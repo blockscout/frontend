@@ -6,12 +6,11 @@ const Nav = () => {
   return (
     <Flex
       w="250px"
-      paddingRight="24px"
       flexDirection="column"
       color="blue.600"
     >
-      <NextLink href="/"><Link padding="8px 0px">Home</Link></NextLink>
-      <NextLink href="/watchlist"><Link padding="8px 0px" >Watchlist</Link></NextLink>
+      <NextLink href="/" passHref><Link padding="8px 0px">Home</Link></NextLink>
+      <NextLink href="/watchlist" passHref><Link padding="8px 0px" >Watchlist</Link></NextLink>
     </Flex>
   )
 }
