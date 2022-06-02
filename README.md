@@ -1,1 +1,1 @@
-coming soon...!
+https://block-scout.vercel.app/
