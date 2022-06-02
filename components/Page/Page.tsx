@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, HStack } from '@chakra-ui/react';
 
-import Nav from '../Nav/Nav';
+import AccountNav from '../AccountNav/AccountNav';
 
 interface Props {
   children: React.ReactNode;
@@ -17,7 +17,7 @@ const Page = ({ children }: Props) => {
       spacing="12"
       alignItems="stretch"
     >
-      <Nav/>
+      <AccountNav/>
       <Box borderRadius="10px" w="100%" overflow="hidden">{ children }</Box>
     </HStack>
   );

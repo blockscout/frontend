@@ -2,7 +2,7 @@ import React from 'react';
 import { Flex, Link } from '@chakra-ui/react';
 import NextLink from 'next/link';
 
-const Nav = () => {
+const AccountNav = () => {
   return (
     <Flex
       w="250px"
@@ -15,4 +15,4 @@ const Nav = () => {
   )
 }
 
-export default Nav;
+export default AccountNav;
