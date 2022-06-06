@@ -1,13 +1,14 @@
 import React from 'react';
 import { VStack, Text } from '@chakra-ui/react';
 import AccountNavLink from './AccountNavLink';
+import { FaRegStar, FaTag, FaUserTag, FaCode, FaMarsDouble } from 'react-icons/fa'
 
 const navItems = [
-  { text: 'Watchlist', pathname: '/watchlist' },
-  { text: 'Private tags', pathname: '/private-tags' },
-  { text: 'Public tags', pathname: '/public-tags' },
-  { text: 'API keys', pathname: '/api-keys' },
-  { text: 'Custom ABI', pathname: '/custom-abi' },
+  { text: 'Watchlist', pathname: '/watchlist', icon: FaRegStar },
+  { text: 'Private tags', pathname: '/private-tags', icon: FaUserTag },
+  { text: 'Public tags', pathname: '/public-tags', icon: FaTag },
+  { text: 'API keys', pathname: '/api-keys', icon: FaMarsDouble },
+  { text: 'Custom ABI', pathname: '/custom-abi', icon: FaCode },
 ]
 
 const AccountNav = () => {
