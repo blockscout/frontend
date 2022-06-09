@@ -1,7 +1,7 @@
 import React from 'react';
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, HStack, LightMode } from '@chakra-ui/react';
 
-import Nav from '../Nav/Nav';
+import AccountNav from '../AccountNav/AccountNav';
 
 interface Props {
   children: React.ReactNode;
@@ -9,15 +9,19 @@ interface Props {
 
 const Page = ({ children }: Props) => {
   return (
-    <Flex
-      w="100%"
-      minH="100vh"
-      padding="140px 48px 48px 48px"
-      bgColor="gray.200"
-    >
-      <Nav/>
-      <Box borderRadius="10px" w="100%" overflow="hidden">{ children }</Box>
-    </Flex>
+    <LightMode>
+      <HStack
+        w="100%"
+        minH="100vh"
+        padding="140px 48px 48px 48px"
+        bgColor="gray.200"
+        spacing="12"
+        alignItems="stretch"
+      >
+        <AccountNav/>
+        <Box borderRadius="10px" w="100%" overflow="hidden" bgColor="white">{ children }</Box>
+      </HStack>
+    </LightMode>
   );
 };
 

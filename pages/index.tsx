@@ -6,7 +6,7 @@ import Page from '../components/Page/Page';
 const Home: NextPage = () => {
   return (
     <Page>
-      <Center h="100%" bgColor="white" color="black">
+      <Center h="100%">
         Home Page
       </Center>
     </Page>
