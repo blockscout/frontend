@@ -20,7 +20,7 @@ const AccountNavLink = ({ text, pathname, icon }: Props) => {
         w="220px"
         p="15px 20px"
         color={ isActive ? 'white' : 'black' }
-        bgColor={ isActive ? 'green.700' : 'transparent' }
+        bgColor={ isActive ? 'brand.700' : 'transparent' }
         borderRadius="base"
       >
         <HStack spacing="4">

@@ -45,7 +45,7 @@ const WatchlistTable = ({ data }: Props) => {
                 <Td>
                   <HStack spacing="30px">
                     <Icon as={ FaEdit } w="20px" h="20px" cursor="pointer" color="blue.500"/>
-                    <Icon as={ FaTrash } w="20px" h="20px" cursor="pointer" color="red.500"/>
+                    <Icon as={ FaTrash } w="20px" h="20px" cursor="pointer" color="red.200"/>
                   </HStack>
                 </Td>
               </Tr>
