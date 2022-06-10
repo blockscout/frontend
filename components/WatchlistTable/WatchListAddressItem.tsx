@@ -1,30 +1,46 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 
-import { Box, Icon } from '@chakra-ui/react';
+import { Link, HStack, VStack, Image, Text, Icon } from '@chakra-ui/react';
 
-import copyToClipboard from '../../lib/copyToClipboard';
-
+import CopyToClipboard from '../CopyToClipboard/CopyToClipboard';
 import type { TWatchlistItem } from '../../data/watchlist';
+import { nbsp } from '../../lib/html-entities';
+import { FaIcicles, FaWallet } from 'react-icons/fa';
 
 const WatchListAddressItem = ({ item }: {item: TWatchlistItem}) => {
-  const copyToClipboardCallback = useCallback(() => copyToClipboard(item.address), [ item ]);
   return (
-    <Box display="flex">
-      <Box backgroundColor="red" w={ 50 } h={ 50 } marginRight="16px"></Box>
-      <Box>
-        <Box>
-          { item.address }
-          { /* TODO: как быть с иконками? */ }
-          <Icon color="red" w="20px" h="20px" cursor="pointer" onClick={ copyToClipboardCallback }>
-            { /* eslint-disable-next-line max-len */ }
-            <path d="M12.9091 3H5.27273C4.56955 3 4 3.56955 4 4.27273V13.1818H5.27273V4.27273H12.9091V3ZM14.8182 5.54545H7.81818C7.115 5.54545 6.54545 6.115 6.54545 6.81818V15.7273C6.54545 16.4305 7.115 17 7.81818 17H14.8182C15.5214 17 16.0909 16.4305 16.0909 15.7273V6.81818C16.0909 6.115 15.5214 5.54545 14.8182 5.54545ZM14.8182 15.7273H7.81818V6.81818H14.8182V15.7273Z" fill="#3F68C0"/>
-          </Icon>
-        </Box>
-        <Box>{ item.tokens.xDAI.amount + ' ' + item.tokens.xDAI.symbol }</Box>
-        <Box>{ Object.keys(item.tokens).length + 'tokens' }</Box>
-        <Box>{ item.totalUSD }</Box>
-      </Box>
-    </Box>
+    <HStack spacing="12px" align="top">
+      <Image src="/acc.png" alt="Account Image" w="50px" h="50px"/>
+      <VStack align="stretch">
+        <HStack spacing="8px">
+          <Link href="#" color="blue.500">
+            { item.address }
+          </Link>
+          <CopyToClipboard text={ item.address }/>
+        </HStack>
+        { item.tokenBalance && (
+          <HStack spacing="0">
+            <Image src="./xdai.png" alt="chain-logo" marginRight="10px" w="16px" h="16px"/>
+            <Text fontSize="12px">{ item.tokenBalance + ' xDAI' }</Text>
+            <Text fontSize="12px" color="gray.500">{ `${ nbsp }($${ item.tokenBalanceUSD } USD)` }</Text>
+          </HStack>
+        ) }
+        { item.tokensAmount && (
+          <HStack spacing="0">
+            <Icon as={ FaIcicles } marginRight="10px" w="16px" h="16px"/>
+            <Text fontSize="12px">{ item.tokensAmount + ' tokens' }</Text>
+            <Text fontSize="12px" color="gray.500">{ `${ nbsp }($${ item.tokensUSD } USD)` }</Text>
+          </HStack>
+        ) }
+        { item.totalUSD && (
+          <HStack spacing="0">
+            <Icon as={ FaWallet } marginRight="10px" w="16px" h="16px"/>
+            <Text fontSize="12px">{ `Total balance:${ nbsp }` }</Text>
+            <Link fontSize="12px" href="#" color="blue.500">{ `$${ item.totalUSD } USD` }</Link>
+          </HStack>
+        ) }
+      </VStack>
+    </HStack>
   )
 }
 
