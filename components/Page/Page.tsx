@@ -14,12 +14,12 @@ const Page = ({ children }: Props) => {
         w="100%"
         minH="100vh"
         padding="140px 48px 48px 48px"
-        bgColor="gray.200"
+        bgColor="gray.50"
         spacing="12"
         alignItems="stretch"
       >
         <AccountNav/>
-        <Box borderRadius="10px" w="100%" overflow="hidden" bgColor="white">{ children }</Box>
+        <Box borderRadius="base" w="100%" overflow="hidden" bgColor="white">{ children }</Box>
       </HStack>
     </LightMode>
   );
