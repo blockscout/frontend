@@ -19,7 +19,7 @@ const Page = ({ children }: Props) => {
         alignItems="stretch"
       >
         <AccountNav/>
-        <Box borderRadius="10px" w="100%" overflow="hidden" bgColor="white">{ children }</Box>
+        <Box borderRadius="base" w="100%" overflow="hidden" bgColor="white">{ children }</Box>
       </HStack>
     </LightMode>
   );

@@ -21,7 +21,7 @@ const AccountNavLink = ({ text, pathname, icon }: Props) => {
         p="15px 20px"
         color={ isActive ? 'white' : 'black' }
         bgColor={ isActive ? 'green.700' : 'transparent' }
-        borderRadius="10px"
+        borderRadius="base"
       >
         <HStack spacing="4">
           <Icon as={ icon } boxSize="5"/>

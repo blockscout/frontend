@@ -1,9 +1,11 @@
 import { extendTheme } from '@chakra-ui/react';
 
-import fonts from './fonts';
+import typography from './foundations/typography';
+import borders from './foundations/borders';
 
 const overrides = {
-  fonts,
+  ...typography,
+  ...borders,
 }
 
 export default extendTheme(overrides);
