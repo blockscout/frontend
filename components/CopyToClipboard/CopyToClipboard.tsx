@@ -3,7 +3,7 @@ import React, { useCallback, useEffect } from 'react';
 import { Icon, useClipboard, useToast } from '@chakra-ui/react';
 import { FaCopy } from 'react-icons/fa';
 
-const WatchListAddressItem = ({ text }: {text: string}) => {
+const CopyToClipboard = ({ text }: {text: string}) => {
   const { hasCopied, onCopy } = useClipboard(text);
   const toast = useToast();
 
@@ -21,4 +21,4 @@ const WatchListAddressItem = ({ text }: {text: string}) => {
   return <Icon as={ FaCopy } w="15px" h="15px" color="blue.500" cursor="pointer" onClick={ copyToClipboardCallback }/>;
 }
 
-export default WatchListAddressItem;
+export default CopyToClipboard;
