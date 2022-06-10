@@ -1,0 +1,20 @@
+// https://unicode-table.com
+export const asymp = String.fromCharCode(8776); // приблизительно
+export const hellip = String.fromCharCode(8230); // многоточие
+export const nbsp = String.fromCharCode(160); // неразрывный пробел
+export const thinsp = String.fromCharCode(8201); // короткий пробел
+export const space = String.fromCharCode(32); // обычный пробел
+export const nbdash = String.fromCharCode(8209); // неразрывное тире
+export const mdash = String.fromCharCode(8212); // длинное тире
+export const ndash = String.fromCharCode(8211); // среднее тире
+export const laquo = String.fromCharCode(171); // кавычки-ёлочки (левые)
+export const raquo = String.fromCharCode(187); // кавычки-ёлочки (правые)
+export const middot = String.fromCharCode(183); // точка по центру строки (в вертикальном смысле)
+export const blackCircle = String.fromCharCode(9679); // жирная точка по центру строки (в вертикальном смысле)
+export const blackRightwardsArrowhead = String.fromCharCode(10148); // ➤
+export const degree = String.fromCharCode(176); // градус °
+export const times = String.fromCharCode(215); // мультипликатор ×
+export const disk = String.fromCharCode(8226); // диск •
+export const minus = String.fromCharCode(8722); // минус −
+export const leftLineArrow = String.fromCharCode(8592); // стрелка ←
+export const rightLineArrow = String.fromCharCode(8594); // стрелка →
