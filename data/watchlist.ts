@@ -18,7 +18,7 @@ export const watchlist = [
     notification: false,
   },
   {
-    address: '0x8c461F78760988c4135e363a87dd736f8b671ff0',
+    address: '0x8c461F78760988c4135e363a87dd736f8b671ff1',
     tokenBalance: 200.2,
     tokenBalanceUSD: 202.4,
     totalUSD: 3000.5,
