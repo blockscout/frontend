@@ -6,14 +6,14 @@ import {
   Thead,
   Tbody,
   Tr,
+  Th,
+  Td,
   TableContainer,
   Switch,
   Icon,
   HStack,
 } from '@chakra-ui/react'
 import { FaEdit, FaTrash } from 'react-icons/fa';
-
-import { Th, Td } from '../Table/Table';
 
 import type { TWatchlist } from '../../data/watchlist';
 
@@ -25,7 +25,7 @@ interface Props {
 
 const WatchlistTable = ({ data }: Props) => {
   return (
-    <TableContainer>
+    <TableContainer width="100%">
       <Table variant="simple">
         <Thead>
           <Tr>
