@@ -6,12 +6,12 @@ import { Box, Button, Text, useDisclosure } from '@chakra-ui/react';
 import Page from '../components/Page/Page';
 
 import WatchlistTable from '../components/WatchlistTable/WatchlistTable';
-import AddAddressModal from '../components/AddAddressModal/AddAddressModal';
+import AddressModal from '../components/AddressModal/AddressModal';
 
 import { watchlist } from '../data/watchlist';
 
 const WatchList: NextPage = () => {
-  const addModalProps = useDisclosure()
+  const addressModalProps = useDisclosure();
   return (
     <Page>
       <Box h="100%">
@@ -20,13 +20,13 @@ const WatchList: NextPage = () => {
         <Box marginTop="32px">
           <Button
             colorScheme="blue"
-            onClick={ addModalProps.onOpen }
+            onClick={ addressModalProps.onOpen }
           >
             Add address
           </Button>
         </Box>
       </Box>
-      <AddAddressModal { ...addModalProps }/>
+      <AddressModal { ...addressModalProps }/>
     </Page>
   );
 };
