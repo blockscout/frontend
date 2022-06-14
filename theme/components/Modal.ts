@@ -29,6 +29,7 @@ const Modal: ComponentMultiStyleConfig = {
     closeButton: {
       top: '40px',
       right: '40px',
+      color: 'blue.500',
     },
   },
 }
