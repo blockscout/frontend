@@ -56,7 +56,7 @@ const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
       <ModalOverlay/>
       <ModalContent>
         <ModalHeader fontWeight="500">New Address to Watchlist</ModalHeader>
-        <ModalCloseButton color="blue.500"/>
+        <ModalCloseButton/>
         <ModalBody>
           <Text lineHeight="30px" marginBottom="40px">
             An Email notification can be sent to you when an address on your watch list sends or receives any transactions.

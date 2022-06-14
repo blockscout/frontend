@@ -10,25 +10,34 @@ import AddressModal from '../components/AddressModal/AddressModal';
 
 import type { TWatchlistItem } from '../data/watchlist';
 import { watchlist } from '../data/watchlist';
+import DeleteModal from '../components/DeleteModal/DeleteModal';
 
 const WatchList: NextPage = () => {
   const addressModalProps = useDisclosure();
-  const [ data, setData ] = useState<TWatchlistItem>();
+  const deleteModalProps = useDisclosure();
+
+  const [ addressModalData, setAddressModalData ] = useState<TWatchlistItem>();
+  const [ deleteModalData, setDeleteModalData ] = useState<string>();
 
   const onEditClick = useCallback((index: number) => () => {
-    setData(watchlist[index]);
+    setAddressModalData(watchlist[index]);
     addressModalProps.onOpen();
   }, [ addressModalProps ])
 
-  const onDeleteClick = useCallback((index: number) => () => {
-    // eslint-disable-next-line no-console
-    console.log('delete', index);
-  }, [ ])
-
-  const onModalClose = useCallback(() => {
-    setData(undefined);
+  const onAddressModalClose = useCallback(() => {
+    setAddressModalData(undefined);
     addressModalProps.onClose();
   }, [ addressModalProps ]);
+
+  const onDeleteClick = useCallback((index: number) => () => {
+    setDeleteModalData(watchlist[index]?.address);
+    deleteModalProps.onOpen();
+  }, [ deleteModalProps ])
+
+  const onDeleteModalClose = useCallback(() => {
+    setDeleteModalData(undefined);
+    deleteModalProps.onClose();
+  }, [ deleteModalProps ]);
 
   return (
     <Page>
@@ -50,7 +59,8 @@ const WatchList: NextPage = () => {
           </Button>
         </Box>
       </Box>
-      <AddressModal { ...addressModalProps } onClose={ onModalClose } data={ data }/>
+      <AddressModal { ...addressModalProps } onClose={ onAddressModalClose } data={ addressModalData }/>
+      <DeleteModal { ...deleteModalProps } onClose={ onDeleteModalClose } address={ deleteModalData }/>
     </Page>
   );
 };
