@@ -15,9 +15,11 @@ import WatchlistTableItem from './WatchListTableItem';
 
 interface Props {
   data: TWatchlist;
+  onEditClick: (index: number) => () => void;
+  onDeleteClick: (index: number) => () => void;
 }
 
-const WatchlistTable = ({ data }: Props) => {
+const WatchlistTable = ({ data, onDeleteClick, onEditClick }: Props) => {
   return (
     <TableContainer width="100%">
       <Table variant="simple">
@@ -30,7 +32,14 @@ const WatchlistTable = ({ data }: Props) => {
           </Tr>
         </Thead>
         <Tbody>
-          { data.map(item => <WatchlistTableItem item={ item } key={ item.address }/>) }
+          { data.map((item, index) => (
+            <WatchlistTableItem
+              item={ item }
+              key={ item.address }
+              onDeleteClick={ onDeleteClick(index) }
+              onEditClick={ onEditClick(index) }
+            />
+          )) }
         </Tbody>
       </Table>
     </TableContainer>
