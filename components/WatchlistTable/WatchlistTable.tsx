@@ -1,23 +1,17 @@
 import React from 'react';
 
 import {
-  Tag,
   Table,
   Thead,
   Tbody,
   Tr,
   Th,
-  Td,
   TableContainer,
-  Switch,
-  Icon,
-  HStack,
 } from '@chakra-ui/react'
-import { FaEdit, FaTrash } from 'react-icons/fa';
 
 import type { TWatchlist } from '../../data/watchlist';
 
-import WatchListAddressItem from './WatchListAddressItem';
+import WatchlistTableItem from './WatchListTableItem';
 
 interface Props {
   data: TWatchlist;
@@ -36,21 +30,7 @@ const WatchlistTable = ({ data }: Props) => {
           </Tr>
         </Thead>
         <Tbody>
-          { data.map(item => {
-            return (
-              <Tr alignItems="top" key={ item.address }>
-                <Td><WatchListAddressItem item={ item }/></Td>
-                <Td><Tag>{ item.tag }</Tag></Td>
-                <Td><Switch colorScheme="green" size="md" isChecked={ item.notification }/></Td>
-                <Td>
-                  <HStack spacing="30px">
-                    <Icon as={ FaEdit } w="20px" h="20px" cursor="pointer" color="blue.500"/>
-                    <Icon as={ FaTrash } w="20px" h="20px" cursor="pointer" color="red.200"/>
-                  </HStack>
-                </Td>
-              </Tr>
-            )
-          }) }
+          { data.map(item => <WatchlistTableItem item={ item } key={ item.address }/>) }
         </Tbody>
       </Table>
     </TableContainer>
