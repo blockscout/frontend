@@ -17,7 +17,7 @@ const sizes: Record<string, SystemStyleObject> = {
 
 const variantOutline: PartsStyleFunction<typeof parts> = (props) => {
   const { theme } = props
-  const { focusBorderColor: fc, errorBorderColor: ec } = getDefaultFormColors(props)
+  const { focusColor: fc, errorColor: ec } = getDefaultFormColors(props)
 
   return {
     field: {

@@ -19,7 +19,7 @@ const getActiveInputStyles = (theme: Dict, fc: string) => ({
 
 const variantFloating: PartsStyleFunction<typeof parts> = (props: StyleFunctionProps) => {
   const { theme } = props;
-  const { focusBorderColor: fc, errorBorderColor: ec } = getDefaultFormColors(props);
+  const { focusColor: fc, errorColor: ec } = getDefaultFormColors(props);
 
   const activeLabelStyles = getActiveLabelStyles(theme, fc);
   const activeInputStyles = getActiveInputStyles(theme, fc);
@@ -64,6 +64,10 @@ const variantFloating: PartsStyleFunction<typeof parts> = (props: StyleFunctionP
       'input[aria-invalid=true]': {
         borderColor: getColor(theme, ec),
       },
+    },
+    requiredIndicator: {
+      marginStart: 0,
+      color: fc,
     },
   }
 }
