@@ -91,7 +91,7 @@ const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
           </Box>
           <Text color="gray.600" fontSize="14px" marginBottom="20px">Notification methods:</Text>
           <Checkbox
-            defaultChecked={ notification }
+            isChecked={ notification }
             colorScheme="green"
             onChange={ onNotificationChange }
           >

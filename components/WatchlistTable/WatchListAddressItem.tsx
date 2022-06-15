@@ -5,14 +5,15 @@ import { Link, HStack, VStack, Image, Text, Icon } from '@chakra-ui/react';
 import CopyToClipboard from '../CopyToClipboard/CopyToClipboard';
 import type { TWatchlistItem } from '../../data/watchlist';
 import { nbsp } from '../../lib/html-entities';
-import { FaIcicles, FaWallet } from 'react-icons/fa';
+import TokensIcon from '../../icons/tokens.svg';
+import WalletIcon from '../../icons/wallet.svg';
 
 const WatchListAddressItem = ({ item }: {item: TWatchlistItem}) => {
   return (
     <HStack spacing="12px" align="top">
       <Image src="/acc.png" alt="Account Image" w="50px" h="50px"/>
       <VStack align="stretch">
-        <HStack spacing="8px">
+        <HStack spacing="8px" alignContent="center">
           <Link href="#" color="blue.500">
             { item.address }
           </Link>
@@ -27,14 +28,14 @@ const WatchListAddressItem = ({ item }: {item: TWatchlistItem}) => {
         ) }
         { item.tokensAmount && (
           <HStack spacing="0">
-            <Icon as={ FaIcicles } marginRight="10px" w="16px" h="16px"/>
+            <Icon as={ TokensIcon } marginRight="10px" w="17px" h="16px"/>
             <Text fontSize="12px">{ item.tokensAmount + ' tokens' }</Text>
             <Text fontSize="12px" color="gray.500">{ `${ nbsp }($${ item.tokensUSD } USD)` }</Text>
           </HStack>
         ) }
         { item.totalUSD && (
           <HStack spacing="0">
-            <Icon as={ FaWallet } marginRight="10px" w="16px" h="16px"/>
+            <Icon as={ WalletIcon } marginRight="10px" w="16px" h="16px"/>
             <Text fontSize="12px">{ `Total balance:${ nbsp }` }</Text>
             <Link fontSize="12px" href="#" color="blue.500">{ `$${ item.totalUSD } USD` }</Link>
           </HStack>

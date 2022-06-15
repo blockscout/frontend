@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 
 import { Icon, useClipboard, useToast } from '@chakra-ui/react';
-import { FaCopy } from 'react-icons/fa';
+import CopyIcon from '../../icons/copy.svg';
 
 const CopyToClipboard = ({ text }: {text: string}) => {
   const { hasCopied, onCopy } = useClipboard(text);
@@ -18,7 +18,7 @@ const CopyToClipboard = ({ text }: {text: string}) => {
   }, [ toast, hasCopied ]);
 
   const copyToClipboardCallback = useCallback(() => onCopy(), [ onCopy ]);
-  return <Icon as={ FaCopy } w="15px" h="15px" color="blue.500" cursor="pointer" onClick={ copyToClipboardCallback }/>;
+  return <Icon as={ CopyIcon } w="20px" h="20px" color="blue.500" cursor="pointer" onClick={ copyToClipboardCallback }/>;
 }
 
 export default CopyToClipboard;
