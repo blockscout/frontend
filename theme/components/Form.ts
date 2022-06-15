@@ -33,6 +33,9 @@ const variantFloating: PartsStyleFunction<typeof parts> = (props: StyleFunctionP
         input: {
           ...activeInputStyles,
         },
+        'label .chakra-form__required-indicator': {
+          color: getColor(theme, fc),
+        },
       },
       // label's styles
       label: {
@@ -64,10 +67,17 @@ const variantFloating: PartsStyleFunction<typeof parts> = (props: StyleFunctionP
       'input[aria-invalid=true]': {
         borderColor: getColor(theme, ec),
       },
+      // indicator's styles
+      'input:not(:placeholder-shown) + label .chakra-form__required-indicator': {
+        color: getColor(theme, fc),
+      },
+      'input[aria-invalid=true] + label .chakra-form__required-indicator': {
+        color: getColor(theme, ec),
+      },
     },
     requiredIndicator: {
       marginStart: 0,
-      color: fc,
+      color: mode('gray.500', 'whiteAlpha.400')(props),
     },
   }
 }
