@@ -6,16 +6,15 @@ import type { Dict } from '@chakra-ui/utils';
 import getDefaultFormColors from '../utils/getDefaultFormColors';
 
 const getActiveLabelStyles = (theme: Dict, fc: string) => ({
-  fontSize: '12px',
-  lineHeight: '15px',
-  top: '10px',
   color: getColor(theme, fc),
+  transform: 'scale(0.75) translateY(-10px)',
 })
 
 const getActiveInputStyles = (theme: Dict, fc: string) => ({
   paddingTop: '30px',
   paddingBottom: '10px',
   borderColor: getColor(theme, fc),
+  boxShadow: 'none',
 })
 
 const variantFloating: PartsStyleFunction<typeof parts> = (props: StyleFunctionProps) => {
@@ -38,18 +37,16 @@ const variantFloating: PartsStyleFunction<typeof parts> = (props: StyleFunctionP
       // label's styles
       label: {
         top: '20px',
-        left: 0,
+        left: '20px',
         zIndex: 2,
         position: 'absolute',
         color: mode('gray.500', 'whiteAlpha.400')(props),
         backgroundColor: 'transparent',
         pointerEvents: 'none',
-        padding: '0 20px',
         margin: 0,
         transformOrigin: 'left top',
         fontSize: '16px',
         lineHeight: '20px',
-        transitionProperty: 'top, font-size, line-height',
       },
       'input:not(:placeholder-shown) + label': {
         ...activeLabelStyles,
