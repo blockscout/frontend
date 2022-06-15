@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import {
   Box,
@@ -28,12 +28,18 @@ type Props = {
   data?: TWatchlistItem;
 }
 
-const AddressModal: React.FC<Props> = ({ isOpen, onClose, data = {} as TWatchlistItem }) => {
+const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
   // надо чето придумать с формой
   // потом доделаем
-  const [ address, setAddress ] = useState(data.address);
-  const [ tag, setTag ] = useState(data.tag);
-  const [ notification, setNotification ] = useState(data.notification);
+  const [ address, setAddress ] = useState<string>();
+  const [ tag, setTag ] = useState<string>();
+  const [ notification, setNotification ] = useState<boolean>();
+
+  useEffect(() => {
+    setAddress(data?.address);
+    setTag(data?.tag);
+    setNotification(data?.notification);
+  }, [ data ]);
 
   const onAddressChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => setAddress(event.target.value), [ setAddress ]);
   const onTagChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => setTag(event.target.value), [ setTag ]);
@@ -44,12 +50,13 @@ const AddressModal: React.FC<Props> = ({ isOpen, onClose, data = {} as TWatchlis
     console.log(address, tag, notification);
     onClose()
   }, [ address, tag, notification, onClose ]);
+
   return (
     <Modal isOpen={ isOpen } onClose={ onClose } size="md">
       <ModalOverlay/>
       <ModalContent>
         <ModalHeader fontWeight="500">New Address to Watchlist</ModalHeader>
-        <ModalCloseButton color="blue.500"/>
+        <ModalCloseButton/>
         <ModalBody>
           <Text lineHeight="30px" marginBottom="40px">
             An Email notification can be sent to you when an address on your watch list sends or receives any transactions.
@@ -58,13 +65,13 @@ const AddressModal: React.FC<Props> = ({ isOpen, onClose, data = {} as TWatchlis
             placeholder="Address (0x...)*"
             marginBottom="20px"
             onChange={ onAddressChange }
-            value={ address }
+            value={ address || '' }
           />
           <Input
             placeholder="Private tag (max 35 characters)*"
             marginBottom="30px"
             onChange={ onTagChange }
-            value={ tag }
+            value={ tag || '' }
           />
           <Text color="gray.600" fontSize="14px" marginBottom="32px">
             Please select what types of notifications you will receive:
