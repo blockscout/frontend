@@ -19,8 +19,8 @@ const WatchList: NextPage = () => {
   const [ addressModalData, setAddressModalData ] = useState<TWatchlistItem>();
   const [ deleteModalData, setDeleteModalData ] = useState<string>();
 
-  const onEditClick = useCallback((index: number) => () => {
-    setAddressModalData(watchlist[index]);
+  const onEditClick = useCallback((data: TWatchlistItem) => {
+    setAddressModalData(data);
     addressModalProps.onOpen();
   }, [ addressModalProps ])
 
@@ -29,8 +29,8 @@ const WatchList: NextPage = () => {
     addressModalProps.onClose();
   }, [ addressModalProps ]);
 
-  const onDeleteClick = useCallback((index: number) => () => {
-    setDeleteModalData(watchlist[index]?.address);
+  const onDeleteClick = useCallback((data: TWatchlistItem) => {
+    setDeleteModalData(data.address);
     deleteModalProps.onOpen();
   }, [ deleteModalProps ])
 

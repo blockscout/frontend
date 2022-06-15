@@ -9,14 +9,14 @@ import {
   TableContainer,
 } from '@chakra-ui/react'
 
-import type { TWatchlist } from '../../data/watchlist';
+import type { TWatchlist, TWatchlistItem } from '../../data/watchlist';
 
 import WatchlistTableItem from './WatchListTableItem';
 
 interface Props {
   data: TWatchlist;
-  onEditClick: (index: number) => () => void;
-  onDeleteClick: (index: number) => () => void;
+  onEditClick: (data: TWatchlistItem) => void;
+  onDeleteClick: (data: TWatchlistItem) => void;
 }
 
 const WatchlistTable = ({ data, onDeleteClick, onEditClick }: Props) => {
@@ -32,12 +32,12 @@ const WatchlistTable = ({ data, onDeleteClick, onEditClick }: Props) => {
           </Tr>
         </Thead>
         <Tbody>
-          { data.map((item, index) => (
+          { data.map((item) => (
             <WatchlistTableItem
               item={ item }
               key={ item.address }
-              onDeleteClick={ onDeleteClick(index) }
-              onEditClick={ onEditClick(index) }
+              onDeleteClick={ onDeleteClick }
+              onEditClick={ onEditClick }
             />
           )) }
         </Tbody>
