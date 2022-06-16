@@ -15,6 +15,8 @@ import {
   Text,
   Grid,
   GridItem,
+  FormControl,
+  FormLabel,
 } from '@chakra-ui/react';
 
 import type { TWatchlistItem } from '../../data/watchlist';
@@ -61,18 +63,14 @@ const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
           <Text lineHeight="30px" marginBottom="40px">
             An Email notification can be sent to you when an address on your watch list sends or receives any transactions.
           </Text>
-          <Input
-            placeholder="Address (0x...)*"
-            marginBottom="20px"
-            onChange={ onAddressChange }
-            value={ address || '' }
-          />
-          <Input
-            placeholder="Private tag (max 35 characters)*"
-            marginBottom="30px"
-            onChange={ onTagChange }
-            value={ tag || '' }
-          />
+          <FormControl variant="floating" id="address" marginBottom="20px" isRequired>
+            <Input placeholder=" " onChange={ onAddressChange } value={ address || '' }/>
+            <FormLabel>Address (0x...)</FormLabel>
+          </FormControl>
+          <FormControl variant="floating" id="tag" marginBottom="30px" isRequired>
+            <Input placeholder=" " onChange={ onTagChange } value={ tag || '' }/>
+            <FormLabel>Private tag (max 35 characters)</FormLabel>
+          </FormControl>
           <Text color="gray.600" fontSize="14px" marginBottom="32px">
             Please select what types of notifications you will receive:
           </Text>
