@@ -2,12 +2,11 @@ import React from 'react';
 import { Link, Icon, Text, HStack } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import type { IconType } from 'react-icons';
 
 interface Props {
   pathname: string;
   text: string;
-  icon: IconType;
+  icon: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
 }
 
 const AccountNavLink = ({ text, pathname, icon }: Props) => {

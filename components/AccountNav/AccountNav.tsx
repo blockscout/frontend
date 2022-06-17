@@ -1,14 +1,19 @@
 import React from 'react';
 import { VStack, Text } from '@chakra-ui/react';
 import AccountNavLink from './AccountNavLink';
-import { FaRegStar, FaTag, FaUserTag, FaCode, FaMarsDouble } from 'react-icons/fa'
+import StarIcon from '../../icons/star.svg'
+// тут кривая иконка в макете, потом доделаем
+import PrivateTagIcon from '../../icons/privateTag.svg'
+import PublicTagIcon from '../../icons/publicTag.svg'
+import ApiKeysIcon from '../../icons/apiKeys.svg';
+import ABIIcon from '../../icons/ABI.svg';
 
 const navItems = [
-  { text: 'Watchlist', pathname: '/watchlist', icon: FaRegStar },
-  { text: 'Private tags', pathname: '/private-tags', icon: FaUserTag },
-  { text: 'Public tags', pathname: '/public-tags', icon: FaTag },
-  { text: 'API keys', pathname: '/api-keys', icon: FaMarsDouble },
-  { text: 'Custom ABI', pathname: '/custom-abi', icon: FaCode },
+  { text: 'Watchlist', pathname: '/watchlist', icon: StarIcon },
+  { text: 'Private tags', pathname: '/private-tags', icon: PrivateTagIcon },
+  { text: 'Public tags', pathname: '/public-tags', icon: PublicTagIcon },
+  { text: 'API keys', pathname: '/api-keys', icon: ApiKeysIcon },
+  { text: 'Custom ABI', pathname: '/custom-abi', icon: ABIIcon },
 ]
 
 const AccountNav = () => {
