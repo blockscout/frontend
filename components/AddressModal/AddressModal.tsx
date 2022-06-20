@@ -22,6 +22,7 @@ import {
 import type { TWatchlistItem } from '../../data/watchlist';
 
 const NOTIFICATIONS = [ 'xDAI', 'ERC-20', 'ERC-721, ERC-1155 (NFT)' ];
+const ADDRESS_LENGTH = 42;
 
 type Props = {
   isOpen: boolean;
@@ -36,15 +37,34 @@ const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
   const [ address, setAddress ] = useState<string>();
   const [ tag, setTag ] = useState<string>();
   const [ notification, setNotification ] = useState<boolean>();
+  const [ addressError, setAddressError ] = useState<boolean>(false);
+
+  const isValidAddress = (address: string) => address.length === ADDRESS_LENGTH;
 
   useEffect(() => {
     setAddress(data?.address);
+    setAddressError(false);
     setTag(data?.tag);
     setNotification(data?.notification);
   }, [ data ]);
 
-  const onAddressChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => setAddress(event.target.value), [ setAddress ]);
-  const onTagChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => setTag(event.target.value), [ setTag ]);
+  const onAddressChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    if (addressError && isValidAddress(event.target.value)) {
+      setAddressError(false);
+    }
+    setAddress(event.target.value);
+  }, [ addressError ]);
+
+  const validateAddress = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!isValidAddress(event.target.value)) {
+      setAddressError(true);
+    }
+  }, [ ]);
+
+  const onTagChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    setTag(event.target.value)
+  }, [ ]);
+
   const onNotificationChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => setNotification(event.target.checked), [ setNotification ]);
 
   const onButtonClick = useCallback(() => {
@@ -53,22 +73,33 @@ const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
     onClose()
   }, [ address, tag, notification, onClose ]);
 
+  const title = data ? 'Edit watchlist address' : 'New Address to Watchlist';
+
   return (
     <Modal isOpen={ isOpen } onClose={ onClose } size="md">
       <ModalOverlay/>
       <ModalContent>
-        <ModalHeader fontWeight="500">New Address to Watchlist</ModalHeader>
+        <ModalHeader fontWeight="500">{ title }</ModalHeader>
         <ModalCloseButton/>
         <ModalBody>
-          <Text lineHeight="30px" marginBottom="40px">
-            An Email notification can be sent to you when an address on your watch list sends or receives any transactions.
-          </Text>
+          { !data && (
+            <Text lineHeight="30px" marginBottom="40px">
+                      An Email notification can be sent to you when an address on your watch list sends or receives any transactions.
+            </Text>
+          ) }
           <FormControl variant="floating" id="address" marginBottom="20px" isRequired>
-            <Input placeholder=" " onChange={ onAddressChange } value={ address || '' }/>
+            <Input
+              placeholder=" "
+              onChange={ onAddressChange }
+              value={ address || '' }
+              isInvalid={ addressError }
+              onBlur={ validateAddress }
+              maxLength={ ADDRESS_LENGTH }
+            />
             <FormLabel>Address (0x...)</FormLabel>
           </FormControl>
           <FormControl variant="floating" id="tag" marginBottom="30px" isRequired>
-            <Input placeholder=" " onChange={ onTagChange } value={ tag || '' }/>
+            <Input placeholder=" " onChange={ onTagChange } value={ tag || '' } maxLength={ 35 }/>
             <FormLabel>Private tag (max 35 characters)</FormLabel>
           </FormControl>
           <Text color="gray.600" fontSize="14px" marginBottom="32px">
@@ -98,8 +129,8 @@ const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
         </ModalBody>
 
         <ModalFooter justifyContent="flex-start">
-          <Button colorScheme="blue" onClick={ onButtonClick }>
-            Add address
+          <Button colorScheme="blue" onClick={ onButtonClick } disabled={ addressError }>
+            { data ? 'Save changes' : 'Add address' }
           </Button>
         </ModalFooter>
       </ModalContent>
