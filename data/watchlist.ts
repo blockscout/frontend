@@ -22,7 +22,7 @@ export const watchlist = [
     tokenBalance: 200.2,
     tokenBalanceUSD: 202.4,
     totalUSD: 3000.5,
-    tag: 'some_other_tag',
+    tag: '12345678901234567890123456789012345',
     notification: false,
   },
 ];

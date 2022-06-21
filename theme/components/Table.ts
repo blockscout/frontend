@@ -6,7 +6,7 @@ const firstLastStyle = {
 }
 
 const Table: ComponentMultiStyleConfig = {
-  parts: [ 'th', 'td' ],
+  parts: [ 'th', 'td', 'table' ],
   baseStyle: {
     th: {
       ...firstLastStyle,
@@ -17,6 +17,9 @@ const Table: ComponentMultiStyleConfig = {
       ...firstLastStyle,
       fontSize: 'md',
       verticalAlign: 'top',
+    },
+    table: {
+      tableLayout: 'fixed',
     },
   },
 }

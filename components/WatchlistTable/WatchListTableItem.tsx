@@ -34,7 +34,11 @@ const WatchlistTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   return (
     <Tr alignItems="top" key={ item.address }>
       <Td><WatchListAddressItem item={ item }/></Td>
-      <Td><Tag>{ item.tag }</Tag></Td>
+      <Td>
+        <Tag lineHeight="24px" title={ item.tag }>
+          { item.tag }
+        </Tag>
+      </Td>
       <Td><Switch colorScheme="green" size="md" isChecked={ item.notification }/></Td>
       <Td>
         <HStack spacing="30px">

@@ -22,13 +22,13 @@ interface Props {
 const WatchlistTable = ({ data, onDeleteClick, onEditClick }: Props) => {
   return (
     <TableContainer width="100%">
-      <Table variant="simple">
+      <Table variant="simple" minWidth="600px">
         <Thead>
           <Tr>
-            <Th>Address</Th>
-            <Th>Private tag</Th>
-            <Th>Notification</Th>
-            <Th></Th>
+            <Th width="70%" overflow="hidden">Address</Th>
+            <Th width="30%" overflow="hidden">Private tag</Th>
+            <Th width="108px" overflow="hidden">Notification</Th>
+            <Th width="108px" overflow="hidden"></Th>
           </Tr>
         </Thead>
         <Tbody>
