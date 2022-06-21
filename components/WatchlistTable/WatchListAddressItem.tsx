@@ -12,9 +12,9 @@ const WatchListAddressItem = ({ item }: {item: TWatchlistItem}) => {
   return (
     <HStack spacing="12px" align="top">
       <Image src="/acc.png" alt="Account Image" w="50px" h="50px"/>
-      <VStack align="stretch">
+      <VStack align="stretch" overflow="hidden">
         <HStack spacing="8px" alignContent="center">
-          <Link href="#" color="blue.500">
+          <Link href="#" color="blue.500" title={ item.address } overflow="hidden" textOverflow="ellipsis">
             { item.address }
           </Link>
           <CopyToClipboard text={ item.address }/>
