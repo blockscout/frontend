@@ -35,8 +35,8 @@ const DeleteModal: React.FC<Props> = ({ isOpen, onClose, address }) => {
         </ModalBody>
 
         <ModalFooter>
-          <Button variant="ghost" onClick={ onDeleteClick }>Yes</Button>
-          <Button colorScheme="blue" ml={ 3 } onClick={ onClose }>
+          <Button variant="secondary" onClick={ onDeleteClick }>Yes</Button>
+          <Button variant="primary" ml={ 3 } onClick={ onClose }>
               No
           </Button>
         </ModalFooter>

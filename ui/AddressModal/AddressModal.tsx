@@ -129,7 +129,7 @@ const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
         </ModalBody>
 
         <ModalFooter justifyContent="flex-start">
-          <Button colorScheme="blue" onClick={ onButtonClick } disabled={ addressError }>
+          <Button variant="primary" onClick={ onButtonClick } disabled={ addressError }>
             { data ? 'Save changes' : 'Add address' }
           </Button>
         </ModalFooter>
