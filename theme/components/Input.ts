@@ -6,7 +6,7 @@ import getDefaultFormColors from '../utils/getDefaultFormColors';
 
 const sizes: Record<string, SystemStyleObject> = {
   md: {
-    fontSize: '16px',
+    fontSize: 'md',
     lineHeight: '20px',
     px: '20px',
     py: '20px',

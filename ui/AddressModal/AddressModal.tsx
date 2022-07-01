@@ -102,7 +102,7 @@ const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
             <Input placeholder=" " onChange={ onTagChange } value={ tag || '' } maxLength={ 35 }/>
             <FormLabel>Private tag (max 35 characters)</FormLabel>
           </FormControl>
-          <Text color="gray.600" fontSize="14px" marginBottom="32px">
+          <Text color="gray.600" fontSize="sm" marginBottom="32px">
             Please select what types of notifications you will receive:
           </Text>
           <Box marginBottom="32px">
@@ -118,7 +118,7 @@ const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
               }) }
             </Grid>
           </Box>
-          <Text color="gray.600" fontSize="14px" marginBottom="20px">Notification methods:</Text>
+          <Text color="gray.600" fontSize="sm" marginBottom="20px">Notification methods:</Text>
           <Checkbox
             isChecked={ notification }
             colorScheme="green"

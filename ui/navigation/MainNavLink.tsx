@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, Icon, Text, HStack } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
+import { ChevronRightIcon } from '@chakra-ui/icons'
 
 interface Props {
   pathname: string;
@@ -9,7 +10,7 @@ interface Props {
   icon: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
 }
 
-const AccountNavLink = ({ text, pathname, icon }: Props) => {
+const MainNavLink = ({ text, pathname, icon }: Props) => {
   const router = useRouter();
   const isActive = router.pathname === pathname;
 
@@ -20,16 +21,19 @@ const AccountNavLink = ({ text, pathname, icon }: Props) => {
         p="15px 20px"
         color={ isActive ? 'blue.600' : 'gray.600' }
         bgColor={ isActive ? 'blue.50' : 'transparent' }
-        _hover={{ color: 'blue.600' }}
         borderRadius="base"
+        _hover={{ color: 'blue.600' }}
       >
-        <HStack spacing={ 3 }>
-          <Icon as={ icon } boxSize="30px"/>
-          <Text>{ text }</Text>
+        <HStack justifyContent="space-between">
+          <HStack spacing={ 3 }>
+            <Icon as={ icon } boxSize="30px"/>
+            <Text>{ text }</Text>
+          </HStack>
+          <ChevronRightIcon boxSize={ 6 }/>
         </HStack>
       </Link>
     </NextLink>
   )
 }
 
-export default AccountNavLink;
+export default MainNavLink;

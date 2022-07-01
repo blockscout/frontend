@@ -14,10 +14,10 @@ const Page = ({ children }: Props) => {
       <HStack
         w="100%"
         minH="100vh"
-        padding="36px 60px 48px 40px"
         bgColor="white"
-        spacing="12"
+        spacing={ 12 }
         alignItems="stretch"
+        paddingRight="60px"
       >
         <AccountNav/>
         <VStack>

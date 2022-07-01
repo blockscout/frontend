@@ -17,7 +17,7 @@ const Modal: ComponentMultiStyleConfig = {
     header: {
       padding: 0,
       marginBottom: '20px',
-      fontSize: '24px',
+      fontSize: '2xl',
     },
     body: {
       padding: 0,
