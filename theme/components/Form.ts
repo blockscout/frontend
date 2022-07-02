@@ -48,7 +48,7 @@ const variantFloating: PartsStyleFunction<typeof parts> = (props: StyleFunctionP
         pointerEvents: 'none',
         margin: 0,
         transformOrigin: 'left top',
-        fontSize: '16px',
+        fontSize: 'md',
         lineHeight: '20px',
       },
       'input:not(:placeholder-shown) + label': {

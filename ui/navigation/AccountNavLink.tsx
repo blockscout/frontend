@@ -16,14 +16,18 @@ const AccountNavLink = ({ text, pathname, icon }: Props) => {
   return (
     <NextLink href={ pathname } passHref>
       <Link
+        as="li"
+        listStyleType="none"
         w="220px"
-        p="15px 20px"
-        color={ isActive ? 'white' : 'black' }
-        bgColor={ isActive ? 'brand.700' : 'transparent' }
+        px={ 5 }
+        py={ 4 }
+        color={ isActive ? 'blue.600' : 'gray.600' }
+        bgColor={ isActive ? 'blue.50' : 'transparent' }
+        _hover={{ color: 'blue.600' }}
         borderRadius="base"
       >
-        <HStack spacing="4">
-          <Icon as={ icon } boxSize="5"/>
+        <HStack spacing={ 3 }>
+          <Icon as={ icon } boxSize="30px"/>
           <Text>{ text }</Text>
         </HStack>
       </Link>
