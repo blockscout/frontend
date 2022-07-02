@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, HStack, LightMode, VStack } from '@chakra-ui/react';
 
-import AccountNav from '../navigation/Navigation';
+import Navigation from '../navigation/Navigation';
 import Header from '../header/Header';
 
 interface Props {
@@ -17,12 +17,22 @@ const Page = ({ children }: Props) => {
         bgColor="white"
         spacing={ 12 }
         alignItems="stretch"
-        paddingRight="60px"
+        paddingRight={ 15 }
       >
-        <AccountNav/>
+        <Navigation/>
         <VStack>
           <Header/>
-          <Box borderRadius="base" w="100%" overflow="hidden" bgColor="white" padding="32px 20px">{ children }</Box>
+          <Box
+            as="main"
+            borderRadius="base"
+            w="100%"
+            overflow="hidden"
+            bgColor="white"
+            px={ 5 }
+            py={ 8 }
+          >
+            { children }
+          </Box>
         </VStack>
       </HStack>
     </LightMode>

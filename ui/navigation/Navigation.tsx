@@ -15,10 +15,11 @@ const Navigation = () => {
       spacing={ 12 }
       borderRight="1px solid"
       borderColor="gray.200"
-      padding="48px 40px"
+      px={ 10 }
+      py={ 12 }
       width="300px"
     >
-      <HStack justifyContent="space-between" w="100%" padding={ 4 }>
+      <HStack as="header" justifyContent="space-between" w="100%" padding={ 4 }>
         <Icon as={ logoIcon } width="142px" height="26px" color="blue.600"/>
         <Icon as={ networksIcon } width="20px" height="20px"/>
       </HStack>

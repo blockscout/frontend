@@ -17,8 +17,11 @@ const MainNavLink = ({ text, pathname, icon }: Props) => {
   return (
     <NextLink href={ pathname } passHref>
       <Link
+        as="li"
+        listStyleType="none"
         w="220px"
-        p="15px 20px"
+        px={ 5 }
+        py={ 4 }
         color={ isActive ? 'blue.600' : 'gray.600' }
         bgColor={ isActive ? 'blue.50' : 'transparent' }
         borderRadius="base"

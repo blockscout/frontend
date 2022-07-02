@@ -17,6 +17,7 @@ const SOCIAL_LINKS = [
 const NavFooter = () => {
   return (
     <VStack
+      as="footer"
       spacing={ 8 }
       borderTop="1px solid"
       borderColor="gray.200"

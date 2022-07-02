@@ -1,5 +1,5 @@
 import React from 'react';
-import { VStack } from '@chakra-ui/react';
+import { Box, VStack } from '@chakra-ui/react';
 import AccountNavLink from './AccountNavLink';
 import WatchlistIcon from '../../icons/watchlist.svg'
 import PrivateTagIcon from '../../icons/privattags.svg'
@@ -17,9 +17,11 @@ const navItems = [
 
 const AccountNavigation = () => {
   return (
-    <VStack spacing="3">
-      { navItems.map((item) => <AccountNavLink key={ item.text } { ...item }/>) }
-    </VStack>
+    <Box as="nav">
+      <VStack as="ul" spacing="3">
+        { navItems.map((item) => <AccountNavLink key={ item.text } { ...item }/>) }
+      </VStack>
+    </Box>
   )
 }
 

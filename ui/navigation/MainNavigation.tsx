@@ -1,5 +1,5 @@
 import React from 'react';
-import { VStack } from '@chakra-ui/react';
+import { Box, VStack } from '@chakra-ui/react';
 import MainNavLink from './MainNavLink';
 import BlocksIcon from '../../icons/block.svg'
 import TransactionsIcon from '../../icons/transactions.svg'
@@ -17,9 +17,11 @@ const navItems = [
 
 const MainNavigation = () => {
   return (
-    <VStack spacing="3">
-      { navItems.map((item) => <MainNavLink key={ item.text } { ...item }/>) }
-    </VStack>
+    <Box as="nav">
+      <VStack as="ul" spacing="3">
+        { navItems.map((item) => <MainNavLink key={ item.text } { ...item }/>) }
+      </VStack>
+    </Box>
   )
 }
 
