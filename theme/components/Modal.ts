@@ -11,17 +11,17 @@ const Modal: ComponentMultiStyleConfig = {
   },
   baseStyle: {
     dialog: {
-      padding: '40px',
-      borderRadius: '30px',
+      padding: 8,
+      borderRadius: 'lg',
     },
     header: {
       padding: 0,
-      marginBottom: '20px',
+      marginBottom: 8,
       fontSize: '2xl',
     },
     body: {
       padding: 0,
-      marginBottom: '40px',
+      marginBottom: 8,
     },
     footer: {
       padding: 0,

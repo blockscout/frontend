@@ -42,7 +42,7 @@ const WatchList: React.FC = () => {
     <Page>
       <Box h="100%">
         <Box as="h1" textStyle="h2" marginBottom={ 8 }>Watch list</Box>
-        <Text marginBottom="40px">An Email notification can be sent to you when an address on your watch list sends or receives any transactions.</Text>
+        <Text marginBottom={ 12 }>An Email notification can be sent to you when an address on your watch list sends or receives any transactions.</Text>
         { Boolean(watchlist.length) && (
           <WatchlistTable
             data={ watchlist }
@@ -50,7 +50,7 @@ const WatchList: React.FC = () => {
             onEditClick={ onEditClick }
           />
         ) }
-        <Box marginTop="32px">
+        <Box marginTop={ 8 }>
           <Button
             variant="primary"
             onClick={ addressModalProps.onOpen }

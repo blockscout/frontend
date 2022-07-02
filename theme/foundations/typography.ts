@@ -8,8 +8,15 @@ const typography = {
   textStyles: {
     h2: {
       fontSize: [ '32px' ],
-      fontWeight: 'semibold',
+      fontWeight: '500',
       lineHeight: '40px',
+      fontFamily: 'heading',
+    },
+    h3: {
+      fontSize: '24px',
+      fontWeight: '500',
+      lineHeight: '32px',
+      fontFamily: 'heading',
     },
   },
 }

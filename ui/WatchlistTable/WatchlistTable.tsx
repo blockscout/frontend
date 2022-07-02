@@ -25,10 +25,10 @@ const WatchlistTable = ({ data, onDeleteClick, onEditClick }: Props) => {
       <Table variant="simple" minWidth="600px">
         <Thead>
           <Tr>
-            <Th width="70%" overflow="hidden">Address</Th>
-            <Th width="30%" overflow="hidden">Private tag</Th>
-            <Th width="108px" overflow="hidden">Notification</Th>
-            <Th width="108px" overflow="hidden"></Th>
+            <Th width="70%">Address</Th>
+            <Th width="30%">Private tag</Th>
+            <Th width="108px">Notification</Th>
+            <Th width="108px"></Th>
           </Tr>
         </Thead>
         <Tbody>
