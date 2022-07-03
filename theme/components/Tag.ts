@@ -6,6 +6,15 @@ const Tag: ComponentStyleConfig = {
       display: 'inline-block',
       overflow: 'hidden',
       textOverflow: 'ellipsis',
+      borderRadius: 'md',
+    },
+  },
+  variants: {
+    gray: {
+      container: {
+        bg: 'gray.200',
+        color: 'gray.600',
+      },
     },
   },
 }

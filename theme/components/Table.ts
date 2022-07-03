@@ -1,25 +1,45 @@
 import type { ComponentMultiStyleConfig } from '@chakra-ui/theme';
 
-const firstLastStyle = {
-  _first: { paddingLeft: 0 },
-  _last: { paddingRight: 0 },
-}
-
 const Table: ComponentMultiStyleConfig = {
   parts: [ 'th', 'td', 'table' ],
   baseStyle: {
+    thead: {
+      backgroundColor: 'gray.50',
+    },
     th: {
-      ...firstLastStyle,
       textTransform: 'none',
       fontWeight: 'normal',
+      overflow: 'hidden',
+      color: 'gray.500',
     },
     td: {
-      ...firstLastStyle,
       fontSize: 'md',
       verticalAlign: 'top',
     },
     table: {
       tableLayout: 'fixed',
+      borderTopLeftRadius: 'md',
+      borderTopRightRadius: 'md',
+      overflow: 'hidden',
+    },
+  },
+  sizes: {
+    md: {
+      th: {
+        px: 4,
+        fontSize: 'sm',
+      },
+      td: {
+        px: 4,
+        py: 6,
+      },
+    },
+  },
+  variants: {
+    simple: {
+      th: {
+        border: 0,
+      },
     },
   },
 }

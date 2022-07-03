@@ -79,15 +79,15 @@ const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
     <Modal isOpen={ isOpen } onClose={ onClose } size="md">
       <ModalOverlay/>
       <ModalContent>
-        <ModalHeader fontWeight="500">{ title }</ModalHeader>
+        <ModalHeader fontWeight="500" textStyle="h3">{ title }</ModalHeader>
         <ModalCloseButton/>
         <ModalBody>
           { !data && (
-            <Text lineHeight="30px" marginBottom="40px">
+            <Text lineHeight="30px" marginBottom={ 12 }>
                       An Email notification can be sent to you when an address on your watch list sends or receives any transactions.
             </Text>
           ) }
-          <FormControl variant="floating" id="address" marginBottom="20px" isRequired>
+          <FormControl variant="floating" id="address" marginBottom={ 5 } isRequired>
             <Input
               placeholder=" "
               onChange={ onAddressChange }
@@ -98,31 +98,32 @@ const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
             />
             <FormLabel>Address (0x...)</FormLabel>
           </FormControl>
-          <FormControl variant="floating" id="tag" marginBottom="30px" isRequired>
+          <FormControl variant="floating" id="tag" marginBottom={ 8 } isRequired>
             <Input placeholder=" " onChange={ onTagChange } value={ tag || '' } maxLength={ 35 }/>
             <FormLabel>Private tag (max 35 characters)</FormLabel>
           </FormControl>
-          <Text color="gray.600" fontSize="sm" marginBottom="32px">
+          <Text color="gray.500" fontSize="sm" marginBottom={ 8 }>
             Please select what types of notifications you will receive:
           </Text>
-          <Box marginBottom="32px">
+          <Box marginBottom={ 8 }>
             <Grid templateColumns="repeat(3, max-content)" gap="20px 24px">
               { NOTIFICATIONS.map((notification: string) => {
                 return (
                   <>
                     <GridItem>{ notification }</GridItem>
-                    <GridItem><Checkbox colorScheme="green">Incoming</Checkbox></GridItem>
-                    <GridItem><Checkbox colorScheme="green">Outgoing</Checkbox></GridItem>
+                    <GridItem><Checkbox colorScheme="blue" size="lg">Incoming</Checkbox></GridItem>
+                    <GridItem><Checkbox colorScheme="blue" size="lg">Outgoing</Checkbox></GridItem>
                   </>
                 )
               }) }
             </Grid>
           </Box>
-          <Text color="gray.600" fontSize="sm" marginBottom="20px">Notification methods:</Text>
+          <Text color="gray.500" fontSize="sm" marginBottom={ 5 }>Notification methods:</Text>
           <Checkbox
             isChecked={ notification }
-            colorScheme="green"
+            colorScheme="blue"
             onChange={ onNotificationChange }
+            size="lg"
           >
             Email notifications
           </Checkbox>

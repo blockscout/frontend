@@ -35,15 +35,15 @@ const WatchlistTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
     <Tr alignItems="top" key={ item.address }>
       <Td><WatchListAddressItem item={ item }/></Td>
       <Td>
-        <Tag lineHeight="24px" title={ item.tag }>
+        <Tag variant="gray" lineHeight="24px" title={ item.tag }>
           { item.tag }
         </Tag>
       </Td>
-      <Td><Switch colorScheme="green" size="md" isChecked={ item.notification }/></Td>
+      <Td><Switch colorScheme="blue" size="md" isChecked={ item.notification }/></Td>
       <Td>
-        <HStack spacing="30px">
-          <Icon as={ EditIcon } w="20px" h="20px" cursor="pointer" color="blue.500" onClick={ onItemEditClick }/>
-          <Icon as={ DeleteIcon } w="20px" h="20px" cursor="pointer" color="red.200" onClick={ onItemDeleteClick }/>
+        <HStack spacing={ 6 }>
+          <Icon as={ EditIcon } w="20px" h="20px" cursor="pointer" color="blue.600" onClick={ onItemEditClick }/>
+          <Icon as={ DeleteIcon } w="20px" h="20px" cursor="pointer" color="blue.600" onClick={ onItemDeleteClick }/>
         </HStack>
       </Td>
     </Tr>
