@@ -21,6 +21,7 @@ const Table: ComponentMultiStyleConfig = {
       borderTopLeftRadius: 'md',
       borderTopRightRadius: 'md',
       overflow: 'hidden',
+      fontVariant: 'normal',
     },
   },
   sizes: {

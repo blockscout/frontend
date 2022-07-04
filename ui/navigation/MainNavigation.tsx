@@ -18,7 +18,7 @@ const navItems = [
 const MainNavigation = () => {
   return (
     <Box as="nav">
-      <VStack as="ul" spacing="3">
+      <VStack as="ul" spacing="2">
         { navItems.map((item) => <MainNavLink key={ item.text } { ...item }/>) }
       </VStack>
     </Box>

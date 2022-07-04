@@ -40,7 +40,7 @@ const variantFloating: PartsStyleFunction<typeof parts> = (props: StyleFunctionP
       // label's styles
       label: {
         top: '20px',
-        left: '20px',
+        left: '22px',
         zIndex: 2,
         position: 'absolute',
         color: mode('gray.500', 'whiteAlpha.400')(props),
