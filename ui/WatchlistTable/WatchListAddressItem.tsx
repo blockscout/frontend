@@ -3,7 +3,8 @@ import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 
 import { Box, Link, HStack, VStack, Image, Text, Icon, Tooltip } from '@chakra-ui/react';
 
-import CopyToClipboard from '../CopyToClipboard/CopyToClipboard';
+import AddressWithDots from '../shared/AddressWithDots';
+import CopyToClipboard from '../shared/CopyToClipboard';
 import type { TWatchlistItem } from '../../data/watchlist';
 import { nbsp } from '../../lib/html-entities';
 import TokensIcon from '../../icons/tokens.svg';
@@ -25,7 +26,7 @@ const WatchListAddressItem = ({ item }: {item: TWatchlistItem}) => {
             lineHeight="24px"
           >
             <Tooltip hasArrow label={ item.address }>
-              { item.address }
+              <AddressWithDots address={ item.address }/>
             </Tooltip>
           </Link>
           <CopyToClipboard text={ item.address }/>
