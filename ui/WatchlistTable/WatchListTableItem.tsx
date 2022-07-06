@@ -7,6 +7,7 @@ import {
   Switch,
   Icon,
   HStack,
+  Tooltip,
 } from '@chakra-ui/react'
 
 import EditIcon from '../../icons/edit.svg';
@@ -35,9 +36,11 @@ const WatchlistTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
     <Tr alignItems="top" key={ item.address }>
       <Td><WatchListAddressItem item={ item }/></Td>
       <Td>
-        <Tag variant="gray" lineHeight="24px" title={ item.tag }>
-          { item.tag }
-        </Tag>
+        <Tooltip hasArrow label={ item.tag }>
+          <Tag variant="gray" lineHeight="24px">
+            { item.tag }
+          </Tag>
+        </Tooltip>
       </Td>
       <Td><Switch colorScheme="blue" size="md" isChecked={ item.notification }/></Td>
       <Td>

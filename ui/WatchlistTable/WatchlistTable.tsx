@@ -27,7 +27,7 @@ const WatchlistTable = ({ data, onDeleteClick, onEditClick }: Props) => {
           <Tr>
             <Th width="70%">Address</Th>
             <Th width="30%">Private tag</Th>
-            <Th width="108px">Notification</Th>
+            <Th width="160px">Email notification</Th>
             <Th width="108px"></Th>
           </Tr>
         </Thead>

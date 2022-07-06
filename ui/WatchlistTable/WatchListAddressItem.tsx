@@ -1,9 +1,10 @@
 import React from 'react';
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 
-import { Box, Link, HStack, VStack, Image, Text, Icon } from '@chakra-ui/react';
+import { Box, Link, HStack, VStack, Image, Text, Icon, Tooltip } from '@chakra-ui/react';
 
-import CopyToClipboard from '../CopyToClipboard/CopyToClipboard';
+import AddressWithDots from '../shared/AddressWithDots';
+import CopyToClipboard from '../shared/CopyToClipboard';
 import type { TWatchlistItem } from '../../data/watchlist';
 import { nbsp } from '../../lib/html-entities';
 import TokensIcon from '../../icons/tokens.svg';
@@ -11,22 +12,22 @@ import WalletIcon from '../../icons/wallet.svg';
 
 const WatchListAddressItem = ({ item }: {item: TWatchlistItem}) => {
 
-  const image = <Jazzicon diameter={ 50 } seed={ jsNumberForAddress(item.address) }/>
+  const image = <Jazzicon diameter={ 24 } seed={ jsNumberForAddress(item.address) }/>
   return (
     <HStack spacing={ 3 } align="top">
-      <Box width="50px">{ image }</Box>
+      <Box width="24px">{ image }</Box>
       <VStack spacing={ 2 } align="stretch" overflow="hidden">
         <HStack spacing={ 2 } alignContent="center">
           <Link
             href="#"
             color="blue.500"
-            title={ item.address }
             overflow="hidden"
-            textOverflow="ellipsis"
             fontWeight={ 600 }
             lineHeight="24px"
           >
-            { item.address }
+            <Tooltip hasArrow label={ item.address }>
+              <AddressWithDots address={ item.address }/>
+            </Tooltip>
           </Link>
           <CopyToClipboard text={ item.address }/>
         </HStack>
