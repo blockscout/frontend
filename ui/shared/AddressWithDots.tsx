@@ -11,6 +11,9 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import _debounce from 'lodash/debounce';
 
+const TAIL_LENGTH = 4;
+const HEAD_MIN_LENGTH = 4;
+
 const AddressWithDots = ({ address }: {address: string}) => {
   const addressRef = useRef<HTMLSpanElement>(null);
 
@@ -30,11 +33,13 @@ const AddressWithDots = ({ address }: {address: string}) => {
     parent.appendChild(shadowEl);
     shadowEl.textContent = address;
 
-    if (getWidth(shadowEl) > getWidth(parent)) {
-      for (let i = 1; i < address.length - 6; i++) {
-        const res = address.slice(0, address.length - i - 4) + '...' + address.slice(-4);
+    const parentWidth = getWidth(parent);
+
+    if (getWidth(shadowEl) > parentWidth) {
+      for (let i = 1; i <= address.length - TAIL_LENGTH - HEAD_MIN_LENGTH; i++) {
+        const res = address.slice(0, address.length - i - TAIL_LENGTH) + '...' + address.slice(-TAIL_LENGTH);
         shadowEl.textContent = res;
-        if (shadowEl.getBoundingClientRect().width < parent.getBoundingClientRect().width) {
+        if (getWidth(shadowEl) < parentWidth || i === address.length - TAIL_LENGTH - HEAD_MIN_LENGTH) {
           addressRef.current.textContent = res;
           break;
         }
