@@ -13,7 +13,6 @@ import {
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  getDisclosureProps: () => any;
   address?: string;
 }
 

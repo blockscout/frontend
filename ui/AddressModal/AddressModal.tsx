@@ -1,78 +1,26 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 
 import {
-  Box,
-  Button,
   Modal,
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
-  Input,
-  Checkbox,
   Text,
-  Grid,
-  GridItem,
-  FormControl,
-  FormLabel,
 } from '@chakra-ui/react';
 
 import type { TWatchlistItem } from '../../data/watchlist';
 
-const NOTIFICATIONS = [ 'xDAI', 'ERC-20', 'ERC-721, ERC-1155 (NFT)' ];
-const ADDRESS_LENGTH = 42;
+import AddressForm from './AddressForm';
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  getDisclosureProps: () => any;
   data?: TWatchlistItem;
 }
 
 const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
-  // надо чето придумать с формой
-  // потом доделаем
-  const [ address, setAddress ] = useState<string>();
-  const [ tag, setTag ] = useState<string>();
-  const [ notification, setNotification ] = useState<boolean>();
-  const [ addressError, setAddressError ] = useState<boolean>(false);
-
-  const isValidAddress = (address: string) => address.length === ADDRESS_LENGTH;
-
-  useEffect(() => {
-    setAddress(data?.address);
-    setAddressError(false);
-    setTag(data?.tag);
-    setNotification(data?.notification);
-  }, [ data ]);
-
-  const onAddressChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    if (addressError && isValidAddress(event.target.value)) {
-      setAddressError(false);
-    }
-    setAddress(event.target.value);
-  }, [ addressError ]);
-
-  const validateAddress = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!isValidAddress(event.target.value)) {
-      setAddressError(true);
-    }
-  }, [ ]);
-
-  const onTagChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setTag(event.target.value)
-  }, [ ]);
-
-  const onNotificationChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => setNotification(event.target.checked), [ setNotification ]);
-
-  const onButtonClick = useCallback(() => {
-    // eslint-disable-next-line no-console
-    console.log(address, tag, notification);
-    onClose()
-  }, [ address, tag, notification, onClose ]);
-
   const title = data ? 'Edit watchlist address' : 'New Address to Watchlist';
 
   return (
@@ -84,56 +32,11 @@ const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
         <ModalBody>
           { !data && (
             <Text lineHeight="30px" marginBottom={ 12 }>
-                      An Email notification can be sent to you when an address on your watch list sends or receives any transactions.
+              An Email notification can be sent to you when an address on your watch list sends or receives any transactions.
             </Text>
           ) }
-          <FormControl variant="floating" id="address" marginBottom={ 5 } isRequired>
-            <Input
-              placeholder=" "
-              onChange={ onAddressChange }
-              value={ address || '' }
-              isInvalid={ addressError }
-              onBlur={ validateAddress }
-              maxLength={ ADDRESS_LENGTH }
-            />
-            <FormLabel>Address (0x...)</FormLabel>
-          </FormControl>
-          <FormControl variant="floating" id="tag" marginBottom={ 8 } isRequired>
-            <Input placeholder=" " onChange={ onTagChange } value={ tag || '' } maxLength={ 35 }/>
-            <FormLabel>Private tag (max 35 characters)</FormLabel>
-          </FormControl>
-          <Text color="gray.500" fontSize="sm" marginBottom={ 8 }>
-            Please select what types of notifications you will receive:
-          </Text>
-          <Box marginBottom={ 8 }>
-            <Grid templateColumns="repeat(3, max-content)" gap="20px 24px">
-              { NOTIFICATIONS.map((notification: string) => {
-                return (
-                  <>
-                    <GridItem>{ notification }</GridItem>
-                    <GridItem><Checkbox colorScheme="blue" size="lg">Incoming</Checkbox></GridItem>
-                    <GridItem><Checkbox colorScheme="blue" size="lg">Outgoing</Checkbox></GridItem>
-                  </>
-                )
-              }) }
-            </Grid>
-          </Box>
-          <Text color="gray.500" fontSize="sm" marginBottom={ 5 }>Notification methods:</Text>
-          <Checkbox
-            isChecked={ notification }
-            colorScheme="blue"
-            onChange={ onNotificationChange }
-            size="lg"
-          >
-            Email notifications
-          </Checkbox>
+          <AddressForm data={ data }/>
         </ModalBody>
-
-        <ModalFooter justifyContent="flex-start">
-          <Button variant="primary" onClick={ onButtonClick } disabled={ addressError }>
-            { data ? 'Save changes' : 'Add address' }
-          </Button>
-        </ModalFooter>
       </ModalContent>
     </Modal>
   )
