@@ -31,6 +31,38 @@ const Button: ComponentStyleConfig = {
         opacity: 0.2,
       },
     },
+    iconBlue: {
+      color: 'blue.600',
+      _hover: {
+        color: 'blue.400',
+      },
+    },
+  },
+  sizes: {
+    lg: {
+      h: 12,
+      minW: 'unset',
+      fontSize: 'lg',
+      px: 6,
+    },
+    md: {
+      h: 10,
+      minW: 'unset',
+      fontSize: 'md',
+      px: 4,
+    },
+    sm: {
+      h: 8,
+      minW: 'unset',
+      fontSize: 'sm',
+      px: 3,
+    },
+    xs: {
+      h: 6,
+      minW: 'unset',
+      fontSize: 'xs',
+      px: 2,
+    },
   },
 }
 

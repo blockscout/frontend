@@ -18,6 +18,7 @@ const Modal: ComponentMultiStyleConfig = {
       padding: 0,
       marginBottom: 8,
       fontSize: '2xl',
+      lineHeight: 10,
     },
     body: {
       padding: 0,
@@ -25,11 +26,16 @@ const Modal: ComponentMultiStyleConfig = {
     },
     footer: {
       padding: 0,
+      justifyContent: 'flex-start',
     },
     closeButton: {
-      top: '40px',
-      right: '40px',
-      color: 'blue.500',
+      top: 8,
+      right: 8,
+      height: 10,
+      width: 10,
+      color: 'gray.700',
+      _hover: { color: 'blue.400' },
+      _active: { bg: 'none' },
     },
   },
 }

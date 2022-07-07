@@ -75,16 +75,18 @@ const AddressModal: React.FC<Props> = ({ data }) => {
           render={ renderAddressInput }
         />
       </Box>
-      <Controller
-        name="tag"
-        control={ control }
-        rules={{
-          maxLength: TAG_MAX_LENGTH,
-        }}
-        render={ renderTagInput }
-      />
-      <Text color="gray.500" fontSize="sm" marginBottom={ 8 }>
-            Please select what types of notifications you will receive:
+      <Box marginBottom={ 8 }>
+        <Controller
+          name="tag"
+          control={ control }
+          rules={{
+            maxLength: TAG_MAX_LENGTH,
+          }}
+          render={ renderTagInput }
+        />
+      </Box>
+      <Text color="gray.500" fontSize="sm" marginBottom={ 5 }>
+        Please select what types of notifications you will receive
       </Text>
       <Box marginBottom={ 8 }>
         { /* add them to the form later */ }
@@ -100,7 +102,7 @@ const AddressModal: React.FC<Props> = ({ data }) => {
           }) }
         </Grid>
       </Box>
-      <Text color="gray.500" fontSize="sm" marginBottom={ 5 }>Notification methods:</Text>
+      <Text color="gray.500" fontSize="sm" marginBottom={ 5 }>Notification methods</Text>
       <Controller
         name="notification"
         control={ control }
@@ -108,6 +110,7 @@ const AddressModal: React.FC<Props> = ({ data }) => {
       />
       <Box marginTop={ 8 }>
         <Button
+          size="lg"
           variant="primary"
           onClick={ handleSubmit(onSubmit) }
           disabled={ Object.keys(errors).length > 0 }

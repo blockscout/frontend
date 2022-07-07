@@ -25,7 +25,7 @@ const MainNavLink = ({ text, pathname, icon }: Props) => {
         color={ isActive ? 'blue.600' : 'gray.600' }
         bgColor={ isActive ? 'blue.50' : 'transparent' }
         borderRadius="base"
-        _hover={{ color: 'blue.600' }}
+        _hover={{ color: 'blue.400' }}
       >
         <HStack justifyContent="space-between">
           <HStack spacing={ 3 }>
