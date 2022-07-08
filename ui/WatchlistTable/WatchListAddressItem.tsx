@@ -16,7 +16,7 @@ const WatchListAddressItem = ({ item }: {item: TWatchlistItem}) => {
   return (
     <HStack spacing={ 3 } align="top">
       <Box width="24px">{ image }</Box>
-      <VStack spacing={ 2 } align="stretch" overflow="hidden">
+      <VStack spacing={ 2 } align="stretch" overflow="hidden" fontWeight={ 500 } color="gray.700">
         <HStack spacing={ 2 } alignContent="center">
           <Link
             href="#"
@@ -24,9 +24,11 @@ const WatchListAddressItem = ({ item }: {item: TWatchlistItem}) => {
             overflow="hidden"
             fontWeight={ 600 }
             lineHeight="24px"
+            // need theme
+            _hover={{ color: 'blue.400' }}
           >
-            <Tooltip hasArrow label={ item.address }>
-              <AddressWithDots address={ item.address }/>
+            <Tooltip label={ item.address }>
+              <Box overflow="hidden"><AddressWithDots address={ item.address }/></Box>
             </Tooltip>
           </Link>
           <CopyToClipboard text={ item.address }/>
@@ -34,22 +36,22 @@ const WatchListAddressItem = ({ item }: {item: TWatchlistItem}) => {
         { item.tokenBalance && (
           <HStack spacing={ 0 } fontSize="sm" h={ 6 }>
             <Image src="./xdai.png" alt="chain-logo" marginRight="10px" w="16px" h="16px"/>
-            <Text>{ item.tokenBalance + ' xDAI' }</Text>
+            <Text>{ `xDAI balance:${ nbsp }` + item.tokenBalance }</Text>
             <Text color="gray.500">{ `${ nbsp }($${ item.tokenBalanceUSD } USD)` }</Text>
           </HStack>
         ) }
         { item.tokensAmount && (
-          <HStack spacing={ 0 } fontSize="sm">
+          <HStack spacing={ 0 } fontSize="sm" h={ 6 }>
             <Icon as={ TokensIcon } marginRight="10px" w="17px" h="16px"/>
-            <Text>{ item.tokensAmount + ' tokens' }</Text>
+            <Text>{ `Tokens:${ nbsp }` + item.tokensAmount }</Text>
             <Text color="gray.500">{ `${ nbsp }($${ item.tokensUSD } USD)` }</Text>
           </HStack>
         ) }
         { item.totalUSD && (
-          <HStack spacing={ 0 } fontSize="sm">
+          <HStack spacing={ 0 } fontSize="sm" h={ 6 }>
             <Icon as={ WalletIcon } marginRight="10px" w="16px" h="16px"/>
-            <Text>{ `Total balance:${ nbsp }` }</Text>
-            <Link href="#" color="blue.500">{ `$${ item.totalUSD } USD` }</Link>
+            <Text>{ `Net worth:${ nbsp }` }</Text>
+            <Link href="#" color="blue.500" _hover={{ color: 'blue.400' }}>{ `$${ item.totalUSD } USD` }</Link>
           </HStack>
         ) }
       </VStack>

@@ -14,7 +14,6 @@ const getActiveInputStyles = (theme: Dict, fc: string) => ({
   paddingTop: '30px',
   paddingBottom: '10px',
   borderColor: getColor(theme, fc),
-  boxShadow: 'none',
 })
 
 const variantFloating: PartsStyleFunction<typeof parts> = (props: StyleFunctionProps) => {

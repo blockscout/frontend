@@ -1,24 +1,32 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { Icon, useClipboard, useToast } from '@chakra-ui/react';
+import { IconButton, Tooltip, useClipboard } from '@chakra-ui/react';
 import CopyIcon from '../../icons/copy.svg';
 
 const CopyToClipboard = ({ text }: {text: string}) => {
-  const { hasCopied, onCopy } = useClipboard(text);
-  const toast = useToast();
+  const { hasCopied, onCopy } = useClipboard(text, 3000);
+  const [ copied, setCopied ] = useState(false);
 
   useEffect(() => {
     if (hasCopied) {
-      toast({
-        description: 'Copied',
-        status: 'success',
-        duration: 3000,
-      })
+      setCopied(true);
+    } else {
+      setCopied(false);
     }
-  }, [ toast, hasCopied ]);
+  }, [ hasCopied ]);
 
-  const copyToClipboardCallback = useCallback(() => onCopy(), [ onCopy ]);
-  return <Icon as={ CopyIcon } w="20px" h="20px" color="blue.500" cursor="pointer" onClick={ copyToClipboardCallback }/>;
+  return (
+    <Tooltip label={ copied ? 'Copied' : 'Copy to clipboard' } closeOnClick={ false }>
+      <IconButton
+        aria-label="copy"
+        icon={ <CopyIcon/> }
+        w="20px"
+        h="20px"
+        variant="iconBlue"
+        onClick={ onCopy }
+      />
+    </Tooltip>
+  );
 }
 
 export default CopyToClipboard;

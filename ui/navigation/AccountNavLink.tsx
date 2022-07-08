@@ -23,7 +23,7 @@ const AccountNavLink = ({ text, pathname, icon }: Props) => {
         py={ 2.5 }
         color={ isActive ? 'blue.600' : 'gray.600' }
         bgColor={ isActive ? 'blue.50' : 'transparent' }
-        _hover={{ color: 'blue.600' }}
+        _hover={{ color: 'blue.400' }}
         borderRadius="base"
       >
         <HStack spacing={ 3 }>

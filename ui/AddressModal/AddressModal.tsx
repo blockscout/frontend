@@ -21,7 +21,7 @@ type Props = {
 }
 
 const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
-  const title = data ? 'Edit watchlist address' : 'New Address to Watchlist';
+  const title = data ? 'Edit watch list address' : 'New address to watch list';
 
   return (
     <Modal isOpen={ isOpen } onClose={ onClose } size="md">
@@ -29,10 +29,10 @@ const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
       <ModalContent>
         <ModalHeader fontWeight="500" textStyle="h3">{ title }</ModalHeader>
         <ModalCloseButton/>
-        <ModalBody>
+        <ModalBody mb={ 0 }>
           { !data && (
             <Text lineHeight="30px" marginBottom={ 12 }>
-              An Email notification can be sent to you when an address on your watch list sends or receives any transactions.
+              An email notification can be sent to you when an address on your watch list sends or receives any transactions.
             </Text>
           ) }
           <AddressForm data={ data }/>

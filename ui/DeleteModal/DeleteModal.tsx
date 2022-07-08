@@ -6,6 +6,7 @@ import {
   ModalOverlay,
   ModalContent,
   ModalFooter,
+  ModalHeader,
   ModalBody,
   ModalCloseButton,
 } from '@chakra-ui/react';
@@ -28,15 +29,14 @@ const DeleteModal: React.FC<Props> = ({ isOpen, onClose, address }) => {
     <Modal isOpen={ isOpen } onClose={ onClose } size="md">
       <ModalOverlay/>
       <ModalContent>
+        <ModalHeader fontWeight="500" textStyle="h3">Remove address from watch list</ModalHeader>
         <ModalCloseButton/>
         <ModalBody>
-          { `Delete ${ address || 'address' } from watchlist?` }
+          { `Address ${ address || 'address' } will be deleted` }
         </ModalBody>
-
         <ModalFooter>
-          <Button variant="secondary" onClick={ onDeleteClick }>Yes</Button>
-          <Button variant="primary" ml={ 3 } onClick={ onClose }>
-              No
+          <Button variant="primary" size="lg" onClick={ onDeleteClick }>
+              Delete
           </Button>
         </ModalFooter>
       </ModalContent>
