@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { VStack, Text, HStack, Icon, Link } from '@chakra-ui/react';
+import { VStack, Text, HStack, Icon, Link, useColorModeValue } from '@chakra-ui/react';
 
 import ghIcon from '../../icons/social/git.svg';
 import twIcon from '../../icons/social/tweet.svg';
@@ -20,7 +20,7 @@ const NavFooter = () => {
       as="footer"
       spacing={ 8 }
       borderTop="1px solid"
-      borderColor="gray.200"
+      borderColor={ useColorModeValue('gray.200', 'whiteAlpha.200') }
       paddingTop={ 8 }
       w="100%"
       alignItems="baseline"

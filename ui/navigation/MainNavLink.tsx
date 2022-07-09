@@ -3,6 +3,7 @@ import { Link, Icon, Text, HStack } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { ChevronRightIcon } from '@chakra-ui/icons'
+import useColors from './useColors';
 
 interface Props {
   pathname: string;
@@ -14,6 +15,8 @@ const MainNavLink = ({ text, pathname, icon }: Props) => {
   const router = useRouter();
   const isActive = router.pathname === pathname;
 
+  const colors = useColors();
+
   return (
     <NextLink href={ pathname } passHref>
       <Link
@@ -22,10 +25,10 @@ const MainNavLink = ({ text, pathname, icon }: Props) => {
         w="220px"
         px={ 4 }
         py={ 2.5 }
-        color={ isActive ? 'blue.700' : 'gray.600' }
-        bgColor={ isActive ? 'blue.50' : 'transparent' }
+        color={ isActive ? colors.text.active : colors.text.default }
+        bgColor={ isActive ? colors.bg.active : colors.bg.default }
+        _hover={{ color: colors.text.hover }}
         borderRadius="base"
-        _hover={{ color: 'blue.400' }}
       >
         <HStack justifyContent="space-between">
           <HStack spacing={ 3 }>

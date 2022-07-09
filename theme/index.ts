@@ -5,6 +5,7 @@ import borders from './foundations/borders';
 import colors from './foundations/colors';
 import components from './components/index';
 import config from './config';
+import global from './global';
 
 const overrides = {
   ...typography,
@@ -12,6 +13,9 @@ const overrides = {
   colors,
   components,
   config,
+  styles: {
+    global,
+  },
 }
 
 export default extendTheme(overrides);
