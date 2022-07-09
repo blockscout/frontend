@@ -1,5 +1,5 @@
 import React from 'react';
-import { HStack, InputGroup, Input, InputLeftAddon, InputLeftElement, Center, Switch, useColorMode } from '@chakra-ui/react';
+import { HStack, InputGroup, Input, InputLeftAddon, InputLeftElement, Center, Switch, useColorMode, useColorModeValue } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons'
 import Identicon from 'react-identicons';
 
@@ -26,7 +26,7 @@ const Header = () => {
         <Input paddingInlineStart="50px" placeholder="Search by addresses / transactions /block/ token ... "/>
       </InputGroup>
       <Switch size="lg" onChange={ toggleColorMode }/>
-      <Center minWidth="50px" width="50px" height="50px" bg="blackAlpha.100" borderRadius="50%" overflow="hidden">
+      <Center minWidth="50px" width="50px" height="50px" bg={ useColorModeValue('blackAlpha.100', 'white') } borderRadius="50%" overflow="hidden">
         { /* the displayed size is 40px, but we need to generate x2 for retina displays */ }
         <Identicon className={ styles.identicon } string="randomness" size={ 80 }/>
       </Center>

@@ -1,7 +1,25 @@
+import type { tableAnatomy as parts } from '@chakra-ui/anatomy';
 import type { ComponentMultiStyleConfig } from '@chakra-ui/theme';
+import { mode } from '@chakra-ui/theme-tools';
+import type { PartsStyleFunction } from '@chakra-ui/theme-tools';
+
+const variantSimple: PartsStyleFunction<typeof parts> = (props) => {
+  return {
+    th: {
+      border: 0,
+      color: mode('gray.500', 'gray.50')(props),
+    },
+    thead: {
+      backgroundColor: mode('gray.50', 'whiteAlpha.100')(props),
+    },
+    td: {
+      borderColor: mode('gray.200', 'whiteAlpha.200')(props),
+    },
+  }
+}
 
 const Table: ComponentMultiStyleConfig = {
-  parts: [ 'th', 'td', 'table' ],
+  parts: [ 'th', 'td', 'table', 'thead' ],
   baseStyle: {
     thead: {
       backgroundColor: 'gray.50',
@@ -38,14 +56,7 @@ const Table: ComponentMultiStyleConfig = {
     },
   },
   variants: {
-    simple: {
-      th: {
-        border: 0,
-      },
-      td: {
-        borderColor: 'gray.200',
-      },
-    },
+    simple: variantSimple,
   },
 }
 
