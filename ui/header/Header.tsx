@@ -1,11 +1,13 @@
 import React from 'react';
-import { Box, HStack, InputGroup, Input, InputLeftAddon, InputLeftElement, Center } from '@chakra-ui/react';
+import { HStack, InputGroup, Input, InputLeftAddon, InputLeftElement, Center, Switch, useColorMode } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons'
 import Identicon from 'react-identicons';
 
 import styles from './Header.module.css';
 
-const AccountNav = () => {
+const Header = () => {
+  const { toggleColorMode } = useColorMode();
+
   return (
     <HStack
       as="header"
@@ -23,7 +25,7 @@ const AccountNav = () => {
         </InputLeftElement>
         <Input paddingInlineStart="50px" placeholder="Search by addresses / transactions /block/ token ... "/>
       </InputGroup>
-      <Box>Switch</Box>
+      <Switch size="lg" onChange={ toggleColorMode }/>
       <Center minWidth="50px" width="50px" height="50px" bg="blackAlpha.100" borderRadius="50%" overflow="hidden">
         { /* the displayed size is 40px, but we need to generate x2 for retina displays */ }
         <Identicon className={ styles.identicon } string="randomness" size={ 80 }/>
@@ -32,4 +34,4 @@ const AccountNav = () => {
   )
 }
 
-export default AccountNav;
+export default Header;
