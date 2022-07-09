@@ -15,12 +15,12 @@ const Page = ({ children }: Props) => {
         w="100%"
         minH="100vh"
         bgColor="white"
-        spacing={ 12 }
+        spacing={ 16 }
         alignItems="stretch"
-        paddingRight={ 15 }
+        paddingRight="60px"
       >
         <Navigation/>
-        <VStack>
+        <VStack width="100%">
           <Header/>
           <Box
             as="main"
@@ -28,7 +28,6 @@ const Page = ({ children }: Props) => {
             w="100%"
             overflow="hidden"
             bgColor="white"
-            px={ 5 }
             py={ 8 }
           >
             { children }
