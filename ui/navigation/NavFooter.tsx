@@ -30,7 +30,7 @@ const NavFooter = () => {
       <HStack>
         { SOCIAL_LINKS.map(sl => {
           return (
-            <Link href={ sl.link } key={ sl.link }>
+            <Link href={ sl.link } key={ sl.link } variant="secondary">
               <Icon as={ sl.icon } boxSize={ 5 }/>
             </Link>
           )

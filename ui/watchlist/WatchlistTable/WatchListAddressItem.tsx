@@ -33,7 +33,7 @@ const WatchListAddressItem = ({ item }: {item: TWatchlistItem}) => {
           <HStack spacing={ 0 } fontSize="sm" h={ 6 }>
             <Icon as={ WalletIcon } marginRight="10px" w="16px" h="16px"/>
             <Text>{ `Net worth:${ nbsp }` }</Text>
-            <Link href="#" color="blue.500" _hover={{ color: 'blue.400' }}>{ `$${ item.totalUSD } USD` }</Link>
+            <Link href="#">{ `$${ item.totalUSD } USD` }</Link>
           </HStack>
         ) }
       </VStack>
