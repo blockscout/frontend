@@ -9,31 +9,30 @@ import {
   TableContainer,
 } from '@chakra-ui/react'
 
-import type { TWatchlist, TWatchlistItem } from '../../data/watchlist';
+import type { TPrivateTagsAddress, TPrivateTagsAddressItem } from '../../../data/privateTagsAddress';
 
-import WatchlistTableItem from './WatchListTableItem';
+import AddressTagTableItem from './AddressTagTableItem';
 
 interface Props {
-  data: TWatchlist;
-  onEditClick: (data: TWatchlistItem) => void;
-  onDeleteClick: (data: TWatchlistItem) => void;
+  data: TPrivateTagsAddress;
+  onEditClick: (data: TPrivateTagsAddressItem) => void;
+  onDeleteClick: (data: TPrivateTagsAddressItem) => void;
 }
 
-const WatchlistTable = ({ data, onDeleteClick, onEditClick }: Props) => {
+const AddressTagTable = ({ data, onDeleteClick, onEditClick }: Props) => {
   return (
     <TableContainer width="100%">
       <Table variant="simple" minWidth="600px">
         <Thead>
           <Tr>
-            <Th width="70%">Address</Th>
-            <Th width="30%">Private tag</Th>
-            <Th width="160px">Email notification</Th>
+            <Th width="60%">Address</Th>
+            <Th width="40%">Private tag</Th>
             <Th width="108px"></Th>
           </Tr>
         </Thead>
         <Tbody>
           { data.map((item) => (
-            <WatchlistTableItem
+            <AddressTagTableItem
               item={ item }
               key={ item.address }
               onDeleteClick={ onDeleteClick }
@@ -46,4 +45,4 @@ const WatchlistTable = ({ data, onDeleteClick, onEditClick }: Props) => {
   );
 };
 
-export default WatchlistTable;
+export default AddressTagTable;

@@ -10,19 +10,16 @@ import {
   Text,
 } from '@chakra-ui/react';
 
-import type { TWatchlistItem } from '../../data/watchlist';
-
-import AddressForm from './AddressForm';
-
-type Props = {
+interface Props<TData> {
   isOpen: boolean;
   onClose: () => void;
-  data?: TWatchlistItem;
+  data?: TData;
+  title: string;
+  text: string;
+  renderForm: (data?: TData) => JSX.Element;
 }
 
-const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
-  const title = data ? 'Edit watch list address' : 'New address to watch list';
-
+export default function FormModal<TData>({ isOpen, onClose, data, title, text, renderForm }: Props<TData>) {
   return (
     <Modal isOpen={ isOpen } onClose={ onClose } size="md">
       <ModalOverlay/>
@@ -32,14 +29,12 @@ const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
         <ModalBody mb={ 0 }>
           { !data && (
             <Text lineHeight="30px" marginBottom={ 12 }>
-              An email notification can be sent to you when an address on your watch list sends or receives any transactions.
+              { text }
             </Text>
           ) }
-          <AddressForm data={ data }/>
+          { renderForm(data) }
         </ModalBody>
       </ModalContent>
     </Modal>
   )
 }
-
-export default AddressModal;

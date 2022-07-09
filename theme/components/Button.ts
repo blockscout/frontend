@@ -8,6 +8,7 @@ const Button: ComponentStyleConfig = {
     primary: {
       bg: 'blue.600',
       color: 'white',
+      fontWeight: 600,
       _hover: {
         bg: 'blue.400',
         _disabled: {
@@ -21,6 +22,7 @@ const Button: ComponentStyleConfig = {
     secondary: {
       bg: 'white',
       color: 'blue.600',
+      fontWeight: 600,
       borderColor: 'blue.600',
       border: '2px solid',
       _hover: {

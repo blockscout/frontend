@@ -14,25 +14,26 @@ import {
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  address?: string;
+  onDelete: () => void;
+  title: string;
+  text: string;
 }
 
-const DeleteModal: React.FC<Props> = ({ isOpen, onClose, address }) => {
+const DeleteModal: React.FC<Props> = ({ isOpen, onClose, onDelete, title, text }) => {
 
   const onDeleteClick = useCallback(() => {
-    // eslint-disable-next-line no-console
-    console.log('delete ', address);
+    onDelete();
     onClose()
-  }, [ address, onClose ]);
+  }, [ onClose, onDelete ]);
 
   return (
     <Modal isOpen={ isOpen } onClose={ onClose } size="md">
       <ModalOverlay/>
       <ModalContent>
-        <ModalHeader fontWeight="500" textStyle="h3">Remove address from watch list</ModalHeader>
+        <ModalHeader fontWeight="500" textStyle="h3">{ title }</ModalHeader>
         <ModalCloseButton/>
         <ModalBody>
-          { `Address ${ address || 'address' } will be deleted` }
+          { text }
         </ModalBody>
         <ModalFooter>
           <Button variant="primary" size="lg" onClick={ onDeleteClick }>

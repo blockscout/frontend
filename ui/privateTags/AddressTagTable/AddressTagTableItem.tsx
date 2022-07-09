@@ -4,27 +4,27 @@ import {
   Tag,
   Tr,
   Td,
-  Switch,
   Icon,
   IconButton,
   HStack,
   Tooltip,
 } from '@chakra-ui/react'
 
-import EditIcon from '../../icons/edit.svg';
-import DeleteIcon from '../../icons/delete.svg';
+import EditIcon from '../../../icons/edit.svg';
+import DeleteIcon from '../../../icons/delete.svg';
 
-import type { TWatchlistItem } from '../../data/watchlist';
+import AddressIcon from '../../shared/AddressIcon';
+import AddressLinkWithTooltip from '../../shared/AddressLinkWithTooltip';
 
-import WatchListAddressItem from './WatchListAddressItem';
+import type { TPrivateTagsAddressItem } from '../../../data/privateTagsAddress';
 
 interface Props {
-  item: TWatchlistItem;
-  onEditClick: (data: TWatchlistItem) => void;
-  onDeleteClick: (data: TWatchlistItem) => void;
+  item: TPrivateTagsAddressItem;
+  onEditClick: (data: TPrivateTagsAddressItem) => void;
+  onDeleteClick: (data: TPrivateTagsAddressItem) => void;
 }
 
-const WatchlistTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
+const AddressTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   const onItemEditClick = useCallback(() => {
     return onEditClick(item);
   }, [ item, onEditClick ]);
@@ -35,7 +35,12 @@ const WatchlistTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
 
   return (
     <Tr alignItems="top" key={ item.address }>
-      <Td><WatchListAddressItem item={ item }/></Td>
+      <Td>
+        <HStack spacing={ 4 }>
+          <AddressIcon address={ item.address }/>
+          <AddressLinkWithTooltip address={ item.address }/>
+        </HStack>
+      </Td>
       <Td>
         <Tooltip label={ item.tag }>
           <Tag variant="gray" lineHeight="24px">
@@ -43,7 +48,6 @@ const WatchlistTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
           </Tag>
         </Tooltip>
       </Td>
-      <Td><Switch colorScheme="blue" size="md" isChecked={ item.notification }/></Td>
       <Td>
         <HStack spacing={ 6 }>
           <Tooltip label="Edit">
@@ -72,4 +76,4 @@ const WatchlistTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   )
 };
 
-export default WatchlistTableItem;
+export default AddressTagTableItem;

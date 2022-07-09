@@ -4,12 +4,12 @@ import { Box, Button, Text, useDisclosure } from '@chakra-ui/react';
 
 import Page from '../Page/Page';
 
-import WatchlistTable from '../WatchlistTable/WatchlistTable';
-import AddressModal from '../AddressModal/AddressModal';
+import WatchlistTable from '../watchlist/WatchlistTable/WatchlistTable';
+import AddressModal from '../watchlist/AddressModal/AddressModal';
 
 import type { TWatchlistItem } from '../../data/watchlist';
 import { watchlist } from '../../data/watchlist';
-import DeleteModal from '../DeleteModal/DeleteModal';
+import DeleteAddressModal from '../watchlist/DeleteAddressModal';
 
 const WatchList: React.FC = () => {
   const addressModalProps = useDisclosure();
@@ -61,7 +61,7 @@ const WatchList: React.FC = () => {
         </Box>
       </Box>
       <AddressModal { ...addressModalProps } onClose={ onAddressModalClose } data={ addressModalData }/>
-      <DeleteModal { ...deleteModalProps } onClose={ onDeleteModalClose } address={ deleteModalData }/>
+      <DeleteAddressModal { ...deleteModalProps } onClose={ onDeleteModalClose } address={ deleteModalData }/>
     </Page>
   );
 };

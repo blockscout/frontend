@@ -1,38 +1,20 @@
 import React from 'react';
-import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 
-import { Box, Link, HStack, VStack, Image, Text, Icon, Tooltip } from '@chakra-ui/react';
+import { Link, HStack, VStack, Image, Text, Icon } from '@chakra-ui/react';
 
-import AddressWithDots from '../shared/AddressWithDots';
-import CopyToClipboard from '../shared/CopyToClipboard';
-import type { TWatchlistItem } from '../../data/watchlist';
-import { nbsp } from '../../lib/html-entities';
-import TokensIcon from '../../icons/tokens.svg';
-import WalletIcon from '../../icons/wallet.svg';
+import AddressIcon from '../../shared/AddressIcon';
+import AddressLinkWithTooltip from '../../shared/AddressLinkWithTooltip';
+import type { TWatchlistItem } from '../../../data/watchlist';
+import { nbsp } from '../../../lib/html-entities';
+import TokensIcon from '../../../icons/tokens.svg';
+import WalletIcon from '../../../icons/wallet.svg';
 
 const WatchListAddressItem = ({ item }: {item: TWatchlistItem}) => {
-
-  const image = <Jazzicon diameter={ 24 } seed={ jsNumberForAddress(item.address) }/>
   return (
     <HStack spacing={ 3 } align="top">
-      <Box width="24px">{ image }</Box>
+      <AddressIcon address={ item.address }/>
       <VStack spacing={ 2 } align="stretch" overflow="hidden" fontWeight={ 500 } color="gray.700">
-        <HStack spacing={ 2 } alignContent="center">
-          <Link
-            href="#"
-            color="blue.500"
-            overflow="hidden"
-            fontWeight={ 600 }
-            lineHeight="24px"
-            // need theme
-            _hover={{ color: 'blue.400' }}
-          >
-            <Tooltip label={ item.address }>
-              <Box overflow="hidden"><AddressWithDots address={ item.address }/></Box>
-            </Tooltip>
-          </Link>
-          <CopyToClipboard text={ item.address }/>
-        </HStack>
+        <AddressLinkWithTooltip address={ item.address }/>
         { item.tokenBalance && (
           <HStack spacing={ 0 } fontSize="sm" h={ 6 }>
             <Image src="./xdai.png" alt="chain-logo" marginRight="10px" w="16px" h="16px"/>
