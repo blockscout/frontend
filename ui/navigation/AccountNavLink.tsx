@@ -21,7 +21,7 @@ const AccountNavLink = ({ text, pathname, icon }: Props) => {
         w="220px"
         px={ 4 }
         py={ 2.5 }
-        color={ isActive ? 'blue.600' : 'gray.600' }
+        color={ isActive ? 'blue.700' : 'gray.600' }
         bgColor={ isActive ? 'blue.50' : 'transparent' }
         _hover={{ color: 'blue.400' }}
         borderRadius="base"
