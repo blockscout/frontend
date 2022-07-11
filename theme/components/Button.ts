@@ -1,45 +1,57 @@
 import type { ComponentStyleConfig } from '@chakra-ui/theme';
+import { mode } from '@chakra-ui/theme-tools';
+import type { SystemStyleFunction } from '@chakra-ui/theme-tools';
+
+const variantPrimary = {
+  bg: 'blue.600',
+  color: 'white',
+  fontWeight: 600,
+  _hover: {
+    bg: 'blue.400',
+    _disabled: {
+      bg: 'blue.600',
+    },
+  },
+  _disabled: {
+    opacity: 0.2,
+  },
+}
+
+const variantSecondary = {
+  bg: 'white',
+  color: 'blue.600',
+  fontWeight: 600,
+  borderColor: 'blue.600',
+  border: '2px solid',
+  _hover: {
+    color: 'blue.400',
+    borderColor: 'blue.400',
+  },
+  _disabled: {
+    opacity: 0.2,
+  },
+}
+
+const variantIconBlue: SystemStyleFunction = (props) => {
+  return {
+    color: mode('blue.600', 'blue.300')(props),
+    _hover: {
+      color: mode('blue.400', 'blue.200')(props),
+    },
+  }
+}
+
+const variants = {
+  primary: variantPrimary,
+  secondary: variantSecondary,
+  iconBlue: variantIconBlue,
+}
 
 const Button: ComponentStyleConfig = {
   baseStyle: {
     fontWeight: 'normal',
   },
-  variants: {
-    primary: {
-      bg: 'blue.600',
-      color: 'white',
-      fontWeight: 600,
-      _hover: {
-        bg: 'blue.400',
-        _disabled: {
-          bg: 'blue.600',
-        },
-      },
-      _disabled: {
-        opacity: 0.2,
-      },
-    },
-    secondary: {
-      bg: 'white',
-      color: 'blue.600',
-      fontWeight: 600,
-      borderColor: 'blue.600',
-      border: '2px solid',
-      _hover: {
-        color: 'blue.400',
-        borderColor: 'blue.400',
-      },
-      _disabled: {
-        opacity: 0.2,
-      },
-    },
-    iconBlue: {
-      color: 'blue.600',
-      _hover: {
-        color: 'blue.400',
-      },
-    },
-  },
+  variants,
   sizes: {
     lg: {
       h: 12,
