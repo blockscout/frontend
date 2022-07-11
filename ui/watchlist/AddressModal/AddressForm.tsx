@@ -93,11 +93,11 @@ const AddressModal: React.FC<Props> = ({ data }) => {
         <Grid templateColumns="repeat(3, max-content)" gap="20px 24px">
           { NOTIFICATIONS.map((notification: string) => {
             return (
-              <>
+              <React.Fragment key={ notification }>
                 <GridItem>{ notification }</GridItem>
                 <GridItem><Checkbox colorScheme="blue" size="lg">Incoming</Checkbox></GridItem>
                 <GridItem><Checkbox colorScheme="blue" size="lg">Outgoing</Checkbox></GridItem>
-              </>
+              </React.Fragment>
             )
           }) }
         </Grid>

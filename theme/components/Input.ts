@@ -22,8 +22,8 @@ const variantOutline: PartsStyleFunction<typeof parts> = (props) => {
   return {
     field: {
       border: '2px solid',
-      borderColor: 'inherit',
       bg: 'inherit',
+      borderColor: mode('gray.100', 'whiteAlpha.200')(props),
       _hover: {
         borderColor: mode('gray.300', 'whiteAlpha.400')(props),
       },
@@ -47,8 +47,8 @@ const variantOutline: PartsStyleFunction<typeof parts> = (props) => {
     },
     addon: {
       border: '2px solid',
-      borderColor: mode('inherit', 'whiteAlpha.50')(props),
-      bg: mode('gray.100', 'whiteAlpha.300')(props),
+      borderColor: mode('gray.100', 'whiteAlpha.200')(props),
+      bg: mode('gray.100', 'whiteAlpha.200')(props),
     },
   }
 }

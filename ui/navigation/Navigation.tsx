@@ -1,5 +1,5 @@
 import React from 'react';
-import { VStack, HStack, Icon } from '@chakra-ui/react';
+import { VStack, HStack, Icon, useColorModeValue } from '@chakra-ui/react';
 
 import AccountNavigation from './AccountNavigation';
 import MainNavigation from './MainNavigation';
@@ -14,14 +14,14 @@ const Navigation = () => {
       alignItems="flex-start"
       spacing={ 12 }
       borderRight="1px solid"
-      borderColor="gray.200"
+      borderColor={ useColorModeValue('gray.200', 'whiteAlpha.200') }
       px={ 10 }
       py={ 12 }
       width="300px"
     >
       <HStack as="header" justifyContent="space-between" w="100%" px={ 4 } mb={ 2 } h={ 10 } alignItems="center">
-        <Icon as={ logoIcon } width="142px" height="26px" color="blue.600"/>
-        <Icon as={ networksIcon } width="20px" height="20px"/>
+        <Icon as={ logoIcon } width="142px" height="26px" color={ useColorModeValue('blue.600', 'white') }/>
+        <Icon as={ networksIcon } width="20px" height="20px" color={ useColorModeValue('gray.500', 'white') }/>
       </HStack>
       <MainNavigation/>
       <AccountNavigation/>
