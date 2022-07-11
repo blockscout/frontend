@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Link, HStack, VStack, Image, Text, Icon } from '@chakra-ui/react';
+import { Link, HStack, VStack, Image, Text, Icon, useColorModeValue } from '@chakra-ui/react';
 
 import AddressIcon from '../../shared/AddressIcon';
 import AddressLinkWithTooltip from '../../shared/AddressLinkWithTooltip';
@@ -10,6 +10,9 @@ import TokensIcon from '../../../icons/tokens.svg';
 import WalletIcon from '../../../icons/wallet.svg';
 
 const WatchListAddressItem = ({ item }: {item: TWatchlistItem}) => {
+  const mainTextColor = useColorModeValue('gray.700', 'gray.50');
+  const secondaryTextColor = useColorModeValue('gray.500', 'gray.400');
+
   return (
     <HStack spacing={ 3 } align="top">
       <AddressIcon address={ item.address }/>
