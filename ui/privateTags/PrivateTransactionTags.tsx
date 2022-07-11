@@ -7,7 +7,7 @@ import TransactionModal from './TransactionModal/TransactionModal';
 
 import type { TPrivateTagsTransactionItem } from './../../data/privateTagsTransaction';
 import { privateTagsTransaction } from './../../data/privateTagsTransaction';
-import DeleteTransactionModal from './DeleteTransactionModal';
+import DeletePrivateTagModal from './DeletePrivateTagModal';
 
 const PrivateTransactionTags: React.FC = () => {
   const transactionModalProps = useDisclosure();
@@ -27,7 +27,7 @@ const PrivateTransactionTags: React.FC = () => {
   }, [ transactionModalProps ]);
 
   const onDeleteClick = useCallback((data: TPrivateTagsTransactionItem) => {
-    setDeleteModalData(data.transaction);
+    setDeleteModalData(data.tag);
     deleteModalProps.onOpen();
   }, [ deleteModalProps ])
 
@@ -59,7 +59,7 @@ const PrivateTransactionTags: React.FC = () => {
         </Button>
       </Box>
       <TransactionModal { ...transactionModalProps } onClose={ onAddressModalClose } data={ transactionModalData }/>
-      <DeleteTransactionModal { ...deleteModalProps } onClose={ onDeleteModalClose } transaction={ deleteModalData }/>
+      <DeletePrivateTagModal { ...deleteModalProps } onClose={ onDeleteModalClose } tag={ deleteModalData }/>
     </>
   );
 };

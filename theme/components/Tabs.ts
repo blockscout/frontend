@@ -17,6 +17,9 @@ const variantSoftRounded: PartsStyleFunction<typeof parts> = (props) => {
         color: getColor(theme, `${ c }.700`),
         bg: getColor(theme, `${ c }.50`),
       },
+      _hover: {
+        color: getColor(theme, `${ c }.400`),
+      },
     },
   }
 }

@@ -5,23 +5,23 @@ import DeleteModal from '../shared/DeleteModal'
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  transaction?: string;
+  tag?: string;
 }
 
-const DeleteTransactionModal: React.FC<Props> = ({ isOpen, onClose, transaction }) => {
+const DeletePrivateTagModal: React.FC<Props> = ({ isOpen, onClose, tag }) => {
   const onDelete = useCallback(() => {
     // eslint-disable-next-line no-console
-    console.log('delete', transaction);
-  }, [ transaction ]);
+    console.log('delete', tag);
+  }, [ tag ]);
   return (
     <DeleteModal
       isOpen={ isOpen }
       onClose={ onClose }
       onDelete={ onDelete }
-      title="Remove transaction private tag"
-      text={ `Transaction ${ transaction || 'transaction' } will be deleted` }
+      title="Removal of private tag"
+      text={ `Tag "${ tag || 'address' }" will be removed` }
     />
   )
 }
 
-export default DeleteTransactionModal;
+export default DeletePrivateTagModal;

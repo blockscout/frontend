@@ -22,6 +22,12 @@ const AddressInput: React.FC<Props> = ({ field, isInvalid }) => {
         placeholder=" "
         isInvalid={ isInvalid }
         maxLength={ ADDRESS_LENGTH }
+        // TODO: move this to input theme
+        css={{
+          ':-webkit-autofill': { transition: 'background-color 5000s ease-in-out 0s' },
+          ':-webkit-autofill:hover': { transition: 'background-color 5000s ease-in-out 0s' },
+          ':-webkit-autofill:focus': { transition: 'background-color 5000s ease-in-out 0s' },
+        }}
       />
       <FormLabel>Address (0x...)</FormLabel>
     </FormControl>
