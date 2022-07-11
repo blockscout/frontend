@@ -42,6 +42,9 @@ const Table: ComponentMultiStyleConfig = {
       th: {
         border: 0,
       },
+      td: {
+        borderColor: 'gray.200',
+      },
     },
   },
 }
