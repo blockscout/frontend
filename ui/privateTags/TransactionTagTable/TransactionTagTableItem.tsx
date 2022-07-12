@@ -4,14 +4,12 @@ import {
   Tag,
   Tr,
   Td,
-  Icon,
-  IconButton,
   HStack,
   Tooltip,
 } from '@chakra-ui/react'
 
-import EditIcon from '../../../icons/edit.svg';
-import DeleteIcon from '../../../icons/delete.svg';
+import EditButton from '../../shared/EditButton';
+import DeleteButton from '../../shared/DeleteButton';
 
 import AddressLinkWithTooltip from '../../shared/AddressLinkWithTooltip';
 
@@ -48,26 +46,8 @@ const AddressTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
       </Td>
       <Td>
         <HStack spacing={ 6 }>
-          <Tooltip label="Edit">
-            <IconButton
-              aria-label="edit"
-              variant="iconBlue"
-              w="30px"
-              h="30px"
-              onClick={ onItemEditClick }
-              icon={ <Icon as={ EditIcon } w="20px" h="20px"/> }
-            />
-          </Tooltip>
-          <Tooltip label="Delete">
-            <IconButton
-              aria-label="delete"
-              variant="iconBlue"
-              w="30px"
-              h="30px"
-              onClick={ onItemDeleteClick }
-              icon={ <Icon as={ DeleteIcon } w="20px" h="20px"/> }
-            />
-          </Tooltip>
+          <EditButton onClick={ onItemEditClick }/>
+          <DeleteButton onClick={ onItemDeleteClick }/>
         </HStack>
       </Td>
     </Tr>

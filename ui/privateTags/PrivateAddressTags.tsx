@@ -7,7 +7,7 @@ import AddressModal from './AddressModal/AddressModal';
 
 import type { TPrivateTagsAddressItem } from './../../data/privateTagsAddress';
 import { privateTagsAddress } from './../../data/privateTagsAddress';
-import DeleteAddressModal from './DeleteAddressModal';
+import DeletePrivateTagModal from './DeletePrivateTagModal';
 
 const PrivateAddressTags: React.FC = () => {
   const addressModalProps = useDisclosure();
@@ -27,7 +27,7 @@ const PrivateAddressTags: React.FC = () => {
   }, [ addressModalProps ]);
 
   const onDeleteClick = useCallback((data: TPrivateTagsAddressItem) => {
-    setDeleteModalData(data.address);
+    setDeleteModalData(data.tag);
     deleteModalProps.onOpen();
   }, [ deleteModalProps ])
 
@@ -59,7 +59,7 @@ const PrivateAddressTags: React.FC = () => {
         </Button>
       </Box>
       <AddressModal { ...addressModalProps } onClose={ onAddressModalClose } data={ addressModalData }/>
-      <DeleteAddressModal { ...deleteModalProps } onClose={ onDeleteModalClose } address={ deleteModalData }/>
+      <DeletePrivateTagModal { ...deleteModalProps } onClose={ onDeleteModalClose } tag={ deleteModalData }/>
     </>
   );
 };
