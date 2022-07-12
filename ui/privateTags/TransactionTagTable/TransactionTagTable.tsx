@@ -25,7 +25,7 @@ const AddressTagTable = ({ data, onDeleteClick, onEditClick }: Props) => {
       <Table variant="simple" minWidth="600px">
         <Thead>
           <Tr>
-            <Th width="75%">Address</Th>
+            <Th width="75%">Transaction</Th>
             <Th width="25%">Private tag</Th>
             <Th width="108px"></Th>
           </Tr>
