@@ -10,7 +10,7 @@ const variantSimple: PartsStyleFunction<typeof parts> = (props) => {
       color: mode('gray.500', 'gray.50')(props),
     },
     thead: {
-      backgroundColor: mode('gray.50', 'whiteAlpha.100')(props),
+      backgroundColor: mode('gray.50', 'whiteAlpha.200')(props),
     },
     td: {
       borderColor: mode('gray.200', 'whiteAlpha.200')(props),
