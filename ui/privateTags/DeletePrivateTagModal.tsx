@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-
+import { Text } from '@chakra-ui/react';
 import DeleteModal from '../shared/DeleteModal'
 
 type Props = {
@@ -13,13 +13,20 @@ const DeletePrivateTagModal: React.FC<Props> = ({ isOpen, onClose, tag }) => {
     // eslint-disable-next-line no-console
     console.log('delete', tag);
   }, [ tag ]);
+
+  const renderText = useCallback(() => {
+    return (
+      <Text display="flex">Tag<Text fontWeight="600" whiteSpace="pre">{ ` "${ tag || 'address' }" ` }</Text>will be deleted</Text>
+    )
+  }, [ tag ]);
+
   return (
     <DeleteModal
       isOpen={ isOpen }
       onClose={ onClose }
       onDelete={ onDelete }
       title="Removal of private tag"
-      text={ `Tag "${ tag || 'address' }" will be removed` }
+      renderText={ renderText }
     />
   )
 }

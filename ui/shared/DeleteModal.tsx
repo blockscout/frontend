@@ -16,10 +16,10 @@ type Props = {
   onClose: () => void;
   onDelete: () => void;
   title: string;
-  text: string;
+  renderText: () => JSX.Element;
 }
 
-const DeleteModal: React.FC<Props> = ({ isOpen, onClose, onDelete, title, text }) => {
+const DeleteModal: React.FC<Props> = ({ isOpen, onClose, onDelete, title, renderText }) => {
 
   const onDeleteClick = useCallback(() => {
     onDelete();
@@ -33,7 +33,7 @@ const DeleteModal: React.FC<Props> = ({ isOpen, onClose, onDelete, title, text }
         <ModalHeader fontWeight="500" textStyle="h3">{ title }</ModalHeader>
         <ModalCloseButton/>
         <ModalBody>
-          { text }
+          { renderText() }
         </ModalBody>
         <ModalFooter>
           <Button variant="primary" size="lg" onClick={ onDeleteClick }>

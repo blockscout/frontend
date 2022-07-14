@@ -42,7 +42,6 @@ const WatchlistTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
       </Td>
       <Td>
         <HStack spacing={ 6 }>
-          icons
           <EditButton onClick={ onItemEditClick }/>
           <DeleteButton onClick={ onItemDeleteClick }/>
         </HStack>
