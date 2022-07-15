@@ -39,6 +39,9 @@ const baseStyleCloseButton: SystemStyleFunction = (props) => {
     _active: { bg: 'none' },
   }
 }
+const baseStyleOverlay = {
+  bg: 'blackAlpha.800',
+}
 
 const baseStyle: PartsStyleFunction<typeof parts> = (props) => ({
   dialog: baseStyleDialog(props),
@@ -46,6 +49,7 @@ const baseStyle: PartsStyleFunction<typeof parts> = (props) => ({
   body: baseStyleBody,
   footer: baseStyleFooter,
   closeButton: baseStyleCloseButton(props),
+  overlay: baseStyleOverlay,
 })
 
 const sizes = {
@@ -61,5 +65,7 @@ const Modal: ComponentMultiStyleConfig = {
   sizes,
   baseStyle,
 }
+
+Modal.defaultProps = { isCentered: true };
 
 export default Modal;

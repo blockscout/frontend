@@ -30,7 +30,7 @@ type Inputs = {
   notification: boolean;
 }
 
-const AddressModal: React.FC<Props> = ({ data }) => {
+const AddressForm: React.FC<Props> = ({ data }) => {
   const { control, handleSubmit, formState: { errors }, setValue } = useForm<Inputs>();
 
   useEffect(() => {
@@ -122,4 +122,4 @@ const AddressModal: React.FC<Props> = ({ data }) => {
   )
 }
 
-export default AddressModal;
+export default AddressForm;

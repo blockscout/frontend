@@ -30,6 +30,7 @@ const Table: ComponentMultiStyleConfig = {
       fontWeight: 'normal',
       overflow: 'hidden',
       color: 'gray.500',
+      letterSpacing: 'none',
     },
     td: {
       fontSize: 'md',

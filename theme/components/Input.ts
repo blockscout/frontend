@@ -32,7 +32,9 @@ const variantOutline: PartsStyleFunction<typeof parts> = (props) => {
         userSelect: 'all',
       },
       _disabled: {
-        opacity: 0.4,
+        opacity: 1,
+        background: mode('gray.200', 'whiteAlpha.400')(props),
+        border: 'none',
         cursor: 'not-allowed',
       },
       _invalid: {
