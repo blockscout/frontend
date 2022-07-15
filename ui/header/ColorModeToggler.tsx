@@ -17,6 +17,8 @@ import { useColorMode, useColorModeValue } from '@chakra-ui/react';
 
 import styles from './ColorModeToggler.module.css';
 
+const TRANSITION_DURATION = 150;
+
 export interface ColorModeTogglerProps
   extends Omit<UseCheckboxProps, 'isIndeterminate'>,
   Omit<HTMLChakraProps<'label'>, keyof UseCheckboxProps>,
@@ -25,7 +27,8 @@ export interface ColorModeTogglerProps
 
 export const ColorModeToggler = forwardRef<ColorModeTogglerProps, 'input'>((props, ref) => {
   const ownProps = omitThemingProps(props);
-  const { toggleColorMode } = useColorMode();
+  const { toggleColorMode, colorMode } = useColorMode();
+  const [ isOn, setMode ] = React.useState(colorMode === 'light');
 
   const {
     state,
@@ -34,17 +37,29 @@ export const ColorModeToggler = forwardRef<ColorModeTogglerProps, 'input'>((prop
     getRootProps,
   } = useCheckbox(ownProps);
 
-  const trackStyles: SystemStyleObject = {
-    bg: useColorModeValue('blackAlpha.100', 'whiteAlpha.200'),
-  }
+  const trackBg = useColorModeValue('blackAlpha.100', 'whiteAlpha.200')
+  const thumbBg = useColorModeValue('white', 'black')
 
-  const thumbStyles: SystemStyleObject = {
-    bg: useColorModeValue('white', 'black'),
-  }
+  const trackStyles: SystemStyleObject = React.useMemo(() => ({
+    bg: trackBg,
+  }), [ trackBg ])
+
+  const thumbStyles: SystemStyleObject = React.useMemo(() => ({
+    bg: thumbBg,
+    transitionProperty: 'transform',
+    transitionDuration: `${ TRANSITION_DURATION }ms`,
+  }), [ thumbBg ])
+
+  const handleInputChange = React.useCallback(() => {
+    // was not able to make transition while consuming flag value from chakra's useColorMode hook
+    // that's why there is a local state for toggler and this fancy window.setTimeout
+    setMode((isOn) => !isOn);
+    window.setTimeout(toggleColorMode, TRANSITION_DURATION);
+  }, [ toggleColorMode ]);
 
   return (
     <chakra.label
-      { ...getRootProps({ onChange: toggleColorMode }) }
+      { ...getRootProps({ onChange: handleInputChange }) }
       className={ styles.root }
     >
       <input className={ styles.input } { ...getInputProps({}, ref) }/>
@@ -56,7 +71,7 @@ export const ColorModeToggler = forwardRef<ColorModeTogglerProps, 'input'>((prop
         <MoonIcon className={ styles.nightIcon } boxSize={ 4 } color={ useColorModeValue('blue.600', 'white') }/>
         <chakra.div
           className={ styles.thumb }
-          data-checked={ dataAttr(state.isChecked) }
+          data-checked={ dataAttr(isOn) }
           data-hover={ dataAttr(state.isHovered) }
           __css={ thumbStyles }
         />
