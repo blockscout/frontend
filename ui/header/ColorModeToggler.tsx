@@ -27,8 +27,7 @@ export interface ColorModeTogglerProps
 
 export const ColorModeToggler = forwardRef<ColorModeTogglerProps, 'input'>((props, ref) => {
   const ownProps = omitThemingProps(props);
-  const { toggleColorMode, colorMode } = useColorMode();
-  const [ isOn, setMode ] = React.useState(colorMode === 'light');
+  const { toggleColorMode } = useColorMode();
 
   const {
     state,
@@ -50,16 +49,9 @@ export const ColorModeToggler = forwardRef<ColorModeTogglerProps, 'input'>((prop
     transitionDuration: `${ TRANSITION_DURATION }ms`,
   }), [ thumbBg ])
 
-  const handleInputChange = React.useCallback(() => {
-    // was not able to make transition while consuming flag value from chakra's useColorMode hook
-    // that's why there is a local state for toggler and this fancy window.setTimeout
-    setMode((isOn) => !isOn);
-    window.setTimeout(toggleColorMode, TRANSITION_DURATION);
-  }, [ toggleColorMode ]);
-
   return (
     <chakra.label
-      { ...getRootProps({ onChange: handleInputChange }) }
+      { ...getRootProps({ onChange: toggleColorMode }) }
       className={ styles.root }
     >
       <input className={ styles.input } { ...getInputProps({}, ref) }/>
@@ -71,7 +63,7 @@ export const ColorModeToggler = forwardRef<ColorModeTogglerProps, 'input'>((prop
         <MoonIcon className={ styles.nightIcon } boxSize={ 4 } color={ useColorModeValue('blue.600', 'white') }/>
         <chakra.div
           className={ styles.thumb }
-          data-checked={ dataAttr(isOn) }
+          data-checked={ dataAttr(state.isChecked) }
           data-hover={ dataAttr(state.isHovered) }
           __css={ thumbStyles }
         />

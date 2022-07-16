@@ -6,6 +6,7 @@ import ghIcon from '../../icons/social/git.svg';
 import twIcon from '../../icons/social/tweet.svg';
 import tgIcon from '../../icons/social/telega.svg';
 import statsIcon from '../../icons/social/stats.svg';
+import getDefaultTransitionProps from '../../theme/utils/getDefaultTransitionProps';
 
 const SOCIAL_LINKS = [
   { link: '#gh', icon: ghIcon },
@@ -20,12 +21,13 @@ const NavFooter = () => {
       as="footer"
       spacing={ 8 }
       borderTop="1px solid"
-      borderColor={ useColorModeValue('gray.200', 'whiteAlpha.200') }
+      borderColor={ useColorModeValue('blackAlpha.200', 'whiteAlpha.200') }
       paddingTop={ 8 }
       w="100%"
       alignItems="baseline"
       color="gray.500"
       fontSize="xs"
+      { ...getDefaultTransitionProps() }
     >
       <HStack>
         { SOCIAL_LINKS.map(sl => {
