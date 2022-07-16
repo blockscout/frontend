@@ -14,10 +14,9 @@ import { dataAttr, __DEV__ } from '@chakra-ui/utils'
 import * as React from 'react'
 import { SunIcon, MoonIcon } from '@chakra-ui/icons'
 import { useColorMode, useColorModeValue } from '@chakra-ui/react';
+import getDefaultTransitionProps from '../../theme/utils/getDefaultTransitionProps';
 
 import styles from './ColorModeToggler.module.css';
-
-const TRANSITION_DURATION = 150;
 
 export interface ColorModeTogglerProps
   extends Omit<UseCheckboxProps, 'isIndeterminate'>,
@@ -38,16 +37,18 @@ export const ColorModeToggler = forwardRef<ColorModeTogglerProps, 'input'>((prop
 
   const trackBg = useColorModeValue('blackAlpha.100', 'whiteAlpha.200')
   const thumbBg = useColorModeValue('white', 'black')
+  const transitionProps = getDefaultTransitionProps();
 
   const trackStyles: SystemStyleObject = React.useMemo(() => ({
     bg: trackBg,
-  }), [ trackBg ])
+    ...transitionProps,
+  }), [ trackBg, transitionProps ])
 
   const thumbStyles: SystemStyleObject = React.useMemo(() => ({
     bg: thumbBg,
-    transitionProperty: 'transform',
-    transitionDuration: `${ TRANSITION_DURATION }ms`,
-  }), [ thumbBg ])
+    ...transitionProps,
+    transitionProperty: 'background-color, transform',
+  }), [ thumbBg, transitionProps ])
 
   return (
     <chakra.label
@@ -60,14 +61,24 @@ export const ColorModeToggler = forwardRef<ColorModeTogglerProps, 'input'>((prop
         className={ styles.track }
         __css={ trackStyles }
       >
-        <MoonIcon className={ styles.nightIcon } boxSize={ 4 } color={ useColorModeValue('blue.600', 'white') }/>
+        <MoonIcon
+          className={ styles.nightIcon }
+          boxSize={ 4 }
+          color={ useColorModeValue('blue.600', 'white') }
+          { ...transitionProps }
+        />
         <chakra.div
           className={ styles.thumb }
           data-checked={ dataAttr(state.isChecked) }
           data-hover={ dataAttr(state.isHovered) }
           __css={ thumbStyles }
         />
-        <SunIcon className={ styles.dayIcon } boxSize={ 4 } color={ useColorModeValue('gray.500', 'blue.600') }/>
+        <SunIcon
+          className={ styles.dayIcon }
+          boxSize={ 4 }
+          color={ useColorModeValue('gray.500', 'blue.600') }
+          { ...transitionProps }
+        />
       </chakra.div>
     </chakra.label>
   )
