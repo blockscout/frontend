@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 
-import { Box, Button, HStack, Link, Text, useColorModeValue, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, Heading, HStack, Link, Text, useColorModeValue, useDisclosure } from '@chakra-ui/react';
 
 import Page from '../Page/Page';
 
@@ -49,7 +49,7 @@ const ApiKeys: React.FC = () => {
   return (
     <Page>
       <Box h="100%">
-        <Box as="h1" textStyle="h2" marginBottom={ 8 }>API keys</Box>
+        <Heading as="h1" size="lg" marginBottom={ 8 }>API keys</Heading>
         <Text marginBottom={ 12 }>
           Create API keys to use for your RPC and EthRPC API requests. For more information, see { space }
           <Link href="#">“How to use a Blockscout API key”</Link>.
