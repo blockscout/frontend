@@ -11,8 +11,8 @@ import {
   GridItem,
 } from '@chakra-ui/react';
 
-import AddressInput from '../../shared/AddressInput';
-import TagInput from '../../shared/TagInput';
+import AddressInput from 'ui/shared/AddressInput';
+import TagInput from 'ui/shared/TagInput';
 
 import type { TWatchlistItem } from 'data/watchlist';
 

@@ -3,7 +3,7 @@ import React, { useCallback } from 'react';
 import type { TPrivateTagsTransactionItem } from 'data/privateTagsTransaction';
 
 import TransactionForm from './TransactionForm';
-import FormModal from '../../shared/FormModal';
+import FormModal from 'ui/shared/FormModal';
 
 type Props = {
   isOpen: boolean;

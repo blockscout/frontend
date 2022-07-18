@@ -3,7 +3,7 @@ import React, { useCallback } from 'react';
 import type { TApiKeyItem } from 'data/apiKey';
 
 import ApiKeyForm from './ApiKeyForm';
-import FormModal from '../../shared/FormModal';
+import FormModal from 'ui/shared/FormModal';
 
 type Props = {
   isOpen: boolean;
