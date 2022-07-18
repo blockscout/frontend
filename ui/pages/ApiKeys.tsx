@@ -2,16 +2,16 @@ import React, { useCallback, useState } from 'react';
 
 import { Box, Button, Heading, HStack, Link, Text, useColorModeValue, useDisclosure } from '@chakra-ui/react';
 
-import Page from '../Page/Page';
+import Page from 'ui/shared/Page/Page';
 
-import ApiKeyTable from '../apiKey/ApiKeyTable/ApiKeyTable';
-import ApiKeyModal from '../apiKey/ApiKeyModal/ApiKeyModal';
-import DeleteApiKeyModal from '../apiKey/DeleteApiKeyModal';
+import ApiKeyTable from 'ui/apiKey/ApiKeyTable/ApiKeyTable';
+import ApiKeyModal from 'ui/apiKey/ApiKeyModal/ApiKeyModal';
+import DeleteApiKeyModal from 'ui/apiKey/DeleteApiKeyModal';
 
-import type { TApiKeyItem } from '../../data/apiKey';
-import { apiKey } from '../../data/apiKey';
+import type { TApiKeyItem } from 'data/apiKey';
+import { apiKey } from 'data/apiKey';
 
-import { space } from '../../lib/html-entities';
+import { space } from 'lib/html-entities';
 
 const DATA_LIMIT = 3;
 

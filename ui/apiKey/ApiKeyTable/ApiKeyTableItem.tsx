@@ -8,11 +8,11 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 
-import EditButton from '../../shared/EditButton';
-import DeleteButton from '../../shared/DeleteButton';
+import EditButton from 'ui/shared/EditButton';
+import DeleteButton from 'ui/shared/DeleteButton';
 
-import type { TApiKeyItem } from '../../../data/apiKey';
-import CopyToClipboard from '../../shared/CopyToClipboard';
+import type { TApiKeyItem } from 'data/apiKey';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 interface Props {
   item: TApiKeyItem;

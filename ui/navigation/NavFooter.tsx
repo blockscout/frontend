@@ -2,10 +2,10 @@ import React from 'react';
 
 import { VStack, Text, HStack, Icon, Link, useColorModeValue } from '@chakra-ui/react';
 
-import ghIcon from '../../icons/social/git.svg';
-import twIcon from '../../icons/social/tweet.svg';
-import tgIcon from '../../icons/social/telega.svg';
-import statsIcon from '../../icons/social/stats.svg';
+import ghIcon from 'icons/social/git.svg';
+import twIcon from 'icons/social/tweet.svg';
+import tgIcon from 'icons/social/telega.svg';
+import statsIcon from 'icons/social/stats.svg';
 
 const SOCIAL_LINKS = [
   { link: '#gh', icon: ghIcon },

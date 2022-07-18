@@ -9,7 +9,7 @@ import {
   TableContainer,
 } from '@chakra-ui/react'
 
-import type { TWatchlist, TWatchlistItem } from '../../../data/watchlist';
+import type { TWatchlist, TWatchlistItem } from 'data/watchlist';
 
 import WatchlistTableItem from './WatchListTableItem';
 

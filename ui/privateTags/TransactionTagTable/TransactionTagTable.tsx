@@ -9,7 +9,7 @@ import {
   TableContainer,
 } from '@chakra-ui/react'
 
-import type { TPrivateTagsTransaction, TPrivateTagsTransactionItem } from '../../../data/privateTagsTransaction';
+import type { TPrivateTagsTransaction, TPrivateTagsTransactionItem } from 'data/privateTagsTransaction';
 
 import TransactionTagTableItem from './TransactionTagTableItem';
 

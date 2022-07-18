@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
 
-import type { TWatchlistItem } from '../../../data/watchlist';
+import type { TWatchlistItem } from 'data/watchlist';
 
 import AddressForm from './AddressForm';
-import FormModal from '../../shared/FormModal';
+import FormModal from 'ui/shared/FormModal';
 
 type Props = {
   isOpen: boolean;

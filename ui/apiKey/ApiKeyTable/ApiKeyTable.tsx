@@ -9,7 +9,7 @@ import {
   TableContainer,
 } from '@chakra-ui/react'
 
-import type { TApiKey, TApiKeyItem } from '../../../data/apiKey';
+import type { TApiKey, TApiKeyItem } from 'data/apiKey';
 
 import ApiKeyTableItem from './ApiKeyTableItem';
 
