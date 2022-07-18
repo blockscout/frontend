@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { HStack, Link, Box, Tooltip } from '@chakra-ui/react';
+import { HStack, Link } from '@chakra-ui/react';
 
 import AddressWithDots from './AddressWithDots';
 import CopyToClipboard from './CopyToClipboard';
@@ -14,9 +14,7 @@ const AddressLinkWithTooltip = ({ address }: {address: string}) => {
         fontWeight={ 600 }
         lineHeight="24px"
       >
-        <Tooltip label={ address }>
-          <Box overflow="hidden"><AddressWithDots address={ address }/></Box>
-        </Tooltip>
+        <AddressWithDots address={ address }/>
       </Link>
       <CopyToClipboard text={ address }/>
     </HStack>
