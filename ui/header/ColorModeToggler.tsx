@@ -42,12 +42,14 @@ export const ColorModeToggler = forwardRef<ColorModeTogglerProps, 'input'>((prop
   const trackStyles: SystemStyleObject = React.useMemo(() => ({
     bg: trackBg,
     ...transitionProps,
+    transitionDuration: '500ms',
   }), [ trackBg, transitionProps ])
 
   const thumbStyles: SystemStyleObject = React.useMemo(() => ({
     bg: thumbBg,
     ...transitionProps,
     transitionProperty: 'background-color, transform',
+    transitionDuration: '500ms',
   }), [ thumbBg, transitionProps ])
 
   return (
