@@ -1,6 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const withReactSvg = require('next-react-svg');
-import path from 'path';
+const path = require('path');
 
 module.exports = withReactSvg({
   include: path.resolve(__dirname, 'icons'),
