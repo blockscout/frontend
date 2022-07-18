@@ -12,9 +12,10 @@ import {
 } from '@chakra-ui/system'
 import { dataAttr, __DEV__ } from '@chakra-ui/utils'
 import * as React from 'react'
-import { SunIcon, MoonIcon } from '@chakra-ui/icons'
-import { useColorMode, useColorModeValue } from '@chakra-ui/react';
+import { SunIcon } from '@chakra-ui/icons'
+import { useColorMode, useColorModeValue, Icon } from '@chakra-ui/react';
 import getDefaultTransitionProps from '../../theme/utils/getDefaultTransitionProps';
+import moonIcon from '../../icons/moon.svg';
 
 import styles from './ColorModeToggler.module.css';
 
@@ -63,9 +64,10 @@ export const ColorModeToggler = forwardRef<ColorModeTogglerProps, 'input'>((prop
         className={ styles.track }
         __css={ trackStyles }
       >
-        <MoonIcon
+        <Icon
           className={ styles.nightIcon }
           boxSize={ 4 }
+          as={ moonIcon }
           color={ useColorModeValue('blue.600', 'white') }
           { ...transitionProps }
         />

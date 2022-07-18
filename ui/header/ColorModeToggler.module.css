@@ -35,11 +35,11 @@
     height: 24px;
     border-radius: 12px;
     position: absolute;
-    transform: translate(4px, 4px);
+    transform: translate(44px, 4px);
 }
 
 .thumb[data-checked] {
-    transform: translate(44px, 4px);
+    transform: translate(4px, 4px);
 }
 
 .nightIcon {
