@@ -5,7 +5,7 @@ import path from 'path';
 module.exports = withReactSvg({
   include: path.resolve(__dirname, 'icons'),
   reactStrictMode: true,
-  webpack(config: unknown) {
+  webpack(config) {
     return config
   },
 })
