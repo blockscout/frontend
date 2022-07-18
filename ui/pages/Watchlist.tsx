@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 
 import { Box, Button, Text, useDisclosure, Heading } from '@chakra-ui/react';
 
-import Page from '../Page/Page';
+import Page from 'ui/shared/Page/Page';
 
 import WatchlistTable from '../watchlist/WatchlistTable/WatchlistTable';
 import AddressModal from '../watchlist/AddressModal/AddressModal';

@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 
 import { Box, Button, Heading, HStack, Link, Text, useColorModeValue, useDisclosure } from '@chakra-ui/react';
 
-import Page from '../Page/Page';
+import Page from 'ui/shared/Page/Page';
 
 import ApiKeyTable from '../apiKey/ApiKeyTable/ApiKeyTable';
 import ApiKeyModal from '../apiKey/ApiKeyModal/ApiKeyModal';

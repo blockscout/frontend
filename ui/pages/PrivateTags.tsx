@@ -10,7 +10,7 @@ import {
   TabPanels,
 } from '@chakra-ui/react';
 
-import Page from '../Page/Page';
+import Page from 'ui/shared/Page/Page';
 import PrivateAddressTags from '../privateTags/PrivateAddressTags';
 import PrivateTransactionTags from '../privateTags/PrivateTransactionTags';
 
