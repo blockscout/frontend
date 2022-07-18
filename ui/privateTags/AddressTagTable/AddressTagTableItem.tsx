@@ -5,7 +5,6 @@ import {
   Tr,
   Td,
   HStack,
-  Tooltip,
 } from '@chakra-ui/react'
 
 import AddressIcon from 'ui/shared/AddressIcon';
@@ -14,6 +13,7 @@ import AddressLinkWithTooltip from 'ui/shared/AddressLinkWithTooltip';
 import type { TPrivateTagsAddressItem } from 'data/privateTagsAddress';
 import EditButton from 'ui/shared/EditButton';
 import DeleteButton from 'ui/shared/DeleteButton';
+import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 interface Props {
   item: TPrivateTagsAddressItem;
@@ -39,11 +39,11 @@ const AddressTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
         </HStack>
       </Td>
       <Td>
-        <Tooltip label={ item.tag }>
+        <TruncatedTextTooltip label={ item.tag }>
           <Tag variant="gray" lineHeight="24px">
             { item.tag }
           </Tag>
-        </Tooltip>
+        </TruncatedTextTooltip>
       </Td>
       <Td>
         <HStack spacing={ 6 }>
