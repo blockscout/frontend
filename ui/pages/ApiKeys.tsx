@@ -4,9 +4,9 @@ import { Box, Button, Heading, HStack, Link, Text, useColorModeValue, useDisclos
 
 import Page from 'ui/shared/Page/Page';
 
-import ApiKeyTable from '../apiKey/ApiKeyTable/ApiKeyTable';
-import ApiKeyModal from '../apiKey/ApiKeyModal/ApiKeyModal';
-import DeleteApiKeyModal from '../apiKey/DeleteApiKeyModal';
+import ApiKeyTable from 'ui/apiKey/ApiKeyTable/ApiKeyTable';
+import ApiKeyModal from 'ui/apiKey/ApiKeyModal/ApiKeyModal';
+import DeleteApiKeyModal from 'ui/apiKey/DeleteApiKeyModal';
 
 import type { TApiKeyItem } from 'data/apiKey';
 import { apiKey } from 'data/apiKey';

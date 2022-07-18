@@ -4,12 +4,12 @@ import { Box, Button, Text, useDisclosure, Heading } from '@chakra-ui/react';
 
 import Page from 'ui/shared/Page/Page';
 
-import WatchlistTable from '../watchlist/WatchlistTable/WatchlistTable';
-import AddressModal from '../watchlist/AddressModal/AddressModal';
+import WatchlistTable from 'ui/watchlist/WatchlistTable/WatchlistTable';
+import AddressModal from 'ui/watchlist/AddressModal/AddressModal';
 
 import type { TWatchlistItem } from 'data/watchlist';
 import { watchlist } from 'data/watchlist';
-import DeleteAddressModal from '../watchlist/DeleteAddressModal';
+import DeleteAddressModal from 'ui/watchlist/DeleteAddressModal';
 
 const WatchList: React.FC = () => {
   const addressModalProps = useDisclosure();

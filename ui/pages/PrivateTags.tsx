@@ -11,8 +11,8 @@ import {
 } from '@chakra-ui/react';
 
 import Page from 'ui/shared/Page/Page';
-import PrivateAddressTags from '../privateTags/PrivateAddressTags';
-import PrivateTransactionTags from '../privateTags/PrivateTransactionTags';
+import PrivateAddressTags from 'ui/privateTags/PrivateAddressTags';
+import PrivateTransactionTags from 'ui/privateTags/PrivateTransactionTags';
 
 const PrivateTags: React.FC = () => {
   return (
