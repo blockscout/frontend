@@ -27,14 +27,14 @@ export interface ColorModeTogglerProps
 
 export const ColorModeToggler = forwardRef<ColorModeTogglerProps, 'input'>((props, ref) => {
   const ownProps = omitThemingProps(props);
-  const { toggleColorMode } = useColorMode();
+  const { toggleColorMode, colorMode } = useColorMode();
 
   const {
     state,
     getInputProps,
     getCheckboxProps,
     getRootProps,
-  } = useCheckbox(ownProps);
+  } = useCheckbox({ ...ownProps, isChecked: colorMode === 'light' });
 
   const trackBg = useColorModeValue('blackAlpha.100', 'whiteAlpha.200')
   const thumbBg = useColorModeValue('white', 'black')
