@@ -5,8 +5,8 @@ import { Box, Button, Text, useDisclosure } from '@chakra-ui/react';
 import TransactionTagTable from './TransactionTagTable/TransactionTagTable';
 import TransactionModal from './TransactionModal/TransactionModal';
 
-import type { TPrivateTagsTransactionItem } from './../../data/privateTagsTransaction';
-import { privateTagsTransaction } from './../../data/privateTagsTransaction';
+import type { TPrivateTagsTransactionItem } from 'data/privateTagsTransaction';
+import { privateTagsTransaction } from 'data/privateTagsTransaction';
 import DeletePrivateTagModal from './DeletePrivateTagModal';
 
 const PrivateTransactionTags: React.FC = () => {

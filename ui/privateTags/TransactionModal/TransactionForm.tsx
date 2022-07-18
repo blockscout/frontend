@@ -10,7 +10,7 @@ import {
 import TransactionInput from '../../shared/TransactionInput';
 import TagInput from '../../shared/TagInput';
 
-import type { TPrivateTagsTransactionItem } from '../../../data/privateTagsTransaction';
+import type { TPrivateTagsTransactionItem } from 'data/privateTagsTransaction';
 
 const HASH_LENGTH = 66;
 const TAG_MAX_LENGTH = 35;

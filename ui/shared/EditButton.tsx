@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 
 import { Tooltip, IconButton, Icon } from '@chakra-ui/react';
 
-import EditIcon from '../../icons/edit.svg';
+import EditIcon from 'icons/edit.svg';
 
 type Props = {
   onClick: () => void;

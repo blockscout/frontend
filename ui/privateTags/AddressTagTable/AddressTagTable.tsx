@@ -9,7 +9,7 @@ import {
   TableContainer,
 } from '@chakra-ui/react'
 
-import type { TPrivateTagsAddress, TPrivateTagsAddressItem } from '../../../data/privateTagsAddress';
+import type { TPrivateTagsAddress, TPrivateTagsAddressItem } from 'data/privateTagsAddress';
 
 import AddressTagTableItem from './AddressTagTableItem';
 

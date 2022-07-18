@@ -10,7 +10,7 @@ import {
   Input,
 } from '@chakra-ui/react';
 
-import type { TApiKeyItem } from '../../../data/apiKey';
+import type { TApiKeyItem } from 'data/apiKey';
 
 type Props = {
   data?: TApiKeyItem;

@@ -7,8 +7,8 @@ import Page from '../Page/Page';
 import WatchlistTable from '../watchlist/WatchlistTable/WatchlistTable';
 import AddressModal from '../watchlist/AddressModal/AddressModal';
 
-import type { TWatchlistItem } from '../../data/watchlist';
-import { watchlist } from '../../data/watchlist';
+import type { TWatchlistItem } from 'data/watchlist';
+import { watchlist } from 'data/watchlist';
 import DeleteAddressModal from '../watchlist/DeleteAddressModal';
 
 const WatchList: React.FC = () => {

@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 
-import type { TApiKeyItem } from '../../../data/apiKey';
+import type { TApiKeyItem } from 'data/apiKey';
 
 import ApiKeyForm from './ApiKeyForm';
 import FormModal from '../../shared/FormModal';

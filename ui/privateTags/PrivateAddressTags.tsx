@@ -5,8 +5,8 @@ import { Box, Button, Text, useDisclosure } from '@chakra-ui/react';
 import AddressTagTable from './AddressTagTable/AddressTagTable';
 import AddressModal from './AddressModal/AddressModal';
 
-import type { TPrivateTagsAddressItem } from './../../data/privateTagsAddress';
-import { privateTagsAddress } from './../../data/privateTagsAddress';
+import type { TPrivateTagsAddressItem } from 'data/privateTagsAddress';
+import { privateTagsAddress } from 'data/privateTagsAddress';
 import DeletePrivateTagModal from './DeletePrivateTagModal';
 
 const PrivateAddressTags: React.FC = () => {

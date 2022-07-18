@@ -5,8 +5,8 @@ import AccountNavigation from './AccountNavigation';
 import MainNavigation from './MainNavigation';
 import NavFooter from './NavFooter'
 
-import logoIcon from '../../icons/logo.svg';
-import networksIcon from '../../icons/networks.svg';
+import logoIcon from 'icons/logo.svg';
+import networksIcon from 'icons/networks.svg';
 
 const Navigation = () => {
   return (

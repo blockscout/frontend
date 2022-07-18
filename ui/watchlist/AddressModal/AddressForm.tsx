@@ -14,7 +14,7 @@ import {
 import AddressInput from '../../shared/AddressInput';
 import TagInput from '../../shared/TagInput';
 
-import type { TWatchlistItem } from '../../../data/watchlist';
+import type { TWatchlistItem } from 'data/watchlist';
 
 const NOTIFICATIONS = [ 'xDAI', 'ERC-20', 'ERC-721, ERC-1155 (NFT)' ];
 const ADDRESS_LENGTH = 42;

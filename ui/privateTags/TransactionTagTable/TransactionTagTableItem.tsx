@@ -13,7 +13,7 @@ import DeleteButton from '../../shared/DeleteButton';
 
 import AddressLinkWithTooltip from '../../shared/AddressLinkWithTooltip';
 
-import type { TPrivateTagsTransactionItem } from '../../../data/privateTagsTransaction';
+import type { TPrivateTagsTransactionItem } from 'data/privateTagsTransaction';
 
 interface Props {
   item: TPrivateTagsTransactionItem;

@@ -12,7 +12,7 @@ import {
 import EditButton from '../../shared/EditButton';
 import DeleteButton from '../../shared/DeleteButton';
 
-import type { TWatchlistItem } from '../../../data/watchlist';
+import type { TWatchlistItem } from 'data/watchlist';
 
 import WatchListAddressItem from './WatchListAddressItem';
 

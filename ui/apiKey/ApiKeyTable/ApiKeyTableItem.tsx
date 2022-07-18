@@ -11,7 +11,7 @@ import {
 import EditButton from '../../shared/EditButton';
 import DeleteButton from '../../shared/DeleteButton';
 
-import type { TApiKeyItem } from '../../../data/apiKey';
+import type { TApiKeyItem } from 'data/apiKey';
 import CopyToClipboard from '../../shared/CopyToClipboard';
 
 interface Props {

@@ -11,7 +11,7 @@ import {
 import AddressIcon from '../../shared/AddressIcon';
 import AddressLinkWithTooltip from '../../shared/AddressLinkWithTooltip';
 
-import type { TPrivateTagsAddressItem } from '../../../data/privateTagsAddress';
+import type { TPrivateTagsAddressItem } from 'data/privateTagsAddress';
 import EditButton from '../../shared/EditButton';
 import DeleteButton from '../../shared/DeleteButton';
 

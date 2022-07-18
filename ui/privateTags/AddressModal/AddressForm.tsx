@@ -10,7 +10,7 @@ import {
 import AddressInput from '../../shared/AddressInput';
 import TagInput from '../../shared/TagInput';
 
-import type { TPrivateTagsAddressItem } from '../../../data/privateTagsAddress';
+import type { TPrivateTagsAddressItem } from 'data/privateTagsAddress';
 
 const ADDRESS_LENGTH = 42;
 const TAG_MAX_LENGTH = 35;
