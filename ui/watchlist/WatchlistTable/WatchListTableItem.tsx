@@ -6,11 +6,11 @@ import {
   Td,
   Switch,
   HStack,
-  Tooltip,
 } from '@chakra-ui/react'
 
 import EditButton from 'ui/shared/EditButton';
 import DeleteButton from 'ui/shared/DeleteButton';
+import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 import type { TWatchlistItem } from 'data/watchlist';
 
@@ -35,11 +35,11 @@ const WatchlistTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
     <Tr alignItems="top" key={ item.address }>
       <Td><WatchListAddressItem item={ item }/></Td>
       <Td>
-        <Tooltip label={ item.tag }>
+        <TruncatedTextTooltip label={ item.tag }>
           <Tag variant="gray" lineHeight="24px">
             { item.tag }
           </Tag>
-        </Tooltip>
+        </TruncatedTextTooltip>
       </Td>
       <Td><Switch colorScheme="blue" size="md" isChecked={ item.notification }/></Td>
       <Td>

@@ -1,9 +1,11 @@
 import { theme } from '@chakra-ui/react';
 
+export const BODY_TYPEFACE = 'Inter';
+
 const typography = {
   fonts: {
     heading: `Poppins, ${ theme.fonts.heading }`,
-    body: `Inter, ${ theme.fonts.body }`,
+    body: `${ BODY_TYPEFACE }, ${ theme.fonts.body }`,
   },
   textStyles: {
     h2: {

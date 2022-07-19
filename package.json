@@ -22,7 +22,8 @@
     "react-dom": "18.1.0",
     "react-hook-form": "^7.33.1",
     "react-identicons": "^1.2.5",
-    "react-jazzicon": "^1.0.4"
+    "react-jazzicon": "^1.0.4",
+    "use-font-face-observer": "^1.2.1"
   },
   "devDependencies": {
     "@types/node": "17.0.36",

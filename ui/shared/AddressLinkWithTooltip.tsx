@@ -1,9 +1,11 @@
 import React from 'react';
 
-import { HStack, Link, Box, Tooltip } from '@chakra-ui/react';
+import { HStack, Link } from '@chakra-ui/react';
 
 import AddressWithDots from './AddressWithDots';
 import CopyToClipboard from './CopyToClipboard';
+
+const FONT_WEIGHT = '600';
 
 const AddressLinkWithTooltip = ({ address }: {address: string}) => {
   return (
@@ -11,16 +13,14 @@ const AddressLinkWithTooltip = ({ address }: {address: string}) => {
       <Link
         href="#"
         overflow="hidden"
-        fontWeight={ 600 }
+        fontWeight={ FONT_WEIGHT }
         lineHeight="24px"
       >
-        <Tooltip label={ address }>
-          <Box overflow="hidden"><AddressWithDots address={ address }/></Box>
-        </Tooltip>
+        <AddressWithDots address={ address } fontWeight={ FONT_WEIGHT }/>
       </Link>
       <CopyToClipboard text={ address }/>
     </HStack>
   )
 }
 
-export default AddressLinkWithTooltip;
+export default React.memo(AddressLinkWithTooltip);
