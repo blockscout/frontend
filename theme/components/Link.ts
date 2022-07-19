@@ -1,6 +1,11 @@
 import type { ComponentStyleConfig } from '@chakra-ui/theme';
 import { mode } from '@chakra-ui/theme-tools';
-import type { SystemStyleFunction } from '@chakra-ui/theme-tools';
+import type { SystemStyleFunction, SystemStyleInterpolation } from '@chakra-ui/theme-tools';
+import getDefaultTransitionProps from '../utils/getDefaultTransitionProps';
+
+const baseStyle: SystemStyleInterpolation = {
+  ...getDefaultTransitionProps(),
+}
 
 const variantPrimary: SystemStyleFunction = (props) => {
   return {
@@ -32,6 +37,7 @@ const defaultProps = {
 const Link: ComponentStyleConfig = {
   variants,
   defaultProps,
+  baseStyle,
 }
 
 export default Link;

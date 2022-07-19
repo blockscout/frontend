@@ -2,6 +2,7 @@ import React from 'react';
 
 import { VStack, Text, HStack, Icon, Link, useColorModeValue } from '@chakra-ui/react';
 
+import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 import ghIcon from 'icons/social/git.svg';
 import twIcon from 'icons/social/tweet.svg';
 import tgIcon from 'icons/social/telega.svg';
@@ -20,12 +21,13 @@ const NavFooter = () => {
       as="footer"
       spacing={ 8 }
       borderTop="1px solid"
-      borderColor={ useColorModeValue('gray.200', 'whiteAlpha.200') }
+      borderColor={ useColorModeValue('blackAlpha.200', 'whiteAlpha.200') }
       paddingTop={ 8 }
       w="100%"
       alignItems="baseline"
       color="gray.500"
       fontSize="xs"
+      { ...getDefaultTransitionProps() }
     >
       <HStack>
         { SOCIAL_LINKS.map(sl => {

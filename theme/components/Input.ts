@@ -3,6 +3,7 @@ import type { ComponentStyleConfig } from '@chakra-ui/theme';
 import type { PartsStyleFunction, SystemStyleObject } from '@chakra-ui/theme-tools';
 import { getColor, mode } from '@chakra-ui/theme-tools';
 import getDefaultFormColors from '../utils/getDefaultFormColors';
+import getDefaultTransitionProps from '../utils/getDefaultTransitionProps';
 
 const sizes: Record<string, SystemStyleObject> = {
   md: {
@@ -17,13 +18,15 @@ const sizes: Record<string, SystemStyleObject> = {
 
 const variantOutline: PartsStyleFunction<typeof parts> = (props) => {
   const { theme } = props
-  const { focusColor: fc, errorColor: ec } = getDefaultFormColors(props)
+  const { focusColor: fc, errorColor: ec } = getDefaultFormColors(props);
+  const transitionProps = getDefaultTransitionProps();
 
   return {
     field: {
       border: '2px solid',
       bg: 'inherit',
       borderColor: mode('gray.100', 'whiteAlpha.200')(props),
+      ...transitionProps,
       _hover: {
         borderColor: mode('gray.300', 'whiteAlpha.400')(props),
       },
@@ -51,6 +54,7 @@ const variantOutline: PartsStyleFunction<typeof parts> = (props) => {
       border: '2px solid',
       borderColor: mode('gray.100', 'whiteAlpha.200')(props),
       bg: mode('gray.100', 'whiteAlpha.200')(props),
+      ...transitionProps,
     },
   }
 }
