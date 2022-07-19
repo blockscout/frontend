@@ -33,9 +33,7 @@ const AddressTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   return (
     <Tr alignItems="top" key={ item.transaction }>
       <Td>
-        <HStack spacing={ 4 }>
-          <AddressLinkWithTooltip address={ item.transaction }/>
-        </HStack>
+        <AddressLinkWithTooltip address={ item.transaction }/>
       </Td>
       <Td>
         <Tooltip label={ item.tag }>

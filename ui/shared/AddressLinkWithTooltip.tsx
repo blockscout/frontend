@@ -21,4 +21,4 @@ const AddressLinkWithTooltip = ({ address }: {address: string}) => {
   )
 }
 
-export default AddressLinkWithTooltip;
+export default React.memo(AddressLinkWithTooltip);
