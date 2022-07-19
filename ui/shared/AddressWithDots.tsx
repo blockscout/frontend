@@ -11,13 +11,20 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import { Tooltip } from '@chakra-ui/react'
 import _debounce from 'lodash/debounce';
+import type { FontFace } from 'use-font-face-observer';
+import useFontFaceObserver from 'use-font-face-observer';
+import { BODY_TYPEFACE } from 'theme/foundations/typography';
 
 const TAIL_LENGTH = 4;
 const HEAD_MIN_LENGTH = 4;
 
-const AddressWithDots = ({ address }: {address: string}) => {
+const AddressWithDots = ({ address, fontWeight }: {address: string; fontWeight: FontFace['weight']}) => {
   const addressRef = useRef<HTMLSpanElement>(null);
   const [ displayedAddress, setAddress ] = React.useState(address);
+
+  const isFontFaceLoaded = useFontFaceObserver([
+    { family: BODY_TYPEFACE, weight: fontWeight },
+  ]);
 
   const calculateString = useCallback(() => {
     const addressEl = addressRef.current;
@@ -53,8 +60,14 @@ const AddressWithDots = ({ address }: {address: string}) => {
     parent.removeChild(shadowEl);
   }, [ address ]);
 
+  // we want to do recalculation when isFontFaceLoaded flag is changed
+  // but we don't want to create more resize event listeners
+  // that's why there are separate useEffect hooks
   useEffect(() => {
     calculateString();
+  }, [ calculateString, isFontFaceLoaded ])
+
+  useEffect(() => {
     const resizeHandler = _debounce(calculateString, 50)
     window.addEventListener('resize', resizeHandler)
     return function cleanup() {
