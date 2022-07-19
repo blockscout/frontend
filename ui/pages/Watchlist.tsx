@@ -1,15 +1,15 @@
 import React, { useCallback, useState } from 'react';
 
-import { Box, Button, Text, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, Text, useDisclosure, Heading } from '@chakra-ui/react';
 
-import Page from '../Page/Page';
+import Page from 'ui/shared/Page/Page';
 
-import WatchlistTable from '../watchlist/WatchlistTable/WatchlistTable';
-import AddressModal from '../watchlist/AddressModal/AddressModal';
+import WatchlistTable from 'ui/watchlist/WatchlistTable/WatchlistTable';
+import AddressModal from 'ui/watchlist/AddressModal/AddressModal';
 
-import type { TWatchlistItem } from '../../data/watchlist';
-import { watchlist } from '../../data/watchlist';
-import DeleteAddressModal from '../watchlist/DeleteAddressModal';
+import type { TWatchlistItem } from 'data/watchlist';
+import { watchlist } from 'data/watchlist';
+import DeleteAddressModal from 'ui/watchlist/DeleteAddressModal';
 
 const WatchList: React.FC = () => {
   const addressModalProps = useDisclosure();
@@ -41,7 +41,7 @@ const WatchList: React.FC = () => {
   return (
     <Page>
       <Box h="100%">
-        <Box as="h1" textStyle="h2" marginBottom={ 8 }>Watch list</Box>
+        <Heading as="h1" size="lg" marginBottom={ 8 }>Watch list</Heading>
         <Text marginBottom={ 12 }>An email notification can be sent to you when an address on your watch list sends or receives any transactions.</Text>
         { Boolean(watchlist.length) && (
           <WatchlistTable

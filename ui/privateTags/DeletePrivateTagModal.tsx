@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { Text } from '@chakra-ui/react';
-import DeleteModal from '../shared/DeleteModal'
+import DeleteModal from 'ui/shared/DeleteModal'
 
 type Props = {
   isOpen: boolean;

@@ -1,5 +1,6 @@
 import Button from './Button';
 import Form from './Form';
+import Heading from './Heading';
 import Input from './Input';
 import Link from './Link';
 import Modal from './Modal';
@@ -10,6 +11,7 @@ import Tooltip from './Tooltip';
 
 const components = {
   Button,
+  Heading,
   Input,
   Form,
   Link,

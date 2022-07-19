@@ -1,11 +1,11 @@
 import React from 'react';
 import { Box, VStack } from '@chakra-ui/react';
 import MainNavLink from './MainNavLink';
-import BlocksIcon from '../../icons/block.svg'
-import TransactionsIcon from '../../icons/transactions.svg'
-import TokensIcon from '../../icons/token.svg'
-import AppsIcon from '../../icons/apps.svg';
-import BlockscoutIcon from '../../icons/blockscout.svg';
+import BlocksIcon from 'icons/block.svg'
+import TransactionsIcon from 'icons/transactions.svg'
+import TokensIcon from 'icons/token.svg'
+import AppsIcon from 'icons/apps.svg';
+import BlockscoutIcon from 'icons/blockscout.svg';
 
 const navItems = [
   { text: 'Blocks', pathname: '/blocks', icon: BlocksIcon },

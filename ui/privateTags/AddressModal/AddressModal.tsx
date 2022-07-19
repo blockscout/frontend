@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
 
-import type { TPrivateTagsAddressItem } from '../../../data/privateTagsAddress';
+import type { TPrivateTagsAddressItem } from 'data/privateTagsAddress';
 
 import AddressForm from './AddressForm';
-import FormModal from '../../shared/FormModal';
+import FormModal from 'ui/shared/FormModal';
 
 type Props = {
   isOpen: boolean;

@@ -9,10 +9,10 @@ import {
   Tooltip,
 } from '@chakra-ui/react'
 
-import EditButton from '../../shared/EditButton';
-import DeleteButton from '../../shared/DeleteButton';
+import EditButton from 'ui/shared/EditButton';
+import DeleteButton from 'ui/shared/DeleteButton';
 
-import type { TWatchlistItem } from '../../../data/watchlist';
+import type { TWatchlistItem } from 'data/watchlist';
 
 import WatchListAddressItem from './WatchListAddressItem';
 

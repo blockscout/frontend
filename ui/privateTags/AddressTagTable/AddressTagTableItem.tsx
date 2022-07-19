@@ -8,12 +8,12 @@ import {
   Tooltip,
 } from '@chakra-ui/react'
 
-import AddressIcon from '../../shared/AddressIcon';
-import AddressLinkWithTooltip from '../../shared/AddressLinkWithTooltip';
+import AddressIcon from 'ui/shared/AddressIcon';
+import AddressLinkWithTooltip from 'ui/shared/AddressLinkWithTooltip';
 
-import type { TPrivateTagsAddressItem } from '../../../data/privateTagsAddress';
-import EditButton from '../../shared/EditButton';
-import DeleteButton from '../../shared/DeleteButton';
+import type { TPrivateTagsAddressItem } from 'data/privateTagsAddress';
+import EditButton from 'ui/shared/EditButton';
+import DeleteButton from 'ui/shared/DeleteButton';
 
 interface Props {
   item: TPrivateTagsAddressItem;
