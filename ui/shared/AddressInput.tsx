@@ -1,5 +1,5 @@
 import React from 'react'
-import type { ControllerRenderProps } from 'react-hook-form';
+import type { ControllerRenderProps, FieldValues, Path } from 'react-hook-form';
 
 import {
   Input,
@@ -9,14 +9,20 @@ import {
 
 const ADDRESS_LENGTH = 42;
 
-type Props = {
-  field: ControllerRenderProps<any, 'address'>;
+type Props<TInputs extends FieldValues, TInputName extends Path<TInputs>> = {
+  field: ControllerRenderProps<TInputs, TInputName>;
   isInvalid: boolean;
   size?: string;
   placeholder?: string;
 }
 
-const AddressInput: React.FC<Props> = ({ field, isInvalid, size, placeholder = 'Address (0x...)' }) => {
+export default function AddressInput<I extends FieldValues, N extends Path<I>>(
+  {
+    field,
+    isInvalid,
+    size,
+    placeholder = 'Address (0x...)',
+  }: Props<I, N>) {
   return (
     <FormControl variant="floating" id="address" isRequired>
       <Input
@@ -30,5 +36,3 @@ const AddressInput: React.FC<Props> = ({ field, isInvalid, size, placeholder = '
     </FormControl>
   )
 }
-
-export default AddressInput

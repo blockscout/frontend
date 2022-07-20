@@ -43,7 +43,7 @@ const AddressForm: React.FC<Props> = ({ data }) => {
   const onSubmit: SubmitHandler<Inputs> = data => console.log(data);
 
   const renderAddressInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'address'>}) => {
-    return <AddressInput field={ field } isInvalid={ Boolean(errors.address) }/>
+    return <AddressInput<Inputs, 'address'> field={ field } isInvalid={ Boolean(errors.address) }/>
   }, [ errors ]);
 
   const renderTagInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'tag'>}) => {

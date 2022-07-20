@@ -21,7 +21,14 @@ const MAX_INPUTS_NUM = 10;
 
 export default function PublicTagFormAction({ control, index, fieldsLength, hasError, onAddFieldClick, onRemoveFieldClick }: Props) {
   const renderAddressInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, `addresses.${ number }.address`>}) => {
-    return <AddressInput field={ field } isInvalid={ hasError } size="lg" placeholder="Smart contract / Address (0x...)"/>
+    return (
+      <AddressInput<Inputs, `addresses.${ number }.address`>
+        field={ field }
+        isInvalid={ hasError }
+        size="lg"
+        placeholder="Smart contract / Address (0x...)"
+      />
+    )
   }, [ hasError ]);
 
   return (
