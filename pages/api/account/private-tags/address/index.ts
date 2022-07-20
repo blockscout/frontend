@@ -1,18 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import fetch from 'node-fetch';
 
-import getDefaultHeaders from 'pages/api-helpers/getDefaultHeaders';
-import getUrl from 'pages/api-helpers/getUrl';
+import fetch from 'api/utils/fetch';
 
 export default async function handler(_req: NextApiRequest, res: NextApiResponse) {
-  const url = getUrl('/account/v1/user/tags/address');
+  const url = '/account/v1/user/tags/address';
 
   switch (_req.method) {
     case 'GET': {
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: getDefaultHeaders(),
-      })
+      const response = await fetch(url)
       const data = await response.json();
 
       res.status(200).json(data)
@@ -22,7 +17,6 @@ export default async function handler(_req: NextApiRequest, res: NextApiResponse
     case 'POST': {
       const response = await fetch(url, {
         method: 'POST',
-        headers: getDefaultHeaders(),
         body: _req.body,
       })
       const data = await response.json();
