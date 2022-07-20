@@ -7,6 +7,7 @@ import Modal from './Modal';
 import Table from './Table';
 import Tabs from './Tabs';
 import Tag from './Tag';
+import Textarea from './Textarea';
 import Tooltip from './Tooltip';
 
 const components = {
@@ -19,6 +20,7 @@ const components = {
   Tabs,
   Table,
   Tag,
+  Textarea,
   Tooltip,
 }
 

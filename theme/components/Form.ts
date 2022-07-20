@@ -32,6 +32,9 @@ const variantFloating: PartsStyleFunction<typeof parts> = (props: StyleFunctionP
         input: {
           ...activeInputStyles,
         },
+        textarea: {
+          ...activeInputStyles,
+        },
         'label .chakra-form__required-indicator': {
           color: getColor(theme, fc),
         },
@@ -53,24 +56,45 @@ const variantFloating: PartsStyleFunction<typeof parts> = (props: StyleFunctionP
       'input:not(:placeholder-shown) + label': {
         ...activeLabelStyles,
       },
+      'textarea:not(:placeholder-shown) + label': {
+        ...activeLabelStyles,
+      },
       'input[aria-invalid=true] + label': {
+        color: getColor(theme, ec),
+      },
+      'textarea[aria-invalid=true] + label': {
         color: getColor(theme, ec),
       },
       // input's styles
       input: {
         padding: '20px',
       },
+      textarea: {
+        padding: '20px',
+      },
       'input:not(:placeholder-shown)': {
         ...activeInputStyles,
       },
+      'textarea:not(:placeholder-shown)': {
+        ...activeInputStyles,
+      },
       'input[aria-invalid=true]': {
+        borderColor: getColor(theme, ec),
+      },
+      'textarea[aria-invalid=true]': {
         borderColor: getColor(theme, ec),
       },
       // indicator's styles
       'input:not(:placeholder-shown) + label .chakra-form__required-indicator': {
         color: getColor(theme, fc),
       },
+      'textarea:not(:placeholder-shown) + label .chakra-form__required-indicator': {
+        color: getColor(theme, fc),
+      },
       'input[aria-invalid=true] + label .chakra-form__required-indicator': {
+        color: getColor(theme, ec),
+      },
+      'textarea[aria-invalid=true] + label .chakra-form__required-indicator': {
         color: getColor(theme, ec),
       },
     },

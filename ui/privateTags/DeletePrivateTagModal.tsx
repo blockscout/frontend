@@ -26,7 +26,7 @@ const DeletePrivateTagModal: React.FC<Props> = ({ isOpen, onClose, tag }) => {
       onClose={ onClose }
       onDelete={ onDelete }
       title="Removal of private tag"
-      renderText={ renderText }
+      renderContent={ renderText }
     />
   )
 }

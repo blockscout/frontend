@@ -25,7 +25,7 @@ const DeleteAddressModal: React.FC<Props> = ({ isOpen, onClose, name }) => {
       onClose={ onClose }
       onDelete={ onDelete }
       title="Remove API key"
-      renderText={ renderText }
+      renderContent={ renderText }
     />
   )
 }

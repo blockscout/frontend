@@ -12,9 +12,11 @@ const ADDRESS_LENGTH = 42;
 type Props = {
   field: ControllerRenderProps<any, 'address'>;
   isInvalid: boolean;
+  size?: string;
+  placeholder?: string;
 }
 
-const AddressInput: React.FC<Props> = ({ field, isInvalid }) => {
+const AddressInput: React.FC<Props> = ({ field, isInvalid, size, placeholder = 'Address (0x...)' }) => {
   return (
     <FormControl variant="floating" id="address" isRequired>
       <Input
@@ -22,14 +24,9 @@ const AddressInput: React.FC<Props> = ({ field, isInvalid }) => {
         placeholder=" "
         isInvalid={ isInvalid }
         maxLength={ ADDRESS_LENGTH }
-        // TODO: move this to input theme
-        css={{
-          ':-webkit-autofill': { transition: 'background-color 5000s ease-in-out 0s' },
-          ':-webkit-autofill:hover': { transition: 'background-color 5000s ease-in-out 0s' },
-          ':-webkit-autofill:focus': { transition: 'background-color 5000s ease-in-out 0s' },
-        }}
+        size={ size }
       />
-      <FormLabel>Address (0x...)</FormLabel>
+      <FormLabel>{ placeholder }</FormLabel>
     </FormControl>
   )
 }

@@ -41,10 +41,26 @@ const variantIconBlue: SystemStyleFunction = (props) => {
   }
 }
 
+const variantIconBorderBlue: SystemStyleFunction = (props) => {
+  return {
+    color: mode('blue.600', 'blue.300')(props),
+    borderColor: mode('blue.600', 'blue.300')(props),
+    border: '2px solid',
+    _hover: {
+      color: mode('blue.400', 'blue.200')(props),
+      borderColor: mode('blue.400', 'blue.200')(props),
+    },
+    _disabled: {
+      opacity: 0.2,
+    },
+  }
+}
+
 const variants = {
   primary: variantPrimary,
   secondary: variantSecondary,
   iconBlue: variantIconBlue,
+  iconBorderBlue: variantIconBorderBlue,
 }
 
 const Button: ComponentStyleConfig = {
