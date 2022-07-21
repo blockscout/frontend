@@ -53,7 +53,7 @@ export default function PublicTagFormAction({ control, index, fieldsLength, hasE
       ) }
       { fieldsLength > 1 && (
         <IconButton
-          aria-label="add"
+          aria-label="delete"
           variant="iconBorderBlue"
           w="30px"
           h="30px"
