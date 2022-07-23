@@ -16,18 +16,17 @@ type Props<TInputs extends FieldValues, TInputName extends Path<TInputs>> = {
   placeholder?: string;
 }
 
-export default function AddressInput<I extends FieldValues, N extends Path<I>>(
+export default function AddressInput<Inputs extends FieldValues, Name extends Path<Inputs>>(
   {
     field,
     isInvalid,
     size,
     placeholder = 'Address (0x...)',
-  }: Props<I, N>) {
+  }: Props<Inputs, Name>) {
   return (
     <FormControl variant="floating" id="address" isRequired>
       <Input
         { ...field }
-        placeholder=" "
         isInvalid={ isInvalid }
         maxLength={ ADDRESS_LENGTH }
         size={ size }

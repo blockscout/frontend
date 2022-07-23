@@ -11,7 +11,6 @@ import WalletIcon from 'icons/wallet.svg';
 
 const WatchListAddressItem = ({ item }: {item: TWatchlistItem}) => {
   const mainTextColor = useColorModeValue('gray.700', 'gray.50');
-  const secondaryTextColor = useColorModeValue('gray.500', 'gray.400');
 
   return (
     <HStack spacing={ 3 } align="top">
@@ -22,14 +21,14 @@ const WatchListAddressItem = ({ item }: {item: TWatchlistItem}) => {
           <HStack spacing={ 0 } fontSize="sm" h={ 6 }>
             <Image src="./xdai.png" alt="chain-logo" marginRight="10px" w="16px" h="16px"/>
             <Text color={ mainTextColor }>{ `xDAI balance:${ nbsp }` + item.tokenBalance }</Text>
-            <Text color={ secondaryTextColor }>{ `${ nbsp }($${ item.tokenBalanceUSD } USD)` }</Text>
+            <Text variant="secondary">{ `${ nbsp }($${ item.tokenBalanceUSD } USD)` }</Text>
           </HStack>
         ) }
         { item.tokensAmount && (
           <HStack spacing={ 0 } fontSize="sm" h={ 6 }>
             <Icon as={ TokensIcon } marginRight="10px" w="17px" h="16px"/>
             <Text color={ mainTextColor }>{ `Tokens:${ nbsp }` + item.tokensAmount }</Text>
-            <Text color={ secondaryTextColor }>{ `${ nbsp }($${ item.tokensUSD } USD)` }</Text>
+            <Text variant="secondary">{ `${ nbsp }($${ item.tokensUSD } USD)` }</Text>
           </HStack>
         ) }
         { item.totalUSD && (

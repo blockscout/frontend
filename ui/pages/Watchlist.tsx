@@ -41,7 +41,7 @@ const WatchList: React.FC = () => {
   return (
     <Page>
       <Box h="100%">
-        <AccountPageHeader header="Watch list"/>
+        <AccountPageHeader text="Watch list"/>
         <Text marginBottom={ 12 }>An email notification can be sent to you when an address on your watch list sends or receives any transactions.</Text>
         { Boolean(watchlist.length) && (
           <WatchlistTable

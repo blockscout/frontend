@@ -5,7 +5,6 @@ import {
   Td,
   HStack,
   Text,
-  useColorModeValue,
 } from '@chakra-ui/react'
 
 import EditButton from 'ui/shared/EditButton';
@@ -30,7 +29,6 @@ const WatchlistTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
     return onDeleteClick(item);
   }, [ item, onDeleteClick ]);
 
-  const secondaryColor = useColorModeValue('gray.500', 'gray.400');
   return (
     <Tr alignItems="top" key={ item.token }>
       <Td>
@@ -38,7 +36,7 @@ const WatchlistTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
           <Text fontSize="md" fontWeight={ 600 }>{ item.token }</Text>
           <CopyToClipboard text={ item.token }/>
         </HStack>
-        <Text fontSize="sm" marginTop={ 0.5 } color={ secondaryColor }>{ item.name }</Text>
+        <Text fontSize="sm" marginTop={ 0.5 } variant="secondary">{ item.name }</Text>
       </Td>
       <Td>
         <HStack spacing={ 6 }>

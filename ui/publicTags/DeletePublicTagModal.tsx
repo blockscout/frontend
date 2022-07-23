@@ -65,7 +65,6 @@ const DeletePublicTagModal: React.FC<Props> = ({ isOpen, onClose, tags = [], onD
         </Flex>
         <FormControl variant="floating" id="tag-delete">
           <Textarea
-            placeholder=" "
             size="lg"
             value={ reason }
             onChange={ onFieldChange }

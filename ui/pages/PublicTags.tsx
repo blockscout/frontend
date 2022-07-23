@@ -75,7 +75,7 @@ const PublicTags: React.FC = () => {
   return (
     <Page>
       <Box h="100%">
-        <AccountPageHeader header={ header }/>
+        <AccountPageHeader text={ header }/>
         { content }
       </Box>
     </Page>

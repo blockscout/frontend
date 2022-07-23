@@ -76,7 +76,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
 
   return (
     <Box width={ `calc(100% - ${ ADDRESS_INPUT_BUTTONS_WIDTH }px)` } maxWidth="844px">
-      <Text size="sm" color="gray.500" paddingBottom={ 5 }>Company info</Text>
+      <Text size="sm" variant="secondary" paddingBottom={ 5 }>Company info</Text>
       <Grid templateColumns="1fr 1fr" rowGap={ 4 } columnGap={ 5 }>
         <GridItem>
           <PublicTagsFormInput<Inputs> fieldName="userName" control={ control } label={ placeholders.userName } required/>
@@ -94,7 +94,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
       <Box marginTop={ 4 } marginBottom={ 8 }>
         <PublicTagFormAction canReport={ Boolean(data) } control={ control }/>
       </Box>
-      <Text size="sm" color="gray.500" marginBottom={ 5 }>Public tags (2 tags maximum, please use &quot;;&quot; as a divider)</Text>
+      <Text size="sm" variant="secondary" marginBottom={ 5 }>Public tags (2 tags maximum, please use &quot;;&quot; as a divider)</Text>
       <Box marginBottom={ 4 }>
         <PublicTagsFormInput<Inputs> fieldName="tag" control={ control } label={ placeholders.tag } required/>
       </Box>

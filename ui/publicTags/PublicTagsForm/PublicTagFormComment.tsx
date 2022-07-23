@@ -5,7 +5,7 @@ import { Controller } from 'react-hook-form';
 import type { Inputs } from './PublicTagsForm';
 
 interface Props {
-  control: Control<Inputs, object>;
+  control: Control<Inputs>;
 }
 
 export default function PublicTagFormComment({ control }: Props) {
@@ -14,7 +14,6 @@ export default function PublicTagFormComment({ control }: Props) {
       <FormControl variant="floating" id={ field.name }>
         <Textarea
           { ...field }
-          placeholder=" "
           size="lg"
         />
         <FormLabel>Specify the reason for adding tags and color preference(s).</FormLabel>

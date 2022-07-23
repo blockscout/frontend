@@ -14,7 +14,7 @@ const EditButton = ({ onClick }: Props) => {
     <Tooltip label="Edit">
       <IconButton
         aria-label="edit"
-        variant="iconBlue"
+        variant="icon"
         w="30px"
         h="30px"
         onClick={ onClick }

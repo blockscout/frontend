@@ -9,7 +9,7 @@ import PlusIcon from 'icons/plus.svg';
 import MinusIcon from 'icons/minus.svg';
 
 interface Props {
-  control: Control<Inputs, object>;
+  control: Control<Inputs>;
   index: number;
   fieldsLength: number;
   hasError: boolean;
@@ -41,7 +41,7 @@ export default function PublicTagFormAction({ control, index, fieldsLength, hasE
       { index === fieldsLength - 1 && fieldsLength < MAX_INPUTS_NUM && (
         <IconButton
           aria-label="add"
-          variant="iconBorderBlue"
+          variant="iconBorder"
           w="30px"
           h="30px"
           onClick={ onAddFieldClick }
@@ -54,7 +54,7 @@ export default function PublicTagFormAction({ control, index, fieldsLength, hasE
       { fieldsLength > 1 && (
         <IconButton
           aria-label="delete"
-          variant="iconBorderBlue"
+          variant="iconBorder"
           w="30px"
           h="30px"
           onClick={ onRemoveFieldClick(index) }

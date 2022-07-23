@@ -20,7 +20,6 @@ const TagInput: React.FC<Props> = ({ field, isInvalid }) => {
     <FormControl variant="floating" id="tag" isRequired>
       <Input
         { ...field }
-        placeholder=" "
         isInvalid={ isInvalid }
         maxLength={ TAG_MAX_LENGTH }
       />

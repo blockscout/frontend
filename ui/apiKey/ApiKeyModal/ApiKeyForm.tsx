@@ -40,7 +40,6 @@ const ApiKeyForm: React.FC<Props> = ({ data }) => {
       <FormControl variant="floating" id="address" isRequired>
         <Input
           { ...field }
-          placeholder=" "
           disabled={ true }
         />
         <FormLabel>Auto-generated API key token</FormLabel>
@@ -53,7 +52,6 @@ const ApiKeyForm: React.FC<Props> = ({ data }) => {
       <FormControl variant="floating" id="name" isRequired>
         <Input
           { ...field }
-          placeholder=" "
           isInvalid={ Boolean(errors.name) }
           maxLength={ NAME_MAX_LENGTH }
         />

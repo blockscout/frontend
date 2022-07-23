@@ -5,6 +5,8 @@ import { mode } from '@chakra-ui/theme-tools';
 import getDefaultTransitionProps from '../utils/getDefaultTransitionProps';
 import getOutlinedFieldStyles from '../utils/getOutlinedFieldStyles';
 
+import { Input as InputComponent } from '@chakra-ui/react';
+
 const sizes: Record<string, SystemStyleObject> = {
   md: {
     fontSize: 'md',
@@ -55,6 +57,11 @@ const Input: ComponentStyleConfig = {
   variants: {
     outline: variantOutline,
   },
+}
+
+InputComponent.defaultProps = {
+  ...InputComponent.defaultProps,
+  placeholder: ' ',
 }
 
 export default Input;

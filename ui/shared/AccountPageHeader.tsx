@@ -2,9 +2,9 @@ import React from 'react';
 
 import { Heading } from '@chakra-ui/react';
 
-const PageHeader = ({ header }: {header: string}) => {
+const PageHeader = ({ text }: {text: string}) => {
   return (
-    <Heading as="h1" size="lg" marginBottom={ 8 }>{ header }</Heading>
+    <Heading as="h1" size="lg" marginBottom={ 8 }>{ text }</Heading>
   )
 }
 

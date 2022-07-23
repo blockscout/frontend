@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 
-import { Box, Button, HStack, Link, Text, useColorModeValue, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, HStack, Link, Text, useDisclosure } from '@chakra-ui/react';
 
 import Page from 'ui/shared/Page/Page';
 import AccountPageHeader from 'ui/shared/AccountPageHeader';
@@ -42,14 +42,12 @@ const ApiKeys: React.FC = () => {
     deleteModalProps.onClose();
   }, [ deleteModalProps ]);
 
-  const captionColor = useColorModeValue('gray.500', 'gray.400');
-
   const canAdd = apiKey.length < DATA_LIMIT
 
   return (
     <Page>
       <Box h="100%">
-        <AccountPageHeader header="API keys"/>
+        <AccountPageHeader text="API keys"/>
         <Text marginBottom={ 12 }>
           Create API keys to use for your RPC and EthRPC API requests. For more information, see { space }
           <Link href="#">“How to use a Blockscout API key”</Link>.
@@ -72,7 +70,7 @@ const ApiKeys: React.FC = () => {
             Add API key
           </Button>
           { !canAdd && (
-            <Text fontSize="sm" color={ captionColor }>
+            <Text fontSize="sm" variant="secondary">
               { `You have added the maximum number of API keys (${ DATA_LIMIT }). Contact us to request additional keys.` }
             </Text>
           ) }

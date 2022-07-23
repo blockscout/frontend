@@ -22,7 +22,7 @@ const CopyToClipboard = ({ text }: {text: string}) => {
         icon={ <CopyIcon/> }
         w="20px"
         h="20px"
-        variant="iconBlue"
+        variant="icon"
         onClick={ onCopy }
       />
     </Tooltip>

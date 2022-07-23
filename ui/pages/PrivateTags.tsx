@@ -22,7 +22,7 @@ const PrivateTags: React.FC = () => {
   return (
     <Page>
       <Box h="100%">
-        <AccountPageHeader header="Private tags"/>
+        <AccountPageHeader text="Private tags"/>
         <Tabs variant="soft-rounded" colorScheme="blue" isLazy>
           <TabList marginBottom={ 8 }>
             <Tab>Address</Tab>

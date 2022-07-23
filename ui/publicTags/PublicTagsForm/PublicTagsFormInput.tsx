@@ -10,13 +10,12 @@ interface Props<TInputs extends FieldValues> {
   control: Control<TInputs, object>;
 }
 
-export default function PublicTagsFormInput<I extends FieldValues>({ label, control, required, fieldName }: Props<I>) {
-  const renderInput = useCallback(({ field }: {field: ControllerRenderProps<I, typeof fieldName>}) => {
+export default function PublicTagsFormInput<Inputs extends FieldValues>({ label, control, required, fieldName }: Props<Inputs>) {
+  const renderInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, typeof fieldName>}) => {
     return (
       <FormControl variant="floating" id={ field.name } isRequired={ required }>
         <Input
           { ...field }
-          placeholder=" "
           size="lg"
           required={ required }
         />

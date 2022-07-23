@@ -5,7 +5,7 @@ import { Controller } from 'react-hook-form';
 import type { Inputs } from './PublicTagsForm';
 
 interface Props {
-  control: Control<Inputs, object>;
+  control: Control<Inputs>;
   canReport: boolean;
 }
 
