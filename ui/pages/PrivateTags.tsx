@@ -15,6 +15,10 @@ import PrivateAddressTags from 'ui/privateTags/PrivateAddressTags';
 import PrivateTransactionTags from 'ui/privateTags/PrivateTransactionTags';
 
 const PrivateTags: React.FC = () => {
+  React.useEffect(() => {
+    fetch('/api/account/private-tags/address')
+  }, []);
+
   return (
     <Page>
       <Box h="100%">
