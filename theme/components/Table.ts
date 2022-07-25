@@ -33,7 +33,7 @@ const Table: ComponentMultiStyleConfig = {
     th: {
       textTransform: 'none',
       fontFamily: 'body',
-      fontWeight: 'normal',
+      fontWeight: '500',
       overflow: 'hidden',
       color: 'gray.500',
       letterSpacing: 'none',

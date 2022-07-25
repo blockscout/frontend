@@ -1,9 +1,9 @@
 import React, { useCallback, useState } from 'react';
 
-import { Box, Button, Text, useDisclosure, Heading } from '@chakra-ui/react';
+import { Box, Button, Text, useDisclosure } from '@chakra-ui/react';
 
 import Page from 'ui/shared/Page/Page';
-
+import AccountPageHeader from 'ui/shared/AccountPageHeader';
 import WatchlistTable from 'ui/watchlist/WatchlistTable/WatchlistTable';
 import AddressModal from 'ui/watchlist/AddressModal/AddressModal';
 
@@ -41,7 +41,7 @@ const WatchList: React.FC = () => {
   return (
     <Page>
       <Box h="100%">
-        <Heading as="h1" size="lg" marginBottom={ 8 }>Watch list</Heading>
+        <AccountPageHeader text="Watch list"/>
         <Text marginBottom={ 12 }>An email notification can be sent to you when an address on your watch list sends or receives any transactions.</Text>
         { Boolean(watchlist.length) && (
           <WatchlistTable

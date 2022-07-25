@@ -14,7 +14,7 @@ const DeleteButton = ({ onClick }: Props) => {
     <Tooltip label="Delete">
       <IconButton
         aria-label="delete"
-        variant="iconBlue"
+        variant="icon"
         w="30px"
         h="30px"
         onClick={ onClick }

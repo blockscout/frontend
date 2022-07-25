@@ -43,7 +43,7 @@ const AddressForm: React.FC<Props> = ({ data }) => {
   const onSubmit: SubmitHandler<Inputs> = data => console.log(data);
 
   const renderAddressInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'address'>}) => {
-    return <AddressInput field={ field } isInvalid={ Boolean(errors.address) }/>
+    return <AddressInput<Inputs, 'address'> field={ field } isInvalid={ Boolean(errors.address) }/>
   }, [ errors ]);
 
   const renderTagInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'tag'>}) => {
@@ -85,7 +85,7 @@ const AddressForm: React.FC<Props> = ({ data }) => {
           render={ renderTagInput }
         />
       </Box>
-      <Text color="gray.500" fontSize="sm" marginBottom={ 5 }>
+      <Text variant="secondary" fontSize="sm" marginBottom={ 5 }>
         Please select what types of notifications you will receive
       </Text>
       <Box marginBottom={ 8 }>
@@ -102,7 +102,7 @@ const AddressForm: React.FC<Props> = ({ data }) => {
           }) }
         </Grid>
       </Box>
-      <Text color="gray.500" fontSize="sm" marginBottom={ 5 }>Notification methods</Text>
+      <Text variant="secondary" fontSize="sm" marginBottom={ 5 }>Notification methods</Text>
       <Controller
         name="notification"
         control={ control }

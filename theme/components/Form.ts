@@ -5,23 +5,21 @@ import type { StyleFunctionProps, PartsStyleFunction } from '@chakra-ui/theme-to
 import type { Dict } from '@chakra-ui/utils';
 import getDefaultFormColors from '../utils/getDefaultFormColors';
 
+const activeInputStyles = {
+  paddingTop: '30px',
+  paddingBottom: '10px',
+}
+
 const getActiveLabelStyles = (theme: Dict, fc: string) => ({
   color: getColor(theme, fc),
   transform: 'scale(0.75) translateY(-10px)',
-})
-
-const getActiveInputStyles = (theme: Dict, fc: string) => ({
-  paddingTop: '30px',
-  paddingBottom: '10px',
-  borderColor: getColor(theme, fc),
-})
+});
 
 const variantFloating: PartsStyleFunction<typeof parts> = (props: StyleFunctionProps) => {
   const { theme } = props;
   const { focusColor: fc, errorColor: ec } = getDefaultFormColors(props);
 
   const activeLabelStyles = getActiveLabelStyles(theme, fc);
-  const activeInputStyles = getActiveInputStyles(theme, fc);
 
   return {
     container: {
@@ -29,7 +27,7 @@ const variantFloating: PartsStyleFunction<typeof parts> = (props: StyleFunctionP
         label: {
           ...activeLabelStyles,
         },
-        input: {
+        'input, textarea': {
           ...activeInputStyles,
         },
         'label .chakra-form__required-indicator': {
@@ -38,7 +36,6 @@ const variantFloating: PartsStyleFunction<typeof parts> = (props: StyleFunctionP
       },
       // label's styles
       label: {
-        top: '20px',
         left: '22px',
         zIndex: 2,
         position: 'absolute',
@@ -50,27 +47,30 @@ const variantFloating: PartsStyleFunction<typeof parts> = (props: StyleFunctionP
         fontSize: 'md',
         lineHeight: '20px',
       },
-      'input:not(:placeholder-shown) + label': {
+      'input + label': {
+        top: 'calc(50% - 10px);',
+      },
+      'textarea + label': {
+        top: '20px',
+      },
+      'input:not(:placeholder-shown) + label, textarea:not(:placeholder-shown) + label': {
         ...activeLabelStyles,
       },
-      'input[aria-invalid=true] + label': {
+      'input[aria-invalid=true] + label, textarea[aria-invalid=true] + label': {
         color: getColor(theme, ec),
       },
       // input's styles
-      input: {
+      'input, textarea': {
         padding: '20px',
       },
-      'input:not(:placeholder-shown)': {
+      'input:not(:placeholder-shown), textarea:not(:placeholder-shown)': {
         ...activeInputStyles,
       },
-      'input[aria-invalid=true]': {
-        borderColor: getColor(theme, ec),
-      },
       // indicator's styles
-      'input:not(:placeholder-shown) + label .chakra-form__required-indicator': {
+      'input:not(:placeholder-shown) + label .chakra-form__required-indicator, textarea:not(:placeholder-shown) + label .chakra-form__required-indicator': {
         color: getColor(theme, fc),
       },
-      'input[aria-invalid=true] + label .chakra-form__required-indicator': {
+      'input[aria-invalid=true] + label .chakra-form__required-indicator, textarea[aria-invalid=true] + label .chakra-form__required-indicator': {
         color: getColor(theme, ec),
       },
     },

@@ -1,5 +1,5 @@
 import React from 'react'
-import type { ControllerRenderProps } from 'react-hook-form';
+import type { ControllerRenderProps, FieldValues, Path } from 'react-hook-form';
 
 import {
   Input,
@@ -9,29 +9,29 @@ import {
 
 const ADDRESS_LENGTH = 42;
 
-type Props = {
-  field: ControllerRenderProps<any, 'address'>;
+type Props<TInputs extends FieldValues, TInputName extends Path<TInputs>> = {
+  field: ControllerRenderProps<TInputs, TInputName>;
   isInvalid: boolean;
+  size?: string;
+  placeholder?: string;
 }
 
-const AddressInput: React.FC<Props> = ({ field, isInvalid }) => {
+export default function AddressInput<Inputs extends FieldValues, Name extends Path<Inputs>>(
+  {
+    field,
+    isInvalid,
+    size,
+    placeholder = 'Address (0x...)',
+  }: Props<Inputs, Name>) {
   return (
     <FormControl variant="floating" id="address" isRequired>
       <Input
         { ...field }
-        placeholder=" "
         isInvalid={ isInvalid }
         maxLength={ ADDRESS_LENGTH }
-        // TODO: move this to input theme
-        css={{
-          ':-webkit-autofill': { transition: 'background-color 5000s ease-in-out 0s' },
-          ':-webkit-autofill:hover': { transition: 'background-color 5000s ease-in-out 0s' },
-          ':-webkit-autofill:focus': { transition: 'background-color 5000s ease-in-out 0s' },
-        }}
+        size={ size }
       />
-      <FormLabel>Address (0x...)</FormLabel>
+      <FormLabel>{ placeholder }</FormLabel>
     </FormControl>
   )
 }
-
-export default AddressInput

@@ -19,7 +19,6 @@ const AddressInput: React.FC<Props> = ({ field, isInvalid }) => {
     <FormControl variant="floating" id="transaction" isRequired>
       <Input
         { ...field }
-        placeholder=" "
         isInvalid={ isInvalid }
         maxLength={ HASH_LENGTH }
       />

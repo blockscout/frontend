@@ -26,7 +26,7 @@ const DeleteAddressModal: React.FC<Props> = ({ isOpen, onClose, address }) => {
       onClose={ onClose }
       onDelete={ onDelete }
       title="Remove address from watch list"
-      renderText={ renderText }
+      renderContent={ renderText }
     />
   )
 }

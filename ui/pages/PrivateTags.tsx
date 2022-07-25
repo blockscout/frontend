@@ -2,7 +2,6 @@ import React from 'react';
 
 import {
   Box,
-  Heading,
   Tab,
   Tabs,
   TabList,
@@ -11,6 +10,7 @@ import {
 } from '@chakra-ui/react';
 
 import Page from 'ui/shared/Page/Page';
+import AccountPageHeader from 'ui/shared/AccountPageHeader';
 import PrivateAddressTags from 'ui/privateTags/PrivateAddressTags';
 import PrivateTransactionTags from 'ui/privateTags/PrivateTransactionTags';
 
@@ -22,7 +22,7 @@ const PrivateTags: React.FC = () => {
   return (
     <Page>
       <Box h="100%">
-        <Heading as="h1" size="lg" marginBottom={ 8 }>Private tags</Heading>
+        <AccountPageHeader text="Private tags"/>
         <Tabs variant="soft-rounded" colorScheme="blue" isLazy>
           <TabList marginBottom={ 8 }>
             <Tab>Address</Tab>
