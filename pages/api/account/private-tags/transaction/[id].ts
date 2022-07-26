@@ -1,10 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-import fetch from 'pages/api/utils/fetch';
+import fetch from 'api/utils/fetch';
 
 export default async function handler(_req: NextApiRequest, res: NextApiResponse) {
   const { id } = _req.query;
-  const url = `/account/v1/user/tags/address/${ id }`;
+  const url = `/account/v1/user/tags/transaction/${ id }`;
 
   switch (_req.method) {
     case 'DELETE': {

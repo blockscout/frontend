@@ -1,7 +1,7 @@
 export interface AddressTag {
-  addressHash: string;
-  tagName: string;
-  visibilityLevel: boolean;
+  address_hash: string;
+  name: string;
+  id: string;
 }
 
 export type AddressTags = Array<AddressTag>
@@ -35,9 +35,9 @@ export interface Transaction {
 }
 
 export interface TransactionTag {
-  transactionHash: string;
-  tagName: string;
-  visibilityLevel: boolean;
+  transaction_hash: string;
+  name: string;
+  id: string;
 }
 
 export type TransactionTags = Array<TransactionTag>

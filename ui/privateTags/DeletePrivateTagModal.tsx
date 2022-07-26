@@ -1,22 +1,49 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Text } from '@chakra-ui/react';
 import DeleteModal from 'ui/shared/DeleteModal'
+
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+
+import type { AddressTag, TransactionTag } from 'types/api/account';
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  tag?: string;
+  data?: AddressTag | TransactionTag;
+  type: 'address' | 'transaction';
 }
 
-const DeletePrivateTagModal: React.FC<Props> = ({ isOpen, onClose, tag }) => {
+const DeletePrivateTagModal: React.FC<Props> = ({ isOpen, onClose, data, type }) => {
+  const [ pending, setPending ] = useState(false);
+
+  const tag = data?.name;
+  const id = data?.id;
+
+  const queryClient = useQueryClient();
+
+  const { mutate } = useMutation(() => {
+    return fetch(`/api/account/private-tags/${ type }/${ id }`, { method: 'DELETE' })
+  }, {
+    onError: () => {
+      // eslint-disable-next-line no-console
+      console.log('error');
+    },
+    onSuccess: () => {
+      queryClient.refetchQueries([ type ]).then(() => {
+        onClose();
+        setPending(false);
+      });
+    },
+  });
+
   const onDelete = useCallback(() => {
-    // eslint-disable-next-line no-console
-    console.log('delete', tag);
-  }, [ tag ]);
+    setPending(true);
+    mutate()
+  }, [ mutate ]);
 
   const renderText = useCallback(() => {
     return (
-      <Text display="flex">Tag<Text fontWeight="600" whiteSpace="pre">{ ` "${ tag || 'address' }" ` }</Text>will be deleted</Text>
+      <Text display="flex">Tag<Text fontWeight="600" whiteSpace="pre">{ ` "${ tag || 'tag' }" ` }</Text>will be deleted</Text>
     )
   }, [ tag ]);
 
@@ -27,6 +54,7 @@ const DeletePrivateTagModal: React.FC<Props> = ({ isOpen, onClose, tag }) => {
       onDelete={ onDelete }
       title="Removal of private tag"
       renderContent={ renderText }
+      pending={ pending }
     />
   )
 }

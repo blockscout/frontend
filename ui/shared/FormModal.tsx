@@ -16,7 +16,7 @@ interface Props<TData> {
   data?: TData;
   title: string;
   text: string;
-  renderForm: (data?: TData) => JSX.Element;
+  renderForm: () => JSX.Element;
 }
 
 export default function FormModal<TData>({ isOpen, onClose, data, title, text, renderForm }: Props<TData>) {
@@ -32,7 +32,7 @@ export default function FormModal<TData>({ isOpen, onClose, data, title, text, r
               { text }
             </Text>
           ) }
-          { renderForm(data) }
+          { renderForm() }
         </ModalBody>
       </ModalContent>
     </Modal>

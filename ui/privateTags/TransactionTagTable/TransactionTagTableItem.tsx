@@ -13,12 +13,12 @@ import DeleteButton from 'ui/shared/DeleteButton';
 
 import AddressLinkWithTooltip from 'ui/shared/AddressLinkWithTooltip';
 
-import type { TPrivateTagsTransactionItem } from 'data/privateTagsTransaction';
+import type { TransactionTag } from 'types/api/account';
 
 interface Props {
-  item: TPrivateTagsTransactionItem;
-  onEditClick: (data: TPrivateTagsTransactionItem) => void;
-  onDeleteClick: (data: TPrivateTagsTransactionItem) => void;
+  item: TransactionTag;
+  onEditClick: (data: TransactionTag) => void;
+  onDeleteClick: (data: TransactionTag) => void;
 }
 
 const AddressTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
@@ -31,14 +31,14 @@ const AddressTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   }, [ item, onDeleteClick ]);
 
   return (
-    <Tr alignItems="top" key={ item.transaction }>
+    <Tr alignItems="top" key={ item.id }>
       <Td>
-        <AddressLinkWithTooltip address={ item.transaction }/>
+        <AddressLinkWithTooltip address={ item.transaction_hash }/>
       </Td>
       <Td>
-        <Tooltip label={ item.tag }>
+        <Tooltip label={ item.name }>
           <Tag variant="gray" lineHeight="24px">
-            { item.tag }
+            { item.name }
           </Tag>
         </Tooltip>
       </Td>

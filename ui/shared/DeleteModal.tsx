@@ -17,14 +17,14 @@ type Props = {
   onDelete: () => void;
   title: string;
   renderContent: () => JSX.Element;
+  pending?: boolean;
 }
 
-const DeleteModal: React.FC<Props> = ({ isOpen, onClose, onDelete, title, renderContent }) => {
+const DeleteModal: React.FC<Props> = ({ isOpen, onClose, onDelete, title, renderContent, pending }) => {
 
   const onDeleteClick = useCallback(() => {
     onDelete();
-    onClose()
-  }, [ onClose, onDelete ]);
+  }, [ onDelete ]);
 
   return (
     <Modal isOpen={ isOpen } onClose={ onClose } size="md">
@@ -36,7 +36,7 @@ const DeleteModal: React.FC<Props> = ({ isOpen, onClose, onDelete, title, render
           { renderContent() }
         </ModalBody>
         <ModalFooter>
-          <Button variant="primary" size="lg" onClick={ onDeleteClick }>
+          <Button variant="primary" size="lg" onClick={ onDeleteClick } isLoading={ pending }>
               Delete
           </Button>
         </ModalFooter>
