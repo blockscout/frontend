@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-import fetch from 'api/utils/fetch';
+import fetch from 'pages/api/utils/fetch';
 
 export default async function handler(_req: NextApiRequest, res: NextApiResponse) {
   const url = '/account/v1/user/tags/transaction';
