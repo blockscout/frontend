@@ -36,7 +36,14 @@ const DeleteModal: React.FC<Props> = ({ isOpen, onClose, onDelete, title, render
           { renderContent() }
         </ModalBody>
         <ModalFooter>
-          <Button variant="primary" size="lg" onClick={ onDeleteClick } isLoading={ pending }>
+          <Button
+            variant="primary"
+            size="lg"
+            onClick={ onDeleteClick }
+            isLoading={ pending }
+            // FIXME: chackra's button is disabled when isLoading
+            disabled={ false }
+          >
               Delete
           </Button>
         </ModalFooter>
