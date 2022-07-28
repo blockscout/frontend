@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 import fetch from './fetch';
 
-type Methods = 'GET' | 'POST' | 'DELETE';
+type Methods = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 export default function handler<TRes>(getUrl: (_req: NextApiRequest) => string, allowedMethods: Array<Methods>) {
   return async(_req: NextApiRequest, res: NextApiResponse<TRes>) => {
@@ -15,6 +15,13 @@ export default function handler<TRes>(getUrl: (_req: NextApiRequest) => string, 
       const response = await fetch(getUrl(_req), {
         method: 'POST',
         body: _req.body,
+      })
+      const data = await response.json() as TRes;
+
+      res.status(200).json(data)
+    } else if (allowedMethods.includes('PUT') && _req.method === 'PUT') {
+      const response = await fetch(getUrl(_req), {
+        method: 'PUT',
       })
       const data = await response.json() as TRes;
 
