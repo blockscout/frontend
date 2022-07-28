@@ -1,6 +1,8 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
 import { useForm, Controller } from 'react-hook-form';
+
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import {
   Box,
@@ -9,14 +11,14 @@ import {
 
 import AddressInput from 'ui/shared/AddressInput';
 import TagInput from 'ui/shared/TagInput';
-
-import type { TPrivateTagsAddressItem } from 'data/privateTagsAddress';
+import type { AddressTag } from 'types/api/account';
 
 const ADDRESS_LENGTH = 42;
 const TAG_MAX_LENGTH = 35;
 
 type Props = {
-  data?: TPrivateTagsAddressItem;
+  data?: AddressTag;
+  onClose: () => void;
 }
 
 type Inputs = {
@@ -24,16 +26,40 @@ type Inputs = {
   tag: string;
 }
 
-const AddressForm: React.FC<Props> = ({ data }) => {
+const AddressForm: React.FC<Props> = ({ data, onClose }) => {
+  const [ pending, setPending ] = useState(false);
   const { control, handleSubmit, formState: { errors }, setValue } = useForm<Inputs>();
 
   useEffect(() => {
-    setValue('address', data?.address || '');
-    setValue('tag', data?.tag || '');
+    setValue('address', data?.address_hash || '');
+    setValue('tag', data?.name || '');
   }, [ setValue, data ]);
 
-  // eslint-disable-next-line no-console
-  const onSubmit: SubmitHandler<Inputs> = data => console.log(data);
+  const queryClient = useQueryClient();
+
+  const { mutate } = useMutation((formData: Inputs) => {
+    return fetch('/api/account/private-tags/address', { method: 'POST', body: JSON.stringify({
+      name: formData?.tag,
+      address_hash: formData?.address,
+    }) })
+  }, {
+    onError: () => {
+      // eslint-disable-next-line no-console
+      console.log('error');
+    },
+    onSuccess: () => {
+      queryClient.refetchQueries([ 'address' ]).then(() => {
+        onClose();
+        setPending(false);
+      });
+    },
+  });
+
+  const onSubmit: SubmitHandler<Inputs> = (formData) => {
+    setPending(true);
+    // api method for editing is not implemented now!!!
+    mutate(formData);
+  };
 
   const renderAddressInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'address'>}) => {
     return <AddressInput<Inputs, 'address'> field={ field } isInvalid={ Boolean(errors.address) }/>
@@ -72,6 +98,7 @@ const AddressForm: React.FC<Props> = ({ data }) => {
           variant="primary"
           onClick={ handleSubmit(onSubmit) }
           disabled={ Object.keys(errors).length > 0 }
+          isLoading={ pending }
         >
           { data ? 'Save changes' : 'Add tag' }
         </Button>

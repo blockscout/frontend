@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 
-import type { TPrivateTagsTransactionItem } from 'data/privateTagsTransaction';
+import type { TransactionTag } from 'types/api/account';
 
 import TransactionForm from './TransactionForm';
 import FormModal from 'ui/shared/FormModal';
@@ -8,7 +8,7 @@ import FormModal from 'ui/shared/FormModal';
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  data?: TPrivateTagsTransactionItem;
+  data?: TransactionTag;
 }
 
 const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
@@ -16,10 +16,10 @@ const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
   const text = 'Label any transaction with a private transaction tag (up to 35 chars) to customize your explorer experience.'
 
   const renderForm = useCallback(() => {
-    return <TransactionForm data={ data }/>
-  }, [ data ]);
+    return <TransactionForm data={ data } onClose={ onClose }/>
+  }, [ data, onClose ]);
   return (
-    <FormModal<TPrivateTagsTransactionItem>
+    <FormModal<TransactionTag>
       isOpen={ isOpen }
       onClose={ onClose }
       title={ title }

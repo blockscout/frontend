@@ -1,5 +1,7 @@
 import React from 'react';
 
+import type { TransactionTags, TransactionTag } from 'types/api/account';
+
 import {
   Table,
   Thead,
@@ -9,14 +11,12 @@ import {
   TableContainer,
 } from '@chakra-ui/react'
 
-import type { TPrivateTagsTransaction, TPrivateTagsTransactionItem } from 'data/privateTagsTransaction';
-
 import TransactionTagTableItem from './TransactionTagTableItem';
 
 interface Props {
-  data: TPrivateTagsTransaction;
-  onEditClick: (data: TPrivateTagsTransactionItem) => void;
-  onDeleteClick: (data: TPrivateTagsTransactionItem) => void;
+  data: TransactionTags;
+  onEditClick: (data: TransactionTag) => void;
+  onDeleteClick: (data: TransactionTag) => void;
 }
 
 const AddressTagTable = ({ data, onDeleteClick, onEditClick }: Props) => {
@@ -34,7 +34,7 @@ const AddressTagTable = ({ data, onDeleteClick, onEditClick }: Props) => {
           { data.map((item) => (
             <TransactionTagTableItem
               item={ item }
-              key={ item.transaction }
+              key={ item.id }
               onDeleteClick={ onDeleteClick }
               onEditClick={ onEditClick }
             />

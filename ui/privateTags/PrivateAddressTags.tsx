@@ -1,22 +1,24 @@
 import React, { useCallback, useState } from 'react';
 
-import { Box, Button, Text, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, Spinner, Text, useDisclosure } from '@chakra-ui/react';
 
 import AddressTagTable from './AddressTagTable/AddressTagTable';
 import AddressModal from './AddressModal/AddressModal';
-
-import type { TPrivateTagsAddressItem } from 'data/privateTagsAddress';
-import { privateTagsAddress } from 'data/privateTagsAddress';
 import DeletePrivateTagModal from './DeletePrivateTagModal';
+import type { AddressTags, AddressTag } from 'types/api/account';
 
-const PrivateAddressTags: React.FC = () => {
+type Props = {
+  addressTags: AddressTags;
+}
+
+const PrivateAddressTags = ({ addressTags }: Props) => {
   const addressModalProps = useDisclosure();
   const deleteModalProps = useDisclosure();
 
-  const [ addressModalData, setAddressModalData ] = useState<TPrivateTagsAddressItem>();
-  const [ deleteModalData, setDeleteModalData ] = useState<string>();
+  const [ addressModalData, setAddressModalData ] = useState<AddressTag>();
+  const [ deleteModalData, setDeleteModalData ] = useState<AddressTag>();
 
-  const onEditClick = useCallback((data: TPrivateTagsAddressItem) => {
+  const onEditClick = useCallback((data: AddressTag) => {
     setAddressModalData(data);
     addressModalProps.onOpen();
   }, [ addressModalProps ])
@@ -26,8 +28,8 @@ const PrivateAddressTags: React.FC = () => {
     addressModalProps.onClose();
   }, [ addressModalProps ]);
 
-  const onDeleteClick = useCallback((data: TPrivateTagsAddressItem) => {
-    setDeleteModalData(data.tag);
+  const onDeleteClick = useCallback((data: AddressTag) => {
+    setDeleteModalData(data);
     deleteModalProps.onOpen();
   }, [ deleteModalProps ])
 
@@ -42,9 +44,10 @@ const PrivateAddressTags: React.FC = () => {
         Use private transaction tags to label any transactions of interest.
         Private tags are saved in your account and are only visible when you are logged in.
       </Text>
-      { Boolean(privateTagsAddress.length) && (
+      { !addressTags && <Spinner/> }
+      { Boolean(addressTags?.length) && (
         <AddressTagTable
-          data={ privateTagsAddress }
+          data={ addressTags }
           onDeleteClick={ onDeleteClick }
           onEditClick={ onEditClick }
         />
@@ -59,7 +62,12 @@ const PrivateAddressTags: React.FC = () => {
         </Button>
       </Box>
       <AddressModal { ...addressModalProps } onClose={ onAddressModalClose } data={ addressModalData }/>
-      <DeletePrivateTagModal { ...deleteModalProps } onClose={ onDeleteModalClose } tag={ deleteModalData }/>
+      <DeletePrivateTagModal
+        { ...deleteModalProps }
+        onClose={ onDeleteModalClose }
+        data={ deleteModalData }
+        type="address"
+      />
     </>
   );
 };

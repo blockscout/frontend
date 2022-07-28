@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 
-import type { TPrivateTagsAddressItem } from 'data/privateTagsAddress';
+import type { AddressTag } from 'types/api/account';
 
 import AddressForm from './AddressForm';
 import FormModal from 'ui/shared/FormModal';
@@ -8,7 +8,7 @@ import FormModal from 'ui/shared/FormModal';
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  data?: TPrivateTagsAddressItem;
+  data?: AddressTag;
 }
 
 const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
@@ -16,10 +16,10 @@ const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
   const text = 'Label any address with a private address tag (up to 35 chars) to customize your explorer experience.'
 
   const renderForm = useCallback(() => {
-    return <AddressForm data={ data }/>
-  }, [ data ]);
+    return <AddressForm data={ data } onClose={ onClose }/>
+  }, [ data, onClose ]);
   return (
-    <FormModal<TPrivateTagsAddressItem>
+    <FormModal<AddressTag>
       isOpen={ isOpen }
       onClose={ onClose }
       title={ title }

@@ -10,15 +10,15 @@ import {
 import AddressIcon from 'ui/shared/AddressIcon';
 import AddressLinkWithTooltip from 'ui/shared/AddressLinkWithTooltip';
 
-import type { TPrivateTagsAddressItem } from 'data/privateTagsAddress';
+import type { AddressTag } from 'types/api/account';
 import EditButton from 'ui/shared/EditButton';
 import DeleteButton from 'ui/shared/DeleteButton';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 interface Props {
-  item: TPrivateTagsAddressItem;
-  onEditClick: (data: TPrivateTagsAddressItem) => void;
-  onDeleteClick: (data: TPrivateTagsAddressItem) => void;
+  item: AddressTag;
+  onEditClick: (data: AddressTag) => void;
+  onDeleteClick: (data: AddressTag) => void;
 }
 
 const AddressTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
@@ -31,17 +31,17 @@ const AddressTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   }, [ item, onDeleteClick ]);
 
   return (
-    <Tr alignItems="top" key={ item.address }>
+    <Tr alignItems="top" key={ item.id }>
       <Td>
         <HStack spacing={ 4 }>
-          <AddressIcon address={ item.address }/>
-          <AddressLinkWithTooltip address={ item.address }/>
+          <AddressIcon address={ item.address_hash }/>
+          <AddressLinkWithTooltip address={ item.address_hash }/>
         </HStack>
       </Td>
       <Td>
-        <TruncatedTextTooltip label={ item.tag }>
+        <TruncatedTextTooltip label={ item.name }>
           <Tag variant="gray" lineHeight="24px">
-            { item.tag }
+            { item.name }
           </Tag>
         </TruncatedTextTooltip>
       </Td>

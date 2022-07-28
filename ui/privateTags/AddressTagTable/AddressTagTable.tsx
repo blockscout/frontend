@@ -9,14 +9,14 @@ import {
   TableContainer,
 } from '@chakra-ui/react'
 
-import type { TPrivateTagsAddress, TPrivateTagsAddressItem } from 'data/privateTagsAddress';
+import type { AddressTags, AddressTag } from 'types/api/account';
 
 import AddressTagTableItem from './AddressTagTableItem';
 
 interface Props {
-  data: TPrivateTagsAddress;
-  onEditClick: (data: TPrivateTagsAddressItem) => void;
-  onDeleteClick: (data: TPrivateTagsAddressItem) => void;
+  data: AddressTags;
+  onEditClick: (data: AddressTag) => void;
+  onDeleteClick: (data: AddressTag) => void;
 }
 
 const AddressTagTable = ({ data, onDeleteClick, onEditClick }: Props) => {
@@ -31,10 +31,10 @@ const AddressTagTable = ({ data, onDeleteClick, onEditClick }: Props) => {
           </Tr>
         </Thead>
         <Tbody>
-          { data.map((item) => (
+          { data.map((item: AddressTag) => (
             <AddressTagTableItem
               item={ item }
-              key={ item.address }
+              key={ item.id }
               onDeleteClick={ onDeleteClick }
               onEditClick={ onEditClick }
             />

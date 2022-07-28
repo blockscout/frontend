@@ -1,3 +1,6 @@
+// FIXME: here are types of the elixir api's responses
+// and in types/api/ folder we have types of the node api's responses
+// maybe they are always the same and there is no need to keep two separate files with types
 export interface AddressTag {
   address_hash: string;
   name: string;
