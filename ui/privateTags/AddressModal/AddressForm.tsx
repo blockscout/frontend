@@ -38,10 +38,20 @@ const AddressForm: React.FC<Props> = ({ data, onClose }) => {
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation((formData: Inputs) => {
-    return fetch('/api/account/private-tags/address', { method: 'POST', body: JSON.stringify({
+    let mutationFunction;
+    const requestParams = {
       name: formData?.tag,
       address_hash: formData?.address,
-    }) })
+    }
+    if (data) {
+      // edit tag
+      const params = new URLSearchParams(requestParams);
+      mutationFunction = () => fetch(`/api/account/private-tags/address/${ data.id }?${ params.toString() }`, { method: 'PUT' })
+    } else {
+      // add tag
+      mutationFunction = () => fetch('/api/account/private-tags/address', { method: 'POST', body: JSON.stringify(requestParams) })
+    }
+    return mutationFunction();
   }, {
     onError: () => {
       // eslint-disable-next-line no-console
@@ -57,7 +67,6 @@ const AddressForm: React.FC<Props> = ({ data, onClose }) => {
 
   const onSubmit: SubmitHandler<Inputs> = (formData) => {
     setPending(true);
-    // api method for editing is not implemented now!!!
     mutate(formData);
   };
 
