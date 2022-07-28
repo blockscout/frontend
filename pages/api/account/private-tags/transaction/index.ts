@@ -1,33 +1,7 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
+import handler from 'pages/api/utils/handler';
 
-import fetch from 'pages/api/utils/fetch';
+import type { TransactionTags } from 'pages/api/types/account';
 
-export default async function handler(_req: NextApiRequest, res: NextApiResponse) {
-  const url = '/account/v1/user/tags/transaction';
+const transactionHandler = handler<TransactionTags>(() => '/account/v1/user/tags/transaction', [ 'GET', 'POST' ]);
 
-  switch (_req.method) {
-    case 'GET': {
-      const response = await fetch(url)
-      const data = await response.json();
-
-      res.status(200).json(data)
-      break;
-    }
-
-    case 'POST': {
-      const response = await fetch(url, {
-        method: 'POST',
-        body: _req.body,
-      })
-      const data = await response.json();
-
-      res.status(200).json(data)
-      break;
-    }
-
-    default: {
-      res.setHeader('Allow', [ 'GET', 'POST' ])
-      res.status(405).end(`Method ${ _req.method } Not Allowed`)
-    }
-  }
-}
+export default transactionHandler;

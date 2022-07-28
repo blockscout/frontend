@@ -1,26 +1,9 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest } from 'next'
 
-import fetch from 'pages/api/utils/fetch';
+import handler from 'pages/api/utils/handler';
 
-export default async function handler(_req: NextApiRequest, res: NextApiResponse) {
-  const { id } = _req.query;
-  const url = `/account/v1/user/tags/transaction/${ id }`;
+const getUrl = (req: NextApiRequest) => `/account/v1/user/tags/transaction/${ req.query.id }`
 
-  switch (_req.method) {
-    case 'DELETE': {
-      const response = await fetch(url, { method: 'DELETE' });
-      // FIXME: add error handlers
-      if (response.status !== 200) {
-        // eslint-disable-next-line no-console
-        console.log(response.statusText);
-      }
-      res.status(200).end();
-      break;
-    }
+const transactionDeleteHandler = handler(getUrl, [ 'DELETE' ]);
 
-    default: {
-      res.setHeader('Allow', [ 'DELETE' ])
-      res.status(405).end(`Method ${ _req.method } Not Allowed`)
-    }
-  }
-}
+export default transactionDeleteHandler;
