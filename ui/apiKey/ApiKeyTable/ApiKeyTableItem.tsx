@@ -1,17 +1,15 @@
-import React, { useCallback } from 'react';
-
 import {
   Tr,
   Td,
   HStack,
   Text,
-} from '@chakra-ui/react'
-
-import EditButton from 'ui/shared/EditButton';
-import DeleteButton from 'ui/shared/DeleteButton';
+} from '@chakra-ui/react';
+import React, { useCallback } from 'react';
 
 import type { TApiKeyItem } from 'data/apiKey';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import DeleteButton from 'ui/shared/DeleteButton';
+import EditButton from 'ui/shared/EditButton';
 
 interface Props {
   item: TApiKeyItem;
@@ -45,7 +43,7 @@ const WatchlistTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
         </HStack>
       </Td>
     </Tr>
-  )
+  );
 };
 
 export default WatchlistTableItem;

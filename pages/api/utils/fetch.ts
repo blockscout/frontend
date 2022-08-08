@@ -8,11 +8,11 @@ export default function fetch(path: string, init?: RequestInit): Promise<Respons
     accept: 'application/json',
     authorization: `Bearer ${ process.env.API_AUTHORIZATION_TOKEN }`,
     'content-type': 'application/json',
-  }
+  };
   const url = `https://${ process.env.API_HOST }${ process.env.API_BASE_PATH }${ path }`;
 
   return nodeFetch(url, {
     headers,
     ...init,
-  })
+  });
 }

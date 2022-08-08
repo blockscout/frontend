@@ -1,14 +1,13 @@
-import React from 'react';
 import { VStack, HStack, Icon, useColorModeValue } from '@chakra-ui/react';
-
-import AccountNavigation from './AccountNavigation';
-import MainNavigation from './MainNavigation';
-import NavFooter from './NavFooter'
+import React from 'react';
 
 import logoIcon from 'icons/logo.svg';
 import networksIcon from 'icons/networks.svg';
 
 import getDefaultTransitionProps from '../../theme/utils/getDefaultTransitionProps';
+import AccountNavigation from './AccountNavigation';
+import MainNavigation from './MainNavigation';
+import NavFooter from './NavFooter';
 
 const Navigation = () => {
   return (
@@ -42,7 +41,7 @@ const Navigation = () => {
       <AccountNavigation/>
       <NavFooter/>
     </VStack>
-  )
-}
+  );
+};
 
 export default Navigation;

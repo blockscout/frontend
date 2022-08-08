@@ -1,18 +1,16 @@
+import {
+  Box,
+  Button,
+} from '@chakra-ui/react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useCallback, useEffect, useState } from 'react';
 import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
 import { useForm, Controller } from 'react-hook-form';
 
 import type { TransactionTag } from 'types/api/account';
 
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-
-import {
-  Box,
-  Button,
-} from '@chakra-ui/react';
-
-import TransactionInput from 'ui/shared/TransactionInput';
 import TagInput from 'ui/shared/TagInput';
+import TransactionInput from 'ui/shared/TransactionInput';
 
 const HASH_LENGTH = 66;
 const TAG_MAX_LENGTH = 35;
@@ -43,14 +41,14 @@ const TransactionForm: React.FC<Props> = ({ data, onClose }) => {
     const requestParams = {
       name: formData?.tag,
       transaction_hash: formData?.transaction,
-    }
+    };
     if (data) {
       // edit tag
       const params = new URLSearchParams(requestParams);
-      mutationFunction = () => fetch(`/api/account/private-tags/transaction/${ data.id }?${ params.toString() }`, { method: 'PUT' })
+      mutationFunction = () => fetch(`/api/account/private-tags/transaction/${ data.id }?${ params.toString() }`, { method: 'PUT' });
     } else {
       // add tag
-      mutationFunction = () => fetch('/api/account/private-tags/transaction', { method: 'POST', body: JSON.stringify(requestParams) })
+      mutationFunction = () => fetch('/api/account/private-tags/transaction', { method: 'POST', body: JSON.stringify(requestParams) });
     }
     return mutationFunction();
   }, {
@@ -69,15 +67,15 @@ const TransactionForm: React.FC<Props> = ({ data, onClose }) => {
   const onSubmit: SubmitHandler<Inputs> = formData => {
     setPending(true);
     // api method for editing is not implemented now!!!
-    mutate(formData)
-  }
+    mutate(formData);
+  };
 
   const renderTransactionInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'transaction'>}) => {
-    return <TransactionInput field={ field } isInvalid={ Boolean(errors.transaction) }/>
+    return <TransactionInput field={ field } isInvalid={ Boolean(errors.transaction) }/>;
   }, [ errors ]);
 
   const renderTagInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'tag'>}) => {
-    return <TagInput field={ field } isInvalid={ Boolean(errors.tag) }/>
+    return <TagInput field={ field } isInvalid={ Boolean(errors.tag) }/>;
   }, [ errors ]);
 
   return (
@@ -115,7 +113,7 @@ const TransactionForm: React.FC<Props> = ({ data, onClose }) => {
         </Button>
       </Box>
     </>
-  )
-}
+  );
+};
 
 export default TransactionForm;

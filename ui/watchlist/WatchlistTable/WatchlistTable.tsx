@@ -1,5 +1,3 @@
-import React from 'react';
-
 import {
   Table,
   Thead,
@@ -7,7 +5,8 @@ import {
   Tr,
   Th,
   TableContainer,
-} from '@chakra-ui/react'
+} from '@chakra-ui/react';
+import React from 'react';
 
 import type { TWatchlist, TWatchlistItem } from 'data/watchlist';
 

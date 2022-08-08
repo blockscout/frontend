@@ -1,11 +1,11 @@
 import type { inputAnatomy as parts } from '@chakra-ui/anatomy';
+import { Input as InputComponent } from '@chakra-ui/react';
 import type { ComponentStyleConfig } from '@chakra-ui/theme';
 import type { PartsStyleFunction, SystemStyleObject } from '@chakra-ui/theme-tools';
 import { mode } from '@chakra-ui/theme-tools';
+
 import getDefaultTransitionProps from '../utils/getDefaultTransitionProps';
 import getOutlinedFieldStyles from '../utils/getOutlinedFieldStyles';
-
-import { Input as InputComponent } from '@chakra-ui/react';
 
 const sizes: Record<string, SystemStyleObject> = {
   md: {
@@ -24,7 +24,7 @@ const sizes: Record<string, SystemStyleObject> = {
     h: '80px',
     borderRadius: 'base',
   },
-}
+};
 
 const variantOutline: PartsStyleFunction<typeof parts> = (props) => {
   const transitionProps = getDefaultTransitionProps();
@@ -37,8 +37,8 @@ const variantOutline: PartsStyleFunction<typeof parts> = (props) => {
       bg: mode('gray.100', 'whiteAlpha.200')(props),
       ...transitionProps,
     },
-  }
-}
+  };
+};
 
 const Input: ComponentStyleConfig = {
   sizes: {
@@ -57,11 +57,11 @@ const Input: ComponentStyleConfig = {
   variants: {
     outline: variantOutline,
   },
-}
+};
 
 InputComponent.defaultProps = {
   ...InputComponent.defaultProps,
   placeholder: ' ',
-}
+};
 
 export default Input;

@@ -46,6 +46,6 @@ const colors = {
     '800': 'RGBA(16, 17, 18, 0.80)',
     '900': 'RGBA(16, 17, 18, 0.92)',
   },
-}
+};
 
 export default colors;

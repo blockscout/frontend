@@ -7,6 +7,6 @@ const borders = {
     lg: '24px',
     full: '9999px',
   },
-}
+};
 
 export default borders;

@@ -28,6 +28,6 @@ const components = {
   Text,
   Textarea,
   Tooltip,
-}
+};
 
 export default components;

@@ -1,17 +1,14 @@
-import React, { useCallback, useState } from 'react';
-
 import { Box, Button, HStack, Link, Text, useDisclosure } from '@chakra-ui/react';
-
-import Page from 'ui/shared/Page/Page';
-import AccountPageHeader from 'ui/shared/AccountPageHeader';
-import ApiKeyTable from 'ui/apiKey/ApiKeyTable/ApiKeyTable';
-import ApiKeyModal from 'ui/apiKey/ApiKeyModal/ApiKeyModal';
-import DeleteApiKeyModal from 'ui/apiKey/DeleteApiKeyModal';
+import React, { useCallback, useState } from 'react';
 
 import type { TApiKeyItem } from 'data/apiKey';
 import { apiKey } from 'data/apiKey';
-
 import { space } from 'lib/html-entities';
+import ApiKeyModal from 'ui/apiKey/ApiKeyModal/ApiKeyModal';
+import ApiKeyTable from 'ui/apiKey/ApiKeyTable/ApiKeyTable';
+import DeleteApiKeyModal from 'ui/apiKey/DeleteApiKeyModal';
+import AccountPageHeader from 'ui/shared/AccountPageHeader';
+import Page from 'ui/shared/Page/Page';
 
 const DATA_LIMIT = 3;
 
@@ -25,7 +22,7 @@ const ApiKeys: React.FC = () => {
   const onEditClick = useCallback((data: TApiKeyItem) => {
     setApiKeyModalData(data);
     apiKeyModalProps.onOpen();
-  }, [ apiKeyModalProps ])
+  }, [ apiKeyModalProps ]);
 
   const onApiKeyModalClose = useCallback(() => {
     setApiKeyModalData(undefined);
@@ -35,14 +32,14 @@ const ApiKeys: React.FC = () => {
   const onDeleteClick = useCallback((data: TApiKeyItem) => {
     setDeleteModalData(data.name);
     deleteModalProps.onOpen();
-  }, [ deleteModalProps ])
+  }, [ deleteModalProps ]);
 
   const onDeleteModalClose = useCallback(() => {
     setDeleteModalData(undefined);
     deleteModalProps.onClose();
   }, [ deleteModalProps ]);
 
-  const canAdd = apiKey.length < DATA_LIMIT
+  const canAdd = apiKey.length < DATA_LIMIT;
 
   return (
     <Page>
@@ -82,4 +79,4 @@ const ApiKeys: React.FC = () => {
   );
 };
 
-export default ApiKeys
+export default ApiKeys;

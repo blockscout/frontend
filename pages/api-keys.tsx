@@ -1,6 +1,6 @@
-import React from 'react';
 import type { NextPage } from 'next';
-import Head from 'next/head'
+import Head from 'next/head';
+import React from 'react';
 
 import ApiKeys from 'ui/pages/ApiKeys';
 
@@ -11,6 +11,6 @@ const ApiKeysPage: NextPage = () => {
       <ApiKeys/>
     </>
   );
-}
+};
 
-export default ApiKeysPage
+export default ApiKeysPage;

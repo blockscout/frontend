@@ -1,12 +1,13 @@
+import { IconButton, Icon } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 import type { ControllerRenderProps, Control } from 'react-hook-form';
-import { IconButton, Icon } from '@chakra-ui/react';
 import { Controller } from 'react-hook-form';
-import type { Inputs } from './PublicTagsForm';
+
+import MinusIcon from 'icons/minus.svg';
+import PlusIcon from 'icons/plus.svg';
 import AddressInput from 'ui/shared/AddressInput';
 
-import PlusIcon from 'icons/plus.svg';
-import MinusIcon from 'icons/minus.svg';
+import type { Inputs } from './PublicTagsForm';
 
 interface Props {
   control: Control<Inputs>;
@@ -28,7 +29,7 @@ export default function PublicTagFormAction({ control, index, fieldsLength, hasE
         size="lg"
         placeholder="Smart contract / Address (0x...)"
       />
-    )
+    );
   }, [ hasError ]);
 
   return (
@@ -64,5 +65,5 @@ export default function PublicTagFormAction({ control, index, fieldsLength, hasE
           top="25px"
         />
       ) }</>
-  )
+  );
 }

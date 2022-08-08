@@ -1,7 +1,8 @@
+import { FormControl, FormLabel, Textarea } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 import type { ControllerRenderProps, Control } from 'react-hook-form';
-import { FormControl, FormLabel, Textarea } from '@chakra-ui/react';
 import { Controller } from 'react-hook-form';
+
 import type { Inputs } from './PublicTagsForm';
 
 interface Props {
@@ -18,8 +19,8 @@ export default function PublicTagFormComment({ control }: Props) {
         />
         <FormLabel>Specify the reason for adding tags and color preference(s).</FormLabel>
       </FormControl>
-    )
-  }, [])
+    );
+  }, []);
 
   return (
     <Controller
@@ -27,5 +28,5 @@ export default function PublicTagFormComment({ control }: Props) {
       control={ control }
       render={ renderComment }
     />
-  )
+  );
 }

@@ -1,17 +1,16 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
-import { useForm, Controller } from 'react-hook-form';
-
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-
 import {
   Box,
   Button,
 } from '@chakra-ui/react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import React, { useCallback, useEffect, useState } from 'react';
+import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
+
+import type { AddressTag } from 'types/api/account';
 
 import AddressInput from 'ui/shared/AddressInput';
 import TagInput from 'ui/shared/TagInput';
-import type { AddressTag } from 'types/api/account';
 
 const ADDRESS_LENGTH = 42;
 const TAG_MAX_LENGTH = 35;
@@ -42,14 +41,14 @@ const AddressForm: React.FC<Props> = ({ data, onClose }) => {
     const requestParams = {
       name: formData?.tag,
       address_hash: formData?.address,
-    }
+    };
     if (data) {
       // edit tag
       const params = new URLSearchParams(requestParams);
-      mutationFunction = () => fetch(`/api/account/private-tags/address/${ data.id }?${ params.toString() }`, { method: 'PUT' })
+      mutationFunction = () => fetch(`/api/account/private-tags/address/${ data.id }?${ params.toString() }`, { method: 'PUT' });
     } else {
       // add tag
-      mutationFunction = () => fetch('/api/account/private-tags/address', { method: 'POST', body: JSON.stringify(requestParams) })
+      mutationFunction = () => fetch('/api/account/private-tags/address', { method: 'POST', body: JSON.stringify(requestParams) });
     }
     return mutationFunction();
   }, {
@@ -71,11 +70,11 @@ const AddressForm: React.FC<Props> = ({ data, onClose }) => {
   };
 
   const renderAddressInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'address'>}) => {
-    return <AddressInput<Inputs, 'address'> field={ field } isInvalid={ Boolean(errors.address) }/>
+    return <AddressInput<Inputs, 'address'> field={ field } isInvalid={ Boolean(errors.address) }/>;
   }, [ errors ]);
 
   const renderTagInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'tag'>}) => {
-    return <TagInput field={ field } isInvalid={ Boolean(errors.tag) }/>
+    return <TagInput field={ field } isInvalid={ Boolean(errors.tag) }/>;
   }, [ errors ]);
 
   return (
@@ -113,7 +112,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose }) => {
         </Button>
       </Box>
     </>
-  )
-}
+  );
+};
 
 export default AddressForm;

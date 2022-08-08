@@ -2,6 +2,7 @@ import type { tableAnatomy as parts } from '@chakra-ui/anatomy';
 import type { ComponentMultiStyleConfig } from '@chakra-ui/theme';
 import { mode } from '@chakra-ui/theme-tools';
 import type { PartsStyleFunction } from '@chakra-ui/theme-tools';
+
 import getDefaultTransitionProps from '../utils/getDefaultTransitionProps';
 
 const variantSimple: PartsStyleFunction<typeof parts> = (props) => {
@@ -21,8 +22,8 @@ const variantSimple: PartsStyleFunction<typeof parts> = (props) => {
       borderColor: mode('gray.200', 'whiteAlpha.200')(props),
       ...transitionProps,
     },
-  }
-}
+  };
+};
 
 const Table: ComponentMultiStyleConfig = {
   parts: [ 'th', 'td', 'table', 'thead' ],
@@ -65,6 +66,6 @@ const Table: ComponentMultiStyleConfig = {
   variants: {
     simple: variantSimple,
   },
-}
+};
 
 export default Table;

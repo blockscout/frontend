@@ -1,6 +1,7 @@
-import React, { useCallback } from 'react';
 import { Text } from '@chakra-ui/react';
-import DeleteModal from 'ui/shared/DeleteModal'
+import React, { useCallback } from 'react';
+
+import DeleteModal from 'ui/shared/DeleteModal';
 
 type Props = {
   isOpen: boolean;
@@ -17,7 +18,7 @@ const DeleteAddressModal: React.FC<Props> = ({ isOpen, onClose, name }) => {
   const renderText = useCallback(() => {
     return (
       <Text display="flex">API key for<Text fontWeight="600" whiteSpace="pre">{ ` "${ name || 'name' }" ` }</Text>will be deleted</Text>
-    )
+    );
   }, [ name ]);
   return (
     <DeleteModal
@@ -27,7 +28,7 @@ const DeleteAddressModal: React.FC<Props> = ({ isOpen, onClose, name }) => {
       title="Remove API key"
       renderContent={ renderText }
     />
-  )
-}
+  );
+};
 
 export default DeleteAddressModal;

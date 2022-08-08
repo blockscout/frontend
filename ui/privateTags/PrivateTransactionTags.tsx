@@ -1,13 +1,11 @@
-import React, { useCallback, useState } from 'react';
-
 import { Box, Button, Text, useDisclosure } from '@chakra-ui/react';
+import React, { useCallback, useState } from 'react';
 
 import type { TransactionTags, TransactionTag } from 'types/api/account';
 
-import TransactionTagTable from './TransactionTagTable/TransactionTagTable';
-import TransactionModal from './TransactionModal/TransactionModal';
-
 import DeletePrivateTagModal from './DeletePrivateTagModal';
+import TransactionModal from './TransactionModal/TransactionModal';
+import TransactionTagTable from './TransactionTagTable/TransactionTagTable';
 
 type Props = {
   transactionTags: TransactionTags;
@@ -23,7 +21,7 @@ const PrivateTransactionTags = ({ transactionTags }: Props) => {
   const onEditClick = useCallback((data: TransactionTag) => {
     setTransactionModalData(data);
     transactionModalProps.onOpen();
-  }, [ transactionModalProps ])
+  }, [ transactionModalProps ]);
 
   const onAddressModalClose = useCallback(() => {
     setTransactionModalData(undefined);
@@ -33,7 +31,7 @@ const PrivateTransactionTags = ({ transactionTags }: Props) => {
   const onDeleteClick = useCallback((data: TransactionTag) => {
     setDeleteModalData(data);
     deleteModalProps.onOpen();
-  }, [ deleteModalProps ])
+  }, [ deleteModalProps ]);
 
   const onDeleteModalClose = useCallback(() => {
     setDeleteModalData(undefined);
@@ -73,4 +71,4 @@ const PrivateTransactionTags = ({ transactionTags }: Props) => {
   );
 };
 
-export default PrivateTransactionTags
+export default PrivateTransactionTags;

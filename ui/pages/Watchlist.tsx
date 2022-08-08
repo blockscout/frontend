@@ -1,15 +1,13 @@
-import React, { useCallback, useState } from 'react';
-
 import { Box, Button, Text, useDisclosure } from '@chakra-ui/react';
-
-import Page from 'ui/shared/Page/Page';
-import AccountPageHeader from 'ui/shared/AccountPageHeader';
-import WatchlistTable from 'ui/watchlist/WatchlistTable/WatchlistTable';
-import AddressModal from 'ui/watchlist/AddressModal/AddressModal';
+import React, { useCallback, useState } from 'react';
 
 import type { TWatchlistItem } from 'data/watchlist';
 import { watchlist } from 'data/watchlist';
+import AccountPageHeader from 'ui/shared/AccountPageHeader';
+import Page from 'ui/shared/Page/Page';
+import AddressModal from 'ui/watchlist/AddressModal/AddressModal';
 import DeleteAddressModal from 'ui/watchlist/DeleteAddressModal';
+import WatchlistTable from 'ui/watchlist/WatchlistTable/WatchlistTable';
 
 const WatchList: React.FC = () => {
   const addressModalProps = useDisclosure();
@@ -21,7 +19,7 @@ const WatchList: React.FC = () => {
   const onEditClick = useCallback((data: TWatchlistItem) => {
     setAddressModalData(data);
     addressModalProps.onOpen();
-  }, [ addressModalProps ])
+  }, [ addressModalProps ]);
 
   const onAddressModalClose = useCallback(() => {
     setAddressModalData(undefined);
@@ -31,7 +29,7 @@ const WatchList: React.FC = () => {
   const onDeleteClick = useCallback((data: TWatchlistItem) => {
     setDeleteModalData(data.address);
     deleteModalProps.onOpen();
-  }, [ deleteModalProps ])
+  }, [ deleteModalProps ]);
 
   const onDeleteModalClose = useCallback(() => {
     setDeleteModalData(undefined);
@@ -66,4 +64,4 @@ const WatchList: React.FC = () => {
   );
 };
 
-export default WatchList
+export default WatchList;

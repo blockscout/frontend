@@ -1,6 +1,5 @@
-import React, { useCallback } from 'react';
-
 import { Tooltip, IconButton, Icon } from '@chakra-ui/react';
+import React, { useCallback } from 'react';
 
 import DeleteIcon from 'icons/delete.svg';
 
@@ -9,7 +8,7 @@ type Props = {
 }
 
 const DeleteButton = ({ onClick }: Props) => {
-  const onFocusCapture = useCallback((e: React.SyntheticEvent) => e.stopPropagation(), [])
+  const onFocusCapture = useCallback((e: React.SyntheticEvent) => e.stopPropagation(), []);
   return (
     <Tooltip label="Delete">
       <IconButton
@@ -22,7 +21,7 @@ const DeleteButton = ({ onClick }: Props) => {
         onFocusCapture={ onFocusCapture }
       />
     </Tooltip>
-  )
-}
+  );
+};
 
 export default DeleteButton;

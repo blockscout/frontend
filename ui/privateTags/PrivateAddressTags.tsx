@@ -1,11 +1,11 @@
+import { Box, Button, Spinner, Text, useDisclosure } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 
-import { Box, Button, Spinner, Text, useDisclosure } from '@chakra-ui/react';
-
-import AddressTagTable from './AddressTagTable/AddressTagTable';
-import AddressModal from './AddressModal/AddressModal';
-import DeletePrivateTagModal from './DeletePrivateTagModal';
 import type { AddressTags, AddressTag } from 'types/api/account';
+
+import AddressModal from './AddressModal/AddressModal';
+import AddressTagTable from './AddressTagTable/AddressTagTable';
+import DeletePrivateTagModal from './DeletePrivateTagModal';
 
 type Props = {
   addressTags: AddressTags;
@@ -21,7 +21,7 @@ const PrivateAddressTags = ({ addressTags }: Props) => {
   const onEditClick = useCallback((data: AddressTag) => {
     setAddressModalData(data);
     addressModalProps.onOpen();
-  }, [ addressModalProps ])
+  }, [ addressModalProps ]);
 
   const onAddressModalClose = useCallback(() => {
     setAddressModalData(undefined);
@@ -31,7 +31,7 @@ const PrivateAddressTags = ({ addressTags }: Props) => {
   const onDeleteClick = useCallback((data: AddressTag) => {
     setDeleteModalData(data);
     deleteModalProps.onOpen();
-  }, [ deleteModalProps ])
+  }, [ deleteModalProps ]);
 
   const onDeleteModalClose = useCallback(() => {
     setDeleteModalData(undefined);
@@ -72,4 +72,4 @@ const PrivateAddressTags = ({ addressTags }: Props) => {
   );
 };
 
-export default PrivateAddressTags
+export default PrivateAddressTags;

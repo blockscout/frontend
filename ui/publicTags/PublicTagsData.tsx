@@ -3,11 +3,12 @@ import React, { useCallback, useState } from 'react';
 
 import type { TPublicTagItem, TPublicTag } from 'data/publicTags';
 import { publicTags } from 'data/publicTags';
+
+import DeletePublicTagModal from './DeletePublicTagModal';
 import PublicTagTable from './PublicTagTable/PublicTagTable';
-import DeletePublicTagModal from './DeletePublicTagModal'
 
 type Props = {
-  changeToFormScreen: (data?: any) => void;
+  changeToFormScreen: (data?: TPublicTagItem) => void;
   onTagDelete: () => void;
 }
 
@@ -26,7 +27,7 @@ const PublicTagsData = ({ changeToFormScreen, onTagDelete }: Props) => {
 
   const onItemEditClick = useCallback((item: TPublicTagItem) => {
     changeToFormScreen(item);
-  }, [ changeToFormScreen ])
+  }, [ changeToFormScreen ]);
 
   const onItemDeleteClick = useCallback((item: TPublicTagItem) => {
     setDeleteModalData(item.tags);
@@ -58,7 +59,7 @@ const PublicTagsData = ({ changeToFormScreen, onTagDelete }: Props) => {
         onDeleteSuccess={ onTagDelete }
       />
     </>
-  )
-}
+  );
+};
 
 export default PublicTagsData;

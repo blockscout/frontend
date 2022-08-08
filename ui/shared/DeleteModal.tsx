@@ -1,5 +1,3 @@
-import React, { useCallback } from 'react';
-
 import {
   Button,
   Modal,
@@ -10,6 +8,7 @@ import {
   ModalBody,
   ModalCloseButton,
 } from '@chakra-ui/react';
+import React, { useCallback } from 'react';
 
 type Props = {
   isOpen: boolean;
@@ -49,7 +48,7 @@ const DeleteModal: React.FC<Props> = ({ isOpen, onClose, onDelete, title, render
         </ModalFooter>
       </ModalContent>
     </Modal>
-  )
-}
+  );
+};
 
 export default DeleteModal;

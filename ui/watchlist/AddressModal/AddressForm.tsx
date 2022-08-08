@@ -1,7 +1,3 @@
-import React, { useCallback, useEffect } from 'react';
-import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
-import { useForm, Controller } from 'react-hook-form';
-
 import {
   Box,
   Button,
@@ -10,11 +6,13 @@ import {
   Grid,
   GridItem,
 } from '@chakra-ui/react';
-
-import AddressInput from 'ui/shared/AddressInput';
-import TagInput from 'ui/shared/TagInput';
+import React, { useCallback, useEffect } from 'react';
+import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 
 import type { TWatchlistItem } from 'data/watchlist';
+import AddressInput from 'ui/shared/AddressInput';
+import TagInput from 'ui/shared/TagInput';
 
 const NOTIFICATIONS = [ 'xDAI', 'ERC-20', 'ERC-721, ERC-1155 (NFT)' ];
 const ADDRESS_LENGTH = 42;
@@ -43,11 +41,11 @@ const AddressForm: React.FC<Props> = ({ data }) => {
   const onSubmit: SubmitHandler<Inputs> = data => console.log(data);
 
   const renderAddressInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'address'>}) => {
-    return <AddressInput<Inputs, 'address'> field={ field } isInvalid={ Boolean(errors.address) }/>
+    return <AddressInput<Inputs, 'address'> field={ field } isInvalid={ Boolean(errors.address) }/>;
   }, [ errors ]);
 
   const renderTagInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'tag'>}) => {
-    return <TagInput field={ field } isInvalid={ Boolean(errors.tag) }/>
+    return <TagInput field={ field } isInvalid={ Boolean(errors.tag) }/>;
   }, [ errors ]);
 
   const renderCheckbox = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'notification'>}) => (
@@ -98,7 +96,7 @@ const AddressForm: React.FC<Props> = ({ data }) => {
                 <GridItem><Checkbox colorScheme="blue" size="lg">Incoming</Checkbox></GridItem>
                 <GridItem><Checkbox colorScheme="blue" size="lg">Outgoing</Checkbox></GridItem>
               </React.Fragment>
-            )
+            );
           }) }
         </Grid>
       </Box>
@@ -119,7 +117,7 @@ const AddressForm: React.FC<Props> = ({ data }) => {
         </Button>
       </Box>
     </>
-  )
-}
+  );
+};
 
 export default AddressForm;

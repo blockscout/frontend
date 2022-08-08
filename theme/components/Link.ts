@@ -1,11 +1,12 @@
 import type { ComponentStyleConfig } from '@chakra-ui/theme';
 import { mode } from '@chakra-ui/theme-tools';
 import type { SystemStyleFunction, SystemStyleInterpolation } from '@chakra-ui/theme-tools';
+
 import getDefaultTransitionProps from '../utils/getDefaultTransitionProps';
 
 const baseStyle: SystemStyleInterpolation = {
   ...getDefaultTransitionProps(),
-}
+};
 
 const variantPrimary: SystemStyleFunction = (props) => {
   return {
@@ -13,8 +14,8 @@ const variantPrimary: SystemStyleFunction = (props) => {
     _hover: {
       color: mode('blue.400', 'blue.200')(props),
     },
-  }
-}
+  };
+};
 
 const variantSecondary: SystemStyleFunction = (props) => {
   return {
@@ -22,22 +23,22 @@ const variantSecondary: SystemStyleFunction = (props) => {
     _hover: {
       color: mode('gray.600', 'gray.400')(props),
     },
-  }
-}
+  };
+};
 
 const variants = {
   primary: variantPrimary,
   secondary: variantSecondary,
-}
+};
 
 const defaultProps = {
   variant: 'primary',
-}
+};
 
 const Link: ComponentStyleConfig = {
   variants,
   defaultProps,
   baseStyle,
-}
+};
 
 export default Link;

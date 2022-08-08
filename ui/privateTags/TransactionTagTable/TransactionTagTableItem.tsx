@@ -1,19 +1,17 @@
-import React, { useCallback } from 'react';
-
 import {
   Tag,
   Tr,
   Td,
   HStack,
   Tooltip,
-} from '@chakra-ui/react'
-
-import EditButton from 'ui/shared/EditButton';
-import DeleteButton from 'ui/shared/DeleteButton';
-
-import AddressLinkWithTooltip from 'ui/shared/AddressLinkWithTooltip';
+} from '@chakra-ui/react';
+import React, { useCallback } from 'react';
 
 import type { TransactionTag } from 'types/api/account';
+
+import AddressLinkWithTooltip from 'ui/shared/AddressLinkWithTooltip';
+import DeleteButton from 'ui/shared/DeleteButton';
+import EditButton from 'ui/shared/EditButton';
 
 interface Props {
   item: TransactionTag;
@@ -49,7 +47,7 @@ const AddressTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
         </HStack>
       </Td>
     </Tr>
-  )
+  );
 };
 
 export default AddressTagTableItem;

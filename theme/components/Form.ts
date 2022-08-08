@@ -3,12 +3,13 @@ import type { ComponentStyleConfig } from '@chakra-ui/theme';
 import { getColor, mode } from '@chakra-ui/theme-tools';
 import type { StyleFunctionProps, PartsStyleFunction } from '@chakra-ui/theme-tools';
 import type { Dict } from '@chakra-ui/utils';
+
 import getDefaultFormColors from '../utils/getDefaultFormColors';
 
 const activeInputStyles = {
   paddingTop: '30px',
   paddingBottom: '10px',
-}
+};
 
 const getActiveLabelStyles = (theme: Dict, fc: string) => ({
   color: getColor(theme, fc),
@@ -78,13 +79,13 @@ const variantFloating: PartsStyleFunction<typeof parts> = (props: StyleFunctionP
       marginStart: 0,
       color: mode('gray.500', 'whiteAlpha.400')(props),
     },
-  }
-}
+  };
+};
 
 const Form: ComponentStyleConfig = {
   variants: {
     floating: variantFloating,
   },
-}
+};
 
 export default Form;

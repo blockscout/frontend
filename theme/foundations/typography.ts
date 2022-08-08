@@ -21,6 +21,6 @@ const typography = {
       fontFamily: 'heading',
     },
   },
-}
+};
 
 export default typography;

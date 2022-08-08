@@ -1,6 +1,5 @@
-import React from 'react';
-
 import { HStack, Link } from '@chakra-ui/react';
+import React from 'react';
 
 import AddressWithDots from './AddressWithDots';
 import CopyToClipboard from './CopyToClipboard';
@@ -20,7 +19,7 @@ const AddressLinkWithTooltip = ({ address }: {address: string}) => {
       </Link>
       <CopyToClipboard text={ address }/>
     </HStack>
-  )
-}
+  );
+};
 
 export default React.memo(AddressLinkWithTooltip);

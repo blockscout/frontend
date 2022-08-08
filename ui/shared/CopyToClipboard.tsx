@@ -1,6 +1,6 @@
+import { IconButton, Tooltip, useClipboard } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 
-import { IconButton, Tooltip, useClipboard } from '@chakra-ui/react';
 import CopyIcon from 'icons/copy.svg';
 
 const CopyToClipboard = ({ text }: {text: string}) => {
@@ -27,6 +27,6 @@ const CopyToClipboard = ({ text }: {text: string}) => {
       />
     </Tooltip>
   );
-}
+};
 
 export default CopyToClipboard;

@@ -1,8 +1,7 @@
-import React, { useCallback, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import type { NextPage } from 'next';
-import Head from 'next/head'
-
-import { useQuery } from '@tanstack/react-query'
+import Head from 'next/head';
+import React, { useCallback, useState } from 'react';
 
 import PrivateTags from 'ui/pages/PrivateTags';
 
@@ -20,20 +19,20 @@ const PrivateTagsPage: NextPage = () => {
   // FIXME: request data only for active tab and only once
   // don't refetch after tab change
   useQuery([ 'address' ], async() => {
-    const response = await fetch('/api/account/private-tags/address')
+    const response = await fetch('/api/account/private-tags/address');
     if (!response.ok) {
-      throw new Error('Network response was not ok')
+      throw new Error('Network response was not ok');
     }
-    return response.json()
-  })
+    return response.json();
+  });
 
   useQuery([ 'transaction' ], async() => {
-    const response = await fetch('/api/account/private-tags/transaction')
+    const response = await fetch('/api/account/private-tags/transaction');
     if (!response.ok) {
-      throw new Error('Network response was not ok')
+      throw new Error('Network response was not ok');
     }
-    return response.json()
-  })
+    return response.json();
+  });
 
   return (
     <>
@@ -41,6 +40,6 @@ const PrivateTagsPage: NextPage = () => {
       <PrivateTags onChangeTab={ onChangeTab }/>
     </>
   );
-}
+};
 
 export default PrivateTagsPage;

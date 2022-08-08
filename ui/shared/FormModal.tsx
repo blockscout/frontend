@@ -1,5 +1,3 @@
-import React from 'react';
-
 import {
   Modal,
   ModalOverlay,
@@ -9,6 +7,7 @@ import {
   ModalCloseButton,
   Text,
 } from '@chakra-ui/react';
+import React from 'react';
 
 interface Props<TData> {
   isOpen: boolean;
@@ -36,5 +35,5 @@ export default function FormModal<TData>({ isOpen, onClose, data, title, text, r
         </ModalBody>
       </ModalContent>
     </Modal>
-  )
+  );
 }

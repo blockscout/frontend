@@ -1,8 +1,3 @@
-import React, { useCallback } from 'react';
-import { useQueryClient } from '@tanstack/react-query'
-
-import type { AddressTags, TransactionTags } from 'types/api/account';
-
 import {
   Box,
   Tab,
@@ -11,11 +6,15 @@ import {
   TabPanel,
   TabPanels,
 } from '@chakra-ui/react';
+import { useQueryClient } from '@tanstack/react-query';
+import React, { useCallback } from 'react';
 
-import Page from 'ui/shared/Page/Page';
-import AccountPageHeader from 'ui/shared/AccountPageHeader';
+import type { AddressTags, TransactionTags } from 'types/api/account';
+
 import PrivateAddressTags from 'ui/privateTags/PrivateAddressTags';
 import PrivateTransactionTags from 'ui/privateTags/PrivateTransactionTags';
+import AccountPageHeader from 'ui/shared/AccountPageHeader';
+import Page from 'ui/shared/Page/Page';
 
 type Props = {
   onChangeTab: (index: number) => void;
@@ -28,7 +27,7 @@ const PrivateTags = ({ onChangeTab: onChangeTabProps }: Props) => {
 
   const onTabChange = useCallback((index: number) => {
     onChangeTabProps(index);
-  }, [ onChangeTabProps ])
+  }, [ onChangeTabProps ]);
 
   return (
     <Page>
@@ -53,4 +52,4 @@ const PrivateTags = ({ onChangeTab: onChangeTabProps }: Props) => {
   );
 };
 
-export default PrivateTags
+export default PrivateTags;

@@ -7,16 +7,15 @@ import {
   HStack,
 } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
-
-import type { TPublicTagItem, TPublicTag, TPublicTagAddress } from 'data/publicTags';
-
 import type { Path } from 'react-hook-form';
 import { useForm, useFieldArray } from 'react-hook-form';
 
+import type { TPublicTagItem, TPublicTag, TPublicTagAddress } from 'data/publicTags';
+
 import PublicTagFormAction from './PublicTagFormAction';
+import PublicTagFormAddressInput from './PublicTagFormAddressInput';
 import PublicTagFormComment from './PublicTagFormComment';
 import PublicTagsFormInput from './PublicTagsFormInput';
-import PublicTagFormAddressInput from './PublicTagFormAddressInput';
 
 type Props = {
   changeToDataScreen: (success?: boolean) => void;
@@ -110,7 +109,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
               onRemoveFieldClick={ onRemoveFieldClick }
             />
           </Box>
-        )
+        );
       }) }
       <Box marginBottom={ 8 }>
         <PublicTagFormComment control={ control }/>
@@ -133,7 +132,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
         </Button>
       </HStack>
     </Box>
-  )
-}
+  );
+};
 
 export default PublicTagsForm;

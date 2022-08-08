@@ -1,6 +1,7 @@
-import React, { useCallback } from 'react';
 import { Text } from '@chakra-ui/react';
-import DeleteModal from 'ui/shared/DeleteModal'
+import React, { useCallback } from 'react';
+
+import DeleteModal from 'ui/shared/DeleteModal';
 
 type Props = {
   isOpen: boolean;
@@ -17,7 +18,7 @@ const DeleteAddressModal: React.FC<Props> = ({ isOpen, onClose, address }) => {
   const renderText = useCallback(() => {
     return (
       <Text display="flex">Address <Text fontWeight="600" whiteSpace="pre"> { address || 'address' } </Text>   will be deleted</Text>
-    )
+    );
   }, [ address ]);
 
   return (
@@ -28,7 +29,7 @@ const DeleteAddressModal: React.FC<Props> = ({ isOpen, onClose, address }) => {
       title="Remove address from watch list"
       renderContent={ renderText }
     />
-  )
-}
+  );
+};
 
 export default DeleteAddressModal;

@@ -1,19 +1,18 @@
+import { VStack, Text, HStack, Icon, Link, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
-import { VStack, Text, HStack, Icon, Link, useColorModeValue } from '@chakra-ui/react';
-
-import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 import ghIcon from 'icons/social/git.svg';
-import twIcon from 'icons/social/tweet.svg';
-import tgIcon from 'icons/social/telega.svg';
 import statsIcon from 'icons/social/stats.svg';
+import tgIcon from 'icons/social/telega.svg';
+import twIcon from 'icons/social/tweet.svg';
+import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 
 const SOCIAL_LINKS = [
   { link: '#gh', icon: ghIcon },
   { link: '#tw', icon: twIcon },
   { link: '#tg', icon: tgIcon },
   { link: '#stats', icon: statsIcon },
-]
+];
 
 const NavFooter = () => {
   return (
@@ -35,7 +34,7 @@ const NavFooter = () => {
             <Link href={ sl.link } key={ sl.link } variant="secondary">
               <Icon as={ sl.icon } boxSize={ 5 }/>
             </Link>
-          )
+          );
         }) }
       </HStack>
       <Text>
@@ -43,7 +42,7 @@ const NavFooter = () => {
       </Text>
       <Text>Version: <Link color="blue.500">v4.2.1-beta</Link></Text>
     </VStack>
-  )
-}
+  );
+};
 
 export default NavFooter;

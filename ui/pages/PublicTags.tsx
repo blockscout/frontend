@@ -1,15 +1,15 @@
-import React, { useCallback, useState } from 'react';
-import { animateScroll } from 'react-scroll';
-
 import {
   Box,
   useToast,
 } from '@chakra-ui/react';
+import React, { useCallback, useState } from 'react';
+import { animateScroll } from 'react-scroll';
 
-import Page from 'ui/shared/Page/Page';
-import AccountPageHeader from 'ui/shared/AccountPageHeader';
+import type { TPublicTagItem } from 'data/publicTags';
 import PublicTagsData from 'ui/publicTags/PublicTagsData';
 import PublicTagsForm from 'ui/publicTags/PublicTagsForm/PublicTagsForm';
+import AccountPageHeader from 'ui/shared/AccountPageHeader';
+import Page from 'ui/shared/Page/Page';
 
 type TScreen = 'data' | 'form';
 
@@ -22,9 +22,9 @@ const toastDescriptions = {
 
 const PublicTags: React.FC = () => {
   const [ screen, setScreen ] = useState<TScreen>('data');
-  const [ formData, setFormData ] = useState();
+  const [ formData, setFormData ] = useState<TPublicTagItem>();
 
-  const toast = useToast()
+  const toast = useToast();
 
   const showToast = useCallback((action: TToastAction) => {
     toast({
@@ -39,7 +39,7 @@ const PublicTags: React.FC = () => {
     });
   }, [ toast ]);
 
-  const changeToFormScreen = useCallback((data: any) => {
+  const changeToFormScreen = useCallback((data?: TPublicTagItem) => {
     setFormData(data);
     setScreen('form');
     animateScroll.scrollToTop({
@@ -65,10 +65,10 @@ const PublicTags: React.FC = () => {
   let header;
 
   if (screen === 'data') {
-    content = <PublicTagsData changeToFormScreen={ changeToFormScreen } onTagDelete={ onTagDelete }/>
-    header = 'Public tags'
+    content = <PublicTagsData changeToFormScreen={ changeToFormScreen } onTagDelete={ onTagDelete }/>;
+    header = 'Public tags';
   } else {
-    content = <PublicTagsForm changeToDataScreen={ changeToDataScreen } data={ formData }/>
+    content = <PublicTagsForm changeToDataScreen={ changeToDataScreen } data={ formData }/>;
     header = formData ? 'Request to edit a public tag/label' : 'Request a public tag/label';
   }
 
