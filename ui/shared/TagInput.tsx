@@ -8,12 +8,12 @@ import type { ControllerRenderProps, FieldValues } from 'react-hook-form';
 
 const TAG_MAX_LENGTH = 35;
 
-type Props = {
-  field: ControllerRenderProps<FieldValues, 'tag'>;
+type Props<Field> = {
+  field: Field;
   isInvalid: boolean;
 }
 
-const TagInput: React.FC<Props> = ({ field, isInvalid }) => {
+function TagInput<Field extends Partial<ControllerRenderProps<FieldValues, 'tag'>>>({ field, isInvalid }: Props<Field>) {
   return (
     <FormControl variant="floating" id="tag" isRequired>
       <Input
@@ -24,6 +24,6 @@ const TagInput: React.FC<Props> = ({ field, isInvalid }) => {
       <FormLabel>Private tag (max 35 characters)</FormLabel>
     </FormControl>
   );
-};
+}
 
 export default TagInput;
