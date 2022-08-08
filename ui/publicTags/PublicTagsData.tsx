@@ -7,7 +7,7 @@ import PublicTagTable from './PublicTagTable/PublicTagTable';
 import DeletePublicTagModal from './DeletePublicTagModal'
 
 type Props = {
-  changeToFormScreen: (data?: any) => void;
+  changeToFormScreen: (data?: TPublicTagItem) => void;
   onTagDelete: () => void;
 }
 

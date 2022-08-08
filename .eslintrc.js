@@ -104,6 +104,7 @@ module.exports = {
     '@typescript-eslint/no-use-before-define': 'off',
     '@typescript-eslint/no-useless-constructor': [ 'error' ],
     '@typescript-eslint/type-annotation-spacing': 'error',
+    '@typescript-eslint/no-explicit-any': [ 'error', { ignoreRestArgs: true } ],
 
     // отключены в пользу @typescript-eslint
     'brace-style': 'off',

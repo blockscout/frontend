@@ -1,5 +1,5 @@
 import React from 'react'
-import type { ControllerRenderProps } from 'react-hook-form';
+import type { ControllerRenderProps, FieldValues } from 'react-hook-form';
 
 import {
   Input,
@@ -10,7 +10,7 @@ import {
 const HASH_LENGTH = 66;
 
 type Props = {
-  field: ControllerRenderProps<any, 'transaction'>;
+  field: ControllerRenderProps<FieldValues, 'transaction'>;
   isInvalid: boolean;
 }
 

@@ -11,6 +11,8 @@ import AccountPageHeader from 'ui/shared/AccountPageHeader';
 import PublicTagsData from 'ui/publicTags/PublicTagsData';
 import PublicTagsForm from 'ui/publicTags/PublicTagsForm/PublicTagsForm';
 
+import type { TPublicTagItem } from 'data/publicTags';
+
 type TScreen = 'data' | 'form';
 
 type TToastAction = 'added' | 'removed';
@@ -22,7 +24,7 @@ const toastDescriptions = {
 
 const PublicTags: React.FC = () => {
   const [ screen, setScreen ] = useState<TScreen>('data');
-  const [ formData, setFormData ] = useState();
+  const [ formData, setFormData ] = useState<TPublicTagItem>();
 
   const toast = useToast()
 
@@ -39,7 +41,7 @@ const PublicTags: React.FC = () => {
     });
   }, [ toast ]);
 
-  const changeToFormScreen = useCallback((data: any) => {
+  const changeToFormScreen = useCallback((data?: TPublicTagItem) => {
     setFormData(data);
     setScreen('form');
     animateScroll.scrollToTop({

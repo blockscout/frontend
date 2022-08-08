@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { ControllerRenderProps } from 'react-hook-form';
+import type { ControllerRenderProps, FieldValues } from 'react-hook-form';
 
 import {
   Input,
@@ -11,7 +11,7 @@ import {
 const TAG_MAX_LENGTH = 35;
 
 type Props = {
-  field: ControllerRenderProps<any, 'tag'>;
+  field: ControllerRenderProps<FieldValues, 'tag'>;
   isInvalid: boolean;
 }
 
