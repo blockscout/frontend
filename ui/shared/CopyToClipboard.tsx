@@ -27,6 +27,6 @@ const CopyToClipboard = ({ text }: {text: string}) => {
       />
     </Tooltip>
   );
-}
+};
 
 export default CopyToClipboard;

@@ -1,6 +1,6 @@
 import type {
   SystemStyleObject,
-} from '@chakra-ui/theme-tools'
+} from '@chakra-ui/theme-tools';
 
 import type { ComponentStyleConfig } from '@chakra-ui/theme';
 import getOutlinedFieldStyles from '../utils/getOutlinedFieldStyles';
@@ -16,7 +16,7 @@ const sizes: Record<string, SystemStyleObject> = {
     h: '160px',
     borderRadius: 'base',
   },
-}
+};
 
 const Textarea: ComponentStyleConfig = {
   sizes,
@@ -27,11 +27,11 @@ const Textarea: ComponentStyleConfig = {
     size: 'md',
     variant: 'outline',
   },
-}
+};
 
 TextareaComponent.defaultProps = {
   ...TextareaComponent.defaultProps,
   placeholder: ' ',
-}
+};
 
 export default Textarea;

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, Icon, Text, HStack } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import { ChevronRightIcon } from '@chakra-ui/icons'
+import { ChevronRightIcon } from '@chakra-ui/icons';
 import useColors from './useColors';
 
 interface Props {
@@ -39,7 +39,7 @@ const MainNavLink = ({ text, pathname, icon }: Props) => {
         </HStack>
       </Link>
     </NextLink>
-  )
-}
+  );
+};
 
 export default MainNavLink;

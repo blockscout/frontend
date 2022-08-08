@@ -5,8 +5,8 @@ const Tooltip: ComponentStyleConfig = {
   baseStyle: {
     maxWidth: 'unset',
   },
-}
+};
 
-TooltipComponent.defaultProps = { ...TooltipComponent.defaultProps, hasArrow: true }
+TooltipComponent.defaultProps = { ...TooltipComponent.defaultProps, hasArrow: true };
 
 export default Tooltip;

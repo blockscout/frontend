@@ -7,6 +7,6 @@ const global = (props: StyleFunctionProps) => ({
     bg: mode('white', 'black')(props),
     ...getDefaultTransitionProps(),
   },
-})
+});
 
 export default global;

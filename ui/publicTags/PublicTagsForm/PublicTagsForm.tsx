@@ -110,7 +110,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
               onRemoveFieldClick={ onRemoveFieldClick }
             />
           </Box>
-        )
+        );
       }) }
       <Box marginBottom={ 8 }>
         <PublicTagFormComment control={ control }/>
@@ -133,7 +133,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
         </Button>
       </HStack>
     </Box>
-  )
-}
+  );
+};
 
 export default PublicTagsForm;

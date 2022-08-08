@@ -35,7 +35,7 @@ const AccountNavLink = ({ text, pathname, icon }: Props) => {
         </HStack>
       </Link>
     </NextLink>
-  )
-}
+  );
+};
 
 export default AccountNavLink;

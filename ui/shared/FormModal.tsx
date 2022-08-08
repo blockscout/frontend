@@ -36,5 +36,5 @@ export default function FormModal<TData>({ isOpen, onClose, data, title, text, r
         </ModalBody>
       </ModalContent>
     </Modal>
-  )
+  );
 }

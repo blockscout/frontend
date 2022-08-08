@@ -9,7 +9,7 @@
 // so i did it with js
 
 import React, { useCallback, useEffect, useRef } from 'react';
-import { Tooltip } from '@chakra-ui/react'
+import { Tooltip } from '@chakra-ui/react';
 import _debounce from 'lodash/debounce';
 import type { FontFace } from 'use-font-face-observer';
 import useFontFaceObserver from 'use-font-face-observer';
@@ -65,13 +65,13 @@ const AddressWithDots = ({ address, fontWeight }: {address: string; fontWeight: 
   // that's why there are separate useEffect hooks
   useEffect(() => {
     calculateString();
-  }, [ calculateString, isFontFaceLoaded ])
+  }, [ calculateString, isFontFaceLoaded ]);
 
   useEffect(() => {
-    const resizeHandler = _debounce(calculateString, 50)
-    window.addEventListener('resize', resizeHandler)
+    const resizeHandler = _debounce(calculateString, 50);
+    window.addEventListener('resize', resizeHandler);
     return function cleanup() {
-      window.removeEventListener('resize', resizeHandler)
+      window.removeEventListener('resize', resizeHandler);
     };
   }, [ calculateString ]);
 
@@ -81,11 +81,11 @@ const AddressWithDots = ({ address, fontWeight }: {address: string; fontWeight: 
   if (isTruncated) {
     return (
       <Tooltip label={ address }>{ content }</Tooltip>
-    )
+    );
   }
 
   return content;
-}
+};
 
 function getWidth(el: HTMLElement) {
   return el.getBoundingClientRect().width;

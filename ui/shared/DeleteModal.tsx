@@ -49,7 +49,7 @@ const DeleteModal: React.FC<Props> = ({ isOpen, onClose, onDelete, title, render
         </ModalFooter>
       </ModalContent>
     </Modal>
-  )
-}
+  );
+};
 
 export default DeleteModal;

@@ -178,6 +178,7 @@ module.exports = {
     'space-unary-ops': 'off',
     'template-curly-spacing': [ 'error', 'always' ],
     'wrap-iife': [ 'error', 'inside' ],
+    semi: [ 'error', 'always' ],
 
     'react/jsx-key': 'error',
     'react/jsx-no-bind': [ 'error', {

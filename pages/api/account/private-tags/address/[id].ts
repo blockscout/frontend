@@ -1,4 +1,4 @@
-import type { NextApiRequest } from 'next'
+import type { NextApiRequest } from 'next';
 
 import handler from 'pages/api/utils/handler';
 
@@ -7,10 +7,10 @@ const getUrl = (req: NextApiRequest) => {
   if (req.method === 'PUT') {
     const params = { address_hash: req.query.address_hash as string, name: req.query.name as string };
     const searchParams = new URLSearchParams(params);
-    url += `?${ searchParams.toString() }`
+    url += `?${ searchParams.toString() }`;
   }
   return url;
-}
+};
 
 const addressDeleteHandler = handler(getUrl, [ 'DELETE', 'PUT' ]);
 

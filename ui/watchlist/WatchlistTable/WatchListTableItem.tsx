@@ -6,7 +6,7 @@ import {
   Td,
   Switch,
   HStack,
-} from '@chakra-ui/react'
+} from '@chakra-ui/react';
 
 import EditButton from 'ui/shared/EditButton';
 import DeleteButton from 'ui/shared/DeleteButton';
@@ -49,7 +49,7 @@ const WatchlistTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
         </HStack>
       </Td>
     </Tr>
-  )
+  );
 };
 
 export default WatchlistTableItem;

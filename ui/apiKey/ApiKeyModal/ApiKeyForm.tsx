@@ -44,7 +44,7 @@ const ApiKeyForm: React.FC<Props> = ({ data }) => {
         />
         <FormLabel>Auto-generated API key token</FormLabel>
       </FormControl>
-    )
+    );
   }, []);
 
   const renderNameInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'name'>}) => {
@@ -57,7 +57,7 @@ const ApiKeyForm: React.FC<Props> = ({ data }) => {
         />
         <FormLabel>Application name for API key (e.g Web3 project)</FormLabel>
       </FormControl>
-    )
+    );
   }, [ errors ]);
 
   return (
@@ -92,7 +92,7 @@ const ApiKeyForm: React.FC<Props> = ({ data }) => {
         </Button>
       </Box>
     </>
-  )
-}
+  );
+};
 
 export default ApiKeyForm;

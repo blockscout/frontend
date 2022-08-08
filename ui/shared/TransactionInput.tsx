@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import type { ControllerRenderProps, FieldValues } from 'react-hook-form';
 
 import {
@@ -24,7 +24,7 @@ const AddressInput: React.FC<Props> = ({ field, isInvalid }) => {
       />
       <FormLabel>Transaction hash (0x...)</FormLabel>
     </FormControl>
-  )
-}
+  );
+};
 
-export default AddressInput
+export default AddressInput;

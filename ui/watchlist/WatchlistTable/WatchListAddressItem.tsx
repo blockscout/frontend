@@ -40,7 +40,7 @@ const WatchListAddressItem = ({ item }: {item: TWatchlistItem}) => {
         ) }
       </VStack>
     </HStack>
-  )
-}
+  );
+};
 
 export default WatchListAddressItem;

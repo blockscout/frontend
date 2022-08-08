@@ -13,10 +13,10 @@ type Props = {
 
 const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
   const title = data ? 'Edit API key' : 'New API key';
-  const text = 'Add an application name to identify your API key. Click the button below to auto-generate the associated key.'
+  const text = 'Add an application name to identify your API key. Click the button below to auto-generate the associated key.';
 
   const renderForm = useCallback(() => {
-    return <ApiKeyForm data={ data }/>
+    return <ApiKeyForm data={ data }/>;
   }, [ data ]);
   return (
     <FormModal<TApiKeyItem>
@@ -27,7 +27,7 @@ const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
       data={ data }
       renderForm={ renderForm }
     />
-  )
-}
+  );
+};
 
 export default AddressModal;

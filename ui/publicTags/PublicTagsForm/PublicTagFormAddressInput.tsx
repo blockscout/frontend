@@ -28,7 +28,7 @@ export default function PublicTagFormAction({ control, index, fieldsLength, hasE
         size="lg"
         placeholder="Smart contract / Address (0x...)"
       />
-    )
+    );
   }, [ hasError ]);
 
   return (
@@ -64,5 +64,5 @@ export default function PublicTagFormAction({ control, index, fieldsLength, hasE
           top="25px"
         />
       ) }</>
-  )
+  );
 }

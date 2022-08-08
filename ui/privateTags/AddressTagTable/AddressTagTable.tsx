@@ -7,7 +7,7 @@ import {
   Tr,
   Th,
   TableContainer,
-} from '@chakra-ui/react'
+} from '@chakra-ui/react';
 
 import type { AddressTags, AddressTag } from 'types/api/account';
 

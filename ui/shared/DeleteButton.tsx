@@ -9,7 +9,7 @@ type Props = {
 }
 
 const DeleteButton = ({ onClick }: Props) => {
-  const onFocusCapture = useCallback((e: React.SyntheticEvent) => e.stopPropagation(), [])
+  const onFocusCapture = useCallback((e: React.SyntheticEvent) => e.stopPropagation(), []);
   return (
     <Tooltip label="Delete">
       <IconButton
@@ -22,7 +22,7 @@ const DeleteButton = ({ onClick }: Props) => {
         onFocusCapture={ onFocusCapture }
       />
     </Tooltip>
-  )
-}
+  );
+};
 
 export default DeleteButton;

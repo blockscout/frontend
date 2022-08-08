@@ -5,7 +5,7 @@ import {
   Tr,
   Td,
   HStack,
-} from '@chakra-ui/react'
+} from '@chakra-ui/react';
 
 import AddressIcon from 'ui/shared/AddressIcon';
 import AddressLinkWithTooltip from 'ui/shared/AddressLinkWithTooltip';
@@ -52,7 +52,7 @@ const AddressTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
         </HStack>
       </Td>
     </Tr>
-  )
+  );
 };
 
 export default AddressTagTableItem;

@@ -13,10 +13,10 @@ type Props = {
 
 const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
   const title = data ? 'Edit address tag' : 'New address tag';
-  const text = 'Label any address with a private address tag (up to 35 chars) to customize your explorer experience.'
+  const text = 'Label any address with a private address tag (up to 35 chars) to customize your explorer experience.';
 
   const renderForm = useCallback(() => {
-    return <AddressForm data={ data } onClose={ onClose }/>
+    return <AddressForm data={ data } onClose={ onClose }/>;
   }, [ data, onClose ]);
   return (
     <FormModal<AddressTag>
@@ -27,7 +27,7 @@ const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
       data={ data }
       renderForm={ renderForm }
     />
-  )
-}
+  );
+};
 
 export default AddressModal;

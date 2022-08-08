@@ -24,7 +24,7 @@ const sizes: Record<string, SystemStyleObject> = {
     h: '80px',
     borderRadius: 'base',
   },
-}
+};
 
 const variantOutline: PartsStyleFunction<typeof parts> = (props) => {
   const transitionProps = getDefaultTransitionProps();
@@ -37,8 +37,8 @@ const variantOutline: PartsStyleFunction<typeof parts> = (props) => {
       bg: mode('gray.100', 'whiteAlpha.200')(props),
       ...transitionProps,
     },
-  }
-}
+  };
+};
 
 const Input: ComponentStyleConfig = {
   sizes: {
@@ -57,11 +57,11 @@ const Input: ComponentStyleConfig = {
   variants: {
     outline: variantOutline,
   },
-}
+};
 
 InputComponent.defaultProps = {
   ...InputComponent.defaultProps,
   placeholder: ' ',
-}
+};
 
 export default Input;

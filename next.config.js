@@ -5,6 +5,6 @@ module.exports = withReactSvg({
   include: path.resolve(__dirname, 'icons'),
   reactStrictMode: true,
   webpack(config) {
-    return config
+    return config;
   },
-})
+});

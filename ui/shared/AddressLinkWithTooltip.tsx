@@ -20,7 +20,7 @@ const AddressLinkWithTooltip = ({ address }: {address: string}) => {
       </Link>
       <CopyToClipboard text={ address }/>
     </HStack>
-  )
-}
+  );
+};
 
 export default React.memo(AddressLinkWithTooltip);

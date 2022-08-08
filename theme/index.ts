@@ -16,6 +16,6 @@ const overrides = {
   styles: {
     global,
   },
-}
+};
 
 export default extendTheme(overrides);

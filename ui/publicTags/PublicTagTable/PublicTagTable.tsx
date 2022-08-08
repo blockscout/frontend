@@ -7,7 +7,7 @@ import {
   Tr,
   Th,
   TableContainer,
-} from '@chakra-ui/react'
+} from '@chakra-ui/react';
 
 import type { TPublicTagItem, TPublicTags } from 'data/publicTags';
 

@@ -25,7 +25,7 @@ const TagInput: React.FC<Props> = ({ field, isInvalid }) => {
       />
       <FormLabel>Private tag (max 35 characters)</FormLabel>
     </FormControl>
-  )
-}
+  );
+};
 
 export default TagInput;

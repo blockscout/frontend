@@ -18,8 +18,8 @@ export default function PublicTagFormComment({ control }: Props) {
         />
         <FormLabel>Specify the reason for adding tags and color preference(s).</FormLabel>
       </FormControl>
-    )
-  }, [])
+    );
+  }, []);
 
   return (
     <Controller
@@ -27,5 +27,5 @@ export default function PublicTagFormComment({ control }: Props) {
       control={ control }
       render={ renderComment }
     />
-  )
+  );
 }

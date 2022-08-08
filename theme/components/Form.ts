@@ -8,7 +8,7 @@ import getDefaultFormColors from '../utils/getDefaultFormColors';
 const activeInputStyles = {
   paddingTop: '30px',
   paddingBottom: '10px',
-}
+};
 
 const getActiveLabelStyles = (theme: Dict, fc: string) => ({
   color: getColor(theme, fc),
@@ -78,13 +78,13 @@ const variantFloating: PartsStyleFunction<typeof parts> = (props: StyleFunctionP
       marginStart: 0,
       color: mode('gray.500', 'whiteAlpha.400')(props),
     },
-  }
-}
+  };
+};
 
 const Form: ComponentStyleConfig = {
   variants: {
     floating: variantFloating,
   },
-}
+};
 
 export default Form;

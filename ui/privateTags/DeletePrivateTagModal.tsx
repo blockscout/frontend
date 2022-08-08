@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { Text } from '@chakra-ui/react';
-import DeleteModal from 'ui/shared/DeleteModal'
+import DeleteModal from 'ui/shared/DeleteModal';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -22,7 +22,7 @@ const DeletePrivateTagModal: React.FC<Props> = ({ isOpen, onClose, data, type })
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation(() => {
-    return fetch(`/api/account/private-tags/${ type }/${ id }`, { method: 'DELETE' })
+    return fetch(`/api/account/private-tags/${ type }/${ id }`, { method: 'DELETE' });
   }, {
     onError: () => {
       // eslint-disable-next-line no-console
@@ -38,13 +38,13 @@ const DeletePrivateTagModal: React.FC<Props> = ({ isOpen, onClose, data, type })
 
   const onDelete = useCallback(() => {
     setPending(true);
-    mutate()
+    mutate();
   }, [ mutate ]);
 
   const renderText = useCallback(() => {
     return (
       <Text display="flex">Tag<Text fontWeight="600" whiteSpace="pre">{ ` "${ tag || 'tag' }" ` }</Text>will be deleted</Text>
-    )
+    );
   }, [ tag ]);
 
   return (
@@ -56,7 +56,7 @@ const DeletePrivateTagModal: React.FC<Props> = ({ isOpen, onClose, data, type })
       renderContent={ renderText }
       pending={ pending }
     />
-  )
-}
+  );
+};
 
 export default DeletePrivateTagModal;

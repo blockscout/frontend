@@ -35,7 +35,7 @@ const DeletePublicTagModal: React.FC<Props> = ({ isOpen, onClose, tags = [], onD
           <Text fontWeight="600" whiteSpace="pre">{ ` "${ tags[0].name }" ` }</Text>
           <Text>will be removed.</Text>
         </>
-      )
+      );
     }
     if (tags.length > 1) {
       const tagsText: Array<JSX.Element | string> = [];
@@ -51,12 +51,12 @@ const DeletePublicTagModal: React.FC<Props> = ({ isOpen, onClose, tags = [], onD
         if (index === tags.length - 1) {
           tagsText.push(<Text fontWeight="600" whiteSpace="pre">{ ` "${ tag.name }" ` }</Text>);
         }
-      })
+      });
       text = (
         <>
           <Text>Public tags</Text>{ tagsText }<Text>will be removed.</Text>
         </>
-      )
+      );
     }
     return (
       <>
@@ -72,7 +72,7 @@ const DeletePublicTagModal: React.FC<Props> = ({ isOpen, onClose, tags = [], onD
           <FormLabel>Why do you want to remove tags?</FormLabel>
         </FormControl>
       </>
-    )
+    );
   }, [ tags, reason, onFieldChange ]);
 
   return (
@@ -83,7 +83,7 @@ const DeletePublicTagModal: React.FC<Props> = ({ isOpen, onClose, tags = [], onD
       title="Request to remove a public tag"
       renderContent={ renderContent }
     />
-  )
-}
+  );
+};
 
 export default DeletePublicTagModal;

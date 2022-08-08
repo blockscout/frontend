@@ -34,4 +34,4 @@ const Page = ({ children }: Props) => {
   );
 };
 
-export default Page
+export default Page;

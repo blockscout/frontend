@@ -22,8 +22,8 @@ export default function PublicTagFormAction({ control, canReport }: Props) {
           </Radio>
         </Stack>
       </RadioGroup>
-    )
-  }, [ canReport ])
+    );
+  }, [ canReport ]);
 
   return (
     <Controller
@@ -31,5 +31,5 @@ export default function PublicTagFormAction({ control, canReport }: Props) {
       control={ control }
       render={ renderRadioGroup }
     />
-  )
+  );
 }

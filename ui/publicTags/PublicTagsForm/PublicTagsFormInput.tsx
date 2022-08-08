@@ -21,7 +21,7 @@ export default function PublicTagsFormInput<Inputs extends FieldValues>({ label,
         />
         <FormLabel>{ label }</FormLabel>
       </FormControl>
-    )
+    );
   }, [ label, required ]);
   return (
     <Controller
@@ -29,5 +29,5 @@ export default function PublicTagsFormInput<Inputs extends FieldValues>({ label,
       control={ control }
       render={ renderInput }
     />
-  )
+  );
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import type { ControllerRenderProps, FieldValues, Path } from 'react-hook-form';
 
 import {
@@ -33,5 +33,5 @@ export default function AddressInput<Inputs extends FieldValues, Name extends Pa
       />
       <FormLabel>{ placeholder }</FormLabel>
     </FormControl>
-  )
+  );
 }

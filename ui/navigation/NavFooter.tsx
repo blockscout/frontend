@@ -13,7 +13,7 @@ const SOCIAL_LINKS = [
   { link: '#tw', icon: twIcon },
   { link: '#tg', icon: tgIcon },
   { link: '#stats', icon: statsIcon },
-]
+];
 
 const NavFooter = () => {
   return (
@@ -35,7 +35,7 @@ const NavFooter = () => {
             <Link href={ sl.link } key={ sl.link } variant="secondary">
               <Icon as={ sl.icon } boxSize={ 5 }/>
             </Link>
-          )
+          );
         }) }
       </HStack>
       <Text>
@@ -43,7 +43,7 @@ const NavFooter = () => {
       </Text>
       <Text>Version: <Link color="blue.500">v4.2.1-beta</Link></Text>
     </VStack>
-  )
-}
+  );
+};
 
 export default NavFooter;

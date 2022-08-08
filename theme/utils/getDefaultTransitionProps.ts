@@ -3,5 +3,5 @@ export default function getDefaultTransitionProps() {
     transitionProperty: 'background-color, color, border-color',
     transitionDuration: 'normal',
     transitionTimingFunction: 'ease',
-  }
+  };
 }

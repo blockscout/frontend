@@ -21,8 +21,8 @@ const variantSimple: PartsStyleFunction<typeof parts> = (props) => {
       borderColor: mode('gray.200', 'whiteAlpha.200')(props),
       ...transitionProps,
     },
-  }
-}
+  };
+};
 
 const Table: ComponentMultiStyleConfig = {
   parts: [ 'th', 'td', 'table', 'thead' ],
@@ -65,6 +65,6 @@ const Table: ComponentMultiStyleConfig = {
   variants: {
     simple: variantSimple,
   },
-}
+};
 
 export default Table;

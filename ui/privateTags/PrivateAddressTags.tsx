@@ -21,7 +21,7 @@ const PrivateAddressTags = ({ addressTags }: Props) => {
   const onEditClick = useCallback((data: AddressTag) => {
     setAddressModalData(data);
     addressModalProps.onOpen();
-  }, [ addressModalProps ])
+  }, [ addressModalProps ]);
 
   const onAddressModalClose = useCallback(() => {
     setAddressModalData(undefined);
@@ -31,7 +31,7 @@ const PrivateAddressTags = ({ addressTags }: Props) => {
   const onDeleteClick = useCallback((data: AddressTag) => {
     setDeleteModalData(data);
     deleteModalProps.onOpen();
-  }, [ deleteModalProps ])
+  }, [ deleteModalProps ]);
 
   const onDeleteModalClose = useCallback(() => {
     setDeleteModalData(undefined);
@@ -72,4 +72,4 @@ const PrivateAddressTags = ({ addressTags }: Props) => {
   );
 };
 
-export default PrivateAddressTags
+export default PrivateAddressTags;

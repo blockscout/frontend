@@ -43,11 +43,11 @@ const AddressForm: React.FC<Props> = ({ data }) => {
   const onSubmit: SubmitHandler<Inputs> = data => console.log(data);
 
   const renderAddressInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'address'>}) => {
-    return <AddressInput<Inputs, 'address'> field={ field } isInvalid={ Boolean(errors.address) }/>
+    return <AddressInput<Inputs, 'address'> field={ field } isInvalid={ Boolean(errors.address) }/>;
   }, [ errors ]);
 
   const renderTagInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'tag'>}) => {
-    return <TagInput field={ field } isInvalid={ Boolean(errors.tag) }/>
+    return <TagInput field={ field } isInvalid={ Boolean(errors.tag) }/>;
   }, [ errors ]);
 
   const renderCheckbox = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'notification'>}) => (
@@ -98,7 +98,7 @@ const AddressForm: React.FC<Props> = ({ data }) => {
                 <GridItem><Checkbox colorScheme="blue" size="lg">Incoming</Checkbox></GridItem>
                 <GridItem><Checkbox colorScheme="blue" size="lg">Outgoing</Checkbox></GridItem>
               </React.Fragment>
-            )
+            );
           }) }
         </Grid>
       </Box>
@@ -119,7 +119,7 @@ const AddressForm: React.FC<Props> = ({ data }) => {
         </Button>
       </Box>
     </>
-  )
-}
+  );
+};
 
 export default AddressForm;

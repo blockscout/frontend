@@ -26,7 +26,7 @@ const PublicTags: React.FC = () => {
   const [ screen, setScreen ] = useState<TScreen>('data');
   const [ formData, setFormData ] = useState<TPublicTagItem>();
 
-  const toast = useToast()
+  const toast = useToast();
 
   const showToast = useCallback((action: TToastAction) => {
     toast({
@@ -67,10 +67,10 @@ const PublicTags: React.FC = () => {
   let header;
 
   if (screen === 'data') {
-    content = <PublicTagsData changeToFormScreen={ changeToFormScreen } onTagDelete={ onTagDelete }/>
-    header = 'Public tags'
+    content = <PublicTagsData changeToFormScreen={ changeToFormScreen } onTagDelete={ onTagDelete }/>;
+    header = 'Public tags';
   } else {
-    content = <PublicTagsForm changeToDataScreen={ changeToDataScreen } data={ formData }/>
+    content = <PublicTagsForm changeToDataScreen={ changeToDataScreen } data={ formData }/>;
     header = formData ? 'Request to edit a public tag/label' : 'Request a public tag/label';
   }
 

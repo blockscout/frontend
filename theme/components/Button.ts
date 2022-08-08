@@ -15,7 +15,7 @@ const variantPrimary = {
   _disabled: {
     opacity: 0.2,
   },
-}
+};
 
 const variantSecondary = {
   color: 'blue.600',
@@ -29,7 +29,7 @@ const variantSecondary = {
   _disabled: {
     opacity: 0.2,
   },
-}
+};
 
 const variantIcon: SystemStyleFunction = (props) => {
   return {
@@ -37,8 +37,8 @@ const variantIcon: SystemStyleFunction = (props) => {
     _hover: {
       color: mode('blue.400', 'blue.200')(props),
     },
-  }
-}
+  };
+};
 
 const variantIconBorder = {
   color: 'blue.600',
@@ -51,14 +51,14 @@ const variantIconBorder = {
   _disabled: {
     opacity: 0.2,
   },
-}
+};
 
 const variants = {
   primary: variantPrimary,
   secondary: variantSecondary,
   icon: variantIcon,
   iconBorder: variantIconBorder,
-}
+};
 
 const Button: ComponentStyleConfig = {
   baseStyle: {
@@ -91,6 +91,6 @@ const Button: ComponentStyleConfig = {
       px: 2,
     },
   },
-}
+};
 
 export default Button;

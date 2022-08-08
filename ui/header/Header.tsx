@@ -1,6 +1,6 @@
 import React from 'react';
 import { HStack, InputGroup, Input, InputLeftAddon, InputLeftElement, Center, useColorModeValue } from '@chakra-ui/react';
-import { SearchIcon } from '@chakra-ui/icons'
+import { SearchIcon } from '@chakra-ui/icons';
 import Identicon from 'react-identicons';
 import { ColorModeToggler } from './ColorModeToggler';
 
@@ -30,7 +30,7 @@ const Header = () => {
         <Identicon className={ styles.identicon } string="randomness" size={ 96 }/>
       </Center>
     </HStack>
-  )
-}
+  );
+};
 
 export default Header;

@@ -10,6 +10,6 @@ const Text: ComponentStyleConfig = {
   variants: {
     secondary: variantSecondary,
   },
-}
+};
 
 export default Text;

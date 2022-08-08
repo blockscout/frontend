@@ -9,7 +9,7 @@ import {
   HStack,
   VStack,
   useColorModeValue,
-} from '@chakra-ui/react'
+} from '@chakra-ui/react';
 
 import AddressIcon from 'ui/shared/AddressIcon';
 import AddressLinkWithTooltip from 'ui/shared/AddressLinkWithTooltip';
@@ -49,7 +49,7 @@ const PublicTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
                   { adr.addressName && <Text fontSize="sm" color={ secondaryColor } mt={ 0.5 }>{ adr.addressName }</Text> }
                 </Box>
               </HStack>
-            )
+            );
           }) }
         </VStack>
       </Td>
@@ -62,7 +62,7 @@ const PublicTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
                   { tag.name }
                 </Tag>
               </TruncatedTextTooltip>
-            )
+            );
           }) }
         </VStack>
       </Td>
@@ -76,7 +76,7 @@ const PublicTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
         </HStack>
       </Td>
     </Tr>
-  )
+  );
 };
 
 export default PublicTagTableItem;

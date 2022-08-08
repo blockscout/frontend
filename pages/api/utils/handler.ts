@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 import fetch from './fetch';
 
@@ -7,7 +7,7 @@ type Methods = 'GET' | 'POST' | 'PUT' | 'DELETE';
 export default function handler<TRes>(getUrl: (_req: NextApiRequest) => string, allowedMethods: Array<Methods>) {
   return async(_req: NextApiRequest, res: NextApiResponse<TRes>) => {
     if (_req.method === 'GET' && allowedMethods.includes('GET')) {
-      const response = await fetch(getUrl(_req))
+      const response = await fetch(getUrl(_req));
       const data = await response.json() as TRes;
 
       res.status(200).json(data);
@@ -15,17 +15,17 @@ export default function handler<TRes>(getUrl: (_req: NextApiRequest) => string, 
       const response = await fetch(getUrl(_req), {
         method: 'POST',
         body: _req.body,
-      })
+      });
       const data = await response.json() as TRes;
 
-      res.status(200).json(data)
+      res.status(200).json(data);
     } else if (allowedMethods.includes('PUT') && _req.method === 'PUT') {
       const response = await fetch(getUrl(_req), {
         method: 'PUT',
-      })
+      });
       const data = await response.json() as TRes;
 
-      res.status(200).json(data)
+      res.status(200).json(data);
     } else if (allowedMethods.includes('DELETE') && _req.method === 'DELETE') {
       const response = await fetch(getUrl(_req), { method: 'DELETE' });
       // FIXME: add error handlers
@@ -35,8 +35,8 @@ export default function handler<TRes>(getUrl: (_req: NextApiRequest) => string, 
       }
       res.status(200).end();
     } else {
-      res.setHeader('Allow', allowedMethods)
-      res.status(405).end(`Method ${ _req.method } Not Allowed`)
+      res.setHeader('Allow', allowedMethods);
+      res.status(405).end(`Method ${ _req.method } Not Allowed`);
     }
-  }
+  };
 }

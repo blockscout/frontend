@@ -4,7 +4,7 @@ import getDefaultFormColors from './getDefaultFormColors';
 import getDefaultTransitionProps from './getDefaultTransitionProps';
 
 export default function getOutlinedFieldStyles(props: StyleFunctionProps) {
-  const { theme } = props
+  const { theme } = props;
   const { focusColor: fc, errorColor: ec, filledColor: flc } = getDefaultFormColors(props);
   const transitionProps = getDefaultTransitionProps();
 
@@ -39,5 +39,5 @@ export default function getOutlinedFieldStyles(props: StyleFunctionProps) {
     ':-webkit-autofill': { transition: 'background-color 5000s ease-in-out 0s' },
     ':-webkit-autofill:hover': { transition: 'background-color 5000s ease-in-out 0s' },
     ':-webkit-autofill:focus': { transition: 'background-color 5000s ease-in-out 0s' },
-  }
+  };
 }

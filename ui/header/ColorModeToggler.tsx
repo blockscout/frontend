@@ -1,5 +1,5 @@
 import type { UseCheckboxProps } from '@chakra-ui/checkbox';
-import { useCheckbox } from '@chakra-ui/checkbox'
+import { useCheckbox } from '@chakra-ui/checkbox';
 import type {
   SystemStyleObject,
   ThemingProps,
@@ -9,10 +9,10 @@ import {
   chakra,
   forwardRef,
   omitThemingProps,
-} from '@chakra-ui/system'
-import { dataAttr, __DEV__ } from '@chakra-ui/utils'
-import * as React from 'react'
-import { SunIcon } from '@chakra-ui/icons'
+} from '@chakra-ui/system';
+import { dataAttr, __DEV__ } from '@chakra-ui/utils';
+import * as React from 'react';
+import { SunIcon } from '@chakra-ui/icons';
 import { useColorMode, useColorModeValue, Icon } from '@chakra-ui/react';
 import getDefaultTransitionProps from '../../theme/utils/getDefaultTransitionProps';
 import moonIcon from '../../icons/moon.svg';
@@ -36,22 +36,22 @@ export const ColorModeToggler = forwardRef<ColorModeTogglerProps, 'input'>((prop
     getRootProps,
   } = useCheckbox({ ...ownProps, isChecked: colorMode === 'light' });
 
-  const trackBg = useColorModeValue('blackAlpha.100', 'whiteAlpha.200')
-  const thumbBg = useColorModeValue('white', 'black')
+  const trackBg = useColorModeValue('blackAlpha.100', 'whiteAlpha.200');
+  const thumbBg = useColorModeValue('white', 'black');
   const transitionProps = getDefaultTransitionProps();
 
   const trackStyles: SystemStyleObject = React.useMemo(() => ({
     bg: trackBg,
     ...transitionProps,
     transitionDuration: '500ms',
-  }), [ trackBg, transitionProps ])
+  }), [ trackBg, transitionProps ]);
 
   const thumbStyles: SystemStyleObject = React.useMemo(() => ({
     bg: thumbBg,
     ...transitionProps,
     transitionProperty: 'background-color, transform',
     transitionDuration: '500ms',
-  }), [ thumbBg, transitionProps ])
+  }), [ thumbBg, transitionProps ]);
 
   return (
     <chakra.label
@@ -85,9 +85,9 @@ export const ColorModeToggler = forwardRef<ColorModeTogglerProps, 'input'>((prop
         />
       </chakra.div>
     </chakra.label>
-  )
-})
+  );
+});
 
 if (__DEV__) {
-  ColorModeToggler.displayName = 'ColorModeToggler'
+  ColorModeToggler.displayName = 'ColorModeToggler';
 }

@@ -13,10 +13,10 @@ type Props = {
 
 const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
   const title = data ? 'Edit watch list address' : 'New address to watch list';
-  const text = 'An email notification can be sent to you when an address on your watch list sends or receives any transactions.'
+  const text = 'An email notification can be sent to you when an address on your watch list sends or receives any transactions.';
 
   const renderForm = useCallback(() => {
-    return <AddressForm data={ data }/>
+    return <AddressForm data={ data }/>;
   }, [ data ]);
   return (
     <FormModal<TWatchlistItem>
@@ -27,7 +27,7 @@ const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
       data={ data }
       renderForm={ renderForm }
     />
-  )
-}
+  );
+};
 
 export default AddressModal;

@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { useQueryClient } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query';
 
 import type { AddressTags, TransactionTags } from 'types/api/account';
 
@@ -28,7 +28,7 @@ const PrivateTags = ({ onChangeTab: onChangeTabProps }: Props) => {
 
   const onTabChange = useCallback((index: number) => {
     onChangeTabProps(index);
-  }, [ onChangeTabProps ])
+  }, [ onChangeTabProps ]);
 
   return (
     <Page>
@@ -53,4 +53,4 @@ const PrivateTags = ({ onChangeTab: onChangeTabProps }: Props) => {
   );
 };
 
-export default PrivateTags
+export default PrivateTags;

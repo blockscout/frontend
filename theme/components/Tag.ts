@@ -13,12 +13,12 @@ const variantGray: PartsStyleFunction<typeof parts> = (props) => {
       color: mode('gray.600', 'gray.50')(props),
       ...transitionProps,
     },
-  }
-}
+  };
+};
 
 const variants = {
   gray: variantGray,
-}
+};
 
 const Tag: ComponentStyleConfig = {
   baseStyle: {
@@ -30,6 +30,6 @@ const Tag: ComponentStyleConfig = {
     },
   },
   variants,
-}
+};
 
 export default Tag;

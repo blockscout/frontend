@@ -11,5 +11,5 @@ export default function useColors() {
       'default': 'transparent',
       active: useColorModeValue('blue.50', 'whiteAlpha.200'),
     },
-  }
+  };
 }
