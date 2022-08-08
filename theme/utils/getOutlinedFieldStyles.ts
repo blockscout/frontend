@@ -1,5 +1,6 @@
 import type { StyleFunctionProps } from '@chakra-ui/theme-tools';
 import { mode, getColor } from '@chakra-ui/theme-tools';
+
 import getDefaultFormColors from './getDefaultFormColors';
 import getDefaultTransitionProps from './getDefaultTransitionProps';
 

@@ -1,6 +1,5 @@
-import React, { useCallback } from 'react';
-
 import { Tooltip, IconButton, Icon } from '@chakra-ui/react';
+import React, { useCallback } from 'react';
 
 import EditIcon from 'icons/edit.svg';
 

@@ -1,5 +1,5 @@
-import type { ComponentStyleConfig } from '@chakra-ui/theme';
 import { Tooltip as TooltipComponent } from '@chakra-ui/react';
+import type { ComponentStyleConfig } from '@chakra-ui/theme';
 
 const Tooltip: ComponentStyleConfig = {
   baseStyle: {

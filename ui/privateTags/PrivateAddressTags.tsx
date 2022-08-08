@@ -1,11 +1,11 @@
+import { Box, Button, Spinner, Text, useDisclosure } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 
-import { Box, Button, Spinner, Text, useDisclosure } from '@chakra-ui/react';
-
-import AddressTagTable from './AddressTagTable/AddressTagTable';
-import AddressModal from './AddressModal/AddressModal';
-import DeletePrivateTagModal from './DeletePrivateTagModal';
 import type { AddressTags, AddressTag } from 'types/api/account';
+
+import AddressModal from './AddressModal/AddressModal';
+import AddressTagTable from './AddressTagTable/AddressTagTable';
+import DeletePrivateTagModal from './DeletePrivateTagModal';
 
 type Props = {
   addressTags: AddressTags;

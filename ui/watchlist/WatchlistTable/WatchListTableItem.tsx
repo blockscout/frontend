@@ -1,5 +1,3 @@
-import React, { useCallback } from 'react';
-
 import {
   Tag,
   Tr,
@@ -7,12 +5,12 @@ import {
   Switch,
   HStack,
 } from '@chakra-ui/react';
-
-import EditButton from 'ui/shared/EditButton';
-import DeleteButton from 'ui/shared/DeleteButton';
-import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
+import React, { useCallback } from 'react';
 
 import type { TWatchlistItem } from 'data/watchlist';
+import DeleteButton from 'ui/shared/DeleteButton';
+import EditButton from 'ui/shared/EditButton';
+import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 import WatchListAddressItem from './WatchListAddressItem';
 

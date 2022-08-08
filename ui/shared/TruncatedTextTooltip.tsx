@@ -1,7 +1,8 @@
-import React from 'react';
 import { Tooltip } from '@chakra-ui/react';
 import debounce from 'lodash/debounce';
+import React from 'react';
 import useFontFaceObserver from 'use-font-face-observer';
+
 import { BODY_TYPEFACE } from 'theme/foundations/typography';
 
 interface Props {

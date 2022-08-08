@@ -1,8 +1,8 @@
-import React from 'react';
 import { Box, HStack, VStack } from '@chakra-ui/react';
+import React from 'react';
 
-import Navigation from 'ui/navigation/Navigation';
 import Header from 'ui/header/Header';
+import Navigation from 'ui/navigation/Navigation';
 
 interface Props {
   children: React.ReactNode;

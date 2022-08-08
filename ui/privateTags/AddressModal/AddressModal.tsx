@@ -2,8 +2,9 @@ import React, { useCallback } from 'react';
 
 import type { AddressTag } from 'types/api/account';
 
-import AddressForm from './AddressForm';
 import FormModal from 'ui/shared/FormModal';
+
+import AddressForm from './AddressForm';
 
 type Props = {
   isOpen: boolean;

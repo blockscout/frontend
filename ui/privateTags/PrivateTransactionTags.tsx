@@ -1,13 +1,11 @@
-import React, { useCallback, useState } from 'react';
-
 import { Box, Button, Text, useDisclosure } from '@chakra-ui/react';
+import React, { useCallback, useState } from 'react';
 
 import type { TransactionTags, TransactionTag } from 'types/api/account';
 
-import TransactionTagTable from './TransactionTagTable/TransactionTagTable';
-import TransactionModal from './TransactionModal/TransactionModal';
-
 import DeletePrivateTagModal from './DeletePrivateTagModal';
+import TransactionModal from './TransactionModal/TransactionModal';
+import TransactionTagTable from './TransactionTagTable/TransactionTagTable';
 
 type Props = {
   transactionTags: TransactionTags;

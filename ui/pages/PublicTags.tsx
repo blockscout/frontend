@@ -1,17 +1,15 @@
-import React, { useCallback, useState } from 'react';
-import { animateScroll } from 'react-scroll';
-
 import {
   Box,
   useToast,
 } from '@chakra-ui/react';
-
-import Page from 'ui/shared/Page/Page';
-import AccountPageHeader from 'ui/shared/AccountPageHeader';
-import PublicTagsData from 'ui/publicTags/PublicTagsData';
-import PublicTagsForm from 'ui/publicTags/PublicTagsForm/PublicTagsForm';
+import React, { useCallback, useState } from 'react';
+import { animateScroll } from 'react-scroll';
 
 import type { TPublicTagItem } from 'data/publicTags';
+import PublicTagsData from 'ui/publicTags/PublicTagsData';
+import PublicTagsForm from 'ui/publicTags/PublicTagsForm/PublicTagsForm';
+import AccountPageHeader from 'ui/shared/AccountPageHeader';
+import Page from 'ui/shared/Page/Page';
 
 type TScreen = 'data' | 'form';
 

@@ -1,8 +1,7 @@
-import React, { useCallback, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import type { NextPage } from 'next';
 import Head from 'next/head';
-
-import { useQuery } from '@tanstack/react-query';
+import React, { useCallback, useState } from 'react';
 
 import PrivateTags from 'ui/pages/PrivateTags';
 

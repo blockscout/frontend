@@ -1,5 +1,3 @@
-import React, { useCallback } from 'react';
-
 import {
   Box,
   Tag,
@@ -10,14 +8,14 @@ import {
   VStack,
   useColorModeValue,
 } from '@chakra-ui/react';
-
-import AddressIcon from 'ui/shared/AddressIcon';
-import AddressLinkWithTooltip from 'ui/shared/AddressLinkWithTooltip';
-import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
+import React, { useCallback } from 'react';
 
 import type { TPublicTagItem, TPublicTagAddress, TPublicTag } from 'data/publicTags';
-import EditButton from 'ui/shared/EditButton';
+import AddressIcon from 'ui/shared/AddressIcon';
+import AddressLinkWithTooltip from 'ui/shared/AddressLinkWithTooltip';
 import DeleteButton from 'ui/shared/DeleteButton';
+import EditButton from 'ui/shared/EditButton';
+import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 interface Props {
   item: TPublicTagItem;

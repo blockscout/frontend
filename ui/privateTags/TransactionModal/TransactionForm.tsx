@@ -1,18 +1,16 @@
+import {
+  Box,
+  Button,
+} from '@chakra-ui/react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useCallback, useEffect, useState } from 'react';
 import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
 import { useForm, Controller } from 'react-hook-form';
 
 import type { TransactionTag } from 'types/api/account';
 
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-
-import {
-  Box,
-  Button,
-} from '@chakra-ui/react';
-
-import TransactionInput from 'ui/shared/TransactionInput';
 import TagInput from 'ui/shared/TagInput';
+import TransactionInput from 'ui/shared/TransactionInput';
 
 const HASH_LENGTH = 66;
 const TAG_MAX_LENGTH = 35;

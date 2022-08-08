@@ -1,10 +1,9 @@
+import { Flex, Text, FormControl, FormLabel, Textarea } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 import type { ChangeEvent } from 'react';
-import { Flex, Text, FormControl, FormLabel, Textarea } from '@chakra-ui/react';
-
-import DeleteModal from 'ui/shared/DeleteModal';
 
 import type { TPublicTag } from 'data/publicTags';
+import DeleteModal from 'ui/shared/DeleteModal';
 
 type Props = {
   isOpen: boolean;

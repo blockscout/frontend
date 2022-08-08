@@ -1,17 +1,16 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
-import { useForm, Controller } from 'react-hook-form';
-
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-
 import {
   Box,
   Button,
 } from '@chakra-ui/react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import React, { useCallback, useEffect, useState } from 'react';
+import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
+
+import type { AddressTag } from 'types/api/account';
 
 import AddressInput from 'ui/shared/AddressInput';
 import TagInput from 'ui/shared/TagInput';
-import type { AddressTag } from 'types/api/account';
 
 const ADDRESS_LENGTH = 42;
 const TAG_MAX_LENGTH = 35;

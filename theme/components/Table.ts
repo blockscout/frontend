@@ -2,6 +2,7 @@ import type { tableAnatomy as parts } from '@chakra-ui/anatomy';
 import type { ComponentMultiStyleConfig } from '@chakra-ui/theme';
 import { mode } from '@chakra-ui/theme-tools';
 import type { PartsStyleFunction } from '@chakra-ui/theme-tools';
+
 import getDefaultTransitionProps from '../utils/getDefaultTransitionProps';
 
 const variantSimple: PartsStyleFunction<typeof parts> = (props) => {

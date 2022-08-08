@@ -1,6 +1,5 @@
-import React from 'react';
-
 import { HStack, Link } from '@chakra-ui/react';
+import React from 'react';
 
 import AddressWithDots from './AddressWithDots';
 import CopyToClipboard from './CopyToClipboard';

@@ -1,7 +1,7 @@
 import { modalAnatomy as parts } from '@chakra-ui/anatomy';
+import type { ComponentMultiStyleConfig } from '@chakra-ui/theme';
 import type { PartsStyleFunction, SystemStyleFunction } from '@chakra-ui/theme-tools';
 import { mode } from '@chakra-ui/theme-tools';
-import type { ComponentMultiStyleConfig } from '@chakra-ui/theme';
 
 const baseStyleDialog: SystemStyleFunction = (props) => {
   return {

@@ -2,6 +2,7 @@ import type { tagAnatomy as parts } from '@chakra-ui/anatomy';
 import type { ComponentStyleConfig } from '@chakra-ui/theme';
 import { mode } from '@chakra-ui/theme-tools';
 import type { PartsStyleFunction } from '@chakra-ui/theme-tools';
+
 import getDefaultTransitionProps from '../utils/getDefaultTransitionProps';
 
 const variantGray: PartsStyleFunction<typeof parts> = (props) => {

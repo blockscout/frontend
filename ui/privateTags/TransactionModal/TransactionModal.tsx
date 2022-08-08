@@ -2,8 +2,9 @@ import React, { useCallback } from 'react';
 
 import type { TransactionTag } from 'types/api/account';
 
-import TransactionForm from './TransactionForm';
 import FormModal from 'ui/shared/FormModal';
+
+import TransactionForm from './TransactionForm';
 
 type Props = {
   isOpen: boolean;

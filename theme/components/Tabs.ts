@@ -1,10 +1,9 @@
+import type { tabsAnatomy as parts } from '@chakra-ui/anatomy';
 import type { ComponentStyleConfig } from '@chakra-ui/theme';
 import type {
   PartsStyleFunction,
 } from '@chakra-ui/theme-tools';
 import { getColor } from '@chakra-ui/theme-tools';
-
-import type { tabsAnatomy as parts } from '@chakra-ui/anatomy';
 
 const variantSoftRounded: PartsStyleFunction<typeof parts> = (props) => {
   const { colorScheme: c, theme } = props;

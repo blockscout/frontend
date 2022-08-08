@@ -1,5 +1,7 @@
 import type { UseCheckboxProps } from '@chakra-ui/checkbox';
 import { useCheckbox } from '@chakra-ui/checkbox';
+import { SunIcon } from '@chakra-ui/icons';
+import { useColorMode, useColorModeValue, Icon } from '@chakra-ui/react';
 import type {
   SystemStyleObject,
   ThemingProps,
@@ -12,11 +14,9 @@ import {
 } from '@chakra-ui/system';
 import { dataAttr, __DEV__ } from '@chakra-ui/utils';
 import * as React from 'react';
-import { SunIcon } from '@chakra-ui/icons';
-import { useColorMode, useColorModeValue, Icon } from '@chakra-ui/react';
-import getDefaultTransitionProps from '../../theme/utils/getDefaultTransitionProps';
-import moonIcon from '../../icons/moon.svg';
 
+import moonIcon from '../../icons/moon.svg';
+import getDefaultTransitionProps from '../../theme/utils/getDefaultTransitionProps';
 import styles from './ColorModeToggler.module.css';
 
 export interface ColorModeTogglerProps

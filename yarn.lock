@@ -1625,6 +1625,11 @@ eslint-plugin-es5@^1.5.0:
   resolved "https://registry.yarnpkg.com/eslint-plugin-es5/-/eslint-plugin-es5-1.5.0.tgz#aab19af3d4798f7924bba309bc4f87087280fbba"
   integrity sha512-Qxmfo7v2B7SGAEURJo0dpBweFf+JU15kSyALfiB2rXWcBuJ96r6X9kFHXFnhdopPHCaHjoQs1xQPUJVbGMb1AA==
 
+eslint-plugin-import-helpers@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-import-helpers/-/eslint-plugin-import-helpers-1.2.1.tgz#22c7ac66c964e8257b2a6fb4aff8a51b35cbdc6d"
+  integrity sha512-BSqLlCnyX4tWGlvPUTpBgUoaFiWxXSztpk9SozZVW4TZU1ygZuF0Lrfn9CO5xx1XT+PVAR9yroP9JPRyB4rAjQ==
+
 eslint-plugin-import@^2.26.0:
   version "2.26.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-import/-/eslint-plugin-import-2.26.0.tgz#f812dc47be4f2b72b478a021605a59fc6fe8b88b"

@@ -1,12 +1,10 @@
-import React from 'react';
-
-import type { ControllerRenderProps, FieldValues } from 'react-hook-form';
-
 import {
   Input,
   FormControl,
   FormLabel,
 } from '@chakra-ui/react';
+import React from 'react';
+import type { ControllerRenderProps, FieldValues } from 'react-hook-form';
 
 const TAG_MAX_LENGTH = 35;
 

@@ -1,7 +1,3 @@
-import React, { useCallback, useEffect } from 'react';
-import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
-import { useForm, Controller } from 'react-hook-form';
-
 import {
   Box,
   Button,
@@ -9,6 +5,9 @@ import {
   FormLabel,
   Input,
 } from '@chakra-ui/react';
+import React, { useCallback, useEffect } from 'react';
+import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 
 import type { TApiKeyItem } from 'data/apiKey';
 

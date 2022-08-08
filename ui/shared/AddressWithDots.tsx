@@ -8,11 +8,12 @@
 
 // so i did it with js
 
-import React, { useCallback, useEffect, useRef } from 'react';
 import { Tooltip } from '@chakra-ui/react';
 import _debounce from 'lodash/debounce';
+import React, { useCallback, useEffect, useRef } from 'react';
 import type { FontFace } from 'use-font-face-observer';
 import useFontFaceObserver from 'use-font-face-observer';
+
 import { BODY_TYPEFACE } from 'theme/foundations/typography';
 
 const TAIL_LENGTH = 4;

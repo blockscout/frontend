@@ -1,8 +1,9 @@
-import React from 'react';
+import { ChevronRightIcon } from '@chakra-ui/icons';
 import { Link, Icon, Text, HStack } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import { ChevronRightIcon } from '@chakra-ui/icons';
+import React from 'react';
+
 import useColors from './useColors';
 
 interface Props {

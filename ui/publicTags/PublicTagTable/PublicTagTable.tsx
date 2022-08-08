@@ -1,5 +1,3 @@
-import React from 'react';
-
 import {
   Table,
   Thead,
@@ -8,6 +6,7 @@ import {
   Th,
   TableContainer,
 } from '@chakra-ui/react';
+import React from 'react';
 
 import type { TPublicTagItem, TPublicTags } from 'data/publicTags';
 

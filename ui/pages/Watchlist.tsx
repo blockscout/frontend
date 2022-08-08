@@ -1,15 +1,13 @@
-import React, { useCallback, useState } from 'react';
-
 import { Box, Button, Text, useDisclosure } from '@chakra-ui/react';
-
-import Page from 'ui/shared/Page/Page';
-import AccountPageHeader from 'ui/shared/AccountPageHeader';
-import WatchlistTable from 'ui/watchlist/WatchlistTable/WatchlistTable';
-import AddressModal from 'ui/watchlist/AddressModal/AddressModal';
+import React, { useCallback, useState } from 'react';
 
 import type { TWatchlistItem } from 'data/watchlist';
 import { watchlist } from 'data/watchlist';
+import AccountPageHeader from 'ui/shared/AccountPageHeader';
+import Page from 'ui/shared/Page/Page';
+import AddressModal from 'ui/watchlist/AddressModal/AddressModal';
 import DeleteAddressModal from 'ui/watchlist/DeleteAddressModal';
+import WatchlistTable from 'ui/watchlist/WatchlistTable/WatchlistTable';
 
 const WatchList: React.FC = () => {
   const addressModalProps = useDisclosure();

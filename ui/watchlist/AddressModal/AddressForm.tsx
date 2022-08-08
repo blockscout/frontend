@@ -1,7 +1,3 @@
-import React, { useCallback, useEffect } from 'react';
-import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
-import { useForm, Controller } from 'react-hook-form';
-
 import {
   Box,
   Button,
@@ -10,11 +6,13 @@ import {
   Grid,
   GridItem,
 } from '@chakra-ui/react';
-
-import AddressInput from 'ui/shared/AddressInput';
-import TagInput from 'ui/shared/TagInput';
+import React, { useCallback, useEffect } from 'react';
+import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 
 import type { TWatchlistItem } from 'data/watchlist';
+import AddressInput from 'ui/shared/AddressInput';
+import TagInput from 'ui/shared/TagInput';
 
 const NOTIFICATIONS = [ 'xDAI', 'ERC-20', 'ERC-721, ERC-1155 (NFT)' ];
 const ADDRESS_LENGTH = 42;

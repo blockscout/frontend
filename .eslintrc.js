@@ -19,6 +19,7 @@ module.exports = {
     '@typescript-eslint',
     'react-hooks',
     'jsx-a11y',
+    'eslint-plugin-import-helpers',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -179,6 +180,20 @@ module.exports = {
     'template-curly-spacing': [ 'error', 'always' ],
     'wrap-iife': [ 'error', 'inside' ],
     semi: [ 'error', 'always' ],
+
+    'import-helpers/order-imports': [
+      'error',
+      {
+        newlinesBetween: 'always',
+        groups: [
+          'module',
+          '/types/',
+          [ '/^data/', '/^icons/', '/^lib/', '/^pages/', '/^theme/', '/^ui/' ],
+          [ 'parent', 'sibling', 'index' ],
+        ],
+        alphabetize: { order: 'asc', ignoreCase: true },
+      },
+    ],
 
     'react/jsx-key': 'error',
     'react/jsx-no-bind': [ 'error', {

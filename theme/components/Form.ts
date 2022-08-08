@@ -3,6 +3,7 @@ import type { ComponentStyleConfig } from '@chakra-ui/theme';
 import { getColor, mode } from '@chakra-ui/theme-tools';
 import type { StyleFunctionProps, PartsStyleFunction } from '@chakra-ui/theme-tools';
 import type { Dict } from '@chakra-ui/utils';
+
 import getDefaultFormColors from '../utils/getDefaultFormColors';
 
 const activeInputStyles = {

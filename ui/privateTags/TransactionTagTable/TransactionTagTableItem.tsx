@@ -1,5 +1,3 @@
-import React, { useCallback } from 'react';
-
 import {
   Tag,
   Tr,
@@ -7,13 +5,13 @@ import {
   HStack,
   Tooltip,
 } from '@chakra-ui/react';
-
-import EditButton from 'ui/shared/EditButton';
-import DeleteButton from 'ui/shared/DeleteButton';
-
-import AddressLinkWithTooltip from 'ui/shared/AddressLinkWithTooltip';
+import React, { useCallback } from 'react';
 
 import type { TransactionTag } from 'types/api/account';
+
+import AddressLinkWithTooltip from 'ui/shared/AddressLinkWithTooltip';
+import DeleteButton from 'ui/shared/DeleteButton';
+import EditButton from 'ui/shared/EditButton';
 
 interface Props {
   item: TransactionTag;

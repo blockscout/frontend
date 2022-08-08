@@ -1,7 +1,8 @@
+import { FormControl, FormLabel, Textarea } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 import type { ControllerRenderProps, Control } from 'react-hook-form';
-import { FormControl, FormLabel, Textarea } from '@chakra-ui/react';
 import { Controller } from 'react-hook-form';
+
 import type { Inputs } from './PublicTagsForm';
 
 interface Props {

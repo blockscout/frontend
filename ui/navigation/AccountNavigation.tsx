@@ -1,11 +1,13 @@
-import React from 'react';
 import { Box, VStack } from '@chakra-ui/react';
-import AccountNavLink from './AccountNavLink';
-import WatchlistIcon from 'icons/watchlist.svg';
+import React from 'react';
+
+import ABIIcon from 'icons/ABI.svg';
+import ApiKeysIcon from 'icons/API.svg';
 import PrivateTagIcon from 'icons/privattags.svg';
 import PublicTagIcon from 'icons/publictags.svg';
-import ApiKeysIcon from 'icons/API.svg';
-import ABIIcon from 'icons/ABI.svg';
+import WatchlistIcon from 'icons/watchlist.svg';
+
+import AccountNavLink from './AccountNavLink';
 
 const navItems = [
   { text: 'Watchlist', pathname: '/watchlist', icon: WatchlistIcon },

@@ -1,5 +1,6 @@
-import React, { useCallback } from 'react';
 import { Text } from '@chakra-ui/react';
+import React, { useCallback } from 'react';
+
 import DeleteModal from 'ui/shared/DeleteModal';
 
 type Props = {

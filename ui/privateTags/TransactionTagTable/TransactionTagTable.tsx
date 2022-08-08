@@ -1,7 +1,3 @@
-import React from 'react';
-
-import type { TransactionTags, TransactionTag } from 'types/api/account';
-
 import {
   Table,
   Thead,
@@ -10,6 +6,9 @@ import {
   Th,
   TableContainer,
 } from '@chakra-ui/react';
+import React from 'react';
+
+import type { TransactionTags, TransactionTag } from 'types/api/account';
 
 import TransactionTagTableItem from './TransactionTagTableItem';
 

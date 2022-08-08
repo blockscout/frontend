@@ -1,11 +1,10 @@
-import React from 'react';
-import type { ControllerRenderProps, FieldValues, Path } from 'react-hook-form';
-
 import {
   Input,
   FormControl,
   FormLabel,
 } from '@chakra-ui/react';
+import React from 'react';
+import type { ControllerRenderProps, FieldValues, Path } from 'react-hook-form';
 
 const ADDRESS_LENGTH = 42;
 

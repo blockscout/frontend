@@ -1,6 +1,7 @@
 import type { ComponentStyleConfig } from '@chakra-ui/theme';
 import { mode } from '@chakra-ui/theme-tools';
 import type { SystemStyleFunction, SystemStyleInterpolation } from '@chakra-ui/theme-tools';
+
 import getDefaultTransitionProps from '../utils/getDefaultTransitionProps';
 
 const baseStyle: SystemStyleInterpolation = {

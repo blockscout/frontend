@@ -3,8 +3,9 @@ import React, { useCallback, useState } from 'react';
 
 import type { TPublicTagItem, TPublicTag } from 'data/publicTags';
 import { publicTags } from 'data/publicTags';
-import PublicTagTable from './PublicTagTable/PublicTagTable';
+
 import DeletePublicTagModal from './DeletePublicTagModal';
+import PublicTagTable from './PublicTagTable/PublicTagTable';
 
 type Props = {
   changeToFormScreen: (data?: TPublicTagItem) => void;

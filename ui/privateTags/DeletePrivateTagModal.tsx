@@ -1,10 +1,10 @@
-import React, { useCallback, useState } from 'react';
 import { Text } from '@chakra-ui/react';
-import DeleteModal from 'ui/shared/DeleteModal';
-
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import React, { useCallback, useState } from 'react';
 
 import type { AddressTag, TransactionTag } from 'types/api/account';
+
+import DeleteModal from 'ui/shared/DeleteModal';
 
 type Props = {
   isOpen: boolean;

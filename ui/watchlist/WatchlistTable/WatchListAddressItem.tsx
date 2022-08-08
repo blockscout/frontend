@@ -1,13 +1,12 @@
+import { Link, HStack, VStack, Image, Text, Icon, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
-import { Link, HStack, VStack, Image, Text, Icon, useColorModeValue } from '@chakra-ui/react';
-
-import AddressIcon from 'ui/shared/AddressIcon';
-import AddressLinkWithTooltip from 'ui/shared/AddressLinkWithTooltip';
 import type { TWatchlistItem } from 'data/watchlist';
-import { nbsp } from 'lib/html-entities';
 import TokensIcon from 'icons/tokens.svg';
 import WalletIcon from 'icons/wallet.svg';
+import { nbsp } from 'lib/html-entities';
+import AddressIcon from 'ui/shared/AddressIcon';
+import AddressLinkWithTooltip from 'ui/shared/AddressLinkWithTooltip';
 
 const WatchListAddressItem = ({ item }: {item: TWatchlistItem}) => {
   const mainTextColor = useColorModeValue('gray.700', 'gray.50');
