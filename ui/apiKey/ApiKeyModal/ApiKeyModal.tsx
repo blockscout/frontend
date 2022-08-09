@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 
-import type { TApiKeyItem } from 'data/apiKey';
+import type { ApiKey } from 'pages/api/types/account';
+
 import FormModal from 'ui/shared/FormModal';
 
 import ApiKeyForm from './ApiKeyForm';
@@ -8,7 +9,7 @@ import ApiKeyForm from './ApiKeyForm';
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  data?: TApiKeyItem;
+  data?: ApiKey;
 }
 
 const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
@@ -19,7 +20,7 @@ const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
     return <ApiKeyForm data={ data }/>;
   }, [ data ]);
   return (
-    <FormModal<TApiKeyItem>
+    <FormModal<ApiKey>
       isOpen={ isOpen }
       onClose={ onClose }
       title={ title }

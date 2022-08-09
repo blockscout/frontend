@@ -9,10 +9,10 @@ import React, { useCallback, useEffect } from 'react';
 import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
 import { useForm, Controller } from 'react-hook-form';
 
-import type { TApiKeyItem } from 'data/apiKey';
+import type { ApiKey } from 'pages/api/types/account';
 
 type Props = {
-  data?: TApiKeyItem;
+  data?: ApiKey;
 }
 
 type Inputs = {
@@ -27,7 +27,7 @@ const ApiKeyForm: React.FC<Props> = ({ data }) => {
   const { control, handleSubmit, formState: { errors }, setValue } = useForm<Inputs>();
 
   useEffect(() => {
-    setValue('token', data?.token || '');
+    setValue('token', data?.api_key || '');
     setValue('name', data?.name || '');
   }, [ setValue, data ]);
 
