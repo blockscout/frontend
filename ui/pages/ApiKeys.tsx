@@ -1,4 +1,5 @@
 import { Box, Button, HStack, Link, Text, useDisclosure } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
 import type { TApiKeyItem } from 'data/apiKey';
@@ -18,6 +19,14 @@ const ApiKeys: React.FC = () => {
 
   const [ apiKeyModalData, setApiKeyModalData ] = useState<TApiKeyItem>();
   const [ deleteModalData, setDeleteModalData ] = useState<string>();
+
+  useQuery([ 'api-keys' ], async() => {
+    const response = await fetch('/api/account/api-keys');
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json();
+  });
 
   const onEditClick = useCallback((data: TApiKeyItem) => {
     setApiKeyModalData(data);
