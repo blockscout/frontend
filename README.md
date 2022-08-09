@@ -1,4 +1,4 @@
-[Design](https://www.figma.com/file/07zoJSAP7Vo655ertmlppA/My_Account?node-id=279%3A1006) | [API Postman](https://www.postman.com/collections/94a0bb509ef7c1bb5250) | [API Swagger](https://app.swaggerhub.com/apis/vbaranov/blockscout-account/2.0.0)
+[Design](https://www.figma.com/file/07zoJSAP7Vo655ertmlppA/My_Account?node-id=279%3A1006) | [API Doc](https://github.com/blockscout/blockscout-account/blob/account/apps/block_scout_web/API.md)
 
 -----
 ## Local Development
