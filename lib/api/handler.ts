@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import fetch from './fetch';
+import fetch from 'lib/api/fetch';
 
 type Methods = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
