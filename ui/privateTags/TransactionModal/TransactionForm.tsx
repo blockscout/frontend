@@ -37,20 +37,17 @@ const TransactionForm: React.FC<Props> = ({ data, onClose }) => {
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation((formData: Inputs) => {
-    let mutationFunction;
-    const requestParams = {
+    const body = JSON.stringify({
       name: formData?.tag,
       transaction_hash: formData?.transaction,
-    };
-    if (data) {
-      // edit tag
-      const params = new URLSearchParams(requestParams);
-      mutationFunction = () => fetch(`/api/account/private-tags/transaction/${ data.id }?${ params.toString() }`, { method: 'PUT' });
-    } else {
-      // add tag
-      mutationFunction = () => fetch('/api/account/private-tags/transaction', { method: 'POST', body: JSON.stringify(requestParams) });
+    });
+    const isEdit = data?.id;
+
+    if (isEdit) {
+      return fetch(`/api/account/private-tags/transaction/${ data.id }`, { method: 'PUT', body });
     }
-    return mutationFunction();
+
+    return fetch('/api/account/private-tags/transaction', { method: 'POST', body });
   }, {
     onError: () => {
       // eslint-disable-next-line no-console

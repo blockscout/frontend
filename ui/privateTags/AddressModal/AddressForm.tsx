@@ -37,20 +37,17 @@ const AddressForm: React.FC<Props> = ({ data, onClose }) => {
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation((formData: Inputs) => {
-    let mutationFunction;
-    const requestParams = {
+    const body = JSON.stringify({
       name: formData?.tag,
       address_hash: formData?.address,
-    };
-    if (data) {
-      // edit tag
-      const params = new URLSearchParams(requestParams);
-      mutationFunction = () => fetch(`/api/account/private-tags/address/${ data.id }?${ params.toString() }`, { method: 'PUT' });
-    } else {
-      // add tag
-      mutationFunction = () => fetch('/api/account/private-tags/address', { method: 'POST', body: JSON.stringify(requestParams) });
+    });
+
+    const isEdit = data?.id;
+    if (isEdit) {
+      return fetch(`/api/account/private-tags/address/${ data.id }`, { method: 'PUT', body });
     }
-    return mutationFunction();
+
+    return fetch('/api/account/private-tags/address', { method: 'POST', body });
   }, {
     onError: () => {
       // eslint-disable-next-line no-console
