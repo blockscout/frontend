@@ -1,4 +1,4 @@
-import type { AddressTags } from 'pages/api/types/account';
+import type { AddressTags } from 'types/api/account';
 
 import handler from 'pages/api/utils/handler';
 

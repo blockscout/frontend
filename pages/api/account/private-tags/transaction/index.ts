@@ -1,4 +1,4 @@
-import type { TransactionTags } from 'pages/api/types/account';
+import type { TransactionTags } from 'types/api/account';
 
 import handler from 'pages/api/utils/handler';
 

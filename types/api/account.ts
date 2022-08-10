@@ -7,8 +7,8 @@ export interface AddressTag {
 export type AddressTags = Array<AddressTag>
 
 export interface ApiKey {
-  apiKey: string;
-  apiKeyName: string;
+  api_key: string;
+  name: string;
 }
 
 export type ApiKeys = Array<ApiKey>

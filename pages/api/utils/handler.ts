@@ -6,35 +6,23 @@ type Methods = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 export default function handler<TRes>(getUrl: (_req: NextApiRequest) => string, allowedMethods: Array<Methods>) {
   return async(_req: NextApiRequest, res: NextApiResponse<TRes>) => {
-    if (_req.method === 'GET' && allowedMethods.includes('GET')) {
-      const response = await fetch(getUrl(_req));
-      const data = await response.json() as TRes;
-
-      res.status(200).json(data);
-    } else if (allowedMethods.includes('POST') && _req.method === 'POST') {
+    if (_req.method && allowedMethods.includes(_req.method as Methods)) {
+      const isBodyDisallowed = _req.method === 'GET' || _req.method === 'HEAD';
       const response = await fetch(getUrl(_req), {
-        method: 'POST',
-        body: _req.body,
+        method: _req.method,
+        body: isBodyDisallowed ? undefined : _req.body,
       });
-      const data = await response.json() as TRes;
 
-      res.status(200).json(data);
-    } else if (allowedMethods.includes('PUT') && _req.method === 'PUT') {
-      const response = await fetch(getUrl(_req), {
-        method: 'PUT',
-        body: _req.body,
-      });
-      const data = await response.json() as TRes;
-
-      res.status(200).json(data);
-    } else if (allowedMethods.includes('DELETE') && _req.method === 'DELETE') {
-      const response = await fetch(getUrl(_req), { method: 'DELETE' });
       // FIXME: add error handlers
       if (response.status !== 200) {
         // eslint-disable-next-line no-console
-        console.log(response.statusText);
+        console.error(response.statusText);
+        res.status(500).end('Unknown error');
+        return;
       }
-      res.status(200).end();
+
+      const data = await response.json() as TRes;
+      res.status(200).json(data);
     } else {
       res.setHeader('Allow', allowedMethods);
       res.status(405).end(`Method ${ _req.method } Not Allowed`);

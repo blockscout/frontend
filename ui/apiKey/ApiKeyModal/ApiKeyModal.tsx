@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 
-import type { ApiKey } from 'pages/api/types/account';
+import type { ApiKey } from 'types/api/account';
 
 import FormModal from 'ui/shared/FormModal';
 

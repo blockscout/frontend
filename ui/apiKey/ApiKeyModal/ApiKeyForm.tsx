@@ -10,7 +10,7 @@ import React, { useCallback, useEffect } from 'react';
 import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
 import { useForm, Controller } from 'react-hook-form';
 
-import type { ApiKey, ApiKeys } from 'pages/api/types/account';
+import type { ApiKey, ApiKeys } from 'types/api/account';
 
 type Props = {
   data?: ApiKey;
