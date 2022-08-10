@@ -34,7 +34,7 @@ const MainNavLink = ({ text, pathname, icon }: Props) => {
         <HStack justifyContent="space-between">
           <HStack spacing={ 3 }>
             <Icon as={ icon } boxSize="30px"/>
-            <Text>{ text }</Text>
+            <Text variant="inherit">{ text }</Text>
           </HStack>
           <ChevronRightIcon boxSize={ 6 }/>
         </HStack>
