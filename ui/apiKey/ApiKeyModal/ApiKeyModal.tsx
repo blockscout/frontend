@@ -17,8 +17,8 @@ const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
   const text = 'Add an application name to identify your API key. Click the button below to auto-generate the associated key.';
 
   const renderForm = useCallback(() => {
-    return <ApiKeyForm data={ data }/>;
-  }, [ data ]);
+    return <ApiKeyForm data={ data } onClose={ onClose }/>;
+  }, [ data, onClose ]);
   return (
     <FormModal<ApiKey>
       isOpen={ isOpen }

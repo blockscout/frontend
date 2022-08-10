@@ -18,7 +18,7 @@ const ApiKeysPage: React.FC = () => {
   const deleteModalProps = useDisclosure();
 
   const [ apiKeyModalData, setApiKeyModalData ] = useState<ApiKey>();
-  const [ deleteModalData, setDeleteModalData ] = useState<string>();
+  const [ deleteModalData, setDeleteModalData ] = useState<ApiKey>();
 
   const { data, isLoading, isError } = useQuery<unknown, unknown, ApiKeys>([ 'api-keys' ], async() => {
     const response = await fetch('/api/account/api-keys');
@@ -39,7 +39,7 @@ const ApiKeysPage: React.FC = () => {
   }, [ apiKeyModalProps ]);
 
   const onDeleteClick = useCallback((data: ApiKey) => {
-    setDeleteModalData(data.name);
+    setDeleteModalData(data);
     deleteModalProps.onOpen();
   }, [ deleteModalProps ]);
 
@@ -94,7 +94,7 @@ const ApiKeysPage: React.FC = () => {
         { content }
       </Box>
       <ApiKeyModal { ...apiKeyModalProps } onClose={ onApiKeyModalClose } data={ apiKeyModalData }/>
-      <DeleteApiKeyModal { ...deleteModalProps } onClose={ onDeleteModalClose } name={ deleteModalData }/>
+      { deleteModalData && <DeleteApiKeyModal { ...deleteModalProps } onClose={ onDeleteModalClose } data={ deleteModalData }/> }
     </Page>
   );
 };
