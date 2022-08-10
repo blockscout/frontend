@@ -22,6 +22,7 @@ export default function handler<TRes>(getUrl: (_req: NextApiRequest) => string, 
     } else if (allowedMethods.includes('PUT') && _req.method === 'PUT') {
       const response = await fetch(getUrl(_req), {
         method: 'PUT',
+        body: _req.body,
       });
       const data = await response.json() as TRes;
 

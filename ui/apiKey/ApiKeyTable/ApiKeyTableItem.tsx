@@ -6,15 +6,16 @@ import {
 } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
-import type { TApiKeyItem } from 'data/apiKey';
+import type { ApiKey } from 'pages/api/types/account';
+
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DeleteButton from 'ui/shared/DeleteButton';
 import EditButton from 'ui/shared/EditButton';
 
 interface Props {
-  item: TApiKeyItem;
-  onEditClick: (data: TApiKeyItem) => void;
-  onDeleteClick: (data: TApiKeyItem) => void;
+  item: ApiKey;
+  onEditClick: (item: ApiKey) => void;
+  onDeleteClick: (item: ApiKey) => void;
 }
 
 const WatchlistTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
@@ -28,11 +29,11 @@ const WatchlistTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   }, [ item, onDeleteClick ]);
 
   return (
-    <Tr alignItems="top" key={ item.token }>
+    <Tr alignItems="top" key={ item.api_key }>
       <Td>
         <HStack>
-          <Text fontSize="md" fontWeight={ 600 }>{ item.token }</Text>
-          <CopyToClipboard text={ item.token }/>
+          <Text fontSize="md" fontWeight={ 600 }>{ item.api_key }</Text>
+          <CopyToClipboard text={ item.api_key }/>
         </HStack>
         <Text fontSize="sm" marginTop={ 0.5 } variant="secondary">{ item.name }</Text>
       </Td>

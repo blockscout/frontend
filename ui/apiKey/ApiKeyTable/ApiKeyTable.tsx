@@ -8,14 +8,14 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TApiKey, TApiKeyItem } from 'data/apiKey';
+import type { ApiKeys, ApiKey } from 'pages/api/types/account';
 
 import ApiKeyTableItem from './ApiKeyTableItem';
 
 interface Props {
-  data: TApiKey;
-  onEditClick: (data: TApiKeyItem) => void;
-  onDeleteClick: (data: TApiKeyItem) => void;
+  data: ApiKeys;
+  onEditClick: (item: ApiKey) => void;
+  onDeleteClick: (item: ApiKey) => void;
   limit: number;
 }
 
@@ -33,7 +33,7 @@ const ApiKeyTable = ({ data, onDeleteClick, onEditClick, limit }: Props) => {
           { data.map((item) => (
             <ApiKeyTableItem
               item={ item }
-              key={ item.token }
+              key={ item.api_key }
               onDeleteClick={ onDeleteClick }
               onEditClick={ onEditClick }
             />
