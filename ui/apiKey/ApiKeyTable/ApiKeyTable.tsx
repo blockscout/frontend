@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ApiKeys, ApiKey } from 'pages/api/types/account';
+import type { ApiKeys, ApiKey } from 'types/api/account';
 
 import ApiKeyTableItem from './ApiKeyTableItem';
 

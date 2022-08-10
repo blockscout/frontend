@@ -2,7 +2,7 @@ import { Text } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useCallback } from 'react';
 
-import type { ApiKey, ApiKeys } from 'pages/api/types/account';
+import type { ApiKey, ApiKeys } from 'types/api/account';
 
 import DeleteModal from 'ui/shared/DeleteModal';
 

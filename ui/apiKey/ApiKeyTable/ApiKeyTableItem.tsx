@@ -6,7 +6,7 @@ import {
 } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
-import type { ApiKey } from 'pages/api/types/account';
+import type { ApiKey } from 'types/api/account';
 
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DeleteButton from 'ui/shared/DeleteButton';

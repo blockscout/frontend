@@ -2,7 +2,7 @@ import { Box, Button, HStack, Link, Text, Spinner, useDisclosure } from '@chakra
 import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
-import type { ApiKey, ApiKeys } from 'pages/api/types/account';
+import type { ApiKey, ApiKeys } from 'types/api/account';
 
 import { space } from 'lib/html-entities';
 import ApiKeyModal from 'ui/apiKey/ApiKeyModal/ApiKeyModal';
