@@ -6,12 +6,13 @@ import React from 'react';
 import useColors from './useColors';
 
 interface Props {
+  isCollapsed: boolean;
   pathname: string;
   text: string;
   icon: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
 }
 
-const NavLink = ({ text, pathname, icon }: Props) => {
+const NavLink = ({ text, pathname, icon, isCollapsed }: Props) => {
   const router = useRouter();
   const isActive = router.pathname === pathname;
 
@@ -22,8 +23,8 @@ const NavLink = ({ text, pathname, icon }: Props) => {
       <Link
         as="li"
         listStyleType="none"
-        w="180px"
-        px={ 3 }
+        w={ isCollapsed ? '60px' : '180px' }
+        px={ isCollapsed ? '15px' : 3 }
         py={ 2.5 }
         color={ isActive ? colors.text.active : colors.text.default }
         bgColor={ isActive ? colors.bg.active : colors.bg.default }
@@ -32,7 +33,7 @@ const NavLink = ({ text, pathname, icon }: Props) => {
       >
         <HStack spacing={ 3 }>
           <Icon as={ icon } boxSize="30px"/>
-          <Text variant="inherit">{ text }</Text>
+          { !isCollapsed && <Text variant="inherit">{ text }</Text> }
         </HStack>
       </Link>
     </NextLink>

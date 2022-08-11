@@ -1,4 +1,4 @@
-import { VStack, Text, HStack, Icon, Link, useColorModeValue } from '@chakra-ui/react';
+import { VStack, Text, Stack, Icon, Link, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import ghIcon from 'icons/social/git.svg';
@@ -14,7 +14,11 @@ const SOCIAL_LINKS = [
   { link: '#stats', icon: statsIcon },
 ];
 
-const NavFooter = () => {
+interface Props {
+  isCollapsed: boolean;
+}
+
+const NavFooter = ({ isCollapsed }: Props) => {
   return (
     <VStack
       as="footer"
@@ -23,25 +27,29 @@ const NavFooter = () => {
       borderColor={ useColorModeValue('blackAlpha.200', 'whiteAlpha.200') }
       paddingTop={ 8 }
       marginTop={ 20 }
-      w="100%"
+      // w="100%"
       alignItems="baseline"
       color="gray.500"
       fontSize="xs"
       { ...getDefaultTransitionProps() }
     >
-      <HStack>
+      <Stack direction={ isCollapsed ? 'column' : 'row' }>
         { SOCIAL_LINKS.map(sl => {
           return (
-            <Link href={ sl.link } key={ sl.link } variant="secondary">
+            <Link href={ sl.link } key={ sl.link } variant="secondary" w={ 5 } h={ 5 }>
               <Icon as={ sl.icon } boxSize={ 5 }/>
             </Link>
           );
         }) }
-      </HStack>
-      <Text variant="secondary">
-        Blockscout is a tool for inspecting and analyzing EVM based blockchains. Blockchain explorer for Ethereum Networks.
-      </Text>
-      <Text variant="secondary">Version: <Link>v4.2.1-beta</Link></Text>
+      </Stack>
+      { !isCollapsed && (
+        <>
+          <Text variant="secondary">
+            Blockscout is a tool for inspecting and analyzing EVM based blockchains. Blockchain explorer for Ethereum Networks.
+          </Text>
+          <Text variant="secondary">Version: <Link>v4.2.1-beta</Link></Text>
+        </>
+      ) }
     </VStack>
   );
 };

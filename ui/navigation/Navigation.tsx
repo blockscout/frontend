@@ -36,26 +36,43 @@ const accountNavItems = [
 ];
 
 const Navigation = () => {
+  const [ isCollapsed, setCollapsedState ] = React.useState(false);
+
+  const handleTogglerClick = React.useCallback(() => {
+    setCollapsedState((flag) => !flag);
+  }, []);
+
+  const logoColor = useColorModeValue('blue.600', 'white');
+
   return (
     <Flex
       position="relative"
       flexDirection="column"
-      alignItems="flex-start"
+      alignItems="center"
       borderRight="1px solid"
       borderColor={ useColorModeValue('blackAlpha.200', 'whiteAlpha.200') }
-      px={ 6 }
+      px={ isCollapsed ? 4 : 6 }
       py={ 12 }
-      width="300px"
+      width={ isCollapsed ? '92px' : '229px' }
       { ...getDefaultTransitionProps() }
     >
-      <HStack as="header" justifyContent="space-between" w="100%" px={ 3 } h={ 10 } alignItems="center">
-        <Icon
-          as={ logoIcon }
-          width="113px"
-          height="20px"
-          color={ useColorModeValue('blue.600', 'white') }
-          { ...getDefaultTransitionProps() }
-        />
+      <HStack
+        as="header"
+        justifyContent={ isCollapsed ? 'center' : 'space-between' }
+        alignItems="center"
+        w="100%"
+        px={ 3 }
+        h={ 10 }
+      >
+        { !isCollapsed && (
+          <Icon
+            as={ logoIcon }
+            width="113px"
+            height="20px"
+            color={ logoColor }
+            { ...getDefaultTransitionProps() }
+          />
+        ) }
         <Icon
           as={ networksIcon }
           width="16px"
@@ -66,15 +83,15 @@ const Navigation = () => {
       </HStack>
       <Box as="nav" mt={ 14 }>
         <VStack as="ul" spacing="2">
-          { mainNavItems.map((item) => <NavLink key={ item.text } { ...item }/>) }
+          { mainNavItems.map((item) => <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed }/>) }
         </VStack>
       </Box>
       <Box as="nav" mt={ 12 }>
         <VStack as="ul" spacing="2">
-          { accountNavItems.map((item) => <NavLink key={ item.text } { ...item }/>) }
+          { accountNavItems.map((item) => <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed }/>) }
         </VStack>
       </Box>
-      <NavFooter/>
+      <NavFooter isCollapsed={ isCollapsed }/>
       <ChevronLeftIcon
         width={ 6 }
         height={ 6 }
@@ -83,10 +100,13 @@ const Navigation = () => {
         color={ useColorModeValue('blackAlpha.400', 'whiteAlpha.400') }
         borderColor={ useColorModeValue('blackAlpha.200', 'whiteAlpha.200') }
         borderRadius="base"
+        transform={ isCollapsed ? 'rotate(180deg)' : 'rotate(0)' }
+        transformOrigin="center"
         position="absolute"
         top="104px"
         right={ -3 }
         cursor="pointer"
+        onClick={ handleTogglerClick }
       />
     </Flex>
   );
