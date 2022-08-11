@@ -25,13 +25,13 @@ const NavFooter = ({ isCollapsed }: Props) => {
       spacing={ 8 }
       borderTop="1px solid"
       borderColor={ useColorModeValue('blackAlpha.200', 'whiteAlpha.200') }
+      width={ isCollapsed ? '20px' : '180px' }
       paddingTop={ 8 }
       marginTop={ 20 }
-      // w="100%"
-      alignItems="baseline"
+      alignItems="flex-start"
       color="gray.500"
       fontSize="xs"
-      { ...getDefaultTransitionProps() }
+      { ...getDefaultTransitionProps({ transitionProperty: 'width' }) }
     >
       <Stack direction={ isCollapsed ? 'column' : 'row' }>
         { SOCIAL_LINKS.map(sl => {

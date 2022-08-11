@@ -3,6 +3,8 @@ import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
+
 import useColors from './useColors';
 
 interface Props {
@@ -30,6 +32,8 @@ const NavLink = ({ text, pathname, icon, isCollapsed }: Props) => {
         bgColor={ isActive ? colors.bg.active : colors.bg.default }
         _hover={{ color: isActive ? colors.text.active : colors.text.hover }}
         borderRadius="base"
+        whiteSpace="nowrap"
+        { ...getDefaultTransitionProps({ transitionProperty: 'width, padding' }) }
       >
         <HStack spacing={ 3 }>
           <Icon as={ icon } boxSize="30px"/>

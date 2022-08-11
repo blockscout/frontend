@@ -1,5 +1,5 @@
 import { ChevronLeftIcon } from '@chakra-ui/icons';
-import { Flex, HStack, Icon, Box, VStack, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Icon, Box, VStack, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import abiIcon from 'icons/ABI.svg';
@@ -54,17 +54,24 @@ const Navigation = () => {
       px={ isCollapsed ? 4 : 6 }
       py={ 12 }
       width={ isCollapsed ? '92px' : '229px' }
-      { ...getDefaultTransitionProps() }
+      { ...getDefaultTransitionProps({ transitionProperty: 'width, padding' }) }
     >
-      <HStack
+      <Box
         as="header"
-        justifyContent={ isCollapsed ? 'center' : 'space-between' }
+        display="flex"
+        justifyContent="center"
         alignItems="center"
+        flexDirection="row"
         w="100%"
         px={ 3 }
         h={ 10 }
       >
-        { !isCollapsed && (
+        <Box
+          width={ isCollapsed ? '0' : '113px' }
+          display="inline-flex"
+          overflow="hidden"
+          { ...getDefaultTransitionProps({ transitionProperty: 'width' }) }
+        >
           <Icon
             as={ logoIcon }
             width="113px"
@@ -72,22 +79,23 @@ const Navigation = () => {
             color={ logoColor }
             { ...getDefaultTransitionProps() }
           />
-        ) }
+        </Box>
         <Icon
           as={ networksIcon }
           width="16px"
           height="16px"
           color={ useColorModeValue('gray.500', 'white') }
-          { ...getDefaultTransitionProps() }
+          marginLeft={ isCollapsed ? '0px' : '27px' }
+          { ...getDefaultTransitionProps({ transitionProperty: 'margin' }) }
         />
-      </HStack>
+      </Box>
       <Box as="nav" mt={ 14 }>
-        <VStack as="ul" spacing="2">
+        <VStack as="ul" spacing="2" alignItems="flex-start" overflow="hidden">
           { mainNavItems.map((item) => <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed }/>) }
         </VStack>
       </Box>
       <Box as="nav" mt={ 12 }>
-        <VStack as="ul" spacing="2">
+        <VStack as="ul" spacing="2" alignItems="flex-start" overflow="hidden">
           { accountNavItems.map((item) => <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed }/>) }
         </VStack>
       </Box>
@@ -101,6 +109,7 @@ const Navigation = () => {
         borderColor={ useColorModeValue('blackAlpha.200', 'whiteAlpha.200') }
         borderRadius="base"
         transform={ isCollapsed ? 'rotate(180deg)' : 'rotate(0)' }
+        { ...getDefaultTransitionProps({ transitionProperty: 'transform' }) }
         transformOrigin="center"
         position="absolute"
         top="104px"
