@@ -20,9 +20,9 @@ const Header = () => {
       <InputGroup>
         <InputLeftAddon w="111px">All filters</InputLeftAddon>
         <InputLeftElement w={ 6 } ml="132px" mr={ 2.5 }>
-          <SearchIcon w={ 5 } h={ 5 } color="gray.500"/>
+          <SearchIcon w={ 5 } h={ 5 } color={ useColorModeValue('blackAlpha.600', 'whiteAlpha.600') }/>
         </InputLeftElement>
-        <Input paddingInlineStart="50px" placeholder="Search by addresses / transactions / block / token... "/>
+        <Input paddingInlineStart="50px" placeholder="Search by addresses / transactions / block / token... " ml="1px"/>
       </InputGroup>
       <ColorModeToggler/>
       <Center minWidth="50px" width="50px" height="50px" bg={ useColorModeValue('blackAlpha.100', 'white') } borderRadius="50%" overflow="hidden">
