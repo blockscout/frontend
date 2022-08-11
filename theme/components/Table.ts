@@ -45,8 +45,8 @@ const Table: ComponentMultiStyleConfig = {
     },
     table: {
       tableLayout: 'fixed',
-      borderTopLeftRadius: 'md',
-      borderTopRightRadius: 'md',
+      borderTopLeftRadius: 'base',
+      borderTopRightRadius: 'base',
       overflow: 'hidden',
       fontVariant: 'normal',
     },

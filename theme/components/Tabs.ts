@@ -3,21 +3,23 @@ import type { ComponentStyleConfig } from '@chakra-ui/theme';
 import type {
   PartsStyleFunction,
 } from '@chakra-ui/theme-tools';
-import { getColor } from '@chakra-ui/theme-tools';
+import { mode } from '@chakra-ui/theme-tools';
 
 const variantSoftRounded: PartsStyleFunction<typeof parts> = (props) => {
-  const { colorScheme: c, theme } = props;
   return {
     tab: {
-      borderRadius: '12px',
-      fontWeight: 'semibold',
-      color: 'gray.600',
+      borderRadius: 'base',
+      fontWeight: '600',
+      color: mode('blue.700', 'gray.400')(props),
       _selected: {
-        color: getColor(theme, `${ c }.700`),
-        bg: getColor(theme, `${ c }.50`),
+        color: mode('blue.700', 'gray.50')(props),
+        bg: mode('blue.50', 'gray.800')(props),
+        _hover: {
+          color: mode('blue.700', 'gray.50')(props),
+        },
       },
       _hover: {
-        color: getColor(theme, `${ c }.400`),
+        color: 'blue.400',
       },
     },
   };

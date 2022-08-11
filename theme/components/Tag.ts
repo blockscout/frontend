@@ -10,7 +10,7 @@ const variantGray: PartsStyleFunction<typeof parts> = (props) => {
 
   return {
     container: {
-      bg: mode('gray.200', 'gray.600')(props),
+      bg: mode('blackAlpha.100', 'whiteAlpha.400')(props),
       color: mode('gray.600', 'gray.50')(props),
       ...transitionProps,
     },
@@ -27,7 +27,7 @@ const Tag: ComponentStyleConfig = {
       display: 'inline-block',
       overflow: 'hidden',
       textOverflow: 'ellipsis',
-      borderRadius: 'md',
+      borderRadius: 'sm',
     },
   },
   variants,
