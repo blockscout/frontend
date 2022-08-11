@@ -3,7 +3,7 @@ import React from 'react';
 
 import AppsIcon from 'icons/apps.svg';
 import BlocksIcon from 'icons/block.svg';
-import BlockscoutIcon from 'icons/blockscout.svg';
+import GearIcon from 'icons/gear.svg';
 import TokensIcon from 'icons/token.svg';
 import TransactionsIcon from 'icons/transactions.svg';
 
@@ -14,12 +14,12 @@ const navItems = [
   { text: 'Transactions', pathname: '/transactions', icon: TransactionsIcon },
   { text: 'Tokens', pathname: '/tokens', icon: TokensIcon },
   { text: 'Apps', pathname: '/apps', icon: AppsIcon },
-  { text: 'Blockscout', pathname: '/blockscout', icon: BlockscoutIcon },
+  { text: 'Other', pathname: '/other', icon: GearIcon },
 ];
 
 const MainNavigation = () => {
   return (
-    <Box as="nav">
+    <Box as="nav" mt={ 14 }>
       <VStack as="ul" spacing="2">
         { navItems.map((item) => <MainNavLink key={ item.text } { ...item }/>) }
       </VStack>

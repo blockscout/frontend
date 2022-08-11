@@ -19,7 +19,7 @@ const navItems = [
 
 const AccountNavigation = () => {
   return (
-    <Box as="nav">
+    <Box as="nav" mt={ 12 }>
       <VStack as="ul" spacing="2">
         { navItems.map((item) => <AccountNavLink key={ item.text } { ...item }/>) }
       </VStack>

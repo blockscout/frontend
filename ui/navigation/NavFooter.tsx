@@ -22,6 +22,7 @@ const NavFooter = () => {
       borderTop="1px solid"
       borderColor={ useColorModeValue('blackAlpha.200', 'whiteAlpha.200') }
       paddingTop={ 8 }
+      marginTop={ 20 }
       w="100%"
       alignItems="baseline"
       color="gray.500"
@@ -37,10 +38,10 @@ const NavFooter = () => {
           );
         }) }
       </HStack>
-      <Text>
+      <Text variant="secondary">
         Blockscout is a tool for inspecting and analyzing EVM based blockchains. Blockchain explorer for Ethereum Networks.
       </Text>
-      <Text>Version: <Link color="blue.500">v4.2.1-beta</Link></Text>
+      <Text variant="secondary">Version: <Link>v4.2.1-beta</Link></Text>
     </VStack>
   );
 };

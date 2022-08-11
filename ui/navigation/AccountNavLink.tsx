@@ -22,13 +22,13 @@ const AccountNavLink = ({ text, pathname, icon }: Props) => {
       <Link
         as="li"
         listStyleType="none"
-        w="220px"
-        px={ 4 }
+        w="180px"
+        px={ 3 }
         py={ 2.5 }
         color={ isActive ? colors.text.active : colors.text.default }
         bgColor={ isActive ? colors.bg.active : colors.bg.default }
         _hover={{ color: isActive ? colors.text.active : colors.text.hover }}
-        borderRadius="base"
+        borderRadius="md"
       >
         <HStack spacing={ 3 }>
           <Icon as={ icon } boxSize="30px"/>
