@@ -14,6 +14,7 @@ import publicTagIcon from 'icons/publictags.svg';
 import tokensIcon from 'icons/token.svg';
 import transactionsIcon from 'icons/transactions.svg';
 import watchlistIcon from 'icons/watchlist.svg';
+import * as cookies from 'lib/cookies';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 
 import NavFooter from './NavFooter';
@@ -38,9 +39,14 @@ const accountNavItems = [
 const Navigation = () => {
   const [ isCollapsed, setCollapsedState ] = React.useState(false);
 
+  React.useEffect(() => {
+    setCollapsedState(cookies.get(cookies.NAMES.NAV_BAR_COLLAPSED) === 'true');
+  }, []);
+
   const handleTogglerClick = React.useCallback(() => {
     setCollapsedState((flag) => !flag);
-  }, []);
+    cookies.set(cookies.NAMES.NAV_BAR_COLLAPSED, isCollapsed ? 'false' : 'true');
+  }, [ isCollapsed ]);
 
   const logoColor = useColorModeValue('blue.600', 'white');
 

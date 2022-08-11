@@ -28,6 +28,7 @@
     "react-identicons": "^1.2.5",
     "react-jazzicon": "^1.0.4",
     "react-scroll": "^1.8.7",
+    "typescript-cookie": "^1.0.4",
     "use-font-face-observer": "^1.2.1"
   },
   "devDependencies": {
