@@ -109,11 +109,11 @@ const Navigation = () => {
         borderColor={ useColorModeValue('blackAlpha.200', 'whiteAlpha.200') }
         borderRadius="base"
         transform={ isCollapsed ? 'rotate(180deg)' : 'rotate(0)' }
-        { ...getDefaultTransitionProps({ transitionProperty: 'transform' }) }
+        { ...getDefaultTransitionProps({ transitionProperty: 'transform, left' }) }
         transformOrigin="center"
-        position="absolute"
+        position="fixed"
         top="104px"
-        right={ -3 }
+        left={ isCollapsed ? '80px' : '216px' }
         cursor="pointer"
         onClick={ handleTogglerClick }
       />
