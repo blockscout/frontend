@@ -37,11 +37,7 @@ const accountNavItems = [
 ];
 
 const Navigation = () => {
-  const [ isCollapsed, setCollapsedState ] = React.useState(false);
-
-  React.useEffect(() => {
-    setCollapsedState(cookies.get(cookies.NAMES.NAV_BAR_COLLAPSED) === 'true');
-  }, []);
+  const [ isCollapsed, setCollapsedState ] = React.useState(cookies.get(cookies.NAMES.NAV_BAR_COLLAPSED) === 'true');
 
   const handleTogglerClick = React.useCallback(() => {
     setCollapsedState((flag) => !flag);
