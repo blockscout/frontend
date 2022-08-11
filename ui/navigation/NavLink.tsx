@@ -11,7 +11,7 @@ interface Props {
   icon: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
 }
 
-const MainNavLink = ({ text, pathname, icon }: Props) => {
+const NavLink = ({ text, pathname, icon }: Props) => {
   const router = useRouter();
   const isActive = router.pathname === pathname;
 
@@ -39,4 +39,4 @@ const MainNavLink = ({ text, pathname, icon }: Props) => {
   );
 };
 
-export default MainNavLink;
+export default React.memo(NavLink);
