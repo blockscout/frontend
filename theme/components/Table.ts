@@ -11,15 +11,15 @@ const variantSimple: PartsStyleFunction<typeof parts> = (props) => {
   return {
     th: {
       border: 0,
-      color: mode('gray.500', 'gray.50')(props),
+      color: mode('gray.600', 'gray.50')(props),
       ...transitionProps,
     },
     thead: {
-      backgroundColor: mode('gray.50', 'whiteAlpha.200')(props),
+      backgroundColor: mode('blackAlpha.100', 'whiteAlpha.200')(props),
       ...transitionProps,
     },
     td: {
-      borderColor: mode('gray.200', 'whiteAlpha.200')(props),
+      borderColor: mode('blackAlpha.200', 'whiteAlpha.200')(props),
       ...transitionProps,
     },
   };
@@ -45,8 +45,8 @@ const Table: ComponentMultiStyleConfig = {
     },
     table: {
       tableLayout: 'fixed',
-      borderTopLeftRadius: 'md',
-      borderTopRightRadius: 'md',
+      borderTopLeftRadius: 'base',
+      borderTopRightRadius: 'base',
       overflow: 'hidden',
       fontVariant: 'normal',
     },

@@ -1,18 +1,20 @@
-import { ChevronRightIcon } from '@chakra-ui/icons';
-import { Link, Icon, Text, HStack } from '@chakra-ui/react';
+import { Link, Icon, Text, HStack, Tooltip } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
+
 import useColors from './useColors';
 
 interface Props {
+  isCollapsed: boolean;
   pathname: string;
   text: string;
   icon: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
 }
 
-const MainNavLink = ({ text, pathname, icon }: Props) => {
+const NavLink = ({ text, pathname, icon, isCollapsed }: Props) => {
   const router = useRouter();
   const isActive = router.pathname === pathname;
 
@@ -20,27 +22,37 @@ const MainNavLink = ({ text, pathname, icon }: Props) => {
 
   return (
     <NextLink href={ pathname } passHref>
+
       <Link
         as="li"
         listStyleType="none"
-        w="220px"
-        px={ 4 }
+        w={ isCollapsed ? '60px' : '180px' }
+        px={ isCollapsed ? '15px' : 3 }
         py={ 2.5 }
         color={ isActive ? colors.text.active : colors.text.default }
         bgColor={ isActive ? colors.bg.active : colors.bg.default }
         _hover={{ color: isActive ? colors.text.active : colors.text.hover }}
         borderRadius="base"
+        whiteSpace="nowrap"
+        { ...getDefaultTransitionProps({ transitionProperty: 'width, padding' }) }
       >
-        <HStack justifyContent="space-between">
+        <Tooltip
+          label={ text }
+          hasArrow={ false }
+          isDisabled={ !isCollapsed }
+          placement="right"
+          variant="nav"
+          gutter={ 15 }
+          color={ isActive ? colors.text.active : colors.text.hover }
+        >
           <HStack spacing={ 3 }>
             <Icon as={ icon } boxSize="30px"/>
-            <Text>{ text }</Text>
+            { !isCollapsed && <Text variant="inherit">{ text }</Text> }
           </HStack>
-          <ChevronRightIcon boxSize={ 6 }/>
-        </HStack>
+        </Tooltip>
       </Link>
     </NextLink>
   );
 };
 
-export default MainNavLink;
+export default React.memo(NavLink);

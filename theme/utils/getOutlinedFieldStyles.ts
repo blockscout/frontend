@@ -36,7 +36,10 @@ export default function getOutlinedFieldStyles(props: StyleFunctionProps) {
       borderColor: getColor(theme, fc),
       boxShadow: '0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06)',
     },
-    ':placeholder-shown:not(:focus-visible):not(:hover)': { borderColor: mode('gray.100', 'whiteAlpha.200')(props) },
+    _placeholder: {
+      color: mode('blackAlpha.600', 'whiteAlpha.600')(props),
+    },
+    ':placeholder-shown:not(:focus-visible):not(:hover)': { borderColor: mode('blackAlpha.100', 'whiteAlpha.200')(props) },
     ':-webkit-autofill': { transition: 'background-color 5000s ease-in-out 0s' },
     ':-webkit-autofill:hover': { transition: 'background-color 5000s ease-in-out 0s' },
     ':-webkit-autofill:focus': { transition: 'background-color 5000s ease-in-out 0s' },

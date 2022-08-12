@@ -33,8 +33,9 @@ const variantOutline: PartsStyleFunction<typeof parts> = (props) => {
     field: getOutlinedFieldStyles(props),
     addon: {
       border: '2px solid',
-      borderColor: mode('gray.100', 'whiteAlpha.200')(props),
-      bg: mode('gray.100', 'whiteAlpha.200')(props),
+      borderColor: 'transparent',
+      bg: mode('blackAlpha.100', 'whiteAlpha.200')(props),
+      color: mode('blackAlpha.800', 'whiteAlpha.800')(props),
       ...transitionProps,
     },
   };

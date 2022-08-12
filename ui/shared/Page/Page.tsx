@@ -13,7 +13,7 @@ const Page = ({ children }: Props) => {
     <HStack
       w="100%"
       minH="100vh"
-      spacing={ 16 }
+      spacing={ 12 }
       alignItems="stretch"
       paddingRight="60px"
     >

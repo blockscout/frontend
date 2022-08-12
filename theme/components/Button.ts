@@ -63,6 +63,7 @@ const variants = {
 const Button: ComponentStyleConfig = {
   baseStyle: {
     fontWeight: 'normal',
+    borderRadius: 'base',
   },
   variants,
   sizes: {
