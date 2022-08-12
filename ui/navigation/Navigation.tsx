@@ -108,6 +108,7 @@ const Navigation = () => {
         bgColor={ useColorModeValue('white', 'black') }
         border="1px"
         color={ useColorModeValue('blackAlpha.400', 'whiteAlpha.400') }
+        _hover={{ color: 'blue.400' }}
         borderColor={ useColorModeValue('blackAlpha.200', 'whiteAlpha.200') }
         borderRadius="base"
         transform={ isCollapsed ? 'rotate(180deg)' : 'rotate(0)' }
