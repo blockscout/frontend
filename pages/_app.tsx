@@ -6,6 +6,14 @@ import React, { useState } from 'react';
 
 import theme from 'theme';
 
+function SafeHydrate({ children }: { children: React.ReactNode}) {
+  return (
+    <div suppressHydrationWarning>
+      { typeof window === 'undefined' ? null : children }
+    </div>
+  );
+}
+
 function MyApp({ Component, pageProps }: AppProps) {
   const [ queryClient ] = useState(() => new QueryClient({
     defaultOptions: {
@@ -16,12 +24,14 @@ function MyApp({ Component, pageProps }: AppProps) {
   }));
 
   return (
-    <QueryClientProvider client={ queryClient }>
-      <ChakraProvider theme={ theme }>
-        <Component { ...pageProps }/>
-      </ChakraProvider>
-      <ReactQueryDevtools/>
-    </QueryClientProvider>
+    <SafeHydrate>
+      <QueryClientProvider client={ queryClient }>
+        <ChakraProvider theme={ theme }>
+          <Component { ...pageProps }/>
+        </ChakraProvider>
+        <ReactQueryDevtools/>
+      </QueryClientProvider>
+    </SafeHydrate>
   );
 }
 
