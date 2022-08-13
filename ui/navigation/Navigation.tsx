@@ -8,7 +8,6 @@ import appsIcon from 'icons/apps.svg';
 import blocksIcon from 'icons/block.svg';
 import gearIcon from 'icons/gear.svg';
 import logoIcon from 'icons/logo.svg';
-import networksIcon from 'icons/networks.svg';
 import privateTagIcon from 'icons/privattags.svg';
 import publicTagIcon from 'icons/publictags.svg';
 import tokensIcon from 'icons/token.svg';
@@ -19,6 +18,7 @@ import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 
 import NavFooter from './NavFooter';
 import NavLink from './NavLink';
+import NetworkMenu from './networkMenu/NetworkMenu';
 
 const mainNavItems = [
   { text: 'Blocks', pathname: '/blocks', icon: blocksIcon },
@@ -82,14 +82,7 @@ const Navigation = () => {
             { ...getDefaultTransitionProps() }
           />
         </Box>
-        <Icon
-          as={ networksIcon }
-          width="16px"
-          height="16px"
-          color={ useColorModeValue('gray.500', 'white') }
-          marginLeft={ isCollapsed ? '0px' : '27px' }
-          { ...getDefaultTransitionProps({ transitionProperty: 'margin' }) }
-        />
+        <NetworkMenu isCollapsed={ isCollapsed }/>
       </Box>
       <Box as="nav" mt={ 14 }>
         <VStack as="ul" spacing="2" alignItems="flex-start" overflow="hidden">
