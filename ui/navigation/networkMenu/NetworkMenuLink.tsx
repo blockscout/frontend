@@ -8,15 +8,17 @@ import checkIcon from 'icons/check.svg';
 
 import useColors from '../useColors';
 
-type Props = NetworkLink;
+interface Props extends NetworkLink {
+  isActive: boolean;
+}
 
-const NetworkMenuLink = ({ name, url, icon, iconColor }: Props) => {
-  const isActive = name === 'Gnosis Chain';
+const NetworkMenuLink = ({ name, pathname, icon, iconColor, isActive, isNewUi }: Props) => {
   const colors = useColors();
+  const href = isNewUi ? pathname : 'https://blockscout.com' + pathname;
 
   return (
     <Box as="li" listStyleType="none">
-      <NextLink href={ url } passHref>
+      <NextLink href={ href } passHref>
         <Flex
           as="a"
           px={ 4 }

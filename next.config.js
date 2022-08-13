@@ -7,4 +7,13 @@ module.exports = withReactSvg({
   webpack(config) {
     return config;
   },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/xdai/mainnet',
+        permanent: true,
+      },
+    ];
+  },
 });

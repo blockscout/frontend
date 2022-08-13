@@ -1,6 +1,5 @@
 import { Link, Icon, Text, HStack, Tooltip } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
@@ -9,15 +8,13 @@ import useColors from './useColors';
 
 interface Props {
   isCollapsed: boolean;
+  isActive: boolean;
   pathname: string;
   text: string;
   icon: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
 }
 
-const NavLink = ({ text, pathname, icon, isCollapsed }: Props) => {
-  const router = useRouter();
-  const isActive = router.pathname === pathname;
-
+const NavLink = ({ text, pathname, icon, isCollapsed, isActive }: Props) => {
   const colors = useColors();
 
   return (

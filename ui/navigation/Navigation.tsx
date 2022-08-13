@@ -1,5 +1,6 @@
 import { ChevronLeftIcon } from '@chakra-ui/icons';
 import { Flex, Icon, Box, VStack, useColorModeValue } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import abiIcon from 'icons/ABI.svg';
@@ -20,23 +21,26 @@ import NavFooter from './NavFooter';
 import NavLink from './NavLink';
 import NetworkMenu from './networkMenu/NetworkMenu';
 
-const mainNavItems = [
-  { text: 'Blocks', pathname: '/blocks', icon: blocksIcon },
-  { text: 'Transactions', pathname: '/transactions', icon: transactionsIcon },
-  { text: 'Tokens', pathname: '/tokens', icon: tokensIcon },
-  { text: 'Apps', pathname: '/apps', icon: appsIcon },
-  { text: 'Other', pathname: '/other', icon: gearIcon },
-];
-
-const accountNavItems = [
-  { text: 'Watchlist', pathname: '/watchlist', icon: watchlistIcon },
-  { text: 'Private tags', pathname: '/private-tags', icon: privateTagIcon },
-  { text: 'Public tags', pathname: '/public-tags', icon: publicTagIcon },
-  { text: 'API keys', pathname: '/api-keys', icon: apiKeysIcon },
-  { text: 'Custom ABI', pathname: '/custom-abi', icon: abiIcon },
-];
-
 const Navigation = () => {
+  const router = useRouter();
+  const basePathName = `/${ router.query.network_name }/${ router.query.network_type }`;
+
+  const mainNavItems = [
+    { text: 'Blocks', pathname: basePathName + '/blocks', icon: blocksIcon },
+    { text: 'Transactions', pathname: basePathName + '/transactions', icon: transactionsIcon },
+    { text: 'Tokens', pathname: basePathName + '/tokens', icon: tokensIcon },
+    { text: 'Apps', pathname: basePathName + '/apps', icon: appsIcon },
+    { text: 'Other', pathname: basePathName + '/other', icon: gearIcon },
+  ];
+
+  const accountNavItems = [
+    { text: 'Watchlist', pathname: basePathName + '/watchlist', icon: watchlistIcon },
+    { text: 'Private tags', pathname: basePathName + '/private-tags', icon: privateTagIcon },
+    { text: 'Public tags', pathname: basePathName + '/public-tags', icon: publicTagIcon },
+    { text: 'API keys', pathname: basePathName + '/api-keys', icon: apiKeysIcon },
+    { text: 'Custom ABI', pathname: basePathName + '/custom-abi', icon: abiIcon },
+  ];
+
   const [ isCollapsed, setCollapsedState ] = React.useState(cookies.get(cookies.NAMES.NAV_BAR_COLLAPSED) === 'true');
 
   const handleTogglerClick = React.useCallback(() => {
@@ -86,12 +90,12 @@ const Navigation = () => {
       </Box>
       <Box as="nav" mt={ 14 }>
         <VStack as="ul" spacing="2" alignItems="flex-start" overflow="hidden">
-          { mainNavItems.map((item) => <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed }/>) }
+          { mainNavItems.map((item) => <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed } isActive={ router.asPath === item.pathname }/>) }
         </VStack>
       </Box>
       <Box as="nav" mt={ 12 }>
         <VStack as="ul" spacing="2" alignItems="flex-start" overflow="hidden">
-          { accountNavItems.map((item) => <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed }/>) }
+          { accountNavItems.map((item) => <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed } isActive={ router.asPath === item.pathname }/>) }
         </VStack>
       </Box>
       <NavFooter isCollapsed={ isCollapsed }/>

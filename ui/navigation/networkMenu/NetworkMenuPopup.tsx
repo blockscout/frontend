@@ -1,4 +1,5 @@
 import { PopoverContent, PopoverBody, Text, Tabs, TabList, TabPanels, TabPanel, Tab, VStack, useColorModeValue } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { NetworkLink } from './types';
@@ -19,26 +20,29 @@ type PopupTab = 'mainnets' | 'testnets' | 'other';
 const TABS: Array<PopupTab> = [ 'mainnets', 'testnets', 'other' ];
 
 const NetworkMenuPopup = () => {
+  const router = useRouter();
   const gnosisChainIconColor = useColorModeValue('black', 'white');
   const poaChainIconColor = useColorModeValue('gray.100', 'gray.100');
 
+  const basePathName = `/${ router.query.network_name }/${ router.query.network_type }`;
+
   const LINKS: Record<PopupTab, Array<NetworkLink>> = {
     mainnets: [
-      { name: 'Gnosis Chain', url: '/xdai/mainnet', icon: gnosisIcon, iconColor: gnosisChainIconColor },
-      { name: 'Optimism on Gnosis Chain', url: '/xdai/optimism', icon: gnosisIcon, iconColor: gnosisChainIconColor },
-      { name: 'Arbitrum on xDai', url: '/xdai/aox', icon: arbitrumIcon },
-      { name: 'Ethereum', url: '/eth/mainnet', icon: ethereumIcon },
-      { name: 'Ethereum Classic', url: '/etc/mainnet', icon: ethereumClassicIcon },
-      { name: 'POA', url: '/poa/core', icon: poaIcon, iconColor: poaChainIconColor },
-      { name: 'RSK', url: '/rsk/mainnet', icon: rskIcon },
+      { name: 'Gnosis Chain', pathname: '/xdai/mainnet', icon: gnosisIcon, iconColor: gnosisChainIconColor, isNewUi: true },
+      { name: 'Optimism on Gnosis Chain', pathname: '/xdai/optimism', icon: gnosisIcon, iconColor: gnosisChainIconColor },
+      { name: 'Arbitrum on xDai', pathname: '/xdai/aox', icon: arbitrumIcon },
+      { name: 'Ethereum', pathname: '/eth/mainnet', icon: ethereumIcon },
+      { name: 'Ethereum Classic', pathname: '/etc/mainnet', icon: ethereumClassicIcon },
+      { name: 'POA', pathname: '/poa/core', icon: poaIcon, iconColor: poaChainIconColor },
+      { name: 'RSK', pathname: '/rsk/mainnet', icon: rskIcon },
     ],
     testnets: [
-      { name: 'Gnosis Chain Testnet', url: '/xdai/testnet', icon: arbitrumIcon },
-      { name: 'POA Sokol', url: '/poa/sokol', icon: poaSokolIcon },
+      { name: 'Gnosis Chain Testnet', pathname: '/xdai/testnet', icon: arbitrumIcon },
+      { name: 'POA Sokol', pathname: '/poa/sokol', icon: poaSokolIcon },
     ],
     other: [
-      { name: 'ARTIS Σ1', url: '/artis/sigma1', icon: artisIcon },
-      { name: 'LUKSO L14', url: '/lukso/l14', icon: poaIcon, iconColor: poaChainIconColor },
+      { name: 'ARTIS Σ1', pathname: '/artis/sigma1', icon: artisIcon },
+      { name: 'LUKSO L14', pathname: '/lukso/l14', icon: poaIcon, iconColor: poaChainIconColor },
     ],
   };
 
@@ -54,7 +58,7 @@ const NetworkMenuPopup = () => {
             { TABS.map((tab) => (
               <TabPanel key={ tab } p={ 0 }>
                 <VStack as="ul" spacing={ 2 } alignItems="stretch" mt={ 4 }>
-                  { LINKS[tab].map((link) => <NetworkMenuLink key={ link.name } { ...link }/>) }
+                  { LINKS[tab].map((link) => <NetworkMenuLink key={ link.name } { ...link } isActive={ basePathName === link.pathname }/>) }
                 </VStack>
               </TabPanel>
             )) }
