@@ -25,7 +25,7 @@ export interface ColorModeTogglerProps
   ThemingProps<'Switch'> {
 }
 
-export const ColorModeToggler = forwardRef<ColorModeTogglerProps, 'input'>((props, ref) => {
+const ColorModeToggler = forwardRef<ColorModeTogglerProps, 'input'>((props, ref) => {
   const ownProps = omitThemingProps(props);
   const { toggleColorMode, colorMode } = useColorMode();
 
@@ -91,3 +91,5 @@ export const ColorModeToggler = forwardRef<ColorModeTogglerProps, 'input'>((prop
 if (__DEV__) {
   ColorModeToggler.displayName = 'ColorModeToggler';
 }
+
+export default ColorModeToggler;
