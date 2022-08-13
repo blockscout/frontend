@@ -22,7 +22,6 @@ const NavLink = ({ text, pathname, icon, isCollapsed }: Props) => {
 
   return (
     <NextLink href={ pathname } passHref>
-
       <Link
         as="li"
         listStyleType="none"

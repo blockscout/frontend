@@ -1,4 +1,4 @@
-import { PopoverContent, PopoverBody, Text, Tabs, TabList, TabPanels, TabPanel, Tab } from '@chakra-ui/react';
+import { PopoverContent, PopoverBody, Text, Tabs, TabList, TabPanels, TabPanel, Tab, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { NetworkLink } from './types';
@@ -42,8 +42,10 @@ const NetworkMenuPopup = () => {
           </TabList>
           <TabPanels>
             { TABS.map((tab) => (
-              <TabPanel key={ tab }>
-                { LINKS[tab].map((link) => <NetworkMenuLink key={ link.name } { ...link }/>) }
+              <TabPanel key={ tab } p={ 0 }>
+                <VStack as="ul" spacing={ 2 } alignItems="stretch" mt={ 4 }>
+                  { LINKS[tab].map((link) => <NetworkMenuLink key={ link.name } { ...link }/>) }
+                </VStack>
               </TabPanel>
             )) }
           </TabPanels>

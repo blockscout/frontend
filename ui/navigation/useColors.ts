@@ -11,5 +11,9 @@ export default function useColors() {
       'default': 'transparent',
       active: useColorModeValue('blue.50', 'gray.800'),
     },
+    border: {
+      'default': useColorModeValue('gray.200', 'whiteAlpha.200'),
+      active: useColorModeValue('blue.50', 'gray.800'),
+    },
   };
 }
