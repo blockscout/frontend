@@ -15,6 +15,7 @@ import tokensIcon from 'icons/token.svg';
 import transactionsIcon from 'icons/transactions.svg';
 import watchlistIcon from 'icons/watchlist.svg';
 import * as cookies from 'lib/cookies';
+import useBasePath from 'lib/hooks/useBasePath';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 
 import NavFooter from './NavFooter';
@@ -23,22 +24,22 @@ import NetworkMenu from './networkMenu/NetworkMenu';
 
 const Navigation = () => {
   const router = useRouter();
-  const basePathName = `/${ router.query.network_name }/${ router.query.network_type }`;
+  const basePath = useBasePath();
 
   const mainNavItems = [
-    { text: 'Blocks', pathname: basePathName + '/blocks', icon: blocksIcon },
-    { text: 'Transactions', pathname: basePathName + '/transactions', icon: transactionsIcon },
-    { text: 'Tokens', pathname: basePathName + '/tokens', icon: tokensIcon },
-    { text: 'Apps', pathname: basePathName + '/apps', icon: appsIcon },
-    { text: 'Other', pathname: basePathName + '/other', icon: gearIcon },
+    { text: 'Blocks', pathname: basePath + '/blocks', icon: blocksIcon },
+    { text: 'Transactions', pathname: basePath + '/transactions', icon: transactionsIcon },
+    { text: 'Tokens', pathname: basePath + '/tokens', icon: tokensIcon },
+    { text: 'Apps', pathname: basePath + '/apps', icon: appsIcon },
+    { text: 'Other', pathname: basePath + '/other', icon: gearIcon },
   ];
 
   const accountNavItems = [
-    { text: 'Watchlist', pathname: basePathName + '/watchlist', icon: watchlistIcon },
-    { text: 'Private tags', pathname: basePathName + '/private-tags', icon: privateTagIcon },
-    { text: 'Public tags', pathname: basePathName + '/public-tags', icon: publicTagIcon },
-    { text: 'API keys', pathname: basePathName + '/api-keys', icon: apiKeysIcon },
-    { text: 'Custom ABI', pathname: basePathName + '/custom-abi', icon: abiIcon },
+    { text: 'Watchlist', pathname: basePath + '/watchlist', icon: watchlistIcon },
+    { text: 'Private tags', pathname: basePath + '/private-tags', icon: privateTagIcon },
+    { text: 'Public tags', pathname: basePath + '/public-tags', icon: publicTagIcon },
+    { text: 'API keys', pathname: basePath + '/api-keys', icon: apiKeysIcon },
+    { text: 'Custom ABI', pathname: basePath + '/custom-abi', icon: abiIcon },
   ];
 
   const [ isCollapsed, setCollapsedState ] = React.useState(cookies.get(cookies.NAMES.NAV_BAR_COLLAPSED) === 'true');

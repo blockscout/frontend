@@ -1,5 +1,4 @@
 import { PopoverContent, PopoverBody, Text, Tabs, TabList, TabPanels, TabPanel, Tab, VStack, useColorModeValue } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { NetworkLink } from './types';
@@ -12,6 +11,7 @@ import gnosisIcon from 'icons/networks/gnosis.svg';
 import poaSokolIcon from 'icons/networks/poa-sokol.svg';
 import poaIcon from 'icons/networks/poa.svg';
 import rskIcon from 'icons/networks/rsk.svg';
+import useBasePath from 'lib/hooks/useBasePath';
 
 import NetworkMenuLink from './NetworkMenuLink';
 
@@ -20,11 +20,10 @@ type PopupTab = 'mainnets' | 'testnets' | 'other';
 const TABS: Array<PopupTab> = [ 'mainnets', 'testnets', 'other' ];
 
 const NetworkMenuPopup = () => {
-  const router = useRouter();
   const gnosisChainIconColor = useColorModeValue('black', 'white');
   const poaChainIconColor = useColorModeValue('gray.100', 'gray.100');
 
-  const basePathName = `/${ router.query.network_name }/${ router.query.network_type }`;
+  const basePath = useBasePath();
 
   const LINKS: Record<PopupTab, Array<NetworkLink>> = {
     mainnets: [
@@ -58,7 +57,7 @@ const NetworkMenuPopup = () => {
             { TABS.map((tab) => (
               <TabPanel key={ tab } p={ 0 }>
                 <VStack as="ul" spacing={ 2 } alignItems="stretch" mt={ 4 }>
-                  { LINKS[tab].map((link) => <NetworkMenuLink key={ link.name } { ...link } isActive={ basePathName === link.pathname }/>) }
+                  { LINKS[tab].map((link) => <NetworkMenuLink key={ link.name } { ...link } isActive={ basePath === link.pathname }/>) }
                 </VStack>
               </TabPanel>
             )) }
