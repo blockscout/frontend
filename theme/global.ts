@@ -8,6 +8,9 @@ const global = (props: StyleFunctionProps) => ({
     bg: mode('white', 'black')(props),
     ...getDefaultTransitionProps(),
   },
+  form: {
+    w: '100%',
+  },
 });
 
 export default global;
