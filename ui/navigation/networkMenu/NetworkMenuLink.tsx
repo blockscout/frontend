@@ -10,7 +10,7 @@ import useColors from '../useColors';
 
 type Props = NetworkLink;
 
-const NetworkMenuLink = ({ name, url, icon }: Props) => {
+const NetworkMenuLink = ({ name, url, icon, iconColor }: Props) => {
   const isActive = name === 'Gnosis Chain';
   const colors = useColors();
 
@@ -33,7 +33,7 @@ const NetworkMenuLink = ({ name, url, icon }: Props) => {
           <Icon
             as={ icon }
             boxSize="40px"
-            color="deeppink"
+            color={ iconColor || 'inherit' }
           />
           <Text
             marginLeft={ 3 }

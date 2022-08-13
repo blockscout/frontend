@@ -12,9 +12,9 @@ interface Props {
 
 const NetworkMenu = ({ isCollapsed }: Props) => {
   return (
-    <Popover trigger="hover" openDelay={ 0 } placement="right-start" gutter={ 22 } isOpen>
+    <Popover trigger="hover" openDelay={ 0 } placement="right-start" gutter={ 22 }>
       <PopoverTrigger>
-        <Box display="inline-flex">
+        <Box display="inline-flex" alignSelf="stretch" alignItems="center">
           <Icon
             as={ networksIcon }
             width="16px"
