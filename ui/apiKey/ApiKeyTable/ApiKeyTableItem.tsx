@@ -18,7 +18,7 @@ interface Props {
   onDeleteClick: (item: ApiKey) => void;
 }
 
-const WatchlistTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
+const ApiKeyTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
 
   const onItemEditClick = useCallback(() => {
     return onEditClick(item);
@@ -47,4 +47,4 @@ const WatchlistTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   );
 };
 
-export default WatchlistTableItem;
+export default ApiKeyTableItem;

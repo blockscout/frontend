@@ -7,6 +7,7 @@ import Link from './Link';
 import Modal from './Modal';
 import Popover from './Popover';
 import Radio from './Radio';
+import Skeleton from './Skeleton';
 import Table from './Table';
 import Tabs from './Tabs';
 import Tag from './Tag';
@@ -24,6 +25,7 @@ const components = {
   Modal,
   Popover,
   Radio,
+  Skeleton,
   Tabs,
   Table,
   Tag,
