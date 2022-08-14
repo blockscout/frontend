@@ -1,14 +1,16 @@
-import { Box, Button, Text, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, Skeleton, Text, useDisclosure } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 
 import type { TransactionTags, TransactionTag } from 'types/api/account';
+
+import SkeletonTable from 'ui/shared/SkeletonTable';
 
 import DeletePrivateTagModal from './DeletePrivateTagModal';
 import TransactionModal from './TransactionModal/TransactionModal';
 import TransactionTagTable from './TransactionTagTable/TransactionTagTable';
 
 type Props = {
-  transactionTags: TransactionTags;
+  transactionTags?: TransactionTags;
 }
 
 const PrivateTransactionTags = ({ transactionTags }: Props) => {
@@ -37,6 +39,16 @@ const PrivateTransactionTags = ({ transactionTags }: Props) => {
     setDeleteModalData(undefined);
     deleteModalProps.onClose();
   }, [ deleteModalProps ]);
+
+  if (!transactionTags) {
+    return (
+      <>
+        <Skeleton height={ 6 } width="250px" borderRadius="full" marginBottom={ 12 }/>
+        <SkeletonTable columns={ [ 'auto', '25%', '108px' ] }/>
+        <Skeleton height="44px" width="156px" borderRadius="base" marginTop={ 8 }/>
+      </>
+    );
+  }
 
   return (
     <>

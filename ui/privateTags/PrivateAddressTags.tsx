@@ -1,14 +1,16 @@
-import { Box, Button, Spinner, Text, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, Text, Skeleton, useDisclosure } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 
 import type { AddressTags, AddressTag } from 'types/api/account';
+
+import SkeletonTable from 'ui/shared/SkeletonTable';
 
 import AddressModal from './AddressModal/AddressModal';
 import AddressTagTable from './AddressTagTable/AddressTagTable';
 import DeletePrivateTagModal from './DeletePrivateTagModal';
 
 type Props = {
-  addressTags: AddressTags;
+  addressTags?: AddressTags;
 }
 
 const PrivateAddressTags = ({ addressTags }: Props) => {
@@ -38,13 +40,22 @@ const PrivateAddressTags = ({ addressTags }: Props) => {
     deleteModalProps.onClose();
   }, [ deleteModalProps ]);
 
+  if (!addressTags) {
+    return (
+      <>
+        <Skeleton height={ 6 } width="250px" borderRadius="full" marginBottom={ 12 }/>
+        <SkeletonTable columns={ [ 'auto', '40%', '108px' ] }/>
+        <Skeleton height="44px" width="156px" borderRadius="base" marginTop={ 8 }/>
+      </>
+    );
+  }
+
   return (
     <>
       <Text marginBottom={ 12 }>
         Use private transaction tags to label any transactions of interest.
         Private tags are saved in your account and are only visible when you are logged in.
       </Text>
-      { !addressTags && <Spinner/> }
       { Boolean(addressTags?.length) && (
         <AddressTagTable
           data={ addressTags }
