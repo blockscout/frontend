@@ -45,7 +45,7 @@ const PrivateTransactionTags = ({ transactionTags }: Props) => {
       <>
         <Skeleton height={ 6 } width="250px" borderRadius="full" marginBottom={ 12 }/>
         <SkeletonTable columns={ [ 'auto', '25%', '108px' ] }/>
-        <Skeleton height="44px" width="156px" borderRadius="base" marginTop={ 8 }/>
+        <Skeleton height="44px" width="156px" marginTop={ 8 }/>
       </>
     );
   }

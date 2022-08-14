@@ -8,7 +8,7 @@ interface Props {
 const SkeletonTable = ({ columns }: Props) => {
   return (
     <div>
-      <Skeleton height={ 10 } width="100%" borderTopLeftRadius="base" borderTopRightRadius="base"/>
+      <Skeleton height={ 10 } width="100%" borderBottomLeftRadius="none" borderBottomRightRadius="none"/>
       { Array.from(Array(4)).map((item, index) => (
         <HStack key={ index } spacing={ 6 } marginTop={ 8 }>
           { columns.map((width, index) => (

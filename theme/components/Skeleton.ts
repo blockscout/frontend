@@ -23,8 +23,8 @@ const baseStyle: SystemStyleFunction = (props) => {
   const end = getColor(theme, endColor);
 
   return {
-    opacity: 0.7,
-    borderRadius: '2px',
+    opacity: 1,
+    borderRadius: 'base',
     borderColor: start,
     background: end,
     animation: `${ speed }s linear infinite alternate ${ fade(start, end) }`,
