@@ -14,6 +14,7 @@ interface Props extends NetworkLink {
 }
 
 const NetworkMenuLink = ({ name, pathname, icon, isActive, isNewUi }: Props) => {
+  // will fix later after we agree on CI/CD workflow
   const href = isNewUi ? pathname : 'https://blockscout.com' + pathname;
   const hasIcon = Boolean(icon);
   const colors = useColors({ hasIcon });
@@ -27,6 +28,7 @@ const NetworkMenuLink = ({ name, pathname, icon, isActive, isNewUi }: Props) => 
           py={ 2 }
           alignItems="center"
           cursor="pointer"
+          pointerEvents={ isActive ? 'none' : 'initial' }
           borderWidth="1px"
           borderColor={ isActive ? colors.border.active : colors.border.default }
           borderRadius="base"
