@@ -1,4 +1,4 @@
-import { PopoverContent, PopoverBody, Text, Tabs, TabList, TabPanels, TabPanel, Tab, VStack, useColorModeValue } from '@chakra-ui/react';
+import { PopoverContent, PopoverBody, Text, Tabs, TabList, TabPanels, TabPanel, Tab, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { NetworkLink } from './types';
@@ -9,7 +9,6 @@ import ethereumClassicIcon from 'icons/networks/ethereum-classic.svg';
 import ethereumIcon from 'icons/networks/ethereum.svg';
 import gnosisIcon from 'icons/networks/gnosis.svg';
 import poaSokolIcon from 'icons/networks/poa-sokol.svg';
-import poaIcon from 'icons/networks/poa.svg';
 import rskIcon from 'icons/networks/rsk.svg';
 import useBasePath from 'lib/hooks/useBasePath';
 
@@ -20,19 +19,16 @@ type PopupTab = 'mainnets' | 'testnets' | 'other';
 const TABS: Array<PopupTab> = [ 'mainnets', 'testnets', 'other' ];
 
 const NetworkMenuPopup = () => {
-  const gnosisChainIconColor = useColorModeValue('black', 'white');
-  const poaChainIconColor = useColorModeValue('gray.100', 'gray.100');
-
   const basePath = useBasePath();
 
   const LINKS: Record<PopupTab, Array<NetworkLink>> = {
     mainnets: [
-      { name: 'Gnosis Chain', pathname: '/xdai/mainnet', icon: gnosisIcon, iconColor: gnosisChainIconColor, isNewUi: true },
-      { name: 'Optimism on Gnosis Chain', pathname: '/xdai/optimism', icon: gnosisIcon, iconColor: gnosisChainIconColor },
+      { name: 'Gnosis Chain', pathname: '/xdai/mainnet', icon: gnosisIcon, isNewUi: true },
+      { name: 'Optimism on Gnosis Chain', pathname: '/xdai/optimism', icon: gnosisIcon },
       { name: 'Arbitrum on xDai', pathname: '/xdai/aox', icon: arbitrumIcon },
       { name: 'Ethereum', pathname: '/eth/mainnet', icon: ethereumIcon },
       { name: 'Ethereum Classic', pathname: '/etc/mainnet', icon: ethereumClassicIcon },
-      { name: 'POA', pathname: '/poa/core', icon: poaIcon, iconColor: poaChainIconColor },
+      { name: 'POA', pathname: '/poa/core' },
       { name: 'RSK', pathname: '/rsk/mainnet', icon: rskIcon },
     ],
     testnets: [
@@ -41,7 +37,7 @@ const NetworkMenuPopup = () => {
     ],
     other: [
       { name: 'ARTIS Σ1', pathname: '/artis/sigma1', icon: artisIcon },
-      { name: 'LUKSO L14', pathname: '/lukso/l14', icon: poaIcon, iconColor: poaChainIconColor },
+      { name: 'LUKSO L14', pathname: '/lukso/l14' },
     ],
   };
 

@@ -12,7 +12,7 @@ interface Props {
 
 const NetworkMenu = ({ isCollapsed }: Props) => {
   return (
-    <Popover trigger="hover" openDelay={ 0 } placement="right-start" gutter={ 22 }>
+    <Popover openDelay={ 0 } placement="right-start" gutter={ 22 }>
       <PopoverTrigger>
         <Box display="inline-flex" alignSelf="stretch" alignItems="center">
           <Icon
@@ -20,6 +20,7 @@ const NetworkMenu = ({ isCollapsed }: Props) => {
             width="16px"
             height="16px"
             color={ useColorModeValue('gray.500', 'white') }
+            _hover={{ color: 'blue.400' }}
             marginLeft={ isCollapsed ? '0px' : '27px' }
             cursor="pointer"
             { ...getDefaultTransitionProps({ transitionProperty: 'margin' }) }

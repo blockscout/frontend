@@ -1,15 +1,12 @@
 <svg width="40" height="40" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <g clip-path="url(#a)">
-    <path d="m20.471 5-.207.683v19.833l.207.2 9.47-5.441L20.472 5Z" fill="#343434"/>
-    <path d="M20.47 5 11 20.275l9.47 5.442V5Z" fill="#8C8C8C"/>
-    <path d="m20.47 27.46-.116.138v7.064l.117.331 9.476-12.972-9.476 5.438Z" fill="#3C3C3B"/>
-    <path d="M20.47 34.993V27.46L11 22.02l9.47 12.973Z" fill="#8C8C8C"/>
-    <path d="m20.47 25.716 9.471-5.441-9.47-4.184v9.625Z" fill="#141414"/>
-    <path d="m11 20.275 9.47 5.441V16.09L11 20.275Z" fill="#393939"/>
+  <g clip-path="url(#ethereum-a)" fill="currentColor" fill-opacity=".48">
+    <path d="m20.471 5-.207.683v19.833l.207.2 9.47-5.441L20.472 5Z"/>
+    <path d="M20.47 5 11 20.275l9.47 5.442V5ZM20.47 27.46l-.116.138v7.064l.117.331 9.476-12.972-9.476 5.438Z"/>
+    <path d="M20.47 34.993V27.46L11 22.02l9.47 12.973ZM20.47 25.716l9.471-5.441-9.47-4.184v9.625ZM11 20.275l9.47 5.441V16.09L11 20.275Z"/>
   </g>
   <defs>
-    <clipPath id="a">
-      <path fill="#fff" transform="translate(11 5)" d="M0 0h18.947v30H0z"/>
+    <clipPath id="ethereum-a">
+      <path transform="translate(11 5)" d="M0 0h18.947v30H0z"/>
     </clipPath>
   </defs>
 </svg>
