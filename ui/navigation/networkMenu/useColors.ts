@@ -13,7 +13,7 @@ export default function useColors({ hasIcon }: {hasIcon: boolean}) {
     icon: {
       'default': hasIcon ? iconDefaultColor : iconPlaceholderDefaultColor,
       active: useColorModeValue('blackAlpha.900', 'whiteAlpha.900'),
-      hover: 'blue.400',
+      hover: hasIcon ? 'blue.400' : 'blue.100',
     },
     bg: {
       'default': 'transparent',
