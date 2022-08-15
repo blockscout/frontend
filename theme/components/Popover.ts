@@ -28,7 +28,7 @@ const baseStyleContent: SystemStyleFunction = (props) => {
     zIndex: 'inherit',
     _focusVisible: {
       outline: 0,
-      boxShadow: 'outline',
+      boxShadow: '2xl',
     },
   };
 };
