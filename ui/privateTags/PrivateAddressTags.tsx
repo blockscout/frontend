@@ -40,10 +40,17 @@ const PrivateAddressTags = ({ addressTags }: Props) => {
     deleteModalProps.onClose();
   }, [ deleteModalProps ]);
 
+  const description = (
+    <Text marginBottom={ 12 }>
+        Use private transaction tags to label any transactions of interest.
+        Private tags are saved in your account and are only visible when you are logged in.
+    </Text>
+  );
+
   if (!addressTags) {
     return (
       <>
-        <Skeleton height={ 6 } width="250px" borderRadius="full" marginBottom={ 12 }/>
+        { description }
         <SkeletonTable columns={ [ '60%', '40%', '108px' ] }/>
         <Skeleton height="44px" width="156px" marginTop={ 8 }/>
       </>
@@ -52,10 +59,7 @@ const PrivateAddressTags = ({ addressTags }: Props) => {
 
   return (
     <>
-      <Text marginBottom={ 12 }>
-        Use private transaction tags to label any transactions of interest.
-        Private tags are saved in your account and are only visible when you are logged in.
-      </Text>
+      { description }
       { Boolean(addressTags?.length) && (
         <AddressTagTable
           data={ addressTags }

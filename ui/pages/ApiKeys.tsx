@@ -57,7 +57,6 @@ const ApiKeysPage: React.FC = () => {
     if (isLoading || isError) {
       return (
         <>
-          <Skeleton height={ 6 } width="250px" borderRadius="full" marginBottom={ 12 }/>
           <SkeletonTable columns={ [ '100%', '108px' ] }/>
           <Skeleton height="44px" width="156px" marginTop={ 8 }/>
         </>
@@ -67,10 +66,6 @@ const ApiKeysPage: React.FC = () => {
     const canAdd = data.length < DATA_LIMIT;
     return (
       <>
-        <Text marginBottom={ 12 }>
-          Create API keys to use for your RPC and EthRPC API requests. For more information, see { space }
-          <Link href="#">“How to use a Blockscout API key”</Link>.
-        </Text>
         <ApiKeyTable
           data={ data }
           onDeleteClick={ onDeleteClick }
@@ -100,6 +95,10 @@ const ApiKeysPage: React.FC = () => {
     <Page>
       <Box h="100%">
         <AccountPageHeader text="API keys"/>
+        <Text marginBottom={ 12 }>
+          Create API keys to use for your RPC and EthRPC API requests. For more information, see { space }
+          <Link href="#">“How to use a Blockscout API key”</Link>.
+        </Text>
         { content }
       </Box>
       <ApiKeyModal { ...apiKeyModalProps } onClose={ onApiKeyModalClose } data={ apiKeyModalData }/>
