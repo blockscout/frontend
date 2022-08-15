@@ -54,6 +54,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose }) => {
       console.log('error');
     },
     onSuccess: () => {
+    // todo_tom ask: тут я бы не стал ходить еще раз на сервер; что если запрос упадет; думаю можно просто обновить данные у нас
       queryClient.refetchQueries([ 'address' ]).then(() => {
         onClose();
         setPending(false);

@@ -14,6 +14,7 @@ type Props = {
 }
 
 const DeletePrivateTagModal: React.FC<Props> = ({ isOpen, onClose, data, type }) => {
+  // todo_tom ask: этот стейт по идее не нужен, можно использовать mutation.isLoading
   const [ pending, setPending ] = useState(false);
 
   const tag = data?.name;

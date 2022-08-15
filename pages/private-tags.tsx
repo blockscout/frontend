@@ -18,6 +18,7 @@ const PrivateTagsPage: NextPage = () => {
 
   // FIXME: request data only for active tab and only once
   // don't refetch after tab change
+  // todo_tom ask: думаю стоит просто унести это в компоненты контента каждого таба, все остальное react query сделает за нас
   useQuery([ 'address' ], async() => {
     const response = await fetch('/api/account/private-tags/address');
     if (!response.ok) {
