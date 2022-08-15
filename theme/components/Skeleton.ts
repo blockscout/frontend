@@ -9,8 +9,8 @@ const fade = (startColor: string, endColor: string) =>
   });
 
 const baseStyle: SystemStyleFunction = (props) => {
-  const defaultStartColor = mode('blackAlpha.50', 'whiteAlpha.200')(props);
-  const defaultEndColor = mode('blackAlpha.200', 'whiteAlpha.300')(props);
+  const defaultStartColor = mode('blackAlpha.50', 'whiteAlpha.50')(props);
+  const defaultEndColor = mode('blackAlpha.100', 'whiteAlpha.100')(props);
 
   const {
     startColor = defaultStartColor,
