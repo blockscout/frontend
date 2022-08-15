@@ -44,7 +44,7 @@ const PrivateAddressTags = ({ addressTags }: Props) => {
     return (
       <>
         <Skeleton height={ 6 } width="250px" borderRadius="full" marginBottom={ 12 }/>
-        <SkeletonTable columns={ [ 'auto', '40%', '108px' ] }/>
+        <SkeletonTable columns={ [ '60%', '40%', '108px' ] }/>
         <Skeleton height="44px" width="156px" marginTop={ 8 }/>
       </>
     );
