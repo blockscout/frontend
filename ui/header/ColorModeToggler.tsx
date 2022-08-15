@@ -22,8 +22,7 @@ import styles from './ColorModeToggler.module.css';
 export interface ColorModeTogglerProps
   extends Omit<UseCheckboxProps, 'isIndeterminate'>,
   Omit<HTMLChakraProps<'label'>, keyof UseCheckboxProps>,
-  ThemingProps<'Switch'> {
-}
+  ThemingProps<'Switch'> {}
 
 const ColorModeToggler = forwardRef<ColorModeTogglerProps, 'input'>((props, ref) => {
   const ownProps = omitThemingProps(props);
