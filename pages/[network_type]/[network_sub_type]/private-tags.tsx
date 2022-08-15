@@ -3,10 +3,10 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import React, { useCallback, useState } from 'react';
 
+import delay from 'lib/delay';
 import PrivateTags from 'ui/pages/PrivateTags';
 
 const TABS = [ 'address', 'transaction' ];
-const artificialDelay = new Promise((resolve) => window.setTimeout(resolve, 5000));
 
 const PrivateTagsPage: NextPage = () => {
   const [ activeTab, setActiveTab ] = useState(TABS[0]);
@@ -22,7 +22,7 @@ const PrivateTagsPage: NextPage = () => {
   useQuery([ 'address' ], async() => {
     const [ response ] = await Promise.all([
       fetch('/api/account/private-tags/address'),
-      artificialDelay,
+      delay(5000),
     ]);
     if (!response.ok) {
       throw new Error('Network response was not ok');
@@ -33,7 +33,7 @@ const PrivateTagsPage: NextPage = () => {
   useQuery([ 'transaction' ], async() => {
     const [ response ] = await Promise.all([
       fetch('/api/account/private-tags/transaction'),
-      artificialDelay,
+      delay(5000),
     ]);
     if (!response.ok) {
       throw new Error('Network response was not ok');

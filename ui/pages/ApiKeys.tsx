@@ -4,6 +4,7 @@ import React, { useCallback, useState } from 'react';
 
 import type { ApiKey, ApiKeys } from 'types/api/account';
 
+import delay from 'lib/delay';
 import { space } from 'lib/html-entities';
 import ApiKeyModal from 'ui/apiKey/ApiKeyModal/ApiKeyModal';
 import ApiKeyTable from 'ui/apiKey/ApiKeyTable/ApiKeyTable';
@@ -13,7 +14,6 @@ import Page from 'ui/shared/Page/Page';
 import SkeletonTable from 'ui/shared/SkeletonTable';
 
 const DATA_LIMIT = 3;
-const artificialDelay = new Promise((resolve) => window.setTimeout(resolve, 5000));
 
 const ApiKeysPage: React.FC = () => {
   const apiKeyModalProps = useDisclosure();
@@ -25,7 +25,7 @@ const ApiKeysPage: React.FC = () => {
   const { data, isLoading, isError } = useQuery<unknown, unknown, ApiKeys>([ 'api-keys' ], async() => {
     const [ response ] = await Promise.all([
       fetch('/api/account/api-keys'),
-      artificialDelay,
+      delay(5000),
     ]);
     if (!response.ok) {
       throw new Error('Network response was not ok');
