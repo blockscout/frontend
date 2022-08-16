@@ -1,4 +1,4 @@
-import { Box, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import { keyframes } from '@chakra-ui/system';
 import React from 'react';
 
@@ -22,7 +22,7 @@ const ContentLoader = () => {
           animation: `${ runnerAnimation } 700ms ease-in-out infinite alternate`,
           left: '100%',
           top: 0,
-          backgroundColor: useColorModeValue('blackAlpha.700', 'whiteAlpha.700'),
+          backgroundColor: 'blue.300',
           borderRadius: 'full',
         }}
       />
