@@ -1,11 +1,11 @@
+import { Skeleton as SkeletonComponent } from '@chakra-ui/react';
 import { keyframes } from '@chakra-ui/system';
 import type { SystemStyleFunction } from '@chakra-ui/theme-tools';
 import { getColor, mode } from '@chakra-ui/theme-tools';
 
-const fade = (startColor: string, endColor: string) =>
+const shine = () =>
   keyframes({
-    from: { borderColor: startColor, background: startColor },
-    to: { borderColor: endColor, background: endColor },
+    to: { backgroundPositionX: '-200%' },
   });
 
 const baseStyle: SystemStyleFunction = (props) => {
@@ -26,8 +26,9 @@ const baseStyle: SystemStyleFunction = (props) => {
     opacity: 1,
     borderRadius: 'base',
     borderColor: start,
-    background: end,
-    animation: `${ speed }s linear infinite alternate ${ fade(start, end) }`,
+    background: `linear-gradient(90deg, ${ start } 8%, ${ end } 18%, ${ start } 33%)`,
+    backgroundSize: '200% 100%',
+    animation: `${ speed }s linear infinite ${ shine() }`,
   };
 };
 
@@ -36,3 +37,8 @@ const Skeleton = {
 };
 
 export default Skeleton;
+
+SkeletonComponent.defaultProps = {
+  ...SkeletonComponent.defaultProps,
+  speed: 1,
+};
