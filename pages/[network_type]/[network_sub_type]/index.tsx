@@ -11,7 +11,7 @@ const Home: NextPage = () => {
   return (
     <Page>
       <Center h="100%">
-        home page for { router.query.network_name } { router.query.network_type } network
+        home page for { router.query.network_type } { router.query.network_sub_type } network
       </Center>
     </Page>
   );

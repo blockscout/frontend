@@ -1,47 +1,18 @@
 import { PopoverContent, PopoverBody, Text, Tabs, TabList, TabPanels, TabPanel, Tab, VStack } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { NetworkLink } from './types';
+import type { NetworkGroup } from 'types/networks';
 
-import arbitrumIcon from 'icons/networks/arbitrum.svg';
-import artisIcon from 'icons/networks/artis.svg';
-import ethereumClassicIcon from 'icons/networks/ethereum-classic.svg';
-import ethereumIcon from 'icons/networks/ethereum.svg';
-import gnosisIcon from 'icons/networks/gnosis.svg';
-import optimismIcon from 'icons/networks/optimism.svg';
-import poaSokolIcon from 'icons/networks/poa-sokol.svg';
-import poaIcon from 'icons/networks/poa.svg';
-import rskIcon from 'icons/networks/rsk.svg';
-import useBasePath from 'lib/hooks/useBasePath';
+import { NETWORKS } from 'data/networks';
 
 import NetworkMenuLink from './NetworkMenuLink';
 
-type PopupTab = 'mainnets' | 'testnets' | 'other';
-
-const TABS: Array<PopupTab> = [ 'mainnets', 'testnets', 'other' ];
+const TABS: Array<NetworkGroup> = [ 'mainnets', 'testnets', 'other' ];
 
 const NetworkMenuPopup = () => {
-  const basePath = useBasePath();
-
-  const LINKS: Record<PopupTab, Array<NetworkLink>> = {
-    mainnets: [
-      { name: 'Gnosis Chain', pathname: '/xdai/mainnet', icon: gnosisIcon, isNewUi: true },
-      { name: 'Optimism on Gnosis Chain', pathname: '/xdai/optimism', icon: optimismIcon },
-      { name: 'Arbitrum on xDai', pathname: '/xdai/aox', icon: arbitrumIcon },
-      { name: 'Ethereum', pathname: '/eth/mainnet', icon: ethereumIcon },
-      { name: 'Ethereum Classic', pathname: '/etc/mainnet', icon: ethereumClassicIcon },
-      { name: 'POA', pathname: '/poa/core', icon: poaIcon },
-      { name: 'RSK', pathname: '/rsk/mainnet', icon: rskIcon },
-    ],
-    testnets: [
-      { name: 'Gnosis Chain Testnet', pathname: '/xdai/testnet', icon: arbitrumIcon },
-      { name: 'POA Sokol', pathname: '/poa/sokol', icon: poaSokolIcon },
-    ],
-    other: [
-      { name: 'ARTIS Σ1', pathname: '/artis/sigma1', icon: artisIcon },
-      { name: 'LUKSO L14', pathname: '/lukso/l14' },
-    ],
-  };
+  const router = useRouter();
+  const routeName = router.pathname.replace('/[network_type]/[network_sub_type]', '');
 
   return (
     <PopoverContent w="382px">
@@ -55,7 +26,16 @@ const NetworkMenuPopup = () => {
             { TABS.map((tab) => (
               <TabPanel key={ tab } p={ 0 }>
                 <VStack as="ul" spacing={ 2 } alignItems="stretch" mt={ 4 }>
-                  { LINKS[tab].map((link) => <NetworkMenuLink key={ link.name } { ...link } isActive={ basePath === link.pathname }/>) }
+                  { NETWORKS
+                    .filter((network) => network.group === tab)
+                    .map((network) => (
+                      <NetworkMenuLink
+                        key={ network.name }
+                        { ...network }
+                        isActive={ router.query.network_type === network.type && router.query.network_sub_type === network.subType }
+                        routeName={ routeName }
+                      />
+                    )) }
                 </VStack>
               </TabPanel>
             )) }

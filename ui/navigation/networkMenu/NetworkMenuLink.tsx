@@ -2,21 +2,24 @@ import { Box, Flex, Icon, Text } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import React from 'react';
 
-import type { NetworkLink } from './types';
+import type { Network } from 'types/networks';
 
 import checkIcon from 'icons/check.svg';
 import placeholderIcon from 'icons/networks/placeholder.svg';
 
 import useColors from './useColors';
 
-interface Props extends NetworkLink {
+interface Props extends Network {
   isActive: boolean;
+  routeName: string;
 }
 
-const NetworkMenuLink = ({ name, pathname, icon, isActive }: Props) => {
+const NetworkMenuLink = ({ name, type, subType, icon, isActive, routeName }: Props) => {
+  const pathName = `/${ type }/${ subType }` + (routeName || '');
+
   // will fix later after we agree on CI/CD workflow
   // const href = isNewUi ? pathname : 'https://blockscout.com' + pathname;
-  const href = pathname;
+  const href = pathName;
   const hasIcon = Boolean(icon);
   const colors = useColors({ hasIcon });
 
