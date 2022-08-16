@@ -8,7 +8,9 @@ import artisIcon from 'icons/networks/artis.svg';
 import ethereumClassicIcon from 'icons/networks/ethereum-classic.svg';
 import ethereumIcon from 'icons/networks/ethereum.svg';
 import gnosisIcon from 'icons/networks/gnosis.svg';
+import optimismIcon from 'icons/networks/optimism.svg';
 import poaSokolIcon from 'icons/networks/poa-sokol.svg';
+import poaIcon from 'icons/networks/poa.svg';
 import rskIcon from 'icons/networks/rsk.svg';
 import useBasePath from 'lib/hooks/useBasePath';
 
@@ -24,11 +26,11 @@ const NetworkMenuPopup = () => {
   const LINKS: Record<PopupTab, Array<NetworkLink>> = {
     mainnets: [
       { name: 'Gnosis Chain', pathname: '/xdai/mainnet', icon: gnosisIcon, isNewUi: true },
-      { name: 'Optimism on Gnosis Chain', pathname: '/xdai/optimism', icon: gnosisIcon },
+      { name: 'Optimism on Gnosis Chain', pathname: '/xdai/optimism', icon: optimismIcon },
       { name: 'Arbitrum on xDai', pathname: '/xdai/aox', icon: arbitrumIcon },
       { name: 'Ethereum', pathname: '/eth/mainnet', icon: ethereumIcon },
       { name: 'Ethereum Classic', pathname: '/etc/mainnet', icon: ethereumClassicIcon },
-      { name: 'POA', pathname: '/poa/core' },
+      { name: 'POA', pathname: '/poa/core', icon: poaIcon },
       { name: 'RSK', pathname: '/rsk/mainnet', icon: rskIcon },
     ],
     testnets: [
@@ -49,7 +51,7 @@ const NetworkMenuPopup = () => {
           <TabList>
             { TABS.map((tab) => <Tab key={ tab } textTransform="capitalize">{ tab }</Tab>) }
           </TabList>
-          <TabPanels>
+          <TabPanels mt={ 8 }>
             { TABS.map((tab) => (
               <TabPanel key={ tab } p={ 0 }>
                 <VStack as="ul" spacing={ 2 } alignItems="stretch" mt={ 4 }>

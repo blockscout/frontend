@@ -1,4 +1,4 @@
-import { Popover, PopoverTrigger, Box, Icon, useColorModeValue } from '@chakra-ui/react';
+import { Popover, PopoverTrigger, Icon, useColorModeValue, Button } from '@chakra-ui/react';
 import React from 'react';
 
 import networksIcon from 'icons/networks.svg';
@@ -12,9 +12,9 @@ interface Props {
 
 const NetworkMenu = ({ isCollapsed }: Props) => {
   return (
-    <Popover openDelay={ 0 } placement="right-start" gutter={ 22 }>
+    <Popover openDelay={ 300 } placement="right-start" gutter={ 22 }>
       <PopoverTrigger>
-        <Box display="inline-flex" alignSelf="stretch" alignItems="center">
+        <Button variant="unstyled" display="inline-flex" alignSelf="stretch" alignItems="center">
           <Icon
             as={ networksIcon }
             width="16px"
@@ -25,7 +25,7 @@ const NetworkMenu = ({ isCollapsed }: Props) => {
             cursor="pointer"
             { ...getDefaultTransitionProps({ transitionProperty: 'margin' }) }
           />
-        </Box>
+        </Button>
       </PopoverTrigger>
       <NetworkMenuPopup/>
     </Popover>

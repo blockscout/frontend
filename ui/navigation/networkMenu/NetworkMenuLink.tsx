@@ -13,9 +13,10 @@ interface Props extends NetworkLink {
   isActive: boolean;
 }
 
-const NetworkMenuLink = ({ name, pathname, icon, isActive, isNewUi }: Props) => {
+const NetworkMenuLink = ({ name, pathname, icon, isActive }: Props) => {
   // will fix later after we agree on CI/CD workflow
-  const href = isNewUi ? pathname : 'https://blockscout.com' + pathname;
+  // const href = isNewUi ? pathname : 'https://blockscout.com' + pathname;
+  const href = pathname;
   const hasIcon = Boolean(icon);
   const colors = useColors({ hasIcon });
 
@@ -25,7 +26,7 @@ const NetworkMenuLink = ({ name, pathname, icon, isActive, isNewUi }: Props) => 
         <Flex
           as="a"
           px={ 4 }
-          py={ 2 }
+          py={ 3 }
           alignItems="center"
           cursor="pointer"
           pointerEvents={ isActive ? 'none' : 'initial' }
@@ -34,16 +35,11 @@ const NetworkMenuLink = ({ name, pathname, icon, isActive, isNewUi }: Props) => 
           borderRadius="base"
           color={ isActive ? colors.text.active : colors.text.default }
           bgColor={ isActive ? colors.bg.active : colors.bg.default }
-          _hover={{
-            color: isActive ? colors.text.active : colors.text.hover,
-            svg: {
-              color: isActive ? colors.icon.active : colors.icon.hover,
-            },
-          }}
+          _hover={{ color: isActive ? colors.text.active : colors.text.hover }}
         >
           <Icon
             as={ hasIcon ? icon : placeholderIcon }
-            boxSize="40px"
+            boxSize="30px"
             color={ isActive ? colors.icon.active : colors.icon.default }
           />
           <Text

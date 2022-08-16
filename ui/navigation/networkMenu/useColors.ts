@@ -6,14 +6,13 @@ export default function useColors({ hasIcon }: {hasIcon: boolean}) {
 
   return {
     text: {
-      'default': useColorModeValue('gray.700', 'gray.400'),
-      active: useColorModeValue('gray.700', 'gray.50'),
-      hover: 'blue.400',
+      'default': useColorModeValue('gray.600', 'gray.400'),
+      active: useColorModeValue('gray.700', 'whiteAlpha.900'),
+      hover: useColorModeValue('blue.600', 'blue.400'),
     },
     icon: {
       'default': hasIcon ? iconDefaultColor : iconPlaceholderDefaultColor,
       active: useColorModeValue('blackAlpha.900', 'whiteAlpha.900'),
-      hover: hasIcon ? 'blue.400' : 'blue.100',
     },
     bg: {
       'default': 'transparent',
