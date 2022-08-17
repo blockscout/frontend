@@ -4,20 +4,18 @@ import React, { useCallback, useState } from 'react';
 
 import type { CustomAbi, CustomAbis } from 'types/api/account';
 
-// import ApiKeyTable from 'ui/apiKey/ApiKeyTable/ApiKeyTable';
-// import DeleteApiKeyModal from 'ui/apiKey/DeleteApiKeyModal';
 import CustomAbiModal from 'ui/customAbi/CustomAbiModal/CustomAbiModal';
+import CustomAbiTable from 'ui/customAbi/CustomAbiTable/CustomAbiTable';
+import DeleteCustomAbiModal from 'ui/customAbi/DeleteCustomAbiModal';
 import AccountPageHeader from 'ui/shared/AccountPageHeader';
 import Page from 'ui/shared/Page/Page';
 
-const DATA_LIMIT = 3;
-
 const CustomAbiPage: React.FC = () => {
   const customAbiModalProps = useDisclosure();
-  //   const deleteModalProps = useDisclosure();
+  const deleteModalProps = useDisclosure();
 
   const [ customAbiModalData, setCustomAbiModalData ] = useState<CustomAbi>();
-  //   const [ deleteModalData, setDeleteModalData ] = useState<CustomAbi>();
+  const [ deleteModalData, setDeleteModalData ] = useState<CustomAbi>();
 
   const { data, isLoading, isError } = useQuery<unknown, unknown, CustomAbis>([ 'custom-abis' ], async() => {
     const response = await fetch('/api/account/custom-abis');
@@ -27,56 +25,48 @@ const CustomAbiPage: React.FC = () => {
     return response.json();
   });
 
-  //   const onEditClick = useCallback((data: CustomAbi) => {
-  //     setCustomAbiModalData(data);
-  //     customAbiModalProps.onOpen();
-  //   }, [ customAbiModalProps ]);
+  const onEditClick = useCallback((data: CustomAbi) => {
+    setCustomAbiModalData(data);
+    customAbiModalProps.onOpen();
+  }, [ customAbiModalProps ]);
 
   const onCustomAbiModalClose = useCallback(() => {
     setCustomAbiModalData(undefined);
     customAbiModalProps.onClose();
   }, [ customAbiModalProps ]);
 
-  //   const onDeleteClick = useCallback((data: CustomAbi) => {
-  //     setDeleteModalData(data);
-  //     deleteModalProps.onOpen();
-  //   }, [ deleteModalProps ]);
+  const onDeleteClick = useCallback((data: CustomAbi) => {
+    setDeleteModalData(data);
+    deleteModalProps.onOpen();
+  }, [ deleteModalProps ]);
 
-  //   const onDeleteModalClose = useCallback(() => {
-  //     setDeleteModalData(undefined);
-  //     deleteModalProps.onClose();
-  //   }, [ deleteModalProps ]);
+  const onDeleteModalClose = useCallback(() => {
+    setDeleteModalData(undefined);
+    deleteModalProps.onClose();
+  }, [ deleteModalProps ]);
 
   const content = (() => {
     if (isLoading || isError) {
       return <Spinner/>;
     }
 
-    const canAdd = data.length < DATA_LIMIT;
     return (
       <>
-        { /* { data.length > 0 && (
-          <ApiKeyTable
+        { data.length > 0 && (
+          <CustomAbiTable
             data={ data }
             onDeleteClick={ onDeleteClick }
             onEditClick={ onEditClick }
-            limit={ DATA_LIMIT }
           />
-        ) } */ }
+        ) }
         <HStack marginTop={ 8 } spacing={ 5 }>
           <Button
             variant="primary"
             size="lg"
             onClick={ customAbiModalProps.onOpen }
-            disabled={ !canAdd }
           >
             Add custom ABI
           </Button>
-          { !canAdd && (
-            <Text fontSize="sm" variant="secondary">
-              { `You have added the maximum number of API keys (${ DATA_LIMIT }). Contact us to request additional keys.` }
-            </Text>
-          ) }
         </HStack>
       </>
     );
@@ -92,7 +82,7 @@ const CustomAbiPage: React.FC = () => {
         { content }
       </Box>
       <CustomAbiModal { ...customAbiModalProps } onClose={ onCustomAbiModalClose } data={ customAbiModalData }/>
-      { /* { deleteModalData && <DeleteApiKeyModal { ...deleteModalProps } onClose={ onDeleteModalClose } data={ deleteModalData }/> } */ }
+      { deleteModalData && <DeleteCustomAbiModal { ...deleteModalProps } onClose={ onDeleteModalClose } data={ deleteModalData }/> }
     </Page>
   );
 };
