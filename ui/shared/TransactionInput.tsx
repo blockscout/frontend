@@ -11,11 +11,12 @@ const HASH_LENGTH = 66;
 type Props<Field> = {
   field: Field;
   isInvalid: boolean;
+  backgroundColor?: string;
 }
 
-function AddressInput<Field extends Partial<ControllerRenderProps<FieldValues, 'transaction'>>>({ field, isInvalid }: Props<Field>) {
+function AddressInput<Field extends Partial<ControllerRenderProps<FieldValues, 'transaction'>>>({ field, isInvalid, backgroundColor }: Props<Field>) {
   return (
-    <FormControl variant="floating" id="transaction" isRequired>
+    <FormControl variant="floating" id="transaction" isRequired backgroundColor={ backgroundColor }>
       <Input
         { ...field }
         isInvalid={ isInvalid }

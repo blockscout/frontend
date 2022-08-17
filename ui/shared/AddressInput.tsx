@@ -13,6 +13,7 @@ type Props<TInputs extends FieldValues, TInputName extends Path<TInputs>> = {
   isInvalid: boolean;
   size?: string;
   placeholder?: string;
+  backgroundColor?: string;
 }
 
 export default function AddressInput<Inputs extends FieldValues, Name extends Path<Inputs>>(
@@ -21,9 +22,10 @@ export default function AddressInput<Inputs extends FieldValues, Name extends Pa
     isInvalid,
     size,
     placeholder = 'Address (0x...)',
+    backgroundColor,
   }: Props<Inputs, Name>) {
   return (
-    <FormControl variant="floating" id="address" isRequired>
+    <FormControl variant="floating" id="address" isRequired backgroundColor={ backgroundColor } size={ size }>
       <Input
         { ...field }
         isInvalid={ isInvalid }

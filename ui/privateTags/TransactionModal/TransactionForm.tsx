@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -28,6 +29,7 @@ type Inputs = {
 const TransactionForm: React.FC<Props> = ({ data, onClose }) => {
   const [ pending, setPending ] = useState(false);
   const { control, handleSubmit, formState: { errors }, setValue } = useForm<Inputs>();
+  const formBackgroundColor = useColorModeValue('white', 'gray.800');
 
   useEffect(() => {
     setValue('transaction', data?.transaction_hash || '');
@@ -68,12 +70,12 @@ const TransactionForm: React.FC<Props> = ({ data, onClose }) => {
   };
 
   const renderTransactionInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'transaction'>}) => {
-    return <TransactionInput field={ field } isInvalid={ Boolean(errors.transaction) }/>;
-  }, [ errors ]);
+    return <TransactionInput field={ field } isInvalid={ Boolean(errors.transaction) } backgroundColor={ formBackgroundColor }/>;
+  }, [ errors, formBackgroundColor ]);
 
   const renderTagInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'tag'>}) => {
-    return <TagInput field={ field } isInvalid={ Boolean(errors.tag) }/>;
-  }, [ errors ]);
+    return <TagInput field={ field } isInvalid={ Boolean(errors.tag) } backgroundColor={ formBackgroundColor }/>;
+  }, [ errors, formBackgroundColor ]);
 
   return (
     <>

@@ -5,6 +5,7 @@ import {
   Text,
   Grid,
   GridItem,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import React, { useCallback, useEffect } from 'react';
 import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
@@ -30,6 +31,7 @@ type Inputs = {
 
 const AddressForm: React.FC<Props> = ({ data }) => {
   const { control, handleSubmit, formState: { errors }, setValue } = useForm<Inputs>();
+  const formBackgroundColor = useColorModeValue('white', 'gray.800');
 
   useEffect(() => {
     setValue('address', data?.address || '');
@@ -41,12 +43,12 @@ const AddressForm: React.FC<Props> = ({ data }) => {
   const onSubmit: SubmitHandler<Inputs> = data => console.log(data);
 
   const renderAddressInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'address'>}) => {
-    return <AddressInput<Inputs, 'address'> field={ field } isInvalid={ Boolean(errors.address) }/>;
-  }, [ errors ]);
+    return <AddressInput<Inputs, 'address'> field={ field } isInvalid={ Boolean(errors.address) } backgroundColor={ formBackgroundColor }/>;
+  }, [ errors, formBackgroundColor ]);
 
   const renderTagInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'tag'>}) => {
-    return <TagInput field={ field } isInvalid={ Boolean(errors.tag) }/>;
-  }, [ errors ]);
+    return <TagInput field={ field } isInvalid={ Boolean(errors.tag) } backgroundColor={ formBackgroundColor }/>;
+  }, [ errors, formBackgroundColor ]);
 
   const renderCheckbox = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'notification'>}) => (
     <Checkbox

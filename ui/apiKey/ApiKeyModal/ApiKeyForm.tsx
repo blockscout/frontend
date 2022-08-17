@@ -4,6 +4,7 @@ import {
   FormControl,
   FormLabel,
   Input,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useCallback, useEffect } from 'react';
@@ -28,6 +29,7 @@ const NAME_MAX_LENGTH = 100;
 const ApiKeyForm: React.FC<Props> = ({ data, onClose }) => {
   const { control, handleSubmit, formState: { errors }, setValue } = useForm<Inputs>();
   const queryClient = useQueryClient();
+  const formBackgroundColor = useColorModeValue('white', 'gray.800');
 
   useEffect(() => {
     setValue('token', data?.api_key || '');
@@ -88,7 +90,7 @@ const ApiKeyForm: React.FC<Props> = ({ data, onClose }) => {
 
   const renderNameInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'name'>}) => {
     return (
-      <FormControl variant="floating" id="name" isRequired>
+      <FormControl variant="floating" id="name" isRequired backgroundColor={ formBackgroundColor }>
         <Input
           { ...field }
           isInvalid={ Boolean(errors.name) }
@@ -97,7 +99,7 @@ const ApiKeyForm: React.FC<Props> = ({ data, onClose }) => {
         <FormLabel>Application name for API key (e.g Web3 project)</FormLabel>
       </FormControl>
     );
-  }, [ errors ]);
+  }, [ errors, formBackgroundColor ]);
 
   return (
     <>

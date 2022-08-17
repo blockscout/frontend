@@ -5,6 +5,7 @@ import {
   FormLabel,
   Input,
   Textarea,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useCallback, useEffect } from 'react';
@@ -47,6 +48,8 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose }) => {
     return fetch(`/api/account/custom-abis/${ data.id }`, { method: 'PUT', body });
   };
 
+  const formBackgroundColor = useColorModeValue('white', 'gray.800');
+
   const mutation = useMutation(customAbiKey, {
     onSuccess: async(data) => {
       const response: CustomAbi = await data.json();
@@ -79,7 +82,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose }) => {
 
   const renderContractAddressInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'contract_address_hash'>}) => {
     return (
-      <FormControl variant="floating" id="contract_address_hash" isRequired>
+      <FormControl variant="floating" id="contract_address_hash" isRequired backgroundColor={ formBackgroundColor }>
         <Input
           { ...field }
           isInvalid={ Boolean(errors.contract_address_hash) }
@@ -87,11 +90,11 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose }) => {
         <FormLabel>Smart contract address (0x...)</FormLabel>
       </FormControl>
     );
-  }, [ errors ]);
+  }, [ errors, formBackgroundColor ]);
 
   const renderNameInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'name'>}) => {
     return (
-      <FormControl variant="floating" id="name" isRequired>
+      <FormControl variant="floating" id="name" isRequired backgroundColor={ formBackgroundColor }>
         <Input
           { ...field }
           isInvalid={ Boolean(errors.name) }
@@ -100,11 +103,11 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose }) => {
         <FormLabel>Project name</FormLabel>
       </FormControl>
     );
-  }, [ errors ]);
+  }, [ errors, formBackgroundColor ]);
 
   const renderAbiInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'abi'>}) => {
     return (
-      <FormControl variant="floating" id="abi" isRequired>
+      <FormControl variant="floating" id="abi" isRequired backgroundColor={ formBackgroundColor }>
         <Textarea
           { ...field }
           size="lg"
@@ -113,7 +116,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose }) => {
         <FormLabel>{ `Custom ABI [{...}] (JSON format)` }</FormLabel>
       </FormControl>
     );
-  }, [ errors ]);
+  }, [ errors, formBackgroundColor ]);
 
   return (
     <>

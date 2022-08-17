@@ -11,11 +11,12 @@ const TAG_MAX_LENGTH = 35;
 type Props<Field> = {
   field: Field;
   isInvalid: boolean;
+  backgroundColor?: string;
 }
 
-function TagInput<Field extends Partial<ControllerRenderProps<FieldValues, 'tag'>>>({ field, isInvalid }: Props<Field>) {
+function TagInput<Field extends Partial<ControllerRenderProps<FieldValues, 'tag'>>>({ field, isInvalid, backgroundColor }: Props<Field>) {
   return (
-    <FormControl variant="floating" id="tag" isRequired>
+    <FormControl variant="floating" id="tag" isRequired backgroundColor={ backgroundColor }>
       <Input
         { ...field }
         isInvalid={ isInvalid }
