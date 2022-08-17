@@ -12,7 +12,7 @@ interface Props {
 
 const NetworkMenu = ({ isCollapsed }: Props) => {
   return (
-    <Popover openDelay={ 300 } placement="right-start" gutter={ 22 }>
+    <Popover openDelay={ 300 } placement="right-start" gutter={ 22 } isLazy>
       <PopoverTrigger>
         <Button variant="unstyled" display="inline-flex" alignSelf="stretch" alignItems="center">
           <Icon

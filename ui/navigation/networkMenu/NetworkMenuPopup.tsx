@@ -13,12 +13,14 @@ const TABS: Array<NetworkGroup> = [ 'mainnets', 'testnets', 'other' ];
 const NetworkMenuPopup = () => {
   const router = useRouter();
   const routeName = router.pathname.replace('/[network_type]/[network_sub_type]', '');
+  const selectedNetwork = NETWORKS.find((network) => router.query.network_type === network.type && router.query.network_sub_type === network.subType);
+  const selectedTab = TABS.findIndex((tab) => selectedNetwork?.group === tab);
 
   return (
     <PopoverContent w="382px">
       <PopoverBody>
         <Text as="h4" fontSize="18px" lineHeight="30px" fontWeight="500">Networks</Text>
-        <Tabs variant="soft-rounded" mt={ 4 } isLazy>
+        <Tabs variant="soft-rounded" mt={ 4 } isLazy defaultIndex={ selectedTab !== -1 ? selectedTab : undefined }>
           <TabList>
             { TABS.map((tab) => <Tab key={ tab } textTransform="capitalize">{ tab }</Tab>) }
           </TabList>
@@ -32,7 +34,7 @@ const NetworkMenuPopup = () => {
                       <NetworkMenuLink
                         key={ network.name }
                         { ...network }
-                        isActive={ router.query.network_type === network.type && router.query.network_sub_type === network.subType }
+                        isActive={ network.name === selectedNetwork?.name }
                         routeName={ routeName }
                       />
                     )) }
