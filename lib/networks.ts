@@ -92,3 +92,9 @@ export const NETWORKS: Array<Network> = [
     group: 'other',
   },
 ];
+
+export const ACCOUNT_ROUTES = [ '/watchlist', 'private-tags', 'public-tags', 'api-keys', 'custom-abi' ];
+
+export function isAccountRoute(route: string) {
+  return ACCOUNT_ROUTES.includes(route);
+}

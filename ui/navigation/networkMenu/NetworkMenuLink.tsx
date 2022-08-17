@@ -6,6 +6,7 @@ import type { Network } from 'types/networks';
 
 import checkIcon from 'icons/check.svg';
 import placeholderIcon from 'icons/networks/placeholder.svg';
+import { isAccountRoute } from 'lib/networks';
 
 import useColors from './useColors';
 
@@ -14,12 +15,24 @@ interface Props extends Network {
   routeName: string;
 }
 
-const NetworkMenuLink = ({ name, type, subType, icon, isActive, routeName }: Props) => {
-  const pathName = `/${ type }/${ subType }` + (routeName || '');
+const NetworkMenuLink = ({ name, type, subType, icon, isActive, routeName, isAccountSupported, isNewUiSupported }: Props) => {
+  const isAccount = isAccountRoute(routeName);
+  const localPath = (() => {
+    if (isAccount && isAccountSupported) {
+      return routeName;
+    }
+
+    if (isAccount && !isAccountSupported) {
+      return '';
+    }
+
+    // will change when blocks&transaction is implemented
+    return routeName;
+  })();
+  const pathName = `/${ type }/${ subType }${ localPath }`;
 
   // will fix later after we agree on CI/CD workflow
-  // const href = isNewUi ? pathname : 'https://blockscout.com' + pathname;
-  const href = pathName;
+  const href = isNewUiSupported ? pathName : 'https://blockscout.com' + pathName;
   const hasIcon = Boolean(icon);
   const colors = useColors({ hasIcon });
 
