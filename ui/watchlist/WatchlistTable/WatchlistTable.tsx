@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TWatchlist, TWatchlistItem } from 'data/watchlist';
+import type { TWatchlist, TWatchlistItem } from 'types/client/account';
 
 import WatchlistTableItem from './WatchListTableItem';
 
@@ -34,7 +34,7 @@ const WatchlistTable = ({ data, onDeleteClick, onEditClick }: Props) => {
           { data.map((item) => (
             <WatchlistTableItem
               item={ item }
-              key={ item.address }
+              key={ item.address_hash }
               onDeleteClick={ onDeleteClick }
               onEditClick={ onEditClick }
             />
