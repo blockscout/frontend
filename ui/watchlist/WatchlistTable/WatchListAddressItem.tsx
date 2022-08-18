@@ -16,26 +16,26 @@ const DECIMALS = 18;
 const WatchListAddressItem = ({ item }: {item: TWatchlistItem}) => {
   const mainTextColor = useColorModeValue('gray.700', 'gray.50');
 
-  const xdaiBalance = ((item.address_balance || 0) / 10 ** DECIMALS).toFixed(1);
+  const nativeBalance = ((item.address_balance || 0) / 10 ** DECIMALS).toFixed(1);
+  const nativeBalanceUSD = item.exchange_rate ? `$${ Number(nativeBalance) * item.exchange_rate } USD` : 'N/A';
 
   return (
     <HStack spacing={ 3 } align="top">
       <AddressIcon address={ item.address_hash }/>
       <VStack spacing={ 2 } align="stretch" overflow="hidden" fontWeight={ 500 } color="gray.700">
-        <AddressLinkWithTooltip address={ item.address }/>
-        { item.tokenBalance && (
-          <HStack spacing={ 0 } fontSize="sm" h={ 6 }>
-            <Image src="./xdai.png" alt="chain-logo" marginRight="10px" w="16px" h="16px"/>
-            <Text color={ mainTextColor }>{ `xDAI balance:${ nbsp }` + item.tokenBalance }</Text>
-            <Text variant="secondary">{ `${ nbsp }($${ item.tokenBalanceUSD } USD)` }</Text>
-          </HStack>
-        ) }
-        { item.tokensAmount && (
+        <AddressLinkWithTooltip address={ item.address_hash }/>
+        <HStack spacing={ 0 } fontSize="sm" h={ 6 }>
+          <Image src="./xdai.png" alt="chain-logo" marginRight="10px" w="16px" h="16px"/>
+          <Text color={ mainTextColor }>{ `xDAI balance:${ nbsp }` + nativeBalance }</Text>
+          <Text variant="secondary">{ `${ nbsp }(${ nativeBalanceUSD })` }</Text>
+        </HStack>
+        { item.tokens_count && (
           <HStack spacing={ 0 } fontSize="sm" h={ 6 }>
             <Icon as={ TokensIcon } marginRight="10px" w="17px" h="16px"/>
             <Text color={ mainTextColor }>{ `Tokens:${ nbsp }` + item.tokens_count }</Text>
             { /* api does not provide token prices */ }
             { /* <Text variant="secondary">{ `${ nbsp }($${ item.tokensUSD } USD)` }</Text> */ }
+            <Text variant="secondary">{ `${ nbsp }(N/A)` }</Text>
           </HStack>
         ) }
         { /* api does not provide token prices */ }
