@@ -1,4 +1,4 @@
-import { Box, Button, HStack, Text, Spinner, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, HStack, Text, Skeleton, useDisclosure } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
@@ -9,6 +9,7 @@ import CustomAbiTable from 'ui/customAbi/CustomAbiTable/CustomAbiTable';
 import DeleteCustomAbiModal from 'ui/customAbi/DeleteCustomAbiModal';
 import AccountPageHeader from 'ui/shared/AccountPageHeader';
 import Page from 'ui/shared/Page/Page';
+import SkeletonTable from 'ui/shared/SkeletonTable';
 
 const CustomAbiPage: React.FC = () => {
   const customAbiModalProps = useDisclosure();
@@ -47,7 +48,12 @@ const CustomAbiPage: React.FC = () => {
 
   const content = (() => {
     if (isLoading || isError) {
-      return <Spinner/>;
+      return (
+        <>
+          <SkeletonTable columns={ [ '100%', '108px' ] }/>
+          <Skeleton height="44px" width="156px" marginTop={ 8 }/>
+        </>
+      );
     }
 
     return (
