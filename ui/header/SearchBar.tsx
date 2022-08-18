@@ -3,8 +3,11 @@ import { InputGroup, Input, InputLeftAddon, InputLeftElement, useColorModeValue 
 import type { ChangeEvent, FormEvent } from 'react';
 import React from 'react';
 
+import useBasePath from 'lib/hooks/useBasePath';
+
 const SearchBar = () => {
   const [ value, setValue ] = React.useState('');
+  const basePath = useBasePath();
 
   const handleChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
@@ -12,8 +15,8 @@ const SearchBar = () => {
 
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    window.location.assign(`https://blockscout.com/xdai/mainnet/search-results?q=${ value }`);
-  }, [ value ]);
+    window.location.assign(`https://blockscout.com${ basePath }/search-results?q=${ value }`);
+  }, [ value, basePath ]);
 
   return (
     <form noValidate onSubmit={ handleSubmit }>

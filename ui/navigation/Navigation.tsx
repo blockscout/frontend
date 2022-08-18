@@ -1,5 +1,6 @@
 import { ChevronLeftIcon } from '@chakra-ui/icons';
 import { Flex, Icon, Box, VStack, useColorModeValue } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import abiIcon from 'icons/ABI.svg';
@@ -8,35 +9,39 @@ import appsIcon from 'icons/apps.svg';
 import blocksIcon from 'icons/block.svg';
 import gearIcon from 'icons/gear.svg';
 import logoIcon from 'icons/logo.svg';
-import networksIcon from 'icons/networks.svg';
 import privateTagIcon from 'icons/privattags.svg';
 import publicTagIcon from 'icons/publictags.svg';
 import tokensIcon from 'icons/token.svg';
 import transactionsIcon from 'icons/transactions.svg';
 import watchlistIcon from 'icons/watchlist.svg';
 import * as cookies from 'lib/cookies';
+import useBasePath from 'lib/hooks/useBasePath';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 
 import NavFooter from './NavFooter';
 import NavLink from './NavLink';
-
-const mainNavItems = [
-  { text: 'Blocks', pathname: '/blocks', icon: blocksIcon },
-  { text: 'Transactions', pathname: '/transactions', icon: transactionsIcon },
-  { text: 'Tokens', pathname: '/tokens', icon: tokensIcon },
-  { text: 'Apps', pathname: '/apps', icon: appsIcon },
-  { text: 'Other', pathname: '/other', icon: gearIcon },
-];
-
-const accountNavItems = [
-  { text: 'Watchlist', pathname: '/watchlist', icon: watchlistIcon },
-  { text: 'Private tags', pathname: '/private-tags', icon: privateTagIcon },
-  { text: 'Public tags', pathname: '/public-tags', icon: publicTagIcon },
-  { text: 'API keys', pathname: '/api-keys', icon: apiKeysIcon },
-  { text: 'Custom ABI', pathname: '/custom-abi', icon: abiIcon },
-];
+import NetworkMenu from './networkMenu/NetworkMenu';
 
 const Navigation = () => {
+  const router = useRouter();
+  const basePath = useBasePath();
+
+  const mainNavItems = [
+    { text: 'Blocks', pathname: basePath + '/blocks', icon: blocksIcon },
+    { text: 'Transactions', pathname: basePath + '/transactions', icon: transactionsIcon },
+    { text: 'Tokens', pathname: basePath + '/tokens', icon: tokensIcon },
+    { text: 'Apps', pathname: basePath + '/apps', icon: appsIcon },
+    { text: 'Other', pathname: basePath + '/other', icon: gearIcon },
+  ];
+
+  const accountNavItems = [
+    { text: 'Watchlist', pathname: basePath + '/watchlist', icon: watchlistIcon },
+    { text: 'Private tags', pathname: basePath + '/private-tags', icon: privateTagIcon },
+    { text: 'Public tags', pathname: basePath + '/public-tags', icon: publicTagIcon },
+    { text: 'API keys', pathname: basePath + '/api-keys', icon: apiKeysIcon },
+    { text: 'Custom ABI', pathname: basePath + '/custom-abi', icon: abiIcon },
+  ];
+
   const [ isCollapsed, setCollapsedState ] = React.useState(cookies.get(cookies.NAMES.NAV_BAR_COLLAPSED) === 'true');
 
   const handleTogglerClick = React.useCallback(() => {
@@ -82,23 +87,16 @@ const Navigation = () => {
             { ...getDefaultTransitionProps() }
           />
         </Box>
-        <Icon
-          as={ networksIcon }
-          width="16px"
-          height="16px"
-          color={ useColorModeValue('gray.500', 'white') }
-          marginLeft={ isCollapsed ? '0px' : '27px' }
-          { ...getDefaultTransitionProps({ transitionProperty: 'margin' }) }
-        />
+        <NetworkMenu isCollapsed={ isCollapsed }/>
       </Box>
       <Box as="nav" mt={ 14 }>
         <VStack as="ul" spacing="2" alignItems="flex-start" overflow="hidden">
-          { mainNavItems.map((item) => <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed }/>) }
+          { mainNavItems.map((item) => <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed } isActive={ router.asPath === item.pathname }/>) }
         </VStack>
       </Box>
       <Box as="nav" mt={ 12 }>
         <VStack as="ul" spacing="2" alignItems="flex-start" overflow="hidden">
-          { accountNavItems.map((item) => <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed }/>) }
+          { accountNavItems.map((item) => <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed } isActive={ router.asPath === item.pathname }/>) }
         </VStack>
       </Box>
       <NavFooter isCollapsed={ isCollapsed }/>
