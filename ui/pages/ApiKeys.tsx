@@ -1,17 +1,16 @@
-import { Box, Button, HStack, Link, Text, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, HStack, Link, Text, Skeleton, useDisclosure } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
 import type { ApiKey, ApiKeys } from 'types/api/account';
 
-import delay from 'lib/delay';
 import { space } from 'lib/html-entities';
 import ApiKeyModal from 'ui/apiKey/ApiKeyModal/ApiKeyModal';
 import ApiKeyTable from 'ui/apiKey/ApiKeyTable/ApiKeyTable';
 import DeleteApiKeyModal from 'ui/apiKey/DeleteApiKeyModal';
 import AccountPageHeader from 'ui/shared/AccountPageHeader';
-import ContentLoader from 'ui/shared/ContentLoader';
 import Page from 'ui/shared/Page/Page';
+import SkeletonTable from 'ui/shared/SkeletonTable';
 
 const DATA_LIMIT = 3;
 
@@ -23,10 +22,7 @@ const ApiKeysPage: React.FC = () => {
   const [ deleteModalData, setDeleteModalData ] = useState<ApiKey>();
 
   const { data, isLoading, isError } = useQuery<unknown, unknown, ApiKeys>([ 'api-keys' ], async() => {
-    const [ response ] = await Promise.all([
-      fetch('/api/account/api-keys'),
-      delay(5000),
-    ]);
+    const response = await fetch('/api/account/api-keys');
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
@@ -56,7 +52,10 @@ const ApiKeysPage: React.FC = () => {
   const content = (() => {
     if (isLoading || isError) {
       return (
-        <ContentLoader/>
+        <>
+          <SkeletonTable columns={ [ '100%', '108px' ] }/>
+          <Skeleton height="44px" width="156px" marginTop={ 8 }/>
+        </>
       );
     }
 
