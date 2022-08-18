@@ -12,6 +12,7 @@ const getActiveLabelStyles = (theme: Dict, fc: string, bc: string, size: 'md' | 
     color: getColor(theme, fc),
     fontSize: 'xs',
     lineHeight: '16px',
+    borderTopRightRadius: 'none',
   };
 
   switch (size) {
@@ -38,6 +39,7 @@ const getDefaultLabelStyles = (size: 'md' | 'lg') => {
         fontSize: 'md',
         lineHeight: '20px',
         padding: '18px 16px',
+        right: '18px',
       };
     }
 
@@ -46,6 +48,7 @@ const getDefaultLabelStyles = (size: 'md' | 'lg') => {
         fontSize: 'md',
         lineHeight: '24px',
         padding: '28px 24px',
+        right: '26px',
       };
     }
   }
@@ -107,7 +110,6 @@ const variantFloating: PartsStyleFunction<typeof parts> = (props: StyleFunctionP
       label: {
         ...getDefaultLabelStyles(size),
         left: '2px',
-        right: '2px',
         top: '2px',
         zIndex: 2,
         position: 'absolute',
