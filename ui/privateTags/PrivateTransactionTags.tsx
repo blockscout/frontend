@@ -1,14 +1,16 @@
-import { Box, Button, Text, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, Skeleton, Text, useDisclosure } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 
 import type { TransactionTags, TransactionTag } from 'types/api/account';
+
+import SkeletonTable from 'ui/shared/SkeletonTable';
 
 import DeletePrivateTagModal from './DeletePrivateTagModal';
 import TransactionModal from './TransactionModal/TransactionModal';
 import TransactionTagTable from './TransactionTagTable/TransactionTagTable';
 
 type Props = {
-  transactionTags: TransactionTags;
+  transactionTags?: TransactionTags;
 }
 
 const PrivateTransactionTags = ({ transactionTags }: Props) => {
@@ -38,12 +40,26 @@ const PrivateTransactionTags = ({ transactionTags }: Props) => {
     deleteModalProps.onClose();
   }, [ deleteModalProps ]);
 
-  return (
-    <>
-      <Text marginBottom={ 12 }>
+  const description = (
+    <Text marginBottom={ 12 }>
         Use private transaction tags to label any transactions of interest.
         Private tags are saved in your account and are only visible when you are logged in.
-      </Text>
+    </Text>
+  );
+
+  if (!transactionTags) {
+    return (
+      <>
+        { description }
+        <SkeletonTable columns={ [ '75%', '25%', '108px' ] }/>
+        <Skeleton height="44px" width="156px" marginTop={ 8 }/>
+      </>
+    );
+  }
+
+  return (
+    <>
+      { description }
       { Boolean(transactionTags.length) && (
         <TransactionTagTable
           data={ transactionTags }

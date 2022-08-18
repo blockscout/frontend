@@ -1,4 +1,4 @@
-import { Box, Button, HStack, Link, Text, Spinner, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, HStack, Link, Text, Skeleton, useDisclosure } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
@@ -10,6 +10,7 @@ import ApiKeyTable from 'ui/apiKey/ApiKeyTable/ApiKeyTable';
 import DeleteApiKeyModal from 'ui/apiKey/DeleteApiKeyModal';
 import AccountPageHeader from 'ui/shared/AccountPageHeader';
 import Page from 'ui/shared/Page/Page';
+import SkeletonTable from 'ui/shared/SkeletonTable';
 
 const DATA_LIMIT = 3;
 
@@ -50,20 +51,23 @@ const ApiKeysPage: React.FC = () => {
 
   const content = (() => {
     if (isLoading || isError) {
-      return <Spinner/>;
+      return (
+        <>
+          <SkeletonTable columns={ [ '100%', '108px' ] }/>
+          <Skeleton height="44px" width="156px" marginTop={ 8 }/>
+        </>
+      );
     }
 
     const canAdd = data.length < DATA_LIMIT;
     return (
       <>
-        { data.length > 0 && (
-          <ApiKeyTable
-            data={ data }
-            onDeleteClick={ onDeleteClick }
-            onEditClick={ onEditClick }
-            limit={ DATA_LIMIT }
-          />
-        ) }
+        <ApiKeyTable
+          data={ data }
+          onDeleteClick={ onDeleteClick }
+          onEditClick={ onEditClick }
+          limit={ DATA_LIMIT }
+        />
         <HStack marginTop={ 8 } spacing={ 5 }>
           <Button
             variant="primary"
