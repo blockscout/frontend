@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import nodeFetch from 'node-fetch';
 
 import type { WatchlistAddresses } from 'types/api/account';
 import type { Tokenlist } from 'types/api/tokenlist';
@@ -19,7 +18,7 @@ const watchlistWithTokensHandler = async(_req: NextApiRequest, res: NextApiRespo
   const watchlistData = await watchlistResponse.json() as WatchlistAddresses;
 
   const data = await Promise.all(watchlistData.map(async item => {
-    const tokens = await nodeFetch(`https://blockscout.com/xdai/testnet/api?module=account&action=tokenlist&address=${ item.address_hash }`);
+    const tokens = await fetch(`?module=account&action=tokenlist&address=${ item.address_hash }`);
 
     const tokensData = await tokens.json() as Tokenlist;
     return ({ ...item, tokens_count: Array.isArray(tokensData.result) ? tokensData.result.length : 0 });

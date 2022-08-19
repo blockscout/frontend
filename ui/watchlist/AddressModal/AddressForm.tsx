@@ -63,8 +63,6 @@ const AddressForm: React.FC<Props> = ({ data, onClose }) => {
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation((formData: Inputs) => {
-
-    let mutationFunction;
     const requestParams = {
       name: formData?.tag,
       address_hash: formData?.address,
@@ -75,12 +73,11 @@ const AddressForm: React.FC<Props> = ({ data, onClose }) => {
     };
     if (data) {
       // edit address
-      mutationFunction = () => fetch(`/api/account/watchlist/${ data.id }`, { method: 'PUT', body: JSON.stringify(requestParams) });
+      return fetch(`/api/account/watchlist/${ data.id }`, { method: 'PUT', body: JSON.stringify(requestParams) });
     } else {
       // add address
-      mutationFunction = () => fetch('/api/account/watchlist', { method: 'POST', body: JSON.stringify(requestParams) });
+      return fetch('/api/account/watchlist', { method: 'POST', body: JSON.stringify(requestParams) });
     }
-    return mutationFunction();
   }, {
     onError: () => {
       // eslint-disable-next-line no-console

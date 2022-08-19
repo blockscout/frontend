@@ -25,7 +25,7 @@ const WatchListAddressItem = ({ item }: {item: TWatchlistItem}) => {
       <VStack spacing={ 2 } align="stretch" overflow="hidden" fontWeight={ 500 } color="gray.700">
         <AddressLinkWithTooltip address={ item.address_hash }/>
         <HStack spacing={ 0 } fontSize="sm" h={ 6 }>
-          <Image src="./xdai.png" alt="chain-logo" marginRight="10px" w="16px" h="16px"/>
+          <Image src="/xdai.png" alt="chain-logo" marginRight="10px" w="16px" h="16px"/>
           <Text color={ mainTextColor }>{ `xDAI balance:${ nbsp }` + nativeBalance }</Text>
           <Text variant="secondary">{ `${ nbsp }(${ nativeBalanceUSD })` }</Text>
         </HStack>
