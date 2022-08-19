@@ -7,16 +7,17 @@ const baseStyleDialog: SystemStyleFunction = (props) => {
   return {
     padding: 8,
     borderRadius: 'lg',
-    bg: mode('white', 'gray.800')(props),
+    bg: mode('white', 'gray.900')(props),
   };
 };
 
-const baseStyleHeader = {
+const baseStyleHeader: SystemStyleFunction = (props) => ({
   padding: 0,
   marginBottom: 8,
   fontSize: '2xl',
   lineHeight: 10,
-};
+  color: mode('blackAlpha.800', 'whiteAlpha.800')(props),
+});
 
 const baseStyleBody = {
   padding: 0,
@@ -34,7 +35,7 @@ const baseStyleCloseButton: SystemStyleFunction = (props) => {
     right: 8,
     height: 10,
     width: 10,
-    color: mode('gray.700', 'gray.600')(props),
+    color: mode('gray.700', 'gray.500')(props),
     _hover: { color: 'blue.400' },
     _active: { bg: 'none' },
   };
@@ -45,7 +46,7 @@ const baseStyleOverlay = {
 
 const baseStyle: PartsStyleFunction<typeof parts> = (props) => ({
   dialog: baseStyleDialog(props),
-  header: baseStyleHeader,
+  header: baseStyleHeader(props),
   body: baseStyleBody,
   footer: baseStyleFooter,
   closeButton: baseStyleCloseButton(props),
