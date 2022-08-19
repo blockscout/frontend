@@ -1,20 +1,25 @@
-import { Box, Button, Text, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, Text, Skeleton, useDisclosure } from '@chakra-ui/react';
+import { useQueryClient } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
-import type { TWatchlistItem } from 'data/watchlist';
-import { watchlist } from 'data/watchlist';
+import type { TWatchlist, TWatchlistItem } from 'types/client/account';
+
 import AccountPageHeader from 'ui/shared/AccountPageHeader';
 import Page from 'ui/shared/Page/Page';
+import SkeletonTable from 'ui/shared/SkeletonTable';
 import AddressModal from 'ui/watchlist/AddressModal/AddressModal';
 import DeleteAddressModal from 'ui/watchlist/DeleteAddressModal';
 import WatchlistTable from 'ui/watchlist/WatchlistTable/WatchlistTable';
 
 const WatchList: React.FC = () => {
+  const queryClient = useQueryClient();
+  const watchlistData = queryClient.getQueryData([ 'watchlist' ]) as TWatchlist;
+
   const addressModalProps = useDisclosure();
   const deleteModalProps = useDisclosure();
 
   const [ addressModalData, setAddressModalData ] = useState<TWatchlistItem>();
-  const [ deleteModalData, setDeleteModalData ] = useState<string>();
+  const [ deleteModalData, setDeleteModalData ] = useState<TWatchlistItem>();
 
   const onEditClick = useCallback((data: TWatchlistItem) => {
     setAddressModalData(data);
@@ -27,7 +32,7 @@ const WatchList: React.FC = () => {
   }, [ addressModalProps ]);
 
   const onDeleteClick = useCallback((data: TWatchlistItem) => {
-    setDeleteModalData(data.address);
+    setDeleteModalData(data);
     deleteModalProps.onOpen();
   }, [ deleteModalProps ]);
 
@@ -41,25 +46,33 @@ const WatchList: React.FC = () => {
       <Box h="100%">
         <AccountPageHeader text="Watch list"/>
         <Text marginBottom={ 12 }>An email notification can be sent to you when an address on your watch list sends or receives any transactions.</Text>
-        { Boolean(watchlist.length) && (
-          <WatchlistTable
-            data={ watchlist }
-            onDeleteClick={ onDeleteClick }
-            onEditClick={ onEditClick }
-          />
+        { !watchlistData && (
+          <>
+            <SkeletonTable columns={ [ '70%', '30%', '160px', '108px' ] }/>
+            <Skeleton height="44px" width="156px" marginTop={ 8 }/>
+          </>
         ) }
-        <Box marginTop={ 8 }>
-          <Button
-            variant="primary"
-            size="lg"
-            onClick={ addressModalProps.onOpen }
-          >
-            Add address
-          </Button>
-        </Box>
+        { Boolean(watchlistData?.length) && (
+          <>
+            <WatchlistTable
+              data={ watchlistData }
+              onDeleteClick={ onDeleteClick }
+              onEditClick={ onEditClick }
+            />
+            <Box marginTop={ 8 }>
+              <Button
+                variant="primary"
+                size="lg"
+                onClick={ addressModalProps.onOpen }
+              >
+                Add address
+              </Button>
+            </Box>
+          </>
+        ) }
       </Box>
       <AddressModal { ...addressModalProps } onClose={ onAddressModalClose } data={ addressModalData }/>
-      <DeleteAddressModal { ...deleteModalProps } onClose={ onDeleteModalClose } address={ deleteModalData }/>
+      <DeleteAddressModal { ...deleteModalProps } onClose={ onDeleteModalClose } data={ deleteModalData }/>
     </Page>
   );
 };

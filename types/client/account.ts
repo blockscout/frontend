@@ -1,3 +1,5 @@
-// here will be types if some back-end models are needed to be extended
-// in order to fit the client's needs
-export {};
+import type { WatchlistAddress } from '../api/account';
+
+export type TWatchlistItem = WatchlistAddress & {tokens_count: number};
+
+export type TWatchlist = Array<TWatchlistItem>;

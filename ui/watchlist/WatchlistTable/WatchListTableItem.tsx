@@ -5,9 +5,11 @@ import {
   Switch,
   HStack,
 } from '@chakra-ui/react';
-import React, { useCallback } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import React, { useCallback, useState } from 'react';
 
-import type { TWatchlistItem } from 'data/watchlist';
+import type { TWatchlistItem } from 'types/client/account';
+
 import DeleteButton from 'ui/shared/DeleteButton';
 import EditButton from 'ui/shared/EditButton';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
@@ -21,6 +23,7 @@ interface Props {
 }
 
 const WatchlistTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
+  const [ notificationEnabled, setNotificationEnabled ] = useState(item.notification_methods.email);
   const onItemEditClick = useCallback(() => {
     return onEditClick(item);
   }, [ item, onEditClick ]);
@@ -29,17 +32,34 @@ const WatchlistTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
     return onDeleteClick(item);
   }, [ item, onDeleteClick ]);
 
+  const { mutate } = useMutation(() => {
+    const data = { ...item, notification_methods: { email: !notificationEnabled } };
+    return fetch(`/api/account/watchlist/${ item.id }`, { method: 'PUT', body: JSON.stringify(data) });
+  }, {
+    onError: () => {
+      // eslint-disable-next-line no-console
+      console.log('error');
+    },
+    onSuccess: () => {
+      setNotificationEnabled(prevState => !prevState);
+    },
+  });
+
+  const onSwitch = useCallback(() => {
+    return mutate();
+  }, [ mutate ]);
+
   return (
-    <Tr alignItems="top" key={ item.address }>
+    <Tr alignItems="top" key={ item.address_hash }>
       <Td><WatchListAddressItem item={ item }/></Td>
       <Td>
-        <TruncatedTextTooltip label={ item.tag }>
+        <TruncatedTextTooltip label={ item.name }>
           <Tag variant="gray" lineHeight="24px">
-            { item.tag }
+            { item.name }
           </Tag>
         </TruncatedTextTooltip>
       </Td>
-      <Td><Switch colorScheme="blue" size="md" isChecked={ item.notification }/></Td>
+      <Td><Switch colorScheme="blue" size="md" isChecked={ notificationEnabled } onChange={ onSwitch }/></Td>
       <Td>
         <HStack spacing={ 6 }>
           <EditButton onClick={ onItemEditClick }/>

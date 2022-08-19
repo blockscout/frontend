@@ -23,9 +23,13 @@ export interface NotificationDirection {
 }
 
 export interface NotificationSettings {
-  _native?: NotificationDirection;
-  erc20?: NotificationDirection;
-  erc7211155?: NotificationDirection;
+  'native': NotificationDirection;
+  'ERC-20': NotificationDirection;
+  'ERC-721': NotificationDirection;
+}
+
+export interface NotificationMethods {
+  email: boolean;
 }
 
 export interface Transaction {
@@ -51,12 +55,14 @@ export interface UserInfo {
 }
 
 export interface WatchlistAddress {
-  addressHash: string;
-  addressName: string;
-  addressBalance: number;
-  coinName: string;
-  exchangeRate?: number;
-  notificationSettings: NotificationSettings;
+  address_hash: string;
+  name: string;
+  address_balance: number;
+  coin_name: string;
+  exchange_rate: number;
+  notification_settings: NotificationSettings;
+  notification_methods: NotificationMethods;
+  id: string;
 }
 
 export interface WatchlistAddressNew {
