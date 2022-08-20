@@ -7,24 +7,24 @@ import type { Inputs } from './PublicTagsForm';
 
 interface Props {
   control: Control<Inputs>;
-  canReport: boolean;
+  isDisabled?: boolean;
 }
 
-export default function PublicTagFormAction({ control, canReport }: Props) {
+export default function PublicTagFormAction({ control, isDisabled }: Props) {
   const renderRadioGroup = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'action'>}) => {
     return (
-      <RadioGroup defaultValue="add" value={ field.value } colorScheme="blue">
+      <RadioGroup defaultValue="add" colorScheme="blue" { ...field }>
         <Stack spacing={ 5 }>
           <Radio value="add">
             I want to add tags for my project
           </Radio>
-          <Radio value="report" isDisabled={ canReport }>
+          <Radio value="report" isDisabled={ isDisabled }>
             I want to report an incorrect public tag
           </Radio>
         </Stack>
       </RadioGroup>
     );
-  }, [ canReport ]);
+  }, [ isDisabled ]);
 
   return (
     <Controller

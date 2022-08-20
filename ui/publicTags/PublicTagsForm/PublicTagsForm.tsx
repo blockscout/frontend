@@ -6,11 +6,12 @@ import {
   Text,
   HStack,
 } from '@chakra-ui/react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useCallback } from 'react';
-import type { Path } from 'react-hook-form';
+import type { Path, SubmitHandler } from 'react-hook-form';
 import { useForm, useFieldArray } from 'react-hook-form';
 
-import type { PublicTag } from 'types/api/account';
+import type { PublicTags, PublicTag, PublicTagNew } from 'types/api/account';
 
 import PublicTagFormAction from './PublicTagFormAction';
 import PublicTagFormAddressInput from './PublicTagFormAddressInput';
@@ -23,41 +24,44 @@ type Props = {
 }
 
 export type Inputs = {
-  userName: string;
-  userEmail: string;
-  companyName: string;
-  companyUrl: string;
+  fullName?: string;
+  email?: string;
+  companyName?: string;
+  companyUrl?: string;
   action: 'add' | 'report';
-  tag: string;
-  addresses: Array<{
+  tags?: string;
+  addresses?: Array<{
     name: string;
     address: string;
   }>;
-  comment: string;
+  comment?: string;
 }
 
 const placeholders = {
-  userName: 'Your name',
-  userEmail: 'Email',
+  fullName: 'Your name',
+  email: 'Email',
   companyName: 'Company name',
   companyUrl: 'Company website',
-  tag: 'Public tag (max 35 characters)',
+  tags: 'Public tag (max 35 characters)',
   comment: 'Specify the reason for adding tags and color preference(s).',
 } as Record<Path<Inputs>, string>;
 
 const ADDRESS_INPUT_BUTTONS_WIDTH = 170;
 
 const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
+  const queryClient = useQueryClient();
+
   const { control, handleSubmit, formState: { errors } } = useForm<Inputs>({
     defaultValues: {
-      userName: data?.full_name,
-      userEmail: data?.email,
+      fullName: data?.full_name,
+      email: data?.email,
       companyName: data?.company,
       companyUrl: data?.website,
-      tag: data?.tags.split(';').map((tag) => tag).join('; '),
+      tags: data?.tags.split(';').map((tag) => tag).join('; '),
       addresses: data?.addresses.split(';').map((address, index: number) => ({ name: `address.${ index }.address`, address })) ||
         [ { name: 'address.0.address', address: '' } ],
       comment: data?.additional_comment,
+      action: data?.is_owner === undefined || data?.is_owner ? 'add' : 'report',
     },
   });
 
@@ -67,10 +71,61 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
   });
 
   const onAddFieldClick = useCallback(() => append({ address: '' }), [ append ]);
+
   const onRemoveFieldClick = useCallback((index: number) => () => remove(index), [ remove ]);
 
+  const updatePublicTag = (formData: Inputs) => {
+    const payload: PublicTagNew = {
+      full_name: formData.fullName || '',
+      email: formData.email || '',
+      company: formData.companyName || '',
+      website: formData.companyUrl || '',
+      is_owner: formData.action === 'add',
+      addresses_array: formData.addresses?.map(({ address }) => address) || [],
+      tags: formData.tags?.split(';').map((s) => s.trim()).join(';') || '',
+      additional_comment: formData.comment || '',
+    };
+    const body = JSON.stringify(payload);
+
+    if (!data?.id) {
+      return fetch('/api/account/public-tags', { method: 'POST', body });
+    }
+
+    return fetch(`/api/account/public-tags/${ data.id }`, { method: 'PUT', body });
+  };
+
+  const mutation = useMutation(updatePublicTag, {
+    onSuccess: async(data) => {
+      const response: PublicTag = await data.json();
+
+      queryClient.setQueryData([ 'public-tags' ], (prevData: PublicTags | undefined) => {
+        const isExisting = prevData && prevData.some((item) => item.id === response.id);
+
+        if (isExisting) {
+          return prevData.map((item) => {
+            if (item.id === response.id) {
+              return response;
+            }
+
+            return item;
+          });
+        }
+
+        return [ ...(prevData || []), response ];
+      });
+
+      changeToDataScreen(true);
+    },
+    // eslint-disable-next-line no-console
+    onError: console.error,
+  });
+
+  const onSubmit: SubmitHandler<Inputs> = useCallback((data) => {
+    mutation.mutate(data);
+  }, [ mutation ]);
+
   const changeToData = useCallback(() => {
-    changeToDataScreen(true);
+    changeToDataScreen(false);
   }, [ changeToDataScreen ]);
 
   return (
@@ -78,24 +133,24 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
       <Text size="sm" variant="secondary" paddingBottom={ 5 }>Company info</Text>
       <Grid templateColumns="1fr 1fr" rowGap={ 4 } columnGap={ 5 }>
         <GridItem>
-          <PublicTagsFormInput<Inputs> fieldName="userName" control={ control } label={ placeholders.userName } required/>
+          <PublicTagsFormInput<Inputs> fieldName="fullName" control={ control } label={ placeholders.fullName } required/>
         </GridItem>
         <GridItem>
           <PublicTagsFormInput<Inputs> fieldName="companyName" control={ control } label={ placeholders.companyName }/>
         </GridItem>
         <GridItem>
-          <PublicTagsFormInput<Inputs> fieldName="userEmail" control={ control } label={ placeholders.userEmail } required/>
+          <PublicTagsFormInput<Inputs> fieldName="email" control={ control } label={ placeholders.email } required/>
         </GridItem>
         <GridItem>
           <PublicTagsFormInput<Inputs> fieldName="companyUrl" control={ control } label={ placeholders.companyUrl }/>
         </GridItem>
       </Grid>
       <Box marginTop={ 4 } marginBottom={ 8 }>
-        <PublicTagFormAction canReport={ Boolean(data) } control={ control }/>
+        <PublicTagFormAction control={ control }/>
       </Box>
       <Text size="sm" variant="secondary" marginBottom={ 5 }>Public tags (2 tags maximum, please use &quot;;&quot; as a divider)</Text>
       <Box marginBottom={ 4 }>
-        <PublicTagsFormInput<Inputs> fieldName="tag" control={ control } label={ placeholders.tag } required/>
+        <PublicTagsFormInput<Inputs> fieldName="tags" control={ control } label={ placeholders.tags } required/>
       </Box>
       { fields.map((field, index) => {
         return (
@@ -118,8 +173,8 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
         <Button
           size="lg"
           variant="primary"
-          onClick={ handleSubmit(changeToData) }
-          disabled={ Object.keys(errors).length > 0 }
+          onClick={ handleSubmit(onSubmit) }
+          disabled={ Object.keys(errors).length > 0 || mutation.isLoading }
         >
           Send request
         </Button>
