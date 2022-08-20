@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -28,6 +29,7 @@ type Inputs = {
 const AddressForm: React.FC<Props> = ({ data, onClose }) => {
   const [ pending, setPending ] = useState(false);
   const { control, handleSubmit, formState: { errors }, setValue } = useForm<Inputs>();
+  const formBackgroundColor = useColorModeValue('white', 'gray.900');
 
   useEffect(() => {
     setValue('address', data?.address_hash || '');
@@ -67,12 +69,12 @@ const AddressForm: React.FC<Props> = ({ data, onClose }) => {
   };
 
   const renderAddressInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'address'>}) => {
-    return <AddressInput<Inputs, 'address'> field={ field } isInvalid={ Boolean(errors.address) }/>;
-  }, [ errors ]);
+    return <AddressInput<Inputs, 'address'> field={ field } isInvalid={ Boolean(errors.address) } backgroundColor={ formBackgroundColor }/>;
+  }, [ errors, formBackgroundColor ]);
 
   const renderTagInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'tag'>}) => {
-    return <TagInput field={ field } isInvalid={ Boolean(errors.tag) }/>;
-  }, [ errors ]);
+    return <TagInput field={ field } isInvalid={ Boolean(errors.tag) } backgroundColor={ formBackgroundColor }/>;
+  }, [ errors, formBackgroundColor ]);
 
   return (
     <>

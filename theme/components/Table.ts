@@ -11,7 +11,7 @@ const variantSimple: PartsStyleFunction<typeof parts> = (props) => {
   return {
     th: {
       border: 0,
-      color: mode('gray.600', 'gray.50')(props),
+      color: mode('gray.600', 'whiteAlpha.700')(props),
       ...transitionProps,
     },
     thead: {

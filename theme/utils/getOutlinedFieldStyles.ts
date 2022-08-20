@@ -5,17 +5,18 @@ import getDefaultFormColors from './getDefaultFormColors';
 import getDefaultTransitionProps from './getDefaultTransitionProps';
 
 export default function getOutlinedFieldStyles(props: StyleFunctionProps) {
-  const { theme } = props;
-  const { focusColor: fc, errorColor: ec, filledColor: flc } = getDefaultFormColors(props);
+  const { theme, borderColor } = props;
+  const { focusColor: fc, errorColor: ec } = getDefaultFormColors(props);
   const transitionProps = getDefaultTransitionProps();
 
   return {
     border: '2px solid',
-    bg: 'inherit',
-    borderColor: getColor(theme, flc),
+    // filled input
+    backgroundColor: 'transparent',
+    borderColor: mode('gray.300', 'gray.600')(props),
     ...transitionProps,
     _hover: {
-      borderColor: mode('gray.200', 'whiteAlpha.400')(props),
+      borderColor: mode('gray.200', 'gray.500')(props),
     },
     _readOnly: {
       boxShadow: 'none !important',
@@ -23,7 +24,7 @@ export default function getOutlinedFieldStyles(props: StyleFunctionProps) {
     },
     _disabled: {
       opacity: 1,
-      background: mode('gray.200', 'whiteAlpha.400')(props),
+      backgroundColor: mode('gray.200', 'whiteAlpha.200')(props),
       border: 'none',
       cursor: 'not-allowed',
     },
@@ -39,7 +40,8 @@ export default function getOutlinedFieldStyles(props: StyleFunctionProps) {
     _placeholder: {
       color: mode('blackAlpha.600', 'whiteAlpha.600')(props),
     },
-    ':placeholder-shown:not(:focus-visible):not(:hover)': { borderColor: mode('blackAlpha.100', 'whiteAlpha.200')(props) },
+    // not filled input
+    ':placeholder-shown:not(:focus-visible):not(:hover)': { borderColor: borderColor || mode('gray.100', 'gray.700')(props) },
     ':-webkit-autofill': { transition: 'background-color 5000s ease-in-out 0s' },
     ':-webkit-autofill:hover': { transition: 'background-color 5000s ease-in-out 0s' },
     ':-webkit-autofill:focus': { transition: 'background-color 5000s ease-in-out 0s' },

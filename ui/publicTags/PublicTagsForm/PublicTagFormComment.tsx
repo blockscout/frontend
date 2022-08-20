@@ -12,7 +12,7 @@ interface Props {
 export default function PublicTagFormComment({ control }: Props) {
   const renderComment = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'comment'>}) => {
     return (
-      <FormControl variant="floating" id={ field.name }>
+      <FormControl variant="floating" id={ field.name } size="lg">
         <Textarea
           { ...field }
           size="lg"

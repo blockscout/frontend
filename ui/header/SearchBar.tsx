@@ -30,6 +30,7 @@ const SearchBar = () => {
           placeholder="Search by addresses / transactions / block / token... "
           ml="1px"
           onChange={ handleChange }
+          borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }
         />
       </InputGroup>
     </form>
