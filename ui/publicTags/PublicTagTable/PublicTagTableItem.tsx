@@ -42,8 +42,8 @@ const PublicTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
                 <AddressIcon address={ address }/>
                 <Box overflow="hidden">
                   <AddressLinkWithTooltip address={ address }/>
-                  { /* todo_tom add address name */ }
-                  <Text fontSize="sm" variant="secondary" mt={ 0.5 }>Address Name</Text>
+                  { /* will be added later */ }
+                  { /* <Text fontSize="sm" variant="secondary" mt={ 0.5 }>Address Name</Text> */ }
                 </Box>
               </HStack>
             );
@@ -63,11 +63,9 @@ const PublicTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
           }) }
         </VStack>
       </Td>
-      { /* todo_tom update tag date and status */ }
       <Td>
         <VStack alignItems="flex-start">
-          <Text fontSize="sm" color="green.500" fontWeight="500">Approved</Text>
-          <Text fontSize="sm" variant="secondary">Jun 10, 2022</Text>
+          <Text fontSize="sm" fontWeight="500">Submitted</Text>
         </VStack>
       </Td>
       <Td>

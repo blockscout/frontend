@@ -24,9 +24,9 @@ const PublicTagTable = ({ data, onEditClick, onDeleteClick }: Props) => {
       <Table variant="simple" minWidth="600px">
         <Thead>
           <Tr>
-            <Th width="60%">Smart contract / Address (0x...)</Th>
-            <Th width="40%">Public tag</Th>
-            <Th width="200px">Request status</Th>
+            <Th width="50%">Smart contract / Address (0x...)</Th>
+            <Th width="25%">Public tag</Th>
+            <Th width="25%">Request status</Th>
             <Th width="108px"></Th>
           </Tr>
         </Thead>

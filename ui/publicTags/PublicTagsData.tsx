@@ -48,7 +48,7 @@ const PublicTagsData = ({ changeToFormScreen, onTagDelete }: Props) => {
     if (isLoading || isError) {
       return (
         <>
-          <SkeletonTable columns={ [ '60%', '40%', '200px', '108px' ] }/>
+          <SkeletonTable columns={ [ '50%', '25%', '25%', '108px' ] }/>
           <Skeleton height="48px" width="270px" marginTop={ 8 }/>
         </>
       );
