@@ -53,22 +53,22 @@ const WatchList: React.FC = () => {
           </>
         ) }
         { Boolean(watchlistData?.length) && (
-          <>
-            <WatchlistTable
-              data={ watchlistData }
-              onDeleteClick={ onDeleteClick }
-              onEditClick={ onEditClick }
-            />
-            <Box marginTop={ 8 }>
-              <Button
-                variant="primary"
-                size="lg"
-                onClick={ addressModalProps.onOpen }
-              >
+          <WatchlistTable
+            data={ watchlistData }
+            onDeleteClick={ onDeleteClick }
+            onEditClick={ onEditClick }
+          />
+        ) }
+        { Boolean(watchlistData) && (
+          <Box marginTop={ 8 }>
+            <Button
+              variant="primary"
+              size="lg"
+              onClick={ addressModalProps.onOpen }
+            >
                 Add address
-              </Button>
-            </Box>
-          </>
+            </Button>
+          </Box>
         ) }
       </Box>
       <AddressModal { ...addressModalProps } onClose={ onAddressModalClose } data={ addressModalData }/>

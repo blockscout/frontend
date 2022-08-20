@@ -62,12 +62,14 @@ const ApiKeysPage: React.FC = () => {
     const canAdd = data.length < DATA_LIMIT;
     return (
       <>
-        <ApiKeyTable
-          data={ data }
-          onDeleteClick={ onDeleteClick }
-          onEditClick={ onEditClick }
-          limit={ DATA_LIMIT }
-        />
+        { Boolean(data.length) && (
+          <ApiKeyTable
+            data={ data }
+            onDeleteClick={ onDeleteClick }
+            onEditClick={ onEditClick }
+            limit={ DATA_LIMIT }
+          />
+        ) }
         <HStack marginTop={ 8 } spacing={ 5 }>
           <Button
             variant="primary"
