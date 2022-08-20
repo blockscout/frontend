@@ -29,7 +29,7 @@ const NAME_MAX_LENGTH = 100;
 const ApiKeyForm: React.FC<Props> = ({ data, onClose }) => {
   const { control, handleSubmit, formState: { errors }, setValue } = useForm<Inputs>();
   const queryClient = useQueryClient();
-  const formBackgroundColor = useColorModeValue('white', 'gray.800');
+  const formBackgroundColor = useColorModeValue('white', 'gray.900');
 
   useEffect(() => {
     setValue('token', data?.api_key || '');

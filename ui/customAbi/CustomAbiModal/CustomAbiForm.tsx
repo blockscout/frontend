@@ -48,7 +48,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose }) => {
     return fetch(`/api/account/custom-abis/${ data.id }`, { method: 'PUT', body });
   };
 
-  const formBackgroundColor = useColorModeValue('white', 'gray.800');
+  const formBackgroundColor = useColorModeValue('white', 'gray.900');
 
   const mutation = useMutation(customAbiKey, {
     onSuccess: async(data) => {

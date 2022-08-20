@@ -31,7 +31,7 @@ type Inputs = {
 
 const AddressForm: React.FC<Props> = ({ data }) => {
   const { control, handleSubmit, formState: { errors }, setValue } = useForm<Inputs>();
-  const formBackgroundColor = useColorModeValue('white', 'gray.800');
+  const formBackgroundColor = useColorModeValue('white', 'gray.900');
 
   useEffect(() => {
     setValue('address', data?.address || '');

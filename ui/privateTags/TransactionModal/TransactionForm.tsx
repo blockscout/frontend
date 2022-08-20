@@ -29,7 +29,7 @@ type Inputs = {
 const TransactionForm: React.FC<Props> = ({ data, onClose }) => {
   const [ pending, setPending ] = useState(false);
   const { control, handleSubmit, formState: { errors }, setValue } = useForm<Inputs>();
-  const formBackgroundColor = useColorModeValue('white', 'gray.800');
+  const formBackgroundColor = useColorModeValue('white', 'gray.900');
 
   useEffect(() => {
     setValue('transaction', data?.transaction_hash || '');

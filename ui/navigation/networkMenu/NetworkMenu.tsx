@@ -19,7 +19,7 @@ const NetworkMenu = ({ isCollapsed }: Props) => {
             as={ networksIcon }
             width="16px"
             height="16px"
-            color={ useColorModeValue('gray.500', 'white') }
+            color={ useColorModeValue('gray.500', 'gray.400') }
             _hover={{ color: 'blue.400' }}
             marginLeft={ isCollapsed ? '0px' : '27px' }
             cursor="pointer"
