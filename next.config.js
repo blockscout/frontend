@@ -16,4 +16,5 @@ module.exports = withReactSvg({
       },
     ];
   },
+  output: 'standalone',
 });
