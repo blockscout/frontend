@@ -2,22 +2,26 @@ import { Flex, Text, FormControl, FormLabel, Textarea } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 import type { ChangeEvent } from 'react';
 
-import type { TPublicTag } from 'data/publicTags';
+import type { PublicTag } from 'types/api/account';
+
 import DeleteModal from 'ui/shared/DeleteModal';
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  tags: Array<TPublicTag>;
+  data: PublicTag;
   onDeleteSuccess: () => void;
 }
 
-const DeletePublicTagModal: React.FC<Props> = ({ isOpen, onClose, tags = [], onDeleteSuccess }) => {
+const DeletePublicTagModal: React.FC<Props> = ({ isOpen, onClose, data, onDeleteSuccess }) => {
+
+  const tags = data.tags.split(';');
+
   const onDelete = useCallback(() => {
     // eslint-disable-next-line no-console
-    console.log('delete', tags);
+    console.log('delete', data);
     onDeleteSuccess();
-  }, [ tags, onDeleteSuccess ]);
+  }, [ data, onDeleteSuccess ]);
 
   const [ reason, setReason ] = useState<string>('');
 
@@ -31,7 +35,7 @@ const DeletePublicTagModal: React.FC<Props> = ({ isOpen, onClose, tags = [], onD
       text = (
         <>
           <Text display="flex">Public tag</Text>
-          <Text fontWeight="600" whiteSpace="pre">{ ` "${ tags[0].name }" ` }</Text>
+          <Text fontWeight="600" whiteSpace="pre">{ ` "${ tags[0] }" ` }</Text>
           <Text>will be removed.</Text>
         </>
       );
@@ -40,15 +44,15 @@ const DeletePublicTagModal: React.FC<Props> = ({ isOpen, onClose, tags = [], onD
       const tagsText: Array<JSX.Element | string> = [];
       tags.forEach((tag, index) => {
         if (index < tags.length - 2) {
-          tagsText.push(<Text fontWeight="600" whiteSpace="pre">{ ` "${ tag.name }"` }</Text>);
+          tagsText.push(<Text fontWeight="600" whiteSpace="pre">{ ` "${ tag }"` }</Text>);
           tagsText.push(',');
         }
         if (index === tags.length - 2) {
-          tagsText.push(<Text fontWeight="600" whiteSpace="pre">{ ` "${ tag.name }" ` }</Text>);
+          tagsText.push(<Text fontWeight="600" whiteSpace="pre">{ ` "${ tag }" ` }</Text>);
           tagsText.push('and');
         }
         if (index === tags.length - 1) {
-          tagsText.push(<Text fontWeight="600" whiteSpace="pre">{ ` "${ tag.name }" ` }</Text>);
+          tagsText.push(<Text fontWeight="600" whiteSpace="pre">{ ` "${ tag }" ` }</Text>);
         }
       });
       text = (
@@ -85,4 +89,4 @@ const DeletePublicTagModal: React.FC<Props> = ({ isOpen, onClose, tags = [], onD
   );
 };
 
-export default DeletePublicTagModal;
+export default React.memo(DeletePublicTagModal);

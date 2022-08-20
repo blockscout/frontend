@@ -10,7 +10,7 @@ import React, { useCallback } from 'react';
 import type { Path } from 'react-hook-form';
 import { useForm, useFieldArray } from 'react-hook-form';
 
-import type { TPublicTagItem, TPublicTag, TPublicTagAddress } from 'data/publicTags';
+import type { PublicTag } from 'types/api/account';
 
 import PublicTagFormAction from './PublicTagFormAction';
 import PublicTagFormAddressInput from './PublicTagFormAddressInput';
@@ -19,7 +19,7 @@ import PublicTagsFormInput from './PublicTagsFormInput';
 
 type Props = {
   changeToDataScreen: (success?: boolean) => void;
-  data?: TPublicTagItem;
+  data?: PublicTag;
 }
 
 export type Inputs = {
@@ -50,14 +50,14 @@ const ADDRESS_INPUT_BUTTONS_WIDTH = 170;
 const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
   const { control, handleSubmit, formState: { errors } } = useForm<Inputs>({
     defaultValues: {
-      userName: data?.userName,
-      userEmail: data?.userEmail,
-      companyName: data?.companyName,
-      companyUrl: data?.companyUrl,
-      tag: data?.tags.map((tag: TPublicTag) => tag.name).join('; '),
-      addresses: data?.addresses.map((adr: TPublicTagAddress, index: number) => ({ name: `address.${ index }.address`, address: adr.address })) ||
+      userName: data?.full_name,
+      userEmail: data?.email,
+      companyName: data?.company,
+      companyUrl: data?.website,
+      tag: data?.tags.split(';').map((tag) => tag).join('; '),
+      addresses: data?.addresses.split(';').map((address, index: number) => ({ name: `address.${ index }.address`, address })) ||
         [ { name: 'address.0.address', address: '' } ],
-      comment: data?.comment,
+      comment: data?.additional_comment,
     },
   });
 
@@ -135,4 +135,4 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
   );
 };
 
-export default PublicTagsForm;
+export default React.memo(PublicTagsForm);

@@ -1,16 +1,16 @@
 import {
   Box,
   Tag,
-  Text,
   Tr,
   Td,
   HStack,
   VStack,
-  useColorModeValue,
+  Text,
 } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
-import type { TPublicTagItem, TPublicTagAddress, TPublicTag } from 'data/publicTags';
+import type { PublicTag } from 'types/api/account';
+
 import AddressIcon from 'ui/shared/AddressIcon';
 import AddressLinkWithTooltip from 'ui/shared/AddressLinkWithTooltip';
 import DeleteButton from 'ui/shared/DeleteButton';
@@ -18,9 +18,9 @@ import EditButton from 'ui/shared/EditButton';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 interface Props {
-  item: TPublicTagItem;
-  onEditClick: (data: TPublicTagItem) => void;
-  onDeleteClick: (data: TPublicTagItem) => void;
+  item: PublicTag;
+  onEditClick: (data: PublicTag) => void;
+  onDeleteClick: (data: PublicTag) => void;
 }
 
 const PublicTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
@@ -32,19 +32,18 @@ const PublicTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
     return onDeleteClick(item);
   }, [ item, onDeleteClick ]);
 
-  const secondaryColor = useColorModeValue('gray.500', 'gray.400');
-
   return (
     <Tr alignItems="top" key={ item.id }>
       <Td>
         <VStack spacing={ 4 } alignItems="unset">
-          { item.addresses.map((adr: TPublicTagAddress) => {
+          { item.addresses.split(';').map((address) => {
             return (
-              <HStack spacing={ 4 } key={ adr.address } overflow="hidden" alignItems="start">
-                <AddressIcon address={ adr.address }/>
+              <HStack spacing={ 4 } key={ address } overflow="hidden" alignItems="start">
+                <AddressIcon address={ address }/>
                 <Box overflow="hidden">
-                  <AddressLinkWithTooltip address={ adr.address }/>
-                  { adr.addressName && <Text fontSize="sm" color={ secondaryColor } mt={ 0.5 }>{ adr.addressName }</Text> }
+                  <AddressLinkWithTooltip address={ address }/>
+                  { /* todo_tom add address name */ }
+                  <Text fontSize="sm" variant="secondary" mt={ 0.5 }>Address Name</Text>
                 </Box>
               </HStack>
             );
@@ -53,19 +52,23 @@ const PublicTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
       </Td>
       <Td>
         <VStack spacing={ 2 } alignItems="baseline">
-          { item.tags.map((tag: TPublicTag) => {
+          { item.tags.split(';').map((tag) => {
             return (
-              <TruncatedTextTooltip label={ tag.name } key={ tag.name }>
-                <Tag color={ tag.colorHex || 'gray.600' } background={ tag.backgroundHex || 'gray.200' } lineHeight="24px">
-                  { tag.name }
+              <TruncatedTextTooltip label={ tag } key={ tag }>
+                <Tag variant="gray" lineHeight="24px">
+                  { tag }
                 </Tag>
               </TruncatedTextTooltip>
             );
           }) }
         </VStack>
       </Td>
+      { /* todo_tom update tag date and status */ }
       <Td>
-        <Text fontSize="sm" color={ secondaryColor }>{ item.date }</Text>
+        <VStack alignItems="flex-start">
+          <Text fontSize="sm" color="green.500" fontWeight="500">Approved</Text>
+          <Text fontSize="sm" variant="secondary">Jun 10, 2022</Text>
+        </VStack>
       </Td>
       <Td>
         <HStack spacing={ 6 }>
@@ -77,4 +80,4 @@ const PublicTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   );
 };
 
-export default PublicTagTableItem;
+export default React.memo(PublicTagTableItem);
