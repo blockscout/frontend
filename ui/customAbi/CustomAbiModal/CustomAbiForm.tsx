@@ -8,11 +8,14 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import type { ControllerRenderProps, SubmitHandler } from 'react-hook-form';
 import { useForm, Controller } from 'react-hook-form';
 
 import type { CustomAbi, CustomAbis } from 'types/api/account';
+
+import { ADDRESS_REGEXP } from 'lib/addressValidations';
+import AddressInput from 'ui/shared/AddressInput';
 
 type Props = {
   data?: CustomAbi;
@@ -25,18 +28,19 @@ type Inputs = {
   abi: string;
 }
 
-// idk, maybe there is no limit
-const NAME_MAX_LENGTH = 100;
+const NAME_MAX_LENGTH = 255;
 
 const CustomAbiForm: React.FC<Props> = ({ data, onClose }) => {
-  const { control, formState: { errors }, setValue, handleSubmit } = useForm<Inputs>();
-  const queryClient = useQueryClient();
+  const { control, formState: { errors }, handleSubmit } = useForm<Inputs>({
+    defaultValues: {
+      contract_address_hash: data?.contract_address_hash || '',
+      name: data?.name || '',
+      abi: JSON.stringify(data?.abi) || '',
+    },
+    mode: 'all',
+  });
 
-  useEffect(() => {
-    setValue('contract_address_hash', data?.contract_address_hash || '');
-    setValue('name', data?.name || '');
-    setValue('abi', JSON.stringify(data?.abi) || '');
-  }, [ setValue, data ]);
+  const queryClient = useQueryClient();
 
   const customAbiKey = (data: Inputs & { id?: number }) => {
     const body = JSON.stringify({ name: data.name, contract_address_hash: data.contract_address_hash, abi: data.abi });
@@ -82,13 +86,12 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose }) => {
 
   const renderContractAddressInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'contract_address_hash'>}) => {
     return (
-      <FormControl variant="floating" id="contract_address_hash" isRequired backgroundColor={ formBackgroundColor }>
-        <Input
-          { ...field }
-          isInvalid={ Boolean(errors.contract_address_hash) }
-        />
-        <FormLabel>Smart contract address (0x...)</FormLabel>
-      </FormControl>
+      <AddressInput<Inputs, 'contract_address_hash'>
+        field={ field }
+        isInvalid={ Boolean(errors.contract_address_hash) }
+        backgroundColor={ formBackgroundColor }
+        placeholder="Smart contract address (0x...)"
+      />
     );
   }, [ errors, formBackgroundColor ]);
 
@@ -125,15 +128,13 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose }) => {
           name="contract_address_hash"
           control={ control }
           render={ renderContractAddressInput }
+          rules={{ pattern: ADDRESS_REGEXP }}
         />
       </Box>
       <Box marginTop={ 5 }>
         <Controller
           name="name"
           control={ control }
-          rules={{
-            maxLength: NAME_MAX_LENGTH,
-          }}
           render={ renderNameInput }
         />
       </Box>
