@@ -6,7 +6,7 @@ import {
 import React from 'react';
 import type { ControllerRenderProps, FieldValues, Path } from 'react-hook-form';
 
-const ADDRESS_LENGTH = 42;
+import { ADDRESS_LENGTH } from 'lib/validations/address';
 
 type Props<TInputs extends FieldValues, TInputName extends Path<TInputs>> = {
   field: ControllerRenderProps<TInputs, TInputName>;

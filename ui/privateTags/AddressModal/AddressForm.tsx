@@ -4,16 +4,16 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
 import { useForm, Controller } from 'react-hook-form';
 
 import type { AddressTag } from 'types/api/account';
 
+import { ADDRESS_REGEXP } from 'lib/validations/address';
 import AddressInput from 'ui/shared/AddressInput';
 import TagInput from 'ui/shared/TagInput';
 
-const ADDRESS_LENGTH = 42;
 const TAG_MAX_LENGTH = 35;
 
 type Props = {
@@ -28,13 +28,15 @@ type Inputs = {
 
 const AddressForm: React.FC<Props> = ({ data, onClose }) => {
   const [ pending, setPending ] = useState(false);
-  const { control, handleSubmit, formState: { errors }, setValue } = useForm<Inputs>();
-  const formBackgroundColor = useColorModeValue('white', 'gray.900');
+  const { control, handleSubmit, formState: { errors } } = useForm<Inputs>({
+    mode: 'all',
+    defaultValues: {
+      address: data?.address_hash || '',
+      tag: data?.name || '',
+    },
+  });
 
-  useEffect(() => {
-    setValue('address', data?.address_hash || '');
-    setValue('tag', data?.name || '');
-  }, [ setValue, data ]);
+  const formBackgroundColor = useColorModeValue('white', 'gray.900');
 
   const queryClient = useQueryClient();
 
@@ -83,8 +85,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose }) => {
           name="address"
           control={ control }
           rules={{
-            maxLength: ADDRESS_LENGTH,
-            minLength: ADDRESS_LENGTH,
+            pattern: ADDRESS_REGEXP,
           }}
           render={ renderAddressInput }
         />

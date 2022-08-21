@@ -11,6 +11,7 @@ import type { Path } from 'react-hook-form';
 import { useForm, useFieldArray } from 'react-hook-form';
 
 import type { TPublicTagItem, TPublicTag, TPublicTagAddress } from 'data/publicTags';
+import { EMAIL_REGEXP } from 'lib/validations/email';
 
 import PublicTagFormAction from './PublicTagFormAction';
 import PublicTagFormAddressInput from './PublicTagFormAddressInput';
@@ -50,15 +51,16 @@ const ADDRESS_INPUT_BUTTONS_WIDTH = 170;
 const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
   const { control, handleSubmit, formState: { errors } } = useForm<Inputs>({
     defaultValues: {
-      userName: data?.userName,
-      userEmail: data?.userEmail,
-      companyName: data?.companyName,
-      companyUrl: data?.companyUrl,
-      tag: data?.tags.map((tag: TPublicTag) => tag.name).join('; '),
+      userName: data?.userName || '',
+      userEmail: data?.userEmail || '',
+      companyName: data?.companyName || '',
+      companyUrl: data?.companyUrl || '',
+      tag: data?.tags.map((tag: TPublicTag) => tag.name).join('; ') || '',
       addresses: data?.addresses.map((adr: TPublicTagAddress, index: number) => ({ name: `address.${ index }.address`, address: adr.address })) ||
         [ { name: 'address.0.address', address: '' } ],
-      comment: data?.comment,
+      comment: data?.comment || '',
     },
+    mode: 'all',
   });
 
   const { fields, append, remove } = useFieldArray({
@@ -78,16 +80,36 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
       <Text size="sm" variant="secondary" paddingBottom={ 5 }>Company info</Text>
       <Grid templateColumns="1fr 1fr" rowGap={ 4 } columnGap={ 5 }>
         <GridItem>
-          <PublicTagsFormInput<Inputs> fieldName="userName" control={ control } label={ placeholders.userName } required/>
+          <PublicTagsFormInput<Inputs>
+            fieldName="userName"
+            control={ control }
+            label={ placeholders.userName }
+            required
+          />
         </GridItem>
         <GridItem>
-          <PublicTagsFormInput<Inputs> fieldName="companyName" control={ control } label={ placeholders.companyName }/>
+          <PublicTagsFormInput<Inputs>
+            fieldName="companyName"
+            control={ control }
+            label={ placeholders.companyName }
+          />
         </GridItem>
         <GridItem>
-          <PublicTagsFormInput<Inputs> fieldName="userEmail" control={ control } label={ placeholders.userEmail } required/>
+          <PublicTagsFormInput<Inputs>
+            fieldName="userEmail"
+            control={ control }
+            label={ placeholders.userEmail }
+            pattern={ EMAIL_REGEXP }
+            hasError={ Boolean(errors.userEmail) }
+            required
+          />
         </GridItem>
         <GridItem>
-          <PublicTagsFormInput<Inputs> fieldName="companyUrl" control={ control } label={ placeholders.companyUrl }/>
+          <PublicTagsFormInput<Inputs>
+            fieldName="companyUrl"
+            control={ control }
+            label={ placeholders.companyUrl }
+          />
         </GridItem>
       </Grid>
       <Box marginTop={ 4 } marginBottom={ 8 }>
@@ -95,14 +117,19 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
       </Box>
       <Text size="sm" variant="secondary" marginBottom={ 5 }>Public tags (2 tags maximum, please use &quot;;&quot; as a divider)</Text>
       <Box marginBottom={ 4 }>
-        <PublicTagsFormInput<Inputs> fieldName="tag" control={ control } label={ placeholders.tag } required/>
+        <PublicTagsFormInput<Inputs>
+          fieldName="tag"
+          control={ control }
+          label={ placeholders.tag }
+          hasError={ Boolean(errors.tag) }
+          required/>
       </Box>
       { fields.map((field, index) => {
         return (
           <Box position="relative" key={ field.id } marginBottom={ 4 }>
             <PublicTagFormAddressInput
               control={ control }
-              hasError={ Boolean(errors.addresses) }
+              hasError={ Boolean(errors?.addresses?.[index]) }
               index={ index }
               fieldsLength={ fields.length }
               onAddFieldClick={ onAddFieldClick }

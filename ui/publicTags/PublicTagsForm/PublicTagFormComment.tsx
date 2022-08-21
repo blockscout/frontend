@@ -5,6 +5,8 @@ import { Controller } from 'react-hook-form';
 
 import type { Inputs } from './PublicTagsForm';
 
+const TEXT_INPUT_MAX_LENGTH = 255;
+
 interface Props {
   control: Control<Inputs>;
 }
@@ -27,6 +29,7 @@ export default function PublicTagFormComment({ control }: Props) {
       name="comment"
       control={ control }
       render={ renderComment }
+      rules={{ maxLength: TEXT_INPUT_MAX_LENGTH }}
     />
   );
 }
