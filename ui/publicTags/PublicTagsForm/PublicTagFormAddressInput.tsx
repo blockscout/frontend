@@ -5,7 +5,7 @@ import { Controller } from 'react-hook-form';
 
 import MinusIcon from 'icons/minus.svg';
 import PlusIcon from 'icons/plus.svg';
-import { ADDRESS_REGEXP } from 'lib/addressValidations';
+import { ADDRESS_REGEXP } from 'lib/validations/address';
 import AddressInput from 'ui/shared/AddressInput';
 
 import type { Inputs } from './PublicTagsForm';

@@ -10,7 +10,7 @@ import { useForm, Controller } from 'react-hook-form';
 
 import type { TransactionTag } from 'types/api/account';
 
-import { TRANSACTION_HASH_LENGTH, TRANSACTION_HASH_REGEXP } from 'lib/transactionValidations';
+import { TRANSACTION_HASH_LENGTH, TRANSACTION_HASH_REGEXP } from 'lib/validations/transaction';
 import TagInput from 'ui/shared/TagInput';
 import TransactionInput from 'ui/shared/TransactionInput';
 

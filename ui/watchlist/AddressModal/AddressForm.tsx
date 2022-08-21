@@ -14,7 +14,7 @@ import { useForm, Controller } from 'react-hook-form';
 
 import type { TWatchlistItem } from 'types/client/account';
 
-import { ADDRESS_REGEXP } from 'lib/addressValidations';
+import { ADDRESS_REGEXP } from 'lib/validations/address';
 import AddressInput from 'ui/shared/AddressInput';
 import TagInput from 'ui/shared/TagInput';
 

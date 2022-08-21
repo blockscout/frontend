@@ -14,7 +14,7 @@ import { useForm, Controller } from 'react-hook-form';
 
 import type { CustomAbi, CustomAbis } from 'types/api/account';
 
-import { ADDRESS_REGEXP } from 'lib/addressValidations';
+import { ADDRESS_REGEXP } from 'lib/validations/address';
 import AddressInput from 'ui/shared/AddressInput';
 
 type Props = {

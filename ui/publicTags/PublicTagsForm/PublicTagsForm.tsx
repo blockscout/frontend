@@ -11,6 +11,7 @@ import type { Path } from 'react-hook-form';
 import { useForm, useFieldArray } from 'react-hook-form';
 
 import type { TPublicTagItem, TPublicTag, TPublicTagAddress } from 'data/publicTags';
+import { EMAIL_REGEXP } from 'lib/validations/email';
 
 import PublicTagFormAction from './PublicTagFormAction';
 import PublicTagFormAddressInput from './PublicTagFormAddressInput';
@@ -98,7 +99,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
             fieldName="userEmail"
             control={ control }
             label={ placeholders.userEmail }
-            pattern={ /^[\w.%+-]+@[a-zA-Z\d-]+(?:\.[a-zA-Z\d-]+)+$/ }
+            pattern={ EMAIL_REGEXP }
             hasError={ Boolean(errors.userEmail) }
             required
           />
