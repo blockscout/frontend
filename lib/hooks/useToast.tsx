@@ -10,8 +10,10 @@ import Toast from 'ui/shared/Toast';
 const defaultOptions: UseToastOptions & { toastComponent?: React.FC<ToastProps> } = {
   toastComponent: Toast,
   position: 'top-right',
-  duration: 10000000,
   isClosable: true,
+  containerStyle: {
+    margin: 8,
+  },
 };
 
 export default function useToastModified() {
