@@ -1,12 +1,12 @@
 import {
   Box,
-  useToast,
 } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 import { animateScroll } from 'react-scroll';
 
 import type { PublicTag } from 'types/api/account';
 
+import useToast from 'lib/hooks/useToast';
 import PublicTagsData from 'ui/publicTags/PublicTagsData';
 import PublicTagsForm from 'ui/publicTags/PublicTagsForm/PublicTagsForm';
 import AccountPageHeader from 'ui/shared/AccountPageHeader';
