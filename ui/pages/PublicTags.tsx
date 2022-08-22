@@ -5,7 +5,8 @@ import {
 import React, { useCallback, useState } from 'react';
 import { animateScroll } from 'react-scroll';
 
-import type { TPublicTagItem } from 'data/publicTags';
+import type { PublicTag } from 'types/api/account';
+
 import PublicTagsData from 'ui/publicTags/PublicTagsData';
 import PublicTagsForm from 'ui/publicTags/PublicTagsForm/PublicTagsForm';
 import AccountPageHeader from 'ui/shared/AccountPageHeader';
@@ -20,9 +21,9 @@ const toastDescriptions = {
   removed: 'Tags have been removed.',
 } as Record<TToastAction, string>;
 
-const PublicTags: React.FC = () => {
+const PublicTagsComponent: React.FC = () => {
   const [ screen, setScreen ] = useState<TScreen>('data');
-  const [ formData, setFormData ] = useState<TPublicTagItem>();
+  const [ formData, setFormData ] = useState<PublicTag>();
 
   const toast = useToast();
 
@@ -39,7 +40,7 @@ const PublicTags: React.FC = () => {
     });
   }, [ toast ]);
 
-  const changeToFormScreen = useCallback((data?: TPublicTagItem) => {
+  const changeToFormScreen = useCallback((data?: PublicTag) => {
     setFormData(data);
     setScreen('form');
     animateScroll.scrollToTop({
@@ -82,4 +83,4 @@ const PublicTags: React.FC = () => {
   );
 };
 
-export default PublicTags;
+export default PublicTagsComponent;

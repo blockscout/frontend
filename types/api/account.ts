@@ -72,6 +72,24 @@ export interface WatchlistAddressNew {
 
 export type WatchlistAddresses = Array<WatchlistAddress>
 
+export interface PublicTag {
+  website: string;
+  tags: string; // tag_1;tag_2;tag_3 etc.
+  is_owner: boolean;
+  id: number;
+  full_name: string;
+  email: string;
+  company: string;
+  addresses: string; // address_1;<address_2;address_3 etc.
+  additional_comment: string;
+}
+
+export type PublicTagNew = Omit<PublicTag, 'addresses' | 'id'> & {
+  addresses_array: Array<string>;
+}
+
+export type PublicTags = Array<PublicTag>;
+
 export type CustomAbis = Array<CustomAbi>
 
 export interface CustomAbi {

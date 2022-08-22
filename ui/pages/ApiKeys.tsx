@@ -54,7 +54,7 @@ const ApiKeysPage: React.FC = () => {
       return (
         <>
           <SkeletonTable columns={ [ '100%', '108px' ] }/>
-          <Skeleton height="44px" width="156px" marginTop={ 8 }/>
+          <Skeleton height="48px" width="156px" marginTop={ 8 }/>
         </>
       );
     }

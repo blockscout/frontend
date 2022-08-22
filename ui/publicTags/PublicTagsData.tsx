@@ -1,23 +1,33 @@
-import { Box, Text, Button, useDisclosure } from '@chakra-ui/react';
+import { Box, Text, Button, Skeleton, useDisclosure } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
-import type { TPublicTagItem, TPublicTag } from 'data/publicTags';
-import { publicTags } from 'data/publicTags';
+import type { PublicTags, PublicTag } from 'types/api/account';
+
+import SkeletonTable from 'ui/shared/SkeletonTable';
 
 import DeletePublicTagModal from './DeletePublicTagModal';
 import PublicTagTable from './PublicTagTable/PublicTagTable';
 
 type Props = {
-  changeToFormScreen: (data?: TPublicTagItem) => void;
+  changeToFormScreen: (data?: PublicTag) => void;
   onTagDelete: () => void;
 }
 
 const PublicTagsData = ({ changeToFormScreen, onTagDelete }: Props) => {
   const deleteModalProps = useDisclosure();
-  const [ deleteModalData, setDeleteModalData ] = useState<Array<TPublicTag>>([]);
+  const [ deleteModalData, setDeleteModalData ] = useState<PublicTag>();
+
+  const { data, isLoading, isError } = useQuery<unknown, unknown, PublicTags>([ 'public-tags' ], async() => {
+    const response = await fetch('/api/account/public-tags');
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json();
+  });
 
   const onDeleteModalClose = useCallback(() => {
-    setDeleteModalData([]);
+    setDeleteModalData(undefined);
     deleteModalProps.onClose();
   }, [ deleteModalProps ]);
 
@@ -25,14 +35,40 @@ const PublicTagsData = ({ changeToFormScreen, onTagDelete }: Props) => {
     changeToFormScreen();
   }, [ changeToFormScreen ]);
 
-  const onItemEditClick = useCallback((item: TPublicTagItem) => {
+  const onItemEditClick = useCallback((item: PublicTag) => {
     changeToFormScreen(item);
   }, [ changeToFormScreen ]);
 
-  const onItemDeleteClick = useCallback((item: TPublicTagItem) => {
-    setDeleteModalData(item.tags);
+  const onItemDeleteClick = useCallback((item: PublicTag) => {
+    setDeleteModalData(item);
     deleteModalProps.onOpen();
   }, [ deleteModalProps ]);
+
+  const content = (() => {
+    if (isLoading || isError) {
+      return (
+        <>
+          <SkeletonTable columns={ [ '50%', '25%', '25%', '108px' ] }/>
+          <Skeleton height="48px" width="270px" marginTop={ 8 }/>
+        </>
+      );
+    }
+
+    return (
+      <>
+        { data.length > 0 && <PublicTagTable data={ data } onEditClick={ onItemEditClick } onDeleteClick={ onItemDeleteClick }/> }
+        <Box marginTop={ 8 }>
+          <Button
+            variant="primary"
+            size="lg"
+            onClick={ changeToForm }
+          >
+            Request to add public tag
+          </Button>
+        </Box>
+      </>
+    );
+  })();
 
   return (
     <>
@@ -42,22 +78,15 @@ const PublicTagsData = ({ changeToFormScreen, onTagDelete }: Props) => {
         Clicking a tag opens a page with related information and helps provide context and data organization.
         Requests are sent to a moderator for review and approval. This process can take several days.
       </Text>
-      <PublicTagTable data={ publicTags } onEditClick={ onItemEditClick } onDeleteClick={ onItemDeleteClick }/>
-      <Box marginTop={ 8 }>
-        <Button
-          variant="primary"
-          size="lg"
-          onClick={ changeToForm }
-        >
-            Request to add public tag
-        </Button>
-      </Box>
-      <DeletePublicTagModal
-        { ...deleteModalProps }
-        onClose={ onDeleteModalClose }
-        tags={ deleteModalData }
-        onDeleteSuccess={ onTagDelete }
-      />
+      { content }
+      { deleteModalData && (
+        <DeletePublicTagModal
+          { ...deleteModalProps }
+          onClose={ onDeleteModalClose }
+          data={ deleteModalData }
+          onDeleteSuccess={ onTagDelete }
+        />
+      ) }
     </>
   );
 };

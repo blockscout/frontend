@@ -8,14 +8,14 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TPublicTagItem, TPublicTags } from 'data/publicTags';
+import type { PublicTags, PublicTag } from 'types/api/account';
 
 import PublicTagTableItem from './PublicTagTableItem';
 
 interface Props {
-  data: TPublicTags;
-  onEditClick: (data: TPublicTagItem) => void;
-  onDeleteClick: (data: TPublicTagItem) => void;
+  data: PublicTags;
+  onEditClick: (data: PublicTag) => void;
+  onDeleteClick: (data: PublicTag) => void;
 }
 
 const PublicTagTable = ({ data, onEditClick, onDeleteClick }: Props) => {
@@ -24,14 +24,14 @@ const PublicTagTable = ({ data, onEditClick, onDeleteClick }: Props) => {
       <Table variant="simple" minWidth="600px">
         <Thead>
           <Tr>
-            <Th width="60%">Smart contract / Address (0x...)</Th>
-            <Th width="40%">Public tag</Th>
-            <Th width="200px">Submission date</Th>
+            <Th width="50%">Smart contract / Address (0x...)</Th>
+            <Th width="25%">Public tag</Th>
+            <Th width="25%">Request status</Th>
             <Th width="108px"></Th>
           </Tr>
         </Thead>
         <Tbody>
-          { data.map((item: TPublicTagItem) => (
+          { data.map((item) => (
             <PublicTagTableItem
               item={ item }
               key={ item.id }
