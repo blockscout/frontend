@@ -89,3 +89,27 @@ export type PublicTagNew = Omit<PublicTag, 'addresses' | 'id'> & {
 }
 
 export type PublicTags = Array<PublicTag>;
+
+export type CustomAbis = Array<CustomAbi>
+
+export interface CustomAbi {
+  name: string;
+  id: number;
+  contract_address_hash: string;
+  abi: Array<AbiItem>;
+}
+
+export interface AbiItem {
+  type: 'function';
+  stateMutability: 'nonpayable' | 'view';
+  payable: boolean;
+  outputs: Array<AbiInputOutput>;
+  name: string;
+  inputs: Array<AbiInputOutput>;
+  constant: boolean;
+}
+
+interface AbiInputOutput {
+  type: 'uint256';
+  name: string;
+}

@@ -5,6 +5,7 @@ import { Controller } from 'react-hook-form';
 
 import MinusIcon from 'icons/minus.svg';
 import PlusIcon from 'icons/plus.svg';
+import { ADDRESS_REGEXP } from 'lib/validations/address';
 import AddressInput from 'ui/shared/AddressInput';
 
 import type { Inputs } from './PublicTagsForm';
@@ -38,6 +39,7 @@ export default function PublicTagFormAction({ control, index, fieldsLength, hasE
         name={ `addresses.${ index }.address` }
         control={ control }
         render={ renderAddressInput }
+        rules={{ pattern: ADDRESS_REGEXP }}
       />
       { index === fieldsLength - 1 && fieldsLength < MAX_INPUTS_NUM && (
         <IconButton

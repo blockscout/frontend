@@ -4,9 +4,10 @@ import {
   FormControl,
   FormLabel,
   Input,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
 import { useForm, Controller } from 'react-hook-form';
 
@@ -22,17 +23,18 @@ type Inputs = {
   name: string;
 }
 
-// idk, maybe there is no limit
-const NAME_MAX_LENGTH = 100;
+const NAME_MAX_LENGTH = 255;
 
 const ApiKeyForm: React.FC<Props> = ({ data, onClose }) => {
-  const { control, handleSubmit, formState: { errors }, setValue } = useForm<Inputs>();
+  const { control, handleSubmit, formState: { errors } } = useForm<Inputs>({
+    mode: 'all',
+    defaultValues: {
+      token: data?.api_key || '',
+      name: data?.name || '',
+    },
+  });
   const queryClient = useQueryClient();
-
-  useEffect(() => {
-    setValue('token', data?.api_key || '');
-    setValue('name', data?.name || '');
-  }, [ setValue, data ]);
+  const formBackgroundColor = useColorModeValue('white', 'gray.900');
 
   const updateApiKey = (data: Inputs) => {
     const body = JSON.stringify({ name: data.name });
@@ -88,7 +90,7 @@ const ApiKeyForm: React.FC<Props> = ({ data, onClose }) => {
 
   const renderNameInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'name'>}) => {
     return (
-      <FormControl variant="floating" id="name" isRequired>
+      <FormControl variant="floating" id="name" isRequired backgroundColor={ formBackgroundColor }>
         <Input
           { ...field }
           isInvalid={ Boolean(errors.name) }
@@ -97,7 +99,7 @@ const ApiKeyForm: React.FC<Props> = ({ data, onClose }) => {
         <FormLabel>Application name for API key (e.g Web3 project)</FormLabel>
       </FormControl>
     );
-  }, [ errors ]);
+  }, [ errors, formBackgroundColor ]);
 
   return (
     <>

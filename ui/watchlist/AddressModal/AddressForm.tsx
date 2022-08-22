@@ -5,20 +5,23 @@ import {
   Text,
   Grid,
   GridItem,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
 import { useForm, Controller } from 'react-hook-form';
 
 import type { TWatchlistItem } from 'types/client/account';
 
+import { ADDRESS_REGEXP } from 'lib/validations/address';
 import AddressInput from 'ui/shared/AddressInput';
 import TagInput from 'ui/shared/TagInput';
 
+// does it depend on the network?
 const NOTIFICATIONS = [ 'native', 'ERC-20', 'ERC-721' ] as const;
 const NOTIFICATIONS_NAMES = [ 'xDAI', 'ERC-20', 'ERC-721, ERC-1155 (NFT)' ];
-const ADDRESS_LENGTH = 42;
+
 const TAG_MAX_LENGTH = 35;
 
 type Props = {
@@ -58,7 +61,24 @@ type Checkboxes = 'notification' |
 
 const AddressForm: React.FC<Props> = ({ data, onClose }) => {
   const [ pending, setPending ] = useState(false);
-  const { control, handleSubmit, formState: { errors }, setValue } = useForm<Inputs>();
+  const formBackgroundColor = useColorModeValue('white', 'gray.900');
+
+  let notificationsDefault = {} as Inputs['notification_settings'];
+  if (!data) {
+    NOTIFICATIONS.forEach(n => notificationsDefault[n] = { incoming: true, outcoming: true });
+  } else {
+    notificationsDefault = data.notification_settings;
+  }
+
+  const { control, handleSubmit, formState: { errors } } = useForm<Inputs>({
+    defaultValues: {
+      address: data?.address_hash || '',
+      tag: data?.name || '',
+      notification: data ? data.notification_methods.email : true,
+      notification_settings: notificationsDefault,
+    },
+    mode: 'all',
+  });
 
   const queryClient = useQueryClient();
 
@@ -96,22 +116,13 @@ const AddressForm: React.FC<Props> = ({ data, onClose }) => {
     mutate(formData);
   };
 
-  useEffect(() => {
-    const notificationsDefault = {} as Inputs['notification_settings'];
-    NOTIFICATIONS.forEach(n => notificationsDefault[n] = { incoming: true, outcoming: true });
-    setValue('address', data?.address_hash || '');
-    setValue('tag', data?.name || '');
-    setValue('notification', data ? data.notification_methods.email : true);
-    setValue('notification_settings', data ? data.notification_settings : notificationsDefault);
-  }, [ setValue, data ]);
-
   const renderAddressInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'address'>}) => {
-    return <AddressInput<Inputs, 'address'> field={ field } isInvalid={ Boolean(errors.address) }/>;
-  }, [ errors ]);
+    return <AddressInput<Inputs, 'address'> field={ field } isInvalid={ Boolean(errors.address) } backgroundColor={ formBackgroundColor }/>;
+  }, [ errors, formBackgroundColor ]);
 
   const renderTagInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'tag'>}) => {
-    return <TagInput field={ field } isInvalid={ Boolean(errors.tag) }/>;
-  }, [ errors ]);
+    return <TagInput field={ field } isInvalid={ Boolean(errors.tag) } backgroundColor={ formBackgroundColor }/>;
+  }, [ errors, formBackgroundColor ]);
 
   // eslint-disable-next-line react/display-name
   const renderCheckbox = useCallback((text: string) => ({ field }: {field: ControllerRenderProps<Inputs, Checkboxes>}) => (
@@ -133,8 +144,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose }) => {
           name="address"
           control={ control }
           rules={{
-            maxLength: ADDRESS_LENGTH,
-            minLength: ADDRESS_LENGTH,
+            pattern: ADDRESS_REGEXP,
           }}
           render={ renderAddressInput }
         />

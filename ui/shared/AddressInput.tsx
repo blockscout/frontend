@@ -6,13 +6,14 @@ import {
 import React from 'react';
 import type { ControllerRenderProps, FieldValues, Path } from 'react-hook-form';
 
-const ADDRESS_LENGTH = 42;
+import { ADDRESS_LENGTH } from 'lib/validations/address';
 
 type Props<TInputs extends FieldValues, TInputName extends Path<TInputs>> = {
   field: ControllerRenderProps<TInputs, TInputName>;
   isInvalid: boolean;
   size?: string;
   placeholder?: string;
+  backgroundColor?: string;
 }
 
 export default function AddressInput<Inputs extends FieldValues, Name extends Path<Inputs>>(
@@ -21,9 +22,10 @@ export default function AddressInput<Inputs extends FieldValues, Name extends Pa
     isInvalid,
     size,
     placeholder = 'Address (0x...)',
+    backgroundColor,
   }: Props<Inputs, Name>) {
   return (
-    <FormControl variant="floating" id="address" isRequired>
+    <FormControl variant="floating" id="address" isRequired backgroundColor={ backgroundColor } size={ size }>
       <Input
         { ...field }
         isInvalid={ isInvalid }

@@ -1,18 +1,19 @@
 import {
   Box,
   Button,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
 import { useForm, Controller } from 'react-hook-form';
 
 import type { TransactionTag } from 'types/api/account';
 
+import { TRANSACTION_HASH_LENGTH, TRANSACTION_HASH_REGEXP } from 'lib/validations/transaction';
 import TagInput from 'ui/shared/TagInput';
 import TransactionInput from 'ui/shared/TransactionInput';
 
-const HASH_LENGTH = 66;
 const TAG_MAX_LENGTH = 35;
 
 type Props = {
@@ -27,12 +28,15 @@ type Inputs = {
 
 const TransactionForm: React.FC<Props> = ({ data, onClose }) => {
   const [ pending, setPending ] = useState(false);
-  const { control, handleSubmit, formState: { errors }, setValue } = useForm<Inputs>();
+  const formBackgroundColor = useColorModeValue('white', 'gray.900');
 
-  useEffect(() => {
-    setValue('transaction', data?.transaction_hash || '');
-    setValue('tag', data?.name || '');
-  }, [ setValue, data ]);
+  const { control, handleSubmit, formState: { errors } } = useForm<Inputs>({
+    mode: 'all',
+    defaultValues: {
+      transaction: data?.transaction_hash || '',
+      tag: data?.name || '',
+    },
+  });
 
   const queryClient = useQueryClient();
 
@@ -68,12 +72,12 @@ const TransactionForm: React.FC<Props> = ({ data, onClose }) => {
   };
 
   const renderTransactionInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'transaction'>}) => {
-    return <TransactionInput field={ field } isInvalid={ Boolean(errors.transaction) }/>;
-  }, [ errors ]);
+    return <TransactionInput field={ field } isInvalid={ Boolean(errors.transaction) } backgroundColor={ formBackgroundColor }/>;
+  }, [ errors, formBackgroundColor ]);
 
   const renderTagInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'tag'>}) => {
-    return <TagInput field={ field } isInvalid={ Boolean(errors.tag) }/>;
-  }, [ errors ]);
+    return <TagInput field={ field } isInvalid={ Boolean(errors.tag) } backgroundColor={ formBackgroundColor }/>;
+  }, [ errors, formBackgroundColor ]);
 
   return (
     <>
@@ -82,8 +86,9 @@ const TransactionForm: React.FC<Props> = ({ data, onClose }) => {
           name="transaction"
           control={ control }
           rules={{
-            maxLength: HASH_LENGTH,
-            minLength: HASH_LENGTH,
+            maxLength: TRANSACTION_HASH_LENGTH,
+            minLength: TRANSACTION_HASH_LENGTH,
+            pattern: TRANSACTION_HASH_REGEXP,
           }}
           render={ renderTransactionInput }
         />

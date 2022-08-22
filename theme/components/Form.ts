@@ -6,21 +6,92 @@ import type { Dict } from '@chakra-ui/utils';
 
 import getDefaultFormColors from '../utils/getDefaultFormColors';
 
-const activeInputStyles = {
-  paddingTop: '30px',
-  paddingBottom: '10px',
+const getActiveLabelStyles = (theme: Dict, fc: string, bc: string, size: 'md' | 'lg') => {
+  const baseStyles = {
+    backgroundColor: bc,
+    color: getColor(theme, fc),
+    fontSize: 'xs',
+    lineHeight: '16px',
+    borderTopRightRadius: 'none',
+  };
+
+  switch (size) {
+    case 'md': {
+      return {
+        ...baseStyles,
+        padding: '10px 16px 2px 16px',
+      };
+    }
+
+    case 'lg': {
+      return {
+        ...baseStyles,
+        padding: '16px 24px 2px 24px',
+      };
+    }
+  }
 };
 
-const getActiveLabelStyles = (theme: Dict, fc: string) => ({
-  color: getColor(theme, fc),
-  transform: 'scale(0.75) translateY(-10px)',
-});
+const getDefaultLabelStyles = (size: 'md' | 'lg') => {
+  switch (size) {
+    case 'md': {
+      return {
+        fontSize: 'md',
+        lineHeight: '20px',
+        padding: '18px 16px',
+        right: '18px',
+      };
+    }
+
+    case 'lg': {
+      return {
+        fontSize: 'md',
+        lineHeight: '24px',
+        padding: '28px 24px',
+        right: '26px',
+      };
+    }
+  }
+};
+
+const getPaddingX = (size: 'md' | 'lg') => {
+  switch (size) {
+    case 'md': {
+      return '16px';
+    }
+
+    case 'lg': {
+      return '24px';
+    }
+  }
+};
+
+const getActiveInputStyles = (size: 'md' | 'lg') => {
+  switch (size) {
+    case 'md': {
+      return {
+        paddingTop: '26px',
+        paddingBottom: '10px',
+      };
+    }
+
+    case 'lg': {
+      return {
+        paddingTop: '38px',
+        paddingBottom: '18px',
+      };
+    }
+  }
+};
 
 const variantFloating: PartsStyleFunction<typeof parts> = (props: StyleFunctionProps) => {
-  const { theme } = props;
+  const { theme, backgroundColor, size = 'md' } = props;
   const { focusColor: fc, errorColor: ec } = getDefaultFormColors(props);
+  const bc = backgroundColor || mode('white', 'black')(props);
 
-  const activeLabelStyles = getActiveLabelStyles(theme, fc);
+  const px = getPaddingX(size);
+  const activeInputStyles = getActiveInputStyles(size);
+  const activeLabelStyles = getActiveLabelStyles(theme, fc, bc, size);
 
   return {
     container: {
@@ -37,22 +108,19 @@ const variantFloating: PartsStyleFunction<typeof parts> = (props: StyleFunctionP
       },
       // label's styles
       label: {
-        left: '22px',
+        ...getDefaultLabelStyles(size),
+        left: '2px',
+        top: '2px',
         zIndex: 2,
         position: 'absolute',
-        color: mode('gray.500', 'whiteAlpha.400')(props),
+        borderRadius: 'base',
+        boxSizing: 'border-box',
+        color: 'gray.500',
         backgroundColor: 'transparent',
         pointerEvents: 'none',
         margin: 0,
-        transformOrigin: 'left top',
-        fontSize: 'md',
-        lineHeight: '20px',
-      },
-      'input + label': {
-        top: 'calc(50% - 10px);',
-      },
-      'textarea + label': {
-        top: '20px',
+        transformOrigin: 'top left',
+        transitionProperty: 'font-size, line-height, padding, top, background-color',
       },
       'input:not(:placeholder-shown) + label, textarea:not(:placeholder-shown) + label': {
         ...activeLabelStyles,
@@ -62,7 +130,10 @@ const variantFloating: PartsStyleFunction<typeof parts> = (props: StyleFunctionP
       },
       // input's styles
       'input, textarea': {
-        padding: '20px',
+        padding: px,
+      },
+      'input[disabled] + label, textarea[disabled] + label': {
+        backgroundColor: 'transparent',
       },
       'input:not(:placeholder-shown), textarea:not(:placeholder-shown)': {
         ...activeInputStyles,
