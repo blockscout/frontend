@@ -15,7 +15,7 @@ interface Props extends Network {
   routeName: string;
 }
 
-const NetworkMenuLink = ({ name, type, subType, icon, isActive, routeName, isAccountSupported, isNewUiSupported }: Props) => {
+const NetworkMenuLink = ({ name, type, subType, icon, isActive, routeName, isAccountSupported }: Props) => {
   const isAccount = isAccountRoute(routeName);
   const localPath = (() => {
     if (isAccount && isAccountSupported) {
@@ -32,7 +32,7 @@ const NetworkMenuLink = ({ name, type, subType, icon, isActive, routeName, isAcc
   const pathName = `/${ type }/${ subType }${ localPath }`;
 
   // will fix later after we agree on CI/CD workflow
-  const href = isNewUiSupported ? pathName : 'https://blockscout.com' + pathName;
+  const href = type === 'xdai' ? pathName : 'https://blockscout.com' + pathName;
   const hasIcon = Boolean(icon);
   const colors = useColors({ hasIcon });
 

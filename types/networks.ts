@@ -10,5 +10,4 @@ export interface Network {
   group: 'mainnets' | 'testnets' | 'other';
   icon?: FunctionComponent<SVGAttributes<SVGElement>>;
   isAccountSupported?: boolean;
-  isNewUiSupported?: boolean;
 }

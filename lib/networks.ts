@@ -10,88 +10,100 @@ import poaSokolIcon from 'icons/networks/poa-sokol.svg';
 import poaIcon from 'icons/networks/poa.svg';
 import rskIcon from 'icons/networks/rsk.svg';
 
-export const NETWORKS: Array<Network> = [
-  {
-    name: 'Gnosis Chain',
-    type: 'xdai',
-    subType: 'mainnet',
-    icon: gnosisIcon,
-    group: 'mainnets',
-    isAccountSupported: true,
-    isNewUiSupported: true,
-  },
-  {
-    name: 'Optimism on Gnosis Chain',
-    type: 'xdai',
-    subType: 'optimism',
-    icon: optimismIcon,
-    group: 'mainnets',
-  },
-  {
-    name: 'Arbitrum on xDai',
-    type: 'xdai',
-    subType: 'aox',
-    icon: arbitrumIcon,
-    group: 'mainnets',
-  },
-  {
-    name: 'Ethereum',
-    type: 'eth',
-    subType: 'mainnet',
-    icon: ethereumIcon,
-    group: 'mainnets',
-  },
-  {
-    name: 'Ethereum Classic',
-    type: 'etc',
-    subType: 'mainnet',
-    icon: ethereumClassicIcon,
-    group: 'mainnets',
-  },
-  {
-    name: 'POA',
-    type: 'poa',
-    subType: 'core',
-    icon: poaIcon,
-    group: 'mainnets',
-  },
-  {
-    name: 'RSK',
-    type: 'rsk',
-    subType: 'mainnet',
-    icon: rskIcon,
-    group: 'mainnets',
-  },
-  {
-    name: 'Gnosis Chain Testnet',
-    type: 'xdai',
-    subType: 'testnet',
-    icon: arbitrumIcon,
-    group: 'testnets',
-    isAccountSupported: true,
-    isNewUiSupported: true,
-  },
-  {
-    name: 'POA Sokol',
-    type: 'poa',
-    subType: 'sokol',
-    icon: poaSokolIcon,
-    group: 'testnets',
-  },
-  {
-    name: 'ARTIS Σ1',
-    type: 'artis',
-    subType: 'sigma1',
-    icon: artisIcon,
-    group: 'other',
-  },
-  {
-    name: 'LUKSO L14',
-    type: 'lukso',
-    subType: 'l14',
-    group: 'other',
-  },
-];
+// will change later when we agree how to host network icons
+const ICONS: Record<string, React.FunctionComponent<React.SVGAttributes<SVGElement>>> = {
+  'xdai/mainnet': gnosisIcon,
+  'xdai/optimism': optimismIcon,
+  'xdai/aox': arbitrumIcon,
+  'eth/mainnet': ethereumIcon,
+  'etc/mainnet': ethereumClassicIcon,
+  'poa/core': poaIcon,
+  'rsk/mainnet': rskIcon,
+  'xdai/testnet': arbitrumIcon,
+  'poa/sokol': poaSokolIcon,
+  'artis/sigma1': artisIcon,
+};
+
+export const NETWORKS: Array<Network> = (() => {
+  try {
+    const networksFromConfig: Array<Network> = JSON.parse(process.env.NEXT_PUBLIC_SUPPORTED_NETWORKS || '[]');
+    return networksFromConfig.map((network) => ({ ...network, icon: ICONS[`${ network.type }/${ network.subType }`] }));
+  } catch (error) {
+    return [];
+  }
+})();
+
+// for easy env creation
+// const FOR_CONFIG = [
+//   {
+//     name: 'Gnosis Chain',
+//     type: 'xdai',
+//     subType: 'mainnet',
+//     group: 'mainnets',
+//     isAccountSupported: true,
+//   },
+//   {
+//     name: 'Optimism on Gnosis Chain',
+//     type: 'xdai',
+//     subType: 'optimism',
+//     group: 'mainnets',
+//   },
+//   {
+//     name: 'Arbitrum on xDai',
+//     type: 'xdai',
+//     subType: 'aox',
+//     group: 'mainnets',
+//   },
+//   {
+//     name: 'Ethereum',
+//     type: 'eth',
+//     subType: 'mainnet',
+//     group: 'mainnets',
+//   },
+//   {
+//     name: 'Ethereum Classic',
+//     type: 'etc',
+//     subType: 'mainnet',
+//     group: 'mainnets',
+//   },
+//   {
+//     name: 'POA',
+//     type: 'poa',
+//     subType: 'core',
+//     group: 'mainnets',
+//   },
+//   {
+//     name: 'RSK',
+//     type: 'rsk',
+//     subType: 'mainnet',
+//     group: 'mainnets',
+//   },
+//   {
+//     name: 'Gnosis Chain Testnet',
+//     type: 'xdai',
+//     subType: 'testnet',
+//     group: 'testnets',
+//     isAccountSupported: true,
+//   },
+//   {
+//     name: 'POA Sokol',
+//     type: 'poa',
+//     subType: 'sokol',
+//     group: 'testnets',
+//   },
+//   {
+//     name: 'ARTIS Σ1',
+//     type: 'artis',
+//     subType: 'sigma1',
+//     group: 'other',
+//   },
+//   {
+//     name: 'LUKSO L14',
+//     type: 'lukso',
+//     subType: 'l14',
+//     group: 'other',
+//   },
+// ];
 
 export const ACCOUNT_ROUTES = [ '/watchlist', '/private-tags', '/public-tags', '/api-keys', '/custom-abi' ];
 
