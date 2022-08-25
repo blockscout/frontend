@@ -27,7 +27,7 @@ const ICONS: Record<string, React.FunctionComponent<React.SVGAttributes<SVGEleme
 export const NETWORKS: Array<Network> = (() => {
   try {
     const networksFromConfig: Array<Network> = JSON.parse(process.env.NEXT_PUBLIC_SUPPORTED_NETWORKS || '[]');
-    return networksFromConfig.map((network) => ({ ...network, icon: ICONS[`${ network.type }/${ network.subType }`] }));
+    return networksFromConfig.map((network) => ({ ...network, icon: network.icon || ICONS[`${ network.type }/${ network.subType }`] }));
   } catch (error) {
     return [];
   }
@@ -47,6 +47,7 @@ export const NETWORKS: Array<Network> = (() => {
 //     type: 'xdai',
 //     subType: 'optimism',
 //     group: 'mainnets',
+//     icon: 'https://www.fillmurray.com/60/60'
 //   },
 //   {
 //     name: 'Arbitrum on xDai',

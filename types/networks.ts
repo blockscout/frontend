@@ -8,6 +8,6 @@ export interface Network {
   type: string;
   subType: string;
   group: 'mainnets' | 'testnets' | 'other';
-  icon?: FunctionComponent<SVGAttributes<SVGElement>>;
+  icon?: FunctionComponent<SVGAttributes<SVGElement>> | string;
   isAccountSupported?: boolean;
 }
