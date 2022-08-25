@@ -35,11 +35,11 @@ const Navigation = () => {
   ];
 
   const accountNavItems = [
-    { text: 'Watchlist', pathname: basePath + '/watchlist', icon: watchlistIcon },
-    { text: 'Private tags', pathname: basePath + '/private-tags', icon: privateTagIcon },
-    { text: 'Public tags', pathname: basePath + '/public-tags', icon: publicTagIcon },
-    { text: 'API keys', pathname: basePath + '/api-keys', icon: apiKeysIcon },
-    { text: 'Custom ABI', pathname: basePath + '/custom-abi', icon: abiIcon },
+    { text: 'Watchlist', pathname: basePath + '/account/watchlist', icon: watchlistIcon },
+    { text: 'Private tags', pathname: basePath + '/account/private_tags', icon: privateTagIcon },
+    { text: 'Public tags', pathname: basePath + '/account/public_tags_request', icon: publicTagIcon },
+    { text: 'API keys', pathname: basePath + '/account/api_key', icon: apiKeysIcon },
+    { text: 'Custom ABI', pathname: basePath + '/account/custom_abi', icon: abiIcon },
   ];
 
   const [ isCollapsed, setCollapsedState ] = React.useState(cookies.get(cookies.NAMES.NAV_BAR_COLLAPSED) === 'true');
