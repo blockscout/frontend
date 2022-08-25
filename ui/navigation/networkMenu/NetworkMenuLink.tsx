@@ -32,7 +32,7 @@ const NetworkMenuLink = ({ name, type, subType, icon, isActive, routeName, isAcc
   const pathName = `/${ type }/${ subType }${ localPath }`;
 
   // will fix later after we agree on CI/CD workflow
-  const href = type === 'xdai' ? pathName : 'https://blockscout.com' + pathName;
+  const href = type === 'xdai' && subType === 'testnet' ? pathName : 'https://blockscout.com' + pathName;
   const hasIcon = Boolean(icon);
   const colors = useColors({ hasIcon });
 

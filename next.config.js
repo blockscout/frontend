@@ -11,7 +11,7 @@ module.exports = withReactSvg({
     return [
       {
         source: '/',
-        destination: '/xdai/mainnet',
+        destination: '/xdai/testnet',
         permanent: true,
       },
     ];
