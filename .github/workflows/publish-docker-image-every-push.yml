@@ -1,57 +1,43 @@
-name: Publish Docker image on every push to master branch
+name: Publish Docker image on every push to main branch
 
 on:
   push:
     branches:
       - main
       - build-ci-cd
-env:
-  RELEASE_VERSION: 1.0.0
 
 jobs:
   push_to_registry:
-    name: Push Docker image to Docker Hub
+    name: Push Docker image to registry
     runs-on: ubuntu-latest
-    outputs:
-      release-version: ${{ steps.output-step.outputs.release-version }}
-      short-sha: ${{ steps.output-step.outputs.short-sha }}
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # - name: Log in to Docker Hub
-      #   uses: docker/login-action@v2
-      #   with:
-      #     username: ${{ secrets.DOCKER_USERNAME }}
-      #     password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Extract metadata (tags, labels) for Docker
+      # Will automatically make nice tags, see the table here https://github.com/docker/metadata-action#basic
+      - name: Docker meta
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: blockscout/frontend
+          images: ghcr.io/blockscout/frontend
 
-      - name: Add SHORT_SHA env property with commit short sha
-        run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Add outputs
-        run: |
-          echo "::set-output name=release-version::${{ env.RELEASE_VERSION }}"
-          echo "::set-output name=short-sha::${{ env.SHORT_SHA }}"
-        id: output-step
-
-      - name: Build and push Docker image
+      - name: Build and push
         uses: docker/build-push-action@v3
         with:
           context: .
           file: ./Dockerfile
           push: true
-          cache-from: type=registry,ref=blockscout/frontend:buildcache
-          cache-to: type=registry,ref=blockscout/frontend:buildcache,mode=max
-          tags: blockscout/frontend:latest, blockscout/frontend:${{ env.RELEASE_VERSION }}-prerelease-${{ env.SHORT_SHA }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
