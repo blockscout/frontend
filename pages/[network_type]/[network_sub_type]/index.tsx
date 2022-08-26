@@ -12,7 +12,9 @@ const Home: NextPage = () => {
     <Page>
       <Center h="100%" fontSize={{ base: 'sm', lg: 'xl' }}>
         <VStack gap={ 4 }>
-          <Box>home page for { router.query.network_type } { router.query.network_sub_type } network</Box>
+          <Box minHeight={{ base: '200vh', lg: 'auto' }}>
+            home page for { router.query.network_type } { router.query.network_sub_type } network
+          </Box>
         </VStack>
       </Center>
     </Page>

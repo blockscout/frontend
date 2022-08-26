@@ -1,28 +1,50 @@
-import { HStack, Center, useColorModeValue } from '@chakra-ui/react';
+import { HStack, Flex, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
-import Identicon from 'react-identicons';
 
+import useIsMobile from 'lib/hooks/useIsMobile';
+import NetworkLogo from 'ui/navigation/NetworkLogo';
+
+import Burger from './Burger';
 import ColorModeToggler from './ColorModeToggler';
-import styles from './Header.module.css';
+import ProfileMenu from './ProfileMenu';
 import SearchBar from './SearchBar';
 
 const Header = () => {
+  const isMobile = useIsMobile();
+  const bgColor = useColorModeValue('white', 'black');
+
+  if (isMobile) {
+    return (
+      <Flex
+        as="header"
+        width="100%"
+        alignItems="center"
+        justifyContent="space-between"
+        position="fixed"
+        bgColor={ bgColor }
+        top={ 0 }
+        left={ 0 }
+        paddingX={ 4 }
+        paddingTop={ 2 }
+      >
+        <Burger/>
+        <NetworkLogo/>
+        <ProfileMenu/>
+      </Flex>
+    );
+  }
+
   return (
     <HStack
       as="header"
-      height="60px"
       width="100%"
       alignItems="center"
       justifyContent="center"
-      marginTop={ 9 }
       gap={ 12 }
     >
       <SearchBar/>
       <ColorModeToggler/>
-      <Center minWidth="50px" width="50px" height="50px" bg={ useColorModeValue('blackAlpha.100', 'white') } borderRadius="50%" overflow="hidden">
-        { /* the displayed size is 48px, but we need to generate x2 for retina displays */ }
-        <Identicon className={ styles.identicon } string="randomness" size={ 96 }/>
-      </Center>
+      <ProfileMenu/>
     </HStack>
   );
 };

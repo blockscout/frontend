@@ -1,6 +1,7 @@
 import { Box, HStack, VStack } from '@chakra-ui/react';
 import React from 'react';
 
+import useIsMobile from 'lib/hooks/useIsMobile';
 import Header from 'ui/header/Header';
 import Navigation from 'ui/navigation/Navigation';
 
@@ -9,23 +10,22 @@ interface Props {
 }
 
 const Page = ({ children }: Props) => {
+  const isMobile = useIsMobile();
+
   return (
     <HStack
       w="100%"
       minH="100vh"
-      spacing={ 12 }
       alignItems="stretch"
-      paddingRight="60px"
     >
       <Navigation/>
-      <VStack width="100%">
+      <VStack width="100%" paddingX={ isMobile ? 4 : 8 } paddingTop={ isMobile ? 12 : 9 }>
         <Header/>
         <Box
           as="main"
           borderRadius="base"
           w="100%"
           overflow="hidden"
-          py={ 8 }
         >
           { children }
         </Box>
