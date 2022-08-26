@@ -36,7 +36,7 @@ const PublicTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
     <Tr alignItems="top" key={ item.id }>
       <Td>
         <VStack spacing={ 4 } alignItems="unset">
-          { item.addresses.split(';').map((address) => {
+          { item.addresses.map((address) => {
             return (
               <HStack spacing={ 4 } key={ address } overflow="hidden" alignItems="start">
                 <AddressIcon address={ address }/>

@@ -21,7 +21,6 @@ resources:
     cpu:
       _default: "0.2"
 
-
 environment: {}
   # ENV_NAME:
   #   _default: value
