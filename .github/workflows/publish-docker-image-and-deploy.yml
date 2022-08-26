@@ -53,7 +53,7 @@ jobs:
           kubeconfig: ${{ secrets.KUBE_CONFIG }}
       - name: Deploy to k8s
         shell: bash
-        working-directory: charts
+        working-directory: ./charts
         # port forwarding works only inside the step, consider refactoring as TS action
         env:
           NAMESPACE_NAME: bs-frontend
