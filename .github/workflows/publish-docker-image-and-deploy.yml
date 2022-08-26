@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - build-ci-cd
 
 env:
   K8S_LOCAL_PORT: ${{ secrets.K8S_LOCAL_PORT }}
