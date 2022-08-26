@@ -8,6 +8,14 @@ import getDefaultTransitionProps from '../utils/getDefaultTransitionProps';
 import getOutlinedFieldStyles from '../utils/getOutlinedFieldStyles';
 
 const sizes: Record<string, SystemStyleObject> = {
+  sm: {
+    fontSize: 'md',
+    lineHeight: '24px',
+    px: '8px',
+    py: '12px',
+    h: '40px',
+    borderRadius: 'base',
+  },
   md: {
     fontSize: 'md',
     lineHeight: '20px',
@@ -43,6 +51,10 @@ const variantOutline: PartsStyleFunction<typeof parts> = (props) => {
 
 const Input: ComponentStyleConfig = {
   sizes: {
+    sm: {
+      field: sizes.sm,
+      addon: sizes.sm,
+    },
     md: {
       field: sizes.md,
       addon: sizes.md,

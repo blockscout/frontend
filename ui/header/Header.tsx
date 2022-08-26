@@ -1,4 +1,4 @@
-import { HStack, Flex, useColorModeValue } from '@chakra-ui/react';
+import { HStack, VStack, Flex, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -7,7 +7,7 @@ import NetworkLogo from 'ui/navigation/NetworkLogo';
 import Burger from './Burger';
 import ColorModeToggler from './ColorModeToggler';
 import ProfileMenu from './ProfileMenu';
-import SearchBar from './SearchBar';
+import SearchBar from './searchBar/SearchBar';
 
 const Header = () => {
   const isMobile = useIsMobile();
@@ -15,22 +15,27 @@ const Header = () => {
 
   if (isMobile) {
     return (
-      <Flex
+      <VStack
         as="header"
-        width="100%"
-        alignItems="center"
-        justifyContent="space-between"
         position="fixed"
-        bgColor={ bgColor }
         top={ 0 }
         left={ 0 }
         paddingX={ 4 }
-        paddingTop={ 2 }
+        paddingY={ 2 }
+        bgColor={ bgColor }
+        width="100%"
       >
-        <Burger/>
-        <NetworkLogo/>
-        <ProfileMenu/>
-      </Flex>
+        <Flex
+          width="100%"
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <Burger/>
+          <NetworkLogo/>
+          <ProfileMenu/>
+        </Flex>
+        <SearchBar/>
+      </VStack>
     );
   }
 

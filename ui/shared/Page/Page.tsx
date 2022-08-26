@@ -19,7 +19,7 @@ const Page = ({ children }: Props) => {
       alignItems="stretch"
     >
       <Navigation/>
-      <VStack width="100%" paddingX={ isMobile ? 4 : 8 } paddingTop={ isMobile ? 12 : 9 }>
+      <VStack width="100%" paddingX={ isMobile ? 4 : 8 } paddingTop={ isMobile ? '104px' : 9 }>
         <Header/>
         <Box
           as="main"
