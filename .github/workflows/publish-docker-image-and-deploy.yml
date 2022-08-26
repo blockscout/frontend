@@ -46,6 +46,8 @@ jobs:
     needs: push_to_registry
     runs-on: ubuntu-latest
     steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
       - name: Set Kubernetes Context
         uses: azure/k8s-set-context@v1
         with:
@@ -53,7 +55,7 @@ jobs:
           kubeconfig: ${{ secrets.KUBE_CONFIG }}
       - name: Deploy to k8s
         shell: bash
-        # working-directory: ./charts
+        # working-directory: charts
         # port forwarding works only inside the step, consider refactoring as TS action
         env:
           NAMESPACE_NAME: bs-frontend
