@@ -1,4 +1,4 @@
-image: ghcr.io/blockscout/frontend:latest
+image: ghcr.io/blockscout/frontend:main
 
 replicas:
   app: 1
