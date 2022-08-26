@@ -1,4 +1,4 @@
-image: ghcr.io/blockscout/frontend:build-ci-cd
+image: ghcr.io/blockscout/frontend:latest
 
 replicas:
   app: 1
@@ -21,8 +21,9 @@ resources:
     cpu:
       _default: "0.2"
 
-
 environment: {}
+  # ENV_NAME:
+  #   _default: value
 
 global:
   env: test
