@@ -80,13 +80,11 @@ export interface PublicTag {
   full_name: string;
   email: string;
   company: string;
-  addresses: string; // address_1;<address_2;address_3 etc.
+  addresses: Array<string>;
   additional_comment: string;
 }
 
-export type PublicTagNew = Omit<PublicTag, 'addresses' | 'id'> & {
-  addresses_array: Array<string>;
-}
+export type PublicTagNew = Omit<PublicTag, 'id'>
 
 export type PublicTags = Array<PublicTag>;
 
