@@ -58,8 +58,8 @@ jobs:
         env:
           NAMESPACE_NAME: bs-frontend
         run: |
-          ls -la .
-          ls -la frontend
+          ls -la /home/runner/work/frontend
+          ls -la /home/runner/work/frontend/frontend
           mkdir ~/.ssh
           ssh-keyscan -H $BASTION_HOST >> ~/.ssh/known_hosts
           eval `ssh-agent -s`
