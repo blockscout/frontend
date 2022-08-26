@@ -6,6 +6,9 @@ on:
       - main
       - build-ci-cd
 
+env:
+
+
 jobs:
   push_to_registry:
     name: Push Docker image to registry
@@ -41,3 +44,26 @@ jobs:
           cache-to: type=gha,mode=max
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+  deploy:
+    name: Deploy frontend to k8s
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set Kubernetes Context
+        uses: azure/k8s-set-context@v1
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}
+    - name: Deploy to k8s
+      shell: bash
+      working-directory: charts
+      # port forwarding works only inside the step, consider refactoring as TS action
+      env:
+        NAMESPACE_NAME: bs-frontend
+      run: |
+        mkdir ~/.ssh
+        ssh-keyscan -H $BASTION_HOST >> ~/.ssh/known_hosts
+        eval `ssh-agent -s`
+        ssh-add - <<< "$BASTION_SSH_KEY"
+        sudo echo "127.0.0.1 $K8S_HOST" | sudo tee -a /etc/hosts
+        ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
+        helm upgrade --install -n $NAMESPACE_NAME $NAMESPACE_NAME ./ -f values-frontend.yaml --create-namespace
