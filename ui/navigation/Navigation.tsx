@@ -3,19 +3,9 @@ import { Flex, Box, VStack, useColorModeValue } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import abiIcon from 'icons/ABI.svg';
-import apiKeysIcon from 'icons/API.svg';
-import appsIcon from 'icons/apps.svg';
-import blocksIcon from 'icons/block.svg';
-import gearIcon from 'icons/gear.svg';
-import privateTagIcon from 'icons/privattags.svg';
-import publicTagIcon from 'icons/publictags.svg';
-import tokensIcon from 'icons/token.svg';
-import transactionsIcon from 'icons/transactions.svg';
-import watchlistIcon from 'icons/watchlist.svg';
 import * as cookies from 'lib/cookies';
-import useBasePath from 'lib/hooks/useBasePath';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import useNavItems from 'lib/hooks/useNavItems';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 
 import NavFooter from './NavFooter';
@@ -25,24 +15,9 @@ import NetworkMenu from './networkMenu/NetworkMenu';
 
 const Navigation = () => {
   const router = useRouter();
-  const basePath = useBasePath();
   const isMobile = useIsMobile();
 
-  const mainNavItems = [
-    { text: 'Blocks', pathname: basePath + '/blocks', icon: blocksIcon },
-    { text: 'Transactions', pathname: basePath + '/transactions', icon: transactionsIcon },
-    { text: 'Tokens', pathname: basePath + '/tokens', icon: tokensIcon },
-    { text: 'Apps', pathname: basePath + '/apps', icon: appsIcon },
-    { text: 'Other', pathname: basePath + '/other', icon: gearIcon },
-  ];
-
-  const accountNavItems = [
-    { text: 'Watchlist', pathname: basePath + '/watchlist', icon: watchlistIcon },
-    { text: 'Private tags', pathname: basePath + '/private-tags', icon: privateTagIcon },
-    { text: 'Public tags', pathname: basePath + '/public-tags', icon: publicTagIcon },
-    { text: 'API keys', pathname: basePath + '/api-keys', icon: apiKeysIcon },
-    { text: 'Custom ABI', pathname: basePath + '/custom-abi', icon: abiIcon },
-  ];
+  const { mainNavItems, accountNavItems } = useNavItems();
 
   const [ isCollapsed, setCollapsedState ] = React.useState(cookies.get(cookies.NAMES.NAV_BAR_COLLAPSED) === 'true');
 
