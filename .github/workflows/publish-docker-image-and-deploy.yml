@@ -6,6 +6,14 @@ on:
       - main
       - build-ci-cd
 
+env:
+  K8S_LOCAL_PORT: ${{ secrets.K8S_LOCAL_PORT }}
+  K8S_HOST: ${{ secrets.K8S_HOST }}
+  BASTION_HOST: ${{ secrets.BASTION_HOST }}
+  K8S_PORT: ${{ secrets.K8S_PORT }}
+  USERNAME: ${{ secrets.USERNAME }}
+  BASTION_SSH_KEY: ${{secrets.BASTION_SSH_KEY}}
+
 jobs:
   push_to_registry:
     name: Push Docker image to registry
@@ -60,8 +68,6 @@ jobs:
         env:
           NAMESPACE_NAME: bs-frontend
         run: |
-          ls -la /home/runner/work/frontend
-          ls -la /home/runner/work/frontend/frontend
           mkdir ~/.ssh
           ssh-keyscan -H $BASTION_HOST >> ~/.ssh/known_hosts
           eval `ssh-agent -s`
