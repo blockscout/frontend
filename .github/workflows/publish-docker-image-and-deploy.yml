@@ -6,9 +6,6 @@ on:
       - main
       - build-ci-cd
 
-env:
-
-
 jobs:
   push_to_registry:
     name: Push Docker image to registry
