@@ -11,7 +11,7 @@ const SOCIAL_LINKS = [
   { link: process.env.NEXT_PUBLIC_FOOTER_GITHUB_LINK, icon: ghIcon },
   { link: process.env.NEXT_PUBLIC_FOOTER_TWITTER_LINK, icon: twIcon },
   { link: process.env.NEXT_PUBLIC_FOOTER_TELEGRAM_LINK, icon: tgIcon },
-  { link: process.env.NEXT_PUBLIC_FOOTER_ANALYTICS_LINK, icon: statsIcon },
+  { link: process.env.NEXT_PUBLIC_FOOTER_STAKING_LINK, icon: statsIcon },
 ].filter(({ link }) => link !== undefined);
 
 const BLOCKSCOUT_VERSION = process.env.NEXT_PUBLIC_BLOCKSCOUT_VERSION;
