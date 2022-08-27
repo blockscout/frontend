@@ -52,7 +52,7 @@ const NavLink = ({ text, pathname, icon, isCollapsed, isActive }: Props) => {
         >
           <HStack spacing={ 3 }>
             <Icon as={ icon } boxSize="30px"/>
-            { !isCollapsed && <Text variant="inherit">{ text }</Text> }
+            { !isCollapsed && <Text variant="inherit" fontSize="sm" lineHeight="20px">{ text }</Text> }
           </HStack>
         </Tooltip>
       </Link>

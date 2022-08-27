@@ -1,5 +1,6 @@
 import Button from './Button';
 import Checkbox from './Checkbox';
+import Drawer from './Drawer';
 import Form from './Form';
 import Heading from './Heading';
 import Input from './Input';
@@ -18,6 +19,7 @@ import Tooltip from './Tooltip';
 const components = {
   Button,
   Checkbox,
+  Drawer,
   Heading,
   Input,
   Form,

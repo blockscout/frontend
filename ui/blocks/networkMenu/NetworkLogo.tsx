@@ -6,9 +6,10 @@ import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 
 interface Props {
   isCollapsed?: boolean;
+  onClick?: () => void;
 }
 
-const NetworkLogo = ({ isCollapsed }: Props) => {
+const NetworkLogo = ({ isCollapsed, onClick }: Props) => {
   const logoColor = useColorModeValue('blue.600', 'white');
 
   return (
@@ -16,6 +17,7 @@ const NetworkLogo = ({ isCollapsed }: Props) => {
       width={ isCollapsed ? '0' : '113px' }
       display="inline-flex"
       overflow="hidden"
+      onClick={ onClick }
       { ...getDefaultTransitionProps({ transitionProperty: 'width' }) }
     >
       <Icon

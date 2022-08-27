@@ -16,6 +16,10 @@ const Burger = () => {
     setNetworkMenuVisibility((flag) => !flag);
   }, []);
 
+  const handleNetworkLogoClick = React.useCallback(() => {
+    setNetworkMenuVisibility(false);
+  }, []);
+
   return (
     <>
       <Box padding={ 2 } onClick={ onOpen }>
@@ -31,11 +35,11 @@ const Burger = () => {
         placement="left"
         onClose={ onClose }
       >
-        <DrawerOverlay bgColor="blackAlpha.800"/>
+        <DrawerOverlay/>
         <DrawerContent maxWidth="260px">
           <DrawerBody p={ 6 }>
             <Flex alignItems="center" justifyContent="space-between">
-              <NetworkLogo/>
+              <NetworkLogo onClick={ handleNetworkLogoClick }/>
               <NetworkMenuButton
                 isCollapsed
                 isMobile

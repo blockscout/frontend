@@ -35,6 +35,7 @@ const NetworkMenuContentMobile = () => {
               { ...network }
               isActive={ network.name === selectedNetwork?.name }
               routeName={ routeName }
+              isMobile
             />
           ))
         }
