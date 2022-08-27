@@ -3,8 +3,8 @@ const breakpoints = {
 //   sm: '320px',
 //   md: '768px',
   lg: '1000px',
-  // these breakpoints are needed just to make "lg" work
-  xl: '2000px',
+  xl: '1440px',
+  // these breakpoint are needed just to make others work
   '2xl': '3000px',
 };
 

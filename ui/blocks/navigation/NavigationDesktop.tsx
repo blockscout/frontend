@@ -1,5 +1,5 @@
 import { ChevronLeftIcon } from '@chakra-ui/icons';
-import { Flex, Box, VStack, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Box, VStack, useColorModeValue, useBreakpointValue } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -16,8 +16,16 @@ const NavigationDesktop = () => {
   const router = useRouter();
 
   const { mainNavItems, accountNavItems } = useNavItems();
+  const isLargeScreen = useBreakpointValue({ base: false, xl: true });
+  const cookieValue = cookies.get(cookies.NAMES.NAV_BAR_COLLAPSED);
 
-  const [ isCollapsed, setCollapsedState ] = React.useState(cookies.get(cookies.NAMES.NAV_BAR_COLLAPSED) === 'true');
+  const [ isCollapsed, setCollapsedState ] = React.useState(cookieValue === 'true');
+
+  React.useEffect(() => {
+    if (!cookieValue) {
+      setCollapsedState(!isLargeScreen);
+    }
+  }, [ isLargeScreen, cookieValue ]);
 
   const handleTogglerClick = React.useCallback(() => {
     setCollapsedState((flag) => !flag);
