@@ -26,10 +26,10 @@ export default function useNavItems() {
 
     const accountNavItems = [
       { text: 'Watchlist', pathname: basePath + '/account/watchlist', icon: watchlistIcon },
-      { text: 'Private tags', pathname: basePath + '/account/private-tags', icon: privateTagIcon },
-      { text: 'Public tags', pathname: basePath + '/account/public-tags', icon: publicTagIcon },
-      { text: 'API keys', pathname: basePath + '/account/api-keys', icon: apiKeysIcon },
-      { text: 'Custom ABI', pathname: basePath + '/account/custom-abi', icon: abiIcon },
+      { text: 'Private tags', pathname: basePath + '/account/private_tags', icon: privateTagIcon },
+      { text: 'Public tags', pathname: basePath + '/account/public_tags_request', icon: publicTagIcon },
+      { text: 'API keys', pathname: basePath + '/account/api_key', icon: apiKeysIcon },
+      { text: 'Custom ABI', pathname: basePath + '/account/custom_abi', icon: abiIcon },
     ];
 
     return { mainNavItems, accountNavItems };

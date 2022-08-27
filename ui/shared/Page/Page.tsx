@@ -1,6 +1,8 @@
 import { Box, HStack, VStack } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React from 'react';
 
+import * as cookies from 'lib/cookies';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import Header from 'ui/header/Header';
 import Navigation from 'ui/navigation/Navigation';
@@ -11,6 +13,18 @@ interface Props {
 
 const Page = ({ children }: Props) => {
   const isMobile = useIsMobile();
+  const router = useRouter();
+  const networkType = router.query.network_type;
+  const networkSubType = router.query.network_sub_type;
+
+  React.useEffect(() => {
+    if (typeof networkType === 'string') {
+      cookies.set(cookies.NAMES.NETWORK_TYPE, networkType);
+    }
+    if (typeof networkSubType === 'string') {
+      cookies.set(cookies.NAMES.NETWORK_SUB_TYPE, networkSubType);
+    }
+  }, [ networkType, networkSubType ]);
 
   return (
     <HStack
