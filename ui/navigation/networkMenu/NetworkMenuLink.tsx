@@ -1,4 +1,4 @@
-import { Box, Flex, Icon, Text } from '@chakra-ui/react';
+import { Box, Flex, Icon, Text, Image } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import React from 'react';
 
@@ -15,7 +15,7 @@ interface Props extends Network {
   routeName: string;
 }
 
-const NetworkMenuLink = ({ name, type, subType, icon, isActive, routeName, isAccountSupported, isNewUiSupported }: Props) => {
+const NetworkMenuLink = ({ name, type, subType, icon, isActive, routeName, isAccountSupported }: Props) => {
   const isAccount = isAccountRoute(routeName);
   const localPath = (() => {
     if (isAccount && isAccountSupported) {
@@ -32,9 +32,19 @@ const NetworkMenuLink = ({ name, type, subType, icon, isActive, routeName, isAcc
   const pathName = `/${ type }/${ subType }${ localPath }`;
 
   // will fix later after we agree on CI/CD workflow
-  const href = isNewUiSupported ? pathName : 'https://blockscout.com' + pathName;
+  const href = type === 'xdai' && subType === 'testnet' ? pathName : 'https://blockscout.com' + pathName;
   const hasIcon = Boolean(icon);
   const colors = useColors({ hasIcon });
+
+  const iconEl = typeof icon === 'string' ? (
+    <Image w="30px" h="30px" src={ icon } alt={ `${ type } ${ subType } network icon` }/>
+  ) : (
+    <Icon
+      as={ hasIcon ? icon : placeholderIcon }
+      boxSize="30px"
+      color={ isActive ? colors.icon.active : colors.icon.default }
+    />
+  );
 
   return (
     <Box as="li" listStyleType="none">
@@ -51,11 +61,7 @@ const NetworkMenuLink = ({ name, type, subType, icon, isActive, routeName, isAcc
           bgColor={ isActive ? colors.bg.active : colors.bg.default }
           _hover={{ color: isActive ? colors.text.active : colors.text.hover }}
         >
-          <Icon
-            as={ hasIcon ? icon : placeholderIcon }
-            boxSize="30px"
-            color={ isActive ? colors.icon.active : colors.icon.default }
-          />
+          { iconEl }
           <Text
             marginLeft={ 3 }
             fontWeight="500"
