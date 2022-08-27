@@ -4,18 +4,16 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import * as cookies from 'lib/cookies';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import useNavItems from 'lib/hooks/useNavItems';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
+import NetworkLogo from 'ui/blocks/networkMenu/NetworkLogo';
+import NetworkMenu from 'ui/blocks/networkMenu/NetworkMenu';
 
 import NavFooter from './NavFooter';
 import NavLink from './NavLink';
-import NetworkLogo from './NetworkLogo';
-import NetworkMenu from './networkMenu/NetworkMenu';
 
-const Navigation = () => {
+const NavigationDesktop = () => {
   const router = useRouter();
-  const isMobile = useIsMobile();
 
   const { mainNavItems, accountNavItems } = useNavItems();
 
@@ -32,10 +30,6 @@ const Navigation = () => {
     color: useColorModeValue('blackAlpha.400', 'whiteAlpha.400'),
     borderColor: useColorModeValue('blackAlpha.200', 'whiteAlpha.200'),
   };
-
-  if (isMobile) {
-    return null;
-  }
 
   return (
     <Flex
@@ -93,4 +87,4 @@ const Navigation = () => {
   );
 };
 
-export default Navigation;
+export default NavigationDesktop;

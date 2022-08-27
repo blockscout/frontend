@@ -2,12 +2,12 @@ import { HStack, VStack, Flex, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-import NetworkLogo from 'ui/navigation/NetworkLogo';
+import NetworkLogo from 'ui/blocks/networkMenu/NetworkLogo';
+import SearchBar from 'ui/blocks/searchBar/SearchBar';
 
 import Burger from './Burger';
 import ColorModeToggler from './ColorModeToggler';
 import ProfileMenu from './ProfileMenu';
-import SearchBar from './searchBar/SearchBar';
 
 const Header = () => {
   const isMobile = useIsMobile();

@@ -4,8 +4,8 @@ import React from 'react';
 
 import * as cookies from 'lib/cookies';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import Header from 'ui/header/Header';
-import Navigation from 'ui/navigation/Navigation';
+import Header from 'ui/blocks/header/Header';
+import NavigationDesktop from 'ui/blocks/navigation/NavigationDesktop';
 
 interface Props {
   children: React.ReactNode;
@@ -32,7 +32,7 @@ const Page = ({ children }: Props) => {
       minH="100vh"
       alignItems="stretch"
     >
-      <Navigation/>
+      { !isMobile && <NavigationDesktop/> }
       <VStack width="100%" paddingX={ isMobile ? 4 : 8 } paddingTop={ isMobile ? '104px' : 9 } paddingBottom={ 10 }>
         <Header/>
         <Box

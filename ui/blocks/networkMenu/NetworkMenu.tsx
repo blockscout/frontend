@@ -2,7 +2,7 @@ import { Popover, PopoverTrigger, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import NetworkMenuButton from './NetworkMenuButton';
-import NetworkMenuPopup from './NetworkMenuPopup';
+import NetworkMenuContentDesktop from './NetworkMenuContentDesktop';
 interface Props {
   isCollapsed: boolean;
 }
@@ -15,7 +15,7 @@ const NetworkMenu = ({ isCollapsed }: Props) => {
           <NetworkMenuButton isCollapsed={ isCollapsed }/>
         </Box>
       </PopoverTrigger>
-      <NetworkMenuPopup/>
+      <NetworkMenuContentDesktop/>
     </Popover>
   );
 };
