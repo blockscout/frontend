@@ -3,8 +3,8 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import useNavItems from 'lib/hooks/useNavItems';
-import NavFooter from 'ui/navigation/NavFooter';
-import NavLink from 'ui/navigation/NavLink';
+import NavFooter from 'ui/blocks/navigation/NavFooter';
+import NavLink from 'ui/blocks/navigation/NavLink';
 
 const NavigationMobile = () => {
   const { mainNavItems, accountNavItems } = useNavItems();

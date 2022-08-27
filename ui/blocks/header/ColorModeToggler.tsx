@@ -15,8 +15,9 @@ import {
 import { dataAttr, __DEV__ } from '@chakra-ui/utils';
 import * as React from 'react';
 
-import moonIcon from '../../icons/moon.svg';
-import getDefaultTransitionProps from '../../theme/utils/getDefaultTransitionProps';
+import moonIcon from 'icons/moon.svg';
+import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
+
 import styles from './ColorModeToggler.module.css';
 
 export interface ColorModeTogglerProps
