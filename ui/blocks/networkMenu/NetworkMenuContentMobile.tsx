@@ -23,7 +23,7 @@ const NetworkMenuContentMobile = () => {
 
   return (
     <Box mt={ 6 }>
-      <Select size="sm" borderRadius="base" value={ selectedTab } onChange={ handleSelectChange }>
+      <Select size="sm" borderRadius="base" value={ selectedTab } onChange={ handleSelectChange } focusBorderColor="none">
         { TABS.map((tab) => <option key={ tab } value={ tab }>{ capitalize(tab) }</option>) }
       </Select>
       <VStack as="ul" spacing={ 2 } alignItems="stretch" mt={ 6 }>
