@@ -1,5 +1,6 @@
 import { SearchIcon } from '@chakra-ui/icons';
 import { InputGroup, Input, InputLeftElement, useColorModeValue, chakra } from '@chakra-ui/react';
+import clamp from 'lodash/clamp';
 import throttle from 'lodash/throttle';
 import React from 'react';
 import type { ChangeEvent, FormEvent } from 'react';
@@ -23,7 +24,7 @@ const SearchBarMobile = ({ onChange, onSubmit }: Props) => {
   const bgColor = useColorModeValue('white', 'black');
 
   const handleScroll = React.useCallback(() => {
-    const currentScrollPosition = window.pageYOffset;
+    const currentScrollPosition = clamp(window.pageYOffset, 0, window.document.body.scrollHeight - window.innerHeight);
     const scrollDiff = currentScrollPosition - prevScrollPosition.current;
 
     if (Math.abs(scrollDiff) > SCROLL_DIFF_THRESHOLD) {
