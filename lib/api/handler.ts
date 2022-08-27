@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import fetch from 'lib/api/fetch';
+import * as cookies from 'lib/cookies';
 
 type Methods = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
@@ -8,7 +9,16 @@ export default function handler<TRes>(getUrl: (_req: NextApiRequest) => string, 
   return async(_req: NextApiRequest, res: NextApiResponse<TRes>) => {
     if (_req.method && allowedMethods.includes(_req.method as Methods)) {
       const isBodyDisallowed = _req.method === 'GET' || _req.method === 'HEAD';
-      const response = await fetch(getUrl(_req), {
+      const networkType = _req.cookies[cookies.NAMES.NETWORK_TYPE];
+      const networkSubType = _req.cookies[cookies.NAMES.NETWORK_SUB_TYPE];
+
+      if (!networkType || !networkSubType) {
+        // eslint-disable-next-line no-console
+        console.error(`Incorrect network: NETWORK_TYPE=${ networkType } NETWORK_SUB_TYPE=${ networkSubType }`);
+      }
+
+      const url = `/${ networkType }/${ networkSubType }/api${ getUrl(_req) }`;
+      const response = await fetch(url, {
         method: _req.method,
         body: isBodyDisallowed ? undefined : _req.body,
       });

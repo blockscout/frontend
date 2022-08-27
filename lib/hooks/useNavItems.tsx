@@ -25,11 +25,11 @@ export default function useNavItems() {
     ];
 
     const accountNavItems = [
-      { text: 'Watchlist', pathname: basePath + '/watchlist', icon: watchlistIcon },
-      { text: 'Private tags', pathname: basePath + '/private-tags', icon: privateTagIcon },
-      { text: 'Public tags', pathname: basePath + '/public-tags', icon: publicTagIcon },
-      { text: 'API keys', pathname: basePath + '/api-keys', icon: apiKeysIcon },
-      { text: 'Custom ABI', pathname: basePath + '/custom-abi', icon: abiIcon },
+      { text: 'Watchlist', pathname: basePath + '/account/watchlist', icon: watchlistIcon },
+      { text: 'Private tags', pathname: basePath + '/account/private-tags', icon: privateTagIcon },
+      { text: 'Public tags', pathname: basePath + '/account/public-tags', icon: publicTagIcon },
+      { text: 'API keys', pathname: basePath + '/account/api-keys', icon: apiKeysIcon },
+      { text: 'Custom ABI', pathname: basePath + '/account/custom-abi', icon: abiIcon },
     ];
 
     return { mainNavItems, accountNavItems };
