@@ -1,4 +1,4 @@
-import { HStack, VStack, Flex, useColorModeValue } from '@chakra-ui/react';
+import { HStack, Box, Flex, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -15,27 +15,26 @@ const Header = () => {
 
   if (isMobile) {
     return (
-      <VStack
-        as="header"
-        position="fixed"
-        top={ 0 }
-        left={ 0 }
-        paddingX={ 4 }
-        paddingY={ 2 }
-        bgColor={ bgColor }
-        width="100%"
-      >
+      <Box bgColor={ bgColor }>
         <Flex
+          as="header"
+          position="fixed"
+          top={ 0 }
+          left={ 0 }
+          paddingX={ 4 }
+          paddingY={ 2 }
+          bgColor={ bgColor }
           width="100%"
           alignItems="center"
           justifyContent="space-between"
+          zIndex={ 10 }
         >
           <Burger/>
           <NetworkLogo/>
           <ProfileMenu/>
         </Flex>
         <SearchBar/>
-      </VStack>
+      </Box>
     );
   }
 

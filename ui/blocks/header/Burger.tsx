@@ -34,6 +34,7 @@ const Burger = () => {
         isOpen={ isOpen }
         placement="left"
         onClose={ onClose }
+        autoFocus={ false }
       >
         <DrawerOverlay/>
         <DrawerContent maxWidth="260px">

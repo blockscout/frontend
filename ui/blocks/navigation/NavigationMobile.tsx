@@ -12,7 +12,7 @@ const NavigationMobile = () => {
 
   return (
     <>
-      <Box as="nav" mt={ 8 }>
+      <Box as="nav" mt={ 6 }>
         <VStack as="ul" spacing="2" alignItems="flex-start" overflow="hidden">
           { mainNavItems.map((item) => <NavLink key={ item.text } { ...item } isActive={ router.asPath === item.pathname }/>) }
         </VStack>

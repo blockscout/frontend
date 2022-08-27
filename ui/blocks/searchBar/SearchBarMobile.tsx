@@ -1,5 +1,5 @@
 import { SearchIcon } from '@chakra-ui/icons';
-import { InputGroup, Input, InputLeftElement, useColorModeValue } from '@chakra-ui/react';
+import { InputGroup, Input, InputLeftElement, useColorModeValue, chakra } from '@chakra-ui/react';
 import throttle from 'lodash/throttle';
 import React from 'react';
 import type { ChangeEvent, FormEvent } from 'react';
@@ -20,6 +20,7 @@ const SearchBarMobile = ({ onChange, onSubmit }: Props) => {
 
   const searchIconColor = useColorModeValue('blackAlpha.600', 'whiteAlpha.600');
   const inputBorderColor = useColorModeValue('blackAlpha.100', 'whiteAlpha.200');
+  const bgColor = useColorModeValue('white', 'black');
 
   const handleScroll = React.useCallback(() => {
     const currentScrollPosition = window.pageYOffset;
@@ -44,12 +45,21 @@ const SearchBarMobile = ({ onChange, onSubmit }: Props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!isVisible) {
-    return null;
-  }
-
   return (
-    <form noValidate onSubmit={ onSubmit }>
+    <chakra.form
+      noValidate
+      onSubmit={ onSubmit }
+      paddingX={ 4 }
+      paddingTop={ 1 }
+      paddingBottom={ 2 }
+      position="fixed"
+      top="56px"
+      left="0"
+      bgColor={ bgColor }
+      transform={ isVisible ? 'translateY(0)' : 'translateY(-100%)' }
+      transitionProperty="transform"
+      transitionDuration="slow"
+    >
       <InputGroup size="sm">
         <InputLeftElement >
           <SearchIcon w={ 4 } h={ 4 } color={ searchIconColor }/>
@@ -62,7 +72,7 @@ const SearchBarMobile = ({ onChange, onSubmit }: Props) => {
           borderColor={ inputBorderColor }
         />
       </InputGroup>
-    </form>
+    </chakra.form>
   );
 };
 
