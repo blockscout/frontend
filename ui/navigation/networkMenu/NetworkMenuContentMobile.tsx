@@ -1,4 +1,5 @@
 import { Box, Select, VStack } from '@chakra-ui/react';
+import capitalize from 'lodash/capitalize';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -23,7 +24,7 @@ const NetworkMenuContentMobile = () => {
   return (
     <Box mt={ 6 }>
       <Select size="sm" borderRadius="base" value={ selectedTab } onChange={ handleSelectChange }>
-        { TABS.map((tab) => <option key={ tab } value={ tab }>{ tab.charAt(0).toUpperCase() + tab.slice(1) }</option>) }
+        { TABS.map((tab) => <option key={ tab } value={ tab }>{ capitalize(tab) }</option>) }
       </Select>
       <VStack as="ul" spacing={ 2 } alignItems="stretch" mt={ 6 }>
         { NETWORKS

@@ -23,16 +23,12 @@ const SearchBar = () => {
 
   if (isMobile) {
     return (
-      <form noValidate onSubmit={ handleSubmit }>
-        <SearchBarMobile onChange={ handleChange }/>
-      </form>
+      <SearchBarMobile onChange={ handleChange } onSubmit={ handleSubmit }/>
     );
   }
 
   return (
-    <form noValidate onSubmit={ handleSubmit }>
-      <SearchBarDesktop onChange={ handleChange }/>
-    </form>
+    <SearchBarDesktop onChange={ handleChange } onSubmit={ handleSubmit }/>
   );
 };
 
