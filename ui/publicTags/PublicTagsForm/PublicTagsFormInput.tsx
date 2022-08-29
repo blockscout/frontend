@@ -3,6 +3,8 @@ import React, { useCallback } from 'react';
 import type { ControllerRenderProps, FieldValues, Path, Control } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 
+import getPlaceholderWithError from 'lib/getPlaceholderWithError';
+
 const TEXT_INPUT_MAX_LENGTH = 255;
 
 interface Props<TInputs extends FieldValues> {
@@ -11,7 +13,7 @@ interface Props<TInputs extends FieldValues> {
   required?: boolean;
   control: Control<TInputs, object>;
   pattern?: RegExp;
-  hasError?: boolean;
+  error?: string;
 }
 
 export default function PublicTagsFormInput<Inputs extends FieldValues>({
@@ -20,7 +22,7 @@ export default function PublicTagsFormInput<Inputs extends FieldValues>({
   required,
   fieldName,
   pattern,
-  hasError,
+  error,
 }: Props<Inputs>) {
   const renderInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, typeof fieldName>}) => {
     return (
@@ -29,13 +31,13 @@ export default function PublicTagsFormInput<Inputs extends FieldValues>({
           { ...field }
           size="lg"
           required={ required }
-          isInvalid={ hasError }
+          isInvalid={ Boolean(error) }
           maxLength={ TEXT_INPUT_MAX_LENGTH }
         />
-        <FormLabel>{ label }</FormLabel>
+        <FormLabel>{ getPlaceholderWithError(label, error) }</FormLabel>
       </FormControl>
     );
-  }, [ label, required, hasError ]);
+  }, [ label, required, error ]);
   return (
     <Controller
       name={ fieldName }

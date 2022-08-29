@@ -1,6 +1,4 @@
-import {
-  Box,
-} from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 import { animateScroll } from 'react-scroll';
 

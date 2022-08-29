@@ -19,6 +19,10 @@ const colors = {
   },
   red: {
     '500': '#E53E3E',
+    '100': '#FED7D7',
+  },
+  orange: {
+    '100': '#FEEBCB',
   },
   gray: {
     '50': '#F7FAFC', // <-

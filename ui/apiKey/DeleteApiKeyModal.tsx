@@ -1,9 +1,10 @@
 import { Text } from '@chakra-ui/react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import React, { useCallback } from 'react';
 
 import type { ApiKey, ApiKeys } from 'types/api/account';
 
+import fetch from 'lib/client/fetch';
 import DeleteModal from 'ui/shared/DeleteModal';
 
 type Props = {
@@ -13,28 +14,17 @@ type Props = {
 }
 
 const DeleteAddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
-
   const queryClient = useQueryClient();
 
-  const deleteApiKey = () => {
+  const mutationFn = useCallback(() => {
     return fetch(`/api/account/api-keys/${ data.api_key }`, { method: 'DELETE' });
-  };
+  }, [ data ]);
 
-  const mutation = useMutation(deleteApiKey, {
-    onSuccess: async() => {
-      queryClient.setQueryData([ 'api-keys' ], (prevData: ApiKeys | undefined) => {
-        return prevData?.filter((item) => item.api_key !== data.api_key);
-      });
-
-      onClose();
-    },
-    // eslint-disable-next-line no-console
-    onError: console.error,
-  });
-
-  const onDelete = useCallback(() => {
-    mutation.mutate(data);
-  }, [ data, mutation ]);
+  const onSuccess = useCallback(async() => {
+    queryClient.setQueryData([ 'api-keys' ], (prevData: ApiKeys | undefined) => {
+      return prevData?.filter((item) => item.api_key !== data.api_key);
+    });
+  }, [ data, queryClient ]);
 
   const renderText = useCallback(() => {
     return (
@@ -46,10 +36,10 @@ const DeleteAddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
     <DeleteModal
       isOpen={ isOpen }
       onClose={ onClose }
-      onDelete={ onDelete }
       title="Remove API key"
       renderContent={ renderText }
-      pending={ mutation.isLoading }
+      mutationFn={ mutationFn }
+      onSuccess={ onSuccess }
     />
   );
 };

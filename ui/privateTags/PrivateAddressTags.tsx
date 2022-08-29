@@ -1,19 +1,21 @@
 import { Box, Button, Text, Skeleton, useDisclosure } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
 import type { AddressTags, AddressTag } from 'types/api/account';
 
+import fetch from 'lib/client/fetch';
+import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import SkeletonTable from 'ui/shared/SkeletonTable';
 
 import AddressModal from './AddressModal/AddressModal';
 import AddressTagTable from './AddressTagTable/AddressTagTable';
 import DeletePrivateTagModal from './DeletePrivateTagModal';
 
-type Props = {
-  addressTags?: AddressTags;
-}
+const PrivateAddressTags = () => {
+  const { data: addressTagsData, isLoading, isError } =
+    useQuery<unknown, unknown, AddressTags>([ 'address-tags' ], async() => fetch('/api/account/private-tags/address'), { refetchOnMount: false });
 
-const PrivateAddressTags = ({ addressTags }: Props) => {
   const addressModalProps = useDisclosure();
   const deleteModalProps = useDisclosure();
 
@@ -47,7 +49,7 @@ const PrivateAddressTags = ({ addressTags }: Props) => {
     </Text>
   );
 
-  if (!addressTags) {
+  if (isLoading && !addressTagsData) {
     return (
       <>
         { description }
@@ -57,12 +59,16 @@ const PrivateAddressTags = ({ addressTags }: Props) => {
     );
   }
 
+  if (isError) {
+    return <DataFetchAlert/>;
+  }
+
   return (
     <>
       { description }
-      { Boolean(addressTags?.length) && (
+      { Boolean(addressTagsData?.length) && (
         <AddressTagTable
-          data={ addressTags }
+          data={ addressTagsData }
           onDeleteClick={ onDeleteClick }
           onEditClick={ onEditClick }
         />
@@ -77,12 +83,14 @@ const PrivateAddressTags = ({ addressTags }: Props) => {
         </Button>
       </Box>
       <AddressModal { ...addressModalProps } onClose={ onAddressModalClose } data={ addressModalData }/>
-      <DeletePrivateTagModal
-        { ...deleteModalProps }
-        onClose={ onDeleteModalClose }
-        data={ deleteModalData }
-        type="address"
-      />
+      { deleteModalData && (
+        <DeletePrivateTagModal
+          { ...deleteModalProps }
+          onClose={ onDeleteModalClose }
+          data={ deleteModalData }
+          type="address"
+        />
+      ) }
     </>
   );
 };

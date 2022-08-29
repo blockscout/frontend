@@ -1,5 +1,5 @@
 import { Text } from '@chakra-ui/react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import React, { useCallback } from 'react';
 
 import type { CustomAbi, CustomAbis } from 'types/api/account';
@@ -16,25 +16,15 @@ const DeleteCustomAbiModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
 
   const queryClient = useQueryClient();
 
-  const deleteApiKey = () => {
+  const mutationFn = useCallback(() => {
     return fetch(`/api/account/custom-abis/${ data.id }`, { method: 'DELETE' });
-  };
+  }, [ data ]);
 
-  const mutation = useMutation(deleteApiKey, {
-    onSuccess: async() => {
-      queryClient.setQueryData([ 'custom-abis' ], (prevData: CustomAbis | undefined) => {
-        return prevData?.filter((item) => item.id !== data.id);
-      });
-
-      onClose();
-    },
-    // eslint-disable-next-line no-console
-    onError: console.error,
-  });
-
-  const onDelete = useCallback(() => {
-    mutation.mutate(data);
-  }, [ data, mutation ]);
+  const onSuccess = useCallback(async() => {
+    queryClient.setQueryData([ 'custom-abis' ], (prevData: CustomAbis | undefined) => {
+      return prevData?.filter((item) => item.id !== data.id);
+    });
+  }, [ data, queryClient ]);
 
   const renderText = useCallback(() => {
     return (
@@ -46,10 +36,10 @@ const DeleteCustomAbiModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
     <DeleteModal
       isOpen={ isOpen }
       onClose={ onClose }
-      onDelete={ onDelete }
       title="Remove custom ABI"
       renderContent={ renderText }
-      pending={ mutation.isLoading }
+      mutationFn={ mutationFn }
+      onSuccess={ onSuccess }
     />
   );
 };
