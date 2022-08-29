@@ -12,7 +12,7 @@ const moduleExports = {
     return [
       {
         source: '/',
-        destination: '/xdai/mainnet',
+        destination: '/xdai/testnet',
         permanent: true,
       },
     ];

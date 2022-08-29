@@ -45,6 +45,7 @@ const Toast = ({ onClose, title, description, id, isClosable, status }: ToastPro
       bgColor={ bgColor }
       textAlign="start"
       width="auto"
+      maxWidth="400px"
     >
       <chakra.div flex="1" maxWidth="100%">
         { title && <AlertTitle id={ ids?.title }>{ title }</AlertTitle> }

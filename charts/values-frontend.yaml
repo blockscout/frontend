@@ -1,0 +1,29 @@
+image: ghcr.io/blockscout/frontend:main
+
+replicas:
+  app: 1
+docker:
+  port: 80
+  targetPort: 3000
+
+ingress:
+  host: blockscout-frontend.aws-k8s.blockscout.com
+
+resources:
+  limits:
+    memory:
+      _default: "0.3Gi"
+    cpu:
+      _default: "0.2"
+  requests:
+    memory:
+      _default: "0.3Gi"
+    cpu:
+      _default: "0.2"
+
+environment: {}
+  # ENV_NAME:
+  #   _default: value
+
+global:
+  env: test

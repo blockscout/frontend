@@ -60,7 +60,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
       companyName: data?.company || '',
       companyUrl: data?.website || '',
       tags: data?.tags.split(';').map((tag) => tag).join('; ') || '',
-      addresses: data?.addresses.split(';').map((address, index: number) => ({ name: `address.${ index }.address`, address })) ||
+      addresses: data?.addresses.map((address, index: number) => ({ name: `address.${ index }.address`, address })) ||
         [ { name: 'address.0.address', address: '' } ],
       comment: data?.additional_comment || '',
       action: data?.is_owner === undefined || data?.is_owner ? 'add' : 'report',
@@ -84,7 +84,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
       company: formData.companyName || '',
       website: formData.companyUrl || '',
       is_owner: formData.action === 'add',
-      addresses_array: formData.addresses?.map(({ address }) => address) || [],
+      addresses: formData.addresses?.map(({ address }) => address) || [],
       tags: formData.tags?.split(';').map((s) => s.trim()).join(';') || '',
       additional_comment: formData.comment || '',
     };

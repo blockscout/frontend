@@ -9,7 +9,7 @@ export default function fetch(path: string, init?: RequestInit): Promise<Respons
     authorization: `Bearer ${ process.env.API_AUTHORIZATION_TOKEN }`,
     'content-type': 'application/json',
   };
-  const url = `https://${ process.env.API_HOST }${ process.env.API_BASE_PATH }${ path }`;
+  const url = `https://blockscout.com${ path }`;
 
   return nodeFetch(url, {
     headers,

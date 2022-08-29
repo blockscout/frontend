@@ -1,7 +1,9 @@
 import { Popover, PopoverTrigger, Icon, useColorModeValue, Button } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import networksIcon from 'icons/networks.svg';
+import * as cookies from 'lib/cookies';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 
 import NetworkMenuPopup from './NetworkMenuPopup';
@@ -11,6 +13,19 @@ interface Props {
 }
 
 const NetworkMenu = ({ isCollapsed }: Props) => {
+  const router = useRouter();
+  const networkType = router.query.network_type;
+  const networkSubType = router.query.network_sub_type;
+
+  React.useEffect(() => {
+    if (typeof networkType === 'string') {
+      cookies.set(cookies.NAMES.NETWORK_TYPE, networkType);
+    }
+    if (typeof networkSubType === 'string') {
+      cookies.set(cookies.NAMES.NETWORK_SUB_TYPE, networkSubType);
+    }
+  }, [ networkType, networkSubType ]);
+
   return (
     <Popover openDelay={ 300 } placement="right-start" gutter={ 22 } isLazy>
       <PopoverTrigger>
