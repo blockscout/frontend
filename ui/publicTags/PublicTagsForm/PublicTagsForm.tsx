@@ -150,7 +150,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
 
   return (
     <Box width={ `calc(100% - ${ ADDRESS_INPUT_BUTTONS_WIDTH }px)` } maxWidth="844px">
-      { isAlertVisible && <FormSubmitAlert/> }
+      { isAlertVisible && <Box mb={ 4 }><FormSubmitAlert/></Box> }
       <Text size="sm" variant="secondary" paddingBottom={ 5 }>Company info</Text>
       <Grid templateColumns="1fr 1fr" rowGap={ 4 } columnGap={ 5 }>
         <GridItem>
