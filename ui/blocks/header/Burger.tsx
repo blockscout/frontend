@@ -16,9 +16,10 @@ const Burger = () => {
     setNetworkMenuVisibility((flag) => !flag);
   }, []);
 
-  const handleNetworkLogoClick = React.useCallback(() => {
+  const handleNetworkLogoClick = React.useCallback((event: React.SyntheticEvent) => {
+    isNetworkMenuOpened && event.preventDefault();
     setNetworkMenuVisibility(false);
-  }, []);
+  }, [ isNetworkMenuOpened ]);
 
   return (
     <>
