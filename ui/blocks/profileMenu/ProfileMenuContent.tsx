@@ -39,7 +39,7 @@ const ProfileMenuContent = ({ name, nickname, email }: Props) => {
           { accountNavItems.map((item) => <NavLink key={ item.text } { ...item } px="0px"/>) }
         </VStack>
       </Box>
-      <Box mt={ 2 } pt={ 2 } borderTopColor={ borderColor } borderTopWidth="1px" { ...getDefaultTransitionProps() }>
+      <Box mt={ 2 } pt={ 3 } borderTopColor={ borderColor } borderTopWidth="1px" { ...getDefaultTransitionProps() }>
         <Button size="sm" width="full" variant="secondary">Sign Out</Button>
       </Box>
     </Box>
