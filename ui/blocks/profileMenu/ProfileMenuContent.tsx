@@ -1,5 +1,4 @@
 import { Box, Button, Text, VStack, useColorModeValue } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { UserInfo } from 'types/api/account';
@@ -12,7 +11,6 @@ type Props = UserInfo;
 
 const ProfileMenuContent = ({ name, nickname, email }: Props) => {
   const { accountNavItems, profileItem } = useNavItems();
-  const router = useRouter();
   const borderColor = useColorModeValue('gray.200', 'whiteAlpha.200');
   const primaryTextColor = useColorModeValue('gray.600', 'whiteAlpha.800');
 
@@ -35,7 +33,7 @@ const ProfileMenuContent = ({ name, nickname, email }: Props) => {
       >
         { email }
       </Text>
-      <NavLink { ...profileItem } isActive={ router.asPath === profileItem.pathname } px="0px"/>
+      <NavLink { ...profileItem } px="0px"/>
       <Box as="nav" mt={ 2 } pt={ 2 } borderTopColor={ borderColor } borderTopWidth="1px" { ...getDefaultTransitionProps() }>
         <VStack as="ul" spacing="0" alignItems="flex-start" overflow="hidden">
           { accountNavItems.map((item) => <NavLink key={ item.text } { ...item } px="0px"/>) }

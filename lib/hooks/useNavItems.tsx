@@ -33,7 +33,7 @@ export default function useNavItems() {
       { text: 'Custom ABI', pathname: basePath + '/account/custom_abi', icon: abiIcon },
     ];
 
-    const profileItem = { text: 'My account', pathname: basePath + '/auth/profile', icon: profileIcon };
+    const profileItem = { text: 'My profile', pathname: basePath + '/auth/profile', icon: profileIcon };
 
     return { mainNavItems, accountNavItems, profileItem };
   }, [ basePath ]);

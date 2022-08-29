@@ -22,7 +22,7 @@ const ProfileMenuMobile = () => {
   return (
     <>
       <Box padding={ 2 } onClick={ onOpen }>
-        <UserAvatar size={ 24 } { ...data }/>
+        <UserAvatar size={ 24 } data={ data }/>
       </Box>
       { data && (
         <Drawer
