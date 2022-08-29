@@ -6,6 +6,7 @@ import appsIcon from 'icons/apps.svg';
 import blocksIcon from 'icons/block.svg';
 import gearIcon from 'icons/gear.svg';
 import privateTagIcon from 'icons/privattags.svg';
+import profileIcon from 'icons/profile.svg';
 import publicTagIcon from 'icons/publictags.svg';
 import tokensIcon from 'icons/token.svg';
 import transactionsIcon from 'icons/transactions.svg';
@@ -32,6 +33,8 @@ export default function useNavItems() {
       { text: 'Custom ABI', pathname: basePath + '/account/custom_abi', icon: abiIcon },
     ];
 
-    return { mainNavItems, accountNavItems };
+    const profileItem = { text: 'My account', pathname: basePath + '/auth/profile', icon: profileIcon };
+
+    return { mainNavItems, accountNavItems, profileItem };
   }, [ basePath ]);
 }

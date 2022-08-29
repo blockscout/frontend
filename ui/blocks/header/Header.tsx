@@ -3,11 +3,12 @@ import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import NetworkLogo from 'ui/blocks/networkMenu/NetworkLogo';
+import ProfileMenuDesktop from 'ui/blocks/profileMenu/ProfileMenuDesktop';
+import ProfileMenuMobile from 'ui/blocks/profileMenu/ProfileMenuMobile';
 import SearchBar from 'ui/blocks/searchBar/SearchBar';
 
 import Burger from './Burger';
 import ColorModeToggler from './ColorModeToggler';
-import ProfileMenu from './ProfileMenu';
 
 const Header = () => {
   const isMobile = useIsMobile();
@@ -31,7 +32,7 @@ const Header = () => {
         >
           <Burger/>
           <NetworkLogo/>
-          <ProfileMenu/>
+          <ProfileMenuMobile/>
         </Flex>
         <SearchBar/>
       </Box>
@@ -48,7 +49,7 @@ const Header = () => {
     >
       <SearchBar/>
       <ColorModeToggler/>
-      <ProfileMenu/>
+      <ProfileMenuDesktop/>
     </HStack>
   );
 };
