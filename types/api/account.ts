@@ -51,7 +51,8 @@ export type Transactions = Array<Transaction>
 export interface UserInfo {
   name?: string;
   nickname?: string;
-  email?: string;
+  email: string;
+  avatar?: string;
 }
 
 export interface WatchlistAddress {
