@@ -43,7 +43,6 @@ const Burger = () => {
             <Flex alignItems="center" justifyContent="space-between">
               <NetworkLogo onClick={ handleNetworkLogoClick }/>
               <NetworkMenuButton
-                isCollapsed
                 isMobile
                 isActive={ isNetworkMenuOpened }
                 onClick={ handleNetworkMenuButtonClick }

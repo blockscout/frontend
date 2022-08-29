@@ -10,12 +10,16 @@ interface Props {
 const NetworkMenu = ({ isCollapsed }: Props) => {
   return (
     <Popover openDelay={ 300 } placement="right-start" gutter={ 22 } isLazy>
-      <PopoverTrigger>
-        <Box>
-          <NetworkMenuButton isCollapsed={ isCollapsed }/>
-        </Box>
-      </PopoverTrigger>
-      <NetworkMenuContentDesktop/>
+      { ({ isOpen }) => (
+        <>
+          <PopoverTrigger>
+            <Box marginLeft={ isCollapsed ? '0px' : '7px' }>
+              <NetworkMenuButton isActive={ isOpen }/>
+            </Box>
+          </PopoverTrigger>
+          <NetworkMenuContentDesktop/>
+        </>
+      ) }
     </Popover>
   );
 };
