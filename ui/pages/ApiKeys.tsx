@@ -11,6 +11,7 @@ import ApiKeyModal from 'ui/apiKey/ApiKeyModal/ApiKeyModal';
 import ApiKeyListItem from 'ui/apiKey/ApiKeyTable/ApiKeyListItem';
 import ApiKeyTable from 'ui/apiKey/ApiKeyTable/ApiKeyTable';
 import DeleteApiKeyModal from 'ui/apiKey/DeleteApiKeyModal';
+import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import AccountPageHeader from 'ui/shared/AccountPageHeader';
 import Page from 'ui/shared/Page/Page';
 import SkeletonTable from 'ui/shared/SkeletonTable';
@@ -50,10 +51,10 @@ const ApiKeysPage: React.FC = () => {
   }, [ deleteModalProps ]);
 
   const description = (
-    <Text marginBottom={{ base: 6, lg: 12 }}>
-    Create API keys to use for your RPC and EthRPC API requests. For more information, see { space }
+    <AccountPageDescription>
+      Create API keys to use for your RPC and EthRPC API requests. For more information, see { space }
       <Link href="#">“How to use a Blockscout API key”</Link>.
-    </Text>
+    </AccountPageDescription>
   );
 
   const content = (() => {

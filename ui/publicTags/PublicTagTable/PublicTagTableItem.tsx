@@ -2,7 +2,6 @@ import {
   Tag,
   Tr,
   Td,
-  HStack,
   VStack,
   Text,
 } from '@chakra-ui/react';
@@ -11,8 +10,7 @@ import React, { useCallback } from 'react';
 import type { PublicTag } from 'types/api/account';
 
 import AddressSnippet from 'ui/shared/AddressSnippet';
-import DeleteButton from 'ui/shared/DeleteButton';
-import EditButton from 'ui/shared/EditButton';
+import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 interface Props {
@@ -56,10 +54,7 @@ const PublicTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
         </VStack>
       </Td>
       <Td>
-        <HStack spacing={ 6 }>
-          <EditButton onClick={ onItemEditClick }/>
-          <DeleteButton onClick={ onItemDeleteClick }/>
-        </HStack>
+        <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
       </Td>
     </Tr>
   );

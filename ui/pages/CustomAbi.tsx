@@ -1,4 +1,4 @@
-import { Box, Button, HStack, Text, Skeleton, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, HStack, Skeleton, useDisclosure } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
@@ -10,6 +10,7 @@ import CustomAbiModal from 'ui/customAbi/CustomAbiModal/CustomAbiModal';
 import CustomAbiListItem from 'ui/customAbi/CustomAbiTable/CustomAbiListItem';
 import CustomAbiTable from 'ui/customAbi/CustomAbiTable/CustomAbiTable';
 import DeleteCustomAbiModal from 'ui/customAbi/DeleteCustomAbiModal';
+import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import AccountPageHeader from 'ui/shared/AccountPageHeader';
 import Page from 'ui/shared/Page/Page';
 import SkeletonTable from 'ui/shared/SkeletonTable';
@@ -47,9 +48,9 @@ const CustomAbiPage: React.FC = () => {
   }, [ deleteModalProps ]);
 
   const description = (
-    <Text marginBottom={{ base: 6, lg: 12 }}>
+    <AccountPageDescription>
       Add custom ABIs for any contract and access when logged into your account. Helpful for debugging, functional testing and contract interaction.
-    </Text>
+    </AccountPageDescription>
   );
 
   const content = (() => {
