@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
-import type { Path, SubmitHandler } from 'react-hook-form';
+import type { FieldError, Path, SubmitHandler } from 'react-hook-form';
 import { useForm, useFieldArray } from 'react-hook-form';
 
 import type { PublicTags, PublicTag, PublicTagNew, PublicTagErrors } from 'types/api/account';
@@ -206,7 +206,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
           <Box position="relative" key={ field.id } marginBottom={ 4 }>
             <PublicTagFormAddressInput
               control={ control }
-              error={ errors?.addresses?.[index] }
+              error={ errors?.addresses?.[index] as FieldError }
               index={ index }
               fieldsLength={ fields.length }
               onAddFieldClick={ onAddFieldClick }
