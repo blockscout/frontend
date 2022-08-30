@@ -19,6 +19,7 @@ const AddressLinkWithTooltip = ({ address }: {address: string}) => {
         overflow="hidden"
         fontWeight={ FONT_WEIGHT }
         lineHeight="24px"
+        whiteSpace="nowrap"
       >
         <AddressWithDots address={ address } fontWeight={ FONT_WEIGHT }/>
       </Link>

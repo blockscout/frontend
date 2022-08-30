@@ -1,15 +1,13 @@
 import {
   Tr,
   Td,
-  HStack,
 } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
 import type { CustomAbi } from 'types/api/account';
 
 import AddressSnippet from 'ui/shared/AddressSnippet';
-import DeleteButton from 'ui/shared/DeleteButton';
-import EditButton from 'ui/shared/EditButton';
+import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 
 interface Props {
   item: CustomAbi;
@@ -33,10 +31,7 @@ const CustomAbiTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
         <AddressSnippet address={ item.contract_address_hash } subtitle={ item.name }/>
       </Td>
       <Td>
-        <HStack spacing={ 6 }>
-          <EditButton onClick={ onItemEditClick }/>
-          <DeleteButton onClick={ onItemDeleteClick }/>
-        </HStack>
+        <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
       </Td>
     </Tr>
   );

@@ -5,7 +5,9 @@ import React, { useCallback, useState } from 'react';
 import type { CustomAbi, CustomAbis } from 'types/api/account';
 
 import fetch from 'lib/client/fetch';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import CustomAbiModal from 'ui/customAbi/CustomAbiModal/CustomAbiModal';
+import CustomAbiListItem from 'ui/customAbi/CustomAbiTable/CustomAbiListItem';
 import CustomAbiTable from 'ui/customAbi/CustomAbiTable/CustomAbiTable';
 import DeleteCustomAbiModal from 'ui/customAbi/DeleteCustomAbiModal';
 import AccountPageHeader from 'ui/shared/AccountPageHeader';
@@ -17,6 +19,7 @@ import DataFetchAlert from '../shared/DataFetchAlert';
 const CustomAbiPage: React.FC = () => {
   const customAbiModalProps = useDisclosure();
   const deleteModalProps = useDisclosure();
+  const isMobile = useIsMobile();
 
   const [ customAbiModalData, setCustomAbiModalData ] = useState<CustomAbi>();
   const [ deleteModalData, setDeleteModalData ] = useState<CustomAbi>();
@@ -64,16 +67,29 @@ const CustomAbiPage: React.FC = () => {
       return <DataFetchAlert/>;
     }
 
-    return (
-      <>
-        { description }
-        { data.length > 0 && (
-          <CustomAbiTable
-            data={ data }
+    const list = isMobile ? (
+      <Box>
+        { data.map((item) => (
+          <CustomAbiListItem
+            item={ item }
+            key={ item.id }
             onDeleteClick={ onDeleteClick }
             onEditClick={ onEditClick }
           />
-        ) }
+        )) }
+      </Box>
+    ) : (
+      <CustomAbiTable
+        data={ data }
+        onDeleteClick={ onDeleteClick }
+        onEditClick={ onEditClick }
+      />
+    );
+
+    return (
+      <>
+        { description }
+        { data.length > 0 && list }
         <HStack marginTop={ 8 } spacing={ 5 }>
           <Button
             variant="primary"

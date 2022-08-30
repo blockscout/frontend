@@ -11,7 +11,7 @@ interface Props {
 
 const AddressSnippet = ({ address, subtitle }: Props) => {
   return (
-    <HStack spacing={ 4 } key={ address } overflow="hidden" alignItems="start">
+    <HStack spacing={ 4 } key={ address } overflow="hidden" alignItems="start" maxW="100%">
       <AddressIcon address={ address }/>
       <Box overflow="hidden">
         <AddressLinkWithTooltip address={ address }/>
