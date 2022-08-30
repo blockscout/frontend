@@ -17,18 +17,20 @@ const variantPrimary = {
   },
 };
 
-const variantSecondary = {
-  color: 'blue.600',
-  fontWeight: 600,
-  borderColor: 'blue.600',
-  border: '2px solid',
-  _hover: {
-    color: 'blue.400',
-    borderColor: 'blue.400',
-  },
-  _disabled: {
-    opacity: 0.2,
-  },
+const variantSecondary: SystemStyleFunction = (props) => {
+  return {
+    color: mode('blue.600', 'blue.300')(props),
+    fontWeight: 600,
+    borderColor: mode('blue.600', 'blue.300')(props),
+    border: '2px solid',
+    _hover: {
+      color: 'blue.400',
+      borderColor: 'blue.400',
+    },
+    _disabled: {
+      opacity: 0.2,
+    },
+  };
 };
 
 const variantIcon: SystemStyleFunction = (props) => {
