@@ -1,4 +1,4 @@
-import { VStack, FormControl, FormLabel, Input, Button, Flex } from '@chakra-ui/react';
+import { VStack, FormControl, FormLabel, Input } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
@@ -25,10 +25,7 @@ const MyProfile = () => {
 
     return (
       <VStack maxW="412px" mt={ 12 } gap={ 5 } alignItems="stretch">
-        <Flex justifyContent="space-between" alignItems="center">
-          <UserAvatar size={ 64 } data={ data }/>
-          <Button size="sm" variant="secondary">Sign Out</Button>
-        </Flex>
+        <UserAvatar size={ 64 } data={ data }/>
         <FormControl variant="floating" id="name" isRequired size="lg">
           <Input
             size="lg"
