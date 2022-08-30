@@ -12,7 +12,7 @@ const AddressLinkWithTooltip = ({ address }: {address: string}) => {
   const basePath = useBasePath();
   const url = basePath + '/address/' + address + '/tokens#address-tabs';
   return (
-    <HStack spacing={ 2 } alignContent="center" overflow="hidden">
+    <HStack spacing={ 2 } alignContent="center" overflow="hidden" maxW="100%">
       <Link
         href={ url }
         target="_blank"

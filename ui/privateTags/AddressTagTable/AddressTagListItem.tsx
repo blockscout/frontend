@@ -1,15 +1,11 @@
-import {
-  Tag,
-  Tr,
-  Td,
-} from '@chakra-ui/react';
+import { Tag, Flex, HStack, Text } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
 import type { AddressTag } from 'types/api/account';
 
+import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import AddressSnippet from 'ui/shared/AddressSnippet';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
-import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 interface Props {
   item: AddressTag;
@@ -17,7 +13,7 @@ interface Props {
   onDeleteClick: (data: AddressTag) => void;
 }
 
-const AddressTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
+const AddressTagListItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   const onItemEditClick = useCallback(() => {
     return onEditClick(item);
   }, [ item, onEditClick ]);
@@ -27,22 +23,19 @@ const AddressTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   }, [ item, onDeleteClick ]);
 
   return (
-    <Tr alignItems="top" key={ item.id }>
-      <Td>
+    <AccountListItemMobile>
+      <Flex alignItems="flex-start" flexDirection="column" maxW="100%">
         <AddressSnippet address={ item.address_hash }/>
-      </Td>
-      <Td>
-        <TruncatedTextTooltip label={ item.name }>
+        <HStack spacing={ 3 } mt={ 4 }>
+          <Text fontSize="sm" fontWeight={ 500 }>Private tag</Text>
           <Tag variant="gray" lineHeight="24px">
             { item.name }
           </Tag>
-        </TruncatedTextTooltip>
-      </Td>
-      <Td>
-        <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
-      </Td>
-    </Tr>
+        </HStack>
+      </Flex>
+      <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
+    </AccountListItemMobile>
   );
 };
 
-export default AddressTagTableItem;
+export default React.memo(AddressTagListItem);
