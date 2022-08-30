@@ -5,9 +5,11 @@ import type { Tokenlist } from 'types/api/tokenlist';
 import type { TWatchlistItem } from 'types/client/account';
 
 import fetch from 'lib/api/fetch';
+import getUrlWithNetwork from 'lib/api/getUrlWithNetwork';
 
 const watchlistWithTokensHandler = async(_req: NextApiRequest, res: NextApiResponse<Array<TWatchlistItem>>) => {
-  const watchlistResponse = await fetch('/account/v1/user/watchlist', { method: 'GET' });
+  const url = getUrlWithNetwork(_req, 'api/account/v1/user/watchlist');
+  const watchlistResponse = await fetch(url, { method: 'GET' });
 
   const watchlistData = await watchlistResponse.json() as WatchlistAddresses;
 
