@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Modal,
   ModalOverlay,
@@ -8,30 +9,58 @@ import {
   ModalBody,
   ModalCloseButton,
 } from '@chakra-ui/react';
-import React, { useCallback } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import React, { useCallback, useState } from 'react';
+
+import FormSubmitAlert from 'ui/shared/FormSubmitAlert';
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  onDelete: () => void;
   title: string;
   renderContent: () => JSX.Element;
-  pending?: boolean;
+  mutationFn: () => Promise<unknown>;
+  onSuccess: () => Promise<void>;
 }
 
-const DeleteModal: React.FC<Props> = ({ isOpen, onClose, onDelete, title, renderContent, pending }) => {
+const DeleteModal: React.FC<Props> = ({
+  isOpen,
+  onClose,
+  title,
+  renderContent,
+  mutationFn,
+  onSuccess,
+}) => {
+  const [ isAlertVisible, setAlertVisible ] = useState(false);
+
+  const onModalClose = useCallback(() => {
+    setAlertVisible(false);
+    onClose();
+  }, [ onClose, setAlertVisible ]);
+
+  const mutation = useMutation(mutationFn, {
+    onSuccess: async() => {
+      onSuccess();
+      onClose();
+    },
+    onError: () => {
+      setAlertVisible(true);
+    },
+  });
 
   const onDeleteClick = useCallback(() => {
-    onDelete();
-  }, [ onDelete ]);
+    setAlertVisible(false);
+    mutation.mutate();
+  }, [ setAlertVisible, mutation ]);
 
   return (
-    <Modal isOpen={ isOpen } onClose={ onClose } size="md">
+    <Modal isOpen={ isOpen } onClose={ onModalClose } size="md">
       <ModalOverlay/>
       <ModalContent>
         <ModalHeader fontWeight="500" textStyle="h3">{ title }</ModalHeader>
         <ModalCloseButton/>
         <ModalBody>
+          { isAlertVisible && <Box mb={ 4 }><FormSubmitAlert/></Box> }
           { renderContent() }
         </ModalBody>
         <ModalFooter>
@@ -39,7 +68,7 @@ const DeleteModal: React.FC<Props> = ({ isOpen, onClose, onDelete, title, render
             variant="primary"
             size="lg"
             onClick={ onDeleteClick }
-            isLoading={ pending }
+            isLoading={ mutation.isLoading }
             // FIXME: chackra's button is disabled when isLoading
             disabled={ false }
           >

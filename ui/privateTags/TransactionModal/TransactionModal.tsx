@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import type { TransactionTag } from 'types/api/account';
 
@@ -14,10 +14,12 @@ type Props = {
 
 const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
   const title = data ? 'Edit transaction tag' : 'New transaction tag';
-  const text = 'Label any transaction with a private transaction tag (up to 35 chars) to customize your explorer experience.';
+  const text = !data ? 'Label any transaction with a private transaction tag (up to 35 chars) to customize your explorer experience.' : '';
+
+  const [ isAlertVisible, setAlertVisible ] = useState(false);
 
   const renderForm = useCallback(() => {
-    return <TransactionForm data={ data } onClose={ onClose }/>;
+    return <TransactionForm data={ data } onClose={ onClose } setAlertVisible={ setAlertVisible }/>;
   }, [ data, onClose ]);
   return (
     <FormModal<TransactionTag>
@@ -25,8 +27,9 @@ const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
       onClose={ onClose }
       title={ title }
       text={ text }
-      data={ data }
       renderForm={ renderForm }
+      isAlertVisible={ isAlertVisible }
+      setAlertVisible={ setAlertVisible }
     />
   );
 };

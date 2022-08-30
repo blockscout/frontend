@@ -1,3 +1,4 @@
+import Alert from './Alert';
 import Button from './Button';
 import Checkbox from './Checkbox';
 import Drawer from './Drawer';
@@ -17,6 +18,7 @@ import Textarea from './Textarea';
 import Tooltip from './Tooltip';
 
 const components = {
+  Alert,
   Button,
   Checkbox,
   Drawer,

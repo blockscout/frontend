@@ -1,10 +1,7 @@
 import {
   Box,
   Button,
-  Checkbox,
   Text,
-  Grid,
-  GridItem,
   useColorModeValue,
 } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -12,21 +9,28 @@ import React, { useCallback, useState } from 'react';
 import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
 import { useForm, Controller } from 'react-hook-form';
 
+import type { WatchlistErrors } from 'types/api/account';
 import type { TWatchlistItem } from 'types/client/account';
 
+import type { ErrorType } from 'lib/client/fetch';
+import fetch from 'lib/client/fetch';
+import getErrorMessage from 'lib/getErrorMessage';
 import { ADDRESS_REGEXP } from 'lib/validations/address';
 import AddressInput from 'ui/shared/AddressInput';
+import CheckboxInput from 'ui/shared/CheckboxInput';
 import TagInput from 'ui/shared/TagInput';
+
+import AddressFormNotifications from './AddressFormNotifications';
 
 // does it depend on the network?
 const NOTIFICATIONS = [ 'native', 'ERC-20', 'ERC-721' ] as const;
-const NOTIFICATIONS_NAMES = [ 'xDAI', 'ERC-20', 'ERC-721, ERC-1155 (NFT)' ];
 
 const TAG_MAX_LENGTH = 35;
 
 type Props = {
   data?: TWatchlistItem;
   onClose: () => void;
+  setAlertVisible: (isAlertVisible: boolean) => void;
 }
 
 type Inputs = {
@@ -57,9 +61,7 @@ type Checkboxes = 'notification' |
 'notification_settings.ERC-721.outcoming' |
 'notification_settings.ERC-721.incoming';
 
-// TODO: mb we need to create an abstract form here?
-
-const AddressForm: React.FC<Props> = ({ data, onClose }) => {
+const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
   const [ pending, setPending ] = useState(false);
   const formBackgroundColor = useColorModeValue('white', 'gray.900');
 
@@ -70,7 +72,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose }) => {
     notificationsDefault = data.notification_settings;
   }
 
-  const { control, handleSubmit, formState: { errors } } = useForm<Inputs>({
+  const { control, handleSubmit, formState: { errors, isValid }, setError } = useForm<Inputs>({
     defaultValues: {
       address: data?.address_hash || '',
       tag: data?.name || '',
@@ -82,7 +84,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose }) => {
 
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation((formData: Inputs) => {
+  function updateWatchlist(formData: Inputs) {
     const requestParams = {
       name: formData?.tag,
       address_hash: formData?.address,
@@ -93,58 +95,68 @@ const AddressForm: React.FC<Props> = ({ data, onClose }) => {
     };
     if (data) {
       // edit address
-      return fetch(`/api/account/watchlist/${ data.id }`, { method: 'PUT', body: JSON.stringify(requestParams) });
+      return fetch<TWatchlistItem, WatchlistErrors>(`/api/account/watchlist/${ data.id }`, { method: 'PUT', body: JSON.stringify(requestParams) });
+
     } else {
       // add address
-      return fetch('/api/account/watchlist', { method: 'POST', body: JSON.stringify(requestParams) });
+      return fetch<TWatchlistItem, WatchlistErrors>('/api/account/watchlist', { method: 'POST', body: JSON.stringify(requestParams) });
     }
-  }, {
-    onError: () => {
-      // eslint-disable-next-line no-console
-      console.log('error');
-    },
+  }
+
+  const { mutate } = useMutation(updateWatchlist, {
     onSuccess: () => {
       queryClient.refetchQueries([ 'watchlist' ]).then(() => {
         onClose();
         setPending(false);
       });
     },
+    onError: (e: ErrorType<WatchlistErrors>) => {
+      setPending(false);
+      if (e?.error?.address_hash || e?.error?.name) {
+        e?.error?.address_hash && setError('address', { type: 'custom', message: getErrorMessage(e.error, 'address_hash') });
+        e?.error?.name && setError('tag', { type: 'custom', message: getErrorMessage(e.error, 'name') });
+      } else if (e?.error?.watchlist_id) {
+        setError('address', { type: 'custom', message: getErrorMessage(e.error, 'watchlist_id') });
+      } else {
+        setAlertVisible(true);
+      }
+    },
   });
 
   const onSubmit: SubmitHandler<Inputs> = (formData) => {
+    setAlertVisible(false);
     setPending(true);
     mutate(formData);
   };
 
   const renderAddressInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'address'>}) => {
-    return <AddressInput<Inputs, 'address'> field={ field } isInvalid={ Boolean(errors.address) } backgroundColor={ formBackgroundColor }/>;
+    return (
+      <AddressInput<Inputs, 'address'>
+        field={ field }
+        backgroundColor={ formBackgroundColor }
+        error={ errors.address }
+      />
+    );
   }, [ errors, formBackgroundColor ]);
 
   const renderTagInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'tag'>}) => {
-    return <TagInput field={ field } isInvalid={ Boolean(errors.tag) } backgroundColor={ formBackgroundColor }/>;
+    return <TagInput<Inputs, 'tag'> field={ field } error={ errors.tag } backgroundColor={ formBackgroundColor }/>;
   }, [ errors, formBackgroundColor ]);
 
   // eslint-disable-next-line react/display-name
   const renderCheckbox = useCallback((text: string) => ({ field }: {field: ControllerRenderProps<Inputs, Checkboxes>}) => (
-    <Checkbox
-      isChecked={ field.value }
-      onChange={ field.onChange }
-      ref={ field.ref }
-      colorScheme="blue"
-      size="lg"
-    >
-      { text }
-    </Checkbox>
+    <CheckboxInput<Inputs, Checkboxes> text={ text } field={ field }/>
   ), []);
 
   return (
     <>
-      <Box marginBottom={ 5 }>
+      <Box marginBottom={ 5 } marginTop={ 5 }>
         <Controller
           name="address"
           control={ control }
           rules={{
             pattern: ADDRESS_REGEXP,
+            required: true,
           }}
           render={ renderAddressInput }
         />
@@ -155,6 +167,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose }) => {
           control={ control }
           rules={{
             maxLength: TAG_MAX_LENGTH,
+            required: true,
           }}
           render={ renderTagInput }
         />
@@ -163,33 +176,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose }) => {
         Please select what types of notifications you will receive
       </Text>
       <Box marginBottom={ 8 }>
-        <Grid templateColumns="repeat(3, max-content)" gap="20px 24px">
-          { NOTIFICATIONS.map((notification: string, index: number) => {
-            const incomingFieldName = `notification_settings.${ notification }.incoming` as Checkboxes;
-            const outgoingFieldName = `notification_settings.${ notification }.outcoming` as Checkboxes;
-            return (
-              <React.Fragment key={ notification }>
-                <GridItem>{ NOTIFICATIONS_NAMES[index] }</GridItem>
-                <GridItem>
-                  <Controller
-                    name={ incomingFieldName }
-                    control={ control }
-
-                    render={ renderCheckbox('Incoming') }
-                  />
-                </GridItem>
-                <GridItem>
-                  <Controller
-                    name={ outgoingFieldName }
-                    control={ control }
-
-                    render={ renderCheckbox('Outgoing') }
-                  />
-                </GridItem>
-              </React.Fragment>
-            );
-          }) }
-        </Grid>
+        <AddressFormNotifications control={ control }/>
       </Box>
       <Text variant="secondary" fontSize="sm" marginBottom={ 5 }>Notification methods</Text>
       <Controller
@@ -203,7 +190,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose }) => {
           variant="primary"
           onClick={ handleSubmit(onSubmit) }
           isLoading={ pending }
-          disabled={ Object.keys(errors).length > 0 }
+          disabled={ !isValid }
         >
           { data ? 'Save changes' : 'Add address' }
         </Button>

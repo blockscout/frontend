@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import type { AddressTag } from 'types/api/account';
 
@@ -14,10 +14,12 @@ type Props = {
 
 const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
   const title = data ? 'Edit address tag' : 'New address tag';
-  const text = 'Label any address with a private address tag (up to 35 chars) to customize your explorer experience.';
+  const text = !data ? 'Label any address with a private address tag (up to 35 chars) to customize your explorer experience.' : '';
+
+  const [ isAlertVisible, setAlertVisible ] = useState(false);
 
   const renderForm = useCallback(() => {
-    return <AddressForm data={ data } onClose={ onClose }/>;
+    return <AddressForm data={ data } onClose={ onClose } setAlertVisible={ setAlertVisible }/>;
   }, [ data, onClose ]);
   return (
     <FormModal<AddressTag>
@@ -25,8 +27,9 @@ const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
       onClose={ onClose }
       title={ title }
       text={ text }
-      data={ data }
       renderForm={ renderForm }
+      isAlertVisible={ isAlertVisible }
+      setAlertVisible={ setAlertVisible }
     />
   );
 };

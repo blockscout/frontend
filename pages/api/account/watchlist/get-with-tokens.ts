@@ -5,17 +5,18 @@ import type { Tokenlist } from 'types/api/tokenlist';
 import type { TWatchlistItem } from 'types/client/account';
 
 import fetch from 'lib/api/fetch';
+import getUrlWithNetwork from 'lib/api/getUrlWithNetwork';
 
 const watchlistWithTokensHandler = async(_req: NextApiRequest, res: NextApiResponse<Array<TWatchlistItem>>) => {
-  const watchlistResponse = await fetch('/account/v1/user/watchlist', { method: 'GET' });
-  if (watchlistResponse.status !== 200) {
-    // eslint-disable-next-line no-console
-    console.error(watchlistResponse.statusText);
-    res.status(500).end('Unknown error');
-    return;
-  }
+  const url = getUrlWithNetwork(_req, 'api/account/v1/user/watchlist');
+  const watchlistResponse = await fetch(url, { method: 'GET' });
 
   const watchlistData = await watchlistResponse.json() as WatchlistAddresses;
+
+  if (watchlistResponse.status !== 200) {
+    res.status(500).end(watchlistData || 'Unknown error');
+    return;
+  }
 
   const data = await Promise.all(watchlistData.map(async item => {
     const tokens = await fetch(`?module=account&action=tokenlist&address=${ item.address_hash }`);

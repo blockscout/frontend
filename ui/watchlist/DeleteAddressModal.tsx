@@ -1,45 +1,34 @@
 import { Text } from '@chakra-ui/react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import React, { useCallback, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import React, { useCallback } from 'react';
 
-import type { TWatchlistItem } from 'types/client/account';
+import type { TWatchlistItem, TWatchlist } from 'types/client/account';
 
+import fetch from 'lib/client/fetch';
 import DeleteModal from 'ui/shared/DeleteModal';
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  data?: TWatchlistItem;
+  data: TWatchlistItem;
 }
 
 const DeleteAddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
-  const [ pending, setPending ] = useState(false);
-
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation(() => {
-    return fetch(`/api/account/watchlist/${ data?.id }`, { method: 'DELETE' });
-  }, {
-    onError: () => {
-      // eslint-disable-next-line no-console
-      console.log('error');
-    },
-    onSuccess: () => {
-      queryClient.refetchQueries([ 'watchlist' ]).then(() => {
-        onClose();
-        setPending(false);
-      });
-    },
-  });
+  const mutationFn = useCallback(() => {
+    return fetch(`/api/account1/watchlist/${ data?.id }`, { method: 'DELETE' });
+  }, [ data ]);
 
-  const onDelete = useCallback(() => {
-    setPending(true);
-    mutate();
-  }, [ mutate ]);
+  const onSuccess = useCallback(async() => {
+    queryClient.setQueryData([ 'watchlist' ], (prevData: TWatchlist | undefined) => {
+      return prevData?.filter((item) => item.id !== data.id);
+    });
+  }, [ data, queryClient ]);
 
   const address = data?.address_hash;
 
-  const renderText = useCallback(() => {
+  const renderModalContent = useCallback(() => {
     return (
       <Text display="flex">Address <Text fontWeight="600" whiteSpace="pre"> { address || 'address' } </Text>   will be deleted</Text>
     );
@@ -49,10 +38,10 @@ const DeleteAddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
     <DeleteModal
       isOpen={ isOpen }
       onClose={ onClose }
-      onDelete={ onDelete }
       title="Remove address from watch list"
-      renderContent={ renderText }
-      pending={ pending }
+      renderContent={ renderModalContent }
+      mutationFn={ mutationFn }
+      onSuccess={ onSuccess }
     />
   );
 };

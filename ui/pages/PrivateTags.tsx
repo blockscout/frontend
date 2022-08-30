@@ -6,10 +6,7 @@ import {
   TabPanel,
   TabPanels,
 } from '@chakra-ui/react';
-import { useQueryClient } from '@tanstack/react-query';
 import React, { useCallback } from 'react';
-
-import type { AddressTags, TransactionTags } from 'types/api/account';
 
 import PrivateAddressTags from 'ui/privateTags/PrivateAddressTags';
 import PrivateTransactionTags from 'ui/privateTags/PrivateTransactionTags';
@@ -21,10 +18,6 @@ type Props = {
 }
 
 const PrivateTags = ({ onChangeTab: onChangeTabProps }: Props) => {
-  const queryClient = useQueryClient();
-  const addressData = queryClient.getQueryData([ 'address' ]) as AddressTags;
-  const txData = queryClient.getQueryData([ 'transaction' ]) as TransactionTags;
-
   const onTabChange = useCallback((index: number) => {
     onChangeTabProps(index);
   }, [ onChangeTabProps ]);
@@ -40,10 +33,10 @@ const PrivateTags = ({ onChangeTab: onChangeTabProps }: Props) => {
           </TabList>
           <TabPanels>
             <TabPanel padding={ 0 }>
-              <PrivateAddressTags addressTags={ addressData }/>
+              <PrivateAddressTags/>
             </TabPanel>
             <TabPanel padding={ 0 }>
-              <PrivateTransactionTags transactionTags={ txData }/>
+              <PrivateTransactionTags/>
             </TabPanel>
           </TabPanels>
         </Tabs>

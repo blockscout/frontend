@@ -1,6 +1,6 @@
 import { IconButton, Icon } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
-import type { ControllerRenderProps, Control } from 'react-hook-form';
+import type { ControllerRenderProps, Control, FieldError } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 
 import MinusIcon from 'icons/minus.svg';
@@ -14,24 +14,24 @@ interface Props {
   control: Control<Inputs>;
   index: number;
   fieldsLength: number;
-  hasError: boolean;
+  error?: FieldError;
   onAddFieldClick: (e: React.SyntheticEvent) => void;
   onRemoveFieldClick: (index: number) => (e: React.SyntheticEvent) => void;
 }
 
 const MAX_INPUTS_NUM = 10;
 
-export default function PublicTagFormAction({ control, index, fieldsLength, hasError, onAddFieldClick, onRemoveFieldClick }: Props) {
+export default function PublicTagFormAction({ control, index, fieldsLength, error, onAddFieldClick, onRemoveFieldClick }: Props) {
   const renderAddressInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, `addresses.${ number }.address`>}) => {
     return (
       <AddressInput<Inputs, `addresses.${ number }.address`>
         field={ field }
-        isInvalid={ hasError }
+        error={ error }
         size="lg"
         placeholder="Smart contract / Address (0x...)"
       />
     );
-  }, [ hasError ]);
+  }, [ error ]);
 
   return (
     <>

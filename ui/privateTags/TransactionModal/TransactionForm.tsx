@@ -8,9 +8,12 @@ import React, { useCallback, useState } from 'react';
 import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
 import { useForm, Controller } from 'react-hook-form';
 
-import type { TransactionTag } from 'types/api/account';
+import type { TransactionTag, TransactionTagErrors } from 'types/api/account';
 
-import { TRANSACTION_HASH_LENGTH, TRANSACTION_HASH_REGEXP } from 'lib/validations/transaction';
+import type { ErrorType } from 'lib/client/fetch';
+import fetch from 'lib/client/fetch';
+import getErrorMessage from 'lib/getErrorMessage';
+import { TRANSACTION_HASH_REGEXP } from 'lib/validations/transaction';
 import TagInput from 'ui/shared/TagInput';
 import TransactionInput from 'ui/shared/TransactionInput';
 
@@ -19,6 +22,7 @@ const TAG_MAX_LENGTH = 35;
 type Props = {
   data?: TransactionTag;
   onClose: () => void;
+  setAlertVisible: (isAlertVisible: boolean) => void;
 }
 
 type Inputs = {
@@ -26,11 +30,11 @@ type Inputs = {
   tag: string;
 }
 
-const TransactionForm: React.FC<Props> = ({ data, onClose }) => {
+const TransactionForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
   const [ pending, setPending ] = useState(false);
   const formBackgroundColor = useColorModeValue('white', 'gray.900');
 
-  const { control, handleSubmit, formState: { errors } } = useForm<Inputs>({
+  const { control, handleSubmit, formState: { errors, isValid }, setError } = useForm<Inputs>({
     mode: 'all',
     defaultValues: {
       transaction: data?.transaction_hash || '',
@@ -53,12 +57,19 @@ const TransactionForm: React.FC<Props> = ({ data, onClose }) => {
 
     return fetch('/api/account/private-tags/transaction', { method: 'POST', body });
   }, {
-    onError: () => {
-      // eslint-disable-next-line no-console
-      console.log('error');
+    onError: (e: ErrorType<TransactionTagErrors>) => {
+      setPending(false);
+      if (e?.error?.tx_hash || e?.error?.name) {
+        e?.error?.tx_hash && setError('transaction', { type: 'custom', message: getErrorMessage(e.error, 'tx_hash') });
+        e?.error?.name && setError('tag', { type: 'custom', message: getErrorMessage(e.error, 'name') });
+      } else if (e?.error?.identity_id) {
+        setError('transaction', { type: 'custom', message: getErrorMessage(e.error, 'identity_id') });
+      } else {
+        setAlertVisible(true);
+      }
     },
     onSuccess: () => {
-      queryClient.refetchQueries([ 'transaction' ]).then(() => {
+      queryClient.refetchQueries([ 'transaction-tags' ]).then(() => {
         onClose();
         setPending(false);
       });
@@ -67,16 +78,15 @@ const TransactionForm: React.FC<Props> = ({ data, onClose }) => {
 
   const onSubmit: SubmitHandler<Inputs> = formData => {
     setPending(true);
-    // api method for editing is not implemented now!!!
     mutate(formData);
   };
 
   const renderTransactionInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'transaction'>}) => {
-    return <TransactionInput field={ field } isInvalid={ Boolean(errors.transaction) } backgroundColor={ formBackgroundColor }/>;
+    return <TransactionInput field={ field } error={ errors.transaction } backgroundColor={ formBackgroundColor }/>;
   }, [ errors, formBackgroundColor ]);
 
   const renderTagInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'tag'>}) => {
-    return <TagInput field={ field } isInvalid={ Boolean(errors.tag) } backgroundColor={ formBackgroundColor }/>;
+    return <TagInput<Inputs, 'tag'> field={ field } error={ errors.tag } backgroundColor={ formBackgroundColor }/>;
   }, [ errors, formBackgroundColor ]);
 
   return (
@@ -86,8 +96,6 @@ const TransactionForm: React.FC<Props> = ({ data, onClose }) => {
           name="transaction"
           control={ control }
           rules={{
-            maxLength: TRANSACTION_HASH_LENGTH,
-            minLength: TRANSACTION_HASH_LENGTH,
             pattern: TRANSACTION_HASH_REGEXP,
           }}
           render={ renderTransactionInput }
@@ -108,7 +116,7 @@ const TransactionForm: React.FC<Props> = ({ data, onClose }) => {
           size="lg"
           variant="primary"
           onClick={ handleSubmit(onSubmit) }
-          disabled={ Object.keys(errors).length > 0 }
+          disabled={ !isValid }
           isLoading={ pending }
         >
           { data ? 'Save changes' : 'Add tag' }

@@ -112,3 +112,41 @@ interface AbiInputOutput {
   type: 'uint256';
   name: string;
 }
+
+export type WatchlistErrors = {
+  address_hash?: Array<string>;
+  name?: Array<string>;
+  watchlist_id?: Array<string>;
+}
+
+export type CustomAbiErrors = {
+  address_hash?: Array<string>;
+  name?: Array<string>;
+  abi?: Array<string>;
+  identity_id?: Array<string>;
+}
+
+export type ApiKeyErrors = {
+  name?: Array<string>;
+  identity_id?: Array<string>;
+};
+
+export type AddressTagErrors = {
+  address_hash: Array<string>;
+  name: Array<string>;
+  identity_id?: Array<string>;
+}
+
+export type TransactionTagErrors = {
+  tx_hash: Array<string>;
+  name: Array<string>;
+  identity_id?: Array<string>;
+}
+
+export type PublicTagErrors = {
+  additional_comment: Array<string>;
+  addresses: Array<string>;
+  email: Array<string>;
+  full_name: Array<string>;
+  tags: Array<string>;
+}
