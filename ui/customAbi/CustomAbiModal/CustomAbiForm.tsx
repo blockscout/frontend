@@ -102,7 +102,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
     return (
       <AddressInput<Inputs, 'contract_address_hash'>
         field={ field }
-        error={ errors.contract_address_hash?.message }
+        error={ errors.contract_address_hash }
         backgroundColor={ formBackgroundColor }
         placeholder="Smart contract address (0x...)"
       />

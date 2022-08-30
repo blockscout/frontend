@@ -134,13 +134,13 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
       <AddressInput<Inputs, 'address'>
         field={ field }
         backgroundColor={ formBackgroundColor }
-        error={ errors.address?.message }
+        error={ errors.address }
       />
     );
   }, [ errors, formBackgroundColor ]);
 
   const renderTagInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'tag'>}) => {
-    return <TagInput<Inputs, 'tag'> field={ field } error={ errors.tag?.message } backgroundColor={ formBackgroundColor }/>;
+    return <TagInput<Inputs, 'tag'> field={ field } error={ errors.tag } backgroundColor={ formBackgroundColor }/>;
   }, [ errors, formBackgroundColor ]);
 
   // eslint-disable-next-line react/display-name

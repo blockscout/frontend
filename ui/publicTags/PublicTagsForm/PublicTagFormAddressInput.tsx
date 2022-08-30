@@ -1,6 +1,6 @@
 import { IconButton, Icon } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
-import type { ControllerRenderProps, Control } from 'react-hook-form';
+import type { ControllerRenderProps, Control, FieldError } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 
 import MinusIcon from 'icons/minus.svg';
@@ -14,7 +14,7 @@ interface Props {
   control: Control<Inputs>;
   index: number;
   fieldsLength: number;
-  error?: string;
+  error?: FieldError;
   onAddFieldClick: (e: React.SyntheticEvent) => void;
   onRemoveFieldClick: (index: number) => (e: React.SyntheticEvent) => void;
 }

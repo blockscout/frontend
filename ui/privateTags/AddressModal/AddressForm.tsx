@@ -83,11 +83,11 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
   };
 
   const renderAddressInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'address'>}) => {
-    return <AddressInput<Inputs, 'address'> field={ field } error={ errors.address?.message } backgroundColor={ formBackgroundColor }/>;
+    return <AddressInput<Inputs, 'address'> field={ field } error={ errors.address } backgroundColor={ formBackgroundColor }/>;
   }, [ errors, formBackgroundColor ]);
 
   const renderTagInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'tag'>}) => {
-    return <TagInput<Inputs, 'tag'> field={ field } error={ errors.tag?.message } backgroundColor={ formBackgroundColor }/>;
+    return <TagInput<Inputs, 'tag'> field={ field } error={ errors.tag } backgroundColor={ formBackgroundColor }/>;
   }, [ errors, formBackgroundColor ]);
 
   return (

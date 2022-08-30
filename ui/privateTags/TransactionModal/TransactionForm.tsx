@@ -82,11 +82,11 @@ const TransactionForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) =>
   };
 
   const renderTransactionInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'transaction'>}) => {
-    return <TransactionInput field={ field } error={ errors.transaction?.message } backgroundColor={ formBackgroundColor }/>;
+    return <TransactionInput field={ field } error={ errors.transaction } backgroundColor={ formBackgroundColor }/>;
   }, [ errors, formBackgroundColor ]);
 
   const renderTagInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'tag'>}) => {
-    return <TagInput<Inputs, 'tag'> field={ field } error={ errors.tag?.message } backgroundColor={ formBackgroundColor }/>;
+    return <TagInput<Inputs, 'tag'> field={ field } error={ errors.tag } backgroundColor={ formBackgroundColor }/>;
   }, [ errors, formBackgroundColor ]);
 
   return (
