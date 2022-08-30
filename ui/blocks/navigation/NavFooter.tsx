@@ -5,6 +5,7 @@ import ghIcon from 'icons/social/git.svg';
 import statsIcon from 'icons/social/stats.svg';
 import tgIcon from 'icons/social/telega.svg';
 import twIcon from 'icons/social/tweet.svg';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 
 const SOCIAL_LINKS = [
@@ -18,19 +19,29 @@ const BLOCKSCOUT_VERSION = process.env.NEXT_PUBLIC_BLOCKSCOUT_VERSION;
 const VERSION_URL = `https://github.com/blockscout/blockscout/tree/${ BLOCKSCOUT_VERSION }`;
 
 interface Props {
-  isCollapsed: boolean;
+  isCollapsed?: boolean;
 }
 
 const NavFooter = ({ isCollapsed }: Props) => {
+  const isMobile = useIsMobile();
+
+  const width = (() => {
+    if (isMobile) {
+      return '100%';
+    }
+
+    return isCollapsed ? '20px' : '180px';
+  })();
+
   return (
     <VStack
       as="footer"
       spacing={ 8 }
       borderTop="1px solid"
       borderColor={ useColorModeValue('blackAlpha.200', 'whiteAlpha.200') }
-      width={ isCollapsed ? '20px' : '180px' }
-      paddingTop={ 8 }
-      marginTop={ 20 }
+      width={ width }
+      paddingTop={ isMobile ? 6 : 8 }
+      marginTop={ isMobile ? 6 : 20 }
       alignItems="flex-start"
       color="gray.500"
       fontSize="xs"

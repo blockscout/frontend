@@ -1,25 +1,16 @@
 import { SearchIcon } from '@chakra-ui/icons';
 import { InputGroup, Input, InputLeftAddon, InputLeftElement, useColorModeValue } from '@chakra-ui/react';
-import type { ChangeEvent, FormEvent } from 'react';
 import React from 'react';
+import type { ChangeEvent, FormEvent } from 'react';
 
-import useBasePath from 'lib/hooks/useBasePath';
+interface Props {
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onSubmit: (event: FormEvent<HTMLFormElement>) => void;
+}
 
-const SearchBar = () => {
-  const [ value, setValue ] = React.useState('');
-  const basePath = useBasePath();
-
-  const handleChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
-  }, []);
-
-  const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    window.location.assign(`https://blockscout.com${ basePath }/search-results?q=${ value }`);
-  }, [ value, basePath ]);
-
+const SearchBarDesktop = ({ onChange, onSubmit }: Props) => {
   return (
-    <form noValidate onSubmit={ handleSubmit }>
+    <form noValidate onSubmit={ onSubmit }>
       <InputGroup>
         <InputLeftAddon w="111px">All filters</InputLeftAddon>
         <InputLeftElement w={ 6 } ml="132px" mr={ 2.5 }>
@@ -29,7 +20,7 @@ const SearchBar = () => {
           paddingInlineStart="50px"
           placeholder="Search by addresses / transactions / block / token... "
           ml="1px"
-          onChange={ handleChange }
+          onChange={ onChange }
           borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }
         />
       </InputGroup>
@@ -37,4 +28,4 @@ const SearchBar = () => {
   );
 };
 
-export default SearchBar;
+export default React.memo(SearchBarDesktop);

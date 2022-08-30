@@ -12,10 +12,11 @@ import useColors from './useColors';
 
 interface Props extends Network {
   isActive: boolean;
+  isMobile?: boolean;
   routeName: string;
 }
 
-const NetworkMenuLink = ({ name, type, subType, icon, isActive, routeName, isAccountSupported }: Props) => {
+const NetworkMenuLink = ({ name, type, subType, icon, isActive, isMobile, routeName, isAccountSupported }: Props) => {
   const isAccount = isAccountRoute(routeName);
   const localPath = (() => {
     if (isAccount && isAccountSupported) {
@@ -51,8 +52,8 @@ const NetworkMenuLink = ({ name, type, subType, icon, isActive, routeName, isAcc
       <NextLink href={ href } passHref>
         <Flex
           as="a"
-          px={ 4 }
-          py={ 3 }
+          px={ isMobile ? 3 : 4 }
+          py={ 2 }
           alignItems="center"
           cursor="pointer"
           pointerEvents={ isActive ? 'none' : 'initial' }
@@ -66,6 +67,8 @@ const NetworkMenuLink = ({ name, type, subType, icon, isActive, routeName, isAcc
             marginLeft={ 3 }
             fontWeight="500"
             color="inherit"
+            fontSize={ isMobile ? 'sm' : 'md' }
+            lineHeight={ isMobile ? '20px' : '24px' }
           >
             { name }
           </Text>
