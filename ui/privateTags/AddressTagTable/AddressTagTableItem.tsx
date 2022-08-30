@@ -8,8 +8,7 @@ import React, { useCallback } from 'react';
 
 import type { AddressTag } from 'types/api/account';
 
-import AddressIcon from 'ui/shared/AddressIcon';
-import AddressLinkWithTooltip from 'ui/shared/AddressLinkWithTooltip';
+import AddressSnippet from 'ui/shared/AddressSnippet';
 import DeleteButton from 'ui/shared/DeleteButton';
 import EditButton from 'ui/shared/EditButton';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
@@ -32,10 +31,7 @@ const AddressTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   return (
     <Tr alignItems="top" key={ item.id }>
       <Td>
-        <HStack spacing={ 4 }>
-          <AddressIcon address={ item.address_hash }/>
-          <AddressLinkWithTooltip address={ item.address_hash }/>
-        </HStack>
+        <AddressSnippet address={ item.address_hash }/>
       </Td>
       <Td>
         <TruncatedTextTooltip label={ item.name }>
