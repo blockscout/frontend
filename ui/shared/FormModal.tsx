@@ -39,7 +39,7 @@ export default function FormModal<TData>({
   }, [ onClose, setAlertVisible ]);
 
   return (
-    <Modal isOpen={ isOpen } onClose={ onModalClose } size="md" >
+    <Modal isOpen={ isOpen } onClose={ onModalClose } size={{ base: 'full', lg: 'md' }} >
       <ModalOverlay/>
       <ModalContent>
         <ModalHeader fontWeight="500" textStyle="h3">{ title }</ModalHeader>

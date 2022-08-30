@@ -52,7 +52,7 @@ const placeholders = {
   comment: 'Specify the reason for adding tags and color preference(s).',
 } as Record<Path<Inputs>, string>;
 
-const ADDRESS_INPUT_BUTTONS_WIDTH = 170;
+const ADDRESS_INPUT_BUTTONS_WIDTH = 100;
 
 const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
   const queryClient = useQueryClient();
@@ -152,7 +152,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
     <Box width={ `calc(100% - ${ ADDRESS_INPUT_BUTTONS_WIDTH }px)` } maxWidth="844px">
       { isAlertVisible && <Box mb={ 4 }><FormSubmitAlert/></Box> }
       <Text size="sm" variant="secondary" paddingBottom={ 5 }>Company info</Text>
-      <Grid templateColumns="1fr 1fr" rowGap={ 4 } columnGap={ 5 }>
+      <Grid templateColumns={{ base: '1fr', lg: '1fr 1fr' }} rowGap={ 4 } columnGap={ 5 }>
         <GridItem>
           <PublicTagsFormInput<Inputs>
             fieldName="fullName"

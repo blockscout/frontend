@@ -59,6 +59,21 @@ const sizes = {
       maxW: '760px',
     },
   },
+  full: {
+    dialog: {
+      borderRadius: 'none',
+      padding: '80px 16px 32px 16px',
+    },
+    closeButton: {
+      top: 4,
+      right: 6,
+      width: 6,
+      height: 6,
+    },
+    header: {
+      mb: 6,
+    },
+  },
 };
 
 const Modal: ComponentMultiStyleConfig = {
