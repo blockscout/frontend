@@ -5,8 +5,8 @@ import * as cookies from 'lib/cookies';
 
 type Methods = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
-export default function handler<TRes>(getUrl: (_req: NextApiRequest) => string, allowedMethods: Array<Methods>) {
-  return async(_req: NextApiRequest, res: NextApiResponse<TRes>) => {
+export default function handler<TRes, TErrRes>(getUrl: (_req: NextApiRequest) => string, allowedMethods: Array<Methods>) {
+  return async(_req: NextApiRequest, res: NextApiResponse<TRes | TErrRes>) => {
     if (_req.method && allowedMethods.includes(_req.method as Methods)) {
       const isBodyDisallowed = _req.method === 'GET' || _req.method === 'HEAD';
       const networkType = _req.cookies[cookies.NAMES.NETWORK_TYPE];
@@ -23,11 +23,9 @@ export default function handler<TRes>(getUrl: (_req: NextApiRequest) => string, 
         body: isBodyDisallowed ? undefined : _req.body,
       });
 
-      // FIXME: add error handlers
       if (response.status !== 200) {
-        // eslint-disable-next-line no-console
-        console.error(response.statusText);
-        res.status(500).end('Unknown error');
+        const error = await response.json() as { errors: TErrRes };
+        res.status(500).json(error?.errors || {} as TErrRes);
         return;
       }
 

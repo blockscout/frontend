@@ -1,19 +1,21 @@
 import { Box, Button, Skeleton, Text, useDisclosure } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
 import type { TransactionTags, TransactionTag } from 'types/api/account';
 
+import fetch from 'lib/client/fetch';
+import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import SkeletonTable from 'ui/shared/SkeletonTable';
 
 import DeletePrivateTagModal from './DeletePrivateTagModal';
 import TransactionModal from './TransactionModal/TransactionModal';
 import TransactionTagTable from './TransactionTagTable/TransactionTagTable';
 
-type Props = {
-  transactionTags?: TransactionTags;
-}
+const PrivateTransactionTags = () => {
+  const { data: transactionTagsData, isLoading, isError } =
+    useQuery<unknown, unknown, TransactionTags>([ 'transaction-tags' ], async() => fetch('/api/account/private-tags/transaction'), { refetchOnMount: false });
 
-const PrivateTransactionTags = ({ transactionTags }: Props) => {
   const transactionModalProps = useDisclosure();
   const deleteModalProps = useDisclosure();
 
@@ -47,7 +49,7 @@ const PrivateTransactionTags = ({ transactionTags }: Props) => {
     </Text>
   );
 
-  if (!transactionTags) {
+  if (isLoading && !transactionTagsData) {
     return (
       <>
         { description }
@@ -57,12 +59,16 @@ const PrivateTransactionTags = ({ transactionTags }: Props) => {
     );
   }
 
+  if (isError) {
+    return <DataFetchAlert/>;
+  }
+
   return (
     <>
       { description }
-      { Boolean(transactionTags.length) && (
+      { Boolean(transactionTagsData.length) && (
         <TransactionTagTable
-          data={ transactionTags }
+          data={ transactionTagsData }
           onDeleteClick={ onDeleteClick }
           onEditClick={ onEditClick }
         />
@@ -77,12 +83,14 @@ const PrivateTransactionTags = ({ transactionTags }: Props) => {
         </Button>
       </Box>
       <TransactionModal { ...transactionModalProps } onClose={ onAddressModalClose } data={ transactionModalData }/>
-      <DeletePrivateTagModal
-        { ...deleteModalProps }
-        onClose={ onDeleteModalClose }
-        data={ deleteModalData }
-        type="transaction"
-      />
+      { deleteModalData && (
+        <DeletePrivateTagModal
+          { ...deleteModalProps }
+          onClose={ onDeleteModalClose }
+          data={ deleteModalData }
+          type="transaction"
+        />
+      ) }
     </>
   );
 };

@@ -4,12 +4,15 @@ import React, { useCallback, useState } from 'react';
 
 import type { CustomAbi, CustomAbis } from 'types/api/account';
 
+import fetch from 'lib/client/fetch';
 import CustomAbiModal from 'ui/customAbi/CustomAbiModal/CustomAbiModal';
 import CustomAbiTable from 'ui/customAbi/CustomAbiTable/CustomAbiTable';
 import DeleteCustomAbiModal from 'ui/customAbi/DeleteCustomAbiModal';
 import AccountPageHeader from 'ui/shared/AccountPageHeader';
 import Page from 'ui/shared/Page/Page';
 import SkeletonTable from 'ui/shared/SkeletonTable';
+
+import DataFetchAlert from '../shared/DataFetchAlert';
 
 const CustomAbiPage: React.FC = () => {
   const customAbiModalProps = useDisclosure();
@@ -18,13 +21,7 @@ const CustomAbiPage: React.FC = () => {
   const [ customAbiModalData, setCustomAbiModalData ] = useState<CustomAbi>();
   const [ deleteModalData, setDeleteModalData ] = useState<CustomAbi>();
 
-  const { data, isLoading, isError } = useQuery<unknown, unknown, CustomAbis>([ 'custom-abis' ], async() => {
-    const response = await fetch('/api/account/custom-abis');
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
-  });
+  const { data, isLoading, isError } = useQuery<unknown, unknown, CustomAbis>([ 'custom-abis' ], async() => await fetch('/api/account/custom-abis'));
 
   const onEditClick = useCallback((data: CustomAbi) => {
     setCustomAbiModalData(data);
@@ -46,18 +43,30 @@ const CustomAbiPage: React.FC = () => {
     deleteModalProps.onClose();
   }, [ deleteModalProps ]);
 
+  const description = (
+    <Text marginBottom={ 12 }>
+      Add custom ABIs for any contract and access when logged into your account. Helpful for debugging, functional testing and contract interaction.
+    </Text>
+  );
+
   const content = (() => {
-    if (isLoading || isError) {
+    if (isLoading && !data) {
       return (
         <>
+          { description }
           <SkeletonTable columns={ [ '100%', '108px' ] }/>
           <Skeleton height="44px" width="156px" marginTop={ 8 }/>
         </>
       );
     }
 
+    if (isError) {
+      return <DataFetchAlert/>;
+    }
+
     return (
       <>
+        { description }
         { data.length > 0 && (
           <CustomAbiTable
             data={ data }
@@ -74,6 +83,8 @@ const CustomAbiPage: React.FC = () => {
             Add custom ABI
           </Button>
         </HStack>
+        <CustomAbiModal { ...customAbiModalProps } onClose={ onCustomAbiModalClose } data={ customAbiModalData }/>
+        { deleteModalData && <DeleteCustomAbiModal { ...deleteModalProps } onClose={ onDeleteModalClose } data={ deleteModalData }/> }
       </>
     );
   })();
@@ -82,13 +93,8 @@ const CustomAbiPage: React.FC = () => {
     <Page>
       <Box h="100%">
         <AccountPageHeader text="Custom ABI"/>
-        <Text marginBottom={ 12 }>
-            Add custom ABIs for any contract and access when logged into your account. Helpful for debugging, functional testing and contract interaction.
-        </Text>
         { content }
       </Box>
-      <CustomAbiModal { ...customAbiModalProps } onClose={ onCustomAbiModalClose } data={ customAbiModalData }/>
-      { deleteModalData && <DeleteCustomAbiModal { ...deleteModalProps } onClose={ onDeleteModalClose } data={ deleteModalData }/> }
     </Page>
   );
 };

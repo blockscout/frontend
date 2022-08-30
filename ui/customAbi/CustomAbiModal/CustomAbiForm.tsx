@@ -12,14 +12,19 @@ import React, { useCallback } from 'react';
 import type { ControllerRenderProps, SubmitHandler } from 'react-hook-form';
 import { useForm, Controller } from 'react-hook-form';
 
-import type { CustomAbi, CustomAbis } from 'types/api/account';
+import type { CustomAbi, CustomAbis, CustomAbiErrors } from 'types/api/account';
 
+import type { ErrorType } from 'lib/client/fetch';
+import fetch from 'lib/client/fetch';
+import getErrorMessage from 'lib/getErrorMessage';
+import getPlaceholderWithError from 'lib/getPlaceholderWithError';
 import { ADDRESS_REGEXP } from 'lib/validations/address';
 import AddressInput from 'ui/shared/AddressInput';
 
 type Props = {
   data?: CustomAbi;
   onClose: () => void;
+  setAlertVisible: (isAlertVisible: boolean) => void;
 }
 
 type Inputs = {
@@ -30,8 +35,8 @@ type Inputs = {
 
 const NAME_MAX_LENGTH = 255;
 
-const CustomAbiForm: React.FC<Props> = ({ data, onClose }) => {
-  const { control, formState: { errors }, handleSubmit } = useForm<Inputs>({
+const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
+  const { control, formState: { errors }, handleSubmit, setError } = useForm<Inputs>({
     defaultValues: {
       contract_address_hash: data?.contract_address_hash || '',
       name: data?.name || '',
@@ -46,18 +51,17 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose }) => {
     const body = JSON.stringify({ name: data.name, contract_address_hash: data.contract_address_hash, abi: data.abi });
 
     if (!data.id) {
-      return fetch('/api/account/custom-abis', { method: 'POST', body });
+      return fetch<CustomAbi, CustomAbiErrors>('/api/account/custom-abis', { method: 'POST', body });
     }
 
-    return fetch(`/api/account/custom-abis/${ data.id }`, { method: 'PUT', body });
+    return fetch<CustomAbi, CustomAbiErrors>(`/api/account/custom-abis/${ data.id }`, { method: 'PUT', body });
   };
 
   const formBackgroundColor = useColorModeValue('white', 'gray.900');
 
   const mutation = useMutation(customAbiKey, {
-    onSuccess: async(data) => {
-      const response: CustomAbi = await data.json();
-
+    onSuccess: (data) => {
+      const response = data as unknown as CustomAbi;
       queryClient.setQueryData([ 'custom-abis' ], (prevData: CustomAbis | undefined) => {
         const isExisting = prevData && prevData.some((item) => item.id === response.id);
 
@@ -76,19 +80,29 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose }) => {
 
       onClose();
     },
-    // eslint-disable-next-line no-console
-    onError: console.error,
+    onError: (e: ErrorType<CustomAbiErrors>) => {
+      if (e?.error?.address_hash || e?.error?.name || e?.error?.abi) {
+        e?.error?.address_hash && setError('contract_address_hash', { type: 'custom', message: getErrorMessage(e.error, 'address_hash') });
+        e?.error?.name && setError('name', { type: 'custom', message: getErrorMessage(e.error, 'name') });
+        e?.error?.abi && setError('abi', { type: 'custom', message: getErrorMessage(e.error, 'abi') });
+      } else if (e?.error?.identity_id) {
+        setError('contract_address_hash', { type: 'custom', message: getErrorMessage(e.error, 'identity_id') });
+      } else {
+        setAlertVisible(true);
+      }
+    },
   });
 
   const onSubmit: SubmitHandler<Inputs> = useCallback((formData) => {
+    setAlertVisible(false);
     mutation.mutate({ ...formData, id: data?.id });
-  }, [ mutation, data ]);
+  }, [ mutation, data, setAlertVisible ]);
 
   const renderContractAddressInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'contract_address_hash'>}) => {
     return (
       <AddressInput<Inputs, 'contract_address_hash'>
         field={ field }
-        isInvalid={ Boolean(errors.contract_address_hash) }
+        error={ errors.contract_address_hash?.message }
         backgroundColor={ formBackgroundColor }
         placeholder="Smart contract address (0x...)"
       />
@@ -103,7 +117,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose }) => {
           isInvalid={ Boolean(errors.name) }
           maxLength={ NAME_MAX_LENGTH }
         />
-        <FormLabel>Project name</FormLabel>
+        <FormLabel>{ getPlaceholderWithError('Project name', errors.name?.message) }</FormLabel>
       </FormControl>
     );
   }, [ errors, formBackgroundColor ]);
@@ -116,7 +130,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose }) => {
           size="lg"
           isInvalid={ Boolean(errors.abi) }
         />
-        <FormLabel>{ `Custom ABI [{...}] (JSON format)` }</FormLabel>
+        <FormLabel>{ getPlaceholderWithError(`Custom ABI [{...}] (JSON format)`, errors.abi?.message) }</FormLabel>
       </FormControl>
     );
   }, [ errors, formBackgroundColor ]);

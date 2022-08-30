@@ -8,8 +8,11 @@ import React, { useCallback, useState } from 'react';
 import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
 import { useForm, Controller } from 'react-hook-form';
 
-import type { AddressTag } from 'types/api/account';
+import type { AddressTag, AddressTagErrors } from 'types/api/account';
 
+import type { ErrorType } from 'lib/client/fetch';
+import fetch from 'lib/client/fetch';
+import getErrorMessage from 'lib/getErrorMessage';
 import { ADDRESS_REGEXP } from 'lib/validations/address';
 import AddressInput from 'ui/shared/AddressInput';
 import TagInput from 'ui/shared/TagInput';
@@ -19,6 +22,7 @@ const TAG_MAX_LENGTH = 35;
 type Props = {
   data?: AddressTag;
   onClose: () => void;
+  setAlertVisible: (isAlertVisible: boolean) => void;
 }
 
 type Inputs = {
@@ -26,9 +30,9 @@ type Inputs = {
   tag: string;
 }
 
-const AddressForm: React.FC<Props> = ({ data, onClose }) => {
+const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
   const [ pending, setPending ] = useState(false);
-  const { control, handleSubmit, formState: { errors } } = useForm<Inputs>({
+  const { control, handleSubmit, formState: { errors }, setError } = useForm<Inputs>({
     mode: 'all',
     defaultValues: {
       address: data?.address_hash || '',
@@ -53,12 +57,19 @@ const AddressForm: React.FC<Props> = ({ data, onClose }) => {
 
     return fetch('/api/account/private-tags/address', { method: 'POST', body });
   }, {
-    onError: () => {
-      // eslint-disable-next-line no-console
-      console.log('error');
+    onError: (e: ErrorType<AddressTagErrors>) => {
+      setPending(false);
+      if (e?.error?.address_hash || e?.error?.name) {
+        e?.error?.address_hash && setError('address', { type: 'custom', message: getErrorMessage(e.error, 'address_hash') });
+        e?.error?.name && setError('tag', { type: 'custom', message: getErrorMessage(e.error, 'name') });
+      } else if (e?.error?.identity_id) {
+        setError('address', { type: 'custom', message: getErrorMessage(e.error, 'identity_id') });
+      } else {
+        setAlertVisible(true);
+      }
     },
     onSuccess: () => {
-      queryClient.refetchQueries([ 'address' ]).then(() => {
+      queryClient.refetchQueries([ 'address-tags' ]).then(() => {
         onClose();
         setPending(false);
       });
@@ -66,16 +77,17 @@ const AddressForm: React.FC<Props> = ({ data, onClose }) => {
   });
 
   const onSubmit: SubmitHandler<Inputs> = (formData) => {
+    setAlertVisible(false);
     setPending(true);
     mutate(formData);
   };
 
   const renderAddressInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'address'>}) => {
-    return <AddressInput<Inputs, 'address'> field={ field } isInvalid={ Boolean(errors.address) } backgroundColor={ formBackgroundColor }/>;
+    return <AddressInput<Inputs, 'address'> field={ field } error={ errors.address?.message } backgroundColor={ formBackgroundColor }/>;
   }, [ errors, formBackgroundColor ]);
 
   const renderTagInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'tag'>}) => {
-    return <TagInput field={ field } isInvalid={ Boolean(errors.tag) } backgroundColor={ formBackgroundColor }/>;
+    return <TagInput<Inputs, 'tag'> field={ field } error={ errors.tag?.message } backgroundColor={ formBackgroundColor }/>;
   }, [ errors, formBackgroundColor ]);
 
   return (

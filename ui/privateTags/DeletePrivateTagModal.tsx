@@ -1,45 +1,39 @@
 import { Text } from '@chakra-ui/react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import React, { useCallback, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import React, { useCallback } from 'react';
 
-import type { AddressTag, TransactionTag } from 'types/api/account';
+import type { AddressTag, TransactionTag, AddressTags, TransactionTags } from 'types/api/account';
 
 import DeleteModal from 'ui/shared/DeleteModal';
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  data?: AddressTag | TransactionTag;
+  data: AddressTag | TransactionTag;
   type: 'address' | 'transaction';
 }
 
 const DeletePrivateTagModal: React.FC<Props> = ({ isOpen, onClose, data, type }) => {
-  const [ pending, setPending ] = useState(false);
-
-  const tag = data?.name;
-  const id = data?.id;
+  const tag = data.name;
+  const id = data.id;
 
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation(() => {
+  const mutationFn = useCallback(() => {
     return fetch(`/api/account/private-tags/${ type }/${ id }`, { method: 'DELETE' });
-  }, {
-    onError: () => {
-      // eslint-disable-next-line no-console
-      console.log('error');
-    },
-    onSuccess: () => {
-      queryClient.refetchQueries([ type ]).then(() => {
-        onClose();
-        setPending(false);
-      });
-    },
-  });
+  }, [ type, id ]);
 
-  const onDelete = useCallback(() => {
-    setPending(true);
-    mutate();
-  }, [ mutate ]);
+  const onSuccess = useCallback(async() => {
+    if (type === 'address') {
+      queryClient.setQueryData([ type ], (prevData: AddressTags | undefined) => {
+        return prevData?.filter((item: AddressTag) => item.id !== id);
+      });
+    } else {
+      queryClient.setQueryData([ type ], (prevData: TransactionTags | undefined) => {
+        return prevData?.filter((item: TransactionTag) => item.id !== id);
+      });
+    }
+  }, [ type, id, queryClient ]);
 
   const renderText = useCallback(() => {
     return (
@@ -51,10 +45,10 @@ const DeletePrivateTagModal: React.FC<Props> = ({ isOpen, onClose, data, type })
     <DeleteModal
       isOpen={ isOpen }
       onClose={ onClose }
-      onDelete={ onDelete }
       title="Removal of private tag"
       renderContent={ renderText }
-      pending={ pending }
+      mutationFn={ mutationFn }
+      onSuccess={ onSuccess }
     />
   );
 };

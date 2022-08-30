@@ -4,7 +4,7 @@ export interface ErrorType<T> {
   statusText: Response['statusText'];
 }
 
-export default function clientFetch<Response, Error>(path: string, init: RequestInit): Promise<Response | ErrorType<Error>> {
+export default function clientFetch<Success, Error>(path: string, init?: RequestInit): Promise<Success | ErrorType<Error>> {
   return fetch(path, init).then(response => {
     if (!response.ok) {
       return response.json().then(
@@ -20,7 +20,7 @@ export default function clientFetch<Response, Error>(path: string, init: Request
       );
 
     } else {
-      return response.json() as Promise<Response>;
+      return response.json() as Promise<Success>;
     }
   });
 }

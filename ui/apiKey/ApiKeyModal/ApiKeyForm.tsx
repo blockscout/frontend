@@ -11,11 +11,17 @@ import React, { useCallback } from 'react';
 import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
 import { useForm, Controller } from 'react-hook-form';
 
-import type { ApiKey, ApiKeys } from 'types/api/account';
+import type { ApiKey, ApiKeys, ApiKeyErrors } from 'types/api/account';
+
+import type { ErrorType } from 'lib/client/fetch';
+import fetch from 'lib/client/fetch';
+import getErrorMessage from 'lib/getErrorMessage';
+import getPlaceholderWithError from 'lib/getPlaceholderWithError';
 
 type Props = {
   data?: ApiKey;
   onClose: () => void;
+  setAlertVisible: (isAlertVisible: boolean) => void;
 }
 
 type Inputs = {
@@ -25,8 +31,8 @@ type Inputs = {
 
 const NAME_MAX_LENGTH = 255;
 
-const ApiKeyForm: React.FC<Props> = ({ data, onClose }) => {
-  const { control, handleSubmit, formState: { errors } } = useForm<Inputs>({
+const ApiKeyForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
+  const { control, handleSubmit, formState: { errors }, setError } = useForm<Inputs>({
     mode: 'all',
     defaultValues: {
       token: data?.api_key || '',
@@ -48,7 +54,7 @@ const ApiKeyForm: React.FC<Props> = ({ data, onClose }) => {
 
   const mutation = useMutation(updateApiKey, {
     onSuccess: async(data) => {
-      const response: ApiKey = await data.json();
+      const response = data as unknown as ApiKey;
 
       queryClient.setQueryData([ 'api-keys' ], (prevData: ApiKeys | undefined) => {
         const isExisting = prevData && prevData.some((item) => item.api_key === response.api_key);
@@ -68,13 +74,21 @@ const ApiKeyForm: React.FC<Props> = ({ data, onClose }) => {
 
       onClose();
     },
-    // eslint-disable-next-line no-console
-    onError: console.error,
+    onError: (e: ErrorType<ApiKeyErrors>) => {
+      if (e?.error?.name) {
+        setError('name', { type: 'custom', message: getErrorMessage(e.error, 'name') });
+      } else if (e?.error?.identity_id) {
+        setError('name', { type: 'custom', message: getErrorMessage(e.error, 'identity_id') });
+      } else {
+        setAlertVisible(true);
+      }
+    },
   });
 
   const onSubmit: SubmitHandler<Inputs> = useCallback((data) => {
+    setAlertVisible(false);
     mutation.mutate(data);
-  }, [ mutation ]);
+  }, [ mutation, setAlertVisible ]);
 
   const renderTokenInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'token'>}) => {
     return (
@@ -96,7 +110,9 @@ const ApiKeyForm: React.FC<Props> = ({ data, onClose }) => {
           isInvalid={ Boolean(errors.name) }
           maxLength={ NAME_MAX_LENGTH }
         />
-        <FormLabel>Application name for API key (e.g Web3 project)</FormLabel>
+        <FormLabel>
+          { getPlaceholderWithError('Application name for API key (e.g Web3 project)', errors.name?.message) }
+        </FormLabel>
       </FormControl>
     );
   }, [ errors, formBackgroundColor ]);
