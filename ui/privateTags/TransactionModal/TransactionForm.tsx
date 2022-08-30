@@ -34,7 +34,7 @@ const TransactionForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) =>
   const [ pending, setPending ] = useState(false);
   const formBackgroundColor = useColorModeValue('white', 'gray.900');
 
-  const { control, handleSubmit, formState: { errors }, setError } = useForm<Inputs>({
+  const { control, handleSubmit, formState: { errors, isValid }, setError } = useForm<Inputs>({
     mode: 'all',
     defaultValues: {
       transaction: data?.transaction_hash || '',
@@ -82,11 +82,11 @@ const TransactionForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) =>
   };
 
   const renderTransactionInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'transaction'>}) => {
-    return <TransactionInput field={ field } error={ errors.transaction?.message } backgroundColor={ formBackgroundColor }/>;
+    return <TransactionInput field={ field } error={ errors.transaction } backgroundColor={ formBackgroundColor }/>;
   }, [ errors, formBackgroundColor ]);
 
   const renderTagInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'tag'>}) => {
-    return <TagInput<Inputs, 'tag'> field={ field } error={ errors.tag?.message } backgroundColor={ formBackgroundColor }/>;
+    return <TagInput<Inputs, 'tag'> field={ field } error={ errors.tag } backgroundColor={ formBackgroundColor }/>;
   }, [ errors, formBackgroundColor ]);
 
   return (
@@ -116,7 +116,7 @@ const TransactionForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) =>
           size="lg"
           variant="primary"
           onClick={ handleSubmit(onSubmit) }
-          disabled={ Object.keys(errors).length > 0 }
+          disabled={ !isValid }
           isLoading={ pending }
         >
           { data ? 'Save changes' : 'Add tag' }

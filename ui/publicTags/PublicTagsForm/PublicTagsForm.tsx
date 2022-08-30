@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
-import type { Path, SubmitHandler } from 'react-hook-form';
+import type { FieldError, Path, SubmitHandler } from 'react-hook-form';
 import { useForm, useFieldArray } from 'react-hook-form';
 
 import type { PublicTags, PublicTag, PublicTagNew, PublicTagErrors } from 'types/api/account';
@@ -57,7 +57,7 @@ const ADDRESS_INPUT_BUTTONS_WIDTH = 170;
 const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
   const queryClient = useQueryClient();
 
-  const { control, handleSubmit, formState: { errors }, setError } = useForm<Inputs>({
+  const { control, handleSubmit, formState: { errors, isValid }, setError } = useForm<Inputs>({
     defaultValues: {
       fullName: data?.full_name || '',
       email: data?.email || '',
@@ -158,7 +158,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
             fieldName="fullName"
             control={ control }
             label={ placeholders.fullName }
-            error={ errors.fullName?.message }
+            error={ errors.fullName }
             required
           />
         </GridItem>
@@ -167,7 +167,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
             fieldName="companyName"
             control={ control }
             label={ placeholders.companyName }
-            error={ errors.companyName?.message }
+            error={ errors.companyName }
           />
         </GridItem>
         <GridItem>
@@ -176,7 +176,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
             control={ control }
             label={ placeholders.email }
             pattern={ EMAIL_REGEXP }
-            error={ errors.email?.message }
+            error={ errors.email }
             required
           />
         </GridItem>
@@ -185,7 +185,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
             fieldName="companyUrl"
             control={ control }
             label={ placeholders.companyUrl }
-            error={ errors?.companyUrl?.message }
+            error={ errors?.companyUrl }
           />
         </GridItem>
       </Grid>
@@ -198,7 +198,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
           fieldName="tags"
           control={ control }
           label={ placeholders.tags }
-          error={ errors.tags?.message }
+          error={ errors.tags }
           required/>
       </Box>
       { fields.map((field, index) => {
@@ -206,7 +206,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
           <Box position="relative" key={ field.id } marginBottom={ 4 }>
             <PublicTagFormAddressInput
               control={ control }
-              error={ errors?.addresses?.[index]?.message }
+              error={ errors?.addresses?.[index] as FieldError }
               index={ index }
               fieldsLength={ fields.length }
               onAddFieldClick={ onAddFieldClick }
@@ -216,14 +216,14 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
         );
       }) }
       <Box marginBottom={ 8 }>
-        <PublicTagFormComment control={ control } error={ errors.comment?.message }/>
+        <PublicTagFormComment control={ control } error={ errors.comment }/>
       </Box>
       <HStack spacing={ 6 }>
         <Button
           size="lg"
           variant="primary"
           onClick={ handleSubmit(onSubmit) }
-          disabled={ Object.keys(errors).length > 0 }
+          disabled={ !isValid }
           isLoading={ mutation.isLoading }
         >
           Send request
