@@ -32,7 +32,7 @@ type Inputs = {
 
 const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
   const [ pending, setPending ] = useState(false);
-  const { control, handleSubmit, formState: { errors }, setError } = useForm<Inputs>({
+  const { control, handleSubmit, formState: { errors, isValid }, setError } = useForm<Inputs>({
     mode: 'all',
     defaultValues: {
       address: data?.address_hash || '',
@@ -117,7 +117,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
           size="lg"
           variant="primary"
           onClick={ handleSubmit(onSubmit) }
-          disabled={ Object.keys(errors).length > 0 }
+          disabled={ !isValid }
           isLoading={ pending }
         >
           { data ? 'Save changes' : 'Add tag' }

@@ -72,7 +72,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
     notificationsDefault = data.notification_settings;
   }
 
-  const { control, handleSubmit, formState: { errors }, setError } = useForm<Inputs>({
+  const { control, handleSubmit, formState: { errors, isValid }, setError } = useForm<Inputs>({
     defaultValues: {
       address: data?.address_hash || '',
       tag: data?.name || '',
@@ -156,6 +156,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
           control={ control }
           rules={{
             pattern: ADDRESS_REGEXP,
+            required: true,
           }}
           render={ renderAddressInput }
         />
@@ -166,6 +167,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
           control={ control }
           rules={{
             maxLength: TAG_MAX_LENGTH,
+            required: true,
           }}
           render={ renderTagInput }
         />
@@ -188,7 +190,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
           variant="primary"
           onClick={ handleSubmit(onSubmit) }
           isLoading={ pending }
-          disabled={ Object.keys(errors).length > 0 }
+          disabled={ !isValid }
         >
           { data ? 'Save changes' : 'Add address' }
         </Button>

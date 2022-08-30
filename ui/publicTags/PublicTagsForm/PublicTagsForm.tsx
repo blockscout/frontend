@@ -57,7 +57,7 @@ const ADDRESS_INPUT_BUTTONS_WIDTH = 170;
 const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
   const queryClient = useQueryClient();
 
-  const { control, handleSubmit, formState: { errors }, setError } = useForm<Inputs>({
+  const { control, handleSubmit, formState: { errors, isValid }, setError } = useForm<Inputs>({
     defaultValues: {
       fullName: data?.full_name || '',
       email: data?.email || '',
@@ -223,7 +223,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
           size="lg"
           variant="primary"
           onClick={ handleSubmit(onSubmit) }
-          disabled={ Object.keys(errors).length > 0 }
+          disabled={ !isValid }
           isLoading={ mutation.isLoading }
         >
           Send request
