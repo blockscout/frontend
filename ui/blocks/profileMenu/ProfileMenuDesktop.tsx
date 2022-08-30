@@ -1,20 +1,12 @@
 import { Popover, PopoverContent, PopoverBody, PopoverTrigger, Button } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
-import type { UserInfo } from 'types/api/account';
-
+import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
 import ProfileMenuContent from 'ui/blocks/profileMenu/ProfileMenuContent';
 import UserAvatar from 'ui/shared/UserAvatar';
 
 const ProfileMenuDesktop = () => {
-  const { data } = useQuery<unknown, unknown, UserInfo>([ 'profile' ], async() => {
-    const response = await fetch('/api/account/profile');
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
-  });
+  const { data } = useFetchProfileInfo();
 
   return (
     <Popover openDelay={ 300 } placement="bottom-end" gutter={ 10 } isLazy>

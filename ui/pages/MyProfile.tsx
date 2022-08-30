@@ -6,6 +6,7 @@ import type { UserInfo } from 'types/api/account';
 
 import AccountPageHeader from 'ui/shared/AccountPageHeader';
 import ContentLoader from 'ui/shared/ContentLoader';
+import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Page from 'ui/shared/Page/Page';
 import UserAvatar from 'ui/shared/UserAvatar';
 
@@ -19,8 +20,12 @@ const MyProfile = () => {
   });
 
   const content = (() => {
-    if (isLoading || isError) {
+    if (isLoading) {
       return <ContentLoader/>;
+    }
+
+    if (isError) {
+      return <DataFetchAlert/>;
     }
 
     return (

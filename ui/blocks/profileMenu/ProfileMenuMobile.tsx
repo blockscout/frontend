@@ -1,9 +1,7 @@
 import { Flex, Box, Drawer, DrawerOverlay, DrawerContent, DrawerBody, useDisclosure } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
-import type { UserInfo } from 'types/api/account';
-
+import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
 import ColorModeToggler from 'ui/blocks/header/ColorModeToggler';
 import ProfileMenuContent from 'ui/blocks/profileMenu/ProfileMenuContent';
 import UserAvatar from 'ui/shared/UserAvatar';
@@ -11,13 +9,7 @@ import UserAvatar from 'ui/shared/UserAvatar';
 const ProfileMenuMobile = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { data } = useQuery<unknown, unknown, UserInfo>([ 'profile' ], async() => {
-    const response = await fetch('/api/account/profile');
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
-  });
+  const { data } = useFetchProfileInfo();
 
   return (
     <>
