@@ -1,13 +1,9 @@
-import {
-  Tr,
-  Td,
-  HStack,
-  Text,
-} from '@chakra-ui/react';
+import { HStack, Text, Box } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
 import type { ApiKey } from 'types/api/account';
 
+import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 
@@ -17,7 +13,7 @@ interface Props {
   onDeleteClick: (item: ApiKey) => void;
 }
 
-const ApiKeyTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
+const ApiKeyListItem = ({ item, onEditClick, onDeleteClick }: Props) => {
 
   const onItemEditClick = useCallback(() => {
     return onEditClick(item);
@@ -28,19 +24,17 @@ const ApiKeyTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   }, [ item, onDeleteClick ]);
 
   return (
-    <Tr alignItems="top" key={ item.api_key }>
-      <Td>
+    <AccountListItemMobile>
+      <Box>
         <HStack>
           <Text fontSize="md" fontWeight={ 600 }>{ item.api_key }</Text>
           <CopyToClipboard text={ item.api_key }/>
         </HStack>
         <Text fontSize="sm" marginTop={ 0.5 } variant="secondary">{ item.name }</Text>
-      </Td>
-      <Td>
-        <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
-      </Td>
-    </Tr>
+      </Box>
+      <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
+    </AccountListItemMobile>
   );
 };
 
-export default ApiKeyTableItem;
+export default ApiKeyListItem;

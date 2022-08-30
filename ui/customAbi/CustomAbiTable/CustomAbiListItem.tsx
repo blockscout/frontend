@@ -1,8 +1,8 @@
-import { VStack, useColorModeValue } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
 import type { CustomAbi } from 'types/api/account';
 
+import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import AddressSnippet from 'ui/shared/AddressSnippet';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 
@@ -23,19 +23,10 @@ const CustomAbiListItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   }, [ item, onDeleteClick ]);
 
   return (
-    <VStack
-      gap={ 4 }
-      alignItems="flex-start"
-      paddingY={ 6 }
-      borderColor={ useColorModeValue('blackAlpha.200', 'whiteAlpha.200') }
-      borderTopWidth="1px"
-      _last={{
-        borderBottomWidth: '1px',
-      }}
-    >
+    <AccountListItemMobile>
       <AddressSnippet address={ item.contract_address_hash } subtitle={ item.name }/>
       <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
-    </VStack>
+    </AccountListItemMobile>
   );
 };
 

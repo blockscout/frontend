@@ -47,7 +47,7 @@ const CustomAbiPage: React.FC = () => {
   }, [ deleteModalProps ]);
 
   const description = (
-    <Text marginBottom={ 12 }>
+    <Text marginBottom={{ base: 6, lg: 12 }}>
       Add custom ABIs for any contract and access when logged into your account. Helpful for debugging, functional testing and contract interaction.
     </Text>
   );

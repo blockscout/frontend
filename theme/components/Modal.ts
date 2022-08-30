@@ -22,6 +22,7 @@ const baseStyleHeader: SystemStyleFunction = (props) => ({
 const baseStyleBody = {
   padding: 0,
   marginBottom: 8,
+  flex: 'initial',
 };
 
 const baseStyleFooter = {
