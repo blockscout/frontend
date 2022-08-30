@@ -1,16 +1,11 @@
-import {
-  Tag,
-  Tr,
-  Td,
-  Switch,
-} from '@chakra-ui/react';
+import { Tag, Box, Switch, Text, HStack, Flex } from '@chakra-ui/react';
 import { useMutation } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
 import type { TWatchlistItem } from 'types/client/account';
 
+import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
-import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 import WatchListAddressItem from './WatchListAddressItem';
 
@@ -20,7 +15,7 @@ interface Props {
   onDeleteClick: (data: TWatchlistItem) => void;
 }
 
-const WatchlistTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
+const WatchListItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   const [ notificationEnabled, setNotificationEnabled ] = useState(item.notification_methods.email);
   const onItemEditClick = useCallback(() => {
     return onEditClick(item);
@@ -48,21 +43,25 @@ const WatchlistTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   }, [ mutate ]);
 
   return (
-    <Tr alignItems="top" key={ item.address_hash }>
-      <Td><WatchListAddressItem item={ item }/></Td>
-      <Td>
-        <TruncatedTextTooltip label={ item.name }>
+    <AccountListItemMobile>
+      <Box maxW="100%">
+        <WatchListAddressItem item={ item }/>
+        <HStack spacing={ 3 } mt={ 6 }>
+          <Text fontSize="sm" fontWeight={ 500 }>Private tag</Text>
           <Tag variant="gray" lineHeight="24px">
             { item.name }
           </Tag>
-        </TruncatedTextTooltip>
-      </Td>
-      <Td><Switch colorScheme="blue" size="md" isChecked={ notificationEnabled } onChange={ onSwitch }/></Td>
-      <Td>
+        </HStack>
+      </Box>
+      <Flex alignItems="center" justifyContent="space-between" mt={ 6 } w="100%">
+        <HStack spacing={ 3 }>
+          <Text fontSize="sm" fontWeight={ 500 }>Email notification</Text>
+          <Switch colorScheme="blue" size="md" isChecked={ notificationEnabled } onChange={ onSwitch }/>
+        </HStack>
         <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
-      </Td>
-    </Tr>
+      </Flex>
+    </AccountListItemMobile>
   );
 };
 
-export default WatchlistTableItem;
+export default WatchListItem;
