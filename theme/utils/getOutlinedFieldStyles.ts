@@ -41,7 +41,7 @@ export default function getOutlinedFieldStyles(props: StyleFunctionProps) {
       color: mode('blackAlpha.600', 'whiteAlpha.600')(props),
     },
     // not filled input
-    ':placeholder-shown:not(:focus-visible):not(:hover)': { borderColor: borderColor || mode('gray.100', 'gray.700')(props) },
+    ':placeholder-shown:not(:focus-visible):not(:hover):not([aria-invalid=true])': { borderColor: borderColor || mode('gray.100', 'gray.700')(props) },
     ':-webkit-autofill': { transition: 'background-color 5000s ease-in-out 0s' },
     ':-webkit-autofill:hover': { transition: 'background-color 5000s ease-in-out 0s' },
     ':-webkit-autofill:focus': { transition: 'background-color 5000s ease-in-out 0s' },
