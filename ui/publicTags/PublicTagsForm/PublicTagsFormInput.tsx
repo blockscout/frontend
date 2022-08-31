@@ -1,6 +1,6 @@
 import { FormControl, FormLabel, Input } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
-import type { ControllerRenderProps, FieldValues, Path, Control } from 'react-hook-form';
+import type { ControllerRenderProps, FieldError, FieldValues, Path, Control } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 
 import getPlaceholderWithError from 'lib/getPlaceholderWithError';
@@ -13,7 +13,7 @@ interface Props<TInputs extends FieldValues> {
   required?: boolean;
   control: Control<TInputs, object>;
   pattern?: RegExp;
-  error?: string;
+  error?: FieldError;
 }
 
 export default function PublicTagsFormInput<Inputs extends FieldValues>({
@@ -34,7 +34,7 @@ export default function PublicTagsFormInput<Inputs extends FieldValues>({
           isInvalid={ Boolean(error) }
           maxLength={ TEXT_INPUT_MAX_LENGTH }
         />
-        <FormLabel>{ getPlaceholderWithError(label, error) }</FormLabel>
+        <FormLabel>{ getPlaceholderWithError(label, error?.message) }</FormLabel>
       </FormControl>
     );
   }, [ label, required, error ]);

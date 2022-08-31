@@ -32,7 +32,7 @@ type Inputs = {
 
 const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
   const [ pending, setPending ] = useState(false);
-  const { control, handleSubmit, formState: { errors }, setError } = useForm<Inputs>({
+  const { control, handleSubmit, formState: { errors, isValid }, setError } = useForm<Inputs>({
     mode: 'all',
     defaultValues: {
       address: data?.address_hash || '',
@@ -83,11 +83,11 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
   };
 
   const renderAddressInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'address'>}) => {
-    return <AddressInput<Inputs, 'address'> field={ field } error={ errors.address?.message } backgroundColor={ formBackgroundColor }/>;
+    return <AddressInput<Inputs, 'address'> field={ field } error={ errors.address } backgroundColor={ formBackgroundColor }/>;
   }, [ errors, formBackgroundColor ]);
 
   const renderTagInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'tag'>}) => {
-    return <TagInput<Inputs, 'tag'> field={ field } error={ errors.tag?.message } backgroundColor={ formBackgroundColor }/>;
+    return <TagInput<Inputs, 'tag'> field={ field } error={ errors.tag } backgroundColor={ formBackgroundColor }/>;
   }, [ errors, formBackgroundColor ]);
 
   return (
@@ -117,7 +117,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
           size="lg"
           variant="primary"
           onClick={ handleSubmit(onSubmit) }
-          disabled={ Object.keys(errors).length > 0 }
+          disabled={ !isValid }
           isLoading={ pending }
         >
           { data ? 'Save changes' : 'Add tag' }

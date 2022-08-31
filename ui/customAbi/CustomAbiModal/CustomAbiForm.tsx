@@ -36,7 +36,7 @@ type Inputs = {
 const NAME_MAX_LENGTH = 255;
 
 const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
-  const { control, formState: { errors }, handleSubmit, setError } = useForm<Inputs>({
+  const { control, formState: { errors, isValid }, handleSubmit, setError } = useForm<Inputs>({
     defaultValues: {
       contract_address_hash: data?.contract_address_hash || '',
       name: data?.name || '',
@@ -102,7 +102,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
     return (
       <AddressInput<Inputs, 'contract_address_hash'>
         field={ field }
-        error={ errors.contract_address_hash?.message }
+        error={ errors.contract_address_hash }
         backgroundColor={ formBackgroundColor }
         placeholder="Smart contract address (0x...)"
       />
@@ -164,7 +164,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
           size="lg"
           variant="primary"
           onClick={ handleSubmit(onSubmit) }
-          disabled={ Object.keys(errors).length > 0 }
+          disabled={ !isValid }
           isLoading={ mutation.isLoading }
         >
           { data ? 'Save' : 'Create custom ABI' }
