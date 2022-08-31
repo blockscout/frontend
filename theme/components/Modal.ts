@@ -61,9 +61,14 @@ const sizes = {
     },
   },
   full: {
+    dialogContainer: {
+      height: '100%',
+    },
     dialog: {
       borderRadius: 'none',
       padding: '80px 16px 32px 16px',
+      height: '100%',
+      overflowY: 'scroll',
     },
     closeButton: {
       top: 4,
