@@ -8,6 +8,7 @@ import fetch from 'lib/client/fetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import AccountPageHeader from 'ui/shared/AccountPageHeader';
+import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Page from 'ui/shared/Page/Page';
 import SkeletonTable from 'ui/shared/SkeletonTable';
@@ -55,11 +56,17 @@ const WatchList: React.FC = () => {
 
   let content;
   if (isLoading && !data) {
+    const loader = isMobile ? <ContentLoader/> : (
+      <>
+        <SkeletonTable columns={ [ '70%', '30%', '160px', '108px' ] }/>
+        <Skeleton height="44px" width="156px" marginTop={ 8 }/>
+      </>
+    );
+
     content = (
       <>
         { description }
-        <SkeletonTable columns={ [ '70%', '30%', '160px', '108px' ] }/>
-        <Skeleton height="44px" width="156px" marginTop={ 8 }/>
+        { loader }
       </>
     );
   } else if (isError) {

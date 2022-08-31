@@ -13,6 +13,7 @@ import ApiKeyTable from 'ui/apiKey/ApiKeyTable/ApiKeyTable';
 import DeleteApiKeyModal from 'ui/apiKey/DeleteApiKeyModal';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import AccountPageHeader from 'ui/shared/AccountPageHeader';
+import ContentLoader from 'ui/shared/ContentLoader';
 import Page from 'ui/shared/Page/Page';
 import SkeletonTable from 'ui/shared/SkeletonTable';
 
@@ -59,11 +60,17 @@ const ApiKeysPage: React.FC = () => {
 
   const content = (() => {
     if (isLoading && !data) {
+      const loader = isMobile ? <ContentLoader/> : (
+        <>
+          <SkeletonTable columns={ [ '100%', '108px' ] }/>
+          <Skeleton height="48px" width="156px" marginTop={ 8 }/>
+        </>
+      );
+
       return (
         <>
           { description }
-          <SkeletonTable columns={ [ '100%', '108px' ] }/>
-          <Skeleton height="48px" width="156px" marginTop={ 8 }/>
+          { loader }
         </>
       );
     }

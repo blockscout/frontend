@@ -7,6 +7,7 @@ import type { AddressTags, AddressTag } from 'types/api/account';
 import fetch from 'lib/client/fetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
+import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import SkeletonTable from 'ui/shared/SkeletonTable';
 
@@ -54,11 +55,17 @@ const PrivateAddressTags = () => {
   );
 
   if (isLoading && !addressTagsData) {
+    const loader = isMobile ? <ContentLoader/> : (
+      <>
+        <SkeletonTable columns={ [ '60%', '40%', '108px' ] }/>
+        <Skeleton height="44px" width="156px" marginTop={ 8 }/>
+      </>
+    );
+
     return (
       <>
         { description }
-        <SkeletonTable columns={ [ '60%', '40%', '108px' ] }/>
-        <Skeleton height="44px" width="156px" marginTop={ 8 }/>
+        { loader }
       </>
     );
   }
