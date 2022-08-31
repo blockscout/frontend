@@ -1,9 +1,7 @@
 import { VStack, FormControl, FormLabel, Input } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
-import type { UserInfo } from 'types/api/account';
-
+import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
 import AccountPageHeader from 'ui/shared/AccountPageHeader';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
@@ -11,13 +9,7 @@ import Page from 'ui/shared/Page/Page';
 import UserAvatar from 'ui/shared/UserAvatar';
 
 const MyProfile = () => {
-  const { data, isLoading, isError } = useQuery<unknown, unknown, UserInfo>([ 'profile' ], async() => {
-    const response = await fetch('/api/account/profile');
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
-  });
+  const { data, isLoading, isError } = useFetchProfileInfo();
 
   const content = (() => {
     if (isLoading) {
