@@ -9,13 +9,14 @@ import useColors from './useColors';
 
 interface Props {
   isCollapsed?: boolean;
-  isActive: boolean;
+  isActive?: boolean;
   pathname: string;
   text: string;
   icon: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
+  px?: string | number;
 }
 
-const NavLink = ({ text, pathname, icon, isCollapsed, isActive }: Props) => {
+const NavLink = ({ text, pathname, icon, isCollapsed, isActive, px }: Props) => {
   const colors = useColors();
   const isMobile = useIsMobile();
   const width = (() => {
@@ -32,7 +33,7 @@ const NavLink = ({ text, pathname, icon, isCollapsed, isActive }: Props) => {
         as="li"
         listStyleType="none"
         w={ width }
-        px={ isCollapsed ? '15px' : 3 }
+        px={ px || (isCollapsed ? '15px' : 3) }
         py={ 2.5 }
         color={ isActive ? colors.text.active : colors.text.default }
         bgColor={ isActive ? colors.bg.active : colors.bg.default }
