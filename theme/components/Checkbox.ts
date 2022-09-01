@@ -1,14 +1,22 @@
-import type { ComponentStyleConfig } from '@chakra-ui/theme';
-import type { SystemStyleObject } from '@chakra-ui/theme-tools';
+import { checkboxAnatomy as parts } from '@chakra-ui/anatomy';
+import {
+  createMultiStyleConfigHelpers,
+  defineStyle,
+} from '@chakra-ui/styled-system';
 
-const baseStyleLabel: SystemStyleObject = {
+const { definePartsStyle, defineMultiStyleConfig } =
+  createMultiStyleConfigHelpers(parts.keys);
+
+const baseStyleLabel = defineStyle({
   _disabled: { opacity: 0.2 },
-};
+});
 
-const Checkbox: ComponentStyleConfig = {
-  baseStyle: {
-    label: baseStyleLabel,
-  },
-};
+const baseStyle = definePartsStyle({
+  label: baseStyleLabel,
+});
+
+const Checkbox = defineMultiStyleConfig({
+  baseStyle,
+});
 
 export default Checkbox;

@@ -1,24 +1,24 @@
-import type { ComponentStyleConfig } from '@chakra-ui/theme';
-import type { SystemStyleFunction } from '@chakra-ui/theme-tools';
+import type { SystemStyleInterpolation } from '@chakra-ui/styled-system';
+import { defineStyle, defineStyleConfig } from '@chakra-ui/styled-system';
 import { mode } from '@chakra-ui/theme-tools';
 
-const variantPrimary: SystemStyleFunction = (props) => ({
+const variantPrimary = defineStyle((props) => ({
   color: mode('blackAlpha.800', 'whiteAlpha.800')(props),
-});
+}));
 
-const variantSecondary: SystemStyleFunction = (props) => ({
+const variantSecondary = defineStyle((props) => ({
   color: mode('gray.500', 'gray.400')(props),
-});
+}));
 
-const variantAlternate: SystemStyleFunction = (props) => ({
+const variantAlternate = defineStyle((props) => ({
   color: mode('blue.600', 'blue.300')(props),
-});
+}));
 
 const variantInherit = {
   color: 'inherit',
 };
 
-const variants = {
+const variants: Record<string, SystemStyleInterpolation> = {
   primary: variantPrimary,
   secondary: variantSecondary,
   alternate: variantAlternate,
@@ -29,9 +29,9 @@ const defaultProps = {
   variant: 'primary',
 };
 
-const Text: ComponentStyleConfig = {
+const Text = defineStyleConfig({
   defaultProps,
   variants,
-};
+});
 
 export default Text;

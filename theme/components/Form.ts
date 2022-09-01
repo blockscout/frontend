@@ -1,10 +1,14 @@
-import type { formAnatomy as parts } from '@chakra-ui/anatomy';
-import type { ComponentStyleConfig } from '@chakra-ui/theme';
+import { formAnatomy as parts } from '@chakra-ui/anatomy';
+import {
+  createMultiStyleConfigHelpers,
+} from '@chakra-ui/styled-system';
 import { getColor, mode } from '@chakra-ui/theme-tools';
-import type { StyleFunctionProps, PartsStyleFunction } from '@chakra-ui/theme-tools';
 import type { Dict } from '@chakra-ui/utils';
 
 import getDefaultFormColors from '../utils/getDefaultFormColors';
+
+const { definePartsStyle, defineMultiStyleConfig } =
+  createMultiStyleConfigHelpers(parts.keys);
 
 const getActiveLabelStyles = (theme: Dict, fc: string, bc: string, size: 'md' | 'lg') => {
   const baseStyles = {
@@ -84,7 +88,7 @@ const getActiveInputStyles = (size: 'md' | 'lg') => {
   }
 };
 
-const variantFloating: PartsStyleFunction<typeof parts> = (props: StyleFunctionProps) => {
+const variantFloating = definePartsStyle((props) => {
   const { theme, backgroundColor, size = 'md' } = props;
   const { focusColor: fc, errorColor: ec } = getDefaultFormColors(props);
   const bc = backgroundColor || mode('white', 'black')(props);
@@ -151,12 +155,14 @@ const variantFloating: PartsStyleFunction<typeof parts> = (props: StyleFunctionP
       color: mode('gray.500', 'whiteAlpha.400')(props),
     },
   };
+});
+
+const variants = {
+  floating: variantFloating,
 };
 
-const Form: ComponentStyleConfig = {
-  variants: {
-    floating: variantFloating,
-  },
-};
+const Form = defineMultiStyleConfig({
+  variants,
+});
 
 export default Form;

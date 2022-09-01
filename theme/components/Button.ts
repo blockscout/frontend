@@ -1,8 +1,7 @@
-import type { ComponentStyleConfig } from '@chakra-ui/theme';
+import { defineStyle, defineStyleConfig } from '@chakra-ui/styled-system';
 import { mode } from '@chakra-ui/theme-tools';
-import type { SystemStyleFunction } from '@chakra-ui/theme-tools';
 
-const variantPrimary = {
+const variantPrimary = defineStyle({
   bg: 'blue.600',
   color: 'white',
   fontWeight: 600,
@@ -15,9 +14,9 @@ const variantPrimary = {
   _disabled: {
     opacity: 0.2,
   },
-};
+});
 
-const variantSecondary: SystemStyleFunction = (props) => {
+const variantSecondary = defineStyle((props) => {
   return {
     color: mode('blue.600', 'blue.300')(props),
     fontWeight: 600,
@@ -31,18 +30,18 @@ const variantSecondary: SystemStyleFunction = (props) => {
       opacity: 0.2,
     },
   };
-};
+});
 
-const variantIcon: SystemStyleFunction = (props) => {
+const variantIcon = defineStyle((props) => {
   return {
     color: mode('blue.600', 'blue.300')(props),
     _hover: {
       color: mode('blue.400', 'blue.200')(props),
     },
   };
-};
+});
 
-const variantIconBorder = {
+const variantIconBorder = defineStyle({
   color: 'blue.600',
   borderColor: 'blue.600',
   border: '2px solid',
@@ -53,7 +52,7 @@ const variantIconBorder = {
   _disabled: {
     opacity: 0.2,
   },
-};
+});
 
 const variants = {
   primary: variantPrimary,
@@ -62,38 +61,42 @@ const variants = {
   iconBorder: variantIconBorder,
 };
 
-const Button: ComponentStyleConfig = {
-  baseStyle: {
-    fontWeight: 'normal',
-    borderRadius: 'base',
-  },
-  variants,
-  sizes: {
-    lg: {
-      h: 12,
-      minW: 'unset',
-      fontSize: 'lg',
-      px: 6,
-    },
-    md: {
-      h: 10,
-      minW: 'unset',
-      fontSize: 'md',
-      px: 4,
-    },
-    sm: {
-      h: 8,
-      minW: 'unset',
-      fontSize: 'sm',
-      px: 3,
-    },
-    xs: {
-      h: 6,
-      minW: 'unset',
-      fontSize: 'xs',
-      px: 2,
-    },
-  },
+const baseStyle = defineStyle({
+  fontWeight: 'normal',
+  borderRadius: 'base',
+});
+
+const sizes = {
+  lg: defineStyle({
+    h: 12,
+    minW: 'unset',
+    fontSize: 'lg',
+    px: 6,
+  }),
+  md: defineStyle({
+    h: 10,
+    minW: 'unset',
+    fontSize: 'md',
+    px: 4,
+  }),
+  sm: defineStyle({
+    h: 8,
+    minW: 'unset',
+    fontSize: 'sm',
+    px: 3,
+  }),
+  xs: defineStyle({
+    h: 6,
+    minW: 'unset',
+    fontSize: 'xs',
+    px: 2,
+  }),
 };
+
+const Button = defineStyleConfig({
+  baseStyle,
+  variants,
+  sizes,
+});
 
 export default Button;

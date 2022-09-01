@@ -1,40 +1,45 @@
-import type { inputAnatomy as parts } from '@chakra-ui/anatomy';
+import { inputAnatomy as parts } from '@chakra-ui/anatomy';
 import { Input as InputComponent } from '@chakra-ui/react';
-import type { ComponentStyleConfig } from '@chakra-ui/theme';
-import type { PartsStyleFunction, SystemStyleObject } from '@chakra-ui/theme-tools';
+import {
+  createMultiStyleConfigHelpers,
+  defineStyle,
+} from '@chakra-ui/styled-system';
 import { mode } from '@chakra-ui/theme-tools';
+
+const { definePartsStyle, defineMultiStyleConfig } =
+  createMultiStyleConfigHelpers(parts.keys);
 
 import getDefaultTransitionProps from '../utils/getDefaultTransitionProps';
 import getOutlinedFieldStyles from '../utils/getOutlinedFieldStyles';
 
-const sizes: Record<string, SystemStyleObject> = {
-  sm: {
+const size = {
+  sm: defineStyle({
     fontSize: 'md',
     lineHeight: '24px',
     px: '8px',
     py: '12px',
     h: '40px',
     borderRadius: 'base',
-  },
-  md: {
+  }),
+  md: defineStyle({
     fontSize: 'md',
     lineHeight: '20px',
     px: '20px',
     py: '20px',
     h: '60px',
     borderRadius: 'base',
-  },
-  lg: {
+  }),
+  lg: defineStyle({
     fontSize: 'md',
     lineHeight: '20px',
     px: '24px',
     py: '28px',
     h: '80px',
     borderRadius: 'base',
-  },
+  }),
 };
 
-const variantOutline: PartsStyleFunction<typeof parts> = (props) => {
+const variantOutline = definePartsStyle((props) => {
   const transitionProps = getDefaultTransitionProps();
 
   return {
@@ -47,30 +52,34 @@ const variantOutline: PartsStyleFunction<typeof parts> = (props) => {
       ...transitionProps,
     },
   };
+});
+
+const sizes = {
+  sm: definePartsStyle({
+    field: size.sm,
+    addon: size.sm,
+  }),
+  md: definePartsStyle({
+    field: size.md,
+    addon: size.md,
+  }),
+  lg: definePartsStyle({
+    field: size.lg,
+    addon: size.lg,
+  }),
 };
 
-const Input: ComponentStyleConfig = {
-  sizes: {
-    sm: {
-      field: sizes.sm,
-      addon: sizes.sm,
-    },
-    md: {
-      field: sizes.md,
-      addon: sizes.md,
-    },
-    lg: {
-      field: sizes.lg,
-      addon: sizes.lg,
-    },
-  },
+const variants = {
+  outline: variantOutline,
+};
+
+const Input = defineMultiStyleConfig({
+  sizes,
+  variants,
   defaultProps: {
     size: 'md',
   },
-  variants: {
-    outline: variantOutline,
-  },
-};
+});
 
 InputComponent.defaultProps = {
   ...InputComponent.defaultProps,

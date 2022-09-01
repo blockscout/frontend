@@ -1,9 +1,8 @@
 import { Tooltip as TooltipComponent } from '@chakra-ui/react';
-import type { ComponentStyleConfig } from '@chakra-ui/theme';
-import type { SystemStyleFunction } from '@chakra-ui/theme-tools';
+import { defineStyle, defineStyleConfig } from '@chakra-ui/styled-system';
 import { mode } from '@chakra-ui/theme-tools';
 
-const variantNav: SystemStyleFunction = (props) => {
+const variantNav = defineStyle((props) => {
   return {
     bg: mode('blue.50', 'gray.800')(props),
     color: 'blue.400',
@@ -16,18 +15,20 @@ const variantNav: SystemStyleFunction = (props) => {
     boxShadow: 'none',
     fontWeight: '500',
   };
-};
+});
 
 const variants = {
   nav: variantNav,
 };
 
-const Tooltip: ComponentStyleConfig = {
+const baseStyle = defineStyle({
+  maxWidth: 'unset',
+});
+
+const Tooltip = defineStyleConfig({
   variants,
-  baseStyle: {
-    maxWidth: 'unset',
-  },
-};
+  baseStyle,
+});
 
 TooltipComponent.defaultProps = { ...TooltipComponent.defaultProps, hasArrow: true };
 

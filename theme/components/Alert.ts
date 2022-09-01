@@ -1,13 +1,19 @@
-import type { ComponentStyleConfig } from '@chakra-ui/theme';
+import { alertAnatomy as parts } from '@chakra-ui/anatomy';
+import { createMultiStyleConfigHelpers } from '@chakra-ui/styled-system';
 
-const Alert: ComponentStyleConfig = {
-  baseStyle: {
-    container: {
-      borderRadius: '12px',
-      px: 6,
-      py: 4,
-    },
+const { definePartsStyle, defineMultiStyleConfig } =
+  createMultiStyleConfigHelpers(parts.keys);
+
+const baseStyle = definePartsStyle({
+  container: {
+    borderRadius: 'md',
+    px: 6,
+    py: 4,
   },
-};
+});
+
+const Alert = defineMultiStyleConfig({
+  baseStyle,
+});
 
 export default Alert;

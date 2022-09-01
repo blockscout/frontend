@@ -1,4 +1,4 @@
-import type { ComponentStyleConfig } from '@chakra-ui/theme';
+import { defineStyle, defineStyleConfig } from '@chakra-ui/styled-system';
 import type { SystemStyleInterpolation } from '@chakra-ui/theme-tools';
 import { mode } from '@chakra-ui/theme-tools';
 
@@ -10,24 +10,24 @@ const baseStyle: SystemStyleInterpolation = (props) => {
 };
 
 const sizes = {
-  lg: {
+  lg: defineStyle({
     fontSize: '32px',
     lineHeight: '40px',
     letterSpacing: '-0.5px',
-  },
-  md: {
+  }),
+  md: defineStyle({
     fontSize: '24px',
     lineHeight: '32px',
-  },
-  sm: {
+  }),
+  sm: defineStyle({
     fontSize: '18px',
     lineHeight: '24px',
-  },
+  }),
 };
 
-const Heading: ComponentStyleConfig = {
+const Heading = defineStyleConfig({
   sizes,
   baseStyle,
-};
+});
 
 export default Heading;
