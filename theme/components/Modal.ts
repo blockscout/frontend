@@ -8,7 +8,14 @@ const baseStyleDialog: SystemStyleFunction = (props) => {
     padding: 8,
     borderRadius: 'lg',
     bg: mode('white', 'gray.900')(props),
+    margin: 'auto',
   };
+};
+
+const baseStyleDialogContainer = {
+  '::-webkit-scrollbar': { display: 'none' },
+  'scrollbar-width': 'none',
+  '@supports (height: -webkit-fill-available)': { height: '100vh' },
 };
 
 const baseStyleHeader: SystemStyleFunction = (props) => ({
@@ -47,6 +54,7 @@ const baseStyleOverlay = {
 
 const baseStyle: PartsStyleFunction<typeof parts> = (props) => ({
   dialog: baseStyleDialog(props),
+  dialogContainer: baseStyleDialogContainer,
   header: baseStyleHeader(props),
   body: baseStyleBody,
   footer: baseStyleFooter,
