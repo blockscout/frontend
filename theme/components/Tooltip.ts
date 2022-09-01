@@ -1,6 +1,10 @@
 import { Tooltip as TooltipComponent } from '@chakra-ui/react';
 import { defineStyle, defineStyleConfig } from '@chakra-ui/styled-system';
-import { mode } from '@chakra-ui/theme-tools';
+import { mode, cssVar } from '@chakra-ui/theme-tools';
+
+const $bg = cssVar('tooltip-bg');
+const $fg = cssVar('tooltip-fg');
+const $arrowBg = cssVar('popper-arrow-bg');
 
 const variantNav = defineStyle((props) => {
   return {
@@ -21,8 +25,18 @@ const variants = {
   nav: variantNav,
 };
 
-const baseStyle = defineStyle({
-  maxWidth: 'unset',
+const baseStyle = defineStyle((props) => {
+  const bg = mode('gray.700', 'gray.200')(props);
+  const fg = mode('white', 'black')(props);
+
+  return {
+    bg: $bg.reference,
+    color: mode('white', 'black')(props),
+    [$bg.variable]: `colors.${ bg }`,
+    [$fg.reference]: `colors.${ fg }`,
+    [$arrowBg.variable]: $bg.reference,
+    maxWidth: 'unset',
+  };
 });
 
 const Tooltip = defineStyleConfig({
