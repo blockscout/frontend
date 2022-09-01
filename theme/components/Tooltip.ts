@@ -1,9 +1,12 @@
 import { Tooltip as TooltipComponent } from '@chakra-ui/react';
-import type { ComponentStyleConfig } from '@chakra-ui/theme';
-import type { SystemStyleFunction } from '@chakra-ui/theme-tools';
-import { mode } from '@chakra-ui/theme-tools';
+import { defineStyle, defineStyleConfig } from '@chakra-ui/styled-system';
+import { mode, cssVar } from '@chakra-ui/theme-tools';
 
-const variantNav: SystemStyleFunction = (props) => {
+const $bg = cssVar('tooltip-bg');
+const $fg = cssVar('tooltip-fg');
+const $arrowBg = cssVar('popper-arrow-bg');
+
+const variantNav = defineStyle((props) => {
   return {
     bg: mode('blue.50', 'gray.800')(props),
     color: 'blue.400',
@@ -16,18 +19,30 @@ const variantNav: SystemStyleFunction = (props) => {
     boxShadow: 'none',
     fontWeight: '500',
   };
-};
+});
 
 const variants = {
   nav: variantNav,
 };
 
-const Tooltip: ComponentStyleConfig = {
-  variants,
-  baseStyle: {
+const baseStyle = defineStyle((props) => {
+  const bg = mode('gray.700', 'gray.200')(props);
+  const fg = mode('white', 'black')(props);
+
+  return {
+    bg: $bg.reference,
+    color: mode('white', 'black')(props),
+    [$bg.variable]: `colors.${ bg }`,
+    [$fg.reference]: `colors.${ fg }`,
+    [$arrowBg.variable]: $bg.reference,
     maxWidth: 'unset',
-  },
-};
+  };
+});
+
+const Tooltip = defineStyleConfig({
+  variants,
+  baseStyle,
+});
 
 TooltipComponent.defaultProps = { ...TooltipComponent.defaultProps, hasArrow: true };
 

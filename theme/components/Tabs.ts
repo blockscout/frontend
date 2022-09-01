@@ -1,11 +1,12 @@
-import type { tabsAnatomy as parts } from '@chakra-ui/anatomy';
-import type { ComponentStyleConfig } from '@chakra-ui/theme';
-import type {
-  PartsStyleFunction,
-} from '@chakra-ui/theme-tools';
+import { tabsAnatomy as parts } from '@chakra-ui/anatomy';
+import {
+  createMultiStyleConfigHelpers,
+} from '@chakra-ui/styled-system';
 import { mode } from '@chakra-ui/theme-tools';
+const { defineMultiStyleConfig, definePartsStyle } =
+  createMultiStyleConfigHelpers(parts.keys);
 
-const variantSoftRounded: PartsStyleFunction<typeof parts> = (props) => {
+const variantSoftRounded = definePartsStyle((props) => {
   return {
     tab: {
       borderRadius: 'base',
@@ -23,12 +24,14 @@ const variantSoftRounded: PartsStyleFunction<typeof parts> = (props) => {
       },
     },
   };
+});
+
+const variants = {
+  'soft-rounded': variantSoftRounded,
 };
 
-const Tabs: ComponentStyleConfig = {
-  variants: {
-    'soft-rounded': variantSoftRounded,
-  },
-};
+const Tabs = defineMultiStyleConfig({
+  variants,
+});
 
 export default Tabs;

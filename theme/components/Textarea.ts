@@ -1,32 +1,28 @@
 import { Textarea as TextareaComponent } from '@chakra-ui/react';
-import type { ComponentStyleConfig } from '@chakra-ui/theme';
-import type {
-  SystemStyleObject,
-} from '@chakra-ui/theme-tools';
+import { defineStyle, defineStyleConfig } from '@chakra-ui/styled-system';
 
 import getOutlinedFieldStyles from '../utils/getOutlinedFieldStyles';
 
-const sizes: Record<string, SystemStyleObject> = {
-  lg: {
+const sizes = {
+  lg: defineStyle({
     fontSize: 'md',
     lineHeight: '20px',
     px: '24px',
     py: '28px',
     h: '160px',
     borderRadius: 'base',
-  },
+  }),
 };
 
-const Textarea: ComponentStyleConfig = {
+const Textarea = defineStyleConfig({
   sizes,
   variants: {
-    outline: (props) => getOutlinedFieldStyles(props),
+    outline: defineStyle(getOutlinedFieldStyles),
   },
   defaultProps: {
-    size: 'md',
     variant: 'outline',
   },
-};
+});
 
 TextareaComponent.defaultProps = {
   ...TextareaComponent.defaultProps,
