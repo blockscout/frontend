@@ -25,7 +25,7 @@ const PublicTagListItem = ({ item, onEditClick, onDeleteClick }: Props) => {
 
   return (
     <AccountListItemMobile>
-      <VStack spacing={ 4 } alignItems="flex-start" maxW="100%">
+      <VStack spacing={ 3 } alignItems="flex-start" maxW="100%">
         <VStack spacing={ 4 } alignItems="unset" maxW="100%">
           { item.addresses.map((address) => <AddressSnippet key={ address } address={ address }/>) }
         </VStack>
@@ -43,7 +43,10 @@ const PublicTagListItem = ({ item, onEditClick, onDeleteClick }: Props) => {
             }) }
           </HStack>
         </HStack>
-        <Text fontSize="sm" fontWeight="500">Submitted</Text>
+        <HStack spacing={ 3 }>
+          <Text fontSize="sm" fontWeight={ 500 }>Status</Text>
+          <Text fontSize="sm" variant="secondary">Submitted</Text>
+        </HStack>
       </VStack>
       <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
     </AccountListItemMobile>

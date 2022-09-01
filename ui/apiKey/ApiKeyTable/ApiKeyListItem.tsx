@@ -26,7 +26,7 @@ const ApiKeyListItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   return (
     <AccountListItemMobile>
       <Box>
-        <HStack>
+        <HStack alignItems="flex-start">
           <Text fontSize="md" fontWeight={ 600 }>{ item.api_key }</Text>
           <CopyToClipboard text={ item.api_key }/>
         </HStack>
