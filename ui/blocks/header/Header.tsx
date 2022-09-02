@@ -28,7 +28,7 @@ const Header = () => {
           width="100%"
           alignItems="center"
           justifyContent="space-between"
-          zIndex={ 10 }
+          zIndex="sticky"
         >
           <Burger/>
           <NetworkLogo/>
