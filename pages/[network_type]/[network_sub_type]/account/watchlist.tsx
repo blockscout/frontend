@@ -1,7 +1,8 @@
-import type { NextPage } from 'next';
+import type { NextPage, GetStaticPaths } from 'next';
 import Head from 'next/head';
 import React from 'react';
 
+import { getAvailablePaths } from 'lib/networks';
 import WatchList from 'ui/pages/Watchlist';
 
 const WatchListPage: NextPage = () => {
@@ -14,3 +15,13 @@ const WatchListPage: NextPage = () => {
 };
 
 export default WatchListPage;
+
+export const getStaticPaths: GetStaticPaths = async() => {
+  return { paths: getAvailablePaths(), fallback: false };
+};
+
+export const getStaticProps = async() => {
+  return {
+    props: {},
+  };
+};
