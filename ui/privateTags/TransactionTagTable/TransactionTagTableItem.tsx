@@ -31,7 +31,7 @@ const AddressTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   return (
     <Tr alignItems="top" key={ item.id }>
       <Td>
-        <AddressLinkWithTooltip address={ item.transaction_hash }/>
+        <AddressLinkWithTooltip address={ item.transaction_hash } type="transaction"/>
       </Td>
       <Td>
         <Tooltip label={ item.name }>
