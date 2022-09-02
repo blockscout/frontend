@@ -16,6 +16,7 @@ import type { PublicTags, PublicTag, PublicTagNew, PublicTagErrors } from 'types
 import type { ErrorType } from 'lib/client/fetch';
 import fetch from 'lib/client/fetch';
 import getErrorMessage from 'lib/getErrorMessage';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import { EMAIL_REGEXP } from 'lib/validations/email';
 import FormSubmitAlert from 'ui/shared/FormSubmitAlert';
 
@@ -56,6 +57,8 @@ const ADDRESS_INPUT_BUTTONS_WIDTH = 100;
 
 const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
   const queryClient = useQueryClient();
+  const isMobile = useIsMobile();
+  const inputSize = isMobile ? 'md' : 'lg';
 
   const { control, handleSubmit, formState: { errors, isValid }, setError } = useForm<Inputs>({
     defaultValues: {
@@ -149,7 +152,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
   }, [ changeToDataScreen ]);
 
   return (
-    <Box width={ `calc(100% - ${ ADDRESS_INPUT_BUTTONS_WIDTH }px)` } maxWidth="844px">
+    <Box width={{ base: 'auto', lg: `calc(100% - ${ ADDRESS_INPUT_BUTTONS_WIDTH }px)` }} maxWidth="844px">
       { isAlertVisible && <Box mb={ 4 }><FormSubmitAlert/></Box> }
       <Text size="sm" variant="secondary" paddingBottom={ 5 }>Company info</Text>
       <Grid templateColumns={{ base: '1fr', lg: '1fr 1fr' }} rowGap={ 4 } columnGap={ 5 }>
@@ -160,6 +163,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
             label={ placeholders.fullName }
             error={ errors.fullName }
             required
+            size={ inputSize }
           />
         </GridItem>
         <GridItem>
@@ -168,6 +172,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
             control={ control }
             label={ placeholders.companyName }
             error={ errors.companyName }
+            size={ inputSize }
           />
         </GridItem>
         <GridItem>
@@ -178,6 +183,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
             pattern={ EMAIL_REGEXP }
             error={ errors.email }
             required
+            size={ inputSize }
           />
         </GridItem>
         <GridItem>
@@ -186,10 +192,11 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
             control={ control }
             label={ placeholders.companyUrl }
             error={ errors?.companyUrl }
+            size={ inputSize }
           />
         </GridItem>
       </Grid>
-      <Box marginTop={ 4 } marginBottom={ 8 }>
+      <Box marginTop={{ base: 5, lg: 8 }} marginBottom={{ base: 5, lg: 8 }}>
         <PublicTagFormAction control={ control }/>
       </Box>
       <Text size="sm" variant="secondary" marginBottom={ 5 }>Public tags (2 tags maximum, please use &quot;;&quot; as a divider)</Text>
@@ -199,7 +206,9 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
           control={ control }
           label={ placeholders.tags }
           error={ errors.tags }
-          required/>
+          required
+          size={ inputSize }
+        />
       </Box>
       { fields.map((field, index) => {
         return (
@@ -211,12 +220,13 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
               fieldsLength={ fields.length }
               onAddFieldClick={ onAddFieldClick }
               onRemoveFieldClick={ onRemoveFieldClick }
+              size={ inputSize }
             />
           </Box>
         );
       }) }
       <Box marginBottom={ 8 }>
-        <PublicTagFormComment control={ control } error={ errors.comment }/>
+        <PublicTagFormComment control={ control } error={ errors.comment } size={ inputSize }/>
       </Box>
       <HStack spacing={ 6 }>
         <Button
