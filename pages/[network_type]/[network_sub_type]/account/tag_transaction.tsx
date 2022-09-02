@@ -3,18 +3,18 @@ import Head from 'next/head';
 import React from 'react';
 
 import { getAvailablePaths } from 'lib/networks';
-import PublicTags from 'ui/pages/PublicTags';
+import PrivateTags from 'ui/pages/PrivateTags';
 
-const PublicTagsPage: NextPage = () => {
+const TransactionTagsPage: NextPage = () => {
   return (
     <>
       <Head><title>Public tags</title></Head>
-      <PublicTags/>
+      <PrivateTags tab="transaction"/>
     </>
   );
 };
 
-export default PublicTagsPage;
+export default TransactionTagsPage;
 
 export const getStaticPaths: GetStaticPaths = async() => {
   return { paths: getAvailablePaths(), fallback: false };

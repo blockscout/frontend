@@ -40,7 +40,10 @@ export default function PublicTagFormAction({ control, index, fieldsLength, erro
         name={ `addresses.${ index }.address` }
         control={ control }
         render={ renderAddressInput }
-        rules={{ pattern: ADDRESS_REGEXP }}
+        rules={{
+          pattern: ADDRESS_REGEXP,
+          required: index === 0,
+        }}
       />
       <Flex
         columnGap={ 5 }

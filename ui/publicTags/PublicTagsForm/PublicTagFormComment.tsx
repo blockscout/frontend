@@ -36,7 +36,10 @@ export default function PublicTagFormComment({ control, error, size }: Props) {
       name="comment"
       control={ control }
       render={ renderComment }
-      rules={{ maxLength: TEXT_INPUT_MAX_LENGTH }}
+      rules={{
+        maxLength: TEXT_INPUT_MAX_LENGTH,
+        required: true,
+      }}
     />
   );
 }

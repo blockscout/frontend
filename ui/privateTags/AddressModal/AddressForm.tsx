@@ -98,6 +98,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
           control={ control }
           rules={{
             pattern: ADDRESS_REGEXP,
+            required: true,
           }}
           render={ renderAddressInput }
         />
@@ -108,6 +109,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
           control={ control }
           rules={{
             maxLength: TAG_MAX_LENGTH,
+            required: true,
           }}
           render={ renderTagInput }
         />
