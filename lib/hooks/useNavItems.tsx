@@ -27,7 +27,7 @@ export default function useNavItems() {
 
     const accountNavItems = [
       { text: 'Watchlist', pathname: basePath + '/account/watchlist', icon: watchlistIcon },
-      { text: 'Private tags', pathname: basePath + '/account/private_tags', icon: privateTagIcon },
+      { text: 'Private tags', pathname: basePath + '/account/tag_address', icon: privateTagIcon },
       { text: 'Public tags', pathname: basePath + '/account/public_tags_request', icon: publicTagIcon },
       { text: 'API keys', pathname: basePath + '/account/api_key', icon: apiKeysIcon },
       { text: 'Custom ABI', pathname: basePath + '/account/custom_abi', icon: abiIcon },
