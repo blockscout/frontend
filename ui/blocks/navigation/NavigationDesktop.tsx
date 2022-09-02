@@ -43,7 +43,7 @@ const NavigationDesktop = () => {
     <Flex
       position="relative"
       flexDirection="column"
-      alignItems="center"
+      alignItems="flex-start"
       borderRight="1px solid"
       borderColor={ containerBorderColor }
       px={ isCollapsed ? 4 : 6 }

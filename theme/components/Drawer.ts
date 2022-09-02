@@ -1,17 +1,24 @@
-import type { drawerAnatomy as parts } from '@chakra-ui/anatomy';
-import type { SystemStyleFunction, PartsStyleFunction, SystemStyleObject } from '@chakra-ui/theme-tools';
-import { mode } from '@chakra-ui/theme-tools';
+import { drawerAnatomy as parts } from '@chakra-ui/anatomy';
+import {
+  createMultiStyleConfigHelpers,
+  defineStyle,
+} from '@chakra-ui/styled-system';
+import { mode, runIfFn } from '@chakra-ui/theme-tools';
+
+const { definePartsStyle, defineMultiStyleConfig } =
+  createMultiStyleConfigHelpers(parts.keys);
 
 import getDefaultTransitionProps from '../utils/getDefaultTransitionProps';
+
 const transitionProps = getDefaultTransitionProps();
 
-const baseStyleOverlay: SystemStyleObject = {
+const baseStyleOverlay = defineStyle({
   ...transitionProps,
   bg: 'blackAlpha.800',
   zIndex: 'overlay',
-};
+});
 
-const baseStyleDialog: SystemStyleFunction = (props) => {
+const baseStyleDialog = defineStyle((props) => {
   const { isFullHeight } = props;
 
   return {
@@ -23,15 +30,15 @@ const baseStyleDialog: SystemStyleFunction = (props) => {
     color: 'inherit',
     boxShadow: mode('lg', 'dark-lg')(props),
   };
-};
-
-const baseStyle: PartsStyleFunction<typeof parts> = (props) => ({
-  overlay: baseStyleOverlay,
-  dialog: baseStyleDialog(props),
 });
 
-const Drawer = {
+const baseStyle = definePartsStyle((props) => ({
+  overlay: baseStyleOverlay,
+  dialog: runIfFn(baseStyleDialog, props),
+}));
+
+const Drawer = defineMultiStyleConfig({
   baseStyle,
-};
+});
 
 export default Drawer;

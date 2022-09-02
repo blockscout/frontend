@@ -1,43 +1,49 @@
 import { modalAnatomy as parts } from '@chakra-ui/anatomy';
-import type { ComponentMultiStyleConfig } from '@chakra-ui/theme';
-import type { PartsStyleFunction, SystemStyleFunction } from '@chakra-ui/theme-tools';
-import { mode } from '@chakra-ui/theme-tools';
+import { Modal as ModalComponent } from '@chakra-ui/react';
+import {
+  createMultiStyleConfigHelpers,
+  defineStyle,
+} from '@chakra-ui/styled-system';
+import { mode, runIfFn } from '@chakra-ui/theme-tools';
 
-const baseStyleDialog: SystemStyleFunction = (props) => {
+const { defineMultiStyleConfig, definePartsStyle } =
+  createMultiStyleConfigHelpers(parts.keys);
+
+const baseStyleDialog = defineStyle((props) => {
   return {
     padding: 8,
     borderRadius: 'lg',
     bg: mode('white', 'gray.900')(props),
     margin: 'auto',
   };
-};
+});
 
-const baseStyleDialogContainer = {
+const baseStyleDialogContainer = defineStyle({
   '::-webkit-scrollbar': { display: 'none' },
   'scrollbar-width': 'none',
   '@supports (height: -webkit-fill-available)': { height: '100vh' },
-};
+});
 
-const baseStyleHeader: SystemStyleFunction = (props) => ({
+const baseStyleHeader = defineStyle((props) => ({
   padding: 0,
   marginBottom: 8,
   fontSize: '2xl',
   lineHeight: 10,
   color: mode('blackAlpha.800', 'whiteAlpha.800')(props),
-});
+}));
 
-const baseStyleBody = {
+const baseStyleBody = defineStyle({
   padding: 0,
   marginBottom: 8,
   flex: 'initial',
-};
+});
 
-const baseStyleFooter = {
+const baseStyleFooter = defineStyle({
   padding: 0,
   justifyContent: 'flex-start',
-};
+});
 
-const baseStyleCloseButton: SystemStyleFunction = (props) => {
+const baseStyleCloseButton = defineStyle((props) => {
   return {
     top: 8,
     right: 8,
@@ -47,33 +53,40 @@ const baseStyleCloseButton: SystemStyleFunction = (props) => {
     _hover: { color: 'blue.400' },
     _active: { bg: 'none' },
   };
-};
-const baseStyleOverlay = {
-  bg: 'blackAlpha.800',
-};
-
-const baseStyle: PartsStyleFunction<typeof parts> = (props) => ({
-  dialog: baseStyleDialog(props),
-  dialogContainer: baseStyleDialogContainer,
-  header: baseStyleHeader(props),
-  body: baseStyleBody,
-  footer: baseStyleFooter,
-  closeButton: baseStyleCloseButton(props),
-  overlay: baseStyleOverlay,
 });
 
+const baseStyleOverlay = defineStyle({
+  bg: 'blackAlpha.800',
+});
+
+const baseStyle = definePartsStyle((props) => ({
+  dialog: runIfFn(baseStyleDialog, props),
+  dialogContainer: baseStyleDialogContainer,
+  header: runIfFn(baseStyleHeader, props),
+  body: baseStyleBody,
+  footer: baseStyleFooter,
+  closeButton: runIfFn(baseStyleCloseButton, props),
+  overlay: baseStyleOverlay,
+}));
+
 const sizes = {
-  md: {
-    dialog: {
-      maxW: '760px',
-    },
-  },
-  full: {
+  md: definePartsStyle({
     dialogContainer: {
       height: '100%',
     },
     dialog: {
-      borderRadius: 'none',
+      maxW: '760px',
+    },
+  }),
+  full: definePartsStyle({
+    dialogContainer: {
+      height: '100%',
+    },
+    dialog: {
+      maxW: '100vw',
+      minH: '100vh',
+      my: '0',
+      borderRadius: '0',
       padding: '80px 16px 32px 16px',
       height: '100%',
       overflowY: 'scroll',
@@ -87,15 +100,17 @@ const sizes = {
     header: {
       mb: 6,
     },
-  },
+  }),
 };
 
-const Modal: ComponentMultiStyleConfig = {
-  parts: parts.keys,
+const Modal = defineMultiStyleConfig({
   sizes,
   baseStyle,
-};
-
-Modal.defaultProps = { isCentered: true };
+});
 
 export default Modal;
+
+ModalComponent.defaultProps = {
+  ...ModalComponent.defaultProps,
+  isCentered: true,
+};

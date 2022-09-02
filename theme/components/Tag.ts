@@ -1,11 +1,16 @@
-import type { tagAnatomy as parts } from '@chakra-ui/anatomy';
-import type { ComponentStyleConfig } from '@chakra-ui/theme';
+import { tagAnatomy as parts } from '@chakra-ui/anatomy';
+import {
+  createMultiStyleConfigHelpers,
+  defineStyle,
+} from '@chakra-ui/styled-system';
 import { mode } from '@chakra-ui/theme-tools';
-import type { PartsStyleFunction } from '@chakra-ui/theme-tools';
+
+const { defineMultiStyleConfig, definePartsStyle } =
+  createMultiStyleConfigHelpers(parts.keys);
 
 import getDefaultTransitionProps from '../utils/getDefaultTransitionProps';
 
-const variantGray: PartsStyleFunction<typeof parts> = (props) => {
+const variantGray = definePartsStyle((props) => {
   const transitionProps = getDefaultTransitionProps();
 
   return {
@@ -15,22 +20,26 @@ const variantGray: PartsStyleFunction<typeof parts> = (props) => {
       ...transitionProps,
     },
   };
-};
+});
 
 const variants = {
   gray: variantGray,
 };
 
-const Tag: ComponentStyleConfig = {
-  baseStyle: {
-    container: {
-      display: 'inline-block',
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
-      borderRadius: 'sm',
-    },
-  },
+const baseStyleContainer = defineStyle({
+  display: 'inline-block',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  borderRadius: 'sm',
+});
+
+const baseStyle = definePartsStyle({
+  container: baseStyleContainer,
+});
+
+const Tag = defineMultiStyleConfig({
+  baseStyle,
   variants,
-};
+});
 
 export default Tag;

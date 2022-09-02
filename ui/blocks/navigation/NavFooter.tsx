@@ -43,6 +43,7 @@ const NavFooter = ({ isCollapsed }: Props) => {
       paddingTop={ isMobile ? 6 : 8 }
       marginTop={ isMobile ? 6 : 20 }
       alignItems="flex-start"
+      alignSelf="center"
       color="gray.500"
       fontSize="xs"
       { ...getDefaultTransitionProps({ transitionProperty: 'width' }) }

@@ -1,11 +1,15 @@
-import type { tableAnatomy as parts } from '@chakra-ui/anatomy';
-import type { ComponentMultiStyleConfig } from '@chakra-ui/theme';
+import { tableAnatomy as parts } from '@chakra-ui/anatomy';
+import {
+  createMultiStyleConfigHelpers,
+} from '@chakra-ui/styled-system';
 import { mode } from '@chakra-ui/theme-tools';
-import type { PartsStyleFunction } from '@chakra-ui/theme-tools';
 
 import getDefaultTransitionProps from '../utils/getDefaultTransitionProps';
 
-const variantSimple: PartsStyleFunction<typeof parts> = (props) => {
+const { defineMultiStyleConfig, definePartsStyle } =
+  createMultiStyleConfigHelpers(parts.keys);
+
+const variantSimple = definePartsStyle((props) => {
   const transitionProps = getDefaultTransitionProps();
 
   return {
@@ -23,49 +27,54 @@ const variantSimple: PartsStyleFunction<typeof parts> = (props) => {
       ...transitionProps,
     },
   };
-};
+});
 
-const Table: ComponentMultiStyleConfig = {
-  parts: [ 'th', 'td', 'table', 'thead' ],
-  baseStyle: {
-    thead: {
-      backgroundColor: 'gray.50',
-    },
+const sizes = {
+  md: definePartsStyle({
     th: {
-      textTransform: 'none',
-      fontFamily: 'body',
-      fontWeight: '500',
-      overflow: 'hidden',
-      color: 'gray.500',
-      letterSpacing: 'none',
+      px: 4,
+      fontSize: 'sm',
     },
     td: {
-      fontSize: 'md',
-      verticalAlign: 'top',
+      px: 4,
+      py: 6,
     },
-    table: {
-      tableLayout: 'fixed',
-      borderTopLeftRadius: 'base',
-      borderTopRightRadius: 'base',
-      overflow: 'hidden',
-      fontVariant: 'normal',
-    },
-  },
-  sizes: {
-    md: {
-      th: {
-        px: 4,
-        fontSize: 'sm',
-      },
-      td: {
-        px: 4,
-        py: 6,
-      },
-    },
-  },
-  variants: {
-    simple: variantSimple,
-  },
+  }),
 };
+
+const variants = {
+  simple: variantSimple,
+};
+
+const baseStyle = definePartsStyle({
+  thead: {
+    backgroundColor: 'gray.50',
+  },
+  th: {
+    textTransform: 'none',
+    fontFamily: 'body',
+    fontWeight: '500',
+    overflow: 'hidden',
+    color: 'gray.500',
+    letterSpacing: 'none',
+  },
+  td: {
+    fontSize: 'md',
+    verticalAlign: 'top',
+  },
+  table: {
+    tableLayout: 'fixed',
+    borderTopLeftRadius: 'base',
+    borderTopRightRadius: 'base',
+    overflow: 'hidden',
+    fontVariant: 'normal',
+  },
+});
+
+const Table = defineMultiStyleConfig({
+  baseStyle,
+  sizes,
+  variants,
+});
 
 export default Table;

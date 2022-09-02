@@ -1,14 +1,22 @@
-import type { ComponentStyleConfig } from '@chakra-ui/theme';
-import type { SystemStyleObject } from '@chakra-ui/theme-tools';
+import { radioAnatomy as parts } from '@chakra-ui/anatomy';
+import {
+  createMultiStyleConfigHelpers,
+  defineStyle,
+} from '@chakra-ui/styled-system';
 
-const baseStyleLabel: SystemStyleObject = {
+const { defineMultiStyleConfig, definePartsStyle } =
+  createMultiStyleConfigHelpers(parts.keys);
+
+const baseStyleLabel = defineStyle({
   _disabled: { opacity: 0.2 },
-};
+});
 
-const Radio: ComponentStyleConfig = {
-  baseStyle: {
-    label: baseStyleLabel,
-  },
-};
+const baseStyle = definePartsStyle({
+  label: baseStyleLabel,
+});
+
+const Radio = defineMultiStyleConfig({
+  baseStyle,
+});
 
 export default Radio;
