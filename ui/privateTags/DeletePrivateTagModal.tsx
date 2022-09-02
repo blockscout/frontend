@@ -37,7 +37,7 @@ const DeletePrivateTagModal: React.FC<Props> = ({ isOpen, onClose, data, type })
 
   const renderText = useCallback(() => {
     return (
-      <Text display="flex">Tag<Text fontWeight="600" whiteSpace="pre">{ ` "${ tag || 'tag' }" ` }</Text>will be deleted</Text>
+      <Text>Tag<Text fontWeight="600" as="span">{ ` "${ tag || 'tag' }" ` }</Text>will be deleted</Text>
     );
   }, [ tag ]);
 
