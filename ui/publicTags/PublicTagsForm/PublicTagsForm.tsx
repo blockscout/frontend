@@ -130,7 +130,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
         e.error?.full_name && setError('fullName', { type: 'custom', message: getErrorMessage(e.error, 'full_name') });
         e.error?.email && setError('email', { type: 'custom', message: getErrorMessage(e.error, 'email') });
         e.error?.tags && setError('tags', { type: 'custom', message: getErrorMessage(e.error, 'tags') });
-        e.error?.addresses && setError('addresses.0', { type: 'custom', message: getErrorMessage(e.error, 'addresses') });
+        e.error?.addresses && setError('addresses.0.address', { type: 'custom', message: getErrorMessage(e.error, 'addresses') });
         e.error?.additional_comment && setError('comment', { type: 'custom', message: getErrorMessage(e.error, 'additional_comment') });
       } else {
         setAlertVisible(true);
@@ -206,7 +206,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
           <Box position="relative" key={ field.id } marginBottom={ 4 }>
             <PublicTagFormAddressInput
               control={ control }
-              error={ errors?.addresses?.[index] as FieldError }
+              error={ errors?.addresses?.[index]?.address as FieldError }
               index={ index }
               fieldsLength={ fields.length }
               onAddFieldClick={ onAddFieldClick }

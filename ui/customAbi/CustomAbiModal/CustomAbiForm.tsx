@@ -142,7 +142,10 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
           name="contract_address_hash"
           control={ control }
           render={ renderContractAddressInput }
-          rules={{ pattern: ADDRESS_REGEXP }}
+          rules={{
+            pattern: ADDRESS_REGEXP,
+            required: true,
+          }}
         />
       </Box>
       <Box marginTop={ 5 }>
@@ -150,6 +153,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
           name="name"
           control={ control }
           render={ renderNameInput }
+          rules={{ required: true }}
         />
       </Box>
       <Box marginTop={ 5 }>
@@ -157,6 +161,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
           name="abi"
           control={ control }
           render={ renderAbiInput }
+          rules={{ required: true }}
         />
       </Box>
       <Box marginTop={ 8 }>

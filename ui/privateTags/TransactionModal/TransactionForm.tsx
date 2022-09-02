@@ -97,6 +97,7 @@ const TransactionForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) =>
           control={ control }
           rules={{
             pattern: TRANSACTION_HASH_REGEXP,
+            required: true,
           }}
           render={ renderTransactionInput }
         />
@@ -107,6 +108,7 @@ const TransactionForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) =>
           control={ control }
           rules={{
             maxLength: TAG_MAX_LENGTH,
+            required: true,
           }}
           render={ renderTagInput }
         />

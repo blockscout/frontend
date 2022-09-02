@@ -43,7 +43,7 @@ export default function PublicTagsFormInput<Inputs extends FieldValues>({
       name={ fieldName }
       control={ control }
       render={ renderInput }
-      rules={{ pattern }}
+      rules={{ pattern, required }}
     />
   );
 }

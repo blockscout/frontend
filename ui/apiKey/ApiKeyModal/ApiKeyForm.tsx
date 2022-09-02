@@ -92,7 +92,7 @@ const ApiKeyForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
 
   const renderTokenInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'token'>}) => {
     return (
-      <FormControl variant="floating" id="address" isRequired>
+      <FormControl variant="floating" id="address">
         <Input
           { ...field }
           disabled={ true }
@@ -134,6 +134,7 @@ const ApiKeyForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
           control={ control }
           rules={{
             maxLength: NAME_MAX_LENGTH,
+            required: true,
           }}
           render={ renderNameInput }
         />
