@@ -5,7 +5,6 @@ import React, { useCallback, useState } from 'react';
 import type { AddressTags, AddressTag } from 'types/api/account';
 
 import fetch from 'lib/client/fetch';
-import delay from 'lib/delay';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
@@ -19,13 +18,7 @@ import DeletePrivateTagModal from './DeletePrivateTagModal';
 
 const PrivateAddressTags = () => {
   const { data: addressTagsData, isLoading, isError } =
-    useQuery<unknown, unknown, AddressTags>([ 'address-tags' ], async() => {
-      const [ result ] = await Promise.all([
-        fetch('/api/account/private-tags/address'),
-        delay(5_000_000),
-      ]);
-      return result;
-    }, { refetchOnMount: false });
+    useQuery<unknown, unknown, AddressTags>([ 'address-tags' ], async() => fetch('/api/account/private-tags/address'), { refetchOnMount: false });
 
   const addressModalProps = useDisclosure();
   const deleteModalProps = useDisclosure();
@@ -62,12 +55,7 @@ const PrivateAddressTags = () => {
   );
 
   if (isLoading && !addressTagsData) {
-    const loader = isMobile ? (
-      <Box>
-        <SkeletonAccountMobile/>
-        <SkeletonAccountMobile/>
-      </Box>
-    ) : (
+    const loader = isMobile ? <SkeletonAccountMobile/> : (
       <>
         <SkeletonTable columns={ [ '60%', '40%', '108px' ] }/>
         <Skeleton height="44px" width="156px" marginTop={ 8 }/>

@@ -12,8 +12,8 @@ import CustomAbiTable from 'ui/customAbi/CustomAbiTable/CustomAbiTable';
 import DeleteCustomAbiModal from 'ui/customAbi/DeleteCustomAbiModal';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import AccountPageHeader from 'ui/shared/AccountPageHeader';
-import ContentLoader from 'ui/shared/ContentLoader';
 import Page from 'ui/shared/Page/Page';
+import SkeletonAccountMobile from 'ui/shared/SkeletonAccountMobile';
 import SkeletonTable from 'ui/shared/SkeletonTable';
 
 import DataFetchAlert from '../shared/DataFetchAlert';
@@ -56,7 +56,7 @@ const CustomAbiPage: React.FC = () => {
 
   const content = (() => {
     if (isLoading && !data) {
-      const loader = isMobile ? <ContentLoader/> : (
+      const loader = isMobile ? <SkeletonAccountMobile/> : (
         <>
           <SkeletonTable columns={ [ '100%', '108px' ] }/>
           <Skeleton height="44px" width="156px" marginTop={ 8 }/>
