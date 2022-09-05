@@ -20,13 +20,21 @@ export default function AddressFormNotifications<Inputs extends FieldValues, Che
   ), []);
 
   return (
-    <Grid templateColumns="repeat(3, max-content)" gap="20px 24px">
+    <Grid templateColumns={{ base: 'repeat(2, max-content)', lg: 'repeat(3, max-content)' }} gap={{ base: '10px 24px', lg: '20px 24px' }}>
       { NOTIFICATIONS.map((notification: string, index: number) => {
         const incomingFieldName = `notification_settings.${ notification }.incoming` as Checkboxes;
         const outgoingFieldName = `notification_settings.${ notification }.outcoming` as Checkboxes;
         return (
           <React.Fragment key={ notification }>
-            <GridItem>{ NOTIFICATIONS_NAMES[index] }</GridItem>
+            <GridItem
+              gridColumnStart={{ base: 1, lg: 1 }}
+              gridColumnEnd={{ base: 3, lg: 1 }}
+              _notFirst={{
+                mt: { base: 3, lg: 0 },
+              }}
+            >
+              { NOTIFICATIONS_NAMES[index] }
+            </GridItem>
             <GridItem>
               <Controller
                 name={ incomingFieldName }

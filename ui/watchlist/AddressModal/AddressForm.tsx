@@ -150,7 +150,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
 
   return (
     <>
-      <Box marginBottom={ 5 } marginTop={ 5 }>
+      <Box marginBottom={ 5 }>
         <Controller
           name="address"
           control={ control }
@@ -178,7 +178,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
       <Box marginBottom={ 8 }>
         <AddressFormNotifications control={ control }/>
       </Box>
-      <Text variant="secondary" fontSize="sm" marginBottom={ 5 }>Notification methods</Text>
+      <Text variant="secondary" fontSize="sm" marginBottom={{ base: '10px', lg: 5 }}>Notification methods</Text>
       <Controller
         name={ 'notification' as Checkboxes }
         control={ control }

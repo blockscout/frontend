@@ -54,7 +54,7 @@ const DeleteModal: React.FC<Props> = ({
   }, [ setAlertVisible, mutation ]);
 
   return (
-    <Modal isOpen={ isOpen } onClose={ onModalClose } size="md">
+    <Modal isOpen={ isOpen } onClose={ onModalClose } size={{ base: 'full', lg: 'md' }}>
       <ModalOverlay/>
       <ModalContent>
         <ModalHeader fontWeight="500" textStyle="h3">{ title }</ModalHeader>

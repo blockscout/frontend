@@ -3,7 +3,6 @@ import {
   Tr,
   Td,
   Switch,
-  HStack,
 } from '@chakra-ui/react';
 import { useMutation } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
@@ -12,8 +11,7 @@ import type { TWatchlistItem } from 'types/client/account';
 
 import fetch from 'lib/client/fetch';
 import useToast from 'lib/hooks/useToast';
-import DeleteButton from 'ui/shared/DeleteButton';
-import EditButton from 'ui/shared/EditButton';
+import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 import WatchListAddressItem from './WatchListAddressItem';
@@ -89,10 +87,7 @@ const WatchlistTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
         />
       </Td>
       <Td>
-        <HStack spacing={ 6 }>
-          <EditButton onClick={ onItemEditClick }/>
-          <DeleteButton onClick={ onItemDeleteClick }/>
-        </HStack>
+        <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
       </Td>
     </Tr>
   );
