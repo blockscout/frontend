@@ -22,7 +22,7 @@ function makePolicyMap() {
     'connect-src': [
       KEY_WORDS.SELF,
 
-      // webpack hmr in safari doesn't recognize localhost 'self' for some reason
+      // webpack hmr in safari doesn't recognize localhost as 'self' for some reason
       isDev() ? 'ws://localhost:3000/_next/webpack-hmr' : '',
 
       // client error monitoring
@@ -88,7 +88,7 @@ function makePolicyMap() {
 export default function getCspPolicy() {
   const policyMap = makePolicyMap();
 
-  const policyHeader = Object.entries(policyMap)
+  const policyString = Object.entries(policyMap)
     .map(([ key, value ]) => {
       if (!value || value.length === 0) {
         return;
@@ -99,5 +99,5 @@ export default function getCspPolicy() {
     .filter(Boolean)
     .join(';');
 
-  return policyHeader;
+  return policyString;
 }
