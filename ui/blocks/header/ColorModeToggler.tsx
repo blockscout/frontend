@@ -57,9 +57,8 @@ const ColorModeToggler = forwardRef<ColorModeTogglerProps, 'input'>((props, ref)
     <chakra.label
       { ...getRootProps({ onChange: toggleColorMode }) }
       className={ styles.root }
-      htmlFor="color-mode-toggler"
     >
-      <input id="color-mode-toggler" className={ styles.input } { ...getInputProps({}, ref) }/>
+      <input className={ styles.input } { ...getInputProps({}, ref) }/>
       <chakra.div
         { ...getCheckboxProps() }
         className={ styles.track }
