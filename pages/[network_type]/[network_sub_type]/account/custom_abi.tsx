@@ -1,14 +1,24 @@
-import type { NextPage, GetStaticPaths } from 'next';
+import type { NextPage, GetStaticPaths, GetStaticProps, GetStaticPropsResult } from 'next';
 import Head from 'next/head';
 import React from 'react';
 
-import { getAvailablePaths } from 'lib/networks';
+import { getAvailablePaths, getNetworkTitle } from 'lib/networks';
 import CustomAbi from 'ui/pages/CustomAbi';
 
-const CustomAbiPage: NextPage = () => {
+type PageParams = {
+  network_type: string;
+  network_sub_type: string;
+}
+
+type Props = {
+  pageParams: PageParams;
+}
+
+const CustomAbiPage: NextPage<Props> = ({ pageParams }: Props) => {
+  const title = getNetworkTitle(pageParams);
   return (
     <>
-      <Head><title>Custom ABI</title></Head>
+      <Head><title>{ title }</title></Head>
       <CustomAbi/>
     </>
   );
@@ -20,8 +30,10 @@ export const getStaticPaths: GetStaticPaths = async() => {
   return { paths: getAvailablePaths(), fallback: false };
 };
 
-export const getStaticProps = async() => {
+export const getStaticProps: GetStaticProps = async(context): Promise<GetStaticPropsResult<Props>> => {
   return {
-    props: {},
+    props: {
+      pageParams: context.params as PageParams,
+    },
   };
 };

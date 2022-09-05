@@ -44,6 +44,7 @@ export const NETWORKS: Array<Network> = (() => {
 //   },
 //   {
 //     name: 'Optimism on Gnosis Chain',
+//     shortName: 'OoG',
 //     type: 'xdai',
 //     subType: 'optimism',
 //     group: 'mainnets',
@@ -57,24 +58,28 @@ export const NETWORKS: Array<Network> = (() => {
 //   },
 //   {
 //     name: 'Ethereum',
+//     shortName: 'ETH',
 //     type: 'eth',
 //     subType: 'mainnet',
 //     group: 'mainnets',
 //   },
 //   {
 //     name: 'Ethereum Classic',
+//     shortName: 'ETC',
 //     type: 'etc',
 //     subType: 'mainnet',
 //     group: 'mainnets',
 //   },
 //   {
 //     name: 'POA',
+//     shortName: 'POA',
 //     type: 'poa',
 //     subType: 'core',
 //     group: 'mainnets',
 //   },
 //   {
 //     name: 'RSK',
+//     shortName: 'RBTC',
 //     type: 'rsk',
 //     subType: 'mainnet',
 //     group: 'mainnets',
@@ -88,6 +93,7 @@ export const NETWORKS: Array<Network> = (() => {
 //   },
 //   {
 //     name: 'POA Sokol',
+//     shortName: 'POA',
 //     type: 'poa',
 //     subType: 'sokol',
 //     group: 'testnets',
@@ -100,6 +106,7 @@ export const NETWORKS: Array<Network> = (() => {
 //   },
 //   {
 //     name: 'LUKSO L14',
+//     shortName: 'POA',
 //     type: 'lukso',
 //     subType: 'l14',
 //     group: 'other',
@@ -114,4 +121,12 @@ export function isAccountRoute(route: string) {
 
 export function getAvailablePaths() {
   return NETWORKS.map(({ type, subType }) => ({ params: { network_type: type, network_sub_type: subType } }));
+}
+
+export function getNetworkTitle({ network_type: type, network_sub_type: subType }: {network_type: string; network_sub_type: string}) {
+  const currentNetwork = NETWORKS.find(n => n.type === type && n.subType === subType);
+  if (currentNetwork) {
+    return currentNetwork.name + (currentNetwork.shortName ? ` (${ currentNetwork.shortName })` : '') + ' Explorer';
+  }
+  return '';
 }

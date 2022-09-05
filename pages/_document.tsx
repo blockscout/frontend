@@ -17,6 +17,8 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,500;0,600;1,400&display=swap"
             rel="stylesheet"
           />
+          <link rel="icon" href="/favicon32.png"/>
+          <link rel="icon" href="/favicon16.png"/>
         </Head>
         <body>
           <ColorModeScript initialColorMode={ theme.config.initialColorMode }/>
