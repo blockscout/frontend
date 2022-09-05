@@ -24,6 +24,7 @@ const NetworkLogo = ({ isCollapsed, onClick }: Props) => {
         overflow="hidden"
         onClick={ onClick }
         { ...getDefaultTransitionProps({ transitionProperty: 'width' }) }
+        aria-label="Link to main page"
       >
         <Icon
           as={ logoIcon }
