@@ -1,8 +1,9 @@
 import { Center, VStack, Box } from '@chakra-ui/react';
-import type { NextPage } from 'next';
+import type { NextPage, GetStaticPaths } from 'next';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import { getAvailablePaths } from 'lib/networks';
 import Page from 'ui/shared/Page/Page';
 
 const Home: NextPage = () => {
@@ -22,3 +23,13 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+export const getStaticPaths: GetStaticPaths = async() => {
+  return { paths: getAvailablePaths(), fallback: false };
+};
+
+export const getStaticProps = async() => {
+  return {
+    props: {},
+  };
+};
