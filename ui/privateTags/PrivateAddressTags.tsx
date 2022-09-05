@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Skeleton, SkeletonCircle, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, Skeleton, useDisclosure } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
@@ -9,6 +9,7 @@ import delay from 'lib/delay';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
+import SkeletonAccountMobile from 'ui/shared/SkeletonAccountMobile';
 import SkeletonTable from 'ui/shared/SkeletonTable';
 
 import AddressModal from './AddressModal/AddressModal';
@@ -21,7 +22,7 @@ const PrivateAddressTags = () => {
     useQuery<unknown, unknown, AddressTags>([ 'address-tags' ], async() => {
       const [ result ] = await Promise.all([
         fetch('/api/account/private-tags/address'),
-        delay(5_000),
+        delay(5_000_000),
       ]);
       return result;
     }, { refetchOnMount: false });
@@ -62,17 +63,10 @@ const PrivateAddressTags = () => {
 
   if (isLoading && !addressTagsData) {
     const loader = isMobile ? (
-      <Flex rowGap={ 3 } flexDirection="column">
-        <Flex columnGap={ 2 } w="100%" alignItems="center">
-          <SkeletonCircle size="6" flexShrink="0"/>
-          <Skeleton h={ 4 } w="100%"/>
-        </Flex>
-        <Skeleton h={ 4 } w="164px"/>
-        <Flex columnGap={ 3 } alignSelf="flex-end" mt={ 7 }>
-          <SkeletonCircle size="6" flexShrink="0"/>
-          <SkeletonCircle size="6" flexShrink="0"/>
-        </Flex>
-      </Flex>
+      <Box>
+        <SkeletonAccountMobile/>
+        <SkeletonAccountMobile/>
+      </Box>
     ) : (
       <>
         <SkeletonTable columns={ [ '60%', '40%', '108px' ] }/>
