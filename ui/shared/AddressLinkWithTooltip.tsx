@@ -22,13 +22,14 @@ const AddressLinkWithTooltip = ({ address, type = 'address' }: Props) => {
     url = basePath + '/address/' + address + '/tokens#address-tabs';
   }
   return (
-    <HStack spacing={ 2 } alignContent="center" overflow="hidden">
+    <HStack spacing={ 2 } alignContent="center" overflow="hidden" maxW="100%">
       <Link
         href={ url }
         target="_blank"
         overflow="hidden"
         fontWeight={ FONT_WEIGHT }
         lineHeight="24px"
+        whiteSpace="nowrap"
       >
         <AddressWithDots address={ address } fontWeight={ FONT_WEIGHT }/>
       </Link>

@@ -4,6 +4,12 @@ import { defineStyle, defineStyleConfig } from '@chakra-ui/styled-system';
 import getOutlinedFieldStyles from '../utils/getOutlinedFieldStyles';
 
 const sizes = {
+  md: defineStyle({
+    fontSize: 'md',
+    lineHeight: '20px',
+    h: '160px',
+    borderRadius: 'base',
+  }),
   lg: defineStyle({
     fontSize: 'md',
     lineHeight: '20px',

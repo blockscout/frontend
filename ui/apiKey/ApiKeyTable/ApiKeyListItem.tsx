@@ -1,11 +1,8 @@
-import {
-  Tr,
-  Td,
-} from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
 import type { ApiKey } from 'types/api/account';
 
+import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import ApiKeySnippet from 'ui/shared/ApiKeySnippet';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 
@@ -15,7 +12,7 @@ interface Props {
   onDeleteClick: (item: ApiKey) => void;
 }
 
-const ApiKeyTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
+const ApiKeyListItem = ({ item, onEditClick, onDeleteClick }: Props) => {
 
   const onItemEditClick = useCallback(() => {
     return onEditClick(item);
@@ -26,15 +23,11 @@ const ApiKeyTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   }, [ item, onDeleteClick ]);
 
   return (
-    <Tr alignItems="top" key={ item.api_key }>
-      <Td>
-        <ApiKeySnippet apiKey={ item.api_key } name={ item.name }/>
-      </Td>
-      <Td>
-        <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
-      </Td>
-    </Tr>
+    <AccountListItemMobile>
+      <ApiKeySnippet apiKey={ item.api_key } name={ item.name }/>
+      <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
+    </AccountListItemMobile>
   );
 };
 
-export default ApiKeyTableItem;
+export default ApiKeyListItem;

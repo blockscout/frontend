@@ -1,9 +1,7 @@
 import {
-  Box,
   Tag,
   Tr,
   Td,
-  HStack,
   VStack,
   Text,
 } from '@chakra-ui/react';
@@ -11,10 +9,8 @@ import React, { useCallback } from 'react';
 
 import type { PublicTag } from 'types/api/account';
 
-import AddressIcon from 'ui/shared/AddressIcon';
-import AddressLinkWithTooltip from 'ui/shared/AddressLinkWithTooltip';
-import DeleteButton from 'ui/shared/DeleteButton';
-import EditButton from 'ui/shared/EditButton';
+import AddressSnippet from 'ui/shared/AddressSnippet';
+import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 interface Props {
@@ -36,18 +32,7 @@ const PublicTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
     <Tr alignItems="top" key={ item.id }>
       <Td>
         <VStack spacing={ 4 } alignItems="unset">
-          { item.addresses.map((address) => {
-            return (
-              <HStack spacing={ 4 } key={ address } overflow="hidden" alignItems="start">
-                <AddressIcon address={ address }/>
-                <Box overflow="hidden">
-                  <AddressLinkWithTooltip address={ address }/>
-                  { /* will be added later */ }
-                  { /* <Text fontSize="sm" variant="secondary" mt={ 0.5 }>Address Name</Text> */ }
-                </Box>
-              </HStack>
-            );
-          }) }
+          { item.addresses.map((address) => <AddressSnippet key={ address } address={ address }/>) }
         </VStack>
       </Td>
       <Td>
@@ -69,10 +54,7 @@ const PublicTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
         </VStack>
       </Td>
       <Td>
-        <HStack spacing={ 6 }>
-          <EditButton onClick={ onItemEditClick }/>
-          <DeleteButton onClick={ onItemDeleteClick }/>
-        </HStack>
+        <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
       </Td>
     </Tr>
   );

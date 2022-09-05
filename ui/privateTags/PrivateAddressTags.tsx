@@ -1,14 +1,18 @@
-import { Box, Button, Text, Skeleton, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, Skeleton, useDisclosure } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
 import type { AddressTags, AddressTag } from 'types/api/account';
 
 import fetch from 'lib/client/fetch';
+import useIsMobile from 'lib/hooks/useIsMobile';
+import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
+import SkeletonAccountMobile from 'ui/shared/SkeletonAccountMobile';
 import SkeletonTable from 'ui/shared/SkeletonTable';
 
 import AddressModal from './AddressModal/AddressModal';
+import AddressTagListItem from './AddressTagTable/AddressTagListItem';
 import AddressTagTable from './AddressTagTable/AddressTagTable';
 import DeletePrivateTagModal from './DeletePrivateTagModal';
 
@@ -18,6 +22,7 @@ const PrivateAddressTags = () => {
 
   const addressModalProps = useDisclosure();
   const deleteModalProps = useDisclosure();
+  const isMobile = useIsMobile();
 
   const [ addressModalData, setAddressModalData ] = useState<AddressTag>();
   const [ deleteModalData, setDeleteModalData ] = useState<AddressTag>();
@@ -43,18 +48,24 @@ const PrivateAddressTags = () => {
   }, [ deleteModalProps ]);
 
   const description = (
-    <Text marginBottom={ 12 }>
-        Use private transaction tags to label any transactions of interest.
+    <AccountPageDescription>
+        Use private address tags to track any addresses of interest.
         Private tags are saved in your account and are only visible when you are logged in.
-    </Text>
+    </AccountPageDescription>
   );
 
   if (isLoading && !addressTagsData) {
+    const loader = isMobile ? <SkeletonAccountMobile/> : (
+      <>
+        <SkeletonTable columns={ [ '60%', '40%', '108px' ] }/>
+        <Skeleton height="44px" width="156px" marginTop={ 8 }/>
+      </>
+    );
+
     return (
       <>
         { description }
-        <SkeletonTable columns={ [ '60%', '40%', '108px' ] }/>
-        <Skeleton height="44px" width="156px" marginTop={ 8 }/>
+        { loader }
       </>
     );
   }
@@ -63,16 +74,29 @@ const PrivateAddressTags = () => {
     return <DataFetchAlert/>;
   }
 
-  return (
-    <>
-      { description }
-      { Boolean(addressTagsData?.length) && (
-        <AddressTagTable
-          data={ addressTagsData }
+  const list = isMobile ? (
+    <Box>
+      { addressTagsData.map((item: AddressTag) => (
+        <AddressTagListItem
+          item={ item }
+          key={ item.id }
           onDeleteClick={ onDeleteClick }
           onEditClick={ onEditClick }
         />
-      ) }
+      )) }
+    </Box>
+  ) : (
+    <AddressTagTable
+      data={ addressTagsData }
+      onDeleteClick={ onDeleteClick }
+      onEditClick={ onEditClick }
+    />
+  );
+
+  return (
+    <>
+      { description }
+      { Boolean(addressTagsData?.length) && list }
       <Box marginTop={ 8 }>
         <Button
           variant="primary"

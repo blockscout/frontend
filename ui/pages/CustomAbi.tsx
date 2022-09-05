@@ -1,15 +1,19 @@
-import { Box, Button, HStack, Text, Skeleton, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, HStack, Skeleton, useDisclosure } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
 import type { CustomAbi, CustomAbis } from 'types/api/account';
 
 import fetch from 'lib/client/fetch';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import CustomAbiModal from 'ui/customAbi/CustomAbiModal/CustomAbiModal';
+import CustomAbiListItem from 'ui/customAbi/CustomAbiTable/CustomAbiListItem';
 import CustomAbiTable from 'ui/customAbi/CustomAbiTable/CustomAbiTable';
 import DeleteCustomAbiModal from 'ui/customAbi/DeleteCustomAbiModal';
+import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import AccountPageHeader from 'ui/shared/AccountPageHeader';
 import Page from 'ui/shared/Page/Page';
+import SkeletonAccountMobile from 'ui/shared/SkeletonAccountMobile';
 import SkeletonTable from 'ui/shared/SkeletonTable';
 
 import DataFetchAlert from '../shared/DataFetchAlert';
@@ -17,6 +21,7 @@ import DataFetchAlert from '../shared/DataFetchAlert';
 const CustomAbiPage: React.FC = () => {
   const customAbiModalProps = useDisclosure();
   const deleteModalProps = useDisclosure();
+  const isMobile = useIsMobile();
 
   const [ customAbiModalData, setCustomAbiModalData ] = useState<CustomAbi>();
   const [ deleteModalData, setDeleteModalData ] = useState<CustomAbi>();
@@ -44,18 +49,24 @@ const CustomAbiPage: React.FC = () => {
   }, [ deleteModalProps ]);
 
   const description = (
-    <Text marginBottom={ 12 }>
+    <AccountPageDescription>
       Add custom ABIs for any contract and access when logged into your account. Helpful for debugging, functional testing and contract interaction.
-    </Text>
+    </AccountPageDescription>
   );
 
   const content = (() => {
     if (isLoading && !data) {
+      const loader = isMobile ? <SkeletonAccountMobile/> : (
+        <>
+          <SkeletonTable columns={ [ '100%', '108px' ] }/>
+          <Skeleton height="44px" width="156px" marginTop={ 8 }/>
+        </>
+      );
+
       return (
         <>
           { description }
-          <SkeletonTable columns={ [ '100%', '108px' ] }/>
-          <Skeleton height="44px" width="156px" marginTop={ 8 }/>
+          { loader }
         </>
       );
     }
@@ -64,16 +75,29 @@ const CustomAbiPage: React.FC = () => {
       return <DataFetchAlert/>;
     }
 
-    return (
-      <>
-        { description }
-        { data.length > 0 && (
-          <CustomAbiTable
-            data={ data }
+    const list = isMobile ? (
+      <Box>
+        { data.map((item) => (
+          <CustomAbiListItem
+            item={ item }
+            key={ item.id }
             onDeleteClick={ onDeleteClick }
             onEditClick={ onEditClick }
           />
-        ) }
+        )) }
+      </Box>
+    ) : (
+      <CustomAbiTable
+        data={ data }
+        onDeleteClick={ onDeleteClick }
+        onEditClick={ onEditClick }
+      />
+    );
+
+    return (
+      <>
+        { description }
+        { data.length > 0 && list }
         <HStack marginTop={ 8 } spacing={ 5 }>
           <Button
             variant="primary"
