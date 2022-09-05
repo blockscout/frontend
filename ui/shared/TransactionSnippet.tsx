@@ -13,7 +13,7 @@ const TransactionSnippet = ({ hash }: Props) => {
     <HStack spacing={ 2 } overflow="hidden" alignItems="start" maxW="100%">
       <Icon as={ transactionIcon } boxSize={ 6 } color={ useColorModeValue('gray.500', 'gray.400') }/>
       <Box overflow="hidden">
-        <AddressLinkWithTooltip address={ hash }/>
+        <AddressLinkWithTooltip address={ hash } type="transaction"/>
       </Box>
     </HStack>
   );

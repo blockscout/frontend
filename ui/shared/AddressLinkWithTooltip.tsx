@@ -8,9 +8,19 @@ import CopyToClipboard from './CopyToClipboard';
 
 const FONT_WEIGHT = '600';
 
-const AddressLinkWithTooltip = ({ address }: {address: string}) => {
+type Props = {
+  address: string;
+  type?: 'address' | 'transaction';
+}
+
+const AddressLinkWithTooltip = ({ address, type = 'address' }: Props) => {
   const basePath = useBasePath();
-  const url = basePath + '/address/' + address + '/tokens#address-tabs';
+  let url;
+  if (type === 'transaction') {
+    url = basePath + '/tx/' + address;
+  } else {
+    url = basePath + '/address/' + address + '/tokens#address-tabs';
+  }
   return (
     <HStack spacing={ 2 } alignContent="center" overflow="hidden" maxW="100%">
       <Link
