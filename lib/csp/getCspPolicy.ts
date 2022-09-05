@@ -1,4 +1,5 @@
 import isDev from 'lib/isDev';
+import { NETWORKS } from 'lib/networks';
 
 enum KEY_WORDS {
   BLOB = 'blob:',
@@ -13,7 +14,17 @@ enum KEY_WORDS {
 
 const MAIN_DOMAINS = [ '*.blockscout.com', 'blockscout.com' ];
 
+function getNetworksExternalAssets() {
+  const icons = NETWORKS
+    .filter(({ icon }) => typeof icon === 'string')
+    .map(({ icon }) => new URL(icon as string));
+
+  return icons;
+}
+
 function makePolicyMap() {
+  const networkExternalAssets = getNetworksExternalAssets();
+
   return {
     'default-src': [
       KEY_WORDS.NONE,
@@ -65,6 +76,9 @@ function makePolicyMap() {
 
       // github avatars
       'avatars.githubusercontent.com',
+
+      // network assets
+      ...networkExternalAssets.map((url) => url.host),
     ],
 
     'font-src': [
