@@ -56,7 +56,7 @@ const WatchListItem = ({ item, onEditClick, onDeleteClick }: Props) => {
       <Flex alignItems="center" justifyContent="space-between" mt={ 6 } w="100%">
         <HStack spacing={ 3 }>
           <Text fontSize="sm" fontWeight={ 500 }>Email notification</Text>
-          <Switch colorScheme="blue" size="md" isChecked={ notificationEnabled } onChange={ onSwitch }/>
+          <Switch colorScheme="blue" size="md" isChecked={ notificationEnabled } onChange={ onSwitch } aria-label="Email notification"/>
         </HStack>
         <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
       </Flex>

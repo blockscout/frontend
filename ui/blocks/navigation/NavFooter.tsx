@@ -9,10 +9,10 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 
 const SOCIAL_LINKS = [
-  { link: process.env.NEXT_PUBLIC_FOOTER_GITHUB_LINK, icon: ghIcon },
-  { link: process.env.NEXT_PUBLIC_FOOTER_TWITTER_LINK, icon: twIcon },
-  { link: process.env.NEXT_PUBLIC_FOOTER_TELEGRAM_LINK, icon: tgIcon },
-  { link: process.env.NEXT_PUBLIC_FOOTER_STAKING_LINK, icon: statsIcon },
+  { link: process.env.NEXT_PUBLIC_FOOTER_GITHUB_LINK, icon: ghIcon, label: 'Github link' },
+  { link: process.env.NEXT_PUBLIC_FOOTER_TWITTER_LINK, icon: twIcon, label: 'Twitter link' },
+  { link: process.env.NEXT_PUBLIC_FOOTER_TELEGRAM_LINK, icon: tgIcon, label: 'Telegram link' },
+  { link: process.env.NEXT_PUBLIC_FOOTER_STAKING_LINK, icon: statsIcon, label: 'Staking analytic link' },
 ].filter(({ link }) => link !== undefined);
 
 const BLOCKSCOUT_VERSION = process.env.NEXT_PUBLIC_BLOCKSCOUT_VERSION;
@@ -51,7 +51,7 @@ const NavFooter = ({ isCollapsed }: Props) => {
       <Stack direction={ isCollapsed ? 'column' : 'row' }>
         { SOCIAL_LINKS.map(sl => {
           return (
-            <Link href={ sl.link } key={ sl.link } variant="secondary" w={ 5 } h={ 5 }>
+            <Link href={ sl.link } key={ sl.link } variant="secondary" w={ 5 } h={ 5 } aria-label={ sl.label }>
               <Icon as={ sl.icon } boxSize={ 5 }/>
             </Link>
           );

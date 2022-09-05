@@ -84,6 +84,7 @@ const WatchlistTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
           isChecked={ notificationEnabled }
           onChange={ onSwitch }
           isDisabled={ switchDisabled }
+          aria-label="Email notification"
         />
       </Td>
       <Td>
