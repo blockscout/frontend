@@ -84,7 +84,6 @@ const sizes = {
     },
     dialog: {
       maxW: '100vw',
-      minH: '100vh',
       my: '0',
       borderRadius: '0',
       padding: '80px 16px 32px 16px',
