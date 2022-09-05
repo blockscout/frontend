@@ -68,7 +68,6 @@ const PrivateAddressTags = () => {
           <Skeleton h={ 4 } w="100%"/>
         </Flex>
         <Skeleton h={ 4 } w="164px"/>
-        <Skeleton h={ 4 } w="164px"/>
         <Flex columnGap={ 3 } alignSelf="flex-end" mt={ 7 }>
           <SkeletonCircle size="6" flexShrink="0"/>
           <SkeletonCircle size="6" flexShrink="0"/>
