@@ -5,8 +5,8 @@ import getUrlWithNetwork from 'lib/api/getUrlWithNetwork';
 
 type Methods = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
-export default function handler<TRes, TErrRes>(getUrl: (_req: NextApiRequest) => string, allowedMethods: Array<Methods>) {
-  return async(_req: NextApiRequest, res: NextApiResponse<TRes | TErrRes>) => {
+export default function handler(getUrl: (_req: NextApiRequest) => string, allowedMethods: Array<Methods>) {
+  return async(_req: NextApiRequest, res: NextApiResponse) => {
     if (_req.method && allowedMethods.includes(_req.method as Methods)) {
       const isBodyDisallowed = _req.method === 'GET' || _req.method === 'HEAD';
 
@@ -17,12 +17,17 @@ export default function handler<TRes, TErrRes>(getUrl: (_req: NextApiRequest) =>
       });
 
       if (response.status !== 200) {
-        const error = await response.json() as { errors: TErrRes };
-        res.status(500).json(error?.errors || {} as TErrRes);
+        try {
+          const error = await response.json() as { errors: unknown };
+          res.status(500).json(error?.errors || {});
+        } catch (error) {
+          res.status(500).json({ statusText: response.statusText, status: response.status });
+        }
+
         return;
       }
 
-      const data = await response.json() as TRes;
+      const data = await response.json();
       res.status(200).json(data);
     } else {
       res.setHeader('Allow', allowedMethods);
