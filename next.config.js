@@ -2,6 +2,8 @@ const { withSentryConfig } = require('@sentry/nextjs');
 const withReactSvg = require('next-react-svg');
 const path = require('path');
 
+const headers = require('./configs/nextjs/headers');
+
 const moduleExports = {
   include: path.resolve(__dirname, 'icons'),
   reactStrictMode: true,
@@ -24,6 +26,7 @@ const moduleExports = {
       },
     ];
   },
+  headers,
   output: 'standalone',
 };
 
@@ -37,6 +40,9 @@ const sentryWebpackPluginOptions = {
   silent: true, // Suppresses all logs
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options.
+  deploy: {
+    env: process.env.VERCEL_ENV || process.env.NODE_ENV,
+  },
 };
 
 module.exports = withReactSvg(withSentryConfig(moduleExports, sentryWebpackPluginOptions));
