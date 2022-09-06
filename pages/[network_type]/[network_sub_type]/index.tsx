@@ -3,7 +3,7 @@ import type { NextPage, GetStaticPaths } from 'next';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { getAvailablePaths } from 'lib/networks';
+import getAvailablePaths from 'lib/networks/getAvailablePaths';
 import Page from 'ui/shared/Page/Page';
 
 const Home: NextPage = () => {

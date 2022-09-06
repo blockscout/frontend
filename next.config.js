@@ -2,6 +2,8 @@ const { withSentryConfig } = require('@sentry/nextjs');
 const withReactSvg = require('next-react-svg');
 const path = require('path');
 
+const headers = require('./configs/nextjs/headers');
+
 const moduleExports = {
   include: path.resolve(__dirname, 'icons'),
   reactStrictMode: true,
@@ -17,6 +19,7 @@ const moduleExports = {
       },
     ];
   },
+  headers,
   output: 'standalone',
 };
 
