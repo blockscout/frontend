@@ -1,14 +1,27 @@
-import type { NextPage, GetStaticPaths } from 'next';
+import type { NextPage, GetStaticPaths, GetStaticProps, GetStaticPropsResult } from 'next';
 import Head from 'next/head';
 import React from 'react';
 
 import getAvailablePaths from 'lib/networks/getAvailablePaths';
+import getNetworkTitle from 'lib/networks/getNetworkTitle';
 import WatchList from 'ui/pages/Watchlist';
 
-const WatchListPage: NextPage = () => {
+type PageParams = {
+  network_type: string;
+  network_sub_type: string;
+}
+
+type Props = {
+  pageParams: PageParams;
+}
+
+const WatchListPage: NextPage<Props> = ({ pageParams }: Props) => {
+  const title = getNetworkTitle(pageParams);
   return (
     <>
-      <Head><title>Watch list</title></Head>
+      <Head>
+        <title>{ title }</title>
+      </Head>
       <WatchList/>
     </>
   );
@@ -20,8 +33,10 @@ export const getStaticPaths: GetStaticPaths = async() => {
   return { paths: getAvailablePaths(), fallback: false };
 };
 
-export const getStaticProps = async() => {
+export const getStaticProps: GetStaticProps = async(context): Promise<GetStaticPropsResult<Props>> => {
   return {
-    props: {},
+    props: {
+      pageParams: context.params as PageParams,
+    },
   };
 };

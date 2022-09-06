@@ -1,14 +1,25 @@
-import type { NextPage, GetStaticPaths } from 'next';
+import type { NextPage, GetStaticPaths, GetStaticProps, GetStaticPropsResult } from 'next';
 import Head from 'next/head';
 import React from 'react';
 
 import getAvailablePaths from 'lib/networks/getAvailablePaths';
+import getNetworkTitle from 'lib/networks/getNetworkTitle';
 import PrivateTags from 'ui/pages/PrivateTags';
 
-const TransactionTagsPage: NextPage = () => {
+type PageParams = {
+  network_type: string;
+  network_sub_type: string;
+}
+
+type Props = {
+  pageParams: PageParams;
+}
+
+const TransactionTagsPage: NextPage<Props> = ({ pageParams }: Props) => {
+  const title = getNetworkTitle(pageParams);
   return (
     <>
-      <Head><title>Public tags</title></Head>
+      <Head><title>{ title }</title></Head>
       <PrivateTags tab="transaction"/>
     </>
   );
@@ -20,8 +31,10 @@ export const getStaticPaths: GetStaticPaths = async() => {
   return { paths: getAvailablePaths(), fallback: false };
 };
 
-export const getStaticProps = async() => {
+export const getStaticProps: GetStaticProps = async(context): Promise<GetStaticPropsResult<Props>> => {
   return {
-    props: {},
+    props: {
+      pageParams: context.params as PageParams,
+    },
   };
 };
