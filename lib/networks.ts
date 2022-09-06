@@ -9,6 +9,7 @@ import optimismIcon from 'icons/networks/optimism.svg';
 import poaSokolIcon from 'icons/networks/poa-sokol.svg';
 import poaIcon from 'icons/networks/poa.svg';
 import rskIcon from 'icons/networks/rsk.svg';
+import getSupportedNetworks from 'lib/networks/getSupportedNetworks';
 
 // will change later when we agree how to host network icons
 const ICONS: Record<string, React.FunctionComponent<React.SVGAttributes<SVGElement>>> = {
@@ -25,12 +26,8 @@ const ICONS: Record<string, React.FunctionComponent<React.SVGAttributes<SVGEleme
 };
 
 export const NETWORKS: Array<Network> = (() => {
-  try {
-    const networksFromConfig: Array<Network> = JSON.parse(process.env.NEXT_PUBLIC_SUPPORTED_NETWORKS || '[]');
-    return networksFromConfig.map((network) => ({ ...network, icon: network.icon || ICONS[`${ network.type }/${ network.subType }`] }));
-  } catch (error) {
-    return [];
-  }
+  const networksFromConfig: Array<Network> = getSupportedNetworks();
+  return networksFromConfig.map((network) => ({ ...network, icon: network.icon || ICONS[`${ network.type }/${ network.subType }`] }));
 })();
 
 // for easy env creation
