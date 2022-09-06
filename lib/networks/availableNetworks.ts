@@ -26,9 +26,28 @@ const ICONS: Record<string, React.FunctionComponent<React.SVGAttributes<SVGEleme
   'artis/sigma1': artisIcon,
 };
 
+const LOGOS: Record<string, React.FunctionComponent<React.SVGAttributes<SVGElement>>> = {
+  'xdai/mainnet': require('icons/networkLogos/gnosis.svg'),
+  'eth/mainnet': require('icons/networkLogos/eth.svg'),
+  'etc/mainnet': require('icons/networkLogos/etc.svg'),
+  'poa/core': require('icons/networkLogos/poa.svg'),
+  'rsk/mainnet': require('icons/networkLogos/rsk.svg'),
+  'xdai/testnet': require('icons/networkLogos/gnosis.svg'),
+  'poa/sokol': require('icons/networkLogos/sokol.svg'),
+  'artis/sigma1': require('icons/networkLogos/artis.svg'),
+  'lukso/l14': require('icons/networkLogos/lukso.svg'),
+  astar: require('icons/networkLogos/astar.svg'),
+  shiden: require('icons/networkLogos/shiden.svg'),
+  shibuya: require('icons/networkLogos/shibuya.svg'),
+};
+
 const NETWORKS: Array<Network> = (() => {
   const networksFromConfig: Array<Network> = parseNetworkConfig();
-  return networksFromConfig.map((network) => ({ ...network, icon: network.icon || ICONS[`${ network.type }/${ network.subType }`] }));
+  return networksFromConfig.map((network) => ({
+    ...network,
+    logo: network.logo || LOGOS[network.type + (network.subType ? `/${ network.subType }` : '')],
+    icon: network.icon || ICONS[network.type + (network.subType ? `/${ network.subType }` : '')],
+  }));
 })();
 
 export default NETWORKS;

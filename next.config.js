@@ -27,6 +27,17 @@ const moduleExports = {
     ];
   },
   headers,
+  async rewrites() {
+    // there can be networks without subtype
+    // routing in nextjs allows optional params only at the end of the path
+    // if there are paths with subtype and subsubtype, we will change the routing
+    // but so far we think we're ok with this hack
+    const NETWORKS = JSON.parse(process.env.NEXT_PUBLIC_SUPPORTED_NETWORKS);
+    return NETWORKS.filter(n => !n.subType).map(n => ({
+      source: `/${ n.type }/:slug*`,
+      destination: `/${ n.type }/mainnet/:slug*`,
+    }));
+  },
   output: 'standalone',
 };
 
