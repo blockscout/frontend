@@ -1,11 +1,8 @@
-import {
-  Tr,
-  Td,
-} from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
 import type { CustomAbi } from 'types/api/account';
 
+import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import AddressSnippet from 'ui/shared/AddressSnippet';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 
@@ -15,7 +12,7 @@ interface Props {
   onDeleteClick: (item: CustomAbi) => void;
 }
 
-const CustomAbiTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
+const CustomAbiListItem = ({ item, onEditClick, onDeleteClick }: Props) => {
 
   const onItemEditClick = useCallback(() => {
     return onEditClick(item);
@@ -26,15 +23,11 @@ const CustomAbiTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   }, [ item, onDeleteClick ]);
 
   return (
-    <Tr alignItems="top" key={ item.id }>
-      <Td>
-        <AddressSnippet address={ item.contract_address_hash } subtitle={ item.name }/>
-      </Td>
-      <Td>
-        <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
-      </Td>
-    </Tr>
+    <AccountListItemMobile>
+      <AddressSnippet address={ item.contract_address_hash } subtitle={ item.name }/>
+      <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
+    </AccountListItemMobile>
   );
 };
 
-export default React.memo(CustomAbiTableItem);
+export default React.memo(CustomAbiListItem);

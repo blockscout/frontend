@@ -1,15 +1,19 @@
-import { Box, Button, Skeleton, Text, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, Skeleton, useDisclosure } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
 import type { TransactionTags, TransactionTag } from 'types/api/account';
 
 import fetch from 'lib/client/fetch';
+import useIsMobile from 'lib/hooks/useIsMobile';
+import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
+import SkeletonAccountMobile from 'ui/shared/SkeletonAccountMobile';
 import SkeletonTable from 'ui/shared/SkeletonTable';
 
 import DeletePrivateTagModal from './DeletePrivateTagModal';
 import TransactionModal from './TransactionModal/TransactionModal';
+import TransactionTagListItem from './TransactionTagTable/TransactionTagListItem';
 import TransactionTagTable from './TransactionTagTable/TransactionTagTable';
 
 const PrivateTransactionTags = () => {
@@ -18,6 +22,7 @@ const PrivateTransactionTags = () => {
 
   const transactionModalProps = useDisclosure();
   const deleteModalProps = useDisclosure();
+  const isMobile = useIsMobile();
 
   const [ transactionModalData, setTransactionModalData ] = useState<TransactionTag>();
   const [ deleteModalData, setDeleteModalData ] = useState<TransactionTag>();
@@ -43,18 +48,24 @@ const PrivateTransactionTags = () => {
   }, [ deleteModalProps ]);
 
   const description = (
-    <Text marginBottom={ 12 }>
+    <AccountPageDescription>
         Use private transaction tags to label any transactions of interest.
         Private tags are saved in your account and are only visible when you are logged in.
-    </Text>
+    </AccountPageDescription>
   );
 
   if (isLoading && !transactionTagsData) {
+    const loader = isMobile ? <SkeletonAccountMobile/> : (
+      <>
+        <SkeletonTable columns={ [ '75%', '25%', '108px' ] }/>
+        <Skeleton height="44px" width="156px" marginTop={ 8 }/>
+      </>
+    );
+
     return (
       <>
         { description }
-        <SkeletonTable columns={ [ '75%', '25%', '108px' ] }/>
-        <Skeleton height="44px" width="156px" marginTop={ 8 }/>
+        { loader }
       </>
     );
   }
@@ -63,16 +74,29 @@ const PrivateTransactionTags = () => {
     return <DataFetchAlert/>;
   }
 
-  return (
-    <>
-      { description }
-      { Boolean(transactionTagsData.length) && (
-        <TransactionTagTable
-          data={ transactionTagsData }
+  const list = isMobile ? (
+    <Box>
+      { transactionTagsData.map((item) => (
+        <TransactionTagListItem
+          item={ item }
+          key={ item.id }
           onDeleteClick={ onDeleteClick }
           onEditClick={ onEditClick }
         />
-      ) }
+      )) }
+    </Box>
+  ) : (
+    <TransactionTagTable
+      data={ transactionTagsData }
+      onDeleteClick={ onDeleteClick }
+      onEditClick={ onEditClick }
+    />
+  );
+
+  return (
+    <>
+      { description }
+      { Boolean(transactionTagsData.length) && list }
       <Box marginTop={ 8 }>
         <Button
           variant="primary"

@@ -3,15 +3,15 @@ import {
   Tr,
   Td,
   Switch,
-  HStack,
 } from '@chakra-ui/react';
 import { useMutation } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
 import type { TWatchlistItem } from 'types/client/account';
 
-import DeleteButton from 'ui/shared/DeleteButton';
-import EditButton from 'ui/shared/EditButton';
+import fetch from 'lib/client/fetch';
+import useToast from 'lib/hooks/useToast';
+import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 import WatchListAddressItem from './WatchListAddressItem';
@@ -24,6 +24,7 @@ interface Props {
 
 const WatchlistTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   const [ notificationEnabled, setNotificationEnabled ] = useState(item.notification_methods.email);
+  const [ switchDisabled, setSwitchDisabled ] = useState(false);
   const onItemEditClick = useCallback(() => {
     return onEditClick(item);
   }, [ item, onEditClick ]);
@@ -32,16 +33,33 @@ const WatchlistTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
     return onDeleteClick(item);
   }, [ item, onDeleteClick ]);
 
+  const toast = useToast();
+
+  const showToast = useCallback(() => {
+    toast({
+      position: 'top-right',
+      description: 'There has been an error processing your request',
+      colorScheme: 'red',
+      status: 'error',
+      variant: 'subtle',
+      isClosable: true,
+      icon: null,
+    });
+  }, [ toast ]);
+
   const { mutate } = useMutation(() => {
+    setSwitchDisabled(true);
     const data = { ...item, notification_methods: { email: !notificationEnabled } };
-    return fetch(`/api/account/watchlist/${ item.id }`, { method: 'PUT', body: JSON.stringify(data) });
+    setNotificationEnabled(prevState => !prevState);
+    return fetch(`/api/account1/watchlist/${ item.id }`, { method: 'PUT', body: JSON.stringify(data) });
   }, {
     onError: () => {
-      // eslint-disable-next-line no-console
-      console.log('error');
+      showToast();
+      setNotificationEnabled(prevState => !prevState);
+      setSwitchDisabled(false);
     },
     onSuccess: () => {
-      setNotificationEnabled(prevState => !prevState);
+      setSwitchDisabled(false);
     },
   });
 
@@ -59,12 +77,17 @@ const WatchlistTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
           </Tag>
         </TruncatedTextTooltip>
       </Td>
-      <Td><Switch colorScheme="blue" size="md" isChecked={ notificationEnabled } onChange={ onSwitch }/></Td>
       <Td>
-        <HStack spacing={ 6 }>
-          <EditButton onClick={ onItemEditClick }/>
-          <DeleteButton onClick={ onItemDeleteClick }/>
-        </HStack>
+        <Switch
+          colorScheme="blue"
+          size="md"
+          isChecked={ notificationEnabled }
+          onChange={ onSwitch }
+          isDisabled={ switchDisabled }
+        />
+      </Td>
+      <Td>
+        <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
       </Td>
     </Tr>
   );

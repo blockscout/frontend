@@ -33,6 +33,9 @@ const sentryWebpackPluginOptions = {
   silent: true, // Suppresses all logs
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options.
+  deploy: {
+    env: process.env.VERCEL_ENV || process.env.NODE_ENV,
+  },
 };
 
 module.exports = withReactSvg(withSentryConfig(moduleExports, sentryWebpackPluginOptions));

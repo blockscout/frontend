@@ -128,6 +128,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
         <Textarea
           { ...field }
           size="lg"
+          minH="300px"
           isInvalid={ Boolean(errors.abi) }
         />
         <FormLabel>{ getPlaceholderWithError(`Custom ABI [{...}] (JSON format)`, errors.abi?.message) }</FormLabel>

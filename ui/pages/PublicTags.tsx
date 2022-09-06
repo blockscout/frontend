@@ -1,9 +1,11 @@
-import { Box } from '@chakra-ui/react';
+import { ArrowBackIcon } from '@chakra-ui/icons';
+import { Box, Link, Text } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 import { animateScroll } from 'react-scroll';
 
 import type { PublicTag } from 'types/api/account';
 
+import useIsMobile from 'lib/hooks/useIsMobile';
 import useToast from 'lib/hooks/useToast';
 import PublicTagsData from 'ui/publicTags/PublicTagsData';
 import PublicTagsForm from 'ui/publicTags/PublicTagsForm/PublicTagsForm';
@@ -24,6 +26,7 @@ const PublicTagsComponent: React.FC = () => {
   const [ formData, setFormData ] = useState<PublicTag>();
 
   const toast = useToast();
+  const isMobile = useIsMobile();
 
   const showToast = useCallback((action: TToastAction) => {
     toast({
@@ -59,6 +62,7 @@ const PublicTagsComponent: React.FC = () => {
   }, [ showToast ]);
 
   const onTagDelete = useCallback(() => showToast('removed'), [ showToast ]);
+  const onGoBack = useCallback(() => setScreen('data'), [ ]);
 
   let content;
   let header;
@@ -74,6 +78,12 @@ const PublicTagsComponent: React.FC = () => {
   return (
     <Page>
       <Box h="100%">
+        { isMobile && screen === 'form' && (
+          <Link display="inline-flex" alignItems="center" mb={ 6 } onClick={ onGoBack }>
+            <ArrowBackIcon w={ 6 } h={ 6 }/>
+            <Text variant="inherit" fontSize="sm" ml={ 2 }>Public tags</Text>
+          </Link>
+        ) }
         <AccountPageHeader text={ header }/>
         { content }
       </Box>

@@ -35,6 +35,7 @@ const baseStyleHeader = defineStyle((props) => ({
 const baseStyleBody = defineStyle({
   padding: 0,
   marginBottom: 8,
+  flex: 'initial',
 });
 
 const baseStyleFooter = defineStyle({
@@ -70,16 +71,33 @@ const baseStyle = definePartsStyle((props) => ({
 
 const sizes = {
   md: definePartsStyle({
+    dialogContainer: {
+      height: '100%',
+    },
     dialog: {
       maxW: '760px',
     },
   }),
   full: definePartsStyle({
+    dialogContainer: {
+      height: '100%',
+    },
     dialog: {
       maxW: '100vw',
-      minH: '100vh',
       my: '0',
       borderRadius: '0',
+      padding: '80px 16px 32px 16px',
+      height: '100%',
+      overflowY: 'scroll',
+    },
+    closeButton: {
+      top: 4,
+      right: 6,
+      width: 6,
+      height: 6,
+    },
+    header: {
+      mb: 6,
     },
   }),
 };

@@ -125,6 +125,9 @@ const variantFloating = definePartsStyle((props) => {
         margin: 0,
         transformOrigin: 'top left',
         transitionProperty: 'font-size, line-height, padding, top, background-color',
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
       },
       'input:not(:placeholder-shown) + label, textarea:not(:placeholder-shown) + label': {
         ...activeLabelStyles,
