@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/nextjs';
 import type { NextApiRequest } from 'next';
 
 import * as cookies from 'lib/cookies';
@@ -7,8 +8,7 @@ export default function getUrlWithNetwork(_req: NextApiRequest, path: string) {
   const networkSubType = _req.cookies[cookies.NAMES.NETWORK_SUB_TYPE];
 
   if (!networkType || !networkSubType) {
-    // eslint-disable-next-line no-console
-    console.error(`Incorrect network: NETWORK_TYPE=${ networkType } NETWORK_SUB_TYPE=${ networkSubType }`);
+    Sentry.captureException(new Error('Incorrect network'), { extra: { networkType, networkSubType } });
   }
 
   return `/${ networkType }/${ networkSubType }/${ path }`;
