@@ -7,7 +7,14 @@ const headers = require('./configs/nextjs/headers');
 const moduleExports = {
   include: path.resolve(__dirname, 'icons'),
   reactStrictMode: true,
-  webpack(config) {
+  webpack(config, { webpack }) {
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        __SENTRY_DEBUG__: false,
+        __SENTRY_TRACING__: false,
+      }),
+    );
+
     return config;
   },
   async redirects() {
