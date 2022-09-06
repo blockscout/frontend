@@ -14,6 +14,7 @@ interface Props<TInputs extends FieldValues> {
   control: Control<TInputs, object>;
   pattern?: RegExp;
   error?: FieldError;
+  size?: string;
 }
 
 export default function PublicTagsFormInput<Inputs extends FieldValues>({
@@ -23,13 +24,14 @@ export default function PublicTagsFormInput<Inputs extends FieldValues>({
   fieldName,
   pattern,
   error,
+  size,
 }: Props<Inputs>) {
   const renderInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, typeof fieldName>}) => {
     return (
-      <FormControl variant="floating" id={ field.name } isRequired={ required } size="lg">
+      <FormControl variant="floating" id={ field.name } isRequired={ required } size={ size }>
         <Input
           { ...field }
-          size="lg"
+          size={ size }
           required={ required }
           isInvalid={ Boolean(error) }
           maxLength={ TEXT_INPUT_MAX_LENGTH }
@@ -37,7 +39,7 @@ export default function PublicTagsFormInput<Inputs extends FieldValues>({
         <FormLabel>{ getPlaceholderWithError(label, error?.message) }</FormLabel>
       </FormControl>
     );
-  }, [ label, required, error ]);
+  }, [ label, required, error, size ]);
   return (
     <Controller
       name={ fieldName }

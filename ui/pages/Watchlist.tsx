@@ -1,16 +1,20 @@
-import { Box, Button, Text, Skeleton, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, Skeleton, useDisclosure } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
 import type { TWatchlist, TWatchlistItem } from 'types/client/account';
 
 import fetch from 'lib/client/fetch';
+import useIsMobile from 'lib/hooks/useIsMobile';
+import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import AccountPageHeader from 'ui/shared/AccountPageHeader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Page from 'ui/shared/Page/Page';
+import SkeletonAccountMobile from 'ui/shared/SkeletonAccountMobile';
 import SkeletonTable from 'ui/shared/SkeletonTable';
 import AddressModal from 'ui/watchlist/AddressModal/AddressModal';
 import DeleteAddressModal from 'ui/watchlist/DeleteAddressModal';
+import WatchListItem from 'ui/watchlist/WatchlistTable/WatchListItem';
 import WatchlistTable from 'ui/watchlist/WatchlistTable/WatchlistTable';
 
 const WatchList: React.FC = () => {
@@ -19,6 +23,7 @@ const WatchList: React.FC = () => {
 
   const addressModalProps = useDisclosure();
   const deleteModalProps = useDisclosure();
+  const isMobile = useIsMobile();
 
   const [ addressModalData, setAddressModalData ] = useState<TWatchlistItem>();
   const [ deleteModalData, setDeleteModalData ] = useState<TWatchlistItem>();
@@ -44,32 +49,52 @@ const WatchList: React.FC = () => {
   }, [ deleteModalProps ]);
 
   const description = (
-    <Text marginBottom={ 12 }>
+    <AccountPageDescription>
       An email notification can be sent to you when an address on your watch list sends or receives any transactions.
-    </Text>
+    </AccountPageDescription>
   );
 
   let content;
   if (isLoading && !data) {
+    const loader = isMobile ? <SkeletonAccountMobile showFooterSlot/> : (
+      <>
+        <SkeletonTable columns={ [ '70%', '30%', '160px', '108px' ] }/>
+        <Skeleton height="44px" width="156px" marginTop={ 8 }/>
+      </>
+    );
+
     content = (
       <>
         { description }
-        <SkeletonTable columns={ [ '70%', '30%', '160px', '108px' ] }/>
-        <Skeleton height="44px" width="156px" marginTop={ 8 }/>
+        { loader }
       </>
     );
   } else if (isError) {
     content = <DataFetchAlert/>;
   } else {
-    content = (
-      <>
-        { Boolean(data?.length) && (
-          <WatchlistTable
-            data={ data }
+    const list = isMobile ? (
+      <Box>
+        { data.map((item) => (
+          <WatchListItem
+            item={ item }
+            key={ item.address_hash }
             onDeleteClick={ onDeleteClick }
             onEditClick={ onEditClick }
           />
-        ) }
+        )) }
+      </Box>
+    ) : (
+      <WatchlistTable
+        data={ data }
+        onDeleteClick={ onDeleteClick }
+        onEditClick={ onEditClick }
+      />
+    );
+
+    content = (
+      <>
+        { description }
+        { Boolean(data?.length) && list }
         <Box marginTop={ 8 }>
           <Button
             variant="primary"

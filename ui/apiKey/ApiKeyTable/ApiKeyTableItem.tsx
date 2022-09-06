@@ -1,16 +1,13 @@
 import {
   Tr,
   Td,
-  HStack,
-  Text,
 } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
 import type { ApiKey } from 'types/api/account';
 
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import DeleteButton from 'ui/shared/DeleteButton';
-import EditButton from 'ui/shared/EditButton';
+import ApiKeySnippet from 'ui/shared/ApiKeySnippet';
+import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 
 interface Props {
   item: ApiKey;
@@ -31,17 +28,10 @@ const ApiKeyTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   return (
     <Tr alignItems="top" key={ item.api_key }>
       <Td>
-        <HStack>
-          <Text fontSize="md" fontWeight={ 600 }>{ item.api_key }</Text>
-          <CopyToClipboard text={ item.api_key }/>
-        </HStack>
-        <Text fontSize="sm" marginTop={ 0.5 } variant="secondary">{ item.name }</Text>
+        <ApiKeySnippet apiKey={ item.api_key } name={ item.name }/>
       </Td>
       <Td>
-        <HStack spacing={ 6 }>
-          <EditButton onClick={ onItemEditClick }/>
-          <DeleteButton onClick={ onItemDeleteClick }/>
-        </HStack>
+        <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
       </Td>
     </Tr>
   );

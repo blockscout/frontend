@@ -2,7 +2,8 @@ import type { NextPage, GetStaticPaths, GetStaticProps, GetStaticPropsResult } f
 import Head from 'next/head';
 import React from 'react';
 
-import { getAvailablePaths, getNetworkTitle } from 'lib/networks';
+import getAvailablePaths from 'lib/networks/getAvailablePaths';
+import getNetworkTitle from 'lib/networks/getNetworkTitle';
 import PrivateTags from 'ui/pages/PrivateTags';
 
 type PageParams = {

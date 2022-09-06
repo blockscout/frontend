@@ -2,7 +2,7 @@ import type { NextPage, GetStaticPaths } from 'next';
 import Head from 'next/head';
 import React from 'react';
 
-import { getAvailablePaths } from 'lib/networks';
+import getAvailablePaths from 'lib/networks/getAvailablePaths';
 import MyProfile from 'ui/pages/MyProfile';
 
 const MyProfilePage: NextPage = () => {

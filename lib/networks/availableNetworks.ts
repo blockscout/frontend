@@ -10,6 +10,8 @@ import poaSokolIcon from 'icons/networks/poa-sokol.svg';
 import poaIcon from 'icons/networks/poa.svg';
 import rskIcon from 'icons/networks/rsk.svg';
 
+import parseNetworkConfig from './parseNetworkConfig';
+
 // will change later when we agree how to host network icons
 const ICONS: Record<string, React.FunctionComponent<React.SVGAttributes<SVGElement>>> = {
   'xdai/mainnet': gnosisIcon,
@@ -24,14 +26,12 @@ const ICONS: Record<string, React.FunctionComponent<React.SVGAttributes<SVGEleme
   'artis/sigma1': artisIcon,
 };
 
-export const NETWORKS: Array<Network> = (() => {
-  try {
-    const networksFromConfig: Array<Network> = JSON.parse(process.env.NEXT_PUBLIC_SUPPORTED_NETWORKS || '[]');
-    return networksFromConfig.map((network) => ({ ...network, icon: network.icon || ICONS[`${ network.type }/${ network.subType }`] }));
-  } catch (error) {
-    return [];
-  }
+const NETWORKS: Array<Network> = (() => {
+  const networksFromConfig: Array<Network> = parseNetworkConfig();
+  return networksFromConfig.map((network) => ({ ...network, icon: network.icon || ICONS[`${ network.type }/${ network.subType }`] }));
 })();
+
+export default NETWORKS;
 
 // for easy env creation
 // const FOR_CONFIG = [
@@ -112,21 +112,3 @@ export const NETWORKS: Array<Network> = (() => {
 //     group: 'other',
 //   },
 // ];
-
-export const ACCOUNT_ROUTES = [ '/watchlist', '/tag_address', '/tag_transaction', '/public_tags_request', '/api_key', '/custom_abi' ];
-
-export function isAccountRoute(route: string) {
-  return ACCOUNT_ROUTES.includes(route);
-}
-
-export function getAvailablePaths() {
-  return NETWORKS.map(({ type, subType }) => ({ params: { network_type: type, network_sub_type: subType } }));
-}
-
-export function getNetworkTitle({ network_type: type, network_sub_type: subType }: {network_type: string; network_sub_type: string}) {
-  const currentNetwork = NETWORKS.find(n => n.type === type && n.subType === subType);
-  if (currentNetwork) {
-    return currentNetwork.name + (currentNetwork.shortName ? ` (${ currentNetwork.shortName })` : '') + ' Explorer';
-  }
-  return '';
-}

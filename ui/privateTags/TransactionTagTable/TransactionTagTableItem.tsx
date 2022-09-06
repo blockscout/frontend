@@ -2,16 +2,14 @@ import {
   Tag,
   Tr,
   Td,
-  HStack,
   Tooltip,
 } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
 import type { TransactionTag } from 'types/api/account';
 
-import AddressLinkWithTooltip from 'ui/shared/AddressLinkWithTooltip';
-import DeleteButton from 'ui/shared/DeleteButton';
-import EditButton from 'ui/shared/EditButton';
+import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
+import TransactionSnippet from 'ui/shared/TransactionSnippet';
 
 interface Props {
   item: TransactionTag;
@@ -19,7 +17,7 @@ interface Props {
   onDeleteClick: (data: TransactionTag) => void;
 }
 
-const AddressTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
+const TransactionTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   const onItemEditClick = useCallback(() => {
     return onEditClick(item);
   }, [ item, onEditClick ]);
@@ -31,7 +29,7 @@ const AddressTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   return (
     <Tr alignItems="top" key={ item.id }>
       <Td>
-        <AddressLinkWithTooltip address={ item.transaction_hash }/>
+        <TransactionSnippet hash={ item.transaction_hash }/>
       </Td>
       <Td>
         <Tooltip label={ item.name }>
@@ -41,13 +39,10 @@ const AddressTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
         </Tooltip>
       </Td>
       <Td>
-        <HStack spacing={ 6 }>
-          <EditButton onClick={ onItemEditClick }/>
-          <DeleteButton onClick={ onItemDeleteClick }/>
-        </HStack>
+        <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
       </Td>
     </Tr>
   );
 };
 
-export default AddressTagTableItem;
+export default TransactionTagTableItem;

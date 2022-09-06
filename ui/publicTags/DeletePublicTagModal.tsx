@@ -1,4 +1,4 @@
-import { Flex, Text, FormControl, FormLabel, Textarea } from '@chakra-ui/react';
+import { Box, Text, FormControl, FormLabel, Textarea, useColorModeValue } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 import type { ChangeEvent } from 'react';
@@ -22,6 +22,7 @@ const DeletePublicTagModal: React.FC<Props> = ({ isOpen, onClose, data, onDelete
   const tags = data.tags.split(';');
 
   const queryClient = useQueryClient();
+  const formBackgroundColor = useColorModeValue('white', 'gray.900');
 
   const deleteApiKey = useCallback(() => {
     const body = JSON.stringify({ remove_reason: reason });
@@ -44,9 +45,9 @@ const DeletePublicTagModal: React.FC<Props> = ({ isOpen, onClose, data, onDelete
     if (tags.length === 1) {
       text = (
         <>
-          <Text display="flex">Public tag</Text>
-          <Text fontWeight="600" whiteSpace="pre">{ ` "${ tags[0] }" ` }</Text>
-          <Text>will be removed.</Text>
+          <Text display="inline" as="span">Public tag</Text>
+          <Text fontWeight="600" whiteSpace="pre" as="span">{ ` "${ tags[0] }" ` }</Text>
+          <Text as="span">will be removed.</Text>
         </>
       );
     }
@@ -54,29 +55,29 @@ const DeletePublicTagModal: React.FC<Props> = ({ isOpen, onClose, data, onDelete
       const tagsText: Array<JSX.Element | string> = [];
       tags.forEach((tag, index) => {
         if (index < tags.length - 2) {
-          tagsText.push(<Text fontWeight="600" whiteSpace="pre">{ ` "${ tag }"` }</Text>);
+          tagsText.push(<Text fontWeight="600" whiteSpace="pre" as="span">{ ` "${ tag }"` }</Text>);
           tagsText.push(',');
         }
         if (index === tags.length - 2) {
-          tagsText.push(<Text fontWeight="600" whiteSpace="pre">{ ` "${ tag }" ` }</Text>);
+          tagsText.push(<Text fontWeight="600" whiteSpace="pre" as="span">{ ` "${ tag }" ` }</Text>);
           tagsText.push('and');
         }
         if (index === tags.length - 1) {
-          tagsText.push(<Text fontWeight="600" whiteSpace="pre">{ ` "${ tag }" ` }</Text>);
+          tagsText.push(<Text fontWeight="600" whiteSpace="pre" as="span">{ ` "${ tag }" ` }</Text>);
         }
       });
       text = (
         <>
-          <Text>Public tags</Text>{ tagsText }<Text>will be removed.</Text>
+          <Text as="span">Public tags</Text>{ tagsText }<Text as="span">will be removed.</Text>
         </>
       );
     }
     return (
       <>
-        <Flex marginBottom={ 12 }>
+        <Box marginBottom={ 12 }>
           { text }
-        </Flex>
-        <FormControl variant="floating" id="tag-delete">
+        </Box>
+        <FormControl variant="floating" id="tag-delete" backgroundColor={ formBackgroundColor }>
           <Textarea
             size="lg"
             value={ reason }
@@ -86,7 +87,7 @@ const DeletePublicTagModal: React.FC<Props> = ({ isOpen, onClose, data, onDelete
         </FormControl>
       </>
     );
-  }, [ tags, reason, onFieldChange ]);
+  }, [ tags, reason, onFieldChange, formBackgroundColor ]);
 
   return (
     <DeleteModal

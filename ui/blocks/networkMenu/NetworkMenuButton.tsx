@@ -26,6 +26,8 @@ const NetworkMenuButton = ({ isMobile, isActive, onClick }: Props, ref: React.Fo
       borderRadius="base"
       backgroundColor={ isActive ? bgColorMobile : 'none' }
       onClick={ onClick }
+      aria-label="Network menu"
+      aria-roledescription="menu"
     >
       <Icon
         as={ networksIcon }

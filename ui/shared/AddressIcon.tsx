@@ -4,7 +4,7 @@ import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 
 const AddressIcon = ({ address }: {address: string}) => {
   return (
-    <Box width="24px">
+    <Box width="24px" display="inline-flex">
       <Jazzicon diameter={ 24 } seed={ jsNumberForAddress(address) }/>
     </Box>
   );

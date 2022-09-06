@@ -2,16 +2,13 @@ import {
   Tag,
   Tr,
   Td,
-  HStack,
 } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
 import type { AddressTag } from 'types/api/account';
 
-import AddressIcon from 'ui/shared/AddressIcon';
-import AddressLinkWithTooltip from 'ui/shared/AddressLinkWithTooltip';
-import DeleteButton from 'ui/shared/DeleteButton';
-import EditButton from 'ui/shared/EditButton';
+import AddressSnippet from 'ui/shared/AddressSnippet';
+import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 interface Props {
@@ -32,10 +29,7 @@ const AddressTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   return (
     <Tr alignItems="top" key={ item.id }>
       <Td>
-        <HStack spacing={ 4 }>
-          <AddressIcon address={ item.address_hash }/>
-          <AddressLinkWithTooltip address={ item.address_hash }/>
-        </HStack>
+        <AddressSnippet address={ item.address_hash }/>
       </Td>
       <Td>
         <TruncatedTextTooltip label={ item.name }>
@@ -45,10 +39,7 @@ const AddressTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
         </TruncatedTextTooltip>
       </Td>
       <Td>
-        <HStack spacing={ 6 }>
-          <EditButton onClick={ onItemEditClick }/>
-          <DeleteButton onClick={ onItemDeleteClick }/>
-        </HStack>
+        <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
       </Td>
     </Tr>
   );

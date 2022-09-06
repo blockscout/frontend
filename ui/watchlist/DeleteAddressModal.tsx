@@ -5,6 +5,7 @@ import React, { useCallback } from 'react';
 import type { TWatchlistItem, TWatchlist } from 'types/client/account';
 
 import fetch from 'lib/client/fetch';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import DeleteModal from 'ui/shared/DeleteModal';
 
 type Props = {
@@ -15,6 +16,7 @@ type Props = {
 
 const DeleteAddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
   const queryClient = useQueryClient();
+  const isMobile = useIsMobile();
 
   const mutationFn = useCallback(() => {
     return fetch(`/api/account1/watchlist/${ data?.id }`, { method: 'DELETE' });
@@ -29,10 +31,11 @@ const DeleteAddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
   const address = data?.address_hash;
 
   const renderModalContent = useCallback(() => {
+    const addressString = isMobile ? [ address.slice(0, 4), address.slice(-4) ].join('...') : address;
     return (
-      <Text display="flex">Address <Text fontWeight="600" whiteSpace="pre"> { address || 'address' } </Text>   will be deleted</Text>
+      <Text>Address <Text fontWeight="600" as="span"> { addressString || 'address' }</Text> will be deleted</Text>
     );
-  }, [ address ]);
+  }, [ address, isMobile ]);
 
   return (
     <DeleteModal

@@ -38,7 +38,7 @@ const PrivateTags = ({ tab }: Props) => {
       <Box h="100%">
         <AccountPageHeader text="Private tags"/>
         <Tabs variant="soft-rounded" colorScheme="blue" isLazy onChange={ onChangeTab } defaultIndex={ TABS.indexOf(tab) }>
-          <TabList marginBottom={ 8 }>
+          <TabList marginBottom={{ base: 6, lg: 8 }}>
             <Tab>Address</Tab>
             <Tab>Transaction</Tab>
           </TabList>

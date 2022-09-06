@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { NetworkGroup } from 'types/networks';
 
-import { NETWORKS } from 'lib/networks';
+import NETWORKS from 'lib/networks/availableNetworks';
 
 import NetworkMenuLink from './NetworkMenuLink';
 

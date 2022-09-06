@@ -1,3 +1,5 @@
+import * as Sentry from '@sentry/nextjs';
+
 export interface ErrorType<T> {
   error?: T;
   status: Response['status'];
@@ -13,10 +15,15 @@ export default function clientFetch<Success, Error>(path: string, init?: Request
           status: response.status,
           statusText: response.statusText,
         }),
-        () => Promise.reject({
-          status: response.status,
-          statusText: response.statusText,
-        }),
+        () => {
+          const error = {
+            status: response.status,
+            statusText: response.statusText,
+          };
+          Sentry.captureException(new Error('Client fetch failed'), { extra: error, tags: { source: 'fetch' } });
+
+          return Promise.reject(error);
+        },
       );
 
     } else {
