@@ -9,7 +9,8 @@ import optimismIcon from 'icons/networks/optimism.svg';
 import poaSokolIcon from 'icons/networks/poa-sokol.svg';
 import poaIcon from 'icons/networks/poa.svg';
 import rskIcon from 'icons/networks/rsk.svg';
-import getSupportedNetworks from 'lib/networks/getSupportedNetworks';
+
+import parseNetworkConfig from './parseNetworkConfig';
 
 // will change later when we agree how to host network icons
 const ICONS: Record<string, React.FunctionComponent<React.SVGAttributes<SVGElement>>> = {
@@ -25,10 +26,12 @@ const ICONS: Record<string, React.FunctionComponent<React.SVGAttributes<SVGEleme
   'artis/sigma1': artisIcon,
 };
 
-export const NETWORKS: Array<Network> = (() => {
-  const networksFromConfig: Array<Network> = getSupportedNetworks();
+const NETWORKS: Array<Network> = (() => {
+  const networksFromConfig: Array<Network> = parseNetworkConfig();
   return networksFromConfig.map((network) => ({ ...network, icon: network.icon || ICONS[`${ network.type }/${ network.subType }`] }));
 })();
+
+export default NETWORKS;
 
 // for easy env creation
 // const FOR_CONFIG = [
@@ -102,13 +105,3 @@ export const NETWORKS: Array<Network> = (() => {
 //     group: 'other',
 //   },
 // ];
-
-export const ACCOUNT_ROUTES = [ '/watchlist', '/tag_address', '/tag_transaction', '/public_tags_request', '/api_key', '/custom_abi' ];
-
-export function isAccountRoute(route: string) {
-  return ACCOUNT_ROUTES.includes(route);
-}
-
-export function getAvailablePaths() {
-  return NETWORKS.map(({ type, subType }) => ({ params: { network_type: type, network_sub_type: subType } }));
-}
