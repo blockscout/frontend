@@ -18,8 +18,6 @@ import * as React from 'react';
 import moonIcon from 'icons/moon.svg';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 
-import styles from './ColorModeToggler.module.css';
-
 export interface ColorModeTogglerProps
   extends Omit<UseCheckboxProps, 'isIndeterminate'>,
   Omit<HTMLChakraProps<'label'>, keyof UseCheckboxProps>,
@@ -42,44 +40,71 @@ const ColorModeToggler = forwardRef<ColorModeTogglerProps, 'input'>((props, ref)
 
   const trackStyles: SystemStyleObject = React.useMemo(() => ({
     bg: trackBg,
+    width: '72px',
+    height: '32px',
+    borderRadius: 'full',
+    display: 'inline-flex',
+    flexShrink: 0,
+    justifyContent: 'space-between',
+    boxSizing: 'content-box',
+    cursor: 'pointer',
     ...transitionProps,
     transitionDuration: '500ms',
   }), [ trackBg, transitionProps ]);
 
   const thumbStyles: SystemStyleObject = React.useMemo(() => ({
     bg: thumbBg,
+    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+    width: '24px',
+    height: '24px',
+    borderRadius: 'md',
+    position: 'absolute',
+    transform: state.isChecked ? 'translate(44px, 4px)' : 'translate(4px, 4px)',
     ...transitionProps,
     transitionProperty: 'background-color, transform',
     transitionDuration: '500ms',
-  }), [ thumbBg, transitionProps ]);
+  }), [ thumbBg, transitionProps, state.isChecked ]);
 
   return (
     <chakra.label
       { ...getRootProps({ onChange: toggleColorMode }) }
-      className={ styles.root }
+      display="inline-block"
+      position="relative"
+      verticalAlign="middle"
+      lineHeight={ 0 }
     >
-      <input className={ styles.input } { ...getInputProps({}, ref) }/>
+      <chakra.input
+        { ...getInputProps({}, ref) }
+        border="none"
+        height="1px"
+        width="1px"
+        margin="1px"
+        padding="0"
+        overflow="hidden"
+        whiteSpace="nowrap"
+        position="absolute"
+      />
       <chakra.div
         { ...getCheckboxProps() }
-        className={ styles.track }
         __css={ trackStyles }
       >
         <Icon
-          className={ styles.nightIcon }
           boxSize={ 4 }
+          margin={ 2 }
+          zIndex="docked"
           as={ moonIcon }
           color={ useColorModeValue('blue.600', 'white') }
           { ...transitionProps }
         />
         <chakra.div
-          className={ styles.thumb }
           data-checked={ dataAttr(state.isChecked) }
           data-hover={ dataAttr(state.isHovered) }
           __css={ thumbStyles }
         />
         <SunIcon
-          className={ styles.dayIcon }
           boxSize={ 4 }
+          margin={ 2 }
+          zIndex="docked"
           color={ useColorModeValue('gray.500', 'blue.600') }
           { ...transitionProps }
         />
