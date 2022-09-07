@@ -22,7 +22,7 @@ const TABS: Array<Tab> = [
   { type: 'internal_txn', path: '/internal-transactions', name: 'Internal txn' },
 ];
 
-interface Props {
+export interface Props {
   tab: Tab['type'];
 }
 
