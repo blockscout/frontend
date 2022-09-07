@@ -12,7 +12,8 @@
     "build": "next build",
     "start": "next start",
     "lint:eslint": "./node_modules/.bin/eslint . --ext .js,.jsx,.ts,.tsx",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "format-svg": "./node_modules/.bin/svgo -r ./icons"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.2",
@@ -50,6 +51,7 @@
     "eslint-plugin-regexp": "^1.7.0",
     "husky": "^8.0.0",
     "lint-staged": ">=10",
+    "svgo": "^2.8.0",
     "typescript": "4.7.2"
   },
   "lint-staged": {
