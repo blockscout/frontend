@@ -49,12 +49,12 @@ const ColorModeToggler = forwardRef<ColorModeTogglerProps, 'input'>((props, ref)
     boxSizing: 'content-box',
     cursor: 'pointer',
     ...transitionProps,
-    transitionDuration: '500ms',
+    transitionDuration: 'ultra-slow',
   }), [ trackBg, transitionProps ]);
 
   const thumbStyles: SystemStyleObject = React.useMemo(() => ({
     bg: thumbBg,
-    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+    boxShadow: 'md',
     width: '24px',
     height: '24px',
     borderRadius: 'md',
@@ -62,7 +62,7 @@ const ColorModeToggler = forwardRef<ColorModeTogglerProps, 'input'>((props, ref)
     transform: state.isChecked ? 'translate(44px, 4px)' : 'translate(4px, 4px)',
     ...transitionProps,
     transitionProperty: 'background-color, transform',
-    transitionDuration: '500ms',
+    transitionDuration: 'ultra-slow',
   }), [ thumbBg, transitionProps, state.isChecked ]);
 
   return (
