@@ -11,15 +11,21 @@ import React from 'react';
 import useBasePath from 'lib/hooks/useBasePath';
 import AccountPageHeader from 'ui/shared/AccountPageHeader';
 import Page from 'ui/shared/Page';
+import TxDetails from 'ui/tx/TxDetails';
 
 interface Tab {
-  type: 'details' | 'internal_txn';
+  type: 'details' | 'internal_txn' | 'logs' | 'raw_trace' | 'state';
   path: string;
   name: string;
+  component?: React.ReactNode;
 }
+
 const TABS: Array<Tab> = [
-  { type: 'details', path: '', name: 'Details' },
+  { type: 'details', path: '', name: 'Details', component: <TxDetails/> },
   { type: 'internal_txn', path: '/internal-transactions', name: 'Internal txn' },
+  { type: 'logs', path: '/logs', name: 'Logs' },
+  { type: 'state', path: '/state', name: 'State' },
+  { type: 'raw_trace', path: '/raw-trace', name: 'Raw trace' },
 ];
 
 export interface Props {
@@ -44,16 +50,11 @@ const TransactionPageContent = ({ tab }: Props) => {
     <Page>
       <AccountPageHeader text="Transaction details"/>
       <Tabs variant="soft-rounded" colorScheme="blue" isLazy onChange={ handleTabChange } defaultIndex={ defaultIndex }>
-        <TabList marginBottom={{ base: 6, lg: 8 }}>
+        <TabList marginBottom={{ base: 6, lg: 8 }} flexWrap="wrap">
           { TABS.map((tab) => <Tab key={ tab.type }>{ tab.name }</Tab>) }
         </TabList>
         <TabPanels>
-          <TabPanel padding={ 0 }>
-            Details
-          </TabPanel>
-          <TabPanel padding={ 0 }>
-            Internal txn
-          </TabPanel>
+          { TABS.map((tab) => <TabPanel padding={ 0 } key={ tab.type }>{ tab.component || tab.name }</TabPanel>) }
         </TabPanels>
       </Tabs>
     </Page>
