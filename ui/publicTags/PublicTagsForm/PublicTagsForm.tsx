@@ -82,7 +82,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
 
   const [ isAlertVisible, setAlertVisible ] = useState(false);
 
-  const onAddFieldClick = useCallback(() => append({ address: '' }), [ append ]);
+  const onAddFieldClick = useCallback(() => append({ address: '', name: '' }), [ append ]);
 
   const onRemoveFieldClick = useCallback((index: number) => () => remove(index), [ remove ]);
 

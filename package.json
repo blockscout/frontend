@@ -2,6 +2,11 @@
   "name": "block-scout",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://github.com/blockscout/frontend#readme",
+  "engines": {
+    "node": "16",
+    "npm": "8"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",

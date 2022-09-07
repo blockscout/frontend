@@ -35,7 +35,7 @@ export default function getOutlinedFieldStyles(props: StyleFunctionProps) {
     _focusVisible: {
       zIndex: 1,
       borderColor: getColor(theme, fc),
-      boxShadow: '0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06)',
+      boxShadow: 'md',
     },
     _placeholder: {
       color: mode('blackAlpha.600', 'whiteAlpha.600')(props),
