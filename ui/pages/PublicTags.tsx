@@ -9,8 +9,8 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import useToast from 'lib/hooks/useToast';
 import PublicTagsData from 'ui/publicTags/PublicTagsData';
 import PublicTagsForm from 'ui/publicTags/PublicTagsForm/PublicTagsForm';
-import AccountPageHeader from 'ui/shared/AccountPageHeader';
 import Page from 'ui/shared/Page';
+import PageHeader from 'ui/shared/PageHeader';
 
 type TScreen = 'data' | 'form';
 
@@ -84,7 +84,7 @@ const PublicTagsComponent: React.FC = () => {
             <Text variant="inherit" fontSize="sm" ml={ 2 }>Public tags</Text>
           </Link>
         ) }
-        <AccountPageHeader text={ header }/>
+        <PageHeader text={ header }/>
         { content }
       </Box>
     </Page>

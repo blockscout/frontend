@@ -9,8 +9,8 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import useBasePath from 'lib/hooks/useBasePath';
-import AccountPageHeader from 'ui/shared/AccountPageHeader';
 import Page from 'ui/shared/Page';
+import PageHeader from 'ui/shared/PageHeader';
 import TxDetails from 'ui/tx/TxDetails';
 
 interface Tab {
@@ -48,7 +48,7 @@ const TransactionPageContent = ({ tab }: Props) => {
 
   return (
     <Page>
-      <AccountPageHeader text="Transaction details"/>
+      <PageHeader text="Transaction details"/>
       <Tabs variant="soft-rounded" colorScheme="blue" isLazy onChange={ handleTabChange } defaultIndex={ defaultIndex }>
         <TabList marginBottom={{ base: 6, lg: 8 }} flexWrap="wrap">
           { TABS.map((tab) => <Tab key={ tab.type }>{ tab.name }</Tab>) }
