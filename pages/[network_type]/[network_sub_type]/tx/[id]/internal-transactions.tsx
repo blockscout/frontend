@@ -20,7 +20,7 @@ const TransactionPage: NextPage<Props> = ({ pageParams }: Props) => {
   return (
     <>
       <Head><title>{ title }</title></Head>
-      <Transaction tab="details"/>
+      <Transaction tab="internal_txn"/>
     </>
   );
 };

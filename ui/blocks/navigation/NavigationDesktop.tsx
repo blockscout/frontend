@@ -66,12 +66,14 @@ const NavigationDesktop = () => {
       </Box>
       <Box as="nav" mt={ 14 }>
         <VStack as="ul" spacing="2" alignItems="flex-start" overflow="hidden">
-          { mainNavItems.map((item) => <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed } isActive={ router.asPath === item.pathname }/>) }
+          { mainNavItems.map((item) =>
+            <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed } isActive={ router.asPath.startsWith(item.pathname) }/>) }
         </VStack>
       </Box>
       <Box as="nav" mt={ 12 }>
         <VStack as="ul" spacing="2" alignItems="flex-start" overflow="hidden">
-          { accountNavItems.map((item) => <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed } isActive={ router.asPath === item.pathname }/>) }
+          { accountNavItems.map((item) =>
+            <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed } isActive={ router.asPath.startsWith(item.pathname) }/>) }
         </VStack>
       </Box>
       <NavFooter isCollapsed={ isCollapsed }/>
