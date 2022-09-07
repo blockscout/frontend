@@ -5,7 +5,7 @@ import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
 import AccountPageHeader from 'ui/shared/AccountPageHeader';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import Page from 'ui/shared/Page/Page';
+import Page from 'ui/shared/Page';
 import UserAvatar from 'ui/shared/UserAvatar';
 
 const MyProfile = () => {

@@ -12,7 +12,7 @@ import useBasePath from 'lib/hooks/useBasePath';
 import PrivateAddressTags from 'ui/privateTags/PrivateAddressTags';
 import PrivateTransactionTags from 'ui/privateTags/PrivateTransactionTags';
 import AccountPageHeader from 'ui/shared/AccountPageHeader';
-import Page from 'ui/shared/Page/Page';
+import Page from 'ui/shared/Page';
 
 const TABS = [ 'address', 'transaction' ] as const;
 

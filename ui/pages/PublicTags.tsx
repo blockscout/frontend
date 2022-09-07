@@ -10,7 +10,7 @@ import useToast from 'lib/hooks/useToast';
 import PublicTagsData from 'ui/publicTags/PublicTagsData';
 import PublicTagsForm from 'ui/publicTags/PublicTagsForm/PublicTagsForm';
 import AccountPageHeader from 'ui/shared/AccountPageHeader';
-import Page from 'ui/shared/Page/Page';
+import Page from 'ui/shared/Page';
 
 type TScreen = 'data' | 'form';
 

@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import getAvailablePaths from 'lib/networks/getAvailablePaths';
-import Page from 'ui/shared/Page/Page';
+import Page from 'ui/shared/Page';
 
 const Home: NextPage = () => {
   const router = useRouter();
