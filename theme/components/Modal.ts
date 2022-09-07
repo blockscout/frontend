@@ -4,7 +4,8 @@ import {
   createMultiStyleConfigHelpers,
   defineStyle,
 } from '@chakra-ui/styled-system';
-import { mode, runIfFn } from '@chakra-ui/theme-tools';
+import { mode } from '@chakra-ui/theme-tools';
+import { runIfFn } from '@chakra-ui/utils';
 
 const { defineMultiStyleConfig, definePartsStyle } =
   createMultiStyleConfigHelpers(parts.keys);
