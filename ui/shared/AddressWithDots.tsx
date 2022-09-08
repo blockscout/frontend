@@ -19,12 +19,12 @@ import { BODY_TYPEFACE } from 'theme/foundations/typography';
 const TAIL_LENGTH = 4;
 const HEAD_MIN_LENGTH = 4;
 
-const AddressWithDots = ({ address, fontWeight }: {address: string; fontWeight: FontFace['weight']}) => {
+const AddressWithDots = ({ address, fontWeight }: { address: string; fontWeight: string | number }) => {
   const addressRef = useRef<HTMLSpanElement>(null);
   const [ displayedAddress, setAddress ] = React.useState(address);
 
   const isFontFaceLoaded = useFontFaceObserver([
-    { family: BODY_TYPEFACE, weight: fontWeight },
+    { family: BODY_TYPEFACE, weight: String(fontWeight) as FontFace['weight'] },
   ]);
 
   const calculateString = useCallback(() => {
