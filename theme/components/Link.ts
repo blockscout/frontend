@@ -11,6 +11,7 @@ const variantPrimary = defineStyle((props) => {
     color: mode('blue.600', 'blue.300')(props),
     _hover: {
       color: mode('blue.400', 'blue.200')(props),
+      textDecorationStyle: props.textDecorationStyle || 'solid',
     },
   };
 });

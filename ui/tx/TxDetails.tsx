@@ -1,4 +1,4 @@
-import { Grid, Text, Box, Icon } from '@chakra-ui/react';
+import { Grid, GridItem, Text, Box, Icon, Link } from '@chakra-ui/react';
 import React from 'react';
 
 import { tx } from 'data/tx';
@@ -14,12 +14,18 @@ import type { Props as TxStatusProps } from 'ui/tx/TxStatus';
 import TxStatus from 'ui/tx/TxStatus';
 
 const TxDetails = () => {
+  const [ isExpanded, setIsExpanded ] = React.useState(false);
+
   const leftSeparatorStyles = {
     ml: 3,
     pl: 3,
     borderLeftWidth: '1px',
     borderLeftColor: 'gray.700',
   };
+
+  const handleCutClick = React.useCallback(() => {
+    setIsExpanded((flag) => !flag);
+  }, []);
 
   return (
     <Grid columnGap={ 8 } rowGap={ 3 } templateColumns="auto 1fr">
@@ -107,15 +113,15 @@ const TxDetails = () => {
         hint="Base Fee refers to the network Base Fee at the time of the block, while Max Fee & Max Priority Fee refer to the max amount a user is willing to pay for their tx & to give to the miner respectively."
       >
         <Box>
-          <Text as="span">Base: </Text>
+          <Text as="span" fontWeight="500">Base: </Text>
           <Text fontWeight="600" as="span">{ tx.gas_fees.base }</Text>
         </Box>
         <Box { ...leftSeparatorStyles }>
-          <Text as="span">Max: </Text>
+          <Text as="span" fontWeight="500">Max: </Text>
           <Text fontWeight="600" as="span">{ tx.gas_fees.max }</Text>
         </Box>
         <Box { ...leftSeparatorStyles }>
-          <Text as="span">Max priority: </Text>
+          <Text as="span" fontWeight="500">Max priority: </Text>
           <Text fontWeight="600" as="span">{ tx.gas_fees.max_priority }</Text>
         </Box>
       </DetailsInfoItem>
@@ -127,6 +133,59 @@ const TxDetails = () => {
         <Text ml={ 1 }>{ tx.burnt_fees.value.toLocaleString('en', { minimumFractionDigits: 18 }) } Ether</Text>
         <Text variant="secondary" ml={ 1 }>(${ tx.burnt_fees.value_usd.toFixed(2) })</Text>
       </DetailsInfoItem>
+      <GridItem colSpan={ 2 }>
+        <Link
+          mt={ 6 }
+          display="inline-block"
+          fontSize="sm"
+          textDecorationLine="underline"
+          textDecorationStyle="dashed"
+          onClick={ handleCutClick }
+        >
+          { isExpanded ? 'Hide details' : 'View details' }
+        </Link>
+      </GridItem>
+      { isExpanded && (
+        <>
+          <DetailsInfoItem
+            mt={ 4 }
+            title="Other"
+            hint="Other data related to this transaction."
+          >
+            <Box>
+              <Text as="span" fontWeight="500">Txn type: </Text>
+              <Text fontWeight="600" as="span">{ tx.type.value }</Text>
+              <Text fontWeight="400" as="span" ml={ 1 }>({ tx.type.eip })</Text>
+            </Box>
+            <Box { ...leftSeparatorStyles }>
+              <Text as="span" fontWeight="500">Nonce: </Text>
+              <Text fontWeight="600" as="span">{ tx.nonce }</Text>
+            </Box>
+            <Box { ...leftSeparatorStyles }>
+              <Text as="span" fontWeight="500">Position: </Text>
+              <Text fontWeight="600" as="span">{ tx.position }</Text>
+            </Box>
+          </DetailsInfoItem>
+          <DetailsInfoItem
+            title="Other"
+            hint="Other data related to this transaction."
+          >
+            <Box>
+              <Text as="span" fontWeight="500">Txn type: </Text>
+              <Text fontWeight="600" as="span">{ tx.type.value }</Text>
+              <Text fontWeight="400" as="span" ml={ 1 }>({ tx.type.eip })</Text>
+            </Box>
+            <Box { ...leftSeparatorStyles }>
+              <Text as="span" fontWeight="500">Nonce: </Text>
+              <Text fontWeight="600" as="span">{ tx.nonce }</Text>
+            </Box>
+            <Box { ...leftSeparatorStyles }>
+              <Text as="span" fontWeight="500">Position: </Text>
+              <Text fontWeight="600" as="span">{ tx.position }</Text>
+            </Box>
+          </DetailsInfoItem>
+        </>
+      ) }
     </Grid>
   );
 };

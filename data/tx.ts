@@ -27,4 +27,10 @@ export const tx = {
     value: 0.002156925953623692,
     value_usd: 2.55,
   },
+  type: {
+    value: '2',
+    eip: 'EIP-1559',
+  },
+  nonce: 4,
+  position: 342,
 };
