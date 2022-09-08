@@ -33,7 +33,7 @@ const TransactionTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) =>
       </Td>
       <Td>
         <Tooltip label={ item.name }>
-          <Tag variant="gray" lineHeight="24px">
+          <Tag>
             { item.name }
           </Tag>
         </Tooltip>
