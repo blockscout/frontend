@@ -12,7 +12,7 @@ interface Props {
 const DetailsInfoItem = ({ title, hint, children }: Props) => {
   return (
     <>
-      <GridItem>
+      <GridItem py={ 2 }>
         <Flex columnGap={ 2 } alignItems="center">
           <Tooltip
             label={ hint }
@@ -26,7 +26,7 @@ const DetailsInfoItem = ({ title, hint, children }: Props) => {
           <Text fontWeight={ 500 } whiteSpace="nowrap">{ title }</Text>
         </Flex>
       </GridItem>
-      <GridItem display="flex" alignItems="center">{ children }</GridItem>
+      <GridItem display="flex" alignItems="center" py={ 2 }>{ children }</GridItem>
     </>
   );
 };
