@@ -1,4 +1,5 @@
 import Alert from './Alert';
+import Badge from './Badge';
 import Button from './Button';
 import Checkbox from './Checkbox';
 import Drawer from './Drawer';
@@ -19,6 +20,7 @@ import Tooltip from './Tooltip';
 
 const components = {
   Alert,
+  Badge,
   Button,
   Checkbox,
   Drawer,

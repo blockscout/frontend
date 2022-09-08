@@ -48,7 +48,7 @@ const WatchListItem = ({ item, onEditClick, onDeleteClick }: Props) => {
         <WatchListAddressItem item={ item }/>
         <HStack spacing={ 3 } mt={ 6 }>
           <Text fontSize="sm" fontWeight={ 500 }>Private tag</Text>
-          <Tag variant="gray" lineHeight="24px">
+          <Tag>
             { item.name }
           </Tag>
         </HStack>

@@ -3,34 +3,41 @@ import {
   createMultiStyleConfigHelpers,
   defineStyle,
 } from '@chakra-ui/styled-system';
-import { mode } from '@chakra-ui/theme-tools';
+
+import getDefaultTransitionProps from '../utils/getDefaultTransitionProps';
+import Badge from './Badge';
+const transitionProps = getDefaultTransitionProps();
 
 const { defineMultiStyleConfig, definePartsStyle } =
   createMultiStyleConfigHelpers(parts.keys);
 
-import getDefaultTransitionProps from '../utils/getDefaultTransitionProps';
-
-const variantGray = definePartsStyle((props) => {
-  const transitionProps = getDefaultTransitionProps();
-
-  return {
-    container: {
-      bg: mode('blackAlpha.100', 'whiteAlpha.400')(props),
-      color: mode('gray.600', 'gray.50')(props),
-      ...transitionProps,
-    },
-  };
-});
-
 const variants = {
-  gray: variantGray,
+  subtle: definePartsStyle((props) => ({
+    container: Badge.variants?.subtle(props),
+  })),
+};
+
+const sizes = {
+  md: definePartsStyle({
+    container: {
+      minH: 6,
+      minW: 6,
+      fontSize: 'sm',
+      px: 2,
+      py: '2px',
+    },
+    label: {
+      lineHeight: 5,
+    },
+  }),
 };
 
 const baseStyleContainer = defineStyle({
-  display: 'inline-block',
+  display: 'inline-flex',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   borderRadius: 'sm',
+  ...transitionProps,
 });
 
 const baseStyle = definePartsStyle({
@@ -40,6 +47,12 @@ const baseStyle = definePartsStyle({
 const Tag = defineMultiStyleConfig({
   baseStyle,
   variants,
+  sizes,
+  defaultProps: {
+    size: 'md',
+    variant: 'subtle',
+    colorScheme: 'gray',
+  },
 });
 
 export default Tag;

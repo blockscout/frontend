@@ -33,7 +33,7 @@ const AddressTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
       </Td>
       <Td>
         <TruncatedTextTooltip label={ item.name }>
-          <Tag variant="gray" lineHeight="24px">
+          <Tag>
             { item.name }
           </Tag>
         </TruncatedTextTooltip>

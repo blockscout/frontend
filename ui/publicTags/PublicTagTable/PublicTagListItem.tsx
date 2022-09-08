@@ -35,7 +35,7 @@ const PublicTagListItem = ({ item, onEditClick, onDeleteClick }: Props) => {
             { item.tags.split(';').map((tag) => {
               return (
                 <TruncatedTextTooltip label={ tag } key={ tag }>
-                  <Tag variant="gray" lineHeight="24px">
+                  <Tag>
                     { tag }
                   </Tag>
                 </TruncatedTextTooltip>
