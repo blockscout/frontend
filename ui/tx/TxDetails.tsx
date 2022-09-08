@@ -1,4 +1,4 @@
-import { Grid, Text, Icon } from '@chakra-ui/react';
+import { Grid, Text, Box, Icon } from '@chakra-ui/react';
 import React from 'react';
 
 import { tx } from 'data/tx';
@@ -9,6 +9,7 @@ import AddressIcon from 'ui/shared/AddressIcon';
 import AddressLinkWithTooltip from 'ui/shared/AddressLinkWithTooltip';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import Utilization from 'ui/shared/Utilization';
 import type { Props as TxStatusProps } from 'ui/tx/TxStatus';
 import TxStatus from 'ui/tx/TxStatus';
 
@@ -91,6 +92,32 @@ const TxDetails = () => {
       >
         <Text>{ tx.gas_price.toLocaleString('en', { minimumFractionDigits: 18 }) } Ether</Text>
         <Text variant="secondary" ml={ 1 }>({ (tx.gas_price * Math.pow(10, 18)).toFixed(0) } Gwei)</Text>
+      </DetailsInfoItem>
+      <DetailsInfoItem
+        title="Gas limit & usage by txn"
+        hint="Actual gas amount used by the transaction."
+      >
+        <Text>{ tx.gas_used.toLocaleString('en') }</Text>
+        <Text { ...leftSeparatorStyles }>{ tx.gas_limit.toLocaleString('en') }</Text>
+        <Utilization ml={ 4 } value={ tx.gas_used / tx.gas_limit }/>
+      </DetailsInfoItem>
+      <DetailsInfoItem
+        title="Gas fees (Gwei)"
+        // eslint-disable-next-line max-len
+        hint="Base Fee refers to the network Base Fee at the time of the block, while Max Fee & Max Priority Fee refer to the max amount a user is willing to pay for their tx & to give to the miner respectively."
+      >
+        <Box>
+          <Text as="span">Base: </Text>
+          <Text fontWeight="600" as="span">{ tx.gas_fees.base }</Text>
+        </Box>
+        <Box { ...leftSeparatorStyles }>
+          <Text as="span">Max: </Text>
+          <Text fontWeight="600" as="span">{ tx.gas_fees.max }</Text>
+        </Box>
+        <Box { ...leftSeparatorStyles }>
+          <Text as="span">Max priority: </Text>
+          <Text fontWeight="600" as="span">{ tx.gas_fees.max_priority }</Text>
+        </Box>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Burnt fees"
