@@ -1,7 +1,14 @@
 import { Textarea as TextareaComponent } from '@chakra-ui/react';
 import { defineStyle, defineStyleConfig } from '@chakra-ui/styled-system';
+import { mode } from '@chakra-ui/theme-tools';
 
 import getOutlinedFieldStyles from '../utils/getOutlinedFieldStyles';
+
+const variantFilledInactive = defineStyle((props) => {
+  return {
+    bgColor: mode('blackAlpha.50', 'whiteAlpha.50')(props),
+  };
+});
 
 const sizes = {
   md: defineStyle({
@@ -24,6 +31,7 @@ const Textarea = defineStyleConfig({
   sizes,
   variants: {
     outline: defineStyle(getOutlinedFieldStyles),
+    filledInactive: variantFilledInactive,
   },
   defaultProps: {
     variant: 'outline',

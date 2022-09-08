@@ -8,7 +8,9 @@ import dayjs from 'lib/date/dayjs';
 import AddressIcon from 'ui/shared/AddressIcon';
 import AddressLinkWithTooltip from 'ui/shared/AddressLinkWithTooltip';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import DecodedInputData from 'ui/shared/DecodedInputData';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import RawInputData from 'ui/shared/RawInputData';
 import Utilization from 'ui/shared/Utilization';
 import type { Props as TxStatusProps } from 'ui/tx/TxStatus';
 import TxStatus from 'ui/tx/TxStatus';
@@ -167,22 +169,16 @@ const TxDetails = () => {
             </Box>
           </DetailsInfoItem>
           <DetailsInfoItem
-            title="Other"
-            hint="Other data related to this transaction."
+            title="Raw input"
+            hint="Binary data included with the transaction. See logs tab for additional info."
           >
-            <Box>
-              <Text as="span" fontWeight="500">Txn type: </Text>
-              <Text fontWeight="600" as="span">{ tx.type.value }</Text>
-              <Text fontWeight="400" as="span" ml={ 1 }>({ tx.type.eip })</Text>
-            </Box>
-            <Box { ...leftSeparatorStyles }>
-              <Text as="span" fontWeight="500">Nonce: </Text>
-              <Text fontWeight="600" as="span">{ tx.nonce }</Text>
-            </Box>
-            <Box { ...leftSeparatorStyles }>
-              <Text as="span" fontWeight="500">Position: </Text>
-              <Text fontWeight="600" as="span">{ tx.position }</Text>
-            </Box>
+            <RawInputData hex={ tx.input_hex }/>
+          </DetailsInfoItem>
+          <DetailsInfoItem
+            title="Decoded input data"
+            hint="hmmmmmmmmmmm"
+          >
+            <DecodedInputData/>
           </DetailsInfoItem>
         </>
       ) }
