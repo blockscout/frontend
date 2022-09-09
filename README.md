@@ -44,5 +44,6 @@ The app instance could be customized by passing following variables to NodeJS en
 | group | `mainnets \| testnets \| other` | Indicates in which tab network appears in the menu | `"mainnets"` |
 | isAccountSupported | `boolean` *(optional)* | Set to true if network has account feature | `true` |
 | icon | `string` *(optional)* | Network icon; if not provided, will fallback to  icon predefined in the project; if the project doesn't have icon for such network then the common placeholder will be shown; *Note* that icon size should be 30px by 30px | `"https://www.fillmurray.com/60/60"` |
+| logo | `string` *(optional)* | Network logo; if not provided, will fallback to logo predefined in the project; if the project doesn't have logo for such network then the common placeholder will be shown; *Note* that logo height should be 20px and width less than 120px | `"https://www.fillmurray.com/240/40"` |
 
 *Note* the base path for the network is built up from its `type` and `subType` like so `https://blockscout.com/<type>/<subType>`

@@ -3,6 +3,7 @@ const withReactSvg = require('next-react-svg');
 const path = require('path');
 
 const headers = require('./configs/nextjs/headers');
+const rewrites = require('./configs/nextjs/rewrites');
 
 const moduleExports = {
   include: path.resolve(__dirname, 'icons'),
@@ -27,17 +28,7 @@ const moduleExports = {
     ];
   },
   headers,
-  async rewrites() {
-    // there can be networks without subtype
-    // routing in nextjs allows optional params only at the end of the path
-    // if there are paths with subtype and subsubtype, we will change the routing
-    // but so far we think we're ok with this hack
-    const NETWORKS = JSON.parse(process.env.NEXT_PUBLIC_SUPPORTED_NETWORKS);
-    return NETWORKS.filter(n => !n.subType).map(n => ({
-      source: `/${ n.type }/:slug*`,
-      destination: `/${ n.type }/mainnet/:slug*`,
-    }));
-  },
+  rewrites,
   output: 'standalone',
 };
 

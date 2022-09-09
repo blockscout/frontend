@@ -1,14 +1,14 @@
 import type { Network } from 'types/networks';
 
-import arbitrumIcon from 'icons/networks/arbitrum.svg';
-import artisIcon from 'icons/networks/artis.svg';
-import ethereumClassicIcon from 'icons/networks/ethereum-classic.svg';
-import ethereumIcon from 'icons/networks/ethereum.svg';
-import gnosisIcon from 'icons/networks/gnosis.svg';
-import optimismIcon from 'icons/networks/optimism.svg';
-import poaSokolIcon from 'icons/networks/poa-sokol.svg';
-import poaIcon from 'icons/networks/poa.svg';
-import rskIcon from 'icons/networks/rsk.svg';
+import arbitrumIcon from 'icons/networks/icons/arbitrum.svg';
+import artisIcon from 'icons/networks/icons/artis.svg';
+import ethereumClassicIcon from 'icons/networks/icons/ethereum-classic.svg';
+import ethereumIcon from 'icons/networks/icons/ethereum.svg';
+import gnosisIcon from 'icons/networks/icons/gnosis.svg';
+import optimismIcon from 'icons/networks/icons/optimism.svg';
+import poaSokolIcon from 'icons/networks/icons/poa-sokol.svg';
+import poaIcon from 'icons/networks/icons/poa.svg';
+import rskIcon from 'icons/networks/icons/rsk.svg';
 
 import parseNetworkConfig from './parseNetworkConfig';
 
@@ -27,18 +27,18 @@ const ICONS: Record<string, React.FunctionComponent<React.SVGAttributes<SVGEleme
 };
 
 const LOGOS: Record<string, React.FunctionComponent<React.SVGAttributes<SVGElement>>> = {
-  'xdai/mainnet': require('icons/networkLogos/gnosis.svg'),
-  'eth/mainnet': require('icons/networkLogos/eth.svg'),
-  'etc/mainnet': require('icons/networkLogos/etc.svg'),
-  'poa/core': require('icons/networkLogos/poa.svg'),
-  'rsk/mainnet': require('icons/networkLogos/rsk.svg'),
-  'xdai/testnet': require('icons/networkLogos/gnosis.svg'),
-  'poa/sokol': require('icons/networkLogos/sokol.svg'),
-  'artis/sigma1': require('icons/networkLogos/artis.svg'),
-  'lukso/l14': require('icons/networkLogos/lukso.svg'),
-  astar: require('icons/networkLogos/astar.svg'),
-  shiden: require('icons/networkLogos/shiden.svg'),
-  shibuya: require('icons/networkLogos/shibuya.svg'),
+  'xdai/mainnet': require('icons/networks/logos/gnosis.svg'),
+  'eth/mainnet': require('icons/networks/logos/eth.svg'),
+  'etc/mainnet': require('icons/networks/logos/etc.svg'),
+  'poa/core': require('icons/networks/logos/poa.svg'),
+  'rsk/mainnet': require('icons/networks/logos/rsk.svg'),
+  'xdai/testnet': require('icons/networks/logos/gnosis.svg'),
+  'poa/sokol': require('icons/networks/logos/sokol.svg'),
+  'artis/sigma1': require('icons/networks/logos/artis.svg'),
+  'lukso/l14': require('icons/networks/logos/lukso.svg'),
+  astar: require('icons/networks/logos/astar.svg'),
+  shiden: require('icons/networks/logos/shiden.svg'),
+  shibuya: require('icons/networks/logos/shibuya.svg'),
 };
 
 const NETWORKS: Array<Network> = (() => {

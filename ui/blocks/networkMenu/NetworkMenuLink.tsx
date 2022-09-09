@@ -5,7 +5,7 @@ import React from 'react';
 import type { Network } from 'types/networks';
 
 import checkIcon from 'icons/check.svg';
-import placeholderIcon from 'icons/networks/placeholder.svg';
+import placeholderIcon from 'icons/networks/icons/placeholder.svg';
 import isAccountRoute from 'lib/networks/isAccountRoute';
 
 import useColors from './useColors';
