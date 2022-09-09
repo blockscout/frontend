@@ -40,7 +40,7 @@ const ProfileMenuContent = ({ name, nickname, email }: Props) => {
         </VStack>
       </Box>
       <Box mt={ 2 } pt={ 3 } borderTopColor={ borderColor } borderTopWidth="1px" { ...getDefaultTransitionProps() }>
-        <Button size="sm" width="full" variant="secondary">Sign Out</Button>
+        <Button size="sm" width="full" variant="outline">Sign Out</Button>
       </Box>
     </Box>
   );

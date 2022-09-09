@@ -55,7 +55,7 @@ export default function PublicTagFormAction({ control, index, fieldsLength, erro
         { fieldsLength > 1 && (
           <IconButton
             aria-label="delete"
-            variant="iconBorder"
+            variant="outline"
             w="30px"
             h="30px"
             onClick={ onRemoveFieldClick(index) }
@@ -65,7 +65,7 @@ export default function PublicTagFormAction({ control, index, fieldsLength, erro
         { index === fieldsLength - 1 && fieldsLength < MAX_INPUTS_NUM && (
           <IconButton
             aria-label="add"
-            variant="iconBorder"
+            variant="outline"
             w="30px"
             h="30px"
             onClick={ onAddFieldClick }

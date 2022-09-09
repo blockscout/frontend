@@ -97,7 +97,6 @@ const WatchList: React.FC = () => {
         { Boolean(data?.length) && list }
         <Box marginTop={ 8 }>
           <Button
-            variant="primary"
             size="lg"
             onClick={ addressModalProps.onOpen }
           >
