@@ -1,5 +1,6 @@
 import { Grid, GridItem, Text, Box, Icon, Link, Tag, Flex } from '@chakra-ui/react';
 import React from 'react';
+import { scroller, Element } from 'react-scroll';
 
 import { tx } from 'data/tx';
 import clockIcon from 'icons/clock.svg';
@@ -30,6 +31,10 @@ const TxDetails = () => {
 
   const handleCutClick = React.useCallback(() => {
     setIsExpanded((flag) => !flag);
+    scroller.scrollTo('TxDetails__cutLink', {
+      duration: 500,
+      smooth: true,
+    });
   }, []);
 
   return (
@@ -150,16 +155,18 @@ const TxDetails = () => {
         <Text variant="secondary" ml={ 1 }>(${ tx.burnt_fees.value_usd.toFixed(2) })</Text>
       </DetailsInfoItem>
       <GridItem colSpan={ 2 }>
-        <Link
-          mt={ 6 }
-          display="inline-block"
-          fontSize="sm"
-          textDecorationLine="underline"
-          textDecorationStyle="dashed"
-          onClick={ handleCutClick }
-        >
-          { isExpanded ? 'Hide details' : 'View details' }
-        </Link>
+        <Element name="TxDetails__cutLink">
+          <Link
+            mt={ 6 }
+            display="inline-block"
+            fontSize="sm"
+            textDecorationLine="underline"
+            textDecorationStyle="dashed"
+            onClick={ handleCutClick }
+          >
+            { isExpanded ? 'Hide details' : 'View details' }
+          </Link>
+        </Element>
       </GridItem>
       { isExpanded && (
         <>
