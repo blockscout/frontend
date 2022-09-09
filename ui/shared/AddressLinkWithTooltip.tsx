@@ -11,17 +11,21 @@ const FONT_WEIGHT = '600';
 
 interface Props extends HTMLChakraProps<'div'> {
   address: string;
-  type?: 'address' | 'transaction';
+  type?: 'address' | 'transaction' | 'token';
   fontWeight?: string;
+  truncated?: boolean;
+  withCopy?: boolean;
 }
 
-const AddressLinkWithTooltip = ({ address, type = 'address', ...styles }: Props) => {
+const AddressLinkWithTooltip = ({ address, type = 'address', truncated, withCopy = true, ...styles }: Props) => {
   const basePath = useBasePath();
   let url;
   if (type === 'transaction') {
     url = basePath + '/tx/' + address;
-  } else {
+  } else if (type === 'token') {
     url = basePath + '/address/' + address + '/tokens#address-tabs';
+  } else {
+    url = basePath + '/address/' + address;
   }
   return (
     <Flex columnGap={ 2 } alignItems="center" overflow="hidden" maxW="100%" { ...styles }>
@@ -33,9 +37,9 @@ const AddressLinkWithTooltip = ({ address, type = 'address', ...styles }: Props)
         lineHeight="24px"
         whiteSpace="nowrap"
       >
-        <AddressWithDots address={ address } fontWeight={ styles.fontWeight || FONT_WEIGHT }/>
+        <AddressWithDots address={ address } fontWeight={ styles.fontWeight || FONT_WEIGHT } truncated={ truncated }/>
       </Link>
-      <CopyToClipboard text={ address }/>
+      { withCopy && <CopyToClipboard text={ address }/> }
     </Flex>
   );
 };

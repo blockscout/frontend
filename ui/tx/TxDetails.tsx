@@ -1,9 +1,10 @@
-import { Grid, GridItem, Text, Box, Icon, Link } from '@chakra-ui/react';
+import { Grid, GridItem, Text, Box, Icon, Link, Tag, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import { tx } from 'data/tx';
 import clockIcon from 'icons/clock.svg';
 import flameIcon from 'icons/flame.svg';
+import successIcon from 'icons/status/success.svg';
 import dayjs from 'lib/date/dayjs';
 import AddressIcon from 'ui/shared/AddressIcon';
 import AddressLinkWithTooltip from 'ui/shared/AddressLinkWithTooltip';
@@ -11,7 +12,9 @@ import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DecodedInputData from 'ui/shared/DecodedInputData';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import RawInputData from 'ui/shared/RawInputData';
+import Token from 'ui/shared/Token';
 import Utilization from 'ui/shared/Utilization';
+import TokenTransfer from 'ui/tx/TokenTransfer';
 import type { Props as TxStatusProps } from 'ui/tx/TxStatus';
 import TxStatus from 'ui/tx/TxStatus';
 
@@ -73,11 +76,22 @@ const TxDetails = () => {
         <AddressLinkWithTooltip address={ tx.address_from } columnGap={ 0 } ml={ 2 } fontWeight="400"/>
       </DetailsInfoItem>
       <DetailsInfoItem
-        title="To"
-        hint="Address (external or contract) sending the transaction."
+        title="Interacted with contract"
+        hint="Address (external or contract) receiving the transaction."
       >
         <AddressIcon address={ tx.address_to }/>
         <AddressLinkWithTooltip address={ tx.address_to } columnGap={ 0 } ml={ 2 } fontWeight="400"/>
+        <Tag colorScheme="orange" variant="solid" ml={ 3 }>SANA</Tag>
+        <Icon as={ successIcon } boxSize={ 4 } ml={ 2 } color="green.500"/>
+        <Token symbol="USDT" ml={ 3 }/>
+      </DetailsInfoItem>
+      <DetailsInfoItem
+        title="Token transferred"
+        hint="List of token transferred in the transaction."
+      >
+        <Flex flexDirection="column" alignItems="flex-start" rowGap={ 5 }>
+          { tx.transferred_tokens.map((item) => <TokenTransfer key={ item.token } { ...item }/>) }
+        </Flex>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Value"

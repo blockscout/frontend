@@ -19,9 +19,17 @@ import { BODY_TYPEFACE } from 'theme/foundations/typography';
 const TAIL_LENGTH = 4;
 const HEAD_MIN_LENGTH = 4;
 
-const AddressWithDots = ({ address, fontWeight }: { address: string; fontWeight: string | number }) => {
+interface Props {
+  address: string;
+  fontWeight: string | number;
+  truncated?: boolean;
+}
+
+const shortenAddress = (address: string) => address.slice(0, 4) + '...' + address.slice(-4);
+
+const AddressWithDots = ({ address, fontWeight, truncated }: Props) => {
   const addressRef = useRef<HTMLSpanElement>(null);
-  const [ displayedAddress, setAddress ] = React.useState(address);
+  const [ displayedAddress, setAddress ] = React.useState(truncated ? shortenAddress(address) : address);
 
   const isFontFaceLoaded = useFontFaceObserver([
     { family: BODY_TYPEFACE, weight: String(fontWeight) as FontFace['weight'] },
@@ -65,19 +73,21 @@ const AddressWithDots = ({ address, fontWeight }: { address: string; fontWeight:
   // but we don't want to create more resize event listeners
   // that's why there are separate useEffect hooks
   useEffect(() => {
-    calculateString();
-  }, [ calculateString, isFontFaceLoaded ]);
+    !truncated && calculateString();
+  }, [ calculateString, isFontFaceLoaded, truncated ]);
 
   useEffect(() => {
-    const resizeHandler = _debounce(calculateString, 50);
-    window.addEventListener('resize', resizeHandler);
-    return function cleanup() {
-      window.removeEventListener('resize', resizeHandler);
-    };
-  }, [ calculateString ]);
+    if (!truncated) {
+      const resizeHandler = _debounce(calculateString, 50);
+      window.addEventListener('resize', resizeHandler);
+      return function cleanup() {
+        window.removeEventListener('resize', resizeHandler);
+      };
+    }
+  }, [ calculateString, truncated ]);
 
   const content = <span ref={ addressRef }>{ displayedAddress }</span>;
-  const isTruncated = address.length !== displayedAddress.length;
+  const isTruncated = truncated || address.length !== displayedAddress.length;
 
   if (isTruncated) {
     return (
