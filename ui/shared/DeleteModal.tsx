@@ -65,7 +65,6 @@ const DeleteModal: React.FC<Props> = ({
         </ModalBody>
         <ModalFooter>
           <Button
-            variant="primary"
             size="lg"
             onClick={ onDeleteClick }
             isLoading={ mutation.isLoading }

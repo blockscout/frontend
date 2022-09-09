@@ -106,7 +106,6 @@ const ApiKeysPage: React.FC = () => {
         { Boolean(data.length) && list }
         <Stack marginTop={ 8 } spacing={ 5 } direction={{ base: 'column', lg: 'row' }}>
           <Button
-            variant="primary"
             size="lg"
             onClick={ apiKeyModalProps.onOpen }
             disabled={ !canAdd }

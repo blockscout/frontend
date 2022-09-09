@@ -100,7 +100,6 @@ const CustomAbiPage: React.FC = () => {
         { data.length > 0 && list }
         <HStack marginTop={ 8 } spacing={ 5 }>
           <Button
-            variant="primary"
             size="lg"
             onClick={ customAbiModalProps.onOpen }
           >

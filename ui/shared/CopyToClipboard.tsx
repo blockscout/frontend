@@ -22,7 +22,7 @@ const CopyToClipboard = ({ text }: {text: string}) => {
         icon={ <CopyIcon/> }
         w="20px"
         h="20px"
-        variant="icon"
+        variant="simple"
         display="inline-block"
         flexShrink={ 0 }
         onClick={ onCopy }

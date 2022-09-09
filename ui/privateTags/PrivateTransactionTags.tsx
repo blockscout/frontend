@@ -99,7 +99,6 @@ const PrivateTransactionTags = () => {
       { Boolean(transactionTagsData.length) && list }
       <Box marginTop={ 8 }>
         <Button
-          variant="primary"
           size="lg"
           onClick={ transactionModalProps.onOpen }
         >
