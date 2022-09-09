@@ -2,12 +2,14 @@ import { Box, Table, Thead, Tbody, Tr, Th, TableContainer } from '@chakra-ui/rea
 import React from 'react';
 
 import { data } from 'data/txInternal';
+import Filters from 'ui/shared/Filters';
 import TxInternalsTableItem from 'ui/tx/internals/TxInternalsTableItem';
 
 const TxInternals = () => {
   return (
     <Box>
-      <TableContainer width="100%">
+      <Filters/>
+      <TableContainer width="100%" mt={ 6 }>
         <Table variant="simple" minWidth="950px">
           <Thead>
             <Tr>
