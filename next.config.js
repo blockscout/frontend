@@ -3,6 +3,7 @@ const withReactSvg = require('next-react-svg');
 const path = require('path');
 
 const headers = require('./configs/nextjs/headers');
+const rewrites = require('./configs/nextjs/rewrites');
 
 const moduleExports = {
   include: path.resolve(__dirname, 'icons'),
@@ -27,6 +28,7 @@ const moduleExports = {
     ];
   },
   headers,
+  rewrites,
   output: 'standalone',
 };
 
