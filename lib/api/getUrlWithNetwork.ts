@@ -7,9 +7,9 @@ export default function getUrlWithNetwork(_req: NextApiRequest, path: string) {
   const networkType = _req.cookies[cookies.NAMES.NETWORK_TYPE];
   const networkSubType = _req.cookies[cookies.NAMES.NETWORK_SUB_TYPE];
 
-  if (!networkType || !networkSubType) {
+  if (!networkType) {
     Sentry.captureException(new Error('Incorrect network'), { extra: { networkType, networkSubType } });
   }
 
-  return `/${ networkType }/${ networkSubType }/${ path }`;
+  return `/${ networkType }${ networkSubType ? '/' + networkSubType : '' }/${ path }`;
 }
