@@ -95,7 +95,6 @@ const PublicTagsData = ({ changeToFormScreen, onTagDelete }: Props) => {
       { data.length > 0 && list }
       <Box marginTop={ 8 }>
         <Button
-          variant="primary"
           size="lg"
           onClick={ changeToForm }
         >

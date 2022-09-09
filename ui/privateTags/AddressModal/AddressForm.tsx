@@ -117,7 +117,6 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
       <Box marginTop={ 8 }>
         <Button
           size="lg"
-          variant="primary"
           onClick={ handleSubmit(onSubmit) }
           disabled={ !isValid }
           isLoading={ pending }
