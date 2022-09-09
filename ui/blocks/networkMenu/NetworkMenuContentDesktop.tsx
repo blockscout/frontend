@@ -4,6 +4,7 @@ import React from 'react';
 
 import type { NetworkGroup } from 'types/networks';
 
+import useNetwork from 'lib/hooks/useNetwork';
 import NETWORKS from 'lib/networks/availableNetworks';
 
 import NetworkMenuLink from './NetworkMenuLink';
@@ -14,7 +15,7 @@ const availableTabs = TABS.filter((tab) => NETWORKS.some(({ group }) => group ==
 const NetworkMenuPopup = () => {
   const router = useRouter();
   const routeName = router.pathname.replace('/[network_type]/[network_sub_type]', '');
-  const selectedNetwork = NETWORKS.find((network) => router.query.network_type === network.type && router.query.network_sub_type === network.subType);
+  const selectedNetwork = useNetwork();
   const selectedTab = availableTabs.findIndex((tab) => selectedNetwork?.group === tab);
 
   return (

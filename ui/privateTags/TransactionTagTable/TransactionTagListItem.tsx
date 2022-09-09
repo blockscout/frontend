@@ -28,7 +28,7 @@ const TransactionTagListItem = ({ item, onEditClick, onDeleteClick }: Props) => 
         <TransactionSnippet hash={ item.transaction_hash }/>
         <HStack spacing={ 3 } mt={ 4 }>
           <Text fontSize="sm" fontWeight={ 500 }>Private tag</Text>
-          <Tag variant="gray" lineHeight="24px">
+          <Tag>
             { item.name }
           </Tag>
         </HStack>

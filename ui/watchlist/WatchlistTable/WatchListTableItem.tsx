@@ -72,7 +72,7 @@ const WatchlistTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
       <Td><WatchListAddressItem item={ item }/></Td>
       <Td>
         <TruncatedTextTooltip label={ item.name }>
-          <Tag variant="gray" lineHeight="24px">
+          <Tag>
             { item.name }
           </Tag>
         </TruncatedTextTooltip>

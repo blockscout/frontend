@@ -5,7 +5,7 @@ import React from 'react';
 import type { Network } from 'types/networks';
 
 import checkIcon from 'icons/check.svg';
-import placeholderIcon from 'icons/networks/placeholder.svg';
+import placeholderIcon from 'icons/networks/icons/placeholder.svg';
 import isAccountRoute from 'lib/networks/isAccountRoute';
 
 import useColors from './useColors';
@@ -30,7 +30,7 @@ const NetworkMenuLink = ({ name, type, subType, icon, isActive, isMobile, routeN
     // will change when blocks&transaction is implemented
     return routeName;
   })();
-  const pathName = `/${ type }/${ subType }${ localPath }`;
+  const pathName = `/${ type }${ subType ? '/' + subType : '' }${ localPath }`;
 
   // will fix later after we agree on CI/CD workflow
   const href = type === 'xdai' && subType === 'testnet' ? pathName : 'https://blockscout.com' + pathName;
@@ -38,7 +38,7 @@ const NetworkMenuLink = ({ name, type, subType, icon, isActive, isMobile, routeN
   const colors = useColors({ hasIcon });
 
   const iconEl = typeof icon === 'string' ? (
-    <Image w="30px" h="30px" src={ icon } alt={ `${ type } ${ subType } network icon` }/>
+    <Image w="30px" h="30px" src={ icon } alt={ `${ type } ${ subType ? subType : '' } network icon` }/>
   ) : (
     <Icon
       as={ hasIcon ? icon : placeholderIcon }

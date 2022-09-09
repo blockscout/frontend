@@ -1,9 +1,11 @@
-import { Icon, Box, useColorModeValue } from '@chakra-ui/react';
+import { Icon, Box, Image, useColorModeValue } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import React from 'react';
+import type { FunctionComponent, SVGAttributes } from 'react';
 
-import logoIcon from 'icons/logo.svg';
+import blockscoutLogo from 'icons/logo.svg';
 import useBasePath from 'lib/hooks/useBasePath';
+import useNetwork from 'lib/hooks/useNetwork';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 
 interface Props {
@@ -14,6 +16,41 @@ interface Props {
 const NetworkLogo = ({ isCollapsed, onClick }: Props) => {
   const logoColor = useColorModeValue('blue.600', 'white');
   const href = useBasePath();
+  const network = useNetwork();
+  const logo = network?.logo;
+
+  const style = useColorModeValue({}, { filter: 'brightness(0) invert(1)' });
+
+  let logoEl;
+
+  if (logo && typeof logo === 'string') {
+    logoEl = (
+      <Image
+        h="20px"
+        src={ logo }
+        alt={ `${ network.type } ${ network.subType ? network.subType : '' } network icon` }
+      />
+    );
+  } else if (typeof logo !== undefined) {
+    logoEl = (
+      <Icon
+        as={ logo as FunctionComponent<SVGAttributes<SVGElement>> }
+        width="auto"
+        height="20px"
+        { ...getDefaultTransitionProps() }
+        style={ style }
+      />
+    );
+  } else {
+    <Icon
+      as={ blockscoutLogo }
+      width="113px"
+      height="20px"
+      color={ logoColor }
+      { ...getDefaultTransitionProps() }
+      style={ style }
+    />;
+  }
 
   return (
     <NextLink href={ href } passHref>
@@ -26,13 +63,7 @@ const NetworkLogo = ({ isCollapsed, onClick }: Props) => {
         { ...getDefaultTransitionProps({ transitionProperty: 'width' }) }
         aria-label="Link to main page"
       >
-        <Icon
-          as={ logoIcon }
-          width="113px"
-          height="20px"
-          color={ logoColor }
-          { ...getDefaultTransitionProps() }
-        />
+        { logoEl }
       </Box>
     </NextLink>
   );

@@ -7,8 +7,9 @@ export interface Network {
   shortName?: string;
   // basePath = /<type>/<subType>, e.g. /xdai/mainnet
   type: string;
-  subType: string;
+  subType?: string;
   group: 'mainnets' | 'testnets' | 'other';
   icon?: FunctionComponent<SVGAttributes<SVGElement>> | string;
+  logo?: FunctionComponent<SVGAttributes<SVGElement>> | string;
   isAccountSupported?: boolean;
 }
