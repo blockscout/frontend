@@ -12,6 +12,7 @@ import useBasePath from 'lib/hooks/useBasePath';
 import Page from 'ui/shared/Page';
 import PageHeader from 'ui/shared/PageHeader';
 import TxDetails from 'ui/tx/TxDetails';
+import TxInternals from 'ui/tx/TxInternals';
 
 interface Tab {
   type: 'details' | 'internal_txn' | 'logs' | 'raw_trace' | 'state';
@@ -22,7 +23,7 @@ interface Tab {
 
 const TABS: Array<Tab> = [
   { type: 'details', path: '', name: 'Details', component: <TxDetails/> },
-  { type: 'internal_txn', path: '/internal-transactions', name: 'Internal txn' },
+  { type: 'internal_txn', path: '/internal-transactions', name: 'Internal txn', component: <TxInternals/> },
   { type: 'logs', path: '/logs', name: 'Logs' },
   { type: 'state', path: '/state', name: 'State' },
   { type: 'raw_trace', path: '/raw-trace', name: 'Raw trace' },
