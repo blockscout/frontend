@@ -78,10 +78,12 @@ const AddressWithDots = ({ address, fontWeight, truncated }: Props) => {
 
   useEffect(() => {
     if (!truncated) {
-      const resizeHandler = _debounce(calculateString, 50);
-      window.addEventListener('resize', resizeHandler);
+      const resizeHandler = _debounce(calculateString, 100);
+      const resizeObserver = new ResizeObserver(resizeHandler);
+
+      resizeObserver.observe(document.body);
       return function cleanup() {
-        window.removeEventListener('resize', resizeHandler);
+        resizeObserver.unobserve(document.body);
       };
     }
   }, [ calculateString, truncated ]);
