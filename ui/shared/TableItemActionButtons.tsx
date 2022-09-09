@@ -18,7 +18,7 @@ const TableItemActionButtons = ({ onEditClick, onDeleteClick }: Props) => {
       <Tooltip label="Edit">
         <IconButton
           aria-label="edit"
-          variant="icon"
+          variant="simple"
           w="30px"
           h="30px"
           onClick={ onEditClick }
@@ -29,7 +29,7 @@ const TableItemActionButtons = ({ onEditClick, onDeleteClick }: Props) => {
       <Tooltip label="Delete">
         <IconButton
           aria-label="delete"
-          variant="icon"
+          variant="simple"
           w="30px"
           h="30px"
           onClick={ onDeleteClick }

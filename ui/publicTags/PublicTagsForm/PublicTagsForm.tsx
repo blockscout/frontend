@@ -231,7 +231,6 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
       <HStack spacing={ 6 }>
         <Button
           size="lg"
-          variant="primary"
           onClick={ handleSubmit(onSubmit) }
           disabled={ !isValid }
           isLoading={ mutation.isLoading }
@@ -240,7 +239,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
         </Button>
         <Button
           size="lg"
-          variant="secondary"
+          variant="outline"
           onClick={ changeToData }
           disabled={ mutation.isLoading }
         >
