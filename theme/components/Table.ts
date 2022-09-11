@@ -40,6 +40,19 @@ const sizes = {
       py: 6,
     },
   }),
+  sm: definePartsStyle({
+    th: {
+      px: '10px',
+      py: '10px',
+      fontSize: 'sm',
+    },
+    td: {
+      px: '10px',
+      py: 6,
+      fontSize: 'sm',
+      fontWeight: 500,
+    },
+  }),
 };
 
 const variants = {
