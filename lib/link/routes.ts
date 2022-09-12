@@ -3,9 +3,45 @@ export interface Route {
 }
 export type RouteName = keyof typeof ROUTES;
 
+const BASE_PATH = '/:network_type/:network_sub_type';
+
 export const ROUTES = {
   tx: {
-    pattern: '/:network_type/:network_sub_type/tx/:id/:tab?',
+    pattern: `${ BASE_PATH }/tx/:id/:tab?`,
+  },
+  txs: {
+    pattern: `${ BASE_PATH }/txs`,
+  },
+  blocks: {
+    pattern: `${ BASE_PATH }/blocks`,
+  },
+  tokens: {
+    pattern: `${ BASE_PATH }/tokens`,
+  },
+  apps: {
+    pattern: `${ BASE_PATH }/apps`,
+  },
+  // ??? what URL will be here
+  other: {
+    pattern: `${ BASE_PATH }/other`,
+  },
+  watchlist: {
+    pattern: `${ BASE_PATH }/account/watchlist`,
+  },
+  private_tags: {
+    pattern: `${ BASE_PATH }/account/tag_{:tab}`,
+  },
+  public_tags: {
+    pattern: `${ BASE_PATH }/account/public_tags_request`,
+  },
+  api_keys: {
+    pattern: `${ BASE_PATH }/account/api_key`,
+  },
+  custom_abi: {
+    pattern: `${ BASE_PATH }/account/custom_abi`,
+  },
+  profile: {
+    pattern: `${ BASE_PATH }/auth/profile`,
   },
 };
 

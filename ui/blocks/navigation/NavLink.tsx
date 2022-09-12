@@ -10,13 +10,13 @@ import useColors from './useColors';
 interface Props {
   isCollapsed?: boolean;
   isActive?: boolean;
-  pathname: string;
+  url: string;
   text: string;
   icon: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
   px?: string | number;
 }
 
-const NavLink = ({ text, pathname, icon, isCollapsed, isActive, px }: Props) => {
+const NavLink = ({ text, url, icon, isCollapsed, isActive, px }: Props) => {
   const colors = useColors();
   const isMobile = useIsMobile();
   const width = (() => {
@@ -28,7 +28,7 @@ const NavLink = ({ text, pathname, icon, isCollapsed, isActive, px }: Props) => 
   })();
 
   return (
-    <NextLink href={ pathname } passHref>
+    <NextLink href={ url } passHref>
       <Link
         as="li"
         listStyleType="none"

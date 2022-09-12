@@ -10,6 +10,7 @@ export function link(routeName: RouteName, urlParams?: Record<string, string | u
   }
 
   const toPath = compile(route.pattern, { encode: encodeURIComponent, validate: false });
+
   const path = toPath(urlParams);
   const url = new URL(path, window.location.origin);
 
