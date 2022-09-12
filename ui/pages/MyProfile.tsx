@@ -2,10 +2,10 @@ import { VStack, FormControl, FormLabel, Input } from '@chakra-ui/react';
 import React from 'react';
 
 import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
-import AccountPageHeader from 'ui/shared/AccountPageHeader';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Page from 'ui/shared/Page';
+import PageHeader from 'ui/shared/PageHeader';
 import UserAvatar from 'ui/shared/UserAvatar';
 
 const MyProfile = () => {
@@ -56,7 +56,7 @@ const MyProfile = () => {
 
   return (
     <Page>
-      <AccountPageHeader text="My profile"/>
+      <PageHeader text="My profile"/>
       { content }
     </Page>
   );

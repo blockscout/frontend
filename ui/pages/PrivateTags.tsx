@@ -11,8 +11,8 @@ import React, { useCallback, useState } from 'react';
 import useBasePath from 'lib/hooks/useBasePath';
 import PrivateAddressTags from 'ui/privateTags/PrivateAddressTags';
 import PrivateTransactionTags from 'ui/privateTags/PrivateTransactionTags';
-import AccountPageHeader from 'ui/shared/AccountPageHeader';
 import Page from 'ui/shared/Page';
+import PageHeader from 'ui/shared/PageHeader';
 
 const TABS = [ 'address', 'transaction' ] as const;
 
@@ -36,7 +36,7 @@ const PrivateTags = ({ tab }: Props) => {
   return (
     <Page>
       <Box h="100%">
-        <AccountPageHeader text="Private tags"/>
+        <PageHeader text="Private tags"/>
         <Tabs variant="soft-rounded" colorScheme="blue" isLazy onChange={ onChangeTab } defaultIndex={ TABS.indexOf(tab) }>
           <TabList marginBottom={{ base: 6, lg: 8 }}>
             <Tab>Address</Tab>

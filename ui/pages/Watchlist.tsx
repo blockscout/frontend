@@ -7,9 +7,9 @@ import type { TWatchlist, TWatchlistItem } from 'types/client/account';
 import fetch from 'lib/client/fetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
-import AccountPageHeader from 'ui/shared/AccountPageHeader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Page from 'ui/shared/Page';
+import PageHeader from 'ui/shared/PageHeader';
 import SkeletonAccountMobile from 'ui/shared/SkeletonAccountMobile';
 import SkeletonTable from 'ui/shared/SkeletonTable';
 import AddressModal from 'ui/watchlist/AddressModal/AddressModal';
@@ -112,7 +112,7 @@ const WatchList: React.FC = () => {
   return (
     <Page>
       <Box h="100%">
-        <AccountPageHeader text="Watch list"/>
+        <PageHeader text="Watch list"/>
         { content }
       </Box>
     </Page>

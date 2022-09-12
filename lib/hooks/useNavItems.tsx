@@ -19,7 +19,7 @@ export default function useNavItems() {
   return React.useMemo(() => {
     const mainNavItems = [
       { text: 'Blocks', pathname: basePath + '/blocks', icon: blocksIcon },
-      { text: 'Transactions', pathname: basePath + '/transactions', icon: transactionsIcon },
+      { text: 'Transactions', pathname: basePath + '/tx', icon: transactionsIcon },
       { text: 'Tokens', pathname: basePath + '/tokens', icon: tokensIcon },
       { text: 'Apps', pathname: basePath + '/apps', icon: appsIcon },
       { text: 'Other', pathname: basePath + '/other', icon: gearIcon },
