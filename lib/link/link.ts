@@ -1,7 +1,7 @@
-import { compile } from 'path-to-regexp';
-
 import { ROUTES } from './routes';
 import type { RouteName } from './routes';
+
+const PATH_PARAM_REGEXP = /\/\[(\w+)\]/g;
 
 export function link(routeName: RouteName, urlParams?: Record<string, string | undefined>, queryParams?: Record<string, string>): string {
   const route = ROUTES[routeName];
@@ -9,9 +9,11 @@ export function link(routeName: RouteName, urlParams?: Record<string, string | u
     return '';
   }
 
-  const toPath = compile(route.pattern, { encode: encodeURIComponent, validate: false });
+  const path = route.pattern.replace(PATH_PARAM_REGEXP, (_, paramName: string) => {
+    const paramValue = urlParams?.[paramName];
+    return paramValue ? `/${ paramValue }` : '';
+  });
 
-  const path = toPath(urlParams);
   const url = new URL(path, window.location.origin);
 
   queryParams && Object.entries(queryParams).forEach(([ key, value ]) => {

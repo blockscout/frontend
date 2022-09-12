@@ -1,47 +1,90 @@
 export interface Route {
   pattern: string;
+  crossNetworkNavigation?: boolean; // route will not change when switching networks
 }
+
 export type RouteName = keyof typeof ROUTES;
 
-const BASE_PATH = '/:network_type/:network_sub_type';
+const BASE_PATH = '/[network_type]/[network_sub_type]';
 
 export const ROUTES = {
-  tx: {
-    pattern: `${ BASE_PATH }/tx/:id/:tab?`,
+  // NETWORK MAIN PAGE
+  network_index: {
+    pattern: `${ BASE_PATH }`,
+    crossNetworkNavigation: true,
   },
-  txs: {
-    pattern: `${ BASE_PATH }/txs`,
-  },
-  blocks: {
-    pattern: `${ BASE_PATH }/blocks`,
-  },
-  tokens: {
-    pattern: `${ BASE_PATH }/tokens`,
-  },
-  apps: {
-    pattern: `${ BASE_PATH }/apps`,
-  },
-  // ??? what URL will be here
-  other: {
-    pattern: `${ BASE_PATH }/other`,
-  },
+
+  // ACCOUNT
   watchlist: {
     pattern: `${ BASE_PATH }/account/watchlist`,
+    crossNetworkNavigation: true,
   },
-  private_tags: {
-    pattern: `${ BASE_PATH }/account/tag_{:tab}`,
+  private_tags_address: {
+    pattern: `${ BASE_PATH }/account/tag_address`,
+    crossNetworkNavigation: true,
+  },
+  private_tags_tx: {
+    pattern: `${ BASE_PATH }/account/tag_transaction`,
+    crossNetworkNavigation: true,
   },
   public_tags: {
     pattern: `${ BASE_PATH }/account/public_tags_request`,
+    crossNetworkNavigation: true,
   },
   api_keys: {
     pattern: `${ BASE_PATH }/account/api_key`,
+    crossNetworkNavigation: true,
   },
   custom_abi: {
     pattern: `${ BASE_PATH }/account/custom_abi`,
+    crossNetworkNavigation: true,
   },
   profile: {
     pattern: `${ BASE_PATH }/auth/profile`,
+    crossNetworkNavigation: true,
+  },
+
+  // TRANSACTIONS
+  txs: {
+    pattern: `${ BASE_PATH }/txs`,
+    crossNetworkNavigation: true,
+  },
+  tx_index: {
+    pattern: `${ BASE_PATH }/tx/[id]`,
+  },
+  tx_internal: {
+    pattern: `${ BASE_PATH }/tx/[id]/internal-transactions`,
+  },
+  tx_logs: {
+    pattern: `${ BASE_PATH }/tx/[id]/logs`,
+  },
+  tx_raw_trace: {
+    pattern: `${ BASE_PATH }/tx/[id]/raw-trace`,
+  },
+  tx_state: {
+    pattern: `${ BASE_PATH }/tx/[id]/state`,
+  },
+
+  // BLOCKS
+  blocks: {
+    pattern: `${ BASE_PATH }/blocks`,
+    crossNetworkNavigation: true,
+  },
+
+  // TOKENS
+  tokens: {
+    pattern: `${ BASE_PATH }/tokens`,
+    crossNetworkNavigation: true,
+  },
+
+  // APPS
+  apps: {
+    pattern: `${ BASE_PATH }/apps`,
+  },
+
+  // ??? what URL will be here
+  other: {
+    pattern: `${ BASE_PATH }/other`,
   },
 };
 

@@ -8,6 +8,7 @@ import {
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { RouteName } from 'lib/link/routes';
 import useLink from 'lib/link/useLink';
 import Page from 'ui/shared/Page';
 import PageHeader from 'ui/shared/PageHeader';
@@ -20,14 +21,15 @@ interface Tab {
   name: string;
   path?: string;
   component?: React.ReactNode;
+  routeName: RouteName;
 }
 
 const TABS: Array<Tab> = [
-  { type: 'details', name: 'Details', component: <TxDetails/> },
-  { type: 'internal_txn', path: 'internal-transactions', name: 'Internal txn', component: <TxInternals/> },
-  { type: 'logs', path: 'logs', name: 'Logs', component: <TxLogs/> },
-  { type: 'state', path: 'state', name: 'State' },
-  { type: 'raw_trace', path: 'raw-trace', name: 'Raw trace' },
+  { type: 'details', routeName: 'tx_index', name: 'Details', component: <TxDetails/> },
+  { type: 'internal_txn', routeName: 'tx_internal', name: 'Internal txn', component: <TxInternals/> },
+  { type: 'logs', routeName: 'tx_logs', name: 'Logs', component: <TxLogs/> },
+  { type: 'state', routeName: 'tx_state', name: 'State' },
+  { type: 'raw_trace', routeName: 'tx_raw_trace', name: 'Raw trace' },
 ];
 
 export interface Props {
@@ -42,7 +44,7 @@ const TransactionPageContent = ({ tab }: Props) => {
   const handleTabChange = React.useCallback((index: number) => {
     const nextTab = TABS[index];
     setActiveTab(nextTab.type);
-    const newUrl = link('tx', { id: router.query.id as string, tab: nextTab.path });
+    const newUrl = link(nextTab.routeName, { id: router.query.id as string });
     window.history.replaceState(history.state, '', newUrl);
   }, [ setActiveTab, link, router.query.id ]);
 
