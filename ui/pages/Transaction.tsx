@@ -8,7 +8,7 @@ import {
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import useBasePath from 'lib/hooks/useBasePath';
+import useLink from 'lib/link/useLink';
 import Page from 'ui/shared/Page';
 import PageHeader from 'ui/shared/PageHeader';
 import TxDetails from 'ui/tx/TxDetails';
@@ -17,17 +17,17 @@ import TxLogs from 'ui/tx/TxLogs';
 
 interface Tab {
   type: 'details' | 'internal_txn' | 'logs' | 'raw_trace' | 'state';
-  path: string;
   name: string;
+  path?: string;
   component?: React.ReactNode;
 }
 
 const TABS: Array<Tab> = [
-  { type: 'details', path: '', name: 'Details', component: <TxDetails/> },
-  { type: 'internal_txn', path: '/internal-transactions', name: 'Internal txn', component: <TxInternals/> },
-  { type: 'logs', path: '/logs', name: 'Logs', component: <TxLogs/> },
-  { type: 'state', path: '/state', name: 'State' },
-  { type: 'raw_trace', path: '/raw-trace', name: 'Raw trace' },
+  { type: 'details', name: 'Details', component: <TxDetails/> },
+  { type: 'internal_txn', path: 'internal-transactions', name: 'Internal txn', component: <TxInternals/> },
+  { type: 'logs', path: 'logs', name: 'Logs', component: <TxLogs/> },
+  { type: 'state', path: 'state', name: 'State' },
+  { type: 'raw_trace', path: 'raw-trace', name: 'Raw trace' },
 ];
 
 export interface Props {
@@ -37,14 +37,14 @@ export interface Props {
 const TransactionPageContent = ({ tab }: Props) => {
   const [ , setActiveTab ] = React.useState<Tab['type']>(tab);
   const router = useRouter();
-  const basePath = useBasePath();
+  const link = useLink();
 
   const handleTabChange = React.useCallback((index: number) => {
     const nextTab = TABS[index];
     setActiveTab(nextTab.type);
-    const newUrl = basePath + '/tx/' + router.query.id + nextTab.path;
+    const newUrl = link('tx', { id: router.query.id as string, tab: nextTab.path });
     window.history.replaceState(history.state, '', newUrl);
-  }, [ setActiveTab, basePath, router ]);
+  }, [ setActiveTab, link, router.query.id ]);
 
   const defaultIndex = TABS.map(({ type }) => type).indexOf(tab);
 
