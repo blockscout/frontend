@@ -1,3 +1,8 @@
+const RESTRICTED_MODULES = {
+  paths: [
+    { name: 'dayjs', message: 'Please use lib/date/dayjs.ts' },
+  ],
+};
 module.exports = {
   env: {
     es6: true,
@@ -194,6 +199,8 @@ module.exports = {
         alphabetize: { order: 'asc', ignoreCase: true },
       },
     ],
+
+    'no-restricted-imports': [ 'error', RESTRICTED_MODULES ],
 
     'react/jsx-key': 'error',
     'react/jsx-no-bind': [ 'error', {

@@ -13,6 +13,14 @@ import getDefaultTransitionProps from '../utils/getDefaultTransitionProps';
 import getOutlinedFieldStyles from '../utils/getOutlinedFieldStyles';
 
 const size = {
+  xs: defineStyle({
+    fontSize: 'md',
+    lineHeight: '24px',
+    px: '4px',
+    py: '12px',
+    h: '32px',
+    borderRadius: 'base',
+  }),
   sm: defineStyle({
     fontSize: 'md',
     lineHeight: '24px',
@@ -55,6 +63,10 @@ const variantOutline = definePartsStyle((props) => {
 });
 
 const sizes = {
+  xs: definePartsStyle({
+    field: size.xs,
+    addon: size.xs,
+  }),
   sm: definePartsStyle({
     field: size.sm,
     addon: size.sm,
