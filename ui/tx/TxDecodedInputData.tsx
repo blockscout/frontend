@@ -50,7 +50,7 @@ const TableRow = ({ isLast, name, type, children }: RowProps) => {
   );
 };
 
-const DecodedInputData = () => {
+const TxDecodedInputData = () => {
   const bgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
 
   return (
@@ -124,4 +124,4 @@ const DecodedInputData = () => {
   );
 };
 
-export default DecodedInputData;
+export default TxDecodedInputData;

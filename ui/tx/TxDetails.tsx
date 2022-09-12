@@ -10,12 +10,12 @@ import dayjs from 'lib/date/dayjs';
 import AddressIcon from 'ui/shared/AddressIcon';
 import AddressLinkWithTooltip from 'ui/shared/AddressLinkWithTooltip';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import DecodedInputData from 'ui/shared/DecodedInputData';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import RawInputData from 'ui/shared/RawInputData';
 import Token from 'ui/shared/Token';
 import Utilization from 'ui/shared/Utilization';
 import TokenTransfer from 'ui/tx/TokenTransfer';
+import TxDecodedInputData from 'ui/tx/TxDecodedInputData';
 import type { Props as TxStatusProps } from 'ui/tx/TxStatus';
 import TxStatus from 'ui/tx/TxStatus';
 
@@ -199,7 +199,7 @@ const TxDetails = () => {
             title="Decoded input data"
             hint="hmmmmmmmmmmm"
           >
-            <DecodedInputData/>
+            <TxDecodedInputData/>
           </DetailsInfoItem>
         </>
       ) }

@@ -4,8 +4,8 @@ import React from 'react';
 
 import AddressIcon from 'ui/shared/AddressIcon';
 import AddressLinkWithTooltip from 'ui/shared/AddressLinkWithTooltip';
-import DecodedInputData from 'ui/shared/DecodedInputData';
 import TxLogTopic from 'ui/tx/logs/TxLogTopic';
+import DecodedInputData from 'ui/tx/TxDecodedInputData';
 
 interface Props {
   address: string;
