@@ -3,7 +3,7 @@ import React from 'react';
 
 import tokeIcon from 'icons/tokens/toke.svg';
 import usdtIcon from 'icons/tokens/usdt.svg';
-import useBasePath from 'lib/hooks/useBasePath';
+import useLink from 'lib/link/useLink';
 
 // temporary solution
 // don't know where to get icons and addresses yet
@@ -29,13 +29,13 @@ interface Props {
 
 const Token = ({ symbol, className }: Props) => {
   const token = TOKENS[symbol as keyof typeof TOKENS];
-  const basePath = useBasePath();
+  const link = useLink();
 
   if (!token) {
     return null;
   }
 
-  const url = basePath + '/token/' + token.address;
+  const url = link('token_index', { id: token.address });
 
   return (
     <Center className={ className }>

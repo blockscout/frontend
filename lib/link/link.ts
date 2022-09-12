@@ -1,3 +1,5 @@
+import isBrowser from 'lib/isBrowser';
+
 import { ROUTES } from './routes';
 import type { RouteName } from './routes';
 
@@ -14,7 +16,7 @@ export function link(routeName: RouteName, urlParams?: Record<string, string | u
     return paramValue ? `/${ paramValue }` : '';
   });
 
-  const url = new URL(path, window.location.origin);
+  const url = new URL(path, isBrowser() ? window.location.origin : 'https://blockscout.com');
 
   queryParams && Object.entries(queryParams).forEach(([ key, value ]) => {
     url.searchParams.append(key, value);

@@ -76,15 +76,30 @@ export const ROUTES = {
     pattern: `${ BASE_PATH }/tokens`,
     crossNetworkNavigation: true,
   },
+  token_index: {
+    pattern: `${ BASE_PATH }/token/[id]`,
+    crossNetworkNavigation: true,
+  },
+
+  // ADDRESSES
+  address_index: {
+    pattern: `${ BASE_PATH }/address/[id]`,
+    crossNetworkNavigation: true,
+  },
 
   // APPS
   apps: {
     pattern: `${ BASE_PATH }/apps`,
   },
 
+  // SEARCH
+  search_results: {
+    pattern: `${ BASE_PATH }/apps`,
+  },
+
   // ??? what URL will be here
   other: {
-    pattern: `${ BASE_PATH }/other`,
+    pattern: `${ BASE_PATH }/search-results`,
   },
 };
 

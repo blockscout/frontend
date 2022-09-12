@@ -1,15 +1,15 @@
 import type { ChangeEvent, FormEvent } from 'react';
 import React from 'react';
 
-import useBasePath from 'lib/hooks/useBasePath';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import useLink from 'lib/link/useLink';
 
 import SearchBarDesktop from './SearchBarDesktop';
 import SearchBarMobile from './SearchBarMobile';
 
 const SearchBar = () => {
   const [ value, setValue ] = React.useState('');
-  const basePath = useBasePath();
+  const link = useLink();
   const isMobile = useIsMobile();
 
   const handleChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
@@ -18,8 +18,9 @@ const SearchBar = () => {
 
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    window.location.assign(`https://blockscout.com${ basePath }/search-results?q=${ value }`);
-  }, [ value, basePath ]);
+    const url = link('search_results', undefined, { q: value });
+    window.location.assign(url);
+  }, [ link, value ]);
 
   if (isMobile) {
     return (
