@@ -16,26 +16,6 @@ interface Props extends Network {
 }
 
 const NetworkMenuLink = ({ name, type, subType, icon, isActive, isMobile, url }: Props) => {
-  // const isAccount = isAccountRoute(routeName);
-  // const localPath = (() => {
-  //   if (isAccount && isAccountSupported) {
-  //     return routeName;
-  //   }
-
-  //   if (isAccount && !isAccountSupported) {
-  //     return '';
-  //   }
-
-  //   // will change when blocks&transaction is implemented
-  //   return routeName;
-  // })();
-  // const pathName = `/${ type }${ subType ? '/' + subType : '' }${ localPath }`;
-
-  // const url = link(routeName, { network_type: type, network_sub_type: subType });
-  // console.log('__>__', url);
-
-  // will fix later after we agree on CI/CD workflow
-  // const href = type === 'xdai' && subType === 'testnet' ? pathName : 'https://blockscout.com' + pathName;
   const hasIcon = Boolean(icon);
   const colors = useColors({ hasIcon });
 
