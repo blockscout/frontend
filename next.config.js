@@ -23,7 +23,7 @@ const moduleExports = {
       {
         source: '/',
         destination: '/poa/core',
-        permanent: true,
+        permanent: false,
       },
     ];
   },
