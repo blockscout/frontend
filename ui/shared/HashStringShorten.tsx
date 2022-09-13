@@ -2,13 +2,13 @@ import { Tooltip } from '@chakra-ui/react';
 import React from 'react';
 
 interface Props {
-  address: string;
+  hash?: string;
 }
 
-const HashStringShorten = ({ address }: Props) => {
+const HashStringShorten = ({ hash = '' }: Props) => {
   return (
-    <Tooltip label={ address }>
-      { address.slice(0, 4) + '...' + address.slice(-4) }
+    <Tooltip label={ hash }>
+      { hash.slice(0, 4) + '...' + hash.slice(-4) }
     </Tooltip>
   );
 };

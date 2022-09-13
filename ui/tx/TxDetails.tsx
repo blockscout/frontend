@@ -7,10 +7,12 @@ import clockIcon from 'icons/clock.svg';
 import flameIcon from 'icons/flame.svg';
 import successIcon from 'icons/status/success.svg';
 import dayjs from 'lib/date/dayjs';
-import AddressIcon from 'ui/shared/AddressIcon';
-import AddressLinkWithTooltip from 'ui/shared/AddressLinkWithTooltip';
+import Address from 'ui/shared/address/Address';
+import AddressIcon from 'ui/shared/address/AddressIcon';
+import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import RawInputData from 'ui/shared/RawInputData';
 import Token from 'ui/shared/Token';
 import Utilization from 'ui/shared/Utilization';
@@ -77,15 +79,25 @@ const TxDetails = () => {
         hint="Address (external or contract) sending the transaction."
         mt={ 8 }
       >
-        <AddressIcon address={ tx.address_from }/>
-        <AddressLinkWithTooltip address={ tx.address_from } columnGap={ 0 } ml={ 2 } fontWeight="400"/>
+        <Address hash={ tx.address_from }>
+          <AddressIcon/>
+          <AddressLink ml={ 2 }>
+            <HashStringShortenDynamic/>
+          </AddressLink>
+          <CopyToClipboard/>
+        </Address>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Interacted with contract"
         hint="Address (external or contract) receiving the transaction."
       >
-        <AddressIcon address={ tx.address_to }/>
-        <AddressLinkWithTooltip address={ tx.address_to } columnGap={ 0 } ml={ 2 } fontWeight="400"/>
+        <Address hash={ tx.address_to }>
+          <AddressIcon/>
+          <AddressLink ml={ 2 }>
+            <HashStringShortenDynamic/>
+          </AddressLink>
+          <CopyToClipboard/>
+        </Address>
         <Tag colorScheme="orange" variant="solid" ml={ 3 }>SANA</Tag>
         <Icon as={ successIcon } boxSize={ 4 } ml={ 2 } color="green.500"/>
         <Token symbol="USDT" ml={ 3 }/>

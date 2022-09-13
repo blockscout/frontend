@@ -1,8 +1,10 @@
 import { Flex, Text, Grid, GridItem, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
-import AddressLinkWithTooltip from 'ui/shared/AddressLinkWithTooltip';
+import Address from 'ui/shared/address/Address';
+import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 interface RowProps {
   children: React.ReactNode;
@@ -109,10 +111,20 @@ const TxDecodedInputData = () => {
         Data
       </GridItem>
       <TableRow name="from" type="address">
-        <AddressLinkWithTooltip address="0x0000000000000000000000000000000000000000" columnGap={ 0 } justifyContent="space-between" fontWeight="400"/>
+        <Address hash="0x0000000000000000000000000000000000000000" justifyContent="space-between">
+          <AddressLink>
+            <HashStringShortenDynamic/>
+          </AddressLink>
+          <CopyToClipboard/>
+        </Address>
       </TableRow>
       <TableRow name="from" type="address">
-        <AddressLinkWithTooltip address="0xcf0c50b7ea8af37d57380a0ac199d55b0782c718" columnGap={ 0 } justifyContent="space-between" fontWeight="400"/>
+        <Address hash="0xcf0c50b7ea8af37d57380a0ac199d55b0782c718" justifyContent="space-between">
+          <AddressLink>
+            <HashStringShortenDynamic/>
+          </AddressLink>
+          <CopyToClipboard/>
+        </Address>
       </TableRow>
       <TableRow name="tokenId" type="uint256" isLast>
         <Flex alignItems="center" justifyContent="space-between">

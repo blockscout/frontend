@@ -1,5 +1,5 @@
-// this component trims address like 0x123...4567 (always 4 chars after dots)
-// or shows full address, if fits
+// this component trims hash string like 0x123...4567 (always 4 chars after dots)
+// or shows full hash string, if fits
 
 // i can't do this with pure css. if you can, feel free to replace it
 
@@ -20,25 +20,20 @@ const TAIL_LENGTH = 4;
 const HEAD_MIN_LENGTH = 4;
 
 interface Props {
-  address: string;
+  hash?: string;
   fontWeight?: string | number;
 }
 
-const HashStringShortenDynamic = ({ address, fontWeight = '400' }: Props) => {
-  const addressRef = useRef<HTMLSpanElement>(null);
-  const [ displayedAddress, setAddress ] = React.useState(address);
+const HashStringShortenDynamic = ({ hash = '', fontWeight = '400' }: Props) => {
+  const elementRef = useRef<HTMLSpanElement>(null);
+  const [ displayedString, setDisplayedString ] = React.useState(hash);
 
   const isFontFaceLoaded = useFontFaceObserver([
     { family: BODY_TYPEFACE, weight: String(fontWeight) as FontFace['weight'] },
   ]);
 
   const calculateString = useCallback(() => {
-    const addressEl = addressRef.current;
-    if (!addressEl) {
-      return;
-    }
-
-    const parent = addressRef?.current?.parentNode as HTMLElement;
+    const parent = elementRef?.current?.parentNode as HTMLElement;
     if (!parent) {
       return;
     }
@@ -46,25 +41,25 @@ const HashStringShortenDynamic = ({ address, fontWeight = '400' }: Props) => {
     const shadowEl = document.createElement('span');
     shadowEl.style.opacity = '0';
     parent.appendChild(shadowEl);
-    shadowEl.textContent = address;
+    shadowEl.textContent = hash;
 
     const parentWidth = getWidth(parent);
 
     if (getWidth(shadowEl) > parentWidth) {
-      for (let i = 1; i <= address.length - TAIL_LENGTH - HEAD_MIN_LENGTH; i++) {
-        const res = address.slice(0, address.length - i - TAIL_LENGTH) + '...' + address.slice(-TAIL_LENGTH);
+      for (let i = 1; i <= hash.length - TAIL_LENGTH - HEAD_MIN_LENGTH; i++) {
+        const res = hash.slice(0, hash.length - i - TAIL_LENGTH) + '...' + hash.slice(-TAIL_LENGTH);
         shadowEl.textContent = res;
-        if (getWidth(shadowEl) < parentWidth || i === address.length - TAIL_LENGTH - HEAD_MIN_LENGTH) {
-          setAddress(res);
+        if (getWidth(shadowEl) < parentWidth || i === hash.length - TAIL_LENGTH - HEAD_MIN_LENGTH) {
+          setDisplayedString(res);
           break;
         }
       }
     } else {
-      setAddress(address);
+      setDisplayedString(hash);
     }
 
     parent.removeChild(shadowEl);
-  }, [ address ]);
+  }, [ hash ]);
 
   // we want to do recalculation when isFontFaceLoaded flag is changed
   // but we don't want to create more resize event listeners
@@ -83,12 +78,12 @@ const HashStringShortenDynamic = ({ address, fontWeight = '400' }: Props) => {
     };
   }, [ calculateString ]);
 
-  const content = <span ref={ addressRef }>{ displayedAddress }</span>;
-  const isTruncated = address.length !== displayedAddress.length;
+  const content = <span ref={ elementRef }>{ displayedString }</span>;
+  const isTruncated = hash.length !== displayedString.length;
 
   if (isTruncated) {
     return (
-      <Tooltip label={ address }>{ content }</Tooltip>
+      <Tooltip label={ hash }>{ content }</Tooltip>
     );
   }
 
