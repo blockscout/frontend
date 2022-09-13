@@ -2,6 +2,8 @@ import type { NextApiRequest } from 'next';
 import type { RequestInit, Response } from 'node-fetch';
 import nodeFetch from 'node-fetch';
 
+import * as cookies from 'lib/cookies';
+
 // first arg can be only a string
 // FIXME migrate to RequestInfo later if needed
 export default function fetchFactory(_req: NextApiRequest) {
@@ -9,7 +11,7 @@ export default function fetchFactory(_req: NextApiRequest) {
     const headers = {
       accept: 'application/json',
       'content-type': 'application/json',
-      cookie: `_explorer_key=${ _req.cookies._explorer_key }`,
+      cookie: `${ cookies.NAMES.API_TOKEN }=${ _req.cookies[cookies.NAMES.API_TOKEN] }`,
     };
     const url = `https://blockscout.com${ path }`;
 

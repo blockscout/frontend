@@ -1,5 +1,6 @@
 const { NextResponse } = require('next/server');
 
+const { NAMES } = require('lib/cookies');
 const NETWORKS = require('lib/networks/availableNetworks').default;
 
 export function middleware(req) {
@@ -8,7 +9,7 @@ export function middleware(req) {
     type === networkType && (subType ? subType === networkSubtype : true));
 
   if (selectedNetwork) {
-    const apiToken = req.cookies.get('_explorer_key');
+    const apiToken = req.cookies.get(NAMES.API_TOKEN);
 
     if (!apiToken) {
       const authPath = `/${ selectedNetwork.type }/${ selectedNetwork.subType }auth/auth0`;
