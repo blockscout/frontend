@@ -21,15 +21,12 @@ const HEAD_MIN_LENGTH = 4;
 
 interface Props {
   address: string;
-  fontWeight: string | number;
-  truncated?: boolean;
+  fontWeight?: string | number;
 }
 
-const shortenAddress = (address: string) => address.slice(0, 4) + '...' + address.slice(-4);
-
-const AddressWithDots = ({ address, fontWeight, truncated }: Props) => {
+const HashStringShortenDynamic = ({ address, fontWeight = '400' }: Props) => {
   const addressRef = useRef<HTMLSpanElement>(null);
-  const [ displayedAddress, setAddress ] = React.useState(truncated ? shortenAddress(address) : address);
+  const [ displayedAddress, setAddress ] = React.useState(address);
 
   const isFontFaceLoaded = useFontFaceObserver([
     { family: BODY_TYPEFACE, weight: String(fontWeight) as FontFace['weight'] },
@@ -73,23 +70,21 @@ const AddressWithDots = ({ address, fontWeight, truncated }: Props) => {
   // but we don't want to create more resize event listeners
   // that's why there are separate useEffect hooks
   useEffect(() => {
-    !truncated && calculateString();
-  }, [ calculateString, isFontFaceLoaded, truncated ]);
+    calculateString();
+  }, [ calculateString, isFontFaceLoaded ]);
 
   useEffect(() => {
-    if (!truncated) {
-      const resizeHandler = _debounce(calculateString, 100);
-      const resizeObserver = new ResizeObserver(resizeHandler);
+    const resizeHandler = _debounce(calculateString, 100);
+    const resizeObserver = new ResizeObserver(resizeHandler);
 
-      resizeObserver.observe(document.body);
-      return function cleanup() {
-        resizeObserver.unobserve(document.body);
-      };
-    }
-  }, [ calculateString, truncated ]);
+    resizeObserver.observe(document.body);
+    return function cleanup() {
+      resizeObserver.unobserve(document.body);
+    };
+  }, [ calculateString ]);
 
   const content = <span ref={ addressRef }>{ displayedAddress }</span>;
-  const isTruncated = truncated || address.length !== displayedAddress.length;
+  const isTruncated = address.length !== displayedAddress.length;
 
   if (isTruncated) {
     return (
@@ -104,4 +99,4 @@ function getWidth(el: HTMLElement) {
   return el.getBoundingClientRect().width;
 }
 
-export default React.memo(AddressWithDots);
+export default React.memo(HashStringShortenDynamic);

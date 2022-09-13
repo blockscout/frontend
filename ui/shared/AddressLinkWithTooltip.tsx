@@ -3,8 +3,9 @@ import type { HTMLChakraProps } from '@chakra-ui/system';
 import React from 'react';
 
 import useBasePath from 'lib/hooks/useBasePath';
+import HashStringShorten from 'ui/shared/HashStringShorten';
+import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
-import AddressWithDots from './AddressWithDots';
 import CopyToClipboard from './CopyToClipboard';
 
 const FONT_WEIGHT = '600';
@@ -37,7 +38,10 @@ const AddressLinkWithTooltip = ({ address, type = 'address', truncated, withCopy
         lineHeight="24px"
         whiteSpace="nowrap"
       >
-        <AddressWithDots address={ address } fontWeight={ styles.fontWeight || FONT_WEIGHT } truncated={ truncated }/>
+        { truncated ?
+          <HashStringShorten address={ address }/> :
+          <HashStringShortenDynamic address={ address } fontWeight={ styles.fontWeight || FONT_WEIGHT }/>
+        }
       </Link>
       { withCopy && <CopyToClipboard text={ address }/> }
     </Flex>
