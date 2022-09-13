@@ -45,6 +45,8 @@ const Home: NextPage = () => {
     });
   }, [ toast, token ]);
 
+  const prodUrl = new URL(`/${ router.query.network_type }/${ router.query.network_sub_type }`, 'https://blockscout.com').toString();
+
   return (
     <Page>
       <VStack gap={ 4 } alignItems="flex-start" maxW="800px">
@@ -59,7 +61,7 @@ const Home: NextPage = () => {
                 !!! Temporary solution for authentication !!!
               </AlertTitle>
               <AlertDescription mt={ 3 }>
-                To Sign in go to <Link>https://blockscout.com/poa/core</Link> first, sign in there, copy obtained API token from cookie
+                To Sign in go to <Link href={ prodUrl } target="_blank">{ prodUrl }</Link> first, sign in there, copy obtained API token from cookie
                 <Code ml={ 1 }>{ cookies.NAMES.API_TOKEN }</Code> and paste it in the form below. After submitting the form you should be successfully
                 authenticated in current environment
               </AlertDescription>
