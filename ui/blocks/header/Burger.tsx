@@ -39,7 +39,7 @@ const Burger = () => {
       >
         <DrawerOverlay/>
         <DrawerContent maxWidth="260px">
-          <DrawerBody p={ 6 }>
+          <DrawerBody p={ 6 } display="flex" flexDirection="column">
             <Flex alignItems="center" justifyContent="space-between">
               <NetworkLogo onClick={ handleNetworkLogoClick }/>
               <NetworkMenuButton

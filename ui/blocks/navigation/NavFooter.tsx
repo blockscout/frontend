@@ -20,9 +20,10 @@ const VERSION_URL = `https://github.com/blockscout/blockscout/tree/${ BLOCKSCOUT
 
 interface Props {
   isCollapsed?: boolean;
+  isAuth?: boolean;
 }
 
-const NavFooter = ({ isCollapsed }: Props) => {
+const NavFooter = ({ isCollapsed, isAuth }: Props) => {
   const isMobile = useIsMobile();
 
   const width = (() => {
@@ -33,6 +34,14 @@ const NavFooter = ({ isCollapsed }: Props) => {
     return isCollapsed ? '20px' : '180px';
   })();
 
+  const marginTop = (() => {
+    if (!isAuth) {
+      return 'auto';
+    }
+
+    return isMobile ? 6 : 20;
+  })();
+
   return (
     <VStack
       as="footer"
@@ -41,7 +50,7 @@ const NavFooter = ({ isCollapsed }: Props) => {
       borderColor={ useColorModeValue('blackAlpha.200', 'whiteAlpha.200') }
       width={ width }
       paddingTop={ isMobile ? 6 : 8 }
-      marginTop={ isMobile ? 6 : 20 }
+      marginTop={ marginTop }
       alignItems="flex-start"
       alignSelf="center"
       color="gray.500"

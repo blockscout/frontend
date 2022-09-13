@@ -17,15 +17,16 @@ const NavigationDesktop = () => {
 
   const { mainNavItems, accountNavItems } = useNavItems();
   const isLargeScreen = useBreakpointValue({ base: false, xl: true });
-  const cookieValue = cookies.get(cookies.NAMES.NAV_BAR_COLLAPSED);
+  const navBarCollapsedCookie = cookies.get(cookies.NAMES.NAV_BAR_COLLAPSED);
+  const isAuth = Boolean(cookies.get(cookies.NAMES.API_TOKEN));
 
-  const [ isCollapsed, setCollapsedState ] = React.useState(cookieValue === 'true');
+  const [ isCollapsed, setCollapsedState ] = React.useState(navBarCollapsedCookie === 'true');
 
   React.useEffect(() => {
-    if (!cookieValue) {
+    if (!navBarCollapsedCookie) {
       setCollapsedState(!isLargeScreen);
     }
-  }, [ isLargeScreen, cookieValue ]);
+  }, [ isLargeScreen, navBarCollapsedCookie ]);
 
   const handleTogglerClick = React.useCallback(() => {
     setCollapsedState((flag) => !flag);
@@ -70,13 +71,15 @@ const NavigationDesktop = () => {
             <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed } isActive={ router.asPath.startsWith(item.pathname) }/>) }
         </VStack>
       </Box>
-      <Box as="nav" mt={ 12 }>
-        <VStack as="ul" spacing="2" alignItems="flex-start" overflow="hidden">
-          { accountNavItems.map((item) =>
-            <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed } isActive={ router.asPath.startsWith(item.pathname) }/>) }
-        </VStack>
-      </Box>
-      <NavFooter isCollapsed={ isCollapsed }/>
+      { isAuth && (
+        <Box as="nav" mt={ 12 }>
+          <VStack as="ul" spacing="2" alignItems="flex-start" overflow="hidden">
+            { accountNavItems.map((item) =>
+              <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed } isActive={ router.asPath.startsWith(item.pathname) }/>) }
+          </VStack>
+        </Box>
+      ) }
+      <NavFooter isCollapsed={ isCollapsed } isAuth={ isAuth }/>
       <ChevronLeftIcon
         width={ 6 }
         height={ 6 }
