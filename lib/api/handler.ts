@@ -1,7 +1,7 @@
 import { withSentry } from '@sentry/nextjs';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import fetch from 'lib/api/fetch';
+import fetchFactory from 'lib/api/fetch';
 import getUrlWithNetwork from 'lib/api/getUrlWithNetwork';
 
 type Methods = 'GET' | 'POST' | 'PUT' | 'DELETE';
@@ -16,7 +16,8 @@ export default function createHandler(getUrl: (_req: NextApiRequest) => string, 
 
     const isBodyDisallowed = _req.method === 'GET' || _req.method === 'HEAD';
 
-    const url = getUrlWithNetwork(_req, `/api${ getUrl(_req) }`);
+    const url = getUrlWithNetwork(_req, `api${ getUrl(_req) }`);
+    const fetch = fetchFactory(_req);
     const response = await fetch(url, {
       method: _req.method,
       body: isBodyDisallowed ? undefined : _req.body,
@@ -29,12 +30,13 @@ export default function createHandler(getUrl: (_req: NextApiRequest) => string, 
     }
 
     let responseError;
+    const defaultError = { statusText: response.statusText, status: response.status };
 
     try {
       const error = await response.json() as { errors: unknown };
-      responseError = error?.errors || {};
+      responseError = error?.errors || defaultError;
     } catch (error) {
-      responseError = { statusText: response.statusText, status: response.status };
+      responseError = defaultError;
     }
 
     res.status(500).json(responseError);
