@@ -6,7 +6,14 @@ import getOutlinedFieldStyles from '../utils/getOutlinedFieldStyles';
 
 const variantFilledInactive = defineStyle((props) => {
   return {
-    bgColor: mode('blackAlpha.50', 'whiteAlpha.50')(props),
+    // https://bugs.chromium.org/p/chromium/issues/detail?id=1362573
+    // there is a problem with scrollbar color in chromium
+    // so blackAlpha.50 here is replaced with #f5f5f6
+    // and whiteAlpha.50 is replaced with #1a1b1b
+
+    // bgColor: mode('blackAlpha.50', 'whiteAlpha.50')(props),
+    bgColor: mode('#f5f5f6', '#1a1b1b')(props),
+
   };
 });
 
