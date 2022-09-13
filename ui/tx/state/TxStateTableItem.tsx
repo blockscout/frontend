@@ -12,8 +12,7 @@ import {
   StatArrow,
   Portal,
   Link,
-  Center,
-  useColorModeValue,
+  Button,
 } from '@chakra-ui/react';
 import React, { useRef } from 'react';
 
@@ -29,39 +28,33 @@ const TxStateTableItem = ({ txStateItem }: { txStateItem: TTxStateItem }) => {
 
   const hasStorageData = Boolean(txStateItem.storage?.length);
 
-  // FIXME: I'm not sure about dark theme colors
-  const storageCounterBgColor = useColorModeValue('blue.50', 'gray.800');
-  const storageCounterColor = useColorModeValue('blue.700', 'gray.50');
-  const storageBorderColor = useColorModeValue('gray.200', 'gray.600');
-
   return (
     <>
       <AccordionItem as="tr" isDisabled={ !hasStorageData } fontWeight={ 500 } border={ 0 }>
         { ({ isExpanded }) => (
           <>
             <Td border={ 0 }>
-              <Flex>
-                <Center
-                  background={ isExpanded ? storageCounterBgColor : 'unset' }
-                  color={ storageCounterColor }
-                  width="30px"
-                  height="30px"
-                  borderRadius="6px"
-                  border={ isExpanded ? 'none' : '1px solid' }
-                  borderColor={ storageBorderColor }
-                  opacity={ hasStorageData ? 1 : 0.2 }
+              <AccordionButton
+                _hover={{ background: 'unset' }}
+                padding="0"
+              >
+                <Button
+                  variant="outline"
+                  borderWidth="1px"
+                  // button can't be inside button (AccordionButton)
+                  as="div"
+                  isActive={ isExpanded }
+                  size="sm"
+                  fontWeight={ 400 }
+                  isDisabled={ !hasStorageData }
+                  colorScheme="gray"
+                  // AccordionButton has its own opacity rule when disabled
+                  _disabled={{ opacity: 1 }}
                 >
                   { txStateItem.storage?.length || '0' }
-                </Center>
-                <AccordionButton
-                  _hover={{ background: 'unset', cursor: 'pointer' }}
-                  padding="0"
-                  width="30px"
-                  justifyContent="center"
-                >
-                  <AccordionIcon color="blue.600"/>
-                </AccordionButton>
-              </Flex>
+                </Button>
+                <AccordionIcon color="blue.600" width="30px"/>
+              </AccordionButton>
             </Td>
             <Td border={ 0 }>
               <Flex height="30px" alignItems="center">
@@ -73,7 +66,7 @@ const TxStateTableItem = ({ txStateItem }: { txStateItem: TTxStateItem }) => {
             <Td border={ 0 } isNumeric lineHeight="30px">
               <Box>{ txStateItem.after.balance }</Box>
               { typeof txStateItem.after.nonce !== 'undefined' && (
-                <Flex justifyContent="end">Nonce: <Text fontWeight={ 600 }>{ nbsp + txStateItem.after.nonce }</Text></Flex>
+                <Box justifyContent="end" display="inline-flex">Nonce: <Text fontWeight={ 600 }>{ nbsp + txStateItem.after.nonce }</Text></Box>
               ) }
             </Td>
             <Td border={ 0 } isNumeric lineHeight="30px">{ txStateItem.before.balance }</Td>
