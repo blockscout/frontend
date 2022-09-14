@@ -4,6 +4,7 @@ import React from 'react';
 
 import * as cookies from 'lib/cookies';
 import useNavItems from 'lib/hooks/useNavItems';
+import useNetwork from 'lib/hooks/useNetwork';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 import NetworkLogo from 'ui/blocks/networkMenu/NetworkLogo';
 import NetworkMenu from 'ui/blocks/networkMenu/NetworkMenu';
@@ -13,16 +14,19 @@ import NavLink from './NavLink';
 
 const NavigationDesktop = () => {
   const { mainNavItems, accountNavItems } = useNavItems();
+  const selectedNetwork = useNetwork();
   const isLargeScreen = useBreakpointValue({ base: false, xl: true });
-  const cookieValue = cookies.get(cookies.NAMES.NAV_BAR_COLLAPSED);
+  const navBarCollapsedCookie = cookies.get(cookies.NAMES.NAV_BAR_COLLAPSED);
+  const isAuth = Boolean(cookies.get(cookies.NAMES.API_TOKEN));
+  const hasAccount = selectedNetwork?.isAccountSupported && isAuth;
 
-  const [ isCollapsed, setCollapsedState ] = React.useState(cookieValue === 'true');
+  const [ isCollapsed, setCollapsedState ] = React.useState(navBarCollapsedCookie === 'true');
 
   React.useEffect(() => {
-    if (!cookieValue) {
+    if (!navBarCollapsedCookie) {
       setCollapsedState(!isLargeScreen);
     }
-  }, [ isLargeScreen, cookieValue ]);
+  }, [ isLargeScreen, navBarCollapsedCookie ]);
 
   const handleTogglerClick = React.useCallback(() => {
     setCollapsedState((flag) => !flag);
@@ -66,12 +70,14 @@ const NavigationDesktop = () => {
           { mainNavItems.map((item) => <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed }/>) }
         </VStack>
       </Box>
-      <Box as="nav" mt={ 12 }>
-        <VStack as="ul" spacing="2" alignItems="flex-start" overflow="hidden">
-          { accountNavItems.map((item) => <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed }/>) }
-        </VStack>
-      </Box>
-      <NavFooter isCollapsed={ isCollapsed }/>
+      { hasAccount && (
+        <Box as="nav" mt={ 12 }>
+          <VStack as="ul" spacing="2" alignItems="flex-start" overflow="hidden">
+            { accountNavItems.map((item) => <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed }/>) }
+          </VStack>
+        </Box>
+      ) }
+      <NavFooter isCollapsed={ isCollapsed } hasAccount={ hasAccount }/>
       <ChevronLeftIcon
         width={ 6 }
         height={ 6 }

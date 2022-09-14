@@ -10,9 +10,9 @@ import { useForm, Controller } from 'react-hook-form';
 
 import type { TransactionTag, TransactionTagErrors } from 'types/api/account';
 
-import type { ErrorType } from 'lib/client/fetch';
-import fetch from 'lib/client/fetch';
 import getErrorMessage from 'lib/getErrorMessage';
+import type { ErrorType } from 'lib/hooks/useFetch';
+import useFetch from 'lib/hooks/useFetch';
 import { TRANSACTION_HASH_REGEXP } from 'lib/validations/transaction';
 import TagInput from 'ui/shared/TagInput';
 import TransactionInput from 'ui/shared/TransactionInput';
@@ -43,12 +43,13 @@ const TransactionForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) =>
   });
 
   const queryClient = useQueryClient();
+  const fetch = useFetch();
 
   const { mutate } = useMutation((formData: Inputs) => {
-    const body = JSON.stringify({
+    const body = {
       name: formData?.tag,
       transaction_hash: formData?.transaction,
-    });
+    };
     const isEdit = data?.id;
 
     if (isEdit) {

@@ -4,7 +4,7 @@ import React, { useCallback, useState } from 'react';
 
 import type { TWatchlist, TWatchlistItem } from 'types/client/account';
 
-import fetch from 'lib/client/fetch';
+import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
@@ -24,6 +24,7 @@ const WatchList: React.FC = () => {
   const addressModalProps = useDisclosure();
   const deleteModalProps = useDisclosure();
   const isMobile = useIsMobile();
+  const fetch = useFetch();
 
   const [ addressModalData, setAddressModalData ] = useState<TWatchlistItem>();
   const [ deleteModalData, setDeleteModalData ] = useState<TWatchlistItem>();

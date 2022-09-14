@@ -75,6 +75,10 @@ const variantOutline = defineStyle((props) => {
         borderColor: props.isActive ? activeBg : 'blue.400',
         color: props.isActive ? activeColor : 'blue.400',
       },
+      _disabled: {
+        color,
+        borderColor,
+      },
     },
     _disabled: {
       opacity: 0.2,
@@ -83,6 +87,10 @@ const variantOutline = defineStyle((props) => {
       bg: activeBg,
       borderColor: activeBg,
       color: activeColor,
+      _disabled: {
+        color,
+        borderColor,
+      },
     },
   };
 });

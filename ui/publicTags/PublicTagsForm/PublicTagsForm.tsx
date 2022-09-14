@@ -13,9 +13,9 @@ import { useForm, useFieldArray } from 'react-hook-form';
 
 import type { PublicTags, PublicTag, PublicTagNew, PublicTagErrors } from 'types/api/account';
 
-import type { ErrorType } from 'lib/client/fetch';
-import fetch from 'lib/client/fetch';
 import getErrorMessage from 'lib/getErrorMessage';
+import type { ErrorType } from 'lib/hooks/useFetch';
+import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { EMAIL_REGEXP } from 'lib/validations/email';
 import FormSubmitAlert from 'ui/shared/FormSubmitAlert';
@@ -58,6 +58,7 @@ const ADDRESS_INPUT_BUTTONS_WIDTH = 100;
 const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
   const queryClient = useQueryClient();
   const isMobile = useIsMobile();
+  const fetch = useFetch();
   const inputSize = isMobile ? 'md' : 'lg';
 
   const { control, handleSubmit, formState: { errors, isValid }, setError } = useForm<Inputs>({
@@ -87,7 +88,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
   const onRemoveFieldClick = useCallback((index: number) => () => remove(index), [ remove ]);
 
   const updatePublicTag = (formData: Inputs) => {
-    const payload: PublicTagNew = {
+    const body: PublicTagNew = {
       full_name: formData.fullName || '',
       email: formData.email || '',
       company: formData.companyName || '',
@@ -97,7 +98,6 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
       tags: formData.tags?.split(';').map((s) => s.trim()).join(';') || '',
       additional_comment: formData.comment || '',
     };
-    const body = JSON.stringify(payload);
 
     if (!data?.id) {
       return fetch<PublicTag, PublicTagErrors>('/api/account/public-tags', { method: 'POST', body });

@@ -1,18 +1,23 @@
+import type { NextApiRequest } from 'next';
 import type { RequestInit, Response } from 'node-fetch';
 import nodeFetch from 'node-fetch';
 
+import * as cookies from 'lib/cookies';
+
 // first arg can be only a string
 // FIXME migrate to RequestInfo later if needed
-export default function fetch(path: string, init?: RequestInit): Promise<Response> {
-  const headers = {
-    accept: 'application/json',
-    authorization: `Bearer ${ process.env.API_AUTHORIZATION_TOKEN }`,
-    'content-type': 'application/json',
-  };
-  const url = `https://blockscout.com${ path }`;
+export default function fetchFactory(_req: NextApiRequest) {
+  return function fetch(path: string, init?: RequestInit): Promise<Response> {
+    const headers = {
+      accept: 'application/json',
+      'content-type': 'application/json',
+      cookie: `${ cookies.NAMES.API_TOKEN }=${ _req.cookies[cookies.NAMES.API_TOKEN] }`,
+    };
+    const url = `https://blockscout.com${ path }`;
 
-  return nodeFetch(url, {
-    headers,
-    ...init,
-  });
+    return nodeFetch(url, {
+      headers,
+      ...init,
+    });
+  };
 }

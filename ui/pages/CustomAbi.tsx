@@ -4,7 +4,7 @@ import React, { useCallback, useState } from 'react';
 
 import type { CustomAbi, CustomAbis } from 'types/api/account';
 
-import fetch from 'lib/client/fetch';
+import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import CustomAbiModal from 'ui/customAbi/CustomAbiModal/CustomAbiModal';
 import CustomAbiListItem from 'ui/customAbi/CustomAbiTable/CustomAbiListItem';
@@ -22,6 +22,7 @@ const CustomAbiPage: React.FC = () => {
   const customAbiModalProps = useDisclosure();
   const deleteModalProps = useDisclosure();
   const isMobile = useIsMobile();
+  const fetch = useFetch();
 
   const [ customAbiModalData, setCustomAbiModalData ] = useState<CustomAbi>();
   const [ deleteModalData, setDeleteModalData ] = useState<CustomAbi>();

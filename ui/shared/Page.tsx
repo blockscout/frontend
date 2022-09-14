@@ -1,8 +1,10 @@
 import { Box, HStack, VStack } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import * as cookies from 'lib/cookies';
+import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import Header from 'ui/blocks/header/Header';
 import NavigationDesktop from 'ui/blocks/navigation/NavigationDesktop';
@@ -14,8 +16,12 @@ interface Props {
 const Page = ({ children }: Props) => {
   const isMobile = useIsMobile();
   const router = useRouter();
+  const fetch = useFetch();
+
   const networkType = router.query.network_type;
   const networkSubType = router.query.network_sub_type;
+
+  useQuery<unknown, unknown, unknown>([ 'csrf' ], async() => await fetch('/api/account/csrf'));
 
   React.useEffect(() => {
     if (typeof networkType === 'string') {

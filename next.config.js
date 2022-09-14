@@ -22,8 +22,8 @@ const moduleExports = {
     return [
       {
         source: '/',
-        destination: '/xdai/testnet',
-        permanent: true,
+        destination: '/poa/core',
+        permanent: false,
       },
     ];
   },

@@ -5,7 +5,7 @@ import type { ChangeEvent } from 'react';
 
 import type { PublicTags, PublicTag } from 'types/api/account';
 
-import fetch from 'lib/client/fetch';
+import useFetch from 'lib/hooks/useFetch';
 import DeleteModal from 'ui/shared/DeleteModal';
 
 type Props = {
@@ -22,12 +22,13 @@ const DeletePublicTagModal: React.FC<Props> = ({ isOpen, onClose, data, onDelete
   const tags = data.tags.split(';');
 
   const queryClient = useQueryClient();
+  const fetch = useFetch();
   const formBackgroundColor = useColorModeValue('white', 'gray.900');
 
   const deleteApiKey = useCallback(() => {
-    const body = JSON.stringify({ remove_reason: reason });
+    const body = { remove_reason: reason };
     return fetch(`/api/account/public-tags/${ data.id }`, { method: 'DELETE', body });
-  }, [ data, reason ]);
+  }, [ data.id, fetch, reason ]);
 
   const onSuccess = useCallback(async() => {
     onDeleteSuccess();
