@@ -11,10 +11,6 @@ export default function useLink() {
   const networkSubType = router.query.network_sub_type;
 
   return React.useCallback((...args: LinkBuilderParams) => {
-    if (typeof networkType !== 'string' || typeof networkSubType !== 'string') {
-      return '';
-    }
-
     return link(args[0], { network_type: networkType, network_sub_type: networkSubType, ...args[1] }, args[2]);
   }, [ networkType, networkSubType ]);
 }

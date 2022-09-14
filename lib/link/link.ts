@@ -6,15 +6,15 @@ import type { RouteName } from './routes';
 
 const PATH_PARAM_REGEXP = /\/\[(\w+)\]/g;
 
-export function link(routeName: RouteName, urlParams?: Record<string, string | undefined>, queryParams?: Record<string, string>): string {
+export function link(routeName: RouteName, urlParams?: Record<string, Array<string> | string | undefined>, queryParams?: Record<string, string>): string {
   const route = ROUTES[routeName];
   if (!route) {
     return '';
   }
 
   const network = findNetwork({
-    network_type: urlParams?.network_type || '',
-    network_sub_type: urlParams?.network_sub_type,
+    network_type: typeof urlParams?.network_type === 'string' ? urlParams?.network_type : '',
+    network_sub_type: typeof urlParams?.network_sub_type === 'string' ? urlParams?.network_sub_type : undefined,
   });
 
   const path = route.pattern.replace(PATH_PARAM_REGEXP, (_, paramName: string) => {
@@ -22,7 +22,13 @@ export function link(routeName: RouteName, urlParams?: Record<string, string | u
       return '';
     }
 
-    const paramValue = urlParams?.[paramName];
+    let paramValue = urlParams?.[paramName];
+    if (Array.isArray(paramValue)) {
+      // FIXME we don't have yet params as array, but typescript says that we could
+      // dun't know how to manage it, fix me if you find an issue
+      paramValue = paramValue.join(',');
+    }
+
     return paramValue ? `/${ paramValue }` : '';
   });
 
