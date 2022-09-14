@@ -48,7 +48,7 @@ jobs:
           cache-to: type=gha,mode=max
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          secrets: |
+          env: |
             SENTRY_DSN=${{ secrets.SENTRY_DSN }}
             NEXT_PUBLIC_SENTRY_DSN=${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}
             SENTRY_CSP_REPORT_URI=${{ secrets.SENTRY_CSP_REPORT_URI }}
