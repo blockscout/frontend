@@ -33,7 +33,7 @@ const sizes = {
 };
 
 const baseStyleContainer = defineStyle({
-  display: 'inline-flex',
+  display: 'inline-block',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   borderRadius: 'sm',
