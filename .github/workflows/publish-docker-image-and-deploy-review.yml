@@ -16,6 +16,8 @@ jobs:
   push_to_registry:
     name: Push Docker image to registry
     runs-on: ubuntu-latest
+    outputs:
+      shortSha: ${{ steps.output-step.outputs.short-sha }}
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -37,15 +39,24 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Add SHORT_SHA env property with commit short sha
+        run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
+
+      - name: Add outputs
+        run: |
+          echo "::set-output name=short-sha::${{ env.SHORT_SHA }}"
+        id: output-step
+
       - name: Build and push
         uses: docker/build-push-action@v3
+        id: output-step
         with:
           context: .
           file: ./Dockerfile
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: frontend:prerelease-${{ env.SHORT_SHA }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             SENTRY_DSN=${{ secrets.SENTRY_DSN }}
@@ -60,4 +71,5 @@ jobs:
       valuesDir: deploy/values
       appNamespace: frontend-$GITHUB_REF_NAME
       appName: frontend
+      frontendImage: ghcr.io/blockscout/frontend:prerelease-${{ needs.push_to_registry.outputs.shortSha }}
     secrets: inherit

@@ -9,7 +9,6 @@ ARG NEXT_PUBLIC_SENTRY_DSN
 ARG SENTRY_CSP_REPORT_URI
 ARG SENTRY_AUTH_TOKEN
 
-
 # Install dependencies based on the preferred package manager
 COPY package.json yarn.lock ./
 RUN yarn --frozen-lockfile
