@@ -19,7 +19,7 @@ const AddressTagsPage: NextPage<Props> = ({ pageParams }: Props) => {
   return (
     <>
       <Head><title>{ title }</title></Head>
-      <PrivateTags tab="address"/>
+      <PrivateTags tab="private_tags_address"/>
     </>
   );
 };
