@@ -18,13 +18,5 @@ export default function useFetchProfileInfo() {
     return fetch('/api/account/profile');
   }, {
     refetchOnMount: false,
-    retry: (failureCount, error) => {
-      if (error?.error?.status === 401) {
-        // for unauthorized users don't do retry
-        return false;
-      }
-
-      return failureCount < 2;
-    },
   });
 }
