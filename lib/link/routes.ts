@@ -101,6 +101,12 @@ export const ROUTES = {
   other: {
     pattern: `${ BASE_PATH }/search-results`,
   },
+
+  // AUTH
+  auth: {
+    // no slash required, it is correct
+    pattern: `${ BASE_PATH }auth/auth0`,
+  },
 };
 
 // !!! for development purpose only !!!

@@ -1,20 +1,23 @@
 const { NextResponse } = require('next/server');
 
 const { NAMES } = require('lib/cookies');
-const NETWORKS = require('lib/networks/availableNetworks').default;
+const { link } = require('lib/link/link');
+const findNetwork = require('lib/networks/findNetwork').default;
 
 export function middleware(req) {
   const [ , networkType, networkSubtype ] = req.nextUrl.pathname.split('/');
-  const selectedNetwork = NETWORKS.find(({ type, subType }) =>
-    type === networkType && (subType ? subType === networkSubtype : true));
+  const networkParams = {
+    network_type: networkType,
+    network_sub_type: networkSubtype,
+  };
+  const selectedNetwork = findNetwork(networkParams);
 
   if (selectedNetwork) {
     const apiToken = req.cookies.get(NAMES.API_TOKEN);
 
     if (!apiToken) {
-      const authPath = `/${ selectedNetwork.type }/${ selectedNetwork.subType }auth/auth0`;
-
-      return NextResponse.redirect(new URL(authPath, 'https://blockscout.com/'));
+      const authUrl = link('auth', networkParams);
+      return NextResponse.redirect(authUrl);
     }
   }
 }
