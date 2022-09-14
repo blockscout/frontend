@@ -20,10 +20,10 @@ const VERSION_URL = `https://github.com/blockscout/blockscout/tree/${ BLOCKSCOUT
 
 interface Props {
   isCollapsed?: boolean;
-  isAuth?: boolean;
+  hasAccount?: boolean;
 }
 
-const NavFooter = ({ isCollapsed, isAuth }: Props) => {
+const NavFooter = ({ isCollapsed, hasAccount }: Props) => {
   const isMobile = useIsMobile();
 
   const width = (() => {
@@ -35,7 +35,7 @@ const NavFooter = ({ isCollapsed, isAuth }: Props) => {
   })();
 
   const marginTop = (() => {
-    if (!isAuth) {
+    if (!hasAccount) {
       return 'auto';
     }
 

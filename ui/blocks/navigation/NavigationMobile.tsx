@@ -3,12 +3,16 @@ import React from 'react';
 
 import * as cookies from 'lib/cookies';
 import useNavItems from 'lib/hooks/useNavItems';
+import useNetwork from 'lib/hooks/useNetwork';
 import NavFooter from 'ui/blocks/navigation/NavFooter';
 import NavLink from 'ui/blocks/navigation/NavLink';
 
 const NavigationMobile = () => {
   const { mainNavItems, accountNavItems } = useNavItems();
+  const selectedNetwork = useNetwork();
+
   const isAuth = Boolean(cookies.get(cookies.NAMES.API_TOKEN));
+  const hasAccount = selectedNetwork?.isAccountSupported && isAuth;
 
   return (
     <>
@@ -24,7 +28,7 @@ const NavigationMobile = () => {
           </VStack>
         </Box>
       ) }
-      <NavFooter isAuth={ isAuth }/>
+      <NavFooter hasAccount={ hasAccount }/>
     </>
   );
 };

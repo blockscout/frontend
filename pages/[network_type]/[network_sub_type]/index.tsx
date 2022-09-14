@@ -1,5 +1,4 @@
 import { VStack, Textarea, Button, Alert, AlertTitle, AlertDescription, Link, Code } from '@chakra-ui/react';
-import capitalize from 'lodash/capitalize';
 import type { NextPage, GetStaticPaths } from 'next';
 import { useRouter } from 'next/router';
 import type { ChangeEvent } from 'react';
@@ -22,9 +21,7 @@ const Home: NextPage = () => {
 
   React.useEffect(() => {
     const token = cookies.get(cookies.NAMES.API_TOKEN);
-    if (!token && selectedNetwork?.isAccountSupported) {
-      setFormVisibility(true);
-    }
+    setFormVisibility(Boolean(!token && selectedNetwork?.isAccountSupported));
   }, [ selectedNetwork?.isAccountSupported ]);
 
   const handleTokenChange = React.useCallback((event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -53,7 +50,7 @@ const Home: NextPage = () => {
     <Page>
       <VStack gap={ 4 } alignItems="flex-start" maxW="800px">
         <PageHeader text={
-          `Home Page for ${ capitalize(router.query.network_type as string) } ${ capitalize(router.query.network_sub_type as string) } network`
+          `Home Page for ${ selectedNetwork?.name } network`
         }/>
         { /* will be deleted when we move to new CI */ }
         { isFormVisible && (
