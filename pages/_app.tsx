@@ -14,8 +14,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         refetchOnWindowFocus: false,
         retry: (failureCount, _error) => {
           const error = _error as ErrorType<{ status: number }>;
-          if (error?.error?.status === 401) {
-            // for unauthorized users don't do retry
+          const status = error?.error?.status;
+          if (status && status >= 400 && status < 500) {
+            // don't do retry for client error responses
             return false;
           }
 
