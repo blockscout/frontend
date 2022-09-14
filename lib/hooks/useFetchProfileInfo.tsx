@@ -2,10 +2,21 @@ import { useQuery } from '@tanstack/react-query';
 
 import type { UserInfo } from 'types/api/account';
 
-import fetch from 'lib/client/fetch';
+import useFetch from 'lib/hooks/useFetch';
+
+interface Error {
+  error?: {
+    status?: number;
+    statusText?: string;
+  };
+}
 
 export default function useFetchProfileInfo() {
-  return useQuery<unknown, unknown, UserInfo>([ 'profile' ], async() => {
+  const fetch = useFetch();
+
+  return useQuery<unknown, Error, UserInfo>([ 'profile' ], async() => {
     return fetch('/api/account/profile');
-  }, { refetchOnMount: false });
+  }, {
+    refetchOnMount: false,
+  });
 }

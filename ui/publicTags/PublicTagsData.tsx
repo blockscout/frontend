@@ -4,7 +4,7 @@ import React, { useCallback, useState } from 'react';
 
 import type { PublicTags, PublicTag } from 'types/api/account';
 
-import fetch from 'lib/client/fetch';
+import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import PublicTagListItem from 'ui/publicTags/PublicTagTable/PublicTagListItem';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
@@ -24,6 +24,7 @@ const PublicTagsData = ({ changeToFormScreen, onTagDelete }: Props) => {
   const deleteModalProps = useDisclosure();
   const [ deleteModalData, setDeleteModalData ] = useState<PublicTag>();
   const isMobile = useIsMobile();
+  const fetch = useFetch();
 
   const { data, isLoading, isError } = useQuery<unknown, unknown, PublicTags>([ 'public-tags' ], async() => await fetch('/api/account/public-tags'));
 

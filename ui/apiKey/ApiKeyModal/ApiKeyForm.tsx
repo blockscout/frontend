@@ -13,10 +13,10 @@ import { useForm, Controller } from 'react-hook-form';
 
 import type { ApiKey, ApiKeys, ApiKeyErrors } from 'types/api/account';
 
-import type { ErrorType } from 'lib/client/fetch';
-import fetch from 'lib/client/fetch';
 import getErrorMessage from 'lib/getErrorMessage';
 import getPlaceholderWithError from 'lib/getPlaceholderWithError';
+import type { ErrorType } from 'lib/hooks/useFetch';
+import useFetch from 'lib/hooks/useFetch';
 
 type Props = {
   data?: ApiKey;
@@ -39,11 +39,12 @@ const ApiKeyForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
       name: data?.name || '',
     },
   });
+  const fetch = useFetch();
   const queryClient = useQueryClient();
   const formBackgroundColor = useColorModeValue('white', 'gray.900');
 
   const updateApiKey = (data: Inputs) => {
-    const body = JSON.stringify({ name: data.name });
+    const body = { name: data.name };
 
     if (!data.token) {
       return fetch('/api/account/api-keys', { method: 'POST', body });

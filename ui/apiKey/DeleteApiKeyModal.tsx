@@ -4,7 +4,7 @@ import React, { useCallback } from 'react';
 
 import type { ApiKey, ApiKeys } from 'types/api/account';
 
-import fetch from 'lib/client/fetch';
+import useFetch from 'lib/hooks/useFetch';
 import DeleteModal from 'ui/shared/DeleteModal';
 
 type Props = {
@@ -15,10 +15,11 @@ type Props = {
 
 const DeleteAddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
   const queryClient = useQueryClient();
+  const fetch = useFetch();
 
   const mutationFn = useCallback(() => {
     return fetch(`/api/account/api-keys/${ data.api_key }`, { method: 'DELETE' });
-  }, [ data ]);
+  }, [ data.api_key, fetch ]);
 
   const onSuccess = useCallback(async() => {
     queryClient.setQueryData([ 'api-keys' ], (prevData: ApiKeys | undefined) => {

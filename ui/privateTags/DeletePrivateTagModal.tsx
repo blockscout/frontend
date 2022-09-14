@@ -4,6 +4,7 @@ import React, { useCallback } from 'react';
 
 import type { AddressTag, TransactionTag, AddressTags, TransactionTags } from 'types/api/account';
 
+import useFetch from 'lib/hooks/useFetch';
 import DeleteModal from 'ui/shared/DeleteModal';
 
 type Props = {
@@ -18,18 +19,19 @@ const DeletePrivateTagModal: React.FC<Props> = ({ isOpen, onClose, data, type })
   const id = data.id;
 
   const queryClient = useQueryClient();
+  const fetch = useFetch();
 
   const mutationFn = useCallback(() => {
     return fetch(`/api/account/private-tags/${ type }/${ id }`, { method: 'DELETE' });
-  }, [ type, id ]);
+  }, [ fetch, type, id ]);
 
   const onSuccess = useCallback(async() => {
     if (type === 'address') {
-      queryClient.setQueryData([ type ], (prevData: AddressTags | undefined) => {
+      queryClient.setQueryData([ 'address-tags' ], (prevData: AddressTags | undefined) => {
         return prevData?.filter((item: AddressTag) => item.id !== id);
       });
     } else {
-      queryClient.setQueryData([ type ], (prevData: TransactionTags | undefined) => {
+      queryClient.setQueryData([ 'transaction-tags' ], (prevData: TransactionTags | undefined) => {
         return prevData?.filter((item: TransactionTag) => item.id !== id);
       });
     }
