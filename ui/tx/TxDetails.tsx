@@ -12,7 +12,6 @@ import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import RawInputData from 'ui/shared/RawInputData';
 import Token from 'ui/shared/Token';
 import Utilization from 'ui/shared/Utilization';
@@ -79,24 +78,20 @@ const TxDetails = () => {
         hint="Address (external or contract) sending the transaction."
         mt={ 8 }
       >
-        <Address hash={ tx.address_from }>
-          <AddressIcon/>
-          <AddressLink ml={ 2 }>
-            <HashStringShortenDynamic/>
-          </AddressLink>
-          <CopyToClipboard/>
+        <Address>
+          <AddressIcon hash={ tx.address_from }/>
+          <AddressLink ml={ 2 } hash={ tx.address_from }/>
+          <CopyToClipboard text={ tx.address_from }/>
         </Address>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Interacted with contract"
         hint="Address (external or contract) receiving the transaction."
       >
-        <Address hash={ tx.address_to }>
-          <AddressIcon/>
-          <AddressLink ml={ 2 }>
-            <HashStringShortenDynamic/>
-          </AddressLink>
-          <CopyToClipboard/>
+        <Address>
+          <AddressIcon hash={ tx.address_to }/>
+          <AddressLink ml={ 2 } hash={ tx.address_to }/>
+          <CopyToClipboard text={ tx.address_to }/>
         </Address>
         <Tag colorScheme="orange" variant="solid" ml={ 3 }>SANA</Tag>
         <Icon as={ successIcon } boxSize={ 4 } ml={ 2 } color="green.500"/>

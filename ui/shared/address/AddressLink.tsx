@@ -1,33 +1,39 @@
-import { Link, chakra } from '@chakra-ui/react';
+import { Link, chakra, shouldForwardProp } from '@chakra-ui/react';
 import React from 'react';
 
 import useLink from 'lib/link/useLink';
+import HashStringShorten from 'ui/shared/HashStringShorten';
+import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 interface Props {
-  children: React.ReactNode;
   type?: 'address' | 'transaction' | 'token';
-  hash?: string;
   className?: string;
+  hash: string;
+  truncation?: 'constant' | 'dynamic'| 'none';
+  fontWeight?: string;
 }
 
-const AddressLink = ({ children, type, className, ...props }: Props) => {
+const AddressLink = ({ type, className, truncation = 'dynamic', hash, fontWeight }: Props) => {
   const link = useLink();
   let url;
   if (type === 'transaction') {
-    url = link('tx_index', { id: props.hash });
+    url = link('tx_index', { id: hash });
   } else if (type === 'token') {
-    url = link('token_index', { id: props.hash });
+    url = link('token_index', { id: hash });
   } else {
-    url = link('address_index', { id: props.hash });
+    url = link('address_index', { id: hash });
   }
 
-  const childrenWithProps = React.Children.map(children, child => {
-    if (React.isValidElement(child)) {
-      return React.cloneElement(child, { ...props });
+  const content = (() => {
+    switch (truncation) {
+      case 'constant':
+        return <HashStringShorten hash={ hash }/>;
+      case 'dynamic':
+        return <HashStringShortenDynamic hash={ hash } fontWeight={ fontWeight }/>;
+      case 'none':
+        return <span>{ hash }</span>;
     }
-
-    return child;
-  });
+  })();
 
   return (
     <Link
@@ -37,11 +43,22 @@ const AddressLink = ({ children, type, className, ...props }: Props) => {
       overflow="hidden"
       whiteSpace="nowrap"
     >
-      { childrenWithProps }
+      { content }
     </Link>
   );
 };
 
-const AddressLinkChakra = chakra(AddressLink);
+const AddressLinkChakra = chakra(AddressLink, {
+  shouldForwardProp: (prop) => {
+    const isChakraProp = !shouldForwardProp(prop);
+
+    // forward fontWeight to the AddressLink since it's needed for underlying HashStringShortenDynamic component
+    if (isChakraProp && prop !== 'fontWeight') {
+      return false;
+    }
+
+    return true;
+  },
+});
 
 export default React.memo(AddressLinkChakra);

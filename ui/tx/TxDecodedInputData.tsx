@@ -4,7 +4,6 @@ import React from 'react';
 import Address from 'ui/shared/address/Address';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 interface RowProps {
   children: React.ReactNode;
@@ -111,19 +110,15 @@ const TxDecodedInputData = () => {
         Data
       </GridItem>
       <TableRow name="from" type="address">
-        <Address hash="0x0000000000000000000000000000000000000000" justifyContent="space-between">
-          <AddressLink>
-            <HashStringShortenDynamic/>
-          </AddressLink>
-          <CopyToClipboard/>
+        <Address justifyContent="space-between">
+          <AddressLink hash="0x0000000000000000000000000000000000000000"/>
+          <CopyToClipboard text="0x0000000000000000000000000000000000000000"/>
         </Address>
       </TableRow>
       <TableRow name="from" type="address">
-        <Address hash="0xcf0c50b7ea8af37d57380a0ac199d55b0782c718" justifyContent="space-between">
-          <AddressLink>
-            <HashStringShortenDynamic/>
-          </AddressLink>
-          <CopyToClipboard/>
+        <Address justifyContent="space-between">
+          <AddressLink hash="0xcf0c50b7ea8af37d57380a0ac199d55b0782c718"/>
+          <CopyToClipboard text="0xcf0c50b7ea8af37d57380a0ac199d55b0782c718"/>
         </Address>
       </TableRow>
       <TableRow name="tokenId" type="uint256" isLast>

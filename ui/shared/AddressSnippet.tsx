@@ -5,7 +5,6 @@ import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 interface Props {
   address: string;
@@ -15,12 +14,10 @@ interface Props {
 const AddressSnippet = ({ address, subtitle }: Props) => {
   return (
     <Box maxW="100%">
-      <Address hash={ address }>
+      <Address>
         <AddressIcon hash={ address }/>
-        <AddressLink fontWeight="600" ml={ 2 }>
-          <HashStringShortenDynamic fontWeight="600"/>
-        </AddressLink>
-        <CopyToClipboard ml={ 1 }/>
+        <AddressLink hash={ address } fontWeight="600" ml={ 2 }/>
+        <CopyToClipboard text={ address } ml={ 1 }/>
       </Address>
       { subtitle && <Text fontSize="sm" variant="secondary" mt={ 0.5 } ml={{ base: 0, lg: 8 }}>{ subtitle }</Text> }
     </Box>

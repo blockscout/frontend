@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 import CopyIcon from 'icons/copy.svg';
 
-const CopyToClipboard = ({ text = '', className }: {text?: string; className?: string}) => {
+const CopyToClipboard = ({ text, className }: {text: string; className?: string}) => {
   const { hasCopied, onCopy } = useClipboard(text, 3000);
   const [ copied, setCopied ] = useState(false);
 

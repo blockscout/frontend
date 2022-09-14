@@ -20,11 +20,11 @@ const TAIL_LENGTH = 4;
 const HEAD_MIN_LENGTH = 4;
 
 interface Props {
-  hash?: string;
+  hash: string;
   fontWeight?: string | number;
 }
 
-const HashStringShortenDynamic = ({ hash = '', fontWeight = '400' }: Props) => {
+const HashStringShortenDynamic = ({ hash, fontWeight = '400' }: Props) => {
   const elementRef = useRef<HTMLSpanElement>(null);
   const [ displayedString, setDisplayedString ] = React.useState(hash);
 
