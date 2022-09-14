@@ -1,9 +1,8 @@
-name: Publish Docker image on every push to main branch
+name: Publish Docker image for review environment
 
 on:
   push:
-    branches:
-      - main
+  # pull_request:
 
 env:
   K8S_LOCAL_PORT: ${{ secrets.K8S_LOCAL_PORT }}
@@ -59,6 +58,6 @@ jobs:
     uses: blockscout/blockscout-ci-cd/.github/workflows/deploy.yaml@deploy-smart-contract-verifier
     with:
       valuesDir: deploy/values
-      appNamespace: frontend-main
+      appNamespace: frontend-$GITHUB_REF_NAME
       appName: frontend
     secrets: inherit
