@@ -1,0 +1,40 @@
+global:
+  env: test
+frontend:
+  enabled: true
+  image: ghcr.io/blockscout/frontend:main
+  replicas:
+    app: 1
+  docker:
+    port: 80
+    targetPort: 3000
+  ingress:
+    enabled: true
+    host: bs-frontend.aws-k8s.blockscout.com
+  resources:
+    limits:
+      memory:
+        _default: 0.3Gi
+      cpu:
+        _default: "0.2"
+    requests:
+      memory:
+        _default: 0.3Gi
+      cpu:
+        _default: "0.2"
+  # node label
+  nodeSelector:
+    app: blockscout
+  environment:
+    NEXT_PUBLIC_BLOCKSCOUT_VERSION:
+      _default: v4.1.7-beta
+    NEXT_PUBLIC_FOOTER_GITHUB_LINK:
+      _default: https://github.com/blockscout/blockscout
+    NEXT_PUBLIC_FOOTER_TWITTER_LINK:
+      _default: https://www.twitter.com/blockscoutcom
+    NEXT_PUBLIC_FOOTER_TELEGRAM_LINK:
+      _default: https://t.me/poa_network
+    NEXT_PUBLIC_FOOTER_STAKING_LINK:
+      _default: https://duneanalytics.com/maxaleks/xdai-staking
+    NEXT_PUBLIC_SUPPORTED_NETWORKS:
+      _default: '[{"name":"Gnosis Chain","type":"xdai","subType":"mainnet","group":"mainnets","isAccountSupported":true},{"name":"Optimism on Gnosis Chain","type":"xdai","subType":"optimism","group":"mainnets"},{"name":"Arbitrum on xDai","type":"xdai","subType":"aox","group":"mainnets"},{"name":"Ethereum","type":"eth","subType":"mainnet","group":"mainnets"},{"name":"Ethereum Classic","type":"etc","subType":"mainnet","group":"mainnets"},{"name":"POA","type":"poa","subType":"core","group":"mainnets"},{"name":"RSK","type":"rsk","subType":"mainnet","group":"mainnets"},{"name":"Gnosis Chain Testnet","type":"xdai","subType":"testnet","group":"testnets","isAccountSupported":true},{"name":"POA Sokol","type":"poa","subType":"sokol","group":"testnets"},{"name":"ARTIS Σ1","type":"artis","subType":"sigma1","group":"other"},{"name":"LUKSO L14","type":"lukso","subType":"l14","group":"other"}]'
