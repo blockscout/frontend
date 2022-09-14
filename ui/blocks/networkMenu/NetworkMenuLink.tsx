@@ -6,34 +6,16 @@ import type { Network } from 'types/networks';
 
 import checkIcon from 'icons/check.svg';
 import placeholderIcon from 'icons/networks/icons/placeholder.svg';
-import isAccountRoute from 'lib/networks/isAccountRoute';
 
 import useColors from './useColors';
 
 interface Props extends Network {
   isActive: boolean;
   isMobile?: boolean;
-  routeName: string;
+  url: string;
 }
 
-const NetworkMenuLink = ({ name, type, subType, icon, isActive, isMobile, routeName, isAccountSupported }: Props) => {
-  const isAccount = isAccountRoute(routeName);
-  const localPath = (() => {
-    if (isAccount && isAccountSupported) {
-      return routeName;
-    }
-
-    if (isAccount && !isAccountSupported) {
-      return '';
-    }
-
-    // will change when blocks&transaction is implemented
-    return routeName;
-  })();
-  const pathName = `/${ type }${ subType ? '/' + subType : '' }${ localPath }`;
-
-  // will fix later after we agree on CI/CD workflow
-  const href = type === 'xdai' && subType === 'testnet' ? pathName : 'https://blockscout.com' + pathName;
+const NetworkMenuLink = ({ name, type, subType, icon, isActive, isMobile, url }: Props) => {
   const hasIcon = Boolean(icon);
   const colors = useColors({ hasIcon });
 
@@ -49,7 +31,7 @@ const NetworkMenuLink = ({ name, type, subType, icon, isActive, isMobile, routeN
 
   return (
     <Box as="li" listStyleType="none">
-      <NextLink href={ href } passHref>
+      <NextLink href={ url } passHref>
         <Flex
           as="a"
           px={ isMobile ? 3 : 4 }

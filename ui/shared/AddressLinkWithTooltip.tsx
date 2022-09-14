@@ -2,7 +2,7 @@ import { Flex, Link } from '@chakra-ui/react';
 import type { HTMLChakraProps } from '@chakra-ui/system';
 import React from 'react';
 
-import useBasePath from 'lib/hooks/useBasePath';
+import useLink from 'lib/link/useLink';
 
 import AddressWithDots from './AddressWithDots';
 import CopyToClipboard from './CopyToClipboard';
@@ -18,14 +18,15 @@ interface Props extends HTMLChakraProps<'div'> {
 }
 
 const AddressLinkWithTooltip = ({ address, type = 'address', truncated, withCopy = true, ...styles }: Props) => {
-  const basePath = useBasePath();
+  const link = useLink();
+
   let url;
   if (type === 'transaction') {
-    url = basePath + '/tx/' + address;
+    url = link('tx_index', { id: address });
   } else if (type === 'token') {
-    url = basePath + '/address/' + address + '/tokens#address-tabs';
+    url = link('token_index', { id: address });
   } else {
-    url = basePath + '/address/' + address;
+    url = link('address_index', { id: address });
   }
   return (
     <Flex columnGap={ 2 } alignItems="center" overflow="hidden" maxW="100%" { ...styles }>

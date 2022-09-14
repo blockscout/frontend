@@ -11,30 +11,32 @@ import publicTagIcon from 'icons/publictags.svg';
 import tokensIcon from 'icons/token.svg';
 import transactionsIcon from 'icons/transactions.svg';
 import watchlistIcon from 'icons/watchlist.svg';
-import useBasePath from 'lib/hooks/useBasePath';
+import useCurrentRoute from 'lib/link/useCurrentRoute';
+import useLink from 'lib/link/useLink';
 
 export default function useNavItems() {
-  const basePath = useBasePath();
+  const link = useLink();
+  const currentRoute = useCurrentRoute()();
 
   return React.useMemo(() => {
     const mainNavItems = [
-      { text: 'Blocks', pathname: basePath + '/blocks', icon: blocksIcon },
-      { text: 'Transactions', pathname: basePath + '/tx', icon: transactionsIcon },
-      { text: 'Tokens', pathname: basePath + '/tokens', icon: tokensIcon },
-      { text: 'Apps', pathname: basePath + '/apps', icon: appsIcon },
-      { text: 'Other', pathname: basePath + '/other', icon: gearIcon },
+      { text: 'Blocks', url: link('blocks'), icon: blocksIcon, isActive: currentRoute === 'blocks' },
+      { text: 'Transactions', url: link('txs'), icon: transactionsIcon, isActive: currentRoute.startsWith('tx') },
+      { text: 'Tokens', url: link('tokens'), icon: tokensIcon, isActive: currentRoute === 'tokens' },
+      { text: 'Apps', url: link('apps'), icon: appsIcon, isActive: currentRoute === 'apps' },
+      { text: 'Other', url: link('other'), icon: gearIcon, isActive: currentRoute === 'other' },
     ];
 
     const accountNavItems = [
-      { text: 'Watchlist', pathname: basePath + '/account/watchlist', icon: watchlistIcon },
-      { text: 'Private tags', pathname: basePath + '/account/tag_address', icon: privateTagIcon },
-      { text: 'Public tags', pathname: basePath + '/account/public_tags_request', icon: publicTagIcon },
-      { text: 'API keys', pathname: basePath + '/account/api_key', icon: apiKeysIcon },
-      { text: 'Custom ABI', pathname: basePath + '/account/custom_abi', icon: abiIcon },
+      { text: 'Watchlist', url: link('watchlist'), icon: watchlistIcon, isActive: currentRoute === 'watchlist' },
+      { text: 'Private tags', url: link('private_tags_address'), icon: privateTagIcon, isActive: currentRoute.startsWith('private_tags') },
+      { text: 'Public tags', url: link('public_tags'), icon: publicTagIcon, isActive: currentRoute === 'public_tags' },
+      { text: 'API keys', url: link('api_keys'), icon: apiKeysIcon, isActive: currentRoute === 'api_keys' },
+      { text: 'Custom ABI', url: link('custom_abi'), icon: abiIcon, isActive: currentRoute === 'custom_abi' },
     ];
 
-    const profileItem = { text: 'My profile', pathname: basePath + '/auth/profile', icon: profileIcon };
+    const profileItem = { text: 'My profile', url: link('profile'), icon: profileIcon, isActive: currentRoute === 'profile' };
 
     return { mainNavItems, accountNavItems, profileItem };
-  }, [ basePath ]);
+  }, [ link, currentRoute ]);
 }
