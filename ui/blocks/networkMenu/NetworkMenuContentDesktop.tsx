@@ -1,11 +1,11 @@
 import { PopoverContent, PopoverBody, Text, Tabs, TabList, TabPanels, TabPanel, Tab, VStack } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { NetworkGroup } from 'types/networks';
 
 import useNetwork from 'lib/hooks/useNetwork';
 import NETWORKS from 'lib/networks/availableNetworks';
+import useNetworkNavigationItems from 'lib/networks/useNetworkNavigationItems';
 
 import NetworkMenuLink from './NetworkMenuLink';
 
@@ -13,9 +13,8 @@ const TABS: Array<NetworkGroup> = [ 'mainnets', 'testnets', 'other' ];
 const availableTabs = TABS.filter((tab) => NETWORKS.some(({ group }) => group === tab));
 
 const NetworkMenuPopup = () => {
-  const router = useRouter();
-  const routeName = router.pathname.replace('/[network_type]/[network_sub_type]', '');
   const selectedNetwork = useNetwork();
+  const items = useNetworkNavigationItems();
   const selectedTab = availableTabs.findIndex((tab) => selectedNetwork?.group === tab);
 
   return (
@@ -32,14 +31,12 @@ const NetworkMenuPopup = () => {
             { availableTabs.map((tab) => (
               <TabPanel key={ tab } p={ 0 }>
                 <VStack as="ul" spacing={ 2 } alignItems="stretch" mt={ 4 }>
-                  { NETWORKS
+                  { items
                     .filter((network) => network.group === tab)
                     .map((network) => (
                       <NetworkMenuLink
                         key={ network.name }
                         { ...network }
-                        isActive={ network.name === selectedNetwork?.name }
-                        routeName={ routeName }
                       />
                     )) }
                 </VStack>

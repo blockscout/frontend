@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 
-import useBasePath from 'lib/hooks/useBasePath';
+import useLink from 'lib/link/useLink';
 import PrivateAddressTags from 'ui/privateTags/PrivateAddressTags';
 import PrivateTransactionTags from 'ui/privateTags/PrivateTransactionTags';
 import Page from 'ui/shared/Page';
@@ -25,13 +25,13 @@ type Props = {
 const PrivateTags = ({ tab }: Props) => {
   const [ , setActiveTab ] = useState<TabName>(tab);
 
-  const basePath = useBasePath();
+  const link = useLink();
 
   const onChangeTab = useCallback((index: number) => {
     setActiveTab(TABS[index]);
-    const newUrl = basePath + '/account/' + (TABS[index] === 'address' ? 'tag_address' : 'tag_transaction');
+    const newUrl = link(TABS[index] === 'address' ? 'private_tags_address' : 'private_tags_tx');
     history.replaceState(history.state, '', newUrl);
-  }, [ setActiveTab, basePath ]);
+  }, [ link ]);
 
   return (
     <Page>
