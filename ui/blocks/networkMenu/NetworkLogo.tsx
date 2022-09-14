@@ -4,8 +4,8 @@ import React from 'react';
 import type { FunctionComponent, SVGAttributes } from 'react';
 
 import blockscoutLogo from 'icons/logo.svg';
-import useBasePath from 'lib/hooks/useBasePath';
 import useNetwork from 'lib/hooks/useNetwork';
+import useLink from 'lib/link/useLink';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 
 interface Props {
@@ -15,7 +15,8 @@ interface Props {
 
 const NetworkLogo = ({ isCollapsed, onClick }: Props) => {
   const logoColor = useColorModeValue('blue.600', 'white');
-  const href = useBasePath();
+  const link = useLink();
+  const href = link('network_index');
   const network = useNetwork();
   const logo = network?.logo;
 

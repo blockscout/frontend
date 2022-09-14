@@ -1,7 +1,7 @@
 import { Link, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import useBasePath from 'lib/hooks/useBasePath';
+import useLink from 'lib/link/useLink';
 
 interface Props {
   children: React.ReactNode;
@@ -11,14 +11,14 @@ interface Props {
 }
 
 const AddressLink = ({ children, type, className, ...props }: Props) => {
-  const basePath = useBasePath();
+  const link = useLink();
   let url;
   if (type === 'transaction') {
-    url = basePath + '/tx/' + props.hash;
+    url = link('tx_index', { id: props.hash });
   } else if (type === 'token') {
-    url = basePath + '/address/' + props.hash + '/tokens#address-tabs';
+    url = link('token_index', { id: props.hash });
   } else {
-    url = basePath + '/address/' + props.hash;
+    url = link('address_index', { id: props.hash });
   }
 
   const childrenWithProps = React.Children.map(children, child => {
