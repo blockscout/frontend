@@ -4,7 +4,7 @@ import React, { useCallback, useState } from 'react';
 
 import type { ApiKey, ApiKeys } from 'types/api/account';
 
-import fetch from 'lib/client/fetch';
+import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { space } from 'lib/html-entities';
 import ApiKeyModal from 'ui/apiKey/ApiKeyModal/ApiKeyModal';
@@ -25,6 +25,7 @@ const ApiKeysPage: React.FC = () => {
   const apiKeyModalProps = useDisclosure();
   const deleteModalProps = useDisclosure();
   const isMobile = useIsMobile();
+  const fetch = useFetch();
 
   const [ apiKeyModalData, setApiKeyModalData ] = useState<ApiKey>();
   const [ deleteModalData, setDeleteModalData ] = useState<ApiKey>();

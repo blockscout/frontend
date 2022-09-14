@@ -12,9 +12,9 @@ import { useForm, Controller } from 'react-hook-form';
 import type { WatchlistErrors } from 'types/api/account';
 import type { TWatchlistItem } from 'types/client/account';
 
-import type { ErrorType } from 'lib/client/fetch';
-import fetch from 'lib/client/fetch';
 import getErrorMessage from 'lib/getErrorMessage';
+import type { ErrorType } from 'lib/hooks/useFetch';
+import useFetch from 'lib/hooks/useFetch';
 import { ADDRESS_REGEXP } from 'lib/validations/address';
 import AddressInput from 'ui/shared/AddressInput';
 import CheckboxInput from 'ui/shared/CheckboxInput';
@@ -83,9 +83,10 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
   });
 
   const queryClient = useQueryClient();
+  const fetch = useFetch();
 
   function updateWatchlist(formData: Inputs) {
-    const requestParams = {
+    const body = {
       name: formData?.tag,
       address_hash: formData?.address,
       notification_settings: formData.notification_settings,
@@ -95,11 +96,11 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
     };
     if (data) {
       // edit address
-      return fetch<TWatchlistItem, WatchlistErrors>(`/api/account/watchlist/${ data.id }`, { method: 'PUT', body: JSON.stringify(requestParams) });
+      return fetch<TWatchlistItem, WatchlistErrors>(`/api/account/watchlist/${ data.id }`, { method: 'PUT', body });
 
     } else {
       // add address
-      return fetch<TWatchlistItem, WatchlistErrors>('/api/account/watchlist', { method: 'POST', body: JSON.stringify(requestParams) });
+      return fetch<TWatchlistItem, WatchlistErrors>('/api/account/watchlist', { method: 'POST', body });
     }
   }
 

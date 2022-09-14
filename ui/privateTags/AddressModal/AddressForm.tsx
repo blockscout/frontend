@@ -10,9 +10,9 @@ import { useForm, Controller } from 'react-hook-form';
 
 import type { AddressTag, AddressTagErrors } from 'types/api/account';
 
-import type { ErrorType } from 'lib/client/fetch';
-import fetch from 'lib/client/fetch';
 import getErrorMessage from 'lib/getErrorMessage';
+import type { ErrorType } from 'lib/hooks/useFetch';
+import useFetch from 'lib/hooks/useFetch';
 import { ADDRESS_REGEXP } from 'lib/validations/address';
 import AddressInput from 'ui/shared/AddressInput';
 import TagInput from 'ui/shared/TagInput';
@@ -31,6 +31,7 @@ type Inputs = {
 }
 
 const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
+  const fetch = useFetch();
   const [ pending, setPending ] = useState(false);
   const { control, handleSubmit, formState: { errors, isValid }, setError } = useForm<Inputs>({
     mode: 'all',
@@ -45,10 +46,10 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation((formData: Inputs) => {
-    const body = JSON.stringify({
+    const body = {
       name: formData?.tag,
       address_hash: formData?.address,
-    });
+    };
 
     const isEdit = data?.id;
     if (isEdit) {

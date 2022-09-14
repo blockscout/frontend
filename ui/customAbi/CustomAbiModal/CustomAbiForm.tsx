@@ -14,10 +14,10 @@ import { useForm, Controller } from 'react-hook-form';
 
 import type { CustomAbi, CustomAbis, CustomAbiErrors } from 'types/api/account';
 
-import type { ErrorType } from 'lib/client/fetch';
-import fetch from 'lib/client/fetch';
 import getErrorMessage from 'lib/getErrorMessage';
 import getPlaceholderWithError from 'lib/getPlaceholderWithError';
+import type { ErrorType } from 'lib/hooks/useFetch';
+import useFetch from 'lib/hooks/useFetch';
 import { ADDRESS_REGEXP } from 'lib/validations/address';
 import AddressInput from 'ui/shared/AddressInput';
 
@@ -46,9 +46,10 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
   });
 
   const queryClient = useQueryClient();
+  const fetch = useFetch();
 
   const customAbiKey = (data: Inputs & { id?: number }) => {
-    const body = JSON.stringify({ name: data.name, contract_address_hash: data.contract_address_hash, abi: data.abi });
+    const body = { name: data.name, contract_address_hash: data.contract_address_hash, abi: data.abi };
 
     if (!data.id) {
       return fetch<CustomAbi, CustomAbiErrors>('/api/account/custom-abis', { method: 'POST', body });
