@@ -16,6 +16,7 @@ import TxDetails from 'ui/tx/TxDetails';
 import TxInternals from 'ui/tx/TxInternals';
 import TxLogs from 'ui/tx/TxLogs';
 import TxRawTrace from 'ui/tx/TxRawTrace';
+import TxState from 'ui/tx/TxState';
 
 interface Tab {
   type: 'details' | 'internal_txn' | 'logs' | 'raw_trace' | 'state';
@@ -29,7 +30,7 @@ const TABS: Array<Tab> = [
   { type: 'details', routeName: 'tx_index', name: 'Details', component: <TxDetails/> },
   { type: 'internal_txn', routeName: 'tx_internal', name: 'Internal txn', component: <TxInternals/> },
   { type: 'logs', routeName: 'tx_logs', name: 'Logs', component: <TxLogs/> },
-  { type: 'state', routeName: 'tx_state', name: 'State' },
+  { type: 'state', routeName: 'tx_state', name: 'State', component: <TxState/> },
   { type: 'raw_trace', routeName: 'tx_raw_trace', name: 'Raw trace', component: <TxRawTrace/> },
 ];
 

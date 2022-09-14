@@ -10,7 +10,7 @@ const TxInternals = () => {
     <Box>
       <Filters/>
       <TableContainer width="100%" mt={ 6 }>
-        <Table variant="simple" minWidth="950px">
+        <Table variant="simple" minWidth="950px" size="sm">
           <Thead>
             <Tr>
               <Th width="20%">Type</Th>
