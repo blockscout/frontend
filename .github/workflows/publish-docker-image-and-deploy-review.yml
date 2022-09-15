@@ -11,10 +11,6 @@ env:
   K8S_PORT: ${{ secrets.K8S_PORT }}
   USERNAME: ${{ secrets.USERNAME }}
   BASTION_SSH_KEY: ${{secrets.BASTION_SSH_KEY}}
-  SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-  NEXT_PUBLIC_SENTRY_DSN: ${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}
-  SENTRY_CSP_REPORT_URI: ${{ secrets.SENTRY_CSP_REPORT_URI }}
-  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 
 jobs:
   push_to_registry:
@@ -59,7 +55,7 @@ jobs:
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          tags: frontend:prerelease-${{ env.SHORT_SHA }}
+          tags: ghcr.io/frontend:prerelease-${{ env.SHORT_SHA }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             SENTRY_DSN=${{ secrets.SENTRY_DSN }}
