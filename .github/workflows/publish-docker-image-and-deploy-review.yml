@@ -55,7 +55,7 @@ jobs:
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          tags: ghcr.io/blocksckout/frontend:prerelease-${{ env.SHORT_SHA }}
+          tags: ghcr.io/blockscout/frontend:prerelease-${{ env.SHORT_SHA }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             SENTRY_DSN=${{ secrets.SENTRY_DSN }}
