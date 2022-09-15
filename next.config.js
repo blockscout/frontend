@@ -33,6 +33,9 @@ const moduleExports = {
   sentry: {
     hideSourceMaps: true,
   },
+  publicRuntimeConfig: {
+    NEXT_PUBLIC_SUPPORTED_NETWORKS: process.env.NEXT_PUBLIC_SUPPORTED_NETWORKS,
+  },
 };
 
 const sentryWebpackPluginOptions = {

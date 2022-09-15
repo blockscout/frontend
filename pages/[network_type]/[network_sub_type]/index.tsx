@@ -1,5 +1,5 @@
 import { VStack, Textarea, Button, Alert, AlertTitle, AlertDescription, Link, Code } from '@chakra-ui/react';
-import type { NextPage, GetStaticPaths } from 'next';
+import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import type { ChangeEvent } from 'react';
 import React from 'react';
@@ -7,7 +7,6 @@ import React from 'react';
 import * as cookies from 'lib/cookies';
 import useNetwork from 'lib/hooks/useNetwork';
 import useToast from 'lib/hooks/useToast';
-import getAvailablePaths from 'lib/networks/getAvailablePaths';
 import Page from 'ui/shared/Page';
 import PageHeader from 'ui/shared/PageHeader';
 
@@ -76,12 +75,5 @@ const Home: NextPage = () => {
 
 export default Home;
 
-export const getStaticPaths: GetStaticPaths = async() => {
-  return { paths: getAvailablePaths(), fallback: false };
-};
-
-export const getStaticProps = async() => {
-  return {
-    props: {},
-  };
-};
+export { getStaticPaths } from 'lib/next/getStaticPaths';
+export { getStaticProps } from 'lib/next/getStaticProps';
