@@ -21,7 +21,7 @@ export default function useNavItems() {
   return React.useMemo(() => {
     const mainNavItems = [
       { text: 'Blocks', url: link('blocks'), icon: blocksIcon, isActive: currentRoute === 'blocks' },
-      { text: 'Transactions', url: link('txs'), icon: transactionsIcon, isActive: currentRoute.startsWith('tx') },
+      { text: 'Transactions', url: link('txs_validated'), icon: transactionsIcon, isActive: currentRoute.startsWith('tx') },
       { text: 'Tokens', url: link('tokens'), icon: tokensIcon, isActive: currentRoute === 'tokens' },
       { text: 'Apps', url: link('apps'), icon: appsIcon, isActive: currentRoute === 'apps' },
       // there should be custom site sections like Stats, Faucet, More, etc but never an 'other'

@@ -35,6 +35,7 @@ const baseStyleContainer = defineStyle({
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   borderRadius: 'sm',
+  lineHeight: '20px',
   ...transitionProps,
 });
 

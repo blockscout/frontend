@@ -6,13 +6,13 @@ import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
-import TxStatus from 'ui/tx/TxStatus';
+import TxStatus from 'ui/shared/TxStatus';
 
 interface Props {
   type: string;
-  status: 'success' | 'error';
-  from: string;
-  to: string;
+  status: 'success' | 'failed' | 'pending';
+  from: { hash: string; alias?: string};
+  to: { hash: string; alias?: string};
   value: number;
   gasLimit: number;
 }
@@ -32,8 +32,8 @@ const TxInternalTableItem = ({ type, status, from, to, value, gasLimit }: Props)
       </Td>
       <Td>
         <Address>
-          <AddressIcon hash={ from }/>
-          <AddressLink ml={ 2 } fontWeight="500" hash={ from } flexGrow={ 1 }/>
+          <AddressIcon hash={ from.hash }/>
+          <AddressLink ml={ 2 } fontWeight="500" hash={ from.hash } alias={ from.alias } flexGrow={ 1 }/>
         </Address>
       </Td>
       <Td px={ 0 }>
@@ -41,8 +41,8 @@ const TxInternalTableItem = ({ type, status, from, to, value, gasLimit }: Props)
       </Td>
       <Td>
         <Address>
-          <AddressIcon hash={ to }/>
-          <AddressLink ml={ 2 } fontWeight="500" hash={ to }/>
+          <AddressIcon hash={ to.hash }/>
+          <AddressLink hash={ to.hash } alias={ to.alias } fontWeight="500" ml={ 2 }/>
         </Address>
       </Td>
       <Td isNumeric>
