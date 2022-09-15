@@ -7,8 +7,9 @@ import clockIcon from 'icons/clock.svg';
 import flameIcon from 'icons/flame.svg';
 import successIcon from 'icons/status/success.svg';
 import dayjs from 'lib/date/dayjs';
-import AddressIcon from 'ui/shared/AddressIcon';
-import AddressLinkWithTooltip from 'ui/shared/AddressLinkWithTooltip';
+import Address from 'ui/shared/address/Address';
+import AddressIcon from 'ui/shared/address/AddressIcon';
+import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import RawInputData from 'ui/shared/RawInputData';
@@ -77,15 +78,21 @@ const TxDetails = () => {
         hint="Address (external or contract) sending the transaction."
         mt={ 8 }
       >
-        <AddressIcon address={ tx.address_from }/>
-        <AddressLinkWithTooltip address={ tx.address_from } columnGap={ 0 } ml={ 2 } fontWeight="400"/>
+        <Address>
+          <AddressIcon hash={ tx.address_from }/>
+          <AddressLink ml={ 2 } hash={ tx.address_from }/>
+          <CopyToClipboard text={ tx.address_from }/>
+        </Address>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Interacted with contract"
         hint="Address (external or contract) receiving the transaction."
       >
-        <AddressIcon address={ tx.address_to }/>
-        <AddressLinkWithTooltip address={ tx.address_to } columnGap={ 0 } ml={ 2 } fontWeight="400"/>
+        <Address>
+          <AddressIcon hash={ tx.address_to }/>
+          <AddressLink ml={ 2 } hash={ tx.address_to }/>
+          <CopyToClipboard text={ tx.address_to }/>
+        </Address>
         <Tag colorScheme="orange" variant="solid" ml={ 3 }>SANA</Tag>
         <Icon as={ successIcon } boxSize={ 4 } ml={ 2 } color="green.500"/>
         <Token symbol="USDT" ml={ 3 }/>

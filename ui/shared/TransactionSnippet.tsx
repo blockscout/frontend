@@ -1,8 +1,10 @@
-import { Box, HStack, Icon, useColorModeValue } from '@chakra-ui/react';
+import { Icon, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import transactionIcon from 'icons/transactions.svg';
-import AddressLinkWithTooltip from 'ui/shared/AddressLinkWithTooltip';
+import Address from 'ui/shared/address/Address';
+import AddressLink from 'ui/shared/address/AddressLink';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 interface Props {
   hash: string;
@@ -10,12 +12,11 @@ interface Props {
 
 const TransactionSnippet = ({ hash }: Props) => {
   return (
-    <HStack spacing={ 2 } overflow="hidden" alignItems="start" maxW="100%">
+    <Address maxW="100%">
       <Icon as={ transactionIcon } boxSize={ 6 } color={ useColorModeValue('gray.500', 'gray.400') }/>
-      <Box overflow="hidden">
-        <AddressLinkWithTooltip address={ hash } type="transaction"/>
-      </Box>
-    </HStack>
+      <AddressLink hash={ hash } fontWeight="600" type="transaction" ml={ 2 }/>
+      <CopyToClipboard text={ hash } ml={ 1 }/>
+    </Address>
   );
 };
 

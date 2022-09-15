@@ -7,7 +7,6 @@ import {
   Box,
   Tr,
   Td,
-  Flex,
   Stat,
   StatArrow,
   Portal,
@@ -18,8 +17,9 @@ import React, { useRef } from 'react';
 
 import type { TTxStateItem } from 'data/txState';
 import { nbsp } from 'lib/html-entities';
-import AddressIcon from 'ui/shared/AddressIcon';
-import AddressLinkWithTooltip from 'ui/shared/AddressLinkWithTooltip';
+import Address from 'ui/shared/address/Address';
+import AddressIcon from 'ui/shared/address/AddressIcon';
+import AddressLink from 'ui/shared/address/AddressLink';
 
 import TxStateStorageItem from './TxStateStorageItem';
 
@@ -57,10 +57,10 @@ const TxStateTableItem = ({ txStateItem }: { txStateItem: TTxStateItem }) => {
               </AccordionButton>
             </Td>
             <Td border={ 0 }>
-              <Flex height="30px" alignItems="center">
-                <AddressIcon address={ txStateItem.address }/>
-                <AddressLinkWithTooltip address={ txStateItem.address } fontWeight="500" truncated withCopy={ false } ml={ 2 }/>
-              </Flex>
+              <Address height="30px">
+                <AddressIcon hash={ txStateItem.address }/>
+                <AddressLink hash={ txStateItem.address } fontWeight="500" truncation="constant" ml={ 2 }/>
+              </Address>
             </Td>
             <Td border={ 0 } lineHeight="30px"><Link>{ txStateItem.miner }</Link></Td>
             <Td border={ 0 } isNumeric lineHeight="30px">
