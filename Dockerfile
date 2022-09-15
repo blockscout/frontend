@@ -4,15 +4,9 @@ FROM node:16-alpine AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-ARG SENTRY_DSN
-ARG NEXT_PUBLIC_SENTRY_DSN
-ARG SENTRY_CSP_REPORT_URI
-ARG SENTRY_AUTH_TOKEN
-
 # Install dependencies based on the preferred package manager
 COPY package.json yarn.lock ./
 RUN yarn --frozen-lockfile
-
 
 # Rebuild the source code only when needed
 FROM node:16-alpine AS builder
@@ -24,6 +18,11 @@ COPY . .
 # Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED 1
+
+ARG SENTRY_DSN
+ARG NEXT_PUBLIC_SENTRY_DSN
+ARG SENTRY_CSP_REPORT_URI
+ARG SENTRY_AUTH_TOKEN
 
 RUN yarn build
 
