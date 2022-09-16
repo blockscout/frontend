@@ -8,15 +8,16 @@ const AppCard = ({ title, logo, shortDescription, categories }: AppItemPreview) 
 
   return (
     <Box
+      borderRadius={{ base: 'none', sm: 'md' }}
       height="100%"
-      padding={{ base: '16px', md: '20px' }}
+      padding={{ base: '16px', sm: '20px' }}
       boxShadow={ `0 0 0 1px ${ useColorModeValue('var(--chakra-colors-gray-200)', 'var(--chakra-colors-gray-600)') }` }
     >
       <Box overflow="hidden" height="100%">
         <Box
           marginBottom={ 4 }
-          w={{ base: '64px', lg: '96px' }}
-          h={{ base: '64px', lg: '96px' }}
+          w={{ base: '64px', sm: '96px' }}
+          h={{ base: '64px', sm: '96px' }}
         >
           <Image
             src={ logo }
@@ -27,7 +28,7 @@ const AppCard = ({ title, logo, shortDescription, categories }: AppItemPreview) 
         <Text
           as="h3"
           marginBottom={ 2 }
-          fontSize={{ base: 'sm', lg: 'lg' }}
+          fontSize={{ base: 'sm', sm: 'sm' }}
           fontWeight="semibold"
         >
           { title }
@@ -42,7 +43,7 @@ const AppCard = ({ title, logo, shortDescription, categories }: AppItemPreview) 
         </Text>
 
         <Text
-          fontSize={{ base: 'xs', lg: 'sm' }}
+          fontSize={{ base: 'xs', sm: 'sm' }}
           lineHeight="20px"
           style={{
             display: '-webkit-box',
