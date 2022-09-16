@@ -1,5 +1,5 @@
 global:
-  env: test
+  env: testnet
 frontend:
   enabled: true
   image: ghcr.io/blockscout/frontend:main
