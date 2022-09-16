@@ -9,6 +9,7 @@ export const txs = [
   {
     ...tx,
     status: 'failed',
+    errorText: 'Error: (Awaiting internal transactions for reason)',
     txType: 'contract-call',
     method: 'CommitHash CommitHash CommitHash CommitHash',
   },
@@ -20,6 +21,7 @@ export const txs = [
     address_from: {
       hash: '0x97Aa2EfcF35c0f4c9AaDDCa8c2330fa7A9533830',
       alias: 'tkdkdkdkdkdkdkdkdkdkdkdkdkdkd.eth',
+      type: 'ENS name',
     },
   },
 ];

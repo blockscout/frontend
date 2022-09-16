@@ -1,4 +1,21 @@
-import { Box, Tr, Td, Tag, Link, Icon, VStack, Text, useBreakpointValue } from '@chakra-ui/react';
+import {
+  Box,
+  Tr,
+  Td,
+  Tag,
+  Link,
+  Icon,
+  VStack,
+  Text,
+  Tooltip,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverBody,
+  useBreakpointValue,
+  Center,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import React from 'react';
 
 import rightArrowIcon from 'icons/arrows/right.svg';
@@ -10,6 +27,7 @@ import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 import TxStatus from 'ui/shared/TxStatus';
+import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 
 import TxType from './TxType';
 
@@ -20,27 +38,55 @@ const TxsTableItem = (item) => {
 
   const addressFrom = (
     <Address>
-      <AddressIcon hash={ item.address_from.hash }/>
+      <Tooltip label={ item.address_from.type } shouldWrapChildren>
+        <AddressIcon hash={ item.address_from.hash }/>
+      </Tooltip>
       <AddressLink hash={ item.address_from.hash } alias={ item.address_from.alias } fontWeight="500" ml={ 2 }/>
     </Address>
   );
 
   const addressTo = (
     <Address>
-      <AddressIcon hash={ item.address_to.hash }/>
+      <Tooltip label={ item.address_to.type } shouldWrapChildren>
+        <AddressIcon hash={ item.address_to.hash }/>
+      </Tooltip>
       <AddressLink hash={ item.address_to.hash } alias={ item.address_to.alias } fontWeight="500" ml={ 2 }/>
     </Address>
   );
 
+  const infoBgColor = useColorModeValue('blue.50', 'gray.600');
+  const infoColor = useColorModeValue('blue.600', 'blue.300');
+
+  const infoBorderColor = useColorModeValue('gray.200', 'whiteAlpha.200');
   return (
     <Tr>
       <Td pl={ 4 }>
-        <Icon as={ infoIcon } boxSize={ 5 } color="blue.600"/>
+        <Popover placement="right-start" openDelay={ 300 }>
+          { ({ isOpen }) => (
+            <>
+              <PopoverTrigger>
+                <Center background={ isOpen ? infoBgColor : 'unset' } borderRadius="8px" w="30px" h="30px">
+                  <Icon
+                    as={ infoIcon }
+                    boxSize={ 5 }
+                    color={ infoColor }
+                    _hover={{ color: 'blue.400' }}
+                  />
+                </Center>
+              </PopoverTrigger>
+              <PopoverContent border="1px solid" borderColor={ infoBorderColor }>
+                <PopoverBody>
+                  <TxAdditionalInfo tx={ item }/>
+                </PopoverBody>
+              </PopoverContent>
+            </>
+          ) }
+        </Popover>
       </Td>
       <Td>
         <VStack alignItems="start">
           <TxType type={ item.txType }/>
-          <TxStatus status={ item.status }/>
+          <TxStatus status={ item.status } errorText={ item.errorText }/>
         </VStack>
       </Td>
       <Td>

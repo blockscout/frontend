@@ -8,9 +8,11 @@ export const tx = {
   timestamp: 1662623567695,
   address_from: {
     hash: '0x97Aa2EfcF35c0f4c9AaDDCa8c2330fa7A9533830',
+    type: 'Address',
   },
   address_to: {
     hash: '0x35317007D203b8a86CA727ad44E473E40450E378',
+    type: 'Contract',
   },
   amount: {
     value: 0.03,
