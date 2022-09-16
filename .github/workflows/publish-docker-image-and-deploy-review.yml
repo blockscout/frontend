@@ -68,8 +68,8 @@ jobs:
     uses: blockscout/blockscout-ci-cd/.github/workflows/deploy.yaml@deploy-smart-contract-verifier
     with:
       valuesDir: deploy/values
-      appNamespace: frontend-$GITHUB_REF_NAME
+      appNamespace: frontend-$GITHUB_HEAD_REF
       appName: frontend
-      frontendIngressHost: frontend-$GITHUB_REF_NAME.aws-k8s.blockscout.com
+      frontendIngressHost: frontend-$GITHUB_HEAD_REF.aws-k8s.blockscout.com
       frontendImage: ghcr.io/blockscout/frontend:prerelease-${{ needs.push_to_registry.outputs.shortSha }}
     secrets: inherit
