@@ -43,9 +43,7 @@ const Page = ({ children }: Props) => {
         <Header/>
         <Box
           as="main"
-          borderRadius="base"
           w="100%"
-          overflow="hidden"
           paddingTop={ isMobile ? '138px' : '52px' }
         >
           { children }
