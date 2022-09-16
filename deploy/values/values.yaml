@@ -10,7 +10,8 @@ frontend:
     targetPort: 3000
   ingress:
     enabled: true
-    host: bs-frontend.aws-k8s.blockscout.com
+    host:
+      _default: bs-frontend.aws-k8s.blockscout.com
   resources:
     limits:
       memory:
