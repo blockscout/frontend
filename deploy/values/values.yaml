@@ -2,7 +2,8 @@ global:
   env: testnet
 frontend:
   enabled: true
-  image: ghcr.io/blockscout/frontend:main
+  image:
+    _default: ghcr.io/blockscout/frontend:main
   replicas:
     app: 1
   docker:
