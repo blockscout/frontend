@@ -11,10 +11,6 @@ env:
   K8S_PORT: ${{ secrets.K8S_PORT }}
   USERNAME: ${{ secrets.USERNAME }}
   BASTION_SSH_KEY: ${{secrets.BASTION_SSH_KEY}}
-  SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-  NEXT_PUBLIC_SENTRY_DSN: ${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}
-  SENTRY_CSP_REPORT_URI: ${{ secrets.SENTRY_CSP_REPORT_URI }}
-  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 
 jobs:
   push_to_registry:
@@ -59,13 +55,13 @@ jobs:
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          tags: frontend:prerelease-${{ env.SHORT_SHA }}
+          tags: ghcr.io/blockscout/frontend:prerelease-${{ env.SHORT_SHA }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            SENTRY_DSN=$SENTRY_DSN
-            NEXT_PUBLIC_SENTRY_DSN=$NEXT_PUBLIC_SENTRY_DSN
-            SENTRY_CSP_REPORT_URI=$SENTRY_CSP_REPORT_URI
-            SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN
+            SENTRY_DSN=${{ secrets.SENTRY_DSN }}
+            NEXT_PUBLIC_SENTRY_DSN=${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}
+            SENTRY_CSP_REPORT_URI=${{ secrets.SENTRY_CSP_REPORT_URI }}
+            SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
 
   deploy_frontend:
     needs: push_to_registry
@@ -74,5 +70,6 @@ jobs:
       valuesDir: deploy/values
       appNamespace: frontend-$GITHUB_REF_NAME
       appName: frontend
+      frontendIngressHost: frontend-$GITHUB_REF_NAME.aws-k8s.blockscout.com
       frontendImage: ghcr.io/blockscout/frontend:prerelease-${{ needs.push_to_registry.outputs.shortSha }}
     secrets: inherit
