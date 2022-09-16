@@ -13,6 +13,7 @@ FROM node:16-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+COPY .env.template .env.production
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
@@ -41,9 +42,10 @@ COPY --from=builder /app/next.config.js ./
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/package.json ./package.json
 
-# Copy script and ENV templates file
-COPY entrypoint.sh .
-COPY .env.production .
+# Copy scripts and ENV templates file
+COPY ./deploy/scripts/entrypoint.sh .
+COPY ./deploy/scripts/replace_envs.sh .
+COPY .env.template .
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
@@ -53,6 +55,8 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 # Execute script for replace build ENV with run ones
 RUN apk add --no-cache --upgrade bash
 RUN ["chmod", "+x", "./entrypoint.sh"]
+RUN ["chmod", "+x", "./replace_envs.sh"]
+
 ENTRYPOINT ["./entrypoint.sh"]
 
 USER nextjs

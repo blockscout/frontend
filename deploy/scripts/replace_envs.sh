@@ -3,12 +3,12 @@
 set +x
 
 # config
-envFilename='.env.production'
+envFilename='.env.template'
 nextFolder='./.next/'
 
 # replacing build-stage ENVs with run-stage ENVs
 # https://raphaelpralat.medium.com/system-environment-variables-in-next-js-with-docker-1f0754e04cde
-function apply_path {
+function replace_envs {
   # read all config file  
   while read line; do
     # no comment or not empty
@@ -31,7 +31,4 @@ function apply_path {
   done < $envFilename
 }
 
-apply_path
-
-echo "Starting Nextjs"
-exec "$@"
+replace_envs
