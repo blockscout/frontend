@@ -1,4 +1,4 @@
-const parseNetworkConfig = require('../networks/parseNetworkConfig');
+import availableNetworks from 'lib/networks/availableNetworks';
 
 const KEY_WORDS = {
   BLOB: 'blob:',
@@ -16,11 +16,15 @@ const MAIN_DOMAINS = [ '*.blockscout.com', 'blockscout.com' ];
 const isDev = process.env.NODE_ENV === 'development';
 
 function getNetworksExternalAssets() {
-  const icons = parseNetworkConfig()
+  const icons = availableNetworks
     .filter(({ icon }) => typeof icon === 'string')
-    .map(({ icon }) => new URL(icon));
+    .map(({ icon }) => new URL(icon as string));
 
-  return icons;
+  const logos = availableNetworks
+    .filter(({ logo }) => typeof logo === 'string')
+    .map(({ logo }) => new URL(logo as string));
+
+  return icons.concat(logos);
 }
 
 function makePolicyMap() {
@@ -121,4 +125,4 @@ function getCspPolicy() {
   return policyString;
 }
 
-module.exports = getCspPolicy;
+export default getCspPolicy;
