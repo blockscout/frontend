@@ -19,11 +19,12 @@ const AppList = ({ apps }: Props) => {
       { apps.length > 0 ? (
         <Grid
           templateColumns={{
-            base: 'repeat(auto-fill, minmax(140px, 1fr))',
+            base: 'repeat(auto-fill, minmax(160px, 1fr))',
+            sm: 'repeat(auto-fill, minmax(200px, 1fr))',
             lg: 'repeat(auto-fill, minmax(260px, 1fr))',
           }}
           autoRows="1fr"
-          gap={{ base: '1px', lg: '24px' }}
+          gap={{ base: '1px', sm: '24px' }}
         >
           { apps.map((app) => (
             <GridItem
@@ -54,7 +55,7 @@ const AppList = ({ apps }: Props) => {
           <Text
             as="h3"
             marginBottom={ 2 }
-            fontSize={{ base: '2xl', lg: '3xl' }}
+            fontSize={{ base: '2xl', sm: '3xl' }}
             fontWeight="semibold"
           >
             No results
