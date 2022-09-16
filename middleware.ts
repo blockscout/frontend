@@ -23,7 +23,9 @@ export function middleware(req: NextRequest) {
   const selectedNetwork = findNetwork(networkParams);
 
   if (!selectedNetwork) {
-    return;
+    const url = req.nextUrl.clone();
+    url.pathname = `/404`;
+    return NextResponse.rewrite(url);
   }
 
   // we don't have any info from router here, so just do straight forward sub-string search (sorry)
