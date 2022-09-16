@@ -14,7 +14,7 @@ const TxStatus = ({ status }: Props) => {
   const colorScheme = status === 'success' ? 'green' : 'red';
 
   return (
-    <Tag colorScheme={ colorScheme }>
+    <Tag colorScheme={ colorScheme } display="inline-flex">
       <TagLeftIcon boxSize={ 2.5 } as={ icon }/>
       <TagLabel>{ label }</TagLabel>
     </Tag>
