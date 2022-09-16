@@ -1,8 +1,8 @@
 name: Publish Docker image for review environment
 
 on:
-  push:
-  # pull_request:
+  # push:
+  pull_request:
 
 env:
   K8S_LOCAL_PORT: ${{ secrets.K8S_LOCAL_PORT }}
