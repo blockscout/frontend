@@ -31,7 +31,7 @@ const TxsTable = () => {
           { txs.map((item) => (
             <TxsTableItem
               key={ item.hash }
-              { ...item }
+              tx={ item }
             />
           )) }
         </Tbody>
