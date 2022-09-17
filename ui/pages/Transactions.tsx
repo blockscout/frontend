@@ -36,7 +36,7 @@ const Transactions = ({ tab }: Props) => {
   return (
     <Page>
       <Box h="100%">
-        <PageHeader text="Private tags"/>
+        <PageHeader text="Transactions"/>
         <Tabs variant="soft-rounded" colorScheme="blue" isLazy onChange={ onChangeTab } defaultIndex={ TABS.indexOf(tab) }>
           <TabList marginBottom={{ base: 6, lg: 8 }}>
             <Tab>Validated</Tab>
