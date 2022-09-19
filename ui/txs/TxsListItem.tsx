@@ -4,14 +4,9 @@ import {
   Flex,
   Icon,
   Link,
-  Drawer,
-  DrawerBody,
-  DrawerContent,
-  DrawerCloseButton,
-  DrawerOverlay,
-  //   Modal,
-  //   ModalContent,
-  //   ModalCloseButton,
+  Modal,
+  ModalContent,
+  ModalCloseButton,
   Text,
   Tooltip,
   useColorModeValue,
@@ -124,23 +119,12 @@ const TxsListItem = ({ tx }: {tx: any}) => {
           <Text as="span" color={ secondaryTextColor }>{ tx.fee.value.toFixed(8) }</Text>
         </Box>
       </Box>
-      { /* <Modal isOpen={ isOpen } onClose={ onClose } size="full">
+      <Modal isOpen={ isOpen } onClose={ onClose } size="full">
         <ModalContent paddingTop={ 4 }>
           <ModalCloseButton/>
           <TxAdditionalInfo tx={ tx }/>
         </ModalContent>
-      </Modal> */ }
-      <Drawer
-        isOpen={ isOpen }
-        placement="bottom"
-        onClose={ onClose }
-      >
-        <DrawerOverlay/>
-        <DrawerContent>
-          <DrawerCloseButton/>
-          <DrawerBody p={ 6 }>          <TxAdditionalInfo tx={ tx }/></DrawerBody>
-        </DrawerContent>
-      </Drawer>
+      </Modal>
     </>
   );
 };
