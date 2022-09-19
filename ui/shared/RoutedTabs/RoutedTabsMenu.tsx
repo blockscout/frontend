@@ -23,7 +23,7 @@ interface Props {
 }
 
 const RoutedTabsMenu = ({ tabs, tabsCut, isActive, styles, onItemClick, buttonRef, activeTab }: Props) => {
-  const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   const handleItemClick = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
     onClose();
@@ -38,7 +38,6 @@ const RoutedTabsMenu = ({ tabs, tabsCut, isActive, styles, onItemClick, buttonRe
       <PopoverTrigger>
         <Button
           variant="subtle"
-          onClick={ onToggle }
           isActive={ isOpen || isActive }
           ref={ buttonRef }
           { ...styles }
