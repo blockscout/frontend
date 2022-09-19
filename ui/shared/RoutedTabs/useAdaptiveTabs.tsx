@@ -57,6 +57,10 @@ export default function useAdaptiveTabs(tabs: Array<RoutedTab>) {
   }, [ calculateCut, tabsRefs ]);
 
   React.useEffect(() => {
+    if (tabsRefs.length === 0) {
+      return;
+    }
+
     const resizeHandler = _debounce(() => {
       setTabsCut(calculateCut());
     }, 100);
@@ -66,7 +70,7 @@ export default function useAdaptiveTabs(tabs: Array<RoutedTab>) {
     return function cleanup() {
       resizeObserver.unobserve(document.body);
     };
-  }, [ calculateCut ]);
+  }, [ calculateCut, tabsRefs.length ]);
 
   return React.useMemo(() => {
     return {
