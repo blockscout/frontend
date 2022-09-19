@@ -6,7 +6,9 @@ import type { RoutedTab } from './types';
 import { menuButton } from './utils';
 
 export default function useAdaptiveTabs(tabs: Array<RoutedTab>) {
-  const [ tabsCut, setTabsCut ] = React.useState(tabs.length);
+  // to avoid flickering we set initial value to 0
+  // so there will be no displayed tabs initially
+  const [ tabsCut, setTabsCut ] = React.useState(0);
   const [ tabsRefs, setTabsRefs ] = React.useState<Array<React.RefObject<HTMLButtonElement>>>([]);
   const listRef = React.useRef<HTMLDivElement>(null);
 

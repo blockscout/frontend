@@ -67,7 +67,13 @@ const RoutedTabs = ({ tabs, defaultActiveTab }: Props) => {
                 activeTab={ tabs[activeTab] }
                 tabsCut={ tabsCut }
                 isActive={ activeTab >= tabsCut }
-                styles={ tabsCut < tabs.length ? {} : hiddenItemStyles }
+                styles={ tabsCut < tabs.length ?
+                  // initially our cut is 0 and we don't want to show the menu button too
+                  // but we want to keep it in the tabs row so it won't collapse
+                  // that's why we only change opacity but not the position itself
+                  { opacity: tabsCut === 0 ? 0 : 1 } :
+                  hiddenItemStyles
+                }
                 onItemClick={ handleItemInMenuClick }
                 buttonRef={ tabsRefs[index] }
               />
