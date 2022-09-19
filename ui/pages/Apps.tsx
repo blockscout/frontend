@@ -1,8 +1,9 @@
-import AppList from '~/ui/apps/AppList';
-import { TEMPORARY_DEMO_APPS } from '~/ui/apps/contants';
-import FilterInput from '~/ui/apps/FilterInput';
-import debounce from 'lodash.debounce';
+import debounce from 'lodash/debounce';
 import React, { useCallback, useState } from 'react';
+
+import { TEMPORARY_DEMO_APPS } from 'data/apps';
+import AppList from 'ui/apps/AppList';
+import FilterInput from 'ui/apps/FilterInput';
 
 const defaultDisplayedApps = [ ...TEMPORARY_DEMO_APPS ]
   .sort((a, b) => a.title.localeCompare(b.title));
