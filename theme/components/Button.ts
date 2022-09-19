@@ -106,10 +106,30 @@ const variantSimple = defineStyle((props) => {
   };
 });
 
+const variantSubtle = defineStyle((props) => {
+  const { colorScheme: c } = props;
+
+  return {
+    bg: 'transparent',
+    color: mode(`${ c }.700`, 'gray.400')(props),
+    _active: {
+      color: mode(`${ c }.700`, 'gray.50')(props),
+      bg: mode(`${ c }.50`, 'gray.800')(props),
+      _hover: {
+        color: mode(`${ c }.700`, 'gray.50')(props),
+      },
+    },
+    _hover: {
+      color: `${ c }.400`,
+    },
+  };
+});
+
 const variants = {
   solid: variantSolid,
   outline: variantOutline,
   simple: variantSimple,
+  subtle: variantSubtle,
 };
 
 const baseStyle = defineStyle({
