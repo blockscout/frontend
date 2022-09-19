@@ -12,6 +12,7 @@ import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import PrevNext from 'ui/shared/PrevNext';
 import RawInputData from 'ui/shared/RawInputData';
 import Token from 'ui/shared/Token';
 import Utilization from 'ui/shared/Utilization';
@@ -46,6 +47,7 @@ const TxDetails = () => {
       >
         { tx.hash }
         <CopyToClipboard text={ tx.hash }/>
+        <PrevNext ml={ 7 }/>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Status"

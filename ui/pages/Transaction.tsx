@@ -1,7 +1,9 @@
+import { Flex, Link, Icon } from '@chakra-ui/react';
 import React from 'react';
 
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
+import externalLinkIcon from 'icons/external-link.svg';
 import Page from 'ui/shared/Page';
 import PageHeader from 'ui/shared/PageHeader';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
@@ -24,10 +26,31 @@ export interface Props {
 }
 
 const TransactionPageContent = ({ tab }: Props) => {
+
+  const externalLinks = (
+    <Flex marginLeft="auto" alignItems="center" columnGap={ 6 }>
+      <Link fontSize="sm" display="inline-flex" alignItems="center" target="_blank">
+        Open in Tenderly
+        <Icon as={ externalLinkIcon }/>
+      </Link>
+      <Link fontSize="sm" display="inline-flex" alignItems="center" target="_blank">
+        Open in Tenderly
+        <Icon as={ externalLinkIcon }/>
+      </Link>
+    </Flex>
+  );
+
   return (
     <Page>
       <PageHeader text="Transaction details"/>
-      <RoutedTabs tabs={ TABS } defaultActiveTab={ tab }/>
+      <Flex justifyContent="space-between">
+        <RoutedTabs
+          tabs={ TABS }
+          defaultActiveTab={ tab }
+          rightSlot={ externalLinks }
+        />
+
+      </Flex>
     </Page>
   );
 };

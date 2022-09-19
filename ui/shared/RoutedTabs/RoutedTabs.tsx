@@ -26,9 +26,10 @@ const hiddenItemStyles: StyleProps = {
 interface Props {
   tabs: Array<RoutedTab>;
   defaultActiveTab: RoutedTab['routeName'];
+  rightSlot?: React.ReactNode;
 }
 
-const RoutedTabs = ({ tabs, defaultActiveTab }: Props) => {
+const RoutedTabs = ({ tabs, defaultActiveTab, rightSlot }: Props) => {
   const defaultIndex = tabs.findIndex(({ routeName }) => routeName === defaultActiveTab);
 
   const [ activeTab, setActiveTab ] = React.useState<number>(defaultIndex);
@@ -82,6 +83,7 @@ const RoutedTabs = ({ tabs, defaultActiveTab }: Props) => {
             </Tab>
           );
         }) }
+        { rightSlot }
       </TabList>
       <TabPanels>
         { tabsWithMenu.map((tab) => <TabPanel padding={ 0 } key={ tab.routeName }>{ tab.component }</TabPanel>) }

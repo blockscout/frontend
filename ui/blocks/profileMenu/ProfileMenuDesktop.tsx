@@ -11,7 +11,7 @@ const ProfileMenuDesktop = () => {
   return (
     <Popover openDelay={ 300 } placement="bottom-end" gutter={ 10 } isLazy>
       <PopoverTrigger>
-        <Button variant="unstyled" display="inline-flex" height="auto">
+        <Button variant="unstyled" display="inline-flex" height="auto" flexShrink={ 0 }>
           <UserAvatar size={ 50 } data={ data }/>
         </Button>
       </PopoverTrigger>
