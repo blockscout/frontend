@@ -14,7 +14,7 @@ import PageHeader from 'ui/shared/PageHeader';
 import TxsPending from 'ui/txs/TxsPending';
 import TxsValidated from 'ui/txs/TxsValidated';
 
-const TABS = [ 'mined', 'pending' ] as const;
+const TABS = [ 'validated', 'pending' ] as const;
 
 type TabName = typeof TABS[number];
 
@@ -29,7 +29,7 @@ const Transactions = ({ tab }: Props) => {
 
   const onChangeTab = useCallback((index: number) => {
     setActiveTab(TABS[index]);
-    const newUrl = link(TABS[index] === 'mined' ? 'txs_validated' : 'txs_pending');
+    const newUrl = link(TABS[index] === 'validated' ? 'txs_validated' : 'txs_pending');
     history.replaceState(history.state, '', newUrl);
   }, [ link ]);
 
