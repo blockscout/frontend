@@ -1,9 +1,10 @@
 import React from 'react';
 
+import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
+
 import Page from 'ui/shared/Page';
 import PageHeader from 'ui/shared/PageHeader';
-import type { RoutedTab } from 'ui/shared/RoutedTabs';
-import RoutedTabs from 'ui/shared/RoutedTabs';
+import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
 import TxDetails from 'ui/tx/TxDetails';
 import TxInternals from 'ui/tx/TxInternals';
 import TxLogs from 'ui/tx/TxLogs';

@@ -1,11 +1,12 @@
 import { Box } from '@chakra-ui/react'; import React from 'react';
 
+import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
+
 import PrivateAddressTags from 'ui/privateTags/PrivateAddressTags';
 import PrivateTransactionTags from 'ui/privateTags/PrivateTransactionTags';
 import Page from 'ui/shared/Page';
 import PageHeader from 'ui/shared/PageHeader';
-import type { RoutedTab } from 'ui/shared/RoutedTabs';
-import RoutedTabs from 'ui/shared/RoutedTabs';
+import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
 
 const TABS: Array<RoutedTab> = [
   { routeName: 'private_tags_address', title: 'Address', component: <PrivateAddressTags/> },
