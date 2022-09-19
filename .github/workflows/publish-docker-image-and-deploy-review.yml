@@ -65,7 +65,7 @@ jobs:
 
   deploy_frontend:
     needs: push_to_registry
-    uses: blockscout/blockscout-ci-cd/.github/workflows/deploy.yaml@deploy-smart-contract-verifier
+    uses: blockscout/blockscout-ci-cd/.github/workflows/deploy.yaml@main
     with:
       valuesDir: deploy/values
       appNamespace: frontend-$GITHUB_HEAD_REF
