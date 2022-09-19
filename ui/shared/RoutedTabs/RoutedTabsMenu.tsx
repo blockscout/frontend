@@ -23,7 +23,7 @@ interface Props {
 }
 
 const RoutedTabsMenu = ({ tabs, tabsCut, isActive, styles, onItemClick, buttonRef, activeTab }: Props) => {
-  const { isOpen, onToggle, onClose } = useDisclosure();
+  const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
 
   const handleItemClick = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
     onClose();
@@ -34,7 +34,7 @@ const RoutedTabsMenu = ({ tabs, tabsCut, isActive, styles, onItemClick, buttonRe
   }, [ onClose, onItemClick, tabsCut ]);
 
   return (
-    <Popover isLazy placement="bottom-end" key="more">
+    <Popover isLazy placement="bottom-end" key="more" isOpen={ isOpen } onClose={ onClose } onOpen={ onOpen } closeDelay={ 0 }>
       <PopoverTrigger>
         <Button
           variant="subtle"
