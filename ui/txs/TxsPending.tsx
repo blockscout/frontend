@@ -1,7 +1,9 @@
 import React from 'react';
 
+import TxsContent from './TxsContent';
+
 const TxsPending = () => {
-  return <div>Привет2</div>;
+  return <TxsContent isPending/>;
 };
 
 export default TxsPending;

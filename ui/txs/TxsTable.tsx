@@ -1,13 +1,22 @@
-import { Table, Thead, Tbody, Tr, Th, TableContainer, useBreakpointValue } from '@chakra-ui/react';
+import { Link, Table, Thead, Tbody, Tr, Th, TableContainer, useBreakpointValue, Icon } from '@chakra-ui/react';
 import React from 'react';
 
-import { txs } from 'data/txs';
+import rightArrowIcon from 'icons/arrows/right.svg';
 
 import TxsTableItem from './TxsTableItem';
 
 const CURRENCY = 'xDAI';
 
-const TxsTable = () => {
+export type Sort = 'val-desc' | 'val-asc' | 'fee-desc' | 'fee-asc' | undefined;
+
+type Props = {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+  txs: any;
+  sort: (field: 'val' | 'fee') => () => void;
+  sorting: Sort;
+}
+
+const TxsTable = ({ txs, sort, sorting }: Props) => {
   const isLargeScreen = useBreakpointValue({ base: false, xl: true });
 
   return (
@@ -23,12 +32,25 @@ const TxsTable = () => {
             <Th width={ isLargeScreen ? '128px' : '58px' }>From</Th>
             <Th width={ isLargeScreen ? '36px' : '0' }></Th>
             <Th width={ isLargeScreen ? '128px' : '58px' }>To</Th>
-            <Th width="18%" isNumeric>{ `Value ${ CURRENCY }` }</Th>
-            <Th width="18%" isNumeric pr={ 5 }>{ `Fee ${ CURRENCY }` }</Th>
+            <Th width="18%" isNumeric>
+              <Link onClick={ sort('val') } display="flex" justifyContent="end">
+                { sorting === 'val-asc' && <Icon boxSize={ 5 } as={ rightArrowIcon } transform="rotate(-90deg)"/> }
+                { sorting === 'val-desc' && <Icon boxSize={ 5 } as={ rightArrowIcon } transform="rotate(90deg)"/> }
+                { `Value ${ CURRENCY }` }
+              </Link>
+            </Th>
+            <Th width="18%" isNumeric pr={ 5 }>
+              <Link onClick={ sort('fee') } display="flex" justifyContent="end">
+                { sorting === 'fee-asc' && <Icon boxSize={ 5 } as={ rightArrowIcon } transform="rotate(-90deg)"/> }
+                { sorting === 'fee-desc' && <Icon boxSize={ 5 } as={ rightArrowIcon } transform="rotate(90deg)"/> }
+                { `Fee ${ CURRENCY }` }
+              </Link>
+            </Th>
           </Tr>
         </Thead>
         <Tbody>
-          { txs.map((item) => (
+          { /* eslint-disable-next-line @typescript-eslint/no-explicit-any */ }
+          { txs.map((item: any) => (
             <TxsTableItem
               key={ item.hash }
               tx={ item }

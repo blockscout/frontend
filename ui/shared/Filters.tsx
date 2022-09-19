@@ -6,21 +6,31 @@ import { Flex, Icon, Button, Circle, InputGroup, InputLeftElement, Input, useCol
 import type { ChangeEvent } from 'react';
 import React from 'react';
 
+import upDownArrow from 'icons/arrows/up-down.svg';
 import filterIcon from 'icons/filter.svg';
 import searchIcon from 'icons/search.svg';
 
 const FilterIcon = <Icon as={ filterIcon } boxSize={ 5 }/>;
 
-const Filters = () => {
-  const [ isActive, setIsActive ] = React.useState(false);
+type Props = {
+  isMobile?: boolean;
+}
+
+const Filters = ({ isMobile }: Props) => {
+  const [ isFilterActive, setIsFilterActive ] = React.useState(false);
   const [ value, setValue ] = React.useState('');
+  const [ isSortActive, setIsSortActive ] = React.useState(false);
 
   const handleClick = React.useCallback(() => {
-    setIsActive(flag => !flag);
+    setIsFilterActive(flag => !flag);
   }, []);
 
   const handleChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
+  }, []);
+
+  const handleSort = React.useCallback(() => {
+    setIsSortActive(flag => !flag);
   }, []);
 
   const badgeColor = useColorModeValue('white', 'black');
@@ -31,19 +41,31 @@ const Filters = () => {
   return (
     <Flex>
       <Button
-        leftIcon={ FilterIcon }
-        rightIcon={ isActive ? <Circle bg={ badgeBgColor } size={ 5 } color={ badgeColor }>2</Circle> : undefined }
+        leftIcon={ isMobile ? undefined : FilterIcon }
+        rightIcon={ isFilterActive ? <Circle bg={ badgeBgColor } size={ 5 } color={ badgeColor }>2</Circle> : undefined }
         size="sm"
         variant="outline"
         colorScheme="gray-dark"
-        borderWidth="1px"
         onClick={ handleClick }
-        isActive={ isActive }
+        isActive={ isFilterActive }
         px={ 1.5 }
       >
-        Filter
+        { isMobile ? FilterIcon : 'Filter' }
       </Button>
-      <InputGroup size="xs" ml={ 3 } maxW="360px">
+      { isMobile && (
+        <IconButton
+          icon={ <Icon as={ upDownArrow } boxSize={ 5 }/> }
+          aria-label="sort"
+          size="sm"
+          variant="outline"
+          colorScheme="gray-dark"
+          ml={ 2 }
+          minWidth="36px"
+          onClick={ handleSort }
+          isActive={ isSortActive }
+        />
+      ) }
+      <InputGroup size="xs" ml={ isMobile ? 2 : 3 } maxW="360px">
         <InputLeftElement ml={ 1 }>
           <Icon as={ searchIcon } boxSize={ 5 } color={ searchIconColor }/>
         </InputLeftElement>
