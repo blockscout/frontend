@@ -18,3 +18,4 @@ export const disk = String.fromCharCode(8226); // диск •
 export const minus = String.fromCharCode(8722); // минус −
 export const leftLineArrow = String.fromCharCode(8592); // стрелка ←
 export const rightLineArrow = String.fromCharCode(8594); // стрелка →
+export const apos = String.fromCharCode(39); // апостроф '

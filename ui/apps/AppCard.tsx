@@ -1,7 +1,7 @@
-import { Box, Image, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Heading, Image, Text, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
-import type { AppItemPreview } from '~/types/client/apps';
+import type { AppItemPreview } from 'types/client/apps';
 
 const AppCard = ({ title, logo, shortDescription, categories }: AppItemPreview) => {
   const categoriesLabel = categories.map(c => c.name).join(', ');
@@ -25,14 +25,14 @@ const AppCard = ({ title, logo, shortDescription, categories }: AppItemPreview) 
           />
         </Box>
 
-        <Text
+        <Heading
           as="h3"
           marginBottom={ 2 }
-          fontSize={{ base: 'sm', sm: 'sm' }}
+          fontSize={{ base: 'sm', sm: 'lg' }}
           fontWeight="semibold"
         >
           { title }
-        </Text>
+        </Heading>
 
         <Text
           marginBottom={ 2 }
@@ -45,14 +45,7 @@ const AppCard = ({ title, logo, shortDescription, categories }: AppItemPreview) 
         <Text
           fontSize={{ base: 'xs', sm: 'sm' }}
           lineHeight="20px"
-          style={{
-            display: '-webkit-box',
-            WebkitBoxOrient: 'vertical',
-            WebkitLineClamp: 4,
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-          }}
-          overflow="hidden"
+          noOfLines={ 4 }
         >
           { shortDescription }
         </Text>

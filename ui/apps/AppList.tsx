@@ -1,9 +1,10 @@
-import { Box, Text, Grid, GridItem, VisuallyHidden, Icon } from '@chakra-ui/react';
-import emptyIcon from '~/icons/empty.svg';
-import AppCard from '~/ui/apps/AppCard';
+import { Grid, GridItem, VisuallyHidden, Heading } from '@chakra-ui/react';
 import React from 'react';
 
-import type { AppItemOverview } from '~/types/client/apps';
+import type { AppItemOverview } from 'types/client/apps';
+
+import AppCard from 'ui/apps/AppCard';
+import EmptySearchResult from 'ui/apps/EmptySearchResult';
 
 type Props = {
   apps: Array<AppItemOverview>;
@@ -13,7 +14,7 @@ const AppList = ({ apps }: Props) => {
   return (
     <>
       <VisuallyHidden>
-        <Text as="h2">App list</Text>
+        <Heading as="h2">App list</Heading>
       </VisuallyHidden>
 
       { apps.length > 0 ? (
@@ -41,34 +42,7 @@ const AppList = ({ apps }: Props) => {
           )) }
         </Grid>
       ) : (
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-        >
-          <Icon
-            as={ emptyIcon }
-            boxSize={ 60 }
-            display="block"
-          />
-
-          <Text
-            as="h3"
-            marginBottom={ 2 }
-            fontSize={{ base: '2xl', sm: '3xl' }}
-            fontWeight="semibold"
-          >
-            No results
-          </Text>
-
-          <Text
-            fontSize={{ base: 'sm' }}
-            variant="secondary"
-            align="center"
-          >
-              Couldn&apos;t find an app that matches your filter query.
-          </Text>
-        </Box>
+        <EmptySearchResult/>
       ) }
     </>
   );

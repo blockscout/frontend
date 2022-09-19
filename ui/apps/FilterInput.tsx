@@ -1,5 +1,5 @@
 import { SearchIcon } from '@chakra-ui/icons';
-import { Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
+import { Input, InputGroup, InputLeftElement, useColorModeValue } from '@chakra-ui/react';
 import type { ChangeEvent } from 'react';
 import React, { useCallback, useState } from 'react';
 
@@ -24,7 +24,7 @@ const FilterInput = ({ onChange }: Props) => {
       <InputLeftElement
         pointerEvents="none"
       >
-        <SearchIcon color="gray.300"/>
+        <SearchIcon color={ useColorModeValue('blackAlpha.600', 'whiteAlpha.600') }/>
       </InputLeftElement>
 
       <Input
