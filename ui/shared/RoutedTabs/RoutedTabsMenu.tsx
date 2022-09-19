@@ -18,12 +18,20 @@ interface Props {
   tabsCut: number;
   isActive: boolean;
   styles?: StyleProps;
-  onItemClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onItemClick: (index: number) => void;
   buttonRef: React.RefObject<HTMLButtonElement>;
 }
 
 const RoutedTabsMenu = ({ tabs, tabsCut, isActive, styles, onItemClick, buttonRef, activeTab }: Props) => {
-  const { isOpen, onToggle } = useDisclosure();
+  const { isOpen, onToggle, onClose } = useDisclosure();
+
+  const handleItemClick = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+    onClose();
+    const tabIndex = (event.target as HTMLButtonElement).getAttribute('data-index');
+    if (tabIndex) {
+      onItemClick(tabsCut + Number(tabIndex));
+    }
+  }, [ onClose, onItemClick, tabsCut ]);
 
   return (
     <Popover isLazy placement="bottom-end" key="more">
@@ -44,7 +52,7 @@ const RoutedTabsMenu = ({ tabs, tabsCut, isActive, styles, onItemClick, buttonRe
             <Button
               key={ tab.routeName }
               variant="subtle"
-              onClick={ onItemClick }
+              onClick={ handleItemClick }
               isActive={ activeTab.routeName === tab.routeName }
               justifyContent="left"
               data-index={ index }

@@ -47,14 +47,6 @@ const RoutedTabs = ({ tabs, defaultActiveTab }: Props) => {
     setActiveTab(index);
   }, [ tabs, router ]);
 
-  const handleItemInMenuClick = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
-    const tabIndex = (event.target as HTMLButtonElement).getAttribute('data-index');
-
-    if (tabIndex) {
-      handleTabChange(tabsCut + Number(tabIndex));
-    }
-  }, [ handleTabChange, tabsCut ]);
-
   return (
     <Tabs variant="soft-rounded" colorScheme="blue" isLazy onChange={ handleTabChange } index={ activeTab }>
       <TabList marginBottom={{ base: 6, lg: 8 }} flexWrap="nowrap" whiteSpace="nowrap" ref={ listRef }>
@@ -74,7 +66,7 @@ const RoutedTabs = ({ tabs, defaultActiveTab }: Props) => {
                   { opacity: tabsCut === 0 ? 0 : 1 } :
                   hiddenItemStyles
                 }
-                onItemClick={ handleItemInMenuClick }
+                onItemClick={ handleTabChange }
                 buttonRef={ tabsRefs[index] }
               />
             );
