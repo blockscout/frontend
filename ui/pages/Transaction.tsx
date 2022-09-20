@@ -3,7 +3,9 @@ import React from 'react';
 
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
+import leftArrowIcon from 'icons/arrows/left.svg';
 import externalLinkIcon from 'icons/external-link.svg';
+import useLink from 'lib/link/useLink';
 import Page from 'ui/shared/Page';
 import PageHeader from 'ui/shared/PageHeader';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
@@ -26,6 +28,7 @@ export interface Props {
 }
 
 const TransactionPageContent = ({ tab }: Props) => {
+  const link = useLink();
 
   const externalLinks = (
     <Flex marginLeft="auto" alignItems="center" columnGap={ 6 }>
@@ -42,15 +45,16 @@ const TransactionPageContent = ({ tab }: Props) => {
 
   return (
     <Page>
+      <Link mb={ 6 } display="inline-flex" href={ link('txs') }>
+        <Icon as={ leftArrowIcon } boxSize={ 6 } mr={ 2 }/>
+        Transactions
+      </Link>
       <PageHeader text="Transaction details"/>
-      <Flex justifyContent="space-between">
-        <RoutedTabs
-          tabs={ TABS }
-          defaultActiveTab={ tab }
-          rightSlot={ externalLinks }
-        />
-
-      </Flex>
+      <RoutedTabs
+        tabs={ TABS }
+        defaultActiveTab={ tab }
+        rightSlot={ externalLinks }
+      />
     </Page>
   );
 };
