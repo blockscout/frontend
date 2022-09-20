@@ -15,14 +15,29 @@ interface Props {
   index: number;
 }
 
-const RowHeader = ({ children }: { children: React.ReactNode }) => <GridItem><Text fontWeight={ 500 }>{ children }</Text></GridItem>;
+const RowHeader = ({ children }: { children: React.ReactNode }) => (
+  <GridItem _notFirst={{ mt: { base: 5, lg: 0 } }}>
+    <Text fontWeight={{ base: 700, lg: 500 }}>{ children }</Text>
+  </GridItem>
+);
 
 const TxLogItem = ({ address, index, topics, data }: Props) => {
   const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
   const dataBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
 
   return (
-    <Grid gridTemplateColumns="200px 1fr" gap={ 8 } py={ 8 } _notFirst={{ borderTopWidth: '1px', borderTopColor: borderColor }}>
+    <Grid
+      gridTemplateColumns={{ base: 'minmax(0, 1fr)', lg: '200px minmax(0, 1fr)' }}
+      gap={{ base: 3, lg: 8 }}
+      py={ 8 }
+      _notFirst={{
+        borderTopWidth: '1px',
+        borderTopColor: borderColor,
+      }}
+      _first={{
+        pt: 0,
+      }}
+    >
       <RowHeader>Address</RowHeader>
       <GridItem display="flex" alignItems="center">
         <Address>
@@ -35,7 +50,7 @@ const TxLogItem = ({ address, index, topics, data }: Props) => {
           </Link>
         </Tooltip>
         <Tooltip label="Log index">
-          <Button variant="outline" isActive ml="auto" size="sm" fontWeight={ 400 }>
+          <Button variant="outline" isActive ml={{ base: 6, lg: 'auto' }} size="sm" fontWeight={ 400 }>
             { index }
           </Button>
         </Tooltip>

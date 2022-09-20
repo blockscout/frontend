@@ -1,5 +1,7 @@
-import { Flex, Button, Text, Select } from '@chakra-ui/react';
+import { Flex, Button, Select, Box } from '@chakra-ui/react';
 import React from 'react';
+
+import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 interface Props {
   hex: string;
@@ -17,18 +19,29 @@ const TxLogTopic = ({ hex, index }: Props) => {
   }, []);
 
   return (
-    <Flex alignItems="center" px={ 3 } _notFirst={{ mt: 3 }}>
+    <Flex alignItems="center" px={{ base: 0, lg: 3 }} _notFirst={{ mt: 3 }} overflow="hidden" maxW="100%">
       <Button variant="outline" isActive size="xs" fontWeight={ 400 } mr={ 3 } w={ 6 }>
         { index }
       </Button>
       { /* temporary condition juse to show different states of the component */ }
       { /* delete when ther will be real data */ }
       { index > 0 && (
-        <Select size="sm" borderRadius="base" value={ selectedDataType } onChange={ handleSelectChange } focusBorderColor="none" w="75px" mr={ 3 }>
+        <Select
+          size="sm"
+          borderRadius="base"
+          value={ selectedDataType }
+          onChange={ handleSelectChange }
+          focusBorderColor="none"
+          w="75px"
+          mr={ 3 }
+          flexShrink={ 0 }
+        >
           { OPTIONS.map((option) => <option key={ option } value={ option }>{ option }</option>) }
         </Select>
       ) }
-      <Text>{ hex }</Text>
+      <Box overflow="hidden" whiteSpace="nowrap">
+        <HashStringShortenDynamic hash={ hex }/>
+      </Box>
     </Flex>
   );
 };
