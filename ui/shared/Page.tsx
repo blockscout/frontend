@@ -39,13 +39,20 @@ const Page = ({ children }: Props) => {
       alignItems="stretch"
     >
       { !isMobile && <NavigationDesktop/> }
-      <VStack width="100%" paddingX={ isMobile ? 4 : 8 } paddingTop={ isMobile ? 0 : 9 } paddingBottom={ 10 } spacing={ 0 }>
+      <VStack
+        width="100%"
+        paddingX={ isMobile ? 4 : 8 }
+        paddingTop={ isMobile ? 0 : 9 }
+        paddingBottom={ 10 }
+        spacing={ 0 }
+        overflow="hidden"
+      >
         <Header/>
         <Box
           as="main"
           borderRadius="base"
           w="100%"
-          overflow="hidden"
+          // overflow="hidden"
           paddingTop={ isMobile ? '138px' : '52px' }
         >
           { children }

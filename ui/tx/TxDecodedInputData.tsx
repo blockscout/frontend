@@ -55,7 +55,7 @@ const TxDecodedInputData = () => {
   const bgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
 
   return (
-    <Grid gridTemplateColumns="minmax(80px, auto) minmax(80px, auto) 1fr" fontSize="sm" lineHeight={ 5 } w="100%">
+    <Grid gridTemplateColumns="minmax(80px, auto) minmax(80px, auto) minmax(0, 1fr)" fontSize="sm" lineHeight={ 5 } w="100%">
       { /* FIRST PART OF BLOCK */ }
       <GridItem fontWeight={ 600 } pl={ PADDING } pr={ GAP }>Method Id</GridItem>
       <GridItem colSpan={ 2 } pr={ PADDING }>0xddf252ad</GridItem>
@@ -77,6 +77,7 @@ const TxDecodedInputData = () => {
         pr={ PADDING }
         borderTopColor={ useColorModeValue('blackAlpha.200', 'whiteAlpha.200') }
         borderTopWidth="1px"
+        whiteSpace="normal"
       >
         Transfer(address indexed from, address indexed to, uint256 indexed tokenId)
       </GridItem>

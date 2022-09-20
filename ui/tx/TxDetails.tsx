@@ -12,6 +12,7 @@ import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import PrevNext from 'ui/shared/PrevNext';
 import RawInputData from 'ui/shared/RawInputData';
 import Token from 'ui/shared/Token';
@@ -24,11 +25,11 @@ import TxStatus from 'ui/tx/TxStatus';
 const TxDetails = () => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
 
-  const leftSeparatorStyles = {
-    ml: 3,
-    pl: 3,
-    borderLeftWidth: '1px',
-    borderLeftColor: 'gray.700',
+  const rightSeparatorStyles = {
+    mr: 3,
+    pr: 3,
+    borderRightWidth: '1px',
+    borderRightColor: 'gray.700',
   };
 
   const handleCutClick = React.useCallback(() => {
@@ -40,12 +41,15 @@ const TxDetails = () => {
   }, []);
 
   return (
-    <Grid columnGap={ 8 } rowGap={ 3 } templateColumns="auto 1fr">
+    <Grid columnGap={ 8 } rowGap={ 3 } templateColumns="auto minmax(0, 1fr)">
       <DetailsInfoItem
         title="Transaction hash"
         hint="Unique character string (TxID) assigned to every verified transaction."
+        flexWrap="nowrap"
       >
-        { tx.hash }
+        <Box overflow="hidden">
+          <HashStringShortenDynamic hash={ tx.hash }/>
+        </Box>
         <CopyToClipboard text={ tx.hash }/>
         <PrevNext ml={ 7 }/>
       </DetailsInfoItem>
@@ -59,8 +63,8 @@ const TxDetails = () => {
         title="Block"
         hint="Block number containing the transaction."
       >
-        <Text>{ tx.block_num }</Text>
-        <Text { ...leftSeparatorStyles } borderLeftColor="gray.500" variant="secondary">
+        <Text { ...rightSeparatorStyles }>{ tx.block_num }</Text>
+        <Text borderLeftColor="gray.500" variant="secondary">
           { tx.confirmation_num } Block confirmations
         </Text>
       </DetailsInfoItem>
@@ -69,9 +73,9 @@ const TxDetails = () => {
         hint="Date & time of transaction inclusion, including length of time for confirmation."
       >
         <Icon as={ clockIcon } boxSize={ 5 } color="gray.500"/>
-        <Text ml={ 1 }>{ dayjs(tx.timestamp).fromNow() }</Text>
-        <Text { ...leftSeparatorStyles }>{ dayjs(tx.timestamp).format('LLLL') }</Text>
-        <Text { ...leftSeparatorStyles } borderLeftColor="gray.500" variant="secondary">
+        <Text ml={ 1 } { ...rightSeparatorStyles }>{ dayjs(tx.timestamp).fromNow() }</Text>
+        <Text { ...rightSeparatorStyles } borderLeftColor="gray.500">{ dayjs(tx.timestamp).format('LLLL') }</Text>
+        <Text variant="secondary">
           Confirmed within { tx.confirmation_duration } secs
         </Text>
       </DetailsInfoItem>
@@ -89,13 +93,14 @@ const TxDetails = () => {
       <DetailsInfoItem
         title="Interacted with contract"
         hint="Address (external or contract) receiving the transaction."
+        flexWrap="nowrap"
       >
         <Address>
           <AddressIcon hash={ tx.address_to }/>
           <AddressLink ml={ 2 } hash={ tx.address_to }/>
           <CopyToClipboard text={ tx.address_to }/>
         </Address>
-        <Tag colorScheme="orange" variant="solid" ml={ 3 }>SANA</Tag>
+        <Tag colorScheme="orange" variant="solid" ml={ 3 } flexShrink={ 0 }>SANA</Tag>
         <Icon as={ successIcon } boxSize={ 4 } ml={ 2 } color="green.500"/>
         <Token symbol="USDT" ml={ 3 }/>
       </DetailsInfoItem>
@@ -103,7 +108,7 @@ const TxDetails = () => {
         title="Token transferred"
         hint="List of token transferred in the transaction."
       >
-        <Flex flexDirection="column" alignItems="flex-start" rowGap={ 5 }>
+        <Flex flexDirection="column" alignItems="flex-start" rowGap={ 5 } w="100%">
           { tx.transferred_tokens.map((item) => <TokenTransfer key={ item.token } { ...item }/>) }
         </Flex>
       </DetailsInfoItem>
@@ -133,8 +138,8 @@ const TxDetails = () => {
         title="Gas limit & usage by txn"
         hint="Actual gas amount used by the transaction."
       >
-        <Text>{ tx.gas_used.toLocaleString('en') }</Text>
-        <Text { ...leftSeparatorStyles }>{ tx.gas_limit.toLocaleString('en') }</Text>
+        <Text { ...rightSeparatorStyles }>{ tx.gas_used.toLocaleString('en') }</Text>
+        <Text >{ tx.gas_limit.toLocaleString('en') }</Text>
         <Utilization ml={ 4 } value={ tx.gas_used / tx.gas_limit }/>
       </DetailsInfoItem>
       <DetailsInfoItem
@@ -142,15 +147,15 @@ const TxDetails = () => {
         // eslint-disable-next-line max-len
         hint="Base Fee refers to the network Base Fee at the time of the block, while Max Fee & Max Priority Fee refer to the max amount a user is willing to pay for their tx & to give to the miner respectively."
       >
-        <Box>
+        <Box { ...rightSeparatorStyles }>
           <Text as="span" fontWeight="500">Base: </Text>
           <Text fontWeight="600" as="span">{ tx.gas_fees.base }</Text>
         </Box>
-        <Box { ...leftSeparatorStyles }>
+        <Box { ...rightSeparatorStyles }>
           <Text as="span" fontWeight="500">Max: </Text>
           <Text fontWeight="600" as="span">{ tx.gas_fees.max }</Text>
         </Box>
-        <Box { ...leftSeparatorStyles }>
+        <Box>
           <Text as="span" fontWeight="500">Max priority: </Text>
           <Text fontWeight="600" as="span">{ tx.gas_fees.max_priority }</Text>
         </Box>
@@ -184,16 +189,16 @@ const TxDetails = () => {
             title="Other"
             hint="Other data related to this transaction."
           >
-            <Box>
+            <Box { ...rightSeparatorStyles }>
               <Text as="span" fontWeight="500">Txn type: </Text>
               <Text fontWeight="600" as="span">{ tx.type.value }</Text>
               <Text fontWeight="400" as="span" ml={ 1 }>({ tx.type.eip })</Text>
             </Box>
-            <Box { ...leftSeparatorStyles }>
+            <Box { ...rightSeparatorStyles }>
               <Text as="span" fontWeight="500">Nonce: </Text>
               <Text fontWeight="600" as="span">{ tx.nonce }</Text>
             </Box>
-            <Box { ...leftSeparatorStyles }>
+            <Box>
               <Text as="span" fontWeight="500">Position: </Text>
               <Text fontWeight="600" as="span">{ tx.position }</Text>
             </Box>

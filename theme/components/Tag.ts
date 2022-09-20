@@ -25,8 +25,6 @@ const sizes = {
       fontSize: 'sm',
       px: 2,
       py: '2px',
-    },
-    label: {
       lineHeight: 5,
     },
   }),

@@ -27,7 +27,7 @@ const DetailsInfoItem = ({ title, hint, children, ...styles }: Props) => {
           <Text fontWeight={ 500 }>{ title }</Text>
         </Flex>
       </GridItem>
-      <GridItem display="flex" alignItems="center" py={ 2 } lineHeight={ 5 } whiteSpace="nowrap" { ...styles }>
+      <GridItem display="flex" alignItems="center" flexWrap="wrap" rowGap={ 3 } py={ 2 } lineHeight={ 5 } whiteSpace="nowrap" { ...styles }>
         { children }
       </GridItem>
     </>

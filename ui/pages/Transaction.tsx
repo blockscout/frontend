@@ -4,8 +4,8 @@ import React from 'react';
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
 import leftArrowIcon from 'icons/arrows/left.svg';
-import externalLinkIcon from 'icons/external-link.svg';
 import useLink from 'lib/link/useLink';
+import ExternalLink from 'ui/shared/ExternalLink';
 import Page from 'ui/shared/Page';
 import PageHeader from 'ui/shared/PageHeader';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
@@ -30,19 +30,6 @@ export interface Props {
 const TransactionPageContent = ({ tab }: Props) => {
   const link = useLink();
 
-  const externalLinks = (
-    <Flex marginLeft="auto" alignItems="center" columnGap={ 6 }>
-      <Link fontSize="sm" display="inline-flex" alignItems="center" target="_blank">
-        Open in Tenderly
-        <Icon as={ externalLinkIcon }/>
-      </Link>
-      <Link fontSize="sm" display="inline-flex" alignItems="center" target="_blank">
-        Open in Tenderly
-        <Icon as={ externalLinkIcon }/>
-      </Link>
-    </Flex>
-  );
-
   return (
     <Page>
       <Link mb={ 6 } display="inline-flex" href={ link('txs') }>
@@ -50,10 +37,13 @@ const TransactionPageContent = ({ tab }: Props) => {
         Transactions
       </Link>
       <PageHeader text="Transaction details"/>
+      <Flex marginLeft="auto" alignItems="center" columnGap={ 6 } mb={ 6 }>
+        <ExternalLink title="Open in Tenderly" href="#"/>
+        <ExternalLink title="Open in Tenderly" href="#"/>
+      </Flex>
       <RoutedTabs
         tabs={ TABS }
         defaultActiveTab={ tab }
-        rightSlot={ externalLinks }
       />
     </Page>
   );
