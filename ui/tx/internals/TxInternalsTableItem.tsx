@@ -27,7 +27,7 @@ const TxInternalTableItem = ({ type, status, from, to, value, gasLimit }: Props)
       <Td pr="0">
         <Address>
           <AddressIcon hash={ from }/>
-          <AddressLink ml={ 2 } fontWeight="500" hash={ from }/>
+          <AddressLink ml={ 2 } fontWeight="500" hash={ from } flexGrow={ 1 }/>
           <Icon as={ rightArrowIcon } boxSize={ 6 } mx={ 2 } flexShrink={ 0 } color="gray.500"/>
         </Address>
       </Td>

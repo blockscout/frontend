@@ -11,8 +11,8 @@ const TxInternalsTable = () => {
         <Thead>
           <Tr>
             <Th width="26%">Type</Th>
-            <Th width="calc(20% + 40px)" pr="0">From</Th>
-            <Th width="calc(20% - 40px)" pl="0">To</Th>
+            <Th width="20%" pr="0">From</Th>
+            <Th width="20%" pl="0">To</Th>
             <Th width="17%" isNumeric>Value</Th>
             <Th width="17%" isNumeric>Gas limit</Th>
           </Tr>
