@@ -15,6 +15,7 @@ import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import PrevNext from 'ui/shared/PrevNext';
 import RawInputData from 'ui/shared/RawInputData';
+import TextSeparator from 'ui/shared/TextSeparator';
 import Token from 'ui/shared/Token';
 import Utilization from 'ui/shared/Utilization';
 import TokenTransfer from 'ui/tx/TokenTransfer';
@@ -24,13 +25,6 @@ import TxStatus from 'ui/tx/TxStatus';
 
 const TxDetails = () => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
-
-  const rightSeparatorStyles = {
-    mr: 3,
-    pr: 3,
-    borderRightWidth: '1px',
-    borderRightColor: 'gray.700',
-  };
 
   const handleCutClick = React.useCallback(() => {
     setIsExpanded((flag) => !flag);
@@ -63,8 +57,9 @@ const TxDetails = () => {
         title="Block"
         hint="Block number containing the transaction."
       >
-        <Text { ...rightSeparatorStyles }>{ tx.block_num }</Text>
-        <Text borderLeftColor="gray.500" variant="secondary">
+        <Text>{ tx.block_num }</Text>
+        <TextSeparator color="gray.500"/>
+        <Text variant="secondary">
           { tx.confirmation_num } Block confirmations
         </Text>
       </DetailsInfoItem>
@@ -73,8 +68,9 @@ const TxDetails = () => {
         hint="Date & time of transaction inclusion, including length of time for confirmation."
       >
         <Icon as={ clockIcon } boxSize={ 5 } color="gray.500"/>
-        <Text ml={ 1 } { ...rightSeparatorStyles }>{ dayjs(tx.timestamp).fromNow() }</Text>
-        <Text { ...rightSeparatorStyles } borderLeftColor="gray.500">{ dayjs(tx.timestamp).format('LLLL') }</Text>
+        <Text ml={ 1 }>{ dayjs(tx.timestamp).fromNow() }</Text>
+        <TextSeparator/>
+        <Text whiteSpace="normal">{ dayjs(tx.timestamp).format('LLLL') }<TextSeparator color="gray.500"/></Text>
         <Text variant="secondary">
           Confirmed within { tx.confirmation_duration } secs
         </Text>
@@ -93,14 +89,14 @@ const TxDetails = () => {
       <DetailsInfoItem
         title="Interacted with contract"
         hint="Address (external or contract) receiving the transaction."
-        flexWrap="nowrap"
+        flexWrap={{ base: 'wrap', lg: 'nowrap' }}
       >
-        <Address>
+        <Address mr={ 3 }>
           <AddressIcon hash={ tx.address_to }/>
           <AddressLink ml={ 2 } hash={ tx.address_to }/>
           <CopyToClipboard text={ tx.address_to }/>
         </Address>
-        <Tag colorScheme="orange" variant="solid" ml={ 3 } flexShrink={ 0 }>SANA</Tag>
+        <Tag colorScheme="orange" variant="solid" flexShrink={ 0 }>SANA</Tag>
         <Icon as={ successIcon } boxSize={ 4 } ml={ 2 } color="green.500"/>
         <Token symbol="USDT" ml={ 3 }/>
       </DetailsInfoItem>
@@ -138,7 +134,8 @@ const TxDetails = () => {
         title="Gas limit & usage by txn"
         hint="Actual gas amount used by the transaction."
       >
-        <Text { ...rightSeparatorStyles }>{ tx.gas_used.toLocaleString('en') }</Text>
+        <Text>{ tx.gas_used.toLocaleString('en') }</Text>
+        <TextSeparator/>
         <Text >{ tx.gas_limit.toLocaleString('en') }</Text>
         <Utilization ml={ 4 } value={ tx.gas_used / tx.gas_limit }/>
       </DetailsInfoItem>
@@ -147,13 +144,15 @@ const TxDetails = () => {
         // eslint-disable-next-line max-len
         hint="Base Fee refers to the network Base Fee at the time of the block, while Max Fee & Max Priority Fee refer to the max amount a user is willing to pay for their tx & to give to the miner respectively."
       >
-        <Box { ...rightSeparatorStyles }>
+        <Box>
           <Text as="span" fontWeight="500">Base: </Text>
           <Text fontWeight="600" as="span">{ tx.gas_fees.base }</Text>
+          <TextSeparator/>
         </Box>
-        <Box { ...rightSeparatorStyles }>
+        <Box>
           <Text as="span" fontWeight="500">Max: </Text>
           <Text fontWeight="600" as="span">{ tx.gas_fees.max }</Text>
+          <TextSeparator/>
         </Box>
         <Box>
           <Text as="span" fontWeight="500">Max priority: </Text>
@@ -184,19 +183,21 @@ const TxDetails = () => {
       </GridItem>
       { isExpanded && (
         <>
+          <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
           <DetailsInfoItem
-            mt={ 4 }
             title="Other"
             hint="Other data related to this transaction."
           >
-            <Box { ...rightSeparatorStyles }>
+            <Box>
               <Text as="span" fontWeight="500">Txn type: </Text>
               <Text fontWeight="600" as="span">{ tx.type.value }</Text>
               <Text fontWeight="400" as="span" ml={ 1 }>({ tx.type.eip })</Text>
+              <TextSeparator/>
             </Box>
-            <Box { ...rightSeparatorStyles }>
+            <Box>
               <Text as="span" fontWeight="500">Nonce: </Text>
               <Text fontWeight="600" as="span">{ tx.nonce }</Text>
+              <TextSeparator/>
             </Box>
             <Box>
               <Text as="span" fontWeight="500">Position: </Text>

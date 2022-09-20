@@ -130,6 +130,16 @@ const variantGhost = defineStyle((props) => {
 const variantSubtle = defineStyle((props) => {
   const { colorScheme: c } = props;
 
+  if (c === 'gray') {
+    return {
+      bg: mode('blackAlpha.200', 'whiteAlpha.200')(props),
+      color: mode('blackAlpha.800', 'whiteAlpha.800')(props),
+      _hover: {
+        color: 'blue.400',
+      },
+    };
+  }
+
   return {
     bg: `${ c }.100`,
     color: `${ c }.600`,
