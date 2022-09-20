@@ -32,10 +32,11 @@ const Filters = () => {
         size="sm"
         variant="outline"
         colorScheme="gray-dark"
-        borderWidth="1px"
+        fontWeight="500"
         onClick={ handleClick }
         isActive={ isActive }
-        px={ 1.5 }
+        px={ 2 }
+        flexShrink={ 0 }
       >
         Filter
       </Button>
@@ -47,6 +48,8 @@ const Filters = () => {
           paddingInlineStart="38px"
           placeholder="Search by addresses, hash, method..."
           ml="1px"
+          borderWidth="2px"
+          textOverflow="ellipsis"
           onChange={ handleChange }
           borderColor={ inputBorderColor }
           value={ value }

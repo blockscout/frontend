@@ -11,7 +11,7 @@ export const data = [
   {
     id: 2,
     type: 'delegate call',
-    status: 'error' as const,
+    status: 'success' as const,
     from: '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45',
     to: '0x12E80C27BfFBB76b4A8d26FF2bfd3C9f310FFA01',
     value: 0.5633333,
@@ -20,7 +20,7 @@ export const data = [
   {
     id: 3,
     type: 'static call',
-    status: 'success' as const,
+    status: 'error' as const,
     from: '0x97Aa2EfcF35c0f4c9AaDDCa8c2330fa7A9533830',
     to: '0x35317007D203b8a86CA727ad44E473E40450E378',
     value: 0.421152366,

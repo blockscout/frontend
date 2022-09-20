@@ -32,6 +32,7 @@ const TransactionPageContent = ({ tab }: Props) => {
 
   return (
     <Page>
+      { /* TODO should be shown only when navigating from txs list */ }
       <Link mb={ 6 } display="inline-flex" href={ link('txs') }>
         <Icon as={ leftArrowIcon } boxSize={ 6 } mr={ 2 }/>
         Transactions
