@@ -37,9 +37,10 @@ const TransactionPageContent = ({ tab }: Props) => {
         Transactions
       </Link>
       <PageHeader text="Transaction details"/>
-      <Flex marginLeft="auto" alignItems="center" columnGap={ 6 } mb={ 6 }>
+      <Flex marginLeft="auto" alignItems="center" flexWrap="wrap" columnGap={ 6 } rowGap={ 3 } mb={ 6 }>
         <ExternalLink title="Open in Tenderly" href="#"/>
-        <ExternalLink title="Open in Tenderly" href="#"/>
+        <ExternalLink title="Open in Blockchair" href="#"/>
+        <ExternalLink title="Open in Etherscan" href="#"/>
       </Flex>
       <RoutedTabs
         tabs={ TABS }

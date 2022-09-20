@@ -41,7 +41,7 @@ const TxDetails = () => {
   }, []);
 
   return (
-    <Grid columnGap={ 8 } rowGap={ 3 } templateColumns="auto minmax(0, 1fr)">
+    <Grid columnGap={ 8 } rowGap={{ base: 3, lg: 3 }} templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }}>
       <DetailsInfoItem
         title="Transaction hash"
         hint="Unique character string (TxID) assigned to every verified transaction."
@@ -79,10 +79,10 @@ const TxDetails = () => {
           Confirmed within { tx.confirmation_duration } secs
         </Text>
       </DetailsInfoItem>
+      <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 3, lg: 8 }}/>
       <DetailsInfoItem
         title="From"
         hint="Address (external or contract) sending the transaction."
-        mt={ 8 }
       >
         <Address>
           <AddressIcon hash={ tx.address_from }/>
@@ -112,10 +112,10 @@ const TxDetails = () => {
           { tx.transferred_tokens.map((item) => <TokenTransfer key={ item.token } { ...item }/>) }
         </Flex>
       </DetailsInfoItem>
+      <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 3, lg: 8 }}/>
       <DetailsInfoItem
         title="Value"
         hint="Value sent in the native token (and USD) if applicable."
-        mt={ 8 }
       >
         <Text>{ tx.amount.value } Ether</Text>
         <Text variant="secondary" ml={ 1 }>(${ tx.amount.value_usd.toFixed(2) })</Text>
@@ -131,8 +131,8 @@ const TxDetails = () => {
         title="Gas price"
         hint="Price per unit of gas specified by the sender. Higher gas prices can prioritize transaction inclusion during times of high usage."
       >
-        <Text>{ tx.gas_price.toLocaleString('en', { minimumFractionDigits: 18 }) } Ether</Text>
-        <Text variant="secondary" ml={ 1 }>({ (tx.gas_price * Math.pow(10, 18)).toFixed(0) } Gwei)</Text>
+        <Text mr={ 1 }>{ tx.gas_price.toLocaleString('en', { minimumFractionDigits: 18 }) } Ether</Text>
+        <Text variant="secondary">({ (tx.gas_price * Math.pow(10, 18)).toFixed(0) } Gwei)</Text>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Gas limit & usage by txn"
@@ -165,10 +165,10 @@ const TxDetails = () => {
         hint="Amount of ETH burned for this transaction. Equals Block Base Fee per Gas * Gas Used."
       >
         <Icon as={ flameIcon } boxSize={ 5 } color="gray.500"/>
-        <Text ml={ 1 }>{ tx.burnt_fees.value.toLocaleString('en', { minimumFractionDigits: 18 }) } Ether</Text>
-        <Text variant="secondary" ml={ 1 }>(${ tx.burnt_fees.value_usd.toFixed(2) })</Text>
+        <Text ml={ 1 } mr={ 1 }>{ tx.burnt_fees.value.toLocaleString('en', { minimumFractionDigits: 18 }) } Ether</Text>
+        <Text variant="secondary">(${ tx.burnt_fees.value_usd.toFixed(2) })</Text>
       </DetailsInfoItem>
-      <GridItem colSpan={ 2 }>
+      <GridItem colSpan={{ base: undefined, lg: 2 }}>
         <Element name="TxDetails__cutLink">
           <Link
             mt={ 6 }
@@ -211,7 +211,7 @@ const TxDetails = () => {
           </DetailsInfoItem>
           <DetailsInfoItem
             title="Decoded input data"
-            hint="hmmmmmmmmmmm"
+            hint="Decoded input data"
           >
             <TxDecodedInputData/>
           </DetailsInfoItem>
