@@ -4,6 +4,7 @@ import { APP_CATEGORIES } from 'ui/apps/constants';
 
 export const TEMPORARY_DEMO_APPS: Array<AppItemOverview> = [
   {
+    author: 'xDaichain',
     id: 'easy-staking',
     title: 'Easy Staking',
     logo: 'https://www.fillmurray.com/144/144',
@@ -18,6 +19,7 @@ export const TEMPORARY_DEMO_APPS: Array<AppItemOverview> = [
     github: 'https://github.com/mikhin',
   },
   {
+    author: 'xDaichain',
     id: 'curve',
     title: 'Curve',
     logo: 'https://www.fillmurray.com/144/144',
@@ -33,6 +35,7 @@ export const TEMPORARY_DEMO_APPS: Array<AppItemOverview> = [
     github: 'https://github.com/mikhin',
   },
   {
+    author: 'xDaichain',
     id: 'honwyswap',
     title: 'HonwySwap',
     logo: 'https://www.fillmurray.com/144/144',
@@ -48,6 +51,7 @@ export const TEMPORARY_DEMO_APPS: Array<AppItemOverview> = [
     github: 'https://github.com/mikhin',
   },
   {
+    author: 'xDaichain',
     id: 'sushi',
     title: 'Sushi',
     logo: 'https://www.fillmurray.com/144/144',
@@ -61,6 +65,7 @@ export const TEMPORARY_DEMO_APPS: Array<AppItemOverview> = [
     github: 'https://github.com/mikhin',
   },
   {
+    author: 'xDaichain',
     id: 'bao-finance',
     title: 'Bao Finance',
     logo: 'https://www.fillmurray.com/144/144',
@@ -74,6 +79,7 @@ export const TEMPORARY_DEMO_APPS: Array<AppItemOverview> = [
     github: 'https://github.com/mikhin',
   },
   {
+    author: 'xDaichain',
     id: 'component',
     title: 'Component',
     logo: 'https://www.fillmurray.com/144/144',
@@ -89,6 +95,7 @@ export const TEMPORARY_DEMO_APPS: Array<AppItemOverview> = [
     github: 'https://github.com/mikhin',
   },
   {
+    author: 'xDaichain',
     id: 'pooltogether',
     title: 'PoolTogether',
     logo: 'https://www.fillmurray.com/144/144',
@@ -102,6 +109,7 @@ export const TEMPORARY_DEMO_APPS: Array<AppItemOverview> = [
     github: 'https://github.com/mikhin',
   },
   {
+    author: 'xDaichain',
     id: 'swapr',
     title: 'Swapr',
     logo: 'https://www.fillmurray.com/144/144',
@@ -115,6 +123,7 @@ export const TEMPORARY_DEMO_APPS: Array<AppItemOverview> = [
     github: 'https://github.com/mikhin',
   },
   {
+    author: 'xDaichain',
     id: 'levinswap',
     title: 'Levinswap',
     logo: 'https://www.fillmurray.com/144/144',
@@ -129,6 +138,7 @@ export const TEMPORARY_DEMO_APPS: Array<AppItemOverview> = [
     github: 'https://github.com/mikhin',
   },
   {
+    author: 'xDaichain',
     id: 'omen',
     title: 'Omen',
     logo: 'https://www.fillmurray.com/144/144',
@@ -142,6 +152,7 @@ export const TEMPORARY_DEMO_APPS: Array<AppItemOverview> = [
     github: 'https://github.com/mikhin',
   },
   {
+    author: 'xDaichain',
     id: 'nifty-ink',
     title: 'Nifty Ink',
     logo: 'https://www.fillmurray.com/144/144',
@@ -155,6 +166,7 @@ export const TEMPORARY_DEMO_APPS: Array<AppItemOverview> = [
     github: 'https://github.com/mikhin',
   },
   {
+    author: 'xDaichain',
     id: 'treasure-chess',
     title: 'Treasure Chess',
     logo: 'https://www.fillmurray.com/144/144',
@@ -168,6 +180,7 @@ export const TEMPORARY_DEMO_APPS: Array<AppItemOverview> = [
     github: 'https://github.com/mikhin',
   },
   {
+    author: 'xDaichain',
     id: 'unique-one',
     title: 'Unique.One',
     logo: 'https://www.fillmurray.com/144/144',
@@ -183,6 +196,7 @@ export const TEMPORARY_DEMO_APPS: Array<AppItemOverview> = [
     github: 'https://github.com/mikhin',
   },
   {
+    author: 'xDaichain',
     id: 'cold-truth-culture',
     title: 'Cold Truth Culture',
     logo: 'https://www.fillmurray.com/144/144',
@@ -196,6 +210,7 @@ export const TEMPORARY_DEMO_APPS: Array<AppItemOverview> = [
     github: 'https://github.com/mikhin',
   },
   {
+    author: 'xDaichain',
     id: 'xdai-bridge',
     title: 'xDai Bridge',
     logo: 'https://www.fillmurray.com/144/144',
@@ -209,6 +224,7 @@ export const TEMPORARY_DEMO_APPS: Array<AppItemOverview> = [
     github: 'https://github.com/mikhin',
   },
   {
+    author: 'xDaichain',
     id: 'omni-bridge',
     title: 'OmniBridge',
     logo: 'https://www.fillmurray.com/144/144',
@@ -222,6 +238,7 @@ export const TEMPORARY_DEMO_APPS: Array<AppItemOverview> = [
     github: 'https://github.com/mikhin',
   },
   {
+    author: 'xDaichain',
     id: 'gnosis-safe',
     title: 'Gnosis Safe',
     logo: 'https://www.fillmurray.com/144/144',
@@ -235,6 +252,7 @@ export const TEMPORARY_DEMO_APPS: Array<AppItemOverview> = [
     github: 'https://github.com/mikhin',
   },
   {
+    author: 'xDaichain',
     id: 'multisender',
     title: 'Multisender',
     logo: 'https://www.fillmurray.com/144/144',
@@ -250,6 +268,7 @@ export const TEMPORARY_DEMO_APPS: Array<AppItemOverview> = [
     github: 'https://github.com/mikhin',
   },
   {
+    author: 'xDaichain',
     id: 'disperse',
     title: 'Disperse',
     logo: 'https://www.fillmurray.com/144/144',
@@ -263,6 +282,7 @@ export const TEMPORARY_DEMO_APPS: Array<AppItemOverview> = [
     github: 'https://github.com/mikhin',
   },
   {
+    author: 'xDaichain',
     id: 'symmetric',
     title: 'Symmetric',
     logo: 'https://www.fillmurray.com/144/144',
