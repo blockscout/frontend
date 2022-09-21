@@ -5,21 +5,7 @@ import type { TxInternalsType } from 'types/api/tx';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import FilterButton from 'ui/shared/FilterButton';
-
-interface Filter {
-  title: string;
-  id: TxInternalsType;
-}
-
-const FILTERS: Array<Filter> = [
-  { title: 'Call', id: 'call' },
-  { title: 'Delegate call', id: 'delegate_call' },
-  { title: 'Static call', id: 'static_call' },
-  { title: 'Create', id: 'create' },
-  { title: 'Create2', id: 'create2' },
-  { title: 'Self-destruct', id: 'self_destruct' },
-  { title: 'Reward', id: 'reward' },
-];
+import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
 interface Props {
   appliedFiltersNum?: number;
@@ -44,7 +30,7 @@ const TxInternalsFilter = ({ onFilterChange, defaultFilters, appliedFiltersNum }
       <PopoverContent w="438px">
         <PopoverBody px={ 4 } py={ 6 } display="grid" gridTemplateColumns="1fr 1fr" rowGap={ 5 }>
           <CheckboxGroup size="lg" onChange={ onFilterChange } defaultValue={ defaultFilters }>
-            { FILTERS.map(({ title, id }) => <Checkbox key={ id } value={ id }><Text fontSize="md">{ title }</Text></Checkbox>) }
+            { TX_INTERNALS_ITEMS.map(({ title, id }) => <Checkbox key={ id } value={ id }><Text fontSize="md">{ title }</Text></Checkbox>) }
           </CheckboxGroup>
         </PopoverBody>
       </PopoverContent>

@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react';
 
 import { TEMPORARY_DEMO_APPS } from 'data/apps';
 import AppList from 'ui/apps/AppList';
-import FilterInput from 'ui/apps/FilterInput';
+import FilterInput from 'ui/shared/FilterInput';
 
 const defaultDisplayedApps = [ ...TEMPORARY_DEMO_APPS ]
   .sort((a, b) => a.title.localeCompare(b.title));
@@ -23,7 +23,7 @@ const Apps = () => {
 
   return (
     <>
-      <FilterInput onChange={ debounceFilterApps }/>
+      <FilterInput onChange={ debounceFilterApps } marginBottom={{ base: '4', lg: '6' }} placeholder="Find app"/>
       <AppList apps={ displayedApps }/>
     </>
   );
