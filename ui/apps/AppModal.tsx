@@ -183,22 +183,20 @@ const AppModal = ({
               display="flex"
               alignItems="center"
               paddingRight={{ sm: 2 }}
-              marginBottom={{ base: 2, sm: 0 }}
-              overflow="hidden"
+              marginBottom={{ base: 3, sm: 0 }}
               maxW="100%"
+              overflow="hidden"
             >
               <Icon
                 as={ LinkIcon }
                 display="inline"
                 verticalAlign="baseline"
                 boxSize={ 3 }
-                color="blue.400"
                 marginRight={ 2 }
               />
 
               <Text
-                as="span"
-                color="blue.400"
+                color="inherit"
                 whiteSpace="nowrap"
                 overflow="hidden"
                 textOverflow="ellipsis"
@@ -211,7 +209,9 @@ const AppModal = ({
           { socialLinks.length && (
             <List
               marginLeft={{ sm: 'auto' }}
-              display="flex"
+              display="grid"
+              gridAutoFlow="column"
+              columnGap={ 2 }
             >
               { socialLinks.map(({ icon, url }) => (
                 <Link
@@ -225,15 +225,12 @@ const AppModal = ({
                   isExternal
                   w={ 10 }
                   h={ 10 }
-                  marginRight={ 2 }
-                  _last={{ marginRight: 0 }}
                 >
                   <Icon
                     as={ icon }
                     w="20px"
                     h="20px"
                     display="block"
-                    color="blue.400"
                   />
                 </Link>
               )) }
