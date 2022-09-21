@@ -38,4 +38,4 @@ const TxInternalsFilter = ({ onFilterChange, defaultFilters, appliedFiltersNum }
   );
 };
 
-export default TxInternalsFilter;
+export default React.memo(TxInternalsFilter);

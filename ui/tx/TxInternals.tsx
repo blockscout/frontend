@@ -5,6 +5,8 @@ import type { TxInternalsType } from 'types/api/tx';
 import type ArrayElement from 'types/utils/ArrayElement';
 
 import { data } from 'data/txInternal';
+import { apos } from 'lib/html-entities';
+import EmptySearchResult from 'ui/apps/EmptySearchResult';
 import FilterInput from 'ui/shared/FilterInput';
 import TxInternalsFilter from 'ui/tx/internals/TxInternalsFilter';
 import TxInternalsTableItem from 'ui/tx/internals/TxInternalsTableItem';
@@ -26,13 +28,17 @@ const TxInternals = () => {
     setFilters(nextValue);
   }, []);
 
-  return (
-    <Box>
-      <Flex>
-        <TxInternalsFilter onFilterChange={ handleFilterChange } defaultFilters={ filters } appliedFiltersNum={ filters.length }/>
-        <FilterInput onChange={ setSearchTerm } maxW="360px" ml={ 3 } size="xs" placeholder="Search by addresses, hash, method..."/>
-      </Flex>
-      <TableContainer width="100%" mt={ 6 }>
+  const content = (() => {
+    const filteredData = data
+      .filter(({ type }) => filters.includes(type))
+      .filter(searchFn(searchTerm));
+
+    if (filteredData.length === 0) {
+      return <EmptySearchResult text={ `Couldn${ apos }t find any transaction that matches your query.` }/>;
+    }
+
+    return (
+      <TableContainer width="100%">
         <Table variant="simple" minWidth="950px" size="sm">
           <Thead>
             <Tr>
@@ -51,6 +57,16 @@ const TxInternals = () => {
           </Tbody>
         </Table>
       </TableContainer>
+    );
+  })();
+
+  return (
+    <Box>
+      <Flex mb={ 6 }>
+        <TxInternalsFilter onFilterChange={ handleFilterChange } defaultFilters={ filters } appliedFiltersNum={ filters.length }/>
+        <FilterInput onChange={ setSearchTerm } maxW="360px" ml={ 3 } size="xs" placeholder="Search by addresses, hash, method..."/>
+      </Flex>
+      { content }
     </Box>
   );
 };
