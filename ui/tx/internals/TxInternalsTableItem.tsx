@@ -24,14 +24,16 @@ const TxInternalTableItem = ({ type, status, from, to, value, gasLimit }: Props)
         <Tag colorScheme="cyan" mr={ 2 }>{ capitalize(type) }</Tag>
         <TxStatus status={ status }/>
       </Td>
-      <Td pr="0">
+      <Td>
         <Address>
           <AddressIcon hash={ from }/>
           <AddressLink ml={ 2 } fontWeight="500" hash={ from } flexGrow={ 1 }/>
-          <Icon as={ rightArrowIcon } boxSize={ 6 } mx={ 2 } flexShrink={ 0 } color="gray.500"/>
         </Address>
       </Td>
-      <Td pl="0">
+      <Td px={ 0 }>
+        <Icon as={ rightArrowIcon } boxSize={ 6 } color="gray.500"/>
+      </Td>
+      <Td>
         <Address>
           <AddressIcon hash={ to }/>
           <AddressLink ml={ 2 } fontWeight="500" hash={ to }/>

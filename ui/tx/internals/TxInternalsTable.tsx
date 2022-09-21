@@ -11,18 +11,16 @@ const TxInternalsTable = () => {
         <Thead>
           <Tr>
             <Th width="26%">Type</Th>
-            <Th width="20%" pr="0">From</Th>
-            <Th width="20%" pl="0">To</Th>
+            <Th width="20%">From</Th>
+            <Th width="24px" px={ 0 }/>
+            <Th width="20%">To</Th>
             <Th width="17%" isNumeric>Value</Th>
             <Th width="17%" isNumeric>Gas limit</Th>
           </Tr>
         </Thead>
         <Tbody>
           { data.map((item) => (
-            <TxInternalsTableItem
-              key={ item.id }
-              { ...item }
-            />
+            <TxInternalsTableItem key={ item.id } { ...item }/>
           )) }
         </Tbody>
       </Table>

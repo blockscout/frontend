@@ -21,13 +21,13 @@ const TxInternalsListItem = ({ type, status, from, to, value, gasLimit }: Props)
         <Tag colorScheme="cyan" mr={ 2 }>{ capitalize(type) }</Tag>
         <TxStatus status={ status }/>
       </Flex>
-      <Box w="100%" display="inline-grid" gridTemplateColumns="1fr auto 1fr" columnGap={ 3 }>
-        <Address>
+      <Box w="100%" display="flex" columnGap={ 3 }>
+        <Address width="calc((100% - 48px) / 2)">
           <AddressIcon hash={ from }/>
           <AddressLink ml={ 2 } fontWeight="500" hash={ from }/>
         </Address>
         <Icon as={ rightArrowIcon } boxSize={ 6 } color="gray.500"/>
-        <Address>
+        <Address width="calc((100% - 48px) / 2)">
           <AddressIcon hash={ to }/>
           <AddressLink ml={ 2 } fontWeight="500" hash={ to }/>
         </Address>
