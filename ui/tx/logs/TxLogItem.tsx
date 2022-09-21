@@ -16,8 +16,8 @@ interface Props {
 }
 
 const RowHeader = ({ children }: { children: React.ReactNode }) => (
-  <GridItem _notFirst={{ mt: { base: 5, lg: 0 } }}>
-    <Text fontWeight={{ base: 700, lg: 500 }}>{ children }</Text>
+  <GridItem _notFirst={{ my: { base: 4, lg: 0 } }}>
+    <Text fontWeight={ 500 }>{ children }</Text>
   </GridItem>
 );
 
@@ -28,7 +28,7 @@ const TxLogItem = ({ address, index, topics, data }: Props) => {
   return (
     <Grid
       gridTemplateColumns={{ base: 'minmax(0, 1fr)', lg: '200px minmax(0, 1fr)' }}
-      gap={{ base: 3, lg: 8 }}
+      gap={{ base: 2, lg: 8 }}
       py={ 8 }
       _notFirst={{
         borderTopWidth: '1px',
@@ -50,7 +50,7 @@ const TxLogItem = ({ address, index, topics, data }: Props) => {
           </Link>
         </Tooltip>
         <Tooltip label="Log index">
-          <Button variant="outline" isActive ml={{ base: 6, lg: 'auto' }} size="sm" fontWeight={ 400 }>
+          <Button variant="outline" isActive ml={{ base: 9, lg: 'auto' }} size="sm" fontWeight={ 400 }>
             { index }
           </Button>
         </Tooltip>

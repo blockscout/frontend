@@ -10,12 +10,13 @@ interface RowProps {
   isLast?: boolean;
   name: string;
   type: string;
+  indexed?: boolean;
 }
 
 const PADDING = 4;
 const GAP = 5;
 
-const TableRow = ({ isLast, name, type, children }: RowProps) => {
+const TableRow = ({ isLast, name, type, children, indexed }: RowProps) => {
   const bgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
 
   return (
@@ -39,6 +40,14 @@ const TableRow = ({ isLast, name, type, children }: RowProps) => {
         { type }
       </GridItem>
       <GridItem
+        pr={ GAP }
+        pt={ GAP }
+        pb={ isLast ? PADDING : 0 }
+        bgColor={ bgColor }
+      >
+        { indexed ? 'true' : 'false' }
+      </GridItem>
+      <GridItem
         pr={ PADDING }
         pt={ GAP }
         pb={ isLast ? PADDING : 0 }
@@ -55,28 +64,30 @@ const TxDecodedInputData = () => {
   const bgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
 
   return (
-    <Grid gridTemplateColumns="minmax(80px, auto) minmax(80px, auto) minmax(0, 1fr)" fontSize="sm" lineHeight={ 5 } w="100%">
+    <Grid gridTemplateColumns="minmax(80px, auto) minmax(80px, auto) minmax(80px, auto) minmax(0, 1fr)" fontSize="sm" lineHeight={ 5 } w="100%">
       { /* FIRST PART OF BLOCK */ }
-      <GridItem fontWeight={ 600 } pl={ PADDING } pr={ GAP }>Method Id</GridItem>
-      <GridItem colSpan={ 2 } pr={ PADDING }>0xddf252ad</GridItem>
+      <GridItem fontWeight={ 600 } pl={{ base: 0, lg: PADDING }} pr={{ base: 0, lg: GAP }} colSpan={{ base: 4, lg: undefined }}>Method Id</GridItem>
+      <GridItem colSpan={{ base: 4, lg: 3 }} pr={{ base: 0, lg: PADDING }} mt={{ base: 2, lg: 0 }}>0xddf252ad</GridItem>
       <GridItem
         py={ 2 }
         mt={ 2 }
-        pl={ PADDING }
-        pr={ GAP }
+        pl={{ base: 0, lg: PADDING }}
+        pr={{ base: 0, lg: GAP }}
         fontWeight={ 600 }
         borderTopColor={ useColorModeValue('blackAlpha.200', 'whiteAlpha.200') }
         borderTopWidth="1px"
+        colSpan={{ base: 4, lg: undefined }}
       >
         Call
       </GridItem>
       <GridItem
-        py={ 2 }
-        mt={ 2 }
-        colSpan={ 2 }
-        pr={ PADDING }
+        py={{ base: 0, lg: 2 }}
+        mt={{ base: 0, lg: 2 }}
+        mb={{ base: 2, lg: 0 }}
+        colSpan={{ base: 4, lg: 3 }}
+        pr={{ base: 0, lg: PADDING }}
         borderTopColor={ useColorModeValue('blackAlpha.200', 'whiteAlpha.200') }
-        borderTopWidth="1px"
+        borderTopWidth={{ base: '0px', lg: '1px' }}
         whiteSpace="normal"
       >
         Transfer(address indexed from, address indexed to, uint256 indexed tokenId)
@@ -102,6 +113,15 @@ const TxDecodedInputData = () => {
         Type
       </GridItem>
       <GridItem
+        pr={ GAP }
+        pt={ PADDING }
+        pb={ 1 }
+        bgColor={ bgColor }
+        fontWeight={ 600 }
+      >
+        Indexed?
+      </GridItem>
+      <GridItem
         pr={ PADDING }
         pt={ PADDING }
         pb={ 1 }
@@ -116,7 +136,7 @@ const TxDecodedInputData = () => {
           <CopyToClipboard text="0x0000000000000000000000000000000000000000"/>
         </Address>
       </TableRow>
-      <TableRow name="from" type="address">
+      <TableRow name="to" type="address" indexed>
         <Address justifyContent="space-between">
           <AddressLink hash="0xcf0c50b7ea8af37d57380a0ac199d55b0782c718"/>
           <CopyToClipboard text="0xcf0c50b7ea8af37d57380a0ac199d55b0782c718"/>
