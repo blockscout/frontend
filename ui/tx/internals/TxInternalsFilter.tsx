@@ -27,7 +27,7 @@ const TxInternalsFilter = ({ onFilterChange, defaultFilters, appliedFiltersNum }
           appliedFiltersNum={ appliedFiltersNum }
         />
       </PopoverTrigger>
-      <PopoverContent w="438px">
+      <PopoverContent w={{ md: '100%', lg: '438px' }}>
         <PopoverBody px={ 4 } py={ 6 } display="grid" gridTemplateColumns="1fr 1fr" rowGap={ 5 }>
           <CheckboxGroup size="lg" onChange={ onFilterChange } defaultValue={ defaultFilters }>
             { TX_INTERNALS_ITEMS.map(({ title, id }) => <Checkbox key={ id } value={ id }><Text fontSize="md">{ title }</Text></Checkbox>) }
