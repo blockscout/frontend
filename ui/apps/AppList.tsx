@@ -9,9 +9,10 @@ import EmptySearchResult from 'ui/apps/EmptySearchResult';
 
 type Props = {
   apps: Array<AppItemPreview>;
+  onAppClick: (id: string) => void;
 }
 
-const AppList = ({ apps }: Props) => {
+const AppList = ({ apps, onAppClick }: Props) => {
   return (
     <>
       <VisuallyHidden>
@@ -21,18 +22,18 @@ const AppList = ({ apps }: Props) => {
       { apps.length > 0 ? (
         <Grid
           templateColumns={{
-            base: 'repeat(auto-fill, minmax(160px, 1fr))',
-            sm: 'repeat(auto-fill, minmax(200px, 1fr))',
+            sm: 'repeat(auto-fill, minmax(170px, 1fr))',
             lg: 'repeat(auto-fill, minmax(260px, 1fr))',
           }}
           autoRows="1fr"
-          gap={{ base: '1px', sm: '24px' }}
+          gap={{ base: '16px', sm: '24px' }}
         >
           { apps.map((app) => (
             <GridItem
               key={ app.id }
             >
               <AppCard
+                onInfoClick={ onAppClick }
                 id={ app.id }
                 title={ app.title }
                 logo={ app.logo }
@@ -49,4 +50,4 @@ const AppList = ({ apps }: Props) => {
   );
 };
 
-export default AppList;
+export default React.memo(AppList);

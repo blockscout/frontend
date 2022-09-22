@@ -13,7 +13,11 @@ const defaultDisplayedApps = [ ...TEMPORARY_DEMO_APPS ]
 
 const Apps = () => {
   const [ displayedApps, setDisplayedApps ] = useState<Array<AppItemOverview>>(defaultDisplayedApps);
-  const [ displayedAppId, setDisplayedAppId ] = useState<string | null>('component');
+  const [ displayedAppId, setDisplayedAppId ] = useState<string | null>(null);
+
+  const showAppInfo = useCallback((id: string) => {
+    setDisplayedAppId(id);
+  }, []);
 
   const filterApps = (q: string) => {
     const apps = displayedApps
@@ -30,7 +34,7 @@ const Apps = () => {
   return (
     <>
       <FilterInput onChange={ debounceFilterApps } marginBottom={{ base: '4', lg: '6' }} placeholder="Find app"/>
-      <AppList apps={ displayedApps }/>
+      <AppList apps={ displayedApps } onAppClick={ showAppInfo }/>
       <AppModal
         id={ displayedAppId }
         onClose={ clearDisplayedAppId }
