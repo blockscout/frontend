@@ -5,10 +5,10 @@ import type { RoutedTab } from './types';
 
 import { menuButton } from './utils';
 
-export default function useAdaptiveTabs(tabs: Array<RoutedTab>) {
+export default function useAdaptiveTabs(tabs: Array<RoutedTab>, disabled?: boolean) {
   // to avoid flickering we set initial value to 0
   // so there will be no displayed tabs initially
-  const [ tabsCut, setTabsCut ] = React.useState(0);
+  const [ tabsCut, setTabsCut ] = React.useState(disabled ? tabs.length : 0);
   const [ tabsRefs, setTabsRefs ] = React.useState<Array<React.RefObject<HTMLButtonElement>>>([]);
   const listRef = React.useRef<HTMLDivElement>(null);
 
@@ -40,12 +40,16 @@ export default function useAdaptiveTabs(tabs: Array<RoutedTab>) {
     return visibleNum;
   }, [ tabs.length, tabsRefs ]);
 
-  const tabsWithMenu = React.useMemo(() => {
+  const tabsList = React.useMemo(() => {
+    if (disabled) {
+      return tabs;
+    }
+
     return [ ...tabs, menuButton ];
-  }, [ tabs ]);
+  }, [ tabs, disabled ]);
 
   React.useEffect(() => {
-    setTabsRefs(tabsWithMenu.map((_, index) => tabsRefs[index] || React.createRef()));
+    !disabled && setTabsRefs(tabsList.map((_, index) => tabsRefs[index] || React.createRef()));
   // imitate componentDidMount
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -75,9 +79,9 @@ export default function useAdaptiveTabs(tabs: Array<RoutedTab>) {
   return React.useMemo(() => {
     return {
       tabsCut,
-      tabsWithMenu,
+      tabsList,
       tabsRefs,
       listRef,
     };
-  }, [ tabsWithMenu, tabsCut, tabsRefs, listRef ]);
+  }, [ tabsList, tabsCut, tabsRefs, listRef ]);
 }
