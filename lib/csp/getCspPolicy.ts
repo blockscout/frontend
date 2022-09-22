@@ -37,6 +37,7 @@ function makePolicyMap() {
 
     'connect-src': [
       KEY_WORDS.SELF,
+      ...MAIN_DOMAINS,
 
       // webpack hmr in safari doesn't recognize localhost as 'self' for some reason
       isDev ? 'ws://localhost:3000/_next/webpack-hmr' : '',

@@ -13,6 +13,7 @@ export interface ErrorType<T> {
 interface Params {
   method?: RequestInit['method'];
   body?: Record<string, unknown>;
+  credentials?: RequestCredentials;
 }
 
 export default function useFetch() {
