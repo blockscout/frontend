@@ -15,36 +15,44 @@ And of course our premier language is [Typescript](https://www.typescriptlang.or
 -----
 ## Local Development
 
+**Pre-requisites** You should have installed Node.js v16. The best way to manage your local Node.js version is [nvm](https://github.com/nvm-sh/nvm)
+
 For local development please follow next steps:
 - clone repo
 - install dependencies with `yarn`
-- create local env file `env.local` according to `env.example` snapshot (see list of used environment variables [below](#environment-variables))
+- clone `env.example` into local env file `env.local` (see explanation of all used environment variables [below](#environment-variables))
 - run `yarn dev` to spin up local dev server and navigate to the host from logs output
 
 ## Environment variables
 ### Variables list
 The app instance could be customized by passing following variables to NodeJS environment.
 
+**IMPORTANT NOTE!** For _production_ build purposes all json-like values should be single-quoted
+
 | Variable | Type | Description | Default value
 | --- | --- | --- | --- |
-| NEXT_PUBLIC_BLOCKSCOUT_VERSION | `string` | Current running version of Blockscout (used to display link to release in the footer) |
-| NEXT_PUBLIC_FOOTER_GITHUB_LINK | `string` | Link to Github in the footer | `https://github.com/blockscout/blockscout` |
-| NEXT_PUBLIC_FOOTER_TWITTER_LINK | `string` | Link to Twitter in the footer | `https://www.twitter.com/blockscoutcom` |
-| NEXT_PUBLIC_FOOTER_TELEGRAM_LINK | `string` | Link to Telegram in the footer | `https://t.me/poa_network` |
-| NEXT_PUBLIC_FOOTER_STAKING_LINK | `string` | Link to staking dashboard in the footer | `https://duneanalytics.com/maxaleks/xdai-staking` |
-| NEXT_PUBLIC_SUPPORTED_NETWORKS | `Array<Network>` where `Network` can have following [properties](#network-configuration-properties) | Configuration of supported networks | `[{"name":"Gnosis Chain","type":"xdai","subType":"mainnet","group":"mainnets","isAccountSupported":true, "chainId": 100},{"name":"Optimism on Gnosis Chain","shortName":"OoG","type":"xdai","subType":"optimism","group":"mainnets","icon":"https://www.fillmurray.com/60/60", "chainId": 300},{"name":"Arbitrum on xDai","type":"xdai","subType":"aox","group":"mainnets", "chainId": 200},{"name":"Ethereum","shortName":"ETH","type":"eth","subType":"mainnet","group":"mainnets", "chainId": 1},{"name":"Ethereum Classic","shortName":"ETC","type":"etc","subType":"mainnet","group":"mainnets", "chainId": 61},{"name":"POA","shortName":"POA","type":"poa","subType":"core","group":"mainnets","isAccountSupported":true, "chainId": 99},{"name":"RSK","shortName":"RBTC","type":"rsk","subType":"mainnet","group":"mainnets", "chainId": 30},{"name":"Gnosis Chain Testnet","type":"xdai","subType":"testnet","group":"testnets"},{"name":"POA Sokol","shortName":"POA","type":"poa","subType":"sokol","group":"testnets", "chainId": 77},{"name":"ARTIS Σ1","type":"artis","subType":"sigma1","group":"other", "chainId": 246529},{"name":"LUKSO L14","shortName":"POA","type":"lukso","subType":"l14","group":"other", "chainId": 22}]` |
+| NEXT_PUBLIC_BLOCKSCOUT_VERSION | `string` *(optional)* | Current running version of Blockscout (used to display link to release in the footer) |
+| NEXT_PUBLIC_FOOTER_GITHUB_LINK | `string` *(optional)* | Link to Github in the footer | `https://github.com/blockscout/blockscout` |
+| NEXT_PUBLIC_FOOTER_TWITTER_LINK | `string` *(optional)* | Link to Twitter in the footer | `https://www.twitter.com/blockscoutcom` |
+| NEXT_PUBLIC_FOOTER_TELEGRAM_LINK | `string` *(optional)* | Link to Telegram in the footer | `https://t.me/poa_network` |
+| NEXT_PUBLIC_FOOTER_STAKING_LINK | `string` *(optional)* | Link to staking dashboard in the footer | `https://duneanalytics.com/maxaleks/xdai-staking` |
+| NEXT_PUBLIC_SUPPORTED_NETWORKS | `Array<Network>` where `Network` can have following [properties](#network-configuration-properties) | Configuration of supported networks | `[{'name':'Gnosis Chain','type':'xdai','subType':'mainnet','group':'mainnets','isAccountSupported':true, 'chainId': 100,'icon':'https://www.fillmurray.com/60/60','logo':'https://www.fillmurray.com/240/40'}]` |
 
 ### Network configuration properties
 
 | Property | Type | Description | Example value
 | --- | --- | --- | --- |
-| name | `string` | Displayed name of the network | `"Gnosis Chain"` |
+| name | `string` | Displayed name of the network | `'Gnosis Chain'` |
 | chainId | `number` | Id of the network. Could be seen there – [https://chainlist.org/](https://chainlist.org/) | `1` |
-| type | `string` | Network type (used as first part of the base path) | `"xdai"` |
+| type | `string` | Network type (used as first part of the base path) | `'xdai'` |
 | subType | `string` | Network subtype (used as second part of the base path) | `"mainnet"` |
-| group | `mainnets \| testnets \| other` | Indicates in which tab network appears in the menu | `"mainnets"` |
+| group | `mainnets \| testnets \| other` | Indicates in which tab network appears in the menu | `'mainnets'` |
 | isAccountSupported | `boolean` *(optional)* | Set to true if network has account feature | `true` |
-| icon | `string` *(optional)* | Network icon; if not provided, will fallback to  icon predefined in the project; if the project doesn't have icon for such network then the common placeholder will be shown; *Note* that icon size should be 30px by 30px | `"https://www.fillmurray.com/60/60"` |
-| logo | `string` *(optional)* | Network logo; if not provided, will fallback to logo predefined in the project; if the project doesn't have logo for such network then the common placeholder will be shown; *Note* that logo height should be 20px and width less than 120px | `"https://www.fillmurray.com/240/40"` |
+| icon | `string` *(optional)* | Network icon; if not provided, will fallback to  icon predefined in the project; if the project doesn't have icon for such network then the common placeholder will be shown; *Note* that icon size should be 30px by 30px | `'https://www.fillmurray.com/60/60'` |
+| logo | `string` *(optional)* | Network logo; if not provided, will fallback to logo predefined in the project; if the project doesn't have logo for such network then the common placeholder will be shown; *Note* that logo height should be 20px and width less than 120px | `'https://www.fillmurray.com/240/40'` |
 
 *Note* the base path for the network is built up from its `type` and `subType` like so `https://blockscout.com/<type>/<subType>`
+
+### Sentry.io setup
+
+TBD
