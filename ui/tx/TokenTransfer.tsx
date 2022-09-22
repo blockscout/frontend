@@ -1,7 +1,7 @@
 import { Center, Icon, Text } from '@chakra-ui/react';
 import React from 'react';
 
-import rightArrowIcon from 'icons/arrows/right.svg';
+import rightArrowIcon from 'icons/arrows/east.svg';
 import { space } from 'lib/html-entities';
 import AddressLink from 'ui/shared/address/AddressLink';
 import Token from 'ui/shared/Token';
