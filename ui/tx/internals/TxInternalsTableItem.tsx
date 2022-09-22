@@ -1,10 +1,11 @@
-import { Tr, Td, Tag, Flex, Icon } from '@chakra-ui/react';
+import { Tr, Td, Tag, Icon } from '@chakra-ui/react';
 import capitalize from 'lodash/capitalize';
 import React from 'react';
 
 import rightArrowIcon from 'icons/arrows/right.svg';
-import AddressIcon from 'ui/shared/AddressIcon';
-import AddressLinkWithTooltip from 'ui/shared/AddressLinkWithTooltip';
+import Address from 'ui/shared/address/Address';
+import AddressIcon from 'ui/shared/address/AddressIcon';
+import AddressLink from 'ui/shared/address/AddressLink';
 import TxStatus from 'ui/tx/TxStatus';
 
 interface Props {
@@ -24,17 +25,17 @@ const TxInternalTableItem = ({ type, status, from, to, value, gasLimit }: Props)
         <TxStatus status={ status }/>
       </Td>
       <Td pr="0">
-        <Flex alignItems="center">
-          <AddressIcon address={ from }/>
-          <AddressLinkWithTooltip address={ from } fontWeight="500" withCopy={ false } ml={ 2 }/>
-          <Icon as={ rightArrowIcon } boxSize={ 6 } mx={ 2 } color="gray.500"/>
-        </Flex>
+        <Address>
+          <AddressIcon hash={ from }/>
+          <AddressLink ml={ 2 } fontWeight="500" hash={ from }/>
+          <Icon as={ rightArrowIcon } boxSize={ 6 } mx={ 2 } flexShrink={ 0 } color="gray.500"/>
+        </Address>
       </Td>
       <Td pl="0">
-        <Flex alignItems="center">
-          <AddressIcon address={ to }/>
-          <AddressLinkWithTooltip address={ to } fontWeight="500" withCopy={ false } ml={ 2 }/>
-        </Flex>
+        <Address>
+          <AddressIcon hash={ to }/>
+          <AddressLink ml={ 2 } fontWeight="500" hash={ to }/>
+        </Address>
       </Td>
       <Td isNumeric>
         { value }

@@ -27,18 +27,19 @@ The app instance could be customized by passing following variables to NodeJS en
 
 | Variable | Type | Description | Default value
 | --- | --- | --- | --- |
-| NEXT_PUBLIC_BLOCKSCOUT_VERSION | `string` | Current running version of Blockscout (used to display link to release in the footer) | 
+| NEXT_PUBLIC_BLOCKSCOUT_VERSION | `string` | Current running version of Blockscout (used to display link to release in the footer) |
 | NEXT_PUBLIC_FOOTER_GITHUB_LINK | `string` | Link to Github in the footer | `https://github.com/blockscout/blockscout` |
 | NEXT_PUBLIC_FOOTER_TWITTER_LINK | `string` | Link to Twitter in the footer | `https://www.twitter.com/blockscoutcom` |
 | NEXT_PUBLIC_FOOTER_TELEGRAM_LINK | `string` | Link to Telegram in the footer | `https://t.me/poa_network` |
 | NEXT_PUBLIC_FOOTER_STAKING_LINK | `string` | Link to staking dashboard in the footer | `https://duneanalytics.com/maxaleks/xdai-staking` |
-| NEXT_PUBLIC_SUPPORTED_NETWORKS | `Array<Network>` where `Network` can have following [properties](#network-configuration-properties) | Configuration of supported networks | `[{"name":"Gnosis Chain","type":"xdai","subType":"mainnet","group":"mainnets","isAccountSupported":true},{"name":"Optimism on Gnosis Chain","type":"xdai","subType":"optimism","group":"mainnets"},{"name":"Arbitrum on xDai","type":"xdai","subType":"aox","group":"mainnets"},{"name":"Ethereum","type":"eth","subType":"mainnet","group":"mainnets"},{"name":"Ethereum Classic","type":"etc","subType":"mainnet","group":"mainnets"},{"name":"POA","type":"poa","subType":"core","group":"mainnets"},{"name":"RSK","type":"rsk","subType":"mainnet","group":"mainnets"},{"name":"Gnosis Chain Testnet","type":"xdai","subType":"testnet","group":"testnets","isAccountSupported":true},{"name":"POA Sokol","type":"poa","subType":"sokol","group":"testnets"},{"name":"ARTIS Σ1","type":"artis","subType":"sigma1","group":"other"},{"name":"LUKSO L14","type":"lukso","subType":"l14","group":"other"}]` |
+| NEXT_PUBLIC_SUPPORTED_NETWORKS | `Array<Network>` where `Network` can have following [properties](#network-configuration-properties) | Configuration of supported networks | `[{"name":"Gnosis Chain","type":"xdai","subType":"mainnet","group":"mainnets","isAccountSupported":true, "chainId": 100},{"name":"Optimism on Gnosis Chain","shortName":"OoG","type":"xdai","subType":"optimism","group":"mainnets","icon":"https://www.fillmurray.com/60/60", "chainId": 300},{"name":"Arbitrum on xDai","type":"xdai","subType":"aox","group":"mainnets", "chainId": 200},{"name":"Ethereum","shortName":"ETH","type":"eth","subType":"mainnet","group":"mainnets", "chainId": 1},{"name":"Ethereum Classic","shortName":"ETC","type":"etc","subType":"mainnet","group":"mainnets", "chainId": 61},{"name":"POA","shortName":"POA","type":"poa","subType":"core","group":"mainnets","isAccountSupported":true, "chainId": 99},{"name":"RSK","shortName":"RBTC","type":"rsk","subType":"mainnet","group":"mainnets", "chainId": 30},{"name":"Gnosis Chain Testnet","type":"xdai","subType":"testnet","group":"testnets"},{"name":"POA Sokol","shortName":"POA","type":"poa","subType":"sokol","group":"testnets", "chainId": 77},{"name":"ARTIS Σ1","type":"artis","subType":"sigma1","group":"other", "chainId": 246529},{"name":"LUKSO L14","shortName":"POA","type":"lukso","subType":"l14","group":"other", "chainId": 22}]` |
 
 ### Network configuration properties
 
 | Property | Type | Description | Example value
 | --- | --- | --- | --- |
 | name | `string` | Displayed name of the network | `"Gnosis Chain"` |
+| chainId | `number` | Id of the network. Could be seen there – [https://chainlist.org/](https://chainlist.org/) | `1` |
 | type | `string` | Network type (used as first part of the base path) | `"xdai"` |
 | subType | `string` | Network subtype (used as second part of the base path) | `"mainnet"` |
 | group | `mainnets \| testnets \| other` | Indicates in which tab network appears in the menu | `"mainnets"` |

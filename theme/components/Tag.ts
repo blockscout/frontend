@@ -23,6 +23,7 @@ const sizes = {
       minH: 6,
       minW: 6,
       fontSize: 'sm',
+      lineHeight: 'sm',
       px: 2,
       py: '2px',
     },
@@ -33,7 +34,7 @@ const sizes = {
 };
 
 const baseStyleContainer = defineStyle({
-  display: 'inline-flex',
+  display: 'inline-block',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   borderRadius: 'sm',

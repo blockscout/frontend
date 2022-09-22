@@ -1,9 +1,9 @@
-import { IconButton, Tooltip, useClipboard } from '@chakra-ui/react';
+import { IconButton, Tooltip, useClipboard, chakra } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 
 import CopyIcon from 'icons/copy.svg';
 
-const CopyToClipboard = ({ text }: {text: string}) => {
+const CopyToClipboard = ({ text, className }: {text: string; className?: string}) => {
   const { hasCopied, onCopy } = useClipboard(text, 3000);
   const [ copied, setCopied ] = useState(false);
 
@@ -26,9 +26,10 @@ const CopyToClipboard = ({ text }: {text: string}) => {
         display="inline-block"
         flexShrink={ 0 }
         onClick={ onCopy }
+        className={ className }
       />
     </Tooltip>
   );
 };
 
-export default CopyToClipboard;
+export default chakra(CopyToClipboard);

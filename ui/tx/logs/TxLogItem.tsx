@@ -2,8 +2,9 @@ import { SearchIcon } from '@chakra-ui/icons';
 import { Text, Grid, GridItem, Link, Tooltip, Button, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
-import AddressIcon from 'ui/shared/AddressIcon';
-import AddressLinkWithTooltip from 'ui/shared/AddressLinkWithTooltip';
+import Address from 'ui/shared/address/Address';
+import AddressIcon from 'ui/shared/address/AddressIcon';
+import AddressLink from 'ui/shared/address/AddressLink';
 import TxLogTopic from 'ui/tx/logs/TxLogTopic';
 import DecodedInputData from 'ui/tx/TxDecodedInputData';
 
@@ -24,8 +25,10 @@ const TxLogItem = ({ address, index, topics, data }: Props) => {
     <Grid gridTemplateColumns="200px 1fr" gap={ 8 } py={ 8 } _notFirst={{ borderTopWidth: '1px', borderTopColor: borderColor }}>
       <RowHeader>Address</RowHeader>
       <GridItem display="flex" alignItems="center">
-        <AddressIcon address={ address }/>
-        <AddressLinkWithTooltip address={ address } columnGap={ 0 } ml={ 2 } fontWeight="400" withCopy={ false }/>
+        <Address>
+          <AddressIcon hash={ address }/>
+          <AddressLink hash={ address } ml={ 2 }/>
+        </Address>
         <Tooltip label="Find matches topic">
           <Link ml={ 2 }>
             <SearchIcon w={ 5 } h={ 5 }/>
