@@ -119,7 +119,7 @@ const TxDecodedInputData = () => {
         bgColor={ bgColor }
         fontWeight={ 600 }
       >
-        Indexed?
+        Inde<wbr/>xed?
       </GridItem>
       <GridItem
         pr={ PADDING }

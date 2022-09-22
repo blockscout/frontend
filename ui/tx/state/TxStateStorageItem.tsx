@@ -8,7 +8,6 @@ import {
 import React from 'react';
 
 import type { TTxStateItemStorage } from 'data/txState';
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 const TxStateStorageItem = ({ storageItem }: {storageItem: TTxStateItemStorage}) => {
   const gridData = [
@@ -49,8 +48,8 @@ const TxStateStorageItem = ({ storageItem }: {storageItem: TTxStateItemStorage})
                 { OPTIONS.map((option) => <option key={ option } value={ option }>{ option }</option>) }
               </Select>
             ) }
-            <Box fontWeight={{ base: 400, lg: 500 }} overflow="hidden" whiteSpace="nowrap" maxW="100%">
-              <HashStringShortenDynamic hash={ item.value }/>
+            <Box fontWeight={{ base: 400, lg: 500 }} maxW="100%">
+              { item.value }
             </Box>
           </GridItem>
         </React.Fragment>
