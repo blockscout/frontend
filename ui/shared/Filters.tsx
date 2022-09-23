@@ -1,3 +1,7 @@
+// DEPRECATED
+// migrate to separate components
+//    ui/shared/FilterButton.tsx + custom filter
+//    ui/shared/FilterInput.tsx
 import { SearchIcon } from '@chakra-ui/icons';
 import { Flex, Icon, Button, Circle, InputGroup, InputLeftElement, Input, useColorModeValue } from '@chakra-ui/react';
 import type { ChangeEvent } from 'react';

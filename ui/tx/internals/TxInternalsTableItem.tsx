@@ -1,11 +1,11 @@
 import { Tr, Td, Tag, Icon } from '@chakra-ui/react';
-import capitalize from 'lodash/capitalize';
 import React from 'react';
 
 import rightArrowIcon from 'icons/arrows/right.svg';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
+import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 import TxStatus from 'ui/tx/TxStatus';
 
 interface Props {
@@ -18,10 +18,12 @@ interface Props {
 }
 
 const TxInternalTableItem = ({ type, status, from, to, value, gasLimit }: Props) => {
+  const typeTitle = TX_INTERNALS_ITEMS.find(({ id }) => id === type)?.title;
+
   return (
     <Tr alignItems="top">
       <Td>
-        <Tag colorScheme="cyan" mr={ 2 }>{ capitalize(type) }</Tag>
+        { typeTitle && <Tag colorScheme="cyan" mr={ 2 }>{ typeTitle }</Tag> }
         <TxStatus status={ status }/>
       </Td>
       <Td>

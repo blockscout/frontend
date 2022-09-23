@@ -1,10 +1,10 @@
 import { Table, Thead, Tbody, Tr, Th, TableContainer } from '@chakra-ui/react';
 import React from 'react';
 
-import { data } from 'data/txInternal';
+import type { data as txData } from 'data/txInternal';
 import TxInternalsTableItem from 'ui/tx/internals/TxInternalsTableItem';
 
-const TxInternalsTable = () => {
+const TxInternalsTable = ({ data }: { data: typeof txData}) => {
   return (
     <TableContainer width="100%" mt={ 6 }>
       <Table variant="simple" size="sm">
