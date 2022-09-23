@@ -1,4 +1,4 @@
-import { Tr, Td, Tag, Icon } from '@chakra-ui/react';
+import { Tr, Td, Tag, Icon, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import rightArrowIcon from 'icons/arrows/right.svg';
@@ -23,7 +23,11 @@ const TxInternalTableItem = ({ type, status, from, to, value, gasLimit }: Props)
   return (
     <Tr alignItems="top">
       <Td>
-        { typeTitle && <Tag colorScheme="cyan" mr={ 2 }>{ typeTitle }</Tag> }
+        { typeTitle && (
+          <Box w="126px" display="inline-block">
+            <Tag colorScheme="cyan" mr={ 5 }>{ typeTitle }</Tag>
+          </Box>
+        ) }
         <TxStatus status={ status }/>
       </Td>
       <Td>

@@ -29,12 +29,12 @@ const TxStateStorageItem = ({ storageItem }: {storageItem: TTxStateItemStorage})
       background="blackAlpha.50"
       borderRadius="12px"
       mb={ 4 }
-      fontSize={{ base: 'sm', lg: 'md' }}
+      fontSize="sm"
     >
       { gridData.map((item) => (
         <React.Fragment key={ item.name }>
           <GridItem alignSelf={{ base: 'start', lg: 'center' }} fontWeight={{ base: 500, lg: 600 }} textAlign="end">{ item.name }</GridItem>
-          <GridItem display="flex" flexDir="column" rowGap={ 2 } alignItems="flex-start" >
+          <GridItem display="flex" flexDir={{ base: 'column', lg: 'row' }} rowGap={ 2 } alignItems={{ base: 'flex-start', lg: 'center' }} >
             { item.select && (
               <Select
                 size="sm"

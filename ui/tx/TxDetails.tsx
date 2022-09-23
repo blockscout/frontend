@@ -1,10 +1,11 @@
-import { Grid, GridItem, Text, Box, Icon, Link, Tag, Flex } from '@chakra-ui/react';
+import { Grid, GridItem, Text, Box, Icon, Link, Tag, Flex, Tooltip, chakra } from '@chakra-ui/react';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
 import { tx } from 'data/tx';
 import clockIcon from 'icons/clock.svg';
 import flameIcon from 'icons/flame.svg';
+import errorIcon from 'icons/status/error.svg';
 import successIcon from 'icons/status/success.svg';
 import dayjs from 'lib/date/dayjs';
 import Address from 'ui/shared/address/Address';
@@ -97,7 +98,16 @@ const TxDetails = () => {
           <CopyToClipboard text={ tx.address_to }/>
         </Address>
         <Tag colorScheme="orange" variant="solid" flexShrink={ 0 }>SANA</Tag>
-        <Icon as={ successIcon } boxSize={ 4 } ml={ 2 } color="green.500"/>
+        <Tooltip label="Contract execution completed">
+          <chakra.span display="inline-flex">
+            <Icon as={ successIcon } boxSize={ 4 } ml={ 2 } color="green.500" cursor="pointer"/>
+          </chakra.span>
+        </Tooltip>
+        <Tooltip label="Error occured during contract execution">
+          <chakra.span display="inline-flex">
+            <Icon as={ errorIcon } boxSize={ 4 } ml={ 2 } color="red.500" cursor="pointer"/>
+          </chakra.span>
+        </Tooltip>
         <Token symbol="USDT" ml={ 3 }/>
       </DetailsInfoItem>
       <DetailsInfoItem

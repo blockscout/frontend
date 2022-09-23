@@ -20,7 +20,7 @@ const TxLogTopic = ({ hex, index }: Props) => {
 
   return (
     <Flex alignItems="center" px={{ base: 0, lg: 3 }} _notFirst={{ mt: 3 }} overflow="hidden" maxW="100%">
-      <Button variant="outline" isActive size="xs" fontWeight={ 400 } mr={ 3 } w={ 6 }>
+      <Button variant="outline" colorScheme="gray" isActive size="xs" fontWeight={ 400 } mr={ 3 } w={ 6 }>
         { index }
       </Button>
       { /* temporary condition juse to show different states of the component */ }
