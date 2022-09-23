@@ -1,13 +1,16 @@
 import { SearchIcon } from '@chakra-ui/icons';
-import { Input, InputGroup, InputLeftElement, useColorModeValue } from '@chakra-ui/react';
+import { Input, InputGroup, InputLeftElement, useColorModeValue, chakra } from '@chakra-ui/react';
 import type { ChangeEvent } from 'react';
 import React, { useCallback, useState } from 'react';
 
 type Props = {
-  onChange: (q: string) => void;
+  onChange: (searchTerm: string) => void;
+  className?: string;
+  size?: 'xs' | 'sm' | 'md' | 'lg';
+  placeholder: string;
 }
 
-const FilterInput = ({ onChange }: Props) => {
+const FilterInput = ({ onChange, className, size = 'sm', placeholder }: Props) => {
   const [ filterQuery, setFilterQuery ] = useState('');
 
   const handleFilterQueryChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
@@ -19,7 +22,8 @@ const FilterInput = ({ onChange }: Props) => {
 
   return (
     <InputGroup
-      size="sm"
+      size={ size }
+      className={ className }
     >
       <InputLeftElement
         pointerEvents="none"
@@ -28,13 +32,13 @@ const FilterInput = ({ onChange }: Props) => {
       </InputLeftElement>
 
       <Input
-        size="sm"
+        size={ size }
         value={ filterQuery }
         onChange={ handleFilterQueryChange }
-        marginBottom={{ base: '4', lg: '6' }}
+        placeholder={ placeholder }
       />
     </InputGroup>
   );
 };
 
-export default FilterInput;
+export default chakra(FilterInput);

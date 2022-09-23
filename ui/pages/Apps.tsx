@@ -5,8 +5,8 @@ import type { AppItemOverview } from 'types/client/apps';
 
 import { TEMPORARY_DEMO_APPS } from 'data/apps';
 import AppList from 'ui/apps/AppList';
+import FilterInput from 'ui/shared/FilterInput';
 import AppModal from 'ui/apps/AppModal';
-import FilterInput from 'ui/apps/FilterInput';
 
 const defaultDisplayedApps = [ ...TEMPORARY_DEMO_APPS ]
   .sort((a, b) => a.title.localeCompare(b.title));
@@ -29,7 +29,7 @@ const Apps = () => {
 
   return (
     <>
-      <FilterInput onChange={ debounceFilterApps }/>
+      <FilterInput onChange={ debounceFilterApps } marginBottom={{ base: '4', lg: '6' }} placeholder="Find app"/>
       <AppList apps={ displayedApps }/>
       <AppModal
         id={ displayedAppId }

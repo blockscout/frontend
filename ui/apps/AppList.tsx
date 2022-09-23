@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { AppItemPreview } from 'types/client/apps';
 
+import { apos } from 'lib/html-entities';
 import AppCard from 'ui/apps/AppCard';
 import EmptySearchResult from 'ui/apps/EmptySearchResult';
 
@@ -42,7 +43,7 @@ const AppList = ({ apps }: Props) => {
           )) }
         </Grid>
       ) : (
-        <EmptySearchResult/>
+        <EmptySearchResult text={ `Couldn${ apos }t find an app that matches your filter query.` }/>
       ) }
     </>
   );

@@ -2,9 +2,12 @@ import { Box, Heading, Icon, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import emptyIcon from 'icons/empty_search_result.svg';
-import { apos } from 'lib/html-entities';
 
-const EmptySearchResult = () => {
+interface Props {
+  text: string;
+}
+
+const EmptySearchResult = ({ text }: Props) => {
   return (
     <Box
       display="flex"
@@ -31,7 +34,7 @@ const EmptySearchResult = () => {
         variant="secondary"
         align="center"
       >
-        Couldn{ apos }t find an app that matches your filter query.
+        { text }
       </Text>
     </Box>
   );
