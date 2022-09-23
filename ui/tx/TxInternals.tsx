@@ -11,8 +11,6 @@ import FilterInput from 'ui/shared/FilterInput';
 import TxInternalsFilter from 'ui/tx/internals/TxInternalsFilter';
 import TxInternalsTableItem from 'ui/tx/internals/TxInternalsTableItem';
 
-const DEFAULT_FILTERS: Array<TxInternalsType> = [ 'call', 'delegate_call', 'static_call', 'create', 'create2', 'self_destruct', 'reward' ];
-
 const searchFn = (searchTerm: string) => (item: ArrayElement<typeof data>): boolean => {
   const formattedSearchTerm = searchTerm.toLowerCase();
   return item.type.toLowerCase().includes(formattedSearchTerm) ||
@@ -21,7 +19,7 @@ const searchFn = (searchTerm: string) => (item: ArrayElement<typeof data>): bool
 };
 
 const TxInternals = () => {
-  const [ filters, setFilters ] = React.useState<Array<TxInternalsType>>(DEFAULT_FILTERS);
+  const [ filters, setFilters ] = React.useState<Array<TxInternalsType>>([]);
   const [ searchTerm, setSearchTerm ] = React.useState<string>('');
 
   const handleFilterChange = React.useCallback((nextValue: Array<TxInternalsType>) => {
@@ -30,7 +28,7 @@ const TxInternals = () => {
 
   const content = (() => {
     const filteredData = data
-      .filter(({ type }) => filters.includes(type))
+      .filter(({ type }) => filters.length > 0 ? filters.includes(type) : true)
       .filter(searchFn(searchTerm));
 
     if (filteredData.length === 0) {
@@ -50,10 +48,7 @@ const TxInternals = () => {
             </Tr>
           </Thead>
           <Tbody>
-            { data
-              .filter(({ type }) => filters.includes(type))
-              .filter(searchFn(searchTerm))
-              .map((item) => <TxInternalsTableItem key={ item.id } { ...item }/>) }
+            { filteredData.map((item) => <TxInternalsTableItem key={ item.id } { ...item }/>) }
           </Tbody>
         </Table>
       </TableContainer>
