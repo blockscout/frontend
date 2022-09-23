@@ -5,8 +5,8 @@ import type { AppItemOverview } from 'types/client/apps';
 
 import { TEMPORARY_DEMO_APPS } from 'data/apps';
 import AppList from 'ui/apps/AppList';
-import FilterInput from 'ui/shared/FilterInput';
 import AppModal from 'ui/apps/AppModal';
+import FilterInput from 'ui/shared/FilterInput';
 
 const defaultDisplayedApps = [ ...TEMPORARY_DEMO_APPS ]
   .sort((a, b) => a.title.localeCompare(b.title));

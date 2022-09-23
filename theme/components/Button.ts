@@ -106,15 +106,39 @@ const variantSimple = defineStyle((props) => {
   };
 });
 
+const variantSubtle = defineStyle((props) => {
+  const { colorScheme: c } = props;
+
+  const activeBg = mode(`${ c }.50`, 'gray.800')(props);
+
+  return {
+    bg: 'transparent',
+    color: mode(`${ c }.700`, 'gray.400')(props),
+    _active: {
+      color: mode(`${ c }.700`, 'gray.50')(props),
+      bg: mode(`${ c }.50`, 'gray.800')(props),
+    },
+    _hover: {
+      color: `${ c }.400`,
+      _active: {
+        bg: props.isActive ? activeBg : 'transparent',
+        color: mode(`${ c }.700`, 'gray.50')(props),
+      },
+    },
+  };
+});
+
 const variants = {
   solid: variantSolid,
   outline: variantOutline,
   simple: variantSimple,
+  subtle: variantSubtle,
 };
 
 const baseStyle = defineStyle({
   fontWeight: 600,
   borderRadius: 'base',
+  overflow: 'hidden',
 });
 
 const sizes = {
