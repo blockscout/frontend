@@ -45,7 +45,6 @@ const Page = ({ children }: Props) => {
         paddingTop={ isMobile ? 0 : 9 }
         paddingBottom={ 10 }
         spacing={ 0 }
-        overflow="hidden"
       >
         <Header/>
         <Box

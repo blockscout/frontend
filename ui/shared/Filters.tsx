@@ -36,11 +36,10 @@ const Filters = () => {
         size="sm"
         variant="outline"
         colorScheme="gray-dark"
-        fontWeight="500"
+        borderWidth="1px"
         onClick={ handleClick }
         isActive={ isActive }
-        px={ 2 }
-        flexShrink={ 0 }
+        px={ 1.5 }
       >
         Filter
       </Button>
