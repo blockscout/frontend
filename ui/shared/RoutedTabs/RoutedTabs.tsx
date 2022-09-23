@@ -11,6 +11,7 @@ import React from 'react';
 
 import type { RoutedTab } from './types';
 
+import useIsMobile from 'lib/hooks/useIsMobile';
 import { link } from 'lib/link/link';
 
 import RoutedTabsMenu from './RoutedTabsMenu';
@@ -30,9 +31,10 @@ interface Props {
 
 const RoutedTabs = ({ tabs, defaultActiveTab }: Props) => {
   const defaultIndex = tabs.findIndex(({ routeName }) => routeName === defaultActiveTab);
+  const isMobile = useIsMobile();
 
   const [ activeTab, setActiveTab ] = React.useState<number>(defaultIndex);
-  const { tabsCut, tabsWithMenu, tabsRefs, listRef } = useAdaptiveTabs(tabs);
+  const { tabsCut, tabsList, tabsRefs, listRef } = useAdaptiveTabs(tabs, isMobile);
 
   const router = useRouter();
 
@@ -49,8 +51,25 @@ const RoutedTabs = ({ tabs, defaultActiveTab }: Props) => {
 
   return (
     <Tabs variant="soft-rounded" colorScheme="blue" isLazy onChange={ handleTabChange } index={ activeTab }>
-      <TabList marginBottom={{ base: 6, lg: 8 }} flexWrap="nowrap" whiteSpace="nowrap" ref={ listRef }>
-        { tabsWithMenu.map((tab, index) => {
+      <TabList
+        marginBottom={{ base: 6, lg: 8 }}
+        flexWrap="nowrap"
+        whiteSpace="nowrap"
+        ref={ listRef }
+        overflowY="hidden"
+        overflowX={ isMobile ? 'auto' : undefined }
+        overscrollBehaviorX="contain"
+        css={{
+          'scroll-snap-type': 'x mandatory',
+          // hide scrollbar
+          '&::-webkit-scrollbar': { /* Chromiums */
+            display: 'none',
+          },
+          '-ms-overflow-style': 'none', /* IE and Edge */
+          'scrollbar-width': 'none', /* Firefox */
+        }}
+      >
+        { tabsList.map((tab, index) => {
           if (!tab.routeName) {
             return (
               <RoutedTabsMenu
@@ -77,6 +96,7 @@ const RoutedTabs = ({ tabs, defaultActiveTab }: Props) => {
               key={ tab.routeName }
               ref={ tabsRefs[index] }
               { ...(index < tabsCut ? {} : hiddenItemStyles) }
+              scrollSnapAlign="start"
             >
               { tab.title }
             </Tab>
@@ -84,7 +104,7 @@ const RoutedTabs = ({ tabs, defaultActiveTab }: Props) => {
         }) }
       </TabList>
       <TabPanels>
-        { tabsWithMenu.map((tab) => <TabPanel padding={ 0 } key={ tab.routeName }>{ tab.component }</TabPanel>) }
+        { tabsList.map((tab) => <TabPanel padding={ 0 } key={ tab.routeName }>{ tab.component }</TabPanel>) }
       </TabPanels>
     </Tabs>
   );
