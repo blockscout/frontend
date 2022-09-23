@@ -1,14 +1,14 @@
 import { Grid, GridItem, VisuallyHidden, Heading } from '@chakra-ui/react';
 import React from 'react';
 
-import type { AppItemOverview } from 'types/client/apps';
+import type { AppItemPreview } from 'types/client/apps';
 
 import { apos } from 'lib/html-entities';
 import AppCard from 'ui/apps/AppCard';
 import EmptySearchResult from 'ui/apps/EmptySearchResult';
 
 type Props = {
-  apps: Array<AppItemOverview>;
+  apps: Array<AppItemPreview>;
 }
 
 const AppList = ({ apps }: Props) => {

@@ -12,10 +12,11 @@ export type AppItemPreview = {
 }
 
 export type AppItemOverview = AppItemPreview & {
+  author: string;
   url: string;
   description: string;
-  site: string;
-  twitter: string;
-  telegram: string;
-  github: string;
+  site?: string;
+  twitter?: string;
+  telegram?: string;
+  github?: string;
 }

@@ -1,4 +1,4 @@
-import { Link, Icon, Text, HStack, Tooltip } from '@chakra-ui/react';
+import { Link, Icon, Text, HStack, Tooltip, Box } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import React from 'react';
 
@@ -28,36 +28,37 @@ const NavLink = ({ text, url, icon, isCollapsed, isActive, px }: Props) => {
   })();
 
   return (
-    <NextLink href={ url } passHref>
-      <Link
-        as="li"
-        listStyleType="none"
-        w={ width }
-        px={ px || (isCollapsed ? '15px' : 3) }
-        py={ 2.5 }
-        color={ isActive ? colors.text.active : colors.text.default }
-        bgColor={ isActive ? colors.bg.active : colors.bg.default }
-        _hover={{ color: isActive ? colors.text.active : colors.text.hover }}
-        borderRadius="base"
-        whiteSpace="nowrap"
-        { ...getDefaultTransitionProps({ transitionProperty: 'width, padding' }) }
-      >
-        <Tooltip
-          label={ text }
-          hasArrow={ false }
-          isDisabled={ !isCollapsed }
-          placement="right"
-          variant="nav"
-          gutter={ 15 }
-          color={ isActive ? colors.text.active : colors.text.hover }
+    <Box as="li" listStyleType="none" w="100%">
+      <NextLink href={ url } passHref>
+        <Link
+          w={ width }
+          px={ px || (isCollapsed ? '15px' : 3) }
+          py={ 2.5 }
+          display="flex"
+          color={ isActive ? colors.text.active : colors.text.default }
+          bgColor={ isActive ? colors.bg.active : colors.bg.default }
+          _hover={{ color: isActive ? colors.text.active : colors.text.hover }}
+          borderRadius="base"
+          whiteSpace="nowrap"
+          { ...getDefaultTransitionProps({ transitionProperty: 'width, padding' }) }
         >
-          <HStack spacing={ 3 }>
-            <Icon as={ icon } boxSize="30px"/>
-            { !isCollapsed && <Text variant="inherit" fontSize="sm" lineHeight="20px">{ text }</Text> }
-          </HStack>
-        </Tooltip>
-      </Link>
-    </NextLink>
+          <Tooltip
+            label={ text }
+            hasArrow={ false }
+            isDisabled={ !isCollapsed }
+            placement="right"
+            variant="nav"
+            gutter={ 15 }
+            color={ isActive ? colors.text.active : colors.text.hover }
+          >
+            <HStack spacing={ 3 }>
+              <Icon as={ icon } boxSize="30px"/>
+              { !isCollapsed && <Text variant="inherit" fontSize="sm" lineHeight="20px">{ text }</Text> }
+            </HStack>
+          </Tooltip>
+        </Link>
+      </NextLink>
+    </Box>
   );
 };
 
