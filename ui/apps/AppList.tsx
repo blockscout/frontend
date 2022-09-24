@@ -1,5 +1,5 @@
 import { Grid, GridItem, VisuallyHidden, Heading } from '@chakra-ui/react';
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import type { AppItemPreview } from 'types/client/apps';
 
@@ -7,12 +7,44 @@ import { apos } from 'lib/html-entities';
 import AppCard from 'ui/apps/AppCard';
 import EmptySearchResult from 'ui/apps/EmptySearchResult';
 
+import AppModal from './AppModal';
+
 type Props = {
   apps: Array<AppItemPreview>;
   onAppClick: (id: string) => void;
+  displayedAppId: string | null;
+  onModalClose: () => void;
 }
 
-const AppList = ({ apps, onAppClick }: Props) => {
+function getFavoriteApps() {
+  try {
+    return JSON.parse(localStorage.getItem('favoriteApps') || '[]');
+  } catch (e) {
+    return [];
+  }
+}
+
+const AppList = ({ apps, onAppClick, displayedAppId, onModalClose }: Props) => {
+  const [ favoriteApps, setFavoriteApps ] = useState<Array<string>>([]);
+
+  const handleFavoriteClick = useCallback((id: string, isFavorite: boolean) => {
+    const favoriteApps = getFavoriteApps();
+
+    if (isFavorite) {
+      const result = favoriteApps.filter((appId: string) => appId !== id);
+      setFavoriteApps(result);
+      localStorage.setItem('favoriteApps', JSON.stringify(result));
+    } else {
+      favoriteApps.push(id);
+      localStorage.setItem('favoriteApps', JSON.stringify(favoriteApps));
+      setFavoriteApps(favoriteApps);
+    }
+  }, [ ]);
+
+  useEffect(() => {
+    setFavoriteApps(getFavoriteApps());
+  }, [ ]);
+
   return (
     <>
       <VisuallyHidden>
@@ -39,12 +71,23 @@ const AppList = ({ apps, onAppClick }: Props) => {
                 logo={ app.logo }
                 shortDescription={ app.shortDescription }
                 categories={ app.categories }
+                isFavorite={ favoriteApps.includes(app.id) }
+                onFavoriteClick={ handleFavoriteClick }
               />
             </GridItem>
           )) }
         </Grid>
       ) : (
         <EmptySearchResult text={ `Couldn${ apos }t find an app that matches your filter query.` }/>
+      ) }
+
+      { displayedAppId && (
+        <AppModal
+          id={ displayedAppId }
+          onClose={ onModalClose }
+          isFavorite={ favoriteApps.includes(displayedAppId) }
+          onFavoriteClick={ handleFavoriteClick }
+        />
       ) }
     </>
   );
