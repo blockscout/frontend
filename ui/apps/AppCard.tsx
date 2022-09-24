@@ -1,16 +1,29 @@
-import { Box, Heading, Icon, Image, Link, LinkBox, LinkOverlay, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Heading, Icon, IconButton, Image, Link, LinkBox, LinkOverlay, Text, useColorModeValue } from '@chakra-ui/react';
 import type { MouseEvent } from 'react';
 import React, { useCallback } from 'react';
 
 import type { AppItemPreview } from 'types/client/apps';
 
 import northEastIcon from 'icons/arrows/north-east.svg';
+import starFilledIcon from 'icons/star_filled.svg';
+import starOutlineIcon from 'icons/star_outline.svg';
 
 interface Props extends AppItemPreview {
   onInfoClick: (id: string) => void;
+  isFavorite: boolean;
+  onFavoriteClick: (id: string, isFavorite: boolean) => void;
 }
 
-const AppCard = ({ id, title, logo, shortDescription, categories, onInfoClick }: Props) => {
+const AppCard = ({ id,
+  title,
+  logo,
+  shortDescription,
+  categories,
+  onInfoClick,
+  isFavorite,
+  onFavoriteClick,
+}: Props) => {
+
   const categoriesLabel = categories.map(c => c.name).join(', ');
 
   const handleInfoClick = useCallback((event: MouseEvent) => {
@@ -18,12 +31,23 @@ const AppCard = ({ id, title, logo, shortDescription, categories, onInfoClick }:
     onInfoClick(id);
   }, [ onInfoClick, id ]);
 
+  const handleFavoriteClick = useCallback(() => {
+    onFavoriteClick(id, isFavorite);
+  }, [ onFavoriteClick, id, isFavorite ]);
+
   return (
     <LinkBox
+      _hover={{
+        boxShadow: 'md',
+      }}
+      _focusWithin={{
+        boxShadow: 'md',
+      }}
       borderRadius="md"
       height="100%"
       padding={{ base: 3, sm: '20px' }}
-      boxShadow={ `0 0 0 1px ${ useColorModeValue('var(--chakra-colors-gray-200)', 'var(--chakra-colors-gray-600)') }` }
+      border="1px"
+      borderColor={ useColorModeValue('gray.200', 'gray.600') }
     >
       <Box
         display={{ base: 'grid', sm: 'block' }}
@@ -54,9 +78,6 @@ const AppCard = ({ id, title, logo, shortDescription, categories, onInfoClick }:
         >
           <LinkOverlay
             href="#"
-            _hover={{
-              textDecoration: 'underline',
-            }}
           >
             { title }
           </LinkOverlay>
@@ -104,6 +125,23 @@ const AppCard = ({ id, title, logo, shortDescription, categories, onInfoClick }:
             />
           </Link>
         </Box>
+
+        <IconButton
+          position="absolute"
+          right={{ base: 3, sm: '20px' }}
+          top={{ base: 3, sm: '20px' }}
+          aria-label="Mark as favorite"
+          title="Mark as favorite"
+          variant="ghost"
+          colorScheme="gray"
+          w={ 9 }
+          h={ 8 }
+          onClick={ handleFavoriteClick }
+          icon={ isFavorite ?
+            <Icon as={ starFilledIcon } w={ 4 } h={ 4 } color="yellow.400"/> :
+            <Icon as={ starOutlineIcon } w={ 4 } h={ 4 } color="gray.300"/>
+          }
+        />
       </Box>
     </LinkBox>
   );
