@@ -1,4 +1,3 @@
-import { LinkIcon } from '@chakra-ui/icons';
 import {
   Box, Button, Heading, Icon, IconButton, Image, Link, List, Modal, ModalBody,
   ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tag, Text,
@@ -9,6 +8,7 @@ import React, { useCallback } from 'react';
 import type { AppCategory, AppItemOverview } from 'types/client/apps';
 
 import { TEMPORARY_DEMO_APPS } from 'data/apps';
+import linkIcon from 'icons/link.svg';
 import ghIcon from 'icons/social/git.svg';
 import tgIcon from 'icons/social/telega.svg';
 import twIcon from 'icons/social/tweet.svg';
@@ -187,10 +187,10 @@ const AppModal = ({
               overflow="hidden"
             >
               <Icon
-                as={ LinkIcon }
+                as={ linkIcon }
                 display="inline"
                 verticalAlign="baseline"
-                boxSize={ 3 }
+                boxSize="18px"
                 marginRight={ 2 }
               />
 
