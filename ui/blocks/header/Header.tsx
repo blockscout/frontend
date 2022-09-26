@@ -45,6 +45,8 @@ const Header = () => {
       width="100%"
       alignItems="center"
       justifyContent="center"
+      paddingX={ 12 }
+      paddingTop={ 9 }
       gap={ 12 }
     >
       <SearchBar/>

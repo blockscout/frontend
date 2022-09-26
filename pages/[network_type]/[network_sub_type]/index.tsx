@@ -1,87 +1,19 @@
-import { VStack, Textarea, Button, Alert, AlertTitle, AlertDescription, Link, Code } from '@chakra-ui/react';
-import type { NextPage, GetStaticPaths } from 'next';
-import { useRouter } from 'next/router';
-import type { ChangeEvent } from 'react';
+import type { NextPage } from 'next';
+import Head from 'next/head';
 import React from 'react';
 
-import * as cookies from 'lib/cookies';
-import useNetwork from 'lib/hooks/useNetwork';
-import useToast from 'lib/hooks/useToast';
-import getAvailablePaths from 'lib/networks/getAvailablePaths';
-import Page from 'ui/shared/Page/Page';
-import PageTitle from 'ui/shared/Page/PageTitle';
+import Home from 'ui/pages/Home';
 
-const Home: NextPage = () => {
-  const router = useRouter();
-  const selectedNetwork = useNetwork();
-  const toast = useToast();
-
-  const [ isFormVisible, setFormVisibility ] = React.useState(false);
-  const [ token, setToken ] = React.useState('');
-
-  React.useEffect(() => {
-    const token = cookies.get(cookies.NAMES.API_TOKEN);
-    setFormVisibility(Boolean(!token && selectedNetwork?.isAccountSupported));
-  }, [ selectedNetwork?.isAccountSupported ]);
-
-  const handleTokenChange = React.useCallback((event: ChangeEvent<HTMLTextAreaElement>) => {
-    setToken(event.target.value);
-  }, []);
-
-  const handleSetTokenClick = React.useCallback(() => {
-    cookies.set(cookies.NAMES.API_TOKEN, token);
-    setToken('');
-    toast({
-      position: 'top-right',
-      title: 'Success 🥳',
-      description: 'Successfully set cookie',
-      status: 'success',
-      variant: 'subtle',
-      isClosable: true,
-      onCloseComplete: () => {
-        setFormVisibility(false);
-      },
-    });
-  }, [ toast, token ]);
-
-  const prodUrl = new URL(`/${ router.query.network_type }/${ router.query.network_sub_type }`, 'https://blockscout.com').toString();
-
+const HomePage: NextPage = () => {
   return (
-    <Page>
-      <VStack gap={ 4 } alignItems="flex-start" maxW="800px">
-        <PageTitle text={
-          `Home Page for ${ selectedNetwork?.name } network`
-        }/>
-        { /* will be deleted when we move to new CI */ }
-        { isFormVisible && (
-          <>
-            <Alert status="error" flexDirection="column" alignItems="flex-start">
-              <AlertTitle fontSize="md">
-                !!! Temporary solution for authentication !!!
-              </AlertTitle>
-              <AlertDescription mt={ 3 }>
-                To Sign in go to <Link href={ prodUrl } target="_blank">{ prodUrl }</Link> first, sign in there, copy obtained API token from cookie
-                <Code ml={ 1 }>{ cookies.NAMES.API_TOKEN }</Code> and paste it in the form below. After submitting the form you should be successfully
-                authenticated in current environment
-              </AlertDescription>
-            </Alert>
-            <Textarea value={ token } onChange={ handleTokenChange } placeholder="API token"/>
-            <Button onClick={ handleSetTokenClick }>Set cookie</Button>
-          </>
-        ) }
-      </VStack>
-    </Page>
+    <>
+      <Head><title>Home Page</title></Head>
+      <Home/>
+    </>
   );
 };
 
-export default Home;
+export default HomePage;
 
-export const getStaticPaths: GetStaticPaths = async() => {
-  return { paths: getAvailablePaths(), fallback: false };
-};
-
-export const getStaticProps = async() => {
-  return {
-    props: {},
-  };
-};
+export { getStaticPaths } from 'lib/next/account/getStaticPaths';
+export { getStaticProps } from 'lib/next/getStaticProps';

@@ -1,5 +1,5 @@
 import { ArrowBackIcon } from '@chakra-ui/icons';
-import { Box, Link, Text } from '@chakra-ui/react';
+import { Link, Text } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 import { animateScroll } from 'react-scroll';
 
@@ -77,16 +77,14 @@ const PublicTagsComponent: React.FC = () => {
 
   return (
     <Page>
-      <Box h="100%">
-        { isMobile && screen === 'form' && (
-          <Link display="inline-flex" alignItems="center" mb={ 6 } onClick={ onGoBack }>
-            <ArrowBackIcon w={ 6 } h={ 6 }/>
-            <Text variant="inherit" fontSize="sm" ml={ 2 }>Public tags</Text>
-          </Link>
-        ) }
-        <PageTitle text={ header }/>
-        { content }
-      </Box>
+      { isMobile && screen === 'form' && (
+        <Link display="inline-flex" alignItems="center" mb={ 6 } onClick={ onGoBack }>
+          <ArrowBackIcon w={ 6 } h={ 6 }/>
+          <Text variant="inherit" fontSize="sm" ml={ 2 }>Public tags</Text>
+        </Link>
+      ) }
+      <PageTitle text={ header }/>
+      { content }
     </Page>
   );
 };

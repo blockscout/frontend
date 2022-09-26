@@ -1,4 +1,4 @@
-import { Box, HStack, VStack } from '@chakra-ui/react';
+import { chakra, VStack, Grid, GridItem } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -8,12 +8,15 @@ import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import Header from 'ui/blocks/header/Header';
 import NavigationDesktop from 'ui/blocks/navigation/NavigationDesktop';
+import PageContent from 'ui/shared/Page/PageContent';
 
 interface Props {
   children: React.ReactNode;
+  wrapChildren?: boolean;
+  className?: string;
 }
 
-const Page = ({ children }: Props) => {
+const Page = ({ children, wrapChildren = true, className }: Props) => {
   const isMobile = useIsMobile();
   const router = useRouter();
   const fetch = useFetch();
@@ -32,25 +35,32 @@ const Page = ({ children }: Props) => {
     }
   }, [ networkType, networkSubType ]);
 
-  return (
-    <HStack
-      w="100%"
-      minH="100vh"
-      alignItems="stretch"
-    >
-      { !isMobile && <NavigationDesktop/> }
-      <VStack width="100%" paddingX={ isMobile ? 4 : 8 } paddingTop={ isMobile ? 0 : 9 } paddingBottom={ 10 } spacing={ 0 }>
+  const renderedChildren = wrapChildren ? (
+    <PageContent>{ children }</PageContent>
+  ) : children;
+
+  if (isMobile) {
+    return (
+      <VStack width="100%" minH="100vh" spacing={ 0 } className={ className }>
         <Header/>
-        <Box
-          as="main"
-          w="100%"
-          paddingTop={ isMobile ? '138px' : '52px' }
-        >
-          { children }
-        </Box>
+        { renderedChildren }
       </VStack>
-    </HStack>
+    );
+  }
+
+  return (
+    <Grid templateColumns="auto 1fr" templateRows="auto 1fr" rowGap="52px" className={ className }>
+      <GridItem rowSpan={ 2 } colSpan={ 1 }>
+        <NavigationDesktop/>
+      </GridItem>
+      <GridItem>
+        <Header/>
+      </GridItem>
+      <GridItem>
+        { renderedChildren }
+      </GridItem>
+    </Grid>
   );
 };
 
-export default Page;
+export default chakra(Page);
