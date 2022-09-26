@@ -6,6 +6,7 @@ export interface Network {
   name: string;
   // https://chainlist.org/
   chainId?: number;
+  currency?: string;
   shortName?: string;
   // basePath = /<type>/<subType>, e.g. /xdai/mainnet
   type: string;

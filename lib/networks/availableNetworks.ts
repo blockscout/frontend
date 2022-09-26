@@ -60,7 +60,8 @@ export default NETWORKS;
 //     subType: 'mainnet',
 //     group: 'mainnets',
 //     isAccountSupported: true,
-//     chainId: 100
+//     chainId: 100,
+//     currency: 'xDAI',
 //   },
 //   {
 //     name: 'Optimism on Gnosis Chain',
@@ -68,15 +69,17 @@ export default NETWORKS;
 //     type: 'xdai',
 //     subType: 'optimism',
 //     group: 'mainnets',
-//     icon: 'https://www.fillmurray.com/60/60'
-//     chainId: 300
+//     icon: 'https://www.fillmurray.com/60/60',
+//     chainId: 300,
+//     currency: 'xDAI',
 //   },
 //   {
 //     name: 'Arbitrum on xDai',
 //     type: 'xdai',
 //     subType: 'aox',
 //     group: 'mainnets',
-//     chainId: 200
+//     chainId: 200,
+//     currency: 'xDAI',
 //   },
 //   {
 //     name: 'Ethereum',
@@ -84,7 +87,8 @@ export default NETWORKS;
 //     type: 'eth',
 //     subType: 'mainnet',
 //     group: 'mainnets',
-//     chainId: 1
+//     chainId: 1,
+//     currency: 'ETH',
 //   },
 //   {
 //     name: 'Ethereum Classic',
@@ -92,7 +96,8 @@ export default NETWORKS;
 //     type: 'etc',
 //     subType: 'mainnet',
 //     group: 'mainnets',
-//     chainId: 61
+//     chainId: 61,
+//     currency: 'ETC',
 //   },
 //   {
 //     name: 'POA',
@@ -100,7 +105,9 @@ export default NETWORKS;
 //     type: 'poa',
 //     subType: 'core',
 //     group: 'mainnets',
-//     chainId: 99
+//     chainId: 99,
+//     currency: 'POA',
+//     isAccountSupported: true,
 //   },
 //   {
 //     name: 'RSK',
@@ -108,7 +115,8 @@ export default NETWORKS;
 //     type: 'rsk',
 //     subType: 'mainnet',
 //     group: 'mainnets',
-//     chainId: 30
+//     chainId: 30,
+//     currency: 'RBTC',
 //   },
 //   {
 //     name: 'Gnosis Chain Testnet',
@@ -116,6 +124,7 @@ export default NETWORKS;
 //     subType: 'testnet',
 //     group: 'testnets',
 //     isAccountSupported: true,
+//     currency: 'xDAI',
 //   },
 //   {
 //     name: 'POA Sokol',
@@ -123,14 +132,16 @@ export default NETWORKS;
 //     type: 'poa',
 //     subType: 'sokol',
 //     group: 'testnets',
-//     chainId: 77
+//     chainId: 77,
+//     currency: 'SPOA',
 //   },
 //   {
 //     name: 'ARTIS Σ1',
 //     type: 'artis',
 //     subType: 'sigma1',
 //     group: 'other',
-//     chainId: 246529
+//     chainId: 246529,
+//     currency: 'ATS',
 //   },
 //   {
 //     name: 'LUKSO L14',
@@ -138,6 +149,7 @@ export default NETWORKS;
 //     type: 'lukso',
 //     subType: 'l14',
 //     group: 'other',
-//     chainId: 22
+//     chainId: 22,
+//     currency: 'LYX',
 //   },
 // ];

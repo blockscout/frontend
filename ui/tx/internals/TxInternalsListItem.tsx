@@ -12,9 +12,9 @@ import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import TxStatus from 'ui/tx/TxStatus';
 
-type Props = ArrayElement<typeof data>;
+type Props = ArrayElement<typeof data> & { currency?: string };
 
-const TxInternalsListItem = ({ type, status, from, to, value, gasLimit }: Props) => {
+const TxInternalsListItem = ({ type, status, from, to, value, gasLimit, currency }: Props) => {
   return (
     <AccountListItemMobile rowGap={ 3 }>
       <Flex>
@@ -33,7 +33,7 @@ const TxInternalsListItem = ({ type, status, from, to, value, gasLimit }: Props)
         </Address>
       </Box>
       <HStack spacing={ 3 }>
-        <Text fontSize="sm" fontWeight={ 500 }>Value xDAI</Text>
+        <Text fontSize="sm" fontWeight={ 500 }>Value { currency }</Text>
         <Text fontSize="sm" variant="secondary">{ value }</Text>
       </HStack>
       <HStack spacing={ 3 }>

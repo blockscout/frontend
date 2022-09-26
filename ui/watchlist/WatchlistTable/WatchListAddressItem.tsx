@@ -5,6 +5,7 @@ import type { TWatchlistItem } from 'types/client/account';
 
 import TokensIcon from 'icons/tokens.svg';
 // import WalletIcon from 'icons/wallet.svg';
+import useNetwork from 'lib/hooks/useNetwork';
 import { nbsp } from 'lib/html-entities';
 import AddressSnippet from 'ui/shared/AddressSnippet';
 
@@ -14,6 +15,7 @@ const DECIMALS = 18;
 
 const WatchListAddressItem = ({ item }: {item: TWatchlistItem}) => {
   const mainTextColor = useColorModeValue('gray.700', 'gray.50');
+  const selectedNetwork = useNetwork();
 
   const nativeBalance = ((item.address_balance || 0) / 10 ** DECIMALS).toFixed(1);
   const nativeBalanceUSD = item.exchange_rate ? `$${ Number(nativeBalance) * item.exchange_rate } USD` : 'N/A';
@@ -24,7 +26,7 @@ const WatchListAddressItem = ({ item }: {item: TWatchlistItem}) => {
       <AddressSnippet address={ item.address_hash }/>
       <HStack spacing={ 0 } fontSize="sm" h={ 6 } pl={ infoItemsPaddingLeft }>
         <Image src="/xdai.png" srcSet="/xdai@2x.png 2x" alt="chain-logo" marginRight="10px" w="16px" h="16px"/>
-        <Text color={ mainTextColor }>{ `xDAI balance:${ nbsp }` + nativeBalance }</Text>
+        <Text color={ mainTextColor }>{ `${ selectedNetwork?.currency } balance:${ nbsp }` + nativeBalance }</Text>
         <Text variant="secondary">{ `${ nbsp }(${ nativeBalanceUSD })` }</Text>
       </HStack>
       { item.tokens_count && (
