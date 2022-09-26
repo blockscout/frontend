@@ -3,7 +3,7 @@ import React from 'react';
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
 import Page from 'ui/shared/Page';
-import PageHeader from 'ui/shared/PageHeader';
+import PageTitle from 'ui/shared/PageTitle';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
 import TxDetails from 'ui/tx/TxDetails';
 import TxInternals from 'ui/tx/TxInternals';
@@ -26,7 +26,7 @@ export interface Props {
 const TransactionPageContent = ({ tab }: Props) => {
   return (
     <Page>
-      <PageHeader text="Transaction details"/>
+      <PageTitle text="Transaction details"/>
       <RoutedTabs tabs={ TABS } defaultActiveTab={ tab }/>
     </Page>
   );

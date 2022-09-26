@@ -12,7 +12,7 @@ import CustomAbiTable from 'ui/customAbi/CustomAbiTable/CustomAbiTable';
 import DeleteCustomAbiModal from 'ui/customAbi/DeleteCustomAbiModal';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import Page from 'ui/shared/Page';
-import PageHeader from 'ui/shared/PageHeader';
+import PageTitle from 'ui/shared/PageTitle';
 import SkeletonAccountMobile from 'ui/shared/SkeletonAccountMobile';
 import SkeletonTable from 'ui/shared/SkeletonTable';
 
@@ -116,7 +116,7 @@ const CustomAbiPage: React.FC = () => {
   return (
     <Page>
       <Box h="100%">
-        <PageHeader text="Custom ABI"/>
+        <PageTitle text="Custom ABI"/>
         { content }
       </Box>
     </Page>

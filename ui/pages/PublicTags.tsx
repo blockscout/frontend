@@ -10,7 +10,7 @@ import useToast from 'lib/hooks/useToast';
 import PublicTagsData from 'ui/publicTags/PublicTagsData';
 import PublicTagsForm from 'ui/publicTags/PublicTagsForm/PublicTagsForm';
 import Page from 'ui/shared/Page';
-import PageHeader from 'ui/shared/PageHeader';
+import PageTitle from 'ui/shared/PageTitle';
 
 type TScreen = 'data' | 'form';
 
@@ -84,7 +84,7 @@ const PublicTagsComponent: React.FC = () => {
             <Text variant="inherit" fontSize="sm" ml={ 2 }>Public tags</Text>
           </Link>
         ) }
-        <PageHeader text={ header }/>
+        <PageTitle text={ header }/>
         { content }
       </Box>
     </Page>

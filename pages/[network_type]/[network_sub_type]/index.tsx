@@ -9,7 +9,7 @@ import useNetwork from 'lib/hooks/useNetwork';
 import useToast from 'lib/hooks/useToast';
 import getAvailablePaths from 'lib/networks/getAvailablePaths';
 import Page from 'ui/shared/Page';
-import PageHeader from 'ui/shared/PageHeader';
+import PageTitle from 'ui/shared/PageTitle';
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -49,7 +49,7 @@ const Home: NextPage = () => {
   return (
     <Page>
       <VStack gap={ 4 } alignItems="flex-start" maxW="800px">
-        <PageHeader text={
+        <PageTitle text={
           `Home Page for ${ selectedNetwork?.name } network`
         }/>
         { /* will be deleted when we move to new CI */ }

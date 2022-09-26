@@ -5,7 +5,7 @@ import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Page from 'ui/shared/Page';
-import PageHeader from 'ui/shared/PageHeader';
+import PageTitle from 'ui/shared/PageTitle';
 import UserAvatar from 'ui/shared/UserAvatar';
 
 const MyProfile = () => {
@@ -56,7 +56,7 @@ const MyProfile = () => {
 
   return (
     <Page>
-      <PageHeader text="My profile"/>
+      <PageTitle text="My profile"/>
       { content }
     </Page>
   );

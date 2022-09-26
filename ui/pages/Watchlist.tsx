@@ -9,7 +9,7 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Page from 'ui/shared/Page';
-import PageHeader from 'ui/shared/PageHeader';
+import PageTitle from 'ui/shared/PageTitle';
 import SkeletonAccountMobile from 'ui/shared/SkeletonAccountMobile';
 import SkeletonTable from 'ui/shared/SkeletonTable';
 import AddressModal from 'ui/watchlist/AddressModal/AddressModal';
@@ -113,7 +113,7 @@ const WatchList: React.FC = () => {
   return (
     <Page>
       <Box h="100%">
-        <PageHeader text="Watch list"/>
+        <PageTitle text="Watch list"/>
         { content }
       </Box>
     </Page>

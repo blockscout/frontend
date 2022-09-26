@@ -3,12 +3,12 @@ import React from 'react';
 
 import Apps from 'ui/pages/Apps';
 import Page from 'ui/shared/Page';
-import PageHeader from 'ui/shared/PageHeader';
+import PageTitle from 'ui/shared/PageTitle';
 
 const AppsPage = () => {
   return (
     <Page>
-      <PageHeader text="Apps"/>
+      <PageTitle text="Apps"/>
       <Head><title>Apps</title></Head>
 
       <Apps/>
