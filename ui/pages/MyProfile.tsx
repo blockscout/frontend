@@ -4,8 +4,8 @@ import React from 'react';
 import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import Page from 'ui/shared/Page';
-import PageTitle from 'ui/shared/PageTitle';
+import Page from 'ui/shared/Page/Page';
+import PageTitle from 'ui/shared/Page/PageTitle';
 import UserAvatar from 'ui/shared/UserAvatar';
 
 const MyProfile = () => {

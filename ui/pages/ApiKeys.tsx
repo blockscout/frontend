@@ -12,8 +12,8 @@ import ApiKeyListItem from 'ui/apiKey/ApiKeyTable/ApiKeyListItem';
 import ApiKeyTable from 'ui/apiKey/ApiKeyTable/ApiKeyTable';
 import DeleteApiKeyModal from 'ui/apiKey/DeleteApiKeyModal';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
-import Page from 'ui/shared/Page';
-import PageTitle from 'ui/shared/PageTitle';
+import Page from 'ui/shared/Page/Page';
+import PageTitle from 'ui/shared/Page/PageTitle';
 import SkeletonAccountMobile from 'ui/shared/SkeletonAccountMobile';
 import SkeletonTable from 'ui/shared/SkeletonTable';
 

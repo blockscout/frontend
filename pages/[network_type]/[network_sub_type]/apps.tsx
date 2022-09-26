@@ -2,8 +2,8 @@ import Head from 'next/head';
 import React from 'react';
 
 import Apps from 'ui/pages/Apps';
-import Page from 'ui/shared/Page';
-import PageTitle from 'ui/shared/PageTitle';
+import Page from 'ui/shared/Page/Page';
+import PageTitle from 'ui/shared/Page/PageTitle';
 
 const AppsPage = () => {
   return (

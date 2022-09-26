@@ -9,8 +9,8 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import useToast from 'lib/hooks/useToast';
 import PublicTagsData from 'ui/publicTags/PublicTagsData';
 import PublicTagsForm from 'ui/publicTags/PublicTagsForm/PublicTagsForm';
-import Page from 'ui/shared/Page';
-import PageTitle from 'ui/shared/PageTitle';
+import Page from 'ui/shared/Page/Page';
+import PageTitle from 'ui/shared/Page/PageTitle';
 
 type TScreen = 'data' | 'form';
 

@@ -2,8 +2,8 @@ import React from 'react';
 
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
-import Page from 'ui/shared/Page';
-import PageTitle from 'ui/shared/PageTitle';
+import Page from 'ui/shared/Page/Page';
+import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
 import TxDetails from 'ui/tx/TxDetails';
 import TxInternals from 'ui/tx/TxInternals';

@@ -8,8 +8,8 @@ import * as cookies from 'lib/cookies';
 import useNetwork from 'lib/hooks/useNetwork';
 import useToast from 'lib/hooks/useToast';
 import getAvailablePaths from 'lib/networks/getAvailablePaths';
-import Page from 'ui/shared/Page';
-import PageTitle from 'ui/shared/PageTitle';
+import Page from 'ui/shared/Page/Page';
+import PageTitle from 'ui/shared/Page/PageTitle';
 
 const Home: NextPage = () => {
   const router = useRouter();
