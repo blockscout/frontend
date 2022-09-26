@@ -584,13 +584,6 @@
   dependencies:
     "@chakra-ui/shared-utils" "2.0.1"
 
-"@chakra-ui/icons@^2.0.2":
-  version "2.0.9"
-  resolved "https://registry.yarnpkg.com/@chakra-ui/icons/-/icons-2.0.9.tgz#35edcf9c61b8e158a5d03aeda6bd4e756960dfc7"
-  integrity sha512-6xvV2rC8wATgfnRH+fC9mi0nLcgKjhHKO29lV1pGioVI0yWK0dqc//zjcyBhMMpW5ABnSfig7ujVBf3op/Syzg==
-  dependencies:
-    "@chakra-ui/icon" "3.0.9"
-
 "@chakra-ui/image@2.0.10":
   version "2.0.10"
   resolved "https://registry.yarnpkg.com/@chakra-ui/image/-/image-2.0.10.tgz#712c0e1c579d959225bd8316d8d8f66cbeb95bb8"

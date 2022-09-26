@@ -2,12 +2,12 @@
 // migrate to separate components
 //    ui/shared/FilterButton.tsx + custom filter
 //    ui/shared/FilterInput.tsx
-import { SearchIcon } from '@chakra-ui/icons';
 import { Flex, Icon, Button, Circle, InputGroup, InputLeftElement, Input, useColorModeValue } from '@chakra-ui/react';
 import type { ChangeEvent } from 'react';
 import React from 'react';
 
 import filterIcon from 'icons/filter.svg';
+import searchIcon from 'icons/search.svg';
 
 const FilterIcon = <Icon as={ filterIcon } boxSize={ 5 }/>;
 
@@ -45,7 +45,7 @@ const Filters = () => {
       </Button>
       <InputGroup size="xs" ml={ 3 } maxW="360px">
         <InputLeftElement ml={ 1 }>
-          <SearchIcon w={ 5 } h={ 5 } color={ searchIconColor }/>
+          <Icon as={ searchIcon } boxSize={ 5 } color={ searchIconColor }/>
         </InputLeftElement>
         <Input
           paddingInlineStart="38px"

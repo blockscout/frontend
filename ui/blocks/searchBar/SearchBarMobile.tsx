@@ -1,10 +1,10 @@
-import { SearchIcon } from '@chakra-ui/icons';
-import { InputGroup, Input, InputLeftElement, useColorModeValue, chakra } from '@chakra-ui/react';
+import { InputGroup, Input, InputLeftElement, Icon, useColorModeValue, chakra } from '@chakra-ui/react';
 import clamp from 'lodash/clamp';
 import throttle from 'lodash/throttle';
 import React from 'react';
 import type { ChangeEvent, FormEvent } from 'react';
 
+import searchIcon from 'icons/search.svg';
 import isBrowser from 'lib/isBrowser';
 
 const SCROLL_DIFF_THRESHOLD = 20;
@@ -64,7 +64,7 @@ const SearchBarMobile = ({ onChange, onSubmit }: Props) => {
     >
       <InputGroup size="sm">
         <InputLeftElement >
-          <SearchIcon w={ 4 } h={ 4 } color={ searchIconColor }/>
+          <Icon as={ searchIcon } boxSize={ 4 } color={ searchIconColor }/>
         </InputLeftElement>
         <Input
           paddingInlineStart="38px"

@@ -1,7 +1,7 @@
-import { ChevronLeftIcon } from '@chakra-ui/icons';
-import { Flex, Box, VStack, useColorModeValue, useBreakpointValue } from '@chakra-ui/react';
+import { Flex, Box, VStack, Icon, useColorModeValue, useBreakpointValue } from '@chakra-ui/react';
 import React from 'react';
 
+import chevronIcon from 'icons/arrows/east-mini.svg';
 import * as cookies from 'lib/cookies';
 import useNavItems from 'lib/hooks/useNavItems';
 import useNetwork from 'lib/hooks/useNetwork';
@@ -78,7 +78,8 @@ const NavigationDesktop = () => {
         </Box>
       ) }
       <NavFooter isCollapsed={ isCollapsed } hasAccount={ hasAccount }/>
-      <ChevronLeftIcon
+      <Icon
+        as={ chevronIcon }
         width={ 6 }
         height={ 6 }
         border="1px"

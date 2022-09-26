@@ -1,6 +1,5 @@
 import type { UseCheckboxProps } from '@chakra-ui/checkbox';
 import { useCheckbox } from '@chakra-ui/checkbox';
-import { SunIcon } from '@chakra-ui/icons';
 import { useColorMode, useColorModeValue, Icon } from '@chakra-ui/react';
 import type {
   SystemStyleObject,
@@ -16,6 +15,7 @@ import { dataAttr, __DEV__ } from '@chakra-ui/utils';
 import * as React from 'react';
 
 import moonIcon from 'icons/moon.svg';
+import sunIcon from 'icons/sun.svg';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 
 export interface ColorModeTogglerProps
@@ -101,10 +101,11 @@ const ColorModeToggler = forwardRef<ColorModeTogglerProps, 'input'>((props, ref)
           data-hover={ dataAttr(state.isHovered) }
           __css={ thumbStyles }
         />
-        <SunIcon
-          boxSize={ 4 }
-          margin={ 2 }
+        <Icon
+          boxSize={ 5 }
+          margin={ 1.5 }
           zIndex="docked"
+          as={ sunIcon }
           color={ useColorModeValue('gray.500', 'blue.600') }
           { ...transitionProps }
         />
