@@ -5,8 +5,8 @@ import rightArrowIcon from 'icons/arrows/east.svg';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
-import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 import TxStatus from 'ui/shared/TxStatus';
+import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
 interface Props {
   type: string;

@@ -1,11 +1,13 @@
-import { Box } from '@chakra-ui/react';
+import { Box, HStack } from '@chakra-ui/react';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { txs } from 'data/txs';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import Filters from 'ui/shared/Filters';
+import FilterButton from 'ui/shared/FilterButton';
+import FilterInput from 'ui/shared/FilterInput';
+import Pagination from 'ui/shared/Pagination';
+import SortButton from 'ui/shared/SortButton';
 
-import Pagination from './Pagination';
 import TxsListItem from './TxsListItem';
 import TxsTable from './TxsTable';
 
@@ -69,11 +71,32 @@ const TxsContent = ({ isPending }: Props) => {
   return (
     <>
       { !isPending && <Box mb={ 12 }>Only the first 10,000 elements are displayed</Box> }
-      <Box mb={ 6 }><Filters isMobile={ isMobile }/></Box>
+      <HStack mb={ 6 }>
+        { /* TODO */ }
+        <FilterButton
+          isActive={ false }
+          isCollapsed={ isMobile }
+          // eslint-disable-next-line react/jsx-no-bind
+          onClick={ () => {} }
+          appliedFiltersNum={ 0 }
+        />
+        <SortButton
+        // eslint-disable-next-line react/jsx-no-bind
+          handleSort={ () => {} }
+          isSortActive={ Boolean(sorting) }
+        />
+        <FilterInput
+          // eslint-disable-next-line react/jsx-no-bind
+          onChange={ () => {} }
+          maxW="360px"
+          size="xs"
+          placeholder="Search by addresses, hash, method..."
+        />
+      </HStack>
       { isMobile ?
         sortedTxs.map(tx => <TxsListItem tx={ tx } key={ tx.hash }/>) :
         <TxsTable txs={ sortedTxs } sort={ sort } sorting={ sorting }/> }
-      <Box mx={ isMobile ? 0 : 6 } my={ isMobile ? 6 : 3 }>
+      <Box mx={{ base: 0, lg: 6 }} my={{ base: 6, lg: 3 }}>
         <Pagination currentPage={ 1 } isMobile={ isMobile }/>
       </Box>
     </>

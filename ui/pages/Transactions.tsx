@@ -1,56 +1,32 @@
 import {
   Box,
-  Tab,
-  Tabs,
-  TabList,
-  TabPanel,
-  TabPanels,
 } from '@chakra-ui/react';
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 
-import useLink from 'lib/link/useLink';
+import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
+
 import Page from 'ui/shared/Page';
 import PageHeader from 'ui/shared/PageHeader';
+import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
 import TxsPending from 'ui/txs/TxsPending';
 import TxsValidated from 'ui/txs/TxsValidated';
 
-const TABS = [ 'validated', 'pending' ] as const;
-
-type TabName = typeof TABS[number];
+const TABS: Array<RoutedTab> = [
+  { routeName: 'txs_validated', title: 'Validated', component: <TxsValidated/> },
+  { routeName: 'txs_pending', title: 'Pending', component: <TxsPending/> },
+];
 
 type Props = {
-  tab: TabName;
+  tab: RoutedTab['routeName'];
 }
 
 const Transactions = ({ tab }: Props) => {
-  const [ , setActiveTab ] = useState<TabName>(tab);
-
-  const link = useLink();
-
-  const onChangeTab = useCallback((index: number) => {
-    setActiveTab(TABS[index]);
-    const newUrl = link(TABS[index] === 'validated' ? 'txs_validated' : 'txs_pending');
-    history.replaceState(history.state, '', newUrl);
-  }, [ link ]);
 
   return (
     <Page>
       <Box h="100%">
         <PageHeader text="Transactions"/>
-        <Tabs variant="soft-rounded" colorScheme="blue" isLazy onChange={ onChangeTab } defaultIndex={ TABS.indexOf(tab) }>
-          <TabList marginBottom={{ base: 6, lg: 8 }}>
-            <Tab>Validated</Tab>
-            <Tab>Pending</Tab>
-          </TabList>
-          <TabPanels>
-            <TabPanel padding={ 0 }>
-              <TxsValidated/>
-            </TabPanel>
-            <TabPanel padding={ 0 }>
-              <TxsPending/>
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
+        <RoutedTabs tabs={ TABS } defaultActiveTab={ tab }/>
       </Box>
     </Page>
   );

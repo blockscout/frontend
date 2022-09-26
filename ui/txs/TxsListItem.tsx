@@ -8,12 +8,14 @@ import {
   ModalContent,
   ModalCloseButton,
   Text,
-  Tooltip,
   useColorModeValue,
   useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 
-import rightArrowIcon from 'icons/arrows/right.svg';
+import type ArrayElement from 'types/utils/ArrayElement';
+
+import type { txs } from 'data/txs';
+import rightArrowIcon from 'icons/arrows/east.svg';
 import transactionIcon from 'icons/transactions.svg';
 import dayjs from 'lib/date/dayjs';
 import useLink from 'lib/link/useLink';
@@ -25,13 +27,10 @@ import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 import TxAdditionalInfoButton from 'ui/txs/TxAdditionalInfoButton';
 import TxType from 'ui/txs/TxType';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const TxsListItem = ({ tx }: {tx: any}) => {
+const TxsListItem = ({ tx }: {tx: ArrayElement<typeof txs>}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const iconColor = useColorModeValue('blue.600', 'blue.300');
-  const secondaryTextColor = useColorModeValue('gray.500', 'gray.400');
-
   const link = useLink();
 
   return (
@@ -61,34 +60,32 @@ const TxsListItem = ({ tx }: {tx: any}) => {
               />
             </Address>
           </Flex>
-          <Text color={ secondaryTextColor } fontWeight="400">{ dayjs(tx.timestamp).fromNow() }</Text>
+          <Text variant="secondary" fontWeight="400">{ dayjs(tx.timestamp).fromNow() }</Text>
         </Flex>
         <Flex mt={ 3 }>
           <Text as="span" whiteSpace="pre">Method </Text>
-          <Box
-            color={ secondaryTextColor }
+          <Text
+            as="span"
+            variant="secondary"
             overflow="hidden"
             whiteSpace="nowrap"
             textOverflow="ellipsis"
           >
             { tx.method }
-          </Box>
+          </Text>
         </Flex>
         <Box mt={ 2 }>
           <Text as="span">Block </Text>
-          <Link href={ link('block', { id: tx.block_num }) }>{ tx.block_num }</Link>
+          <Link href={ link('block', { id: tx.block_num.toString() }) }>{ tx.block_num }</Link>
         </Box>
         <Flex alignItems="center" height={ 6 } mt={ 6 }>
           <Address width="calc((100%-40px)/2)">
-            <Tooltip label={ tx.address_from.type } shouldWrapChildren>
-              <AddressIcon hash={ tx.address_from.hash }/>
-            </Tooltip>
+            <AddressIcon hash={ tx.address_from.hash }/>
             <AddressLink
               hash={ tx.address_from.hash }
               alias={ tx.address_from.alias }
               fontWeight="500"
               ml={ 2 }
-              truncation="constant"
             />
           </Address>
           <Icon
@@ -98,25 +95,22 @@ const TxsListItem = ({ tx }: {tx: any}) => {
             color="gray.500"
           />
           <Address width="calc((100%-40px)/2)">
-            <Tooltip label={ tx.address_to.type } shouldWrapChildren>
-              <AddressIcon hash={ tx.address_to.hash }/>
-            </Tooltip>
+            <AddressIcon hash={ tx.address_to.hash }/>
             <AddressLink
               hash={ tx.address_to.hash }
               alias={ tx.address_to.alias }
               fontWeight="500"
               ml={ 2 }
-              truncation="constant"
             />
           </Address>
         </Flex>
         <Box mt={ 2 }>
           <Text as="span">Value xDAI </Text>
-          <Text as="span" color={ secondaryTextColor }>{ tx.amount.value.toFixed(8) }</Text>
+          <Text as="span" variant="secondary">{ tx.amount.value.toFixed(8) }</Text>
         </Box>
         <Box mt={ 2 } mb={ 3 }>
           <Text as="span">Fee xDAI </Text>
-          <Text as="span" color={ secondaryTextColor }>{ tx.fee.value.toFixed(8) }</Text>
+          <Text as="span" variant="secondary">{ tx.fee.value.toFixed(8) }</Text>
         </Box>
       </Box>
       <Modal isOpen={ isOpen } onClose={ onClose } size="full">

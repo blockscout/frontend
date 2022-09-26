@@ -1,7 +1,8 @@
 import { Link, Table, Thead, Tbody, Tr, Th, TableContainer, useBreakpointValue, Icon } from '@chakra-ui/react';
 import React from 'react';
 
-import rightArrowIcon from 'icons/arrows/right.svg';
+import type { txs as data } from 'data/txs';
+import rightArrowIcon from 'icons/arrows/east.svg';
 
 import TxsTableItem from './TxsTableItem';
 
@@ -10,8 +11,7 @@ const CURRENCY = 'xDAI';
 export type Sort = 'val-desc' | 'val-asc' | 'fee-desc' | 'fee-asc' | undefined;
 
 type Props = {
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-  txs: any;
+  txs: typeof data;
   sort: (field: 'val' | 'fee') => () => void;
   sorting: Sort;
 }
@@ -49,8 +49,7 @@ const TxsTable = ({ txs, sort, sorting }: Props) => {
           </Tr>
         </Thead>
         <Tbody>
-          { /* eslint-disable-next-line @typescript-eslint/no-explicit-any */ }
-          { txs.map((item: any) => (
+          { txs.map((item) => (
             <TxsTableItem
               key={ item.hash }
               tx={ item }

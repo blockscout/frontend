@@ -12,12 +12,16 @@ import {
   PopoverTrigger,
   PopoverContent,
   PopoverBody,
+  Portal,
   useBreakpointValue,
   useColorModeValue,
 } from '@chakra-ui/react';
 import React from 'react';
 
-import rightArrowIcon from 'icons/arrows/right.svg';
+import type ArrayElement from 'types/utils/ArrayElement';
+
+import type { txs } from 'data/txs';
+import rightArrowIcon from 'icons/arrows/east.svg';
 import dayjs from 'lib/date/dayjs';
 import useLink from 'lib/link/useLink';
 import Address from 'ui/shared/address/Address';
@@ -30,16 +34,15 @@ import TxAdditionalInfoButton from 'ui/txs/TxAdditionalInfoButton';
 
 import TxType from './TxType';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const TxsTableItem = ({ tx }: {tx: any}) => {
+const TxsTableItem = ({ tx }: {tx: ArrayElement<typeof txs>}) => {
   const link = useLink();
 
   const isLargeScreen = useBreakpointValue({ base: false, xl: true });
 
   const addressFrom = (
     <Address>
-      <Tooltip label={ tx.address_from.type } shouldWrapChildren>
-        <AddressIcon hash={ tx.address_from.hash }/>
+      <Tooltip label={ tx.address_from.type }>
+        <Box display="flex"><AddressIcon hash={ tx.address_from.hash }/></Box>
       </Tooltip>
       <AddressLink hash={ tx.address_from.hash } alias={ tx.address_from.alias } fontWeight="500" ml={ 2 }/>
     </Address>
@@ -47,8 +50,8 @@ const TxsTableItem = ({ tx }: {tx: any}) => {
 
   const addressTo = (
     <Address>
-      <Tooltip label={ tx.address_to.type } shouldWrapChildren>
-        <AddressIcon hash={ tx.address_to.hash }/>
+      <Tooltip label={ tx.address_to.type }>
+        <Box display="flex">        <AddressIcon hash={ tx.address_to.hash }/></Box>
       </Tooltip>
       <AddressLink hash={ tx.address_to.hash } alias={ tx.address_to.alias } fontWeight="500" ml={ 2 }/>
     </Address>
@@ -64,11 +67,13 @@ const TxsTableItem = ({ tx }: {tx: any}) => {
               <PopoverTrigger>
                 <TxAdditionalInfoButton isOpen={ isOpen }/>
               </PopoverTrigger>
-              <PopoverContent border="1px solid" borderColor={ infoBorderColor }>
-                <PopoverBody>
-                  <TxAdditionalInfo tx={ tx }/>
-                </PopoverBody>
-              </PopoverContent>
+              <Portal>
+                <PopoverContent border="1px solid" borderColor={ infoBorderColor }>
+                  <PopoverBody>
+                    <TxAdditionalInfo tx={ tx }/>
+                  </PopoverBody>
+                </PopoverContent>
+              </Portal>
             </>
           ) }
         </Popover>
@@ -101,7 +106,7 @@ const TxsTableItem = ({ tx }: {tx: any}) => {
         </TruncatedTextTooltip>
       </Td>
       <Td>
-        <Link href={ link('block', { id: tx.block_num }) }>{ tx.block_num }</Link>
+        <Link href={ link('block', { id: tx.block_num.toString() }) }>{ tx.block_num }</Link>
       </Td>
       { isLargeScreen ? (
         <>

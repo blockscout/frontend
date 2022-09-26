@@ -1,12 +1,14 @@
 import { Box, Heading, Text, Flex, Link, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
+import type ArrayElement from 'types/utils/ArrayElement';
+
+import type { txs } from 'data/txs';
 import useLink from 'lib/link/useLink';
 import Separator from 'ui/shared/Separator';
 import Utilization from 'ui/shared/Utilization';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const TxAdditionalInfo = ({ tx }: { tx: any }) => {
+const TxAdditionalInfo = ({ tx }: { tx: ArrayElement<typeof txs> }) => {
 
   const sectionBorderColor = useColorModeValue('gray.200', 'whiteAlpha.200');
   const sectionProps = {

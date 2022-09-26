@@ -19,7 +19,7 @@ const AddressTagsPage: NextPage<Props> = ({ pageParams }: Props) => {
   return (
     <>
       <Head><title>{ title }</title></Head>
-      <Transactions tab="validated"/>
+      <Transactions tab="txs_validated"/>
     </>
   );
 };
