@@ -5,7 +5,6 @@ import type { AppItemOverview } from 'types/client/apps';
 
 import { TEMPORARY_DEMO_APPS } from 'data/apps';
 import AppList from 'ui/apps/AppList';
-import AppModal from 'ui/apps/AppModal';
 import FilterInput from 'ui/shared/FilterInput';
 
 const defaultDisplayedApps = [ ...TEMPORARY_DEMO_APPS ]
@@ -13,7 +12,11 @@ const defaultDisplayedApps = [ ...TEMPORARY_DEMO_APPS ]
 
 const Apps = () => {
   const [ displayedApps, setDisplayedApps ] = useState<Array<AppItemOverview>>(defaultDisplayedApps);
-  const [ displayedAppId, setDisplayedAppId ] = useState<string | null>('component');
+  const [ displayedAppId, setDisplayedAppId ] = useState<string | null>(null);
+
+  const showAppInfo = useCallback((id: string) => {
+    setDisplayedAppId(id);
+  }, []);
 
   const filterApps = (q: string) => {
     const apps = displayedApps
@@ -30,10 +33,11 @@ const Apps = () => {
   return (
     <>
       <FilterInput onChange={ debounceFilterApps } marginBottom={{ base: '4', lg: '6' }} placeholder="Find app"/>
-      <AppList apps={ displayedApps }/>
-      <AppModal
-        id={ displayedAppId }
-        onClose={ clearDisplayedAppId }
+      <AppList
+        apps={ displayedApps }
+        onAppClick={ showAppInfo }
+        displayedAppId={ displayedAppId }
+        onModalClose={ clearDisplayedAppId }
       />
     </>
   );
