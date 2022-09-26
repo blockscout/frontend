@@ -43,7 +43,7 @@ const Token = ({ symbol, className }: Props) => {
       <Link href={ url } target="_blank" ml={ 1 }>
         { token.fullName }
       </Link>
-      <Text ml={ 1 }>({ token.symbol })</Text>
+      <Text ml={ 1 } variant="secondary">({ token.symbol })</Text>
     </Center>
   );
 };

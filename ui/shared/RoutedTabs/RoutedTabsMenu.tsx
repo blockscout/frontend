@@ -37,7 +37,7 @@ const RoutedTabsMenu = ({ tabs, tabsCut, isActive, styles, onItemClick, buttonRe
     <Popover isLazy placement="bottom-end" key="more" isOpen={ isOpen } onClose={ onClose } onOpen={ onOpen } closeDelay={ 0 }>
       <PopoverTrigger>
         <Button
-          variant="subtle"
+          variant="ghost"
           isActive={ isOpen || isActive }
           ref={ buttonRef }
           { ...styles }
@@ -50,7 +50,7 @@ const RoutedTabsMenu = ({ tabs, tabsCut, isActive, styles, onItemClick, buttonRe
           { tabs.slice(tabsCut).map((tab, index) => (
             <Button
               key={ tab.routeName }
-              variant="subtle"
+              variant="ghost"
               onClick={ handleItemClick }
               isActive={ activeTab.routeName === tab.routeName }
               justifyContent="left"

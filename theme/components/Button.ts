@@ -47,7 +47,7 @@ const variantOutline = defineStyle((props) => {
 
   const isGrayTheme = c === 'gray' || c === 'gray-dark';
   const color = isGrayTheme ? mode('blackAlpha.800', 'whiteAlpha.800')(props) : mode(`${ c }.600`, `${ c }.300`)(props);
-  const borderColor = isGrayTheme ? mode('gray.200', 'gray.600')(props) : mode(`${ c }.600`, `${ c }.300`)(props);
+  const borderColor = isGrayTheme ? mode('gray.300', 'gray.600')(props) : mode(`${ c }.600`, `${ c }.300`)(props);
   const activeBg = isGrayTheme ? mode('blue.50', 'gray.600')(props) : mode(`${ c }.50`, 'gray.600')(props);
   const activeColor = (() => {
     if (c === 'gray') {
@@ -106,9 +106,8 @@ const variantSimple = defineStyle((props) => {
   };
 });
 
-const variantSubtle = defineStyle((props) => {
+const variantGhost = defineStyle((props) => {
   const { colorScheme: c } = props;
-
   const activeBg = mode(`${ c }.50`, 'gray.800')(props);
 
   return {
@@ -128,10 +127,33 @@ const variantSubtle = defineStyle((props) => {
   };
 });
 
+const variantSubtle = defineStyle((props) => {
+  const { colorScheme: c } = props;
+
+  if (c === 'gray') {
+    return {
+      bg: mode('blackAlpha.200', 'whiteAlpha.200')(props),
+      color: mode('blackAlpha.800', 'whiteAlpha.800')(props),
+      _hover: {
+        color: 'blue.400',
+      },
+    };
+  }
+
+  return {
+    bg: `${ c }.100`,
+    color: `${ c }.600`,
+    _hover: {
+      color: 'blue.400',
+    },
+  };
+});
+
 const variants = {
   solid: variantSolid,
   outline: variantOutline,
   simple: variantSimple,
+  ghost: variantGhost,
   subtle: variantSubtle,
 };
 

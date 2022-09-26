@@ -52,7 +52,7 @@ const RoutedTabs = ({ tabs, defaultActiveTab }: Props) => {
   return (
     <Tabs variant="soft-rounded" colorScheme="blue" isLazy onChange={ handleTabChange } index={ activeTab }>
       <TabList
-        marginBottom={{ base: 6, lg: 8 }}
+        marginBottom={{ base: 6, lg: 12 }}
         flexWrap="nowrap"
         whiteSpace="nowrap"
         ref={ listRef }

@@ -88,7 +88,7 @@ const NavigationDesktop = () => {
         transform={ isCollapsed ? 'rotate(180deg)' : 'rotate(0)' }
         { ...getDefaultTransitionProps({ transitionProperty: 'transform, left' }) }
         transformOrigin="center"
-        position="fixed"
+        position="absolute"
         top="104px"
         left={ isCollapsed ? '80px' : '216px' }
         cursor="pointer"

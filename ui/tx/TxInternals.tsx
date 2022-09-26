@@ -1,15 +1,17 @@
-import { Box, Flex, Table, Thead, Tbody, Tr, Th, TableContainer } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TxInternalsType } from 'types/api/tx';
 import type ArrayElement from 'types/utils/ArrayElement';
 
 import { data } from 'data/txInternal';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import { apos } from 'lib/html-entities';
 import EmptySearchResult from 'ui/apps/EmptySearchResult';
 import FilterInput from 'ui/shared/FilterInput';
 import TxInternalsFilter from 'ui/tx/internals/TxInternalsFilter';
-import TxInternalsTableItem from 'ui/tx/internals/TxInternalsTableItem';
+import TxInternalsList from 'ui/tx/internals/TxInternalsList';
+import TxInternalsTable from 'ui/tx/internals/TxInternalsTable';
 
 const searchFn = (searchTerm: string) => (item: ArrayElement<typeof data>): boolean => {
   const formattedSearchTerm = searchTerm.toLowerCase();
@@ -21,6 +23,7 @@ const searchFn = (searchTerm: string) => (item: ArrayElement<typeof data>): bool
 const TxInternals = () => {
   const [ filters, setFilters ] = React.useState<Array<TxInternalsType>>([]);
   const [ searchTerm, setSearchTerm ] = React.useState<string>('');
+  const isMobile = useIsMobile();
 
   const handleFilterChange = React.useCallback((nextValue: Array<TxInternalsType>) => {
     setFilters(nextValue);
@@ -35,24 +38,7 @@ const TxInternals = () => {
       return <EmptySearchResult text={ `Couldn${ apos }t find any transaction that matches your query.` }/>;
     }
 
-    return (
-      <TableContainer width="100%">
-        <Table variant="simple" minWidth="950px" size="sm">
-          <Thead>
-            <Tr>
-              <Th width="20%">Type</Th>
-              <Th width="calc(20% + 40px)" pr="0">From</Th>
-              <Th width="calc(20% - 40px)" pl="0">To</Th>
-              <Th width="20%" isNumeric>Value</Th>
-              <Th width="20%" isNumeric>Gas limit</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            { filteredData.map((item) => <TxInternalsTableItem key={ item.id } { ...item }/>) }
-          </Tbody>
-        </Table>
-      </TableContainer>
-    );
+    return isMobile ? <TxInternalsList data={ filteredData }/> : <TxInternalsTable data={ filteredData }/>;
   })();
 
   return (

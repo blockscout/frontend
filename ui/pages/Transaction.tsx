@@ -1,7 +1,11 @@
+import { Flex, Link, Icon } from '@chakra-ui/react';
 import React from 'react';
 
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
+import eastArrowIcon from 'icons/arrows/east.svg';
+import useLink from 'lib/link/useLink';
+import ExternalLink from 'ui/shared/ExternalLink';
 import Page from 'ui/shared/Page';
 import PageHeader from 'ui/shared/PageHeader';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
@@ -24,10 +28,25 @@ export interface Props {
 }
 
 const TransactionPageContent = ({ tab }: Props) => {
+  const link = useLink();
+
   return (
     <Page>
+      { /* TODO should be shown only when navigating from txs list */ }
+      <Link mb={ 6 } display="inline-flex" href={ link('txs') }>
+        <Icon as={ eastArrowIcon } boxSize={ 6 } mr={ 2 } transform="rotate(180deg)"/>
+        Transactions
+      </Link>
       <PageHeader text="Transaction details"/>
-      <RoutedTabs tabs={ TABS } defaultActiveTab={ tab }/>
+      <Flex marginLeft="auto" alignItems="center" flexWrap="wrap" columnGap={ 6 } rowGap={ 3 } mb={ 6 }>
+        <ExternalLink title="Open in Tenderly" href="#"/>
+        <ExternalLink title="Open in Blockchair" href="#"/>
+        <ExternalLink title="Open in Etherscan" href="#"/>
+      </Flex>
+      <RoutedTabs
+        tabs={ TABS }
+        defaultActiveTab={ tab }
+      />
     </Page>
   );
 };

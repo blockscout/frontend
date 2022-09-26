@@ -13,7 +13,7 @@ interface Props extends HTMLChakraProps<'div'> {
 const DetailsInfoItem = ({ title, hint, children, ...styles }: Props) => {
   return (
     <>
-      <GridItem py={ 2 } lineHeight={ 5 } { ...styles } whiteSpace="nowrap">
+      <GridItem py={{ base: 1, lg: 2 }} lineHeight={ 5 } { ...styles } whiteSpace="nowrap" _notFirst={{ mt: { base: 3, lg: 0 } }}>
         <Flex columnGap={ 2 } alignItems="center">
           <Tooltip
             label={ hint }
@@ -24,10 +24,20 @@ const DetailsInfoItem = ({ title, hint, children, ...styles }: Props) => {
               <Icon as={ infoIcon } boxSize={ 5 }/>
             </Box>
           </Tooltip>
-          <Text fontWeight={ 500 }>{ title }</Text>
+          <Text fontWeight={{ base: 700, lg: 500 }}>{ title }</Text>
         </Flex>
       </GridItem>
-      <GridItem display="flex" alignItems="center" py={ 2 } lineHeight={ 5 } whiteSpace="nowrap" { ...styles }>
+      <GridItem
+        display="flex"
+        alignItems="center"
+        flexWrap="wrap"
+        rowGap={ 3 }
+        pl={{ base: 7, lg: 0 }}
+        py={{ base: 1, lg: 2 }}
+        lineHeight={ 5 }
+        whiteSpace="nowrap"
+        { ...styles }
+      >
         { children }
       </GridItem>
     </>

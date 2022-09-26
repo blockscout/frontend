@@ -51,6 +51,8 @@ const Filters = () => {
           paddingInlineStart="38px"
           placeholder="Search by addresses, hash, method..."
           ml="1px"
+          borderWidth="2px"
+          textOverflow="ellipsis"
           onChange={ handleChange }
           borderColor={ inputBorderColor }
           value={ value }
