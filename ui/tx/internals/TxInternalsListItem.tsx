@@ -5,7 +5,7 @@ import React from 'react';
 import type ArrayElement from 'types/utils/ArrayElement';
 
 import type { data } from 'data/txInternal';
-import rightArrowIcon from 'icons/arrows/right.svg';
+import eastArrowIcon from 'icons/arrows/east.svg';
 import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
@@ -26,7 +26,7 @@ const TxInternalsListItem = ({ type, status, from, to, value, gasLimit }: Props)
           <AddressIcon hash={ from }/>
           <AddressLink ml={ 2 } fontWeight="500" hash={ from }/>
         </Address>
-        <Icon as={ rightArrowIcon } boxSize={ 6 } color="gray.500"/>
+        <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500"/>
         <Address width="calc((100% - 48px) / 2)">
           <AddressIcon hash={ to }/>
           <AddressLink ml={ 2 } fontWeight="500" hash={ to }/>

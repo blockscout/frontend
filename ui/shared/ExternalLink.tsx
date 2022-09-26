@@ -1,7 +1,7 @@
 import { Link, Icon } from '@chakra-ui/react';
 import React from 'react';
 
-import externalLinkIcon from 'icons/external-link.svg';
+import arrowIcon from 'icons/arrows/north-east.svg';
 
 interface Props {
   href: string;
@@ -12,7 +12,7 @@ const ExternalLink = ({ href, title }: Props) => {
   return (
     <Link fontSize="sm" display="inline-flex" alignItems="center" target="_blank" href={ href }>
       { title }
-      <Icon as={ externalLinkIcon }/>
+      <Icon as={ arrowIcon } boxSize={ 4 }/>
     </Link>
   );
 };

@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
-import leftArrowIcon from 'icons/arrows/left.svg';
+import eastArrowIcon from 'icons/arrows/east.svg';
 import useLink from 'lib/link/useLink';
 import ExternalLink from 'ui/shared/ExternalLink';
 import Page from 'ui/shared/Page';
@@ -34,7 +34,7 @@ const TransactionPageContent = ({ tab }: Props) => {
     <Page>
       { /* TODO should be shown only when navigating from txs list */ }
       <Link mb={ 6 } display="inline-flex" href={ link('txs') }>
-        <Icon as={ leftArrowIcon } boxSize={ 6 } mr={ 2 }/>
+        <Icon as={ eastArrowIcon } boxSize={ 6 } mr={ 2 } transform="rotate(180deg)"/>
         Transactions
       </Link>
       <PageHeader text="Transaction details"/>

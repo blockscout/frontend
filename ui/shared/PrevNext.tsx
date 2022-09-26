@@ -1,8 +1,7 @@
 import { Box, Icon, IconButton, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import leftArrow from 'icons/arrows/left-mini.svg';
-import rightArrow from 'icons/arrows/right-mini.svg';
+import eastArrow from 'icons/arrows/east-mini.svg';
 
 interface Props {
   className?: string;
@@ -13,7 +12,7 @@ const PrevNext = ({ className }: Props) => {
     <Box className={ className }>
       <IconButton
         aria-label="prev"
-        icon={ <Icon as={ leftArrow } boxSize={ 6 }/> }
+        icon={ <Icon as={ eastArrow } boxSize={ 6 }/> }
         h={ 6 }
         borderRadius="sm"
         variant="subtle"
@@ -21,7 +20,7 @@ const PrevNext = ({ className }: Props) => {
       />
       <IconButton
         aria-label="next"
-        icon={ <Icon as={ rightArrow }boxSize={ 6 }/> }
+        icon={ <Icon as={ eastArrow }boxSize={ 6 } transform="rotate(180deg)"/> }
         h={ 6 }
         borderRadius="sm"
         variant="subtle"
