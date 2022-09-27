@@ -1,5 +1,7 @@
-import { Link, Table, Thead, Tbody, Tr, Th, TableContainer, useBreakpointValue, Icon } from '@chakra-ui/react';
+import { Link, Table, Thead, Tbody, Tr, Th, TableContainer, Icon } from '@chakra-ui/react';
 import React from 'react';
+
+import type { Sort } from 'types/client/txs-sort';
 
 import type { txs as data } from 'data/txs';
 import rightArrowIcon from 'icons/arrows/east.svg';
@@ -8,8 +10,6 @@ import TxsTableItem from './TxsTableItem';
 
 const CURRENCY = 'xDAI';
 
-export type Sort = 'val-desc' | 'val-asc' | 'fee-desc' | 'fee-asc' | undefined;
-
 type Props = {
   txs: typeof data;
   sort: (field: 'val' | 'fee') => () => void;
@@ -17,8 +17,6 @@ type Props = {
 }
 
 const TxsTable = ({ txs, sort, sorting }: Props) => {
-  const isLargeScreen = useBreakpointValue({ base: false, xl: true });
-
   return (
     <TableContainer width="100%" mt={ 6 }>
       <Table variant="simple" minWidth="810px" size="xs">
@@ -29,9 +27,9 @@ const TxsTable = ({ txs, sort, sorting }: Props) => {
             <Th width="18%">Txn hash</Th>
             <Th width="15%">Method</Th>
             <Th width="11%">Block</Th>
-            <Th width={ isLargeScreen ? '128px' : '58px' }>From</Th>
-            <Th width={ isLargeScreen ? '36px' : '0' }></Th>
-            <Th width={ isLargeScreen ? '128px' : '58px' }>To</Th>
+            <Th width={{ xl: '128px', base: '58px' }}>From</Th>
+            <Th width={{ xl: '36px', base: '0' }}></Th>
+            <Th width={{ xl: '128px', base: '58px' }}>To</Th>
             <Th width="18%" isNumeric>
               <Link onClick={ sort('val') } display="flex" justifyContent="end">
                 { sorting === 'val-asc' && <Icon boxSize={ 5 } as={ rightArrowIcon } transform="rotate(-90deg)"/> }

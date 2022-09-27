@@ -5,11 +5,10 @@ import type ArrayElement from 'types/utils/ArrayElement';
 
 import type { txs } from 'data/txs';
 import useLink from 'lib/link/useLink';
-import Separator from 'ui/shared/Separator';
+import TextSeparator from 'ui/shared/TextSeparator';
 import Utilization from 'ui/shared/Utilization';
 
 const TxAdditionalInfo = ({ tx }: { tx: ArrayElement<typeof txs> }) => {
-
   const sectionBorderColor = useColorModeValue('gray.200', 'whiteAlpha.200');
   const sectionProps = {
     borderBottom: '1px solid',
@@ -39,7 +38,7 @@ const TxAdditionalInfo = ({ tx }: { tx: ArrayElement<typeof txs> }) => {
         <Text { ...sectionTitleProps }>Gas limit & usage by transaction</Text>
         <Flex>
           <Text>{ tx.gas_used.toLocaleString('en') }</Text>
-          <Separator/>
+          <TextSeparator/>
           <Text>{ tx.gas_limit.toLocaleString('en') }</Text>
           <Utilization ml={ 4 } value={ tx.gas_used / tx.gas_limit }/>
         </Flex>

@@ -1,6 +1,8 @@
 import { Box, HStack } from '@chakra-ui/react';
 import React, { useCallback, useEffect, useState } from 'react';
 
+import type { Sort } from 'types/client/txs-sort';
+
 import { txs } from 'data/txs';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import FilterButton from 'ui/shared/FilterButton';
@@ -10,8 +12,6 @@ import SortButton from 'ui/shared/SortButton';
 
 import TxsListItem from './TxsListItem';
 import TxsTable from './TxsTable';
-
-type Sort = 'val-desc' | 'val-asc' | 'fee-desc' | 'fee-asc' | undefined;
 
 type Props = {
   isPending?: boolean;

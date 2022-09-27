@@ -31,11 +31,12 @@ const TxsListItem = ({ tx }: {tx: ArrayElement<typeof txs>}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const iconColor = useColorModeValue('blue.600', 'blue.300');
+  const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
   const link = useLink();
 
   return (
     <>
-      <Box width="100%" borderBottom="1px solid" borderColor="blackAlpha.200" _first={{ borderTop: '1px solid', borderColor: 'blackAlpha.200' }}>
+      <Box width="100%" borderBottom="1px solid" borderColor={ borderColor } _first={{ borderTop: '1px solid', borderColor: { borderColor } }}>
         <Flex justifyContent="space-between" mt={ 4 }>
           <HStack>
             <TxType type={ tx.txType }/>
