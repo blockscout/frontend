@@ -5,7 +5,7 @@ import type { UserInfo } from 'types/api/account';
 
 import useNavItems from 'lib/hooks/useNavItems';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
-import NavLink from 'ui/blocks/navigation/NavLink';
+import NavLink from 'ui/snippets/navigation/NavLink';
 
 type Props = UserInfo;
 

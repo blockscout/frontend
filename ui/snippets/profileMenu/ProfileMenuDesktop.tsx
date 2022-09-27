@@ -2,8 +2,8 @@ import { Popover, PopoverContent, PopoverBody, PopoverTrigger, Button } from '@c
 import React from 'react';
 
 import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
-import ProfileMenuContent from 'ui/blocks/profileMenu/ProfileMenuContent';
 import UserAvatar from 'ui/shared/UserAvatar';
+import ProfileMenuContent from 'ui/snippets/profileMenu/ProfileMenuContent';
 
 const ProfileMenuDesktop = () => {
   const { data } = useFetchProfileInfo();

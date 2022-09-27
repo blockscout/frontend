@@ -6,8 +6,8 @@ import * as cookies from 'lib/cookies';
 import useNavItems from 'lib/hooks/useNavItems';
 import useNetwork from 'lib/hooks/useNetwork';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
-import NetworkLogo from 'ui/blocks/networkMenu/NetworkLogo';
-import NetworkMenu from 'ui/blocks/networkMenu/NetworkMenu';
+import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
+import NetworkMenu from 'ui/snippets/networkMenu/NetworkMenu';
 
 import NavFooter from './NavFooter';
 import NavLink from './NavLink';
