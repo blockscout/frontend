@@ -10,7 +10,7 @@ import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
-import TxStatus from 'ui/tx/TxStatus';
+import TxStatus from 'ui/shared/TxStatus';
 
 type Props = ArrayElement<typeof data>;
 
@@ -23,13 +23,13 @@ const TxInternalsListItem = ({ type, status, from, to, value, gasLimit }: Props)
       </Flex>
       <Box w="100%" display="flex" columnGap={ 3 }>
         <Address width="calc((100% - 48px) / 2)">
-          <AddressIcon hash={ from }/>
-          <AddressLink ml={ 2 } fontWeight="500" hash={ from }/>
+          <AddressIcon hash={ from.hash }/>
+          <AddressLink ml={ 2 } fontWeight="500" hash={ from.hash }/>
         </Address>
         <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500"/>
         <Address width="calc((100% - 48px) / 2)">
-          <AddressIcon hash={ to }/>
-          <AddressLink ml={ 2 } fontWeight="500" hash={ to }/>
+          <AddressIcon hash={ to.hash }/>
+          <AddressLink ml={ 2 } fontWeight="500" hash={ to.hash }/>
         </Address>
       </Box>
       <HStack spacing={ 3 }>

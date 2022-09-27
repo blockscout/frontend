@@ -16,8 +16,8 @@ import TxInternalsTable from 'ui/tx/internals/TxInternalsTable';
 const searchFn = (searchTerm: string) => (item: ArrayElement<typeof data>): boolean => {
   const formattedSearchTerm = searchTerm.toLowerCase();
   return item.type.toLowerCase().includes(formattedSearchTerm) ||
-    item.from.toLowerCase().includes(formattedSearchTerm) ||
-    item.to.toLowerCase().includes(formattedSearchTerm);
+    item.from.hash.toLowerCase().includes(formattedSearchTerm) ||
+    item.to.hash.toLowerCase().includes(formattedSearchTerm);
 };
 
 const TxInternals = () => {
