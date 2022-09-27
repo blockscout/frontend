@@ -18,11 +18,11 @@ import PrevNext from 'ui/shared/PrevNext';
 import RawInputData from 'ui/shared/RawInputData';
 import TextSeparator from 'ui/shared/TextSeparator';
 import TokenSnippet from 'ui/shared/TokenSnippet';
+import type { Props as TxStatusProps } from 'ui/shared/TxStatus';
+import TxStatus from 'ui/shared/TxStatus';
 import Utilization from 'ui/shared/Utilization';
 import TokenTransfer from 'ui/tx/TokenTransfer';
 import TxDecodedInputData from 'ui/tx/TxDecodedInputData';
-import type { Props as TxStatusProps } from 'ui/tx/TxStatus';
-import TxStatus from 'ui/tx/TxStatus';
 
 const TxDetails = () => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
@@ -82,9 +82,9 @@ const TxDetails = () => {
         hint="Address (external or contract) sending the transaction."
       >
         <Address>
-          <AddressIcon hash={ tx.address_from }/>
-          <AddressLink ml={ 2 } hash={ tx.address_from }/>
-          <CopyToClipboard text={ tx.address_from }/>
+          <AddressIcon hash={ tx.address_from.hash }/>
+          <AddressLink ml={ 2 } hash={ tx.address_from.hash }/>
+          <CopyToClipboard text={ tx.address_from.hash }/>
         </Address>
       </DetailsInfoItem>
       <DetailsInfoItem
@@ -93,9 +93,9 @@ const TxDetails = () => {
         flexWrap={{ base: 'wrap', lg: 'nowrap' }}
       >
         <Address mr={ 3 }>
-          <AddressIcon hash={ tx.address_to }/>
-          <AddressLink ml={ 2 } hash={ tx.address_to }/>
-          <CopyToClipboard text={ tx.address_to }/>
+          <AddressIcon hash={ tx.address_to.hash }/>
+          <AddressLink ml={ 2 } hash={ tx.address_to.hash }/>
+          <CopyToClipboard text={ tx.address_to.hash }/>
         </Address>
         <Tag colorScheme="orange" variant="solid" flexShrink={ 0 }>SANA</Tag>
         <Tooltip label="Contract execution completed">

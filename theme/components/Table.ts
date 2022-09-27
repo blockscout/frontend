@@ -53,6 +53,19 @@ const sizes = {
       fontWeight: 500,
     },
   }),
+  xs: definePartsStyle({
+    th: {
+      px: '6px',
+      py: '10px',
+      fontSize: 'sm',
+    },
+    td: {
+      px: '6px',
+      py: 6,
+      fontSize: 'sm',
+      fontWeight: 500,
+    },
+  }),
 };
 
 const variants = {
