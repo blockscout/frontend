@@ -4,9 +4,9 @@ export type NetworkGroup = 'mainnets' | 'testnets' | 'other';
 
 export interface Network {
   name: string;
-  // https://chainlist.org/
-  chainId?: number;
-  currency?: string;
+  chainId: number; // https://chainlist.org/
+  currency: string;
+  nativeTokenAddress: string;
   shortName?: string;
   // basePath = /<type>/<subType>, e.g. /xdai/mainnet
   type: string;

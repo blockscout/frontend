@@ -108,6 +108,7 @@ export default NETWORKS;
 //     chainId: 99,
 //     currency: 'POA',
 //     isAccountSupported: true,
+//     nativeTokenAddress: '0x029a799563238d0e75e20be2f4bda0ea68d00172',
 //   },
 //   {
 //     name: 'RSK',
@@ -151,5 +152,12 @@ export default NETWORKS;
 //     group: 'other',
 //     chainId: 22,
 //     currency: 'LYX',
+//   },
+//   {
+//     name: 'Astar',
+//     type: 'astar',
+//     group: 'other',
+//     chainId: 22,
+//     currency: 'ASTR',
 //   },
 // ];
