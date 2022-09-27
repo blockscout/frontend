@@ -4,6 +4,7 @@ import React from 'react';
 import type ArrayElement from 'types/utils/ArrayElement';
 
 import type { data } from 'data/txState';
+import useNetwork from 'lib/hooks/useNetwork';
 import { nbsp } from 'lib/html-entities';
 import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import Address from 'ui/shared/address/Address';
@@ -16,6 +17,8 @@ import TxStateStorageItem from './TxStateStorageItem';
 type Props = ArrayElement<typeof data>;
 
 const TxStateListItem = ({ storage, address, miner, after, before, diff }: Props) => {
+  const selectedNetwork = useNetwork();
+
   const hasStorageData = Boolean(storage?.length);
 
   return (
@@ -59,20 +62,20 @@ const TxStateListItem = ({ storage, address, miner, after, before, diff }: Props
             <Flex rowGap={ 2 } flexDir="column" fontSize="sm">
               <Text fontWeight={ 600 }>Before</Text>
               <Flex>
-                <Text>{ before.balance } ETH</Text>
+                <Text>{ before.balance } { selectedNetwork?.currency }</Text>
                 <TextSeparator/>
                 { typeof before.nonce !== 'undefined' && <Text>Nonce:{ nbsp }{ before.nonce }</Text> }
               </Flex>
             </Flex>
             <Flex rowGap={ 2 } flexDir="column" fontSize="sm">
               <Text fontWeight={ 600 }>After</Text>
-              <Text>{ after.balance } ETH</Text>
+              <Text>{ after.balance } { selectedNetwork?.currency }</Text>
               { typeof after.nonce !== 'undefined' && <Text>Nonce:{ nbsp }{ after.nonce }</Text> }
             </Flex>
             <Flex rowGap={ 2 } flexDir="column" fontSize="sm">
               <Text fontWeight={ 600 }>State difference</Text>
               <Stat>
-                { diff } ETH
+                { diff } { selectedNetwork?.currency }
                 <StatArrow ml={ 2 } type={ Number(diff) > 0 ? 'increase' : 'decrease' }/>
               </Stat>
             </Flex>

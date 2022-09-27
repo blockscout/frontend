@@ -8,6 +8,7 @@ import flameIcon from 'icons/flame.svg';
 import errorIcon from 'icons/status/error.svg';
 import successIcon from 'icons/status/success.svg';
 import dayjs from 'lib/date/dayjs';
+import useNetwork from 'lib/hooks/useNetwork';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -25,6 +26,8 @@ import TokenTransfer from 'ui/tx/TokenTransfer';
 import TxDecodedInputData from 'ui/tx/TxDecodedInputData';
 
 const TxDetails = () => {
+  const selectedNetwork = useNetwork();
+
   const [ isExpanded, setIsExpanded ] = React.useState(false);
 
   const handleCutClick = React.useCallback(() => {
@@ -123,21 +126,21 @@ const TxDetails = () => {
         title="Value"
         hint="Value sent in the native token (and USD) if applicable."
       >
-        <Text>{ tx.amount.value } Ether</Text>
+        <Text>{ tx.amount.value } { selectedNetwork?.currency }</Text>
         <Text variant="secondary" ml={ 1 }>(${ tx.amount.value_usd.toFixed(2) })</Text>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Transaction fee"
         hint="Total transaction fee."
       >
-        <Text>{ tx.fee.value } Ether</Text>
+        <Text>{ tx.fee.value } { selectedNetwork?.currency }</Text>
         <Text variant="secondary" ml={ 1 }>(${ tx.fee.value_usd.toFixed(2) })</Text>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Gas price"
         hint="Price per unit of gas specified by the sender. Higher gas prices can prioritize transaction inclusion during times of high usage."
       >
-        <Text mr={ 1 }>{ tx.gas_price.toLocaleString('en', { minimumFractionDigits: 18 }) } Ether</Text>
+        <Text mr={ 1 }>{ tx.gas_price.toLocaleString('en', { minimumFractionDigits: 18 }) } { selectedNetwork?.currency }</Text>
         <Text variant="secondary">({ (tx.gas_price * Math.pow(10, 18)).toFixed(0) } Gwei)</Text>
       </DetailsInfoItem>
       <DetailsInfoItem
@@ -171,10 +174,10 @@ const TxDetails = () => {
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Burnt fees"
-        hint="Amount of ETH burned for this transaction. Equals Block Base Fee per Gas * Gas Used."
+        hint={ `Amount of ${ selectedNetwork?.currency } burned for this transaction. Equals Block Base Fee per Gas * Gas Used.` }
       >
         <Icon as={ flameIcon } boxSize={ 5 } color="gray.500"/>
-        <Text ml={ 1 } mr={ 1 }>{ tx.burnt_fees.value.toLocaleString('en', { minimumFractionDigits: 18 }) } Ether</Text>
+        <Text ml={ 1 } mr={ 1 }>{ tx.burnt_fees.value.toLocaleString('en', { minimumFractionDigits: 18 }) } { selectedNetwork?.currency }</Text>
         <Text variant="secondary">(${ tx.burnt_fees.value_usd.toFixed(2) })</Text>
       </DetailsInfoItem>
       <GridItem colSpan={{ base: undefined, lg: 2 }}>
