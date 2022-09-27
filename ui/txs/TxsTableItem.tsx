@@ -106,7 +106,7 @@ const TxsTableItem = ({ tx }: {tx: ArrayElement<typeof txs>}) => {
         </TruncatedTextTooltip>
       </Td>
       <Td>
-        <Link href={ link('block', { id: tx.block_num.toString() }) }>{ tx.block_num }</Link>
+        <Link href={ link('block_index', { id: tx.block_num.toString() }) }>{ tx.block_num }</Link>
       </Td>
       { isLargeScreen ? (
         <>
