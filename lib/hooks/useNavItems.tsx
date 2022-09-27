@@ -4,7 +4,7 @@ import abiIcon from 'icons/ABI.svg';
 import apiKeysIcon from 'icons/API.svg';
 import appsIcon from 'icons/apps.svg';
 import blocksIcon from 'icons/block.svg';
-import gearIcon from 'icons/gear.svg';
+// import gearIcon from 'icons/gear.svg';
 import privateTagIcon from 'icons/privattags.svg';
 import profileIcon from 'icons/profile.svg';
 import publicTagIcon from 'icons/publictags.svg';
@@ -21,10 +21,13 @@ export default function useNavItems() {
   return React.useMemo(() => {
     const mainNavItems = [
       { text: 'Blocks', url: link('blocks'), icon: blocksIcon, isActive: currentRoute === 'blocks' },
-      { text: 'Transactions', url: link('txs'), icon: transactionsIcon, isActive: currentRoute.startsWith('tx') },
+      { text: 'Transactions', url: link('txs_validated'), icon: transactionsIcon, isActive: currentRoute.startsWith('tx') },
       { text: 'Tokens', url: link('tokens'), icon: tokensIcon, isActive: currentRoute === 'tokens' },
       { text: 'Apps', url: link('apps'), icon: appsIcon, isActive: currentRoute === 'apps' },
-      { text: 'Other', url: link('other'), icon: gearIcon, isActive: currentRoute === 'other' },
+      // there should be custom site sections like Stats, Faucet, More, etc but never an 'other'
+      // examples https://explorer-edgenet.polygon.technology/ and https://explorer.celo.org/
+      // at this stage custom menu items is under development, we will implement it later
+      // { text: 'Other', url: link('other'), icon: gearIcon, isActive: currentRoute === 'other' },
     ];
 
     const accountNavItems = [

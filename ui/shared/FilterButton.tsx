@@ -22,11 +22,13 @@ const FilterButton = ({ isActive, appliedFiltersNum, onClick, isCollapsed }: Pro
       leftIcon={ isCollapsed ? undefined : FilterIcon }
       rightIcon={ appliedFiltersNum ? <Circle bg={ badgeBgColor } size={ 5 } color={ badgeColor }>{ appliedFiltersNum }</Circle> : undefined }
       size="sm"
+      fontWeight="500"
       variant="outline"
       colorScheme="gray-dark"
       onClick={ onClick }
       isActive={ isActive }
       px={ 1.5 }
+      flexShrink={ 0 }
     >
       { isCollapsed ? FilterIcon : 'Filter' }
     </Button>

@@ -1,4 +1,4 @@
-import { Link, chakra, shouldForwardProp } from '@chakra-ui/react';
+import { Link, chakra, shouldForwardProp, Tooltip, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useLink from 'lib/link/useLink';
@@ -7,13 +7,14 @@ import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 interface Props {
   type?: 'address' | 'transaction' | 'token';
+  alias?: string;
   className?: string;
   hash: string;
   truncation?: 'constant' | 'dynamic'| 'none';
   fontWeight?: string;
 }
 
-const AddressLink = ({ type, className, truncation = 'dynamic', hash, fontWeight }: Props) => {
+const AddressLink = ({ alias, type, className, truncation = 'dynamic', hash, fontWeight }: Props) => {
   const link = useLink();
   let url;
   if (type === 'transaction') {
@@ -25,6 +26,13 @@ const AddressLink = ({ type, className, truncation = 'dynamic', hash, fontWeight
   }
 
   const content = (() => {
+    if (alias) {
+      return (
+        <Tooltip label={ hash }>
+          <Box overflow="hidden" textOverflow="ellipsis">{ alias }</Box>
+        </Tooltip>
+      );
+    }
     switch (truncation) {
       case 'constant':
         return <HashStringShorten hash={ hash }/>;

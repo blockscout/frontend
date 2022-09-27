@@ -6,9 +6,9 @@ import React from 'react';
 import * as cookies from 'lib/cookies';
 import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import Header from 'ui/blocks/header/Header';
-import NavigationDesktop from 'ui/blocks/navigation/NavigationDesktop';
 import PageContent from 'ui/shared/Page/PageContent';
+import Header from 'ui/snippets/header/Header';
+import NavigationDesktop from 'ui/snippets/navigation/NavigationDesktop';
 
 interface Props {
   children: React.ReactNode;

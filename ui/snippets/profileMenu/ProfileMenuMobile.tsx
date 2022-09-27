@@ -2,9 +2,9 @@ import { Flex, Box, Drawer, DrawerOverlay, DrawerContent, DrawerBody, useDisclos
 import React from 'react';
 
 import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
-import ColorModeToggler from 'ui/blocks/header/ColorModeToggler';
-import ProfileMenuContent from 'ui/blocks/profileMenu/ProfileMenuContent';
 import UserAvatar from 'ui/shared/UserAvatar';
+import ColorModeToggler from 'ui/snippets/header/ColorModeToggler';
+import ProfileMenuContent from 'ui/snippets/profileMenu/ProfileMenuContent';
 
 const ProfileMenuMobile = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();

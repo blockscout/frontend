@@ -1,7 +1,8 @@
-import { SearchIcon } from '@chakra-ui/icons';
-import { Input, InputGroup, InputLeftElement, useColorModeValue, chakra } from '@chakra-ui/react';
+import { Input, InputGroup, InputLeftElement, Icon, useColorModeValue, chakra } from '@chakra-ui/react';
 import type { ChangeEvent } from 'react';
 import React, { useCallback, useState } from 'react';
+
+import searchIcon from 'icons/search.svg';
 
 type Props = {
   onChange: (searchTerm: string) => void;
@@ -28,7 +29,7 @@ const FilterInput = ({ onChange, className, size = 'sm', placeholder }: Props) =
       <InputLeftElement
         pointerEvents="none"
       >
-        <SearchIcon color={ useColorModeValue('blackAlpha.600', 'whiteAlpha.600') }/>
+        <Icon as={ searchIcon } color={ useColorModeValue('blackAlpha.600', 'whiteAlpha.600') }/>
       </InputLeftElement>
 
       <Input
@@ -36,6 +37,8 @@ const FilterInput = ({ onChange, className, size = 'sm', placeholder }: Props) =
         value={ filterQuery }
         onChange={ handleFilterQueryChange }
         placeholder={ placeholder }
+        borderWidth="2px"
+        textOverflow="ellipsis"
       />
     </InputGroup>
   );

@@ -1,13 +1,13 @@
-import { ChevronLeftIcon } from '@chakra-ui/icons';
-import { Flex, Box, VStack, useColorModeValue, useBreakpointValue } from '@chakra-ui/react';
+import { Flex, Box, VStack, Icon, useColorModeValue, useBreakpointValue } from '@chakra-ui/react';
 import React from 'react';
 
+import chevronIcon from 'icons/arrows/east-mini.svg';
 import * as cookies from 'lib/cookies';
 import useNavItems from 'lib/hooks/useNavItems';
 import useNetwork from 'lib/hooks/useNetwork';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
-import NetworkLogo from 'ui/blocks/networkMenu/NetworkLogo';
-import NetworkMenu from 'ui/blocks/networkMenu/NetworkMenu';
+import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
+import NetworkMenu from 'ui/snippets/networkMenu/NetworkMenu';
 
 import NavFooter from './NavFooter';
 import NavLink from './NavLink';
@@ -78,7 +78,8 @@ const NavigationDesktop = () => {
         </Box>
       ) }
       <NavFooter isCollapsed={ isCollapsed } hasAccount={ hasAccount }/>
-      <ChevronLeftIcon
+      <Icon
+        as={ chevronIcon }
         width={ 6 }
         height={ 6 }
         border="1px"
@@ -88,7 +89,7 @@ const NavigationDesktop = () => {
         transform={ isCollapsed ? 'rotate(180deg)' : 'rotate(0)' }
         { ...getDefaultTransitionProps({ transitionProperty: 'transform, left' }) }
         transformOrigin="center"
-        position="fixed"
+        position="absolute"
         top="104px"
         left={ isCollapsed ? '80px' : '216px' }
         cursor="pointer"

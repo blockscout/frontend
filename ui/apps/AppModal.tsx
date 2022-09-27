@@ -1,4 +1,3 @@
-import { LinkIcon, StarIcon } from '@chakra-ui/icons';
 import {
   Box, Button, Heading, Icon, IconButton, Image, Link, List, Modal, ModalBody,
   ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tag, Text,
@@ -9,29 +8,27 @@ import React, { useCallback } from 'react';
 import type { AppCategory, AppItemOverview } from 'types/client/apps';
 
 import { TEMPORARY_DEMO_APPS } from 'data/apps';
+import linkIcon from 'icons/link.svg';
 import ghIcon from 'icons/social/git.svg';
 import tgIcon from 'icons/social/telega.svg';
 import twIcon from 'icons/social/tweet.svg';
+import starFilledIcon from 'icons/star_filled.svg';
 import starOutlineIcon from 'icons/star_outline.svg';
 import { nbsp } from 'lib/html-entities';
 
 type Props = {
-  id: string | null;
+  id: string;
   onClose: () => void;
+  isFavorite: boolean;
+  onFavoriteClick: (id: string, isFavorite: boolean) => void;
 }
 
 const AppModal = ({
   id,
   onClose,
+  isFavorite,
+  onFavoriteClick,
 }: Props) => {
-  const handleFavorite = useCallback(() => {
-    // TODO: implement
-  }, []);
-
-  if (!id) {
-    return null;
-  }
-
   const {
     title,
     author,
@@ -44,8 +41,6 @@ const AppModal = ({
     logo,
     categories,
   } = TEMPORARY_DEMO_APPS.find(app => app.id === id) as AppItemOverview;
-
-  const isFavorite = false;
 
   const socialLinks = [
     Boolean(telegram) && {
@@ -61,6 +56,10 @@ const AppModal = ({
       url: github,
     },
   ].filter(Boolean) as Array<{ icon: FunctionComponent; url: string }>;
+
+  const handleFavoriteClick = useCallback(() => {
+    onFavoriteClick(id, isFavorite);
+  }, [ onFavoriteClick, id, isFavorite ]);
 
   return (
     <Modal
@@ -135,10 +134,10 @@ const AppModal = ({
                 colorScheme="gray"
                 w={ 9 }
                 h={ 8 }
-                onClick={ handleFavorite }
+                onClick={ handleFavoriteClick }
                 icon={ isFavorite ?
-                  <Icon as={ StarIcon } w={ 4 } h={ 4 } color="yellow.400"/> :
-                  <Icon as={ starOutlineIcon } w={ 4 } h={ 4 }/> }
+                  <Icon as={ starFilledIcon } w={ 4 } h={ 4 } color="yellow.400"/> :
+                  <Icon as={ starOutlineIcon } w={ 4 } h={ 4 } color="gray.300"/> }
               />
             </Box>
           </Box>
@@ -188,10 +187,10 @@ const AppModal = ({
               overflow="hidden"
             >
               <Icon
-                as={ LinkIcon }
+                as={ linkIcon }
                 display="inline"
                 verticalAlign="baseline"
-                boxSize={ 3 }
+                boxSize="18px"
                 marginRight={ 2 }
               />
 

@@ -2,10 +2,10 @@ import { Icon, Box, Flex, Drawer, DrawerOverlay, DrawerContent, DrawerBody, useC
 import React from 'react';
 
 import burgerIcon from 'icons/burger.svg';
-import NavigationMobile from 'ui/blocks/navigation/NavigationMobile';
-import NetworkLogo from 'ui/blocks/networkMenu/NetworkLogo';
-import NetworkMenuButton from 'ui/blocks/networkMenu/NetworkMenuButton';
-import NetworkMenuContentMobile from 'ui/blocks/networkMenu/NetworkMenuContentMobile';
+import NavigationMobile from 'ui/snippets/navigation/NavigationMobile';
+import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
+import NetworkMenuButton from 'ui/snippets/networkMenu/NetworkMenuButton';
+import NetworkMenuContentMobile from 'ui/snippets/networkMenu/NetworkMenuContentMobile';
 
 const Burger = () => {
   const iconColor = useColorModeValue('gray.600', 'white');

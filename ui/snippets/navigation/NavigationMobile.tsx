@@ -4,8 +4,8 @@ import React from 'react';
 import * as cookies from 'lib/cookies';
 import useNavItems from 'lib/hooks/useNavItems';
 import useNetwork from 'lib/hooks/useNetwork';
-import NavFooter from 'ui/blocks/navigation/NavFooter';
-import NavLink from 'ui/blocks/navigation/NavLink';
+import NavFooter from 'ui/snippets/navigation/NavFooter';
+import NavLink from 'ui/snippets/navigation/NavLink';
 
 const NavigationMobile = () => {
   const { mainNavItems, accountNavItems } = useNavItems();

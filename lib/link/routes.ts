@@ -45,8 +45,12 @@ export const ROUTES = {
   },
 
   // TRANSACTIONS
-  txs: {
+  txs_validated: {
     pattern: `${ BASE_PATH }/txs`,
+    crossNetworkNavigation: true,
+  },
+  txs_pending: {
+    pattern: `${ BASE_PATH }/pending-transactions`,
     crossNetworkNavigation: true,
   },
   tx_index: {
@@ -69,6 +73,9 @@ export const ROUTES = {
   blocks: {
     pattern: `${ BASE_PATH }/blocks`,
     crossNetworkNavigation: true,
+  },
+  block: {
+    pattern: `${ BASE_PATH }/block/[id]`,
   },
 
   // TOKENS

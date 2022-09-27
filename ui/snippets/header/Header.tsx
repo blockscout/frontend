@@ -2,10 +2,10 @@ import { HStack, Box, Flex, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-import NetworkLogo from 'ui/blocks/networkMenu/NetworkLogo';
-import ProfileMenuDesktop from 'ui/blocks/profileMenu/ProfileMenuDesktop';
-import ProfileMenuMobile from 'ui/blocks/profileMenu/ProfileMenuMobile';
-import SearchBar from 'ui/blocks/searchBar/SearchBar';
+import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
+import ProfileMenuDesktop from 'ui/snippets/profileMenu/ProfileMenuDesktop';
+import ProfileMenuMobile from 'ui/snippets/profileMenu/ProfileMenuMobile';
+import SearchBar from 'ui/snippets/searchBar/SearchBar';
 
 import Burger from './Burger';
 import ColorModeToggler from './ColorModeToggler';
