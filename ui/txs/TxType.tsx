@@ -1,4 +1,4 @@
-import { Tag, TagLabel } from '@chakra-ui/react';
+import { Tag } from '@chakra-ui/react';
 import React from 'react';
 
 export interface Props {
@@ -34,7 +34,7 @@ const TxStatus = ({ type }: Props) => {
 
   return (
     <Tag colorScheme={ colorScheme }>
-      <TagLabel>{ label }</TagLabel>
+      { label }
     </Tag>
   );
 };
