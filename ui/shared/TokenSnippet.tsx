@@ -27,7 +27,7 @@ interface Props {
   className?: string;
 }
 
-const Token = ({ symbol, className }: Props) => {
+const TokenSnippet = ({ symbol, className }: Props) => {
   const token = TOKENS[symbol as keyof typeof TOKENS];
   const link = useLink();
 
@@ -48,4 +48,4 @@ const Token = ({ symbol, className }: Props) => {
   );
 };
 
-export default chakra(Token);
+export default chakra(TokenSnippet);

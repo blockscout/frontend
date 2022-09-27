@@ -17,7 +17,7 @@ import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import PrevNext from 'ui/shared/PrevNext';
 import RawInputData from 'ui/shared/RawInputData';
 import TextSeparator from 'ui/shared/TextSeparator';
-import Token from 'ui/shared/Token';
+import TokenSnippet from 'ui/shared/TokenSnippet';
 import Utilization from 'ui/shared/Utilization';
 import TokenTransfer from 'ui/tx/TokenTransfer';
 import TxDecodedInputData from 'ui/tx/TxDecodedInputData';
@@ -108,7 +108,7 @@ const TxDetails = () => {
             <Icon as={ errorIcon } boxSize={ 4 } ml={ 2 } color="red.500" cursor="pointer"/>
           </chakra.span>
         </Tooltip>
-        <Token symbol="USDT" ml={ 3 }/>
+        <TokenSnippet symbol="USDT" ml={ 3 }/>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Token transferred"
