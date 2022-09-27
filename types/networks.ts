@@ -15,4 +15,5 @@ export interface Network {
   icon?: FunctionComponent<SVGAttributes<SVGElement>> | string;
   logo?: FunctionComponent<SVGAttributes<SVGElement>> | string;
   isAccountSupported?: boolean;
+  assetsNamePath?: string;
 }

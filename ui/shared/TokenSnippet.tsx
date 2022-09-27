@@ -1,49 +1,28 @@
-import { Center, Icon, Link, Text, chakra } from '@chakra-ui/react';
+import { Center, Link, Text, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import tokeIcon from 'icons/tokens/toke.svg';
-import usdtIcon from 'icons/tokens/usdt.svg';
 import useLink from 'lib/link/useLink';
-
-// temporary solution
-// don't know where to get icons and addresses yet
-const TOKENS = {
-  USDT: {
-    fullName: 'Tether USD',
-    symbol: 'USDT',
-    icon: usdtIcon,
-    address: '0x9bD35A17C9C7c8820f89e0277e2046CDC57aCB15',
-  },
-  TOKE: {
-    fullName: 'Tokemak',
-    symbol: 'TOKE',
-    icon: tokeIcon,
-    address: '0x9bD35A17C9C7c8820f89e0277e2046CDC57aCB15',
-  },
-};
+import TokenLogo from 'ui/shared/TokenLogo';
 
 interface Props {
   symbol: string;
+  hash: string;
+  name: string;
   className?: string;
 }
 
-const TokenSnippet = ({ symbol, className }: Props) => {
-  const token = TOKENS[symbol as keyof typeof TOKENS];
+const TokenSnippet = ({ symbol, hash, name, className }: Props) => {
   const link = useLink();
 
-  if (!token) {
-    return null;
-  }
-
-  const url = link('token_index', { id: token.address });
+  const url = link('token_index', { id: hash });
 
   return (
-    <Center className={ className }>
-      <Icon as={ token.icon } boxSize={ 5 }/>
-      <Link href={ url } target="_blank" ml={ 1 }>
-        { token.fullName }
+    <Center className={ className } columnGap={ 1 }>
+      <TokenLogo boxSize={ 5 } hash={ hash } name={ name }/>
+      <Link href={ url } target="_blank">
+        { name }
       </Link>
-      <Text ml={ 1 } variant="secondary">({ token.symbol })</Text>
+      <Text variant="secondary">({ symbol })</Text>
     </Center>
   );
 };

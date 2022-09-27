@@ -108,14 +108,14 @@ const TxDetails = () => {
             <Icon as={ errorIcon } boxSize={ 4 } ml={ 2 } color="red.500" cursor="pointer"/>
           </chakra.span>
         </Tooltip>
-        <TokenSnippet symbol="USDT" ml={ 3 }/>
+        <TokenSnippet symbol="UP" name="User Pay" hash="0xA17ed5dFc62D0a3E74D69a0503AE9FdA65d9f212" ml={ 3 }/>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Token transferred"
         hint="List of token transferred in the transaction."
       >
         <Flex flexDirection="column" alignItems="flex-start" rowGap={ 5 } w="100%">
-          { tx.transferred_tokens.map((item) => <TokenTransfer key={ item.token } { ...item }/>) }
+          { tx.transferred_tokens.map((item) => <TokenTransfer key={ item.token.hash } { ...item }/>) }
         </Flex>
       </DetailsInfoItem>
       <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 3, lg: 8 }}/>
