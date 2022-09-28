@@ -57,7 +57,7 @@ const NetworkLogo = ({ isCollapsed, onClick }: Props) => {
     <NextLink href={ href } passHref>
       <Box
         as="a"
-        width={ isCollapsed ? '0' : '113px' }
+        width={{ base: '113px', lg: isCollapsed === false ? '113px' : 0, xl: isCollapsed ? '0' : '113px' }}
         display="inline-flex"
         overflow="hidden"
         onClick={ onClick }

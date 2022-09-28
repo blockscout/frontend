@@ -5,7 +5,6 @@ import React from 'react';
 
 import * as cookies from 'lib/cookies';
 import useFetch from 'lib/hooks/useFetch';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import Header from 'ui/snippets/header/Header';
 import NavigationDesktop from 'ui/snippets/navigation/NavigationDesktop';
 
@@ -14,7 +13,6 @@ interface Props {
 }
 
 const Page = ({ children }: Props) => {
-  const isMobile = useIsMobile();
   const router = useRouter();
   const fetch = useFetch();
 
@@ -38,11 +36,11 @@ const Page = ({ children }: Props) => {
       minH="100vh"
       alignItems="stretch"
     >
-      { !isMobile && <NavigationDesktop/> }
+      <NavigationDesktop/>
       <VStack
         width="100%"
-        paddingX={ isMobile ? 4 : 8 }
-        paddingTop={ isMobile ? 0 : 9 }
+        paddingX={{ base: 4, lg: 8 }}
+        paddingTop={{ base: 0, lg: 9 }}
         paddingBottom={ 10 }
         spacing={ 0 }
       >
@@ -50,7 +48,7 @@ const Page = ({ children }: Props) => {
         <Box
           as="main"
           w="100%"
-          paddingTop={ isMobile ? '138px' : '52px' }
+          paddingTop={{ base: '138px', lg: '52px' }}
         >
           { children }
         </Box>

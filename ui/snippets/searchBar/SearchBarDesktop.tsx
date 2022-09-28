@@ -1,4 +1,4 @@
-import { InputGroup, Input, InputLeftAddon, InputLeftElement, Icon, useColorModeValue } from '@chakra-ui/react';
+import { InputGroup, Input, InputLeftAddon, InputLeftElement, Icon, chakra, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 import type { ChangeEvent, FormEvent } from 'react';
 
@@ -11,7 +11,7 @@ interface Props {
 
 const SearchBarDesktop = ({ onChange, onSubmit }: Props) => {
   return (
-    <form noValidate onSubmit={ onSubmit }>
+    <chakra.form noValidate onSubmit={ onSubmit } display={{ base: 'none', lg: 'block' }} w="100%">
       <InputGroup>
         <InputLeftAddon w="111px">All filters</InputLeftAddon>
         <InputLeftElement w={ 6 } ml="132px" mr={ 2.5 }>
@@ -25,7 +25,7 @@ const SearchBarDesktop = ({ onChange, onSubmit }: Props) => {
           borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }
         />
       </InputGroup>
-    </form>
+    </chakra.form>
   );
 };
 
