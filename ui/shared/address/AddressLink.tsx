@@ -6,23 +6,26 @@ import HashStringShorten from 'ui/shared/HashStringShorten';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 interface Props {
-  type?: 'address' | 'transaction' | 'token';
+  type?: 'address' | 'transaction' | 'token' | 'block';
   alias?: string;
   className?: string;
   hash: string;
   truncation?: 'constant' | 'dynamic'| 'none';
   fontWeight?: string;
+  id?: string;
 }
 
-const AddressLink = ({ alias, type, className, truncation = 'dynamic', hash, fontWeight }: Props) => {
+const AddressLink = ({ alias, type, className, truncation = 'dynamic', hash, id, fontWeight }: Props) => {
   const link = useLink();
   let url;
   if (type === 'transaction') {
-    url = link('tx_index', { id: hash });
+    url = link('tx_index', { id: id || hash });
   } else if (type === 'token') {
-    url = link('token_index', { id: hash });
+    url = link('token_index', { id: id || hash });
+  } else if (type === 'block') {
+    url = link('block_index', { id: id || hash });
   } else {
-    url = link('address_index', { id: hash });
+    url = link('address_index', { id: id || hash });
   }
 
   const content = (() => {
