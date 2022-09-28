@@ -74,11 +74,11 @@ export const ROUTES = {
     pattern: `${ BASE_PATH }/blocks`,
     crossNetworkNavigation: true,
   },
-  uncles: {
+  blocks_uncles: {
     pattern: `${ BASE_PATH }/uncles`,
     crossNetworkNavigation: true,
   },
-  reorgs: {
+  blocks_reorgs: {
     pattern: `${ BASE_PATH }/reorgs`,
     crossNetworkNavigation: true,
   },
