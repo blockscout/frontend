@@ -1,4 +1,4 @@
-import { Grid, GridItem, Text, Icon, Link, Stat, StatArrow, Tooltip } from '@chakra-ui/react';
+import { Grid, GridItem, Text, Icon, Link, Stat, StatArrow, Box, Tooltip } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
@@ -35,7 +35,7 @@ const BlockDetails = () => {
   const sectionGap = <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>;
 
   return (
-    <Grid columnGap={ 8 } rowGap={{ base: 3, lg: 3 }} templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }}>
+    <Grid columnGap={ 8 } rowGap={{ base: 3, lg: 3 }} templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }} overflow="hidden">
       <DetailsInfoItem
         title="Block height"
         hint="The block height of a particular block is defined as the number of blocks preceding it in the blockchain."
@@ -81,7 +81,7 @@ const BlockDetails = () => {
         columnGap={ 1 }
       >
         <Text>{ block.reward.static + block.reward.tx_fee - block.burnt_fees }</Text>
-        <Text variant="secondary" whiteSpace="pre">(
+        <Text variant="secondary" whiteSpace="break-spaces">(
           <Tooltip label="Static block reward">
             <span>{ block.reward.static }</span>
           </Tooltip>
@@ -103,8 +103,8 @@ const BlockDetails = () => {
         hint="The total gas amount used in the block and its percentage of gas filled in the block."
       >
         <Text>{ block.gas_used.toLocaleString('en') }</Text>
-        <Utilization ml={ 4 } colorScheme="gray" value={ block.gas_used / block.gas_limit }/>
-        <Stat ml={ 5 }>
+        <Utilization ml={ 4 } mr={ 5 } colorScheme="gray" value={ block.gas_used / block.gas_limit }/>
+        <Stat>
           <StatArrow ml={ 1 } type={ gasUsedPercentage >= 0 ? 'increase' : 'decrease' }/>
           <Text as="span" color={ gasUsedPercentage >= 0 ? 'green.500' : 'red.500' } fontWeight={ 600 }>{ Math.abs(gasUsedPercentage) } % Gas Target</Text>
         </Stat>
@@ -133,8 +133,8 @@ const BlockDetails = () => {
         title="Extra data"
         hint="Any data that can be included by the miner in the block."
       >
-        <Text>{ block.data.utf }</Text>
-        <Text variant="secondary" whiteSpace="pre"> (Hex: { block.data.hex })</Text>
+        <Text whiteSpace="pre">{ block.data.utf } </Text>
+        <Text variant="secondary">(Hex: { block.data.hex })</Text>
       </DetailsInfoItem>
 
       { /* CUT */ }
@@ -176,13 +176,17 @@ const BlockDetails = () => {
           <DetailsInfoItem
             title="Hash"
             hint="The SHA256 hash of the block."
+            flexWrap="nowrap"
           >
-            <HashStringShortenDynamic hash={ block.hash }/>
+            <Box overflow="hidden">
+              <HashStringShortenDynamic hash={ block.hash }/>
+            </Box>
             <CopyToClipboard text={ block.hash }/>
           </DetailsInfoItem>
           <DetailsInfoItem
             title="Parent hash"
             hint="The hash of the block from which this block was generated."
+            flexWrap="nowrap"
           >
             <AddressLink hash={ block.parent_hash } type="block" id={ String(block.parent_height) }/>
             <CopyToClipboard text={ block.hash }/>
@@ -191,7 +195,7 @@ const BlockDetails = () => {
             title="State root"
             hint="The root of the state trie."
           >
-            { block.state_root }
+            <Text wordBreak="break-all" whiteSpace="break-spaces">{ block.state_root }</Text>
           </DetailsInfoItem>
           <DetailsInfoItem
             title="Nonce"
