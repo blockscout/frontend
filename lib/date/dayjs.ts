@@ -5,8 +5,6 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import updateLocale from 'dayjs/plugin/updateLocale';
 
-dayjs.locale('en');
-
 const relativeTimeConfig = {
   thresholds: [
     { l: 's', r: 1 },
@@ -50,5 +48,28 @@ dayjs.updateLocale('en', {
     yy: '%d years',
   },
 });
+
+dayjs.locale('en-short', {
+  name: 'en-short',
+  relativeTime: {
+    s: '1s',
+    future: 'in %s',
+    past: '%s ago',
+    m: '1m',
+    mm: '%dm',
+    h: '1h',
+    hh: '%dh',
+    d: '1d',
+    dd: '%dd',
+    M: '1mo',
+    MM: '%dmo',
+    y: '1y',
+    yy: '%dy',
+    // have to trick typescript 🎩 🐇
+    ...{ ss: '%ds' },
+  },
+});
+
+dayjs.locale('en');
 
 export default dayjs;

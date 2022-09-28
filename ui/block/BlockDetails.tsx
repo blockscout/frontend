@@ -128,6 +128,11 @@ const BlockDetails = () => {
       >
         <Icon as={ flameIcon } boxSize={ 5 } color="gray.500"/>
         <Text ml={ 1 }>{ block.burnt_fees.toLocaleString('en', { minimumFractionDigits: 18 }) } Ether</Text>
+        <Tooltip label="Burnt fees / Txn fees * 100%">
+          <Box>
+            <Utilization ml={ 4 } value={ block.burnt_fees / block.reward.tx_fee }/>
+          </Box>
+        </Tooltip>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Extra data"
