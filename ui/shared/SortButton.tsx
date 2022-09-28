@@ -1,4 +1,4 @@
-import { Icon, IconButton } from '@chakra-ui/react';
+import { Icon, IconButton, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import upDownArrow from 'icons/arrows/up-down.svg';
@@ -6,9 +6,10 @@ import upDownArrow from 'icons/arrows/up-down.svg';
 type Props = {
   handleSort: () => void;
   isSortActive: boolean;
+  className?: string;
 }
 
-const SortButton = ({ handleSort, isSortActive }: Props) => {
+const SortButton = ({ handleSort, isSortActive, className }: Props) => {
   return (
     <IconButton
       icon={ <Icon as={ upDownArrow } boxSize={ 5 }/> }
@@ -16,12 +17,12 @@ const SortButton = ({ handleSort, isSortActive }: Props) => {
       size="sm"
       variant="outline"
       colorScheme="gray-dark"
-      ml={ 2 }
       minWidth="36px"
       onClick={ handleSort }
       isActive={ isSortActive }
+      className={ className }
     />
   );
 };
 
-export default SortButton;
+export default chakra(SortButton);

@@ -12,7 +12,7 @@ export enum NAMES {
 
 export function get(name?: string | undefined | null) {
   if (!isBrowser()) {
-    return () => {};
+    return undefined;
   }
   return Cookies.get(name);
 }

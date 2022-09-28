@@ -33,7 +33,7 @@ const RoutedTabs = ({ tabs, defaultActiveTab }: Props) => {
   const defaultIndex = tabs.findIndex(({ routeName }) => routeName === defaultActiveTab);
   const isMobile = useIsMobile();
 
-  const [ activeTab, setActiveTab ] = React.useState<number>(defaultIndex);
+  const [ activeTab ] = React.useState<number>(defaultIndex);
   const { tabsCut, tabsList, tabsRefs, listRef } = useAdaptiveTabs(tabs, isMobile);
 
   const router = useRouter();
@@ -45,8 +45,6 @@ const RoutedTabs = ({ tabs, defaultActiveTab }: Props) => {
       const newUrl = link(nextTab.routeName, router.query);
       router.push(newUrl, undefined, { shallow: true });
     }
-
-    setActiveTab(index);
   }, [ tabs, router ]);
 
   return (
@@ -57,7 +55,7 @@ const RoutedTabs = ({ tabs, defaultActiveTab }: Props) => {
         whiteSpace="nowrap"
         ref={ listRef }
         overflowY="hidden"
-        overflowX={ isMobile ? 'auto' : undefined }
+        overflowX={{ base: 'auto', lg: undefined }}
         overscrollBehaviorX="contain"
         css={{
           'scroll-snap-type': 'x mandatory',
