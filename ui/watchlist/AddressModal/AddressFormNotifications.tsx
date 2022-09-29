@@ -3,17 +3,23 @@ import React, { useCallback } from 'react';
 import { Controller } from 'react-hook-form';
 import type { Path, ControllerRenderProps, FieldValues, Control } from 'react-hook-form';
 
+import useNetwork from 'lib/hooks/useNetwork';
 import CheckboxInput from 'ui/shared/CheckboxInput';
 
 // does it depend on the network?
 const NOTIFICATIONS = [ 'native', 'ERC-20', 'ERC-721' ] as const;
-const NOTIFICATIONS_NAMES = [ 'xDAI', 'ERC-20', 'ERC-721, ERC-1155 (NFT)' ];
 
 type Props<Inputs extends FieldValues> = {
   control: Control<Inputs>;
 }
 
 export default function AddressFormNotifications<Inputs extends FieldValues, Checkboxes extends Path<Inputs>>({ control }: Props<Inputs>) {
+  const selectedNetwork = useNetwork();
+
+  const NOTIFICATIONS_NAMES = React.useMemo(() => {
+    return [ selectedNetwork?.currency, 'ERC-20', 'ERC-721, ERC-1155 (NFT)' ];
+  }, [ selectedNetwork?.currency ]);
+
   // eslint-disable-next-line react/display-name
   const renderCheckbox = useCallback((text: string) => ({ field }: {field: ControllerRenderProps<Inputs, Checkboxes>}) => (
     <CheckboxInput<Inputs, Checkboxes> text={ text } field={ field }/>
