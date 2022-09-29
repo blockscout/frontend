@@ -5,8 +5,8 @@ import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
 import BlockDetails from 'ui/block/BlockDetails';
 import BlockTxs from 'ui/block/BlockTxs';
-import Page from 'ui/shared/Page';
-import PageHeader from 'ui/shared/PageHeader';
+import Page from 'ui/shared/Page/Page';
+import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
 
 const TABS: Array<RoutedTab> = [
@@ -23,7 +23,7 @@ const BlockPageContent = ({ tab }: Props) => {
 
   return (
     <Page>
-      <PageHeader text={ `Block #${ router.query.id || '' }` }/>
+      <PageTitle text={ `Block #${ router.query.id || '' }` }/>
       <RoutedTabs
         tabs={ TABS }
         defaultActiveTab={ tab }
