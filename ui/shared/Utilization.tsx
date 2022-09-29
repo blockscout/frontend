@@ -4,18 +4,22 @@ import React from 'react';
 interface Props {
   className?: string;
   value: number;
+  colorScheme?: 'green' | 'gray';
 }
 
 const WIDTH = 50;
 
-const Utilization = ({ className, value }: Props) => {
+const Utilization = ({ className, value, colorScheme = 'green' }: Props) => {
   const valueString = (value * 100).toFixed(2) + '%';
+  const colorGrayScheme = useColorModeValue('gray.500', 'gray.500');
+  const color = colorScheme === 'gray' ? colorGrayScheme : 'green.500';
+
   return (
     <Flex className={ className } alignItems="center">
       <Box bg={ useColorModeValue('blackAlpha.200', 'whiteAlpha.200') } w={ `${ WIDTH }px` } h="4px" borderRadius="full" overflow="hidden">
-        <Box bg="green.500" w={ valueString } h="100%"/>
+        <Box bg={ color } w={ valueString } h="100%"/>
       </Box>
-      <Text color="green.500" ml="10px" fontWeight="bold">{ valueString }</Text>
+      <Text color={ color } ml="10px" fontWeight="bold">{ valueString }</Text>
     </Flex>
   );
 };

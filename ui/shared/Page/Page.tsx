@@ -1,12 +1,10 @@
-import { chakra, VStack, Grid, GridItem } from '@chakra-ui/react';
+import { chakra, VStack, Box, HStack } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import * as cookies from 'lib/cookies';
 import useFetch from 'lib/hooks/useFetch';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import PageContent from 'ui/shared/Page/PageContent';
 import Header from 'ui/snippets/header/Header';
 import NavigationDesktop from 'ui/snippets/navigation/NavigationDesktop';
 
@@ -16,8 +14,7 @@ interface Props {
   className?: string;
 }
 
-const Page = ({ children, wrapChildren = true, className }: Props) => {
-  const isMobile = useIsMobile();
+const Page = ({ children }: Props) => {
   const router = useRouter();
   const fetch = useFetch();
 
@@ -35,31 +32,30 @@ const Page = ({ children, wrapChildren = true, className }: Props) => {
     }
   }, [ networkType, networkSubType ]);
 
-  const renderedChildren = wrapChildren ? (
-    <PageContent>{ children }</PageContent>
-  ) : children;
-
-  if (isMobile) {
-    return (
-      <VStack width="100%" minH="100vh" spacing={ 0 } className={ className }>
-        <Header/>
-        { renderedChildren }
-      </VStack>
-    );
-  }
-
   return (
-    <Grid templateColumns="auto 1fr" templateRows="auto 1fr" rowGap="52px" className={ className }>
-      <GridItem rowSpan={ 2 } colSpan={ 1 }>
-        <NavigationDesktop/>
-      </GridItem>
-      <GridItem>
+    <HStack
+      w="100%"
+      minH="100vh"
+      alignItems="stretch"
+    >
+      <NavigationDesktop/>
+      <VStack
+        width="100%"
+        paddingX={{ base: 4, lg: 8 }}
+        paddingTop={{ base: 0, lg: 9 }}
+        paddingBottom={ 10 }
+        spacing={ 0 }
+      >
         <Header/>
-      </GridItem>
-      <GridItem>
-        { renderedChildren }
-      </GridItem>
-    </Grid>
+        <Box
+          as="main"
+          w="100%"
+          paddingTop={{ base: '138px', lg: '52px' }}
+        >
+          { children }
+        </Box>
+      </VStack>
+    </HStack>
   );
 };
 

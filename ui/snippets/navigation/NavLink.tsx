@@ -2,7 +2,6 @@ import { Link, Icon, Text, HStack, Tooltip, Box } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import React from 'react';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 
 import useColors from './useColors';
@@ -18,21 +17,15 @@ interface Props {
 
 const NavLink = ({ text, url, icon, isCollapsed, isActive, px }: Props) => {
   const colors = useColors();
-  const isMobile = useIsMobile();
-  const width = (() => {
-    if (isMobile) {
-      return '100%';
-    }
 
-    return isCollapsed ? '60px' : '180px';
-  })();
+  const isExpanded = isCollapsed === false;
 
   return (
     <Box as="li" listStyleType="none" w="100%">
       <NextLink href={ url } passHref>
         <Link
-          w={ width }
-          px={ px || (isCollapsed ? '15px' : 3) }
+          w={{ base: '100%', lg: isExpanded ? '180px' : '60px', xl: isCollapsed ? '60px' : '180px' }}
+          px={ px || { base: 3, lg: isExpanded ? 3 : '15px', xl: isCollapsed ? '15px' : 3 } }
           py={ 2.5 }
           display="flex"
           color={ isActive ? colors.text.active : colors.text.default }
@@ -53,7 +46,14 @@ const NavLink = ({ text, url, icon, isCollapsed, isActive, px }: Props) => {
           >
             <HStack spacing={ 3 }>
               <Icon as={ icon } boxSize="30px"/>
-              { !isCollapsed && <Text variant="inherit" fontSize="sm" lineHeight="20px">{ text }</Text> }
+              <Text
+                variant="inherit"
+                fontSize="sm"
+                lineHeight="20px"
+                display={{ base: 'block', lg: isExpanded ? 'block' : 'none', xl: isCollapsed ? 'none' : 'block' }}
+              >
+                { text }
+              </Text>
             </HStack>
           </Tooltip>
         </Link>
