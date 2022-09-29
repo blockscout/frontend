@@ -50,7 +50,7 @@ const BlocksTableItem = ({ data, isPending }: Props) => {
       <Td fontSize="sm">{ (data.reward.static + data.reward.tx_fee - data.burnt_fees).toLocaleString('en', { maximumFractionDigits: 5 }) }</Td>
       <Td fontSize="sm">
         <Flex alignItems="center" columnGap={ 1 }>
-          <Icon as={ flameIcon } boxSize={ 5 } color="gray.500"/>
+          <Icon as={ flameIcon } boxSize={ 5 } color={ useColorModeValue('gray.500', 'inherit') }/>
           { data.burnt_fees.toLocaleString('en', { maximumFractionDigits: 6 }) }
         </Flex>
         <Tooltip label="Burnt fees / Txn fees * 100%">
