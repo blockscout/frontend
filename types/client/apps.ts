@@ -1,6 +1,9 @@
+import type { RouteName } from '../../lib/link/routes';
+
 export type AppCategory = {
   id: string;
   name: string;
+  routeName: RouteName;
 }
 
 export type AppItemPreview = {

@@ -98,6 +98,36 @@ export const ROUTES = {
   apps: {
     pattern: `${ BASE_PATH }/apps`,
   },
+  apps_category_defi: {
+    pattern: `${ BASE_PATH }/apps/defi`,
+  },
+  apps_category_exchanges: {
+    pattern: `${ BASE_PATH }/apps/exchanges`,
+  },
+  apps_category_finance: {
+    pattern: `${ BASE_PATH }/apps/finance`,
+  },
+  apps_category_games: {
+    pattern: `${ BASE_PATH }/apps/games`,
+  },
+  apps_category_marketplaces: {
+    pattern: `${ BASE_PATH }/apps/marketplaces`,
+  },
+  apps_category_nft: {
+    pattern: `${ BASE_PATH }/apps/nft`,
+  },
+  apps_category_security: {
+    pattern: `${ BASE_PATH }/apps/security`,
+  },
+  apps_category_social: {
+    pattern: `${ BASE_PATH }/apps/social`,
+  },
+  apps_category_tools: {
+    pattern: `${ BASE_PATH }/apps/tools`,
+  },
+  apps_category_yield_farming: {
+    pattern: `${ BASE_PATH }/apps/yield-farming`,
+  },
 
   // SEARCH
   search_results: {

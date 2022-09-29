@@ -11,7 +11,7 @@ const AppsPage = () => {
       <PageTitle text="Apps"/>
       <Head><title>Apps</title></Head>
 
-      <Apps/>
+      <Apps activeRoute="apps" category="all"/>
     </Page>
   );
 };

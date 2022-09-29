@@ -11,9 +11,6 @@ import AppModal from './AppModal';
 
 type Props = {
   apps: Array<AppItemPreview>;
-  onAppClick: (id: string) => void;
-  displayedAppId: string | null;
-  onModalClose: () => void;
 }
 
 function getFavoriteApps() {
@@ -24,8 +21,15 @@ function getFavoriteApps() {
   }
 }
 
-const AppList = ({ apps, onAppClick, displayedAppId, onModalClose }: Props) => {
+const AppList = ({ apps }: Props) => {
+  const [ displayedAppId, setDisplayedAppId ] = useState<string | null>(null);
   const [ favoriteApps, setFavoriteApps ] = useState<Array<string>>([]);
+
+  const handleAppInfoClick = useCallback((id: string) => {
+    setDisplayedAppId(id);
+  }, []);
+
+  const handleCloseModal = useCallback(() => setDisplayedAppId(null), []);
 
   const handleFavoriteClick = useCallback((id: string, isFavorite: boolean) => {
     const favoriteApps = getFavoriteApps();
@@ -65,7 +69,7 @@ const AppList = ({ apps, onAppClick, displayedAppId, onModalClose }: Props) => {
               key={ app.id }
             >
               <AppCard
-                onInfoClick={ onAppClick }
+                onInfoClick={ handleAppInfoClick }
                 id={ app.id }
                 title={ app.title }
                 logo={ app.logo }
@@ -84,7 +88,7 @@ const AppList = ({ apps, onAppClick, displayedAppId, onModalClose }: Props) => {
       { displayedAppId && (
         <AppModal
           id={ displayedAppId }
-          onClose={ onModalClose }
+          onClose={ handleCloseModal }
           isFavorite={ favoriteApps.includes(displayedAppId) }
           onFavoriteClick={ handleFavoriteClick }
         />
