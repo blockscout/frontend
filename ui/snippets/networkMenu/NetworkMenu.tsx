@@ -4,7 +4,7 @@ import React from 'react';
 import NetworkMenuButton from './NetworkMenuButton';
 import NetworkMenuContentDesktop from './NetworkMenuContentDesktop';
 interface Props {
-  isCollapsed: boolean;
+  isCollapsed?: boolean;
 }
 
 const NetworkMenu = ({ isCollapsed }: Props) => {
@@ -13,7 +13,7 @@ const NetworkMenu = ({ isCollapsed }: Props) => {
       { ({ isOpen }) => (
         <>
           <PopoverTrigger>
-            <Box marginLeft={ isCollapsed ? '0px' : '7px' }>
+            <Box marginLeft={{ base: '7px', lg: isCollapsed === false ? '7px' : '0px', xl: isCollapsed ? '0px' : '7px' }}>
               <NetworkMenuButton isActive={ isOpen }/>
             </Box>
           </PopoverTrigger>
