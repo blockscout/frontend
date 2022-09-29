@@ -1,4 +1,4 @@
-import { Tr, Td, Text, Link, Flex, Box, Stat, StatArrow, Icon, Tooltip, Spinner, useColorModeValue } from '@chakra-ui/react';
+import { Tr, Td, Text, Link, Flex, Box, Icon, Tooltip, Spinner, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import type ArrayElement from 'types/utils/ArrayElement';
@@ -8,6 +8,7 @@ import flameIcon from 'icons/flame.svg';
 import dayjs from 'lib/date/dayjs';
 import useLink from 'lib/link/useLink';
 import AddressLink from 'ui/shared/address/AddressLink';
+import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
 import Utilization from 'ui/shared/Utilization';
 
 interface Props {
@@ -18,7 +19,6 @@ interface Props {
 const BlocksTableItem = ({ data, isPending }: Props) => {
   const link = useLink();
 
-  const gasUsedPercentage = (data.gas_used / data.gas_target - 1) * 100;
   const spinnerEmptyColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
 
   return (
@@ -44,12 +44,7 @@ const BlocksTableItem = ({ data, isPending }: Props) => {
         <Box>{ data.gas_used.toLocaleString('en') }</Box>
         <Flex mt={ 2 }>
           <Utilization colorScheme="gray" value={ data.gas_used / data.gas_limit }/>
-          <Stat ml={ 2 }>
-            <StatArrow type={ gasUsedPercentage >= 0 ? 'increase' : 'decrease' }/>
-            <Text as="span" color={ gasUsedPercentage >= 0 ? 'green.500' : 'red.500' } fontWeight={ 600 }>
-              { Math.abs(gasUsedPercentage).toLocaleString('en', { maximumFractionDigits: 2 }) } %
-            </Text>
-          </Stat>
+          <GasUsedToTargetRatio ml={ 2 } used={ data.gas_used } target={ data.gas_target }/>
         </Flex>
       </Td>
       <Td fontSize="sm">{ (data.reward.static + data.reward.tx_fee - data.burnt_fees).toLocaleString('en', { maximumFractionDigits: 5 }) }</Td>
