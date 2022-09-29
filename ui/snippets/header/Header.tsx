@@ -40,6 +40,9 @@ const Header = () => {
         justifyContent="center"
         gap={ 12 }
         display={{ base: 'none', lg: 'flex' }}
+        paddingX={ 12 }
+        paddingTop={ 9 }
+        paddingBottom="52px"
       >
         <SearchBar/>
         <ColorModeToggler/>
