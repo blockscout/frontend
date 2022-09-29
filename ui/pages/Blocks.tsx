@@ -3,8 +3,8 @@ import React from 'react';
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
 import BlocksContent from 'ui/blocks/BlocksContent';
-import Page from 'ui/shared/Page';
-import PageHeader from 'ui/shared/PageHeader';
+import Page from 'ui/shared/Page/Page';
+import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
 
 const TABS: Array<RoutedTab> = [
@@ -20,7 +20,7 @@ export interface Props {
 const BlocksPageContent = ({ tab }: Props) => {
   return (
     <Page>
-      <PageHeader text="Blocks"/>
+      <PageTitle text="Blocks"/>
       <RoutedTabs
         tabs={ TABS }
         defaultActiveTab={ tab }

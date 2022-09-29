@@ -1,20 +1,18 @@
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Text, Show } from '@chakra-ui/react';
 import React from 'react';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
 import BlocksList from 'ui/blocks/BlocksList';
 import BlocksTable from 'ui/blocks/BlocksTable';
 import Pagination from 'ui/shared/Pagination';
 
 const BlocksContent = () => {
-  const isMobile = useIsMobile();
-
   return (
     <>
       <Text>Total of 15,044,883 blocks</Text>
-      { isMobile ? <BlocksList/> : <BlocksTable/> }
+      <Show below="lg"><BlocksList/></Show>
+      <Show above="lg"><BlocksTable/></Show>
       <Box mx={{ base: 0, lg: 6 }} my={{ base: 6, lg: 3 }}>
-        <Pagination currentPage={ 1 } isMobile={ isMobile }/>
+        <Pagination currentPage={ 1 }/>
       </Box>
     </>
   );
