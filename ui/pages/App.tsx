@@ -5,8 +5,8 @@ import Page from 'ui/shared/Page/Page';
 
 const App = () => {
   return (
-    <Page wrapChildren={ false } rowGap={ 10 }>
-      <Center bgColor={ useColorModeValue('blackAlpha.200', 'whiteAlpha.200') } h="100%" w="100%" flexGrow={ 1 }>
+    <Page wrapChildren={ false }>
+      <Center as="main" bgColor={ useColorModeValue('blackAlpha.200', 'whiteAlpha.200') } h="100%" paddingTop={{ base: '138px', lg: 0 }}>
         3rd party app content
       </Center>
     </Page>
