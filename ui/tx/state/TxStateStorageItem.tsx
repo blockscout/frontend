@@ -2,6 +2,7 @@ import {
   Grid,
   GridItem,
   Select,
+  Box,
   useColorModeValue,
 } from '@chakra-ui/react';
 import React from 'react';
@@ -20,7 +21,7 @@ const TxStateStorageItem = ({ storageItem }: {storageItem: TTxStateItemStorage})
   const OPTIONS = [ 'Hex', 'Number', 'Text', 'Address' ];
   return (
     <Grid
-      gridTemplateColumns="auto 1fr"
+      gridTemplateColumns={{ base: '70px minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }}
       columnGap={ 3 }
       rowGap={ 4 }
       px={ 6 }
@@ -28,11 +29,12 @@ const TxStateStorageItem = ({ storageItem }: {storageItem: TTxStateItemStorage})
       background="blackAlpha.50"
       borderRadius="12px"
       mb={ 4 }
+      fontSize="sm"
     >
       { gridData.map((item) => (
-        <>
-          <GridItem alignSelf="center" fontWeight={ 600 } textAlign="end">{ item.name }</GridItem>
-          <GridItem>
+        <React.Fragment key={ item.name }>
+          <GridItem alignSelf={{ base: 'start', lg: 'center' }} fontWeight={{ base: 500, lg: 600 }} textAlign="end">{ item.name }</GridItem>
+          <GridItem display="flex" flexDir={{ base: 'column', lg: 'row' }} rowGap={ 2 } alignItems={{ base: 'flex-start', lg: 'center' }} >
             { item.select && (
               <Select
                 size="sm"
@@ -46,9 +48,11 @@ const TxStateStorageItem = ({ storageItem }: {storageItem: TTxStateItemStorage})
                 { OPTIONS.map((option) => <option key={ option } value={ option }>{ option }</option>) }
               </Select>
             ) }
-            { item.value }
+            <Box fontWeight={{ base: 400, lg: 500 }} maxW="100%">
+              { item.value }
+            </Box>
           </GridItem>
-        </>
+        </React.Fragment>
       )) }
     </Grid>
   );

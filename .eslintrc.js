@@ -1,6 +1,7 @@
 const RESTRICTED_MODULES = {
   paths: [
-    { name: 'dayjs', message: 'Please use lib/date/dayjs.ts' },
+    { name: 'dayjs', message: 'Please use lib/date/dayjs.ts instead of directly importing dayjs' },
+    { name: '@chakra-ui/icons', message: 'Using @chakra-ui/icons is prohibited. Please use regular svg-icon instead (see examples in "icons/" folder)' },
   ],
 };
 module.exports = {

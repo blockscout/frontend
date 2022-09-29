@@ -11,7 +11,7 @@ type Props = {
 
 const TransactionPage: NextPage<Props> = ({ pageParams }: Props) => {
   return (
-    <TransactionNextPage tab="details" pageParams={ pageParams }/>
+    <TransactionNextPage tab="tx_index" pageParams={ pageParams }/>
   );
 };
 

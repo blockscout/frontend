@@ -19,7 +19,7 @@ const AddressSnippet = ({ address, subtitle }: Props) => {
         <AddressLink hash={ address } fontWeight="600" ml={ 2 }/>
         <CopyToClipboard text={ address } ml={ 1 }/>
       </Address>
-      { subtitle && <Text fontSize="sm" variant="secondary" mt={ 0.5 } ml={{ base: 0, lg: 8 }}>{ subtitle }</Text> }
+      { subtitle && <Text fontSize="sm" variant="secondary" mt={ 0.5 } ml={ 8 }>{ subtitle }</Text> }
     </Box>
   );
 };

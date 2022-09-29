@@ -1,40 +1,48 @@
-import { Tr, Td, Tag, Icon } from '@chakra-ui/react';
-import capitalize from 'lodash/capitalize';
+import { Tr, Td, Tag, Icon, Box } from '@chakra-ui/react';
 import React from 'react';
 
-import rightArrowIcon from 'icons/arrows/right.svg';
+import rightArrowIcon from 'icons/arrows/east.svg';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
-import TxStatus from 'ui/tx/TxStatus';
+import TxStatus from 'ui/shared/TxStatus';
+import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
 interface Props {
   type: string;
-  status: 'success' | 'error';
-  from: string;
-  to: string;
+  status: 'success' | 'failed' | 'pending';
+  from: { hash: string; alias?: string};
+  to: { hash: string; alias?: string};
   value: number;
   gasLimit: number;
 }
 
 const TxInternalTableItem = ({ type, status, from, to, value, gasLimit }: Props) => {
+  const typeTitle = TX_INTERNALS_ITEMS.find(({ id }) => id === type)?.title;
+
   return (
     <Tr alignItems="top">
       <Td>
-        <Tag colorScheme="cyan" mr={ 2 }>{ capitalize(type) }</Tag>
+        { typeTitle && (
+          <Box w="126px" display="inline-block">
+            <Tag colorScheme="cyan" mr={ 5 }>{ typeTitle }</Tag>
+          </Box>
+        ) }
         <TxStatus status={ status }/>
       </Td>
-      <Td pr="0">
+      <Td>
         <Address>
-          <AddressIcon hash={ from }/>
-          <AddressLink ml={ 2 } fontWeight="500" hash={ from }/>
-          <Icon as={ rightArrowIcon } boxSize={ 6 } mx={ 2 } flexShrink={ 0 } color="gray.500"/>
+          <AddressIcon hash={ from.hash }/>
+          <AddressLink ml={ 2 } fontWeight="500" hash={ from.hash } alias={ from.alias } flexGrow={ 1 }/>
         </Address>
       </Td>
-      <Td pl="0">
+      <Td px={ 0 }>
+        <Icon as={ rightArrowIcon } boxSize={ 6 } color="gray.500"/>
+      </Td>
+      <Td>
         <Address>
-          <AddressIcon hash={ to }/>
-          <AddressLink ml={ 2 } fontWeight="500" hash={ to }/>
+          <AddressIcon hash={ to.hash }/>
+          <AddressLink hash={ to.hash } alias={ to.alias } fontWeight="500" ml={ 2 }/>
         </Address>
       </Td>
       <Td isNumeric>

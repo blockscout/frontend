@@ -10,7 +10,7 @@ type Props = {
 }
 
 const TransactionPage: NextPage<Props> = ({ pageParams }: Props) => {
-  return <TransactionNextPage pageParams={ pageParams } tab="internal_txn"/>;
+  return <TransactionNextPage pageParams={ pageParams } tab="tx_internal"/>;
 };
 
 export default TransactionPage;

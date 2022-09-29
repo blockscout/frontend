@@ -19,7 +19,7 @@ const TransactionTagsPage: NextPage<Props> = ({ pageParams }: Props) => {
   return (
     <>
       <Head><title>{ title }</title></Head>
-      <PrivateTags tab="transaction"/>
+      <PrivateTags tab="private_tags_tx"/>
     </>
   );
 };

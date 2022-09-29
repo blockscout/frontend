@@ -23,11 +23,8 @@ const sizes = {
       minH: 6,
       minW: 6,
       fontSize: 'sm',
-      lineHeight: 'sm',
       px: 2,
       py: '2px',
-    },
-    label: {
       lineHeight: 5,
     },
   }),

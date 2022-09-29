@@ -1,34 +1,34 @@
-import { Grid, GridItem, Text, Box, Icon, Link, Tag, Flex } from '@chakra-ui/react';
+import { Grid, GridItem, Text, Box, Icon, Link, Tag, Flex, Tooltip, chakra } from '@chakra-ui/react';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
 import { tx } from 'data/tx';
 import clockIcon from 'icons/clock.svg';
 import flameIcon from 'icons/flame.svg';
+import errorIcon from 'icons/status/error.svg';
 import successIcon from 'icons/status/success.svg';
 import dayjs from 'lib/date/dayjs';
+import useNetwork from 'lib/hooks/useNetwork';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import PrevNext from 'ui/shared/PrevNext';
 import RawInputData from 'ui/shared/RawInputData';
-import Token from 'ui/shared/Token';
+import TextSeparator from 'ui/shared/TextSeparator';
+import TokenSnippet from 'ui/shared/TokenSnippet';
+import type { Props as TxStatusProps } from 'ui/shared/TxStatus';
+import TxStatus from 'ui/shared/TxStatus';
 import Utilization from 'ui/shared/Utilization';
 import TokenTransfer from 'ui/tx/TokenTransfer';
 import TxDecodedInputData from 'ui/tx/TxDecodedInputData';
-import type { Props as TxStatusProps } from 'ui/tx/TxStatus';
-import TxStatus from 'ui/tx/TxStatus';
 
 const TxDetails = () => {
-  const [ isExpanded, setIsExpanded ] = React.useState(false);
+  const selectedNetwork = useNetwork();
 
-  const leftSeparatorStyles = {
-    ml: 3,
-    pl: 3,
-    borderLeftWidth: '1px',
-    borderLeftColor: 'gray.700',
-  };
+  const [ isExpanded, setIsExpanded ] = React.useState(false);
 
   const handleCutClick = React.useCallback(() => {
     setIsExpanded((flag) => !flag);
@@ -39,13 +39,17 @@ const TxDetails = () => {
   }, []);
 
   return (
-    <Grid columnGap={ 8 } rowGap={ 3 } templateColumns="auto 1fr">
+    <Grid columnGap={ 8 } rowGap={{ base: 3, lg: 3 }} templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }}>
       <DetailsInfoItem
         title="Transaction hash"
         hint="Unique character string (TxID) assigned to every verified transaction."
+        flexWrap="nowrap"
       >
-        { tx.hash }
+        <Box overflow="hidden">
+          <HashStringShortenDynamic hash={ tx.hash }/>
+        </Box>
         <CopyToClipboard text={ tx.hash }/>
+        <PrevNext ml={ 7 }/>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Status"
@@ -58,7 +62,8 @@ const TxDetails = () => {
         hint="Block number containing the transaction."
       >
         <Text>{ tx.block_num }</Text>
-        <Text { ...leftSeparatorStyles } borderLeftColor="gray.500" variant="secondary">
+        <TextSeparator color="gray.500"/>
+        <Text variant="secondary">
           { tx.confirmation_num } Block confirmations
         </Text>
       </DetailsInfoItem>
@@ -68,71 +73,83 @@ const TxDetails = () => {
       >
         <Icon as={ clockIcon } boxSize={ 5 } color="gray.500"/>
         <Text ml={ 1 }>{ dayjs(tx.timestamp).fromNow() }</Text>
-        <Text { ...leftSeparatorStyles }>{ dayjs(tx.timestamp).format('LLLL') }</Text>
-        <Text { ...leftSeparatorStyles } borderLeftColor="gray.500" variant="secondary">
+        <TextSeparator/>
+        <Text whiteSpace="normal">{ dayjs(tx.timestamp).format('LLLL') }<TextSeparator color="gray.500"/></Text>
+        <Text variant="secondary">
           Confirmed within { tx.confirmation_duration } secs
         </Text>
       </DetailsInfoItem>
+      <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 3, lg: 8 }}/>
       <DetailsInfoItem
         title="From"
         hint="Address (external or contract) sending the transaction."
-        mt={ 8 }
       >
         <Address>
-          <AddressIcon hash={ tx.address_from }/>
-          <AddressLink ml={ 2 } hash={ tx.address_from }/>
-          <CopyToClipboard text={ tx.address_from }/>
+          <AddressIcon hash={ tx.address_from.hash }/>
+          <AddressLink ml={ 2 } hash={ tx.address_from.hash }/>
+          <CopyToClipboard text={ tx.address_from.hash }/>
         </Address>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Interacted with contract"
         hint="Address (external or contract) receiving the transaction."
+        flexWrap={{ base: 'wrap', lg: 'nowrap' }}
       >
-        <Address>
-          <AddressIcon hash={ tx.address_to }/>
-          <AddressLink ml={ 2 } hash={ tx.address_to }/>
-          <CopyToClipboard text={ tx.address_to }/>
+        <Address mr={ 3 }>
+          <AddressIcon hash={ tx.address_to.hash }/>
+          <AddressLink ml={ 2 } hash={ tx.address_to.hash }/>
+          <CopyToClipboard text={ tx.address_to.hash }/>
         </Address>
-        <Tag colorScheme="orange" variant="solid" ml={ 3 }>SANA</Tag>
-        <Icon as={ successIcon } boxSize={ 4 } ml={ 2 } color="green.500"/>
-        <Token symbol="USDT" ml={ 3 }/>
+        <Tag colorScheme="orange" variant="solid" flexShrink={ 0 }>SANA</Tag>
+        <Tooltip label="Contract execution completed">
+          <chakra.span display="inline-flex">
+            <Icon as={ successIcon } boxSize={ 4 } ml={ 2 } color="green.500" cursor="pointer"/>
+          </chakra.span>
+        </Tooltip>
+        <Tooltip label="Error occured during contract execution">
+          <chakra.span display="inline-flex">
+            <Icon as={ errorIcon } boxSize={ 4 } ml={ 2 } color="red.500" cursor="pointer"/>
+          </chakra.span>
+        </Tooltip>
+        <TokenSnippet symbol="UP" name="User Pay" hash="0xA17ed5dFc62D0a3E74D69a0503AE9FdA65d9f212" ml={ 3 }/>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Token transferred"
         hint="List of token transferred in the transaction."
       >
-        <Flex flexDirection="column" alignItems="flex-start" rowGap={ 5 }>
-          { tx.transferred_tokens.map((item) => <TokenTransfer key={ item.token } { ...item }/>) }
+        <Flex flexDirection="column" alignItems="flex-start" rowGap={ 5 } w="100%">
+          { tx.transferred_tokens.map((item) => <TokenTransfer key={ item.token.hash } { ...item }/>) }
         </Flex>
       </DetailsInfoItem>
+      <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 3, lg: 8 }}/>
       <DetailsInfoItem
         title="Value"
         hint="Value sent in the native token (and USD) if applicable."
-        mt={ 8 }
       >
-        <Text>{ tx.amount.value } Ether</Text>
+        <Text>{ tx.amount.value } { selectedNetwork?.currency }</Text>
         <Text variant="secondary" ml={ 1 }>(${ tx.amount.value_usd.toFixed(2) })</Text>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Transaction fee"
         hint="Total transaction fee."
       >
-        <Text>{ tx.fee.value } Ether</Text>
+        <Text>{ tx.fee.value } { selectedNetwork?.currency }</Text>
         <Text variant="secondary" ml={ 1 }>(${ tx.fee.value_usd.toFixed(2) })</Text>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Gas price"
         hint="Price per unit of gas specified by the sender. Higher gas prices can prioritize transaction inclusion during times of high usage."
       >
-        <Text>{ tx.gas_price.toLocaleString('en', { minimumFractionDigits: 18 }) } Ether</Text>
-        <Text variant="secondary" ml={ 1 }>({ (tx.gas_price * Math.pow(10, 18)).toFixed(0) } Gwei)</Text>
+        <Text mr={ 1 }>{ tx.gas_price.toLocaleString('en', { minimumFractionDigits: 18 }) } { selectedNetwork?.currency }</Text>
+        <Text variant="secondary">({ (tx.gas_price * Math.pow(10, 18)).toFixed(0) } Gwei)</Text>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Gas limit & usage by txn"
         hint="Actual gas amount used by the transaction."
       >
         <Text>{ tx.gas_used.toLocaleString('en') }</Text>
-        <Text { ...leftSeparatorStyles }>{ tx.gas_limit.toLocaleString('en') }</Text>
+        <TextSeparator/>
+        <Text >{ tx.gas_limit.toLocaleString('en') }</Text>
         <Utilization ml={ 4 } value={ tx.gas_used / tx.gas_limit }/>
       </DetailsInfoItem>
       <DetailsInfoItem
@@ -143,25 +160,27 @@ const TxDetails = () => {
         <Box>
           <Text as="span" fontWeight="500">Base: </Text>
           <Text fontWeight="600" as="span">{ tx.gas_fees.base }</Text>
+          <TextSeparator/>
         </Box>
-        <Box { ...leftSeparatorStyles }>
+        <Box>
           <Text as="span" fontWeight="500">Max: </Text>
           <Text fontWeight="600" as="span">{ tx.gas_fees.max }</Text>
+          <TextSeparator/>
         </Box>
-        <Box { ...leftSeparatorStyles }>
+        <Box>
           <Text as="span" fontWeight="500">Max priority: </Text>
           <Text fontWeight="600" as="span">{ tx.gas_fees.max_priority }</Text>
         </Box>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Burnt fees"
-        hint="Amount of ETH burned for this transaction. Equals Block Base Fee per Gas * Gas Used."
+        hint={ `Amount of ${ selectedNetwork?.currency } burned for this transaction. Equals Block Base Fee per Gas * Gas Used.` }
       >
         <Icon as={ flameIcon } boxSize={ 5 } color="gray.500"/>
-        <Text ml={ 1 }>{ tx.burnt_fees.value.toLocaleString('en', { minimumFractionDigits: 18 }) } Ether</Text>
-        <Text variant="secondary" ml={ 1 }>(${ tx.burnt_fees.value_usd.toFixed(2) })</Text>
+        <Text ml={ 1 } mr={ 1 }>{ tx.burnt_fees.value.toLocaleString('en', { minimumFractionDigits: 18 }) } { selectedNetwork?.currency }</Text>
+        <Text variant="secondary">(${ tx.burnt_fees.value_usd.toFixed(2) })</Text>
       </DetailsInfoItem>
-      <GridItem colSpan={ 2 }>
+      <GridItem colSpan={{ base: undefined, lg: 2 }}>
         <Element name="TxDetails__cutLink">
           <Link
             mt={ 6 }
@@ -177,8 +196,8 @@ const TxDetails = () => {
       </GridItem>
       { isExpanded && (
         <>
+          <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
           <DetailsInfoItem
-            mt={ 4 }
             title="Other"
             hint="Other data related to this transaction."
           >
@@ -186,12 +205,14 @@ const TxDetails = () => {
               <Text as="span" fontWeight="500">Txn type: </Text>
               <Text fontWeight="600" as="span">{ tx.type.value }</Text>
               <Text fontWeight="400" as="span" ml={ 1 }>({ tx.type.eip })</Text>
+              <TextSeparator/>
             </Box>
-            <Box { ...leftSeparatorStyles }>
+            <Box>
               <Text as="span" fontWeight="500">Nonce: </Text>
               <Text fontWeight="600" as="span">{ tx.nonce }</Text>
+              <TextSeparator/>
             </Box>
-            <Box { ...leftSeparatorStyles }>
+            <Box>
               <Text as="span" fontWeight="500">Position: </Text>
               <Text fontWeight="600" as="span">{ tx.position }</Text>
             </Box>
@@ -204,7 +225,7 @@ const TxDetails = () => {
           </DetailsInfoItem>
           <DetailsInfoItem
             title="Decoded input data"
-            hint="hmmmmmmmmmmm"
+            hint="Decoded input data"
           >
             <TxDecodedInputData/>
           </DetailsInfoItem>
