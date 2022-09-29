@@ -3,7 +3,6 @@ import React from 'react';
 
 import type { TxInternalsType } from 'types/api/tx';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
 import FilterButton from 'ui/shared/FilterButton';
 import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
@@ -15,14 +14,12 @@ interface Props {
 
 const TxInternalsFilter = ({ onFilterChange, defaultFilters, appliedFiltersNum }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
-  const isMobile = useIsMobile();
 
   return (
     <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
       <PopoverTrigger>
         <FilterButton
           isActive={ isOpen || Number(appliedFiltersNum) > 0 }
-          isCollapsed={ isMobile }
           onClick={ onToggle }
           appliedFiltersNum={ appliedFiltersNum }
         />

@@ -13,8 +13,8 @@ import {
   PopoverContent,
   PopoverBody,
   Portal,
-  useBreakpointValue,
   useColorModeValue,
+  Show,
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -36,8 +36,6 @@ import TxType from './TxType';
 
 const TxsTableItem = ({ tx }: {tx: ArrayElement<typeof txs>}) => {
   const link = useLink();
-
-  const isLargeScreen = useBreakpointValue({ base: false, xl: true });
 
   const addressFrom = (
     <Address>
@@ -108,19 +106,18 @@ const TxsTableItem = ({ tx }: {tx: ArrayElement<typeof txs>}) => {
       <Td>
         <Link href={ link('block_index', { id: tx.block_num.toString() }) }>{ tx.block_num }</Link>
       </Td>
-      { isLargeScreen ? (
-        <>
-          <Td>
-            { addressFrom }
-          </Td>
-          <Td>
-            <Icon as={ rightArrowIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
-          </Td>
-          <Td>
-            { addressTo }
-          </Td>
-        </>
-      ) : (
+      <Show above="xl">
+        <Td>
+          { addressFrom }
+        </Td>
+        <Td>
+          <Icon as={ rightArrowIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
+        </Td>
+        <Td>
+          { addressTo }
+        </Td>
+      </Show>
+      <Show below="xl">
         <Td colSpan={ 3 }>
           <Box>
             { addressFrom }
@@ -135,7 +132,7 @@ const TxsTableItem = ({ tx }: {tx: ArrayElement<typeof txs>}) => {
             { addressTo }
           </Box>
         </Td>
-      ) }
+      </Show>
       <Td isNumeric>
         { tx.amount.value.toFixed(8) }
       </Td>

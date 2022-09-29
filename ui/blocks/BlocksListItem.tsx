@@ -6,6 +6,7 @@ import type ArrayElement from 'types/utils/ArrayElement';
 import type { blocks } from 'data/blocks';
 import flameIcon from 'icons/flame.svg';
 import dayjs from 'lib/date/dayjs';
+import useNetwork from 'lib/hooks/useNetwork';
 import useLink from 'lib/link/useLink';
 import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -20,6 +21,7 @@ interface Props {
 const BlocksListItem = ({ data, isPending }: Props) => {
   const spinnerEmptyColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
   const link = useLink();
+  const network = useNetwork();
 
   return (
     <AccountListItemMobile rowGap={ 3 }>
@@ -56,7 +58,7 @@ const BlocksListItem = ({ data, isPending }: Props) => {
         </Flex>
       </Box>
       <Flex columnGap={ 2 }>
-        <Text fontWeight={ 500 }>Reward ETH</Text>
+        <Text fontWeight={ 500 }>Reward { network?.currency }</Text>
         <Text variant="secondary">{ (data.reward.static + data.reward.tx_fee - data.burnt_fees).toLocaleString('en', { maximumFractionDigits: 5 }) }</Text>
       </Flex>
       <Flex>

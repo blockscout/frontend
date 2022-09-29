@@ -7,6 +7,7 @@ import { block } from 'data/block';
 import clockIcon from 'icons/clock.svg';
 import flameIcon from 'icons/flame.svg';
 import dayjs from 'lib/date/dayjs';
+import useNetwork from 'lib/hooks/useNetwork';
 import { space } from 'lib/html-entities';
 import useLink from 'lib/link/useLink';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -22,6 +23,7 @@ const BlockDetails = () => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
   const link = useLink();
   const router = useRouter();
+  const network = useNetwork();
 
   const handleCutClick = React.useCallback(() => {
     setIsExpanded((flag) => !flag);
@@ -76,7 +78,10 @@ const BlockDetails = () => {
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Block reward"
-        hint="For each block, the miner is rewarded with a finite amount of Ether on top of the fees paid for all transactions in the block."
+        hint={
+          `For each block, the miner is rewarded with a finite amount of ${ network?.currency || 'native token' } 
+          on top of the fees paid for all transactions in the block.`
+        }
         columnGap={ 1 }
       >
         <Text>{ block.reward.static + block.reward.tx_fee - block.burnt_fees }</Text>
@@ -115,15 +120,15 @@ const BlockDetails = () => {
         title="Base fee per gas"
         hint="Minimum fee required per unit of gas. Fee adjusts based on network congestion."
       >
-        <Text>{ (block.base_fee_per_gas / 10 ** 9).toLocaleString('en', { minimumFractionDigits: 18 }) } Ether </Text>
+        <Text>{ (block.base_fee_per_gas / 10 ** 9).toLocaleString('en', { minimumFractionDigits: 18 }) } { network?.currency } </Text>
         <Text variant="secondary" whiteSpace="pre">{ space }({ block.base_fee_per_gas.toLocaleString('en', { minimumFractionDigits: 9 }) } Gwei)</Text>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Burnt fees"
-        hint="Amount of ETH burned from transactions included in the block. Equals Block Base Fee per Gas * Gas Used."
+        hint={ `Amount of ${ network?.currency || 'native token' } burned from transactions included in the block. Equals Block Base Fee per Gas * Gas Used.` }
       >
         <Icon as={ flameIcon } boxSize={ 5 } color="gray.500"/>
-        <Text ml={ 1 }>{ block.burnt_fees.toLocaleString('en', { minimumFractionDigits: 18 }) } Ether</Text>
+        <Text ml={ 1 }>{ block.burnt_fees.toLocaleString('en', { minimumFractionDigits: 18 }) } { network?.currency }</Text>
         <Tooltip label="Burnt fees / Txn fees * 100%">
           <Box>
             <Utilization ml={ 4 } value={ block.burnt_fees / block.reward.tx_fee }/>

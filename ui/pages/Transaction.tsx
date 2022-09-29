@@ -6,8 +6,8 @@ import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 import eastArrowIcon from 'icons/arrows/east.svg';
 import useLink from 'lib/link/useLink';
 import ExternalLink from 'ui/shared/ExternalLink';
-import Page from 'ui/shared/Page';
-import PageHeader from 'ui/shared/PageHeader';
+import Page from 'ui/shared/Page/Page';
+import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
 import TxDetails from 'ui/tx/TxDetails';
 import TxInternals from 'ui/tx/TxInternals';
@@ -37,7 +37,7 @@ const TransactionPageContent = ({ tab }: Props) => {
         <Icon as={ eastArrowIcon } boxSize={ 6 } mr={ 2 } transform="rotate(180deg)"/>
         Transactions
       </Link>
-      <PageHeader text="Transaction details"/>
+      <PageTitle text="Transaction details"/>
       <Flex marginLeft="auto" alignItems="center" flexWrap="wrap" columnGap={ 6 } rowGap={ 3 } mb={ 6 }>
         <ExternalLink title="Open in Tenderly" href="#"/>
         <ExternalLink title="Open in Blockchair" href="#"/>
