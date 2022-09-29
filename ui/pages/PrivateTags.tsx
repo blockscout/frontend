@@ -1,12 +1,11 @@
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
 import PrivateAddressTags from 'ui/privateTags/PrivateAddressTags';
 import PrivateTransactionTags from 'ui/privateTags/PrivateTransactionTags';
-import Page from 'ui/shared/Page';
-import PageHeader from 'ui/shared/PageHeader';
+import Page from 'ui/shared/Page/Page';
+import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
 
 const TABS: Array<RoutedTab> = [
@@ -21,10 +20,8 @@ type Props = {
 const PrivateTags = ({ tab }: Props) => {
   return (
     <Page>
-      <Box h="100%">
-        <PageHeader text="Private tags"/>
-        <RoutedTabs tabs={ TABS } defaultActiveTab={ tab }/>
-      </Box>
+      <PageTitle text="Private tags"/>
+      <RoutedTabs tabs={ TABS } defaultActiveTab={ tab }/>
     </Page>
   );
 };

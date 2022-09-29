@@ -55,7 +55,7 @@ const RoutedTabs = ({ tabs, defaultActiveTab }: Props) => {
         whiteSpace="nowrap"
         ref={ listRef }
         overflowY="hidden"
-        overflowX={ isMobile ? 'auto' : undefined }
+        overflowX={{ base: 'auto', lg: undefined }}
         overscrollBehaviorX="contain"
         css={{
           'scroll-snap-type': 'x mandatory',

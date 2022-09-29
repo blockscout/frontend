@@ -1,4 +1,4 @@
-import { Box, Link, Text, Icon } from '@chakra-ui/react';
+import { Link, Text, Icon } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 import { animateScroll } from 'react-scroll';
 
@@ -9,8 +9,8 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import useToast from 'lib/hooks/useToast';
 import PublicTagsData from 'ui/publicTags/PublicTagsData';
 import PublicTagsForm from 'ui/publicTags/PublicTagsForm/PublicTagsForm';
-import Page from 'ui/shared/Page';
-import PageHeader from 'ui/shared/PageHeader';
+import Page from 'ui/shared/Page/Page';
+import PageTitle from 'ui/shared/Page/PageTitle';
 
 type TScreen = 'data' | 'form';
 
@@ -77,16 +77,14 @@ const PublicTagsComponent: React.FC = () => {
 
   return (
     <Page>
-      <Box h="100%">
-        { isMobile && screen === 'form' && (
-          <Link display="inline-flex" alignItems="center" mb={ 6 } onClick={ onGoBack }>
-            <Icon as={ eastArrowIcon } boxSize={ 6 } transform="rotate(180deg)"/>
-            <Text variant="inherit" fontSize="sm" ml={ 2 }>Public tags</Text>
-          </Link>
-        ) }
-        <PageHeader text={ header }/>
-        { content }
-      </Box>
+      { isMobile && screen === 'form' && (
+        <Link display="inline-flex" alignItems="center" mb={ 6 } onClick={ onGoBack }>
+          <Icon as={ eastArrowIcon } boxSize={ 6 } transform="rotate(180deg)"/>
+          <Text variant="inherit" fontSize="sm" ml={ 2 }>Public tags</Text>
+        </Link>
+      ) }
+      <PageTitle text={ header }/>
+      { content }
     </Page>
   );
 };

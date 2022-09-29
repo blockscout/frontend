@@ -5,10 +5,9 @@ import type { Sort } from 'types/client/txs-sort';
 
 import type { txs as data } from 'data/txs';
 import rightArrowIcon from 'icons/arrows/east.svg';
+import useNetwork from 'lib/hooks/useNetwork';
 
 import TxsTableItem from './TxsTableItem';
-
-const CURRENCY = 'xDAI';
 
 type Props = {
   txs: typeof data;
@@ -17,6 +16,8 @@ type Props = {
 }
 
 const TxsTable = ({ txs, sort, sorting }: Props) => {
+  const selectedNetwork = useNetwork();
+
   return (
     <TableContainer width="100%" mt={ 6 }>
       <Table variant="simple" minWidth="810px" size="xs">
@@ -34,14 +35,14 @@ const TxsTable = ({ txs, sort, sorting }: Props) => {
               <Link onClick={ sort('val') } display="flex" justifyContent="end">
                 { sorting === 'val-asc' && <Icon boxSize={ 5 } as={ rightArrowIcon } transform="rotate(-90deg)"/> }
                 { sorting === 'val-desc' && <Icon boxSize={ 5 } as={ rightArrowIcon } transform="rotate(90deg)"/> }
-                { `Value ${ CURRENCY }` }
+                { `Value ${ selectedNetwork?.currency }` }
               </Link>
             </Th>
             <Th width="18%" isNumeric pr={ 5 }>
               <Link onClick={ sort('fee') } display="flex" justifyContent="end">
                 { sorting === 'fee-asc' && <Icon boxSize={ 5 } as={ rightArrowIcon } transform="rotate(-90deg)"/> }
                 { sorting === 'fee-desc' && <Icon boxSize={ 5 } as={ rightArrowIcon } transform="rotate(90deg)"/> }
-                { `Fee ${ CURRENCY }` }
+                { `Fee ${ selectedNetwork?.currency }` }
               </Link>
             </Th>
           </Tr>

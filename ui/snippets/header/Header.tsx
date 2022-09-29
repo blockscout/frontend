@@ -1,7 +1,6 @@
 import { HStack, Box, Flex, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import ProfileMenuDesktop from 'ui/snippets/profileMenu/ProfileMenuDesktop';
 import ProfileMenuMobile from 'ui/snippets/profileMenu/ProfileMenuMobile';
@@ -11,12 +10,10 @@ import Burger from './Burger';
 import ColorModeToggler from './ColorModeToggler';
 
 const Header = () => {
-  const isMobile = useIsMobile();
   const bgColor = useColorModeValue('white', 'black');
-
-  if (isMobile) {
-    return (
-      <Box bgColor={ bgColor }>
+  return (
+    <>
+      <Box bgColor={ bgColor } display={{ base: 'block', lg: 'none' }}>
         <Flex
           as="header"
           position="fixed"
@@ -36,21 +33,22 @@ const Header = () => {
         </Flex>
         <SearchBar/>
       </Box>
-    );
-  }
-
-  return (
-    <HStack
-      as="header"
-      width="100%"
-      alignItems="center"
-      justifyContent="center"
-      gap={ 12 }
-    >
-      <SearchBar/>
-      <ColorModeToggler/>
-      <ProfileMenuDesktop/>
-    </HStack>
+      <HStack
+        as="header"
+        width="100%"
+        alignItems="center"
+        justifyContent="center"
+        gap={ 12 }
+        display={{ base: 'none', lg: 'flex' }}
+        paddingX={ 12 }
+        paddingTop={ 9 }
+        paddingBottom="52px"
+      >
+        <SearchBar/>
+        <ColorModeToggler/>
+        <ProfileMenuDesktop/>
+      </HStack>
+    </>
   );
 };
 

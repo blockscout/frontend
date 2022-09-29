@@ -12,8 +12,8 @@ import ApiKeyListItem from 'ui/apiKey/ApiKeyTable/ApiKeyListItem';
 import ApiKeyTable from 'ui/apiKey/ApiKeyTable/ApiKeyTable';
 import DeleteApiKeyModal from 'ui/apiKey/DeleteApiKeyModal';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
-import Page from 'ui/shared/Page';
-import PageHeader from 'ui/shared/PageHeader';
+import Page from 'ui/shared/Page/Page';
+import PageTitle from 'ui/shared/Page/PageTitle';
 import SkeletonAccountMobile from 'ui/shared/SkeletonAccountMobile';
 import SkeletonTable from 'ui/shared/SkeletonTable';
 
@@ -128,7 +128,7 @@ const ApiKeysPage: React.FC = () => {
   return (
     <Page>
       <Box h="100%">
-        <PageHeader text="API keys"/>
+        <PageTitle text="API keys"/>
         { content }
       </Box>
     </Page>

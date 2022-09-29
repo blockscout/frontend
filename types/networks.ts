@@ -4,8 +4,9 @@ export type NetworkGroup = 'mainnets' | 'testnets' | 'other';
 
 export interface Network {
   name: string;
-  // https://chainlist.org/
-  chainId?: number;
+  chainId: number; // https://chainlist.org/
+  currency: string;
+  nativeTokenAddress: string;
   shortName?: string;
   // basePath = /<type>/<subType>, e.g. /xdai/mainnet
   type: string;
@@ -14,4 +15,5 @@ export interface Network {
   icon?: FunctionComponent<SVGAttributes<SVGElement>> | string;
   logo?: FunctionComponent<SVGAttributes<SVGElement>> | string;
   isAccountSupported?: boolean;
+  assetsNamePath?: string;
 }

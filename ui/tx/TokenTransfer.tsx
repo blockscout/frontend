@@ -4,14 +4,18 @@ import React from 'react';
 import rightArrowIcon from 'icons/arrows/east.svg';
 import { space } from 'lib/html-entities';
 import AddressLink from 'ui/shared/address/AddressLink';
-import Token from 'ui/shared/Token';
+import TokenSnippet from 'ui/shared/TokenSnippet';
 
 interface Props {
   from: string;
   to: string;
-  token: string;
   amount: number;
   usd: number;
+  token: {
+    symbol: string;
+    hash: string;
+    name: string;
+  };
 }
 
 const TokenTransfer = ({ from, to, amount, usd, token }: Props) => {
@@ -26,7 +30,7 @@ const TokenTransfer = ({ from, to, amount, usd, token }: Props) => {
         <Text fontWeight={ 600 } as="span">{ amount }</Text>{ space }
         <Text fontWeight={ 400 } variant="secondary" as="span">(${ usd.toFixed(2) })</Text>
       </Text>
-      <Token symbol={ token }/>
+      <TokenSnippet { ...token }/>
     </Flex>
   );
 };

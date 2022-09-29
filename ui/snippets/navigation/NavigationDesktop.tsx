@@ -1,10 +1,11 @@
-import { Flex, Box, VStack, Icon, useColorModeValue, useBreakpointValue } from '@chakra-ui/react';
+import { Flex, Box, VStack, Icon, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import chevronIcon from 'icons/arrows/east-mini.svg';
 import * as cookies from 'lib/cookies';
 import useNavItems from 'lib/hooks/useNavItems';
 import useNetwork from 'lib/hooks/useNetwork';
+import isBrowser from 'lib/isBrowser';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import NetworkMenu from 'ui/snippets/networkMenu/NetworkMenu';
@@ -15,18 +16,24 @@ import NavLink from './NavLink';
 const NavigationDesktop = () => {
   const { mainNavItems, accountNavItems } = useNavItems();
   const selectedNetwork = useNetwork();
-  const isLargeScreen = useBreakpointValue({ base: false, xl: true });
-  const navBarCollapsedCookie = cookies.get(cookies.NAMES.NAV_BAR_COLLAPSED);
-  const isAuth = Boolean(cookies.get(cookies.NAMES.API_TOKEN));
-  const hasAccount = selectedNetwork?.isAccountSupported && isAuth;
 
-  const [ isCollapsed, setCollapsedState ] = React.useState(navBarCollapsedCookie === 'true');
+  const isInBrowser = isBrowser();
+  const [ hasAccount, setHasAccount ] = React.useState(false);
+  const [ isCollapsed, setCollapsedState ] = React.useState<boolean | undefined>();
 
   React.useEffect(() => {
-    if (!navBarCollapsedCookie) {
-      setCollapsedState(!isLargeScreen);
+    const navBarCollapsedCookie = cookies.get(cookies.NAMES.NAV_BAR_COLLAPSED);
+    const isAuth = Boolean(cookies.get(cookies.NAMES.API_TOKEN));
+    if (isInBrowser) {
+      if (navBarCollapsedCookie === 'true') {
+        setCollapsedState(true);
+      }
+      if (navBarCollapsedCookie === 'false') {
+        setCollapsedState(false);
+      }
+      setHasAccount(Boolean(selectedNetwork?.isAccountSupported && isAuth && isInBrowser));
     }
-  }, [ isLargeScreen, navBarCollapsedCookie ]);
+  }, [ isInBrowser, selectedNetwork?.isAccountSupported ]);
 
   const handleTogglerClick = React.useCallback(() => {
     setCollapsedState((flag) => !flag);
@@ -40,16 +47,19 @@ const NavigationDesktop = () => {
     borderColor: useColorModeValue('blackAlpha.200', 'whiteAlpha.200'),
   };
 
+  const isExpanded = isCollapsed === false;
+
   return (
     <Flex
+      display={{ base: 'none', lg: 'flex' }}
       position="relative"
       flexDirection="column"
       alignItems="flex-start"
       borderRight="1px solid"
       borderColor={ containerBorderColor }
-      px={ isCollapsed ? 4 : 6 }
+      px={{ lg: isExpanded ? 6 : 4, xl: isCollapsed ? 4 : 6 }}
       py={ 12 }
-      width={ isCollapsed ? '92px' : '229px' }
+      width={{ lg: isExpanded ? '229px' : '92px', xl: isCollapsed ? '92px' : '229px' }}
       { ...getDefaultTransitionProps({ transitionProperty: 'width, padding' }) }
     >
       <Box
@@ -86,12 +96,12 @@ const NavigationDesktop = () => {
         _hover={{ color: 'blue.400' }}
         borderRadius="base"
         { ...chevronIconStyles }
-        transform={ isCollapsed ? 'rotate(180deg)' : 'rotate(0)' }
+        transform={{ lg: isExpanded ? 'rotate(0)' : 'rotate(180deg)', xl: isCollapsed ? 'rotate(180deg)' : 'rotate(0)' }}
         { ...getDefaultTransitionProps({ transitionProperty: 'transform, left' }) }
         transformOrigin="center"
         position="absolute"
         top="104px"
-        left={ isCollapsed ? '80px' : '216px' }
+        left={{ lg: isExpanded ? '216px' : '80px', xl: isCollapsed ? '80px' : '216px' }}
         cursor="pointer"
         onClick={ handleTogglerClick }
       />

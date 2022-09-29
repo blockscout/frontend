@@ -1,10 +1,9 @@
-import { Box, HStack } from '@chakra-ui/react';
+import { Box, HStack, Show } from '@chakra-ui/react';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import type { Sort } from 'types/client/txs-sort';
 
 import { txs } from 'data/txs';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import FilterButton from 'ui/shared/FilterButton';
 import FilterInput from 'ui/shared/FilterInput';
 import Pagination from 'ui/shared/Pagination';
@@ -18,8 +17,6 @@ type Props = {
 }
 
 const TxsContent = ({ isPending }: Props) => {
-  const isMobile = useIsMobile();
-
   const [ sorting, setSorting ] = useState<Sort>();
   const [ sortedTxs, setSortedTxs ] = useState(txs);
 
@@ -75,15 +72,15 @@ const TxsContent = ({ isPending }: Props) => {
         { /* TODO */ }
         <FilterButton
           isActive={ false }
-          isCollapsed={ isMobile }
           // eslint-disable-next-line react/jsx-no-bind
           onClick={ () => {} }
           appliedFiltersNum={ 0 }
         />
         <SortButton
-        // eslint-disable-next-line react/jsx-no-bind
+          // eslint-disable-next-line react/jsx-no-bind
           handleSort={ () => {} }
           isSortActive={ Boolean(sorting) }
+          display={{ base: 'block', lg: 'none' }}
         />
         <FilterInput
           // eslint-disable-next-line react/jsx-no-bind
@@ -93,11 +90,10 @@ const TxsContent = ({ isPending }: Props) => {
           placeholder="Search by addresses, hash, method..."
         />
       </HStack>
-      { isMobile ?
-        sortedTxs.map(tx => <TxsListItem tx={ tx } key={ tx.hash }/>) :
-        <TxsTable txs={ sortedTxs } sort={ sort } sorting={ sorting }/> }
+      <Show below="lg">{ sortedTxs.map(tx => <TxsListItem tx={ tx } key={ tx.hash }/>) }</Show>
+      <Show above="lg"><TxsTable txs={ sortedTxs } sort={ sort } sorting={ sorting }/></Show>
       <Box mx={{ base: 0, lg: 6 }} my={{ base: 6, lg: 3 }}>
-        <Pagination currentPage={ 1 } isMobile={ isMobile }/>
+        <Pagination currentPage={ 1 }/>
       </Box>
     </>
   );

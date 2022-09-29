@@ -1,20 +1,20 @@
-import { Box, HStack, VStack } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import * as cookies from 'lib/cookies';
 import useFetch from 'lib/hooks/useFetch';
-import useIsMobile from 'lib/hooks/useIsMobile';
+import PageContent from 'ui/shared/Page/PageContent';
 import Header from 'ui/snippets/header/Header';
 import NavigationDesktop from 'ui/snippets/navigation/NavigationDesktop';
 
 interface Props {
   children: React.ReactNode;
+  wrapChildren?: boolean;
 }
 
-const Page = ({ children }: Props) => {
-  const isMobile = useIsMobile();
+const Page = ({ children, wrapChildren = true }: Props) => {
   const router = useRouter();
   const fetch = useFetch();
 
@@ -32,30 +32,18 @@ const Page = ({ children }: Props) => {
     }
   }, [ networkType, networkSubType ]);
 
+  const renderedChildren = wrapChildren ? (
+    <PageContent>{ children }</PageContent>
+  ) : children;
+
   return (
-    <HStack
-      w="100%"
-      minH="100vh"
-      alignItems="stretch"
-    >
-      { !isMobile && <NavigationDesktop/> }
-      <VStack
-        width="100%"
-        paddingX={ isMobile ? 4 : 8 }
-        paddingTop={ isMobile ? 0 : 9 }
-        paddingBottom={ 10 }
-        spacing={ 0 }
-      >
+    <Flex w="100%" minH="100vh" alignItems="stretch">
+      <NavigationDesktop/>
+      <Flex flexDir="column" width="100%">
         <Header/>
-        <Box
-          as="main"
-          w="100%"
-          paddingTop={ isMobile ? '138px' : '52px' }
-        >
-          { children }
-        </Box>
-      </VStack>
-    </HStack>
+        { renderedChildren }
+      </Flex>
+    </Flex>
   );
 };
 

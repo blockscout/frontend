@@ -61,6 +61,8 @@ const SearchBarMobile = ({ onChange, onSubmit }: Props) => {
       transform={ isVisible ? 'translateY(0)' : 'translateY(-100%)' }
       transitionProperty="transform"
       transitionDuration="slow"
+      display={{ base: 'block', lg: 'none' }}
+      w="100%"
     >
       <InputGroup size="sm">
         <InputLeftElement >
