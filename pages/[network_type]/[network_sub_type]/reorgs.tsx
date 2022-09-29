@@ -11,7 +11,7 @@ type Props = {
 
 const BlockPage: NextPage<Props> = ({ pageParams }: Props) => {
   return (
-    <BlocksNextPage tab="reorgs" pageParams={ pageParams }/>
+    <BlocksNextPage tab="blocks_reorgs" pageParams={ pageParams }/>
   );
 };
 
