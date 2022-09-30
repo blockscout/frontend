@@ -4,13 +4,13 @@ import React from 'react';
 import type { NetworkGroup } from 'types/networks';
 
 import useNetwork from 'lib/hooks/useNetwork';
-import NETWORKS from 'lib/networks/availableNetworks';
+import featuredNetworks from 'lib/networks/featuredNetworks';
 import useNetworkNavigationItems from 'lib/networks/useNetworkNavigationItems';
 
 import NetworkMenuLink from './NetworkMenuLink';
 
 const TABS: Array<NetworkGroup> = [ 'mainnets', 'testnets', 'other' ];
-const availableTabs = TABS.filter((tab) => NETWORKS.some(({ group }) => group === tab));
+const availableTabs = TABS.filter((tab) => featuredNetworks.some(({ group }) => group === tab));
 
 const NetworkMenuPopup = () => {
   const selectedNetwork = useNetwork();

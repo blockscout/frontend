@@ -21,7 +21,7 @@ export default function useNetworkNavigationItems() {
       return {
         ...network,
         url: url,
-        isActive: appConfig.basePath === network.basePath,
+        isActive: appConfig.network.basePath === network.basePath,
       };
     });
   }, [ currentRoute, currentRouteName, router.query ]);

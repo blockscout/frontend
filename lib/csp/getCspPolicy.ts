@@ -1,4 +1,6 @@
-import availableNetworks from 'lib/networks/availableNetworks';
+import appConfig from 'configs/app/config';
+
+import featuredNetworks from 'lib/networks/featuredNetworks';
 
 const KEY_WORDS = {
   BLOB: 'blob:',
@@ -16,15 +18,13 @@ const MAIN_DOMAINS = [ '*.blockscout.com', 'blockscout.com' ];
 const isDev = process.env.NODE_ENV === 'development';
 
 function getNetworksExternalAssets() {
-  const icons = availableNetworks
+  const icons = featuredNetworks
     .filter(({ icon }) => typeof icon === 'string')
     .map(({ icon }) => new URL(icon as string));
 
-  const logos = availableNetworks
-    .filter(({ logo }) => typeof logo === 'string')
-    .map(({ logo }) => new URL(logo as string));
+  const logo = appConfig.network.logo ? new URL(appConfig.network.logo) : undefined;
 
-  return icons.concat(logos);
+  return logo ? icons.concat(logo) : icons;
 }
 
 function makePolicyMap() {

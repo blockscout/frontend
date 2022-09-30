@@ -14,8 +14,8 @@ type Props = {
   pageParams: PageParams;
 }
 
-const WatchListPage: NextPage<Props> = ({ pageParams }: Props) => {
-  const title = getNetworkTitle(pageParams || {});
+const WatchListPage: NextPage<Props> = () => {
+  const title = getNetworkTitle();
   return (
     <>
       <Head>

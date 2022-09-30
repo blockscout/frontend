@@ -1,3 +1,4 @@
+// todo_tom delete this
 import availableNetworks from 'lib/networks/availableNetworks';
 
 interface Params {

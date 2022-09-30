@@ -1,11 +1,7 @@
-import type { PageParams } from './types';
-
 import getNetworkTitle from 'lib/networks/getNetworkTitle';
 
-export default function getSeo(params?: PageParams) {
-  const networkTitle = getNetworkTitle(params || {});
-
+export default function getSeo() {
   return {
-    title: params ? `${ networkTitle } - BlockScout` : '',
+    title: getNetworkTitle(),
   };
 }

@@ -14,8 +14,8 @@ type Props = {
   pageParams: PageParams;
 }
 
-const TransactionTagsPage: NextPage<Props> = ({ pageParams }: Props) => {
-  const title = getNetworkTitle(pageParams || {});
+const TransactionTagsPage: NextPage<Props> = () => {
+  const title = getNetworkTitle();
   return (
     <>
       <Head><title>{ title }</title></Head>

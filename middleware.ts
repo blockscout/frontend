@@ -21,7 +21,7 @@ export function middleware(req: NextRequest) {
     network_sub_type: networkSubtype,
   };
 
-  if (appConfig.networkType !== networkType && appConfig.networkSubtype !== networkSubtype) {
+  if (appConfig.network.type !== networkType && appConfig.network.subtype !== networkSubtype) {
     const url = req.nextUrl.clone();
     url.pathname = `/404`;
     return NextResponse.rewrite(url);

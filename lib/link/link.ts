@@ -13,7 +13,7 @@ export function link(routeName: RouteName, urlParams?: Record<string, Array<stri
 
   // if we pass network type, we have to get subtype from params too
   // otherwise getting it from config since it is not cross-chain link
-  const networkSubType = typeof urlParams?.network_type === 'string' ? urlParams?.network_sub_type : appConfig.networkSubtype;
+  const networkSubType = typeof urlParams?.network_type === 'string' ? urlParams?.network_sub_type : appConfig.network.subtype;
 
   const path = route.pattern.replace(PATH_PARAM_REGEXP, (_, paramName: string) => {
     if (paramName === 'network_sub_type' && !networkSubType) {
