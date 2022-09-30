@@ -74,6 +74,14 @@ export const ROUTES = {
     pattern: `${ BASE_PATH }/blocks`,
     crossNetworkNavigation: true,
   },
+  blocks_uncles: {
+    pattern: `${ BASE_PATH }/uncles`,
+    crossNetworkNavigation: true,
+  },
+  blocks_reorgs: {
+    pattern: `${ BASE_PATH }/reorgs`,
+    crossNetworkNavigation: true,
+  },
   block_index: {
     pattern: `${ BASE_PATH }/block/[id]`,
   },

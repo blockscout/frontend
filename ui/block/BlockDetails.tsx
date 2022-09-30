@@ -1,4 +1,4 @@
-import { Grid, GridItem, Text, Icon, Link, Stat, StatArrow, Box, Tooltip } from '@chakra-ui/react';
+import { Grid, GridItem, Text, Icon, Link, Box, Tooltip } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
@@ -13,6 +13,7 @@ import useLink from 'lib/link/useLink';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import PrevNext from 'ui/shared/PrevNext';
 import TextSeparator from 'ui/shared/TextSeparator';
@@ -31,8 +32,6 @@ const BlockDetails = () => {
       smooth: true,
     });
   }, []);
-
-  const gasUsedPercentage = Math.round((block.gas_used / block.gas_target - 1) * 100);
 
   const sectionGap = <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>;
 
@@ -109,10 +108,7 @@ const BlockDetails = () => {
       >
         <Text>{ block.gas_used.toLocaleString('en') }</Text>
         <Utilization ml={ 4 } mr={ 5 } colorScheme="gray" value={ block.gas_used / block.gas_limit }/>
-        <Stat>
-          <StatArrow ml={ 1 } type={ gasUsedPercentage >= 0 ? 'increase' : 'decrease' }/>
-          <Text as="span" color={ gasUsedPercentage >= 0 ? 'green.500' : 'red.500' } fontWeight={ 600 }>{ Math.abs(gasUsedPercentage) } % Gas Target</Text>
-        </Stat>
+        <GasUsedToTargetRatio used={ block.gas_used } target={ block.gas_target }/>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Gas limit"
@@ -133,6 +129,11 @@ const BlockDetails = () => {
       >
         <Icon as={ flameIcon } boxSize={ 5 } color="gray.500"/>
         <Text ml={ 1 }>{ block.burnt_fees.toLocaleString('en', { minimumFractionDigits: 18 }) } { network?.currency }</Text>
+        <Tooltip label="Burnt fees / Txn fees * 100%">
+          <Box>
+            <Utilization ml={ 4 } value={ block.burnt_fees / block.reward.tx_fee }/>
+          </Box>
+        </Tooltip>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Extra data"
