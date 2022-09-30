@@ -102,9 +102,12 @@ function makePolicyMap() {
       KEY_WORDS.NONE,
     ],
 
-    'report-uri': [
-      process.env.SENTRY_CSP_REPORT_URI,
-    ],
+    ...(process.env.SENTRY_CSP_REPORT_URI ? {
+      'report-uri': [
+        process.env.SENTRY_CSP_REPORT_URI,
+      ],
+    } : {}),
+
   };
 }
 
