@@ -74,8 +74,11 @@ export const ROUTES = {
     pattern: `${ BASE_PATH }/blocks`,
     crossNetworkNavigation: true,
   },
-  block: {
+  block_index: {
     pattern: `${ BASE_PATH }/block/[id]`,
+  },
+  block_txs: {
+    pattern: `${ BASE_PATH }/block/[id]/transactions`,
   },
 
   // TOKENS

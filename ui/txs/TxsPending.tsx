@@ -3,7 +3,7 @@ import React from 'react';
 import TxsContent from './TxsContent';
 
 const TxsPending = () => {
-  return <TxsContent isPending/>;
+  return <TxsContent showDescription={ false }/>;
 };
 
 export default TxsPending;
