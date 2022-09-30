@@ -1,10 +1,11 @@
 import { Box, Select, VStack } from '@chakra-ui/react';
+import appConfig from 'configs/app/config';
 import capitalize from 'lodash/capitalize';
 import React from 'react';
 
 import type { NetworkGroup } from 'types/networks';
 
-import useNetwork from 'lib/hooks/useNetwork';
+import featuredNetworks from 'lib/networks/featuredNetworks';
 import useNetworkNavigationItems from 'lib/networks/useNetworkNavigationItems';
 
 import NetworkMenuLink from './NetworkMenuLink';
@@ -12,7 +13,7 @@ import NetworkMenuLink from './NetworkMenuLink';
 const TABS: Array<NetworkGroup> = [ 'mainnets', 'testnets', 'other' ];
 
 const NetworkMenuContentMobile = () => {
-  const selectedNetwork = useNetwork();
+  const selectedNetwork = featuredNetworks.find((network) => network.basePath === appConfig.network.basePath);
   const [ selectedTab, setSelectedTab ] = React.useState<NetworkGroup>(TABS.find((tab) => selectedNetwork?.group === tab) || 'mainnets');
   const items = useNetworkNavigationItems();
 
