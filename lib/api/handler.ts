@@ -1,4 +1,3 @@
-import { withSentry } from '@sentry/nextjs';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import fetchFactory from 'lib/api/fetch';
@@ -42,5 +41,5 @@ export default function createHandler(getUrl: (_req: NextApiRequest) => string, 
     res.status(500).json(responseError);
   };
 
-  return withSentry(handler);
+  return handler;
 }

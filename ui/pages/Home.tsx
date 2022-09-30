@@ -1,4 +1,5 @@
 import { VStack, Textarea, Button, Alert, AlertTitle, AlertDescription, Link, Code } from '@chakra-ui/react';
+import * as Sentry from '@sentry/react';
 import { useRouter } from 'next/router';
 import type { ChangeEvent } from 'react';
 import React from 'react';
@@ -21,6 +22,10 @@ const Home = () => {
     const token = cookies.get(cookies.NAMES.API_TOKEN);
     setFormVisibility(Boolean(!token && selectedNetwork?.isAccountSupported));
   }, [ selectedNetwork?.isAccountSupported ]);
+
+  const checkSentry = React.useCallback(() => {
+    Sentry.captureException(new Error('Test error'), { extra: { foo: 'bar' }, tags: { source: 'test' } });
+  }, []);
 
   const handleTokenChange = React.useCallback((event: ChangeEvent<HTMLTextAreaElement>) => {
     setToken(event.target.value);
@@ -50,6 +55,7 @@ const Home = () => {
         <PageTitle text={
           `Home Page for ${ selectedNetwork?.name } network`
         }/>
+        <Button colorScheme="red" onClick={ checkSentry }>Check Sentry</Button>
         { /* will be deleted when we move to new CI */ }
         { isFormVisible && (
           <>

@@ -21,6 +21,8 @@
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@sentry/nextjs": "^7.12.1",
+    "@sentry/react": "^7.13.0",
+    "@sentry/tracing": "^7.13.0",
     "@tanstack/react-query": "^4.0.10",
     "@tanstack/react-query-devtools": "^4.0.10",
     "@types/react-scroll": "^1.8.4",
