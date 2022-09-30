@@ -35,7 +35,7 @@ const NetworkMenuPopup = () => {
                     .filter((network) => network.group === tab)
                     .map((network) => (
                       <NetworkMenuLink
-                        key={ network.name }
+                        key={ network.title }
                         { ...network }
                       />
                     )) }

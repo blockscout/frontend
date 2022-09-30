@@ -30,7 +30,7 @@ const NetworkMenuContentMobile = () => {
           .filter(({ group }) => group === selectedTab)
           .map((network) => (
             <NetworkMenuLink
-              key={ network.name }
+              key={ network.title }
               { ...network }
               isMobile
             />
