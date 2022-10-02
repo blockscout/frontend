@@ -1,6 +1,14 @@
-export type AppCategory = {
-  id: string;
-  name: string;
+export enum MarketplaceCategoryNames {
+  'defi',
+  'exchanges',
+  'finance',
+  'games',
+  'marketplaces',
+  'nft',
+  'security',
+  'social',
+  'tools',
+  'yieldFarming',
 }
 
 export type AppItemPreview = {
@@ -8,10 +16,11 @@ export type AppItemPreview = {
   title: string;
   logo: string;
   shortDescription: string;
-  categories: Array<AppCategory>;
+  categories: Array<keyof typeof MarketplaceCategoryNames>;
 }
 
 export type AppItemOverview = AppItemPreview & {
+  chainId: number;
   author: string;
   url: string;
   description: string;
