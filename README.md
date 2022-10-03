@@ -18,7 +18,7 @@ And of course our premier language is [Typescript](https://www.typescriptlang.or
 For local development please follow next steps:
 - clone repo
 - install dependencies with `yarn`
-- create local env file `env.local` according to `env.example` snapshot (see list of used environment variables [below](#environment-variables))
+- create local env file `.env.local` according to `.env.example` snapshot (see list of used environment variables [below](#environment-variables))
 - run `yarn dev` to spin up local dev server and navigate to the host from logs output
 
 ## Environment variables
