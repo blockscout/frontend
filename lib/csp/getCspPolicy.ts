@@ -13,9 +13,7 @@ const KEY_WORDS = {
   UNSAFE_EVAL: '\'unsafe-eval\'',
 };
 
-const MAIN_DOMAINS = [ '*.blockscout.com', 'blockscout.com' ];
-
-const isDev = process.env.NODE_ENV === 'development';
+const MAIN_DOMAINS = [ `*.${ appConfig.host }`, appConfig.host ];
 
 function getNetworksExternalAssets() {
   const icons = featuredNetworks
@@ -39,7 +37,7 @@ function makePolicyMap() {
       KEY_WORDS.SELF,
 
       // webpack hmr in safari doesn't recognize localhost as 'self' for some reason
-      isDev ? 'ws://localhost:3000/_next/webpack-hmr' : '',
+      appConfig.isDev ? 'ws://localhost:3000/_next/webpack-hmr' : '',
 
       // client error monitoring
       'sentry.io', '*.sentry.io',
@@ -50,7 +48,7 @@ function makePolicyMap() {
 
       // next.js generates and rebuilds source maps in dev using eval()
       // https://github.com/vercel/next.js/issues/14221#issuecomment-657258278
-      isDev ? KEY_WORDS.UNSAFE_EVAL : '',
+      appConfig.isDev ? KEY_WORDS.UNSAFE_EVAL : '',
 
       ...MAIN_DOMAINS,
 

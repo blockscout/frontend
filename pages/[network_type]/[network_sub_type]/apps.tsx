@@ -17,3 +17,6 @@ const AppsPage = () => {
 };
 
 export default AppsPage;
+
+export { getStaticPaths } from 'lib/next/getStaticPaths';
+export { getStaticProps } from 'lib/next/getStaticProps';

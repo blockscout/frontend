@@ -30,7 +30,7 @@ export function link(routeName: RouteName, urlParams?: Record<string, Array<stri
     return paramValue ? `/${ paramValue }` : '';
   });
 
-  const url = new URL(path, appConfig.domain);
+  const url = new URL(path, appConfig.baseUrl);
 
   queryParams && Object.entries(queryParams).forEach(([ key, value ]) => {
     url.searchParams.append(key, value);
