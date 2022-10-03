@@ -26,5 +26,5 @@ const CustomAbiPage: NextPage<Props> = () => {
 
 export default CustomAbiPage;
 
-export { getStaticPaths } from 'lib/next/account/getStaticPaths';
+export { getStaticPaths } from 'lib/next/getStaticPaths';
 export { getStaticProps } from 'lib/next/getStaticProps';

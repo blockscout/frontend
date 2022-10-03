@@ -26,5 +26,5 @@ const PublicTagsPage: NextPage<Props> = () => {
 
 export default PublicTagsPage;
 
-export { getStaticPaths } from 'lib/next/account/getStaticPaths';
+export { getStaticPaths } from 'lib/next/getStaticPaths';
 export { getStaticProps } from 'lib/next/getStaticProps';

@@ -26,5 +26,5 @@ const AddressTagsPage: NextPage<Props> = () => {
 
 export default AddressTagsPage;
 
-export { getStaticPaths } from 'lib/next/account/getStaticPaths';
+export { getStaticPaths } from 'lib/next/getStaticPaths';
 export { getStaticProps } from 'lib/next/getStaticProps';

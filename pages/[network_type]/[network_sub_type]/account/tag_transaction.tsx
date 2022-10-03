@@ -26,5 +26,5 @@ const TransactionTagsPage: NextPage<Props> = () => {
 
 export default TransactionTagsPage;
 
-export { getStaticPaths } from 'lib/next/account/getStaticPaths';
+export { getStaticPaths } from 'lib/next/getStaticPaths';
 export { getStaticProps } from 'lib/next/getStaticProps';

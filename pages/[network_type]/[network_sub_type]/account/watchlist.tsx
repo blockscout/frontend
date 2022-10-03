@@ -28,5 +28,5 @@ const WatchListPage: NextPage<Props> = () => {
 
 export default WatchListPage;
 
-export { getStaticPaths } from 'lib/next/account/getStaticPaths';
+export { getStaticPaths } from 'lib/next/getStaticPaths';
 export { getStaticProps } from 'lib/next/getStaticProps';

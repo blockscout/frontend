@@ -17,5 +17,5 @@ const BlockPage: NextPage<Props> = ({ pageParams }: Props) => {
 
 export default BlockPage;
 
-export { getStaticPaths } from 'lib/next/block/getStaticPaths';
+export { getStaticPaths } from 'lib/next/getStaticPaths';
 export { getStaticProps } from 'lib/next/getStaticProps';
