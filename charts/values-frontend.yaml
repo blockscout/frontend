@@ -34,6 +34,8 @@ environment: {}
     _default: https://duneanalytics.com/maxaleks/xdai-staking
   NEXT_PUBLIC_SUPPORTED_NETWORKS:
     _default: [{"name":"Gnosis Chain","type":"xdai","subType":"mainnet","group":"mainnets","isAccountSupported":true, "chainId": 100},{"name":"Optimism on Gnosis Chain","shortName":"OoG","type":"xdai","subType":"optimism","group":"mainnets","icon":"https://www.fillmurray.com/60/60", "chainId": 300},{"name":"Arbitrum on xDai","type":"xdai","subType":"aox","group":"mainnets", "chainId": 200},{"name":"Ethereum","shortName":"ETH","type":"eth","subType":"mainnet","group":"mainnets", "chainId": 1},{"name":"Ethereum Classic","shortName":"ETC","type":"etc","subType":"mainnet","group":"mainnets", "chainId": 61},{"name":"POA","shortName":"POA","type":"poa","subType":"core","group":"mainnets","isAccountSupported":true, "chainId": 99},{"name":"RSK","shortName":"RBTC","type":"rsk","subType":"mainnet","group":"mainnets", "chainId": 30},{"name":"Gnosis Chain Testnet","type":"xdai","subType":"testnet","group":"testnets"},{"name":"POA Sokol","shortName":"POA","type":"poa","subType":"sokol","group":"testnets", "chainId": 77},{"name":"ARTIS Σ1","type":"artis","subType":"sigma1","group":"other", "chainId": 246529},{"name":"LUKSO L14","shortName":"POA","type":"lukso","subType":"l14","group":"other", "chainId": 22}]
+  NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM:
+    _default: https://airtable.com/shrqUAcjgGJ4jU88C
 
 global:
   env: test
