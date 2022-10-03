@@ -9,6 +9,7 @@
   },
   "scripts": {
     "dev": "next dev",
+    "dev:poa_core": "./node_modules/.bin/dotenv -e ./configs/envs/.env.poa_core -e ./configs/envs/.env.common yarn dev",
     "build": "next build",
     "start": "next start",
     "lint:eslint": "./node_modules/.bin/eslint . --ext .js,.jsx,.ts,.tsx",
@@ -46,6 +47,7 @@
     "@types/react": "18.0.9",
     "@types/react-dom": "18.0.5",
     "@typescript-eslint/eslint-plugin": "^5.27.0",
+    "dotenv-cli": "^6.0.0",
     "eslint": "8.16.0",
     "eslint-config-next": "^12.3.0",
     "eslint-plugin-es5": "^1.5.0",

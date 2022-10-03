@@ -89,7 +89,7 @@ const ICONS: Record<string, React.FunctionComponent<React.SVGAttributes<SVGEleme
 //     basePath: '/astar',
 //     group: 'other',
 //   },
-// ]);
+// ]).replaceAll('"', '\'');
 
 function parseNetworkConfig() {
   try {
