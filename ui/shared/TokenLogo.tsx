@@ -11,7 +11,13 @@ interface Props {
 }
 
 const TokenLogo = ({ hash, name, className }: Props) => {
-  const logoSrc = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${ appConfig.network.assetsPathname }/assets/${ hash }/logo.png`;
+  const logoSrc = `
+    https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/
+    ${ appConfig.network.assetsPathname || appConfig.network.type }
+    /assets/
+    ${ hash }
+    /logo.png
+  `;
 
   return <Image className={ className } src={ logoSrc } alt={ `${ name || 'token' } logo` } fallback={ <EmptyElement/> }/>;
 };

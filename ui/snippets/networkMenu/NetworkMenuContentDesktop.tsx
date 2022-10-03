@@ -1,5 +1,4 @@
 import { PopoverContent, PopoverBody, Text, Tabs, TabList, TabPanels, TabPanel, Tab, VStack } from '@chakra-ui/react';
-import appConfig from 'configs/app/config';
 import React from 'react';
 
 import type { NetworkGroup } from 'types/networks';
@@ -14,7 +13,7 @@ const availableTabs = TABS.filter((tab) => featuredNetworks.some(({ group }) => 
 
 const NetworkMenuPopup = () => {
   const items = useNetworkNavigationItems();
-  const selectedNetwork = featuredNetworks.find((network) => network.basePath === appConfig.network.basePath);
+  const selectedNetwork = items.find(({ isActive }) => isActive);
   const selectedTab = availableTabs.findIndex((tab) => selectedNetwork?.group === tab);
 
   return (
