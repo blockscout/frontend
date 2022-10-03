@@ -28,9 +28,9 @@ const TxsTable = ({ txs, sort, sorting }: Props) => {
             <Th width="18%">Txn hash</Th>
             <Th width="15%">Method</Th>
             <Th width="11%">Block</Th>
-            <Th width={{ xl: '128px', base: '58px' }}>From</Th>
+            <Th width={{ xl: '128px', base: '66px' }}>From</Th>
             <Th width={{ xl: '36px', base: '0' }}></Th>
-            <Th width={{ xl: '128px', base: '58px' }}>To</Th>
+            <Th width={{ xl: '128px', base: '66px' }}>To</Th>
             <Th width="18%" isNumeric>
               <Link onClick={ sort('val') } display="flex" justifyContent="end">
                 { sorting === 'val-asc' && <Icon boxSize={ 5 } as={ rightArrowIcon } transform="rotate(-90deg)"/> }

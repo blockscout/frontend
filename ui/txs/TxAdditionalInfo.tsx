@@ -5,6 +5,7 @@ import type ArrayElement from 'types/utils/ArrayElement';
 
 import type { txs } from 'data/txs';
 import useNetwork from 'lib/hooks/useNetwork';
+import { nbsp } from 'lib/html-entities';
 import useLink from 'lib/link/useLink';
 import TextSeparator from 'ui/shared/TextSeparator';
 import Utilization from 'ui/shared/Utilization';
@@ -23,6 +24,7 @@ const TxAdditionalInfo = ({ tx }: { tx: ArrayElement<typeof txs> }) => {
     color: 'gray.500',
     fontWeight: 600,
     marginBottom: 3,
+    fontSize: 'sm',
   };
 
   const link = useLink();
@@ -33,7 +35,7 @@ const TxAdditionalInfo = ({ tx }: { tx: ArrayElement<typeof txs> }) => {
       <Box { ...sectionProps } mb={ 4 }>
         <Text { ...sectionTitleProps }>Transaction fee</Text>
         <Flex>
-          <Text>{ tx.fee.value } { selectedNetwork?.currency }</Text>
+          <Text>{ tx.fee.value }{ nbsp }{ selectedNetwork?.currency }</Text>
           <Text variant="secondary" ml={ 1 }>(${ tx.fee.value_usd.toFixed(2) })</Text>
         </Flex>
       </Box>
@@ -66,7 +68,7 @@ const TxAdditionalInfo = ({ tx }: { tx: ArrayElement<typeof txs> }) => {
         <Box>
           <Text as="span" fontWeight="500">Txn type: </Text>
           <Text fontWeight="600" as="span">{ tx.type.value }</Text>
-          <Text fontWeight="400" as="span" ml={ 1 }>({ tx.type.eip })</Text>
+          <Text fontWeight="400" as="span" ml={ 1 } color="gray.500">({ tx.type.eip })</Text>
         </Box>
         <Box>
           <Text as="span" fontWeight="500">Nonce: </Text>
@@ -77,7 +79,7 @@ const TxAdditionalInfo = ({ tx }: { tx: ArrayElement<typeof txs> }) => {
           <Text fontWeight="600" as="span">{ tx.position }</Text>
         </Box>
       </Box>
-      <Link href={ link('tx_index', { id: tx.hash }) }>More details</Link>
+      <Link fontSize="sm" href={ link('tx_index', { id: tx.hash }) }>More details</Link>
     </>
   );
 };
