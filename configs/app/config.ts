@@ -1,6 +1,12 @@
 /* eslint-disable no-restricted-properties */
 const env = process.env.VERCEL_ENV || process.env.NODE_ENV;
 const isDev = env === 'development';
+const baseUrl = [
+  process.env.NEXT_PUBLIC_APP_PROTOCOL || 'https',
+  '://',
+  process.env.NEXT_PUBLIC_APP_HOST,
+  process.env.NEXT_PUBLIC_APP_PORT ? ':' + process.env.NEXT_PUBLIC_APP_PORT : '',
+].join('');
 
 const config = Object.freeze({
   env,
@@ -29,12 +35,8 @@ const config = Object.freeze({
   protocol: process.env.NEXT_PUBLIC_APP_PROTOCOL,
   host: process.env.NEXT_PUBLIC_APP_HOST,
   port: process.env.NEXT_PUBLIC_APP_PORT,
-  baseUrl: [
-    process.env.NEXT_PUBLIC_APP_PROTOCOL || 'https',
-    '://',
-    process.env.NEXT_PUBLIC_APP_HOST,
-    process.env.NEXT_PUBLIC_APP_PORT ? ':' + process.env.NEXT_PUBLIC_APP_PORT : '',
-  ].join(''),
+  baseUrl,
+  apiEndpoint: process.env.NEXT_PUBLIC_API_ENDPOINT || baseUrl,
 });
 
 export default config;

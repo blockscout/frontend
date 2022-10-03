@@ -54,6 +54,7 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_APP_PROTOCOL | `http \| https` *(optional)* | App protocol (`https` used as default value) | `https` |
 | NEXT_PUBLIC_APP_HOST | `string` | App host | `blockscout.com` |
 | NEXT_PUBLIC_APP_PORT | `number` *(optional)* | Port where app is running. Have to be provided if it is different to default port | `3000` |
+| NEXT_PUBLIC_API_ENDPOINT | `string` *(optional)* | By default the API endpoint base URL will be set up the same value as frontend app host. If it is not the case, pass the API endpoint base URL in this variable  | `https://blockscout.com` |
 | NEXT_PUBLIC_SENTRY_DSN | `string` *(optional)* | Client key for your Senty.io app | `<secret>` |
 | SENTRY_CSP_REPORT_URI | `string` *(optional)* | URL for sending CSP-reports to your Senty.io app | `<secret>` |
 
