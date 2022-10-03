@@ -4,6 +4,7 @@ const RESTRICTED_MODULES = {
     { name: '@chakra-ui/icons', message: 'Using @chakra-ui/icons is prohibited. Please use regular svg-icon instead (see examples in "icons/" folder)' },
   ],
 };
+
 module.exports = {
   env: {
     es6: true,
@@ -202,6 +203,12 @@ module.exports = {
     ],
 
     'no-restricted-imports': [ 'error', RESTRICTED_MODULES ],
+    'no-restricted-properties': [ 2, {
+      object: 'process',
+      property: 'env',
+      // FIXME: restrict the rule only NEXT_PUBLIC variables
+      message: 'Please use configs/app/config.ts to import any NEXT_PUBLIC environment variables. For other properties please disable this rule for a while.',
+    } ],
 
     'react/jsx-key': 'error',
     'react/jsx-no-bind': [ 'error', {
@@ -273,6 +280,13 @@ module.exports = {
       files: [ '*.js', '*.jsx' ],
       rules: {
         '@typescript-eslint/no-var-requires': 'off',
+      },
+    },
+    {
+      files: [ 'configs/**/*.js', 'configs/**/*.ts' ],
+      rules: {
+        // for configs allow to consume env variables from process.env directly
+        'no-restricted-properties': [ 0 ],
       },
     },
   ],

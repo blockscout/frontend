@@ -14,6 +14,8 @@ const KEY_WORDS = {
 };
 
 const MAIN_DOMAINS = [ `*.${ appConfig.host }`, appConfig.host ];
+// eslint-disable-next-line no-restricted-properties
+const REPORT_URI = process.env.SENTRY_CSP_REPORT_URI;
 
 function getNetworksExternalAssets() {
   const icons = featuredNetworks
@@ -100,9 +102,9 @@ function makePolicyMap() {
       KEY_WORDS.NONE,
     ],
 
-    ...(process.env.SENTRY_CSP_REPORT_URI ? {
+    ...(REPORT_URI ? {
       'report-uri': [
-        process.env.SENTRY_CSP_REPORT_URI,
+        REPORT_URI,
       ],
     } : {}),
 

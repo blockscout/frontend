@@ -3,6 +3,8 @@ export interface Route {
   crossNetworkNavigation?: boolean; // route will not change when switching networks
 }
 
+import appConfig from 'configs/app/config';
+
 export type RouteName = keyof typeof ROUTES;
 
 const BASE_PATH = '/[network_type]/[network_sub_type]';
@@ -132,6 +134,6 @@ function checkRoutes(route: Record<string, Route>) {
   return route;
 }
 
-if (process.env.NODE_ENV === 'development') {
+if (appConfig.isDev) {
   checkRoutes(ROUTES);
 }

@@ -1,3 +1,5 @@
+import appConfig from 'configs/app/config';
+
 import type { FeaturedNetwork } from 'types/networks';
 
 import arbitrumIcon from 'icons/networks/icons/arbitrum.svg';
@@ -89,11 +91,9 @@ const ICONS: Record<string, React.FunctionComponent<React.SVGAttributes<SVGEleme
 //   },
 // ]);
 
-const CONFIG_VALUE = process.env.NEXT_PUBLIC_FEATURED_NETWORKS?.replaceAll('\'', '"');
-
 function parseNetworkConfig() {
   try {
-    return JSON.parse(CONFIG_VALUE || '[]');
+    return JSON.parse(appConfig.featuredNetworks || '[]');
   } catch (error) {
     return [];
   }

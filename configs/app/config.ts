@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-properties */
 const env = process.env.VERCEL_ENV || process.env.NODE_ENV;
 const isDev = env === 'development';
 
@@ -16,6 +17,14 @@ const config = Object.freeze({
     nativeTokenAddress: process.env.NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS,
     basePath: '/' + [ process.env.NEXT_PUBLIC_NETWORK_TYPE, process.env.NEXT_PUBLIC_NETWORK_SUBTYPE ].filter(Boolean).join('/'),
   },
+  footerLinks: {
+    github: process.env.NEXT_PUBLIC_FOOTER_GITHUB_LINK,
+    twitter: process.env.NEXT_PUBLIC_FOOTER_TWITTER_LINK,
+    telegram: process.env.NEXT_PUBLIC_FOOTER_TELEGRAM_LINK,
+    staking: process.env.NEXT_PUBLIC_FOOTER_STAKING_LINK,
+  },
+  featuredNetworks: process.env.NEXT_PUBLIC_FEATURED_NETWORKS?.replaceAll('\'', '"'),
+  blockScoutVersion: process.env.NEXT_PUBLIC_BLOCKSCOUT_VERSION,
   isAccountSupported: process.env.NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED?.replaceAll('\'', '"') === 'true',
   protocol: process.env.NEXT_PUBLIC_APP_PROTOCOL,
   host: process.env.NEXT_PUBLIC_APP_HOST,
