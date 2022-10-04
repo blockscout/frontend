@@ -1,4 +1,4 @@
-import { AccordionItem, AccordionButton, AccordionIcon, Button, Flex, Text, Link, StatArrow, Stat, AccordionPanel } from '@chakra-ui/react';
+import { AccordionItem, AccordionButton, AccordionIcon, Button, Box, Flex, Text, Link, StatArrow, Stat, AccordionPanel } from '@chakra-ui/react';
 import React from 'react';
 
 import type ArrayElement from 'types/utils/ArrayElement';
@@ -10,7 +10,6 @@ import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
-import TextSeparator from 'ui/shared/TextSeparator';
 
 import TxStateStorageItem from './TxStateStorageItem';
 
@@ -23,18 +22,14 @@ const TxStateListItem = ({ storage, address, miner, after, before, diff }: Props
 
   return (
     <AccountListItemMobile>
-      <AccordionItem isDisabled={ !hasStorageData } border={ 0 } w="100%" display="flex" flexDirection="column" rowGap={ 3 }>
+      <AccordionItem isDisabled={ !hasStorageData } border={ 0 } w="100%" display="flex" flexDirection="column">
         { ({ isExpanded }) => (
           <>
-            <Flex>
-              <Address flexGrow={ 1 }>
-                <AddressIcon hash={ address }/>
-                <AddressLink hash={ address } fontWeight="500" ml={ 2 }/>
-              </Address>
+            <Flex mb={ 6 }>
               <AccordionButton
                 _hover={{ background: 'unset' }}
                 padding="0"
-                ml={ 4 }
+                mr={ 5 }
                 w="auto"
               >
                 <Button
@@ -54,36 +49,47 @@ const TxStateListItem = ({ storage, address, miner, after, before, diff }: Props
                 </Button>
                 <AccordionIcon color="blue.600" width="30px"/>
               </AccordionButton>
-            </Flex>
-            <Flex rowGap={ 2 } flexDir="column" fontSize="sm">
-              <Text fontWeight={ 600 }>Miner</Text>
-              <Link>{ miner }</Link>
-            </Flex>
-            <Flex rowGap={ 2 } flexDir="column" fontSize="sm">
-              <Text fontWeight={ 600 }>Before</Text>
-              <Flex>
-                <Text>{ before.balance } { selectedNetwork?.currency }</Text>
-                <TextSeparator/>
-                { typeof before.nonce !== 'undefined' && <Text>Nonce:{ nbsp }{ before.nonce }</Text> }
-              </Flex>
-            </Flex>
-            <Flex rowGap={ 2 } flexDir="column" fontSize="sm">
-              <Text fontWeight={ 600 }>After</Text>
-              <Text>{ after.balance } { selectedNetwork?.currency }</Text>
-              { typeof after.nonce !== 'undefined' && <Text>Nonce:{ nbsp }{ after.nonce }</Text> }
-            </Flex>
-            <Flex rowGap={ 2 } flexDir="column" fontSize="sm">
-              <Text fontWeight={ 600 }>State difference</Text>
-              <Stat>
-                { diff } { selectedNetwork?.currency }
-                <StatArrow ml={ 2 } type={ Number(diff) > 0 ? 'increase' : 'decrease' }/>
-              </Stat>
+              <Address flexGrow={ 1 }>
+                <AddressIcon hash={ address }/>
+                <AddressLink hash={ address } ml={ 2 }/>
+              </Address>
             </Flex>
             { hasStorageData && (
               <AccordionPanel fontWeight={ 500 } p={ 0 }>
                 { storage?.map((storageItem, index) => <TxStateStorageItem key={ index } storageItem={ storageItem }/>) }
               </AccordionPanel>
             ) }
+            <Flex rowGap={ 2 } flexDir="column" fontSize="sm" whiteSpace="pre" fontWeight={ 500 }>
+              <Box>
+                <Text as="span">Miner </Text>
+                <Link>{ miner }</Link>
+              </Box>
+              <Box>
+                <Text as="span">Before { selectedNetwork?.currency } </Text>
+                <Text as="span" variant="secondary">{ before.balance }</Text>
+              </Box>
+              { typeof before.nonce !== 'undefined' && (
+                <Box>
+                  <Text as="span">Nonce:</Text>
+                  <Text as="span" fontWeight={ 600 }>{ nbsp }{ before.nonce }</Text>
+                </Box>
+              ) }
+              <Box>
+                <Text as="span">After { selectedNetwork?.currency } </Text>
+                <Text as="span" variant="secondary">{ after.balance }</Text>
+              </Box>
+              { typeof after.nonce !== 'undefined' && (
+                <Box>
+                  <Text as="span">Nonce:</Text>
+                  <Text as="span" fontWeight={ 600 }>{ nbsp }{ after.nonce }</Text>
+                </Box>
+              ) }
+              <Text>State difference { selectedNetwork?.currency }</Text>
+              <Stat>
+                { diff }
+                <StatArrow ml={ 2 } type={ Number(diff) > 0 ? 'increase' : 'decrease' }/>
+              </Stat>
+            </Flex>
           </>
         ) }
       </AccordionItem>
