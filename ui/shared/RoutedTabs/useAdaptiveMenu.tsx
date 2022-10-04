@@ -1,22 +1,25 @@
+import { useDisclosure } from '@chakra-ui/react';
 import _debounce from 'lodash/debounce';
 import React from 'react';
 
 import { menuButton } from './utils';
 
-export default function useAdaptiveTabs<T>(tabs: Array<T>, disabled?: boolean) {
+export default function useAdaptiveMenu<T>(items: Array<T>, disabled?: boolean) {
   // to avoid flickering we set initial value to 0
-  // so there will be no displayed tabs initially
-  const [ tabsCut, setTabsCut ] = React.useState(disabled ? tabs.length : 0);
-  const [ tabsRefs, setTabsRefs ] = React.useState<Array<React.RefObject<HTMLButtonElement>>>([]);
+  // so there will be no displayed items initially
+  const [ itemsCut, setItemsCut ] = React.useState(disabled ? items.length : 0);
+  const [ itemsRefs, setItemsRefs ] = React.useState<Array<React.RefObject<HTMLButtonElement>>>([]);
   const listRef = React.useRef<HTMLDivElement>(null);
+
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   const calculateCut = React.useCallback(() => {
     const listWidth = listRef.current?.getBoundingClientRect().width;
-    const tabWidths = tabsRefs.map((tab) => tab.current?.getBoundingClientRect().width);
+    const tabWidths = itemsRefs.map((tab) => tab.current?.getBoundingClientRect().width);
     const menuWidth = tabWidths.at(-1);
 
     if (!listWidth || !menuWidth) {
-      return tabs.length;
+      return items.length;
     }
 
     const { visibleNum } = tabWidths.slice(0, -1).reduce((result, item, index) => {
@@ -36,35 +39,35 @@ export default function useAdaptiveTabs<T>(tabs: Array<T>, disabled?: boolean) {
     }, { visibleNum: 0, accWidth: 0 });
 
     return visibleNum;
-  }, [ tabs.length, tabsRefs ]);
+  }, [ items.length, itemsRefs ]);
 
-  const tabsList = React.useMemo(() => {
+  const itemsList = React.useMemo(() => {
     if (disabled) {
-      return tabs;
+      return items;
     }
 
-    return [ ...tabs, menuButton ];
-  }, [ tabs, disabled ]);
+    return [ ...items, menuButton ];
+  }, [ items, disabled ]);
 
   React.useEffect(() => {
-    setTabsRefs(disabled ? [] : tabsList.map((_, index) => tabsRefs[index] || React.createRef()));
-  // update refs only when disabled prop changes
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    setItemsRefs(disabled ? [] : itemsList.map((_, index) => itemsRefs[index] || React.createRef()));
+    // update refs only when disabled prop changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ disabled ]);
 
   React.useEffect(() => {
-    if (tabsRefs.length > 0) {
-      setTabsCut(calculateCut());
+    if (itemsRefs.length > 0) {
+      setItemsCut(calculateCut());
     }
-  }, [ calculateCut, tabsRefs ]);
+  }, [ calculateCut, itemsRefs ]);
 
   React.useEffect(() => {
-    if (tabsRefs.length === 0) {
+    if (itemsRefs.length === 0) {
       return;
     }
 
     const resizeHandler = _debounce(() => {
-      setTabsCut(calculateCut());
+      setItemsCut(calculateCut());
     }, 100);
     const resizeObserver = new ResizeObserver(resizeHandler);
 
@@ -72,14 +75,17 @@ export default function useAdaptiveTabs<T>(tabs: Array<T>, disabled?: boolean) {
     return function cleanup() {
       resizeObserver.unobserve(document.body);
     };
-  }, [ calculateCut, tabsRefs.length ]);
+  }, [ calculateCut, itemsRefs.length ]);
 
   return React.useMemo(() => {
     return {
-      tabsCut,
-      tabsList,
-      tabsRefs,
+      itemsCut,
+      itemsList,
+      itemsRefs,
       listRef,
+      isMenuOpen: isOpen,
+      onMenuOpen: onOpen,
+      onMenuClose: onClose,
     };
-  }, [ tabsList, tabsCut, tabsRefs, listRef ]);
+  }, [ itemsCut, itemsList, itemsRefs, isOpen, onOpen, onClose ]);
 }

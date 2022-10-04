@@ -19,6 +19,7 @@ const Apps = () => {
   const [ defaultAppList, setDefaultAppList ] = useState<Array<AppItemOverview>>();
   const [ displayedApps, setDisplayedApps ] = useState<Array<AppItemOverview>>([]);
   const [ displayedAppId, setDisplayedAppId ] = useState<string | null>(null);
+  const [ selectedCategory, setSelectedCategory ] = useState<string>('');
 
   const showAppInfo = useCallback((id: string) => {
     setDisplayedAppId(id);
@@ -50,7 +51,7 @@ const Apps = () => {
 
   return (
     <>
-      <Categories/>
+      <Categories onCategoryChange={ setSelectedCategory } selectedCategory={ selectedCategory }/>
 
       <FilterInput onChange={ debounceFilterApps } marginBottom={{ base: '4', lg: '6' }} placeholder="Find app"/>
 

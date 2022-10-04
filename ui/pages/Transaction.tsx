@@ -44,7 +44,7 @@ const TransactionPageContent = ({ tab }: Props) => {
         <ExternalLink title="Open in Etherscan" href="#"/>
       </Flex>
       <RoutedTabs
-        tabs={ TABS }
+        tabs={ [ ...TABS, ...TABS, ...TABS, ...TABS, ...TABS ] }
         defaultActiveTab={ tab }
       />
     </Page>

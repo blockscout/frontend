@@ -1,11 +1,4 @@
-import {
-  Tab,
-  Tabs,
-  TabList,
-  TabPanel,
-  TabPanels,
-} from '@chakra-ui/react';
-import type { StyleProps } from '@chakra-ui/styled-system';
+import { Button, Tab, TabList, TabPanel, TabPanels, Tabs, visuallyHiddenStyle } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -14,15 +7,8 @@ import type { RoutedTab } from './types';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { link } from 'lib/link/link';
 
-import RoutedTabsMenu from './RoutedTabsMenu';
-import useAdaptiveTabs from './useAdaptiveTabs';
-
-const hiddenItemStyles: StyleProps = {
-  position: 'absolute',
-  top: '-9999px',
-  left: '-9999px',
-  visibility: 'hidden',
-};
+import ButtonMenu from '../ButtonMenu';
+import useAdaptiveMenu from './useAdaptiveMenu';
 
 interface Props {
   tabs: Array<RoutedTab>;
@@ -31,12 +17,20 @@ interface Props {
 
 const RoutedTabs = ({ tabs, defaultActiveTab }: Props) => {
   const defaultIndex = tabs.findIndex(({ routeName }) => routeName === defaultActiveTab);
-  const isMobile = useIsMobile();
 
   const [ activeTab ] = React.useState<number>(defaultIndex);
-  const { tabsCut, tabsList, tabsRefs, listRef } = useAdaptiveTabs(tabs, isMobile);
 
   const router = useRouter();
+  const isMobile = useIsMobile();
+  const {
+    itemsCut,
+    itemsList,
+    itemsRefs,
+    listRef,
+    isMenuOpen,
+    onMenuOpen,
+    onMenuClose,
+  } = useAdaptiveMenu(tabs, isMobile);
 
   const handleTabChange = React.useCallback((index: number) => {
     const nextTab = tabs[index];
@@ -46,6 +40,14 @@ const RoutedTabs = ({ tabs, defaultActiveTab }: Props) => {
       router.push(newUrl, undefined, { shallow: true });
     }
   }, [ tabs, router ]);
+
+  const handleMenuItemClick = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+    onMenuClose();
+    const tabIndex = (event.target as HTMLButtonElement).getAttribute('data-index');
+    if (tabIndex) {
+      handleTabChange(itemsCut + Number(tabIndex));
+    }
+  }, [ onMenuClose, handleTabChange, itemsCut ]);
 
   return (
     <Tabs variant="soft-rounded" colorScheme="blue" isLazy onChange={ handleTabChange } index={ activeTab }>
@@ -67,34 +69,47 @@ const RoutedTabs = ({ tabs, defaultActiveTab }: Props) => {
           'scrollbar-width': 'none', /* Firefox */
         }}
       >
-        { tabsList.map((tab, index) => {
+        { itemsList.map((tab, index) => {
           if (!tab.routeName) {
             return (
-              <RoutedTabsMenu
+              <ButtonMenu
+                isOpen={ isMenuOpen }
+                onOpen={ onMenuOpen }
+                onClose={ onMenuClose }
                 key="menu"
-                tabs={ tabs }
-                activeTab={ tabs[activeTab] }
-                tabsCut={ tabsCut }
-                isActive={ activeTab >= tabsCut }
-                styles={ tabsCut < tabs.length ?
-                  // initially our cut is 0 and we don't want to show the menu button too
-                  // but we want to keep it in the tabs row so it won't collapse
-                  // that's why we only change opacity but not the position itself
-                  { opacity: tabsCut === 0 ? 0 : 1 } :
-                  hiddenItemStyles
+                isActive={ activeTab >= itemsCut }
+                isTransparent={ itemsCut === 0 }
+                styles={ itemsCut < tabs.length ?
+                // initially our cut is 0 and we don't want to show the menu button too
+                // but we want to keep it in the tabs row so it won't collapse
+                // that's why we only change opacity but not the position itself
+                  { opacity: itemsCut === 0 ? 0 : 1 } :
+                  visuallyHiddenStyle
                 }
-                onItemClick={ handleTabChange }
-                buttonRef={ tabsRefs[index] }
-              />
+                buttonRef={ itemsRefs[index] }
+              >
+                { tabs.slice(itemsCut).map((tab, index) => (
+                  <Button
+                    key={ tab.routeName }
+                    variant="ghost"
+                    onClick={ handleMenuItemClick }
+                    isActive={ tabs[activeTab].routeName === tab.routeName }
+                    justifyContent="left"
+                    data-index={ index }
+                  >
+                    { tab.title }
+                  </Button>
+                )) }
+              </ButtonMenu>
             );
           }
 
           return (
             <Tab
               key={ tab.routeName }
-              ref={ tabsRefs[index] }
-              { ...(index < tabsCut ? {} : hiddenItemStyles) }
+              ref={ itemsRefs[index] }
               scrollSnapAlign="start"
+              { ...(index < itemsCut ? {} : { css: { ...visuallyHiddenStyle } }) }
             >
               { tab.title }
             </Tab>
@@ -102,7 +117,7 @@ const RoutedTabs = ({ tabs, defaultActiveTab }: Props) => {
         }) }
       </TabList>
       <TabPanels>
-        { tabsList.map((tab) => <TabPanel padding={ 0 } key={ tab.routeName }>{ tab.component }</TabPanel>) }
+        { itemsList.map((tab) => <TabPanel padding={ 0 } key={ tab.routeName }>{ tab.component }</TabPanel>) }
       </TabPanels>
     </Tabs>
   );
