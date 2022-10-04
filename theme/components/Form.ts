@@ -1,151 +1,82 @@
 import { formAnatomy as parts } from '@chakra-ui/anatomy';
-import {
-  createMultiStyleConfigHelpers,
-} from '@chakra-ui/styled-system';
+import { createMultiStyleConfigHelpers } from '@chakra-ui/styled-system';
+import type { StyleFunctionProps } from '@chakra-ui/theme-tools';
 import { getColor, mode } from '@chakra-ui/theme-tools';
-import type { Dict } from '@chakra-ui/utils';
 
 import getDefaultFormColors from '../utils/getDefaultFormColors';
+import FormLabel from './FormLabel';
+import Input from './Input';
+import Textarea from './Textarea';
 
 const { definePartsStyle, defineMultiStyleConfig } =
   createMultiStyleConfigHelpers(parts.keys);
 
-const getActiveLabelStyles = (theme: Dict, fc: string, bc: string, size: 'md' | 'lg') => {
-  const baseStyles = {
-    backgroundColor: bc,
-    color: getColor(theme, fc),
-    fontSize: 'xs',
-    lineHeight: '16px',
-    borderTopRightRadius: 'none',
-  };
-
-  switch (size) {
-    case 'md': {
-      return {
-        ...baseStyles,
-        padding: '10px 16px 2px 16px',
-      };
-    }
-
-    case 'lg': {
-      return {
-        ...baseStyles,
-        padding: '16px 24px 2px 24px',
-      };
-    }
-  }
-};
-
-const getDefaultLabelStyles = (size: 'md' | 'lg') => {
-  switch (size) {
-    case 'md': {
-      return {
-        fontSize: 'md',
-        lineHeight: '20px',
-        padding: '18px 16px',
-        right: '18px',
-      };
-    }
-
-    case 'lg': {
-      return {
-        fontSize: 'md',
-        lineHeight: '24px',
-        padding: '28px 24px',
-        right: '26px',
-      };
-    }
-  }
-};
-
-const getPaddingX = (size: 'md' | 'lg') => {
-  switch (size) {
-    case 'md': {
-      return '16px';
-    }
-
-    case 'lg': {
-      return '24px';
-    }
-  }
-};
-
-const getActiveInputStyles = (size: 'md' | 'lg') => {
-  switch (size) {
-    case 'md': {
-      return {
-        paddingTop: '26px',
-        paddingBottom: '10px',
-      };
-    }
-
-    case 'lg': {
-      return {
-        paddingTop: '38px',
-        paddingBottom: '18px',
-      };
-    }
-  }
-};
-
-const variantFloating = definePartsStyle((props) => {
-  const { theme, backgroundColor, size = 'md' } = props;
+function getFloatingVariantStylesForSize(size: 'md' | 'lg', props: StyleFunctionProps) {
+  const { theme } = props;
   const { focusColor: fc, errorColor: ec } = getDefaultFormColors(props);
-  const bc = backgroundColor || mode('white', 'black')(props);
 
-  const px = getPaddingX(size);
-  const activeInputStyles = getActiveInputStyles(size);
-  const activeLabelStyles = getActiveLabelStyles(theme, fc, bc, size);
+  const activeLabelStyles = {
+    ...FormLabel.variants?.floating?.(props)._focusWithin,
+    ...FormLabel.sizes?.[size](props)._focusWithin,
+  } || {};
+
+  const activeInputStyles = (() => {
+    switch (size) {
+      case 'md': {
+        return {
+          paddingTop: '26px',
+          paddingBottom: '10px',
+        };
+      }
+
+      case 'lg': {
+        return {
+          paddingTop: '38px',
+          paddingBottom: '18px',
+        };
+      }
+    }
+  })();
+
+  const inputPx = (() => {
+    switch (size) {
+      case 'md': {
+        return '16px';
+      }
+
+      case 'lg': {
+        return '24px';
+      }
+    }
+  })();
 
   return {
     container: {
+      // active styles
       _focusWithin: {
-        label: {
-          ...activeLabelStyles,
-        },
-        'input, textarea': {
-          ...activeInputStyles,
-        },
-        'label .chakra-form__required-indicator': {
-          color: getColor(theme, fc),
-        },
+        label: activeLabelStyles,
+        'input, textarea': activeInputStyles,
       },
-      // label's styles
-      label: {
-        ...getDefaultLabelStyles(size),
-        left: '2px',
-        top: '2px',
-        zIndex: 2,
-        position: 'absolute',
-        borderRadius: 'base',
-        boxSizing: 'border-box',
-        color: 'gray.500',
-        backgroundColor: 'transparent',
-        pointerEvents: 'none',
-        margin: 0,
-        transformOrigin: 'top left',
-        transitionProperty: 'font-size, line-height, padding, top, background-color',
-        overflow: 'hidden',
-        whiteSpace: 'nowrap',
-        textOverflow: 'ellipsis',
-      },
-      'input:not(:placeholder-shown) + label, textarea:not(:placeholder-shown) + label': {
-        ...activeLabelStyles,
-      },
+
+      // label styles
+      label: FormLabel.sizes?.[size](props) || {},
+      'input:not(:placeholder-shown) + label, textarea:not(:placeholder-shown) + label': activeLabelStyles,
       'input[aria-invalid=true] + label, textarea[aria-invalid=true] + label': {
         color: getColor(theme, ec),
       },
-      // input's styles
+
+      // input styles
+      input: Input.sizes?.[size].field,
+      textarea: Textarea.sizes?.[size],
       'input, textarea': {
-        padding: px,
+        padding: inputPx,
       },
+      'input:not(:placeholder-shown), textarea:not(:placeholder-shown)': activeInputStyles,
       'input[disabled] + label, textarea[disabled] + label': {
         backgroundColor: 'transparent',
       },
-      'input:not(:placeholder-shown), textarea:not(:placeholder-shown)': {
-        ...activeInputStyles,
-      },
-      // indicator's styles
+
+      // indicator styles
       'input:not(:placeholder-shown) + label .chakra-form__required-indicator, textarea:not(:placeholder-shown) + label .chakra-form__required-indicator': {
         color: getColor(theme, fc),
       },
@@ -153,6 +84,11 @@ const variantFloating = definePartsStyle((props) => {
         color: getColor(theme, ec),
       },
     },
+  };
+}
+
+const baseStyle = definePartsStyle((props) => {
+  return {
     requiredIndicator: {
       marginStart: 0,
       color: mode('gray.500', 'whiteAlpha.400')(props),
@@ -160,12 +96,42 @@ const variantFloating = definePartsStyle((props) => {
   };
 });
 
+const variantFloating = definePartsStyle((props) => {
+  return {
+    container: {
+      label: FormLabel.variants?.floating(props) || {},
+    },
+  };
+});
+
+const sizes = {
+  lg: definePartsStyle((props) => {
+    if (props.variant === 'floating') {
+      return getFloatingVariantStylesForSize('lg', props);
+    }
+
+    return {};
+  }),
+  md: definePartsStyle((props) => {
+    if (props.variant === 'floating') {
+      return getFloatingVariantStylesForSize('md', props);
+    }
+
+    return {};
+  }),
+};
+
 const variants = {
   floating: variantFloating,
 };
 
 const Form = defineMultiStyleConfig({
+  baseStyle,
   variants,
+  sizes,
+  defaultProps: {
+    size: 'md',
+  },
 });
 
 export default Form;

@@ -1,3 +1,4 @@
+import type { InputProps } from '@chakra-ui/react';
 import { FormControl, FormLabel, Textarea } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 import type { ControllerRenderProps, Control, FieldError } from 'react-hook-form';
@@ -12,7 +13,7 @@ const TEXT_INPUT_MAX_LENGTH = 255;
 interface Props {
   control: Control<Inputs>;
   error?: FieldError;
-  size?: string;
+  size?: InputProps['size'];
 }
 
 export default function PublicTagFormComment({ control, error, size }: Props) {
@@ -22,7 +23,6 @@ export default function PublicTagFormComment({ control, error, size }: Props) {
         <Textarea
           { ...field }
           isInvalid={ Boolean(error) }
-          size={ size }
         />
         <FormLabel>
           { getPlaceholderWithError('Specify the reason for adding tags and color preference(s)', error?.message) }
