@@ -14,7 +14,8 @@
     "lint:eslint": "./node_modules/.bin/eslint . --ext .js,.jsx,.ts,.tsx",
     "prepare": "husky install",
     "format-svg": "./node_modules/.bin/svgo -r ./icons",
-    "test-ct": "playwright test -c playwright-ct.config.ts"
+    "test-ct": "playwright test -c playwright-ct.config.ts",
+    "test-docker": " docker run --rm --network host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.26.0-focal yarn test-ct"
   },
   "dependencies": {
     "@chakra-ui/react": "2.3.1",

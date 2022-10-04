@@ -36,6 +36,8 @@ const config: PlaywrightTestConfig = {
 
     /* Port to use for Playwright component endpoint. */
     ctPort: 3100,
+
+    headless: true,
   },
 
   /* Configure projects for major browsers */
