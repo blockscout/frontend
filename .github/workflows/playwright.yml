@@ -1,0 +1,23 @@
+name: playwright
+on: [pull_request]
+jobs:
+  test:
+    runs-on: macos-11
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - name: Install dependencies
+        run: yarn install
+      - name: Install Playwright
+        run: yarn add playwright
+      - name: Run your tests
+        run: yarn test-ct
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: playwright-report
+          path: playwright-report
