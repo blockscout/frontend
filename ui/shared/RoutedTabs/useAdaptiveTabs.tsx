@@ -49,10 +49,10 @@ export default function useAdaptiveTabs(tabs: Array<RoutedTab>, disabled?: boole
   }, [ tabs, disabled ]);
 
   React.useEffect(() => {
-    !disabled && setTabsRefs(tabsList.map((_, index) => tabsRefs[index] || React.createRef()));
-  // imitate componentDidMount
+    setTabsRefs(disabled ? [] : tabsList.map((_, index) => tabsRefs[index] || React.createRef()));
+  // update refs only when disabled prop changes
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [ disabled ]);
 
   React.useEffect(() => {
     if (tabsRefs.length > 0) {
