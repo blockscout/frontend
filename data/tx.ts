@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 export const tx = {
   hash: '0x1ea365d2144796f793883534aa51bf20d23292b19478994eede23dfc599e7c34',
-  status: 'success' as TxStatus,
+  status: 'ok' as Transaction['status'],
   block_num: 15006918,
   confirmation_num: 283,
   confirmation_duration: 30,
@@ -52,4 +52,4 @@ export const tx = {
 
 export type TxType = 'contract-call' | 'transaction' | 'token-transfer' | 'internal-tx' | 'multicall';
 
-export type TxStatus = 'success' | 'failed' | 'pending';
+import type { Transaction } from 'types/api/transaction';
