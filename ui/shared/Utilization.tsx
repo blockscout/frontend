@@ -19,7 +19,7 @@ const Utilization = ({ className, value, colorScheme = 'green' }: Props) => {
       <Box bg={ useColorModeValue('blackAlpha.200', 'whiteAlpha.200') } w={ `${ WIDTH }px` } h="4px" borderRadius="full" overflow="hidden">
         <Box bg={ color } w={ valueString } h="100%"/>
       </Box>
-      <Text color={ color } ml="10px" fontWeight="bold">{ valueString }</Text>
+      <Text color={ color } ml="10px">{ valueString }</Text>
     </Flex>
   );
 };
