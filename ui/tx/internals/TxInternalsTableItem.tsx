@@ -10,7 +10,7 @@ import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
 interface Props {
   type: string;
-  status: 'success' | 'failed' | 'pending';
+  status: 'ok' | 'error' | null;
   from: { hash: string; alias?: string};
   to: { hash: string; alias?: string};
   value: number;
