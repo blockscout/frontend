@@ -63,7 +63,7 @@ const TxsListItem = ({ tx }: {tx: ArrayElement<typeof txs>}) => {
               />
             </Address>
           </Flex>
-          <Text variant="secondary" fontWeight="400">{ dayjs(tx.timestamp).fromNow() }</Text>
+          <Text variant="secondary" fontWeight="400" fontSize="sm">{ dayjs(tx.timestamp).fromNow() }</Text>
         </Flex>
         <Flex mt={ 3 }>
           <Text as="span" whiteSpace="pre">Method </Text>
@@ -79,7 +79,7 @@ const TxsListItem = ({ tx }: {tx: ArrayElement<typeof txs>}) => {
         </Flex>
         <Box mt={ 2 }>
           <Text as="span">Block </Text>
-          <Link href={ link('block', { id: tx.block_num.toString() }) }>{ tx.block_num }</Link>
+          <Link href={ link('block_index', { id: tx.block_num.toString() }) }>{ tx.block_num }</Link>
         </Box>
         <Flex alignItems="center" height={ 6 } mt={ 6 }>
           <Address width="calc((100%-40px)/2)">

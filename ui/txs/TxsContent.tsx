@@ -13,10 +13,11 @@ import TxsListItem from './TxsListItem';
 import TxsTable from './TxsTable';
 
 type Props = {
-  isPending?: boolean;
+  showDescription?: boolean;
+  showSortButton?: boolean;
 }
 
-const TxsContent = ({ isPending }: Props) => {
+const TxsContent = ({ showSortButton = true, showDescription = true }: Props) => {
   const [ sorting, setSorting ] = useState<Sort>();
   const [ sortedTxs, setSortedTxs ] = useState(txs);
 
@@ -67,7 +68,7 @@ const TxsContent = ({ isPending }: Props) => {
 
   return (
     <>
-      { !isPending && <Box mb={ 12 }>Only the first 10,000 elements are displayed</Box> }
+      { showDescription && <Box mb={ 12 }>Only the first 10,000 elements are displayed</Box> }
       <HStack mb={ 6 }>
         { /* TODO */ }
         <FilterButton
@@ -76,12 +77,14 @@ const TxsContent = ({ isPending }: Props) => {
           onClick={ () => {} }
           appliedFiltersNum={ 0 }
         />
-        <SortButton
-          // eslint-disable-next-line react/jsx-no-bind
-          handleSort={ () => {} }
-          isSortActive={ Boolean(sorting) }
-          display={{ base: 'block', lg: 'none' }}
-        />
+        { showSortButton && (
+          <SortButton
+            // eslint-disable-next-line react/jsx-no-bind
+            handleSort={ () => {} }
+            isSortActive={ Boolean(sorting) }
+            display={{ base: 'block', lg: 'none' }}
+          />
+        ) }
         <FilterInput
           // eslint-disable-next-line react/jsx-no-bind
           onChange={ () => {} }
