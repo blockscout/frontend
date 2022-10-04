@@ -1,11 +1,9 @@
 import _debounce from 'lodash/debounce';
 import React from 'react';
 
-import type { RoutedTab } from './types';
-
 import { menuButton } from './utils';
 
-export default function useAdaptiveTabs(tabs: Array<RoutedTab>, disabled?: boolean) {
+export default function useAdaptiveTabs<T>(tabs: Array<T>, disabled?: boolean) {
   // to avoid flickering we set initial value to 0
   // so there will be no displayed tabs initially
   const [ tabsCut, setTabsCut ] = React.useState(disabled ? tabs.length : 0);

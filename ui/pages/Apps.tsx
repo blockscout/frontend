@@ -11,6 +11,7 @@ import AppList from 'ui/apps/AppList';
 import FilterInput from 'ui/shared/FilterInput';
 
 import { AppListSkeleton } from '../apps/AppListSkeleton';
+import Categories from '../apps/Categories';
 
 const Apps = () => {
   const selectedNetwork = useNetwork();
@@ -49,6 +50,8 @@ const Apps = () => {
 
   return (
     <>
+      <Categories/>
+
       <FilterInput onChange={ debounceFilterApps } marginBottom={{ base: '4', lg: '6' }} placeholder="Find app"/>
 
       { isLoading ? <AppListSkeleton/> : (
