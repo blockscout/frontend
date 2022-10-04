@@ -1,4 +1,5 @@
 import { Box, Heading, Icon, IconButton, Image, Link, LinkBox, LinkOverlay, Text, useColorModeValue } from '@chakra-ui/react';
+import NextLink from 'next/link';
 import type { MouseEvent } from 'react';
 import React, { useCallback } from 'react';
 
@@ -7,6 +8,10 @@ import type { AppItemPreview } from 'types/client/apps';
 import northEastIcon from 'icons/arrows/north-east.svg';
 import starFilledIcon from 'icons/star_filled.svg';
 import starOutlineIcon from 'icons/star_outline.svg';
+import useLink from 'lib/link/useLink';
+import notEmpty from 'lib/notEmpty';
+
+import { APP_CATEGORIES } from './constants';
 
 interface Props extends AppItemPreview {
   onInfoClick: (id: string) => void;
@@ -24,7 +29,7 @@ const AppCard = ({ id,
   onFavoriteClick,
 }: Props) => {
 
-  const categoriesLabel = categories.map(c => c.name).join(', ');
+  const categoriesLabel = categories.map(c => APP_CATEGORIES[c]).filter(notEmpty).join(', ');
 
   const handleInfoClick = useCallback((event: MouseEvent) => {
     event.preventDefault();
@@ -34,6 +39,8 @@ const AppCard = ({ id,
   const handleFavoriteClick = useCallback(() => {
     onFavoriteClick(id, isFavorite);
   }, [ onFavoriteClick, id, isFavorite ]);
+
+  const link = useLink();
 
   return (
     <LinkBox
@@ -76,11 +83,11 @@ const AppCard = ({ id,
           fontSize={{ base: 'sm', sm: 'lg' }}
           fontWeight="semibold"
         >
-          <LinkOverlay
-            href="#"
-          >
-            { title }
-          </LinkOverlay>
+          <NextLink href={ link('app_index', { id: id }) } passHref>
+            <LinkOverlay>
+              { title }
+            </LinkOverlay>
+          </NextLink>
         </Heading>
 
         <Text

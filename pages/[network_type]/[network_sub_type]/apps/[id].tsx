@@ -1,15 +1,47 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
 
-import App from 'ui/pages/App';
+import type { AppItemOverview } from 'types/client/apps';
+
+import marketplaceApps from 'data/marketplaceApps.json';
+import { apos } from 'lib/html-entities';
+import EmptySearchResult from 'ui/apps/EmptySearchResult';
+import MarketplaceApp from 'ui/pages/MarketplaceApp';
+import Page from 'ui/shared/Page/Page';
 
 const AppPage: NextPage = () => {
+  const router = useRouter();
+  const [ isLoading, setIsLoading ] = useState(true);
+  const [ app, setApp ] = useState<AppItemOverview | undefined>(undefined);
+
+  const { id }: { id?: string } = router.query;
+
+  useEffect(() => {
+    if (!id) {
+      return;
+    }
+
+    const app = marketplaceApps.find((app) => app.id === id);
+    setApp(app);
+    setIsLoading(false);
+  }, [ id ]);
+
+  if (app || isLoading) {
+    return (
+      <>
+        <Head><title>{ app ? `Blockscout | ${ app.title }` : 'Loading app..' }</title></Head>
+        <MarketplaceApp app={ app } isLoading={ isLoading }/>
+      </>
+    );
+  }
+
   return (
-    <>
-      <Head><title>App Card Page</title></Head>
-      <App/>
-    </>
+    <Page>
+      <Head><title>Blockscout | No app found</title></Head>
+      <EmptySearchResult text={ `Couldn${ apos }t find an app.` }/>
+    </Page>
   );
 };
 

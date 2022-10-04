@@ -33,6 +33,7 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_FOOTER_TELEGRAM_LINK | `string` | Link to Telegram in the footer | `https://t.me/poa_network` |
 | NEXT_PUBLIC_FOOTER_STAKING_LINK | `string` | Link to staking dashboard in the footer | `https://duneanalytics.com/maxaleks/xdai-staking` |
 | NEXT_PUBLIC_SUPPORTED_NETWORKS | `Array<Network>` where `Network` can have following [properties](#network-configuration-properties) | Configuration of supported networks | `[{"name":"POA","type":"poa","subType":"core","group":"mainnets","isAccountSupported":true,"chainId":99,"currency":"POA"}]` |
+| NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM | `string` | Link to form where authors can submit their dapps to the marketplace | `https://airtable.com/shrqUAcjgGJ4jU88C` |
 
 ### Network configuration properties
 
