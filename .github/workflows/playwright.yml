@@ -12,7 +12,8 @@ jobs:
       - name: Install dependencies
         run: yarn install
       - name: Install Playwright
-        run: yarn add playwright --with-deps
+        # run: yarn add playwright --with-deps
+        run: npx playwright install-deps
       - name: Run your tests
         run: yarn test-ct
       - name: Upload test results
