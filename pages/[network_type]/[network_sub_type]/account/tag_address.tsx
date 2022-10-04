@@ -14,8 +14,8 @@ type Props = {
   pageParams: PageParams;
 }
 
-const AddressTagsPage: NextPage<Props> = ({ pageParams }: Props) => {
-  const title = getNetworkTitle(pageParams || {});
+const AddressTagsPage: NextPage<Props> = () => {
+  const title = getNetworkTitle();
   return (
     <>
       <Head><title>{ title }</title></Head>
@@ -26,5 +26,5 @@ const AddressTagsPage: NextPage<Props> = ({ pageParams }: Props) => {
 
 export default AddressTagsPage;
 
-export { getStaticPaths } from 'lib/next/account/getStaticPaths';
+export { getStaticPaths } from 'lib/next/getStaticPaths';
 export { getStaticProps } from 'lib/next/getStaticProps';

@@ -2,25 +2,25 @@ import { Box, Flex, Icon, Text, Image } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import React from 'react';
 
-import type { Network } from 'types/networks';
+import type { FeaturedNetwork } from 'types/networks';
 
 import checkIcon from 'icons/check.svg';
 import placeholderIcon from 'icons/networks/icons/placeholder.svg';
 
 import useColors from './useColors';
 
-interface Props extends Network {
+interface Props extends FeaturedNetwork {
   isActive: boolean;
   isMobile?: boolean;
   url: string;
 }
 
-const NetworkMenuLink = ({ name, type, subType, icon, isActive, isMobile, url }: Props) => {
+const NetworkMenuLink = ({ title, icon, isActive, isMobile, url }: Props) => {
   const hasIcon = Boolean(icon);
   const colors = useColors({ hasIcon });
 
   const iconEl = typeof icon === 'string' ? (
-    <Image w="30px" h="30px" src={ icon } alt={ `${ type } ${ subType ? subType : '' } network icon` }/>
+    <Image w="30px" h="30px" src={ icon } alt={ `${ title } network icon` }/>
   ) : (
     <Icon
       as={ hasIcon ? icon : placeholderIcon }
@@ -52,7 +52,7 @@ const NetworkMenuLink = ({ name, type, subType, icon, isActive, isMobile, url }:
             fontSize={ isMobile ? 'sm' : 'md' }
             lineHeight={ isMobile ? '20px' : '24px' }
           >
-            { name }
+            { title }
           </Text>
           { isActive && (
             <Icon

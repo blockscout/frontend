@@ -1,3 +1,4 @@
+import appConfig from 'configs/app/config';
 import type { NextApiRequest } from 'next';
 import type { RequestInit, Response } from 'node-fetch';
 import nodeFetch from 'node-fetch';
@@ -13,9 +14,9 @@ export default function fetchFactory(_req: NextApiRequest) {
       'content-type': 'application/json',
       cookie: `${ cookies.NAMES.API_TOKEN }=${ _req.cookies[cookies.NAMES.API_TOKEN] }`,
     };
-    const url = `https://blockscout.com${ path }`;
+    const url = new URL(path, appConfig.apiEndpoint);
 
-    return nodeFetch(url, {
+    return nodeFetch(url.toString(), {
       headers,
       ...init,
     });

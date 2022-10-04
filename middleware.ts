@@ -1,10 +1,10 @@
+import appConfig from 'configs/app/config';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
 import { NAMES } from 'lib/cookies';
 import getCspPolicy from 'lib/csp/getCspPolicy';
 import { link } from 'lib/link/link';
-import findNetwork from 'lib/networks/findNetwork';
 
 const cspPolicy = getCspPolicy();
 
@@ -20,9 +20,8 @@ export function middleware(req: NextRequest) {
     network_type: networkType,
     network_sub_type: networkSubtype,
   };
-  const selectedNetwork = findNetwork(networkParams);
 
-  if (!selectedNetwork) {
+  if (appConfig.network.type !== networkType && appConfig.network.subtype !== networkSubtype) {
     const url = req.nextUrl.clone();
     url.pathname = `/404`;
     return NextResponse.rewrite(url);

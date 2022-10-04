@@ -1,4 +1,6 @@
-import availableNetworks from 'lib/networks/availableNetworks';
+import appConfig from 'configs/app/config';
+
+import featuredNetworks from 'lib/networks/featuredNetworks';
 
 const KEY_WORDS = {
   BLOB: 'blob:',
@@ -11,20 +13,18 @@ const KEY_WORDS = {
   UNSAFE_EVAL: '\'unsafe-eval\'',
 };
 
-const MAIN_DOMAINS = [ '*.blockscout.com', 'blockscout.com' ];
-
-const isDev = process.env.NODE_ENV === 'development';
+const MAIN_DOMAINS = [ `*.${ appConfig.host }`, appConfig.host ];
+// eslint-disable-next-line no-restricted-properties
+const REPORT_URI = process.env.SENTRY_CSP_REPORT_URI;
 
 function getNetworksExternalAssets() {
-  const icons = availableNetworks
+  const icons = featuredNetworks
     .filter(({ icon }) => typeof icon === 'string')
     .map(({ icon }) => new URL(icon as string));
 
-  const logos = availableNetworks
-    .filter(({ logo }) => typeof logo === 'string')
-    .map(({ logo }) => new URL(logo as string));
+  const logo = appConfig.network.logo ? new URL(appConfig.network.logo) : undefined;
 
-  return icons.concat(logos);
+  return logo ? icons.concat(logo) : icons;
 }
 
 function makePolicyMap() {
@@ -39,7 +39,7 @@ function makePolicyMap() {
       KEY_WORDS.SELF,
 
       // webpack hmr in safari doesn't recognize localhost as 'self' for some reason
-      isDev ? 'ws://localhost:3000/_next/webpack-hmr' : '',
+      appConfig.isDev ? 'ws://localhost:3000/_next/webpack-hmr' : '',
 
       // client error monitoring
       'sentry.io', '*.sentry.io',
@@ -50,7 +50,7 @@ function makePolicyMap() {
 
       // next.js generates and rebuilds source maps in dev using eval()
       // https://github.com/vercel/next.js/issues/14221#issuecomment-657258278
-      isDev ? KEY_WORDS.UNSAFE_EVAL : '',
+      appConfig.isDev ? KEY_WORDS.UNSAFE_EVAL : '',
 
       ...MAIN_DOMAINS,
 
@@ -102,9 +102,9 @@ function makePolicyMap() {
       KEY_WORDS.NONE,
     ],
 
-    ...(process.env.SENTRY_CSP_REPORT_URI ? {
+    ...(REPORT_URI ? {
       'report-uri': [
-        process.env.SENTRY_CSP_REPORT_URI,
+        REPORT_URI,
       ],
     } : {}),
 

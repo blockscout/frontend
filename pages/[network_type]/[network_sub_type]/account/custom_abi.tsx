@@ -14,8 +14,8 @@ type Props = {
   pageParams: PageParams;
 }
 
-const CustomAbiPage: NextPage<Props> = ({ pageParams }: Props) => {
-  const title = getNetworkTitle(pageParams || {});
+const CustomAbiPage: NextPage<Props> = () => {
+  const title = getNetworkTitle();
   return (
     <>
       <Head><title>{ title }</title></Head>
@@ -26,5 +26,5 @@ const CustomAbiPage: NextPage<Props> = ({ pageParams }: Props) => {
 
 export default CustomAbiPage;
 
-export { getStaticPaths } from 'lib/next/account/getStaticPaths';
+export { getStaticPaths } from 'lib/next/getStaticPaths';
 export { getStaticProps } from 'lib/next/getStaticProps';

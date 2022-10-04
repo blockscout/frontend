@@ -1,10 +1,10 @@
 import { Flex, Box, VStack, Icon, useColorModeValue } from '@chakra-ui/react';
+import appConfig from 'configs/app/config';
 import React from 'react';
 
 import chevronIcon from 'icons/arrows/east-mini.svg';
 import * as cookies from 'lib/cookies';
 import useNavItems from 'lib/hooks/useNavItems';
-import useNetwork from 'lib/hooks/useNetwork';
 import isBrowser from 'lib/isBrowser';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
@@ -15,7 +15,6 @@ import NavLink from './NavLink';
 
 const NavigationDesktop = () => {
   const { mainNavItems, accountNavItems } = useNavItems();
-  const selectedNetwork = useNetwork();
 
   const isInBrowser = isBrowser();
   const [ hasAccount, setHasAccount ] = React.useState(false);
@@ -31,9 +30,9 @@ const NavigationDesktop = () => {
       if (navBarCollapsedCookie === 'false') {
         setCollapsedState(false);
       }
-      setHasAccount(Boolean(selectedNetwork?.isAccountSupported && isAuth && isInBrowser));
+      setHasAccount(Boolean(appConfig.isAccountSupported && isAuth && isInBrowser));
     }
-  }, [ isInBrowser, selectedNetwork?.isAccountSupported ]);
+  }, [ isInBrowser ]);
 
   const handleTogglerClick = React.useCallback(() => {
     setCollapsedState((flag) => !flag);

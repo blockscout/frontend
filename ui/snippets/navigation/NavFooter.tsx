@@ -1,4 +1,5 @@
 import { Box, VStack, Text, Stack, Icon, Link, useColorModeValue } from '@chakra-ui/react';
+import appConfig from 'configs/app/config';
 import React from 'react';
 
 import ghIcon from 'icons/social/git.svg';
@@ -8,14 +9,13 @@ import twIcon from 'icons/social/tweet.svg';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 
 const SOCIAL_LINKS = [
-  { link: process.env.NEXT_PUBLIC_FOOTER_GITHUB_LINK, icon: ghIcon, label: 'Github link' },
-  { link: process.env.NEXT_PUBLIC_FOOTER_TWITTER_LINK, icon: twIcon, label: 'Twitter link' },
-  { link: process.env.NEXT_PUBLIC_FOOTER_TELEGRAM_LINK, icon: tgIcon, label: 'Telegram link' },
-  { link: process.env.NEXT_PUBLIC_FOOTER_STAKING_LINK, icon: statsIcon, label: 'Staking analytic link' },
+  { link: appConfig.footerLinks.github, icon: ghIcon, label: 'Github link' },
+  { link: appConfig.footerLinks.twitter, icon: twIcon, label: 'Twitter link' },
+  { link: appConfig.footerLinks.telegram, icon: tgIcon, label: 'Telegram link' },
+  { link: appConfig.footerLinks.staking, icon: statsIcon, label: 'Staking analytic link' },
 ].filter(({ link }) => link !== undefined);
 
-const BLOCKSCOUT_VERSION = process.env.NEXT_PUBLIC_BLOCKSCOUT_VERSION;
-const VERSION_URL = `https://github.com/blockscout/blockscout/tree/${ BLOCKSCOUT_VERSION }`;
+const VERSION_URL = `https://github.com/blockscout/blockscout/tree/${ appConfig.blockScoutVersion }`;
 
 interface Props {
   isCollapsed?: boolean;
@@ -60,7 +60,7 @@ const NavFooter = ({ isCollapsed, hasAccount }: Props) => {
         <Text variant="secondary" mb={ 8 }>
             Blockscout is a tool for inspecting and analyzing EVM based blockchains. Blockchain explorer for Ethereum Networks.
         </Text>
-        <Text variant="secondary">Version: <Link href={ VERSION_URL } target="_blank">{ BLOCKSCOUT_VERSION }</Link></Text>
+        <Text variant="secondary">Version: <Link href={ VERSION_URL } target="_blank">{ appConfig.blockScoutVersion }</Link></Text>
       </Box>
     </VStack>
   );

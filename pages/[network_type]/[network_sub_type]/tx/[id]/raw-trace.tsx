@@ -15,5 +15,5 @@ const TransactionPage: NextPage<Props> = ({ pageParams }: Props) => {
 
 export default TransactionPage;
 
-export { getStaticPaths } from 'lib/next/tx/getStaticPaths';
+export { getStaticPaths } from 'lib/next/getStaticPaths';
 export { getStaticProps } from 'lib/next/getStaticProps';

@@ -1,10 +1,10 @@
 import { AccordionItem, AccordionButton, AccordionIcon, Button, Flex, Text, Link, StatArrow, Stat, AccordionPanel } from '@chakra-ui/react';
+import appConfig from 'configs/app/config';
 import React from 'react';
 
 import type ArrayElement from 'types/utils/ArrayElement';
 
 import type { data } from 'data/txState';
-import useNetwork from 'lib/hooks/useNetwork';
 import { nbsp } from 'lib/html-entities';
 import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import Address from 'ui/shared/address/Address';
@@ -17,7 +17,6 @@ import TxStateStorageItem from './TxStateStorageItem';
 type Props = ArrayElement<typeof data>;
 
 const TxStateListItem = ({ storage, address, miner, after, before, diff }: Props) => {
-  const selectedNetwork = useNetwork();
 
   const hasStorageData = Boolean(storage?.length);
 
@@ -62,20 +61,20 @@ const TxStateListItem = ({ storage, address, miner, after, before, diff }: Props
             <Flex rowGap={ 2 } flexDir="column" fontSize="sm">
               <Text fontWeight={ 600 }>Before</Text>
               <Flex>
-                <Text>{ before.balance } { selectedNetwork?.currency }</Text>
+                <Text>{ before.balance } { appConfig.network.currency }</Text>
                 <TextSeparator/>
                 { typeof before.nonce !== 'undefined' && <Text>Nonce:{ nbsp }{ before.nonce }</Text> }
               </Flex>
             </Flex>
             <Flex rowGap={ 2 } flexDir="column" fontSize="sm">
               <Text fontWeight={ 600 }>After</Text>
-              <Text>{ after.balance } { selectedNetwork?.currency }</Text>
+              <Text>{ after.balance } { appConfig.network.currency }</Text>
               { typeof after.nonce !== 'undefined' && <Text>Nonce:{ nbsp }{ after.nonce }</Text> }
             </Flex>
             <Flex rowGap={ 2 } flexDir="column" fontSize="sm">
               <Text fontWeight={ 600 }>State difference</Text>
               <Stat>
-                { diff } { selectedNetwork?.currency }
+                { diff } { appConfig.network.currency }
                 <StatArrow ml={ 2 } type={ Number(diff) > 0 ? 'increase' : 'decrease' }/>
               </Stat>
             </Flex>

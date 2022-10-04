@@ -14,8 +14,8 @@ type Props = {
   tab: BlocksProps['tab'];
 }
 
-const BlocksNextPage: NextPage<Props> = ({ pageParams, tab }: Props) => {
-  const { title } = getSeo(pageParams);
+const BlocksNextPage: NextPage<Props> = ({ tab }: Props) => {
+  const { title } = getSeo();
   return (
     <>
       <Head>
