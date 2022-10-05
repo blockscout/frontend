@@ -35,7 +35,7 @@ export interface Transaction {
   decoded_input?: DecodedInput;
   token_transfers?: Array<TokenTransfer>;
   token_transfers_overflow: boolean;
-  exchange_rate: number;
+  exchange_rate: string;
 }
 
 export interface TransactionsResponse {

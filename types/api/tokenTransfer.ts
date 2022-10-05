@@ -11,5 +11,5 @@ export interface TokenTransfer {
   total: {
     value: string;
   };
-  exchangeRate: number;
+  exchange_rate: string;
 }

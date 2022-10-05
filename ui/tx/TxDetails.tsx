@@ -19,6 +19,7 @@ import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import CurrencyValue from 'ui/shared/CurrencyValue';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
@@ -152,17 +153,13 @@ const TxDetails = () => {
         title="Value"
         hint="Value sent in the native token (and USD) if applicable."
       >
-        <Text>{ Number(utils.formatUnits(utils.parseUnits(String(data.value), 'wei'))) } { selectedNetwork?.currency }</Text>
-        { /* todo_tom API doesn't send exchange rate currently*/ }
-        { /* <Text variant="secondary" ml={ 1 }>(${ usdValue.toFixed(2) })</Text> */ }
+        <CurrencyValue value={ String(data.value) } currency={ selectedNetwork?.currency } exchangeRate={ data.exchange_rate }/>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Transaction fee"
         hint="Total transaction fee."
       >
-        <Text>{ utils.formatUnits(utils.parseUnits(data.fee.value, 'wei')) } { selectedNetwork?.currency }</Text>
-        { /* todo_tom API doesn't send exchange rate currently*/ }
-        { /* <Text variant="secondary" ml={ 1 }>(${ tx.fee.value_usd.toFixed(2) })</Text> */ }
+        <CurrencyValue value={ String(data.fee.value) } currency={ selectedNetwork?.currency } exchangeRate={ data.exchange_rate }/>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Gas price"
@@ -213,10 +210,8 @@ const TxDetails = () => {
           title="Burnt fees"
           hint={ `Amount of ${ selectedNetwork?.currency } burned for this transaction. Equals Block Base Fee per Gas * Gas Used.` }
         >
-          <Icon as={ flameIcon } boxSize={ 5 } color="gray.500"/>
-          <Text ml={ 1 } mr={ 1 }>{ utils.formatUnits(utils.parseUnits(String(data.tx_burnt_fee), 'wei')) } { selectedNetwork?.currency }</Text>
-          { /* todo_tom API doesn't send exchange rate currently*/ }
-          { /* <Text variant="secondary">(${ tx.burnt_fees.value_usd.toFixed(2) })</Text> */ }
+          <Icon as={ flameIcon } mr={ 1 } boxSize={ 5 } color="gray.500"/>
+          <CurrencyValue value={ String(data.tx_burnt_fee) } currency={ selectedNetwork?.currency } exchangeRate={ data.exchange_rate }/>
         </DetailsInfoItem>
       ) }
       <GridItem colSpan={{ base: undefined, lg: 2 }}>
