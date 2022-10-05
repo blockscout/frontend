@@ -1,5 +1,7 @@
+import type { Transaction } from 'types/api/transaction';
+
 import { tx } from './tx';
-import type { TxType, TxStatus } from './tx';
+import type { TxType } from './tx';
 
 export const txs = [
   {
@@ -10,7 +12,7 @@ export const txs = [
   },
   {
     ...tx,
-    status: 'failed' as TxStatus,
+    status: 'error' as Transaction['status'],
     errorText: 'Error: (Awaiting internal transactions for reason)',
     txType: 'contract-call' as TxType,
     method: 'CommitHash CommitHash CommitHash CommitHash',
@@ -25,7 +27,7 @@ export const txs = [
   },
   {
     ...tx,
-    status: 'pending' as TxStatus,
+    status: null,
     txType: 'token-transfer' as TxType,
     method: 'Multicall',
     address_from: {

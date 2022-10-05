@@ -109,7 +109,7 @@ const TxDetails = () => {
       >
         <Address>
           <AddressIcon hash={ data.from.hash }/>
-          <AddressLink ml={ 2 } hash={ data.from.hash }/>
+          <AddressLink ml={ 2 } hash={ data.from.hash } alias={ data.from.name }/>
           <CopyToClipboard text={ data.from.hash }/>
         </Address>
       </DetailsInfoItem>
@@ -123,7 +123,7 @@ const TxDetails = () => {
           <AddressLink ml={ 2 } hash={ data.to.hash } alias={ data.to.name }/>
           <CopyToClipboard text={ data.to.hash }/>
         </Address>
-        { /* todo_tom ask Nikita about tags and contract execution */ }
+        { /* todo_tom ask Nikita about tags */ }
         { /* <Tag colorScheme="orange" variant="solid" flexShrink={ 0 }>SANA</Tag> */ }
         { /* <Tooltip label="Contract execution completed">
           <chakra.span display="inline-flex">
@@ -135,7 +135,6 @@ const TxDetails = () => {
             <Icon as={ errorIcon } boxSize={ 4 } ml={ 2 } color="red.500" cursor="pointer"/>
           </chakra.span>
         </Tooltip> */ }
-        { /* todo_tom ask Nikita about token */ }
         { /* <TokenSnippet symbol="UP" name="User Pay" hash="0xA17ed5dFc62D0a3E74D69a0503AE9FdA65d9f212" ml={ 3 }/> */ }
       </DetailsInfoItem>
       { (data.token_transfers?.length || 0) > 0 && (

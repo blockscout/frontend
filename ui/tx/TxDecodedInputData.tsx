@@ -136,21 +136,23 @@ const TxDecodedInputData = ({ data }: Props) => {
       >
         Data
       </GridItem>
-      { data.parameters.map(({ name, type, value }, index) => (
-        <TableRow key={ name } name={ name } type={ type } isLast={ index === data.parameters.length - 1 }>
-          { type === 'address' ? (
-            <Address justifyContent="space-between">
-              <AddressLink hash={ value }/>
-              <CopyToClipboard text={ value }/>
-            </Address>
-          ) : (
-            <Flex alignItems="center" justifyContent="space-between">
-              <Text>116842</Text>
-              <CopyToClipboard text="116842"/>
-            </Flex>
-          ) }
-        </TableRow>
-      )) }
+      { data.parameters.map(({ name, type, value }, index) => {
+        return (
+          <TableRow key={ name } name={ name } type={ type } isLast={ index === data.parameters.length - 1 }>
+            { type === 'address' ? (
+              <Address justifyContent="space-between">
+                <AddressLink hash={ value }/>
+                <CopyToClipboard text={ value }/>
+              </Address>
+            ) : (
+              <Flex alignItems="flex-start" justifyContent="space-between" whiteSpace="normal" wordBreak="break-all">
+                <Text>{ value }</Text>
+                <CopyToClipboard text={ value }/>
+              </Flex>
+            ) }
+          </TableRow>
+        );
+      }) }
     </Grid>
   );
 };
