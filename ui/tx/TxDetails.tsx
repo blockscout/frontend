@@ -27,6 +27,7 @@ import TextSeparator from 'ui/shared/TextSeparator';
 // import TokenSnippet from 'ui/shared/TokenSnippet';
 import TxStatus from 'ui/shared/TxStatus';
 import Utilization from 'ui/shared/Utilization';
+import TxDetailsSkeleton from 'ui/tx/details/TxDetailsSkeleton';
 import TokenTransfer from 'ui/tx/TokenTransfer';
 import TxDecodedInputData from 'ui/tx/TxDecodedInputData';
 
@@ -54,7 +55,7 @@ const TxDetails = () => {
   }, []);
 
   if (isLoading || isError) {
-    return <div>foo</div>;
+    return <TxDetailsSkeleton/>;
   }
 
   return (
