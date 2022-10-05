@@ -38,11 +38,21 @@ const TransactionPageContent = ({ tab }: Props) => {
         <Icon as={ eastArrowIcon } boxSize={ 6 } mr={ 2 } transform="rotate(180deg)"/>
         Transactions
       </Link>
-      <PageTitle text="Transaction details"/>
-      <Flex marginLeft="auto" alignItems="center" flexWrap="wrap" columnGap={ 6 } rowGap={ 3 } mb={ 6 }>
-        <ExternalLink title="Open in Tenderly" href="#"/>
-        <ExternalLink title="Open in Blockchair" href="#"/>
-        <ExternalLink title="Open in Etherscan" href="#"/>
+      <Flex alignItems="flex-start" flexDir={{ base: 'column', lg: 'row' }}>
+        <PageTitle text="Transaction details"/>
+        <Flex
+          alignItems="center"
+          flexWrap="wrap"
+          columnGap={ 6 }
+          rowGap={ 3 }
+          ml={{ base: 'initial', lg: 'auto' }}
+          mb={{ base: 6, lg: 'initial' }}
+          py={ 2.5 }
+        >
+          <ExternalLink title="Open in Tenderly" href="#"/>
+          <ExternalLink title="Open in Blockchair" href="#"/>
+          <ExternalLink title="Open in Etherscan" href="#"/>
+        </Flex>
       </Flex>
       <RoutedTabs
         tabs={ TABS }

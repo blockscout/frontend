@@ -13,7 +13,7 @@ const TxAdditionalInfoButton = ({ isOpen, onClick }: {isOpen?: boolean; onClick?
   const infoColor = useColorModeValue('blue.600', 'blue.300');
 
   return (
-    <Center ref={ ref } background={ isOpen ? infoBgColor : 'unset' } borderRadius="8px" w="24px" h="24px" onClick={ onClick }>
+    <Center ref={ ref } background={ isOpen ? infoBgColor : 'unset' } borderRadius="8px" w="24px" h="24px" onClick={ onClick } cursor="pointer">
       <Icon
         as={ infoIcon }
         boxSize={ 5 }

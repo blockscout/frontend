@@ -33,7 +33,7 @@ const BlocksTableItem = ({ data, isPending }: Props) => {
             { data.height }
           </Link>
         </Flex>
-        <Text variant="secondary" mt={ 2 } fontWeight={ 400 }>{ dayjs(data.timestamp).locale('en-short').fromNow() }</Text>
+        <Text variant="secondary" mt={ 2 } fontWeight={ 400 }>{ dayjs(data.timestamp).fromNow() }</Text>
       </Td>
       <Td fontSize="sm">{ data.size.toLocaleString('en') } bytes</Td>
       <Td fontSize="sm">

@@ -241,7 +241,7 @@ const TxDetails = () => {
                 <Text as="span" fontWeight="500">Txn type: </Text>
                 <Text fontWeight="600" as="span">{ data.type }</Text>
                 { /* todo_tom waiting for Nikita's reply */ }
-                { /* <Text fontWeight="400" as="span" ml={ 1 }>({ tx.type.eip })</Text> */ }
+                { /* <Text fontWeight="400" as="span" ml={ 1 } variant="secondary">({ tx.type.eip })</Text> */ }
                 <TextSeparator/>
               </Box>
             ) }
