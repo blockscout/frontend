@@ -137,7 +137,6 @@ const TxDecodedInputData = ({ data }: Props) => {
         Data
       </GridItem>
       { data.parameters.map(({ name, type, value }, index) => {
-        const formattedValue = type.startsWith('uint') ? BigInt(value).toString() : value;
         return (
           <TableRow key={ name } name={ name } type={ type } isLast={ index === data.parameters.length - 1 }>
             { type === 'address' ? (
@@ -148,8 +147,6 @@ const TxDecodedInputData = ({ data }: Props) => {
             ) : (
               <Flex alignItems="flex-start" justifyContent="space-between" whiteSpace="normal" wordBreak="break-all">
                 <Text>{ value }</Text>
-                <br/>
-                <Text>{ formattedValue }</Text>
                 <CopyToClipboard text={ value }/>
               </Flex>
             ) }
