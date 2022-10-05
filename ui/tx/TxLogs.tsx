@@ -15,7 +15,7 @@ const TxLogs = () => {
   const fetch = useFetch();
 
   const { data, isLoading, isError } = useQuery<unknown, unknown, LogsResponse>(
-    [ 'tx', router.query.id ],
+    [ 'tx-log', router.query.id ],
     async() => await fetch(`/api/transactions/${ router.query.id }/logs`),
     {
       enabled: Boolean(router.query.id),
