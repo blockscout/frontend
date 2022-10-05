@@ -19,11 +19,11 @@ const AddressLink = ({ alias, type, className, truncation = 'dynamic', hash, id,
   const link = useLink();
   let url;
   if (type === 'transaction') {
-    url = link('tx_index', { id: id || hash });
+    url = link('tx', { id: id || hash });
   } else if (type === 'token') {
     url = link('token_index', { id: id || hash });
   } else if (type === 'block') {
-    url = link('block_index', { id: id || hash });
+    url = link('block', { id: id || hash });
   } else {
     url = link('address_index', { id: id || hash });
   }

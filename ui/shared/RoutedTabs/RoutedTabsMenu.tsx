@@ -49,10 +49,10 @@ const RoutedTabsMenu = ({ tabs, tabsCut, isActive, styles, onItemClick, buttonRe
         <PopoverBody display="flex" flexDir="column">
           { tabs.slice(tabsCut).map((tab, index) => (
             <Button
-              key={ tab.routeName }
+              key={ tab.id }
               variant="ghost"
               onClick={ handleItemClick }
-              isActive={ activeTab.routeName === tab.routeName }
+              isActive={ activeTab.id === tab.id }
               justifyContent="left"
               data-index={ index }
             >

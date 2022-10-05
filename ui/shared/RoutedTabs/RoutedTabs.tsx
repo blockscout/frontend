@@ -7,12 +7,11 @@ import {
 } from '@chakra-ui/react';
 import type { StyleProps } from '@chakra-ui/styled-system';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import type { RoutedTab } from './types';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-import { link } from 'lib/link/link';
 
 import RoutedTabsMenu from './RoutedTabsMenu';
 import useAdaptiveTabs from './useAdaptiveTabs';
@@ -26,29 +25,36 @@ const hiddenItemStyles: StyleProps = {
 
 interface Props {
   tabs: Array<RoutedTab>;
-  defaultActiveTab: RoutedTab['routeName'];
 }
 
-const RoutedTabs = ({ tabs, defaultActiveTab }: Props) => {
-  const defaultIndex = tabs.findIndex(({ routeName }) => routeName === defaultActiveTab);
-  const isMobile = useIsMobile();
-
-  const [ activeTab ] = React.useState<number>(defaultIndex);
-  const { tabsCut, tabsList, tabsRefs, listRef } = useAdaptiveTabs(tabs, isMobile);
-
+const RoutedTabs = ({ tabs }: Props) => {
   const router = useRouter();
+  const [ activeTabIndex, setActiveTabIndex ] = useState<number>(tabs.length + 1);
+  useEffect(() => {
+    if (router.isReady) {
+      let tabIndex = 0;
+      if (router.query.tab) {
+        tabIndex = tabs.findIndex(({ id }) => id === router.query.tab);
+        if (tabIndex < 0) {
+          tabIndex = 0;
+        }
+      }
+      setActiveTabIndex(tabIndex);
+    }
+  }, [ tabs, router ]);
+
+  const isMobile = useIsMobile();
+  const { tabsCut, tabsList, tabsRefs, listRef } = useAdaptiveTabs(tabs, isMobile);
 
   const handleTabChange = React.useCallback((index: number) => {
     const nextTab = tabs[index];
 
-    if (nextTab.routeName) {
-      const newUrl = link(nextTab.routeName, router.query);
-      router.push(newUrl, undefined, { shallow: true });
-    }
+    router.query.tab = nextTab.id;
+    router.push(router);
   }, [ tabs, router ]);
 
   return (
-    <Tabs variant="soft-rounded" colorScheme="blue" isLazy onChange={ handleTabChange } index={ activeTab }>
+    <Tabs variant="soft-rounded" colorScheme="blue" isLazy onChange={ handleTabChange } index={ activeTabIndex }>
       <TabList
         marginBottom={{ base: 6, lg: 12 }}
         flexWrap="nowrap"
@@ -68,14 +74,14 @@ const RoutedTabs = ({ tabs, defaultActiveTab }: Props) => {
         }}
       >
         { tabsList.map((tab, index) => {
-          if (!tab.routeName) {
+          if (!tab.id) {
             return (
               <RoutedTabsMenu
                 key="menu"
                 tabs={ tabs }
-                activeTab={ tabs[activeTab] }
+                activeTab={ tabs[activeTabIndex] }
                 tabsCut={ tabsCut }
-                isActive={ activeTab >= tabsCut }
+                isActive={ activeTabIndex >= tabsCut }
                 styles={ tabsCut < tabs.length ?
                   // initially our cut is 0 and we don't want to show the menu button too
                   // but we want to keep it in the tabs row so it won't collapse
@@ -91,7 +97,7 @@ const RoutedTabs = ({ tabs, defaultActiveTab }: Props) => {
 
           return (
             <Tab
-              key={ tab.routeName }
+              key={ tab.id }
               ref={ tabsRefs[index] }
               { ...(index < tabsCut ? {} : hiddenItemStyles) }
               scrollSnapAlign="start"
@@ -102,7 +108,7 @@ const RoutedTabs = ({ tabs, defaultActiveTab }: Props) => {
         }) }
       </TabList>
       <TabPanels>
-        { tabsList.map((tab) => <TabPanel padding={ 0 } key={ tab.routeName }>{ tab.component }</TabPanel>) }
+        { tabsList.map((tab) => <TabPanel padding={ 0 } key={ tab.id }>{ tab.component }</TabPanel>) }
       </TabPanels>
     </Tabs>
   );

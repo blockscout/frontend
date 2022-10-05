@@ -10,15 +10,11 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
 
 const TABS: Array<RoutedTab> = [
-  { routeName: 'block_index', title: 'Details', component: <BlockDetails/> },
-  { routeName: 'block_txs', title: 'Transactions', component: <BlockTxs/> },
+  { id: 'index', title: 'Details', component: <BlockDetails/> },
+  { id: 'txs', title: 'Transactions', component: <BlockTxs/> },
 ];
 
-export interface Props {
-  tab: RoutedTab['routeName'];
-}
-
-const BlockPageContent = ({ tab }: Props) => {
+const BlockPageContent = () => {
   const router = useRouter();
 
   return (
@@ -26,7 +22,6 @@ const BlockPageContent = ({ tab }: Props) => {
       <PageTitle text={ `Block #${ router.query.id || '' }` }/>
       <RoutedTabs
         tabs={ TABS }
-        defaultActiveTab={ tab }
       />
     </Page>
   );
