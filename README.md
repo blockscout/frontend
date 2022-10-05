@@ -9,6 +9,7 @@ Core technologies what used in the project are
 - [Next.js](https://nextjs.org/) as application framework
 - [Chakra](https://chakra-ui.com/) as component library; our theme customization could be found in `/theme` folder
 - [css-modules](https://github.com/css-modules/css-modules) as lib for styling custom components
+- [playwright](https://playwright.dev/) as a tool for components visual testing
 
 And of course our premier language is [Typescript](https://www.typescriptlang.org/)
 
