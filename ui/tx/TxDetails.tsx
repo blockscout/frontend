@@ -204,7 +204,7 @@ const TxDetails = () => {
             <Box>
               <Text as="span" fontWeight="500">Txn type: </Text>
               <Text fontWeight="600" as="span">{ tx.type.value }</Text>
-              <Text fontWeight="400" as="span" ml={ 1 }>({ tx.type.eip })</Text>
+              <Text fontWeight="400" as="span" ml={ 1 } variant="secondary">({ tx.type.eip })</Text>
               <TextSeparator/>
             </Box>
             <Box>
