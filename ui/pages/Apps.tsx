@@ -23,7 +23,7 @@ const Apps = () => {
     setDisplayedAppId(id);
   }, []);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debounceFilterApps = useCallback(debounce(q => filterApps(q), 500), []);
+  const debounceFilterApps = useCallback(debounce(q => filterApps(q), 500), [ defaultAppList ]);
   const clearDisplayedAppId = useCallback(() => setDisplayedAppId(null), []);
 
   function filterApps(q: string) {
