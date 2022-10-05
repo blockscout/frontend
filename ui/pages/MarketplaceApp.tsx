@@ -27,10 +27,10 @@ const MarketplaceApp = ({ app, isLoading }: Props) => {
         'allow-top-navigation-by-user-activation';
 
   useEffect(() => {
-    if (app) {
-      ref?.current?.contentWindow?.postMessage({ colorMode, chaindId: network?.chainId }, app.url);
+    if (app && !isFrameLoading) {
+      ref?.current?.contentWindow?.postMessage({ blockscoutColorMode: colorMode, blockscoutChainId: network?.chainId }, app.url);
     }
-  }, [ app, colorMode, network, ref ]);
+  }, [ isFrameLoading, app, colorMode, network, ref ]);
 
   return (
     <Page wrapChildren={ false }>

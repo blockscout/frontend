@@ -72,7 +72,7 @@
     "github": "https://github.com/mikhin"
   },
   {
-    "chainId": 1,
+    "chainId": 100,
     "author": "xDaichain",
     "id": "bao-finance",
     "title": "Bao Finance",
