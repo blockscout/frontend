@@ -19,6 +19,7 @@ import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import PrevNext from 'ui/shared/PrevNext';
@@ -54,8 +55,12 @@ const TxDetails = () => {
     });
   }, []);
 
-  if (isLoading || isError) {
+  if (isLoading) {
     return <TxDetailsSkeleton/>;
+  }
+
+  if (isError) {
+    return <DataFetchAlert/>;
   }
 
   return (
@@ -240,8 +245,7 @@ const TxDetails = () => {
               <Box>
                 <Text as="span" fontWeight="500">Txn type: </Text>
                 <Text fontWeight="600" as="span">{ data.type }</Text>
-                { /* todo_tom waiting for Nikita's reply */ }
-                { /* <Text fontWeight="400" as="span" ml={ 1 } variant="secondary">({ tx.type.eip })</Text> */ }
+                { data.type === 2 && <Text fontWeight="400" as="span" ml={ 1 } variant="secondary">(EIP-1559)</Text> }
                 <TextSeparator/>
               </Box>
             ) }
