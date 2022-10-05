@@ -123,7 +123,7 @@ const TxDetails = () => {
           <AddressLink ml={ 2 } hash={ data.to.hash } alias={ data.to.name }/>
           <CopyToClipboard text={ data.to.hash }/>
         </Address>
-        { /* todo_tom ask Nikita about tags */ }
+        { /* todo_tom Nikita should add to api later */ }
         { /* <Tag colorScheme="orange" variant="solid" flexShrink={ 0 }>SANA</Tag> */ }
         { /* <Tooltip label="Contract execution completed">
           <chakra.span display="inline-flex">
