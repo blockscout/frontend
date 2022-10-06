@@ -5,7 +5,7 @@ import { AppCardSkeleton } from 'ui/apps/AppCardSkeleton';
 
 const applicationStubs = [ ...Array(12) ];
 
-export const AppListSkeleton = () => {
+const AppListSkeleton = () => {
   return (
     <Grid
       templateColumns={{
@@ -25,3 +25,5 @@ export const AppListSkeleton = () => {
     </Grid>
   );
 };
+
+export default AppListSkeleton;

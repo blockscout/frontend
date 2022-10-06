@@ -1,5 +1,5 @@
-import { Grid, GridItem, VisuallyHidden, Heading } from '@chakra-ui/react';
-import React, { useCallback, useEffect, useState } from 'react';
+import { Grid, GridItem, Heading, VisuallyHidden } from '@chakra-ui/react';
+import React from 'react';
 
 import type { AppItemPreview } from 'types/client/apps';
 
@@ -14,37 +14,11 @@ type Props = {
   onAppClick: (id: string) => void;
   displayedAppId: string | null;
   onModalClose: () => void;
+  favoriteApps: Array<string>;
+  onFavoriteClick: (id: string, isFavorite: boolean) => void;
 }
 
-function getFavoriteApps() {
-  try {
-    return JSON.parse(localStorage.getItem('favoriteApps') || '[]');
-  } catch (e) {
-    return [];
-  }
-}
-
-const AppList = ({ apps, onAppClick, displayedAppId, onModalClose }: Props) => {
-  const [ favoriteApps, setFavoriteApps ] = useState<Array<string>>([]);
-
-  const handleFavoriteClick = useCallback((id: string, isFavorite: boolean) => {
-    const favoriteApps = getFavoriteApps();
-
-    if (isFavorite) {
-      const result = favoriteApps.filter((appId: string) => appId !== id);
-      setFavoriteApps(result);
-      localStorage.setItem('favoriteApps', JSON.stringify(result));
-    } else {
-      favoriteApps.push(id);
-      localStorage.setItem('favoriteApps', JSON.stringify(favoriteApps));
-      setFavoriteApps(favoriteApps);
-    }
-  }, [ ]);
-
-  useEffect(() => {
-    setFavoriteApps(getFavoriteApps());
-  }, [ ]);
-
+const AppList = ({ apps, onAppClick, displayedAppId, onModalClose, favoriteApps, onFavoriteClick }: Props) => {
   return (
     <>
       <VisuallyHidden>
@@ -72,7 +46,7 @@ const AppList = ({ apps, onAppClick, displayedAppId, onModalClose }: Props) => {
                 shortDescription={ app.shortDescription }
                 categories={ app.categories }
                 isFavorite={ favoriteApps.includes(app.id) }
-                onFavoriteClick={ handleFavoriteClick }
+                onFavoriteClick={ onFavoriteClick }
               />
             </GridItem>
           )) }
@@ -86,7 +60,7 @@ const AppList = ({ apps, onAppClick, displayedAppId, onModalClose }: Props) => {
           id={ displayedAppId }
           onClose={ onModalClose }
           isFavorite={ favoriteApps.includes(displayedAppId) }
-          onFavoriteClick={ handleFavoriteClick }
+          onFavoriteClick={ onFavoriteClick }
         />
       ) }
     </>

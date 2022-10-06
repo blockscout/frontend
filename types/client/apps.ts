@@ -1,4 +1,6 @@
-export enum MarketplaceCategoryNames {
+export enum MarketplaceCategoryId {
+  'all',
+  'favorites',
   'defi',
   'exchanges',
   'finance',
@@ -11,12 +13,16 @@ export enum MarketplaceCategoryNames {
   'yieldFarming',
 }
 
+export type MarketplaceCategoriesIds = keyof typeof MarketplaceCategoryId;
+
+export type MarketplaceCategory = { id: MarketplaceCategoriesIds; name: string }
+
 export type AppItemPreview = {
   id: string;
   title: string;
   logo: string;
   shortDescription: string;
-  categories: Array<keyof typeof MarketplaceCategoryNames>;
+  categories: Array<MarketplaceCategoriesIds>;
 }
 
 export type AppItemOverview = AppItemPreview & {
