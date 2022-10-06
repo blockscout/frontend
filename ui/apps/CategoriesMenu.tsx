@@ -37,7 +37,7 @@ const CategoriesMenu = ({ selectedCategoryId, onSelect }: Props) => {
           display="flex"
           alignItems="center"
         >
-          { selectedCategory ? selectedCategory.name : 'All' }
+          { selectedCategory?.name }
           <Icon transform="rotate(-90deg)" ml={{ base: 'auto', sm: 1 }} as={ eastMiniArrowIcon } w={ 5 } h={ 5 }/>
         </Box>
       </MenuButton>

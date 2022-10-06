@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import type { AppItemOverview } from 'types/client/apps';
 
 import useNetwork from 'lib/hooks/useNetwork';
+import ContentLoader from 'ui/shared/ContentLoader';
 import Page from 'ui/shared/Page/Page';
 
 type Props = {
@@ -40,12 +41,7 @@ const MarketplaceApp = ({ app, isLoading }: Props) => {
         paddingTop={{ base: '138px', lg: 0 }}
       >
         { (isFrameLoading) && (
-          <Center
-            h="100%"
-            w="100%"
-          >
-            Loading...
-          </Center>
+          <ContentLoader/>
         ) }
 
         { app && (

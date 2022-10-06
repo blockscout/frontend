@@ -100,9 +100,6 @@ const AppModal = ({
             fontWeight="medium"
             lineHeight={ 1 }
             color="blue.600"
-            whiteSpace="nowrap"
-            overflow="hidden"
-            textOverflow="ellipsis"
           >
             { title }
           </Heading>
