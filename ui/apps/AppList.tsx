@@ -28,7 +28,7 @@ const AppList = ({ apps, onAppClick, displayedAppId, onModalClose, favoriteApps,
       { apps.length > 0 ? (
         <Grid
           templateColumns={{
-            sm: 'repeat(auto-fill, minmax(170px, 1fr))',
+            sm: 'repeat(auto-fill, minmax(178px, 1fr))',
             lg: 'repeat(auto-fill, minmax(260px, 1fr))',
           }}
           autoRows="1fr"

@@ -1,8 +1,8 @@
 import type { MarketplaceCategoriesIds } from 'types/client/apps';
 
 export const APP_CATEGORIES: {[key in MarketplaceCategoriesIds]: string} = {
-  all: 'All',
   favorites: 'Favorites',
+  all: 'All apps',
   defi: 'DeFi',
   exchanges: 'Exchanges',
   finance: 'Finance',
