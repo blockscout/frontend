@@ -1,3 +1,4 @@
+import type { InputProps } from '@chakra-ui/react';
 import {
   Input,
   FormControl,
@@ -11,7 +12,7 @@ import { ADDRESS_LENGTH } from 'lib/validations/address';
 
 type Props<TInputs extends FieldValues, TInputName extends Path<TInputs>> = {
   field: ControllerRenderProps<TInputs, TInputName>;
-  size?: string;
+  size?: InputProps['size'];
   placeholder?: string;
   backgroundColor?: string;
   error?: FieldError;
@@ -31,7 +32,6 @@ export default function AddressInput<Inputs extends FieldValues, Name extends Pa
         { ...field }
         isInvalid={ Boolean(error) }
         maxLength={ ADDRESS_LENGTH }
-        size={ size }
       />
       <FormLabel>{ getPlaceholderWithError(placeholder, error?.message) }</FormLabel>
     </FormControl>

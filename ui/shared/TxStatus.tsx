@@ -9,7 +9,7 @@ import successIcon from 'icons/status/success.svg';
 
 export interface Props {
   status: Transaction['status'];
-  errorText?: string;
+  errorText?: string | null;
 }
 
 const TxStatus = ({ status, errorText }: Props) => {

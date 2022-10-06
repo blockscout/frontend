@@ -4,6 +4,7 @@ import Button from './Button';
 import Checkbox from './Checkbox';
 import Drawer from './Drawer';
 import Form from './Form';
+import FormLabel from './FormLabel';
 import Heading from './Heading';
 import Input from './Input';
 import Link from './Link';
@@ -27,6 +28,7 @@ const components = {
   Heading,
   Input,
   Form,
+  FormLabel,
   Link,
   Modal,
   Popover,
