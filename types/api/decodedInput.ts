@@ -8,4 +8,5 @@ export interface DecodedInputParams {
   name: string;
   type: string;
   value: string;
+  indexed?: boolean;
 }

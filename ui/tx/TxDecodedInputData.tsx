@@ -18,7 +18,7 @@ interface RowProps {
 const PADDING = 4;
 const GAP = 5;
 
-const TableRow = ({ isLast, name, type, children }: RowProps) => {
+const TableRow = ({ isLast, name, type, children, indexed }: RowProps) => {
   const bgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
 
   return (
@@ -41,14 +41,16 @@ const TableRow = ({ isLast, name, type, children }: RowProps) => {
       >
         { type }
       </GridItem>
-      { /* <GridItem
-        pr={ GAP }
-        pt={ GAP }
-        pb={ isLast ? PADDING : 0 }
-        bgColor={ bgColor }
-      >
-        { indexed ? 'true' : 'false' }
-      </GridItem> */ }
+      { indexed !== undefined && (
+        <GridItem
+          pr={ GAP }
+          pt={ GAP }
+          pb={ isLast ? PADDING : 0 }
+          bgColor={ bgColor }
+        >
+          { indexed ? 'true' : 'false' }
+        </GridItem>
+      ) }
       <GridItem
         pr={ PADDING }
         pt={ GAP }
@@ -68,12 +70,22 @@ interface Props {
 
 const TxDecodedInputData = ({ data }: Props) => {
   const bgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
+  const hasIndexed = data.parameters.some(({ indexed }) => indexed !== undefined);
+
+  const gridTemplateColumns = hasIndexed ?
+    'minmax(80px, auto) minmax(80px, auto) minmax(80px, auto) minmax(0, 1fr)' :
+    'minmax(80px, auto) minmax(80px, auto) minmax(0, 1fr)';
+  const colNumber = hasIndexed ? 4 : 3;
 
   return (
-    <Grid gridTemplateColumns="minmax(80px, auto) minmax(80px, auto) minmax(0, 1fr)" fontSize="sm" lineHeight={ 5 } w="100%">
+    <Grid gridTemplateColumns={ gridTemplateColumns } fontSize="sm" lineHeight={ 5 } w="100%">
       { /* FIRST PART OF BLOCK */ }
-      <GridItem fontWeight={ 600 } pl={{ base: 0, lg: PADDING }} pr={{ base: 0, lg: GAP }} colSpan={{ base: 3, lg: undefined }}>Method Id</GridItem>
-      <GridItem colSpan={{ base: 3, lg: 2 }} pr={{ base: 0, lg: PADDING }} mt={{ base: 2, lg: 0 }}>{ data.method_id }</GridItem>
+      <GridItem fontWeight={ 600 } pl={{ base: 0, lg: PADDING }} pr={{ base: 0, lg: GAP }} colSpan={{ base: colNumber, lg: undefined }}>
+        Method Id
+      </GridItem>
+      <GridItem colSpan={{ base: colNumber, lg: colNumber - 1 }} pr={{ base: 0, lg: PADDING }} mt={{ base: 2, lg: 0 }}>
+        { data.method_id }
+      </GridItem>
       <GridItem
         py={ 2 }
         mt={ 2 }
@@ -82,7 +94,7 @@ const TxDecodedInputData = ({ data }: Props) => {
         fontWeight={ 600 }
         borderTopColor={ useColorModeValue('blackAlpha.200', 'whiteAlpha.200') }
         borderTopWidth="1px"
-        colSpan={{ base: 3, lg: undefined }}
+        colSpan={{ base: colNumber, lg: undefined }}
       >
         Call
       </GridItem>
@@ -90,7 +102,7 @@ const TxDecodedInputData = ({ data }: Props) => {
         py={{ base: 0, lg: 2 }}
         mt={{ base: 0, lg: 2 }}
         mb={{ base: 2, lg: 0 }}
-        colSpan={{ base: 3, lg: 2 }}
+        colSpan={{ base: colNumber, lg: colNumber - 1 }}
         pr={{ base: 0, lg: PADDING }}
         borderTopColor={ useColorModeValue('blackAlpha.200', 'whiteAlpha.200') }
         borderTopWidth={{ base: '0px', lg: '1px' }}
@@ -118,15 +130,17 @@ const TxDecodedInputData = ({ data }: Props) => {
       >
         Type
       </GridItem>
-      { /* <GridItem
-        pr={ GAP }
-        pt={ PADDING }
-        pb={ 1 }
-        bgColor={ bgColor }
-        fontWeight={ 600 }
-      >
-        Inde<wbr/>xed?
-      </GridItem> */ }
+      { hasIndexed && (
+        <GridItem
+          pr={ GAP }
+          pt={ PADDING }
+          pb={ 1 }
+          bgColor={ bgColor }
+          fontWeight={ 600 }
+        >
+          Inde<wbr/>xed?
+        </GridItem>
+      ) }
       <GridItem
         pr={ PADDING }
         pt={ PADDING }
@@ -136,9 +150,9 @@ const TxDecodedInputData = ({ data }: Props) => {
       >
         Data
       </GridItem>
-      { data.parameters.map(({ name, type, value }, index) => {
+      { data.parameters.map(({ name, type, value, indexed }, index) => {
         return (
-          <TableRow key={ name } name={ name } type={ type } isLast={ index === data.parameters.length - 1 }>
+          <TableRow key={ name } name={ name } type={ type } isLast={ index === data.parameters.length - 1 } indexed={ indexed }>
             { type === 'address' ? (
               <Address justifyContent="space-between">
                 <AddressLink hash={ value }/>
