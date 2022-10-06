@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
-import RenderWithChakra from '../test-helpers/RenderWithChakra';
+import RenderWithChakra from '../../playwright/RenderWithChakra';
 import Utilization from './Utilization';
 
 test.use({ viewport: { width: 100, height: 50 } });

@@ -15,7 +15,7 @@
     "prepare": "husky install",
     "format-svg": "./node_modules/.bin/svgo -r ./icons",
     "test-ct": "playwright test -c playwright-ct.config.ts",
-    "test-docker": " docker run --rm --network host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.26.0-focal yarn test-ct"
+    "test-docker": "docker run --rm --network host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.26.0-focal ./run-tests.sh"
   },
   "dependencies": {
     "@chakra-ui/react": "2.3.1",
@@ -33,7 +33,6 @@
     "next": "12.2.5",
     "next-react-svg": "1.1.3",
     "node-fetch": "^3.2.9",
-    "playwright": "^1.26.1",
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-hook-form": "^7.33.1",
@@ -56,6 +55,7 @@
     "eslint-plugin-regexp": "^1.7.0",
     "husky": "^8.0.0",
     "lint-staged": ">=10",
+    "playwright": "^1.26.1",
     "svgo": "^2.8.0",
     "typescript": "4.7.2"
   },

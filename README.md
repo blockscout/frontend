@@ -22,6 +22,11 @@ For local development please follow next steps:
 - create local env file `.env.local` according to `.env.example` snapshot (see list of used environment variables [below](#environment-variables))
 - run `yarn dev` to spin up local dev server and navigate to the host from logs output
 
+## Components visual testing
+
+We use [playwright experimental components testing](https://playwright.dev/docs/test-components) for visual (screenshots) CI check. Test renders a single component in headless browser in docker, generates screenshots and then compares this screenshot with a reference one.
+To perform testing locally you need to install docker and run `yarn test-docker`
+
 ## Environment variables
 ### Variables list
 The app instance could be customized by passing following variables to NodeJS environment.
