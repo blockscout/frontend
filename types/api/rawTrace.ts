@@ -11,7 +11,7 @@ export interface RawTrace {
     gasUsed: string;
     output: string;
   };
-  error?: string;
+  error: string | null;
   subtraces: number;
   traceAddress: Array<number>;
   type: string;

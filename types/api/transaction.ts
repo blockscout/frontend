@@ -20,20 +20,20 @@ export interface Transaction {
   type: number;
   gas_used: number;
   gas_limit: number;
-  max_fee_per_gas?: number;
-  max_priority_fee_per_gas?: number;
-  priority_fee?: number;
-  base_fee_per_gas?: number;
-  tx_burnt_fee?: number;
+  max_fee_per_gas: number | null;
+  max_priority_fee_per_gas: number | null;
+  priority_fee: number | null;
+  base_fee_per_gas: number | null;
+  tx_burnt_fee: number | null;
   nonce: number;
   position: number;
-  revert_reason?: {
+  revert_reason: {
     raw: string;
     decoded: string;
-  };
+  } | null;
   raw_input: string;
-  decoded_input?: DecodedInput;
-  token_transfers?: Array<TokenTransfer>;
+  decoded_input: DecodedInput | null;
+  token_transfers: Array<TokenTransfer> | null;
   token_transfers_overflow: boolean;
   exchange_rate: number;
 }

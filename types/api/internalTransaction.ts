@@ -1,7 +1,7 @@
 import type { AddressParam } from './addressParams';
 
 export interface InternalTransaction {
-  error?: string;
+  error: string | null;
   success: boolean;
   type: string;
   transaction_hash: string;
