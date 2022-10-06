@@ -1,55 +1,41 @@
-import { Icon, Link } from '@chakra-ui/react';
-import debounce from 'lodash/debounce';
-import React, { useCallback, useEffect, useState } from 'react';
+import { Box, Icon, Link } from '@chakra-ui/react';
+import React from 'react';
 
-import type { AppItemOverview } from 'types/client/apps';
-
-import marketplaceApps from 'data/marketplaceApps.json';
 import PlusIcon from 'icons/plus.svg';
-import useNetwork from 'lib/hooks/useNetwork';
 import AppList from 'ui/apps/AppList';
+import AppListSkeleton from 'ui/apps/AppListSkeleton';
+import CategoriesMenu from 'ui/apps/CategoriesMenu';
 import FilterInput from 'ui/shared/FilterInput';
 
-import { AppListSkeleton } from '../apps/AppListSkeleton';
+import useMarketplaceApps from '../apps/useMarkeplaceApps';
 
 const Apps = () => {
-  const selectedNetwork = useNetwork();
-  const [ isLoading, setIsLoading ] = useState(true);
-  const [ defaultAppList, setDefaultAppList ] = useState<Array<AppItemOverview>>();
-  const [ displayedApps, setDisplayedApps ] = useState<Array<AppItemOverview>>([]);
-  const [ displayedAppId, setDisplayedAppId ] = useState<string | null>(null);
-
-  const showAppInfo = useCallback((id: string) => {
-    setDisplayedAppId(id);
-  }, []);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debounceFilterApps = useCallback(debounce(q => filterApps(q), 500), [ defaultAppList ]);
-  const clearDisplayedAppId = useCallback(() => setDisplayedAppId(null), []);
-
-  function filterApps(q: string) {
-    const apps = defaultAppList
-      ?.filter(app => app.title.toLowerCase().includes(q.toLowerCase()));
-
-    setDisplayedApps(apps || []);
-  }
-
-  useEffect(() => {
-    if (!selectedNetwork) {
-      return;
-    }
-
-    const defaultDisplayedApps = [ ...marketplaceApps ]
-      .filter(item => item.chainId === selectedNetwork?.chainId)
-      .sort((a, b) => a.title.localeCompare(b.title));
-
-    setDefaultAppList(defaultDisplayedApps);
-    setDisplayedApps(defaultDisplayedApps);
-    setIsLoading(false);
-  }, [ selectedNetwork ]);
+  const {
+    isLoading,
+    category,
+    handleCategoryChange,
+    debounceFilterApps,
+    showAppInfo,
+    displayedApps,
+    displayedAppId,
+    clearDisplayedAppId,
+    favoriteApps,
+    handleFavoriteClick,
+  } = useMarketplaceApps();
 
   return (
     <>
-      <FilterInput onChange={ debounceFilterApps } marginBottom={{ base: '4', lg: '6' }} placeholder="Find app"/>
+      <Box
+        display="flex"
+        flexDirection={{ base: 'column', sm: 'row' }}
+      >
+        <CategoriesMenu
+          selectedCategoryId={ category }
+          onSelect={ handleCategoryChange }
+        />
+
+        <FilterInput onChange={ debounceFilterApps } marginBottom={{ base: '4', lg: '6' }} placeholder="Find app"/>
+      </Box>
 
       { isLoading ? <AppListSkeleton/> : (
         <AppList
@@ -57,6 +43,8 @@ const Apps = () => {
           onAppClick={ showAppInfo }
           displayedAppId={ displayedAppId }
           onModalClose={ clearDisplayedAppId }
+          favoriteApps={ favoriteApps }
+          onFavoriteClick={ handleFavoriteClick }
         />
       ) }
 
