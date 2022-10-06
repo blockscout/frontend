@@ -7,7 +7,7 @@ export interface Transaction {
   hash: string;
   result: string;
   confirmations: number;
-  status: string;
+  status: 'ok' | 'error' | null;
   block: number;
   timestamp: string;
   confirmation_duration: Array<number>;
@@ -18,8 +18,8 @@ export interface Transaction {
   fee: Fee;
   gas_price: number;
   type: number;
-  gas_used: number;
-  gas_limit: number;
+  gas_used: string;
+  gas_limit: string;
   max_fee_per_gas: number | null;
   max_priority_fee_per_gas: number | null;
   priority_fee: number | null;
@@ -35,7 +35,7 @@ export interface Transaction {
   decoded_input: DecodedInput | null;
   token_transfers: Array<TokenTransfer> | null;
   token_transfers_overflow: boolean;
-  exchange_rate: number;
+  exchange_rate: string;
 }
 
 export interface TransactionsResponse {

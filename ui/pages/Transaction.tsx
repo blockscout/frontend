@@ -13,13 +13,14 @@ import TxDetails from 'ui/tx/TxDetails';
 import TxInternals from 'ui/tx/TxInternals';
 import TxLogs from 'ui/tx/TxLogs';
 import TxRawTrace from 'ui/tx/TxRawTrace';
-import TxState from 'ui/tx/TxState';
+// import TxState from 'ui/tx/TxState';
 
 const TABS: Array<RoutedTab> = [
   { routeName: 'tx_index', title: 'Details', component: <TxDetails/> },
   { routeName: 'tx_internal', title: 'Internal txn', component: <TxInternals/> },
   { routeName: 'tx_logs', title: 'Logs', component: <TxLogs/> },
-  { routeName: 'tx_state', title: 'State', component: <TxState/> },
+  // will be implemented later, api is not ready
+  // { routeName: 'tx_state', title: 'State', component: <TxState/> },
   { routeName: 'tx_raw_trace', title: 'Raw trace', component: <TxRawTrace/> },
 ];
 

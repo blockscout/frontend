@@ -1,6 +1,8 @@
 import { Text, Grid, GridItem, Link, Tooltip, Button, Icon, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
+import type { Log } from 'types/api/log';
+
 import searchIcon from 'icons/search.svg';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
@@ -8,12 +10,7 @@ import AddressLink from 'ui/shared/address/AddressLink';
 import TxLogTopic from 'ui/tx/logs/TxLogTopic';
 import DecodedInputData from 'ui/tx/TxDecodedInputData';
 
-interface Props {
-  address: string;
-  topics: Array<{ hex: string }>;
-  data: string;
-  index: number;
-}
+type Props = Log;
 
 const RowHeader = ({ children }: { children: React.ReactNode }) => (
   <GridItem _notFirst={{ my: { base: 4, lg: 0 } }}>
@@ -21,7 +18,8 @@ const RowHeader = ({ children }: { children: React.ReactNode }) => (
   </GridItem>
 );
 
-const TxLogItem = ({ address, index, topics, data }: Props) => {
+const TxLogItem = ({ address, index, topics, data, decoded }: Props) => {
+
   const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
   const dataBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
 
@@ -41,27 +39,31 @@ const TxLogItem = ({ address, index, topics, data }: Props) => {
       <RowHeader>Address</RowHeader>
       <GridItem display="flex" alignItems="center">
         <Address>
-          <AddressIcon hash={ address }/>
-          <AddressLink hash={ address } ml={ 2 }/>
+          <AddressIcon hash={ address.hash }/>
+          <AddressLink hash={ address.hash } alias={ address.name } ml={ 2 }/>
         </Address>
         <Tooltip label="Find matches topic">
-          <Link ml={ 2 } display="inline-flex">
+          <Link ml={ 2 } mr={{ base: 9, lg: 0 }} display="inline-flex">
             <Icon as={ searchIcon } boxSize={ 5 }/>
           </Link>
         </Tooltip>
         <Tooltip label="Log index">
-          <Button variant="outline" colorScheme="gray" isActive ml={{ base: 9, lg: 'auto' }} size="sm" fontWeight={ 400 }>
+          <Button variant="outline" colorScheme="gray" isActive ml="auto" size="sm" fontWeight={ 400 }>
             { index }
           </Button>
         </Tooltip>
       </GridItem>
-      <RowHeader>Decode input data</RowHeader>
-      <GridItem>
-        <DecodedInputData/>
-      </GridItem>
+      { decoded && (
+        <>
+          <RowHeader>Decode input data</RowHeader>
+          <GridItem>
+            <DecodedInputData data={ decoded }/>
+          </GridItem>
+        </>
+      ) }
       <RowHeader>Topics</RowHeader>
       <GridItem>
-        { topics.map((item, index) => <TxLogTopic key={ index } { ...item } index={ index }/>) }
+        { topics.filter(Boolean).map((item, index) => <TxLogTopic key={ index } hex={ item } index={ index }/>) }
       </GridItem>
       <RowHeader>Data</RowHeader>
       <GridItem p={ 4 } fontSize="sm" borderRadius="md" bgColor={ dataBgColor }>

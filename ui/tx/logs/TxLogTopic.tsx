@@ -23,22 +23,18 @@ const TxLogTopic = ({ hex, index }: Props) => {
       <Button variant="outline" colorScheme="gray" isActive size="xs" fontWeight={ 400 } mr={ 3 } w={ 6 }>
         { index }
       </Button>
-      { /* temporary condition juse to show different states of the component */ }
-      { /* delete when ther will be real data */ }
-      { index > 0 && (
-        <Select
-          size="sm"
-          borderRadius="base"
-          value={ selectedDataType }
-          onChange={ handleSelectChange }
-          focusBorderColor="none"
-          w="75px"
-          mr={ 3 }
-          flexShrink={ 0 }
-        >
-          { OPTIONS.map((option) => <option key={ option } value={ option }>{ option }</option>) }
-        </Select>
-      ) }
+      <Select
+        size="sm"
+        borderRadius="base"
+        value={ selectedDataType }
+        onChange={ handleSelectChange }
+        focusBorderColor="none"
+        w="75px"
+        mr={ 3 }
+        flexShrink={ 0 }
+      >
+        { OPTIONS.map((option) => <option key={ option } value={ option }>{ option }</option>) }
+      </Select>
       <Box overflow="hidden" whiteSpace="nowrap">
         <HashStringShortenDynamic hash={ hex }/>
       </Box>
