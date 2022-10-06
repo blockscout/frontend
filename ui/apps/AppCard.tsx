@@ -110,9 +110,8 @@ const AppCard = ({ id,
           position="absolute"
           right={{ base: 3, sm: '20px' }}
           bottom={{ base: 3, sm: '20px' }}
-          paddingTop={ 1 }
           paddingLeft={ 8 }
-          bgGradient={ `linear(to-r, transparent, ${ useColorModeValue('white', 'black') } 20%)` }
+          bgGradient={ `linear(to-r, ${ useColorModeValue('whiteAlpha.50', 'blackAlpha.50') }, ${ useColorModeValue('white', 'black') } 20%)` }
         >
           <Link
             fontSize={{ base: 'xs', sm: 'sm' }}
