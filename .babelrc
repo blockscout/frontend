@@ -1,6 +1,11 @@
 {
-    "presets": ["next/babel"],
-    "plugins": [
-        "@babel/plugin-proposal-class-properties"
+    "presets": [
+        "next/babel",
+        [
+            "@babel/preset-env", {
+                "useBuiltIns": "entry",
+                "corejs": "3.25"
+            }
+        ]
     ]
   }
