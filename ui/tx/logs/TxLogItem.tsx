@@ -1,9 +1,9 @@
-import { Text, Grid, GridItem, Link, Tooltip, Button, Icon, useColorModeValue } from '@chakra-ui/react';
+import { Text, Grid, GridItem, Tooltip, Button, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Log } from 'types/api/log';
 
-import searchIcon from 'icons/search.svg';
+// import searchIcon from 'icons/search.svg';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -43,11 +43,12 @@ const TxLogItem = ({ address, index, topics, data, decoded }: Props) => {
           <AddressIcon hash={ address.hash }/>
           <AddressLink hash={ address.hash } alias={ address.name } ml={ 2 }/>
         </Address>
-        <Tooltip label="Find matches topic">
+        { /* api doesn't have find topic feature yet */ }
+        { /* <Tooltip label="Find matches topic">
           <Link ml={ 2 } mr={{ base: 9, lg: 0 }} display="inline-flex">
             <Icon as={ searchIcon } boxSize={ 5 }/>
           </Link>
-        </Tooltip>
+        </Tooltip> */ }
         <Tooltip label="Log index">
           <Button variant="outline" colorScheme="gray" isActive ml="auto" size="sm" fontWeight={ 400 }>
             { index }
