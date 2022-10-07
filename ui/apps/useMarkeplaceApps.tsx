@@ -85,7 +85,7 @@ export default function useMarketplaceApps() {
     }
 
     const defaultDisplayedApps = [ ...marketplaceApps ]
-      .filter(item => item.chainId === selectedNetwork?.chainId)
+      .filter(item => item.chainIds.includes(selectedNetwork?.chainId))
       .sort((a, b) => a.title.localeCompare(b.title));
 
     setDefaultAppList(defaultDisplayedApps);
