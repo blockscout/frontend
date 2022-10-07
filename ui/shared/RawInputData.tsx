@@ -1,6 +1,7 @@
 import { Box, Flex, Select, Textarea } from '@chakra-ui/react';
 import React from 'react';
 
+import hexToUtf8 from 'lib/hexToUtf8';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 type DataType = 'Hex' | 'UTF-8'
@@ -26,7 +27,7 @@ const RawInputData = ({ hex }: Props) => {
         <CopyToClipboard text={ hex }/>
       </Flex>
       <Textarea
-        value={ selectedDataType === 'Hex' ? hex : 'UTF-8 equivalent' }
+        value={ selectedDataType === 'Hex' ? hex : hexToUtf8(hex) }
         w="100%"
         maxH="220px"
         mt={ 2 }
@@ -38,4 +39,4 @@ const RawInputData = ({ hex }: Props) => {
   );
 };
 
-export default RawInputData;
+export default React.memo(RawInputData);
