@@ -22,6 +22,7 @@ const TxLogItem = ({ address, index, topics, data, decoded }: Props) => {
 
   const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
   const dataBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
+  const decodedTopics = decoded?.parameters.filter(({ indexed }) => indexed);
 
   return (
     <Grid
@@ -63,7 +64,15 @@ const TxLogItem = ({ address, index, topics, data, decoded }: Props) => {
       ) }
       <RowHeader>Topics</RowHeader>
       <GridItem>
-        { topics.filter(Boolean).map((item, index) => <TxLogTopic key={ index } hex={ item } index={ index }/>) }
+        { topics.filter(Boolean).map((item, index) => (
+          <TxLogTopic
+            key={ index }
+            hex={ item }
+            decoded={ decodedTopics?.[index - 1]?.value }
+            type={ decodedTopics?.[index - 1]?.type }
+            index={ index }
+          />
+        )) }
       </GridItem>
       <RowHeader>Data</RowHeader>
       <GridItem p={ 4 } fontSize="sm" borderRadius="md" bgColor={ dataBgColor }>
