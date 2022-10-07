@@ -27,6 +27,8 @@ const MarketplaceApp = ({ app, isLoading }: Props) => {
         'allow-same-origin allow-scripts ' +
         'allow-top-navigation-by-user-activation';
 
+  const allowAttributeValue = 'clipboard-read; clipboard-write';
+
   useEffect(() => {
     if (app && !isFrameLoading) {
       ref?.current?.contentWindow?.postMessage({ blockscoutColorMode: colorMode, blockscoutChainId: network?.chainId }, app.url);
@@ -46,6 +48,7 @@ const MarketplaceApp = ({ app, isLoading }: Props) => {
 
         { app && (
           <Box
+            allow={ allowAttributeValue }
             ref={ ref }
             sandbox={ sandboxAttributeValue }
             as="iframe"
