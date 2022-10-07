@@ -1,4 +1,4 @@
-import { Grid, GridItem, Text, Icon, Link, Box, Tooltip } from '@chakra-ui/react';
+import { Grid, GridItem, Text, Icon, Link, Box, Tooltip, Alert } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { utils } from 'ethers';
 import { useRouter } from 'next/router';
@@ -11,6 +11,7 @@ import clockIcon from 'icons/clock.svg';
 import flameIcon from 'icons/flame.svg';
 import getBlockReward from 'lib/block/getBlockReward';
 import dayjs from 'lib/date/dayjs';
+import type { ErrorType } from 'lib/hooks/useFetch';
 import useFetch from 'lib/hooks/useFetch';
 import useNetwork from 'lib/hooks/useNetwork';
 import { space } from 'lib/html-entities';
@@ -33,7 +34,7 @@ const BlockDetails = () => {
   const network = useNetwork();
   const fetch = useFetch();
 
-  const { data, isLoading, isError } = useQuery<unknown, unknown, Block>(
+  const { data, isLoading, isError, error } = useQuery<unknown, ErrorType<{ status: number }>, Block>(
     [ 'block', router.query.id ],
     async() => await fetch(`/api/blocks/${ router.query.id }`),
     {
@@ -49,12 +50,19 @@ const BlockDetails = () => {
     });
   }, []);
 
+  const handlePrevNextClick = React.useCallback((direction: 'prev' | 'next') => {
+    const increment = direction === 'next' ? +1 : -1;
+    const url = link('block_index', { id: String(Number(router.query.id) + increment) });
+    router.push(url, undefined, { shallow: true });
+  }, [ link, router ]);
+
   if (isLoading) {
     return <BlockDetailsSkeleton/>;
   }
 
   if (isError) {
-    return <DataFetchAlert/>;
+    const is404 = error?.error?.status === 404;
+    return is404 ? <Alert>This block has not been processed yet.</Alert> : <DataFetchAlert/>;
   }
 
   const sectionGap = <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>;
@@ -67,7 +75,13 @@ const BlockDetails = () => {
         hint="The block height of a particular block is defined as the number of blocks preceding it in the blockchain."
       >
         { data.height }
-        <PrevNext ml={ 6 }/>
+        <PrevNext
+          ml={ 6 }
+          onClick={ handlePrevNextClick }
+          prevLabel="View previous block"
+          nextLabel="View next block"
+          isPrevDisabled={ router.query.id === '0' }
+        />
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Size"
@@ -235,14 +249,16 @@ const BlockDetails = () => {
             </Box>
             <CopyToClipboard text={ data.hash }/>
           </DetailsInfoItem>
-          <DetailsInfoItem
-            title="Parent hash"
-            hint="The hash of the block from which this block was generated."
-            flexWrap="nowrap"
-          >
-            <AddressLink hash={ data.parent_hash } type="block" id={ String(data.height - 1) }/>
-            <CopyToClipboard text={ data.parent_hash }/>
-          </DetailsInfoItem>
+          { data.height > 0 && (
+            <DetailsInfoItem
+              title="Parent hash"
+              hint="The hash of the block from which this block was generated."
+              flexWrap="nowrap"
+            >
+              <AddressLink hash={ data.parent_hash } type="block" id={ String(data.height - 1) }/>
+              <CopyToClipboard text={ data.parent_hash }/>
+            </DetailsInfoItem>
+          ) }
           { /* api doesn't support state root yet */ }
           { /* <DetailsInfoItem
             title="State root"
