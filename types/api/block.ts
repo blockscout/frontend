@@ -9,10 +9,10 @@ export interface Block {
   size: number;
   hash: string;
   parent_hash: string;
-  difficulty: number;
-  total_difficulty: number;
-  gas_used: number;
-  gas_limit: number;
+  difficulty: string;
+  total_difficulty: string;
+  gas_used: string;
+  gas_limit: string;
   nonce: number;
   base_fee_per_gas: number | null;
   burnt_fees: number | null;

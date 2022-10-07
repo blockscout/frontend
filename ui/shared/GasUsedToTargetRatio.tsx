@@ -2,13 +2,14 @@ import { Stat, StatArrow, Text, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 interface Props {
-  used: number;
-  target: number;
+  used?: number;
+  target?: number;
+  value?: number;
   className?: string;
 }
 
-const GasUsedToTargetRatio = ({ used, target, className }: Props) => {
-  const percentage = (used / target - 1) * 100;
+const GasUsedToTargetRatio = ({ used, target, value, className }: Props) => {
+  const percentage = value || ((used || 0) / (target || 0) - 1) * 100;
 
   return (
     <Stat className={ className }>
