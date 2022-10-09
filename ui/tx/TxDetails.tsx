@@ -23,7 +23,7 @@ import CurrencyValue from 'ui/shared/CurrencyValue';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import PrevNext from 'ui/shared/PrevNext';
+// import PrevNext from 'ui/shared/PrevNext';
 import RawInputData from 'ui/shared/RawInputData';
 import TextSeparator from 'ui/shared/TextSeparator';
 // import TokenSnippet from 'ui/shared/TokenSnippet';
@@ -75,7 +75,8 @@ const TxDetails = () => {
           <HashStringShortenDynamic hash={ data.hash }/>
         </Box>
         <CopyToClipboard text={ data.hash }/>
-        <PrevNext ml={ 7 }/>
+        { /* api doesn't support navigation between certain address account tx */ }
+        { /* <PrevNext ml={ 7 }/> */ }
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Status"
