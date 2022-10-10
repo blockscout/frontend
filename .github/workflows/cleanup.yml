@@ -8,8 +8,7 @@ on:
 jobs:
   if_merged:
     if: github.event.pull_request.merged == true
-    needs: push_to_registry
-    uses: blockscout/blockscout-ci-cd/.github/workflows/cleanup.yaml@master
+    uses: blockscout/blockscout-ci-cd/.github/workflows/cleanup.yaml@fix-e2e-tests
     with:
-      appNamespace: frontend-$GITHUB_REF_NAME
+      appNamespace: review-front-$GITHUB_HEAD_REF_SLUG
     secrets: inherit
