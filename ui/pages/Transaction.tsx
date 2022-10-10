@@ -13,13 +13,14 @@ import TxDetails from 'ui/tx/TxDetails';
 import TxInternals from 'ui/tx/TxInternals';
 import TxLogs from 'ui/tx/TxLogs';
 import TxRawTrace from 'ui/tx/TxRawTrace';
-import TxState from 'ui/tx/TxState';
+// import TxState from 'ui/tx/TxState';
 
 const TABS: Array<RoutedTab> = [
   { routeName: 'tx_index', title: 'Details', component: <TxDetails/> },
   { routeName: 'tx_internal', title: 'Internal txn', component: <TxInternals/> },
   { routeName: 'tx_logs', title: 'Logs', component: <TxLogs/> },
-  { routeName: 'tx_state', title: 'State', component: <TxState/> },
+  // will be implemented later, api is not ready
+  // { routeName: 'tx_state', title: 'State', component: <TxState/> },
   { routeName: 'tx_raw_trace', title: 'Raw trace', component: <TxRawTrace/> },
 ];
 
@@ -37,11 +38,21 @@ const TransactionPageContent = ({ tab }: Props) => {
         <Icon as={ eastArrowIcon } boxSize={ 6 } mr={ 2 } transform="rotate(180deg)"/>
         Transactions
       </Link>
-      <PageTitle text="Transaction details"/>
-      <Flex marginLeft="auto" alignItems="center" flexWrap="wrap" columnGap={ 6 } rowGap={ 3 } mb={ 6 }>
-        <ExternalLink title="Open in Tenderly" href="#"/>
-        <ExternalLink title="Open in Blockchair" href="#"/>
-        <ExternalLink title="Open in Etherscan" href="#"/>
+      <Flex alignItems="flex-start" flexDir={{ base: 'column', lg: 'row' }}>
+        <PageTitle text="Transaction details"/>
+        <Flex
+          alignItems="center"
+          flexWrap="wrap"
+          columnGap={ 6 }
+          rowGap={ 3 }
+          ml={{ base: 'initial', lg: 'auto' }}
+          mb={{ base: 6, lg: 'initial' }}
+          py={ 2.5 }
+        >
+          <ExternalLink title="Open in Tenderly" href="#"/>
+          <ExternalLink title="Open in Blockchair" href="#"/>
+          <ExternalLink title="Open in Etherscan" href="#"/>
+        </Flex>
       </Flex>
       <RoutedTabs
         tabs={ TABS }

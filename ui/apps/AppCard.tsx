@@ -1,4 +1,5 @@
 import { Box, Heading, Icon, IconButton, Image, Link, LinkBox, LinkOverlay, Text, useColorModeValue } from '@chakra-ui/react';
+import NextLink from 'next/link';
 import type { MouseEvent } from 'react';
 import React, { useCallback } from 'react';
 
@@ -7,6 +8,10 @@ import type { AppItemPreview } from 'types/client/apps';
 import northEastIcon from 'icons/arrows/north-east.svg';
 import starFilledIcon from 'icons/star_filled.svg';
 import starOutlineIcon from 'icons/star_outline.svg';
+import useLink from 'lib/link/useLink';
+import notEmpty from 'lib/notEmpty';
+
+import { APP_CATEGORIES } from './constants';
 
 interface Props extends AppItemPreview {
   onInfoClick: (id: string) => void;
@@ -23,8 +28,7 @@ const AppCard = ({ id,
   isFavorite,
   onFavoriteClick,
 }: Props) => {
-
-  const categoriesLabel = categories.map(c => c.name).join(', ');
+  const categoriesLabel = categories.map(c => APP_CATEGORIES[c]).filter(notEmpty).join(', ');
 
   const handleInfoClick = useCallback((event: MouseEvent) => {
     event.preventDefault();
@@ -34,6 +38,8 @@ const AppCard = ({ id,
   const handleFavoriteClick = useCallback(() => {
     onFavoriteClick(id, isFavorite);
   }, [ onFavoriteClick, id, isFavorite ]);
+
+  const link = useLink();
 
   return (
     <LinkBox
@@ -48,6 +54,7 @@ const AppCard = ({ id,
       padding={{ base: 3, sm: '20px' }}
       border="1px"
       borderColor={ useColorModeValue('gray.200', 'gray.600') }
+      role="group"
     >
       <Box
         display={{ base: 'grid', sm: 'block' }}
@@ -64,6 +71,7 @@ const AppCard = ({ id,
           h={{ base: '64px', sm: '96px' }}
         >
           <Image
+            borderRadius={ 8 }
             src={ logo }
             alt={ `${ title } app icon` }
           />
@@ -76,11 +84,11 @@ const AppCard = ({ id,
           fontSize={{ base: 'sm', sm: 'lg' }}
           fontWeight="semibold"
         >
-          <LinkOverlay
-            href="#"
-          >
-            { title }
-          </LinkOverlay>
+          <NextLink href={ link('app_index', { id: id }) } passHref>
+            <LinkOverlay>
+              { title }
+            </LinkOverlay>
+          </NextLink>
         </Heading>
 
         <Text
@@ -103,9 +111,8 @@ const AppCard = ({ id,
           position="absolute"
           right={{ base: 3, sm: '20px' }}
           bottom={{ base: 3, sm: '20px' }}
-          paddingTop={ 1 }
           paddingLeft={ 8 }
-          bgGradient={ `linear(to-r, transparent, ${ useColorModeValue('white', 'black') } 20%)` }
+          bgGradient={ `linear(to-r, ${ useColorModeValue('whiteAlpha.50', 'blackAlpha.50') }, ${ useColorModeValue('white', 'black') } 20%)` }
         >
           <Link
             fontSize={{ base: 'xs', sm: 'sm' }}
@@ -127,9 +134,11 @@ const AppCard = ({ id,
         </Box>
 
         <IconButton
+          display={{ base: 'block', sm: isFavorite ? 'block' : 'none' }}
+          _groupHover={{ display: 'block' }}
           position="absolute"
-          right={{ base: 3, sm: '20px' }}
-          top={{ base: 3, sm: '20px' }}
+          right={{ base: 3, sm: '10px' }}
+          top={{ base: 3, sm: '14px' }}
           aria-label="Mark as favorite"
           title="Mark as favorite"
           variant="ghost"

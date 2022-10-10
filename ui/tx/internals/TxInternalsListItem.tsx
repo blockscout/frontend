@@ -1,26 +1,27 @@
 import { Flex, Tag, Icon, Box, HStack, Text } from '@chakra-ui/react';
 import appConfig from 'configs/app/config';
-import capitalize from 'lodash/capitalize';
 import React from 'react';
 
-import type ArrayElement from 'types/utils/ArrayElement';
+import type { InternalTransaction } from 'types/api/internalTransaction';
 
-import type { data } from 'data/txInternal';
 import eastArrowIcon from 'icons/arrows/east.svg';
 import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import TxStatus from 'ui/shared/TxStatus';
+import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
-type Props = ArrayElement<typeof data>;
+type Props = InternalTransaction;
 
-const TxInternalsListItem = ({ type, status, from, to, value, gasLimit }: Props) => {
+const TxInternalsListItem = ({ type, from, to, value, success, error }: Props) => {
+  const typeTitle = TX_INTERNALS_ITEMS.find(({ id }) => id === type)?.title;
+
   return (
     <AccountListItemMobile rowGap={ 3 }>
       <Flex>
-        <Tag colorScheme="cyan" mr={ 2 }>{ capitalize(type) }</Tag>
-        <TxStatus status={ status }/>
+        <Tag colorScheme="cyan" mr={ 2 }>{ typeTitle }</Tag>
+        <TxStatus status={ success ? 'ok' : 'error' } errorText={ error }/>
       </Flex>
       <Box w="100%" display="flex" columnGap={ 3 }>
         <Address width="calc((100% - 48px) / 2)">
@@ -37,10 +38,11 @@ const TxInternalsListItem = ({ type, status, from, to, value, gasLimit }: Props)
         <Text fontSize="sm" fontWeight={ 500 }>Value { appConfig.network.currency }</Text>
         <Text fontSize="sm" variant="secondary">{ value }</Text>
       </HStack>
-      <HStack spacing={ 3 }>
+      { /* no gas limit in api yet */ }
+      { /* <HStack spacing={ 3 }>
         <Text fontSize="sm" fontWeight={ 500 }>Gas limit</Text>
         <Text fontSize="sm" variant="secondary">{ gasLimit.toLocaleString('en') }</Text>
-      </HStack>
+      </HStack> */ }
     </AccountListItemMobile>
   );
 };

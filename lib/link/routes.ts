@@ -104,6 +104,9 @@ export const ROUTES = {
   apps: {
     pattern: `${ BASE_PATH }/apps`,
   },
+  app_index: {
+    pattern: `${ BASE_PATH }/apps/[id]`,
+  },
 
   // SEARCH
   search_results: {

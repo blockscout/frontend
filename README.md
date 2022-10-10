@@ -20,7 +20,7 @@ And of course our premier language is [Typescript](https://www.typescriptlang.or
 For local development please follow next steps:
 - clone repo
 - install dependencies with `yarn`
-- clone `env.example` into `configs/envs/env.secrets` and fill it with necessary secret values (see description [below](#environment-variables))
+- clone `.env.example` into `configs/envs/.env.secrets` and fill it with necessary secret values (see description [below](#environment-variables))
 - to spin up local dev server
     - for predefined networks configs (see full available list in `package.json`) you can just run `yarn dev:<app_name>`
     - for custom network setup create `.env.local` file with all required environment variables from the [list](#environment-variables) and run `yarn dev` 
@@ -50,6 +50,7 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_FOOTER_TWITTER_LINK | `string` *(optional)* | Link to Twitter in the footer | `https://www.twitter.com/blockscoutcom` |
 | NEXT_PUBLIC_FOOTER_TELEGRAM_LINK | `string` *(optional)* | Link to Telegram in the footer | `https://t.me/poa_network` |
 | NEXT_PUBLIC_FOOTER_STAKING_LINK | `string` *(optional)* | Link to staking dashboard in the footer | `https://duneanalytics.com/maxaleks/xdai-staking` |
+| NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM | `string` | Link to form where authors can submit their dapps to the marketplace | `https://airtable.com/shrqUAcjgGJ4jU88C` |
 | NEXT_PUBLIC_APP_INSTANCE | `string` *(optional)* | Name of app instance | `wonderful_kepler` |
 | NEXT_PUBLIC_APP_PROTOCOL | `http \| https` *(optional)* | App protocol (`https` used as default value) | `https` |
 | NEXT_PUBLIC_APP_HOST | `string` | App host | `blockscout.com` |

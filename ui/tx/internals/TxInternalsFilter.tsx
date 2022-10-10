@@ -1,7 +1,7 @@
 import { Popover, PopoverTrigger, PopoverContent, PopoverBody, CheckboxGroup, Checkbox, Text, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TxInternalsType } from 'types/api/tx';
+import type { TxInternalsType } from 'types/api/internalTransaction';
 
 import FilterButton from 'ui/shared/FilterButton';
 import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';

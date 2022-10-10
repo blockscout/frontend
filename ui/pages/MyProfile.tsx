@@ -25,7 +25,6 @@ const MyProfile = () => {
         <UserAvatar size={ 64 } data={ data }/>
         <FormControl variant="floating" id="name" isRequired size="lg">
           <Input
-            size="lg"
             required
             disabled
             value={ data.name || '' }
@@ -34,7 +33,6 @@ const MyProfile = () => {
         </FormControl>
         <FormControl variant="floating" id="nickname" isRequired size="lg">
           <Input
-            size="lg"
             required
             disabled
             value={ data.nickname || '' }
@@ -43,7 +41,6 @@ const MyProfile = () => {
         </FormControl>
         <FormControl variant="floating" id="email" isRequired size="lg">
           <Input
-            size="lg"
             required
             disabled
             value={ data.email }

@@ -1,44 +1,73 @@
-import debounce from 'lodash/debounce';
-import React, { useCallback, useState } from 'react';
+import { Box, Icon, Link } from '@chakra-ui/react';
+import config from 'configs/app/config';
+import React from 'react';
 
-import type { AppItemOverview } from 'types/client/apps';
-
-import { TEMPORARY_DEMO_APPS } from 'data/apps';
+import PlusIcon from 'icons/plus.svg';
 import AppList from 'ui/apps/AppList';
+import AppListSkeleton from 'ui/apps/AppListSkeleton';
+import CategoriesMenu from 'ui/apps/CategoriesMenu';
 import FilterInput from 'ui/shared/FilterInput';
 
-const defaultDisplayedApps = [ ...TEMPORARY_DEMO_APPS ]
-  .sort((a, b) => a.title.localeCompare(b.title));
+import useMarketplaceApps from '../apps/useMarkeplaceApps';
 
 const Apps = () => {
-  const [ displayedApps, setDisplayedApps ] = useState<Array<AppItemOverview>>(defaultDisplayedApps);
-  const [ displayedAppId, setDisplayedAppId ] = useState<string | null>(null);
-
-  const showAppInfo = useCallback((id: string) => {
-    setDisplayedAppId(id);
-  }, []);
-
-  const filterApps = (q: string) => {
-    const apps = displayedApps
-      .filter(app => app.title.toLowerCase().includes(q.toLowerCase()));
-
-    setDisplayedApps(apps);
-  };
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debounceFilterApps = useCallback(debounce(q => filterApps(q), 500), []);
-
-  const clearDisplayedAppId = useCallback(() => setDisplayedAppId(null), []);
+  const {
+    isLoading,
+    category,
+    handleCategoryChange,
+    debounceFilterApps,
+    showAppInfo,
+    displayedApps,
+    displayedAppId,
+    clearDisplayedAppId,
+    favoriteApps,
+    handleFavoriteClick,
+  } = useMarketplaceApps();
 
   return (
     <>
-      <FilterInput onChange={ debounceFilterApps } marginBottom={{ base: '4', lg: '6' }} placeholder="Find app"/>
-      <AppList
-        apps={ displayedApps }
-        onAppClick={ showAppInfo }
-        displayedAppId={ displayedAppId }
-        onModalClose={ clearDisplayedAppId }
-      />
+      <Box
+        display="flex"
+        flexDirection={{ base: 'column', sm: 'row' }}
+      >
+        <CategoriesMenu
+          selectedCategoryId={ category }
+          onSelect={ handleCategoryChange }
+        />
+
+        <FilterInput onChange={ debounceFilterApps } marginBottom={{ base: '4', lg: '6' }} placeholder="Find app"/>
+      </Box>
+
+      { isLoading ? <AppListSkeleton/> : (
+        <AppList
+          apps={ displayedApps }
+          onAppClick={ showAppInfo }
+          displayedAppId={ displayedAppId }
+          onModalClose={ clearDisplayedAppId }
+          favoriteApps={ favoriteApps }
+          onFavoriteClick={ handleFavoriteClick }
+        />
+      ) }
+
+      { config.marketplaceSubmitForm && (
+        <Link
+          fontWeight="bold"
+          display="inline-flex"
+          alignItems="baseline"
+          marginTop={{ base: 8, sm: 16 }}
+          href={ config.marketplaceSubmitForm }
+          isExternal
+        >
+          <Icon
+            as={ PlusIcon }
+            w={ 3 }
+            h={ 3 }
+            mr={ 2 }
+          />
+
+            Submit an App
+        </Link>
+      ) }
     </>
   );
 };

@@ -15,7 +15,7 @@ import TxStateTableItem from 'ui/tx/state/TxStateTableItem';
 const TxStateTable = () => {
   return (
     <TableContainer width="100%" mt={ 6 }>
-      <Table variant="simple" minWidth="950px" size="sm">
+      <Table variant="simple" minWidth="950px" size="sm" w="auto">
         <Thead>
           <Tr>
             <Th width="92px">Storage</Th>

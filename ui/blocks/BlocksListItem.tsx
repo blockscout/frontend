@@ -34,7 +34,7 @@ const BlocksListItem = ({ data, isPending }: Props) => {
             { data.height }
           </Link>
         </Flex>
-        <Text variant="secondary"fontWeight={ 400 }>{ dayjs(data.timestamp).locale('en-short').fromNow() }</Text>
+        <Text variant="secondary"fontWeight={ 400 }>{ dayjs(data.timestamp).fromNow() }</Text>
       </Flex>
       <Flex columnGap={ 2 }>
         <Text fontWeight={ 500 }>Size</Text>

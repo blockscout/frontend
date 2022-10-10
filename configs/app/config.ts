@@ -36,6 +36,7 @@ const config = Object.freeze({
   featuredNetworks: process.env.NEXT_PUBLIC_FEATURED_NETWORKS?.replaceAll('\'', '"'),
   blockScoutVersion: process.env.NEXT_PUBLIC_BLOCKSCOUT_VERSION,
   isAccountSupported: process.env.NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED?.replaceAll('\'', '"') === 'true',
+  marketplaceSubmitForm: process.env.NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM,
   protocol: process.env.NEXT_PUBLIC_APP_PROTOCOL,
   host: process.env.NEXT_PUBLIC_APP_HOST,
   port: process.env.NEXT_PUBLIC_APP_PORT,

@@ -1,3 +1,4 @@
+import type { InputProps } from '@chakra-ui/react';
 import { FormControl, FormLabel, Input } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 import type { ControllerRenderProps, FieldError, FieldValues, Path, Control } from 'react-hook-form';
@@ -14,7 +15,7 @@ interface Props<TInputs extends FieldValues> {
   control: Control<TInputs, object>;
   pattern?: RegExp;
   error?: FieldError;
-  size?: string;
+  size?: InputProps['size'];
 }
 
 export default function PublicTagsFormInput<Inputs extends FieldValues>({
@@ -31,7 +32,6 @@ export default function PublicTagsFormInput<Inputs extends FieldValues>({
       <FormControl variant="floating" id={ field.name } isRequired={ required } size={ size }>
         <Input
           { ...field }
-          size={ size }
           required={ required }
           isInvalid={ Boolean(error) }
           maxLength={ TEXT_INPUT_MAX_LENGTH }

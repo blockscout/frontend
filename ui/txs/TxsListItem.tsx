@@ -62,7 +62,7 @@ const TxsListItem = ({ tx }: {tx: ArrayElement<typeof txs>}) => {
               />
             </Address>
           </Flex>
-          <Text variant="secondary" fontWeight="400">{ dayjs(tx.timestamp).fromNow() }</Text>
+          <Text variant="secondary" fontWeight="400" fontSize="sm">{ dayjs(tx.timestamp).fromNow() }</Text>
         </Flex>
         <Flex mt={ 3 }>
           <Text as="span" whiteSpace="pre">Method </Text>

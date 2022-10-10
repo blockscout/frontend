@@ -2,6 +2,8 @@ import appConfig from 'configs/app/config';
 
 import featuredNetworks from 'lib/networks/featuredNetworks';
 
+import getMarketplaceApps from '../getMarketplaceApps';
+
 const KEY_WORDS = {
   BLOB: 'blob:',
   DATA: 'data:',
@@ -25,6 +27,14 @@ function getNetworksExternalAssets() {
   const logo = appConfig.network.logo ? new URL(appConfig.network.logo) : undefined;
 
   return logo ? icons.concat(logo) : icons;
+}
+
+function getMarketplaceAppsOrigins() {
+  return getMarketplaceApps().map(({ url }) => url);
+}
+
+function getMarketplaceAppsLogosOrigins() {
+  return getMarketplaceApps().map(({ logo }) => logo);
 }
 
 function makePolicyMap() {
@@ -84,6 +94,9 @@ function makePolicyMap() {
 
       // network assets
       ...networkExternalAssets.map((url) => url.host),
+
+      // marketplace apps logos
+      ...getMarketplaceAppsLogosOrigins(),
     ],
 
     'font-src': [
@@ -102,12 +115,13 @@ function makePolicyMap() {
       KEY_WORDS.NONE,
     ],
 
+    'frame-src': getMarketplaceAppsOrigins(),
+
     ...(REPORT_URI ? {
       'report-uri': [
         REPORT_URI,
       ],
     } : {}),
-
   };
 }
 

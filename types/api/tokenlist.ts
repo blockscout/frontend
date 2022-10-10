@@ -6,7 +6,7 @@ export type Tokenlist = {
 export type TokenlistItem = {
   balance: number;
   contractAddress: string;
-  decimals?: number;
+  decimals: number | null;
   id: number;
   name: string;
   symbol: string;
