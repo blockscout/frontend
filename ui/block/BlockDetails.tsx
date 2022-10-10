@@ -1,6 +1,6 @@
 import { Grid, GridItem, Text, Icon, Link, Box, Tooltip, Alert } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
-import { utils } from 'ethers';
+import { utils, constants } from 'ethers';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
@@ -75,12 +75,13 @@ const BlockDetails = () => {
         hint="The block height of a particular block is defined as the number of blocks preceding it in the blockchain."
       >
         { data.height }
+        { data.height === 0 && <Text whiteSpace="pre"> - Genesis Block</Text> }
         <PrevNext
           ml={ 6 }
           onClick={ handlePrevNextClick }
           prevLabel="View previous block"
           nextLabel="View next block"
-          isPrevDisabled={ router.query.id === '0' }
+          isPrevDisabled={ data.height === 0 }
         />
       </DetailsInfoItem>
       <DetailsInfoItem
@@ -116,29 +117,41 @@ const BlockDetails = () => {
         { /* api doesn't return the block processing time yet */ }
         { /* <Text>{ dayjs.duration(block.minedIn, 'second').humanize(true) }</Text> */ }
       </DetailsInfoItem>
-      <DetailsInfoItem
-        title="Block reward"
-        hint={
-          `For each block, the miner is rewarded with a finite amount of ${ network?.currency || 'native token' } 
+      { !totalReward.eq(constants.Zero) && (
+        <DetailsInfoItem
+          title="Block reward"
+          hint={
+            `For each block, the miner is rewarded with a finite amount of ${ network?.currency || 'native token' } 
           on top of the fees paid for all transactions in the block.`
-        }
-        columnGap={ 1 }
-      >
-        <Text>{ utils.formatUnits(totalReward) } { network?.currency }</Text>
-        <Text variant="secondary" whiteSpace="break-spaces">(
-          <Tooltip label="Static block reward">
-            <span>{ utils.formatUnits(staticReward) }</span>
-          </Tooltip>
-          { space }+{ space }
-          <Tooltip label="Txn fees">
-            <span>{ utils.formatUnits(txFees) }</span>
-          </Tooltip>
-          { space }-{ space }
-          <Tooltip label="Burnt fees">
-            <span>{ utils.formatUnits(burntFees) }</span>
-          </Tooltip>
+          }
+          columnGap={ 1 }
+        >
+          <Text>{ utils.formatUnits(totalReward) } { network?.currency }</Text>
+          { (!txFees.eq(constants.Zero) || !burntFees.eq(constants.Zero)) && (
+            <Text variant="secondary" whiteSpace="break-spaces">(
+              <Tooltip label="Static block reward">
+                <span>{ utils.formatUnits(staticReward) }</span>
+              </Tooltip>
+              { !txFees.eq(constants.Zero) && (
+                <>
+                  { space }+{ space }
+                  <Tooltip label="Txn fees">
+                    <span>{ utils.formatUnits(txFees) }</span>
+                  </Tooltip>
+                </>
+              ) }
+              { !burntFees.eq(constants.Zero) && (
+                <>
+                  { space }-{ space }
+                  <Tooltip label="Burnt fees">
+                    <span>{ utils.formatUnits(burntFees) }</span>
+                  </Tooltip>
+                </>
+              ) }
         )</Text>
-      </DetailsInfoItem>
+          ) }
+        </DetailsInfoItem>
+      ) }
 
       { sectionGap }
 
@@ -172,28 +185,26 @@ const BlockDetails = () => {
           </Text>
         </DetailsInfoItem>
       ) }
-      { data.burnt_fees && (
-        <DetailsInfoItem
-          title="Burnt fees"
-          hint={
-            `Amount of ${ network?.currency || 'native token' } burned from transactions included in the block. 
+      <DetailsInfoItem
+        title="Burnt fees"
+        hint={
+          `Amount of ${ network?.currency || 'native token' } burned from transactions included in the block. 
             Equals Block Base Fee per Gas * Gas Used.`
-          }
-        >
-          <Icon as={ flameIcon } boxSize={ 5 } color="gray.500"/>
-          <Text ml={ 1 }>{ utils.formatUnits(burntFees) } { network?.currency }</Text>
-          { data.tx_fees && (
-            <Tooltip label="Burnt fees / Txn fees * 100%">
-              <Box>
-                <Utilization
-                  ml={ 4 }
-                  value={ burntFees.mul(10_000).div(txFees).toNumber() / 10_000 }
-                />
-              </Box>
-            </Tooltip>
-          ) }
-        </DetailsInfoItem>
-      ) }
+        }
+      >
+        <Icon as={ flameIcon } boxSize={ 5 } color="gray.500"/>
+        <Text ml={ 1 }>{ utils.formatUnits(burntFees) } { network?.currency }</Text>
+        { !txFees.eq(constants.Zero) && (
+          <Tooltip label="Burnt fees / Txn fees * 100%">
+            <Box>
+              <Utilization
+                ml={ 4 }
+                value={ burntFees.mul(10_000).div(txFees).toNumber() / 10_000 }
+              />
+            </Box>
+          </Tooltip>
+        ) }
+      </DetailsInfoItem>
       { /* api doesn't support extra data yet */ }
       { /* <DetailsInfoItem
         title="Extra data"
@@ -272,15 +283,17 @@ const BlockDetails = () => {
           >
             { data.nonce }
           </DetailsInfoItem>
-          { data.rewards?.map(({ type, reward }) => (
-            <DetailsInfoItem
-              key={ type }
-              title={ type }
-              hint="Amount of distributed reward. Miners receive a static block reward + Tx fees + uncle fees."
-            >
-              { utils.formatUnits(utils.parseUnits(String(reward), 'wei')) } { network?.currency }
-            </DetailsInfoItem>
-          )) }
+          { data.rewards
+            ?.filter(({ type }) => type !== 'Validator Reward' && type !== 'Miner Reward')
+            .map(({ type, reward }) => (
+              <DetailsInfoItem
+                key={ type }
+                title={ type }
+                hint="Amount of distributed reward. Miners receive a static block reward + Tx fees + uncle fees."
+              >
+                { utils.formatUnits(utils.parseUnits(String(reward), 'wei')) } { network?.currency }
+              </DetailsInfoItem>
+            )) }
         </>
       ) }
     </Grid>
