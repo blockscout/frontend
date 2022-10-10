@@ -69,7 +69,7 @@ jobs:
     with:
       valuesDir: deploy/values
       appName: e2e-front
-      appNamespace: e2e-front
+      appNamespace: e2e-front-$GITHUB_SHA_SHORT
       blockscoutIngressHost: blockscout
       frontendIngressHost: frontend
       frontendImage: ghcr.io/blockscout/frontend:prerelease-${{ needs.push_to_registry.outputs.shortSha }}

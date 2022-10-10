@@ -75,3 +75,4 @@ jobs:
       gethIngressHost: geth
       scVerifierIngressHost: sc-verifier
     secrets: inherit
+
