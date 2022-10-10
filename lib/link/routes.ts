@@ -104,6 +104,10 @@ export const ROUTES = {
     pattern: `${ BASE_PATH }/address/[id]`,
     crossNetworkNavigation: true,
   },
+  address_contract_verification: {
+    pattern: `${ BASE_PATH }/address/[id]/contract_verifications/new`,
+    crossNetworkNavigation: true,
+  },
 
   // APPS
   apps: {
