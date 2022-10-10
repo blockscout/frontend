@@ -21,9 +21,13 @@ export interface Props {
 const BlockPageContent = ({ tab }: Props) => {
   const router = useRouter();
 
+  if (!router.query.id) {
+    return null;
+  }
+
   return (
     <Page>
-      <PageTitle text={ `Block #${ router.query.id || '' }` }/>
+      <PageTitle text={ `Block #${ router.query.id }` }/>
       <RoutedTabs
         tabs={ TABS }
         defaultActiveTab={ tab }

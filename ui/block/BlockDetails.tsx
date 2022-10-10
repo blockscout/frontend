@@ -52,8 +52,10 @@ const BlockDetails = () => {
 
   const handlePrevNextClick = React.useCallback((direction: 'prev' | 'next') => {
     const increment = direction === 'next' ? +1 : -1;
-    const url = link('block_index', { id: String(Number(router.query.id) + increment) });
-    router.push(url, undefined, { shallow: true });
+    const nextId = String(Number(router.query.id) + increment);
+
+    const url = link('block_index', { id: nextId });
+    router.push(url, undefined);
   }, [ link, router ]);
 
   if (isLoading) {
