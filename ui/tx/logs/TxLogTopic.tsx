@@ -1,39 +1,58 @@
 import { Flex, Button, Select, Box } from '@chakra-ui/react';
+import capitalize from 'lodash/capitalize';
 import React from 'react';
 
+import hexToAddress from 'lib/hexToAddress';
+import hexToUtf8 from 'lib/hexToUtf8';
 import AddressLink from 'ui/shared/address/AddressLink';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 interface Props {
   hex: string;
-  decoded?: string;
-  type?: string;
   index: number;
 }
 
-type DataType = 'Hex' | 'Dec';
-const OPTIONS: Array<DataType> = [ 'Hex', 'Dec' ];
+type DataType = 'hex' | 'text' | 'address' | 'number';
 
-const TxLogTopic = ({ hex, index, decoded, type }: Props) => {
-  const [ selectedDataType, setSelectedDataType ] = React.useState<DataType>('Hex');
+const VALUE_CONVERTERS: Record<DataType, (hex: string) => string> = {
+  hex: (hex) => hex,
+  text: hexToUtf8,
+  address: hexToAddress,
+  number: (hex) => BigInt(hex).toString(),
+};
+const OPTIONS: Array<DataType> = [ 'hex', 'address', 'text', 'number' ];
+
+const TxLogTopic = ({ hex, index }: Props) => {
+  const [ selectedDataType, setSelectedDataType ] = React.useState<DataType>('hex');
 
   const handleSelectChange = React.useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedDataType(event.target.value as DataType);
   }, []);
 
-  const content = (() => {
-    if (selectedDataType === 'Dec' && type === 'address' && decoded) {
-      return (
-        <AddressLink hash={ decoded }/>
-      );
-    }
+  const value = VALUE_CONVERTERS[selectedDataType.toLowerCase() as Lowercase<DataType>](hex);
 
-    const value = selectedDataType === 'Dec' && decoded ? decoded : hex;
-    return (
-      <Box overflow="hidden" whiteSpace="nowrap">
-        <HashStringShortenDynamic hash={ value }/>
-      </Box>
-    );
+  const content = (() => {
+    switch (selectedDataType) {
+      case 'hex':
+      case 'number':
+      case 'text': {
+        return (
+          <>
+            <Box overflow="hidden" whiteSpace="nowrap">
+              <HashStringShortenDynamic hash={ value }/>
+            </Box>
+            <CopyToClipboard text={ value }/>
+          </>
+        );
+      }
+
+      case 'address': {
+        return (
+          <AddressLink hash={ hexToAddress(hex) }/>
+        );
+      }
+    }
   })();
 
   return (
@@ -41,18 +60,18 @@ const TxLogTopic = ({ hex, index, decoded, type }: Props) => {
       <Button variant="outline" colorScheme="gray" isActive size="xs" fontWeight={ 400 } mr={ 3 } w={ 6 }>
         { index }
       </Button>
-      { decoded && (
+      { index !== 0 && (
         <Select
           size="sm"
           borderRadius="base"
           value={ selectedDataType }
           onChange={ handleSelectChange }
           focusBorderColor="none"
-          w="75px"
           mr={ 3 }
           flexShrink={ 0 }
+          w="auto"
         >
-          { OPTIONS.map((option) => <option key={ option } value={ option }>{ option }</option>) }
+          { OPTIONS.map((option) => <option key={ option } value={ option }>{ capitalize(option) }</option>) }
         </Select>
       ) }
       { content }
