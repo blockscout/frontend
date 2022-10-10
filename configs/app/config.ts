@@ -7,6 +7,10 @@ const baseUrl = [
   process.env.NEXT_PUBLIC_APP_HOST,
   process.env.NEXT_PUBLIC_APP_PORT ? ':' + process.env.NEXT_PUBLIC_APP_PORT : '',
 ].join('');
+const apiUrl = [
+  process.env.NEXT_PUBLIC_API_ENDPOINT || 'https://blockscout.com',
+  process.env.NEXT_PUBLIC_API_BASE_PATH,
+].filter(Boolean).join('');
 
 const config = Object.freeze({
   env,
@@ -36,7 +40,7 @@ const config = Object.freeze({
   host: process.env.NEXT_PUBLIC_APP_HOST,
   port: process.env.NEXT_PUBLIC_APP_PORT,
   baseUrl,
-  apiEndpoint: process.env.NEXT_PUBLIC_API_ENDPOINT || baseUrl,
+  apiUrl,
 });
 
 export default config;

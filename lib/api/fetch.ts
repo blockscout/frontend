@@ -14,7 +14,7 @@ export default function fetchFactory(_req: NextApiRequest) {
       'content-type': 'application/json',
       cookie: `${ cookies.NAMES.API_TOKEN }=${ _req.cookies[cookies.NAMES.API_TOKEN] }`,
     };
-    const url = new URL(path, appConfig.apiEndpoint);
+    const url = new URL(path, appConfig.apiUrl);
 
     return nodeFetch(url.toString(), {
       headers,
