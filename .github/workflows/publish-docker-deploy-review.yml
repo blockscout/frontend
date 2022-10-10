@@ -65,11 +65,13 @@ jobs:
 
   deploy_frontend:
     needs: push_to_registry
-    uses: blockscout/blockscout-ci-cd/.github/workflows/deploy.yaml@master
+    uses: blockscout/blockscout-ci-cd/.github/workflows/deploy.yaml@fix-e2e-tests
     with:
       valuesDir: deploy/values
-      appNamespace: frontend-$GITHUB_HEAD_REF
-      appName: frontend
-      frontendIngressHost: frontend-$GITHUB_HEAD_REF.aws-k8s.blockscout.com
+      appNamespace: review-front
+      blockscoutIngressHost: blockscout
+      frontendIngressHost: frontend
       frontendImage: ghcr.io/blockscout/frontend:prerelease-${{ needs.push_to_registry.outputs.shortSha }}
+      gethIngressHost: geth
+      scVerifierIngressHost: sc-verifier
     secrets: inherit

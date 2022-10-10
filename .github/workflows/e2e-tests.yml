@@ -68,7 +68,8 @@ jobs:
     uses: blockscout/blockscout-ci-cd/.github/workflows/e2e_new.yaml@fix-e2e-tests
     with:
       valuesDir: deploy/values
-      appName: e2e-bs-stack
+      appName: e2e-front
+      appNamespace: e2e-front
       blockscoutIngressHost: blockscout
       frontendIngressHost: frontend
       frontendImage: ghcr.io/blockscout/frontend:prerelease-${{ needs.push_to_registry.outputs.shortSha }}

@@ -9,9 +9,7 @@ jobs:
   if_merged:
     if: github.event.pull_request.merged == true
     needs: push_to_registry
-    uses: blockscout/blockscout-ci-cd/.github/workflows/cleanup.yaml@deploy-smart-contract-verifier
+    uses: blockscout/blockscout-ci-cd/.github/workflows/cleanup.yaml@master
     with:
-      valuesDir: values/frontend
       appNamespace: frontend-$GITHUB_REF_NAME
-      appName: frontend
     secrets: inherit
