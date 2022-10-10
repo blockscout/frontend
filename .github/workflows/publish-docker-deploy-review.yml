@@ -1,4 +1,4 @@
-name: Publish Docker image for review environment
+name: Deploy review environment
 
 on:
   # push:
@@ -68,7 +68,7 @@ jobs:
     uses: blockscout/blockscout-ci-cd/.github/workflows/deploy.yaml@fix-e2e-tests
     with:
       valuesDir: deploy/values
-      appNamespace: review-front
+      appNamespace: review-front-$GITHUB_HEAD_REF_SLUG
       blockscoutIngressHost: blockscout
       frontendIngressHost: frontend
       frontendImage: ghcr.io/blockscout/frontend:prerelease-${{ needs.push_to_registry.outputs.shortSha }}
