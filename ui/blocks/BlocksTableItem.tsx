@@ -1,10 +1,11 @@
 import { Tr, Td, Text, Link, Flex, Box, Icon, Tooltip, Spinner, useColorModeValue } from '@chakra-ui/react';
+import { utils } from 'ethers';
 import React from 'react';
 
-import type ArrayElement from 'types/utils/ArrayElement';
+import type { Block } from 'types/api/block';
 
-import type { blocks } from 'data/blocks';
 import flameIcon from 'icons/flame.svg';
+import getBlockReward from 'lib/block/getBlockReward';
 import dayjs from 'lib/date/dayjs';
 import useLink from 'lib/link/useLink';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -12,7 +13,7 @@ import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
 import Utilization from 'ui/shared/Utilization';
 
 interface Props {
-  data: ArrayElement<typeof blocks>;
+  data: Block;
   isPending?: boolean;
 }
 
@@ -20,6 +21,7 @@ const BlocksTableItem = ({ data, isPending }: Props) => {
   const link = useLink();
 
   const spinnerEmptyColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
+  const { totalReward, burntFees, txFees } = getBlockReward(data);
 
   return (
     <Tr>
@@ -37,25 +39,28 @@ const BlocksTableItem = ({ data, isPending }: Props) => {
       </Td>
       <Td fontSize="sm">{ data.size.toLocaleString('en') } bytes</Td>
       <Td fontSize="sm">
-        <AddressLink alias={ data.miner?.name } hash={ data.miner.address } truncation="constant"/>
+        <AddressLink alias={ data.miner.name } hash={ data.miner.hash } truncation="constant"/>
       </Td>
-      <Td isNumeric fontSize="sm">{ data.transactionsNum }</Td>
+      <Td isNumeric fontSize="sm">{ data.tx_count }</Td>
       <Td fontSize="sm">
-        <Box>{ data.gas_used.toLocaleString('en') }</Box>
+        <Box>{ utils.commify(data.gas_used) }</Box>
         <Flex mt={ 2 }>
-          <Utilization colorScheme="gray" value={ data.gas_used / data.gas_limit }/>
-          <GasUsedToTargetRatio ml={ 2 } used={ data.gas_used } target={ data.gas_target }/>
+          <Utilization
+            colorScheme="gray"
+            value={ utils.parseUnits(data.gas_used).mul(10_000).div(utils.parseUnits(data.gas_limit)).toNumber() / 10_000 }
+          />
+          <GasUsedToTargetRatio ml={ 2 } value={ data.gas_target_percentage || undefined }/>
         </Flex>
       </Td>
-      <Td fontSize="sm">{ (data.reward.static + data.reward.tx_fee - data.burnt_fees).toLocaleString('en', { maximumFractionDigits: 5 }) }</Td>
+      <Td fontSize="sm">{ utils.formatUnits(totalReward) }</Td>
       <Td fontSize="sm">
         <Flex alignItems="center" columnGap={ 1 }>
           <Icon as={ flameIcon } boxSize={ 5 } color={ useColorModeValue('gray.500', 'inherit') }/>
-          { data.burnt_fees.toLocaleString('en', { maximumFractionDigits: 6 }) }
+          { utils.formatUnits(burntFees) }
         </Flex>
         <Tooltip label="Burnt fees / Txn fees * 100%">
           <Box>
-            <Utilization mt={ 2 } value={ data.burnt_fees / data.reward.tx_fee }/>
+            <Utilization mt={ 2 } value={ burntFees.mul(10_000).div(txFees).toNumber() / 10_000 }/>
           </Box>
         </Tooltip>
       </Td>

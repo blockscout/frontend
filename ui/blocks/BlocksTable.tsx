@@ -1,11 +1,16 @@
 import { Table, Thead, Tbody, Tr, Th, TableContainer } from '@chakra-ui/react';
 import React from 'react';
 
-import { blocks } from 'data/blocks';
+import type { Block } from 'types/api/block';
+
 import useNetwork from 'lib/hooks/useNetwork';
 import BlocksTableItem from 'ui/blocks/BlocksTableItem';
 
-const BlocksTable = () => {
+interface Props {
+  data: Array<Block>;
+}
+
+const BlocksTable = ({ data }: Props) => {
   const network = useNetwork();
 
   return (
@@ -23,7 +28,7 @@ const BlocksTable = () => {
           </Tr>
         </Thead>
         <Tbody>
-          { blocks.map((item, index) => <BlocksTableItem key={ item.height } data={ item } isPending={ index === 0 }/>) }
+          { data.map((item, index) => <BlocksTableItem key={ item.height } data={ item } isPending={ index === 0 }/>) }
         </Tbody>
       </Table>
     </TableContainer>

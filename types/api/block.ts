@@ -1,6 +1,8 @@
 import type { AddressParam } from 'types/api/addressParams';
 import type { Reward } from 'types/api/reward';
 
+export type BlockType = 'block' | 'reorg' | 'uncle';
+
 export interface Block {
   height: number;
   timestamp: string;
@@ -23,12 +25,12 @@ export interface Block {
   gas_target_percentage: number | null;
   gas_used_percentage: number | null;
   burnt_fees_percentage: number | null;
-  type: 'block' | 'reorg' | 'uncle';
+  type: BlockType;
   tx_fees: string | null;
   uncles_hashes: Array<string>;
 }
 
-export interface BlockResponse {
+export interface BlocksResponse {
   items: Array<Block>;
   next_page_params: {
     block_number: number;
