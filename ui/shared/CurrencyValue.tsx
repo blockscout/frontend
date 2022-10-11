@@ -10,10 +10,10 @@ interface Props {
   currency?: string;
   exchangeRate?: string;
   className?: string;
-  accuracy?: number;
+  accuracyUsd?: number;
 }
 
-const CurrencyValue = ({ value, currency = '', unit = 'wei', exchangeRate, className, accuracy }: Props) => {
+const CurrencyValue = ({ value, currency = '', unit = 'wei', exchangeRate, className, accuracyUsd }: Props) => {
   let unitBn: BigNumber.Value;
   switch (unit) {
     case 'wei':
@@ -38,7 +38,7 @@ const CurrencyValue = ({ value, currency = '', unit = 'wei', exchangeRate, class
       </Text>
       { exchangeRate !== undefined && exchangeRate !== null &&
         // TODO: mb need to implement rounding to the first significant digit
-        <Text as="span" variant="secondary" whiteSpace="pre" fontWeight={ 400 }> (${ accuracy ? usdBn.toFixed(accuracy) : usdBn.toFixed() })</Text>
+        <Text as="span" variant="secondary" whiteSpace="pre" fontWeight={ 400 }> (${ accuracyUsd ? usdBn.toFixed(accuracyUsd) : usdBn.toFixed() })</Text>
       }
     </Box>
   );
