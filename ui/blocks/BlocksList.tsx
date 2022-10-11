@@ -12,7 +12,7 @@ interface Props {
 const BlocksList = ({ data }: Props) => {
   return (
     <Box mt={ 8 }>
-      { data.map((item, index) => <BlocksListItem key={ item.height } data={ item } isPending={ index === 0 }/>) }
+      { data.map((item) => <BlocksListItem key={ item.height } data={ item }/>) }
     </Box>
   );
 };

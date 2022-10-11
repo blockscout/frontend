@@ -28,7 +28,7 @@ const BlocksTable = ({ data }: Props) => {
           </Tr>
         </Thead>
         <Tbody>
-          { data.map((item, index) => <BlocksTableItem key={ item.height } data={ item } isPending={ index === 0 }/>) }
+          { data.map((item) => <BlocksTableItem key={ item.height } data={ item }/>) }
         </Tbody>
       </Table>
     </TableContainer>
