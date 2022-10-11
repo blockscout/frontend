@@ -1,5 +1,5 @@
 import { Tr, Td, Text, Link, Flex, Box, Icon, Tooltip, Spinner, useColorModeValue } from '@chakra-ui/react';
-import { utils } from 'ethers';
+import { constants, utils } from 'ethers';
 import React from 'react';
 
 import type { Block } from 'types/api/block';
@@ -27,7 +27,7 @@ const BlocksTableItem = ({ data, isPending }: Props) => {
     <Tr>
       <Td fontSize="sm">
         <Flex columnGap={ 2 } alignItems="center">
-          { isPending && <Spinner size="sm" color="blue.500" emptyColor={ spinnerEmptyColor }/> }
+          { isPending && <Spinner size="sm" color="blue.500" emptyColor={ spinnerEmptyColor } flexShrink={ 0 }/> }
           <Link
             fontWeight={ 600 }
             href={ link('block_index', { id: String(data.height) }) }
@@ -39,7 +39,7 @@ const BlocksTableItem = ({ data, isPending }: Props) => {
       </Td>
       <Td fontSize="sm">{ data.size.toLocaleString('en') } bytes</Td>
       <Td fontSize="sm">
-        <AddressLink alias={ data.miner.name } hash={ data.miner.hash } truncation="constant"/>
+        <AddressLink alias={ data.miner.name } hash={ data.miner.hash } truncation="constant" display="inline-flex" maxW="100%"/>
       </Td>
       <Td isNumeric fontSize="sm">{ data.tx_count }</Td>
       <Td fontSize="sm">
@@ -56,11 +56,11 @@ const BlocksTableItem = ({ data, isPending }: Props) => {
       <Td fontSize="sm">
         <Flex alignItems="center" columnGap={ 1 }>
           <Icon as={ flameIcon } boxSize={ 5 } color={ useColorModeValue('gray.500', 'inherit') }/>
-          { utils.formatUnits(burntFees) }
+          { Number(utils.formatUnits(burntFees)).toFixed(8) }
         </Flex>
         <Tooltip label="Burnt fees / Txn fees * 100%">
-          <Box>
-            <Utilization mt={ 2 } value={ burntFees.mul(10_000).div(txFees).toNumber() / 10_000 }/>
+          <Box w="min-content">
+            <Utilization mt={ 2 } value={ txFees.eq(constants.Zero) ? 1 : burntFees.mul(10_000).div(txFees).toNumber() / 10_000 }/>
           </Box>
         </Tooltip>
       </Td>

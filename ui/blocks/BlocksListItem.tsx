@@ -1,5 +1,5 @@
 import { Flex, Link, Spinner, Text, Box, Icon, useColorModeValue } from '@chakra-ui/react';
-import { utils } from 'ethers';
+import { constants, utils } from 'ethers';
 import React from 'react';
 
 import type { Block } from 'types/api/block';
@@ -67,7 +67,7 @@ const BlocksListItem = ({ data, isPending }: Props) => {
         <Text fontWeight={ 500 }>Burnt fees</Text>
         <Icon as={ flameIcon } boxSize={ 5 } color="gray.500" ml={ 2 }/>
         <Text variant="secondary" ml={ 1 }>{ utils.formatUnits(burntFees) }</Text>
-        <Utilization ml={ 4 } value={ burntFees.mul(10_000).div(txFees).toNumber() / 10_000 }/>
+        <Utilization ml={ 4 } value={ txFees.eq(constants.Zero) ? 1 : burntFees.mul(10_000).div(txFees).toNumber() / 10_000 }/>
       </Flex>
     </AccountListItemMobile>
   );

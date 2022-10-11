@@ -1,4 +1,4 @@
-import { Box, Text, Show, Alert } from '@chakra-ui/react';
+import { Box, Text, Show, Alert, Skeleton } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
@@ -21,15 +21,18 @@ const BlocksContent = ({ type }: Props) => {
 
   const { data, isLoading, isError } = useQuery<unknown, unknown, BlocksResponse>(
     [ 'blocks', type ],
-    async() => await fetch(`/api/blocks?type=${ type }`),
+    async() => await fetch(`/api/blocks${ type ? `?type=${ type }` : '' }`),
   );
 
   if (isLoading) {
     return (
       <>
-        <Show below="lg"><BlocksSkeletonMobile/></Show>
-        <Show above="lg">
-          <SkeletonTable columns={ [ '124px', '112px', '144px', '64px', '40%', '30%', '30%' ] }/>
+        <Show below="lg" key="skeleton-mobile">
+          <BlocksSkeletonMobile/>
+        </Show>
+        <Show above="lg" key="skeleton-desktop">
+          <Skeleton h={ 6 } mb={ 8 } w="150px"/>
+          <SkeletonTable columns={ [ '125px', '112px', '21%', '64px', '35%', '22%', '22%' ] }/>
         </Show>
       </>
     );
@@ -45,9 +48,9 @@ const BlocksContent = ({ type }: Props) => {
 
   return (
     <>
-      <Text>Total of 15,044,883 blocks</Text>
-      <Show below="lg"><BlocksList data={ data.items }/></Show>
-      <Show above="lg"><BlocksTable data={ data.items }/></Show>
+      <Text>Total of { data.items[0].height.toLocaleString() } blocks</Text>
+      <Show below="lg" key="content-mobile"><BlocksList data={ data.items }/></Show>
+      <Show above="lg" key="content-desktop"><BlocksTable data={ data.items }/></Show>
       <Box mx={{ base: 0, lg: 6 }} my={{ base: 6, lg: 3 }}>
         <Pagination currentPage={ 1 }/>
       </Box>

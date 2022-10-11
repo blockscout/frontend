@@ -18,13 +18,13 @@ const BlocksTable = ({ data }: Props) => {
       <Table variant="simple" minWidth="1040px" size="md" fontWeight={ 500 }>
         <Thead>
           <Tr>
-            <Th width="124px">Block</Th>
+            <Th width="125px">Block</Th>
             <Th width="112px">Size</Th>
-            <Th width="144px">Miner</Th>
+            <Th width="21%" minW="144px">Miner</Th>
             <Th width="64px" isNumeric>Txn</Th>
-            <Th width="40%">Gas used</Th>
-            <Th width="30%">Reward { network?.currency }</Th>
-            <Th width="30%">Burnt fees { network?.currency }</Th>
+            <Th width="35%">Gas used</Th>
+            <Th width="22%">Reward { network?.currency }</Th>
+            <Th width="22%">Burnt fees { network?.currency }</Th>
           </Tr>
         </Thead>
         <Tbody>
