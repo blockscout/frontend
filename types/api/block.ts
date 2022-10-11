@@ -13,7 +13,7 @@ export interface Block {
   parent_hash: string;
   difficulty: string;
   total_difficulty: string;
-  gas_used: string;
+  gas_used: string | null;
   gas_limit: string;
   nonce: number;
   base_fee_per_gas: number | null;

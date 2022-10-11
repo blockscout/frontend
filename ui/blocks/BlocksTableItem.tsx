@@ -46,9 +46,9 @@ const BlocksTableItem = ({ data, isPending }: Props) => {
       </Td>
       <Td isNumeric fontSize="sm">{ data.tx_count }</Td>
       <Td fontSize="sm">
-        <Box>{ BigNumber(data.gas_used).toFormat() }</Box>
+        <Box>{ BigNumber(data.gas_used || 0).toFormat() }</Box>
         <Flex mt={ 2 }>
-          <Utilization colorScheme="gray" value={ BigNumber(data.gas_used).dividedBy(BigNumber(data.gas_limit)).toNumber() }/>
+          <Utilization colorScheme="gray" value={ BigNumber(data.gas_used || 0).dividedBy(BigNumber(data.gas_limit)).toNumber() }/>
           <GasUsedToTargetRatio ml={ 2 } value={ data.gas_target_percentage || undefined }/>
         </Flex>
       </Td>

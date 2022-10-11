@@ -55,8 +55,8 @@ const BlocksListItem = ({ data, isPending }: Props) => {
       <Box>
         <Text fontWeight={ 500 }>Gas used</Text>
         <Flex columnGap={ 4 }>
-          <Text variant="secondary">{ BigNumber(data.gas_used).toFormat() }</Text>
-          <Utilization colorScheme="gray" value={ BigNumber(data.gas_used).div(BigNumber(data.gas_limit)).toNumber() }/>
+          <Text variant="secondary">{ BigNumber(data.gas_used || 0).toFormat() }</Text>
+          <Utilization colorScheme="gray" value={ BigNumber(data.gas_used || 0).div(BigNumber(data.gas_limit)).toNumber() }/>
           <GasUsedToTargetRatio value={ data.gas_target_percentage || undefined }/>
         </Flex>
       </Box>
