@@ -1,6 +1,6 @@
 import { Grid, GridItem, Text, Box, Icon, Link, Flex } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
-import { utils } from 'ethers';
+import BigNumber from 'bignumber.js';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
@@ -9,6 +9,7 @@ import type { Transaction } from 'types/api/transaction';
 
 import clockIcon from 'icons/clock.svg';
 import flameIcon from 'icons/flame.svg';
+import { WEI, WEI_IN_GWEI } from 'lib/consts';
 // import errorIcon from 'icons/status/error.svg';
 // import successIcon from 'icons/status/success.svg';
 import dayjs from 'lib/date/dayjs';
@@ -165,17 +166,17 @@ const TxDetails = () => {
         title="Gas price"
         hint="Price per unit of gas specified by the sender. Higher gas prices can prioritize transaction inclusion during times of high usage."
       >
-        <Text mr={ 1 }>{ utils.formatUnits(utils.parseUnits(String(data.gas_price), 'wei')) } { selectedNetwork?.currency }</Text>
-        <Text variant="secondary">({ Number(utils.formatUnits(utils.parseUnits(String(data.gas_price), 'wei'), 'gwei')) } Gwei)</Text>
+        <Text mr={ 1 }>{ BigNumber(data.gas_price).dividedBy(WEI).toFixed() } { selectedNetwork?.currency }</Text>
+        <Text variant="secondary">({ BigNumber(data.gas_price).dividedBy(WEI_IN_GWEI).toFixed() } Gwei)</Text>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Gas limit & usage by txn"
         hint="Actual gas amount used by the transaction."
       >
-        <Text>{ utils.commify(data.gas_used) }</Text>
+        <Text>{ BigNumber(data.gas_used).toFormat() }</Text>
         <TextSeparator/>
-        <Text >{ utils.commify(data.gas_limit) }</Text>
-        <Utilization ml={ 4 } value={ utils.parseUnits(data.gas_used).mul(10_000).div(utils.parseUnits(data.gas_limit)).toNumber() / 10_000 }/>
+        <Text >{ BigNumber(data.gas_limit).toFormat() }</Text>
+        <Utilization ml={ 4 } value={ BigNumber(data.gas_used).dividedBy(BigNumber(data.gas_limit)).toNumber() }/>
       </DetailsInfoItem>
       { (data.base_fee_per_gas || data.max_fee_per_gas || data.max_priority_fee_per_gas) && (
         <DetailsInfoItem
@@ -186,21 +187,21 @@ const TxDetails = () => {
           { data.base_fee_per_gas && (
             <Box>
               <Text as="span" fontWeight="500">Base: </Text>
-              <Text fontWeight="600" as="span">{ utils.formatUnits(utils.parseUnits(String(data.base_fee_per_gas), 'wei'), 'gwei') }</Text>
+              <Text fontWeight="600" as="span">{ BigNumber(data.base_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
             </Box>
           ) }
           { data.max_fee_per_gas && (
             <Box>
               <TextSeparator/>
               <Text as="span" fontWeight="500">Max: </Text>
-              <Text fontWeight="600" as="span">{ utils.formatUnits(utils.parseUnits(String(data.max_fee_per_gas), 'wei'), 'gwei') }</Text>
+              <Text fontWeight="600" as="span">{ BigNumber(data.max_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
             </Box>
           ) }
           { data.max_priority_fee_per_gas && (
             <Box>
               <TextSeparator/>
               <Text as="span" fontWeight="500">Max priority: </Text>
-              <Text fontWeight="600" as="span">{ utils.formatUnits(utils.parseUnits(String(data.max_priority_fee_per_gas), 'wei'), 'gwei') }</Text>
+              <Text fontWeight="600" as="span">{ BigNumber(data.max_priority_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
             </Box>
           ) }
         </DetailsInfoItem>
