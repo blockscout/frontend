@@ -1,6 +1,6 @@
 import { Grid, GridItem, Text, Icon, Link, Box, Tooltip, Alert } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
-import { utils, constants } from 'ethers';
+import BigNumber from 'bignumber.js';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
@@ -10,6 +10,7 @@ import type { Block } from 'types/api/block';
 import clockIcon from 'icons/clock.svg';
 import flameIcon from 'icons/flame.svg';
 import getBlockReward from 'lib/block/getBlockReward';
+import { WEI, WEI_IN_GWEI, ZERO } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
 import type { ErrorType } from 'lib/hooks/useFetch';
 import useFetch from 'lib/hooks/useFetch';
@@ -119,7 +120,7 @@ const BlockDetails = () => {
         { /* api doesn't return the block processing time yet */ }
         { /* <Text>{ dayjs.duration(block.minedIn, 'second').humanize(true) }</Text> */ }
       </DetailsInfoItem>
-      { !totalReward.eq(constants.Zero) && (
+      { !totalReward.isEqualTo(ZERO) && (
         <DetailsInfoItem
           title="Block reward"
           hint={
@@ -128,25 +129,25 @@ const BlockDetails = () => {
           }
           columnGap={ 1 }
         >
-          <Text>{ utils.formatUnits(totalReward) } { network?.currency }</Text>
-          { (!txFees.eq(constants.Zero) || !burntFees.eq(constants.Zero)) && (
+          <Text>{ totalReward.dividedBy(WEI).toFixed() } { network?.currency }</Text>
+          { (!txFees.isEqualTo(ZERO) || !burntFees.isEqualTo(ZERO)) && (
             <Text variant="secondary" whiteSpace="break-spaces">(
               <Tooltip label="Static block reward">
-                <span>{ utils.formatUnits(staticReward) }</span>
+                <span>{ staticReward.dividedBy(WEI).toFixed() }</span>
               </Tooltip>
-              { !txFees.eq(constants.Zero) && (
+              { !txFees.isEqualTo(ZERO) && (
                 <>
                   { space }+{ space }
                   <Tooltip label="Txn fees">
-                    <span>{ utils.formatUnits(txFees) }</span>
+                    <span>{ txFees.dividedBy(WEI).toFixed() }</span>
                   </Tooltip>
                 </>
               ) }
-              { !burntFees.eq(constants.Zero) && (
+              { !burntFees.isEqualTo(ZERO) && (
                 <>
                   { space }-{ space }
                   <Tooltip label="Burnt fees">
-                    <span>{ utils.formatUnits(burntFees) }</span>
+                    <span>{ burntFees.dividedBy(WEI).toFixed() }</span>
                   </Tooltip>
                 </>
               ) }
@@ -161,12 +162,12 @@ const BlockDetails = () => {
         title="Gas used"
         hint="The total gas amount used in the block and its percentage of gas filled in the block."
       >
-        <Text>{ utils.commify(data.gas_used) }</Text>
+        <Text>{ BigNumber(data.gas_used).toFormat() }</Text>
         <Utilization
           ml={ 4 }
           mr={ 5 }
           colorScheme="gray"
-          value={ utils.parseUnits(data.gas_used).mul(10_000).div(utils.parseUnits(data.gas_limit)).toNumber() / 10_000 }
+          value={ BigNumber(data.gas_used).dividedBy(BigNumber(data.gas_limit)).toNumber() }
         />
         <GasUsedToTargetRatio value={ data.gas_target_percentage || undefined }/>
       </DetailsInfoItem>
@@ -174,16 +175,16 @@ const BlockDetails = () => {
         title="Gas limit"
         hint="Total gas limit provided by all transactions in the block."
       >
-        <Text>{ utils.commify(data.gas_limit) }</Text>
+        <Text>{ BigNumber(data.gas_limit).toFormat() }</Text>
       </DetailsInfoItem>
       { data.base_fee_per_gas && (
         <DetailsInfoItem
           title="Base fee per gas"
           hint="Minimum fee required per unit of gas. Fee adjusts based on network congestion."
         >
-          <Text>{ utils.formatUnits(utils.parseUnits(String(data.base_fee_per_gas), 'wei')) } { network?.currency } </Text>
+          <Text>{ BigNumber(data.base_fee_per_gas).dividedBy(WEI).toFixed() } { network?.currency } </Text>
           <Text variant="secondary" whiteSpace="pre">
-            { space }({ utils.formatUnits(utils.parseUnits(String(data.base_fee_per_gas), 'wei'), 'gwei') } Gwei)
+            { space }({ BigNumber(data.base_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() } Gwei)
           </Text>
         </DetailsInfoItem>
       ) }
@@ -195,18 +196,26 @@ const BlockDetails = () => {
         }
       >
         <Icon as={ flameIcon } boxSize={ 5 } color="gray.500"/>
-        <Text ml={ 1 }>{ utils.formatUnits(burntFees) } { network?.currency }</Text>
-        { !txFees.eq(constants.Zero) && (
+        <Text ml={ 1 }>{ burntFees.dividedBy(WEI).toFixed() } { network?.currency }</Text>
+        { !txFees.isEqualTo(ZERO) && (
           <Tooltip label="Burnt fees / Txn fees * 100%">
             <Box>
               <Utilization
                 ml={ 4 }
-                value={ burntFees.mul(10_000).div(txFees).toNumber() / 10_000 }
+                value={ burntFees.dividedBy(txFees).toNumber() }
               />
             </Box>
           </Tooltip>
         ) }
       </DetailsInfoItem>
+      { data.priority_fee && (
+        <DetailsInfoItem
+          title="Priority fee / Tip"
+          hint="User-defined tips sent to validator for transaction priority/inclusion."
+        >
+          { BigNumber(data.priority_fee).dividedBy(WEI).toFixed() } { network?.currency }
+        </DetailsInfoItem>
+      ) }
       { /* api doesn't support extra data yet */ }
       { /* <DetailsInfoItem
         title="Extra data"
@@ -241,13 +250,13 @@ const BlockDetails = () => {
             title="Difficulty"
             hint="Block difficulty for miner, used to calibrate block generation time."
           >
-            { utils.commify(data.difficulty) }
+            { BigNumber(data.difficulty).toFormat() }
           </DetailsInfoItem>
           <DetailsInfoItem
             title="Total difficulty"
             hint="Total difficulty of the chain until this block."
           >
-            { utils.commify(data.total_difficulty) }
+            { BigNumber(data.total_difficulty).toFormat() }
           </DetailsInfoItem>
 
           { sectionGap }
@@ -293,7 +302,7 @@ const BlockDetails = () => {
                 title={ type }
                 hint="Amount of distributed reward. Miners receive a static block reward + Tx fees + uncle fees."
               >
-                { utils.formatUnits(utils.parseUnits(String(reward), 'wei')) } { network?.currency }
+                { BigNumber(reward).dividedBy(WEI).toFixed() } { network?.currency }
               </DetailsInfoItem>
             )) }
         </>
