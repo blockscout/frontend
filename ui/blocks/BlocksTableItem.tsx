@@ -28,12 +28,14 @@ const BlocksTableItem = ({ data, isPending }: Props) => {
       <Td fontSize="sm">
         <Flex columnGap={ 2 } alignItems="center">
           { isPending && <Spinner size="sm" color="blue.500" emptyColor={ spinnerEmptyColor } flexShrink={ 0 }/> }
-          <Link
-            fontWeight={ 600 }
-            href={ link('block_index', { id: String(data.height) }) }
-          >
-            { data.height }
-          </Link>
+          <Tooltip isDisabled={ data.type !== 'reorg' } label="Chain reorganizations">
+            <Link
+              fontWeight={ 600 }
+              href={ link('block_index', { id: String(data.height) }) }
+            >
+              { data.height }
+            </Link>
+          </Tooltip>
         </Flex>
         <Text variant="secondary" mt={ 2 } fontWeight={ 400 }>{ dayjs(data.timestamp).fromNow() }</Text>
       </Td>
