@@ -1,3 +1,4 @@
 export default function hexToAddress(hex: string) {
-  return hex.slice(0, 2) + hex.slice(26);
+  const shortenHex = hex.slice(0, 66);
+  return shortenHex.slice(0, 2) + shortenHex.slice(26);
 }

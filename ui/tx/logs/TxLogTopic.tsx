@@ -4,6 +4,7 @@ import React from 'react';
 
 import hexToAddress from 'lib/hexToAddress';
 import hexToUtf8 from 'lib/hexToUtf8';
+import Address from 'ui/shared/address/Address';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
@@ -49,7 +50,10 @@ const TxLogTopic = ({ hex, index }: Props) => {
 
       case 'address': {
         return (
-          <AddressLink hash={ hexToAddress(hex) }/>
+          <Address>
+            <AddressLink hash={ value }/>
+            <CopyToClipboard text={ value }/>
+          </Address>
         );
       }
     }
