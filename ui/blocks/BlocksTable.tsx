@@ -19,7 +19,7 @@ const BlocksTable = ({ data }: Props) => {
         <Thead>
           <Tr>
             <Th width="125px">Block</Th>
-            <Th width="112px">Size</Th>
+            <Th width="120px">Size</Th>
             <Th width="21%" minW="144px">Miner</Th>
             <Th width="64px" isNumeric>Txn</Th>
             <Th width="35%">Gas used</Th>

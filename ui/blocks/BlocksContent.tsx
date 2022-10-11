@@ -32,7 +32,7 @@ const BlocksContent = ({ type }: Props) => {
         </Show>
         <Show above="lg" key="skeleton-desktop">
           <Skeleton h={ 6 } mb={ 8 } w="150px"/>
-          <SkeletonTable columns={ [ '125px', '112px', '21%', '64px', '35%', '22%', '22%' ] }/>
+          <SkeletonTable columns={ [ '125px', '120px', '21%', '64px', '35%', '22%', '22%' ] }/>
         </Show>
       </>
     );
