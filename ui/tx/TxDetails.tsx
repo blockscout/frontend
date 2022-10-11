@@ -1,4 +1,4 @@
-import { Grid, GridItem, Text, Box, Icon, Link, Flex } from '@chakra-ui/react';
+import { Grid, GridItem, Text, Box, Icon, Link, Flex, Spinner } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import { useRouter } from 'next/router';
@@ -72,6 +72,7 @@ const TxDetails = () => {
         hint="Unique character string (TxID) assigned to every verified transaction."
         flexWrap="nowrap"
       >
+        { data.status === null && <Spinner mr={ 2 } size="sm" flexShrink={ 0 }/> }
         <Box overflow="hidden">
           <HashStringShortenDynamic hash={ data.hash }/>
         </Box>
@@ -88,22 +89,28 @@ const TxDetails = () => {
         title="Block"
         hint="Block number containing the transaction."
       >
-        <Text>{ data.block }</Text>
-        <TextSeparator color="gray.500"/>
-        <Text variant="secondary">
-          { data.confirmations } Block confirmations
-        </Text>
+        <Text>{ data.block === null ? 'Pending' : data.block }</Text>
+        { Boolean(data.confirmations) && (
+          <>
+            <TextSeparator color="gray.500"/>
+            <Text variant="secondary">
+              { data.confirmations } Block confirmations
+            </Text>
+          </>
+        ) }
       </DetailsInfoItem>
-      <DetailsInfoItem
-        title="Timestamp"
-        hint="Date & time of transaction inclusion, including length of time for confirmation."
-      >
-        <Icon as={ clockIcon } boxSize={ 5 } color="gray.500"/>
-        <Text ml={ 1 }>{ dayjs(data.timestamp).fromNow() }</Text>
-        <TextSeparator/>
-        <Text whiteSpace="normal">{ dayjs(data.timestamp).format('LLLL') }<TextSeparator color="gray.500"/></Text>
-        <Text variant="secondary">{ getConfirmationDuration(data.confirmation_duration) }</Text>
-      </DetailsInfoItem>
+      { data.timestamp && (
+        <DetailsInfoItem
+          title="Timestamp"
+          hint="Date & time of transaction inclusion, including length of time for confirmation."
+        >
+          <Icon as={ clockIcon } boxSize={ 5 } color="gray.500"/>
+          <Text ml={ 1 }>{ dayjs(data.timestamp).fromNow() }</Text>
+          <TextSeparator/>
+          <Text whiteSpace="normal">{ dayjs(data.timestamp).format('LLLL') }<TextSeparator color="gray.500"/></Text>
+          <Text variant="secondary">{ getConfirmationDuration(data.confirmation_duration) }</Text>
+        </DetailsInfoItem>
+      ) }
       <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 3, lg: 8 }}/>
       <DetailsInfoItem
         title="From"
@@ -173,10 +180,10 @@ const TxDetails = () => {
         title="Gas limit & usage by txn"
         hint="Actual gas amount used by the transaction."
       >
-        <Text>{ BigNumber(data.gas_used).toFormat() }</Text>
+        <Text>{ BigNumber(data.gas_used || 0).toFormat() }</Text>
         <TextSeparator/>
         <Text >{ BigNumber(data.gas_limit).toFormat() }</Text>
-        <Utilization ml={ 4 } value={ BigNumber(data.gas_used).dividedBy(BigNumber(data.gas_limit)).toNumber() }/>
+        <Utilization ml={ 4 } value={ BigNumber(data.gas_used || 0).dividedBy(BigNumber(data.gas_limit)).toNumber() }/>
       </DetailsInfoItem>
       { (data.base_fee_per_gas || data.max_fee_per_gas || data.max_priority_fee_per_gas) && (
         <DetailsInfoItem
@@ -236,23 +243,34 @@ const TxDetails = () => {
             title="Other"
             hint="Other data related to this transaction."
           >
-            { typeof data.type === 'number' && (
-              <Box>
-                <Text as="span" fontWeight="500">Txn type: </Text>
-                <Text fontWeight="600" as="span">{ data.type }</Text>
-                { data.type === 2 && <Text fontWeight="400" as="span" ml={ 1 } variant="secondary">(EIP-1559)</Text> }
-                <TextSeparator/>
-              </Box>
-            ) }
-            <Box>
-              <Text as="span" fontWeight="500">Nonce: </Text>
-              <Text fontWeight="600" as="span">{ data.nonce }</Text>
-              <TextSeparator/>
-            </Box>
-            <Box>
-              <Text as="span" fontWeight="500">Position: </Text>
-              <Text fontWeight="600" as="span">{ data.position }</Text>
-            </Box>
+            {
+              [
+                typeof data.type === 'number' && (
+                  <Box key="type">
+                    <Text as="span" fontWeight="500">Txn type: </Text>
+                    <Text fontWeight="600" as="span">{ data.type }</Text>
+                    { data.type === 2 && <Text fontWeight="400" as="span" ml={ 1 } variant="secondary">(EIP-1559)</Text> }
+                  </Box>
+                ),
+                <Box key="nonce">
+                  <Text as="span" fontWeight="500">Nonce: </Text>
+                  <Text fontWeight="600" as="span">{ data.nonce }</Text>
+                </Box>,
+                data.position !== null && (
+                  <Box key="position">
+                    <Text as="span" fontWeight="500">Position: </Text>
+                    <Text fontWeight="600" as="span">{ data.position }</Text>
+                  </Box>
+                ),
+              ]
+                .filter(Boolean)
+                .map((item, index) => (
+                  <>
+                    { index !== 0 && <TextSeparator/> }
+                    { item }
+                  </>
+                ))
+            }
           </DetailsInfoItem>
           <DetailsInfoItem
             title="Raw input"

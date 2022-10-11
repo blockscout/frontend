@@ -20,7 +20,7 @@ const TokenTransfer = ({ from, to, total, exchange_rate: exchangeRate, ...token 
         <AddressLink fontWeight="500" hash={ to.hash } truncation="constant"/>
       </Flex>
       <Text fontWeight={ 500 } as="span">For:{ space }
-        <CurrencyValue value={ total.value.replaceAll(',', '') } unit="ether" exchangeRate={ exchangeRate } fontWeight={ 600 }/>
+        <CurrencyValue value={ total.value } unit="ether" exchangeRate={ exchangeRate } fontWeight={ 600 }/>
       </Text>
       <TokenSnippet symbol={ token.token_symbol } hash={ token.token_address } name="Foo"/>
     </Flex>

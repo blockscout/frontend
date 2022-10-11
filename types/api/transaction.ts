@@ -8,8 +8,8 @@ export interface Transaction {
   result: string;
   confirmations: number;
   status: 'ok' | 'error' | null;
-  block: number;
-  timestamp: string;
+  block: number | null;
+  timestamp: string | null;
   confirmation_duration: Array<number>;
   from: AddressParam;
   to: AddressParam;
@@ -18,7 +18,7 @@ export interface Transaction {
   fee: Fee;
   gas_price: number;
   type: number;
-  gas_used: string;
+  gas_used: string | null;
   gas_limit: string;
   max_fee_per_gas: number | null;
   max_priority_fee_per_gas: number | null;
