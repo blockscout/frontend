@@ -7,6 +7,8 @@ import { devices } from '@playwright/experimental-ct-react';
 const config: PlaywrightTestConfig = {
   testDir: './',
 
+  testMatch: /.*\.pw\.tsx/,
+
   /* The base directory, relative to the config file, for snapshot files created with toMatchSnapshot and toHaveScreenshot. */
   snapshotDir: './__snapshots__',
 
