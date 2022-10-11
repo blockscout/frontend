@@ -1,11 +1,12 @@
 import { Tr, Td, Text, Link, Flex, Box, Icon, Tooltip, Spinner, useColorModeValue } from '@chakra-ui/react';
-import { constants, utils } from 'ethers';
+import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { Block } from 'types/api/block';
 
 import flameIcon from 'icons/flame.svg';
 import getBlockReward from 'lib/block/getBlockReward';
+import { WEI } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
 import useLink from 'lib/link/useLink';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -45,24 +46,21 @@ const BlocksTableItem = ({ data, isPending }: Props) => {
       </Td>
       <Td isNumeric fontSize="sm">{ data.tx_count }</Td>
       <Td fontSize="sm">
-        <Box>{ utils.commify(data.gas_used) }</Box>
+        <Box>{ BigNumber(data.gas_used).toFormat() }</Box>
         <Flex mt={ 2 }>
-          <Utilization
-            colorScheme="gray"
-            value={ utils.parseUnits(data.gas_used).mul(10_000).div(utils.parseUnits(data.gas_limit)).toNumber() / 10_000 }
-          />
+          <Utilization colorScheme="gray" value={ BigNumber(data.gas_used).dividedBy(BigNumber(data.gas_limit)).toNumber() }/>
           <GasUsedToTargetRatio ml={ 2 } value={ data.gas_target_percentage || undefined }/>
         </Flex>
       </Td>
-      <Td fontSize="sm">{ utils.formatUnits(totalReward) }</Td>
+      <Td fontSize="sm">{ totalReward.dividedBy(WEI).toFixed() }</Td>
       <Td fontSize="sm">
         <Flex alignItems="center" columnGap={ 1 }>
           <Icon as={ flameIcon } boxSize={ 5 } color={ useColorModeValue('gray.500', 'inherit') }/>
-          { Number(utils.formatUnits(burntFees)).toFixed(8) }
+          { burntFees.dividedBy(WEI).toFixed(8) }
         </Flex>
         <Tooltip label="Burnt fees / Txn fees * 100%">
           <Box w="min-content">
-            <Utilization mt={ 2 } value={ txFees.eq(constants.Zero) ? 1 : burntFees.mul(10_000).div(txFees).toNumber() / 10_000 }/>
+            <Utilization mt={ 2 } value={ burntFees.div(txFees).toNumber() }/>
           </Box>
         </Tooltip>
       </Td>
