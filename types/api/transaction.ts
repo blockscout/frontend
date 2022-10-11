@@ -3,6 +3,11 @@ import type { DecodedInput } from './decodedInput';
 import type { Fee } from './fee';
 import type { TokenTransfer } from './tokenTransfer';
 
+export type TransactionRevertReason = {
+  raw: string;
+  decoded: string;
+} | DecodedInput;
+
 export interface Transaction {
   hash: string;
   result: string;
@@ -27,10 +32,7 @@ export interface Transaction {
   tx_burnt_fee: number | null;
   nonce: number;
   position: number;
-  revert_reason: {
-    raw: string;
-    decoded: string;
-  } | null;
+  revert_reason: TransactionRevertReason | null;
   raw_input: string;
   decoded_input: DecodedInput | null;
   token_transfers: Array<TokenTransfer> | null;

@@ -31,6 +31,7 @@ import TextSeparator from 'ui/shared/TextSeparator';
 import TxStatus from 'ui/shared/TxStatus';
 import Utilization from 'ui/shared/Utilization';
 import TxDetailsSkeleton from 'ui/tx/details/TxDetailsSkeleton';
+import TxRevertReason from 'ui/tx/details/TxRevertReason';
 import TokenTransfer from 'ui/tx/TokenTransfer';
 import TxDecodedInputData from 'ui/tx/TxDecodedInputData';
 
@@ -85,6 +86,14 @@ const TxDetails = () => {
       >
         <TxStatus status={ data.status } errorText={ data.status === 'error' ? data.result : undefined }/>
       </DetailsInfoItem>
+      { data.revert_reason && (
+        <DetailsInfoItem
+          title="Revert reason"
+          hint="The revert reason of the transaction."
+        >
+          <TxRevertReason { ...data.revert_reason }/>
+        </DetailsInfoItem>
+      ) }
       <DetailsInfoItem
         title="Block"
         hint="Block number containing the transaction."

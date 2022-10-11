@@ -111,45 +111,49 @@ const TxDecodedInputData = ({ data }: Props) => {
         { data.method_call }
       </GridItem>
       { /* TABLE INSIDE OF BLOCK */ }
-      <GridItem
-        pl={ PADDING }
-        pr={ GAP }
-        pt={ PADDING }
-        pb={ 1 }
-        bgColor={ bgColor }
-        fontWeight={ 600 }
-      >
+      { data.parameters.length > 0 && (
+        <>
+          <GridItem
+            pl={ PADDING }
+            pr={ GAP }
+            pt={ PADDING }
+            pb={ 1 }
+            bgColor={ bgColor }
+            fontWeight={ 600 }
+          >
         Name
-      </GridItem>
-      <GridItem
-        pr={ GAP }
-        pt={ PADDING }
-        pb={ 1 }
-        bgColor={ bgColor }
-        fontWeight={ 600 }
-      >
+          </GridItem>
+          <GridItem
+            pr={ GAP }
+            pt={ PADDING }
+            pb={ 1 }
+            bgColor={ bgColor }
+            fontWeight={ 600 }
+          >
         Type
-      </GridItem>
-      { hasIndexed && (
-        <GridItem
-          pr={ GAP }
-          pt={ PADDING }
-          pb={ 1 }
-          bgColor={ bgColor }
-          fontWeight={ 600 }
-        >
+          </GridItem>
+          { hasIndexed && (
+            <GridItem
+              pr={ GAP }
+              pt={ PADDING }
+              pb={ 1 }
+              bgColor={ bgColor }
+              fontWeight={ 600 }
+            >
           Inde<wbr/>xed?
-        </GridItem>
-      ) }
-      <GridItem
-        pr={ PADDING }
-        pt={ PADDING }
-        pb={ 1 }
-        bgColor={ bgColor }
-        fontWeight={ 600 }
-      >
+            </GridItem>
+          ) }
+          <GridItem
+            pr={ PADDING }
+            pt={ PADDING }
+            pb={ 1 }
+            bgColor={ bgColor }
+            fontWeight={ 600 }
+          >
         Data
-      </GridItem>
+          </GridItem>
+        </>
+      ) }
       { data.parameters.map(({ name, type, value, indexed }, index) => {
         return (
           <TableRow key={ name } name={ name } type={ type } isLast={ index === data.parameters.length - 1 } indexed={ indexed }>
