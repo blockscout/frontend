@@ -164,7 +164,7 @@ const TxDecodedInputData = ({ data }: Props) => {
               </Address>
             ) : (
               <Flex alignItems="flex-start" justifyContent="space-between" whiteSpace="normal" wordBreak="break-all">
-                <Text>{ value }</Text>
+                <Text>{ String(value) }</Text>
                 <CopyToClipboard text={ value }/>
               </Flex>
             ) }

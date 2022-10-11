@@ -1,17 +1,34 @@
-import { Flex, Icon, Text } from '@chakra-ui/react';
+import { Flex, Icon, Text, Link } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenTransfer as TTokenTransfer } from 'types/api/tokenTransfer';
 
 import rightArrowIcon from 'icons/arrows/east.svg';
 import { space } from 'lib/html-entities';
+import useLink from 'lib/link/useLink';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import TokenSnippet from 'ui/shared/TokenSnippet';
 
 type Props = TTokenTransfer
 
-const TokenTransfer = ({ from, to, total, exchange_rate: exchangeRate, ...token }: Props) => {
+const TokenTransfer = ({ from, to, total, exchange_rate: exchangeRate, type, ...token }: Props) => {
+  const link = useLink();
+
+  const content = (() => {
+    switch (type) {
+      case 'token_transfer':
+        return (
+          <CurrencyValue value={ total.value } unit="ether" exchangeRate={ exchangeRate } fontWeight={ 600 }/>
+        );
+
+      case 'token_minting': {
+        const url = link('token_instance_item', { hash: token.token_address, id: total.token_id });
+        return <Text as="span">Token ID [<Link href={ url }>{ total.token_id }</Link>]</Text>;
+      }
+    }
+  })();
+
   return (
     <Flex alignItems="center" flexWrap="wrap" columnGap={ 3 } rowGap={ 3 }>
       <Flex alignItems="center">
@@ -20,7 +37,7 @@ const TokenTransfer = ({ from, to, total, exchange_rate: exchangeRate, ...token 
         <AddressLink fontWeight="500" hash={ to.hash } truncation="constant"/>
       </Flex>
       <Text fontWeight={ 500 } as="span">For:{ space }
-        <CurrencyValue value={ total.value } unit="ether" exchangeRate={ exchangeRate } fontWeight={ 600 }/>
+        { content }
       </Text>
       <TokenSnippet symbol={ token.token_symbol } hash={ token.token_address } name="Foo"/>
     </Flex>

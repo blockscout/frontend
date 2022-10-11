@@ -66,6 +66,9 @@ const TxDetails = () => {
     return <DataFetchAlert/>;
   }
 
+  const transferredTokens = data.token_transfers?.filter(({ type }) => type === 'token_transfer') || [];
+  const mintedTokens = data.token_transfers?.filter(({ type }) => type === 'token_minting') || [];
+
   return (
     <Grid columnGap={ 8 } rowGap={{ base: 3, lg: 3 }} templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }}>
       <DetailsInfoItem
@@ -155,13 +158,23 @@ const TxDetails = () => {
         </Tooltip> */ }
         { /* <TokenSnippet symbol="UP" name="User Pay" hash="0xA17ed5dFc62D0a3E74D69a0503AE9FdA65d9f212" ml={ 3 }/> */ }
       </DetailsInfoItem>
-      { (data.token_transfers?.length || 0) > 0 && (
+      { transferredTokens.length > 0 && (
         <DetailsInfoItem
           title="Token transferred"
           hint="List of token transferred in the transaction."
         >
           <Flex flexDirection="column" alignItems="flex-start" rowGap={ 5 } w="100%">
-            { data.token_transfers?.map((item, index) => <TokenTransfer key={ index } { ...item }/>) }
+            { transferredTokens.map((item, index) => <TokenTransfer key={ index } { ...item }/>) }
+          </Flex>
+        </DetailsInfoItem>
+      ) }
+      { mintedTokens.length > 0 && (
+        <DetailsInfoItem
+          title="Token Minted"
+          hint="List of token minted in the transaction."
+        >
+          <Flex flexDirection="column" alignItems="flex-start" rowGap={ 5 } w="100%">
+            { mintedTokens.map((item, index) => <TokenTransfer key={ index } { ...item }/>) }
           </Flex>
         </DetailsInfoItem>
       ) }

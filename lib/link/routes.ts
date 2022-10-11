@@ -95,8 +95,11 @@ export const ROUTES = {
     crossNetworkNavigation: true,
   },
   token_index: {
-    pattern: `${ BASE_PATH }/token/[id]`,
+    pattern: `${ BASE_PATH }/token/[hash]`,
     crossNetworkNavigation: true,
+  },
+  token_instance_item: {
+    pattern: `${ BASE_PATH }/token/[hash]/instance/[id]`,
   },
 
   // ADDRESSES
