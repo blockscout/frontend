@@ -25,7 +25,9 @@ const MarketplaceApp = ({ app, isLoading }: Props) => {
   const sandboxAttributeValue = 'allow-forms allow-orientation-lock ' +
         'allow-pointer-lock allow-popups-to-escape-sandbox ' +
         'allow-same-origin allow-scripts ' +
-        'allow-top-navigation-by-user-activation';
+        'allow-top-navigation-by-user-activation allow-popups';
+
+  const allowAttributeValue = 'clipboard-read; clipboard-write;';
 
   useEffect(() => {
     if (app && !isFrameLoading) {
@@ -46,6 +48,7 @@ const MarketplaceApp = ({ app, isLoading }: Props) => {
 
         { app && (
           <Box
+            allow={ allowAttributeValue }
             ref={ ref }
             sandbox={ sandboxAttributeValue }
             as="iframe"
