@@ -8,13 +8,13 @@ export interface Transaction {
   result: string;
   confirmations: number;
   status: 'ok' | 'error' | null;
-  block: number;
+  block: number | null;
   timestamp: string;
   confirmation_duration: Array<number>;
   from: AddressParam;
   to: AddressParam;
   created_contract: AddressParam;
-  value: number;
+  value: string;
   fee: Fee;
   gas_price: number;
   type: number;

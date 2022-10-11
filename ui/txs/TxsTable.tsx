@@ -2,15 +2,15 @@ import { Link, Table, Thead, Tbody, Tr, Th, TableContainer, Icon } from '@chakra
 import appConfig from 'configs/app/config';
 import React from 'react';
 
+import type { Transaction } from 'types/api/transaction';
 import type { Sort } from 'types/client/txs-sort';
 
-import type { txs as data } from 'data/txs';
 import rightArrowIcon from 'icons/arrows/east.svg';
 
 import TxsTableItem from './TxsTableItem';
 
 type Props = {
-  txs: typeof data;
+  txs: Array<Transaction>;
   sort: (field: 'val' | 'fee') => () => void;
   sorting: Sort;
 }

@@ -2,45 +2,40 @@ import { Box, Text, chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import { WEI, GWEI } from 'lib/consts';
+import type { Unit } from 'types/unit';
+
+import getValue from 'lib/tx/getValue';
 
 interface Props {
   value: string;
-  unit?: 'wei' | 'gwei' | 'ether';
+  unit?: Unit;
   currency?: string;
-  exchangeRate?: string;
+  exchangeRate?: string | null;
   className?: string;
   accuracy?: number;
   accuracyUsd?: number;
 }
 
-const CurrencyValue = ({ value, currency = '', unit = 'wei', exchangeRate, className, accuracy, accuracyUsd }: Props) => {
-  let unitBn: BigNumber.Value;
-  switch (unit) {
-    case 'wei':
-      unitBn = WEI;
-      break;
-    case 'gwei':
-      unitBn = GWEI;
-      break;
-    default:
-      unitBn = new BigNumber(1);
-  }
+const CurrencyValue = ({ value, currency = '', unit, exchangeRate, className, accuracy, accuracyUsd }: Props) => {
+  const valueCurr = getValue(value, unit);
+  const valueResult = parseFloat(accuracy ? valueCurr.toFixed(accuracy) : valueCurr.toFixed());
 
-  const valueBn = new BigNumber(value);
-  const valueCurr = valueBn.dividedBy(unitBn);
-  const exchangeRateBn = new BigNumber(exchangeRate || 0);
-  const usdBn = valueCurr.times(exchangeRateBn);
+  let usdContent;
+  if (exchangeRate !== undefined && exchangeRate !== null) {
+    const exchangeRateBn = new BigNumber(exchangeRate);
+    const usdBn = valueCurr.times(exchangeRateBn);
+    const usdResult = parseFloat(accuracyUsd ? usdBn.toFixed(accuracyUsd) : usdBn.toFixed());
+    usdContent = (
+      <Text as="span" variant="secondary" whiteSpace="pre" fontWeight={ 400 }> (${ usdResult })</Text>
+    );
+  }
 
   return (
     <Box as="span" className={ className }>
       <Text as="span">
-        { accuracy ? valueCurr.toFixed(accuracy) : valueCurr.toFixed() }{ currency ? ` ${ currency }` : '' }
+        { valueResult }{ currency ? ` ${ currency }` : '' }
       </Text>
-      { exchangeRate !== undefined && exchangeRate !== null &&
-        // TODO: mb need to implement rounding to the first significant digit
-        <Text as="span" variant="secondary" whiteSpace="pre" fontWeight={ 400 }> (${ accuracyUsd ? usdBn.toFixed(accuracyUsd) : usdBn.toFixed() })</Text>
-      }
+      { usdContent }
     </Box>
   );
 };

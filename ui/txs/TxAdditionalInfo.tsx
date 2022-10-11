@@ -1,16 +1,18 @@
 import { Box, Heading, Text, Flex, Link, useColorModeValue } from '@chakra-ui/react';
+import BigNumber from 'bignumber.js';
 import appConfig from 'configs/app/config';
 import React from 'react';
 
-import type ArrayElement from 'types/utils/ArrayElement';
+import type { Transaction } from 'types/api/transaction';
 
-import type { txs } from 'data/txs';
-import { nbsp } from 'lib/html-entities';
+import divideBns from 'lib/bigint/divideBns';
 import link from 'lib/link/link';
+import getValue from 'lib/tx/getValue';
+import CurrencyValue from 'ui/shared/CurrencyValue';
 import TextSeparator from 'ui/shared/TextSeparator';
 import Utilization from 'ui/shared/Utilization';
 
-const TxAdditionalInfo = ({ tx }: { tx: ArrayElement<typeof txs> }) => {
+const TxAdditionalInfo = ({ tx }: { tx: Transaction }) => {
   const sectionBorderColor = useColorModeValue('gray.200', 'whiteAlpha.200');
   const sectionProps = {
     borderBottom: '1px solid',
@@ -31,40 +33,54 @@ const TxAdditionalInfo = ({ tx }: { tx: ArrayElement<typeof txs> }) => {
       <Box { ...sectionProps } mb={ 4 }>
         <Text { ...sectionTitleProps }>Transaction fee</Text>
         <Flex>
-          <Text>{ tx.fee.value }{ nbsp }{ appConfig.network.currency }</Text>
-          <Text variant="secondary" ml={ 1 }>(${ tx.fee.value_usd.toFixed(2) })</Text>
+          <CurrencyValue
+            value={ tx.fee.value }
+            currency={ appConfig.network.currency }
+            exchangeRate={ tx.exchange_rate }
+            accuracyUsd={ 2 }
+          />
         </Flex>
       </Box>
-      <Box { ...sectionProps } mb={ 4 }>
-        <Text { ...sectionTitleProps }>Gas limit & usage by transaction</Text>
-        <Flex>
-          <Text>{ tx.gas_used.toLocaleString('en') }</Text>
-          <TextSeparator/>
-          <Text>{ tx.gas_limit.toLocaleString('en') }</Text>
-          <Utilization ml={ 4 } value={ tx.gas_used / tx.gas_limit }/>
-        </Flex>
-      </Box>
-      <Box { ...sectionProps } mb={ 4 }>
-        <Text { ...sectionTitleProps }>Gas fees (Gwei)</Text>
-        <Box>
-          <Text as="span" fontWeight="500">Base: </Text>
-          <Text fontWeight="600" as="span">{ tx.gas_fees.base }</Text>
+      { tx.gas_used !== null && (
+        <Box { ...sectionProps } mb={ 4 }>
+          <Text { ...sectionTitleProps }>Gas limit & usage by transaction</Text>
+          <Flex>
+            <Text>{ BigNumber(tx.gas_used).toFormat() }</Text>
+            <TextSeparator/>
+            <Text>{ BigNumber(tx.gas_limit).toFormat() }</Text>
+            <Utilization ml={ 4 } value={ Number(divideBns(tx.gas_used, tx.gas_limit, 2)) }/>
+          </Flex>
         </Box>
-        <Box>
-          <Text as="span" fontWeight="500">Max: </Text>
-          <Text fontWeight="600" as="span">{ tx.gas_fees.max }</Text>
+      ) }
+      { (tx.base_fee_per_gas !== null || tx.max_fee_per_gas !== null || tx.max_priority_fee_per_gas !== null) && (
+        <Box { ...sectionProps } mb={ 4 }>
+          <Text { ...sectionTitleProps }>Gas fees (Gwei)</Text>
+          { tx.base_fee_per_gas !== null && (
+            <Box>
+              <Text as="span" fontWeight="500">Base: </Text>
+              <Text fontWeight="600" as="span">{ getValue(tx.base_fee_per_gas, 'gwei').toFixed() }</Text>
+            </Box>
+          ) }
+          { tx.max_fee_per_gas !== null && (
+            <Box>
+              <Text as="span" fontWeight="500">Max: </Text>
+              <Text fontWeight="600" as="span">{ getValue(tx.max_fee_per_gas, 'gwei').toFixed() }</Text>
+            </Box>
+          ) }
+          { tx.max_priority_fee_per_gas !== null && (
+            <Box>
+              <Text as="span" fontWeight="500">Max priority: </Text>
+              <Text fontWeight="600" as="span">{ getValue(tx.max_priority_fee_per_gas, 'gwei').toFixed() }</Text>
+            </Box>
+          ) }
         </Box>
-        <Box>
-          <Text as="span" fontWeight="500">Max priority: </Text>
-          <Text fontWeight="600" as="span">{ tx.gas_fees.max_priority }</Text>
-        </Box>
-      </Box>
+      ) }
       <Box { ...sectionProps } mb={ 4 }>
         <Text { ...sectionTitleProps }>Others</Text>
         <Box>
           <Text as="span" fontWeight="500">Txn type: </Text>
-          <Text fontWeight="600" as="span">{ tx.type.value }</Text>
-          <Text fontWeight="400" as="span" ml={ 1 } color="gray.500">({ tx.type.eip })</Text>
+          <Text fontWeight="600" as="span">{ tx.type }</Text>
+          { tx.type === 2 && <Text fontWeight="400" as="span" ml={ 1 } color="gray.500">(EIP-1559)</Text> }
         </Box>
         <Box>
           <Text as="span" fontWeight="500">Nonce: </Text>

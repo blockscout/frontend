@@ -1,9 +1,10 @@
 import { Box, HStack, Show } from '@chakra-ui/react';
 import React, { useCallback, useEffect, useState } from 'react';
 
+import type { TransactionsResponse } from 'types/api/transaction';
 import type { Sort } from 'types/client/txs-sort';
 
-import { txs } from 'data/txs';
+import compareBns from 'lib/bigint/compareBns';
 import FilterButton from 'ui/shared/FilterButton';
 import FilterInput from 'ui/shared/FilterInput';
 import Pagination from 'ui/shared/Pagination';
@@ -13,11 +14,12 @@ import TxsListItem from './TxsListItem';
 import TxsTable from './TxsTable';
 
 type Props = {
+  txs: TransactionsResponse['items'];
   showDescription?: boolean;
   showSortButton?: boolean;
 }
 
-const TxsContent = ({ showSortButton = true, showDescription = true }: Props) => {
+const TxsContent = ({ showSortButton = true, showDescription = true, txs }: Props) => {
   const [ sorting, setSorting ] = useState<Sort>();
   const [ sortedTxs, setSortedTxs ] = useState(txs);
 
@@ -50,21 +52,21 @@ const TxsContent = ({ showSortButton = true, showDescription = true }: Props) =>
   useEffect(() => {
     switch (sorting) {
       case 'val-desc':
-        setSortedTxs([ ...txs ].sort((tx1, tx2) => tx1.amount.value - tx2.amount.value));
+        setSortedTxs([ ...txs ].sort((tx1, tx2) => compareBns(tx1.value, tx2.value)));
         break;
       case 'val-asc':
-        setSortedTxs([ ...txs ].sort((tx1, tx2) => tx2.amount.value - tx1.amount.value));
+        setSortedTxs([ ...txs ].sort((tx1, tx2) => compareBns(tx2.value, tx1.value)));
         break;
       case 'fee-desc':
-        setSortedTxs([ ...txs ].sort((tx1, tx2) => tx1.fee.value - tx2.fee.value));
+        setSortedTxs([ ...txs ].sort((tx1, tx2) => compareBns(tx1.fee.value, tx2.fee.value)));
         break;
       case 'fee-asc':
-        setSortedTxs([ ...txs ].sort((tx1, tx2) => tx2.fee.value - tx1.fee.value));
+        setSortedTxs([ ...txs ].sort((tx1, tx2) => compareBns(tx2.fee.value, tx1.fee.value)));
         break;
       default:
         setSortedTxs(txs);
     }
-  }, [ sorting ]);
+  }, [ sorting, txs ]);
 
   return (
     <>
@@ -93,7 +95,7 @@ const TxsContent = ({ showSortButton = true, showDescription = true }: Props) =>
           placeholder="Search by addresses, hash, method..."
         />
       </HStack>
-      <Show below="lg">{ sortedTxs.map(tx => <TxsListItem tx={ tx } key={ tx.hash }/>) }</Show>
+      <Show below="lg"><Box>{ sortedTxs.map(tx => <TxsListItem tx={ tx } key={ tx.hash }/>) }</Box></Show>
       <Show above="lg"><TxsTable txs={ sortedTxs } sort={ sort } sorting={ sorting }/></Show>
       <Box mx={{ base: 0, lg: 6 }} my={{ base: 6, lg: 3 }}>
         <Pagination currentPage={ 1 }/>
