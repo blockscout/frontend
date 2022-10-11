@@ -34,13 +34,7 @@ import TxAdditionalInfoButton from 'ui/txs/TxAdditionalInfoButton';
 
 import TxType from './TxType';
 
-<<<<<<< HEAD
-const TxsTableItem = ({ tx }: {tx: ArrayElement<typeof txs>}) => {
-=======
 const TxsTableItem = ({ tx }: {tx: Transaction}) => {
-  const link = useLink();
->>>>>>> 9239655 (txs api start)
-
   const addressFrom = (
     <Address>
       <Tooltip label={ tx.from.implementation_name }>
@@ -118,11 +112,7 @@ const TxsTableItem = ({ tx }: {tx: Transaction}) => {
         </TruncatedTextTooltip>
       </Td>
       <Td>
-<<<<<<< HEAD
-        <Link href={ link('block', { id: tx.block_num.toString() }) }>{ tx.block_num }</Link>
-=======
-        { tx.block && <Link href={ link('block_index', { id: tx.block.toString() }) }>{ tx.block }</Link> }
->>>>>>> 9239655 (txs api start)
+        { tx.block && <Link href={ link('block', { id: tx.block.toString() }) }>{ tx.block }</Link> }
       </Td>
       { /* TODO: fix "show" problem */ }
       <Show above="xl">
