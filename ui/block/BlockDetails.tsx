@@ -162,12 +162,12 @@ const BlockDetails = () => {
         title="Gas used"
         hint="The total gas amount used in the block and its percentage of gas filled in the block."
       >
-        <Text>{ BigNumber(data.gas_used).toFormat() }</Text>
+        <Text>{ BigNumber(data.gas_used || 0).toFormat() }</Text>
         <Utilization
           ml={ 4 }
           mr={ 5 }
           colorScheme="gray"
-          value={ BigNumber(data.gas_used).dividedBy(BigNumber(data.gas_limit)).toNumber() }
+          value={ BigNumber(data.gas_used || 0).dividedBy(BigNumber(data.gas_limit)).toNumber() }
         />
         <GasUsedToTargetRatio value={ data.gas_target_percentage || undefined }/>
       </DetailsInfoItem>
