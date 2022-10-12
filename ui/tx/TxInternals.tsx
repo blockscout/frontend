@@ -1,16 +1,20 @@
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Flex, Alert, Show } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { TxInternalsType } from 'types/api/tx';
-import type ArrayElement from 'types/utils/ArrayElement';
+import type { InternalTransactionsResponse, TxInternalsType, InternalTransaction } from 'types/api/internalTransaction';
 
-import { data } from 'data/txInternal';
+import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { apos } from 'lib/html-entities';
 import EmptySearchResult from 'ui/apps/EmptySearchResult';
+import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import FilterInput from 'ui/shared/FilterInput';
 import TxInternalsFilter from 'ui/tx/internals/TxInternalsFilter';
 import TxInternalsList from 'ui/tx/internals/TxInternalsList';
+import TxInternalsSkeletonDesktop from 'ui/tx/internals/TxInternalsSkeletonDesktop';
+import TxInternalsSkeletonMobile from 'ui/tx/internals/TxInternalsSkeletonMobile';
 import TxInternalsTable from 'ui/tx/internals/TxInternalsTable';
 import type { Sort, SortField } from 'ui/tx/internals/utils';
 
@@ -26,7 +30,7 @@ const getNextSortValue = (field: SortField) => (prevValue: Sort | undefined) => 
   return sequence[nextIndex];
 };
 
-const sortFn = (sort: Sort | undefined) => (a: ArrayElement<typeof data>, b: ArrayElement<typeof data>) => {
+const sortFn = (sort: Sort | undefined) => (a: InternalTransaction, b: InternalTransaction) => {
   switch (sort) {
     case 'value-desc': {
       const result = a.value > b.value ? -1 : 1;
@@ -38,22 +42,23 @@ const sortFn = (sort: Sort | undefined) => (a: ArrayElement<typeof data>, b: Arr
       return a.value === b.value ? 0 : result;
     }
 
-    case 'gas-limit-desc': {
-      const result = a.gasLimit > b.gasLimit ? -1 : 1;
-      return a.gasLimit === b.gasLimit ? 0 : result;
-    }
+    // no gas limit in api yet
+    // case 'gas-limit-desc': {
+    //   const result = a.gasLimit > b.gasLimit ? -1 : 1;
+    //   return a.gasLimit === b.gasLimit ? 0 : result;
+    // }
 
-    case 'gas-limit-asc': {
-      const result = a.gasLimit > b.gasLimit ? 1 : -1;
-      return a.gasLimit === b.gasLimit ? 0 : result;
-    }
+    // case 'gas-limit-asc': {
+    //   const result = a.gasLimit > b.gasLimit ? 1 : -1;
+    //   return a.gasLimit === b.gasLimit ? 0 : result;
+    // }
 
     default:
       return 0;
   }
 };
 
-const searchFn = (searchTerm: string) => (item: ArrayElement<typeof data>): boolean => {
+const searchFn = (searchTerm: string) => (item: InternalTransaction): boolean => {
   const formattedSearchTerm = searchTerm.toLowerCase();
   return item.type.toLowerCase().includes(formattedSearchTerm) ||
     item.from.hash.toLowerCase().includes(formattedSearchTerm) ||
@@ -61,9 +66,19 @@ const searchFn = (searchTerm: string) => (item: ArrayElement<typeof data>): bool
 };
 
 const TxInternals = () => {
+  const router = useRouter();
+  const fetch = useFetch();
+
   const [ filters, setFilters ] = React.useState<Array<TxInternalsType>>([]);
   const [ searchTerm, setSearchTerm ] = React.useState<string>('');
   const [ sort, setSort ] = React.useState<Sort>();
+  const { data, isLoading, isError } = useQuery<unknown, unknown, InternalTransactionsResponse>(
+    [ 'tx-internals', router.query.id ],
+    async() => await fetch(`/api/transactions/${ router.query.id }/internal-transactions`),
+    {
+      enabled: Boolean(router.query.id),
+    },
+  );
 
   const isMobile = useIsMobile();
 
@@ -77,8 +92,25 @@ const TxInternals = () => {
     };
   }, []);
 
+  if (isLoading) {
+    return (
+      <>
+        <Show below="lg"><TxInternalsSkeletonMobile/></Show>
+        <Show above="lg"><TxInternalsSkeletonDesktop/></Show>
+      </>
+    );
+  }
+
+  if (isError) {
+    return <DataFetchAlert/>;
+  }
+
+  if (data.items.length === 0) {
+    return <Alert>There are no internal transactions for this transaction.</Alert>;
+  }
+
   const content = (() => {
-    const filteredData = data
+    const filteredData = data.items
       .filter(({ type }) => filters.length > 0 ? filters.includes(type) : true)
       .filter(searchFn(searchTerm))
       .sort(sortFn(sort));

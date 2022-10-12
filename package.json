@@ -13,7 +13,9 @@
     "start": "next start",
     "lint:eslint": "./node_modules/.bin/eslint . --ext .js,.jsx,.ts,.tsx",
     "prepare": "husky install",
-    "format-svg": "./node_modules/.bin/svgo -r ./icons"
+    "format-svg": "./node_modules/.bin/svgo -r ./icons",
+    "test-ct": "playwright test -c playwright-ct.config.ts",
+    "test-docker": "docker run --rm --network host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.27.0-focal ./run-tests.sh"
   },
   "dependencies": {
     "@chakra-ui/react": "2.3.1",
@@ -24,7 +26,9 @@
     "@tanstack/react-query": "^4.0.10",
     "@tanstack/react-query-devtools": "^4.0.10",
     "@types/react-scroll": "^1.8.4",
+    "bignumber.js": "^9.1.0",
     "dayjs": "^1.11.5",
+    "ethers": "^5.7.1",
     "framer-motion": "^6",
     "lodash": "^4.0.0",
     "next": "12.2.5",
@@ -40,6 +44,7 @@
     "use-font-face-observer": "^1.2.1"
   },
   "devDependencies": {
+    "@playwright/experimental-ct-react": "^1.26.1",
     "@types/node": "17.0.36",
     "@types/react": "18.0.9",
     "@types/react-dom": "18.0.5",
@@ -51,6 +56,7 @@
     "eslint-plugin-regexp": "^1.7.0",
     "husky": "^8.0.0",
     "lint-staged": ">=10",
+    "playwright": "^1.26.1",
     "svgo": "^2.8.0",
     "typescript": "4.7.2"
   },

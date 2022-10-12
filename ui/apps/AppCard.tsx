@@ -28,7 +28,6 @@ const AppCard = ({ id,
   isFavorite,
   onFavoriteClick,
 }: Props) => {
-
   const categoriesLabel = categories.map(c => APP_CATEGORIES[c]).filter(notEmpty).join(', ');
 
   const handleInfoClick = useCallback((event: MouseEvent) => {
@@ -55,6 +54,7 @@ const AppCard = ({ id,
       padding={{ base: 3, sm: '20px' }}
       border="1px"
       borderColor={ useColorModeValue('gray.200', 'gray.600') }
+      role="group"
     >
       <Box
         display={{ base: 'grid', sm: 'block' }}
@@ -71,6 +71,7 @@ const AppCard = ({ id,
           h={{ base: '64px', sm: '96px' }}
         >
           <Image
+            borderRadius={ 8 }
             src={ logo }
             alt={ `${ title } app icon` }
           />
@@ -110,9 +111,8 @@ const AppCard = ({ id,
           position="absolute"
           right={{ base: 3, sm: '20px' }}
           bottom={{ base: 3, sm: '20px' }}
-          paddingTop={ 1 }
           paddingLeft={ 8 }
-          bgGradient={ `linear(to-r, transparent, ${ useColorModeValue('white', 'black') } 20%)` }
+          bgGradient={ `linear(to-r, ${ useColorModeValue('whiteAlpha.50', 'blackAlpha.50') }, ${ useColorModeValue('white', 'black') } 20%)` }
         >
           <Link
             fontSize={{ base: 'xs', sm: 'sm' }}
@@ -134,9 +134,11 @@ const AppCard = ({ id,
         </Box>
 
         <IconButton
+          display={{ base: 'block', sm: isFavorite ? 'block' : 'none' }}
+          _groupHover={{ display: 'block' }}
           position="absolute"
-          right={{ base: 3, sm: '20px' }}
-          top={{ base: 3, sm: '20px' }}
+          right={{ base: 3, sm: '10px' }}
+          top={{ base: 3, sm: '14px' }}
           aria-label="Mark as favorite"
           title="Mark as favorite"
           variant="ghost"

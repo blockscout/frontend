@@ -22,7 +22,7 @@ export default function useNavItems() {
   const selectedNetwork = useNetwork();
 
   const isMarketplaceFilled = useMemo(() =>
-    marketplaceApps.filter(item => item.chainId === selectedNetwork?.chainId),
+    marketplaceApps.filter(item => item.chainIds.includes(selectedNetwork?.chainId)),
   [ selectedNetwork?.chainId ])
     .length > 0;
 

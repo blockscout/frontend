@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import type { AppItemOverview } from 'types/client/apps';
 
 import useNetwork from 'lib/hooks/useNetwork';
+import ContentLoader from 'ui/shared/ContentLoader';
 import Page from 'ui/shared/Page/Page';
 
 type Props = {
@@ -24,13 +25,15 @@ const MarketplaceApp = ({ app, isLoading }: Props) => {
   const sandboxAttributeValue = 'allow-forms allow-orientation-lock ' +
         'allow-pointer-lock allow-popups-to-escape-sandbox ' +
         'allow-same-origin allow-scripts ' +
-        'allow-top-navigation-by-user-activation';
+        'allow-top-navigation-by-user-activation allow-popups';
+
+  const allowAttributeValue = 'clipboard-read; clipboard-write;';
 
   useEffect(() => {
-    if (app) {
-      ref?.current?.contentWindow?.postMessage({ colorMode, chaindId: network?.chainId }, app.url);
+    if (app && !isFrameLoading) {
+      ref?.current?.contentWindow?.postMessage({ blockscoutColorMode: colorMode, blockscoutChainId: network?.chainId }, app.url);
     }
-  }, [ app, colorMode, network, ref ]);
+  }, [ isFrameLoading, app, colorMode, network, ref ]);
 
   return (
     <Page wrapChildren={ false }>
@@ -40,16 +43,12 @@ const MarketplaceApp = ({ app, isLoading }: Props) => {
         paddingTop={{ base: '138px', lg: 0 }}
       >
         { (isFrameLoading) && (
-          <Center
-            h="100%"
-            w="100%"
-          >
-            Loading...
-          </Center>
+          <ContentLoader/>
         ) }
 
         { app && (
           <Box
+            allow={ allowAttributeValue }
             ref={ ref }
             sandbox={ sandboxAttributeValue }
             as="iframe"

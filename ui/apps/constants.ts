@@ -1,6 +1,8 @@
-import type { MarketplaceCategoryNames } from 'types/client/apps';
+import type { MarketplaceCategoriesIds } from 'types/client/apps';
 
-export const APP_CATEGORIES: {[key in keyof typeof MarketplaceCategoryNames]: string} = {
+export const APP_CATEGORIES: {[key in MarketplaceCategoriesIds]: string} = {
+  favorites: 'Favorites',
+  all: 'All apps',
   defi: 'DeFi',
   exchanges: 'Exchanges',
   finance: 'Finance',

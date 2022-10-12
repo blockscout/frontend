@@ -6,7 +6,7 @@ export interface Log {
   topics: Array<string>;
   data: string;
   index: number;
-  decoded?: DecodedInput;
+  decoded: DecodedInput | null;
 }
 
 export interface LogsResponse {

@@ -5,7 +5,7 @@ import {
 import NextLink from 'next/link';
 import React, { useCallback } from 'react';
 
-import type { AppItemOverview, MarketplaceCategoryNames } from 'types/client/apps';
+import type { AppItemOverview, MarketplaceCategoriesIds } from 'types/client/apps';
 
 import marketplaceApps from 'data/marketplaceApps.json';
 import linkIcon from 'icons/link.svg';
@@ -100,9 +100,6 @@ const AppModal = ({
             fontWeight="medium"
             lineHeight={ 1 }
             color="blue.600"
-            whiteSpace="nowrap"
-            overflow="hidden"
-            textOverflow="ellipsis"
           >
             { title }
           </Heading>
@@ -161,7 +158,7 @@ const AppModal = ({
           </Heading>
 
           <Box marginBottom={ 2 }>
-            { categories.map((category: keyof typeof MarketplaceCategoryNames) => APP_CATEGORIES[category] && (
+            { categories.map((category: MarketplaceCategoriesIds) => APP_CATEGORIES[category] && (
               <Tag
                 colorScheme="blue"
                 marginRight={ 2 }

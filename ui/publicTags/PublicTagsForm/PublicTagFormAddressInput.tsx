@@ -1,3 +1,4 @@
+import type { InputProps } from '@chakra-ui/react';
 import { IconButton, Icon, Flex } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 import type { ControllerRenderProps, Control, FieldError } from 'react-hook-form';
@@ -17,7 +18,7 @@ interface Props {
   error?: FieldError;
   onAddFieldClick: (e: React.SyntheticEvent) => void;
   onRemoveFieldClick: (index: number) => (e: React.SyntheticEvent) => void;
-  size?: string;
+  size?: InputProps['size'];
 }
 
 const MAX_INPUTS_NUM = 10;
