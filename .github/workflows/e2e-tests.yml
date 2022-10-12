@@ -67,7 +67,7 @@ jobs:
     needs: push_to_registry
     uses: blockscout/blockscout-ci-cd/.github/workflows/e2e_new.yaml@fix-e2e-tests
     with:
-      valuesDir: deploy/values
+      valuesDir: deploy/values/e2e
       appName: e2e-front
       appNamespace: e2e-front-$GITHUB_SHA_SHORT
       blockscoutIngressHost: blockscout

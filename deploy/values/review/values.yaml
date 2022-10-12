@@ -18,7 +18,6 @@ blockscout:
     enabled: true
     host:
       _default: blockscout.test.blockscout.aws-k8s.blockscout.com
-      testnet: asdfg-blockscout.test.blockscout.aws-k8s.blockscout.com
     # enable https
     tls:
       enabled: true
@@ -287,7 +286,7 @@ frontend:
     NEXT_PUBLIC_APP_PORT:
       _default: 3000
     NEXT_PUBLIC_BLOCKSCOUT_VERSION:
-      _default: v4.1.7-beta
+      _default: v4.1.8-beta
     NEXT_PUBLIC_FOOTER_GITHUB_LINK:
       _default: https://github.com/blockscout/blockscout
     NEXT_PUBLIC_FOOTER_TWITTER_LINK:

@@ -67,7 +67,7 @@ jobs:
     needs: push_to_registry
     uses: blockscout/blockscout-ci-cd/.github/workflows/deploy.yaml@fix-e2e-tests
     with:
-      valuesDir: deploy/values
+      valuesDir: deploy/values/review
       appNamespace: review-front-$GITHUB_HEAD_REF_SLUG
       blockscoutIngressHost: blockscout
       frontendIngressHost: frontend
@@ -75,4 +75,3 @@ jobs:
       gethIngressHost: geth
       scVerifierIngressHost: sc-verifier
     secrets: inherit
-
