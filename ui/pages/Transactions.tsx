@@ -12,21 +12,17 @@ import TxsPending from 'ui/txs/TxsPending';
 import TxsValidated from 'ui/txs/TxsValidated';
 
 const TABS: Array<RoutedTab> = [
-  { routeName: 'txs_validated', title: 'Validated', component: <TxsValidated/> },
-  { routeName: 'txs_pending', title: 'Pending', component: <TxsPending/> },
+  { id: 'validated', title: 'Validated', component: <TxsValidated/> },
+  { id: 'pending', title: 'Pending', component: <TxsPending/> },
 ];
 
-type Props = {
-  tab: RoutedTab['routeName'];
-}
-
-const Transactions = ({ tab }: Props) => {
+const Transactions = () => {
 
   return (
     <Page>
       <Box h="100%">
         <PageTitle text="Transactions"/>
-        <RoutedTabs tabs={ TABS } defaultActiveTab={ tab }/>
+        <RoutedTabs tabs={ TABS }/>
       </Box>
     </Page>
   );

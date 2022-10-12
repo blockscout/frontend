@@ -11,7 +11,7 @@ type Props = {
 
 const BlockPage: NextPage<Props> = ({ pageParams }: Props) => {
   return (
-    <BlockNextPage tab="block_index" pageParams={ pageParams }/>
+    <BlockNextPage pageParams={ pageParams }/>
   );
 };
 

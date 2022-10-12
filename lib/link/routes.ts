@@ -19,12 +19,8 @@ export const ROUTES = {
     pattern: `${ BASE_PATH }/account/watchlist`,
     crossNetworkNavigation: true,
   },
-  private_tags_address: {
+  private_tags: {
     pattern: `${ BASE_PATH }/account/tag_address`,
-    crossNetworkNavigation: true,
-  },
-  private_tags_tx: {
-    pattern: `${ BASE_PATH }/account/tag_transaction`,
     crossNetworkNavigation: true,
   },
   public_tags: {
@@ -45,28 +41,12 @@ export const ROUTES = {
   },
 
   // TRANSACTIONS
-  txs_validated: {
+  txs: {
     pattern: `${ BASE_PATH }/txs`,
     crossNetworkNavigation: true,
   },
-  txs_pending: {
-    pattern: `${ BASE_PATH }/pending-transactions`,
-    crossNetworkNavigation: true,
-  },
-  tx_index: {
+  tx: {
     pattern: `${ BASE_PATH }/tx/[id]`,
-  },
-  tx_internal: {
-    pattern: `${ BASE_PATH }/tx/[id]/internal-transactions`,
-  },
-  tx_logs: {
-    pattern: `${ BASE_PATH }/tx/[id]/logs`,
-  },
-  tx_raw_trace: {
-    pattern: `${ BASE_PATH }/tx/[id]/raw-trace`,
-  },
-  tx_state: {
-    pattern: `${ BASE_PATH }/tx/[id]/state`,
   },
 
   // BLOCKS
@@ -74,19 +54,8 @@ export const ROUTES = {
     pattern: `${ BASE_PATH }/blocks`,
     crossNetworkNavigation: true,
   },
-  blocks_uncles: {
-    pattern: `${ BASE_PATH }/uncles`,
-    crossNetworkNavigation: true,
-  },
-  blocks_reorgs: {
-    pattern: `${ BASE_PATH }/reorgs`,
-    crossNetworkNavigation: true,
-  },
-  block_index: {
+  block: {
     pattern: `${ BASE_PATH }/block/[id]`,
-  },
-  block_txs: {
-    pattern: `${ BASE_PATH }/block/[id]/transactions`,
   },
 
   // TOKENS

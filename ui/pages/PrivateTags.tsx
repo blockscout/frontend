@@ -9,19 +9,15 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
 
 const TABS: Array<RoutedTab> = [
-  { routeName: 'private_tags_address', title: 'Address', component: <PrivateAddressTags/> },
-  { routeName: 'private_tags_tx', title: 'Transaction', component: <PrivateTransactionTags/> },
+  { id: 'address', title: 'Address', component: <PrivateAddressTags/> },
+  { id: 'tx', title: 'Transaction', component: <PrivateTransactionTags/> },
 ];
 
-type Props = {
-  tab: RoutedTab['routeName'];
-}
-
-const PrivateTags = ({ tab }: Props) => {
+const PrivateTags = () => {
   return (
     <Page>
       <PageTitle text="Private tags"/>
-      <RoutedTabs tabs={ TABS } defaultActiveTab={ tab }/>
+      <RoutedTabs tabs={ TABS }/>
     </Page>
   );
 };
