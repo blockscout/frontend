@@ -77,7 +77,7 @@ const TxAdditionalInfo = ({ tx }: { tx: ArrayElement<typeof txs> }) => {
           <Text fontWeight="600" as="span">{ tx.position }</Text>
         </Box>
       </Box>
-      <Link fontSize="sm" href={ link('tx_index', { id: tx.hash }) }>More details</Link>
+      <Link fontSize="sm" href={ link('tx', { id: tx.hash }) }>More details</Link>
     </>
   );
 };

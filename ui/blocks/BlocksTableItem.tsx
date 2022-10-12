@@ -28,7 +28,7 @@ const BlocksTableItem = ({ data, isPending }: Props) => {
           { isPending && <Spinner size="sm" color="blue.500" emptyColor={ spinnerEmptyColor }/> }
           <Link
             fontWeight={ 600 }
-            href={ link('block_index', { id: String(data.height) }) }
+            href={ link('block', { id: String(data.height) }) }
           >
             { data.height }
           </Link>

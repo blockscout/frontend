@@ -9,9 +9,9 @@ type Props = {
   pageParams: PageParams;
 }
 
-const BlockPage: NextPage<Props> = ({ pageParams }: Props) => {
+const BlockPage: NextPage<Props> = () => {
   return (
-    <BlocksNextPage tab="blocks" pageParams={ pageParams }/>
+    <BlocksNextPage/>
   );
 };
 

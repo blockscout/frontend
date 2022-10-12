@@ -3,17 +3,19 @@ import React from 'react';
 
 import type { PageParams } from 'lib/next/tx/types';
 
-import TransactionNextPage from 'lib/next/tx/TransactionNextPage';
+import BlockNextPage from 'lib/next/block/BlockNextPage';
 
 type Props = {
   pageParams: PageParams;
 }
 
-const TransactionPage: NextPage<Props> = ({ pageParams }: Props) => {
-  return <TransactionNextPage pageParams={ pageParams } tab="tx_state"/>;
+const BlockPage: NextPage<Props> = ({ pageParams }: Props) => {
+  return (
+    <BlockNextPage pageParams={ pageParams }/>
+  );
 };
 
-export default TransactionPage;
+export default BlockPage;
 
 export { getStaticPaths } from 'lib/next/getStaticPaths';
 export { getStaticProps } from 'lib/next/getStaticProps';
