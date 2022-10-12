@@ -1,13 +1,18 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import { blocks } from 'data/blocks';
+import type { Block } from 'types/api/block';
+
 import BlocksListItem from 'ui/blocks/BlocksListItem';
 
-const BlocksList = () => {
+interface Props {
+  data: Array<Block>;
+}
+
+const BlocksList = ({ data }: Props) => {
   return (
     <Box mt={ 8 }>
-      { blocks.map((item, index) => <BlocksListItem key={ item.height } data={ item } isPending={ index === 0 }/>) }
+      { data.map((item) => <BlocksListItem key={ item.height } data={ item }/>) }
     </Box>
   );
 };

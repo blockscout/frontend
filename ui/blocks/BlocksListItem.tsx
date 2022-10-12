@@ -1,10 +1,12 @@
 import { Flex, Link, Spinner, Text, Box, Icon, useColorModeValue } from '@chakra-ui/react';
+import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type ArrayElement from 'types/utils/ArrayElement';
+import type { Block } from 'types/api/block';
 
-import type { blocks } from 'data/blocks';
 import flameIcon from 'icons/flame.svg';
+import getBlockReward from 'lib/block/getBlockReward';
+import { WEI } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
 import useNetwork from 'lib/hooks/useNetwork';
 import useLink from 'lib/link/useLink';
@@ -14,7 +16,7 @@ import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
 import Utilization from 'ui/shared/Utilization';
 
 interface Props {
-  data: ArrayElement<typeof blocks>;
+  data: Block;
   isPending?: boolean;
 }
 
@@ -22,6 +24,7 @@ const BlocksListItem = ({ data, isPending }: Props) => {
   const spinnerEmptyColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
   const link = useLink();
   const network = useNetwork();
+  const { totalReward, burntFees, txFees } = getBlockReward(data);
 
   return (
     <AccountListItemMobile rowGap={ 3 }>
@@ -43,29 +46,29 @@ const BlocksListItem = ({ data, isPending }: Props) => {
       </Flex>
       <Flex columnGap={ 2 }>
         <Text fontWeight={ 500 }>Miner</Text>
-        <AddressLink alias={ data.miner?.name } hash={ data.miner.address } truncation="constant"/>
+        <AddressLink alias={ data.miner.name } hash={ data.miner.hash } truncation="constant"/>
       </Flex>
       <Flex columnGap={ 2 }>
         <Text fontWeight={ 500 }>Txn</Text>
-        <Text variant="secondary">{ data.transactionsNum }</Text>
+        <Text variant="secondary">{ data.tx_count }</Text>
       </Flex>
       <Box>
         <Text fontWeight={ 500 }>Gas used</Text>
         <Flex columnGap={ 4 }>
-          <Text variant="secondary">{ data.gas_used.toLocaleString('en') }</Text>
-          <Utilization colorScheme="gray" value={ data.gas_used / data.gas_limit }/>
-          <GasUsedToTargetRatio used={ data.gas_used } target={ data.gas_target }/>
+          <Text variant="secondary">{ BigNumber(data.gas_used || 0).toFormat() }</Text>
+          <Utilization colorScheme="gray" value={ BigNumber(data.gas_used || 0).div(BigNumber(data.gas_limit)).toNumber() }/>
+          <GasUsedToTargetRatio value={ data.gas_target_percentage || undefined }/>
         </Flex>
       </Box>
       <Flex columnGap={ 2 }>
         <Text fontWeight={ 500 }>Reward { network?.currency }</Text>
-        <Text variant="secondary">{ (data.reward.static + data.reward.tx_fee - data.burnt_fees).toLocaleString('en', { maximumFractionDigits: 5 }) }</Text>
+        <Text variant="secondary">{ totalReward.div(WEI).toFixed() }</Text>
       </Flex>
       <Flex>
         <Text fontWeight={ 500 }>Burnt fees</Text>
         <Icon as={ flameIcon } boxSize={ 5 } color="gray.500" ml={ 2 }/>
-        <Text variant="secondary" ml={ 1 }>{ data.burnt_fees.toLocaleString('en', { maximumFractionDigits: 6 }) }</Text>
-        <Utilization ml={ 4 } value={ data.burnt_fees / data.reward.tx_fee }/>
+        <Text variant="secondary" ml={ 1 }>{ burntFees.div(WEI).toFixed() }</Text>
+        <Utilization ml={ 4 } value={ burntFees.div(txFees).toNumber() }/>
       </Flex>
     </AccountListItemMobile>
   );
