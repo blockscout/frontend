@@ -1,7 +1,8 @@
 name: Run code checks
 on: [pull_request]
 jobs:
-  Check code:
+  check_code:
+    name: Check code
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
