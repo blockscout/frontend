@@ -1,3 +1,4 @@
+import appConfig from 'configs/app/config';
 import React, { useMemo } from 'react';
 
 import marketplaceApps from 'data/marketplaceApps.json';
@@ -16,14 +17,10 @@ import useCurrentRoute from 'lib/link/useCurrentRoute';
 import useLink from 'lib/link/useLink';
 import notEmpty from 'lib/notEmpty';
 
-import useNetwork from './useNetwork';
-
 export default function useNavItems() {
-  const selectedNetwork = useNetwork();
-
   const isMarketplaceFilled = useMemo(() =>
-    marketplaceApps.filter(item => item.chainIds.includes(selectedNetwork?.chainId)),
-  [ selectedNetwork?.chainId ])
+    marketplaceApps.filter(item => item.chainIds.includes(appConfig.network.id)),
+  [ ])
     .length > 0;
 
   const link = useLink();

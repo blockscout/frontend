@@ -3,6 +3,8 @@ export interface Route {
   crossNetworkNavigation?: boolean; // route will not change when switching networks
 }
 
+import appConfig from 'configs/app/config';
+
 export type RouteName = keyof typeof ROUTES;
 
 const BASE_PATH = '/[network_type]/[network_sub_type]';
@@ -17,27 +19,21 @@ export const ROUTES = {
   // ACCOUNT
   watchlist: {
     pattern: `${ BASE_PATH }/account/watchlist`,
-    crossNetworkNavigation: true,
   },
   private_tags: {
     pattern: `${ BASE_PATH }/account/tag_address`,
-    crossNetworkNavigation: true,
   },
   public_tags: {
     pattern: `${ BASE_PATH }/account/public_tags_request`,
-    crossNetworkNavigation: true,
   },
   api_keys: {
     pattern: `${ BASE_PATH }/account/api_key`,
-    crossNetworkNavigation: true,
   },
   custom_abi: {
     pattern: `${ BASE_PATH }/account/custom_abi`,
-    crossNetworkNavigation: true,
   },
   profile: {
     pattern: `${ BASE_PATH }/auth/profile`,
-    crossNetworkNavigation: true,
   },
 
   // TRANSACTIONS
@@ -115,6 +111,6 @@ function checkRoutes(route: Record<string, Route>) {
   return route;
 }
 
-if (process.env.NODE_ENV === 'development') {
+if (appConfig.isDev) {
   checkRoutes(ROUTES);
 }

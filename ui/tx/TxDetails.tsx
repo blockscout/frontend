@@ -1,6 +1,7 @@
 import { Grid, GridItem, Text, Box, Icon, Link, Flex } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
+import appConfig from 'configs/app/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
@@ -14,7 +15,6 @@ import { WEI, WEI_IN_GWEI } from 'lib/consts';
 // import successIcon from 'icons/status/success.svg';
 import dayjs from 'lib/date/dayjs';
 import useFetch from 'lib/hooks/useFetch';
-import useNetwork from 'lib/hooks/useNetwork';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
@@ -35,7 +35,6 @@ import TokenTransfer from 'ui/tx/TokenTransfer';
 import TxDecodedInputData from 'ui/tx/TxDecodedInputData';
 
 const TxDetails = () => {
-  const selectedNetwork = useNetwork();
   const router = useRouter();
   const fetch = useFetch();
 
@@ -154,19 +153,19 @@ const TxDetails = () => {
         title="Value"
         hint="Value sent in the native token (and USD) if applicable."
       >
-        <CurrencyValue value={ String(data.value) } currency={ selectedNetwork?.currency } exchangeRate={ data.exchange_rate }/>
+        <CurrencyValue value={ String(data.value) } currency={ appConfig.network.currency } exchangeRate={ data.exchange_rate }/>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Transaction fee"
         hint="Total transaction fee."
       >
-        <CurrencyValue value={ String(data.fee.value) } currency={ selectedNetwork?.currency } exchangeRate={ data.exchange_rate }/>
+        <CurrencyValue value={ String(data.fee.value) } currency={ appConfig.network.currency } exchangeRate={ data.exchange_rate }/>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Gas price"
         hint="Price per unit of gas specified by the sender. Higher gas prices can prioritize transaction inclusion during times of high usage."
       >
-        <Text mr={ 1 }>{ BigNumber(data.gas_price).dividedBy(WEI).toFixed() } { selectedNetwork?.currency }</Text>
+        <Text mr={ 1 }>{ BigNumber(data.gas_price).dividedBy(WEI).toFixed() } { appConfig.network.currency }</Text>
         <Text variant="secondary">({ BigNumber(data.gas_price).dividedBy(WEI_IN_GWEI).toFixed() } Gwei)</Text>
       </DetailsInfoItem>
       <DetailsInfoItem
@@ -209,10 +208,10 @@ const TxDetails = () => {
       { data.tx_burnt_fee && (
         <DetailsInfoItem
           title="Burnt fees"
-          hint={ `Amount of ${ selectedNetwork?.currency } burned for this transaction. Equals Block Base Fee per Gas * Gas Used.` }
+          hint={ `Amount of ${ appConfig.network.currency } burned for this transaction. Equals Block Base Fee per Gas * Gas Used.` }
         >
           <Icon as={ flameIcon } mr={ 1 } boxSize={ 5 } color="gray.500"/>
-          <CurrencyValue value={ String(data.tx_burnt_fee) } currency={ selectedNetwork?.currency } exchangeRate={ data.exchange_rate }/>
+          <CurrencyValue value={ String(data.tx_burnt_fee) } currency={ appConfig.network.currency } exchangeRate={ data.exchange_rate }/>
         </DetailsInfoItem>
       ) }
       <GridItem colSpan={{ base: undefined, lg: 2 }}>

@@ -1,10 +1,10 @@
+import appConfig from 'configs/app/config';
 import debounce from 'lodash/debounce';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import type { AppItemOverview, MarketplaceCategoriesIds } from 'types/client/apps';
 
 import marketplaceApps from 'data/marketplaceApps.json';
-import useNetwork from 'lib/hooks/useNetwork';
 
 const favoriteAppsLocalStorageKey = 'favoriteApps';
 
@@ -27,7 +27,6 @@ function isAppCategoryMatches(category: MarketplaceCategoriesIds, app: AppItemOv
 }
 
 export default function useMarketplaceApps() {
-  const selectedNetwork = useNetwork();
   const [ isLoading, setIsLoading ] = useState(true);
   const [ defaultAppList, setDefaultAppList ] = useState<Array<AppItemOverview>>();
   const [ displayedApps, setDisplayedApps ] = useState<Array<AppItemOverview>>([]);
@@ -80,18 +79,14 @@ export default function useMarketplaceApps() {
   }, [ filterQuery, category, filterApps ]);
 
   useEffect(() => {
-    if (!selectedNetwork) {
-      return;
-    }
-
     const defaultDisplayedApps = [ ...marketplaceApps ]
-      .filter(item => item.chainIds.includes(selectedNetwork?.chainId))
+      .filter(item => item.chainIds.includes(appConfig.network.id))
       .sort((a, b) => a.title.localeCompare(b.title));
 
     setDefaultAppList(defaultDisplayedApps);
     setDisplayedApps(defaultDisplayedApps);
     setIsLoading(false);
-  }, [ selectedNetwork ]);
+  }, [ ]);
 
   return React.useMemo(() => ({
     category,

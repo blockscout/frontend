@@ -3,7 +3,7 @@ import type { PageParams } from './types';
 import getNetworkTitle from 'lib/networks/getNetworkTitle';
 
 export default function getSeo(params?: PageParams) {
-  const networkTitle = getNetworkTitle(params || {});
+  const networkTitle = getNetworkTitle();
 
   return {
     title: params ? `Block ${ params.id } - ${ networkTitle }` : '',

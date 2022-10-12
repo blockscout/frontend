@@ -4,10 +4,13 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { AppProps } from 'next/app';
 import React, { useState } from 'react';
 
+import useConfigSentry from 'lib/hooks/useConfigSentry';
 import type { ErrorType } from 'lib/hooks/useFetch';
 import theme from 'theme';
 
 function MyApp({ Component, pageProps }: AppProps) {
+  useConfigSentry();
+
   const [ queryClient ] = useState(() => new QueryClient({
     defaultOptions: {
       queries: {
