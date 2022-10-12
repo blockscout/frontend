@@ -4,7 +4,7 @@ const isDev = env === 'development';
 const baseUrl = [
   process.env.NEXT_PUBLIC_APP_PROTOCOL || 'https',
   '://',
-  process.env.VERCEL_URL || process.env.NEXT_PUBLIC_APP_HOST,
+  process.env.NEXT_PUBLIC_VERCEL_URL || process.env.NEXT_PUBLIC_APP_HOST,
   process.env.NEXT_PUBLIC_APP_PORT ? ':' + process.env.NEXT_PUBLIC_APP_PORT : '',
 ].join('');
 const apiUrl = [
