@@ -9,6 +9,7 @@ Core technologies what used in the project are
 - [Next.js](https://nextjs.org/) as application framework
 - [Chakra](https://chakra-ui.com/) as component library; our theme customization could be found in `/theme` folder
 - [css-modules](https://github.com/css-modules/css-modules) as lib for styling custom components
+- [playwright](https://playwright.dev/) as a tool for components visual testing
 
 And of course our premier language is [Typescript](https://www.typescriptlang.org/)
 
@@ -25,6 +26,11 @@ For local development please follow next steps:
     - for predefined networks configs (see full available list in `package.json`) you can just run `yarn dev:<app_name>`
     - for custom network setup create `.env.local` file with all required environment variables from the [list](#environment-variables) and run `yarn dev` 
 - navigate to the host from logs output
+
+## Components visual testing
+
+We use [playwright experimental components testing](https://playwright.dev/docs/test-components) for visual (screenshots) CI check. Test renders a single component in headless browser in docker, generates screenshots and then compares this screenshot with a reference one.
+To perform testing locally you need to install docker and run `yarn test-docker`
 
 ## Environment variables
 ### Variables list

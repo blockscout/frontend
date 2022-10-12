@@ -42,3 +42,6 @@ yarn-error.log*
 .sentryclirc
 
 **.decrypted~**
+/test-results/
+/playwright-report/
+/playwright/.cache/
