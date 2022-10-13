@@ -33,10 +33,12 @@ We use [playwright experimental components testing](https://playwright.dev/docs/
 To perform testing locally you need to install docker and run `yarn test-docker`
 
 ## Environment variables
-### Variables list
+
 The app instance could be customized by passing following variables to NodeJS environment at runtime.
 
 **IMPORTANT NOTE!** For _production_ build purposes all json-like values should be single-quoted
+
+### Network configuration
 
 | Variable | Type | Description | Default value
 | --- | --- | --- | --- |
@@ -50,21 +52,37 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME | `string` *(optional)* | Network name for constructing url of token logos according to template `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${assetsNamePath}/assets/${tokenAddress}/logo.png`. It should match network name in TrustWallet assets repo, see the full list [here](https://github.com/trustwallet/assets/tree/master/blockchains). If not provided, the network type will be used as its assets path part | `ethereum` |
 | NEXT_PUBLIC_NETWORK_LOGO | `string` *(optional)* | Network logo; if not provided, will fallback to logo predefined in the project; if the project doesn't have logo for such network then the common placeholder will be shown; *Note* that logo height should be 20px and width less than 120px | `https://www.fillmurray.com/240/40` |
 | NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED | `boolean` *(optional)* | Set to true if network has account feature | `true` |
-| NEXT_PUBLIC_FEATURED_NETWORKS | `Array<FeaturedNetwork>` where `FeaturedNetwork` can have following [properties](#network-configuration-properties) | Configuration of featured networks that will be shown in the app menu | `[{'title':'Gnosis Chain','basePath':'/xdai/mainnet','group':'mainnets'}]` |
+
+*Note* the base path for the network is built up from its `type` and `subType` like so `https://blockscout.com/<type>/<subType>`
+
+### UI configuration
+
+| Variable | Type | Description | Default value
+| --- | --- | --- | --- |
+| NEXT_PUBLIC_FEATURED_NETWORKS | `Array<FeaturedNetwork>` where `FeaturedNetwork` can have following [properties](#featured-network-configuration-properties) | Configuration of featured networks that will be shown in the network menu | `[{'title':'Gnosis Chain','basePath':'/xdai/mainnet','group':'mainnets'}]` |
 | NEXT_PUBLIC_BLOCKSCOUT_VERSION | `string` *(optional)* | Current running version of Blockscout (used to display link to release in the footer) |
 | NEXT_PUBLIC_FOOTER_GITHUB_LINK | `string` *(optional)* | Link to Github in the footer | `https://github.com/blockscout/blockscout` |
 | NEXT_PUBLIC_FOOTER_TWITTER_LINK | `string` *(optional)* | Link to Twitter in the footer | `https://www.twitter.com/blockscoutcom` |
 | NEXT_PUBLIC_FOOTER_TELEGRAM_LINK | `string` *(optional)* | Link to Telegram in the footer | `https://t.me/poa_network` |
 | NEXT_PUBLIC_FOOTER_STAKING_LINK | `string` *(optional)* | Link to staking dashboard in the footer | `https://duneanalytics.com/maxaleks/xdai-staking` |
 | NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM | `string` | Link to form where authors can submit their dapps to the marketplace | `https://airtable.com/shrqUAcjgGJ4jU88C` |
+
+### App configuration
+
+| Variable | Type | Description | Default value
+| --- | --- | --- | --- |
 | NEXT_PUBLIC_APP_INSTANCE | `string` *(optional)* | Name of app instance | `wonderful_kepler` |
 | NEXT_PUBLIC_APP_PROTOCOL | `http \| https` *(optional)* | App protocol (`https` used as default value) | `https` |
 | NEXT_PUBLIC_APP_HOST | `string` | App host | `blockscout.com` |
 | NEXT_PUBLIC_APP_PORT | `number` *(optional)* | Port where app is running. Have to be provided if it is different to default port | `3000` |
+
+### API configuration
+
+| Variable | Type | Description | Default value
+| --- | --- | --- | --- |
 | NEXT_PUBLIC_API_ENDPOINT | `string` *(optional)* | By default the API endpoint base URL will be set as `https://blockscout.com`. If it is not the case, pass the API endpoint base URL in this variable  | `https://blockscout.com` |
 | NEXT_PUBLIC_API_BASE_PATH | `string` *(optional)* | Base path for API endpoint url  | `/poa/core` |
-| NEXT_PUBLIC_SENTRY_DSN | `string` *(optional)* | Client key for your Senty.io app | `<secret>` |
-| SENTRY_CSP_REPORT_URI | `string` *(optional)* | URL for sending CSP-reports to your Senty.io app | `<secret>` |
+
 
 ### Featured network configuration properties
 
@@ -75,8 +93,9 @@ The app instance could be customized by passing following variables to NodeJS en
 | group | `mainnets \| testnets \| other` | Indicates in which tab network appears in the menu | `'mainnets'` |
 | icon | `string` *(optional)* | Network icon; if not provided, will fallback to  icon predefined in the project; if the project doesn't have icon for such network then the common placeholder will be shown; *Note* that icon size should be 30px by 30px | `'https://www.fillmurray.com/60/60'` |
 
-*Note* the base path for the network is built up from its `type` and `subType` like so `https://blockscout.com/<type>/<subType>`
+### External services configuration
 
-### Sentry.io setup
-
-TBD
+| Variable | Type | Description | Default value
+| --- | --- | --- | --- |
+| NEXT_PUBLIC_SENTRY_DSN | `string` *(optional)* | Client key for your Senty.io app | `<secret>` |
+| SENTRY_CSP_REPORT_URI | `string` *(optional)* | URL for sending CSP-reports to your Senty.io app | `<secret>` |
