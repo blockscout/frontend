@@ -1,7 +1,7 @@
 import { Link, chakra, shouldForwardProp, Tooltip, Box } from '@chakra-ui/react';
 import React from 'react';
 
-import useLink from 'lib/link/useLink';
+import link from 'lib/link/link';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
@@ -16,7 +16,6 @@ interface Props {
 }
 
 const AddressLink = ({ alias, type, className, truncation = 'dynamic', hash, id, fontWeight }: Props) => {
-  const link = useLink();
   let url;
   if (type === 'transaction') {
     url = link('tx', { id: id || hash });

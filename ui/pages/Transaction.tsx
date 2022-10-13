@@ -4,7 +4,7 @@ import React from 'react';
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
 import eastArrowIcon from 'icons/arrows/east.svg';
-import useLink from 'lib/link/useLink';
+import link from 'lib/link/link';
 import ExternalLink from 'ui/shared/ExternalLink';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -25,8 +25,6 @@ const TABS: Array<RoutedTab> = [
 ];
 
 const TransactionPageContent = () => {
-  const link = useLink();
-
   return (
     <Page>
       { /* TODO should be shown only when navigating from txs list */ }

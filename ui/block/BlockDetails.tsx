@@ -9,7 +9,7 @@ import clockIcon from 'icons/clock.svg';
 import flameIcon from 'icons/flame.svg';
 import dayjs from 'lib/date/dayjs';
 import { space } from 'lib/html-entities';
-import useLink from 'lib/link/useLink';
+import link from 'lib/link/link';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
@@ -21,7 +21,6 @@ import Utilization from 'ui/shared/Utilization';
 
 const BlockDetails = () => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
-  const link = useLink();
   const router = useRouter();
 
   const handleCutClick = React.useCallback(() => {

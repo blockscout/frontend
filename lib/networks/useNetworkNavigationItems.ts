@@ -2,7 +2,7 @@ import appConfig from 'configs/app/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { link } from 'lib/link/link';
+import link from 'lib/link/link';
 import { ROUTES } from 'lib/link/routes';
 import useCurrentRoute from 'lib/link/useCurrentRoute';
 import featuredNetworks from 'lib/networks/featuredNetworks';

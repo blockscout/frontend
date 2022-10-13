@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 
 import { NAMES } from 'lib/cookies';
 import getCspPolicy from 'lib/csp/getCspPolicy';
-import { link } from 'lib/link/link';
+import link from 'lib/link/link';
 
 const cspPolicy = getCspPolicy();
 

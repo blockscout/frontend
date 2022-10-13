@@ -23,7 +23,7 @@ import type ArrayElement from 'types/utils/ArrayElement';
 import type { txs } from 'data/txs';
 import rightArrowIcon from 'icons/arrows/east.svg';
 import dayjs from 'lib/date/dayjs';
-import useLink from 'lib/link/useLink';
+import link from 'lib/link/link';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -35,7 +35,6 @@ import TxAdditionalInfoButton from 'ui/txs/TxAdditionalInfoButton';
 import TxType from './TxType';
 
 const TxsTableItem = ({ tx }: {tx: ArrayElement<typeof txs>}) => {
-  const link = useLink();
 
   const addressFrom = (
     <Address>
