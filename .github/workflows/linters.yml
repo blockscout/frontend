@@ -1,7 +1,8 @@
-name: Linters
+name: Run code checks
 on: [pull_request]
 jobs:
-  eslint:
+  check_code:
+    name: Check code
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -9,3 +10,5 @@ jobs:
       run: yarn
     - name: Run ESLint
       run: yarn lint:eslint
+    - name: Compile TypeScript
+      run: yarn lint:tsc

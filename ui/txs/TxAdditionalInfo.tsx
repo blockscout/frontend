@@ -1,18 +1,16 @@
 import { Box, Heading, Text, Flex, Link, useColorModeValue } from '@chakra-ui/react';
+import appConfig from 'configs/app/config';
 import React from 'react';
 
 import type ArrayElement from 'types/utils/ArrayElement';
 
 import type { txs } from 'data/txs';
-import useNetwork from 'lib/hooks/useNetwork';
 import { nbsp } from 'lib/html-entities';
-import useLink from 'lib/link/useLink';
+import link from 'lib/link/link';
 import TextSeparator from 'ui/shared/TextSeparator';
 import Utilization from 'ui/shared/Utilization';
 
 const TxAdditionalInfo = ({ tx }: { tx: ArrayElement<typeof txs> }) => {
-  const selectedNetwork = useNetwork();
-
   const sectionBorderColor = useColorModeValue('gray.200', 'whiteAlpha.200');
   const sectionProps = {
     borderBottom: '1px solid',
@@ -27,15 +25,13 @@ const TxAdditionalInfo = ({ tx }: { tx: ArrayElement<typeof txs> }) => {
     fontSize: 'sm',
   };
 
-  const link = useLink();
-
   return (
     <>
       <Heading as="h4" fontSize="18px" mb={ 6 }>Additional info </Heading>
       <Box { ...sectionProps } mb={ 4 }>
         <Text { ...sectionTitleProps }>Transaction fee</Text>
         <Flex>
-          <Text>{ tx.fee.value }{ nbsp }{ selectedNetwork?.currency }</Text>
+          <Text>{ tx.fee.value }{ nbsp }{ appConfig.network.currency }</Text>
           <Text variant="secondary" ml={ 1 }>(${ tx.fee.value_usd.toFixed(2) })</Text>
         </Flex>
       </Box>
@@ -79,7 +75,7 @@ const TxAdditionalInfo = ({ tx }: { tx: ArrayElement<typeof txs> }) => {
           <Text fontWeight="600" as="span">{ tx.position }</Text>
         </Box>
       </Box>
-      <Link fontSize="sm" href={ link('tx_index', { id: tx.hash }) }>More details</Link>
+      <Link fontSize="sm" href={ link('tx', { id: tx.hash }) }>More details</Link>
     </>
   );
 };

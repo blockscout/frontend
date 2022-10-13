@@ -1,4 +1,5 @@
 import { Flex, Tag, Icon, Box, HStack, Text } from '@chakra-ui/react';
+import appConfig from 'configs/app/config';
 import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
@@ -11,9 +12,9 @@ import AddressLink from 'ui/shared/address/AddressLink';
 import TxStatus from 'ui/shared/TxStatus';
 import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
-type Props = InternalTransaction & { currency?: string };
+type Props = InternalTransaction;
 
-const TxInternalsListItem = ({ type, from, to, value, currency, success, error }: Props) => {
+const TxInternalsListItem = ({ type, from, to, value, success, error }: Props) => {
   const typeTitle = TX_INTERNALS_ITEMS.find(({ id }) => id === type)?.title;
 
   return (
@@ -34,7 +35,7 @@ const TxInternalsListItem = ({ type, from, to, value, currency, success, error }
         </Address>
       </Box>
       <HStack spacing={ 3 }>
-        <Text fontSize="sm" fontWeight={ 500 }>Value { currency }</Text>
+        <Text fontSize="sm" fontWeight={ 500 }>Value { appConfig.network.currency }</Text>
         <Text fontSize="sm" variant="secondary">{ value }</Text>
       </HStack>
       { /* no gas limit in api yet */ }

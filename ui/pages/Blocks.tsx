@@ -8,22 +8,17 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
 
 const TABS: Array<RoutedTab> = [
-  { routeName: 'blocks', title: 'All', component: <BlocksContent/> },
-  { routeName: 'blocks_reorgs', title: 'Forked', component: <BlocksContent/> },
-  { routeName: 'blocks_uncles', title: 'Uncles', component: <BlocksContent/> },
+  { id: 'blocks', title: 'All', component: <BlocksContent/> },
+  { id: 'reorgs', title: 'Forked', component: <BlocksContent/> },
+  { id: 'uncles', title: 'Uncles', component: <BlocksContent/> },
 ];
 
-export interface Props {
-  tab: RoutedTab['routeName'];
-}
-
-const BlocksPageContent = ({ tab }: Props) => {
+const BlocksPageContent = () => {
   return (
     <Page>
       <PageTitle text="Blocks"/>
       <RoutedTabs
         tabs={ TABS }
-        defaultActiveTab={ tab }
       />
     </Page>
   );

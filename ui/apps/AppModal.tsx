@@ -15,7 +15,7 @@ import twIcon from 'icons/social/tweet.svg';
 import starFilledIcon from 'icons/star_filled.svg';
 import starOutlineIcon from 'icons/star_outline.svg';
 import { nbsp } from 'lib/html-entities';
-import useLink from 'lib/link/useLink';
+import link from 'lib/link/link';
 import notEmpty from 'lib/notEmpty';
 
 import { APP_CATEGORIES } from './constants';
@@ -44,8 +44,6 @@ const AppModal = ({
     logo,
     categories,
   } = marketplaceApps.find(app => app.id === id) as AppItemOverview;
-
-  const link = useLink();
 
   const socialLinks = [
     telegram ? {

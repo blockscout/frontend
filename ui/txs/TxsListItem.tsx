@@ -10,6 +10,7 @@ import {
   Text,
   useColorModeValue,
   useDisclosure } from '@chakra-ui/react';
+import appConfig from 'configs/app/config';
 import React from 'react';
 
 import type ArrayElement from 'types/utils/ArrayElement';
@@ -18,8 +19,7 @@ import type { txs } from 'data/txs';
 import rightArrowIcon from 'icons/arrows/east.svg';
 import transactionIcon from 'icons/transactions.svg';
 import dayjs from 'lib/date/dayjs';
-import useNetwork from 'lib/hooks/useNetwork';
-import useLink from 'lib/link/useLink';
+import link from 'lib/link/link';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -30,11 +30,9 @@ import TxType from 'ui/txs/TxType';
 
 const TxsListItem = ({ tx }: {tx: ArrayElement<typeof txs>}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const selectedNetwork = useNetwork();
 
   const iconColor = useColorModeValue('blue.600', 'blue.300');
   const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
-  const link = useLink();
 
   return (
     <>
@@ -79,7 +77,7 @@ const TxsListItem = ({ tx }: {tx: ArrayElement<typeof txs>}) => {
         </Flex>
         <Box mt={ 2 }>
           <Text as="span">Block </Text>
-          <Link href={ link('block_index', { id: tx.block_num.toString() }) }>{ tx.block_num }</Link>
+          <Link href={ link('block', { id: tx.block_num.toString() }) }>{ tx.block_num }</Link>
         </Box>
         <Flex alignItems="center" height={ 6 } mt={ 6 }>
           <Address width="calc((100%-40px)/2)">
@@ -108,11 +106,11 @@ const TxsListItem = ({ tx }: {tx: ArrayElement<typeof txs>}) => {
           </Address>
         </Flex>
         <Box mt={ 2 }>
-          <Text as="span">Value { selectedNetwork?.currency } </Text>
+          <Text as="span">Value { appConfig.network.currency } </Text>
           <Text as="span" variant="secondary">{ tx.amount.value.toFixed(8) }</Text>
         </Box>
         <Box mt={ 2 } mb={ 3 }>
-          <Text as="span">Fee { selectedNetwork?.currency } </Text>
+          <Text as="span">Fee { appConfig.network.currency } </Text>
           <Text as="span" variant="secondary">{ tx.fee.value.toFixed(8) }</Text>
         </Box>
       </Box>

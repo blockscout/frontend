@@ -24,9 +24,29 @@
             }
         },
         {
+            "type": "npm",
+            "script": "dev:poa_core",
+            "problemMatcher": [],
+            "label": "dev server: poa",
+            "detail": "start local dev server for POA network",
+            "presentation": {
+                "reveal": "silent",
+                "panel": "new",
+                "close": true,
+                "revealProblems": "onProblem",
+            },
+            "icon": {
+                "color": "terminal.ansiMagenta",
+                "id": "server-process"
+            },
+            "runOptions": {
+                "instanceLimit": 1
+            }
+        },
+        {
             "type": "typescript",
             "label": "tsc build",
-            "detail": "run ts typechecking",
+            "detail": "compile typescript",
             "tsconfig": "tsconfig.json",
             "problemMatcher": [
                 "$tsc"
@@ -42,6 +62,106 @@
                 "revealProblems": "onProblem",
             },
             "group": "build",
-        }
+        },
+        {
+            "type": "npm",
+            "script": "lint:eslint",
+            "problemMatcher": [],
+            "label": "eslint",
+            "detail": "run eslint",
+            "presentation": {
+                "reveal": "silent",
+                "panel": "new",
+                "close": true,
+                "revealProblems": "onProblem",
+            },
+            "icon": {
+                "color": "terminal.ansiYellow",
+                "id": "zap"
+            },
+            "runOptions": {
+                "instanceLimit": 1
+            }
+        },
+        {
+            "type": "npm",
+            "script": "test-docker",
+            "problemMatcher": [],
+            "label": "test: playwright",
+            "detail": "run visual components tests",
+            "presentation": {
+                "reveal": "silent",
+                "panel": "new",
+                "close": true,
+                "revealProblems": "onProblem",
+            },
+            "icon": {
+                "color": "terminal.ansiBlue",
+                "id": "beaker"
+            },
+            "runOptions": {
+                "instanceLimit": 1
+            }
+        },
+        {
+            "type": "npm",
+            "script": "build:docker",
+            "problemMatcher": [],
+            "label": "docker: build",
+            "detail": "build docker image",
+            "presentation": {
+                "reveal": "silent",
+                "panel": "new",
+                "close": true,
+                "revealProblems": "onProblem",
+            },
+            "icon": {
+                "color": "terminal.ansiRed",
+                "id": "symbol-structure"
+            },
+            "runOptions": {
+                "instanceLimit": 1
+            }
+        },
+        {
+            "type": "npm",
+            "script": "start:docker:poa_core",
+            "problemMatcher": [],
+            "label": "docker: run poa",
+            "detail": "run docker container for POA network",
+            "presentation": {
+                "reveal": "silent",
+                "panel": "new",
+                "close": true,
+                "revealProblems": "onProblem",
+            },
+            "icon": {
+                "color": "terminal.ansiRed",
+                "id": "browser"
+            },
+            "runOptions": {
+                "instanceLimit": 1
+            }
+        },
+        {
+            "type": "npm",
+            "script": "format-svg",
+            "problemMatcher": [],
+            "label": "format svg",
+            "detail": "format svg files with svgo",
+            "presentation": {
+                "reveal": "silent",
+                "panel": "new",
+                "close": true,
+                "revealProblems": "onProblem",
+            },
+            "icon": {
+                "color": "terminal.ansiCyan",
+                "id": "combine"
+            },
+            "runOptions": {
+                "instanceLimit": 1
+            }
+        },
     ]
 }

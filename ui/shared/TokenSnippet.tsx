@@ -1,7 +1,7 @@
 import { Center, Link, Text, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import useLink from 'lib/link/useLink';
+import link from 'lib/link/link';
 import TokenLogo from 'ui/shared/TokenLogo';
 
 interface Props {
@@ -12,8 +12,6 @@ interface Props {
 }
 
 const TokenSnippet = ({ symbol, hash, name, className }: Props) => {
-  const link = useLink();
-
   const url = link('token_index', { hash });
 
   return (

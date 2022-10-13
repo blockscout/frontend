@@ -1,10 +1,10 @@
 import { Table, Thead, Tbody, Tr, Th, TableContainer, Link, Icon } from '@chakra-ui/react';
+import appConfig from 'configs/app/config';
 import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
 
 import arrowIcon from 'icons/arrows/east.svg';
-import useNetwork from 'lib/hooks/useNetwork';
 import TxInternalsTableItem from 'ui/tx/internals/TxInternalsTableItem';
 import type { Sort, SortField } from 'ui/tx/internals/utils';
 
@@ -15,7 +15,6 @@ interface Props {
 }
 
 const TxInternalsTable = ({ data, sort, onSortToggle }: Props) => {
-  const selectedNetwork = useNetwork();
   const sortIconTransform = sort?.includes('asc') ? 'rotate(-90deg)' : 'rotate(90deg)';
 
   return (
@@ -30,7 +29,7 @@ const TxInternalsTable = ({ data, sort, onSortToggle }: Props) => {
             <Th width="16%" isNumeric>
               <Link display="flex" alignItems="center" justifyContent="flex-end" onClick={ onSortToggle('value') } columnGap={ 1 }>
                 { sort?.includes('value') && <Icon as={ arrowIcon } boxSize={ 4 } transform={ sortIconTransform }/> }
-                Value { selectedNetwork?.currency }
+                Value { appConfig.network.currency }
               </Link>
             </Th>
             { /* no gas limit in api yet */ }

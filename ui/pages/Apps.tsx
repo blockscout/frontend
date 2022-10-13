@@ -1,4 +1,5 @@
 import { Box, Icon, Link } from '@chakra-ui/react';
+import config from 'configs/app/config';
 import React from 'react';
 
 import PlusIcon from 'icons/plus.svg';
@@ -48,13 +49,13 @@ const Apps = () => {
         />
       ) }
 
-      { process.env.NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM && (
+      { config.marketplaceSubmitForm && (
         <Link
           fontWeight="bold"
           display="inline-flex"
           alignItems="baseline"
           marginTop={{ base: 8, sm: 16 }}
-          href={ process.env.NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM }
+          href={ config.marketplaceSubmitForm }
           isExternal
         >
           <Icon

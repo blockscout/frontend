@@ -1,0 +1,14 @@
+name: Cleanup environments
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  if_merged:
+    if: github.event.pull_request.merged == true
+    uses: blockscout/blockscout-ci-cd/.github/workflows/cleanup.yaml@fix-e2e-tests
+    with:
+      appNamespace: review-front-$GITHUB_HEAD_REF_SLUG
+    secrets: inherit

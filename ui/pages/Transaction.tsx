@@ -4,7 +4,7 @@ import React from 'react';
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
 import eastArrowIcon from 'icons/arrows/east.svg';
-import useLink from 'lib/link/useLink';
+import link from 'lib/link/link';
 import ExternalLink from 'ui/shared/ExternalLink';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -16,25 +16,19 @@ import TxRawTrace from 'ui/tx/TxRawTrace';
 // import TxState from 'ui/tx/TxState';
 
 const TABS: Array<RoutedTab> = [
-  { routeName: 'tx_index', title: 'Details', component: <TxDetails/> },
-  { routeName: 'tx_internal', title: 'Internal txn', component: <TxInternals/> },
-  { routeName: 'tx_logs', title: 'Logs', component: <TxLogs/> },
+  { id: 'index', title: 'Details', component: <TxDetails/> },
+  { id: 'internal', title: 'Internal txn', component: <TxInternals/> },
+  { id: 'logs', title: 'Logs', component: <TxLogs/> },
   // will be implemented later, api is not ready
-  // { routeName: 'tx_state', title: 'State', component: <TxState/> },
-  { routeName: 'tx_raw_trace', title: 'Raw trace', component: <TxRawTrace/> },
+  // { id: 'state', title: 'State', component: <TxState/> },
+  { id: 'raw_trace', title: 'Raw trace', component: <TxRawTrace/> },
 ];
 
-export interface Props {
-  tab: RoutedTab['routeName'];
-}
-
-const TransactionPageContent = ({ tab }: Props) => {
-  const link = useLink();
-
+const TransactionPageContent = () => {
   return (
     <Page>
       { /* TODO should be shown only when navigating from txs list */ }
-      <Link mb={ 6 } display="inline-flex" href={ link('txs_validated') }>
+      <Link mb={ 6 } display="inline-flex" href={ link('txs') }>
         <Icon as={ eastArrowIcon } boxSize={ 6 } mr={ 2 } transform="rotate(180deg)"/>
         Transactions
       </Link>
@@ -56,7 +50,6 @@ const TransactionPageContent = ({ tab }: Props) => {
       </Flex>
       <RoutedTabs
         tabs={ TABS }
-        defaultActiveTab={ tab }
       />
     </Page>
   );
