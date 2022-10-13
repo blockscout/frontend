@@ -1,7 +1,7 @@
 [
   {
     "chainIds": [
-      1
+      "1"
     ],
     "author": "xDaichain",
     "id": "easy-staking",
@@ -21,7 +21,7 @@
   },
   {
     "chainIds": [
-      99
+      "99"
     ],
     "author": "xDaichain",
     "id": "curve",
@@ -41,7 +41,7 @@
   },
   {
     "chainIds": [
-      1
+      "1"
     ],
     "author": "xDaichain",
     "id": "honwyswap",
@@ -61,7 +61,7 @@
   },
   {
     "chainIds": [
-      99
+      "99"
     ],
     "author": "xDaichain",
     "id": "sushi",
@@ -81,7 +81,7 @@
   },
   {
     "chainIds": [
-      100
+      "100"
     ],
     "author": "xDaichain",
     "id": "bao-finance",
@@ -101,7 +101,7 @@
   },
   {
     "chainIds": [
-      99
+      "99"
     ],
     "author": "xDaichain",
     "id": "component",
@@ -121,7 +121,7 @@
   },
   {
     "chainIds": [
-      1
+      "1"
     ],
     "author": "xDaichain",
     "id": "pooltogether",
@@ -141,7 +141,7 @@
   },
   {
     "chainIds": [
-      99
+      "99"
     ],
     "author": "xDaichain",
     "id": "swapr",
@@ -161,7 +161,7 @@
   },
   {
     "chainIds": [
-      1
+      "1"
     ],
     "author": "xDaichain",
     "id": "levinswap",
@@ -181,7 +181,7 @@
   },
   {
     "chainIds": [
-      99
+      "99"
     ],
     "author": "xDaichain",
     "id": "omen",
@@ -201,7 +201,7 @@
   },
   {
     "chainIds": [
-      1
+      "1"
     ],
     "author": "xDaichain",
     "id": "nifty-ink",
@@ -221,7 +221,7 @@
   },
   {
     "chainIds": [
-      99
+      "99"
     ],
     "author": "xDaichain",
     "id": "treasure-chess",
@@ -241,7 +241,7 @@
   },
   {
     "chainIds": [
-      1
+      "1"
     ],
     "author": "xDaichain",
     "id": "unique-one",
@@ -261,7 +261,7 @@
   },
   {
     "chainIds": [
-      99
+      "99"
     ],
     "author": "xDaichain",
     "id": "cold-truth-culture",
@@ -281,7 +281,7 @@
   },
   {
     "chainIds": [
-      1
+      "1"
     ],
     "author": "xDaichain",
     "id": "xdai-bridge",
@@ -301,7 +301,7 @@
   },
   {
     "chainIds": [
-      99
+      "99"
     ],
     "author": "xDaichain",
     "id": "omni-bridge",
@@ -321,7 +321,7 @@
   },
   {
     "chainIds": [
-      1
+      "1"
     ],
     "author": "xDaichain",
     "id": "gnosis-safe",
@@ -341,7 +341,7 @@
   },
   {
     "chainIds": [
-      99
+      "99"
     ],
     "author": "xDaichain",
     "id": "multisender",
@@ -361,7 +361,7 @@
   },
   {
     "chainIds": [
-      1
+      "1"
     ],
     "author": "xDaichain",
     "id": "disperse",
@@ -381,7 +381,7 @@
   },
   {
     "chainIds": [
-      99
+      "99"
     ],
     "author": "xDaichain",
     "id": "symmetric",

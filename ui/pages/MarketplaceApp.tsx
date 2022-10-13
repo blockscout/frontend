@@ -30,7 +30,7 @@ const MarketplaceApp = ({ app, isLoading }: Props) => {
 
   useEffect(() => {
     if (app && !isFrameLoading) {
-      ref?.current?.contentWindow?.postMessage({ blockscoutColorMode: colorMode, blockscoutChainId: appConfig.network.id }, app.url);
+      ref?.current?.contentWindow?.postMessage({ blockscoutColorMode: colorMode, blockscoutChainId: Number(appConfig.network.id) }, app.url);
     }
   }, [ isFrameLoading, app, colorMode, ref ]);
 
@@ -38,7 +38,7 @@ const MarketplaceApp = ({ app, isLoading }: Props) => {
     <Page wrapChildren={ false }>
       <Center
         as="main"
-        h="100%"
+        h="100vh"
         paddingTop={{ base: '138px', lg: 0 }}
       >
         { (isFrameLoading) && (
