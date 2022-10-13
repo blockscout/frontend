@@ -5,9 +5,8 @@ import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
 
-import divideBns from 'lib/bigint/divideBns';
+import getValueWithUnit from 'lib/getValueWithUnit';
 import link from 'lib/link/link';
-import getValue from 'lib/tx/getValue';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import TextSeparator from 'ui/shared/TextSeparator';
 import Utilization from 'ui/shared/Utilization';
@@ -48,7 +47,7 @@ const TxAdditionalInfo = ({ tx }: { tx: Transaction }) => {
             <Text>{ BigNumber(tx.gas_used).toFormat() }</Text>
             <TextSeparator/>
             <Text>{ BigNumber(tx.gas_limit).toFormat() }</Text>
-            <Utilization ml={ 4 } value={ Number(divideBns(tx.gas_used, tx.gas_limit, 2)) }/>
+            <Utilization ml={ 4 } value={ Number(BigNumber(tx.gas_used).dividedBy(BigNumber(tx.gas_limit)).toFixed(2)) }/>
           </Flex>
         </Box>
       ) }
@@ -58,19 +57,19 @@ const TxAdditionalInfo = ({ tx }: { tx: Transaction }) => {
           { tx.base_fee_per_gas !== null && (
             <Box>
               <Text as="span" fontWeight="500">Base: </Text>
-              <Text fontWeight="600" as="span">{ getValue(tx.base_fee_per_gas, 'gwei').toFixed() }</Text>
+              <Text fontWeight="600" as="span">{ getValueWithUnit(tx.base_fee_per_gas, 'gwei').toFixed() }</Text>
             </Box>
           ) }
           { tx.max_fee_per_gas !== null && (
             <Box>
               <Text as="span" fontWeight="500">Max: </Text>
-              <Text fontWeight="600" as="span">{ getValue(tx.max_fee_per_gas, 'gwei').toFixed() }</Text>
+              <Text fontWeight="600" as="span">{ getValueWithUnit(tx.max_fee_per_gas, 'gwei').toFixed() }</Text>
             </Box>
           ) }
           { tx.max_priority_fee_per_gas !== null && (
             <Box>
               <Text as="span" fontWeight="500">Max priority: </Text>
-              <Text fontWeight="600" as="span">{ getValue(tx.max_priority_fee_per_gas, 'gwei').toFixed() }</Text>
+              <Text fontWeight="600" as="span">{ getValueWithUnit(tx.max_priority_fee_per_gas, 'gwei').toFixed() }</Text>
             </Box>
           ) }
         </Box>

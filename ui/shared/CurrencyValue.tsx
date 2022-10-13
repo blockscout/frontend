@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { Unit } from 'types/unit';
 
-import getValue from 'lib/tx/getValue';
+import getValueWithUnit from 'lib/getValueWithUnit';
 
 interface Props {
   value: string;
@@ -17,7 +17,7 @@ interface Props {
 }
 
 const CurrencyValue = ({ value, currency = '', unit, exchangeRate, className, accuracy, accuracyUsd }: Props) => {
-  const valueCurr = getValue(value, unit);
+  const valueCurr = getValueWithUnit(value, unit);
   const valueResult = parseFloat(accuracy ? valueCurr.toFixed(accuracy) : valueCurr.toFixed());
 
   let usdContent;

@@ -11,7 +11,7 @@ const TxsInternalsSkeletonDesktop = ({ isPending }: {isPending?: boolean}) => {
         <Skeleton w="78px"/>
         <Skeleton w="360px"/>
       </Flex>
-      <SkeletonTable columns={ [ '20%', '20%', '20%', '20%', '20%' ] }/>
+      <SkeletonTable columns={ [ '32px', '20%', '18%', '15%', '11%', '292px', '18%', '18%' ] }/>
     </>
   );
 };

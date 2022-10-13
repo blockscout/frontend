@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js';
 
 import { WEI, GWEI } from 'lib/consts';
 
-export default function getValue(value: string | number, unit: 'wei' | 'gwei' | 'ether' = 'wei') {
+export default function getValueWithUnit(value: string | number, unit: 'wei' | 'gwei' | 'ether' = 'wei') {
   let unitBn: BigNumber.Value;
   switch (unit) {
     case 'wei':
