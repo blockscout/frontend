@@ -1,0 +1,23 @@
+name: Test workflow
+
+on: 
+  workflow_run:
+    workflows: ["Linters"]
+    types:
+      - completed
+
+jobs:
+  on-success:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    name: Test depended workflow
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print result
+        run: echo Success
+  on-error:
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    name: Test depended workflow
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print result
+        run: echo Failure
