@@ -1,8 +1,9 @@
 name: Run E2E tests k8s
 
 on:
-  push:
+  # push:
   # pull_request:
+  workflow_dispatch
 
 env:
   K8S_LOCAL_PORT: ${{ secrets.K8S_LOCAL_PORT }}

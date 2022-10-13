@@ -54,11 +54,11 @@ jobs:
             SENTRY_CSP_REPORT_URI=${{ secrets.SENTRY_CSP_REPORT_URI }}
             SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
 
-  deploy_frontend:
-    needs: push_to_registry
-    uses: blockscout/blockscout-ci-cd/.github/workflows/deploy.yaml@master
-    with:
-      valuesDir: deploy/values
-      appNamespace: frontend-main
-      appName: frontend
-    secrets: inherit
+  # deploy_frontend:
+  #   needs: push_to_registry
+  #   uses: blockscout/blockscout-ci-cd/.github/workflows/deploy.yaml@master
+  #   with:
+  #     valuesDir: deploy/values
+  #     appNamespace: frontend-main
+  #     appName: frontend
+  #   secrets: inherit
