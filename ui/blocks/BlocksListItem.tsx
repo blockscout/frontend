@@ -7,7 +7,7 @@ import type ArrayElement from 'types/utils/ArrayElement';
 import type { blocks } from 'data/blocks';
 import flameIcon from 'icons/flame.svg';
 import dayjs from 'lib/date/dayjs';
-import useLink from 'lib/link/useLink';
+import link from 'lib/link/link';
 import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import AddressLink from 'ui/shared/address/AddressLink';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
@@ -20,7 +20,6 @@ interface Props {
 
 const BlocksListItem = ({ data, isPending }: Props) => {
   const spinnerEmptyColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
-  const link = useLink();
 
   return (
     <AccountListItemMobile rowGap={ 3 }>

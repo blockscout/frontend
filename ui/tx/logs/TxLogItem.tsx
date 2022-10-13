@@ -5,7 +5,7 @@ import type { Log } from 'types/api/log';
 
 // import searchIcon from 'icons/search.svg';
 import { space } from 'lib/html-entities';
-import useLink from 'lib/link/useLink';
+import link from 'lib/link/link';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -24,7 +24,6 @@ const TxLogItem = ({ address, index, topics, data, decoded }: Props) => {
 
   const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
   const dataBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
-  const link = useLink();
 
   return (
     <Grid

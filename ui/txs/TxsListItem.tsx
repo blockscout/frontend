@@ -19,7 +19,7 @@ import type { txs } from 'data/txs';
 import rightArrowIcon from 'icons/arrows/east.svg';
 import transactionIcon from 'icons/transactions.svg';
 import dayjs from 'lib/date/dayjs';
-import useLink from 'lib/link/useLink';
+import link from 'lib/link/link';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -33,7 +33,6 @@ const TxsListItem = ({ tx }: {tx: ArrayElement<typeof txs>}) => {
 
   const iconColor = useColorModeValue('blue.600', 'blue.300');
   const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
-  const link = useLink();
 
   return (
     <>
