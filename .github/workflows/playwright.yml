@@ -1,7 +1,14 @@
-name: playwright
-on: [pull_request]
+name: Playwright
+on:
+  workflow_run:
+    workflows: ["Linters"]
+    types:
+      - completed
+
 jobs:
   test:
+    name: Run visual components test
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.27.0-focal
