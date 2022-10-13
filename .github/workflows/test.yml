@@ -1,11 +1,11 @@
 name: Test workflow
 
 on: 
-  workflow_run:
-    workflows: ["Linters"]
-    types:
-      - completed
-    pull_request:
+  pull_request:
+    workflow_run:
+      workflows: ["Linters"]
+      types:
+        - completed
 
 jobs:
   on-success:
