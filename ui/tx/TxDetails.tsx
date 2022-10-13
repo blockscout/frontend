@@ -35,6 +35,13 @@ import TxRevertReason from 'ui/tx/details/TxRevertReason';
 import TokenTransfer from 'ui/tx/TokenTransfer';
 import TxDecodedInputData from 'ui/tx/TxDecodedInputData';
 
+const TOKEN_TRANSFERS = [
+  { title: 'Tokens Transferred', hint: 'List of tokens transferred in the transaction.', type: 'token_transfer' },
+  { title: 'Tokens Minted', hint: 'List of tokens minted in the transaction.', type: 'token_minting' },
+  { title: 'Tokens Burnt', hint: 'List of tokens burnt in the transaction.', type: 'token_burning' },
+  { title: 'Tokens Created', hint: 'List of tokens created in the transaction.', type: 'token_spawning' },
+];
+
 const TxDetails = () => {
   const router = useRouter();
   const fetch = useFetch();
@@ -64,9 +71,6 @@ const TxDetails = () => {
   if (isError) {
     return <DataFetchAlert/>;
   }
-
-  const transferredTokens = data.token_transfers?.filter(({ type }) => type === 'token_transfer') || [];
-  const mintedTokens = data.token_transfers?.filter(({ type }) => type === 'token_minting') || [];
 
   return (
     <Grid columnGap={ 8 } rowGap={{ base: 3, lg: 3 }} templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }}>
@@ -157,26 +161,24 @@ const TxDetails = () => {
         </Tooltip> */ }
         { /* <TokenSnippet symbol="UP" name="User Pay" hash="0xA17ed5dFc62D0a3E74D69a0503AE9FdA65d9f212" ml={ 3 }/> */ }
       </DetailsInfoItem>
-      { transferredTokens.length > 0 && (
-        <DetailsInfoItem
-          title="Token transferred"
-          hint="List of token transferred in the transaction."
-        >
-          <Flex flexDirection="column" alignItems="flex-start" rowGap={ 5 } w="100%">
-            { transferredTokens.map((item, index) => <TokenTransfer key={ index } { ...item }/>) }
-          </Flex>
-        </DetailsInfoItem>
-      ) }
-      { mintedTokens.length > 0 && (
-        <DetailsInfoItem
-          title="Token Minted"
-          hint="List of token minted in the transaction."
-        >
-          <Flex flexDirection="column" alignItems="flex-start" rowGap={ 5 } w="100%">
-            { mintedTokens.map((item, index) => <TokenTransfer key={ index } { ...item }/>) }
-          </Flex>
-        </DetailsInfoItem>
-      ) }
+      { TOKEN_TRANSFERS.map(({ title, hint, type }) => {
+        const items = data.token_transfers?.filter((token) => token.type === type) || [];
+        if (items.length === 0) {
+          return null;
+        }
+        return (
+          <DetailsInfoItem
+            key={ type }
+            title={ title }
+            hint={ hint }
+          >
+            <Flex flexDirection="column" alignItems="flex-start" rowGap={ 5 } w="100%">
+              { items.map((item, index) => <TokenTransfer key={ index } { ...item }/>) }
+            </Flex>
+          </DetailsInfoItem>
+        );
+      }) }
+
       <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 3, lg: 8 }}/>
       <DetailsInfoItem
         title="Value"
