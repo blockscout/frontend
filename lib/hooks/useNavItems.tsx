@@ -13,8 +13,8 @@ import publicTagIcon from 'icons/publictags.svg';
 import tokensIcon from 'icons/token.svg';
 import transactionsIcon from 'icons/transactions.svg';
 import watchlistIcon from 'icons/watchlist.svg';
+import link from 'lib/link/link';
 import useCurrentRoute from 'lib/link/useCurrentRoute';
-import useLink from 'lib/link/useLink';
 import notEmpty from 'lib/notEmpty';
 
 export default function useNavItems() {
@@ -23,7 +23,6 @@ export default function useNavItems() {
   [ ])
     .length > 0;
 
-  const link = useLink();
   const currentRoute = useCurrentRoute()();
 
   return React.useMemo(() => {
@@ -50,5 +49,5 @@ export default function useNavItems() {
     const profileItem = { text: 'My profile', url: link('profile'), icon: profileIcon, isActive: currentRoute === 'profile' };
 
     return { mainNavItems, accountNavItems, profileItem };
-  }, [ isMarketplaceFilled, link, currentRoute ]);
+  }, [ isMarketplaceFilled, currentRoute ]);
 }

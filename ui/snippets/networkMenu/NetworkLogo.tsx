@@ -5,7 +5,7 @@ import React from 'react';
 import type { FunctionComponent, SVGAttributes } from 'react';
 
 import blockscoutLogo from 'icons/logo.svg';
-import useLink from 'lib/link/useLink';
+import link from 'lib/link/link';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 
 // predefined network logos
@@ -31,7 +31,6 @@ interface Props {
 
 const NetworkLogo = ({ isCollapsed, onClick }: Props) => {
   const logoColor = useColorModeValue('blue.600', 'white');
-  const link = useLink();
   const href = link('network_index');
   const logo = appConfig.network.logo || LOGOS[appConfig.network.basePath];
 

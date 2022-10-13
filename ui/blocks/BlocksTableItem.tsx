@@ -6,7 +6,7 @@ import type ArrayElement from 'types/utils/ArrayElement';
 import type { blocks } from 'data/blocks';
 import flameIcon from 'icons/flame.svg';
 import dayjs from 'lib/date/dayjs';
-import useLink from 'lib/link/useLink';
+import link from 'lib/link/link';
 import AddressLink from 'ui/shared/address/AddressLink';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
 import Utilization from 'ui/shared/Utilization';
@@ -17,8 +17,6 @@ interface Props {
 }
 
 const BlocksTableItem = ({ data, isPending }: Props) => {
-  const link = useLink();
-
   const spinnerEmptyColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
 
   return (

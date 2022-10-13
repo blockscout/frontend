@@ -6,7 +6,7 @@ import type ArrayElement from 'types/utils/ArrayElement';
 
 import type { txs } from 'data/txs';
 import { nbsp } from 'lib/html-entities';
-import useLink from 'lib/link/useLink';
+import link from 'lib/link/link';
 import TextSeparator from 'ui/shared/TextSeparator';
 import Utilization from 'ui/shared/Utilization';
 
@@ -24,8 +24,6 @@ const TxAdditionalInfo = ({ tx }: { tx: ArrayElement<typeof txs> }) => {
     marginBottom: 3,
     fontSize: 'sm',
   };
-
-  const link = useLink();
 
   return (
     <>
