@@ -249,7 +249,7 @@ scVerifier:
 frontend:
   enabled: true
   image:
-    _default: ghcr.io/blockscout/frontend:prerelease-5ca79e55
+    _default: ghcr.io/blockscout/frontend:main
   replicas:
     app: 1
   docker:
