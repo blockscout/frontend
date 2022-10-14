@@ -3,7 +3,7 @@ name: Deploy review environment
 on:
   # push:
   pull_request:
-  workflow_dispatch
+  workflow_dispatch:
 
 env:
   K8S_LOCAL_PORT: ${{ secrets.K8S_LOCAL_PORT }}

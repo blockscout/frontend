@@ -317,5 +317,5 @@ frontend:
       _default: "[{'title':'Gnosis Chain','basePath':'/xdai/mainnet','group':'mainnets'},{'title':'Optimism on Gnosis Chain','basePath':'/xdai/optimism','group':'mainnets','icon':'https://www.fillmurray.com/60/60'},{'title':'Arbitrum on xDai','basePath':'/xdai/aox','group':'mainnets'},{'title':'Ethereum','basePath':'/eth/mainnet','group':'mainnets'},{'title':'Ethereum Classic','basePath':'/etx/mainnet','group':'mainnets'},{'title':'POA','basePath':'/poa/core','group':'mainnets'},{'title':'RSK','basePath':'/rsk/mainnet','group':'mainnets'},{'title':'Gnosis Chain Testnet','basePath':'/xdai/testnet','group':'testnets'},{'title':'POA Sokol','basePath':'/poa/sokol','group':'testnets'},{'title':'ARTIS Σ1','basePath':'/artis/sigma1','group':'other'},{'title':'LUKSO L14','basePath':'/lukso/l14','group':'other'},{'title':'Astar','basePath':'/astar','group':'other'}]"
     NEXT_PUBLIC_API_ENDPOINT:
       _default: https://blockscout.com
-    NEXT_PUBLIC_API_BASE_PATH: :
+    NEXT_PUBLIC_API_BASE_PATH:
       _default: /
