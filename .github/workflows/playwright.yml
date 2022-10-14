@@ -1,7 +1,8 @@
-name: playwright
+name: Playwright
 on: [pull_request]
 jobs:
   test:
+    name: Run components visual tests
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.27.0-focal
