@@ -2,7 +2,7 @@ name: Deploy review environment
 
 on:
   # push:
-  # pull_request:
+  pull_request:
   workflow_dispatch
 
 env:
