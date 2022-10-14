@@ -7,7 +7,8 @@ on:
       - merged
 
 jobs:
-  uses: blockscout/blockscout-ci-cd/.github/workflows/cleanup.yaml@master
-  with:
-    appNamespace: review-front-$GITHUB_HEAD_REF_SLUG
-  secrets: inherit
+  cleanup:
+    uses: blockscout/blockscout-ci-cd/.github/workflows/cleanup.yaml@master
+    with:
+      appNamespace: review-front-$GITHUB_HEAD_REF_SLUG
+    secrets: inherit
