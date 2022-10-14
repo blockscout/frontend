@@ -33,13 +33,13 @@ const CurrencyValue = ({ value, currency = '', unit = 'wei', exchangeRate, class
   const usdBn = valueCurr.times(exchangeRateBn);
 
   return (
-    <Box as="span" className={ className }>
+    <Box as="span" className={ className } display="inline-flex" rowGap={ 3 } columnGap={ 1 }>
       <Text as="span">
         { accuracy ? valueCurr.toFixed(accuracy) : valueCurr.toFixed() }{ currency ? ` ${ currency }` : '' }
       </Text>
       { exchangeRate !== undefined && exchangeRate !== null &&
         // TODO: mb need to implement rounding to the first significant digit
-        <Text as="span" variant="secondary" whiteSpace="pre" fontWeight={ 400 }> (${ accuracyUsd ? usdBn.toFixed(accuracyUsd) : usdBn.toFixed() })</Text>
+        <Text as="span" variant="secondary" fontWeight={ 400 }>(${ accuracyUsd ? usdBn.toFixed(accuracyUsd) : usdBn.toFixed() })</Text>
       }
     </Box>
   );

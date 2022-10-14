@@ -1,5 +1,10 @@
 import type { AddressParam } from './addressParams';
 
+export type ERC1155TotalPayload = {
+  value: string;
+  token_id: string;
+}
+
 export type TokenTransfer = (
   {
     token_type: 'ERC-20';
@@ -15,17 +20,7 @@ export type TokenTransfer = (
   } |
   {
     token_type: 'ERC-1155';
-    total: {
-      value: string;
-      token_id: string;
-    };
-  } |
-  {
-    token_type: 'ERC-1155_batch';
-    total: Array<{
-      value: string;
-      token_id: string;
-    }>;
+    total: ERC1155TotalPayload | Array<ERC1155TotalPayload>;
   }
 ) & TokenTransferBase
 

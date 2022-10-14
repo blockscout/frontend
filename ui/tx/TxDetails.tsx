@@ -190,7 +190,12 @@ const TxDetails = () => {
         title="Transaction fee"
         hint="Total transaction fee."
       >
-        <CurrencyValue value={ String(data.fee.value) } currency={ appConfig.network.currency } exchangeRate={ data.exchange_rate }/>
+        <CurrencyValue
+          value={ String(data.fee.value) }
+          currency={ appConfig.network.currency }
+          exchangeRate={ data.exchange_rate }
+          flexWrap="wrap"
+        />
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Gas price"
@@ -218,18 +223,18 @@ const TxDetails = () => {
             <Box>
               <Text as="span" fontWeight="500">Base: </Text>
               <Text fontWeight="600" as="span">{ BigNumber(data.base_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
+              { (data.max_fee_per_gas || data.max_priority_fee_per_gas) && <TextSeparator/> }
             </Box>
           ) }
           { data.max_fee_per_gas && (
             <Box>
-              <TextSeparator/>
               <Text as="span" fontWeight="500">Max: </Text>
               <Text fontWeight="600" as="span">{ BigNumber(data.max_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
+              { data.max_priority_fee_per_gas && <TextSeparator/> }
             </Box>
           ) }
           { data.max_priority_fee_per_gas && (
             <Box>
-              <TextSeparator/>
               <Text as="span" fontWeight="500">Max priority: </Text>
               <Text fontWeight="600" as="span">{ BigNumber(data.max_priority_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
             </Box>
@@ -242,7 +247,12 @@ const TxDetails = () => {
           hint={ `Amount of ${ appConfig.network.currency } burned for this transaction. Equals Block Base Fee per Gas * Gas Used.` }
         >
           <Icon as={ flameIcon } mr={ 1 } boxSize={ 5 } color="gray.500"/>
-          <CurrencyValue value={ String(data.tx_burnt_fee) } currency={ appConfig.network.currency } exchangeRate={ data.exchange_rate }/>
+          <CurrencyValue
+            value={ String(data.tx_burnt_fee) }
+            currency={ appConfig.network.currency }
+            exchangeRate={ data.exchange_rate }
+            flexWrap="wrap"
+          />
         </DetailsInfoItem>
       ) }
       <GridItem colSpan={{ base: undefined, lg: 2 }}>
