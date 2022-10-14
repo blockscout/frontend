@@ -5,6 +5,7 @@ on:
     types:
       - closed
       - merged
+  workflow_dispatch:
 
 jobs:
   cleanup:
