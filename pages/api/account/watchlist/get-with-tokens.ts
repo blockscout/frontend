@@ -12,7 +12,7 @@ const watchlistWithTokensHandler = async(_req: NextApiRequest, res: NextApiRespo
   httpLogger(_req, res);
 
   const fetch = fetchFactory(_req);
-  const url = getUrlWithNetwork(_req, 'api/account/v1/user/watchlist');
+  const url = getUrlWithNetwork(_req, '/api/account/v1/user/watchlist');
   const watchlistResponse = await fetch(url, { method: 'GET' });
 
   const watchlistData = await watchlistResponse.json() as WatchlistAddresses;

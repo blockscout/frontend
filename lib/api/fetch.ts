@@ -15,7 +15,7 @@ export default function fetchFactory(_req: NextApiRequest) {
       'content-type': 'application/json',
       cookie: `${ cookies.NAMES.API_TOKEN }=${ _req.cookies[cookies.NAMES.API_TOKEN] }`,
     };
-    const url = new URL(path, appConfig.apiUrl);
+    const url = new URL(path, appConfig.api.endpoint);
 
     httpLogger.logger.info({
       message: 'Trying to call API',

@@ -18,7 +18,7 @@ export default function createHandler(getUrl: (_req: NextApiRequest) => string, 
 
     const isBodyDisallowed = _req.method === 'GET' || _req.method === 'HEAD';
 
-    const url = getUrlWithNetwork(_req, `api${ getUrl(_req) }`);
+    const url = getUrlWithNetwork(_req, `/api${ getUrl(_req) }`);
     const fetch = fetchFactory(_req);
     const response = await fetch(url, {
       method: _req.method,
