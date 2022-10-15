@@ -1,101 +1,100 @@
+import appConfig from 'configs/app/config';
+
+import PATHS from './paths.js';
+
 export interface Route {
   pattern: string;
   crossNetworkNavigation?: boolean; // route will not change when switching networks
 }
 
-import appConfig from 'configs/app/config';
-
 export type RouteName = keyof typeof ROUTES;
-
-const BASE_PATH = '/[network_type]/[network_sub_type]';
 
 export const ROUTES = {
   // NETWORK MAIN PAGE
   network_index: {
-    pattern: `${ BASE_PATH }`,
+    pattern: PATHS.network_index,
     crossNetworkNavigation: true,
   },
 
   // ACCOUNT
   watchlist: {
-    pattern: `${ BASE_PATH }/account/watchlist`,
+    pattern: PATHS.watchlist,
   },
   private_tags: {
-    pattern: `${ BASE_PATH }/account/tag_address`,
+    pattern: PATHS.private_tags,
   },
   public_tags: {
-    pattern: `${ BASE_PATH }/account/public_tags_request`,
+    pattern: PATHS.public_tags,
   },
   api_keys: {
-    pattern: `${ BASE_PATH }/account/api_key`,
+    pattern: PATHS.api_keys,
   },
   custom_abi: {
-    pattern: `${ BASE_PATH }/account/custom_abi`,
+    pattern: PATHS.custom_abi,
   },
   profile: {
-    pattern: `${ BASE_PATH }/auth/profile`,
+    pattern: PATHS.profile,
   },
 
   // TRANSACTIONS
   txs: {
-    pattern: `${ BASE_PATH }/txs`,
+    pattern: PATHS.txs,
     crossNetworkNavigation: true,
   },
   tx: {
-    pattern: `${ BASE_PATH }/tx/[id]`,
+    pattern: PATHS.tx,
   },
 
   // BLOCKS
   blocks: {
-    pattern: `${ BASE_PATH }/blocks`,
+    pattern: PATHS.blocks,
     crossNetworkNavigation: true,
   },
   block: {
-    pattern: `${ BASE_PATH }/block/[id]`,
+    pattern: PATHS.block,
   },
 
   // TOKENS
   tokens: {
-    pattern: `${ BASE_PATH }/tokens`,
+    pattern: PATHS.tokens,
     crossNetworkNavigation: true,
   },
   token_index: {
-    pattern: `${ BASE_PATH }/token/[id]`,
+    pattern: PATHS.token_index,
     crossNetworkNavigation: true,
   },
 
   // ADDRESSES
   address_index: {
-    pattern: `${ BASE_PATH }/address/[id]`,
+    pattern: PATHS.address_index,
     crossNetworkNavigation: true,
   },
   address_contract_verification: {
-    pattern: `${ BASE_PATH }/address/[id]/contract_verifications/new`,
+    pattern: PATHS.address_contract_verification,
     crossNetworkNavigation: true,
   },
 
   // APPS
   apps: {
-    pattern: `${ BASE_PATH }/apps`,
+    pattern: PATHS.apps,
   },
   app_index: {
-    pattern: `${ BASE_PATH }/apps/[id]`,
+    pattern: PATHS.app_index,
   },
 
   // SEARCH
   search_results: {
-    pattern: `${ BASE_PATH }/apps`,
+    pattern: PATHS.search_results,
   },
 
   // ??? what URL will be here
   other: {
-    pattern: `${ BASE_PATH }/search-results`,
+    pattern: PATHS.other,
   },
 
   // AUTH
   auth: {
-    // no slash required, it is correct
-    pattern: `${ BASE_PATH }auth/auth0`,
+    pattern: PATHS.auth,
   },
 };
 
