@@ -6,5 +6,7 @@ export default function getUrlWithNetwork(_req: NextApiRequest, path: string) {
   return [
     appConfig.api.basePath,
     path,
-  ].filter(Boolean).join('');
+  ]
+    .filter((segment) => segment !== '' && segment !== '/')
+    .join('');
 }
