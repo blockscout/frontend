@@ -57,19 +57,19 @@ const TxAdditionalInfo = ({ tx }: { tx: Transaction }) => {
           { tx.base_fee_per_gas !== null && (
             <Box>
               <Text as="span" fontWeight="500">Base: </Text>
-              <Text fontWeight="600" as="span">{ getValueWithUnit(tx.base_fee_per_gas, 'gwei').toFixed() }</Text>
+              <Text fontWeight="600" as="span">{ getValueWithUnit(tx.base_fee_per_gas, 'gwei').toFormat() }</Text>
             </Box>
           ) }
           { tx.max_fee_per_gas !== null && (
             <Box>
               <Text as="span" fontWeight="500">Max: </Text>
-              <Text fontWeight="600" as="span">{ getValueWithUnit(tx.max_fee_per_gas, 'gwei').toFixed() }</Text>
+              <Text fontWeight="600" as="span">{ getValueWithUnit(tx.max_fee_per_gas, 'gwei').toFormat() }</Text>
             </Box>
           ) }
           { tx.max_priority_fee_per_gas !== null && (
             <Box>
               <Text as="span" fontWeight="500">Max priority: </Text>
-              <Text fontWeight="600" as="span">{ getValueWithUnit(tx.max_priority_fee_per_gas, 'gwei').toFixed() }</Text>
+              <Text fontWeight="600" as="span">{ getValueWithUnit(tx.max_priority_fee_per_gas, 'gwei').toFormat() }</Text>
             </Box>
           ) }
         </Box>

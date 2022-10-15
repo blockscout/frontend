@@ -113,11 +113,11 @@ const TxsListItem = ({ tx }: {tx: Transaction}) => {
         </Flex>
         <Box mt={ 2 }>
           <Text as="span">Value { appConfig.network.currency } </Text>
-          <Text as="span" variant="secondary">{ parseFloat(getValueWithUnit(tx.value).toFixed()) }</Text>
+          <Text as="span" variant="secondary">{ getValueWithUnit(tx.value).toFormat() }</Text>
         </Box>
         <Box mt={ 2 } mb={ 3 }>
           <Text as="span">Fee { appConfig.network.currency } </Text>
-          <Text as="span" variant="secondary">{ parseFloat(getValueWithUnit(tx.fee.value).toFixed()) }</Text>
+          <Text as="span" variant="secondary">{ getValueWithUnit(tx.fee.value).toFormat() }</Text>
         </Box>
       </Box>
       <Modal isOpen={ isOpen } onClose={ onClose } size="full">
