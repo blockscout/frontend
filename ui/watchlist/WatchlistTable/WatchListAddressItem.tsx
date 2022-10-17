@@ -1,11 +1,11 @@
 import { HStack, VStack, Text, Icon, useColorModeValue } from '@chakra-ui/react';
+import appConfig from 'configs/app/config';
 import React from 'react';
 
 import type { TWatchlistItem } from 'types/client/account';
 
 import TokensIcon from 'icons/tokens.svg';
 // import WalletIcon from 'icons/wallet.svg';
-import useNetwork from 'lib/hooks/useNetwork';
 import { nbsp } from 'lib/html-entities';
 import AddressSnippet from 'ui/shared/AddressSnippet';
 import TokenLogo from 'ui/shared/TokenLogo';
@@ -14,7 +14,6 @@ const DECIMALS = 18;
 
 const WatchListAddressItem = ({ item }: {item: TWatchlistItem}) => {
   const mainTextColor = useColorModeValue('gray.700', 'gray.50');
-  const selectedNetwork = useNetwork();
 
   const nativeBalance = ((item.address_balance || 0) / 10 ** DECIMALS).toFixed(1);
   const nativeBalanceUSD = item.exchange_rate ? `$${ Number(nativeBalance) * item.exchange_rate } USD` : 'N/A';
@@ -24,8 +23,9 @@ const WatchListAddressItem = ({ item }: {item: TWatchlistItem}) => {
     <VStack spacing={ 2 } align="stretch" overflow="hidden" fontWeight={ 500 } color="gray.700">
       <AddressSnippet address={ item.address_hash }/>
       <HStack spacing={ 0 } fontSize="sm" h={ 6 } pl={ infoItemsPaddingLeft }>
-        { selectedNetwork && <TokenLogo hash={ selectedNetwork.nativeTokenAddress } name={ selectedNetwork.name } boxSize={ 4 } mr="10px"/> }
-        <Text color={ mainTextColor }>{ `${ selectedNetwork?.currency } balance:${ nbsp }` + nativeBalance }</Text>
+        { appConfig.network.nativeTokenAddress &&
+          <TokenLogo hash={ appConfig.network.nativeTokenAddress } name={ appConfig.network.name } boxSize={ 4 } mr="10px"/> }
+        <Text color={ mainTextColor }>{ `${ appConfig.network.currency } balance:${ nbsp }` + nativeBalance }</Text>
         <Text variant="secondary">{ `${ nbsp }(${ nativeBalanceUSD })` }</Text>
       </HStack>
       { item.tokens_count && (

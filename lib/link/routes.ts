@@ -1,3 +1,7 @@
+import appConfig from 'configs/app/config';
+
+import PATHS from './paths.js';
+
 export interface Route {
   pattern: string;
   crossNetworkNavigation?: boolean; // route will not change when switching networks
@@ -5,128 +9,95 @@ export interface Route {
 
 export type RouteName = keyof typeof ROUTES;
 
-const BASE_PATH = '/[network_type]/[network_sub_type]';
-
 export const ROUTES = {
   // NETWORK MAIN PAGE
   network_index: {
-    pattern: `${ BASE_PATH }`,
+    pattern: PATHS.network_index,
     crossNetworkNavigation: true,
   },
 
   // ACCOUNT
   watchlist: {
-    pattern: `${ BASE_PATH }/account/watchlist`,
-    crossNetworkNavigation: true,
+    pattern: PATHS.watchlist,
   },
-  private_tags_address: {
-    pattern: `${ BASE_PATH }/account/tag_address`,
-    crossNetworkNavigation: true,
-  },
-  private_tags_tx: {
-    pattern: `${ BASE_PATH }/account/tag_transaction`,
-    crossNetworkNavigation: true,
+  private_tags: {
+    pattern: PATHS.private_tags,
   },
   public_tags: {
-    pattern: `${ BASE_PATH }/account/public_tags_request`,
-    crossNetworkNavigation: true,
+    pattern: PATHS.public_tags,
   },
   api_keys: {
-    pattern: `${ BASE_PATH }/account/api_key`,
-    crossNetworkNavigation: true,
+    pattern: PATHS.api_keys,
   },
   custom_abi: {
-    pattern: `${ BASE_PATH }/account/custom_abi`,
-    crossNetworkNavigation: true,
+    pattern: PATHS.custom_abi,
   },
   profile: {
-    pattern: `${ BASE_PATH }/auth/profile`,
-    crossNetworkNavigation: true,
+    pattern: PATHS.profile,
   },
 
   // TRANSACTIONS
-  txs_validated: {
-    pattern: `${ BASE_PATH }/txs`,
+  txs: {
+    pattern: PATHS.txs,
     crossNetworkNavigation: true,
   },
-  txs_pending: {
-    pattern: `${ BASE_PATH }/pending-transactions`,
-    crossNetworkNavigation: true,
-  },
-  tx_index: {
-    pattern: `${ BASE_PATH }/tx/[id]`,
-  },
-  tx_internal: {
-    pattern: `${ BASE_PATH }/tx/[id]/internal-transactions`,
-  },
-  tx_logs: {
-    pattern: `${ BASE_PATH }/tx/[id]/logs`,
-  },
-  tx_raw_trace: {
-    pattern: `${ BASE_PATH }/tx/[id]/raw-trace`,
-  },
-  tx_state: {
-    pattern: `${ BASE_PATH }/tx/[id]/state`,
+  tx: {
+    pattern: PATHS.tx,
   },
 
   // BLOCKS
   blocks: {
-    pattern: `${ BASE_PATH }/blocks`,
+    pattern: PATHS.blocks,
     crossNetworkNavigation: true,
   },
-  blocks_uncles: {
-    pattern: `${ BASE_PATH }/uncles`,
-    crossNetworkNavigation: true,
-  },
-  blocks_reorgs: {
-    pattern: `${ BASE_PATH }/reorgs`,
-    crossNetworkNavigation: true,
-  },
-  block_index: {
-    pattern: `${ BASE_PATH }/block/[id]`,
-  },
-  block_txs: {
-    pattern: `${ BASE_PATH }/block/[id]/transactions`,
+  block: {
+    pattern: PATHS.block,
   },
 
   // TOKENS
   tokens: {
-    pattern: `${ BASE_PATH }/tokens`,
+    pattern: PATHS.tokens,
     crossNetworkNavigation: true,
   },
   token_index: {
-    pattern: `${ BASE_PATH }/token/[id]`,
+    pattern: PATHS.token_index,
     crossNetworkNavigation: true,
+  },
+  token_instance_item: {
+    pattern: PATHS.token_instance_item,
   },
 
   // ADDRESSES
   address_index: {
-    pattern: `${ BASE_PATH }/address/[id]`,
+    pattern: PATHS.address_index,
+    crossNetworkNavigation: true,
+  },
+  address_contract_verification: {
+    pattern: PATHS.address_contract_verification,
     crossNetworkNavigation: true,
   },
 
   // APPS
   apps: {
-    pattern: `${ BASE_PATH }/apps`,
+    pattern: PATHS.apps,
   },
   app_index: {
-    pattern: `${ BASE_PATH }/apps/[id]`,
+    pattern: PATHS.app_index,
   },
 
   // SEARCH
   search_results: {
-    pattern: `${ BASE_PATH }/apps`,
+    pattern: PATHS.search_results,
   },
 
   // ??? what URL will be here
   other: {
-    pattern: `${ BASE_PATH }/search-results`,
+    pattern: PATHS.other,
   },
 
   // AUTH
   auth: {
-    // no slash required, it is correct
-    pattern: `${ BASE_PATH }auth/auth0`,
+    pattern: PATHS.auth,
   },
 };
 
@@ -142,6 +113,6 @@ function checkRoutes(route: Record<string, Route>) {
   return route;
 }
 
-if (process.env.NODE_ENV === 'development') {
+if (appConfig.isDev) {
   checkRoutes(ROUTES);
 }

@@ -4,7 +4,6 @@ import React from 'react';
 
 import type { NetworkGroup } from 'types/networks';
 
-import useNetwork from 'lib/hooks/useNetwork';
 import useNetworkNavigationItems from 'lib/networks/useNetworkNavigationItems';
 
 import NetworkMenuLink from './NetworkMenuLink';
@@ -12,9 +11,9 @@ import NetworkMenuLink from './NetworkMenuLink';
 const TABS: Array<NetworkGroup> = [ 'mainnets', 'testnets', 'other' ];
 
 const NetworkMenuContentMobile = () => {
-  const selectedNetwork = useNetwork();
-  const [ selectedTab, setSelectedTab ] = React.useState<NetworkGroup>(TABS.find((tab) => selectedNetwork?.group === tab) || 'mainnets');
   const items = useNetworkNavigationItems();
+  const selectedNetwork = items.find(({ isActive }) => isActive);
+  const [ selectedTab, setSelectedTab ] = React.useState<NetworkGroup>(TABS.find((tab) => selectedNetwork?.group === tab) || 'mainnets');
 
   const handleSelectChange = React.useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedTab(event.target.value as NetworkGroup);
@@ -30,7 +29,7 @@ const NetworkMenuContentMobile = () => {
           .filter(({ group }) => group === selectedTab)
           .map((network) => (
             <NetworkMenuLink
-              key={ network.name }
+              key={ network.title }
               { ...network }
               isMobile
             />

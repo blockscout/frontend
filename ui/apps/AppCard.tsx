@@ -8,7 +8,7 @@ import type { AppItemPreview } from 'types/client/apps';
 import northEastIcon from 'icons/arrows/north-east.svg';
 import starFilledIcon from 'icons/star_filled.svg';
 import starOutlineIcon from 'icons/star_outline.svg';
-import useLink from 'lib/link/useLink';
+import link from 'lib/link/link';
 import notEmpty from 'lib/notEmpty';
 
 import { APP_CATEGORIES } from './constants';
@@ -38,8 +38,6 @@ const AppCard = ({ id,
   const handleFavoriteClick = useCallback(() => {
     onFavoriteClick(id, isFavorite);
   }, [ onFavoriteClick, id, isFavorite ]);
-
-  const link = useLink();
 
   return (
     <LinkBox

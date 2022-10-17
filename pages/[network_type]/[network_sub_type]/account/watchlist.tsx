@@ -14,8 +14,8 @@ type Props = {
   pageParams: PageParams;
 }
 
-const WatchListPage: NextPage<Props> = ({ pageParams }: Props) => {
-  const title = getNetworkTitle(pageParams || {});
+const WatchListPage: NextPage<Props> = () => {
+  const title = getNetworkTitle();
   return (
     <>
       <Head>
@@ -28,5 +28,5 @@ const WatchListPage: NextPage<Props> = ({ pageParams }: Props) => {
 
 export default WatchListPage;
 
-export { getStaticPaths } from 'lib/next/account/getStaticPaths';
+export { getStaticPaths } from 'lib/next/getStaticPaths';
 export { getStaticProps } from 'lib/next/getStaticProps';

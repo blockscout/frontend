@@ -1,5 +1,3 @@
-const getCspPolicy = require('../../lib/csp/getCspPolicy');
-
 async function headers() {
   return [
     {
@@ -13,10 +11,6 @@ async function headers() {
         {
           key: 'X-Content-Type-Options',
           value: 'nosniff',
-        },
-        {
-          key: 'Content-Security-Policy-Report-Only',
-          value: getCspPolicy(),
         },
       ],
     },

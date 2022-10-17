@@ -1,3 +1,4 @@
+import appConfig from 'configs/app/config';
 import React, { useMemo } from 'react';
 
 import marketplaceApps from 'data/marketplaceApps.json';
@@ -12,27 +13,22 @@ import publicTagIcon from 'icons/publictags.svg';
 import tokensIcon from 'icons/token.svg';
 import transactionsIcon from 'icons/transactions.svg';
 import watchlistIcon from 'icons/watchlist.svg';
+import link from 'lib/link/link';
 import useCurrentRoute from 'lib/link/useCurrentRoute';
-import useLink from 'lib/link/useLink';
 import notEmpty from 'lib/notEmpty';
 
-import useNetwork from './useNetwork';
-
 export default function useNavItems() {
-  const selectedNetwork = useNetwork();
-
   const isMarketplaceFilled = useMemo(() =>
-    marketplaceApps.filter(item => item.chainIds.includes(selectedNetwork?.chainId)),
-  [ selectedNetwork?.chainId ])
+    marketplaceApps.filter(item => item.chainIds.includes(appConfig.network.id)),
+  [ ])
     .length > 0;
 
-  const link = useLink();
   const currentRoute = useCurrentRoute()();
 
   return React.useMemo(() => {
     const mainNavItems = [
       { text: 'Blocks', url: link('blocks'), icon: blocksIcon, isActive: currentRoute.startsWith('block') },
-      { text: 'Transactions', url: link('txs_validated'), icon: transactionsIcon, isActive: currentRoute.startsWith('tx') },
+      { text: 'Transactions', url: link('txs'), icon: transactionsIcon, isActive: currentRoute.startsWith('tx') },
       { text: 'Tokens', url: link('tokens'), icon: tokensIcon, isActive: currentRoute === 'tokens' },
       isMarketplaceFilled ?
         { text: 'Apps', url: link('apps'), icon: appsIcon, isActive: currentRoute === 'apps' } : null,
@@ -44,7 +40,7 @@ export default function useNavItems() {
 
     const accountNavItems = [
       { text: 'Watchlist', url: link('watchlist'), icon: watchlistIcon, isActive: currentRoute === 'watchlist' },
-      { text: 'Private tags', url: link('private_tags_address'), icon: privateTagIcon, isActive: currentRoute.startsWith('private_tags') },
+      { text: 'Private tags', url: link('private_tags'), icon: privateTagIcon, isActive: currentRoute.startsWith('private_tags') },
       { text: 'Public tags', url: link('public_tags'), icon: publicTagIcon, isActive: currentRoute === 'public_tags' },
       { text: 'API keys', url: link('api_keys'), icon: apiKeysIcon, isActive: currentRoute === 'api_keys' },
       { text: 'Custom ABI', url: link('custom_abi'), icon: abiIcon, isActive: currentRoute === 'custom_abi' },
@@ -53,5 +49,5 @@ export default function useNavItems() {
     const profileItem = { text: 'My profile', url: link('profile'), icon: profileIcon, isActive: currentRoute === 'profile' };
 
     return { mainNavItems, accountNavItems, profileItem };
-  }, [ isMarketplaceFilled, link, currentRoute ]);
+  }, [ isMarketplaceFilled, currentRoute ]);
 }

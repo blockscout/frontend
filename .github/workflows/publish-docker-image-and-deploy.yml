@@ -12,8 +12,6 @@ env:
   K8S_PORT: ${{ secrets.K8S_PORT }}
   USERNAME: ${{ secrets.USERNAME }}
   BASTION_SSH_KEY: ${{secrets.BASTION_SSH_KEY}}
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
 jobs:
   push_to_registry:
@@ -50,29 +48,21 @@ jobs:
           cache-to: type=gha,mode=max
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-  deploy:
-    name: Deploy frontend to k8s
+          build-args: |
+            SENTRY_DSN=${{ secrets.SENTRY_DSN }}
+            NEXT_PUBLIC_SENTRY_DSN=${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}
+            SENTRY_CSP_REPORT_URI=${{ secrets.SENTRY_CSP_REPORT_URI }}
+            SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
+
+  deploy_main:
     needs: push_to_registry
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out the repo
-        uses: actions/checkout@v3
-      - name: Set Kubernetes Context
-        uses: azure/k8s-set-context@v1
-        with:
-          method: kubeconfig
-          kubeconfig: ${{ secrets.KUBE_CONFIG }}
-      - name: Deploy to k8s
-        shell: bash
-        working-directory: charts
-        # port forwarding works only inside the step, consider refactoring as TS action
-        env:
-          NAMESPACE_NAME: bs-frontend
-        run: |
-          mkdir ~/.ssh
-          ssh-keyscan -H $BASTION_HOST >> ~/.ssh/known_hosts
-          eval `ssh-agent -s`
-          ssh-add - <<< "$BASTION_SSH_KEY"
-          sudo echo "127.0.0.1 $K8S_HOST" | sudo tee -a /etc/hosts
-          ssh -fN -v -L $K8S_LOCAL_PORT:$K8S_HOST:$K8S_PORT $USERNAME@$BASTION_HOST
-          helm upgrade --install -n $NAMESPACE_NAME $NAMESPACE_NAME ./ -f values-frontend.yaml --create-namespace
+    uses: blockscout/blockscout-ci-cd/.github/workflows/deploy.yaml@master
+    with:
+      valuesDir: deploy/values/review
+      appNamespace: front-main
+      blockscoutIngressHost: blockscout
+      frontendIngressHost: frontend
+      frontendImage: ghcr.io/blockscout/frontend:main
+      gethIngressHost: geth
+      scVerifierIngressHost: sc-verifier
+    secrets: inherit

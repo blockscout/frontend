@@ -26,7 +26,7 @@ const TxInternalTableItem = ({ type, from, to, value, success, error }: Props) =
         <TxStatus status={ success ? 'ok' : 'error' } errorText={ error }/>
       </Td>
       <Td>
-        <Address>
+        <Address display="inline-flex" maxW="100%">
           <AddressIcon hash={ from.hash }/>
           <AddressLink ml={ 2 } fontWeight="500" hash={ from.hash } alias={ from.name } flexGrow={ 1 }/>
         </Address>
@@ -35,16 +35,16 @@ const TxInternalTableItem = ({ type, from, to, value, success, error }: Props) =
         <Icon as={ rightArrowIcon } boxSize={ 6 } color="gray.500"/>
       </Td>
       <Td>
-        <Address>
+        <Address display="inline-flex" maxW="100%">
           <AddressIcon hash={ to.hash }/>
           <AddressLink hash={ to.hash } alias={ to.name } fontWeight="500" ml={ 2 }/>
         </Address>
       </Td>
-      <Td isNumeric>
+      <Td isNumeric verticalAlign="middle">
         { value }
       </Td>
       { /* no gas limit in api yet */ }
-      { /* <Td isNumeric>
+      { /* <Td isNumeric verticalAlign='middle'>
         { gasLimit.toLocaleString('en') }
       </Td> */ }
     </Tr>

@@ -28,6 +28,7 @@ yarn-error.log*
 
 # local env files
 .env*.local
+/configs/envs/.env.secrets
 
 # vercel
 .vercel
@@ -39,3 +40,8 @@ yarn-error.log*
 
 # Sentry
 .sentryclirc
+
+**.decrypted~**
+/test-results/
+/playwright-report/
+/playwright/.cache/

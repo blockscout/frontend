@@ -3,22 +3,27 @@ import type { DecodedInput } from './decodedInput';
 import type { Fee } from './fee';
 import type { TokenTransfer } from './tokenTransfer';
 
+export type TransactionRevertReason = {
+  raw: string;
+  decoded: string;
+} | DecodedInput;
+
 export interface Transaction {
   hash: string;
   result: string;
   confirmations: number;
   status: 'ok' | 'error' | null;
-  block: number;
-  timestamp: string;
+  block: number | null;
+  timestamp: string | null;
   confirmation_duration: Array<number>;
   from: AddressParam;
   to: AddressParam;
   created_contract: AddressParam;
-  value: number;
+  value: string;
   fee: Fee;
   gas_price: number;
   type: number;
-  gas_used: string;
+  gas_used: string | null;
   gas_limit: string;
   max_fee_per_gas: number | null;
   max_priority_fee_per_gas: number | null;
@@ -27,10 +32,7 @@ export interface Transaction {
   tx_burnt_fee: number | null;
   nonce: number;
   position: number;
-  revert_reason: {
-    raw: string;
-    decoded: string;
-  } | null;
+  revert_reason: TransactionRevertReason | null;
   raw_input: string;
   decoded_input: DecodedInput | null;
   token_transfers: Array<TokenTransfer> | null;

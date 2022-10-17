@@ -1,10 +1,10 @@
 import { AccordionItem, AccordionButton, AccordionIcon, Button, Box, Flex, Text, Link, StatArrow, Stat, AccordionPanel } from '@chakra-ui/react';
+import appConfig from 'configs/app/config';
 import React from 'react';
 
 import type ArrayElement from 'types/utils/ArrayElement';
 
 import type { data } from 'data/txState';
-import useNetwork from 'lib/hooks/useNetwork';
 import { nbsp } from 'lib/html-entities';
 import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import Address from 'ui/shared/address/Address';
@@ -16,7 +16,6 @@ import TxStateStorageItem from './TxStateStorageItem';
 type Props = ArrayElement<typeof data>;
 
 const TxStateListItem = ({ storage, address, miner, after, before, diff }: Props) => {
-  const selectedNetwork = useNetwork();
 
   const hasStorageData = Boolean(storage?.length);
 
@@ -65,7 +64,7 @@ const TxStateListItem = ({ storage, address, miner, after, before, diff }: Props
                 <Link>{ miner }</Link>
               </Box>
               <Box>
-                <Text as="span">Before { selectedNetwork?.currency } </Text>
+                <Text as="span">Before { appConfig.network.currency } </Text>
                 <Text as="span" variant="secondary">{ before.balance }</Text>
               </Box>
               { typeof before.nonce !== 'undefined' && (
@@ -75,7 +74,7 @@ const TxStateListItem = ({ storage, address, miner, after, before, diff }: Props
                 </Box>
               ) }
               <Box>
-                <Text as="span">After { selectedNetwork?.currency } </Text>
+                <Text as="span">After { appConfig.network.currency } </Text>
                 <Text as="span" variant="secondary">{ after.balance }</Text>
               </Box>
               { typeof after.nonce !== 'undefined' && (
@@ -84,7 +83,7 @@ const TxStateListItem = ({ storage, address, miner, after, before, diff }: Props
                   <Text as="span" fontWeight={ 600 }>{ nbsp }{ after.nonce }</Text>
                 </Box>
               ) }
-              <Text>State difference { selectedNetwork?.currency }</Text>
+              <Text>State difference { appConfig.network.currency }</Text>
               <Stat>
                 { diff }
                 <StatArrow ml={ 2 } type={ Number(diff) > 0 ? 'increase' : 'decrease' }/>

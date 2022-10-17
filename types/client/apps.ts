@@ -26,7 +26,7 @@ export type AppItemPreview = {
 }
 
 export type AppItemOverview = AppItemPreview & {
-  chainIds: Array<number>;
+  chainIds: Array<string>;
   author: string;
   url: string;
   description: string;

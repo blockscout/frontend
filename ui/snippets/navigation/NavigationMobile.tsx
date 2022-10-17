@@ -1,18 +1,17 @@
 import { Box, VStack } from '@chakra-ui/react';
+import appConfig from 'configs/app/config';
 import React from 'react';
 
 import * as cookies from 'lib/cookies';
 import useNavItems from 'lib/hooks/useNavItems';
-import useNetwork from 'lib/hooks/useNetwork';
 import NavFooter from 'ui/snippets/navigation/NavFooter';
 import NavLink from 'ui/snippets/navigation/NavLink';
 
 const NavigationMobile = () => {
   const { mainNavItems, accountNavItems } = useNavItems();
-  const selectedNetwork = useNetwork();
 
   const isAuth = Boolean(cookies.get(cookies.NAMES.API_TOKEN));
-  const hasAccount = selectedNetwork?.isAccountSupported && isAuth;
+  const hasAccount = appConfig.isAccountSupported && isAuth;
 
   return (
     <>

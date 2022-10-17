@@ -1,9 +1,9 @@
 import { Box, Center, useColorMode } from '@chakra-ui/react';
+import appConfig from 'configs/app/config';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import type { AppItemOverview } from 'types/client/apps';
 
-import useNetwork from 'lib/hooks/useNetwork';
 import ContentLoader from 'ui/shared/ContentLoader';
 import Page from 'ui/shared/Page/Page';
 
@@ -16,7 +16,6 @@ const MarketplaceApp = ({ app, isLoading }: Props) => {
   const [ isFrameLoading, setIsFrameLoading ] = useState(isLoading);
   const ref = useRef<HTMLIFrameElement>(null);
   const { colorMode } = useColorMode();
-  const network = useNetwork();
 
   const handleIframeLoad = useCallback(() => {
     setIsFrameLoading(false);
@@ -31,15 +30,15 @@ const MarketplaceApp = ({ app, isLoading }: Props) => {
 
   useEffect(() => {
     if (app && !isFrameLoading) {
-      ref?.current?.contentWindow?.postMessage({ blockscoutColorMode: colorMode, blockscoutChainId: network?.chainId }, app.url);
+      ref?.current?.contentWindow?.postMessage({ blockscoutColorMode: colorMode, blockscoutChainId: Number(appConfig.network.id) }, app.url);
     }
-  }, [ isFrameLoading, app, colorMode, network, ref ]);
+  }, [ isFrameLoading, app, colorMode, ref ]);
 
   return (
     <Page wrapChildren={ false }>
       <Center
         as="main"
-        h="100%"
+        h="100vh"
         paddingTop={{ base: '138px', lg: 0 }}
       >
         { (isFrameLoading) && (
