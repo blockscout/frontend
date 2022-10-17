@@ -136,6 +136,10 @@ const variantSubtle = defineStyle((props) => {
       color: mode('blackAlpha.800', 'whiteAlpha.800')(props),
       _hover: {
         color: 'blue.400',
+        _disabled: {
+          color: mode('blackAlpha.800', 'whiteAlpha.800')(props),
+          bg: mode('blackAlpha.200', 'whiteAlpha.200')(props),
+        },
       },
     };
   }

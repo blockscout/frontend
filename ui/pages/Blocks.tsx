@@ -9,8 +9,8 @@ import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
 
 const TABS: Array<RoutedTab> = [
   { id: 'blocks', title: 'All', component: <BlocksContent/> },
-  { id: 'reorgs', title: 'Forked', component: <BlocksContent/> },
-  { id: 'uncles', title: 'Uncles', component: <BlocksContent/> },
+  { id: 'reorgs', title: 'Forked', component: <BlocksContent type="reorg"/> },
+  { id: 'uncles', title: 'Uncles', component: <BlocksContent type="uncle"/> },
 ];
 
 const BlocksPageContent = () => {
