@@ -17,13 +17,11 @@ interface Props {
 }
 
 const BlocksTableItem = ({ data, isPending }: Props) => {
-  const spinnerEmptyColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
-
   return (
     <Tr>
       <Td fontSize="sm">
         <Flex columnGap={ 2 } alignItems="center">
-          { isPending && <Spinner size="sm" color="blue.500" emptyColor={ spinnerEmptyColor }/> }
+          { isPending && <Spinner size="sm"/> }
           <Link
             fontWeight={ 600 }
             href={ link('block', { id: String(data.height) }) }

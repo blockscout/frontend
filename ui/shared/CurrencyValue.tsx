@@ -33,12 +33,12 @@ const CurrencyValue = ({ value, currency = '', unit, exchangeRate, className, ac
     }
 
     usdContent = (
-      <Text as="span" variant="secondary" whiteSpace="pre" fontWeight={ 400 }> (${ usdResult })</Text>
+      <Text as="span" variant="secondary" fontWeight={ 400 }>(${ usdResult })</Text>
     );
   }
 
   return (
-    <Box as="span" className={ className }>
+    <Box as="span" className={ className } display="inline-flex" rowGap={ 3 } columnGap={ 1 }>
       <Text display="inline-block">
         { valueResult }{ currency ? ` ${ currency }` : '' }
       </Text>

@@ -12,7 +12,7 @@ interface Props {
 }
 
 const TokenSnippet = ({ symbol, hash, name, className }: Props) => {
-  const url = link('token_index', { id: hash });
+  const url = link('token_index', { hash });
 
   return (
     <Center className={ className } columnGap={ 1 }>

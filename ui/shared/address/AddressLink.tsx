@@ -20,7 +20,7 @@ const AddressLink = ({ alias, type, className, truncation = 'dynamic', hash, id,
   if (type === 'transaction') {
     url = link('tx', { id: id || hash });
   } else if (type === 'token') {
-    url = link('token_index', { id: id || hash });
+    url = link('token_index', { hash: id || hash });
   } else if (type === 'block') {
     url = link('block', { id: id || hash });
   } else {

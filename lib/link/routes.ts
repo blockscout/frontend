@@ -63,6 +63,9 @@ export const ROUTES = {
     pattern: PATHS.token_index,
     crossNetworkNavigation: true,
   },
+  token_instance_item: {
+    pattern: PATHS.token_instance_item,
+  },
 
   // ADDRESSES
   address_index: {
