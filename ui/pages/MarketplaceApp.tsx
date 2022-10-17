@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import type { AppItemOverview } from 'types/client/apps';
 
 import appConfig from 'configs/app/config';
+import link from 'lib/link/link';
 import ContentLoader from 'ui/shared/ContentLoader';
 import Page from 'ui/shared/Page/Page';
 
@@ -30,7 +31,12 @@ const MarketplaceApp = ({ app, isLoading }: Props) => {
 
   useEffect(() => {
     if (app && !isFrameLoading) {
-      ref?.current?.contentWindow?.postMessage({ blockscoutColorMode: colorMode, blockscoutChainId: Number(appConfig.network.id) }, app.url);
+      ref?.current?.contentWindow?.postMessage({
+        blockscoutColorMode: colorMode,
+        blockscoutChainId: Number(appConfig.network.id),
+        blockscoutAddressExplorerUrl: link('address_index'),
+        blockscoutTransactionExplorerUrl: link('tx'),
+      }, app.url);
     }
   }, [ isFrameLoading, app, colorMode, ref ]);
 
