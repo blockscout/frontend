@@ -207,7 +207,7 @@ const BlockDetails = () => {
           </Tooltip>
         ) }
       </DetailsInfoItem>
-      { data.priority_fee && (
+      { data.priority_fee !== null && data.priority_fee > 0 && (
         <DetailsInfoItem
           title="Priority fee / Tip"
           hint="User-defined tips sent to validator for transaction priority/inclusion."
