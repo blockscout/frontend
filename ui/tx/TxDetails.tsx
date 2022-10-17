@@ -1,4 +1,4 @@
-import { Grid, GridItem, Text, Box, Icon, Link, Flex, Spinner } from '@chakra-ui/react';
+import { Grid, GridItem, Text, Box, Icon, Link, Spinner } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import appConfig from 'configs/app/config';
@@ -32,7 +32,7 @@ import TxStatus from 'ui/shared/TxStatus';
 import Utilization from 'ui/shared/Utilization';
 import TxDetailsSkeleton from 'ui/tx/details/TxDetailsSkeleton';
 import TxRevertReason from 'ui/tx/details/TxRevertReason';
-import TokenTransfer from 'ui/tx/TokenTransfer';
+import TokenTransferList from 'ui/tx/TokenTransferList';
 import TxDecodedInputData from 'ui/tx/TxDecodedInputData';
 
 const TOKEN_TRANSFERS = [
@@ -171,10 +171,9 @@ const TxDetails = () => {
             key={ type }
             title={ title }
             hint={ hint }
+            position="relative"
           >
-            <Flex flexDirection="column" alignItems="flex-start" rowGap={ 5 } w="100%">
-              { items.map((item, index) => <TokenTransfer key={ index } { ...item }/>) }
-            </Flex>
+            <TokenTransferList items={ items }/>
           </DetailsInfoItem>
         );
       }) }
