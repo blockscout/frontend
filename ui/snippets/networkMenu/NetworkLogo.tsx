@@ -1,9 +1,9 @@
 import { Icon, Box, Image, useColorModeValue } from '@chakra-ui/react';
-import appConfig from 'configs/app/config';
 import NextLink from 'next/link';
 import React from 'react';
 import type { FunctionComponent, SVGAttributes } from 'react';
 
+import appConfig from 'configs/app/config';
 import blockscoutLogo from 'icons/logo.svg';
 import link from 'lib/link/link';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';

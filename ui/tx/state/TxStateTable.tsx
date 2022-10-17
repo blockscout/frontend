@@ -6,9 +6,9 @@ import {
   Th,
   TableContainer,
 } from '@chakra-ui/react';
-import appConfig from 'configs/app/config';
 import React from 'react';
 
+import appConfig from 'configs/app/config';
 import { data } from 'data/txState';
 import TxStateTableItem from 'ui/tx/state/TxStateTableItem';
 

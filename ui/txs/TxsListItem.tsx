@@ -10,11 +10,11 @@ import {
   Text,
   useColorModeValue,
   useDisclosure } from '@chakra-ui/react';
-import appConfig from 'configs/app/config';
 import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
 
+import appConfig from 'configs/app/config';
 import rightArrowIcon from 'icons/arrows/east.svg';
 import transactionIcon from 'icons/transactions.svg';
 import dayjs from 'lib/date/dayjs';

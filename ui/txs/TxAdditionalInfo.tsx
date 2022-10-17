@@ -1,10 +1,10 @@
 import { Box, Heading, Text, Flex, Link, useColorModeValue } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import appConfig from 'configs/app/config';
 import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
 
+import appConfig from 'configs/app/config';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import link from 'lib/link/link';
 import CurrencyValue from 'ui/shared/CurrencyValue';

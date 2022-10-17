@@ -1,7 +1,7 @@
-import appConfig from 'configs/app/config';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
+import appConfig from 'configs/app/config';
 import { NAMES } from 'lib/cookies';
 import getCspPolicy from 'lib/csp/getCspPolicy';
 import link from 'lib/link/link';

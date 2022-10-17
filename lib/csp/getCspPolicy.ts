@@ -1,5 +1,4 @@
 import appConfig from 'configs/app/config';
-
 import featuredNetworks from 'lib/networks/featuredNetworks';
 
 import getMarketplaceApps from '../getMarketplaceApps';

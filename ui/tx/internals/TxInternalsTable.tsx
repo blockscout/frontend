@@ -1,9 +1,9 @@
 import { Table, Thead, Tbody, Tr, Th, TableContainer, Link, Icon } from '@chakra-ui/react';
-import appConfig from 'configs/app/config';
 import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
 
+import appConfig from 'configs/app/config';
 import arrowIcon from 'icons/arrows/east.svg';
 import TxInternalsTableItem from 'ui/tx/internals/TxInternalsTableItem';
 import type { Sort, SortField } from 'ui/tx/internals/utils';

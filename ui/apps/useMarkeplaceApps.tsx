@@ -1,9 +1,9 @@
-import appConfig from 'configs/app/config';
 import debounce from 'lodash/debounce';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import type { AppItemOverview, MarketplaceCategoriesIds } from 'types/client/apps';
 
+import appConfig from 'configs/app/config';
 import marketplaceApps from 'data/marketplaceApps.json';
 
 const favoriteAppsLocalStorageKey = 'favoriteApps';

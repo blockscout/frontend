@@ -1,10 +1,10 @@
 import { VStack, Textarea, Button, Alert, AlertTitle, AlertDescription, Link, Code } from '@chakra-ui/react';
 import * as Sentry from '@sentry/react';
-import appConfig from 'configs/app/config';
 import { useRouter } from 'next/router';
 import type { ChangeEvent } from 'react';
 import React from 'react';
 
+import appConfig from 'configs/app/config';
 import * as cookies from 'lib/cookies';
 import useToast from 'lib/hooks/useToast';
 import Page from 'ui/shared/Page/Page';

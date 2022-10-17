@@ -17,10 +17,11 @@
  */
 
 import * as Sentry from '@sentry/nextjs';
-import sentryConfig from 'configs/sentry/nextjs';
 import type { NextPageContext } from 'next';
 import NextErrorComponent from 'next/error';
 import React from 'react';
+
+import sentryConfig from 'configs/sentry/nextjs';
 
 type ContextOrProps = {
   req?: NextPageContext['req'];

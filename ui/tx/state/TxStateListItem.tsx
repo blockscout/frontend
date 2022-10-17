@@ -1,9 +1,9 @@
 import { AccordionItem, AccordionButton, AccordionIcon, Button, Box, Flex, Text, Link, StatArrow, Stat, AccordionPanel } from '@chakra-ui/react';
-import appConfig from 'configs/app/config';
 import React from 'react';
 
 import type ArrayElement from 'types/utils/ArrayElement';
 
+import appConfig from 'configs/app/config';
 import type { data } from 'data/txState';
 import { nbsp } from 'lib/html-entities';
 import AccountListItemMobile from 'ui/shared/AccountListItemMobile';

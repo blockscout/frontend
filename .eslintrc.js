@@ -195,7 +195,7 @@ module.exports = {
         groups: [
           'module',
           '/types/',
-          [ '/^data/', '/^icons/', '/^lib/', '/^pages/', '/^theme/', '/^ui/' ],
+          [ '/^configs/', '/^data/', '/^deploy/', '/^icons/', '/^lib/', '/^pages/', '/^playwright/', '/^theme/', '/^ui/' ],
           [ 'parent', 'sibling', 'index' ],
         ],
         alphabetize: { order: 'asc', ignoreCase: true },

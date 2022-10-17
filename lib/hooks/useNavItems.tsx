@@ -1,6 +1,6 @@
-import appConfig from 'configs/app/config';
 import React, { useMemo } from 'react';
 
+import appConfig from 'configs/app/config';
 import marketplaceApps from 'data/marketplaceApps.json';
 import abiIcon from 'icons/ABI.svg';
 import apiKeysIcon from 'icons/API.svg';

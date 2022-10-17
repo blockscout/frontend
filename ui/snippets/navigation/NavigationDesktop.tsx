@@ -1,7 +1,7 @@
 import { Flex, Box, VStack, Icon, useColorModeValue } from '@chakra-ui/react';
-import appConfig from 'configs/app/config';
 import React from 'react';
 
+import appConfig from 'configs/app/config';
 import chevronIcon from 'icons/arrows/east-mini.svg';
 import * as cookies from 'lib/cookies';
 import useNavItems from 'lib/hooks/useNavItems';

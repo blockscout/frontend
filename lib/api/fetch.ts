@@ -1,8 +1,8 @@
-import appConfig from 'configs/app/config';
 import type { NextApiRequest } from 'next';
 import type { RequestInit, Response } from 'node-fetch';
 import nodeFetch from 'node-fetch';
 
+import appConfig from 'configs/app/config';
 import { httpLogger } from 'lib/api/logger';
 import * as cookies from 'lib/cookies';
 

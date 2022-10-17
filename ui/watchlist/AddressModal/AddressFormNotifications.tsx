@@ -1,9 +1,9 @@
 import { Grid, GridItem } from '@chakra-ui/react';
-import appConfig from 'configs/app/config';
 import React, { useCallback } from 'react';
 import { Controller } from 'react-hook-form';
 import type { Path, ControllerRenderProps, FieldValues, Control } from 'react-hook-form';
 
+import appConfig from 'configs/app/config';
 import CheckboxInput from 'ui/shared/CheckboxInput';
 
 // does it depend on the network?

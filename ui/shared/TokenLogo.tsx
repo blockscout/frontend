@@ -1,6 +1,7 @@
 import { Image, chakra } from '@chakra-ui/react';
-import appConfig from 'configs/app/config';
 import React from 'react';
+
+import appConfig from 'configs/app/config';
 
 const EmptyElement = () => null;
 
