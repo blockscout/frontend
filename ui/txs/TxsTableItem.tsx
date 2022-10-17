@@ -18,15 +18,15 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-import type ArrayElement from 'types/utils/ArrayElement';
+import type { Transaction } from 'types/api/transaction';
 
-import type { txs } from 'data/txs';
 import rightArrowIcon from 'icons/arrows/east.svg';
 import dayjs from 'lib/date/dayjs';
 import link from 'lib/link/link';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
+import CurrencyValue from 'ui/shared/CurrencyValue';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 import TxStatus from 'ui/shared/TxStatus';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
@@ -34,23 +34,22 @@ import TxAdditionalInfoButton from 'ui/txs/TxAdditionalInfoButton';
 
 import TxType from './TxType';
 
-const TxsTableItem = ({ tx }: {tx: ArrayElement<typeof txs>}) => {
-
+const TxsTableItem = ({ tx }: {tx: Transaction}) => {
   const addressFrom = (
     <Address>
-      <Tooltip label={ tx.address_from.type }>
-        <Box display="flex"><AddressIcon hash={ tx.address_from.hash }/></Box>
+      <Tooltip label={ tx.from.implementation_name }>
+        <Box display="flex"><AddressIcon hash={ tx.from.hash }/></Box>
       </Tooltip>
-      <AddressLink hash={ tx.address_from.hash } alias={ tx.address_from.alias } fontWeight="500" ml={ 2 }/>
+      <AddressLink hash={ tx.from.hash } alias={ tx.from.name } fontWeight="500" ml={ 2 }/>
     </Address>
   );
 
   const addressTo = (
     <Address>
-      <Tooltip label={ tx.address_to.type }>
-        <Box display="flex">        <AddressIcon hash={ tx.address_to.hash }/></Box>
+      <Tooltip label={ tx.to.implementation_name }>
+        <Box display="flex"><AddressIcon hash={ tx.to.hash }/></Box>
       </Tooltip>
-      <AddressLink hash={ tx.address_to.hash } alias={ tx.address_to.alias } fontWeight="500" ml={ 2 }/>
+      <AddressLink hash={ tx.to.hash } alias={ tx.to.name } fontWeight="500" ml={ 2 }/>
     </Address>
   );
 
@@ -77,8 +76,10 @@ const TxsTableItem = ({ tx }: {tx: ArrayElement<typeof txs>}) => {
       </Td>
       <Td>
         <VStack alignItems="start">
-          <TxType type={ tx.txType }/>
-          <TxStatus status={ tx.status } errorText={ tx.errorText }/>
+          { /* TODO: we don't recieve type from api */ }
+          { /* <TxType type={ tx.type }/> */ }
+          <TxType type="transaction"/>
+          <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined }/>
         </VStack>
       </Td>
       <Td>
@@ -94,17 +95,26 @@ const TxsTableItem = ({ tx }: {tx: ArrayElement<typeof txs>}) => {
         </VStack>
       </Td>
       <Td>
-        <TruncatedTextTooltip label={ tx.method }>
+        { /* TODO: we don't recieve method from api */ }
+        { /* <TruncatedTextTooltip label={ tx.method }>
           <Tag
             colorScheme={ tx.method === 'Multicall' ? 'teal' : 'gray' }
           >
             { tx.method }
           </Tag>
+        </TruncatedTextTooltip> */ }
+        <TruncatedTextTooltip label="CommitHash">
+          <Tag
+            colorScheme="gray"
+          >
+            CommitHash
+          </Tag>
         </TruncatedTextTooltip>
       </Td>
       <Td>
-        <Link href={ link('block', { id: tx.block_num.toString() }) }>{ tx.block_num }</Link>
+        { tx.block && <Link href={ link('block', { id: tx.block.toString() }) }>{ tx.block }</Link> }
       </Td>
+      { /* TODO: fix "show" problem */ }
       <Show above="xl">
         <Td>
           { addressFrom }
@@ -133,10 +143,10 @@ const TxsTableItem = ({ tx }: {tx: ArrayElement<typeof txs>}) => {
         </Td>
       </Show>
       <Td isNumeric>
-        { tx.amount.value.toFixed(8) }
+        <CurrencyValue value={ tx.value }/>
       </Td>
       <Td isNumeric>
-        { tx.fee.value.toFixed(8) }
+        <CurrencyValue value={ tx.fee.value } accuracy={ 8 }/>
       </Td>
     </Tr>
   );
