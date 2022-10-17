@@ -1,10 +1,10 @@
 import { Link, Table, Thead, Tbody, Tr, Th, TableContainer, Icon } from '@chakra-ui/react';
-import appConfig from 'configs/app/config';
 import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
 import type { Sort } from 'types/client/txs-sort';
 
+import appConfig from 'configs/app/config';
 import rightArrowIcon from 'icons/arrows/east.svg';
 
 import TxsTableItem from './TxsTableItem';

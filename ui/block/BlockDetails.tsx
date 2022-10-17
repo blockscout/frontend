@@ -1,13 +1,13 @@
 import { Grid, GridItem, Text, Icon, Link, Box, Tooltip, Alert } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
-import appConfig from 'configs/app/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
 import type { Block } from 'types/api/block';
 
+import appConfig from 'configs/app/config';
 import clockIcon from 'icons/clock.svg';
 import flameIcon from 'icons/flame.svg';
 import getBlockReward from 'lib/block/getBlockReward';

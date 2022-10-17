@@ -1,7 +1,7 @@
 import { Box, VStack, Text, Stack, Icon, Link, useColorModeValue } from '@chakra-ui/react';
-import appConfig from 'configs/app/config';
 import React from 'react';
 
+import appConfig from 'configs/app/config';
 import ghIcon from 'icons/social/git.svg';
 import statsIcon from 'icons/social/stats.svg';
 import tgIcon from 'icons/social/telega.svg';

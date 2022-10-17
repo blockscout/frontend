@@ -1,9 +1,9 @@
 import { Table, Thead, Tbody, Tr, Th, TableContainer } from '@chakra-ui/react';
-import appConfig from 'configs/app/config';
 import React from 'react';
 
 import type { Block } from 'types/api/block';
 
+import appConfig from 'configs/app/config';
 import BlocksTableItem from 'ui/blocks/BlocksTableItem';
 
 interface Props {

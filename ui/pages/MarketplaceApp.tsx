@@ -1,9 +1,9 @@
 import { Box, Center, useColorMode } from '@chakra-ui/react';
-import appConfig from 'configs/app/config';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import type { AppItemOverview } from 'types/client/apps';
 
+import appConfig from 'configs/app/config';
 import ContentLoader from 'ui/shared/ContentLoader';
 import Page from 'ui/shared/Page/Page';
 

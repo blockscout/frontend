@@ -1,9 +1,9 @@
 import { Flex, Tag, Icon, Box, HStack, Text } from '@chakra-ui/react';
-import appConfig from 'configs/app/config';
 import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
 
+import appConfig from 'configs/app/config';
 import eastArrowIcon from 'icons/arrows/east.svg';
 import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import Address from 'ui/shared/address/Address';

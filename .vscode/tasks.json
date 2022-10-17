@@ -65,14 +65,13 @@
         },
         {
             "type": "npm",
-            "script": "lint:eslint",
+            "script": "lint:eslint:fix",
             "problemMatcher": [],
             "label": "eslint",
             "detail": "run eslint",
             "presentation": {
                 "reveal": "silent",
                 "panel": "new",
-                "close": true,
                 "revealProblems": "onProblem",
             },
             "icon": {
@@ -110,7 +109,7 @@
             "label": "docker: build",
             "detail": "build docker image",
             "presentation": {
-                "reveal": "silent",
+                "reveal": "always",
                 "panel": "new",
                 "close": true,
                 "revealProblems": "onProblem",

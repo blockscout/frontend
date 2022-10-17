@@ -3,10 +3,6 @@ const PATHS = require('../../lib/link/paths.js');
 
 const oldUrls = [
   {
-    oldPath: '/account/tag_address',
-    newPath: `${ PATHS.private_tags }?tab=address`,
-  },
-  {
     oldPath: '/account/tag_transaction',
     newPath: `${ PATHS.private_tags }?tab=tx`,
   },

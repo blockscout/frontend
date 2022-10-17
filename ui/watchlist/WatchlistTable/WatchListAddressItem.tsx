@@ -1,9 +1,9 @@
 import { HStack, VStack, Text, Icon, useColorModeValue } from '@chakra-ui/react';
-import appConfig from 'configs/app/config';
 import React from 'react';
 
 import type { TWatchlistItem } from 'types/client/account';
 
+import appConfig from 'configs/app/config';
 import TokensIcon from 'icons/tokens.svg';
 // import WalletIcon from 'icons/wallet.svg';
 import { nbsp } from 'lib/html-entities';

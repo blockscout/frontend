@@ -1,7 +1,7 @@
 import { Box, Icon, Link } from '@chakra-ui/react';
-import config from 'configs/app/config';
 import React from 'react';
 
+import config from 'configs/app/config';
 import PlusIcon from 'icons/plus.svg';
 import AppList from 'ui/apps/AppList';
 import AppListSkeleton from 'ui/apps/AppListSkeleton';

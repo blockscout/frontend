@@ -1,8 +1,9 @@
-import appConfig from 'configs/app/config';
 import _compose from 'lodash/fp/compose';
 import _mapValues from 'lodash/mapValues';
 
 import type { NetworkExplorer } from 'types/networks';
+
+import appConfig from 'configs/app/config';
 
 // for easy .env update
 // const NETWORK_EXPLORERS = JSON.stringify([

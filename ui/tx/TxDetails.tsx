@@ -1,13 +1,13 @@
 import { Grid, GridItem, Text, Box, Icon, Link, Spinner } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
-import appConfig from 'configs/app/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
 import type { Transaction } from 'types/api/transaction';
 
+import appConfig from 'configs/app/config';
 import clockIcon from 'icons/clock.svg';
 import flameIcon from 'icons/flame.svg';
 import { WEI, WEI_IN_GWEI } from 'lib/consts';

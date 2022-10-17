@@ -1,7 +1,6 @@
-import appConfig from 'configs/app/config';
-
 import type { FeaturedNetwork } from 'types/networks';
 
+import appConfig from 'configs/app/config';
 import arbitrumIcon from 'icons/networks/icons/arbitrum.svg';
 import artisIcon from 'icons/networks/icons/artis.svg';
 import ethereumClassicIcon from 'icons/networks/icons/ethereum-classic.svg';

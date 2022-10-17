@@ -1,10 +1,10 @@
 import { Flex, Link, Spinner, Text, Box, Icon, useColorModeValue } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import appConfig from 'configs/app/config';
 import React from 'react';
 
 import type { Block } from 'types/api/block';
 
+import appConfig from 'configs/app/config';
 import flameIcon from 'icons/flame.svg';
 import getBlockReward from 'lib/block/getBlockReward';
 import { WEI } from 'lib/consts';
