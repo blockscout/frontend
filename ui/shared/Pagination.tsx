@@ -6,11 +6,13 @@ import arrowIcon from 'icons/arrows/east-mini.svg';
 type Props = {
   currentPage: number;
   maxPage?: number;
+  onNextPageClick: () => void;
+  onPrevPageClick: () => void;
 }
 
 const MAX_PAGE_DEFAULT = 50;
 
-const Pagination = ({ currentPage, maxPage }: Props) => {
+const Pagination = ({ currentPage, maxPage, onNextPageClick, onPrevPageClick }: Props) => {
   const pageNumber = (
     <Flex alignItems="center">
       <Button
@@ -50,6 +52,7 @@ const Pagination = ({ currentPage, maxPage }: Props) => {
       <Flex alignItems="center" justifyContent="space-between" w={{ base: '100%', lg: 'auto' }}>
         <IconButton
           variant="outline"
+          onClick={ onPrevPageClick }
           size="sm"
           aria-label="Next page"
           w="36px"
@@ -59,6 +62,7 @@ const Pagination = ({ currentPage, maxPage }: Props) => {
         { pageNumber }
         <IconButton
           variant="outline"
+          onClick={ onNextPageClick }
           size="sm"
           aria-label="Next page"
           w="36px"

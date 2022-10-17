@@ -1,5 +1,4 @@
 import { Show, Alert } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
 import type { TransactionsResponse } from 'types/api/transaction';
@@ -11,6 +10,7 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import TxsContent from './TxsContent';
 import TxsSkeletonDesktop from './TxsSkeletonDesktop';
 import TxsSkeletonMobile from './TxsSkeletonMobile';
+import useQueryWithPages from './useQueryWithPages';
 
 const TxsValidated = () => {
   const fetch = useFetch();
@@ -34,7 +34,7 @@ const TxsValidated = () => {
     return <Alert>There are no transactions.</Alert>;
   }
 
-  return <TxsContent txs={ data.items }/>;
+  return <TxsContent txs={ data.items } page={ page } onNextPageClick={ onNextPageClick } onPrevPageClick={ onPrevPageClick }/>;
 };
 
 export default TxsValidated;

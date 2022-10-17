@@ -17,9 +17,12 @@ type Props = {
   txs: TransactionsResponse['items'];
   showDescription?: boolean;
   showSortButton?: boolean;
+  onNextPageClick: () => void;
+  onPrevPageClick: () => void;
+  page: number;
 }
 
-const TxsContent = ({ showSortButton = true, showDescription = true, txs }: Props) => {
+const TxsContent = ({ showSortButton = true, showDescription = true, txs, page, onNextPageClick, onPrevPageClick }: Props) => {
   const [ sorting, setSorting ] = useState<Sort>();
   const [ sortedTxs, setSortedTxs ] = useState(txs);
 
@@ -95,10 +98,10 @@ const TxsContent = ({ showSortButton = true, showDescription = true, txs }: Prop
           placeholder="Search by addresses, hash, method..."
         />
       </HStack>
-      <Show below="lg"><Box>{ sortedTxs.map(tx => <TxsListItem tx={ tx } key={ tx.hash }/>) }</Box></Show>
-      <Show above="lg"><TxsTable txs={ sortedTxs } sort={ sort } sorting={ sorting }/></Show>
+      <Show below="lg" ssr={ false }><Box>{ sortedTxs.map(tx => <TxsListItem tx={ tx } key={ tx.hash }/>) }</Box></Show>
+      <Show above="lg" ssr={ false }><TxsTable txs={ sortedTxs } sort={ sort } sorting={ sorting }/></Show>
       <Box mx={{ base: 0, lg: 6 }} my={{ base: 6, lg: 3 }}>
-        <Pagination currentPage={ 1 }/>
+        <Pagination currentPage={ page } onNextPageClick={ onNextPageClick } onPrevPageClick={ onPrevPageClick }/>
       </Box>
     </>
   );
