@@ -1,4 +1,4 @@
-import { Button, Flex, Input, Icon, IconButton } from '@chakra-ui/react';
+import { Button, Flex, Icon, IconButton } from '@chakra-ui/react';
 import React from 'react';
 
 import arrowIcon from 'icons/arrows/east-mini.svg';
@@ -70,9 +70,10 @@ const Pagination = ({ currentPage, maxPage, onNextPageClick, onPrevPageClick }: 
           ml={ 8 }
         />
       </Flex>
-      <Flex alignItems="center" width="132px" ml={ 16 } display={{ base: 'none', lg: 'flex' }}>
+      { /* not implemented yet */ }
+      { /* <Flex alignItems="center" width="132px" ml={ 16 } display={{ base: 'none', lg: 'flex' }}>
             Go to <Input w="84px" size="xs" ml={ 2 }/>
-      </Flex>
+      </Flex> */ }
     </Flex>
 
   );

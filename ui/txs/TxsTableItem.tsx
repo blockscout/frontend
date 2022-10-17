@@ -12,7 +12,6 @@ import {
   PopoverTrigger,
   PopoverContent,
   PopoverBody,
-  Portal,
   useColorModeValue,
   Show,
 } from '@chakra-ui/react';
@@ -57,19 +56,17 @@ const TxsTableItem = ({ tx }: {tx: Transaction}) => {
   return (
     <Tr>
       <Td pl={ 4 }>
-        <Popover placement="right-start" openDelay={ 300 }>
+        <Popover placement="right-start" openDelay={ 300 } isLazy>
           { ({ isOpen }) => (
             <>
               <PopoverTrigger>
                 <TxAdditionalInfoButton isOpen={ isOpen }/>
               </PopoverTrigger>
-              <Portal>
-                <PopoverContent border="1px solid" borderColor={ infoBorderColor }>
-                  <PopoverBody>
-                    <TxAdditionalInfo tx={ tx }/>
-                  </PopoverBody>
-                </PopoverContent>
-              </Portal>
+              <PopoverContent border="1px solid" borderColor={ infoBorderColor }>
+                <PopoverBody>
+                  <TxAdditionalInfo tx={ tx }/>
+                </PopoverBody>
+              </PopoverContent>
             </>
           ) }
         </Popover>
