@@ -66,6 +66,7 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_FOOTER_TELEGRAM_LINK | `string` *(optional)* | Link to Telegram in the footer | `https://t.me/poa_network` |
 | NEXT_PUBLIC_FOOTER_STAKING_LINK | `string` *(optional)* | Link to staking dashboard in the footer | `https://duneanalytics.com/maxaleks/xdai-staking` |
 | NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM | `string` | Link to form where authors can submit their dapps to the marketplace | `https://airtable.com/shrqUAcjgGJ4jU88C` |
+| NEXT_PUBLIC_NETWORK_EXPLORERS | `Array<NetworkExplorer>` where `NetworkExplorer` can have following [properties](#network-explorer-configuration-properties) | Used to build up links to transactions, blocks, addresses in other chain explorers.  | `[{'title':'Anyblock','baseUrl':'https://explorer.anyblock.tools','paths':{'tx':'/ethereum/poa/core/tx'}}]` |
 
 ### App configuration
 
@@ -92,6 +93,16 @@ The app instance could be customized by passing following variables to NodeJS en
 | basePath | `string` | Network explorer main page url | `'/xdai/mainnet'` |
 | group | `mainnets \| testnets \| other` | Indicates in which tab network appears in the menu | `'mainnets'` |
 | icon | `string` *(optional)* | Network icon; if not provided, will fallback to  icon predefined in the project; if the project doesn't have icon for such network then the common placeholder will be shown; *Note* that icon size should be 30px by 30px | `'https://www.fillmurray.com/60/60'` |
+
+### Network explorer configuration properties
+
+| Property | Type | Description | Example value
+| --- | --- | --- | --- |
+| title | `string` | Displayed name of the explorer | `'Anyblock'` |
+| baseUrl | `string` | Base url of the explorer | `'https://explorer.anyblock.tools'` |
+| paths | `Record<'tx' \| 'block' \| 'address', string>` | Map of explorer entities and their paths | `'paths':{'tx':'/ethereum/poa/core/tx'}` |
+
+*Note* The url of an entity will be constructed as `<baseUrl><paths[<entity-type>]><entity-id>`, e.g `https://explorer.anyblock.tools/ethereum/poa/core/tx/<tx-id>`
 
 ### External services configuration
 
