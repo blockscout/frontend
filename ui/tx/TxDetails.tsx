@@ -183,14 +183,14 @@ const TxDetails = () => {
         title="Value"
         hint="Value sent in the native token (and USD) if applicable."
       >
-        <CurrencyValue value={ String(data.value) } currency={ appConfig.network.currency } exchangeRate={ data.exchange_rate }/>
+        <CurrencyValue value={ data.value } currency={ appConfig.network.currency } exchangeRate={ data.exchange_rate }/>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Transaction fee"
         hint="Total transaction fee."
       >
         <CurrencyValue
-          value={ String(data.fee.value) }
+          value={ data.fee.value }
           currency={ appConfig.network.currency }
           exchangeRate={ data.exchange_rate }
           flexWrap="wrap"

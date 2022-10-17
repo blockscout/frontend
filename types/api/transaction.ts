@@ -19,7 +19,7 @@ export interface Transaction {
   from: AddressParam;
   to: AddressParam;
   created_contract: AddressParam;
-  value: number;
+  value: string;
   fee: Fee;
   gas_price: number;
   type: number;

@@ -1,8 +1,9 @@
 name: Run E2E tests k8s
 
 on:
-  push:
+  # push:
   # pull_request:
+  workflow_dispatch
 
 env:
   K8S_LOCAL_PORT: ${{ secrets.K8S_LOCAL_PORT }}
@@ -65,7 +66,7 @@ jobs:
 
   deploy_and_tests:
     needs: push_to_registry
-    uses: blockscout/blockscout-ci-cd/.github/workflows/e2e_new.yaml@fix-e2e-tests
+    uses: blockscout/blockscout-ci-cd/.github/workflows/e2e_new.yaml@master
     with:
       valuesDir: deploy/values/e2e
       appName: e2e-front

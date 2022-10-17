@@ -249,7 +249,7 @@ scVerifier:
 frontend:
   enabled: true
   image:
-    _default: ghcr.io/blockscout/frontend:prerelease-5ca79e55
+    _default: ghcr.io/blockscout/frontend:main
   replicas:
     app: 1
   docker:
@@ -284,9 +284,9 @@ frontend:
     NEXT_PUBLIC_APP_HOST:
       _default: localhost
     NEXT_PUBLIC_APP_PORT:
-      _default: 3000
+      _default: 80
     NEXT_PUBLIC_BLOCKSCOUT_VERSION:
-      _default: v4.1.7-beta
+      _default: v4.1.8-beta
     NEXT_PUBLIC_FOOTER_GITHUB_LINK:
       _default: https://github.com/blockscout/blockscout
     NEXT_PUBLIC_FOOTER_TWITTER_LINK:
@@ -298,7 +298,7 @@ frontend:
     NEXT_PUBLIC_FOOTER_STAKING_LINK:
       _default: https://duneanalytics.com/maxaleks/xdai-staking
     NEXT_PUBLIC_NETWORK_NAME:
-      _default: POA
+      _default: Sokol
     NEXT_PUBLIC_NETWORK_SHORT_NAME:
       _default: POA
     NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME:
@@ -306,15 +306,16 @@ frontend:
     NEXT_PUBLIC_NETWORK_TYPE:
       _default: poa
     NEXT_PUBLIC_NETWORK_SUBTYPE:
-      _default: core
+      _default: sokol
     NEXT_PUBLIC_NETWORK_ID:
-      _default: 99
+      _default: 77
     NEXT_PUBLIC_NETWORK_CURRENCY:
-      _default: POA
+      _default: SPOA
     NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED:
       _default: 'true'
     NEXT_PUBLIC_FEATURED_NETWORKS:
       _default: "[{'title':'Gnosis Chain','basePath':'/xdai/mainnet','group':'mainnets'},{'title':'Optimism on Gnosis Chain','basePath':'/xdai/optimism','group':'mainnets','icon':'https://www.fillmurray.com/60/60'},{'title':'Arbitrum on xDai','basePath':'/xdai/aox','group':'mainnets'},{'title':'Ethereum','basePath':'/eth/mainnet','group':'mainnets'},{'title':'Ethereum Classic','basePath':'/etx/mainnet','group':'mainnets'},{'title':'POA','basePath':'/poa/core','group':'mainnets'},{'title':'RSK','basePath':'/rsk/mainnet','group':'mainnets'},{'title':'Gnosis Chain Testnet','basePath':'/xdai/testnet','group':'testnets'},{'title':'POA Sokol','basePath':'/poa/sokol','group':'testnets'},{'title':'ARTIS Σ1','basePath':'/artis/sigma1','group':'other'},{'title':'LUKSO L14','basePath':'/lukso/l14','group':'other'},{'title':'Astar','basePath':'/astar','group':'other'}]"
     NEXT_PUBLIC_API_ENDPOINT:
       _default: https://blockscout.com
-    NEXT_PUBLIC_API_BASE_PATH: /
+    NEXT_PUBLIC_API_BASE_PATH:
+      _default: /
