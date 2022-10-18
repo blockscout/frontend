@@ -1,3 +1,5 @@
+import _unique from 'lodash/uniq';
+
 import appConfig from 'configs/app/config';
 import featuredNetworks from 'lib/networks/featuredNetworks';
 
@@ -33,7 +35,7 @@ function getMarketplaceAppsOrigins() {
 }
 
 function getMarketplaceAppsLogosOrigins() {
-  return getMarketplaceApps().map(({ logo }) => logo);
+  return getMarketplaceApps().map(({ logo }) => new URL(logo));
 }
 
 function makePolicyMap() {
@@ -91,11 +93,17 @@ function makePolicyMap() {
       // github avatars
       'avatars.githubusercontent.com',
 
+      // other github assets (e.g trustwallet token icons)
+      'raw.githubusercontent.com',
+
+      // auth0 assets
+      's.gravatar.com',
+
       // network assets
       ...networkExternalAssets.map((url) => url.host),
 
       // marketplace apps logos
-      ...getMarketplaceAppsLogosOrigins(),
+      ...getMarketplaceAppsLogosOrigins().map((url) => url.host),
     ],
 
     'font-src': [
@@ -133,7 +141,8 @@ function getCspPolicy() {
         return;
       }
 
-      return [ key, value.join(' ') ].join(' ');
+      const uniqueValues = _unique(value);
+      return [ key, uniqueValues.join(' ') ].join(' ');
     })
     .filter(Boolean)
     .join(';');
