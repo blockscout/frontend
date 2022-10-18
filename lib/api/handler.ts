@@ -1,13 +1,15 @@
-import { withSentry } from '@sentry/nextjs';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import fetchFactory from 'lib/api/fetch';
 import getUrlWithNetwork from 'lib/api/getUrlWithNetwork';
+import { httpLogger } from 'lib/api/logger';
 
 type Methods = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 export default function createHandler(getUrl: (_req: NextApiRequest) => string, allowedMethods: Array<Methods>) {
   const handler = async(_req: NextApiRequest, res: NextApiResponse) => {
+    httpLogger(_req, res);
+
     if (!_req.method || !allowedMethods.includes(_req.method as Methods)) {
       res.setHeader('Allow', allowedMethods);
       res.status(405).end(`Method ${ _req.method } Not Allowed`);
@@ -16,7 +18,7 @@ export default function createHandler(getUrl: (_req: NextApiRequest) => string, 
 
     const isBodyDisallowed = _req.method === 'GET' || _req.method === 'HEAD';
 
-    const url = getUrlWithNetwork(_req, `api${ getUrl(_req) }`);
+    const url = getUrlWithNetwork(_req, `/api${ getUrl(_req) }`);
     const fetch = fetchFactory(_req);
     const response = await fetch(url, {
       method: _req.method,
@@ -39,8 +41,10 @@ export default function createHandler(getUrl: (_req: NextApiRequest) => string, 
       responseError = defaultError;
     }
 
+    httpLogger.logger.error({ err: responseError, url: _req.url });
+
     res.status(500).json(responseError);
   };
 
-  return withSentry(handler);
+  return handler;
 }

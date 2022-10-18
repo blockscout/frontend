@@ -2,6 +2,8 @@ import type { NextApiRequest } from 'next';
 import type { RequestInit, Response } from 'node-fetch';
 import nodeFetch from 'node-fetch';
 
+import appConfig from 'configs/app/config';
+import { httpLogger } from 'lib/api/logger';
 import * as cookies from 'lib/cookies';
 
 // first arg can be only a string
@@ -13,9 +15,15 @@ export default function fetchFactory(_req: NextApiRequest) {
       'content-type': 'application/json',
       cookie: `${ cookies.NAMES.API_TOKEN }=${ _req.cookies[cookies.NAMES.API_TOKEN] }`,
     };
-    const url = `https://blockscout.com${ path }`;
+    const url = new URL(path, appConfig.api.endpoint);
 
-    return nodeFetch(url, {
+    httpLogger.logger.info({
+      message: 'Trying to call API',
+      url,
+      req: _req,
+    });
+
+    return nodeFetch(url.toString(), {
       headers,
       ...init,
     });

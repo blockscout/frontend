@@ -1,68 +1,56 @@
-import {
-  Tab,
-  Tabs,
-  TabList,
-  TabPanel,
-  TabPanels,
-} from '@chakra-ui/react';
-import { useRouter } from 'next/router';
+import { Flex, Link, Icon } from '@chakra-ui/react';
 import React from 'react';
 
-import type { RouteName } from 'lib/link/routes';
-import useLink from 'lib/link/useLink';
-import Page from 'ui/shared/Page';
-import PageHeader from 'ui/shared/PageHeader';
+import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
+
+import eastArrowIcon from 'icons/arrows/east.svg';
+import link from 'lib/link/link';
+import ExternalLink from 'ui/shared/ExternalLink';
+import Page from 'ui/shared/Page/Page';
+import PageTitle from 'ui/shared/Page/PageTitle';
+import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
 import TxDetails from 'ui/tx/TxDetails';
 import TxInternals from 'ui/tx/TxInternals';
 import TxLogs from 'ui/tx/TxLogs';
 import TxRawTrace from 'ui/tx/TxRawTrace';
-import TxState from 'ui/tx/TxState';
+// import TxState from 'ui/tx/TxState';
 
-interface Tab {
-  type: 'details' | 'internal_txn' | 'logs' | 'raw_trace' | 'state';
-  name: string;
-  path?: string;
-  component?: React.ReactNode;
-  routeName: RouteName;
-}
-
-const TABS: Array<Tab> = [
-  { type: 'details', routeName: 'tx_index', name: 'Details', component: <TxDetails/> },
-  { type: 'internal_txn', routeName: 'tx_internal', name: 'Internal txn', component: <TxInternals/> },
-  { type: 'logs', routeName: 'tx_logs', name: 'Logs', component: <TxLogs/> },
-  { type: 'state', routeName: 'tx_state', name: 'State', component: <TxState/> },
-  { type: 'raw_trace', routeName: 'tx_raw_trace', name: 'Raw trace', component: <TxRawTrace/> },
+const TABS: Array<RoutedTab> = [
+  { id: 'index', title: 'Details', component: <TxDetails/> },
+  { id: 'internal', title: 'Internal txn', component: <TxInternals/> },
+  { id: 'logs', title: 'Logs', component: <TxLogs/> },
+  // will be implemented later, api is not ready
+  // { id: 'state', title: 'State', component: <TxState/> },
+  { id: 'raw_trace', title: 'Raw trace', component: <TxRawTrace/> },
 ];
 
-export interface Props {
-  tab: Tab['type'];
-}
-
-const TransactionPageContent = ({ tab }: Props) => {
-  const [ , setActiveTab ] = React.useState<Tab['type']>(tab);
-  const router = useRouter();
-  const link = useLink();
-
-  const handleTabChange = React.useCallback((index: number) => {
-    const nextTab = TABS[index];
-    setActiveTab(nextTab.type);
-    const newUrl = link(nextTab.routeName, { id: router.query.id as string });
-    window.history.replaceState(history.state, '', newUrl);
-  }, [ setActiveTab, link, router.query.id ]);
-
-  const defaultIndex = TABS.map(({ type }) => type).indexOf(tab);
-
+const TransactionPageContent = () => {
   return (
     <Page>
-      <PageHeader text="Transaction details"/>
-      <Tabs variant="soft-rounded" colorScheme="blue" isLazy onChange={ handleTabChange } defaultIndex={ defaultIndex }>
-        <TabList marginBottom={{ base: 6, lg: 8 }} flexWrap="wrap">
-          { TABS.map((tab) => <Tab key={ tab.type }>{ tab.name }</Tab>) }
-        </TabList>
-        <TabPanels>
-          { TABS.map((tab) => <TabPanel padding={ 0 } key={ tab.type }>{ tab.component || tab.name }</TabPanel>) }
-        </TabPanels>
-      </Tabs>
+      { /* TODO should be shown only when navigating from txs list */ }
+      <Link mb={ 6 } display="inline-flex" href={ link('txs') }>
+        <Icon as={ eastArrowIcon } boxSize={ 6 } mr={ 2 } transform="rotate(180deg)"/>
+        Transactions
+      </Link>
+      <Flex alignItems="flex-start" flexDir={{ base: 'column', lg: 'row' }}>
+        <PageTitle text="Transaction details"/>
+        <Flex
+          alignItems="center"
+          flexWrap="wrap"
+          columnGap={ 6 }
+          rowGap={ 3 }
+          ml={{ base: 'initial', lg: 'auto' }}
+          mb={{ base: 6, lg: 'initial' }}
+          py={ 2.5 }
+        >
+          <ExternalLink title="Open in Tenderly" href="#"/>
+          <ExternalLink title="Open in Blockchair" href="#"/>
+          <ExternalLink title="Open in Etherscan" href="#"/>
+        </Flex>
+      </Flex>
+      <RoutedTabs
+        tabs={ TABS }
+      />
     </Page>
   );
 };

@@ -7,6 +7,7 @@ const global = (props: StyleFunctionProps) => ({
   body: {
     bg: mode('white', 'black')(props),
     ...getDefaultTransitionProps(),
+    '-webkit-tap-highlight-color': 'transparent',
   },
   form: {
     w: '100%',

@@ -1,40 +1,28 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import useNetwork from 'lib/hooks/useNetwork';
-import isAccountRoute from 'lib/link/isAccountRoute';
-import { link } from 'lib/link/link';
+import appConfig from 'configs/app/config';
+import link from 'lib/link/link';
 import { ROUTES } from 'lib/link/routes';
 import useCurrentRoute from 'lib/link/useCurrentRoute';
-import NETWORKS from 'lib/networks/availableNetworks';
+import featuredNetworks from 'lib/networks/featuredNetworks';
 
 export default function useNetworkNavigationItems() {
-  const selectedNetwork = useNetwork();
   const currentRouteName = useCurrentRoute()();
   const currentRoute = ROUTES[currentRouteName];
   const router = useRouter();
-  const isAccount = isAccountRoute(currentRouteName);
 
   return React.useMemo(() => {
-    return NETWORKS.map((network) => {
-
-      const routeName = (() => {
-        if ('crossNetworkNavigation' in currentRoute && currentRoute.crossNetworkNavigation) {
-          if ((isAccount && network.isAccountSupported) || !isAccount) {
-            return currentRouteName;
-          }
-        }
-
-        return 'network_index';
-      })();
-
-      const url = link(routeName, { ...router.query, network_type: network.type, network_sub_type: network.subType });
+    return featuredNetworks.map((network) => {
+      const routeName = 'crossNetworkNavigation' in currentRoute && currentRoute.crossNetworkNavigation ? currentRouteName : 'network_index';
+      const [ , networkType, networkSubtype ] = network.basePath.split('/');
+      const url = link(routeName, { ...router.query, network_type: networkType, network_sub_type: networkSubtype });
 
       return {
         ...network,
         url: url,
-        isActive: selectedNetwork?.type === network.type && selectedNetwork?.subType === network?.subType,
+        isActive: appConfig.network.basePath === network.basePath,
       };
     });
-  }, [ currentRoute, currentRouteName, isAccount, router.query, selectedNetwork?.subType, selectedNetwork?.type ]);
+  }, [ currentRoute, currentRouteName, router.query ]);
 }

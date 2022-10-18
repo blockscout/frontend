@@ -1,34 +1,84 @@
-import { Flex, Button, Text, Select } from '@chakra-ui/react';
+import { Flex, Button, Select, Box } from '@chakra-ui/react';
+import capitalize from 'lodash/capitalize';
 import React from 'react';
+
+import hexToAddress from 'lib/hexToAddress';
+import hexToUtf8 from 'lib/hexToUtf8';
+import Address from 'ui/shared/address/Address';
+import AddressLink from 'ui/shared/address/AddressLink';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 interface Props {
   hex: string;
   index: number;
 }
 
-type DataType = 'Hex' | 'Dec'
-const OPTIONS: Array<DataType> = [ 'Hex', 'Dec' ];
+type DataType = 'hex' | 'text' | 'address' | 'number';
+
+const VALUE_CONVERTERS: Record<DataType, (hex: string) => string> = {
+  hex: (hex) => hex,
+  text: hexToUtf8,
+  address: hexToAddress,
+  number: (hex) => BigInt(hex).toString(),
+};
+const OPTIONS: Array<DataType> = [ 'hex', 'address', 'text', 'number' ];
 
 const TxLogTopic = ({ hex, index }: Props) => {
-  const [ selectedDataType, setSelectedDataType ] = React.useState<DataType>('Hex');
+  const [ selectedDataType, setSelectedDataType ] = React.useState<DataType>('hex');
 
   const handleSelectChange = React.useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedDataType(event.target.value as DataType);
   }, []);
 
+  const value = VALUE_CONVERTERS[selectedDataType.toLowerCase() as Lowercase<DataType>](hex);
+
+  const content = (() => {
+    switch (selectedDataType) {
+      case 'hex':
+      case 'number':
+      case 'text': {
+        return (
+          <>
+            <Box overflow="hidden" whiteSpace="nowrap">
+              <HashStringShortenDynamic hash={ value }/>
+            </Box>
+            <CopyToClipboard text={ value }/>
+          </>
+        );
+      }
+
+      case 'address': {
+        return (
+          <Address>
+            <AddressLink hash={ value }/>
+            <CopyToClipboard text={ value }/>
+          </Address>
+        );
+      }
+    }
+  })();
+
   return (
-    <Flex alignItems="center" px={ 3 } _notFirst={{ mt: 3 }}>
-      <Button variant="outline" isActive size="xs" fontWeight={ 400 } mr={ 3 } w={ 6 }>
+    <Flex alignItems="center" px={{ base: 0, lg: 3 }} _notFirst={{ mt: 3 }} overflow="hidden" maxW="100%">
+      <Button variant="outline" colorScheme="gray" isActive size="xs" fontWeight={ 400 } mr={ 3 } w={ 6 }>
         { index }
       </Button>
-      { /* temporary condition juse to show different states of the component */ }
-      { /* delete when ther will be real data */ }
-      { index > 0 && (
-        <Select size="sm" borderRadius="base" value={ selectedDataType } onChange={ handleSelectChange } focusBorderColor="none" w="75px" mr={ 3 }>
-          { OPTIONS.map((option) => <option key={ option } value={ option }>{ option }</option>) }
+      { index !== 0 && (
+        <Select
+          size="sm"
+          borderRadius="base"
+          value={ selectedDataType }
+          onChange={ handleSelectChange }
+          focusBorderColor="none"
+          mr={ 3 }
+          flexShrink={ 0 }
+          w="auto"
+        >
+          { OPTIONS.map((option) => <option key={ option } value={ option }>{ capitalize(option) }</option>) }
         </Select>
       ) }
-      <Text>{ hex }</Text>
+      { content }
     </Flex>
   );
 };

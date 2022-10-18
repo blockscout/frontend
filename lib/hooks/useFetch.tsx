@@ -1,4 +1,4 @@
-import * as Sentry from '@sentry/nextjs';
+import * as Sentry from '@sentry/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
@@ -30,6 +30,12 @@ export default function useFetch() {
 
     return fetch(path, reqParams).then(response => {
       if (!response.ok) {
+        const error = {
+          status: response.status,
+          statusText: response.statusText,
+        };
+        Sentry.captureException(new Error('Client fetch failed'), { extra: error, tags: { source: 'fetch' } });
+
         return response.json().then(
           (jsonError) => Promise.reject({
             error: jsonError as Error,
@@ -37,12 +43,6 @@ export default function useFetch() {
             statusText: response.statusText,
           }),
           () => {
-            const error = {
-              status: response.status,
-              statusText: response.statusText,
-            };
-            Sentry.captureException(new Error('Client fetch failed'), { extra: error, tags: { source: 'fetch' } });
-
             return Promise.reject(error);
           },
         );

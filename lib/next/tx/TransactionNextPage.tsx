@@ -4,22 +4,23 @@ import React from 'react';
 
 import type { PageParams } from './types';
 
-import type { Props as TransactionProps } from 'ui/pages/Transaction';
 import Transaction from 'ui/pages/Transaction';
 
 import getSeo from './getSeo';
 
 type Props = {
   pageParams: PageParams;
-  tab: TransactionProps['tab'];
 }
 
-const TransactionNextPage: NextPage<Props> = ({ pageParams, tab }: Props) => {
-  const { title } = getSeo(pageParams);
+const TransactionNextPage: NextPage<Props> = ({ pageParams }: Props) => {
+  const { title, description } = getSeo(pageParams);
   return (
     <>
-      <Head><title>{ title }</title></Head>
-      <Transaction tab={ tab }/>
+      <Head>
+        <title>{ title }</title>
+        <meta name="description" content={ description }/>
+      </Head>
+      <Transaction/>
     </>
   );
 };

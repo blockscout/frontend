@@ -1,15 +1,15 @@
-import { HStack, VStack, Image, Text, Icon, useColorModeValue } from '@chakra-ui/react';
+import { HStack, VStack, Text, Icon, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TWatchlistItem } from 'types/client/account';
 
+import appConfig from 'configs/app/config';
 import TokensIcon from 'icons/tokens.svg';
 // import WalletIcon from 'icons/wallet.svg';
 import { nbsp } from 'lib/html-entities';
 import AddressSnippet from 'ui/shared/AddressSnippet';
+import TokenLogo from 'ui/shared/TokenLogo';
 
-// now this component works only for xDAI
-// for other networks later we will use config or smth
 const DECIMALS = 18;
 
 const WatchListAddressItem = ({ item }: {item: TWatchlistItem}) => {
@@ -23,8 +23,9 @@ const WatchListAddressItem = ({ item }: {item: TWatchlistItem}) => {
     <VStack spacing={ 2 } align="stretch" overflow="hidden" fontWeight={ 500 } color="gray.700">
       <AddressSnippet address={ item.address_hash }/>
       <HStack spacing={ 0 } fontSize="sm" h={ 6 } pl={ infoItemsPaddingLeft }>
-        <Image src="/xdai.png" srcSet="/xdai@2x.png 2x" alt="chain-logo" marginRight="10px" w="16px" h="16px"/>
-        <Text color={ mainTextColor }>{ `xDAI balance:${ nbsp }` + nativeBalance }</Text>
+        { appConfig.network.nativeTokenAddress &&
+          <TokenLogo hash={ appConfig.network.nativeTokenAddress } name={ appConfig.network.name } boxSize={ 4 } mr="10px"/> }
+        <Text color={ mainTextColor }>{ `${ appConfig.network.currency } balance:${ nbsp }` + nativeBalance }</Text>
         <Text variant="secondary">{ `${ nbsp }(${ nativeBalanceUSD })` }</Text>
       </HStack>
       { item.tokens_count && (

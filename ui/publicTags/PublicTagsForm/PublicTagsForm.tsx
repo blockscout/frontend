@@ -16,7 +16,6 @@ import type { PublicTags, PublicTag, PublicTagNew, PublicTagErrors } from 'types
 import getErrorMessage from 'lib/getErrorMessage';
 import type { ErrorType } from 'lib/hooks/useFetch';
 import useFetch from 'lib/hooks/useFetch';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import { EMAIL_REGEXP } from 'lib/validations/email';
 import FormSubmitAlert from 'ui/shared/FormSubmitAlert';
 
@@ -57,9 +56,8 @@ const ADDRESS_INPUT_BUTTONS_WIDTH = 100;
 
 const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
   const queryClient = useQueryClient();
-  const isMobile = useIsMobile();
   const fetch = useFetch();
-  const inputSize = isMobile ? 'md' : 'lg';
+  const inputSize = { base: 'md', lg: 'lg' };
 
   const { control, handleSubmit, formState: { errors, isValid }, setError } = useForm<Inputs>({
     defaultValues: {

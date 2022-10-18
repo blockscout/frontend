@@ -1,66 +1,68 @@
-import { LinkIcon, StarIcon } from '@chakra-ui/icons';
 import {
   Box, Button, Heading, Icon, IconButton, Image, Link, List, Modal, ModalBody,
   ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tag, Text,
 } from '@chakra-ui/react';
-import type { FunctionComponent } from 'react';
+import NextLink from 'next/link';
 import React, { useCallback } from 'react';
 
-import type { AppCategory, AppItemOverview } from 'types/client/apps';
+import type { AppItemOverview, MarketplaceCategoriesIds } from 'types/client/apps';
 
-import { TEMPORARY_DEMO_APPS } from 'data/apps';
+import marketplaceApps from 'data/marketplaceApps.json';
+import linkIcon from 'icons/link.svg';
 import ghIcon from 'icons/social/git.svg';
 import tgIcon from 'icons/social/telega.svg';
 import twIcon from 'icons/social/tweet.svg';
+import starFilledIcon from 'icons/star_filled.svg';
 import starOutlineIcon from 'icons/star_outline.svg';
 import { nbsp } from 'lib/html-entities';
+import link from 'lib/link/link';
+import notEmpty from 'lib/notEmpty';
+
+import { APP_CATEGORIES } from './constants';
 
 type Props = {
-  id: string | null;
+  id: string;
   onClose: () => void;
+  isFavorite: boolean;
+  onFavoriteClick: (id: string, isFavorite: boolean) => void;
 }
 
 const AppModal = ({
   id,
   onClose,
+  isFavorite,
+  onFavoriteClick,
 }: Props) => {
-  const handleFavorite = useCallback(() => {
-    // TODO: implement
-  }, []);
-
-  if (!id) {
-    return null;
-  }
-
   const {
     title,
     author,
     description,
-    url,
     site,
     github,
     telegram,
     twitter,
     logo,
     categories,
-  } = TEMPORARY_DEMO_APPS.find(app => app.id === id) as AppItemOverview;
-
-  const isFavorite = false;
+  } = marketplaceApps.find(app => app.id === id) as AppItemOverview;
 
   const socialLinks = [
-    Boolean(telegram) && {
+    telegram ? {
       icon: tgIcon,
       url: telegram,
-    },
-    Boolean(twitter) && {
+    } : null,
+    twitter ? {
       icon: twIcon,
       url: twitter,
-    },
-    Boolean(github) && {
+    } : null,
+    github ? {
       icon: ghIcon,
       url: github,
-    },
-  ].filter(Boolean) as Array<{ icon: FunctionComponent; url: string }>;
+    } : null,
+  ].filter(notEmpty);
+
+  const handleFavoriteClick = useCallback(() => {
+    onFavoriteClick(id, isFavorite);
+  }, [ onFavoriteClick, id, isFavorite ]);
 
   return (
     <Modal
@@ -96,9 +98,6 @@ const AppModal = ({
             fontWeight="medium"
             lineHeight={ 1 }
             color="blue.600"
-            whiteSpace="nowrap"
-            overflow="hidden"
-            textOverflow="ellipsis"
           >
             { title }
           </Heading>
@@ -118,15 +117,16 @@ const AppModal = ({
             marginTop={{ base: 6, sm: 0 }}
           >
             <Box display="flex">
-              <Button
-                href={ url }
-                as="a"
-                size="sm"
-                marginRight={ 2 }
-                width={{ base: '100%', sm: 'auto' }}
-              >
-                Launch app
-              </Button>
+              <NextLink href={ link('app_index', { id: id }) } passHref>
+                <Button
+                  as="a"
+                  size="sm"
+                  marginRight={ 2 }
+                  width={{ base: '100%', sm: 'auto' }}
+                >
+                  Launch app
+                </Button>
+              </NextLink>
 
               <IconButton
                 aria-label="Mark as favorite"
@@ -135,10 +135,10 @@ const AppModal = ({
                 colorScheme="gray"
                 w={ 9 }
                 h={ 8 }
-                onClick={ handleFavorite }
+                onClick={ handleFavoriteClick }
                 icon={ isFavorite ?
-                  <Icon as={ StarIcon } w={ 4 } h={ 4 } color="yellow.400"/> :
-                  <Icon as={ starOutlineIcon } w={ 4 } h={ 4 }/> }
+                  <Icon as={ starFilledIcon } w={ 4 } h={ 4 } color="yellow.400"/> :
+                  <Icon as={ starOutlineIcon } w={ 4 } h={ 4 } color="gray.300"/> }
               />
             </Box>
           </Box>
@@ -156,14 +156,14 @@ const AppModal = ({
           </Heading>
 
           <Box marginBottom={ 2 }>
-            { categories.map((category: AppCategory) => (
+            { categories.map((category: MarketplaceCategoriesIds) => APP_CATEGORIES[category] && (
               <Tag
                 colorScheme="blue"
                 marginRight={ 2 }
                 marginBottom={ 2 }
-                key={ category.id }
+                key={ category }
               >
-                { category.name }
+                { APP_CATEGORIES[category] }
               </Tag>
             )) }
           </Box>
@@ -188,10 +188,10 @@ const AppModal = ({
               overflow="hidden"
             >
               <Icon
-                as={ LinkIcon }
+                as={ linkIcon }
                 display="inline"
                 verticalAlign="baseline"
-                boxSize={ 3 }
+                boxSize="18px"
                 marginRight={ 2 }
               />
 

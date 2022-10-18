@@ -1,48 +1,52 @@
-import { Tr, Td, Tag, Icon } from '@chakra-ui/react';
-import capitalize from 'lodash/capitalize';
+import { Tr, Td, Tag, Icon, Box } from '@chakra-ui/react';
 import React from 'react';
 
-import rightArrowIcon from 'icons/arrows/right.svg';
+import type { InternalTransaction } from 'types/api/internalTransaction';
+
+import rightArrowIcon from 'icons/arrows/east.svg';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
-import TxStatus from 'ui/tx/TxStatus';
+import TxStatus from 'ui/shared/TxStatus';
+import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
-interface Props {
-  type: string;
-  status: 'success' | 'error';
-  from: string;
-  to: string;
-  value: number;
-  gasLimit: number;
-}
+type Props = InternalTransaction
 
-const TxInternalTableItem = ({ type, status, from, to, value, gasLimit }: Props) => {
+const TxInternalTableItem = ({ type, from, to, value, success, error }: Props) => {
+  const typeTitle = TX_INTERNALS_ITEMS.find(({ id }) => id === type)?.title;
+
   return (
     <Tr alignItems="top">
       <Td>
-        <Tag colorScheme="cyan" mr={ 2 }>{ capitalize(type) }</Tag>
-        <TxStatus status={ status }/>
+        { typeTitle && (
+          <Box w="126px" display="inline-block">
+            <Tag colorScheme="cyan" mr={ 5 }>{ typeTitle }</Tag>
+          </Box>
+        ) }
+        <TxStatus status={ success ? 'ok' : 'error' } errorText={ error }/>
       </Td>
-      <Td pr="0">
-        <Address>
-          <AddressIcon hash={ from }/>
-          <AddressLink ml={ 2 } fontWeight="500" hash={ from }/>
-          <Icon as={ rightArrowIcon } boxSize={ 6 } mx={ 2 } flexShrink={ 0 } color="gray.500"/>
+      <Td>
+        <Address display="inline-flex" maxW="100%">
+          <AddressIcon hash={ from.hash }/>
+          <AddressLink ml={ 2 } fontWeight="500" hash={ from.hash } alias={ from.name } flexGrow={ 1 }/>
         </Address>
       </Td>
-      <Td pl="0">
-        <Address>
-          <AddressIcon hash={ to }/>
-          <AddressLink ml={ 2 } fontWeight="500" hash={ to }/>
+      <Td px={ 0 }>
+        <Icon as={ rightArrowIcon } boxSize={ 6 } color="gray.500"/>
+      </Td>
+      <Td>
+        <Address display="inline-flex" maxW="100%">
+          <AddressIcon hash={ to.hash }/>
+          <AddressLink hash={ to.hash } alias={ to.name } fontWeight="500" ml={ 2 }/>
         </Address>
       </Td>
-      <Td isNumeric>
+      <Td isNumeric verticalAlign="middle">
         { value }
       </Td>
-      <Td isNumeric>
+      { /* no gas limit in api yet */ }
+      { /* <Td isNumeric verticalAlign='middle'>
         { gasLimit.toLocaleString('en') }
-      </Td>
+      </Td> */ }
     </Tr>
   );
 };

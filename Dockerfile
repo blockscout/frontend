@@ -25,6 +25,10 @@ ARG NEXT_PUBLIC_SENTRY_DSN
 ARG SENTRY_CSP_REPORT_URI
 ARG SENTRY_AUTH_TOKEN
 
+# pass commit sha to the app (uses by sentry.io as release version)
+ARG GIT_COMMIT_SHA
+ENV NEXT_PUBLIC_GIT_COMMIT_SHA=$GIT_COMMIT_SHA
+
 RUN yarn build
 
 # Production image, copy all the files and run next

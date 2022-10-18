@@ -1,8 +1,10 @@
 const RESTRICTED_MODULES = {
   paths: [
-    { name: 'dayjs', message: 'Please use lib/date/dayjs.ts' },
+    { name: 'dayjs', message: 'Please use lib/date/dayjs.ts instead of directly importing dayjs' },
+    { name: '@chakra-ui/icons', message: 'Using @chakra-ui/icons is prohibited. Please use regular svg-icon instead (see examples in "icons/" folder)' },
   ],
 };
+
 module.exports = {
   env: {
     es6: true,
@@ -193,7 +195,7 @@ module.exports = {
         groups: [
           'module',
           '/types/',
-          [ '/^data/', '/^icons/', '/^lib/', '/^pages/', '/^theme/', '/^ui/' ],
+          [ '/^configs/', '/^data/', '/^deploy/', '/^icons/', '/^lib/', '/^pages/', '/^playwright/', '/^theme/', '/^ui/' ],
           [ 'parent', 'sibling', 'index' ],
         ],
         alphabetize: { order: 'asc', ignoreCase: true },
@@ -201,6 +203,12 @@ module.exports = {
     ],
 
     'no-restricted-imports': [ 'error', RESTRICTED_MODULES ],
+    'no-restricted-properties': [ 2, {
+      object: 'process',
+      property: 'env',
+      // FIXME: restrict the rule only NEXT_PUBLIC variables
+      message: 'Please use configs/app/config.ts to import any NEXT_PUBLIC environment variables. For other properties please disable this rule for a while.',
+    } ],
 
     'react/jsx-key': 'error',
     'react/jsx-no-bind': [ 'error', {
@@ -272,6 +280,13 @@ module.exports = {
       files: [ '*.js', '*.jsx' ],
       rules: {
         '@typescript-eslint/no-var-requires': 'off',
+      },
+    },
+    {
+      files: [ 'configs/**/*.js', 'configs/**/*.ts', '*.config.ts' ],
+      rules: {
+        // for configs allow to consume env variables from process.env directly
+        'no-restricted-properties': [ 0 ],
       },
     },
   ],

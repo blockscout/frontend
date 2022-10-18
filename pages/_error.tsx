@@ -21,6 +21,8 @@ import type { NextPageContext } from 'next';
 import NextErrorComponent from 'next/error';
 import React from 'react';
 
+import sentryConfig from 'configs/sentry/nextjs';
+
 type ContextOrProps = {
   req?: NextPageContext['req'];
   res?: NextPageContext['res'];
@@ -34,6 +36,8 @@ const CustomErrorComponent = (props: { statusCode: number }) => {
 };
 
 CustomErrorComponent.getInitialProps = async(contextData: ContextOrProps) => {
+  Sentry.init(sentryConfig);
+
   // In case this is running in a serverless function, await this in order to give Sentry
   // time to send the error before the lambda exits
   await Sentry.captureUnderscoreErrorException(contextData);

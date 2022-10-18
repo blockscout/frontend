@@ -4,8 +4,8 @@ import React from 'react';
 import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import Page from 'ui/shared/Page';
-import PageHeader from 'ui/shared/PageHeader';
+import Page from 'ui/shared/Page/Page';
+import PageTitle from 'ui/shared/Page/PageTitle';
 import UserAvatar from 'ui/shared/UserAvatar';
 
 const MyProfile = () => {
@@ -25,7 +25,6 @@ const MyProfile = () => {
         <UserAvatar size={ 64 } data={ data }/>
         <FormControl variant="floating" id="name" isRequired size="lg">
           <Input
-            size="lg"
             required
             disabled
             value={ data.name || '' }
@@ -34,7 +33,6 @@ const MyProfile = () => {
         </FormControl>
         <FormControl variant="floating" id="nickname" isRequired size="lg">
           <Input
-            size="lg"
             required
             disabled
             value={ data.nickname || '' }
@@ -43,7 +41,6 @@ const MyProfile = () => {
         </FormControl>
         <FormControl variant="floating" id="email" isRequired size="lg">
           <Input
-            size="lg"
             required
             disabled
             value={ data.email }
@@ -56,7 +53,7 @@ const MyProfile = () => {
 
   return (
     <Page>
-      <PageHeader text="My profile"/>
+      <PageTitle text="My profile"/>
       { content }
     </Page>
   );

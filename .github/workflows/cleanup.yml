@@ -4,14 +4,12 @@ on:
   pull_request:
     types:
       - closed
+      - merged
+  workflow_dispatch:
 
 jobs:
-  if_merged:
-    if: github.event.pull_request.merged == true
-    needs: push_to_registry
-    uses: blockscout/blockscout-ci-cd/.github/workflows/cleanup.yaml@deploy-smart-contract-verifier
+  cleanup:
+    uses: blockscout/blockscout-ci-cd/.github/workflows/cleanup.yaml@master
     with:
-      valuesDir: values/frontend
-      appNamespace: frontend-$GITHUB_REF_NAME
-      appName: frontend
+      appNamespace: review-front-$GITHUB_HEAD_REF_SLUG
     secrets: inherit
