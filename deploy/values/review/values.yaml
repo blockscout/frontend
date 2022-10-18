@@ -279,12 +279,8 @@ frontend:
     enabled: true
     app: blockscout
   environment:
-    NEXT_PUBLIC_APP_PROTOCOL:
-      _default: http
-    NEXT_PUBLIC_APP_HOST:
-      _default: localhost
     NEXT_PUBLIC_APP_PORT:
-      _default: 80
+        _default: 80
     NEXT_PUBLIC_BLOCKSCOUT_VERSION:
       _default: v4.1.8-beta
     NEXT_PUBLIC_FOOTER_GITHUB_LINK:
@@ -292,7 +288,7 @@ frontend:
     NEXT_PUBLIC_FOOTER_TWITTER_LINK:
       _default: https://www.twitter.com/blockscoutcom
     NEXT_PUBLIC_APP_INSTANCE:
-      _default: local
+      _default: review
     NEXT_PUBLIC_FOOTER_TELEGRAM_LINK:
       _default: https://t.me/poa_network
     NEXT_PUBLIC_FOOTER_STAKING_LINK:
@@ -302,7 +298,7 @@ frontend:
     NEXT_PUBLIC_NETWORK_SHORT_NAME:
       _default: POA
     NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME:
-      _default: poa
+      _default: sokol
     NEXT_PUBLIC_NETWORK_TYPE:
       _default: poa
     NEXT_PUBLIC_NETWORK_SUBTYPE:
