@@ -59,12 +59,10 @@ jobs:
           tags: ghcr.io/blockscout/frontend:prerelease-${{ env.SHORT_SHA }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            SENTRY_DSN=${{ secrets.SENTRY_DSN }}
-            NEXT_PUBLIC_SENTRY_DSN=${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}
-            SENTRY_CSP_REPORT_URI=${{ secrets.SENTRY_CSP_REPORT_URI }}
-            SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
+            GIT_COMMIT_SHA=${{ env.SHORT_SHA }}
 
   deploy_frontend:
+    name: Deploy frontend app
     needs: push_to_registry
     uses: blockscout/blockscout-ci-cd/.github/workflows/deploy.yaml@master
     with:
