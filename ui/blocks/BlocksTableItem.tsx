@@ -7,7 +7,7 @@ import type { Block } from 'types/api/block';
 import flameIcon from 'icons/flame.svg';
 import getBlockReward from 'lib/block/getBlockReward';
 import { WEI } from 'lib/consts';
-import dayjs from 'lib/date/dayjs';
+import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import link from 'lib/link/link';
 import AddressLink from 'ui/shared/address/AddressLink';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
@@ -16,10 +16,12 @@ import Utilization from 'ui/shared/Utilization';
 interface Props {
   data: Block;
   isPending?: boolean;
+  enableTimeIncrement?: boolean;
 }
 
-const BlocksTableItem = ({ data, isPending }: Props) => {
+const BlocksTableItem = ({ data, isPending, enableTimeIncrement }: Props) => {
   const { totalReward, burntFees, txFees } = getBlockReward(data);
+  const blockTimestampTimeAgo = useTimeAgoIncrement(data.timestamp, enableTimeIncrement);
 
   return (
     <Tr>
@@ -35,7 +37,7 @@ const BlocksTableItem = ({ data, isPending }: Props) => {
             </Link>
           </Tooltip>
         </Flex>
-        <Text variant="secondary" mt={ 2 } fontWeight={ 400 }>{ dayjs(data.timestamp).fromNow() }</Text>
+        <Text variant="secondary" mt={ 2 } fontWeight={ 400 }>{ blockTimestampTimeAgo }</Text>
       </Td>
       <Td fontSize="sm">{ data.size.toLocaleString('en') } bytes</Td>
       <Td fontSize="sm">
