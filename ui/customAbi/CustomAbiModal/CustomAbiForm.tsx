@@ -13,6 +13,7 @@ import type { ControllerRenderProps, SubmitHandler } from 'react-hook-form';
 import { useForm, Controller } from 'react-hook-form';
 
 import type { CustomAbi, CustomAbis, CustomAbiErrors } from 'types/api/account';
+import { QueryKeys } from 'types/client/accountQueries';
 
 import getErrorMessage from 'lib/getErrorMessage';
 import getPlaceholderWithError from 'lib/getPlaceholderWithError';
@@ -63,7 +64,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
   const mutation = useMutation(customAbiKey, {
     onSuccess: (data) => {
       const response = data as unknown as CustomAbi;
-      queryClient.setQueryData([ 'custom-abis' ], (prevData: CustomAbis | undefined) => {
+      queryClient.setQueryData([ QueryKeys.customAbis ], (prevData: CustomAbis | undefined) => {
         const isExisting = prevData && prevData.some((item) => item.id === response.id);
 
         if (isExisting) {
