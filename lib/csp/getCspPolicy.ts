@@ -1,5 +1,3 @@
-import _unique from 'lodash/uniq';
-
 import appConfig from 'configs/app/config';
 import featuredNetworks from 'lib/networks/featuredNetworks';
 
@@ -36,6 +34,17 @@ function getMarketplaceAppsOrigins() {
 
 function getMarketplaceAppsLogosOrigins() {
   return getMarketplaceApps().map(({ logo }) => new URL(logo));
+}
+
+// we cannot use lodash/uniq in middleware code since it calls new Set() and it'is causing an error in Nextjs
+// "Dynamic Code Evaluation (e. g. 'eval', 'new Function', 'WebAssembly.compile') not allowed in Edge Runtime"
+function unique(array: Array<string | undefined>) {
+  const set: Record<string, boolean> = {};
+  for (const item of array) {
+    item && (set[item] = true);
+  }
+
+  return Object.keys(set);
 }
 
 function makePolicyMap() {
@@ -141,7 +150,7 @@ function getCspPolicy() {
         return;
       }
 
-      const uniqueValues = _unique(value);
+      const uniqueValues = unique(value);
       return [ key, uniqueValues.join(' ') ].join(' ');
     })
     .filter(Boolean)
