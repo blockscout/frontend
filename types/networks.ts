@@ -16,3 +16,5 @@ export interface NetworkExplorer {
     tx: string;
   };
 }
+
+export type NetworkVerificationType = 'mining' | 'validation';

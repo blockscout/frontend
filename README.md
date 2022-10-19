@@ -69,6 +69,7 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_FOOTER_STAKING_LINK | `string` *(optional)* | Link to staking dashboard in the footer | `https://duneanalytics.com/maxaleks/xdai-staking` |
 | NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM | `string` | Link to form where authors can submit their dapps to the marketplace | `https://airtable.com/shrqUAcjgGJ4jU88C` |
 | NEXT_PUBLIC_NETWORK_EXPLORERS | `Array<NetworkExplorer>` where `NetworkExplorer` can have following [properties](#network-explorer-configuration-properties) | Used to build up links to transactions, blocks, addresses in other chain explorers.  | `[{'title':'Anyblock','baseUrl':'https://explorer.anyblock.tools','paths':{'tx':'/ethereum/poa/core/tx'}}]` |
+| NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE | `validation` or `mining` *(optional)* | Verification type in the network | `mining` |
 
 ### App configuration
 
