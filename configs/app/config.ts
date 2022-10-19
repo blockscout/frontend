@@ -8,6 +8,8 @@ const baseUrl = [
   process.env.NEXT_PUBLIC_APP_PORT ? ':' + process.env.NEXT_PUBLIC_APP_PORT : '',
 ].join('');
 
+const DEFAULT_CURRENCY_DECIMALS = 18;
+
 const config = Object.freeze({
   env,
   isDev,
@@ -18,7 +20,11 @@ const config = Object.freeze({
     name: process.env.NEXT_PUBLIC_NETWORK_NAME,
     id: process.env.NEXT_PUBLIC_NETWORK_ID,
     shortName: process.env.NEXT_PUBLIC_NETWORK_SHORT_NAME,
-    currency: process.env.NEXT_PUBLIC_NETWORK_CURRENCY,
+    currency: {
+      name: process.env.NEXT_PUBLIC_NETWORK_CURRENCY_NAME,
+      symbol: process.env.NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL,
+      decimals: Number(process.env.NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS) || DEFAULT_CURRENCY_DECIMALS,
+    },
     assetsPathname: process.env.NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME,
     nativeTokenAddress: process.env.NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS,
     basePath: '/' + [ process.env.NEXT_PUBLIC_NETWORK_TYPE, process.env.NEXT_PUBLIC_NETWORK_SUBTYPE ].filter(Boolean).join('/'),

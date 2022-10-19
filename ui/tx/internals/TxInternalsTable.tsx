@@ -29,7 +29,7 @@ const TxInternalsTable = ({ data, sort, onSortToggle }: Props) => {
             <Th width="16%" isNumeric>
               <Link display="flex" alignItems="center" justifyContent="flex-end" onClick={ onSortToggle('value') } columnGap={ 1 }>
                 { sort?.includes('value') && <Icon as={ arrowIcon } boxSize={ 4 } transform={ sortIconTransform }/> }
-                Value { appConfig.network.currency }
+                Value { appConfig.network.currency.name }
               </Link>
             </Th>
             { /* no gas limit in api yet */ }

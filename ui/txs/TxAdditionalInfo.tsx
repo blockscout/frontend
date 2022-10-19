@@ -34,7 +34,7 @@ const TxAdditionalInfo = ({ tx }: { tx: Transaction }) => {
         <Flex>
           <CurrencyValue
             value={ tx.fee.value }
-            currency={ appConfig.network.currency }
+            currency={ appConfig.network.currency.name }
             exchangeRate={ tx.exchange_rate }
             accuracyUsd={ 2 }
           />
