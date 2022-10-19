@@ -22,6 +22,7 @@ const config = Object.freeze({
     assetsPathname: process.env.NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME,
     nativeTokenAddress: process.env.NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS,
     basePath: '/' + [ process.env.NEXT_PUBLIC_NETWORK_TYPE, process.env.NEXT_PUBLIC_NETWORK_SUBTYPE ].filter(Boolean).join('/'),
+    explorers: process.env.NEXT_PUBLIC_NETWORK_EXPLORERS?.replaceAll('\'', '"'),
   },
   footerLinks: {
     github: process.env.NEXT_PUBLIC_FOOTER_GITHUB_LINK,

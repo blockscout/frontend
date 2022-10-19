@@ -1,10 +1,12 @@
 import { Flex, Link, Icon } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
 import eastArrowIcon from 'icons/arrows/east.svg';
 import link from 'lib/link/link';
+import networkExplorers from 'lib/networks/networkExplorers';
 import ExternalLink from 'ui/shared/ExternalLink';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -25,6 +27,15 @@ const TABS: Array<RoutedTab> = [
 ];
 
 const TransactionPageContent = () => {
+  const router = useRouter();
+
+  const explorersLinks = networkExplorers
+    .filter((explorer) => explorer.paths.tx)
+    .map((explorer) => {
+      const url = new URL(explorer.paths.tx + '/' + router.query.id, explorer.baseUrl);
+      return <ExternalLink key={ explorer.baseUrl } title={ `Open in ${ explorer.title }` } href={ url.toString() }/>;
+    });
+
   return (
     <Page>
       { /* TODO should be shown only when navigating from txs list */ }
@@ -34,19 +45,19 @@ const TransactionPageContent = () => {
       </Link>
       <Flex alignItems="flex-start" flexDir={{ base: 'column', lg: 'row' }}>
         <PageTitle text="Transaction details"/>
-        <Flex
-          alignItems="center"
-          flexWrap="wrap"
-          columnGap={ 6 }
-          rowGap={ 3 }
-          ml={{ base: 'initial', lg: 'auto' }}
-          mb={{ base: 6, lg: 'initial' }}
-          py={ 2.5 }
-        >
-          <ExternalLink title="Open in Tenderly" href="#"/>
-          <ExternalLink title="Open in Blockchair" href="#"/>
-          <ExternalLink title="Open in Etherscan" href="#"/>
-        </Flex>
+        { explorersLinks.length > 0 && (
+          <Flex
+            alignItems="center"
+            flexWrap="wrap"
+            columnGap={ 6 }
+            rowGap={ 3 }
+            ml={{ base: 'initial', lg: 'auto' }}
+            mb={{ base: 6, lg: 'initial' }}
+            py={ 2.5 }
+          >
+            { explorersLinks }
+          </Flex>
+        ) }
       </Flex>
       <RoutedTabs
         tabs={ TABS }
