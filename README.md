@@ -24,7 +24,7 @@ For local development please follow next steps:
 - clone `.env.example` into `configs/envs/.env.secrets` and fill it with necessary secret values (see description [below](#environment-variables))
 - to spin up local dev server
     - for predefined networks configs (see full available list in `package.json`) you can just run `yarn dev:<app_name>`
-    - for custom network setup create `.env.local` file with all required environment variables from the [list](#environment-variables) and run `yarn dev` 
+    - for custom network setup create `.env.local` file with all required environment variables from the [list](#environment-variables) and run `yarn dev`
 - navigate to the host from logs output
 
 ## Components visual testing
@@ -47,7 +47,9 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_NETWORK_TYPE | `string` | Network type (used as first part of the base path) | `xdai` |
 | NEXT_PUBLIC_NETWORK_SUBTYPE | `string` | Network subtype (used as second part of the base path) | `mainnet` |
 | NEXT_PUBLIC_NETWORK_ID | `number` | Chain id, see [https://chainlist.org/](https://chainlist.org/) for the reference | `99` |
-| NEXT_PUBLIC_NETWORK_CURRENCY | `string` | Network currency symbol | `xDAI` |
+| NEXT_PUBLIC_NETWORK_CURRENCY_NAME | `string` | Network currencyName name | `xDAI` |
+| NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL | `string` | Network currencyName symbol | `xDAI` |
+| NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS | `string` | Network currencyName decimals | `18` |
 | NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS | `string` | Address of network's native token | `0x029a799563238d0e75e20be2f4bda0ea68d00172` |
 | NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME | `string` *(optional)* | Network name for constructing url of token logos according to template `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${assetsNamePath}/assets/${tokenAddress}/logo.png`. It should match network name in TrustWallet assets repo, see the full list [here](https://github.com/trustwallet/assets/tree/master/blockchains). If not provided, the network type will be used as its assets path part | `ethereum` |
 | NEXT_PUBLIC_NETWORK_LOGO | `string` *(optional)* | Network logo; if not provided, will fallback to logo predefined in the project; if the project doesn't have logo for such network then the common placeholder will be shown; *Note* that logo height should be 20px and width less than 120px | `https://www.fillmurray.com/240/40` |

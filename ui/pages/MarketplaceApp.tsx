@@ -1,9 +1,12 @@
 import { Box, Center, useColorMode } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
+import type { JsonRpcUrlResponse } from 'types/api/json-rpc-url';
 import type { AppItemOverview } from 'types/client/apps';
 
 import appConfig from 'configs/app/config';
+import useFetch from 'lib/hooks/useFetch';
 import link from 'lib/link/link';
 import ContentLoader from 'ui/shared/ContentLoader';
 import Page from 'ui/shared/Page/Page';
@@ -15,30 +18,42 @@ type Props = {
 
 const MarketplaceApp = ({ app, isLoading }: Props) => {
   const [ isFrameLoading, setIsFrameLoading ] = useState(isLoading);
-  const ref = useRef<HTMLIFrameElement>(null);
   const { colorMode } = useColorMode();
+  const fetch = useFetch();
+  const ref = useRef<HTMLIFrameElement>(null);
 
   const handleIframeLoad = useCallback(() => {
     setIsFrameLoading(false);
   }, []);
 
-  const sandboxAttributeValue = 'allow-forms allow-orientation-lock ' +
-        'allow-pointer-lock allow-popups-to-escape-sandbox ' +
-        'allow-same-origin allow-scripts ' +
-        'allow-top-navigation-by-user-activation allow-popups';
-
-  const allowAttributeValue = 'clipboard-read; clipboard-write;';
+  const { data: jsonRpcUrlResponse } = useQuery<unknown, unknown, JsonRpcUrlResponse>(
+    [ 'json-rpc-url' ],
+    async() => await fetch(`/api/config/json-rpc-url`),
+    { refetchOnMount: false },
+  );
 
   useEffect(() => {
     if (app && !isFrameLoading) {
-      ref?.current?.contentWindow?.postMessage({
+      const message = {
         blockscoutColorMode: colorMode,
-        blockscoutChainId: Number(appConfig.network.id),
+        blockscoutRootUrl: link('network_index'),
         blockscoutAddressExplorerUrl: link('address_index'),
         blockscoutTransactionExplorerUrl: link('tx'),
-      }, app.url);
+        blockscoutNetworkId: Number(appConfig.network.id),
+        blockscoutNetworkCurrency: appConfig.network.currency,
+        blockscoutNetworkRpc: jsonRpcUrlResponse?.json_rpc_url,
+      };
+
+      ref?.current?.contentWindow?.postMessage(message, app.url);
     }
-  }, [ isFrameLoading, app, colorMode, ref ]);
+  }, [ isFrameLoading, app, colorMode, ref, jsonRpcUrlResponse ]);
+
+  const sandboxAttributeValue = 'allow-forms allow-orientation-lock ' +
+      'allow-pointer-lock allow-popups-to-escape-sandbox ' +
+      'allow-same-origin allow-scripts ' +
+      'allow-top-navigation-by-user-activation allow-popups';
+
+  const allowAttributeValue = 'clipboard-read; clipboard-write;';
 
   return (
     <Page wrapChildren={ false }>

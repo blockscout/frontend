@@ -21,9 +21,9 @@ const TxStateTable = () => {
             <Th width="92px">Storage</Th>
             <Th width="146px">Address</Th>
             <Th width="120px">Miner</Th>
-            <Th width="33%" isNumeric>{ `After ${ appConfig.network.currency }` }</Th>
-            <Th width="33%" isNumeric>{ `Before ${ appConfig.network.currency }` }</Th>
-            <Th width="33%" isNumeric>{ `State difference ${ appConfig.network.currency }` }</Th>
+            <Th width="33%" isNumeric>{ `After ${ appConfig.network.currency.name }` }</Th>
+            <Th width="33%" isNumeric>{ `Before ${ appConfig.network.currency.name }` }</Th>
+            <Th width="33%" isNumeric>{ `State difference ${ appConfig.network.currency.name }` }</Th>
           </Tr>
         </Thead>
         <Tbody>

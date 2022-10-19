@@ -112,11 +112,11 @@ const TxsListItem = ({ tx }: {tx: Transaction}) => {
           </Address>
         </Flex>
         <Box mt={ 2 }>
-          <Text as="span">Value { appConfig.network.currency } </Text>
+          <Text as="span">Value { appConfig.network.currency.name } </Text>
           <Text as="span" variant="secondary">{ getValueWithUnit(tx.value).toFormat() }</Text>
         </Box>
         <Box mt={ 2 } mb={ 3 }>
-          <Text as="span">Fee { appConfig.network.currency } </Text>
+          <Text as="span">Fee { appConfig.network.currency.name } </Text>
           <Text as="span" variant="secondary">{ getValueWithUnit(tx.fee.value).toFormat() }</Text>
         </Box>
       </Box>

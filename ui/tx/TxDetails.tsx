@@ -185,7 +185,7 @@ const TxDetails = () => {
         title="Value"
         hint="Value sent in the native token (and USD) if applicable."
       >
-        <CurrencyValue value={ data.value } currency={ appConfig.network.currency } exchangeRate={ data.exchange_rate }/>
+        <CurrencyValue value={ data.value } currency={ appConfig.network.currency.name } exchangeRate={ data.exchange_rate }/>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Transaction fee"
@@ -193,7 +193,7 @@ const TxDetails = () => {
       >
         <CurrencyValue
           value={ data.fee.value }
-          currency={ appConfig.network.currency }
+          currency={ appConfig.network.currency.name }
           exchangeRate={ data.exchange_rate }
           flexWrap="wrap"
         />
@@ -202,7 +202,7 @@ const TxDetails = () => {
         title="Gas price"
         hint="Price per unit of gas specified by the sender. Higher gas prices can prioritize transaction inclusion during times of high usage."
       >
-        <Text mr={ 1 }>{ BigNumber(data.gas_price).dividedBy(WEI).toFixed() } { appConfig.network.currency }</Text>
+        <Text mr={ 1 }>{ BigNumber(data.gas_price).dividedBy(WEI).toFixed() } { appConfig.network.currency.name }</Text>
         <Text variant="secondary">({ BigNumber(data.gas_price).dividedBy(WEI_IN_GWEI).toFixed() } Gwei)</Text>
       </DetailsInfoItem>
       <DetailsInfoItem
@@ -245,12 +245,12 @@ const TxDetails = () => {
       { data.tx_burnt_fee && (
         <DetailsInfoItem
           title="Burnt fees"
-          hint={ `Amount of ${ appConfig.network.currency } burned for this transaction. Equals Block Base Fee per Gas * Gas Used.` }
+          hint={ `Amount of ${ appConfig.network.currency.name } burned for this transaction. Equals Block Base Fee per Gas * Gas Used.` }
         >
           <Icon as={ flameIcon } mr={ 1 } boxSize={ 5 } color="gray.500"/>
           <CurrencyValue
             value={ String(data.tx_burnt_fee) }
-            currency={ appConfig.network.currency }
+            currency={ appConfig.network.currency.name }
             exchangeRate={ data.exchange_rate }
             flexWrap="wrap"
           />

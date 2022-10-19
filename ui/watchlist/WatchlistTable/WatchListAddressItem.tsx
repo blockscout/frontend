@@ -25,7 +25,7 @@ const WatchListAddressItem = ({ item }: {item: TWatchlistItem}) => {
       <HStack spacing={ 0 } fontSize="sm" h={ 6 } pl={ infoItemsPaddingLeft }>
         { appConfig.network.nativeTokenAddress &&
           <TokenLogo hash={ appConfig.network.nativeTokenAddress } name={ appConfig.network.name } boxSize={ 4 } mr="10px"/> }
-        <Text color={ mainTextColor }>{ `${ appConfig.network.currency } balance:${ nbsp }` + nativeBalance }</Text>
+        <Text color={ mainTextColor }>{ `${ appConfig.network.currency.name } balance:${ nbsp }` + nativeBalance }</Text>
         <Text variant="secondary">{ `${ nbsp }(${ nativeBalanceUSD })` }</Text>
       </HStack>
       { item.tokens_count && (
