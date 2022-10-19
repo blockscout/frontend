@@ -39,7 +39,7 @@ const TxsTableItem = ({ tx }: {tx: Transaction}) => {
       <Tooltip label={ tx.from.implementation_name }>
         <Box display="flex"><AddressIcon hash={ tx.from.hash }/></Box>
       </Tooltip>
-      <AddressLink hash={ tx.from.hash } alias={ tx.from.name } fontWeight="500" ml={ 2 }/>
+      <AddressLink hash={ tx.from.hash } alias={ tx.from.name } fontWeight="500" ml={ 2 } truncation="constant"/>
     </Address>
   );
 
@@ -48,7 +48,7 @@ const TxsTableItem = ({ tx }: {tx: Transaction}) => {
       <Tooltip label={ tx.to.implementation_name }>
         <Box display="flex"><AddressIcon hash={ tx.to.hash }/></Box>
       </Tooltip>
-      <AddressLink hash={ tx.to.hash } alias={ tx.to.name } fontWeight="500" ml={ 2 }/>
+      <AddressLink hash={ tx.to.hash } alias={ tx.to.name } fontWeight="500" ml={ 2 } truncation="constant"/>
     </Address>
   );
 
