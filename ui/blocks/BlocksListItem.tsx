@@ -59,7 +59,7 @@ const BlocksListItem = ({ data, isPending }: Props) => {
         </Flex>
       </Box>
       <Flex columnGap={ 2 }>
-        <Text fontWeight={ 500 }>Reward { appConfig.network.currency.name }</Text>
+        <Text fontWeight={ 500 }>Reward { appConfig.network.currency.symbol }</Text>
         <Text variant="secondary">{ totalReward.div(WEI).toFixed() }</Text>
       </Flex>
       <Flex>

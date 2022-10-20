@@ -310,7 +310,7 @@ frontend:
     NEXT_PUBLIC_NETWORK_ID:
       _default: 77
     NEXT_PUBLIC_NETWORK_CURRENCY_NAME:
-      _default: SPOA
+      _default: POA Network Sokol
     NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL:
       _default: SPOA
     NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS:

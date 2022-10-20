@@ -35,7 +35,7 @@ const TxInternalsListItem = ({ type, from, to, value, success, error }: Props) =
         </Address>
       </Box>
       <HStack spacing={ 3 }>
-        <Text fontSize="sm" fontWeight={ 500 }>Value { appConfig.network.currency.name }</Text>
+        <Text fontSize="sm" fontWeight={ 500 }>Value { appConfig.network.currency.symbol }</Text>
         <Text fontSize="sm" variant="secondary">{ value }</Text>
       </HStack>
       { /* no gas limit in api yet */ }
