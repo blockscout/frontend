@@ -32,7 +32,7 @@ export default function useQueryWithPages(queryName: string, filter: string) {
     if (page >= pageParams.length && data?.next_page_params) {
       // api adds filters into next-page-params now
       // later filters will be removed from response
-      const nextPageParams = pick(data?.next_page_params, PAGINATION_FIELDS);
+      const nextPageParams = pick(data.next_page_params, PAGINATION_FIELDS);
       setPageParams(prev => [ ...prev, nextPageParams ]);
       const nextPageQuery = { ...router.query };
       Object.entries(nextPageParams).forEach(([ key, val ]) => nextPageQuery[key] = val.toString());
