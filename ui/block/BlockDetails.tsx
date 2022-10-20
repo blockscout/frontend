@@ -153,6 +153,18 @@ const BlockDetails = () => {
           ) }
         </DetailsInfoItem>
       ) }
+      { data.rewards
+        ?.filter(({ type }) => type !== 'Validator Reward' && type !== 'Miner Reward')
+        .map(({ type, reward }) => (
+          <DetailsInfoItem
+            key={ type }
+            title={ type }
+            hint="Amount of distributed reward. Miners receive a static block reward + Tx fees + uncle fees."
+          >
+            { BigNumber(reward).dividedBy(WEI).toFixed() } { appConfig.network.currency }
+          </DetailsInfoItem>
+        ))
+      }
 
       { sectionGap }
 
@@ -293,17 +305,6 @@ const BlockDetails = () => {
           >
             { data.nonce }
           </DetailsInfoItem>
-          { data.rewards
-            ?.filter(({ type }) => type !== 'Validator Reward' && type !== 'Miner Reward')
-            .map(({ type, reward }) => (
-              <DetailsInfoItem
-                key={ type }
-                title={ type }
-                hint="Amount of distributed reward. Miners receive a static block reward + Tx fees + uncle fees."
-              >
-                { BigNumber(reward).dividedBy(WEI).toFixed() } { appConfig.network.currency }
-              </DetailsInfoItem>
-            )) }
         </>
       ) }
     </Grid>

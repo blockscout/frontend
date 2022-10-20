@@ -5,8 +5,7 @@ import React from 'react';
 import type { Block } from 'types/api/block';
 
 import flameIcon from 'icons/flame.svg';
-import getBlockReward from 'lib/block/getBlockReward';
-import { WEI } from 'lib/consts';
+import { WEI, ZERO } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
 import link from 'lib/link/link';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -19,7 +18,11 @@ interface Props {
 }
 
 const BlocksTableItem = ({ data, isPending }: Props) => {
-  const { totalReward, burntFees, txFees } = getBlockReward(data);
+  const totalReward = data.rewards
+    ?.map(({ reward }) => BigNumber(reward))
+    .reduce((result, item) => result.plus(item), ZERO) || ZERO;
+  const burntFees = BigNumber(data.burnt_fees || 0);
+  const txFees = BigNumber(data.tx_fees || 0);
 
   return (
     <Tr>

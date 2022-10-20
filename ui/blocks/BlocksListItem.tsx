@@ -1,4 +1,4 @@
-import { Flex, Link, Spinner, Text, Box, Icon, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Link, Spinner, Text, Box, Icon } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -6,8 +6,7 @@ import type { Block } from 'types/api/block';
 
 import appConfig from 'configs/app/config';
 import flameIcon from 'icons/flame.svg';
-import getBlockReward from 'lib/block/getBlockReward';
-import { WEI } from 'lib/consts';
+import { WEI, ZERO } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
 import link from 'lib/link/link';
 import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
@@ -21,14 +20,17 @@ interface Props {
 }
 
 const BlocksListItem = ({ data, isPending }: Props) => {
-  const spinnerEmptyColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
-  const { totalReward, burntFees, txFees } = getBlockReward(data);
+  const totalReward = data.rewards
+    ?.map(({ reward }) => BigNumber(reward))
+    .reduce((result, item) => result.plus(item), ZERO) || ZERO;
+  const burntFees = BigNumber(data.burnt_fees || 0);
+  const txFees = BigNumber(data.tx_fees || 0);
 
   return (
     <AccountListItemMobile rowGap={ 3 }>
       <Flex justifyContent="space-between" w="100%">
         <Flex columnGap={ 2 } alignItems="center">
-          { isPending && <Spinner size="sm" color="blue.500" emptyColor={ spinnerEmptyColor }/> }
+          { isPending && <Spinner size="sm"/> }
           <Link
             fontWeight={ 600 }
             href={ link('block', { id: String(data.height) }) }
