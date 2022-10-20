@@ -38,6 +38,7 @@ export interface Transaction {
   token_transfers: Array<TokenTransfer> | null;
   token_transfers_overflow: boolean;
   exchange_rate: string;
+  tx_tag: string | null;
 }
 
 export interface TransactionsResponse {

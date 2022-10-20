@@ -1,10 +1,13 @@
-import { Flex, Link, Icon } from '@chakra-ui/react';
+import { Flex, Link, Icon, Tag } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { Transaction } from 'types/api/transaction';
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
 import eastArrowIcon from 'icons/arrows/east.svg';
+import useFetch from 'lib/hooks/useFetch';
 import link from 'lib/link/link';
 import networkExplorers from 'lib/networks/networkExplorers';
 import ExternalLink from 'ui/shared/ExternalLink';
@@ -28,6 +31,15 @@ const TABS: Array<RoutedTab> = [
 
 const TransactionPageContent = () => {
   const router = useRouter();
+  const fetch = useFetch();
+
+  const { data } = useQuery<unknown, unknown, Transaction>(
+    [ 'tx', router.query.id ],
+    async() => await fetch(`/api/transactions/${ router.query.id }`),
+    {
+      enabled: Boolean(router.query.id),
+    },
+  );
 
   const explorersLinks = networkExplorers
     .filter((explorer) => explorer.paths.tx)
@@ -45,6 +57,7 @@ const TransactionPageContent = () => {
       </Link>
       <Flex alignItems="flex-start" flexDir={{ base: 'column', lg: 'row' }}>
         <PageTitle text="Transaction details"/>
+        { data?.tx_tag && <Tag my={ 2 } ml={ 3 }>{ data.tx_tag }</Tag> }
         { explorersLinks.length > 0 && (
           <Flex
             alignItems="center"
