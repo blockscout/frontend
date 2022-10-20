@@ -147,9 +147,10 @@ const TxDetails = () => {
       >
         <Address>
           <AddressIcon hash={ data.from.hash }/>
-          <AddressLink ml={ 2 } hash={ data.from.hash } alias={ data.from.name }/>
+          <AddressLink ml={ 2 } hash={ data.from.hash }/>
           <CopyToClipboard text={ data.from.hash }/>
         </Address>
+        { data.from.name && <Text>{ data.from.name }</Text> }
         { addressFromTags.length > 0 && (
           <Flex columnGap={ 3 }>
             { addressFromTags }
@@ -160,17 +161,14 @@ const TxDetails = () => {
         title={ data.to.is_contract ? 'Interacted with contract' : 'To' }
         hint="Address (external or contract) receiving the transaction."
         flexWrap={{ base: 'wrap', lg: 'nowrap' }}
+        columnGap={ 3 }
       >
-        <Address mr={ 3 }>
+        <Address>
           <AddressIcon hash={ data.to.hash }/>
-          <AddressLink ml={ 2 } hash={ data.to.hash } alias={ data.to.name }/>
+          <AddressLink ml={ 2 } hash={ data.to.hash }/>
           <CopyToClipboard text={ data.to.hash }/>
         </Address>
-        { addressToTags.length > 0 && (
-          <Flex columnGap={ 3 }>
-            { addressToTags }
-          </Flex>
-        ) }
+        { data.to.name && <Text>{ data.to.name }</Text> }
         { data.to.is_contract && data.result === 'success' && (
           <Tooltip label="Contract execution completed">
             <chakra.span display="inline-flex">
@@ -185,7 +183,11 @@ const TxDetails = () => {
             </chakra.span>
           </Tooltip>
         ) }
-        { /* <TokenSnippet symbol="UP" name="User Pay" hash="0xA17ed5dFc62D0a3E74D69a0503AE9FdA65d9f212" ml={ 3 }/> */ }
+        { addressToTags.length > 0 && (
+          <Flex columnGap={ 3 }>
+            { addressToTags }
+          </Flex>
+        ) }
       </DetailsInfoItem>
       { TOKEN_TRANSFERS.map(({ title, hint, type }) => {
         const items = data.token_transfers?.filter((token) => token.type === type) || [];
