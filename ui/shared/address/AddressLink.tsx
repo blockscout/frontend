@@ -1,4 +1,5 @@
 import { Link, chakra, shouldForwardProp, Tooltip, Box } from '@chakra-ui/react';
+import type { HTMLAttributeAnchorTarget } from 'react';
 import React from 'react';
 
 import link from 'lib/link/link';
@@ -13,9 +14,10 @@ interface Props {
   truncation?: 'constant' | 'dynamic'| 'none';
   fontWeight?: string;
   id?: string;
+  target?: HTMLAttributeAnchorTarget;
 }
 
-const AddressLink = ({ alias, type, className, truncation = 'dynamic', hash, id, fontWeight }: Props) => {
+const AddressLink = ({ alias, type, className, truncation = 'dynamic', hash, id, fontWeight, target }: Props) => {
   let url;
   if (type === 'transaction') {
     url = link('tx', { id: id || hash });
@@ -49,7 +51,7 @@ const AddressLink = ({ alias, type, className, truncation = 'dynamic', hash, id,
     <Link
       className={ className }
       href={ url }
-      target="_blank"
+      target={ target || '_blank' }
       overflow="hidden"
       whiteSpace="nowrap"
     >

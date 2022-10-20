@@ -8,7 +8,7 @@ import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
 import eastArrowIcon from 'icons/arrows/east.svg';
 import useFetch from 'lib/hooks/useFetch';
-import link from 'lib/link/link';
+import isBrowser from 'lib/isBrowser';
 import networkExplorers from 'lib/networks/networkExplorers';
 import ExternalLink from 'ui/shared/ExternalLink';
 import Page from 'ui/shared/Page/Page';
@@ -48,13 +48,16 @@ const TransactionPageContent = () => {
       return <ExternalLink key={ explorer.baseUrl } title={ `Open in ${ explorer.title }` } href={ url.toString() }/>;
     });
 
+  const hasGoBackLink = isBrowser() && window.document.referrer.includes('/txs');
+
   return (
     <Page>
-      { /* TODO should be shown only when navigating from txs list */ }
-      <Link mb={ 6 } display="inline-flex" href={ link('txs') }>
-        <Icon as={ eastArrowIcon } boxSize={ 6 } mr={ 2 } transform="rotate(180deg)"/>
-        Transactions
-      </Link>
+      { hasGoBackLink && (
+        <Link mb={ 6 } display="inline-flex" href={ window.document.referrer }>
+          <Icon as={ eastArrowIcon } boxSize={ 6 } mr={ 2 } transform="rotate(180deg)"/>
+            Transactions
+        </Link>
+      ) }
       <Flex alignItems="flex-start" flexDir={{ base: 'column', lg: 'row' }}>
         <PageTitle text="Transaction details"/>
         { data?.tx_tag && <Tag my={ 2 } ml={ 3 }>{ data.tx_tag }</Tag> }
