@@ -44,7 +44,7 @@ export default function useQueryWithPages(queryName: string, filter: string) {
   }, [ data, page, pageParams, router ]);
 
   const onPrevPageClick = useCallback(() => {
-    // returning for the first page
+    // returning to the first page
     // we dont have pagination params for the first page
     if (page === 2) {
       router.query = omit(router.query, PAGINATION_FIELDS);
