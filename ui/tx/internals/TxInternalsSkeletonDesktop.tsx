@@ -10,7 +10,7 @@ const TxInternalsSkeletonDesktop = () => {
         <Skeleton w="78px"/>
         <Skeleton w="360px"/>
       </Flex>
-      <SkeletonTable columns={ [ '28%', '28%', '24px', '28%', '16%' ] }/>
+      <SkeletonTable columns={ [ '28%', '20%', '24px', '20%', '16%', '16%' ] }/>
     </>
   );
 };

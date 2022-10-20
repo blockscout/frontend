@@ -10,10 +10,11 @@ export interface InternalTransaction {
   from: AddressParam;
   to: AddressParam;
   created_contract: AddressParam;
-  value: number;
+  value: string;
   index: number;
   block: number;
   timestamp: string;
+  gas_limit: string;
 }
 
 export interface InternalTransactionsResponse {

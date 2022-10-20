@@ -1,4 +1,5 @@
 import { Flex, Tag, Icon, Box, HStack, Text } from '@chakra-ui/react';
+import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
@@ -14,7 +15,7 @@ import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
 type Props = InternalTransaction;
 
-const TxInternalsListItem = ({ type, from, to, value, success, error }: Props) => {
+const TxInternalsListItem = ({ type, from, to, value, success, error, gas_limit: gasLimit }: Props) => {
   const typeTitle = TX_INTERNALS_ITEMS.find(({ id }) => id === type)?.title;
 
   return (
@@ -38,11 +39,10 @@ const TxInternalsListItem = ({ type, from, to, value, success, error }: Props) =
         <Text fontSize="sm" fontWeight={ 500 }>Value { appConfig.network.currency }</Text>
         <Text fontSize="sm" variant="secondary">{ value }</Text>
       </HStack>
-      { /* no gas limit in api yet */ }
-      { /* <HStack spacing={ 3 }>
+      <HStack spacing={ 3 }>
         <Text fontSize="sm" fontWeight={ 500 }>Gas limit</Text>
-        <Text fontSize="sm" variant="secondary">{ gasLimit.toLocaleString('en') }</Text>
-      </HStack> */ }
+        <Text fontSize="sm" variant="secondary">{ BigNumber(gasLimit).toFormat() }</Text>
+      </HStack>
     </AccountListItemMobile>
   );
 };
