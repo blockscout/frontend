@@ -3,6 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import React, { useCallback } from 'react';
 
 import type { AddressTag, TransactionTag, AddressTags, TransactionTags } from 'types/api/account';
+import { QueryKeys } from 'types/client/accountQueries';
 
 import useFetch from 'lib/hooks/useFetch';
 import DeleteModal from 'ui/shared/DeleteModal';
@@ -27,11 +28,11 @@ const DeletePrivateTagModal: React.FC<Props> = ({ isOpen, onClose, data, type })
 
   const onSuccess = useCallback(async() => {
     if (type === 'address') {
-      queryClient.setQueryData([ 'address-tags' ], (prevData: AddressTags | undefined) => {
+      queryClient.setQueryData([ QueryKeys.addressTags ], (prevData: AddressTags | undefined) => {
         return prevData?.filter((item: AddressTag) => item.id !== id);
       });
     } else {
-      queryClient.setQueryData([ 'transaction-tags' ], (prevData: TransactionTags | undefined) => {
+      queryClient.setQueryData([ QueryKeys.transactionTags ], (prevData: TransactionTags | undefined) => {
         return prevData?.filter((item: TransactionTag) => item.id !== id);
       });
     }

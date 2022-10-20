@@ -6,6 +6,7 @@ import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
 import type { Block } from 'types/api/block';
+import { QueryKeys } from 'types/client/accountQueries';
 
 import appConfig from 'configs/app/config';
 import clockIcon from 'icons/clock.svg';
@@ -34,7 +35,7 @@ const BlockDetails = () => {
   const fetch = useFetch();
 
   const { data, isLoading, isError, error } = useQuery<unknown, ErrorType<{ status: number }>, Block>(
-    [ 'block', router.query.id ],
+    [ QueryKeys.block, router.query.id ],
     async() => await fetch(`/api/blocks/${ router.query.id }`),
     {
       enabled: Boolean(router.query.id),

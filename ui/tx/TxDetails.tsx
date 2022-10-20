@@ -6,6 +6,7 @@ import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
 import type { Transaction } from 'types/api/transaction';
+import { QueryKeys } from 'types/client/queries';
 
 import appConfig from 'configs/app/config';
 import clockIcon from 'icons/clock.svg';
@@ -47,7 +48,7 @@ const TxDetails = () => {
   const fetch = useFetch();
 
   const { data, isLoading, isError } = useQuery<unknown, unknown, Transaction>(
-    [ 'tx', router.query.id ],
+    [ QueryKeys.tx, router.query.id ],
     async() => await fetch(`/api/transactions/${ router.query.id }`),
     {
       enabled: Boolean(router.query.id),

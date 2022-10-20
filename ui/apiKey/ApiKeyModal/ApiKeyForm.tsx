@@ -12,6 +12,7 @@ import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
 import { useForm, Controller } from 'react-hook-form';
 
 import type { ApiKey, ApiKeys, ApiKeyErrors } from 'types/api/account';
+import { QueryKeys } from 'types/client/accountQueries';
 
 import getErrorMessage from 'lib/getErrorMessage';
 import getPlaceholderWithError from 'lib/getPlaceholderWithError';
@@ -57,7 +58,7 @@ const ApiKeyForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
     onSuccess: async(data) => {
       const response = data as unknown as ApiKey;
 
-      queryClient.setQueryData([ 'api-keys' ], (prevData: ApiKeys | undefined) => {
+      queryClient.setQueryData([ QueryKeys.apiKeys ], (prevData: ApiKeys | undefined) => {
         const isExisting = prevData && prevData.some((item) => item.api_key === response.api_key);
 
         if (isExisting) {
