@@ -39,6 +39,7 @@ const MarketplaceApp = ({ app, isLoading }: Props) => {
         blockscoutRootUrl: link('network_index'),
         blockscoutAddressExplorerUrl: link('address_index'),
         blockscoutTransactionExplorerUrl: link('tx'),
+        blockscoutNetworkName: appConfig.network.name,
         blockscoutNetworkId: Number(appConfig.network.id),
         blockscoutNetworkCurrency: appConfig.network.currency,
         blockscoutNetworkRpc: jsonRpcUrlResponse?.json_rpc_url,

@@ -64,7 +64,7 @@ const TxStateListItem = ({ storage, address, miner, after, before, diff }: Props
                 <Link>{ miner }</Link>
               </Box>
               <Box>
-                <Text as="span">Before { appConfig.network.currency.name } </Text>
+                <Text as="span">Before { appConfig.network.currency.symbol } </Text>
                 <Text as="span" variant="secondary">{ before.balance }</Text>
               </Box>
               { typeof before.nonce !== 'undefined' && (
@@ -74,7 +74,7 @@ const TxStateListItem = ({ storage, address, miner, after, before, diff }: Props
                 </Box>
               ) }
               <Box>
-                <Text as="span">After { appConfig.network.currency.name } </Text>
+                <Text as="span">After { appConfig.network.currency.symbol } </Text>
                 <Text as="span" variant="secondary">{ after.balance }</Text>
               </Box>
               { typeof after.nonce !== 'undefined' && (
@@ -83,7 +83,7 @@ const TxStateListItem = ({ storage, address, miner, after, before, diff }: Props
                   <Text as="span" fontWeight={ 600 }>{ nbsp }{ after.nonce }</Text>
                 </Box>
               ) }
-              <Text>State difference { appConfig.network.currency.name }</Text>
+              <Text>State difference { appConfig.network.currency.symbol }</Text>
               <Stat>
                 { diff }
                 <StatArrow ml={ 2 } type={ Number(diff) > 0 ? 'increase' : 'decrease' }/>
