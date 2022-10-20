@@ -1,4 +1,4 @@
-[Design](https://www.figma.com/file/07zoJSAP7Vo655ertmlppA/My_Account?node-id=279%3A1006) | [API Doc](https://github.com/blockscout/blockscout-account/blob/account/apps/block_scout_web/API.md) | [Swagger](https://app.swaggerhub.com/apis/NIKITOSING4/blockscout-account-api/1.0)
+[Design](https://www.figma.com/file/07zoJSAP7Vo655ertmlppA/My_Account?node-id=279%3A1006) | [API Doc](https://github.com/blockscout/blockscout-account/blob/account/apps/block_scout_web/API.md) | [Core Swagger](https://app.swaggerhub.com/apis/NIKITOSING4/CoreBlockScoutAPI/1.0.0) | [Account Swagger](https://app.swaggerhub.com/apis/NIKITOSING4/blockscout-account-api/1.0)
 
 -----
 ## Technology stack
@@ -110,3 +110,17 @@ The app instance could be customized by passing following variables to NodeJS en
 | --- | --- | --- | --- |
 | NEXT_PUBLIC_SENTRY_DSN | `string` *(optional)* | Client key for your Senty.io app | `<secret>` |
 | SENTRY_CSP_REPORT_URI | `string` *(optional)* | URL for sending CSP-reports to your Senty.io app | `<secret>` |
+
+### How to add new environment variable
+
+If the variable should be exposed to the browser don't forget to add prefix `NEXT_PUBLIC_` to its name.
+
+These are the steps that you have to follow to make everything work:
+- create the variable placeholder for build-time in file `.env.template`; this is the most important step, without this the app will not receive any variables that are passed at run-time
+- for local development purposes add the variable to either `configs/envs/.env.common` or `configs/envs/.env.<network>` files depending on if the variable has the same value for all network or specific value for each network
+- add the variable to CI configs
+    - `deploy/values/review/values.yaml` - review environment
+    - `deploy/values/main/values.yaml` - production environment
+    - `deploy/values/e2e/values.yaml` - e2e-test environment
+
+Keep in mind that all json-like values should be single-quoted, e.g `[{'foo': 'bar'}]`
