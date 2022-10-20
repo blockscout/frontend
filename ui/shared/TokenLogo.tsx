@@ -7,7 +7,7 @@ const EmptyElement = () => null;
 
 interface Props {
   hash: string;
-  name?: string;
+  name?: string | null;
   className?: string;
 }
 

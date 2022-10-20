@@ -1,7 +1,7 @@
 import { Flex, Icon, Text } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenTransfer as TTokenTransfer } from 'types/api/tokenTransfer';
+import type { TokenTransfer as TTokenTransfer, Erc20TotalPayload, Erc721TotalPayload, Erc1155TotalPayload } from 'types/api/tokenTransfer';
 
 import rightArrowIcon from 'icons/arrows/east.svg';
 import { space } from 'lib/html-entities';
@@ -12,43 +12,47 @@ import NftTokenTransferSnippet from 'ui/tx/NftTokenTransferSnippet';
 
 type Props = TTokenTransfer;
 
-const TokenTransfer = (props: Props) => {
+const TokenTransfer = ({ token, total, to, from }: Props) => {
 
-  const isColumnLayout = props.token_type === 'ERC-1155' && Array.isArray(props.total);
-  const tokenSnippet = <TokenSnippet symbol={ props.token_symbol } hash={ props.token_address } name="Foo" ml={ 3 }/>;
+  const isColumnLayout = token.type === 'ERC-1155' && Array.isArray(total);
+  const tokenSnippet = <TokenSnippet symbol={ token.symbol } hash={ token.address } name={ token.name } ml={ 3 }/>;
 
   const content = (() => {
-    switch (props.token_type) {
-      case 'ERC-20':
+    switch (token.type) {
+      case 'ERC-20': {
+        const payload = total as Erc20TotalPayload;
         return (
           <Flex>
             <Text fontWeight={ 500 } as="span">For:{ space }
-              <CurrencyValue value={ props.total.value } unit="ether" exchangeRate={ props.exchange_rate } fontWeight={ 600 }/>
+              <CurrencyValue value={ payload.value } exchangeRate={ token.exchange_rate } fontWeight={ 600 }/>
             </Text>
             { tokenSnippet }
           </Flex>
         );
+      }
 
       case 'ERC-721': {
+        const payload = total as Erc721TotalPayload;
         return (
           <NftTokenTransferSnippet
-            tokenId={ props.total.token_id }
+            tokenId={ payload.token_id }
             value="1"
-            hash={ props.token_address }
-            symbol={ props.token_symbol }
+            hash={ token.address }
+            symbol={ token.symbol }
           />
         );
       }
 
       case 'ERC-1155': {
-        const items = Array.isArray(props.total) ? props.total : [ props.total ];
+        const payload = total as Erc1155TotalPayload | Array<Erc1155TotalPayload>;
+        const items = Array.isArray(payload) ? payload : [ payload ];
         return items.map((item) => (
           <NftTokenTransferSnippet
             key={ item.token_id }
             tokenId={ item.token_id }
             value={ item.value }
-            hash={ props.token_address }
-            symbol={ props.token_symbol }
+            hash={ token.address }
+            symbol={ token.symbol }
           />
         ));
       }
@@ -64,9 +68,9 @@ const TokenTransfer = (props: Props) => {
       flexDir={ isColumnLayout ? 'column' : 'row' }
     >
       <Flex alignItems="center">
-        <AddressLink fontWeight="500" hash={ props.from.hash } truncation="constant"/>
+        <AddressLink fontWeight="500" hash={ from.hash } truncation="constant"/>
         <Icon as={ rightArrowIcon } boxSize={ 6 } mx={ 2 } color="gray.500"/>
-        <AddressLink fontWeight="500" hash={ props.to.hash } truncation="constant"/>
+        <AddressLink fontWeight="500" hash={ to.hash } truncation="constant"/>
       </Flex>
       <Flex flexDir="column" rowGap={ 5 }>
         { content }

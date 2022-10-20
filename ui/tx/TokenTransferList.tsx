@@ -10,9 +10,9 @@ interface Props {
 }
 
 function getItemsNum(items: Array<TTokenTransfer>) {
-  const nonErc1155items = items.filter((item) => item.token_type !== 'ERC-1155').length;
+  const nonErc1155items = items.filter((item) => item.token.type !== 'ERC-1155').length;
   const erc1155items = items
-    .filter((item) => item.token_type === 'ERC-1155')
+    .filter((item) => item.token.type === 'ERC-1155')
     .map((item) => {
       if (Array.isArray(item.total)) {
         return item.total.length;

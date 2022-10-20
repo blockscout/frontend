@@ -7,7 +7,7 @@ import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 interface Props {
   type?: 'address' | 'transaction' | 'token' | 'block';
-  alias?: string;
+  alias?: string | null;
   className?: string;
   hash: string;
   truncation?: 'constant' | 'dynamic'| 'none';

@@ -9,7 +9,8 @@ interface Props {
   value: string;
   tokenId: string;
   hash: string;
-  symbol: string;
+  name?: string | null;
+  symbol?: string | null;
 }
 
 const NftTokenTransferSnippet = (props: Props) => {
@@ -23,7 +24,7 @@ const NftTokenTransferSnippet = (props: Props) => {
         <Icon as={ nftIcon } boxSize={ 6 } mr={ 1 }/>
         <Link href={ url } fontWeight={ 600 }>{ props.tokenId }</Link>
       </Box>
-      <TokenSnippet symbol={ props.symbol } hash={ props.hash } name="Foo"/>
+      <TokenSnippet symbol={ props.symbol } hash={ props.hash } name={ props.name }/>
     </Flex>
   );
 };
