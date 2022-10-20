@@ -1,5 +1,5 @@
 import { Alert, Box, HStack, Show, Button } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 
 import type { Sort } from 'types/client/txs-sort';
 
@@ -27,6 +27,31 @@ const TxsContent = ({
   stateFilter,
 }: Props) => {
   const [ sorting, setSorting ] = useState<Sort>();
+
+  const sort = useCallback((field: 'val' | 'fee') => () => {
+    if (field === 'val') {
+      setSorting((prevVal => {
+        if (prevVal === 'val-asc') {
+          return undefined;
+        }
+        if (prevVal === 'val-desc') {
+          return 'val-asc';
+        }
+        return 'val-desc';
+      }));
+    }
+    if (field === 'fee') {
+      setSorting((prevVal => {
+        if (prevVal === 'fee-asc') {
+          return undefined;
+        }
+        if (prevVal === 'fee-desc') {
+          return 'fee-asc';
+        }
+        return 'fee-desc';
+      }));
+    }
+  }, [ setSorting ]);
 
   const {
     data,
@@ -59,7 +84,7 @@ const TxsContent = ({
   );
 
   if (!isLoading && txs) {
-    content = <TxsWithSort txs={ txs } sorting={ sorting } setSorting={ setSorting }/>;
+    content = <TxsWithSort txs={ txs } sorting={ sorting } sort={ sort }/>;
   }
 
   return (
