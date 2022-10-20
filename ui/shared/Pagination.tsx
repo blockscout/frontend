@@ -8,11 +8,12 @@ type Props = {
   maxPage?: number;
   onNextPageClick: () => void;
   onPrevPageClick: () => void;
+  hasNextPage: boolean;
 }
 
 const MAX_PAGE_DEFAULT = 50;
 
-const Pagination = ({ currentPage, maxPage, onNextPageClick, onPrevPageClick }: Props) => {
+const Pagination = ({ currentPage, maxPage, onNextPageClick, onPrevPageClick, hasNextPage }: Props) => {
   const pageNumber = (
     <Flex alignItems="center">
       <Button
@@ -27,6 +28,7 @@ const Pagination = ({ currentPage, maxPage, onNextPageClick, onPrevPageClick }: 
       >
         { currentPage }
       </Button>
+      { /* max page will be removed */ }
           of
       <Button
         variant="outline"
@@ -58,6 +60,7 @@ const Pagination = ({ currentPage, maxPage, onNextPageClick, onPrevPageClick }: 
           w="36px"
           icon={ <Icon as={ arrowIcon } w={ 5 } h={ 5 }/> }
           mr={ 8 }
+          disabled={ currentPage === 1 }
         />
         { pageNumber }
         <IconButton
@@ -68,6 +71,7 @@ const Pagination = ({ currentPage, maxPage, onNextPageClick, onPrevPageClick }: 
           w="36px"
           icon={ <Icon as={ arrowIcon } w={ 5 } h={ 5 } transform="rotate(180deg)"/> }
           ml={ 8 }
+          disabled={ !hasNextPage }
         />
       </Flex>
       { /* not implemented yet */ }

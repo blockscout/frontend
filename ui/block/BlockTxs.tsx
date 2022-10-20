@@ -15,7 +15,7 @@ const BlockTxs = () => {
     //   onPrevPageClick={ () => {} }
     // />
     // eslint-disable-next-line react/jsx-no-bind
-    <TxsWithSort txs={ [] } setSorting={ () => {} }/>
+    <TxsWithSort txs={ [] } sort={ () => () => {} }/>
   );
 };
 

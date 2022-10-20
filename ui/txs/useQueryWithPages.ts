@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { pick, omit } from 'lodash';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
@@ -11,8 +11,10 @@ import useFetch from 'lib/hooks/useFetch';
 const PAGINATION_FIELDS = [ 'block_number', 'index', 'items_count' ];
 
 export default function useQueryWithPages(queryName: string, filter: string) {
+  const queryClient = useQueryClient();
   const router = useRouter();
   const [ page, setPage ] = React.useState(1);
+  const currPageParams = pick(router.query, PAGINATION_FIELDS);
   const [ pageParams, setPageParams ] = React.useState<Array<Partial<TransactionsResponse['next_page_params']>>>([ {} ]);
   const fetch = useFetch();
 
@@ -21,7 +23,7 @@ export default function useQueryWithPages(queryName: string, filter: string) {
     async() => {
       const params: Array<string> = [];
 
-      Object.entries(pageParams[page - 1]).forEach(([ key, val ]) => params.push(`${ key }=${ val }`));
+      Object.entries(currPageParams).forEach(([ key, val ]) => params.push(`${ key }=${ val }`));
 
       return fetch(`/api/transactions?filter=${ filter }${ params.length ? '&' + params.join('&') : '' }`);
     },
@@ -29,16 +31,19 @@ export default function useQueryWithPages(queryName: string, filter: string) {
   );
 
   const onNextPageClick = useCallback(() => {
-    if (page >= pageParams.length && data?.next_page_params) {
-      // api adds filters into next-page-params now
-      // later filters will be removed from response
-      const nextPageParams = pick(data.next_page_params, PAGINATION_FIELDS);
-      setPageParams(prev => [ ...prev, nextPageParams ]);
-      const nextPageQuery = { ...router.query };
-      Object.entries(nextPageParams).forEach(([ key, val ]) => nextPageQuery[key] = val.toString());
-      router.query = nextPageQuery;
-      router.push(router);
+    if (!data?.next_page_params) {
+      // we hide next page button if no next_page_params
+      return;
     }
+    // api adds filters into next-page-params now
+    // later filters will be removed from response
+    const nextPageParams = pick(data.next_page_params, PAGINATION_FIELDS);
+    if (page >= pageParams.length && data?.next_page_params) {
+      setPageParams(prev => [ ...prev, nextPageParams ]);
+    }
+    const nextPageQuery = { ...router.query };
+    Object.entries(nextPageParams).forEach(([ key, val ]) => nextPageQuery[key] = val.toString());
+    router.push({ pathname: router.pathname, query: nextPageQuery }, undefined, { shallow: true });
     animateScroll.scrollToTop({ duration: 0 });
     setPage(prev => prev + 1);
   }, [ data, page, pageParams, router ]);
@@ -46,29 +51,28 @@ export default function useQueryWithPages(queryName: string, filter: string) {
   const onPrevPageClick = useCallback(() => {
     // returning to the first page
     // we dont have pagination params for the first page
+    let nextPageQuery: typeof router.query;
     if (page === 2) {
-      router.query = omit(router.query, PAGINATION_FIELDS);
+      nextPageQuery = omit(router.query, PAGINATION_FIELDS);
     } else {
-      const nextPageParams = { ...pageParams[page - 1] };
-      const nextPageQuery = { ...router.query };
+      const nextPageParams = { ...pageParams[page - 2] };
+      nextPageQuery = { ...router.query };
       Object.entries(nextPageParams).forEach(([ key, val ]) => nextPageQuery[key] = val.toString());
-      router.query = nextPageQuery;
     }
-    router.push(router);
+    router.query = nextPageQuery;
+    router.push({ pathname: router.pathname, query: nextPageQuery }, undefined, { shallow: true });
     animateScroll.scrollToTop({ duration: 0 });
     setPage(prev => prev - 1);
   }, [ router, page, pageParams ]);
 
   const resetPage = useCallback(() => {
-    router.query = omit(router.query, PAGINATION_FIELDS);
-    router.push(router);
+    queryClient.clear();
     animateScroll.scrollToTop({ duration: 0 });
-    setPageParams([ {} ]);
-    setPage(1);
-  }, [ router ]);
+    router.push({ pathname: router.pathname, query: omit(router.query, PAGINATION_FIELDS) }, undefined, { shallow: true });
+  }, [ router, queryClient ]);
 
   // if there are pagination params on the initial page, we shouldn't show pagination
-  const hasPagination = !(page === 1 && Object.keys(pick(router.query, PAGINATION_FIELDS)).length > 0);
+  const hasPagination = !(page === 1 && Object.keys(currPageParams).length > 0);
 
   return { data, isError, isLoading, page, onNextPageClick, onPrevPageClick, hasPagination, resetPage };
 }

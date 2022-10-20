@@ -116,8 +116,15 @@ const TxsContent = ({
       </HStack>
       { content }
       <Box mx={{ base: 0, lg: 6 }} my={{ base: 6, lg: 3 }}>
-        { hasPagination ?
-          <Pagination currentPage={ page } onNextPageClick={ onNextPageClick } onPrevPageClick={ onPrevPageClick }/> :
+        { hasPagination ? (
+          <Pagination
+            currentPage={ page }
+            hasNextPage={ data?.next_page_params !== undefined && Object.keys(data?.next_page_params).length > 0 }
+            onNextPageClick={ onNextPageClick }
+            onPrevPageClick={ onPrevPageClick }
+          />
+        ) :
+          // temporary button, waiting for new pagination mockups
           <Button onClick={ resetPage }>Reset</Button>
         }
       </Box>
