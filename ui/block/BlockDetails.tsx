@@ -305,7 +305,7 @@ const BlockDetails = () => {
                 key={ type }
                 title={ type }
                 // is this text correct for validators?
-                hint={ `Amount of distributed reward. ${ capitalize(getNetworkValidatorTitle()) }s receive a static block reward + Tx fees + uncle fees.` }
+                hint={ `Amount of distributed reward. ${ capitalize(validatorTitle) }s receive a static block reward + Tx fees + uncle fees.` }
               >
                 { BigNumber(reward).dividedBy(WEI).toFixed() } { appConfig.network.currency.symbol }
               </DetailsInfoItem>
