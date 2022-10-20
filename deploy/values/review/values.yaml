@@ -311,6 +311,8 @@ frontend:
       _default: SPOA
     NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS:
       _default: 18
+    NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE:
+      _default: validation
     NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED:
       _default: 'true'
     NEXT_PUBLIC_FEATURED_NETWORKS:

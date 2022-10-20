@@ -29,6 +29,7 @@ const config = Object.freeze({
     nativeTokenAddress: process.env.NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS,
     basePath: '/' + [ process.env.NEXT_PUBLIC_NETWORK_TYPE, process.env.NEXT_PUBLIC_NETWORK_SUBTYPE ].filter(Boolean).join('/'),
     explorers: process.env.NEXT_PUBLIC_NETWORK_EXPLORERS?.replaceAll('\'', '"'),
+    verificationType: process.env.NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE || 'mining',
   },
   footerLinks: {
     github: process.env.NEXT_PUBLIC_FOOTER_GITHUB_LINK,

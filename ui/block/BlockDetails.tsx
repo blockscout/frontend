@@ -1,6 +1,7 @@
 import { Grid, GridItem, Text, Icon, Link, Box, Tooltip, Alert } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
+import capitalize from 'lodash/capitalize';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
@@ -18,6 +19,7 @@ import type { ErrorType } from 'lib/hooks/useFetch';
 import useFetch from 'lib/hooks/useFetch';
 import { space } from 'lib/html-entities';
 import link from 'lib/link/link';
+import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import BlockDetailsSkeleton from 'ui/block/details/BlockDetailsSkeleton';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
@@ -70,6 +72,8 @@ const BlockDetails = () => {
   const sectionGap = <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>;
   const { totalReward, staticReward, burntFees, txFees } = getBlockReward(data);
 
+  const validatorTitle = getNetworkValidatorTitle();
+
   return (
     <Grid columnGap={ 8 } rowGap={{ base: 3, lg: 3 }} templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }} overflow="hidden">
       <DetailsInfoItem
@@ -110,12 +114,12 @@ const BlockDetails = () => {
         </Link>
       </DetailsInfoItem>
       <DetailsInfoItem
-        title="Mined by"
+        title={ appConfig.network.verificationType === 'validation' ? 'Validated by' : 'Mined by' }
         hint="A block producer who successfully included the block onto the blockchain."
         columnGap={ 1 }
       >
         <AddressLink hash={ data.miner.hash }/>
-        { data.miner.name && <Text>(Miner: { data.miner.name })</Text> }
+        { data.miner.name && <Text>{ `(${ capitalize(validatorTitle) }: ${ data.miner.name })` }</Text> }
         { /* api doesn't return the block processing time yet */ }
         { /* <Text>{ dayjs.duration(block.minedIn, 'second').humanize(true) }</Text> */ }
       </DetailsInfoItem>
@@ -123,7 +127,7 @@ const BlockDetails = () => {
         <DetailsInfoItem
           title="Block reward"
           hint={
-            `For each block, the miner is rewarded with a finite amount of ${ appConfig.network.currency.symbol || 'native token' }
+            `For each block, the ${ validatorTitle } is rewarded with a finite amount of ${ appConfig.network.currency.symbol || 'native token' } 
           on top of the fees paid for all transactions in the block.`
           }
           columnGap={ 1 }
@@ -219,7 +223,7 @@ const BlockDetails = () => {
       { /* api doesn't support extra data yet */ }
       { /* <DetailsInfoItem
         title="Extra data"
-        hint="Any data that can be included by the miner in the block."
+        hint={ `Any data that can be included by the ${ validatorTitle } in the block.` }
       >
         <Text whiteSpace="pre">{ data.extra_data } </Text>
         <Text variant="secondary">(Hex: { data.extra_data })</Text>
@@ -248,7 +252,7 @@ const BlockDetails = () => {
 
           <DetailsInfoItem
             title="Difficulty"
-            hint="Block difficulty for miner, used to calibrate block generation time."
+            hint={ `Block difficulty for ${ validatorTitle }, used to calibrate block generation time.` }
           >
             { BigNumber(data.difficulty).toFormat() }
           </DetailsInfoItem>
@@ -300,7 +304,8 @@ const BlockDetails = () => {
               <DetailsInfoItem
                 key={ type }
                 title={ type }
-                hint="Amount of distributed reward. Miners receive a static block reward + Tx fees + uncle fees."
+                // is this text correct for validators?
+                hint={ `Amount of distributed reward. ${ capitalize(validatorTitle) }s receive a static block reward + Tx fees + uncle fees.` }
               >
                 { BigNumber(reward).dividedBy(WEI).toFixed() } { appConfig.network.currency.symbol }
               </DetailsInfoItem>
