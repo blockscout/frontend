@@ -25,4 +25,4 @@ const Utilization = ({ className, value, colorScheme = 'green' }: Props) => {
   );
 };
 
-export default chakra(Utilization);
+export default React.memo(chakra(Utilization));

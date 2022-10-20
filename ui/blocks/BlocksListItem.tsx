@@ -8,8 +8,8 @@ import appConfig from 'configs/app/config';
 import flameIcon from 'icons/flame.svg';
 import getBlockReward from 'lib/block/getBlockReward';
 import { WEI } from 'lib/consts';
-import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import link from 'lib/link/link';
+import BlockTimestamp from 'ui/blocks/BlockTimestamp';
 import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import AddressLink from 'ui/shared/address/AddressLink';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
@@ -24,7 +24,6 @@ interface Props {
 const BlocksListItem = ({ data, isPending, enableTimeIncrement }: Props) => {
   const spinnerEmptyColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
   const { totalReward, burntFees, txFees } = getBlockReward(data);
-  const blockTimestampTimeAgo = useTimeAgoIncrement(data.timestamp, enableTimeIncrement);
 
   return (
     <AccountListItemMobile rowGap={ 3 }>
@@ -38,7 +37,7 @@ const BlocksListItem = ({ data, isPending, enableTimeIncrement }: Props) => {
             { data.height }
           </Link>
         </Flex>
-        <Text variant="secondary"fontWeight={ 400 }>{ blockTimestampTimeAgo }</Text>
+        <BlockTimestamp ts={ data.timestamp } isEnabled={ enableTimeIncrement }/>
       </Flex>
       <Flex columnGap={ 2 }>
         <Text fontWeight={ 500 }>Size</Text>
