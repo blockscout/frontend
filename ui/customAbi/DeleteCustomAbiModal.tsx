@@ -3,6 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import React, { useCallback } from 'react';
 
 import type { CustomAbi, CustomAbis } from 'types/api/account';
+import { QueryKeys } from 'types/client/accountQueries';
 
 import DeleteModal from 'ui/shared/DeleteModal';
 
@@ -21,7 +22,7 @@ const DeleteCustomAbiModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
   }, [ data ]);
 
   const onSuccess = useCallback(async() => {
-    queryClient.setQueryData([ 'custom-abis' ], (prevData: CustomAbis | undefined) => {
+    queryClient.setQueryData([ QueryKeys.customAbis ], (prevData: CustomAbis | undefined) => {
       return prevData?.filter((item) => item.id !== data.id);
     });
   }, [ data, queryClient ]);

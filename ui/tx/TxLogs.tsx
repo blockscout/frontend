@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { LogsResponse } from 'types/api/log';
+import { QueryKeys } from 'types/client/queries';
 
 import useFetch from 'lib/hooks/useFetch';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
@@ -15,7 +16,7 @@ const TxLogs = () => {
   const fetch = useFetch();
 
   const { data, isLoading, isError } = useQuery<unknown, unknown, LogsResponse>(
-    [ 'tx-log', router.query.id ],
+    [ QueryKeys.txLog, router.query.id ],
     async() => await fetch(`/api/transactions/${ router.query.id }/logs`),
     {
       enabled: Boolean(router.query.id),

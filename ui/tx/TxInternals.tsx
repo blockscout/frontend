@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { InternalTransactionsResponse, TxInternalsType, InternalTransaction } from 'types/api/internalTransaction';
+import { QueryKeys } from 'types/client/queries';
 
 import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -72,7 +73,7 @@ const TxInternals = () => {
   const [ searchTerm, setSearchTerm ] = React.useState<string>('');
   const [ sort, setSort ] = React.useState<Sort>();
   const { data, isLoading, isError } = useQuery<unknown, unknown, InternalTransactionsResponse>(
-    [ 'tx-internals', router.query.id ],
+    [ QueryKeys.txInternals, router.query.id ],
     async() => await fetch(`/api/transactions/${ router.query.id }/internal-transactions`),
     {
       enabled: Boolean(router.query.id),

@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
 import type { BlockType, BlocksResponse } from 'types/api/block';
+import { QueryKeys } from 'types/client/accountQueries';
 
 import useFetch from 'lib/hooks/useFetch';
 import BlocksList from 'ui/blocks/BlocksList';
@@ -20,7 +21,7 @@ const BlocksContent = ({ type }: Props) => {
   const fetch = useFetch();
 
   const { data, isLoading, isError } = useQuery<unknown, unknown, BlocksResponse>(
-    [ 'blocks', type ],
+    [ QueryKeys.blocks, type ],
     async() => await fetch(`/api/blocks${ type ? `?type=${ type }` : '' }`),
   );
 

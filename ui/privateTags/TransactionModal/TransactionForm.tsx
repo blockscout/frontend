@@ -9,6 +9,7 @@ import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
 import { useForm, Controller } from 'react-hook-form';
 
 import type { TransactionTag, TransactionTagErrors } from 'types/api/account';
+import { QueryKeys } from 'types/client/accountQueries';
 
 import getErrorMessage from 'lib/getErrorMessage';
 import type { ErrorType } from 'lib/hooks/useFetch';
@@ -70,7 +71,7 @@ const TransactionForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) =>
       }
     },
     onSuccess: () => {
-      queryClient.refetchQueries([ 'transaction-tags' ]).then(() => {
+      queryClient.refetchQueries([ QueryKeys.transactionTags ]).then(() => {
         onClose();
         setPending(false);
       });

@@ -22,8 +22,8 @@ const BlocksTable = ({ data }: Props) => {
             <Th width="21%" minW="144px">Miner</Th>
             <Th width="64px" isNumeric>Txn</Th>
             <Th width="35%">Gas used</Th>
-            <Th width="22%">Reward { appConfig.network.currency }</Th>
-            <Th width="22%">Burnt fees { appConfig.network.currency }</Th>
+            <Th width="22%">Reward { appConfig.network.currency.symbol }</Th>
+            <Th width="22%">Burnt fees { appConfig.network.currency.symbol }</Th>
           </Tr>
         </Thead>
         <Tbody>

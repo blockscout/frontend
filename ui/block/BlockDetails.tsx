@@ -6,6 +6,7 @@ import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
 import type { Block } from 'types/api/block';
+import { QueryKeys } from 'types/client/accountQueries';
 
 import appConfig from 'configs/app/config';
 import clockIcon from 'icons/clock.svg';
@@ -34,7 +35,7 @@ const BlockDetails = () => {
   const fetch = useFetch();
 
   const { data, isLoading, isError, error } = useQuery<unknown, ErrorType<{ status: number }>, Block>(
-    [ 'block', router.query.id ],
+    [ QueryKeys.block, router.query.id ],
     async() => await fetch(`/api/blocks/${ router.query.id }`),
     {
       enabled: Boolean(router.query.id),
@@ -122,12 +123,12 @@ const BlockDetails = () => {
         <DetailsInfoItem
           title="Block reward"
           hint={
-            `For each block, the miner is rewarded with a finite amount of ${ appConfig.network.currency || 'native token' } 
+            `For each block, the miner is rewarded with a finite amount of ${ appConfig.network.currency.symbol || 'native token' }
           on top of the fees paid for all transactions in the block.`
           }
           columnGap={ 1 }
         >
-          <Text>{ totalReward.dividedBy(WEI).toFixed() } { appConfig.network.currency }</Text>
+          <Text>{ totalReward.dividedBy(WEI).toFixed() } { appConfig.network.currency.symbol }</Text>
           { (!txFees.isEqualTo(ZERO) || !burntFees.isEqualTo(ZERO)) && (
             <Text variant="secondary" whiteSpace="break-spaces">(
               <Tooltip label="Static block reward">
@@ -161,7 +162,7 @@ const BlockDetails = () => {
             title={ type }
             hint="Amount of distributed reward. Miners receive a static block reward + Tx fees + uncle fees."
           >
-            { BigNumber(reward).dividedBy(WEI).toFixed() } { appConfig.network.currency }
+            { BigNumber(reward).dividedBy(WEI).toFixed() } { appConfig.network.currency.symbol }
           </DetailsInfoItem>
         ))
       }
@@ -192,7 +193,7 @@ const BlockDetails = () => {
           title="Base fee per gas"
           hint="Minimum fee required per unit of gas. Fee adjusts based on network congestion."
         >
-          <Text>{ BigNumber(data.base_fee_per_gas).dividedBy(WEI).toFixed() } { appConfig.network.currency } </Text>
+          <Text>{ BigNumber(data.base_fee_per_gas).dividedBy(WEI).toFixed() } { appConfig.network.currency.symbol } </Text>
           <Text variant="secondary" whiteSpace="pre">
             { space }({ BigNumber(data.base_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() } Gwei)
           </Text>
@@ -201,13 +202,13 @@ const BlockDetails = () => {
       <DetailsInfoItem
         title="Burnt fees"
         hint={
-          `Amount of ${ appConfig.network.currency || 'native token' } burned from transactions included in the block. 
-            
+          `Amount of ${ appConfig.network.currency.symbol || 'native token' } burned from transactions included in the block.
+
           Equals Block Base Fee per Gas * Gas Used.`
         }
       >
         <Icon as={ flameIcon } boxSize={ 5 } color="gray.500"/>
-        <Text ml={ 1 }>{ burntFees.dividedBy(WEI).toFixed() } { appConfig.network.currency }</Text>
+        <Text ml={ 1 }>{ burntFees.dividedBy(WEI).toFixed() } { appConfig.network.currency.symbol }</Text>
         { !txFees.isEqualTo(ZERO) && (
           <Tooltip label="Burnt fees / Txn fees * 100%">
             <Box>
@@ -224,7 +225,7 @@ const BlockDetails = () => {
           title="Priority fee / Tip"
           hint="User-defined tips sent to validator for transaction priority/inclusion."
         >
-          { BigNumber(data.priority_fee).dividedBy(WEI).toFixed() } { appConfig.network.currency }
+          { BigNumber(data.priority_fee).dividedBy(WEI).toFixed() } { appConfig.network.currency.symbol }
         </DetailsInfoItem>
       ) }
       { /* api doesn't support extra data yet */ }

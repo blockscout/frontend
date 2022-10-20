@@ -36,7 +36,7 @@ const TxInternalsListItem = ({ type, from, to, value, success, error, gas_limit:
         </Address>
       </Box>
       <HStack spacing={ 3 }>
-        <Text fontSize="sm" fontWeight={ 500 }>Value { appConfig.network.currency }</Text>
+        <Text fontSize="sm" fontWeight={ 500 }>Value { appConfig.network.currency.symbol }</Text>
         <Text fontSize="sm" variant="secondary">{ value }</Text>
       </HStack>
       <HStack spacing={ 3 }>

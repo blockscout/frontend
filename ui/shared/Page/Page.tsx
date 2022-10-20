@@ -2,6 +2,8 @@ import { Flex } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
+import { QueryKeys } from 'types/client/queries';
+
 import useFetch from 'lib/hooks/useFetch';
 import PageContent from 'ui/shared/Page/PageContent';
 import Header from 'ui/snippets/header/Header';
@@ -15,7 +17,7 @@ interface Props {
 const Page = ({ children, wrapChildren = true }: Props) => {
   const fetch = useFetch();
 
-  useQuery<unknown, unknown, unknown>([ 'csrf' ], async() => await fetch('/api/account/csrf'));
+  useQuery<unknown, unknown, unknown>([ QueryKeys.csrf ], async() => await fetch('/api/account/csrf'));
 
   const renderedChildren = wrapChildren ? (
     <PageContent>{ children }</PageContent>

@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
 import type { PublicTags, PublicTag } from 'types/api/account';
+import { QueryKeys } from 'types/client/accountQueries';
 
 import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -26,7 +27,7 @@ const PublicTagsData = ({ changeToFormScreen, onTagDelete }: Props) => {
   const isMobile = useIsMobile();
   const fetch = useFetch();
 
-  const { data, isLoading, isError } = useQuery<unknown, unknown, PublicTags>([ 'public-tags' ], async() => await fetch('/api/account/public-tags'));
+  const { data, isLoading, isError } = useQuery<unknown, unknown, PublicTags>([ QueryKeys.publicTags ], async() => await fetch('/api/account/public-tags'));
 
   const onDeleteModalClose = useCallback(() => {
     setDeleteModalData(undefined);

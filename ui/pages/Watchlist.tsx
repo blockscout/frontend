@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
 import type { TWatchlist, TWatchlistItem } from 'types/client/account';
+import { QueryKeys } from 'types/client/accountQueries';
 
 import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -19,7 +20,7 @@ import WatchlistTable from 'ui/watchlist/WatchlistTable/WatchlistTable';
 
 const WatchList: React.FC = () => {
   const { data, isLoading, isError } =
-    useQuery<unknown, unknown, TWatchlist>([ 'watchlist' ], async() => fetch('/api/account/watchlist/get-with-tokens'));
+    useQuery<unknown, unknown, TWatchlist>([ QueryKeys.watchlist ], async() => fetch('/api/account/watchlist/get-with-tokens'));
 
   const addressModalProps = useDisclosure();
   const deleteModalProps = useDisclosure();

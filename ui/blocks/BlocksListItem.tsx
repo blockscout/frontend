@@ -38,7 +38,7 @@ const BlocksListItem = ({ data, isPending }: Props) => {
             { data.height }
           </Link>
         </Flex>
-        <Text variant="secondary"fontWeight={ 400 }>{ dayjs(data.timestamp).fromNow() }</Text>
+        <Text variant="secondary" fontWeight={ 400 }>{ dayjs(data.timestamp).fromNow() }</Text>
       </Flex>
       <Flex columnGap={ 2 }>
         <Text fontWeight={ 500 }>Size</Text>
@@ -61,7 +61,7 @@ const BlocksListItem = ({ data, isPending }: Props) => {
         </Flex>
       </Box>
       <Flex columnGap={ 2 }>
-        <Text fontWeight={ 500 }>Reward { appConfig.network.currency }</Text>
+        <Text fontWeight={ 500 }>Reward { appConfig.network.currency.symbol }</Text>
         <Text variant="secondary">{ totalReward.div(WEI).toFixed() }</Text>
       </Flex>
       <Flex>

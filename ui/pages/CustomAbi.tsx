@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
 import type { CustomAbi, CustomAbis } from 'types/api/account';
+import { QueryKeys } from 'types/client/accountQueries';
 
 import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -27,7 +28,7 @@ const CustomAbiPage: React.FC = () => {
   const [ customAbiModalData, setCustomAbiModalData ] = useState<CustomAbi>();
   const [ deleteModalData, setDeleteModalData ] = useState<CustomAbi>();
 
-  const { data, isLoading, isError } = useQuery<unknown, unknown, CustomAbis>([ 'custom-abis' ], async() => await fetch('/api/account/custom-abis'));
+  const { data, isLoading, isError } = useQuery<unknown, unknown, CustomAbis>([ QueryKeys.customAbis ], async() => await fetch('/api/account/custom-abis'));
 
   const onEditClick = useCallback((data: CustomAbi) => {
     setCustomAbiModalData(data);
