@@ -127,7 +127,7 @@ const BlockDetails = () => {
         <DetailsInfoItem
           title="Block reward"
           hint={
-            `For each block, the ${ getNetworkValidatorTitle() } is rewarded with a finite amount of ${ appConfig.network.currency.symbol || 'native token' } 
+            `For each block, the ${ validatorTitle } is rewarded with a finite amount of ${ appConfig.network.currency.symbol || 'native token' } 
           on top of the fees paid for all transactions in the block.`
           }
           columnGap={ 1 }
