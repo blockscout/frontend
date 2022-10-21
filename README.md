@@ -79,6 +79,7 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_APP_PROTOCOL | `http \| https` *(optional)* | App protocol (`https` used as default value) | `https` |
 | NEXT_PUBLIC_APP_HOST | `string` | App host | `blockscout.com` |
 | NEXT_PUBLIC_APP_PORT | `number` *(optional)* | Port where app is running. Have to be provided if it is different to default port | `3000` |
+| NEXT_PUBLIC_APP_ENV | `string` *(optional)* | Current app env (e.g development, review or production). Used for Sentry.io configuration | `production` |
 
 ### API configuration
 

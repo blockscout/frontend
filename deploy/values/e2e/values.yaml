@@ -292,7 +292,9 @@ frontend:
     NEXT_PUBLIC_FOOTER_TWITTER_LINK:
       _default: https://www.twitter.com/blockscoutcom
     NEXT_PUBLIC_APP_INSTANCE:
-      _default: local
+      _default: unknown
+    NEXT_PUBLIC_APP_ENV:
+      _default: e2e
     NEXT_PUBLIC_FOOTER_TELEGRAM_LINK:
       _default: https://t.me/poa_network
     NEXT_PUBLIC_FOOTER_STAKING_LINK:
