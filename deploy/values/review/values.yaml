@@ -90,6 +90,8 @@ blockscout:
       _default: "/poa/sokol"
     NETWORK_PATH:
       _default: "/poa/sokol"
+    API_PATH:
+      _default: "/poa/sokol"
     ETHEREUM_JSONRPC_DISABLE_ARCHIVE_BALANCES:
       _default: 'true'
 
@@ -266,8 +268,8 @@ frontend:
     tls:
       enabled: true
     path:
-      - "/account"
-      - "/profile"
+      - "/poa/sokol/auth/account"
+      - "/poa/sokol/auth/profile"
   resources:
     limits:
       memory:
