@@ -43,9 +43,11 @@ export default function useQueryWithPages(queryName: string, filter: string) {
     }
     const nextPageQuery = { ...router.query };
     Object.entries(nextPageParams).forEach(([ key, val ]) => nextPageQuery[key] = val.toString());
-    router.push({ pathname: router.pathname, query: nextPageQuery }, undefined, { shallow: true });
-    animateScroll.scrollToTop({ duration: 0 });
-    setPage(prev => prev + 1);
+    router.push({ pathname: router.pathname, query: nextPageQuery }, undefined, { shallow: true })
+      .then(() => {
+        animateScroll.scrollToTop({ duration: 0 });
+        setPage(prev => prev + 1);
+      });
   }, [ data, page, pageParams, router ]);
 
   const onPrevPageClick = useCallback(() => {
@@ -60,9 +62,11 @@ export default function useQueryWithPages(queryName: string, filter: string) {
       Object.entries(nextPageParams).forEach(([ key, val ]) => nextPageQuery[key] = val.toString());
     }
     router.query = nextPageQuery;
-    router.push({ pathname: router.pathname, query: nextPageQuery }, undefined, { shallow: true });
-    animateScroll.scrollToTop({ duration: 0 });
-    setPage(prev => prev - 1);
+    router.push({ pathname: router.pathname, query: nextPageQuery }, undefined, { shallow: true })
+      .then(() => {
+        animateScroll.scrollToTop({ duration: 0 });
+        setPage(prev => prev - 1);
+      });
   }, [ router, page, pageParams ]);
 
   const resetPage = useCallback(() => {
