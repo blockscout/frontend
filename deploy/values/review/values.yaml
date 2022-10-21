@@ -270,6 +270,7 @@ frontend:
     path:
       - "/poa/sokol/auth/account"
       - "/poa/sokol/auth/profile"
+      - "/_next"
   resources:
     limits:
       memory:
