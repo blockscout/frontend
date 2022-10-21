@@ -1,6 +1,7 @@
 import { VStack, FormControl, FormLabel, Input } from '@chakra-ui/react';
 import React from 'react';
 
+import config from 'configs/app/config';
 import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
@@ -10,6 +11,9 @@ import UserAvatar from 'ui/shared/UserAvatar';
 
 const MyProfile = () => {
   const { data, isLoading, isError } = useFetchProfileInfo();
+
+  // eslint-disable-next-line no-console
+  console.log('__>__', config);
 
   const content = (() => {
     if (isLoading) {
