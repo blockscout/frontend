@@ -22,7 +22,7 @@ const BlocksContent = ({ type }: Props) => {
 
   const { data, isLoading, isError } = useQuery<unknown, unknown, BlocksResponse>(
     [ QueryKeys.blocks, type ],
-    async() => await fetch(`/api/blocks${ type ? `?type=${ type }` : '' }`),
+    async() => await fetch(`/node-api/blocks${ type ? `?type=${ type }` : '' }`),
   );
 
   if (isLoading) {

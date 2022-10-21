@@ -19,7 +19,7 @@ const DeleteAddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
   const fetch = useFetch();
 
   const mutationFn = useCallback(() => {
-    return fetch(`/api/account/api-keys/${ data.api_key }`, { method: 'DELETE' });
+    return fetch(`/node-api/account/api-keys/${ data.api_key }`, { method: 'DELETE' });
   }, [ data.api_key, fetch ]);
 
   const onSuccess = useCallback(async() => {

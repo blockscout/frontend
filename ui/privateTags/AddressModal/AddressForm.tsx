@@ -54,10 +54,10 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
 
     const isEdit = data?.id;
     if (isEdit) {
-      return fetch(`/api/account/private-tags/address/${ data.id }`, { method: 'PUT', body });
+      return fetch(`/node-api/account/private-tags/address/${ data.id }`, { method: 'PUT', body });
     }
 
-    return fetch('/api/account/private-tags/address', { method: 'POST', body });
+    return fetch('/node-api/account/private-tags/address', { method: 'POST', body });
   }, {
     onError: (e: ErrorType<AddressTagErrors>) => {
       setPending(false);

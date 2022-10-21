@@ -28,7 +28,8 @@ const CustomAbiPage: React.FC = () => {
   const [ customAbiModalData, setCustomAbiModalData ] = useState<CustomAbi>();
   const [ deleteModalData, setDeleteModalData ] = useState<CustomAbi>();
 
-  const { data, isLoading, isError } = useQuery<unknown, unknown, CustomAbis>([ QueryKeys.customAbis ], async() => await fetch('/api/account/custom-abis'));
+  const { data, isLoading, isError } = useQuery<unknown, unknown, CustomAbis>([ QueryKeys.customAbis ], async() =>
+    await fetch('/node-api/account/custom-abis'));
 
   const onEditClick = useCallback((data: CustomAbi) => {
     setCustomAbiModalData(data);

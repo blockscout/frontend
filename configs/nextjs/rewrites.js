@@ -10,6 +10,7 @@ async function rewrites() {
   // it seems like it's solved but it's not actually
 
   return [
+    { source: '/node-api/:slug*', destination: '/api/:slug*' },
     { source: '/astar/:slug*', destination: '/astar/mainnet/:slug*' },
     { source: '/shiden/:slug*', destination: '/shiden/mainnet/:slug*' },
   ];

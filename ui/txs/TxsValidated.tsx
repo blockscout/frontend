@@ -15,7 +15,7 @@ import TxsSkeletonMobile from './TxsSkeletonMobile';
 const TxsValidated = () => {
   const fetch = useFetch();
   const { data, isLoading, isError } =
-  useQuery<unknown, unknown, TransactionsResponse>([ QueryKeys.transactionsValidated ], async() => fetch('/api/transactions/?filter=validated'));
+  useQuery<unknown, unknown, TransactionsResponse>([ QueryKeys.transactionsValidated ], async() => fetch('/node-api/transactions/?filter=validated'));
 
   if (isError) {
     return <DataFetchAlert/>;

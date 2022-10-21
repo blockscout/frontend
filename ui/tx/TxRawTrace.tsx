@@ -16,7 +16,7 @@ const TxRawTrace = () => {
 
   const { data, isLoading, isError } = useQuery<unknown, unknown, RawTracesResponse>(
     [ QueryKeys.txRawTrace, router.query.id ],
-    async() => await fetch(`/api/transactions/${ router.query.id }/raw-trace`),
+    async() => await fetch(`/node-api/transactions/${ router.query.id }/raw-trace`),
     {
       enabled: Boolean(router.query.id),
     },

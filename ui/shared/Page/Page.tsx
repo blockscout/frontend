@@ -17,7 +17,7 @@ interface Props {
 const Page = ({ children, wrapChildren = true }: Props) => {
   const fetch = useFetch();
 
-  useQuery<unknown, unknown, unknown>([ QueryKeys.csrf ], async() => await fetch('/api/account/csrf'));
+  useQuery<unknown, unknown, unknown>([ QueryKeys.csrf ], async() => await fetch('/node-api/account/csrf'));
 
   const renderedChildren = wrapChildren ? (
     <PageContent>{ children }</PageContent>

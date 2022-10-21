@@ -38,7 +38,7 @@ const BlockDetails = () => {
 
   const { data, isLoading, isError, error } = useQuery<unknown, ErrorType<{ status: number }>, Block>(
     [ QueryKeys.block, router.query.id ],
-    async() => await fetch(`/api/blocks/${ router.query.id }`),
+    async() => await fetch(`/node-api/blocks/${ router.query.id }`),
     {
       enabled: Boolean(router.query.id),
     },
