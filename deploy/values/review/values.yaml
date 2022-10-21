@@ -87,9 +87,9 @@ blockscout:
     DISABLE_REALTIME_INDEXER:
       _default: 'false'
     SOCKET_ROOT:
-      _default: "/"
+      _default: "/poa/sokol"
     NETWORK_PATH:
-      _default: "/"
+      _default: "/poa/sokol"
     ETHEREUM_JSONRPC_DISABLE_ARCHIVE_BALANCES:
       _default: 'true'
 
@@ -325,4 +325,4 @@ frontend:
     NEXT_PUBLIC_API_ENDPOINT:
       _default: https://blockscout.com
     NEXT_PUBLIC_API_BASE_PATH:
-      _default: /
+      _default: /poa/sokol
