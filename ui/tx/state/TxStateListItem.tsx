@@ -1,4 +1,5 @@
 import { AccordionItem, AccordionButton, AccordionIcon, Button, Box, Flex, Text, Link, StatArrow, Stat, AccordionPanel } from '@chakra-ui/react';
+import capitalize from 'lodash/capitalize';
 import React from 'react';
 
 import type ArrayElement from 'types/utils/ArrayElement';
@@ -6,6 +7,7 @@ import type ArrayElement from 'types/utils/ArrayElement';
 import appConfig from 'configs/app/config';
 import type { data } from 'data/txState';
 import { nbsp } from 'lib/html-entities';
+import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
@@ -60,7 +62,7 @@ const TxStateListItem = ({ storage, address, miner, after, before, diff }: Props
             ) }
             <Flex rowGap={ 2 } flexDir="column" fontSize="sm" whiteSpace="pre" fontWeight={ 500 }>
               <Box>
-                <Text as="span">Miner </Text>
+                <Text as="span">{ capitalize(getNetworkValidatorTitle()) }</Text>
                 <Link>{ miner }</Link>
               </Box>
               <Box>

@@ -1,5 +1,6 @@
 import { Flex, Link, Spinner, Text, Box, Icon } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
+import capitalize from 'lodash/capitalize';
 import React from 'react';
 
 import type { Block } from 'types/api/block';
@@ -9,6 +10,7 @@ import flameIcon from 'icons/flame.svg';
 import { WEI, ZERO } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
 import link from 'lib/link/link';
+import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import AddressLink from 'ui/shared/address/AddressLink';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
@@ -45,7 +47,7 @@ const BlocksListItem = ({ data, isPending }: Props) => {
         <Text variant="secondary">{ data.size.toLocaleString('en') } bytes</Text>
       </Flex>
       <Flex columnGap={ 2 }>
-        <Text fontWeight={ 500 }>Miner</Text>
+        <Text fontWeight={ 500 }>{ capitalize(getNetworkValidatorTitle()) }</Text>
         <AddressLink alias={ data.miner.name } hash={ data.miner.hash } truncation="constant"/>
       </Flex>
       <Flex columnGap={ 2 }>
