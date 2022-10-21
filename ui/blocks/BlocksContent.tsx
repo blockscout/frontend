@@ -53,7 +53,8 @@ const BlocksContent = ({ type }: Props) => {
       <Show below="lg" key="content-mobile"><BlocksList data={ data.items }/></Show>
       <Show above="lg" key="content-desktop"><BlocksTable data={ data.items }/></Show>
       <Box mx={{ base: 0, lg: 6 }} my={{ base: 6, lg: 3 }}>
-        <Pagination currentPage={ 1 }/>
+        { /* eslint-disable-next-line react/jsx-no-bind */ }
+        <Pagination currentPage={ 1 } onNextPageClick={ () => {} } onPrevPageClick={ () => {} } hasNextPage/>
       </Box>
     </>
   );

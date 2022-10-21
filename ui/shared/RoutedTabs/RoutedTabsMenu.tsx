@@ -14,7 +14,7 @@ import { menuButton } from './utils';
 
 interface Props {
   tabs: Array<RoutedTab | MenuButton>;
-  activeTab: RoutedTab;
+  activeTab?: RoutedTab;
   tabsCut: number;
   isActive: boolean;
   styles?: StyleProps;
@@ -52,7 +52,7 @@ const RoutedTabsMenu = ({ tabs, tabsCut, isActive, styles, onItemClick, buttonRe
               key={ tab.id }
               variant="ghost"
               onClick={ handleItemClick }
-              isActive={ activeTab.id === tab.id }
+              isActive={ activeTab ? activeTab.id === tab.id : false }
               justifyContent="left"
               data-index={ index }
             >

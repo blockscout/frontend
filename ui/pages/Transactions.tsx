@@ -9,15 +9,13 @@ import appConfig from 'configs/app/config';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
-import TxsPending from 'ui/txs/TxsPending';
-import TxsValidated from 'ui/txs/TxsValidated';
+import TxsTab from 'ui/txs/TxsTab';
 
 const Transactions = () => {
-
   const verifiedTitle = appConfig.network.verificationType === 'validation' ? 'Validated' : 'Mined';
   const TABS: Array<RoutedTab> = [
-    { id: 'validated', title: verifiedTitle, component: <TxsValidated/> },
-    { id: 'pending', title: 'Pending', component: <TxsPending/> },
+    { id: 'validated', title: verifiedTitle, component: <TxsTab tab="validated"/> },
+    { id: 'pending', title: 'Pending', component: <TxsTab tab="pending"/> },
   ];
 
   return (
