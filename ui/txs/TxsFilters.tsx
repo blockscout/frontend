@@ -41,6 +41,11 @@ const METHOD_OPTIONS = [
   { title: 'Commit', id: 'commit' },
 ];
 
+// TODO: i think we need to reload page after applying filters,
+// because we need to reset pagination, clear query caches, reconnect websocket...
+
+// also mobile version of filters is not implemented
+
 const TxsFilters = ({ onFiltersChange, filters, appliedFiltersNum }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
 

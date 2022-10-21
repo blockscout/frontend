@@ -6,11 +6,11 @@ import type { Sort } from 'types/client/txs-sort';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import FilterInput from 'ui/shared/FilterInput';
+// import FilterInput from 'ui/shared/FilterInput';
 import Pagination from 'ui/shared/Pagination';
 import SortButton from 'ui/shared/SortButton';
 
-import TxsFilters from './TxsFilters';
+// import TxsFilters from './TxsFilters';
 import TxsSkeletonDesktop from './TxsSkeletonDesktop';
 import TxsSkeletonMobile from './TxsSkeletonMobile';
 import TxsWithSort from './TxsWithSort';
@@ -26,7 +26,7 @@ const TxsContent = ({
   stateFilter,
 }: Props) => {
   const [ sorting, setSorting ] = useState<Sort>();
-  const [ filters, setFilters ] = useState<Partial<TTxsFilters>>({ type: [], method: [] });
+  // const [ filters, setFilters ] = useState<Partial<TTxsFilters>>({ type: [], method: [] });
 
   const sort = useCallback((field: 'val' | 'fee') => () => {
     if (field === 'val') {
@@ -62,7 +62,8 @@ const TxsContent = ({
     onNextPageClick,
     hasPagination,
     resetPage,
-  } = useQueryWithPages({ ...filters, filter: stateFilter });
+  } = useQueryWithPages({ filter: stateFilter });
+  // } = useQueryWithPages({ ...filters, filter: stateFilter });
 
   const isMobile = useIsMobile(false);
 
@@ -91,12 +92,12 @@ const TxsContent = ({
     <>
       { showDescription && <Box mb={ 12 }>Only the first 10,000 elements are displayed</Box> }
       <HStack mb={ 6 }>
-        { /* TODO */ }
-        <TxsFilters
+        { /* api is not implemented */ }
+        { /* <TxsFilters
           filters={ filters }
           onFiltersChange={ setFilters }
           appliedFiltersNum={ 0 }
-        />
+        /> */ }
         { isMobile && (
           <SortButton
             // eslint-disable-next-line react/jsx-no-bind
@@ -105,13 +106,14 @@ const TxsContent = ({
             display={{ base: 'block', lg: 'none' }}
           />
         ) }
-        <FilterInput
+        { /* api is not implemented */ }
+        { /* <FilterInput
           // eslint-disable-next-line react/jsx-no-bind
           onChange={ () => {} }
           maxW="360px"
           size="xs"
           placeholder="Search by addresses, hash, method..."
-        />
+        /> */ }
       </HStack>
       { content }
       <Box mx={{ base: 0, lg: 6 }} my={{ base: 6, lg: 3 }}>
