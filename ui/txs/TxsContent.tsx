@@ -1,32 +1,32 @@
 import { Alert, Box, HStack, Show, Button } from '@chakra-ui/react';
 import React, { useState, useCallback } from 'react';
 
+import type { TTxsFilters } from 'types/api/txsFilters';
 import type { Sort } from 'types/client/txs-sort';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import FilterButton from 'ui/shared/FilterButton';
 import FilterInput from 'ui/shared/FilterInput';
 import Pagination from 'ui/shared/Pagination';
 import SortButton from 'ui/shared/SortButton';
 
+import TxsFilters from './TxsFilters';
 import TxsSkeletonDesktop from './TxsSkeletonDesktop';
 import TxsSkeletonMobile from './TxsSkeletonMobile';
 import TxsWithSort from './TxsWithSort';
 import useQueryWithPages from './useQueryWithPages';
 
 type Props = {
-  queryName: string;
   showDescription?: boolean;
-  stateFilter: 'validated' | 'pending';
+  stateFilter: TTxsFilters['filter'];
 }
 
 const TxsContent = ({
   showDescription,
-  queryName,
   stateFilter,
 }: Props) => {
   const [ sorting, setSorting ] = useState<Sort>();
+  const [ filters, setFilters ] = useState<Partial<TTxsFilters>>({ type: [], method: [] });
 
   const sort = useCallback((field: 'val' | 'fee') => () => {
     if (field === 'val') {
@@ -62,7 +62,7 @@ const TxsContent = ({
     onNextPageClick,
     hasPagination,
     resetPage,
-  } = useQueryWithPages(queryName, stateFilter);
+  } = useQueryWithPages({ ...filters, filter: stateFilter });
 
   const isMobile = useIsMobile(false);
 
@@ -92,10 +92,9 @@ const TxsContent = ({
       { showDescription && <Box mb={ 12 }>Only the first 10,000 elements are displayed</Box> }
       <HStack mb={ 6 }>
         { /* TODO */ }
-        <FilterButton
-          isActive={ false }
-          // eslint-disable-next-line react/jsx-no-bind
-          onClick={ () => {} }
+        <TxsFilters
+          filters={ filters }
+          onFiltersChange={ setFilters }
           appliedFiltersNum={ 0 }
         />
         { isMobile && (
