@@ -69,7 +69,7 @@ jobs:
       valuesDir: deploy/values/review
       appNamespace: review-front-$GITHUB_HEAD_REF_SLUG
       blockscoutIngressHost: blockscout
-      frontendIngressHost: frontend
+      frontendIngressHost: blockscout
       frontendImage: ghcr.io/blockscout/frontend:prerelease-${{ needs.push_to_registry.outputs.shortSha }}
       gethIngressHost: geth
       scVerifierIngressHost: sc-verifier

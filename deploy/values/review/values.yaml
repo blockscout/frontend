@@ -266,8 +266,8 @@ frontend:
     tls:
       enabled: true
     path:
-      - "/account/*"
-      - "/profile/*"
+      - "/account"
+      - "/profile"
   resources:
     limits:
       memory:
