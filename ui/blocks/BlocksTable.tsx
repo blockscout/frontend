@@ -29,7 +29,8 @@ const BlocksTable = ({ data }: Props) => {
           </Tr>
         </Thead>
         <Tbody>
-          { data.map((item) => <BlocksTableItem key={ item.height } data={ item }/>) }
+          { /* TODO prop "enableTimeIncrement" should be set to false for second and later pages */ }
+          { data.map((item) => <BlocksTableItem key={ item.height } data={ item } enableTimeIncrement/>) }
         </Tbody>
       </Table>
     </TableContainer>
