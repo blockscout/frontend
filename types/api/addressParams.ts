@@ -1,4 +1,10 @@
-export interface Tag {
+export interface AddressTag {
+  label: string;
+  display_name: string;
+  address_hash: string;
+}
+
+export interface WatchlistName {
   label: string;
   display_name: string;
 }
@@ -8,7 +14,7 @@ export interface AddressParam {
   implementation_name: string;
   name: string | null;
   is_contract: boolean;
-  private_tags: Array<Tag> | null;
-  watchlist_names: Array<Tag> | null;
-  public_tags: Array<Tag> | null;
+  private_tags: Array<AddressTag> | null;
+  watchlist_names: Array<WatchlistName> | null;
+  public_tags: Array<AddressTag> | null;
 }
