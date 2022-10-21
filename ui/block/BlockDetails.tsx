@@ -1,11 +1,13 @@
 import { Grid, GridItem, Text, Icon, Link, Box, Tooltip, Alert } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
+import capitalize from 'lodash/capitalize';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
 import type { Block } from 'types/api/block';
+import { QueryKeys } from 'types/client/accountQueries';
 
 import appConfig from 'configs/app/config';
 import clockIcon from 'icons/clock.svg';
@@ -17,6 +19,7 @@ import type { ErrorType } from 'lib/hooks/useFetch';
 import useFetch from 'lib/hooks/useFetch';
 import { space } from 'lib/html-entities';
 import link from 'lib/link/link';
+import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import BlockDetailsSkeleton from 'ui/block/details/BlockDetailsSkeleton';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
@@ -34,7 +37,7 @@ const BlockDetails = () => {
   const fetch = useFetch();
 
   const { data, isLoading, isError, error } = useQuery<unknown, ErrorType<{ status: number }>, Block>(
-    [ 'block', router.query.id ],
+    [ QueryKeys.block, router.query.id ],
     async() => await fetch(`/api/blocks/${ router.query.id }`),
     {
       enabled: Boolean(router.query.id),
@@ -68,6 +71,8 @@ const BlockDetails = () => {
 
   const sectionGap = <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>;
   const { totalReward, staticReward, burntFees, txFees } = getBlockReward(data);
+
+  const validatorTitle = getNetworkValidatorTitle();
 
   return (
     <Grid columnGap={ 8 } rowGap={{ base: 3, lg: 3 }} templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }} overflow="hidden">
@@ -109,12 +114,12 @@ const BlockDetails = () => {
         </Link>
       </DetailsInfoItem>
       <DetailsInfoItem
-        title="Mined by"
+        title={ appConfig.network.verificationType === 'validation' ? 'Validated by' : 'Mined by' }
         hint="A block producer who successfully included the block onto the blockchain."
         columnGap={ 1 }
       >
         <AddressLink hash={ data.miner.hash }/>
-        { data.miner.name && <Text>(Miner: { data.miner.name })</Text> }
+        { data.miner.name && <Text>{ `(${ capitalize(validatorTitle) }: ${ data.miner.name })` }</Text> }
         { /* api doesn't return the block processing time yet */ }
         { /* <Text>{ dayjs.duration(block.minedIn, 'second').humanize(true) }</Text> */ }
       </DetailsInfoItem>
@@ -122,12 +127,12 @@ const BlockDetails = () => {
         <DetailsInfoItem
           title="Block reward"
           hint={
-            `For each block, the miner is rewarded with a finite amount of ${ appConfig.network.currency || 'native token' } 
+            `For each block, the ${ validatorTitle } is rewarded with a finite amount of ${ appConfig.network.currency.symbol || 'native token' } 
           on top of the fees paid for all transactions in the block.`
           }
           columnGap={ 1 }
         >
-          <Text>{ totalReward.dividedBy(WEI).toFixed() } { appConfig.network.currency }</Text>
+          <Text>{ totalReward.dividedBy(WEI).toFixed() } { appConfig.network.currency.symbol }</Text>
           { (!txFees.isEqualTo(ZERO) || !burntFees.isEqualTo(ZERO)) && (
             <Text variant="secondary" whiteSpace="break-spaces">(
               <Tooltip label="Static block reward">
@@ -180,7 +185,7 @@ const BlockDetails = () => {
           title="Base fee per gas"
           hint="Minimum fee required per unit of gas. Fee adjusts based on network congestion."
         >
-          <Text>{ BigNumber(data.base_fee_per_gas).dividedBy(WEI).toFixed() } { appConfig.network.currency } </Text>
+          <Text>{ BigNumber(data.base_fee_per_gas).dividedBy(WEI).toFixed() } { appConfig.network.currency.symbol } </Text>
           <Text variant="secondary" whiteSpace="pre">
             { space }({ BigNumber(data.base_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() } Gwei)
           </Text>
@@ -189,13 +194,13 @@ const BlockDetails = () => {
       <DetailsInfoItem
         title="Burnt fees"
         hint={
-          `Amount of ${ appConfig.network.currency || 'native token' } burned from transactions included in the block. 
-            
+          `Amount of ${ appConfig.network.currency.symbol || 'native token' } burned from transactions included in the block.
+
           Equals Block Base Fee per Gas * Gas Used.`
         }
       >
         <Icon as={ flameIcon } boxSize={ 5 } color="gray.500"/>
-        <Text ml={ 1 }>{ burntFees.dividedBy(WEI).toFixed() } { appConfig.network.currency }</Text>
+        <Text ml={ 1 }>{ burntFees.dividedBy(WEI).toFixed() } { appConfig.network.currency.symbol }</Text>
         { !txFees.isEqualTo(ZERO) && (
           <Tooltip label="Burnt fees / Txn fees * 100%">
             <Box>
@@ -212,13 +217,13 @@ const BlockDetails = () => {
           title="Priority fee / Tip"
           hint="User-defined tips sent to validator for transaction priority/inclusion."
         >
-          { BigNumber(data.priority_fee).dividedBy(WEI).toFixed() } { appConfig.network.currency }
+          { BigNumber(data.priority_fee).dividedBy(WEI).toFixed() } { appConfig.network.currency.symbol }
         </DetailsInfoItem>
       ) }
       { /* api doesn't support extra data yet */ }
       { /* <DetailsInfoItem
         title="Extra data"
-        hint="Any data that can be included by the miner in the block."
+        hint={ `Any data that can be included by the ${ validatorTitle } in the block.` }
       >
         <Text whiteSpace="pre">{ data.extra_data } </Text>
         <Text variant="secondary">(Hex: { data.extra_data })</Text>
@@ -247,7 +252,7 @@ const BlockDetails = () => {
 
           <DetailsInfoItem
             title="Difficulty"
-            hint="Block difficulty for miner, used to calibrate block generation time."
+            hint={ `Block difficulty for ${ validatorTitle }, used to calibrate block generation time.` }
           >
             { BigNumber(data.difficulty).toFormat() }
           </DetailsInfoItem>
@@ -299,9 +304,10 @@ const BlockDetails = () => {
               <DetailsInfoItem
                 key={ type }
                 title={ type }
-                hint="Amount of distributed reward. Miners receive a static block reward + Tx fees + uncle fees."
+                // is this text correct for validators?
+                hint={ `Amount of distributed reward. ${ capitalize(validatorTitle) }s receive a static block reward + Tx fees + uncle fees.` }
               >
-                { BigNumber(reward).dividedBy(WEI).toFixed() } { appConfig.network.currency }
+                { BigNumber(reward).dividedBy(WEI).toFixed() } { appConfig.network.currency.symbol }
               </DetailsInfoItem>
             )) }
         </>

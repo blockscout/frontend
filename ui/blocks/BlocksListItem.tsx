@@ -1,5 +1,6 @@
 import { Flex, Link, Spinner, Text, Box, Icon, useColorModeValue } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
+import capitalize from 'lodash/capitalize';
 import React from 'react';
 
 import type { Block } from 'types/api/block';
@@ -10,6 +11,7 @@ import getBlockReward from 'lib/block/getBlockReward';
 import { WEI } from 'lib/consts';
 import link from 'lib/link/link';
 import BlockTimestamp from 'ui/blocks/BlockTimestamp';
+import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import AddressLink from 'ui/shared/address/AddressLink';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
@@ -44,7 +46,7 @@ const BlocksListItem = ({ data, isPending, enableTimeIncrement }: Props) => {
         <Text variant="secondary">{ data.size.toLocaleString('en') } bytes</Text>
       </Flex>
       <Flex columnGap={ 2 }>
-        <Text fontWeight={ 500 }>Miner</Text>
+        <Text fontWeight={ 500 }>{ capitalize(getNetworkValidatorTitle()) }</Text>
         <AddressLink alias={ data.miner.name } hash={ data.miner.hash } truncation="constant"/>
       </Flex>
       <Flex columnGap={ 2 }>
@@ -60,7 +62,7 @@ const BlocksListItem = ({ data, isPending, enableTimeIncrement }: Props) => {
         </Flex>
       </Box>
       <Flex columnGap={ 2 }>
-        <Text fontWeight={ 500 }>Reward { appConfig.network.currency }</Text>
+        <Text fontWeight={ 500 }>Reward { appConfig.network.currency.symbol }</Text>
         <Text variant="secondary">{ totalReward.div(WEI).toFixed() }</Text>
       </Flex>
       <Flex>

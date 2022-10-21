@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
 import type { BlockType, BlocksResponse } from 'types/api/block';
+import { QueryKeys } from 'types/client/accountQueries';
 
 import useFetch from 'lib/hooks/useFetch';
 import BlocksList from 'ui/blocks/BlocksList';
@@ -20,7 +21,7 @@ const BlocksContent = ({ type }: Props) => {
   const fetch = useFetch();
 
   const { data, isLoading, isError } = useQuery<unknown, unknown, BlocksResponse>(
-    [ 'blocks', type ],
+    [ QueryKeys.blocks, type ],
     async() => await fetch(`/api/blocks${ type ? `?type=${ type }` : '' }`),
   );
 
@@ -52,7 +53,8 @@ const BlocksContent = ({ type }: Props) => {
       <Show below="lg" key="content-mobile"><BlocksList data={ data.items }/></Show>
       <Show above="lg" key="content-desktop"><BlocksTable data={ data.items }/></Show>
       <Box mx={{ base: 0, lg: 6 }} my={{ base: 6, lg: 3 }}>
-        <Pagination currentPage={ 1 }/>
+        { /* eslint-disable-next-line react/jsx-no-bind */ }
+        <Pagination currentPage={ 1 } onNextPageClick={ () => {} } onPrevPageClick={ () => {} } hasNextPage/>
       </Box>
     </>
   );

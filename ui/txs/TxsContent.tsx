@@ -1,29 +1,33 @@
-import { Box, HStack, Show } from '@chakra-ui/react';
-import React, { useCallback, useEffect, useState } from 'react';
+import { Alert, Box, HStack, Show, Button } from '@chakra-ui/react';
+import React, { useState, useCallback } from 'react';
 
-import type { TransactionsResponse } from 'types/api/transaction';
 import type { Sort } from 'types/client/txs-sort';
 
-import compareBns from 'lib/bigint/compareBns';
+import useIsMobile from 'lib/hooks/useIsMobile';
+import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import FilterButton from 'ui/shared/FilterButton';
 import FilterInput from 'ui/shared/FilterInput';
 import Pagination from 'ui/shared/Pagination';
 import SortButton from 'ui/shared/SortButton';
 
-import TxsListItem from './TxsListItem';
-import TxsTable from './TxsTable';
+import TxsSkeletonDesktop from './TxsSkeletonDesktop';
+import TxsSkeletonMobile from './TxsSkeletonMobile';
+import TxsWithSort from './TxsWithSort';
+import useQueryWithPages from './useQueryWithPages';
 
 type Props = {
-  txs: TransactionsResponse['items'];
+  queryName: string;
   showDescription?: boolean;
-  showSortButton?: boolean;
+  stateFilter: 'validated' | 'pending';
 }
 
-const TxsContent = ({ showSortButton = true, showDescription = true, txs }: Props) => {
+const TxsContent = ({
+  showDescription,
+  queryName,
+  stateFilter,
+}: Props) => {
   const [ sorting, setSorting ] = useState<Sort>();
-  const [ sortedTxs, setSortedTxs ] = useState(txs);
 
-  // sorting should be preserved with pagination!
   const sort = useCallback((field: 'val' | 'fee') => () => {
     if (field === 'val') {
       setSorting((prevVal => {
@@ -47,26 +51,41 @@ const TxsContent = ({ showSortButton = true, showDescription = true, txs }: Prop
         return 'fee-desc';
       }));
     }
-  }, []);
+  }, [ setSorting ]);
 
-  useEffect(() => {
-    switch (sorting) {
-      case 'val-desc':
-        setSortedTxs([ ...txs ].sort((tx1, tx2) => compareBns(tx1.value, tx2.value)));
-        break;
-      case 'val-asc':
-        setSortedTxs([ ...txs ].sort((tx1, tx2) => compareBns(tx2.value, tx1.value)));
-        break;
-      case 'fee-desc':
-        setSortedTxs([ ...txs ].sort((tx1, tx2) => compareBns(tx1.fee.value, tx2.fee.value)));
-        break;
-      case 'fee-asc':
-        setSortedTxs([ ...txs ].sort((tx1, tx2) => compareBns(tx2.fee.value, tx1.fee.value)));
-        break;
-      default:
-        setSortedTxs(txs);
-    }
-  }, [ sorting, txs ]);
+  const {
+    data,
+    isLoading,
+    isError,
+    page,
+    onPrevPageClick,
+    onNextPageClick,
+    hasPagination,
+    resetPage,
+  } = useQueryWithPages(queryName, stateFilter);
+
+  const isMobile = useIsMobile(false);
+
+  if (isError) {
+    return <DataFetchAlert/>;
+  }
+
+  const txs = data?.items;
+
+  if (!isLoading && !txs) {
+    return <Alert>There are no transactions.</Alert>;
+  }
+
+  let content = (
+    <>
+      <Show below="lg" ssr={ false }><TxsSkeletonMobile/></Show>
+      <Show above="lg" ssr={ false }><TxsSkeletonDesktop/></Show>
+    </>
+  );
+
+  if (!isLoading && txs) {
+    content = <TxsWithSort txs={ txs } sorting={ sorting } sort={ sort }/>;
+  }
 
   return (
     <>
@@ -79,7 +98,7 @@ const TxsContent = ({ showSortButton = true, showDescription = true, txs }: Prop
           onClick={ () => {} }
           appliedFiltersNum={ 0 }
         />
-        { showSortButton && (
+        { isMobile && (
           <SortButton
             // eslint-disable-next-line react/jsx-no-bind
             handleSort={ () => {} }
@@ -95,10 +114,19 @@ const TxsContent = ({ showSortButton = true, showDescription = true, txs }: Prop
           placeholder="Search by addresses, hash, method..."
         />
       </HStack>
-      <Show below="lg"><Box>{ sortedTxs.map(tx => <TxsListItem tx={ tx } key={ tx.hash }/>) }</Box></Show>
-      <Show above="lg"><TxsTable txs={ sortedTxs } sort={ sort } sorting={ sorting }/></Show>
+      { content }
       <Box mx={{ base: 0, lg: 6 }} my={{ base: 6, lg: 3 }}>
-        <Pagination currentPage={ 1 }/>
+        { hasPagination ? (
+          <Pagination
+            currentPage={ page }
+            hasNextPage={ data?.next_page_params !== undefined && Object.keys(data?.next_page_params).length > 0 }
+            onNextPageClick={ onNextPageClick }
+            onPrevPageClick={ onPrevPageClick }
+          />
+        ) :
+          // temporary button, waiting for new pagination mockups
+          <Button onClick={ resetPage }>Reset</Button>
+        }
       </Box>
     </>
   );

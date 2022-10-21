@@ -8,3 +8,13 @@ export interface FeaturedNetwork {
   group: NetworkGroup;
   icon?: FunctionComponent<SVGAttributes<SVGElement>> | string;
 }
+
+export interface NetworkExplorer {
+  title: string;
+  baseUrl: string;
+  paths: {
+    tx: string;
+  };
+}
+
+export type NetworkVerificationType = 'mining' | 'validation';

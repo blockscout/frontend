@@ -1,4 +1,4 @@
-[Design](https://www.figma.com/file/07zoJSAP7Vo655ertmlppA/My_Account?node-id=279%3A1006) | [API Doc](https://github.com/blockscout/blockscout-account/blob/account/apps/block_scout_web/API.md) | [Swagger](https://app.swaggerhub.com/apis/NIKITOSING4/blockscout-account-api/1.0)
+[Design](https://www.figma.com/file/07zoJSAP7Vo655ertmlppA/My_Account?node-id=279%3A1006) | [API Doc](https://github.com/blockscout/blockscout-account/blob/account/apps/block_scout_web/API.md) | [Core Swagger](https://app.swaggerhub.com/apis/NIKITOSING4/CoreBlockScoutAPI/1.0.0) | [Account Swagger](https://app.swaggerhub.com/apis/NIKITOSING4/blockscout-account-api/1.0)
 
 -----
 ## Technology stack
@@ -24,7 +24,7 @@ For local development please follow next steps:
 - clone `.env.example` into `configs/envs/.env.secrets` and fill it with necessary secret values (see description [below](#environment-variables))
 - to spin up local dev server
     - for predefined networks configs (see full available list in `package.json`) you can just run `yarn dev:<app_name>`
-    - for custom network setup create `.env.local` file with all required environment variables from the [list](#environment-variables) and run `yarn dev` 
+    - for custom network setup create `.env.local` file with all required environment variables from the [list](#environment-variables) and run `yarn dev`
 - navigate to the host from logs output
 
 ## Components visual testing
@@ -47,7 +47,9 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_NETWORK_TYPE | `string` | Network type (used as first part of the base path) | `xdai` |
 | NEXT_PUBLIC_NETWORK_SUBTYPE | `string` | Network subtype (used as second part of the base path) | `mainnet` |
 | NEXT_PUBLIC_NETWORK_ID | `number` | Chain id, see [https://chainlist.org/](https://chainlist.org/) for the reference | `99` |
-| NEXT_PUBLIC_NETWORK_CURRENCY | `string` | Network currency symbol | `xDAI` |
+| NEXT_PUBLIC_NETWORK_CURRENCY_NAME | `string` | Network currency name | `Ether` |
+| NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL | `string` | Network currency symbol | `ETH` |
+| NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS | `string` | Network currency decimals | `18` |
 | NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS | `string` | Address of network's native token | `0x029a799563238d0e75e20be2f4bda0ea68d00172` |
 | NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME | `string` *(optional)* | Network name for constructing url of token logos according to template `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${assetsNamePath}/assets/${tokenAddress}/logo.png`. It should match network name in TrustWallet assets repo, see the full list [here](https://github.com/trustwallet/assets/tree/master/blockchains). If not provided, the network type will be used as its assets path part | `ethereum` |
 | NEXT_PUBLIC_NETWORK_LOGO | `string` *(optional)* | Network logo; if not provided, will fallback to logo predefined in the project; if the project doesn't have logo for such network then the common placeholder will be shown; *Note* that logo height should be 20px and width less than 120px | `https://www.fillmurray.com/240/40` |
@@ -66,6 +68,8 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_FOOTER_TELEGRAM_LINK | `string` *(optional)* | Link to Telegram in the footer | `https://t.me/poa_network` |
 | NEXT_PUBLIC_FOOTER_STAKING_LINK | `string` *(optional)* | Link to staking dashboard in the footer | `https://duneanalytics.com/maxaleks/xdai-staking` |
 | NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM | `string` | Link to form where authors can submit their dapps to the marketplace | `https://airtable.com/shrqUAcjgGJ4jU88C` |
+| NEXT_PUBLIC_NETWORK_EXPLORERS | `Array<NetworkExplorer>` where `NetworkExplorer` can have following [properties](#network-explorer-configuration-properties) | Used to build up links to transactions, blocks, addresses in other chain explorers.  | `[{'title':'Anyblock','baseUrl':'https://explorer.anyblock.tools','paths':{'tx':'/ethereum/poa/core/tx'}}]` |
+| NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE | `validation` or `mining` *(optional)* | Verification type in the network | `mining` |
 
 ### App configuration
 
@@ -93,9 +97,33 @@ The app instance could be customized by passing following variables to NodeJS en
 | group | `mainnets \| testnets \| other` | Indicates in which tab network appears in the menu | `'mainnets'` |
 | icon | `string` *(optional)* | Network icon; if not provided, will fallback to  icon predefined in the project; if the project doesn't have icon for such network then the common placeholder will be shown; *Note* that icon size should be 30px by 30px | `'https://www.fillmurray.com/60/60'` |
 
+### Network explorer configuration properties
+
+| Property | Type | Description | Example value
+| --- | --- | --- | --- |
+| title | `string` | Displayed name of the explorer | `'Anyblock'` |
+| baseUrl | `string` | Base url of the explorer | `'https://explorer.anyblock.tools'` |
+| paths | `Record<'tx' \| 'block' \| 'address', string>` | Map of explorer entities and their paths | `'paths':{'tx':'/ethereum/poa/core/tx'}` |
+
+*Note* The url of an entity will be constructed as `<baseUrl><paths[<entity-type>]><entity-id>`, e.g `https://explorer.anyblock.tools/ethereum/poa/core/tx/<tx-id>`
+
 ### External services configuration
 
 | Variable | Type | Description | Default value
 | --- | --- | --- | --- |
 | NEXT_PUBLIC_SENTRY_DSN | `string` *(optional)* | Client key for your Senty.io app | `<secret>` |
 | SENTRY_CSP_REPORT_URI | `string` *(optional)* | URL for sending CSP-reports to your Senty.io app | `<secret>` |
+
+### How to add new environment variable
+
+If the variable should be exposed to the browser don't forget to add prefix `NEXT_PUBLIC_` to its name.
+
+These are the steps that you have to follow to make everything work:
+- create the variable placeholder for build-time in file `.env.template`; this is the most important step, without this the app will not receive any variables that are passed at run-time
+- for local development purposes add the variable to either `configs/envs/.env.common` or `configs/envs/.env.<network>` files depending on if the variable has the same value for all network or specific value for each network
+- add the variable to CI configs
+    - `deploy/values/review/values.yaml` - review environment
+    - `deploy/values/main/values.yaml` - production environment
+    - `deploy/values/e2e/values.yaml` - e2e-test environment
+
+Keep in mind that all json-like values should be single-quoted, e.g `[{'foo': 'bar'}]`
