@@ -5,12 +5,14 @@ import React, { useCallback } from 'react';
 import { animateScroll } from 'react-scroll';
 
 import type { TransactionsResponse } from 'types/api/transaction';
+import type { TTxsFilters } from 'types/api/txsFilters';
+import { QueryKeys } from 'types/client/queries';
 
 import useFetch from 'lib/hooks/useFetch';
 
 const PAGINATION_FIELDS = [ 'block_number', 'index', 'items_count' ];
 
-export default function useQueryWithPages(queryName: string, filter: string) {
+export default function useQueryWithPages(filters: TTxsFilters) {
   const queryClient = useQueryClient();
   const router = useRouter();
   const [ page, setPage ] = React.useState(1);
@@ -19,13 +21,19 @@ export default function useQueryWithPages(queryName: string, filter: string) {
   const fetch = useFetch();
 
   const { data, isLoading, isError } = useQuery<unknown, unknown, TransactionsResponse>(
-    [ queryName, { page } ],
+    [ QueryKeys.transactions, { page, filters } ],
     async() => {
       const params: Array<string> = [];
 
-      Object.entries(currPageParams).forEach(([ key, val ]) => params.push(`${ key }=${ val }`));
+      Object.entries({ ...filters, ...currPageParams }).forEach(([ key, val ]) => {
+        if (Array.isArray(val)) {
+          val.length && params.push(`${ key }=${ val.join(',') }`);
+        } else if (val) {
+          params.push(`${ key }=${ val }`);
+        }
+      });
 
-      return fetch(`/api/transactions?filter=${ filter }${ params.length ? '&' + params.join('&') : '' }`);
+      return fetch(`/api/transactions${ params.length ? '?' + params.join('&') : '' }`);
     },
     { staleTime: Infinity },
   );
