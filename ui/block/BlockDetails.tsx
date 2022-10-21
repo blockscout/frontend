@@ -109,7 +109,7 @@ const BlockDetails = () => {
         title="Transactions"
         hint="The number of transactions in the block."
       >
-        <Link href={ link('block', { id: router.query.id }, { tab: 'transactions' }) }>
+        <Link href={ link('block', { id: router.query.id }, { tab: 'txs' }) }>
           { data.tx_count } transactions
         </Link>
       </DetailsInfoItem>

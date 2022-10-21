@@ -1,6 +1,7 @@
 import { Alert, Box, HStack, Show, Button } from '@chakra-ui/react';
 import React, { useState, useCallback } from 'react';
 
+import type { QueryKeys } from 'types/client/queries';
 import type { Sort } from 'types/client/txs-sort';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -16,15 +17,17 @@ import TxsWithSort from './TxsWithSort';
 import useQueryWithPages from './useQueryWithPages';
 
 type Props = {
-  queryName: string;
+  queryName: QueryKeys;
   showDescription?: boolean;
-  stateFilter: 'validated' | 'pending';
+  stateFilter?: 'validated' | 'pending';
+  apiPath: string;
 }
 
 const TxsContent = ({
   showDescription,
   queryName,
   stateFilter,
+  apiPath,
 }: Props) => {
   const [ sorting, setSorting ] = useState<Sort>();
 
@@ -62,7 +65,7 @@ const TxsContent = ({
     onNextPageClick,
     hasPagination,
     resetPage,
-  } = useQueryWithPages(queryName, stateFilter);
+  } = useQueryWithPages(queryName, stateFilter, apiPath);
 
   const isMobile = useIsMobile(false);
 

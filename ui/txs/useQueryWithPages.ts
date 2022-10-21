@@ -10,7 +10,7 @@ import useFetch from 'lib/hooks/useFetch';
 
 const PAGINATION_FIELDS = [ 'block_number', 'index', 'items_count' ];
 
-export default function useQueryWithPages(queryName: string, filter: string) {
+export default function useQueryWithPages(queryName: string, filter: string | undefined, apiPath: string) {
   const queryClient = useQueryClient();
   const router = useRouter();
   const [ page, setPage ] = React.useState(1);
@@ -23,9 +23,12 @@ export default function useQueryWithPages(queryName: string, filter: string) {
     async() => {
       const params: Array<string> = [];
 
-      Object.entries(currPageParams).forEach(([ key, val ]) => params.push(`${ key }=${ val }`));
+      Object.entries({
+        ...currPageParams,
+        filter,
+      }).forEach(([ key, val ]) => val && params.push(`${ key }=${ val }`));
 
-      return fetch(`/api/transactions?filter=${ filter }${ params.length ? '&' + params.join('&') : '' }`);
+      return fetch(`${ apiPath }${ params.length ? '?' + params.join('&') : '' }`);
     },
     { staleTime: Infinity },
   );

@@ -14,6 +14,7 @@ const TxsTab = ({ tab }: Props) => {
       queryName={ tab === 'validated' ? QueryKeys.transactionsValidated : QueryKeys.transactionsPending }
       showDescription={ tab === 'validated' }
       stateFilter={ tab }
+      apiPath="/api/transactions"
     />
   );
 };

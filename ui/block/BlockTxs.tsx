@@ -1,21 +1,18 @@
+import { useRouter } from 'next/router';
 import React from 'react';
 
-import TxsWithSort from 'ui/txs/TxsWithSort';
+import { QueryKeys } from 'types/client/queries';
+
+import TxsContent from 'ui/txs/TxsContent';
 
 const BlockTxs = () => {
+  const router = useRouter();
+
   return (
-    // <TxsContent
-    //   showDescription={ false }
-    //   showSortButton={ false }
-    //   txs={ [] }
-    //   page={ 1 }
-    //   // eslint-disable-next-line react/jsx-no-bind
-    //   onNextPageClick={ () => {} }
-    //   // eslint-disable-next-line react/jsx-no-bind
-    //   onPrevPageClick={ () => {} }
-    // />
-    // eslint-disable-next-line react/jsx-no-bind
-    <TxsWithSort txs={ [] } sort={ () => () => {} }/>
+    <TxsContent
+      queryName={ QueryKeys.blockTxs }
+      apiPath={ `/api/blocks/${ router.query.id }/transactions` }
+    />
   );
 };
 
