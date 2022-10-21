@@ -28,7 +28,7 @@ const BlocksListItem = ({ data, isPending, enableTimeIncrement }: Props) => {
   const { totalReward, burntFees, txFees } = getBlockReward(data);
 
   return (
-    <AccountListItemMobile rowGap={ 3 }>
+    <AccountListItemMobile rowGap={ 3 } key={ String(data.height) }>
       <Flex justifyContent="space-between" w="100%">
         <Flex columnGap={ 2 } alignItems="center">
           { isPending && <Spinner size="sm" color="blue.500" emptyColor={ spinnerEmptyColor }/> }

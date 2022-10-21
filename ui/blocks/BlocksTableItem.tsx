@@ -1,5 +1,6 @@
 import { Tr, Td, Link, Flex, Box, Icon, Tooltip, Spinner, useColorModeValue } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
+import { motion } from 'framer-motion';
 import React from 'react';
 
 import type { Block } from 'types/api/block';
@@ -23,7 +24,14 @@ const BlocksTableItem = ({ data, isPending, enableTimeIncrement }: Props) => {
   const { totalReward, burntFees, txFees } = getBlockReward(data);
 
   return (
-    <Tr>
+    <Tr
+      as={ motion.tr }
+      initial={{ opacity: 0, scale: 0.97 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transitionDuration="normal"
+      transitionTimingFunction="linear"
+      key={ data.height }
+    >
       <Td fontSize="sm">
         <Flex columnGap={ 2 } alignItems="center" mb={ 2 }>
           { isPending && <Spinner size="sm" flexShrink={ 0 }/> }

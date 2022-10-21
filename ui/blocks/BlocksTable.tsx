@@ -1,4 +1,5 @@
 import { Table, Thead, Tbody, Tr, Th, TableContainer } from '@chakra-ui/react';
+import { AnimatePresence } from 'framer-motion';
 import capitalize from 'lodash/capitalize';
 import React from 'react';
 
@@ -29,8 +30,10 @@ const BlocksTable = ({ data }: Props) => {
           </Tr>
         </Thead>
         <Tbody>
-          { /* TODO prop "enableTimeIncrement" should be set to false for second and later pages */ }
-          { data.map((item) => <BlocksTableItem key={ item.height } data={ item } enableTimeIncrement/>) }
+          <AnimatePresence initial={ false }>
+            { /* TODO prop "enableTimeIncrement" should be set to false for second and later pages */ }
+            { data.map((item) => <BlocksTableItem key={ item.height } data={ item } enableTimeIncrement/>) }
+          </AnimatePresence>
         </Tbody>
       </Table>
     </TableContainer>
