@@ -21,6 +21,8 @@ blockscout:
     # enable https
     tls:
       enabled: true
+    path:
+      - "/"
   # probes
   livenessProbe:
     enabled: true
@@ -263,6 +265,9 @@ frontend:
     # enable https
     tls:
       enabled: true
+    path:
+      - "/account/*"
+      - "/profile/*"
   resources:
     limits:
       memory:
