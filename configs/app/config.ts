@@ -2,10 +2,10 @@
 const env = process.env.VERCEL_ENV || process.env.NODE_ENV;
 const isDev = env === 'development';
 const baseUrl = [
-  process.env.NEXT_PUBLIC_APP_PROTOCOL || 'https',
+  process.env.NEXT_PUBLIC_APP_PROTOCOL?.replaceAll('\'', '"') || 'https',
   '://',
   process.env.NEXT_PUBLIC_VERCEL_URL || process.env.NEXT_PUBLIC_APP_HOST,
-  process.env.NEXT_PUBLIC_APP_PORT && process.env.NEXT_PUBLIC_APP_PORT !== '80' ? ':' + process.env.NEXT_PUBLIC_APP_PORT : '',
+  process.env.NEXT_PUBLIC_APP_PORT?.replaceAll('\'', '"') ? ':' + process.env.NEXT_PUBLIC_APP_PORT : '',
 ].join('');
 
 const DEFAULT_CURRENCY_DECIMALS = 18;
