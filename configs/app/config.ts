@@ -8,9 +8,6 @@ const baseUrl = [
   process.env.NEXT_PUBLIC_APP_PORT?.replaceAll('\'', '"') ? ':' + process.env.NEXT_PUBLIC_APP_PORT : '',
 ].join('');
 
-// eslint-disable-next-line no-console
-console.log('__>__', process.env.NEXT_PUBLIC_APP_PORT);
-
 const DEFAULT_CURRENCY_DECIMALS = 18;
 
 const config = Object.freeze({
