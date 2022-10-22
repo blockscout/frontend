@@ -5,8 +5,11 @@ const baseUrl = [
   process.env.NEXT_PUBLIC_APP_PROTOCOL || 'https',
   '://',
   process.env.NEXT_PUBLIC_VERCEL_URL || process.env.NEXT_PUBLIC_APP_HOST,
-  process.env.NEXT_PUBLIC_APP_PORT && process.env.NEXT_PUBLIC_APP_PORT !== '80' ? ':' + process.env.NEXT_PUBLIC_APP_PORT : '',
+  process.env.NEXT_PUBLIC_APP_PORT ? ':' + process.env.NEXT_PUBLIC_APP_PORT : '',
 ].join('');
+
+// eslint-disable-next-line no-console
+console.log('__>__', process.env.NEXT_PUBLIC_APP_PORT);
 
 const DEFAULT_CURRENCY_DECIMALS = 18;
 

@@ -14,6 +14,9 @@ const Home = () => {
   const router = useRouter();
   const toast = useToast();
 
+  // eslint-disable-next-line no-console
+  console.log({ appConfig });
+
   const [ isFormVisible, setFormVisibility ] = React.useState(false);
   const [ token, setToken ] = React.useState('');
 
