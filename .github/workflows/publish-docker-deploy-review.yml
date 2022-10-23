@@ -1,8 +1,10 @@
 name: Deploy review environment
 
 on:
-  push:
-  # pull_request:
+  # push:
+  pull_request:
+    paths:
+      - '**'
   workflow_dispatch:
 
 env:
