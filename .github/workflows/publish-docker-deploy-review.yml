@@ -16,6 +16,7 @@ env:
 
 jobs:
   push_to_registry:
+    if: github.event.pull_request
     name: Push Docker image to registry
     runs-on: ubuntu-latest
     outputs:
@@ -64,6 +65,7 @@ jobs:
 
   deploy_frontend:
     name: Deploy frontend app
+    if: github.event.pull_request
     needs: push_to_registry
     uses: blockscout/blockscout-ci-cd/.github/workflows/deploy.yaml@master
     with:
