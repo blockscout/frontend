@@ -21,6 +21,8 @@ blockscout:
     # enable https
     tls:
       enabled: true
+    path:
+      - "/"
   # probes
   livenessProbe:
     enabled: true
@@ -263,6 +265,8 @@ frontend:
     # enable https
     tls:
       enabled: true
+    path:
+      - "/"
   resources:
     limits:
       memory:
@@ -307,15 +311,15 @@ frontend:
       _default: 77
     NEXT_PUBLIC_NETWORK_CURRENCY_NAME:
       _default: POA Network Sokol
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
     NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL:
       _default: SPOA
     NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS:
