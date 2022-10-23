@@ -3,8 +3,8 @@ name: Deploy review environment
 on:
   # push:
   pull_request:
-    paths:
-      - '**'
+  #   paths:
+  #     - '**'
   workflow_dispatch:
 
 env:
@@ -17,6 +17,7 @@ env:
 
 jobs:
   push_to_registry:
+    if: github.event.review.state == 'approved'
     name: Push Docker image to registry
     runs-on: ubuntu-latest
     outputs:
@@ -69,7 +70,7 @@ jobs:
     uses: blockscout/blockscout-ci-cd/.github/workflows/deploy.yaml@master
     with:
       valuesDir: deploy/values/review
-      appNamespace: review-front-$GITHUB_REF_SLUG
+      appNamespace: review-front-$GITHUB_HEAD_REF_SLUG
       blockscoutIngressHost: blockscout
       frontendIngressHost: blockscout
       frontendImage: ghcr.io/blockscout/frontend:prerelease-${{ needs.push_to_registry.outputs.shortSha }}
