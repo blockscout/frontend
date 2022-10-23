@@ -271,6 +271,7 @@ frontend:
       - "/poa/sokol/auth/account"
       - "/poa/sokol/auth/profile"
       - "/_next"
+      - "/node-api"
   resources:
     limits:
       memory:
