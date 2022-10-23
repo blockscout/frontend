@@ -1,9 +1,10 @@
 name: Deploy review environment
 
 on:
-  push:
-    branches-ignore:
-      - 'main'
+  pull_request:
+  # push:
+  #   branches-ignore:
+  #     - 'main'
   workflow_dispatch:
 
 env:
@@ -16,7 +17,7 @@ env:
 
 jobs:
   push_to_registry:
-    if: env.pull_request.number
+    if: github.event.pull_request.number
     name: Push Docker image to registry
     runs-on: ubuntu-latest
     outputs:
