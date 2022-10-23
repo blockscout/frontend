@@ -3,6 +3,9 @@ name: Deploy review environment
 on:
   # push:
   pull_request:
+    types:
+      - opened
+      - edited
   #   paths:
   #     - '**'
   workflow_dispatch:
