@@ -16,7 +16,7 @@ env:
 
 jobs:
   push_to_registry:
-    if: github.event.pull_request.number
+    if: env.pull_request.number
     name: Push Docker image to registry
     runs-on: ubuntu-latest
     outputs:
