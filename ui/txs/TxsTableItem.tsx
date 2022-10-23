@@ -12,7 +12,6 @@ import {
   PopoverTrigger,
   PopoverContent,
   PopoverBody,
-  Portal,
   useColorModeValue,
   Show,
 } from '@chakra-ui/react';
@@ -40,7 +39,7 @@ const TxsTableItem = ({ tx }: {tx: Transaction}) => {
       <Tooltip label={ tx.from.implementation_name }>
         <Box display="flex"><AddressIcon hash={ tx.from.hash }/></Box>
       </Tooltip>
-      <AddressLink hash={ tx.from.hash } alias={ tx.from.name } fontWeight="500" ml={ 2 }/>
+      <AddressLink hash={ tx.from.hash } alias={ tx.from.name } fontWeight="500" ml={ 2 } truncation="constant"/>
     </Address>
   );
 
@@ -49,7 +48,7 @@ const TxsTableItem = ({ tx }: {tx: Transaction}) => {
       <Tooltip label={ tx.to.implementation_name }>
         <Box display="flex"><AddressIcon hash={ tx.to.hash }/></Box>
       </Tooltip>
-      <AddressLink hash={ tx.to.hash } alias={ tx.to.name } fontWeight="500" ml={ 2 }/>
+      <AddressLink hash={ tx.to.hash } alias={ tx.to.name } fontWeight="500" ml={ 2 } truncation="constant"/>
     </Address>
   );
 
@@ -57,19 +56,17 @@ const TxsTableItem = ({ tx }: {tx: Transaction}) => {
   return (
     <Tr>
       <Td pl={ 4 }>
-        <Popover placement="right-start" openDelay={ 300 }>
+        <Popover placement="right-start" openDelay={ 300 } isLazy>
           { ({ isOpen }) => (
             <>
               <PopoverTrigger>
                 <TxAdditionalInfoButton isOpen={ isOpen }/>
               </PopoverTrigger>
-              <Portal>
-                <PopoverContent border="1px solid" borderColor={ infoBorderColor }>
-                  <PopoverBody>
-                    <TxAdditionalInfo tx={ tx }/>
-                  </PopoverBody>
-                </PopoverContent>
-              </Portal>
+              <PopoverContent border="1px solid" borderColor={ infoBorderColor }>
+                <PopoverBody>
+                  <TxAdditionalInfo tx={ tx }/>
+                </PopoverBody>
+              </PopoverContent>
             </>
           ) }
         </Popover>
@@ -114,8 +111,7 @@ const TxsTableItem = ({ tx }: {tx: Transaction}) => {
       <Td>
         { tx.block && <Link href={ link('block', { id: tx.block.toString() }) }>{ tx.block }</Link> }
       </Td>
-      { /* TODO: fix "show" problem */ }
-      <Show above="xl">
+      <Show above="xl" ssr={ false }>
         <Td>
           { addressFrom }
         </Td>
@@ -126,7 +122,7 @@ const TxsTableItem = ({ tx }: {tx: Transaction}) => {
           { addressTo }
         </Td>
       </Show>
-      <Show below="xl">
+      <Show below="xl" ssr={ false }>
         <Td colSpan={ 3 }>
           <Box>
             { addressFrom }
