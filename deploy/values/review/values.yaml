@@ -4,7 +4,7 @@ global:
 blockscout:
   enabled: true
   image:
-    _default: blockscout/blockscout:review-prerelease-25d92762@sha256:462546c8970d49caa87934ebfd44cfc509005592dc2edf2ec0709c7c341bf330
+    _default: blockscout/blockscout:review-prerelease-51545cc5@sha256:f99e656fe10104896a29f19ab106fb34eb4966ff33506e5d0e14165f0a740fab
   replicas:
     app: 1
   docker:
@@ -26,6 +26,7 @@ blockscout:
       enabled: true
     path:
       - "/poa/sokol(/|$)(.*)"
+      - "/"
   # probes
   livenessProbe:
     enabled: true
@@ -277,11 +278,10 @@ frontend:
     tls:
       enabled: true
     path:
-      - "/poa/sokol/auth/account"
+      - "/poa/sokol/account"
       - "/poa/sokol/auth/profile"
       - "/_next"
       - "/node-api"
-      - "/"
   resources:
     limits:
       memory:
