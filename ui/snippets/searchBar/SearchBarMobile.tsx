@@ -31,8 +31,8 @@ const SearchBarMobile = ({ onChange, onSubmit }: Props) => {
       zIndex="docked"
       bgColor={ bgColor }
       transform={ isVisible ? 'translateY(0)' : 'translateY(-100%)' }
-      transitionProperty="transform"
-      transitionDuration="slow"
+      // transitionProperty="transform"
+      // transitionDuration="slow"
       display={{ base: 'block', lg: 'none' }}
       w="100%"
     >

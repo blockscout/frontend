@@ -30,9 +30,9 @@ const TxsHeader = ({ sorting, paginationProps }: Props) => {
       justifyContent="space-between"
       width="100%"
       position="sticky"
-      top={{ base: isVisible ? '56px' : '-56px', lg: 0 }}
-      transitionDuration="slow"
-      transitionProperty="top"
+      top={{ base: isVisible ? '56px' : '108px', lg: 0 }}
+      // transitionDuration="slow"
+      // transitionProperty="top"
       zIndex={{ base: 0, lg: 'docked' }}
     >
       <HStack>
