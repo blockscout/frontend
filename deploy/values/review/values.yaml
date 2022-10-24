@@ -17,7 +17,7 @@ blockscout:
   ingress:
     enabled: true
     annotations:
-      - 'nginx.ingress.kubernetes.io/rewrite-target=/$2'
+      - 'nginx.ingress.kubernetes.io/rewrite-target: /$2'
     host:
       _default: blockscout.test.blockscout.aws-k8s.blockscout.com
     # enable https
@@ -46,7 +46,7 @@ blockscout:
         _default: "2"
   # enable service to connect to RDS
   rds:
-    enable: false
+    enabled: false
     endpoint:
       _default: <endpoint>.<region>.rds.amazonaws.com
   # node label
@@ -86,7 +86,7 @@ blockscout:
     RUST_VERIFICATION_SERVICE_URL:
       _default: http://sc-verifier-svc:8043
     ACCOUNT_ENABLED:
-      _default: true
+      _default: 'true'
     DISABLE_REALTIME_INDEXER:
       _default: 'false'
     SOCKET_ROOT:
@@ -99,6 +99,10 @@ blockscout:
       _default: 'true'
     API_BASE_PATH:
       _default: "/poa/sokol"
+    APPS_MENU:
+      _default: 'true'
+    EXTERNAL_APPS:
+      _default: '[{"title": "Marketplace", "url": "..."}]'
 
 postgres:
   enabled: true
