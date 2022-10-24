@@ -1,5 +1,4 @@
 import { Icon, Box, Image, useColorModeValue } from '@chakra-ui/react';
-import NextLink from 'next/link';
 import React from 'react';
 import type { FunctionComponent, SVGAttributes } from 'react';
 
@@ -68,19 +67,19 @@ const NetworkLogo = ({ isCollapsed, onClick }: Props) => {
   }
 
   return (
-    <NextLink href={ href } passHref>
-      <Box
-        as="a"
-        width={{ base: '113px', lg: isCollapsed === false ? '113px' : 0, xl: isCollapsed ? '0' : '113px' }}
-        display="inline-flex"
-        overflow="hidden"
-        onClick={ onClick }
-        { ...getDefaultTransitionProps({ transitionProperty: 'width' }) }
-        aria-label="Link to main page"
-      >
-        { logoEl }
-      </Box>
-    </NextLink>
+    // TODO switch to <NextLink href={ href } passHref> when main page for network will be ready
+    <Box
+      as="a"
+      href={ href }
+      width={{ base: '113px', lg: isCollapsed === false ? '113px' : 0, xl: isCollapsed ? '0' : '113px' }}
+      display="inline-flex"
+      overflow="hidden"
+      onClick={ onClick }
+      { ...getDefaultTransitionProps({ transitionProperty: 'width' }) }
+      aria-label="Link to main page"
+    >
+      { logoEl }
+    </Box>
   );
 };
 

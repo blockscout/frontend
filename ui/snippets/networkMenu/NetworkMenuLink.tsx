@@ -1,5 +1,4 @@
 import { Box, Flex, Icon, Text, Image } from '@chakra-ui/react';
-import NextLink from 'next/link';
 import React from 'react';
 
 import type { FeaturedNetwork } from 'types/networks';
@@ -31,38 +30,37 @@ const NetworkMenuLink = ({ title, icon, isActive, isMobile, url }: Props) => {
 
   return (
     <Box as="li" listStyleType="none">
-      <NextLink href={ url } passHref>
-        <Flex
-          as="a"
-          px={ isMobile ? 3 : 4 }
-          py={ 2 }
-          alignItems="center"
-          cursor="pointer"
-          pointerEvents={ isActive ? 'none' : 'initial' }
-          borderRadius="base"
-          color={ isActive ? colors.text.active : colors.text.default }
-          bgColor={ isActive ? colors.bg.active : colors.bg.default }
-          _hover={{ color: isActive ? colors.text.active : colors.text.hover }}
+      <Flex
+        as="a"
+        href={ url }
+        px={ isMobile ? 3 : 4 }
+        py={ 2 }
+        alignItems="center"
+        cursor="pointer"
+        pointerEvents={ isActive ? 'none' : 'initial' }
+        borderRadius="base"
+        color={ isActive ? colors.text.active : colors.text.default }
+        bgColor={ isActive ? colors.bg.active : colors.bg.default }
+        _hover={{ color: isActive ? colors.text.active : colors.text.hover }}
+      >
+        { iconEl }
+        <Text
+          marginLeft={ 3 }
+          fontWeight="500"
+          color="inherit"
+          fontSize={ isMobile ? 'sm' : 'md' }
+          lineHeight={ isMobile ? '20px' : '24px' }
         >
-          { iconEl }
-          <Text
-            marginLeft={ 3 }
-            fontWeight="500"
-            color="inherit"
-            fontSize={ isMobile ? 'sm' : 'md' }
-            lineHeight={ isMobile ? '20px' : '24px' }
-          >
-            { title }
-          </Text>
-          { isActive && (
-            <Icon
-              as={ checkIcon }
-              boxSize="24px"
-              marginLeft="auto"
-            />
-          ) }
-        </Flex>
-      </NextLink>
+          { title }
+        </Text>
+        { isActive && (
+          <Icon
+            as={ checkIcon }
+            boxSize="24px"
+            marginLeft="auto"
+          />
+        ) }
+      </Flex>
     </Box>
   );
 };
