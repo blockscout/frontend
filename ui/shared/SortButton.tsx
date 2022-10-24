@@ -18,6 +18,7 @@ const SortButton = ({ handleSort, isSortActive, className }: Props) => {
       variant="outline"
       colorScheme="gray-dark"
       minWidth="36px"
+      display="flex"
       onClick={ handleSort }
       isActive={ isSortActive }
       className={ className }

@@ -1,13 +1,9 @@
 import { InputGroup, Input, InputLeftElement, Icon, useColorModeValue, chakra } from '@chakra-ui/react';
-import clamp from 'lodash/clamp';
-import throttle from 'lodash/throttle';
 import React from 'react';
 import type { ChangeEvent, FormEvent } from 'react';
 
 import searchIcon from 'icons/search.svg';
-import isBrowser from 'lib/isBrowser';
-
-const SCROLL_DIFF_THRESHOLD = 20;
+import useScrollVisibility from 'lib/hooks/useScrollVisibility';
 
 interface Props {
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -16,35 +12,11 @@ interface Props {
 
 const SearchBarMobile = ({ onChange, onSubmit }: Props) => {
 
-  const prevScrollPosition = React.useRef(isBrowser() ? window.pageYOffset : 0);
-  const [ isVisible, setVisibility ] = React.useState(true);
+  const isVisible = useScrollVisibility('up');
 
   const searchIconColor = useColorModeValue('blackAlpha.600', 'whiteAlpha.600');
   const inputBorderColor = useColorModeValue('blackAlpha.100', 'whiteAlpha.200');
   const bgColor = useColorModeValue('white', 'black');
-
-  const handleScroll = React.useCallback(() => {
-    const currentScrollPosition = clamp(window.pageYOffset, 0, window.document.body.scrollHeight - window.innerHeight);
-    const scrollDiff = currentScrollPosition - prevScrollPosition.current;
-
-    if (Math.abs(scrollDiff) > SCROLL_DIFF_THRESHOLD) {
-      setVisibility(scrollDiff > 0 ? false : true);
-    }
-
-    prevScrollPosition.current = currentScrollPosition;
-  }, []);
-
-  React.useEffect(() => {
-    const throttledHandleScroll = throttle(handleScroll, 300);
-
-    window.addEventListener('scroll', throttledHandleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', throttledHandleScroll);
-    };
-  // replicate componentDidMount
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <chakra.form
