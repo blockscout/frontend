@@ -17,7 +17,7 @@ type Props = {
 
 const TxsTable = ({ txs, sort, sorting }: Props) => {
   return (
-    <TableContainer width="100%" mt={ 6 }>
+    <TableContainer width="100%">
       <Table variant="simple" minWidth="810px" size="xs">
         <Thead>
           <Tr>

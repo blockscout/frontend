@@ -1,4 +1,4 @@
-import { Alert, Box, HStack, Show, Button } from '@chakra-ui/react';
+import { Alert, Box, Show } from '@chakra-ui/react';
 import React, { useState, useCallback } from 'react';
 
 import type { TTxsFilters } from 'types/api/txsFilters';
@@ -11,7 +11,7 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 // import FilterInput from 'ui/shared/FilterInput';
 import Pagination from 'ui/shared/Pagination';
 
-// import TxsFilters from './TxsFilters';
+import TxsHeader from './TxsHeader';
 import TxsSkeletonDesktop from './TxsSkeletonDesktop';
 import TxsSkeletonMobile from './TxsSkeletonMobile';
 import TxsSorting from './TxsSorting';
@@ -64,15 +64,9 @@ const TxsContent = ({
     data,
     isLoading,
     isError,
-    page,
-    onPrevPageClick,
-    onNextPageClick,
-    hasPagination,
-    resetPage,
+    pagination,
   } = useQueryWithPages(apiPath, queryName, stateFilter && { filter: stateFilter });
   // } = useQueryWithPages({ ...filters, filter: stateFilter, apiPath });
-
-  const isMobile = useIsMobile(false);
 
   if (isError) {
     return <DataFetchAlert/>;
@@ -95,47 +89,16 @@ const TxsContent = ({
     content = <TxsWithSort txs={ txs } sorting={ sorting } sort={ sort }/>;
   }
 
+  const paginationProps = {
+    ...pagination,
+    hasNextPage: data?.next_page_params !== undefined && Object.keys(data?.next_page_params).length > 0,
+  };
+
   return (
     <>
       { showDescription && <Box mb={ 12 }>Only the first 10,000 elements are displayed</Box> }
-      <HStack mb={ 6 }>
-        { /* api is not implemented */ }
-        { /* <TxsFilters
-          filters={ filters }
-          onFiltersChange={ setFilters }
-          appliedFiltersNum={ 0 }
-        /> */ }
-        { isMobile && (
-          <TxsSorting
-            // eslint-disable-next-line react/jsx-no-bind
-            isActive={ Boolean(sorting) }
-            setSorting={ setSorting }
-            sorting={ sorting }
-          />
-        ) }
-        { /* api is not implemented */ }
-        { /* <FilterInput
-          // eslint-disable-next-line react/jsx-no-bind
-          onChange={ () => {} }
-          maxW="360px"
-          size="xs"
-          placeholder="Search by addresses, hash, method..."
-        /> */ }
-      </HStack>
+      <TxsHeader sorting={ sorting } paginationProps={ paginationProps }/>
       { content }
-      <Box mx={{ base: 0, lg: 6 }} my={{ base: 6, lg: 3 }}>
-        { hasPagination ? (
-          <Pagination
-            currentPage={ page }
-            hasNextPage={ data?.next_page_params !== undefined && Object.keys(data?.next_page_params || {}).length > 0 }
-            onNextPageClick={ onNextPageClick }
-            onPrevPageClick={ onPrevPageClick }
-          />
-        ) :
-          // temporary button, waiting for new pagination mockups
-          <Button onClick={ resetPage }>Reset</Button>
-        }
-      </Box>
     </>
   );
 };
