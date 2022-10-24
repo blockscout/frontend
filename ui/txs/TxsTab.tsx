@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { QueryKeys } from 'types/client/queries';
+
 import TxsContent from './TxsContent';
 
 type Props = {
@@ -9,6 +11,7 @@ type Props = {
 const TxsTab = ({ tab }: Props) => {
   return (
     <TxsContent
+      queryName={ QueryKeys.transactions }
       showDescription={ tab === 'validated' }
       stateFilter={ tab }
       apiPath="/api/transactions"

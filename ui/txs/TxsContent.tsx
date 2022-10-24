@@ -25,6 +25,7 @@ type Props = {
 }
 
 const TxsContent = ({
+  queryName,
   showDescription,
   stateFilter,
   apiPath,
@@ -66,7 +67,7 @@ const TxsContent = ({
     onNextPageClick,
     hasPagination,
     resetPage,
-  } = useQueryWithPages({ filter: stateFilter }, apiPath);
+  } = useQueryWithPages(apiPath, queryName, stateFilter && { filter: stateFilter });
   // } = useQueryWithPages({ ...filters, filter: stateFilter, apiPath });
 
   const isMobile = useIsMobile(false);
@@ -124,7 +125,7 @@ const TxsContent = ({
         { hasPagination ? (
           <Pagination
             currentPage={ page }
-            hasNextPage={ data?.next_page_params !== undefined && Object.keys(data?.next_page_params).length > 0 }
+            hasNextPage={ data?.next_page_params !== undefined && Object.keys(data?.next_page_params || {}).length > 0 }
             onNextPageClick={ onNextPageClick }
             onPrevPageClick={ onPrevPageClick }
           />
