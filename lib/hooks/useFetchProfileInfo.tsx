@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import type { UserInfo } from 'types/api/account';
 import { QueryKeys } from 'types/client/queries';
 
+import * as cookies from 'lib/cookies';
 import useFetch from 'lib/hooks/useFetch';
 
 interface Error {
@@ -19,5 +20,6 @@ export default function useFetchProfileInfo() {
     return fetch('/api/account/profile');
   }, {
     refetchOnMount: false,
+    enabled: Boolean(cookies.get(cookies.NAMES.API_TOKEN)),
   });
 }

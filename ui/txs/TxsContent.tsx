@@ -1,16 +1,17 @@
 import { Alert, Box, HStack, Show, Button } from '@chakra-ui/react';
 import React, { useState, useCallback } from 'react';
 
+import type { TTxsFilters } from 'types/api/txsFilters';
 import type { QueryKeys } from 'types/client/queries';
 import type { Sort } from 'types/client/txs-sort';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import FilterButton from 'ui/shared/FilterButton';
-import FilterInput from 'ui/shared/FilterInput';
+// import FilterInput from 'ui/shared/FilterInput';
 import Pagination from 'ui/shared/Pagination';
 import SortButton from 'ui/shared/SortButton';
 
+// import TxsFilters from './TxsFilters';
 import TxsSkeletonDesktop from './TxsSkeletonDesktop';
 import TxsSkeletonMobile from './TxsSkeletonMobile';
 import TxsWithSort from './TxsWithSort';
@@ -19,17 +20,17 @@ import useQueryWithPages from './useQueryWithPages';
 type Props = {
   queryName: QueryKeys;
   showDescription?: boolean;
-  stateFilter?: 'validated' | 'pending';
+  stateFilter?: TTxsFilters['filter'];
   apiPath: string;
 }
 
 const TxsContent = ({
   showDescription,
-  queryName,
   stateFilter,
   apiPath,
 }: Props) => {
   const [ sorting, setSorting ] = useState<Sort>();
+  // const [ filters, setFilters ] = useState<Partial<TTxsFilters>>({ type: [], method: [] });
 
   const sort = useCallback((field: 'val' | 'fee') => () => {
     if (field === 'val') {
@@ -65,7 +66,8 @@ const TxsContent = ({
     onNextPageClick,
     hasPagination,
     resetPage,
-  } = useQueryWithPages(queryName, stateFilter, apiPath);
+  } = useQueryWithPages({ filter: stateFilter }, apiPath);
+  // } = useQueryWithPages({ ...filters, filter: stateFilter, apiPath });
 
   const isMobile = useIsMobile(false);
 
@@ -94,13 +96,12 @@ const TxsContent = ({
     <>
       { showDescription && <Box mb={ 12 }>Only the first 10,000 elements are displayed</Box> }
       <HStack mb={ 6 }>
-        { /* TODO */ }
-        <FilterButton
-          isActive={ false }
-          // eslint-disable-next-line react/jsx-no-bind
-          onClick={ () => {} }
+        { /* api is not implemented */ }
+        { /* <TxsFilters
+          filters={ filters }
+          onFiltersChange={ setFilters }
           appliedFiltersNum={ 0 }
-        />
+        /> */ }
         { isMobile && (
           <SortButton
             // eslint-disable-next-line react/jsx-no-bind
@@ -109,13 +110,14 @@ const TxsContent = ({
             display={{ base: 'block', lg: 'none' }}
           />
         ) }
-        <FilterInput
+        { /* api is not implemented */ }
+        { /* <FilterInput
           // eslint-disable-next-line react/jsx-no-bind
           onChange={ () => {} }
           maxW="360px"
           size="xs"
           placeholder="Search by addresses, hash, method..."
-        />
+        /> */ }
       </HStack>
       { content }
       <Box mx={{ base: 0, lg: 6 }} my={{ base: 6, lg: 3 }}>
