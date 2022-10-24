@@ -94,6 +94,8 @@ blockscout:
       _default: "/poa/sokol"
     ETHEREUM_JSONRPC_DISABLE_ARCHIVE_BALANCES:
       _default: 'true'
+    API_BASE_PATH:
+      _default: "/poa/sokol"
 
 postgres:
   enabled: true
