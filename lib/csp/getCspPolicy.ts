@@ -33,7 +33,18 @@ function getMarketplaceAppsOrigins() {
 }
 
 function getMarketplaceAppsLogosOrigins() {
-  return getMarketplaceApps().map(({ logo }) => logo);
+  return getMarketplaceApps().map(({ logo }) => new URL(logo));
+}
+
+// we cannot use lodash/uniq in middleware code since it calls new Set() and it'is causing an error in Nextjs
+// "Dynamic Code Evaluation (e. g. 'eval', 'new Function', 'WebAssembly.compile') not allowed in Edge Runtime"
+function unique(array: Array<string | undefined>) {
+  const set: Record<string, boolean> = {};
+  for (const item of array) {
+    item && (set[item] = true);
+  }
+
+  return Object.keys(set);
 }
 
 function makePolicyMap() {
@@ -91,11 +102,17 @@ function makePolicyMap() {
       // github avatars
       'avatars.githubusercontent.com',
 
+      // other github assets (e.g trustwallet token icons)
+      'raw.githubusercontent.com',
+
+      // auth0 assets
+      's.gravatar.com',
+
       // network assets
       ...networkExternalAssets.map((url) => url.host),
 
       // marketplace apps logos
-      ...getMarketplaceAppsLogosOrigins(),
+      ...getMarketplaceAppsLogosOrigins().map((url) => url.host),
     ],
 
     'font-src': [
@@ -133,7 +150,8 @@ function getCspPolicy() {
         return;
       }
 
-      return [ key, value.join(' ') ].join(' ');
+      const uniqueValues = unique(value);
+      return [ key, uniqueValues.join(' ') ].join(' ');
     })
     .filter(Boolean)
     .join(';');

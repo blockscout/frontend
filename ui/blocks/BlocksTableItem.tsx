@@ -1,4 +1,4 @@
-import { Tr, Td, Text, Link, Flex, Box, Icon, Tooltip, Spinner, useColorModeValue } from '@chakra-ui/react';
+import { Tr, Td, Link, Flex, Box, Icon, Tooltip, Spinner, useColorModeValue } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -6,8 +6,8 @@ import type { Block } from 'types/api/block';
 
 import flameIcon from 'icons/flame.svg';
 import { WEI, ZERO } from 'lib/consts';
-import dayjs from 'lib/date/dayjs';
 import link from 'lib/link/link';
+import BlockTimestamp from 'ui/blocks/BlockTimestamp';
 import AddressLink from 'ui/shared/address/AddressLink';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
 import Utilization from 'ui/shared/Utilization';
@@ -15,9 +15,10 @@ import Utilization from 'ui/shared/Utilization';
 interface Props {
   data: Block;
   isPending?: boolean;
+  enableTimeIncrement?: boolean;
 }
 
-const BlocksTableItem = ({ data, isPending }: Props) => {
+const BlocksTableItem = ({ data, isPending, enableTimeIncrement }: Props) => {
   const totalReward = data.rewards
     ?.map(({ reward }) => BigNumber(reward))
     .reduce((result, item) => result.plus(item), ZERO) || ZERO;
@@ -27,7 +28,7 @@ const BlocksTableItem = ({ data, isPending }: Props) => {
   return (
     <Tr>
       <Td fontSize="sm">
-        <Flex columnGap={ 2 } alignItems="center">
+        <Flex columnGap={ 2 } alignItems="center" mb={ 2 }>
           { isPending && <Spinner size="sm" flexShrink={ 0 }/> }
           <Tooltip isDisabled={ data.type !== 'reorg' } label="Chain reorganizations">
             <Link
@@ -38,7 +39,7 @@ const BlocksTableItem = ({ data, isPending }: Props) => {
             </Link>
           </Tooltip>
         </Flex>
-        <Text variant="secondary" mt={ 2 } fontWeight={ 400 }>{ dayjs(data.timestamp).fromNow() }</Text>
+        <BlockTimestamp ts={ data.timestamp } isEnabled={ enableTimeIncrement }/>
       </Td>
       <Td fontSize="sm">{ data.size.toLocaleString('en') } bytes</Td>
       <Td fontSize="sm">

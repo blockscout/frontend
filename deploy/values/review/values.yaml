@@ -21,6 +21,8 @@ blockscout:
     # enable https
     tls:
       enabled: true
+    path:
+      - "/"
   # probes
   livenessProbe:
     enabled: true
@@ -263,6 +265,8 @@ frontend:
     # enable https
     tls:
       enabled: true
+    path:
+      - "/"
   resources:
     limits:
       memory:
@@ -279,16 +283,16 @@ frontend:
     enabled: true
     app: blockscout
   environment:
-    NEXT_PUBLIC_APP_PORT:
-        _default: 80
     NEXT_PUBLIC_BLOCKSCOUT_VERSION:
       _default: v4.1.8-beta
     NEXT_PUBLIC_FOOTER_GITHUB_LINK:
       _default: https://github.com/blockscout/blockscout
     NEXT_PUBLIC_FOOTER_TWITTER_LINK:
       _default: https://www.twitter.com/blockscoutcom
+    NEXT_PUBLIC_APP_ENV:
+      _default: preview
     NEXT_PUBLIC_APP_INSTANCE:
-      _default: review
+      _default: unknown
     NEXT_PUBLIC_FOOTER_TELEGRAM_LINK:
       _default: https://t.me/poa_network
     NEXT_PUBLIC_FOOTER_STAKING_LINK:

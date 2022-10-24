@@ -12,7 +12,8 @@ interface Props {
 const BlocksList = ({ data }: Props) => {
   return (
     <Box mt={ 8 }>
-      { data.map((item) => <BlocksListItem key={ item.height } data={ item }/>) }
+      { /* TODO prop "enableTimeIncrement" should be set to false for second and later pages */ }
+      { data.map((item) => <BlocksListItem key={ item.height } data={ item } enableTimeIncrement/>) }
     </Box>
   );
 };

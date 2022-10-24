@@ -8,9 +8,9 @@ import type { Block } from 'types/api/block';
 import appConfig from 'configs/app/config';
 import flameIcon from 'icons/flame.svg';
 import { WEI, ZERO } from 'lib/consts';
-import dayjs from 'lib/date/dayjs';
 import link from 'lib/link/link';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
+import BlockTimestamp from 'ui/blocks/BlockTimestamp';
 import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import AddressLink from 'ui/shared/address/AddressLink';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
@@ -19,9 +19,10 @@ import Utilization from 'ui/shared/Utilization';
 interface Props {
   data: Block;
   isPending?: boolean;
+  enableTimeIncrement?: boolean;
 }
 
-const BlocksListItem = ({ data, isPending }: Props) => {
+const BlocksListItem = ({ data, isPending, enableTimeIncrement }: Props) => {
   const totalReward = data.rewards
     ?.map(({ reward }) => BigNumber(reward))
     .reduce((result, item) => result.plus(item), ZERO) || ZERO;
@@ -40,7 +41,7 @@ const BlocksListItem = ({ data, isPending }: Props) => {
             { data.height }
           </Link>
         </Flex>
-        <Text variant="secondary" fontWeight={ 400 }>{ dayjs(data.timestamp).fromNow() }</Text>
+        <BlockTimestamp ts={ data.timestamp } isEnabled={ enableTimeIncrement }/>
       </Flex>
       <Flex columnGap={ 2 }>
         <Text fontWeight={ 500 }>Size</Text>
