@@ -40,30 +40,33 @@ const NetworkLogo = ({ isCollapsed, onClick }: Props) => {
   if (logo && typeof logo === 'string') {
     logoEl = (
       <Image
-        h="20px"
+        w="auto"
+        h="100%"
         src={ logo }
         alt={ `${ appConfig.network.name } network icon` }
       />
     );
-  } else if (typeof logo !== undefined) {
+  } else if (typeof logo !== 'undefined') {
     logoEl = (
       <Icon
         as={ logo as FunctionComponent<SVGAttributes<SVGElement>> }
         width="auto"
-        height="20px"
+        height="100%"
         { ...getDefaultTransitionProps() }
         style={ style }
       />
     );
   } else {
-    <Icon
-      as={ blockscoutLogo }
-      width="113px"
-      height="20px"
-      color={ logoColor }
-      { ...getDefaultTransitionProps() }
-      style={ style }
-    />;
+    logoEl = (
+      <Icon
+        as={ blockscoutLogo }
+        width="auto"
+        height="100%"
+        color={ logoColor }
+        { ...getDefaultTransitionProps() }
+        style={ style }
+      />
+    );
   }
 
   return (
@@ -71,7 +74,8 @@ const NetworkLogo = ({ isCollapsed, onClick }: Props) => {
     <Box
       as="a"
       href={ href }
-      width={{ base: '113px', lg: isCollapsed === false ? '113px' : 0, xl: isCollapsed ? '0' : '113px' }}
+      width={{ base: 'auto', lg: isCollapsed === false ? '113px' : 0, xl: isCollapsed ? '0' : '113px' }}
+      height="20px"
       display="inline-flex"
       overflow="hidden"
       onClick={ onClick }
