@@ -4,7 +4,7 @@ global:
 blockscout:
   enabled: true
   image:
-    _default: blockscout/blockscout:latest
+    _default: blockscout/blockscout:review-prerelease-25d92762@sha256:462546c8970d49caa87934ebfd44cfc509005592dc2edf2ec0709c7c341bf330
   replicas:
     app: 1
   docker:
@@ -16,13 +16,16 @@ blockscout:
   # enable ingress
   ingress:
     enabled: true
+    annotations:
+      - 'nginx.ingress.kubernetes.io/rewrite-target=/$2'
     host:
       _default: blockscout.test.blockscout.aws-k8s.blockscout.com
     # enable https
+    #
     tls:
       enabled: true
     path:
-      - "/"
+      - "/poa/sokol(/|$)(.*)"
   # probes
   livenessProbe:
     enabled: true
@@ -274,6 +277,7 @@ frontend:
       - "/poa/sokol/auth/profile"
       - "/_next"
       - "/node-api"
+      - "/"
   resources:
     limits:
       memory:
