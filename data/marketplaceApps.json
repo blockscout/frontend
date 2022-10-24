@@ -94,7 +94,7 @@
     "shortDescription": "Yield Farming for Synthetic Assets from LP tokens",
     "site": "https://farms.baoswap.xyz/",
     "description": "Yield Farming for Synthetic Assets from LP tokens",
-    "url": "https://blockscout-allowance-mainnet-stage.vercel.app/",
+    "url": "https://approval-tracker.vercel.app",
     "twitter": "https://twitter.com/EasyStaking",
     "telegram": "https://t.me/easystaking",
     "github": "https://github.com/mikhin"
@@ -114,7 +114,7 @@
     "shortDescription": "During the Unit protocol development, we faced difficulty finding a reliable, flexible protocol for stablecoin swap without interface censorship.",
     "site": "https://xdai.component.finance",
     "description": "During the Unit protocol development, we faced difficulty finding a reliable, flexible protocol for stablecoin swap without interface censorship.",
-    "url": "https://blockscout-allowance-mainnet-stage.vercel.app/",
+    "url": "https://approval-tracker.vercel.app",
     "twitter": "https://twitter.com/EasyStaking",
     "telegram": "https://t.me/easystaking",
     "github": "https://github.com/mikhin"
@@ -134,7 +134,7 @@
     "shortDescription": "View, deposit and withdraw for all V3 Pools",
     "site": "https://app.pooltogether.com/",
     "description": "View, deposit and withdraw for all V3 Pools",
-    "url": "https://blockscout-allowance-mainnet-stage.vercel.app/",
+    "url": "https://approval-tracker.vercel.app",
     "twitter": "https://twitter.com/EasyStaking",
     "telegram": "https://t.me/easystaking",
     "github": "https://github.com/mikhin"
@@ -154,7 +154,7 @@
     "shortDescription": "A governance-enabled automated market maker with adjustable fees.",
     "site": "https://swapr.eth.limo",
     "description": "A governance-enabled automated market maker with adjustable fees.",
-    "url": "https://blockscout-allowance-mainnet-stage.vercel.app/",
+    "url": "https://approval-tracker.vercel.app",
     "twitter": "https://twitter.com/EasyStaking",
     "telegram": "https://t.me/easystaking",
     "github": "https://github.com/mikhin"
@@ -174,7 +174,7 @@
     "shortDescription": "AMM DEX on the xDai chain. Its uniqueness comes from the ability to trade securities tokens, specifically, tokenized real estate tokens.",
     "site": "https://app.levinswap.org/",
     "description": "AMM DEX on the xDai chain. Its uniqueness comes from the ability to trade securities tokens, specifically, tokenized real estate tokens.",
-    "url": "https://blockscout-allowance-mainnet-stage.vercel.app/",
+    "url": "https://approval-tracker.vercel.app",
     "twitter": "https://twitter.com/EasyStaking",
     "telegram": "https://t.me/easystaking",
     "github": "https://github.com/mikhin"
@@ -194,7 +194,7 @@
     "shortDescription": "Decentralized prediction markets on Ethereum",
     "site": "https://xdai.omen.eth.link/",
     "description": "Decentralized prediction markets on Ethereum",
-    "url": "https://blockscout-allowance-mainnet-stage.vercel.app/",
+    "url": "https://approval-tracker.vercel.app",
     "twitter": "https://twitter.com/EasyStaking",
     "telegram": "https://t.me/easystaking",
     "github": "https://github.com/mikhin"
@@ -214,7 +214,7 @@
     "shortDescription": "NFT artwork created and sold on xDAI using meta transactions, burner wallets, and bridged to Ethereum",
     "site": "https://nifty.ink/explore",
     "description": "NFT artwork created and sold on xDAI using meta transactions, burner wallets, and bridged to Ethereum",
-    "url": "https://blockscout-allowance-mainnet-stage.vercel.app/",
+    "url": "https://approval-tracker.vercel.app",
     "twitter": "https://twitter.com/EasyStaking",
     "telegram": "https://t.me/easystaking",
     "github": "https://github.com/mikhin"
@@ -234,7 +234,7 @@
     "shortDescription": "Every chess game is one-of-a-kind. Make yours a collectible.",
     "site": "https://treasure.chess.com/",
     "description": "Every chess game is one-of-a-kind. Make yours a collectible.",
-    "url": "https://blockscout-allowance-mainnet-stage.vercel.app/",
+    "url": "https://approval-tracker.vercel.app",
     "twitter": "https://twitter.com/EasyStaking",
     "telegram": "https://t.me/easystaking",
     "github": "https://github.com/mikhin"
@@ -254,7 +254,7 @@
     "shortDescription": "A truly decentralised non-profit platform owned and managed by the Digital Arts community, bringing together Artists, Creators and Collectors as One.",
     "site": "https://www.unique.one/",
     "description": "A truly decentralised non-profit platform owned and managed by the Digital Arts community, bringing together Artists, Creators and Collectors as One.",
-    "url": "https://blockscout-allowance-mainnet-stage.vercel.app/",
+    "url": "https://approval-tracker.vercel.app",
     "twitter": "https://twitter.com/EasyStaking",
     "telegram": "https://t.me/easystaking",
     "github": "https://github.com/mikhin"
@@ -274,7 +274,7 @@
     "shortDescription": "A Community That Empowers NFT Artists",
     "site": "https://www.coldtruthculture.io/",
     "description": "A Community That Empowers NFT Artists",
-    "url": "https://blockscout-allowance-mainnet-stage.vercel.app/",
+    "url": "https://approval-tracker.vercel.app",
     "twitter": "https://twitter.com/EasyStaking",
     "telegram": "https://t.me/easystaking",
     "github": "https://github.com/mikhin"
@@ -294,7 +294,7 @@
     "shortDescription": "Token bridge between the Gnosis Chain and the Ethereum network",
     "site": "https://bridge.gnosischain.com/",
     "description": "Token bridge between the Gnosis Chain and the Ethereum network",
-    "url": "https://blockscout-allowance-mainnet-stage.vercel.app/",
+    "url": "https://approval-tracker.vercel.app",
     "twitter": "https://twitter.com/EasyStaking",
     "telegram": "https://t.me/easystaking",
     "github": "https://github.com/mikhin"
@@ -314,7 +314,7 @@
     "shortDescription": "The OmniBridge multi-token extension is the simplest way to transfer ANY ERC20/ ERC677 /ERC827 token to and from the xDai chain.",
     "site": "https://omni.gnosischain.com/bridge",
     "description": "The OmniBridge multi-token extension is the simplest way to transfer ANY ERC20/ ERC677 /ERC827 token to and from the xDai chain.",
-    "url": "https://blockscout-allowance-mainnet-stage.vercel.app/",
+    "url": "https://approval-tracker.vercel.app",
     "twitter": "https://twitter.com/EasyStaking",
     "telegram": "https://t.me/easystaking",
     "github": "https://github.com/mikhin"
@@ -334,7 +334,7 @@
     "shortDescription": "Gnosis Safe is the most trusted platform to manage digital assets on Ethereum",
     "site": "https://gnosis-safe.io/",
     "description": "Gnosis Safe is the most trusted platform to manage digital assets on Ethereum",
-    "url": "https://blockscout-allowance-mainnet-stage.vercel.app/",
+    "url": "https://approval-tracker.vercel.app",
     "twitter": "https://twitter.com/EasyStaking",
     "telegram": "https://t.me/easystaking",
     "github": "https://github.com/mikhin"
@@ -354,7 +354,7 @@
     "shortDescription": "Send ERC20 token or ETH. Batch sender. Bulk Sender. Token Multisender allows you to airdrop tokens in a few transactions in trustless way. Batch sending ERC20, Ethereum tokens.",
     "site": "https://multisender.app/",
     "description": "Send ERC20 token or ETH. Batch sender. Bulk Sender. Token Multisender allows you to airdrop tokens in a few transactions in trustless way. Batch sending ERC20, Ethereum tokens.",
-    "url": "https://blockscout-allowance-mainnet-stage.vercel.app/",
+    "url": "https://approval-tracker.vercel.app",
     "twitter": "https://twitter.com/EasyStaking",
     "telegram": "https://t.me/easystaking",
     "github": "https://github.com/mikhin"
@@ -374,7 +374,7 @@
     "shortDescription": "Distribute ether or tokens to multiple addresses",
     "site": "https://disperse.app/",
     "description": "Distribute ether or tokens to multiple addresses",
-    "url": "https://blockscout-allowance-mainnet-stage.vercel.app/",
+    "url": "https://approval-tracker.vercel.app",
     "twitter": "https://twitter.com/EasyStaking",
     "telegram": "https://t.me/easystaking",
     "github": "https://github.com/mikhin"
@@ -394,7 +394,7 @@
     "shortDescription": "DEX or Decentralized Exchange, also called an Automated Market Maker (AMM) in Decentralized Finance (DeFi). Symmetric is live on gnosis chain (xDai) and Celo.",
     "site": "https://symmetric.finance/",
     "description": "DEX or Decentralized Exchange, also called an Automated Market Maker (AMM) in Decentralized Finance (DeFi). Symmetric is live on gnosis chain (xDai) and Celo.",
-    "url": "https://blockscout-allowance-mainnet-stage.vercel.app/",
+    "url": "https://approval-tracker.vercel.app",
     "twitter": "https://twitter.com/EasyStaking",
     "telegram": "https://t.me/easystaking",
     "github": "https://github.com/mikhin"
