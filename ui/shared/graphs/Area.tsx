@@ -1,16 +1,13 @@
 import * as d3 from 'd3';
 import React from 'react';
 
-interface DataItem {
-  date: Date;
-  value: number;
-}
+import type { TimeGraphItem } from 'ui/shared/graphs/types';
 
-interface Props {
+interface Props extends React.SVGProps<SVGPathElement> {
   xScale: d3.ScaleTime<number, number> | d3.ScaleLinear<number, number>;
   yScale: d3.ScaleTime<number, number> | d3.ScaleLinear<number, number>;
   color: string;
-  data: Array<DataItem>;
+  data: Array<TimeGraphItem>;
   disableAnimation?: boolean;
 }
 
@@ -28,7 +25,7 @@ const Area = ({ xScale, yScale, color, data, disableAnimation, ...props }: Props
   }, [ disableAnimation ]);
 
   const d = React.useMemo(() => {
-    const area = d3.area<DataItem>()
+    const area = d3.area<TimeGraphItem>()
       .x(({ date }) => xScale(date))
       .y1(({ value }) => yScale(value))
       .y0(() => yScale(yScale.domain()[0]));
@@ -40,8 +37,8 @@ const Area = ({ xScale, yScale, color, data, disableAnimation, ...props }: Props
       <path ref={ ref } d={ d } fill={ `url(#gradient-${ color })` } opacity={ 0 } { ...props }/>
       <defs>
         <linearGradient id={ `gradient-${ color }` } x1="0%" x2="0%" y1="0%" y2="100%">
-          <stop offset="0%" stopColor={ color } stopOpacity={ 0.5 }/>
-          <stop offset="100%" stopColor={ color } stopOpacity={ 0 }/>
+          <stop offset="0%" stopColor={ color } stopOpacity={ 0.9 }/>
+          <stop offset="100%" stopColor={ color } stopOpacity={ 0.1 }/>
         </linearGradient>
       </defs>
     </>

@@ -1,20 +1,17 @@
 import * as d3 from 'd3';
 import { useMemo } from 'react';
 
-interface DataItem {
-  date: Date;
-  value: number;
-}
+import type { TimeGraphItem } from 'ui/shared/graphs/types';
 
 interface Props {
   data: {
-    items: Array<DataItem>;
+    items: Array<TimeGraphItem>;
   };
   width: number;
   height: number;
 }
 
-const useController = ({ data, width, height }: Props) => {
+const useTimeGraphController = ({ data, width, height }: Props) => {
 
   const xMin = useMemo(
     () => d3.min(data.items, ({ date }) => date) || new Date(),
@@ -44,7 +41,7 @@ const useController = ({ data, width, height }: Props) => {
   const yScale = useMemo(() => {
     const indention = (yMax - yMin) * 0.5;
     return d3.scaleLinear()
-      .domain([ Math.max(yMin - indention, 0), yMax + indention ])
+      .domain([ yMin >= 0 && yMin - indention <= 0 ? 0 : yMin - indention, yMax + indention ])
       .range([ height, 0 ]);
   }, [ height, yMin, yMax ]);
 
@@ -53,9 +50,11 @@ const useController = ({ data, width, height }: Props) => {
     [ height, yMin, yMax ],
   );
 
+  const xTickFormat = (d: d3.AxisDomain) => d.toLocaleString();
   const yTickFormat = (d: d3.AxisDomain) => d.toLocaleString();
 
   return {
+    xTickFormat,
     yTickFormat,
     xScale,
     yScale,
@@ -63,4 +62,4 @@ const useController = ({ data, width, height }: Props) => {
   };
 };
 
-export default useController;
+export default useTimeGraphController;

@@ -1,17 +1,20 @@
+import { useColorModeValue, useToken } from '@chakra-ui/react';
 import * as d3 from 'd3';
 import React from 'react';
 
-interface Props {
+interface Props extends Omit<React.SVGProps<SVGGElement>, 'scale'> {
   type: 'vertical' | 'horizontal';
   scale: d3.ScaleTime<number, number> | d3.ScaleLinear<number, number>;
   disableAnimation?: boolean;
   size: number;
-  transform?: string;
   ticks: number;
 }
 
-const GridLine = ({ type, scale, ticks, size, transform, disableAnimation, ...props }: Props) => {
+const GridLine = ({ type, scale, ticks, size, disableAnimation, ...props }: Props) => {
   const ref = React.useRef<SVGGElement>(null);
+
+  const strokeColorToken = useColorModeValue('blackAlpha.300', 'whiteAlpha.300');
+  const strokeColor = useToken('colors', strokeColorToken);
 
   React.useEffect(() => {
     if (!ref.current) {
@@ -29,10 +32,10 @@ const GridLine = ({ type, scale, ticks, size, transform, disableAnimation, ...pr
     }
     gridGroup.select('.domain').remove();
     gridGroup.selectAll('text').remove();
-    gridGroup.selectAll('line').attr('stroke', 'rgba(255, 255, 255, 0.1)');
-  }, [ scale, ticks, size, disableAnimation, type ]);
+    gridGroup.selectAll('line').attr('stroke', strokeColor);
+  }, [ scale, ticks, size, disableAnimation, type, strokeColor ]);
 
-  return <g ref={ ref } transform={ transform } { ...props }/>;
+  return <g ref={ ref } { ...props }/>;
 };
 
 export default React.memo(GridLine);

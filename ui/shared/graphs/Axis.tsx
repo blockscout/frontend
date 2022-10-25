@@ -1,17 +1,20 @@
+import { useColorModeValue, useToken } from '@chakra-ui/react';
 import * as d3 from 'd3';
 import React from 'react';
 
-interface Props {
+interface Props extends Omit<React.SVGProps<SVGGElement>, 'scale'> {
   type: 'left' | 'bottom';
   scale: d3.ScaleTime<number, number> | d3.ScaleLinear<number, number>;
   disableAnimation?: boolean;
-  transform?: string;
   ticks: number;
   tickFormat?: (domainValue: d3.AxisDomain, index: number) => string;
 }
 
-const Axis = ({ type, scale, ticks, transform, tickFormat, disableAnimation, ...props }: Props) => {
+const Axis = ({ type, scale, ticks, tickFormat, disableAnimation, ...props }: Props) => {
   const ref = React.useRef<SVGGElement>(null);
+
+  const textColorToken = useColorModeValue('blackAlpha.500', 'whiteAlpha.500');
+  const textColor = useToken('colors', textColorToken);
 
   React.useEffect(() => {
     if (!ref.current) {
@@ -31,12 +34,12 @@ const Axis = ({ type, scale, ticks, transform, tickFormat, disableAnimation, ...
     axisGroup.select('.domain').remove();
     axisGroup.selectAll('line').remove();
     axisGroup.selectAll('text')
-      .attr('opacity', 0.5)
-      .attr('color', 'white')
+      .attr('opacity', 1)
+      .attr('color', textColor)
       .attr('font-size', '0.75rem');
-  }, [ scale, ticks, tickFormat, disableAnimation, type ]);
+  }, [ scale, ticks, tickFormat, disableAnimation, type, textColor ]);
 
-  return <g ref={ ref } transform={ transform } { ...props }/>;
+  return <g ref={ ref } { ...props }/>;
 };
 
 export default React.memo(Axis);

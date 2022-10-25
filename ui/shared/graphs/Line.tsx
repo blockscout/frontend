@@ -1,20 +1,16 @@
 import * as d3 from 'd3';
 import React from 'react';
 
-interface DataItem {
-  date: Date;
-  value: number;
-}
+import type { TimeGraphItem } from 'ui/shared/graphs/types';
 
-interface Props {
+interface Props extends React.SVGProps<SVGPathElement> {
   xScale: d3.ScaleTime<number, number> | d3.ScaleLinear<number, number>;
   yScale: d3.ScaleTime<number, number> | d3.ScaleLinear<number, number>;
-  color: string;
-  data: Array<DataItem>;
+  data: Array<TimeGraphItem>;
   animation: 'left' | 'fadeIn' | 'none';
 }
 
-const Line = ({ xScale, yScale, color, data, animation, ...props }: Props) => {
+const Line = ({ xScale, yScale, data, animation, ...props }: Props) => {
   const ref = React.useRef<SVGPathElement>(null);
 
   // Define different types of animation that we can use
@@ -68,7 +64,7 @@ const Line = ({ xScale, yScale, color, data, animation, ...props }: Props) => {
     }
   }, [ xScale, yScale, animation ]);
 
-  const line = d3.line<DataItem>()
+  const line = d3.line<TimeGraphItem>()
     .x((d) => xScale(d.date))
     .y((d) => yScale(d.value));
 
@@ -76,7 +72,6 @@ const Line = ({ xScale, yScale, color, data, animation, ...props }: Props) => {
     <path
       ref={ ref }
       d={ line(data) || undefined }
-      stroke={ color }
       strokeWidth={ 1 }
       fill="none"
       opacity={ 0 }
