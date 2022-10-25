@@ -66,7 +66,7 @@ jobs:
     needs: push_to_registry
     uses: blockscout/blockscout-ci-cd/.github/workflows/deploy.yaml@master
     with:
-      valuesDir: deploy/values/review
+      env_vars: VALUES_DIR=deploy/values/review,APP_NAME=bs-stack
       appNamespace: review-front-$GITHUB_HEAD_REF_SLUG
       blockscoutIngressHost: blockscout
       frontendIngressHost: frontend
