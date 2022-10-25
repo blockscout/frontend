@@ -39,18 +39,13 @@ const Line = ({ xScale, yScale, data, animation, ...props }: Props) => {
   }, []);
 
   React.useEffect(() => {
-    switch (animation) {
-      case 'left':
-        animateLeft();
-        break;
-      case 'fadeIn':
-        animateFadeIn();
-        break;
-      case 'none':
-      default:
-        noneAnimation();
-        break;
-    }
+    const ANIMATIONS = {
+      left: animateLeft,
+      fadeIn: animateFadeIn,
+      none: noneAnimation,
+    };
+    const animationFn = ANIMATIONS[animation];
+    window.setTimeout(animationFn, 100);
   }, [ animateLeft, animateFadeIn, noneAnimation, animation ]);
 
   // Recalculate line length if scale has changed

@@ -1,4 +1,5 @@
 import { useToken } from '@chakra-ui/react';
+import _debounce from 'lodash/debounce';
 import React from 'react';
 
 import json from 'data/charts_eth_txs.json';
@@ -27,18 +28,38 @@ const EthereumDailyTxsChart = ({ margin }: Props) => {
   const ref = React.useRef<SVGSVGElement>(null);
   const overlayRef = React.useRef<SVGRectElement>(null);
 
-  const [ rect, setRect ] = React.useState<{ width: number; height: number}>();
+  const [ rect, setRect ] = React.useState<{ width: number; height: number}>({ width: 0, height: 0 });
+
+  const calculateRect = React.useCallback(() => {
+    const rect = ref.current?.getBoundingClientRect();
+    return { width: rect?.width || 0, height: rect?.height || 0 };
+  }, []);
 
   React.useEffect(() => {
-    const rect = ref.current?.getBoundingClientRect();
-    rect && setRect({ width: rect.width, height: rect.height });
-  }, [ ]);
+    setRect(calculateRect());
+  }, [ calculateRect ]);
 
-  const width = rect?.width || 0;
-  const height = rect?.height || 0;
+  React.useEffect(() => {
+    let timeoutId: number;
+    const resizeHandler = _debounce(() => {
+      setRect({ width: 0, height: 0 });
+      timeoutId = window.setTimeout(() => {
+        setRect(calculateRect());
+      }, 0);
+    }, 100);
+    const resizeObserver = new ResizeObserver(resizeHandler);
 
-  const innerWidth = width - (margin?.left || 0) - (margin?.right || 0);
-  const innerHeight = height - (margin?.bottom || 0) - (margin?.top || 0);
+    resizeObserver.observe(document.body);
+    return function cleanup() {
+      resizeObserver.unobserve(document.body);
+      window.clearTimeout(timeoutId);
+    };
+  }, [ calculateRect ]);
+
+  const { width, height } = rect;
+
+  const innerWidth = Math.max(width - (margin?.left || 0) - (margin?.right || 0), 0);
+  const innerHeight = Math.max(height - (margin?.bottom || 0) - (margin?.top || 0), 0);
 
   const { yTickFormat, xScale, yScale } = useTimeGraphController({ data, width: innerWidth, height: innerHeight });
 
@@ -46,7 +67,7 @@ const EthereumDailyTxsChart = ({ margin }: Props) => {
 
   return (
     <svg width={ width || '100%' } height={ height || '100%' } ref={ ref }>
-      <g transform={ `translate(${ margin?.left || 0 },${ margin?.top || 0 })` }>
+      <g transform={ `translate(${ margin?.left || 0 },${ margin?.top || 0 })` } opacity={ width ? 1 : 0 }>
         { /* BASE GRID LINE */ }
         <GridLine
           type="horizontal"
@@ -63,12 +84,14 @@ const EthereumDailyTxsChart = ({ margin }: Props) => {
           ticks={ 5 }
           size={ innerHeight }
           transform={ `translate(0, ${ innerHeight })` }
+          disableAnimation
         />
         <GridLine
           type="horizontal"
           scale={ yScale }
           ticks={ 5 }
           size={ innerWidth }
+          disableAnimation
         />
 
         { /* GRAPH */ }
@@ -92,6 +115,7 @@ const EthereumDailyTxsChart = ({ margin }: Props) => {
           scale={ yScale }
           ticks={ 5 }
           tickFormat={ yTickFormat }
+          disableAnimation
         />
         <Overlay ref={ overlayRef } width={ innerWidth } height={ innerHeight }>
           <Axis
@@ -100,6 +124,7 @@ const EthereumDailyTxsChart = ({ margin }: Props) => {
             transform={ `translate(0, ${ innerHeight })` }
             ticks={ 5 }
             anchorEl={ overlayRef.current }
+            disableAnimation
           />
           <Tooltip
             anchorEl={ overlayRef.current }
