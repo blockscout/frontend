@@ -283,16 +283,22 @@ frontend:
     enabled: true
     app: blockscout
   environment:
+    NEXT_PUBLIC_APP_PROTOCOL:
+      _default: http
+    NEXT_PUBLIC_APP_HOST:
+      _default: localhost
+    NEXT_PUBLIC_APP_PORT:
+      _default: 80
     NEXT_PUBLIC_BLOCKSCOUT_VERSION:
       _default: v4.1.8-beta
     NEXT_PUBLIC_FOOTER_GITHUB_LINK:
       _default: https://github.com/blockscout/blockscout
     NEXT_PUBLIC_FOOTER_TWITTER_LINK:
       _default: https://www.twitter.com/blockscoutcom
-    NEXT_PUBLIC_APP_ENV:
-      _default: production
     NEXT_PUBLIC_APP_INSTANCE:
       _default: unknown
+    NEXT_PUBLIC_APP_ENV:
+      _default: e2e
     NEXT_PUBLIC_FOOTER_TELEGRAM_LINK:
       _default: https://t.me/poa_network
     NEXT_PUBLIC_FOOTER_STAKING_LINK:
@@ -302,7 +308,7 @@ frontend:
     NEXT_PUBLIC_NETWORK_SHORT_NAME:
       _default: POA
     NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME:
-      _default: sokol
+      _default: poa
     NEXT_PUBLIC_NETWORK_TYPE:
       _default: poa
     NEXT_PUBLIC_NETWORK_SUBTYPE:
@@ -311,15 +317,6 @@ frontend:
       _default: 77
     NEXT_PUBLIC_NETWORK_CURRENCY_NAME:
       _default: POA Network Sokol
-
-
-
-
-
-
-
-
-
     NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL:
       _default: SPOA
     NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS:
@@ -334,3 +331,5 @@ frontend:
       _default: https://blockscout.com
     NEXT_PUBLIC_API_BASE_PATH:
       _default: /
+    NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM:
+      _default: https://airtable.com/shrqUAcjgGJ4jU88C
