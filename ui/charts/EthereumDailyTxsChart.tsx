@@ -6,6 +6,8 @@ import Area from 'ui/shared/graphs/Area';
 import Axis from 'ui/shared/graphs/Axis';
 import GridLine from 'ui/shared/graphs/GridLine';
 import Line from 'ui/shared/graphs/Line';
+import Overlay from 'ui/shared/graphs/Overlay';
+import Tooltip from 'ui/shared/graphs/Tooltip';
 import useTimeGraphController from 'ui/shared/graphs/useTimeGraphController';
 
 const data = {
@@ -23,6 +25,8 @@ interface Props {
 
 const EthereumDailyTxsChart = ({ margin }: Props) => {
   const ref = React.useRef<SVGSVGElement>(null);
+  const overlayRef = React.useRef<SVGRectElement>(null);
+
   const [ rect, setRect ] = React.useState<{ width: number; height: number}>();
 
   React.useEffect(() => {
@@ -42,62 +46,72 @@ const EthereumDailyTxsChart = ({ margin }: Props) => {
 
   return (
     <svg width={ width || '100%' } height={ height || '100%' } ref={ ref }>
-      { width > 0 && (
-        <g transform={ `translate(${ margin?.left || 0 },${ margin?.top || 0 })` }>
-          { /* BASE GRID LINE */ }
-          <GridLine
-            type="horizontal"
-            scale={ yScale }
-            ticks={ 1 }
-            size={ innerWidth }
-            disableAnimation
-          />
+      <g transform={ `translate(${ margin?.left || 0 },${ margin?.top || 0 })` }>
+        { /* BASE GRID LINE */ }
+        <GridLine
+          type="horizontal"
+          scale={ yScale }
+          ticks={ 1 }
+          size={ innerWidth }
+          disableAnimation
+        />
 
-          { /* GIRD LINES */ }
-          <GridLine
-            type="vertical"
-            scale={ xScale }
-            ticks={ 5 }
-            size={ innerHeight }
-            transform={ `translate(0, ${ innerHeight })` }
-          />
-          <GridLine
-            type="horizontal"
-            scale={ yScale }
-            ticks={ 5 }
-            size={ innerWidth }
-          />
+        { /* GIRD LINES */ }
+        <GridLine
+          type="vertical"
+          scale={ xScale }
+          ticks={ 5 }
+          size={ innerHeight }
+          transform={ `translate(0, ${ innerHeight })` }
+        />
+        <GridLine
+          type="horizontal"
+          scale={ yScale }
+          ticks={ 5 }
+          size={ innerWidth }
+        />
 
-          { /* GRAPH */ }
-          <Line
-            data={ data.items }
-            xScale={ xScale }
-            yScale={ yScale }
-            stroke={ lineColor }
-            animation="left"
-          />
-          <Area
-            data={ data.items }
-            color={ lineColor }
-            xScale={ xScale }
-            yScale={ yScale }
-          />
+        { /* GRAPH */ }
+        <Line
+          data={ data.items }
+          xScale={ xScale }
+          yScale={ yScale }
+          stroke={ lineColor }
+          animation="left"
+        />
+        <Area
+          data={ data.items }
+          color={ lineColor }
+          xScale={ xScale }
+          yScale={ yScale }
+        />
 
-          { /* AXISES */ }
-          <Axis
-            type="left"
-            scale={ yScale }
-            ticks={ 5 }
-            tickFormat={ yTickFormat }
-          />
+        { /* AXISES */ }
+        <Axis
+          type="left"
+          scale={ yScale }
+          ticks={ 5 }
+          tickFormat={ yTickFormat }
+        />
+        <Overlay ref={ overlayRef } width={ innerWidth } height={ innerHeight }>
           <Axis
             type="bottom"
             scale={ xScale }
             transform={ `translate(0, ${ innerHeight })` }
             ticks={ 5 }
+            anchorEl={ overlayRef.current }
           />
-        </g>
-      ) }
+          <Tooltip
+            anchorEl={ overlayRef.current }
+            width={ innerWidth }
+            height={ innerHeight }
+            margin={ margin }
+            xScale={ xScale }
+            yScale={ yScale }
+            data={ data }
+          />
+        </Overlay>
+      </g>
     </svg>
   );
 };

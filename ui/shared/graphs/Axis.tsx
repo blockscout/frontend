@@ -8,9 +8,10 @@ interface Props extends Omit<React.SVGProps<SVGGElement>, 'scale'> {
   disableAnimation?: boolean;
   ticks: number;
   tickFormat?: (domainValue: d3.AxisDomain, index: number) => string;
+  anchorEl?: SVGRectElement | null;
 }
 
-const Axis = ({ type, scale, ticks, tickFormat, disableAnimation, ...props }: Props) => {
+const Axis = ({ type, scale, ticks, tickFormat, disableAnimation, anchorEl, ...props }: Props) => {
   const ref = React.useRef<SVGGElement>(null);
 
   const textColorToken = useColorModeValue('blackAlpha.500', 'whiteAlpha.500');
@@ -38,6 +39,28 @@ const Axis = ({ type, scale, ticks, tickFormat, disableAnimation, ...props }: Pr
       .attr('color', textColor)
       .attr('font-size', '0.75rem');
   }, [ scale, ticks, tickFormat, disableAnimation, type, textColor ]);
+
+  React.useEffect(() => {
+    if (!anchorEl) {
+      return;
+    }
+
+    d3.select(anchorEl)
+      .on('mouseout.axisX', () => {
+        d3.select(ref.current)
+          .selectAll('text')
+          .style('font-weight', 'normal');
+      })
+      .on('mousemove.axisX', (event) => {
+        const [ x ] = d3.pointer(event, anchorEl);
+        const xDate = scale.invert(x);
+        const textElements = d3.select(ref.current).selectAll('text');
+        const data = textElements.data();
+        const index = d3.bisector((d) => d).left(data, xDate);
+        textElements
+          .style('font-weight', (d, i) => i === index - 1 ? 'bold' : 'normal');
+      });
+  }, [ anchorEl, scale ]);
 
   return <g ref={ ref } { ...props }/>;
 };
