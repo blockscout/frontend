@@ -16,20 +16,11 @@ import appConfig from 'configs/app/config';
 //   },
 // ]).replaceAll('"', '\'');
 
-function parseNetworkExplorers() {
-  try {
-    return JSON.parse(appConfig.network.explorers || '[]');
-  } catch (error) {
-    return [];
-  }
-}
-
 const stripTrailingSlash = (str: string) => str.at(-1) === '/' ? str.slice(0, -1) : str;
 const addLeadingSlash = (str: string) => str.at(0) === '/' ? str : '/' + str;
 
 const networkExplorers: Array<NetworkExplorer> = (() => {
-  const explorers: Array<NetworkExplorer> = parseNetworkExplorers();
-  return explorers.map((explorer) => ({
+  return appConfig.network.explorers.map((explorer) => ({
     ...explorer,
     baseUrl: stripTrailingSlash(explorer.baseUrl),
     paths: _mapValues(explorer.paths, _compose(stripTrailingSlash, addLeadingSlash)),

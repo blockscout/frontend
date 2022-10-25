@@ -90,17 +90,8 @@ const ICONS: Record<string, React.FunctionComponent<React.SVGAttributes<SVGEleme
 //   },
 // ]).replaceAll('"', '\'');
 
-function parseNetworkConfig() {
-  try {
-    return JSON.parse(appConfig.featuredNetworks || '[]');
-  } catch (error) {
-    return [];
-  }
-}
-
 const featuredNetworks: Array<FeaturedNetwork> = (() => {
-  const networksFromConfig: Array<FeaturedNetwork> = parseNetworkConfig();
-  return networksFromConfig.map((network) => ({
+  return appConfig.featuredNetworks.map((network) => ({
     ...network,
     icon: network.icon || ICONS[network.basePath],
   }));
