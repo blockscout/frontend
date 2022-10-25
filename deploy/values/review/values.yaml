@@ -4,7 +4,7 @@ global:
 blockscout:
   enabled: true
   image:
-    _default: blockscout/blockscout:review-prerelease-51545cc5@sha256:f99e656fe10104896a29f19ab106fb34eb4966ff33506e5d0e14165f0a740fab
+    _default: blockscout/blockscout:review-prerelease-4dad4e9b@sha256:0afd8e344f7856eeb5326dff370f6258e588a77fa1611ecf16f8433944ddbaf9
   replicas:
     app: 1
   docker:
@@ -340,3 +340,5 @@ frontend:
       _default: https://blockscout.com
     NEXT_PUBLIC_API_BASE_PATH:
       _default: /poa/sokol
+    NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM:
+      _default: https://airtable.com/shrqUAcjgGJ4jU88C

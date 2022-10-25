@@ -331,3 +331,5 @@ frontend:
       _default: https://blockscout.com
     NEXT_PUBLIC_API_BASE_PATH:
       _default: /
+    NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM:
+      _default: https://airtable.com/shrqUAcjgGJ4jU88C
