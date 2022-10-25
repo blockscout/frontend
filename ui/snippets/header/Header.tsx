@@ -14,7 +14,7 @@ const Header = ({ hideOnScrollDown }: {hideOnScrollDown?: boolean}) => {
   const scrollDirection = useScrollDirection();
   const bgColor = useColorModeValue('white', 'black');
 
-  const transform = hideOnScrollDown && scrollDirection === 'down' ? 'translateY(-100%)' : 'translateY(0)';
+  const transform = hideOnScrollDown && scrollDirection === 'down' ? 'translateY(-60px)' : 'translateY(0)';
   return (
     <>
       <Box bgColor={ bgColor } display={{ base: 'block', lg: 'none' }}>
@@ -29,10 +29,11 @@ const Header = ({ hideOnScrollDown }: {hideOnScrollDown?: boolean}) => {
           width="100%"
           alignItems="center"
           justifyContent="space-between"
-          zIndex="sticky"
+          zIndex="sticky2"
           transform={ transform }
-          transitionProperty="transform"
+          transitionProperty="transform,box-shadow"
           transitionDuration="slow"
+          boxShadow={ scrollDirection === 'down' ? 'md' : 'none' }
         >
           <Burger/>
           <NetworkLogo/>

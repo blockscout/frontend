@@ -1,5 +1,6 @@
 import { HStack, Flex, useColorModeValue } from '@chakra-ui/react';
-import React from 'react';
+import throttle from 'lodash/throttle';
+import React, { useCallback } from 'react';
 
 import type { Sort } from 'types/client/txs-sort';
 
@@ -17,24 +18,54 @@ type Props = {
   paginationProps: PaginationProps;
 }
 
+const TOP_UP = 106;
+const TOP_DOWN = 0;
+
 const TxsHeader = ({ sorting, paginationProps }: Props) => {
   const scrollDirection = useScrollDirection();
+  const [ isSticky, setIsSticky ] = React.useState(false);
+  const ref = React.useRef<HTMLDivElement>(null);
 
   const isMobile = useIsMobile(false);
+
+  const handleScroll = useCallback(() => {
+    if (
+      Number(ref.current?.getBoundingClientRect().y) <= TOP_DOWN ||
+      (scrollDirection === 'up' && Number(ref.current?.getBoundingClientRect().y) <= TOP_UP)
+    ) {
+      setIsSticky(true);
+    } else {
+      setIsSticky(false);
+    }
+  }, [ scrollDirection ]);
+
+  React.useEffect(() => {
+    const throttledHandleScroll = throttle(handleScroll, 300);
+
+    window.addEventListener('scroll', throttledHandleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', throttledHandleScroll);
+    };
+  }, [ handleScroll ]);
+
   return (
     <Flex
       backgroundColor={ useColorModeValue('white', 'black') }
       mt={ -6 }
       pt={ 6 }
       pb={ 6 }
+      mx={{ base: -4, lg: 0 }}
+      px={{ base: 4, lg: 0 }}
       justifyContent="space-between"
-      width="100%"
+      width={{ base: '100vw', lg: 'unset' }}
       position="sticky"
-      top="108px"
-      transform={ scrollDirection === 'up' ? 'translateY(0)' : 'translateY(-108px)' }
-      transitionProperty="transform"
+      top={{ base: scrollDirection === 'down' ? `${ TOP_DOWN }px` : `${ TOP_UP }px`, lg: 0 }}
+      transitionProperty="top"
       transitionDuration="slow"
-      zIndex={{ base: 0, lg: 'docked' }}
+      zIndex={{ base: 'sticky2', lg: 'docked' }}
+      boxShadow={{ base: isSticky ? 'md' : 'none', lg: 'none' }}
+      ref={ ref }
     >
       <HStack>
         { /* api is not implemented */ }
