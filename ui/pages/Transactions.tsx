@@ -19,7 +19,7 @@ const Transactions = () => {
   ];
 
   return (
-    <Page>
+    <Page hideMobileHeaderOnScrollDown>
       <Box h="100%">
         <PageTitle text="Transactions"/>
         <RoutedTabs tabs={ TABS }/>
