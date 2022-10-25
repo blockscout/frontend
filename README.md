@@ -67,6 +67,7 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_FOOTER_TWITTER_LINK | `string` *(optional)* | Link to Twitter in the footer | `https://www.twitter.com/blockscoutcom` |
 | NEXT_PUBLIC_FOOTER_TELEGRAM_LINK | `string` *(optional)* | Link to Telegram in the footer | `https://t.me/poa_network` |
 | NEXT_PUBLIC_FOOTER_STAKING_LINK | `string` *(optional)* | Link to staking dashboard in the footer | `https://duneanalytics.com/maxaleks/xdai-staking` |
+| NEXT_PUBLIC_MARKETPLACE_APP_LIST | `Array<MarketplaceApp>` where `MarketplaceApp` can have following [properties](#marketplace-app-configuration-properties) | List of apps that will be shown on the marketplace page | `[{'author': 'Bob', 'id': 'app', 'title': 'The App', 'logo': 'https://foo.app/icon.png', 'categories': ['security'], 'shortDescription': 'Awesome app', 'site': 'https://foo.app', 'description': 'The best app', 'url': 'https://foo.app/launch'}]` |
 | NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM | `string` | Link to form where authors can submit their dapps to the marketplace | `https://airtable.com/shrqUAcjgGJ4jU88C` |
 | NEXT_PUBLIC_NETWORK_EXPLORERS | `Array<NetworkExplorer>` where `NetworkExplorer` can have following [properties](#network-explorer-configuration-properties) | Used to build up links to transactions, blocks, addresses in other chain explorers.  | `[{'title':'Anyblock','baseUrl':'https://explorer.anyblock.tools','paths':{'tx':'/ethereum/poa/core/tx'}}]` |
 | NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE | `validation` or `mining` *(optional)* | Verification type in the network | `mining` |
@@ -112,8 +113,40 @@ The app instance could be customized by passing following variables to NodeJS en
 
 | Variable | Type | Description | Default value
 | --- | --- | --- | --- |
-| NEXT_PUBLIC_SENTRY_DSN | `string` *(optional)* | Client key for your Senty.io app | `<secret>` |
-| SENTRY_CSP_REPORT_URI | `string` *(optional)* | URL for sending CSP-reports to your Senty.io app | `<secret>` |
+| NEXT_PUBLIC_SENTRY_DSN | `string` *(optional)* | Client key for your Sentry.io app | `<secret>` |
+| SENTRY_CSP_REPORT_URI | `string` *(optional)* | URL for sending CSP-reports to your Sentry.io app | `<secret>` |
+
+### Marketplace app configuration properties
+
+| Property | Type | Description | Example value
+| --- | --- | --- | --- |
+| id | `string` | Used as slug for the app. Must be unique in the app list. | `'app'` |
+| title | `string` | Displayed title of the app. | `'The App'` |
+| logo | `string` | URL to logo file. Should be at least 144x144. | `'https://foo.app/icon.png'` |
+| shortDescription | `string` | Displayed only in the app list. | `'Awesome app'` |
+| categories | `Array<MarketplaceCategoryId>` | Displayed category. Select one of the following bellow. | `['security', 'tools']` |
+| author | `string` | Displayed author of the app | `'Bob'` |
+| url | `string` | URL of the app which will be launched in the iframe. | `'https://foo.app/launch'` |
+| description | `string` | Displayed only in the modal dialog with additional info about the app. | `'The best app'` |
+| site | `string` *(optional)* | Displayed site link | `'https://blockscout.com'` |
+| twitter | `string` *(optional)* | Displayed twitter link | `'https://twitter.com/blockscoutcom'` |
+| telegram | `string`  *(optional)* | Displayed telegram link | `'https://t.me/poa_network'` |
+| github | `string` *(optional)* | Displayed github link | `'https://github.com/blockscout'` |
+
+#### Marketplace categories ids
+
+For each application, you need to specify the `MarketplaceCategoryId` to which it belongs. Select one of the following:
+
+- `defi`
+- `exchanges`
+- `finance`
+- `games`
+- `marketplaces`
+- `nft`
+- `security`
+- `social`
+- `tools`
+- `yieldFarming`
 
 ### How to add new environment variable
 

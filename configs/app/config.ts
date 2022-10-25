@@ -1,4 +1,5 @@
 /* eslint-disable no-restricted-properties */
+import type { AppItemOverview } from 'types/client/apps';
 import type { FeaturedNetwork, NetworkExplorer } from 'types/networks';
 
 const getEnvValue = (env: string | undefined) => env?.replaceAll('\'', '"');
@@ -58,6 +59,7 @@ const config = Object.freeze({
   featuredNetworks: parseEnvJson<Array<FeaturedNetwork>>(getEnvValue(process.env.NEXT_PUBLIC_FEATURED_NETWORKS)) || [],
   blockScoutVersion: getEnvValue(process.env.NEXT_PUBLIC_BLOCKSCOUT_VERSION),
   isAccountSupported: getEnvValue(process.env.NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED) === 'true',
+  marketplaceAppList: parseEnvJson<Array<AppItemOverview>>(getEnvValue(process.env.NEXT_PUBLIC_MARKETPLACE_APP_LIST)) || [],
   marketplaceSubmitForm: getEnvValue(process.env.NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM),
   protocol: appSchema,
   host: appHost,

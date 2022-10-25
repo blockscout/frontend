@@ -1,7 +1,6 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import appConfig from 'configs/app/config';
-import marketplaceApps from 'data/marketplaceApps.json';
 import abiIcon from 'icons/ABI.svg';
 import apiKeysIcon from 'icons/API.svg';
 import appsIcon from 'icons/apps.svg';
@@ -18,10 +17,7 @@ import useCurrentRoute from 'lib/link/useCurrentRoute';
 import notEmpty from 'lib/notEmpty';
 
 export default function useNavItems() {
-  const isMarketplaceFilled = useMemo(() =>
-    marketplaceApps.filter(item => item.chainIds.includes(appConfig.network.id)),
-  [ ])
-    .length > 0;
+  const isMarketplaceFilled = appConfig.marketplaceAppList.length > 0;
 
   const currentRoute = useCurrentRoute()();
 
