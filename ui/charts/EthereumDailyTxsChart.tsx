@@ -9,11 +9,8 @@ import GridLine from 'ui/shared/graphs/GridLine';
 import Line from 'ui/shared/graphs/Line';
 import Overlay from 'ui/shared/graphs/Overlay';
 import Tooltip from 'ui/shared/graphs/Tooltip';
+import useBrushX from 'ui/shared/graphs/useBrushX';
 import useTimeGraphController from 'ui/shared/graphs/useTimeGraphController';
-
-const data = {
-  items: json.map((d) => ({ ...d, date: new Date(d.date) })),
-};
 
 interface Props {
   margin?: {
@@ -57,10 +54,17 @@ const EthereumDailyTxsChart = ({ margin }: Props) => {
   }, [ calculateRect ]);
 
   const { width, height } = rect;
-
   const innerWidth = Math.max(width - (margin?.left || 0) - (margin?.right || 0), 0);
   const innerHeight = Math.max(height - (margin?.bottom || 0) - (margin?.top || 0), 0);
 
+  const brushLimits = React.useMemo(() => (
+    [ [ 0, innerHeight ], [ innerWidth, height ] ] as [[number, number], [number, number]]
+  ), [ height, innerHeight, innerWidth ]);
+  const range = useBrushX({ anchor: ref.current, limits: brushLimits });
+
+  const data = {
+    items: json.slice(range[0], range[1]).map((d) => ({ ...d, date: new Date(d.date) })),
+  };
   const { yTickFormat, xScale, yScale } = useTimeGraphController({ data, width: innerWidth, height: innerHeight });
 
   const lineColor = useToken('colors', 'blue.500');
