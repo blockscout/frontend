@@ -1,6 +1,6 @@
 const breakpoints = {
 // maybe we need them in future
-  sm: '414px',
+  sm: '415px',
   //   md: '768px',
   lg: '1000px',
   xl: '1440px',
