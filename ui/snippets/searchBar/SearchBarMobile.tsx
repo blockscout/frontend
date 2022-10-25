@@ -3,7 +3,7 @@ import React from 'react';
 import type { ChangeEvent, FormEvent } from 'react';
 
 import searchIcon from 'icons/search.svg';
-import useScrollVisibility from 'lib/hooks/useScrollVisibility';
+import useScrollDirection from 'lib/hooks/useScrollDirection';
 
 interface Props {
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -12,7 +12,7 @@ interface Props {
 
 const SearchBarMobile = ({ onChange, onSubmit }: Props) => {
 
-  const isVisible = useScrollVisibility('up');
+  const isVisible = useScrollDirection() === 'up';
 
   const searchIconColor = useColorModeValue('blackAlpha.600', 'whiteAlpha.600');
   const inputBorderColor = useColorModeValue('blackAlpha.100', 'whiteAlpha.200');
@@ -30,9 +30,9 @@ const SearchBarMobile = ({ onChange, onSubmit }: Props) => {
       left="0"
       zIndex="docked"
       bgColor={ bgColor }
-      transform={ isVisible ? 'translateY(0)' : 'translateY(-100%)' }
-      // transitionProperty="transform"
-      // transitionDuration="slow"
+      transform={ isVisible ? 'translateY(0)' : 'translateY(-108px)' }
+      transitionProperty="transform"
+      transitionDuration="slow"
       display={{ base: 'block', lg: 'none' }}
       w="100%"
     >

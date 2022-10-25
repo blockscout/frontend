@@ -13,9 +13,10 @@ import NavigationDesktop from 'ui/snippets/navigation/NavigationDesktop';
 interface Props {
   children: React.ReactNode;
   wrapChildren?: boolean;
+  hideMobileHeaderOnScrollDown?: boolean;
 }
 
-const Page = ({ children, wrapChildren = true }: Props) => {
+const Page = ({ children, wrapChildren = true, hideMobileHeaderOnScrollDown }: Props) => {
   const fetch = useFetch();
 
   useQuery<unknown, unknown, unknown>([ QueryKeys.csrf ], async() => await fetch('/node-api/account/csrf'), {
@@ -30,7 +31,7 @@ const Page = ({ children, wrapChildren = true }: Props) => {
     <Flex w="100%" minH="100vh" alignItems="stretch">
       <NavigationDesktop/>
       <Flex flexDir="column" width="100%">
-        <Header/>
+        <Header hideOnScrollDown={ hideMobileHeaderOnScrollDown }/>
         { renderedChildren }
       </Flex>
     </Flex>

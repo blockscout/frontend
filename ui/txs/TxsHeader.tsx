@@ -1,11 +1,11 @@
-import { HStack, Flex } from '@chakra-ui/react';
+import { HStack, Flex, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Sort } from 'types/client/txs-sort';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 // import FilterInput from 'ui/shared/FilterInput';
-import useScrollVisibility from 'lib/hooks/useScrollVisibility';
+import useScrollDirection from 'lib/hooks/useScrollDirection';
 import Pagination from 'ui/shared/Pagination';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
 import SortButton from 'ui/shared/SortButton';
@@ -18,21 +18,22 @@ type Props = {
 }
 
 const TxsHeader = ({ sorting, paginationProps }: Props) => {
-  const isVisible = useScrollVisibility('down');
+  const scrollDirection = useScrollDirection();
 
   const isMobile = useIsMobile(false);
   return (
     <Flex
-      backgroundColor="white"
+      backgroundColor={ useColorModeValue('white', 'black') }
       mt={ -6 }
       pt={ 6 }
       pb={ 6 }
       justifyContent="space-between"
       width="100%"
       position="sticky"
-      top={{ base: isVisible ? '56px' : '108px', lg: 0 }}
-      // transitionDuration="slow"
-      // transitionProperty="top"
+      top="108px"
+      transform={ scrollDirection === 'up' ? 'translateY(0)' : 'translateY(-108px)' }
+      transitionProperty="transform"
+      transitionDuration="slow"
       zIndex={{ base: 0, lg: 'docked' }}
     >
       <HStack>

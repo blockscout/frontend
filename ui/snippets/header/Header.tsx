@@ -1,6 +1,7 @@
 import { HStack, Box, Flex, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
+import useScrollDirection from 'lib/hooks/useScrollDirection';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import ProfileMenuDesktop from 'ui/snippets/profileMenu/ProfileMenuDesktop';
 import ProfileMenuMobile from 'ui/snippets/profileMenu/ProfileMenuMobile';
@@ -9,8 +10,11 @@ import SearchBar from 'ui/snippets/searchBar/SearchBar';
 import Burger from './Burger';
 import ColorModeToggler from './ColorModeToggler';
 
-const Header = () => {
+const Header = ({ hideOnScrollDown }: {hideOnScrollDown?: boolean}) => {
+  const scrollDirection = useScrollDirection();
   const bgColor = useColorModeValue('white', 'black');
+
+  const transform = hideOnScrollDown && scrollDirection === 'down' ? 'translateY(-100%)' : 'translateY(0)';
   return (
     <>
       <Box bgColor={ bgColor } display={{ base: 'block', lg: 'none' }}>
@@ -26,6 +30,9 @@ const Header = () => {
           alignItems="center"
           justifyContent="space-between"
           zIndex="sticky"
+          transform={ transform }
+          transitionProperty="transform"
+          transitionDuration="slow"
         >
           <Burger/>
           <NetworkLogo/>

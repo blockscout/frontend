@@ -6,20 +6,22 @@ import isBrowser from 'lib/isBrowser';
 
 const SCROLL_DIFF_THRESHOLD = 20;
 
-export default function useScrollVisibility(direction: 'up' | 'down') {
+type Directions = 'up' | 'down';
+
+export default function useScrollDirection() {
   const prevScrollPosition = React.useRef(isBrowser() ? window.pageYOffset : 0);
-  const [ isVisible, setVisibility ] = React.useState(true);
+  const [ scrollDirection, setDirection ] = React.useState<Directions>();
 
   const handleScroll = React.useCallback(() => {
     const currentScrollPosition = clamp(window.pageYOffset, 0, window.document.body.scrollHeight - window.innerHeight);
     const scrollDiff = currentScrollPosition - prevScrollPosition.current;
 
     if (Math.abs(scrollDiff) > SCROLL_DIFF_THRESHOLD) {
-      setVisibility(direction === 'up' ? scrollDiff < 0 : scrollDiff > 0);
+      setDirection(scrollDiff < 0 ? 'up' : 'down');
     }
 
     prevScrollPosition.current = currentScrollPosition;
-  }, [ direction ]);
+  }, [ ]);
 
   React.useEffect(() => {
     const throttledHandleScroll = throttle(handleScroll, 300);
@@ -33,5 +35,5 @@ export default function useScrollVisibility(direction: 'up' | 'down') {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return isVisible;
+  return scrollDirection;
 }
