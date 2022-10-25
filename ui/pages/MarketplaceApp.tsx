@@ -61,7 +61,8 @@ const MarketplaceApp = ({ app, isLoading }: Props) => {
       <Center
         as="main"
         h="100vh"
-        paddingTop={{ base: '138px', lg: 0 }}
+        pt={{ base: '138px', lg: 0 }}
+        pb={{ base: 0, lg: 10 }}
       >
         { (isFrameLoading) && (
           <ContentLoader/>

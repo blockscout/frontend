@@ -12,7 +12,7 @@ import AppListSkeleton from 'ui/apps/AppListSkeleton';
 import CategoriesMenu from 'ui/apps/CategoriesMenu';
 import FilterInput from 'ui/shared/FilterInput';
 
-import useMarketplaceApps from '../apps/useMarkeplaceApps';
+import useMarketplaceApps from '../apps/useMarketplaceApps';
 
 const Apps = () => {
   const fetch = useFetch();

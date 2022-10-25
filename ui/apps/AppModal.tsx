@@ -7,7 +7,7 @@ import React, { useCallback } from 'react';
 
 import type { AppItemOverview, MarketplaceCategoriesIds } from 'types/client/apps';
 
-import marketplaceApps from 'data/marketplaceApps.json';
+import appConfig from 'configs/app/config';
 import linkIcon from 'icons/link.svg';
 import ghIcon from 'icons/social/git.svg';
 import tgIcon from 'icons/social/telega.svg';
@@ -43,7 +43,7 @@ const AppModal = ({
     twitter,
     logo,
     categories,
-  } = marketplaceApps.find(app => app.id === id) as AppItemOverview;
+  } = appConfig.marketplaceAppList.find(app => app.id === id) as AppItemOverview;
 
   const socialLinks = [
     telegram ? {
@@ -206,7 +206,7 @@ const AppModal = ({
             </Link>
           ) }
 
-          { socialLinks.length && (
+          { socialLinks.length > 0 && (
             <List
               marginLeft={{ sm: 'auto' }}
               display="grid"

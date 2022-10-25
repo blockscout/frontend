@@ -1,8 +1,6 @@
 import appConfig from 'configs/app/config';
 import featuredNetworks from 'lib/networks/featuredNetworks';
 
-import getMarketplaceApps from '../getMarketplaceApps';
-
 const KEY_WORDS = {
   BLOB: 'blob:',
   DATA: 'data:',
@@ -29,11 +27,11 @@ function getNetworksExternalAssets() {
 }
 
 function getMarketplaceAppsOrigins() {
-  return getMarketplaceApps().map(({ url }) => url);
+  return appConfig.marketplaceAppList.map(({ url }) => url);
 }
 
 function getMarketplaceAppsLogosOrigins() {
-  return getMarketplaceApps().map(({ logo }) => new URL(logo));
+  return appConfig.marketplaceAppList.map(({ logo }) => new URL(logo));
 }
 
 // we cannot use lodash/uniq in middleware code since it calls new Set() and it'is causing an error in Nextjs
