@@ -6,15 +6,11 @@ import type { QueryKeys } from 'types/client/queries';
 import type { Sort } from 'types/client/txs-sort';
 
 import * as cookies from 'lib/cookies';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-// import FilterInput from 'ui/shared/FilterInput';
-import Pagination from 'ui/shared/Pagination';
 
 import TxsHeader from './TxsHeader';
 import TxsSkeletonDesktop from './TxsSkeletonDesktop';
 import TxsSkeletonMobile from './TxsSkeletonMobile';
-import TxsSorting from './TxsSorting';
 import TxsWithSort from './TxsWithSort';
 import useQueryWithPages from './useQueryWithPages';
 
@@ -91,7 +87,7 @@ const TxsContent = ({
 
   const paginationProps = {
     ...pagination,
-    hasNextPage: data?.next_page_params !== undefined && Object.keys(data?.next_page_params).length > 0,
+    hasNextPage: data?.next_page_params !== undefined && data?.next_page_params !== null && Object.keys(data?.next_page_params).length > 0,
   };
 
   return (

@@ -4,7 +4,6 @@ import {
   Tbody,
   Tr,
   Th,
-  TableContainer,
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -20,28 +19,26 @@ interface Props {
 
 const WatchlistTable = ({ data, onDeleteClick, onEditClick }: Props) => {
   return (
-    <TableContainer width="100%">
-      <Table variant="simple" minWidth="600px">
-        <Thead>
-          <Tr>
-            <Th width="70%">Address</Th>
-            <Th width="30%">Private tag</Th>
-            <Th width="160px">Email notification</Th>
-            <Th width="108px"></Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          { data.map((item) => (
-            <WatchlistTableItem
-              item={ item }
-              key={ item.address_hash }
-              onDeleteClick={ onDeleteClick }
-              onEditClick={ onEditClick }
-            />
-          )) }
-        </Tbody>
-      </Table>
-    </TableContainer>
+    <Table variant="simple" minWidth="600px">
+      <Thead>
+        <Tr>
+          <Th width="70%">Address</Th>
+          <Th width="30%">Private tag</Th>
+          <Th width="160px">Email notification</Th>
+          <Th width="108px"></Th>
+        </Tr>
+      </Thead>
+      <Tbody>
+        { data.map((item) => (
+          <WatchlistTableItem
+            item={ item }
+            key={ item.address_hash }
+            onDeleteClick={ onDeleteClick }
+            onEditClick={ onEditClick }
+          />
+        )) }
+      </Tbody>
+    </Table>
   );
 };
 

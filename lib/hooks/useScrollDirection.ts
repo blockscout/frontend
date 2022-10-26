@@ -16,7 +16,9 @@ export default function useScrollDirection() {
     const currentScrollPosition = clamp(window.pageYOffset, 0, window.document.body.scrollHeight - window.innerHeight);
     const scrollDiff = currentScrollPosition - prevScrollPosition.current;
 
-    if (Math.abs(scrollDiff) > SCROLL_DIFF_THRESHOLD) {
+    if (window.pageYOffset === 0) {
+      setDirection(undefined);
+    } else if (Math.abs(scrollDiff) > SCROLL_DIFF_THRESHOLD) {
       setDirection(scrollDiff < 0 ? 'up' : 'down');
     }
 

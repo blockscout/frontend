@@ -4,7 +4,6 @@ import {
   Tbody,
   Tr,
   Th,
-  TableContainer,
 } from '@chakra-ui/react';
 import capitalize from 'lodash/capitalize';
 import React from 'react';
@@ -16,23 +15,21 @@ import TxStateTableItem from 'ui/tx/state/TxStateTableItem';
 
 const TxStateTable = () => {
   return (
-    <TableContainer width="100%" mt={ 6 }>
-      <Table variant="simple" minWidth="950px" size="sm" w="auto">
-        <Thead>
-          <Tr>
-            <Th width="92px">Storage</Th>
-            <Th width="146px">Address</Th>
-            <Th width="120px">{ capitalize(getNetworkValidatorTitle()) }</Th>
-            <Th width="33%" isNumeric>{ `After ${ appConfig.network.currency.symbol }` }</Th>
-            <Th width="33%" isNumeric>{ `Before ${ appConfig.network.currency.symbol }` }</Th>
-            <Th width="33%" isNumeric>{ `State difference ${ appConfig.network.currency.symbol }` }</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          { data.map((item, index) => <TxStateTableItem txStateItem={ item } key={ index }/>) }
-        </Tbody>
-      </Table>
-    </TableContainer>
+    <Table variant="simple" minWidth="950px" size="sm" w="auto" mt={ 6 }>
+      <Thead>
+        <Tr>
+          <Th width="92px">Storage</Th>
+          <Th width="146px">Address</Th>
+          <Th width="120px">{ capitalize(getNetworkValidatorTitle()) }</Th>
+          <Th width="33%" isNumeric>{ `After ${ appConfig.network.currency.symbol }` }</Th>
+          <Th width="33%" isNumeric>{ `Before ${ appConfig.network.currency.symbol }` }</Th>
+          <Th width="33%" isNumeric>{ `State difference ${ appConfig.network.currency.symbol }` }</Th>
+        </Tr>
+      </Thead>
+      <Tbody>
+        { data.map((item, index) => <TxStateTableItem txStateItem={ item } key={ index }/>) }
+      </Tbody>
+    </Table>
   );
 };
 

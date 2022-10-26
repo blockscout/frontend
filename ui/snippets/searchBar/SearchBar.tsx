@@ -6,7 +6,7 @@ import link from 'lib/link/link';
 import SearchBarDesktop from './SearchBarDesktop';
 import SearchBarMobile from './SearchBarMobile';
 
-const SearchBar = () => {
+const SearchBar = ({ withShadow }: {withShadow?: boolean}) => {
   const [ value, setValue ] = React.useState('');
 
   const handleChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
@@ -22,7 +22,7 @@ const SearchBar = () => {
   return (
     <>
       <SearchBarDesktop onChange={ handleChange } onSubmit={ handleSubmit }/>
-      <SearchBarMobile onChange={ handleChange } onSubmit={ handleSubmit }/>
+      <SearchBarMobile onChange={ handleChange } onSubmit={ handleSubmit } withShadow={ withShadow }/>
     </>
   );
 };
