@@ -31,7 +31,7 @@ const TxsHeader = ({ sorting, paginationProps }: Props) => {
 
   const handleScroll = useCallback(() => {
     if (
-      Number(ref.current?.getBoundingClientRect().y) < TOP_UP + 1
+      Number(ref.current?.getBoundingClientRect().y) < TOP_UP + 5
     ) {
       setIsSticky(true);
     } else {
