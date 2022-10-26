@@ -37,8 +37,8 @@ const ChartArea = ({ xScale, yScale, color, data, disableAnimation, ...props }: 
       <path ref={ ref } d={ d } fill={ `url(#gradient-${ color })` } opacity={ 0 } { ...props }/>
       <defs>
         <linearGradient id={ `gradient-${ color }` } x1="0%" x2="0%" y1="0%" y2="100%">
-          <stop offset="0%" stopColor={ color } stopOpacity={ 0.9 }/>
-          <stop offset="100%" stopColor={ color } stopOpacity={ 0.1 }/>
+          <stop offset="0%" stopColor={ color } stopOpacity={ 1 }/>
+          <stop offset="100%" stopColor={ color } stopOpacity={ 0.15 }/>
         </linearGradient>
       </defs>
     </>

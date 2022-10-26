@@ -45,7 +45,9 @@ const ChartAxis = ({ type, scale, ticks, tickFormat, disableAnimation, anchorEl,
       return;
     }
 
-    d3.select(anchorEl)
+    const anchorD3 = d3.select(anchorEl);
+
+    anchorD3
       .on('mouseout.axisX', () => {
         d3.select(ref.current)
           .selectAll('text')
@@ -60,6 +62,10 @@ const ChartAxis = ({ type, scale, ticks, tickFormat, disableAnimation, anchorEl,
         textElements
           .style('font-weight', (d, i) => i === index - 1 ? 'bold' : 'normal');
       });
+
+    return () => {
+      anchorD3.on('mouseout.axisX mousemove.axisX', null);
+    };
   }, [ anchorEl, scale ]);
 
   return <g ref={ ref } { ...props }/>;

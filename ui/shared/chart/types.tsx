@@ -9,3 +9,11 @@ export interface ChartMargin {
   bottom?: number;
   left?: number;
 }
+
+export interface TimeChartDataItem {
+  items: Array<TimeChartItem>;
+  name: string;
+  color: string;
+}
+
+export type TimeChartData = Array<TimeChartDataItem>;

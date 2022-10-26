@@ -1,38 +1,53 @@
 import { useToken, Button, Box } from '@chakra-ui/react';
+import _range from 'lodash/range';
 import React from 'react';
 
-import json from 'data/charts_eth_txs.json';
+import type { TimeChartData } from 'ui/shared/chart/types';
+
+import ethTokenTransferData from 'data/charts_eth_token_transfer.json';
+import ethTxsData from 'data/charts_eth_txs.json';
 import ChartArea from 'ui/shared/chart/ChartArea';
 import ChartAxis from 'ui/shared/chart/ChartAxis';
 import ChartGridLine from 'ui/shared/chart/ChartGridLine';
+import ChartLegend from 'ui/shared/chart/ChartLegend';
 import ChartLine from 'ui/shared/chart/ChartLine';
 import ChartOverlay from 'ui/shared/chart/ChartOverlay';
 import ChartSelectionX from 'ui/shared/chart/ChartSelectionX';
 import ChartTooltip from 'ui/shared/chart/ChartTooltip';
-import useBrushX from 'ui/shared/chart/useBrushX';
+// import useBrushX from 'ui/shared/chart/useBrushX';
 import useChartSize from 'ui/shared/chart/useChartSize';
 import useTimeChartController from 'ui/shared/chart/useTimeChartController';
 
 const CHART_MARGIN = { bottom: 20, left: 65, right: 30, top: 10 };
 
-const EthereumDailyTxsChart = () => {
+const EthereumChart = () => {
   const ref = React.useRef<SVGSVGElement>(null);
   const overlayRef = React.useRef<SVGRectElement>(null);
 
   const { width, height, innerWidth, innerHeight } = useChartSize(ref.current, CHART_MARGIN);
   const [ range, setRange ] = React.useState<[number, number]>([ 0, Infinity ]);
 
-  const brushLimits = React.useMemo(() => (
-    [ [ 0, innerHeight ], [ innerWidth, height ] ] as [[number, number], [number, number]]
-  ), [ height, innerHeight, innerWidth ]);
-  useBrushX({ anchor: ref.current, limits: brushLimits, setRange });
+  const data: TimeChartData = [
+    {
+      name: 'Daily Transactions',
+      color: useToken('colors', 'blue.500'),
+      items: ethTxsData.slice(range[0], range[1]).map((d) => ({ ...d, date: new Date(d.date) })),
+    },
+    {
+      name: 'ERC-20 Token Transfers',
+      color: useToken('colors', 'green.500'),
+      items: ethTokenTransferData.slice(range[0], range[1]).map((d) => ({ ...d, date: new Date(d.date) })),
+    },
+  ];
 
-  const data = {
-    items: json.slice(range[0], range[1]).map((d) => ({ ...d, date: new Date(d.date) })),
-  };
-  const { yTickFormat, xScale, yScale } = useTimeChartController({ data, width: innerWidth, height: innerHeight });
+  const [ selectedLines, setSelectedLines ] = React.useState<Array<number>>(_range(data.length));
+  const filteredData = data.filter((_, index) => selectedLines.includes(index));
 
-  const lineColor = useToken('colors', 'blue.500');
+  const { yTickFormat, xScale, yScale } = useTimeChartController({
+    data: filteredData.length === 0 ? data : filteredData,
+    width: innerWidth,
+    height: innerHeight,
+  });
 
   const handleRangeSelect = React.useCallback((nextRange: [number, number]) => {
     setRange([ range[0] + nextRange[0], range[0] + nextRange[1] ]);
@@ -41,6 +56,17 @@ const EthereumDailyTxsChart = () => {
   const handleZoomReset = React.useCallback(() => {
     setRange([ 0, Infinity ]);
   }, [ ]);
+
+  const handleLegendItemClick = React.useCallback((index: number) => {
+    const nextSelectedLines = selectedLines.includes(index) ? selectedLines.filter((item) => item !== index) : [ ...selectedLines, index ];
+    setSelectedLines(nextSelectedLines);
+  }, [ selectedLines ]);
+
+  // uncomment if we need brush the chart
+  // const brushLimits = React.useMemo(() => (
+  //   [ [ 0, innerHeight ], [ innerWidth, height ] ] as [[number, number], [number, number]]
+  // ), [ height, innerHeight, innerWidth ]);
+  // useBrushX({ anchor: ref.current, limits: brushLimits, setRange });
 
   return (
     <Box display="inline-block" position="relative" width="100%" height="100%">
@@ -73,19 +99,25 @@ const EthereumDailyTxsChart = () => {
           />
 
           { /* GRAPH */ }
-          <ChartLine
-            data={ data.items }
-            xScale={ xScale }
-            yScale={ yScale }
-            stroke={ lineColor }
-            animation="left"
-          />
-          <ChartArea
-            data={ data.items }
-            color={ lineColor }
-            xScale={ xScale }
-            yScale={ yScale }
-          />
+          { filteredData.map((d) => (
+            <ChartLine
+              key={ d.name }
+              data={ d.items }
+              xScale={ xScale }
+              yScale={ yScale }
+              stroke={ d.color }
+              animation="left"
+            />
+          )) }
+          { filteredData.map((d) => (
+            <ChartArea
+              key={ d.name }
+              data={ d.items }
+              color={ d.color }
+              xScale={ xScale }
+              yScale={ yScale }
+            />
+          )) }
 
           { /* AXISES */ }
           <ChartAxis
@@ -104,22 +136,26 @@ const EthereumDailyTxsChart = () => {
               anchorEl={ overlayRef.current }
               disableAnimation
             />
-            <ChartTooltip
-              anchorEl={ overlayRef.current }
-              width={ innerWidth }
-              height={ innerHeight }
-              margin={ CHART_MARGIN }
-              xScale={ xScale }
-              yScale={ yScale }
-              data={ data }
-            />
-            <ChartSelectionX
-              anchorEl={ overlayRef.current }
-              height={ innerHeight }
-              scale={ xScale }
-              data={ data }
-              onSelect={ handleRangeSelect }
-            />
+            { filteredData.length > 0 && (
+              <ChartTooltip
+                anchorEl={ overlayRef.current }
+                width={ innerWidth }
+                height={ innerHeight }
+                margin={ CHART_MARGIN }
+                xScale={ xScale }
+                yScale={ yScale }
+                data={ filteredData }
+              />
+            ) }
+            { filteredData.length > 0 && (
+              <ChartSelectionX
+                anchorEl={ overlayRef.current }
+                height={ innerHeight }
+                scale={ xScale }
+                data={ filteredData }
+                onSelect={ handleRangeSelect }
+              />
+            ) }
           </ChartOverlay>
         </g>
       </svg>
@@ -132,11 +168,12 @@ const EthereumDailyTxsChart = () => {
           right={ `${ CHART_MARGIN?.right || 0 }px` }
           onClick={ handleZoomReset }
         >
-            Reset zoom
+          Reset zoom
         </Button>
       ) }
+      <ChartLegend data={ data } selectedIndexes={ selectedLines } onClick={ handleLegendItemClick }/>
     </Box>
   );
 };
 
-export default React.memo(EthereumDailyTxsChart);
+export default React.memo(EthereumChart);

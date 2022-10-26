@@ -1,12 +1,10 @@
 import * as d3 from 'd3';
 import { useMemo } from 'react';
 
-import type { TimeChartItem } from 'ui/shared/chart/types';
+import type { TimeChartData } from 'ui/shared/chart/types';
 
 interface Props {
-  data: {
-    items: Array<TimeChartItem>;
-  };
+  data: TimeChartData;
   width: number;
   height: number;
 }
@@ -14,12 +12,12 @@ interface Props {
 export default function useTimeChartController({ data, width, height }: Props) {
 
   const xMin = useMemo(
-    () => d3.min(data.items, ({ date }) => date) || new Date(),
+    () => d3.min(data, ({ items }) => d3.min(items, ({ date }) => date)) || new Date(),
     [ data ],
   );
 
   const xMax = useMemo(
-    () => d3.max(data.items, ({ date }) => date) || new Date(),
+    () => d3.max(data, ({ items }) => d3.max(items, ({ date }) => date)) || new Date(),
     [ data ],
   );
 
@@ -29,17 +27,17 @@ export default function useTimeChartController({ data, width, height }: Props) {
   );
 
   const yMin = useMemo(
-    () => d3.min(data.items, ({ value }) => value) || 0,
+    () => d3.min(data, ({ items }) => d3.min(items, ({ value }) => value)) || 0,
     [ data ],
   );
 
   const yMax = useMemo(
-    () => d3.max(data.items, ({ value }) => value) || 0,
+    () => d3.max(data, ({ items }) => d3.max(items, ({ value }) => value)) || 0,
     [ data ],
   );
 
   const yScale = useMemo(() => {
-    const indention = (yMax - yMin) * 0.5;
+    const indention = (yMax - yMin) * 0.3;
     return d3.scaleLinear()
       .domain([ yMin >= 0 && yMin - indention <= 0 ? 0 : yMin - indention, yMax + indention ])
       .range([ height, 0 ]);

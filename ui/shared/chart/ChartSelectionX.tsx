@@ -2,7 +2,7 @@ import { useToken } from '@chakra-ui/react';
 import * as d3 from 'd3';
 import React from 'react';
 
-import type { TimeChartItem } from 'ui/shared/chart/types';
+import type { TimeChartData, TimeChartItem } from 'ui/shared/chart/types';
 
 const SELECTION_THRESHOLD = 1;
 
@@ -10,9 +10,7 @@ interface Props {
   height: number;
   anchorEl?: SVGRectElement | null;
   scale: d3.ScaleTime<number, number>;
-  data: {
-    items: Array<TimeChartItem>;
-  };
+  data: TimeChartData;
   onSelect: (range: [number, number]) => void;
 }
 
@@ -28,8 +26,8 @@ const ChartSelectionX = ({ anchorEl, height, scale, data, onSelect }: Props) => 
   const getIndexByX = React.useCallback((x: number) => {
     const xDate = scale.invert(x);
     const bisectDate = d3.bisector<TimeChartItem, unknown>((d) => d.date).left;
-    return bisectDate(data.items, xDate, 1);
-  }, [ data.items, scale ]);
+    return bisectDate(data[0].items, xDate, 1);
+  }, [ data, scale ]);
 
   const drawSelection = React.useCallback((x0: number, x1: number) => {
     const diffX = x1 - x0;
@@ -99,6 +97,11 @@ const ChartSelectionX = ({ anchorEl, height, scale, data, onSelect }: Props) => 
         handelMouseUp();
       }
     });
+
+    return () => {
+      anchorD3.on('mousedown.selectionX mouseup.selectionX mousemove.selectionX', null);
+      d3.select('body').on('mouseup.selectionX', null);
+    };
   }, [ anchorEl, drawSelection, getIndexByX, handelMouseUp ]);
 
   return (
