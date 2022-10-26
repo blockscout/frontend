@@ -340,7 +340,7 @@ frontend:
     NEXT_PUBLIC_API_ENDPOINT:
       _default: https://blockscout.com
     NEXT_PUBLIC_API_BASE_PATH:
-      _default: /
+      _default: /poa/sokol
     NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM:
       _default: https://airtable.com/shrqUAcjgGJ4jU88C
     NEXT_PUBLIC_MARKETPLACE_APP_LIST:
