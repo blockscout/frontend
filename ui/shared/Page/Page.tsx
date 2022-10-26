@@ -6,6 +6,8 @@ import { QueryKeys } from 'types/client/queries';
 
 import * as cookies from 'lib/cookies';
 import useFetch from 'lib/hooks/useFetch';
+import useScrollDirection from 'lib/hooks/useScrollDirection';
+import ScrollDirectionContext from 'ui/ScrollDirectionContext';
 import PageContent from 'ui/shared/Page/PageContent';
 import Header from 'ui/snippets/header/Header';
 import NavigationDesktop from 'ui/snippets/navigation/NavigationDesktop';
@@ -23,18 +25,22 @@ const Page = ({ children, wrapChildren = true, hideMobileHeaderOnScrollDown }: P
     enabled: Boolean(cookies.get(cookies.NAMES.API_TOKEN)),
   });
 
+  const directionContext = useScrollDirection();
+
   const renderedChildren = wrapChildren ? (
     <PageContent>{ children }</PageContent>
   ) : children;
 
   return (
-    <Flex w="100%" minH="100vh" alignItems="stretch">
-      <NavigationDesktop/>
-      <Flex flexDir="column" width="100%">
-        <Header hideOnScrollDown={ hideMobileHeaderOnScrollDown }/>
-        { renderedChildren }
+    <ScrollDirectionContext.Provider value={ directionContext }>
+      <Flex w="100%" minH="100vh" alignItems="stretch">
+        <NavigationDesktop/>
+        <Flex flexDir="column" width="100%">
+          <Header hideOnScrollDown={ hideMobileHeaderOnScrollDown }/>
+          { renderedChildren }
+        </Flex>
       </Flex>
-    </Flex>
+    </ScrollDirectionContext.Provider>
   );
 };
 
