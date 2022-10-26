@@ -1,5 +1,4 @@
 import { useToken, Button, Box } from '@chakra-ui/react';
-import _range from 'lodash/range';
 import React from 'react';
 
 import type { TimeChartData } from 'ui/shared/chart/types';
@@ -15,6 +14,7 @@ import ChartOverlay from 'ui/shared/chart/ChartOverlay';
 import ChartSelectionX from 'ui/shared/chart/ChartSelectionX';
 import ChartTooltip from 'ui/shared/chart/ChartTooltip';
 // import useBrushX from 'ui/shared/chart/useBrushX';
+import useChartLegend from 'ui/shared/chart/useChartLegend';
 import useChartSize from 'ui/shared/chart/useChartSize';
 import useTimeChartController from 'ui/shared/chart/useTimeChartController';
 
@@ -40,7 +40,7 @@ const EthereumChart = () => {
     },
   ];
 
-  const [ selectedLines, setSelectedLines ] = React.useState<Array<number>>(_range(data.length));
+  const { selectedLines, handleLegendItemClick } = useChartLegend(data.length);
   const filteredData = data.filter((_, index) => selectedLines.includes(index));
 
   const { yTickFormat, xScale, yScale } = useTimeChartController({
@@ -56,11 +56,6 @@ const EthereumChart = () => {
   const handleZoomReset = React.useCallback(() => {
     setRange([ 0, Infinity ]);
   }, [ ]);
-
-  const handleLegendItemClick = React.useCallback((index: number) => {
-    const nextSelectedLines = selectedLines.includes(index) ? selectedLines.filter((item) => item !== index) : [ ...selectedLines, index ];
-    setSelectedLines(nextSelectedLines);
-  }, [ selectedLines ]);
 
   // uncomment if we need brush the chart
   // const brushLimits = React.useMemo(() => (
