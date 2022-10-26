@@ -1,6 +1,7 @@
 import { useToken } from '@chakra-ui/react';
-import _debounce from 'lodash/debounce';
 import React from 'react';
+
+import type { ChartMargin } from 'ui/shared/chart/types';
 
 import json from 'data/charts_eth_txs.json';
 import ChartArea from 'ui/shared/chart/ChartArea';
@@ -10,52 +11,18 @@ import ChartLine from 'ui/shared/chart/ChartLine';
 import ChartOverlay from 'ui/shared/chart/ChartOverlay';
 import ChartTooltip from 'ui/shared/chart/ChartTooltip';
 import useBrushX from 'ui/shared/chart/useBrushX';
+import useChartSize from 'ui/shared/chart/useChartSize';
 import useTimeChartController from 'ui/shared/chart/useTimeChartController';
 
 interface Props {
-  margin?: {
-    top?: number;
-    right?: number;
-    bottom?: number;
-    left?: number;
-  };
+  margin?: ChartMargin;
 }
 
 const EthereumDailyTxsChart = ({ margin }: Props) => {
   const ref = React.useRef<SVGSVGElement>(null);
   const overlayRef = React.useRef<SVGRectElement>(null);
 
-  const [ rect, setRect ] = React.useState<{ width: number; height: number}>({ width: 0, height: 0 });
-
-  const calculateRect = React.useCallback(() => {
-    const rect = ref.current?.getBoundingClientRect();
-    return { width: rect?.width || 0, height: rect?.height || 0 };
-  }, []);
-
-  React.useEffect(() => {
-    setRect(calculateRect());
-  }, [ calculateRect ]);
-
-  React.useEffect(() => {
-    let timeoutId: number;
-    const resizeHandler = _debounce(() => {
-      setRect({ width: 0, height: 0 });
-      timeoutId = window.setTimeout(() => {
-        setRect(calculateRect());
-      }, 0);
-    }, 100);
-    const resizeObserver = new ResizeObserver(resizeHandler);
-
-    resizeObserver.observe(document.body);
-    return function cleanup() {
-      resizeObserver.unobserve(document.body);
-      window.clearTimeout(timeoutId);
-    };
-  }, [ calculateRect ]);
-
-  const { width, height } = rect;
-  const innerWidth = Math.max(width - (margin?.left || 0) - (margin?.right || 0), 0);
-  const innerHeight = Math.max(height - (margin?.bottom || 0) - (margin?.top || 0), 0);
+  const { width, height, innerWidth, innerHeight } = useChartSize(ref.current, margin);
 
   const brushLimits = React.useMemo(() => (
     [ [ 0, innerHeight ], [ innerWidth, height ] ] as [[number, number], [number, number]]

@@ -2,17 +2,12 @@ import { useToken, useColorModeValue } from '@chakra-ui/react';
 import * as d3 from 'd3';
 import React from 'react';
 
-import type { TimeChartItem } from 'ui/shared/chart/types';
+import type { TimeChartItem, ChartMargin } from 'ui/shared/chart/types';
 
 interface Props {
   width?: number;
   height?: number;
-  margin?: {
-    top?: number;
-    bottom?: number;
-    left?: number;
-    right?: number;
-  };
+  margin?: ChartMargin;
   data: {
     items: Array<TimeChartItem>;
   };

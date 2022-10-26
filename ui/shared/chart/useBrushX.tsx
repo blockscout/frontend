@@ -13,7 +13,7 @@ export default function useBrushX({ limits, anchor }: Props) {
   const brushSelectionBg = useToken('colors', useColorModeValue('blackAlpha.400', 'whiteAlpha.500'));
 
   React.useEffect(() => {
-    if (!anchor || brushRef.current) {
+    if (!anchor || brushRef.current || limits[1][0] === 0) {
       return;
     }
 
@@ -25,7 +25,7 @@ export default function useBrushX({ limits, anchor }: Props) {
     });
 
     const gBrush = svgEl?.append('g')
-      .attr('class', 'brush')
+      .attr('class', 'ChartBrush')
       .call(brushRef.current);
 
     gBrush.select('.selection')
