@@ -1,18 +1,18 @@
-import { HStack, Flex, useColorModeValue } from '@chakra-ui/react';
+import { HStack, Flex, useColorModeValue, Box } from '@chakra-ui/react';
 import throttle from 'lodash/throttle';
 import React, { useCallback } from 'react';
 
 import type { Sort } from 'types/client/txs-sort';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-// import FilterInput from 'ui/shared/FilterInput';
+import FilterInput from 'ui/shared/FilterInput';
 import useScrollDirection from 'lib/hooks/useScrollDirection';
 import ScrollDirectionContext from 'ui/ScrollDirectionContext';
 import Pagination from 'ui/shared/Pagination';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
 import SortButton from 'ui/shared/SortButton';
 
-// import TxsFilters from './TxsFilters';
+import TxsFilters from './TxsFilters';
 
 type Props = {
   sorting: Sort;
@@ -56,7 +56,7 @@ const TxsHeader = ({ sorting, paginationProps }: Props) => {
   return (
     <ScrollDirectionContext.Consumer>
       { (scrollDirection) => (
-        <Flex
+        <Box
           backgroundColor={ bgColor }
           mt={ -6 }
           pt={ 6 }
@@ -79,11 +79,11 @@ const TxsHeader = ({ sorting, paginationProps }: Props) => {
         >
           <HStack>
             { /* api is not implemented */ }
-            { /* <TxsFilters
-          filters={ filters }
-          onFiltersChange={ setFilters }
-          appliedFiltersNum={ 0 }
-        /> */ }
+            <TxsFilters
+              filters={ {} }
+              onFiltersChange={ () => {} }
+              appliedFiltersNum={ 0 }
+            />
             { isMobile && (
               <SortButton
                 // eslint-disable-next-line react/jsx-no-bind
@@ -92,16 +92,16 @@ const TxsHeader = ({ sorting, paginationProps }: Props) => {
               />
             ) }
             { /* api is not implemented */ }
-            { /* <FilterInput
+            <FilterInput
           // eslint-disable-next-line react/jsx-no-bind
           onChange={ () => {} }
           maxW="360px"
           size="xs"
           placeholder="Search by addresses, hash, method..."
-        /> */ }
+        />
           </HStack>
-          <Pagination { ...paginationProps }/>
-        </Flex>
+          <Flex mt={4} justifyContent="end"><Pagination { ...paginationProps }/></Flex>
+        </Box>
       ) }
     </ScrollDirectionContext.Consumer>
   );
