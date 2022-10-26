@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 
 import type { AppItemOverview } from 'types/client/apps';
 
-import marketplaceApps from 'data/marketplaceApps.json';
+import appConfig from 'configs/app/config';
 import { apos } from 'lib/html-entities';
 import EmptySearchResult from 'ui/apps/EmptySearchResult';
 import MarketplaceApp from 'ui/pages/MarketplaceApp';
@@ -23,7 +23,7 @@ const AppPage: NextPage = () => {
       return;
     }
 
-    const app = marketplaceApps.find((app) => app.id === id);
+    const app = appConfig.marketplaceAppList.find((app) => app.id === id);
     setApp(app);
     setIsLoading(false);
   }, [ id ]);

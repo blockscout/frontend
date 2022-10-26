@@ -49,8 +49,11 @@ const RoutedTabs = ({ tabs }: Props) => {
   const handleTabChange = React.useCallback((index: number) => {
     const nextTab = tabs[index];
 
-    router.query.tab = nextTab.id;
-    router.push(router);
+    router.push(
+      { pathname: router.asPath.split('?')[0], query: { tab: nextTab.id } },
+      undefined,
+      { shallow: true },
+    );
   }, [ tabs, router ]);
 
   return (

@@ -4,7 +4,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 import type { AppItemOverview, MarketplaceCategoriesIds } from 'types/client/apps';
 
 import appConfig from 'configs/app/config';
-import marketplaceApps from 'data/marketplaceApps.json';
 
 const favoriteAppsLocalStorageKey = 'favoriteApps';
 
@@ -79,8 +78,7 @@ export default function useMarketplaceApps() {
   }, [ filterQuery, category, filterApps ]);
 
   useEffect(() => {
-    const defaultDisplayedApps = [ ...marketplaceApps ]
-      .filter(item => item.chainIds.includes(appConfig.network.id))
+    const defaultDisplayedApps = [ ...appConfig.marketplaceAppList ]
       .sort((a, b) => a.title.localeCompare(b.title));
 
     setDefaultAppList(defaultDisplayedApps);
