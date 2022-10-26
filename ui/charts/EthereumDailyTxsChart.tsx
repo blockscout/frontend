@@ -3,14 +3,14 @@ import _debounce from 'lodash/debounce';
 import React from 'react';
 
 import json from 'data/charts_eth_txs.json';
-import Area from 'ui/shared/graphs/Area';
-import Axis from 'ui/shared/graphs/Axis';
-import GridLine from 'ui/shared/graphs/GridLine';
-import Line from 'ui/shared/graphs/Line';
-import Overlay from 'ui/shared/graphs/Overlay';
-import Tooltip from 'ui/shared/graphs/Tooltip';
-import useBrushX from 'ui/shared/graphs/useBrushX';
-import useTimeGraphController from 'ui/shared/graphs/useTimeGraphController';
+import ChartArea from 'ui/shared/chart/ChartArea';
+import ChartAxis from 'ui/shared/chart/ChartAxis';
+import ChartGridLine from 'ui/shared/chart/ChartGridLine';
+import ChartLine from 'ui/shared/chart/ChartLine';
+import ChartOverlay from 'ui/shared/chart/ChartOverlay';
+import ChartTooltip from 'ui/shared/chart/ChartTooltip';
+import useBrushX from 'ui/shared/chart/useBrushX';
+import useTimeChartController from 'ui/shared/chart/useTimeChartController';
 
 interface Props {
   margin?: {
@@ -65,7 +65,7 @@ const EthereumDailyTxsChart = ({ margin }: Props) => {
   const data = {
     items: json.slice(range[0], range[1]).map((d) => ({ ...d, date: new Date(d.date) })),
   };
-  const { yTickFormat, xScale, yScale } = useTimeGraphController({ data, width: innerWidth, height: innerHeight });
+  const { yTickFormat, xScale, yScale } = useTimeChartController({ data, width: innerWidth, height: innerHeight });
 
   const lineColor = useToken('colors', 'blue.500');
 
@@ -73,7 +73,7 @@ const EthereumDailyTxsChart = ({ margin }: Props) => {
     <svg width={ width || '100%' } height={ height || '100%' } ref={ ref }>
       <g transform={ `translate(${ margin?.left || 0 },${ margin?.top || 0 })` } opacity={ width ? 1 : 0 }>
         { /* BASE GRID LINE */ }
-        <GridLine
+        <ChartGridLine
           type="horizontal"
           scale={ yScale }
           ticks={ 1 }
@@ -82,7 +82,7 @@ const EthereumDailyTxsChart = ({ margin }: Props) => {
         />
 
         { /* GIRD LINES */ }
-        <GridLine
+        <ChartGridLine
           type="vertical"
           scale={ xScale }
           ticks={ 5 }
@@ -90,7 +90,7 @@ const EthereumDailyTxsChart = ({ margin }: Props) => {
           transform={ `translate(0, ${ innerHeight })` }
           disableAnimation
         />
-        <GridLine
+        <ChartGridLine
           type="horizontal"
           scale={ yScale }
           ticks={ 5 }
@@ -99,14 +99,14 @@ const EthereumDailyTxsChart = ({ margin }: Props) => {
         />
 
         { /* GRAPH */ }
-        <Line
+        <ChartLine
           data={ data.items }
           xScale={ xScale }
           yScale={ yScale }
           stroke={ lineColor }
           animation="left"
         />
-        <Area
+        <ChartArea
           data={ data.items }
           color={ lineColor }
           xScale={ xScale }
@@ -114,15 +114,15 @@ const EthereumDailyTxsChart = ({ margin }: Props) => {
         />
 
         { /* AXISES */ }
-        <Axis
+        <ChartAxis
           type="left"
           scale={ yScale }
           ticks={ 5 }
           tickFormat={ yTickFormat }
           disableAnimation
         />
-        <Overlay ref={ overlayRef } width={ innerWidth } height={ innerHeight }>
-          <Axis
+        <ChartOverlay ref={ overlayRef } width={ innerWidth } height={ innerHeight }>
+          <ChartAxis
             type="bottom"
             scale={ xScale }
             transform={ `translate(0, ${ innerHeight })` }
@@ -130,7 +130,7 @@ const EthereumDailyTxsChart = ({ margin }: Props) => {
             anchorEl={ overlayRef.current }
             disableAnimation
           />
-          <Tooltip
+          <ChartTooltip
             anchorEl={ overlayRef.current }
             width={ innerWidth }
             height={ innerHeight }
@@ -139,7 +139,7 @@ const EthereumDailyTxsChart = ({ margin }: Props) => {
             yScale={ yScale }
             data={ data }
           />
-        </Overlay>
+        </ChartOverlay>
       </g>
     </svg>
   );

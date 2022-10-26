@@ -1,17 +1,17 @@
 import * as d3 from 'd3';
 import { useMemo } from 'react';
 
-import type { TimeGraphItem } from 'ui/shared/graphs/types';
+import type { TimeChartItem } from 'ui/shared/chart/types';
 
 interface Props {
   data: {
-    items: Array<TimeGraphItem>;
+    items: Array<TimeChartItem>;
   };
   width: number;
   height: number;
 }
 
-const useTimeGraphController = ({ data, width, height }: Props) => {
+export default function useTimeChartController({ data, width, height }: Props) {
 
   const xMin = useMemo(
     () => d3.min(data.items, ({ date }) => date) || new Date(),
@@ -60,6 +60,4 @@ const useTimeGraphController = ({ data, width, height }: Props) => {
     yScale,
     yScaleForAxis,
   };
-};
-
-export default useTimeGraphController;
+}

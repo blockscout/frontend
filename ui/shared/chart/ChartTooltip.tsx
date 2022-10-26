@@ -2,7 +2,7 @@ import { useToken, useColorModeValue } from '@chakra-ui/react';
 import * as d3 from 'd3';
 import React from 'react';
 
-import type { TimeGraphItem } from 'ui/shared/graphs/types';
+import type { TimeChartItem } from 'ui/shared/chart/types';
 
 interface Props {
   width?: number;
@@ -14,14 +14,14 @@ interface Props {
     right?: number;
   };
   data: {
-    items: Array<TimeGraphItem>;
+    items: Array<TimeChartItem>;
   };
   xScale: d3.ScaleTime<number, number>;
   yScale: d3.ScaleLinear<number, number>;
   anchorEl: SVGRectElement | null;
 }
 
-const Tooltip = ({ xScale, yScale, width, height, data, margin: _margin, anchorEl, ...props }: Props) => {
+const ChartTooltip = ({ xScale, yScale, width, height, data, margin: _margin, anchorEl, ...props }: Props) => {
   const margin = React.useMemo(() => ({
     top: 0, bottom: 0, left: 0, right: 0,
     ..._margin,
@@ -36,7 +36,7 @@ const Tooltip = ({ xScale, yScale, width, height, data, margin: _margin, anchorE
   const drawLine = React.useCallback(
     (x: number) => {
       d3.select(ref.current)
-        .select('.Tooltip__line')
+        .select('.ChartTooltip__line')
         .attr('x1', x)
         .attr('x2', x)
         .attr('y1', -margin.top)
@@ -47,7 +47,7 @@ const Tooltip = ({ xScale, yScale, width, height, data, margin: _margin, anchorE
 
   const drawContent = React.useCallback(
     (x: number) => {
-      const tooltipContent = d3.select(ref.current).select('.Tooltip__content');
+      const tooltipContent = d3.select(ref.current).select('.ChartTooltip__content');
 
       tooltipContent.attr('transform', (cur, i, nodes) => {
         const OFFSET = 8;
@@ -58,26 +58,26 @@ const Tooltip = ({ xScale, yScale, width, height, data, margin: _margin, anchorE
       });
 
       tooltipContent
-        .select('.Tooltip__contentTitle')
+        .select('.ChartTooltip__contentTitle')
         .text(d3.timeFormat('%b %d, %Y')(xScale.invert(x)));
     },
     [ xScale, margin, width ],
   );
 
-  const onChangePosition = React.useCallback((d: TimeGraphItem, isVisible: boolean) => {
-    d3.select('.Tooltip__value')
+  const onChangePosition = React.useCallback((d: TimeChartItem, isVisible: boolean) => {
+    d3.select('.ChartTooltip__value')
       .text(isVisible ? d.value.toLocaleString() : '');
   }, []);
 
   const followPoints = React.useCallback((event: MouseEvent) => {
     const [ x ] = d3.pointer(event, anchorEl);
     const xDate = xScale.invert(x);
-    const bisectDate = d3.bisector<TimeGraphItem, unknown>((d) => d.date).left;
+    const bisectDate = d3.bisector<TimeChartItem, unknown>((d) => d.date).left;
     let baseXPos = 0;
 
     // draw circles on line
     d3.select(ref.current)
-      .select('.Tooltip__linePoint')
+      .select('.ChartTooltip__linePoint')
       .attr('transform', (cur, i) => {
         const index = bisectDate(data.items, xDate, 1);
         const d0 = data.items[index - 1];
@@ -129,7 +129,7 @@ const Tooltip = ({ xScale, yScale, width, height, data, margin: _margin, anchorE
       })
       .on('mousemove.tooltip', (event: MouseEvent) => {
         d3.select(ref.current)
-          .select('.Tooltip__linePoint')
+          .select('.ChartTooltip__linePoint')
           .attr('opacity', 1);
         followPoints(event);
       });
@@ -137,20 +137,20 @@ const Tooltip = ({ xScale, yScale, width, height, data, margin: _margin, anchorE
 
   return (
     <g ref={ ref } opacity={ 0 } { ...props }>
-      <line className="Tooltip__line" stroke={ lineColor }/>
-      <g className="Tooltip__content">
-        <rect className="Tooltip__contentBg" rx={ 8 } ry={ 8 } fill={ bgColor } width={ 125 } height={ 52 }/>
-        <text className="Tooltip__contentTitle" transform="translate(8,20)" fontSize="12px" fontWeight="bold" fill={ textColor }/>
+      <line className="ChartTooltip__line" stroke={ lineColor }/>
+      <g className="ChartTooltip__content">
+        <rect className="ChartTooltip__contentBg" rx={ 8 } ry={ 8 } fill={ bgColor } width={ 125 } height={ 52 }/>
+        <text className="ChartTooltip__contentTitle" transform="translate(8,20)" fontSize="12px" fontWeight="bold" fill={ textColor }/>
         <text
           transform="translate(8,40)"
-          className="Tooltip__value"
+          className="ChartTooltip__value"
           fontSize="12px"
           fill={ textColor }
         />
       </g>
-      <circle className="Tooltip__linePoint" r={ 3 } opacity={ 0 } fill={ lineColor }/>
+      <circle className="ChartTooltip__linePoint" r={ 3 } opacity={ 0 } fill={ lineColor }/>
     </g>
   );
 };
 
-export default React.memo(Tooltip);
+export default React.memo(ChartTooltip);

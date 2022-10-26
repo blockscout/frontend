@@ -1,17 +1,17 @@
 import * as d3 from 'd3';
 import React from 'react';
 
-import type { TimeGraphItem } from 'ui/shared/graphs/types';
+import type { TimeChartItem } from 'ui/shared/chart/types';
 
 interface Props extends React.SVGProps<SVGPathElement> {
   xScale: d3.ScaleTime<number, number> | d3.ScaleLinear<number, number>;
   yScale: d3.ScaleTime<number, number> | d3.ScaleLinear<number, number>;
   color: string;
-  data: Array<TimeGraphItem>;
+  data: Array<TimeChartItem>;
   disableAnimation?: boolean;
 }
 
-const Area = ({ xScale, yScale, color, data, disableAnimation, ...props }: Props) => {
+const ChartArea = ({ xScale, yScale, color, data, disableAnimation, ...props }: Props) => {
   const ref = React.useRef(null);
   React.useEffect(() => {
     if (disableAnimation) {
@@ -25,7 +25,7 @@ const Area = ({ xScale, yScale, color, data, disableAnimation, ...props }: Props
   }, [ disableAnimation ]);
 
   const d = React.useMemo(() => {
-    const area = d3.area<TimeGraphItem>()
+    const area = d3.area<TimeChartItem>()
       .x(({ date }) => xScale(date))
       .y1(({ value }) => yScale(value))
       .y0(() => yScale(yScale.domain()[0]));
@@ -45,4 +45,4 @@ const Area = ({ xScale, yScale, color, data, disableAnimation, ...props }: Props
   );
 };
 
-export default React.memo(Area);
+export default React.memo(ChartArea);

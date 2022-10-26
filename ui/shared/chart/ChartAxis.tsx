@@ -11,7 +11,7 @@ interface Props extends Omit<React.SVGProps<SVGGElement>, 'scale'> {
   anchorEl?: SVGRectElement | null;
 }
 
-const Axis = ({ type, scale, ticks, tickFormat, disableAnimation, anchorEl, ...props }: Props) => {
+const ChartAxis = ({ type, scale, ticks, tickFormat, disableAnimation, anchorEl, ...props }: Props) => {
   const ref = React.useRef<SVGGElement>(null);
 
   const textColorToken = useColorModeValue('blackAlpha.500', 'whiteAlpha.500');
@@ -65,4 +65,4 @@ const Axis = ({ type, scale, ticks, tickFormat, disableAnimation, anchorEl, ...p
   return <g ref={ ref } { ...props }/>;
 };
 
-export default React.memo(Axis);
+export default React.memo(ChartAxis);

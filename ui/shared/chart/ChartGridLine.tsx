@@ -10,7 +10,7 @@ interface Props extends Omit<React.SVGProps<SVGGElement>, 'scale'> {
   ticks: number;
 }
 
-const GridLine = ({ type, scale, ticks, size, disableAnimation, ...props }: Props) => {
+const ChartGridLine = ({ type, scale, ticks, size, disableAnimation, ...props }: Props) => {
   const ref = React.useRef<SVGGElement>(null);
 
   const strokeColorToken = useColorModeValue('blackAlpha.300', 'whiteAlpha.300');
@@ -38,4 +38,4 @@ const GridLine = ({ type, scale, ticks, size, disableAnimation, ...props }: Prop
   return <g ref={ ref } { ...props }/>;
 };
 
-export default React.memo(GridLine);
+export default React.memo(ChartGridLine);

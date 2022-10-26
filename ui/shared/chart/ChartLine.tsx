@@ -1,16 +1,16 @@
 import * as d3 from 'd3';
 import React from 'react';
 
-import type { TimeGraphItem } from 'ui/shared/graphs/types';
+import type { TimeChartItem } from 'ui/shared/chart/types';
 
 interface Props extends React.SVGProps<SVGPathElement> {
   xScale: d3.ScaleTime<number, number> | d3.ScaleLinear<number, number>;
   yScale: d3.ScaleTime<number, number> | d3.ScaleLinear<number, number>;
-  data: Array<TimeGraphItem>;
+  data: Array<TimeChartItem>;
   animation: 'left' | 'fadeIn' | 'none';
 }
 
-const Line = ({ xScale, yScale, data, animation, ...props }: Props) => {
+const ChartLine = ({ xScale, yScale, data, animation, ...props }: Props) => {
   const ref = React.useRef<SVGPathElement>(null);
 
   // Define different types of animation that we can use
@@ -59,7 +59,7 @@ const Line = ({ xScale, yScale, data, animation, ...props }: Props) => {
     }
   }, [ xScale, yScale, animation ]);
 
-  const line = d3.line<TimeGraphItem>()
+  const line = d3.line<TimeChartItem>()
     .x((d) => xScale(d.date))
     .y((d) => yScale(d.value));
 
@@ -75,4 +75,4 @@ const Line = ({ xScale, yScale, data, animation, ...props }: Props) => {
   );
 };
 
-export default React.memo(Line);
+export default React.memo(ChartLine);

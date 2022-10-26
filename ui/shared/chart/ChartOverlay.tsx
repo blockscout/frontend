@@ -6,13 +6,13 @@ interface Props {
   children: React.ReactNode;
 }
 
-const Overlay = ({ width, height, children }: Props, ref: React.LegacyRef<SVGRectElement>) => {
+const ChartOverlay = ({ width, height, children }: Props, ref: React.LegacyRef<SVGRectElement>) => {
   return (
-    <g className="TooltipOverlay">
+    <g className="ChartOverlay">
       { children }
       <rect ref={ ref } width={ width } height={ height } opacity={ 0 }/>
     </g>
   );
 };
 
-export default React.forwardRef(Overlay);
+export default React.forwardRef(ChartOverlay);

@@ -1,4 +1,4 @@
-export interface TimeGraphItem {
+export interface TimeChartItem {
   date: Date;
   value: number;
 }
