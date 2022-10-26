@@ -43,7 +43,7 @@ const EthereumDailyTxsChart = () => {
   }, [ ]);
 
   return (
-    <Box display="inline" position="relative">
+    <Box display="inline-block" position="relative" width="100%" height="100%">
       <svg width={ width || '100%' } height={ height || '100%' } ref={ ref }>
         <g transform={ `translate(${ CHART_MARGIN?.left || 0 },${ CHART_MARGIN?.top || 0 })` } opacity={ width ? 1 : 0 }>
           { /* BASE GRID LINE */ }

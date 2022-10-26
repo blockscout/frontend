@@ -55,7 +55,6 @@ const ChartTooltip = ({ xScale, yScale, width, height, data, margin: _margin, an
 
       tooltipContent
         .select('.ChartTooltip__contentTitle')
-        .attr('user-select', 'none')
         .text(d3.timeFormat('%b %d, %Y')(xScale.invert(x)));
     },
     [ xScale, margin, width ],
@@ -63,7 +62,6 @@ const ChartTooltip = ({ xScale, yScale, width, height, data, margin: _margin, an
 
   const onChangePosition = React.useCallback((d: TimeChartItem, isVisible: boolean) => {
     d3.select('.ChartTooltip__value')
-      .attr('user-select', 'none')
       .text(isVisible ? d.value.toLocaleString() : '');
   }, []);
 

@@ -35,7 +35,6 @@ const ChartAxis = ({ type, scale, ticks, tickFormat, disableAnimation, anchorEl,
     axisGroup.select('.domain').remove();
     axisGroup.selectAll('line').remove();
     axisGroup.selectAll('text')
-      .attr('user-select', 'none')
       .attr('opacity', 1)
       .attr('color', textColor)
       .attr('font-size', '0.75rem');
