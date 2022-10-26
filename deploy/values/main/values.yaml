@@ -4,7 +4,7 @@ global:
 blockscout:
   enabled: true
   image:
-    _default: blockscout/blockscout:latest
+    _default: blockscout/blockscout:review-prerelease-4dad4e9b@sha256:0afd8e344f7856eeb5326dff370f6258e588a77fa1611ecf16f8433944ddbaf9
   replicas:
     app: 1
   docker:
@@ -16,12 +16,16 @@ blockscout:
   # enable ingress
   ingress:
     enabled: true
+    annotations:
+      - 'nginx.ingress.kubernetes.io/rewrite-target: /$2'
     host:
       _default: blockscout.test.blockscout.aws-k8s.blockscout.com
     # enable https
+    #
     tls:
       enabled: true
     path:
+      - "/poa/sokol(/|$)(.*)"
       - "/"
   # probes
   livenessProbe:
@@ -43,7 +47,7 @@ blockscout:
         _default: "2"
   # enable service to connect to RDS
   rds:
-    enable: false
+    enabled: false
     endpoint:
       _default: <endpoint>.<region>.rds.amazonaws.com
   # node label
@@ -83,15 +87,23 @@ blockscout:
     RUST_VERIFICATION_SERVICE_URL:
       _default: http://sc-verifier-svc:8043
     ACCOUNT_ENABLED:
-      _default: true
+      _default: 'true'
     DISABLE_REALTIME_INDEXER:
       _default: 'false'
     SOCKET_ROOT:
-      _default: "/"
+      _default: "/poa/sokol"
     NETWORK_PATH:
-      _default: "/"
+      _default: "/poa/sokol"
+    API_PATH:
+      _default: "/poa/sokol"
     ETHEREUM_JSONRPC_DISABLE_ARCHIVE_BALANCES:
       _default: 'true'
+    API_BASE_PATH:
+      _default: "/poa/sokol"
+    APPS_MENU:
+      _default: 'true'
+    EXTERNAL_APPS:
+      _default: '[{"title": "Marketplace", "url": "..."}]'
 
 postgres:
   enabled: true
