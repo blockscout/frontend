@@ -5,11 +5,11 @@ import React from 'react';
 interface Props {
   limits: [[number, number], [number, number]];
   anchor: SVGSVGElement | null;
+  setRange: (range: [number, number]) => void;
 }
 
-export default function useBrushX({ limits, anchor }: Props) {
+export default function useBrushX({ limits, anchor, setRange }: Props) {
   const brushRef = React.useRef<d3.BrushBehavior<unknown>>();
-  const [ range, setRange ] = React.useState<[number, number]>([ 0, Infinity ]);
   const brushSelectionBg = useToken('colors', useColorModeValue('blackAlpha.400', 'whiteAlpha.500'));
 
   React.useEffect(() => {
@@ -32,7 +32,5 @@ export default function useBrushX({ limits, anchor }: Props) {
       .attr('stroke', 'none')
       .attr('fill', brushSelectionBg);
 
-  }, [ anchor, brushSelectionBg, limits ]);
-
-  return range;
+  }, [ anchor, brushSelectionBg, limits, setRange ]);
 }

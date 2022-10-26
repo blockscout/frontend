@@ -6,7 +6,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-const ChartOverlay = ({ width, height, children }: Props, ref: React.LegacyRef<SVGRectElement>) => {
+const ChartOverlay = ({ width, height, children }: Props, ref: React.ForwardedRef<SVGRectElement>) => {
   return (
     <g className="ChartOverlay">
       { children }

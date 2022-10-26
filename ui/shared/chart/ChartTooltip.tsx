@@ -27,6 +27,7 @@ const ChartTooltip = ({ xScale, yScale, width, height, data, margin: _margin, an
   const bgColor = useToken('colors', useColorModeValue('gray.900', 'gray.400'));
 
   const ref = React.useRef(null);
+  const isPressed = React.useRef(false);
 
   const drawLine = React.useCallback(
     (x: number) => {
@@ -34,10 +35,10 @@ const ChartTooltip = ({ xScale, yScale, width, height, data, margin: _margin, an
         .select('.ChartTooltip__line')
         .attr('x1', x)
         .attr('x2', x)
-        .attr('y1', -margin.top)
+        .attr('y1', 0)
         .attr('y2', height || 0);
     },
-    [ ref, height, margin ],
+    [ ref, height ],
   );
 
   const drawContent = React.useCallback(
@@ -49,11 +50,12 @@ const ChartTooltip = ({ xScale, yScale, width, height, data, margin: _margin, an
         const node = nodes[i] as SVGGElement | null;
         const nodeWidth = node?.getBoundingClientRect()?.width || 0;
         const translateX = nodeWidth + x + OFFSET > (width || 0) ? x - nodeWidth - OFFSET : x + OFFSET;
-        return `translate(${ translateX }, ${ -margin.top })`;
+        return `translate(${ translateX }, ${ margin.top + 30 })`;
       });
 
       tooltipContent
         .select('.ChartTooltip__contentTitle')
+        .attr('user-select', 'none')
         .text(d3.timeFormat('%b %d, %Y')(xScale.invert(x)));
     },
     [ xScale, margin, width ],
@@ -61,6 +63,7 @@ const ChartTooltip = ({ xScale, yScale, width, height, data, margin: _margin, an
 
   const onChangePosition = React.useCallback((d: TimeChartItem, isVisible: boolean) => {
     d3.select('.ChartTooltip__value')
+      .attr('user-select', 'none')
       .text(isVisible ? d.value.toLocaleString() : '');
   }, []);
 
@@ -115,7 +118,16 @@ const ChartTooltip = ({ xScale, yScale, width, height, data, margin: _margin, an
   ]);
 
   React.useEffect(() => {
-    d3.select(anchorEl)
+    const anchorD3 = d3.select(anchorEl);
+
+    anchorD3
+      .on('mousedown.tooltip', () => {
+        isPressed.current = true;
+        d3.select(ref.current).attr('opacity', 0);
+      })
+      .on('mouseup.tooltip', () => {
+        isPressed.current = false;
+      })
       .on('mouseout.tooltip', () => {
         d3.select(ref.current).attr('opacity', 0);
       })
@@ -123,11 +135,21 @@ const ChartTooltip = ({ xScale, yScale, width, height, data, margin: _margin, an
         d3.select(ref.current).attr('opacity', 1);
       })
       .on('mousemove.tooltip', (event: MouseEvent) => {
-        d3.select(ref.current)
-          .select('.ChartTooltip__linePoint')
-          .attr('opacity', 1);
-        followPoints(event);
+        if (!isPressed.current) {
+          d3.select(ref.current).attr('opacity', 1);
+          d3.select(ref.current)
+            .select('.ChartTooltip__linePoint')
+            .attr('opacity', 1);
+          followPoints(event);
+        }
       });
+
+    d3.select('body').on('mouseup.tooltip', function(event) {
+      const isOutside = event.target !== anchorD3.node();
+      if (isOutside) {
+        isPressed.current = false;
+      }
+    });
   }, [ anchorEl, followPoints ]);
 
   return (
@@ -135,12 +157,20 @@ const ChartTooltip = ({ xScale, yScale, width, height, data, margin: _margin, an
       <line className="ChartTooltip__line" stroke={ lineColor }/>
       <g className="ChartTooltip__content">
         <rect className="ChartTooltip__contentBg" rx={ 8 } ry={ 8 } fill={ bgColor } width={ 125 } height={ 52 }/>
-        <text className="ChartTooltip__contentTitle" transform="translate(8,20)" fontSize="12px" fontWeight="bold" fill={ textColor }/>
+        <text
+          className="ChartTooltip__contentTitle"
+          transform="translate(8,20)"
+          fontSize="12px"
+          fontWeight="bold"
+          fill={ textColor }
+          pointerEvents="none"
+        />
         <text
           transform="translate(8,40)"
           className="ChartTooltip__value"
           fontSize="12px"
           fill={ textColor }
+          pointerEvents="none"
         />
       </g>
       <circle className="ChartTooltip__linePoint" r={ 3 } opacity={ 0 } fill={ lineColor }/>
