@@ -279,6 +279,7 @@ frontend:
       - "/poa/sokol/(apps|auth/profile|account)"
       - "/_next"
       - "/node-api"
+      - "/static"
   resources:
     limits:
       memory:
