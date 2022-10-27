@@ -76,3 +76,6 @@ jobs:
       gethIngressHost: geth
       scVerifierIngressHost: sc-verifier
     secrets: inherit
+    environment:
+      name: Dev
+      url: https://google.com
