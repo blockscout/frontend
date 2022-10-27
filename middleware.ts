@@ -29,9 +29,10 @@ export function middleware(req: NextRequest) {
 
   // we don't have any info from router here, so just do straight forward sub-string search (sorry)
   const isAccountRoute = req.nextUrl.pathname.includes('/account/');
+  const isProfileRoute = req.nextUrl.pathname.includes('/auth/profile');
   const apiToken = req.cookies.get(NAMES.API_TOKEN);
 
-  if (isAccountRoute && !apiToken) {
+  if ((isAccountRoute || isProfileRoute) && !apiToken) {
     const authUrl = link('auth', networkParams);
     return NextResponse.redirect(authUrl);
   }

@@ -28,7 +28,7 @@ const MarketplaceApp = ({ app, isLoading }: Props) => {
 
   const { data: jsonRpcUrlResponse } = useQuery<unknown, unknown, JsonRpcUrlResponse>(
     [ 'json-rpc-url' ],
-    async() => await fetch(`/api/config/json-rpc-url`),
+    async() => await fetch(`/node-api/config/json-rpc-url`),
     { refetchOnMount: false },
   );
 

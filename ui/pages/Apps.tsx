@@ -32,7 +32,7 @@ const Apps = () => {
 
   useQuery<unknown, unknown, JsonRpcUrlResponse>(
     [ 'json-rpc-url' ],
-    async() => await fetch(`/api/config/json-rpc-url`),
+    async() => await fetch(`/node-api/config/json-rpc-url`),
   );
 
   return (

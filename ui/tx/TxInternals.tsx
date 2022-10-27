@@ -75,7 +75,7 @@ const TxInternals = () => {
   const [ sort, setSort ] = React.useState<Sort>();
   const { data, isLoading, isError } = useQuery<unknown, unknown, InternalTransactionsResponse>(
     [ QueryKeys.txInternals, router.query.id ],
-    async() => await fetch(`/api/transactions/${ router.query.id }/internal-transactions`),
+    async() => await fetch(`/node-api/transactions/${ router.query.id }/internal-transactions`),
     {
       enabled: Boolean(router.query.id),
     },

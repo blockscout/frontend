@@ -27,7 +27,7 @@ const WatchListItem = ({ item, onEditClick, onDeleteClick }: Props) => {
 
   const { mutate } = useMutation(() => {
     const data = { ...item, notification_methods: { email: !notificationEnabled } };
-    return fetch(`/api/account/watchlist/${ item.id }`, { method: 'PUT', body: JSON.stringify(data) });
+    return fetch(`/node-api/account/watchlist/${ item.id }`, { method: 'PUT', body: JSON.stringify(data) });
   }, {
     onError: () => {
       // eslint-disable-next-line no-console

@@ -1,10 +1,12 @@
 global:
-  env: e2e
+  env: review
 # enable Blockscout deploy
 blockscout:
+  app: blockscout
   enabled: true
   image:
-    _default: blockscout/blockscout:latest
+    _default: blockscout/blockscout-sokol:latest
+    #blockscout/blockscout:review-prerelease-9ad99cc8@sha256:608d335025a135f1cde6608b2449b8988b7cb8bfa6ea38e92ce1f184ec577781
   replicas:
     app: 1
   docker:
@@ -16,12 +18,16 @@ blockscout:
   # enable ingress
   ingress:
     enabled: true
+    annotations:
+      - 'nginx.ingress.kubernetes.io/rewrite-target: /$2'
     host:
       _default: blockscout.test.blockscout.aws-k8s.blockscout.com
     # enable https
+    #
     tls:
       enabled: true
     path:
+      - "/poa/sokol(/|$)(.*)"
       - "/"
   # probes
   livenessProbe:
@@ -43,7 +49,7 @@ blockscout:
         _default: "2"
   # enable service to connect to RDS
   rds:
-    enable: false
+    enabled: false
     endpoint:
       _default: <endpoint>.<region>.rds.amazonaws.com
   # node label
@@ -83,15 +89,23 @@ blockscout:
     RUST_VERIFICATION_SERVICE_URL:
       _default: http://sc-verifier-svc:8043
     ACCOUNT_ENABLED:
-      _default: true
+      _default: 'true'
     DISABLE_REALTIME_INDEXER:
       _default: 'false'
     SOCKET_ROOT:
-      _default: "/"
+      _default: "/poa/sokol"
     NETWORK_PATH:
-      _default: "/"
+      _default: "/poa/sokol"
+    API_PATH:
+      _default: "/poa/sokol"
     ETHEREUM_JSONRPC_DISABLE_ARCHIVE_BALANCES:
       _default: 'true'
+    API_BASE_PATH:
+      _default: "/poa/sokol"
+    APPS_MENU:
+      _default: 'true'
+    EXTERNAL_APPS:
+      _default: '[{"title": "Marketplace", "url": "/poa/sokol/apps"}]'
 
 postgres:
   enabled: true
@@ -155,7 +169,7 @@ geth:
   ingress:
     enabled: true
     host:
-      _default: asdfg-node.test.blockscout.aws-k8s.blockscout.com
+      _default: node.test.blockscout.aws-k8s.blockscout.com
     # enable https
     tls:
       enabled: false
@@ -182,7 +196,6 @@ scVerifier:
     enabled: true
     host:
       _default: verifier.test.blockscout.aws-k8s.blockscout.com
-      testnet: asdfg-verifier.test.blockscout.aws-k8s.blockscout.com
     # enable https
     tls:
       enabled: true
@@ -249,6 +262,7 @@ scVerifier:
     SMART_CONTRACT_VERIFIER__JAEGER__ENABLED:
       _default: 'false'
 frontend:
+  app: blockscout
   enabled: true
   image:
     _default: ghcr.io/blockscout/frontend:main
@@ -261,12 +275,14 @@ frontend:
     enabled: true
     host:
       _default: frontend.test.blockscout.aws-k8s.blockscout.com
-      testnet: asdfg-frontend.test.blockscout.aws-k8s.blockscout.com
     # enable https
     tls:
       enabled: true
     path:
-      - "/"
+      - "/poa/sokol/(apps|auth/profile|account)"
+      - "/_next"
+      - "/node-api"
+      - "/static"
   resources:
     limits:
       memory:
@@ -324,8 +340,12 @@ frontend:
     NEXT_PUBLIC_API_ENDPOINT:
       _default: https://blockscout.com
     NEXT_PUBLIC_API_BASE_PATH:
-      _default: /
+      _default: /poa/sokol
     NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM:
       _default: https://airtable.com/shrqUAcjgGJ4jU88C
     NEXT_PUBLIC_MARKETPLACE_APP_LIST:
       _default: "[{'author': 'Blockscout', 'id': 'token-approval-tracker', 'title': 'Token Approval Tracker', 'logo': 'https://approval-tracker.vercel.app/icon-192.png', 'categories': ['security', 'tools'], 'shortDescription': 'Token Approval Tracker shows all approvals for any ERC20-compliant tokens and NFTs and lets to revoke them or adjust the approved amount.', 'site': 'https://docs.blockscout.com/for-users/blockscout-apps/token-approval-tracker', 'description': 'Token Approval Tracker shows all approvals for any ERC20-compliant tokens and NFTs and lets to revoke them or adjust the approved amount.', 'url': 'https://approval-tracker.vercel.app/'}]"
+    NEXT_PUBLIC_LOGOUT_URL:
+      _default: https://blockscoutcom.us.auth0.com/v2/logout
+    NEXT_PUBLIC_LOGOUT_RETURN_URL:
+      _default: https://blockscout.com/poa/sokol/auth/logout

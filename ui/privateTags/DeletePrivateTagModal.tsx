@@ -23,7 +23,7 @@ const DeletePrivateTagModal: React.FC<Props> = ({ isOpen, onClose, data, type })
   const fetch = useFetch();
 
   const mutationFn = useCallback(() => {
-    return fetch(`/api/account/private-tags/${ type }/${ id }`, { method: 'DELETE' });
+    return fetch(`/node-api/account/private-tags/${ type }/${ id }`, { method: 'DELETE' });
   }, [ fetch, type, id ]);
 
   const onSuccess = useCallback(async() => {

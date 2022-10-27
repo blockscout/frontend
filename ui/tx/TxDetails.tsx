@@ -49,7 +49,7 @@ const TxDetails = () => {
 
   const { data, isLoading, isError } = useQuery<unknown, unknown, Transaction>(
     [ QueryKeys.tx, router.query.id ],
-    async() => await fetch(`/api/transactions/${ router.query.id }`),
+    async() => await fetch(`/node-api/transactions/${ router.query.id }`),
     {
       enabled: Boolean(router.query.id),
     },

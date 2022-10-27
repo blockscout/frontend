@@ -19,7 +19,7 @@ import DeletePrivateTagModal from './DeletePrivateTagModal';
 
 const PrivateAddressTags = () => {
   const { data: addressTagsData, isLoading, isError } =
-    useQuery<unknown, unknown, AddressTags>([ QueryKeys.addressTags ], async() => fetch('/api/account/private-tags/address'), { refetchOnMount: false });
+    useQuery<unknown, unknown, AddressTags>([ QueryKeys.addressTags ], async() => fetch('/node-api/account/private-tags/address'), { refetchOnMount: false });
 
   const addressModalProps = useDisclosure();
   const deleteModalProps = useDisclosure();
