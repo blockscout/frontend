@@ -69,7 +69,7 @@ jobs:
     uses: blockscout/blockscout-ci-cd/.github/workflows/deploy.yaml@master
     with:
       env_vars: VALUES_DIR=deploy/values/review,APP_NAME=bs-stack
-      appNamespace: review-front-$GITHUB_REF_SLUG
+      appNamespace: review-front-$GITHUB_HEAD_REF_SLUG
       blockscoutIngressHost: blockscout
       frontendIngressHost: blockscout
       frontendImage: ghcr.io/blockscout/frontend:prerelease-${{ needs.push_to_registry.outputs.shortSha }}
