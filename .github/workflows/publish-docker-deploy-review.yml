@@ -74,3 +74,31 @@ jobs:
       gethIngressHost: geth
       scVerifierIngressHost: sc-verifier
     secrets: inherit
+
+  update_pr_meta:
+    name: Update PR meta data
+    # need: deploy_frontend
+    steps:
+      - name: Render template
+        id: deploy_comment_template
+        uses: chuhlomin/render-template@v1.4
+        with:
+          template: .github/templates/pr-deploy-comment.md
+          vars: |
+            foo: foo value
+            bar: bar value
+      - name: Find deploy comment
+        uses: peter-evans/find-comment@v2
+        id: fc
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: Preview deployment
+
+      - name: Create or update deploy comment
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: ${{ steps.deploy_comment_template.outputs.result }}
+          edit-mode: replace
