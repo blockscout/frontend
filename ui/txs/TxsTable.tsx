@@ -12,7 +12,7 @@ import TxsTableItem from './TxsTableItem';
 type Props = {
   txs: Array<Transaction>;
   sort: (field: 'val' | 'fee') => () => void;
-  sorting: Sort;
+  sorting?: Sort;
 }
 
 const TxsTable = ({ txs, sort, sorting }: Props) => {
