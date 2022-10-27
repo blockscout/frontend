@@ -1,10 +1,11 @@
 global:
-  env: e2e
+  env: review
 # enable Blockscout deploy
 blockscout:
   enabled: true
   image:
-    _default: blockscout/blockscout:review-prerelease-9ad99cc8@sha256:608d335025a135f1cde6608b2449b8988b7cb8bfa6ea38e92ce1f184ec577781
+    _default: blockscout/blockscout:latest
+    #blockscout/blockscout:review-prerelease-9ad99cc8@sha256:608d335025a135f1cde6608b2449b8988b7cb8bfa6ea38e92ce1f184ec577781
   replicas:
     app: 1
   docker:
@@ -103,7 +104,7 @@ blockscout:
     APPS_MENU:
       _default: 'true'
     EXTERNAL_APPS:
-      _default: '[{"title": "Marketplace", "url": "https://blockscout-256-merge.test.aws-k8s.blockscout.com/poa/sokol/apps"}]'
+      _default: '[{"title": "Marketplace", "url": "/poa/sokol/apps"}]'
 
 postgres:
   enabled: true
