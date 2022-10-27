@@ -80,6 +80,9 @@ jobs:
     runs-on: ubuntu-latest
     # need: deploy_frontend
     steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+
       - name: Render template
         id: deploy_comment_template
         uses: chuhlomin/render-template@v1.4
@@ -88,6 +91,7 @@ jobs:
           vars: |
             foo: foo value
             bar: bar value
+            
       - name: Find deploy comment
         uses: peter-evans/find-comment@v2
         id: fc
