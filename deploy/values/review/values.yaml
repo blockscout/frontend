@@ -2,6 +2,7 @@ global:
   env: review
 # enable Blockscout deploy
 blockscout:
+  app: blockscout
   enabled: true
   image:
     _default: blockscout/blockscout:latest
@@ -261,6 +262,7 @@ scVerifier:
     SMART_CONTRACT_VERIFIER__JAEGER__ENABLED:
       _default: 'false'
 frontend:
+  app: blockscout
   enabled: true
   image:
     _default: ghcr.io/blockscout/frontend:main
