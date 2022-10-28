@@ -1,5 +1,5 @@
-import { Box, Text, Show, Alert, Skeleton, Button } from '@chakra-ui/react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { Box, Text, Show, Alert, Skeleton } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
 import type { BlockType, BlocksResponse } from 'types/api/block';
@@ -24,23 +24,6 @@ const BlocksContent = ({ type }: Props) => {
     [ QueryKeys.blocks, type ],
     async() => await fetch(`/api/blocks${ type ? `?type=${ type }` : '' }`),
   );
-
-  const queryClient = useQueryClient();
-  const handleAddNewBlock = React.useCallback(() => {
-    queryClient.setQueryData([ QueryKeys.blocks, type ], (prevData: BlocksResponse | undefined) => {
-      if (prevData === undefined) {
-        return;
-      }
-
-      return {
-        ...prevData,
-        items: [
-          { ...prevData.items[0], height: prevData.items[0].height + 1, timestamp: (new Date()).toString() },
-          ...prevData.items,
-        ],
-      };
-    });
-  }, [ queryClient, type ]);
 
   if (isLoading) {
     return (
@@ -67,9 +50,6 @@ const BlocksContent = ({ type }: Props) => {
   return (
     <>
       <Text as="span">Total of { data.items[0].height.toLocaleString() } blocks</Text>
-      { /* for demo purpose only to show how blocks will appear in the list */ }
-      { /* remove when adding socket to update block list */ }
-      <Button display="inline" size="sm" ml={ 4 } onClick={ handleAddNewBlock }>Add new block</Button>
       <Show below="lg" key="content-mobile"><BlocksList data={ data.items }/></Show>
       <Show above="lg" key="content-desktop"><BlocksTable data={ data.items }/></Show>
       <Box mx={{ base: 0, lg: 6 }} my={{ base: 6, lg: 3 }}>
