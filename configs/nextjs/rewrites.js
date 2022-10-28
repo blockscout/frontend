@@ -11,9 +11,8 @@ async function rewrites() {
 
   return [
     { source: '/node-api/:slug*', destination: '/api/:slug*' },
-    { source: '/astar/:slug*', destination: '/astar/mainnet/:slug*' },
-    { source: '/shiden/:slug*', destination: '/shiden/mainnet/:slug*' },
-  ];
+    // { source: '/poa/core/:slug*', destination: '/:slug*' },
+  ].filter(Boolean);
 }
 
 module.exports = rewrites;

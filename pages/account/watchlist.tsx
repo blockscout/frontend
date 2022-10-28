@@ -5,16 +5,7 @@ import React from 'react';
 import getNetworkTitle from 'lib/networks/getNetworkTitle';
 import WatchList from 'ui/pages/Watchlist';
 
-type PageParams = {
-  network_type: string;
-  network_sub_type: string;
-}
-
-type Props = {
-  pageParams: PageParams;
-}
-
-const WatchListPage: NextPage<Props> = () => {
+const WatchListPage: NextPage = () => {
   const title = getNetworkTitle();
   return (
     <>
@@ -28,5 +19,4 @@ const WatchListPage: NextPage<Props> = () => {
 
 export default WatchListPage;
 
-export { getStaticPaths } from 'lib/next/getStaticPaths';
-export { getStaticProps } from 'lib/next/getStaticProps';
+export { getServerSideProps } from 'lib/next/getServerSidePropsDummy';

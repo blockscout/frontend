@@ -1,5 +1,7 @@
-const BASE_PATH = require('../../lib/link/basePath.js');
-const PATHS = require('../../lib/link/paths.js');
+const PATHS = require('../../lib/link/paths');
+const BASE_PATH = process.env.NEXT_PUBLIC_APP_BASE_PATH === '__PLACEHOLDER_FOR_NEXT_PUBLIC_APP_BASE_PATH__' ?
+  '' :
+  (process.env.NEXT_PUBLIC_APP_BASE_PATH || '');
 
 const oldUrls = [
   {
@@ -41,17 +43,10 @@ const oldUrls = [
 ];
 
 async function redirects() {
-  const homePagePath = '/' + [ process.env.NEXT_PUBLIC_NETWORK_TYPE, process.env.NEXT_PUBLIC_NETWORK_SUBTYPE ].filter(Boolean).join('/');
-
   return [
-    {
-      source: '/',
-      destination: homePagePath,
-      permanent: false,
-    },
     ...oldUrls.map(item => {
-      const source = BASE_PATH.replaceAll('[', ':').replaceAll(']', '') + item.oldPath;
-      const destination = item.newPath.replaceAll('[', ':').replaceAll(']', '');
+      const source = BASE_PATH + item.oldPath;
+      const destination = BASE_PATH + item.newPath;
       return { source, destination, permanent: false };
     }),
   ];

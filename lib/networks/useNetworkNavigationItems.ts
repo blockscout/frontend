@@ -15,8 +15,7 @@ export default function useNetworkNavigationItems() {
   return React.useMemo(() => {
     return featuredNetworks.map((network) => {
       const routeName = 'crossNetworkNavigation' in currentRoute && currentRoute.crossNetworkNavigation ? currentRouteName : 'network_index';
-      const [ , networkType, networkSubtype ] = network.basePath.split('/');
-      const url = link(routeName, { ...router.query, network_type: networkType, network_sub_type: networkSubtype });
+      const url = link(routeName, router.query);
 
       return {
         ...network,

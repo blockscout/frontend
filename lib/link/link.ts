@@ -15,18 +15,8 @@ export default function link(
     return '';
   }
 
-  const refinedUrlParams: typeof urlParams = {
-    network_type: appConfig.network.type,
-    network_sub_type: appConfig.network.subtype,
-    ...urlParams,
-  };
-
   const path = route.pattern.replace(PATH_PARAM_REGEXP, (_, paramName: string) => {
-    if (paramName === 'network_sub_type' && !refinedUrlParams.network_sub_type) {
-      return '';
-    }
-
-    let paramValue = refinedUrlParams?.[paramName];
+    let paramValue = urlParams?.[paramName];
     if (Array.isArray(paramValue)) {
       // FIXME we don't have yet params as array, but typescript says that we could
       // dunno know how to manage it, fix me if you find an issue
@@ -36,11 +26,11 @@ export default function link(
     return paramValue ? `/${ paramValue }` : '';
   });
 
-  const url = new URL(path, appConfig.baseUrl);
+  const url = new URL(appConfig.basePath + path, appConfig.baseUrl);
 
   queryParams && Object.entries(queryParams).forEach(([ key, value ]) => {
     url.searchParams.append(key, value);
   });
 
-  return url.toString();
+  return url.pathname;
 }
