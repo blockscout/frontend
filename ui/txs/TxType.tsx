@@ -1,8 +1,10 @@
 import { Tag } from '@chakra-ui/react';
 import React from 'react';
 
+import type { TransactionType } from 'types/api/transaction';
+
 export interface Props {
-  type: 'contract-call' | 'transaction' | 'token-transfer' | 'internal-tx' | 'multicall';
+  type: TransactionType;
 }
 
 const TxStatus = ({ type }: Props) => {
@@ -10,24 +12,24 @@ const TxStatus = ({ type }: Props) => {
   let colorScheme;
 
   switch (type) {
-    case 'contract-call':
+    case 'contract_call':
       label = 'Contract call';
       colorScheme = 'blue';
       break;
-    case 'transaction':
-      label = 'Transaction';
+    case 'contract_creation':
+      label = 'Contract creation';
       colorScheme = 'purple';
       break;
-    case 'token-transfer':
+    case 'token_transfer':
       label = 'Token transfer';
       colorScheme = 'orange';
       break;
-    case 'internal-tx':
-      label = 'Internal txn';
+    case 'token_creation':
+      label = 'Token creation';
       colorScheme = 'cyan';
       break;
-    case 'multicall':
-      label = 'Multicall';
+    case 'coin_transfer':
+      label = 'Coin transfer';
       colorScheme = 'teal';
       break;
   }
