@@ -6,4 +6,5 @@ export enum QueryKeys {
   txInternals = 'tx-internals',
   txLog = 'tx-log',
   txRawTrace = 'tx-raw-trace',
+  blockTxs = 'block-transactions',
 }

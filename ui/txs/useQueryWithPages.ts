@@ -6,13 +6,13 @@ import { animateScroll } from 'react-scroll';
 
 import type { TransactionsResponse } from 'types/api/transaction';
 import type { TTxsFilters } from 'types/api/txsFilters';
-import { QueryKeys } from 'types/client/queries';
+import type { QueryKeys } from 'types/client/queries';
 
 import useFetch from 'lib/hooks/useFetch';
 
 const PAGINATION_FIELDS = [ 'block_number', 'index', 'items_count' ];
 
-export default function useQueryWithPages(filters: TTxsFilters) {
+export default function useQueryWithPages(apiPath: string, queryName: QueryKeys, filters?: TTxsFilters) {
   const queryClient = useQueryClient();
   const router = useRouter();
   const [ page, setPage ] = React.useState(1);
@@ -21,7 +21,7 @@ export default function useQueryWithPages(filters: TTxsFilters) {
   const fetch = useFetch();
 
   const { data, isLoading, isError } = useQuery<unknown, unknown, TransactionsResponse>(
-    [ QueryKeys.transactions, { page, filters } ],
+    [ queryName, { page, filters } ],
     async() => {
       const params: Array<string> = [];
 
@@ -33,7 +33,7 @@ export default function useQueryWithPages(filters: TTxsFilters) {
         }
       });
 
-      return fetch(`/api/transactions${ params.length ? '?' + params.join('&') : '' }`);
+      return fetch(`${ apiPath }${ params.length ? '?' + params.join('&') : '' }`);
     },
     { staleTime: Infinity },
   );

@@ -47,5 +47,5 @@ export interface TransactionsResponse {
     block_number: number;
     index: number;
     items_count: number;
-  };
+  } | null;
 }

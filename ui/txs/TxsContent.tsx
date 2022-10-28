@@ -2,6 +2,7 @@ import { Alert, Box, HStack, Show, Button } from '@chakra-ui/react';
 import React, { useState, useCallback } from 'react';
 
 import type { TTxsFilters } from 'types/api/txsFilters';
+import type { QueryKeys } from 'types/client/queries';
 import type { Sort } from 'types/client/txs-sort';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -17,13 +18,17 @@ import TxsWithSort from './TxsWithSort';
 import useQueryWithPages from './useQueryWithPages';
 
 type Props = {
+  queryName: QueryKeys;
   showDescription?: boolean;
-  stateFilter: TTxsFilters['filter'];
+  stateFilter?: TTxsFilters['filter'];
+  apiPath: string;
 }
 
 const TxsContent = ({
+  queryName,
   showDescription,
   stateFilter,
+  apiPath,
 }: Props) => {
   const [ sorting, setSorting ] = useState<Sort>();
   // const [ filters, setFilters ] = useState<Partial<TTxsFilters>>({ type: [], method: [] });
@@ -62,8 +67,8 @@ const TxsContent = ({
     onNextPageClick,
     hasPagination,
     resetPage,
-  } = useQueryWithPages({ filter: stateFilter });
-  // } = useQueryWithPages({ ...filters, filter: stateFilter });
+  } = useQueryWithPages(apiPath, queryName, stateFilter && { filter: stateFilter });
+  // } = useQueryWithPages({ ...filters, filter: stateFilter, apiPath });
 
   const isMobile = useIsMobile(false);
 
@@ -120,7 +125,7 @@ const TxsContent = ({
         { hasPagination ? (
           <Pagination
             currentPage={ page }
-            hasNextPage={ data?.next_page_params !== undefined && Object.keys(data?.next_page_params).length > 0 }
+            hasNextPage={ data?.next_page_params !== undefined && Object.keys(data?.next_page_params || {}).length > 0 }
             onNextPageClick={ onNextPageClick }
             onPrevPageClick={ onPrevPageClick }
           />
