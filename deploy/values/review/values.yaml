@@ -106,6 +106,8 @@ blockscout:
       _default: 'true'
     EXTERNAL_APPS:
       _default: '[{"title": "Marketplace", "url": "/poa/sokol/apps"}]'
+    JSON_RPC:
+      _default: https://sokol.poa.network
 
 postgres:
   enabled: true
