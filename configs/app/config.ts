@@ -24,6 +24,24 @@ const baseUrl = [
   appPort && ':' + appPort,
 ].filter(Boolean).join('');
 
+const logoutUrl = (() => {
+  try {
+    const envUrl = getEnvValue(process.env.NEXT_PUBLIC_LOGOUT_URL);
+    const auth0ClientId = getEnvValue(process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID);
+    const returnUrl = getEnvValue(process.env.NEXT_PUBLIC_LOGOUT_RETURN_URL);
+    if (!envUrl || !auth0ClientId || !returnUrl) {
+      throw Error();
+    }
+
+    const url = new URL(envUrl);
+    url.searchParams.set('client_id', auth0ClientId);
+    url.searchParams.set('returnTo', returnUrl);
+    return url.toString();
+  } catch (error) {
+    return;
+  }
+})();
+
 const networkType = getEnvValue(process.env.NEXT_PUBLIC_NETWORK_TYPE);
 const networkSubType = getEnvValue(process.env.NEXT_PUBLIC_NETWORK_SUBTYPE);
 
@@ -65,6 +83,7 @@ const config = Object.freeze({
   host: appHost,
   port: appPort,
   baseUrl,
+  logoutUrl,
   api: {
     endpoint: getEnvValue(process.env.NEXT_PUBLIC_API_ENDPOINT) || 'https://blockscout.com',
     basePath: getEnvValue(process.env.NEXT_PUBLIC_API_BASE_PATH) || '',

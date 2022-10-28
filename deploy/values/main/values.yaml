@@ -1,10 +1,12 @@
 global:
-  env: e2e
+  env: main
 # enable Blockscout deploy
 blockscout:
+  app: blockscout
   enabled: true
   image:
-    _default: blockscout/blockscout:review-prerelease-4dad4e9b@sha256:0afd8e344f7856eeb5326dff370f6258e588a77fa1611ecf16f8433944ddbaf9
+    _default: blockscout/blockscout-sokol:latest
+    #blockscout/blockscout:review-prerelease-9ad99cc8@sha256:608d335025a135f1cde6608b2449b8988b7cb8bfa6ea38e92ce1f184ec577781
   replicas:
     app: 1
   docker:
@@ -103,7 +105,7 @@ blockscout:
     APPS_MENU:
       _default: 'true'
     EXTERNAL_APPS:
-      _default: '[{"title": "Marketplace", "url": "..."}]'
+      _default: '[{"title": "Marketplace", "url": "/poa/sokol/apps"}]'
 
 postgres:
   enabled: true
@@ -260,6 +262,7 @@ scVerifier:
     SMART_CONTRACT_VERIFIER__JAEGER__ENABLED:
       _default: 'false'
 frontend:
+  app: blockscout
   enabled: true
   image:
     _default: ghcr.io/blockscout/frontend:main
@@ -276,7 +279,10 @@ frontend:
     tls:
       enabled: true
     path:
-      - "/"
+      - "/poa/sokol/(apps|auth/profile|account)"
+      - "/_next"
+      - "/node-api"
+      - "/static"
   resources:
     limits:
       memory:
@@ -293,22 +299,16 @@ frontend:
     enabled: true
     app: blockscout
   environment:
-    NEXT_PUBLIC_APP_PROTOCOL:
-      _default: http
-    NEXT_PUBLIC_APP_HOST:
-      _default: localhost
-    NEXT_PUBLIC_APP_PORT:
-      _default: 80
     NEXT_PUBLIC_BLOCKSCOUT_VERSION:
       _default: v4.1.8-beta
     NEXT_PUBLIC_FOOTER_GITHUB_LINK:
       _default: https://github.com/blockscout/blockscout
     NEXT_PUBLIC_FOOTER_TWITTER_LINK:
       _default: https://www.twitter.com/blockscoutcom
+    NEXT_PUBLIC_APP_ENV:
+      _default: preview
     NEXT_PUBLIC_APP_INSTANCE:
       _default: unknown
-    NEXT_PUBLIC_APP_ENV:
-      _default: e2e
     NEXT_PUBLIC_FOOTER_TELEGRAM_LINK:
       _default: https://t.me/poa_network
     NEXT_PUBLIC_FOOTER_STAKING_LINK:
@@ -318,7 +318,7 @@ frontend:
     NEXT_PUBLIC_NETWORK_SHORT_NAME:
       _default: POA
     NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME:
-      _default: poa
+      _default: sokol
     NEXT_PUBLIC_NETWORK_TYPE:
       _default: poa
     NEXT_PUBLIC_NETWORK_SUBTYPE:
@@ -345,3 +345,7 @@ frontend:
       _default: https://airtable.com/shrqUAcjgGJ4jU88C
     NEXT_PUBLIC_MARKETPLACE_APP_LIST:
       _default: "[{'author': 'Blockscout', 'id': 'token-approval-tracker', 'title': 'Token Approval Tracker', 'logo': 'https://approval-tracker.vercel.app/icon-192.png', 'categories': ['security', 'tools'], 'shortDescription': 'Token Approval Tracker shows all approvals for any ERC20-compliant tokens and NFTs and lets to revoke them or adjust the approved amount.', 'site': 'https://docs.blockscout.com/for-users/blockscout-apps/token-approval-tracker', 'description': 'Token Approval Tracker shows all approvals for any ERC20-compliant tokens and NFTs and lets to revoke them or adjust the approved amount.', 'url': 'https://approval-tracker.vercel.app/'}]"
+    NEXT_PUBLIC_LOGOUT_URL:
+      _default: https://blockscoutcom.us.auth0.com/v2/logout
+    NEXT_PUBLIC_LOGOUT_RETURN_URL:
+      _default: https://blockscout.com/poa/sokol/auth/logout

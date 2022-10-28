@@ -20,7 +20,7 @@ import WatchlistTable from 'ui/watchlist/WatchlistTable/WatchlistTable';
 
 const WatchList: React.FC = () => {
   const { data, isLoading, isError } =
-    useQuery<unknown, unknown, TWatchlist>([ QueryKeys.watchlist ], async() => fetch('/api/account/watchlist/get-with-tokens'));
+    useQuery<unknown, unknown, TWatchlist>([ QueryKeys.watchlist ], async() => fetch('/node-api/account/watchlist/get-with-tokens'));
 
   const addressModalProps = useDisclosure();
   const deleteModalProps = useDisclosure();

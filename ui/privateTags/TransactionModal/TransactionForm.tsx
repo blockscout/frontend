@@ -54,10 +54,10 @@ const TransactionForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) =>
     const isEdit = data?.id;
 
     if (isEdit) {
-      return fetch(`/api/account/private-tags/transaction/${ data.id }`, { method: 'PUT', body });
+      return fetch(`/node-api/account/private-tags/transaction/${ data.id }`, { method: 'PUT', body });
     }
 
-    return fetch('/api/account/private-tags/transaction', { method: 'POST', body });
+    return fetch('/node-api/account/private-tags/transaction', { method: 'POST', body });
   }, {
     onError: (e: ErrorType<TransactionTagErrors>) => {
       setPending(false);

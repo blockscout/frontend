@@ -31,7 +31,7 @@ const ApiKeysPage: React.FC = () => {
   const [ apiKeyModalData, setApiKeyModalData ] = useState<ApiKey>();
   const [ deleteModalData, setDeleteModalData ] = useState<ApiKey>();
 
-  const { data, isLoading, isError } = useQuery<unknown, unknown, ApiKeys>([ QueryKeys.apiKeys ], async() => await fetch('/api/account/api-keys'));
+  const { data, isLoading, isError } = useQuery<unknown, unknown, ApiKeys>([ QueryKeys.apiKeys ], async() => await fetch('/node-api/account/api-keys'));
 
   const onEditClick = useCallback((data: ApiKey) => {
     setApiKeyModalData(data);

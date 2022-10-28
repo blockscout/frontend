@@ -48,10 +48,10 @@ const ApiKeyForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
     const body = { name: data.name };
 
     if (!data.token) {
-      return fetch('/api/account/api-keys', { method: 'POST', body });
+      return fetch('/node-api/account/api-keys', { method: 'POST', body });
     }
 
-    return fetch(`/api/account/api-keys/${ data.token }`, { method: 'PUT', body });
+    return fetch(`/node-api/account/api-keys/${ data.token }`, { method: 'PUT', body });
   };
 
   const mutation = useMutation(updateApiKey, {

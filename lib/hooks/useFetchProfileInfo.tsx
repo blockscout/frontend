@@ -17,7 +17,7 @@ export default function useFetchProfileInfo() {
   const fetch = useFetch();
 
   return useQuery<unknown, Error, UserInfo>([ QueryKeys.profile ], async() => {
-    return fetch('/api/account/profile');
+    return fetch('/node-api/account/profile');
   }, {
     refetchOnMount: false,
     enabled: Boolean(cookies.get(cookies.NAMES.API_TOKEN)),

@@ -97,11 +97,11 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
     };
     if (data) {
       // edit address
-      return fetch<TWatchlistItem, WatchlistErrors>(`/api/account/watchlist/${ data.id }`, { method: 'PUT', body });
+      return fetch<TWatchlistItem, WatchlistErrors>(`/node-api/account/watchlist/${ data.id }`, { method: 'PUT', body });
 
     } else {
       // add address
-      return fetch<TWatchlistItem, WatchlistErrors>('/api/account/watchlist', { method: 'POST', body });
+      return fetch<TWatchlistItem, WatchlistErrors>('/node-api/account/watchlist', { method: 'POST', body });
     }
   }
 

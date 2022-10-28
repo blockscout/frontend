@@ -99,10 +99,10 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
     };
 
     if (!data?.id) {
-      return fetch<PublicTag, PublicTagErrors>('/api/account/public-tags', { method: 'POST', body });
+      return fetch<PublicTag, PublicTagErrors>('/node-api/account/public-tags', { method: 'POST', body });
     }
 
-    return fetch<PublicTag, PublicTagErrors>(`/api/account/public-tags/${ data.id }`, { method: 'PUT', body });
+    return fetch<PublicTag, PublicTagErrors>(`/node-api/account/public-tags/${ data.id }`, { method: 'PUT', body });
   };
 
   const mutation = useMutation(updatePublicTag, {

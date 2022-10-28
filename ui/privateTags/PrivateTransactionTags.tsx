@@ -21,7 +21,7 @@ const PrivateTransactionTags = () => {
   const { data: transactionTagsData, isLoading, isError } =
     useQuery<unknown, unknown, TransactionTags>(
       [ QueryKeys.transactionTags ],
-      async() => fetch('/api/account/private-tags/transaction'), { refetchOnMount: false },
+      async() => fetch('/node-api/account/private-tags/transaction'), { refetchOnMount: false },
     );
 
   const transactionModalProps = useDisclosure();

@@ -53,10 +53,10 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
     const body = { name: data.name, contract_address_hash: data.contract_address_hash, abi: data.abi };
 
     if (!data.id) {
-      return fetch<CustomAbi, CustomAbiErrors>('/api/account/custom-abis', { method: 'POST', body });
+      return fetch<CustomAbi, CustomAbiErrors>('/node-api/account/custom-abis', { method: 'POST', body });
     }
 
-    return fetch<CustomAbi, CustomAbiErrors>(`/api/account/custom-abis/${ data.id }`, { method: 'PUT', body });
+    return fetch<CustomAbi, CustomAbiErrors>(`/node-api/account/custom-abis/${ data.id }`, { method: 'PUT', body });
   };
 
   const formBackgroundColor = useColorModeValue('white', 'gray.900');

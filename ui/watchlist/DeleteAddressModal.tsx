@@ -21,7 +21,7 @@ const DeleteAddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
   const fetch = useFetch();
 
   const mutationFn = useCallback(() => {
-    return fetch(`/api/account1/watchlist/${ data?.id }`, { method: 'DELETE' });
+    return fetch(`/node-api/account/watchlist/${ data?.id }`, { method: 'DELETE' });
   }, [ data?.id, fetch ]);
 
   const onSuccess = useCallback(async() => {

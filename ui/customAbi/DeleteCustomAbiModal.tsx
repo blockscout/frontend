@@ -18,7 +18,7 @@ const DeleteCustomAbiModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
   const queryClient = useQueryClient();
 
   const mutationFn = useCallback(() => {
-    return fetch(`/api/account/custom-abis/${ data.id }`, { method: 'DELETE' });
+    return fetch(`/node-api/account/custom-abis/${ data.id }`, { method: 'DELETE' });
   }, [ data ]);
 
   const onSuccess = useCallback(async() => {
