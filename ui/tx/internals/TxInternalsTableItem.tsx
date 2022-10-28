@@ -1,4 +1,5 @@
 import { Tr, Td, Tag, Icon, Box } from '@chakra-ui/react';
+import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
@@ -12,7 +13,7 @@ import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
 type Props = InternalTransaction
 
-const TxInternalTableItem = ({ type, from, to, value, success, error }: Props) => {
+const TxInternalTableItem = ({ type, from, to, value, success, error, gas_limit: gasLimit }: Props) => {
   const typeTitle = TX_INTERNALS_ITEMS.find(({ id }) => id === type)?.title;
 
   return (
@@ -43,10 +44,9 @@ const TxInternalTableItem = ({ type, from, to, value, success, error }: Props) =
       <Td isNumeric verticalAlign="middle">
         { value }
       </Td>
-      { /* no gas limit in api yet */ }
-      { /* <Td isNumeric verticalAlign='middle'>
-        { gasLimit.toLocaleString('en') }
-      </Td> */ }
+      <Td isNumeric verticalAlign="middle">
+        { BigNumber(gasLimit).toFormat() }
+      </Td>
     </Tr>
   );
 };

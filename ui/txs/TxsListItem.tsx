@@ -60,6 +60,7 @@ const TxsListItem = ({ tx }: {tx: Transaction}) => {
                 type="transaction"
                 fontWeight="700"
                 truncation="constant"
+                target="_self"
               />
             </Address>
           </Flex>

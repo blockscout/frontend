@@ -1,4 +1,4 @@
-import { Grid, GridItem, Text, Box, Icon, Link, Spinner } from '@chakra-ui/react';
+import { Grid, GridItem, Text, Box, Icon, Link, Spinner, Tag, Flex, Tooltip, chakra } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import { useRouter } from 'next/router';
@@ -11,9 +11,9 @@ import { QueryKeys } from 'types/client/queries';
 import appConfig from 'configs/app/config';
 import clockIcon from 'icons/clock.svg';
 import flameIcon from 'icons/flame.svg';
+import errorIcon from 'icons/status/error.svg';
+import successIcon from 'icons/status/success.svg';
 import { WEI, WEI_IN_GWEI } from 'lib/consts';
-// import errorIcon from 'icons/status/error.svg';
-// import successIcon from 'icons/status/success.svg';
 import dayjs from 'lib/date/dayjs';
 import useFetch from 'lib/hooks/useFetch';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
@@ -72,6 +72,18 @@ const TxDetails = () => {
   if (isError) {
     return <DataFetchAlert/>;
   }
+
+  const addressFromTags = [
+    ...data.from.private_tags || [],
+    ...data.from.public_tags || [],
+    ...data.from.watchlist_names || [],
+  ].map((tag) => <Tag key={ tag.label }>{ tag.display_name }</Tag>);
+
+  const addressToTags = [
+    ...data.to.private_tags || [],
+    ...data.to.public_tags || [],
+    ...data.to.watchlist_names || [],
+  ].map((tag) => <Tag key={ tag.label }>{ tag.display_name }</Tag>);
 
   return (
     <Grid columnGap={ 8 } rowGap={{ base: 3, lg: 3 }} templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }}>
@@ -132,36 +144,51 @@ const TxDetails = () => {
       <DetailsInfoItem
         title="From"
         hint="Address (external or contract) sending the transaction."
+        columnGap={ 3 }
       >
         <Address>
           <AddressIcon hash={ data.from.hash }/>
-          <AddressLink ml={ 2 } hash={ data.from.hash } alias={ data.from.name }/>
+          <AddressLink ml={ 2 } hash={ data.from.hash }/>
           <CopyToClipboard text={ data.from.hash }/>
         </Address>
+        { data.from.name && <Text>{ data.from.name }</Text> }
+        { addressFromTags.length > 0 && (
+          <Flex columnGap={ 3 }>
+            { addressFromTags }
+          </Flex>
+        ) }
       </DetailsInfoItem>
       <DetailsInfoItem
         title={ data.to.is_contract ? 'Interacted with contract' : 'To' }
         hint="Address (external or contract) receiving the transaction."
         flexWrap={{ base: 'wrap', lg: 'nowrap' }}
+        columnGap={ 3 }
       >
-        <Address mr={ 3 }>
+        <Address>
           <AddressIcon hash={ data.to.hash }/>
-          <AddressLink ml={ 2 } hash={ data.to.hash } alias={ data.to.name }/>
+          <AddressLink ml={ 2 } hash={ data.to.hash }/>
           <CopyToClipboard text={ data.to.hash }/>
         </Address>
-        { /* todo_tom Nikita should add to api later */ }
-        { /* <Tag colorScheme="orange" variant="solid" flexShrink={ 0 }>SANA</Tag> */ }
-        { /* <Tooltip label="Contract execution completed">
-          <chakra.span display="inline-flex">
-            <Icon as={ successIcon } boxSize={ 4 } ml={ 2 } color="green.500" cursor="pointer"/>
-          </chakra.span>
-        </Tooltip> */ }
-        { /* <Tooltip label="Error occured during contract execution">
-          <chakra.span display="inline-flex">
-            <Icon as={ errorIcon } boxSize={ 4 } ml={ 2 } color="red.500" cursor="pointer"/>
-          </chakra.span>
-        </Tooltip> */ }
-        { /* <TokenSnippet symbol="UP" name="User Pay" hash="0xA17ed5dFc62D0a3E74D69a0503AE9FdA65d9f212" ml={ 3 }/> */ }
+        { data.to.name && <Text>{ data.to.name }</Text> }
+        { data.to.is_contract && data.result === 'success' && (
+          <Tooltip label="Contract execution completed">
+            <chakra.span display="inline-flex">
+              <Icon as={ successIcon } boxSize={ 4 } color="green.500" cursor="pointer"/>
+            </chakra.span>
+          </Tooltip>
+        ) }
+        { data.to.is_contract && Boolean(data.status) && data.result !== 'success' && (
+          <Tooltip label="Error occured during contract execution">
+            <chakra.span display="inline-flex">
+              <Icon as={ errorIcon } boxSize={ 4 } color="red.500" cursor="pointer"/>
+            </chakra.span>
+          </Tooltip>
+        ) }
+        { addressToTags.length > 0 && (
+          <Flex columnGap={ 3 }>
+            { addressToTags }
+          </Flex>
+        ) }
       </DetailsInfoItem>
       { TOKEN_TRANSFERS.map(({ title, hint, type }) => {
         const items = data.token_transfers?.filter((token) => token.type === type) || [];

@@ -23,22 +23,21 @@ const TxInternalsTable = ({ data, sort, onSortToggle }: Props) => {
         <Thead>
           <Tr>
             <Th width="28%">Type</Th>
-            <Th width="28%">From</Th>
+            <Th width="20%">From</Th>
             <Th width="24px" px={ 0 }/>
-            <Th width="28%">To</Th>
+            <Th width="20%">To</Th>
             <Th width="16%" isNumeric>
               <Link display="flex" alignItems="center" justifyContent="flex-end" onClick={ onSortToggle('value') } columnGap={ 1 }>
                 { sort?.includes('value') && <Icon as={ arrowIcon } boxSize={ 4 } transform={ sortIconTransform }/> }
                 Value { appConfig.network.currency.symbol }
               </Link>
             </Th>
-            { /* no gas limit in api yet */ }
-            { /* <Th width="16%" isNumeric>
+            <Th width="16%" isNumeric>
               <Link display="flex" alignItems="center" justifyContent="flex-end" onClick={ onSortToggle('gas-limit') } columnGap={ 1 }>
                 { sort?.includes('gas-limit') && <Icon as={ arrowIcon } boxSize={ 4 } transform={ sortIconTransform }/> }
-                Gas limit
+                Gas limit { appConfig.network.currency.symbol }
               </Link>
-            </Th> */ }
+            </Th>
           </Tr>
         </Thead>
         <Tbody>
