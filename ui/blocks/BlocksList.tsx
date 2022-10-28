@@ -1,4 +1,5 @@
 import { Box } from '@chakra-ui/react';
+import { AnimatePresence } from 'framer-motion';
 import React from 'react';
 
 import type { Block } from 'types/api/block';
@@ -12,8 +13,10 @@ interface Props {
 const BlocksList = ({ data }: Props) => {
   return (
     <Box mt={ 8 }>
-      { /* TODO prop "enableTimeIncrement" should be set to false for second and later pages */ }
-      { data.map((item) => <BlocksListItem key={ item.height } data={ item } enableTimeIncrement/>) }
+      <AnimatePresence initial={ false }>
+        { /* TODO prop "enableTimeIncrement" should be set to false for second and later pages */ }
+        { data.map((item) => <BlocksListItem key={ item.height } data={ item } enableTimeIncrement/>) }
+      </AnimatePresence>
     </Box>
   );
 };
