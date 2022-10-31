@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-properties */
 import type { AppItemOverview } from 'types/client/apps';
-import type { FeaturedNetwork, NetworkExplorer } from 'types/networks';
+import type { FeaturedNetwork, NetworkExplorer, PreDefinedNetwork } from 'types/networks';
 
 const getEnvValue = (env: string | undefined) => env?.replaceAll('\'', '"');
 const parseEnvJson = <DataType>(env: string | undefined): DataType | null => {
@@ -42,17 +42,13 @@ const logoutUrl = (() => {
   }
 })();
 
-const networkType = getEnvValue(process.env.NEXT_PUBLIC_NETWORK_TYPE);
-const networkSubType = getEnvValue(process.env.NEXT_PUBLIC_NETWORK_SUBTYPE);
-
 const DEFAULT_CURRENCY_DECIMALS = 18;
 
 const config = Object.freeze({
   env,
   isDev,
   network: {
-    type: networkType,
-    subtype: networkSubType,
+    type: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_TYPE) as PreDefinedNetwork | undefined,
     logo: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_LOGO),
     name: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_NAME),
     id: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_ID),
@@ -64,7 +60,6 @@ const config = Object.freeze({
     },
     assetsPathname: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME),
     nativeTokenAddress: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS),
-    basePath: '/' + [ networkType, networkSubType ].filter(Boolean).join('/'),
     explorers: parseEnvJson<Array<NetworkExplorer>>(getEnvValue(process.env.NEXT_PUBLIC_NETWORK_EXPLORERS)) || [],
     verificationType: process.env.NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE || 'mining',
   },

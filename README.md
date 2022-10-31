@@ -44,24 +44,21 @@ The app instance could be customized by passing following variables to NodeJS en
 | --- | --- | --- | --- |
 | NEXT_PUBLIC_NETWORK_NAME | `string` | Displayed name of the network | `Gnosis Chain` |
 | NEXT_PUBLIC_NETWORK_SHORT_NAME | `string` *(optional)* | Used for SEO attributes (page title and description) | `OoG` |
-| NEXT_PUBLIC_NETWORK_TYPE | `string` | Network type (used as first part of the base path) | `xdai` |
-| NEXT_PUBLIC_NETWORK_SUBTYPE | `string` | Network subtype (used as second part of the base path) | `mainnet` |
+| NEXT_PUBLIC_NETWORK_TYPE | `string` *(optional)* | Network type (used for matching pre-defined assets, e.g network logo and icon, which are stored in the project). See all possible values here | `xdai_mainnet` |
 | NEXT_PUBLIC_NETWORK_ID | `number` | Chain id, see [https://chainlist.org/](https://chainlist.org/) for the reference | `99` |
 | NEXT_PUBLIC_NETWORK_CURRENCY_NAME | `string` | Network currency name | `Ether` |
 | NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL | `string` | Network currency symbol | `ETH` |
 | NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS | `string` | Network currency decimals | `18` |
 | NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS | `string` | Address of network's native token | `0x029a799563238d0e75e20be2f4bda0ea68d00172` |
-| NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME | `string` *(optional)* | Network name for constructing url of token logos according to template `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${assetsNamePath}/assets/${tokenAddress}/logo.png`. It should match network name in TrustWallet assets repo, see the full list [here](https://github.com/trustwallet/assets/tree/master/blockchains). If not provided, the network type will be used as its assets path part | `ethereum` |
+| NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME | `string` *(optional)* | Network name for constructing url of token logos according to template `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${assetsNamePath}/assets/${tokenAddress}/logo.png`. It should match network name in TrustWallet assets repo, see the full list [here](https://github.com/trustwallet/assets/tree/master/blockchains) | `ethereum` |
 | NEXT_PUBLIC_NETWORK_LOGO | `string` *(optional)* | Network logo; if not provided, will fallback to logo predefined in the project; if the project doesn't have logo for such network then the common placeholder will be shown; *Note* that logo height should be 20px and width less than 120px | `https://www.fillmurray.com/240/40` |
 | NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED | `boolean` *(optional)* | Set to true if network has account feature | `true` |
-
-*Note* the base path for the network is built up from its `type` and `subType` like so `https://blockscout.com/<type>/<subType>`
 
 ### UI configuration
 
 | Variable | Type | Description | Default value
 | --- | --- | --- | --- |
-| NEXT_PUBLIC_FEATURED_NETWORKS | `Array<FeaturedNetwork>` where `FeaturedNetwork` can have following [properties](#featured-network-configuration-properties) | Configuration of featured networks that will be shown in the network menu | `[{'title':'Gnosis Chain','basePath':'/xdai/mainnet','group':'mainnets'}]` |
+| NEXT_PUBLIC_FEATURED_NETWORKS | `Array<FeaturedNetwork>` where `FeaturedNetwork` can have following [properties](#featured-network-configuration-properties) | Configuration of featured networks that will be shown in the network menu | `[{'title':'Gnosis Chain','url':'https://blockscout.com/xdai/mainnet','group':'mainnets'}]` |
 | NEXT_PUBLIC_BLOCKSCOUT_VERSION | `string` *(optional)* | Current running version of Blockscout (used to display link to release in the footer) |
 | NEXT_PUBLIC_FOOTER_GITHUB_LINK | `string` *(optional)* | Link to Github in the footer | `https://github.com/blockscout/blockscout` |
 | NEXT_PUBLIC_FOOTER_TWITTER_LINK | `string` *(optional)* | Link to Twitter in the footer | `https://www.twitter.com/blockscoutcom` |
@@ -97,9 +94,10 @@ The app instance could be customized by passing following variables to NodeJS en
 | Property | Type | Description | Example value
 | --- | --- | --- | --- |
 | title | `string` | Displayed name of the network | `'Gnosis Chain'` |
-| basePath | `string` | Network explorer main page url | `'/xdai/mainnet'` |
+| url | `string` | Network explorer main page url | `'https://blockscout.com/xdai/mainnet'` |
 | group | `mainnets \| testnets \| other` | Indicates in which tab network appears in the menu | `'mainnets'` |
 | icon | `string` *(optional)* | Network icon; if not provided, will fallback to  icon predefined in the project; if the project doesn't have icon for such network then the common placeholder will be shown; *Note* that icon size should be 30px by 30px | `'https://www.fillmurray.com/60/60'` |
+| type | `string` *(optional)* | Network type (used for matching pre-defined network icon, which is stored in the project). See all possible values here | `xdai_mainnet` |
 
 ### Network explorer configuration properties
 
