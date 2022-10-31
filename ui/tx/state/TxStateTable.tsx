@@ -1,6 +1,5 @@
 import {
   Table,
-  Thead,
   Tbody,
   Tr,
   Th,
@@ -11,12 +10,13 @@ import React from 'react';
 import appConfig from 'configs/app/config';
 import { data } from 'data/txState';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
+import { default as Thead } from 'ui/shared/TheadSticky';
 import TxStateTableItem from 'ui/tx/state/TxStateTableItem';
 
 const TxStateTable = () => {
   return (
     <Table variant="simple" minWidth="950px" size="sm" w="auto" mt={ 6 }>
-      <Thead>
+      <Thead top={ 0 }>
         <Tr>
           <Th width="92px">Storage</Th>
           <Th width="146px">Address</Th>

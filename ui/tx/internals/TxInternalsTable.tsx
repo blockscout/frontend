@@ -1,10 +1,11 @@
-import { Table, Thead, Tbody, Tr, Th, Link, Icon } from '@chakra-ui/react';
+import { Table, Tbody, Tr, Th, Link, Icon } from '@chakra-ui/react';
 import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
 
 import appConfig from 'configs/app/config';
 import arrowIcon from 'icons/arrows/east.svg';
+import { default as Thead } from 'ui/shared/TheadSticky';
 import TxInternalsTableItem from 'ui/tx/internals/TxInternalsTableItem';
 import type { Sort, SortField } from 'ui/tx/internals/utils';
 
@@ -19,7 +20,7 @@ const TxInternalsTable = ({ data, sort, onSortToggle }: Props) => {
 
   return (
     <Table variant="simple" size="sm" mt={ 6 }>
-      <Thead>
+      <Thead top={ 0 }>
         <Tr>
           <Th width="28%">Type</Th>
           <Th width="20%">From</Th>
