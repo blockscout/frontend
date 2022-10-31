@@ -15,26 +15,6 @@ export function middleware(req: NextRequest) {
     return;
   }
 
-  if (appConfig.basePath) {
-    const [ firstPart, secondPart ] = req.nextUrl.pathname.split(appConfig.basePath);
-    if (firstPart && !secondPart) {
-      // for urls like /foo/bar we redirect to /base/path/foo/bar
-      const newPath = appConfig.basePath + firstPart;
-      if (newPath !== req.nextUrl.pathname) {
-        const url = new URL(req.nextUrl.origin + newPath).toString();
-        return NextResponse.redirect(url);
-      }
-    } else if (!firstPart && secondPart) {
-      // for urls like /base/path/foo/bar we do rewrite to /foo/bar
-      const url = new URL(req.nextUrl.origin + secondPart).toString();
-      return NextResponse.rewrite(url);
-    } else {
-      // for urls like /base/path we do rewrite to root
-      const url = new URL(req.nextUrl.origin).toString();
-      return NextResponse.rewrite(url);
-    }
-  }
-
   // we don't have any info from router here, so just do straight forward sub-string search (sorry)
   const isAccountRoute = req.nextUrl.pathname.includes('/account/');
   const isProfileRoute = req.nextUrl.pathname.includes('/auth/profile');

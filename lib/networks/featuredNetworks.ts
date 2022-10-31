@@ -29,6 +29,7 @@ const ICONS: Record<string, React.FunctionComponent<React.SVGAttributes<SVGEleme
 // const FEATURED_NETWORKS = JSON.stringify([
 //   {
 //     title: 'Gnosis Chain',
+//      todo_tom change to absolute path
 //     basePath: '/xdai/mainnet',
 //     group: 'mainnets',
 //   },

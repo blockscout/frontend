@@ -1,7 +1,4 @@
 const PATHS = require('../../lib/link/paths');
-const BASE_PATH = process.env.NEXT_PUBLIC_APP_BASE_PATH === '__PLACEHOLDER_FOR_NEXT_PUBLIC_APP_BASE_PATH__' ?
-  '' :
-  (process.env.NEXT_PUBLIC_APP_BASE_PATH || '');
 
 const oldUrls = [
   {
@@ -45,8 +42,8 @@ const oldUrls = [
 async function redirects() {
   return [
     ...oldUrls.map(item => {
-      const source = BASE_PATH + item.oldPath;
-      const destination = BASE_PATH + item.newPath;
+      const source = item.oldPath;
+      const destination = item.newPath;
       return { source, destination, permanent: false };
     }),
   ];

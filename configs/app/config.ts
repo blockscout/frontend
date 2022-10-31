@@ -83,7 +83,6 @@ const config = Object.freeze({
   host: appHost,
   port: appPort,
   baseUrl,
-  basePath: getEnvValue(process.env.NEXT_PUBLIC_APP_BASE_PATH) || '',
   logoutUrl,
   api: {
     endpoint: getEnvValue(process.env.NEXT_PUBLIC_API_ENDPOINT) || 'https://blockscout.com',

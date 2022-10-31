@@ -26,7 +26,7 @@ export default function link(
     return paramValue ? `/${ paramValue }` : '';
   });
 
-  const url = new URL(appConfig.basePath + path, appConfig.baseUrl);
+  const url = new URL(path, appConfig.baseUrl);
 
   queryParams && Object.entries(queryParams).forEach(([ key, value ]) => {
     url.searchParams.append(key, value);

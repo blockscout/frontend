@@ -31,7 +31,8 @@ interface Props {
 const NetworkLogo = ({ isCollapsed, onClick }: Props) => {
   const logoColor = useColorModeValue('blue.600', 'white');
   const href = link('network_index');
-  const logo = appConfig.network.logo || LOGOS[appConfig.network.basePath];
+  // todo_tom predefined logo
+  const logo = appConfig.network.logo || LOGOS['/xdai/mainnet'];
 
   const style = useColorModeValue({}, { filter: 'brightness(0) invert(1)' });
 
