@@ -10,11 +10,11 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 // import FilterInput from 'ui/shared/FilterInput';
 import Pagination from 'ui/shared/Pagination';
-import SortButton from 'ui/shared/SortButton';
 
 // import TxsFilters from './TxsFilters';
 import TxsSkeletonDesktop from './TxsSkeletonDesktop';
 import TxsSkeletonMobile from './TxsSkeletonMobile';
+import TxsSorting from './TxsSorting';
 import TxsWithSort from './TxsWithSort';
 import useQueryWithPages from './useQueryWithPages';
 
@@ -55,10 +55,10 @@ const TxsContent = ({
           newVal = 'fee-desc';
         }
       }
-      cookies.set(cookies.NAMES.TXS_SORT, newVal || '');
+      cookies.set(cookies.NAMES.TXS_SORT, newVal);
       return newVal;
     });
-  }, [ setSorting ]);
+  }, [ ]);
 
   const {
     data,
@@ -106,11 +106,11 @@ const TxsContent = ({
           appliedFiltersNum={ 0 }
         /> */ }
         { isMobile && (
-          <SortButton
+          <TxsSorting
             // eslint-disable-next-line react/jsx-no-bind
-            handleSort={ () => {} }
-            isSortActive={ Boolean(sorting) }
-            display={{ base: 'block', lg: 'none' }}
+            isActive={ Boolean(sorting) }
+            setSorting={ setSorting }
+            sorting={ sorting }
           />
         ) }
         { /* api is not implemented */ }

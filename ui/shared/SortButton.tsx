@@ -4,12 +4,12 @@ import React from 'react';
 import upDownArrow from 'icons/arrows/up-down.svg';
 
 type Props = {
-  handleSort: () => void;
-  isSortActive: boolean;
+  onClick: () => void;
+  isActive: boolean;
   className?: string;
 }
 
-const SortButton = ({ handleSort, isSortActive, className }: Props) => {
+const SortButton = ({ onClick, isActive, className }: Props) => {
   return (
     <IconButton
       icon={ <Icon as={ upDownArrow } boxSize={ 5 }/> }
@@ -18,8 +18,8 @@ const SortButton = ({ handleSort, isSortActive, className }: Props) => {
       variant="outline"
       colorScheme="gray-dark"
       minWidth="36px"
-      onClick={ handleSort }
-      isActive={ isSortActive }
+      onClick={ onClick }
+      isActive={ isActive }
       className={ className }
     />
   );
