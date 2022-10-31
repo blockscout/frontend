@@ -9,19 +9,20 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import ScrollDirectionContext from 'ui/ScrollDirectionContext';
 import Pagination from 'ui/shared/Pagination';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
-import SortButton from 'ui/shared/SortButton';
+import TxsSorting from 'ui/txs/TxsSorting';
 
 // import TxsFilters from './TxsFilters';
 
 type Props = {
   sorting: Sort;
+  setSorting: (val: Sort | ((val: Sort) => Sort)) => void;
   paginationProps: PaginationProps;
 }
 
 const TOP_UP = 106;
 const TOP_DOWN = 0;
 
-const TxsHeader = ({ sorting, paginationProps }: Props) => {
+const TxsHeader = ({ sorting, setSorting, paginationProps }: Props) => {
   const [ isSticky, setIsSticky ] = React.useState(false);
   const ref = React.useRef<HTMLDivElement>(null);
 
@@ -79,10 +80,10 @@ const TxsHeader = ({ sorting, paginationProps }: Props) => {
           appliedFiltersNum={ 0 }
         /> */ }
             { isMobile && (
-              <SortButton
-                // eslint-disable-next-line react/jsx-no-bind
-                handleSort={ () => {} }
-                isSortActive={ Boolean(sorting) }
+              <TxsSorting
+                isActive={ Boolean(sorting) }
+                setSorting={ setSorting }
+                sorting={ sorting }
               />
             ) }
             { /* api is not implemented */ }

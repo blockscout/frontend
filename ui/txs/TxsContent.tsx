@@ -93,7 +93,7 @@ const TxsContent = ({
   return (
     <>
       { showDescription && <Box mb={ 12 }>Only the first 10,000 elements are displayed</Box> }
-      <TxsHeader sorting={ sorting } paginationProps={ paginationProps }/>
+      <TxsHeader sorting={ sorting } setSorting={ setSorting } paginationProps={ paginationProps }/>
       { content }
     </>
   );
