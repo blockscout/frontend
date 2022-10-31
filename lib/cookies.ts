@@ -6,6 +6,7 @@ import isBrowser from './isBrowser';
 export enum NAMES {
   NAV_BAR_COLLAPSED='nav_bar_collapsed',
   API_TOKEN='_explorer_key',
+  TXS_SORT='txs_sort',
 }
 
 export function get(name?: string | undefined | null) {

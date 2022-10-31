@@ -5,6 +5,7 @@ import type { TTxsFilters } from 'types/api/txsFilters';
 import type { QueryKeys } from 'types/client/queries';
 import type { Sort } from 'types/client/txs-sort';
 
+import * as cookies from 'lib/cookies';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 // import FilterInput from 'ui/shared/FilterInput';
@@ -30,32 +31,33 @@ const TxsContent = ({
   stateFilter,
   apiPath,
 }: Props) => {
-  const [ sorting, setSorting ] = useState<Sort>();
+  const [ sorting, setSorting ] = useState<Sort>(cookies.get(cookies.NAMES.TXS_SORT) as Sort || '');
   // const [ filters, setFilters ] = useState<Partial<TTxsFilters>>({ type: [], method: [] });
 
   const sort = useCallback((field: 'val' | 'fee') => () => {
-    if (field === 'val') {
-      setSorting((prevVal => {
+    setSorting((prevVal) => {
+      let newVal: Sort = '';
+      if (field === 'val') {
         if (prevVal === 'val-asc') {
-          return undefined;
+          newVal = '';
+        } else if (prevVal === 'val-desc') {
+          newVal = 'val-asc';
+        } else {
+          newVal = 'val-desc';
         }
-        if (prevVal === 'val-desc') {
-          return 'val-asc';
-        }
-        return 'val-desc';
-      }));
-    }
-    if (field === 'fee') {
-      setSorting((prevVal => {
+      }
+      if (field === 'fee') {
         if (prevVal === 'fee-asc') {
-          return undefined;
+          newVal = '';
+        } else if (prevVal === 'fee-desc') {
+          newVal = 'fee-asc';
+        } else {
+          newVal = 'fee-desc';
         }
-        if (prevVal === 'fee-desc') {
-          return 'fee-asc';
-        }
-        return 'fee-desc';
-      }));
-    }
+      }
+      cookies.set(cookies.NAMES.TXS_SORT, newVal || '');
+      return newVal;
+    });
   }, [ setSorting ]);
 
   const {
