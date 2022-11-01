@@ -8,7 +8,6 @@ import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
 import eastArrowIcon from 'icons/arrows/east.svg';
 import useFetch from 'lib/hooks/useFetch';
-import isBrowser from 'lib/isBrowser';
 import networkExplorers from 'lib/networks/networkExplorers';
 import ExternalLink from 'ui/shared/ExternalLink';
 import Page from 'ui/shared/Page/Page';
@@ -48,11 +47,9 @@ const TransactionPageContent = () => {
       return <ExternalLink key={ explorer.baseUrl } title={ `Open in ${ explorer.title }` } href={ url.toString() }/>;
     });
 
-  const hasGoBackLink = isBrowser() && window.document.referrer.includes('/txs');
-
   return (
     <Page>
-      { hasGoBackLink && (
+      { window.document.referrer.includes('/txs') && (
         <Link mb={ 6 } display="inline-flex" href={ window.document.referrer }>
           <Icon as={ eastArrowIcon } boxSize={ 6 } mr={ 2 } transform="rotate(180deg)"/>
             Transactions

@@ -7,6 +7,7 @@ import { QueryKeys } from 'types/client/queries';
 import * as cookies from 'lib/cookies';
 import useFetch from 'lib/hooks/useFetch';
 import useScrollDirection from 'lib/hooks/useScrollDirection';
+import isBrowser from 'lib/isBrowser';
 import ScrollDirectionContext from 'ui/ScrollDirectionContext';
 import PageContent from 'ui/shared/Page/PageContent';
 import Header from 'ui/snippets/header/Header';
@@ -19,13 +20,23 @@ interface Props {
 }
 
 const Page = ({ children, wrapChildren = true, hideMobileHeaderOnScrollDown }: Props) => {
+  const [ isBrowserState, setIsBrowser ] = React.useState(false);
   const fetch = useFetch();
+  const isInBrowser = isBrowser();
+
+  React.useEffect(() => {
+    setIsBrowser(isInBrowser);
+  }, [ isInBrowser ]);
 
   useQuery<unknown, unknown, unknown>([ QueryKeys.csrf ], async() => await fetch('/node-api/account/csrf'), {
     enabled: Boolean(cookies.get(cookies.NAMES.API_TOKEN)),
   });
 
   const directionContext = useScrollDirection();
+
+  if (!isBrowserState) {
+    return null;
+  }
 
   const renderedChildren = wrapChildren ? (
     <PageContent>{ children }</PageContent>
