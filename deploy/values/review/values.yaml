@@ -5,7 +5,7 @@ blockscout:
   app: blockscout
   enabled: true
   image:
-    _default: blockscout/blockscout-sokol:latest
+    _default: blockscout/blockscout:latest
     #blockscout/blockscout:review-prerelease-9ad99cc8@sha256:608d335025a135f1cde6608b2449b8988b7cb8bfa6ea38e92ce1f184ec577781
   replicas:
     app: 1
@@ -18,8 +18,8 @@ blockscout:
   # enable ingress
   ingress:
     enabled: true
-    annotations:
-      - 'nginx.ingress.kubernetes.io/rewrite-target: /$2'
+    annotations: {}
+      # - 'nginx.ingress.kubernetes.io/rewrite-target: /$2'
     host:
       _default: blockscout.test.blockscout.aws-k8s.blockscout.com
     # enable https
@@ -27,7 +27,7 @@ blockscout:
     tls:
       enabled: true
     path:
-      - "/poa/sokol(/|$)(.*)"
+      # - "/poa/sokol(/|$)(.*)"
       - "/"
   # probes
   livenessProbe:
@@ -93,19 +93,19 @@ blockscout:
     DISABLE_REALTIME_INDEXER:
       _default: 'false'
     SOCKET_ROOT:
-      _default: "/poa/sokol"
+      _default: "/"
     NETWORK_PATH:
-      _default: "/poa/sokol"
+      _default: "/"
     API_PATH:
-      _default: "/poa/sokol"
+      _default: "/"
     ETHEREUM_JSONRPC_DISABLE_ARCHIVE_BALANCES:
       _default: 'true'
     API_BASE_PATH:
-      _default: "/poa/sokol"
+      _default: "/"
     APPS_MENU:
       _default: 'true'
     EXTERNAL_APPS:
-      _default: '[{"title": "Marketplace", "url": "/poa/sokol/apps"}]'
+      _default: '[{"title": "Marketplace", "url": "/apps"}]'
 
 postgres:
   enabled: true
@@ -279,7 +279,7 @@ frontend:
     tls:
       enabled: true
     path:
-      - "/poa/sokol/(apps|auth/profile|account)"
+      - "/(apps|auth/profile|account)"
       - "/_next"
       - "/node-api"
       - "/static"
@@ -338,7 +338,7 @@ frontend:
     NEXT_PUBLIC_API_ENDPOINT:
       _default: https://blockscout.com
     NEXT_PUBLIC_API_BASE_PATH:
-      _default: /poa/sokol
+      _default: /
     NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM:
       _default: https://airtable.com/shrqUAcjgGJ4jU88C
     NEXT_PUBLIC_MARKETPLACE_APP_LIST:
@@ -346,4 +346,4 @@ frontend:
     NEXT_PUBLIC_LOGOUT_URL:
       _default: https://blockscoutcom.us.auth0.com/v2/logout
     NEXT_PUBLIC_LOGOUT_RETURN_URL:
-      _default: https://blockscout.com/poa/sokol/auth/logout
+      _default: https://blockscout.com/auth/logout
