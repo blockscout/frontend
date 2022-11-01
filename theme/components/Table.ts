@@ -16,10 +16,10 @@ const variantSimple = definePartsStyle((props) => {
     th: {
       border: 0,
       color: mode('gray.600', 'whiteAlpha.700')(props),
+      backgroundColor: mode('blackAlpha.100', 'whiteAlpha.200')(props),
       ...transitionProps,
     },
     thead: {
-      backgroundColor: mode('blackAlpha.100', 'whiteAlpha.200')(props),
       ...transitionProps,
     },
     td: {
@@ -73,9 +73,6 @@ const variants = {
 };
 
 const baseStyle = definePartsStyle({
-  thead: {
-    backgroundColor: 'gray.50',
-  },
   th: {
     textTransform: 'none',
     fontFamily: 'body',
@@ -83,6 +80,12 @@ const baseStyle = definePartsStyle({
     overflow: 'hidden',
     color: 'gray.500',
     letterSpacing: 'none',
+    _first: {
+      borderTopLeftRadius: '8px',
+    },
+    _last: {
+      borderTopRightRadius: '8px',
+    },
   },
   td: {
     fontSize: 'md',
@@ -92,7 +95,7 @@ const baseStyle = definePartsStyle({
     tableLayout: 'fixed',
     borderTopLeftRadius: 'base',
     borderTopRightRadius: 'base',
-    overflow: 'hidden',
+    overflow: 'unset',
     fontVariant: 'normal',
   },
 });

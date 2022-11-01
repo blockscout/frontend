@@ -20,6 +20,7 @@ const SortButton = ({ onClick, isActive, className }: Props) => {
       minWidth="36px"
       onClick={ onClick }
       isActive={ isActive }
+      display="flex"
       className={ className }
     />
   );
