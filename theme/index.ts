@@ -7,6 +7,7 @@ import breakpoints from './foundations/breakpoints';
 import colors from './foundations/colors';
 import transition from './foundations/transition';
 import typography from './foundations/typography';
+import zIndices from './foundations/zIndices';
 import global from './global';
 
 const overrides = {
@@ -20,6 +21,7 @@ const overrides = {
   },
   breakpoints,
   transition,
+  zIndices,
 };
 
 export default extendTheme(overrides);

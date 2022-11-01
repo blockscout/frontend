@@ -73,9 +73,7 @@ const TxsTableItem = ({ tx }: {tx: Transaction}) => {
       </Td>
       <Td>
         <VStack alignItems="start">
-          { /* TODO: we don't recieve type from api */ }
-          { /* <TxType type={ tx.type }/> */ }
-          <TxType type="transaction"/>
+          { tx.tx_types.map(item => <TxType key={ item } type={ item }/>) }
           <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined }/>
         </VStack>
       </Td>
@@ -93,19 +91,11 @@ const TxsTableItem = ({ tx }: {tx: Transaction}) => {
         </VStack>
       </Td>
       <Td>
-        { /* TODO: we don't recieve method from api */ }
-        { /* <TruncatedTextTooltip label={ tx.method }>
+        <TruncatedTextTooltip label={ tx.method }>
           <Tag
             colorScheme={ tx.method === 'Multicall' ? 'teal' : 'gray' }
           >
             { tx.method }
-          </Tag>
-        </TruncatedTextTooltip> */ }
-        <TruncatedTextTooltip label="CommitHash">
-          <Tag
-            colorScheme="gray"
-          >
-            CommitHash
           </Tag>
         </TruncatedTextTooltip>
       </Td>
