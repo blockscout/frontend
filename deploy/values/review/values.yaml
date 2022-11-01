@@ -12,6 +12,11 @@ blockscout:
   docker:
     port: 80
     targetPort: 4000
+  # init container
+  init:
+    enabled: true
+    image:
+      _default: blockscout/blockscout:latest
   service:
     # ClusterIP, NodePort or LoadBalancer
     type: ClusterIP
@@ -273,6 +278,8 @@ frontend:
     targetPort: 3000
   ingress:
     enabled: true
+    annotations:
+      - 'nginx.ingress.kubernetes.io/use-regex: "true"'
     host:
       _default: frontend.test.blockscout.aws-k8s.blockscout.com
     # enable https
