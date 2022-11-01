@@ -2,14 +2,12 @@ import clamp from 'lodash/clamp';
 import throttle from 'lodash/throttle';
 import React from 'react';
 
-import isBrowser from 'lib/isBrowser';
-
 const SCROLL_DIFF_THRESHOLD = 20;
 
 type Directions = 'up' | 'down';
 
 export default function useScrollDirection() {
-  const prevScrollPosition = React.useRef(isBrowser() ? window.pageYOffset : 0);
+  const prevScrollPosition = React.useRef(window.pageYOffset);
   const [ scrollDirection, setDirection ] = React.useState<Directions>();
 
   const handleScroll = React.useCallback(() => {

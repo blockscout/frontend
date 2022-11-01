@@ -2,6 +2,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { AppProps } from 'next/app';
+import dynamic from 'next/dynamic';
 import React, { useState } from 'react';
 
 import useConfigSentry from 'lib/hooks/useConfigSentry';
@@ -39,4 +40,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 
-export default MyApp;
+// export default MyApp;
+export default dynamic(() => Promise.resolve(MyApp), {
+  ssr: false,
+});
