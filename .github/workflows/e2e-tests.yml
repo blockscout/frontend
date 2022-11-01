@@ -67,9 +67,9 @@ jobs:
     with:
       env_vars: VALUES_DIR=deploy/values/e2e,APP_NAME=e2e-front
       appNamespace: e2e-front-$GITHUB_SHA_SHORT
-      blockscoutIngressHost: blockscout
-      frontendIngressHost: blockscout
       frontendImage: ghcr.io/blockscout/frontend:prerelease-${{ needs.push_to_registry.outputs.shortSha }}
-      gethIngressHost: geth
-      scVerifierIngressHost: sc-verifier
+      blockscoutIngressHost: e2e-blockscout-$GITHUB_SHA_SHORT
+      frontendIngressHost: e2e-blockscout-$GITHUB_SHA_SHORT
+      gethIngressHost: geth-$GITHUB_SHA_SHORT
+      scVerifierIngressHost: sc-verifier-$GITHUB_SHA_SHORT
     secrets: inherit
