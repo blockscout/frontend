@@ -63,6 +63,7 @@ export default function useQueryWithPages(apiPath: string, queryName: QueryKeys,
     // we dont have pagination params for the first page
     let nextPageQuery: typeof router.query;
     if (page === 2) {
+      queryClient.clear();
       nextPageQuery = omit(router.query, PAGINATION_FIELDS);
     } else {
       const nextPageParams = { ...pageParams[page - 2] };
@@ -75,16 +76,26 @@ export default function useQueryWithPages(apiPath: string, queryName: QueryKeys,
         animateScroll.scrollToTop({ duration: 0 });
         setPage(prev => prev - 1);
       });
-  }, [ router, page, pageParams ]);
+  }, [ router, page, pageParams, queryClient ]);
 
   const resetPage = useCallback(() => {
     queryClient.clear();
-    animateScroll.scrollToTop({ duration: 0 });
-    router.push({ pathname: router.pathname, query: omit(router.query, PAGINATION_FIELDS) }, undefined, { shallow: true });
+    router.push({ pathname: router.pathname, query: omit(router.query, PAGINATION_FIELDS) }, undefined, { shallow: true }).then(() => {
+      animateScroll.scrollToTop({ duration: 0 });
+      setPage(1);
+      setPageParams([ {} ]);
+    });
   }, [ router, queryClient ]);
 
-  // if there are pagination params on the initial page, we shouldn't show pagination
-  const hasPagination = !(page === 1 && Object.keys(currPageParams).length > 0);
+  const hasPaginationParams = Object.keys(currPageParams).length > 0;
 
-  return { data, isError, isLoading, page, onNextPageClick, onPrevPageClick, hasPagination, resetPage };
+  const pagination = {
+    page,
+    onNextPageClick,
+    onPrevPageClick,
+    hasPaginationParams,
+    resetPage,
+  };
+
+  return { data, isError, isLoading, pagination };
 }

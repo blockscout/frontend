@@ -54,7 +54,7 @@ const BlocksContent = ({ type }: Props) => {
       <Show above="lg" key="content-desktop"><BlocksTable data={ data.items }/></Show>
       <Box mx={{ base: 0, lg: 6 }} my={{ base: 6, lg: 3 }}>
         { /* eslint-disable-next-line react/jsx-no-bind */ }
-        <Pagination currentPage={ 1 } onNextPageClick={ () => {} } onPrevPageClick={ () => {} } hasNextPage/>
+        <Pagination page={ 1 } onNextPageClick={ () => {} } onPrevPageClick={ () => {} } resetPage={ () => {} } hasNextPage/>
       </Box>
     </>
   );
