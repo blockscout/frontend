@@ -64,7 +64,7 @@ const NavLink = ({ text, url, icon, isCollapsed, isActive, px, isNewUi }: Props)
       { /* why not NextLink in all cases? since prev UI and new one are hosting in the same domain and global routing is managed by nginx */ }
       { /* we have to hard reload page on every transition between urls from different part of the app */ }
       { isNewUi ? (
-        <NextLink href={ url } passHref>
+        <NextLink href={ url } passHref shallow>
           { content }
         </NextLink>
       ) : content }
