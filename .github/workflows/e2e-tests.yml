@@ -70,6 +70,6 @@ jobs:
       frontendImage: ghcr.io/blockscout/frontend:prerelease-${{ needs.push_to_registry.outputs.shortSha }}
       blockscoutIngressHost: e2e-blockscout-$GITHUB_SHA_SHORT
       frontendIngressHost: e2e-blockscout-$GITHUB_SHA_SHORT
-      gethIngressHost: geth-$GITHUB_SHA_SHORT
-      scVerifierIngressHost: sc-verifier-$GITHUB_SHA_SHORT
+      gethIngressHost: e2e-geth-$GITHUB_SHA_SHORT
+      scVerifierIngressHost: e2e-sc-verifier-$GITHUB_SHA_SHORT
     secrets: inherit
