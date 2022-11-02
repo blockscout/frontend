@@ -213,19 +213,19 @@ geth:
     # command: '["sh","./root/init.sh"]'
     args: '["--goerli", "--datadir=/data", "--jwt-secret=/geth/geth/jwtsecret", "--rpc-host=0.0.0.0", "--grpc-gateway-host=0.0.0.0", "--monitoring-host=0.0.0.0", "--execution-endpoint=http://geth-svc:8545", "--checkpoint-sync-url=https://goerli.checkpoint-sync.ethdevops.io", "--genesis-beacon-api-url=https://goerli.checkpoint-sync.ethdevops.io"]'
     ports:
-      portTcp:
+      port-tcp:
         number: 13000
         protocol: TCP
-      portUdp:
+      port-udp:
         number: 12000
         protocol: UDP
-      portRpc:
+      port-rpc:
         number: 4000
         protocol: TCP
-      portRpcGateway:
+      port-rpc-gateway:
         number: 3500
         protocol: TCP
-      portMonitoring:
+      port-monitoring:
         number: 8080
         protocol: TCP
     persistence:
