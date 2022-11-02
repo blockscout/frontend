@@ -61,6 +61,8 @@ function makePolicyMap() {
 
       // client error monitoring
       'sentry.io', '*.sentry.io',
+
+      appConfig.api.socket,
     ],
 
     'script-src': [
