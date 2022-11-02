@@ -79,11 +79,11 @@ blockscout:
     ETHEREUM_JSONRPC_VARIANT:
       _default: geth
     ETHEREUM_JSONRPC_TRACE_URL:
-      _default: https://eth-goerli.public.blastapi.io
+      _default: http://geth-svc:8545
     ETHEREUM_JSONRPC_HTTP_URL:
-      _default: https://eth-goerli.public.blastapi.io
+      _default: http://geth-svc:8545
     ETHEREUM_JSONRPC_WS_URL:
-      _default: wss://eth-goerli.public.blastapi.io/ws
+      _default: ws://geth-svc:8546
     COIN:
       _default: ETH
     CHAIN_ID:
@@ -117,7 +117,7 @@ blockscout:
     API_V2_ENABLED:
       _default: 'true'
     FIRST_BLOCK:
-      _default: 7878406
+      _default: '7878406'
     # GAS_PRICE:
     #   _default: 1
     # GAS_PRICE_ORACLE_AVERAGE_PERCENTILE:
@@ -166,11 +166,14 @@ geth:
   portHttp: 8545
   portWs: 8546
   portAuth: 8551
-  command: '["sh","./root/init.sh"]'
-  args: '["--fakepow", "--dev", "--dev.period=1", "--datadir=/root/.ethereum/devnet", "--keystore=/root/.ethereum/devnet/keystore", "--password=/root/password.txt", "--unlock=0", "--unlock=1", "--mine", "--miner.threads=1", "--miner.etherbase=0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266", "--ipcpath=/root/geth.ipc", "--http", "--http.vhosts=*", "--http.addr=0.0.0.0", "--http.port=8545", "--http.api=eth,net,web3,debug,txpool", "--ws", "--ws.origins=*", "--ws.addr=0.0.0.0", "--ws.port=8546", "--ws.api=eth,net,web3,debug,txpool", "--graphql", "--graphql.corsdomain=*", "--allow-insecure-unlock", "--rpc.allow-unprotected-txs", "--http.corsdomain=*", "--vmdebug", "--networkid=1337", "--rpc.txfeecap=0"]'
+  command: '["geth"]'
+  args: '["console", "--goerli", "--datadir=/geth", "--gcmode=archive", "--http", "--http.vhosts=*", "--http.addr=0.0.0.0", "--http.port=8545", "--http.api=eth,net,web3,debug,txpool", "--ws", "--ws.origins=*", "--ws.addr=0.0.0.0", "--ws.port=8546", "--ws.api=eth,net,web3,debug,txpool", "--allow-insecure-unlock", "--rpc.allow-unprotected-txs", "--http.corsdomain=*", "--vmdebug", "--rpc.txfeecap=0"]'
   environment: {}
   persistence:
-    enabled: false
+    enabled: true
+    mountPath: /geth
+    storageClass: gp3-new
+    storage: 1000Gi
   resources:
     limits:
       memory:
@@ -200,7 +203,7 @@ geth:
   jwt:
     enabled: false
   files:
-    enabled: true
+    enabled: false
 # enable Smart-contract-verifier deploy
 scVerifier:
   enabled: true
