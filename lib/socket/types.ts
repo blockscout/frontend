@@ -3,13 +3,15 @@ import type { NewBlockSocketResponse } from 'types/api/block';
 export type SocketData = [ null, null, string, string, unknown ];
 
 export type SocketSubscriber = SocketSubscribers.BlocksNewBlock |
-SocketSubscribers.BlocksIndexStatus |
+SocketSubscribers.BlockNewBlock |
 SocketSubscribers.BlockNewBlock;
 
 interface SocketSubscriberGeneric<Channel extends string, Event extends string, Payload> {
   channelId: Channel;
   eventId: Event;
   onMessage: (payload: Payload) => void;
+  onClose?: () => void;
+  onError?: () => void;
   hash?: string;
 }
 
