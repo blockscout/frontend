@@ -158,7 +158,7 @@ postgres:
       _default: 'trust'
 # enable geth deploy
 geth:
-  enabled: false
+  enabled: true
   image:
     _default: ethereum/client-go:stable
   replicas:
