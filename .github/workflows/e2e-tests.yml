@@ -65,7 +65,6 @@ jobs:
     needs: push_to_registry
     uses: blockscout/blockscout-ci-cd/.github/workflows/e2e_new.yaml@master
     with:
-      env_vars: VALUES_DIR=deploy/values/e2e,APP_NAME=e2e-front
       appNamespace: e2e-front-$GITHUB_SHA_SHORT
       frontendImage: ghcr.io/blockscout/frontend:prerelease-${{ needs.push_to_registry.outputs.shortSha }}
       blockscoutIngressHost: e2e-blockscout-$GITHUB_SHA_SHORT
