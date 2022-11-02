@@ -5,21 +5,25 @@ blockscout:
   app: blockscout
   enabled: true
   image:
-    _default: blockscout/blockscout-sokol:latest
-    #blockscout/blockscout:review-prerelease-9ad99cc8@sha256:608d335025a135f1cde6608b2449b8988b7cb8bfa6ea38e92ce1f184ec577781
+    _default: blockscout/blockscout:latest
   replicas:
     app: 1
   docker:
     port: 80
     targetPort: 4000
+  # init container
+  init:
+    enabled: true
+    image:
+      _default: blockscout/blockscout:latest
   service:
     # ClusterIP, NodePort or LoadBalancer
     type: ClusterIP
   # enable ingress
   ingress:
     enabled: true
-    annotations:
-      - 'nginx.ingress.kubernetes.io/rewrite-target: /$2'
+    annotations: {}
+      # - 'nginx.ingress.kubernetes.io/rewrite-target: /$2'
     host:
       _default: blockscout.test.blockscout.aws-k8s.blockscout.com
     # enable https
@@ -27,7 +31,7 @@ blockscout:
     tls:
       enabled: true
     path:
-      - "/poa/sokol(/|$)(.*)"
+      # - "/poa/sokol(/|$)(.*)"
       - "/"
   # probes
   livenessProbe:
@@ -93,21 +97,23 @@ blockscout:
     DISABLE_REALTIME_INDEXER:
       _default: 'false'
     SOCKET_ROOT:
-      _default: "/poa/sokol"
+      _default: "/"
     NETWORK_PATH:
-      _default: "/poa/sokol"
+      _default: "/"
     API_PATH:
-      _default: "/poa/sokol"
+      _default: "/"
     ETHEREUM_JSONRPC_DISABLE_ARCHIVE_BALANCES:
       _default: 'true'
     API_BASE_PATH:
-      _default: "/poa/sokol"
+      _default: "/"
     APPS_MENU:
       _default: 'true'
     EXTERNAL_APPS:
-      _default: '[{"title": "Marketplace", "url": "/poa/sokol/apps"}]'
+      _default: '[{"title": "Marketplace", "url": "/apps"}]'
     JSON_RPC:
       _default: https://sokol.poa.network
+    API_V2_ENABLED:
+      _default: 'true'
 
 postgres:
   enabled: true
@@ -275,16 +281,21 @@ frontend:
     targetPort: 3000
   ingress:
     enabled: true
+    # annotations:
+    #   - 'nginx.ingress.kubernetes.io/use-regex: "true"'
     host:
       _default: frontend.test.blockscout.aws-k8s.blockscout.com
     # enable https
     tls:
       enabled: true
     path:
-      - "/poa/sokol/(apps|auth/profile|account)"
+      # - "/(apps|auth/profile|account)"
+      - "/apps"
       - "/_next"
       - "/node-api"
       - "/static"
+      - "/auth/profile"
+      - "/account"
   resources:
     limits:
       memory:
@@ -320,11 +331,9 @@ frontend:
     NEXT_PUBLIC_NETWORK_SHORT_NAME:
       _default: POA
     NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME:
-      _default: sokol
-    NEXT_PUBLIC_NETWORK_TYPE:
       _default: poa
-    NEXT_PUBLIC_NETWORK_SUBTYPE:
-      _default: sokol
+    NEXT_PUBLIC_NETWORK_TYPE:
+      _default: poa_core
     NEXT_PUBLIC_NETWORK_ID:
       _default: 77
     NEXT_PUBLIC_NETWORK_CURRENCY_NAME:
@@ -338,11 +347,11 @@ frontend:
     NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED:
       _default: 'true'
     NEXT_PUBLIC_FEATURED_NETWORKS:
-      _default: "[{'title':'Gnosis Chain','basePath':'/xdai/mainnet','group':'mainnets'},{'title':'Optimism on Gnosis Chain','basePath':'/xdai/optimism','group':'mainnets','icon':'https://www.fillmurray.com/60/60'},{'title':'Arbitrum on xDai','basePath':'/xdai/aox','group':'mainnets'},{'title':'Ethereum','basePath':'/eth/mainnet','group':'mainnets'},{'title':'Ethereum Classic','basePath':'/etx/mainnet','group':'mainnets'},{'title':'POA','basePath':'/poa/core','group':'mainnets'},{'title':'RSK','basePath':'/rsk/mainnet','group':'mainnets'},{'title':'Gnosis Chain Testnet','basePath':'/xdai/testnet','group':'testnets'},{'title':'POA Sokol','basePath':'/poa/sokol','group':'testnets'},{'title':'ARTIS Σ1','basePath':'/artis/sigma1','group':'other'},{'title':'LUKSO L14','basePath':'/lukso/l14','group':'other'},{'title':'Astar','basePath':'/astar','group':'other'}]"
+      _default: "[{'title':'Gnosis Chain','url':'https://blockscout.com/xdai/mainnet','group':'mainnets','type':'xdai_mainnet'},{'title':'Optimism on Gnosis Chain','url':'https://blockscout.com/xdai/optimism','group':'mainnets','icon':'https://www.fillmurray.com/60/60','type':'xdai_optimism'},{'title':'Arbitrum on xDai','url':'https://blockscout.com/xdai/aox','group':'mainnets'},{'title':'Ethereum','url':'https://blockscout.com/eth/mainnet','group':'mainnets','type':'eth_mainnet'},{'title':'Ethereum Classic','url':'https://blockscout.com/etx/mainnet','group':'mainnets','type':'etc_mainnet'},{'title':'POA','url':'https://blockscout.com/poa/core','group':'mainnets','type':'poa_core'},{'title':'RSK','url':'https://blockscout.com/rsk/mainnet','group':'mainnets','type':'rsk_mainnet'},{'title':'Gnosis Chain Testnet','url':'https://blockscout.com/xdai/testnet','group':'testnets','type':'xdai_testnet'},{'title':'POA Sokol','url':'https://blockscout.com/poa/sokol','group':'testnets','type':'poa_sokol'},{'title':'ARTIS Σ1','url':'https://blockscout.com/artis/sigma1','group':'other','type':'artis_sigma1'},{'title':'LUKSO L14','url':'https://blockscout.com/lukso/l14','group':'other','type':'lukso_l14'},{'title':'Astar','url':'https://blockscout.com/astar','group':'other','type':'astar'}]"
     NEXT_PUBLIC_API_ENDPOINT:
       _default: https://blockscout.com
     NEXT_PUBLIC_API_BASE_PATH:
-      _default: /poa/sokol
+      _default: /
     NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM:
       _default: https://airtable.com/shrqUAcjgGJ4jU88C
     NEXT_PUBLIC_MARKETPLACE_APP_LIST:
@@ -350,4 +359,4 @@ frontend:
     NEXT_PUBLIC_LOGOUT_URL:
       _default: https://blockscoutcom.us.auth0.com/v2/logout
     NEXT_PUBLIC_LOGOUT_RETURN_URL:
-      _default: https://blockscout.com/poa/sokol/auth/logout
+      _default: https://blockscout.com/auth/logout

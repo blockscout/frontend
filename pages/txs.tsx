@@ -5,16 +5,7 @@ import React from 'react';
 import getNetworkTitle from 'lib/networks/getNetworkTitle';
 import Transactions from 'ui/pages/Transactions';
 
-type PageParams = {
-  network_type: string;
-  network_sub_type: string;
-}
-
-type Props = {
-  pageParams: PageParams;
-}
-
-const AddressTagsPage: NextPage<Props> = () => {
+const TxsPage: NextPage = () => {
   const title = getNetworkTitle();
   return (
     <>
@@ -24,7 +15,6 @@ const AddressTagsPage: NextPage<Props> = () => {
   );
 };
 
-export default AddressTagsPage;
+export default TxsPage;
 
-export { getStaticPaths } from 'lib/next/getStaticPaths';
-export { getStaticProps } from 'lib/next/getStaticProps';
+export { getServerSideProps } from 'lib/next/getServerSidePropsDummy';

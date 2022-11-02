@@ -11,7 +11,6 @@ import useColors from './useColors';
 interface Props extends FeaturedNetwork {
   isActive: boolean;
   isMobile?: boolean;
-  url: string;
 }
 
 const NetworkMenuLink = ({ title, icon, isActive, isMobile, url }: Props) => {

@@ -2,25 +2,27 @@ import { Icon, Box, Image, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 import type { FunctionComponent, SVGAttributes } from 'react';
 
+import type { PreDefinedNetwork } from 'types/networks';
+
 import appConfig from 'configs/app/config';
 import blockscoutLogo from 'icons/logo.svg';
 import link from 'lib/link/link';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 
 // predefined network logos
-const LOGOS: Record<string, React.FunctionComponent<React.SVGAttributes<SVGElement>>> = {
-  '/xdai/mainnet': require('icons/networks/logos/gnosis.svg'),
-  '/eth/mainnet': require('icons/networks/logos/eth.svg'),
-  '/etc/mainnet': require('icons/networks/logos/etc.svg'),
-  '/poa/core': require('icons/networks/logos/poa.svg'),
-  '/rsk/mainnet': require('icons/networks/logos/rsk.svg'),
-  '/xdai/testnet': require('icons/networks/logos/gnosis.svg'),
-  '/poa/sokol': require('icons/networks/logos/sokol.svg'),
-  '/artis/sigma1': require('icons/networks/logos/artis.svg'),
-  '/lukso/l14': require('icons/networks/logos/lukso.svg'),
-  '/astar': require('icons/networks/logos/astar.svg'),
-  '/shiden': require('icons/networks/logos/shiden.svg'),
-  '/shibuya': require('icons/networks/logos/shibuya.svg'),
+const LOGOS: Partial<Record<PreDefinedNetwork, React.FunctionComponent<React.SVGAttributes<SVGElement>>>> = {
+  xdai_mainnet: require('icons/networks/logos/gnosis.svg'),
+  eth_mainnet: require('icons/networks/logos/eth.svg'),
+  etc_mainnet: require('icons/networks/logos/etc.svg'),
+  poa_core: require('icons/networks/logos/poa.svg'),
+  rsk_mainnet: require('icons/networks/logos/rsk.svg'),
+  xdai_testnet: require('icons/networks/logos/gnosis.svg'),
+  poa_sokol: require('icons/networks/logos/sokol.svg'),
+  artis_sigma1: require('icons/networks/logos/artis.svg'),
+  lukso_l14: require('icons/networks/logos/lukso.svg'),
+  astar: require('icons/networks/logos/astar.svg'),
+  shiden: require('icons/networks/logos/shiden.svg'),
+  shibuya: require('icons/networks/logos/shibuya.svg'),
 };
 
 interface Props {
@@ -31,7 +33,7 @@ interface Props {
 const NetworkLogo = ({ isCollapsed, onClick }: Props) => {
   const logoColor = useColorModeValue('blue.600', 'white');
   const href = link('network_index');
-  const logo = appConfig.network.logo || LOGOS[appConfig.network.basePath];
+  const logo = appConfig.network.logo || (appConfig.network.type ? LOGOS[appConfig.network.type] : undefined);
 
   const style = useColorModeValue({}, { filter: 'brightness(0) invert(1)' });
 

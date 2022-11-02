@@ -15,5 +15,4 @@ const MyProfilePage: NextPage = () => {
 
 export default MyProfilePage;
 
-export { getStaticPaths } from 'lib/next/getStaticPaths';
-export { getStaticProps } from 'lib/next/getStaticProps';
+export { getServerSideProps } from 'lib/next/getServerSidePropsDummy';

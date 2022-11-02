@@ -1,6 +1,5 @@
 import { VStack, Textarea, Button, Alert, AlertTitle, AlertDescription, Link, Code } from '@chakra-ui/react';
 import * as Sentry from '@sentry/react';
-import { useRouter } from 'next/router';
 import type { ChangeEvent } from 'react';
 import React from 'react';
 
@@ -11,7 +10,6 @@ import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 const Home = () => {
-  const router = useRouter();
   const toast = useToast();
 
   const [ isFormVisible, setFormVisibility ] = React.useState(false);
@@ -46,7 +44,7 @@ const Home = () => {
     });
   }, [ toast, token ]);
 
-  const prodUrl = new URL(`/${ router.query.network_type }/${ router.query.network_sub_type }`, 'https://blockscout.com').toString();
+  const prodUrl = 'https://blockscout.com/poa/core';
 
   return (
     <Page>
