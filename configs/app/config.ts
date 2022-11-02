@@ -10,6 +10,7 @@ const parseEnvJson = <DataType>(env: string | undefined): DataType | null => {
     return null;
   }
 };
+const stripTrailingSlash = (str: string) => str.at(-1) === '/' ? str.slice(0, -1) : str;
 
 const env = process.env.VERCEL_ENV || process.env.NODE_ENV;
 const isDev = env === 'development';
@@ -23,6 +24,7 @@ const baseUrl = [
   process.env.NEXT_PUBLIC_VERCEL_URL || appHost,
   appPort && ':' + appPort,
 ].filter(Boolean).join('');
+const apiHost = getEnvValue(process.env.NEXT_PUBLIC_API_HOST);
 
 const logoutUrl = (() => {
   try {
@@ -80,8 +82,9 @@ const config = Object.freeze({
   baseUrl,
   logoutUrl,
   api: {
-    endpoint: getEnvValue(process.env.NEXT_PUBLIC_API_ENDPOINT) || 'https://blockscout.com',
-    basePath: getEnvValue(process.env.NEXT_PUBLIC_API_BASE_PATH) || '',
+    endpoint: apiHost ? `https://${ apiHost }` : 'https://blockscout.com',
+    socket: apiHost ? `wss://${ apiHost }` : 'wss://blockscout.com',
+    basePath: stripTrailingSlash(getEnvValue(process.env.NEXT_PUBLIC_API_BASE_PATH) || ''),
   },
 });
 
