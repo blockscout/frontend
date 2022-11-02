@@ -21,3 +21,7 @@ export function set(name: string, value: string, attributes: Types.CookieAttribu
 
   return Cookies.set(name, value, attributes);
 }
+
+export function getFromCookieString(cookieString: string, name: NAMES) {
+  return cookieString.split(`${ name }=`)[1]?.split(';')[0];
+}

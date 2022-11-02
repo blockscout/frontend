@@ -5,7 +5,7 @@ import appConfig from 'configs/app/config';
 import chevronIcon from 'icons/arrows/east-mini.svg';
 import * as cookies from 'lib/cookies';
 import useNavItems from 'lib/hooks/useNavItems';
-import isBrowser from 'lib/isBrowser';
+import { useAppContext } from 'lib/next/AppWrapper';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import NetworkMenu from 'ui/snippets/networkMenu/NetworkMenu';
@@ -14,25 +14,16 @@ import NavFooter from './NavFooter';
 import NavLink from './NavLink';
 
 const NavigationDesktop = () => {
+  const appProps = useAppContext();
+  const cookiesString = appProps.cookies;
+
+  const isNavBarCollapsed = cookies.getFromCookieString(cookiesString, cookies.NAMES.NAV_BAR_COLLAPSED) === 'true';
+  const hasAuth = Boolean(cookies.getFromCookieString(cookiesString, cookies.NAMES.API_TOKEN));
+
   const { mainNavItems, accountNavItems } = useNavItems();
 
-  const isInBrowser = isBrowser();
-  const [ hasAccount, setHasAccount ] = React.useState(false);
-  const [ isCollapsed, setCollapsedState ] = React.useState<boolean | undefined>();
-
-  React.useEffect(() => {
-    const navBarCollapsedCookie = cookies.get(cookies.NAMES.NAV_BAR_COLLAPSED);
-    const isAuth = Boolean(cookies.get(cookies.NAMES.API_TOKEN));
-    if (isInBrowser) {
-      if (navBarCollapsedCookie === 'true') {
-        setCollapsedState(true);
-      }
-      if (navBarCollapsedCookie === 'false') {
-        setCollapsedState(false);
-      }
-      setHasAccount(Boolean(appConfig.isAccountSupported && isAuth && isInBrowser));
-    }
-  }, [ isInBrowser ]);
+  const hasAccount = hasAuth && appConfig.isAccountSupported;
+  const [ isCollapsed, setCollapsedState ] = React.useState<boolean | undefined>(isNavBarCollapsed);
 
   const handleTogglerClick = React.useCallback(() => {
     setCollapsedState((flag) => !flag);

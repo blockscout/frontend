@@ -10,13 +10,13 @@ import ProfileMenuContent from 'ui/snippets/profileMenu/ProfileMenuContent';
 const ProfileMenuMobile = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { data } = useFetchProfileInfo();
+  const { data, isFetched } = useFetchProfileInfo();
   const loginUrl = link('auth');
 
   return (
     <>
       <Box padding={ 2 } onClick={ onOpen }>
-        <UserAvatar size={ 24 } data={ data }/>
+        <UserAvatar size={ 24 } data={ data } isFetched={ isFetched }/>
       </Box>
       <Drawer
         isOpen={ isOpen }
@@ -34,7 +34,7 @@ const ProfileMenuMobile = () => {
             >
               <ColorModeToggler/>
               <Box onClick={ onClose }>
-                <UserAvatar size={ 24 } data={ data }/>
+                <UserAvatar size={ 24 } data={ data } isFetched={ isFetched }/>
               </Box>
             </Flex>
             { data ? <ProfileMenuContent { ...data }/> : (

@@ -1,11 +1,12 @@
-import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { AppProps } from 'next/app';
 import React, { useState } from 'react';
 
+import { Chakra } from 'lib/Chakra';
 import useConfigSentry from 'lib/hooks/useConfigSentry';
 import type { ErrorType } from 'lib/hooks/useFetch';
+import { AppWrapper } from 'lib/next/AppWrapper';
 import theme from 'theme';
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -30,12 +31,14 @@ function MyApp({ Component, pageProps }: AppProps) {
   }));
 
   return (
-    <QueryClientProvider client={ queryClient }>
-      <ChakraProvider theme={ theme }>
-        <Component { ...pageProps }/>
-      </ChakraProvider>
-      <ReactQueryDevtools/>
-    </QueryClientProvider>
+    <AppWrapper pageProps={ pageProps }>
+      <QueryClientProvider client={ queryClient }>
+        <Chakra theme={ theme } cookies={ pageProps.cookies }>
+          <Component { ...pageProps }/>
+        </Chakra>
+        <ReactQueryDevtools/>
+      </QueryClientProvider>
+    </AppWrapper>
   );
 }
 
