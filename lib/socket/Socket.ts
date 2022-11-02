@@ -1,5 +1,6 @@
 import type { SocketData, SocketChannelSubscriber } from 'lib/socket/types';
 
+import appConfig from 'configs/app/config';
 import { SECOND } from 'lib/consts';
 
 interface InitParams {
@@ -21,8 +22,7 @@ class Socket {
       return this;
     }
 
-    // todo_tom pass host and base path from config
-    this.socket = new WebSocket('wss://blockscout.com/poa/core/socket/v2/websocket?vsn=2.0.0');
+    this.socket = new WebSocket(`${ appConfig.api.socket }${ appConfig.api.basePath }/socket/v2/websocket?vsn=2.0.0`);
 
     this.socket.addEventListener('open', (event: Event) => {
       this.startHeartBeat();
