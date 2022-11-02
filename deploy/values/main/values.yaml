@@ -222,7 +222,7 @@ geth:
       port-rpc:
         number: 4000
         protocol: TCP
-      port-rpc-gateway:
+      port-rpc-gtw:
         number: 3500
         protocol: TCP
       port-monitoring:
