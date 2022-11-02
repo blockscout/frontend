@@ -1,10 +1,8 @@
 name: Deploy review environment
 
 on:
-  pull_request:
+  # pull_request:
   # push:
-  #   branches-ignore:
-  #     - 'main'
   workflow_dispatch:
 
 env:
