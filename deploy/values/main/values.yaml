@@ -177,14 +177,14 @@ geth:
   resources:
     limits:
       memory:
-        _default: "2Gi"
+        _default: "8Gi"
       cpu:
-        _default: "0.2"
+        _default: "2"
     requests:
       memory:
-        _default: "2Gi"
+        _default: "8Gi"
       cpu:
-        _default: "0.2"
+        _default: "2"
   # node label
   nodeSelector:
     enabled: true
