@@ -5,6 +5,7 @@ import React from 'react';
 
 import appConfig from 'configs/app/config';
 import * as cookies from 'lib/cookies';
+import useApiSocket from 'lib/hooks/useApiSocket';
 import useToast from 'lib/hooks/useToast';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -14,11 +15,23 @@ const Home = () => {
 
   const [ isFormVisible, setFormVisibility ] = React.useState(false);
   const [ token, setToken ] = React.useState('');
+  const { joinRoom, leaveRoom } = useApiSocket({});
+
+  React.useEffect(() => {
+    joinRoom('blocks:0xdc4765d9dabf6c6c4908fe97e649ef1f05cb6252', {
+      filters: [ 'new_block' ],
+      callback: () => {},
+    });
+
+    return () => {
+      leaveRoom('blocks:0xdc4765d9dabf6c6c4908fe97e649ef1f05cb6252');
+    };
+  }, [ joinRoom, leaveRoom ]);
 
   React.useEffect(() => {
     const token = cookies.get(cookies.NAMES.API_TOKEN);
     setFormVisibility(Boolean(!token && appConfig.isAccountSupported));
-  }, []);
+  }, [ joinRoom ]);
 
   const checkSentry = React.useCallback(() => {
     Sentry.captureException(new Error('Test error'), { extra: { foo: 'bar' }, tags: { source: 'test' } });

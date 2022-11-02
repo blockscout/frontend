@@ -61,6 +61,9 @@ function makePolicyMap() {
 
       // client error monitoring
       'sentry.io', '*.sentry.io',
+
+      // todo_tom pass host from config
+      'wss://blockscout.com',
     ],
 
     'script-src': [
