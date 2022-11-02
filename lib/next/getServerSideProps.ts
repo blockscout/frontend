@@ -4,12 +4,7 @@ export type Props = {
   cookies: string;
 }
 
-export const getServerSideProps: GetServerSideProps = async({ req, res }): Promise<GetServerSidePropsResult<Props>> => {
-  res.setHeader(
-    'Cache-Control',
-    `public, s-maxage=${ 60 * 60 }, stale-while-revalidate=${ 2 * 60 * 60 }`,
-  );
-
+export const getServerSideProps: GetServerSideProps = async({ req }): Promise<GetServerSidePropsResult<Props>> => {
   return {
     props: {
       cookies: req.headers.cookie || '',
