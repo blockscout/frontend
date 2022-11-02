@@ -13,7 +13,7 @@ interface Params {
 type SocketData = [ null, null, string, string, Record<string, unknown> ];
 interface SocketChannelSubscriber {
   filters?: Array<string>;
-  callback: (payload: unknown) => void;
+  onMessage: (payload: unknown) => void;
 }
 
 export default function useApiSocket({ onOpen, onError, onClose }: Params) {
@@ -82,7 +82,7 @@ export default function useApiSocket({ onOpen, onError, onClose }: Params) {
       const subscribers = channels.current[channelId];
       subscribers
         ?.filter((subscriber) => subscriber.filters ? subscriber.filters.includes(filterId) : true)
-        ?.forEach((subscriber) => subscriber.callback(payload));
+        ?.forEach((subscriber) => subscriber.onMessage(payload));
     });
 
     socket.current.addEventListener('error', (event) => {
