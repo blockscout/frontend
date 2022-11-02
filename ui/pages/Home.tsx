@@ -3,6 +3,8 @@ import * as Sentry from '@sentry/react';
 import type { ChangeEvent } from 'react';
 import React from 'react';
 
+import type { SocketSubscribers } from 'lib/socket/types';
+
 import appConfig from 'configs/app/config';
 import * as cookies from 'lib/cookies';
 import useToast from 'lib/hooks/useToast';
@@ -17,14 +19,22 @@ const Home = () => {
   const [ token, setToken ] = React.useState('');
 
   React.useEffect(() => {
-    const socket = (new Socket).init({});
-    socket.joinRoom('blocks:0xdc4765d9dabf6c6c4908fe97e649ef1f05cb6252', {
-      filters: [ 'new_block' ],
-      onMessage: () => {},
+    const socket = (new Socket).init();
+    const onMessage: SocketSubscribers.BlocksNewBlock['onMessage'] = () => {};
+    socket.joinRoom({
+      channelId: 'blocks:new_block',
+      eventId: 'new_block',
+      onMessage,
+      hash: '0xdc4765d9dabf6c6c4908fe97e649ef1f05cb6252',
     });
 
     return () => {
-      socket.leaveRoom('blocks:0xdc4765d9dabf6c6c4908fe97e649ef1f05cb6252');
+      socket.leaveRoom({
+        channelId: 'blocks:[hash]',
+        eventId: 'new_block',
+        hash: '0xdc4765d9dabf6c6c4908fe97e649ef1f05cb6252',
+        onMessage,
+      });
       socket.close();
     };
   }, []);

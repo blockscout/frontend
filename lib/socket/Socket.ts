@@ -1,4 +1,4 @@
-import type { SocketData, SocketChannelSubscriber } from 'lib/socket/types';
+import type { SocketData, SocketSubscriber } from 'lib/socket/types';
 
 import appConfig from 'configs/app/config';
 import { SECOND } from 'lib/consts';
@@ -15,9 +15,9 @@ class Socket {
   private socket: WebSocket | undefined;
   private heartBeatIntervalId: number | undefined;
   private onReadyEvents: Array<SocketData> = [];
-  private channels: Record<string, Array<SocketChannelSubscriber>> = {};
+  private channels: Record<string, Array<SocketSubscriber>> = {};
 
-  init({ onOpen, onError, onClose }: InitParams) {
+  init({ onOpen, onError, onClose }: InitParams | undefined = {}) {
     if (this.socket) {
       return this;
     }
@@ -36,12 +36,13 @@ class Socket {
       const data: SocketData = JSON.parse(event.data);
 
       const channelId = data[2];
-      const filterId = data[3];
+      const eventId = data[3];
       const payload = data[4];
       const subscribers = this.channels[channelId];
       subscribers
-        ?.filter((subscriber) => subscriber.filters ? subscriber.filters.includes(filterId) : true)
-        ?.forEach((subscriber) => subscriber.onMessage(payload));
+        ?.filter((subscriber) => subscriber.eventId ? subscriber.eventId === eventId : true)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        ?.forEach((subscriber) => subscriber.onMessage(payload as any));
     });
 
     this.socket.addEventListener('error', (event) => {
@@ -63,8 +64,9 @@ class Socket {
     this.channels = {};
   }
 
-  joinRoom(id: string, subscriber: SocketChannelSubscriber) {
-    const data: SocketData = [ null, null, id, 'phx_join', {} ];
+  joinRoom(subscriber: SocketSubscriber) {
+    const channelId = this.getChannelId(subscriber.channelId, subscriber.hash);
+    const data: SocketData = [ null, null, channelId, 'phx_join', {} ];
 
     if (this.socket?.readyState === OPEN_STATE) {
       this.socket?.send(JSON.stringify(data));
@@ -72,16 +74,16 @@ class Socket {
       this.onReadyEvents.push(data);
     }
 
-    if (this.channels[id]) {
-      this.channels[id].push(subscriber);
+    if (this.channels[channelId]) {
+      this.channels[channelId].push(subscriber);
     } else {
-      this.channels[id] = [ subscriber ];
+      this.channels[channelId] = [ subscriber ];
     }
   }
 
-  leaveRoom(id: string) {
-    // todo_tom remove only specified subscriber
-    const data: SocketData = [ null, null, id, 'phx_leave', {} ];
+  leaveRoom(subscriber: SocketSubscriber) {
+    const channelId = this.getChannelId(subscriber.channelId, subscriber.hash);
+    const data: SocketData = [ null, null, channelId, 'phx_leave', {} ];
 
     if (this.socket?.readyState === OPEN_STATE) {
       this.socket?.send(JSON.stringify(data));
@@ -89,7 +91,7 @@ class Socket {
       this.onReadyEvents.push(data);
     }
 
-    this.channels[id] = [];
+    this.channels[channelId]?.filter(({ onMessage }) => onMessage !== subscriber.onMessage);
   }
 
   private startHeartBeat() {
@@ -97,6 +99,14 @@ class Socket {
       const data: SocketData = [ null, null, 'phoenix', 'heartbeat', {} ];
       this.socket?.send(JSON.stringify(data));
     }, 30 * SECOND);
+  }
+
+  private getChannelId(pattern: string, hash?: string) {
+    if (!hash) {
+      return pattern;
+    }
+
+    return pattern.replace('[hash]', hash);
   }
 }
 

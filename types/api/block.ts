@@ -47,3 +47,8 @@ export interface BlockTransactionsResponse {
     items_count: number;
   } | null;
 }
+
+export interface NewBlockSocketResponse {
+  average_block_time: string;
+  block: Block;
+}
