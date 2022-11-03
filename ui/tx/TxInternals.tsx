@@ -6,6 +6,7 @@ import React from 'react';
 import type { InternalTransactionsResponse, TxInternalsType, InternalTransaction } from 'types/api/internalTransaction';
 import { QueryKeys } from 'types/client/queries';
 
+import { SECOND } from 'lib/consts';
 import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { apos } from 'lib/html-entities';
@@ -18,6 +19,9 @@ import TxInternalsSkeletonDesktop from 'ui/tx/internals/TxInternalsSkeletonDeskt
 import TxInternalsSkeletonMobile from 'ui/tx/internals/TxInternalsSkeletonMobile';
 import TxInternalsTable from 'ui/tx/internals/TxInternalsTable';
 import type { Sort, SortField } from 'ui/tx/internals/utils';
+import TxPendingAlert from 'ui/tx/TxPendingAlert';
+import TxSocketAlert from 'ui/tx/TxSocketAlert';
+import useFetchTxInfo from 'ui/tx/useFetchTxInfo';
 
 const SORT_SEQUENCE: Record<SortField, Array<Sort | undefined>> = {
   value: [ 'value-desc', 'value-asc', undefined ],
@@ -72,11 +76,12 @@ const TxInternals = () => {
   const [ filters, setFilters ] = React.useState<Array<TxInternalsType>>([]);
   const [ searchTerm, setSearchTerm ] = React.useState<string>('');
   const [ sort, setSort ] = React.useState<Sort>();
+  const txInfo = useFetchTxInfo({ updateDelay: 5 * SECOND });
   const { data, isLoading, isError } = useQuery<unknown, unknown, InternalTransactionsResponse>(
     [ QueryKeys.txInternals, router.query.id ],
     async() => await fetch(`/node-api/transactions/${ router.query.id }/internal-transactions`),
     {
-      enabled: Boolean(router.query.id),
+      enabled: Boolean(router.query.id) && Boolean(txInfo.data?.status),
     },
   );
 
@@ -92,7 +97,11 @@ const TxInternals = () => {
     };
   }, []);
 
-  if (isLoading) {
+  if (!txInfo.isLoading && !txInfo.isError && !txInfo.data.status) {
+    return txInfo.socketStatus ? <TxSocketAlert status={ txInfo.socketStatus }/> : <TxPendingAlert/>;
+  }
+
+  if (isLoading || txInfo.isLoading) {
     return (
       <>
         <Show below="lg"><TxInternalsSkeletonMobile/></Show>
@@ -101,7 +110,7 @@ const TxInternals = () => {
     );
   }
 
-  if (isError) {
+  if (isError || txInfo.isError) {
     return <DataFetchAlert/>;
   }
 

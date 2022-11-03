@@ -1,13 +1,7 @@
-import { Grid, GridItem, Text, Box, Icon, Link, Spinner, Tag, Flex, Tooltip, Alert, chakra } from '@chakra-ui/react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { Grid, GridItem, Text, Box, Icon, Link, Spinner, Tag, Flex, Tooltip, chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import { useRouter } from 'next/router';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
-
-import type { SocketMessage } from 'lib/socket/types';
-import type { Transaction } from 'types/api/transaction';
-import { QueryKeys } from 'types/client/queries';
 
 import appConfig from 'configs/app/config';
 import clockIcon from 'icons/clock.svg';
@@ -16,9 +10,6 @@ import errorIcon from 'icons/status/error.svg';
 import successIcon from 'icons/status/success.svg';
 import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
-import useFetch from 'lib/hooks/useFetch';
-import useSocketChannel from 'lib/socket/useSocketChannel';
-import useSocketMessage from 'lib/socket/useSocketMessage';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
@@ -31,13 +22,14 @@ import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 // import PrevNext from 'ui/shared/PrevNext';
 import RawInputData from 'ui/shared/RawInputData';
 import TextSeparator from 'ui/shared/TextSeparator';
-// import TokenSnippet from 'ui/shared/TokenSnippet';
 import TxStatus from 'ui/shared/TxStatus';
 import Utilization from 'ui/shared/Utilization';
 import TxDetailsSkeleton from 'ui/tx/details/TxDetailsSkeleton';
 import TxRevertReason from 'ui/tx/details/TxRevertReason';
 import TokenTransferList from 'ui/tx/TokenTransferList';
 import TxDecodedInputData from 'ui/tx/TxDecodedInputData';
+import TxSocketAlert from 'ui/tx/TxSocketAlert';
+import useFetchTxInfo from 'ui/tx/useFetchTxInfo';
 
 const TOKEN_TRANSFERS = [
   { title: 'Tokens Transferred', hint: 'List of tokens transferred in the transaction.', type: 'token_transfer' },
@@ -47,42 +39,7 @@ const TOKEN_TRANSFERS = [
 ];
 
 const TxDetails = () => {
-  const router = useRouter();
-  const fetch = useFetch();
-  const queryClient = useQueryClient();
-  const [ socketAlert, setSocketAlert ] = React.useState('');
-
-  const { data, isLoading, isError } = useQuery<unknown, unknown, Transaction>(
-    [ QueryKeys.tx, router.query.id ],
-    async() => await fetch(`/node-api/transactions/${ router.query.id }`),
-    {
-      enabled: Boolean(router.query.id),
-    },
-  );
-
-  const handleStatusUpdateMessage: SocketMessage.TxStatusUpdate['handler'] = React.useCallback(() => {
-    queryClient.invalidateQueries({ queryKey: [ QueryKeys.tx, router.query.id ] });
-  }, [ queryClient, router.query.id ]);
-
-  const handleSocketClose = React.useCallback(() => {
-    setSocketAlert('Connection is lost. Please click here to update transaction info.');
-  }, []);
-
-  const handleSocketError = React.useCallback(() => {
-    setSocketAlert('An error has occurred while fetching new blocks. Please click here to update transaction info.');
-  }, []);
-
-  const channel = useSocketChannel({
-    topic: `transactions:${ router.query.id }`,
-    onSocketClose: handleSocketClose,
-    onSocketError: handleSocketError,
-    isDisabled: isLoading || isError || data.status !== null,
-  });
-  useSocketMessage({
-    channel,
-    event: 'collated',
-    handler: handleStatusUpdateMessage,
-  });
+  const { data, isLoading, isError, socketStatus } = useFetchTxInfo();
 
   const [ isExpanded, setIsExpanded ] = React.useState(false);
 
@@ -116,9 +73,9 @@ const TxDetails = () => {
 
   return (
     <Grid columnGap={ 8 } rowGap={{ base: 3, lg: 3 }} templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }}>
-      { socketAlert && (
+      { socketStatus && (
         <GridItem colSpan={{ base: undefined, lg: 2 }} mb={ 2 }>
-          <Alert status="warning" as="a" href={ window.document.location.href }>{ socketAlert }</Alert>
+          <TxSocketAlert status={ socketStatus }/>
         </GridItem>
       ) }
       <DetailsInfoItem

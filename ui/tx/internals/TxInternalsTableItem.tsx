@@ -1,4 +1,4 @@
-import { Tr, Td, Tag, Icon, Box } from '@chakra-ui/react';
+import { Tr, Td, Tag, Icon, Box, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -19,12 +19,14 @@ const TxInternalTableItem = ({ type, from, to, value, success, error, gas_limit:
   return (
     <Tr alignItems="top">
       <Td>
-        { typeTitle && (
-          <Box w="126px" display="inline-block">
-            <Tag colorScheme="cyan" mr={ 5 }>{ typeTitle }</Tag>
-          </Box>
-        ) }
-        <TxStatus status={ success ? 'ok' : 'error' } errorText={ error }/>
+        <Flex rowGap={ 2 } flexWrap="wrap">
+          { typeTitle && (
+            <Box w="126px" display="inline-block">
+              <Tag colorScheme="cyan" mr={ 5 }>{ typeTitle }</Tag>
+            </Box>
+          ) }
+          <TxStatus status={ success ? 'ok' : 'error' } errorText={ error }/>
+        </Flex>
       </Td>
       <Td>
         <Address display="inline-flex" maxW="100%">

@@ -35,7 +35,7 @@ const TransactionPageContent = () => {
 
   const { data } = useQuery<unknown, unknown, Transaction>(
     [ 'tx', router.query.id ],
-    async() => await fetch(`/api/transactions/${ router.query.id }`),
+    async() => await fetch(`/node-api/transactions/${ router.query.id }`),
     {
       enabled: Boolean(router.query.id),
     },
@@ -48,7 +48,7 @@ const TransactionPageContent = () => {
       return <ExternalLink key={ explorer.baseUrl } title={ `Open in ${ explorer.title }` } href={ url.toString() }/>;
     });
 
-  const hasGoBackLink = isBrowser() && window.document.referrer.includes('/txs');
+  const hasGoBackLink = false && isBrowser() && window.document.referrer.includes('/txs');
 
   return (
     <Page>
