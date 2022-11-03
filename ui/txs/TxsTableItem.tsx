@@ -14,6 +14,7 @@ import {
   PopoverBody,
   useColorModeValue,
   Show,
+  Hide,
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -113,7 +114,7 @@ const TxsTableItem = ({ tx }: {tx: Transaction}) => {
           { addressTo }
         </Td>
       </Show>
-      <Show below="xl" ssr={ false }>
+      <Hide above="xl" ssr={ false }>
         <Td colSpan={ 3 }>
           <Box>
             { addressFrom }
@@ -128,7 +129,7 @@ const TxsTableItem = ({ tx }: {tx: Transaction}) => {
             { addressTo }
           </Box>
         </Td>
-      </Show>
+      </Hide>
       <Td isNumeric>
         <CurrencyValue value={ tx.value }/>
       </Td>
