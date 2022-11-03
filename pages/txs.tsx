@@ -17,4 +17,4 @@ const TxsPage: NextPage = () => {
 
 export default TxsPage;
 
-export { getServerSideProps } from 'lib/next/getServerSidePropsDummy';
+export { getServerSideProps } from 'lib/next/getServerSideProps';

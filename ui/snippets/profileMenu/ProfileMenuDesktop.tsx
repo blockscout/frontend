@@ -7,7 +7,7 @@ import UserAvatar from 'ui/shared/UserAvatar';
 import ProfileMenuContent from 'ui/snippets/profileMenu/ProfileMenuContent';
 
 const ProfileMenuDesktop = () => {
-  const { data } = useFetchProfileInfo();
+  const { data, isFetched } = useFetchProfileInfo();
   const loginUrl = link('auth');
 
   return (
@@ -21,7 +21,7 @@ const ProfileMenuDesktop = () => {
           as={ data ? undefined : 'a' }
           href={ data ? undefined : loginUrl }
         >
-          <UserAvatar size={ 50 } data={ data }/>
+          <UserAvatar size={ 50 } data={ data } isFetched={ isFetched }/>
         </Button>
       </PopoverTrigger>
       { data && (

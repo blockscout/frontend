@@ -19,4 +19,4 @@ const AppsPage: NextPage = () => {
 
 export default AppsPage;
 
-export { getServerSideProps } from 'lib/next/getServerSidePropsDummy';
+export { getServerSideProps } from 'lib/next/getServerSideProps';

@@ -20,7 +20,11 @@ interface Props {
   hideMobileHeaderOnScrollDown?: boolean;
 }
 
-const Page = ({ children, wrapChildren = true, hideMobileHeaderOnScrollDown }: Props) => {
+const Page = ({
+  children,
+  wrapChildren = true,
+  hideMobileHeaderOnScrollDown,
+}: Props) => {
   const fetch = useFetch();
 
   useQuery<unknown, unknown, unknown>([ QueryKeys.csrf ], async() => await fetch('/node-api/account/csrf'), {
