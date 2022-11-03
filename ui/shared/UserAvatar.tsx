@@ -1,11 +1,11 @@
-import { useColorModeValue, chakra, Box, Image } from '@chakra-ui/react';
+import { useColorModeValue, chakra, SkeletonCircle, Image } from '@chakra-ui/react';
 import React from 'react';
 import Identicon from 'react-identicons';
 
 import type { UserInfo } from 'types/api/account';
 
+import { useAppContext } from 'lib/appContext';
 import * as cookies from 'lib/cookies';
-import { useAppContext } from 'lib/next/AppWrapper';
 
 const ProfileIcon = chakra(Identicon);
 
@@ -17,17 +17,13 @@ interface Props {
 
 const UserAvatar = ({ size, data, isFetched }: Props) => {
   const appProps = useAppContext();
-  const hasAuth = Boolean(cookies.getFromCookieString(appProps.cookies, cookies.NAMES.API_TOKEN));
+  const hasAuth = Boolean(cookies.get(cookies.NAMES.API_TOKEN, appProps.cookies));
 
   const sizeString = `${ size }px`;
   const bgColor = useColorModeValue('blackAlpha.100', 'white');
 
-  // if (hasAuth && !isFetched) {
-
-  // }
-
   if (hasAuth && !isFetched) {
-    return <Box w={ sizeString } h={ sizeString }></Box>;
+    return <SkeletonCircle h={ sizeString } w={ sizeString }/>;
   }
 
   if (data?.avatar) {

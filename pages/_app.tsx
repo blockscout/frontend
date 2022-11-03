@@ -3,10 +3,10 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { AppProps } from 'next/app';
 import React, { useState } from 'react';
 
+import { AppWrapper } from 'lib/appContext';
 import { Chakra } from 'lib/Chakra';
 import useConfigSentry from 'lib/hooks/useConfigSentry';
 import type { ErrorType } from 'lib/hooks/useFetch';
-import { AppWrapper } from 'lib/next/AppWrapper';
 import theme from 'theme';
 
 function MyApp({ Component, pageProps }: AppProps) {

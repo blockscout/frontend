@@ -3,9 +3,9 @@ import React from 'react';
 
 import appConfig from 'configs/app/config';
 import chevronIcon from 'icons/arrows/east-mini.svg';
+import { useAppContext } from 'lib/appContext';
 import * as cookies from 'lib/cookies';
 import useNavItems from 'lib/hooks/useNavItems';
-import { useAppContext } from 'lib/next/AppWrapper';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import NetworkMenu from 'ui/snippets/networkMenu/NetworkMenu';
@@ -17,8 +17,16 @@ const NavigationDesktop = () => {
   const appProps = useAppContext();
   const cookiesString = appProps.cookies;
 
-  const isNavBarCollapsed = cookies.getFromCookieString(cookiesString, cookies.NAMES.NAV_BAR_COLLAPSED) === 'true';
-  const hasAuth = Boolean(cookies.getFromCookieString(cookiesString, cookies.NAMES.API_TOKEN));
+  const isNavBarCollapsedCookie = cookies.get(cookies.NAMES.NAV_BAR_COLLAPSED, cookiesString);
+  let isNavBarCollapsed;
+  if (isNavBarCollapsedCookie === 'true') {
+    isNavBarCollapsed = true;
+  }
+  if (isNavBarCollapsedCookie === 'false') {
+    isNavBarCollapsed = false;
+  }
+
+  const hasAuth = Boolean(cookies.get(cookies.NAMES.API_TOKEN, cookiesString));
 
   const { mainNavItems, accountNavItems } = useNavItems();
 
