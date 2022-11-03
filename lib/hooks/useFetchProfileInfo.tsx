@@ -19,7 +19,7 @@ export default function useFetchProfileInfo() {
 
   return useQuery<unknown, Error, UserInfo>([ QueryKeys.profile ], async() => {
     const url = new URL(`${ appConfig.api.basePath }/api/account/v1/user/info`, appConfig.api.endpoint);
-    return fetch(url.toString(), { credentials: appConfig.isDev ? 'include' : 'same-origin' });
+    return fetch(url.toString(), { credentials: 'include' });
   }, {
     refetchOnMount: false,
     enabled: Boolean(cookies.get(cookies.NAMES.API_TOKEN)),
