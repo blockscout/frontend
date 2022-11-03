@@ -17,4 +17,4 @@ const PublicTagsPage: NextPage = () => {
 
 export default PublicTagsPage;
 
-export { getServerSideProps } from 'lib/next/getServerSidePropsDummy';
+export { getServerSideProps } from 'lib/next/getServerSideProps';

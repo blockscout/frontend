@@ -11,4 +11,4 @@ const BlockPage: NextPage = () => {
 
 export default BlockPage;
 
-export { getServerSideProps } from 'lib/next/getServerSidePropsDummy';
+export { getServerSideProps } from 'lib/next/getServerSideProps';
