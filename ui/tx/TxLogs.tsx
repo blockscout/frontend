@@ -1,4 +1,4 @@
-import { Box, Alert } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -37,7 +37,7 @@ const TxLogs = () => {
   }
 
   if (data.items.length === 0) {
-    return <Alert>There are no logs for this transaction.</Alert>;
+    return <Text as="span">There are no logs for this transaction.</Text>;
   }
 
   return (

@@ -1,4 +1,4 @@
-import { Box, Flex, Alert, Show } from '@chakra-ui/react';
+import { Box, Flex, Text, Show, Hide } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -96,7 +96,7 @@ const TxInternals = () => {
     return (
       <>
         <Show below="lg"><TxInternalsSkeletonMobile/></Show>
-        <Show above="lg"><TxInternalsSkeletonDesktop/></Show>
+        <Hide below="lg"><TxInternalsSkeletonDesktop/></Hide>
       </>
     );
   }
@@ -106,7 +106,7 @@ const TxInternals = () => {
   }
 
   if (data.items.length === 0) {
-    return <Alert>There are no internal transactions for this transaction.</Alert>;
+    return <Text as="span">There are no internal transactions for this transaction.</Text>;
   }
 
   const content = (() => {
