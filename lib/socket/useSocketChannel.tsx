@@ -20,8 +20,8 @@ export default function useSocketChannel({ topic, params, isDisabled, onJoin, on
   const onCloseRef = useRef<string>();
   const onErrorRef = useRef<string>();
 
-  const onJoinFun = useRef(onJoin);
-  onJoinFun.current = onJoin;
+  const onJoinRef = useRef(onJoin);
+  onJoinRef.current = onJoin;
 
   useEffect(() => {
     const cleanUpRefs = () => {
@@ -31,7 +31,7 @@ export default function useSocketChannel({ topic, params, isDisabled, onJoin, on
 
     if (!isDisabled) {
       onCloseRef.current = onSocketClose && socket?.onClose(onSocketClose);
-      onErrorRef.current = onSocketError && socket?.onClose(onSocketError);
+      onErrorRef.current = onSocketError && socket?.onError(onSocketError);
     } else {
       cleanUpRefs();
     }
@@ -52,7 +52,7 @@ export default function useSocketChannel({ topic, params, isDisabled, onJoin, on
     }
 
     const ch = socket.channel(topic, params);
-    ch.join().receive('ok', (message) => onJoinFun.current?.(ch, message));
+    ch.join().receive('ok', (message) => onJoinRef.current?.(ch, message));
     setChannel(ch);
 
     return () => {

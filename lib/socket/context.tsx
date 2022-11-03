@@ -14,12 +14,12 @@ export function SocketProvider({ children, options, url }: SocketProviderProps) 
   const [ socket, setSocket ] = useState<Socket | null>(null);
 
   useEffect(() => {
-    const s = new Socket(url, options);
-    s.connect();
-    setSocket(s);
+    const socketInstance = new Socket(url, options);
+    socketInstance.connect();
+    setSocket(socketInstance);
 
     return () => {
-      s.disconnect();
+      socketInstance.disconnect();
       setSocket(null);
     };
   }, [ options, url ]);
@@ -34,7 +34,7 @@ export function SocketProvider({ children, options, url }: SocketProviderProps) 
 export function useSocket() {
   const context = React.useContext(SocketContext);
   if (context === undefined) {
-    throw new Error('useCount must be used within a SocketProvider');
+    throw new Error('useSocket must be used within a SocketProvider');
   }
   return context;
 }

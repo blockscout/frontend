@@ -3,8 +3,8 @@ import { useEffect, useRef } from 'react';
 import type { SocketMessageParams } from 'lib/socket/types';
 
 export default function useSocketMessage({ channel, event, handler }: SocketMessageParams) {
-  const handlerFun = useRef(handler);
-  handlerFun.current = handler;
+  const handlerRef = useRef(handler);
+  handlerRef.current = handler;
 
   useEffect(() => {
     if (channel === undefined) {
@@ -12,7 +12,7 @@ export default function useSocketMessage({ channel, event, handler }: SocketMess
     }
 
     const ref = channel.on(event, (message) => {
-      handlerFun.current?.(message);
+      handlerRef.current?.(message);
     });
 
     return () => {

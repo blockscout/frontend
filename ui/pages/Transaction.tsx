@@ -48,7 +48,7 @@ const TransactionPageContent = () => {
       return <ExternalLink key={ explorer.baseUrl } title={ `Open in ${ explorer.title }` } href={ url.toString() }/>;
     });
 
-  const hasGoBackLink = false && isBrowser() && window.document.referrer.includes('/txs');
+  const hasGoBackLink = isBrowser() && window.document.referrer.includes('/txs');
 
   return (
     <Page>
