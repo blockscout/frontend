@@ -1,9 +1,9 @@
 import type { Channel } from 'phoenix';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import notEmpty from 'lib/notEmpty';
 
-import { SocketContext } from './context';
+import { useSocket } from './context';
 
 interface Params {
   topic: string;
@@ -15,21 +15,29 @@ interface Params {
 }
 
 export default function useSocketChannel({ topic, params, isDisabled, onJoin, onSocketClose, onSocketError }: Params) {
-  const socket = useContext(SocketContext);
+  const socket = useSocket();
   const [ channel, setChannel ] = useState<Channel>();
+  const onCloseRef = useRef<string>();
+  const onErrorRef = useRef<string>();
 
   const onJoinFun = useRef(onJoin);
   onJoinFun.current = onJoin;
 
   useEffect(() => {
-    const onCloseRef = onSocketClose && socket?.onClose(onSocketClose);
-    const onErrorRef = onSocketError && socket?.onClose(onSocketError);
-
-    return () => {
-      const refs = [ onCloseRef, onErrorRef ].filter(notEmpty);
+    const cleanUpRefs = () => {
+      const refs = [ onCloseRef.current, onErrorRef.current ].filter(notEmpty);
       refs.length > 0 && socket?.off(refs);
     };
-  }, [ onSocketClose, onSocketError, socket ]);
+
+    if (!isDisabled) {
+      onCloseRef.current = onSocketClose && socket?.onClose(onSocketClose);
+      onErrorRef.current = onSocketError && socket?.onClose(onSocketError);
+    } else {
+      cleanUpRefs();
+    }
+
+    return cleanUpRefs;
+  }, [ onSocketClose, onSocketError, socket, isDisabled ]);
 
   useEffect(() => {
     if (isDisabled && channel) {
