@@ -1,4 +1,4 @@
-import { Box, Text, Show, Alert, Skeleton } from '@chakra-ui/react';
+import { Text, Show, Alert, Skeleton } from '@chakra-ui/react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
@@ -12,6 +12,7 @@ import useSocketMessage from 'lib/socket/useSocketMessage';
 import BlocksList from 'ui/blocks/BlocksList';
 import BlocksSkeletonMobile from 'ui/blocks/BlocksSkeletonMobile';
 import BlocksTable from 'ui/blocks/BlocksTable';
+import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Pagination from 'ui/shared/Pagination';
 import SkeletonTable from 'ui/shared/SkeletonTable';
@@ -89,13 +90,13 @@ const BlocksContent = ({ type }: Props) => {
   return (
     <>
       <Text as="span">Total of { data.items[0].height.toLocaleString() } blocks</Text>
+      <ActionBar>
+        { /* eslint-disable-next-line react/jsx-no-bind */ }
+        <Pagination ml="auto" page={ 1 } onNextPageClick={ () => {} } onPrevPageClick={ () => {} } resetPage={ () => {} } hasNextPage/>
+      </ActionBar>
       { socketAlert && <Alert status="warning" mt={ 8 } as="a" href={ window.document.location.href }>{ socketAlert }</Alert> }
       <Show below="lg" key="content-mobile"><BlocksList data={ data.items }/></Show>
       <Show above="lg" key="content-desktop"><BlocksTable data={ data.items }/></Show>
-      <Box mx={{ base: 0, lg: 6 }} my={{ base: 6, lg: 3 }}>
-        { /* eslint-disable-next-line react/jsx-no-bind */ }
-        <Pagination page={ 1 } onNextPageClick={ () => {} } onPrevPageClick={ () => {} } resetPage={ () => {} } hasNextPage/>
-      </Box>
     </>
   );
 };
