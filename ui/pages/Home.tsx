@@ -3,12 +3,9 @@ import * as Sentry from '@sentry/react';
 import type { ChangeEvent } from 'react';
 import React from 'react';
 
-import type { SocketSubscribers } from 'lib/socket/types';
-
 import appConfig from 'configs/app/config';
 import * as cookies from 'lib/cookies';
 import useToast from 'lib/hooks/useToast';
-import Socket from 'lib/socket/Socket';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
@@ -17,27 +14,6 @@ const Home = () => {
 
   const [ isFormVisible, setFormVisibility ] = React.useState(false);
   const [ token, setToken ] = React.useState('');
-
-  React.useEffect(() => {
-    const socket = (new Socket).init();
-    const onMessage: SocketSubscribers.BlocksNewBlock['onMessage'] = () => {};
-    socket.joinRoom({
-      channelId: 'blocks:new_block',
-      eventId: 'new_block',
-      onMessage,
-      hash: '0xdc4765d9dabf6c6c4908fe97e649ef1f05cb6252',
-    });
-
-    return () => {
-      socket.leaveRoom({
-        channelId: 'blocks:[hash]',
-        eventId: 'new_block',
-        hash: '0xdc4765d9dabf6c6c4908fe97e649ef1f05cb6252',
-        onMessage,
-      });
-      socket.close();
-    };
-  }, []);
 
   React.useEffect(() => {
     const token = cookies.get(cookies.NAMES.API_TOKEN);

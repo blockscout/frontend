@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
-import type { SocketSubscribers } from 'lib/socket/types';
+import type { SocketMessage } from 'lib/socket/types';
 import type { Transaction } from 'types/api/transaction';
 import { QueryKeys } from 'types/client/queries';
 
@@ -17,7 +17,8 @@ import successIcon from 'icons/status/success.svg';
 import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
 import useFetch from 'lib/hooks/useFetch';
-import useSocketRoom from 'lib/hooks/useSocketRoom';
+import useSocketChannel from 'lib/socket/useSocketChannel';
+import useSocketMessage from 'lib/socket/useSocketMessage';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
@@ -59,7 +60,7 @@ const TxDetails = () => {
     },
   );
 
-  const handleStatusUpdateMessage: SocketSubscribers.BlocksNewBlock['onMessage'] = React.useCallback(() => {
+  const handleStatusUpdateMessage: SocketMessage.TxStatusUpdate['handler'] = React.useCallback(() => {
     queryClient.invalidateQueries({ queryKey: [ QueryKeys.tx, router.query.id ] });
   }, [ queryClient, router.query.id ]);
 
@@ -71,14 +72,16 @@ const TxDetails = () => {
     setSocketAlert('An error has occurred while fetching new blocks. Please click here to update transaction info.');
   }, []);
 
-  useSocketRoom({
-    channelId: 'transactions:[hash]',
-    eventId: 'collated',
-    hash: data?.hash,
-    onMessage: handleStatusUpdateMessage,
-    onClose: handleSocketClose,
-    onError: handleSocketError,
-    isDisabled: isLoading || isError,
+  const channel = useSocketChannel({
+    topic: `transactions:${ router.query.id }`,
+    onSocketClose: handleSocketClose,
+    onSocketError: handleSocketError,
+    isDisabled: isLoading || isError || data.status !== null,
+  });
+  useSocketMessage({
+    channel,
+    event: 'collated',
+    handler: handleStatusUpdateMessage,
   });
 
   const [ isExpanded, setIsExpanded ] = React.useState(false);

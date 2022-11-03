@@ -1,25 +1,20 @@
+import type { Channel } from 'phoenix';
+
 import type { NewBlockSocketResponse } from 'types/api/block';
 
-export type SocketData = [ null, null, string, string, unknown ];
+export type SocketMessageParams = SocketMessage.NewBlock |
+SocketMessage.BlocksIndexStatus |
+SocketMessage.TxStatusUpdate;
 
-export type SocketSubscriber = SocketSubscribers.BlocksNewBlock |
-SocketSubscribers.BlockNewBlock |
-SocketSubscribers.BlockNewBlock |
-SocketSubscribers.TxStatusUpdate;
-
-interface SocketSubscriberGeneric<Channel extends string, Event extends string, Payload> {
-  channelId: Channel;
-  eventId: Event;
-  onMessage: (payload: Payload) => void;
-  onClose?: () => void;
-  onError?: () => void;
-  hash?: string;
+interface SocketMessageParamsGeneric<Event extends string, Payload extends object> {
+  channel: Channel | undefined;
+  event: Event;
+  handler: (payload: Payload) => void;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
-export namespace SocketSubscribers {
-  export type BlocksNewBlock = SocketSubscriberGeneric<'blocks:new_block', 'new_block', NewBlockSocketResponse>;
-  export type BlocksIndexStatus = SocketSubscriberGeneric<'blocks:indexing', 'index_status', {finished: boolean; ratio: string}>;
-  export type BlockNewBlock = SocketSubscriberGeneric<'blocks:[hash]', 'new_block', NewBlockSocketResponse>;
-  export type TxStatusUpdate = SocketSubscriberGeneric<'transactions:[hash]', 'collated', NewBlockSocketResponse>;
+export namespace SocketMessage {
+  export type NewBlock = SocketMessageParamsGeneric<'new_block', NewBlockSocketResponse>;
+  export type BlocksIndexStatus = SocketMessageParamsGeneric<'index_status', {finished: boolean; ratio: string}>;
+  export type TxStatusUpdate = SocketMessageParamsGeneric<'collated', NewBlockSocketResponse>;
 }

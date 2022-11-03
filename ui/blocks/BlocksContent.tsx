@@ -2,12 +2,13 @@ import { Box, Text, Show, Alert, Skeleton } from '@chakra-ui/react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
-import type { SocketSubscribers } from 'lib/socket/types';
+import type { SocketMessage } from 'lib/socket/types';
 import type { BlockType, BlocksResponse } from 'types/api/block';
 import { QueryKeys } from 'types/client/accountQueries';
 
 import useFetch from 'lib/hooks/useFetch';
-import useSocketRoom from 'lib/hooks/useSocketRoom';
+import useSocketChannel from 'lib/socket/useSocketChannel';
+import useSocketMessage from 'lib/socket/useSocketMessage';
 import BlocksList from 'ui/blocks/BlocksList';
 import BlocksSkeletonMobile from 'ui/blocks/BlocksSkeletonMobile';
 import BlocksTable from 'ui/blocks/BlocksTable';
@@ -29,7 +30,7 @@ const BlocksContent = ({ type }: Props) => {
     async() => await fetch(`/node-api/blocks${ type ? `?type=${ type }` : '' }`),
   );
 
-  const handleNewBlockMessage: SocketSubscribers.BlocksNewBlock['onMessage'] = React.useCallback((payload) => {
+  const handleNewBlockMessage: SocketMessage.NewBlock['handler'] = React.useCallback((payload) => {
     queryClient.setQueryData([ QueryKeys.blocks, type ], (prevData: BlocksResponse | undefined) => {
       if (!prevData) {
         return {
@@ -49,13 +50,16 @@ const BlocksContent = ({ type }: Props) => {
     setSocketAlert('An error has occurred while fetching new blocks. Please click here to refresh the page.');
   }, []);
 
-  useSocketRoom({
-    channelId: 'blocks:new_block',
-    eventId: 'new_block',
-    onMessage: handleNewBlockMessage,
-    onClose: handleSocketClose,
-    onError: handleSocketError,
+  const channel = useSocketChannel({
+    topic: 'blocks:new_block',
+    onSocketClose: handleSocketClose,
+    onSocketError: handleSocketError,
     isDisabled: isLoading || isError,
+  });
+  useSocketMessage({
+    channel,
+    event: 'new_block',
+    handler: handleNewBlockMessage,
   });
 
   if (isLoading) {
