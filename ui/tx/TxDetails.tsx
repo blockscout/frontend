@@ -1,10 +1,11 @@
-import { Grid, GridItem, Text, Box, Icon, Link, Spinner, Tag, Flex, Tooltip, chakra } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
+import { Grid, GridItem, Text, Box, Icon, Link, Spinner, Tag, Flex, Tooltip, Alert, chakra } from '@chakra-ui/react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
+import type { SocketSubscribers } from 'lib/socket/types';
 import type { Transaction } from 'types/api/transaction';
 import { QueryKeys } from 'types/client/queries';
 
@@ -16,6 +17,7 @@ import successIcon from 'icons/status/success.svg';
 import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
 import useFetch from 'lib/hooks/useFetch';
+import useSocketRoom from 'lib/hooks/useSocketRoom';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
@@ -46,6 +48,8 @@ const TOKEN_TRANSFERS = [
 const TxDetails = () => {
   const router = useRouter();
   const fetch = useFetch();
+  const queryClient = useQueryClient();
+  const [ socketAlert, setSocketAlert ] = React.useState('');
 
   const { data, isLoading, isError } = useQuery<unknown, unknown, Transaction>(
     [ QueryKeys.tx, router.query.id ],
@@ -54,6 +58,28 @@ const TxDetails = () => {
       enabled: Boolean(router.query.id),
     },
   );
+
+  const handleStatusUpdateMessage: SocketSubscribers.BlocksNewBlock['onMessage'] = React.useCallback(() => {
+    queryClient.invalidateQueries({ queryKey: [ QueryKeys.tx, router.query.id ] });
+  }, [ queryClient, router.query.id ]);
+
+  const handleSocketClose = React.useCallback(() => {
+    setSocketAlert('Connection is lost. Please click here to update transaction info.');
+  }, []);
+
+  const handleSocketError = React.useCallback(() => {
+    setSocketAlert('An error has occurred while fetching new blocks. Please click here to update transaction info.');
+  }, []);
+
+  useSocketRoom({
+    channelId: 'transactions:[hash]',
+    eventId: 'collated',
+    hash: data?.hash,
+    onMessage: handleStatusUpdateMessage,
+    onClose: handleSocketClose,
+    onError: handleSocketError,
+    isDisabled: isLoading || isError,
+  });
 
   const [ isExpanded, setIsExpanded ] = React.useState(false);
 
@@ -87,6 +113,11 @@ const TxDetails = () => {
 
   return (
     <Grid columnGap={ 8 } rowGap={{ base: 3, lg: 3 }} templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }}>
+      { socketAlert && (
+        <GridItem colSpan={{ base: undefined, lg: 2 }} mb={ 2 }>
+          <Alert status="warning" as="a" href={ window.document.location.href }>{ socketAlert }</Alert>
+        </GridItem>
+      ) }
       <DetailsInfoItem
         title="Transaction hash"
         hint="Unique character string (TxID) assigned to every verified transaction."

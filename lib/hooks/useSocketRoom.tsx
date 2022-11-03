@@ -8,7 +8,7 @@ type Params = SocketSubscriber & {
   isDisabled: boolean;
 }
 
-export default function useSocketRoom({ isDisabled, channelId, eventId, onMessage, onClose, onError }: Params) {
+export default function useSocketRoom({ isDisabled, channelId, eventId, onMessage, onClose, onError, hash }: Params) {
   React.useEffect(() => {
     if (isDisabled) {
       return;
@@ -20,6 +20,7 @@ export default function useSocketRoom({ isDisabled, channelId, eventId, onMessag
       onMessage,
       onClose,
       onError,
+      hash,
     } as SocketSubscriber;
 
     const socket = (new Socket).init();
@@ -29,5 +30,5 @@ export default function useSocketRoom({ isDisabled, channelId, eventId, onMessag
       socket.leaveRoom(room);
       socket.close();
     };
-  }, [ channelId, eventId, isDisabled, onClose, onError, onMessage ]);
+  }, [ channelId, eventId, hash, isDisabled, onClose, onError, onMessage ]);
 }

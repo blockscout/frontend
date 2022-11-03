@@ -77,7 +77,9 @@ class Socket {
     this.socket?.removeEventListener('error', this.handleError);
     this.socket?.removeEventListener('close', this.handleClose);
 
-    Object.values(this.channels).forEach((channel) => channel.forEach((subscriber) => subscriber.onClose?.()));
+    if (this.socket?.readyState === OPEN_STATE) {
+      Object.values(this.channels).forEach((channel) => channel.forEach((subscriber) => subscriber.onClose?.()));
+    }
   }
 
   afterClose() {
@@ -139,7 +141,7 @@ class Socket {
       return pattern;
     }
 
-    return pattern.replace('[hash]', hash);
+    return pattern.replace('[hash]', hash.toLowerCase());
   }
 }
 
