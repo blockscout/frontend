@@ -32,13 +32,15 @@ const BlocksContent = ({ type }: Props) => {
 
   const handleNewBlockMessage: SocketMessage.NewBlock['handler'] = React.useCallback((payload) => {
     queryClient.setQueryData([ QueryKeys.blocks, type ], (prevData: BlocksResponse | undefined) => {
+      const shouldAddToList = !type || type === payload.block.type;
+
       if (!prevData) {
         return {
-          items: [ payload.block ],
+          items: shouldAddToList ? [ payload.block ] : [],
           next_page_params: null,
         };
       }
-      return { ...prevData, items: [ payload.block, ...prevData.items ] };
+      return shouldAddToList ? { ...prevData, items: [ payload.block, ...prevData.items ] } : prevData;
     });
   }, [ queryClient, type ]);
 
