@@ -1,4 +1,4 @@
 export interface Reward {
-  reward: number;
+  reward: string;
   type: 'Miner Reward' | 'Validator Reward' | 'Emission Reward' | 'Chore Reward' | 'Uncle Reward';
 }

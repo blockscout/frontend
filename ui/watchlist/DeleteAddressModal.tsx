@@ -3,6 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import React, { useCallback } from 'react';
 
 import type { TWatchlistItem, TWatchlist } from 'types/client/account';
+import { QueryKeys } from 'types/client/accountQueries';
 
 import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -20,11 +21,11 @@ const DeleteAddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
   const fetch = useFetch();
 
   const mutationFn = useCallback(() => {
-    return fetch(`/api/account1/watchlist/${ data?.id }`, { method: 'DELETE' });
+    return fetch(`/node-api/account/watchlist/${ data?.id }`, { method: 'DELETE' });
   }, [ data?.id, fetch ]);
 
   const onSuccess = useCallback(async() => {
-    queryClient.setQueryData([ 'watchlist' ], (prevData: TWatchlist | undefined) => {
+    queryClient.setQueryData([ QueryKeys.watchlist ], (prevData: TWatchlist | undefined) => {
       return prevData?.filter((item) => item.id !== data.id);
     });
   }, [ data, queryClient ]);

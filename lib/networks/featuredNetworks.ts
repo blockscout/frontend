@@ -1,4 +1,4 @@
-import type { FeaturedNetwork } from 'types/networks';
+import type { FeaturedNetwork, PreDefinedNetwork } from 'types/networks';
 
 import appConfig from 'configs/app/config';
 import arbitrumIcon from 'icons/networks/icons/arbitrum.svg';
@@ -12,97 +12,99 @@ import poaIcon from 'icons/networks/icons/poa.svg';
 import rskIcon from 'icons/networks/icons/rsk.svg';
 
 // predefined network icons
-const ICONS: Record<string, React.FunctionComponent<React.SVGAttributes<SVGElement>>> = {
-  '/xdai/mainnet': gnosisIcon,
-  '/xdai/optimism': optimismIcon,
-  '/xdai/aox': arbitrumIcon,
-  '/eth/mainnet': ethereumIcon,
-  '/etc/mainnet': ethereumClassicIcon,
-  '/poa/core': poaIcon,
-  '/rsk/mainnet': rskIcon,
-  '/xdai/testnet': arbitrumIcon,
-  '/poa/sokol': poaSokolIcon,
-  '/artis/sigma1': artisIcon,
+const ICONS: Partial<Record<PreDefinedNetwork, React.FunctionComponent<React.SVGAttributes<SVGElement>>>> = {
+  xdai_mainnet: gnosisIcon,
+  xdai_optimism: optimismIcon,
+  xdai_aox: arbitrumIcon,
+  eth_mainnet: ethereumIcon,
+  etc_mainnet: ethereumClassicIcon,
+  poa_core: poaIcon,
+  rsk_mainnet: rskIcon,
+  xdai_testnet: arbitrumIcon,
+  poa_sokol: poaSokolIcon,
+  artis_sigma1: artisIcon,
 };
 
 // for easy .env.example update
 // const FEATURED_NETWORKS = JSON.stringify([
 //   {
 //     title: 'Gnosis Chain',
-//     basePath: '/xdai/mainnet',
+//     url: 'https://blockscout.com/xdai/mainnet',
 //     group: 'mainnets',
+//     type: 'xdai_mainnet',
 //   },
 //   {
 //     title: 'Optimism on Gnosis Chain',
-//     basePath: '/xdai/optimism',
+//     url: 'https://blockscout.com/xdai/optimism',
 //     group: 'mainnets',
 //     icon: 'https://www.fillmurray.com/60/60',
+//     type: 'xdai_optimism',
 //   },
 //   {
 //     title: 'Arbitrum on xDai',
-//     basePath: '/xdai/aox',
+//     url: 'https://blockscout.com/xdai/aox',
 //     group: 'mainnets',
 //   },
 //   {
 //     title: 'Ethereum',
-//     basePath: '/eth/mainnet',
+//     url: 'https://blockscout.com/eth/mainnet',
 //     group: 'mainnets',
+//     type: 'eth_mainnet',
 //   },
 //   {
 //     title: 'Ethereum Classic',
-//     basePath: '/etx/mainnet',
+//     url: 'https://blockscout.com/etx/mainnet',
 //     group: 'mainnets',
+//     type: 'etc_mainnet',
 //   },
 //   {
 //     title: 'POA',
-//     basePath: '/poa/core',
+//     url: 'https://blockscout.com/poa/core',
 //     group: 'mainnets',
+//     type: 'poa_core',
 //   },
 //   {
 //     title: 'RSK',
-//     basePath: '/rsk/mainnet',
+//     url: 'https://blockscout.com/rsk/mainnet',
 //     group: 'mainnets',
+//     type: 'rsk_mainnet',
 //   },
 //   {
 //     title: 'Gnosis Chain Testnet',
-//     basePath: '/xdai/testnet',
+//     url: 'https://blockscout.com/xdai/testnet',
 //     group: 'testnets',
+//     type: 'xdai_testnet',
 //   },
 //   {
 //     title: 'POA Sokol',
-//     basePath: '/poa/sokol',
+//     url: 'https://blockscout.com/poa/sokol',
 //     group: 'testnets',
+//     type: 'poa_sokol',
 //   },
 //   {
 //     title: 'ARTIS Σ1',
-//     basePath: '/artis/sigma1',
+//     url: 'https://blockscout.com/artis/sigma1',
 //     group: 'other',
+//     type: 'artis_sigma1',
 //   },
 //   {
 //     title: 'LUKSO L14',
-//     basePath: '/lukso/l14',
+//     url: 'https://blockscout.com/lukso/l14',
 //     group: 'other',
+//     type: 'lukso_l14',
 //   },
 //   {
 //     title: 'Astar',
-//     basePath: '/astar',
+//     url: 'https://blockscout.com/astar',
 //     group: 'other',
+//     type: 'astar',
 //   },
 // ]).replaceAll('"', '\'');
 
-function parseNetworkConfig() {
-  try {
-    return JSON.parse(appConfig.featuredNetworks || '[]');
-  } catch (error) {
-    return [];
-  }
-}
-
 const featuredNetworks: Array<FeaturedNetwork> = (() => {
-  const networksFromConfig: Array<FeaturedNetwork> = parseNetworkConfig();
-  return networksFromConfig.map((network) => ({
+  return appConfig.featuredNetworks.map((network) => ({
     ...network,
-    icon: network.icon || ICONS[network.basePath],
+    icon: network.icon || (network.type ? ICONS[network.type] : undefined),
   }));
 })();
 

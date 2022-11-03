@@ -11,6 +11,7 @@ import { useForm, Controller } from 'react-hook-form';
 
 import type { WatchlistErrors } from 'types/api/account';
 import type { TWatchlistItem } from 'types/client/account';
+import { QueryKeys } from 'types/client/accountQueries';
 
 import getErrorMessage from 'lib/getErrorMessage';
 import type { ErrorType } from 'lib/hooks/useFetch';
@@ -96,17 +97,17 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
     };
     if (data) {
       // edit address
-      return fetch<TWatchlistItem, WatchlistErrors>(`/api/account/watchlist/${ data.id }`, { method: 'PUT', body });
+      return fetch<TWatchlistItem, WatchlistErrors>(`/node-api/account/watchlist/${ data.id }`, { method: 'PUT', body });
 
     } else {
       // add address
-      return fetch<TWatchlistItem, WatchlistErrors>('/api/account/watchlist', { method: 'POST', body });
+      return fetch<TWatchlistItem, WatchlistErrors>('/node-api/account/watchlist', { method: 'POST', body });
     }
   }
 
   const { mutate } = useMutation(updateWatchlist, {
     onSuccess: () => {
-      queryClient.refetchQueries([ 'watchlist' ]).then(() => {
+      queryClient.refetchQueries([ QueryKeys.watchlist ]).then(() => {
         onClose();
         setPending(false);
       });

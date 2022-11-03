@@ -1,4 +1,3 @@
-// import * as Sentry from '@sentry/nextjs';
 import type { NextApiRequest } from 'next';
 
 import appConfig from 'configs/app/config';

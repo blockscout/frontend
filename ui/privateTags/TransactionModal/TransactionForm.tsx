@@ -9,6 +9,7 @@ import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
 import { useForm, Controller } from 'react-hook-form';
 
 import type { TransactionTag, TransactionTagErrors } from 'types/api/account';
+import { QueryKeys } from 'types/client/accountQueries';
 
 import getErrorMessage from 'lib/getErrorMessage';
 import type { ErrorType } from 'lib/hooks/useFetch';
@@ -53,10 +54,10 @@ const TransactionForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) =>
     const isEdit = data?.id;
 
     if (isEdit) {
-      return fetch(`/api/account/private-tags/transaction/${ data.id }`, { method: 'PUT', body });
+      return fetch(`/node-api/account/private-tags/transaction/${ data.id }`, { method: 'PUT', body });
     }
 
-    return fetch('/api/account/private-tags/transaction', { method: 'POST', body });
+    return fetch('/node-api/account/private-tags/transaction', { method: 'POST', body });
   }, {
     onError: (e: ErrorType<TransactionTagErrors>) => {
       setPending(false);
@@ -70,7 +71,7 @@ const TransactionForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) =>
       }
     },
     onSuccess: () => {
-      queryClient.refetchQueries([ 'transaction-tags' ]).then(() => {
+      queryClient.refetchQueries([ QueryKeys.transactionTags ]).then(() => {
         onClose();
         setPending(false);
       });

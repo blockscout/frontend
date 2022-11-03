@@ -52,7 +52,7 @@ const WatchlistTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
     setSwitchDisabled(true);
     const body = { ...item, notification_methods: { email: !notificationEnabled } };
     setNotificationEnabled(prevState => !prevState);
-    return fetch(`/api/account1/watchlist/${ item.id }`, { method: 'PUT', body });
+    return fetch(`/node-api/account/watchlist/${ item.id }`, { method: 'PUT', body });
   }, {
     onError: () => {
       showToast();

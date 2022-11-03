@@ -39,9 +39,7 @@ const TxsListItem = ({ tx }: {tx: Transaction}) => {
       <Box width="100%" borderBottom="1px solid" borderColor={ borderColor } _first={{ borderTop: '1px solid', borderColor }}>
         <Flex justifyContent="space-between" mt={ 4 }>
           <HStack>
-            { /* TODO: we don't recieve type from api */ }
-            { /* <TxType type={ tx.type }/> */ }
-            <TxType type="transaction"/>
+            { tx.tx_types.map(item => <TxType key={ item } type={ item }/>) }
             <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined }/>
           </HStack>
           <TxAdditionalInfoButton onClick={ onOpen }/>
@@ -60,6 +58,7 @@ const TxsListItem = ({ tx }: {tx: Transaction}) => {
                 type="transaction"
                 fontWeight="700"
                 truncation="constant"
+                target="_self"
               />
             </Address>
           </Flex>
@@ -67,7 +66,6 @@ const TxsListItem = ({ tx }: {tx: Transaction}) => {
         </Flex>
         <Flex mt={ 3 }>
           <Text as="span" whiteSpace="pre">Method </Text>
-          { /* TODO: we don't recieve method from api */ }
           <Text
             as="span"
             variant="secondary"
@@ -75,8 +73,7 @@ const TxsListItem = ({ tx }: {tx: Transaction}) => {
             whiteSpace="nowrap"
             textOverflow="ellipsis"
           >
-            { /* { tx.method } */ }
-            CommitHash
+            { tx.method }
           </Text>
         </Flex>
         { tx.block !== null && (
@@ -112,11 +109,11 @@ const TxsListItem = ({ tx }: {tx: Transaction}) => {
           </Address>
         </Flex>
         <Box mt={ 2 }>
-          <Text as="span">Value { appConfig.network.currency } </Text>
+          <Text as="span">Value { appConfig.network.currency.symbol } </Text>
           <Text as="span" variant="secondary">{ getValueWithUnit(tx.value).toFormat() }</Text>
         </Box>
         <Box mt={ 2 } mb={ 3 }>
-          <Text as="span">Fee { appConfig.network.currency } </Text>
+          <Text as="span">Fee { appConfig.network.currency.symbol } </Text>
           <Text as="span" variant="secondary">{ getValueWithUnit(tx.fee.value).toFormat() }</Text>
         </Box>
       </Box>

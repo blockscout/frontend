@@ -59,21 +59,16 @@ jobs:
           tags: ghcr.io/blockscout/frontend:prerelease-${{ env.SHORT_SHA }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            SENTRY_DSN=${{ secrets.SENTRY_DSN }}
-            NEXT_PUBLIC_SENTRY_DSN=${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}
-            SENTRY_CSP_REPORT_URI=${{ secrets.SENTRY_CSP_REPORT_URI }}
-            SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
+            GIT_COMMIT_SHA=${{ env.SHORT_SHA }}
 
   deploy_and_tests:
     needs: push_to_registry
     uses: blockscout/blockscout-ci-cd/.github/workflows/e2e_new.yaml@master
     with:
-      valuesDir: deploy/values/e2e
-      appName: e2e-front
       appNamespace: e2e-front-$GITHUB_SHA_SHORT
-      blockscoutIngressHost: blockscout
-      frontendIngressHost: frontend
       frontendImage: ghcr.io/blockscout/frontend:prerelease-${{ needs.push_to_registry.outputs.shortSha }}
-      gethIngressHost: geth
-      scVerifierIngressHost: sc-verifier
+      blockscoutIngressHost: e2e-blockscout-$GITHUB_SHA_SHORT
+      frontendIngressHost: e2e-blockscout-$GITHUB_SHA_SHORT
+      gethIngressHost: e2e-geth-$GITHUB_SHA_SHORT
+      scVerifierIngressHost: e2e-sc-verifier-$GITHUB_SHA_SHORT
     secrets: inherit

@@ -38,6 +38,9 @@ export interface Transaction {
   token_transfers: Array<TokenTransfer> | null;
   token_transfers_overflow: boolean;
   exchange_rate: string;
+  method: string;
+  tx_types: Array<TransactionType>;
+  tx_tag: string | null;
 }
 
 export interface TransactionsResponse {
@@ -46,5 +49,7 @@ export interface TransactionsResponse {
     block_number: number;
     index: number;
     items_count: number;
-  };
+  } | null;
 }
+
+export type TransactionType = 'token_transfer' | 'contract_creation' | 'contract_call' | 'token_creation' | 'coin_transfer'

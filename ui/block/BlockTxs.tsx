@@ -1,9 +1,19 @@
+import { useRouter } from 'next/router';
 import React from 'react';
+
+import { QueryKeys } from 'types/client/queries';
 
 import TxsContent from 'ui/txs/TxsContent';
 
 const BlockTxs = () => {
-  return <TxsContent showDescription={ false } showSortButton={ false } txs={ [] }/>;
+  const router = useRouter();
+
+  return (
+    <TxsContent
+      queryName={ QueryKeys.blockTxs }
+      apiPath={ `/api/blocks/${ router.query.id }/transactions` }
+    />
+  );
 };
 
 export default BlockTxs;

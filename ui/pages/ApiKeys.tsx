@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
 import type { ApiKey, ApiKeys } from 'types/api/account';
+import { QueryKeys } from 'types/client/accountQueries';
 
 import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -30,7 +31,7 @@ const ApiKeysPage: React.FC = () => {
   const [ apiKeyModalData, setApiKeyModalData ] = useState<ApiKey>();
   const [ deleteModalData, setDeleteModalData ] = useState<ApiKey>();
 
-  const { data, isLoading, isError } = useQuery<unknown, unknown, ApiKeys>([ 'api-keys' ], async() => await fetch('/api/account/api-keys'));
+  const { data, isLoading, isError } = useQuery<unknown, unknown, ApiKeys>([ QueryKeys.apiKeys ], async() => await fetch('/node-api/account/api-keys'));
 
   const onEditClick = useCallback((data: ApiKey) => {
     setApiKeyModalData(data);

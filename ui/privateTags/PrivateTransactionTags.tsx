@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
 import type { TransactionTags, TransactionTag } from 'types/api/account';
+import { QueryKeys } from 'types/client/accountQueries';
 
 import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -18,7 +19,10 @@ import TransactionTagTable from './TransactionTagTable/TransactionTagTable';
 
 const PrivateTransactionTags = () => {
   const { data: transactionTagsData, isLoading, isError } =
-    useQuery<unknown, unknown, TransactionTags>([ 'transaction-tags' ], async() => fetch('/api/account/private-tags/transaction'), { refetchOnMount: false });
+    useQuery<unknown, unknown, TransactionTags>(
+      [ QueryKeys.transactionTags ],
+      async() => fetch('/node-api/account/private-tags/transaction'), { refetchOnMount: false },
+    );
 
   const transactionModalProps = useDisclosure();
   const deleteModalProps = useDisclosure();

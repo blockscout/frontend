@@ -38,6 +38,10 @@ const TxInternalsSkeletonMobile = () => {
               <Skeleton w="70px" mr={ 2 }/>
               <Skeleton w="30px"/>
             </Flex>
+            <Flex h={ 6 }>
+              <Skeleton w="70px" mr={ 2 }/>
+              <Skeleton w="60px"/>
+            </Flex>
           </Flex>
         )) }
       </Box>

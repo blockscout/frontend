@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { UserInfo } from 'types/api/account';
 
+import appConfig from 'configs/app/config';
 import useNavItems from 'lib/hooks/useNavItems';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 import NavLink from 'ui/snippets/navigation/NavLink';
@@ -40,7 +41,7 @@ const ProfileMenuContent = ({ name, nickname, email }: Props) => {
         </VStack>
       </Box>
       <Box mt={ 2 } pt={ 3 } borderTopColor={ borderColor } borderTopWidth="1px" { ...getDefaultTransitionProps() }>
-        <Button size="sm" width="full" variant="outline">Sign Out</Button>
+        <Button size="sm" width="full" variant="outline" as="a" href={ appConfig.logoutUrl }>Sign Out</Button>
       </Box>
     </Box>
   );

@@ -1,16 +1,22 @@
 import { Box, Icon, Link } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
 import React from 'react';
+
+import type { JsonRpcUrlResponse } from 'types/api/json-rpc-url';
 
 import config from 'configs/app/config';
 import PlusIcon from 'icons/plus.svg';
+import useFetch from 'lib/hooks/useFetch';
 import AppList from 'ui/apps/AppList';
 import AppListSkeleton from 'ui/apps/AppListSkeleton';
 import CategoriesMenu from 'ui/apps/CategoriesMenu';
 import FilterInput from 'ui/shared/FilterInput';
 
-import useMarketplaceApps from '../apps/useMarkeplaceApps';
+import useMarketplaceApps from '../apps/useMarketplaceApps';
 
 const Apps = () => {
+  const fetch = useFetch();
+
   const {
     isLoading,
     category,
@@ -23,6 +29,11 @@ const Apps = () => {
     favoriteApps,
     handleFavoriteClick,
   } = useMarketplaceApps();
+
+  useQuery<unknown, unknown, JsonRpcUrlResponse>(
+    [ 'json-rpc-url' ],
+    async() => await fetch(`/node-api/config/json-rpc-url`),
+  );
 
   return (
     <>

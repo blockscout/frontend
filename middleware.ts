@@ -15,24 +15,13 @@ export function middleware(req: NextRequest) {
     return;
   }
 
-  const [ , networkType, networkSubtype ] = req.nextUrl.pathname.split('/');
-  const networkParams = {
-    network_type: networkType,
-    network_sub_type: networkSubtype,
-  };
-
-  if (appConfig.network.type !== networkType && appConfig.network.subtype !== networkSubtype) {
-    const url = req.nextUrl.clone();
-    url.pathname = `/404`;
-    return NextResponse.rewrite(url);
-  }
-
   // we don't have any info from router here, so just do straight forward sub-string search (sorry)
   const isAccountRoute = req.nextUrl.pathname.includes('/account/');
+  const isProfileRoute = req.nextUrl.pathname.includes('/auth/profile');
   const apiToken = req.cookies.get(NAMES.API_TOKEN);
 
-  if (isAccountRoute && !apiToken) {
-    const authUrl = link('auth', networkParams);
+  if ((isAccountRoute || isProfileRoute) && !apiToken && appConfig.isAccountSupported) {
+    const authUrl = link('auth');
     return NextResponse.redirect(authUrl);
   }
 

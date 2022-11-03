@@ -12,6 +12,7 @@ import type { FieldError, Path, SubmitHandler } from 'react-hook-form';
 import { useForm, useFieldArray } from 'react-hook-form';
 
 import type { PublicTags, PublicTag, PublicTagNew, PublicTagErrors } from 'types/api/account';
+import { QueryKeys } from 'types/client/accountQueries';
 
 import getErrorMessage from 'lib/getErrorMessage';
 import type { ErrorType } from 'lib/hooks/useFetch';
@@ -98,17 +99,17 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
     };
 
     if (!data?.id) {
-      return fetch<PublicTag, PublicTagErrors>('/api/account/public-tags', { method: 'POST', body });
+      return fetch<PublicTag, PublicTagErrors>('/node-api/account/public-tags', { method: 'POST', body });
     }
 
-    return fetch<PublicTag, PublicTagErrors>(`/api/account/public-tags/${ data.id }`, { method: 'PUT', body });
+    return fetch<PublicTag, PublicTagErrors>(`/node-api/account/public-tags/${ data.id }`, { method: 'PUT', body });
   };
 
   const mutation = useMutation(updatePublicTag, {
     onSuccess: async(data) => {
       const response = data as unknown as PublicTag;
 
-      queryClient.setQueryData([ 'public-tags' ], (prevData: PublicTags | undefined) => {
+      queryClient.setQueryData([ QueryKeys.publicTags ], (prevData: PublicTags | undefined) => {
         const isExisting = prevData && prevData.some((item) => item.id === response.id);
 
         if (isExisting) {

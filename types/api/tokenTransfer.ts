@@ -1,35 +1,39 @@
 import type { AddressParam } from './addressParams';
+import type { TokenInfoGeneric } from './tokenInfo';
 
-export type ERC1155TotalPayload = {
+export type Erc20TotalPayload = {
+  decimals: string | null;
+  value: string;
+}
+
+export type Erc721TotalPayload = {
+  token_id: string;
+}
+
+export type Erc1155TotalPayload = {
+  decimals: string | null;
   value: string;
   token_id: string;
 }
 
 export type TokenTransfer = (
   {
-    token_type: 'ERC-20';
-    total: {
-      value: string;
-    };
+    token: TokenInfoGeneric<'ERC-20'>;
+    total: Erc20TotalPayload;
   } |
   {
-    token_type: 'ERC-721';
-    total: {
-      token_id: string;
-    };
+    token: TokenInfoGeneric<'ERC-721'>;
+    total: Erc721TotalPayload;
   } |
   {
-    token_type: 'ERC-1155';
-    total: ERC1155TotalPayload | Array<ERC1155TotalPayload>;
+    token: TokenInfoGeneric<'ERC-1155'>;
+    total: Erc1155TotalPayload | Array<Erc1155TotalPayload>;
   }
 ) & TokenTransferBase
 
 interface TokenTransferBase {
   type: 'token_transfer' | 'token_burning' | 'token_spawning' | 'token_minting';
-  txHash: string;
+  tx_hash: string;
   from: AddressParam;
   to: AddressParam;
-  token_address: string;
-  token_symbol: string;
-  exchange_rate: string;
 }

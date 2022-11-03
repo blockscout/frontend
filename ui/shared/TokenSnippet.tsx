@@ -5,9 +5,9 @@ import link from 'lib/link/link';
 import TokenLogo from 'ui/shared/TokenLogo';
 
 interface Props {
-  symbol: string;
+  symbol?: string | null;
   hash: string;
-  name: string;
+  name?: string | null;
   className?: string;
 }
 
@@ -20,7 +20,7 @@ const TokenSnippet = ({ symbol, hash, name, className }: Props) => {
       <Link href={ url } target="_blank">
         { name }
       </Link>
-      <Text variant="secondary">({ symbol })</Text>
+      { symbol && <Text variant="secondary">({ symbol })</Text> }
     </Center>
   );
 };

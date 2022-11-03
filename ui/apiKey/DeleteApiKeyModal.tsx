@@ -3,6 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import React, { useCallback } from 'react';
 
 import type { ApiKey, ApiKeys } from 'types/api/account';
+import { QueryKeys } from 'types/client/accountQueries';
 
 import useFetch from 'lib/hooks/useFetch';
 import DeleteModal from 'ui/shared/DeleteModal';
@@ -18,11 +19,11 @@ const DeleteAddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
   const fetch = useFetch();
 
   const mutationFn = useCallback(() => {
-    return fetch(`/api/account/api-keys/${ data.api_key }`, { method: 'DELETE' });
+    return fetch(`/node-api/account/api-keys/${ data.api_key }`, { method: 'DELETE' });
   }, [ data.api_key, fetch ]);
 
   const onSuccess = useCallback(async() => {
-    queryClient.setQueryData([ 'api-keys' ], (prevData: ApiKeys | undefined) => {
+    queryClient.setQueryData([ QueryKeys.apiKeys ], (prevData: ApiKeys | undefined) => {
       return prevData?.filter((item) => item.api_key !== data.api_key);
     });
   }, [ data, queryClient ]);

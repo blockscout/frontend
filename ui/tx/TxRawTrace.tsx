@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { RawTracesResponse } from 'types/api/rawTrace';
+import { QueryKeys } from 'types/client/queries';
 
 import useFetch from 'lib/hooks/useFetch';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
@@ -14,8 +15,8 @@ const TxRawTrace = () => {
   const fetch = useFetch();
 
   const { data, isLoading, isError } = useQuery<unknown, unknown, RawTracesResponse>(
-    [ 'tx-raw-trace', router.query.id ],
-    async() => await fetch(`/api/transactions/${ router.query.id }/raw-trace`),
+    [ QueryKeys.txRawTrace, router.query.id ],
+    async() => await fetch(`/node-api/transactions/${ router.query.id }/raw-trace`),
     {
       enabled: Boolean(router.query.id),
     },

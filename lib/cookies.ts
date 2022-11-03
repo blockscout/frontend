@@ -6,11 +6,12 @@ import isBrowser from './isBrowser';
 export enum NAMES {
   NAV_BAR_COLLAPSED='nav_bar_collapsed',
   API_TOKEN='_explorer_key',
+  TXS_SORT='txs_sort',
 }
 
-export function get(name?: string | undefined | null) {
+export function get(name?: NAMES | undefined | null, serverCookie?: string) {
   if (!isBrowser()) {
-    return undefined;
+    return serverCookie ? getFromCookieString(serverCookie, name) : undefined;
   }
   return Cookies.get(name);
 }
@@ -19,4 +20,8 @@ export function set(name: string, value: string, attributes: Types.CookieAttribu
   attributes.path = '/';
 
   return Cookies.set(name, value, attributes);
+}
+
+export function getFromCookieString(cookieString: string, name?: NAMES | undefined | null) {
+  return cookieString.split(`${ name }=`)[1]?.split(';')[0];
 }

@@ -2,22 +2,18 @@ import { Box, Text, chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type { Unit } from 'types/unit';
-
-import getValueWithUnit from 'lib/getValueWithUnit';
-
 interface Props {
   value: string;
-  unit?: Unit;
   currency?: string;
   exchangeRate?: string | null;
   className?: string;
   accuracy?: number;
   accuracyUsd?: number;
+  decimals?: string | null;
 }
 
-const CurrencyValue = ({ value, currency = '', unit, exchangeRate, className, accuracy, accuracyUsd }: Props) => {
-  const valueCurr = getValueWithUnit(value, unit);
+const CurrencyValue = ({ value, currency = '', decimals, exchangeRate, className, accuracy, accuracyUsd }: Props) => {
+  const valueCurr = BigNumber(value).div(BigNumber(10 ** Number(decimals || '18')));
   const valueResult = accuracy ? valueCurr.dp(accuracy).toFormat() : valueCurr.toFormat();
 
   let usdContent;

@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { InternalTransactionsResponse, TxInternalsType, InternalTransaction } from 'types/api/internalTransaction';
+import { QueryKeys } from 'types/client/queries';
 
 import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -42,16 +43,15 @@ const sortFn = (sort: Sort | undefined) => (a: InternalTransaction, b: InternalT
       return a.value === b.value ? 0 : result;
     }
 
-    // no gas limit in api yet
-    // case 'gas-limit-desc': {
-    //   const result = a.gasLimit > b.gasLimit ? -1 : 1;
-    //   return a.gasLimit === b.gasLimit ? 0 : result;
-    // }
+    case 'gas-limit-desc': {
+      const result = a.gas_limit > b.gas_limit ? -1 : 1;
+      return a.gas_limit === b.gas_limit ? 0 : result;
+    }
 
-    // case 'gas-limit-asc': {
-    //   const result = a.gasLimit > b.gasLimit ? 1 : -1;
-    //   return a.gasLimit === b.gasLimit ? 0 : result;
-    // }
+    case 'gas-limit-asc': {
+      const result = a.gas_limit > b.gas_limit ? 1 : -1;
+      return a.gas_limit === b.gas_limit ? 0 : result;
+    }
 
     default:
       return 0;
@@ -73,8 +73,8 @@ const TxInternals = () => {
   const [ searchTerm, setSearchTerm ] = React.useState<string>('');
   const [ sort, setSort ] = React.useState<Sort>();
   const { data, isLoading, isError } = useQuery<unknown, unknown, InternalTransactionsResponse>(
-    [ 'tx-internals', router.query.id ],
-    async() => await fetch(`/api/transactions/${ router.query.id }/internal-transactions`),
+    [ QueryKeys.txInternals, router.query.id ],
+    async() => await fetch(`/node-api/transactions/${ router.query.id }/internal-transactions`),
     {
       enabled: Boolean(router.query.id),
     },

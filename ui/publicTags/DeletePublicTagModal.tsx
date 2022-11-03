@@ -4,6 +4,7 @@ import React, { useCallback, useState } from 'react';
 import type { ChangeEvent } from 'react';
 
 import type { PublicTags, PublicTag } from 'types/api/account';
+import { QueryKeys } from 'types/client/accountQueries';
 
 import useFetch from 'lib/hooks/useFetch';
 import DeleteModal from 'ui/shared/DeleteModal';
@@ -27,12 +28,12 @@ const DeletePublicTagModal: React.FC<Props> = ({ isOpen, onClose, data, onDelete
 
   const deleteApiKey = useCallback(() => {
     const body = { remove_reason: reason };
-    return fetch(`/api/account/public-tags/${ data.id }`, { method: 'DELETE', body });
+    return fetch(`/node-api/account/public-tags/${ data.id }`, { method: 'DELETE', body });
   }, [ data.id, fetch, reason ]);
 
   const onSuccess = useCallback(async() => {
     onDeleteSuccess();
-    queryClient.setQueryData([ 'public-tags' ], (prevData: PublicTags | undefined) => {
+    queryClient.setQueryData([ QueryKeys.publicTags ], (prevData: PublicTags | undefined) => {
       return prevData?.filter((item) => item.id !== data.id);
     });
   }, [ queryClient, data, onDeleteSuccess ]);

@@ -1,4 +1,4 @@
-[Design](https://www.figma.com/file/07zoJSAP7Vo655ertmlppA/My_Account?node-id=279%3A1006) | [API Doc](https://github.com/blockscout/blockscout-account/blob/account/apps/block_scout_web/API.md) | [Swagger](https://app.swaggerhub.com/apis/NIKITOSING4/blockscout-account-api/1.0)
+[Design](https://www.figma.com/file/07zoJSAP7Vo655ertmlppA/My_Account?node-id=279%3A1006) | [API Doc](https://github.com/blockscout/blockscout-account/blob/account/apps/block_scout_web/API.md) | [Core Swagger](https://app.swaggerhub.com/apis/NIKITOSING4/CoreBlockScoutAPI/1.0.0) | [Account Swagger](https://app.swaggerhub.com/apis/NIKITOSING4/blockscout-account-api/1.0)
 
 -----
 ## Technology stack
@@ -24,7 +24,7 @@ For local development please follow next steps:
 - clone `.env.example` into `configs/envs/.env.secrets` and fill it with necessary secret values (see description [below](#environment-variables))
 - to spin up local dev server
     - for predefined networks configs (see full available list in `package.json`) you can just run `yarn dev:<app_name>`
-    - for custom network setup create `.env.local` file with all required environment variables from the [list](#environment-variables) and run `yarn dev` 
+    - for custom network setup create `.env.local` file with all required environment variables from the [list](#environment-variables) and run `yarn dev`
 - navigate to the host from logs output
 
 ## Components visual testing
@@ -44,28 +44,32 @@ The app instance could be customized by passing following variables to NodeJS en
 | --- | --- | --- | --- |
 | NEXT_PUBLIC_NETWORK_NAME | `string` | Displayed name of the network | `Gnosis Chain` |
 | NEXT_PUBLIC_NETWORK_SHORT_NAME | `string` *(optional)* | Used for SEO attributes (page title and description) | `OoG` |
-| NEXT_PUBLIC_NETWORK_TYPE | `string` | Network type (used as first part of the base path) | `xdai` |
-| NEXT_PUBLIC_NETWORK_SUBTYPE | `string` | Network subtype (used as second part of the base path) | `mainnet` |
+| NEXT_PUBLIC_NETWORK_TYPE | `string` *(optional)* | Network type (used for matching pre-defined assets, e.g network logo and icon, which are stored in the project). See all possible values here | `xdai_mainnet` |
 | NEXT_PUBLIC_NETWORK_ID | `number` | Chain id, see [https://chainlist.org/](https://chainlist.org/) for the reference | `99` |
-| NEXT_PUBLIC_NETWORK_CURRENCY | `string` | Network currency symbol | `xDAI` |
+| NEXT_PUBLIC_NETWORK_CURRENCY_NAME | `string` | Network currency name | `Ether` |
+| NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL | `string` | Network currency symbol | `ETH` |
+| NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS | `string` | Network currency decimals | `18` |
 | NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS | `string` | Address of network's native token | `0x029a799563238d0e75e20be2f4bda0ea68d00172` |
-| NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME | `string` *(optional)* | Network name for constructing url of token logos according to template `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${assetsNamePath}/assets/${tokenAddress}/logo.png`. It should match network name in TrustWallet assets repo, see the full list [here](https://github.com/trustwallet/assets/tree/master/blockchains). If not provided, the network type will be used as its assets path part | `ethereum` |
+| NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME | `string` *(optional)* | Network name for constructing url of token logos according to template `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${assetsNamePath}/assets/${tokenAddress}/logo.png`. It should match network name in TrustWallet assets repo, see the full list [here](https://github.com/trustwallet/assets/tree/master/blockchains) | `ethereum` |
 | NEXT_PUBLIC_NETWORK_LOGO | `string` *(optional)* | Network logo; if not provided, will fallback to logo predefined in the project; if the project doesn't have logo for such network then the common placeholder will be shown; *Note* that logo height should be 20px and width less than 120px | `https://www.fillmurray.com/240/40` |
 | NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED | `boolean` *(optional)* | Set to true if network has account feature | `true` |
-
-*Note* the base path for the network is built up from its `type` and `subType` like so `https://blockscout.com/<type>/<subType>`
 
 ### UI configuration
 
 | Variable | Type | Description | Default value
 | --- | --- | --- | --- |
-| NEXT_PUBLIC_FEATURED_NETWORKS | `Array<FeaturedNetwork>` where `FeaturedNetwork` can have following [properties](#featured-network-configuration-properties) | Configuration of featured networks that will be shown in the network menu | `[{'title':'Gnosis Chain','basePath':'/xdai/mainnet','group':'mainnets'}]` |
+| NEXT_PUBLIC_FEATURED_NETWORKS | `Array<FeaturedNetwork>` where `FeaturedNetwork` can have following [properties](#featured-network-configuration-properties) | Configuration of featured networks that will be shown in the network menu | `[{'title':'Gnosis Chain','url':'https://blockscout.com/xdai/mainnet','group':'mainnets'}]` |
 | NEXT_PUBLIC_BLOCKSCOUT_VERSION | `string` *(optional)* | Current running version of Blockscout (used to display link to release in the footer) |
 | NEXT_PUBLIC_FOOTER_GITHUB_LINK | `string` *(optional)* | Link to Github in the footer | `https://github.com/blockscout/blockscout` |
 | NEXT_PUBLIC_FOOTER_TWITTER_LINK | `string` *(optional)* | Link to Twitter in the footer | `https://www.twitter.com/blockscoutcom` |
 | NEXT_PUBLIC_FOOTER_TELEGRAM_LINK | `string` *(optional)* | Link to Telegram in the footer | `https://t.me/poa_network` |
 | NEXT_PUBLIC_FOOTER_STAKING_LINK | `string` *(optional)* | Link to staking dashboard in the footer | `https://duneanalytics.com/maxaleks/xdai-staking` |
+| NEXT_PUBLIC_MARKETPLACE_APP_LIST | `Array<MarketplaceApp>` where `MarketplaceApp` can have following [properties](#marketplace-app-configuration-properties) | List of apps that will be shown on the marketplace page | `[{'author': 'Bob', 'id': 'app', 'title': 'The App', 'logo': 'https://foo.app/icon.png', 'categories': ['security'], 'shortDescription': 'Awesome app', 'site': 'https://foo.app', 'description': 'The best app', 'url': 'https://foo.app/launch'}]` |
 | NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM | `string` | Link to form where authors can submit their dapps to the marketplace | `https://airtable.com/shrqUAcjgGJ4jU88C` |
+| NEXT_PUBLIC_NETWORK_EXPLORERS | `Array<NetworkExplorer>` where `NetworkExplorer` can have following [properties](#network-explorer-configuration-properties) | Used to build up links to transactions, blocks, addresses in other chain explorers.  | `[{'title':'Anyblock','baseUrl':'https://explorer.anyblock.tools','paths':{'tx':'/ethereum/poa/core/tx'}}]` |
+| NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE | `validation` or `mining` *(optional)* | Verification type in the network | `mining` |
+| NEXT_PUBLIC_LOGOUT_URL | `string` *(optional)* | Account logout url | `https://blockscoutcom.us.auth0.com/v2/logout` |
+| NEXT_PUBLIC_LOGOUT_RETURN_URL | `string` *(optional)* | Account logout return url | `https://blockscout.com/poa/core/auth/logout` |
 
 ### App configuration
 
@@ -75,12 +79,13 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_APP_PROTOCOL | `http \| https` *(optional)* | App protocol (`https` used as default value) | `https` |
 | NEXT_PUBLIC_APP_HOST | `string` | App host | `blockscout.com` |
 | NEXT_PUBLIC_APP_PORT | `number` *(optional)* | Port where app is running. Have to be provided if it is different to default port | `3000` |
+| NEXT_PUBLIC_APP_ENV | `string` *(optional)* | Current app env (e.g development, review or production). Used for Sentry.io configuration | `production` |
 
 ### API configuration
 
 | Variable | Type | Description | Default value
 | --- | --- | --- | --- |
-| NEXT_PUBLIC_API_ENDPOINT | `string` *(optional)* | By default the API endpoint base URL will be set as `https://blockscout.com`. If it is not the case, pass the API endpoint base URL in this variable  | `https://blockscout.com` |
+| NEXT_PUBLIC_API_HOST | `string` *(optional)* | By default the API endpoint base URL will be set as `https://blockscout.com`. If it is not the case, pass the API host in this variable  | `my-host.com` |
 | NEXT_PUBLIC_API_BASE_PATH | `string` *(optional)* | Base path for API endpoint url  | `/poa/core` |
 
 
@@ -89,13 +94,71 @@ The app instance could be customized by passing following variables to NodeJS en
 | Property | Type | Description | Example value
 | --- | --- | --- | --- |
 | title | `string` | Displayed name of the network | `'Gnosis Chain'` |
-| basePath | `string` | Network explorer main page url | `'/xdai/mainnet'` |
+| url | `string` | Network explorer main page url | `'https://blockscout.com/xdai/mainnet'` |
 | group | `mainnets \| testnets \| other` | Indicates in which tab network appears in the menu | `'mainnets'` |
 | icon | `string` *(optional)* | Network icon; if not provided, will fallback to  icon predefined in the project; if the project doesn't have icon for such network then the common placeholder will be shown; *Note* that icon size should be 30px by 30px | `'https://www.fillmurray.com/60/60'` |
+| type | `string` *(optional)* | Network type (used for matching pre-defined network icon, which is stored in the project). See all possible values here | `xdai_mainnet` |
+
+### Network explorer configuration properties
+
+| Property | Type | Description | Example value
+| --- | --- | --- | --- |
+| title | `string` | Displayed name of the explorer | `'Anyblock'` |
+| baseUrl | `string` | Base url of the explorer | `'https://explorer.anyblock.tools'` |
+| paths | `Record<'tx' \| 'block' \| 'address', string>` | Map of explorer entities and their paths | `'paths':{'tx':'/ethereum/poa/core/tx'}` |
+
+*Note* The url of an entity will be constructed as `<baseUrl><paths[<entity-type>]><entity-id>`, e.g `https://explorer.anyblock.tools/ethereum/poa/core/tx/<tx-id>`
 
 ### External services configuration
 
 | Variable | Type | Description | Default value
 | --- | --- | --- | --- |
-| NEXT_PUBLIC_SENTRY_DSN | `string` *(optional)* | Client key for your Senty.io app | `<secret>` |
-| SENTRY_CSP_REPORT_URI | `string` *(optional)* | URL for sending CSP-reports to your Senty.io app | `<secret>` |
+| NEXT_PUBLIC_SENTRY_DSN | `string` *(optional)* | Client key for your Sentry.io app | `<secret>` |
+| SENTRY_CSP_REPORT_URI | `string` *(optional)* | URL for sending CSP-reports to your Sentry.io app | `<secret>` |
+| NEXT_PUBLIC_AUTH0_CLIENT_ID | `string` *(optional)* | Client id for [Auth0](https://auth0.com/) provider | `<secret>` |
+
+### Marketplace app configuration properties
+
+| Property | Type | Description | Example value
+| --- | --- | --- | --- |
+| id | `string` | Used as slug for the app. Must be unique in the app list. | `'app'` |
+| title | `string` | Displayed title of the app. | `'The App'` |
+| logo | `string` | URL to logo file. Should be at least 144x144. | `'https://foo.app/icon.png'` |
+| shortDescription | `string` | Displayed only in the app list. | `'Awesome app'` |
+| categories | `Array<MarketplaceCategoryId>` | Displayed category. Select one of the following bellow. | `['security', 'tools']` |
+| author | `string` | Displayed author of the app | `'Bob'` |
+| url | `string` | URL of the app which will be launched in the iframe. | `'https://foo.app/launch'` |
+| description | `string` | Displayed only in the modal dialog with additional info about the app. | `'The best app'` |
+| site | `string` *(optional)* | Displayed site link | `'https://blockscout.com'` |
+| twitter | `string` *(optional)* | Displayed twitter link | `'https://twitter.com/blockscoutcom'` |
+| telegram | `string`  *(optional)* | Displayed telegram link | `'https://t.me/poa_network'` |
+| github | `string` *(optional)* | Displayed github link | `'https://github.com/blockscout'` |
+
+#### Marketplace categories ids
+
+For each application, you need to specify the `MarketplaceCategoryId` to which it belongs. Select one of the following:
+
+- `defi`
+- `exchanges`
+- `finance`
+- `games`
+- `marketplaces`
+- `nft`
+- `security`
+- `social`
+- `tools`
+- `yieldFarming`
+
+### How to add new environment variable
+
+If the variable should be exposed to the browser don't forget to add prefix `NEXT_PUBLIC_` to its name.
+
+These are the steps that you have to follow to make everything work:
+- create the variable placeholder for build-time in file `.env.template`; this is the most important step, without this the app will not receive any variables that are passed at run-time
+- for local development purposes add the variable to either `configs/envs/.env.common` or `configs/envs/.env.<network>` files depending on if the variable has the same value for all network or specific value for each network
+- add the variable to CI configs
+    - `deploy/values/review/values.yaml` - review environment
+    - `deploy/values/main/values.yaml` - production environment
+    - `deploy/values/e2e/values.yaml` - e2e-test environment
+
+Keep in mind that all json-like values should be single-quoted, e.g `[{'foo': 'bar'}]`

@@ -9,6 +9,7 @@ import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
 import { useForm, Controller } from 'react-hook-form';
 
 import type { AddressTag, AddressTagErrors } from 'types/api/account';
+import { QueryKeys } from 'types/client/accountQueries';
 
 import getErrorMessage from 'lib/getErrorMessage';
 import type { ErrorType } from 'lib/hooks/useFetch';
@@ -53,10 +54,10 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
 
     const isEdit = data?.id;
     if (isEdit) {
-      return fetch(`/api/account/private-tags/address/${ data.id }`, { method: 'PUT', body });
+      return fetch(`/node-api/account/private-tags/address/${ data.id }`, { method: 'PUT', body });
     }
 
-    return fetch('/api/account/private-tags/address', { method: 'POST', body });
+    return fetch('/node-api/account/private-tags/address', { method: 'POST', body });
   }, {
     onError: (e: ErrorType<AddressTagErrors>) => {
       setPending(false);
@@ -70,7 +71,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
       }
     },
     onSuccess: () => {
-      queryClient.refetchQueries([ 'address-tags' ]).then(() => {
+      queryClient.refetchQueries([ QueryKeys.addressTags ]).then(() => {
         onClose();
         setPending(false);
       });
