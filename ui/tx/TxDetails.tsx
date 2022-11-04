@@ -25,18 +25,11 @@ import TextSeparator from 'ui/shared/TextSeparator';
 import TxStatus from 'ui/shared/TxStatus';
 import Utilization from 'ui/shared/Utilization';
 import TxDetailsSkeleton from 'ui/tx/details/TxDetailsSkeleton';
+import TxDetailsTokenTransfers from 'ui/tx/details/TxDetailsTokenTransfers';
 import TxRevertReason from 'ui/tx/details/TxRevertReason';
-import TokenTransferList from 'ui/tx/TokenTransferList';
 import TxDecodedInputData from 'ui/tx/TxDecodedInputData';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
 import useFetchTxInfo from 'ui/tx/useFetchTxInfo';
-
-const TOKEN_TRANSFERS = [
-  { title: 'Tokens Transferred', hint: 'List of tokens transferred in the transaction.', type: 'token_transfer' },
-  { title: 'Tokens Minted', hint: 'List of tokens minted in the transaction.', type: 'token_minting' },
-  { title: 'Tokens Burnt', hint: 'List of tokens burnt in the transaction.', type: 'token_burning' },
-  { title: 'Tokens Created', hint: 'List of tokens created in the transaction.', type: 'token_spawning' },
-];
 
 const TxDetails = () => {
   const { data, isLoading, isError, socketStatus } = useFetchTxInfo();
@@ -181,22 +174,7 @@ const TxDetails = () => {
           </Flex>
         ) }
       </DetailsInfoItem>
-      { TOKEN_TRANSFERS.map(({ title, hint, type }) => {
-        const items = data.token_transfers?.filter((token) => token.type === type) || [];
-        if (items.length === 0) {
-          return null;
-        }
-        return (
-          <DetailsInfoItem
-            key={ type }
-            title={ title }
-            hint={ hint }
-            position="relative"
-          >
-            <TokenTransferList items={ items }/>
-          </DetailsInfoItem>
-        );
-      }) }
+      { data.token_transfers && <TxDetailsTokenTransfers data={ data.token_transfers } txHash={ data.hash }/> }
 
       <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 3, lg: 8 }}/>
       <DetailsInfoItem

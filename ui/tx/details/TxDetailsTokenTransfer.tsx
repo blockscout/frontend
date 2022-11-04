@@ -12,7 +12,7 @@ import NftTokenTransferSnippet from 'ui/tx/NftTokenTransferSnippet';
 
 type Props = TTokenTransfer;
 
-const TokenTransfer = ({ token, total, to, from }: Props) => {
+const TxDetailsTokenTransfer = ({ token, total, to, from }: Props) => {
 
   const isColumnLayout = token.type === 'ERC-1155' && Array.isArray(total);
   const tokenSnippet = <TokenSnippet symbol={ token.symbol } hash={ token.address } name={ token.name } ml={ 3 }/>;
@@ -79,4 +79,4 @@ const TokenTransfer = ({ token, total, to, from }: Props) => {
   );
 };
 
-export default React.memo(TokenTransfer);
+export default React.memo(TxDetailsTokenTransfer);

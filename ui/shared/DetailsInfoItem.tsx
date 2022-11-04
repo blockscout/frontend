@@ -4,8 +4,8 @@ import React from 'react';
 
 import infoIcon from 'icons/info.svg';
 
-interface Props extends HTMLChakraProps<'div'> {
-  title: string;
+interface Props extends Omit<HTMLChakraProps<'div'>, 'title'> {
+  title: React.ReactNode;
   hint: string;
   children: React.ReactNode;
 }

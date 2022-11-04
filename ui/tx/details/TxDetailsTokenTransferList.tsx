@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { TokenTransfer as TTokenTransfer } from 'types/api/tokenTransfer';
 
-import TokenTransfer from 'ui/tx/TokenTransfer';
+import TokenTransfer from './TxDetailsTokenTransfer';
 
 interface Props {
   items: Array<TTokenTransfer>;
@@ -25,7 +25,7 @@ function getItemsNum(items: Array<TTokenTransfer>) {
   return nonErc1155items + erc1155items;
 }
 
-const TokenTransferList = ({ items }: Props) => {
+const TxDetailsTokenTransferList = ({ items }: Props) => {
   const itemsNum = getItemsNum(items);
   const hasScroll = itemsNum > 5;
 
@@ -57,4 +57,4 @@ const TokenTransferList = ({ items }: Props) => {
   );
 };
 
-export default React.memo(TokenTransferList);
+export default React.memo(TxDetailsTokenTransferList);
