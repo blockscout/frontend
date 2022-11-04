@@ -73,7 +73,6 @@ export default function useQueryWithPages<Response extends ResponseWithPaginatio
     // we dont have pagination params for the first page
     let nextPageQuery: typeof router.query;
     if (page === 2) {
-      queryClient.clear();
       nextPageQuery = omit(router.query, PAGINATION_FIELDS);
     } else {
       const nextPageParams = { ...pageParams[page - 2] };
@@ -85,6 +84,7 @@ export default function useQueryWithPages<Response extends ResponseWithPaginatio
       .then(() => {
         animateScroll.scrollToTop({ duration: 0 });
         setPage(prev => prev - 1);
+        page === 2 && queryClient.clear();
       });
   }, [ router, page, pageParams, queryClient ]);
 
