@@ -7,7 +7,7 @@ import HashStringShorten from 'ui/shared/HashStringShorten';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 interface Props {
-  type?: 'address' | 'transaction' | 'token' | 'block';
+  type?: 'address' | 'transaction' | 'token' | 'block' | 'token_instance_item';
   alias?: string | null;
   className?: string;
   hash: string;
@@ -23,6 +23,8 @@ const AddressLink = ({ alias, type, className, truncation = 'dynamic', hash, id,
     url = link('tx', { id: id || hash });
   } else if (type === 'token') {
     url = link('token_index', { hash: id || hash });
+  } else if (type === 'token_instance_item') {
+    url = link('token_instance_item', { hash, id });
   } else if (type === 'block') {
     url = link('block', { id: id || hash });
   } else {
@@ -39,11 +41,11 @@ const AddressLink = ({ alias, type, className, truncation = 'dynamic', hash, id,
     }
     switch (truncation) {
       case 'constant':
-        return <HashStringShorten hash={ hash }/>;
+        return <HashStringShorten hash={ id || hash }/>;
       case 'dynamic':
-        return <HashStringShortenDynamic hash={ hash } fontWeight={ fontWeight }/>;
+        return <HashStringShortenDynamic hash={ id || hash } fontWeight={ fontWeight }/>;
       case 'none':
-        return <span>{ hash }</span>;
+        return <span>{ id || hash }</span>;
     }
   })();
 

@@ -20,12 +20,12 @@ import transactionIcon from 'icons/transactions.svg';
 import dayjs from 'lib/date/dayjs';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import link from 'lib/link/link';
+import AdditionalInfoButton from 'ui/shared/AdditionalInfoButton';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import TxStatus from 'ui/shared/TxStatus';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
-import TxAdditionalInfoButton from 'ui/txs/TxAdditionalInfoButton';
 import TxType from 'ui/txs/TxType';
 
 const TxsListItem = ({ tx }: {tx: Transaction}) => {
@@ -42,7 +42,7 @@ const TxsListItem = ({ tx }: {tx: Transaction}) => {
             { tx.tx_types.map(item => <TxType key={ item } type={ item }/>) }
             <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined }/>
           </HStack>
-          <TxAdditionalInfoButton onClick={ onOpen }/>
+          <AdditionalInfoButton onClick={ onOpen }/>
         </Flex>
         <Flex justifyContent="space-between" lineHeight="24px" mt={ 3 }>
           <Flex>
