@@ -54,7 +54,7 @@ const TxDetailsTokenTransfers = ({ data, txHash }: Props) => {
         <NextLink href={ viewAllUrl } passHref>
           <Link>View all</Link>
         </NextLink>
-        <Text variant="secondary" as="span" whiteSpace="pre"> (15)</Text>
+        <Text variant="secondary" as="span" whiteSpace="pre"> ({ data.length })</Text>
       </GridItem>
     </>
   );
