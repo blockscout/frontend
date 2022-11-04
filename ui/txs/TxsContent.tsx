@@ -65,31 +65,33 @@ const TxsContent = ({
   } = useQueryWithPages<TransactionsResponse>(apiPath, queryName, stateFilter && { filter: stateFilter });
   // } = useQueryWithPages({ ...filters, filter: stateFilter, apiPath });
 
-  if (isError) {
-    return <DataFetchAlert/>;
-  }
+  const content = (() => {
+    if (isError) {
+      return <DataFetchAlert/>;
+    }
 
-  const txs = data?.items;
+    const txs = data?.items;
 
-  if (!isLoading && !txs) {
-    return <Alert>There are no transactions.</Alert>;
-  }
+    if (!isLoading && !txs?.length) {
+      return <Alert>There are no transactions.</Alert>;
+    }
 
-  let content = (
-    <>
-      <Show below="lg" ssr={ false }><TxsSkeletonMobile/></Show>
-      <Show above="lg" ssr={ false }><TxsSkeletonDesktop/></Show>
-    </>
-  );
+    if (!isLoading && txs) {
+      return <TxsWithSort txs={ txs } sorting={ sorting } sort={ sort }/>;
+    }
 
-  if (!isLoading && txs) {
-    content = <TxsWithSort txs={ txs } sorting={ sorting } sort={ sort }/>;
-  }
+    return (
+      <>
+        <Show below="lg" ssr={ false }><TxsSkeletonMobile/></Show>
+        <Show above="lg" ssr={ false }><TxsSkeletonDesktop/></Show>
+      </>
+    );
+  })();
 
   return (
     <>
-      { showDescription && <Box mb={ 12 }>Only the first 10,000 elements are displayed</Box> }
-      <TxsHeader sorting={ sorting } setSorting={ setSorting } paginationProps={ pagination }/>
+      { showDescription && <Box mb={{ base: 6, lg: 12 }}>Only the first 10,000 elements are displayed</Box> }
+      <TxsHeader mt={ -6 } sorting={ sorting } setSorting={ setSorting } paginationProps={ pagination }/>
       { content }
     </>
   );

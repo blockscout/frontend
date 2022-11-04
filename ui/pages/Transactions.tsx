@@ -22,7 +22,7 @@ const Transactions = () => {
     <Page hideMobileHeaderOnScrollDown>
       <Box h="100%">
         <PageTitle text="Transactions"/>
-        <RoutedTabs tabs={ TABS }/>
+        <RoutedTabs tabs={ TABS } tabListMarginBottom={{ base: 6, lg: 8 }}/>
       </Box>
     </Page>
   );

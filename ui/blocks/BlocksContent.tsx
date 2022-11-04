@@ -61,37 +61,48 @@ const BlocksContent = ({ type }: Props) => {
     handler: handleNewBlockMessage,
   });
 
-  if (isLoading) {
+  const content = (() => {
+    if (isLoading) {
+      return (
+        <>
+          <Show below="lg" key="skeleton-mobile">
+            <BlocksSkeletonMobile/>
+          </Show>
+          <Show above="lg" key="skeleton-desktop">
+            <SkeletonTable columns={ [ '125px', '120px', '21%', '64px', '35%', '22%', '22%' ] }/>
+          </Show>
+        </>
+      );
+    }
+
+    if (isError) {
+      return <DataFetchAlert/>;
+    }
+
+    if (data.items.length === 0) {
+      return <Alert>There are no blocks.</Alert>;
+    }
+
     return (
       <>
-        <Show below="lg" key="skeleton-mobile">
-          <BlocksSkeletonMobile/>
-        </Show>
-        <Show above="lg" key="skeleton-desktop">
-          <Skeleton h={ 6 } mb={ 8 } w="150px"/>
-          <SkeletonTable columns={ [ '125px', '120px', '21%', '64px', '35%', '22%', '22%' ] }/>
-        </Show>
+        { socketAlert && <Alert status="warning" mb={ 6 } as="a" href={ window.document.location.href }>{ socketAlert }</Alert> }
+        <Show below="lg" key="content-mobile"><BlocksList data={ data.items }/></Show>
+        <Show above="lg" key="content-desktop"><BlocksTable data={ data.items }/></Show>
       </>
     );
-  }
 
-  if (isError) {
-    return <DataFetchAlert/>;
-  }
-
-  if (data.items.length === 0) {
-    return <Alert>There are no blocks.</Alert>;
-  }
+  })();
 
   return (
     <>
-      <Text as="span">Total of { data.items[0].height.toLocaleString() } blocks</Text>
+      { data ?
+        <Text mb={{ base: 0, lg: 6 }}>Total of { data.items[0].height.toLocaleString() } blocks</Text> :
+        <Skeleton h="24px" w="200px" mb={{ base: 0, lg: 6 }}/>
+      }
       <ActionBar>
         <Pagination ml="auto" { ...pagination }/>
       </ActionBar>
-      { socketAlert && <Alert status="warning" mt={ 8 } as="a" href={ window.document.location.href }>{ socketAlert }</Alert> }
-      <Show below="lg" key="content-mobile"><BlocksList data={ data.items }/></Show>
-      <Show above="lg" key="content-desktop"><BlocksTable data={ data.items }/></Show>
+      { content }
     </>
   );
 };

@@ -1,4 +1,4 @@
-import { HStack } from '@chakra-ui/react';
+import { HStack, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Sort } from 'types/client/txs-sort';
@@ -16,13 +16,14 @@ type Props = {
   sorting: Sort;
   setSorting: (val: Sort | ((val: Sort) => Sort)) => void;
   paginationProps: PaginationProps;
+  className?: string;
 }
 
-const TxsHeader = ({ sorting, setSorting, paginationProps }: Props) => {
+const TxsHeader = ({ sorting, setSorting, paginationProps, className }: Props) => {
   const isMobile = useIsMobile(false);
 
   return (
-    <ActionBar>
+    <ActionBar className={ className }>
       <HStack>
         { /* api is not implemented */ }
         { /* <TxsFilters
@@ -51,4 +52,4 @@ const TxsHeader = ({ sorting, setSorting, paginationProps }: Props) => {
   );
 };
 
-export default TxsHeader;
+export default chakra(TxsHeader);
