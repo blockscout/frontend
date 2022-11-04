@@ -4,9 +4,11 @@ import React from 'react';
 
 import { QueryKeys } from 'types/client/queries';
 
+import appConfig from 'configs/app/config';
 import * as cookies from 'lib/cookies';
 import useFetch from 'lib/hooks/useFetch';
 import useScrollDirection from 'lib/hooks/useScrollDirection';
+import { SocketProvider } from 'lib/socket/context';
 import ScrollDirectionContext from 'ui/ScrollDirectionContext';
 import PageContent from 'ui/shared/Page/PageContent';
 import Header from 'ui/snippets/header/Header';
@@ -36,15 +38,17 @@ const Page = ({
   ) : children;
 
   return (
-    <ScrollDirectionContext.Provider value={ directionContext }>
-      <Flex w="100%" minH="100vh" alignItems="stretch">
-        <NavigationDesktop/>
-        <Flex flexDir="column" width="100%">
-          <Header hideOnScrollDown={ hideMobileHeaderOnScrollDown }/>
-          { renderedChildren }
+    <SocketProvider url={ `${ appConfig.api.socket }${ appConfig.api.basePath }/socket/v2/websocket?vsn=2.0.0` }>
+      <ScrollDirectionContext.Provider value={ directionContext }>
+        <Flex w="100%" minH="100vh" alignItems="stretch">
+          <NavigationDesktop/>
+          <Flex flexDir="column" width="100%">
+            <Header hideOnScrollDown={ hideMobileHeaderOnScrollDown }/>
+            { renderedChildren }
+          </Flex>
         </Flex>
-      </Flex>
-    </ScrollDirectionContext.Provider>
+      </ScrollDirectionContext.Provider>
+    </SocketProvider>
   );
 };
 

@@ -36,7 +36,7 @@ export interface BlocksResponse {
   next_page_params: {
     block_number: number;
     items_count: number;
-  };
+  } | null;
 }
 
 export interface BlockTransactionsResponse {
@@ -46,4 +46,9 @@ export interface BlockTransactionsResponse {
     index: number;
     items_count: number;
   } | null;
+}
+
+export interface NewBlockSocketResponse {
+  average_block_time: string;
+  block: Block;
 }

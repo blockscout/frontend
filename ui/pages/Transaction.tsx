@@ -42,7 +42,7 @@ const TransactionPageContent = () => {
 
   const { data } = useQuery<unknown, unknown, Transaction>(
     [ 'tx', router.query.id ],
-    async() => await fetch(`/api/transactions/${ router.query.id }`),
+    async() => await fetch(`/node-api/transactions/${ router.query.id }`),
     {
       enabled: Boolean(router.query.id),
     },
