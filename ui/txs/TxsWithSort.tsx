@@ -1,4 +1,4 @@
-import { Box, Show } from '@chakra-ui/react';
+import { Box, Show, Hide } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 
 import type { TransactionsResponse } from 'types/api/transaction';
@@ -29,7 +29,7 @@ const TxsWithSort = ({
   return (
     <>
       <Show below="lg" ssr={ false }><Box>{ sortedTxs.map(tx => <TxsListItem tx={ tx } key={ tx.hash }/>) }</Box></Show>
-      <Show above="lg" ssr={ false }><TxsTable txs={ sortedTxs } sort={ sort } sorting={ sorting }/></Show>
+      <Hide below="lg" ssr={ false }><TxsTable txs={ sortedTxs } sort={ sort } sorting={ sorting }/></Hide>
     </>
   );
 
