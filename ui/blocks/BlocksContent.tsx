@@ -1,4 +1,4 @@
-import { Box, Text, Show, Alert, Skeleton } from '@chakra-ui/react';
+import { Box, Text, Show, Hide, Skeleton, Alert } from '@chakra-ui/react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
@@ -70,10 +70,10 @@ const BlocksContent = ({ type }: Props) => {
         <Show below="lg" key="skeleton-mobile">
           <BlocksSkeletonMobile/>
         </Show>
-        <Show above="lg" key="skeleton-desktop">
+        <Hide below="lg" key="skeleton-desktop">
           <Skeleton h={ 6 } mb={ 8 } w="150px"/>
           <SkeletonTable columns={ [ '125px', '120px', '21%', '64px', '35%', '22%', '22%' ] }/>
-        </Show>
+        </Hide>
       </>
     );
   }
@@ -83,7 +83,7 @@ const BlocksContent = ({ type }: Props) => {
   }
 
   if (data.items.length === 0) {
-    return <Alert>There are no blocks.</Alert>;
+    return <Text as="span">There are no blocks.</Text>;
   }
 
   return (
@@ -91,7 +91,7 @@ const BlocksContent = ({ type }: Props) => {
       <Text as="span">Total of { data.items[0].height.toLocaleString() } blocks</Text>
       { socketAlert && <Alert status="warning" mt={ 8 } as="a" href={ window.document.location.href }>{ socketAlert }</Alert> }
       <Show below="lg" key="content-mobile"><BlocksList data={ data.items }/></Show>
-      <Show above="lg" key="content-desktop"><BlocksTable data={ data.items }/></Show>
+      <Hide below="lg" key="content-desktop"><BlocksTable data={ data.items }/></Hide>
       <Box mx={{ base: 0, lg: 6 }} my={{ base: 6, lg: 3 }}>
         { /* eslint-disable-next-line react/jsx-no-bind */ }
         <Pagination page={ 1 } onNextPageClick={ () => {} } onPrevPageClick={ () => {} } resetPage={ () => {} } hasNextPage/>

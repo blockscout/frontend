@@ -7,6 +7,7 @@ import type { Transaction } from 'types/api/transaction';
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
 import eastArrowIcon from 'icons/arrows/east.svg';
+import { useAppContext } from 'lib/appContext';
 import useFetch from 'lib/hooks/useFetch';
 import isBrowser from 'lib/isBrowser';
 import networkExplorers from 'lib/networks/networkExplorers';
@@ -32,6 +33,12 @@ const TABS: Array<RoutedTab> = [
 const TransactionPageContent = () => {
   const router = useRouter();
   const fetch = useFetch();
+  const appProps = useAppContext();
+  const isInBrowser = isBrowser();
+
+  const referrer = isInBrowser ? window.document.referrer : appProps.referrer;
+
+  const hasGoBackLink = referrer && referrer.includes('/txs');
 
   const { data } = useQuery<unknown, unknown, Transaction>(
     [ 'tx', router.query.id ],
@@ -48,12 +55,10 @@ const TransactionPageContent = () => {
       return <ExternalLink key={ explorer.baseUrl } title={ `Open in ${ explorer.title }` } href={ url.toString() }/>;
     });
 
-  const hasGoBackLink = isBrowser() && window.document.referrer.includes('/txs');
-
   return (
     <Page>
       { hasGoBackLink && (
-        <Link mb={ 6 } display="inline-flex" href={ window.document.referrer }>
+        <Link mb={ 6 } display="inline-flex" href={ referrer }>
           <Icon as={ eastArrowIcon } boxSize={ 6 } mr={ 2 } transform="rotate(180deg)"/>
             Transactions
         </Link>
