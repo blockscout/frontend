@@ -1,15 +1,15 @@
 import { Flex, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenTransfer as TTokenTransfer } from 'types/api/tokenTransfer';
+import type { TokenTransfer } from 'types/api/tokenTransfer';
 
-import TokenTransfer from './TxDetailsTokenTransfer';
+import TxDetailsTokenTransfer from './TxDetailsTokenTransfer';
 
 interface Props {
-  items: Array<TTokenTransfer>;
+  items: Array<TokenTransfer>;
 }
 
-function getItemsNum(items: Array<TTokenTransfer>) {
+function getItemsNum(items: Array<TokenTransfer>) {
   const nonErc1155items = items.filter((item) => item.token.type !== 'ERC-1155').length;
   const erc1155items = items
     .filter((item) => item.token.type === 'ERC-1155')
@@ -52,7 +52,7 @@ const TxDetailsTokenTransferList = ({ items }: Props) => {
       pr={ hasScroll ? 5 : 0 }
       pb={ hasScroll ? 10 : 0 }
     >
-      { items.map((item, index) => <TokenTransfer key={ index } { ...item }/>) }
+      { items.map((item, index) => <TxDetailsTokenTransfer key={ index } { ...item }/>) }
     </Flex>
   );
 };

@@ -38,7 +38,7 @@ const TxDetailsTokenTransfers = ({ data, txHash }: Props) => {
             title={ (
               <>
                 <Text as="span">{ title }</Text>
-                { items.length > 1 && <Text as="span" whiteSpace="pre" variant="secondary"> ({ items.length })</Text> }
+                <Text as="span" whiteSpace="pre" variant="secondary"> ({ items.length })</Text>
               </>
             ) }
             hint={ hint }

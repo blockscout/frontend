@@ -15,18 +15,17 @@ type Props = TTokenTransfer;
 const TxDetailsTokenTransfer = ({ token, total, to, from }: Props) => {
 
   const isColumnLayout = token.type === 'ERC-1155' && Array.isArray(total);
-  const tokenSnippet = <TokenSnippet symbol={ token.symbol } hash={ token.address } name={ token.name } ml={ 3 }/>;
 
   const content = (() => {
     switch (token.type) {
       case 'ERC-20': {
         const payload = total as Erc20TotalPayload;
         return (
-          <Flex>
+          <Flex flexWrap="wrap" columnGap={ 3 } rowGap={ 2 }>
             <Text fontWeight={ 500 } as="span">For:{ space }
               <CurrencyValue value={ payload.value } exchangeRate={ token.exchange_rate } fontWeight={ 600 }/>
             </Text>
-            { tokenSnippet }
+            <TokenSnippet symbol={ token.symbol } hash={ token.address } name={ token.name } w="auto" flexGrow="1"/>
           </Flex>
         );
       }
