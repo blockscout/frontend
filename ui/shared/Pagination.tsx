@@ -1,4 +1,4 @@
-import { Button, Flex, Icon, IconButton } from '@chakra-ui/react';
+import { Button, Flex, Icon, IconButton, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import arrowIcon from 'icons/arrows/east-mini.svg';
@@ -10,12 +10,14 @@ export type Props = {
   resetPage: () => void;
   hasNextPage: boolean;
   hasPaginationParams?: boolean;
+  className?: string;
 }
 
-const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasNextPage, hasPaginationParams }: Props) => {
+const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasNextPage, hasPaginationParams, className }: Props) => {
 
   return (
     <Flex
+      className={ className }
       fontSize="sm"
       alignItems="center"
     >
@@ -69,4 +71,4 @@ const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasNext
   );
 };
 
-export default Pagination;
+export default chakra(Pagination);

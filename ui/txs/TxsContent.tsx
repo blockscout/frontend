@@ -1,18 +1,19 @@
 import { Text, Box, Show, Hide } from '@chakra-ui/react';
 import React, { useState, useCallback } from 'react';
 
+import type { TransactionsResponse } from 'types/api/transaction';
 import type { TTxsFilters } from 'types/api/txsFilters';
 import type { QueryKeys } from 'types/client/queries';
 import type { Sort } from 'types/client/txs-sort';
 
 import * as cookies from 'lib/cookies';
+import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import TxsHeader from './TxsHeader';
 import TxsSkeletonDesktop from './TxsSkeletonDesktop';
 import TxsSkeletonMobile from './TxsSkeletonMobile';
 import TxsWithSort from './TxsWithSort';
-import useQueryWithPages from './useQueryWithPages';
 
 type Props = {
   queryName: QueryKeys;
@@ -61,39 +62,36 @@ const TxsContent = ({
     isLoading,
     isError,
     pagination,
-  } = useQueryWithPages(apiPath, queryName, stateFilter && { filter: stateFilter });
+  } = useQueryWithPages<TransactionsResponse>(apiPath, queryName, stateFilter && { filter: stateFilter });
   // } = useQueryWithPages({ ...filters, filter: stateFilter, apiPath });
 
-  if (isError) {
-    return <DataFetchAlert/>;
-  }
+  const content = (() => {
+    if (isError) {
+      return <DataFetchAlert/>;
+    }
 
-  const txs = data?.items;
+    const txs = data?.items;
 
-  if (!isLoading && !txs) {
-    return <Text as="span">There are no transactions.</Text>;
-  }
+    if (!isLoading && !txs?.length) {
+      return <Text as="span">There are no transactions.</Text>;
+    }
 
-  let content = (
-    <>
-      <Show below="lg" ssr={ false }><TxsSkeletonMobile/></Show>
-      <Hide below="lg" ssr={ false }><TxsSkeletonDesktop/></Hide>
-    </>
-  );
+    if (!isLoading && txs) {
+      return <TxsWithSort txs={ txs } sorting={ sorting } sort={ sort }/>;
+    }
 
-  if (!isLoading && txs) {
-    content = <TxsWithSort txs={ txs } sorting={ sorting } sort={ sort }/>;
-  }
-
-  const paginationProps = {
-    ...pagination,
-    hasNextPage: data?.next_page_params !== undefined && data?.next_page_params !== null && Object.keys(data?.next_page_params).length > 0,
-  };
+    return (
+      <>
+        <Show below="lg" ssr={ false }><TxsSkeletonMobile/></Show>
+        <Hide below="lg" ssr={ false }><TxsSkeletonDesktop/></Hide>
+      </>
+    );
+  })();
 
   return (
     <>
-      { showDescription && <Box mb={ 12 }>Only the first 10,000 elements are displayed</Box> }
-      <TxsHeader sorting={ sorting } setSorting={ setSorting } paginationProps={ paginationProps }/>
+      { showDescription && <Box mb={{ base: 6, lg: 12 }}>Only the first 10,000 elements are displayed</Box> }
+      <TxsHeader mt={ -6 } sorting={ sorting } setSorting={ setSorting } paginationProps={ pagination }/>
       { content }
     </>
   );

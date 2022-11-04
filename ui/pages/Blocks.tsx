@@ -17,9 +17,7 @@ const BlocksPageContent = () => {
   return (
     <Page>
       <PageTitle text="Blocks"/>
-      <RoutedTabs
-        tabs={ TABS }
-      />
+      <RoutedTabs tabs={ TABS } tabListMarginBottom={{ base: 6, lg: 8 }}/>
     </Page>
   );
 };

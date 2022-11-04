@@ -1,3 +1,4 @@
+import type { ChakraProps } from '@chakra-ui/react';
 import {
   Tab,
   Tabs,
@@ -25,9 +26,10 @@ const hiddenItemStyles: StyleProps = {
 
 interface Props {
   tabs: Array<RoutedTab>;
+  tabListMarginBottom?: ChakraProps['marginBottom'];
 }
 
-const RoutedTabs = ({ tabs }: Props) => {
+const RoutedTabs = ({ tabs, tabListMarginBottom }: Props) => {
   const router = useRouter();
   const [ activeTabIndex, setActiveTabIndex ] = useState<number>(tabs.length + 1);
   useEffect(() => {
@@ -59,7 +61,7 @@ const RoutedTabs = ({ tabs }: Props) => {
   return (
     <Tabs variant="soft-rounded" colorScheme="blue" isLazy onChange={ handleTabChange } index={ activeTabIndex }>
       <TabList
-        marginBottom={{ base: 6, lg: 12 }}
+        marginBottom={ tabListMarginBottom }
         flexWrap="nowrap"
         whiteSpace="nowrap"
         ref={ listRef }

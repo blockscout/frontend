@@ -7,7 +7,7 @@ import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
 import type { Block } from 'types/api/block';
-import { QueryKeys } from 'types/client/accountQueries';
+import { QueryKeys } from 'types/client/queries';
 
 import appConfig from 'configs/app/config';
 import clockIcon from 'icons/clock.svg';

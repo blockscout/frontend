@@ -1,9 +1,11 @@
 import type { NextApiRequest } from 'next';
 
+import getSearchParams from 'lib/api/getSearchParams';
 import handler from 'lib/api/handler';
 
 const getUrl = (req: NextApiRequest) => {
-  return `/v2/blocks${ req.query.type ? `?type=${ req.query.type }` : '' }`;
+  const searchParamsStr = getSearchParams(req);
+  return `/v2/blocks${ searchParamsStr ? '?' + searchParamsStr : '' }`;
 };
 
 const requestHandler = handler(getUrl, [ 'GET' ]);

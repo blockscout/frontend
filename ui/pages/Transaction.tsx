@@ -80,9 +80,7 @@ const TransactionPageContent = () => {
           </Flex>
         ) }
       </Flex>
-      <RoutedTabs
-        tabs={ TABS }
-      />
+      <RoutedTabs tabs={ TABS } tabListMarginBottom={{ base: 6, lg: 12 }}/>
     </Page>
   );
 };
