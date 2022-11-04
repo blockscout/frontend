@@ -4,23 +4,32 @@ import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 import { animateScroll } from 'react-scroll';
 
-import type { TransactionsResponse } from 'types/api/transaction';
+import type { BlockFilters } from 'types/api/block';
+import type { PaginationParams } from 'types/api/pagination';
 import type { TTxsFilters } from 'types/api/txsFilters';
 import type { QueryKeys } from 'types/client/queries';
 
 import useFetch from 'lib/hooks/useFetch';
 
-const PAGINATION_FIELDS = [ 'block_number', 'index', 'items_count' ];
+const PAGINATION_FIELDS: Array<keyof PaginationParams> = [ 'block_number', 'index', 'items_count' ];
 
-export default function useQueryWithPages(apiPath: string, queryName: QueryKeys, filters?: TTxsFilters) {
+interface ResponseWithPagination {
+  next_page_params: PaginationParams | null;
+}
+
+export default function useQueryWithPages<Response extends ResponseWithPagination>(
+  apiPath: string,
+  queryName: QueryKeys,
+  filters?: TTxsFilters | BlockFilters,
+) {
   const queryClient = useQueryClient();
   const router = useRouter();
   const [ page, setPage ] = React.useState(1);
   const currPageParams = pick(router.query, PAGINATION_FIELDS);
-  const [ pageParams, setPageParams ] = React.useState<Array<Partial<TransactionsResponse['next_page_params']>>>([ {} ]);
+  const [ pageParams, setPageParams ] = React.useState<Array<Partial<PaginationParams>>>([ {} ]);
   const fetch = useFetch();
 
-  const { data, isLoading, isError } = useQuery<unknown, unknown, TransactionsResponse>(
+  const queryResult = useQuery<unknown, unknown, Response>(
     [ queryName, { page, filters } ],
     async() => {
       const params: Array<string> = [];
@@ -37,6 +46,7 @@ export default function useQueryWithPages(apiPath: string, queryName: QueryKeys,
     },
     { staleTime: Infinity },
   );
+  const { data } = queryResult;
 
   const onNextPageClick = useCallback(() => {
     if (!data?.next_page_params) {
@@ -88,6 +98,7 @@ export default function useQueryWithPages(apiPath: string, queryName: QueryKeys,
   }, [ router, queryClient ]);
 
   const hasPaginationParams = Object.keys(currPageParams).length > 0;
+  const nextPageParams = data?.next_page_params;
 
   const pagination = {
     page,
@@ -95,7 +106,8 @@ export default function useQueryWithPages(apiPath: string, queryName: QueryKeys,
     onPrevPageClick,
     hasPaginationParams,
     resetPage,
+    hasNextPage: nextPageParams ? Object.keys(nextPageParams).length > 0 : false,
   };
 
-  return { data, isError, isLoading, pagination };
+  return { ...queryResult, pagination };
 }

@@ -7,4 +7,6 @@ export enum QueryKeys {
   txLog = 'tx-log',
   txRawTrace = 'tx-raw-trace',
   blockTxs = 'block-transactions',
+  block = 'block',
+  blocks = 'blocks',
 }
