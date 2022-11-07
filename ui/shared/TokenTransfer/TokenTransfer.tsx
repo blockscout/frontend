@@ -3,12 +3,12 @@ import type { QueryKey } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
-import { TokenTransfer } from 'types/api/tokenTransfer';
 import type { TokenTransferResponse } from 'types/api/tokenTransfer';
 
 import useFetch from 'lib/hooks/useFetch';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import SkeletonTable from 'ui/shared/SkeletonTable';
+import { flattenTotal } from 'ui/shared/TokenTransfer/helpers';
 import TokenTransferList from 'ui/shared/TokenTransfer/TokenTransferList';
 import TokenTransferSkeletonMobile from 'ui/shared/TokenTransfer/TokenTransferSkeletonMobile';
 import TokenTransferTable from 'ui/shared/TokenTransfer/TokenTransferTable';
@@ -52,17 +52,7 @@ const TokenTransfer = ({ isLoading: isLoadingProp, isDisabled, queryKey, path, b
     return <Alert>There are no token transfers</Alert>;
   }
 
-  const items = data.items.reduce((result, item) => {
-    if (Array.isArray(item.total)) {
-      item.total.forEach((total) => {
-        result.push({ ...item, total });
-      });
-    } else {
-      result.push(item);
-    }
-
-    return result;
-  }, [] as Array<TokenTransfer>);
+  const items = data.items.reduce(flattenTotal, []);
 
   return (
     <>

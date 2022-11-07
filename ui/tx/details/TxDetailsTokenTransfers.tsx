@@ -1,4 +1,4 @@
-import { Text, Icon, Link, GridItem, Show } from '@chakra-ui/react';
+import { Icon, Link, GridItem, Show, Flex } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import React from 'react';
 
@@ -7,55 +7,69 @@ import type { TokenTransfer } from 'types/api/tokenTransfer';
 import tokenIcon from 'icons/token.svg';
 import link from 'lib/link/link';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import { flattenTotal } from 'ui/shared/TokenTransfer/helpers';
 
-import TxDetailsTokenTransferList from './TxDetailsTokenTransferList';
+import TxDetailsTokenTransfer from './TxDetailsTokenTransfer';
 
 interface Props {
   data: Array<TokenTransfer>;
   txHash: string;
 }
 
-const TOKEN_TRANSFERS = [
+const TOKEN_TRANSFERS_TYPES = [
   { title: 'Tokens Transferred', hint: 'List of tokens transferred in the transaction.', type: 'token_transfer' },
   { title: 'Tokens Minted', hint: 'List of tokens minted in the transaction.', type: 'token_minting' },
   { title: 'Tokens Burnt', hint: 'List of tokens burnt in the transaction.', type: 'token_burning' },
   { title: 'Tokens Created', hint: 'List of tokens created in the transaction.', type: 'token_spawning' },
 ];
+const VISIBLE_ITEMS_NUM = 3;
 
 const TxDetailsTokenTransfers = ({ data, txHash }: Props) => {
   const viewAllUrl = link('tx', { id: txHash }, { tab: 'token_transfers' });
 
+  const formattedData = data.reduce(flattenTotal, []);
+  const transferGroups = TOKEN_TRANSFERS_TYPES.map((group) => ({
+    ...group,
+    items: formattedData?.filter((token) => token.type === group.type) || [],
+  }));
+  const showViewAllLink = transferGroups.some(({ items }) => items.length > VISIBLE_ITEMS_NUM);
+
   return (
     <>
-      { TOKEN_TRANSFERS.map(({ title, hint, type }) => {
-        const items = data?.filter((token) => token.type === type) || [];
+      { transferGroups.map(({ title, hint, type, items }) => {
         if (items.length === 0) {
           return null;
         }
+
         return (
           <DetailsInfoItem
             key={ type }
-            title={ (
-              <>
-                <Text as="span">{ title }</Text>
-                <Text as="span" whiteSpace="pre" variant="secondary"> ({ items.length })</Text>
-              </>
-            ) }
+            title={ title }
             hint={ hint }
             position="relative"
           >
-            <TxDetailsTokenTransferList items={ items }/>
+            <Flex
+              flexDirection="column"
+              alignItems="flex-start"
+              rowGap={ 5 }
+              w="100%"
+            >
+              { items.slice(0, VISIBLE_ITEMS_NUM).map((item, index) => <TxDetailsTokenTransfer key={ index } { ...item }/>) }
+            </Flex>
           </DetailsInfoItem>
         );
       }) }
-      <Show above="lg"><GridItem></GridItem></Show>
-      <GridItem fontSize="sm" alignItems="center" display="inline-flex" pl={{ base: '28px', lg: 0 }}>
-        <Icon as={ tokenIcon } boxSize={ 6 }/>
-        <NextLink href={ viewAllUrl } passHref>
-          <Link>View all</Link>
-        </NextLink>
-        <Text variant="secondary" as="span" whiteSpace="pre"> ({ data.length })</Text>
-      </GridItem>
+      { showViewAllLink && (
+        <>
+          <Show above="lg"><GridItem></GridItem></Show>
+          <GridItem fontSize="sm" alignItems="center" display="inline-flex" pl={{ base: '28px', lg: 0 }}>
+            <Icon as={ tokenIcon } boxSize={ 6 }/>
+            <NextLink href={ viewAllUrl } passHref>
+              <Link>View all</Link>
+            </NextLink>
+          </GridItem>
+        </>
+      ) }
     </>
   );
 };
