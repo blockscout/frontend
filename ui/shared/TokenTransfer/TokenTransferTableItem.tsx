@@ -31,12 +31,12 @@ const TxInternalTableItem = ({ token, total, tx_hash: txHash, from, to, baseAddr
         <AdditionalInfoButton/>
       </Td>
       <Td>
-        <Flex flexDir="column" rowGap={ 3 } alignItems="flex-start">
-          <TokenSnippet hash={ token.address } name={ token.name || 'Unnamed token' }/>
+        <Flex flexDir="column" alignItems="flex-start">
+          <TokenSnippet hash={ token.address } name={ token.name || 'Unnamed token' } lineHeight="30px"/>
           <Tag>{ token.type }</Tag>
         </Flex>
       </Td>
-      <Td>
+      <Td lineHeight="30px">
         { 'token_id' in total ? (
           <Flex align="center">
             <Icon as={ nftPlaceholder } boxSize="30px" mr={ 2 }/>
@@ -45,28 +45,28 @@ const TxInternalTableItem = ({ token, total, tx_hash: txHash, from, to, baseAddr
         ) : '-' }
       </Td>
       <Td>
-        <Address display="inline-flex" maxW="100%" fontWeight={ 600 }>
+        <Address display="inline-flex" maxW="100%" fontWeight={ 600 } lineHeight="30px">
           <AddressLink type="transaction" hash={ txHash }/>
         </Address>
       </Td>
       <Td>
-        <Address display="inline-flex" maxW="100%">
+        <Address display="inline-flex" maxW="100%" lineHeight="30px">
           <AddressIcon hash={ from.hash }/>
           <AddressLink ml={ 2 } fontWeight="500" hash={ from.hash } alias={ from.name } flexGrow={ 1 }/>
         </Address>
       </Td>
       { baseAddress && (
         <Td px={ 0 }>
-          <InOutTag baseAddress={ baseAddress } addressFrom={ from.hash } w="50px" textAlign="center"/>
+          <InOutTag baseAddress={ baseAddress } addressFrom={ from.hash } w="50px" textAlign="center" mt="3px"/>
         </Td>
       ) }
       <Td>
-        <Address display="inline-flex" maxW="100%">
+        <Address display="inline-flex" maxW="100%" lineHeight="30px">
           <AddressIcon hash={ to.hash }/>
           <AddressLink ml={ 2 } fontWeight="500" hash={ to.hash } alias={ to.name } flexGrow={ 1 }/>
         </Address>
       </Td>
-      <Td isNumeric verticalAlign="top">
+      <Td isNumeric verticalAlign="top" lineHeight="30px">
         { value }
       </Td>
     </Tr>
