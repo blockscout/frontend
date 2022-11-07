@@ -16,9 +16,10 @@ import TokenSnippet from 'ui/shared/TokenSnippet';
 
 type Props = TokenTransfer & {
   baseAddress?: string;
+  showTxInfo?: boolean;
 }
 
-const TokenTransferListItem = ({ token, total, tx_hash: txHash, from, to, baseAddress }: Props) => {
+const TokenTransferListItem = ({ token, total, tx_hash: txHash, from, to, baseAddress, showTxInfo }: Props) => {
   const value = (() => {
     if (!('value' in total)) {
       return null;
@@ -33,7 +34,7 @@ const TokenTransferListItem = ({ token, total, tx_hash: txHash, from, to, baseAd
       <Flex w="100%">
         <TokenSnippet hash={ token.address } w="auto" maxW="calc(100% - 140px)" name={ token.name || 'Unnamed token' }/>
         <Tag flexShrink={ 0 } ml={ 2 } mr="auto">{ token.type }</Tag>
-        <AdditionalInfoButton/>
+        { showTxInfo && <AdditionalInfoButton/> }
       </Flex>
       { 'token_id' in total && (
         <Flex alignItems="center">
@@ -42,12 +43,14 @@ const TokenTransferListItem = ({ token, total, tx_hash: txHash, from, to, baseAd
           <AddressLink hash={ token.address } id={ total.token_id } type="token_instance_item"/>
         </Flex>
       ) }
-      <Flex columnGap={ 2 } w="100%">
-        <Text fontWeight={ 500 } flexShrink={ 0 }>Txn hash</Text>
-        <Address display="inline-flex" maxW="100%">
-          <AddressLink type="transaction" hash={ txHash }/>
-        </Address>
-      </Flex>
+      { showTxInfo && (
+        <Flex columnGap={ 2 } w="100%">
+          <Text fontWeight={ 500 } flexShrink={ 0 }>Txn hash</Text>
+          <Address display="inline-flex" maxW="100%">
+            <AddressLink type="transaction" hash={ txHash }/>
+          </Address>
+        </Flex>
+      ) }
       <Flex w="100%" columnGap={ 3 }>
         <Address width={ addressWidth }>
           <AddressIcon hash={ from.hash }/>

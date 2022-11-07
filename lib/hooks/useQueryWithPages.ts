@@ -1,3 +1,4 @@
+import type { UseQueryOptions } from '@tanstack/react-query';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { pick, omit } from 'lodash';
 import { useRouter } from 'next/router';
@@ -17,11 +18,15 @@ interface ResponseWithPagination {
   next_page_params: PaginationParams | null;
 }
 
-export default function useQueryWithPages<Response extends ResponseWithPagination>(
-  apiPath: string,
-  queryName: QueryKeys,
-  filters?: TTxsFilters | BlockFilters,
-) {
+interface Params<Response> {
+  apiPath: string;
+  queryName: QueryKeys;
+  queryIds?: Array<string>;
+  filters?: TTxsFilters | BlockFilters;
+  options?: Omit<UseQueryOptions<unknown, unknown, Response>, 'queryKey' | 'queryFn'>;
+}
+
+export default function useQueryWithPages<Response extends ResponseWithPagination>({ queryName, filters, options, apiPath, queryIds }: Params<Response>) {
   const queryClient = useQueryClient();
   const router = useRouter();
   const [ page, setPage ] = React.useState(1);
@@ -30,7 +35,7 @@ export default function useQueryWithPages<Response extends ResponseWithPaginatio
   const fetch = useFetch();
 
   const queryResult = useQuery<unknown, unknown, Response>(
-    [ queryName, { page, filters } ],
+    [ queryName, ...(queryIds || []), { page, filters } ],
     async() => {
       const params: Array<string> = [];
 
@@ -44,7 +49,7 @@ export default function useQueryWithPages<Response extends ResponseWithPaginatio
 
       return fetch(`${ apiPath }${ params.length ? '?' + params.join('&') : '' }`);
     },
-    { staleTime: Infinity },
+    { staleTime: Infinity, ...options },
   );
   const { data } = queryResult;
 

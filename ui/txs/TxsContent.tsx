@@ -62,7 +62,11 @@ const TxsContent = ({
     isLoading,
     isError,
     pagination,
-  } = useQueryWithPages<TransactionsResponse>(apiPath, queryName, stateFilter && { filter: stateFilter });
+  } = useQueryWithPages<TransactionsResponse>({
+    apiPath,
+    queryName,
+    filters: stateFilter ? { filter: stateFilter } : undefined,
+  });
   // } = useQueryWithPages({ ...filters, filter: stateFilter, apiPath });
 
   const content = (() => {

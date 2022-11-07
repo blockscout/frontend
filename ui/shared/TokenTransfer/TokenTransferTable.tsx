@@ -9,27 +9,28 @@ import TokenTransferTableItem from 'ui/shared/TokenTransfer/TokenTransferTableIt
 interface Props {
   data: Array<TokenTransfer>;
   baseAddress?: string;
+  showTxInfo?: boolean;
 }
 
-const TxInternalsTable = ({ data, baseAddress }: Props) => {
+const TxInternalsTable = ({ data, baseAddress, showTxInfo }: Props) => {
 
   return (
-    <Table variant="simple" size="sm" mt={ 6 }>
-      <Thead top={ 0 }>
+    <Table variant="simple" size="sm">
+      <Thead top={ 80 }>
         <Tr>
-          <Th width="44px"></Th>
+          { showTxInfo && <Th width="44px"></Th> }
           <Th width="185px">Token</Th>
           <Th width="160px">Token ID</Th>
-          <Th width="25%">Txn hash</Th>
+          { showTxInfo && <Th width="25%">Txn hash</Th> }
           <Th width="25%">From</Th>
           { baseAddress && <Th width="50px" px={ 0 }/> }
           <Th width="25%">To</Th>
-          <Th width="25%">Value</Th>
+          <Th width="25%" isNumeric>Value</Th>
         </Tr>
       </Thead>
       <Tbody>
         { data.map((item, index) => (
-          <TokenTransferTableItem key={ index } { ...item } baseAddress={ baseAddress }/>
+          <TokenTransferTableItem key={ index } { ...item } baseAddress={ baseAddress } showTxInfo={ showTxInfo }/>
         )) }
       </Tbody>
     </Table>

@@ -14,9 +14,10 @@ import TokenSnippet from 'ui/shared/TokenSnippet';
 
 type Props = TokenTransfer & {
   baseAddress?: string;
+  showTxInfo?: boolean;
 }
 
-const TxInternalTableItem = ({ token, total, tx_hash: txHash, from, to, baseAddress }: Props) => {
+const TxInternalTableItem = ({ token, total, tx_hash: txHash, from, to, baseAddress, showTxInfo }: Props) => {
   const value = (() => {
     if (!('value' in total)) {
       return '-';
@@ -27,9 +28,11 @@ const TxInternalTableItem = ({ token, total, tx_hash: txHash, from, to, baseAddr
 
   return (
     <Tr alignItems="top">
-      <Td>
-        <AdditionalInfoButton/>
-      </Td>
+      { showTxInfo && (
+        <Td>
+          <AdditionalInfoButton/>
+        </Td>
+      ) }
       <Td>
         <Flex flexDir="column" alignItems="flex-start">
           <TokenSnippet hash={ token.address } name={ token.name || 'Unnamed token' } lineHeight="30px"/>
@@ -44,11 +47,13 @@ const TxInternalTableItem = ({ token, total, tx_hash: txHash, from, to, baseAddr
           </Flex>
         ) : '-' }
       </Td>
-      <Td>
-        <Address display="inline-flex" maxW="100%" fontWeight={ 600 } lineHeight="30px">
-          <AddressLink type="transaction" hash={ txHash }/>
-        </Address>
-      </Td>
+      { showTxInfo && (
+        <Td>
+          <Address display="inline-flex" maxW="100%" fontWeight={ 600 } lineHeight="30px">
+            <AddressLink type="transaction" hash={ txHash }/>
+          </Address>
+        </Td>
+      ) }
       <Td>
         <Address display="inline-flex" maxW="100%" lineHeight="30px">
           <AddressIcon hash={ from.hash }/>
