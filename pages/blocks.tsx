@@ -1,11 +1,19 @@
 import type { NextPage } from 'next';
+import Head from 'next/head';
 import React from 'react';
 
-import BlocksNextPage from 'lib/next/blocks/BlocksNextPage';
+import getSeo from 'lib/next/blocks/getSeo';
+import Blocks from 'ui/pages/Blocks';
 
 const BlockPage: NextPage = () => {
+  const { title } = getSeo();
   return (
-    <BlocksNextPage/>
+    <>
+      <Head>
+        <title>{ title }</title>
+      </Head>
+      <Blocks/>
+    </>
   );
 };
 
