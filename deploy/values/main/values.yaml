@@ -296,6 +296,10 @@ frontend:
       - "/static"
       - "/auth/profile"
       - "/account"
+      - "/txs"
+      - "/tx"
+      - "/blocks"
+      - "/block"
   resources:
     limits:
       memory:

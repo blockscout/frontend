@@ -1,4 +1,4 @@
-import { Alert, Box, Show } from '@chakra-ui/react';
+import { Text, Box, Show, Hide } from '@chakra-ui/react';
 import React, { useState, useCallback } from 'react';
 
 import type { TransactionsResponse } from 'types/api/transaction';
@@ -73,7 +73,7 @@ const TxsContent = ({
     const txs = data?.items;
 
     if (!isLoading && !txs?.length) {
-      return <Alert>There are no transactions.</Alert>;
+      return <Text as="span">There are no transactions.</Text>;
     }
 
     if (!isLoading && txs) {
@@ -83,7 +83,7 @@ const TxsContent = ({
     return (
       <>
         <Show below="lg" ssr={ false }><TxsSkeletonMobile/></Show>
-        <Show above="lg" ssr={ false }><TxsSkeletonDesktop/></Show>
+        <Hide below="lg" ssr={ false }><TxsSkeletonDesktop/></Hide>
       </>
     );
   })();
