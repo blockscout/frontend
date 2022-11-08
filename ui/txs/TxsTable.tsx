@@ -1,4 +1,4 @@
-import { Link, Table, Tbody, Tr, Th, Icon } from '@chakra-ui/react';
+import { Link, Table, Tbody, Tr, Th, Td, Icon } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
@@ -8,6 +8,7 @@ import appConfig from 'configs/app/config';
 import rightArrowIcon from 'icons/arrows/east.svg';
 import TheadSticky from 'ui/shared/TheadSticky';
 
+import TxsNewItemNotice from './TxsNewItemNotice';
 import TxsTableItem from './TxsTableItem';
 
 type Props = {
@@ -46,6 +47,9 @@ const TxsTable = ({ txs, sort, sorting }: Props) => {
         </Tr>
       </TheadSticky>
       <Tbody>
+        <TxsNewItemNotice>
+          { ({ content }) => <Tr><Td colSpan={ 10 } p={ 0 }>{ content }</Td></Tr> }
+        </TxsNewItemNotice>
         { txs.map((item) => (
           <TxsTableItem
             key={ item.hash }

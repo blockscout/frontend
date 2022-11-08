@@ -7,6 +7,7 @@ import type { Sort } from 'types/client/txs-sort';
 import sortTxs from 'lib/tx/sortTxs';
 
 import TxsListItem from './TxsListItem';
+import TxsNewItemNotice from './TxsNewItemNotice';
 import TxsTable from './TxsTable';
 
 type Props = {
@@ -28,7 +29,14 @@ const TxsWithSort = ({
 
   return (
     <>
-      <Show below="lg" ssr={ false }><Box>{ sortedTxs.map(tx => <TxsListItem tx={ tx } key={ tx.hash }/>) }</Box></Show>
+      <Show below="lg" ssr={ false }>
+        <Box>
+          <TxsNewItemNotice borderRadius="md">
+            { ({ content }) => <Box>{ content }</Box> }
+          </TxsNewItemNotice>
+          { sortedTxs.map(tx => <TxsListItem tx={ tx } key={ tx.hash }/>) }
+        </Box>
+      </Show>
       <Hide below="lg" ssr={ false }><TxsTable txs={ sortedTxs } sort={ sort } sorting={ sorting }/></Hide>
     </>
   );
