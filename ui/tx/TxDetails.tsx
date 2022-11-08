@@ -153,7 +153,6 @@ const TxDetails = () => {
           <AddressLink ml={ 2 } hash={ data.to.hash }/>
           <CopyToClipboard text={ data.to.hash }/>
         </Address>
-        { data.to.name && <Text>{ data.to.name }</Text> }
         { data.to.is_contract && data.result === 'success' && (
           <Tooltip label="Contract execution completed">
             <chakra.span display="inline-flex">
@@ -168,6 +167,7 @@ const TxDetails = () => {
             </chakra.span>
           </Tooltip>
         ) }
+        { data.to.name && <Text>{ data.to.name }</Text> }
         { addressToTags.length > 0 && (
           <Flex columnGap={ 3 }>
             { addressToTags }
