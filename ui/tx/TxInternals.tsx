@@ -121,6 +121,7 @@ const TxInternals = () => {
 
   const content = (() => {
     const filteredData = data.items
+      .slice()
       // .filter(({ type }) => filters.length > 0 ? filters.includes(type) : true)
       // .filter(searchFn(searchTerm))
       .sort(sortFn(sort));
