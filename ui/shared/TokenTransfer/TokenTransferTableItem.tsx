@@ -1,10 +1,9 @@
-import { Tr, Td, Tag, Icon, Flex } from '@chakra-ui/react';
+import { Tr, Td, Tag, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
-import nftPlaceholder from 'icons/nft_shield.svg';
 import AdditionalInfoButton from 'ui/shared/AdditionalInfoButton';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
@@ -12,6 +11,7 @@ import AddressLink from 'ui/shared/address/AddressLink';
 import InOutTag from 'ui/shared/InOutTag';
 import TokenSnippet from 'ui/shared/TokenSnippet';
 import { getTokenTransferTypeText } from 'ui/shared/TokenTransfer/helpers';
+import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
 
 type Props = TokenTransfer & {
   baseAddress?: string;
@@ -42,12 +42,7 @@ const TxInternalTableItem = ({ token, total, tx_hash: txHash, from, to, baseAddr
         </Flex>
       </Td>
       <Td lineHeight="30px">
-        { 'token_id' in total ? (
-          <Flex align="center">
-            <Icon as={ nftPlaceholder } boxSize="30px" mr={ 1 }/>
-            <AddressLink hash={ token.address } id={ total.token_id } type="token_instance_item"/>
-          </Flex>
-        ) : '-' }
+        { 'token_id' in total ? <TokenTransferNft hash={ token.address } id={ total.token_id }/> : '-' }
       </Td>
       { showTxInfo && (
         <Td>
