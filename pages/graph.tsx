@@ -15,5 +15,4 @@ const GraphPage: NextPage = () => {
 
 export default GraphPage;
 
-export { getStaticPaths } from 'lib/next/getStaticPaths';
-export { getStaticProps } from 'lib/next/getStaticProps';
+export { getServerSideProps } from 'lib/next/getServerSideProps';
