@@ -13,13 +13,14 @@ import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import InOutTag from 'ui/shared/InOutTag';
 import TokenSnippet from 'ui/shared/TokenSnippet';
+import { getTokenTransferTypeText } from 'ui/shared/TokenTransfer/helpers';
 
 type Props = TokenTransfer & {
   baseAddress?: string;
   showTxInfo?: boolean;
 }
 
-const TokenTransferListItem = ({ token, total, tx_hash: txHash, from, to, baseAddress, showTxInfo }: Props) => {
+const TokenTransferListItem = ({ token, total, tx_hash: txHash, from, to, baseAddress, showTxInfo, type }: Props) => {
   const value = (() => {
     if (!('value' in total)) {
       return null;
@@ -31,10 +32,11 @@ const TokenTransferListItem = ({ token, total, tx_hash: txHash, from, to, baseAd
   const addressWidth = `calc((100% - ${ baseAddress ? '50px' : '0px' }) / 2)`;
   return (
     <AccountListItemMobile rowGap={ 3 }>
-      <Flex w="100%">
+      <Flex w="100%" flexWrap="wrap" rowGap={ 1 } position="relative">
         <TokenSnippet hash={ token.address } w="auto" maxW="calc(100% - 140px)" name={ token.name || 'Unnamed token' }/>
-        <Tag flexShrink={ 0 } ml={ 2 } mr="auto">{ token.type }</Tag>
-        { showTxInfo && <AdditionalInfoButton/> }
+        <Tag flexShrink={ 0 } ml={ 2 } mr={ 2 }>{ token.type }</Tag>
+        <Tag colorScheme="orange">{ getTokenTransferTypeText(type) }</Tag>
+        { showTxInfo && <AdditionalInfoButton position="absolute" top={ 0 } right={ 0 }/> }
       </Flex>
       { 'token_id' in total && (
         <Flex alignItems="center">

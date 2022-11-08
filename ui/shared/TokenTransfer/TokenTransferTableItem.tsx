@@ -11,13 +11,14 @@ import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import InOutTag from 'ui/shared/InOutTag';
 import TokenSnippet from 'ui/shared/TokenSnippet';
+import { getTokenTransferTypeText } from 'ui/shared/TokenTransfer/helpers';
 
 type Props = TokenTransfer & {
   baseAddress?: string;
   showTxInfo?: boolean;
 }
 
-const TxInternalTableItem = ({ token, total, tx_hash: txHash, from, to, baseAddress, showTxInfo }: Props) => {
+const TxInternalTableItem = ({ token, total, tx_hash: txHash, from, to, baseAddress, showTxInfo, type }: Props) => {
   const value = (() => {
     if (!('value' in total)) {
       return '-';
@@ -36,7 +37,8 @@ const TxInternalTableItem = ({ token, total, tx_hash: txHash, from, to, baseAddr
       <Td>
         <Flex flexDir="column" alignItems="flex-start">
           <TokenSnippet hash={ token.address } name={ token.name || 'Unnamed token' } lineHeight="30px"/>
-          <Tag>{ token.type }</Tag>
+          <Tag mt={ 1 }>{ token.type }</Tag>
+          <Tag colorScheme="orange" mt={ 2 }>{ getTokenTransferTypeText(type) }</Tag>
         </Flex>
       </Td>
       <Td lineHeight="30px">

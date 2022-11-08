@@ -11,3 +11,16 @@ export const flattenTotal = (result: Array<TokenTransfer>, item: TokenTransfer):
 
   return result;
 };
+
+export const getTokenTransferTypeText = (type: TokenTransfer['type']) => {
+  switch (type) {
+    case 'token_minting':
+      return 'Token minting';
+    case 'token_burning':
+      return 'Token burning';
+    case 'token_spawning':
+      return 'Token creating';
+    case 'token_transfer':
+      return 'Token transfer';
+  }
+};
