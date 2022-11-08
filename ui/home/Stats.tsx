@@ -1,0 +1,80 @@
+import { Grid, Skeleton } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
+import React from 'react';
+
+import { Stats } from 'types/api/stats';
+import { QueryKeys } from 'types/client/queries';
+
+import blockIcon from 'icons/block.svg';
+import clockIcon from 'icons/clock-light.svg';
+import txIcon from 'icons/transactions.svg';
+import walletIcon from 'icons/wallet.svg';
+import useFetch from 'lib/hooks/useFetch';
+
+import StatsItem from './StatsItem';
+
+const Stats = () => {
+  const fetch = useFetch();
+
+  const { data, isLoading, isError } = useQuery<unknown, unknown, Stats>(
+    [ QueryKeys.stats ],
+    async() => await fetch(`/api/stats`),
+  );
+
+  if (isError) {
+    return null;
+  }
+
+  let content;
+
+  if (isLoading) {
+    content = (
+      <>
+        <Skeleton h="80px"/>
+        <Skeleton h="80px"/>
+        <Skeleton h="80px"/>
+        <Skeleton h="80px"/>
+      </>
+    );
+  }
+
+  if (data) {
+    content = (
+      <>
+        <StatsItem
+          icon={ blockIcon }
+          title="Total blocks"
+          value={ Number(data.total_blocks).toLocaleString() }
+        />
+        <StatsItem
+          icon={ clockIcon }
+          title="Average block time"
+          value={ `${ (data.average_block_time / 1000).toFixed(1) } s` }
+        />
+        <StatsItem
+          icon={ txIcon }
+          title="Total transactions"
+          value={ Number(data.total_transactions).toLocaleString() }
+        />
+        <StatsItem
+          icon={ walletIcon }
+          title="Wallet addresses"
+          value={ Number(data.total_addresses).toLocaleString() }
+        />
+      </>
+    );
+  }
+
+  return (
+    <Grid
+      gridTemplateColumns={{ lg: 'repeat(4, 1fr)', base: 'none' }}
+      gridTemplateRows={{ lg: 'none', base: 'repeat(4, 1fr)' }}
+      gridGap="10px"
+      marginTop="32px"
+    >
+      { content }
+    </Grid>
+  );
+};
+
+export default Stats;
