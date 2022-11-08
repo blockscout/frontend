@@ -1,4 +1,4 @@
-import { Hide, Show, Text } from '@chakra-ui/react';
+import { Hide, Show, Text, Flex, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenTransferResponse } from 'types/api/tokenTransfer';
@@ -7,6 +7,7 @@ import type { QueryKeys } from 'types/client/queries';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
+import HashStringShorten from 'ui/shared/HashStringShorten';
 import Pagination from 'ui/shared/Pagination';
 import SkeletonTable from 'ui/shared/SkeletonTable';
 import { flattenTotal } from 'ui/shared/TokenTransfer/helpers';
@@ -22,9 +23,10 @@ interface Props {
   queryIds?: Array<string>;
   baseAddress?: string;
   showTxInfo?: boolean;
+  txHash?: string;
 }
 
-const TokenTransfer = ({ isLoading: isLoadingProp, isDisabled, queryName, queryIds, path, baseAddress, showTxInfo = true }: Props) => {
+const TokenTransfer = ({ isLoading: isLoadingProp, isDisabled, queryName, queryIds, path, baseAddress, showTxInfo = true, txHash }: Props) => {
   const { isError, isLoading, data, pagination } = useQueryWithPages<TokenTransferResponse>({
     apiPath: path,
     queryName,
@@ -37,13 +39,14 @@ const TokenTransfer = ({ isLoading: isLoadingProp, isDisabled, queryName, queryI
       return (
         <>
           <Hide below="lg">
+            { txHash !== undefined && <Skeleton mb={ 6 } h={ 6 } w="340px"/> }
             <SkeletonTable columns={ showTxInfo ?
               [ '44px', '185px', '160px', '25%', '25%', '25%', '25%' ] :
               [ '185px', '25%', '25%', '25%', '25%' ] }
             />
           </Hide>
           <Show below="lg">
-            <TokenTransferSkeletonMobile showTxInfo={ showTxInfo }/>
+            <TokenTransferSkeletonMobile showTxInfo={ showTxInfo } txHash={ txHash }/>
           </Show>
         </>
       );
@@ -70,9 +73,17 @@ const TokenTransfer = ({ isLoading: isLoadingProp, isDisabled, queryName, queryI
     );
   })();
 
+  const isPaginatorHidden = pagination.page === 1 && !pagination.hasNextPage;
+
   return (
     <>
-      { pagination.page === 1 && !pagination.hasNextPage ? null : (
+      { txHash && (data?.items.length || 0 > 0) && (
+        <Flex mb={ isPaginatorHidden ? 6 : 0 } w="100%">
+          <Text as="span" fontWeight={ 600 } whiteSpace="pre">Token transfers for by txn hash: </Text>
+          <HashStringShorten hash={ txHash }/>
+        </Flex>
+      ) }
+      { isPaginatorHidden ? null : (
         <ActionBar>
           <Pagination ml="auto" { ...pagination }/>
         </ActionBar>

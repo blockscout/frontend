@@ -1,4 +1,3 @@
-import { Text } from '@chakra-ui/react';
 import React from 'react';
 
 import { QueryKeys } from 'types/client/queries';
@@ -24,17 +23,15 @@ const TxTokenTransfer = () => {
   const path = `/node-api/transactions/${ data?.hash }/token-transfers`;
 
   return (
-    <>
-      <Text mb={ 6 }>Token transfers for transaction { data?.hash }</Text>
-      <TokenTransfer
-        isLoading={ isLoading }
-        isDisabled={ !data?.status || !data?.hash }
-        path={ path }
-        queryName={ QueryKeys.txTokenTransfers }
-        queryIds={ data?.hash ? [ data.hash ] : undefined }
-        showTxInfo={ false }
-      />
-    </>
+    <TokenTransfer
+      isLoading={ isLoading }
+      isDisabled={ !data?.status || !data?.hash }
+      path={ path }
+      queryName={ QueryKeys.txTokenTransfers }
+      queryIds={ data?.hash ? [ data.hash ] : undefined }
+      showTxInfo={ false }
+      txHash={ data?.hash || '' }
+    />
   );
 };
 
