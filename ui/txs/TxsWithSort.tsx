@@ -31,7 +31,7 @@ const TxsWithSort = ({
     <>
       <Show below="lg" ssr={ false }>
         <Box>
-          <TxsNewItemNotice borderRadius="md">
+          <TxsNewItemNotice>
             { ({ content }) => <Box>{ content }</Box> }
           </TxsNewItemNotice>
           { sortedTxs.map(tx => <TxsListItem tx={ tx } key={ tx.hash }/>) }

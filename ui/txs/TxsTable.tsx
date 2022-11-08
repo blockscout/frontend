@@ -47,7 +47,7 @@ const TxsTable = ({ txs, sort, sorting }: Props) => {
         </Tr>
       </TheadSticky>
       <Tbody>
-        <TxsNewItemNotice>
+        <TxsNewItemNotice borderRadius={ 0 }>
           { ({ content }) => <Tr><Td colSpan={ 10 } p={ 0 }>{ content }</Td></Tr> }
         </TxsNewItemNotice>
         { txs.map((item) => (

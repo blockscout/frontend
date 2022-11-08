@@ -101,7 +101,7 @@ const TxsNewItemNotice = ({ children, className }: Props) => {
     }
 
     return (
-      <Alert className={ className } status="warning" p={ 4 } borderRadius={ 0 } fontWeight={ 400 }>
+      <Alert className={ className } status="warning" p={ 4 } fontWeight={ 400 }>
         <Spinner size="sm" mr={ 3 }/>
         <Text as="span" whiteSpace="pre">+ { num } new transaction{ num > 1 ? 's' : '' }. </Text>
         <Link onClick={ handleClick }>Show in list</Link>
