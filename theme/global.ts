@@ -9,6 +9,10 @@ const global = (props: StyleFunctionProps) => ({
     ...getDefaultTransitionProps(),
     '-webkit-tap-highlight-color': 'transparent',
   },
+  'svg *::selection': {
+    color: 'none',
+    background: 'none',
+  },
   form: {
     w: '100%',
   },
