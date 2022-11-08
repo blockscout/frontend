@@ -10,13 +10,14 @@ interface Props {
   data: Array<TokenTransfer>;
   baseAddress?: string;
   showTxInfo?: boolean;
+  top: number;
 }
 
-const TokenTransferTable = ({ data, baseAddress, showTxInfo }: Props) => {
+const TokenTransferTable = ({ data, baseAddress, showTxInfo, top }: Props) => {
 
   return (
     <Table variant="simple" size="sm">
-      <Thead top={ 80 }>
+      <Thead top={ top }>
         <Tr>
           { showTxInfo && <Th width="44px"></Th> }
           <Th width="185px">Token</Th>

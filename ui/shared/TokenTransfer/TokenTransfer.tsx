@@ -34,6 +34,8 @@ const TokenTransfer = ({ isLoading: isLoadingProp, isDisabled, queryName, queryI
     options: { enabled: !isDisabled },
   });
 
+  const isPaginatorHidden = pagination.page === 1 && !pagination.hasNextPage;
+
   const content = (() => {
     if (isLoading || isLoadingProp) {
       return (
@@ -64,7 +66,7 @@ const TokenTransfer = ({ isLoading: isLoadingProp, isDisabled, queryName, queryI
     return (
       <>
         <Hide below="lg">
-          <TokenTransferTable data={ items } baseAddress={ baseAddress } showTxInfo={ showTxInfo }/>
+          <TokenTransferTable data={ items } baseAddress={ baseAddress } showTxInfo={ showTxInfo } top={ isPaginatorHidden ? 0 : 80 }/>
         </Hide>
         <Show below="lg">
           <TokenTransferList data={ items } baseAddress={ baseAddress } showTxInfo={ showTxInfo }/>
@@ -72,8 +74,6 @@ const TokenTransfer = ({ isLoading: isLoadingProp, isDisabled, queryName, queryI
       </>
     );
   })();
-
-  const isPaginatorHidden = pagination.page === 1 && !pagination.hasNextPage;
 
   return (
     <>
