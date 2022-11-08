@@ -33,6 +33,7 @@ const TxsListItem = ({ tx }: {tx: Transaction}) => {
 
   const iconColor = useColorModeValue('blue.600', 'blue.300');
   const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
+  const dataTo = tx.to && tx.to.hash ? tx.to : tx.created_contract;
 
   return (
     <>
@@ -99,10 +100,10 @@ const TxsListItem = ({ tx }: {tx: Transaction}) => {
             color="gray.500"
           />
           <Address width="calc((100%-40px)/2)">
-            <AddressIcon hash={ tx.to.hash }/>
+            <AddressIcon hash={ dataTo.hash }/>
             <AddressLink
-              hash={ tx.to.hash }
-              alias={ tx.to.name }
+              hash={ dataTo.hash }
+              alias={ dataTo.name }
               fontWeight="500"
               ml={ 2 }
             />

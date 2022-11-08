@@ -44,12 +44,14 @@ const TxsTableItem = ({ tx }: {tx: Transaction}) => {
     </Address>
   );
 
+  const dataTo = tx.to && tx.to.hash ? tx.to : tx.created_contract;
+
   const addressTo = (
     <Address>
-      <Tooltip label={ tx.to.implementation_name }>
-        <Box display="flex"><AddressIcon hash={ tx.to.hash }/></Box>
+      <Tooltip label={ dataTo.implementation_name }>
+        <Box display="flex"><AddressIcon hash={ dataTo.hash }/></Box>
       </Tooltip>
-      <AddressLink hash={ tx.to.hash } alias={ tx.to.name } fontWeight="500" ml={ 2 } truncation="constant"/>
+      <AddressLink hash={ dataTo.hash } alias={ dataTo.name } fontWeight="500" ml={ 2 } truncation="constant"/>
     </Address>
   );
 
@@ -92,13 +94,13 @@ const TxsTableItem = ({ tx }: {tx: Transaction}) => {
         </VStack>
       </Td>
       <Td>
-        <TruncatedTextTooltip label={ tx.method }>
-          <Tag
-            colorScheme={ tx.method === 'Multicall' ? 'teal' : 'gray' }
-          >
-            { tx.method }
-          </Tag>
-        </TruncatedTextTooltip>
+        { tx.method ? (
+          <TruncatedTextTooltip label={ tx.method }>
+            <Tag colorScheme={ tx.method === 'Multicall' ? 'teal' : 'gray' }>
+              { tx.method }
+            </Tag>
+          </TruncatedTextTooltip>
+        ) : '-' }
       </Td>
       <Td>
         { tx.block && <Link href={ link('block', { id: tx.block.toString() }) }>{ tx.block }</Link> }

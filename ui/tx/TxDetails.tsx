@@ -65,10 +65,11 @@ const TxDetails = () => {
     ...data.from.watchlist_names || [],
   ].map((tag) => <Tag key={ tag.label }>{ tag.display_name }</Tag>);
 
+  const toAddress = data.to && data.to.hash ? data.to : data.created_contract;
   const addressToTags = [
-    ...data.to.private_tags || [],
-    ...data.to.public_tags || [],
-    ...data.to.watchlist_names || [],
+    ...toAddress.private_tags || [],
+    ...toAddress.public_tags || [],
+    ...toAddress.watchlist_names || [],
   ].map((tag) => <Tag key={ tag.label }>{ tag.display_name }</Tag>);
 
   return (
@@ -150,25 +151,34 @@ const TxDetails = () => {
         ) }
       </DetailsInfoItem>
       <DetailsInfoItem
-        title={ data.to.is_contract ? 'Interacted with contract' : 'To' }
+        title={ toAddress.is_contract ? 'Interacted with contract' : 'To' }
         hint="Address (external or contract) receiving the transaction."
         flexWrap={{ base: 'wrap', lg: 'nowrap' }}
         columnGap={ 3 }
       >
-        <Address>
-          <AddressIcon hash={ data.to.hash }/>
-          <AddressLink ml={ 2 } hash={ data.to.hash }/>
-          <CopyToClipboard text={ data.to.hash }/>
-        </Address>
-        { data.to.name && <Text>{ data.to.name }</Text> }
-        { data.to.is_contract && data.result === 'success' && (
+        { data.to && data.to.hash ? (
+          <Address>
+            <AddressIcon hash={ toAddress.hash }/>
+            <AddressLink ml={ 2 } hash={ toAddress.hash }/>
+            <CopyToClipboard text={ toAddress.hash }/>
+          </Address>
+        ) : (
+          <Flex width="100%" whiteSpace="pre">
+            <span>[Contract </span>
+            <AddressLink hash={ toAddress.hash }/>
+            <span> created]</span>
+            <CopyToClipboard text={ toAddress.hash }/>
+          </Flex>
+        ) }
+        { toAddress.name && <Text>{ toAddress.name }</Text> }
+        { toAddress.is_contract && data.result === 'success' && (
           <Tooltip label="Contract execution completed">
             <chakra.span display="inline-flex">
               <Icon as={ successIcon } boxSize={ 4 } color="green.500" cursor="pointer"/>
             </chakra.span>
           </Tooltip>
         ) }
-        { data.to.is_contract && Boolean(data.status) && data.result !== 'success' && (
+        { toAddress.is_contract && Boolean(data.status) && data.result !== 'success' && (
           <Tooltip label="Error occured during contract execution">
             <chakra.span display="inline-flex">
               <Icon as={ errorIcon } boxSize={ 4 } color="red.500" cursor="pointer"/>

@@ -18,7 +18,7 @@ export interface Transaction {
   timestamp: string | null;
   confirmation_duration: Array<number>;
   from: AddressParam;
-  to: AddressParam;
+  to: AddressParam | null;
   created_contract: AddressParam;
   value: string;
   fee: Fee;
@@ -39,7 +39,7 @@ export interface Transaction {
   token_transfers: Array<TokenTransfer> | null;
   token_transfers_overflow: boolean;
   exchange_rate: string;
-  method: string;
+  method: string | null;
   tx_types: Array<TransactionType>;
   tx_tag: string | null;
 }
