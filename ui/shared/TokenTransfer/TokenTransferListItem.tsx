@@ -5,7 +5,7 @@ import React from 'react';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import eastArrowIcon from 'icons/arrows/east.svg';
-import nftPlaceholder from 'icons/nft_placeholder.svg';
+import nftPlaceholder from 'icons/nft_shield.svg';
 import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import AdditionalInfoButton from 'ui/shared/AdditionalInfoButton';
 import Address from 'ui/shared/address/Address';
@@ -39,7 +39,7 @@ const TokenTransferListItem = ({ token, total, tx_hash: txHash, from, to, baseAd
       { 'token_id' in total && (
         <Flex alignItems="center">
           <Text fontWeight={ 500 }>Token ID</Text>
-          <Icon mx={ 2 } as={ nftPlaceholder } boxSize="30px"/>
+          <Icon mx={ 1 } as={ nftPlaceholder } boxSize="30px"/>
           <AddressLink hash={ token.address } id={ total.token_id } type="token_instance_item"/>
         </Flex>
       ) }

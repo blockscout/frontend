@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
-import nftPlaceholder from 'icons/nft_placeholder.svg';
+import nftPlaceholder from 'icons/nft_shield.svg';
 import AdditionalInfoButton from 'ui/shared/AdditionalInfoButton';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
@@ -42,7 +42,7 @@ const TxInternalTableItem = ({ token, total, tx_hash: txHash, from, to, baseAddr
       <Td lineHeight="30px">
         { 'token_id' in total ? (
           <Flex align="center">
-            <Icon as={ nftPlaceholder } boxSize="30px" mr={ 2 }/>
+            <Icon as={ nftPlaceholder } boxSize="30px" mr={ 1 }/>
             <AddressLink hash={ token.address } id={ total.token_id } type="token_instance_item"/>
           </Flex>
         ) : '-' }

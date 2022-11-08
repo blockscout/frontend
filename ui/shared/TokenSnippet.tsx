@@ -14,7 +14,7 @@ interface Props {
 const TokenSnippet = ({ symbol, hash, name, className }: Props) => {
   return (
     <Flex className={ className } alignItems="center" columnGap={ 1 } w="100%">
-      <TokenLogo boxSize={ 5 } borderRadius={ 2 } hash={ hash } name={ name }/>
+      <TokenLogo boxSize={ 5 } hash={ hash } name={ name }/>
       <AddressLink hash={ hash } alias={ name } type="token"/>
       { symbol && <Text variant="secondary">({ symbol })</Text> }
     </Flex>
