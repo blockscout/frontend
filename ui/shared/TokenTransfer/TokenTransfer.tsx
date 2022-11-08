@@ -72,9 +72,11 @@ const TokenTransfer = ({ isLoading: isLoadingProp, isDisabled, queryName, queryI
 
   return (
     <>
-      <ActionBar>
-        <Pagination ml="auto" { ...pagination }/>
-      </ActionBar>
+      { pagination.page === 1 && !pagination.hasNextPage ? null : (
+        <ActionBar>
+          <Pagination ml="auto" { ...pagination }/>
+        </ActionBar>
+      ) }
       { content }
     </>
   );

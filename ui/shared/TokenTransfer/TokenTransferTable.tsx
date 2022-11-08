@@ -12,7 +12,7 @@ interface Props {
   showTxInfo?: boolean;
 }
 
-const TxInternalsTable = ({ data, baseAddress, showTxInfo }: Props) => {
+const TokenTransferTable = ({ data, baseAddress, showTxInfo }: Props) => {
 
   return (
     <Table variant="simple" size="sm">
@@ -37,4 +37,4 @@ const TxInternalsTable = ({ data, baseAddress, showTxInfo }: Props) => {
   );
 };
 
-export default React.memo(TxInternalsTable);
+export default React.memo(TokenTransferTable);

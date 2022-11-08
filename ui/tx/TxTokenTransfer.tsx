@@ -25,7 +25,7 @@ const TxTokenTransfer = () => {
 
   return (
     <>
-      <Text>Token transfers for transaction { data?.hash }</Text>
+      <Text mb={ 6 }>Token transfers for transaction { data?.hash }</Text>
       <TokenTransfer
         isLoading={ isLoading }
         isDisabled={ !data?.status || !data?.hash }
