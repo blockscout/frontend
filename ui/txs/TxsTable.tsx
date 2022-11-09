@@ -14,12 +14,13 @@ type Props = {
   txs: Array<Transaction>;
   sort: (field: 'val' | 'fee') => () => void;
   sorting?: Sort;
+  top: number;
 }
 
-const TxsTable = ({ txs, sort, sorting }: Props) => {
+const TxsTable = ({ txs, sort, sorting, top }: Props) => {
   return (
     <Table variant="simple" minWidth="810px" size="xs">
-      <TheadSticky top={ 80 }>
+      <TheadSticky top={ top }>
         <Tr>
           <Th width="54px"></Th>
           <Th width="20%">Type</Th>

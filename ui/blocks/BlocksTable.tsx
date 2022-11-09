@@ -12,13 +12,14 @@ import { default as Thead } from 'ui/shared/TheadSticky';
 
 interface Props {
   data: Array<Block>;
+  top: number;
 }
 
-const BlocksTable = ({ data }: Props) => {
+const BlocksTable = ({ data, top }: Props) => {
 
   return (
     <Table variant="simple" minWidth="1040px" size="md" fontWeight={ 500 }>
-      <Thead top={ 80 }>
+      <Thead top={ top }>
         <Tr>
           <Th width="125px">Block</Th>
           <Th width="120px">Size</Th>

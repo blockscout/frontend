@@ -37,6 +37,7 @@ const TxsContent = ({
   });
   // } = useQueryWithPages({ ...filters, filter: stateFilter, apiPath });
   const { data, isLoading, isError, setSortByField, setSortByValue, sorting } = useTxsSort(queryResult);
+  const isPaginatorHidden = !isLoading && !isError && pagination.page === 1 && !pagination.hasNextPage;
 
   const content = (() => {
     if (isError) {
@@ -61,7 +62,7 @@ const TxsContent = ({
     return (
       <>
         <Show below="lg" ssr={ false }><Box>{ txs.map(tx => <TxsListItem tx={ tx } key={ tx.hash }/>) }</Box></Show>
-        <Hide below="lg" ssr={ false }><TxsTable txs={ txs } sort={ setSortByField } sorting={ sorting }/></Hide>
+        <Hide below="lg" ssr={ false }><TxsTable txs={ txs } sort={ setSortByField } sorting={ sorting } top={ isPaginatorHidden ? 0 : 80 }/></Hide>
       </>
     );
   })();
@@ -69,7 +70,7 @@ const TxsContent = ({
   return (
     <>
       { showDescription && <Box mb={{ base: 6, lg: 12 }}>Only the first 10,000 elements are displayed</Box> }
-      <TxsHeader mt={ -6 } sorting={ sorting } setSorting={ setSortByValue } paginationProps={ pagination }/>
+      <TxsHeader mt={ -6 } sorting={ sorting } setSorting={ setSortByValue } paginationProps={ pagination } showPagination={ !isPaginatorHidden }/>
       { content }
     </>
   );
