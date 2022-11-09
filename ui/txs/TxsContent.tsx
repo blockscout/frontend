@@ -1,7 +1,6 @@
 import { Text, Box, Show, Hide } from '@chakra-ui/react';
 import React, { useState, useCallback } from 'react';
 
-import type { TransactionsResponse } from 'types/api/transaction';
 import type { TTxsFilters } from 'types/api/txsFilters';
 import type { QueryKeys } from 'types/client/queries';
 import type { Sort } from 'types/client/txs-sort';
@@ -16,7 +15,7 @@ import TxsSkeletonMobile from './TxsSkeletonMobile';
 import TxsWithSort from './TxsWithSort';
 
 type Props = {
-  queryName: QueryKeys;
+  queryName: QueryKeys.txsPending | QueryKeys.txsValidate | QueryKeys.blockTxs;
   showDescription?: boolean;
   stateFilter?: TTxsFilters['filter'];
   apiPath: string;
@@ -62,7 +61,7 @@ const TxsContent = ({
     isLoading,
     isError,
     pagination,
-  } = useQueryWithPages<TransactionsResponse>({
+  } = useQueryWithPages({
     apiPath,
     queryName,
     filters: stateFilter ? { filter: stateFilter } : undefined,

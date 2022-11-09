@@ -25,7 +25,7 @@ const BlocksContent = ({ type }: Props) => {
   const queryClient = useQueryClient();
   const [ socketAlert, setSocketAlert ] = React.useState('');
 
-  const { data, isLoading, isError, pagination } = useQueryWithPages<BlocksResponse>({
+  const { data, isLoading, isError, pagination } = useQueryWithPages({
     apiPath: '/node-api/blocks',
     queryName: QueryKeys.blocks,
     filters: { type },
