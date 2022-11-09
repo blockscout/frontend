@@ -14,7 +14,7 @@ const Graph = () => {
       <Box w="100%" h="400px">
         <EthereumChart/>
       </Box>
-      <Heading as="h2" size="sm" fontWeight="500" mb={ 3 } mt="100px">Ethereum Daily Transactions For Last Month</Heading>
+      <Heading as="h2" size="sm" fontWeight="500" mb={ 3 } mt="80px">Ethereum Daily Transactions For Last Month</Heading>
       <Box w="240px" h="150px">
         <SplineChartExample/>
       </Box>

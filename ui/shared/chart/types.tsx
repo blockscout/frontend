@@ -10,6 +10,11 @@ export interface ChartMargin {
   left?: number;
 }
 
+export interface ChartOffset {
+  x?: number;
+  y?: number;
+}
+
 export interface TimeChartDataItem {
   items: Array<TimeChartItem>;
   name: string;

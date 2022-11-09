@@ -19,12 +19,15 @@ import useChartSize from 'ui/shared/chart/useChartSize';
 import useTimeChartController from 'ui/shared/chart/useTimeChartController';
 
 const CHART_MARGIN = { bottom: 20, left: 65, right: 30, top: 10 };
+const CHART_OFFSET = {
+  y: 26, // legend height
+};
 
 const EthereumChart = () => {
   const ref = React.useRef<SVGSVGElement>(null);
   const overlayRef = React.useRef<SVGRectElement>(null);
 
-  const { width, height, innerWidth, innerHeight } = useChartSize(ref.current, CHART_MARGIN);
+  const { width, height, innerWidth, innerHeight } = useChartSize(ref.current, CHART_MARGIN, CHART_OFFSET);
   const [ range, setRange ] = React.useState<[number, number]>([ 0, Infinity ]);
 
   const data: TimeChartData = [
