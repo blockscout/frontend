@@ -1,4 +1,3 @@
-const withReactSvg = require('next-react-svg');
 const path = require('path');
 
 const headers = require('./configs/nextjs/headers');
@@ -15,6 +14,12 @@ const moduleExports = {
         __SENTRY_TRACING__: false,
       }),
     );
+    config.module.rules.push(
+      {
+        test: /\.svg$/,
+        use: [ '@svgr/webpack' ],
+      },
+    );
 
     return config;
   },
@@ -28,4 +33,4 @@ const moduleExports = {
   output: 'standalone',
 };
 
-module.exports = withReactSvg(moduleExports);
+module.exports = moduleExports;
