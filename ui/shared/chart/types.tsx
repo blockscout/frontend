@@ -13,7 +13,7 @@ export interface ChartMargin {
 export interface TimeChartDataItem {
   items: Array<TimeChartItem>;
   name: string;
-  color: string;
+  color?: string;
 }
 
 export type TimeChartData = Array<TimeChartDataItem>;
