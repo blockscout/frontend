@@ -1,6 +1,7 @@
-import { Box, Heading } from '@chakra-ui/react';
+import { Box, Heading, Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import LatestBlocks from 'ui/home/LatestBlocks';
 import Stats from 'ui/home/Stats';
 import Page from 'ui/shared/Page/Page';
 import SearchBar from 'ui/snippets/searchBar/SearchBar';
@@ -10,7 +11,6 @@ const Home = () => {
     <Page hasSearch={ false }>
       <Box
         w="100%"
-        // h="236px"
         backgroundImage="radial-gradient(farthest-corner at 0 0, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%)"
         borderRadius="24px"
         padding={{ base: '24px 40px', lg: '48px' }}
@@ -27,6 +27,10 @@ const Home = () => {
         <SearchBar backgroundColor="white" isHomepage/>
       </Box>
       <Stats/>
+      <Flex mt={ 12 }>
+        <Box mr={ 12 }><LatestBlocks/></Box>
+        <Box><Heading as="h4" fontSize="18px" mb={ 8 }>Latest transactions</Heading></Box>
+      </Flex>
     </Page>
   );
 };
