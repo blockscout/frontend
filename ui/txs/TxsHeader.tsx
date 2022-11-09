@@ -14,7 +14,7 @@ import TxsSorting from 'ui/txs/TxsSorting';
 
 type Props = {
   sorting: Sort;
-  setSorting: (val: Sort | ((val: Sort) => Sort)) => void;
+  setSorting: (val: Sort) => void;
   paginationProps: PaginationProps;
   className?: string;
 }
