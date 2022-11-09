@@ -1,5 +1,6 @@
 import type { BlocksResponse, BlockTransactionsResponse } from 'types/api/block';
 import type { InternalTransactionsResponse } from 'types/api/internalTransaction';
+import type { LogsResponse } from 'types/api/log';
 import type { TokenTransferResponse } from 'types/api/tokenTransfer';
 import type { TransactionsResponseValidated, TransactionsResponsePending } from 'types/api/transaction';
 import { QueryKeys } from 'types/client/queries';
@@ -11,6 +12,7 @@ export type PaginatedQueryKeys =
   QueryKeys.txsValidate |
   QueryKeys.txsPending |
   QueryKeys.txInternals |
+  QueryKeys.txLogs |
   QueryKeys.txTokenTransfers;
 
 export type PaginatedResponse<Q extends PaginatedQueryKeys> =
@@ -19,8 +21,9 @@ export type PaginatedResponse<Q extends PaginatedQueryKeys> =
       Q extends QueryKeys.txsValidate ? TransactionsResponseValidated :
         Q extends QueryKeys.txsPending ? TransactionsResponsePending :
           Q extends QueryKeys.txInternals ? InternalTransactionsResponse :
-            Q extends QueryKeys.txTokenTransfers ? TokenTransferResponse :
-              never
+            Q extends QueryKeys.txLogs ? LogsResponse :
+              Q extends QueryKeys.txTokenTransfers ? TokenTransferResponse :
+                never
 
 export type PaginationParams<Q extends PaginatedQueryKeys> = PaginatedResponse<Q>['next_page_params'];
 
@@ -35,4 +38,5 @@ export const PAGINATION_FIELDS: PaginationFields = {
   [QueryKeys.txsPending]: [ 'filter', 'hash', 'inserted_at' ],
   [QueryKeys.txInternals]: [ 'block_number', 'items_count', 'transaction_hash', 'index', 'transaction_index' ],
   [QueryKeys.txTokenTransfers]: [ 'block_number', 'items_count', 'transaction_hash', 'index' ],
+  [QueryKeys.txLogs]: [ 'items_count', 'transaction_hash', 'index' ],
 };

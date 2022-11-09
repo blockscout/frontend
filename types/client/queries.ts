@@ -5,7 +5,7 @@ export enum QueryKeys {
   txsPending = 'txs-pending',
   tx = 'tx',
   txInternals = 'tx-internals',
-  txLog = 'tx-log',
+  txLogs = 'tx-logs',
   txRawTrace = 'tx-raw-trace',
   txTokenTransfers = 'tx-token-transfers',
   blockTxs = 'block-transactions',

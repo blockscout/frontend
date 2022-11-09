@@ -13,14 +13,15 @@ interface Props {
   data: Array<InternalTransaction>;
   sort: Sort | undefined;
   onSortToggle: (field: SortField) => () => void;
+  top: number;
 }
 
-const TxInternalsTable = ({ data, sort, onSortToggle }: Props) => {
+const TxInternalsTable = ({ data, sort, onSortToggle, top }: Props) => {
   const sortIconTransform = sort?.includes('asc') ? 'rotate(-90deg)' : 'rotate(90deg)';
 
   return (
-    <Table variant="simple" size="sm" mt={ 6 }>
-      <Thead top={ 0 }>
+    <Table variant="simple" size="sm">
+      <Thead top={ top }>
         <Tr>
           <Th width="28%">Type</Th>
           <Th width="20%">From</Th>
