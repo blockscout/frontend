@@ -15,9 +15,10 @@ type Props = {
   sort: (field: 'val' | 'fee') => () => void;
   sorting?: Sort;
   top: number;
+  showBlockInfo: boolean;
 }
 
-const TxsTable = ({ txs, sort, sorting, top }: Props) => {
+const TxsTable = ({ txs, sort, sorting, top, showBlockInfo }: Props) => {
   return (
     <Table variant="simple" minWidth="810px" size="xs">
       <TheadSticky top={ top }>
@@ -26,7 +27,7 @@ const TxsTable = ({ txs, sort, sorting, top }: Props) => {
           <Th width="20%">Type</Th>
           <Th width="18%">Txn hash</Th>
           <Th width="15%">Method</Th>
-          <Th width="11%">Block</Th>
+          { showBlockInfo && <Th width="11%">Block</Th> }
           <Th width={{ xl: '128px', base: '66px' }}>From</Th>
           <Th width={{ xl: '36px', base: '0' }}></Th>
           <Th width={{ xl: '128px', base: '66px' }}>To</Th>
@@ -51,6 +52,7 @@ const TxsTable = ({ txs, sort, sorting, top }: Props) => {
           <TxsTableItem
             key={ item.hash }
             tx={ item }
+            showBlockInfo={ showBlockInfo }
           />
         )) }
       </Tbody>

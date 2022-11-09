@@ -13,9 +13,10 @@ import { default as Thead } from 'ui/shared/TheadSticky';
 interface Props {
   data: Array<Block>;
   top: number;
+  page: number;
 }
 
-const BlocksTable = ({ data, top }: Props) => {
+const BlocksTable = ({ data, top, page }: Props) => {
 
   return (
     <Table variant="simple" minWidth="1040px" size="md" fontWeight={ 500 }>
@@ -32,8 +33,7 @@ const BlocksTable = ({ data, top }: Props) => {
       </Thead>
       <Tbody>
         <AnimatePresence initial={ false }>
-          { /* TODO prop "enableTimeIncrement" should be set to false for second and later pages */ }
-          { data.map((item) => <BlocksTableItem key={ item.height } data={ item } enableTimeIncrement/>) }
+          { data.map((item) => <BlocksTableItem key={ item.height } data={ item } enableTimeIncrement={ page === 1 }/>) }
         </AnimatePresence>
       </Tbody>
     </Table>

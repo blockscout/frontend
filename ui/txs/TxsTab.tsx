@@ -25,6 +25,7 @@ const TxsTab = ({ tab }: Props) => {
       queryName={ QueryKeys.txsPending }
       stateFilter="pending"
       apiPath="/api/transactions"
+      showBlockInfo={ false }
     />
   );
 };

@@ -19,6 +19,7 @@ type Props = {
   showDescription?: boolean;
   stateFilter?: TTxsFilters['filter'];
   apiPath: string;
+  showBlockInfo?: boolean;
 }
 
 const TxsContent = ({
@@ -26,6 +27,7 @@ const TxsContent = ({
   showDescription,
   stateFilter,
   apiPath,
+  showBlockInfo = true,
 }: Props) => {
   const {
     pagination,
@@ -47,8 +49,8 @@ const TxsContent = ({
     if (isLoading) {
       return (
         <>
-          <Show below="lg" ssr={ false }><TxsSkeletonMobile/></Show>
-          <Hide below="lg" ssr={ false }><TxsSkeletonDesktop/></Hide>
+          <Show below="lg" ssr={ false }><TxsSkeletonMobile showBlockInfo={ showBlockInfo }/></Show>
+          <Hide below="lg" ssr={ false }><TxsSkeletonDesktop showBlockInfo={ showBlockInfo }/></Hide>
         </>
       );
     }
@@ -61,8 +63,12 @@ const TxsContent = ({
 
     return (
       <>
-        <Show below="lg" ssr={ false }><Box>{ txs.map(tx => <TxsListItem tx={ tx } key={ tx.hash }/>) }</Box></Show>
-        <Hide below="lg" ssr={ false }><TxsTable txs={ txs } sort={ setSortByField } sorting={ sorting } top={ isPaginatorHidden ? 0 : 80 }/></Hide>
+        <Show below="lg" ssr={ false }>
+          <Box>{ txs.map(tx => <TxsListItem tx={ tx } key={ tx.hash } showBlockInfo={ showBlockInfo }/>) }</Box>
+        </Show>
+        <Hide below="lg" ssr={ false }>
+          <TxsTable txs={ txs } sort={ setSortByField } sorting={ sorting } showBlockInfo={ showBlockInfo } top={ isPaginatorHidden ? 0 : 80 }/>
+        </Hide>
       </>
     );
   })();

@@ -92,7 +92,7 @@ const BlocksContent = ({ type }: Props) => {
       <>
         { socketAlert && <Alert status="warning" mb={ 6 } as="a" href={ window.document.location.href }>{ socketAlert }</Alert> }
         <Show below="lg" key="content-mobile"><BlocksList data={ data.items }/></Show>
-        <Hide below="lg" key="content-desktop"><BlocksTable data={ data.items } top={ isPaginatorHidden ? 0 : 80 }/></Hide>
+        <Hide below="lg" key="content-desktop"><BlocksTable data={ data.items } top={ isPaginatorHidden ? 0 : 80 } page={ pagination.page }/></Hide>
       </>
     );
 

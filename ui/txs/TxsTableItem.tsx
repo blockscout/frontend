@@ -34,7 +34,7 @@ import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 
 import TxType from './TxType';
 
-const TxsTableItem = ({ tx }: {tx: Transaction}) => {
+const TxsTableItem = ({ tx, showBlockInfo }: {tx: Transaction; showBlockInfo: boolean }) => {
   const addressFrom = (
     <Address>
       <Tooltip label={ tx.from.implementation_name }>
@@ -102,9 +102,11 @@ const TxsTableItem = ({ tx }: {tx: Transaction}) => {
           </TruncatedTextTooltip>
         ) : '-' }
       </Td>
-      <Td>
-        { tx.block && <Link href={ link('block', { id: tx.block.toString() }) }>{ tx.block }</Link> }
-      </Td>
+      { showBlockInfo && (
+        <Td>
+          { tx.block && <Link href={ link('block', { id: tx.block.toString() }) }>{ tx.block }</Link> }
+        </Td>
+      ) }
       <Show above="xl" ssr={ false }>
         <Td>
           { addressFrom }

@@ -1,7 +1,11 @@
 import { Skeleton, Flex, Box, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
-const TxInternalsSkeletonMobile = () => {
+interface Props {
+  showBlockInfo: boolean;
+}
+
+const TxInternalsSkeletonMobile = ({ showBlockInfo }: Props) => {
   const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
 
   return (
@@ -25,7 +29,7 @@ const TxInternalsSkeletonMobile = () => {
           <Skeleton w="100%" h="30px" mt={ 3 }/>
           <Skeleton w="50%" h={ 6 } mt={ 3 }/>
           <Skeleton w="50%" h={ 6 } mt={ 2 }/>
-          <Skeleton w="100%" h={ 6 } mt={ 6 }/>
+          { showBlockInfo && <Skeleton w="100%" h={ 6 } mt={ 6 }/> }
           <Skeleton w="50%" h={ 6 } mt={ 2 }/>
           <Skeleton w="50%" h={ 6 } mt={ 2 }/>
         </Flex>
