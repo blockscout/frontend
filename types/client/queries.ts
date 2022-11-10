@@ -11,4 +11,6 @@ export enum QueryKeys {
   blockTxs = 'block-transactions',
   block = 'block',
   blocks = 'blocks',
+  chartsTxs = 'charts-txs',
+  chartsMarket = 'charts-market',
 }

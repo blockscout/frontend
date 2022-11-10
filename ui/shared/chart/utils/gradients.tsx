@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const BlueLinearGradient = {
+export const BlueLineGradient = {
   id: 'blue-linear-gradient',
   defs: () => (
     <linearGradient id="blue-linear-gradient">

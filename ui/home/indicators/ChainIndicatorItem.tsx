@@ -1,20 +1,23 @@
 import { Text, Flex, Box, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
+import type { ChainIndicatorId } from './types';
+
 interface Props {
-  name: string;
+  id: ChainIndicatorId;
+  title: string;
   value: string;
-  isSelected: boolean;
   icon: React.ReactNode;
-  onClick: (name: string) => void;
+  isSelected: boolean;
+  onClick: (id: ChainIndicatorId) => void;
 }
 
-const ChainIndicatorItem = ({ name, value, icon, isSelected, onClick }: Props) => {
+const ChainIndicatorItem = ({ id, title, value, icon, isSelected, onClick }: Props) => {
   const bgColor = useColorModeValue('white', 'gray.900');
 
   const handleClick = React.useCallback(() => {
-    onClick(name);
-  }, [ name, onClick ]);
+    onClick(id);
+  }, [ id, onClick ]);
 
   return (
     <Flex
@@ -35,7 +38,7 @@ const ChainIndicatorItem = ({ name, value, icon, isSelected, onClick }: Props) =
     >
       { icon }
       <Box>
-        <Text fontFamily="Poppins" fontWeight={ 500 }>{ name }</Text>
+        <Text fontFamily="Poppins" fontWeight={ 500 }>{ title }</Text>
         <Text variant="secondary" fontWeight={ 600 }>{ value }</Text>
       </Box>
     </Flex>
