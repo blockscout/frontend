@@ -6,6 +6,7 @@ import React from 'react';
 import appConfig from 'configs/app/config';
 import * as cookies from 'lib/cookies';
 import useToast from 'lib/hooks/useToast';
+import ChainIndicators from 'ui/home/indicators/ChainIndicators';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
@@ -48,11 +49,12 @@ const Home = () => {
 
   return (
     <Page>
-      <VStack gap={ 4 } alignItems="flex-start" maxW="800px">
+      <VStack gap={ 4 } alignItems="flex-start" maxW="1000px">
         <PageTitle text={
           `Home Page for ${ appConfig.network.name } network`
         }/>
         <Button colorScheme="red" onClick={ checkSentry }>Check Sentry</Button>
+        <ChainIndicators/>
         { /* will be deleted when we move to new CI */ }
         { isFormVisible && (
           <>
