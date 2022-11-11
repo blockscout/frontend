@@ -7,6 +7,7 @@ import { QueryKeys } from 'types/client/queries';
 import appConfig from 'configs/app/config';
 import globeIcon from 'icons/globe.svg';
 import txIcon from 'icons/transactions.svg';
+import { shortenNumberWithLetter } from 'lib/formatters';
 import { sortByDateDesc } from 'ui/shared/chart/utils/sorts';
 const COLOR = '#439AE2';
 
@@ -25,7 +26,7 @@ const dailyTxsIndicator: TChainIndicator<QueryKeys.chartsTxs> = {
         .sort(sortByDateDesc),
       name: 'Tx/day',
       color: COLOR,
-      valueFormatter: (x) => x.toString(),
+      valueFormatter: (x) => '$' + shortenNumberWithLetter(x),
     } ]),
   },
 };
