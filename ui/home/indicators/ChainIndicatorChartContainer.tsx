@@ -1,8 +1,11 @@
-import { Box } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
 import type { ChainIndicatorChartData } from './types';
+
+import ChartLineLoader from 'ui/shared/chart/ChartLineLoader';
+import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import ChainIndicatorChart from './ChainIndicatorChart';
 
@@ -12,17 +15,17 @@ const ChainIndicatorChartContainer = ({ data, isError, isLoading }: Props) => {
 
   const content = (() => {
     if (isLoading) {
-      return 'loading...';
+      return <ChartLineLoader mt="auto"/>;
     }
 
     if (isError) {
-      return 'error';
+      return <DataFetchAlert/>;
     }
 
     return <ChainIndicatorChart data={ data }/>;
   })();
 
-  return <Box h="270px">{ content }</Box>;
+  return <Flex h="270px" alignItems="flex-start">{ content }</Flex>;
 };
 
 export default React.memo(ChainIndicatorChartContainer);

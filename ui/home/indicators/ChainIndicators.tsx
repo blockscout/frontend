@@ -20,7 +20,7 @@ const ChainIndicators = () => {
     <Flex p={ 8 } borderRadius="lg" boxShadow="lg" bgColor={ bgColor } columnGap={ 12 } w="100%" alignItems="stretch">
       <Flex flexGrow={ 1 } flexDir="column">
         <Flex alignItems="center">
-          <Text fontWeight={ 500 } fontFamily="Poppins" fontSize="lg">{ indicator?.title }</Text>
+          <Text fontWeight={ 500 } fontFamily="heading" fontSize="lg">{ indicator?.title }</Text>
           { indicator?.hint && (
             <Tooltip label={ indicator.hint } maxW="300px">
               <Box display="inline-flex" cursor="pointer" ml={ 1 }>
@@ -29,7 +29,7 @@ const ChainIndicators = () => {
             </Tooltip>
           ) }
         </Flex>
-        <Text fontWeight={ 600 } fontFamily="Poppins" fontSize="48px" lineHeight="48px" mt={ 3 } mb={ 4 }>{ indicator?.value }</Text>
+        <Text fontWeight={ 600 } fontFamily="heading" fontSize="48px" lineHeight="48px" mt={ 3 } mb={ 4 }>{ indicator?.value }</Text>
         <ChainIndicatorChartContainer { ...queryResult }/>
       </Flex>
       <Flex flexShrink={ 0 } flexDir="column" as="ul" p={ 3 } borderRadius="lg" bgColor={ listBgColor } rowGap={ 3 }>

@@ -38,7 +38,7 @@ const ChainIndicatorItem = ({ id, title, value, icon, isSelected, onClick }: Pro
     >
       { icon }
       <Box>
-        <Text fontFamily="Poppins" fontWeight={ 500 }>{ title }</Text>
+        <Text fontFamily="heading" fontWeight={ 500 }>{ title }</Text>
         <Text variant="secondary" fontWeight={ 600 }>{ value }</Text>
       </Box>
     </Flex>
