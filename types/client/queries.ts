@@ -3,6 +3,7 @@ export enum QueryKeys {
   profile = 'profile',
   txsValidate = 'txs-validated',
   txsPending = 'txs-pending',
+  stats='stats',
   tx = 'tx',
   txInternals = 'tx-internals',
   txLogs = 'tx-logs',

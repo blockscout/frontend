@@ -1,7 +1,12 @@
-import { Box, Flex, Icon, Text, Tooltip, useColorModeValue } from '@chakra-ui/react';
+import { Box, Flex, Icon, Skeleton, Text, Tooltip, useColorModeValue } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
+import type { Stats } from 'types/api/stats';
+import { QueryKeys } from 'types/client/queries';
+
 import infoIcon from 'icons/info.svg';
+import useFetch from 'lib/hooks/useFetch';
 
 import ChainIndicatorChartContainer from './ChainIndicatorChartContainer';
 import ChainIndicatorItem from './ChainIndicatorItem';
@@ -11,10 +16,33 @@ import INDICATORS from './utils/indicators';
 const ChainIndicators = () => {
   const [ selectedIndicator, selectIndicator ] = React.useState(INDICATORS[0].id);
   const indicator = INDICATORS.find(({ id }) => id === selectedIndicator);
+
   const queryResult = useFetchChartData(indicator);
+
+  const fetch = useFetch();
+  const statsQueryResult = useQuery<unknown, unknown, Stats>(
+    [ QueryKeys.stats ],
+    () => fetch('/node-api/stats'),
+  );
 
   const bgColor = useColorModeValue('white', 'gray.900');
   const listBgColor = useColorModeValue('gray.50', 'black');
+
+  const valueTitle = (() => {
+    if (statsQueryResult.isLoading) {
+      return <Skeleton h="48px" w="215px" mt={ 3 } mb={ 4 }/>;
+    }
+
+    if (statsQueryResult.isError) {
+      return <Text mt={ 3 } mb={ 4 }>There is no data</Text>;
+    }
+
+    return (
+      <Text fontWeight={ 600 } fontFamily="heading" fontSize="48px" lineHeight="48px" mt={ 3 } mb={ 4 }>
+        { indicator?.value(statsQueryResult.data) }
+      </Text>
+    );
+  })();
 
   return (
     <Flex p={ 8 } borderRadius="lg" boxShadow="lg" bgColor={ bgColor } columnGap={ 12 } w="100%" alignItems="stretch">
@@ -29,7 +57,7 @@ const ChainIndicators = () => {
             </Tooltip>
           ) }
         </Flex>
-        <Text fontWeight={ 600 } fontFamily="heading" fontSize="48px" lineHeight="48px" mt={ 3 } mb={ 4 }>{ indicator?.value }</Text>
+        { valueTitle }
         <ChainIndicatorChartContainer { ...queryResult }/>
       </Flex>
       <Flex flexShrink={ 0 } flexDir="column" as="ul" p={ 3 } borderRadius="lg" bgColor={ listBgColor } rowGap={ 3 }>
@@ -39,6 +67,7 @@ const ChainIndicators = () => {
             { ...indicator }
             isSelected={ selectedIndicator === indicator.id }
             onClick={ selectIndicator }
+            stats={ statsQueryResult }
           />
         )) }
       </Flex>
