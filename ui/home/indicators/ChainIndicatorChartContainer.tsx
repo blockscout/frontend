@@ -25,7 +25,7 @@ const ChainIndicatorChartContainer = ({ data, isError, isLoading }: Props) => {
     return <ChainIndicatorChart data={ data }/>;
   })();
 
-  return <Flex h="270px" alignItems="flex-start">{ content }</Flex>;
+  return <Flex h={{ base: '130px', lg: '270px' }} alignItems="flex-start">{ content }</Flex>;
 };
 
 export default React.memo(ChainIndicatorChartContainer);

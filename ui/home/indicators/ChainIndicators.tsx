@@ -64,7 +64,17 @@ const ChainIndicators = () => {
   })();
 
   return (
-    <Flex p={ 8 } borderRadius="lg" boxShadow="lg" bgColor={ bgColor } columnGap={ 12 } w="100%" alignItems="stretch">
+    <Flex
+      p={ 8 }
+      borderRadius="lg"
+      boxShadow="lg"
+      bgColor={ bgColor }
+      columnGap={ 12 }
+      rowGap={ 12 }
+      flexDir={{ base: 'column', lg: 'row' }}
+      w="100%"
+      alignItems="stretch"
+    >
       <Flex flexGrow={ 1 } flexDir="column">
         <Flex alignItems="center">
           <Text fontWeight={ 500 } fontFamily="heading" fontSize="lg">{ indicator?.title }</Text>

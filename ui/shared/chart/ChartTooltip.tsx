@@ -5,6 +5,9 @@ import React from 'react';
 
 import type { TimeChartItem, TimeChartData } from 'ui/shared/chart/types';
 
+import type { Pointer } from 'ui/shared/chart/utils/pointerTracker';
+import { trackPointer } from 'ui/shared/chart/utils/pointerTracker';
+
 interface Props {
   width?: number;
   height?: number;
@@ -27,7 +30,6 @@ const ChartTooltip = ({ xScale, yScale, width, height, data, anchorEl, ...props 
   const bgColor = useToken('colors', 'blackAlpha.900');
 
   const ref = React.useRef(null);
-  const isPressed = React.useRef(false);
 
   const drawLine = React.useCallback(
     (x: number) => {
@@ -67,8 +69,7 @@ const ChartTooltip = ({ xScale, yScale, width, height, data, anchorEl, ...props 
       .text(data[i].valueFormatter?.(d.value) || d.value.toLocaleString());
   }, [ data ]);
 
-  const drawCircles = React.useCallback((event: MouseEvent) => {
-    const [ x ] = d3.pointer(event, anchorEl);
+  const drawPoints = React.useCallback((x: number) => {
     const xDate = xScale.invert(x);
     const bisectDate = d3.bisector<TimeChartItem, unknown>((d) => d.date).left;
     let baseXPos = 0;
@@ -101,53 +102,50 @@ const ChartTooltip = ({ xScale, yScale, width, height, data, anchorEl, ...props 
       });
 
     return [ baseXPos, baseYPos ];
-  }, [ anchorEl, data, updateDisplayedValue, xScale, yScale ]);
+  }, [ data, updateDisplayedValue, xScale, yScale ]);
 
-  const followPoints = React.useCallback((event: MouseEvent) => {
-    const [ baseXPos, baseYPos ] = drawCircles(event);
-    drawLine(baseXPos);
-    drawContent(baseXPos, baseYPos);
-  }, [ drawCircles, drawLine, drawContent ]);
+  const draw = React.useCallback((pointer: Pointer) => {
+    if (pointer.point) {
+      const [ baseXPos, baseYPos ] = drawPoints(pointer.point[0]);
+      drawLine(baseXPos);
+      drawContent(baseXPos, baseYPos);
+    }
+
+  }, [ drawPoints, drawLine, drawContent ]);
 
   React.useEffect(() => {
     const anchorD3 = d3.select(anchorEl);
+    const subscriptions: Array<string> = [];
 
     anchorD3
-      .on('mousedown.tooltip', () => {
-        isPressed.current = true;
-        d3.select(ref.current).attr('opacity', 0);
-      })
-      .on('mouseup.tooltip', () => {
-        isPressed.current = false;
-      })
-      .on('mouseout.tooltip', () => {
-        d3.select(ref.current).attr('opacity', 0);
-      })
-      .on('mouseover.tooltip', () => {
-        d3.select(ref.current).attr('opacity', 1);
-      })
-      .on('mousemove.tooltip', (event: MouseEvent) => {
-        if (!isPressed.current) {
-          d3.select(ref.current).attr('opacity', 1);
-          d3.select(ref.current)
-            .selectAll('.ChartTooltip__linePoint')
-            .attr('opacity', 1);
-          followPoints(event);
-        }
+      .on('touchmove.tooltip', (event: PointerEvent) => event.preventDefault()) // prevent scrolling
+      .on('pointerenter.tooltip pointerdown.tooltip', (event: PointerEvent) => {
+        const newSubscriptions = trackPointer(event, {
+          start: () => {
+            d3.select(ref.current).attr('opacity', 1);
+            d3.select(ref.current)
+              .selectAll('.ChartTooltip__linePoint')
+              .attr('opacity', 1);
+          },
+          move: (pointer) => {
+            draw(pointer);
+          },
+          out: () => {
+            d3.select(ref.current).attr('opacity', 0);
+          },
+          end: () => {
+            d3.select(ref.current).attr('opacity', 0);
+          },
+        });
+
+        subscriptions.push(...newSubscriptions);
       });
 
-    d3.select('body').on('mouseup.tooltip', function(event) {
-      const isOutside = event.target !== anchorD3.node();
-      if (isOutside) {
-        isPressed.current = false;
-      }
-    });
-
     return () => {
-      anchorD3.on('mousedown.tooltip mouseup.tooltip mouseout.tooltip mouseover.tooltip mousemove.tooltip', null);
-      d3.select('body').on('mouseup.tooltip', null);
+      anchorD3.on('touchmove.tooltip pointerenter.tooltip pointerdown.tooltip', null);
+      subscriptions && anchorD3.on(subscriptions.join(' '), null);
     };
-  }, [ anchorEl, followPoints ]);
+  }, [ anchorEl, draw ]);
 
   return (
     <g ref={ ref } opacity={ 0 } { ...props }>
