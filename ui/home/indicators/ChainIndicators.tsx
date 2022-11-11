@@ -5,6 +5,7 @@ import React from 'react';
 import type { Stats } from 'types/api/stats';
 import { QueryKeys } from 'types/client/queries';
 
+import appConfig from 'configs/app/config';
 import infoIcon from 'icons/info.svg';
 import useFetch from 'lib/hooks/useFetch';
 
@@ -13,9 +14,23 @@ import ChainIndicatorItem from './ChainIndicatorItem';
 import useFetchChartData from './useFetchChartData';
 import INDICATORS from './utils/indicators';
 
+const indicators = INDICATORS
+  .filter(({ id }) => appConfig.homepage.charts.includes(id))
+  .sort((a, b) => {
+    if (appConfig.homepage.charts.indexOf(a.id) > appConfig.homepage.charts.indexOf(b.id)) {
+      return 1;
+    }
+
+    if (appConfig.homepage.charts.indexOf(a.id) < appConfig.homepage.charts.indexOf(b.id)) {
+      return -1;
+    }
+
+    return 0;
+  });
+
 const ChainIndicators = () => {
-  const [ selectedIndicator, selectIndicator ] = React.useState(INDICATORS[0].id);
-  const indicator = INDICATORS.find(({ id }) => id === selectedIndicator);
+  const [ selectedIndicator, selectIndicator ] = React.useState(indicators[0]?.id);
+  const indicator = indicators.find(({ id }) => id === selectedIndicator);
 
   const queryResult = useFetchChartData(indicator);
 
@@ -27,6 +42,10 @@ const ChainIndicators = () => {
 
   const bgColor = useColorModeValue('white', 'gray.900');
   const listBgColor = useColorModeValue('gray.50', 'black');
+
+  if (indicators.length === 0) {
+    return null;
+  }
 
   const valueTitle = (() => {
     if (statsQueryResult.isLoading) {
@@ -60,17 +79,19 @@ const ChainIndicators = () => {
         { valueTitle }
         <ChainIndicatorChartContainer { ...queryResult }/>
       </Flex>
-      <Flex flexShrink={ 0 } flexDir="column" as="ul" p={ 3 } borderRadius="lg" bgColor={ listBgColor } rowGap={ 3 }>
-        { INDICATORS.map((indicator) => (
-          <ChainIndicatorItem
-            key={ indicator.id }
-            { ...indicator }
-            isSelected={ selectedIndicator === indicator.id }
-            onClick={ selectIndicator }
-            stats={ statsQueryResult }
-          />
-        )) }
-      </Flex>
+      { indicators.length > 1 && (
+        <Flex flexShrink={ 0 } flexDir="column" as="ul" p={ 3 } borderRadius="lg" bgColor={ listBgColor } rowGap={ 3 }>
+          { indicators.map((indicator) => (
+            <ChainIndicatorItem
+              key={ indicator.id }
+              { ...indicator }
+              isSelected={ selectedIndicator === indicator.id }
+              onClick={ selectIndicator }
+              stats={ statsQueryResult }
+            />
+          )) }
+        </Flex>
+      ) }
     </Flex>
   );
 };
