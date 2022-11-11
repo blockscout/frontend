@@ -1,6 +1,6 @@
 import type { ChartTransactionResponse, ChartMarketResponse } from 'types/api/charts';
 import type { QueryKeys } from 'types/client/queries';
-import type { TimeChartItem } from 'ui/shared/chart/types';
+import type { TimeChartDataItem } from 'ui/shared/chart/types';
 
 export type ChartsQueryKeys = QueryKeys.chartsTxs | QueryKeys.chartsMarket;
 
@@ -24,4 +24,4 @@ export type ChartsResponse<Q extends ChartsQueryKeys> =
       Q extends QueryKeys.chartsMarket ? ChartMarketResponse :
         never;
 
-export type ChainIndicatorChartData = Array<TimeChartItem>;
+export type ChainIndicatorChartData = Array<TimeChartDataItem>;

@@ -14,15 +14,22 @@ interface Props {
   anchorEl: SVGRectElement | null;
 }
 
+const TEXT_LINE_HEIGHT = 12;
+const PADDING = 16;
+const LINE_SPACE = 10;
+
 const ChartTooltip = ({ xScale, yScale, width, height, data, margin: _margin, anchorEl, ...props }: Props) => {
   const margin = React.useMemo(() => ({
     top: 0, bottom: 0, left: 0, right: 0,
     ..._margin,
   }), [ _margin ]);
 
-  const lineColor = useToken('colors', 'red.500');
-  const textColor = useToken('colors', useColorModeValue('white', 'black'));
-  const bgColor = useToken('colors', useColorModeValue('gray.900', 'gray.400'));
+  const lineColor = useToken('colors', 'gray.400');
+  const titleColor = useToken('colors', 'blue.100');
+  const textColor = useToken('colors', 'white');
+  const markerBgColor = useToken('colors', useColorModeValue('black', 'white'));
+  const markerBorderColor = useToken('colors', useColorModeValue('white', 'black'));
+  const bgColor = useToken('colors', 'blackAlpha.900');
 
   const ref = React.useRef(null);
   const isPressed = React.useRef(false);
@@ -52,8 +59,8 @@ const ChartTooltip = ({ xScale, yScale, width, height, data, margin: _margin, an
       });
 
       tooltipContent
-        .select('.ChartTooltip__contentTitle')
-        .text(d3.timeFormat('%b %d, %Y')(xScale.invert(x)));
+        .select('.ChartTooltip__contentDate')
+        .text(d3.timeFormat('%e %b %Y')(xScale.invert(x)));
     },
     [ xScale, margin, width ],
   );
@@ -61,8 +68,8 @@ const ChartTooltip = ({ xScale, yScale, width, height, data, margin: _margin, an
   const updateDisplayedValue = React.useCallback((d: TimeChartItem, i: number) => {
     d3.selectAll('.ChartTooltip__value')
       .filter((td, tIndex) => tIndex === i)
-      .text(d.value.toLocaleString());
-  }, []);
+      .text(data[i].valueFormatter?.(d.value) || d.value.toLocaleString());
+  }, [ data ]);
 
   const drawCircles = React.useCallback((event: MouseEvent) => {
     const [ x ] = d3.pointer(event, anchorEl);
@@ -146,34 +153,72 @@ const ChartTooltip = ({ xScale, yScale, width, height, data, margin: _margin, an
 
   return (
     <g ref={ ref } opacity={ 0 } { ...props }>
-      <line className="ChartTooltip__line" stroke={ lineColor }/>
+      <line className="ChartTooltip__line" stroke={ lineColor } strokeDasharray="3"/>
       <g className="ChartTooltip__content">
-        <rect className="ChartTooltip__contentBg" rx={ 8 } ry={ 8 } fill={ bgColor } width={ 125 } height={ data.length * 22 + 34 }/>
-        <text
-          className="ChartTooltip__contentTitle"
-          transform="translate(8,20)"
-          fontSize="12px"
-          fontWeight="bold"
-          fill={ textColor }
-          pointerEvents="none"
+        <rect
+          className="ChartTooltip__contentBg"
+          rx={ 12 }
+          ry={ 12 }
+          fill={ bgColor }
+          width={ 200 }
+          height={ 2 * PADDING + (data.length + 1) * TEXT_LINE_HEIGHT + data.length * LINE_SPACE }
         />
-        <g>
-          { data.map(({ name, color }, index) => (
-            <g key={ name } className="ChartTooltip__contentLine" transform={ `translate(12,${ 40 + index * 20 })` }>
-              <circle r={ 4 } fill={ color }/>
-              <text
-                transform="translate(10,4)"
-                className="ChartTooltip__value"
-                fontSize="12px"
-                fill={ textColor }
-                pointerEvents="none"
-              />
-            </g>
-          )) }
+        <g transform={ `translate(${ PADDING },${ PADDING })` }>
+          <text
+            className="ChartTooltip__contentTitle"
+            transform="translate(0,0)"
+            fontSize="12px"
+            fontWeight="500"
+            fill={ titleColor }
+            dominantBaseline="hanging"
+          >
+            Date
+          </text>
+          <text
+            className="ChartTooltip__contentDate"
+            transform="translate(80,0)"
+            fontSize="12px"
+            fontWeight="500"
+            fill={ textColor }
+            dominantBaseline="hanging"
+          />
         </g>
+        { data.map(({ name }, index) => (
+          <g
+            key={ name }
+            transform={ `translate(${ PADDING },${ PADDING + (index + 1) * (LINE_SPACE + TEXT_LINE_HEIGHT) })` }
+          >
+            <text
+              className="ChartTooltip__contentTitle"
+              transform="translate(0,0)"
+              fontSize="12px"
+              fontWeight="500"
+              fill={ titleColor }
+              dominantBaseline="hanging"
+            >
+              { name }
+            </text>
+            <text
+              transform="translate(80,0)"
+              className="ChartTooltip__value"
+              fontSize="12px"
+              fill={ textColor }
+              dominantBaseline="hanging"
+            />
+          </g>
+        )) }
       </g>
-      { data.map(({ name, color }) => (
-        <circle key={ name } className="ChartTooltip__linePoint" r={ 4 } opacity={ 0 } fill={ color } stroke="#FFF" strokeWidth={ 1 }/>
+      { data.map(({ name }) => (
+        <circle
+          key={ name }
+          className="ChartTooltip__linePoint"
+          r={ 8 }
+          opacity={ 0 }
+          fill={ markerBgColor }
+          stroke={ markerBorderColor }
+          strokeWidth={ 4
+          }
+        />
       )) }
     </g>
   );

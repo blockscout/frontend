@@ -17,7 +17,7 @@ const ChainIndicators = () => {
   const listBgColor = useColorModeValue('gray.50', 'black');
 
   return (
-    <Flex p={ 8 } borderRadius="lg" boxShadow="lg" bgColor={ bgColor } columnGap={ 12 } w="100%" alignItems="flex-start">
+    <Flex p={ 8 } borderRadius="lg" boxShadow="lg" bgColor={ bgColor } columnGap={ 12 } w="100%" alignItems="stretch">
       <Flex flexGrow={ 1 } flexDir="column">
         <Flex alignItems="center">
           <Text fontWeight={ 500 } fontFamily="Poppins" fontSize="lg">{ indicator?.title }</Text>

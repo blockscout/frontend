@@ -8,6 +8,7 @@ import appConfig from 'configs/app/config';
 import globeIcon from 'icons/globe.svg';
 import txIcon from 'icons/transactions.svg';
 import { sortByDateDesc } from 'ui/shared/chart/utils/sorts';
+const COLOR = '#439AE2';
 
 const dailyTxsIndicator: TChainIndicator<QueryKeys.chartsTxs> = {
   id: 'daily_txs',
@@ -18,9 +19,14 @@ const dailyTxsIndicator: TChainIndicator<QueryKeys.chartsTxs> = {
   api: {
     queryName: QueryKeys.chartsTxs,
     path: '/node-api/stats/charts/transactions',
-    dataFn: (response) => response.chart_data
-      .map((item) => ({ date: new Date(item.date), value: item.tx_count }))
-      .sort(sortByDateDesc),
+    dataFn: (response) => ([ {
+      items: response.chart_data
+        .map((item) => ({ date: new Date(item.date), value: item.tx_count }))
+        .sort(sortByDateDesc),
+      name: 'Tx/day',
+      color: COLOR,
+      valueFormatter: (x) => x.toString(),
+    } ]),
   },
 };
 
@@ -34,9 +40,14 @@ const coinPriceIndicator: TChainIndicator<QueryKeys.chartsMarket> = {
   api: {
     queryName: QueryKeys.chartsMarket,
     path: '/node-api/stats/charts/market',
-    dataFn: (response) => response.chart_data
-      .map((item) => ({ date: new Date(item.date), value: Number(item.closing_price) * Number(response.available_supply) }))
-      .sort(sortByDateDesc),
+    dataFn: (response) => ([ {
+      items: response.chart_data
+        .map((item) => ({ date: new Date(item.date), value: Number(item.closing_price) }))
+        .sort(sortByDateDesc),
+      name: `${ appConfig.network.currency.symbol } price`,
+      color: COLOR,
+      valueFormatter: (x) => '$' + x.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }),
+    } ]),
   },
 };
 
@@ -50,9 +61,14 @@ const marketPriceIndicator: TChainIndicator<QueryKeys.chartsMarket> = {
   api: {
     queryName: QueryKeys.chartsMarket,
     path: '/node-api/stats/charts/market',
-    dataFn: (response) => response.chart_data
-      .map((item) => ({ date: new Date(item.date), value: Number(item.closing_price) }))
-      .sort(sortByDateDesc),
+    dataFn: (response) => ([ {
+      items: response.chart_data
+        .map((item) => ({ date: new Date(item.date), value: Number(item.closing_price) * Number(response.available_supply) }))
+        .sort(sortByDateDesc),
+      name: 'Market cap',
+      color: COLOR,
+      valueFormatter: (x) => '$' + x.toLocaleString(undefined, { maximumFractionDigits: 0 }),
+    } ]),
   },
 };
 
