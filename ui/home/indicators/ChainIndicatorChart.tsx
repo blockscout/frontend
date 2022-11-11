@@ -16,12 +16,13 @@ interface Props {
 }
 
 const COLOR = '#439AE2';
+const CHART_MARGIN = { bottom: 0, left: 10, right: 10, top: 0 };
 
 const ChainIndicatorChart = ({ data }: Props) => {
   const ref = React.useRef<SVGSVGElement>(null);
   const overlayRef = React.useRef<SVGRectElement>(null);
 
-  const { width, height, innerWidth, innerHeight } = useChartSize(ref.current);
+  const { width, height, innerWidth, innerHeight } = useChartSize(ref.current, CHART_MARGIN);
   const { xScale, yScale } = useTimeChartController({
     data,
     width: innerWidth,
@@ -33,30 +34,32 @@ const ChainIndicatorChart = ({ data }: Props) => {
       <defs>
         <BlueLineGradient.defs/>
       </defs>
-      <ChartArea
-        data={ data[0].items }
-        color={ COLOR }
-        xScale={ xScale }
-        yScale={ yScale }
-      />
-      <ChartLine
-        data={ data[0].items }
-        xScale={ xScale }
-        yScale={ yScale }
-        stroke={ `url(#${ BlueLineGradient.id })` }
-        animation="left"
-        strokeWidth={ 3 }
-      />
-      <ChartOverlay ref={ overlayRef } width={ innerWidth } height={ innerHeight }>
-        <ChartTooltip
-          anchorEl={ overlayRef.current }
-          width={ innerWidth }
-          height={ innerHeight }
+      <g transform={ `translate(${ CHART_MARGIN?.left || 0 },${ CHART_MARGIN?.top || 0 })` } opacity={ width ? 1 : 0 }>
+        <ChartArea
+          data={ data[0].items }
+          color={ COLOR }
           xScale={ xScale }
           yScale={ yScale }
-          data={ data }
         />
-      </ChartOverlay>
+        <ChartLine
+          data={ data[0].items }
+          xScale={ xScale }
+          yScale={ yScale }
+          stroke={ `url(#${ BlueLineGradient.id })` }
+          animation="left"
+          strokeWidth={ 3 }
+        />
+        <ChartOverlay ref={ overlayRef } width={ innerWidth } height={ innerHeight }>
+          <ChartTooltip
+            anchorEl={ overlayRef.current }
+            width={ innerWidth }
+            height={ innerHeight }
+            xScale={ xScale }
+            yScale={ yScale }
+            data={ data }
+          />
+        </ChartOverlay>
+      </g>
     </svg>
   );
 };

@@ -1,13 +1,13 @@
 import { useToken, useColorModeValue } from '@chakra-ui/react';
 import * as d3 from 'd3';
+import _clamp from 'lodash/clamp';
 import React from 'react';
 
-import type { TimeChartItem, ChartMargin, TimeChartData } from 'ui/shared/chart/types';
+import type { TimeChartItem, TimeChartData } from 'ui/shared/chart/types';
 
 interface Props {
   width?: number;
   height?: number;
-  margin?: ChartMargin;
   data: TimeChartData;
   xScale: d3.ScaleTime<number, number>;
   yScale: d3.ScaleLinear<number, number>;
@@ -18,12 +18,7 @@ const TEXT_LINE_HEIGHT = 12;
 const PADDING = 16;
 const LINE_SPACE = 10;
 
-const ChartTooltip = ({ xScale, yScale, width, height, data, margin: _margin, anchorEl, ...props }: Props) => {
-  const margin = React.useMemo(() => ({
-    top: 0, bottom: 0, left: 0, right: 0,
-    ..._margin,
-  }), [ _margin ]);
-
+const ChartTooltip = ({ xScale, yScale, width, height, data, anchorEl, ...props }: Props) => {
   const lineColor = useToken('colors', 'gray.400');
   const titleColor = useToken('colors', 'blue.100');
   const textColor = useToken('colors', 'white');
@@ -47,22 +42,23 @@ const ChartTooltip = ({ xScale, yScale, width, height, data, margin: _margin, an
   );
 
   const drawContent = React.useCallback(
-    (x: number) => {
+    (x: number, y: number) => {
       const tooltipContent = d3.select(ref.current).select('.ChartTooltip__content');
 
       tooltipContent.attr('transform', (cur, i, nodes) => {
-        const OFFSET = 8;
+        const X_OFFSET = 16;
         const node = nodes[i] as SVGGElement | null;
-        const nodeWidth = node?.getBoundingClientRect()?.width || 0;
-        const translateX = nodeWidth + x + OFFSET > (width || 0) ? x - nodeWidth - OFFSET : x + OFFSET;
-        return `translate(${ translateX }, ${ margin.top + 30 })`;
+        const { width: nodeWidth, height: nodeHeight } = node?.getBoundingClientRect() || { width: 0, height: 0 };
+        const translateX = nodeWidth + x + X_OFFSET > (width || 0) ? x - nodeWidth - X_OFFSET : x + X_OFFSET;
+        const translateY = _clamp(y - nodeHeight / 2, 0, (height || 0) - nodeHeight);
+        return `translate(${ translateX }, ${ translateY })`;
       });
 
       tooltipContent
         .select('.ChartTooltip__contentDate')
         .text(d3.timeFormat('%e %b %Y')(xScale.invert(x)));
     },
-    [ xScale, margin, width ],
+    [ xScale, width, height ],
   );
 
   const updateDisplayedValue = React.useCallback((d: TimeChartItem, i: number) => {
@@ -76,6 +72,7 @@ const ChartTooltip = ({ xScale, yScale, width, height, data, margin: _margin, an
     const xDate = xScale.invert(x);
     const bisectDate = d3.bisector<TimeChartItem, unknown>((d) => d.date).left;
     let baseXPos = 0;
+    let baseYPos = 0;
 
     d3.select(ref.current)
       .selectAll('.ChartTooltip__linePoint')
@@ -91,24 +88,25 @@ const ChartTooltip = ({ xScale, yScale, width, height, data, margin: _margin, an
         }
 
         const xPos = xScale(d.date);
+        const yPos = yScale(d.value);
+
         if (i === 0) {
           baseXPos = xPos;
+          baseYPos = yPos;
         }
-
-        const yPos = yScale(d.value);
 
         updateDisplayedValue(d, i);
 
         return `translate(${ xPos }, ${ yPos })`;
       });
 
-    return baseXPos;
+    return [ baseXPos, baseYPos ];
   }, [ anchorEl, data, updateDisplayedValue, xScale, yScale ]);
 
   const followPoints = React.useCallback((event: MouseEvent) => {
-    const baseXPos = drawCircles(event);
+    const [ baseXPos, baseYPos ] = drawCircles(event);
     drawLine(baseXPos);
-    drawContent(baseXPos);
+    drawContent(baseXPos, baseYPos);
   }, [ drawCircles, drawLine, drawContent ]);
 
   React.useEffect(() => {
