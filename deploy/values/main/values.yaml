@@ -449,4 +449,4 @@ frontend:
     NEXT_PUBLIC_LOGOUT_URL:
       _default: https://blockscoutcom.us.auth0.com/v2/logout
     NEXT_PUBLIC_LOGOUT_RETURN_URL:
-      _default: http://blockscout.com/eth/goerli/auth/logout
+      _default: https://blockscout.com/auth/logout
