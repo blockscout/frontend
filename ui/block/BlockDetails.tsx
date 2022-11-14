@@ -2,6 +2,7 @@ import { Grid, GridItem, Text, Icon, Link, Box, Tooltip, Alert } from '@chakra-u
 import { useQuery } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import capitalize from 'lodash/capitalize';
+import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
@@ -109,9 +110,11 @@ const BlockDetails = () => {
         title="Transactions"
         hint="The number of transactions in the block."
       >
-        <Link href={ link('block', { id: router.query.id }, { tab: 'txs' }) }>
-          { data.tx_count } transactions
-        </Link>
+        <NextLink href={ link('block', { id: router.query.id }, { tab: 'txs' }) } passHref>
+          <Link>
+            { data.tx_count } transactions
+          </Link>
+        </NextLink>
       </DetailsInfoItem>
       <DetailsInfoItem
         title={ appConfig.network.verificationType === 'validation' ? 'Validated by' : 'Mined by' }
