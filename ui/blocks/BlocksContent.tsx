@@ -25,11 +25,12 @@ const BlocksContent = ({ type }: Props) => {
   const queryClient = useQueryClient();
   const [ socketAlert, setSocketAlert ] = React.useState('');
 
-  const { data, isLoading, isError, pagination } = useQueryWithPages<BlocksResponse>({
+  const { data, isLoading, isError, pagination } = useQueryWithPages({
     apiPath: '/node-api/blocks',
     queryName: QueryKeys.blocks,
     filters: { type },
   });
+  const isPaginatorHidden = !isLoading && !isError && pagination.page === 1 && !pagination.hasNextPage;
 
   const handleNewBlockMessage: SocketMessage.NewBlock['handler'] = React.useCallback((payload) => {
     queryClient.setQueryData([ QueryKeys.blocks, { page: pagination.page, filters: { type } } ], (prevData: BlocksResponse | undefined) => {
@@ -91,21 +92,27 @@ const BlocksContent = ({ type }: Props) => {
       <>
         { socketAlert && <Alert status="warning" mb={ 6 } as="a" href={ window.document.location.href }>{ socketAlert }</Alert> }
         <Show below="lg" key="content-mobile"><BlocksList data={ data.items }/></Show>
-        <Hide below="lg" key="content-desktop"><BlocksTable data={ data.items }/></Hide>
+        <Hide below="lg" key="content-desktop"><BlocksTable data={ data.items } top={ isPaginatorHidden ? 0 : 80 } page={ pagination.page }/></Hide>
       </>
     );
 
   })();
 
+  const totalText = data?.items.length ?
+    <Text mb={{ base: 0, lg: 6 }}>Total of { data.items[0].height.toLocaleString() } blocks</Text> :
+    null;
+
   return (
     <>
       { data ?
-        <Text mb={{ base: 0, lg: 6 }}>Total of { data.items[0].height.toLocaleString() } blocks</Text> :
+        totalText :
         <Skeleton h="24px" w="200px" mb={{ base: 0, lg: 6 }}/>
       }
-      <ActionBar>
-        <Pagination ml="auto" { ...pagination }/>
-      </ActionBar>
+      { !isPaginatorHidden && (
+        <ActionBar>
+          <Pagination ml="auto" { ...pagination }/>
+        </ActionBar>
+      ) }
       { content }
     </>
   );

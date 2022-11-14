@@ -1,25 +1,26 @@
 import { Text, Box, Show, Hide } from '@chakra-ui/react';
-import React, { useState, useCallback } from 'react';
+import React from 'react';
 
-import type { TransactionsResponse } from 'types/api/transaction';
 import type { TTxsFilters } from 'types/api/txsFilters';
 import type { QueryKeys } from 'types/client/queries';
-import type { Sort } from 'types/client/txs-sort';
 
-import * as cookies from 'lib/cookies';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import TxsHeader from './TxsHeader';
+import TxsListItem from './TxsListItem';
+import TxsNewItemNotice from './TxsNewItemNotice';
 import TxsSkeletonDesktop from './TxsSkeletonDesktop';
 import TxsSkeletonMobile from './TxsSkeletonMobile';
-import TxsWithSort from './TxsWithSort';
+import TxsTable from './TxsTable';
+import useTxsSort from './useTxsSort';
 
 type Props = {
-  queryName: QueryKeys;
+  queryName: QueryKeys.txsPending | QueryKeys.txsValidate | QueryKeys.blockTxs;
   showDescription?: boolean;
   stateFilter?: TTxsFilters['filter'];
   apiPath: string;
+  showBlockInfo?: boolean;
 }
 
 const TxsContent = ({
@@ -27,67 +28,53 @@ const TxsContent = ({
   showDescription,
   stateFilter,
   apiPath,
+  showBlockInfo = true,
 }: Props) => {
-  const [ sorting, setSorting ] = useState<Sort>(cookies.get(cookies.NAMES.TXS_SORT) as Sort || '');
-  // const [ filters, setFilters ] = useState<Partial<TTxsFilters>>({ type: [], method: [] });
-
-  const sort = useCallback((field: 'val' | 'fee') => () => {
-    setSorting((prevVal) => {
-      let newVal: Sort = '';
-      if (field === 'val') {
-        if (prevVal === 'val-asc') {
-          newVal = '';
-        } else if (prevVal === 'val-desc') {
-          newVal = 'val-asc';
-        } else {
-          newVal = 'val-desc';
-        }
-      }
-      if (field === 'fee') {
-        if (prevVal === 'fee-asc') {
-          newVal = '';
-        } else if (prevVal === 'fee-desc') {
-          newVal = 'fee-asc';
-        } else {
-          newVal = 'fee-desc';
-        }
-      }
-      cookies.set(cookies.NAMES.TXS_SORT, newVal);
-      return newVal;
-    });
-  }, [ ]);
-
   const {
-    data,
-    isLoading,
-    isError,
     pagination,
-  } = useQueryWithPages<TransactionsResponse>({
+    ...queryResult
+  } = useQueryWithPages({
     apiPath,
     queryName,
     filters: stateFilter ? { filter: stateFilter } : undefined,
   });
   // } = useQueryWithPages({ ...filters, filter: stateFilter, apiPath });
+  const { data, isLoading, isError, setSortByField, setSortByValue, sorting } = useTxsSort(queryResult);
+  const isPaginatorHidden = !isLoading && !isError && pagination.page === 1 && !pagination.hasNextPage;
 
   const content = (() => {
     if (isError) {
       return <DataFetchAlert/>;
     }
 
-    const txs = data?.items;
-
-    if (!isLoading && !txs?.length) {
-      return <Text as="span">There are no transactions.</Text>;
+    if (isLoading) {
+      return (
+        <>
+          <Show below="lg" ssr={ false }><TxsSkeletonMobile showBlockInfo={ showBlockInfo }/></Show>
+          <Hide below="lg" ssr={ false }><TxsSkeletonDesktop showBlockInfo={ showBlockInfo }/></Hide>
+        </>
+      );
     }
 
-    if (!isLoading && txs) {
-      return <TxsWithSort txs={ txs } sorting={ sorting } sort={ sort }/>;
+    const txs = data.items;
+
+    if (!txs.length) {
+      return <Text as="span">There are no transactions.</Text>;
     }
 
     return (
       <>
-        <Show below="lg" ssr={ false }><TxsSkeletonMobile/></Show>
-        <Hide below="lg" ssr={ false }><TxsSkeletonDesktop/></Hide>
+        <Show below="lg" ssr={ false }>
+          <Box>
+            <TxsNewItemNotice>
+              { ({ content }) => <Box>{ content }</Box> }
+            </TxsNewItemNotice>
+            { txs.map(tx => <TxsListItem tx={ tx } key={ tx.hash } showBlockInfo={ showBlockInfo }/>) }
+          </Box>
+        </Show>
+        <Hide below="lg" ssr={ false }>
+          <TxsTable txs={ txs } sort={ setSortByField } sorting={ sorting } showBlockInfo={ showBlockInfo } top={ isPaginatorHidden ? 0 : 80 }/>
+        </Hide>
       </>
     );
   })();
@@ -95,7 +82,7 @@ const TxsContent = ({
   return (
     <>
       { showDescription && <Box mb={{ base: 6, lg: 12 }}>Only the first 10,000 elements are displayed</Box> }
-      <TxsHeader mt={ -6 } sorting={ sorting } setSorting={ setSorting } paginationProps={ pagination }/>
+      <TxsHeader mt={ -6 } sorting={ sorting } setSorting={ setSortByValue } paginationProps={ pagination } showPagination={ !isPaginatorHidden }/>
       { content }
     </>
   );

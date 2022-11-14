@@ -1,19 +1,19 @@
 import { Box, Text, Show, Hide } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { InternalTransactionsResponse, InternalTransaction } from 'types/api/internalTransaction';
+import type { InternalTransaction } from 'types/api/internalTransaction';
 import { QueryKeys } from 'types/client/queries';
 
 import { SECOND } from 'lib/consts';
-import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import { apos } from 'lib/html-entities';
 import EmptySearchResult from 'ui/apps/EmptySearchResult';
+import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 // import FilterInput from 'ui/shared/FilterInput';
 // import TxInternalsFilter from 'ui/tx/internals/TxInternalsFilter';
+import Pagination from 'ui/shared/Pagination';
 import TxInternalsList from 'ui/tx/internals/TxInternalsList';
 import TxInternalsSkeletonDesktop from 'ui/tx/internals/TxInternalsSkeletonDesktop';
 import TxInternalsSkeletonMobile from 'ui/tx/internals/TxInternalsSkeletonMobile';
@@ -70,21 +70,20 @@ const sortFn = (sort: Sort | undefined) => (a: InternalTransaction, b: InternalT
 // };
 
 const TxInternals = () => {
-  const router = useRouter();
-  const fetch = useFetch();
-
   // filters are not implemented yet in api
   // const [ filters, setFilters ] = React.useState<Array<TxInternalsType>>([]);
   // const [ searchTerm, setSearchTerm ] = React.useState<string>('');
   const [ sort, setSort ] = React.useState<Sort>();
   const txInfo = useFetchTxInfo({ updateDelay: 5 * SECOND });
-  const { data, isLoading, isError } = useQuery<unknown, unknown, InternalTransactionsResponse>(
-    [ QueryKeys.txInternals, router.query.id ],
-    async() => await fetch(`/node-api/transactions/${ router.query.id }/internal-transactions`),
-    {
-      enabled: Boolean(router.query.id) && Boolean(txInfo.data?.status),
+  const { data, isLoading, isError, pagination } = useQueryWithPages({
+    apiPath: `/node-api/transactions/${ txInfo.data?.hash }/internal-transactions`,
+    queryName: QueryKeys.txInternals,
+    queryIds: txInfo.data?.hash ? [ txInfo.data.hash ] : undefined,
+    options: {
+      enabled: Boolean(txInfo.data?.hash) && Boolean(txInfo.data?.status),
     },
-  );
+  });
+  const isPaginatorHidden = !isLoading && !isError && pagination.page === 1 && !pagination.hasNextPage;
 
   const isMobile = useIsMobile();
 
@@ -132,11 +131,16 @@ const TxInternals = () => {
 
     return isMobile ?
       <TxInternalsList data={ filteredData }/> :
-      <TxInternalsTable data={ filteredData } sort={ sort } onSortToggle={ handleSortToggle }/>;
+      <TxInternalsTable data={ filteredData } sort={ sort } onSortToggle={ handleSortToggle } top={ isPaginatorHidden ? 0 : 80 }/>;
   })();
 
   return (
     <Box>
+      { !isPaginatorHidden && (
+        <ActionBar mt={ -6 }>
+          <Pagination ml="auto" { ...pagination }/>
+        </ActionBar>
+      ) }
       { /* <Flex mb={ 6 }>
         <TxInternalsFilter onFilterChange={ handleFilterChange } defaultFilters={ filters } appliedFiltersNum={ filters.length }/>
         <FilterInput onChange={ setSearchTerm } maxW="360px" ml={ 3 } size="xs" placeholder="Search by addresses, hash, method..."/>

@@ -9,12 +9,23 @@ type Props = {
 }
 
 const TxsTab = ({ tab }: Props) => {
+  if (tab === 'validated') {
+    return (
+      <TxsContent
+        queryName={ QueryKeys.txsValidate }
+        showDescription
+        stateFilter="validated"
+        apiPath="/node-api/transactions"
+      />
+    );
+  }
+
   return (
     <TxsContent
-      queryName={ QueryKeys.transactions }
-      showDescription={ tab === 'validated' }
-      stateFilter={ tab }
+      queryName={ QueryKeys.txsPending }
+      stateFilter="pending"
       apiPath="/node-api/transactions"
+      showBlockInfo={ false }
     />
   );
 };

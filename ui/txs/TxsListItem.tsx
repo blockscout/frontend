@@ -28,7 +28,7 @@ import TxStatus from 'ui/shared/TxStatus';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 import TxType from 'ui/txs/TxType';
 
-const TxsListItem = ({ tx }: {tx: Transaction}) => {
+const TxsListItem = ({ tx, showBlockInfo }: {tx: Transaction; showBlockInfo: boolean}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const iconColor = useColorModeValue('blue.600', 'blue.300');
@@ -77,7 +77,7 @@ const TxsListItem = ({ tx }: {tx: Transaction}) => {
             { tx.method }
           </Text>
         </Flex>
-        { tx.block !== null && (
+        { showBlockInfo && tx.block !== null && (
           <Box mt={ 2 }>
             <Text as="span">Block </Text>
             <Link href={ link('block', { id: tx.block.toString() }) }>{ tx.block }</Link>

@@ -11,13 +11,12 @@ import React from 'react';
 
 import type { Sort } from 'types/client/txs-sort';
 
-import * as cookies from 'lib/cookies';
 import SortButton from 'ui/shared/SortButton';
 
 interface Props {
   isActive: boolean;
   sorting: Sort;
-  setSorting: (val: Sort | ((val: Sort) => Sort)) => void;
+  setSorting: (val: Sort) => void;
 }
 
 const SORT_OPTIONS = [
@@ -32,14 +31,8 @@ const TxsSorting = ({ isActive, sorting, setSorting }: Props) => {
   const { isOpen, onToggle } = useDisclosure();
 
   const setSortingFromMenu = React.useCallback((val: string | Array<string>) => {
-    setSorting((prevVal: Sort) => {
-      let newVal: Sort = '';
-      if (val !== prevVal) {
-        newVal = val as Sort;
-      }
-      cookies.set(cookies.NAMES.TXS_SORT, newVal);
-      return newVal;
-    });
+    const value = val as Sort | Array<Sort>;
+    setSorting(Array.isArray(value) ? value[0] : value);
   }, [ setSorting ]);
 
   return (

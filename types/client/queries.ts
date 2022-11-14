@@ -1,10 +1,11 @@
 export enum QueryKeys {
   csrf = 'csrf',
   profile = 'profile',
-  transactions = 'transactions',
+  txsValidate = 'txs-validated',
+  txsPending = 'txs-pending',
   tx = 'tx',
   txInternals = 'tx-internals',
-  txLog = 'tx-log',
+  txLogs = 'tx-logs',
   txRawTrace = 'tx-raw-trace',
   txTokenTransfers = 'tx-token-transfers',
   blockTxs = 'block-transactions',

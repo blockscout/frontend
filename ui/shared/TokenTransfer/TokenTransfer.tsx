@@ -1,7 +1,6 @@
 import { Hide, Show, Text, Flex, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenTransferResponse } from 'types/api/tokenTransfer';
 import type { QueryKeys } from 'types/client/queries';
 
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
@@ -19,7 +18,7 @@ interface Props {
   isLoading?: boolean;
   isDisabled?: boolean;
   path: string;
-  queryName: QueryKeys;
+  queryName: QueryKeys.txTokenTransfers;
   queryIds?: Array<string>;
   baseAddress?: string;
   showTxInfo?: boolean;
@@ -27,7 +26,7 @@ interface Props {
 }
 
 const TokenTransfer = ({ isLoading: isLoadingProp, isDisabled, queryName, queryIds, path, baseAddress, showTxInfo = true, txHash }: Props) => {
-  const { isError, isLoading, data, pagination } = useQueryWithPages<TokenTransferResponse>({
+  const { isError, isLoading, data, pagination } = useQueryWithPages({
     apiPath: path,
     queryName,
     queryIds,
