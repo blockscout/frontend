@@ -1,10 +1,10 @@
 import { useToken, useColorModeValue } from '@chakra-ui/react';
 import * as d3 from 'd3';
-import _clamp from 'lodash/clamp';
 import React from 'react';
 
 import type { TimeChartItem, TimeChartData } from 'ui/shared/chart/types';
 
+import computeTooltipPosition from 'ui/shared/chart/utils/computeTooltipPosition';
 import type { Pointer } from 'ui/shared/chart/utils/pointerTracker';
 import { trackPointer } from 'ui/shared/chart/utils/pointerTracker';
 
@@ -20,6 +20,7 @@ interface Props {
 const TEXT_LINE_HEIGHT = 12;
 const PADDING = 16;
 const LINE_SPACE = 10;
+const POINT_SIZE = 16;
 
 const ChartTooltip = ({ xScale, yScale, width, height, data, anchorEl, ...props }: Props) => {
   const lineColor = useToken('colors', 'gray.400');
@@ -48,11 +49,17 @@ const ChartTooltip = ({ xScale, yScale, width, height, data, anchorEl, ...props 
       const tooltipContent = d3.select(ref.current).select('.ChartTooltip__content');
 
       tooltipContent.attr('transform', (cur, i, nodes) => {
-        const X_OFFSET = 16;
         const node = nodes[i] as SVGGElement | null;
         const { width: nodeWidth, height: nodeHeight } = node?.getBoundingClientRect() || { width: 0, height: 0 };
-        const translateX = nodeWidth + x + X_OFFSET > (width || 0) ? x - nodeWidth - X_OFFSET : x + X_OFFSET;
-        const translateY = _clamp(y - nodeHeight / 2, 0, (height || 0) - nodeHeight);
+        const [ translateX, translateY ] = computeTooltipPosition({
+          canvasWidth: width || 0,
+          canvasHeight: height || 0,
+          nodeWidth,
+          nodeHeight,
+          pointX: x,
+          pointY: y,
+          offset: POINT_SIZE,
+        });
         return `translate(${ translateX }, ${ translateY })`;
       });
 
@@ -76,7 +83,7 @@ const ChartTooltip = ({ xScale, yScale, width, height, data, anchorEl, ...props 
     let baseYPos = 0;
 
     d3.select(ref.current)
-      .selectAll('.ChartTooltip__linePoint')
+      .selectAll('.ChartTooltip__point')
       .attr('transform', (cur, i) => {
         const index = bisectDate(data[i].items, xDate, 1);
         const d0 = data[i].items[index - 1];
@@ -124,7 +131,7 @@ const ChartTooltip = ({ xScale, yScale, width, height, data, anchorEl, ...props 
           start: () => {
             d3.select(ref.current).attr('opacity', 1);
             d3.select(ref.current)
-              .selectAll('.ChartTooltip__linePoint')
+              .selectAll('.ChartTooltip__point')
               .attr('opacity', 1);
           },
           move: (pointer) => {
@@ -150,6 +157,17 @@ const ChartTooltip = ({ xScale, yScale, width, height, data, anchorEl, ...props 
   return (
     <g ref={ ref } opacity={ 0 } { ...props }>
       <line className="ChartTooltip__line" stroke={ lineColor } strokeDasharray="3"/>
+      { data.map(({ name }) => (
+        <circle
+          key={ name }
+          className="ChartTooltip__point"
+          r={ POINT_SIZE / 2 }
+          opacity={ 0 }
+          fill={ markerBgColor }
+          stroke={ markerBorderColor }
+          strokeWidth={ 4 }
+        />
+      )) }
       <g className="ChartTooltip__content">
         <rect
           className="ChartTooltip__contentBg"
@@ -204,18 +222,6 @@ const ChartTooltip = ({ xScale, yScale, width, height, data, anchorEl, ...props 
           </g>
         )) }
       </g>
-      { data.map(({ name }) => (
-        <circle
-          key={ name }
-          className="ChartTooltip__linePoint"
-          r={ 8 }
-          opacity={ 0 }
-          fill={ markerBgColor }
-          stroke={ markerBorderColor }
-          strokeWidth={ 4
-          }
-        />
-      )) }
     </g>
   );
 };
