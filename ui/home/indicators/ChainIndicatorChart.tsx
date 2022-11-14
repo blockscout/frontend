@@ -15,7 +15,6 @@ interface Props {
   caption?: string;
 }
 
-const COLOR = '#439AE2';
 const CHART_MARGIN = { bottom: 0, left: 10, right: 10, top: 0 };
 
 const ChainIndicatorChart = ({ data }: Props) => {
@@ -37,7 +36,7 @@ const ChainIndicatorChart = ({ data }: Props) => {
       <g transform={ `translate(${ CHART_MARGIN?.left || 0 },${ CHART_MARGIN?.top || 0 })` } opacity={ width ? 1 : 0 }>
         <ChartArea
           data={ data[0].items }
-          color={ COLOR }
+          color={ data[0].color }
           xScale={ xScale }
           yScale={ yScale }
         />

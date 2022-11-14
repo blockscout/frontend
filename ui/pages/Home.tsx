@@ -53,7 +53,6 @@ const Home = () => {
         <PageTitle text={
           `Home Page for ${ appConfig.network.name } network`
         }/>
-        <Button colorScheme="red" onClick={ checkSentry }>Check Sentry</Button>
         <ChainIndicators/>
         { /* will be deleted when we move to new CI */ }
         { isFormVisible && (
@@ -72,6 +71,7 @@ const Home = () => {
             <Button onClick={ handleSetTokenClick }>Set cookie</Button>
           </>
         ) }
+        <Button colorScheme="red" onClick={ checkSentry }>Check Sentry</Button>
       </VStack>
     </Page>
   );
