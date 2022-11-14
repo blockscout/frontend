@@ -5,6 +5,8 @@ import React from 'react';
 import type { ChainIndicatorId } from './types';
 import type { Stats } from 'types/api/stats';
 
+import useIsMobile from 'lib/hooks/useIsMobile';
+
 interface Props {
   id: ChainIndicatorId;
   title: string;
@@ -17,12 +19,17 @@ interface Props {
 
 const ChainIndicatorItem = ({ id, title, value, icon, isSelected, onClick, stats }: Props) => {
   const bgColor = useColorModeValue('white', 'gray.900');
+  const isMobile = useIsMobile();
 
   const handleClick = React.useCallback(() => {
     onClick(id);
   }, [ id, onClick ]);
 
   const valueContent = (() => {
+    if (isMobile) {
+      return null;
+    }
+
     if (stats.isLoading) {
       return <Skeleton h={ 3 } w="70px" my={ 1.5 }/>;
     }

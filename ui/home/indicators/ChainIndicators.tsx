@@ -65,17 +65,17 @@ const ChainIndicators = () => {
 
   return (
     <Flex
-      p={ 8 }
-      borderRadius="lg"
-      boxShadow="xl"
+      p={{ base: 0, lg: 8 }}
+      borderRadius={{ base: 'none', lg: 'lg' }}
+      boxShadow={{ base: 'none', lg: 'xl' }}
       bgColor={ bgColor }
       columnGap={ 12 }
-      rowGap={ 12 }
+      rowGap={ 0 }
       flexDir={{ base: 'column', lg: 'row' }}
       w="100%"
       alignItems="stretch"
     >
-      <Flex flexGrow={ 1 } flexDir="column">
+      <Flex flexGrow={ 1 } flexDir="column" order={{ base: 2, lg: 1 }} p={{ base: 6, lg: 0 }}>
         <Flex alignItems="center">
           <Text fontWeight={ 500 } fontFamily="heading" fontSize="lg">{ indicator?.title }</Text>
           { indicator?.hint && (
@@ -90,7 +90,7 @@ const ChainIndicators = () => {
         <ChainIndicatorChartContainer { ...queryResult }/>
       </Flex>
       { indicators.length > 1 && (
-        <Flex flexShrink={ 0 } flexDir="column" as="ul" p={ 3 } borderRadius="lg" bgColor={ listBgColor } rowGap={ 3 }>
+        <Flex flexShrink={ 0 } flexDir="column" as="ul" p={ 3 } borderRadius="lg" bgColor={ listBgColor } rowGap={ 3 } order={{ base: 1, lg: 2 }}>
           { indicators.map((indicator) => (
             <ChainIndicatorItem
               key={ indicator.id }
