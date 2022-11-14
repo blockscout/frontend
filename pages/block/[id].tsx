@@ -1,17 +1,22 @@
 import type { NextPage } from 'next';
+import Head from 'next/head';
 import React from 'react';
 
-import type { PageParams } from 'lib/next/tx/types';
+import type { PageParams } from 'lib/next/block/types';
 
-import BlockNextPage from 'lib/next/block/BlockNextPage';
+import getSeo from 'lib/next/block/getSeo';
+import Block from 'ui/pages/Block';
 
-type Props = {
-  pageParams: PageParams;
-}
-
-const BlockPage: NextPage<Props> = ({ pageParams }: Props) => {
+const BlockPage: NextPage<PageParams> = ({ id }: PageParams) => {
+  const { title, description } = getSeo({ id });
   return (
-    <BlockNextPage pageParams={ pageParams }/>
+    <>
+      <Head>
+        <title>{ title }</title>
+        <meta name="description" content={ description }/>
+      </Head>
+      <Block/>
+    </>
   );
 };
 

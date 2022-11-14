@@ -38,7 +38,7 @@ const Page = ({
   ) : children;
 
   return (
-    <SocketProvider url={ `${ appConfig.api.socket }${ appConfig.api.basePath }/socket/v2/websocket?vsn=2.0.0` }>
+    <SocketProvider url={ `${ appConfig.api.socket }${ appConfig.api.basePath }/socket/v2` }>
       <ScrollDirectionContext.Provider value={ directionContext }>
         <Flex w="100%" minH="100vh" alignItems="stretch">
           <NavigationDesktop/>

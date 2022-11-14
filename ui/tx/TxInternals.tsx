@@ -1,9 +1,9 @@
-import { Box, Flex, Text, Show, Hide } from '@chakra-ui/react';
+import { Box, Text, Show, Hide } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { InternalTransactionsResponse, TxInternalsType, InternalTransaction } from 'types/api/internalTransaction';
+import type { InternalTransactionsResponse, InternalTransaction } from 'types/api/internalTransaction';
 import { QueryKeys } from 'types/client/queries';
 
 import { SECOND } from 'lib/consts';
@@ -12,8 +12,8 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import { apos } from 'lib/html-entities';
 import EmptySearchResult from 'ui/apps/EmptySearchResult';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import FilterInput from 'ui/shared/FilterInput';
-import TxInternalsFilter from 'ui/tx/internals/TxInternalsFilter';
+// import FilterInput from 'ui/shared/FilterInput';
+// import TxInternalsFilter from 'ui/tx/internals/TxInternalsFilter';
 import TxInternalsList from 'ui/tx/internals/TxInternalsList';
 import TxInternalsSkeletonDesktop from 'ui/tx/internals/TxInternalsSkeletonDesktop';
 import TxInternalsSkeletonMobile from 'ui/tx/internals/TxInternalsSkeletonMobile';
@@ -62,19 +62,20 @@ const sortFn = (sort: Sort | undefined) => (a: InternalTransaction, b: InternalT
   }
 };
 
-const searchFn = (searchTerm: string) => (item: InternalTransaction): boolean => {
-  const formattedSearchTerm = searchTerm.toLowerCase();
-  return item.type.toLowerCase().includes(formattedSearchTerm) ||
-    item.from.hash.toLowerCase().includes(formattedSearchTerm) ||
-    item.to.hash.toLowerCase().includes(formattedSearchTerm);
-};
+// const searchFn = (searchTerm: string) => (item: InternalTransaction): boolean => {
+//   const formattedSearchTerm = searchTerm.toLowerCase();
+//   return item.type.toLowerCase().includes(formattedSearchTerm) ||
+//     item.from.hash.toLowerCase().includes(formattedSearchTerm) ||
+//     item.to.hash.toLowerCase().includes(formattedSearchTerm);
+// };
 
 const TxInternals = () => {
   const router = useRouter();
   const fetch = useFetch();
 
-  const [ filters, setFilters ] = React.useState<Array<TxInternalsType>>([]);
-  const [ searchTerm, setSearchTerm ] = React.useState<string>('');
+  // filters are not implemented yet in api
+  // const [ filters, setFilters ] = React.useState<Array<TxInternalsType>>([]);
+  // const [ searchTerm, setSearchTerm ] = React.useState<string>('');
   const [ sort, setSort ] = React.useState<Sort>();
   const txInfo = useFetchTxInfo({ updateDelay: 5 * SECOND });
   const { data, isLoading, isError } = useQuery<unknown, unknown, InternalTransactionsResponse>(
@@ -87,9 +88,9 @@ const TxInternals = () => {
 
   const isMobile = useIsMobile();
 
-  const handleFilterChange = React.useCallback((nextValue: Array<TxInternalsType>) => {
-    setFilters(nextValue);
-  }, []);
+  // const handleFilterChange = React.useCallback((nextValue: Array<TxInternalsType>) => {
+  //   setFilters(nextValue);
+  // }, []);
 
   const handleSortToggle = React.useCallback((field: SortField) => {
     return () => {
@@ -120,8 +121,9 @@ const TxInternals = () => {
 
   const content = (() => {
     const filteredData = data.items
-      .filter(({ type }) => filters.length > 0 ? filters.includes(type) : true)
-      .filter(searchFn(searchTerm))
+      .slice()
+      // .filter(({ type }) => filters.length > 0 ? filters.includes(type) : true)
+      // .filter(searchFn(searchTerm))
       .sort(sortFn(sort));
 
     if (filteredData.length === 0) {
@@ -135,10 +137,10 @@ const TxInternals = () => {
 
   return (
     <Box>
-      <Flex mb={ 6 }>
+      { /* <Flex mb={ 6 }>
         <TxInternalsFilter onFilterChange={ handleFilterChange } defaultFilters={ filters } appliedFiltersNum={ filters.length }/>
         <FilterInput onChange={ setSearchTerm } maxW="360px" ml={ 3 } size="xs" placeholder="Search by addresses, hash, method..."/>
-      </Flex>
+      </Flex> */ }
       { content }
     </Box>
   );

@@ -6,23 +6,34 @@ import type { PreDefinedNetwork } from 'types/networks';
 
 import appConfig from 'configs/app/config';
 import blockscoutLogo from 'icons/logo.svg';
+import artisLogo from 'icons/networks/logos/artis.svg';
+import astarLogo from 'icons/networks/logos/astar.svg';
+import etcLogo from 'icons/networks/logos/etc.svg';
+import ethLogo from 'icons/networks/logos/eth.svg';
+import gnosisLogo from 'icons/networks/logos/gnosis.svg';
+import luksoLogo from 'icons/networks/logos/lukso.svg';
+import poaLogo from 'icons/networks/logos/poa.svg';
+import rskLogo from 'icons/networks/logos/rsk.svg';
+import shibuyaLogo from 'icons/networks/logos/shibuya.svg';
+import shidenLogo from 'icons/networks/logos/shiden.svg';
+import sokolLogo from 'icons/networks/logos/sokol.svg';
 import link from 'lib/link/link';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 
 // predefined network logos
 const LOGOS: Partial<Record<PreDefinedNetwork, React.FunctionComponent<React.SVGAttributes<SVGElement>>>> = {
-  xdai_mainnet: require('icons/networks/logos/gnosis.svg'),
-  eth_mainnet: require('icons/networks/logos/eth.svg'),
-  etc_mainnet: require('icons/networks/logos/etc.svg'),
-  poa_core: require('icons/networks/logos/poa.svg'),
-  rsk_mainnet: require('icons/networks/logos/rsk.svg'),
-  xdai_testnet: require('icons/networks/logos/gnosis.svg'),
-  poa_sokol: require('icons/networks/logos/sokol.svg'),
-  artis_sigma1: require('icons/networks/logos/artis.svg'),
-  lukso_l14: require('icons/networks/logos/lukso.svg'),
-  astar: require('icons/networks/logos/astar.svg'),
-  shiden: require('icons/networks/logos/shiden.svg'),
-  shibuya: require('icons/networks/logos/shibuya.svg'),
+  xdai_mainnet: gnosisLogo,
+  eth_mainnet: ethLogo,
+  etc_mainnet: etcLogo,
+  poa_core: poaLogo,
+  rsk_mainnet: rskLogo,
+  xdai_testnet: gnosisLogo,
+  poa_sokol: sokolLogo,
+  artis_sigma1: artisLogo,
+  lukso_l14: luksoLogo,
+  astar: astarLogo,
+  shiden: shidenLogo,
+  shibuya: shibuyaLogo,
 };
 
 interface Props {

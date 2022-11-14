@@ -32,5 +32,5 @@ export default function link(
     url.searchParams.append(key, value);
   });
 
-  return url.pathname;
+  return url.toString();
 }
