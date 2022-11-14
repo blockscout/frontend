@@ -129,7 +129,7 @@ blockscout:
     ENABLE_RUST_VERIFICATION_SERVICE:
       _default: 'true'
     RUST_VERIFICATION_SERVICE_URL:
-      _default: https://sc-verifier.aws-k8s.blockscout.com/
+      _default: http://sc-verifier-svc:8043
     INDEXER_MEMORY_LIMIT:
       _default: 3
     ACCOUNT_ENABLED:
