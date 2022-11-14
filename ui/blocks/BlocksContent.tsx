@@ -25,7 +25,11 @@ const BlocksContent = ({ type }: Props) => {
   const queryClient = useQueryClient();
   const [ socketAlert, setSocketAlert ] = React.useState('');
 
-  const { data, isLoading, isError, pagination } = useQueryWithPages<BlocksResponse>('/node-api/blocks', QueryKeys.blocks, { type });
+  const { data, isLoading, isError, pagination } = useQueryWithPages<BlocksResponse>({
+    apiPath: '/node-api/blocks',
+    queryName: QueryKeys.blocks,
+    filters: { type },
+  });
 
   const handleNewBlockMessage: SocketMessage.NewBlock['handler'] = React.useCallback((payload) => {
     queryClient.setQueryData([ QueryKeys.blocks, { page: pagination.page, filters: { type } } ], (prevData: BlocksResponse | undefined) => {

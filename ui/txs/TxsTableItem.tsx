@@ -23,6 +23,7 @@ import type { Transaction } from 'types/api/transaction';
 import rightArrowIcon from 'icons/arrows/east.svg';
 import dayjs from 'lib/date/dayjs';
 import link from 'lib/link/link';
+import AdditionalInfoButton from 'ui/shared/AdditionalInfoButton';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -30,7 +31,6 @@ import CurrencyValue from 'ui/shared/CurrencyValue';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 import TxStatus from 'ui/shared/TxStatus';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
-import TxAdditionalInfoButton from 'ui/txs/TxAdditionalInfoButton';
 
 import TxType from './TxType';
 
@@ -61,7 +61,7 @@ const TxsTableItem = ({ tx }: {tx: Transaction}) => {
           { ({ isOpen }) => (
             <>
               <PopoverTrigger>
-                <TxAdditionalInfoButton isOpen={ isOpen }/>
+                <AdditionalInfoButton isOpen={ isOpen }/>
               </PopoverTrigger>
               <PopoverContent border="1px solid" borderColor={ infoBorderColor }>
                 <PopoverBody>
