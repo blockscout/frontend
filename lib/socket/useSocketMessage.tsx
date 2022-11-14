@@ -7,7 +7,7 @@ export default function useSocketMessage({ channel, event, handler }: SocketMess
   handlerRef.current = handler;
 
   useEffect(() => {
-    if (channel === undefined) {
+    if (channel === undefined || event === undefined) {
       return;
     }
 

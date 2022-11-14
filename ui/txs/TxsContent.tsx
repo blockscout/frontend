@@ -9,6 +9,7 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import TxsHeader from './TxsHeader';
 import TxsListItem from './TxsListItem';
+import TxsNewItemNotice from './TxsNewItemNotice';
 import TxsSkeletonDesktop from './TxsSkeletonDesktop';
 import TxsSkeletonMobile from './TxsSkeletonMobile';
 import TxsTable from './TxsTable';
@@ -64,7 +65,12 @@ const TxsContent = ({
     return (
       <>
         <Show below="lg" ssr={ false }>
-          <Box>{ txs.map(tx => <TxsListItem tx={ tx } key={ tx.hash } showBlockInfo={ showBlockInfo }/>) }</Box>
+          <Box>
+            <TxsNewItemNotice>
+              { ({ content }) => <Box>{ content }</Box> }
+            </TxsNewItemNotice>
+            { txs.map(tx => <TxsListItem tx={ tx } key={ tx.hash } showBlockInfo={ showBlockInfo }/>) }
+          </Box>
         </Show>
         <Hide below="lg" ssr={ false }>
           <TxsTable txs={ txs } sort={ setSortByField } sorting={ sorting } showBlockInfo={ showBlockInfo } top={ isPaginatorHidden ? 0 : 80 }/>

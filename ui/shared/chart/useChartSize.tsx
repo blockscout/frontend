@@ -1,9 +1,9 @@
 import _debounce from 'lodash/debounce';
 import React from 'react';
 
-import type { ChartMargin } from 'ui/shared/chart/types';
+import type { ChartMargin, ChartOffset } from 'ui/shared/chart/types';
 
-export default function useChartSize(svgEl: SVGSVGElement | null, margin?: ChartMargin) {
+export default function useChartSize(svgEl: SVGSVGElement | null, margin?: ChartMargin, offsets?: ChartOffset) {
   const [ rect, setRect ] = React.useState<{ width: number; height: number}>({ width: 0, height: 0 });
 
   const calculateRect = React.useCallback(() => {
@@ -34,10 +34,10 @@ export default function useChartSize(svgEl: SVGSVGElement | null, margin?: Chart
 
   return React.useMemo(() => {
     return {
-      width: rect.width,
-      height: rect.height,
-      innerWidth: Math.max(rect.width - (margin?.left || 0) - (margin?.right || 0), 0),
-      innerHeight: Math.max(rect.height - (margin?.bottom || 0) - (margin?.top || 0), 0),
+      width: Math.max(rect.width - (offsets?.x || 0), 0),
+      height: Math.max(rect.height - (offsets?.y || 0), 0),
+      innerWidth: Math.max(rect.width - (offsets?.x || 0) - (margin?.left || 0) - (margin?.right || 0), 0),
+      innerHeight: Math.max(rect.height - (offsets?.y || 0) - (margin?.bottom || 0) - (margin?.top || 0), 0),
     };
-  }, [ margin?.bottom, margin?.left, margin?.right, margin?.top, rect ]);
+  }, [ margin?.bottom, margin?.left, margin?.right, margin?.top, offsets?.x, offsets?.y, rect.height, rect.width ]);
 }

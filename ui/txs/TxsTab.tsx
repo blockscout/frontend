@@ -15,7 +15,7 @@ const TxsTab = ({ tab }: Props) => {
         queryName={ QueryKeys.txsValidate }
         showDescription
         stateFilter="validated"
-        apiPath="/api/transactions"
+        apiPath="/node-api/transactions"
       />
     );
   }
@@ -24,7 +24,7 @@ const TxsTab = ({ tab }: Props) => {
     <TxsContent
       queryName={ QueryKeys.txsPending }
       stateFilter="pending"
-      apiPath="/api/transactions"
+      apiPath="/node-api/transactions"
       showBlockInfo={ false }
     />
   );

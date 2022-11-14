@@ -6,7 +6,7 @@ import notEmpty from 'lib/notEmpty';
 import { useSocket } from './context';
 
 interface Params {
-  topic: string;
+  topic: string | undefined;
   params?: object;
   isDisabled: boolean;
   onJoin?: (channel: Channel, message: unknown) => void;
@@ -47,7 +47,7 @@ export default function useSocketChannel({ topic, params, isDisabled, onJoin, on
   }, [ channel, isDisabled ]);
 
   useEffect(() => {
-    if (socket === null || isDisabled) {
+    if (socket === null || isDisabled || !topic) {
       return;
     }
 
