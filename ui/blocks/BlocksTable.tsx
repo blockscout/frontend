@@ -17,8 +17,8 @@ interface Props {
 const BlocksTable = ({ data }: Props) => {
 
   return (
-    <Table variant="simple" minWidth="1040px" size="md" fontWeight={ 500 } mt={ 8 }>
-      <Thead top={ 0 }>
+    <Table variant="simple" minWidth="1040px" size="md" fontWeight={ 500 }>
+      <Thead top={ 80 }>
         <Tr>
           <Th width="125px">Block</Th>
           <Th width="120px">Size</Th>

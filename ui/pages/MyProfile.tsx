@@ -9,7 +9,7 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import UserAvatar from 'ui/shared/UserAvatar';
 
 const MyProfile = () => {
-  const { data, isLoading, isError } = useFetchProfileInfo();
+  const { data, isLoading, isError, isFetched } = useFetchProfileInfo();
 
   const content = (() => {
     if (isLoading) {
@@ -22,7 +22,7 @@ const MyProfile = () => {
 
     return (
       <VStack maxW="412px" mt={ 12 } gap={ 5 } alignItems="stretch">
-        <UserAvatar size={ 64 } data={ data }/>
+        <UserAvatar size={ 64 } data={ data } isFetched={ isFetched }/>
         <FormControl variant="floating" id="name" isRequired size="lg">
           <Input
             required

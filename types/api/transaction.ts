@@ -1,6 +1,7 @@
 import type { AddressParam } from './addressParams';
 import type { DecodedInput } from './decodedInput';
 import type { Fee } from './fee';
+import type { PaginationParams } from './pagination';
 import type { TokenTransfer } from './tokenTransfer';
 
 export type TransactionRevertReason = {
@@ -45,11 +46,7 @@ export interface Transaction {
 
 export interface TransactionsResponse {
   items: Array<Transaction>;
-  next_page_params: {
-    block_number: number;
-    index: number;
-    items_count: number;
-  } | null;
+  next_page_params: PaginationParams | null;
 }
 
 export type TransactionType = 'token_transfer' | 'contract_creation' | 'contract_call' | 'token_creation' | 'coin_transfer'

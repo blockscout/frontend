@@ -6,27 +6,36 @@ import React from 'react';
 import type { RawTracesResponse } from 'types/api/rawTrace';
 import { QueryKeys } from 'types/client/queries';
 
+import { SECOND } from 'lib/consts';
 import useFetch from 'lib/hooks/useFetch';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
+import TxPendingAlert from 'ui/tx/TxPendingAlert';
+import TxSocketAlert from 'ui/tx/TxSocketAlert';
+import useFetchTxInfo from 'ui/tx/useFetchTxInfo';
 
 const TxRawTrace = () => {
   const router = useRouter();
   const fetch = useFetch();
 
+  const txInfo = useFetchTxInfo({ updateDelay: 5 * SECOND });
   const { data, isLoading, isError } = useQuery<unknown, unknown, RawTracesResponse>(
     [ QueryKeys.txRawTrace, router.query.id ],
     async() => await fetch(`/node-api/transactions/${ router.query.id }/raw-trace`),
     {
-      enabled: Boolean(router.query.id),
+      enabled: Boolean(router.query.id) && Boolean(txInfo.data?.status),
     },
   );
 
-  if (isError) {
+  if (!txInfo.isLoading && !txInfo.isError && !txInfo.data.status) {
+    return txInfo.socketStatus ? <TxSocketAlert status={ txInfo.socketStatus }/> : <TxPendingAlert/>;
+  }
+
+  if (isError || txInfo.isError) {
     return <DataFetchAlert/>;
   }
 
-  if (isLoading) {
+  if (isLoading || txInfo.isLoading) {
     return (
       <>
         <Flex justifyContent="end" mb={ 2 }>

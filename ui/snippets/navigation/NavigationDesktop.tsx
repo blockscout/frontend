@@ -3,9 +3,9 @@ import React from 'react';
 
 import appConfig from 'configs/app/config';
 import chevronIcon from 'icons/arrows/east-mini.svg';
+import { useAppContext } from 'lib/appContext';
 import * as cookies from 'lib/cookies';
 import useNavItems from 'lib/hooks/useNavItems';
-import isBrowser from 'lib/isBrowser';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import NetworkMenu from 'ui/snippets/networkMenu/NetworkMenu';
@@ -14,25 +14,24 @@ import NavFooter from './NavFooter';
 import NavLink from './NavLink';
 
 const NavigationDesktop = () => {
+  const appProps = useAppContext();
+  const cookiesString = appProps.cookies;
+
+  const isNavBarCollapsedCookie = cookies.get(cookies.NAMES.NAV_BAR_COLLAPSED, cookiesString);
+  let isNavBarCollapsed;
+  if (isNavBarCollapsedCookie === 'true') {
+    isNavBarCollapsed = true;
+  }
+  if (isNavBarCollapsedCookie === 'false') {
+    isNavBarCollapsed = false;
+  }
+
+  const hasAuth = Boolean(cookies.get(cookies.NAMES.API_TOKEN, cookiesString));
+
   const { mainNavItems, accountNavItems } = useNavItems();
 
-  const isInBrowser = isBrowser();
-  const [ hasAccount, setHasAccount ] = React.useState(false);
-  const [ isCollapsed, setCollapsedState ] = React.useState<boolean | undefined>();
-
-  React.useEffect(() => {
-    const navBarCollapsedCookie = cookies.get(cookies.NAMES.NAV_BAR_COLLAPSED);
-    const isAuth = Boolean(cookies.get(cookies.NAMES.API_TOKEN));
-    if (isInBrowser) {
-      if (navBarCollapsedCookie === 'true') {
-        setCollapsedState(true);
-      }
-      if (navBarCollapsedCookie === 'false') {
-        setCollapsedState(false);
-      }
-      setHasAccount(Boolean(appConfig.isAccountSupported && isAuth && isInBrowser));
-    }
-  }, [ isInBrowser ]);
+  const hasAccount = hasAuth && appConfig.isAccountSupported;
+  const [ isCollapsed, setCollapsedState ] = React.useState<boolean | undefined>(isNavBarCollapsed);
 
   const handleTogglerClick = React.useCallback(() => {
     setCollapsedState((flag) => !flag);
