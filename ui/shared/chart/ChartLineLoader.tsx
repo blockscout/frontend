@@ -34,7 +34,7 @@ const ChartLineLoader = ({ className }: { className?: string }) => {
   }, []);
 
   return (
-    <svg className={ className } viewBox="0 0 707 272" xmlns="http://www.w3.org/2000/svg">
+    <svg className={ className } width="100%" viewBox="0 0 707 272" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="chart_line_loader" x1="376.522" y1="-36.0708" x2="340.953" y2="235.952" gradientUnits="userSpaceOnUse">
           <stop offset="0.02" stopColor="#D9D9D9"/>
