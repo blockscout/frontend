@@ -27,8 +27,8 @@ const Home = () => {
         <SearchBar backgroundColor="white" isHomepage/>
       </Box>
       <Stats/>
-      <Flex mt={ 12 }>
-        <Box mr={ 12 }><LatestBlocks/></Box>
+      <Flex mt={ 12 } direction={{ base: 'column', lg: 'row' }}>
+        <Box mr={{ base: 0, lg: 12 }} mb={{ base: 8, lg: 0 }} width={{ base: '100%', lg: '280px' }}><LatestBlocks/></Box>
         <Box><Heading as="h4" fontSize="18px" mb={ 8 }>Latest transactions</Heading></Box>
       </Flex>
     </Page>

@@ -1,4 +1,4 @@
-import { Box, Heading, Link, Text, VStack, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { Box, Heading, Flex, Link, Text, VStack, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { AnimatePresence } from 'framer-motion';
 import React from 'react';
@@ -8,13 +8,19 @@ import type { Block } from 'types/api/block';
 import { QueryKeys } from 'types/client/queries';
 
 import useFetch from 'lib/hooks/useFetch';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp } from 'lib/html-entities';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 
 import LatestBlocksItem from './LatestBlocksItem';
 
+const BLOCK_HEIGHT = 166;
+const BLOCK_MARGIN = 24;
+
 const LatestBlocks = () => {
+  const isMobile = useIsMobile();
+  const blocksCount = isMobile ? 2 : 4;
   const fetch = useFetch();
   const { data, isLoading, isError } = useQuery<unknown, unknown, Array<Block>>(
     [ QueryKeys.indexBlocks ],
@@ -28,9 +34,9 @@ const LatestBlocks = () => {
 
       const newData = prevData ? [ ...prevData ] : [];
 
-      return [ payload.block, ...newData ].slice(0, 4);
+      return [ payload.block, ...newData ].slice(0, blocksCount);
     });
-  }, [ queryClient ]);
+  }, [ queryClient, blocksCount ]);
 
   const channel = useSocketChannel({
     topic: 'blocks:new_block',
@@ -50,7 +56,7 @@ const LatestBlocks = () => {
     content = (
       <>
         <Skeleton w="100%" h={ 6 } mb={ 9 }/>
-        { Array.from(Array(4)).map((item, index) => {
+        { Array.from(Array(blocksCount)).map((item, index) => {
           return (
             <Box
               key={ index }
@@ -73,14 +79,13 @@ const LatestBlocks = () => {
   }
 
   if (isError) {
-    // ???
-    content = null;
+    content = <Text>There are no blocks yet.</Text>;
   }
 
   if (data) {
     content = (
       <>
-        <Box mb={ 9 }>
+        <Box mb={{ base: 6, lg: 9 }}>
           <Text as="span" fontSize="sm">
         Network utilization:{ nbsp }
           </Text>
@@ -89,9 +94,9 @@ const LatestBlocks = () => {
         43.8%
           </Text>
         </Box>
-        <VStack spacing={ 6 } mb={ 6 }>
-          <AnimatePresence initial={ false }>
-            { data.map((block => <LatestBlocksItem key={ block.height } block={ block }/>)) }
+        <VStack spacing={ `${ BLOCK_MARGIN }px` } mb={ 6 } height={ `${ BLOCK_HEIGHT * blocksCount + BLOCK_MARGIN * (blocksCount - 1) }px` } overflow="hidden">
+          <AnimatePresence initial={ false } >
+            { data.slice(0, blocksCount).map((block => <LatestBlocksItem key={ block.height } block={ block } h={ BLOCK_HEIGHT }/>)) }
           </AnimatePresence>
         </VStack>
       </>
@@ -99,11 +104,11 @@ const LatestBlocks = () => {
   }
 
   return (
-    <Box width="280px">
-      <Heading as="h4" fontSize="18px" mb={ 8 }>Latest Blocks</Heading>
+    <>
+      <Heading as="h4" fontSize="18px" mb={{ base: 3, lg: 8 }}>Latest Blocks</Heading>
       { content }
-      <Link fontSize="sm">View all blocks</Link>
-    </Box>
+      <Flex justifyContent={{ base: 'center', lg: 'start' }}><Link fontSize="sm">View all blocks</Link></Flex>
+    </>
   );
 };
 

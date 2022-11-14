@@ -22,15 +22,16 @@ import AddressLink from 'ui/shared/address/AddressLink';
 
 type Props = {
   block: Block;
+  h: number;
 }
 
-const LatestBlocksItem = ({ block }: Props) => {
+const LatestBlocksItem = ({ block, h }: Props) => {
   const totalReward = getBlockTotalReward(block);
   return (
     <Box
       as={ motion.div }
-      initial={{ opacity: 0, scale: 0.97 }}
-      animate={{ opacity: 1, scale: 1 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       transitionDuration="normal"
       transitionTimingFunction="linear"
       width="100%"
@@ -38,6 +39,7 @@ const LatestBlocksItem = ({ block }: Props) => {
       border="1px solid"
       borderColor={ useColorModeValue('gray.200', 'whiteAlpha.200') }
       p={ 6 }
+      h={ `${ h }px` }
     >
       <Flex justifyContent="space-between" alignItems="center" mb={ 3 }>
         <HStack spacing={ 2 }>
@@ -56,12 +58,9 @@ const LatestBlocksItem = ({ block }: Props) => {
       <Grid gridGap={ 2 } templateColumns="auto minmax(0, 1fr)" fontSize="sm">
         <GridItem>Txn</GridItem>
         <GridItem><Text variant="secondary">{ block.tx_count }</Text></GridItem>
-        { totalReward !== '0' && (
-          <>
-            <GridItem>Reward</GridItem>
-            <GridItem><Text variant="secondary">{ totalReward }</Text></GridItem>
-          </>
-        ) }
+        { /*  */ }
+        <GridItem>Reward</GridItem>
+        <GridItem><Text variant="secondary">{ totalReward }</Text></GridItem>
         <GridItem>Miner</GridItem>
         <GridItem><AddressLink alias={ block.miner.name } hash={ block.miner.hash } truncation="constant" maxW="100%"/></GridItem>
       </Grid>
