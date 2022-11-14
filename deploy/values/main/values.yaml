@@ -66,6 +66,8 @@ blockscout:
       _default: http://geth-svc.eth-goerli.svc.cluster.local:8545
     ETHEREUM_JSONRPC_HTTP_URL:
       _default: http://geth-svc.eth-goerli.svc.cluster.local:8545
+    ETHEREUM_JSONRPC_WS_URL:
+      _default: ws://geth-svc.eth-goerli.svc.cluster.local:8546
     BLOCKSCOUT_VERSION:
       _default: v4.1.8-beta
     ETHEREUM_JSONRPC_VARIANT:
