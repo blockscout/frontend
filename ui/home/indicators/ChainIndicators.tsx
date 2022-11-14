@@ -67,7 +67,7 @@ const ChainIndicators = () => {
     <Flex
       p={ 8 }
       borderRadius="lg"
-      boxShadow="lg"
+      boxShadow="xl"
       bgColor={ bgColor }
       columnGap={ 12 }
       rowGap={ 12 }

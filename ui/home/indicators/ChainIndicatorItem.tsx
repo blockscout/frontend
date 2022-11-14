@@ -44,7 +44,7 @@ const ChainIndicatorItem = ({ id, title, value, icon, isSelected, onClick, stats
       cursor="pointer"
       onClick={ handleClick }
       bgColor={ isSelected ? bgColor : 'inherit' }
-      boxShadow={ isSelected ? 'xl' : 'none' }
+      boxShadow={ isSelected ? 'lg' : 'none' }
       zIndex={ isSelected ? 1 : 'initial' }
       _hover={{
         bgColor,
