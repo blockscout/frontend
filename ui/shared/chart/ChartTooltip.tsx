@@ -117,31 +117,38 @@ const ChartTooltip = ({ xScale, yScale, width, height, data, anchorEl, ...props 
       drawLine(baseXPos);
       drawContent(baseXPos, baseYPos);
     }
-
   }, [ drawPoints, drawLine, drawContent ]);
 
   React.useEffect(() => {
     const anchorD3 = d3.select(anchorEl);
     const subscriptions: Array<string> = [];
+    let isShown = false;
 
     anchorD3
       .on('touchmove.tooltip', (event: PointerEvent) => event.preventDefault()) // prevent scrolling
       .on('pointerenter.tooltip pointerdown.tooltip', (event: PointerEvent) => {
         const newSubscriptions = trackPointer(event, {
-          start: () => {
-            d3.select(ref.current).attr('opacity', 1);
-            d3.select(ref.current)
-              .selectAll('.ChartTooltip__point')
-              .attr('opacity', 1);
-          },
           move: (pointer) => {
+            if (!pointer.point) {
+              return;
+            }
+
             draw(pointer);
+            if (!isShown) {
+              d3.select(ref.current).attr('opacity', 1);
+              d3.select(ref.current)
+                .selectAll('.ChartTooltip__point')
+                .attr('opacity', 1);
+              isShown = true;
+            }
           },
           out: () => {
             d3.select(ref.current).attr('opacity', 0);
+            isShown = false;
           },
           end: () => {
             d3.select(ref.current).attr('opacity', 0);
+            isShown = false;
           },
         });
 
