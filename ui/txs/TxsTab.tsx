@@ -14,7 +14,7 @@ const TxsTab = ({ tab }: Props) => {
       queryName={ QueryKeys.transactions }
       showDescription={ tab === 'validated' }
       stateFilter={ tab }
-      apiPath="/api/transactions"
+      apiPath="/node-api/transactions"
     />
   );
 };
