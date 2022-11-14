@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - deploy-to-goerli
 
 env:
   K8S_LOCAL_PORT: ${{ secrets.K8S_LOCAL_PORT }}
