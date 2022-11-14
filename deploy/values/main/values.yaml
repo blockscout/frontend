@@ -70,6 +70,8 @@ blockscout:
       _default: ws://geth-svc.eth-goerli.svc.cluster.local:8546
     BLOCKSCOUT_VERSION:
       _default: v4.1.8-beta
+    ECTO_USE_SSL:
+      _default: 'false'
     ETHEREUM_JSONRPC_VARIANT:
       _default: geth
     HEART_BEAT_TIMEOUT:
