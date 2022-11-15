@@ -1,4 +1,4 @@
-import { Box, Heading, Flex, Link, Text, VStack, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { Box, Heading, Flex, Link, Text, VStack, Skeleton } from '@chakra-ui/react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { AnimatePresence } from 'framer-motion';
 import React from 'react';
@@ -10,10 +10,12 @@ import { QueryKeys } from 'types/client/queries';
 import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp } from 'lib/html-entities';
+import link from 'lib/link/link';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 
 import LatestBlocksItem from './LatestBlocksItem';
+import LatestBlocksItemSkeleton from './LatestBlocksItemSkeleton';
 
 const BLOCK_HEIGHT = 166;
 const BLOCK_MARGIN = 24;
@@ -50,30 +52,11 @@ const LatestBlocks = () => {
 
   let content;
 
-  const borderColor = useColorModeValue('gray.200', 'whiteAlpha.200');
-
   if (isLoading) {
     content = (
       <>
         <Skeleton w="100%" h={ 6 } mb={ 9 }/>
-        { Array.from(Array(blocksCount)).map((item, index) => {
-          return (
-            <Box
-              key={ index }
-              width="100%"
-              borderRadius="12px"
-              border="1px solid"
-              borderColor={ borderColor }
-              p={ 6 }
-              mb={ 6 }
-            >
-              <Skeleton w="100%" h="30px" mb={ 3 }/>
-              <Skeleton w="100%" h="21px" mb={ 2 }/>
-              <Skeleton w="100%" h="21px" mb={ 2 }/>
-              <Skeleton w="100%" h="21px"/>
-            </Box>
-          );
-        }) }
+        { Array.from(Array(blocksCount)).map((item, index) => <LatestBlocksItemSkeleton key={ index }/>) }
       </>
     );
   }
@@ -107,7 +90,9 @@ const LatestBlocks = () => {
     <>
       <Heading as="h4" fontSize="18px" mb={{ base: 3, lg: 8 }}>Latest Blocks</Heading>
       { content }
-      <Flex justifyContent={{ base: 'center', lg: 'start' }}><Link fontSize="sm">View all blocks</Link></Flex>
+      <Flex justifyContent="center">
+        <Link fontSize="sm" href={ link('blocks') }>View all blocks</Link>
+      </Flex>
     </>
   );
 };
