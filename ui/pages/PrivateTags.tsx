@@ -2,6 +2,7 @@ import React from 'react';
 
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
+import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import PrivateAddressTags from 'ui/privateTags/PrivateAddressTags';
 import PrivateTransactionTags from 'ui/privateTags/PrivateTransactionTags';
 import Page from 'ui/shared/Page/Page';
@@ -14,6 +15,8 @@ const TABS: Array<RoutedTab> = [
 ];
 
 const PrivateTags = () => {
+  useRedirectForInvalidAuthToken();
+
   return (
     <Page>
       <PageTitle text="Private tags"/>
