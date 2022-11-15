@@ -1,7 +1,8 @@
-import { Box, Heading, Flex } from '@chakra-ui/react';
+import { Box, Heading, Flex, LightMode } from '@chakra-ui/react';
 import React from 'react';
 
 import LatestBlocks from 'ui/home/LatestBlocks';
+import LatestTxs from 'ui/home/LatestTxs';
 import Stats from 'ui/home/Stats';
 import Page from 'ui/shared/Page/Page';
 import SearchBar from 'ui/snippets/searchBar/SearchBar';
@@ -24,12 +25,12 @@ const Home = () => {
         >
           Welcome to Blockscout explorer
         </Heading>
-        <SearchBar backgroundColor="white" isHomepage/>
+        <LightMode><SearchBar backgroundColor="white" isHomepage/></LightMode>
       </Box>
       <Stats/>
       <Flex mt={ 12 } direction={{ base: 'column', lg: 'row' }}>
         <Box mr={{ base: 0, lg: 12 }} mb={{ base: 8, lg: 0 }} width={{ base: '100%', lg: '280px' }}><LatestBlocks/></Box>
-        <Box><Heading as="h4" fontSize="18px" mb={ 8 }>Latest transactions</Heading></Box>
+        <Box flexGrow={ 1 }><LatestTxs/></Box>
       </Flex>
     </Page>
   );

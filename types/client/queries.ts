@@ -15,4 +15,5 @@ export enum QueryKeys {
   chartsTxs = 'charts-txs',
   chartsMarket = 'charts-market',
   indexBlocks='indexBlocks',
+  indexTxs='indexTxs',
 }
