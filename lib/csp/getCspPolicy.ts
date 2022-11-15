@@ -123,6 +123,10 @@ function makePolicyMap() {
       'fonts.googleapis.com',
     ],
 
+    'prefetch-src': [
+      ...MAIN_DOMAINS,
+    ],
+
     'object-src': [
       KEY_WORDS.NONE,
     ],
