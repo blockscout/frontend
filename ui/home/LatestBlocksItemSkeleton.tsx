@@ -12,7 +12,7 @@ import React from 'react';
 const LatestBlocksItemSkeleton = () => {
   return (
     <Box
-      width="100%"
+      minWidth={{ base: '100%', lg: '280px' }}
       borderRadius="12px"
       border="1px solid"
       borderColor={ useColorModeValue('gray.200', 'whiteAlpha.200') }

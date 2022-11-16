@@ -55,7 +55,7 @@ const Header = ({ hideOnScrollDown, hasSearch }: Props) => {
             paddingTop={ 9 }
             paddingBottom="52px"
           >
-            <Box width="100%" opacity={ hasSearch ? 1 : 0 }><SearchBar/></Box>
+            <Box width="100%">{ hasSearch && <SearchBar/> }</Box>
             <ColorModeToggler/>
             <ProfileMenuDesktop/>
           </HStack>

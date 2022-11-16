@@ -13,8 +13,8 @@ import type { Transaction } from 'types/api/transaction';
 import appConfig from 'configs/app/config';
 import rightArrowIcon from 'icons/arrows/east.svg';
 import transactionIcon from 'icons/transactions.svg';
-import dayjs from 'lib/date/dayjs';
 import getValueWithUnit from 'lib/getValueWithUnit';
+import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -30,6 +30,7 @@ const LatestBlocksItem = ({ tx }: Props) => {
   const iconColor = useColorModeValue('blue.600', 'blue.300');
 
   const dataTo = tx.to && tx.to.hash ? tx.to : tx.created_contract;
+  const timeAgo = useTimeAgoIncrement(tx.timestamp || '0', true);
 
   return (
     <Box
@@ -43,7 +44,9 @@ const LatestBlocksItem = ({ tx }: Props) => {
       <Flex justifyContent="space-between" width="100%" alignItems="start" flexDirection={{ base: 'column', lg: 'row' }}>
         <Box width="100%">
           <HStack>
-            { tx.tx_types.map(item => <TxType key={ item } type={ item }/>) }
+            { /* FIXME: mb only one type must be here */ }
+            <TxType type={ tx.tx_types[0] }/>
+            { /* { tx.tx_types.map(item => <TxType key={ item } type={ item }/>) } */ }
             <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined }/>
           </HStack>
           <Flex
@@ -70,7 +73,7 @@ const LatestBlocksItem = ({ tx }: Props) => {
                 />
               </Address>
             </Flex>
-            <Text variant="secondary" fontWeight="400" fontSize="sm">{ dayjs(tx.timestamp).fromNow() }</Text>
+            { tx.timestamp && <Text variant="secondary" fontWeight="400" fontSize="sm">{ timeAgo }</Text> }
           </Flex>
         </Box>
         <Box>

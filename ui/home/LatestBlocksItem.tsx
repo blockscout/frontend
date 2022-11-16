@@ -34,12 +34,12 @@ const LatestBlocksItem = ({ block, h }: Props) => {
       animate={{ opacity: 1 }}
       transitionDuration="normal"
       transitionTimingFunction="linear"
-      width="100%"
       borderRadius="12px"
       border="1px solid"
       borderColor={ useColorModeValue('gray.200', 'whiteAlpha.200') }
       p={ 6 }
       h={ `${ h }px` }
+      minWidth={{ base: '100%', lg: '280px' }}
     >
       <Flex justifyContent="space-between" alignItems="center" mb={ 3 }>
         <HStack spacing={ 2 }>
