@@ -1,10 +1,15 @@
 const RESTRICTED_MODULES = {
   paths: [
-    { name: 'dayjs', message: 'Please use lib/date/dayjs.ts instead of directly importing dayjs' },
-    { name: '@chakra-ui/icons', message: 'Using @chakra-ui/icons is prohibited. Please use regular svg-icon instead (see examples in "icons/" folder)' },
+    {
+      name: 'dayjs',
+      message: 'Please use lib/date/dayjs.ts instead of directly importing dayjs',
+    },
+    {
+      name: '@chakra-ui/icons',
+      message: 'Using @chakra-ui/icons is prohibited. Please use regular svg-icon instead (see examples in "icons/" folder)',
+    },
   ],
 };
-
 module.exports = {
   env: {
     es6: true,
@@ -18,6 +23,7 @@ module.exports = {
     'plugin:regexp/recommended',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
+    'plugin:storybook/recommended',
   ],
   plugins: [
     'es5',
@@ -113,7 +119,6 @@ module.exports = {
     '@typescript-eslint/no-useless-constructor': [ 'error' ],
     '@typescript-eslint/type-annotation-spacing': 'error',
     '@typescript-eslint/no-explicit-any': [ 'error', { ignoreRestArgs: true } ],
-
     // отключены в пользу @typescript-eslint
     'brace-style': 'off',
     camelcase: 'off',
@@ -121,7 +126,6 @@ module.exports = {
     'no-unused-vars': 'off',
     'no-use-before-define': 'off',
     'no-useless-constructor': 'off',
-
     'array-bracket-spacing': [ 'error', 'always' ],
     'arrow-spacing': [ 'error', { before: true, after: true } ],
     'comma-dangle': [ 'error', 'always-multiline' ],
@@ -150,11 +154,7 @@ module.exports = {
       'boolean': true,
       string: true,
     } ],
-    'no-mixed-operators': [ 'error', {
-      groups: [
-        [ '&&', '||' ],
-      ],
-    } ],
+    'no-mixed-operators': [ 'error', { groups: [ [ '&&', '||' ] ] } ],
     'no-mixed-spaces-and-tabs': 'error',
     'no-multiple-empty-lines': [ 'error', {
       max: 1,
@@ -187,7 +187,6 @@ module.exports = {
     'template-curly-spacing': [ 'error', 'always' ],
     'wrap-iife': [ 'error', 'inside' ],
     semi: [ 'error', 'always' ],
-
     'import-helpers/order-imports': [
       'error',
       {
@@ -201,7 +200,6 @@ module.exports = {
         alphabetize: { order: 'asc', ignoreCase: true },
       },
     ],
-
     'no-restricted-imports': [ 'error', RESTRICTED_MODULES ],
     'no-restricted-properties': [ 2, {
       object: 'process',
@@ -209,7 +207,6 @@ module.exports = {
       // FIXME: restrict the rule only NEXT_PUBLIC variables
       message: 'Please use configs/app/config.ts to import any NEXT_PUBLIC environment variables. For other properties please disable this rule for a while.',
     } ],
-
     'react/jsx-key': 'error',
     'react/jsx-no-bind': [ 'error', {
       ignoreRefs: true,
@@ -257,7 +254,6 @@ module.exports = {
     'react/void-dom-elements-no-children': 'error',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'error',
-
     'regexp/confusing-quantifier': 'error',
     'regexp/control-character-escape': 'error',
     'regexp/negation': 'error',
@@ -285,7 +281,7 @@ module.exports = {
     {
       files: [ 'configs/**/*.js', 'configs/**/*.ts', '*.config.ts' ],
       rules: {
-        // for configs allow to consume env variables from process.env directly
+      // for configs allow to consume env variables from process.env directly
         'no-restricted-properties': [ 0 ],
       },
     },
