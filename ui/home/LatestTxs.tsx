@@ -1,4 +1,4 @@
-import { Box, Heading, Flex, Link, Text } from '@chakra-ui/react';
+import { Box, Heading, Flex, Link, Text, Skeleton } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
@@ -27,34 +27,35 @@ const LatestTransactions = () => {
   if (isLoading) {
     content = (
       <>
+        <Skeleton h="56px" w="100%"/>
         { Array.from(Array(txsCount)).map((item, index) => <LatestTxsItemSkeleton key={ index }/>) }
       </>
     );
   }
 
   if (isError) {
-    content = <Text>There are no transactions. Please reload page.</Text>;
+    content = <Text mt={ 4 }>There are no transactions. Please reload page.</Text>;
   }
 
   if (data) {
+    const txsUrl = link('txs');
     content = (
-      <Box mb={{ base: 3, lg: 6 }}>
-        { data.slice(0, txsCount).map((tx => <LatestTxsItem key={ tx.hash } tx={ tx }/>)) }
-      </Box>
+      <>
+        <LatestTxsNotice/>
+        <Box mb={{ base: 3, lg: 6 }}>
+          { data.slice(0, txsCount).map((tx => <LatestTxsItem key={ tx.hash } tx={ tx }/>)) }
+        </Box>
+        <Flex justifyContent="center">
+          <Link fontSize="sm" href={ txsUrl }>View all transactions</Link>
+        </Flex>
+      </>
     );
   }
-
-  const txsUrl = link('txs');
 
   return (
     <>
       <Heading as="h4" fontSize="18px" mb={{ base: 3, lg: 8 }}>Latest transactions</Heading>
-      { /* <TxsNewItemNotice mb={{ base: 3, lg: 8 }} url={ txsUrl }>{ ({ content }) => <Box>{ content }</Box> }</TxsNewItemNotice> */ }
-      <LatestTxsNotice/>
       { content }
-      <Flex justifyContent="center">
-        <Link fontSize="sm" href={ txsUrl }>View all transactions</Link>
-      </Flex>
     </>
   );
 };

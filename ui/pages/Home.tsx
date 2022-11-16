@@ -16,7 +16,7 @@ const Home = () => {
         backgroundImage="radial-gradient(farthest-corner at 0 0, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%)"
         borderRadius="24px"
         padding={{ base: '24px 40px', lg: '48px' }}
-        minW="850px"
+        minW={{ base: 'unset', lg: '900px' }}
       >
         <Heading
           as="h1"

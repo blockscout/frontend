@@ -44,7 +44,7 @@ const Page = ({
   }, [ wrapChildren ]);
 
   const renderedChildren = wrapChildren ? (
-    <PageContent>{ children }</PageContent>
+    <PageContent hasSearch={ hasSearch }>{ children }</PageContent>
   ) : children;
 
   return (

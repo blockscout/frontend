@@ -56,7 +56,9 @@ const LatestBlocks = () => {
     content = (
       <>
         <Skeleton w="100%" h={ 6 } mb={ 9 }/>
-        { Array.from(Array(blocksCount)).map((item, index) => <LatestBlocksItemSkeleton key={ index }/>) }
+        <VStack spacing={ `${ BLOCK_MARGIN }px` } mb={ 6 } height={ `${ BLOCK_HEIGHT * blocksCount + BLOCK_MARGIN * (blocksCount - 1) }px` } overflow="hidden">
+          { Array.from(Array(blocksCount)).map((item, index) => <LatestBlocksItemSkeleton key={ index }/>) }
+        </VStack>
       </>
     );
   }
@@ -82,6 +84,9 @@ const LatestBlocks = () => {
             { data.slice(0, blocksCount).map((block => <LatestBlocksItem key={ block.height } block={ block } h={ BLOCK_HEIGHT }/>)) }
           </AnimatePresence>
         </VStack>
+        <Flex justifyContent="center">
+          <Link fontSize="sm" href={ link('blocks') }>View all blocks</Link>
+        </Flex>
       </>
     );
   }
@@ -90,9 +95,6 @@ const LatestBlocks = () => {
     <>
       <Heading as="h4" fontSize="18px" mb={{ base: 3, lg: 8 }}>Latest Blocks</Heading>
       { content }
-      <Flex justifyContent="center">
-        <Link fontSize="sm" href={ link('blocks') }>View all blocks</Link>
-      </Flex>
     </>
   );
 };
