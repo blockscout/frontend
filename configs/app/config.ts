@@ -1,6 +1,7 @@
 /* eslint-disable no-restricted-properties */
 import type { AppItemOverview } from 'types/client/apps';
 import type { FeaturedNetwork, NetworkExplorer, PreDefinedNetwork } from 'types/networks';
+import type { ChainIndicatorId } from 'ui/home/indicators/types';
 
 const getEnvValue = (env: string | undefined) => env?.replaceAll('\'', '"');
 const parseEnvJson = <DataType>(env: string | undefined): DataType | null => {
@@ -85,6 +86,9 @@ const config = Object.freeze({
     endpoint: apiHost ? `https://${ apiHost }` : 'https://blockscout.com',
     socket: apiHost ? `wss://${ apiHost }` : 'wss://blockscout.com',
     basePath: stripTrailingSlash(getEnvValue(process.env.NEXT_PUBLIC_API_BASE_PATH) || ''),
+  },
+  homepage: {
+    charts: parseEnvJson<Array<ChainIndicatorId>>(getEnvValue(process.env.NEXT_PUBLIC_HOMEPAGE_CHARTS)) || [],
   },
 });
 

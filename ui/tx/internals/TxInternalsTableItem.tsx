@@ -28,16 +28,16 @@ const TxInternalTableItem = ({ type, from, to, value, success, error, gas_limit:
           <TxStatus status={ success ? 'ok' : 'error' } errorText={ error }/>
         </Flex>
       </Td>
-      <Td>
+      <Td verticalAlign="middle">
         <Address display="inline-flex" maxW="100%">
           <AddressIcon hash={ from.hash }/>
           <AddressLink ml={ 2 } fontWeight="500" hash={ from.hash } alias={ from.name } flexGrow={ 1 }/>
         </Address>
       </Td>
-      <Td px={ 0 }>
+      <Td px={ 0 } verticalAlign="middle">
         <Icon as={ rightArrowIcon } boxSize={ 6 } color="gray.500"/>
       </Td>
-      <Td>
+      <Td verticalAlign="middle">
         <Address display="inline-flex" maxW="100%">
           <AddressIcon hash={ to.hash }/>
           <AddressLink hash={ to.hash } alias={ to.name } fontWeight="500" ml={ 2 }/>

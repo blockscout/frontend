@@ -1,5 +1,4 @@
 import type { AddressParam } from 'types/api/addressParams';
-import type { PaginationParams } from 'types/api/pagination';
 import type { Reward } from 'types/api/reward';
 import type { Transaction } from 'types/api/transaction';
 
@@ -34,12 +33,18 @@ export interface Block {
 
 export interface BlocksResponse {
   items: Array<Block>;
-  next_page_params: PaginationParams | null;
+  next_page_params: {
+    block_number: number;
+    items_count: number;
+  } | null;
 }
 
 export interface BlockTransactionsResponse {
   items: Array<Transaction>;
-  next_page_params: PaginationParams | null;
+  next_page_params: {
+    block_number: number;
+    items_count: number;
+  } | null;
 }
 
 export interface NewBlockSocketResponse {

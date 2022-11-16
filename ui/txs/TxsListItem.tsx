@@ -20,19 +20,20 @@ import transactionIcon from 'icons/transactions.svg';
 import dayjs from 'lib/date/dayjs';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import link from 'lib/link/link';
+import AdditionalInfoButton from 'ui/shared/AdditionalInfoButton';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import TxStatus from 'ui/shared/TxStatus';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
-import TxAdditionalInfoButton from 'ui/txs/TxAdditionalInfoButton';
 import TxType from 'ui/txs/TxType';
 
-const TxsListItem = ({ tx }: {tx: Transaction}) => {
+const TxsListItem = ({ tx, showBlockInfo }: {tx: Transaction; showBlockInfo: boolean}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const iconColor = useColorModeValue('blue.600', 'blue.300');
   const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
+  const dataTo = tx.to && tx.to.hash ? tx.to : tx.created_contract;
 
   return (
     <>
@@ -42,7 +43,7 @@ const TxsListItem = ({ tx }: {tx: Transaction}) => {
             { tx.tx_types.map(item => <TxType key={ item } type={ item }/>) }
             <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined }/>
           </HStack>
-          <TxAdditionalInfoButton onClick={ onOpen }/>
+          <AdditionalInfoButton onClick={ onOpen }/>
         </Flex>
         <Flex justifyContent="space-between" lineHeight="24px" mt={ 3 }>
           <Flex>
@@ -76,7 +77,7 @@ const TxsListItem = ({ tx }: {tx: Transaction}) => {
             { tx.method }
           </Text>
         </Flex>
-        { tx.block !== null && (
+        { showBlockInfo && tx.block !== null && (
           <Box mt={ 2 }>
             <Text as="span">Block </Text>
             <Link href={ link('block', { id: tx.block.toString() }) }>{ tx.block }</Link>
@@ -99,10 +100,10 @@ const TxsListItem = ({ tx }: {tx: Transaction}) => {
             color="gray.500"
           />
           <Address width="calc((100%-40px)/2)">
-            <AddressIcon hash={ tx.to.hash }/>
+            <AddressIcon hash={ dataTo.hash }/>
             <AddressLink
-              hash={ tx.to.hash }
-              alias={ tx.to.name }
+              hash={ dataTo.hash }
+              alias={ dataTo.name }
               fontWeight="500"
               ml={ 2 }
             />

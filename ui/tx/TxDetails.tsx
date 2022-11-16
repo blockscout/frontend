@@ -25,18 +25,11 @@ import TextSeparator from 'ui/shared/TextSeparator';
 import TxStatus from 'ui/shared/TxStatus';
 import Utilization from 'ui/shared/Utilization';
 import TxDetailsSkeleton from 'ui/tx/details/TxDetailsSkeleton';
+import TxDetailsTokenTransfers from 'ui/tx/details/TxDetailsTokenTransfers';
 import TxRevertReason from 'ui/tx/details/TxRevertReason';
-import TokenTransferList from 'ui/tx/TokenTransferList';
 import TxDecodedInputData from 'ui/tx/TxDecodedInputData';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
 import useFetchTxInfo from 'ui/tx/useFetchTxInfo';
-
-const TOKEN_TRANSFERS = [
-  { title: 'Tokens Transferred', hint: 'List of tokens transferred in the transaction.', type: 'token_transfer' },
-  { title: 'Tokens Minted', hint: 'List of tokens minted in the transaction.', type: 'token_minting' },
-  { title: 'Tokens Burnt', hint: 'List of tokens burnt in the transaction.', type: 'token_burning' },
-  { title: 'Tokens Created', hint: 'List of tokens created in the transaction.', type: 'token_spawning' },
-];
 
 const TxDetails = () => {
   const { data, isLoading, isError, socketStatus } = useFetchTxInfo();
@@ -65,10 +58,11 @@ const TxDetails = () => {
     ...data.from.watchlist_names || [],
   ].map((tag) => <Tag key={ tag.label }>{ tag.display_name }</Tag>);
 
+  const toAddress = data.to && data.to.hash ? data.to : data.created_contract;
   const addressToTags = [
-    ...data.to.private_tags || [],
-    ...data.to.public_tags || [],
-    ...data.to.watchlist_names || [],
+    ...toAddress.private_tags || [],
+    ...toAddress.public_tags || [],
+    ...toAddress.watchlist_names || [],
   ].map((tag) => <Tag key={ tag.label }>{ tag.display_name }</Tag>);
 
   return (
@@ -150,25 +144,34 @@ const TxDetails = () => {
         ) }
       </DetailsInfoItem>
       <DetailsInfoItem
-        title={ data.to.is_contract ? 'Interacted with contract' : 'To' }
+        title={ toAddress.is_contract ? 'Interacted with contract' : 'To' }
         hint="Address (external or contract) receiving the transaction."
         flexWrap={{ base: 'wrap', lg: 'nowrap' }}
         columnGap={ 3 }
       >
-        <Address>
-          <AddressIcon hash={ data.to.hash }/>
-          <AddressLink ml={ 2 } hash={ data.to.hash }/>
-          <CopyToClipboard text={ data.to.hash }/>
-        </Address>
-        { data.to.name && <Text>{ data.to.name }</Text> }
-        { data.to.is_contract && data.result === 'success' && (
+        { data.to && data.to.hash ? (
+          <Address>
+            <AddressIcon hash={ toAddress.hash }/>
+            <AddressLink ml={ 2 } hash={ toAddress.hash }/>
+            <CopyToClipboard text={ toAddress.hash }/>
+          </Address>
+        ) : (
+          <Flex width="100%" whiteSpace="pre">
+            <span>[Contract </span>
+            <AddressLink hash={ toAddress.hash }/>
+            <span> created]</span>
+            <CopyToClipboard text={ toAddress.hash }/>
+          </Flex>
+        ) }
+        { toAddress.name && <Text>{ toAddress.name }</Text> }
+        { toAddress.is_contract && data.result === 'success' && (
           <Tooltip label="Contract execution completed">
             <chakra.span display="inline-flex">
               <Icon as={ successIcon } boxSize={ 4 } color="green.500" cursor="pointer"/>
             </chakra.span>
           </Tooltip>
         ) }
-        { data.to.is_contract && Boolean(data.status) && data.result !== 'success' && (
+        { toAddress.is_contract && Boolean(data.status) && data.result !== 'success' && (
           <Tooltip label="Error occured during contract execution">
             <chakra.span display="inline-flex">
               <Icon as={ errorIcon } boxSize={ 4 } color="red.500" cursor="pointer"/>
@@ -181,22 +184,7 @@ const TxDetails = () => {
           </Flex>
         ) }
       </DetailsInfoItem>
-      { TOKEN_TRANSFERS.map(({ title, hint, type }) => {
-        const items = data.token_transfers?.filter((token) => token.type === type) || [];
-        if (items.length === 0) {
-          return null;
-        }
-        return (
-          <DetailsInfoItem
-            key={ type }
-            title={ title }
-            hint={ hint }
-            position="relative"
-          >
-            <TokenTransferList items={ items }/>
-          </DetailsInfoItem>
-        );
-      }) }
+      { data.token_transfers && <TxDetailsTokenTransfers data={ data.token_transfers } txHash={ data.hash }/> }
 
       <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 3, lg: 8 }}/>
       <DetailsInfoItem

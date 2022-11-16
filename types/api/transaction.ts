@@ -1,7 +1,6 @@
 import type { AddressParam } from './addressParams';
 import type { DecodedInput } from './decodedInput';
 import type { Fee } from './fee';
-import type { PaginationParams } from './pagination';
 import type { TokenTransfer } from './tokenTransfer';
 
 export type TransactionRevertReason = {
@@ -18,7 +17,7 @@ export interface Transaction {
   timestamp: string | null;
   confirmation_duration: Array<number>;
   from: AddressParam;
-  to: AddressParam;
+  to: AddressParam | null;
   created_contract: AddressParam;
   value: string;
   fee: Fee;
@@ -39,14 +38,30 @@ export interface Transaction {
   token_transfers: Array<TokenTransfer> | null;
   token_transfers_overflow: boolean;
   exchange_rate: string;
-  method: string;
+  method: string | null;
   tx_types: Array<TransactionType>;
   tx_tag: string | null;
 }
 
-export interface TransactionsResponse {
+export type TransactionsResponse = TransactionsResponseValidated | TransactionsResponsePending;
+
+export interface TransactionsResponseValidated {
   items: Array<Transaction>;
-  next_page_params: PaginationParams | null;
+  next_page_params: {
+    block_number: number;
+    index: number;
+    items_count: number;
+    filter: 'validated';
+  } | null;
+}
+
+export interface TransactionsResponsePending {
+  items: Array<Transaction>;
+  next_page_params: {
+    inserted_at: string;
+    hash: string;
+    filter: 'pending';
+  } | null;
 }
 
 export type TransactionType = 'token_transfer' | 'contract_creation' | 'contract_call' | 'token_creation' | 'coin_transfer'

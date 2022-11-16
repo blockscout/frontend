@@ -3,7 +3,7 @@ import appConfig from 'configs/app/config';
 import { ROUTES } from './routes';
 import type { RouteName } from './routes';
 
-const PATH_PARAM_REGEXP = /\/\[(\w+)\]/g;
+const PATH_PARAM_REGEXP = /\/:(\w+)/g;
 
 export default function link(
   routeName: RouteName,

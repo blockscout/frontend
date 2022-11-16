@@ -147,11 +147,21 @@ geth:
     _default: ethereum/client-go:stable
   replicas:
     app: 1
-  portHttp: 8545
-  portWs: 8546
-  portAuth: 8551
-  command: '["sh","./root/init.sh"]'
-  args: '["--fakepow", "--dev", "--dev.period=1", "--datadir=/root/.ethereum/devnet", "--keystore=/root/.ethereum/devnet/keystore", "--password=/root/password.txt", "--unlock=0", "--unlock=1", "--mine", "--miner.threads=1", "--miner.etherbase=0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266", "--ipcpath=/root/geth.ipc", "--http", "--http.vhosts=*", "--http.addr=0.0.0.0", "--http.port=8545", "--http.api=eth,net,web3,debug,txpool", "--ws", "--ws.origins=*", "--ws.addr=0.0.0.0", "--ws.port=8546", "--ws.api=eth,net,web3,debug,txpool", "--graphql", "--graphql.corsdomain=*", "--allow-insecure-unlock", "--rpc.allow-unprotected-txs", "--http.corsdomain=*", "--vmdebug", "--networkid=1337", "--rpc.txfeecap=0"]'
+  ports:
+    http:
+      number: 8545
+      protocol: TCP
+    ws:
+      number: 8546
+      protocol: TCP
+    auth:
+      number: 8551
+      protocol: TCP
+  command:
+    - /bin/sh
+    - -c
+    - |-
+      /root/init.sh --fakepow --dev --dev.period=1 --datadir=/root/.ethereum/devnet --keystore=/root/.ethereum/devnet/keystore --password=/root/password.txt --unlock=0 --unlock=1 --mine --miner.threads=1 --miner.etherbase=0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 --ipcpath=/root/geth.ipc --http --http.vhosts=* --http.addr=0.0.0.0 --http.port=8545 --http.api=eth,net,web3,debug,txpool --ws --ws.origins=* --ws.addr=0.0.0.0 --ws.port=8546 --ws.api=eth,net,web3,debug,txpool --graphql --graphql.corsdomain=* --allow-insecure-unlock --rpc.allow-unprotected-txs --http.corsdomain=* --vmdebug --networkid=1337 --rpc.txfeecap=0
   environment: {}
   persistence:
     enabled: false
@@ -363,3 +373,5 @@ frontend:
       _default: https://blockscoutcom.us.auth0.com/v2/logout
     NEXT_PUBLIC_LOGOUT_RETURN_URL:
       _default: https://blockscout.com/auth/logout
+    NEXT_PUBLIC_HOMEPAGE_CHARTS:
+      _default: "['daily_txs','coin_price','market_cup']"

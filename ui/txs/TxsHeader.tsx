@@ -14,13 +14,18 @@ import TxsSorting from 'ui/txs/TxsSorting';
 
 type Props = {
   sorting: Sort;
-  setSorting: (val: Sort | ((val: Sort) => Sort)) => void;
+  setSorting: (val: Sort) => void;
   paginationProps: PaginationProps;
   className?: string;
+  showPagination?: boolean;
 }
 
-const TxsHeader = ({ sorting, setSorting, paginationProps, className }: Props) => {
+const TxsHeader = ({ sorting, setSorting, paginationProps, className, showPagination = true }: Props) => {
   const isMobile = useIsMobile(false);
+
+  if (!showPagination && !isMobile) {
+    return null;
+  }
 
   return (
     <ActionBar className={ className }>
@@ -47,7 +52,7 @@ const TxsHeader = ({ sorting, setSorting, paginationProps, className }: Props) =
           placeholder="Search by addresses, hash, method..."
         /> */ }
       </HStack>
-      <Pagination { ...paginationProps }/>
+      { showPagination && <Pagination { ...paginationProps }/> }
     </ActionBar>
   );
 };

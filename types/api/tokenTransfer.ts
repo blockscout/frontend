@@ -37,3 +37,13 @@ interface TokenTransferBase {
   from: AddressParam;
   to: AddressParam;
 }
+
+export interface TokenTransferResponse {
+  items: Array<TokenTransfer>;
+  next_page_params: {
+    block_number: number;
+    index: number;
+    items_count: number;
+    transaction_hash: string;
+  } | null;
+}

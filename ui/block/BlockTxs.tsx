@@ -12,6 +12,7 @@ const BlockTxs = () => {
     <TxsContent
       queryName={ QueryKeys.blockTxs }
       apiPath={ `/node-api/blocks/${ router.query.id }/transactions` }
+      showBlockInfo={ false }
     />
   );
 };

@@ -23,6 +23,7 @@ import type { Transaction } from 'types/api/transaction';
 import rightArrowIcon from 'icons/arrows/east.svg';
 import dayjs from 'lib/date/dayjs';
 import link from 'lib/link/link';
+import AdditionalInfoButton from 'ui/shared/AdditionalInfoButton';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -30,11 +31,10 @@ import CurrencyValue from 'ui/shared/CurrencyValue';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 import TxStatus from 'ui/shared/TxStatus';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
-import TxAdditionalInfoButton from 'ui/txs/TxAdditionalInfoButton';
 
 import TxType from './TxType';
 
-const TxsTableItem = ({ tx }: {tx: Transaction}) => {
+const TxsTableItem = ({ tx, showBlockInfo }: {tx: Transaction; showBlockInfo: boolean }) => {
   const addressFrom = (
     <Address>
       <Tooltip label={ tx.from.implementation_name }>
@@ -44,12 +44,14 @@ const TxsTableItem = ({ tx }: {tx: Transaction}) => {
     </Address>
   );
 
+  const dataTo = tx.to && tx.to.hash ? tx.to : tx.created_contract;
+
   const addressTo = (
     <Address>
-      <Tooltip label={ tx.to.implementation_name }>
-        <Box display="flex"><AddressIcon hash={ tx.to.hash }/></Box>
+      <Tooltip label={ dataTo.implementation_name }>
+        <Box display="flex"><AddressIcon hash={ dataTo.hash }/></Box>
       </Tooltip>
-      <AddressLink hash={ tx.to.hash } alias={ tx.to.name } fontWeight="500" ml={ 2 } truncation="constant"/>
+      <AddressLink hash={ dataTo.hash } alias={ dataTo.name } fontWeight="500" ml={ 2 } truncation="constant"/>
     </Address>
   );
 
@@ -61,7 +63,7 @@ const TxsTableItem = ({ tx }: {tx: Transaction}) => {
           { ({ isOpen }) => (
             <>
               <PopoverTrigger>
-                <TxAdditionalInfoButton isOpen={ isOpen }/>
+                <AdditionalInfoButton isOpen={ isOpen }/>
               </PopoverTrigger>
               <PopoverContent border="1px solid" borderColor={ infoBorderColor }>
                 <PopoverBody>
@@ -92,17 +94,19 @@ const TxsTableItem = ({ tx }: {tx: Transaction}) => {
         </VStack>
       </Td>
       <Td>
-        <TruncatedTextTooltip label={ tx.method }>
-          <Tag
-            colorScheme={ tx.method === 'Multicall' ? 'teal' : 'gray' }
-          >
-            { tx.method }
-          </Tag>
-        </TruncatedTextTooltip>
+        { tx.method ? (
+          <TruncatedTextTooltip label={ tx.method }>
+            <Tag colorScheme={ tx.method === 'Multicall' ? 'teal' : 'gray' }>
+              { tx.method }
+            </Tag>
+          </TruncatedTextTooltip>
+        ) : '-' }
       </Td>
-      <Td>
-        { tx.block && <Link href={ link('block', { id: tx.block.toString() }) }>{ tx.block }</Link> }
-      </Td>
+      { showBlockInfo && (
+        <Td>
+          { tx.block && <Link href={ link('block', { id: tx.block.toString() }) }>{ tx.block }</Link> }
+        </Td>
+      ) }
       <Show above="xl" ssr={ false }>
         <Td>
           { addressFrom }

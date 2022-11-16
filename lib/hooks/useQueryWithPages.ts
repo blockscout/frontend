@@ -1,3 +1,4 @@
+import type { UseQueryOptions } from '@tanstack/react-query';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { pick, omit } from 'lodash';
 import { useRouter } from 'next/router';
@@ -5,32 +6,31 @@ import React, { useCallback } from 'react';
 import { animateScroll } from 'react-scroll';
 
 import type { BlockFilters } from 'types/api/block';
-import type { PaginationParams } from 'types/api/pagination';
+import { PAGINATION_FIELDS } from 'types/api/pagination';
+import type { PaginationParams, PaginatedResponse, PaginatedQueryKeys } from 'types/api/pagination';
 import type { TTxsFilters } from 'types/api/txsFilters';
-import type { QueryKeys } from 'types/client/queries';
 
 import useFetch from 'lib/hooks/useFetch';
 
-const PAGINATION_FIELDS: Array<keyof PaginationParams> = [ 'block_number', 'index', 'items_count' ];
-
-interface ResponseWithPagination {
-  next_page_params: PaginationParams | null;
+interface Params<QueryName extends PaginatedQueryKeys> {
+  apiPath: string;
+  queryName: QueryName;
+  queryIds?: Array<string>;
+  filters?: TTxsFilters | BlockFilters;
+  options?: Omit<UseQueryOptions<unknown, unknown, PaginatedResponse<QueryName>>, 'queryKey' | 'queryFn'>;
 }
 
-export default function useQueryWithPages<Response extends ResponseWithPagination>(
-  apiPath: string,
-  queryName: QueryKeys,
-  filters?: TTxsFilters | BlockFilters,
-) {
+export default function useQueryWithPages<QueryName extends PaginatedQueryKeys>({ queryName, filters, options, apiPath, queryIds }: Params<QueryName>) {
+  const paginationFields = PAGINATION_FIELDS[queryName];
   const queryClient = useQueryClient();
   const router = useRouter();
   const [ page, setPage ] = React.useState(1);
-  const currPageParams = pick(router.query, PAGINATION_FIELDS);
-  const [ pageParams, setPageParams ] = React.useState<Array<Partial<PaginationParams>>>([ {} ]);
+  const currPageParams = pick(router.query, paginationFields);
+  const [ pageParams, setPageParams ] = React.useState<Array<PaginationParams<QueryName>>>([ ]);
   const fetch = useFetch();
 
-  const queryResult = useQuery<unknown, unknown, Response>(
-    [ queryName, { page, filters } ],
+  const queryResult = useQuery<unknown, unknown, PaginatedResponse<QueryName>>(
+    [ queryName, ...(queryIds || []), { page, filters } ],
     async() => {
       const params: Array<string> = [];
 
@@ -44,7 +44,7 @@ export default function useQueryWithPages<Response extends ResponseWithPaginatio
 
       return fetch(`${ apiPath }${ params.length ? '?' + params.join('&') : '' }`);
     },
-    { staleTime: Infinity },
+    { staleTime: Infinity, ...options },
   );
   const { data } = queryResult;
 
@@ -53,9 +53,7 @@ export default function useQueryWithPages<Response extends ResponseWithPaginatio
       // we hide next page button if no next_page_params
       return;
     }
-    // api adds filters into next-page-params now
-    // later filters will be removed from response
-    const nextPageParams = pick(data.next_page_params, PAGINATION_FIELDS);
+    const nextPageParams = data.next_page_params;
     if (page >= pageParams.length && data?.next_page_params) {
       setPageParams(prev => [ ...prev, nextPageParams ]);
     }
@@ -66,18 +64,18 @@ export default function useQueryWithPages<Response extends ResponseWithPaginatio
         animateScroll.scrollToTop({ duration: 0 });
         setPage(prev => prev + 1);
       });
-  }, [ data, page, pageParams, router ]);
+  }, [ data?.next_page_params, page, pageParams.length, router ]);
 
   const onPrevPageClick = useCallback(() => {
     // returning to the first page
     // we dont have pagination params for the first page
     let nextPageQuery: typeof router.query;
     if (page === 2) {
-      nextPageQuery = omit(router.query, PAGINATION_FIELDS);
+      nextPageQuery = omit(router.query, paginationFields);
     } else {
       const nextPageParams = { ...pageParams[page - 2] };
       nextPageQuery = { ...router.query };
-      Object.entries(nextPageParams).forEach(([ key, val ]) => nextPageQuery[key] = val.toString());
+      nextPageParams && Object.entries(nextPageParams).forEach(([ key, val ]) => nextPageQuery[key] = val.toString());
     }
     router.query = nextPageQuery;
     router.push({ pathname: router.pathname, query: nextPageQuery }, undefined, { shallow: true })
@@ -86,16 +84,16 @@ export default function useQueryWithPages<Response extends ResponseWithPaginatio
         setPage(prev => prev - 1);
         page === 2 && queryClient.clear();
       });
-  }, [ router, page, pageParams, queryClient ]);
+  }, [ router, page, paginationFields, pageParams, queryClient ]);
 
   const resetPage = useCallback(() => {
     queryClient.clear();
-    router.push({ pathname: router.pathname, query: omit(router.query, PAGINATION_FIELDS) }, undefined, { shallow: true }).then(() => {
+    router.push({ pathname: router.pathname, query: omit(router.query, paginationFields) }, undefined, { shallow: true }).then(() => {
       animateScroll.scrollToTop({ duration: 0 });
       setPage(1);
-      setPageParams([ {} ]);
+      setPageParams([ ]);
     });
-  }, [ router, queryClient ]);
+  }, [ queryClient, router, paginationFields ]);
 
   const hasPaginationParams = Object.keys(currPageParams).length > 0;
   const nextPageParams = data?.next_page_params;

@@ -1,0 +1,76 @@
+import type { UseQueryResult } from '@tanstack/react-query';
+import React from 'react';
+
+import type { BlockTransactionsResponse } from 'types/api/block';
+import type { TransactionsResponsePending, TransactionsResponseValidated } from 'types/api/transaction';
+import type { Sort } from 'types/client/txs-sort';
+
+import * as cookies from 'lib/cookies';
+import sortTxs from 'lib/tx/sortTxs';
+
+type TxsResponse = TransactionsResponseValidated | TransactionsResponsePending | BlockTransactionsResponse;
+
+type HookResult = UseQueryResult<TxsResponse> & {
+  sorting: Sort;
+  setSortByField: (field: 'val' | 'fee') => () => void;
+  setSortByValue: (value: Sort) => void;
+}
+
+export default function useTxsSort(
+  queryResult: UseQueryResult<TxsResponse>,
+): HookResult {
+
+  const [ sorting, setSorting ] = React.useState<Sort>(cookies.get(cookies.NAMES.TXS_SORT) as Sort);
+
+  const setSortByField = React.useCallback((field: 'val' | 'fee') => () => {
+    setSorting((prevVal) => {
+      let newVal: Sort = '';
+      if (field === 'val') {
+        if (prevVal === 'val-asc') {
+          newVal = '';
+        } else if (prevVal === 'val-desc') {
+          newVal = 'val-asc';
+        } else {
+          newVal = 'val-desc';
+        }
+      }
+      if (field === 'fee') {
+        if (prevVal === 'fee-asc') {
+          newVal = '';
+        } else if (prevVal === 'fee-desc') {
+          newVal = 'fee-asc';
+        } else {
+          newVal = 'fee-desc';
+        }
+      }
+      cookies.set(cookies.NAMES.TXS_SORT, newVal);
+      return newVal;
+    });
+  }, [ ]);
+
+  const setSortByValue = React.useCallback((value: Sort) => {
+    setSorting((prevVal: Sort) => {
+      let newVal: Sort = '';
+      if (value !== prevVal) {
+        newVal = value as Sort;
+      }
+      cookies.set(cookies.NAMES.TXS_SORT, newVal);
+      return newVal;
+    });
+  }, []);
+
+  return React.useMemo(() => {
+    if (queryResult.isError || queryResult.isLoading) {
+      return { ...queryResult, setSortByField, setSortByValue, sorting };
+    }
+
+    return {
+      ...queryResult,
+      data: { ...queryResult.data, items: queryResult.data.items.slice().sort(sortTxs(sorting)) },
+      setSortByField,
+      setSortByValue,
+      sorting,
+    };
+  }, [ queryResult, setSortByField, setSortByValue, sorting ]);
+
+}
