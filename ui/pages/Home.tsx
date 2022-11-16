@@ -1,78 +1,40 @@
-import { VStack, Textarea, Button, Alert, AlertTitle, AlertDescription, Link, Code } from '@chakra-ui/react';
-import * as Sentry from '@sentry/react';
-import type { ChangeEvent } from 'react';
+import { Box, Heading, Flex, LightMode } from '@chakra-ui/react';
 import React from 'react';
 
-import appConfig from 'configs/app/config';
-import * as cookies from 'lib/cookies';
-import useToast from 'lib/hooks/useToast';
 import ChainIndicators from 'ui/home/indicators/ChainIndicators';
+import LatestBlocks from 'ui/home/LatestBlocks';
+import LatestTxs from 'ui/home/LatestTxs';
+import Stats from 'ui/home/Stats';
 import Page from 'ui/shared/Page/Page';
-import PageTitle from 'ui/shared/Page/PageTitle';
+import SearchBar from 'ui/snippets/searchBar/SearchBar';
 
 const Home = () => {
-  const toast = useToast();
-
-  const [ isFormVisible, setFormVisibility ] = React.useState(false);
-  const [ token, setToken ] = React.useState('');
-
-  React.useEffect(() => {
-    const token = cookies.get(cookies.NAMES.API_TOKEN);
-    setFormVisibility(Boolean(!token && appConfig.isAccountSupported));
-  }, []);
-
-  const checkSentry = React.useCallback(() => {
-    Sentry.captureException(new Error('Test error'), { extra: { foo: 'bar' }, tags: { source: 'test' } });
-  }, []);
-
-  const handleTokenChange = React.useCallback((event: ChangeEvent<HTMLTextAreaElement>) => {
-    setToken(event.target.value);
-  }, []);
-
-  const handleSetTokenClick = React.useCallback(() => {
-    cookies.set(cookies.NAMES.API_TOKEN, token);
-    setToken('');
-    toast({
-      position: 'top-right',
-      title: 'Success 🥳',
-      description: 'Successfully set cookie',
-      status: 'success',
-      variant: 'subtle',
-      isClosable: true,
-      onCloseComplete: () => {
-        setFormVisibility(false);
-      },
-    });
-  }, [ toast, token ]);
-
-  const prodUrl = 'https://blockscout.com/poa/core';
-
   return (
-    <Page>
-      <VStack gap={ 4 } alignItems="flex-start" maxW="1000px">
-        <PageTitle text={
-          `Home Page for ${ appConfig.network.name } network`
-        }/>
-        <ChainIndicators/>
-        { /* will be deleted when we move to new CI */ }
-        { isFormVisible && (
-          <>
-            <Alert status="error" flexDirection="column" alignItems="flex-start">
-              <AlertTitle fontSize="md">
-                !!! Temporary solution for authentication !!!
-              </AlertTitle>
-              <AlertDescription mt={ 3 }>
-                To Sign in go to <Link href={ prodUrl } target="_blank">{ prodUrl }</Link> first, sign in there, copy obtained API token from cookie
-                <Code ml={ 1 }>{ cookies.NAMES.API_TOKEN }</Code> and paste it in the form below. After submitting the form you should be successfully
-                authenticated in current environment
-              </AlertDescription>
-            </Alert>
-            <Textarea value={ token } onChange={ handleTokenChange } placeholder="API token"/>
-            <Button onClick={ handleSetTokenClick }>Set cookie</Button>
-          </>
-        ) }
-        <Button colorScheme="red" onClick={ checkSentry }>Check Sentry</Button>
-      </VStack>
+    <Page hasSearch={ false }>
+      <Box
+        w="100%"
+        backgroundImage="radial-gradient(farthest-corner at 0 0, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%)"
+        borderRadius="24px"
+        padding={{ base: '24px 40px', lg: '48px' }}
+        minW="850px"
+      >
+        <Heading
+          as="h1"
+          size={{ base: 'lg', ld: 'xl' }}
+          fontWeight={{ base: 600, lg: 500 }}
+          color="white"
+          mb={{ base: 6, lg: 8 }}
+        >
+          Welcome to Blockscout explorer
+        </Heading>
+        <LightMode><SearchBar backgroundColor="white" isHomepage/></LightMode>
+      </Box>
+      <Stats/>
+      <ChainIndicators/>
+      <Flex mt={ 12 } direction={{ base: 'column', lg: 'row' }}>
+        <Box mr={{ base: 0, lg: 12 }} mb={{ base: 8, lg: 0 }} width={{ base: '100%', lg: '280px' }}><LatestBlocks/></Box>
+        <Box flexGrow={ 1 }><LatestTxs/></Box>
+      </Flex>
     </Page>
   );
 };

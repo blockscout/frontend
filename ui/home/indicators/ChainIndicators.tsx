@@ -74,6 +74,7 @@ const ChainIndicators = () => {
       flexDir={{ base: 'column', lg: 'row' }}
       w="100%"
       alignItems="stretch"
+      mt={ 8 }
     >
       <Flex flexGrow={ 1 } flexDir="column" order={{ base: 2, lg: 1 }} p={{ base: 6, lg: 0 }}>
         <Flex alignItems="center">
