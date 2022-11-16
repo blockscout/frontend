@@ -89,10 +89,45 @@
             "label": "test: playwright",
             "detail": "run visual components tests",
             "presentation": {
-                "reveal": "silent",
+                "reveal": "always",
+                "panel": "new",
+            },
+            "icon": {
+                "color": "terminal.ansiBlue",
+                "id": "beaker"
+            },
+            "runOptions": {
+                "instanceLimit": 1
+            }
+        },
+        {
+            "type": "npm",
+            "script": "test:unit",
+            "problemMatcher": [],
+            "label": "test: unit",
+            "detail": "run unit tests",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+            },
+            "icon": {
+                "color": "terminal.ansiBlue",
+                "id": "beaker"
+            },
+            "runOptions": {
+                "instanceLimit": 1
+            }
+        },
+        {
+            "type": "npm",
+            "script": "test:unit:watch",
+            "problemMatcher": [],
+            "label": "test: unit: watch",
+            "detail": "run unit tests in watch mode",
+            "presentation": {
+                "reveal": "always",
                 "panel": "new",
                 "close": true,
-                "revealProblems": "onProblem",
             },
             "icon": {
                 "color": "terminal.ansiBlue",
