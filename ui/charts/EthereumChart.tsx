@@ -32,12 +32,12 @@ const EthereumChart = () => {
 
   const data: TimeChartData = [
     {
-      name: 'Daily Transactions',
+      name: 'Daily txs',
       color: useToken('colors', 'blue.500'),
       items: ethTxsData.slice(range[0], range[1]).map((d) => ({ ...d, date: new Date(d.date) })),
     },
     {
-      name: 'ERC-20 Token Transfers',
+      name: 'ERC-20 tr.',
       color: useToken('colors', 'green.500'),
       items: ethTokenTransferData.slice(range[0], range[1]).map((d) => ({ ...d, date: new Date(d.date) })),
     },
@@ -139,7 +139,6 @@ const EthereumChart = () => {
                 anchorEl={ overlayRef.current }
                 width={ innerWidth }
                 height={ innerHeight }
-                margin={ CHART_MARGIN }
                 xScale={ xScale }
                 yScale={ yScale }
                 data={ filteredData }

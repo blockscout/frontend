@@ -2,30 +2,35 @@ import { useToken, useColorModeValue } from '@chakra-ui/react';
 import * as d3 from 'd3';
 import React from 'react';
 
-import type { TimeChartItem, ChartMargin, TimeChartData } from 'ui/shared/chart/types';
+import type { TimeChartItem, TimeChartData } from 'ui/shared/chart/types';
+
+import computeTooltipPosition from 'ui/shared/chart/utils/computeTooltipPosition';
+import type { Pointer } from 'ui/shared/chart/utils/pointerTracker';
+import { trackPointer } from 'ui/shared/chart/utils/pointerTracker';
 
 interface Props {
   width?: number;
   height?: number;
-  margin?: ChartMargin;
   data: TimeChartData;
   xScale: d3.ScaleTime<number, number>;
   yScale: d3.ScaleLinear<number, number>;
   anchorEl: SVGRectElement | null;
 }
 
-const ChartTooltip = ({ xScale, yScale, width, height, data, margin: _margin, anchorEl, ...props }: Props) => {
-  const margin = React.useMemo(() => ({
-    top: 0, bottom: 0, left: 0, right: 0,
-    ..._margin,
-  }), [ _margin ]);
+const TEXT_LINE_HEIGHT = 12;
+const PADDING = 16;
+const LINE_SPACE = 10;
+const POINT_SIZE = 16;
 
-  const lineColor = useToken('colors', 'red.500');
-  const textColor = useToken('colors', useColorModeValue('white', 'black'));
-  const bgColor = useToken('colors', useColorModeValue('gray.900', 'gray.400'));
+const ChartTooltip = ({ xScale, yScale, width, height, data, anchorEl, ...props }: Props) => {
+  const lineColor = useToken('colors', 'gray.400');
+  const titleColor = useToken('colors', 'blue.100');
+  const textColor = useToken('colors', 'white');
+  const markerBgColor = useToken('colors', useColorModeValue('black', 'white'));
+  const markerBorderColor = useToken('colors', useColorModeValue('white', 'black'));
+  const bgColor = useToken('colors', 'blackAlpha.900');
 
   const ref = React.useRef(null);
-  const isPressed = React.useRef(false);
 
   const drawLine = React.useCallback(
     (x: number) => {
@@ -40,38 +45,45 @@ const ChartTooltip = ({ xScale, yScale, width, height, data, margin: _margin, an
   );
 
   const drawContent = React.useCallback(
-    (x: number) => {
+    (x: number, y: number) => {
       const tooltipContent = d3.select(ref.current).select('.ChartTooltip__content');
 
       tooltipContent.attr('transform', (cur, i, nodes) => {
-        const OFFSET = 8;
         const node = nodes[i] as SVGGElement | null;
-        const nodeWidth = node?.getBoundingClientRect()?.width || 0;
-        const translateX = nodeWidth + x + OFFSET > (width || 0) ? x - nodeWidth - OFFSET : x + OFFSET;
-        return `translate(${ translateX }, ${ margin.top + 30 })`;
+        const { width: nodeWidth, height: nodeHeight } = node?.getBoundingClientRect() || { width: 0, height: 0 };
+        const [ translateX, translateY ] = computeTooltipPosition({
+          canvasWidth: width || 0,
+          canvasHeight: height || 0,
+          nodeWidth,
+          nodeHeight,
+          pointX: x,
+          pointY: y,
+          offset: POINT_SIZE,
+        });
+        return `translate(${ translateX }, ${ translateY })`;
       });
 
       tooltipContent
-        .select('.ChartTooltip__contentTitle')
-        .text(d3.timeFormat('%b %d, %Y')(xScale.invert(x)));
+        .select('.ChartTooltip__contentDate')
+        .text(d3.timeFormat('%e %b %Y')(xScale.invert(x)));
     },
-    [ xScale, margin, width ],
+    [ xScale, width, height ],
   );
 
   const updateDisplayedValue = React.useCallback((d: TimeChartItem, i: number) => {
     d3.selectAll('.ChartTooltip__value')
       .filter((td, tIndex) => tIndex === i)
-      .text(d.value.toLocaleString());
-  }, []);
+      .text(data[i].valueFormatter?.(d.value) || d.value.toLocaleString());
+  }, [ data ]);
 
-  const drawCircles = React.useCallback((event: MouseEvent) => {
-    const [ x ] = d3.pointer(event, anchorEl);
+  const drawPoints = React.useCallback((x: number) => {
     const xDate = xScale.invert(x);
     const bisectDate = d3.bisector<TimeChartItem, unknown>((d) => d.date).left;
     let baseXPos = 0;
+    let baseYPos = 0;
 
     d3.select(ref.current)
-      .selectAll('.ChartTooltip__linePoint')
+      .selectAll('.ChartTooltip__point')
       .attr('transform', (cur, i) => {
         const index = bisectDate(data[i].items, xDate, 1);
         const d0 = data[i].items[index - 1];
@@ -84,97 +96,139 @@ const ChartTooltip = ({ xScale, yScale, width, height, data, margin: _margin, an
         }
 
         const xPos = xScale(d.date);
+        const yPos = yScale(d.value);
+
         if (i === 0) {
           baseXPos = xPos;
+          baseYPos = yPos;
         }
-
-        const yPos = yScale(d.value);
 
         updateDisplayedValue(d, i);
 
         return `translate(${ xPos }, ${ yPos })`;
       });
 
-    return baseXPos;
-  }, [ anchorEl, data, updateDisplayedValue, xScale, yScale ]);
+    return [ baseXPos, baseYPos ];
+  }, [ data, updateDisplayedValue, xScale, yScale ]);
 
-  const followPoints = React.useCallback((event: MouseEvent) => {
-    const baseXPos = drawCircles(event);
-    drawLine(baseXPos);
-    drawContent(baseXPos);
-  }, [ drawCircles, drawLine, drawContent ]);
+  const draw = React.useCallback((pointer: Pointer) => {
+    if (pointer.point) {
+      const [ baseXPos, baseYPos ] = drawPoints(pointer.point[0]);
+      drawLine(baseXPos);
+      drawContent(baseXPos, baseYPos);
+    }
+  }, [ drawPoints, drawLine, drawContent ]);
 
   React.useEffect(() => {
     const anchorD3 = d3.select(anchorEl);
+    const subscriptions: Array<string> = [];
+    let isShown = false;
 
     anchorD3
-      .on('mousedown.tooltip', () => {
-        isPressed.current = true;
-        d3.select(ref.current).attr('opacity', 0);
-      })
-      .on('mouseup.tooltip', () => {
-        isPressed.current = false;
-      })
-      .on('mouseout.tooltip', () => {
-        d3.select(ref.current).attr('opacity', 0);
-      })
-      .on('mouseover.tooltip', () => {
-        d3.select(ref.current).attr('opacity', 1);
-      })
-      .on('mousemove.tooltip', (event: MouseEvent) => {
-        if (!isPressed.current) {
-          d3.select(ref.current).attr('opacity', 1);
-          d3.select(ref.current)
-            .selectAll('.ChartTooltip__linePoint')
-            .attr('opacity', 1);
-          followPoints(event);
-        }
+      .on('touchmove.tooltip', (event: PointerEvent) => event.preventDefault()) // prevent scrolling
+      .on('pointerenter.tooltip pointerdown.tooltip', (event: PointerEvent) => {
+        const newSubscriptions = trackPointer(event, {
+          move: (pointer) => {
+            if (!pointer.point) {
+              return;
+            }
+
+            draw(pointer);
+            if (!isShown) {
+              d3.select(ref.current).attr('opacity', 1);
+              d3.select(ref.current)
+                .selectAll('.ChartTooltip__point')
+                .attr('opacity', 1);
+              isShown = true;
+            }
+          },
+          out: () => {
+            d3.select(ref.current).attr('opacity', 0);
+            isShown = false;
+          },
+          end: () => {
+            d3.select(ref.current).attr('opacity', 0);
+            isShown = false;
+          },
+        });
+
+        subscriptions.push(...newSubscriptions);
       });
 
-    d3.select('body').on('mouseup.tooltip', function(event) {
-      const isOutside = event.target !== anchorD3.node();
-      if (isOutside) {
-        isPressed.current = false;
-      }
-    });
-
     return () => {
-      anchorD3.on('mousedown.tooltip mouseup.tooltip mouseout.tooltip mouseover.tooltip mousemove.tooltip', null);
-      d3.select('body').on('mouseup.tooltip', null);
+      anchorD3.on('touchmove.tooltip pointerenter.tooltip pointerdown.tooltip', null);
+      subscriptions && anchorD3.on(subscriptions.join(' '), null);
     };
-  }, [ anchorEl, followPoints ]);
+  }, [ anchorEl, draw ]);
 
   return (
     <g ref={ ref } opacity={ 0 } { ...props }>
-      <line className="ChartTooltip__line" stroke={ lineColor }/>
-      <g className="ChartTooltip__content">
-        <rect className="ChartTooltip__contentBg" rx={ 8 } ry={ 8 } fill={ bgColor } width={ 125 } height={ data.length * 22 + 34 }/>
-        <text
-          className="ChartTooltip__contentTitle"
-          transform="translate(8,20)"
-          fontSize="12px"
-          fontWeight="bold"
-          fill={ textColor }
-          pointerEvents="none"
+      <line className="ChartTooltip__line" stroke={ lineColor } strokeDasharray="3"/>
+      { data.map(({ name }) => (
+        <circle
+          key={ name }
+          className="ChartTooltip__point"
+          r={ POINT_SIZE / 2 }
+          opacity={ 0 }
+          fill={ markerBgColor }
+          stroke={ markerBorderColor }
+          strokeWidth={ 4 }
         />
-        <g>
-          { data.map(({ name, color }, index) => (
-            <g key={ name } className="ChartTooltip__contentLine" transform={ `translate(12,${ 40 + index * 20 })` }>
-              <circle r={ 4 } fill={ color }/>
-              <text
-                transform="translate(10,4)"
-                className="ChartTooltip__value"
-                fontSize="12px"
-                fill={ textColor }
-                pointerEvents="none"
-              />
-            </g>
-          )) }
-        </g>
-      </g>
-      { data.map(({ name, color }) => (
-        <circle key={ name } className="ChartTooltip__linePoint" r={ 4 } opacity={ 0 } fill={ color } stroke="#FFF" strokeWidth={ 1 }/>
       )) }
+      <g className="ChartTooltip__content">
+        <rect
+          className="ChartTooltip__contentBg"
+          rx={ 12 }
+          ry={ 12 }
+          fill={ bgColor }
+          width={ 200 }
+          height={ 2 * PADDING + (data.length + 1) * TEXT_LINE_HEIGHT + data.length * LINE_SPACE }
+        />
+        <g transform={ `translate(${ PADDING },${ PADDING })` }>
+          <text
+            className="ChartTooltip__contentTitle"
+            transform="translate(0,0)"
+            fontSize="12px"
+            fontWeight="500"
+            fill={ titleColor }
+            dominantBaseline="hanging"
+          >
+            Date
+          </text>
+          <text
+            className="ChartTooltip__contentDate"
+            transform="translate(80,0)"
+            fontSize="12px"
+            fontWeight="500"
+            fill={ textColor }
+            dominantBaseline="hanging"
+          />
+        </g>
+        { data.map(({ name }, index) => (
+          <g
+            key={ name }
+            transform={ `translate(${ PADDING },${ PADDING + (index + 1) * (LINE_SPACE + TEXT_LINE_HEIGHT) })` }
+          >
+            <text
+              className="ChartTooltip__contentTitle"
+              transform="translate(0,0)"
+              fontSize="12px"
+              fontWeight="500"
+              fill={ titleColor }
+              dominantBaseline="hanging"
+            >
+              { name }
+            </text>
+            <text
+              transform="translate(80,0)"
+              className="ChartTooltip__value"
+              fontSize="12px"
+              fill={ textColor }
+              dominantBaseline="hanging"
+            />
+          </g>
+        )) }
+      </g>
     </g>
   );
 };

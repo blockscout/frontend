@@ -70,6 +70,7 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE | `validation` or `mining` *(optional)* | Verification type in the network | `mining` |
 | NEXT_PUBLIC_LOGOUT_URL | `string` *(optional)* | Account logout url | `https://blockscoutcom.us.auth0.com/v2/logout` |
 | NEXT_PUBLIC_LOGOUT_RETURN_URL | `string` *(optional)* | Account logout return url | `https://blockscout.com/poa/core/auth/logout` |
+| NEXT_PUBLIC_HOMEPAGE_CHARTS | `Array<'daily_txs' \| 'coin_price' \| 'market_cup'>` *(optional)* | List of charts displayed on the home page | `['daily_txs','coin_price','market_cup']` |
 
 ### App configuration
 

@@ -69,6 +69,7 @@ const ChartLine = ({ xScale, yScale, data, animation, ...props }: Props) => {
       ref={ ref }
       d={ line(data) || undefined }
       strokeWidth={ 1 }
+      strokeLinecap="round"
       fill="none"
       opacity={ 0 }
       { ...props }
