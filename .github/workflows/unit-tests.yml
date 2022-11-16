@@ -64,4 +64,4 @@ jobs:
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           exitZeroOnChanges: false
-          onlyStoryFiles: "**.test.stories.tsx""
+          onlyStoryFiles: "**.test.stories.tsx"
