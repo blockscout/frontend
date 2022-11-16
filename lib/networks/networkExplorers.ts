@@ -11,7 +11,14 @@ import appConfig from 'configs/app/config';
 //     title: 'Anyblock',
 //     baseUrl: 'https://explorer.anyblock.tools',
 //     paths: {
-//       tx: '/ethereum/poa/core/tx',
+//       tx: '/ethereum/ethereum/goerli/transaction',
+//     },
+//   },
+//   {
+//     title: 'Etherscan',
+//     baseUrl: 'https://goerli.etherscan.io/',
+//     paths: {
+//       tx: '/tx',
 //     },
 //   },
 // ]).replaceAll('"', '\'');
