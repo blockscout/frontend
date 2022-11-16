@@ -119,47 +119,70 @@ const ChartTooltip = ({ xScale, yScale, width, height, data, anchorEl, ...props 
     }
   }, [ drawPoints, drawLine, drawContent ]);
 
+  const showContent = React.useCallback(() => {
+    d3.select(ref.current).attr('opacity', 1);
+    d3.select(ref.current)
+      .selectAll('.ChartTooltip__point')
+      .attr('opacity', 1);
+  }, []);
+
+  const hideContent = React.useCallback(() => {
+    d3.select(ref.current).attr('opacity', 0);
+  }, []);
+
+  const createPointerTracker = React.useCallback((event: PointerEvent, isSubsequentCall?: boolean) => {
+    let isShown = false;
+    let isPressed = event.pointerType === 'mouse' && event.type === 'pointerdown' && !isSubsequentCall;
+
+    if (isPressed) {
+      hideContent();
+    }
+
+    trackPointer(event, {
+      move: (pointer) => {
+        if (!pointer.point || isPressed) {
+          return;
+        }
+
+        draw(pointer);
+        if (!isShown) {
+          showContent();
+          isShown = true;
+        }
+      },
+      out: () => {
+        hideContent();
+        isShown = false;
+      },
+      end: (tracker) => {
+        hideContent();
+        const isOutside = tracker.sourceEvent?.offsetX && width && (tracker.sourceEvent.offsetX > width || tracker.sourceEvent.offsetX < 0);
+
+        if (!isOutside && isPressed) {
+          window.setTimeout(() => {
+            createPointerTracker(event, true);
+          }, 0);
+        }
+
+        isShown = false;
+        isPressed = false;
+      },
+    });
+  }, [ draw, hideContent, showContent, width ]);
+
   React.useEffect(() => {
     const anchorD3 = d3.select(anchorEl);
-    const subscriptions: Array<string> = [];
-    let isShown = false;
 
     anchorD3
       .on('touchmove.tooltip', (event: PointerEvent) => event.preventDefault()) // prevent scrolling
       .on('pointerenter.tooltip pointerdown.tooltip', (event: PointerEvent) => {
-        const newSubscriptions = trackPointer(event, {
-          move: (pointer) => {
-            if (!pointer.point) {
-              return;
-            }
-
-            draw(pointer);
-            if (!isShown) {
-              d3.select(ref.current).attr('opacity', 1);
-              d3.select(ref.current)
-                .selectAll('.ChartTooltip__point')
-                .attr('opacity', 1);
-              isShown = true;
-            }
-          },
-          out: () => {
-            d3.select(ref.current).attr('opacity', 0);
-            isShown = false;
-          },
-          end: () => {
-            d3.select(ref.current).attr('opacity', 0);
-            isShown = false;
-          },
-        });
-
-        subscriptions.push(...newSubscriptions);
+        createPointerTracker(event);
       });
 
     return () => {
       anchorD3.on('touchmove.tooltip pointerenter.tooltip pointerdown.tooltip', null);
-      subscriptions && anchorD3.on(subscriptions.join(' '), null);
     };
-  }, [ anchorEl, draw ]);
+  }, [ anchorEl, createPointerTracker, draw, hideContent, showContent ]);
 
   return (
     <g ref={ ref } opacity={ 0 } { ...props }>
