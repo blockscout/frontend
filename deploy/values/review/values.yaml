@@ -300,6 +300,7 @@ frontend:
       enabled: true
     path:
       # - "/(apps|auth/profile|account)"
+      - "/"
       - "/apps"
       - "/_next"
       - "/node-api"
