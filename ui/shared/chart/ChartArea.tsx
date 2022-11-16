@@ -1,3 +1,4 @@
+import { useColorModeValue, useToken } from '@chakra-ui/react';
 import * as d3 from 'd3';
 import React from 'react';
 
@@ -13,6 +14,8 @@ interface Props extends React.SVGProps<SVGPathElement> {
 
 const ChartArea = ({ xScale, yScale, color, data, disableAnimation, ...props }: Props) => {
   const ref = React.useRef(null);
+  const gradientStopColor = useToken('colors', useColorModeValue('whiteAlpha.200', 'blackAlpha.100'));
+
   React.useEffect(() => {
     if (disableAnimation) {
       d3.select(ref.current).attr('opacity', 1);
@@ -39,8 +42,8 @@ const ChartArea = ({ xScale, yScale, color, data, disableAnimation, ...props }: 
       { color && (
         <defs>
           <linearGradient id={ `gradient-${ color }` } x1="0%" x2="0%" y1="0%" y2="100%">
-            <stop offset="0%" stopColor={ color } stopOpacity={ 0.8 }/>
-            <stop offset="100%" stopColor={ color } stopOpacity={ 0.02 }/>
+            <stop offset="2%" stopColor={ color }/>
+            <stop offset="78%" stopColor={ gradientStopColor }/>
           </linearGradient>
         </defs>
       ) }

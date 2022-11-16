@@ -19,6 +19,7 @@ export interface TimeChartDataItem {
   items: Array<TimeChartItem>;
   name: string;
   color?: string;
+  valueFormatter?: (value: number) => string;
 }
 
 export type TimeChartData = Array<TimeChartDataItem>;

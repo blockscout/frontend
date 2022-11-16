@@ -3,6 +3,7 @@ export enum QueryKeys {
   profile = 'profile',
   txsValidate = 'txs-validated',
   txsPending = 'txs-pending',
+  stats='stats',
   tx = 'tx',
   txInternals = 'tx-internals',
   txLogs = 'tx-logs',
@@ -11,4 +12,6 @@ export enum QueryKeys {
   blockTxs = 'block-transactions',
   block = 'block',
   blocks = 'blocks',
+  chartsTxs = 'charts-txs',
+  chartsMarket = 'charts-market',
 }
