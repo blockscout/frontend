@@ -24,8 +24,9 @@
     "test-docker": "docker run --rm --network host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.27.0-focal ./run-tests.sh",
     "test:unit": "jest",
     "test:unit:watch": "jest --watch",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "storybook:run": "start-storybook -p 6006",
+    "storybook:build": "build-storybook",
+    "chromatic": "chromatic"
   },
   "dependencies": {
     "@chakra-ui/react": "2.3.1",
@@ -79,6 +80,7 @@
     "@types/react-dom": "18.0.5",
     "@typescript-eslint/eslint-plugin": "^5.27.0",
     "babel-loader": "^8.3.0",
+    "chromatic": "^6.11.4",
     "dotenv-cli": "^6.0.0",
     "eslint": "8.16.0",
     "eslint-config-next": "^12.3.0",
