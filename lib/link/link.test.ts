@@ -3,7 +3,7 @@ import link from './link';
 it('makes correct link if there are no params in path', () => {
   const result = link('api_keys');
 
-  expect(result).toBe('https://blockscout.com/account/api_key1');
+  expect(result).toBe('https://blockscout.com/account/api_key');
 });
 
 it('makes correct link if there are params in path', () => {
