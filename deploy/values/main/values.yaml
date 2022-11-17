@@ -63,11 +63,14 @@ blockscout:
   # Blockscout environment variables
   environment:
     ETHEREUM_JSONRPC_TRACE_URL:
-      _default: http://geth-svc.eth-goerli.svc.cluster.local:8545
+      _default: http://geth-svc:8545
+      # _default: http://geth-svc.goerli.svc.cluster.local:8545
     ETHEREUM_JSONRPC_HTTP_URL:
-      _default: http://geth-svc.eth-goerli.svc.cluster.local:8545
+      _default: http://geth-svc:8545
+      # _default: http://geth-svc.goerli.svc.cluster.local:8545
     ETHEREUM_JSONRPC_WS_URL:
-      _default: ws://geth-svc.eth-goerli.svc.cluster.local:8546
+      _default: ws://geth-svc:8546
+      # _default: ws://geth-svc.goerli.svc.cluster.local:8546
     BLOCKSCOUT_VERSION:
       _default: v4.1.8-beta
     ECTO_USE_SSL:
@@ -168,33 +171,40 @@ postgres:
       _default: 'trust'
 # enable geth deploy
 geth:
-  enabled: false
+  enabled: true
   image:
     _default: ethereum/client-go:stable
   replicas:
     app: 1
-  portHttp: 8545
-  portWs: 8546
-  portAuth: 8551
-  command: '["geth"]'
-  args: '["--goerli", "--datadir=/.ethereum", "--gcmode=archive", "--http", "--http.vhosts=*", "--http.addr=0.0.0.0", "--http.port=8545", "--http.api=eth,net,web3,debug,txpool", "--ws", "--ws.origins=*", "--ws.addr=0.0.0.0", "--ws.port=8546", "--ws.api=eth,net,web3,debug,txpool", "--allow-insecure-unlock", "--rpc.allow-unprotected-txs", "--http.corsdomain=*", "--vmdebug", "--rpc.txfeecap=0"]'
+  ports:
+    http:
+      number: 8545
+      protocol: TCP
+    ws:
+      number: 8546
+      protocol: TCP
+    auth:
+      number: 8551
+      protocol: TCP
+  command:
+    - /bin/sh
+    - -c
+    - |-
+      /root/init.sh --fakepow --dev --dev.period=1 --datadir=/root/.ethereum/devnet --keystore=/root/.ethereum/devnet/keystore --password=/root/password.txt --unlock=0 --unlock=1 --mine --miner.threads=1 --miner.etherbase=0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 --ipcpath=/root/geth.ipc --http --http.vhosts=* --http.addr=0.0.0.0 --http.port=8545 --http.api=eth,net,web3,debug,txpool --ws --ws.origins=* --ws.addr=0.0.0.0 --ws.port=8546 --ws.api=eth,net,web3,debug,txpool --graphql --graphql.corsdomain=* --allow-insecure-unlock --rpc.allow-unprotected-txs --http.corsdomain=* --vmdebug --networkid=1337 --rpc.txfeecap=0
   environment: {}
   persistence:
-    enabled: true
-    mountPath: /geth
-    storageClass: gp3-new
-    storage: 1000Gi
+    enabled: false
   resources:
     limits:
       memory:
-        _default: "8Gi"
+        _default: "2Gi"
       cpu:
-        _default: "2"
+        _default: "0.2"
     requests:
       memory:
-        _default: "8Gi"
+        _default: "2Gi"
       cpu:
-        _default: "2"
+        _default: "0.2"
   # node label
   nodeSelector:
     enabled: true
@@ -206,68 +216,120 @@ geth:
   ingress:
     enabled: true
     host:
-      _default: node.test.blockscout.aws-k8s.blockscout.com
+      _default: node.test.aws-k8s.blockscout.com
     # enable https
     tls:
       enabled: false
   jwt:
-    enabled: true
-    mountPath: /geth/geth/jwtsecret
-  files:
     enabled: false
-  # enable client deploy (Prysm, lighthouse, nimbus, etc.)
-  client:
+  files:
     enabled: true
-    image:
-      _default: gcr.io/prysmaticlabs/prysm/beacon-chain:stable
-    # command: '["sh","./root/init.sh"]'
-    args: '["--goerli", "--datadir=/data", "--jwt-secret=/geth/geth/jwtsecret", "--rpc-host=0.0.0.0", "--grpc-gateway-host=0.0.0.0", "--monitoring-host=0.0.0.0", "--execution-endpoint=http://geth-svc:8545", "--checkpoint-sync-url=https://goerli.checkpoint-sync.ethdevops.io", "--genesis-beacon-api-url=https://goerli.checkpoint-sync.ethdevops.io"]'
-    ports:
-      port-tcp:
-        number: 13000
-        protocol: TCP
-      port-udp:
-        number: 12000
-        protocol: UDP
-      port-rpc:
-        number: 4000
-        protocol: TCP
-      port-rpc-gtw:
-        number: 3500
-        protocol: TCP
-      port-monitoring:
-        number: 8080
-        protocol: TCP
-    persistence:
-      enabled: false
-      mountPath: path
-      storageClass: gp3-new
-      storage: 100Gi
-    files:
-      enabled: false
-      list: {}
-    service:
-      # ClusterIP, NodePort or LoadBalancer
-      type: ClusterIP
-    # enable ingress
-    ingress:
-      enabled: false
-      host:
-      # enable https
-      tls:
-        enabled: false
-    environment: {}
-    resources:
-      limits:
-        memory:
-          _default: "6Gi"
-        cpu:
-          _default: "3"
-      requests:
-        memory:
-          _default: "6Gi"
-        cpu:
-          _default: "3"
+# geth:
+#   enabled: true
+#   image:
+#     _default: ethereum/client-go:stable
+#   replicas:
+#     app: 1
+#   portHttp: 8545
+#   portWs: 8546
+#   portAuth: 8551
+#   command:
+#     - /bin/sh
+#     - -c
+#     - |-
+#       /root/init.sh --fakepow --dev --dev.period=1 --datadir=/root/.ethereum/devnet --keystore=/root/.ethereum/devnet/keystore --password=/root/password.txt --unlock=0 --unlock=1 --mine --miner.threads=1 --miner.etherbase=0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 --ipcpath=/root/geth.ipc --http --http.vhosts=* --http.addr=0.0.0.0 --http.port=8545 --http.api=eth,net,web3,debug,txpool --ws --ws.origins=* --ws.addr=0.0.0.0 --ws.port=8546 --ws.api=eth,net,web3,debug,txpool --graphql --graphql.corsdomain=* --allow-insecure-unlock --rpc.allow-unprotected-txs --http.corsdomain=* --vmdebug --networkid=1337 --rpc.txfeecap=0
+#   # command: '["geth"]'
+#   # args: '["--goerli", "--datadir=/.ethereum", "--gcmode=archive", "--http", "--http.vhosts=*", "--http.addr=0.0.0.0", "--http.port=8545", "--http.api=eth,net,web3,debug,txpool", "--ws", "--ws.origins=*", "--ws.addr=0.0.0.0", "--ws.port=8546", "--ws.api=eth,net,web3,debug,txpool", "--allow-insecure-unlock", "--rpc.allow-unprotected-txs", "--http.corsdomain=*", "--vmdebug", "--rpc.txfeecap=0"]'
+#   environment: {}
+#   persistence:
+#     enabled: true
+#     mountPath: /geth
+#     storageClass: gp3-new
+#     storage: 1000Gi
+#   resources:
+#     limits:
+#       memory:
+#         _default: "8Gi"
+#       cpu:
+#         _default: "2"
+#     requests:
+#       memory:
+#         _default: "8Gi"
+#       cpu:
+#         _default: "2"
+#   # node label
+#   nodeSelector:
+#     enabled: true
+#     app: blockscout
+#   service:
+#     # ClusterIP, NodePort or LoadBalancer
+#     type: ClusterIP
+#   # enable ingress
+#   ingress:
+#     enabled: true
+#     host:
+#       _default: node.test.blockscout.aws-k8s.blockscout.com
+#     # enable https
+#     tls:
+#       enabled: false
+#   jwt:
+#     enabled: true
+#     mountPath: /geth/geth/jwtsecret
+#   files:
+#     enabled: false
+#   # enable client deploy (Prysm, lighthouse, nimbus, etc.)
+#   client:
+#     enabled: true
+#     image:
+#       _default: gcr.io/prysmaticlabs/prysm/beacon-chain:stable
+#     # command: '["sh","./root/init.sh"]'
+#     args: '["--goerli", "--datadir=/data", "--jwt-secret=/geth/geth/jwtsecret", "--rpc-host=0.0.0.0", "--grpc-gateway-host=0.0.0.0", "--monitoring-host=0.0.0.0", "--execution-endpoint=http://geth-svc:8545", "--checkpoint-sync-url=https://goerli.checkpoint-sync.ethdevops.io", "--genesis-beacon-api-url=https://goerli.checkpoint-sync.ethdevops.io"]'
+#     ports:
+#       port-tcp:
+#         number: 13000
+#         protocol: TCP
+#       port-udp:
+#         number: 12000
+#         protocol: UDP
+#       port-rpc:
+#         number: 4000
+#         protocol: TCP
+#       port-rpc-gtw:
+#         number: 3500
+#         protocol: TCP
+#       port-monitoring:
+#         number: 8080
+#         protocol: TCP
+#     persistence:
+#       enabled: false
+#       mountPath: path
+#       storageClass: gp3-new
+#       storage: 100Gi
+#     files:
+#       enabled: false
+#       list: {}
+#     service:
+#       # ClusterIP, NodePort or LoadBalancer
+#       type: ClusterIP
+#     # enable ingress
+#     ingress:
+#       enabled: false
+#       host:
+#       # enable https
+#       tls:
+#         enabled: false
+#     environment: {}
+#     resources:
+#       limits:
+#         memory:
+#           _default: "6Gi"
+#         cpu:
+#           _default: "3"
+#       requests:
+#         memory:
+#           _default: "6Gi"
+#         cpu:
+#           _default: "3"
 # enable Smart-contract-verifier deploy
 scVerifier:
   enabled: true
