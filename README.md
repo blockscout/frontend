@@ -30,7 +30,7 @@ For local development please follow next steps:
 ## Components visual testing
 
 We use [playwright experimental components testing](https://playwright.dev/docs/test-components) for visual (screenshots) CI check. Test renders a single component in headless browser in docker, generates screenshots and then compares this screenshot with a reference one.
-To perform testing locally you need to install docker and run `yarn test-docker`
+To perform testing locally you need to install docker and run `yarn test:pw:docker`
 
 ## Environment variables
 

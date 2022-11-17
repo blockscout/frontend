@@ -18,13 +18,13 @@ jobs:
     - name: Install dependencies
       run: yarn install --frozen-lockfile
     - name: Run tests
-      run: yarn test:unit
+      run: yarn test:jest
 
   pw_tests:
     name: Run components visual tests with PlayWright
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.27.0-focal
+      image: mcr.microsoft.com/playwright:v1.28.0-focal
 
     steps:
       - run: apt-get update && apt-get install git-lfs
@@ -38,7 +38,7 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Run your tests
-        run: HOME=/root yarn test-ct
+        run: HOME=/root yarn test:pw
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v2

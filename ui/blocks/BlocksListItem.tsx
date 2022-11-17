@@ -14,7 +14,7 @@ import BlockTimestamp from 'ui/blocks/BlockTimestamp';
 import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import AddressLink from 'ui/shared/address/AddressLink';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
-import Utilization from 'ui/shared/Utilization';
+import Utilization from 'ui/shared/Utilization/Utilization';
 
 interface Props {
   data: Block;

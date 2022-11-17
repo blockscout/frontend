@@ -30,7 +30,7 @@ import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import PrevNext from 'ui/shared/PrevNext';
 import TextSeparator from 'ui/shared/TextSeparator';
-import Utilization from 'ui/shared/Utilization';
+import Utilization from 'ui/shared/Utilization/Utilization';
 
 const BlockDetails = () => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
