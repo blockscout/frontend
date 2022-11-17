@@ -16,15 +16,15 @@ import useFetch from 'lib/hooks/useFetch';
 import StatsItem from './StatsItem';
 import StatsItemSkeleton from './StatsItemSkeleton';
 
+const hasGasTracker = appConfig.homepage.showGasTracker;
+const hasAvgBlockTime = appConfig.homepage.showAvgBlockTime;
+
+let itemsCount = 5;
+!hasGasTracker && itemsCount--;
+!hasAvgBlockTime && itemsCount--;
+
 const Stats = () => {
   const fetch = useFetch();
-
-  const hasGasTracker = appConfig.stats.showGasTracker;
-  const hasAvgBlockTime = appConfig.stats.showAvgBlockTime;
-
-  let itemsCount = 5;
-  !hasGasTracker && itemsCount--;
-  !hasAvgBlockTime && itemsCount--;
 
   const { data, isLoading, isError } = useQuery<unknown, unknown, Stats>(
     [ QueryKeys.stats ],

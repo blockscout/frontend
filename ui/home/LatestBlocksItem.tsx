@@ -52,7 +52,6 @@ const LatestBlocksItem = ({ block, h }: Props) => {
             { block.height }
           </Link>
         </HStack>
-        { /* <Text fontSize="sm" variant="secondary">{ block.timestamp }</Text> */ }
         <BlockTimestamp ts={ block.timestamp } isEnabled fontSize="sm"/>
       </Flex>
       <Grid gridGap={ 2 } templateColumns="auto minmax(0, 1fr)" fontSize="sm">

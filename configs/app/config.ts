@@ -72,10 +72,6 @@ const config = Object.freeze({
     telegram: getEnvValue(process.env.NEXT_PUBLIC_FOOTER_TELEGRAM_LINK),
     staking: getEnvValue(process.env.NEXT_PUBLIC_FOOTER_STAKING_LINK),
   },
-  stats: {
-    showGasTracker: getEnvValue(process.env.NEXT_PUBLIC_STATS_SHOW_GAS_TRACKER) === 'false' ? false : true,
-    showAvgBlockTime: getEnvValue(process.env.NEXT_PUBLIC_STATS_SHOW_AVG_BLOCK_TIME) === 'false' ? false : true,
-  },
   featuredNetworks: parseEnvJson<Array<FeaturedNetwork>>(getEnvValue(process.env.NEXT_PUBLIC_FEATURED_NETWORKS)) || [],
   blockScoutVersion: getEnvValue(process.env.NEXT_PUBLIC_BLOCKSCOUT_VERSION),
   isAccountSupported: getEnvValue(process.env.NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED) === 'true',
@@ -93,6 +89,8 @@ const config = Object.freeze({
   },
   homepage: {
     charts: parseEnvJson<Array<ChainIndicatorId>>(getEnvValue(process.env.NEXT_PUBLIC_HOMEPAGE_CHARTS)) || [],
+    showGasTracker: getEnvValue(process.env.NEXT_PUBLIC_HOMEPAGE_SHOW_GAS_TRACKER) === 'false' ? false : true,
+    showAvgBlockTime: getEnvValue(process.env.NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME) === 'false' ? false : true,
   },
 });
 

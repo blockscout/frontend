@@ -23,7 +23,6 @@ const LatestBlocksItemSkeleton = () => {
           <Skeleton w="30px" h="30px"/>
           <Skeleton w="93px" h="15px"/>
         </HStack>
-        { /* <Text fontSize="sm" variant="secondary">{ block.timestamp }</Text> */ }
         <Skeleton w="44px" h="15px"/>
       </Flex>
       <Grid gridGap={ 2 } templateColumns="auto minmax(0, 1fr)" fontSize="sm">
