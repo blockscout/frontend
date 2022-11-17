@@ -25,7 +25,7 @@ const dailyTxsIndicator: TChainIndicator<QueryKeys.chartsTxs> = {
         .map((item) => ({ date: new Date(item.date), value: item.tx_count }))
         .sort(sortByDateDesc),
       name: 'Tx/day',
-      valueFormatter: (x) => shortenNumberWithLetter(x, undefined, { maximumFractionDigits: 2 }),
+      valueFormatter: (x: number) => shortenNumberWithLetter(x, undefined, { maximumFractionDigits: 2 }),
     } ]),
   },
 };
@@ -44,7 +44,7 @@ const coinPriceIndicator: TChainIndicator<QueryKeys.chartsMarket> = {
         .map((item) => ({ date: new Date(item.date), value: Number(item.closing_price) }))
         .sort(sortByDateDesc),
       name: `${ appConfig.network.currency.symbol } price`,
-      valueFormatter: (x) => '$' + x.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }),
+      valueFormatter: (x: number) => '$' + x.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }),
     } ]),
   },
 };
@@ -64,7 +64,7 @@ const marketPriceIndicator: TChainIndicator<QueryKeys.chartsMarket> = {
         .map((item) => ({ date: new Date(item.date), value: Number(item.closing_price) * Number(response.available_supply) }))
         .sort(sortByDateDesc),
       name: 'Market cap',
-      valueFormatter: (x) => '$' + shortenNumberWithLetter(x, undefined, { maximumFractionDigits: 0 }),
+      valueFormatter: (x: number) => '$' + shortenNumberWithLetter(x, undefined, { maximumFractionDigits: 0 }),
     } ]),
   },
 };
