@@ -22,7 +22,7 @@ const BLOCK_MARGIN = 24;
 
 const LatestBlocks = () => {
   const isMobile = useIsMobile();
-  const blocksCount = isMobile ? 2 : 4;
+  const blocksMaxCount = isMobile ? 2 : 4;
   const fetch = useFetch();
   const { data, isLoading, isError } = useQuery<unknown, unknown, Array<Block>>(
     [ QueryKeys.indexBlocks ],
@@ -36,9 +36,9 @@ const LatestBlocks = () => {
 
       const newData = prevData ? [ ...prevData ] : [];
 
-      return [ payload.block, ...newData ].slice(0, blocksCount);
+      return [ payload.block, ...newData ].slice(0, blocksMaxCount);
     });
-  }, [ queryClient, blocksCount ]);
+  }, [ queryClient, blocksMaxCount ]);
 
   const channel = useSocketChannel({
     topic: 'blocks:new_block',
@@ -56,8 +56,13 @@ const LatestBlocks = () => {
     content = (
       <>
         <Skeleton w="100%" h={ 6 } mb={ 9 }/>
-        <VStack spacing={ `${ BLOCK_MARGIN }px` } mb={ 6 } height={ `${ BLOCK_HEIGHT * blocksCount + BLOCK_MARGIN * (blocksCount - 1) }px` } overflow="hidden">
-          { Array.from(Array(blocksCount)).map((item, index) => <LatestBlocksItemSkeleton key={ index }/>) }
+        <VStack
+          spacing={ `${ BLOCK_MARGIN }px` }
+          mb={ 6 }
+          height={ `${ BLOCK_HEIGHT * blocksMaxCount + BLOCK_MARGIN * (blocksMaxCount - 1) }px` }
+          overflow="hidden"
+        >
+          { Array.from(Array(blocksMaxCount)).map((item, index) => <LatestBlocksItemSkeleton key={ index }/>) }
         </VStack>
       </>
     );
@@ -68,6 +73,9 @@ const LatestBlocks = () => {
   }
 
   if (data) {
+    const dataToShow = data.slice(0, blocksMaxCount);
+    const blocksCount = dataToShow.length;
+
     content = (
       <>
         <Box mb={{ base: 6, lg: 9 }}>
@@ -81,7 +89,7 @@ const LatestBlocks = () => {
         </Box>
         <VStack spacing={ `${ BLOCK_MARGIN }px` } mb={ 6 } height={ `${ BLOCK_HEIGHT * blocksCount + BLOCK_MARGIN * (blocksCount - 1) }px` } overflow="hidden">
           <AnimatePresence initial={ false } >
-            { data.slice(0, blocksCount).map((block => <LatestBlocksItem key={ block.height } block={ block } h={ BLOCK_HEIGHT }/>)) }
+            { dataToShow.map((block => <LatestBlocksItem key={ block.height } block={ block } h={ BLOCK_HEIGHT }/>)) }
           </AnimatePresence>
         </VStack>
         <Flex justifyContent="center">

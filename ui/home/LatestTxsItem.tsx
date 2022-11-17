@@ -3,8 +3,16 @@ import {
   Flex,
   HStack,
   Icon,
+  Modal,
+  ModalContent,
+  ModalCloseButton,
   Text,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverBody,
   useColorModeValue,
+  useDisclosure,
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -14,11 +22,14 @@ import appConfig from 'configs/app/config';
 import rightArrowIcon from 'icons/arrows/east.svg';
 import transactionIcon from 'icons/transactions.svg';
 import getValueWithUnit from 'lib/getValueWithUnit';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
+import AdditionalInfoButton from 'ui/shared/AdditionalInfoButton';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import TxStatus from 'ui/shared/TxStatus';
+import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 import TxType from 'ui/txs/TxType';
 
 type Props = {
@@ -32,6 +43,9 @@ const LatestBlocksItem = ({ tx }: Props) => {
   const dataTo = tx.to && tx.to.hash ? tx.to : tx.created_contract;
   const timeAgo = useTimeAgoIncrement(tx.timestamp || '0', true);
 
+  const isMobile = useIsMobile();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <Box
       width="100%"
@@ -42,13 +56,30 @@ const LatestBlocksItem = ({ tx }: Props) => {
       _last={{ borderBottom: '1px solid', borderColor }}
     >
       <Flex justifyContent="space-between" width="100%" alignItems="start" flexDirection={{ base: 'column', lg: 'row' }}>
-        <Box width="100%">
-          <HStack>
-            { /* FIXME: mb only one type must be here */ }
-            <TxType type={ tx.tx_types[0] }/>
-            { /* { tx.tx_types.map(item => <TxType key={ item } type={ item }/>) } */ }
-            <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined }/>
-          </HStack>
+        { !isMobile && (
+          <Popover placement="right-start" openDelay={ 300 } isLazy>
+            { ({ isOpen }) => (
+              <>
+                <PopoverTrigger>
+                  <AdditionalInfoButton isOpen={ isOpen } mr={ 3 }/>
+                </PopoverTrigger>
+                <PopoverContent border="1px solid" borderColor={ borderColor }>
+                  <PopoverBody>
+                    <TxAdditionalInfo tx={ tx }/>
+                  </PopoverBody>
+                </PopoverContent>
+              </>
+            ) }
+          </Popover>
+        ) }
+        <Box width={{ base: '100%', lg: 'calc(50% - 32px)' }}>
+          <Flex justifyContent="space-between">
+            <HStack>
+              <TxType types={ tx.tx_types }/>
+              <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined }/>
+            </HStack>
+            { isMobile && <AdditionalInfoButton onClick={ onOpen }/> }
+          </Flex>
           <Flex
             mt={ 2 }
             alignItems="center"
@@ -76,8 +107,8 @@ const LatestBlocksItem = ({ tx }: Props) => {
             { tx.timestamp && <Text variant="secondary" fontWeight="400" fontSize="sm">{ timeAgo }</Text> }
           </Flex>
         </Box>
-        <Box>
-          <Flex alignItems="center" mb={ 3 }>
+        <Box width={{ base: '100%', lg: '50%' }}>
+          <Flex alignItems="center" mb={ 3 } justifyContent={{ base: 'start', lg: 'end' }}>
             <Address>
               <AddressIcon hash={ tx.from.hash }/>
               <AddressLink
@@ -107,7 +138,7 @@ const LatestBlocksItem = ({ tx }: Props) => {
               />
             </Address>
           </Flex>
-          <Flex fontSize="sm" mt={ 3 } justifyContent="end" flexDirection={{ base: 'column', lg: 'row' }}>
+          <Flex fontSize="sm" justifyContent="end" flexDirection={{ base: 'column', lg: 'row' }}>
             <Box mr={{ base: 0, lg: 2 }} mb={{ base: 2, lg: 0 }}>
               <Text as="span">Value { appConfig.network.currency.symbol } </Text>
               <Text as="span" variant="secondary">{ getValueWithUnit(tx.value).toFormat() }</Text>
@@ -119,6 +150,12 @@ const LatestBlocksItem = ({ tx }: Props) => {
           </Flex>
         </Box>
       </Flex>
+      <Modal isOpen={ isOpen } onClose={ onClose } size="full">
+        <ModalContent paddingTop={ 4 }>
+          <ModalCloseButton/>
+          <TxAdditionalInfo tx={ tx }/>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };
