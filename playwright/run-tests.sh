@@ -1,3 +1,3 @@
 #!/bin/sh
 yarn install
-yarn test-ct
+yarn test:pw

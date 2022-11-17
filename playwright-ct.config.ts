@@ -1,5 +1,6 @@
 import type { PlaywrightTestConfig } from '@playwright/experimental-ct-react';
 import { devices } from '@playwright/experimental-ct-react';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -9,8 +10,7 @@ const config: PlaywrightTestConfig = {
 
   testMatch: /.*\.pw\.tsx/,
 
-  /* The base directory, relative to the config file, for snapshot files created with toMatchSnapshot and toHaveScreenshot. */
-  snapshotDir: './__snapshots__',
+  snapshotPathTemplate: '{testDir}/{testFileDir}/__screenshots__/{testFileName}_{arg}{ext}',
 
   /* Maximum time one test can run for. */
   timeout: 10 * 1000,
@@ -40,27 +40,17 @@ const config: PlaywrightTestConfig = {
     ctPort: 3100,
 
     headless: true,
+
+    ctViteConfig: {
+      plugins: [ tsconfigPaths() ],
+    },
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
       name: 'chromium',
-      use: {
-        ...devices['Desktop Chrome'],
-      },
-    },
-    {
-      name: 'firefox',
-      use: {
-        ...devices['Desktop Firefox'],
-      },
-    },
-    {
-      name: 'webkit',
-      use: {
-        ...devices['Desktop Safari'],
-      },
+      use: devices['Desktop Chrome'],
     },
   ],
 };

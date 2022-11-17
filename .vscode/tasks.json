@@ -84,7 +84,7 @@
         },
         {
             "type": "npm",
-            "script": "test-docker",
+            "script": "test:pw:docker",
             "problemMatcher": [],
             "label": "test: playwright",
             "detail": "run visual components tests",
@@ -102,10 +102,10 @@
         },
         {
             "type": "npm",
-            "script": "test:unit",
+            "script": "test:jest",
             "problemMatcher": [],
-            "label": "test: unit",
-            "detail": "run unit tests",
+            "label": "test: jest",
+            "detail": "run jest tests",
             "presentation": {
                 "reveal": "always",
                 "panel": "new",
@@ -120,10 +120,10 @@
         },
         {
             "type": "npm",
-            "script": "test:unit:watch",
+            "script": "test:jest:watch",
             "problemMatcher": [],
-            "label": "test: unit: watch",
-            "detail": "run unit tests in watch mode",
+            "label": "test: jest: watch",
+            "detail": "run jest tests in watch mode",
             "presentation": {
                 "reveal": "always",
                 "panel": "new",
