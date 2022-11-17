@@ -40,7 +40,7 @@ const TxsListItem = ({ tx, showBlockInfo }: {tx: Transaction; showBlockInfo: boo
       <Box width="100%" borderBottom="1px solid" borderColor={ borderColor } _first={{ borderTop: '1px solid', borderColor }}>
         <Flex justifyContent="space-between" mt={ 4 }>
           <HStack>
-            { tx.tx_types.map(item => <TxType key={ item } type={ item }/>) }
+            <TxType types={ tx.tx_types }/>
             <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined }/>
           </HStack>
           <AdditionalInfoButton onClick={ onOpen }/>
