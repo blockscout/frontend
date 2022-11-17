@@ -8,12 +8,11 @@ import SearchBarMobile from './SearchBarMobile';
 import SearchBarMobileHome from './SearchBarMobileHome';
 
 type Props = {
-  backgroundColor?: string;
   withShadow?: boolean;
   isHomepage?: boolean;
 }
 
-const SearchBar = ({ backgroundColor, isHomepage, withShadow }: Props) => {
+const SearchBar = ({ isHomepage, withShadow }: Props) => {
   const [ value, setValue ] = React.useState('');
 
   const handleChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
@@ -28,7 +27,7 @@ const SearchBar = ({ backgroundColor, isHomepage, withShadow }: Props) => {
 
   return (
     <>
-      <SearchBarDesktop onChange={ handleChange } onSubmit={ handleSubmit } backgroundColor={ backgroundColor }/>
+      <SearchBarDesktop onChange={ handleChange } onSubmit={ handleSubmit } isHomepage={ isHomepage }/>
       { !isHomepage && (
         <SearchBarMobile
           onChange={ handleChange }
@@ -40,7 +39,6 @@ const SearchBar = ({ backgroundColor, isHomepage, withShadow }: Props) => {
         <SearchBarMobileHome
           onChange={ handleChange }
           onSubmit={ handleSubmit }
-          backgroundColor={ backgroundColor }
         />
       ) }
     </>

@@ -7,17 +7,17 @@ import searchIcon from 'icons/search.svg';
 interface Props {
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
-  backgroundColor?: string;
+  isHomepage?: boolean;
 }
 
-const SearchBarDesktop = ({ onChange, onSubmit, backgroundColor }: Props) => {
+const SearchBarDesktop = ({ onChange, onSubmit, isHomepage }: Props) => {
   return (
     <chakra.form
       noValidate
       onSubmit={ onSubmit }
       display={{ base: 'none', lg: 'block' }}
       w="100%"
-      bg={ backgroundColor }
+      backgroundColor={ isHomepage ? 'white' : 'none' }
       borderRadius="10px"
     >
       <InputGroup>
@@ -30,7 +30,9 @@ const SearchBarDesktop = ({ onChange, onSubmit, backgroundColor }: Props) => {
           placeholder="Search by addresses / transactions / block / token... "
           ml="1px"
           onChange={ onChange }
+          border={ isHomepage ? 'none' : '2px solid' }
           borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }
+          color={ useColorModeValue('black', 'white') }
         />
       </InputGroup>
     </chakra.form>

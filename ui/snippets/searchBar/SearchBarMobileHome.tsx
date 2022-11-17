@@ -10,7 +10,7 @@ interface Props {
   backgroundColor?: string;
 }
 
-const SearchBarMobileHome = ({ onChange, onSubmit, backgroundColor }: Props) => {
+const SearchBarMobileHome = ({ onChange, onSubmit }: Props) => {
   const commonProps = {
     noValidate: true,
     onSubmit: onSubmit,
@@ -22,7 +22,7 @@ const SearchBarMobileHome = ({ onChange, onSubmit, backgroundColor }: Props) => 
     <LightMode>
       <chakra.form
         { ...commonProps }
-        bgColor={ backgroundColor }
+        bgColor="white"
         h="60px"
         borderRadius="10px"
       >
@@ -36,6 +36,7 @@ const SearchBarMobileHome = ({ onChange, onSubmit, backgroundColor }: Props) => 
             ml="1px"
             onChange={ onChange }
             border="none"
+            color="black"
           />
         </InputGroup>
       </chakra.form>

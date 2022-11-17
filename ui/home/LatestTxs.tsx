@@ -34,7 +34,7 @@ const LatestTransactions = () => {
   }
 
   if (isError) {
-    content = <Text mt={ 4 }>There are no transactions. Please reload page.</Text>;
+    content = <Text mt={ 4 }>No data. Please reload page.</Text>;
   }
 
   if (data) {

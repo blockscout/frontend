@@ -27,7 +27,7 @@ const Home = () => {
         >
           Welcome to Blockscout explorer
         </Heading>
-        <LightMode><SearchBar backgroundColor="white" isHomepage/></LightMode>
+        <LightMode><SearchBar isHomepage/></LightMode>
       </Box>
       <Stats/>
       <ChainIndicators/>

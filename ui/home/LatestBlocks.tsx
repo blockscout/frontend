@@ -69,7 +69,7 @@ const LatestBlocks = () => {
   }
 
   if (isError) {
-    content = <Text>There are no blocks yet.</Text>;
+    content = <Text>No data. Please reload page.</Text>;
   }
 
   if (data) {
