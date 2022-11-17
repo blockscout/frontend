@@ -10,6 +10,8 @@ import useFetch from 'lib/hooks/useFetch';
 import useScrollDirection from 'lib/hooks/useScrollDirection';
 import { SocketProvider } from 'lib/socket/context';
 import ScrollDirectionContext from 'ui/ScrollDirectionContext';
+import AppError from 'ui/shared/AppError';
+import ErrorBoundary from 'ui/shared/ErrorBoundary';
 import PageContent from 'ui/shared/Page/PageContent';
 import Header from 'ui/snippets/header/Header';
 import NavigationDesktop from 'ui/snippets/navigation/NavigationDesktop';
@@ -33,6 +35,12 @@ const Page = ({
 
   const directionContext = useScrollDirection();
 
+  const renderErrorScreen = React.useCallback(() => {
+    return wrapChildren ?
+      <PageContent><AppError statusCode={ 500 } mt="50px"/></PageContent> :
+      <AppError statusCode={ 500 }/>;
+  }, [ wrapChildren ]);
+
   const renderedChildren = wrapChildren ? (
     <PageContent>{ children }</PageContent>
   ) : children;
@@ -44,7 +52,9 @@ const Page = ({
           <NavigationDesktop/>
           <Flex flexDir="column" width="100%">
             <Header hideOnScrollDown={ hideMobileHeaderOnScrollDown }/>
-            { renderedChildren }
+            <ErrorBoundary renderErrorScreen={ renderErrorScreen }>
+              { renderedChildren }
+            </ErrorBoundary>
           </Flex>
         </Flex>
       </ScrollDirectionContext.Provider>

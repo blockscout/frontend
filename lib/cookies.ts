@@ -7,6 +7,7 @@ export enum NAMES {
   NAV_BAR_COLLAPSED='nav_bar_collapsed',
   API_TOKEN='_explorer_key',
   TXS_SORT='txs_sort',
+  COLOR_MODE='chakra-ui-color-mode',
 }
 
 export function get(name?: NAMES | undefined | null, serverCookie?: string) {

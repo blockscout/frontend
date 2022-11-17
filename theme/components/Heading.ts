@@ -10,6 +10,10 @@ const baseStyle: SystemStyleInterpolation = (props) => {
 };
 
 const sizes = {
+  '2xl': defineStyle({
+    fontSize: '48px',
+    lineHeight: '60px',
+  }),
   lg: defineStyle({
     fontSize: '32px',
     lineHeight: '40px',

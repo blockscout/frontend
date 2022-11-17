@@ -17,33 +17,54 @@
  */
 
 import * as Sentry from '@sentry/nextjs';
-import type { NextPageContext } from 'next';
+import type { GetServerSideProps } from 'next';
 import NextErrorComponent from 'next/error';
+import Head from 'next/head';
 import React from 'react';
 
 import sentryConfig from 'configs/sentry/nextjs';
+import * as cookies from 'lib/cookies';
+import getNetworkTitle from 'lib/networks/getNetworkTitle';
+import type { Props as ServerSidePropsCommon } from 'lib/next/getServerSideProps';
+import { getServerSideProps as getServerSidePropsCommon } from 'lib/next/getServerSideProps';
+import AppError from 'ui/shared/AppError';
+import Page from 'ui/shared/Page/Page';
 
-type ContextOrProps = {
-  req?: NextPageContext['req'];
-  res?: NextPageContext['res'];
-  err?: NextPageContext['err'] | string;
-  pathname?: string;
-  statusCode?: number;
+type Props = ServerSidePropsCommon & {
+  statusCode: number;
+}
+
+const CustomErrorComponent = (props: Props) => {
+  if (props.statusCode === 404) {
+    const title = getNetworkTitle();
+
+    return (
+      <>
+        <Head>
+          <title>{ title }</title>
+        </Head>
+        <Page>
+          <AppError statusCode={ 404 } mt="50px"/>
+        </Page>
+      </>
+    );
+  }
+
+  const colorModeCookie = cookies.getFromCookieString(props.cookies, cookies.NAMES.COLOR_MODE);
+  return <NextErrorComponent statusCode={ props.statusCode } withDarkMode={ colorModeCookie === 'dark' }/>;
 };
 
-const CustomErrorComponent = (props: { statusCode: number }) => {
-  return <NextErrorComponent statusCode={ props.statusCode }/>;
-};
+export default CustomErrorComponent;
 
-CustomErrorComponent.getInitialProps = async(contextData: ContextOrProps) => {
+export const getServerSideProps: GetServerSideProps = async(context) => {
   Sentry.init(sentryConfig);
 
   // In case this is running in a serverless function, await this in order to give Sentry
   // time to send the error before the lambda exits
-  await Sentry.captureUnderscoreErrorException(contextData);
+  await Sentry.captureUnderscoreErrorException(context);
 
-  // This will contain the status code of the response
-  return NextErrorComponent.getInitialProps(contextData as NextPageContext);
+  const commonSSPResult = await getServerSidePropsCommon(context);
+  const commonSSProps = 'props' in commonSSPResult ? commonSSPResult.props : undefined;
+
+  return { props: { ...commonSSProps, statusCode: context.res.statusCode } };
 };
-
-export default CustomErrorComponent;

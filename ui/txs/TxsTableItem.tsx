@@ -93,7 +93,7 @@ const TxsTableItem = ({ tx, showBlockInfo }: {tx: Transaction; showBlockInfo: bo
           <Text color="gray.500" fontWeight="400">{ dayjs(tx.timestamp).fromNow() }</Text>
         </VStack>
       </Td>
-      <Td>
+      <Td whiteSpace="nowrap">
         { tx.method ? (
           <TruncatedTextTooltip label={ tx.method }>
             <Tag colorScheme={ tx.method === 'Multicall' ? 'teal' : 'gray' }>

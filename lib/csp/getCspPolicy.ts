@@ -99,14 +99,14 @@ function makePolicyMap() {
 
       ...MAIN_DOMAINS,
 
-      // github avatars
-      'avatars.githubusercontent.com',
-
-      // other github assets (e.g trustwallet token icons)
+      // github assets (e.g trustwallet token icons)
       'raw.githubusercontent.com',
 
-      // auth0 assets
+      // auth0 assets and avatars
       's.gravatar.com',
+      'i0.wp.com', 'i1.wp.com', 'i2.wp.com', 'i3.wp.com',
+      'lh3.googleusercontent.com', // google avatars
+      'avatars.githubusercontent.com', // github avatars
 
       // network assets
       ...networkExternalAssets.map((url) => url.host),
@@ -121,6 +121,10 @@ function makePolicyMap() {
       // google fonts
       '*.gstatic.com',
       'fonts.googleapis.com',
+    ],
+
+    'prefetch-src': [
+      ...MAIN_DOMAINS,
     ],
 
     'object-src': [

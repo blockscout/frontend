@@ -15,7 +15,7 @@ export default function useAdaptiveTabs(tabs: Array<RoutedTab>, disabled?: boole
   const calculateCut = React.useCallback(() => {
     const listWidth = listRef.current?.getBoundingClientRect().width;
     const tabWidths = tabsRefs.map((tab) => tab.current?.getBoundingClientRect().width);
-    const menuWidth = tabWidths.at(-1);
+    const menuWidth = tabWidths[tabWidths.length - 1];
 
     if (!listWidth || !menuWidth) {
       return tabs.length;

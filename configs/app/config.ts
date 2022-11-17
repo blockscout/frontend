@@ -11,7 +11,7 @@ const parseEnvJson = <DataType>(env: string | undefined): DataType | null => {
     return null;
   }
 };
-const stripTrailingSlash = (str: string) => str.at(-1) === '/' ? str.slice(0, -1) : str;
+const stripTrailingSlash = (str: string) => str[str.length - 1] === '/' ? str.slice(0, -1) : str;
 
 const env = process.env.VERCEL_ENV || process.env.NODE_ENV;
 const isDev = env === 'development';

@@ -269,12 +269,16 @@ const BlockDetails = () => {
           <DetailsInfoItem
             title="Difficulty"
             hint={ `Block difficulty for ${ validatorTitle }, used to calibrate block generation time.` }
+            whiteSpace="normal"
+            wordBreak="break-all"
           >
             { BigNumber(data.difficulty).toFormat() }
           </DetailsInfoItem>
           <DetailsInfoItem
             title="Total difficulty"
             hint="Total difficulty of the chain until this block."
+            whiteSpace="normal"
+            wordBreak="break-all"
           >
             { BigNumber(data.total_difficulty).toFormat() }
           </DetailsInfoItem>
