@@ -1,3 +1,4 @@
+import { useToken } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ChainIndicatorChartData } from './types';
@@ -8,7 +9,6 @@ import ChartOverlay from 'ui/shared/chart/ChartOverlay';
 import ChartTooltip from 'ui/shared/chart/ChartTooltip';
 import useChartSize from 'ui/shared/chart/useChartSize';
 import useTimeChartController from 'ui/shared/chart/useTimeChartController';
-import { BlueLineGradient } from 'ui/shared/chart/utils/gradients';
 
 interface Props {
   data: ChainIndicatorChartData;
@@ -20,6 +20,7 @@ const CHART_MARGIN = { bottom: 0, left: 10, right: 10, top: 0 };
 const ChainIndicatorChart = ({ data }: Props) => {
   const ref = React.useRef<SVGSVGElement>(null);
   const overlayRef = React.useRef<SVGRectElement>(null);
+  const lineColor = useToken('colors', 'blue.500');
 
   const { width, height, innerWidth, innerHeight } = useChartSize(ref.current, CHART_MARGIN);
   const { xScale, yScale } = useTimeChartController({
@@ -30,13 +31,9 @@ const ChainIndicatorChart = ({ data }: Props) => {
 
   return (
     <svg width={ width || '100%' } height={ height || '100%' } ref={ ref } cursor="pointer">
-      <defs>
-        <BlueLineGradient.defs/>
-      </defs>
       <g transform={ `translate(${ CHART_MARGIN?.left || 0 },${ CHART_MARGIN?.top || 0 })` } opacity={ width ? 1 : 0 }>
         <ChartArea
           data={ data[0].items }
-          color={ data[0].color }
           xScale={ xScale }
           yScale={ yScale }
         />
@@ -44,7 +41,7 @@ const ChainIndicatorChart = ({ data }: Props) => {
           data={ data[0].items }
           xScale={ xScale }
           yScale={ yScale }
-          stroke={ `url(#${ BlueLineGradient.id })` }
+          stroke={ lineColor }
           animation="left"
           strokeWidth={ 3 }
         />
