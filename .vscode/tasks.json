@@ -44,6 +44,26 @@
             }
         },
         {
+            "type": "npm",
+            "script": "dev:goerli",
+            "problemMatcher": [],
+            "label": "dev server: goerli",
+            "detail": "start local dev server for Goerli network",
+            "presentation": {
+                "reveal": "silent",
+                "panel": "new",
+                "close": true,
+                "revealProblems": "onProblem",
+            },
+            "icon": {
+                "color": "terminal.ansiMagenta",
+                "id": "server-process"
+            },
+            "runOptions": {
+                "instanceLimit": 1
+            }
+        },
+        {
             "type": "typescript",
             "label": "tsc build",
             "detail": "compile typescript",

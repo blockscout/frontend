@@ -11,6 +11,7 @@ import astarLogo from 'icons/networks/logos/astar.svg';
 import etcLogo from 'icons/networks/logos/etc.svg';
 import ethLogo from 'icons/networks/logos/eth.svg';
 import gnosisLogo from 'icons/networks/logos/gnosis.svg';
+import goerliIcon from 'icons/networks/logos/goerli.svg';
 import luksoLogo from 'icons/networks/logos/lukso.svg';
 import poaLogo from 'icons/networks/logos/poa.svg';
 import rskLogo from 'icons/networks/logos/rsk.svg';
@@ -34,6 +35,7 @@ const LOGOS: Partial<Record<PreDefinedNetwork, React.FunctionComponent<React.SVG
   astar: astarLogo,
   shiden: shidenLogo,
   shibuya: shibuyaLogo,
+  goerli: goerliIcon,
 };
 
 interface Props {
