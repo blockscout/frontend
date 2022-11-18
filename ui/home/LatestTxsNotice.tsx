@@ -1,4 +1,5 @@
-import { Alert, Spinner, Text, Link, useColorModeValue } from '@chakra-ui/react';
+import { Alert, Spinner, Text, Link, useColorModeValue, useTheme } from '@chakra-ui/react';
+import { transparentize } from '@chakra-ui/theme-tools';
 import React from 'react';
 
 import useNewTxsSocket from 'lib/hooks/useNewTxsSocket';
@@ -33,13 +34,14 @@ const LatestTxsNotice = ({ className }: Props) => {
     );
   }
 
+  const theme = useTheme();
   return (
     <Alert
       className={ className }
       status="warning"
       p={ 4 }
       fontWeight={ 400 }
-      bgColor={ useColorModeValue('orange.50', 'rgba(251, 211, 141, 0.16)') }
+      bgColor={ useColorModeValue('orange.50', transparentize('orange.200', 0.16)(theme)) }
       borderBottomRadius={ 0 }
     >
       { content }

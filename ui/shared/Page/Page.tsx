@@ -39,9 +39,9 @@ const Page = ({
 
   const renderErrorScreen = React.useCallback(() => {
     return wrapChildren ?
-      <PageContent><AppError statusCode={ 500 } mt="50px"/></PageContent> :
+      <PageContent hasSearch={ hasSearch }><AppError statusCode={ 500 } mt="50px"/></PageContent> :
       <AppError statusCode={ 500 }/>;
-  }, [ wrapChildren ]);
+  }, [ wrapChildren, hasSearch ]);
 
   const renderedChildren = wrapChildren ? (
     <PageContent hasSearch={ hasSearch }>{ children }</PageContent>
