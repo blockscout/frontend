@@ -18,7 +18,7 @@ const FallbackImage = ({ size, id }: { size: number; id: string }) => {
       maxWidth={ `${ size }px` }
       maxHeight={ `${ size }px` }
     >
-      <Box boxSize={ size * 2 } transformOrigin="left top" transform="scale(0.5)" borderRadius="full" overflow="hidden">
+      <Box boxSize={ `${ size * 2 }px` } transformOrigin="left top" transform="scale(0.5)" borderRadius="full" overflow="hidden">
         <Identicon
           bg={ bgColor }
           string={ id }
