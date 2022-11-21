@@ -15,13 +15,14 @@ import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
 type Props = InternalTransaction;
 
-const TxInternalsListItem = ({ type, from, to, value, success, error, gas_limit: gasLimit }: Props) => {
+const TxInternalsListItem = ({ type, from, to, value, success, error, gas_limit: gasLimit, created_contract: createdContract }: Props) => {
   const typeTitle = TX_INTERNALS_ITEMS.find(({ id }) => id === type)?.title;
+  const toData = to && to.hash ? to : createdContract;
 
   return (
     <AccountListItemMobile rowGap={ 3 }>
       <Flex>
-        <Tag colorScheme="cyan" mr={ 2 }>{ typeTitle }</Tag>
+        { typeTitle && <Tag colorScheme="cyan" mr={ 2 }>{ typeTitle }</Tag> }
         <TxStatus status={ success ? 'ok' : 'error' } errorText={ error }/>
       </Flex>
       <Box w="100%" display="flex" columnGap={ 3 }>
@@ -31,8 +32,8 @@ const TxInternalsListItem = ({ type, from, to, value, success, error, gas_limit:
         </Address>
         <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500"/>
         <Address width="calc((100% - 48px) / 2)">
-          <AddressIcon hash={ to.hash }/>
-          <AddressLink ml={ 2 } fontWeight="500" hash={ to.hash }/>
+          <AddressIcon hash={ toData.hash }/>
+          <AddressLink ml={ 2 } fontWeight="500" hash={ toData.hash }/>
         </Address>
       </Box>
       <HStack spacing={ 3 }>

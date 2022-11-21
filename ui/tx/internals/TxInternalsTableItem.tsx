@@ -13,8 +13,9 @@ import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
 type Props = InternalTransaction
 
-const TxInternalTableItem = ({ type, from, to, value, success, error, gas_limit: gasLimit }: Props) => {
+const TxInternalTableItem = ({ type, from, to, value, success, error, gas_limit: gasLimit, created_contract: createdContract }: Props) => {
   const typeTitle = TX_INTERNALS_ITEMS.find(({ id }) => id === type)?.title;
+  const toData = to && to.hash ? to : createdContract;
 
   return (
     <Tr alignItems="top">
@@ -39,8 +40,8 @@ const TxInternalTableItem = ({ type, from, to, value, success, error, gas_limit:
       </Td>
       <Td verticalAlign="middle">
         <Address display="inline-flex" maxW="100%">
-          <AddressIcon hash={ to.hash }/>
-          <AddressLink hash={ to.hash } alias={ to.name } fontWeight="500" ml={ 2 }/>
+          <AddressIcon hash={ toData.hash }/>
+          <AddressLink hash={ toData.hash } alias={ toData.name } fontWeight="500" ml={ 2 }/>
         </Address>
       </Td>
       <Td isNumeric verticalAlign="middle">
