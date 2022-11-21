@@ -20,12 +20,14 @@ interface Props {
   children: React.ReactNode;
   wrapChildren?: boolean;
   hideMobileHeaderOnScrollDown?: boolean;
+  hasSearch?: boolean;
 }
 
 const Page = ({
   children,
   wrapChildren = true,
   hideMobileHeaderOnScrollDown,
+  hasSearch = true,
 }: Props) => {
   const fetch = useFetch();
 
@@ -37,12 +39,12 @@ const Page = ({
 
   const renderErrorScreen = React.useCallback(() => {
     return wrapChildren ?
-      <PageContent><AppError statusCode={ 500 } mt="50px"/></PageContent> :
+      <PageContent hasSearch={ hasSearch }><AppError statusCode={ 500 } mt="50px"/></PageContent> :
       <AppError statusCode={ 500 }/>;
-  }, [ wrapChildren ]);
+  }, [ wrapChildren, hasSearch ]);
 
   const renderedChildren = wrapChildren ? (
-    <PageContent>{ children }</PageContent>
+    <PageContent hasSearch={ hasSearch }>{ children }</PageContent>
   ) : children;
 
   return (
@@ -51,7 +53,7 @@ const Page = ({
         <Flex w="100%" minH="100vh" alignItems="stretch">
           <NavigationDesktop/>
           <Flex flexDir="column" width="100%">
-            <Header hideOnScrollDown={ hideMobileHeaderOnScrollDown }/>
+            <Header hasSearch={ hasSearch } hideOnScrollDown={ hideMobileHeaderOnScrollDown }/>
             <ErrorBoundary renderErrorScreen={ renderErrorScreen }>
               { renderedChildren }
             </ErrorBoundary>

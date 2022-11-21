@@ -7,6 +7,7 @@ import { QueryKeys } from 'types/client/accountQueries';
 
 import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Page from 'ui/shared/Page/Page';
@@ -26,6 +27,7 @@ const WatchList: React.FC = () => {
   const deleteModalProps = useDisclosure();
   const isMobile = useIsMobile();
   const fetch = useFetch();
+  useRedirectForInvalidAuthToken();
 
   const [ addressModalData, setAddressModalData ] = useState<TWatchlistItem>();
   const [ deleteModalData, setDeleteModalData ] = useState<TWatchlistItem>();

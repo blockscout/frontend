@@ -76,7 +76,7 @@ const TxsTableItem = ({ tx, showBlockInfo }: {tx: Transaction; showBlockInfo: bo
       </Td>
       <Td>
         <VStack alignItems="start">
-          { tx.tx_types.map(item => <TxType key={ item } type={ item }/>) }
+          <TxType types={ tx.tx_types }/>
           <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined }/>
         </VStack>
       </Td>

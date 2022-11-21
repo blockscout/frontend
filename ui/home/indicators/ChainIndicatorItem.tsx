@@ -31,7 +31,15 @@ const ChainIndicatorItem = ({ id, title, value, icon, isSelected, onClick, stats
     }
 
     if (stats.isLoading) {
-      return <Skeleton h={ 3 } w="70px" my={ 1.5 }/>;
+      return (
+        <Skeleton
+          h={ 3 }
+          w="70px"
+          my={ 1.5 }
+          // ssr: isMobile = undefined, isLoading = true
+          display={{ base: 'none', lg: 'block' }}
+        />
+      );
     }
 
     if (stats.isError) {
