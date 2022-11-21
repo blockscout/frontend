@@ -67,9 +67,12 @@ const AppCard = ({ id,
           marginBottom={ 4 }
           w={{ base: '64px', sm: '96px' }}
           h={{ base: '64px', sm: '96px' }}
+          borderRadius={ 8 }
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
         >
           <Image
-            borderRadius={ 8 }
             src={ logo }
             alt={ `${ title } app icon` }
           />
@@ -79,7 +82,7 @@ const AppCard = ({ id,
           gridColumn={{ base: 2, sm: 'auto' }}
           as="h3"
           marginBottom={ 2 }
-          fontSize={{ base: 'sm', sm: 'lg' }}
+          size={{ base: 'xs', sm: 'sm' }}
           fontWeight="semibold"
         >
           <NextLink href={ link('app_index', { id: id }) } passHref>
