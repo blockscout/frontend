@@ -21,7 +21,7 @@ blockscout:
     type: ClusterIP
   # enable ingress
   ingress:
-    enabled: true
+    enabled: false
     annotations: {}
       # - 'nginx.ingress.kubernetes.io/rewrite-target: /$2'
     host:
