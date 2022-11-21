@@ -32,6 +32,10 @@ const sizes = {
     fontSize: '18px',
     lineHeight: '24px',
   }),
+  xs: defineStyle({
+    fontSize: '14px',
+    lineHeight: '20px',
+  }),
 };
 
 const Heading = defineStyleConfig({
