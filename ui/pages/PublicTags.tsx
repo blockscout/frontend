@@ -6,6 +6,7 @@ import type { PublicTag } from 'types/api/account';
 
 import eastArrowIcon from 'icons/arrows/east.svg';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import useToast from 'lib/hooks/useToast';
 import PublicTagsData from 'ui/publicTags/PublicTagsData';
 import PublicTagsForm from 'ui/publicTags/PublicTagsForm/PublicTagsForm';
@@ -27,6 +28,7 @@ const PublicTagsComponent: React.FC = () => {
 
   const toast = useToast();
   const isMobile = useIsMobile();
+  useRedirectForInvalidAuthToken();
 
   const showToast = useCallback((action: TToastAction) => {
     toast({
