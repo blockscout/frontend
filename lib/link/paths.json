@@ -1,0 +1,23 @@
+{
+  "network_index": "/",
+  "watchlist": "/account/watchlist",
+  "private_tags": "/account/tag_address",
+  "public_tags": "/account/public_tags_request",
+  "api_keys": "/account/api_key",
+  "custom_abi": "/account/custom_abi",
+  "profile": "/auth/profile",
+  "txs": "/txs",
+  "tx": "/tx/:id",
+  "blocks": "/blocks",
+  "block": "/block/:id",
+  "tokens": "/tokens",
+  "token_index": "/token/:hash",
+  "token_instance_item": "/token/:hash/instance/:id",
+  "address_index": "/address/:id",
+  "address_contract_verification": "/address/:id/contract_verifications/new",
+  "apps": "/apps",
+  "app_index": "/apps/:id",
+  "search_results": "/search-results",
+  "other": "/search-results",
+  "auth": "/auth/auth0"
+}

@@ -1,6 +1,6 @@
 import appConfig from 'configs/app/config';
 
-import PATHS from './paths.js';
+import PATHS from './paths.json';
 
 export interface Route {
   pattern: string;
