@@ -5,8 +5,14 @@ import link from 'lib/link/link';
 
 import SearchBarDesktop from './SearchBarDesktop';
 import SearchBarMobile from './SearchBarMobile';
+import SearchBarMobileHome from './SearchBarMobileHome';
 
-const SearchBar = ({ withShadow }: {withShadow?: boolean}) => {
+type Props = {
+  withShadow?: boolean;
+  isHomepage?: boolean;
+}
+
+const SearchBar = ({ isHomepage, withShadow }: Props) => {
   const [ value, setValue ] = React.useState('');
 
   const handleChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
@@ -21,8 +27,20 @@ const SearchBar = ({ withShadow }: {withShadow?: boolean}) => {
 
   return (
     <>
-      <SearchBarDesktop onChange={ handleChange } onSubmit={ handleSubmit }/>
-      <SearchBarMobile onChange={ handleChange } onSubmit={ handleSubmit } withShadow={ withShadow }/>
+      <SearchBarDesktop onChange={ handleChange } onSubmit={ handleSubmit } isHomepage={ isHomepage }/>
+      { !isHomepage && (
+        <SearchBarMobile
+          onChange={ handleChange }
+          onSubmit={ handleSubmit }
+          withShadow={ withShadow }
+        />
+      ) }
+      { isHomepage && (
+        <SearchBarMobileHome
+          onChange={ handleChange }
+          onSubmit={ handleSubmit }
+        />
+      ) }
     </>
   );
 };

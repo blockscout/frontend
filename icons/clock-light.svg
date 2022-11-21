@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 29 28">
+  <g fill="currentColor" clip-path="url(#clock-light_svg__a)">
+    <path d="M14.75 25.375a11.375 11.375 0 1 1 0-22.75 11.375 11.375 0 0 1 0 22.75Zm0-21a9.625 9.625 0 1 0 0 19.25 9.625 9.625 0 0 0 0-19.25Z"/>
+    <path d="M19.563 19.688a.875.875 0 0 1-.622-.254L14.13 14.62a.874.874 0 0 1-.254-.621V7a.875.875 0 0 1 1.75 0v6.641l4.559 4.55a.874.874 0 0 1-.622 1.497Z"/>
+  </g>
+  <defs>
+    <clipPath id="clock-light_svg__a">
+      <path fill="#fff" d="M.75 0h28v28h-28z"/>
+    </clipPath>
+  </defs>
+</svg>

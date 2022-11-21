@@ -1,4 +1,5 @@
-import { useColorModeValue, useToken } from '@chakra-ui/react';
+import { useColorModeValue, useToken, useTheme } from '@chakra-ui/react';
+import { transparentize } from '@chakra-ui/theme-tools';
 import * as d3 from 'd3';
 import React from 'react';
 
@@ -14,7 +15,13 @@ interface Props extends React.SVGProps<SVGPathElement> {
 
 const ChartArea = ({ xScale, yScale, color, data, disableAnimation, ...props }: Props) => {
   const ref = React.useRef(null);
+  const theme = useTheme();
+
   const gradientStopColor = useToken('colors', useColorModeValue('whiteAlpha.200', 'blackAlpha.100'));
+  const defaultGradient = {
+    startColor: useToken('colors', useColorModeValue('blue.100', 'blue.400')),
+    stopColor: useToken('colors', transparentize(useColorModeValue('blue.100', 'blue.400'), 0)(theme)),
+  };
 
   React.useEffect(() => {
     if (disableAnimation) {
@@ -38,12 +45,19 @@ const ChartArea = ({ xScale, yScale, color, data, disableAnimation, ...props }: 
 
   return (
     <>
-      <path ref={ ref } d={ d } fill={ color ? `url(#gradient-${ color })` : 'none' } opacity={ 0 } { ...props }/>
-      { color && (
+      <path ref={ ref } d={ d } fill={ color ? `url(#gradient-${ color })` : 'url(#gradient-chart-area-default)' } opacity={ 0 } { ...props }/>
+      { color ? (
         <defs>
           <linearGradient id={ `gradient-${ color }` } x1="0%" x2="0%" y1="0%" y2="100%">
-            <stop offset="2%" stopColor={ color }/>
-            <stop offset="78%" stopColor={ gradientStopColor }/>
+            <stop offset="20%" stopColor={ color }/>
+            <stop offset="100%" stopColor={ gradientStopColor }/>
+          </linearGradient>
+        </defs>
+      ) : (
+        <defs>
+          <linearGradient id="gradient-chart-area-default" x1="0%" x2="0%" y1="0%" y2="100%">
+            <stop offset="0%" stopColor={ defaultGradient.startColor }/>
+            <stop offset="100%" stopColor={ defaultGradient.stopColor }/>
           </linearGradient>
         </defs>
       ) }

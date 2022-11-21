@@ -4,14 +4,18 @@ import React from 'react';
 import type { TransactionType } from 'types/api/transaction';
 
 export interface Props {
-  type: TransactionType;
+  types: Array<TransactionType>;
 }
 
-const TxStatus = ({ type }: Props) => {
+const TYPES_ORDER = [ 'token_creation', 'contract_creation', 'token_transfer', 'contract_call', 'coin_transfer' ];
+
+const TxType = ({ types }: Props) => {
+  const typeToShow = types.sort((t1, t2) => TYPES_ORDER.indexOf(t1) - TYPES_ORDER.indexOf(t2))[0];
+
   let label;
   let colorScheme;
 
-  switch (type) {
+  switch (typeToShow) {
     case 'contract_call':
       label = 'Contract call';
       colorScheme = 'blue';
@@ -41,4 +45,4 @@ const TxStatus = ({ type }: Props) => {
   );
 };
 
-export default TxStatus;
+export default TxType;

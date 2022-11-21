@@ -10,7 +10,6 @@ import txIcon from 'icons/transactions.svg';
 import { shortenNumberWithLetter } from 'lib/formatters';
 import { sortByDateDesc } from 'ui/shared/chart/utils/sorts';
 import TokenLogo from 'ui/shared/TokenLogo';
-const CHART_COLOR = '#439AE2';
 
 const dailyTxsIndicator: TChainIndicator<QueryKeys.chartsTxs> = {
   id: 'daily_txs',
@@ -26,7 +25,6 @@ const dailyTxsIndicator: TChainIndicator<QueryKeys.chartsTxs> = {
         .map((item) => ({ date: new Date(item.date), value: item.tx_count }))
         .sort(sortByDateDesc),
       name: 'Tx/day',
-      color: CHART_COLOR,
       valueFormatter: (x) => shortenNumberWithLetter(x, undefined, { maximumFractionDigits: 2 }),
     } ]),
   },
@@ -46,7 +44,6 @@ const coinPriceIndicator: TChainIndicator<QueryKeys.chartsMarket> = {
         .map((item) => ({ date: new Date(item.date), value: Number(item.closing_price) }))
         .sort(sortByDateDesc),
       name: `${ appConfig.network.currency.symbol } price`,
-      color: CHART_COLOR,
       valueFormatter: (x) => '$' + x.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }),
     } ]),
   },
@@ -67,7 +64,6 @@ const marketPriceIndicator: TChainIndicator<QueryKeys.chartsMarket> = {
         .map((item) => ({ date: new Date(item.date), value: Number(item.closing_price) * Number(response.available_supply) }))
         .sort(sortByDateDesc),
       name: 'Market cap',
-      color: CHART_COLOR,
       valueFormatter: (x) => '$' + shortenNumberWithLetter(x, undefined, { maximumFractionDigits: 0 }),
     } ]),
   },

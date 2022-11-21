@@ -7,7 +7,8 @@ import type { Block } from 'types/api/block';
 
 import appConfig from 'configs/app/config';
 import flameIcon from 'icons/flame.svg';
-import { WEI, ZERO } from 'lib/consts';
+import getBlockTotalReward from 'lib/block/getBlockTotalReward';
+import { WEI } from 'lib/consts';
 import link from 'lib/link/link';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import BlockTimestamp from 'ui/blocks/BlockTimestamp';
@@ -23,9 +24,7 @@ interface Props {
 }
 
 const BlocksListItem = ({ data, isPending, enableTimeIncrement }: Props) => {
-  const totalReward = data.rewards
-    ?.map(({ reward }) => BigNumber(reward))
-    .reduce((result, item) => result.plus(item), ZERO) || ZERO;
+  const totalReward = getBlockTotalReward(data);
   const burntFees = BigNumber(data.burnt_fees || 0);
   const txFees = BigNumber(data.tx_fees || 0);
 
@@ -65,7 +64,7 @@ const BlocksListItem = ({ data, isPending, enableTimeIncrement }: Props) => {
       </Box>
       <Flex columnGap={ 2 }>
         <Text fontWeight={ 500 }>Reward { appConfig.network.currency.symbol }</Text>
-        <Text variant="secondary">{ totalReward.div(WEI).toFixed() }</Text>
+        <Text variant="secondary">{ totalReward }</Text>
       </Flex>
       <Box>
         <Text fontWeight={ 500 }>Burnt fees</Text>

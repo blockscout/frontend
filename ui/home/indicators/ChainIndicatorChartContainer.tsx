@@ -1,10 +1,9 @@
-import { Flex } from '@chakra-ui/react';
+import { Flex, Spinner } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
 import type { ChainIndicatorChartData } from './types';
 
-import ChartLineLoader from 'ui/shared/chart/ChartLineLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import ChainIndicatorChart from './ChainIndicatorChart';
@@ -15,7 +14,7 @@ const ChainIndicatorChartContainer = ({ data, isError, isLoading }: Props) => {
 
   const content = (() => {
     if (isLoading) {
-      return <ChartLineLoader mt="auto"/>;
+      return <Spinner size="md" m="auto"/>;
     }
 
     if (isError) {
@@ -25,7 +24,7 @@ const ChainIndicatorChartContainer = ({ data, isError, isLoading }: Props) => {
     return <ChainIndicatorChart data={ data }/>;
   })();
 
-  return <Flex h={{ base: '150px', lg: '250px' }} alignItems="flex-start">{ content }</Flex>;
+  return <Flex h={{ base: '150px', lg: 'auto' }} minH="150px" alignItems="flex-start" flexGrow={ 1 }>{ content }</Flex>;
 };
 
 export default React.memo(ChainIndicatorChartContainer);

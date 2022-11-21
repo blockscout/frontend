@@ -10,7 +10,12 @@ import SearchBar from 'ui/snippets/searchBar/SearchBar';
 import Burger from './Burger';
 import ColorModeToggler from './ColorModeToggler';
 
-const Header = ({ hideOnScrollDown }: {hideOnScrollDown?: boolean}) => {
+type Props = {
+  hasSearch: boolean;
+  hideOnScrollDown?: boolean;
+}
+
+const Header = ({ hideOnScrollDown, hasSearch }: Props) => {
   const bgColor = useColorModeValue('white', 'black');
 
   return (
@@ -38,7 +43,7 @@ const Header = ({ hideOnScrollDown }: {hideOnScrollDown?: boolean}) => {
               <NetworkLogo/>
               <ProfileMenuMobile/>
             </Flex>
-            <SearchBar withShadow={ !hideOnScrollDown }/>
+            { hasSearch && <SearchBar withShadow={ !hideOnScrollDown }/> }
           </Box><HStack
             as="header"
             width="100%"
@@ -50,7 +55,7 @@ const Header = ({ hideOnScrollDown }: {hideOnScrollDown?: boolean}) => {
             paddingTop={ 9 }
             paddingBottom="52px"
           >
-            <SearchBar/>
+            <Box width="100%">{ hasSearch && <SearchBar/> }</Box>
             <ColorModeToggler/>
             <ProfileMenuDesktop/>
           </HStack>

@@ -6,7 +6,8 @@ import React from 'react';
 import type { Block } from 'types/api/block';
 
 import flameIcon from 'icons/flame.svg';
-import { WEI, ZERO } from 'lib/consts';
+import getBlockTotalReward from 'lib/block/getBlockTotalReward';
+import { WEI } from 'lib/consts';
 import link from 'lib/link/link';
 import BlockTimestamp from 'ui/blocks/BlockTimestamp';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -20,9 +21,7 @@ interface Props {
 }
 
 const BlocksTableItem = ({ data, isPending, enableTimeIncrement }: Props) => {
-  const totalReward = data.rewards
-    ?.map(({ reward }) => BigNumber(reward))
-    .reduce((result, item) => result.plus(item), ZERO) || ZERO;
+  const totalReward = getBlockTotalReward(data);
   const burntFees = BigNumber(data.burnt_fees || 0);
   const txFees = BigNumber(data.tx_fees || 0);
 
@@ -61,7 +60,7 @@ const BlocksTableItem = ({ data, isPending, enableTimeIncrement }: Props) => {
           <GasUsedToTargetRatio ml={ 2 } value={ data.gas_target_percentage || undefined }/>
         </Flex>
       </Td>
-      <Td fontSize="sm">{ totalReward.dividedBy(WEI).toFixed() }</Td>
+      <Td fontSize="sm">{ totalReward }</Td>
       <Td fontSize="sm">
         <Flex alignItems="center" columnGap={ 1 }>
           <Icon as={ flameIcon } boxSize={ 5 } color={ useColorModeValue('gray.500', 'inherit') }/>
