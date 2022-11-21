@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-bind */
 import { VStack, Textarea, Button, Alert, AlertTitle, AlertDescription, Link, Code } from '@chakra-ui/react';
 import * as Sentry from '@sentry/react';
 import type { ChangeEvent } from 'react';
@@ -9,6 +10,8 @@ import useToast from 'lib/hooks/useToast';
 import ChainIndicators from 'ui/home/indicators/ChainIndicators';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
+
+import FormModal from 'ui/shared/FormModal';
 
 const Home = () => {
   const toast = useToast();
@@ -73,6 +76,15 @@ const Home = () => {
         ) }
         <Button colorScheme="red" onClick={ checkSentry }>Check Sentry</Button>
       </VStack>
+      <FormModal
+        isOpen={ true }
+        onClose={ () => {} }
+        title={ 'aaa' }
+        text={ 'sss' }
+        renderForm={ () => <>kkk</> }
+        isAlertVisible={ false }
+        setAlertVisible={ () => {} }
+      />
     </Page>
   );
 };

@@ -8,6 +8,7 @@ import {
   ModalCloseButton,
   Text,
 } from '@chakra-ui/react';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import React, { useCallback } from 'react';
 
 import FormSubmitAlert from 'ui/shared/FormSubmitAlert';
@@ -38,8 +39,10 @@ export default function FormModal<TData>({
     onClose();
   }, [ onClose, setAlertVisible ]);
 
+  const isMobile = useIsMobile()
+
   return (
-    <Modal isOpen={ isOpen } onClose={ onModalClose } size={{ base: 'full', lg: 'md' }}>
+    <Modal isOpen={ isOpen } onClose={ onModalClose } size={ isMobile ? 'full' : 'md' }>
       <ModalOverlay/>
       <ModalContent>
         <ModalHeader fontWeight="500" textStyle="h3">{ title }</ModalHeader>
