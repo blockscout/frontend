@@ -63,14 +63,14 @@ blockscout:
   # Blockscout environment variables
   environment:
     ETHEREUM_JSONRPC_TRACE_URL:
-      _default: http://geth-svc:8545
-      # _default: http://geth-svc.goerli.svc.cluster.local:8545
+      # _default: http://geth-svc:8545
+      _default: http://geth-svc.goerli.svc.cluster.local:8545
     ETHEREUM_JSONRPC_HTTP_URL:
-      _default: http://geth-svc:8545
-      # _default: http://geth-svc.goerli.svc.cluster.local:8545
+      # _default: http://geth-svc:8545
+      _default: http://geth-svc.goerli.svc.cluster.local:8545
     ETHEREUM_JSONRPC_WS_URL:
-      _default: ws://geth-svc:8546
-      # _default: ws://geth-svc.goerli.svc.cluster.local:8546
+      # _default: ws://geth-svc:8546
+      _default: ws://geth-svc.goerli.svc.cluster.local:8546
     BLOCKSCOUT_VERSION:
       _default: v4.1.8-beta
     ECTO_USE_SSL:
@@ -171,7 +171,7 @@ postgres:
       _default: 'trust'
 # enable geth deploy
 geth:
-  enabled: true
+  enabled: false
   image:
     _default: ethereum/client-go:stable
   replicas:
