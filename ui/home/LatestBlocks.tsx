@@ -5,6 +5,7 @@ import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
 import type { Block } from 'types/api/block';
+import type { Stats } from 'types/api/stats';
 import { QueryKeys } from 'types/client/queries';
 
 import useFetch from 'lib/hooks/useFetch';
@@ -50,6 +51,8 @@ const LatestBlocks = () => {
     handler: handleNewBlockMessage,
   });
 
+  const stats = queryClient.getQueryState<Stats, unknown>([ QueryKeys.stats ]);
+
   let content;
 
   if (isLoading) {
@@ -79,13 +82,17 @@ const LatestBlocks = () => {
     content = (
       <>
         <Box mb={{ base: 6, lg: 9 }}>
-          <Text as="span" fontSize="sm">
-        Network utilization:{ nbsp }
-          </Text>
-          { /* Not implemented in API yet */ }
-          <Text as="span" fontSize="sm" color="blue.400" fontWeight={ 700 }>
-        43.8%
-          </Text>
+          { stats?.status === 'loading' && <Skeleton h={ 6 } w="100%"/> }
+          { stats?.status === 'success' && Boolean(stats.data?.network_utilization_percentage) && (
+            <>
+              <Text as="span" fontSize="sm">
+              Network utilization:{ nbsp }
+              </Text>
+              <Text as="span" fontSize="sm" color="blue.400" fontWeight={ 700 }>
+                { `${ stats.data?.network_utilization_percentage }%` }
+              </Text>
+            </>
+          ) }
         </Box>
         <VStack spacing={ `${ BLOCK_MARGIN }px` } mb={ 6 } height={ `${ BLOCK_HEIGHT * blocksCount + BLOCK_MARGIN * (blocksCount - 1) }px` } overflow="hidden">
           <AnimatePresence initial={ false } >
