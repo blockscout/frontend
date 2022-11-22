@@ -29,7 +29,7 @@ const LatestTxsNotice = ({ className }: Props) => {
       <>
         <Spinner size="sm" mr={ 3 }/>
         <Text as="span" whiteSpace="pre">+ { num } new transaction{ num > 1 ? 's' : '' }. </Text>
-        <Link href={ txsUrl }>Show in list</Link>
+        <Link href={ txsUrl }>View in list</Link>
       </>
     );
   }
