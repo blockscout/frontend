@@ -104,7 +104,7 @@ const BlocksContent = ({ type }: Props) => {
 
   return (
     <>
-      { data ?
+      { !isLoading ?
         totalText :
         <Skeleton h="24px" w="200px" mb={{ base: 0, lg: 6 }}/>
       }
