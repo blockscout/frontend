@@ -1,5 +1,5 @@
 import {
-  Box, Button, Heading, Icon, IconButton, Image, Link, List, Modal, ModalBody,
+  Box, Button, Flex, Heading, Icon, IconButton, Image, Link, List, Modal, ModalBody,
   ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tag, Text,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
@@ -79,7 +79,9 @@ const AppModal = ({
           gridTemplateColumns={{ base: 'auto 1fr' }}
           paddingRight={{ sm: 12 }}
         >
-          <Box
+          <Flex
+            alignItems="center"
+            justifyContent="center"
             w={{ base: '72px', sm: '144px' }}
             h={{ base: '72px', sm: '144px' }}
             marginRight={{ base: 6, sm: 8 }}
@@ -89,7 +91,7 @@ const AppModal = ({
               src={ logo }
               alt={ `${ title } app icon` }
             />
-          </Box>
+          </Flex>
 
           <Heading
             as="h2"
