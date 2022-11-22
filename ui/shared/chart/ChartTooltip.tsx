@@ -86,11 +86,19 @@ const ChartTooltip = ({ xScale, yScale, width, height, data, anchorEl, ...props 
       .selectAll('.ChartTooltip__point')
       .attr('transform', (cur, i) => {
         const index = bisectDate(data[i].items, xDate, 1);
-        const d0 = data[i].items[index - 1];
-        const d1 = data[i].items[index];
-        const d = xDate.getTime() - d0?.date.getTime() > d1?.date.getTime() - xDate.getTime() ? d1 : d0;
+        const d0 = data[i].items[index - 1] as TimeChartItem | undefined;
+        const d1 = data[i].items[index] as TimeChartItem | undefined;
+        const d = (() => {
+          if (!d0) {
+            return d1;
+          }
+          if (!d1) {
+            return d0;
+          }
+          return xDate.getTime() - d0.date.getTime() > d1.date.getTime() - xDate.getTime() ? d1 : d0;
+        })();
 
-        if (d.date === undefined && d.value === undefined) {
+        if (d?.date === undefined && d?.value === undefined) {
           // move point out of container
           return 'translate(-100,-100)';
         }
