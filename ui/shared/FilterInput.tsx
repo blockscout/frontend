@@ -1,7 +1,8 @@
-import { Input, InputGroup, InputLeftElement, Icon, useColorModeValue, chakra } from '@chakra-ui/react';
+import { chakra, Icon, IconButton, Input, InputGroup, InputLeftElement, InputRightElement, useColorModeValue } from '@chakra-ui/react';
 import type { ChangeEvent } from 'react';
 import React, { useCallback, useState } from 'react';
 
+import crossIcon from 'icons/cross.svg';
 import searchIcon from 'icons/search.svg';
 
 type Props = {
@@ -13,12 +14,19 @@ type Props = {
 
 const FilterInput = ({ onChange, className, size = 'sm', placeholder }: Props) => {
   const [ filterQuery, setFilterQuery ] = useState('');
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
   const handleFilterQueryChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
 
     setFilterQuery(value);
     onChange(value);
+  }, [ onChange ]);
+
+  const handleFilterQueryClear = useCallback(() => {
+    setFilterQuery('');
+    onChange('');
+    inputRef?.current?.focus();
   }, [ onChange ]);
 
   return (
@@ -33,6 +41,7 @@ const FilterInput = ({ onChange, className, size = 'sm', placeholder }: Props) =
       </InputLeftElement>
 
       <Input
+        ref={ inputRef }
         size={ size }
         value={ filterQuery }
         onChange={ handleFilterQueryChange }
@@ -40,6 +49,19 @@ const FilterInput = ({ onChange, className, size = 'sm', placeholder }: Props) =
         borderWidth="2px"
         textOverflow="ellipsis"
       />
+
+      <InputRightElement>
+        <IconButton
+          colorScheme="gray"
+          aria-label="Clear the filter input"
+          title="Clear the filter input"
+          w={ 6 }
+          h={ 6 }
+          icon={ <Icon as={ crossIcon } w={ 4 } h={ 4 } color={ useColorModeValue('blackAlpha.600', 'whiteAlpha.600') }/> }
+          size="sm"
+          onClick={ handleFilterQueryClear }
+        />
+      </InputRightElement>
     </InputGroup>
   );
 };
