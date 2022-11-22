@@ -9,7 +9,7 @@ import useFetch from 'lib/hooks/useFetch';
 
 type NotUndefined<T> = T extends undefined ? never : T;
 
-export default function useFetchCharData<Q extends ChartsQueryKeys>(indicator: TChainIndicator<Q> | undefined): UseQueryResult<TimeChartData> {
+export default function useFetchChartData<Q extends ChartsQueryKeys>(indicator: TChainIndicator<Q> | undefined): UseQueryResult<TimeChartData> {
   const fetch = useFetch();
 
   type ResponseType = ChartsResponse<NotUndefined<typeof indicator>['api']['queryName']>;
