@@ -85,6 +85,10 @@ export const ROUTES = {
     pattern: PATHS.app_index,
   },
 
+  stats: {
+    pattern: PATHS.stats,
+  },
+
   // SEARCH
   search_results: {
     pattern: PATHS.search_results,
