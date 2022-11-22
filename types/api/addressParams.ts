@@ -11,7 +11,7 @@ export interface WatchlistName {
 
 export interface AddressParam {
   hash: string;
-  implementation_name: string;
+  implementation_name: string | null;
   name: string | null;
   is_contract: boolean;
   private_tags: Array<AddressTag> | null;
