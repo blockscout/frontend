@@ -507,7 +507,7 @@ frontend:
     NEXT_PUBLIC_FOOTER_TWITTER_LINK:
       _default: https://www.twitter.com/blockscoutcom
     NEXT_PUBLIC_APP_ENV:
-      _default: preview
+      _default: stable
     NEXT_PUBLIC_APP_INSTANCE:
       _default: unknown
     NEXT_PUBLIC_API_HOST:
