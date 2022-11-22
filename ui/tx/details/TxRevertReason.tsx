@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { TransactionRevertReason } from 'types/api/transaction';
 
-import TxDecodedInputData from 'ui/tx/TxDecodedInputData';
+import TxDecodedInputData from 'ui/tx/TxDecodedInputData/TxDecodedInputData';
 
 type Props = TransactionRevertReason;
 

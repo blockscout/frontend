@@ -10,7 +10,7 @@ import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import TxLogTopic from 'ui/tx/logs/TxLogTopic';
-import DecodedInputData from 'ui/tx/TxDecodedInputData';
+import DecodedInputData from 'ui/tx/TxDecodedInputData/TxDecodedInputData';
 
 type Props = Log;
 
