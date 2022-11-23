@@ -153,6 +153,8 @@ postgres:
   command: '["docker-entrypoint.sh", "-c"]'
   args: '["max_connections=300"]'
 
+  strategy: Recreate
+
   resources:
     limits:
       memory:
