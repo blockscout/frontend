@@ -71,7 +71,7 @@ const ApiKeyForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
           });
         }
 
-        return [ ...(prevData || []), response ];
+        return [ response, ...(prevData || []) ];
       });
 
       onClose();

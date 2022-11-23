@@ -123,7 +123,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
           });
         }
 
-        return [ ...(prevData || []), response ];
+        return [ response, ...(prevData || []) ];
       });
 
       changeToDataScreen(true);
