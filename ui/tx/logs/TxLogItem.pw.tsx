@@ -4,7 +4,6 @@ import React from 'react';
 import * as addressMocks from 'mocks/address/address';
 import * as inputDataMocks from 'mocks/txs/decodedInputData';
 import TestApp from 'playwright/TestApp';
-import { DESKTOP, MOBILE } from 'playwright/viewports';
 
 import TxLogItem from './TxLogItem';
 
@@ -16,56 +15,32 @@ const TOPICS = [
 ];
 const DATA = '0x0000000000000000000000000000000000000000000000000070265bf0112cee';
 
-[
-  { name: 'desktop', viewport: DESKTOP },
-  { name: 'mobile', viewport: MOBILE },
-].forEach(({ name, viewport }) => {
-  test.describe(name, () => {
-    test.use({ viewport });
+test('with decoded input data +@mobile +@dark-mode', async({ mount }) => {
+  const component = await mount(
+    <TestApp>
+      <TxLogItem
+        index={ 42 }
+        decoded={ inputDataMocks.withIndexedFields }
+        address={ addressMocks.withName }
+        topics={ TOPICS }
+        data={ DATA }
+      />
+    </TestApp>,
+  );
+  await expect(component).toHaveScreenshot();
+});
 
-    test('with decoded input data', async({ mount }) => {
-      const component = await mount(
-        <TestApp>
-          <TxLogItem
-            index={ 42 }
-            decoded={ inputDataMocks.withIndexedFields }
-            address={ addressMocks.withName }
-            topics={ TOPICS }
-            data={ DATA }
-          />
-        </TestApp>,
-      );
-      await expect(component).toHaveScreenshot();
-    });
-
-    test('without decoded input data', async({ mount }) => {
-      const component = await mount(
-        <TestApp>
-          <TxLogItem
-            index={ 42 }
-            decoded={ null }
-            address={ addressMocks.withoutName }
-            topics={ TOPICS }
-            data={ DATA }
-          />
-        </TestApp>,
-      );
-      await expect(component).toHaveScreenshot();
-    });
-
-    test('dark color mode', async({ mount }) => {
-      const component = await mount(
-        <TestApp colorMode="dark">
-          <TxLogItem
-            index={ 42 }
-            decoded={ inputDataMocks.withIndexedFields }
-            address={ addressMocks.withName }
-            topics={ TOPICS }
-            data={ DATA }
-          />
-        </TestApp>,
-      );
-      await expect(component).toHaveScreenshot();
-    });
-  });
+test('without decoded input data +@mobile', async({ mount }) => {
+  const component = await mount(
+    <TestApp>
+      <TxLogItem
+        index={ 42 }
+        decoded={ null }
+        address={ addressMocks.withoutName }
+        topics={ TOPICS }
+        data={ DATA }
+      />
+    </TestApp>,
+  );
+  await expect(component).toHaveScreenshot();
 });

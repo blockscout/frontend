@@ -1,5 +1,4 @@
 import { ChakraProvider } from '@chakra-ui/react';
-import type { ColorMode } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
 
@@ -7,10 +6,9 @@ import theme from 'theme';
 
 type Props = {
   children: React.ReactNode;
-  colorMode?: ColorMode;
 }
 
-const TestApp = ({ children, colorMode = 'light' }: Props) => {
+const TestApp = ({ children }: Props) => {
   const [ queryClient ] = React.useState(() => new QueryClient({
     defaultOptions: {
       queries: {
@@ -21,7 +19,7 @@ const TestApp = ({ children, colorMode = 'light' }: Props) => {
   }));
 
   return (
-    <ChakraProvider theme={{ ...theme, config: { ...theme.config, initialColorMode: colorMode } }}>
+    <ChakraProvider theme={ theme }>
       <QueryClientProvider client={ queryClient }>
         { children }
       </QueryClientProvider>
