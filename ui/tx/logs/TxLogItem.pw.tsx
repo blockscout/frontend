@@ -3,7 +3,7 @@ import React from 'react';
 
 import * as addressMocks from 'mocks/address/address';
 import * as inputDataMocks from 'mocks/txs/decodedInputData';
-import RenderWithChakra from 'playwright/RenderWithChakra';
+import TestApp from 'playwright/TestApp';
 import { DESKTOP, MOBILE } from 'playwright/viewports';
 
 import TxLogItem from './TxLogItem';
@@ -25,7 +25,7 @@ const DATA = '0x0000000000000000000000000000000000000000000000000070265bf0112cee
 
     test('with decoded input data', async({ mount }) => {
       const component = await mount(
-        <RenderWithChakra>
+        <TestApp>
           <TxLogItem
             index={ 42 }
             decoded={ inputDataMocks.withIndexedFields }
@@ -33,14 +33,14 @@ const DATA = '0x0000000000000000000000000000000000000000000000000070265bf0112cee
             topics={ TOPICS }
             data={ DATA }
           />
-        </RenderWithChakra>,
+        </TestApp>,
       );
       await expect(component).toHaveScreenshot();
     });
 
     test('without decoded input data', async({ mount }) => {
       const component = await mount(
-        <RenderWithChakra>
+        <TestApp>
           <TxLogItem
             index={ 42 }
             decoded={ null }
@@ -48,14 +48,14 @@ const DATA = '0x0000000000000000000000000000000000000000000000000070265bf0112cee
             topics={ TOPICS }
             data={ DATA }
           />
-        </RenderWithChakra>,
+        </TestApp>,
       );
       await expect(component).toHaveScreenshot();
     });
 
     test('dark color mode', async({ mount }) => {
       const component = await mount(
-        <RenderWithChakra colorMode="dark">
+        <TestApp colorMode="dark">
           <TxLogItem
             index={ 42 }
             decoded={ inputDataMocks.withIndexedFields }
@@ -63,7 +63,7 @@ const DATA = '0x0000000000000000000000000000000000000000000000000070265bf0112cee
             topics={ TOPICS }
             data={ DATA }
           />
-        </RenderWithChakra>,
+        </TestApp>,
       );
       await expect(component).toHaveScreenshot();
     });

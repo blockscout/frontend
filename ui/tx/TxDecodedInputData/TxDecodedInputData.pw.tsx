@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import * as mocks from 'mocks/txs/decodedInputData';
-import RenderWithChakra from 'playwright/RenderWithChakra';
+import TestApp from 'playwright/TestApp';
 import { DESKTOP, MOBILE } from 'playwright/viewports';
 
 import TxDecodedInputData from './TxDecodedInputData';
@@ -12,27 +12,27 @@ test.describe('desktop', () => {
 
   test('dark color mode', async({ mount }) => {
     const component = await mount(
-      <RenderWithChakra colorMode="dark">
+      <TestApp colorMode="dark">
         <TxDecodedInputData data={ mocks.withIndexedFields }/>
-      </RenderWithChakra>,
+      </TestApp>,
     );
     await expect(component).toHaveScreenshot();
   });
 
   test('with indexed fields', async({ mount }) => {
     const component = await mount(
-      <RenderWithChakra>
+      <TestApp>
         <TxDecodedInputData data={ mocks.withIndexedFields }/>
-      </RenderWithChakra>,
+      </TestApp>,
     );
     await expect(component).toHaveScreenshot();
   });
 
   test('without indexed fields', async({ mount }) => {
     const component = await mount(
-      <RenderWithChakra>
+      <TestApp>
         <TxDecodedInputData data={ mocks.withoutIndexedFields }/>
-      </RenderWithChakra>,
+      </TestApp>,
     );
     await expect(component).toHaveScreenshot();
   });
@@ -43,27 +43,27 @@ test.describe('mobile', () => {
 
   test('dark color mode', async({ mount }) => {
     const component = await mount(
-      <RenderWithChakra colorMode="dark">
+      <TestApp colorMode="dark">
         <TxDecodedInputData data={ mocks.withIndexedFields }/>
-      </RenderWithChakra>,
+      </TestApp>,
     );
     await expect(component).toHaveScreenshot();
   });
 
   test('with indexed fields', async({ mount }) => {
     const component = await mount(
-      <RenderWithChakra>
+      <TestApp>
         <TxDecodedInputData data={ mocks.withIndexedFields }/>
-      </RenderWithChakra>,
+      </TestApp>,
     );
     await expect(component).toHaveScreenshot();
   });
 
   test('without indexed fields', async({ mount }) => {
     const component = await mount(
-      <RenderWithChakra>
+      <TestApp>
         <TxDecodedInputData data={ mocks.withoutIndexedFields }/>
-      </RenderWithChakra>,
+      </TestApp>,
     );
     await expect(component).toHaveScreenshot();
   });

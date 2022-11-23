@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
-import RenderWithChakra from 'playwright/RenderWithChakra';
+import TestApp from 'playwright/TestApp';
 import { MOBILE } from 'playwright/viewports';
 
 import TxLogTopic from './TxLogTopic';
@@ -10,9 +10,9 @@ test.use({ viewport: MOBILE });
 
 test('address view', async({ mount }) => {
   const component = await mount(
-    <RenderWithChakra>
+    <TestApp>
       <TxLogTopic hex="0x000000000000000000000000d789a607ceac2f0e14867de4eb15b15c9ffb5859" index={ 42 }/>
-    </RenderWithChakra>,
+    </TestApp>,
   );
   await component.locator('select[aria-label="Data type"]').selectOption('address');
 
@@ -21,9 +21,9 @@ test('address view', async({ mount }) => {
 
 test('hex view', async({ mount }) => {
   const component = await mount(
-    <RenderWithChakra>
+    <TestApp>
       <TxLogTopic hex="0x000000000000000000000000d789a607ceac2f0e14867de4eb15b15c9ffb5859" index={ 42 }/>
-    </RenderWithChakra>,
+    </TestApp>,
   );
   await component.locator('select[aria-label="Data type"]').selectOption('hex');
 
