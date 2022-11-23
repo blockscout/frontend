@@ -25,6 +25,7 @@ import TextSeparator from 'ui/shared/TextSeparator';
 import TxStatus from 'ui/shared/TxStatus';
 import Utilization from 'ui/shared/Utilization/Utilization';
 import TxDetailsSkeleton from 'ui/tx/details/TxDetailsSkeleton';
+import TxDetailsActions from 'ui/tx/details/TxDetailsActions';
 import TxDetailsTokenTransfers from 'ui/tx/details/TxDetailsTokenTransfers';
 import TxRevertReason from 'ui/tx/details/TxRevertReason';
 import TxDecodedInputData from 'ui/tx/TxDecodedInputData/TxDecodedInputData';
@@ -125,6 +126,8 @@ const TxDetails = () => {
           <Text variant="secondary">{ getConfirmationDuration(data.confirmation_duration) }</Text>
         </DetailsInfoItem>
       ) }
+      { data.actions && <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 3, lg: 8 }}/> }
+      { data.actions && <TxDetailsActions actions={ data.actions }/> }
       <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 3, lg: 8 }}/>
       <DetailsInfoItem
         title="From"
