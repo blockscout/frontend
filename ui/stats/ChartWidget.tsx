@@ -2,7 +2,7 @@ import { Box, Button, Grid, Heading, Text, useColorModeValue } from '@chakra-ui/
 import React, { useCallback } from 'react';
 
 import ChartWidgetGraph from './ChartWidgetGraph';
-import { demoData } from './demo-data';
+import { demoData } from './constants/demo-data';
 
 type Props = {
   apiMethodURL: string;

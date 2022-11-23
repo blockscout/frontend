@@ -1,4 +1,4 @@
-import type { TimeChartItem } from '../shared/chart/types';
+import type { TimeChartItem } from '../../shared/chart/types';
 
 export const demoData: Array<TimeChartItem> = [ { date: new Date('2022-10-17T00:00:00.000Z'), value: 432670 }, {
   date: new Date('2022-10-18T00:00:00.000Z'),
