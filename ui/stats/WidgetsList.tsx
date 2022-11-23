@@ -1,8 +1,8 @@
 import { Grid, GridItem, Heading, List, ListItem } from '@chakra-ui/react';
 import React from 'react';
 
-import { statisticsChartsScheme } from '../stats/constants/list';
 import ChartWidget from './ChartWidget';
+import { statisticsChartsScheme } from './constants/charts-scheme';
 
 const WidgetsList = () => {
   return (
