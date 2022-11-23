@@ -107,7 +107,12 @@ const ApiKeysPage: React.FC = () => {
       <>
         { description }
         { Boolean(data.length) && list }
-        <Stack marginTop={ 8 } spacing={ 5 } direction={{ base: 'column', lg: 'row' }}>
+        <Stack
+          marginTop={ 8 }
+          spacing={ 5 }
+          direction={{ base: 'column', lg: 'row' }}
+          align={{ base: 'start', lg: 'center' }}
+        >
           <Button
             size="lg"
             onClick={ apiKeyModalProps.onOpen }
