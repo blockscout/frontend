@@ -93,7 +93,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
   }, [ errors, formBackgroundColor ]);
 
   return (
-    <>
+    <form noValidate onSubmit={ handleSubmit(onSubmit) }>
       <Box marginBottom={ 5 }>
         <Controller
           name="address"
@@ -119,14 +119,14 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
       <Box marginTop={ 8 }>
         <Button
           size="lg"
-          onClick={ handleSubmit(onSubmit) }
+          type="submit"
           disabled={ !isValid }
           isLoading={ pending }
         >
           { data ? 'Save changes' : 'Add tag' }
         </Button>
       </Box>
-    </>
+    </form>
   );
 };
 
