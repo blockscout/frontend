@@ -73,7 +73,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
     notificationsDefault = data.notification_settings;
   }
 
-  const { control, handleSubmit, formState: { errors, isValid }, setError } = useForm<Inputs>({
+  const { control, handleSubmit, formState: { errors, isValid, isDirty }, setError } = useForm<Inputs>({
     defaultValues: {
       address: data?.address_hash || '',
       tag: data?.name || '',
@@ -191,7 +191,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
           size="lg"
           type="submit"
           isLoading={ pending }
-          disabled={ !isValid }
+          disabled={ !isValid || !isDirty }
         >
           { data ? 'Save changes' : 'Add address' }
         </Button>

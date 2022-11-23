@@ -33,7 +33,7 @@ type Inputs = {
 const NAME_MAX_LENGTH = 255;
 
 const ApiKeyForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
-  const { control, handleSubmit, formState: { errors, isValid }, setError } = useForm<Inputs>({
+  const { control, handleSubmit, formState: { errors, isValid, isDirty }, setError } = useForm<Inputs>({
     mode: 'all',
     defaultValues: {
       token: data?.api_key || '',
@@ -145,7 +145,7 @@ const ApiKeyForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
         <Button
           size="lg"
           type="submit"
-          disabled={ !isValid }
+          disabled={ !isValid || !isDirty }
           isLoading={ mutation.isLoading }
         >
           { data ? 'Save' : 'Generate API key' }
