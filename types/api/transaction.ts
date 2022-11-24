@@ -5,7 +5,6 @@ import type { TokenTransfer } from './tokenTransfer';
 
 export type TransactionRevertReason = {
   raw: string;
-  decoded: string;
 } | DecodedInput;
 
 export type Transaction = (
