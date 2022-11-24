@@ -25,8 +25,6 @@ export type Transaction = (
   timestamp: string | null;
   confirmation_duration: Array<number>;
   from: AddressParam;
-  // to: AddressParam | null;
-  // created_contract: AddressParam;
   value: string;
   fee: Fee;
   gas_price: number;

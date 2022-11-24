@@ -83,6 +83,9 @@ const LatestBlocks = () => {
 
     content = (
       <>
+        { statsQueryResult.isLoading && (
+          <Skeleton h="24px" w="170px" mb={{ base: 6, lg: 9 }}/>
+        ) }
         { statsQueryResult.data?.network_utilization_percentage && (
           <Box mb={{ base: 6, lg: 9 }}>
             <Text as="span" fontSize="sm">
