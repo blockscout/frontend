@@ -87,7 +87,6 @@ const TxsTableItem = ({ tx, showBlockInfo }: {tx: Transaction; showBlockInfo: bo
               hash={ tx.hash }
               type="transaction"
               fontWeight="700"
-              target="_self"
             />
           </Address>
           <Text color="gray.500" fontWeight="400">{ dayjs(tx.timestamp).fromNow() }</Text>

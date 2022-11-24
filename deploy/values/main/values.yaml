@@ -44,14 +44,14 @@ blockscout:
   resources:
     limits:
       memory:
-        _default: "1Gi"
+        _default: "4Gi"
       cpu:
-        _default: "2"
+        _default: "4"
     requests:
       memory:
-        _default: "1Gi"
+        _default: "4Gi"
       cpu:
-        _default: "2"
+        _default: "4"
   # enable service to connect to RDS
   rds:
     enabled: false
@@ -158,14 +158,14 @@ postgres:
   resources:
     limits:
       memory:
-        _default: "1Gi"
+        _default: "2Gi"
       cpu:
-        _default: "1"
+        _default: "2"
     requests:
       memory:
-        _default: "1Gi"
+        _default: "2Gi"
       cpu:
-        _default: "1"
+        _default: "2"
 
   environment:
     POSTGRES_USER:

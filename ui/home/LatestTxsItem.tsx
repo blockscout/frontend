@@ -100,7 +100,6 @@ const LatestBlocksItem = ({ tx }: Props) => {
                   type="transaction"
                   fontWeight="700"
                   truncation="constant"
-                  target="_self"
                 />
               </Address>
             </Flex>

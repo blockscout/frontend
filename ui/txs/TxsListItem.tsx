@@ -59,7 +59,6 @@ const TxsListItem = ({ tx, showBlockInfo }: {tx: Transaction; showBlockInfo: boo
                 type="transaction"
                 fontWeight="700"
                 truncation="constant"
-                target="_self"
               />
             </Address>
           </Flex>
