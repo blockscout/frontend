@@ -46,12 +46,12 @@ blockscout:
       memory:
         _default: "4Gi"
       cpu:
-        _default: "3"
+        _default: "4"
     requests:
       memory:
         _default: "4Gi"
       cpu:
-        _default: "3"
+        _default: "4"
   # enable service to connect to RDS
   rds:
     enabled: false
