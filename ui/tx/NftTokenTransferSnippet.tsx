@@ -26,7 +26,7 @@ const NftTokenTransferSnippet = ({ value, name, hash, symbol, tokenId }: Props) 
         <Link href={ url } fontWeight={ 600 }>{ tokenId }</Link>
       </Box>
       { name ? (
-        <TokenSnippet symbol={ symbol } hash={ hash } name={ name }/>
+        <TokenSnippet symbol={ symbol } hash={ hash } name={ name } w="auto"/>
       ) : (
         <AddressLink hash={ hash } truncation="constant" type="token"/>
       ) }

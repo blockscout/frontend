@@ -156,7 +156,7 @@ const TxDetails = () => {
             <CopyToClipboard text={ toAddress.hash }/>
           </Address>
         ) : (
-          <Flex width="100%" whiteSpace="pre">
+          <Flex width={{ base: '100%', lg: 'auto' }} whiteSpace="pre">
             <span>[Contract </span>
             <AddressLink hash={ toAddress.hash }/>
             <span> created]</span>
