@@ -102,11 +102,49 @@
                 "instanceLimit": 1
             }
         },
+
+        // PW TESTS
         {
-            "type": "npm",
-            "script": "test:pw:docker",
+            "type": "shell",
+            "command": "${input:pwDebugFlag} yarn test:pw:local ${relativeFileDirname}/${fileBasenameNoExtension} ${input:pwArgs}",
             "problemMatcher": [],
-            "label": "test: playwright",
+            "label": "test: playwright: local for current file",
+            "detail": "run visual components tests for current file",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+            },
+            "icon": {
+                "color": "terminal.ansiBlue",
+                "id": "beaker"
+            },
+            "runOptions": {
+                "instanceLimit": 1
+            },
+        },
+        {
+            "type": "shell",
+            "command": "yarn test:pw:docker ${relativeFileDirname}/${fileBasenameNoExtension} ${input:pwArgs}",
+            "problemMatcher": [],
+            "label": "test: playwright: docker for current file",
+            "detail": "run visual components tests for current file",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+            },
+            "icon": {
+                "color": "terminal.ansiBlue",
+                "id": "beaker"
+            },
+            "runOptions": {
+                "instanceLimit": 1
+            },
+        },
+        {
+            "type": "shell",
+            "command": "yarn test:pw:docker ${input:pwArgs}",
+            "problemMatcher": [],
+            "label": "test: playwright: docker for all files",
             "detail": "run visual components tests",
             "presentation": {
                 "reveal": "always",
@@ -120,6 +158,8 @@
                 "instanceLimit": 1
             }
         },
+
+        // JEST TESTS
         {
             "type": "npm",
             "script": "test:jest",
@@ -157,6 +197,25 @@
                 "instanceLimit": 1
             }
         },
+        {
+            "type": "shell",
+            "command": "yarn test:jest ${relativeFileDirname}/${fileBasenameNoExtension} --watch",
+            "problemMatcher": [],
+            "label": "test: jest: watch curent file",
+            "detail": "run jest tests in watch mode for current file",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+            },
+            "icon": {
+                "color": "terminal.ansiBlue",
+                "id": "beaker"
+            },
+            "runOptions": {
+                "instanceLimit": 1
+            },
+        },
+
         {
             "type": "npm",
             "script": "build:docker",
@@ -217,5 +276,29 @@
                 "instanceLimit": 1
             }
         },
-    ]
+    ],
+    "inputs": [
+        {
+            "type": "pickString",
+            "id": "pwDebugFlag",
+            "description": "What debug flag you want to use?",
+            "options": [
+              "",
+              "PWDEBUG=1",
+              "DEBUG=pw:browser,pw:api",
+              "DEBUG=*",
+            ],
+            "default": ""
+        },
+        {
+            "type": "pickString",
+            "id": "pwArgs",
+            "description": "What args you want to pass?",
+            "options": [
+              "",
+              "--update-snapshots",
+            ],
+            "default": ""
+        },
+    ],
 }
