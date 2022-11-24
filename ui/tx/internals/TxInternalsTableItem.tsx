@@ -15,7 +15,7 @@ type Props = InternalTransaction
 
 const TxInternalTableItem = ({ type, from, to, value, success, error, gas_limit: gasLimit, created_contract: createdContract }: Props) => {
   const typeTitle = TX_INTERNALS_ITEMS.find(({ id }) => id === type)?.title;
-  const toData = to && to.hash ? to : createdContract;
+  const toData = to ? to : createdContract;
 
   return (
     <Tr alignItems="top">

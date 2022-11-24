@@ -58,7 +58,7 @@ const TxDetails = () => {
     ...data.from.watchlist_names || [],
   ].map((tag) => <Tag key={ tag.label }>{ tag.display_name }</Tag>);
 
-  const toAddress = data.to && data.to.hash ? data.to : data.created_contract;
+  const toAddress = data.to ? data.to : data.created_contract;
   const addressToTags = [
     ...toAddress.private_tags || [],
     ...toAddress.public_tags || [],

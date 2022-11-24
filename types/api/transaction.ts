@@ -8,7 +8,16 @@ export type TransactionRevertReason = {
   decoded: string;
 } | DecodedInput;
 
-export interface Transaction {
+export type Transaction = (
+  {
+    to: AddressParam;
+    created_contract: null;
+  } |
+  {
+    to: null;
+    created_contract: AddressParam;
+  }
+) & {
   hash: string;
   result: string;
   confirmations: number;
@@ -17,8 +26,8 @@ export interface Transaction {
   timestamp: string | null;
   confirmation_duration: Array<number>;
   from: AddressParam;
-  to: AddressParam | null;
-  created_contract: AddressParam;
+  // to: AddressParam | null;
+  // created_contract: AddressParam;
   value: string;
   fee: Fee;
   gas_price: number;
