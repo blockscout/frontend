@@ -76,7 +76,7 @@ const DeletePublicTagModal: React.FC<Props> = ({ isOpen, onClose, data, onDelete
     }
     return (
       <>
-        <Box marginBottom={ 12 }>
+        <Box marginBottom={ 8 }>
           { text }
         </Box>
         <FormControl variant="floating" id="tag-delete" backgroundColor={ formBackgroundColor }>

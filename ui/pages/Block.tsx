@@ -24,7 +24,7 @@ const BlockPageContent = () => {
   return (
     <Page>
       <PageTitle text={ `Block #${ router.query.id }` }/>
-      <RoutedTabs tabs={ TABS } tabListMarginBottom={{ base: 6, lg: 12 }}/>
+      <RoutedTabs tabs={ TABS } tabListMarginBottom={{ base: 6, lg: 8 }}/>
     </Page>
   );
 };
