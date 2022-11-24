@@ -155,6 +155,8 @@ postgres:
 
   strategy: Recreate
 
+  persistence: true 
+
   resources:
     limits:
       memory:
