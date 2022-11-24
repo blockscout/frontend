@@ -44,14 +44,14 @@ blockscout:
   resources:
     limits:
       memory:
-        _default: "1Gi"
+        _default: "4Gi"
       cpu:
-        _default: "2"
+        _default: "3"
     requests:
       memory:
-        _default: "1Gi"
+        _default: "4Gi"
       cpu:
-        _default: "2"
+        _default: "3"
   # enable service to connect to RDS
   rds:
     enabled: false
