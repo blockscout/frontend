@@ -32,5 +32,5 @@ export interface InternalTransactionsResponse {
     items_count: number;
     transaction_hash: string;
     transaction_index: number;
-  };
+  } | null;
 }

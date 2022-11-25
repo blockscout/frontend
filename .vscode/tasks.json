@@ -106,7 +106,7 @@
         // PW TESTS
         {
             "type": "shell",
-            "command": "${input:pwDebugFlag} yarn test:pw:local ${relativeFileDirname}/${fileBasenameNoExtension} ${input:pwArgs}",
+            "command": "${input:pwDebugFlag} yarn test:pw:local ${relativeFileDirname}/${fileBasename} ${input:pwArgs}",
             "problemMatcher": [],
             "label": "test: playwright: local for current file",
             "detail": "run visual components tests for current file",
@@ -124,7 +124,7 @@
         },
         {
             "type": "shell",
-            "command": "yarn test:pw:docker ${relativeFileDirname}/${fileBasenameNoExtension} ${input:pwArgs}",
+            "command": "yarn test:pw:docker ${relativeFileDirname}/${fileBasename} ${input:pwArgs}",
             "problemMatcher": [],
             "label": "test: playwright: docker for current file",
             "detail": "run visual components tests for current file",
@@ -199,7 +199,7 @@
         },
         {
             "type": "shell",
-            "command": "yarn test:jest ${relativeFileDirname}/${fileBasenameNoExtension} --watch",
+            "command": "yarn test:jest ${relativeFileDirname}/${fileBasename} --watch",
             "problemMatcher": [],
             "label": "test: jest: watch curent file",
             "detail": "run jest tests in watch mode for current file",
