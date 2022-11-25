@@ -66,7 +66,7 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_FOOTER_STAKING_LINK | `string` *(optional)* | Link to staking dashboard in the footer | `https://duneanalytics.com/maxaleks/xdai-staking` |
 | NEXT_PUBLIC_HOMEPAGE_SHOW_GAS_TRACKER | `boolean` *(optional)* | Set to false if network doesn't have gas tracker | `true` |
 | NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME | `boolean` *(optional)* | Set to false if average block time is useless for the network | `true` |
-| NEXT_PUBLIC_MARKETPLACE_APP_LIST | `Array<MarketplaceApp>` where `MarketplaceApp` can have following [properties](#marketplace-app-configuration-properties) | List of apps that will be shown on the marketplace page | `[{'author': 'Bob', 'id': 'app', 'title': 'The App', 'logo': 'https://foo.app/icon.png', 'categories': ['security'], 'shortDescription': 'Awesome app', 'site': 'https://foo.app', 'description': 'The best app', 'url': 'https://foo.app/launch'}]` |
+| NEXT_PUBLIC_MARKETPLACE_APP_LIST | `Array<MarketplaceApp>` where `MarketplaceApp` can have following [properties](#marketplace-app-configuration-properties) | List of apps that will be shown on the marketplace page | `[{'author': 'Bob', 'id': 'app', 'external': true, 'title': 'The App', 'logo': 'https://foo.app/icon.png', 'categories': ['security'], 'shortDescription': 'Awesome app', 'site': 'https://foo.app', 'description': 'The best app', 'url': 'https://foo.app/launch'}]` |
 | NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM | `string` | Link to form where authors can submit their dapps to the marketplace | `https://airtable.com/shrqUAcjgGJ4jU88C` |
 | NEXT_PUBLIC_NETWORK_EXPLORERS | `Array<NetworkExplorer>` where `NetworkExplorer` can have following [properties](#network-explorer-configuration-properties) | Used to build up links to transactions, blocks, addresses in other chain explorers.  | `[{'title':'Anyblock','baseUrl':'https://explorer.anyblock.tools','paths':{'tx':'/ethereum/poa/core/tx'}}]` |
 | NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE | `validation` or `mining` *(optional)* | Verification type in the network | `mining` |
@@ -125,6 +125,7 @@ The app instance could be customized by passing following variables to NodeJS en
 | Property | Type | Description | Example value
 | --- | --- | --- | --- |
 | id | `string` | Used as slug for the app. Must be unique in the app list. | `'app'` |
+| external | `boolean` | If true means that the application opens in a new window, but not in an iframe. | `true` |
 | title | `string` | Displayed title of the app. | `'The App'` |
 | logo | `string` | URL to logo file. Should be at least 144x144. | `'https://foo.app/icon.png'` |
 | shortDescription | `string` | Displayed only in the app list. | `'Awesome app'` |
