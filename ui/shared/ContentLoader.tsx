@@ -1,4 +1,4 @@
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Text, chakra } from '@chakra-ui/react';
 import { keyframes } from '@chakra-ui/system';
 import React from 'react';
 
@@ -7,9 +7,13 @@ const runnerAnimation = keyframes`
     100% { left: '100%'; transform: translateX(-99%); }
 `;
 
-const ContentLoader = () => {
+interface Props {
+  className?: string;
+}
+
+const ContentLoader = ({ className }: Props) => {
   return (
-    <Box display="inline-block">
+    <Box display="inline-block" className={ className }>
       <Box
         width="100%"
         height="6px"
@@ -31,4 +35,4 @@ const ContentLoader = () => {
   );
 };
 
-export default ContentLoader;
+export default chakra(ContentLoader);
