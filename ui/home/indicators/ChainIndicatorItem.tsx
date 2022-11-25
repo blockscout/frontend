@@ -18,7 +18,7 @@ interface Props {
 }
 
 const ChainIndicatorItem = ({ id, title, value, icon, isSelected, onClick, stats }: Props) => {
-  const bgColor = useColorModeValue('white', 'gray.900');
+  const bgColor = useColorModeValue('white', 'black');
   const isMobile = useIsMobile();
 
   const handleClick = React.useCallback(() => {

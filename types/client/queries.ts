@@ -16,4 +16,5 @@ export enum QueryKeys {
   chartsMarket = 'charts-market',
   indexBlocks='indexBlocks',
   indexTxs='indexTxs',
+  jsonRpcUrl='json-rpc-url'
 }

@@ -1,7 +1,7 @@
 import { useToken } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ChainIndicatorChartData } from './types';
+import type { TimeChartData } from 'ui/shared/chart/types';
 
 import ChartArea from 'ui/shared/chart/ChartArea';
 import ChartLine from 'ui/shared/chart/ChartLine';
@@ -11,7 +11,7 @@ import useChartSize from 'ui/shared/chart/useChartSize';
 import useTimeChartController from 'ui/shared/chart/useTimeChartController';
 
 interface Props {
-  data: ChainIndicatorChartData;
+  data: TimeChartData;
   caption?: string;
 }
 
