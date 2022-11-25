@@ -1,4 +1,6 @@
-export const base = {
+import type { Block, BlocksResponse } from 'types/api/block';
+
+export const base: Block = {
   base_fee_per_gas: '10000000000',
   burnt_fees: '5449200000000000',
   burnt_fees_percentage: 20.292245650793845,
@@ -39,7 +41,7 @@ export const base = {
   ],
   size: 2448,
   state_root: 'TODO',
-  timestamp: '2022-10-24T11:46:05.000000Z',
+  timestamp: '2022-11-11T11:59:35Z',
   total_difficulty: '10258276095980170141167591583995189665817672619',
   tx_count: 5,
   tx_fees: '26853607500000000',
@@ -81,4 +83,49 @@ export const genesis = {
   tx_fees: '0',
   type: 'block',
   uncles_hashes: [],
+};
+
+export const base2: Block = {
+  ...base,
+  height: base.height - 1,
+  size: 592,
+  miner: {
+    hash: '0xDfE10D55d9248B2ED66f1647df0b0A46dEb25165',
+    implementation_name: null,
+    is_contract: false,
+    is_verified: null,
+    name: 'Kiryl Ihnatsyeu',
+    private_tags: [],
+    public_tags: [],
+    watchlist_names: [],
+  },
+  timestamp: '2022-11-11T11:46:05Z',
+  tx_count: 253,
+  gas_target_percentage: 23.6433,
+  gas_used: '6333342',
+  gas_used_percentage: 87.859504,
+  burnt_fees: '232438000000000000',
+  burnt_fees_percentage: 65.3333333333334,
+  rewards: [
+    {
+      reward: '500000000000000000',
+      type: 'Chore Reward',
+    },
+    {
+      reward: '1017432850000000000',
+      type: 'Miner Reward',
+    },
+    {
+      reward: '500000000000000000',
+      type: 'Emission Reward',
+    },
+  ],
+};
+
+export const baseListResponse: BlocksResponse = {
+  items: [
+    base,
+    base2,
+  ],
+  next_page_params: null,
 };

@@ -113,6 +113,7 @@
             "presentation": {
                 "reveal": "always",
                 "panel": "new",
+                "focus": true,
             },
             "icon": {
                 "color": "terminal.ansiBlue",
@@ -131,6 +132,7 @@
             "presentation": {
                 "reveal": "always",
                 "panel": "new",
+                "focus": true,
             },
             "icon": {
                 "color": "terminal.ansiBlue",
@@ -149,6 +151,7 @@
             "presentation": {
                 "reveal": "always",
                 "panel": "new",
+                "focus": true,
             },
             "icon": {
                 "color": "terminal.ansiBlue",
@@ -169,6 +172,7 @@
             "presentation": {
                 "reveal": "always",
                 "panel": "new",
+                "focus": true,
             },
             "icon": {
                 "color": "terminal.ansiBlue",
@@ -188,6 +192,7 @@
                 "reveal": "always",
                 "panel": "new",
                 "close": true,
+                "focus": true,
             },
             "icon": {
                 "color": "terminal.ansiBlue",
@@ -206,6 +211,7 @@
             "presentation": {
                 "reveal": "always",
                 "panel": "new",
+                "focus": true,
             },
             "icon": {
                 "color": "terminal.ansiBlue",
@@ -227,6 +233,7 @@
                 "panel": "new",
                 "close": true,
                 "revealProblems": "onProblem",
+                "focus": true,
             },
             "icon": {
                 "color": "terminal.ansiRed",

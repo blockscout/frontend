@@ -14,7 +14,7 @@ beforeMount(async({ hooksConfig }) => {
   router.useRouter = () => hooksConfig?.router || NEXT_ROUTER_MOCK;
 
   // set current date
-  MockDate.set('2022-11-11');
+  MockDate.set('2022-11-11T12:00:00Z');
 });
 
 export {};
