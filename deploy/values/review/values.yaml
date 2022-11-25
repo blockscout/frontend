@@ -124,19 +124,19 @@ postgres:
   command: '["docker-entrypoint.sh", "-c"]'
   args: '["max_connections=300"]'
 
-  strategy: Recreate
+  persistence: true
 
   resources:
     limits:
       memory:
-        _default: "1Gi"
+        _default: "4Gi"
       cpu:
-        _default: "1"
+        _default: "3"
     requests:
       memory:
-        _default: "1Gi"
+        _default: "4Gi"
       cpu:
-        _default: "1"
+        _default: "3"
 
   environment:
     POSTGRES_USER:
