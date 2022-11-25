@@ -51,7 +51,7 @@ const NavFooter = ({ isCollapsed, hasAccount }: Props) => {
         <Stack direction={{ base: 'row', lg: isExpanded ? 'row' : 'column', xl: isCollapsed ? 'column' : 'row' }}>
           { SOCIAL_LINKS.map(sl => {
             return (
-              <Link href={ sl.link } key={ sl.link } variant="secondary" w={ 5 } h={ 5 } aria-label={ sl.label }>
+              <Link href={ sl.link } key={ sl.link } variant="secondary" w={ 5 } h={ 5 } aria-label={ sl.label } target="_blank">
                 <Icon as={ sl.icon } boxSize={ 5 }/>
               </Link>
             );

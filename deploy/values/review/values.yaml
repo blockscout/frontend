@@ -31,8 +31,9 @@ blockscout:
     tls:
       enabled: true
     path:
+      prefix:
       # - "/poa/sokol(/|$)(.*)"
-      - "/"
+        - "/"
   # probes
   livenessProbe:
     enabled: true
@@ -122,6 +123,8 @@ postgres:
 
   command: '["docker-entrypoint.sh", "-c"]'
   args: '["max_connections=300"]'
+
+  strategy: Recreate
 
   resources:
     limits:
@@ -299,17 +302,20 @@ frontend:
     tls:
       enabled: true
     path:
+      exact:
+        # - "/(apps|auth/profile|account)"
+        - "/"
+      prefix:
       # - "/(apps|auth/profile|account)"
-      - "/"
-      - "/apps"
-      - "/_next"
-      - "/node-api"
-      - "/static"
-      - "/auth/profile"
-      - "/txs"
-      - "/tx"
-      - "/blocks"
-      - "/block"
+        - "/apps"
+        - "/_next"
+        - "/node-api"
+        - "/static"
+        - "/auth/profile"
+        - "/txs"
+        - "/tx"
+        - "/blocks"
+        - "/block"
   resources:
     limits:
       memory:

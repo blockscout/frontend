@@ -17,7 +17,7 @@ interface Props {
   target?: HTMLAttributeAnchorTarget;
 }
 
-const AddressLink = ({ alias, type, className, truncation = 'dynamic', hash, id, fontWeight, target }: Props) => {
+const AddressLink = ({ alias, type, className, truncation = 'dynamic', hash, id, fontWeight, target = '_self' }: Props) => {
   let url;
   if (type === 'transaction') {
     url = link('tx', { id: id || hash });
@@ -53,7 +53,7 @@ const AddressLink = ({ alias, type, className, truncation = 'dynamic', hash, id,
     <Link
       className={ className }
       href={ url }
-      target={ target || '_blank' }
+      target={ target }
       overflow="hidden"
       whiteSpace="nowrap"
     >

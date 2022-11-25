@@ -44,7 +44,7 @@ const TxsTableItem = ({ tx, showBlockInfo }: {tx: Transaction; showBlockInfo: bo
     </Address>
   );
 
-  const dataTo = tx.to && tx.to.hash ? tx.to : tx.created_contract;
+  const dataTo = tx.to ? tx.to : tx.created_contract;
 
   const addressTo = (
     <Address>
@@ -87,7 +87,6 @@ const TxsTableItem = ({ tx, showBlockInfo }: {tx: Transaction; showBlockInfo: bo
               hash={ tx.hash }
               type="transaction"
               fontWeight="700"
-              target="_self"
             />
           </Address>
           <Text color="gray.500" fontWeight="400">{ dayjs(tx.timestamp).fromNow() }</Text>

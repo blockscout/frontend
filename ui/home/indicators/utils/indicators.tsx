@@ -34,7 +34,7 @@ const coinPriceIndicator: TChainIndicator<QueryKeys.chartsMarket> = {
   id: 'coin_price',
   title: `${ appConfig.network.currency.symbol } price`,
   value: (stats) => '$' + Number(stats.coin_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }),
-  icon: <TokenLogo hash={ appConfig.network.nativeTokenAddress || '' } name={ appConfig.network.currency.name } boxSize={ 6 }/>,
+  icon: <TokenLogo hash={ appConfig.network.currency.address || '' } name={ appConfig.network.currency.name } boxSize={ 6 }/>,
   hint: `${ appConfig.network.currency.symbol } token daily price in USD.`,
   api: {
     queryName: QueryKeys.chartsMarket,

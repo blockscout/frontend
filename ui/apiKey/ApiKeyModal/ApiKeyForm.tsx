@@ -120,7 +120,7 @@ const ApiKeyForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
   }, [ errors, formBackgroundColor ]);
 
   return (
-    <>
+    <form noValidate onSubmit={ handleSubmit(onSubmit) }>
       { data && (
         <Box marginBottom={ 5 }>
           <Controller
@@ -144,14 +144,14 @@ const ApiKeyForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
       <Box marginTop={ 8 }>
         <Button
           size="lg"
-          onClick={ handleSubmit(onSubmit) }
+          type="submit"
           disabled={ !isValid }
           isLoading={ mutation.isLoading }
         >
           { data ? 'Save' : 'Generate API key' }
         </Button>
       </Box>
-    </>
+    </form>
   );
 };
 

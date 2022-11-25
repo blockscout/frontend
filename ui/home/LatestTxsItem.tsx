@@ -40,7 +40,7 @@ const LatestBlocksItem = ({ tx }: Props) => {
   const borderColor = useColorModeValue('gray.200', 'whiteAlpha.200');
   const iconColor = useColorModeValue('blue.600', 'blue.300');
 
-  const dataTo = tx.to && tx.to.hash ? tx.to : tx.created_contract;
+  const dataTo = tx.to ? tx.to : tx.created_contract;
   const timeAgo = useTimeAgoIncrement(tx.timestamp || '0', true);
 
   const isMobile = useIsMobile();
@@ -100,7 +100,6 @@ const LatestBlocksItem = ({ tx }: Props) => {
                   type="transaction"
                   fontWeight="700"
                   truncation="constant"
-                  target="_self"
                 />
               </Address>
             </Flex>

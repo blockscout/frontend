@@ -13,7 +13,6 @@ const TxsTab = ({ tab }: Props) => {
     return (
       <TxsContent
         queryName={ QueryKeys.txsValidate }
-        showDescription
         stateFilter="validated"
         apiPath="/node-api/transactions"
       />

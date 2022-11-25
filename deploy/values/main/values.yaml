@@ -31,8 +31,9 @@ blockscout:
     tls:
       enabled: true
     path:
-      # - "/poa/sokol(/|$)(.*)"
-      - "/"
+      prefix:
+        # - "/poa/sokol(/|$)(.*)"
+        - "/"
   # probes
   livenessProbe:
     enabled: true
@@ -43,14 +44,14 @@ blockscout:
   resources:
     limits:
       memory:
-        _default: "1Gi"
+        _default: "4Gi"
       cpu:
-        _default: "2"
+        _default: "4"
     requests:
       memory:
-        _default: "1Gi"
+        _default: "4Gi"
       cpu:
-        _default: "2"
+        _default: "4"
   # enable service to connect to RDS
   rds:
     enabled: false
@@ -152,17 +153,19 @@ postgres:
   command: '["docker-entrypoint.sh", "-c"]'
   args: '["max_connections=300"]'
 
+  strategy: Recreate
+
   resources:
     limits:
       memory:
-        _default: "1Gi"
+        _default: "2Gi"
       cpu:
-        _default: "1"
+        _default: "2"
     requests:
       memory:
-        _default: "1Gi"
+        _default: "2Gi"
       cpu:
-        _default: "1"
+        _default: "2"
 
   environment:
     POSTGRES_USER:
@@ -434,18 +437,20 @@ frontend:
     tls:
       enabled: true
     path:
-      # - "/(apps|auth/profile|account)"
-      - "/"
-      - "/apps"
-      - "/_next"
-      - "/node-api"
-      - "/static"
-      - "/auth/profile"
-      - "/account"
-      - "/txs"
-      - "/tx"
-      - "/blocks"
-      - "/block"
+      exact:
+        # - "/(apps|auth/profile|account)"
+        - "/"
+      prefix:
+        - "/apps"
+        - "/_next"
+        - "/node-api"
+        - "/static"
+        - "/auth/profile"
+        - "/account"
+        - "/txs"
+        - "/tx"
+        - "/blocks"
+        - "/block"
   resources:
     limits:
       memory:
@@ -504,7 +509,7 @@ frontend:
     NEXT_PUBLIC_FOOTER_TWITTER_LINK:
       _default: https://www.twitter.com/blockscoutcom
     NEXT_PUBLIC_APP_ENV:
-      _default: preview
+      _default: stable
     NEXT_PUBLIC_APP_INSTANCE:
       _default: unknown
     NEXT_PUBLIC_API_HOST:

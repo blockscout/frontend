@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { TransactionRevertReason } from 'types/api/transaction';
 
+import hexToUtf8 from 'lib/hexToUtf8';
 import TxDecodedInputData from 'ui/tx/TxDecodedInputData/TxDecodedInputData';
 
 type Props = TransactionRevertReason;
@@ -25,7 +26,7 @@ const TxRevertReason = (props: Props) => {
         <GridItem fontWeight={ 500 }>Raw:</GridItem>
         <GridItem>{ props.raw }</GridItem>
         <GridItem fontWeight={ 500 }>Decoded:</GridItem>
-        <GridItem>{ props.decoded }</GridItem>
+        <GridItem>{ hexToUtf8(props.raw) }</GridItem>
       </Grid>
     );
   }

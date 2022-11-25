@@ -5,6 +5,7 @@ import {
   GridItem,
   Text,
   HStack,
+  chakra,
 } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
@@ -151,7 +152,12 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
   }, [ changeToDataScreen ]);
 
   return (
-    <Box width={{ base: 'auto', lg: `calc(100% - ${ ADDRESS_INPUT_BUTTONS_WIDTH }px)` }} maxWidth="844px">
+    <chakra.form
+      noValidate
+      width={{ base: 'auto', lg: `calc(100% - ${ ADDRESS_INPUT_BUTTONS_WIDTH }px)` }}
+      maxWidth="844px"
+      onSubmit={ handleSubmit(onSubmit) }
+    >
       { isAlertVisible && <Box mb={ 4 }><FormSubmitAlert/></Box> }
       <Text size="sm" variant="secondary" paddingBottom={ 5 }>Company info</Text>
       <Grid templateColumns={{ base: '1fr', lg: '1fr 1fr' }} rowGap={ 4 } columnGap={ 5 }>
@@ -230,7 +236,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
       <HStack spacing={ 6 }>
         <Button
           size="lg"
-          onClick={ handleSubmit(onSubmit) }
+          type="submit"
           disabled={ !isValid }
           isLoading={ mutation.isLoading }
         >
@@ -245,7 +251,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
           Cancel
         </Button>
       </HStack>
-    </Box>
+    </chakra.form>
   );
 };
 
