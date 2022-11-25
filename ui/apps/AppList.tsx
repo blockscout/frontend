@@ -41,6 +41,8 @@ const AppList = ({ apps, onAppClick, displayedAppId, onModalClose, favoriteApps,
               <AppCard
                 onInfoClick={ onAppClick }
                 id={ app.id }
+                external={ app.external }
+                url={ app.url }
                 title={ app.title }
                 logo={ app.logo }
                 shortDescription={ app.shortDescription }

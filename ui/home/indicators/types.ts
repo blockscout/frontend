@@ -1,7 +1,7 @@
-import type { ChartTransactionResponse, ChartMarketResponse } from 'types/api/charts';
+import type { ChartMarketResponse, ChartTransactionResponse } from 'types/api/charts';
 import type { Stats } from 'types/api/stats';
 import type { QueryKeys } from 'types/client/queries';
-import type { TimeChartDataItem } from 'ui/shared/chart/types';
+import type { TimeChartData } from 'ui/shared/chart/types';
 
 export type ChartsQueryKeys = QueryKeys.chartsTxs | QueryKeys.chartsMarket;
 
@@ -16,7 +16,7 @@ export interface TChainIndicator<Q extends ChartsQueryKeys> {
   api: {
     queryName: Q;
     path: string;
-    dataFn: (response: ChartsResponse<Q>) => ChainIndicatorChartData;
+    dataFn: (response: ChartsResponse<Q>) => TimeChartData;
   };
 }
 
@@ -24,5 +24,3 @@ export type ChartsResponse<Q extends ChartsQueryKeys> =
     Q extends QueryKeys.chartsTxs ? ChartTransactionResponse :
       Q extends QueryKeys.chartsMarket ? ChartMarketResponse :
         never;
-
-export type ChainIndicatorChartData = Array<TimeChartDataItem>;
