@@ -1,4 +1,4 @@
-import type { TokenTransfer } from 'types/api/tokenTransfer';
+import type { TokenTransfer, TokenTransferResponse } from 'types/api/tokenTransfer';
 
 export const erc20: TokenTransfer = {
   from: {
@@ -125,4 +125,14 @@ export const erc1155multiple: TokenTransfer = {
     { token_id: '12345678', value: '142', decimals: null },
     { token_id: '1000006457499', value: '11', decimals: null },
   ],
+};
+
+export const mixTokens: TokenTransferResponse = {
+  items: [
+    erc20,
+    erc721,
+    erc1155,
+    erc1155multiple,
+  ],
+  next_page_params: null,
 };

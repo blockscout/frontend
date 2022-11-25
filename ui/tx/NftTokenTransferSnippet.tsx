@@ -4,7 +4,7 @@ import React from 'react';
 import nftIcon from 'icons/nft_shield.svg';
 import link from 'lib/link/link';
 import AddressLink from 'ui/shared/address/AddressLink';
-import TokenSnippet from 'ui/shared/TokenSnippet';
+import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
 
 interface Props {
   value: string;

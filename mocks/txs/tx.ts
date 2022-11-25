@@ -13,16 +13,7 @@ export const base: Transaction = {
     6364,
   ],
   confirmations: 508299,
-  created_contract: {
-    hash: '', // FIXME currently backend sending null, but according to swagger there cannot be null in AddressParams model
-    implementation_name: null,
-    is_contract: false,
-    is_verified: null,
-    name: null,
-    private_tags: [],
-    public_tags: [],
-    watchlist_names: [],
-  },
+  created_contract: null,
   decoded_input: decodedInputDataMock.withoutIndexedFields,
   exchange_rate: '0.00254428',
   fee: {
@@ -139,7 +130,6 @@ export const withRawRevertReason: Transaction = {
   result: 'Reverted',
   revert_reason: {
     raw: '4f6e6c79206368616972706572736f6e2063616e206769766520726967687420746f20766f74652e',
-    decoded: '', // FIXME api has been changed
   },
   to: {
     hash: '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859',

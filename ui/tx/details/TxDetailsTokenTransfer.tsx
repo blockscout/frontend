@@ -7,7 +7,7 @@ import rightArrowIcon from 'icons/arrows/east.svg';
 import { space } from 'lib/html-entities';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CurrencyValue from 'ui/shared/CurrencyValue';
-import TokenSnippet from 'ui/shared/TokenSnippet';
+import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
 import NftTokenTransferSnippet from 'ui/tx/NftTokenTransferSnippet';
 
 type Props = TTokenTransfer;
