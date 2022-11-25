@@ -17,7 +17,6 @@ import useTxsSort from './useTxsSort';
 
 type Props = {
   queryName: QueryKeys.txsPending | QueryKeys.txsValidate | QueryKeys.blockTxs;
-  showDescription?: boolean;
   stateFilter?: TTxsFilters['filter'];
   apiPath: string;
   showBlockInfo?: boolean;
@@ -25,7 +24,6 @@ type Props = {
 
 const TxsContent = ({
   queryName,
-  showDescription,
   stateFilter,
   apiPath,
   showBlockInfo = true,
@@ -81,7 +79,6 @@ const TxsContent = ({
 
   return (
     <>
-      { showDescription && <Box mb={{ base: 6, lg: 12 }}>Only the first 10,000 elements are displayed</Box> }
       <TxsHeader mt={ -6 } sorting={ sorting } setSorting={ setSortByValue } paginationProps={ pagination } showPagination={ !isPaginatorHidden }/>
       { content }
     </>

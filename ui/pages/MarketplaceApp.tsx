@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import type { JsonRpcUrlResponse } from 'types/api/json-rpc-url';
 import type { AppItemOverview } from 'types/client/apps';
+import { QueryKeys } from 'types/client/queries';
 
 import appConfig from 'configs/app/config';
 import useFetch from 'lib/hooks/useFetch';
@@ -27,7 +28,7 @@ const MarketplaceApp = ({ app, isLoading }: Props) => {
   }, []);
 
   const { data: jsonRpcUrlResponse } = useQuery<unknown, unknown, JsonRpcUrlResponse>(
-    [ 'json-rpc-url' ],
+    [ QueryKeys.jsonRpcUrl ],
     async() => await fetch(`/node-api/config/json-rpc-url`),
     { refetchOnMount: false },
   );

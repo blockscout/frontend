@@ -25,7 +25,7 @@ const dailyTxsIndicator: TChainIndicator<QueryKeys.chartsTxs> = {
         .map((item) => ({ date: new Date(item.date), value: item.tx_count }))
         .sort(sortByDateDesc),
       name: 'Tx/day',
-      valueFormatter: (x) => shortenNumberWithLetter(x, undefined, { maximumFractionDigits: 2 }),
+      valueFormatter: (x: number) => shortenNumberWithLetter(x, undefined, { maximumFractionDigits: 2 }),
     } ]),
   },
 };
@@ -34,7 +34,7 @@ const coinPriceIndicator: TChainIndicator<QueryKeys.chartsMarket> = {
   id: 'coin_price',
   title: `${ appConfig.network.currency.symbol } price`,
   value: (stats) => '$' + Number(stats.coin_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }),
-  icon: <TokenLogo hash={ appConfig.network.nativeTokenAddress || '' } name={ appConfig.network.currency.name } boxSize={ 6 }/>,
+  icon: <TokenLogo hash={ appConfig.network.currency.address || '' } name={ appConfig.network.currency.name } boxSize={ 6 }/>,
   hint: `${ appConfig.network.currency.symbol } token daily price in USD.`,
   api: {
     queryName: QueryKeys.chartsMarket,
@@ -44,7 +44,7 @@ const coinPriceIndicator: TChainIndicator<QueryKeys.chartsMarket> = {
         .map((item) => ({ date: new Date(item.date), value: Number(item.closing_price) }))
         .sort(sortByDateDesc),
       name: `${ appConfig.network.currency.symbol } price`,
-      valueFormatter: (x) => '$' + x.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }),
+      valueFormatter: (x: number) => '$' + x.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }),
     } ]),
   },
 };
@@ -64,7 +64,7 @@ const marketPriceIndicator: TChainIndicator<QueryKeys.chartsMarket> = {
         .map((item) => ({ date: new Date(item.date), value: Number(item.closing_price) * Number(response.available_supply) }))
         .sort(sortByDateDesc),
       name: 'Market cap',
-      valueFormatter: (x) => '$' + shortenNumberWithLetter(x, undefined, { maximumFractionDigits: 0 }),
+      valueFormatter: (x: number) => '$' + shortenNumberWithLetter(x, undefined, { maximumFractionDigits: 0 }),
     } ]),
   },
 };

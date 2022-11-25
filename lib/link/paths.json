@@ -19,5 +19,6 @@
   "app_index": "/apps/:id",
   "search_results": "/search-results",
   "other": "/search-results",
-  "auth": "/auth/auth0"
+  "auth": "/auth/auth0",
+  "stats": "/stats"
 }
