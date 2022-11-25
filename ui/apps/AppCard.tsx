@@ -9,7 +9,7 @@ import starFilledIcon from 'icons/star_filled.svg';
 import starOutlineIcon from 'icons/star_outline.svg';
 import notEmpty from 'lib/notEmpty';
 
-import AppLink from './AppLink';
+import AppCardLink from './AppCardLink';
 import { APP_CATEGORIES } from './constants';
 
 interface Props extends AppItemPreview {
@@ -87,7 +87,7 @@ const AppCard = ({
           size={{ base: 'xs', sm: 'sm' }}
           fontWeight="semibold"
         >
-          <AppLink
+          <AppCardLink
             id={ id }
             url={ url }
             external={ external }
