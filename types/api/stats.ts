@@ -10,4 +10,5 @@ export type Stats = {
   gas_prices: {average: number; fast: number; slow: number};
   static_gas_price: string;
   market_cap: string;
+  network_utilization_percentage: number;
 }

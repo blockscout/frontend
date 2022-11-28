@@ -9,7 +9,7 @@ import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import InOutTag from 'ui/shared/InOutTag';
-import TokenSnippet from 'ui/shared/TokenSnippet';
+import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
 import { getTokenTransferTypeText } from 'ui/shared/TokenTransfer/helpers';
 import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
 
@@ -18,7 +18,7 @@ type Props = TokenTransfer & {
   showTxInfo?: boolean;
 }
 
-const TxInternalTableItem = ({ token, total, tx_hash: txHash, from, to, baseAddress, showTxInfo, type }: Props) => {
+const TokenTransferTableItem = ({ token, total, tx_hash: txHash, from, to, baseAddress, showTxInfo, type }: Props) => {
   const value = (() => {
     if (!('value' in total)) {
       return '-';
@@ -75,4 +75,4 @@ const TxInternalTableItem = ({ token, total, tx_hash: txHash, from, to, baseAddr
   );
 };
 
-export default React.memo(TxInternalTableItem);
+export default React.memo(TokenTransferTableItem);
