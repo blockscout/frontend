@@ -13,6 +13,7 @@ import tgIcon from 'icons/social/telega.svg';
 import twIcon from 'icons/social/tweet.svg';
 import starFilledIcon from 'icons/star_filled.svg';
 import starOutlineIcon from 'icons/star_outline.svg';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp } from 'lib/html-entities';
 import notEmpty from 'lib/notEmpty';
 
@@ -65,11 +66,13 @@ const AppModal = ({
     onFavoriteClick(id, isFavorite);
   }, [ onFavoriteClick, id, isFavorite ]);
 
+  const isMobile = useIsMobile();
+
   return (
     <Modal
       isOpen={ Boolean(id) }
       onClose={ onClose }
-      size={{ base: 'full', lg: 'md' }}
+      size={ isMobile ? 'full' : 'md' }
       isCentered
     >
       <ModalOverlay/>
