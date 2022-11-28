@@ -9,7 +9,7 @@ import { Chakra } from 'lib/Chakra';
 import useConfigSentry from 'lib/hooks/useConfigSentry';
 import type { ErrorType } from 'lib/hooks/useFetch';
 import theme from 'theme';
-import AppError from 'ui/shared/AppError';
+import AppError from 'ui/shared/AppError/AppError';
 import ErrorBoundary from 'ui/shared/ErrorBoundary';
 
 function MyApp({ Component, pageProps }: AppProps) {
