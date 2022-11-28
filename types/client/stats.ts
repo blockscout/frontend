@@ -1,3 +1,5 @@
+export type StatsSection = { id: StatsSectionIds; title: string; charts: Array<StatsChart> }
+export type StatsSectionIds = keyof typeof StatsSectionId;
 export enum StatsSectionId {
   'all',
   'accounts',
@@ -5,9 +7,9 @@ export enum StatsSectionId {
   'transactions',
   'gas',
 }
-export type StatsSectionIds = keyof typeof StatsSectionId;
-export type StatsSection = { id: StatsSectionIds; value: string }
 
+export type StatsInterval = { id: StatsIntervalIds; title: string }
+export type StatsIntervalIds = keyof typeof StatsIntervalId;
 export enum StatsIntervalId {
   'all',
   'oneMonth',
@@ -15,5 +17,11 @@ export enum StatsIntervalId {
   'sixMonths',
   'oneYear',
 }
-export type StatsIntervalIds = keyof typeof StatsIntervalId;
-export type StatsInterval = { id: StatsIntervalIds; value: string }
+
+export type StatsChart = {
+  visible?: boolean;
+  id: string;
+  title: string;
+  description: string;
+  apiMethodURL: string;
+}

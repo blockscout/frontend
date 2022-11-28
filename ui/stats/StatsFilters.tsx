@@ -1,6 +1,5 @@
 import { Grid, GridItem } from '@chakra-ui/react';
-import debounce from 'lodash/debounce';
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 
 import type { StatsInterval, StatsIntervalIds, StatsSection, StatsSectionIds } from 'types/client/stats';
 
@@ -11,21 +10,29 @@ import StatsDropdownMenu from './StatsDropdownMenu';
 
 const sectionsList = Object.keys(STATS_SECTIONS).map((id: string) => ({
   id: id,
-  value: STATS_SECTIONS[id as StatsSectionIds],
+  title: STATS_SECTIONS[id as StatsSectionIds],
 })) as Array<StatsSection>;
 
 const intervalList = Object.keys(STATS_INTERVALS).map((id: string) => ({
   id: id,
-  value: STATS_INTERVALS[id as StatsIntervalIds],
+  title: STATS_INTERVALS[id as StatsIntervalIds],
 })) as Array<StatsInterval>;
 
-const StatsFilters = () => {
-  const [ selectedSectionId, setSelectedSectionId ] = useState<StatsSectionIds>('all');
-  const [ selectedIntervalId, setSelectedIntervalId ] = useState<StatsIntervalIds>('all');
-  const [ , setFilterQuery ] = useState('');
+type Props = {
+  section: StatsSectionIds;
+  onSectionChange: (newSection: StatsSectionIds) => void;
+  interval: StatsIntervalIds;
+  onIntervalChange: (newInterval: StatsIntervalIds) => void;
+  onFilterInputChange: (q: string) => void;
+}
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debounceFilterCharts = useCallback(debounce(q => setFilterQuery(q), 500), []);
+const StatsFilters = ({
+  section,
+  onSectionChange,
+  interval,
+  onIntervalChange,
+  onFilterInputChange,
+}: Props) => {
 
   return (
     <Grid
@@ -42,7 +49,7 @@ const StatsFilters = () => {
         area="input"
       >
         <FilterInput
-          onChange={ debounceFilterCharts }
+          onChange={ onFilterInputChange }
           placeholder="Find chart, metric..."/>
       </GridItem>
 
@@ -52,8 +59,8 @@ const StatsFilters = () => {
       >
         <StatsDropdownMenu
           items={ sectionsList }
-          selectedId={ selectedSectionId }
-          onSelect={ setSelectedSectionId }
+          selectedId={ section }
+          onSelect={ onSectionChange }
         />
       </GridItem>
 
@@ -63,8 +70,8 @@ const StatsFilters = () => {
       >
         <StatsDropdownMenu
           items={ intervalList }
-          selectedId={ selectedIntervalId }
-          onSelect={ setSelectedIntervalId }
+          selectedId={ interval }
+          onSelect={ onIntervalChange }
         />
       </GridItem>
     </Grid>

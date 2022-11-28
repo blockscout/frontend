@@ -14,6 +14,7 @@ import useChartSize from 'ui/shared/chart/useChartSize';
 import useTimeChartController from 'ui/shared/chart/useTimeChartController';
 
 interface Props {
+  title: string;
   items: Array<TimeChartItem>;
   onZoom: () => void;
   isZoomResetInitial: boolean;
@@ -21,7 +22,7 @@ interface Props {
 
 const CHART_MARGIN = { bottom: 20, left: 65, right: 30, top: 10 };
 
-const ChartWidgetGraph = ({ items, onZoom, isZoomResetInitial }: Props) => {
+const ChartWidgetGraph = ({ items, onZoom, isZoomResetInitial, title }: Props) => {
   const ref = React.useRef<SVGSVGElement>(null);
   const [ range, setRange ] = React.useState<[ number, number ]>([ 0, Infinity ]);
   const { width, height, innerWidth, innerHeight } = useChartSize(ref.current, CHART_MARGIN);
@@ -30,7 +31,7 @@ const ChartWidgetGraph = ({ items, onZoom, isZoomResetInitial }: Props) => {
 
   const displayedData = useMemo(() => items.slice(range[0], range[1]).map((d) =>
     ({ ...d, date: new Date(d.date) })), [ items, range ]);
-  const chartData = [ { items: items, name: 'chart', color } ];
+  const chartData = [ { items: items, name: title, color } ];
 
   const { yTickFormat, xScale, yScale } = useTimeChartController({
     data: [ { items: displayedData, name: 'chart', color } ],
