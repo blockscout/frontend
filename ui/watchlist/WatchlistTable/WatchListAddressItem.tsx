@@ -1,4 +1,4 @@
-import { HStack, VStack, Text, Icon, useColorModeValue, Flex } from '@chakra-ui/react';
+import { HStack, VStack, Text, Icon, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TWatchlistItem } from 'types/client/account';
@@ -12,12 +12,10 @@ import CurrencyValue from 'ui/shared/CurrencyValue';
 import TokenLogo from 'ui/shared/TokenLogo';
 
 const WatchListAddressItem = ({ item }: {item: TWatchlistItem}) => {
-  const mainTextColor = useColorModeValue('gray.700', 'gray.50');
-
-  const infoItemsPaddingLeft = { base: 0, lg: 8 };
+  const infoItemsPaddingLeft = { base: 1, lg: 8 };
 
   return (
-    <VStack spacing={ 2 } align="stretch" fontWeight={ 500 } color="gray.700">
+    <VStack spacing={ 2 } align="stretch" fontWeight={ 500 }>
       <AddressSnippet address={ item.address_hash }/>
       <Flex fontSize="sm" h={ 6 } pl={ infoItemsPaddingLeft } flexWrap="wrap" alignItems="center" rowGap={ 1 }>
         { appConfig.network.currency.address && (
@@ -40,8 +38,8 @@ const WatchListAddressItem = ({ item }: {item: TWatchlistItem}) => {
       </Flex>
       { item.tokens_count && (
         <HStack spacing={ 0 } fontSize="sm" h={ 6 } pl={ infoItemsPaddingLeft }>
-          <Icon as={ TokensIcon } marginRight="10px" w="17px" h="16px"/>
-          <Text color={ mainTextColor }>{ `Tokens:${ nbsp }` + item.tokens_count }</Text>
+          <Icon as={ TokensIcon } mr={ 2 } w="17px" h="16px"/>
+          <Text>{ `Tokens:${ nbsp }` + item.tokens_count }</Text>
           { /* api does not provide token prices */ }
           { /* <Text variant="secondary">{ `${ nbsp }($${ item.tokensUSD } USD)` }</Text> */ }
           <Text variant="secondary">{ `${ nbsp }(N/A)` }</Text>
@@ -50,8 +48,8 @@ const WatchListAddressItem = ({ item }: {item: TWatchlistItem}) => {
       { /* api does not provide token prices */ }
       { /* { item.address_balance && (
           <HStack spacing={ 0 } fontSize="sm" h={ 6 } pl={ infoItemsPaddingLeft }>
-            <Icon as={ WalletIcon } marginRight="10px" w="16px" h="16px"/>
-            <Text color={ mainTextColor }>{ `Net worth:${ nbsp }` }</Text>
+            <Icon as={ WalletIcon } mr={ 2 } w="16px" h="16px"/>
+            <Text>{ `Net worth:${ nbsp }` }</Text>
             <Link href="#">{ `$${ item.totalUSD } USD` }</Link>
           </HStack>
         ) } */ }

@@ -49,6 +49,7 @@ const FilterInput = ({ onChange, className, size = 'sm', placeholder }: Props) =
         placeholder={ placeholder }
         borderWidth="2px"
         textOverflow="ellipsis"
+        whiteSpace="nowrap"
       />
 
       { filterQuery ? (

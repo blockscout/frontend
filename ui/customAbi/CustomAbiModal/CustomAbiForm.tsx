@@ -37,7 +37,7 @@ type Inputs = {
 const NAME_MAX_LENGTH = 255;
 
 const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
-  const { control, formState: { errors, isValid }, handleSubmit, setError } = useForm<Inputs>({
+  const { control, formState: { errors, isValid, isDirty }, handleSubmit, setError } = useForm<Inputs>({
     defaultValues: {
       contract_address_hash: data?.contract_address_hash || '',
       name: data?.name || '',
@@ -77,7 +77,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
           });
         }
 
-        return [ ...(prevData || []), response ];
+        return [ response, ...(prevData || []) ];
       });
 
       onClose();
@@ -171,7 +171,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
         <Button
           size="lg"
           type="submit"
-          disabled={ !isValid }
+          disabled={ !isValid || !isDirty }
           isLoading={ mutation.isLoading }
         >
           { data ? 'Save' : 'Create custom ABI' }

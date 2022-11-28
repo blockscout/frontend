@@ -53,7 +53,7 @@ const Header = ({ hideOnScrollDown, hasSearch }: Props) => {
             display={{ base: 'none', lg: 'flex' }}
             paddingX={ 12 }
             paddingTop={ 9 }
-            paddingBottom="52px"
+            paddingBottom={ 8 }
           >
             <Box width="100%">{ hasSearch && <SearchBar/> }</Box>
             <ColorModeToggler/>

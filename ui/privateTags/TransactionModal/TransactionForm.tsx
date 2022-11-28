@@ -35,7 +35,7 @@ const TransactionForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) =>
   const [ pending, setPending ] = useState(false);
   const formBackgroundColor = useColorModeValue('white', 'gray.900');
 
-  const { control, handleSubmit, formState: { errors, isValid }, setError } = useForm<Inputs>({
+  const { control, handleSubmit, formState: { errors, isValid, isDirty }, setError } = useForm<Inputs>({
     mode: 'all',
     defaultValues: {
       transaction: data?.transaction_hash || '',
@@ -119,7 +119,7 @@ const TransactionForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) =>
         <Button
           size="lg"
           type="submit"
-          disabled={ !isValid }
+          disabled={ !isValid || !isDirty }
           isLoading={ pending }
         >
           { data ? 'Save changes' : 'Add tag' }
