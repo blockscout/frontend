@@ -7,7 +7,7 @@ import rightArrowIcon from 'icons/arrows/east.svg';
 import { space } from 'lib/html-entities';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CurrencyValue from 'ui/shared/CurrencyValue';
-import TokenSnippet from 'ui/shared/TokenSnippet';
+import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
 import NftTokenTransferSnippet from 'ui/tx/NftTokenTransferSnippet';
 
 type Props = TTokenTransfer;
@@ -34,6 +34,7 @@ const TxDetailsTokenTransfer = ({ token, total, to, from }: Props) => {
         const payload = total as Erc721TotalPayload;
         return (
           <NftTokenTransferSnippet
+            name={ token.name }
             tokenId={ payload.token_id }
             value="1"
             hash={ token.address }
@@ -47,6 +48,7 @@ const TxDetailsTokenTransfer = ({ token, total, to, from }: Props) => {
         const items = Array.isArray(payload) ? payload : [ payload ];
         return items.map((item) => (
           <NftTokenTransferSnippet
+            name={ token.name }
             key={ item.token_id }
             tokenId={ item.token_id }
             value={ item.value }

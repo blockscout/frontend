@@ -33,7 +33,7 @@ const TxsListItem = ({ tx, showBlockInfo }: {tx: Transaction; showBlockInfo: boo
 
   const iconColor = useColorModeValue('blue.600', 'blue.300');
   const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
-  const dataTo = tx.to && tx.to.hash ? tx.to : tx.created_contract;
+  const dataTo = tx.to ? tx.to : tx.created_contract;
 
   return (
     <>

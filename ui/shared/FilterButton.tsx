@@ -6,7 +6,7 @@ import filterIcon from 'icons/filter.svg';
 const FilterIcon = <Icon as={ filterIcon } boxSize={ 5 } mr={{ base: 0, lg: 2 }}/>;
 
 interface Props {
-  isActive: boolean;
+  isActive?: boolean;
   appliedFiltersNum?: number;
   onClick: () => void;
 }

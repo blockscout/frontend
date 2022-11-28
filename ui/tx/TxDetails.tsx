@@ -27,7 +27,7 @@ import Utilization from 'ui/shared/Utilization/Utilization';
 import TxDetailsSkeleton from 'ui/tx/details/TxDetailsSkeleton';
 import TxDetailsTokenTransfers from 'ui/tx/details/TxDetailsTokenTransfers';
 import TxRevertReason from 'ui/tx/details/TxRevertReason';
-import TxDecodedInputData from 'ui/tx/TxDecodedInputData';
+import TxDecodedInputData from 'ui/tx/TxDecodedInputData/TxDecodedInputData';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
 import useFetchTxInfo from 'ui/tx/useFetchTxInfo';
 
@@ -58,7 +58,7 @@ const TxDetails = () => {
     ...data.from.watchlist_names || [],
   ].map((tag) => <Tag key={ tag.label }>{ tag.display_name }</Tag>);
 
-  const toAddress = data.to && data.to.hash ? data.to : data.created_contract;
+  const toAddress = data.to ? data.to : data.created_contract;
   const addressToTags = [
     ...toAddress.private_tags || [],
     ...toAddress.public_tags || [],
@@ -156,7 +156,7 @@ const TxDetails = () => {
             <CopyToClipboard text={ toAddress.hash }/>
           </Address>
         ) : (
-          <Flex width="100%" whiteSpace="pre">
+          <Flex width={{ base: '100%', lg: 'auto' }} whiteSpace="pre">
             <span>[Contract </span>
             <AddressLink hash={ toAddress.hash }/>
             <span> created]</span>

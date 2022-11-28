@@ -17,7 +17,7 @@ type Props = InternalTransaction;
 
 const TxInternalsListItem = ({ type, from, to, value, success, error, gas_limit: gasLimit, created_contract: createdContract }: Props) => {
   const typeTitle = TX_INTERNALS_ITEMS.find(({ id }) => id === type)?.title;
-  const toData = to && to.hash ? to : createdContract;
+  const toData = to ? to : createdContract;
 
   return (
     <AccountListItemMobile rowGap={ 3 }>
@@ -38,7 +38,9 @@ const TxInternalsListItem = ({ type, from, to, value, success, error, gas_limit:
       </Box>
       <HStack spacing={ 3 }>
         <Text fontSize="sm" fontWeight={ 500 }>Value { appConfig.network.currency.symbol }</Text>
-        <Text fontSize="sm" variant="secondary">{ value }</Text>
+        <Text fontSize="sm" variant="secondary">
+          { BigNumber(value).div(BigNumber(10 ** appConfig.network.currency.decimals)).toFormat() }
+        </Text>
       </HStack>
       <HStack spacing={ 3 }>
         <Text fontSize="sm" fontWeight={ 500 }>Gas limit</Text>

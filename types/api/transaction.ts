@@ -5,10 +5,18 @@ import type { TokenTransfer } from './tokenTransfer';
 
 export type TransactionRevertReason = {
   raw: string;
-  decoded: string;
 } | DecodedInput;
 
-export interface Transaction {
+export type Transaction = (
+  {
+    to: AddressParam;
+    created_contract: null;
+  } |
+  {
+    to: null;
+    created_contract: AddressParam;
+  }
+) & {
   hash: string;
   result: string;
   confirmations: number;
@@ -17,21 +25,19 @@ export interface Transaction {
   timestamp: string | null;
   confirmation_duration: Array<number>;
   from: AddressParam;
-  to: AddressParam | null;
-  created_contract: AddressParam;
   value: string;
   fee: Fee;
-  gas_price: number;
-  type: number;
+  gas_price: string;
+  type: number | null;
   gas_used: string | null;
   gas_limit: string;
-  max_fee_per_gas: number | null;
-  max_priority_fee_per_gas: number | null;
-  priority_fee: number | null;
-  base_fee_per_gas: number | null;
-  tx_burnt_fee: number | null;
+  max_fee_per_gas: string | null;
+  max_priority_fee_per_gas: string | null;
+  priority_fee: string | null;
+  base_fee_per_gas: string | null;
+  tx_burnt_fee: string | null;
   nonce: number;
-  position: number;
+  position: number | null;
   revert_reason: TransactionRevertReason | null;
   raw_input: string;
   decoded_input: DecodedInput | null;

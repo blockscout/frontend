@@ -19,7 +19,7 @@ const LatestTransactions = () => {
   const fetch = useFetch();
   const { data, isLoading, isError } = useQuery<unknown, unknown, Array<Transaction>>(
     [ QueryKeys.indexTxs ],
-    async() => await fetch(`/api/index/txs`),
+    async() => await fetch(`/node-api/index/txs`),
   );
 
   let content;
@@ -54,7 +54,7 @@ const LatestTransactions = () => {
 
   return (
     <>
-      <Heading as="h4" fontSize="18px" mb={{ base: 3, lg: 8 }}>Latest transactions</Heading>
+      <Heading as="h4" size="sm" mb={ 4 }>Latest transactions</Heading>
       { content }
     </>
   );

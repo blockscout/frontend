@@ -1,3 +1,4 @@
+import type { TokenType } from 'types/api/tokenInfo';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 export const flattenTotal = (result: Array<TokenTransfer>, item: TokenTransfer): Array<TokenTransfer> => {
@@ -24,3 +25,9 @@ export const getTokenTransferTypeText = (type: TokenTransfer['type']) => {
       return 'Token transfer';
   }
 };
+
+export const TOKEN_TYPE: Array<{ title: string; id: TokenType }> = [
+  { title: 'ERC-20', id: 'ERC-20' },
+  { title: 'ERC-721', id: 'ERC-721' },
+  { title: 'ERC-1155', id: 'ERC-1155' },
+];

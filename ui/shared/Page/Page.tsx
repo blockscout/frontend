@@ -10,7 +10,7 @@ import useFetch from 'lib/hooks/useFetch';
 import useScrollDirection from 'lib/hooks/useScrollDirection';
 import { SocketProvider } from 'lib/socket/context';
 import ScrollDirectionContext from 'ui/ScrollDirectionContext';
-import AppError from 'ui/shared/AppError';
+import AppError from 'ui/shared/AppError/AppError';
 import ErrorBoundary from 'ui/shared/ErrorBoundary';
 import PageContent from 'ui/shared/Page/PageContent';
 import Header from 'ui/snippets/header/Header';

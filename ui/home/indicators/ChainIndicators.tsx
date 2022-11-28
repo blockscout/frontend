@@ -40,8 +40,8 @@ const ChainIndicators = () => {
     () => fetch('/node-api/stats'),
   );
 
-  const bgColor = useColorModeValue('white', 'gray.900');
-  const listBgColor = useColorModeValue('gray.50', 'black');
+  const bgColor = useColorModeValue('white', 'black');
+  const listBgColor = useColorModeValue('gray.50', 'gray.900');
 
   if (indicators.length === 0) {
     return null;
@@ -91,7 +91,16 @@ const ChainIndicators = () => {
         <ChainIndicatorChartContainer { ...queryResult }/>
       </Flex>
       { indicators.length > 1 && (
-        <Flex flexShrink={ 0 } flexDir="column" as="ul" p={ 3 } borderRadius="lg" bgColor={ listBgColor } rowGap={ 3 } order={{ base: 1, lg: 2 }}>
+        <Flex
+          flexShrink={ 0 }
+          flexDir="column"
+          as="ul"
+          p={ 3 }
+          borderRadius="lg"
+          bgColor={ listBgColor }
+          rowGap={ 3 }
+          order={{ base: 1, lg: 2 }}
+        >
           { indicators.map((indicator) => (
             <ChainIndicatorItem
               key={ indicator.id }

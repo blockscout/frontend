@@ -4,6 +4,7 @@ import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
 
+import appConfig from 'configs/app/config';
 import rightArrowIcon from 'icons/arrows/east.svg';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
@@ -15,7 +16,7 @@ type Props = InternalTransaction
 
 const TxInternalTableItem = ({ type, from, to, value, success, error, gas_limit: gasLimit, created_contract: createdContract }: Props) => {
   const typeTitle = TX_INTERNALS_ITEMS.find(({ id }) => id === type)?.title;
-  const toData = to && to.hash ? to : createdContract;
+  const toData = to ? to : createdContract;
 
   return (
     <Tr alignItems="top">
@@ -45,7 +46,7 @@ const TxInternalTableItem = ({ type, from, to, value, success, error, gas_limit:
         </Address>
       </Td>
       <Td isNumeric verticalAlign="middle">
-        { value }
+        { BigNumber(value).div(BigNumber(10 ** appConfig.network.currency.decimals)).toFormat() }
       </Td>
       <Td isNumeric verticalAlign="middle">
         { BigNumber(gasLimit).toFormat() }

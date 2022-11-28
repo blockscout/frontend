@@ -1,4 +1,4 @@
-const PATHS = require('../../lib/link/paths');
+const PATHS = require('../../lib/link/paths.json');
 
 const oldUrls = [
   {
