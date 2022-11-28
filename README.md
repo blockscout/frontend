@@ -166,3 +166,6 @@ These are the steps that you have to follow to make everything work:
     - `deploy/values/e2e/values.yaml` - e2e-test environment
 
 Keep in mind that all json-like values should be single-quoted, e.g `[{'foo': 'bar'}]`
+
+
+
