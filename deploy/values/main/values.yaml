@@ -156,7 +156,6 @@ postgres:
   # strategy: Recreate
 
   persistence: true
-  mountPath: /var/lib/postgresql/data
 
   resources:
     limits:
