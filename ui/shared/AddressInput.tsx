@@ -2,13 +2,12 @@ import type { InputProps } from '@chakra-ui/react';
 import {
   Input,
   FormControl,
-  FormLabel,
 } from '@chakra-ui/react';
 import React from 'react';
 import type { ControllerRenderProps, FieldError, FieldValues, Path } from 'react-hook-form';
 
-import getPlaceholderWithError from 'lib/getPlaceholderWithError';
 import { ADDRESS_LENGTH } from 'lib/validations/address';
+import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
 type Props<TInputs extends FieldValues, TInputName extends Path<TInputs>> = {
   field: ControllerRenderProps<TInputs, TInputName>;
@@ -33,7 +32,7 @@ export default function AddressInput<Inputs extends FieldValues, Name extends Pa
         isInvalid={ Boolean(error) }
         maxLength={ ADDRESS_LENGTH }
       />
-      <FormLabel>{ getPlaceholderWithError(placeholder, error?.message) }</FormLabel>
+      <InputPlaceholder text={ placeholder } error={ error?.message }/>
     </FormControl>
   );
 }
