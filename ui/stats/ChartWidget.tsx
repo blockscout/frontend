@@ -65,6 +65,7 @@ const ChartWidget = ({ title, description }: Props) => {
         items={ demoData }
         onZoom={ handleZoom }
         isZoomResetInitial={ isZoomResetInitial }
+        title={ title }
       />
     </Box>
   );

@@ -4,7 +4,7 @@ import React, { useCallback } from 'react';
 import eastMiniArrowIcon from 'icons/arrows/east-mini.svg';
 
 type Props<T extends string> = {
-  items: Array<{id: T; value: string}>;
+  items: Array<{id: T; title: string}>;
   selectedId: T;
   onSelect: (id: T) => void;
 }
@@ -32,7 +32,7 @@ export function StatsDropdownMenu<T extends string>({ items, selectedId, onSelec
           display="flex"
           alignItems="center"
         >
-          { selectedCategory?.value }
+          { selectedCategory?.title }
           <Icon transform="rotate(-90deg)" ml={{ base: 'auto', sm: 1 }} as={ eastMiniArrowIcon } w={ 5 } h={ 5 }/>
         </Box>
       </MenuButton>
@@ -48,7 +48,7 @@ export function StatsDropdownMenu<T extends string>({ items, selectedId, onSelec
               key={ item.id }
               value={ item.id }
             >
-              { item.value }
+              { item.title }
             </MenuItemOption>
           )) }
         </MenuOptionGroup>
