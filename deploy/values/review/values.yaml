@@ -384,5 +384,6 @@ frontend:
       review: blockscout-main.test.aws-k8s.blockscout.com/auth/logout
     NEXT_PUBLIC_HOMEPAGE_CHARTS:
       _default: "['daily_txs','coin_price','market_cup']"
-
-
+    NEXT_PUBLIC_APP_HOST:
+      _default: blockscout.com
+      review: blockscout-main.test.aws-k8s.blockscout.com
