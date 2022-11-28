@@ -6,11 +6,12 @@ import type { Log } from 'types/api/log';
 // import searchIcon from 'icons/search.svg';
 import { space } from 'lib/html-entities';
 import link from 'lib/link/link';
+import notEmpty from 'lib/notEmpty';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import TxLogTopic from 'ui/tx/logs/TxLogTopic';
-import DecodedInputData from 'ui/tx/TxDecodedInputData';
+import DecodedInputData from 'ui/tx/TxDecodedInputData/TxDecodedInputData';
 
 type Props = Log;
 
@@ -74,7 +75,7 @@ const TxLogItem = ({ address, index, topics, data, decoded }: Props) => {
       ) }
       <RowHeader>Topics</RowHeader>
       <GridItem>
-        { topics.filter(Boolean).map((item, index) => (
+        { topics.filter(notEmpty).map((item, index) => (
           <TxLogTopic
             key={ index }
             hex={ item }

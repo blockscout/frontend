@@ -1,5 +1,7 @@
 import type { PlaywrightTestConfig } from '@playwright/experimental-ct-react';
 import { devices } from '@playwright/experimental-ct-react';
+import react from '@vitejs/plugin-react';
+import svgr from 'vite-plugin-svgr';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 /**
@@ -10,7 +12,7 @@ const config: PlaywrightTestConfig = {
 
   testMatch: /.*\.pw\.tsx/,
 
-  snapshotPathTemplate: '{testDir}/{testFileDir}/__screenshots__/{testFileName}_{arg}{ext}',
+  snapshotPathTemplate: '{testDir}/{testFileDir}/__screenshots__/{testFileName}_{projectName}_{arg}{ext}',
 
   /* Maximum time one test can run for. */
   timeout: 10 * 1000,
@@ -42,15 +44,49 @@ const config: PlaywrightTestConfig = {
     headless: true,
 
     ctViteConfig: {
-      plugins: [ tsconfigPaths() ],
+      plugins: [
+        tsconfigPaths(),
+        react(),
+        svgr({
+          exportAsDefault: true,
+        }),
+      ],
     },
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chromium',
-      use: devices['Desktop Chrome'],
+      name: 'default',
+      grepInvert: /-@default/,
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1200, height: 750 },
+      },
+    },
+    {
+      name: 'mobile',
+      grep: /\+@mobile/,
+      use: {
+        ...devices['iPhone 13 Pro'],
+      },
+    },
+    {
+      name: 'desktop xl',
+      grep: /\+@desktop-xl/,
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1600, height: 1000 },
+      },
+    },
+    {
+      name: 'dark color mode',
+      grep: /\+@dark-mode/,
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1200, height: 750 },
+        colorScheme: 'dark',
+      },
     },
   ],
 };

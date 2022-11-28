@@ -21,7 +21,8 @@
     "lint:tsc": "./node_modules/.bin/tsc -p ./tsconfig.json",
     "prepare": "husky install",
     "format-svg": "./node_modules/.bin/svgo -r ./icons",
-    "test:pw": "playwright test -c playwright-ct.config.ts",
+    "test:pw": "./playwright/make-envs-script.sh && playwright test -c playwright-ct.config.ts",
+    "test:pw:local": "export NODE_PATH=$(pwd)/node_modules && yarn test:pw",
     "test:pw:docker": "docker run --rm --network host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.28.0-focal ./playwright/run-tests.sh",
     "test:jest": "jest",
     "test:jest:watch": "jest --watch"
@@ -84,6 +85,7 @@
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",
     "typescript": "4.7.2",
+    "vite-plugin-svgr": "^2.2.2",
     "vite-tsconfig-paths": "^3.5.2"
   },
   "lint-staged": {

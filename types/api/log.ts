@@ -3,7 +3,7 @@ import type { DecodedInput } from './decodedInput';
 
 export interface Log {
   address: AddressParam;
-  topics: Array<string>;
+  topics: Array<string | null>;
   data: string;
   index: number;
   decoded: DecodedInput | null;

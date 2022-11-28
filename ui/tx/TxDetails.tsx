@@ -27,7 +27,7 @@ import Utilization from 'ui/shared/Utilization/Utilization';
 import TxDetailsSkeleton from 'ui/tx/details/TxDetailsSkeleton';
 import TxDetailsTokenTransfers from 'ui/tx/details/TxDetailsTokenTransfers';
 import TxRevertReason from 'ui/tx/details/TxRevertReason';
-import TxDecodedInputData from 'ui/tx/TxDecodedInputData';
+import TxDecodedInputData from 'ui/tx/TxDecodedInputData/TxDecodedInputData';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
 import useFetchTxInfo from 'ui/tx/useFetchTxInfo';
 
@@ -156,7 +156,7 @@ const TxDetails = () => {
             <CopyToClipboard text={ toAddress.hash }/>
           </Address>
         ) : (
-          <Flex width="100%" whiteSpace="pre">
+          <Flex width={{ base: '100%', lg: 'auto' }} whiteSpace="pre">
             <span>[Contract </span>
             <AddressLink hash={ toAddress.hash }/>
             <span> created]</span>

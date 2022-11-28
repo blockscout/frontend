@@ -38,7 +38,9 @@ const TxInternalsListItem = ({ type, from, to, value, success, error, gas_limit:
       </Box>
       <HStack spacing={ 3 }>
         <Text fontSize="sm" fontWeight={ 500 }>Value { appConfig.network.currency.symbol }</Text>
-        <Text fontSize="sm" variant="secondary">{ value }</Text>
+        <Text fontSize="sm" variant="secondary">
+          { BigNumber(value).div(BigNumber(10 ** appConfig.network.currency.decimals)).toFormat() }
+        </Text>
       </HStack>
       <HStack spacing={ 3 }>
         <Text fontSize="sm" fontWeight={ 500 }>Gas limit</Text>
