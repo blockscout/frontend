@@ -12,6 +12,7 @@ import {
 import { useMutation } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
+import useIsMobile from 'lib/hooks/useIsMobile';
 import FormSubmitAlert from 'ui/shared/FormSubmitAlert';
 
 type Props = {
@@ -53,8 +54,10 @@ const DeleteModal: React.FC<Props> = ({
     mutation.mutate();
   }, [ setAlertVisible, mutation ]);
 
+  const isMobile = useIsMobile();
+
   return (
-    <Modal isOpen={ isOpen } onClose={ onModalClose } size={{ base: 'full', lg: 'md' }}>
+    <Modal isOpen={ isOpen } onClose={ onModalClose } size={ isMobile ? 'full' : 'md' }>
       <ModalOverlay/>
       <ModalContent>
         <ModalHeader fontWeight="500" textStyle="h3">{ title }</ModalHeader>
