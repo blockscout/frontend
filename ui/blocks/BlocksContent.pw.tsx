@@ -73,7 +73,7 @@ test('socket error', async({ mount, page, createSocket }) => {
 
   const socket = await createSocket();
   await socketServer.joinChannel(socket, 'blocks:new_block');
-  await socketServer.simulateConnectionLoss(page);
+  socket.close();
 
   await expect(component).toHaveScreenshot();
 });

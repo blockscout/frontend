@@ -1,4 +1,4 @@
-import type { TestFixture, Page } from '@playwright/test';
+import type { TestFixture } from '@playwright/test';
 import type { WebSocket } from 'ws';
 import { WebSocketServer } from 'ws';
 
@@ -62,13 +62,4 @@ export function sendMessage(socket: WebSocket, channel: Channel, msg: string, pa
     msg,
     payload,
   ]));
-}
-
-// we massively rely here on phoenix socket lib implementation where page hide event causes socket disconnect
-// i was not able to find better way to simulate connection loss state, feel free to improve it
-// see more here https://github.com/phoenixframework/phoenix/blob/3cf1f1065ce11a906bd04b7841814cdced3f0df2/assets/js/phoenix/socket.js#L113
-export async function simulateConnectionLoss(page: Page) {
-  await page.evaluate(() => {
-    window.dispatchEvent(new Event('pagehide'));
-  });
 }
