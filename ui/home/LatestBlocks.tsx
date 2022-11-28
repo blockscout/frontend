@@ -86,14 +86,13 @@ const LatestBlocks = () => {
         { statsQueryResult.isLoading && (
           <Skeleton h="24px" w="170px" mb={{ base: 6, lg: 9 }}/>
         ) }
-        { statsQueryResult.data?.network_utilization_percentage && (
+        { statsQueryResult.data?.network_utilization_percentage !== undefined && (
           <Box mb={{ base: 6, lg: 9 }}>
             <Text as="span" fontSize="sm">
-            Network utilization:{ nbsp }
+              Network utilization:{ nbsp }
             </Text>
-            { /* Not implemented in API yet */ }
             <Text as="span" fontSize="sm" color="blue.400" fontWeight={ 700 }>
-              { statsQueryResult.data.network_utilization_percentage.toFixed(2) }%
+              { statsQueryResult.data?.network_utilization_percentage.toFixed(2) }%
             </Text>
           </Box>
         ) }
