@@ -4,7 +4,7 @@ import React, { useCallback } from 'react';
 import type { ControllerRenderProps, Control, FieldError } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 
-import getPlaceholderWithError from 'lib/getPlaceholderWithError';
+import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
 import type { Inputs } from './PublicTagsForm';
 
@@ -25,7 +25,7 @@ export default function PublicTagFormComment({ control, error, size }: Props) {
           isInvalid={ Boolean(error) }
         />
         <FormLabel>
-          { getPlaceholderWithError('Specify the reason for adding tags and color preference(s)', error?.message) }
+          <InputPlaceholder text="Specify the reason for adding tags and color preference(s)" error={ error?.message }/>
         </FormLabel>
       </FormControl>
     );

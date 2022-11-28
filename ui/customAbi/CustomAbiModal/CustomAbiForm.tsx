@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   FormControl,
-  FormLabel,
   Input,
   Textarea,
   useColorModeValue,
@@ -16,11 +15,11 @@ import type { CustomAbi, CustomAbis, CustomAbiErrors } from 'types/api/account';
 import { QueryKeys } from 'types/client/accountQueries';
 
 import getErrorMessage from 'lib/getErrorMessage';
-import getPlaceholderWithError from 'lib/getPlaceholderWithError';
 import type { ErrorType } from 'lib/hooks/useFetch';
 import useFetch from 'lib/hooks/useFetch';
 import { ADDRESS_REGEXP } from 'lib/validations/address';
 import AddressInput from 'ui/shared/AddressInput';
+import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
 type Props = {
   data?: CustomAbi;
@@ -119,7 +118,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
           isInvalid={ Boolean(errors.name) }
           maxLength={ NAME_MAX_LENGTH }
         />
-        <FormLabel>{ getPlaceholderWithError('Project name', errors.name?.message) }</FormLabel>
+        <InputPlaceholder text="Project name" error={ errors.name?.message }/>
       </FormControl>
     );
   }, [ errors, formBackgroundColor ]);
@@ -133,7 +132,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
           minH="300px"
           isInvalid={ Boolean(errors.abi) }
         />
-        <FormLabel>{ getPlaceholderWithError(`Custom ABI [{...}] (JSON format)`, errors.abi?.message) }</FormLabel>
+        <InputPlaceholder text="Custom ABI [{...}] (JSON format)" error={ errors.abi?.message }/>
       </FormControl>
     );
   }, [ errors, formBackgroundColor ]);
