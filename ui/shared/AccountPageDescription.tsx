@@ -26,7 +26,8 @@ const AccountPageDescription = ({ children }: {children: React.ReactNode}) => {
     return function cleanup() {
       window.removeEventListener('resize', resizeHandler);
     };
-  }, [ calculateCut ]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ ]);
 
   const expand = useCallback(() => {
     setExpanded(true);
