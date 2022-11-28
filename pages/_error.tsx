@@ -27,7 +27,7 @@ import * as cookies from 'lib/cookies';
 import getNetworkTitle from 'lib/networks/getNetworkTitle';
 import type { Props as ServerSidePropsCommon } from 'lib/next/getServerSideProps';
 import { getServerSideProps as getServerSidePropsCommon } from 'lib/next/getServerSideProps';
-import AppError from 'ui/shared/AppError';
+import AppError from 'ui/shared/AppError/AppError';
 import Page from 'ui/shared/Page/Page';
 
 type Props = ServerSidePropsCommon & {

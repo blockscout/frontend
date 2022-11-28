@@ -1,8 +1,9 @@
-import type { BlocksResponse, BlockTransactionsResponse } from 'types/api/block';
+import type { BlocksResponse, BlockTransactionsResponse, BlockFilters } from 'types/api/block';
 import type { InternalTransactionsResponse } from 'types/api/internalTransaction';
 import type { LogsResponse } from 'types/api/log';
-import type { TokenTransferResponse } from 'types/api/tokenTransfer';
+import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
 import type { TransactionsResponseValidated, TransactionsResponsePending } from 'types/api/transaction';
+import type { TTxsFilters } from 'types/api/txsFilters';
 import { QueryKeys } from 'types/client/queries';
 import type { KeysOfObjectOrNull } from 'types/utils/KeysOfObjectOrNull';
 
@@ -24,6 +25,13 @@ export type PaginatedResponse<Q extends PaginatedQueryKeys> =
             Q extends QueryKeys.txLogs ? LogsResponse :
               Q extends QueryKeys.txTokenTransfers ? TokenTransferResponse :
                 never
+
+export type PaginationFilters<Q extends PaginatedQueryKeys> =
+  Q extends QueryKeys.blocks ? BlockFilters :
+    Q extends QueryKeys.txsValidate ? TTxsFilters :
+      Q extends QueryKeys.txsPending ? TTxsFilters :
+        Q extends QueryKeys.txTokenTransfers ? TokenTransferFilters :
+          never
 
 export type PaginationParams<Q extends PaginatedQueryKeys> = PaginatedResponse<Q>['next_page_params'];
 

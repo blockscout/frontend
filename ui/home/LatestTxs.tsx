@@ -19,7 +19,7 @@ const LatestTransactions = () => {
   const fetch = useFetch();
   const { data, isLoading, isError } = useQuery<unknown, unknown, Array<Transaction>>(
     [ QueryKeys.indexTxs ],
-    async() => await fetch(`/api/index/txs`),
+    async() => await fetch(`/node-api/index/txs`),
   );
 
   let content;

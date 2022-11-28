@@ -28,7 +28,7 @@ const Stats = () => {
 
   const { data, isLoading, isError } = useQuery<unknown, unknown, Stats>(
     [ QueryKeys.stats ],
-    async() => await fetch(`/api/index/stats`),
+    async() => await fetch(`/node-api/stats`),
   );
 
   if (isError) {

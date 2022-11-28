@@ -5,10 +5,8 @@ import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 import { animateScroll } from 'react-scroll';
 
-import type { BlockFilters } from 'types/api/block';
 import { PAGINATION_FIELDS } from 'types/api/pagination';
-import type { PaginationParams, PaginatedResponse, PaginatedQueryKeys } from 'types/api/pagination';
-import type { TTxsFilters } from 'types/api/txsFilters';
+import type { PaginationParams, PaginatedResponse, PaginatedQueryKeys, PaginationFilters } from 'types/api/pagination';
 
 import useFetch from 'lib/hooks/useFetch';
 
@@ -16,7 +14,7 @@ interface Params<QueryName extends PaginatedQueryKeys> {
   apiPath: string;
   queryName: QueryName;
   queryIds?: Array<string>;
-  filters?: TTxsFilters | BlockFilters;
+  filters?: PaginationFilters<QueryName>;
   options?: Omit<UseQueryOptions<unknown, unknown, PaginatedResponse<QueryName>>, 'queryKey' | 'queryFn'>;
 }
 

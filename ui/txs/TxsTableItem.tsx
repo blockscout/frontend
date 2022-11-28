@@ -44,7 +44,7 @@ const TxsTableItem = ({ tx, showBlockInfo }: {tx: Transaction; showBlockInfo: bo
     </Address>
   );
 
-  const dataTo = tx.to && tx.to.hash ? tx.to : tx.created_contract;
+  const dataTo = tx.to ? tx.to : tx.created_contract;
 
   const addressTo = (
     <Address>

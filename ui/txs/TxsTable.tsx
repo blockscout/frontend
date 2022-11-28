@@ -21,7 +21,7 @@ type Props = {
 
 const TxsTable = ({ txs, sort, sorting, top, showBlockInfo }: Props) => {
   return (
-    <Table variant="simple" minWidth="810px" size="xs">
+    <Table variant="simple" minWidth="950px" size="xs">
       <TheadSticky top={ top }>
         <Tr>
           <Th width="54px"></Th>
