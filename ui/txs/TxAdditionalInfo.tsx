@@ -28,7 +28,7 @@ const TxAdditionalInfo = ({ tx }: { tx: Transaction }) => {
 
   return (
     <>
-      <Heading as="h4" fontSize="18px" mb={ 6 }>Additional info </Heading>
+      <Heading as="h4" size="sm" mb={ 6 }>Additional info </Heading>
       <Box { ...sectionProps } mb={ 4 }>
         <Text { ...sectionTitleProps }>Transaction fee</Text>
         <Flex>
