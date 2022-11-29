@@ -1,4 +1,4 @@
-import { Alert, Spinner, Text, Link, useColorModeValue, useTheme } from '@chakra-ui/react';
+import { Alert, Text, Link, useColorModeValue, useTheme } from '@chakra-ui/react';
 import { transparentize } from '@chakra-ui/theme-tools';
 import React from 'react';
 
@@ -18,18 +18,14 @@ const LatestTxsNotice = ({ className }: Props) => {
     content = 'Connection is lost. Please reload page';
   } else if (!num) {
     content = (
-      <>
-        <Spinner size="sm" mr={ 3 }/>
-        <Text>scanning new transactions ...</Text>
-      </>
+      <Text>scanning new transactions...</Text>
     );
   } else {
     const txsUrl = link('txs');
     content = (
       <>
-        <Spinner size="sm" mr={ 3 }/>
-        <Text as="span" whiteSpace="pre">+ { num } new transaction{ num > 1 ? 's' : '' }. </Text>
-        <Link href={ txsUrl }>View all</Link>
+        <Link href={ txsUrl }>{ num } more transaction{ num > 1 ? 's' : '' }</Link>
+        <Text whiteSpace="pre"> ha{ num > 1 ? 've' : 's' } come in</Text>
       </>
     );
   }
