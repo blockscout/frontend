@@ -1,4 +1,4 @@
-import { Alert, Link, chakra } from '@chakra-ui/react';
+import { Alert, Link, Text, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import useNewTxsSocket from 'lib/hooks/useNewTxsSocket';
@@ -45,7 +45,8 @@ const TxsNewItemNotice = ({ children, className }: Props) => {
 
     return (
       <Alert className={ className } status="warning" p={ 4 } fontWeight={ 400 }>
-        <Link onClick={ handleClick }>{ num } more transaction have come in</Link>
+        <Link onClick={ handleClick }>{ num } more transaction{ num > 1 ? 's' : '' }</Link>
+        <Text whiteSpace="pre"> ha{ num > 1 ? 've' : 's' } come in</Text>
       </Alert>
     );
   })();
