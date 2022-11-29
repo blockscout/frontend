@@ -55,6 +55,8 @@ export const joinChannel = async(socket: WebSocket, channelName: string) => {
   });
 };
 
+export function sendMessage(socket: WebSocket, channel: Channel, msg: 'transaction', payload: { transaction: number }): void;
+export function sendMessage(socket: WebSocket, channel: Channel, msg: 'pending_transaction', payload: { pending_transaction: number }): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'new_block', payload: NewBlockSocketResponse): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: string, payload: unknown): void {
   socket.send(JSON.stringify([
