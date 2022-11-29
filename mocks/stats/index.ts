@@ -1,6 +1,6 @@
-import type { Stats } from 'types/api/stats';
+import type { HomeStats } from 'types/api/stats';
 
-export const base: Stats = {
+export const base: HomeStats = {
   average_block_time: 6212.0,
   coin_price: '0.00199678',
   gas_prices: {
