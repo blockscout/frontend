@@ -48,7 +48,7 @@ jobs:
 
       - name: Add outputs
         run: |
-          echo "::set-output name=short-sha::${{ env.GITHUB_SHA_SHORT }}"
+          echo "::set-output name=short-sha::${{ env.GITHUB_EVENT_PULL_REQUEST_HEAD_SHA_SHORT }}"
         id: output-step
 
       - name: Build and push
@@ -59,10 +59,10 @@ jobs:
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          tags: ghcr.io/blockscout/frontend:prerelease-${{ env.GITHUB_SHA_SHORT }}
+          tags: ghcr.io/blockscout/frontend:prerelease-${{ env.GITHUB_EVENT_PULL_REQUEST_HEAD_SHA_SHORT }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            GIT_COMMIT_SHA=${{ env.GITHUB_SHA_SHORT }}
+            GIT_COMMIT_SHA=${{ env.GITHUB_EVENT_PULL_REQUEST_HEAD_SHA_SHORT }}
 
   deploy_frontend:
     name: Deploy frontend app
@@ -74,7 +74,7 @@ jobs:
       appNamespace: review-front-$GITHUB_HEAD_REF_SLUG
       blockscoutIngressHost: blockscout
       frontendIngressHost: blockscout
-      frontendImage: ghcr.io/blockscout/frontend:prerelease-$GITHUB_SHA_SHORT
+      frontendImage: ghcr.io/blockscout/frontend:prerelease-$GITHUB_EVENT_PULL_REQUEST_HEAD_SHA_SHORT
       gethIngressHost: geth
       scVerifierIngressHost: sc-verifier
     secrets: inherit
