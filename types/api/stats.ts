@@ -12,3 +12,7 @@ export type HomeStats = {
   market_cap: string;
   network_utilization_percentage: number;
 }
+
+export type Stats = {
+  total_blocks: string;
+}
