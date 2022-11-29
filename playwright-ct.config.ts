@@ -88,6 +88,14 @@ const config: PlaywrightTestConfig = {
         colorScheme: 'dark',
       },
     },
+    {
+      name: 'dark color mode mobile',
+      grep: /\+@dark-mode-mobile/,
+      use: {
+        ...devices['iPhone 13 Pro'],
+        colorScheme: 'dark',
+      },
+    },
   ],
 };
 

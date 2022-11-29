@@ -11,7 +11,7 @@
             "detail": "start local dev server",
             "presentation": {
                 "reveal": "silent",
-                "panel": "new",
+                "panel": "dedicated",
                 "close": true,
                 "revealProblems": "onProblem",
             },
@@ -31,7 +31,7 @@
             "detail": "start local dev server for POA network",
             "presentation": {
                 "reveal": "silent",
-                "panel": "new",
+                "panel": "dedicated",
                 "close": true,
                 "revealProblems": "onProblem",
             },
@@ -51,7 +51,7 @@
             "detail": "start local dev server for Goerli network",
             "presentation": {
                 "reveal": "silent",
-                "panel": "new",
+                "panel": "dedicated",
                 "close": true,
                 "revealProblems": "onProblem",
             },
@@ -77,7 +77,7 @@
             },
             "presentation": {
                 "reveal": "never",
-                "panel": "new",
+                "panel": "dedicated",
                 "close": true,
                 "revealProblems": "onProblem",
             },
@@ -91,7 +91,7 @@
             "detail": "run eslint",
             "presentation": {
                 "reveal": "silent",
-                "panel": "new",
+                "panel": "dedicated",
                 "revealProblems": "onProblem",
             },
             "icon": {
@@ -112,7 +112,7 @@
             "detail": "run visual components tests for current file",
             "presentation": {
                 "reveal": "always",
-                "panel": "new",
+                "panel": "dedicated",
                 "focus": true,
             },
             "icon": {
@@ -131,7 +131,7 @@
             "detail": "run visual components tests for current file",
             "presentation": {
                 "reveal": "always",
-                "panel": "new",
+                "panel": "dedicated",
                 "focus": true,
             },
             "icon": {
@@ -150,7 +150,7 @@
             "detail": "run visual components tests",
             "presentation": {
                 "reveal": "always",
-                "panel": "new",
+                "panel": "dedicated",
                 "focus": true,
             },
             "icon": {
@@ -171,7 +171,7 @@
             "detail": "run jest tests",
             "presentation": {
                 "reveal": "always",
-                "panel": "new",
+                "panel": "dedicated",
                 "focus": true,
             },
             "icon": {
@@ -190,7 +190,7 @@
             "detail": "run jest tests in watch mode",
             "presentation": {
                 "reveal": "always",
-                "panel": "new",
+                "panel": "dedicated",
                 "close": true,
                 "focus": true,
             },
@@ -210,7 +210,7 @@
             "detail": "run jest tests in watch mode for current file",
             "presentation": {
                 "reveal": "always",
-                "panel": "new",
+                "panel": "dedicated",
                 "focus": true,
             },
             "icon": {
@@ -230,7 +230,7 @@
             "detail": "build docker image",
             "presentation": {
                 "reveal": "always",
-                "panel": "new",
+                "panel": "dedicated",
                 "close": true,
                 "revealProblems": "onProblem",
                 "focus": true,
@@ -251,7 +251,7 @@
             "detail": "run docker container for POA network",
             "presentation": {
                 "reveal": "silent",
-                "panel": "new",
+                "panel": "dedicated",
                 "close": true,
                 "revealProblems": "onProblem",
             },
@@ -271,7 +271,7 @@
             "detail": "format svg files with svgo",
             "presentation": {
                 "reveal": "silent",
-                "panel": "new",
+                "panel": "dedicated",
                 "close": true,
                 "revealProblems": "onProblem",
             },
