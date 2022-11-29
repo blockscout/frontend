@@ -7,10 +7,12 @@ import type { UserInfo } from 'types/api/account';
 import { useAppContext } from 'lib/appContext';
 import * as cookies from 'lib/cookies';
 
+const IdenticonComponent = typeof Identicon === 'object' && 'default' in Identicon ? Identicon.default : Identicon;
+
 // for those who haven't got profile
 // or if we cannot download the profile picture for some reasons
 const FallbackImage = ({ size, id }: { size: number; id: string }) => {
-  const bgColor = useToken('colors', useColorModeValue('blackAlpha.100', 'white'));
+  const bgColor = useToken('colors', useColorModeValue('gray.100', 'white'));
 
   return (
     <Box
@@ -19,7 +21,7 @@ const FallbackImage = ({ size, id }: { size: number; id: string }) => {
       maxHeight={ `${ size }px` }
     >
       <Box boxSize={ `${ size * 2 }px` } transformOrigin="left top" transform="scale(0.5)" borderRadius="full" overflow="hidden">
-        <Identicon
+        <IdenticonComponent
           bg={ bgColor }
           string={ id }
           // the displayed size is doubled for retina displays and then scaled down

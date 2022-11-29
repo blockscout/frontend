@@ -2,7 +2,7 @@ import { Grid } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
-import { Stats } from 'types/api/stats';
+import type { Stats as TStats } from 'types/api/stats';
 import { QueryKeys } from 'types/client/queries';
 
 import appConfig from 'configs/app/config';
@@ -26,7 +26,7 @@ let itemsCount = 5;
 const Stats = () => {
   const fetch = useFetch();
 
-  const { data, isLoading, isError } = useQuery<unknown, unknown, Stats>(
+  const { data, isLoading, isError } = useQuery<unknown, unknown, TStats>(
     [ QueryKeys.stats ],
     async() => await fetch(`/node-api/stats`),
   );
@@ -79,10 +79,10 @@ const Stats = () => {
 
   return (
     <Grid
-      gridTemplateColumns={{ lg: `repeat(${ itemsCount }, 1fr)`, base: 'none' }}
-      gridTemplateRows={{ lg: 'none', base: `repeat(${ itemsCount }, 1fr)` }}
+      gridTemplateColumns={{ lg: `repeat(${ itemsCount }, 1fr)`, base: '1fr 1fr' }}
+      gridTemplateRows={{ lg: 'none', base: undefined }}
       gridGap="10px"
-      marginTop="32px"
+      marginTop="24px"
     >
       { content }
     </Grid>

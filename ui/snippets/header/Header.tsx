@@ -11,11 +11,11 @@ import Burger from './Burger';
 import ColorModeToggler from './ColorModeToggler';
 
 type Props = {
-  hasSearch: boolean;
+  isHomePage?: boolean;
   hideOnScrollDown?: boolean;
 }
 
-const Header = ({ hideOnScrollDown, hasSearch }: Props) => {
+const Header = ({ hideOnScrollDown, isHomePage }: Props) => {
   const bgColor = useColorModeValue('white', 'black');
 
   return (
@@ -43,22 +43,27 @@ const Header = ({ hideOnScrollDown, hasSearch }: Props) => {
               <NetworkLogo/>
               <ProfileMenuMobile/>
             </Flex>
-            { hasSearch && <SearchBar withShadow={ !hideOnScrollDown }/> }
-          </Box><HStack
-            as="header"
-            width="100%"
-            alignItems="center"
-            justifyContent="center"
-            gap={ 12 }
-            display={{ base: 'none', lg: 'flex' }}
-            paddingX={ 12 }
-            paddingTop={ 9 }
-            paddingBottom={ 8 }
-          >
-            <Box width="100%">{ hasSearch && <SearchBar/> }</Box>
-            <ColorModeToggler/>
-            <ProfileMenuDesktop/>
-          </HStack>
+            { !isHomePage && <SearchBar withShadow={ !hideOnScrollDown }/> }
+          </Box>
+          { !isHomePage && (
+            <HStack
+              as="header"
+              width="100%"
+              alignItems="center"
+              justifyContent="center"
+              gap={ 12 }
+              display={{ base: 'none', lg: 'flex' }}
+              paddingX={ 12 }
+              paddingTop={ 9 }
+              paddingBottom="52px"
+            >
+              <Box width="100%">
+                <SearchBar/>
+              </Box>
+              <ColorModeToggler/>
+              <ProfileMenuDesktop/>
+            </HStack>
+          ) }
         </>
       ) }
     </ScrollDirectionContext.Consumer>

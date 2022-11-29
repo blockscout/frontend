@@ -8,7 +8,7 @@ interface InjectedProps {
 }
 
 interface Props {
-  children: (props: InjectedProps) => JSX.Element;
+  children?: (props: InjectedProps) => JSX.Element;
   className?: string;
 }
 
@@ -51,7 +51,7 @@ const TxsNewItemNotice = ({ children, className }: Props) => {
     );
   })();
 
-  return children({ content });
+  return children ? children({ content }) : content;
 };
 
 export default chakra(TxsNewItemNotice);

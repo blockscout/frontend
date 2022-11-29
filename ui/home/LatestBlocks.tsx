@@ -109,10 +109,10 @@ const LatestBlocks = () => {
   }
 
   return (
-    <>
-      <Heading as="h4" size="sm" mb={{ base: 4, lg: 7 }}>Latest Blocks</Heading>
+    <Box width={{ base: '100%', lg: '280px' }}>
+      <Heading as="h4" size="sm" mb={ 4 }>Latest Blocks</Heading>
       { content }
-    </>
+    </Box>
   );
 };
 

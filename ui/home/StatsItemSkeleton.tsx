@@ -7,16 +7,16 @@ const StatsItemSkeleton = () => {
   return (
     <Flex
       backgroundColor={ bgColor }
-      padding={ 5 }
-      borderRadius="16px"
+      padding={ 3 }
+      borderRadius="md"
       flexDirection={{ base: 'row', lg: 'column', xl: 'row' }}
       alignItems="center"
+      columnGap={ 3 }
+      rowGap={ 2 }
     >
       <Skeleton
         w="40px"
         h="40px"
-        mr={{ base: 4, lg: 0, xl: 4 }}
-        mb={{ base: 0, lg: 2, xl: 0 }}
       />
       <Flex flexDirection="column" alignItems={{ base: 'start', lg: 'center', xl: 'start' }}>
         <Skeleton w="69px" h="10px" mt="4px" mb="8px"/>
