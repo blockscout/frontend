@@ -36,8 +36,7 @@ const sizes = {
       fontSize: 'sm',
     },
     td: {
-      px: 4,
-      py: 6,
+      p: 4,
     },
   }),
   sm: definePartsStyle({
@@ -48,7 +47,7 @@ const sizes = {
     },
     td: {
       px: '10px',
-      py: 6,
+      py: 4,
       fontSize: 'sm',
       fontWeight: 500,
     },
@@ -61,7 +60,7 @@ const sizes = {
     },
     td: {
       px: '6px',
-      py: 6,
+      py: 4,
       fontSize: 'sm',
       fontWeight: 500,
     },

@@ -1,5 +1,4 @@
-import { Box, Heading, Icon, IconButton, Image, Link, LinkBox, LinkOverlay, Text, useColorModeValue } from '@chakra-ui/react';
-import NextLink from 'next/link';
+import { Box, Heading, Icon, IconButton, Image, Link, LinkBox, Text, useColorModeValue } from '@chakra-ui/react';
 import type { MouseEvent } from 'react';
 import React, { useCallback } from 'react';
 
@@ -8,9 +7,9 @@ import type { AppItemPreview } from 'types/client/apps';
 import northEastIcon from 'icons/arrows/north-east.svg';
 import starFilledIcon from 'icons/star_filled.svg';
 import starOutlineIcon from 'icons/star_outline.svg';
-import link from 'lib/link/link';
 import notEmpty from 'lib/notEmpty';
 
+import AppCardLink from './AppCardLink';
 import { APP_CATEGORIES } from './constants';
 
 interface Props extends AppItemPreview {
@@ -19,7 +18,10 @@ interface Props extends AppItemPreview {
   onFavoriteClick: (id: string, isFavorite: boolean) => void;
 }
 
-const AppCard = ({ id,
+const AppCard = ({
+  id,
+  url,
+  external,
   title,
   logo,
   shortDescription,
@@ -85,11 +87,12 @@ const AppCard = ({ id,
           size={{ base: 'xs', sm: 'sm' }}
           fontWeight="semibold"
         >
-          <NextLink href={ link('app_index', { id: id }) } passHref>
-            <LinkOverlay>
-              { title }
-            </LinkOverlay>
-          </NextLink>
+          <AppCardLink
+            id={ id }
+            url={ url }
+            external={ external }
+            title={ title }
+          />
         </Heading>
 
         <Text

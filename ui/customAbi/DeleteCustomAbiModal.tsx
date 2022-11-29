@@ -29,7 +29,7 @@ const DeleteCustomAbiModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
 
   const renderText = useCallback(() => {
     return (
-      <Text>Custom ABI for<Text fontWeight="600" as="span">{ ` "${ data.name || 'name' }" ` }</Text>will be deleted</Text>
+      <Text>Custom ABI for<Text fontWeight="700" as="span">{ ` "${ data.name || 'name' }" ` }</Text>will be deleted</Text>
     );
   }, [ data.name ]);
 

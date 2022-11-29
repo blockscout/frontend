@@ -6,7 +6,7 @@ export const SocketContext = React.createContext<Socket | null>(null);
 
 interface SocketProviderProps {
   children: React.ReactNode;
-  url: string;
+  url?: string;
   options?: Partial<SocketConnectOption>;
 }
 
@@ -14,6 +14,10 @@ export function SocketProvider({ children, options, url }: SocketProviderProps) 
   const [ socket, setSocket ] = useState<Socket | null>(null);
 
   useEffect(() => {
+    if (!url) {
+      return;
+    }
+
     const socketInstance = new Socket(url, options);
     socketInstance.connect();
     setSocket(socketInstance);

@@ -18,7 +18,7 @@ const TxType = ({ types }: Props) => {
   switch (typeToShow) {
     case 'contract_call':
       label = 'Contract call';
-      colorScheme = 'blue';
+      colorScheme = 'green';
       break;
     case 'contract_creation':
       label = 'Contract creation';
@@ -36,6 +36,10 @@ const TxType = ({ types }: Props) => {
       label = 'Coin transfer';
       colorScheme = 'teal';
       break;
+    default:
+      label = 'Transaction';
+      colorScheme = 'blue';
+
   }
 
   return (

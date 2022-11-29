@@ -5,6 +5,7 @@ import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
 import type { Block } from 'types/api/block';
+import type { Stats } from 'types/api/stats';
 import { QueryKeys } from 'types/client/queries';
 
 import useFetch from 'lib/hooks/useFetch';
@@ -26,10 +27,14 @@ const LatestBlocks = () => {
   const fetch = useFetch();
   const { data, isLoading, isError } = useQuery<unknown, unknown, Array<Block>>(
     [ QueryKeys.indexBlocks ],
-    async() => await fetch(`/api/index/blocks`),
+    async() => await fetch(`/node-api/index/blocks`),
   );
 
   const queryClient = useQueryClient();
+  const statsQueryResult = useQuery<unknown, unknown, Stats>(
+    [ QueryKeys.stats ],
+    () => fetch('/node-api/stats'),
+  );
 
   const handleNewBlockMessage: SocketMessage.NewBlock['handler'] = React.useCallback((payload) => {
     queryClient.setQueryData([ QueryKeys.indexBlocks ], (prevData: Array<Block> | undefined) => {
@@ -78,15 +83,19 @@ const LatestBlocks = () => {
 
     content = (
       <>
-        <Box mb={{ base: 6, lg: 9 }}>
-          <Text as="span" fontSize="sm">
-        Network utilization:{ nbsp }
-          </Text>
-          { /* Not implemented in API yet */ }
-          <Text as="span" fontSize="sm" color="blue.400" fontWeight={ 700 }>
-        43.8%
-          </Text>
-        </Box>
+        { statsQueryResult.isLoading && (
+          <Skeleton h="24px" w="170px" mb={{ base: 6, lg: 9 }}/>
+        ) }
+        { statsQueryResult.data?.network_utilization_percentage !== undefined && (
+          <Box mb={{ base: 6, lg: 9 }}>
+            <Text as="span" fontSize="sm">
+              Network utilization:{ nbsp }
+            </Text>
+            <Text as="span" fontSize="sm" color="blue.400" fontWeight={ 700 }>
+              { statsQueryResult.data?.network_utilization_percentage.toFixed(2) }%
+            </Text>
+          </Box>
+        ) }
         <VStack spacing={ `${ BLOCK_MARGIN }px` } mb={ 6 } height={ `${ BLOCK_HEIGHT * blocksCount + BLOCK_MARGIN * (blocksCount - 1) }px` } overflow="hidden">
           <AnimatePresence initial={ false } >
             { dataToShow.map((block => <LatestBlocksItem key={ block.height } block={ block } h={ BLOCK_HEIGHT }/>)) }
@@ -101,7 +110,7 @@ const LatestBlocks = () => {
 
   return (
     <>
-      <Heading as="h4" fontSize="18px" mb={{ base: 3, lg: 8 }}>Latest Blocks</Heading>
+      <Heading as="h4" size="sm" mb={{ base: 4, lg: 7 }}>Latest Blocks</Heading>
       { content }
     </>
   );

@@ -1,6 +1,6 @@
 import appConfig from 'configs/app/config';
 
-import PATHS from './paths.js';
+import PATHS from './paths.json';
 
 export interface Route {
   pattern: string;
@@ -83,6 +83,10 @@ export const ROUTES = {
   },
   app_index: {
     pattern: PATHS.app_index,
+  },
+
+  stats: {
+    pattern: PATHS.stats,
   },
 
   // SEARCH

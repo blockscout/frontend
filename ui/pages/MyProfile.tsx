@@ -23,7 +23,7 @@ const MyProfile = () => {
     }
 
     return (
-      <VStack maxW="412px" mt={ 12 } gap={ 5 } alignItems="stretch">
+      <VStack maxW="412px" mt={ 8 } gap={ 5 } alignItems="stretch">
         <UserAvatar size={ 64 } data={ data } isFetched={ isFetched }/>
         <FormControl variant="floating" id="name" isRequired size="lg">
           <Input

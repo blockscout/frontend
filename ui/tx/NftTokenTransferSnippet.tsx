@@ -4,7 +4,7 @@ import React from 'react';
 import nftIcon from 'icons/nft_shield.svg';
 import link from 'lib/link/link';
 import AddressLink from 'ui/shared/address/AddressLink';
-import TokenSnippet from 'ui/shared/TokenSnippet';
+import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
 
 interface Props {
   value: string;
@@ -26,7 +26,7 @@ const NftTokenTransferSnippet = ({ value, name, hash, symbol, tokenId }: Props) 
         <Link href={ url } fontWeight={ 600 }>{ tokenId }</Link>
       </Box>
       { name ? (
-        <TokenSnippet symbol={ symbol } hash={ hash } name={ name }/>
+        <TokenSnippet symbol={ symbol } hash={ hash } name={ name } w="auto"/>
       ) : (
         <AddressLink hash={ hash } truncation="constant" type="token"/>
       ) }

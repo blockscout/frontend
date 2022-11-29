@@ -1,5 +1,5 @@
 import type { AddressParam } from './addressParams';
-import type { TokenInfoGeneric } from './tokenInfo';
+import type { TokenInfoGeneric, TokenType } from './tokenInfo';
 
 export type Erc20TotalPayload = {
   decimals: string | null;
@@ -46,4 +46,8 @@ export interface TokenTransferResponse {
     items_count: number;
     transaction_hash: string;
   } | null;
+}
+
+export interface TokenTransferFilters {
+  type: Array<TokenType>;
 }

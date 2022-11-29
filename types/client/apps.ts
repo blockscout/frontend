@@ -19,15 +19,16 @@ export type MarketplaceCategory = { id: MarketplaceCategoriesIds; name: string }
 
 export type AppItemPreview = {
   id: string;
+  external: boolean;
   title: string;
   logo: string;
   shortDescription: string;
   categories: Array<MarketplaceCategoriesIds>;
+  url: string;
 }
 
 export type AppItemOverview = AppItemPreview & {
   author: string;
-  url: string;
   description: string;
   site?: string;
   twitter?: string;

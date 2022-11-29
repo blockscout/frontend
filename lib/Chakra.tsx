@@ -13,7 +13,7 @@ interface Props extends ChakraProviderProps {
 export function Chakra({ cookies, theme, children }: Props) {
   const colorModeManager =
       typeof cookies === 'string' ?
-        cookieStorageManagerSSR(cookies) :
+        cookieStorageManagerSSR(typeof document !== 'undefined' ? document.cookie : cookies) :
         localStorageManager;
 
   return (

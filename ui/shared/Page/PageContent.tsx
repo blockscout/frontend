@@ -3,7 +3,7 @@ import React from 'react';
 
 interface Props {
   children: React.ReactNode;
-  hasSearch: boolean;
+  hasSearch?: boolean;
 }
 
 const PageContent = ({ children, hasSearch }: Props) => {

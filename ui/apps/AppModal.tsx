@@ -1,8 +1,7 @@
 import {
-  Box, Button, Flex, Heading, Icon, IconButton, Image, Link, List, Modal, ModalBody,
+  Box, Flex, Heading, Icon, IconButton, Image, Link, List, Modal, ModalBody,
   ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tag, Text,
 } from '@chakra-ui/react';
-import NextLink from 'next/link';
 import React, { useCallback } from 'react';
 
 import type { AppItemOverview, MarketplaceCategoriesIds } from 'types/client/apps';
@@ -14,10 +13,11 @@ import tgIcon from 'icons/social/telega.svg';
 import twIcon from 'icons/social/tweet.svg';
 import starFilledIcon from 'icons/star_filled.svg';
 import starOutlineIcon from 'icons/star_outline.svg';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp } from 'lib/html-entities';
-import link from 'lib/link/link';
 import notEmpty from 'lib/notEmpty';
 
+import AppModalLink from './AppModalLink';
 import { APP_CATEGORIES } from './constants';
 
 type Props = {
@@ -35,6 +35,8 @@ const AppModal = ({
 }: Props) => {
   const {
     title,
+    url,
+    external,
     author,
     description,
     site,
@@ -64,11 +66,13 @@ const AppModal = ({
     onFavoriteClick(id, isFavorite);
   }, [ onFavoriteClick, id, isFavorite ]);
 
+  const isMobile = useIsMobile();
+
   return (
     <Modal
       isOpen={ Boolean(id) }
       onClose={ onClose }
-      size={{ base: 'full', lg: 'md' }}
+      size={ isMobile ? 'full' : 'md' }
       isCentered
     >
       <ModalOverlay/>
@@ -119,16 +123,12 @@ const AppModal = ({
             marginTop={{ base: 6, sm: 0 }}
           >
             <Box display="flex">
-              <NextLink href={ link('app_index', { id: id }) } passHref>
-                <Button
-                  as="a"
-                  size="sm"
-                  marginRight={ 2 }
-                  width={{ base: '100%', sm: 'auto' }}
-                >
-                  Launch app
-                </Button>
-              </NextLink>
+              <AppModalLink
+                id={ id }
+                url={ url }
+                external={ external }
+                title={ title }
+              />
 
               <IconButton
                 aria-label="Mark as favorite"

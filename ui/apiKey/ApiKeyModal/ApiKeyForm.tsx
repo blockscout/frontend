@@ -15,9 +15,9 @@ import type { ApiKey, ApiKeys, ApiKeyErrors } from 'types/api/account';
 import { QueryKeys } from 'types/client/accountQueries';
 
 import getErrorMessage from 'lib/getErrorMessage';
-import getPlaceholderWithError from 'lib/getPlaceholderWithError';
 import type { ErrorType } from 'lib/hooks/useFetch';
 import useFetch from 'lib/hooks/useFetch';
+import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
 type Props = {
   data?: ApiKey;
@@ -33,7 +33,7 @@ type Inputs = {
 const NAME_MAX_LENGTH = 255;
 
 const ApiKeyForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
-  const { control, handleSubmit, formState: { errors, isValid }, setError } = useForm<Inputs>({
+  const { control, handleSubmit, formState: { errors, isValid, isDirty }, setError } = useForm<Inputs>({
     mode: 'all',
     defaultValues: {
       token: data?.api_key || '',
@@ -71,7 +71,7 @@ const ApiKeyForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
           });
         }
 
-        return [ ...(prevData || []), response ];
+        return [ response, ...(prevData || []) ];
       });
 
       onClose();
@@ -113,7 +113,7 @@ const ApiKeyForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
           maxLength={ NAME_MAX_LENGTH }
         />
         <FormLabel>
-          { getPlaceholderWithError('Application name for API key (e.g Web3 project)', errors.name?.message) }
+          <InputPlaceholder text="Application name for API key (e.g Web3 project)" error={ errors.name?.message }/>
         </FormLabel>
       </FormControl>
     );
@@ -145,7 +145,7 @@ const ApiKeyForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
         <Button
           size="lg"
           type="submit"
-          disabled={ !isValid }
+          disabled={ !isValid || !isDirty }
           isLoading={ mutation.isLoading }
         >
           { data ? 'Save' : 'Generate API key' }
