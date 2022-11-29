@@ -36,7 +36,7 @@ const ChainIndicators = () => {
 
   const fetch = useFetch();
   const statsQueryResult = useQuery<unknown, unknown, HomeStats>(
-    [ QueryKeys.stats ],
+    [ QueryKeys.homeStats ],
     () => fetch('/node-api/stats'),
   );
 

@@ -27,7 +27,7 @@ const Stats = () => {
   const fetch = useFetch();
 
   const { data, isLoading, isError } = useQuery<unknown, unknown, HomeStats>(
-    [ QueryKeys.stats ],
+    [ QueryKeys.homeStats ],
     async() => await fetch(`/node-api/stats`),
   );
 

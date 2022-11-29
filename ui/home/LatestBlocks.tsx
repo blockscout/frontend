@@ -32,7 +32,7 @@ const LatestBlocks = () => {
 
   const queryClient = useQueryClient();
   const statsQueryResult = useQuery<unknown, unknown, HomeStats>(
-    [ QueryKeys.stats ],
+    [ QueryKeys.homeStats ],
     () => fetch('/node-api/stats'),
   );
 
