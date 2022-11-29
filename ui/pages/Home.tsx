@@ -1,6 +1,7 @@
 import { Box, Heading, Flex, LightMode } from '@chakra-ui/react';
 import React from 'react';
 
+import appConfig from 'configs/app/config';
 import ChainIndicators from 'ui/home/indicators/ChainIndicators';
 import LatestBlocks from 'ui/home/LatestBlocks';
 import LatestTxs from 'ui/home/LatestTxs';
@@ -15,7 +16,8 @@ const Home = () => {
     <Page isHomePage>
       <Box
         w="100%"
-        backgroundImage="radial-gradient(farthest-corner at 0 0, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%)"
+        backgroundImage={ appConfig.homepage.plateGradient }
+        backgroundColor="blue.400"
         borderRadius="24px"
         padding={{ base: '24px', lg: '48px' }}
         minW={{ base: 'unset', lg: '900px' }}
