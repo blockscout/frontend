@@ -4,9 +4,10 @@ import React from 'react';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
+import ChartsWidgetsList from '../stats/ChartsWidgetsList';
+import NumberWidgetsList from '../stats/NumberWidgetsList';
 import StatsFilters from '../stats/StatsFilters';
 import useStats from '../stats/useStats';
-import WidgetsList from '../stats/WidgetsList';
 
 const Stats = () => {
   const {
@@ -23,6 +24,10 @@ const Stats = () => {
       <PageTitle text="Ethereum Stats"/>
 
       <Box mb={{ base: 6, sm: 8 }}>
+        <NumberWidgetsList/>
+      </Box>
+
+      <Box mb={{ base: 6, sm: 8 }}>
         <StatsFilters
           section={ section }
           onSectionChange={ handleSectionChange }
@@ -32,7 +37,7 @@ const Stats = () => {
         />
       </Box>
 
-      <WidgetsList
+      <ChartsWidgetsList
         charts={ displayedCharts }
       />
     </Page>

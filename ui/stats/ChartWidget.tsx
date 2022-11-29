@@ -2,7 +2,7 @@ import { Box, Button, Grid, Heading, Text, useColorModeValue } from '@chakra-ui/
 import React, { useCallback } from 'react';
 
 import ChartWidgetGraph from './ChartWidgetGraph';
-import { demoData } from './constants/demo-data';
+import { demoChartsData } from './constants/demo-charts-data';
 
 type Props = {
   apiMethodURL: string;
@@ -62,7 +62,7 @@ const ChartWidget = ({ title, description }: Props) => {
       </Grid>
 
       <ChartWidgetGraph
-        items={ demoData }
+        items={ demoChartsData }
         onZoom={ handleZoom }
         isZoomResetInitial={ isZoomResetInitial }
         title={ title }

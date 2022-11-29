@@ -12,7 +12,7 @@ type Props = {
   charts: Array<StatsSection>;
 }
 
-const WidgetsList = ({ charts }: Props) => {
+const ChartsWidgetsList = ({ charts }: Props) => {
   const isAnyChartDisplayed = charts.some((section) => section.charts.some(chart => chart.visible));
 
   return isAnyChartDisplayed ? (
@@ -62,4 +62,4 @@ const WidgetsList = ({ charts }: Props) => {
   );
 };
 
-export default WidgetsList;
+export default ChartsWidgetsList;
