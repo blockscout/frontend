@@ -35,7 +35,7 @@ const AddressLink = ({ alias, type, className, truncation = 'dynamic', hash, id,
     if (alias) {
       return (
         <Tooltip label={ hash }>
-          <Box overflow="hidden" textOverflow="ellipsis">{ alias }</Box>
+          <Box overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">{ alias }</Box>
         </Tooltip>
       );
     }

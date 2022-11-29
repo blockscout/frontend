@@ -61,7 +61,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
   const fetch = useFetch();
   const inputSize = { base: 'md', lg: 'lg' };
 
-  const { control, handleSubmit, formState: { errors, isValid }, setError } = useForm<Inputs>({
+  const { control, handleSubmit, formState: { errors, isValid, isDirty }, setError } = useForm<Inputs>({
     defaultValues: {
       fullName: data?.full_name || '',
       email: data?.email || '',
@@ -123,7 +123,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
           });
         }
 
-        return [ ...(prevData || []), response ];
+        return [ response, ...(prevData || []) ];
       });
 
       changeToDataScreen(true);
@@ -237,7 +237,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
         <Button
           size="lg"
           type="submit"
-          disabled={ !isValid }
+          disabled={ !isValid || !isDirty }
           isLoading={ mutation.isLoading }
         >
           Send request

@@ -4,6 +4,7 @@ import { getColor, mode } from '@chakra-ui/theme-tools';
 import getDefaultFormColors from '../utils/getDefaultFormColors';
 
 const baseStyle = defineStyle({
+  display: 'flex',
   fontSize: 'md',
   marginEnd: '3',
   mb: '2',

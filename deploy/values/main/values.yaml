@@ -160,14 +160,14 @@ postgres:
   resources:
     limits:
       memory:
-        _default: "4Gi"
+        _default: "6Gi"
       cpu:
-        _default: "3"
+        _default: "4"
     requests:
       memory:
-        _default: "4Gi"
+        _default: "6Gi"
       cpu:
-        _default: "3"
+        _default: "4"
 
   environment:
     POSTGRES_USER:

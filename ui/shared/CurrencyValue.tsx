@@ -13,6 +13,13 @@ interface Props {
 }
 
 const CurrencyValue = ({ value, currency = '', decimals, exchangeRate, className, accuracy, accuracyUsd }: Props) => {
+  if (value === undefined || value === null) {
+    return (
+      <Box as="span" className={ className }>
+        <Text>N/A</Text>
+      </Box>
+    );
+  }
   const valueCurr = BigNumber(value).div(BigNumber(10 ** Number(decimals || '18')));
   const valueResult = accuracy ? valueCurr.dp(accuracy).toFormat() : valueCurr.toFormat();
 

@@ -2,6 +2,7 @@ import type { NextRouter } from 'next/router';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import useGradualIncrement from 'lib/hooks/useGradualIncrement';
 import { ROUTES } from 'lib/link/routes';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
@@ -36,19 +37,19 @@ function assertIsNewPendingTxResponse(response: unknown): response is { pending_
 
 export default function useNewTxsSocket() {
   const router = useRouter();
-  const [ num, setNum ] = React.useState(0);
+  const [ num, setNum ] = useGradualIncrement(0);
   const [ socketAlert, setSocketAlert ] = React.useState('');
 
   const { topic, event } = getSocketParams(router);
 
   const handleNewTxMessage = React.useCallback((response: { transaction: number } | { pending_transaction: number } | unknown) => {
     if (assertIsNewTxResponse(response)) {
-      setNum((prev) => prev + response.transaction);
+      setNum(response.transaction);
     }
     if (assertIsNewPendingTxResponse(response)) {
-      setNum((prev) => prev + response.pending_transaction);
+      setNum(response.pending_transaction);
     }
-  }, []);
+  }, [ setNum ]);
 
   const handleSocketClose = React.useCallback(() => {
     setSocketAlert('Connection is lost. Please click here to load new transactions.');

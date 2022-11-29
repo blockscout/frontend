@@ -1,12 +1,11 @@
 import {
   Input,
   FormControl,
-  FormLabel,
 } from '@chakra-ui/react';
 import React from 'react';
 import type { ControllerRenderProps, FieldError, FieldValues, Path } from 'react-hook-form';
 
-import getPlaceholderWithError from 'lib/getPlaceholderWithError';
+import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
 const TAG_MAX_LENGTH = 35;
 
@@ -24,7 +23,7 @@ function TagInput<Inputs extends FieldValues, Name extends Path<Inputs>>({ field
         isInvalid={ Boolean(error) }
         maxLength={ TAG_MAX_LENGTH }
       />
-      <FormLabel>{ getPlaceholderWithError(`Private tag (max 35 characters)`, error?.message) }</FormLabel>
+      <InputPlaceholder text="Private tag (max 35 characters)" error={ error?.message }/>
     </FormControl>
   );
 }

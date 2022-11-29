@@ -48,7 +48,7 @@ const DeletePublicTagModal: React.FC<Props> = ({ isOpen, onClose, data, onDelete
       text = (
         <>
           <Text display="inline" as="span">Public tag</Text>
-          <Text fontWeight="600" whiteSpace="pre" as="span">{ ` "${ tags[0] }" ` }</Text>
+          <Text fontWeight="700" whiteSpace="pre" as="span">{ ` "${ tags[0] }" ` }</Text>
           <Text as="span">will be removed.</Text>
         </>
       );
@@ -57,15 +57,15 @@ const DeletePublicTagModal: React.FC<Props> = ({ isOpen, onClose, data, onDelete
       const tagsText: Array<JSX.Element | string> = [];
       tags.forEach((tag, index) => {
         if (index < tags.length - 2) {
-          tagsText.push(<Text fontWeight="600" whiteSpace="pre" as="span">{ ` "${ tag }"` }</Text>);
+          tagsText.push(<Text fontWeight="700" whiteSpace="pre" as="span">{ ` "${ tag }"` }</Text>);
           tagsText.push(',');
         }
         if (index === tags.length - 2) {
-          tagsText.push(<Text fontWeight="600" whiteSpace="pre" as="span">{ ` "${ tag }" ` }</Text>);
+          tagsText.push(<Text fontWeight="700" whiteSpace="pre" as="span">{ ` "${ tag }" ` }</Text>);
           tagsText.push('and');
         }
         if (index === tags.length - 1) {
-          tagsText.push(<Text fontWeight="600" whiteSpace="pre" as="span">{ ` "${ tag }" ` }</Text>);
+          tagsText.push(<Text fontWeight="700" whiteSpace="pre" as="span">{ ` "${ tag }" ` }</Text>);
         }
       });
       text = (
@@ -76,7 +76,7 @@ const DeletePublicTagModal: React.FC<Props> = ({ isOpen, onClose, data, onDelete
     }
     return (
       <>
-        <Box marginBottom={ 12 }>
+        <Box marginBottom={ 8 }>
           { text }
         </Box>
         <FormControl variant="floating" id="tag-delete" backgroundColor={ formBackgroundColor }>
