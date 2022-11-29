@@ -61,7 +61,6 @@ export const base: Transaction = {
   tx_tag: null,
   tx_types: [
     'contract_call',
-    'token_transfer',
   ],
   type: 2,
   value: '42000000000000000000',
@@ -80,6 +79,9 @@ export const withContractCreation: Transaction = {
     public_tags: [],
     watchlist_names: [],
   },
+  tx_types: [
+    'contract_creation',
+  ],
 };
 
 export const withTokenTransfer: Transaction = {
@@ -99,6 +101,9 @@ export const withTokenTransfer: Transaction = {
     tokenTransferMock.erc721,
     tokenTransferMock.erc1155,
     tokenTransferMock.erc1155multiple,
+  ],
+  tx_types: [
+    'token_transfer',
   ],
 };
 

@@ -47,9 +47,9 @@ const Home = () => {
       </Box>
       <Stats/>
       <ChainIndicators/>
-      <Flex mt={ 12 } direction={{ base: 'column', lg: 'row' }}>
-        <Box mr={{ base: 0, lg: 12 }} mb={{ base: 8, lg: 0 }} width={{ base: '100%', lg: '280px' }}><LatestBlocks/></Box>
-        <Box flexGrow={ 1 }><LatestTxs/></Box>
+      <Flex mt={ 12 } direction={{ base: 'column', lg: 'row' }} columnGap={ 12 } rowGap={ 8 }>
+        <LatestBlocks/>
+        <LatestTxs/>
       </Flex>
     </Page>
   );

@@ -53,10 +53,10 @@ const LatestTransactions = () => {
   }
 
   return (
-    <>
+    <Box flexGrow={ 1 }>
       <Heading as="h4" size="sm" mb={ 4 }>Latest transactions</Heading>
       { content }
-    </>
+    </Box>
   );
 };
 
