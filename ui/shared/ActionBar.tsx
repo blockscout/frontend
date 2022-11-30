@@ -1,8 +1,8 @@
 import { Flex, useColorModeValue, chakra } from '@chakra-ui/react';
-import throttle from 'lodash/throttle';
 import React from 'react';
 
 import { useScrollDirection } from 'lib/contexts/scrollDirection';
+import useIsSticky from 'lib/hooks/useIsSticky';
 
 type Props = {
   children: React.ReactNode;
@@ -13,32 +13,9 @@ const TOP_UP = 106;
 const TOP_DOWN = 0;
 
 const ActionBar = ({ children, className }: Props) => {
-  const [ isSticky, setIsSticky ] = React.useState(false);
   const ref = React.useRef<HTMLDivElement>(null);
   const scrollDirection = useScrollDirection();
-
-  const handleScroll = React.useCallback(() => {
-    if (
-      Number(ref.current?.getBoundingClientRect().y) < TOP_UP + 5
-    ) {
-      setIsSticky(true);
-    } else {
-      setIsSticky(false);
-    }
-  }, [ ]);
-
-  React.useEffect(() => {
-    const throttledHandleScroll = throttle(handleScroll, 300);
-
-    window.addEventListener('scroll', throttledHandleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', throttledHandleScroll);
-    };
-  // replicate componentDidMount
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ ]);
-
+  const isSticky = useIsSticky(ref, TOP_UP + 5);
   const bgColor = useColorModeValue('white', 'black');
 
   return (

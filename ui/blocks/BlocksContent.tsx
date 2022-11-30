@@ -93,7 +93,7 @@ const BlocksContent = ({ type, query }: Props) => {
       <>
         { socketAlert && <Alert status="warning" mb={ 6 } as="a" href={ window.document.location.href }>{ socketAlert }</Alert> }
         <Show below="lg" key="content-mobile"><BlocksList data={ query.data.items }/></Show>
-        <Hide below="lg" key="content-desktop"><BlocksTable data={ query.data.items } top={ 0 } page={ 1 }/></Hide>
+        <Hide below="lg" key="content-desktop"><BlocksTable data={ query.data.items } top={ 80 } page={ 1 }/></Hide>
       </>
     );
 

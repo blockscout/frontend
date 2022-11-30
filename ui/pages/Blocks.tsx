@@ -5,6 +5,7 @@ import type { BlockType } from 'types/api/block';
 import { QueryKeys } from 'types/client/queries';
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
+import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import BlocksContent from 'ui/blocks/BlocksContent';
 import BlocksTabSlot from 'ui/blocks/BlocksTabSlot';
@@ -18,8 +19,15 @@ const TAB_TO_TYPE: Record<string, BlockType> = {
   uncles: 'uncle',
 };
 
+const TAB_LIST_PROPS = {
+  marginBottom: 0,
+  py: 5,
+  marginTop: -5,
+};
+
 const BlocksPageContent = () => {
   const router = useRouter();
+  const isMobile = useIsMobile();
   const type = router.query.tab && !Array.isArray(router.query.tab) ? TAB_TO_TYPE[router.query.tab] : undefined;
   const blocksQuery = useQueryWithPages({
     apiPath: '/node-api/blocks',
@@ -38,8 +46,9 @@ const BlocksPageContent = () => {
       <PageTitle text="Blocks"/>
       <RoutedTabs
         tabs={ tabs }
-        tabListMarginBottom={{ base: 6, lg: 8 }}
+        tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
         rightSlot={ <BlocksTabSlot pagination={ blocksQuery.pagination }/> }
+        stickyEnabled={ !isMobile }
       />
     </Page>
   );
