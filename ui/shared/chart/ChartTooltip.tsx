@@ -9,6 +9,7 @@ import type { Pointer } from 'ui/shared/chart/utils/pointerTracker';
 import { trackPointer } from 'ui/shared/chart/utils/pointerTracker';
 
 interface Props {
+  chartId?: string;
   width?: number;
   height?: number;
   data: TimeChartData;
@@ -22,7 +23,7 @@ const PADDING = 16;
 const LINE_SPACE = 10;
 const POINT_SIZE = 16;
 
-const ChartTooltip = ({ xScale, yScale, width, height, data, anchorEl, ...props }: Props) => {
+const ChartTooltip = ({ chartId, xScale, yScale, width, height, data, anchorEl, ...props }: Props) => {
   const lineColor = useToken('colors', 'gray.400');
   const titleColor = useToken('colors', 'blue.100');
   const textColor = useToken('colors', 'white');
@@ -71,10 +72,10 @@ const ChartTooltip = ({ xScale, yScale, width, height, data, anchorEl, ...props 
   );
 
   const updateDisplayedValue = React.useCallback((d: TimeChartItem, i: number) => {
-    d3.selectAll('.ChartTooltip__value')
+    d3.selectAll(`${ chartId ? `#${ chartId }` : '' } .ChartTooltip__value`)
       .filter((td, tIndex) => tIndex === i)
       .text(data[i].valueFormatter?.(d.value) || d.value.toLocaleString());
-  }, [ data ]);
+  }, [ data, chartId ]);
 
   const drawPoints = React.useCallback((x: number) => {
     const xDate = xScale.invert(x);

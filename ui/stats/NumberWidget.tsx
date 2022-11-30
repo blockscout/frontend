@@ -9,8 +9,7 @@ type Props = {
 const NumberWidget = ({ label, value }: Props) => {
   return (
     <Box
-      border="1px"
-      borderColor={ useColorModeValue('gray.200', 'gray.600') }
+      bg={ useColorModeValue('blue.50', 'blue.800') }
       p={ 3 }
       borderRadius={ 12 }
     >
