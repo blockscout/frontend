@@ -17,7 +17,8 @@ export interface NetworkExplorer {
   title: string;
   baseUrl: string;
   paths: {
-    tx: string;
+    tx?: string;
+    address?: string;
   };
 }
 

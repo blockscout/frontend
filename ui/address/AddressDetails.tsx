@@ -8,6 +8,7 @@ import React from 'react';
 import type { Address as TAddress, AddressCounters } from 'types/api/address';
 import { QueryKeys } from 'types/client/queries';
 
+import appConfig from 'configs/app/config';
 import metamaskIcon from 'icons/metamask.svg';
 import qrCodeIcon from 'icons/qr_code.svg';
 import starOutlineIcon from 'icons/star_outline.svg';
@@ -15,6 +16,7 @@ import useFetch from 'lib/hooks/useFetch';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import ExternalLink from 'ui/shared/ExternalLink';
 
 interface Props {
   addressQuery: UseQueryResult<TAddress>;
@@ -40,6 +42,8 @@ const AddressDetails = ({ addressQuery }: Props) => {
     return <Box>error</Box>;
   }
 
+  const explorers = appConfig.network.explorers.filter(({ paths }) => paths.address);
+
   return (
     <Box>
       <Flex alignItems="center">
@@ -54,6 +58,15 @@ const AddressDetails = ({ addressQuery }: Props) => {
           <Icon as={ qrCodeIcon } boxSize={ 5 }/>
         </Button>
       </Flex>
+      { explorers.length > 0 && (
+        <Flex mt={ 8 } columnGap={ 4 }>
+          <Text>Verify with other explorers</Text>
+          { explorers.map((explorer) => {
+            const url = new URL(explorer.paths.tx + '/' + router.query.id, explorer.baseUrl);
+            return <ExternalLink key={ explorer.baseUrl } title={ explorer.title } href={ url.toString() }/>;
+          }) }
+        </Flex>
+      ) }
       <Grid
         mt={ 8 }
         columnGap={ 8 }

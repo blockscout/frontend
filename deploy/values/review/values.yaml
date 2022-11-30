@@ -387,3 +387,5 @@ frontend:
     NEXT_PUBLIC_APP_HOST:
       _default: blockscout.com
       review: blockscout-main.test.aws-k8s.blockscout.com
+    NEXT_PUBLIC_NETWORK_EXPLORERS:
+      _default: [{'title':'Anyblock','baseUrl':'https://explorer.anyblock.tools','paths':{'tx':'/ethereum/poa/core/transaction','address':'/ethereum/poa/core/address'}}]
