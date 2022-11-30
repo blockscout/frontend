@@ -14,9 +14,7 @@ function isChartNameMatches(q: string, chart: StatsChart) {
 }
 
 export default function useStats() {
-  const [ isLoading, setIsLoading ] = useState(true);
-  const [ defaultCharts, setDefaultCharts ] = useState<Array<StatsSection>>();
-  const [ displayedCharts, setDisplayedCharts ] = useState<Array<StatsSection>>([]);
+  const [ displayedCharts, setDisplayedCharts ] = useState<Array<StatsSection>>(statsChartsScheme);
   const [ section, setSection ] = useState<StatsSectionIds>('all');
   const [ interval, setInterval ] = useState<StatsIntervalIds>('all');
   const [ filterQuery, setFilterQuery ] = useState('');
@@ -25,7 +23,7 @@ export default function useStats() {
   const debounceFilterCharts = useCallback(debounce(q => setFilterQuery(q), 500), []);
 
   const filterCharts = useCallback((q: string, currentSection: StatsSectionIds) => {
-    const charts = defaultCharts
+    const charts = statsChartsScheme
       ?.map((section: StatsSection) => {
         const charts = section.charts.map((chart: StatsChart) => ({
           ...chart,
@@ -39,7 +37,7 @@ export default function useStats() {
       });
 
     setDisplayedCharts(charts || []);
-  }, [ defaultCharts ]);
+  }, []);
 
   const handleSectionChange = useCallback((newSection: StatsSectionIds) => {
     setSection(newSection);
@@ -53,19 +51,12 @@ export default function useStats() {
     filterCharts(filterQuery, section);
   }, [ filterQuery, section, filterCharts ]);
 
-  useEffect(() => {
-    setDefaultCharts(statsChartsScheme);
-    setDisplayedCharts(statsChartsScheme);
-    setIsLoading(false);
-  }, []);
-
   return React.useMemo(() => ({
     section,
     handleSectionChange,
     interval,
     handleIntervalChange,
     debounceFilterCharts,
-    isLoading,
     displayedCharts,
   }), [
     section,
@@ -74,6 +65,5 @@ export default function useStats() {
     handleIntervalChange,
     debounceFilterCharts,
     displayedCharts,
-    isLoading,
   ]);
 }

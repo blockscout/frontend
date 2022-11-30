@@ -6,6 +6,7 @@ import React from 'react';
 import type { TimeChartItem } from 'ui/shared/chart/types';
 
 interface Props extends React.SVGProps<SVGPathElement> {
+  id?: string;
   xScale: d3.ScaleTime<number, number> | d3.ScaleLinear<number, number>;
   yScale: d3.ScaleTime<number, number> | d3.ScaleLinear<number, number>;
   color?: string;
@@ -13,10 +14,11 @@ interface Props extends React.SVGProps<SVGPathElement> {
   disableAnimation?: boolean;
 }
 
-const ChartArea = ({ xScale, yScale, color, data, disableAnimation, ...props }: Props) => {
+const ChartArea = ({ id, xScale, yScale, color, data, disableAnimation, ...props }: Props) => {
   const ref = React.useRef(null);
   const theme = useTheme();
 
+  const gradientColorId = `${ id || 'gradient' }-${ color }-color`;
   const gradientStopColor = useToken('colors', useColorModeValue('whiteAlpha.200', 'blackAlpha.100'));
   const defaultGradient = {
     startColor: useToken('colors', useColorModeValue('blue.100', 'blue.400')),
@@ -45,11 +47,11 @@ const ChartArea = ({ xScale, yScale, color, data, disableAnimation, ...props }: 
 
   return (
     <>
-      <path ref={ ref } d={ d } fill={ color ? `url(#gradient-${ color })` : 'url(#gradient-chart-area-default)' } opacity={ 0 } { ...props }/>
+      <path ref={ ref } d={ d } fill={ color ? `url(#${ gradientColorId })` : 'url(#gradient-chart-area-default)' } opacity={ 0 } { ...props }/>
       { color ? (
         <defs>
-          <linearGradient id={ `gradient-${ color }` } x1="0%" x2="0%" y1="0%" y2="100%">
-            <stop offset="20%" stopColor={ color }/>
+          <linearGradient id={ `${ gradientColorId }` } x1="0%" x2="0%" y1="0%" y2="100%">
+            <stop offset="0%" stopColor={ color }/>
             <stop offset="100%" stopColor={ gradientStopColor }/>
           </linearGradient>
         </defs>

@@ -27,14 +27,15 @@ const ChartWidgetGraph = ({ items, onZoom, isZoomResetInitial, title }: Props) =
   const [ range, setRange ] = React.useState<[ number, number ]>([ 0, Infinity ]);
   const { width, height, innerWidth, innerHeight } = useChartSize(ref.current, CHART_MARGIN);
   const overlayRef = React.useRef<SVGRectElement>(null);
-  const color = useToken('colors', 'blue.500');
+  const color = useToken('colors', 'blue.200');
+  const chartId = useMemo(() => `chart-${ crypto.randomUUID() }`, []);
 
   const displayedData = useMemo(() => items.slice(range[0], range[1]).map((d) =>
     ({ ...d, date: new Date(d.date) })), [ items, range ]);
-  const chartData = [ { items: items, name: title, color } ];
+  const chartData = [ { items: items, name: 'Value', color } ];
 
   const { yTickFormat, xScale, yScale } = useTimeChartController({
-    data: [ { items: displayedData, name: 'chart', color } ],
+    data: [ { items: displayedData, name: title, color } ],
     width: innerWidth,
     height: innerHeight,
   });
@@ -51,7 +52,7 @@ const ChartWidgetGraph = ({ items, onZoom, isZoomResetInitial, title }: Props) =
   }, [ isZoomResetInitial ]);
 
   return (
-    <svg width={ width || '100%' } height={ height || '100%' } ref={ ref } cursor="pointer">
+    <svg width={ width || '100%' } height={ height || '100%' } ref={ ref } cursor="pointer" id={ chartId }>
 
       <g transform={ `translate(${ CHART_MARGIN?.left || 0 },${ CHART_MARGIN?.top || 0 })` } opacity={ width ? 1 : 0 }>
         <ChartGridLine
@@ -63,6 +64,7 @@ const ChartWidgetGraph = ({ items, onZoom, isZoomResetInitial, title }: Props) =
         />
 
         <ChartArea
+          id={ chartId }
           data={ displayedData }
           color={ color }
           xScale={ xScale }
@@ -97,6 +99,7 @@ const ChartWidgetGraph = ({ items, onZoom, isZoomResetInitial, title }: Props) =
           />
 
           <ChartTooltip
+            chartId={ chartId }
             anchorEl={ overlayRef.current }
             width={ innerWidth }
             height={ innerHeight }
