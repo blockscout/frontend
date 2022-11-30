@@ -5,6 +5,7 @@ import {
   TabList,
   TabPanel,
   TabPanels,
+  Box,
 } from '@chakra-ui/react';
 import type { StyleProps } from '@chakra-ui/styled-system';
 import { useRouter } from 'next/router';
@@ -27,11 +28,13 @@ const hiddenItemStyles: StyleProps = {
 interface Props {
   tabs: Array<RoutedTab>;
   tabListMarginBottom?: ChakraProps['marginBottom'];
+  rightSlot?: React.ReactNode;
 }
 
-const RoutedTabs = ({ tabs, tabListMarginBottom }: Props) => {
+const RoutedTabs = ({ tabs, tabListMarginBottom, rightSlot }: Props) => {
   const router = useRouter();
   const [ activeTabIndex, setActiveTabIndex ] = useState<number>(tabs.length + 1);
+
   useEffect(() => {
     if (router.isReady) {
       let tabIndex = 0;
@@ -46,7 +49,7 @@ const RoutedTabs = ({ tabs, tabListMarginBottom }: Props) => {
   }, [ tabs, router ]);
 
   const isMobile = useIsMobile();
-  const { tabsCut, tabsList, tabsRefs, listRef } = useAdaptiveTabs(tabs, isMobile);
+  const { tabsCut, tabsList, tabsRefs, listRef, rightSlotRef } = useAdaptiveTabs(tabs, isMobile);
 
   const handleTabChange = React.useCallback((index: number) => {
     const nextTab = tabs[index];
@@ -59,7 +62,7 @@ const RoutedTabs = ({ tabs, tabListMarginBottom }: Props) => {
   }, [ tabs, router ]);
 
   return (
-    <Tabs variant="soft-rounded" colorScheme="blue" isLazy onChange={ handleTabChange } index={ activeTabIndex }>
+    <Tabs variant="soft-rounded" colorScheme="blue" isLazy onChange={ handleTabChange } index={ activeTabIndex } position="relative">
       <TabList
         marginBottom={ tabListMarginBottom }
         flexWrap="nowrap"
@@ -112,6 +115,7 @@ const RoutedTabs = ({ tabs, tabListMarginBottom }: Props) => {
           );
         }) }
       </TabList>
+      { rightSlot ? <Box position="absolute" top={ 0 } right={ 0 } ref={ rightSlotRef }>{ rightSlot }</Box> : null }
       <TabPanels>
         { tabsList.map((tab) => <TabPanel padding={ 0 } key={ tab.id }>{ tab.component }</TabPanel>) }
       </TabPanels>
