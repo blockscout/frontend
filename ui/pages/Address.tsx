@@ -32,7 +32,7 @@ const AddressPageContent = () => {
   return (
     <Page>
       <Flex alignItems="center" columnGap={ 3 }>
-        <PageTitle text="Address details"/>
+        <PageTitle text={ `${ addressQuery.data?.is_contract ? 'Contract' : 'Address' } details` }/>
         { tags.length > 0 && (
           <Flex mb={ 6 } columnGap={ 2 }>
             { tags }
