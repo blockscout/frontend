@@ -1,13 +1,14 @@
 import { Text, Box, Show, Hide } from '@chakra-ui/react';
+import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
-import type { TTxsFilters } from 'types/api/txsFilters';
-import type { QueryKeys } from 'types/client/queries';
+import type { TxsResponse } from 'types/api/transaction';
 
-import useQueryWithPages from 'lib/hooks/useQueryWithPages';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
+import type { Props as PaginationProps } from 'ui/shared/Pagination';
 
-import TxsHeader from './TxsHeader';
+import TxsHeaderMobile from './TxsHeaderMobile';
 import TxsListItem from './TxsListItem';
 import TxsNewItemNotice from './TxsNewItemNotice';
 import TxsSkeletonDesktop from './TxsSkeletonDesktop';
@@ -15,30 +16,19 @@ import TxsSkeletonMobile from './TxsSkeletonMobile';
 import TxsTable from './TxsTable';
 import useTxsSort from './useTxsSort';
 
+type QueryResult = UseQueryResult<TxsResponse> & {
+  pagination: PaginationProps;
+};
+
 type Props = {
-  queryName: QueryKeys.txsPending | QueryKeys.txsValidate | QueryKeys.blockTxs;
-  stateFilter?: TTxsFilters['filter'];
-  apiPath: string;
+  query: QueryResult;
   showBlockInfo?: boolean;
 }
 
-const TxsContent = ({
-  queryName,
-  stateFilter,
-  apiPath,
-  showBlockInfo = true,
-}: Props) => {
-  const {
-    pagination,
-    ...queryResult
-  } = useQueryWithPages({
-    apiPath,
-    queryName,
-    filters: stateFilter ? { filter: stateFilter } : undefined,
-  });
-  // } = useQueryWithPages({ ...filters, filter: stateFilter, apiPath });
-  const { data, isLoading, isError, setSortByField, setSortByValue, sorting } = useTxsSort(queryResult);
-  const isPaginatorHidden = !isLoading && !isError && pagination.page === 1 && !pagination.hasNextPage;
+const TxsContent = ({ query, showBlockInfo = true }: Props) => {
+  const { data, isLoading, isError, setSortByField, setSortByValue, sorting } = useTxsSort(query);
+  const isPaginatorHidden = !isLoading && !isError && query.pagination.page === 1 && !query.pagination.hasNextPage;
+  const isMobile = useIsMobile();
 
   const content = (() => {
     if (isError) {
@@ -79,7 +69,15 @@ const TxsContent = ({
 
   return (
     <>
-      <TxsHeader mt={ -6 } sorting={ sorting } setSorting={ setSortByValue } paginationProps={ pagination } showPagination={ !isPaginatorHidden }/>
+      { isMobile && (
+        <TxsHeaderMobile
+          mt={ -6 }
+          sorting={ sorting }
+          setSorting={ setSortByValue }
+          paginationProps={ query.pagination }
+          showPagination={ !isPaginatorHidden }
+        />
+      ) }
       { content }
     </>
   );

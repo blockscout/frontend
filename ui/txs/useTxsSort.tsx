@@ -1,14 +1,11 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
-import type { BlockTransactionsResponse } from 'types/api/block';
-import type { TransactionsResponsePending, TransactionsResponseValidated } from 'types/api/transaction';
+import type { TxsResponse } from 'types/api/transaction';
 import type { Sort } from 'types/client/txs-sort';
 
 import * as cookies from 'lib/cookies';
 import sortTxs from 'lib/tx/sortTxs';
-
-type TxsResponse = TransactionsResponseValidated | TransactionsResponsePending | BlockTransactionsResponse;
 
 type HookResult = UseQueryResult<TxsResponse> & {
   sorting: Sort;
