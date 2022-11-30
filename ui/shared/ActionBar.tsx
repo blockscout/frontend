@@ -2,7 +2,7 @@ import { Flex, useColorModeValue, chakra } from '@chakra-ui/react';
 import throttle from 'lodash/throttle';
 import React from 'react';
 
-import ScrollDirectionContext from 'ui/ScrollDirectionContext';
+import { useScrollDirection } from 'lib/contexts/scrollDirection';
 
 type Props = {
   children: React.ReactNode;
@@ -15,6 +15,7 @@ const TOP_DOWN = 0;
 const ActionBar = ({ children, className }: Props) => {
   const [ isSticky, setIsSticky ] = React.useState(false);
   const ref = React.useRef<HTMLDivElement>(null);
+  const scrollDirection = useScrollDirection();
 
   const handleScroll = React.useCallback(() => {
     if (
@@ -41,28 +42,24 @@ const ActionBar = ({ children, className }: Props) => {
   const bgColor = useColorModeValue('white', 'black');
 
   return (
-    <ScrollDirectionContext.Consumer>
-      { (scrollDirection) => (
-        <Flex
-          className={ className }
-          backgroundColor={ bgColor }
-          py={ 6 }
-          mx={{ base: -4, lg: 0 }}
-          px={{ base: 4, lg: 0 }}
-          justifyContent="space-between"
-          width={{ base: '100vw', lg: 'unset' }}
-          position="sticky"
-          top={{ base: scrollDirection === 'down' ? `${ TOP_DOWN }px` : `${ TOP_UP }px`, lg: 0 }}
-          transitionProperty="top,box-shadow,background-color,color"
-          transitionDuration="slow"
-          zIndex={{ base: 'sticky2', lg: 'docked' }}
-          boxShadow={{ base: isSticky ? 'md' : 'none', lg: 'none' }}
-          ref={ ref }
-        >
-          { children }
-        </Flex>
-      ) }
-    </ScrollDirectionContext.Consumer>
+    <Flex
+      className={ className }
+      backgroundColor={ bgColor }
+      py={ 6 }
+      mx={{ base: -4, lg: 0 }}
+      px={{ base: 4, lg: 0 }}
+      justifyContent="space-between"
+      width={{ base: '100vw', lg: 'unset' }}
+      position="sticky"
+      top={{ base: scrollDirection === 'down' ? `${ TOP_DOWN }px` : `${ TOP_UP }px`, lg: 0 }}
+      transitionProperty="top,box-shadow,background-color,color"
+      transitionDuration="slow"
+      zIndex={{ base: 'sticky2', lg: 'docked' }}
+      boxShadow={{ base: isSticky ? 'md' : 'none', lg: 'none' }}
+      ref={ ref }
+    >
+      { children }
+    </Flex>
   );
 };
 
