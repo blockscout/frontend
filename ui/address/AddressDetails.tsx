@@ -14,10 +14,12 @@ import qrCodeIcon from 'icons/qr_code.svg';
 import starOutlineIcon from 'icons/star_outline.svg';
 import walletIcon from 'icons/wallet.svg';
 import useFetch from 'lib/hooks/useFetch';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import ExternalLink from 'ui/shared/ExternalLink';
+import HashStringShorten from 'ui/shared/HashStringShorten';
 
 interface Props {
   addressQuery: UseQueryResult<TAddress>;
@@ -26,6 +28,7 @@ interface Props {
 const AddressDetails = ({ addressQuery }: Props) => {
   const router = useRouter();
   const fetch = useFetch();
+  const isMobile = useIsMobile();
 
   const countersQuery = useQuery<unknown, unknown, AddressCounters>(
     [ QueryKeys.addressCounters, router.query.id ],
@@ -57,7 +60,9 @@ const AddressDetails = ({ addressQuery }: Props) => {
     <Box>
       <Flex alignItems="center">
         <AddressIcon hash={ addressQuery.data.hash }/>
-        <Text ml={ 2 } fontFamily="heading" fontWeight={ 500 }>{ addressQuery.data.hash }</Text>
+        <Text ml={ 2 } fontFamily="heading" fontWeight={ 500 }>
+          { isMobile ? <HashStringShorten hash={ addressQuery.data.hash }/> : addressQuery.data.hash }
+        </Text>
         <CopyToClipboard text={ addressQuery.data.hash }/>
         <Icon as={ metamaskIcon } boxSize={ 6 } ml={ 2 }/>
         <Button variant="outline" size="sm" ml={ 3 }>
@@ -68,7 +73,7 @@ const AddressDetails = ({ addressQuery }: Props) => {
         </Button>
       </Flex>
       { explorers.length > 0 && (
-        <Flex mt={ 8 } columnGap={ 4 }>
+        <Flex mt={ 8 } columnGap={ 4 } flexWrap="wrap">
           <Text>Verify with other explorers</Text>
           { explorers.map((explorer) => {
             const url = new URL(explorer.paths.tx + '/' + router.query.id, explorer.baseUrl);
