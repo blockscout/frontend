@@ -5,9 +5,15 @@ import * as blockMock from 'mocks/blocks/block';
 import * as socketServer from 'playwright/fixtures/socketServer';
 import TestApp from 'playwright/TestApp';
 
-import BlocksContent from './BlocksContent';
+import Blocks from './Blocks';
 
 const API_URL = '/node-api/blocks';
+const hooksConfig = {
+  router: {
+    query: { tab: 1 },
+    isReady: true,
+  },
+};
 
 export const test = base.extend<socketServer.SocketServerFixture>({
   createSocket: socketServer.createSocket,
@@ -17,7 +23,7 @@ export const test = base.extend<socketServer.SocketServerFixture>({
 // test cases which use socket cannot run in parallel since the socket server always run on the same port
 test.describe.configure({ mode: 'serial' });
 
-test('base view +@mobile', async({ mount, page }) => {
+test('base view +@mobile +@dark-mode', async({ mount, page }) => {
   await page.route(API_URL, (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(blockMock.baseListResponse),
@@ -25,12 +31,13 @@ test('base view +@mobile', async({ mount, page }) => {
 
   const component = await mount(
     <TestApp>
-      <BlocksContent/>
+      <Blocks/>
     </TestApp>,
+    { hooksConfig },
   );
   await page.waitForResponse(API_URL);
 
-  await expect(component).toHaveScreenshot();
+  await expect(component.locator('main')).toHaveScreenshot();
 });
 
 test('new item from socket', async({ mount, page, createSocket }) => {
@@ -41,8 +48,9 @@ test('new item from socket', async({ mount, page, createSocket }) => {
 
   const component = await mount(
     <TestApp withSocket>
-      <BlocksContent/>
+      <Blocks/>
     </TestApp>,
+    { hooksConfig },
   );
 
   const socket = await createSocket();
@@ -56,7 +64,7 @@ test('new item from socket', async({ mount, page, createSocket }) => {
     },
   });
 
-  await expect(component).toHaveScreenshot();
+  await expect(component.locator('main')).toHaveScreenshot();
 });
 
 test('socket error', async({ mount, page, createSocket }) => {
@@ -67,13 +75,14 @@ test('socket error', async({ mount, page, createSocket }) => {
 
   const component = await mount(
     <TestApp withSocket>
-      <BlocksContent/>
+      <Blocks/>
     </TestApp>,
+    { hooksConfig },
   );
 
   const socket = await createSocket();
   await socketServer.joinChannel(socket, 'blocks:new_block');
   socket.close();
 
-  await expect(component).toHaveScreenshot();
+  await expect(component.locator('main')).toHaveScreenshot();
 });
