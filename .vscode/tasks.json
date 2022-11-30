@@ -108,7 +108,7 @@
             "type": "shell",
             "command": "${input:pwDebugFlag} yarn test:pw:local ${relativeFileDirname}/${fileBasename} ${input:pwArgs}",
             "problemMatcher": [],
-            "label": "test: playwright: local for current file",
+            "label": "pw: local",
             "detail": "run visual components tests for current file",
             "presentation": {
                 "reveal": "always",
@@ -127,7 +127,7 @@
             "type": "shell",
             "command": "yarn test:pw:docker ${relativeFileDirname}/${fileBasename} ${input:pwArgs}",
             "problemMatcher": [],
-            "label": "test: playwright: docker for current file",
+            "label": "pw: docker",
             "detail": "run visual components tests for current file",
             "presentation": {
                 "reveal": "always",
@@ -146,7 +146,7 @@
             "type": "shell",
             "command": "yarn test:pw:docker ${input:pwArgs}",
             "problemMatcher": [],
-            "label": "test: playwright: docker for all files",
+            "label": "pw: docker all",
             "detail": "run visual components tests",
             "presentation": {
                 "reveal": "always",
@@ -167,7 +167,7 @@
             "type": "npm",
             "script": "test:jest",
             "problemMatcher": [],
-            "label": "test: jest",
+            "label": "jest",
             "detail": "run jest tests",
             "presentation": {
                 "reveal": "always",
@@ -186,7 +186,7 @@
             "type": "npm",
             "script": "test:jest:watch",
             "problemMatcher": [],
-            "label": "test: jest: watch",
+            "label": "jest: watch all",
             "detail": "run jest tests in watch mode",
             "presentation": {
                 "reveal": "always",
@@ -206,7 +206,7 @@
             "type": "shell",
             "command": "yarn test:jest ${relativeFileDirname}/${fileBasename} --watch",
             "problemMatcher": [],
-            "label": "test: jest: watch curent file",
+            "label": "jest: watch",
             "detail": "run jest tests in watch mode for current file",
             "presentation": {
                 "reveal": "always",
