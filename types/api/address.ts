@@ -18,3 +18,10 @@ export interface Address {
   tokenInfo: TokenInfo | null;
   watchlist_names: Array<WatchlistName> | null;
 }
+
+export interface AddressCounters {
+  transaction_count: string;
+  token_transfer_count: string;
+  gas_usage_count: string;
+  validation_count: string | null;
+}

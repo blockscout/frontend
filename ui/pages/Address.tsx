@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { Address } from 'types/api/address';
+import { QueryKeys } from 'types/client/queries';
 
 import useFetch from 'lib/hooks/useFetch';
 import AddressDetails from 'ui/address/AddressDetails';
@@ -14,8 +15,8 @@ const AddressPageContent = () => {
   const router = useRouter();
   const fetch = useFetch();
 
-  const addressInfo = useQuery<unknown, unknown, Address>(
-    [ 'address', router.query.id ],
+  const addressQuery = useQuery<unknown, unknown, Address>(
+    [ QueryKeys.address, router.query.id ],
     async() => await fetch(`/node-api/addresses/${ router.query.id }`),
     {
       enabled: Boolean(router.query.id),
@@ -23,9 +24,9 @@ const AddressPageContent = () => {
   );
 
   const tags = [
-    ...(addressInfo.data?.private_tags || []),
-    ...(addressInfo.data?.public_tags || []),
-    ...(addressInfo.data?.watchlist_names || []),
+    ...(addressQuery.data?.private_tags || []),
+    ...(addressQuery.data?.public_tags || []),
+    ...(addressQuery.data?.watchlist_names || []),
   ].map((tag) => <Tag key={ tag.label }>{ tag.display_name }</Tag>);
 
   return (
@@ -38,7 +39,7 @@ const AddressPageContent = () => {
           </Flex>
         ) }
       </Flex>
-      <AddressDetails addressInfo={ addressInfo }/>
+      <AddressDetails addressQuery={ addressQuery }/>
     </Page>
   );
 };
