@@ -25,3 +25,9 @@ export interface AddressCounters {
   gas_usage_count: string;
   validation_count: string | null;
 }
+
+export interface AddressTokenBalance {
+  token: TokenInfo;
+  token_id: string | null;
+  value: string;
+}

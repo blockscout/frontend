@@ -19,4 +19,5 @@ export enum QueryKeys {
   jsonRpcUrl='json-rpc-url',
   address='address',
   addressCounters='address-counters',
+  addressTokenBalances='address-token-balances',
 }
