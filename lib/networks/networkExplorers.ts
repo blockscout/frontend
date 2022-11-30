@@ -12,6 +12,7 @@ import appConfig from 'configs/app/config';
 //     baseUrl: 'https://explorer.anyblock.tools',
 //     paths: {
 //       tx: '/ethereum/ethereum/goerli/transaction',
+//       address: '/ethereum/ethereum/goerli/address'
 //     },
 //   },
 //   {
@@ -19,6 +20,7 @@ import appConfig from 'configs/app/config';
 //     baseUrl: 'https://goerli.etherscan.io/',
 //     paths: {
 //       tx: '/tx',
+//       address: '/address',
 //     },
 //   },
 // ]).replaceAll('"', '\'');
