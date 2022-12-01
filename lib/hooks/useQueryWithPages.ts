@@ -22,11 +22,12 @@ export default function useQueryWithPages<QueryName extends PaginatedQueryKeys>(
   const paginationFields = PAGINATION_FIELDS[queryName];
   const queryClient = useQueryClient();
   const router = useRouter();
-  const [ page, setPage ] = React.useState(1);
+  const [ page, setPage ] = React.useState<number>(router.query.page && !Array.isArray(router.query.page) ? Number(router.query.page) : 1);
   const currPageParams = pick(router.query, paginationFields);
   const [ pageParams, setPageParams ] = React.useState<Array<PaginationParams<QueryName>>>([ ]);
   const fetch = useFetch();
   const isMounted = React.useRef(false);
+  const canGoBackwards = React.useRef(!router.query.page);
 
   const queryKey = [ queryName, ...(queryIds || []), { page, filters } ];
 
@@ -60,6 +61,8 @@ export default function useQueryWithPages<QueryName extends PaginatedQueryKeys>(
     }
     const nextPageQuery = { ...router.query };
     Object.entries(nextPageParams).forEach(([ key, val ]) => nextPageQuery[key] = val.toString());
+    nextPageQuery.page = String(page + 1);
+
     router.push({ pathname: router.pathname, query: nextPageQuery }, undefined, { shallow: true })
       .then(() => {
         animateScroll.scrollToTop({ duration: 0 });
@@ -70,13 +73,14 @@ export default function useQueryWithPages<QueryName extends PaginatedQueryKeys>(
   const onPrevPageClick = useCallback(() => {
     // returning to the first page
     // we dont have pagination params for the first page
-    let nextPageQuery: typeof router.query;
+    let nextPageQuery: typeof router.query = {};
     if (page === 2) {
-      nextPageQuery = omit(router.query, paginationFields);
+      nextPageQuery = omit(router.query, paginationFields, 'page');
+      canGoBackwards.current = true;
     } else {
       const nextPageParams = { ...pageParams[page - 2] };
-      nextPageQuery = { ...router.query };
       nextPageParams && Object.entries(nextPageParams).forEach(([ key, val ]) => nextPageQuery[key] = val.toString());
+      nextPageQuery.page = String(page - 1);
     }
     router.query = nextPageQuery;
     router.push({ pathname: router.pathname, query: nextPageQuery }, undefined, { shallow: true })
@@ -89,10 +93,11 @@ export default function useQueryWithPages<QueryName extends PaginatedQueryKeys>(
 
   const resetPage = useCallback(() => {
     queryClient.clear();
-    router.push({ pathname: router.pathname, query: omit(router.query, paginationFields) }, undefined, { shallow: true }).then(() => {
+    router.push({ pathname: router.pathname, query: omit(router.query, paginationFields, 'page') }, undefined, { shallow: true }).then(() => {
       animateScroll.scrollToTop({ duration: 0 });
       setPage(1);
       setPageParams([ ]);
+      canGoBackwards.current = true;
     });
   }, [ queryClient, router, paginationFields ]);
 
@@ -106,6 +111,7 @@ export default function useQueryWithPages<QueryName extends PaginatedQueryKeys>(
     hasPaginationParams,
     resetPage,
     hasNextPage: nextPageParams ? Object.keys(nextPageParams).length > 0 : false,
+    canGoBackwards: canGoBackwards.current,
   };
 
   React.useEffect(() => {
@@ -118,7 +124,9 @@ export default function useQueryWithPages<QueryName extends PaginatedQueryKeys>(
   }, [ queryName ]);
 
   React.useEffect(() => {
-    isMounted.current = true;
+    window.setTimeout(() => {
+      isMounted.current = true;
+    }, 0);
   }, []);
 
   return { ...queryResult, pagination };
