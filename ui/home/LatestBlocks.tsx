@@ -110,7 +110,7 @@ const LatestBlocks = () => {
 
   return (
     <Box width={{ base: '100%', lg: '280px' }}>
-      <Heading as="h4" size="sm" mb={ 4 }>Latest Blocks</Heading>
+      <Heading as="h4" size="sm" mb={ 4 }>Latest blocks</Heading>
       { content }
     </Box>
   );
