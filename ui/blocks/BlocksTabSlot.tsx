@@ -34,7 +34,7 @@ const BlocksTabSlot = ({ pagination }: Props) => {
       { statsQuery.data?.network_utilization_percentage !== undefined && (
         <Box>
           <Text as="span" fontSize="sm">
-              Network utilization:{ nbsp }
+              Network utilization (last 50 blocks):{ nbsp }
           </Text>
           <Text as="span" fontSize="sm" color="blue.400" fontWeight={ 600 }>
             { statsQuery.data.network_utilization_percentage.toFixed(2) }%

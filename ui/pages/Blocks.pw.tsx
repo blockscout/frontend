@@ -2,12 +2,14 @@ import { test as base, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import * as blockMock from 'mocks/blocks/block';
+import * as statsMock from 'mocks/stats/index';
 import * as socketServer from 'playwright/fixtures/socketServer';
 import TestApp from 'playwright/TestApp';
 
 import Blocks from './Blocks';
 
-const API_URL = '/node-api/blocks';
+const BLOCKS_API_URL = '/node-api/blocks';
+const STATS_API_URL = '/node-api/stats';
 const hooksConfig = {
   router: {
     query: { tab: 1 },
@@ -24,9 +26,13 @@ export const test = base.extend<socketServer.SocketServerFixture>({
 test.describe.configure({ mode: 'serial' });
 
 test('base view +@mobile +@dark-mode', async({ mount, page }) => {
-  await page.route(API_URL, (route) => route.fulfill({
+  await page.route(BLOCKS_API_URL, (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(blockMock.baseListResponse),
+  }));
+  await page.route(STATS_API_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify(statsMock.base),
   }));
 
   const component = await mount(
@@ -35,13 +41,13 @@ test('base view +@mobile +@dark-mode', async({ mount, page }) => {
     </TestApp>,
     { hooksConfig },
   );
-  await page.waitForResponse(API_URL);
+  await page.waitForResponse(BLOCKS_API_URL);
 
   await expect(component.locator('main')).toHaveScreenshot();
 });
 
 test('new item from socket', async({ mount, page, createSocket }) => {
-  await page.route(API_URL, (route) => route.fulfill({
+  await page.route(BLOCKS_API_URL, (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(blockMock.baseListResponse),
   }));
@@ -68,7 +74,7 @@ test('new item from socket', async({ mount, page, createSocket }) => {
 });
 
 test('socket error', async({ mount, page, createSocket }) => {
-  await page.route(API_URL, (route) => route.fulfill({
+  await page.route(BLOCKS_API_URL, (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(blockMock.baseListResponse),
   }));
