@@ -8,11 +8,11 @@ import TestApp from 'playwright/TestApp';
 
 import Blocks from './Blocks';
 
-const BLOCKS_API_URL = '/node-api/blocks';
+const BLOCKS_API_URL = '/node-api/blocks?type=block';
 const STATS_API_URL = '/node-api/stats';
 const hooksConfig = {
   router: {
-    query: { tab: 1 },
+    query: { tab: 'blocks' },
     isReady: true,
   },
 };

@@ -46,7 +46,7 @@ export default function useQueryWithPages<QueryName extends PaginatedQueryKeys>(
 
       return fetch(`${ apiPath }${ params.length ? '?' + params.join('&') : '' }`);
     },
-    { staleTime: Infinity, ...options },
+    { staleTime: page === 1 ? 0 : Infinity, ...options },
   );
   const { data } = queryResult;
 
