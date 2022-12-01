@@ -41,7 +41,7 @@ type PaginationFields = {
 
 export const PAGINATION_FIELDS: PaginationFields = {
   [QueryKeys.blocks]: [ 'block_number', 'items_count' ],
-  [QueryKeys.blockTxs]: [ 'block_number', 'items_count' ],
+  [QueryKeys.blockTxs]: [ 'block_number', 'items_count', 'index' ],
   [QueryKeys.txsValidate]: [ 'block_number', 'items_count', 'filter', 'index' ],
   [QueryKeys.txsPending]: [ 'filter', 'hash', 'inserted_at' ],
   [QueryKeys.txInternals]: [ 'block_number', 'items_count', 'transaction_hash', 'index', 'transaction_index' ],

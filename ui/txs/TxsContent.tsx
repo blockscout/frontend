@@ -23,9 +23,10 @@ type QueryResult = UseQueryResult<TxsResponse> & {
 type Props = {
   query: QueryResult;
   showBlockInfo?: boolean;
+  showSocketInfo?: boolean;
 }
 
-const TxsContent = ({ query, showBlockInfo = true }: Props) => {
+const TxsContent = ({ query, showBlockInfo = true, showSocketInfo = true }: Props) => {
   const { data, isLoading, isError, setSortByField, setSortByValue, sorting } = useTxsSort(query);
   const isPaginatorHidden = !isLoading && !isError && query.pagination.page === 1 && !query.pagination.hasNextPage;
   const isMobile = useIsMobile();
@@ -54,14 +55,23 @@ const TxsContent = ({ query, showBlockInfo = true }: Props) => {
       <>
         <Show below="lg" ssr={ false }>
           <Box>
-            <TxsNewItemNotice>
-              { ({ content }) => <Box>{ content }</Box> }
-            </TxsNewItemNotice>
+            { showSocketInfo && (
+              <TxsNewItemNotice>
+                { ({ content }) => <Box>{ content }</Box> }
+              </TxsNewItemNotice>
+            ) }
             { txs.map(tx => <TxsListItem tx={ tx } key={ tx.hash } showBlockInfo={ showBlockInfo }/>) }
           </Box>
         </Show>
         <Hide below="lg" ssr={ false }>
-          <TxsTable txs={ txs } sort={ setSortByField } sorting={ sorting } showBlockInfo={ showBlockInfo } top={ isPaginatorHidden ? 0 : 80 }/>
+          <TxsTable
+            txs={ txs }
+            sort={ setSortByField }
+            sorting={ sorting }
+            showBlockInfo={ showBlockInfo }
+            showSocketInfo={ showSocketInfo }
+            top={ isPaginatorHidden ? 0 : 80 }
+          />
         </Hide>
       </>
     );
