@@ -4,16 +4,21 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { AppProps } from 'next/app';
 import React, { useState } from 'react';
 
+import appConfig from 'configs/app/config';
 import { AppContextProvider } from 'lib/appContext';
 import { Chakra } from 'lib/Chakra';
 import useConfigSentry from 'lib/hooks/useConfigSentry';
 import type { ErrorType } from 'lib/hooks/useFetch';
+import useScrollDirection from 'lib/hooks/useScrollDirection';
+import { SocketProvider } from 'lib/socket/context';
 import theme from 'theme';
+import ScrollDirectionContext from 'ui/ScrollDirectionContext';
 import AppError from 'ui/shared/AppError/AppError';
 import ErrorBoundary from 'ui/shared/ErrorBoundary';
 
 function MyApp({ Component, pageProps }: AppProps) {
   useConfigSentry();
+  const directionContext = useScrollDirection();
 
   const [ queryClient ] = useState(() => new QueryClient({
     defaultOptions: {
@@ -57,7 +62,11 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ErrorBoundary renderErrorScreen={ renderErrorScreen } onError={ handleError }>
         <AppContextProvider pageProps={ pageProps }>
           <QueryClientProvider client={ queryClient }>
-            <Component { ...pageProps }/>
+            <ScrollDirectionContext.Provider value={ directionContext }>
+              <SocketProvider url={ `${ appConfig.api.socket }${ appConfig.api.basePath }/socket/v2` }>
+                <Component { ...pageProps }/>
+              </SocketProvider>
+            </ScrollDirectionContext.Provider>
             <ReactQueryDevtools/>
           </QueryClientProvider>
         </AppContextProvider>

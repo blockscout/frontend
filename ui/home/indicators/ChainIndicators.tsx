@@ -2,7 +2,7 @@ import { Box, Flex, Icon, Skeleton, Text, Tooltip, useColorModeValue } from '@ch
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
-import type { Stats } from 'types/api/stats';
+import type { HomeStats } from 'types/api/stats';
 import { QueryKeys } from 'types/client/queries';
 
 import appConfig from 'configs/app/config';
@@ -35,13 +35,15 @@ const ChainIndicators = () => {
   const queryResult = useFetchChartData(indicator);
 
   const fetch = useFetch();
-  const statsQueryResult = useQuery<unknown, unknown, Stats>(
-    [ QueryKeys.stats ],
+  const statsQueryResult = useQuery<unknown, unknown, HomeStats>(
+    [ QueryKeys.homeStats ],
     () => fetch('/node-api/stats'),
   );
 
-  const bgColor = useColorModeValue('white', 'black');
-  const listBgColor = useColorModeValue('gray.50', 'gray.900');
+  const bgColorDesktop = useColorModeValue('white', 'gray.900');
+  const bgColorMobile = useColorModeValue('white', 'black');
+  const listBgColorDesktop = useColorModeValue('gray.50', 'black');
+  const listBgColorMobile = useColorModeValue('gray.50', 'gray.900');
 
   if (indicators.length === 0) {
     return null;
@@ -68,7 +70,7 @@ const ChainIndicators = () => {
       p={{ base: 0, lg: 8 }}
       borderRadius={{ base: 'none', lg: 'lg' }}
       boxShadow={{ base: 'none', lg: 'xl' }}
-      bgColor={ bgColor }
+      bgColor={{ base: bgColorMobile, lg: bgColorDesktop }}
       columnGap={ 12 }
       rowGap={ 0 }
       flexDir={{ base: 'column', lg: 'row' }}
@@ -97,7 +99,7 @@ const ChainIndicators = () => {
           as="ul"
           p={ 3 }
           borderRadius="lg"
-          bgColor={ listBgColor }
+          bgColor={{ base: listBgColorMobile, lg: listBgColorDesktop }}
           rowGap={ 3 }
           order={{ base: 1, lg: 2 }}
         >

@@ -3,7 +3,7 @@ global:
 # enable Blockscout deploy
 blockscout:
   app: blockscout
-  enabled: true
+  enabled: false
   image:
     _default: blockscout/blockscout:latest
   replicas:
@@ -117,7 +117,7 @@ blockscout:
       _default: 'true'
 
 postgres:
-  enabled: true
+  enabled: false
   image: postgres:13.8
   port: 5432
 
@@ -145,7 +145,7 @@ postgres:
       _default: 'trust'
 # enable geth deploy
 geth:
-  enabled: true
+  enabled: false
   image:
     _default: ethereum/client-go:stable
   replicas:
@@ -200,7 +200,7 @@ geth:
     enabled: true
 # enable Smart-contract-verifier deploy
 scVerifier:
-  enabled: true
+  enabled: false
   image:
     _default: ghcr.io/blockscout/smart-contract-verifier:latest
   replicas:
@@ -347,19 +347,19 @@ frontend:
     NEXT_PUBLIC_FOOTER_STAKING_LINK:
       _default: https://duneanalytics.com/maxaleks/xdai-staking
     NEXT_PUBLIC_NETWORK_NAME:
-      _default: Sokol
+      _default: Ethereum
     NEXT_PUBLIC_NETWORK_SHORT_NAME:
-      _default: POA
+      _default: Goerli
     NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME:
-      _default: poa
+      _default: ethereum
     NEXT_PUBLIC_NETWORK_TYPE:
-      _default: poa_core
+      _default: goerli
     NEXT_PUBLIC_NETWORK_ID:
-      _default: 77
+      _default: 5
     NEXT_PUBLIC_NETWORK_CURRENCY_NAME:
-      _default: POA Network Sokol
+      _default: Ether
     NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL:
-      _default: SPOA
+      _default: ETH
     NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS:
       _default: 18
     NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE:
@@ -370,6 +370,7 @@ frontend:
       _default: "[{'title':'Gnosis Chain','url':'https://blockscout.com/xdai/mainnet','group':'mainnets','type':'xdai_mainnet'},{'title':'Optimism on Gnosis Chain','url':'https://blockscout.com/xdai/optimism','group':'mainnets','icon':'https://www.fillmurray.com/60/60','type':'xdai_optimism'},{'title':'Arbitrum on xDai','url':'https://blockscout.com/xdai/aox','group':'mainnets'},{'title':'Ethereum','url':'https://blockscout.com/eth/mainnet','group':'mainnets','type':'eth_mainnet'},{'title':'Ethereum Classic','url':'https://blockscout.com/etx/mainnet','group':'mainnets','type':'etc_mainnet'},{'title':'POA','url':'https://blockscout.com/poa/core','group':'mainnets','type':'poa_core'},{'title':'RSK','url':'https://blockscout.com/rsk/mainnet','group':'mainnets','type':'rsk_mainnet'},{'title':'Gnosis Chain Testnet','url':'https://blockscout.com/xdai/testnet','group':'testnets','type':'xdai_testnet'},{'title':'POA Sokol','url':'https://blockscout.com/poa/sokol','group':'testnets','type':'poa_sokol'},{'title':'ARTIS Σ1','url':'https://blockscout.com/artis/sigma1','group':'other','type':'artis_sigma1'},{'title':'LUKSO L14','url':'https://blockscout.com/lukso/l14','group':'other','type':'lukso_l14'},{'title':'Astar','url':'https://blockscout.com/astar','group':'other','type':'astar'}]"
     NEXT_PUBLIC_API_HOST:
       _default: blockscout.com
+      review: blockscout-main.test.aws-k8s.blockscout.com
     NEXT_PUBLIC_API_BASE_PATH:
       _default: /
     NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM:
@@ -380,5 +381,11 @@ frontend:
       _default: https://blockscoutcom.us.auth0.com/v2/logout
     NEXT_PUBLIC_LOGOUT_RETURN_URL:
       _default: https://blockscout.com/auth/logout
+      review: blockscout-main.test.aws-k8s.blockscout.com/auth/logout
     NEXT_PUBLIC_HOMEPAGE_CHARTS:
       _default: "['daily_txs','coin_price','market_cup']"
+    NEXT_PUBLIC_APP_HOST:
+      _default: blockscout.com
+      review: blockscout-main.test.aws-k8s.blockscout.com
+    NEXT_PUBLIC_NETWORK_EXPLORERS:
+      _default: [{'title':'Anyblock','baseUrl':'https://explorer.anyblock.tools','paths':{'tx':'/ethereum/poa/core/transaction','address':'/ethereum/poa/core/address'}}]

@@ -18,6 +18,8 @@ module.exports = {
     'plugin:regexp/recommended',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
+    'plugin:jest/recommended',
+    'plugin:playwright/playwright-test',
   ],
   plugins: [
     'es5',
@@ -27,6 +29,7 @@ module.exports = {
     'react-hooks',
     'jsx-a11y',
     'eslint-plugin-import-helpers',
+    'jest',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {

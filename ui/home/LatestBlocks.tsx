@@ -5,7 +5,7 @@ import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
 import type { Block } from 'types/api/block';
-import type { Stats } from 'types/api/stats';
+import type { HomeStats } from 'types/api/stats';
 import { QueryKeys } from 'types/client/queries';
 
 import useFetch from 'lib/hooks/useFetch';
@@ -31,8 +31,8 @@ const LatestBlocks = () => {
   );
 
   const queryClient = useQueryClient();
-  const statsQueryResult = useQuery<unknown, unknown, Stats>(
-    [ QueryKeys.stats ],
+  const statsQueryResult = useQuery<unknown, unknown, HomeStats>(
+    [ QueryKeys.homeStats ],
     () => fetch('/node-api/stats'),
   );
 
@@ -109,10 +109,10 @@ const LatestBlocks = () => {
   }
 
   return (
-    <>
-      <Heading as="h4" size="sm" mb={{ base: 4, lg: 7 }}>Latest Blocks</Heading>
+    <Box width={{ base: '100%', lg: '280px' }}>
+      <Heading as="h4" size="sm" mb={ 4 }>Latest Blocks</Heading>
       { content }
-    </>
+    </Box>
   );
 };
 

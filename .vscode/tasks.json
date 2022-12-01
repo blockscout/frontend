@@ -11,7 +11,7 @@
             "detail": "start local dev server",
             "presentation": {
                 "reveal": "silent",
-                "panel": "new",
+                "panel": "dedicated",
                 "close": true,
                 "revealProblems": "onProblem",
             },
@@ -31,7 +31,7 @@
             "detail": "start local dev server for POA network",
             "presentation": {
                 "reveal": "silent",
-                "panel": "new",
+                "panel": "dedicated",
                 "close": true,
                 "revealProblems": "onProblem",
             },
@@ -51,7 +51,7 @@
             "detail": "start local dev server for Goerli network",
             "presentation": {
                 "reveal": "silent",
-                "panel": "new",
+                "panel": "dedicated",
                 "close": true,
                 "revealProblems": "onProblem",
             },
@@ -77,7 +77,7 @@
             },
             "presentation": {
                 "reveal": "never",
-                "panel": "new",
+                "panel": "dedicated",
                 "close": true,
                 "revealProblems": "onProblem",
             },
@@ -91,7 +91,7 @@
             "detail": "run eslint",
             "presentation": {
                 "reveal": "silent",
-                "panel": "new",
+                "panel": "dedicated",
                 "revealProblems": "onProblem",
             },
             "icon": {
@@ -108,11 +108,11 @@
             "type": "shell",
             "command": "${input:pwDebugFlag} yarn test:pw:local ${relativeFileDirname}/${fileBasename} ${input:pwArgs}",
             "problemMatcher": [],
-            "label": "test: playwright: local for current file",
+            "label": "pw: local",
             "detail": "run visual components tests for current file",
             "presentation": {
                 "reveal": "always",
-                "panel": "new",
+                "panel": "dedicated",
                 "focus": true,
             },
             "icon": {
@@ -127,11 +127,11 @@
             "type": "shell",
             "command": "yarn test:pw:docker ${relativeFileDirname}/${fileBasename} ${input:pwArgs}",
             "problemMatcher": [],
-            "label": "test: playwright: docker for current file",
+            "label": "pw: docker",
             "detail": "run visual components tests for current file",
             "presentation": {
                 "reveal": "always",
-                "panel": "new",
+                "panel": "dedicated",
                 "focus": true,
             },
             "icon": {
@@ -146,11 +146,11 @@
             "type": "shell",
             "command": "yarn test:pw:docker ${input:pwArgs}",
             "problemMatcher": [],
-            "label": "test: playwright: docker for all files",
+            "label": "pw: docker all",
             "detail": "run visual components tests",
             "presentation": {
                 "reveal": "always",
-                "panel": "new",
+                "panel": "dedicated",
                 "focus": true,
             },
             "icon": {
@@ -167,11 +167,11 @@
             "type": "npm",
             "script": "test:jest",
             "problemMatcher": [],
-            "label": "test: jest",
+            "label": "jest",
             "detail": "run jest tests",
             "presentation": {
                 "reveal": "always",
-                "panel": "new",
+                "panel": "dedicated",
                 "focus": true,
             },
             "icon": {
@@ -186,11 +186,11 @@
             "type": "npm",
             "script": "test:jest:watch",
             "problemMatcher": [],
-            "label": "test: jest: watch",
+            "label": "jest: watch all",
             "detail": "run jest tests in watch mode",
             "presentation": {
                 "reveal": "always",
-                "panel": "new",
+                "panel": "dedicated",
                 "close": true,
                 "focus": true,
             },
@@ -206,11 +206,11 @@
             "type": "shell",
             "command": "yarn test:jest ${relativeFileDirname}/${fileBasename} --watch",
             "problemMatcher": [],
-            "label": "test: jest: watch curent file",
+            "label": "jest: watch",
             "detail": "run jest tests in watch mode for current file",
             "presentation": {
                 "reveal": "always",
-                "panel": "new",
+                "panel": "dedicated",
                 "focus": true,
             },
             "icon": {
@@ -230,7 +230,7 @@
             "detail": "build docker image",
             "presentation": {
                 "reveal": "always",
-                "panel": "new",
+                "panel": "dedicated",
                 "close": true,
                 "revealProblems": "onProblem",
                 "focus": true,
@@ -251,7 +251,7 @@
             "detail": "run docker container for POA network",
             "presentation": {
                 "reveal": "silent",
-                "panel": "new",
+                "panel": "dedicated",
                 "close": true,
                 "revealProblems": "onProblem",
             },
@@ -271,7 +271,7 @@
             "detail": "format svg files with svgo",
             "presentation": {
                 "reveal": "silent",
-                "panel": "new",
+                "panel": "dedicated",
                 "close": true,
                 "revealProblems": "onProblem",
             },

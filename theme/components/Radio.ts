@@ -9,10 +9,16 @@ const { defineMultiStyleConfig, definePartsStyle } =
 
 const baseStyleLabel = defineStyle({
   _disabled: { opacity: 0.2 },
+  width: 'fit-content',
+});
+
+const baseStyleContainer = defineStyle({
+  width: 'fit-content',
 });
 
 const baseStyle = definePartsStyle({
   label: baseStyleLabel,
+  container: baseStyleContainer,
 });
 
 const Radio = defineMultiStyleConfig({

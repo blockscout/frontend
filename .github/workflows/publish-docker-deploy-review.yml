@@ -23,6 +23,9 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v3
 
+      - name: Inject slug/short variables
+        uses: rlespinasse/github-slug-action@v4
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
@@ -45,7 +48,7 @@ jobs:
 
       - name: Add outputs
         run: |
-          echo "::set-output name=short-sha::${{ env.SHORT_SHA }}"
+          echo "::set-output name=short-sha::${{ env.GITHUB_EVENT_PULL_REQUEST_HEAD_SHA_SHORT }}"
         id: output-step
 
       - name: Build and push
@@ -56,21 +59,22 @@ jobs:
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          tags: ghcr.io/blockscout/frontend:prerelease-${{ env.SHORT_SHA }}
+          tags: ghcr.io/blockscout/frontend:prerelease-${{ env.GITHUB_EVENT_PULL_REQUEST_HEAD_SHA_SHORT }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            GIT_COMMIT_SHA=${{ env.SHORT_SHA }}
+            GIT_COMMIT_SHA=${{ env.GITHUB_EVENT_PULL_REQUEST_HEAD_SHA_SHORT }}
 
   deploy_frontend:
     name: Deploy frontend app
     needs: push_to_registry
     uses: blockscout/blockscout-ci-cd/.github/workflows/deploy.yaml@master
     with:
-      env_vars: VALUES_DIR=deploy/values/review,APP_NAME=bs-stack
+      env_vars: VALUES_DIR=deploy/values/review,APP_NAME=bs-stack,DOCKER_IMAGE=prerelease-$GITHUB_EVENT_PULL_REQUEST_HEAD_SHA_SHORT
+      globalEnv: review
       appNamespace: review-front-$GITHUB_HEAD_REF_SLUG
       blockscoutIngressHost: blockscout
       frontendIngressHost: blockscout
-      frontendImage: ghcr.io/blockscout/frontend:prerelease-${{ needs.push_to_registry.outputs.shortSha }}
+      frontendImage: ghcr.io/blockscout/frontend:prerelease-$GITHUB_EVENT_PULL_REQUEST_HEAD_SHA_SHORT
       gethIngressHost: geth
       scVerifierIngressHost: sc-verifier
     secrets: inherit

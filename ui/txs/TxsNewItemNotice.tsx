@@ -1,4 +1,4 @@
-import { Alert, Spinner, Text, Link, chakra } from '@chakra-ui/react';
+import { Alert, Link, Text, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import useNewTxsSocket from 'lib/hooks/useNewTxsSocket';
@@ -8,7 +8,7 @@ interface InjectedProps {
 }
 
 interface Props {
-  children: (props: InjectedProps) => JSX.Element;
+  children?: (props: InjectedProps) => JSX.Element;
   className?: string;
 }
 
@@ -36,19 +36,22 @@ const TxsNewItemNotice = ({ children, className }: Props) => {
     }
 
     if (!num) {
-      return null;
+      return (
+        <Alert className={ className } status="warning" p={ 4 } fontWeight={ 400 }>
+          scanning new transactions...
+        </Alert>
+      );
     }
 
     return (
       <Alert className={ className } status="warning" p={ 4 } fontWeight={ 400 }>
-        <Spinner size="sm" mr={ 3 }/>
-        <Text as="span" whiteSpace="pre">+ { num } new transaction{ num > 1 ? 's' : '' }. </Text>
-        <Link onClick={ handleClick }>View in list</Link>
+        <Link onClick={ handleClick }>{ num } more transaction{ num > 1 ? 's' : '' }</Link>
+        <Text whiteSpace="pre"> ha{ num > 1 ? 've' : 's' } come in</Text>
       </Alert>
     );
   })();
 
-  return children({ content });
+  return children ? children({ content }) : content;
 };
 
 export default chakra(TxsNewItemNotice);

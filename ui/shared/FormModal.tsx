@@ -49,7 +49,7 @@ export default function FormModal<TData>({
         <ModalCloseButton/>
         <ModalBody mb={ 0 }>
           { (isAlertVisible || text) && (
-            <Box marginBottom={{ base: 6, lg: 12 }}>
+            <Box marginBottom={{ base: 6, lg: 8 }}>
               { text && (
                 <Text lineHeight="30px" mb={ 3 }>
                   { text }

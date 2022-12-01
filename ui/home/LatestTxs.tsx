@@ -27,7 +27,7 @@ const LatestTransactions = () => {
   if (isLoading) {
     content = (
       <>
-        <Skeleton h="56px" w="100%"/>
+        <Skeleton h="56px" w="100%" borderBottomLeftRadius={ 0 } borderBottomRightRadius={ 0 }/>
         { Array.from(Array(txsCount)).map((item, index) => <LatestTxsItemSkeleton key={ index }/>) }
       </>
     );
@@ -53,10 +53,10 @@ const LatestTransactions = () => {
   }
 
   return (
-    <>
+    <Box flexGrow={ 1 }>
       <Heading as="h4" size="sm" mb={ 4 }>Latest transactions</Heading>
       { content }
-    </>
+    </Box>
   );
 };
 

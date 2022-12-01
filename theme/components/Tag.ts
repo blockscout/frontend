@@ -34,6 +34,7 @@ const baseStyleContainer = defineStyle({
   display: 'inline-block',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
   borderRadius: 'sm',
   ...transitionProps,
 });

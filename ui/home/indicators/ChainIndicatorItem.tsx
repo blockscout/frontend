@@ -3,23 +3,26 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
 import type { ChainIndicatorId } from './types';
-import type { Stats } from 'types/api/stats';
+import type { HomeStats } from 'types/api/stats';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 
 interface Props {
   id: ChainIndicatorId;
   title: string;
-  value: (stats: Stats) => string;
+  value: (stats: HomeStats) => string;
   icon: React.ReactNode;
   isSelected: boolean;
   onClick: (id: ChainIndicatorId) => void;
-  stats: UseQueryResult<Stats>;
+  stats: UseQueryResult<HomeStats>;
 }
 
 const ChainIndicatorItem = ({ id, title, value, icon, isSelected, onClick, stats }: Props) => {
-  const bgColor = useColorModeValue('white', 'black');
   const isMobile = useIsMobile();
+
+  const activeBgColorDesktop = useColorModeValue('white', 'gray.900');
+  const activeBgColorMobile = useColorModeValue('white', 'black');
+  const activeBgColor = isMobile ? activeBgColorMobile : activeBgColorDesktop;
 
   const handleClick = React.useCallback(() => {
     onClick(id);
@@ -58,11 +61,11 @@ const ChainIndicatorItem = ({ id, title, value, icon, isSelected, onClick, stats
       borderRadius="md"
       cursor="pointer"
       onClick={ handleClick }
-      bgColor={ isSelected ? bgColor : 'inherit' }
+      bgColor={ isSelected ? activeBgColor : 'inherit' }
       boxShadow={ isSelected ? 'lg' : 'none' }
       zIndex={ isSelected ? 1 : 'initial' }
       _hover={{
-        bgColor,
+        activeBgColor,
         zIndex: 1,
       }}
     >

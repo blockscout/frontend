@@ -1,6 +1,6 @@
-import type { TimeChartItem } from '../../shared/chart/types';
+import type { TimeChartItem } from 'ui/shared/chart/types';
 
-export const demoData: Array<TimeChartItem> = [ { date: new Date('2022-10-17T00:00:00.000Z'), value: 432670 }, {
+export const demoChartsData: Array<TimeChartItem> = [ { date: new Date('2022-10-17T00:00:00.000Z'), value: 432670 }, {
   date: new Date('2022-10-18T00:00:00.000Z'),
   value: 370100,
 }, { date: new Date('2022-10-19T00:00:00.000Z'), value: 283234 }, { date: new Date('2022-10-20T00:00:00.000Z'), value: 420910 }, {

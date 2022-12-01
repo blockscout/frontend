@@ -1,5 +1,5 @@
 import type { ChartMarketResponse, ChartTransactionResponse } from 'types/api/charts';
-import type { Stats } from 'types/api/stats';
+import type { HomeStats } from 'types/api/stats';
 import type { QueryKeys } from 'types/client/queries';
 import type { TimeChartData } from 'ui/shared/chart/types';
 
@@ -10,7 +10,7 @@ export type ChainIndicatorId = 'daily_txs' | 'coin_price' | 'market_cup';
 export interface TChainIndicator<Q extends ChartsQueryKeys> {
   id: ChainIndicatorId;
   title: string;
-  value: (stats: Stats) => string;
+  value: (stats: HomeStats) => string;
   icon: React.ReactNode;
   hint?: string;
   api: {

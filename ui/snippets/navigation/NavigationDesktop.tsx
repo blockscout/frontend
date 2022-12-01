@@ -73,7 +73,7 @@ const NavigationDesktop = () => {
         <NetworkLogo isCollapsed={ isCollapsed }/>
         <NetworkMenu isCollapsed={ isCollapsed }/>
       </Box>
-      <Box as="nav" mt={ 14 }>
+      <Box as="nav" mt={ 8 }>
         <VStack as="ul" spacing="2" alignItems="flex-start" overflow="hidden">
           { mainNavItems.map((item) => <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed }/>) }
         </VStack>

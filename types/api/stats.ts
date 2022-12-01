@@ -1,4 +1,4 @@
-export type Stats = {
+export type HomeStats = {
   total_blocks: string;
   total_addresses: string;
   total_transactions: string;
@@ -11,4 +11,8 @@ export type Stats = {
   static_gas_price: string;
   market_cap: string;
   network_utilization_percentage: number;
+}
+
+export type Stats = {
+  total_blocks: string;
 }

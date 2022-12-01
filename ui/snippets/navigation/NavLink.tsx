@@ -41,7 +41,7 @@ const NavLink = ({ text, url, icon, isCollapsed, isActive, px, isNewUi }: Props)
         isDisabled={ !isCollapsed }
         placement="right"
         variant="nav"
-        gutter={ 15 }
+        gutter={ 20 }
         color={ isActive ? colors.text.active : colors.text.hover }
       >
         <HStack spacing={ 3 }>
