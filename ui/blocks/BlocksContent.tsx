@@ -34,7 +34,18 @@ const BlocksContent = ({ type, query }: Props) => {
   const [ socketAlert, setSocketAlert ] = React.useState('');
 
   const handleNewBlockMessage: SocketMessage.NewBlock['handler'] = React.useCallback((payload) => {
-    queryClient.setQueryData([ QueryKeys.blocks, { page: query.pagination.page, filters: { type } } ], (prevData: BlocksResponse | undefined) => {
+    const queryKey = (() => {
+      switch (type) {
+        case 'uncle':
+          return QueryKeys.blocksUncles;
+        case 'reorg':
+          return QueryKeys.blocksReorgs;
+        default:
+          return QueryKeys.blocks;
+      }
+    })();
+
+    queryClient.setQueryData([ queryKey, { page: query.pagination.page, filters: { type } } ], (prevData: BlocksResponse | undefined) => {
       const shouldAddToList = !type || type === payload.block.type;
 
       if (!prevData) {

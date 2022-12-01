@@ -26,9 +26,12 @@ export default function useQueryWithPages<QueryName extends PaginatedQueryKeys>(
   const currPageParams = pick(router.query, paginationFields);
   const [ pageParams, setPageParams ] = React.useState<Array<PaginationParams<QueryName>>>([ ]);
   const fetch = useFetch();
+  const isMounted = React.useRef(false);
+
+  const queryKey = [ queryName, ...(queryIds || []), { page, filters } ];
 
   const queryResult = useQuery<unknown, unknown, PaginatedResponse<QueryName>>(
-    [ queryName, ...(queryIds || []), { page, filters } ],
+    queryKey,
     async() => {
       const params: Array<string> = [];
 
@@ -104,6 +107,19 @@ export default function useQueryWithPages<QueryName extends PaginatedQueryKeys>(
     resetPage,
     hasNextPage: nextPageParams ? Object.keys(nextPageParams).length > 0 : false,
   };
+
+  React.useEffect(() => {
+    if (page !== 1 && isMounted.current) {
+      queryClient.cancelQueries({ queryKey });
+      setPage(1);
+    }
+  // hook should run only when queryName has changed
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ queryName ]);
+
+  React.useEffect(() => {
+    isMounted.current = true;
+  }, []);
 
   return { ...queryResult, pagination };
 }

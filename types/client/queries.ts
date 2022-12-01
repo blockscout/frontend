@@ -13,6 +13,8 @@ export enum QueryKeys {
   blockTxs = 'block-transactions',
   block = 'block',
   blocks = 'blocks',
+  blocksReorgs = 'blocks-reorgs',
+  blocksUncles = 'blocks-uncles',
   chartsTxs = 'charts-txs',
   chartsMarket = 'charts-market',
   indexBlocks='indexBlocks',

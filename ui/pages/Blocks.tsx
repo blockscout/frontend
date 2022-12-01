@@ -19,6 +19,12 @@ const TAB_TO_TYPE: Record<string, BlockType> = {
   uncles: 'uncle',
 };
 
+const TAB_TO_QUERY: Record<string, QueryKeys.blocks | QueryKeys.blocksReorgs | QueryKeys.blocksUncles> = {
+  blocks: QueryKeys.blocks,
+  reorgs: QueryKeys.blocksReorgs,
+  uncles: QueryKeys.blocksUncles,
+};
+
 const TAB_LIST_PROPS = {
   marginBottom: 0,
   py: 5,
@@ -28,15 +34,17 @@ const TAB_LIST_PROPS = {
 const BlocksPageContent = () => {
   const router = useRouter();
   const isMobile = useIsMobile();
-  const type = router.query.tab && !Array.isArray(router.query.tab) ? TAB_TO_TYPE[router.query.tab] : undefined;
+  const type = router.query.tab && !Array.isArray(router.query.tab) ? TAB_TO_TYPE[router.query.tab] : 'block';
+  const queryName = router.query.tab && !Array.isArray(router.query.tab) ? TAB_TO_QUERY[router.query.tab] : QueryKeys.blocks;
+
   const blocksQuery = useQueryWithPages({
     apiPath: '/node-api/blocks',
-    queryName: QueryKeys.blocks,
+    queryName,
     filters: { type },
   });
 
   const tabs: Array<RoutedTab> = [
-    { id: 'blocks', title: 'All', component: <BlocksContent query={ blocksQuery }/> },
+    { id: 'blocks', title: 'All', component: <BlocksContent type="block" query={ blocksQuery }/> },
     { id: 'reorgs', title: 'Forked', component: <BlocksContent type="reorg" query={ blocksQuery }/> },
     { id: 'uncles', title: 'Uncles', component: <BlocksContent type="uncle" query={ blocksQuery }/> },
   ];
