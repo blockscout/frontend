@@ -27,7 +27,7 @@ const LatestTransactions = () => {
   if (isLoading) {
     content = (
       <>
-        <Skeleton h="56px" w="100%" borderBottomLeftRadius={ 0 } borderBottomRightRadius={ 0 }/>
+        <Skeleton h="32px" w="100%" borderBottomLeftRadius={ 0 } borderBottomRightRadius={ 0 }/>
         { Array.from(Array(txsCount)).map((item, index) => <LatestTxsItemSkeleton key={ index }/>) }
       </>
     );
@@ -42,7 +42,7 @@ const LatestTransactions = () => {
     content = (
       <>
         <LatestTxsNotice/>
-        <Box mb={{ base: 3, lg: 6 }}>
+        <Box mb={{ base: 3, lg: 4 }}>
           { data.slice(0, txsCount).map((tx => <LatestTxsItem key={ tx.hash } tx={ tx }/>)) }
         </Box>
         <Flex justifyContent="center">

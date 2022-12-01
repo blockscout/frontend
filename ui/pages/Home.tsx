@@ -47,7 +47,7 @@ const Home = () => {
       </Box>
       <Stats/>
       <ChainIndicators/>
-      <Flex mt={ 12 } direction={{ base: 'column', lg: 'row' }} columnGap={ 12 } rowGap={ 8 }>
+      <Flex mt={ 8 } direction={{ base: 'column', lg: 'row' }} columnGap={ 12 } rowGap={ 8 }>
         <LatestBlocks/>
         <LatestTxs/>
       </Flex>

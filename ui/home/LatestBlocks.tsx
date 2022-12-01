@@ -23,7 +23,7 @@ const BLOCK_MARGIN = 24;
 
 const LatestBlocks = () => {
   const isMobile = useIsMobile();
-  const blocksMaxCount = isMobile ? 2 : 4;
+  const blocksMaxCount = isMobile ? 2 : 3;
   const fetch = useFetch();
   const { data, isLoading, isError } = useQuery<unknown, unknown, Array<Block>>(
     [ QueryKeys.indexBlocks ],
@@ -87,7 +87,7 @@ const LatestBlocks = () => {
           <Skeleton h="24px" w="170px" mb={{ base: 6, lg: 9 }}/>
         ) }
         { statsQueryResult.data?.network_utilization_percentage !== undefined && (
-          <Box mb={{ base: 6, lg: 9 }}>
+          <Box mb={{ base: 6, lg: 3 }}>
             <Text as="span" fontSize="sm">
               Network utilization:{ nbsp }
             </Text>
@@ -96,7 +96,7 @@ const LatestBlocks = () => {
             </Text>
           </Box>
         ) }
-        <VStack spacing={ `${ BLOCK_MARGIN }px` } mb={ 6 } height={ `${ BLOCK_HEIGHT * blocksCount + BLOCK_MARGIN * (blocksCount - 1) }px` } overflow="hidden">
+        <VStack spacing={ `${ BLOCK_MARGIN }px` } mb={ 4 } height={ `${ BLOCK_HEIGHT * blocksCount + BLOCK_MARGIN * (blocksCount - 1) }px` } overflow="hidden">
           <AnimatePresence initial={ false } >
             { dataToShow.map((block => <LatestBlocksItem key={ block.height } block={ block } h={ BLOCK_HEIGHT }/>)) }
           </AnimatePresence>

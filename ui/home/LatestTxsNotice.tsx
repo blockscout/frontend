@@ -35,9 +35,12 @@ const LatestTxsNotice = ({ className }: Props) => {
     <Alert
       className={ className }
       status="warning"
-      p={ 4 }
+      h="32px"
+      px={ 4 }
+      py="6px"
       fontWeight={ 400 }
       bgColor={ useColorModeValue('orange.50', transparentize('orange.200', 0.16)(theme)) }
+      color={ useColorModeValue('blackAlpha.800', 'whiteAlpha.800') }
       borderBottomRadius={ 0 }
     >
       { content }
