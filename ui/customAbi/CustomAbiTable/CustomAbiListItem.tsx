@@ -24,7 +24,7 @@ const CustomAbiListItem = ({ item, onEditClick, onDeleteClick }: Props) => {
 
   return (
     <AccountListItemMobile>
-      <AddressSnippet address={ item.contract_address_hash } subtitle={ item.name }/>
+      <AddressSnippet address={ item.contract_address_hash } subtitle={ item.name } isContract/>
       <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
     </AccountListItemMobile>
   );

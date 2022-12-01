@@ -6,16 +6,20 @@ import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
+import AddressContractIcon from './address/AddressContractIcon';
+
 interface Props {
   address: string;
   subtitle?: string;
+  // temporary solution for custom abis while we don't have address info on account pages
+  isContract?: boolean;
 }
 
-const AddressSnippet = ({ address, subtitle }: Props) => {
+const AddressSnippet = ({ address, isContract, subtitle }: Props) => {
   return (
     <Box maxW="100%">
       <Address>
-        <AddressIcon hash={ address }/>
+        { isContract ? <AddressContractIcon/> : <AddressIcon hash={ address }/> }
         <AddressLink hash={ address } fontWeight="600" ml={ 2 }/>
         <CopyToClipboard text={ address } ml={ 1 }/>
       </Address>
