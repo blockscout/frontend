@@ -56,7 +56,7 @@ const TxsContent = ({ query, showBlockInfo = true, showSocketInfo = true }: Prop
         <Show below="lg" ssr={ false }>
           <Box>
             { showSocketInfo && (
-              <TxsNewItemNotice>
+              <TxsNewItemNotice url={ window.location.href }>
                 { ({ content }) => <Box>{ content }</Box> }
               </TxsNewItemNotice>
             ) }

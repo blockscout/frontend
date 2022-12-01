@@ -51,7 +51,7 @@ const TxsTable = ({ txs, sort, sorting, top, showBlockInfo, showSocketInfo }: Pr
       </TheadSticky>
       <Tbody>
         { showSocketInfo && (
-          <TxsNewItemNotice borderRadius={ 0 }>
+          <TxsNewItemNotice borderRadius={ 0 } url={ window.location.href }>
             { ({ content }) => <Tr><Td colSpan={ 10 } p={ 0 }>{ content }</Td></Tr> }
           </TxsNewItemNotice>
         ) }
