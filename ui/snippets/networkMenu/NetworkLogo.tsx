@@ -1,4 +1,4 @@
-import { Icon, Box, Image, useColorModeValue } from '@chakra-ui/react';
+import { Icon, Box, Image, useColorModeValue, useBreakpointValue } from '@chakra-ui/react';
 import React from 'react';
 
 import appConfig from 'configs/app/config';
@@ -18,9 +18,11 @@ const NetworkLogo = ({ isCollapsed, onClick }: Props) => {
   const href = link('network_index');
 
   const style = useColorModeValue({}, { filter: 'brightness(0) invert(1)' });
+  const isLg = useBreakpointValue({ base: false, lg: true, xl: false }, { ssr: true });
 
   const logoEl = (() => {
-    if (isCollapsed) {
+    const showSmallLogo = isCollapsed || (isCollapsed !== false && isLg);
+    if (showSmallLogo) {
       if (appConfig.network.smallLogo) {
         return (
           <Image
@@ -74,8 +76,8 @@ const NetworkLogo = ({ isCollapsed, onClick }: Props) => {
     <Box
       as="a"
       href={ href }
-      width={{ base: 'auto', lg: isCollapsed === false ? '113px' : '30px' }}
-      height={ isCollapsed ? '30px' : '20px' }
+      width={{ base: 'auto', lg: isCollapsed === false ? '113px' : '30px', xl: isCollapsed ? '30px' : '113px' }}
+      height={{ base: '20px', lg: isCollapsed === false ? '20px' : '30px', xl: isCollapsed ? '30px' : '20px' }}
       display="inline-flex"
       overflow="hidden"
       onClick={ onClick }

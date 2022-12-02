@@ -16,7 +16,7 @@ const NetworkMenu = ({ isCollapsed }: Props) => {
             <Box
               marginLeft="auto"
               overflow="hidden"
-              width={ isCollapsed ? '0px' : 'auto' }
+              width={{ base: 'auto', lg: isCollapsed === false ? 'auto' : '0px', xl: isCollapsed ? '0px' : 'auto' }}
             >
               <NetworkMenuButton isActive={ isOpen }/>
             </Box>
