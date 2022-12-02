@@ -7,6 +7,7 @@ SocketMessage.BlocksIndexStatus |
 SocketMessage.TxStatusUpdate |
 SocketMessage.NewTx |
 SocketMessage.NewPendingTx |
+SocketMessage.NewAddressCount |
 SocketMessage.Unknown;
 
 interface SocketMessageParamsGeneric<Event extends string | undefined, Payload extends object | unknown> {
@@ -22,5 +23,6 @@ export namespace SocketMessage {
   export type TxStatusUpdate = SocketMessageParamsGeneric<'collated', NewBlockSocketResponse>;
   export type NewTx = SocketMessageParamsGeneric<'transaction', { transaction: number }>;
   export type NewPendingTx = SocketMessageParamsGeneric<'pending_transaction', { pending_transaction: number }>;
+  export type NewAddressCount = SocketMessageParamsGeneric<'count', { count: string }>;
   export type Unknown = SocketMessageParamsGeneric<undefined, unknown>;
 }

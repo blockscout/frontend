@@ -5,16 +5,17 @@ import notEmpty from 'lib/notEmpty';
 
 import { useSocket } from './context';
 
+const CHANNEL_REGISTRY: Record<string, Channel> = {};
+
 interface Params {
   topic: string | undefined;
-  params?: object;
-  isDisabled: boolean;
+  isDisabled?: boolean;
   onJoin?: (channel: Channel, message: unknown) => void;
   onSocketClose?: () => void;
   onSocketError?: () => void;
 }
 
-export default function useSocketChannel({ topic, params, isDisabled, onJoin, onSocketClose, onSocketError }: Params) {
+export default function useSocketChannel({ topic, isDisabled, onJoin, onSocketClose, onSocketError }: Params) {
   const socket = useSocket();
   const [ channel, setChannel ] = useState<Channel>();
   const onCloseRef = useRef<string>();
@@ -51,15 +52,24 @@ export default function useSocketChannel({ topic, params, isDisabled, onJoin, on
       return;
     }
 
-    const ch = socket.channel(topic, params);
-    ch.join().receive('ok', (message) => onJoinRef.current?.(ch, message));
+    let ch: Channel;
+    if (CHANNEL_REGISTRY[topic]) {
+      ch = CHANNEL_REGISTRY[topic];
+      onJoinRef.current?.(ch, '');
+    } else {
+      ch = socket.channel(topic);
+      CHANNEL_REGISTRY[topic] = ch;
+      ch.join().receive('ok', (message) => onJoinRef.current?.(ch, message));
+    }
+
     setChannel(ch);
 
     return () => {
       ch.leave();
+      delete CHANNEL_REGISTRY[topic];
       setChannel(undefined);
     };
-  }, [ socket, topic, params, isDisabled ]);
+  }, [ socket, topic, isDisabled ]);
 
   return channel;
 }

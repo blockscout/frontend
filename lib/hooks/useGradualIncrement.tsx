@@ -27,7 +27,7 @@ export default function useGradualIncrement(initialValue: number): [number, (inc
     queue.current += inc;
 
     if (!timeoutId.current) {
-      timeoutId.current = window.setTimeout(incrementDelayed, 0);
+      timeoutId.current = window.setTimeout(incrementDelayed, 50);
     }
   }, [ incrementDelayed ]);
 

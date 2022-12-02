@@ -6,15 +6,15 @@ import type { HomeStats } from 'types/api/stats';
 import { QueryKeys } from 'types/client/queries';
 
 import appConfig from 'configs/app/config';
-import blockIcon from 'icons/block.svg';
-import clockIcon from 'icons/clock-light.svg';
 import gasIcon from 'icons/gas.svg';
-import txIcon from 'icons/transactions.svg';
-import walletIcon from 'icons/wallet.svg';
 import useFetch from 'lib/hooks/useFetch';
 
-import StatsItem from './StatsItem';
-import StatsItemSkeleton from './StatsItemSkeleton';
+import StatsBlockTime from './stats/StatsBlockTime';
+import StatsItem from './stats/StatsItem';
+import StatsItemSkeleton from './stats/StatsItemSkeleton';
+import StatsTotalBlocks from './stats/StatsTotalBlocks';
+import StatsTotalTxs from './stats/StatsTotalTxs';
+import StatsWalletAddresses from './stats/StatsWalletAddresses';
 
 const hasGasTracker = appConfig.homepage.showGasTracker;
 const hasAvgBlockTime = appConfig.homepage.showAvgBlockTime;
@@ -44,28 +44,10 @@ const Stats = () => {
   if (data) {
     content = (
       <>
-        <StatsItem
-          icon={ blockIcon }
-          title="Total blocks"
-          value={ Number(data.total_blocks).toLocaleString() }
-        />
-        { hasAvgBlockTime && (
-          <StatsItem
-            icon={ clockIcon }
-            title="Average block time"
-            value={ `${ (data.average_block_time / 1000).toFixed(1) } s` }
-          />
-        ) }
-        <StatsItem
-          icon={ txIcon }
-          title="Total transactions"
-          value={ Number(data.total_transactions).toLocaleString() }
-        />
-        <StatsItem
-          icon={ walletIcon }
-          title="Wallet addresses"
-          value={ Number(data.total_addresses).toLocaleString() }
-        />
+        <StatsTotalBlocks value={ data.total_blocks }/>
+        { hasAvgBlockTime && <StatsBlockTime value={ data.average_block_time }/> }
+        <StatsTotalTxs value={ data.total_transactions }/>
+        <StatsWalletAddresses value={ data.total_addresses }/>
         { hasGasTracker && (
           <StatsItem
             icon={ gasIcon }
