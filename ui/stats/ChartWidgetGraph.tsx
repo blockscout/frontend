@@ -20,7 +20,7 @@ interface Props {
   isZoomResetInitial: boolean;
 }
 
-const CHART_MARGIN = { bottom: 20, left: 65, right: 30, top: 10 };
+const CHART_MARGIN = { bottom: 20, left: 52, right: 30, top: 10 };
 
 const ChartWidgetGraph = ({ items, onZoom, isZoomResetInitial, title }: Props) => {
   const ref = React.useRef<SVGSVGElement>(null);
