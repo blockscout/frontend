@@ -11,7 +11,7 @@ import BigNumber from 'bignumber.js';
 
 const uniswapIconUrl = 'https://raw.githubusercontent.com/trustwallet/assets/master/dapps/app.uniswap.org.png';
 
-const TxDetailsAction = ({ protocol, type, data }) => {
+const TxDetailsAction = ({ protocol, type, data, isLast }) => {
   if (protocol === 'uniswap_v3') {
     if (['mint', 'burn', 'collect', 'swap'].includes(type)) {
       const amount0 = BigNumber(data.amount0).toFormat();
@@ -25,7 +25,7 @@ const TxDetailsAction = ({ protocol, type, data }) => {
       }
 
       return (
-        <Flex flexWrap="wrap" columnGap={ 1 } rowGap={ 2 }>
+        <Flex flexWrap="wrap" columnGap={ 1 } rowGap={ 2 } marginBottom={ isLast ? 5 : 0 }>
           <Text color="gray.500" as="span">
             { actionName[type][0] }
           </Text>

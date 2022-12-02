@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
@@ -12,15 +12,17 @@ const TxDetailsActions = ({ actions }) => {
       hint="Highlighted events of the transaction"
       position="relative"
     >
-      <Flex
-        flexDirection="column"
-        alignItems="flex-start"
-        rowGap={ 5 }
-        w="100%"
-        fontWeight={ 500 }
-      >
-        { actions.map((action, index) => <TxDetailsAction key={ index } { ...action }/>) }
-      </Flex>
+      <Box className="mCustomScrollbar" data-mcs-theme="minimal-dark" maxH={ 40 }>
+        <Flex
+          flexDirection="column"
+          alignItems="flex-start"
+          rowGap={ 5 }
+          w="100%"
+          fontWeight={ 500 }
+        >
+          { actions.map((action, index) => <TxDetailsAction key={ index } { ...action } isLast={ index === actions.length-1 }/>) }
+        </Flex>
+      </Box>
     </DetailsInfoItem>
   );
 };
