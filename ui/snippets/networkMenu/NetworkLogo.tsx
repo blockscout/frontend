@@ -2,7 +2,7 @@ import { Icon, Box, Image, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import appConfig from 'configs/app/config';
-import shortLogoPlaceholder from 'icons/networks/icons/placeholder.svg';
+import smallLogoPlaceholder from 'icons/networks/icons/placeholder.svg';
 import logoPlaceholder from 'icons/networks/logos/blockscout.svg';
 import link from 'lib/link/link';
 import ASSETS from 'lib/networks/networkAssets';
@@ -21,13 +21,24 @@ const NetworkLogo = ({ isCollapsed, onClick }: Props) => {
 
   const logoEl = (() => {
     if (isCollapsed) {
-      const shortLogo = appConfig.network.type ? ASSETS[appConfig.network.type]?.shortLogo || ASSETS[appConfig.network.type]?.icon : undefined;
+      if (appConfig.network.smallLogo) {
+        return (
+          <Image
+            w="auto"
+            h="100%"
+            src={ appConfig.network.smallLogo }
+            alt={ `${ appConfig.network.name } network logo` }
+          />
+        );
+      }
+
+      const smallLogo = appConfig.network.type ? ASSETS[appConfig.network.type]?.smallLogo || ASSETS[appConfig.network.type]?.icon : undefined;
       return (
         <Icon
-          as={ shortLogo || shortLogoPlaceholder }
+          as={ smallLogo || smallLogoPlaceholder }
           width="auto"
           height="100%"
-          color={ shortLogo ? undefined : logoColor }
+          color={ smallLogo ? undefined : logoColor }
           { ...getDefaultTransitionProps() }
           style={ style }
         />
@@ -40,7 +51,7 @@ const NetworkLogo = ({ isCollapsed, onClick }: Props) => {
           w="auto"
           h="100%"
           src={ appConfig.network.logo }
-          alt={ `${ appConfig.network.name } network icon` }
+          alt={ `${ appConfig.network.name } network logo` }
         />
       );
     }

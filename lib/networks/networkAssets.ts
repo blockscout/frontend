@@ -28,7 +28,7 @@ import sokolLogo from 'icons/networks/logos/sokol.svg';
 interface NetworkAssets {
   icon?: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
   logo?: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
-  shortLogo?: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
+  smallLogo?: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
 }
 
 const networkAssets: Partial<Record<PreDefinedNetwork, NetworkAssets>> = {
