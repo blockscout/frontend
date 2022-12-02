@@ -16,7 +16,7 @@ const LatestTxsItemSkeleton = () => {
       width="100%"
       borderTop="1px solid"
       borderColor={ borderColor }
-      py={{ base: 4, lg: 6 }}
+      py={ 4 }
       px={{ base: 0, lg: 4 }}
       _last={{ borderBottom: '1px solid', borderColor }}
     >
