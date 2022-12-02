@@ -2,8 +2,8 @@ import { Icon, Box, Image, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import appConfig from 'configs/app/config';
-import logoPlaceholder from 'icons/logo.svg';
 import shortLogoPlaceholder from 'icons/networks/icons/placeholder.svg';
+import logoPlaceholder from 'icons/networks/logos/blockscout.svg';
 import link from 'lib/link/link';
 import ASSETS from 'lib/networks/networkAssets';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
