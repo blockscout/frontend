@@ -25,3 +25,8 @@ export type StatsChart = {
   description: string;
   apiMethodURL: string;
 }
+
+export interface ModalChart {
+  id: string;
+  title: string;
+}
