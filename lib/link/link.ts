@@ -25,8 +25,9 @@ export default function link(
 
     return paramValue ? `/${ paramValue }` : '';
   });
+  const baseUrl = routeName === 'auth' ? appConfig.authUrl : appConfig.baseUrl;
 
-  const url = new URL(path, appConfig.baseUrl);
+  const url = new URL(path, baseUrl);
 
   queryParams && Object.entries(queryParams).forEach(([ key, value ]) => {
     url.searchParams.append(key, value);

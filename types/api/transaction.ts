@@ -1,4 +1,5 @@
 import type { AddressParam } from './addressParams';
+import type { BlockTransactionsResponse } from './block';
 import type { DecodedInput } from './decodedInput';
 import type { Fee } from './fee';
 import type { TokenTransfer } from './tokenTransfer';
@@ -71,3 +72,5 @@ export interface TransactionsResponsePending {
 }
 
 export type TransactionType = 'token_transfer' | 'contract_creation' | 'contract_call' | 'token_creation' | 'coin_transfer'
+
+export type TxsResponse = TransactionsResponseValidated | TransactionsResponsePending | BlockTransactionsResponse;

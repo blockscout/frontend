@@ -1,13 +1,12 @@
-import _clamp from 'lodash/clamp';
 import React from 'react';
 
-const MAX_DELAY = 500;
-const MIN_DELAY = 50;
+const DURATION = 300;
 
 export default function useGradualIncrement(initialValue: number): [number, (inc: number) => void] {
   const [ num, setNum ] = React.useState(initialValue);
   const queue = React.useRef<number>(0);
   const timeoutId = React.useRef(0);
+  const delay = React.useRef(0);
 
   const incrementDelayed = React.useCallback(() => {
     if (queue.current === 0) {
@@ -33,8 +32,13 @@ export default function useGradualIncrement(initialValue: number): [number, (inc
 
   React.useEffect(() => {
     if (queue.current > 0 && !timeoutId.current) {
-      const delay = _clamp(MAX_DELAY / queue.current * 1.5, MIN_DELAY, MAX_DELAY);
-      timeoutId.current = window.setTimeout(incrementDelayed, delay);
+      if (!delay.current) {
+        delay.current = DURATION / queue.current;
+      } else if (delay.current > DURATION / queue.current) {
+        // in case if queue size is increased since last DOM update
+        delay.current = DURATION / queue.current;
+      }
+      timeoutId.current = window.setTimeout(incrementDelayed, delay.current);
     }
   }, [ incrementDelayed, num ]);
 

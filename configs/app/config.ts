@@ -25,6 +25,7 @@ const baseUrl = [
   process.env.NEXT_PUBLIC_VERCEL_URL || appHost,
   appPort && ':' + appPort,
 ].filter(Boolean).join('');
+const authUrl = getEnvValue(process.env.NEXT_PUBLIC_AUTH_URL) || baseUrl;
 const apiHost = getEnvValue(process.env.NEXT_PUBLIC_API_HOST);
 
 const logoutUrl = (() => {
@@ -81,6 +82,7 @@ const config = Object.freeze({
   host: appHost,
   port: appPort,
   baseUrl,
+  authUrl,
   logoutUrl,
   api: {
     endpoint: apiHost ? `https://${ apiHost }` : 'https://blockscout.com',
