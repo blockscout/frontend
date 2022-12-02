@@ -17,9 +17,10 @@ type Props = {
   sorting?: Sort;
   top: number;
   showBlockInfo: boolean;
+  showSocketInfo: boolean;
 }
 
-const TxsTable = ({ txs, sort, sorting, top, showBlockInfo }: Props) => {
+const TxsTable = ({ txs, sort, sorting, top, showBlockInfo, showSocketInfo }: Props) => {
   return (
     <Table variant="simple" minWidth="950px" size="xs">
       <TheadSticky top={ top }>
@@ -49,9 +50,11 @@ const TxsTable = ({ txs, sort, sorting, top, showBlockInfo }: Props) => {
         </Tr>
       </TheadSticky>
       <Tbody>
-        <TxsNewItemNotice borderRadius={ 0 }>
-          { ({ content }) => <Tr><Td colSpan={ 10 } p={ 0 }>{ content }</Td></Tr> }
-        </TxsNewItemNotice>
+        { showSocketInfo && (
+          <TxsNewItemNotice borderRadius={ 0 } url={ window.location.href }>
+            { ({ content }) => <Tr><Td colSpan={ 10 } p={ 0 }>{ content }</Td></Tr> }
+          </TxsNewItemNotice>
+        ) }
         { txs.map((item) => (
           <TxsTableItem
             key={ item.hash }

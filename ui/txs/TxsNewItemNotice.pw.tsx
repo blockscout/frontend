@@ -23,7 +23,7 @@ test.describe.configure({ mode: 'serial' });
 test('new item in validated txs list', async({ mount, createSocket }) => {
   const component = await mount(
     <TestApp withSocket>
-      <TxsNewItemNotice/>
+      <TxsNewItemNotice url="/"/>
     </TestApp>,
     { hooksConfig },
   );
@@ -35,10 +35,29 @@ test('new item in validated txs list', async({ mount, createSocket }) => {
   await expect(component).toHaveScreenshot();
 });
 
+test.describe('dark mode', () => {
+  test.use({ colorScheme: 'dark' });
+
+  test('default view', async({ mount, createSocket }) => {
+    const component = await mount(
+      <TestApp withSocket>
+        <TxsNewItemNotice url="/"/>
+      </TestApp>,
+      { hooksConfig },
+    );
+
+    const socket = await createSocket();
+    const channel = await socketServer.joinChannel(socket, 'transactions:new_transaction');
+    socketServer.sendMessage(socket, channel, 'transaction', { transaction: 1 });
+
+    await expect(component).toHaveScreenshot();
+  });
+});
+
 test('2 new items in validated txs list', async({ mount, page, createSocket }) => {
   const component = await mount(
     <TestApp withSocket>
-      <TxsNewItemNotice/>
+      <TxsNewItemNotice url="/"/>
     </TestApp>,
     { hooksConfig },
   );
@@ -56,7 +75,7 @@ test('2 new items in validated txs list', async({ mount, page, createSocket }) =
 test('connection loss', async({ mount, createSocket }) => {
   const component = await mount(
     <TestApp withSocket>
-      <TxsNewItemNotice/>
+      <TxsNewItemNotice url="/"/>
     </TestApp>,
     { hooksConfig },
   );
@@ -71,7 +90,7 @@ test('connection loss', async({ mount, createSocket }) => {
 test('fetching', async({ mount, createSocket }) => {
   const component = await mount(
     <TestApp withSocket>
-      <TxsNewItemNotice/>
+      <TxsNewItemNotice url="/"/>
     </TestApp>,
     { hooksConfig },
   );

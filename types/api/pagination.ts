@@ -9,6 +9,8 @@ import type { KeysOfObjectOrNull } from 'types/utils/KeysOfObjectOrNull';
 
 export type PaginatedQueryKeys =
   QueryKeys.blocks |
+  QueryKeys.blocksReorgs |
+  QueryKeys.blocksUncles |
   QueryKeys.blockTxs |
   QueryKeys.txsValidate |
   QueryKeys.txsPending |
@@ -17,7 +19,7 @@ export type PaginatedQueryKeys =
   QueryKeys.txTokenTransfers;
 
 export type PaginatedResponse<Q extends PaginatedQueryKeys> =
-  Q extends QueryKeys.blocks ? BlocksResponse :
+  Q extends (QueryKeys.blocks | QueryKeys.blocksReorgs | QueryKeys.blocksUncles) ? BlocksResponse :
     Q extends QueryKeys.blockTxs ? BlockTransactionsResponse :
       Q extends QueryKeys.txsValidate ? TransactionsResponseValidated :
         Q extends QueryKeys.txsPending ? TransactionsResponsePending :
@@ -41,7 +43,9 @@ type PaginationFields = {
 
 export const PAGINATION_FIELDS: PaginationFields = {
   [QueryKeys.blocks]: [ 'block_number', 'items_count' ],
-  [QueryKeys.blockTxs]: [ 'block_number', 'items_count' ],
+  [QueryKeys.blocksReorgs]: [ 'block_number', 'items_count' ],
+  [QueryKeys.blocksUncles]: [ 'block_number', 'items_count' ],
+  [QueryKeys.blockTxs]: [ 'block_number', 'items_count', 'index' ],
   [QueryKeys.txsValidate]: [ 'block_number', 'items_count', 'filter', 'index' ],
   [QueryKeys.txsPending]: [ 'filter', 'hash', 'inserted_at' ],
   [QueryKeys.txInternals]: [ 'block_number', 'items_count', 'transaction_hash', 'index', 'transaction_index' ],

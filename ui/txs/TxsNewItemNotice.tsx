@@ -1,4 +1,5 @@
-import { Alert, Link, Text, chakra } from '@chakra-ui/react';
+import { Alert, Link, Text, chakra, useTheme, useColorModeValue } from '@chakra-ui/react';
+import { transparentize } from '@chakra-ui/theme-tools';
 import React from 'react';
 
 import useNewTxsSocket from 'lib/hooks/useNewTxsSocket';
@@ -10,46 +11,44 @@ interface InjectedProps {
 interface Props {
   children?: (props: InjectedProps) => JSX.Element;
   className?: string;
+  url: string;
 }
 
-const TxsNewItemNotice = ({ children, className }: Props) => {
+const TxsNewItemNotice = ({ children, className, url }: Props) => {
   const { num, socketAlert } = useNewTxsSocket();
+  const theme = useTheme();
 
-  const handleClick = React.useCallback(() => {
-    window.location.reload();
-  }, []);
-
-  const content = (() => {
+  const alertContent = (() => {
     if (socketAlert) {
-      return (
-        <Alert
-          className={ className }
-          status="warning"
-          p={ 4 }
-          borderRadius={ 0 }
-          onClick={ handleClick }
-          cursor="pointer"
-        >
-          { socketAlert }
-        </Alert>
-      );
+      return socketAlert;
     }
 
     if (!num) {
-      return (
-        <Alert className={ className } status="warning" p={ 4 } fontWeight={ 400 }>
-          scanning new transactions...
-        </Alert>
-      );
+      return 'scanning new transactions...';
     }
 
     return (
-      <Alert className={ className } status="warning" p={ 4 } fontWeight={ 400 }>
-        <Link onClick={ handleClick }>{ num } more transaction{ num > 1 ? 's' : '' }</Link>
+      <>
+        <Link href={ url }>{ num } more transaction{ num > 1 ? 's' : '' }</Link>
         <Text whiteSpace="pre"> ha{ num > 1 ? 've' : 's' } come in</Text>
-      </Alert>
+      </>
     );
   })();
+
+  const content = (
+    <Alert
+      className={ className }
+      status="warning"
+      px={ 4 }
+      py="6px"
+      fontWeight={ 400 }
+      fontSize="sm"
+      bgColor={ useColorModeValue('orange.50', transparentize('orange.200', 0.16)(theme)) }
+      color={ useColorModeValue('blackAlpha.800', 'whiteAlpha.800') }
+    >
+      { alertContent }
+    </Alert>
+  );
 
   return children ? children({ content }) : content;
 };

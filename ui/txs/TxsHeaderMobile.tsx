@@ -3,7 +3,6 @@ import React from 'react';
 
 import type { Sort } from 'types/client/txs-sort';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
 // import FilterInput from 'ui/shared/FilterInput';
 import ActionBar from 'ui/shared/ActionBar';
 import Pagination from 'ui/shared/Pagination';
@@ -20,13 +19,7 @@ type Props = {
   showPagination?: boolean;
 }
 
-const TxsHeader = ({ sorting, setSorting, paginationProps, className, showPagination = true }: Props) => {
-  const isMobile = useIsMobile(false);
-
-  if (!showPagination && !isMobile) {
-    return null;
-  }
-
+const TxsHeaderMobile = ({ sorting, setSorting, paginationProps, className, showPagination = true }: Props) => {
   return (
     <ActionBar className={ className }>
       <HStack>
@@ -36,13 +29,11 @@ const TxsHeader = ({ sorting, setSorting, paginationProps, className, showPagina
           onFiltersChange={ setFilters }
           appliedFiltersNum={ 0 }
         /> */ }
-        { isMobile && (
-          <TxsSorting
-            isActive={ Boolean(sorting) }
-            setSorting={ setSorting }
-            sorting={ sorting }
-          />
-        ) }
+        <TxsSorting
+          isActive={ Boolean(sorting) }
+          setSorting={ setSorting }
+          sorting={ sorting }
+        />
         { /* api is not implemented */ }
         { /* <FilterInput
           // eslint-disable-next-line react/jsx-no-bind
@@ -57,4 +48,4 @@ const TxsHeader = ({ sorting, setSorting, paginationProps, className, showPagina
   );
 };
 
-export default chakra(TxsHeader);
+export default chakra(TxsHeaderMobile);

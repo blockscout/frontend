@@ -20,7 +20,7 @@ const PrivateTags = () => {
   return (
     <Page>
       <PageTitle text="Private tags"/>
-      <RoutedTabs tabs={ TABS } tabListMarginBottom={{ base: 6, lg: 8 }}/>
+      <RoutedTabs tabs={ TABS }/>
     </Page>
   );
 };
