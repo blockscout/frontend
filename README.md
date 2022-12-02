@@ -68,6 +68,7 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM | `string` | Link to form where authors can submit their dapps to the marketplace | `https://airtable.com/shrqUAcjgGJ4jU88C` |
 | NEXT_PUBLIC_NETWORK_EXPLORERS | `Array<NetworkExplorer>` where `NetworkExplorer` can have following [properties](#network-explorer-configuration-properties) | Used to build up links to transactions, blocks, addresses in other chain explorers.  | `[{'title':'Anyblock','baseUrl':'https://explorer.anyblock.tools','paths':{'tx':'/ethereum/poa/core/tx'}}]` |
 | NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE | `validation` or `mining` *(optional)* | Verification type in the network | `mining` |
+| NEXT_PUBLIC_AUTH_URL | `string` *(optional)* | Account auth base url; the login path (`/auth/auth0`) will be added to it at execution time | `https://blockscout.com` |
 | NEXT_PUBLIC_LOGOUT_URL | `string` *(optional)* | Account logout url | `https://blockscoutcom.us.auth0.com/v2/logout` |
 | NEXT_PUBLIC_LOGOUT_RETURN_URL | `string` *(optional)* | Account logout return url | `https://blockscout.com/poa/core/auth/logout` |
 | NEXT_PUBLIC_HOMEPAGE_CHARTS | `Array<'daily_txs' \| 'coin_price' \| 'market_cup'>` *(optional)* | List of charts displayed on the home page | `['daily_txs','coin_price','market_cup']` |
