@@ -44,6 +44,7 @@ export interface BlockTransactionsResponse {
   next_page_params: {
     block_number: number;
     items_count: number;
+    index: number;
   } | null;
 }
 

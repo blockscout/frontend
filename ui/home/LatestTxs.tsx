@@ -8,10 +8,10 @@ import { QueryKeys } from 'types/client/queries';
 import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import link from 'lib/link/link';
+import TxsNewItemNotice from 'ui/txs/TxsNewItemNotice';
 
 import LatestTxsItem from './LatestTxsItem';
 import LatestTxsItemSkeleton from './LatestTxsItemSkeleton';
-import LatestTxsNotice from './LatestTxsNotice';
 
 const LatestTransactions = () => {
   const isMobile = useIsMobile();
@@ -41,7 +41,7 @@ const LatestTransactions = () => {
     const txsUrl = link('txs');
     content = (
       <>
-        <LatestTxsNotice/>
+        <TxsNewItemNotice borderBottomRadius={ 0 } url={ link('txs') }/>
         <Box mb={{ base: 3, lg: 6 }}>
           { data.slice(0, txsCount).map((tx => <LatestTxsItem key={ tx.hash } tx={ tx }/>)) }
         </Box>

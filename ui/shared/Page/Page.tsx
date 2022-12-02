@@ -44,7 +44,7 @@ const Page = ({
   return (
     <Flex w="100%" minH="100vh" alignItems="stretch">
       <NavigationDesktop/>
-      <Flex flexDir="column" width="100%">
+      <Flex flexDir="column" flexGrow={ 1 } w={{ base: '100%', lg: 'auto' }}>
         <Header isHomePage={ isHomePage } hideOnScrollDown={ hideMobileHeaderOnScrollDown }/>
         <ErrorBoundary renderErrorScreen={ renderErrorScreen }>
           { renderedChildren }
