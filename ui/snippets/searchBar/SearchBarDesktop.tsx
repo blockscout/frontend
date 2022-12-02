@@ -32,6 +32,7 @@ const SearchBarDesktop = ({ onChange, onSubmit, isHomepage }: Props) => {
           onChange={ onChange }
           border={ isHomepage ? 'none' : '2px solid' }
           borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }
+          _focusWithin={{ _placeholder: { color: 'gray.300' } }}
           color={ useColorModeValue('black', 'white') }
         />
       </InputGroup>

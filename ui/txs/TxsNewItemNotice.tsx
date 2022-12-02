@@ -44,6 +44,7 @@ const TxsNewItemNotice = ({ children, className, url }: Props) => {
       fontWeight={ 400 }
       fontSize="sm"
       bgColor={ useColorModeValue('orange.50', transparentize('orange.200', 0.16)(theme)) }
+      color={ useColorModeValue('blackAlpha.800', 'whiteAlpha.800') }
     >
       { alertContent }
     </Alert>
