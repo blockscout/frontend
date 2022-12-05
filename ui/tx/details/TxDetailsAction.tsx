@@ -25,7 +25,7 @@ const TxDetailsAction = ({ protocol, type, data, isLast }) => {
       }
 
       return (
-        <Flex flexWrap="wrap" columnGap={ 1 } rowGap={ 2 } marginBottom={ isLast ? 5 : 0 }>
+        <Flex flexWrap="wrap" columnGap={ 1 } rowGap={ 2 } className={ isLast ? "lastItem" : "" } marginBottom={ isLast ? 5 : 0 }>
           <Text color="gray.500" as="span">
             { actionName[type][0] }
           </Text>
@@ -59,7 +59,7 @@ const TxDetailsAction = ({ protocol, type, data, isLast }) => {
     } else if (type === 'mint_nft') {
       const tokenUrl = link('token_index', { hash: data.address });
       return (
-        <Flex rowGap={ 2 } flexDirection="column">
+        <Flex rowGap={ 2 } flexDirection="column" className={ isLast ? "lastItem" : "" } marginBottom={ isLast ? 5 : 0 }>
           <Flex flexWrap="wrap" columnGap={ 1 } rowGap={ 2 }>
             <Flex columnGap={ 1 }>
               <Text as="span">Mint of</Text>
