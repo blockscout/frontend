@@ -1,4 +1,4 @@
-import { Box, Flex, Text, Icon, Button, Grid, Select } from '@chakra-ui/react';
+import { Box, Flex, Text, Icon, Button, Grid } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
@@ -15,6 +15,7 @@ import starOutlineIcon from 'icons/star_outline.svg';
 import walletIcon from 'icons/wallet.svg';
 import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import AddressTokenSelect from 'ui/address/details/AddressTokenSelect';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
@@ -92,20 +93,11 @@ const AddressDetails = ({ addressQuery }: Props) => {
           title="Tokens"
           hint="All tokens in the account and total value."
           alignSelf="center"
+          py="2px"
         >
           { tokenBalancesQuery.data.length > 0 ? (
             <>
-              { /* TODO will be fixed later when we implement select with custom menu */ }
-              <Select
-                size="sm"
-                borderRadius="base"
-                focusBorderColor="none"
-                display="inline-block"
-                w="auto"
-              >
-                { tokenBalancesQuery.data.map((token) =>
-                  <option key={ token.token.address } value={ token.token.address }>{ token.token.symbol }</option>) }
-              </Select>
+              <AddressTokenSelect data={ tokenBalancesQuery.data }/>
               <Button variant="outline" size="sm" ml={ 3 }>
                 <Icon as={ walletIcon } boxSize={ 5 }/>
               </Button>

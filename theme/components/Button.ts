@@ -82,6 +82,9 @@ const variantOutline = defineStyle((props) => {
         color,
         borderColor,
       },
+      p: {
+        color: 'blue.400',
+      },
     },
     _disabled: {
       opacity: 0.2,
@@ -93,6 +96,9 @@ const variantOutline = defineStyle((props) => {
       _disabled: {
         color,
         borderColor,
+      },
+      p: {
+        color: activeColor,
       },
     },
   };
