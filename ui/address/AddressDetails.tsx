@@ -55,6 +55,7 @@ const AddressDetails = ({ addressQuery }: Props) => {
   }
 
   const explorers = appConfig.network.explorers.filter(({ paths }) => paths.address);
+  const validationsCount = Number(countersQuery.data.validations_count);
 
   return (
     <Box>
@@ -117,13 +118,13 @@ const AddressDetails = ({ addressQuery }: Props) => {
           title="Transactions"
           hint="Number of transactions related to this address."
         >
-          { Number(countersQuery.data.transaction_count).toLocaleString() }
+          { Number(countersQuery.data.transactions_count).toLocaleString() }
         </DetailsInfoItem>
         <DetailsInfoItem
           title="Transfers"
           hint="Number of transfers to/from this address."
         >
-          { Number(countersQuery.data.token_transfer_count).toLocaleString() }
+          { Number(countersQuery.data.token_transfers_count).toLocaleString() }
         </DetailsInfoItem>
         <DetailsInfoItem
           title="Gas used"
@@ -131,12 +132,12 @@ const AddressDetails = ({ addressQuery }: Props) => {
         >
           { BigNumber(countersQuery.data.gas_usage_count).toFormat() }
         </DetailsInfoItem>
-        { countersQuery.data.validation_count && (
+        { !Object.is(validationsCount, NaN) && validationsCount > 0 && (
           <DetailsInfoItem
             title="Blocks validated"
             hint="Number of blocks validated by this validator."
           >
-            { Number(countersQuery.data.validation_count).toLocaleString() }
+            { validationsCount.toLocaleString() }
           </DetailsInfoItem>
         ) }
       </Grid>
