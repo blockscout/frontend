@@ -15,12 +15,13 @@ import starOutlineIcon from 'icons/star_outline.svg';
 import walletIcon from 'icons/wallet.svg';
 import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import AddressTokenSelect from 'ui/address/details/AddressTokenSelect';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import ExternalLink from 'ui/shared/ExternalLink';
 import HashStringShorten from 'ui/shared/HashStringShorten';
+
+import Tokens from './details/Tokens';
 
 interface Props {
   addressQuery: UseQueryResult<TAddress>;
@@ -97,7 +98,7 @@ const AddressDetails = ({ addressQuery }: Props) => {
         >
           { tokenBalancesQuery.data.length > 0 ? (
             <>
-              <AddressTokenSelect data={ tokenBalancesQuery.data }/>
+              <Tokens data={ tokenBalancesQuery.data }/>
               <Button variant="outline" size="sm" ml={ 3 }>
                 <Icon as={ walletIcon } boxSize={ 5 }/>
               </Button>
