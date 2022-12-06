@@ -145,7 +145,7 @@ blockscout:
     APPS:
       _default: '[{"title": "Marketplace", "url": "/apps", "embedded?": true}]'
     SESSION_COOKIE_DOMAIN:
-      _default: blockscout-main.aws-k8s.blockscout.com
+      _default: blockscout-main.test.aws-k8s.blockscout.com
 
 postgres:
   enabled: true
