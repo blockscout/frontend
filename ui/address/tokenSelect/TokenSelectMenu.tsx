@@ -10,7 +10,7 @@ import searchIcon from 'icons/search.svg';
 
 import TokenSelectItem from './TokenSelectItem';
 import type { Sort, EnhancedData } from './utils';
-import { SORTABLE_TOKENS, sortTokenGroups, sortingFns } from './utils';
+import { sortTokenGroups, sortingFns } from './utils';
 
 interface Props {
   searchTerm: string;
@@ -56,14 +56,15 @@ const TokenSelectMenu = ({ erc20sort, erc1155sort, modifiedData, groupedData, on
                 return 'desc';
             }
           })();
+          const hasSort = type === 'ERC-1155' || (type === 'ERC-20' && tokenInfo.some(({ usd }) => usd));
 
           return (
             <Box key={ type }>
               <Flex justifyContent="space-between">
                 <Text mb={ 3 } color="gray.500" fontWeight={ 600 } fontSize="sm">{ type } tokens ({ tokenInfo.length })</Text>
-                { SORTABLE_TOKENS.includes(type) && (
+                { hasSort && (
                   <Link data-type={ type } onClick={ onSortClick }>
-                    <Icon as={ arrowIcon } boxSize={ 5 } transform={ arrowTransform } transitionDuration="fast"/>
+                    <Icon as={ arrowIcon } boxSize={ 5 } transform={ arrowTransform } transitionDuration="faster"/>
                   </Link>
                 ) }
               </Flex>

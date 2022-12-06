@@ -8,7 +8,6 @@ export type EnhancedData = AddressTokenBalance & {
 }
 
 export type Sort = 'desc' | 'asc';
-export const SORTABLE_TOKENS: Array<TokenType> = [ 'ERC-20', 'ERC-1155' ];
 const TOKEN_GROUPS_ORDER: Array<TokenType> = [ 'ERC-20', 'ERC-721', 'ERC-1155' ];
 type TokenGroup = [string, Array<AddressTokenBalance>];
 

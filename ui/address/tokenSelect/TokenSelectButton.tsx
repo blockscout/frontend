@@ -28,7 +28,7 @@ const TokenSelectButton = ({ isOpen, onClick, data }: Props, ref: React.Forwarde
       <Icon as={ tokensIcon } boxSize={ 4 } mr={ 2 }/>
       <Text fontWeight={ 600 }>{ data.length }</Text>
       <Text whiteSpace="pre" variant="secondary" fontWeight={ 400 }> (${ totalBn.toFormat(2) })</Text>
-      <Icon as={ arrowIcon } transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="normal" boxSize={ 5 } ml={ 3 }/>
+      <Icon as={ arrowIcon } transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 } ml={ 3 }/>
     </Button>
   );
 };
