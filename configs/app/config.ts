@@ -85,6 +85,10 @@ const config = Object.freeze({
   baseUrl,
   authUrl,
   logoutUrl,
+  ad: {
+    domainWithAd: getEnvValue(process.env.NEXT_PUBLIC_AD_DOMAIN_WITH_AD) || 'blockscout.com',
+    adButlerOn: getEnvValue(process.env.NEXT_PUBLIC_AD_ADBUTLER_ON) === 'true',
+  },
   api: {
     endpoint: apiHost ? `https://${ apiHost }` : 'https://blockscout.com',
     socket: apiHost ? `wss://${ apiHost }` : 'wss://blockscout.com',
