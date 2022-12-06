@@ -45,6 +45,21 @@ export const erc20c: AddressTokenBalance = {
   value: '9852000000000000000000',
 };
 
+export const erc20d: AddressTokenBalance = {
+  token: {
+    address: '0xCc7bb2D219A0FC08033E130629C2B854b7bA9195',
+    decimals: '18',
+    exchange_rate: null,
+    holders: '102625',
+    name: 'Zeta',
+    symbol: 'ZETA',
+    total_supply: '2100000000000000000000000000',
+    type: 'ERC-20',
+  },
+  token_id: null,
+  value: '39000000000000000000',
+};
+
 export const erc721a: AddressTokenBalance = {
   token: {
     address: '0xDe7cAc71E072FCBd4453E5FB3558C2684d1F88A0',

@@ -24,6 +24,7 @@ const TokenSelectButton = ({ isOpen, onClick, data }: Props, ref: React.Forwarde
       variant="outline"
       colorScheme="gray"
       onClick={ onClick }
+      aria-label="Token select"
     >
       <Icon as={ tokensIcon } boxSize={ 4 } mr={ 2 }/>
       <Text fontWeight={ 600 }>{ data.length }</Text>

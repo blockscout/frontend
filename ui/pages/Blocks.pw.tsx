@@ -17,7 +17,7 @@ const hooksConfig = {
   },
 };
 
-export const test = base.extend<socketServer.SocketServerFixture>({
+const test = base.extend<socketServer.SocketServerFixture>({
   createSocket: socketServer.createSocket,
 });
 

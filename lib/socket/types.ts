@@ -17,13 +17,13 @@ interface SocketMessageParamsGeneric<Event extends string | undefined, Payload e
   handler: (payload: Payload) => void;
 }
 
-interface AddressCoinBalancePayload {
+export interface AddressCoinBalancePayload {
   coin_balance: {
     block_number: number;
-    block_timestamp: string;
-    delta: string;
-    transaction_hash: string | null;
-    value: string;
+    block_timestamp?: string;
+    delta?: string;
+    transaction_hash?: string | null;
+    value?: string;
   };
 }
 
