@@ -72,9 +72,9 @@ jobs:
       env_vars: VALUES_DIR=deploy/values/review,APP_NAME=bs-stack,DOCKER_IMAGE=prerelease-$GITHUB_EVENT_PULL_REQUEST_HEAD_SHA_SHORT,K8S_DOMAIN=blockscout-main.test.aws-k8s.blockscout.com
       globalEnv: review
       appNamespace: review-front-$GITHUB_HEAD_REF_SLUG
-      blockscoutIngressHost: blockscout
-      frontendIngressHost: blockscout
+      blockscoutIngressHost: review
+      frontendIngressHost: review
       frontendImage: ghcr.io/blockscout/frontend:prerelease-$GITHUB_EVENT_PULL_REQUEST_HEAD_SHA_SHORT
-      gethIngressHost: geth
-      scVerifierIngressHost: sc-verifier
+      gethIngressHost: review-geth
+      scVerifierIngressHost: review-sc-verifier
     secrets: inherit
