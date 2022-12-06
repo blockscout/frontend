@@ -12,6 +12,7 @@ env:
   K8S_PORT: ${{ secrets.K8S_PORT }}
   USERNAME: ${{ secrets.USERNAME }}
   BASTION_SSH_KEY: ${{secrets.BASTION_SSH_KEY}}
+  K8S_DOMAIN: blockscout-main.test.aws-k8s.blockscout.com
 
 jobs:
   push_to_registry:
