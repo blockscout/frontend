@@ -13,10 +13,14 @@ import type { AddressTokenBalance } from 'types/api/address';
 
 import searchIcon from 'icons/search.svg';
 
-import TokenItemErc1155 from './TokenItemErc1155';
-import TokenItemErc20 from './TokenItemErc20';
-import TokenItemErc721 from './TokenItemErc721';
+import TokenItem from './TokenItem';
 import TokensButton from './TokensButton';
+
+const TOKEN_GROUPS_ORDER = [ 'ERC-20', 'ERC-721', 'ERC-1155' ];
+type TokenGroup = [string, Array<AddressTokenBalance>];
+const sortTokenGroups = (groupA: TokenGroup, groupB: TokenGroup) => {
+  return TOKEN_GROUPS_ORDER.indexOf(groupA[0]) > TOKEN_GROUPS_ORDER.indexOf(groupB[0]) ? 1 : -1;
+};
 
 interface Props {
   data: Array<AddressTokenBalance>;
@@ -38,7 +42,13 @@ const AddressTokenSelect = ({ data }: Props) => {
   const inputBorderColor = useColorModeValue('blackAlpha.100', 'whiteAlpha.200');
   const bgColor = useColorModeValue('white', 'gray.900');
 
-  const filteredData = data.filter(({ token }) => !token.name && !searchTerm ? true : token.name?.toLowerCase().includes(searchTerm.toLowerCase()));
+  const filteredData = data.filter(({ token }) => {
+    if (!token.name) {
+      return !searchTerm ? true : token.address.toLowerCase().includes(searchTerm.toLowerCase());
+    }
+
+    return token.name?.toLowerCase().includes(searchTerm.toLowerCase());
+  });
   const groupedData = _groupBy(filteredData, 'token.type');
 
   return (
@@ -62,24 +72,14 @@ const AddressTokenSelect = ({ data }: Props) => {
             />
           </InputGroup>
           <Flex flexDir="column" rowGap={ 6 }>
-            { groupedData['ERC-20'] && (
-              <Box>
-                <Text mb={ 3 } color="gray.500" fontWeight={ 600 } fontSize="sm">ERC-20 tokens ({ groupedData['ERC-20'].length })</Text>
-                { groupedData['ERC-20'].map((data) => <TokenItemErc20 key={ data.token.address } data={ data }/>) }
-              </Box>
-            ) }
-            { groupedData['ERC-721'] && (
-              <Box>
-                <Text mb={ 3 } color="gray.500" fontWeight={ 600 } fontSize="sm">ERC-721 tokens ({ groupedData['ERC-721'].length })</Text>
-                { groupedData['ERC-721'].map((data) => <TokenItemErc721 key={ data.token.address } data={ data }/>) }
-              </Box>
-            ) }
-            { groupedData['ERC-1155'] && (
-              <Box>
-                <Text mb={ 3 } color="gray.500" fontWeight={ 600 } fontSize="sm">ERC-1155 tokens ({ groupedData['ERC-1155'].length })</Text>
-                { groupedData['ERC-1155'].map((data) => <TokenItemErc1155 key={ data.token.address } data={ data }/>) }
-              </Box>
-            ) }
+            { Object.entries(groupedData).sort(sortTokenGroups).map(([ tokenType, tokenInfo ]) => {
+              return (
+                <Box key={ tokenType }>
+                  <Text mb={ 3 } color="gray.500" fontWeight={ 600 } fontSize="sm">{ tokenType } tokens ({ tokenInfo.length })</Text>
+                  { tokenInfo.map((data) => <TokenItem key={ data.token.address } data={ data }/>) }
+                </Box>
+              );
+            }) }
           </Flex>
           { filteredData.length === 0 && searchTerm && <Text fontSize="sm">Could not find any matches.</Text> }
         </PopoverBody>
