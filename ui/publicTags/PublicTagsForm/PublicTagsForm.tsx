@@ -146,11 +146,6 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
     mutation.mutate(data);
   }, [ mutation ]);
 
-  const changeToData = useCallback(() => {
-    setAlertVisible(false);
-    changeToDataScreen(false);
-  }, [ changeToDataScreen ]);
-
   return (
     <chakra.form
       noValidate
@@ -241,14 +236,6 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
           isLoading={ mutation.isLoading }
         >
           Send request
-        </Button>
-        <Button
-          size="lg"
-          variant="outline"
-          onClick={ changeToData }
-          disabled={ mutation.isLoading }
-        >
-          Cancel
         </Button>
       </HStack>
     </chakra.form>
