@@ -17,10 +17,12 @@ import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import ExternalLink from 'ui/shared/ExternalLink';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 
+import AddressDetailsSkeleton from './details/AddressDetailsSkeleton';
 import TokenSelectDesktop from './tokenSelect/TokenSelectDesktop';
 import TokenSelectMobile from './tokenSelect/TokenSelectMobile';
 
@@ -50,11 +52,11 @@ const AddressDetails = ({ addressQuery }: Props) => {
   );
 
   if (countersQuery.isLoading || addressQuery.isLoading || tokenBalancesQuery.isLoading) {
-    return <Box>loading</Box>;
+    return <AddressDetailsSkeleton/>;
   }
 
   if (countersQuery.isError || addressQuery.isError || tokenBalancesQuery.isError) {
-    return <Box>error</Box>;
+    return <DataFetchAlert/>;
   }
 
   const explorers = appConfig.network.explorers.filter(({ paths }) => paths.address);
