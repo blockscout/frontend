@@ -2,6 +2,7 @@ import { Flex, Text, useColorModeValue } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
+import link from 'lib/link/link';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import TokenLogo from 'ui/shared/TokenLogo';
 
@@ -38,6 +39,9 @@ const TokenSelectItem = ({ data }: Props) => {
     }
   })();
 
+  // TODO add filter param when token page is ready
+  const url = link('token_index', { hash: data.token.address });
+
   return (
     <Flex
       px={ 1 }
@@ -52,6 +56,8 @@ const TokenSelectItem = ({ data }: Props) => {
       }}
       fontSize="sm"
       cursor="pointer"
+      as="a"
+      href={ url }
     >
       <Flex alignItems="center" w="100%">
         <TokenLogo hash={ data.token.address } name={ data.token.name } boxSize={ 6 }/>
