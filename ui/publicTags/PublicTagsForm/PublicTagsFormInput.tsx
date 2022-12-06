@@ -36,7 +36,7 @@ export default function PublicTagsFormInput<Inputs extends FieldValues>({
           isInvalid={ Boolean(error) }
           maxLength={ TEXT_INPUT_MAX_LENGTH }
         />
-        <InputPlaceholder text={ label } error={ error?.message }/>
+        <InputPlaceholder text={ label } error={ error }/>
       </FormControl>
     );
   }, [ label, required, error, size ]);

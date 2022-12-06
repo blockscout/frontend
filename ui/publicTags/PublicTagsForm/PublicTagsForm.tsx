@@ -73,7 +73,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
       comment: data?.additional_comment || '',
       action: data?.is_owner === undefined || data?.is_owner ? 'add' : 'report',
     },
-    mode: 'all',
+    mode: 'onTouched',
   });
 
   const { fields, append, remove } = useFieldArray({
