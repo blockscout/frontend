@@ -1,4 +1,4 @@
-import { Grid, GridItem, Text, Box, Icon, Link, Spinner, Tag, Flex, Tooltip, chakra } from '@chakra-ui/react';
+import { Grid, GridItem, Text, Box, Icon, Link, Spinner, Tag, Flex, Tooltip, Divider, chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
@@ -126,9 +126,10 @@ const TxDetails = () => {
           <Text variant="secondary">{ getConfirmationDuration(data.confirmation_duration) }</Text>
         </DetailsInfoItem>
       ) }
-      { data.actions && <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 3, lg: 8 }}/> }
+      { data.actions && <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 3, lg: 3 }}><Divider /></GridItem> }
       { data.actions && <TxDetailsActions actions={ data.actions }/> }
-      <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 3, lg: 8 }}/>
+      { data.actions && <GridItem colSpan={{ base: undefined, lg: 2 }} mb={{ base: 0, lg: 3 }}><Divider /></GridItem> }
+      { !data.actions && <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 3, lg: 8 }}/> }
       <DetailsInfoItem
         title="From"
         hint="Address (external or contract) sending the transaction."

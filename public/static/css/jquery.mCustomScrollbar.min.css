@@ -17,3 +17,15 @@
 .mCustomScrollbar.mCS_no_scrollbar .lastItem {
   margin-bottom: 0!important;
 }
+
+.mCSB_scrollTools .mCSB_draggerRail {
+  display: none;
+}
+
+.mCSB_scrollTools .mCSB_draggerContainer {
+  bottom: 1.3rem;
+}
+
+.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
+  background-color: #cbd5e0!important;
+}

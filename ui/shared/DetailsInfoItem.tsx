@@ -10,11 +10,11 @@ interface Props extends Omit<HTMLChakraProps<'div'>, 'title'> {
   children: React.ReactNode;
 }
 
-const DetailsInfoItem = ({ title, hint, children, ...styles }: Props) => {
+const DetailsInfoItem = ({ title, hint, note, noteDisplay, children, ...styles }: Props) => {
   return (
     <>
       <GridItem py={{ base: 1, lg: 2 }} lineHeight={ 5 } { ...styles } whiteSpace="nowrap" _notFirst={{ mt: { base: 3, lg: 0 } }}>
-        <Flex columnGap={ 2 } alignItems="center">
+        <Flex columnGap={ 2 } alignItems="flex-start">
           <Tooltip
             label={ hint }
             placement="top"
@@ -24,7 +24,10 @@ const DetailsInfoItem = ({ title, hint, children, ...styles }: Props) => {
               <Icon as={ infoIcon } boxSize={ 5 }/>
             </Box>
           </Tooltip>
-          <Text fontWeight={{ base: 700, lg: 500 }}>{ title }</Text>
+          <Text fontWeight={{ base: 700, lg: 500 }}>
+            { title }
+            { note && <Text fontWeight={ 500 } color="gray.500" fontSize="xs" className="note" display={ noteDisplay } align="right">{ note }</Text> }
+          </Text>
         </Flex>
       </GridItem>
       <GridItem

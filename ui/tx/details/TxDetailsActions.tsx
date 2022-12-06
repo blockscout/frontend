@@ -1,6 +1,6 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
 import React from 'react';
-import { space } from 'lib/html-entities';
+import Script from 'next/script'
 
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 
@@ -11,26 +11,36 @@ const TxDetailsActions = ({ actions }) => {
     <DetailsInfoItem
       title="Transaction Action"
       hint="Highlighted events of the transaction"
+      note="Scroll to see more"
+      noteDisplay="none"
       position="relative"
+      id="txActionsTitle"
     >
-      <Box w="100%">
-        <Box className="mCustomScrollbar" data-mcs-theme="minimal-dark" maxH={ 36 }>
-          <Flex
-            flexDirection="column"
-            alignItems="flex-start"
-            rowGap={ 5 }
-            w="100%"
-            fontWeight={ 500 }
-          >
-            { actions.map((action, index) => <TxDetailsAction key={ index } { ...action } isLast={ index === actions.length-1 }/>) }
-          </Flex>
-        </Box>
-        <Text fontWeight={ 500 } color="gray.500" fontSize="sm" id="txActionsScrollForMore" display="none" marginTop={ 5 }>
-          Scroll for more
-          { space }
-          <Text color="gray.500" transform="rotate(90deg)" display="inline-block" as="span">&raquo;</Text>
-        </Text>
+      <Box className="mCustomScrollbar" maxH={ 36 } w="90%">
+        <Flex
+          flexDirection="column"
+          alignItems="flex-start"
+          rowGap={ 5 }
+          w="100%"
+          fontWeight={ 500 }
+        >
+          { actions.map((action, index) => <TxDetailsAction key={ index } { ...action } isLast={ index === actions.length-1 }/>) }
+        </Flex>
       </Box>
+      <Script src="/static/js/jquery.mCustomScrollbar.concat.min.js" strategy="afterInteractive" onLoad={() => {
+        $(".mCustomScrollbar").mCustomScrollbar({callbacks:{
+          onOverflowY: () => {
+            $("#txActionsTitle .note").css("display", "block");
+          },
+          onOverflowYNone: () => {
+            $("#txActionsTitle .note").css("display", "none");
+          }
+        },
+        theme: "dark",
+        autoHideScrollbar: true,
+        scrollButtons: {enable: false},
+        scrollbarPosition: "outside"});
+      }} />
     </DetailsInfoItem>
   );
 };
