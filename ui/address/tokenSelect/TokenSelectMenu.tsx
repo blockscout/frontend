@@ -63,7 +63,7 @@ const TokenSelectMenu = ({ erc20sort, erc1155sort, modifiedData, groupedData, on
               <Flex justifyContent="space-between">
                 <Text mb={ 3 } color="gray.500" fontWeight={ 600 } fontSize="sm">{ type } tokens ({ tokenInfo.length })</Text>
                 { hasSort && (
-                  <Link data-type={ type } onClick={ onSortClick }>
+                  <Link data-type={ type } onClick={ onSortClick } aria-label={ `Sort ${ type } tokens` }>
                     <Icon as={ arrowIcon } boxSize={ 5 } transform={ arrowTransform } transitionDuration="faster"/>
                   </Link>
                 ) }
