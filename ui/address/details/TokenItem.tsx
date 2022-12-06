@@ -2,17 +2,16 @@ import { Flex, Text, useColorModeValue } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type { AddressTokenBalance } from 'types/api/address';
-
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import TokenLogo from 'ui/shared/TokenLogo';
 
+import type { EnhancedData } from './utils';
+
 interface Props {
-  data: AddressTokenBalance;
-  usd?: string;
+  data: EnhancedData;
 }
 
-const TokenItem = ({ data, usd }: Props) => {
+const TokenItem = ({ data }: Props) => {
 
   const secondRow = (() => {
     switch (data.token.type) {
@@ -20,7 +19,7 @@ const TokenItem = ({ data, usd }: Props) => {
         const tokenDecimals = Number(data.token.decimals) || 18;
         return (
           <>
-            <Text >{ BigNumber(data.value).dividedBy(10 ** tokenDecimals).dp(2).toFormat() } { data.token.symbol }</Text>
+            <Text >{ BigNumber(data.value).dividedBy(10 ** tokenDecimals).toFormat(2) } { data.token.symbol }</Text>
             { data.token.exchange_rate && <Text >@{ data.token.exchange_rate }</Text> }
           </>
         );
@@ -57,7 +56,7 @@ const TokenItem = ({ data, usd }: Props) => {
       <Flex alignItems="center" w="100%">
         <TokenLogo hash={ data.token.address } name={ data.token.name } boxSize={ 6 }/>
         <Text fontWeight={ 700 } ml={ 2 }>{ data.token.name || <HashStringShorten hash={ data.token.address }/> }</Text>
-        { usd && <Text fontWeight={ 700 } ml="auto">${ usd }</Text> }
+        { data.usd && <Text fontWeight={ 700 } ml="auto">${ data.usd.toFormat(2) }</Text> }
       </Flex>
       <Flex alignItems="center" justifyContent="space-between" w="100%">
         { secondRow }
