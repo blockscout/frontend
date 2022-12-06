@@ -14,7 +14,7 @@ interface Props {
   data: Array<EnhancedData>;
 }
 
-const TokensButton = ({ isOpen, onClick, data }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
+const TokenSelectButton = ({ isOpen, onClick, data }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
   const totalBn = data.reduce((result, item) => !item.usd ? result : result.plus(BigNumber(item.usd)), ZERO);
 
   return (
@@ -33,4 +33,4 @@ const TokensButton = ({ isOpen, onClick, data }: Props, ref: React.ForwardedRef<
   );
 };
 
-export default React.forwardRef(TokensButton);
+export default React.forwardRef(TokenSelectButton);

@@ -11,7 +11,7 @@ interface Props {
   data: EnhancedData;
 }
 
-const TokenItem = ({ data }: Props) => {
+const TokenSelectItem = ({ data }: Props) => {
 
   const secondRow = (() => {
     switch (data.token.type) {
@@ -65,4 +65,4 @@ const TokenItem = ({ data }: Props) => {
   );
 };
 
-export default React.memo(TokenItem);
+export default React.memo(TokenSelectItem);

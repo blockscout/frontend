@@ -21,7 +21,7 @@ import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import ExternalLink from 'ui/shared/ExternalLink';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 
-import Tokens from './details/Tokens';
+import Tokens from './tokenSelect/Tokens';
 
 interface Props {
   addressQuery: UseQueryResult<TAddress>;

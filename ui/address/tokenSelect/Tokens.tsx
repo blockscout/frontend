@@ -16,8 +16,8 @@ import type { TokenType } from 'types/api/tokenInfo';
 import arrowIcon from 'icons/arrows/east.svg';
 import searchIcon from 'icons/search.svg';
 
-import TokenItem from './TokenItem';
-import TokensButton from './TokensButton';
+import TokenSelectButton from './TokenSelectButton';
+import TokenSelectItem from './TokenSelectItem';
 import type { Sort } from './utils';
 import { SORTABLE_TOKENS, sortTokenGroups, sortingFns, calculateUsdValue, filterTokens } from './utils';
 
@@ -55,7 +55,7 @@ const Tokens = ({ data }: Props) => {
   return (
     <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
       <PopoverTrigger>
-        <TokensButton isOpen={ isOpen } onClick={ onToggle } data={ modifiedData }/>
+        <TokenSelectButton isOpen={ isOpen } onClick={ onToggle } data={ modifiedData }/>
       </PopoverTrigger>
       <PopoverContent w="355px" maxH="450px" overflowY="scroll">
         <PopoverBody px={ 4 } py={ 6 } bgColor={ bgColor } boxShadow="2xl" >
@@ -98,7 +98,7 @@ const Tokens = ({ data }: Props) => {
                       </Link>
                     ) }
                   </Flex>
-                  { tokenInfo.sort(sortingFns[type](sortDirection)).map((data) => <TokenItem key={ data.token.address + data.token_id } data={ data }/>) }
+                  { tokenInfo.sort(sortingFns[type](sortDirection)).map((data) => <TokenSelectItem key={ data.token.address + data.token_id } data={ data }/>) }
                 </Box>
               );
             }) }
