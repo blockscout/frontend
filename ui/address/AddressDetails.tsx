@@ -12,7 +12,6 @@ import appConfig from 'configs/app/config';
 import metamaskIcon from 'icons/metamask.svg';
 import qrCodeIcon from 'icons/qr_code.svg';
 import starOutlineIcon from 'icons/star_outline.svg';
-import walletIcon from 'icons/wallet.svg';
 import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import AddressIcon from 'ui/shared/address/AddressIcon';
@@ -23,8 +22,7 @@ import ExternalLink from 'ui/shared/ExternalLink';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 
 import AddressDetailsSkeleton from './details/AddressDetailsSkeleton';
-import TokenSelectDesktop from './tokenSelect/TokenSelectDesktop';
-import TokenSelectMobile from './tokenSelect/TokenSelectMobile';
+import TokenSelect from './tokenSelect/TokenSelect';
 
 interface Props {
   addressQuery: UseQueryResult<TAddress>;
@@ -99,16 +97,7 @@ const AddressDetails = ({ addressQuery }: Props) => {
           alignSelf="center"
           py="2px"
         >
-          { tokenBalancesQuery.data.length > 0 ? (
-            <>
-              { isMobile ? <TokenSelectMobile data={ tokenBalancesQuery.data }/> : <TokenSelectDesktop data={ tokenBalancesQuery.data }/> }
-              <Button variant="outline" size="sm" ml={ 3 }>
-                <Icon as={ walletIcon } boxSize={ 5 }/>
-              </Button>
-            </>
-          ) : (
-            '-'
-          ) }
+          <TokenSelect/>
         </DetailsInfoItem>
         <DetailsInfoItem
           title="Transactions"
