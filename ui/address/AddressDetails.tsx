@@ -21,7 +21,8 @@ import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import ExternalLink from 'ui/shared/ExternalLink';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 
-import Tokens from './tokenSelect/Tokens';
+import TokenSelectDesktop from './tokenSelect/TokenSelectDesktop';
+import TokenSelectMobile from './tokenSelect/TokenSelectMobile';
 
 interface Props {
   addressQuery: UseQueryResult<TAddress>;
@@ -98,7 +99,7 @@ const AddressDetails = ({ addressQuery }: Props) => {
         >
           { tokenBalancesQuery.data.length > 0 ? (
             <>
-              <Tokens data={ tokenBalancesQuery.data }/>
+              { isMobile ? <TokenSelectMobile data={ tokenBalancesQuery.data }/> : <TokenSelectDesktop data={ tokenBalancesQuery.data }/> }
               <Button variant="outline" size="sm" ml={ 3 }>
                 <Icon as={ walletIcon } boxSize={ 5 }/>
               </Button>
