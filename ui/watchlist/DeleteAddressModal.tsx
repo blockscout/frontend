@@ -12,7 +12,7 @@ import DeleteModal from 'ui/shared/DeleteModal';
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  data: TWatchlistItem;
+  data: Pick<TWatchlistItem, 'address_hash' | 'id'>;
 }
 
 const DeleteAddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {

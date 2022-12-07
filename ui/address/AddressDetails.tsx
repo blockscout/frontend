@@ -11,7 +11,6 @@ import { QueryKeys } from 'types/client/queries';
 import appConfig from 'configs/app/config';
 import metamaskIcon from 'icons/metamask.svg';
 import qrCodeIcon from 'icons/qr_code.svg';
-import starOutlineIcon from 'icons/star_outline.svg';
 import walletIcon from 'icons/wallet.svg';
 import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -20,6 +19,8 @@ import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import ExternalLink from 'ui/shared/ExternalLink';
 import HashStringShorten from 'ui/shared/HashStringShorten';
+
+import AddressFavoriteButton from './details/AddressFavoriteButton';
 
 interface Props {
   addressQuery: UseQueryResult<TAddress>;
@@ -65,9 +66,7 @@ const AddressDetails = ({ addressQuery }: Props) => {
         </Text>
         <CopyToClipboard text={ addressQuery.data.hash }/>
         <Icon as={ metamaskIcon } boxSize={ 6 } ml={ 2 }/>
-        <Button variant="outline" size="sm" ml={ 3 }>
-          <Icon as={ starOutlineIcon } boxSize={ 5 }/>
-        </Button>
+        <AddressFavoriteButton hash={ addressQuery.data.hash } isAdded={ Boolean(addressQuery.data.watchlist_names?.length) } ml={ 3 }/>
         <Button variant="outline" size="sm" ml={ 2 }>
           <Icon as={ qrCodeIcon } boxSize={ 5 }/>
         </Button>

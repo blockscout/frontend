@@ -29,9 +29,10 @@ const NOTIFICATIONS = [ 'native', 'ERC-20', 'ERC-721' ] as const;
 const TAG_MAX_LENGTH = 35;
 
 type Props = {
-  data?: TWatchlistItem;
+  data?: Partial<TWatchlistItem>;
   onClose: () => void;
   setAlertVisible: (isAlertVisible: boolean) => void;
+  isAdd: boolean;
 }
 
 type Inputs = {
@@ -62,12 +63,12 @@ type Checkboxes = 'notification' |
 'notification_settings.ERC-721.outcoming' |
 'notification_settings.ERC-721.incoming';
 
-const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
+const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible, isAdd }) => {
   const [ pending, setPending ] = useState(false);
   const formBackgroundColor = useColorModeValue('white', 'gray.900');
 
   let notificationsDefault = {} as Inputs['notification_settings'];
-  if (!data) {
+  if (!data?.notification_settings) {
     NOTIFICATIONS.forEach(n => notificationsDefault[n] = { incoming: true, outcoming: true });
   } else {
     notificationsDefault = data.notification_settings;
@@ -77,7 +78,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
     defaultValues: {
       address: data?.address_hash || '',
       tag: data?.name || '',
-      notification: data ? data.notification_methods.email : true,
+      notification: data?.notification_methods ? data.notification_methods.email : true,
       notification_settings: notificationsDefault,
     },
     mode: 'onTouched',
@@ -95,7 +96,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
         email: formData.notification,
       },
     };
-    if (data) {
+    if (!isAdd && data) {
       // edit address
       return fetch<TWatchlistItem, WatchlistErrors>(`/node-api/account/watchlist/${ data.id }`, { method: 'PUT', body });
 
@@ -193,7 +194,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
           isLoading={ pending }
           disabled={ !isValid || !isDirty }
         >
-          { data ? 'Save changes' : 'Add address' }
+          { !isAdd ? 'Save changes' : 'Add address' }
         </Button>
       </Box>
     </form>

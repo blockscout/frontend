@@ -107,7 +107,7 @@ const WatchList: React.FC = () => {
                 Add address
           </Button>
         </Box>
-        <AddressModal { ...addressModalProps } onClose={ onAddressModalClose } data={ addressModalData }/>
+        <AddressModal { ...addressModalProps } onClose={ onAddressModalClose } data={ addressModalData } isAdd={ !addressModalData }/>
         { deleteModalData && <DeleteAddressModal { ...deleteModalProps } onClose={ onDeleteModalClose } data={ deleteModalData }/> }
       </>
     );
