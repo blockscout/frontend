@@ -5,7 +5,7 @@ import React from 'react';
 import { QueryKeys } from 'types/client/accountQueries';
 
 import * as cookies from 'lib/cookies';
-import link from 'lib/link/link';
+import useLoginUrl from 'lib/hooks/useLoginUrl';
 
 export interface ErrorType {
   error?: {
@@ -19,6 +19,7 @@ export default function useRedirectForInvalidAuthToken() {
 
   const state = queryClient.getQueryState<unknown, ErrorType>([ QueryKeys.profile ]);
   const errorStatus = state?.error?.error?.status;
+  const loginUrl = useLoginUrl();
 
   React.useEffect(() => {
     if (errorStatus === 401) {
@@ -26,9 +27,8 @@ export default function useRedirectForInvalidAuthToken() {
 
       if (apiToken) {
         Sentry.captureException(new Error('Invalid api token'), { tags: { source: 'fetch' } });
-        const authURL = link('auth');
-        window.location.assign(authURL);
+        window.location.assign(loginUrl);
       }
     }
-  }, [ errorStatus ]);
+  }, [ errorStatus, loginUrl ]);
 }
