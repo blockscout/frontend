@@ -37,7 +37,7 @@ const ChainIndicators = () => {
   const fetch = useFetch();
   const statsQueryResult = useQuery<unknown, unknown, HomeStats>(
     [ QueryKeys.homeStats ],
-    () => fetch('/node-api/stats'),
+    () => fetch('/node-api/home-stats'),
   );
 
   const bgColorDesktop = useColorModeValue('white', 'gray.900');
