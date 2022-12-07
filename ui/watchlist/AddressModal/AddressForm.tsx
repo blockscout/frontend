@@ -4,14 +4,13 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
 import { useForm, Controller } from 'react-hook-form';
 
 import type { WatchlistErrors } from 'types/api/account';
 import type { TWatchlistItem } from 'types/client/account';
-import { QueryKeys } from 'types/client/accountQueries';
 
 import getErrorMessage from 'lib/getErrorMessage';
 import type { ErrorType } from 'lib/hooks/useFetch';
@@ -30,7 +29,7 @@ const TAG_MAX_LENGTH = 35;
 
 type Props = {
   data?: Partial<TWatchlistItem>;
-  onClose: () => void;
+  onSuccess: () => Promise<void>;
   setAlertVisible: (isAlertVisible: boolean) => void;
   isAdd: boolean;
 }
@@ -63,7 +62,7 @@ type Checkboxes = 'notification' |
 'notification_settings.ERC-721.outcoming' |
 'notification_settings.ERC-721.incoming';
 
-const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible, isAdd }) => {
+const AddressForm: React.FC<Props> = ({ data, onSuccess, setAlertVisible, isAdd }) => {
   const [ pending, setPending ] = useState(false);
   const formBackgroundColor = useColorModeValue('white', 'gray.900');
 
@@ -84,7 +83,6 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible, isAdd })
     mode: 'onTouched',
   });
 
-  const queryClient = useQueryClient();
   const fetch = useFetch();
 
   function updateWatchlist(formData: Inputs) {
@@ -107,11 +105,9 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible, isAdd })
   }
 
   const { mutate } = useMutation(updateWatchlist, {
-    onSuccess: () => {
-      queryClient.refetchQueries([ QueryKeys.watchlist ]).then(() => {
-        onClose();
-        setPending(false);
-      });
+    onSuccess: async() => {
+      await onSuccess();
+      setPending(false);
     },
     onError: (e: ErrorType<WatchlistErrors>) => {
       setPending(false);

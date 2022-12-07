@@ -1,8 +1,15 @@
 import { Icon, chakra, Tooltip, IconButton, useDisclosure } from '@chakra-ui/react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
 import React from 'react';
+
+import type { TWatchlist } from 'types/client/account';
+import { QueryKeys as AccountQueryKeys } from 'types/client/accountQueries';
+import { QueryKeys } from 'types/client/queries';
 
 import starFilledIcon from 'icons/star_filled.svg';
 import starOutlineIcon from 'icons/star_outline.svg';
+import useFetch from 'lib/hooks/useFetch';
 import usePreventFocusAfterModalClosing from 'lib/hooks/usePreventFocusAfterModalClosing';
 import WatchlistAddModal from 'ui/watchlist/AddressModal/AddressModal';
 import DeleteAddressModal from 'ui/watchlist/DeleteAddressModal';
@@ -16,10 +23,26 @@ interface Props {
 const AddressFavoriteButton = ({ className, hash, isAdded }: Props) => {
   const addModalProps = useDisclosure();
   const deleteModalProps = useDisclosure();
+  const queryClient = useQueryClient();
+  const router = useRouter();
+  const fetch = useFetch();
+
+  const watchListQuery = useQuery<unknown, unknown, TWatchlist>(
+    [ AccountQueryKeys.watchlist ],
+    async() => fetch('/node-api/account/watchlist'),
+    {
+      enabled: isAdded,
+    },
+  );
 
   const handleClick = React.useCallback(() => {
     isAdded ? deleteModalProps.onOpen() : addModalProps.onOpen();
   }, [ addModalProps, deleteModalProps, isAdded ]);
+
+  const handleAddOrDeleteSuccess = React.useCallback(async() => {
+    await queryClient.refetchQueries({ queryKey: [ QueryKeys.address, router.query.id ] });
+    addModalProps.onClose();
+  }, [ addModalProps, queryClient, router.query.id ]);
 
   const handleAddModalClose = React.useCallback(() => {
     addModalProps.onClose();
@@ -30,13 +53,20 @@ const AddressFavoriteButton = ({ className, hash, isAdded }: Props) => {
   }, [ deleteModalProps ]);
 
   const formData = React.useMemo(() => {
-    return { address_hash: hash, id: '1' };
-  }, [ hash ]);
+    return {
+      address_hash: hash,
+      // FIXME temporary solution
+      // there is no endpoint in api what can return watchlist address info by its hash
+      // so we look up in the whole watchlist and hope we can find a necessary item
+      id: watchListQuery.data?.find((address) => address.address?.hash === hash)?.id || '',
+    };
+  }, [ hash, watchListQuery.data ]);
 
   return (
     <>
       <Tooltip label={ `${ isAdded ? 'Remove address from Watch list' : 'Add address to Watch list' }` }>
         <IconButton
+          isActive={ isAdded }
           className={ className }
           aria-label="edit"
           variant="outline"
@@ -48,8 +78,19 @@ const AddressFavoriteButton = ({ className, hash, isAdded }: Props) => {
           onFocusCapture={ usePreventFocusAfterModalClosing() }
         />
       </Tooltip>
-      <WatchlistAddModal { ...addModalProps } onClose={ handleAddModalClose } data={ formData } isAdd/>
-      <DeleteAddressModal { ...deleteModalProps } onClose={ handleDeleteModalClose } data={ formData }/>
+      <WatchlistAddModal
+        { ...addModalProps }
+        isAdd
+        onClose={ handleAddModalClose }
+        onSuccess={ handleAddOrDeleteSuccess }
+        data={ formData }
+      />
+      <DeleteAddressModal
+        { ...deleteModalProps }
+        onClose={ handleDeleteModalClose }
+        data={ formData }
+        onSuccess={ handleAddOrDeleteSuccess }
+      />
     </>
   );
 };
