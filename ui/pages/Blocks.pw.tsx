@@ -9,7 +9,7 @@ import TestApp from 'playwright/TestApp';
 import Blocks from './Blocks';
 
 const BLOCKS_API_URL = '/node-api/blocks?type=block';
-const STATS_API_URL = '/node-api/stats';
+const STATS_API_URL = '/node-api/home-stats';
 const hooksConfig = {
   router: {
     query: { tab: 'blocks' },
