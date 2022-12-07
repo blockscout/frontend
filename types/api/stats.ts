@@ -20,5 +20,19 @@ export type GasPrices = {
 }
 
 export type Stats = {
-  total_blocks: string;
+  totalBlocksAllTime: string;
 }
+
+export type Charts = {
+  'chart': Array<{
+    date: string;
+    value: string;
+  }>;
+}
+
+export enum ChartPrecision {
+  'DAY' = 'DAY',
+  'MONTH' = 'MONTH',
+}
+
+export type ChartPrecisionIds = keyof typeof ChartPrecision;

@@ -1,7 +1,7 @@
 import debounce from 'lodash/debounce';
 import React, { useCallback, useEffect, useState } from 'react';
 
-import type { ModalChart, StatsChart, StatsIntervalIds, StatsSection, StatsSectionIds } from 'types/client/stats';
+import type { StatsChart, StatsIntervalIds, StatsSection, StatsSectionIds } from 'types/client/stats';
 
 import { statsChartsScheme } from './constants/charts-scheme';
 
@@ -16,8 +16,7 @@ function isChartNameMatches(q: string, chart: StatsChart) {
 export default function useStats() {
   const [ displayedCharts, setDisplayedCharts ] = useState<Array<StatsSection>>(statsChartsScheme);
   const [ section, setSection ] = useState<StatsSectionIds>('all');
-  const [ interval, setInterval ] = useState<StatsIntervalIds>('all');
-  const [ fullscreenChart, setFullscreenChart ] = useState<ModalChart | null>(null);
+  const [ interval, setInterval ] = useState<StatsIntervalIds>('oneMonth');
   const [ filterQuery, setFilterQuery ] = useState('');
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -48,22 +47,6 @@ export default function useStats() {
     setInterval(newInterval);
   }, []);
 
-  const showChartFullscreen = useCallback((chart: ModalChart) => {
-    setFullscreenChart(chart);
-
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen();
-    }
-  }, []);
-
-  const clearFullscreenChart = useCallback(() => {
-    setFullscreenChart(null);
-
-    if (document.fullscreenElement) {
-      document.exitFullscreen();
-    }
-  }, []);
-
   useEffect(() => {
     filterCharts(filterQuery, section);
   }, [ filterQuery, section, filterCharts ]);
@@ -75,9 +58,6 @@ export default function useStats() {
     handleIntervalChange,
     debounceFilterCharts,
     displayedCharts,
-    showChartFullscreen,
-    clearFullscreenChart,
-    fullscreenChart,
   }), [
     section,
     handleSectionChange,
@@ -85,8 +65,5 @@ export default function useStats() {
     handleIntervalChange,
     debounceFilterCharts,
     displayedCharts,
-    showChartFullscreen,
-    clearFullscreenChart,
-    fullscreenChart,
   ]);
 }

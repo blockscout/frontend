@@ -21,7 +21,8 @@ const sectionsList = Object.keys(STATS_SECTIONS)
 
 const intervalList = Object.keys(STATS_INTERVALS).map((id: string) => ({
   id: id,
-  title: STATS_INTERVALS[id as StatsIntervalIds],
+  title: STATS_INTERVALS[id as StatsIntervalIds].title,
+  precision: STATS_INTERVALS[id as StatsIntervalIds].precision,
 })) as Array<StatsInterval>;
 
 type Props = {
