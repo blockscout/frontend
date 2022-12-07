@@ -6,7 +6,7 @@ import { httpLogger } from 'lib/api/logger';
 
 type Methods = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
-export default function createHandler(getUrl: (_req: NextApiRequest) => string, allowedMethods: Array<Methods>) {
+export default function createHandler(getUrl: (_req: NextApiRequest) => string, allowedMethods: Array<Methods>, apiEndpoint?: string) {
   const handler = async(_req: NextApiRequest, res: NextApiResponse) => {
     httpLogger(_req, res);
 
@@ -18,8 +18,8 @@ export default function createHandler(getUrl: (_req: NextApiRequest) => string, 
 
     const isBodyDisallowed = _req.method === 'GET' || _req.method === 'HEAD';
 
-    const url = getUrlWithNetwork(_req, `/api${ getUrl(_req) }`);
-    const fetch = fetchFactory(_req);
+    const url = apiEndpoint ? `/api${ getUrl(_req) }` : getUrlWithNetwork(_req, `/api${ getUrl(_req) }`);
+    const fetch = fetchFactory(_req, apiEndpoint);
     const response = await fetch(url, {
       method: _req.method,
       body: isBodyDisallowed ? undefined : _req.body,
