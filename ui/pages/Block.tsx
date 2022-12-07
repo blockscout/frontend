@@ -40,14 +40,17 @@ const BlockPageContent = () => {
     { id: 'txs', title: 'Transactions', component: <TxsContent query={ blockTxsQuery } showBlockInfo={ false } showSocketInfo={ false }/> },
   ];
 
+  const isPaginatorHidden = !blockTxsQuery.isLoading && !blockTxsQuery.isError && blockTxsQuery.pagination.page === 1 && !blockTxsQuery.pagination.hasNextPage;
+  const hasPagination = !isMobile && router.query.tab === 'txs' && !isPaginatorHidden;
+
   return (
     <Page>
       <PageTitle text={ `Block #${ router.query.id }` }/>
       <RoutedTabs
         tabs={ tabs }
         tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
-        rightSlot={ isMobile ? null : <Pagination { ...blockTxsQuery.pagination }/> }
-        stickyEnabled={ !isMobile }
+        rightSlot={ hasPagination ? <Pagination { ...blockTxsQuery.pagination }/> : null }
+        stickyEnabled={ hasPagination }
       />
     </Page>
   );
