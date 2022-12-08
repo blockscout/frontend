@@ -3,6 +3,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { UserInfo } from 'types/api/account';
 import type { TWatchlist } from 'types/client/account';
 import { QueryKeys as AccountQueryKeys } from 'types/client/accountQueries';
 import { QueryKeys } from 'types/client/queries';
@@ -11,6 +12,7 @@ import starFilledIcon from 'icons/star_filled.svg';
 import starOutlineIcon from 'icons/star_outline.svg';
 import useFetch from 'lib/hooks/useFetch';
 import usePreventFocusAfterModalClosing from 'lib/hooks/usePreventFocusAfterModalClosing';
+import link from 'lib/link/link';
 import WatchlistAddModal from 'ui/watchlist/AddressModal/AddressModal';
 import DeleteAddressModal from 'ui/watchlist/DeleteAddressModal';
 
@@ -27,6 +29,9 @@ const AddressFavoriteButton = ({ className, hash, isAdded }: Props) => {
   const router = useRouter();
   const fetch = useFetch();
 
+  const profileData = queryClient.getQueryData<UserInfo>([ AccountQueryKeys.profile ]);
+  const isAuth = Boolean(profileData);
+
   const watchListQuery = useQuery<unknown, unknown, TWatchlist>(
     [ AccountQueryKeys.watchlist ],
     async() => fetch('/node-api/account/watchlist'),
@@ -36,8 +41,13 @@ const AddressFavoriteButton = ({ className, hash, isAdded }: Props) => {
   );
 
   const handleClick = React.useCallback(() => {
+    if (!isAuth) {
+      const loginUrl = link('auth');
+      window.location.assign(loginUrl);
+      return;
+    }
     isAdded ? deleteModalProps.onOpen() : addModalProps.onOpen();
-  }, [ addModalProps, deleteModalProps, isAdded ]);
+  }, [ addModalProps, deleteModalProps, isAdded, isAuth ]);
 
   const handleAddOrDeleteSuccess = React.useCallback(async() => {
     await queryClient.refetchQueries({ queryKey: [ QueryKeys.address, router.query.id ] });
