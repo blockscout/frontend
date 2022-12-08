@@ -69,7 +69,7 @@ const AddressDetails = ({ addressQuery }: Props) => {
         <Button variant="outline" size="sm" ml={ 3 }>
           <Icon as={ starOutlineIcon } boxSize={ 5 }/>
         </Button>
-        <AddressQrCode hash={ addressQuery.data.hash }/>
+        <AddressQrCode hash={ addressQuery.data.hash } ml={ 2 }/>
       </Flex>
       { explorers.length > 0 && (
         <Flex mt={ 8 } columnGap={ 4 } flexWrap="wrap">

@@ -1,4 +1,4 @@
-import { Button, Alert, Icon, Modal, ModalBody, ModalContent, ModalCloseButton, ModalOverlay, Box, useDisclosure } from '@chakra-ui/react';
+import { chakra, Alert, Icon, Modal, ModalBody, ModalContent, ModalCloseButton, ModalOverlay, Box, useDisclosure, Tooltip, IconButton } from '@chakra-ui/react';
 import * as Sentry from '@sentry/react';
 import QRCode from 'qrcode';
 import React from 'react';
@@ -11,19 +11,19 @@ const SVG_OPTIONS = {
 };
 
 interface Props {
+  className?: string;
   hash: string;
 }
 
-const AddressQrCode = ({ hash }: Props) => {
+const AddressQrCode = ({ hash, className }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isMobile = useIsMobile();
-  const ref = React.useRef<HTMLDivElement>(null);
   const [ qr, setQr ] = React.useState('');
   const [ error, setError ] = React.useState('');
 
   React.useEffect(() => {
     if (isOpen) {
-      QRCode.toString(hash, SVG_OPTIONS, function(error: Error | null | undefined, svg: string) {
+      QRCode.toString(hash, SVG_OPTIONS, (error: Error | null | undefined, svg: string) => {
         if (error) {
           setError('We were unable to generate QR code.');
           Sentry.captureException(error, { tags: { source: 'QR code' } });
@@ -38,15 +38,24 @@ const AddressQrCode = ({ hash }: Props) => {
 
   return (
     <>
-      <Button variant="outline" size="sm" ml={ 2 } onClick={ onOpen } aria-label="Show QR code">
-        <Icon as={ qrCodeIcon } boxSize={ 5 }/>
-      </Button>
+      <Tooltip label="Click to view QR code">
+        <IconButton
+          className={ className }
+          aria-label="Show QR code"
+          variant="outline"
+          size="sm"
+          pl="6px"
+          pr="6px"
+          onClick={ onOpen }
+          icon={ <Icon as={ qrCodeIcon } boxSize={ 5 }/> }
+        />
+      </Tooltip>
       <Modal isOpen={ isOpen } onClose={ onClose } size={{ base: 'full', lg: 'sm' }}>
         <ModalOverlay/>
         <ModalContent bgColor={ error ? undefined : 'white' }>
           { isMobile && <ModalCloseButton/> }
           <ModalBody mb={ 0 }>
-            { error ? <Alert status="warning">{ error }</Alert> : <Box ref={ ref } dangerouslySetInnerHTML={{ __html: qr }}/> }
+            { error ? <Alert status="warning">{ error }</Alert> : <Box dangerouslySetInnerHTML={{ __html: qr }}/> }
           </ModalBody>
         </ModalContent>
       </Modal>
@@ -54,4 +63,4 @@ const AddressQrCode = ({ hash }: Props) => {
   );
 };
 
-export default React.memo(AddressQrCode);
+export default React.memo(chakra(AddressQrCode));
