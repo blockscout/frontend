@@ -1,29 +1,7 @@
-import type { FeaturedNetwork, PreDefinedNetwork } from 'types/networks';
+import type { FeaturedNetwork } from 'types/networks';
 
 import appConfig from 'configs/app/config';
-import arbitrumIcon from 'icons/networks/icons/arbitrum.svg';
-import artisIcon from 'icons/networks/icons/artis.svg';
-import ethereumClassicIcon from 'icons/networks/icons/ethereum-classic.svg';
-import ethereumIcon from 'icons/networks/icons/ethereum.svg';
-import gnosisIcon from 'icons/networks/icons/gnosis.svg';
-import optimismIcon from 'icons/networks/icons/optimism.svg';
-import poaSokolIcon from 'icons/networks/icons/poa-sokol.svg';
-import poaIcon from 'icons/networks/icons/poa.svg';
-import rskIcon from 'icons/networks/icons/rsk.svg';
-
-// predefined network icons
-const ICONS: Partial<Record<PreDefinedNetwork, React.FunctionComponent<React.SVGAttributes<SVGElement>>>> = {
-  xdai_mainnet: gnosisIcon,
-  xdai_optimism: optimismIcon,
-  xdai_aox: arbitrumIcon,
-  eth_mainnet: ethereumIcon,
-  etc_mainnet: ethereumClassicIcon,
-  poa_core: poaIcon,
-  rsk_mainnet: rskIcon,
-  xdai_testnet: arbitrumIcon,
-  poa_sokol: poaSokolIcon,
-  artis_sigma1: artisIcon,
-};
+import ASSETS from 'lib/networks/networkAssets';
 
 // for easy .env.example update
 // const FEATURED_NETWORKS = JSON.stringify([
@@ -136,7 +114,7 @@ const ICONS: Partial<Record<PreDefinedNetwork, React.FunctionComponent<React.SVG
 const featuredNetworks: Array<FeaturedNetwork> = (() => {
   return appConfig.featuredNetworks.map((network) => ({
     ...network,
-    icon: network.icon || (network.type ? ICONS[network.type] : undefined),
+    icon: network.icon || (network.type ? ASSETS[network.type]?.icon : undefined),
   }));
 })();
 
