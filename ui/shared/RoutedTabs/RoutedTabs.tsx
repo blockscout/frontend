@@ -96,7 +96,8 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled }: Props) => 
         }}
         bgColor={ listBgColor }
         transitionProperty="top,box-shadow,background-color,color"
-        transitionDuration="slow"
+        transitionDuration="normal"
+        transitionTimingFunction="ease"
         {
           ...(stickyEnabled ? {
             position: 'sticky',
