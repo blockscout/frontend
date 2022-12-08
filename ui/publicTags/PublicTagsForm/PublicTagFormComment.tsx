@@ -25,7 +25,7 @@ export default function PublicTagFormComment({ control, error, size }: Props) {
           isInvalid={ Boolean(error) }
         />
         <FormLabel>
-          <InputPlaceholder text="Specify the reason for adding tags and color preference(s)" error={ error?.message }/>
+          <InputPlaceholder text="Specify the reason for adding tags and color preference(s)" error={ error }/>
         </FormLabel>
       </FormControl>
     );

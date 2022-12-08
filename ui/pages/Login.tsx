@@ -10,8 +10,8 @@ import useToast from 'lib/hooks/useToast';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
-{ /* will be deleted when we move to new CI */ }
-const Vercel = () => {
+{ /* will be deleted when we fix login in preview CI stands */ }
+const Login = () => {
   const toast = useToast();
   const [ num, setNum ] = useGradualIncrement(0);
 
@@ -86,4 +86,4 @@ const Vercel = () => {
 
 };
 
-export default Vercel;
+export default Login;

@@ -22,7 +22,7 @@ function TransactionInput<Field extends Partial<ControllerRenderProps<FieldValue
         isInvalid={ Boolean(error) }
         maxLength={ TRANSACTION_HASH_LENGTH }
       />
-      <InputPlaceholder text="Transaction hash (0x...)" error={ error?.message }/>
+      <InputPlaceholder text="Transaction hash (0x...)" error={ error }/>
     </FormControl>
   );
 }

@@ -80,7 +80,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
       notification: data ? data.notification_methods.email : true,
       notification_settings: notificationsDefault,
     },
-    mode: 'all',
+    mode: 'onTouched',
   });
 
   const queryClient = useQueryClient();

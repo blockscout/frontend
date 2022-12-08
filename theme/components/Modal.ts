@@ -22,7 +22,7 @@ const baseStyleDialog = defineStyle((props) => {
 const baseStyleDialogContainer = defineStyle({
   '::-webkit-scrollbar': { display: 'none' },
   'scrollbar-width': 'none',
-  '@supports (height: -webkit-fill-available)': { height: '100vh' },
+  '@supports (height: -webkit-fill-available)': { height: '-webkit-fill-available' },
 });
 
 const baseStyleHeader = defineStyle((props) => ({
@@ -63,6 +63,7 @@ const baseStyleOverlay = defineStyle({
 const baseStyle = definePartsStyle((props) => ({
   dialog: runIfFn(baseStyleDialog, props),
   dialogContainer: baseStyleDialogContainer,
+
   header: runIfFn(baseStyleHeader, props),
   body: baseStyleBody,
   footer: baseStyleFooter,

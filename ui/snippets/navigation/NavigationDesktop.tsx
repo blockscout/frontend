@@ -63,12 +63,13 @@ const NavigationDesktop = () => {
       <Box
         as="header"
         display="flex"
-        justifyContent="center"
+        justifyContent="flex-start"
         alignItems="center"
         flexDirection="row"
         w="100%"
-        px={ 3 }
+        px={{ lg: isExpanded ? 3 : '15px', xl: isCollapsed ? '15px' : 3 }}
         h={ 10 }
+        { ...getDefaultTransitionProps({ transitionProperty: 'padding' }) }
       >
         <NetworkLogo isCollapsed={ isCollapsed }/>
         <NetworkMenu isCollapsed={ isCollapsed }/>

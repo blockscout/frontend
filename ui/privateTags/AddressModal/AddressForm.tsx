@@ -35,7 +35,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
   const fetch = useFetch();
   const [ pending, setPending ] = useState(false);
   const { control, handleSubmit, formState: { errors, isValid, isDirty }, setError } = useForm<Inputs>({
-    mode: 'all',
+    mode: 'onTouched',
     defaultValues: {
       address: data?.address_hash || '',
       tag: data?.name || '',

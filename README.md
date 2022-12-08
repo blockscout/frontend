@@ -52,6 +52,7 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS | `string` | Address of network's native token | `0x029a799563238d0e75e20be2f4bda0ea68d00172` |
 | NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME | `string` *(optional)* | Network name for constructing url of token logos according to template `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${assetsNamePath}/assets/${tokenAddress}/logo.png`. It should match network name in TrustWallet assets repo, see the full list [here](https://github.com/trustwallet/assets/tree/master/blockchains) | `ethereum` |
 | NEXT_PUBLIC_NETWORK_LOGO | `string` *(optional)* | Network logo; if not provided, will fallback to logo predefined in the project; if the project doesn't have logo for such network then the common placeholder will be shown; *Note* that logo height should be 20px and width less than 120px | `https://www.fillmurray.com/240/40` |
+| NEXT_PUBLIC_NETWORK_SMALL_LOGO | `string` *(optional)* | Small version of network logo; if not provided, will fallback to logo predefined in the project; if the project doesn't have logo for such network then the common placeholder will be shown; *Note* that logo should have square format (e.g 60px by 60px) | `https://www.fillmurray.com/60/60` |
 | NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED | `boolean` *(optional)* | Set to true if network has account feature | `true` |
 
 ### UI configuration
@@ -75,7 +76,8 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_HOMEPAGE_PLATE_GRADIENT | `string` *(optional)* | Gradient value for hero plate on the homepage | `radial-gradient(at 15% 86%, hsla(350,65%,70%,1) 0px, transparent 50%), radial-gradient(at 72% 57%, hsla(14,95%,76%,1) 0px, transparent 50%)` |
 | NEXT_PUBLIC_HOMEPAGE_SHOW_GAS_TRACKER | `boolean` *(optional)* | Set to false if network doesn't have gas tracker | `true` |
 | NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME | `boolean` *(optional)* | Set to false if average block time is useless for the network | `true` |
-
+| NEXT_PUBLIC_DOMAIN_WITH_AD | `string` *(optional)* | The domain on which we display ads | `blockscout.com` |  
+| NEXT_PUBLIC_AD_ADBUTLER_ON | `boolean` *(optional)* | Set to true to show Adbutler banner instead of Coinzilla banner | `false` |
 ### App configuration
 
 | Variable | Type | Description | Default value

@@ -13,7 +13,7 @@ const parseEnvJson = <DataType>(env: string | undefined): DataType | null => {
 };
 const stripTrailingSlash = (str: string) => str[str.length - 1] === '/' ? str.slice(0, -1) : str;
 
-const env = process.env.VERCEL_ENV || process.env.NODE_ENV;
+const env = process.env.NODE_ENV;
 const isDev = env === 'development';
 
 const appPort = getEnvValue(process.env.NEXT_PUBLIC_APP_PORT);
@@ -22,7 +22,7 @@ const appHost = getEnvValue(process.env.NEXT_PUBLIC_APP_HOST);
 const baseUrl = [
   appSchema || 'https',
   '://',
-  process.env.NEXT_PUBLIC_VERCEL_URL || appHost,
+  appHost,
   appPort && ':' + appPort,
 ].filter(Boolean).join('');
 const authUrl = getEnvValue(process.env.NEXT_PUBLIC_AUTH_URL) || baseUrl;
@@ -54,6 +54,7 @@ const config = Object.freeze({
   network: {
     type: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_TYPE) as PreDefinedNetwork | undefined,
     logo: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_LOGO),
+    smallLogo: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_SMALL_LOGO),
     name: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_NAME),
     id: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_ID),
     shortName: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_SHORT_NAME),
@@ -84,6 +85,10 @@ const config = Object.freeze({
   baseUrl,
   authUrl,
   logoutUrl,
+  ad: {
+    domainWithAd: getEnvValue(process.env.NEXT_PUBLIC_AD_DOMAIN_WITH_AD) || 'blockscout.com',
+    adButlerOn: getEnvValue(process.env.NEXT_PUBLIC_AD_ADBUTLER_ON) === 'true',
+  },
   api: {
     endpoint: apiHost ? `https://${ apiHost }` : 'https://blockscout.com',
     socket: apiHost ? `wss://${ apiHost }` : 'wss://blockscout.com',
