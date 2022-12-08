@@ -1,3 +1,4 @@
+import { Flex } from '@chakra-ui/react';
 import { test as base, expect, devices } from '@playwright/experimental-ct-react';
 import React from 'react';
 
@@ -43,7 +44,9 @@ test('base view +@dark-mode', async({ mount, page }) => {
   await mount(
     <TestApp>
       <MockAddressPage>
-        <TokenSelect/>
+        <Flex>
+          <TokenSelect/>
+        </Flex>
       </MockAddressPage>
     </TestApp>,
     { hooksConfig },
@@ -66,7 +69,9 @@ test.describe('mobile', () => {
     await mount(
       <TestApp>
         <MockAddressPage>
-          <TokenSelect/>
+          <Flex>
+            <TokenSelect/>
+          </Flex>
         </MockAddressPage>
       </TestApp>,
       { hooksConfig },
@@ -83,7 +88,9 @@ test('sort', async({ mount, page }) => {
   await mount(
     <TestApp>
       <MockAddressPage>
-        <TokenSelect/>
+        <Flex>
+          <TokenSelect/>
+        </Flex>
       </MockAddressPage>
     </TestApp>,
     { hooksConfig },
@@ -104,7 +111,9 @@ test('filter', async({ mount, page }) => {
   await mount(
     <TestApp>
       <MockAddressPage>
-        <TokenSelect/>
+        <Flex>
+          <TokenSelect/>
+        </Flex>
       </MockAddressPage>
     </TestApp>,
     { hooksConfig },
@@ -125,7 +134,9 @@ test.describe('socket', () => {
     await mount(
       <TestApp withSocket>
         <MockAddressPage>
-          <TokenSelect/>
+          <Flex>
+            <TokenSelect/>
+          </Flex>
         </MockAddressPage>
       </TestApp>,
       { hooksConfig },
@@ -154,7 +165,9 @@ test.describe('socket', () => {
     await mount(
       <TestApp withSocket>
         <MockAddressPage>
-          <TokenSelect/>
+          <Flex>
+            <TokenSelect/>
+          </Flex>
         </MockAddressPage>
       </TestApp>,
       { hooksConfig },
