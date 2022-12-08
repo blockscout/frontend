@@ -31,6 +31,7 @@
     "@chakra-ui/theme-tools": "^2.0.2",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
+    "@metamask/providers": "^10.2.1",
     "@sentry/nextjs": "^7.12.1",
     "@sentry/react": "^7.13.0",
     "@sentry/tracing": "^7.13.0",

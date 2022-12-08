@@ -15,7 +15,7 @@ export interface Address {
   name: string | null;
   private_tags: Array<AddressTag> | null;
   public_tags: Array<AddressTag> | null;
-  tokenInfo: TokenInfo | null;
+  token: TokenInfo | null;
   watchlist_names: Array<WatchlistName> | null;
 }
 
