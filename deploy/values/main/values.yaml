@@ -454,6 +454,7 @@ frontend:
         - "/tx"
         - "/blocks"
         - "/block"
+        - "/address"
   resources:
     limits:
       memory:

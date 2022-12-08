@@ -2,17 +2,17 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import React from 'react';
 
-import Vercel from 'ui/pages/Vercel';
+import Login from 'ui/pages/Login';
 
-const VercelPage: NextPage = () => {
+const LoginPage: NextPage = () => {
   return (
     <>
-      <Head><title>Vercel Page</title></Head>
-      <Vercel/>
+      <Head><title>Login Page</title></Head>
+      <Login/>
     </>
   );
 };
 
-export default VercelPage;
+export default LoginPage;
 
 export { getServerSideProps } from 'lib/next/getServerSideProps';
