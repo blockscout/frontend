@@ -9,15 +9,16 @@ import useTokenSelect from './useTokenSelect';
 
 interface Props {
   data: Array<AddressTokenBalance>;
+  isLoading: boolean;
 }
 
-const TokenSelectMobile = ({ data }: Props) => {
+const TokenSelectMobile = ({ data, isLoading }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
   const result = useTokenSelect(data);
 
   return (
     <>
-      <TokenSelectButton isOpen={ isOpen } onClick={ onToggle } data={ result.modifiedData }/>
+      <TokenSelectButton isOpen={ isOpen } onClick={ onToggle } data={ result.modifiedData } isLoading={ isLoading }/>
       <Modal isOpen={ isOpen } onClose={ onClose } size="full">
         <ModalContent>
           <ModalCloseButton/>

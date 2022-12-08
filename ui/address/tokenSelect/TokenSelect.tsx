@@ -62,27 +62,8 @@ const TokenSelect = () => {
     handler: handleTokenBalanceMessage,
   });
 
-  const button = (
-    <Tooltip label="Show all tokens">
-      <IconButton
-        aria-label="Show all tokens"
-        variant="outline"
-        size="sm"
-        pl="6px"
-        pr="6px"
-        ml={ 3 }
-        icon={ <Icon as={ walletIcon } boxSize={ 5 }/> }
-      />
-    </Tooltip>
-  );
-
-  if (isLoading || balancesIsFetching === 1) {
-    return (
-      <>
-        <Skeleton h={ 8 } w="160px"/>
-        { data && data.length > 0 && button }
-      </>
-    );
+  if (isLoading) {
+    return <Skeleton h={ 8 } w="160px"/>;
   }
 
   if (isError || data.length === 0) {
@@ -91,8 +72,21 @@ const TokenSelect = () => {
 
   return (
     <>
-      { isMobile ? <TokenSelectMobile data={ data }/> : <TokenSelectDesktop data={ data }/> }
-      { button }
+      { isMobile ?
+        <TokenSelectMobile data={ data } isLoading={ balancesIsFetching === 1 }/> :
+        <TokenSelectDesktop data={ data } isLoading={ balancesIsFetching === 1 }/>
+      }
+      <Tooltip label="Show all tokens">
+        <IconButton
+          aria-label="Show all tokens"
+          variant="outline"
+          size="sm"
+          pl="6px"
+          pr="6px"
+          ml={ 3 }
+          icon={ <Icon as={ walletIcon } boxSize={ 5 }/> }
+        />
+      </Tooltip>
     </>
   );
 };
