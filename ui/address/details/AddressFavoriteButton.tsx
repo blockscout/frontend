@@ -81,8 +81,8 @@ const AddressFavoriteButton = ({ className, hash, isAdded }: Props) => {
           aria-label="edit"
           variant="outline"
           size="sm"
-          pl={ 2 }
-          pr={ 2 }
+          pl="6px"
+          pr="6px"
           onClick={ handleClick }
           icon={ <Icon as={ isAdded ? starFilledIcon : starOutlineIcon } boxSize={ 5 }/> }
           onFocusCapture={ usePreventFocusAfterModalClosing() }
