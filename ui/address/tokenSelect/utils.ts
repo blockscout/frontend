@@ -26,6 +26,10 @@ const sortErc1155Tokens = (sort: Sort) => (dataA: AddressTokenBalance, dataB: Ad
   return Number(dataA.value) > Number(dataB.value) ? 1 : -1;
 };
 const sortErc20Tokens = (sort: Sort) => (dataA: EnhancedData, dataB: EnhancedData) => {
+  if (!dataA.usd && !dataB.usd) {
+    return 0;
+  }
+
   // keep tokens without usd value in the end of the group
   if (!dataB.usd) {
     return -1;
