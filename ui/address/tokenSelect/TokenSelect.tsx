@@ -1,4 +1,4 @@
-import { Box, Button, Icon, Skeleton } from '@chakra-ui/react';
+import { Box, Icon, IconButton, Skeleton, Tooltip } from '@chakra-ui/react';
 import { useQuery, useQueryClient, useIsFetching } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -63,9 +63,17 @@ const TokenSelect = () => {
   });
 
   const button = (
-    <Button variant="outline" size="sm" ml={ 3 }>
-      <Icon as={ walletIcon } boxSize={ 5 }/>
-    </Button>
+    <Tooltip label="Show all tokens">
+      <IconButton
+        aria-label="Show all tokens"
+        variant="outline"
+        size="sm"
+        pl="6px"
+        pr="6px"
+        ml={ 3 }
+        icon={ <Icon as={ walletIcon } boxSize={ 5 }/> }
+      />
+    </Tooltip>
   );
 
   if (isLoading || balancesIsFetching === 1) {

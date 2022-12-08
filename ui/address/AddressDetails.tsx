@@ -78,7 +78,7 @@ const AddressDetails = ({ addressQuery }: Props) => {
       </Flex>
       { explorers.length > 0 && (
         <Flex mt={ 8 } columnGap={ 4 } flexWrap="wrap">
-          <Text>Verify with other explorers</Text>
+          <Text fontSize="sm">Verify with other explorers</Text>
           { explorers.map((explorer) => {
             const url = new URL(explorer.paths.tx + '/' + router.query.id, explorer.baseUrl);
             return <ExternalLink key={ explorer.baseUrl } title={ explorer.title } href={ url.toString() }/>;
