@@ -63,6 +63,9 @@ function makePolicyMap() {
       'sentry.io', '*.sentry.io',
 
       appConfig.api.socket,
+
+      // ad
+      'request-global.czilladx.com',
     ],
 
     'script-src': [
@@ -76,6 +79,12 @@ function makePolicyMap() {
 
       // hash of ColorModeScript
       '\'sha256-e7MRMmTzLsLQvIy1iizO1lXf7VWYoQ6ysj5fuUzvRwE=\'',
+
+      // ad
+      'coinzillatag.com',
+      'servedbyadbutler.com',
+      '\'sha256-wMOeDjJaOTjCfNjluteV+tSqHW547T89sgxd8W6tQJM=\'',
+      '\'sha256-FcyIn1h7zra8TVnnRhYrwrplxJW7dpD5TV7kP2AG/kI=\'',
     ],
 
     'style-src': [
@@ -113,6 +122,9 @@ function makePolicyMap() {
 
       // marketplace apps logos
       ...getMarketplaceAppsLogosOrigins().map((url) => url.host),
+
+      // ad
+      'servedbyadbutler.com',
     ],
 
     'font-src': [
@@ -135,7 +147,12 @@ function makePolicyMap() {
       KEY_WORDS.NONE,
     ],
 
-    'frame-src': getMarketplaceAppsOrigins(),
+    'frame-src': [
+      ...getMarketplaceAppsOrigins(),
+
+      // ad
+      'request-global.czilladx.com',
+    ],
 
     ...(REPORT_URI ? {
       'report-uri': [

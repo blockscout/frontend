@@ -76,7 +76,8 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_HOMEPAGE_PLATE_GRADIENT | `string` *(optional)* | Gradient value for hero plate on the homepage | `radial-gradient(at 15% 86%, hsla(350,65%,70%,1) 0px, transparent 50%), radial-gradient(at 72% 57%, hsla(14,95%,76%,1) 0px, transparent 50%)` |
 | NEXT_PUBLIC_HOMEPAGE_SHOW_GAS_TRACKER | `boolean` *(optional)* | Set to false if network doesn't have gas tracker | `true` |
 | NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME | `boolean` *(optional)* | Set to false if average block time is useless for the network | `true` |
-
+| NEXT_PUBLIC_DOMAIN_WITH_AD | `string` *(optional)* | The domain on which we display ads | `blockscout.com` |  
+| NEXT_PUBLIC_AD_ADBUTLER_ON | `boolean` *(optional)* | Set to true to show Adbutler banner instead of Coinzilla banner | `false` |
 ### App configuration
 
 | Variable | Type | Description | Default value
