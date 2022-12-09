@@ -2,7 +2,7 @@ import { Flex, Box, Drawer, DrawerOverlay, DrawerContent, DrawerBody, useDisclos
 import React from 'react';
 
 import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
-import link from 'lib/link/link';
+import useLoginUrl from 'lib/hooks/useLoginUrl';
 import UserAvatar from 'ui/shared/UserAvatar';
 import ColorModeToggler from 'ui/snippets/header/ColorModeToggler';
 import ProfileMenuContent from 'ui/snippets/profileMenu/ProfileMenuContent';
@@ -11,7 +11,7 @@ const ProfileMenuMobile = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { data, isFetched } = useFetchProfileInfo();
-  const loginUrl = link('auth');
+  const loginUrl = useLoginUrl();
 
   return (
     <>
