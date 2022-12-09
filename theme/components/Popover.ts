@@ -26,6 +26,10 @@ const baseStyleContent = defineStyle((props) => {
     bg: $popperBg.reference,
     [$arrowBg.variable]: $popperBg.reference,
     [$arrowShadowColor.variable]: `colors.${ shadowColor }`,
+    _dark: {
+      [$popperBg.variable]: `colors.gray.900`,
+      [$arrowShadowColor.variable]: `colors.whiteAlpha.300`,
+    },
     width: 'xs',
     border: 'none',
     borderColor: 'inherit',
