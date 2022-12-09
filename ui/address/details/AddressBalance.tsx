@@ -34,6 +34,7 @@ const AddressBalance = ({ data }: Props) => {
         ...prevData,
         coin_balance: balance,
         exchange_rate: exchangeRate,
+        block_number_balance_updated_at: blockNumber,
       };
     });
   }, [ data.hash, lastBlockNumber, queryClient ]);
