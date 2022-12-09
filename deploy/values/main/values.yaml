@@ -119,7 +119,7 @@ blockscout:
     GAS_PRICE_ORACLE_CACHE_PERIOD:
       _default: 300
     POOL_SIZE:
-      _default: 20
+      _default: 100
     DISPLAY_TOKEN_ICONS:
       _default: 'true'
     FETCH_REWARDS_WAY:

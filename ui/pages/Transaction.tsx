@@ -11,6 +11,7 @@ import { useAppContext } from 'lib/appContext';
 import useFetch from 'lib/hooks/useFetch';
 import isBrowser from 'lib/isBrowser';
 import networkExplorers from 'lib/networks/networkExplorers';
+import AdBanner from 'ui/shared/ad/AdBanner';
 import ExternalLink from 'ui/shared/ExternalLink';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -83,6 +84,7 @@ const TransactionPageContent = () => {
         ) }
       </Flex>
       <RoutedTabs tabs={ TABS }/>
+      <AdBanner mt={ 6 } justifyContent={{ base: 'center', lg: 'start' }}/>
     </Page>
   );
 };
