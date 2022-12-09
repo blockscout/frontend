@@ -39,10 +39,10 @@ const ChartWidget = ({ id, title, description, apiMethodURL, interval }: Props) 
   const menuButtonColor = useColorModeValue('black', 'white');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
 
-  const url = `${ apiMethodURL }?precision=${ selectedInterval.precision }${ startDate ? `&from=${ startDate }&to=${ endDate }` : '' }`;
+  const url = `${ apiMethodURL }${ startDate ? `?from=${ startDate }&to=${ endDate }` : '' }`;
 
   const { data, isLoading } = useQuery<unknown, unknown, Charts>(
-    [ QueryKeys.charts, id, selectedInterval.precision, startDate ],
+    [ QueryKeys.charts, id, startDate ],
     async() => await fetch(url),
   );
 

@@ -29,10 +29,3 @@ export type Charts = {
     value: string;
   }>;
 }
-
-export enum ChartPrecision {
-  'DAY' = 'DAY',
-  'MONTH' = 'MONTH',
-}
-
-export type ChartPrecisionIds = keyof typeof ChartPrecision;
