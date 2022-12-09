@@ -1,5 +1,3 @@
-import { sub } from 'date-fns';
-
 import type { StatsSectionIds, StatsIntervalIds } from 'types/client/stats';
 
 export const STATS_SECTIONS: { [key in StatsSectionIds]?: string } = {
@@ -33,5 +31,7 @@ export const STATS_INTERVALS: { [key in StatsIntervalIds]: { title: string; star
 };
 
 function getStartDateInPast(months: number): Date {
-  return sub(new Date(), { months });
+  const date = new Date();
+  date.setMonth(date.getMonth() - months);
+  return date;
 }

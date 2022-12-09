@@ -39,7 +39,6 @@
     "@types/react-scroll": "^1.8.4",
     "bignumber.js": "^9.1.0",
     "d3": "^7.6.1",
-    "date-fns": "^2.29.3",
     "dayjs": "^1.11.5",
     "ethers": "^5.7.1",
     "framer-motion": "^6",
