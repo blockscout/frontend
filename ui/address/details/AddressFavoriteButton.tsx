@@ -11,8 +11,8 @@ import { QueryKeys } from 'types/client/queries';
 import starFilledIcon from 'icons/star_filled.svg';
 import starOutlineIcon from 'icons/star_outline.svg';
 import useFetch from 'lib/hooks/useFetch';
+import useLoginUrl from 'lib/hooks/useLoginUrl';
 import usePreventFocusAfterModalClosing from 'lib/hooks/usePreventFocusAfterModalClosing';
-import link from 'lib/link/link';
 import WatchlistAddModal from 'ui/watchlist/AddressModal/AddressModal';
 import DeleteAddressModal from 'ui/watchlist/DeleteAddressModal';
 
@@ -31,6 +31,7 @@ const AddressFavoriteButton = ({ className, hash, isAdded }: Props) => {
 
   const profileData = queryClient.getQueryData<UserInfo>([ AccountQueryKeys.profile ]);
   const isAuth = Boolean(profileData);
+  const loginUrl = useLoginUrl();
 
   const watchListQuery = useQuery<unknown, unknown, TWatchlist>(
     [ AccountQueryKeys.watchlist ],
@@ -42,12 +43,11 @@ const AddressFavoriteButton = ({ className, hash, isAdded }: Props) => {
 
   const handleClick = React.useCallback(() => {
     if (!isAuth) {
-      const loginUrl = link('auth');
       window.location.assign(loginUrl);
       return;
     }
     isAdded ? deleteModalProps.onOpen() : addModalProps.onOpen();
-  }, [ addModalProps, deleteModalProps, isAdded, isAuth ]);
+  }, [ addModalProps, deleteModalProps, isAdded, isAuth, loginUrl ]);
 
   const handleAddOrDeleteSuccess = React.useCallback(async() => {
     await queryClient.refetchQueries({ queryKey: [ QueryKeys.address, router.query.id ] });
