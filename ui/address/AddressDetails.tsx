@@ -21,6 +21,9 @@ import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import ExternalLink from 'ui/shared/ExternalLink';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 
+import AddressBalance from './details/AddressBalance';
+import AddressNameInfo from './details/AddressNameInfo';
+
 interface Props {
   addressQuery: UseQueryResult<TAddress>;
 }
@@ -87,6 +90,8 @@ const AddressDetails = ({ addressQuery }: Props) => {
         rowGap={{ base: 3, lg: 3 }}
         templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }} overflow="hidden"
       >
+        <AddressNameInfo data={ addressQuery.data }/>
+        <AddressBalance data={ addressQuery.data }/>
         <DetailsInfoItem
           title="Tokens"
           hint="All tokens in the account and total value."
