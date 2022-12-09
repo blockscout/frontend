@@ -1,6 +1,5 @@
 import { Box, Button, Grid, Heading, Icon, IconButton, Menu, MenuButton, MenuItem, MenuList, Text, useColorModeValue, VisuallyHidden } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
-import { format, parse } from 'date-fns';
 import React, { useCallback, useState } from 'react';
 
 import type { Charts } from 'types/api/stats';
@@ -23,7 +22,9 @@ type Props = {
   interval: StatsIntervalIds;
 }
 
-const dateFormat = 'dd-LL-yyyy';
+function formatDate(date: Date) {
+  return date.toISOString().substring(0, 10);
+}
 
 const ChartWidget = ({ id, title, description, apiMethodURL, interval }: Props) => {
   const fetch = useFetch();
@@ -33,8 +34,8 @@ const ChartWidget = ({ id, title, description, apiMethodURL, interval }: Props) 
   const [ isFullscreen, setIsFullscreen ] = useState(false);
   const [ isZoomResetInitial, setIsZoomResetInitial ] = React.useState(true);
 
-  const endDate = selectedInterval.start ? format(new Date(), dateFormat) : undefined;
-  const startDate = selectedInterval.start ? format(selectedInterval.start, dateFormat) : undefined;
+  const endDate = selectedInterval.start ? formatDate(new Date()) : undefined;
+  const startDate = selectedInterval.start ? formatDate(selectedInterval.start) : undefined;
 
   const menuButtonColor = useColorModeValue('black', 'white');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
@@ -77,7 +78,7 @@ const ChartWidget = ({ id, title, description, apiMethodURL, interval }: Props) 
   if (data) {
     const items = data.chart
       .map((item) => {
-        return { date: parse(item.date, dateFormat, new Date()), value: Number(item.value) };
+        return { date: new Date(item.date), value: Number(item.value) };
       });
 
     return (
