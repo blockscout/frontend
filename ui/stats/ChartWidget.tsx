@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Heading, Icon, IconButton, Menu, MenuButton, MenuItem, MenuList, Text, useColorModeValue, VisuallyHidden } from '@chakra-ui/react';
+import { Box, Grid, Heading, Icon, IconButton, Menu, MenuButton, MenuItem, MenuList, Text, useColorModeValue, VisuallyHidden } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
@@ -6,7 +6,8 @@ import type { Charts } from 'types/api/stats';
 import { QueryKeys } from 'types/client/queries';
 import type { StatsIntervalIds } from 'types/client/stats';
 
-import dotsIcon from 'icons/vertical-dots.svg';
+import repeatArrow from 'icons/repeat_arrow.svg';
+import dotsIcon from 'icons/vertical_dots.svg';
 import useFetch from 'lib/hooks/useFetch';
 
 import ChartWidgetGraph from './ChartWidgetGraph';
@@ -16,7 +17,6 @@ import FullscreenChartModal from './FullscreenChartModal';
 
 type Props = {
   id: string;
-  apiMethodURL: string;
   title: string;
   description: string;
   interval: StatsIntervalIds;
@@ -26,7 +26,7 @@ function formatDate(date: Date) {
   return date.toISOString().substring(0, 10);
 }
 
-const ChartWidget = ({ id, title, description, apiMethodURL, interval }: Props) => {
+const ChartWidget = ({ id, title, description, interval }: Props) => {
   const fetch = useFetch();
 
   const selectedInterval = STATS_INTERVALS[interval];
@@ -40,7 +40,7 @@ const ChartWidget = ({ id, title, description, apiMethodURL, interval }: Props) 
   const menuButtonColor = useColorModeValue('black', 'white');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
 
-  const url = `${ apiMethodURL }${ startDate ? `?from=${ startDate }&to=${ endDate }` : '' }`;
+  const url = `/node-api/stats/charts?name=${ id }${ startDate ? `&from=${ startDate }&to=${ endDate }` : '' }`;
 
   const { data, isLoading } = useQuery<unknown, unknown, Charts>(
     [ QueryKeys.charts, id, startDate ],
@@ -58,7 +58,7 @@ const ChartWidget = ({ id, title, description, apiMethodURL, interval }: Props) 
   const showChartFullscreen = useCallback(() => {
     setIsFullscreen(true);
 
-    if (!document.fullscreenElement) {
+    if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
       document.documentElement.requestFullscreen();
     }
   }, []);
@@ -91,7 +91,7 @@ const ChartWidget = ({ id, title, description, apiMethodURL, interval }: Props) 
         >
           <Grid
             gridTemplateColumns="auto auto 36px"
-            gridColumnGap={ 4 }
+            gridColumnGap={ 2 }
           >
             <Heading
               mb={ 1 }
@@ -110,19 +110,22 @@ const ChartWidget = ({ id, title, description, apiMethodURL, interval }: Props) 
               { description }
             </Text>
 
-            { !isZoomResetInitial && (
-              <Button
-                gridColumn={ 2 }
-                justifySelf="end"
-                alignSelf="top"
-                gridRow="1/3"
-                size="sm"
-                variant="outline"
-                onClick={ handleZoomResetClick }
-              >
-              Reset zoom
-              </Button>
-            ) }
+            <IconButton
+              hidden={ isZoomResetInitial }
+              aria-label="Reset zoom"
+              title="Reset zoom"
+              colorScheme="blue"
+              w={ 9 }
+              h={ 8 }
+              gridColumn={ 2 }
+              justifySelf="end"
+              alignSelf="top"
+              gridRow="1/3"
+              size="sm"
+              variant="ghost"
+              onClick={ handleZoomResetClick }
+              icon={ <Icon as={ repeatArrow } w={ 4 } h={ 4 } color="blue.700"/> }
+            />
 
             <Menu>
               <MenuButton
@@ -152,6 +155,7 @@ const ChartWidget = ({ id, title, description, apiMethodURL, interval }: Props) 
             title={ title }
           />
         </Box>
+
         <FullscreenChartModal
           isOpen={ isFullscreen }
           items={ items }

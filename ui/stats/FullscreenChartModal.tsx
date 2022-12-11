@@ -74,7 +74,7 @@ const FullscreenChartModal = ({
         <ModalCloseButton/>
 
         <ModalBody
-          h="100%"
+          h="75%"
         >
           <ChartWidgetGraph
             items={ items }
