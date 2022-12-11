@@ -9,7 +9,6 @@ export const statsChartsScheme: Array<StatsSection> = [
         id: 'new-blocks',
         title: 'New blocks',
         description: 'New blocks number per day',
-        apiMethodURL: '/node-api/stats/charts/blocks/new',
         visible: true,
       },
     ],
