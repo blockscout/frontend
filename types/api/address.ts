@@ -31,3 +31,19 @@ export interface AddressTokenBalance {
   token_id: string | null;
   value: string;
 }
+
+export interface AddressCoinBalanceHistoryItem {
+  block_number: number;
+  block_timestamp: string;
+  delta: string;
+  transaction_hash: string | null;
+  value: string;
+}
+
+export interface AddressCoinBalanceHistoryResponse {
+  items: Array<AddressCoinBalanceHistoryItem>;
+  next_page_params: {
+    block_number: number;
+    items_count: number;
+  };
+}
