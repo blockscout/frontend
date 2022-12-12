@@ -318,6 +318,7 @@ frontend:
         - "/block"
         - "/login"
         - "/address"
+        - "/stats"
   resources:
     limits:
       memory:
