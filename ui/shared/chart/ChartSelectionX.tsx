@@ -18,7 +18,7 @@ const ChartSelectionX = ({ anchorEl, height, scale, data, onSelect }: Props) => 
   const borderColor = useToken('colors', 'blue.200');
 
   const ref = React.useRef(null);
-  const isPressed = React.useRef(false);
+  const isActive = React.useRef(false);
   const startX = React.useRef<number>();
   const endX = React.useRef<number>();
 
@@ -60,14 +60,14 @@ const ChartSelectionX = ({ anchorEl, height, scale, data, onSelect }: Props) => 
   }, [ getIndexByX, onSelect ]);
 
   const cleanUp = React.useCallback(() => {
-    isPressed.current = false;
+    isActive.current = false;
     startX.current = undefined;
     endX.current = undefined;
     d3.select(ref.current).attr('opacity', 0);
   }, [ ]);
 
   const handelMouseUp = React.useCallback(() => {
-    if (!isPressed.current) {
+    if (!isActive.current) {
       return;
     }
 
@@ -88,11 +88,11 @@ const ChartSelectionX = ({ anchorEl, height, scale, data, onSelect }: Props) => 
     anchorD3
       .on('mousedown.selectionX', (event: MouseEvent) => {
         const [ x ] = d3.pointer(event, anchorEl);
-        isPressed.current = true;
+        isActive.current = true;
         startX.current = x;
       })
       .on('mousemove.selectionX', (event: MouseEvent) => {
-        if (isPressed.current) {
+        if (isActive.current) {
           const [ x ] = d3.pointer(event, anchorEl);
           startX.current && drawSelection(startX.current, x);
           endX.current = x;
@@ -101,10 +101,10 @@ const ChartSelectionX = ({ anchorEl, height, scale, data, onSelect }: Props) => 
       .on('mouseup.selectionX', handelMouseUp)
       .on('touchstart.selectionX', (event: TouchEvent) => {
         const pointers = d3.pointers(event, anchorEl);
-        isPressed.current = pointers.length === 2;
+        isActive.current = pointers.length === 2;
       })
       .on('touchmove.selectionX', (event: TouchEvent) => {
-        if (isPressed.current) {
+        if (isActive.current) {
           const pointers = d3.pointers(event, anchorEl);
 
           if (pointers.length === 2 && Math.abs(pointers[0][0] - pointers[1][0]) > 5) {

@@ -32,6 +32,8 @@ const ChartTooltip = ({ chartId, xScale, yScale, width, height, data, anchorEl, 
   const bgColor = useToken('colors', 'blackAlpha.900');
 
   const ref = React.useRef(null);
+  const trackerId = React.useRef<number>();
+  const isVisible = React.useRef(false);
 
   const drawLine = React.useCallback(
     (x: number) => {
@@ -129,55 +131,46 @@ const ChartTooltip = ({ chartId, xScale, yScale, width, height, data, anchorEl, 
   }, [ drawPoints, drawLine, drawContent ]);
 
   const showContent = React.useCallback(() => {
-    d3.select(ref.current).attr('opacity', 1);
-    d3.select(ref.current)
-      .selectAll('.ChartTooltip__point')
-      .attr('opacity', 1);
+    if (!isVisible.current) {
+      d3.select(ref.current).attr('opacity', 1);
+      d3.select(ref.current)
+        .selectAll('.ChartTooltip__point')
+        .attr('opacity', 1);
+      isVisible.current = true;
+    }
   }, []);
 
   const hideContent = React.useCallback(() => {
     d3.select(ref.current).attr('opacity', 0);
+    isVisible.current = false;
   }, []);
 
   const createPointerTracker = React.useCallback((event: PointerEvent, isSubsequentCall?: boolean) => {
-    let isShown = false;
-    let isPressed = event.pointerType === 'mouse' && (event.type === 'pointerdown' || event.type === 'pointerenter') && !isSubsequentCall;
+    let isPressed = event.pointerType === 'mouse' && event.type === 'pointerdown' && !isSubsequentCall;
 
     if (isPressed) {
       hideContent();
     }
 
-    trackPointer(event, {
+    return trackPointer(event, {
       move: (pointer) => {
         if (!pointer.point || isPressed) {
           return;
         }
-
         draw(pointer);
-        if (!isShown) {
-          showContent();
-          isShown = true;
-        }
+        showContent();
       },
       out: () => {
         hideContent();
-        isShown = false;
+        trackerId.current = undefined;
       },
-      end: (tracker) => {
+      end: () => {
         hideContent();
-        const isOutside = tracker.sourceEvent?.offsetX && width && (tracker.sourceEvent.offsetX > width || tracker.sourceEvent.offsetX < 0);
-
-        if (!isOutside && isPressed) {
-          window.setTimeout(() => {
-            createPointerTracker(event, true);
-          }, 0);
-        }
-
-        isShown = false;
+        trackerId.current = undefined;
         isPressed = false;
       },
     });
-  }, [ draw, hideContent, showContent, width ]);
+  }, [ draw, hideContent, showContent ]);
 
   React.useEffect(() => {
     const anchorD3 = d3.select(anchorEl);
@@ -194,11 +187,22 @@ const ChartTooltip = ({ chartId, xScale, yScale, width, height, data, anchorEl, 
         }
       })
       .on('pointerenter.tooltip pointerdown.tooltip', (event: PointerEvent) => {
-        !isMultiTouch && createPointerTracker(event);
+        if (!isMultiTouch) {
+          trackerId.current = createPointerTracker(event);
+        }
+      })
+      .on('pointermove.tooltip', (event: PointerEvent) => {
+        if (event.pointerType === 'mouse' && !isMultiTouch && trackerId.current === undefined) {
+          trackerId.current = createPointerTracker(event);
+        }
       });
 
     return () => {
       anchorD3.on('touchmove.tooltip pointerenter.tooltip pointerdown.tooltip', null);
+      trackerId.current && anchorD3.on(
+        [ 'pointerup', 'pointercancel', 'lostpointercapture', 'pointermove', 'pointerout' ].map((event) => `${ event }.${ trackerId.current }`).join(' '),
+        null,
+      );
     };
   }, [ anchorEl, createPointerTracker, draw, hideContent, showContent ]);
 

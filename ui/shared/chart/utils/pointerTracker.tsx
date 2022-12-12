@@ -14,7 +14,7 @@ export interface PointerOptions {
   end?: (tracker: Pointer) => void;
 }
 
-export function trackPointer(event: PointerEvent, { start, move, out, end }: PointerOptions) {
+export function trackPointer(event: PointerEvent, { start, move, out, end }: PointerOptions): number {
   const tracker: Pointer = {
     id: event.pointerId,
     point: null,
@@ -38,7 +38,7 @@ export function trackPointer(event: PointerEvent, { start, move, out, end }: Poi
       const target = sourceEvent.target as Element;
       const touches = d3.pointers(sourceEvent, target);
 
-      // disable current tracker when entering to multi touch mode
+      // disable current tracker when entering multi touch mode
       touches.length > 1 && untrack(sourceEvent);
     })
     .on(`pointerup.${ id } pointercancel.${ id } lostpointercapture.${ id }`, (sourceEvent: PointerEvent) => {
@@ -68,5 +68,5 @@ export function trackPointer(event: PointerEvent, { start, move, out, end }: Poi
 
   start?.(tracker);
 
-  return [ 'pointerup', 'pointercancel', 'lostpointercapture', 'pointermove', 'pointerout' ].map((event) => `${ event }.${ id }`);
+  return id;
 }
