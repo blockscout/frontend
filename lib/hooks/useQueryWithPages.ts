@@ -73,7 +73,7 @@ export default function useQueryWithPages<QueryName extends PaginatedQueryKeys>(
   const onPrevPageClick = useCallback(() => {
     // returning to the first page
     // we dont have pagination params for the first page
-    let nextPageQuery: typeof router.query = {};
+    let nextPageQuery: typeof router.query = { ...router.query };
     if (page === 2) {
       nextPageQuery = omit(router.query, paginationFields, 'page');
       canGoBackwards.current = true;
@@ -87,19 +87,25 @@ export default function useQueryWithPages<QueryName extends PaginatedQueryKeys>(
       .then(() => {
         animateScroll.scrollToTop({ duration: 0 });
         setPage(prev => prev - 1);
-        page === 2 && queryClient.clear();
+        page === 2 && queryClient.removeQueries({ queryKey: [ queryName ] });
       });
-  }, [ router, page, paginationFields, pageParams, queryClient ]);
+  }, [ router, page, paginationFields, pageParams, queryClient, queryName ]);
 
   const resetPage = useCallback(() => {
-    queryClient.clear();
+    queryClient.removeQueries({ queryKey: [ queryName ] });
+
     router.push({ pathname: router.pathname, query: omit(router.query, paginationFields, 'page') }, undefined, { shallow: true }).then(() => {
       animateScroll.scrollToTop({ duration: 0 });
       setPage(1);
       setPageParams([ ]);
       canGoBackwards.current = true;
+      window.setTimeout(() => {
+        // FIXME after router is updated we still have inactive queries for previously visited page (e.g third), where we came from
+        // so have to remove it but with some delay :)
+        queryClient.removeQueries({ queryKey: [ queryName ], type: 'inactive' });
+      }, 100);
     });
-  }, [ queryClient, router, paginationFields ]);
+  }, [ queryClient, queryName, router, paginationFields ]);
 
   const hasPaginationParams = Object.keys(currPageParams).length > 0;
   const nextPageParams = data?.next_page_params;
