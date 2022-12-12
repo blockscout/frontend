@@ -24,4 +24,5 @@ export enum QueryKeys {
   address='address',
   addressCounters='address-counters',
   addressTokenBalances='address-token-balances',
+  addressTxs='addressTxs',
 }

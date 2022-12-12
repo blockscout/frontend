@@ -1,3 +1,5 @@
+import type { Transaction } from 'types/api/transaction';
+
 import type { AddressTag, WatchlistName } from './addressParams';
 import type { TokenInfo } from './tokenInfo';
 
@@ -30,4 +32,17 @@ export interface AddressTokenBalance {
   token: TokenInfo;
   token_id: string | null;
   value: string;
+}
+
+export interface AddressTransactionsResponse {
+  items: Array<Transaction>;
+  next_page_params: {
+    block_number: number;
+    index: number;
+    items_count: number;
+  } | null;
+}
+
+export type AddressTxsFilters = {
+  filter: 'from' | 'to' | undefined;
 }
