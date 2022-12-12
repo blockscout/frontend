@@ -455,6 +455,7 @@ frontend:
         - "/blocks"
         - "/block"
         - "/address"
+        - "/stats"
   resources:
     limits:
       memory:
