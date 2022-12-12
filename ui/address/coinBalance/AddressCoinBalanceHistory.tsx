@@ -10,9 +10,11 @@ import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Pagination from 'ui/shared/Pagination';
+import SkeletonTable from 'ui/shared/SkeletonTable';
 import { default as Thead } from 'ui/shared/TheadSticky';
 
 import AddressCoinBalanceListItem from './AddressCoinBalanceListItem';
+import AddressCoinBalanceSkeletonMobile from './AddressCoinBalanceSkeletonMobile';
 import AddressCoinBalanceTableItem from './AddressCoinBalanceTableItem';
 
 interface Props {
@@ -32,7 +34,16 @@ const AddressCoinBalanceHistory = ({ addressQuery }: Props) => {
 
   const content = (() => {
     if (query.isLoading) {
-      return <Box>loading</Box>;
+      return (
+        <>
+          <Hide below="lg">
+            <SkeletonTable columns={ [ '25%', '25%', '25%', '25%', '120px' ] }/>
+          </Hide>
+          <Show below="lg">
+            <AddressCoinBalanceSkeletonMobile/>
+          </Show>
+        </>
+      );
     }
 
     if (query.isError) {
@@ -71,7 +82,7 @@ const AddressCoinBalanceHistory = ({ addressQuery }: Props) => {
   return (
     <Box mt={ 8 }>
       { !isPaginatorHidden && (
-        <ActionBar>
+        <ActionBar mt={ -6 }>
           <Pagination ml="auto" { ...query.pagination }/>
         </ActionBar>
       ) }
