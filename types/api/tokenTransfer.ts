@@ -38,14 +38,16 @@ interface TokenTransferBase {
   to: AddressParam;
 }
 
+export type TokenTransferPagination = {
+  block_number: number;
+  index: number;
+  items_count: number;
+  transaction_hash: string;
+}
+
 export interface TokenTransferResponse {
   items: Array<TokenTransfer>;
-  next_page_params: {
-    block_number: number;
-    index: number;
-    items_count: number;
-    transaction_hash: string;
-  } | null;
+  next_page_params: TokenTransferPagination | null;
 }
 
 export interface TokenTransferFilters {

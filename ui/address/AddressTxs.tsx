@@ -1,9 +1,7 @@
-import { omit } from 'lodash';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { scroller, Element } from 'react-scroll';
+import { Element } from 'react-scroll';
 
-import { PAGINATION_FIELDS } from 'types/api/pagination';
 import { QueryKeys } from 'types/client/queries';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -45,21 +43,8 @@ const AddressTxs = () => {
 
     const newVal = getFilterValue(val);
     setFilterValue(newVal);
-    const newQuery = omit(router.query, PAGINATION_FIELDS[QueryKeys.addressTxs], 'page', 'filter');
-    if (newVal) {
-      newQuery.filter = newVal;
-    }
-    router.push(
-      {
-        pathname: router.pathname,
-        query: newQuery,
-      },
-      undefined,
-      { shallow: true },
-    ).then(() => {
-      scroller.scrollTo(SCROLL_ELEM, { offset: SCROLL_OFFSET });
-    });
-  }, [ router ]);
+    addressTxsQuery.onFilterChange({ filter: newVal });
+  }, [ addressTxsQuery ]);
 
   const isPaginatorHidden =
       !addressTxsQuery.isLoading &&
@@ -82,7 +67,7 @@ const AddressTxs = () => {
           <AddressTxsFilter
             defaultFilter={ filterValue }
             onFilterChange={ handleFilterChange }
-            appliedFiltersNum={ filterValue ? 1 : 0 }
+            isActive={ Boolean(filterValue) }
           />
           { !isPaginatorHidden && <Pagination { ...addressTxsQuery.pagination }/> }
         </ActionBar>

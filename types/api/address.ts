@@ -1,7 +1,8 @@
 import type { Transaction } from 'types/api/transaction';
 
 import type { AddressTag, WatchlistName } from './addressParams';
-import type { TokenInfo } from './tokenInfo';
+import type { TokenInfo, TokenType } from './tokenInfo';
+import type { TokenTransfer, TokenTransferPagination } from './tokenTransfer';
 
 export interface Address {
   block_number_balance_updated_at: number | null;
@@ -43,6 +44,18 @@ export interface AddressTransactionsResponse {
   } | null;
 }
 
+type AddressFromToFilter = 'from' | 'to' | undefined;
+
 export type AddressTxsFilters = {
-  filter: 'from' | 'to' | undefined;
+  filter: AddressFromToFilter;
+}
+
+export interface AddressTokenTransferResponse {
+  items: Array<TokenTransfer>;
+  next_page_params: TokenTransferPagination | null;
+}
+
+export type AddressTokenTransferFilters = {
+  filter: AddressFromToFilter;
+  type: TokenType;
 }

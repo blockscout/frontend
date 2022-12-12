@@ -2,10 +2,10 @@ import type { UseQueryOptions } from '@tanstack/react-query';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { pick, omit } from 'lodash';
 import { useRouter } from 'next/router';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { animateScroll, scroller } from 'react-scroll';
 
-import { PAGINATION_FIELDS } from 'types/api/pagination';
+import { PAGINATION_FIELDS, PAGINATION_FILTERS_FIELDS } from 'types/api/pagination';
 import type { PaginationParams, PaginatedResponse, PaginatedQueryKeys, PaginationFilters } from 'types/api/pagination';
 
 import useFetch from 'lib/hooks/useFetch';
@@ -42,20 +42,6 @@ export default function useQueryWithPages<QueryName extends PaginatedQueryKeys>(
   const scrollToTop = useCallback(() => {
     scroll ? scroller.scrollTo(scroll.elem, { offset: scroll.offset }) : animateScroll.scrollToTop({ duration: 0 });
   }, [ scroll ]);
-
-  const resetPage = useCallback(() => {
-    router.push({ pathname: router.pathname, query: omit(router.query, paginationFields, 'page') }, undefined, { shallow: true }).then(() => {
-      queryClient.removeQueries({ queryKey: [ queryName ] });
-      scrollToTop();
-      setPage(1);
-      setPageParams([ ]);
-      canGoBackwards.current = true;
-    });
-  }, [ queryClient, queryName, router, paginationFields, scrollToTop ]);
-
-  useEffect(() => {
-    !router.query.page && page !== 1 && resetPage();
-  }, [ router, page, resetPage, filters ]);
 
   const queryResult = useQuery<unknown, unknown, PaginatedResponse<QueryName>>(
     queryKey,
@@ -117,6 +103,39 @@ export default function useQueryWithPages<QueryName extends PaginatedQueryKeys>(
       });
   }, [ router, page, paginationFields, pageParams, queryClient, scrollToTop ]);
 
+  const resetPage = useCallback(() => {
+    router.push({ pathname: router.pathname, query: omit(router.query, paginationFields, 'page') }, undefined, { shallow: true }).then(() => {
+      queryClient.removeQueries({ queryKey: [ queryName ] });
+      scrollToTop();
+      setPage(1);
+      setPageParams([ ]);
+      canGoBackwards.current = true;
+    });
+  }, [ queryClient, queryName, router, paginationFields, scrollToTop ]);
+
+  const onFilterChange = useCallback((newFilters: PaginationFilters<QueryName> | undefined) => {
+    const newQuery = omit(router.query, PAGINATION_FIELDS[queryName], 'page', PAGINATION_FILTERS_FIELDS[queryName]);
+    if (newFilters) {
+      Object.entries(newFilters).forEach(([ key, value ]) => {
+        if (value) {
+          newQuery[key] = Array.isArray(value) ? value.join(',') : (value || '');
+        }
+      });
+    }
+    router.push(
+      {
+        pathname: router.pathname,
+        query: newQuery,
+      },
+      undefined,
+      { shallow: true },
+    ).then(() => {
+      setPage(1);
+      setPageParams([ ]);
+      scrollToTop();
+    });
+  }, [ queryName, router, scrollToTop, setPageParams, setPage ]);
+
   const hasPaginationParams = Object.keys(currPageParams).length > 0;
   const nextPageParams = data?.next_page_params;
 
@@ -145,5 +164,5 @@ export default function useQueryWithPages<QueryName extends PaginatedQueryKeys>(
     }, 0);
   }, []);
 
-  return { ...queryResult, pagination };
+  return { ...queryResult, pagination, onFilterChange };
 }
