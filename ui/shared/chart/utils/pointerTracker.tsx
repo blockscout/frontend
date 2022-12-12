@@ -38,9 +38,8 @@ export function trackPointer(event: PointerEvent, { start, move, out, end }: Poi
       const target = sourceEvent.target as Element;
       const touches = d3.pointers(sourceEvent, target);
 
-      if (touches.length > 1) {
-        untrack(sourceEvent);
-      }
+      // disable current tracker when entering to multi touch mode
+      touches.length > 1 && untrack(sourceEvent);
     })
     .on(`pointerup.${ id } pointercancel.${ id } lostpointercapture.${ id }`, (sourceEvent: PointerEvent) => {
       if (sourceEvent.pointerId !== id) {

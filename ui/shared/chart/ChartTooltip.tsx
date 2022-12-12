@@ -141,7 +141,7 @@ const ChartTooltip = ({ chartId, xScale, yScale, width, height, data, anchorEl, 
 
   const createPointerTracker = React.useCallback((event: PointerEvent, isSubsequentCall?: boolean) => {
     let isShown = false;
-    let isPressed = event.pointerType === 'mouse' && event.type === 'pointerdown' && !isSubsequentCall;
+    let isPressed = event.pointerType === 'mouse' && (event.type === 'pointerdown' || event.type === 'pointerenter') && !isSubsequentCall;
 
     if (isPressed) {
       hideContent();
@@ -181,11 +181,20 @@ const ChartTooltip = ({ chartId, xScale, yScale, width, height, data, anchorEl, 
 
   React.useEffect(() => {
     const anchorD3 = d3.select(anchorEl);
+    let isMultiTouch = false; // disabling creation of new tracker in multi touch mode
 
     anchorD3
-      .on('touchmove.tooltip', (event: PointerEvent) => event.preventDefault()) // prevent scrolling
+      .on('touchmove.tooltip', (event: TouchEvent) => event.preventDefault()) // prevent scrolling
+      .on(`touchstart.tooltip`, (event: TouchEvent) => {
+        isMultiTouch = event.touches.length > 1;
+      })
+      .on(`touchend.tooltip`, (event: TouchEvent) => {
+        if (isMultiTouch && event.touches.length === 0) {
+          isMultiTouch = false;
+        }
+      })
       .on('pointerenter.tooltip pointerdown.tooltip', (event: PointerEvent) => {
-        createPointerTracker(event);
+        !isMultiTouch && createPointerTracker(event);
       });
 
     return () => {
