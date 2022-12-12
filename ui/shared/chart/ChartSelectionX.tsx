@@ -21,7 +21,6 @@ const ChartSelectionX = ({ anchorEl, height, scale, data, onSelect }: Props) => 
   const isPressed = React.useRef(false);
   const startX = React.useRef<number>();
   const endX = React.useRef<number>();
-  const startIndex = React.useRef<number>(0);
 
   const getIndexByX = React.useCallback((x: number) => {
     const xDate = scale.invert(x);
@@ -51,20 +50,33 @@ const ChartSelectionX = ({ anchorEl, height, scale, data, onSelect }: Props) => 
       .attr('width', Math.abs(diffX));
   }, []);
 
-  const handelMouseUp = React.useCallback(() => {
+  const handleSelect = React.useCallback((x0: number, x1: number) => {
+    const index0 = getIndexByX(x0);
+    const index1 = getIndexByX(x1);
+
+    if (Math.abs(index0 - index1) > SELECTION_THRESHOLD) {
+      onSelect([ Math.min(index0, index1), Math.max(index0, index1) ]);
+    }
+  }, [ getIndexByX, onSelect ]);
+
+  const cleanUp = React.useCallback(() => {
     isPressed.current = false;
     startX.current = undefined;
+    endX.current = undefined;
     d3.select(ref.current).attr('opacity', 0);
+  }, [ ]);
 
-    if (!endX.current) {
+  const handelMouseUp = React.useCallback(() => {
+    if (!isPressed.current) {
       return;
     }
 
-    const index = getIndexByX(endX.current);
-    if (Math.abs(index - startIndex.current) > SELECTION_THRESHOLD) {
-      onSelect([ Math.min(index, startIndex.current), Math.max(index, startIndex.current) ]);
+    if (startX.current && endX.current) {
+      handleSelect(startX.current, endX.current);
     }
-  }, [ getIndexByX, onSelect ]);
+
+    cleanUp();
+  }, [ cleanUp, handleSelect ]);
 
   React.useEffect(() => {
     if (!anchorEl) {
@@ -78,18 +90,32 @@ const ChartSelectionX = ({ anchorEl, height, scale, data, onSelect }: Props) => 
         const [ x ] = d3.pointer(event, anchorEl);
         isPressed.current = true;
         startX.current = x;
-
-        const index = getIndexByX(x);
-        startIndex.current = index;
       })
-      .on('mouseup.selectionX', handelMouseUp)
       .on('mousemove.selectionX', (event: MouseEvent) => {
         if (isPressed.current) {
           const [ x ] = d3.pointer(event, anchorEl);
           startX.current && drawSelection(startX.current, x);
           endX.current = x;
         }
-      });
+      })
+      .on('mouseup.selectionX', handelMouseUp)
+      .on('touchstart.selectionX', (event: TouchEvent) => {
+        const pointers = d3.pointers(event, anchorEl);
+        isPressed.current = pointers.length === 2;
+      })
+      .on('touchmove.selectionX', (event: TouchEvent) => {
+        if (isPressed.current) {
+          const pointers = d3.pointers(event, anchorEl);
+
+          if (pointers.length === 2 && Math.abs(pointers[0][0] - pointers[1][0]) > 5) {
+            drawSelection(pointers[0][0], pointers[1][0]);
+
+            startX.current = pointers[0][0];
+            endX.current = pointers[1][0];
+          }
+        }
+      })
+      .on('touchend.selectionX', handelMouseUp);
 
     d3.select('body').on('mouseup.selectionX', function(event) {
       const isOutside = startX.current !== undefined && event.target !== anchorD3.node();
@@ -99,10 +125,10 @@ const ChartSelectionX = ({ anchorEl, height, scale, data, onSelect }: Props) => 
     });
 
     return () => {
-      anchorD3.on('mousedown.selectionX mouseup.selectionX mousemove.selectionX', null);
-      d3.select('body').on('mouseup.selectionX', null);
+      anchorD3.on('.selectionX', null);
+      d3.select('body').on('.selectionX', null);
     };
-  }, [ anchorEl, drawSelection, getIndexByX, handelMouseUp ]);
+  }, [ anchorEl, cleanUp, drawSelection, getIndexByX, handelMouseUp, handleSelect ]);
 
   return (
     <g className="ChartSelectionX" ref={ ref } opacity={ 0 }>

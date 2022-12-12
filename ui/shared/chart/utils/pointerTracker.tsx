@@ -26,16 +26,28 @@ export function trackPointer(event: PointerEvent, { start, move, out, end }: Poi
   tracker.point = d3.pointer(event, target);
   target.setPointerCapture(id);
 
+  const untrack = (sourceEvent: PointerEvent) => {
+    tracker.sourceEvent = sourceEvent;
+    d3.select(target).on(`.${ id }`, null);
+    target.releasePointerCapture(id);
+    end?.(tracker);
+  };
+
   d3.select(target)
+    .on(`touchstart.${ id }`, (sourceEvent: PointerEvent) => {
+      const target = sourceEvent.target as Element;
+      const touches = d3.pointers(sourceEvent, target);
+
+      if (touches.length > 1) {
+        untrack(sourceEvent);
+      }
+    })
     .on(`pointerup.${ id } pointercancel.${ id } lostpointercapture.${ id }`, (sourceEvent: PointerEvent) => {
       if (sourceEvent.pointerId !== id) {
         return;
       }
 
-      tracker.sourceEvent = sourceEvent;
-      d3.select(target).on(`.${ id }`, null);
-      target.releasePointerCapture(id);
-      end?.(tracker);
+      untrack(sourceEvent);
     })
     .on(`pointermove.${ id }`, (sourceEvent) => {
       if (sourceEvent.pointerId !== id) {
