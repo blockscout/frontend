@@ -26,4 +26,5 @@ export enum QueryKeys {
   addressTokenBalances='address-token-balances',
   addressCoinBalanceHistory='address-coin-balance-history',
   addressCoinBalanceHistoryByDay='address-coin-balance-history-by-day',
+  addressBlocksValidated='address-blocks-validated',
 }

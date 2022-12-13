@@ -1,4 +1,4 @@
-import type { AddressCoinBalanceHistoryResponse } from 'types/api/address';
+import type { AddressCoinBalanceHistoryResponse, AddressBlocksValidatedResponse } from 'types/api/address';
 import type { BlocksResponse, BlockTransactionsResponse, BlockFilters } from 'types/api/block';
 import type { InternalTransactionsResponse } from 'types/api/internalTransaction';
 import type { LogsResponse } from 'types/api/log';
@@ -18,7 +18,8 @@ export type PaginatedQueryKeys =
   QueryKeys.txInternals |
   QueryKeys.txLogs |
   QueryKeys.txTokenTransfers |
-  QueryKeys.addressCoinBalanceHistory;
+  QueryKeys.addressCoinBalanceHistory |
+  QueryKeys.addressBlocksValidated;
 
 export type PaginatedResponse<Q extends PaginatedQueryKeys> =
   Q extends (QueryKeys.blocks | QueryKeys.blocksReorgs | QueryKeys.blocksUncles) ? BlocksResponse :
@@ -29,7 +30,8 @@ export type PaginatedResponse<Q extends PaginatedQueryKeys> =
             Q extends QueryKeys.txLogs ? LogsResponse :
               Q extends QueryKeys.txTokenTransfers ? TokenTransferResponse :
                 Q extends QueryKeys.addressCoinBalanceHistory ? AddressCoinBalanceHistoryResponse :
-                  never
+                  Q extends QueryKeys.addressBlocksValidated ? AddressBlocksValidatedResponse :
+                    never
 
 export type PaginationFilters<Q extends PaginatedQueryKeys> =
   Q extends QueryKeys.blocks ? BlockFilters :
@@ -55,4 +57,5 @@ export const PAGINATION_FIELDS: PaginationFields = {
   [QueryKeys.txTokenTransfers]: [ 'block_number', 'items_count', 'transaction_hash', 'index' ],
   [QueryKeys.txLogs]: [ 'items_count', 'transaction_hash', 'index' ],
   [QueryKeys.addressCoinBalanceHistory]: [ 'items_count', 'block_number' ],
+  [QueryKeys.addressBlocksValidated]: [ 'items_count', 'block_number' ],
 };
