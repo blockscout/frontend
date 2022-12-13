@@ -37,6 +37,7 @@ const TokenLogo = ({ hash, name, className }: Props) => {
 
   return (
     <Image
+      borderRadius="base"
       className={ className }
       src={ logoSrc }
       alt={ `${ name || 'token' } logo` }
