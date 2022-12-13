@@ -10,11 +10,11 @@
   background: linear-gradient(180deg,hsla(0,0%,100%,.3),hsla(0,0%,100%,1));
 }
 
-.mCustomScrollbar.mCS_no_scrollbar:after {
+.mCustomScrollbar.mCS_no_scrollbar_y:after {
   display: none;
 }
 
-.mCustomScrollbar.mCS_no_scrollbar .lastItem {
+.mCSB_container.mCS_no_scrollbar_y .lastItem {
   margin-bottom: 0!important;
 }
 

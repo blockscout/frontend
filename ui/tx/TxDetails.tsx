@@ -66,6 +66,8 @@ const TxDetails = () => {
     ...toAddress.watchlist_names || [],
   ].map((tag) => <Tag key={ tag.label }>{ tag.display_name }</Tag>);
 
+  const actionsExist = data.actions && data.actions.length > 0;
+
   return (
     <Grid columnGap={ 8 } rowGap={{ base: 3, lg: 3 }} templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }}>
       { socketStatus && (
@@ -126,10 +128,10 @@ const TxDetails = () => {
           <Text variant="secondary">{ getConfirmationDuration(data.confirmation_duration) }</Text>
         </DetailsInfoItem>
       ) }
-      { data.actions && <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 3, lg: 3 }}><Divider /></GridItem> }
-      { data.actions && <TxDetailsActions actions={ data.actions }/> }
-      { data.actions && <GridItem colSpan={{ base: undefined, lg: 2 }} mb={{ base: 0, lg: 3 }}><Divider /></GridItem> }
-      { !data.actions && <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 3, lg: 8 }}/> }
+      { actionsExist && (<GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 3, lg: 3 }}><Divider /></GridItem>) }
+      { actionsExist && (<TxDetailsActions actions={ data.actions }/>) }
+      { actionsExist && (<GridItem colSpan={{ base: undefined, lg: 2 }} mb={{ base: 0, lg: 3 }}><Divider /></GridItem>) }
+      { !actionsExist && (<GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 3, lg: 8 }}/>) }
       <DetailsInfoItem
         title="From"
         hint="Address (external or contract) sending the transaction."

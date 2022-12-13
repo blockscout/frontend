@@ -4,7 +4,7 @@ import React from 'react';
 import link from 'lib/link/link';
 import { space } from 'lib/html-entities';
 import AddressLink from 'ui/shared/address/AddressLink';
-import TokenSnippet from 'ui/shared/TokenSnippet';
+import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
 import StringShorten from 'ui/shared/StringShorten';
 
 import BigNumber from 'bignumber.js';

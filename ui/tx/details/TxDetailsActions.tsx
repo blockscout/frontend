@@ -16,7 +16,7 @@ const TxDetailsActions = ({ actions }) => {
       position="relative"
       id="txActionsTitle"
     >
-      <Box className="mCustomScrollbar" maxH={ 36 } w="90%">
+      <Box className="mCustomScrollbar" maxH={ 36 } w="98%" overflow="hidden">
         <Flex
           flexDirection="column"
           alignItems="flex-start"
@@ -31,9 +31,11 @@ const TxDetailsActions = ({ actions }) => {
         $(".mCustomScrollbar").mCustomScrollbar({callbacks:{
           onOverflowY: () => {
             $("#txActionsTitle .note").css("display", "block");
+            $(".mCustomScrollbar").removeClass("mCS_no_scrollbar_y");
           },
           onOverflowYNone: () => {
             $("#txActionsTitle .note").css("display", "none");
+            $(".mCustomScrollbar").addClass("mCS_no_scrollbar_y");
           }
         },
         theme: "dark",
