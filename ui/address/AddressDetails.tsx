@@ -1,4 +1,4 @@
-import { Box, Flex, Text, Icon, Button, Grid } from '@chakra-ui/react';
+import { Box, Flex, Text, Icon, Grid } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
