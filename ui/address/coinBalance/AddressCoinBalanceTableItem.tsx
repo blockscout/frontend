@@ -36,7 +36,7 @@ const AddressCoinBalanceTableItem = (props: Props) => {
         <Text variant="secondary">{ dayjs(props.block_timestamp).fromNow() }</Text>
       </Td>
       <Td isNumeric pr={ 1 }>
-        <Text>{ BigNumber(props.value).div(WEI).toFormat() }</Text>
+        <Text>{ BigNumber(props.value).div(WEI).toFixed(8) }</Text>
       </Td>
       <Td isNumeric display="flex" justifyContent="end">
         <Stat flexGrow="0">

@@ -2,13 +2,12 @@ import { Box, Hide, Show, Table, Tbody, Th, Tr } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
-import type { Address } from 'types/api/address';
-import { QueryKeys } from 'types/client/queries';
+import type { AddressCoinBalanceHistoryResponse } from 'types/api/address';
 
 import appConfig from 'configs/app/config';
-import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
+import type { Props as PaginationProps } from 'ui/shared/Pagination';
 import Pagination from 'ui/shared/Pagination';
 import SkeletonTable from 'ui/shared/SkeletonTable';
 import { default as Thead } from 'ui/shared/TheadSticky';
@@ -18,17 +17,12 @@ import AddressCoinBalanceSkeletonMobile from './AddressCoinBalanceSkeletonMobile
 import AddressCoinBalanceTableItem from './AddressCoinBalanceTableItem';
 
 interface Props {
-  addressQuery: UseQueryResult<Address>;
+  query: UseQueryResult<AddressCoinBalanceHistoryResponse> & {
+    pagination: PaginationProps;
+  };
 }
 
-const AddressCoinBalanceHistory = ({ addressQuery }: Props) => {
-  const query = useQueryWithPages({
-    apiPath: `/node-api/addresses/${ addressQuery.data?.hash }/coin-balance-history`,
-    queryName: QueryKeys.addressCoinBalanceHistory,
-    options: {
-      enabled: Boolean(addressQuery.data),
-    },
-  });
+const AddressCoinBalanceHistory = ({ query }: Props) => {
 
   const isPaginatorHidden = !query.isLoading && !query.isError && query.pagination.page === 1 && !query.pagination.hasNextPage;
 
