@@ -28,13 +28,23 @@ import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CurrencyValue from 'ui/shared/CurrencyValue';
+import InOutTag from 'ui/shared/InOutTag';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 import TxStatus from 'ui/shared/TxStatus';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 
 import TxType from './TxType';
 
-const TxsTableItem = ({ tx, showBlockInfo }: {tx: Transaction; showBlockInfo: boolean }) => {
+type Props = {
+  tx: Transaction;
+  showBlockInfo: boolean;
+  currentAddress?: string;
+}
+
+const TxsTableItem = ({ tx, showBlockInfo, currentAddress }: Props) => {
+  const isOut = Boolean(currentAddress && currentAddress === tx.from.hash);
+  const isIn = Boolean(currentAddress && currentAddress === tx.to?.hash);
+
   const addressFrom = (
     <Address>
       <Tooltip label={ tx.from.implementation_name }>
@@ -110,8 +120,11 @@ const TxsTableItem = ({ tx, showBlockInfo }: {tx: Transaction; showBlockInfo: bo
         <Td>
           { addressFrom }
         </Td>
-        <Td>
-          <Icon as={ rightArrowIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
+        <Td px={ 0 }>
+          { (isIn || isOut) ?
+            <InOutTag isIn={ isIn } isOut={ isOut } width="48px" mr={ 2 }/> :
+            <Icon as={ rightArrowIcon } boxSize={ 6 } mx="6px" color="gray.500"/>
+          }
         </Td>
         <Td>
           { addressTo }
@@ -121,14 +134,17 @@ const TxsTableItem = ({ tx, showBlockInfo }: {tx: Transaction; showBlockInfo: bo
         <Td colSpan={ 3 }>
           <Box>
             { addressFrom }
-            <Icon
-              as={ rightArrowIcon }
-              boxSize={ 6 }
-              mt={ 2 }
-              mb={ 1 }
-              color="gray.500"
-              transform="rotate(90deg)"
-            />
+            { (isIn || isOut) ?
+              <InOutTag isIn={ isIn } isOut={ isOut } width="48px" my={ 2 }/> : (
+                <Icon
+                  as={ rightArrowIcon }
+                  boxSize={ 6 }
+                  mt={ 2 }
+                  mb={ 1 }
+                  color="gray.500"
+                  transform="rotate(90deg)"
+                />
+              ) }
             { addressTo }
           </Box>
         </Td>

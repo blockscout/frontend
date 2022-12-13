@@ -53,7 +53,7 @@ const TokenTransferListItem = ({ token, total, tx_hash: txHash, from, to, baseAd
           <AddressLink ml={ 2 } fontWeight="500" hash={ from.hash }/>
         </Address>
         { baseAddress ?
-          <InOutTag baseAddress={ baseAddress } addressFrom={ from.hash } w="50px" textAlign="center"/> :
+          <InOutTag isIn={ baseAddress === to.hash } isOut={ baseAddress === from.hash } w="50px" textAlign="center"/> :
           <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500"/>
         }
         <Address width={ addressWidth }>
