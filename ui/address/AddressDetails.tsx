@@ -1,4 +1,4 @@
-import { Box, Flex, Text, Icon, Grid } from '@chakra-ui/react';
+import { Box, Flex, Text, Icon, Grid, Link } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
@@ -9,18 +9,23 @@ import type { Address as TAddress, AddressCounters, AddressTokenBalance } from '
 import { QueryKeys } from 'types/client/queries';
 
 import appConfig from 'configs/app/config';
+import blockIcon from 'icons/block.svg';
 import metamaskIcon from 'icons/metamask.svg';
 import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import link from 'lib/link/link';
 import AddressIcon from 'ui/shared/address/AddressIcon';
+import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import ExternalLink from 'ui/shared/ExternalLink';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 
+import AddressBalance from './details/AddressBalance';
 import AddressDetailsSkeleton from './details/AddressDetailsSkeleton';
 import AddressFavoriteButton from './details/AddressFavoriteButton';
+import AddressNameInfo from './details/AddressNameInfo';
 import AddressQrCode from './details/AddressQrCode';
 import TokenSelect from './tokenSelect/TokenSelect';
 
@@ -87,6 +92,18 @@ const AddressDetails = ({ addressQuery }: Props) => {
         rowGap={{ base: 3, lg: 3 }}
         templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }} overflow="hidden"
       >
+        <AddressNameInfo data={ addressQuery.data }/>
+        { addressQuery.data.is_contract && addressQuery.data.creation_tx_hash && addressQuery.data.creator_address_hash && (
+          <DetailsInfoItem
+            title="Creator"
+            hint="Transaction and address of creation."
+          >
+            <AddressLink hash={ addressQuery.data.creator_address_hash } truncation="constant"/>
+            <Text whiteSpace="pre"> at </Text>
+            <AddressLink hash={ addressQuery.data.creation_tx_hash } truncation="constant"/>
+          </DetailsInfoItem>
+        ) }
+        <AddressBalance data={ addressQuery.data }/>
         <DetailsInfoItem
           title="Tokens"
           hint="All tokens in the account and total value."
@@ -119,6 +136,23 @@ const AddressDetails = ({ addressQuery }: Props) => {
             hint="Number of blocks validated by this validator."
           >
             { validationsCount.toLocaleString() }
+          </DetailsInfoItem>
+        ) }
+        { addressQuery.data.block_number_balance_updated_at && (
+          <DetailsInfoItem
+            title="Last balance update"
+            hint="Block number in which the address was updated."
+            alignSelf="center"
+            py={{ base: 0, lg: 1 }}
+          >
+            <Link
+              href={ link('block', { id: String(addressQuery.data.block_number_balance_updated_at) }) }
+              display="flex"
+              alignItems="center"
+            >
+              <Icon as={ blockIcon } boxSize={ 6 } mr={ 2 }/>
+              { addressQuery.data.block_number_balance_updated_at }
+            </Link>
           </DetailsInfoItem>
         ) }
       </Grid>

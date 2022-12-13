@@ -21,13 +21,13 @@ const EmptyElement = ({ className, letter }: { className?: string; letter: strin
 };
 
 interface Props {
-  hash: string;
+  hash?: string;
   name?: string | null;
   className?: string;
 }
 
 const TokenLogo = ({ hash, name, className }: Props) => {
-  const logoSrc = appConfig.network.assetsPathname ? [
+  const logoSrc = appConfig.network.assetsPathname && hash ? [
     'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/',
     appConfig.network.assetsPathname,
     '/assets/',

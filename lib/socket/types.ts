@@ -7,6 +7,8 @@ SocketMessage.BlocksIndexStatus |
 SocketMessage.TxStatusUpdate |
 SocketMessage.NewTx |
 SocketMessage.NewPendingTx |
+SocketMessage.AddressBalance |
+SocketMessage.AddressCurrentCoinBalance |
 SocketMessage.AddressTokenBalance |
 SocketMessage.AddressCoinBalance |
 SocketMessage.Unknown;
@@ -34,6 +36,9 @@ export namespace SocketMessage {
   export type TxStatusUpdate = SocketMessageParamsGeneric<'collated', NewBlockSocketResponse>;
   export type NewTx = SocketMessageParamsGeneric<'transaction', { transaction: number }>;
   export type NewPendingTx = SocketMessageParamsGeneric<'pending_transaction', { pending_transaction: number }>;
+  export type AddressBalance = SocketMessageParamsGeneric<'balance', { balance: string; block_number: number; exchange_rate: string }>;
+  export type AddressCurrentCoinBalance =
+  SocketMessageParamsGeneric<'current_coin_balance', { coin_balance: string; block_number: number; exchange_rate: string }>;
   export type AddressTokenBalance = SocketMessageParamsGeneric<'token_balance', { block_number: number }>;
   export type AddressCoinBalance = SocketMessageParamsGeneric<'coin_balance', AddressCoinBalancePayload>;
   export type Unknown = SocketMessageParamsGeneric<undefined, unknown>;
