@@ -39,7 +39,7 @@ const ChartsWidgetsList = ({ charts, interval }: Props) => {
 
                 <Grid
                   templateColumns={{
-                    sm: 'repeat(2, 1fr)',
+                    lg: 'repeat(2, 1fr)',
                   }}
                   gap={ 4 }
                 >
@@ -50,7 +50,6 @@ const ChartsWidgetsList = ({ charts, interval }: Props) => {
                     >
                       <ChartWidget
                         id={ chart.id }
-                        apiMethodURL={ chart.apiMethodURL }
                         title={ chart.title }
                         description={ chart.description }
                         interval={ interval }

@@ -8,6 +8,7 @@ export interface TokenInfo {
   decimals: string | null;
   holders: string | null;
   exchange_rate: string | null;
+  total_supply: string | null;
 }
 
 export type TokenInfoGeneric<Type extends TokenType> = Omit<TokenInfo, 'type'> & { type: Type };

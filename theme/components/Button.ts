@@ -51,15 +51,15 @@ const variantOutline = defineStyle((props) => {
   const activeBg = isGrayTheme ? mode('blue.50', 'gray.600')(props) : mode(`${ c }.50`, 'gray.600')(props);
   const activeColor = (() => {
     if (c === 'gray') {
-      return mode('blue.400', 'gray.50')(props);
+      return mode('blue.600', 'gray.50')(props);
     }
     if (c === 'gray-dark') {
-      return mode('blue.700', 'gray.50')(props);
+      return mode('blue.600', 'gray.50')(props);
     }
     if (c === 'blue') {
-      return mode('blue.400', 'gray.50')(props);
+      return mode('blue.600', 'gray.50')(props);
     }
-    return 'blue.400';
+    return 'blue.600';
   })();
 
   return {
@@ -77,10 +77,16 @@ const variantOutline = defineStyle((props) => {
         bg: props.isActive ? activeBg : 'transparent',
         borderColor: props.isActive ? activeBg : 'blue.400',
         color: props.isActive ? activeColor : 'blue.400',
+        p: {
+          color: 'blue.400',
+        },
       },
       _disabled: {
         color,
         borderColor,
+      },
+      p: {
+        color: 'blue.400',
       },
     },
     _disabled: {
@@ -93,6 +99,9 @@ const variantOutline = defineStyle((props) => {
       _disabled: {
         color,
         borderColor,
+      },
+      p: {
+        color: activeColor,
       },
     },
   };

@@ -17,7 +17,7 @@ const NumberWidgetsList = () => {
 
   const { data, isLoading } = useQuery<unknown, unknown, Stats>(
     [ QueryKeys.stats ],
-    async() => await fetch(`/node-api/stats`),
+    async() => await fetch(`/node-api/stats/counters`),
   );
 
   return (

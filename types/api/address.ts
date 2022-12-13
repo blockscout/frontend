@@ -15,15 +15,15 @@ export interface Address {
   name: string | null;
   private_tags: Array<AddressTag> | null;
   public_tags: Array<AddressTag> | null;
-  tokenInfo: TokenInfo | null;
+  token: TokenInfo | null;
   watchlist_names: Array<WatchlistName> | null;
 }
 
 export interface AddressCounters {
-  transaction_count: string;
-  token_transfer_count: string;
+  transactions_count: string;
+  token_transfers_count: string;
   gas_usage_count: string;
-  validation_count: string | null;
+  validations_count: string | null;
 }
 
 export interface AddressTokenBalance {

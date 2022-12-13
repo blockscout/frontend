@@ -1,0 +1,79 @@
+import BigNumber from 'bignumber.js';
+
+import type { AddressTokenBalance } from 'types/api/address';
+import type { TokenType } from 'types/api/tokenInfo';
+
+export type EnhancedData = AddressTokenBalance & {
+  usd?: BigNumber ;
+}
+
+export type Sort = 'desc' | 'asc';
+const TOKEN_GROUPS_ORDER: Array<TokenType> = [ 'ERC-20', 'ERC-721', 'ERC-1155' ];
+type TokenGroup = [string, Array<AddressTokenBalance>];
+
+export const sortTokenGroups = (groupA: TokenGroup, groupB: TokenGroup) => {
+  return TOKEN_GROUPS_ORDER.indexOf(groupA[0] as TokenType) > TOKEN_GROUPS_ORDER.indexOf(groupB[0] as TokenType) ? 1 : -1;
+};
+
+const sortErc1155Tokens = (sort: Sort) => (dataA: AddressTokenBalance, dataB: AddressTokenBalance) => {
+  if (dataA.value === dataB.value) {
+    return 0;
+  }
+  if (sort === 'desc') {
+    return Number(dataA.value) > Number(dataB.value) ? -1 : 1;
+  }
+
+  return Number(dataA.value) > Number(dataB.value) ? 1 : -1;
+};
+const sortErc20Tokens = (sort: Sort) => (dataA: EnhancedData, dataB: EnhancedData) => {
+  if (!dataA.usd && !dataB.usd) {
+    return 0;
+  }
+
+  // keep tokens without usd value in the end of the group
+  if (!dataB.usd) {
+    return -1;
+  }
+  if (!dataA.usd) {
+    return 0;
+  }
+
+  if (sort === 'desc') {
+    return dataA.usd.gt(dataB.usd) ? -1 : 1;
+  }
+
+  return dataA.usd.gt(dataB.usd) ? 1 : -1;
+};
+
+const sortErc721Tokens = () => () => 0;
+
+export const sortingFns = {
+  'ERC-20': sortErc20Tokens,
+  'ERC-721': sortErc721Tokens,
+  'ERC-1155': sortErc1155Tokens,
+};
+
+export const filterTokens = (searchTerm: string) => ({ token }: AddressTokenBalance) => {
+  if (!token.name) {
+    return !searchTerm ? true : token.address.toLowerCase().includes(searchTerm);
+  }
+
+  return token.name?.toLowerCase().includes(searchTerm);
+};
+
+export const calculateUsdValue = (data: AddressTokenBalance): EnhancedData => {
+  if (data.token.type !== 'ERC-20') {
+    return data;
+  }
+
+  const exchangeRate = data.token.exchange_rate;
+  if (!exchangeRate) {
+    return data;
+  }
+
+  const decimals = Number(data.token.decimals || '18');
+  return {
+    ...data,
+    usd: BigNumber(data.value).div(BigNumber(10 ** decimals)).multipliedBy(BigNumber(exchangeRate)),
+  };
+};
