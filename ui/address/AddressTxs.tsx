@@ -64,11 +64,7 @@ const AddressTxs = () => {
     <Element name={ SCROLL_ELEM }>
       { !isMobile && (
         <ActionBar mt={ -6 }>
-          <AddressTxsFilter
-            defaultFilter={ filterValue }
-            onFilterChange={ handleFilterChange }
-            isActive={ Boolean(filterValue) }
-          />
+          { filter }
           { !isPaginatorHidden && <Pagination { ...addressTxsQuery.pagination }/> }
         </ActionBar>
       ) }
