@@ -39,11 +39,11 @@ const AddressBalance = ({ data }: Props) => {
     });
   }, [ data.hash, lastBlockNumber, queryClient ]);
 
-  const handleNewBalanceMessage: SocketMessage.AddressBalanceUpdate['handler'] = React.useCallback((payload) => {
+  const handleNewBalanceMessage: SocketMessage.AddressBalance['handler'] = React.useCallback((payload) => {
     updateData(payload.balance, payload.exchange_rate, payload.block_number);
   }, [ updateData ]);
 
-  const handleNewCoinBalanceMessage: SocketMessage.AddressCoinBalanceUpdate['handler'] = React.useCallback((payload) => {
+  const handleNewCoinBalanceMessage: SocketMessage.AddressCurrentCoinBalance['handler'] = React.useCallback((payload) => {
     updateData(payload.coin_balance, payload.exchange_rate, payload.block_number);
   }, [ updateData ]);
 

@@ -21,7 +21,7 @@ const BlocksTabSlot = ({ pagination }: Props) => {
 
   const statsQuery = useQuery<unknown, unknown, HomeStats>(
     [ QueryKeys.homeStats ],
-    () => fetch('/node-api/stats'),
+    () => fetch('/node-api/home-stats'),
   );
 
   if (isMobile) {

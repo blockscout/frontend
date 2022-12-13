@@ -7,8 +7,8 @@ import TestApp from 'playwright/TestApp';
 
 import ChainIndicators from './ChainIndicators';
 
-const STATS_API_URL = '/node-api/stats';
-const TX_CHART_API_URL = '/node-api/stats/charts/transactions';
+const STATS_API_URL = '/node-api/home-stats';
+const TX_CHART_API_URL = '/node-api/home-stats/charts/transactions';
 
 test('daily txs chart +@mobile +@dark-mode +@dark-mode-mobile', async({ mount, page }) => {
   await page.route(STATS_API_URL, (route) => route.fulfill({

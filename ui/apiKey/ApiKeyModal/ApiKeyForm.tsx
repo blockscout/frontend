@@ -112,9 +112,7 @@ const ApiKeyForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
           isInvalid={ Boolean(errors.name) }
           maxLength={ NAME_MAX_LENGTH }
         />
-        <FormLabel>
-          <InputPlaceholder text="Application name for API key (e.g Web3 project)" error={ errors.name }/>
-        </FormLabel>
+        <InputPlaceholder text="Application name for API key (e.g Web3 project)" error={ errors.name }/>
       </FormControl>
     );
   }, [ errors, formBackgroundColor ]);
