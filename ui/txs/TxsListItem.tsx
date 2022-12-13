@@ -24,16 +24,29 @@ import AdditionalInfoButton from 'ui/shared/AdditionalInfoButton';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
+import InOutTag from 'ui/shared/InOutTag';
 import TxStatus from 'ui/shared/TxStatus';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 import TxType from 'ui/txs/TxType';
 
-const TxsListItem = ({ tx, showBlockInfo }: {tx: Transaction; showBlockInfo: boolean}) => {
+type Props = {
+  tx: Transaction;
+  showBlockInfo: boolean;
+  currentAddress?: string;
+}
+
+const TAG_WIDTH = 48;
+const ARROW_WIDTH = 24;
+
+const TxsListItem = ({ tx, showBlockInfo, currentAddress }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const iconColor = useColorModeValue('blue.600', 'blue.300');
   const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
   const dataTo = tx.to ? tx.to : tx.created_contract;
+
+  const isOut = Boolean(currentAddress && currentAddress === tx.from.hash);
+  const isIn = Boolean(currentAddress && currentAddress === tx.to?.hash);
 
   return (
     <>
@@ -83,7 +96,7 @@ const TxsListItem = ({ tx, showBlockInfo }: {tx: Transaction; showBlockInfo: boo
           </Box>
         ) }
         <Flex alignItems="center" height={ 6 } mt={ 6 }>
-          <Address width="calc((100%-40px)/2)">
+          <Address width={ `calc((100%-${ currentAddress ? TAG_WIDTH : ARROW_WIDTH + 8 }px)/2)` }>
             <AddressIcon hash={ tx.from.hash }/>
             <AddressLink
               hash={ tx.from.hash }
@@ -92,12 +105,15 @@ const TxsListItem = ({ tx, showBlockInfo }: {tx: Transaction; showBlockInfo: boo
               ml={ 2 }
             />
           </Address>
-          <Icon
-            as={ rightArrowIcon }
-            boxSize={ 6 }
-            mx={ 2 }
-            color="gray.500"
-          />
+          { (isIn || isOut) ?
+            <InOutTag isIn={ isIn } isOut={ isOut } width="48px" mr={ 2 }/> : (
+              <Icon
+                as={ rightArrowIcon }
+                boxSize={ 6 }
+                mx={ 2 }
+                color="gray.500"
+              />
+            ) }
           <Address width="calc((100%-40px)/2)">
             <AddressIcon hash={ dataTo.hash }/>
             <AddressLink

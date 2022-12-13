@@ -17,18 +17,14 @@ type Props = {
   paginationProps: PaginationProps;
   className?: string;
   showPagination?: boolean;
+  filterComponent?: React.ReactNode;
 }
 
-const TxsHeaderMobile = ({ sorting, setSorting, paginationProps, className, showPagination = true }: Props) => {
+const TxsHeaderMobile = ({ filterComponent, sorting, setSorting, paginationProps, className, showPagination = true }: Props) => {
   return (
     <ActionBar className={ className }>
       <HStack>
-        { /* api is not implemented */ }
-        { /* <TxsFilters
-          filters={ filters }
-          onFiltersChange={ setFilters }
-          appliedFiltersNum={ 0 }
-        /> */ }
+        { filterComponent }
         <TxsSorting
           isActive={ Boolean(sorting) }
           setSorting={ setSorting }
