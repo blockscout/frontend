@@ -9,6 +9,7 @@ import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
 import useFetch from 'lib/hooks/useFetch';
 import AddressDetails from 'ui/address/AddressDetails';
+import AddressTokenTransfers from 'ui/address/AddressTokenTransfers';
 import AddressTxs from 'ui/address/AddressTxs';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -34,7 +35,7 @@ const AddressPageContent = () => {
 
   const tabs: Array<RoutedTab> = [
     { id: 'txs', title: 'Transactions', component: <AddressTxs/> },
-    { id: 'token_transfers', title: 'Token transfers', component: null },
+    { id: 'token_transfers', title: 'Token transfers', component: <AddressTokenTransfers/> },
     { id: 'tokens', title: 'Tokens', component: null },
     { id: 'internal_txn', title: 'Internal txn', component: null },
     { id: 'coin_balance_history', title: 'Coin balance history', component: null },

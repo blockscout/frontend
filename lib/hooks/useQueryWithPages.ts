@@ -117,7 +117,7 @@ export default function useQueryWithPages<QueryName extends PaginatedQueryKeys>(
     const newQuery = omit(router.query, PAGINATION_FIELDS[queryName], 'page', PAGINATION_FILTERS_FIELDS[queryName]);
     if (newFilters) {
       Object.entries(newFilters).forEach(([ key, value ]) => {
-        if (value) {
+        if (value && value.length) {
           newQuery[key] = Array.isArray(value) ? value.join(',') : (value || '');
         }
       });
