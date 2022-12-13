@@ -26,7 +26,7 @@ test('between addresses +@mobile +@dark-mode', async({ mount, page }) => {
     { hooksConfig },
   );
 
-  await page.waitForResponse(API_URL),
+  await page.waitForResponse(API_URL);
   await page.getByText('View details').click();
 
   await expect(component).toHaveScreenshot();

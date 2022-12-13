@@ -7,7 +7,7 @@ import TestApp from 'playwright/TestApp';
 
 import Stats from './Stats';
 
-const API_URL = '/node-api/stats';
+const API_URL = '/node-api/home-stats';
 
 test('all items +@mobile +@dark-mode +@desktop-xl', async({ mount, page }) => {
   await page.route(API_URL, (route) => route.fulfill({

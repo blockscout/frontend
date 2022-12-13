@@ -14,7 +14,7 @@ export const test = base.extend<socketServer.SocketServerFixture>({
 });
 
 test('default view +@mobile +@dark-mode', async({ mount, page }) => {
-  await page.route('/node-api/stats', (route) => route.fulfill({
+  await page.route('/node-api/home-stats', (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(statsMock.base),
   }));
@@ -47,7 +47,7 @@ test.describe('socket', () => {
   };
 
   test('new item', async({ mount, page, createSocket }) => {
-    await page.route('/node-api/stats', (route) => route.fulfill({
+    await page.route('/node-api/home-stats', (route) => route.fulfill({
       status: 200,
       body: JSON.stringify(statsMock.base),
     }));

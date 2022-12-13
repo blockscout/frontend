@@ -5,6 +5,7 @@ export enum QueryKeys {
   txsPending = 'txs-pending',
   homeStats='homeStats',
   stats='stats',
+  charts='stats',
   tx = 'tx',
   txInternals = 'tx-internals',
   txLogs = 'tx-logs',

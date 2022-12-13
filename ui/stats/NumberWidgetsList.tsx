@@ -17,8 +17,7 @@ const NumberWidgetsList = () => {
 
   const { data, isLoading } = useQuery<unknown, unknown, Stats>(
     [ QueryKeys.stats ],
-    // TODO: Just temporary. Remove this when the API is ready.
-    async() => await fetch(`/node-api/stats`),
+    async() => await fetch(`/node-api/stats/counters`),
   );
 
   return (
@@ -30,8 +29,8 @@ const NumberWidgetsList = () => {
         .map((e, i) => <NumberWidgetSkeleton key={ i }/>) :
         (
           <NumberWidget
-            label="Total blocks"
-            value={ Number(data?.total_blocks).toLocaleString() }
+            label="Total blocks all time"
+            value={ Number(data?.totalBlocksAllTime).toLocaleString() }
           />
         ) }
     </Grid>

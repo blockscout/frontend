@@ -455,6 +455,7 @@ frontend:
         - "/blocks"
         - "/block"
         - "/address"
+        - "/stats"
   resources:
     limits:
       memory:
@@ -518,6 +519,8 @@ frontend:
       _default: unknown
     NEXT_PUBLIC_API_HOST:
       _default: blockscout.com/eth/goerli
+    NEXT_PUBLIC_STATS_API_HOST:
+      _default: https://stats-test.aws-k8s.blockscout.com/
     NEXT_PUBLIC_APP_HOST:
       _default: blockscout.com/eth/goerli
     NEXT_PUBLIC_LOGOUT_URL:
