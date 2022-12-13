@@ -59,7 +59,7 @@ const TokenTransferTableItem = ({ token, total, tx_hash: txHash, from, to, baseA
       </Td>
       { baseAddress && (
         <Td px={ 0 }>
-          <InOutTag baseAddress={ baseAddress } addressFrom={ from.hash } w="50px" textAlign="center" mt="3px"/>
+          <InOutTag isIn={ baseAddress === to.hash } isOut={ baseAddress === from.hash } w="50px" textAlign="center" mt="3px"/>
         </Td>
       ) }
       <Td>

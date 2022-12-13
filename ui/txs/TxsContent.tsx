@@ -24,9 +24,11 @@ type Props = {
   query: QueryResult;
   showBlockInfo?: boolean;
   showSocketInfo?: boolean;
+  currentAddress?: string;
+  filter?: React.ReactNode;
 }
 
-const TxsContent = ({ query, showBlockInfo = true, showSocketInfo = true }: Props) => {
+const TxsContent = ({ filter, query, showBlockInfo = true, showSocketInfo = true, currentAddress }: Props) => {
   const { data, isLoading, isError, setSortByField, setSortByValue, sorting } = useTxsSort(query);
   const isPaginatorHidden = !isLoading && !isError && query.pagination.page === 1 && !query.pagination.hasNextPage;
   const isMobile = useIsMobile();
@@ -60,7 +62,7 @@ const TxsContent = ({ query, showBlockInfo = true, showSocketInfo = true }: Prop
                 { ({ content }) => <Box>{ content }</Box> }
               </TxsNewItemNotice>
             ) }
-            { txs.map(tx => <TxsListItem tx={ tx } key={ tx.hash } showBlockInfo={ showBlockInfo }/>) }
+            { txs.map(tx => <TxsListItem tx={ tx } key={ tx.hash } showBlockInfo={ showBlockInfo } currentAddress={ currentAddress }/>) }
           </Box>
         </Show>
         <Hide below="lg" ssr={ false }>
@@ -71,6 +73,7 @@ const TxsContent = ({ query, showBlockInfo = true, showSocketInfo = true }: Prop
             showBlockInfo={ showBlockInfo }
             showSocketInfo={ showSocketInfo }
             top={ isPaginatorHidden ? 0 : 80 }
+            currentAddress={ currentAddress }
           />
         </Hide>
       </>
@@ -86,6 +89,7 @@ const TxsContent = ({ query, showBlockInfo = true, showSocketInfo = true }: Prop
           setSorting={ setSortByValue }
           paginationProps={ query.pagination }
           showPagination={ !isPaginatorHidden }
+          filterComponent={ filter }
         />
       ) }
       { content }

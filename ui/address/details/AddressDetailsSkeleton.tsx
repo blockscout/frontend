@@ -8,7 +8,7 @@ const AddressDetailsSkeleton = () => {
     <Box>
       <Flex align="center">
         <SkeletonCircle boxSize={ 6 } flexShrink={ 0 }/>
-        <Skeleton h={ 6 } w="420px" ml={ 2 }/>
+        <Skeleton h={ 6 } w={{ base: '100px', lg: '420px' }} ml={ 2 }/>
         <Skeleton h={ 6 } w="24px" ml={ 2 } flexShrink={ 0 }/>
         <Skeleton h={ 8 } w="48px" ml={ 3 } flexShrink={ 0 }/>
         <Skeleton h={ 8 } w="48px" ml={ 3 } flexShrink={ 0 }/>
