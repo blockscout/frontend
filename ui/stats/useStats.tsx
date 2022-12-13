@@ -25,16 +25,13 @@ export default function useStats() {
   const filterCharts = useCallback((q: string, currentSection: StatsSectionIds) => {
     const charts = statsChartsScheme
       ?.map((section: StatsSection) => {
-        const charts = section.charts.map((chart: StatsChart) => ({
-          ...chart,
-          visible: isSectionMatches(section, currentSection) && isChartNameMatches(q, chart),
-        }));
+        const charts = section.charts.filter((chart: StatsChart) => isSectionMatches(section, currentSection) && isChartNameMatches(q, chart));
 
         return {
           ...section,
           charts,
         };
-      });
+      }).filter((section: StatsSection) => section.charts.length > 0);
 
     setDisplayedCharts(charts || []);
   }, []);
