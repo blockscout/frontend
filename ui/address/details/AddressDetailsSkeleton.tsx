@@ -19,8 +19,10 @@ const AddressDetailsSkeleton = () => {
       </Flex>
       <Grid columnGap={ 8 } rowGap={{ base: 5, lg: 7 }} templateColumns={{ base: '1fr', lg: '150px 1fr' }} maxW="1000px" mt={ 8 }>
         <DetailsSkeletonRow w="30%"/>
+        <DetailsSkeletonRow w="30%"/>
         <DetailsSkeletonRow w="10%"/>
         <DetailsSkeletonRow w="10%"/>
+        <DetailsSkeletonRow w="20%"/>
         <DetailsSkeletonRow w="20%"/>
       </Grid>
     </Box>
