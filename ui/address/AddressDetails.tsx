@@ -10,7 +10,6 @@ import { QueryKeys } from 'types/client/queries';
 
 import appConfig from 'configs/app/config';
 import metamaskIcon from 'icons/metamask.svg';
-import qrCodeIcon from 'icons/qr_code.svg';
 import starOutlineIcon from 'icons/star_outline.svg';
 import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -22,6 +21,7 @@ import ExternalLink from 'ui/shared/ExternalLink';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 
 import AddressDetailsSkeleton from './details/AddressDetailsSkeleton';
+import AddressQrCode from './details/AddressQrCode';
 import TokenSelect from './tokenSelect/TokenSelect';
 
 interface Props {
@@ -72,9 +72,7 @@ const AddressDetails = ({ addressQuery }: Props) => {
         <Button variant="outline" size="sm" ml={ 3 }>
           <Icon as={ starOutlineIcon } boxSize={ 5 }/>
         </Button>
-        <Button variant="outline" size="sm" ml={ 2 }>
-          <Icon as={ qrCodeIcon } boxSize={ 5 }/>
-        </Button>
+        <AddressQrCode hash={ addressQuery.data.hash } ml={ 2 }/>
       </Flex>
       { explorers.length > 0 && (
         <Flex mt={ 8 } columnGap={ 4 } flexWrap="wrap">
