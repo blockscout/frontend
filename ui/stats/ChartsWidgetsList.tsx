@@ -14,7 +14,7 @@ type Props = {
 }
 
 const ChartsWidgetsList = ({ charts, interval }: Props) => {
-  const isAnyChartDisplayed = charts.some((section) => section.charts.some(chart => chart.visible));
+  const isAnyChartDisplayed = charts.some((section) => section.charts.length > 0);
 
   return (
     <Box>
@@ -23,7 +23,6 @@ const ChartsWidgetsList = ({ charts, interval }: Props) => {
           {
             charts.map((section) => (
               <ListItem
-                display={ section.charts.every((chart) => !chart.visible) ? 'none' : 'block' }
                 key={ section.id }
                 mb={ 8 }
                 _last={{
@@ -46,7 +45,6 @@ const ChartsWidgetsList = ({ charts, interval }: Props) => {
                   { section.charts.map((chart) => (
                     <GridItem
                       key={ chart.id }
-                      display={ chart.visible ? 'block' : 'none' }
                     >
                       <ChartWidget
                         id={ chart.id }
