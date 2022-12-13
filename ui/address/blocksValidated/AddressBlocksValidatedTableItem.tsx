@@ -30,9 +30,6 @@ const AddressBlocksValidatedTableItem = (props: Props) => {
         <Text fontWeight="500">{ props.tx_count }</Text>
       </Td>
       <Td>
-        0.00 TH
-      </Td>
-      <Td>
         <Flex alignItems="center" columnGap={ 2 }>
           <Box flexBasis="80px">{ BigNumber(props.gas_used || 0).toFormat() }</Box>
           <Utilization colorScheme="gray" value={ BigNumber(props.gas_used || 0).dividedBy(BigNumber(props.gas_limit)).toNumber() }/>

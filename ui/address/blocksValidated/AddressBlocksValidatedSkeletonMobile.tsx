@@ -31,10 +31,6 @@ const AddressBlocksValidatedSkeletonMobile = () => {
             <Skeleton w="70px"/>
           </Flex>
           <Flex h={ 6 } columnGap={ 2 }>
-            <Skeleton w="70px"/>
-            <Skeleton w="180px"/>
-          </Flex>
-          <Flex h={ 6 } columnGap={ 2 }>
             <Skeleton w="100px"/>
             <Skeleton w="120px"/>
           </Flex>

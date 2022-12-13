@@ -76,7 +76,7 @@ const AddressBlocksValidated = ({ addressQuery }: Props) => {
       return (
         <>
           <Hide below="lg">
-            <SkeletonTable columns={ [ '12%', '12%', '12%', '14%', '25%', '25%' ] }/>
+            <SkeletonTable columns={ [ '17%', '17%', '16%', '25%', '25%' ] }/>
           </Hide>
           <Show below="lg">
             <AddressBlocksValidatedSkeletonMobile/>
@@ -99,10 +99,9 @@ const AddressBlocksValidated = ({ addressQuery }: Props) => {
           <Table variant="simple" size="sm">
             <Thead top={ 80 }>
               <Tr>
-                <Th width="12%">Block</Th>
-                <Th width="12%">Age</Th>
-                <Th width="12%">Txn</Th>
-                <Th width="14%">Difficulty</Th>
+                <Th width="17%">Block</Th>
+                <Th width="17%">Age</Th>
+                <Th width="16%">Txn</Th>
                 <Th width="25%">GasUsed</Th>
                 <Th width="25%" isNumeric>Reward { appConfig.network.currency.symbol }</Th>
               </Tr>

@@ -31,10 +31,6 @@ const AddressBlocksValidatedListItem = (props: Props) => {
         <Text variant="secondary">{ props.tx_count }</Text>
       </Flex>
       <Flex columnGap={ 2 } w="100%">
-        <Text fontWeight={ 500 } flexShrink={ 0 }>Difficulty</Text>
-        <Text variant="secondary">0.00 TH</Text>
-      </Flex>
-      <Flex columnGap={ 2 } w="100%">
         <Text fontWeight={ 500 } flexShrink={ 0 }>Gas used</Text>
         <Text variant="secondary">{ BigNumber(props.gas_used || 0).toFormat() }</Text>
         <Utilization colorScheme="gray" value={ BigNumber(props.gas_used || 0).dividedBy(BigNumber(props.gas_limit)).toNumber() }/>
