@@ -6,18 +6,21 @@ import type { AddressCoinBalanceHistoryItem } from 'types/api/address';
 
 import appConfig from 'configs/app/config';
 import { WEI, ZERO } from 'lib/consts';
-import dayjs from 'lib/date/dayjs';
+import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import link from 'lib/link/link';
 import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import Address from 'ui/shared/address/Address';
 import AddressLink from 'ui/shared/address/AddressLink';
 
-type Props = AddressCoinBalanceHistoryItem;
+type Props = AddressCoinBalanceHistoryItem & {
+  page: number;
+};
 
 const AddressCoinBalanceListItem = (props: Props) => {
   const blockUrl = link('block', { id: String(props.block_number) });
   const deltaBn = BigNumber(props.delta).div(WEI);
   const isPositiveDelta = deltaBn.gte(ZERO);
+  const timeAgo = useTimeAgoIncrement(props.block_timestamp, props.page === 1);
 
   return (
     <AccountListItemMobile fontSize="sm" rowGap={ 2 }>
@@ -46,7 +49,7 @@ const AddressCoinBalanceListItem = (props: Props) => {
       ) }
       <Flex columnGap={ 2 } w="100%">
         <Text fontWeight={ 500 } flexShrink={ 0 }>Age</Text>
-        <Text variant="secondary">{ dayjs(props.block_timestamp).fromNow() }</Text>
+        <Text variant="secondary">{ timeAgo }</Text>
       </Flex>
     </AccountListItemMobile>
   );

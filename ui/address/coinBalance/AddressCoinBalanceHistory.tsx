@@ -59,14 +59,14 @@ const AddressCoinBalanceHistory = ({ query }: Props) => {
             </Thead>
             <Tbody>
               { query.data.items.map((item) => (
-                <AddressCoinBalanceTableItem key={ item.block_number } { ...item }/>
+                <AddressCoinBalanceTableItem key={ item.block_number } { ...item } page={ query.pagination.page }/>
               )) }
             </Tbody>
           </Table>
         </Hide>
         <Show below="lg">
           { query.data.items.map((item) => (
-            <AddressCoinBalanceListItem key={ item.block_number } { ...item }/>
+            <AddressCoinBalanceListItem key={ item.block_number } { ...item } page={ query.pagination.page }/>
           )) }
         </Show>
       </>

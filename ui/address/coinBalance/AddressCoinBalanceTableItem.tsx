@@ -5,17 +5,20 @@ import React from 'react';
 import type { AddressCoinBalanceHistoryItem } from 'types/api/address';
 
 import { WEI, ZERO } from 'lib/consts';
-import dayjs from 'lib/date/dayjs';
+import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import link from 'lib/link/link';
 import Address from 'ui/shared/address/Address';
 import AddressLink from 'ui/shared/address/AddressLink';
 
-type Props = AddressCoinBalanceHistoryItem;
+type Props = AddressCoinBalanceHistoryItem & {
+  page: number;
+};
 
 const AddressCoinBalanceTableItem = (props: Props) => {
   const blockUrl = link('block', { id: String(props.block_number) });
   const deltaBn = BigNumber(props.delta).div(WEI);
   const isPositiveDelta = deltaBn.gte(ZERO);
+  const timeAgo = useTimeAgoIncrement(props.block_timestamp, props.page === 1);
 
   return (
     <Tr>
@@ -33,7 +36,7 @@ const AddressCoinBalanceTableItem = (props: Props) => {
         }
       </Td>
       <Td>
-        <Text variant="secondary">{ dayjs(props.block_timestamp).fromNow() }</Text>
+        <Text variant="secondary">{ timeAgo }</Text>
       </Td>
       <Td isNumeric pr={ 1 }>
         <Text>{ BigNumber(props.value).div(WEI).toFixed(8) }</Text>
