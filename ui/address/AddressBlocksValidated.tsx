@@ -18,6 +18,8 @@ import SkeletonTable from 'ui/shared/SkeletonTable';
 import SocketAlert from 'ui/shared/SocketAlert';
 import { default as Thead } from 'ui/shared/TheadSticky';
 
+import AddressBlocksValidatedListItem from './blocksValidated/AddressBlocksValidatedListItem';
+import AddressBlocksValidatedSkeletonMobile from './blocksValidated/AddressBlocksValidatedSkeletonMobile';
 import AddressBlocksValidatedTableItem from './blocksValidated/AddressBlocksValidatedTableItem';
 
 interface Props {
@@ -77,7 +79,7 @@ const AddressBlocksValidated = ({ addressQuery }: Props) => {
             <SkeletonTable columns={ [ '12%', '12%', '12%', '14%', '25%', '25%' ] }/>
           </Hide>
           <Show below="lg">
-            loading
+            <AddressBlocksValidatedSkeletonMobile/>
           </Show>
         </>
       );
@@ -113,7 +115,9 @@ const AddressBlocksValidated = ({ addressQuery }: Props) => {
           </Table>
         </Hide>
         <Show below="lg">
-          content
+          { query.data.items.map((item) => (
+            <AddressBlocksValidatedListItem key={ item.height } { ...item } page={ query.pagination.page }/>
+          )) }
         </Show>
       </>
     );

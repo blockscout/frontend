@@ -23,7 +23,7 @@ const AddressCoinBalanceListItem = (props: Props) => {
   const timeAgo = useTimeAgoIncrement(props.block_timestamp, props.page === 1);
 
   return (
-    <AccountListItemMobile fontSize="sm" rowGap={ 2 }>
+    <AccountListItemMobile rowGap={ 2 }>
       <Flex justifyContent="space-between" w="100%">
         <Text fontWeight={ 600 }>{ BigNumber(props.value).div(WEI).toFixed(8) } { appConfig.network.currency.symbol }</Text>
         <Stat flexGrow="0">
