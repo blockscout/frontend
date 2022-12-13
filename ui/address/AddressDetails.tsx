@@ -1,4 +1,4 @@
-import { Box, Flex, Text, Icon, Button, Grid } from '@chakra-ui/react';
+import { Box, Flex, Text, Icon, Grid } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
@@ -10,7 +10,6 @@ import { QueryKeys } from 'types/client/queries';
 
 import appConfig from 'configs/app/config';
 import metamaskIcon from 'icons/metamask.svg';
-import starOutlineIcon from 'icons/star_outline.svg';
 import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import AddressIcon from 'ui/shared/address/AddressIcon';
@@ -21,6 +20,7 @@ import ExternalLink from 'ui/shared/ExternalLink';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 
 import AddressDetailsSkeleton from './details/AddressDetailsSkeleton';
+import AddressFavoriteButton from './details/AddressFavoriteButton';
 import AddressQrCode from './details/AddressQrCode';
 import TokenSelect from './tokenSelect/TokenSelect';
 
@@ -69,9 +69,7 @@ const AddressDetails = ({ addressQuery }: Props) => {
         </Text>
         <CopyToClipboard text={ addressQuery.data.hash }/>
         <Icon as={ metamaskIcon } boxSize={ 6 } ml={ 2 }/>
-        <Button variant="outline" size="sm" ml={ 3 }>
-          <Icon as={ starOutlineIcon } boxSize={ 5 }/>
-        </Button>
+        <AddressFavoriteButton hash={ addressQuery.data.hash } isAdded={ Boolean(addressQuery.data.watchlist_names?.length) } ml={ 3 }/>
         <AddressQrCode hash={ addressQuery.data.hash } ml={ 2 }/>
       </Flex>
       { explorers.length > 0 && (

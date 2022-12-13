@@ -4,14 +4,13 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
 import { useForm, Controller } from 'react-hook-form';
 
 import type { WatchlistErrors } from 'types/api/account';
 import type { TWatchlistItem } from 'types/client/account';
-import { QueryKeys } from 'types/client/accountQueries';
 
 import getErrorMessage from 'lib/getErrorMessage';
 import type { ErrorType } from 'lib/hooks/useFetch';
@@ -29,9 +28,10 @@ const NOTIFICATIONS = [ 'native', 'ERC-20', 'ERC-721' ] as const;
 const TAG_MAX_LENGTH = 35;
 
 type Props = {
-  data?: TWatchlistItem;
-  onClose: () => void;
+  data?: Partial<TWatchlistItem>;
+  onSuccess: () => Promise<void>;
   setAlertVisible: (isAlertVisible: boolean) => void;
+  isAdd: boolean;
 }
 
 type Inputs = {
@@ -62,12 +62,12 @@ type Checkboxes = 'notification' |
 'notification_settings.ERC-721.outcoming' |
 'notification_settings.ERC-721.incoming';
 
-const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
+const AddressForm: React.FC<Props> = ({ data, onSuccess, setAlertVisible, isAdd }) => {
   const [ pending, setPending ] = useState(false);
   const formBackgroundColor = useColorModeValue('white', 'gray.900');
 
   let notificationsDefault = {} as Inputs['notification_settings'];
-  if (!data) {
+  if (!data?.notification_settings) {
     NOTIFICATIONS.forEach(n => notificationsDefault[n] = { incoming: true, outcoming: true });
   } else {
     notificationsDefault = data.notification_settings;
@@ -77,13 +77,12 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
     defaultValues: {
       address: data?.address_hash || '',
       tag: data?.name || '',
-      notification: data ? data.notification_methods.email : true,
+      notification: data?.notification_methods ? data.notification_methods.email : true,
       notification_settings: notificationsDefault,
     },
     mode: 'onTouched',
   });
 
-  const queryClient = useQueryClient();
   const fetch = useFetch();
 
   function updateWatchlist(formData: Inputs) {
@@ -95,7 +94,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
         email: formData.notification,
       },
     };
-    if (data) {
+    if (!isAdd && data) {
       // edit address
       return fetch<TWatchlistItem, WatchlistErrors>(`/node-api/account/watchlist/${ data.id }`, { method: 'PUT', body });
 
@@ -106,11 +105,9 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
   }
 
   const { mutate } = useMutation(updateWatchlist, {
-    onSuccess: () => {
-      queryClient.refetchQueries([ QueryKeys.watchlist ]).then(() => {
-        onClose();
-        setPending(false);
-      });
+    onSuccess: async() => {
+      await onSuccess();
+      setPending(false);
     },
     onError: (e: ErrorType<WatchlistErrors>) => {
       setPending(false);
@@ -193,7 +190,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
           isLoading={ pending }
           disabled={ !isValid || !isDirty }
         >
-          { data ? 'Save changes' : 'Add address' }
+          { !isAdd ? 'Save changes' : 'Add address' }
         </Button>
       </Box>
     </form>
