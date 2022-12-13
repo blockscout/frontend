@@ -89,7 +89,7 @@ const AddressDetails = ({ addressQuery }: Props) => {
       <Grid
         mt={ 8 }
         columnGap={ 8 }
-        rowGap={{ base: 3, lg: 3 }}
+        rowGap={{ base: 1, lg: 3 }}
         templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }} overflow="hidden"
       >
         <AddressNameInfo data={ addressQuery.data }/>
@@ -108,7 +108,7 @@ const AddressDetails = ({ addressQuery }: Props) => {
           title="Tokens"
           hint="All tokens in the account and total value."
           alignSelf="center"
-          py="2px"
+          py={ 0 }
         >
           <TokenSelect/>
         </DetailsInfoItem>
@@ -143,7 +143,7 @@ const AddressDetails = ({ addressQuery }: Props) => {
             title="Last balance update"
             hint="Block number in which the address was updated."
             alignSelf="center"
-            py={{ base: 0, lg: 1 }}
+            py={{ base: '2px', lg: 1 }}
           >
             <Link
               href={ link('block', { id: String(addressQuery.data.block_number_balance_updated_at) }) }

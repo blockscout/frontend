@@ -1,4 +1,4 @@
-import { Box, Icon, IconButton, Skeleton, Tooltip } from '@chakra-ui/react';
+import { Box, Flex, Icon, IconButton, Skeleton, Tooltip } from '@chakra-ui/react';
 import { useQuery, useQueryClient, useIsFetching } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -71,7 +71,7 @@ const TokenSelect = () => {
   }
 
   return (
-    <>
+    <Flex columnGap={ 3 } mt={{ base: '6px', lg: 0 }}>
       { isMobile ?
         <TokenSelectMobile data={ data } isLoading={ balancesIsFetching === 1 }/> :
         <TokenSelectDesktop data={ data } isLoading={ balancesIsFetching === 1 }/>
@@ -83,11 +83,10 @@ const TokenSelect = () => {
           size="sm"
           pl="6px"
           pr="6px"
-          ml={ 3 }
           icon={ <Icon as={ walletIcon } boxSize={ 5 }/> }
         />
       </Tooltip>
-    </>
+    </Flex>
   );
 };
 
