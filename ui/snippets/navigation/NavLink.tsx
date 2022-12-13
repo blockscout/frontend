@@ -33,6 +33,7 @@ const NavLink = ({ text, url, icon, isCollapsed, isActive, px, isNewUi }: Props)
       _hover={{ color: isActive ? colors.text.active : colors.text.hover }}
       borderRadius="base"
       whiteSpace="nowrap"
+      aria-label={ `${ text } link` }
       { ...getDefaultTransitionProps({ transitionProperty: 'width, padding' }) }
     >
       <Tooltip
