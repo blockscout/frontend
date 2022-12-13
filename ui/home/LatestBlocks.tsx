@@ -33,7 +33,7 @@ const LatestBlocks = () => {
   const queryClient = useQueryClient();
   const statsQueryResult = useQuery<unknown, unknown, HomeStats>(
     [ QueryKeys.homeStats ],
-    () => fetch('/node-api/stats'),
+    () => fetch('/node-api/home-stats'),
   );
 
   const handleNewBlockMessage: SocketMessage.NewBlock['handler'] = React.useCallback((payload) => {

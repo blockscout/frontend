@@ -18,9 +18,6 @@ const Stats = () => {
     handleIntervalChange,
     debounceFilterCharts,
     displayedCharts,
-    showChartFullscreen,
-    clearFullscreenChart,
-    fullscreenChart,
   } = useStats();
 
   return (
@@ -43,9 +40,7 @@ const Stats = () => {
 
       <ChartsWidgetsList
         charts={ displayedCharts }
-        onChartFullscreenClick={ showChartFullscreen }
-        fullscreenChart={ fullscreenChart }
-        onModalClose={ clearFullscreenChart }
+        interval={ interval }
       />
     </Page>
   );

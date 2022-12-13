@@ -33,11 +33,11 @@ const WatchlistTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
     return onDeleteClick(item);
   }, [ item, onDeleteClick ]);
 
-  const toast = useToast();
+  const errorToast = useToast();
   const fetch = useFetch();
 
-  const showToast = useCallback(() => {
-    toast({
+  const showErrorToast = useCallback(() => {
+    errorToast({
       position: 'top-right',
       description: 'There has been an error processing your request',
       colorScheme: 'red',
@@ -46,7 +46,21 @@ const WatchlistTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
       isClosable: true,
       icon: null,
     });
-  }, [ toast ]);
+  }, [ errorToast ]);
+
+  const notificationToast = useToast();
+  const showNotificationToast = useCallback((isOn: boolean) => {
+    notificationToast({
+      position: 'top-right',
+      description: isOn ? 'Email notification is ON' : 'Email notification is OFF',
+      colorScheme: 'green',
+      status: 'success',
+      variant: 'subtle',
+      title: 'Success',
+      isClosable: true,
+      icon: null,
+    });
+  }, [ notificationToast ]);
 
   const { mutate } = useMutation(() => {
     setSwitchDisabled(true);
@@ -55,12 +69,13 @@ const WatchlistTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
     return fetch(`/node-api/account/watchlist/${ item.id }`, { method: 'PUT', body });
   }, {
     onError: () => {
-      showToast();
+      showErrorToast();
       setNotificationEnabled(prevState => !prevState);
       setSwitchDisabled(false);
     },
     onSuccess: () => {
       setSwitchDisabled(false);
+      showNotificationToast(!notificationEnabled);
     },
   });
 

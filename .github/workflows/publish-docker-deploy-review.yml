@@ -59,7 +59,7 @@ jobs:
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          tags: ghcr.io/blockscout/frontend:prerelease-${{ env.GITHUB_EVENT_PULL_REQUEST_HEAD_SHA_SHORT }}
+          tags: ghcr.io/blockscout/frontend:prerelease-${{ env.GITHUB_REF_NAME_SLUG }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             GIT_COMMIT_SHA=${{ env.GITHUB_EVENT_PULL_REQUEST_HEAD_SHA_SHORT }}
@@ -69,12 +69,12 @@ jobs:
     needs: push_to_registry
     uses: blockscout/blockscout-ci-cd/.github/workflows/deploy.yaml@master
     with:
-      env_vars: VALUES_DIR=deploy/values/review,APP_NAME=bs-stack,DOCKER_IMAGE=prerelease-$GITHUB_EVENT_PULL_REQUEST_HEAD_SHA_SHORT
+      env_vars: VALUES_DIR=deploy/values/review,APP_NAME=bs-stack,DOCKER_IMAGE=prerelease-$GITHUB_REF_NAME_SLUG
       globalEnv: review
-      appNamespace: review-front-$GITHUB_HEAD_REF_SLUG
+      appNamespace: review-front-$GITHUB_REF_NAME_SLUG
       blockscoutIngressHost: blockscout
       frontendIngressHost: blockscout
-      frontendImage: ghcr.io/blockscout/frontend:prerelease-$GITHUB_EVENT_PULL_REQUEST_HEAD_SHA_SHORT
+      frontendImage: ghcr.io/blockscout/frontend:prerelease-$GITHUB_REF_NAME_SLUG
       gethIngressHost: geth
       scVerifierIngressHost: sc-verifier
     secrets: inherit

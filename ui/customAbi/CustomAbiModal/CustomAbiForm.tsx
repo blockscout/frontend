@@ -42,7 +42,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
       name: data?.name || '',
       abi: JSON.stringify(data?.abi) || '',
     },
-    mode: 'all',
+    mode: 'onTouched',
   });
 
   const queryClient = useQueryClient();
@@ -118,7 +118,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
           isInvalid={ Boolean(errors.name) }
           maxLength={ NAME_MAX_LENGTH }
         />
-        <InputPlaceholder text="Project name" error={ errors.name?.message }/>
+        <InputPlaceholder text="Project name" error={ errors.name }/>
       </FormControl>
     );
   }, [ errors, formBackgroundColor ]);
@@ -132,7 +132,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
           minH="300px"
           isInvalid={ Boolean(errors.abi) }
         />
-        <InputPlaceholder text="Custom ABI [{...}] (JSON format)" error={ errors.abi?.message }/>
+        <InputPlaceholder text="Custom ABI [{...}] (JSON format)" error={ errors.abi }/>
       </FormControl>
     );
   }, [ errors, formBackgroundColor ]);

@@ -1,4 +1,4 @@
-import { Box, Flex, Text, Icon, Button, Grid, Select } from '@chakra-ui/react';
+import { Box, Flex, Text, Icon, Button, Grid } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
@@ -11,16 +11,18 @@ import { QueryKeys } from 'types/client/queries';
 import appConfig from 'configs/app/config';
 import metamaskIcon from 'icons/metamask.svg';
 import starOutlineIcon from 'icons/star_outline.svg';
-import walletIcon from 'icons/wallet.svg';
 import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import ExternalLink from 'ui/shared/ExternalLink';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 
+import AddressDetailsSkeleton from './details/AddressDetailsSkeleton';
 import AddressQrCode from './details/AddressQrCode';
+import TokenSelect from './tokenSelect/TokenSelect';
 
 interface Props {
   addressQuery: UseQueryResult<TAddress>;
@@ -48,14 +50,15 @@ const AddressDetails = ({ addressQuery }: Props) => {
   );
 
   if (countersQuery.isLoading || addressQuery.isLoading || tokenBalancesQuery.isLoading) {
-    return <Box>loading</Box>;
+    return <AddressDetailsSkeleton/>;
   }
 
   if (countersQuery.isError || addressQuery.isError || tokenBalancesQuery.isError) {
-    return <Box>error</Box>;
+    return <DataFetchAlert/>;
   }
 
   const explorers = appConfig.network.explorers.filter(({ paths }) => paths.address);
+  const validationsCount = Number(countersQuery.data.validations_count);
 
   return (
     <Box>
@@ -73,7 +76,7 @@ const AddressDetails = ({ addressQuery }: Props) => {
       </Flex>
       { explorers.length > 0 && (
         <Flex mt={ 8 } columnGap={ 4 } flexWrap="wrap">
-          <Text>Verify with other explorers</Text>
+          <Text fontSize="sm">Verify with other explorers</Text>
           { explorers.map((explorer) => {
             const url = new URL(explorer.paths.tx + '/' + router.query.id, explorer.baseUrl);
             return <ExternalLink key={ explorer.baseUrl } title={ explorer.title } href={ url.toString() }/>;
@@ -90,39 +93,21 @@ const AddressDetails = ({ addressQuery }: Props) => {
           title="Tokens"
           hint="All tokens in the account and total value."
           alignSelf="center"
+          py="2px"
         >
-          { tokenBalancesQuery.data.length > 0 ? (
-            <>
-              { /* TODO will be fixed later when we implement select with custom menu */ }
-              <Select
-                size="sm"
-                borderRadius="base"
-                focusBorderColor="none"
-                display="inline-block"
-                w="auto"
-              >
-                { tokenBalancesQuery.data.map((token) =>
-                  <option key={ token.token.address } value={ token.token.address }>{ token.token.symbol }</option>) }
-              </Select>
-              <Button variant="outline" size="sm" ml={ 3 }>
-                <Icon as={ walletIcon } boxSize={ 5 }/>
-              </Button>
-            </>
-          ) : (
-            '-'
-          ) }
+          <TokenSelect/>
         </DetailsInfoItem>
         <DetailsInfoItem
           title="Transactions"
           hint="Number of transactions related to this address."
         >
-          { Number(countersQuery.data.transaction_count).toLocaleString() }
+          { Number(countersQuery.data.transactions_count).toLocaleString() }
         </DetailsInfoItem>
         <DetailsInfoItem
           title="Transfers"
           hint="Number of transfers to/from this address."
         >
-          { Number(countersQuery.data.token_transfer_count).toLocaleString() }
+          { Number(countersQuery.data.token_transfers_count).toLocaleString() }
         </DetailsInfoItem>
         <DetailsInfoItem
           title="Gas used"
@@ -130,12 +115,12 @@ const AddressDetails = ({ addressQuery }: Props) => {
         >
           { BigNumber(countersQuery.data.gas_usage_count).toFormat() }
         </DetailsInfoItem>
-        { countersQuery.data.validation_count && (
+        { !Object.is(validationsCount, NaN) && validationsCount > 0 && (
           <DetailsInfoItem
             title="Blocks validated"
             hint="Number of blocks validated by this validator."
           >
-            { Number(countersQuery.data.validation_count).toLocaleString() }
+            { validationsCount.toLocaleString() }
           </DetailsInfoItem>
         ) }
       </Grid>

@@ -8,7 +8,7 @@ import TestApp from 'playwright/TestApp';
 
 import LatestBlocks from './LatestBlocks';
 
-const STATS_API_URL = '/node-api/stats';
+const STATS_API_URL = '/node-api/home-stats';
 const BLOCKS_API_URL = '/node-api/index/blocks';
 
 export const test = base.extend<socketServer.SocketServerFixture>({

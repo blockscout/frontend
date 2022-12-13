@@ -34,7 +34,7 @@ const NAME_MAX_LENGTH = 255;
 
 const ApiKeyForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
   const { control, handleSubmit, formState: { errors, isValid, isDirty }, setError } = useForm<Inputs>({
-    mode: 'all',
+    mode: 'onTouched',
     defaultValues: {
       token: data?.api_key || '',
       name: data?.name || '',
@@ -112,9 +112,7 @@ const ApiKeyForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
           isInvalid={ Boolean(errors.name) }
           maxLength={ NAME_MAX_LENGTH }
         />
-        <FormLabel>
-          <InputPlaceholder text="Application name for API key (e.g Web3 project)" error={ errors.name?.message }/>
-        </FormLabel>
+        <InputPlaceholder text="Application name for API key (e.g Web3 project)" error={ errors.name }/>
       </FormControl>
     );
   }, [ errors, formBackgroundColor ]);

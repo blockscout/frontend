@@ -79,13 +79,13 @@ const PublicTagsComponent: React.FC = () => {
 
   return (
     <Page>
-      { isMobile && screen === 'form' && (
+      { screen === 'form' && (
         <Link display="inline-flex" alignItems="center" mb={ 6 } onClick={ onGoBack }>
           <Icon as={ eastArrowIcon } boxSize={ 6 } transform="rotate(180deg)"/>
-          <Text variant="inherit" fontSize="sm" ml={ 2 }>Public tags</Text>
+          { isMobile && <Text variant="inherit" fontSize="sm" ml={ 2 }>Public tags</Text> }
         </Link>
       ) }
-      <PageTitle text={ header }/>
+      <PageTitle text={ header } display={{ base: 'block', lg: 'inline-flex' }} ml={{ base: 0, lg: 3 }}/>
       { content }
     </Page>
   );

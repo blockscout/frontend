@@ -13,7 +13,11 @@ const NetworkMenu = ({ isCollapsed }: Props) => {
       { ({ isOpen }) => (
         <>
           <PopoverTrigger>
-            <Box marginLeft={{ base: '7px', lg: isCollapsed === false ? '7px' : '0px', xl: isCollapsed ? '0px' : '7px' }}>
+            <Box
+              marginLeft="auto"
+              overflow="hidden"
+              width={{ base: 'auto', lg: isCollapsed === false ? 'auto' : '0px', xl: isCollapsed ? '0px' : 'auto' }}
+            >
               <NetworkMenuButton isActive={ isOpen }/>
             </Box>
           </PopoverTrigger>
