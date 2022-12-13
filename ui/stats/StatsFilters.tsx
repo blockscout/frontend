@@ -21,7 +21,7 @@ const sectionsList = Object.keys(STATS_SECTIONS)
 
 const intervalList = Object.keys(STATS_INTERVALS).map((id: string) => ({
   id: id,
-  title: STATS_INTERVALS[id as StatsIntervalIds],
+  title: STATS_INTERVALS[id as StatsIntervalIds].title,
 })) as Array<StatsInterval>;
 
 type Props = {
@@ -48,7 +48,7 @@ const StatsFilters = ({
                 "section interval"`,
         lg: `"input section interval"`,
       }}
-      gridTemplateColumns={{ lg: '1fr auto auto' }}
+      gridTemplateColumns={{ base: 'repeat(2, minmax(0, 1fr))', lg: '1fr auto auto' }}
     >
       <GridItem
         w="100%"

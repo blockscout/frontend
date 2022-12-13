@@ -11,7 +11,7 @@ import TestApp from 'playwright/TestApp';
 import Home from './Home';
 
 test('default view -@default +@desktop-xl +@mobile +@dark-mode', async({ mount, page }) => {
-  await page.route('/node-api/stats', (route) => route.fulfill({
+  await page.route('/node-api/home-stats', (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(statsMock.base),
   }));
@@ -30,7 +30,7 @@ test('default view -@default +@desktop-xl +@mobile +@dark-mode', async({ mount, 
       txMock.withTokenTransfer,
     ]),
   }));
-  await page.route('/node-api/stats/charts/transactions', (route) => route.fulfill({
+  await page.route('/node-api/home-stats/charts/transactions', (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(dailyTxsMock.base),
   }));

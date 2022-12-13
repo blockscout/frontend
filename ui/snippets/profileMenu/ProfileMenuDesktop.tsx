@@ -2,13 +2,13 @@ import { Popover, PopoverContent, PopoverBody, PopoverTrigger, Button } from '@c
 import React from 'react';
 
 import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
-import link from 'lib/link/link';
+import useLoginUrl from 'lib/hooks/useLoginUrl';
 import UserAvatar from 'ui/shared/UserAvatar';
 import ProfileMenuContent from 'ui/snippets/profileMenu/ProfileMenuContent';
 
 const ProfileMenuDesktop = () => {
   const { data, isFetched } = useFetchProfileInfo();
-  const loginUrl = link('auth');
+  const loginUrl = useLoginUrl();
 
   return (
     <Popover openDelay={ 300 } placement="bottom-end" gutter={ 10 } isLazy>

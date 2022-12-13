@@ -1,22 +1,19 @@
 import { Box, Grid, GridItem, Heading, List, ListItem } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ModalChart, StatsSection } from 'types/client/stats';
+import type { StatsIntervalIds, StatsSection } from 'types/client/stats';
 
 import { apos } from 'lib/html-entities';
 
 import EmptySearchResult from '../apps/EmptySearchResult';
 import ChartWidget from './ChartWidget';
-import FullscreenChartModal from './FullscreenChartModal';
 
 type Props = {
   charts: Array<StatsSection>;
-  onChartFullscreenClick: (chart: ModalChart) => void;
-  fullscreenChart: ModalChart | null;
-  onModalClose: () => void;
+  interval: StatsIntervalIds;
 }
 
-const ChartsWidgetsList = ({ charts, onChartFullscreenClick, fullscreenChart, onModalClose }: Props) => {
+const ChartsWidgetsList = ({ charts, interval }: Props) => {
   const isAnyChartDisplayed = charts.some((section) => section.charts.some(chart => chart.visible));
 
   return (
@@ -42,7 +39,7 @@ const ChartsWidgetsList = ({ charts, onChartFullscreenClick, fullscreenChart, on
 
                 <Grid
                   templateColumns={{
-                    sm: 'repeat(2, 1fr)',
+                    lg: 'repeat(2, 1fr)',
                   }}
                   gap={ 4 }
                 >
@@ -53,10 +50,9 @@ const ChartsWidgetsList = ({ charts, onChartFullscreenClick, fullscreenChart, on
                     >
                       <ChartWidget
                         id={ chart.id }
-                        onFullscreenClick={ onChartFullscreenClick }
-                        apiMethodURL={ chart.apiMethodURL }
                         title={ chart.title }
                         description={ chart.description }
+                        interval={ interval }
                       />
                     </GridItem>
                   )) }
@@ -67,14 +63,6 @@ const ChartsWidgetsList = ({ charts, onChartFullscreenClick, fullscreenChart, on
         </List>
       ) : (
         <EmptySearchResult text={ `Couldn${ apos }t find a chart that matches your filter query.` }/>
-      ) }
-
-      { fullscreenChart && (
-        <FullscreenChartModal
-          id={ fullscreenChart.id }
-          title={ fullscreenChart.title }
-          onClose={ onModalClose }
-        />
       ) }
     </Box>
   );

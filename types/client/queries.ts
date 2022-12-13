@@ -5,6 +5,7 @@ export enum QueryKeys {
   txsPending = 'txs-pending',
   homeStats='homeStats',
   stats='stats',
+  charts='stats',
   tx = 'tx',
   txInternals = 'tx-internals',
   txLogs = 'tx-logs',
@@ -23,4 +24,6 @@ export enum QueryKeys {
   address='address',
   addressCounters='address-counters',
   addressTokenBalances='address-token-balances',
+  addressTxs='addressTxs',
+  addressTokenTransfers='addressTokenTransfers',
 }

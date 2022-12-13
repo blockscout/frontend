@@ -20,5 +20,12 @@ export type GasPrices = {
 }
 
 export type Stats = {
-  total_blocks: string;
+  totalBlocksAllTime: string;
+}
+
+export type Charts = {
+  'chart': Array<{
+    date: string;
+    value: string;
+  }>;
 }

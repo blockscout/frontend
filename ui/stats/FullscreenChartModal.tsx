@@ -1,18 +1,21 @@
 import { Button, Flex, Heading, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
+import type { TimeChartItem } from '../shared/chart/types';
+
 import ChartWidgetGraph from './ChartWidgetGraph';
-import { demoChartsData } from './constants/demo-charts-data';
 
 type Props = {
-  id: string;
+  isOpen: boolean;
   title: string;
+  items: Array<TimeChartItem>;
   onClose: () => void;
 }
 
 const FullscreenChartModal = ({
-  id,
+  isOpen,
   title,
+  items,
   onClose,
 }: Props) => {
   const [ isZoomResetInitial, setIsZoomResetInitial ] = React.useState(true);
@@ -27,7 +30,7 @@ const FullscreenChartModal = ({
 
   return (
     <Modal
-      isOpen={ Boolean(id) }
+      isOpen={ isOpen }
       onClose={ onClose }
       size="full"
       isCentered
@@ -71,13 +74,13 @@ const FullscreenChartModal = ({
         <ModalCloseButton/>
 
         <ModalBody
-          h="100%"
+          h="75%"
         >
           <ChartWidgetGraph
-            items={ demoChartsData }
+            items={ items }
             onZoom={ handleZoom }
             isZoomResetInitial={ isZoomResetInitial }
-            title="test"
+            title={ title }
           />
         </ModalBody>
       </ModalContent>

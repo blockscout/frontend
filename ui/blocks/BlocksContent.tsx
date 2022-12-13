@@ -82,10 +82,10 @@ const BlocksContent = ({ type, query }: Props) => {
     if (query.isLoading) {
       return (
         <>
-          <Show below="lg" key="skeleton-mobile">
+          <Show below="lg" key="skeleton-mobile" ssr={ false }>
             <BlocksSkeletonMobile/>
           </Show>
-          <Hide below="lg" key="skeleton-desktop">
+          <Hide below="lg" key="skeleton-desktop" ssr={ false }>
             <SkeletonTable columns={ [ '125px', '120px', '21%', '64px', '35%', '22%', '22%' ] }/>
           </Hide>
         </>
@@ -103,8 +103,8 @@ const BlocksContent = ({ type, query }: Props) => {
     return (
       <>
         { socketAlert && <Alert status="warning" mb={ 6 } as="a" href={ window.document.location.href }>{ socketAlert }</Alert> }
-        <Show below="lg" key="content-mobile"><BlocksList data={ query.data.items }/></Show>
-        <Hide below="lg" key="content-desktop"><BlocksTable data={ query.data.items } top={ 80 } page={ 1 }/></Hide>
+        <Show below="lg" key="content-mobile" ssr={ false }><BlocksList data={ query.data.items }/></Show>
+        <Hide below="lg" key="content-desktop" ssr={ false }><BlocksTable data={ query.data.items } top={ 80 } page={ 1 }/></Hide>
       </>
     );
 
@@ -115,7 +115,7 @@ const BlocksContent = ({ type, query }: Props) => {
   return (
     <>
       { isMobile && !isPaginatorHidden && (
-        <ActionBar>
+        <ActionBar mt={ -6 }>
           <Pagination ml="auto" { ...query.pagination }/>
         </ActionBar>
       ) }

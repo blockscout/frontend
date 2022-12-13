@@ -1,7 +1,7 @@
 import { formAnatomy as parts } from '@chakra-ui/anatomy';
 import { createMultiStyleConfigHelpers } from '@chakra-ui/styled-system';
 import type { StyleFunctionProps } from '@chakra-ui/theme-tools';
-import { getColor, mode } from '@chakra-ui/theme-tools';
+import { getColor } from '@chakra-ui/theme-tools';
 
 import getDefaultFormColors from '../utils/getDefaultFormColors';
 import FormLabel from './FormLabel';
@@ -13,7 +13,7 @@ const { definePartsStyle, defineMultiStyleConfig } =
 
 function getFloatingVariantStylesForSize(size: 'md' | 'lg', props: StyleFunctionProps) {
   const { theme } = props;
-  const { focusColor: fc, errorColor: ec } = getDefaultFormColors(props);
+  const { focusPlaceholderColor, errorColor } = getDefaultFormColors(props);
 
   const activeLabelStyles = {
     ...FormLabel.variants?.floating?.(props)._focusWithin,
@@ -62,7 +62,7 @@ function getFloatingVariantStylesForSize(size: 'md' | 'lg', props: StyleFunction
       label: FormLabel.sizes?.[size](props) || {},
       'input:not(:placeholder-shown) + label, textarea:not(:placeholder-shown) + label': activeLabelStyles,
       'input[aria-invalid=true] + label, textarea[aria-invalid=true] + label': {
-        color: getColor(theme, ec),
+        color: getColor(theme, errorColor),
       },
 
       // input styles
@@ -78,20 +78,20 @@ function getFloatingVariantStylesForSize(size: 'md' | 'lg', props: StyleFunction
 
       // indicator styles
       'input:not(:placeholder-shown) + label .chakra-form__required-indicator, textarea:not(:placeholder-shown) + label .chakra-form__required-indicator': {
-        color: getColor(theme, fc),
+        color: getColor(theme, focusPlaceholderColor),
       },
       'input[aria-invalid=true] + label .chakra-form__required-indicator, textarea[aria-invalid=true] + label .chakra-form__required-indicator': {
-        color: getColor(theme, ec),
+        color: getColor(theme, errorColor),
       },
     },
   };
 }
 
-const baseStyle = definePartsStyle((props) => {
+const baseStyle = definePartsStyle(() => {
   return {
     requiredIndicator: {
       marginStart: 0,
-      color: mode('gray.500', 'whiteAlpha.400')(props),
+      color: 'gray.500',
     },
   };
 });

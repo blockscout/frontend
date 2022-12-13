@@ -3,6 +3,7 @@ import React, { useEffect, useMemo } from 'react';
 
 import type { TimeChartItem } from 'ui/shared/chart/types';
 
+import useIsMobile from 'lib/hooks/useIsMobile';
 import ChartArea from 'ui/shared/chart/ChartArea';
 import ChartAxis from 'ui/shared/chart/ChartAxis';
 import ChartGridLine from 'ui/shared/chart/ChartGridLine';
@@ -23,12 +24,13 @@ interface Props {
 const CHART_MARGIN = { bottom: 20, left: 52, right: 30, top: 10 };
 
 const ChartWidgetGraph = ({ items, onZoom, isZoomResetInitial, title }: Props) => {
+  const isMobile = useIsMobile();
   const ref = React.useRef<SVGSVGElement>(null);
-  const [ range, setRange ] = React.useState<[ number, number ]>([ 0, Infinity ]);
-  const { width, height, innerWidth, innerHeight } = useChartSize(ref.current, CHART_MARGIN);
-  const overlayRef = React.useRef<SVGRectElement>(null);
   const color = useToken('colors', 'blue.200');
+  const overlayRef = React.useRef<SVGRectElement>(null);
   const chartId = useMemo(() => `chart-${ crypto.randomUUID() }`, []);
+  const [ range, setRange ] = React.useState<[ number, number ]>([ 0, Infinity ]);
+  const { innerWidth, innerHeight } = useChartSize(ref.current, CHART_MARGIN);
 
   const displayedData = useMemo(() => items.slice(range[0], range[1]).map((d) =>
     ({ ...d, date: new Date(d.date) })), [ items, range ]);
@@ -52,9 +54,9 @@ const ChartWidgetGraph = ({ items, onZoom, isZoomResetInitial, title }: Props) =
   }, [ isZoomResetInitial ]);
 
   return (
-    <svg width={ width || '100%' } height={ height || '100%' } ref={ ref } cursor="pointer" id={ chartId }>
+    <svg width="100%" height="100%" ref={ ref } cursor="pointer" id={ chartId }>
 
-      <g transform={ `translate(${ CHART_MARGIN?.left || 0 },${ CHART_MARGIN?.top || 0 })` } opacity={ width ? 1 : 0 }>
+      <g transform={ `translate(${ CHART_MARGIN?.left || 0 },${ CHART_MARGIN?.top || 0 })` } opacity={ 1 }>
         <ChartGridLine
           type="horizontal"
           scale={ yScale }
@@ -93,7 +95,7 @@ const ChartWidgetGraph = ({ items, onZoom, isZoomResetInitial, title }: Props) =
             type="bottom"
             scale={ xScale }
             transform={ `translate(0, ${ innerHeight })` }
-            ticks={ 5 }
+            ticks={ isMobile ? 1 : 3 }
             anchorEl={ overlayRef.current }
             disableAnimation
           />

@@ -19,7 +19,7 @@ const baseStyle = defineStyle({
 
 const variantFloating = defineStyle((props) => {
   const { theme, backgroundColor } = props;
-  const { focusColor: fc } = getDefaultFormColors(props);
+  const { focusPlaceholderColor } = getDefaultFormColors(props);
   const bc = backgroundColor || mode('white', 'black')(props);
 
   return {
@@ -40,7 +40,7 @@ const variantFloating = defineStyle((props) => {
     textOverflow: 'ellipsis',
     _focusWithin: {
       backgroundColor: bc,
-      color: getColor(theme, fc),
+      color: getColor(theme, focusPlaceholderColor),
       fontSize: 'xs',
       lineHeight: '16px',
       borderTopRightRadius: 'none',
