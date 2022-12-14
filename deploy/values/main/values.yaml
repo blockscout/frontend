@@ -5,7 +5,7 @@ blockscout:
   app: blockscout
   enabled: true
   image:
-    _default: blockscout/blockscout:latest
+    _default: &imaged blockscout/blockscout:frontend-main
   replicas:
     app: 1
   docker:
@@ -15,7 +15,7 @@ blockscout:
   init:
     enabled: true
     image:
-      _default: blockscout/blockscout:latest
+      _default: *image
   service:
     # ClusterIP, NodePort or LoadBalancer
     type: ClusterIP
