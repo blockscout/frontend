@@ -1,51 +1,28 @@
 import { Box, Grid, Heading, Icon, IconButton, Menu, MenuButton, MenuItem, MenuList, Text, useColorModeValue, VisuallyHidden } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
-import type { Charts } from 'types/api/stats';
-import { QueryKeys } from 'types/client/queries';
-import type { StatsIntervalIds } from 'types/client/stats';
+import type { TimeChartItem } from './types';
 
 import repeatArrow from 'icons/repeat_arrow.svg';
 import dotsIcon from 'icons/vertical_dots.svg';
-import useFetch from 'lib/hooks/useFetch';
 
 import ChartWidgetGraph from './ChartWidgetGraph';
 import ChartWidgetSkeleton from './ChartWidgetSkeleton';
-import { STATS_INTERVALS } from './constants';
 import FullscreenChartModal from './FullscreenChartModal';
 
 type Props = {
-  id: string;
+  items?: Array<TimeChartItem>;
   title: string;
   description: string;
-  interval: StatsIntervalIds;
+  isLoading: boolean;
 }
 
-function formatDate(date: Date) {
-  return date.toISOString().substring(0, 10);
-}
-
-const ChartWidget = ({ id, title, description, interval }: Props) => {
-  const fetch = useFetch();
-
-  const selectedInterval = STATS_INTERVALS[interval];
-
+const ChartWidget = ({ items, title, description, isLoading }: Props) => {
   const [ isFullscreen, setIsFullscreen ] = useState(false);
   const [ isZoomResetInitial, setIsZoomResetInitial ] = React.useState(true);
 
-  const endDate = selectedInterval.start ? formatDate(new Date()) : undefined;
-  const startDate = selectedInterval.start ? formatDate(selectedInterval.start) : undefined;
-
   const menuButtonColor = useColorModeValue('black', 'white');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
-
-  const url = `/node-api/stats/charts?name=${ id }${ startDate ? `&from=${ startDate }&to=${ endDate }` : '' }`;
-
-  const { data, isLoading } = useQuery<unknown, unknown, Charts>(
-    [ QueryKeys.charts, id, startDate ],
-    async() => await fetch(url),
-  );
 
   const handleZoom = useCallback(() => {
     setIsZoomResetInitial(false);
@@ -75,12 +52,7 @@ const ChartWidget = ({ id, title, description, interval }: Props) => {
     return <ChartWidgetSkeleton/>;
   }
 
-  if (data) {
-    const items = data.chart
-      .map((item) => {
-        return { date: new Date(item.date), value: Number(item.value) };
-      });
-
+  if (items) {
     return (
       <>
         <Box
