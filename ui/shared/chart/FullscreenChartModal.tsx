@@ -1,7 +1,7 @@
 import { Button, Flex, Heading, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
-import type { TimeChartItem } from '../shared/chart/types';
+import type { TimeChartItem } from './types';
 
 import ChartWidgetGraph from './ChartWidgetGraph';
 

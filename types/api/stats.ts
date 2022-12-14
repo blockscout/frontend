@@ -24,8 +24,10 @@ export type Stats = {
 }
 
 export type Charts = {
-  'chart': Array<{
-    date: string;
-    value: string;
-  }>;
+  chart: Array<ChartsItem>;
+}
+
+export type ChartsItem ={
+  date: string;
+  value: string;
 }

@@ -78,7 +78,7 @@ const ChartWidgetGraph = ({ items, onZoom, isZoomResetInitial, title }: Props) =
           xScale={ xScale }
           yScale={ yScale }
           stroke={ color }
-          animation="left"
+          animation="none"
           strokeWidth={ 3 }
         />
 
