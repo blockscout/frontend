@@ -1,9 +1,10 @@
-import { Tr, Td, Tag, Icon, Box } from '@chakra-ui/react';
+import { Tr, Td, Tag, Icon, Box, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
 
+import appConfig from 'configs/app/config';
 import rightArrowIcon from 'icons/arrows/east.svg';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
@@ -13,36 +14,39 @@ import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
 type Props = InternalTransaction
 
-const TxInternalTableItem = ({ type, from, to, value, success, error, gas_limit: gasLimit }: Props) => {
+const TxInternalTableItem = ({ type, from, to, value, success, error, gas_limit: gasLimit, created_contract: createdContract }: Props) => {
   const typeTitle = TX_INTERNALS_ITEMS.find(({ id }) => id === type)?.title;
+  const toData = to ? to : createdContract;
 
   return (
     <Tr alignItems="top">
       <Td>
-        { typeTitle && (
-          <Box w="126px" display="inline-block">
-            <Tag colorScheme="cyan" mr={ 5 }>{ typeTitle }</Tag>
-          </Box>
-        ) }
-        <TxStatus status={ success ? 'ok' : 'error' } errorText={ error }/>
+        <Flex rowGap={ 2 } flexWrap="wrap">
+          { typeTitle && (
+            <Box w="126px" display="inline-block">
+              <Tag colorScheme="cyan" mr={ 5 }>{ typeTitle }</Tag>
+            </Box>
+          ) }
+          <TxStatus status={ success ? 'ok' : 'error' } errorText={ error }/>
+        </Flex>
       </Td>
-      <Td>
+      <Td verticalAlign="middle">
         <Address display="inline-flex" maxW="100%">
           <AddressIcon hash={ from.hash }/>
           <AddressLink ml={ 2 } fontWeight="500" hash={ from.hash } alias={ from.name } flexGrow={ 1 }/>
         </Address>
       </Td>
-      <Td px={ 0 }>
+      <Td px={ 0 } verticalAlign="middle">
         <Icon as={ rightArrowIcon } boxSize={ 6 } color="gray.500"/>
       </Td>
-      <Td>
+      <Td verticalAlign="middle">
         <Address display="inline-flex" maxW="100%">
-          <AddressIcon hash={ to.hash }/>
-          <AddressLink hash={ to.hash } alias={ to.name } fontWeight="500" ml={ 2 }/>
+          <AddressIcon hash={ toData.hash }/>
+          <AddressLink hash={ toData.hash } alias={ toData.name } fontWeight="500" ml={ 2 }/>
         </Address>
       </Td>
       <Td isNumeric verticalAlign="middle">
-        { value }
+        { BigNumber(value).div(BigNumber(10 ** appConfig.network.currency.decimals)).toFormat() }
       </Td>
       <Td isNumeric verticalAlign="middle">
         { BigNumber(gasLimit).toFormat() }

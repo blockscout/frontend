@@ -7,18 +7,18 @@ import { QueryKeys } from 'types/client/accountQueries';
 
 import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import { space } from 'lib/html-entities';
 import ApiKeyModal from 'ui/apiKey/ApiKeyModal/ApiKeyModal';
 import ApiKeyListItem from 'ui/apiKey/ApiKeyTable/ApiKeyListItem';
 import ApiKeyTable from 'ui/apiKey/ApiKeyTable/ApiKeyTable';
 import DeleteApiKeyModal from 'ui/apiKey/DeleteApiKeyModal';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
+import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import SkeletonAccountMobile from 'ui/shared/SkeletonAccountMobile';
 import SkeletonTable from 'ui/shared/SkeletonTable';
-
-import DataFetchAlert from '../shared/DataFetchAlert';
 
 const DATA_LIMIT = 3;
 
@@ -27,6 +27,7 @@ const ApiKeysPage: React.FC = () => {
   const deleteModalProps = useDisclosure();
   const isMobile = useIsMobile();
   const fetch = useFetch();
+  useRedirectForInvalidAuthToken();
 
   const [ apiKeyModalData, setApiKeyModalData ] = useState<ApiKey>();
   const [ deleteModalData, setDeleteModalData ] = useState<ApiKey>();
@@ -56,7 +57,7 @@ const ApiKeysPage: React.FC = () => {
   const description = (
     <AccountPageDescription>
       Create API keys to use for your RPC and EthRPC API requests. For more information, see { space }
-      <Link href="#">“How to use a Blockscout API key”</Link>.
+      <Link href="https://docs.blockscout.com/for-users/api#api-keys" target="_blank">“How to use a Blockscout API key”</Link>.
     </AccountPageDescription>
   );
 
@@ -106,7 +107,12 @@ const ApiKeysPage: React.FC = () => {
       <>
         { description }
         { Boolean(data.length) && list }
-        <Stack marginTop={ 8 } spacing={ 5 } direction={{ base: 'column', lg: 'row' }}>
+        <Stack
+          marginTop={ 8 }
+          spacing={ 5 }
+          direction={{ base: 'column', lg: 'row' }}
+          align={{ base: 'start', lg: 'center' }}
+        >
           <Button
             size="lg"
             onClick={ apiKeyModalProps.onOpen }

@@ -46,14 +46,21 @@ const HashStringShortenDynamic = ({ hash, fontWeight = '400' }: Props) => {
     const parentWidth = getWidth(parent);
 
     if (getWidth(shadowEl) > parentWidth) {
-      for (let i = 1; i <= hash.length - TAIL_LENGTH - HEAD_MIN_LENGTH; i++) {
-        const res = hash.slice(0, hash.length - i - TAIL_LENGTH) + '...' + hash.slice(-TAIL_LENGTH);
+      const tail = hash.slice(-TAIL_LENGTH);
+      let leftI = HEAD_MIN_LENGTH;
+      let rightI = hash.length - TAIL_LENGTH;
+
+      while (rightI - leftI > 1) {
+        const medI = ((rightI - leftI) % 2) ? leftI + (rightI - leftI + 1) / 2 : leftI + (rightI - leftI) / 2;
+        const res = hash.slice(0, medI) + '...' + tail;
         shadowEl.textContent = res;
-        if (getWidth(shadowEl) < parentWidth || i === hash.length - TAIL_LENGTH - HEAD_MIN_LENGTH) {
-          setDisplayedString(res);
-          break;
+        if (getWidth(shadowEl) < parentWidth) {
+          leftI = medI;
+        } else {
+          rightI = medI;
         }
       }
+      setDisplayedString(hash.slice(0, rightI - 1) + '...' + tail);
     } else {
       setDisplayedString(hash);
     }

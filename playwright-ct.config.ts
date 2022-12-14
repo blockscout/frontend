@@ -1,5 +1,8 @@
 import type { PlaywrightTestConfig } from '@playwright/experimental-ct-react';
 import { devices } from '@playwright/experimental-ct-react';
+import react from '@vitejs/plugin-react';
+import svgr from 'vite-plugin-svgr';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -9,8 +12,7 @@ const config: PlaywrightTestConfig = {
 
   testMatch: /.*\.pw\.tsx/,
 
-  /* The base directory, relative to the config file, for snapshot files created with toMatchSnapshot and toHaveScreenshot. */
-  snapshotDir: './__snapshots__',
+  snapshotPathTemplate: '{testDir}/{testFileDir}/__screenshots__/{testFileName}_{projectName}_{arg}{ext}',
 
   /* Maximum time one test can run for. */
   timeout: 10 * 1000,
@@ -40,26 +42,58 @@ const config: PlaywrightTestConfig = {
     ctPort: 3100,
 
     headless: true,
+
+    ctViteConfig: {
+      plugins: [
+        tsconfigPaths(),
+        react(),
+        svgr({
+          exportAsDefault: true,
+        }),
+      ],
+    },
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chromium',
+      name: 'default',
+      grepInvert: /-@default/,
       use: {
         ...devices['Desktop Chrome'],
+        viewport: { width: 1200, height: 750 },
       },
     },
     {
-      name: 'firefox',
+      name: 'mobile',
+      grep: /\+@mobile/,
       use: {
-        ...devices['Desktop Firefox'],
+        ...devices['iPhone 13 Pro'],
       },
     },
     {
-      name: 'webkit',
+      name: 'desktop xl',
+      grep: /\+@desktop-xl/,
       use: {
-        ...devices['Desktop Safari'],
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1600, height: 1000 },
+      },
+    },
+    {
+      name: 'dark color mode',
+      grep: /\+@dark-mode/,
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1200, height: 750 },
+        colorScheme: 'dark',
+      },
+    },
+    {
+      name: 'dark color mode mobile',
+      grep: /\+@dark-mode-mobile/,
+      use: {
+        ...devices['iPhone 13 Pro'],
+        colorScheme: 'dark',
       },
     },
   ],

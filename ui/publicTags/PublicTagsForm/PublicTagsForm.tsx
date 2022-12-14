@@ -5,6 +5,7 @@ import {
   GridItem,
   Text,
   HStack,
+  chakra,
 } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
@@ -60,7 +61,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
   const fetch = useFetch();
   const inputSize = { base: 'md', lg: 'lg' };
 
-  const { control, handleSubmit, formState: { errors, isValid }, setError } = useForm<Inputs>({
+  const { control, handleSubmit, formState: { errors, isValid, isDirty }, setError } = useForm<Inputs>({
     defaultValues: {
       fullName: data?.full_name || '',
       email: data?.email || '',
@@ -72,7 +73,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
       comment: data?.additional_comment || '',
       action: data?.is_owner === undefined || data?.is_owner ? 'add' : 'report',
     },
-    mode: 'all',
+    mode: 'onTouched',
   });
 
   const { fields, append, remove } = useFieldArray({
@@ -122,7 +123,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
           });
         }
 
-        return [ ...(prevData || []), response ];
+        return [ response, ...(prevData || []) ];
       });
 
       changeToDataScreen(true);
@@ -145,13 +146,13 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
     mutation.mutate(data);
   }, [ mutation ]);
 
-  const changeToData = useCallback(() => {
-    setAlertVisible(false);
-    changeToDataScreen(false);
-  }, [ changeToDataScreen ]);
-
   return (
-    <Box width={{ base: 'auto', lg: `calc(100% - ${ ADDRESS_INPUT_BUTTONS_WIDTH }px)` }} maxWidth="844px">
+    <chakra.form
+      noValidate
+      width={{ base: 'auto', lg: `calc(100% - ${ ADDRESS_INPUT_BUTTONS_WIDTH }px)` }}
+      maxWidth="844px"
+      onSubmit={ handleSubmit(onSubmit) }
+    >
       { isAlertVisible && <Box mb={ 4 }><FormSubmitAlert/></Box> }
       <Text size="sm" variant="secondary" paddingBottom={ 5 }>Company info</Text>
       <Grid templateColumns={{ base: '1fr', lg: '1fr 1fr' }} rowGap={ 4 } columnGap={ 5 }>
@@ -230,22 +231,14 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
       <HStack spacing={ 6 }>
         <Button
           size="lg"
-          onClick={ handleSubmit(onSubmit) }
-          disabled={ !isValid }
+          type="submit"
+          disabled={ !isValid || !isDirty }
           isLoading={ mutation.isLoading }
         >
           Send request
         </Button>
-        <Button
-          size="lg"
-          variant="outline"
-          onClick={ changeToData }
-          disabled={ mutation.isLoading }
-        >
-          Cancel
-        </Button>
       </HStack>
-    </Box>
+    </chakra.form>
   );
 };
 

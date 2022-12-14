@@ -26,7 +26,8 @@ const AccountPageDescription = ({ children }: {children: React.ReactNode}) => {
     return function cleanup() {
       window.removeEventListener('resize', resizeHandler);
     };
-  }, [ calculateCut ]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ ]);
 
   const expand = useCallback(() => {
     setExpanded(true);
@@ -38,7 +39,7 @@ const AccountPageDescription = ({ children }: {children: React.ReactNode}) => {
   );
 
   return (
-    <Box position="relative" marginBottom={{ base: 6, lg: 12 }}>
+    <Box position="relative" marginBottom={{ base: 6, lg: 8 }}>
       <Text
         ref={ ref }
         maxHeight={ needCut && !expanded ? `${ CUT_HEIGHT }px` : 'auto' }

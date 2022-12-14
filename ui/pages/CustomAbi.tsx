@@ -7,23 +7,24 @@ import { QueryKeys } from 'types/client/accountQueries';
 
 import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import CustomAbiModal from 'ui/customAbi/CustomAbiModal/CustomAbiModal';
 import CustomAbiListItem from 'ui/customAbi/CustomAbiTable/CustomAbiListItem';
 import CustomAbiTable from 'ui/customAbi/CustomAbiTable/CustomAbiTable';
 import DeleteCustomAbiModal from 'ui/customAbi/DeleteCustomAbiModal';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
+import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import SkeletonAccountMobile from 'ui/shared/SkeletonAccountMobile';
 import SkeletonTable from 'ui/shared/SkeletonTable';
-
-import DataFetchAlert from '../shared/DataFetchAlert';
 
 const CustomAbiPage: React.FC = () => {
   const customAbiModalProps = useDisclosure();
   const deleteModalProps = useDisclosure();
   const isMobile = useIsMobile();
   const fetch = useFetch();
+  useRedirectForInvalidAuthToken();
 
   const [ customAbiModalData, setCustomAbiModalData ] = useState<CustomAbi>();
   const [ deleteModalData, setDeleteModalData ] = useState<CustomAbi>();

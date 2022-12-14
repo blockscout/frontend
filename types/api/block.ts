@@ -16,10 +16,10 @@ export interface Block {
   total_difficulty: string;
   gas_used: string | null;
   gas_limit: string;
-  nonce: number;
-  base_fee_per_gas: number | null;
-  burnt_fees: number | null;
-  priority_fee: number | null;
+  nonce: string;
+  base_fee_per_gas: string | null;
+  burnt_fees: string | null;
+  priority_fee: string | null;
   extra_data: string | null;
   state_root: string | null;
   rewards?: Array<Reward>;
@@ -36,14 +36,23 @@ export interface BlocksResponse {
   next_page_params: {
     block_number: number;
     items_count: number;
-  };
+  } | null;
 }
 
 export interface BlockTransactionsResponse {
   items: Array<Transaction>;
   next_page_params: {
     block_number: number;
-    index: number;
     items_count: number;
+    index: number;
   } | null;
+}
+
+export interface NewBlockSocketResponse {
+  average_block_time: string;
+  block: Block;
+}
+
+export interface BlockFilters {
+  type?: BlockType;
 }

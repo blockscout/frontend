@@ -7,7 +7,7 @@ import HashStringShorten from 'ui/shared/HashStringShorten';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 interface Props {
-  type?: 'address' | 'transaction' | 'token' | 'block';
+  type?: 'address' | 'transaction' | 'token' | 'block' | 'token_instance_item';
   alias?: string | null;
   className?: string;
   hash: string;
@@ -17,12 +17,14 @@ interface Props {
   target?: HTMLAttributeAnchorTarget;
 }
 
-const AddressLink = ({ alias, type, className, truncation = 'dynamic', hash, id, fontWeight, target }: Props) => {
+const AddressLink = ({ alias, type, className, truncation = 'dynamic', hash, id, fontWeight, target = '_self' }: Props) => {
   let url;
   if (type === 'transaction') {
     url = link('tx', { id: id || hash });
   } else if (type === 'token') {
     url = link('token_index', { hash: id || hash });
+  } else if (type === 'token_instance_item') {
+    url = link('token_instance_item', { hash, id });
   } else if (type === 'block') {
     url = link('block', { id: id || hash });
   } else {
@@ -33,17 +35,17 @@ const AddressLink = ({ alias, type, className, truncation = 'dynamic', hash, id,
     if (alias) {
       return (
         <Tooltip label={ hash }>
-          <Box overflow="hidden" textOverflow="ellipsis">{ alias }</Box>
+          <Box overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">{ alias }</Box>
         </Tooltip>
       );
     }
     switch (truncation) {
       case 'constant':
-        return <HashStringShorten hash={ hash }/>;
+        return <HashStringShorten hash={ id || hash }/>;
       case 'dynamic':
-        return <HashStringShortenDynamic hash={ hash } fontWeight={ fontWeight }/>;
+        return <HashStringShortenDynamic hash={ id || hash } fontWeight={ fontWeight }/>;
       case 'none':
-        return <span>{ hash }</span>;
+        return <span>{ id || hash }</span>;
     }
   })();
 
@@ -51,7 +53,7 @@ const AddressLink = ({ alias, type, className, truncation = 'dynamic', hash, id,
     <Link
       className={ className }
       href={ url }
-      target={ target || '_blank' }
+      target={ target }
       overflow="hidden"
       whiteSpace="nowrap"
     >

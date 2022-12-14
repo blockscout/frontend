@@ -1,17 +1,23 @@
 import type { NextPage } from 'next';
+import Head from 'next/head';
 import React from 'react';
 
 import type { PageParams } from 'lib/next/tx/types';
 
-import TransactionNextPage from 'lib/next/tx/TransactionNextPage';
+import getSeo from 'lib/next/tx/getSeo';
+import Transaction from 'ui/pages/Transaction';
 
-type Props = {
-  pageParams: PageParams;
-}
+const TransactionPage: NextPage<PageParams> = ({ id }: PageParams) => {
+  const { title, description } = getSeo({ id });
 
-const TransactionPage: NextPage<Props> = ({ pageParams }: Props) => {
   return (
-    <TransactionNextPage pageParams={ pageParams }/>
+    <>
+      <Head>
+        <title>{ title }</title>
+        <meta name="description" content={ description }/>
+      </Head>
+      <Transaction/>
+    </>
   );
 };
 

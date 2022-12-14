@@ -1,3 +1,0 @@
-#!/bin/sh
-yarn install
-yarn test-ct

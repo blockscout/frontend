@@ -1,4 +1,4 @@
-import { Button, Flex, Icon, IconButton } from '@chakra-ui/react';
+import { Button, Flex, Icon, IconButton, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import arrowIcon from 'icons/arrows/east-mini.svg';
@@ -10,12 +10,15 @@ export type Props = {
   resetPage: () => void;
   hasNextPage: boolean;
   hasPaginationParams?: boolean;
+  className?: string;
+  canGoBackwards: boolean;
 }
 
-const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasNextPage, hasPaginationParams }: Props) => {
+const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasNextPage, hasPaginationParams, className, canGoBackwards }: Props) => {
 
   return (
     <Flex
+      className={ className }
       fontSize="sm"
       alignItems="center"
     >
@@ -35,8 +38,8 @@ const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasNext
         aria-label="Next page"
         w="36px"
         icon={ <Icon as={ arrowIcon } w={ 5 } h={ 5 }/> }
-        mr={ 6 }
-        disabled={ page === 1 }
+        mr={ 3 }
+        disabled={ !canGoBackwards || page === 1 }
       />
       <Button
         variant="outline"
@@ -57,7 +60,7 @@ const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasNext
         aria-label="Next page"
         w="36px"
         icon={ <Icon as={ arrowIcon } w={ 5 } h={ 5 } transform="rotate(180deg)"/> }
-        ml={ 6 }
+        ml={ 3 }
         disabled={ !hasNextPage }
       />
       { /* not implemented yet */ }
@@ -69,4 +72,4 @@ const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasNext
   );
 };
 
-export default Pagination;
+export default chakra(Pagination);

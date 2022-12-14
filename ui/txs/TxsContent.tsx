@@ -1,99 +1,97 @@
-import { Alert, Box, Show } from '@chakra-ui/react';
-import React, { useState, useCallback } from 'react';
+import { Text, Box, Show, Hide } from '@chakra-ui/react';
+import type { UseQueryResult } from '@tanstack/react-query';
+import React from 'react';
 
-import type { TTxsFilters } from 'types/api/txsFilters';
-import type { QueryKeys } from 'types/client/queries';
-import type { Sort } from 'types/client/txs-sort';
+import type { TxsResponse } from 'types/api/transaction';
 
-import * as cookies from 'lib/cookies';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
+import type { Props as PaginationProps } from 'ui/shared/Pagination';
 
-import TxsHeader from './TxsHeader';
+import TxsHeaderMobile from './TxsHeaderMobile';
+import TxsListItem from './TxsListItem';
+import TxsNewItemNotice from './TxsNewItemNotice';
 import TxsSkeletonDesktop from './TxsSkeletonDesktop';
 import TxsSkeletonMobile from './TxsSkeletonMobile';
-import TxsWithSort from './TxsWithSort';
-import useQueryWithPages from './useQueryWithPages';
+import TxsTable from './TxsTable';
+import useTxsSort from './useTxsSort';
+
+type QueryResult = UseQueryResult<TxsResponse> & {
+  pagination: PaginationProps;
+};
 
 type Props = {
-  queryName: QueryKeys;
-  showDescription?: boolean;
-  stateFilter?: TTxsFilters['filter'];
-  apiPath: string;
+  query: QueryResult;
+  showBlockInfo?: boolean;
+  showSocketInfo?: boolean;
+  currentAddress?: string;
+  filter?: React.ReactNode;
 }
 
-const TxsContent = ({
-  queryName,
-  showDescription,
-  stateFilter,
-  apiPath,
-}: Props) => {
-  const [ sorting, setSorting ] = useState<Sort>(cookies.get(cookies.NAMES.TXS_SORT) as Sort || '');
-  // const [ filters, setFilters ] = useState<Partial<TTxsFilters>>({ type: [], method: [] });
+const TxsContent = ({ filter, query, showBlockInfo = true, showSocketInfo = true, currentAddress }: Props) => {
+  const { data, isLoading, isError, setSortByField, setSortByValue, sorting } = useTxsSort(query);
+  const isPaginatorHidden = !isLoading && !isError && query.pagination.page === 1 && !query.pagination.hasNextPage;
+  const isMobile = useIsMobile();
 
-  const sort = useCallback((field: 'val' | 'fee') => () => {
-    setSorting((prevVal) => {
-      let newVal: Sort = '';
-      if (field === 'val') {
-        if (prevVal === 'val-asc') {
-          newVal = '';
-        } else if (prevVal === 'val-desc') {
-          newVal = 'val-asc';
-        } else {
-          newVal = 'val-desc';
-        }
-      }
-      if (field === 'fee') {
-        if (prevVal === 'fee-asc') {
-          newVal = '';
-        } else if (prevVal === 'fee-desc') {
-          newVal = 'fee-asc';
-        } else {
-          newVal = 'fee-desc';
-        }
-      }
-      cookies.set(cookies.NAMES.TXS_SORT, newVal);
-      return newVal;
-    });
-  }, [ ]);
+  const content = (() => {
+    if (isError) {
+      return <DataFetchAlert/>;
+    }
 
-  const {
-    data,
-    isLoading,
-    isError,
-    pagination,
-  } = useQueryWithPages(apiPath, queryName, stateFilter && { filter: stateFilter });
-  // } = useQueryWithPages({ ...filters, filter: stateFilter, apiPath });
+    if (isLoading) {
+      return (
+        <>
+          <Show below="lg" ssr={ false }><TxsSkeletonMobile showBlockInfo={ showBlockInfo }/></Show>
+          <Hide below="lg" ssr={ false }><TxsSkeletonDesktop showBlockInfo={ showBlockInfo }/></Hide>
+        </>
+      );
+    }
 
-  if (isError) {
-    return <DataFetchAlert/>;
-  }
+    const txs = data.items;
 
-  const txs = data?.items;
+    if (!txs.length) {
+      return <Text as="span">There are no transactions.</Text>;
+    }
 
-  if (!isLoading && !txs) {
-    return <Alert>There are no transactions.</Alert>;
-  }
-
-  let content = (
-    <>
-      <Show below="lg" ssr={ false }><TxsSkeletonMobile/></Show>
-      <Show above="lg" ssr={ false }><TxsSkeletonDesktop/></Show>
-    </>
-  );
-
-  if (!isLoading && txs) {
-    content = <TxsWithSort txs={ txs } sorting={ sorting } sort={ sort }/>;
-  }
-
-  const paginationProps = {
-    ...pagination,
-    hasNextPage: data?.next_page_params !== undefined && data?.next_page_params !== null && Object.keys(data?.next_page_params).length > 0,
-  };
+    return (
+      <>
+        <Show below="lg" ssr={ false }>
+          <Box>
+            { showSocketInfo && (
+              <TxsNewItemNotice url={ window.location.href }>
+                { ({ content }) => <Box>{ content }</Box> }
+              </TxsNewItemNotice>
+            ) }
+            { txs.map(tx => <TxsListItem tx={ tx } key={ tx.hash } showBlockInfo={ showBlockInfo } currentAddress={ currentAddress }/>) }
+          </Box>
+        </Show>
+        <Hide below="lg" ssr={ false }>
+          <TxsTable
+            txs={ txs }
+            sort={ setSortByField }
+            sorting={ sorting }
+            showBlockInfo={ showBlockInfo }
+            showSocketInfo={ showSocketInfo }
+            top={ isPaginatorHidden ? 0 : 80 }
+            currentAddress={ currentAddress }
+          />
+        </Hide>
+      </>
+    );
+  })();
 
   return (
     <>
-      { showDescription && <Box mb={ 12 }>Only the first 10,000 elements are displayed</Box> }
-      <TxsHeader sorting={ sorting } setSorting={ setSorting } paginationProps={ paginationProps }/>
+      { isMobile && (
+        <TxsHeaderMobile
+          mt={ -6 }
+          sorting={ sorting }
+          setSorting={ setSortByValue }
+          paginationProps={ query.pagination }
+          showPagination={ !isPaginatorHidden }
+          filterComponent={ filter }
+        />
+      ) }
       { content }
     </>
   );

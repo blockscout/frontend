@@ -11,12 +11,21 @@ import appConfig from 'configs/app/config';
 //     title: 'Anyblock',
 //     baseUrl: 'https://explorer.anyblock.tools',
 //     paths: {
-//       tx: '/ethereum/poa/core/tx',
+//       tx: '/ethereum/ethereum/goerli/transaction',
+//       address: '/ethereum/ethereum/goerli/address'
+//     },
+//   },
+//   {
+//     title: 'Etherscan',
+//     baseUrl: 'https://goerli.etherscan.io/',
+//     paths: {
+//       tx: '/tx',
+//       address: '/address',
 //     },
 //   },
 // ]).replaceAll('"', '\'');
 
-const stripTrailingSlash = (str: string) => str.at(-1) === '/' ? str.slice(0, -1) : str;
+const stripTrailingSlash = (str: string) => str[str.length - 1] === '/' ? str.slice(0, -1) : str;
 const addLeadingSlash = (str: string) => str.at(0) === '/' ? str : '/' + str;
 
 const networkExplorers: Array<NetworkExplorer> = (() => {

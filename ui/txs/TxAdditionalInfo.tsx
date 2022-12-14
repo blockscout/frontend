@@ -9,7 +9,7 @@ import getValueWithUnit from 'lib/getValueWithUnit';
 import link from 'lib/link/link';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import TextSeparator from 'ui/shared/TextSeparator';
-import Utilization from 'ui/shared/Utilization';
+import Utilization from 'ui/shared/Utilization/Utilization';
 
 const TxAdditionalInfo = ({ tx }: { tx: Transaction }) => {
   const sectionBorderColor = useColorModeValue('gray.200', 'whiteAlpha.200');
@@ -28,7 +28,7 @@ const TxAdditionalInfo = ({ tx }: { tx: Transaction }) => {
 
   return (
     <>
-      <Heading as="h4" fontSize="18px" mb={ 6 }>Additional info </Heading>
+      <Heading as="h4" size="sm" mb={ 6 }>Additional info </Heading>
       <Box { ...sectionProps } mb={ 4 }>
         <Text { ...sectionTitleProps }>Transaction fee</Text>
         <Flex>

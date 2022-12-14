@@ -2,12 +2,13 @@ import { Grid, GridItem, Text, Icon, Link, Box, Tooltip, Alert } from '@chakra-u
 import { useQuery } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import capitalize from 'lodash/capitalize';
+import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
 import type { Block } from 'types/api/block';
-import { QueryKeys } from 'types/client/accountQueries';
+import { QueryKeys } from 'types/client/queries';
 
 import appConfig from 'configs/app/config';
 import clockIcon from 'icons/clock.svg';
@@ -29,7 +30,7 @@ import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import PrevNext from 'ui/shared/PrevNext';
 import TextSeparator from 'ui/shared/TextSeparator';
-import Utilization from 'ui/shared/Utilization';
+import Utilization from 'ui/shared/Utilization/Utilization';
 
 const BlockDetails = () => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
@@ -109,9 +110,11 @@ const BlockDetails = () => {
         title="Transactions"
         hint="The number of transactions in the block."
       >
-        <Link href={ link('block', { id: router.query.id }, { tab: 'txs' }) }>
-          { data.tx_count } transactions
-        </Link>
+        <NextLink href={ link('block', { id: router.query.id }, { tab: 'txs' }) } passHref>
+          <Link>
+            { data.tx_count } transactions
+          </Link>
+        </NextLink>
       </DetailsInfoItem>
       <DetailsInfoItem
         title={ appConfig.network.verificationType === 'validation' ? 'Validated by' : 'Mined by' }
@@ -225,7 +228,7 @@ const BlockDetails = () => {
           </Tooltip>
         ) }
       </DetailsInfoItem>
-      { data.priority_fee !== null && data.priority_fee > 0 && (
+      { data.priority_fee !== null && BigNumber(data.priority_fee).gt(ZERO) && (
         <DetailsInfoItem
           title="Priority fee / Tip"
           hint="User-defined tips sent to validator for transaction priority/inclusion."
@@ -266,12 +269,16 @@ const BlockDetails = () => {
           <DetailsInfoItem
             title="Difficulty"
             hint={ `Block difficulty for ${ validatorTitle }, used to calibrate block generation time.` }
+            whiteSpace="normal"
+            wordBreak="break-all"
           >
             { BigNumber(data.difficulty).toFormat() }
           </DetailsInfoItem>
           <DetailsInfoItem
             title="Total difficulty"
             hint="Total difficulty of the chain until this block."
+            whiteSpace="normal"
+            wordBreak="break-all"
           >
             { BigNumber(data.total_difficulty).toFormat() }
           </DetailsInfoItem>

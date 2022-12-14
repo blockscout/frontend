@@ -1,23 +1,27 @@
-import { Box, Flex, Alert, Show } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
+import { Box, Text, Show, Hide } from '@chakra-ui/react';
 import React from 'react';
 
-import type { InternalTransactionsResponse, TxInternalsType, InternalTransaction } from 'types/api/internalTransaction';
+import type { InternalTransaction } from 'types/api/internalTransaction';
 import { QueryKeys } from 'types/client/queries';
 
-import useFetch from 'lib/hooks/useFetch';
+import { SECOND } from 'lib/consts';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import { apos } from 'lib/html-entities';
 import EmptySearchResult from 'ui/apps/EmptySearchResult';
+import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import FilterInput from 'ui/shared/FilterInput';
-import TxInternalsFilter from 'ui/tx/internals/TxInternalsFilter';
+// import FilterInput from 'ui/shared/FilterInput';
+// import TxInternalsFilter from 'ui/tx/internals/TxInternalsFilter';
+import Pagination from 'ui/shared/Pagination';
 import TxInternalsList from 'ui/tx/internals/TxInternalsList';
 import TxInternalsSkeletonDesktop from 'ui/tx/internals/TxInternalsSkeletonDesktop';
 import TxInternalsSkeletonMobile from 'ui/tx/internals/TxInternalsSkeletonMobile';
 import TxInternalsTable from 'ui/tx/internals/TxInternalsTable';
 import type { Sort, SortField } from 'ui/tx/internals/utils';
+import TxPendingAlert from 'ui/tx/TxPendingAlert';
+import TxSocketAlert from 'ui/tx/TxSocketAlert';
+import useFetchTxInfo from 'ui/tx/useFetchTxInfo';
 
 const SORT_SEQUENCE: Record<SortField, Array<Sort | undefined>> = {
   value: [ 'value-desc', 'value-asc', undefined ],
@@ -58,33 +62,34 @@ const sortFn = (sort: Sort | undefined) => (a: InternalTransaction, b: InternalT
   }
 };
 
-const searchFn = (searchTerm: string) => (item: InternalTransaction): boolean => {
-  const formattedSearchTerm = searchTerm.toLowerCase();
-  return item.type.toLowerCase().includes(formattedSearchTerm) ||
-    item.from.hash.toLowerCase().includes(formattedSearchTerm) ||
-    item.to.hash.toLowerCase().includes(formattedSearchTerm);
-};
+// const searchFn = (searchTerm: string) => (item: InternalTransaction): boolean => {
+//   const formattedSearchTerm = searchTerm.toLowerCase();
+//   return item.type.toLowerCase().includes(formattedSearchTerm) ||
+//     item.from.hash.toLowerCase().includes(formattedSearchTerm) ||
+//     item.to.hash.toLowerCase().includes(formattedSearchTerm);
+// };
 
 const TxInternals = () => {
-  const router = useRouter();
-  const fetch = useFetch();
-
-  const [ filters, setFilters ] = React.useState<Array<TxInternalsType>>([]);
-  const [ searchTerm, setSearchTerm ] = React.useState<string>('');
+  // filters are not implemented yet in api
+  // const [ filters, setFilters ] = React.useState<Array<TxInternalsType>>([]);
+  // const [ searchTerm, setSearchTerm ] = React.useState<string>('');
   const [ sort, setSort ] = React.useState<Sort>();
-  const { data, isLoading, isError } = useQuery<unknown, unknown, InternalTransactionsResponse>(
-    [ QueryKeys.txInternals, router.query.id ],
-    async() => await fetch(`/node-api/transactions/${ router.query.id }/internal-transactions`),
-    {
-      enabled: Boolean(router.query.id),
+  const txInfo = useFetchTxInfo({ updateDelay: 5 * SECOND });
+  const { data, isLoading, isError, pagination } = useQueryWithPages({
+    apiPath: `/node-api/transactions/${ txInfo.data?.hash }/internal-transactions`,
+    queryName: QueryKeys.txInternals,
+    queryIds: txInfo.data?.hash ? [ txInfo.data.hash ] : undefined,
+    options: {
+      enabled: Boolean(txInfo.data?.hash) && Boolean(txInfo.data?.status),
     },
-  );
+  });
+  const isPaginatorHidden = !isLoading && !isError && pagination.page === 1 && !pagination.hasNextPage;
 
   const isMobile = useIsMobile();
 
-  const handleFilterChange = React.useCallback((nextValue: Array<TxInternalsType>) => {
-    setFilters(nextValue);
-  }, []);
+  // const handleFilterChange = React.useCallback((nextValue: Array<TxInternalsType>) => {
+  //   setFilters(nextValue);
+  // }, []);
 
   const handleSortToggle = React.useCallback((field: SortField) => {
     return () => {
@@ -92,27 +97,32 @@ const TxInternals = () => {
     };
   }, []);
 
-  if (isLoading) {
+  if (!txInfo.isLoading && !txInfo.isError && !txInfo.data.status) {
+    return txInfo.socketStatus ? <TxSocketAlert status={ txInfo.socketStatus }/> : <TxPendingAlert/>;
+  }
+
+  if (isLoading || txInfo.isLoading) {
     return (
       <>
         <Show below="lg"><TxInternalsSkeletonMobile/></Show>
-        <Show above="lg"><TxInternalsSkeletonDesktop/></Show>
+        <Hide below="lg"><TxInternalsSkeletonDesktop/></Hide>
       </>
     );
   }
 
-  if (isError) {
+  if (isError || txInfo.isError) {
     return <DataFetchAlert/>;
   }
 
   if (data.items.length === 0) {
-    return <Alert>There are no internal transactions for this transaction.</Alert>;
+    return <Text as="span">There are no internal transactions for this transaction.</Text>;
   }
 
   const content = (() => {
     const filteredData = data.items
-      .filter(({ type }) => filters.length > 0 ? filters.includes(type) : true)
-      .filter(searchFn(searchTerm))
+      .slice()
+      // .filter(({ type }) => filters.length > 0 ? filters.includes(type) : true)
+      // .filter(searchFn(searchTerm))
       .sort(sortFn(sort));
 
     if (filteredData.length === 0) {
@@ -121,15 +131,20 @@ const TxInternals = () => {
 
     return isMobile ?
       <TxInternalsList data={ filteredData }/> :
-      <TxInternalsTable data={ filteredData } sort={ sort } onSortToggle={ handleSortToggle }/>;
+      <TxInternalsTable data={ filteredData } sort={ sort } onSortToggle={ handleSortToggle } top={ isPaginatorHidden ? 0 : 80 }/>;
   })();
 
   return (
     <Box>
-      <Flex mb={ 6 }>
+      { !isPaginatorHidden && (
+        <ActionBar mt={ -6 }>
+          <Pagination ml="auto" { ...pagination }/>
+        </ActionBar>
+      ) }
+      { /* <Flex mb={ 6 }>
         <TxInternalsFilter onFilterChange={ handleFilterChange } defaultFilters={ filters } appliedFiltersNum={ filters.length }/>
         <FilterInput onChange={ setSearchTerm } maxW="360px" ml={ 3 } size="xs" placeholder="Search by addresses, hash, method..."/>
-      </Flex>
+      </Flex> */ }
       { content }
     </Box>
   );

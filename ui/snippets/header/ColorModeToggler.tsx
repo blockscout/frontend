@@ -21,7 +21,9 @@ import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 export interface ColorModeTogglerProps
   extends Omit<UseCheckboxProps, 'isIndeterminate'>,
   Omit<HTMLChakraProps<'label'>, keyof UseCheckboxProps>,
-  ThemingProps<'Switch'> {}
+  ThemingProps<'Switch'> {
+  trackBg?: string;
+}
 
 const ColorModeToggler = forwardRef<ColorModeTogglerProps, 'input'>((props, ref) => {
   const ownProps = omitThemingProps(props);
@@ -39,7 +41,7 @@ const ColorModeToggler = forwardRef<ColorModeTogglerProps, 'input'>((props, ref)
   const transitionProps = getDefaultTransitionProps();
 
   const trackStyles: SystemStyleObject = React.useMemo(() => ({
-    bg: trackBg,
+    bgColor: props.trackBg || trackBg,
     width: '72px',
     height: '32px',
     borderRadius: 'full',
@@ -50,7 +52,7 @@ const ColorModeToggler = forwardRef<ColorModeTogglerProps, 'input'>((props, ref)
     cursor: 'pointer',
     ...transitionProps,
     transitionDuration: 'ultra-slow',
-  }), [ trackBg, transitionProps ]);
+  }), [ props.trackBg, trackBg, transitionProps ]);
 
   const thumbStyles: SystemStyleObject = React.useMemo(() => ({
     bg: thumbBg,

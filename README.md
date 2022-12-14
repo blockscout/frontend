@@ -30,7 +30,7 @@ For local development please follow next steps:
 ## Components visual testing
 
 We use [playwright experimental components testing](https://playwright.dev/docs/test-components) for visual (screenshots) CI check. Test renders a single component in headless browser in docker, generates screenshots and then compares this screenshot with a reference one.
-To perform testing locally you need to install docker and run `yarn test-docker`
+To perform testing locally you need to install docker and run `yarn test:pw:docker`
 
 ## Environment variables
 
@@ -52,6 +52,7 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS | `string` | Address of network's native token | `0x029a799563238d0e75e20be2f4bda0ea68d00172` |
 | NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME | `string` *(optional)* | Network name for constructing url of token logos according to template `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${assetsNamePath}/assets/${tokenAddress}/logo.png`. It should match network name in TrustWallet assets repo, see the full list [here](https://github.com/trustwallet/assets/tree/master/blockchains) | `ethereum` |
 | NEXT_PUBLIC_NETWORK_LOGO | `string` *(optional)* | Network logo; if not provided, will fallback to logo predefined in the project; if the project doesn't have logo for such network then the common placeholder will be shown; *Note* that logo height should be 20px and width less than 120px | `https://www.fillmurray.com/240/40` |
+| NEXT_PUBLIC_NETWORK_SMALL_LOGO | `string` *(optional)* | Small version of network logo; if not provided, will fallback to logo predefined in the project; if the project doesn't have logo for such network then the common placeholder will be shown; *Note* that logo should have square format (e.g 60px by 60px) | `https://www.fillmurray.com/60/60` |
 | NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED | `boolean` *(optional)* | Set to true if network has account feature | `true` |
 
 ### UI configuration
@@ -64,13 +65,19 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_FOOTER_TWITTER_LINK | `string` *(optional)* | Link to Twitter in the footer | `https://www.twitter.com/blockscoutcom` |
 | NEXT_PUBLIC_FOOTER_TELEGRAM_LINK | `string` *(optional)* | Link to Telegram in the footer | `https://t.me/poa_network` |
 | NEXT_PUBLIC_FOOTER_STAKING_LINK | `string` *(optional)* | Link to staking dashboard in the footer | `https://duneanalytics.com/maxaleks/xdai-staking` |
-| NEXT_PUBLIC_MARKETPLACE_APP_LIST | `Array<MarketplaceApp>` where `MarketplaceApp` can have following [properties](#marketplace-app-configuration-properties) | List of apps that will be shown on the marketplace page | `[{'author': 'Bob', 'id': 'app', 'title': 'The App', 'logo': 'https://foo.app/icon.png', 'categories': ['security'], 'shortDescription': 'Awesome app', 'site': 'https://foo.app', 'description': 'The best app', 'url': 'https://foo.app/launch'}]` |
+| NEXT_PUBLIC_MARKETPLACE_APP_LIST | `Array<MarketplaceApp>` where `MarketplaceApp` can have following [properties](#marketplace-app-configuration-properties) | List of apps that will be shown on the marketplace page | `[{'author': 'Bob', 'id': 'app', 'external': true, 'title': 'The App', 'logo': 'https://foo.app/icon.png', 'categories': ['security'], 'shortDescription': 'Awesome app', 'site': 'https://foo.app', 'description': 'The best app', 'url': 'https://foo.app/launch'}]` |
 | NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM | `string` | Link to form where authors can submit their dapps to the marketplace | `https://airtable.com/shrqUAcjgGJ4jU88C` |
 | NEXT_PUBLIC_NETWORK_EXPLORERS | `Array<NetworkExplorer>` where `NetworkExplorer` can have following [properties](#network-explorer-configuration-properties) | Used to build up links to transactions, blocks, addresses in other chain explorers.  | `[{'title':'Anyblock','baseUrl':'https://explorer.anyblock.tools','paths':{'tx':'/ethereum/poa/core/tx'}}]` |
 | NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE | `validation` or `mining` *(optional)* | Verification type in the network | `mining` |
+| NEXT_PUBLIC_AUTH_URL | `string` *(optional)* | Account auth base url; the login path (`/auth/auth0`) will be added to it at execution time | `https://blockscout.com` |
 | NEXT_PUBLIC_LOGOUT_URL | `string` *(optional)* | Account logout url | `https://blockscoutcom.us.auth0.com/v2/logout` |
 | NEXT_PUBLIC_LOGOUT_RETURN_URL | `string` *(optional)* | Account logout return url | `https://blockscout.com/poa/core/auth/logout` |
-
+| NEXT_PUBLIC_HOMEPAGE_CHARTS | `Array<'daily_txs' \| 'coin_price' \| 'market_cup'>` *(optional)* | List of charts displayed on the home page | `['daily_txs','coin_price','market_cup']` |
+| NEXT_PUBLIC_HOMEPAGE_PLATE_GRADIENT | `string` *(optional)* | Gradient value for hero plate on the homepage | `radial-gradient(at 15% 86%, hsla(350,65%,70%,1) 0px, transparent 50%), radial-gradient(at 72% 57%, hsla(14,95%,76%,1) 0px, transparent 50%)` |
+| NEXT_PUBLIC_HOMEPAGE_SHOW_GAS_TRACKER | `boolean` *(optional)* | Set to false if network doesn't have gas tracker | `true` |
+| NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME | `boolean` *(optional)* | Set to false if average block time is useless for the network | `true` |
+| NEXT_PUBLIC_DOMAIN_WITH_AD | `string` *(optional)* | The domain on which we display ads | `blockscout.com` |  
+| NEXT_PUBLIC_AD_ADBUTLER_ON | `boolean` *(optional)* | Set to true to show Adbutler banner instead of Coinzilla banner | `false` |
 ### App configuration
 
 | Variable | Type | Description | Default value
@@ -87,6 +94,7 @@ The app instance could be customized by passing following variables to NodeJS en
 | --- | --- | --- | --- |
 | NEXT_PUBLIC_API_HOST | `string` *(optional)* | By default the API endpoint base URL will be set as `https://blockscout.com`. If it is not the case, pass the API host in this variable  | `my-host.com` |
 | NEXT_PUBLIC_API_BASE_PATH | `string` *(optional)* | Base path for API endpoint url  | `/poa/core` |
+| NEXT_PUBLIC_STATS_API_HOST | `string` *(optional)* | Pass the Stats API host in this variable  | `https://my-host.com` |
 
 
 ### Featured network configuration properties
@@ -122,6 +130,7 @@ The app instance could be customized by passing following variables to NodeJS en
 | Property | Type | Description | Example value
 | --- | --- | --- | --- |
 | id | `string` | Used as slug for the app. Must be unique in the app list. | `'app'` |
+| external | `boolean` | If true means that the application opens in a new window, but not in an iframe. | `true` |
 | title | `string` | Displayed title of the app. | `'The App'` |
 | logo | `string` | URL to logo file. Should be at least 144x144. | `'https://foo.app/icon.png'` |
 | shortDescription | `string` | Displayed only in the app list. | `'Awesome app'` |

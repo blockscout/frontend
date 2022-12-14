@@ -7,9 +7,11 @@ import type { Transaction } from 'types/api/transaction';
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
 import eastArrowIcon from 'icons/arrows/east.svg';
+import { useAppContext } from 'lib/appContext';
 import useFetch from 'lib/hooks/useFetch';
 import isBrowser from 'lib/isBrowser';
 import networkExplorers from 'lib/networks/networkExplorers';
+import AdBanner from 'ui/shared/ad/AdBanner';
 import ExternalLink from 'ui/shared/ExternalLink';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -18,10 +20,12 @@ import TxDetails from 'ui/tx/TxDetails';
 import TxInternals from 'ui/tx/TxInternals';
 import TxLogs from 'ui/tx/TxLogs';
 import TxRawTrace from 'ui/tx/TxRawTrace';
+import TxTokenTransfer from 'ui/tx/TxTokenTransfer';
 // import TxState from 'ui/tx/TxState';
 
 const TABS: Array<RoutedTab> = [
   { id: 'index', title: 'Details', component: <TxDetails/> },
+  { id: 'token_transfers', title: 'Token transfers', component: <TxTokenTransfer/> },
   { id: 'internal', title: 'Internal txn', component: <TxInternals/> },
   { id: 'logs', title: 'Logs', component: <TxLogs/> },
   // will be implemented later, api is not ready
@@ -32,10 +36,16 @@ const TABS: Array<RoutedTab> = [
 const TransactionPageContent = () => {
   const router = useRouter();
   const fetch = useFetch();
+  const appProps = useAppContext();
+  const isInBrowser = isBrowser();
+
+  const referrer = isInBrowser ? window.document.referrer : appProps.referrer;
+
+  const hasGoBackLink = referrer && referrer.includes('/txs');
 
   const { data } = useQuery<unknown, unknown, Transaction>(
     [ 'tx', router.query.id ],
-    async() => await fetch(`/api/transactions/${ router.query.id }`),
+    async() => await fetch(`/node-api/transactions/${ router.query.id }`),
     {
       enabled: Boolean(router.query.id),
     },
@@ -48,12 +58,10 @@ const TransactionPageContent = () => {
       return <ExternalLink key={ explorer.baseUrl } title={ `Open in ${ explorer.title }` } href={ url.toString() }/>;
     });
 
-  const hasGoBackLink = isBrowser() && window.document.referrer.includes('/txs');
-
   return (
     <Page>
       { hasGoBackLink && (
-        <Link mb={ 6 } display="inline-flex" href={ window.document.referrer }>
+        <Link mb={ 6 } display="inline-flex" href={ referrer }>
           <Icon as={ eastArrowIcon } boxSize={ 6 } mr={ 2 } transform="rotate(180deg)"/>
             Transactions
         </Link>
@@ -75,9 +83,8 @@ const TransactionPageContent = () => {
           </Flex>
         ) }
       </Flex>
-      <RoutedTabs
-        tabs={ TABS }
-      />
+      <RoutedTabs tabs={ TABS }/>
+      <AdBanner mt={ 6 } justifyContent={{ base: 'center', lg: 'start' }}/>
     </Page>
   );
 };

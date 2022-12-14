@@ -18,6 +18,8 @@ module.exports = {
     'plugin:regexp/recommended',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
+    'plugin:jest/recommended',
+    'plugin:playwright/playwright-test',
   ],
   plugins: [
     'es5',
@@ -27,6 +29,7 @@ module.exports = {
     'react-hooks',
     'jsx-a11y',
     'eslint-plugin-import-helpers',
+    'jest',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -195,7 +198,7 @@ module.exports = {
         groups: [
           'module',
           '/types/',
-          [ '/^configs/', '/^data/', '/^deploy/', '/^icons/', '/^lib/', '/^pages/', '/^playwright/', '/^theme/', '/^ui/' ],
+          [ '/^configs/', '/^data/', '/^deploy/', '/^icons/', '/^lib/', '/^mocks/', '/^pages/', '/^playwright/', '/^theme/', '/^ui/' ],
           [ 'parent', 'sibling', 'index' ],
         ],
         alphabetize: { order: 'asc', ignoreCase: true },

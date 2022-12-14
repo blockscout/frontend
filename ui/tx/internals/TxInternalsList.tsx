@@ -7,7 +7,7 @@ import TxInternalsListItem from 'ui/tx/internals/TxInternalsListItem';
 
 const TxInternalsList = ({ data }: { data: Array<InternalTransaction>}) => {
   return (
-    <Box mt={ 6 }>
+    <Box>
       { data.map((item) => <TxInternalsListItem key={ item.transaction_hash } { ...item }/>) }
     </Box>
   );

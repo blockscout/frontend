@@ -1,6 +1,7 @@
 /* eslint-disable no-restricted-properties */
 import type { AppItemOverview } from 'types/client/apps';
 import type { FeaturedNetwork, NetworkExplorer, PreDefinedNetwork } from 'types/networks';
+import type { ChainIndicatorId } from 'ui/home/indicators/types';
 
 const getEnvValue = (env: string | undefined) => env?.replaceAll('\'', '"');
 const parseEnvJson = <DataType>(env: string | undefined): DataType | null => {
@@ -10,9 +11,9 @@ const parseEnvJson = <DataType>(env: string | undefined): DataType | null => {
     return null;
   }
 };
-const stripTrailingSlash = (str: string) => str.at(-1) === '/' ? str.slice(0, -1) : str;
+const stripTrailingSlash = (str: string) => str[str.length - 1] === '/' ? str.slice(0, -1) : str;
 
-const env = process.env.VERCEL_ENV || process.env.NODE_ENV;
+const env = process.env.NODE_ENV;
 const isDev = env === 'development';
 
 const appPort = getEnvValue(process.env.NEXT_PUBLIC_APP_PORT);
@@ -21,9 +22,10 @@ const appHost = getEnvValue(process.env.NEXT_PUBLIC_APP_HOST);
 const baseUrl = [
   appSchema || 'https',
   '://',
-  process.env.NEXT_PUBLIC_VERCEL_URL || appHost,
+  appHost,
   appPort && ':' + appPort,
 ].filter(Boolean).join('');
+const authUrl = getEnvValue(process.env.NEXT_PUBLIC_AUTH_URL) || baseUrl;
 const apiHost = getEnvValue(process.env.NEXT_PUBLIC_API_HOST);
 
 const logoutUrl = (() => {
@@ -52,6 +54,7 @@ const config = Object.freeze({
   network: {
     type: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_TYPE) as PreDefinedNetwork | undefined,
     logo: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_LOGO),
+    smallLogo: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_SMALL_LOGO),
     name: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_NAME),
     id: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_ID),
     shortName: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_SHORT_NAME),
@@ -59,9 +62,9 @@ const config = Object.freeze({
       name: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_CURRENCY_NAME),
       symbol: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL),
       decimals: Number(getEnvValue(process.env.NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS)) || DEFAULT_CURRENCY_DECIMALS,
+      address: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS),
     },
     assetsPathname: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME),
-    nativeTokenAddress: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS),
     explorers: parseEnvJson<Array<NetworkExplorer>>(getEnvValue(process.env.NEXT_PUBLIC_NETWORK_EXPLORERS)) || [],
     verificationType: process.env.NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE || 'mining',
   },
@@ -80,11 +83,26 @@ const config = Object.freeze({
   host: appHost,
   port: appPort,
   baseUrl,
+  authUrl,
   logoutUrl,
+  ad: {
+    domainWithAd: getEnvValue(process.env.NEXT_PUBLIC_AD_DOMAIN_WITH_AD) || 'blockscout.com',
+    adButlerOn: getEnvValue(process.env.NEXT_PUBLIC_AD_ADBUTLER_ON) === 'true',
+  },
   api: {
     endpoint: apiHost ? `https://${ apiHost }` : 'https://blockscout.com',
     socket: apiHost ? `wss://${ apiHost }` : 'wss://blockscout.com',
     basePath: stripTrailingSlash(getEnvValue(process.env.NEXT_PUBLIC_API_BASE_PATH) || ''),
+  },
+  statsApi: {
+    endpoint: getEnvValue(process.env.NEXT_PUBLIC_STATS_API_HOST),
+  },
+  homepage: {
+    charts: parseEnvJson<Array<ChainIndicatorId>>(getEnvValue(process.env.NEXT_PUBLIC_HOMEPAGE_CHARTS)) || [],
+    plateGradient: getEnvValue(process.env.NEXT_PUBLIC_HOMEPAGE_PLATE_GRADIENT) ||
+      'radial-gradient(103.03% 103.03% at 0% 0%, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%)',
+    showGasTracker: getEnvValue(process.env.NEXT_PUBLIC_HOMEPAGE_SHOW_GAS_TRACKER) === 'false' ? false : true,
+    showAvgBlockTime: getEnvValue(process.env.NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME) === 'false' ? false : true,
   },
 });
 

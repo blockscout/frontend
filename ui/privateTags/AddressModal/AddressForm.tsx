@@ -34,8 +34,8 @@ type Inputs = {
 const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
   const fetch = useFetch();
   const [ pending, setPending ] = useState(false);
-  const { control, handleSubmit, formState: { errors, isValid }, setError } = useForm<Inputs>({
-    mode: 'all',
+  const { control, handleSubmit, formState: { errors, isValid, isDirty }, setError } = useForm<Inputs>({
+    mode: 'onTouched',
     defaultValues: {
       address: data?.address_hash || '',
       tag: data?.name || '',
@@ -93,7 +93,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
   }, [ errors, formBackgroundColor ]);
 
   return (
-    <>
+    <form noValidate onSubmit={ handleSubmit(onSubmit) }>
       <Box marginBottom={ 5 }>
         <Controller
           name="address"
@@ -119,14 +119,14 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
       <Box marginTop={ 8 }>
         <Button
           size="lg"
-          onClick={ handleSubmit(onSubmit) }
-          disabled={ !isValid }
+          type="submit"
+          disabled={ !isValid || !isDirty }
           isLoading={ pending }
         >
           { data ? 'Save changes' : 'Add tag' }
         </Button>
       </Box>
-    </>
+    </form>
   );
 };
 

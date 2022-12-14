@@ -6,6 +6,7 @@ import type { PublicTag } from 'types/api/account';
 
 import eastArrowIcon from 'icons/arrows/east.svg';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import useToast from 'lib/hooks/useToast';
 import PublicTagsData from 'ui/publicTags/PublicTagsData';
 import PublicTagsForm from 'ui/publicTags/PublicTagsForm/PublicTagsForm';
@@ -27,6 +28,7 @@ const PublicTagsComponent: React.FC = () => {
 
   const toast = useToast();
   const isMobile = useIsMobile();
+  useRedirectForInvalidAuthToken();
 
   const showToast = useCallback((action: TToastAction) => {
     toast({
@@ -77,13 +79,13 @@ const PublicTagsComponent: React.FC = () => {
 
   return (
     <Page>
-      { isMobile && screen === 'form' && (
+      { screen === 'form' && (
         <Link display="inline-flex" alignItems="center" mb={ 6 } onClick={ onGoBack }>
           <Icon as={ eastArrowIcon } boxSize={ 6 } transform="rotate(180deg)"/>
-          <Text variant="inherit" fontSize="sm" ml={ 2 }>Public tags</Text>
+          { isMobile && <Text variant="inherit" fontSize="sm" ml={ 2 }>Public tags</Text> }
         </Link>
       ) }
-      <PageTitle text={ header }/>
+      <PageTitle text={ header } display={{ base: 'block', lg: 'inline-flex' }} ml={{ base: 0, lg: 3 }}/>
       { content }
     </Page>
   );

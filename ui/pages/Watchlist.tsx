@@ -1,5 +1,5 @@
 import { Box, Button, Skeleton, useDisclosure } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
 import type { TWatchlist, TWatchlistItem } from 'types/client/account';
@@ -7,6 +7,7 @@ import { QueryKeys } from 'types/client/accountQueries';
 
 import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Page from 'ui/shared/Page/Page';
@@ -21,11 +22,13 @@ import WatchlistTable from 'ui/watchlist/WatchlistTable/WatchlistTable';
 const WatchList: React.FC = () => {
   const { data, isLoading, isError } =
     useQuery<unknown, unknown, TWatchlist>([ QueryKeys.watchlist ], async() => fetch('/node-api/account/watchlist/get-with-tokens'));
+  const queryClient = useQueryClient();
 
   const addressModalProps = useDisclosure();
   const deleteModalProps = useDisclosure();
   const isMobile = useIsMobile();
   const fetch = useFetch();
+  useRedirectForInvalidAuthToken();
 
   const [ addressModalData, setAddressModalData ] = useState<TWatchlistItem>();
   const [ deleteModalData, setDeleteModalData ] = useState<TWatchlistItem>();
@@ -40,6 +43,12 @@ const WatchList: React.FC = () => {
     addressModalProps.onClose();
   }, [ addressModalProps ]);
 
+  const onAddOrEditSuccess = useCallback(async() => {
+    await queryClient.refetchQueries([ QueryKeys.watchlist ]);
+    setAddressModalData(undefined);
+    addressModalProps.onClose();
+  }, [ addressModalProps, queryClient ]);
+
   const onDeleteClick = useCallback((data: TWatchlistItem) => {
     setDeleteModalData(data);
     deleteModalProps.onOpen();
@@ -49,6 +58,12 @@ const WatchList: React.FC = () => {
     setDeleteModalData(undefined);
     deleteModalProps.onClose();
   }, [ deleteModalProps ]);
+
+  const onDeleteSuccess = useCallback(async() => {
+    queryClient.setQueryData([ QueryKeys.watchlist ], (prevData: TWatchlist | undefined) => {
+      return prevData?.filter((item) => item.id !== deleteModalData?.id);
+    });
+  }, [ deleteModalData?.id, queryClient ]);
 
   const description = (
     <AccountPageDescription>
@@ -105,8 +120,21 @@ const WatchList: React.FC = () => {
                 Add address
           </Button>
         </Box>
-        <AddressModal { ...addressModalProps } onClose={ onAddressModalClose } data={ addressModalData }/>
-        { deleteModalData && <DeleteAddressModal { ...deleteModalProps } onClose={ onDeleteModalClose } data={ deleteModalData }/> }
+        <AddressModal
+          { ...addressModalProps }
+          onClose={ onAddressModalClose }
+          onSuccess={ onAddOrEditSuccess }
+          data={ addressModalData }
+          isAdd={ !addressModalData }
+        />
+        { deleteModalData && (
+          <DeleteAddressModal
+            { ...deleteModalProps }
+            onClose={ onDeleteModalClose }
+            onSuccess={ onDeleteSuccess }
+            data={ deleteModalData }
+          />
+        ) }
       </>
     );
   }

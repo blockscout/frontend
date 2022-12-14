@@ -63,17 +63,20 @@ const NavigationDesktop = () => {
       <Box
         as="header"
         display="flex"
-        justifyContent="center"
+        justifyContent="flex-start"
         alignItems="center"
         flexDirection="row"
         w="100%"
-        px={ 3 }
+        px={{ lg: isExpanded ? 3 : '15px', xl: isCollapsed ? '15px' : 3 }}
         h={ 10 }
+        transitionProperty="padding"
+        transitionDuration="normal"
+        transitionTimingFunction="ease"
       >
         <NetworkLogo isCollapsed={ isCollapsed }/>
         <NetworkMenu isCollapsed={ isCollapsed }/>
       </Box>
-      <Box as="nav" mt={ 14 }>
+      <Box as="nav" mt={ 8 }>
         <VStack as="ul" spacing="2" alignItems="flex-start" overflow="hidden">
           { mainNavItems.map((item) => <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed }/>) }
         </VStack>

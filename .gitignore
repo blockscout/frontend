@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/node_modules_linux
 /.pnp
 .pnp.js
 
@@ -29,6 +30,7 @@ yarn-error.log*
 # local env files
 .env*.local
 /configs/envs/.env.secrets
+/configs/envs/.samples
 
 # vercel
 .vercel
@@ -45,3 +47,5 @@ yarn-error.log*
 /test-results/
 /playwright-report/
 /playwright/.cache/
+/playwright/.browser/
+/playwright/envs.js

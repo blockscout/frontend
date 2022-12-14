@@ -2,6 +2,7 @@ import { VStack, FormControl, FormLabel, Input } from '@chakra-ui/react';
 import React from 'react';
 
 import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
+import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Page from 'ui/shared/Page/Page';
@@ -10,6 +11,7 @@ import UserAvatar from 'ui/shared/UserAvatar';
 
 const MyProfile = () => {
   const { data, isLoading, isError, isFetched } = useFetchProfileInfo();
+  useRedirectForInvalidAuthToken();
 
   const content = (() => {
     if (isLoading) {
@@ -21,7 +23,7 @@ const MyProfile = () => {
     }
 
     return (
-      <VStack maxW="412px" mt={ 12 } gap={ 5 } alignItems="stretch">
+      <VStack maxW="412px" mt={ 8 } gap={ 5 } alignItems="stretch">
         <UserAvatar size={ 64 } data={ data } isFetched={ isFetched }/>
         <FormControl variant="floating" id="name" isRequired size="lg">
           <Input

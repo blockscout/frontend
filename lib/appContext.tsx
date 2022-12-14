@@ -7,13 +7,11 @@ type Props = {
   pageProps: PageProps;
 }
 
-const AppContext = createContext<PageProps>({ cookies: '' });
+const AppContext = createContext<PageProps>({ cookies: '', referrer: '' });
 
-export function AppWrapper({ children, pageProps }: Props) {
-  const appProps = { cookies: pageProps.cookies };
-
+export function AppContextProvider({ children, pageProps }: Props) {
   return (
-    <AppContext.Provider value={ appProps }>
+    <AppContext.Provider value={ pageProps }>
       { children }
     </AppContext.Provider>
   );

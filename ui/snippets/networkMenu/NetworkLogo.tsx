@@ -1,29 +1,11 @@
 import { Icon, Box, Image, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
-import type { FunctionComponent, SVGAttributes } from 'react';
-
-import type { PreDefinedNetwork } from 'types/networks';
 
 import appConfig from 'configs/app/config';
-import blockscoutLogo from 'icons/logo.svg';
+import smallLogoPlaceholder from 'icons/networks/icons/placeholder.svg';
+import logoPlaceholder from 'icons/networks/logos/blockscout.svg';
 import link from 'lib/link/link';
-import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
-
-// predefined network logos
-const LOGOS: Partial<Record<PreDefinedNetwork, React.FunctionComponent<React.SVGAttributes<SVGElement>>>> = {
-  xdai_mainnet: require('icons/networks/logos/gnosis.svg'),
-  eth_mainnet: require('icons/networks/logos/eth.svg'),
-  etc_mainnet: require('icons/networks/logos/etc.svg'),
-  poa_core: require('icons/networks/logos/poa.svg'),
-  rsk_mainnet: require('icons/networks/logos/rsk.svg'),
-  xdai_testnet: require('icons/networks/logos/gnosis.svg'),
-  poa_sokol: require('icons/networks/logos/sokol.svg'),
-  artis_sigma1: require('icons/networks/logos/artis.svg'),
-  lukso_l14: require('icons/networks/logos/lukso.svg'),
-  astar: require('icons/networks/logos/astar.svg'),
-  shiden: require('icons/networks/logos/shiden.svg'),
-  shibuya: require('icons/networks/logos/shibuya.svg'),
-};
+import ASSETS from 'lib/networks/networkAssets';
 
 interface Props {
   isCollapsed?: boolean;
@@ -33,55 +15,84 @@ interface Props {
 const NetworkLogo = ({ isCollapsed, onClick }: Props) => {
   const logoColor = useColorModeValue('blue.600', 'white');
   const href = link('network_index');
-  const logo = appConfig.network.logo || (appConfig.network.type ? LOGOS[appConfig.network.type] : undefined);
+  const [ isLogoError, setLogoError ] = React.useState(false);
+  const [ isSmallLogoError, setSmallLogoError ] = React.useState(false);
 
   const style = useColorModeValue({}, { filter: 'brightness(0) invert(1)' });
 
-  let logoEl;
+  const handleSmallLogoError = React.useCallback(() => {
+    setSmallLogoError(true);
+  }, []);
 
-  if (logo && typeof logo === 'string') {
-    logoEl = (
-      <Image
-        w="auto"
-        h="100%"
-        src={ logo }
-        alt={ `${ appConfig.network.name } network icon` }
-      />
-    );
-  } else if (typeof logo !== 'undefined') {
-    logoEl = (
+  const handleLogoError = React.useCallback(() => {
+    setLogoError(true);
+  }, []);
+
+  const logoEl = (() => {
+    const fallbackLogoSrc = appConfig.network.type ? ASSETS[appConfig.network.type]?.logo : undefined;
+    const fallbackSmallLogoSrc = appConfig.network.type ? ASSETS[appConfig.network.type]?.smallLogo || ASSETS[appConfig.network.type]?.icon : undefined;
+
+    const logo = appConfig.network.logo;
+    const smallLogo = appConfig.network.smallLogo;
+
+    const fallbackLogo = (
       <Icon
-        as={ logo as FunctionComponent<SVGAttributes<SVGElement>> }
+        as={ fallbackLogoSrc || logoPlaceholder }
         width="auto"
         height="100%"
-        { ...getDefaultTransitionProps() }
+        color={ fallbackLogoSrc ? undefined : logoColor }
+        display={{ base: 'block', lg: isCollapsed === false ? 'block' : 'none', xl: isCollapsed ? 'none' : 'block' }}
         style={ style }
       />
     );
-  } else {
-    logoEl = (
+    const fallbackSmallLogo = (
       <Icon
-        as={ blockscoutLogo }
+        as={ fallbackSmallLogoSrc || smallLogoPlaceholder }
         width="auto"
         height="100%"
-        color={ logoColor }
-        { ...getDefaultTransitionProps() }
+        color={ fallbackSmallLogoSrc ? undefined : logoColor }
+        display={{ base: 'none', lg: isCollapsed === false ? 'none' : 'block', xl: isCollapsed ? 'block' : 'none' }}
         style={ style }
       />
     );
-  }
+
+    return (
+      <>
+        { /* big logo */ }
+        <Image
+          w="auto"
+          h="100%"
+          src={ logo }
+          display={{ base: 'block', lg: isCollapsed === false ? 'block' : 'none', xl: isCollapsed ? 'none' : 'block' }}
+          alt={ `${ appConfig.network.name } network logo` }
+          fallback={ isLogoError || !logo ? fallbackSmallLogo : undefined }
+          onError={ handleLogoError }
+        />
+        { /* small logo */ }
+        <Image
+          w="auto"
+          h="100%"
+          src={ smallLogo }
+          display={{ base: 'none', lg: isCollapsed === false ? 'none' : 'block', xl: isCollapsed ? 'block' : 'none' }}
+          alt={ `${ appConfig.network.name } network logo` }
+          fallback={ isSmallLogoError || !smallLogo ? fallbackLogo : undefined }
+          onError={ handleSmallLogoError }
+        />
+      </>
+    );
+  })();
 
   return (
     // TODO switch to <NextLink href={ href } passHref> when main page for network will be ready
     <Box
       as="a"
       href={ href }
-      width={{ base: 'auto', lg: isCollapsed === false ? '113px' : 0, xl: isCollapsed ? '0' : '113px' }}
-      height="20px"
+      width={{ base: 'auto', lg: isCollapsed === false ? '113px' : '30px', xl: isCollapsed ? '30px' : '113px' }}
+      height={{ base: '20px', lg: isCollapsed === false ? '20px' : '30px', xl: isCollapsed ? '30px' : '20px' }}
       display="inline-flex"
       overflow="hidden"
       onClick={ onClick }
-      { ...getDefaultTransitionProps({ transitionProperty: 'width' }) }
+      flexShrink={ 0 }
       aria-label="Link to main page"
     >
       { logoEl }

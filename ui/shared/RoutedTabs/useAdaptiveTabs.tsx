@@ -11,11 +11,13 @@ export default function useAdaptiveTabs(tabs: Array<RoutedTab>, disabled?: boole
   const [ tabsCut, setTabsCut ] = React.useState(disabled ? tabs.length : 0);
   const [ tabsRefs, setTabsRefs ] = React.useState<Array<React.RefObject<HTMLButtonElement>>>([]);
   const listRef = React.useRef<HTMLDivElement>(null);
+  const rightSlotRef = React.useRef<HTMLDivElement>(null);
 
   const calculateCut = React.useCallback(() => {
     const listWidth = listRef.current?.getBoundingClientRect().width;
+    const rightSlotWidth = rightSlotRef.current?.getBoundingClientRect().width || 0;
     const tabWidths = tabsRefs.map((tab) => tab.current?.getBoundingClientRect().width);
-    const menuWidth = tabWidths.at(-1);
+    const menuWidth = tabWidths[tabWidths.length - 1];
 
     if (!listWidth || !menuWidth) {
       return tabs.length;
@@ -26,11 +28,11 @@ export default function useAdaptiveTabs(tabs: Array<RoutedTab>, disabled?: boole
         return result;
       }
 
-      if (result.accWidth + item <= listWidth - menuWidth) {
+      if (result.accWidth + item <= listWidth - rightSlotWidth - menuWidth) {
         return { visibleNum: result.visibleNum + 1, accWidth: result.accWidth + item };
       }
 
-      if (result.accWidth + item <= listWidth && index === tabWidths.length - 2) {
+      if (result.accWidth + item <= listWidth - rightSlotWidth && index === tabWidths.length - 2) {
         return { visibleNum: result.visibleNum + 1, accWidth: result.accWidth + item };
       }
 
@@ -82,6 +84,7 @@ export default function useAdaptiveTabs(tabs: Array<RoutedTab>, disabled?: boole
       tabsList,
       tabsRefs,
       listRef,
+      rightSlotRef,
     };
   }, [ tabsList, tabsCut, tabsRefs, listRef ]);
 }

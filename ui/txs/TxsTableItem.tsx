@@ -14,6 +14,7 @@ import {
   PopoverBody,
   useColorModeValue,
   Show,
+  Hide,
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -22,18 +23,28 @@ import type { Transaction } from 'types/api/transaction';
 import rightArrowIcon from 'icons/arrows/east.svg';
 import dayjs from 'lib/date/dayjs';
 import link from 'lib/link/link';
+import AdditionalInfoButton from 'ui/shared/AdditionalInfoButton';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CurrencyValue from 'ui/shared/CurrencyValue';
+import InOutTag from 'ui/shared/InOutTag';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 import TxStatus from 'ui/shared/TxStatus';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
-import TxAdditionalInfoButton from 'ui/txs/TxAdditionalInfoButton';
 
 import TxType from './TxType';
 
-const TxsTableItem = ({ tx }: {tx: Transaction}) => {
+type Props = {
+  tx: Transaction;
+  showBlockInfo: boolean;
+  currentAddress?: string;
+}
+
+const TxsTableItem = ({ tx, showBlockInfo, currentAddress }: Props) => {
+  const isOut = Boolean(currentAddress && currentAddress === tx.from.hash);
+  const isIn = Boolean(currentAddress && currentAddress === tx.to?.hash);
+
   const addressFrom = (
     <Address>
       <Tooltip label={ tx.from.implementation_name }>
@@ -43,12 +54,14 @@ const TxsTableItem = ({ tx }: {tx: Transaction}) => {
     </Address>
   );
 
+  const dataTo = tx.to ? tx.to : tx.created_contract;
+
   const addressTo = (
     <Address>
-      <Tooltip label={ tx.to.implementation_name }>
-        <Box display="flex"><AddressIcon hash={ tx.to.hash }/></Box>
+      <Tooltip label={ dataTo.implementation_name }>
+        <Box display="flex"><AddressIcon hash={ dataTo.hash }/></Box>
       </Tooltip>
-      <AddressLink hash={ tx.to.hash } alias={ tx.to.name } fontWeight="500" ml={ 2 } truncation="constant"/>
+      <AddressLink hash={ dataTo.hash } alias={ dataTo.name } fontWeight="500" ml={ 2 } truncation="constant"/>
     </Address>
   );
 
@@ -60,7 +73,7 @@ const TxsTableItem = ({ tx }: {tx: Transaction}) => {
           { ({ isOpen }) => (
             <>
               <PopoverTrigger>
-                <TxAdditionalInfoButton isOpen={ isOpen }/>
+                <AdditionalInfoButton isOpen={ isOpen }/>
               </PopoverTrigger>
               <PopoverContent border="1px solid" borderColor={ infoBorderColor }>
                 <PopoverBody>
@@ -73,7 +86,7 @@ const TxsTableItem = ({ tx }: {tx: Transaction}) => {
       </Td>
       <Td>
         <VStack alignItems="start">
-          { tx.tx_types.map(item => <TxType key={ item } type={ item }/>) }
+          <TxType types={ tx.tx_types }/>
           <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined }/>
         </VStack>
       </Td>
@@ -84,51 +97,58 @@ const TxsTableItem = ({ tx }: {tx: Transaction}) => {
               hash={ tx.hash }
               type="transaction"
               fontWeight="700"
-              target="_self"
             />
           </Address>
           <Text color="gray.500" fontWeight="400">{ dayjs(tx.timestamp).fromNow() }</Text>
         </VStack>
       </Td>
-      <Td>
-        <TruncatedTextTooltip label={ tx.method }>
-          <Tag
-            colorScheme={ tx.method === 'Multicall' ? 'teal' : 'gray' }
-          >
-            { tx.method }
-          </Tag>
-        </TruncatedTextTooltip>
+      <Td whiteSpace="nowrap">
+        { tx.method ? (
+          <TruncatedTextTooltip label={ tx.method }>
+            <Tag colorScheme={ tx.method === 'Multicall' ? 'teal' : 'gray' }>
+              { tx.method }
+            </Tag>
+          </TruncatedTextTooltip>
+        ) : '-' }
       </Td>
-      <Td>
-        { tx.block && <Link href={ link('block', { id: tx.block.toString() }) }>{ tx.block }</Link> }
-      </Td>
+      { showBlockInfo && (
+        <Td>
+          { tx.block && <Link href={ link('block', { id: tx.block.toString() }) }>{ tx.block }</Link> }
+        </Td>
+      ) }
       <Show above="xl" ssr={ false }>
         <Td>
           { addressFrom }
         </Td>
-        <Td>
-          <Icon as={ rightArrowIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
+        <Td px={ 0 }>
+          { (isIn || isOut) ?
+            <InOutTag isIn={ isIn } isOut={ isOut } width="48px" mr={ 2 }/> :
+            <Icon as={ rightArrowIcon } boxSize={ 6 } mx="6px" color="gray.500"/>
+          }
         </Td>
         <Td>
           { addressTo }
         </Td>
       </Show>
-      <Show below="xl" ssr={ false }>
+      <Hide above="xl" ssr={ false }>
         <Td colSpan={ 3 }>
           <Box>
             { addressFrom }
-            <Icon
-              as={ rightArrowIcon }
-              boxSize={ 6 }
-              mt={ 2 }
-              mb={ 1 }
-              color="gray.500"
-              transform="rotate(90deg)"
-            />
+            { (isIn || isOut) ?
+              <InOutTag isIn={ isIn } isOut={ isOut } width="48px" my={ 2 }/> : (
+                <Icon
+                  as={ rightArrowIcon }
+                  boxSize={ 6 }
+                  mt={ 2 }
+                  mb={ 1 }
+                  color="gray.500"
+                  transform="rotate(90deg)"
+                />
+              ) }
             { addressTo }
           </Box>
         </Td>
-      </Show>
+      </Hide>
       <Td isNumeric>
         <CurrencyValue value={ tx.value }/>
       </Td>

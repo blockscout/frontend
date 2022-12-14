@@ -13,6 +13,7 @@ import Popover from './Popover';
 import Radio from './Radio';
 import Skeleton from './Skeleton';
 import Spinner from './Spinner';
+import Switch from './Switch';
 import Table from './Table';
 import Tabs from './Tabs';
 import Tag from './Tag';
@@ -36,6 +37,7 @@ const components = {
   Radio,
   Skeleton,
   Spinner,
+  Switch,
   Tabs,
   Table,
   Tag,

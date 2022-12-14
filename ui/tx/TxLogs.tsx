@@ -1,33 +1,40 @@
-import { Box, Alert } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
+import { Box, Text } from '@chakra-ui/react';
 import React from 'react';
 
-import type { LogsResponse } from 'types/api/log';
 import { QueryKeys } from 'types/client/queries';
 
-import useFetch from 'lib/hooks/useFetch';
+import { SECOND } from 'lib/consts';
+import useQueryWithPages from 'lib/hooks/useQueryWithPages';
+import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
+import Pagination from 'ui/shared/Pagination';
 import TxLogItem from 'ui/tx/logs/TxLogItem';
 import TxLogSkeleton from 'ui/tx/logs/TxLogSkeleton';
+import TxPendingAlert from 'ui/tx/TxPendingAlert';
+import TxSocketAlert from 'ui/tx/TxSocketAlert';
+import useFetchTxInfo from 'ui/tx/useFetchTxInfo';
 
 const TxLogs = () => {
-  const router = useRouter();
-  const fetch = useFetch();
-
-  const { data, isLoading, isError } = useQuery<unknown, unknown, LogsResponse>(
-    [ QueryKeys.txLog, router.query.id ],
-    async() => await fetch(`/node-api/transactions/${ router.query.id }/logs`),
-    {
-      enabled: Boolean(router.query.id),
+  const txInfo = useFetchTxInfo({ updateDelay: 5 * SECOND });
+  const { data, isLoading, isError, pagination } = useQueryWithPages({
+    apiPath: `/node-api/transactions/${ txInfo.data?.hash }/logs`,
+    queryName: QueryKeys.txLogs,
+    queryIds: txInfo.data?.hash ? [ txInfo.data.hash ] : undefined,
+    options: {
+      enabled: Boolean(txInfo.data?.hash) && Boolean(txInfo.data?.status),
     },
-  );
+  });
+  const isPaginatorHidden = !isLoading && !isError && pagination.page === 1 && !pagination.hasNextPage;
 
-  if (isError) {
+  if (!txInfo.isLoading && !txInfo.isError && !txInfo.data.status) {
+    return txInfo.socketStatus ? <TxSocketAlert status={ txInfo.socketStatus }/> : <TxPendingAlert/>;
+  }
+
+  if (isError || txInfo.isError) {
     return <DataFetchAlert/>;
   }
 
-  if (isLoading) {
+  if (isLoading || txInfo.isLoading) {
     return (
       <Box>
         <TxLogSkeleton/>
@@ -37,11 +44,16 @@ const TxLogs = () => {
   }
 
   if (data.items.length === 0) {
-    return <Alert>There are no logs for this transaction.</Alert>;
+    return <Text as="span">There are no logs for this transaction.</Text>;
   }
 
   return (
     <Box>
+      { !isPaginatorHidden && (
+        <ActionBar mt={ -6 }>
+          <Pagination ml="auto" { ...pagination }/>
+        </ActionBar>
+      ) }
       { data.items.map((item, index) => <TxLogItem key={ index } { ...item }/>) }
     </Box>
   );

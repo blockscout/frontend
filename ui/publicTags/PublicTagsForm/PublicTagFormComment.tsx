@@ -1,10 +1,10 @@
 import type { InputProps } from '@chakra-ui/react';
-import { FormControl, FormLabel, Textarea } from '@chakra-ui/react';
+import { FormControl, Textarea } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 import type { ControllerRenderProps, Control, FieldError } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 
-import getPlaceholderWithError from 'lib/getPlaceholderWithError';
+import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
 import type { Inputs } from './PublicTagsForm';
 
@@ -24,9 +24,7 @@ export default function PublicTagFormComment({ control, error, size }: Props) {
           { ...field }
           isInvalid={ Boolean(error) }
         />
-        <FormLabel>
-          { getPlaceholderWithError('Specify the reason for adding tags and color preference(s)', error?.message) }
-        </FormLabel>
+        <InputPlaceholder text="Specify the reason for adding tags and color preference(s)" error={ error }/>
       </FormControl>
     );
   }, [ error, size ]);

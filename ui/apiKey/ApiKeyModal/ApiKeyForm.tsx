@@ -15,9 +15,9 @@ import type { ApiKey, ApiKeys, ApiKeyErrors } from 'types/api/account';
 import { QueryKeys } from 'types/client/accountQueries';
 
 import getErrorMessage from 'lib/getErrorMessage';
-import getPlaceholderWithError from 'lib/getPlaceholderWithError';
 import type { ErrorType } from 'lib/hooks/useFetch';
 import useFetch from 'lib/hooks/useFetch';
+import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
 type Props = {
   data?: ApiKey;
@@ -33,8 +33,8 @@ type Inputs = {
 const NAME_MAX_LENGTH = 255;
 
 const ApiKeyForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
-  const { control, handleSubmit, formState: { errors, isValid }, setError } = useForm<Inputs>({
-    mode: 'all',
+  const { control, handleSubmit, formState: { errors, isValid, isDirty }, setError } = useForm<Inputs>({
+    mode: 'onTouched',
     defaultValues: {
       token: data?.api_key || '',
       name: data?.name || '',
@@ -71,7 +71,7 @@ const ApiKeyForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
           });
         }
 
-        return [ ...(prevData || []), response ];
+        return [ response, ...(prevData || []) ];
       });
 
       onClose();
@@ -112,15 +112,13 @@ const ApiKeyForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
           isInvalid={ Boolean(errors.name) }
           maxLength={ NAME_MAX_LENGTH }
         />
-        <FormLabel>
-          { getPlaceholderWithError('Application name for API key (e.g Web3 project)', errors.name?.message) }
-        </FormLabel>
+        <InputPlaceholder text="Application name for API key (e.g Web3 project)" error={ errors.name }/>
       </FormControl>
     );
   }, [ errors, formBackgroundColor ]);
 
   return (
-    <>
+    <form noValidate onSubmit={ handleSubmit(onSubmit) }>
       { data && (
         <Box marginBottom={ 5 }>
           <Controller
@@ -144,14 +142,14 @@ const ApiKeyForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
       <Box marginTop={ 8 }>
         <Button
           size="lg"
-          onClick={ handleSubmit(onSubmit) }
-          disabled={ !isValid }
+          type="submit"
+          disabled={ !isValid || !isDirty }
           isLoading={ mutation.isLoading }
         >
           { data ? 'Save' : 'Generate API key' }
         </Button>
       </Box>
-    </>
+    </form>
   );
 };
 

@@ -6,8 +6,8 @@ import { QueryKeys } from 'types/client/queries';
 
 import * as cookies from 'lib/cookies';
 import useFetch from 'lib/hooks/useFetch';
-import useScrollDirection from 'lib/hooks/useScrollDirection';
-import ScrollDirectionContext from 'ui/ScrollDirectionContext';
+import AppError from 'ui/shared/AppError/AppError';
+import ErrorBoundary from 'ui/shared/ErrorBoundary';
 import PageContent from 'ui/shared/Page/PageContent';
 import Header from 'ui/snippets/header/Header';
 import NavigationDesktop from 'ui/snippets/navigation/NavigationDesktop';
@@ -16,12 +16,14 @@ interface Props {
   children: React.ReactNode;
   wrapChildren?: boolean;
   hideMobileHeaderOnScrollDown?: boolean;
+  isHomePage?: boolean;
 }
 
 const Page = ({
   children,
   wrapChildren = true,
   hideMobileHeaderOnScrollDown,
+  isHomePage,
 }: Props) => {
   const fetch = useFetch();
 
@@ -29,22 +31,26 @@ const Page = ({
     enabled: Boolean(cookies.get(cookies.NAMES.API_TOKEN)),
   });
 
-  const directionContext = useScrollDirection();
+  const renderErrorScreen = React.useCallback(() => {
+    return wrapChildren ?
+      <PageContent isHomePage={ isHomePage }><AppError statusCode={ 500 } mt="50px"/></PageContent> :
+      <AppError statusCode={ 500 }/>;
+  }, [ isHomePage, wrapChildren ]);
 
   const renderedChildren = wrapChildren ? (
-    <PageContent>{ children }</PageContent>
+    <PageContent isHomePage={ isHomePage }>{ children }</PageContent>
   ) : children;
 
   return (
-    <ScrollDirectionContext.Provider value={ directionContext }>
-      <Flex w="100%" minH="100vh" alignItems="stretch">
-        <NavigationDesktop/>
-        <Flex flexDir="column" width="100%">
-          <Header hideOnScrollDown={ hideMobileHeaderOnScrollDown }/>
+    <Flex w="100%" minH="100vh" alignItems="stretch">
+      <NavigationDesktop/>
+      <Flex flexDir="column" flexGrow={ 1 } w={{ base: '100%', lg: 'auto' }}>
+        <Header isHomePage={ isHomePage } hideOnScrollDown={ hideMobileHeaderOnScrollDown }/>
+        <ErrorBoundary renderErrorScreen={ renderErrorScreen }>
           { renderedChildren }
-        </Flex>
+        </ErrorBoundary>
       </Flex>
-    </ScrollDirectionContext.Provider>
+    </Flex>
   );
 };
 

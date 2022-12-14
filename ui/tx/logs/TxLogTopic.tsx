@@ -74,6 +74,7 @@ const TxLogTopic = ({ hex, index }: Props) => {
           mr={ 3 }
           flexShrink={ 0 }
           w="auto"
+          aria-label="Data type"
         >
           { OPTIONS.map((option) => <option key={ option } value={ option }>{ capitalize(option) }</option>) }
         </Select>

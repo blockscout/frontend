@@ -1,4 +1,4 @@
-import { Link, Table, Tbody, Tr, Th, Icon } from '@chakra-ui/react';
+import { Link, Table, Tbody, Tr, Th, Td, Icon } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
@@ -8,26 +8,31 @@ import appConfig from 'configs/app/config';
 import rightArrowIcon from 'icons/arrows/east.svg';
 import TheadSticky from 'ui/shared/TheadSticky';
 
+import TxsNewItemNotice from './TxsNewItemNotice';
 import TxsTableItem from './TxsTableItem';
 
 type Props = {
   txs: Array<Transaction>;
   sort: (field: 'val' | 'fee') => () => void;
   sorting?: Sort;
+  top: number;
+  showBlockInfo: boolean;
+  showSocketInfo: boolean;
+  currentAddress?: string;
 }
 
-const TxsTable = ({ txs, sort, sorting }: Props) => {
+const TxsTable = ({ txs, sort, sorting, top, showBlockInfo, showSocketInfo, currentAddress }: Props) => {
   return (
-    <Table variant="simple" minWidth="810px" size="xs">
-      <TheadSticky top={ 80 }>
+    <Table variant="simple" minWidth="950px" size="xs">
+      <TheadSticky top={ top }>
         <Tr>
           <Th width="54px"></Th>
           <Th width="20%">Type</Th>
           <Th width="18%">Txn hash</Th>
           <Th width="15%">Method</Th>
-          <Th width="11%">Block</Th>
+          { showBlockInfo && <Th width="11%">Block</Th> }
           <Th width={{ xl: '128px', base: '66px' }}>From</Th>
-          <Th width={{ xl: '36px', base: '0' }}></Th>
+          <Th width={{ xl: currentAddress ? '48px' : '36px', base: '0' }}></Th>
           <Th width={{ xl: '128px', base: '66px' }}>To</Th>
           <Th width="18%" isNumeric>
             <Link onClick={ sort('val') } display="flex" justifyContent="end">
@@ -46,10 +51,17 @@ const TxsTable = ({ txs, sort, sorting }: Props) => {
         </Tr>
       </TheadSticky>
       <Tbody>
+        { showSocketInfo && (
+          <TxsNewItemNotice borderRadius={ 0 } url={ window.location.href }>
+            { ({ content }) => <Tr><Td colSpan={ 10 } p={ 0 }>{ content }</Td></Tr> }
+          </TxsNewItemNotice>
+        ) }
         { txs.map((item) => (
           <TxsTableItem
             key={ item.hash }
             tx={ item }
+            showBlockInfo={ showBlockInfo }
+            currentAddress={ currentAddress }
           />
         )) }
       </Tbody>

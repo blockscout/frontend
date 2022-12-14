@@ -3,7 +3,7 @@ import appConfig from 'configs/app/config';
 import { ROUTES } from './routes';
 import type { RouteName } from './routes';
 
-const PATH_PARAM_REGEXP = /\/\[(\w+)\]/g;
+const PATH_PARAM_REGEXP = /\/:(\w+)/g;
 
 export default function link(
   routeName: RouteName,
@@ -25,12 +25,13 @@ export default function link(
 
     return paramValue ? `/${ paramValue }` : '';
   });
+  const baseUrl = routeName === 'auth' ? appConfig.authUrl : appConfig.baseUrl;
 
-  const url = new URL(path, appConfig.baseUrl);
+  const url = new URL(path, baseUrl);
 
   queryParams && Object.entries(queryParams).forEach(([ key, value ]) => {
     url.searchParams.append(key, value);
   });
 
-  return url.pathname;
+  return url.toString();
 }

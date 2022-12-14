@@ -1,3 +1,4 @@
+import type { AddressParam } from './addressParams';
 export interface AddressTag {
   address_hash: string;
   name: string;
@@ -58,12 +59,12 @@ export interface UserInfo {
 export interface WatchlistAddress {
   address_hash: string;
   name: string;
-  address_balance: number;
-  coin_name: string;
-  exchange_rate: number;
+  address_balance: string;
+  exchange_rate: string;
   notification_settings: NotificationSettings;
   notification_methods: NotificationMethods;
   id: string;
+  address?: AddressParam;
 }
 
 export interface WatchlistAddressNew {

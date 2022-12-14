@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   FormControl,
-  FormLabel,
   Input,
   Textarea,
   useColorModeValue,
@@ -16,11 +15,11 @@ import type { CustomAbi, CustomAbis, CustomAbiErrors } from 'types/api/account';
 import { QueryKeys } from 'types/client/accountQueries';
 
 import getErrorMessage from 'lib/getErrorMessage';
-import getPlaceholderWithError from 'lib/getPlaceholderWithError';
 import type { ErrorType } from 'lib/hooks/useFetch';
 import useFetch from 'lib/hooks/useFetch';
 import { ADDRESS_REGEXP } from 'lib/validations/address';
 import AddressInput from 'ui/shared/AddressInput';
+import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
 type Props = {
   data?: CustomAbi;
@@ -37,13 +36,13 @@ type Inputs = {
 const NAME_MAX_LENGTH = 255;
 
 const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
-  const { control, formState: { errors, isValid }, handleSubmit, setError } = useForm<Inputs>({
+  const { control, formState: { errors, isValid, isDirty }, handleSubmit, setError } = useForm<Inputs>({
     defaultValues: {
       contract_address_hash: data?.contract_address_hash || '',
       name: data?.name || '',
       abi: JSON.stringify(data?.abi) || '',
     },
-    mode: 'all',
+    mode: 'onTouched',
   });
 
   const queryClient = useQueryClient();
@@ -77,7 +76,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
           });
         }
 
-        return [ ...(prevData || []), response ];
+        return [ response, ...(prevData || []) ];
       });
 
       onClose();
@@ -119,7 +118,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
           isInvalid={ Boolean(errors.name) }
           maxLength={ NAME_MAX_LENGTH }
         />
-        <FormLabel>{ getPlaceholderWithError('Project name', errors.name?.message) }</FormLabel>
+        <InputPlaceholder text="Project name" error={ errors.name }/>
       </FormControl>
     );
   }, [ errors, formBackgroundColor ]);
@@ -133,13 +132,13 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
           minH="300px"
           isInvalid={ Boolean(errors.abi) }
         />
-        <FormLabel>{ getPlaceholderWithError(`Custom ABI [{...}] (JSON format)`, errors.abi?.message) }</FormLabel>
+        <InputPlaceholder text="Custom ABI [{...}] (JSON format)" error={ errors.abi }/>
       </FormControl>
     );
   }, [ errors, formBackgroundColor ]);
 
   return (
-    <>
+    <form noValidate onSubmit={ handleSubmit(onSubmit) }>
       <Box>
         <Controller
           name="contract_address_hash"
@@ -170,14 +169,14 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
       <Box marginTop={ 8 }>
         <Button
           size="lg"
-          onClick={ handleSubmit(onSubmit) }
-          disabled={ !isValid }
+          type="submit"
+          disabled={ !isValid || !isDirty }
           isLoading={ mutation.isLoading }
         >
           { data ? 'Save' : 'Create custom ABI' }
         </Button>
       </Box>
-    </>
+    </form>
   );
 };
 

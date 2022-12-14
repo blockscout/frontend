@@ -1,10 +1,10 @@
-import { Heading } from '@chakra-ui/react';
+import { Heading, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-const PageTitle = ({ text }: {text: string}) => {
+const PageTitle = ({ text, className }: {text: string; className?: string}) => {
   return (
-    <Heading as="h1" size="lg" marginBottom={{ base: 6, lg: 8 }}>{ text }</Heading>
+    <Heading as="h1" size="lg" marginBottom={ 6 } className={ className }>{ text }</Heading>
   );
 };
 
-export default PageTitle;
+export default chakra(PageTitle);

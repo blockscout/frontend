@@ -64,6 +64,9 @@ function makePolicyMap() {
       'sentry.io', '*.sentry.io',
 
       appConfig.api.socket,
+
+      // ad
+      'request-global.czilladx.com',
     ],
 
     'script-src': [
@@ -77,6 +80,12 @@ function makePolicyMap() {
 
       // hash of ColorModeScript
       '\'sha256-e7MRMmTzLsLQvIy1iizO1lXf7VWYoQ6ysj5fuUzvRwE=\'',
+
+      // ad
+      'coinzillatag.com',
+      'servedbyadbutler.com',
+      '\'sha256-wMOeDjJaOTjCfNjluteV+tSqHW547T89sgxd8W6tQJM=\'',
+      '\'sha256-FcyIn1h7zra8TVnnRhYrwrplxJW7dpD5TV7kP2AG/kI=\'',
     ],
 
     'style-src': [
@@ -100,20 +109,23 @@ function makePolicyMap() {
 
       ...MAIN_DOMAINS,
 
-      // github avatars
-      'avatars.githubusercontent.com',
-
-      // other github assets (e.g trustwallet token icons)
+      // github assets (e.g trustwallet token icons)
       'raw.githubusercontent.com',
 
-      // auth0 assets
+      // auth0 assets and avatars
       's.gravatar.com',
+      'i0.wp.com', 'i1.wp.com', 'i2.wp.com', 'i3.wp.com',
+      'lh3.googleusercontent.com', // google avatars
+      'avatars.githubusercontent.com', // github avatars
 
       // network assets
       ...networkExternalAssets.map((url) => url.host),
 
       // marketplace apps logos
       ...getMarketplaceAppsLogosOrigins().map((url) => url.host),
+
+      // ad
+      'servedbyadbutler.com',
     ],
 
     'font-src': [
@@ -124,6 +136,10 @@ function makePolicyMap() {
       'fonts.googleapis.com',
     ],
 
+    'prefetch-src': [
+      ...MAIN_DOMAINS,
+    ],
+
     'object-src': [
       KEY_WORDS.NONE,
     ],
@@ -132,7 +148,12 @@ function makePolicyMap() {
       KEY_WORDS.NONE,
     ],
 
-    'frame-src': getMarketplaceAppsOrigins(),
+    'frame-src': [
+      ...getMarketplaceAppsOrigins(),
+
+      // ad
+      'request-global.czilladx.com',
+    ],
 
     ...(REPORT_URI ? {
       'report-uri': [

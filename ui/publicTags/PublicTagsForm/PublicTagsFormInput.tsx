@@ -1,10 +1,10 @@
 import type { InputProps } from '@chakra-ui/react';
-import { FormControl, FormLabel, Input } from '@chakra-ui/react';
+import { FormControl, Input } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 import type { ControllerRenderProps, FieldError, FieldValues, Path, Control } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 
-import getPlaceholderWithError from 'lib/getPlaceholderWithError';
+import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
 const TEXT_INPUT_MAX_LENGTH = 255;
 
@@ -36,7 +36,7 @@ export default function PublicTagsFormInput<Inputs extends FieldValues>({
           isInvalid={ Boolean(error) }
           maxLength={ TEXT_INPUT_MAX_LENGTH }
         />
-        <FormLabel>{ getPlaceholderWithError(label, error?.message) }</FormLabel>
+        <InputPlaceholder text={ label } error={ error }/>
       </FormControl>
     );
   }, [ label, required, error, size ]);

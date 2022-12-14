@@ -20,29 +20,43 @@ import transactionIcon from 'icons/transactions.svg';
 import dayjs from 'lib/date/dayjs';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import link from 'lib/link/link';
+import AdditionalInfoButton from 'ui/shared/AdditionalInfoButton';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
+import InOutTag from 'ui/shared/InOutTag';
 import TxStatus from 'ui/shared/TxStatus';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
-import TxAdditionalInfoButton from 'ui/txs/TxAdditionalInfoButton';
 import TxType from 'ui/txs/TxType';
 
-const TxsListItem = ({ tx }: {tx: Transaction}) => {
+type Props = {
+  tx: Transaction;
+  showBlockInfo: boolean;
+  currentAddress?: string;
+}
+
+const TAG_WIDTH = 48;
+const ARROW_WIDTH = 24;
+
+const TxsListItem = ({ tx, showBlockInfo, currentAddress }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const iconColor = useColorModeValue('blue.600', 'blue.300');
   const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
+  const dataTo = tx.to ? tx.to : tx.created_contract;
+
+  const isOut = Boolean(currentAddress && currentAddress === tx.from.hash);
+  const isIn = Boolean(currentAddress && currentAddress === tx.to?.hash);
 
   return (
     <>
       <Box width="100%" borderBottom="1px solid" borderColor={ borderColor } _first={{ borderTop: '1px solid', borderColor }}>
         <Flex justifyContent="space-between" mt={ 4 }>
           <HStack>
-            { tx.tx_types.map(item => <TxType key={ item } type={ item }/>) }
+            <TxType types={ tx.tx_types }/>
             <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined }/>
           </HStack>
-          <TxAdditionalInfoButton onClick={ onOpen }/>
+          <AdditionalInfoButton onClick={ onOpen }/>
         </Flex>
         <Flex justifyContent="space-between" lineHeight="24px" mt={ 3 }>
           <Flex>
@@ -58,7 +72,6 @@ const TxsListItem = ({ tx }: {tx: Transaction}) => {
                 type="transaction"
                 fontWeight="700"
                 truncation="constant"
-                target="_self"
               />
             </Address>
           </Flex>
@@ -76,14 +89,14 @@ const TxsListItem = ({ tx }: {tx: Transaction}) => {
             { tx.method }
           </Text>
         </Flex>
-        { tx.block !== null && (
+        { showBlockInfo && tx.block !== null && (
           <Box mt={ 2 }>
             <Text as="span">Block </Text>
             <Link href={ link('block', { id: tx.block.toString() }) }>{ tx.block }</Link>
           </Box>
         ) }
         <Flex alignItems="center" height={ 6 } mt={ 6 }>
-          <Address width="calc((100%-40px)/2)">
+          <Address width={ `calc((100%-${ currentAddress ? TAG_WIDTH : ARROW_WIDTH + 8 }px)/2)` }>
             <AddressIcon hash={ tx.from.hash }/>
             <AddressLink
               hash={ tx.from.hash }
@@ -92,17 +105,20 @@ const TxsListItem = ({ tx }: {tx: Transaction}) => {
               ml={ 2 }
             />
           </Address>
-          <Icon
-            as={ rightArrowIcon }
-            boxSize={ 6 }
-            mx={ 2 }
-            color="gray.500"
-          />
+          { (isIn || isOut) ?
+            <InOutTag isIn={ isIn } isOut={ isOut } width="48px" mr={ 2 }/> : (
+              <Icon
+                as={ rightArrowIcon }
+                boxSize={ 6 }
+                mx={ 2 }
+                color="gray.500"
+              />
+            ) }
           <Address width="calc((100%-40px)/2)">
-            <AddressIcon hash={ tx.to.hash }/>
+            <AddressIcon hash={ dataTo.hash }/>
             <AddressLink
-              hash={ tx.to.hash }
-              alias={ tx.to.name }
+              hash={ dataTo.hash }
+              alias={ dataTo.name }
               fontWeight="500"
               ml={ 2 }
             />
