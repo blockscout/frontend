@@ -8,14 +8,17 @@ import * as cookies from 'lib/cookies';
 
 // first arg can be only a string
 // FIXME migrate to RequestInfo later if needed
-export default function fetchFactory(_req: NextApiRequest) {
+export default function fetchFactory(
+  _req: NextApiRequest,
+  apiEndpoint: string = appConfig.api.endpoint,
+) {
   return function fetch(path: string, init?: RequestInit): Promise<Response> {
     const headers = {
       accept: 'application/json',
       'content-type': 'application/json',
       cookie: `${ cookies.NAMES.API_TOKEN }=${ _req.cookies[cookies.NAMES.API_TOKEN] }`,
     };
-    const url = new URL(path, appConfig.api.endpoint);
+    const url = new URL(path, apiEndpoint);
 
     httpLogger.logger.info({
       message: 'Trying to call API',

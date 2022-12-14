@@ -9,13 +9,11 @@ export const statsChartsScheme: Array<StatsSection> = [
         id: 'new-blocks',
         title: 'New blocks',
         description: 'New blocks number per day',
-        apiMethodURL: '/node-api/stats/charts/transactions',
       },
       {
         id: 'average-block-size',
         title: 'Average block size',
-        description: 'Average size of blocks in bytes per day',
-        apiMethodURL: '/node-api/stats/charts/transactions',
+        description: 'Average size of blocks in bytes',
       },
     ],
   },
@@ -24,16 +22,40 @@ export const statsChartsScheme: Array<StatsSection> = [
     title: 'Transactions',
     charts: [
       {
-        id: 'transaction-fees',
-        title: 'Transaction fees',
-        description: 'Amount of tokens paid as fees per day',
-        apiMethodURL: '/node-api/stats/charts/transactions',
+        id: 'average-transaction-fee',
+        title: 'Average transaction fee',
+        description: 'The average amount in USD spent per transaction',
       },
       {
-        id: 'native-coin-holders-growth',
-        title: 'Native coin holders growth',
-        description: 'Total token holders number per day',
-        apiMethodURL: '/node-api/stats/charts/transactions',
+        id: 'transactions-fees',
+        title: 'Transactions fees',
+        description: 'Amount of tokens paid as fees',
+      },
+      {
+        id: 'new-transactions',
+        title: 'Transactions fees',
+        description: 'New transactions number per period',
+      },
+      {
+        id: 'transactions-growth',
+        title: 'Transactions growth',
+        description: 'Cumulative transactions number per period',
+      },
+    ],
+  },
+  {
+    id: 'accounts',
+    title: 'Accounts',
+    charts: [
+      {
+        id: 'active-accounts',
+        title: 'Active accounts',
+        description: 'Active accounts number per period',
+      },
+      {
+        id: 'accounts-growth',
+        title: 'Accounts growth',
+        description: 'Cumulative accounts number per period',
       },
     ],
   },

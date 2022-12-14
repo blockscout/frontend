@@ -6,7 +6,7 @@ import getDefaultTransitionProps from './getDefaultTransitionProps';
 
 export default function getOutlinedFieldStyles(props: StyleFunctionProps) {
   const { theme, borderColor } = props;
-  const { focusColor: fc, errorColor: ec } = getDefaultFormColors(props);
+  const { focusBorderColor, errorColor } = getDefaultFormColors(props);
   const transitionProps = getDefaultTransitionProps();
 
   return {
@@ -32,12 +32,12 @@ export default function getOutlinedFieldStyles(props: StyleFunctionProps) {
       },
     },
     _invalid: {
-      borderColor: getColor(theme, ec),
+      borderColor: getColor(theme, errorColor),
       boxShadow: `none`,
     },
     _focusVisible: {
       zIndex: 1,
-      borderColor: getColor(theme, fc),
+      borderColor: getColor(theme, focusBorderColor),
       boxShadow: 'md',
     },
     _placeholder: {

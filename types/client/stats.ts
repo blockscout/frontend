@@ -19,14 +19,7 @@ export enum StatsIntervalId {
 }
 
 export type StatsChart = {
-  visible?: boolean;
   id: string;
   title: string;
   description: string;
-  apiMethodURL: string;
-}
-
-export interface ModalChart {
-  id: string;
-  title: string;
 }

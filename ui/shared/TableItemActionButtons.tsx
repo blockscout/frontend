@@ -1,8 +1,9 @@
 import { Tooltip, IconButton, Icon, HStack } from '@chakra-ui/react';
-import React, { useCallback } from 'react';
+import React from 'react';
 
 import DeleteIcon from 'icons/delete.svg';
 import EditIcon from 'icons/edit.svg';
+import usePreventFocusAfterModalClosing from 'lib/hooks/usePreventFocusAfterModalClosing';
 
 type Props = {
   onEditClick: () => void;
@@ -10,8 +11,7 @@ type Props = {
 }
 
 const TableItemActionButtons = ({ onEditClick, onDeleteClick }: Props) => {
-  // prevent set focus on button when closing modal
-  const onFocusCapture = useCallback((e: React.SyntheticEvent) => e.stopPropagation(), []);
+  const onFocusCapture = usePreventFocusAfterModalClosing();
 
   return (
     <HStack spacing={ 6 } alignSelf="flex-end">

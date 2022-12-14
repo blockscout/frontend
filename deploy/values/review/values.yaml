@@ -316,6 +316,9 @@ frontend:
         - "/tx"
         - "/blocks"
         - "/block"
+        - "/login"
+        - "/address"
+        - "/stats"
   resources:
     limits:
       memory:
@@ -371,6 +374,8 @@ frontend:
     NEXT_PUBLIC_API_HOST:
       _default: blockscout.com
       review: blockscout-main.test.aws-k8s.blockscout.com
+    NEXT_PUBLIC_STATS_API_HOST:
+      _default: https://stats-test.aws-k8s.blockscout.com/
     NEXT_PUBLIC_AUTH_URL:
       _default: https://blockscout-main.test.aws-k8s.blockscout.com
     NEXT_PUBLIC_API_BASE_PATH:

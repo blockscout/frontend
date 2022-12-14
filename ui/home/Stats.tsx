@@ -13,6 +13,7 @@ import txIcon from 'icons/transactions.svg';
 import walletIcon from 'icons/wallet.svg';
 import useFetch from 'lib/hooks/useFetch';
 
+import StatsGasPrices from './StatsGasPrices';
 import StatsItem from './StatsItem';
 import StatsItemSkeleton from './StatsItemSkeleton';
 
@@ -28,7 +29,7 @@ const Stats = () => {
 
   const { data, isLoading, isError } = useQuery<unknown, unknown, HomeStats>(
     [ QueryKeys.homeStats ],
-    async() => await fetch(`/node-api/stats`),
+    async() => await fetch(`/node-api/home-stats`),
   );
 
   if (isError) {
@@ -44,6 +45,7 @@ const Stats = () => {
   const lastItemTouchStyle = { gridColumn: { base: 'span 2', lg: 'unset' } };
 
   if (data) {
+    const gasLabel = hasGasTracker ? <StatsGasPrices gasPrices={ data.gas_prices }/> : null;
     content = (
       <>
         <StatsItem
@@ -75,6 +77,7 @@ const Stats = () => {
             title="Gas tracker"
             value={ `${ Number(data.gas_prices.average).toLocaleString() } Gwei` }
             _last={ itemsCount % 2 ? lastItemTouchStyle : undefined }
+            tooltipLabel={ gasLabel }
           />
         ) }
       </>

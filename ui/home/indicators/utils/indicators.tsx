@@ -19,7 +19,7 @@ const dailyTxsIndicator: TChainIndicator<QueryKeys.chartsTxs> = {
   hint: `The total daily number of transactions on the blockchain for the last month.`,
   api: {
     queryName: QueryKeys.chartsTxs,
-    path: '/node-api/stats/charts/transactions',
+    path: '/node-api/home-stats/charts/transactions',
     dataFn: (response) => ([ {
       items: response.chart_data
         .map((item) => ({ date: new Date(item.date), value: item.tx_count }))
@@ -38,7 +38,7 @@ const coinPriceIndicator: TChainIndicator<QueryKeys.chartsMarket> = {
   hint: `${ appConfig.network.currency.symbol } token daily price in USD.`,
   api: {
     queryName: QueryKeys.chartsMarket,
-    path: '/node-api/stats/charts/market',
+    path: '/node-api/home-stats/charts/market',
     dataFn: (response) => ([ {
       items: response.chart_data
         .map((item) => ({ date: new Date(item.date), value: Number(item.closing_price) }))
@@ -58,7 +58,7 @@ const marketPriceIndicator: TChainIndicator<QueryKeys.chartsMarket> = {
   hint: 'The total market value of a cryptocurrency\'s circulating supply. It is analogous to the free-float capitalization in the stock market. Market Cap = Current Price x Circulating Supply.',
   api: {
     queryName: QueryKeys.chartsMarket,
-    path: '/node-api/stats/charts/market',
+    path: '/node-api/home-stats/charts/market',
     dataFn: (response) => ([ {
       items: response.chart_data
         .map((item) => ({ date: new Date(item.date), value: Number(item.closing_price) * Number(response.available_supply) }))

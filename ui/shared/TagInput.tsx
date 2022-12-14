@@ -23,7 +23,7 @@ function TagInput<Inputs extends FieldValues, Name extends Path<Inputs>>({ field
         isInvalid={ Boolean(error) }
         maxLength={ TAG_MAX_LENGTH }
       />
-      <InputPlaceholder text="Private tag (max 35 characters)" error={ error?.message }/>
+      <InputPlaceholder text="Private tag (max 35 characters)" error={ error }/>
     </FormControl>
   );
 }

@@ -73,7 +73,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
       comment: data?.additional_comment || '',
       action: data?.is_owner === undefined || data?.is_owner ? 'add' : 'report',
     },
-    mode: 'all',
+    mode: 'onTouched',
   });
 
   const { fields, append, remove } = useFieldArray({
@@ -145,11 +145,6 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
     setAlertVisible(false);
     mutation.mutate(data);
   }, [ mutation ]);
-
-  const changeToData = useCallback(() => {
-    setAlertVisible(false);
-    changeToDataScreen(false);
-  }, [ changeToDataScreen ]);
 
   return (
     <chakra.form
@@ -241,14 +236,6 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
           isLoading={ mutation.isLoading }
         >
           Send request
-        </Button>
-        <Button
-          size="lg"
-          variant="outline"
-          onClick={ changeToData }
-          disabled={ mutation.isLoading }
-        >
-          Cancel
         </Button>
       </HStack>
     </chakra.form>

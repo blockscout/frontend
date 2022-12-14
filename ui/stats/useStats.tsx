@@ -1,7 +1,7 @@
 import debounce from 'lodash/debounce';
 import React, { useCallback, useEffect, useState } from 'react';
 
-import type { ModalChart, StatsChart, StatsIntervalIds, StatsSection, StatsSectionIds } from 'types/client/stats';
+import type { StatsChart, StatsIntervalIds, StatsSection, StatsSectionIds } from 'types/client/stats';
 
 import { statsChartsScheme } from './constants/charts-scheme';
 
@@ -16,8 +16,7 @@ function isChartNameMatches(q: string, chart: StatsChart) {
 export default function useStats() {
   const [ displayedCharts, setDisplayedCharts ] = useState<Array<StatsSection>>(statsChartsScheme);
   const [ section, setSection ] = useState<StatsSectionIds>('all');
-  const [ interval, setInterval ] = useState<StatsIntervalIds>('all');
-  const [ fullscreenChart, setFullscreenChart ] = useState<ModalChart | null>(null);
+  const [ interval, setInterval ] = useState<StatsIntervalIds>('oneMonth');
   const [ filterQuery, setFilterQuery ] = useState('');
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -26,16 +25,13 @@ export default function useStats() {
   const filterCharts = useCallback((q: string, currentSection: StatsSectionIds) => {
     const charts = statsChartsScheme
       ?.map((section: StatsSection) => {
-        const charts = section.charts.map((chart: StatsChart) => ({
-          ...chart,
-          visible: isSectionMatches(section, currentSection) && isChartNameMatches(q, chart),
-        }));
+        const charts = section.charts.filter((chart: StatsChart) => isSectionMatches(section, currentSection) && isChartNameMatches(q, chart));
 
         return {
           ...section,
           charts,
         };
-      });
+      }).filter((section: StatsSection) => section.charts.length > 0);
 
     setDisplayedCharts(charts || []);
   }, []);
@@ -46,22 +42,6 @@ export default function useStats() {
 
   const handleIntervalChange = useCallback((newInterval: StatsIntervalIds) => {
     setInterval(newInterval);
-  }, []);
-
-  const showChartFullscreen = useCallback((chart: ModalChart) => {
-    setFullscreenChart(chart);
-
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen();
-    }
-  }, []);
-
-  const clearFullscreenChart = useCallback(() => {
-    setFullscreenChart(null);
-
-    if (document.fullscreenElement) {
-      document.exitFullscreen();
-    }
   }, []);
 
   useEffect(() => {
@@ -75,9 +55,6 @@ export default function useStats() {
     handleIntervalChange,
     debounceFilterCharts,
     displayedCharts,
-    showChartFullscreen,
-    clearFullscreenChart,
-    fullscreenChart,
   }), [
     section,
     handleSectionChange,
@@ -85,8 +62,5 @@ export default function useStats() {
     handleIntervalChange,
     debounceFilterCharts,
     displayedCharts,
-    showChartFullscreen,
-    clearFullscreenChart,
-    fullscreenChart,
   ]);
 }

@@ -1,4 +1,4 @@
-import { Box, Button, Icon, Menu, MenuButton, MenuItemOption, MenuList, MenuOptionGroup } from '@chakra-ui/react';
+import { Box, Button, Icon, Menu, MenuButton, MenuItemOption, MenuList, MenuOptionGroup, Text } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
 import eastMiniArrowIcon from 'icons/arrows/east-mini.svg';
@@ -32,8 +32,14 @@ export function StatsDropdownMenu<T extends string>({ items, selectedId, onSelec
           display="flex"
           alignItems="center"
         >
-          { selectedCategory?.title }
-          <Icon transform="rotate(-90deg)" ml={{ base: 'auto', sm: 1 }} as={ eastMiniArrowIcon } w={ 5 } h={ 5 }/>
+          <Text
+            whiteSpace="nowrap"
+            overflow="hidden"
+            textOverflow="ellipsis"
+          >
+            { selectedCategory?.title }
+          </Text>
+          <Icon transform="rotate(-90deg)" ml="auto" as={ eastMiniArrowIcon } w={ 5 } h={ 5 }/>
         </Box>
       </MenuButton>
 

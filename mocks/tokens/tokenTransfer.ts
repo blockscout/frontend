@@ -29,6 +29,7 @@ export const erc20: TokenTransfer = {
     name: 'ARIANEE',
     symbol: 'ARIA',
     type: 'ERC-20',
+    total_supply: '0',
   },
   total: {
     decimals: '18',
@@ -67,6 +68,7 @@ export const erc721: TokenTransfer = {
     name: 'Arianee Smart-Asset',
     symbol: 'AriaSA',
     type: 'ERC-721',
+    total_supply: '0',
   },
   total: {
     token_id: '875879856',
@@ -104,6 +106,7 @@ export const erc1155: TokenTransfer = {
     name: null,
     symbol: null,
     type: 'ERC-1155',
+    total_supply: '0',
   },
   total: {
     token_id: '123',

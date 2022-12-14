@@ -32,7 +32,7 @@ export default function AddressInput<Inputs extends FieldValues, Name extends Pa
         isInvalid={ Boolean(error) }
         maxLength={ ADDRESS_LENGTH }
       />
-      <InputPlaceholder text={ placeholder } error={ error?.message }/>
+      <InputPlaceholder text={ placeholder } error={ error }/>
     </FormControl>
   );
 }

@@ -36,7 +36,7 @@ const TransactionForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) =>
   const formBackgroundColor = useColorModeValue('white', 'gray.900');
 
   const { control, handleSubmit, formState: { errors, isValid, isDirty }, setError } = useForm<Inputs>({
-    mode: 'all',
+    mode: 'onTouched',
     defaultValues: {
       transaction: data?.transaction_hash || '',
       tag: data?.name || '',

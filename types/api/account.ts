@@ -1,3 +1,4 @@
+import type { AddressParam } from './addressParams';
 export interface AddressTag {
   address_hash: string;
   name: string;
@@ -63,6 +64,7 @@ export interface WatchlistAddress {
   notification_settings: NotificationSettings;
   notification_methods: NotificationMethods;
   id: string;
+  address?: AddressParam;
 }
 
 export interface WatchlistAddressNew {

@@ -1,12 +1,11 @@
-import type { TestFixture } from '@playwright/test';
+import type { TestFixture, Page } from '@playwright/test';
 import type { WebSocket } from 'ws';
 import { WebSocketServer } from 'ws';
 
+import type { AddressCoinBalancePayload } from 'lib/socket/types';
 import type { NewBlockSocketResponse } from 'types/api/block';
 
 type ReturnType = () => Promise<WebSocket>;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type ArgsType = any;
 
 type Channel = [string, string, string];
 
@@ -17,7 +16,7 @@ export interface SocketServerFixture {
 export const PORT = 3200;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const createSocket: TestFixture<ReturnType, ArgsType> = async({ page }, use) => {
+export const createSocket: TestFixture<ReturnType, { page: Page}> = async({ page }, use) => {
   const socketServer = new WebSocketServer({ port: PORT });
 
   const connectionPromise = new Promise<WebSocket>((resolve) => {
@@ -55,6 +54,8 @@ export const joinChannel = async(socket: WebSocket, channelName: string) => {
   });
 };
 
+export function sendMessage(socket: WebSocket, channel: Channel, msg: 'coin_balance', payload: AddressCoinBalancePayload): void;
+export function sendMessage(socket: WebSocket, channel: Channel, msg: 'token_balance', payload: { block_number: number }): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'transaction', payload: { transaction: number }): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'pending_transaction', payload: { pending_transaction: number }): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'new_block', payload: NewBlockSocketResponse): void;
