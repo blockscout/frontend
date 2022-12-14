@@ -5,7 +5,7 @@ blockscout:
   app: blockscout
   enabled: true
   image:
-    _default: &imaged blockscout/blockscout:frontend-main
+    _default: &image blockscout/blockscout:frontend-main
   replicas:
     app: 1
   docker:
