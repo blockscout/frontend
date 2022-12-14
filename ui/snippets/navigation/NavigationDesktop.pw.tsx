@@ -2,6 +2,7 @@ import { Box, Flex } from '@chakra-ui/react';
 import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
+import authFixture from 'playwright/fixtures/auth';
 import TestApp from 'playwright/TestApp';
 
 import NavigationDesktop from './NavigationDesktop';
@@ -30,7 +31,7 @@ test('no auth +@desktop-xl +@dark-mode-xl', async({ mount }) => {
 test.describe('auth', () => {
   const extendedTest = test.extend({
     context: ({ context }, use) => {
-      context.addCookies([ { name: '_explorer_key', value: 'foo', domain: 'localhost', path: '/' } ]);
+      authFixture(context);
       use(context);
     },
   });
