@@ -5,7 +5,7 @@ blockscout:
   app: blockscout
   enabled: true
   image:
-    _default: blockscout/blockscout:latest
+    _default: &image blockscout/blockscout:frontend-main
   replicas:
     app: 1
   docker:
@@ -15,7 +15,7 @@ blockscout:
   init:
     enabled: true
     image:
-      _default: blockscout/blockscout:latest
+      _default: *image
   service:
     # ClusterIP, NodePort or LoadBalancer
     type: ClusterIP
@@ -144,6 +144,8 @@ blockscout:
       _default: 'true'
     APPS:
       _default: '[{"title": "Marketplace", "url": "/apps", "embedded?": true}]'
+    SESSION_COOKIE_DOMAIN:
+      _default: blockscout-main.test.aws-k8s.blockscout.com
 
 postgres:
   enabled: true
