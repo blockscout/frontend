@@ -4,7 +4,7 @@ import type { UserInfo } from 'types/api/account';
 import { QueryKeys } from 'types/client/queries';
 
 import appConfig from 'configs/app/config';
-import * as cookies from 'lib/cookies';
+// import * as cookies from 'lib/cookies';
 import useFetch from 'lib/hooks/useFetch';
 
 interface Error {
@@ -22,6 +22,6 @@ export default function useFetchProfileInfo() {
     return fetch(url.toString(), { credentials: 'include' });
   }, {
     refetchOnMount: false,
-    enabled: Boolean(cookies.get(cookies.NAMES.API_TOKEN)),
+    // enabled: Boolean(cookies.get(cookies.NAMES.API_TOKEN)),
   });
 }
