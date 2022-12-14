@@ -46,7 +46,7 @@ test.describe('custom logo', () => {
     ]) as any,
   });
 
-  extendedTest.only('+@desktop-xl +@dark-mode +@dark-mode-xl', async({ mount, page }) => {
+  extendedTest('+@desktop-xl +@dark-mode +@dark-mode-xl', async({ mount, page }) => {
     await page.route(LOGO_URL, (route) => {
       return route.fulfill({
         status: 200,
