@@ -19,7 +19,7 @@ import Tabs from './Tabs';
 import Tag from './Tag';
 import Text from './Text';
 import Textarea from './Textarea';
-import Tooltip from './Tooltip';
+import Tooltip from './Tooltip/Tooltip';
 
 const components = {
   Alert,
