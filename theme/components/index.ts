@@ -16,7 +16,7 @@ import Spinner from './Spinner';
 import Switch from './Switch';
 import Table from './Table';
 import Tabs from './Tabs';
-import Tag from './Tag';
+import Tag from './Tag/Tag';
 import Text from './Text';
 import Textarea from './Textarea';
 import Tooltip from './Tooltip/Tooltip';
