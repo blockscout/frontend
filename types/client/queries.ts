@@ -4,6 +4,7 @@ export enum QueryKeys {
   txsValidate = 'txs-validated',
   txsPending = 'txs-pending',
   homeStats='homeStats',
+  indexingStatus='indexingStatus',
   stats='stats',
   charts='stats',
   tx = 'tx',
