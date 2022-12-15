@@ -14,7 +14,7 @@ interface Props extends Omit<React.SVGProps<SVGGElement>, 'scale'> {
 const ChartAxis = ({ type, scale, ticks, tickFormat, disableAnimation, anchorEl, ...props }: Props) => {
   const ref = React.useRef<SVGGElement>(null);
 
-  const textColorToken = useColorModeValue('blackAlpha.500', 'whiteAlpha.500');
+  const textColorToken = useColorModeValue('blackAlpha.600', 'whiteAlpha.500');
   const textColor = useToken('colors', textColorToken);
 
   React.useEffect(() => {

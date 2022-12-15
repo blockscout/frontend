@@ -5,7 +5,7 @@ const ChartWidgetSkeleton = () => {
   return (
     <Box
       height="235px"
-      paddingY={{ base: 3, md: 4 }}
+      paddingY={{ base: 3, lg: 4 }}
     >
       <Skeleton w="75%" h="24px" mb={ 1 }/>
       <Skeleton w="50%" h="18px" mb={ 5 }/>

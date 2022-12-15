@@ -1,13 +1,16 @@
-import { Button, Flex, Heading, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/react';
+import { Box, Button, Grid, Heading, Icon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalOverlay, Text } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
 import type { TimeChartItem } from './types';
+
+import repeatArrow from 'icons/repeat_arrow.svg';
 
 import ChartWidgetGraph from './ChartWidgetGraph';
 
 type Props = {
   isOpen: boolean;
   title: string;
+  description: string;
   items: Array<TimeChartItem>;
   onClose: () => void;
 }
@@ -15,6 +18,7 @@ type Props = {
 const FullscreenChartModal = ({
   isOpen,
   title,
+  description,
   items,
   onClose,
 }: Props) => {
@@ -39,44 +43,53 @@ const FullscreenChartModal = ({
 
       <ModalContent>
 
-        <ModalHeader>
-          <Flex
-            alignItems="center"
+        <Box
+          mb={ 1 }
+        >
+          <Grid
+            gridColumnGap={ 2 }
           >
             <Heading
-              as="h2"
-              gridColumn={ 2 }
-              fontSize={{ base: '2xl', sm: '3xl' }}
-              fontWeight="medium"
-              lineHeight={ 1 }
-              color="blue.600"
+              mb={ 1 }
+              size={{ base: 'xs', sm: 'md' }}
             >
               { title }
             </Heading>
 
+            <Text
+              gridColumn={ 1 }
+              as="p"
+              variant="secondary"
+              fontSize="xs"
+            >
+              { description }
+            </Text>
+
             { !isZoomResetInitial && (
               <Button
-                ml="auto"
+                leftIcon={ <Icon as={ repeatArrow } w={ 4 } h={ 4 }/> }
+                colorScheme="blue"
                 gridColumn={ 2 }
                 justifySelf="end"
                 alignSelf="top"
                 gridRow="1/3"
-                size="md"
+                size="sm"
                 variant="outline"
                 onClick={ handleZoomResetClick }
               >
-                  Reset zoom
+                Reset zoom
               </Button>
             ) }
-          </Flex>
-        </ModalHeader>
+          </Grid>
+        </Box>
 
         <ModalCloseButton/>
 
         <ModalBody
-          h="75%"
+          h="100%"
         >
           <ChartWidgetGraph
+            isEnlarged
             items={ items }
             onZoom={ handleZoom }
             isZoomResetInitial={ isZoomResetInitial }
