@@ -2,6 +2,7 @@ import type { Transaction } from 'types/api/transaction';
 
 import type { AddressTag, WatchlistName } from './addressParams';
 import type { Block } from './block';
+import type { InternalTransaction } from './internalTransaction';
 import type { TokenInfo, TokenType } from './tokenInfo';
 import type { TokenTransfer, TokenTransferPagination } from './tokenTransfer';
 
@@ -85,4 +86,13 @@ export interface AddressBlocksValidatedResponse {
     block_number: number;
     items_count: number;
   };
+}
+export interface AddressInternalTxsResponse {
+  items: Array<InternalTransaction>;
+  next_page_params: {
+    block_number: number;
+    index: number;
+    items_count: number;
+    transaction_index: number;
+  } | null;
 }

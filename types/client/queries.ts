@@ -29,4 +29,5 @@ export enum QueryKeys {
   addressTxs='addressTxs',
   addressTokenTransfers='addressTokenTransfers',
   addressBlocksValidated='address-blocks-validated',
+  addressInternalTxs='address-internal-txs',
 }
