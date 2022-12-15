@@ -8,6 +8,7 @@ import { QueryKeys } from 'types/client/queries';
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
 import useFetch from 'lib/hooks/useFetch';
+import AddressCoinBalance from 'ui/address/AddressCoinBalance';
 import AddressDetails from 'ui/address/AddressDetails';
 import AddressTxs from 'ui/address/AddressTxs';
 import Page from 'ui/shared/Page/Page';
@@ -37,7 +38,7 @@ const AddressPageContent = () => {
     { id: 'token_transfers', title: 'Token transfers', component: null },
     { id: 'tokens', title: 'Tokens', component: null },
     { id: 'internal_txn', title: 'Internal txn', component: null },
-    { id: 'coin_balance_history', title: 'Coin balance history', component: null },
+    { id: 'coin_balance_history', title: 'Coin balance history', component: <AddressCoinBalance addressQuery={ addressQuery }/> },
   ];
 
   return (

@@ -2,7 +2,7 @@ import type { TestFixture, Page } from '@playwright/test';
 import type { WebSocket } from 'ws';
 import { WebSocketServer } from 'ws';
 
-import type { AddressCoinBalancePayload } from 'lib/socket/types';
+import type { AddressCoinBalanceHistoryItem } from 'types/api/address';
 import type { NewBlockSocketResponse } from 'types/api/block';
 
 type ReturnType = () => Promise<WebSocket>;
@@ -54,7 +54,7 @@ export const joinChannel = async(socket: WebSocket, channelName: string) => {
   });
 };
 
-export function sendMessage(socket: WebSocket, channel: Channel, msg: 'coin_balance', payload: AddressCoinBalancePayload): void;
+export function sendMessage(socket: WebSocket, channel: Channel, msg: 'coin_balance', payload: { coin_balance: AddressCoinBalanceHistoryItem }): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'token_balance', payload: { block_number: number }): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'transaction', payload: { transaction: number }): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'pending_transaction', payload: { pending_transaction: number }): void;

@@ -2,6 +2,7 @@ import { Flex } from '@chakra-ui/react';
 import { test as base, expect, devices } from '@playwright/experimental-ct-react';
 import React from 'react';
 
+import * as coinBalanceMock from 'mocks/address/coinBalanceHistory';
 import * as tokenBalanceMock from 'mocks/address/tokenBalance';
 import * as socketServer from 'playwright/fixtures/socketServer';
 import TestApp from 'playwright/TestApp';
@@ -184,9 +185,7 @@ test.describe('socket', () => {
     const socket = await createSocket();
     const channel = await socketServer.joinChannel(socket, 'addresses:1');
     socketServer.sendMessage(socket, channel, 'coin_balance', {
-      coin_balance: {
-        block_number: 1,
-      },
+      coin_balance: coinBalanceMock.base,
     });
 
     const button = page.getByRole('button', { name: /select/i });
