@@ -1,5 +1,7 @@
 import type { BrowserContext } from '@playwright/test';
 
+import * as cookies from 'lib/cookies';
+
 export default function authFixture(context: BrowserContext) {
-  context.addCookies([ { name: '_explorer_key', value: 'foo', domain: 'localhost', path: '/' } ]);
+  context.addCookies([ { name: cookies.NAMES.API_TOKEN, value: 'foo', domain: 'localhost', path: '/' } ]);
 }

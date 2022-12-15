@@ -2,6 +2,7 @@ import { Box, Flex } from '@chakra-ui/react';
 import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
+import * as cookies from 'lib/cookies';
 import authFixture from 'playwright/fixtures/auth';
 import TestApp from 'playwright/TestApp';
 
@@ -71,7 +72,7 @@ test('with tooltips +@desktop-xl -@default', async({ mount, page }) => {
 test.describe('cookie set to false', () => {
   const extendedTest = test.extend({
     context: ({ context }, use) => {
-      context.addCookies([ { name: 'nav_bar_collapsed', value: 'false', domain: 'localhost', path: '/' } ]);
+      context.addCookies([ { name: cookies.NAMES.NAV_BAR_COLLAPSED, value: 'false', domain: 'localhost', path: '/' } ]);
       use(context);
     },
   });
@@ -95,7 +96,7 @@ test.describe('cookie set to false', () => {
 test.describe('cookie set to true', () => {
   const extendedTest = test.extend({
     context: ({ context }, use) => {
-      context.addCookies([ { name: 'nav_bar_collapsed', value: 'true', domain: 'localhost', path: '/' } ]);
+      context.addCookies([ { name: cookies.NAMES.NAV_BAR_COLLAPSED, value: 'true', domain: 'localhost', path: '/' } ]);
       use(context);
     },
   });
