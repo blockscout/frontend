@@ -10,7 +10,7 @@ import useFetch from 'lib/hooks/useFetch';
 import NumberWidget from './NumberWidget';
 import NumberWidgetSkeleton from './NumberWidgetSkeleton';
 
-const skeletonsCount = 5;
+const skeletonsCount = 8;
 
 const NumberWidgetsList = () => {
   const fetch = useFetch();

@@ -15,20 +15,21 @@ import useChartSize from 'ui/shared/chart/useChartSize';
 import useTimeChartController from 'ui/shared/chart/useTimeChartController';
 
 interface Props {
+  isEnlarged?: boolean;
   title: string;
   items: Array<TimeChartItem>;
   onZoom: () => void;
   isZoomResetInitial: boolean;
 }
 
-const CHART_MARGIN = { bottom: 20, left: 52, right: 30, top: 10 };
+const CHART_MARGIN = { bottom: 20, left: 30, right: 20, top: 10 };
 
-const ChartWidgetGraph = ({ items, onZoom, isZoomResetInitial, title }: Props) => {
+const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title }: Props) => {
   const isMobile = useIsMobile();
   const ref = React.useRef<SVGSVGElement>(null);
   const color = useToken('colors', 'blue.200');
   const overlayRef = React.useRef<SVGRectElement>(null);
-  const chartId = useMemo(() => `chart-${ crypto.randomUUID() }`, []);
+  const chartId = useMemo(() => `chart-${ title.split(' ').join('') }`, [ title ]);
   const [ range, setRange ] = React.useState<[ number, number ]>([ 0, Infinity ]);
   const { innerWidth, innerHeight } = useChartSize(ref.current, CHART_MARGIN);
 
@@ -60,7 +61,7 @@ const ChartWidgetGraph = ({ items, onZoom, isZoomResetInitial, title }: Props) =
         <ChartGridLine
           type="horizontal"
           scale={ yScale }
-          ticks={ 3 }
+          ticks={ isEnlarged ? 6 : 3 }
           size={ innerWidth }
           disableAnimation
         />
@@ -79,27 +80,27 @@ const ChartWidgetGraph = ({ items, onZoom, isZoomResetInitial, title }: Props) =
           yScale={ yScale }
           stroke={ color }
           animation="none"
-          strokeWidth={ 3 }
+          strokeWidth={ isMobile ? 1 : 2 }
         />
 
         <ChartAxis
           type="left"
           scale={ yScale }
-          ticks={ 5 }
+          ticks={ isEnlarged ? 6 : 3 }
           tickFormat={ yTickFormat }
           disableAnimation
         />
 
-        <ChartOverlay ref={ overlayRef } width={ innerWidth } height={ innerHeight }>
-          <ChartAxis
-            type="bottom"
-            scale={ xScale }
-            transform={ `translate(0, ${ innerHeight })` }
-            ticks={ isMobile ? 1 : 3 }
-            anchorEl={ overlayRef.current }
-            disableAnimation
-          />
+        <ChartAxis
+          type="bottom"
+          scale={ xScale }
+          transform={ `translate(0, ${ innerHeight })` }
+          ticks={ isMobile ? 1 : 4 }
+          anchorEl={ overlayRef.current }
+          disableAnimation
+        />
 
+        <ChartOverlay ref={ overlayRef } width={ innerWidth } height={ innerHeight }>
           <ChartTooltip
             chartId={ chartId }
             anchorEl={ overlayRef.current }

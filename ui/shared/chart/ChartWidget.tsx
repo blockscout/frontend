@@ -1,4 +1,4 @@
-import { Box, Grid, Heading, Icon, IconButton, Menu, MenuButton, MenuItem, MenuList, Text, useColorModeValue, VisuallyHidden } from '@chakra-ui/react';
+import { Box, Grid, Icon, IconButton, Menu, MenuButton, MenuItem, MenuList, Text, Tooltip, useColorModeValue, VisuallyHidden } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 
 import type { TimeChartItem } from './types';
@@ -21,7 +21,6 @@ const ChartWidget = ({ items, title, description, isLoading }: Props) => {
   const [ isFullscreen, setIsFullscreen ] = useState(false);
   const [ isZoomResetInitial, setIsZoomResetInitial ] = React.useState(true);
 
-  const menuButtonColor = useColorModeValue('black', 'white');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
 
   const handleZoom = useCallback(() => {
@@ -56,7 +55,7 @@ const ChartWidget = ({ items, title, description, isLoading }: Props) => {
     return (
       <>
         <Box
-          padding={{ base: 3, md: 4 }}
+          padding={{ base: 3, lg: 4 }}
           borderRadius="md"
           border="1px"
           borderColor={ borderColor }
@@ -65,12 +64,15 @@ const ChartWidget = ({ items, title, description, isLoading }: Props) => {
             gridTemplateColumns="auto auto 36px"
             gridColumnGap={ 2 }
           >
-            <Heading
-              mb={ 1 }
-              size={{ base: 'xs', md: 'sm' }}
+            <Text
+              fontWeight={ 600 }
+              fontSize="md"
+              lineHeight={ 6 }
+              as="p"
+              size={{ base: 'xs', lg: 'sm' }}
             >
               { title }
-            </Heading>
+            </Text>
 
             <Text
               mb={ 1 }
@@ -82,22 +84,23 @@ const ChartWidget = ({ items, title, description, isLoading }: Props) => {
               { description }
             </Text>
 
-            <IconButton
-              hidden={ isZoomResetInitial }
-              aria-label="Reset zoom"
-              title="Reset zoom"
-              colorScheme="blue"
-              w={ 9 }
-              h={ 8 }
-              gridColumn={ 2 }
-              justifySelf="end"
-              alignSelf="top"
-              gridRow="1/3"
-              size="sm"
-              variant="ghost"
-              onClick={ handleZoomResetClick }
-              icon={ <Icon as={ repeatArrow } w={ 4 } h={ 4 } color="blue.700"/> }
-            />
+            <Tooltip label="Reset zoom">
+              <IconButton
+                hidden={ isZoomResetInitial }
+                aria-label="Reset zoom"
+                colorScheme="blue"
+                w={ 9 }
+                h={ 8 }
+                gridColumn={ 2 }
+                justifySelf="end"
+                alignSelf="top"
+                gridRow="1/3"
+                size="sm"
+                variant="outline"
+                onClick={ handleZoomResetClick }
+                icon={ <Icon as={ repeatArrow } w={ 4 } h={ 4 }/> }
+              />
+            </Tooltip>
 
             <Menu>
               <MenuButton
@@ -106,8 +109,9 @@ const ChartWidget = ({ items, title, description, isLoading }: Props) => {
                 justifySelf="end"
                 w="36px"
                 h="32px"
-                icon={ <Icon as={ dotsIcon } w={ 4 } h={ 4 } color={ menuButtonColor }/> }
-                colorScheme="transparent"
+                icon={ <Icon as={ dotsIcon } w={ 4 } h={ 4 }/> }
+                colorScheme="gray"
+                variant="ghost"
                 as={ IconButton }
               >
                 <VisuallyHidden>
@@ -132,6 +136,7 @@ const ChartWidget = ({ items, title, description, isLoading }: Props) => {
           isOpen={ isFullscreen }
           items={ items }
           title={ title }
+          description={ description }
           onClose={ clearFullscreenChart }
         />
       </>
