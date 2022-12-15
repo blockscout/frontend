@@ -28,4 +28,5 @@ export enum QueryKeys {
   addressCoinBalanceHistoryByDay='address-coin-balance-history-by-day',
   addressTxs='addressTxs',
   addressTokenTransfers='addressTokenTransfers',
+  addressBlocksValidated='address-blocks-validated',
 }

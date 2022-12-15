@@ -1,6 +1,7 @@
 import type { Transaction } from 'types/api/transaction';
 
 import type { AddressTag, WatchlistName } from './addressParams';
+import type { Block } from './block';
 import type { TokenInfo, TokenType } from './tokenInfo';
 import type { TokenTransfer, TokenTransferPagination } from './tokenTransfer';
 
@@ -70,6 +71,14 @@ export interface AddressCoinBalanceHistoryItem {
 
 export interface AddressCoinBalanceHistoryResponse {
   items: Array<AddressCoinBalanceHistoryItem>;
+  next_page_params: {
+    block_number: number;
+    items_count: number;
+  };
+}
+
+export interface AddressBlocksValidatedResponse {
+  items: Array<Block>;
   next_page_params: {
     block_number: number;
     items_count: number;

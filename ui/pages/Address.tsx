@@ -8,6 +8,7 @@ import { QueryKeys } from 'types/client/queries';
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
 import useFetch from 'lib/hooks/useFetch';
+import AddressBlocksValidated from 'ui/address/AddressBlocksValidated';
 import AddressCoinBalance from 'ui/address/AddressCoinBalance';
 import AddressDetails from 'ui/address/AddressDetails';
 import AddressTxs from 'ui/address/AddressTxs';
@@ -39,6 +40,9 @@ const AddressPageContent = () => {
     { id: 'tokens', title: 'Tokens', component: null },
     { id: 'internal_txn', title: 'Internal txn', component: null },
     { id: 'coin_balance_history', title: 'Coin balance history', component: <AddressCoinBalance addressQuery={ addressQuery }/> },
+    // temporary show this tab in all address
+    // later api will return info about available tabs
+    { id: 'blocks_validated', title: 'Blocks validated', component: <AddressBlocksValidated addressQuery={ addressQuery }/> },
   ];
 
   return (

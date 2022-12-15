@@ -51,19 +51,20 @@ export default function useAdaptiveTabs(tabs: Array<RoutedTab>, disabled?: boole
   }, [ tabs, disabled ]);
 
   React.useEffect(() => {
-    setTabsRefs(disabled ? [] : tabsList.map((_, index) => tabsRefs[index] || React.createRef()));
+    setTabsRefs(tabsList.map((_, index) => tabsRefs[index] || React.createRef()));
+    setTabsCut(disabled ? tabs.length : 0);
   // update refs only when disabled prop changes
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ disabled ]);
 
   React.useEffect(() => {
-    if (tabsRefs.length > 0) {
+    if (tabsRefs.length > 0 && !disabled) {
       setTabsCut(calculateCut());
     }
-  }, [ calculateCut, tabsRefs ]);
+  }, [ calculateCut, disabled, tabsRefs ]);
 
   React.useEffect(() => {
-    if (tabsRefs.length === 0) {
+    if (tabsRefs.length === 0 || disabled) {
       return;
     }
 
@@ -76,7 +77,7 @@ export default function useAdaptiveTabs(tabs: Array<RoutedTab>, disabled?: boole
     return function cleanup() {
       resizeObserver.unobserve(document.body);
     };
-  }, [ calculateCut, tabsRefs.length ]);
+  }, [ calculateCut, disabled, tabsRefs.length ]);
 
   return React.useMemo(() => {
     return {
