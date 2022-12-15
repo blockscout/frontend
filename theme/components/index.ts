@@ -1,6 +1,6 @@
 import Alert from './Alert';
 import Badge from './Badge';
-import Button from './Button';
+import Button from './Button/Button';
 import Checkbox from './Checkbox';
 import Drawer from './Drawer';
 import Form from './Form';
