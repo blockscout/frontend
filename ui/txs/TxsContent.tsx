@@ -7,12 +7,12 @@ import type { TxsResponse } from 'types/api/transaction';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
+import SkeletonList from 'ui/shared/skeletons/SkeletonList';
+import SkeletonTable from 'ui/shared/SkeletonTable';
 
 import TxsHeaderMobile from './TxsHeaderMobile';
 import TxsListItem from './TxsListItem';
 import TxsNewItemNotice from './TxsNewItemNotice';
-import TxsSkeletonDesktop from './TxsSkeletonDesktop';
-import TxsSkeletonMobile from './TxsSkeletonMobile';
 import TxsTable from './TxsTable';
 import useTxsSort from './useTxsSort';
 
@@ -41,8 +41,13 @@ const TxsContent = ({ filter, query, showBlockInfo = true, showSocketInfo = true
     if (isLoading) {
       return (
         <>
-          <Show below="lg" ssr={ false }><TxsSkeletonMobile showBlockInfo={ showBlockInfo }/></Show>
-          <Hide below="lg" ssr={ false }><TxsSkeletonDesktop showBlockInfo={ showBlockInfo }/></Hide>
+          <Show below="lg" ssr={ false }><SkeletonList/></Show>
+          <Hide below="lg" ssr={ false }>
+            <SkeletonTable columns={ showBlockInfo ?
+              [ '32px', '20%', '18%', '15%', '11%', '292px', '18%', '18%' ] :
+              [ '32px', '20%', '18%', '15%', '292px', '18%', '18%' ]
+            }/>
+          </Hide>
         </>
       );
     }
