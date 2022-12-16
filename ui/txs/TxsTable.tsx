@@ -27,8 +27,8 @@ const TxsTable = ({ txs, sort, sorting, top, showBlockInfo, showSocketInfo, curr
       <TheadSticky top={ top }>
         <Tr>
           <Th width="54px"></Th>
-          <Th width="20%">Type</Th>
           <Th width="18%">Txn hash</Th>
+          <Th width="20%">Type</Th>
           <Th width="15%">Method</Th>
           { showBlockInfo && <Th width="11%">Block</Th> }
           <Th width={{ xl: '128px', base: '66px' }}>From</Th>
