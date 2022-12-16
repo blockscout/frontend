@@ -16,7 +16,7 @@ import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import SkeletonAccountMobile from 'ui/shared/SkeletonAccountMobile';
+import SkeletonListAccount from 'ui/shared/skeletons/SkeletonListAccount';
 import SkeletonTable from 'ui/shared/SkeletonTable';
 
 const CustomAbiPage: React.FC = () => {
@@ -60,7 +60,7 @@ const CustomAbiPage: React.FC = () => {
 
   const content = (() => {
     if (isLoading && !data) {
-      const loader = isMobile ? <SkeletonAccountMobile/> : (
+      const loader = isMobile ? <SkeletonListAccount/> : (
         <>
           <SkeletonTable columns={ [ '100%', '108px' ] }/>
           <Skeleton height="44px" width="156px" marginTop={ 8 }/>
