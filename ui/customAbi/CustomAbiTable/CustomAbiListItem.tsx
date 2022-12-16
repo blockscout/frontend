@@ -2,8 +2,8 @@ import React, { useCallback } from 'react';
 
 import type { CustomAbi } from 'types/api/account';
 
-import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import AddressSnippet from 'ui/shared/AddressSnippet';
+import ListItemMobile from 'ui/shared/ListItemMobile';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 
 interface Props {
@@ -23,10 +23,10 @@ const CustomAbiListItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   }, [ item, onDeleteClick ]);
 
   return (
-    <AccountListItemMobile>
+    <ListItemMobile>
       <AddressSnippet address={ item.contract_address_hash } subtitle={ item.name } isContract/>
       <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
-    </AccountListItemMobile>
+    </ListItemMobile>
   );
 };
 

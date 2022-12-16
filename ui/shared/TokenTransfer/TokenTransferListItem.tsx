@@ -5,12 +5,12 @@ import React from 'react';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import eastArrowIcon from 'icons/arrows/east.svg';
-import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import AdditionalInfoButton from 'ui/shared/AdditionalInfoButton';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import InOutTag from 'ui/shared/InOutTag';
+import ListItemMobile from 'ui/shared/ListItemMobile';
 import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
 import { getTokenTransferTypeText } from 'ui/shared/TokenTransfer/helpers';
 import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
@@ -31,7 +31,7 @@ const TokenTransferListItem = ({ token, total, tx_hash: txHash, from, to, baseAd
 
   const addressWidth = `calc((100% - ${ baseAddress ? '50px' : '0px' }) / 2)`;
   return (
-    <AccountListItemMobile rowGap={ 3 }>
+    <ListItemMobile rowGap={ 3 } isAnimated>
       <Flex w="100%" flexWrap="wrap" rowGap={ 1 } position="relative">
         <TokenSnippet hash={ token.address } w="auto" maxW="calc(100% - 140px)" name={ token.name || 'Unnamed token' }/>
         <Tag flexShrink={ 0 } ml={ 2 } mr={ 2 }>{ token.type }</Tag>
@@ -67,7 +67,7 @@ const TokenTransferListItem = ({ token, total, tx_hash: txHash, from, to, baseAd
           <Text variant="secondary">{ value }</Text>
         </Flex>
       ) }
-    </AccountListItemMobile>
+    </ListItemMobile>
   );
 };
 
