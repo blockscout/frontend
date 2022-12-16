@@ -84,13 +84,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress }: Props) => {
           ) }
         </Popover>
       </Td>
-      <Td>
-        <VStack alignItems="start">
-          <TxType types={ tx.tx_types }/>
-          <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined }/>
-        </VStack>
-      </Td>
-      <Td>
+      <Td pr={ 4 }>
         <VStack alignItems="start" lineHeight="24px">
           <Address width="100%">
             <AddressLink
@@ -100,6 +94,12 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress }: Props) => {
             />
           </Address>
           <Text color="gray.500" fontWeight="400">{ dayjs(tx.timestamp).fromNow() }</Text>
+        </VStack>
+      </Td>
+      <Td>
+        <VStack alignItems="start">
+          <TxType types={ tx.tx_types }/>
+          <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined }/>
         </VStack>
       </Td>
       <Td whiteSpace="nowrap">
