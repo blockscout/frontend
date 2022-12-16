@@ -16,18 +16,26 @@ export default function useChartSize(svgEl: SVGSVGElement | null, margin?: Chart
   }, [ calculateRect ]);
 
   React.useEffect(() => {
+    const content = window.document.querySelector('main');
+    if (!content) {
+      return;
+    }
+
     let timeoutId: number;
     const resizeHandler = _debounce(() => {
       setRect({ width: 0, height: 0 });
       timeoutId = window.setTimeout(() => {
         setRect(calculateRect());
       }, 0);
-    }, 100);
-    const resizeObserver = new ResizeObserver(resizeHandler);
+    }, 200);
 
-    resizeObserver.observe(document.body);
+    const resizeObserver = new ResizeObserver(resizeHandler);
+    resizeObserver.observe(content);
+    resizeObserver.observe(window.document.body);
+
     return function cleanup() {
-      resizeObserver.unobserve(document.body);
+      resizeObserver.unobserve(content);
+      resizeObserver.unobserve(window.document.body);
       window.clearTimeout(timeoutId);
     };
   }, [ calculateRect ]);

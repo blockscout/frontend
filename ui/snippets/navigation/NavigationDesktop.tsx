@@ -77,13 +77,13 @@ const NavigationDesktop = () => {
         <NetworkMenu isCollapsed={ isCollapsed }/>
       </Box>
       <Box as="nav" mt={ 8 }>
-        <VStack as="ul" spacing="1" alignItems="flex-start" overflow="hidden">
+        <VStack as="ul" spacing="1" alignItems="flex-start">
           { mainNavItems.map((item) => <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed }/>) }
         </VStack>
       </Box>
       { hasAccount && (
         <Box as="nav" mt={ 8 }>
-          <VStack as="ul" spacing="1" alignItems="flex-start" overflow="hidden">
+          <VStack as="ul" spacing="1" alignItems="flex-start">
             { accountNavItems.map((item) => <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed }/>) }
           </VStack>
         </Box>

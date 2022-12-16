@@ -10,7 +10,6 @@ import { QueryKeys } from 'types/client/queries';
 
 import appConfig from 'configs/app/config';
 import blockIcon from 'icons/block.svg';
-import metamaskIcon from 'icons/metamask.svg';
 import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import link from 'lib/link/link';
@@ -22,6 +21,7 @@ import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import ExternalLink from 'ui/shared/ExternalLink';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 
+import AddressAddToMetaMask from './details/AddressAddToMetaMask';
 import AddressBalance from './details/AddressBalance';
 import AddressDetailsSkeleton from './details/AddressDetailsSkeleton';
 import AddressFavoriteButton from './details/AddressFavoriteButton';
@@ -73,7 +73,7 @@ const AddressDetails = ({ addressQuery }: Props) => {
           { isMobile ? <HashStringShorten hash={ addressQuery.data.hash }/> : addressQuery.data.hash }
         </Text>
         <CopyToClipboard text={ addressQuery.data.hash }/>
-        <Icon as={ metamaskIcon } boxSize={ 6 } ml={ 2 }/>
+        { addressQuery.data.is_contract && addressQuery.data.token && <AddressAddToMetaMask ml={ 2 } token={ addressQuery.data.token }/> }
         <AddressFavoriteButton hash={ addressQuery.data.hash } isAdded={ Boolean(addressQuery.data.watchlist_names?.length) } ml={ 3 }/>
         <AddressQrCode hash={ addressQuery.data.hash } ml={ 2 }/>
       </Flex>

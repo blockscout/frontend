@@ -1,8 +1,8 @@
 name: Run E2E tests k8s
 
 on:
-  # push:
-  pull_request:
+  pull_request_review:
+    types: [submitted]
   workflow_dispatch:
 
 env:
@@ -14,59 +14,13 @@ env:
   BASTION_SSH_KEY: ${{secrets.BASTION_SSH_KEY}}
 
 jobs:
-  push_to_registry:
-    name: Push Docker image to registry
-    runs-on: ubuntu-latest
-    outputs:
-      shortSha: ${{ steps.output-step.outputs.short-sha }}
-    steps:
-      - name: Check out the repo
-        uses: actions/checkout@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      # Will automatically make nice tags, see the table here https://github.com/docker/metadata-action#basic
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: ghcr.io/blockscout/frontend
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Add SHORT_SHA env property with commit short sha
-        run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
-
-      - name: Add outputs
-        run: |
-          echo "::set-output name=short-sha::${{ env.SHORT_SHA }}"
-        id: output-step
-
-      - name: Build and push
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          tags: ghcr.io/blockscout/frontend:prerelease-${{ env.SHORT_SHA }}
-          labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            GIT_COMMIT_SHA=${{ env.SHORT_SHA }}
-
   deploy_and_tests:
-    needs: push_to_registry
+    if: github.event.review.state == 'approved'
+    # needs: push_to_registry
     uses: blockscout/blockscout-ci-cd/.github/workflows/e2e_new.yaml@master
     with:
       appNamespace: e2e-front-$GITHUB_SHA_SHORT
-      frontendImage: ghcr.io/blockscout/frontend:prerelease-${{ needs.push_to_registry.outputs.shortSha }}
+      frontendImage: ghcr.io/blockscout/frontend:prerelease-$GITHUB_REF_NAME_SLUG
       blockscoutIngressHost: e2e-blockscout-$GITHUB_SHA_SHORT
       frontendIngressHost: e2e-blockscout-$GITHUB_SHA_SHORT
       gethIngressHost: e2e-geth-$GITHUB_SHA_SHORT
