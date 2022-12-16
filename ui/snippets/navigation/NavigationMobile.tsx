@@ -16,13 +16,13 @@ const NavigationMobile = () => {
   return (
     <>
       <Box as="nav" mt={ 6 }>
-        <VStack as="ul" spacing="2" alignItems="flex-start" overflow="hidden">
+        <VStack as="ul" spacing="2" alignItems="flex-start">
           { mainNavItems.map((item) => <NavLink key={ item.text } { ...item }/>) }
         </VStack>
       </Box>
       { isAuth && (
         <Box as="nav" mt={ 6 }>
-          <VStack as="ul" spacing="2" alignItems="flex-start" overflow="hidden">
+          <VStack as="ul" spacing="2" alignItems="flex-start">
             { accountNavItems.map((item) => <NavLink key={ item.text } { ...item }/>) }
           </VStack>
         </Box>
