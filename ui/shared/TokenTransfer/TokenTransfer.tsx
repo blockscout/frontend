@@ -18,7 +18,7 @@ import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Pagination from 'ui/shared/Pagination';
 import SkeletonList from 'ui/shared/skeletons/SkeletonList';
-import SkeletonTable from 'ui/shared/SkeletonTable';
+import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 import { flattenTotal } from 'ui/shared/TokenTransfer/helpers';
 import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
 import TokenTransferList from 'ui/shared/TokenTransfer/TokenTransferList';

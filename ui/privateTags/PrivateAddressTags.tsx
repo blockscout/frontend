@@ -10,7 +10,7 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import SkeletonListAccount from 'ui/shared/skeletons/SkeletonListAccount';
-import SkeletonTable from 'ui/shared/SkeletonTable';
+import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 
 import AddressModal from './AddressModal/AddressModal';
 import AddressTagListItem from './AddressTagTable/AddressTagListItem';

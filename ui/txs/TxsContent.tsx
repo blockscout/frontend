@@ -8,7 +8,7 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
 import SkeletonList from 'ui/shared/skeletons/SkeletonList';
-import SkeletonTable from 'ui/shared/SkeletonTable';
+import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 
 import TxsHeaderMobile from './TxsHeaderMobile';
 import TxsListItem from './TxsListItem';

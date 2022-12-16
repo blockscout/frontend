@@ -11,7 +11,7 @@ import PublicTagListItem from 'ui/publicTags/PublicTagTable/PublicTagListItem';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import SkeletonListAccount from 'ui/shared/skeletons/SkeletonListAccount';
-import SkeletonTable from 'ui/shared/SkeletonTable';
+import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 
 import DeletePublicTagModal from './DeletePublicTagModal';
 import PublicTagTable from './PublicTagTable/PublicTagTable';

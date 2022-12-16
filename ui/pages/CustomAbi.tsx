@@ -17,7 +17,7 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import SkeletonListAccount from 'ui/shared/skeletons/SkeletonListAccount';
-import SkeletonTable from 'ui/shared/SkeletonTable';
+import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 
 const CustomAbiPage: React.FC = () => {
   const customAbiModalProps = useDisclosure();

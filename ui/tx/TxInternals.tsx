@@ -15,7 +15,7 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 // import TxInternalsFilter from 'ui/tx/internals/TxInternalsFilter';
 import Pagination from 'ui/shared/Pagination';
 import SkeletonList from 'ui/shared/skeletons/SkeletonList';
-import SkeletonTable from 'ui/shared/SkeletonTable';
+import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 import TxInternalsList from 'ui/tx/internals/TxInternalsList';
 import TxInternalsTable from 'ui/tx/internals/TxInternalsTable';
 import type { Sort, SortField } from 'ui/tx/internals/utils';
