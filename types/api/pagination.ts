@@ -5,6 +5,7 @@ import type {
   AddressTokenTransferFilters,
   AddressCoinBalanceHistoryResponse,
   AddressBlocksValidatedResponse,
+  AddressInternalTxsResponse,
 } from 'types/api/address';
 import type { BlocksResponse, BlockTransactionsResponse, BlockFilters } from 'types/api/block';
 import type { InternalTransactionsResponse } from 'types/api/internalTransaction';
@@ -18,6 +19,7 @@ import type { KeysOfObjectOrNull } from 'types/utils/KeysOfObjectOrNull';
 export type PaginatedQueryKeys =
   QueryKeys.addressTxs |
   QueryKeys.addressTokenTransfers |
+  QueryKeys.addressInternalTxs |
   QueryKeys.blocks |
   QueryKeys.blocksReorgs |
   QueryKeys.blocksUncles |
@@ -31,6 +33,7 @@ export type PaginatedQueryKeys =
   QueryKeys.addressBlocksValidated;
 
 export type PaginatedResponse<Q extends PaginatedQueryKeys> =
+Q extends QueryKeys.addressInternalTxs ? AddressInternalTxsResponse :
   Q extends QueryKeys.addressTxs ? AddressTransactionsResponse :
     Q extends QueryKeys.addressTokenTransfers ? AddressTokenTransferResponse :
       Q extends (QueryKeys.blocks | QueryKeys.blocksReorgs | QueryKeys.blocksUncles) ? BlocksResponse :
@@ -45,7 +48,7 @@ export type PaginatedResponse<Q extends PaginatedQueryKeys> =
                         never
 
 export type PaginationFilters<Q extends PaginatedQueryKeys> =
-  Q extends QueryKeys.addressTxs ? AddressTxsFilters :
+  Q extends (QueryKeys.addressTxs | QueryKeys.addressInternalTxs) ? AddressTxsFilters :
     Q extends QueryKeys.addressTokenTransfers ? AddressTokenTransferFilters :
       Q extends QueryKeys.blocks ? BlockFilters :
         Q extends QueryKeys.txsValidate ? TTxsFilters :
@@ -61,6 +64,7 @@ type PaginationFields = {
 
 export const PAGINATION_FIELDS: PaginationFields = {
   [QueryKeys.addressTxs]: [ 'block_number', 'items_count', 'index' ],
+  [QueryKeys.addressInternalTxs]: [ 'block_number', 'items_count', 'index', 'transaction_index' ],
   [QueryKeys.addressTokenTransfers]: [ 'block_number', 'items_count', 'index', 'transaction_hash' ],
   [QueryKeys.blocks]: [ 'block_number', 'items_count' ],
   [QueryKeys.blocksReorgs]: [ 'block_number', 'items_count' ],
@@ -81,6 +85,7 @@ type PaginationFiltersFields = {
 
 export const PAGINATION_FILTERS_FIELDS: PaginationFiltersFields = {
   [QueryKeys.addressTxs]: [ 'filter' ],
+  [QueryKeys.addressInternalTxs]: [ 'filter' ],
   [QueryKeys.addressTokenTransfers]: [ 'filter', 'type' ],
   [QueryKeys.addressCoinBalanceHistory]: [],
   [QueryKeys.addressBlocksValidated]: [],

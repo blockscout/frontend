@@ -11,6 +11,7 @@ import useFetch from 'lib/hooks/useFetch';
 import AddressBlocksValidated from 'ui/address/AddressBlocksValidated';
 import AddressCoinBalance from 'ui/address/AddressCoinBalance';
 import AddressDetails from 'ui/address/AddressDetails';
+import AddressInternalTxs from 'ui/address/AddressInternalTxs';
 import AddressTokenTransfers from 'ui/address/AddressTokenTransfers';
 import AddressTxs from 'ui/address/AddressTxs';
 import Page from 'ui/shared/Page/Page';
@@ -39,7 +40,7 @@ const AddressPageContent = () => {
     { id: 'txs', title: 'Transactions', component: <AddressTxs/> },
     { id: 'token_transfers', title: 'Token transfers', component: <AddressTokenTransfers/> },
     { id: 'tokens', title: 'Tokens', component: null },
-    { id: 'internal_txn', title: 'Internal txn', component: null },
+    { id: 'internal_txn', title: 'Internal txn', component: <AddressInternalTxs/> },
     { id: 'coin_balance_history', title: 'Coin balance history', component: <AddressCoinBalance addressQuery={ addressQuery }/> },
     // temporary show this tab in all address
     // later api will return info about available tabs
