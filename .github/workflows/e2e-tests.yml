@@ -2,7 +2,8 @@ name: Run E2E tests k8s
 
 on:
   # push:
-  pull_request:
+  pull_request_review:
+    types: [submitted]
   workflow_dispatch:
 
 env:
