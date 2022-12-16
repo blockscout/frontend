@@ -1,9 +1,16 @@
 import { Hide, Show, Text } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React from 'react';
+import { Element } from 'react-scroll';
 
+import type { AddressTokenTransferFilters, AddressFromToFilter } from 'types/api/address';
+import { AddressFromToFilterValues } from 'types/api/address';
 import type { TokenType } from 'types/api/tokenInfo';
+import type { TokenTransferFilters } from 'types/api/tokenTransfer';
 import type { QueryKeys } from 'types/client/queries';
 
+import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
+import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import { apos } from 'lib/html-entities';
 import EmptySearchResult from 'ui/apps/EmptySearchResult';
@@ -17,11 +24,21 @@ import TokenTransferList from 'ui/shared/TokenTransfer/TokenTransferList';
 import TokenTransferSkeletonMobile from 'ui/shared/TokenTransfer/TokenTransferSkeletonMobile';
 import TokenTransferTable from 'ui/shared/TokenTransfer/TokenTransferTable';
 
+import { TOKEN_TYPE } from './helpers';
+
+const TOKEN_TYPES = TOKEN_TYPE.map(i => i.id);
+
+const SCROLL_ELEM = 'token-transfers';
+const SCROLL_OFFSET = -100;
+
+const getTokenFilterValue = (getFilterValuesFromQuery<TokenType>).bind(null, TOKEN_TYPES);
+const getAddressFilterValue = (getFilterValueFromQuery<AddressFromToFilter>).bind(null, AddressFromToFilterValues);
+
 interface Props {
   isLoading?: boolean;
   isDisabled?: boolean;
   path: string;
-  queryName: QueryKeys.txTokenTransfers;
+  queryName: QueryKeys.txTokenTransfers | QueryKeys.addressTokenTransfers;
   queryIds?: Array<string>;
   baseAddress?: string;
   showTxInfo?: boolean;
@@ -29,20 +46,33 @@ interface Props {
 }
 
 const TokenTransfer = ({ isLoading: isLoadingProp, isDisabled, queryName, queryIds, path, baseAddress, showTxInfo = true }: Props) => {
-  const [ filters, setFilters ] = React.useState<Array<TokenType>>([]);
-  const { isError, isLoading, data, pagination } = useQueryWithPages({
+  const router = useRouter();
+  const [ filters, setFilters ] = React.useState<AddressTokenTransferFilters & TokenTransferFilters>(
+    { type: getTokenFilterValue(router.query.type), filter: getAddressFilterValue(router.query.filter) },
+  );
+
+  const { isError, isLoading, data, pagination, onFilterChange } = useQueryWithPages({
     apiPath: path,
     queryName,
     queryIds,
     options: { enabled: !isDisabled },
-    filters: filters.length ? { type: filters } : undefined,
+    filters: filters,
+    scroll: { elem: SCROLL_ELEM, offset: SCROLL_OFFSET },
   });
 
-  const handleFilterChange = React.useCallback((nextValue: Array<TokenType>) => {
-    setFilters(nextValue);
-  }, []);
+  const handleTypeFilterChange = React.useCallback((nextValue: Array<TokenType>) => {
+    onFilterChange({ ...filters, type: nextValue });
+    setFilters((prevState) => ({ ...prevState, type: nextValue }));
+  }, [ filters, onFilterChange ]);
 
-  const isActionBarHidden = filters.length === 0 && !data?.items.length;
+  const handleAddressFilterChange = React.useCallback((nextValue: string) => {
+    const filterVal = getAddressFilterValue(nextValue);
+    onFilterChange({ ...filters, filter: filterVal });
+    setFilters((prevState) => ({ ...prevState, filter: filterVal }));
+  }, [ filters, onFilterChange ]);
+
+  const numActiveFilters = filters.type.length + (filters.filter ? 1 : 0);
+  const isActionBarHidden = !numActiveFilters && !data?.items.length;
 
   const content = (() => {
     if (isLoading || isLoadingProp) {
@@ -65,7 +95,7 @@ const TokenTransfer = ({ isLoading: isLoadingProp, isDisabled, queryName, queryI
       return <DataFetchAlert/>;
     }
 
-    if (!data.items?.length && filters.length === 0) {
+    if (!data.items?.length && !numActiveFilters) {
       return <Text as="span">There are no token transfers</Text>;
     }
 
@@ -87,15 +117,22 @@ const TokenTransfer = ({ isLoading: isLoadingProp, isDisabled, queryName, queryI
   })();
 
   return (
-    <>
+    <Element name={ SCROLL_ELEM }>
       { !isActionBarHidden && (
         <ActionBar mt={ -6 }>
-          <TokenTransferFilter defaultFilters={ filters } onFilterChange={ handleFilterChange } appliedFiltersNum={ filters.length }/>
+          <TokenTransferFilter
+            defaultTypeFilters={ filters.type }
+            onTypeFilterChange={ handleTypeFilterChange }
+            appliedFiltersNum={ numActiveFilters }
+            withAddressFilter={ Boolean(baseAddress) }
+            onAddressFilterChange={ handleAddressFilterChange }
+            defaultAddressFilter={ filters.filter }
+          />
           <Pagination ml="auto" { ...pagination }/>
         </ActionBar>
       ) }
       { content }
-    </>
+    </Element>
   );
 };
 

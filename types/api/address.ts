@@ -45,7 +45,9 @@ export interface AddressTransactionsResponse {
   } | null;
 }
 
-type AddressFromToFilter = 'from' | 'to' | undefined;
+export const AddressFromToFilterValues = [ 'from', 'to' ] as const;
+
+export type AddressFromToFilter = typeof AddressFromToFilterValues[number] | undefined;
 
 export type AddressTxsFilters = {
   filter: AddressFromToFilter;
@@ -58,7 +60,7 @@ export interface AddressTokenTransferResponse {
 
 export type AddressTokenTransferFilters = {
   filter: AddressFromToFilter;
-  type: TokenType;
+  type: Array<TokenType>;
 }
 
 export interface AddressCoinBalanceHistoryItem {
