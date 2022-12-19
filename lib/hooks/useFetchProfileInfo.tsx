@@ -18,7 +18,7 @@ export default function useFetchProfileInfo() {
   const fetch = useFetch();
 
   return useQuery<unknown, Error, UserInfo>([ QueryKeys.profile ], async() => {
-    const url = new URL(`${ appConfig.api.basePath }/api/account/v1/user/info`, appConfig.api.endpoint);
+    const url = new URL(`/proxy/poa/core/api/account/v1/user/info`, appConfig.baseUrl);
     return fetch(url.toString(), { credentials: 'include' });
   }, {
     refetchOnMount: false,
