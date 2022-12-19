@@ -18,20 +18,21 @@ type Props = {
   top: number;
   showBlockInfo: boolean;
   showSocketInfo: boolean;
+  currentAddress?: string;
 }
 
-const TxsTable = ({ txs, sort, sorting, top, showBlockInfo, showSocketInfo }: Props) => {
+const TxsTable = ({ txs, sort, sorting, top, showBlockInfo, showSocketInfo, currentAddress }: Props) => {
   return (
     <Table variant="simple" minWidth="950px" size="xs">
       <TheadSticky top={ top }>
         <Tr>
           <Th width="54px"></Th>
-          <Th width="20%">Type</Th>
           <Th width="18%">Txn hash</Th>
+          <Th width="20%">Type</Th>
           <Th width="15%">Method</Th>
           { showBlockInfo && <Th width="11%">Block</Th> }
           <Th width={{ xl: '128px', base: '66px' }}>From</Th>
-          <Th width={{ xl: '36px', base: '0' }}></Th>
+          <Th width={{ xl: currentAddress ? '48px' : '36px', base: '0' }}></Th>
           <Th width={{ xl: '128px', base: '66px' }}>To</Th>
           <Th width="18%" isNumeric>
             <Link onClick={ sort('val') } display="flex" justifyContent="end">
@@ -60,6 +61,7 @@ const TxsTable = ({ txs, sort, sorting, top, showBlockInfo, showSocketInfo }: Pr
             key={ item.hash }
             tx={ item }
             showBlockInfo={ showBlockInfo }
+            currentAddress={ currentAddress }
           />
         )) }
       </Tbody>

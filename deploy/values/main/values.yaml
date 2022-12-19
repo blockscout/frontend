@@ -5,7 +5,7 @@ blockscout:
   app: blockscout
   enabled: true
   image:
-    _default: blockscout/blockscout:latest
+    _default: &image blockscout/blockscout:frontend-main
   replicas:
     app: 1
   docker:
@@ -15,15 +15,19 @@ blockscout:
   init:
     enabled: true
     image:
-      _default: blockscout/blockscout:latest
+      _default: *image
   service:
     # ClusterIP, NodePort or LoadBalancer
     type: ClusterIP
   # enable ingress
   ingress:
     enabled: true
-    annotations: {}
+    annotations:
       # - 'nginx.ingress.kubernetes.io/rewrite-target: /$2'
+      nginx.ingress.kubernetes.io/cors-allow-origin: "https://*.blockscout-main.test.aws-k8s.blockscout.com, https://*.test.aws-k8s.blockscout.com, http://localhost:3000"
+      nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+      nginx.ingress.kubernetes.io/cors-allow-methods: PUT, GET, POST, OPTIONS, DELETE, PATCH
+      nginx.ingress.kubernetes.io/enable-cors: "true"
     host:
       _default: blockscout.test.blockscout.aws-k8s.blockscout.com
     # enable https
@@ -144,6 +148,8 @@ blockscout:
       _default: 'true'
     APPS:
       _default: '[{"title": "Marketplace", "url": "/apps", "embedded?": true}]'
+    SESSION_COOKIE_DOMAIN:
+      _default: blockscout-main.test.aws-k8s.blockscout.com
 
 postgres:
   enabled: true
@@ -151,12 +157,12 @@ postgres:
   port: 5432
 
   command: '["docker-entrypoint.sh", "-c"]'
-  args: '["max_connections=300"]'
+  args: '["max_connections=500"]'
 
   # strategy: Recreate
 
   persistence: true
-  storage: 500Gi
+  storage: 1000Gi
 
   resources:
     limits:

@@ -8,7 +8,12 @@ import { QueryKeys } from 'types/client/queries';
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
 import useFetch from 'lib/hooks/useFetch';
+import AddressBlocksValidated from 'ui/address/AddressBlocksValidated';
+import AddressCoinBalance from 'ui/address/AddressCoinBalance';
 import AddressDetails from 'ui/address/AddressDetails';
+import AddressInternalTxs from 'ui/address/AddressInternalTxs';
+import AddressTokenTransfers from 'ui/address/AddressTokenTransfers';
+import AddressTxs from 'ui/address/AddressTxs';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
@@ -32,11 +37,14 @@ const AddressPageContent = () => {
   ].map((tag) => <Tag key={ tag.label }>{ tag.display_name }</Tag>);
 
   const tabs: Array<RoutedTab> = [
-    { id: 'txs', title: 'Transactions', component: null },
-    { id: 'token_transfers', title: 'Token transfers', component: null },
+    { id: 'txs', title: 'Transactions', component: <AddressTxs/> },
+    { id: 'token_transfers', title: 'Token transfers', component: <AddressTokenTransfers/> },
     { id: 'tokens', title: 'Tokens', component: null },
-    { id: 'internal_txn', title: 'Internal txn', component: null },
-    { id: 'coin_balance_history', title: 'Coin balance history', component: null },
+    { id: 'internal_txn', title: 'Internal txn', component: <AddressInternalTxs/> },
+    { id: 'coin_balance_history', title: 'Coin balance history', component: <AddressCoinBalance addressQuery={ addressQuery }/> },
+    // temporary show this tab in all address
+    // later api will return info about available tabs
+    { id: 'blocks_validated', title: 'Blocks validated', component: <AddressBlocksValidated addressQuery={ addressQuery }/> },
   ];
 
   return (
