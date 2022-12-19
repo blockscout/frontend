@@ -48,6 +48,7 @@ export type Transaction = (
   method: string | null;
   tx_types: Array<TransactionType>;
   tx_tag: string | null;
+  actions?: Array<object>;
 }
 
 export type TransactionsResponse = TransactionsResponseValidated | TransactionsResponsePending;

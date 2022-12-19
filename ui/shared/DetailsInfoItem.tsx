@@ -8,6 +8,8 @@ interface Props extends Omit<HTMLChakraProps<'div'>, 'title'> {
   title: React.ReactNode;
   hint: string;
   children: React.ReactNode;
+  note?: string;
+  noteDisplay?: string;
 }
 
 const DetailsInfoItem = ({ title, hint, note, noteDisplay, children, id, ...styles }: Props) => {

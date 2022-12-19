@@ -6,7 +6,11 @@ import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 
 import TxDetailsAction from './TxDetailsAction';
 
-const TxDetailsActions = ({ actions }: array) => {
+interface Props {
+  actions: array;
+}
+
+const TxDetailsActions = ({ actions }: Props) => {
   function onScrollbarLoad() {
     $('.mCustomScrollbar').mCustomScrollbar({ callbacks: {
       onOverflowY: () => {
@@ -41,7 +45,7 @@ const TxDetailsActions = ({ actions }: array) => {
           w="100%"
           fontWeight={ 500 }
         >
-          { actions.map((action, index) => <TxDetailsAction key={ index } { ...action } isLast={ index === actions.length - 1 }/>) }
+          { actions.map((action, index: number) => <TxDetailsAction key={ index } { ...action } isLast={ index === actions.length - 1 }/>) }
         </Flex>
       </Box>
       { /* eslint-disable-next-line react/jsx-no-bind */ }

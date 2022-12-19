@@ -68,9 +68,9 @@ const TxDetailsAction = ({ protocol, type, data, isLast }: Props) => {
               <Text as="span">Mint of</Text>
               <Image src={ uniswapIconUrl } boxSize={ 5 } fallback=" " alt=""/>
               <Link href={ tokenUrl } target="_blank" overflow="hidden" whiteSpace="nowrap">
-                <StringShorten title={ data.name } maxLength="12"/>
+                <StringShorten title={ data.name } maxLength={ 12 }/>
                 { space }
-                (<StringShorten title={ data.symbol } maxLength="6"/>)
+                (<StringShorten title={ data.symbol } maxLength={ 6 }/>)
               </Link>
             </Flex>
             <Flex columnGap={ 1 }>
@@ -80,7 +80,7 @@ const TxDetailsAction = ({ protocol, type, data, isLast }: Props) => {
           </Flex>
           <Flex columnGap={ 1 } rowGap={ 2 } marginLeft={ 3 } flexDirection="column">
             {
-              data.ids.map((id) => {
+              data.ids.map((id: string) => {
                 const url = link('token_instance_item', { hash: data.address, id });
                 return (
                   <Flex key={ id }>
