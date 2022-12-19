@@ -1,7 +1,7 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import useApi from 'lib/api/useApi';
+import useApiQuery from 'lib/api/useApiQuery';
 import * as cookies from 'lib/cookies';
 import AppError from 'ui/shared/AppError/AppError';
 import ErrorBoundary from 'ui/shared/ErrorBoundary';
@@ -22,8 +22,10 @@ const Page = ({
   hideMobileHeaderOnScrollDown,
   isHomePage,
 }: Props) => {
-  useApi('csrf', {
-    enabled: Boolean(cookies.get(cookies.NAMES.API_TOKEN)),
+  useApiQuery('csrf', {
+    queryOptions: {
+      enabled: Boolean(cookies.get(cookies.NAMES.API_TOKEN)),
+    },
   });
 
   const renderErrorScreen = React.useCallback(() => {

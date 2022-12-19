@@ -6,9 +6,13 @@ import useFetch from 'lib/hooks/useFetch';
 import buildUrl from './buildUrl';
 import type { RESOURCES, ResourcePayload, ResourceError } from './resources';
 
-export default function useApi<R extends keyof typeof RESOURCES>(
+interface Params<R extends keyof typeof RESOURCES> {
+  queryOptions?: Omit<UseQueryOptions<unknown, ResourceError, ResourcePayload<R>>, 'queryKey' | 'queryFn'>;
+}
+
+export default function useApiQuery<R extends keyof typeof RESOURCES>(
   resource: R,
-  queryOptions?: Omit<UseQueryOptions<unknown, ResourceError, ResourcePayload<R>>, 'queryKey' | 'queryFn'>,
+  { queryOptions }: Params<R> = {},
 ) {
   const fetch = useFetch();
 
