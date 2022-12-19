@@ -21,7 +21,7 @@ class MyDocument extends Document {
           <link rel="icon" sizes="16x16" type="image/png"href="/static/favicon-16x16.png"/>
           <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png"/>
           <link rel="mask-icon" href="/static/safari-pinned-tab.svg" color="#5bbad5"/>
-          <link rel="stylesheet" href="/static/css/jquery.mCustomScrollbar.min.css" />
+          <link rel="stylesheet" href="/static/css/jquery.mCustomScrollbar.min.css"/>
         </Head>
         <body>
           <ColorModeScript initialColorMode={ theme.config.initialColorMode }/>

@@ -2,3 +2,5 @@ node_modules
 node_modules_linux
 
 playwright/envs.js
+public/static/js/jquery.mCustomScrollbar.concat.min.js
+public/static/js/jquery.min.js

@@ -1,7 +1,7 @@
 import { Flex, Link, Icon, Tag } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import Script from 'next/script'
+import Script from 'next/script';
 import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
@@ -86,7 +86,7 @@ const TransactionPageContent = () => {
       </Flex>
       <RoutedTabs tabs={ TABS }/>
       <AdBanner mt={ 6 } justifyContent={{ base: 'center', lg: 'start' }}/>
-      <Script src="/static/js/jquery.min.js" strategy="beforeInteractive" />
+      <Script src="/static/js/jquery.min.js" strategy="beforeInteractive"/>
     </Page>
   );
 };

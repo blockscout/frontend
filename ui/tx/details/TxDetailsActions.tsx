@@ -1,12 +1,29 @@
-import { Box, Flex, Text } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
+import Script from 'next/script';
 import React from 'react';
-import Script from 'next/script'
 
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 
 import TxDetailsAction from './TxDetailsAction';
 
-const TxDetailsActions = ({ actions }) => {
+const TxDetailsActions = ({ actions }: array) => {
+  function onScrollbarLoad() {
+    $('.mCustomScrollbar').mCustomScrollbar({ callbacks: {
+      onOverflowY: () => {
+        $('#txActionsTitle .note').css('display', 'block');
+        $('.mCustomScrollbar').removeClass('mCS_no_scrollbar_y');
+      },
+      onOverflowYNone: () => {
+        $('#txActionsTitle .note').css('display', 'none');
+        $('.mCustomScrollbar').addClass('mCS_no_scrollbar_y');
+      },
+    },
+    theme: 'dark',
+    autoHideScrollbar: true,
+    scrollButtons: { enable: false },
+    scrollbarPosition: 'outside' });
+  }
+
   return (
     <DetailsInfoItem
       title="Transaction Action"
@@ -24,25 +41,11 @@ const TxDetailsActions = ({ actions }) => {
           w="100%"
           fontWeight={ 500 }
         >
-          { actions.map((action, index) => <TxDetailsAction key={ index } { ...action } isLast={ index === actions.length-1 }/>) }
+          { actions.map((action, index) => <TxDetailsAction key={ index } { ...action } isLast={ index === actions.length - 1 }/>) }
         </Flex>
       </Box>
-      <Script src="/static/js/jquery.mCustomScrollbar.concat.min.js" strategy="afterInteractive" onLoad={() => {
-        $(".mCustomScrollbar").mCustomScrollbar({callbacks:{
-          onOverflowY: () => {
-            $("#txActionsTitle .note").css("display", "block");
-            $(".mCustomScrollbar").removeClass("mCS_no_scrollbar_y");
-          },
-          onOverflowYNone: () => {
-            $("#txActionsTitle .note").css("display", "none");
-            $(".mCustomScrollbar").addClass("mCS_no_scrollbar_y");
-          }
-        },
-        theme: "dark",
-        autoHideScrollbar: true,
-        scrollButtons: {enable: false},
-        scrollbarPosition: "outside"});
-      }} />
+      { /* eslint-disable-next-line react/jsx-no-bind */ }
+      <Script src="/static/js/jquery.mCustomScrollbar.concat.min.js" strategy="afterInteractive" onLoad={ onScrollbarLoad }/>
     </DetailsInfoItem>
   );
 };
