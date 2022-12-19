@@ -52,7 +52,7 @@ export default function useFetch() {
 
       } else {
         if (path.includes(RESOURCES.csrf.path)) {
-          return Promise.resolve({ token: response.headers.get('x-bs-account-csrf') } as Success);
+          return Promise.resolve({ token: response.headers.get('x-bs-account-csrf') }) as unknown as Promise<Success>;
         }
 
         return response.json() as Promise<Success>;
