@@ -15,6 +15,12 @@ const handler = async(_req: NextApiRequest, res: NextApiResponse) => {
     _pickBy(_pick(_req, [ 'body', 'method' ]), Boolean),
   );
 
+  // don't think that we have to proxy all headers, so pick only necessary ones
+  [ 'x-bs-account-csrf' ].forEach((headerName) => {
+    const headerValue = response.headers.get(headerName);
+    headerValue && res.setHeader(headerName, headerValue);
+  });
+
   res.status(response.status).send(response.body);
 };
 

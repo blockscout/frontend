@@ -4,6 +4,8 @@ import React from 'react';
 
 import type { CsrfData } from 'types/client/account';
 
+import { resourceKey, RESOURCES } from 'lib/api/resources';
+
 export interface ErrorType<T> {
   error?: T;
   status: Response['status'];
@@ -18,7 +20,7 @@ interface Params {
 
 export default function useFetch() {
   const queryClient = useQueryClient();
-  const { token } = queryClient.getQueryData<CsrfData>([ 'csrf' ]) || {};
+  const { token } = queryClient.getQueryData<CsrfData>([ resourceKey('csrf') ]) || {};
 
   return React.useCallback(<Success, Error>(path: string, params?: Params): Promise<Success | ErrorType<Error>> => {
     const reqParams = {
@@ -29,6 +31,7 @@ export default function useFetch() {
     };
 
     return fetch(path, reqParams).then(response => {
+
       if (!response.ok) {
         const error = {
           status: response.status,
@@ -48,6 +51,10 @@ export default function useFetch() {
         );
 
       } else {
+        if (path.includes(RESOURCES.csrf.path)) {
+          return Promise.resolve({ token: response.headers.get('x-bs-account-csrf') } as Success);
+        }
+
         return response.json() as Promise<Success>;
       }
     });
