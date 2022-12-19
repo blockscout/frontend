@@ -11,9 +11,10 @@ interface Props {
   baseAddress?: string;
   showTxInfo?: boolean;
   top: number;
+  enableTimeIncrement?: boolean;
 }
 
-const TokenTransferTable = ({ data, baseAddress, showTxInfo, top }: Props) => {
+const TokenTransferTable = ({ data, baseAddress, showTxInfo, top, enableTimeIncrement }: Props) => {
 
   return (
     <Table variant="simple" size="sm">
@@ -31,7 +32,7 @@ const TokenTransferTable = ({ data, baseAddress, showTxInfo, top }: Props) => {
       </Thead>
       <Tbody>
         { data.map((item, index) => (
-          <TokenTransferTableItem key={ index } { ...item } baseAddress={ baseAddress } showTxInfo={ showTxInfo }/>
+          <TokenTransferTableItem key={ index } { ...item } baseAddress={ baseAddress } showTxInfo={ showTxInfo } enableTimeIncrement={ enableTimeIncrement }/>
         )) }
       </Tbody>
     </Table>

@@ -6,7 +6,7 @@ import type { InternalTransaction } from 'types/api/internalTransaction';
 
 import appConfig from 'configs/app/config';
 import rightArrowIcon from 'icons/arrows/east.svg';
-import dayjs from 'lib/date/dayjs';
+import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import link from 'lib/link/link';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
@@ -36,12 +36,14 @@ const AddressIntTxsTableItem = ({
   const isOut = Boolean(currentAddress && currentAddress === from.hash);
   const isIn = Boolean(currentAddress && currentAddress === to?.hash);
 
+  const timeAgo = useTimeAgoIncrement(timestamp, true);
+
   return (
     <Tr alignItems="top">
       <Td verticalAlign="middle">
         <Flex rowGap={ 3 } flexWrap="wrap">
           <AddressLink fontWeight="700" hash={ txnHash } type="transaction"/>
-          <Text variant="secondary" fontWeight="400" fontSize="sm">{ dayjs(timestamp).fromNow() }</Text>
+          { timestamp && <Text variant="secondary" fontWeight="400" fontSize="sm">{ timeAgo }</Text> }
         </Flex>
       </Td>
       <Td verticalAlign="middle">
