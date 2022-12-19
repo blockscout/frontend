@@ -24,7 +24,7 @@ blockscout:
     enabled: true
     annotations:
       # - 'nginx.ingress.kubernetes.io/rewrite-target: /$2'
-      nginx.ingress.kubernetes.io/cors-allow-origin: "https://*.test.aws-k8s.blockscout.com, http://localhost:3000"
+      nginx.ingress.kubernetes.io/cors-allow-origin: "https://*.blockscout-main.test.aws-k8s.blockscout.com, https://*.test.aws-k8s.blockscout.com, http://localhost:3000"
       nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
       nginx.ingress.kubernetes.io/cors-allow-methods: PUT, GET, POST, OPTIONS, DELETE, PATCH
       nginx.ingress.kubernetes.io/enable-cors: "true"
