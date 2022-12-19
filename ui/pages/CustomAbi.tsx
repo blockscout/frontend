@@ -1,11 +1,9 @@
 import { Box, Button, HStack, Skeleton, useDisclosure } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
-import type { CustomAbi, CustomAbis } from 'types/api/account';
-import { QueryKeys } from 'types/client/accountQueries';
+import type { CustomAbi } from 'types/api/account';
 
-import useFetch from 'lib/hooks/useFetch';
+import useApiQuery from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import CustomAbiModal from 'ui/customAbi/CustomAbiModal/CustomAbiModal';
@@ -23,14 +21,12 @@ const CustomAbiPage: React.FC = () => {
   const customAbiModalProps = useDisclosure();
   const deleteModalProps = useDisclosure();
   const isMobile = useIsMobile();
-  const fetch = useFetch();
   useRedirectForInvalidAuthToken();
 
   const [ customAbiModalData, setCustomAbiModalData ] = useState<CustomAbi>();
   const [ deleteModalData, setDeleteModalData ] = useState<CustomAbi>();
 
-  const { data, isLoading, isError } = useQuery<unknown, unknown, CustomAbis>([ QueryKeys.customAbis ], async() =>
-    await fetch('/node-api/account/custom-abis'));
+  const { data, isLoading, isError } = useApiQuery('custom_abi');
 
   const onEditClick = useCallback((data: CustomAbi) => {
     setCustomAbiModalData(data);

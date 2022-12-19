@@ -46,6 +46,7 @@
     "lodash": "^4.0.0",
     "next": "12.2.5",
     "node-fetch": "^3.2.9",
+    "path-to-regexp": "^6.2.1",
     "phoenix": "^1.6.15",
     "pino-http": "^8.2.1",
     "pino-pretty": "^9.1.1",

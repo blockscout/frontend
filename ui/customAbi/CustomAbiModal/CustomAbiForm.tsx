@@ -12,11 +12,11 @@ import type { ControllerRenderProps, SubmitHandler } from 'react-hook-form';
 import { useForm, Controller } from 'react-hook-form';
 
 import type { CustomAbi, CustomAbis, CustomAbiErrors } from 'types/api/account';
-import { QueryKeys } from 'types/client/accountQueries';
 
+import type { ResourceError } from 'lib/api/resources';
+import { resourceKey } from 'lib/api/resources';
+import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/getErrorMessage';
-import type { ErrorType } from 'lib/hooks/useFetch';
-import useFetch from 'lib/hooks/useFetch';
 import { ADDRESS_REGEXP } from 'lib/validations/address';
 import AddressInput from 'ui/shared/AddressInput';
 import InputPlaceholder from 'ui/shared/InputPlaceholder';
@@ -46,16 +46,19 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
   });
 
   const queryClient = useQueryClient();
-  const fetch = useFetch();
+  const apiFetch = useApiFetch();
 
   const customAbiKey = (data: Inputs & { id?: number }) => {
     const body = { name: data.name, contract_address_hash: data.contract_address_hash, abi: data.abi };
 
     if (!data.id) {
-      return fetch<CustomAbi, CustomAbiErrors>('/node-api/account/custom-abis', { method: 'POST', body });
+      return apiFetch<'custom_abi', CustomAbi, CustomAbiErrors>('custom_abi', { fetchParams: { method: 'POST', body } });
     }
 
-    return fetch<CustomAbi, CustomAbiErrors>(`/node-api/account/custom-abis/${ data.id }`, { method: 'PUT', body });
+    return apiFetch<'custom_abi', CustomAbi, CustomAbiErrors>('custom_abi', {
+      pathParams: { id: String(data.id) },
+      fetchParams: { method: 'PUT', body },
+    });
   };
 
   const formBackgroundColor = useColorModeValue('white', 'gray.900');
@@ -63,7 +66,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
   const mutation = useMutation(customAbiKey, {
     onSuccess: (data) => {
       const response = data as unknown as CustomAbi;
-      queryClient.setQueryData([ QueryKeys.customAbis ], (prevData: CustomAbis | undefined) => {
+      queryClient.setQueryData([ resourceKey('custom_abi') ], (prevData: CustomAbis | undefined) => {
         const isExisting = prevData && prevData.some((item) => item.id === response.id);
 
         if (isExisting) {
@@ -81,13 +84,14 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
 
       onClose();
     },
-    onError: (e: ErrorType<CustomAbiErrors>) => {
-      if (e?.error?.address_hash || e?.error?.name || e?.error?.abi) {
-        e?.error?.address_hash && setError('contract_address_hash', { type: 'custom', message: getErrorMessage(e.error, 'address_hash') });
-        e?.error?.name && setError('name', { type: 'custom', message: getErrorMessage(e.error, 'name') });
-        e?.error?.abi && setError('abi', { type: 'custom', message: getErrorMessage(e.error, 'abi') });
-      } else if (e?.error?.identity_id) {
-        setError('contract_address_hash', { type: 'custom', message: getErrorMessage(e.error, 'identity_id') });
+    onError: (error: ResourceError<{ errors: CustomAbiErrors}>) => {
+      const errorMap = error.payload?.errors;
+      if (errorMap?.address_hash || errorMap?.name || errorMap?.abi) {
+        errorMap?.address_hash && setError('contract_address_hash', { type: 'custom', message: getErrorMessage(errorMap, 'address_hash') });
+        errorMap?.name && setError('name', { type: 'custom', message: getErrorMessage(errorMap, 'name') });
+        errorMap?.abi && setError('abi', { type: 'custom', message: getErrorMessage(errorMap, 'abi') });
+      } else if (errorMap?.identity_id) {
+        setError('contract_address_hash', { type: 'custom', message: getErrorMessage(errorMap, 'identity_id') });
       } else {
         setAlertVisible(true);
       }
