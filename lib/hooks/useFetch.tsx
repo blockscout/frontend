@@ -27,7 +27,8 @@ export default function useFetch() {
     };
 
     return fetch(path, reqParams).then(response => {
-
+      // eslint-disable-next-line no-debugger
+      debugger;
       if (!response.ok) {
         const error = {
           status: response.status,
@@ -49,8 +50,6 @@ export default function useFetch() {
         );
 
       } else {
-        // eslint-disable-next-line no-debugger
-        debugger;
         if (path.includes(RESOURCES.csrf.path)) {
           return Promise.resolve({ token: response.headers.get('x-bs-account-csrf') }) as unknown as Promise<Success>;
         }
