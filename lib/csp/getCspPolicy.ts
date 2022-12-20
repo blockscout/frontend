@@ -63,7 +63,10 @@ function makePolicyMap() {
       // client error monitoring
       'sentry.io', '*.sentry.io',
 
+      // API
+      appConfig.api.endpoint,
       appConfig.api.socket,
+      appConfig.statsApi.endpoint,
 
       // ad
       'request-global.czilladx.com',
