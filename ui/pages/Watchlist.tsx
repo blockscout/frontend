@@ -2,10 +2,11 @@ import { Box, Button, Skeleton, useDisclosure } from '@chakra-ui/react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
+import type { WatchlistAddress, WatchlistTokensResponse } from 'types/api/account';
 import type { TWatchlist, TWatchlistItem } from 'types/client/account';
-import { QueryKeys } from 'types/client/accountQueries';
 
-import useFetch from 'lib/hooks/useFetch';
+import { resourceKey } from 'lib/api/resources';
+import useApiFetch from 'lib/api/useApiFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
@@ -20,14 +21,38 @@ import WatchListItem from 'ui/watchlist/WatchlistTable/WatchListItem';
 import WatchlistTable from 'ui/watchlist/WatchlistTable/WatchlistTable';
 
 const WatchList: React.FC = () => {
-  const { data, isLoading, isError } =
-    useQuery<unknown, unknown, TWatchlist>([ QueryKeys.watchlist ], async() => fetch('/node-api/account/watchlist/get-with-tokens'));
+  const apiFetch = useApiFetch();
+  const { data, isLoading, isError } = useQuery<unknown, unknown, TWatchlist>([ resourceKey('watchlist') ], async() => {
+    try {
+      const watchlistAddresses = await apiFetch<'watchlist', Array<WatchlistAddress>>('watchlist');
+
+      if (!Array.isArray(watchlistAddresses)) {
+        throw Error();
+      }
+
+      const watchlistTokens = await Promise.all(watchlistAddresses.map(({ address }) => {
+        if (!address?.hash) {
+          return Promise.resolve(0);
+        }
+        return apiFetch<'old_api', WatchlistTokensResponse>('old_api', { queryParams: { address: address.hash, module: 'account', action: 'tokenlist' } })
+          .then((response) => {
+            if ('result' in response && Array.isArray(response.result)) {
+              return response.result.length;
+            }
+            return 0;
+          });
+      }));
+
+      return watchlistAddresses.map((item, index) => ({ ...item, tokens_count: watchlistTokens[index] }));
+    } catch (error) {
+      return error;
+    }
+  });
   const queryClient = useQueryClient();
 
   const addressModalProps = useDisclosure();
   const deleteModalProps = useDisclosure();
   const isMobile = useIsMobile();
-  const fetch = useFetch();
   useRedirectForInvalidAuthToken();
 
   const [ addressModalData, setAddressModalData ] = useState<TWatchlistItem>();
@@ -44,7 +69,7 @@ const WatchList: React.FC = () => {
   }, [ addressModalProps ]);
 
   const onAddOrEditSuccess = useCallback(async() => {
-    await queryClient.refetchQueries([ QueryKeys.watchlist ]);
+    await queryClient.refetchQueries([ resourceKey('watchlist') ]);
     setAddressModalData(undefined);
     addressModalProps.onClose();
   }, [ addressModalProps, queryClient ]);
@@ -60,7 +85,7 @@ const WatchList: React.FC = () => {
   }, [ deleteModalProps ]);
 
   const onDeleteSuccess = useCallback(async() => {
-    queryClient.setQueryData([ QueryKeys.watchlist ], (prevData: TWatchlist | undefined) => {
+    queryClient.setQueryData([ resourceKey('watchlist') ], (prevData: TWatchlist | undefined) => {
       return prevData?.filter((item) => item.id !== deleteModalData?.id);
     });
   }, [ deleteModalData?.id, queryClient ]);

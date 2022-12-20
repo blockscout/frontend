@@ -1,23 +1,21 @@
 import type { UseQueryOptions } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 
-import useFetch from 'lib/hooks/useFetch';
-
-import buildUrl from './buildUrl';
 import type { RESOURCES, ResourcePayload, ResourceError } from './resources';
+import type { Params as ApiFetchParams } from './useApiFetch';
+import useApiFetch from './useApiFetch';
 
-interface Params<R extends keyof typeof RESOURCES> {
+interface Params<R extends keyof typeof RESOURCES> extends ApiFetchParams {
   queryOptions?: Omit<UseQueryOptions<unknown, ResourceError, ResourcePayload<R>>, 'queryKey' | 'queryFn'>;
 }
 
 export default function useApiQuery<R extends keyof typeof RESOURCES>(
   resource: R,
-  { queryOptions }: Params<R> = {},
+  { queryOptions, pathParams, queryParams, fetchParams }: Params<R> = {},
 ) {
-  const fetch = useFetch();
+  const apiFetch = useApiFetch();
 
   return useQuery<unknown, ResourceError, ResourcePayload<R>>([ resource ], async() => {
-    const url = buildUrl(resource);
-    return fetch(url, { credentials: 'include' });
+    return apiFetch(resource, { pathParams, queryParams, fetchParams });
   }, queryOptions);
 }

@@ -3,7 +3,7 @@ import React, { useCallback } from 'react';
 
 import type { TWatchlistItem } from 'types/client/account';
 
-import useFetch from 'lib/hooks/useFetch';
+import useApiFetch from 'lib/api/useApiFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import DeleteModal from 'ui/shared/DeleteModal';
 
@@ -16,11 +16,14 @@ type Props = {
 
 const DeleteAddressModal: React.FC<Props> = ({ isOpen, onClose, onSuccess, data }) => {
   const isMobile = useIsMobile();
-  const fetch = useFetch();
+  const apiFetch = useApiFetch();
 
   const mutationFn = useCallback(() => {
-    return fetch(`/node-api/account/watchlist/${ data?.id }`, { method: 'DELETE' });
-  }, [ data?.id, fetch ]);
+    return apiFetch('custom_abi', {
+      pathParams: { id: data.id },
+      fetchParams: { method: 'DELETE' },
+    });
+  }, [ data?.id, apiFetch ]);
 
   const address = data?.address_hash;
 

@@ -6,7 +6,7 @@ import useFetch from 'lib/hooks/useFetch';
 import buildUrl from './buildUrl';
 import type { RESOURCES, ResourcePayload, ResourceError } from './resources';
 
-interface Params {
+export interface Params {
   pathParams?: Record<string, string>;
   queryParams?: Record<string, string>;
   fetchParams?: Pick<FetchParams, 'body' | 'method'>;

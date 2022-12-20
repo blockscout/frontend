@@ -12,6 +12,14 @@ export const RESOURCES = {
   custom_abi: {
     path: '/api/account/v1/user/custom_abis/:id?',
   },
+  watchlist: {
+    path: '/api/account/v1/user/watchlist/:id?',
+  },
+
+  // DEPRECATED
+  old_api: {
+    path: '/api',
+  },
 };
 
 export const resourceKey = (x: keyof typeof RESOURCES) => x;

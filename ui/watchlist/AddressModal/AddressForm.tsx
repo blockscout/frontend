@@ -12,9 +12,9 @@ import { useForm, Controller } from 'react-hook-form';
 import type { WatchlistErrors } from 'types/api/account';
 import type { TWatchlistItem } from 'types/client/account';
 
+import type { ResourceError } from 'lib/api/resources';
+import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/getErrorMessage';
-import type { ErrorType } from 'lib/hooks/useFetch';
-import useFetch from 'lib/hooks/useFetch';
 import { ADDRESS_REGEXP } from 'lib/validations/address';
 import AddressInput from 'ui/shared/AddressInput';
 import CheckboxInput from 'ui/shared/CheckboxInput';
@@ -83,7 +83,7 @@ const AddressForm: React.FC<Props> = ({ data, onSuccess, setAlertVisible, isAdd 
     mode: 'onTouched',
   });
 
-  const fetch = useFetch();
+  const apiFetch = useApiFetch();
 
   function updateWatchlist(formData: Inputs) {
     const body = {
@@ -96,11 +96,14 @@ const AddressForm: React.FC<Props> = ({ data, onSuccess, setAlertVisible, isAdd 
     };
     if (!isAdd && data) {
       // edit address
-      return fetch<TWatchlistItem, WatchlistErrors>(`/node-api/account/watchlist/${ data.id }`, { method: 'PUT', body });
+      return apiFetch('watchlist', {
+        pathParams: { id: data?.id || '' },
+        fetchParams: { method: 'PUT', body },
+      });
 
     } else {
       // add address
-      return fetch<TWatchlistItem, WatchlistErrors>('/node-api/account/watchlist', { method: 'POST', body });
+      return apiFetch('watchlist', { fetchParams: { method: 'POST', body } });
     }
   }
 
@@ -109,13 +112,14 @@ const AddressForm: React.FC<Props> = ({ data, onSuccess, setAlertVisible, isAdd 
       await onSuccess();
       setPending(false);
     },
-    onError: (e: ErrorType<WatchlistErrors>) => {
+    onError: (error: ResourceError<{errors: WatchlistErrors}>) => {
       setPending(false);
-      if (e?.error?.address_hash || e?.error?.name) {
-        e?.error?.address_hash && setError('address', { type: 'custom', message: getErrorMessage(e.error, 'address_hash') });
-        e?.error?.name && setError('tag', { type: 'custom', message: getErrorMessage(e.error, 'name') });
-      } else if (e?.error?.watchlist_id) {
-        setError('address', { type: 'custom', message: getErrorMessage(e.error, 'watchlist_id') });
+      const errorMap = error.payload?.errors;
+      if (errorMap?.address_hash || errorMap?.name) {
+        errorMap?.address_hash && setError('address', { type: 'custom', message: getErrorMessage(errorMap, 'address_hash') });
+        errorMap?.name && setError('tag', { type: 'custom', message: getErrorMessage(errorMap, 'name') });
+      } else if (errorMap?.watchlist_id) {
+        setError('address', { type: 'custom', message: getErrorMessage(errorMap, 'watchlist_id') });
       } else {
         setAlertVisible(true);
       }
