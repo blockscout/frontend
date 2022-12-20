@@ -21,6 +21,9 @@ export const RESOURCES = {
   private_tags_tx: {
     path: '/api/account/v1/user/tags/transaction/:id?',
   },
+  api_keys: {
+    path: '/api/account/v1/user/api_keys/:id?',
+  },
 
   // DEPRECATED
   old_api: {
