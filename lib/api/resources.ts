@@ -12,6 +12,9 @@ export const RESOURCES = {
   watchlist: {
     path: '/api/account/v1/user/watchlist/:id?',
   },
+  public_tags: {
+    path: '/api/account/v1/user/public_tags/:id?',
+  },
 
   // DEPRECATED
   old_api: {
@@ -27,3 +30,5 @@ export interface ResourceError<T = unknown> {
   status: Response['status'];
   statusText: Response['statusText'];
 }
+
+export type ResourceErrorAccount<T> = ResourceError<{ errors: T }>

@@ -1,7 +1,7 @@
 import type { UseQueryOptions } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 
-import type { UserInfo, CustomAbis } from 'types/api/account';
+import type { UserInfo, CustomAbis, PublicTags } from 'types/api/account';
 import type { CsrfData } from 'types/client/account';
 
 import type { RESOURCES, ResourceError } from './resources';
@@ -27,4 +27,5 @@ export type ResourcePayload<Q extends keyof typeof RESOURCES> =
   Q extends 'user_info' ? UserInfo :
     Q extends 'csrf' ? CsrfData :
       Q extends 'custom_abi' ? CustomAbis :
-        never;
+        Q extends 'public_tags' ? PublicTags :
+          never;

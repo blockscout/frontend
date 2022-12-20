@@ -4,9 +4,9 @@ import React, { useCallback, useState } from 'react';
 import type { ChangeEvent } from 'react';
 
 import type { PublicTags, PublicTag } from 'types/api/account';
-import { QueryKeys } from 'types/client/accountQueries';
 
-import useFetch from 'lib/hooks/useFetch';
+import { resourceKey } from 'lib/api/resources';
+import useApiFetch from 'lib/api/useApiFetch';
 import DeleteModal from 'ui/shared/DeleteModal';
 
 type Props = {
@@ -23,17 +23,20 @@ const DeletePublicTagModal: React.FC<Props> = ({ isOpen, onClose, data, onDelete
   const tags = data.tags.split(';');
 
   const queryClient = useQueryClient();
-  const fetch = useFetch();
+  const apiFetch = useApiFetch();
   const formBackgroundColor = useColorModeValue('white', 'gray.900');
 
   const deleteApiKey = useCallback(() => {
     const body = { remove_reason: reason };
-    return fetch(`/node-api/account/public-tags/${ data.id }`, { method: 'DELETE', body });
-  }, [ data.id, fetch, reason ]);
+    return apiFetch('public_tags', {
+      pathParams: { id: String(data.id) },
+      fetchParams: { method: 'DELETE', body },
+    });
+  }, [ data.id, apiFetch, reason ]);
 
   const onSuccess = useCallback(async() => {
     onDeleteSuccess();
-    queryClient.setQueryData([ QueryKeys.publicTags ], (prevData: PublicTags | undefined) => {
+    queryClient.setQueryData([ resourceKey('public_tags') ], (prevData: PublicTags | undefined) => {
       return prevData?.filter((item) => item.id !== data.id);
     });
   }, [ queryClient, data, onDeleteSuccess ]);

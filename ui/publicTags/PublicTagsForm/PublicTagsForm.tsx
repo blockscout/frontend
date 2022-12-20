@@ -13,11 +13,11 @@ import type { FieldError, Path, SubmitHandler } from 'react-hook-form';
 import { useForm, useFieldArray } from 'react-hook-form';
 
 import type { PublicTags, PublicTag, PublicTagNew, PublicTagErrors } from 'types/api/account';
-import { QueryKeys } from 'types/client/accountQueries';
 
+import type { ResourceErrorAccount } from 'lib/api/resources';
+import { resourceKey } from 'lib/api/resources';
+import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/getErrorMessage';
-import type { ErrorType } from 'lib/hooks/useFetch';
-import useFetch from 'lib/hooks/useFetch';
 import { EMAIL_REGEXP } from 'lib/validations/email';
 import FormSubmitAlert from 'ui/shared/FormSubmitAlert';
 
@@ -58,7 +58,7 @@ const ADDRESS_INPUT_BUTTONS_WIDTH = 100;
 
 const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
   const queryClient = useQueryClient();
-  const fetch = useFetch();
+  const apiFetch = useApiFetch();
   const inputSize = { base: 'md', lg: 'lg' };
 
   const { control, handleSubmit, formState: { errors, isValid, isDirty }, setError } = useForm<Inputs>({
@@ -100,17 +100,20 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
     };
 
     if (!data?.id) {
-      return fetch<PublicTag, PublicTagErrors>('/node-api/account/public-tags', { method: 'POST', body });
+      return apiFetch('public_tags', { fetchParams: { method: 'POST', body } });
     }
 
-    return fetch<PublicTag, PublicTagErrors>(`/node-api/account/public-tags/${ data.id }`, { method: 'PUT', body });
+    return apiFetch('public_tags', {
+      pathParams: { id: String(data.id) },
+      fetchParams: { method: 'PUT', body },
+    });
   };
 
   const mutation = useMutation(updatePublicTag, {
     onSuccess: async(data) => {
       const response = data as unknown as PublicTag;
 
-      queryClient.setQueryData([ QueryKeys.publicTags ], (prevData: PublicTags | undefined) => {
+      queryClient.setQueryData([ resourceKey('public_tags') ], (prevData: PublicTags | undefined) => {
         const isExisting = prevData && prevData.some((item) => item.id === response.id);
 
         if (isExisting) {
@@ -128,13 +131,14 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
 
       changeToDataScreen(true);
     },
-    onError: (e: ErrorType<PublicTagErrors>) => {
-      if (e.error?.full_name || e.error?.email || e.error?.tags || e.error?.addresses || e.error?.additional_comment) {
-        e.error?.full_name && setError('fullName', { type: 'custom', message: getErrorMessage(e.error, 'full_name') });
-        e.error?.email && setError('email', { type: 'custom', message: getErrorMessage(e.error, 'email') });
-        e.error?.tags && setError('tags', { type: 'custom', message: getErrorMessage(e.error, 'tags') });
-        e.error?.addresses && setError('addresses.0.address', { type: 'custom', message: getErrorMessage(e.error, 'addresses') });
-        e.error?.additional_comment && setError('comment', { type: 'custom', message: getErrorMessage(e.error, 'additional_comment') });
+    onError: (error: ResourceErrorAccount<PublicTagErrors>) => {
+      const errorMap = error.payload?.errors;
+      if (errorMap?.full_name || errorMap?.email || errorMap?.tags || errorMap?.addresses || errorMap?.additional_comment) {
+        errorMap?.full_name && setError('fullName', { type: 'custom', message: getErrorMessage(errorMap, 'full_name') });
+        errorMap?.email && setError('email', { type: 'custom', message: getErrorMessage(errorMap, 'email') });
+        errorMap?.tags && setError('tags', { type: 'custom', message: getErrorMessage(errorMap, 'tags') });
+        errorMap?.addresses && setError('addresses.0.address', { type: 'custom', message: getErrorMessage(errorMap, 'addresses') });
+        errorMap?.additional_comment && setError('comment', { type: 'custom', message: getErrorMessage(errorMap, 'additional_comment') });
       } else {
         setAlertVisible(true);
       }

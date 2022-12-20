@@ -13,7 +13,7 @@ import { useForm, Controller } from 'react-hook-form';
 
 import type { CustomAbi, CustomAbis, CustomAbiErrors } from 'types/api/account';
 
-import type { ResourceError } from 'lib/api/resources';
+import type { ResourceErrorAccount } from 'lib/api/resources';
 import { resourceKey } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/getErrorMessage';
@@ -84,7 +84,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
 
       onClose();
     },
-    onError: (error: ResourceError<{ errors: CustomAbiErrors}>) => {
+    onError: (error: ResourceErrorAccount<CustomAbiErrors>) => {
       const errorMap = error.payload?.errors;
       if (errorMap?.address_hash || errorMap?.name || errorMap?.abi) {
         errorMap?.address_hash && setError('contract_address_hash', { type: 'custom', message: getErrorMessage(errorMap, 'address_hash') });

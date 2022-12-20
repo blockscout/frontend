@@ -1,11 +1,9 @@
 import { Box, Button, Skeleton, useDisclosure } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
-import type { PublicTags, PublicTag } from 'types/api/account';
-import { QueryKeys } from 'types/client/accountQueries';
+import type { PublicTag } from 'types/api/account';
 
-import useFetch from 'lib/hooks/useFetch';
+import useApiQuery from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import PublicTagListItem from 'ui/publicTags/PublicTagTable/PublicTagListItem';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
@@ -25,10 +23,8 @@ const PublicTagsData = ({ changeToFormScreen, onTagDelete }: Props) => {
   const deleteModalProps = useDisclosure();
   const [ deleteModalData, setDeleteModalData ] = useState<PublicTag>();
   const isMobile = useIsMobile();
-  const fetch = useFetch();
 
-  const { data, isLoading, isError } = useQuery<unknown, unknown, PublicTags>([ QueryKeys.publicTags ], async() =>
-    await fetch('/node-api/account/public-tags'));
+  const { data, isLoading, isError } = useApiQuery('public_tags');
 
   const onDeleteModalClose = useCallback(() => {
     setDeleteModalData(undefined);

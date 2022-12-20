@@ -12,7 +12,7 @@ import { useForm, Controller } from 'react-hook-form';
 import type { WatchlistErrors } from 'types/api/account';
 import type { TWatchlistItem } from 'types/client/account';
 
-import type { ResourceError } from 'lib/api/resources';
+import type { ResourceErrorAccount } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/getErrorMessage';
 import { ADDRESS_REGEXP } from 'lib/validations/address';
@@ -112,7 +112,7 @@ const AddressForm: React.FC<Props> = ({ data, onSuccess, setAlertVisible, isAdd 
       await onSuccess();
       setPending(false);
     },
-    onError: (error: ResourceError<{errors: WatchlistErrors}>) => {
+    onError: (error: ResourceErrorAccount<WatchlistErrors>) => {
       setPending(false);
       const errorMap = error.payload?.errors;
       if (errorMap?.address_hash || errorMap?.name) {
