@@ -2,8 +2,7 @@ import * as Sentry from '@sentry/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
-import { QueryKeys } from 'types/client/accountQueries';
-
+import { resourceKey } from 'lib/api/resources';
 import * as cookies from 'lib/cookies';
 import useLoginUrl from 'lib/hooks/useLoginUrl';
 
@@ -17,7 +16,7 @@ export interface ErrorType {
 export default function useRedirectForInvalidAuthToken() {
   const queryClient = useQueryClient();
 
-  const state = queryClient.getQueryState<unknown, ErrorType>([ QueryKeys.profile ]);
+  const state = queryClient.getQueryState<unknown, ErrorType>([ resourceKey('user_info') ]);
   const errorStatus = state?.error?.error?.status;
   const loginUrl = useLoginUrl();
 
