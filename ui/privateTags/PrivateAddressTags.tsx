@@ -1,11 +1,9 @@
 import { Box, Button, Skeleton, useDisclosure } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
-import type { AddressTags, AddressTag } from 'types/api/account';
-import { QueryKeys } from 'types/client/accountQueries';
+import type { AddressTag } from 'types/api/account';
 
-import useFetch from 'lib/hooks/useFetch';
+import useApiQuery from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
@@ -18,13 +16,11 @@ import AddressTagTable from './AddressTagTable/AddressTagTable';
 import DeletePrivateTagModal from './DeletePrivateTagModal';
 
 const PrivateAddressTags = () => {
-  const { data: addressTagsData, isLoading, isError } =
-    useQuery<unknown, unknown, AddressTags>([ QueryKeys.addressTags ], async() => fetch('/node-api/account/private-tags/address'), { refetchOnMount: false });
+  const { data: addressTagsData, isLoading, isError } = useApiQuery('private_tags_address', { queryOptions: { refetchOnMount: false } });
 
   const addressModalProps = useDisclosure();
   const deleteModalProps = useDisclosure();
   const isMobile = useIsMobile();
-  const fetch = useFetch();
 
   const [ addressModalData, setAddressModalData ] = useState<AddressTag>();
   const [ deleteModalData, setDeleteModalData ] = useState<AddressTag>();

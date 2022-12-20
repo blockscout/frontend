@@ -15,6 +15,12 @@ export const RESOURCES = {
   public_tags: {
     path: '/api/account/v1/user/public_tags/:id?',
   },
+  private_tags_address: {
+    path: '/api/account/v1/user/tags/address/:id?',
+  },
+  private_tags_tx: {
+    path: '/api/account/v1/user/tags/transaction/:id?',
+  },
 
   // DEPRECATED
   old_api: {
