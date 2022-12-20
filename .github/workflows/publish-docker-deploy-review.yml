@@ -57,7 +57,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          cache-from: type=registry,ref=ghcr.io/blockscout/frontend::buildcache
+          cache-from: type=gha
           tags: ghcr.io/blockscout/frontend:prerelease-${{ env.GITHUB_REF_NAME_SLUG }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |

@@ -37,7 +37,8 @@ export default function useTimeChartController({ data, width, height }: Props) {
   );
 
   const yScale = useMemo(() => {
-    const indention = (yMax - yMin) * 0.3;
+    const indention = (yMax - yMin) * 0.15;
+
     return d3.scaleLinear()
       .domain([ yMin >= 0 && yMin - indention <= 0 ? 0 : yMin - indention, yMax + indention ])
       .range([ height, 0 ]);

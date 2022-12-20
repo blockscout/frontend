@@ -10,7 +10,7 @@ import useFetch from 'lib/hooks/useFetch';
 import NumberWidget from './NumberWidget';
 import NumberWidgetSkeleton from './NumberWidgetSkeleton';
 
-const skeletonsCount = 4;
+const skeletonsCount = 8;
 
 const NumberWidgetsList = () => {
   const fetch = useFetch();
@@ -28,10 +28,28 @@ const NumberWidgetsList = () => {
       { isLoading ? [ ...Array(skeletonsCount) ]
         .map((e, i) => <NumberWidgetSkeleton key={ i }/>) :
         (
-          <NumberWidget
-            label="Total blocks all time"
-            value={ Number(data?.totalBlocksAllTime).toLocaleString() }
-          />
+          <>
+            <NumberWidget
+              label="Total blocks"
+              value={ Number(data?.counters.totalBlocksAllTime).toLocaleString() }
+            />
+            <NumberWidget
+              label="Average block time"
+              value={ Number(data?.counters.averageBlockTime).toLocaleString() }
+            />
+            <NumberWidget
+              label="Completed transactions"
+              value={ Number(data?.counters.completedTransactions).toLocaleString() }
+            />
+            <NumberWidget
+              label="Total transactions"
+              value={ Number(data?.counters.totalTransactions).toLocaleString() }
+            />
+            <NumberWidget
+              label="Total accounts"
+              value={ Number(data?.counters.totalAccounts).toLocaleString() }
+            />
+          </>
         ) }
     </Grid>
   );

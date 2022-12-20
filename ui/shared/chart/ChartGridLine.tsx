@@ -13,7 +13,7 @@ interface Props extends Omit<React.SVGProps<SVGGElement>, 'scale'> {
 const ChartGridLine = ({ type, scale, ticks, size, disableAnimation, ...props }: Props) => {
   const ref = React.useRef<SVGGElement>(null);
 
-  const strokeColorToken = useColorModeValue('blackAlpha.300', 'whiteAlpha.300');
+  const strokeColorToken = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
   const strokeColor = useToken('colors', strokeColorToken);
 
   React.useEffect(() => {
