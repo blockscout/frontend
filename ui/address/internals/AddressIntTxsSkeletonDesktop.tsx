@@ -1,6 +1,6 @@
 import React from 'react';
 
-import SkeletonTable from 'ui/shared/SkeletonTable';
+import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 
 const TxInternalsSkeletonDesktop = () => {
   return (
