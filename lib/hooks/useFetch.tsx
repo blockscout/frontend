@@ -49,6 +49,8 @@ export default function useFetch() {
         );
 
       } else {
+        // eslint-disable-next-line no-debugger
+        debugger;
         if (path.includes(RESOURCES.csrf.path)) {
           return Promise.resolve({ token: response.headers.get('x-bs-account-csrf') }) as unknown as Promise<Success>;
         }
