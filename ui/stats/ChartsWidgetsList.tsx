@@ -6,7 +6,7 @@ import type { StatsIntervalIds, StatsSection } from 'types/client/stats';
 import { apos } from 'lib/html-entities';
 
 import EmptySearchResult from '../apps/EmptySearchResult';
-import ChartWidget from './ChartWidget';
+import ChartWidgetContainer from './ChartWidgetContainer';
 
 type Props = {
   charts: Array<StatsSection>;
@@ -46,7 +46,7 @@ const ChartsWidgetsList = ({ charts, interval }: Props) => {
                     <GridItem
                       key={ chart.id }
                     >
-                      <ChartWidget
+                      <ChartWidgetContainer
                         id={ chart.id }
                         title={ chart.title }
                         description={ chart.description }

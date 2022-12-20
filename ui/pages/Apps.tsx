@@ -2,7 +2,7 @@ import { Box, Icon, Link } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
-import type { JsonRpcUrlResponse } from 'types/api/json-rpc-url';
+import type { JsonRpcUrlResponse } from 'types/api/jsonRpcUrl';
 
 import config from 'configs/app/config';
 import PlusIcon from 'icons/plus.svg';

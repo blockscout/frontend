@@ -1,3 +1,4 @@
+import castArray from 'lodash/castArray';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { Element } from 'react-scroll';
@@ -30,6 +31,7 @@ const AddressTxs = () => {
   const addressTxsQuery = useQueryWithPages({
     apiPath: `/node-api/addresses/${ router.query.id }/transactions`,
     queryName: QueryKeys.addressTxs,
+    queryIds: castArray(router.query.id),
     filters: { filter: filterValue },
     scroll: { elem: SCROLL_ELEM, offset: SCROLL_OFFSET },
   });
