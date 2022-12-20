@@ -1,4 +1,4 @@
-import { Box, Flex, Icon, Text, useColorModeValue, chakra, Tooltip } from '@chakra-ui/react';
+import { Box, Flex, Icon, Text, useColorModeValue, chakra, Tooltip, LightMode } from '@chakra-ui/react';
 import React from 'react';
 
 import infoIcon from 'icons/info.svg';
@@ -49,18 +49,20 @@ const StatsItem = ({ icon, title, value, className, tooltipLabel }: Props) => {
         <Text fontWeight={ 500 } fontSize="md" color={ useColorModeValue('black', 'white') }>{ value }</Text>
       </Flex>
       { tooltipLabel && (
-        <Tooltip label={ tooltipLabel } hasArrow={ false } borderRadius="12px" placement="bottom-end" offset={ [ 0, 0 ] }>
-          <Box
-            position="absolute"
-            top={{ base: 'calc(50% - 12px)', lg: '10px', xl: 'calc(50% - 12px)' }}
-            right="10px">
-            <Icon
-              as={ infoIcon }
-              boxSize={ 6 }
-              color={ infoColor }
-            />
-          </Box>
-        </Tooltip>
+        <LightMode>
+          <Tooltip label={ tooltipLabel } hasArrow={ false } borderRadius="12px" placement="bottom-end" offset={ [ 0, 0 ] } bgColor="blackAlpha.900">
+            <Box
+              position="absolute"
+              top={{ base: 'calc(50% - 12px)', lg: '10px', xl: 'calc(50% - 12px)' }}
+              right="10px">
+              <Icon
+                as={ infoIcon }
+                boxSize={ 6 }
+                color={ infoColor }
+              />
+            </Box>
+          </Tooltip>
+        </LightMode>
       ) }
     </Flex>
   );

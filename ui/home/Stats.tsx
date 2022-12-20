@@ -45,7 +45,7 @@ const Stats = () => {
   const lastItemTouchStyle = { gridColumn: { base: 'span 2', lg: 'unset' } };
 
   if (data) {
-    const gasLabel = hasGasTracker ? <StatsGasPrices gasPrices={ data.gas_prices }/> : null;
+    const gasLabel = hasGasTracker && data.gas_prices ? <StatsGasPrices gasPrices={ data.gas_prices }/> : null;
     content = (
       <>
         <StatsItem
@@ -71,7 +71,7 @@ const Stats = () => {
           value={ Number(data.total_addresses).toLocaleString() }
           _last={ itemsCount % 2 ? lastItemTouchStyle : undefined }
         />
-        { hasGasTracker && (
+        { hasGasTracker && data.gas_prices && (
           <StatsItem
             icon={ gasIcon }
             title="Gas tracker"
