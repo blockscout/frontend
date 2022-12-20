@@ -4,7 +4,7 @@ import type { Params as FetchParams } from 'lib/hooks/useFetch';
 import useFetch from 'lib/hooks/useFetch';
 
 import buildUrl from './buildUrl';
-import type { RESOURCES, ResourcePayload, ResourceError } from './resources';
+import type { RESOURCES, ResourceError } from './resources';
 
 export interface Params {
   pathParams?: Record<string, string>;
@@ -15,7 +15,7 @@ export interface Params {
 export default function useApiFetch() {
   const fetch = useFetch();
 
-  return React.useCallback(<R extends keyof typeof RESOURCES, SuccessType = ResourcePayload<R>, ErrorType = ResourceError>(
+  return React.useCallback(<R extends keyof typeof RESOURCES, SuccessType = unknown, ErrorType = ResourceError>(
     resource: R,
     { pathParams, queryParams, fetchParams }: Params = {},
   ) => {

@@ -52,10 +52,10 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
     const body = { name: data.name, contract_address_hash: data.contract_address_hash, abi: data.abi };
 
     if (!data.id) {
-      return apiFetch<'custom_abi', CustomAbi, CustomAbiErrors>('custom_abi', { fetchParams: { method: 'POST', body } });
+      return apiFetch('custom_abi', { fetchParams: { method: 'POST', body } });
     }
 
-    return apiFetch<'custom_abi', CustomAbi, CustomAbiErrors>('custom_abi', {
+    return apiFetch('custom_abi', {
       pathParams: { id: String(data.id) },
       fetchParams: { method: 'PUT', body },
     });

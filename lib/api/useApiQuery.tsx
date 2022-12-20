@@ -1,7 +1,10 @@
 import type { UseQueryOptions } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 
-import type { RESOURCES, ResourcePayload, ResourceError } from './resources';
+import type { UserInfo, CustomAbis } from 'types/api/account';
+import type { CsrfData } from 'types/client/account';
+
+import type { RESOURCES, ResourceError } from './resources';
 import type { Params as ApiFetchParams } from './useApiFetch';
 import useApiFetch from './useApiFetch';
 
@@ -16,6 +19,12 @@ export default function useApiQuery<R extends keyof typeof RESOURCES>(
   const apiFetch = useApiFetch();
 
   return useQuery<unknown, ResourceError, ResourcePayload<R>>([ resource ], async() => {
-    return apiFetch(resource, { pathParams, queryParams, fetchParams });
+    return apiFetch<R, ResourcePayload<R>, ResourceError>(resource, { pathParams, queryParams, fetchParams });
   }, queryOptions);
 }
+
+export type ResourcePayload<Q extends keyof typeof RESOURCES> =
+  Q extends 'user_info' ? UserInfo :
+    Q extends 'csrf' ? CsrfData :
+      Q extends 'custom_abi' ? CustomAbis :
+        never;

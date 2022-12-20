@@ -1,6 +1,3 @@
-import type { UserInfo, CustomAbis } from 'types/api/account';
-import type { CsrfData } from 'types/client/account';
-
 export const RESOURCES = {
   // account
   user_info: {
@@ -23,12 +20,6 @@ export const RESOURCES = {
 };
 
 export const resourceKey = (x: keyof typeof RESOURCES) => x;
-
-export type ResourcePayload<Q extends keyof typeof RESOURCES> =
-  Q extends 'user_info' ? UserInfo :
-    Q extends 'csrf' ? CsrfData :
-      Q extends 'custom_abi' ? CustomAbis :
-        never;
 
 export interface ResourceError<T = unknown> {
   error?: T;
