@@ -15,14 +15,6 @@ import theme from 'theme';
 import AppError from 'ui/shared/AppError/AppError';
 import ErrorBoundary from 'ui/shared/ErrorBoundary';
 
-const ReactQueryDevtoolsProduction = React.lazy(() =>
-  import('@tanstack/react-query-devtools/build/lib/index.prod.js').then(
-    (d) => ({
-      'default': d.ReactQueryDevtools,
-    }),
-  ),
-);
-
 function MyApp({ Component, pageProps }: AppProps) {
   useConfigSentry();
   const [ queryClient ] = useState(() => new QueryClient({
@@ -62,14 +54,6 @@ function MyApp({ Component, pageProps }: AppProps) {
     Sentry.captureException(error);
   }, []);
 
-  const [ showDevtools, setShowDevtools ] = React.useState(false);
-
-  React.useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    window.toggleDevtools = () => setShowDevtools((old) => !old);
-  }, []);
-
   return (
     <Chakra theme={ theme } cookies={ pageProps.cookies }>
       <ErrorBoundary renderErrorScreen={ renderErrorScreen } onError={ handleError }>
@@ -81,11 +65,6 @@ function MyApp({ Component, pageProps }: AppProps) {
               </SocketProvider>
             </ScrollDirectionProvider>
             <ReactQueryDevtools/>
-            { showDevtools && (
-              <React.Suspense fallback={ null }>
-                <ReactQueryDevtoolsProduction/>
-              </React.Suspense>
-            ) }
           </QueryClientProvider>
         </AppContextProvider>
       </ErrorBoundary>

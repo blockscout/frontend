@@ -1,8 +1,9 @@
 import { Flex } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
-import useApiQuery from 'lib/api/useApiQuery';
 import * as cookies from 'lib/cookies';
+import useFetch from 'lib/hooks/useFetch';
 import AppError from 'ui/shared/AppError/AppError';
 import ErrorBoundary from 'ui/shared/ErrorBoundary';
 import PageContent from 'ui/shared/Page/PageContent';
@@ -22,10 +23,10 @@ const Page = ({
   hideMobileHeaderOnScrollDown,
   isHomePage,
 }: Props) => {
-  useApiQuery('csrf', {
-    queryOptions: {
-      enabled: Boolean(cookies.get(cookies.NAMES.API_TOKEN)),
-    },
+  const fetch = useFetch();
+
+  useQuery([ 'csrf' ], async() => await fetch('/node-api/csrf'), {
+    enabled: Boolean(cookies.get(cookies.NAMES.API_TOKEN)),
   });
 
   const renderErrorScreen = React.useCallback(() => {

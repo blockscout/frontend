@@ -25,9 +25,11 @@ export default function useApiFetch() {
     const url = buildUrl(resource, pathParams, queryParams);
     return fetch<SuccessType, ErrorType>(url, {
       credentials: 'include',
-      ...(resource.endpoint && appConfig.host === 'localhost' ? { headers: {
-        'x-endpoint': resource.endpoint,
-      } } : {}),
+      ...(resource.endpoint && appConfig.host === 'localhost' ? {
+        headers: {
+          'x-endpoint': resource.endpoint,
+        },
+      } : {}),
       ...fetchParams,
     });
   }, [ fetch ]);

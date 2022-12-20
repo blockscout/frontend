@@ -11,9 +11,6 @@ export const RESOURCES = {
   user_info: {
     path: '/api/account/v1/user/info',
   },
-  csrf: {
-    path: '/api/account/v1/get_csrf',
-  },
   custom_abi: {
     path: '/api/account/v1/user/custom_abis/:id?',
   },
