@@ -88,8 +88,8 @@ test.describe('cookie set to false', () => {
       { hooksConfig },
     );
 
-    const txLink = component.getByText(/transactions/i);
-    expect(await txLink.isVisible()).toBe(true);
+    const networkMenu = component.locator('button[aria-label="Network menu"]');
+    expect(await networkMenu.isVisible()).toBe(true);
   });
 });
 
@@ -101,7 +101,7 @@ test.describe('cookie set to true', () => {
     },
   });
 
-  extendedTest('navbar is collapsed +@desktop-xl', async({ mount }) => {
+  extendedTest('navbar is collapsed', async({ mount }) => {
     const component = await mount(
       <TestApp>
         <Flex w="100%" minH="100vh" alignItems="stretch">
@@ -112,7 +112,7 @@ test.describe('cookie set to true', () => {
       { hooksConfig },
     );
 
-    const txLink = component.getByText(/transactions/i);
-    expect(await txLink.isVisible()).toBe(false);
+    const networkMenu = component.locator('button[aria-label="Network menu"]');
+    expect(await networkMenu.isVisible()).toBe(false);
   });
 });
