@@ -1,4 +1,4 @@
-import { Icon, useColorModeValue, Button } from '@chakra-ui/react';
+import { Icon, useColorModeValue, Button, forwardRef, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import networksIcon from 'icons/networks.svg';
@@ -8,15 +8,17 @@ interface Props {
   isMobile?: boolean;
   isActive?: boolean;
   onClick?: () => void;
+  className?: string;
 }
 
-const NetworkMenuButton = ({ isMobile, isActive, onClick }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
+const NetworkMenuButton = ({ isMobile, isActive, onClick, className }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
   const defaultIconColor = useColorModeValue('gray.600', 'gray.400');
   const bgColorMobile = useColorModeValue('blue.50', 'gray.800');
   const iconColorMobile = useColorModeValue('blue.700', 'blue.50');
 
   return (
     <Button
+      className={ className }
       variant="unstyled"
       display="inline-flex"
       alignSelf="stretch"
@@ -43,4 +45,4 @@ const NetworkMenuButton = ({ isMobile, isActive, onClick }: Props, ref: React.Fo
   );
 };
 
-export default React.forwardRef(NetworkMenuButton);
+export default chakra(forwardRef(NetworkMenuButton));
