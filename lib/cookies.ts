@@ -1,5 +1,4 @@
-import type { Types } from 'typescript-cookie';
-import { Cookies } from 'typescript-cookie';
+import Cookies from 'js-cookie';
 
 import isBrowser from './isBrowser';
 
@@ -14,10 +13,13 @@ export function get(name?: NAMES | undefined | null, serverCookie?: string) {
   if (!isBrowser()) {
     return serverCookie ? getFromCookieString(serverCookie, name) : undefined;
   }
-  return Cookies.get(name);
+
+  if (name) {
+    return Cookies.get(name);
+  }
 }
 
-export function set(name: string, value: string, attributes: Types.CookieAttributes = {}) {
+export function set(name: string, value: string, attributes: Cookies.CookieAttributes = {}) {
   attributes.path = '/';
 
   return Cookies.set(name, value, attributes);

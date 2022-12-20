@@ -89,6 +89,7 @@ const ColorModeToggler = forwardRef<ColorModeTogglerProps, 'input'>((props, ref)
       <chakra.div
         { ...getCheckboxProps() }
         __css={ trackStyles }
+        aria-label="Toggle color mode"
       >
         <Icon
           boxSize={ 4 }

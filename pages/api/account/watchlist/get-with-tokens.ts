@@ -24,7 +24,7 @@ const watchlistWithTokensHandler = async(_req: NextApiRequest, res: NextApiRespo
   }
 
   const data = await Promise.all(watchlistData.map(async item => {
-    const tokens = await fetch(`?module=account&action=tokenlist&address=${ item.address_hash }`);
+    const tokens = await fetch(`/api/?module=account&action=tokenlist&address=${ item.address_hash }`);
 
     const tokensData = await tokens.json() as Tokenlist;
     return ({ ...item, tokens_count: Array.isArray(tokensData.result) ? tokensData.result.length : 0 });

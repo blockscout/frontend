@@ -65,7 +65,7 @@ const NetworkLogo = ({ isCollapsed, onClick }: Props) => {
           src={ logo }
           display={{ base: 'block', lg: isCollapsed === false ? 'block' : 'none', xl: isCollapsed ? 'none' : 'block' }}
           alt={ `${ appConfig.network.name } network logo` }
-          fallback={ isLogoError || !logo ? fallbackSmallLogo : undefined }
+          fallback={ isLogoError || !logo ? fallbackLogo : undefined }
           onError={ handleLogoError }
         />
         { /* small logo */ }
@@ -75,7 +75,7 @@ const NetworkLogo = ({ isCollapsed, onClick }: Props) => {
           src={ smallLogo }
           display={{ base: 'none', lg: isCollapsed === false ? 'none' : 'block', xl: isCollapsed ? 'block' : 'none' }}
           alt={ `${ appConfig.network.name } network logo` }
-          fallback={ isSmallLogoError || !smallLogo ? fallbackLogo : undefined }
+          fallback={ isSmallLogoError || !smallLogo ? fallbackSmallLogo : undefined }
           onError={ handleSmallLogoError }
         />
       </>

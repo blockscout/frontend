@@ -1,6 +1,8 @@
 import type { Transaction } from 'types/api/transaction';
 
 import type { AddressTag, WatchlistName } from './addressParams';
+import type { Block } from './block';
+import type { InternalTransaction } from './internalTransaction';
 import type { TokenInfo, TokenType } from './tokenInfo';
 import type { TokenTransfer, TokenTransferPagination } from './tokenTransfer';
 
@@ -44,7 +46,9 @@ export interface AddressTransactionsResponse {
   } | null;
 }
 
-type AddressFromToFilter = 'from' | 'to' | undefined;
+export const AddressFromToFilterValues = [ 'from', 'to' ] as const;
+
+export type AddressFromToFilter = typeof AddressFromToFilterValues[number] | undefined;
 
 export type AddressTxsFilters = {
   filter: AddressFromToFilter;
@@ -57,5 +61,38 @@ export interface AddressTokenTransferResponse {
 
 export type AddressTokenTransferFilters = {
   filter: AddressFromToFilter;
-  type: TokenType;
+  type: Array<TokenType>;
+}
+
+export interface AddressCoinBalanceHistoryItem {
+  block_number: number;
+  block_timestamp: string;
+  delta: string;
+  transaction_hash: string | null;
+  value: string;
+}
+
+export interface AddressCoinBalanceHistoryResponse {
+  items: Array<AddressCoinBalanceHistoryItem>;
+  next_page_params: {
+    block_number: number;
+    items_count: number;
+  };
+}
+
+export interface AddressBlocksValidatedResponse {
+  items: Array<Block>;
+  next_page_params: {
+    block_number: number;
+    items_count: number;
+  };
+}
+export interface AddressInternalTxsResponse {
+  items: Array<InternalTransaction>;
+  next_page_params: {
+    block_number: number;
+    index: number;
+    items_count: number;
+    transaction_index: number;
+  } | null;
 }

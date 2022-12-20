@@ -8,11 +8,13 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
+import type { AddressFromToFilter } from 'types/api/address';
+
 import FilterButton from 'ui/shared/FilterButton';
 
 interface Props {
   isActive: boolean;
-  defaultFilter: 'from' | 'to' | undefined;
+  defaultFilter: AddressFromToFilter;
   onFilterChange: (nextValue: string | Array<string>) => void;
 }
 

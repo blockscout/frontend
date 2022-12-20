@@ -33,6 +33,7 @@ const NavLink = ({ text, url, icon, isCollapsed, isActive, px, isNewUi }: Props)
       _hover={{ color: isActive ? colors.text.active : colors.text.hover }}
       borderRadius="base"
       whiteSpace="nowrap"
+      aria-label={ `${ text } link` }
       { ...getDefaultTransitionProps({ transitionProperty: 'width, padding' }) }
     >
       <Tooltip
@@ -44,13 +45,16 @@ const NavLink = ({ text, url, icon, isCollapsed, isActive, px, isNewUi }: Props)
         gutter={ 20 }
         color={ isActive ? colors.text.active : colors.text.hover }
       >
-        <HStack spacing={ 3 }>
+        <HStack spacing={ 3 } overflow="hidden">
           <Icon as={ icon } boxSize="30px"/>
           <Text
             variant="inherit"
             fontSize="sm"
             lineHeight="20px"
-            display={{ base: 'block', lg: isExpanded ? 'block' : 'none', xl: isCollapsed ? 'none' : 'block' }}
+            opacity={{ base: '1', lg: isExpanded ? '1' : '0', xl: isCollapsed ? '0' : '1' }}
+            transitionProperty="opacity"
+            transitionDuration="normal"
+            transitionTimingFunction="ease"
           >
             { text }
           </Text>

@@ -138,13 +138,13 @@ const LatestBlocksItem = ({ tx }: Props) => {
             </Address>
           </Flex>
           <Flex fontSize="sm" justifyContent="end" flexDirection={{ base: 'column', lg: 'row' }}>
-            <Box mr={{ base: 0, lg: 2 }} mb={{ base: 2, lg: 0 }}>
+            <Box mr={{ base: 0, lg: 3 }} mb={{ base: 2, lg: 0 }}>
               <Text as="span">Value { appConfig.network.currency.symbol } </Text>
-              <Text as="span" variant="secondary">{ getValueWithUnit(tx.value).toFormat() }</Text>
+              <Text as="span" variant="secondary">{ getValueWithUnit(tx.value).dp(5).toFormat() }</Text>
             </Box>
             <Box>
               <Text as="span">Fee { appConfig.network.currency.symbol } </Text>
-              <Text as="span" variant="secondary">{ getValueWithUnit(tx.fee.value).toFormat() }</Text>
+              <Text as="span" variant="secondary">{ getValueWithUnit(tx.fee.value).dp(5).toFormat() }</Text>
             </Box>
           </Flex>
         </Box>

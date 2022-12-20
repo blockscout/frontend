@@ -40,19 +40,6 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled }: Props) => 
   const scrollDirection = useScrollDirection();
   const [ activeTabIndex, setActiveTabIndex ] = useState<number>(tabs.length + 1);
 
-  useEffect(() => {
-    if (router.isReady) {
-      let tabIndex = 0;
-      if (router.query.tab) {
-        tabIndex = tabs.findIndex(({ id }) => id === router.query.tab);
-        if (tabIndex < 0) {
-          tabIndex = 0;
-        }
-      }
-      setActiveTabIndex(tabIndex);
-    }
-  }, [ tabs, router ]);
-
   const isMobile = useIsMobile();
   const { tabsCut, tabsList, tabsRefs, listRef, rightSlotRef } = useAdaptiveTabs(tabs, isMobile);
   const isSticky = useIsSticky(listRef, 5, stickyEnabled);
@@ -67,6 +54,38 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled }: Props) => 
       { shallow: true },
     );
   }, [ tabs, router ]);
+
+  useEffect(() => {
+    if (router.isReady) {
+      let tabIndex = 0;
+      if (router.query.tab) {
+        tabIndex = tabs.findIndex(({ id }) => id === router.query.tab);
+        if (tabIndex < 0) {
+          tabIndex = 0;
+        }
+      }
+      setActiveTabIndex(tabIndex);
+    }
+  }, [ tabs, router, activeTabIndex ]);
+
+  useEffect(() => {
+    if (activeTabIndex < tabs.length && isMobile) {
+      window.setTimeout(() => {
+        const activeTabRef = tabsRefs[activeTabIndex];
+        if (activeTabRef.current && listRef.current) {
+          const activeTabRect = activeTabRef.current.getBoundingClientRect();
+
+          listRef.current.scrollTo({
+            left: activeTabRect.left + listRef.current.scrollLeft - 16,
+            behavior: 'smooth',
+          });
+        }
+      // have to wait until DOM is updated and all styles to tabs is applied
+      }, 300);
+    }
+  // run only when tab index or device type is updated
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ activeTabIndex, isMobile ]);
 
   return (
     <Tabs

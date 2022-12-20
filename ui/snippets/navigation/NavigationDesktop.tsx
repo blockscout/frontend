@@ -77,13 +77,13 @@ const NavigationDesktop = () => {
         <NetworkMenu isCollapsed={ isCollapsed }/>
       </Box>
       <Box as="nav" mt={ 8 }>
-        <VStack as="ul" spacing="2" alignItems="flex-start" overflow="hidden">
+        <VStack as="ul" spacing="1" alignItems="flex-start">
           { mainNavItems.map((item) => <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed }/>) }
         </VStack>
       </Box>
       { hasAccount && (
-        <Box as="nav" mt={ 12 }>
-          <VStack as="ul" spacing="2" alignItems="flex-start" overflow="hidden">
+        <Box as="nav" mt={ 8 }>
+          <VStack as="ul" spacing="1" alignItems="flex-start">
             { accountNavItems.map((item) => <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed }/>) }
           </VStack>
         </Box>
@@ -105,6 +105,7 @@ const NavigationDesktop = () => {
         left={{ lg: isExpanded ? '216px' : '80px', xl: isCollapsed ? '80px' : '216px' }}
         cursor="pointer"
         onClick={ handleTogglerClick }
+        aria-label="Expand/Collapse menu"
       />
     </Flex>
   );

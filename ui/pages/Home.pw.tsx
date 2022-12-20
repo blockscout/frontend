@@ -43,5 +43,5 @@ test('default view -@default +@desktop-xl +@mobile +@dark-mode', async({ mount, 
 
   await page.evaluate(insertAdText);
 
-  await expect(component).toHaveScreenshot();
+  await expect(component.locator('main')).toHaveScreenshot();
 });

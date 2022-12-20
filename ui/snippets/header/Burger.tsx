@@ -29,6 +29,7 @@ const Burger = () => {
           boxSize={ 6 }
           display="block"
           color={ iconColor }
+          aria-label="Menu button"
         />
       </Box>
       <Drawer
