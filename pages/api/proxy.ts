@@ -10,7 +10,7 @@ const handler = async(_req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
-  const response = await fetchFactory(_req)(
+  const response = await fetchFactory(_req, _req.headers['x-endpoint']?.toString())(
     _req.url.replace(/^\/proxy/, ''),
     _pickBy(_pick(_req, [ 'body', 'method' ]), Boolean),
   );

@@ -1,11 +1,8 @@
-import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
-import type { Charts } from 'types/api/stats';
-import { QueryKeys } from 'types/client/queries';
 import type { StatsIntervalIds } from 'types/client/stats';
 
-import useFetch from 'lib/hooks/useFetch';
+import useApiQuery from 'lib/api/useApiQuery';
 
 import ChartWidget from '../shared/chart/ChartWidget';
 import { STATS_INTERVALS } from './constants';
@@ -22,19 +19,18 @@ function formatDate(date: Date) {
 }
 
 const ChartWidgetContainer = ({ id, title, description, interval }: Props) => {
-  const fetch = useFetch();
-
   const selectedInterval = STATS_INTERVALS[interval];
 
   const endDate = selectedInterval.start ? formatDate(new Date()) : undefined;
   const startDate = selectedInterval.start ? formatDate(selectedInterval.start) : undefined;
 
-  const url = `/node-api/stats/charts?name=${ id }${ startDate ? `&from=${ startDate }&to=${ endDate }` : '' }`;
-
-  const { data, isLoading } = useQuery<unknown, unknown, Charts>(
-    [ QueryKeys.charts, id, startDate ],
-    async() => await fetch(url),
-  );
+  const { data, isLoading } = useApiQuery('stats_charts', {
+    queryParams: {
+      name: id,
+      from: startDate,
+      to: endDate,
+    },
+  });
 
   const items = data?.chart
     .map((item) => {

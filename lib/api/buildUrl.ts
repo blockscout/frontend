@@ -2,23 +2,24 @@ import { compile } from 'path-to-regexp';
 
 import appConfig from 'configs/app/config';
 
-import { RESOURCES } from './resources';
+import type { ApiResource } from './resources';
 
 export default function buildUrl(
-  resource: keyof typeof RESOURCES,
+  resource: ApiResource,
   pathParams?: Record<string, string>,
-  queryParams?: Record<string, string>,
+  queryParams?: Record<string, string | undefined>,
 ) {
   // FIXME was not able to figure out how to send CORS with credentials from localhost
   // so for local development we use nextjs api as proxy server (only!)
-  const base = appConfig.host === 'localhost' ? appConfig.baseUrl : appConfig.api.endpoint;
+  const baseUrl = appConfig.host === 'localhost' ? appConfig.baseUrl : (resource.endpoint || appConfig.api.endpoint);
+  const basePath = resource.basePath !== undefined ? resource.basePath : appConfig.api.basePath;
   const path = appConfig.host === 'localhost' ?
-    '/proxy' + appConfig.api.basePath + RESOURCES[resource].path :
-    appConfig.api.basePath + RESOURCES[resource].path;
-  const url = new URL(compile(path)(pathParams), base);
+    '/proxy' + basePath + resource.path :
+    basePath + resource.path;
+  const url = new URL(compile(path)(pathParams), baseUrl);
 
   queryParams && Object.entries(queryParams).forEach(([ key, value ]) => {
-    url.searchParams.append(key, value);
+    value && url.searchParams.append(key, value);
   });
 
   return url.toString();

@@ -1,3 +1,11 @@
+import appConfig from 'configs/app/config';
+
+export interface ApiResource {
+  path: string;
+  endpoint?: string;
+  basePath?: string;
+}
+
 export const RESOURCES = {
   // account
   user_info: {
@@ -23,6 +31,18 @@ export const RESOURCES = {
   },
   api_keys: {
     path: '/api/account/v1/user/api_keys/:id?',
+  },
+
+  // STATS
+  stats_counters: {
+    path: '/api/v1/counters',
+    endpoint: appConfig.statsApi.endpoint,
+    basePath: appConfig.statsApi.basePath,
+  },
+  stats_charts: {
+    path: '/api/v1/charts/line',
+    endpoint: appConfig.statsApi.endpoint,
+    basePath: appConfig.statsApi.basePath,
   },
 
   // DEPRECATED

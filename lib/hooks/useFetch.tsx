@@ -9,6 +9,7 @@ import { resourceKey, RESOURCES } from 'lib/api/resources';
 
 export interface Params {
   method?: RequestInit['method'];
+  headers?: RequestInit['headers'];
   body?: Record<string, unknown>;
   credentials?: RequestCredentials;
 }

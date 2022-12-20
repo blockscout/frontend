@@ -2,6 +2,7 @@ import type { UseQueryOptions } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 
 import type { UserInfo, CustomAbis, PublicTags, AddressTags, TransactionTags, ApiKeys, WatchlistAddress } from 'types/api/account';
+import type { Stats, Charts } from 'types/api/stats';
 import type { CsrfData } from 'types/client/account';
 
 import type { RESOURCES, ResourceError } from './resources';
@@ -18,9 +19,11 @@ export default function useApiQuery<R extends keyof typeof RESOURCES>(
 ) {
   const apiFetch = useApiFetch();
 
-  return useQuery<unknown, ResourceError, ResourcePayload<R>>([ resource ], async() => {
-    return apiFetch<R, ResourcePayload<R>, ResourceError>(resource, { pathParams, queryParams, fetchParams });
-  }, queryOptions);
+  return useQuery<unknown, ResourceError, ResourcePayload<R>>(
+    pathParams || queryParams ? [ resource, { ...pathParams, ...queryParams } ] : [ resource ],
+    async() => {
+      return apiFetch<R, ResourcePayload<R>, ResourceError>(resource, { pathParams, queryParams, fetchParams });
+    }, queryOptions);
 }
 
 export type ResourcePayload<Q extends keyof typeof RESOURCES> =
@@ -32,4 +35,6 @@ export type ResourcePayload<Q extends keyof typeof RESOURCES> =
             Q extends 'private_tags_tx' ? TransactionTags :
               Q extends 'api_keys' ? ApiKeys :
                 Q extends 'watchlist' ? Array<WatchlistAddress> :
-                  never;
+                  Q extends 'stats_counters' ? Stats :
+                    Q extends 'stats_charts' ? Charts :
+                      never;
