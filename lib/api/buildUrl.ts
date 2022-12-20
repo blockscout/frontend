@@ -9,6 +9,8 @@ export default function buildUrl(
   pathParams?: Record<string, string>,
   queryParams?: Record<string, string>,
 ) {
+  // FIXME was not able to figure out how to send CORS with credentials from localhost
+  // so for local development we use nextjs api as proxy server (only!)
   const base = appConfig.host === 'localhost' ? appConfig.baseUrl : appConfig.api.endpoint;
   const path = appConfig.host === 'localhost' ?
     '/proxy' + appConfig.api.basePath + RESOURCES[resource].path :
