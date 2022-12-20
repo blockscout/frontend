@@ -1,51 +1,27 @@
-import { Box, Grid, Heading, Icon, IconButton, Menu, MenuButton, MenuItem, MenuList, Text, useColorModeValue, VisuallyHidden } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
+import { Box, Grid, Icon, IconButton, Menu, MenuButton, MenuItem, MenuList, Text, Tooltip, useColorModeValue, VisuallyHidden } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 
-import type { Charts } from 'types/api/stats';
-import { QueryKeys } from 'types/client/queries';
-import type { StatsIntervalIds } from 'types/client/stats';
+import type { TimeChartItem } from './types';
 
 import repeatArrow from 'icons/repeat_arrow.svg';
 import dotsIcon from 'icons/vertical_dots.svg';
-import useFetch from 'lib/hooks/useFetch';
 
 import ChartWidgetGraph from './ChartWidgetGraph';
 import ChartWidgetSkeleton from './ChartWidgetSkeleton';
-import { STATS_INTERVALS } from './constants';
 import FullscreenChartModal from './FullscreenChartModal';
 
 type Props = {
-  id: string;
+  items?: Array<TimeChartItem>;
   title: string;
   description: string;
-  interval: StatsIntervalIds;
+  isLoading: boolean;
 }
 
-function formatDate(date: Date) {
-  return date.toISOString().substring(0, 10);
-}
-
-const ChartWidget = ({ id, title, description, interval }: Props) => {
-  const fetch = useFetch();
-
-  const selectedInterval = STATS_INTERVALS[interval];
-
+const ChartWidget = ({ items, title, description, isLoading }: Props) => {
   const [ isFullscreen, setIsFullscreen ] = useState(false);
   const [ isZoomResetInitial, setIsZoomResetInitial ] = React.useState(true);
 
-  const endDate = selectedInterval.start ? formatDate(new Date()) : undefined;
-  const startDate = selectedInterval.start ? formatDate(selectedInterval.start) : undefined;
-
-  const menuButtonColor = useColorModeValue('black', 'white');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
-
-  const url = `/node-api/stats/charts?name=${ id }${ startDate ? `&from=${ startDate }&to=${ endDate }` : '' }`;
-
-  const { data, isLoading } = useQuery<unknown, unknown, Charts>(
-    [ QueryKeys.charts, id, startDate ],
-    async() => await fetch(url),
-  );
 
   const handleZoom = useCallback(() => {
     setIsZoomResetInitial(false);
@@ -75,16 +51,11 @@ const ChartWidget = ({ id, title, description, interval }: Props) => {
     return <ChartWidgetSkeleton/>;
   }
 
-  if (data) {
-    const items = data.chart
-      .map((item) => {
-        return { date: new Date(item.date), value: Number(item.value) };
-      });
-
+  if (items) {
     return (
       <>
         <Box
-          padding={{ base: 3, md: 4 }}
+          padding={{ base: 3, lg: 4 }}
           borderRadius="md"
           border="1px"
           borderColor={ borderColor }
@@ -93,12 +64,15 @@ const ChartWidget = ({ id, title, description, interval }: Props) => {
             gridTemplateColumns="auto auto 36px"
             gridColumnGap={ 2 }
           >
-            <Heading
-              mb={ 1 }
-              size={{ base: 'xs', md: 'sm' }}
+            <Text
+              fontWeight={ 600 }
+              fontSize="md"
+              lineHeight={ 6 }
+              as="p"
+              size={{ base: 'xs', lg: 'sm' }}
             >
               { title }
-            </Heading>
+            </Text>
 
             <Text
               mb={ 1 }
@@ -110,22 +84,23 @@ const ChartWidget = ({ id, title, description, interval }: Props) => {
               { description }
             </Text>
 
-            <IconButton
-              hidden={ isZoomResetInitial }
-              aria-label="Reset zoom"
-              title="Reset zoom"
-              colorScheme="blue"
-              w={ 9 }
-              h={ 8 }
-              gridColumn={ 2 }
-              justifySelf="end"
-              alignSelf="top"
-              gridRow="1/3"
-              size="sm"
-              variant="ghost"
-              onClick={ handleZoomResetClick }
-              icon={ <Icon as={ repeatArrow } w={ 4 } h={ 4 } color="blue.700"/> }
-            />
+            <Tooltip label="Reset zoom">
+              <IconButton
+                hidden={ isZoomResetInitial }
+                aria-label="Reset zoom"
+                colorScheme="blue"
+                w={ 9 }
+                h={ 8 }
+                gridColumn={ 2 }
+                justifySelf="end"
+                alignSelf="top"
+                gridRow="1/3"
+                size="sm"
+                variant="outline"
+                onClick={ handleZoomResetClick }
+                icon={ <Icon as={ repeatArrow } w={ 4 } h={ 4 }/> }
+              />
+            </Tooltip>
 
             <Menu>
               <MenuButton
@@ -134,8 +109,9 @@ const ChartWidget = ({ id, title, description, interval }: Props) => {
                 justifySelf="end"
                 w="36px"
                 h="32px"
-                icon={ <Icon as={ dotsIcon } w={ 4 } h={ 4 } color={ menuButtonColor }/> }
-                colorScheme="transparent"
+                icon={ <Icon as={ dotsIcon } w={ 4 } h={ 4 }/> }
+                colorScheme="gray"
+                variant="ghost"
                 as={ IconButton }
               >
                 <VisuallyHidden>
@@ -160,6 +136,7 @@ const ChartWidget = ({ id, title, description, interval }: Props) => {
           isOpen={ isFullscreen }
           items={ items }
           title={ title }
+          description={ description }
           onClose={ clearFullscreenChart }
         />
       </>

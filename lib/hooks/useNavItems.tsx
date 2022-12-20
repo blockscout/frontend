@@ -29,7 +29,7 @@ export default function useNavItems() {
       { text: 'Tokens', url: link('tokens'), icon: tokensIcon, isActive: currentRoute === 'tokens', isNewUi: false },
       isMarketplaceFilled ?
         { text: 'Apps', url: link('apps'), icon: appsIcon, isActive: currentRoute === 'apps', isNewUi: true } : null,
-      { text: 'Charts & stats', url: link('stats'), icon: statsIcon, isActive: currentRoute === 'stats', isNewUi: true },
+      { text: 'Charts & stats', url: link('stats'), icon: statsIcon, isActive: currentRoute === 'stats', isNewUi: false },
       // there should be custom site sections like Stats, Faucet, More, etc but never an 'other'
       // examples https://explorer-edgenet.polygon.technology/ and https://explorer.celo.org/
       // at this stage custom menu items is under development, we will implement it later

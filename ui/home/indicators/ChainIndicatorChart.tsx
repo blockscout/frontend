@@ -15,7 +15,7 @@ interface Props {
   caption?: string;
 }
 
-const CHART_MARGIN = { bottom: 0, left: 10, right: 10, top: 0 };
+const CHART_MARGIN = { bottom: 5, left: 10, right: 10, top: 0 };
 
 const ChainIndicatorChart = ({ data }: Props) => {
   const ref = React.useRef<SVGSVGElement>(null);
