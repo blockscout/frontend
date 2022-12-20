@@ -2,8 +2,6 @@ import { Tooltip as TooltipComponent } from '@chakra-ui/react';
 import { defineStyle, defineStyleConfig } from '@chakra-ui/styled-system';
 import { mode, cssVar } from '@chakra-ui/theme-tools';
 
-// these cause console warning about kebab-case in naming of css variables
-// but the chakra-ui itself uses the same variable names, and i guess we cannot override them
 const $bg = cssVar('tooltip-bg');
 const $fg = cssVar('tooltip-fg');
 const $arrowBg = cssVar('popper-arrow-bg');
@@ -33,9 +31,9 @@ const baseStyle = defineStyle((props) => {
 
   return {
     bg: $bg.reference,
-    color: mode('white', 'black')(props),
+    color: $fg.reference,
     [$bg.variable]: `colors.${ bg }`,
-    [$fg.reference]: `colors.${ fg }`,
+    [$fg.variable]: `colors.${ fg }`,
     [$arrowBg.variable]: $bg.reference,
     maxWidth: props.maxWidth || props.maxW || 'unset',
   };

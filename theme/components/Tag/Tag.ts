@@ -4,8 +4,8 @@ import {
   defineStyle,
 } from '@chakra-ui/styled-system';
 
-import getDefaultTransitionProps from '../utils/getDefaultTransitionProps';
-import Badge from './Badge';
+import getDefaultTransitionProps from '../../utils/getDefaultTransitionProps';
+import Badge from '../Badge';
 const transitionProps = getDefaultTransitionProps();
 
 const { defineMultiStyleConfig, definePartsStyle } =
