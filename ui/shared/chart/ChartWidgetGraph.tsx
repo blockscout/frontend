@@ -22,7 +22,7 @@ interface Props {
   isZoomResetInitial: boolean;
 }
 
-const CHART_MARGIN = { bottom: 20, left: 30, right: 20, top: 10 };
+const CHART_MARGIN = { bottom: 20, left: 40, right: 20, top: 10 };
 
 const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title }: Props) => {
   const isMobile = useIsMobile();
@@ -33,8 +33,7 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
   const [ range, setRange ] = React.useState<[ number, number ]>([ 0, Infinity ]);
   const { innerWidth, innerHeight } = useChartSize(ref.current, CHART_MARGIN);
 
-  const displayedData = useMemo(() => items.slice(range[0], range[1]).map((d) =>
-    ({ ...d, date: new Date(d.date) })), [ items, range ]);
+  const displayedData = useMemo(() => items.slice(range[0], range[1]), [ items, range ]);
   const chartData = [ { items: items, name: 'Value', color } ];
 
   const { yTickFormat, xScale, yScale } = useTimeChartController({

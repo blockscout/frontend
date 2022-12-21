@@ -16,7 +16,7 @@ import FullscreenChartModal from './FullscreenChartModal';
 type Props = {
   items?: Array<TimeChartItem>;
   title: string;
-  description: string;
+  description?: string;
   isLoading: boolean;
 }
 
@@ -78,7 +78,7 @@ const ChartWidget = ({ items, title, description, isLoading }: Props) => {
   }, [ title ]);
 
   if (isLoading) {
-    return <ChartWidgetSkeleton/>;
+    return <ChartWidgetSkeleton hasDescription={ Boolean(description) }/>;
   }
 
   if (items) {
@@ -105,15 +105,17 @@ const ChartWidget = ({ items, title, description, isLoading }: Props) => {
               { title }
             </Text>
 
-            <Text
-              mb={ 1 }
-              gridColumn={ 1 }
-              as="p"
-              variant="secondary"
-              fontSize="xs"
-            >
-              { description }
-            </Text>
+            { description && (
+              <Text
+                mb={ 1 }
+                gridColumn={ 1 }
+                as="p"
+                variant="secondary"
+                fontSize="xs"
+              >
+                { description }
+              </Text>
+            ) }
 
             <Tooltip label="Reset zoom">
               <IconButton
