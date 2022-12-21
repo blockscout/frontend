@@ -149,7 +149,7 @@ const TxDetails = () => {
           <GridItem
             colSpan={{ base: undefined, lg: 2 }}
           >
-            <AdBanner/>
+            <AdBanner justifyContent="center"/>
           </GridItem>
         ) :
         (
