@@ -31,7 +31,7 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
   const overlayRef = React.useRef<SVGRectElement>(null);
   const chartId = useMemo(() => `chart-${ title.split(' ').join('') }`, [ title ]);
   const [ range, setRange ] = React.useState<[ number, number ]>([ 0, Infinity ]);
-  const { innerWidth, innerHeight } = useChartSize(ref.current, CHART_MARGIN);
+  const { width, height, innerWidth, innerHeight } = useChartSize(ref.current, CHART_MARGIN);
 
   const displayedData = useMemo(() => items.slice(range[0], range[1]), [ items, range ]);
   const chartData = [ { items: items, name: 'Value', color } ];
@@ -54,9 +54,9 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
   }, [ isZoomResetInitial ]);
 
   return (
-    <svg width="100%" height="100%" ref={ ref } cursor="pointer" id={ chartId }>
+    <svg width={ width || '100%' } height={ height || 'auto' } ref={ ref } cursor="pointer" id={ chartId } opacity={ width ? 1 : 0 }>
 
-      <g transform={ `translate(${ CHART_MARGIN?.left || 0 },${ CHART_MARGIN?.top || 0 })` } opacity={ innerWidth ? 1 : 0 }>
+      <g transform={ `translate(${ CHART_MARGIN?.left || 0 },${ CHART_MARGIN?.top || 0 })` }>
         <ChartGridLine
           type="horizontal"
           scale={ yScale }

@@ -18,11 +18,12 @@ type Props = {
   title: string;
   description?: string;
   isLoading: boolean;
+  chartHeight?: string;
 }
 
 const DOWNLOAD_IMAGE_SCALE = 5;
 
-const ChartWidget = ({ items, title, description, isLoading }: Props) => {
+const ChartWidget = ({ items, title, description, isLoading, chartHeight }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
   const [ isFullscreen, setIsFullscreen ] = useState(false);
   const [ isZoomResetInitial, setIsZoomResetInitial ] = React.useState(true);
@@ -78,7 +79,7 @@ const ChartWidget = ({ items, title, description, isLoading }: Props) => {
   }, [ title ]);
 
   if (isLoading) {
-    return <ChartWidgetSkeleton hasDescription={ Boolean(description) }/>;
+    return <ChartWidgetSkeleton hasDescription={ Boolean(description) } chartHeight={ chartHeight }/>;
   }
 
   if (items) {
@@ -172,12 +173,14 @@ const ChartWidget = ({ items, title, description, isLoading }: Props) => {
             </Menu>
           </Grid>
 
-          <ChartWidgetGraph
-            items={ items }
-            onZoom={ handleZoom }
-            isZoomResetInitial={ isZoomResetInitial }
-            title={ title }
-          />
+          <Box h={ chartHeight || 'auto' }>
+            <ChartWidgetGraph
+              items={ items }
+              onZoom={ handleZoom }
+              isZoomResetInitial={ isZoomResetInitial }
+              title={ title }
+            />
+          </Box>
         </Box>
 
         <FullscreenChartModal
@@ -194,4 +197,4 @@ const ChartWidget = ({ items, title, description, isLoading }: Props) => {
   return null;
 };
 
-export default ChartWidget;
+export default React.memo(ChartWidget);

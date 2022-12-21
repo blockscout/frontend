@@ -30,6 +30,7 @@ const AddressCoinBalanceChart = ({ addressQuery }: Props) => {
 
   return (
     <ChartWidget
+      chartHeight="200px"
       title="Balances"
       items={ items }
       isLoading={ isLoading || isError }
