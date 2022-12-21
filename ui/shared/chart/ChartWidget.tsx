@@ -43,18 +43,10 @@ const ChartWidget = ({ items, title, description, isLoading, chartHeight }: Prop
 
   const showChartFullscreen = useCallback(() => {
     setIsFullscreen(true);
-
-    if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
-      document.documentElement.requestFullscreen();
-    }
   }, []);
 
   const clearFullscreenChart = useCallback(() => {
     setIsFullscreen(false);
-
-    if (document.fullscreenElement) {
-      document.exitFullscreen();
-    }
   }, []);
 
   const handleFileSaveClick = useCallback(() => {
