@@ -43,9 +43,19 @@ interface Props {
   baseAddress?: string;
   showTxInfo?: boolean;
   txHash?: string;
+  enableTimeIncrement?: boolean;
 }
 
-const TokenTransfer = ({ isLoading: isLoadingProp, isDisabled, queryName, queryIds, path, baseAddress, showTxInfo = true }: Props) => {
+const TokenTransfer = ({
+  isLoading: isLoadingProp,
+  isDisabled,
+  queryName,
+  queryIds,
+  path,
+  baseAddress,
+  showTxInfo = true,
+  enableTimeIncrement,
+}: Props) => {
   const router = useRouter();
   const [ filters, setFilters ] = React.useState<AddressTokenTransferFilters & TokenTransferFilters>(
     { type: getTokenFilterValue(router.query.type), filter: getAddressFilterValue(router.query.filter) },
@@ -107,10 +117,10 @@ const TokenTransfer = ({ isLoading: isLoadingProp, isDisabled, queryName, queryI
     return (
       <>
         <Hide below="lg">
-          <TokenTransferTable data={ items } baseAddress={ baseAddress } showTxInfo={ showTxInfo } top={ 80 }/>
+          <TokenTransferTable data={ items } baseAddress={ baseAddress } showTxInfo={ showTxInfo } top={ 80 } enableTimeIncrement={ enableTimeIncrement }/>
         </Hide>
         <Show below="lg">
-          <TokenTransferList data={ items } baseAddress={ baseAddress } showTxInfo={ showTxInfo }/>
+          <TokenTransferList data={ items } baseAddress={ baseAddress } showTxInfo={ showTxInfo } enableTimeIncrement={ enableTimeIncrement }/>
         </Show>
       </>
     );

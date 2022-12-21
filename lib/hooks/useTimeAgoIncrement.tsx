@@ -41,46 +41,48 @@ function getUpdateParams(ts: string) {
   };
 }
 
-export default function useTimeAgoIncrement(ts: string, isEnabled?: boolean) {
-  const [ value, setValue ] = React.useState(dayjs(ts).fromNow());
+export default function useTimeAgoIncrement(ts: string | null, isEnabled?: boolean) {
+  const [ value, setValue ] = React.useState(ts ? dayjs(ts).fromNow() : null);
 
   React.useEffect(() => {
-    const timeouts: Array<number> = [];
-    const intervals: Array<number> = [];
+    if (ts !== null) {
+      const timeouts: Array<number> = [];
+      const intervals: Array<number> = [];
 
-    const startIncrement = () => {
-      const { startTimeout, interval, endTimeout } = getUpdateParams(ts);
-      if (!startTimeout && !endTimeout) {
-        return;
-      }
+      const startIncrement = () => {
+        const { startTimeout, interval, endTimeout } = getUpdateParams(ts);
+        if (!startTimeout && !endTimeout) {
+          return;
+        }
 
-      let intervalId: number;
+        let intervalId: number;
 
-      const startTimeoutId = window.setTimeout(() => {
-        setValue(dayjs(ts).fromNow());
-
-        intervalId = window.setInterval(() => {
+        const startTimeoutId = window.setTimeout(() => {
           setValue(dayjs(ts).fromNow());
-        }, interval);
 
-        intervals.push(intervalId);
-      }, startTimeout);
+          intervalId = window.setInterval(() => {
+            setValue(dayjs(ts).fromNow());
+          }, interval);
 
-      const endTimeoutId = window.setTimeout(() => {
-        window.clearInterval(intervalId);
-        startIncrement();
-      }, endTimeout);
+          intervals.push(intervalId);
+        }, startTimeout);
 
-      timeouts.push(startTimeoutId);
-      timeouts.push(endTimeoutId);
-    };
+        const endTimeoutId = window.setTimeout(() => {
+          window.clearInterval(intervalId);
+          startIncrement();
+        }, endTimeout);
 
-    isEnabled && startIncrement();
+        timeouts.push(startTimeoutId);
+        timeouts.push(endTimeoutId);
+      };
 
-    return () => {
-      timeouts.forEach(window.clearTimeout);
-      intervals.forEach(window.clearInterval);
-    };
+      isEnabled && startIncrement();
+
+      return () => {
+        timeouts.forEach(window.clearTimeout);
+        intervals.forEach(window.clearInterval);
+      };
+    }
   }, [ isEnabled, ts ]);
 
   return value;

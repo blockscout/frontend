@@ -16,6 +16,7 @@ const AddressTokenTransfers = () => {
       queryName={ QueryKeys.addressTokenTransfers }
       queryIds={ castArray(router.query.id) }
       baseAddress={ typeof hash === 'string' ? hash : undefined }
+      enableTimeIncrement
     />
   );
 };

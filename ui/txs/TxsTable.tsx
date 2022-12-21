@@ -19,9 +19,10 @@ type Props = {
   showBlockInfo: boolean;
   showSocketInfo: boolean;
   currentAddress?: string;
+  enableTimeIncrement?: boolean;
 }
 
-const TxsTable = ({ txs, sort, sorting, top, showBlockInfo, showSocketInfo, currentAddress }: Props) => {
+const TxsTable = ({ txs, sort, sorting, top, showBlockInfo, showSocketInfo, currentAddress, enableTimeIncrement }: Props) => {
   return (
     <Table variant="simple" minWidth="950px" size="xs">
       <TheadSticky top={ top }>
@@ -62,6 +63,7 @@ const TxsTable = ({ txs, sort, sorting, top, showBlockInfo, showSocketInfo, curr
             tx={ item }
             showBlockInfo={ showBlockInfo }
             currentAddress={ currentAddress }
+            enableTimeIncrement={ enableTimeIncrement }
           />
         )) }
       </Tbody>
