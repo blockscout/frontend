@@ -40,7 +40,7 @@ const AddressPageContent = () => {
     { id: 'txs', title: 'Transactions', component: <AddressTxs/> },
     { id: 'token_transfers', title: 'Token transfers', component: <AddressTokenTransfers/> },
     { id: 'tokens', title: 'Tokens', component: null },
-    { id: 'internal_txn', title: 'Internal txn', component: <AddressInternalTxs/> },
+    { id: 'internal_txns', title: 'Internal txns', component: <AddressInternalTxs/> },
     { id: 'coin_balance_history', title: 'Coin balance history', component: <AddressCoinBalance addressQuery={ addressQuery }/> },
     // temporary show this tab in all address
     // later api will return info about available tabs

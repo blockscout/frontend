@@ -5,6 +5,7 @@ import type { NewBlockSocketResponse } from 'types/api/block';
 
 export type SocketMessageParams = SocketMessage.NewBlock |
 SocketMessage.BlocksIndexStatus |
+SocketMessage.InternalTxsIndexStatus |
 SocketMessage.TxStatusUpdate |
 SocketMessage.NewTx |
 SocketMessage.NewPendingTx |
@@ -23,7 +24,8 @@ interface SocketMessageParamsGeneric<Event extends string | undefined, Payload e
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace SocketMessage {
   export type NewBlock = SocketMessageParamsGeneric<'new_block', NewBlockSocketResponse>;
-  export type BlocksIndexStatus = SocketMessageParamsGeneric<'index_status', {finished: boolean; ratio: string}>;
+  export type BlocksIndexStatus = SocketMessageParamsGeneric<'block_index_status', {finished: boolean; ratio: string}>;
+  export type InternalTxsIndexStatus = SocketMessageParamsGeneric<'internal_txs_index_status', {finished: boolean; ratio: string}>;
   export type TxStatusUpdate = SocketMessageParamsGeneric<'collated', NewBlockSocketResponse>;
   export type NewTx = SocketMessageParamsGeneric<'transaction', { transaction: number }>;
   export type NewPendingTx = SocketMessageParamsGeneric<'pending_transaction', { pending_transaction: number }>;

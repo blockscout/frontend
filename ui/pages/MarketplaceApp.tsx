@@ -2,7 +2,7 @@ import { Box, Center, useColorMode } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-import type { JsonRpcUrlResponse } from 'types/api/json-rpc-url';
+import type { JsonRpcUrlResponse } from 'types/api/jsonRpcUrl';
 import type { AppItemOverview } from 'types/client/apps';
 import { QueryKeys } from 'types/client/queries';
 

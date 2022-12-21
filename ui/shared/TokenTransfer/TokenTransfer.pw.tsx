@@ -32,3 +32,25 @@ test('without tx info +@mobile', async({ mount, page }) => {
 
   await expect(component).toHaveScreenshot();
 });
+
+test('with tx info +@mobile', async({ mount, page }) => {
+  await page.route(API_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify(tokenTransferMock.mixTokens),
+  }));
+
+  const component = await mount(
+    <TestApp>
+      <Box h={{ base: '134px', lg: 6 }}/>
+      <TokenTransfer
+        path={ API_URL }
+        queryName={ QueryKeys.txTokenTransfers }
+        showTxInfo={ true }
+      />
+    </TestApp>,
+  );
+
+  await page.waitForResponse(API_URL),
+
+  await expect(component).toHaveScreenshot();
+});
