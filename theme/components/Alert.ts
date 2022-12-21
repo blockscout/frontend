@@ -18,7 +18,7 @@ const baseStyle = definePartsStyle({
   container: {
     borderRadius: 'md',
     px: 6,
-    py: 4,
+    py: 3,
   },
 });
 
