@@ -23,6 +23,7 @@ import errorIcon from 'icons/status/error.svg';
 import successIcon from 'icons/status/success.svg';
 import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
 import AdBanner from 'ui/shared/ad/AdBanner';
 import Address from 'ui/shared/address/Address';
@@ -47,6 +48,8 @@ import useFetchTxInfo from 'ui/tx/useFetchTxInfo';
 
 const TxDetails = () => {
   const { data, isLoading, isError, socketStatus } = useFetchTxInfo();
+
+  const isMobile = useIsMobile();
 
   const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
 
@@ -156,12 +159,22 @@ const TxDetails = () => {
           <Text variant="secondary">{ getConfirmationDuration(data.confirmation_duration) }</Text>
         </DetailsInfoItem>
       ) }
-      <DetailsInfoItem
-        title="Sponsored"
-        hint="Sponsored banner advertisement"
-      >
-        <AdBanner/>
-      </DetailsInfoItem>
+      { isMobile ?
+        (
+          <GridItem
+            colSpan={{ base: undefined, lg: 2 }}
+          >
+            <AdBanner/>
+          </GridItem>
+        ) :
+        (
+          <DetailsInfoItem
+            title="Sponsored"
+            hint="Sponsored banner advertisement"
+          >
+            <AdBanner/>
+          </DetailsInfoItem>
+        ) }
       <GridItem
         colSpan={{ base: undefined, lg: 2 }}
         mt={{ base: 2, lg: 3 }}
