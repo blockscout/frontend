@@ -22,7 +22,7 @@ var AdButler = AdButler || {}; AdButler.ads = AdButler.ads || [];
 
 const AdbutlerBanner = ({ className }: { className?: string }) => {
   return (
-    <Flex className={ className }>
+    <Flex className={ className } id="adBanner">
       <div id="ad-banner"></div>
       <Script id="ad-butler-1">{ scriptText1 }</Script>
       <Script id="ad-butler-2">{ scriptText2 }</Script>

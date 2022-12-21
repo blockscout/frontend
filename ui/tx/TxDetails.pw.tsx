@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import * as txMock from 'mocks/txs/tx';
+import insertAdPlaceholder from 'playwright/scripts/insertAdPlaceholder';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
 
@@ -28,6 +29,7 @@ test('between addresses +@mobile +@dark-mode', async({ mount, page }) => {
   );
 
   await page.getByText('View details').click();
+  await insertAdPlaceholder(page);
 
   await expect(component).toHaveScreenshot();
 });
@@ -45,6 +47,8 @@ test('creating contact', async({ mount, page }) => {
     { hooksConfig },
   );
 
+  await insertAdPlaceholder(page);
+
   await expect(component).toHaveScreenshot();
 });
 
@@ -60,6 +64,8 @@ test('with token transfer +@mobile', async({ mount, page }) => {
     </TestApp>,
     { hooksConfig },
   );
+
+  await insertAdPlaceholder(page);
 
   await expect(component).toHaveScreenshot();
 });
@@ -77,6 +83,8 @@ test('with decoded revert reason', async({ mount, page }) => {
     { hooksConfig },
   );
 
+  await insertAdPlaceholder(page);
+
   await expect(component).toHaveScreenshot();
 });
 
@@ -92,6 +100,8 @@ test('with decoded raw reason', async({ mount, page }) => {
     </TestApp>,
     { hooksConfig },
   );
+
+  await insertAdPlaceholder(page);
 
   await expect(component).toHaveScreenshot();
 });
@@ -110,6 +120,7 @@ test('pending', async({ mount, page }) => {
   );
 
   await page.getByText('View details').click();
+  await insertAdPlaceholder(page);
 
   await expect(component).toHaveScreenshot();
 });

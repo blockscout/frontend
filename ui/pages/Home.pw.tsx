@@ -5,7 +5,7 @@ import * as blockMock from 'mocks/blocks/block';
 import * as dailyTxsMock from 'mocks/stats/daily_txs';
 import * as statsMock from 'mocks/stats/index';
 import * as txMock from 'mocks/txs/tx';
-import insertAdText from 'playwright/scripts/insertAdText';
+import insertAdPlaceholder from 'playwright/scripts/insertAdPlaceholder';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
 
@@ -42,7 +42,7 @@ test('default view -@default +@desktop-xl +@mobile +@dark-mode', async({ mount, 
     </TestApp>,
   );
 
-  await page.evaluate(insertAdText);
+  await insertAdPlaceholder(page);
 
   await expect(component.locator('main')).toHaveScreenshot();
 });
