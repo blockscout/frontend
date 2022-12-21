@@ -16,7 +16,7 @@ import useFetchTxInfo from 'ui/tx/useFetchTxInfo';
 
 const TxLogs = () => {
   const txInfo = useFetchTxInfo({ updateDelay: 5 * SECOND });
-  const { data, isLoading, isError, pagination } = useQueryWithPages({
+  const { data, isLoading, isError, pagination, isPaginationVisible } = useQueryWithPages({
     apiPath: `/node-api/transactions/${ txInfo.data?.hash }/logs`,
     queryName: QueryKeys.txLogs,
     queryIds: txInfo.data?.hash ? [ txInfo.data.hash ] : undefined,
@@ -24,7 +24,6 @@ const TxLogs = () => {
       enabled: Boolean(txInfo.data?.hash) && Boolean(txInfo.data?.status),
     },
   });
-  const isPaginatorHidden = !isLoading && !isError && pagination.page === 1 && !pagination.hasNextPage;
 
   if (!txInfo.isLoading && !txInfo.isError && !txInfo.data.status) {
     return txInfo.socketStatus ? <TxSocketAlert status={ txInfo.socketStatus }/> : <TxPendingAlert/>;
@@ -49,7 +48,7 @@ const TxLogs = () => {
 
   return (
     <Box>
-      { !isPaginatorHidden && (
+      { isPaginationVisible && (
         <ActionBar mt={ -6 }>
           <Pagination ml="auto" { ...pagination }/>
         </ActionBar>

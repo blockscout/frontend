@@ -19,12 +19,11 @@ import AddressCoinBalanceTableItem from './AddressCoinBalanceTableItem';
 interface Props {
   query: UseQueryResult<AddressCoinBalanceHistoryResponse> & {
     pagination: PaginationProps;
+    isPaginationVisible: boolean;
   };
 }
 
 const AddressCoinBalanceHistory = ({ query }: Props) => {
-
-  const isPaginatorHidden = !query.isLoading && !query.isError && query.pagination.page === 1 && !query.pagination.hasNextPage;
 
   const content = (() => {
     if (query.isLoading) {
@@ -75,7 +74,7 @@ const AddressCoinBalanceHistory = ({ query }: Props) => {
 
   return (
     <Box mt={ 8 }>
-      { !isPaginatorHidden && (
+      { query.isPaginationVisible && (
         <ActionBar mt={ -6 }>
           <Pagination ml="auto" { ...query.pagination }/>
         </ActionBar>

@@ -51,7 +51,7 @@ const TokenTransfer = ({ isLoading: isLoadingProp, isDisabled, queryName, queryI
     { type: getTokenFilterValue(router.query.type), filter: getAddressFilterValue(router.query.filter) },
   );
 
-  const { isError, isLoading, data, pagination, onFilterChange } = useQueryWithPages({
+  const { isError, isLoading, data, pagination, onFilterChange, isPaginationVisible } = useQueryWithPages({
     apiPath: path,
     queryName,
     queryIds,
@@ -128,7 +128,7 @@ const TokenTransfer = ({ isLoading: isLoadingProp, isDisabled, queryName, queryI
             onAddressFilterChange={ handleAddressFilterChange }
             defaultAddressFilter={ filters.filter }
           />
-          <Pagination ml="auto" { ...pagination }/>
+          { isPaginationVisible && <Pagination ml="auto" { ...pagination }/> }
         </ActionBar>
       ) }
       { content }

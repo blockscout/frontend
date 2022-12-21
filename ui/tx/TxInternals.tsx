@@ -75,7 +75,7 @@ const TxInternals = () => {
   // const [ searchTerm, setSearchTerm ] = React.useState<string>('');
   const [ sort, setSort ] = React.useState<Sort>();
   const txInfo = useFetchTxInfo({ updateDelay: 5 * SECOND });
-  const { data, isLoading, isError, pagination } = useQueryWithPages({
+  const { data, isLoading, isError, pagination, isPaginationVisible } = useQueryWithPages({
     apiPath: `/node-api/transactions/${ txInfo.data?.hash }/internal-transactions`,
     queryName: QueryKeys.txInternals,
     queryIds: txInfo.data?.hash ? [ txInfo.data.hash ] : undefined,
@@ -83,7 +83,6 @@ const TxInternals = () => {
       enabled: Boolean(txInfo.data?.hash) && Boolean(txInfo.data?.status),
     },
   });
-  const isPaginatorHidden = !isLoading && !isError && pagination.page === 1 && !pagination.hasNextPage;
 
   const isMobile = useIsMobile();
 
@@ -131,12 +130,12 @@ const TxInternals = () => {
 
     return isMobile ?
       <TxInternalsList data={ filteredData }/> :
-      <TxInternalsTable data={ filteredData } sort={ sort } onSortToggle={ handleSortToggle } top={ isPaginatorHidden ? 0 : 80 }/>;
+      <TxInternalsTable data={ filteredData } sort={ sort } onSortToggle={ handleSortToggle } top={ isPaginationVisible ? 80 : 0 }/>;
   })();
 
   return (
     <Box>
-      { !isPaginatorHidden && (
+      { isPaginationVisible && (
         <ActionBar mt={ -6 }>
           <Pagination ml="auto" { ...pagination }/>
         </ActionBar>

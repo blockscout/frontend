@@ -46,8 +46,7 @@ const BlockPageContent = () => {
     { id: 'txs', title: 'Transactions', component: <TxsContent query={ blockTxsQuery } showBlockInfo={ false } showSocketInfo={ false }/> },
   ];
 
-  const isPaginatorHidden = !blockTxsQuery.isLoading && !blockTxsQuery.isError && blockTxsQuery.pagination.page === 1 && !blockTxsQuery.pagination.hasNextPage;
-  const hasPagination = !isMobile && router.query.tab === 'txs' && !isPaginatorHidden;
+  const hasPagination = !isMobile && router.query.tab === 'txs' && blockTxsQuery.isPaginationVisible;
 
   const referrer = isInBrowser ? window.document.referrer : appProps.referrer;
 

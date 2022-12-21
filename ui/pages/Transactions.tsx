@@ -43,7 +43,7 @@ const Transactions = () => {
         <RoutedTabs
           tabs={ tabs }
           tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
-          rightSlot={ <TxsTabSlot pagination={ txsQuery.pagination }/> }
+          rightSlot={ <TxsTabSlot pagination={ txsQuery.pagination } isPaginationVisible={ txsQuery.isPaginationVisible && !isMobile }/> }
           stickyEnabled={ !isMobile }
         />
       </Box>
