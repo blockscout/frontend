@@ -64,6 +64,7 @@ export const base: Transaction = {
   ],
   type: 2,
   value: '42000000000000000000',
+  actions: [],
 };
 
 export const withContractCreation: Transaction = {

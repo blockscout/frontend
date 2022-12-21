@@ -2,12 +2,14 @@ import { Box, Flex } from '@chakra-ui/react';
 import Script from 'next/script';
 import React from 'react';
 
+import type { TxAction as TTxAction } from 'types/api/txAction';
+
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 
 import TxDetailsAction from './TxDetailsAction';
 
 interface Props {
-  actions: array;
+  actions: Array<TTxAction>;
 }
 
 declare global {
