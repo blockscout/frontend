@@ -14,23 +14,26 @@ const uniswapIconUrl = 'https://raw.githubusercontent.com/trustwallet/assets/mas
 
 type Props = TTxAction;
 
+function actionName(actionType: string) {
+  switch (actionType) {
+    case 'mint': return [ 'Add', 'Liquidity To' ];
+    case 'burn': return [ 'Remove', 'Liquidity From' ];
+    case 'collect': return [ 'Collect', 'From' ];
+    case 'swap': return [ 'Swap', 'On' ];
+    default: return [ '', '' ];
+  }
+}
+
 const TxDetailsAction = ({ protocol, type, data, isLast }: Props) => {
   if (protocol === 'uniswap_v3') {
     if ([ 'mint', 'burn', 'collect', 'swap' ].includes(type)) {
       const amount0 = BigNumber(data.amount0).toFormat();
       const amount1 = BigNumber(data.amount1).toFormat();
 
-      const actionName = {
-        mint: [ 'Add', 'Liquidity To' ],
-        burn: [ 'Remove', 'Liquidity From' ],
-        collect: [ 'Collect', 'From' ],
-        swap: [ 'Swap', 'On' ],
-      };
-
       return (
         <Flex flexWrap="wrap" columnGap={ 1 } rowGap={ 2 } className={ isLast ? 'lastItem' : '' } marginBottom={ isLast ? 5 : 0 }>
           <Text color="gray.500" as="span">
-            { actionName[type][0] }
+            { actionName(type)[0] }
           </Text>
 
           <Flex columnGap={ 1 }>
@@ -48,11 +51,11 @@ const TxDetailsAction = ({ protocol, type, data, isLast }: Props) => {
           </Flex>
 
           <Text color="gray.500" as="span">
-            { actionName[type][1] }
+            { actionName(type)[1] }
           </Text>
 
           <Flex columnGap={ 1 }>
-            <Image src={ uniswapIconUrl } boxSize={ 5 } fallback=" " alt=""/>
+            <Image src={ uniswapIconUrl } boxSize={ 5 } fallback={ <Text as="span"/> } alt=""/>
             <Text color="gray.500" as="span">
               Uniswap V3
             </Text>
@@ -66,7 +69,7 @@ const TxDetailsAction = ({ protocol, type, data, isLast }: Props) => {
           <Flex flexWrap="wrap" columnGap={ 1 } rowGap={ 2 }>
             <Flex columnGap={ 1 }>
               <Text as="span">Mint of</Text>
-              <Image src={ uniswapIconUrl } boxSize={ 5 } fallback=" " alt=""/>
+              <Image src={ uniswapIconUrl } boxSize={ 5 } fallback={ <Text as="span"/> } alt=""/>
               <Link href={ tokenUrl } target="_blank" overflow="hidden" whiteSpace="nowrap">
                 <StringShorten title={ data.name } maxLength={ 12 }/>
                 { space }

@@ -10,16 +10,23 @@ interface Props {
   actions: array;
 }
 
+declare global {
+  interface JQuery {
+    mCustomScrollbar(options: object): void;
+  }
+}
+
 const TxDetailsActions = ({ actions }: Props) => {
   function onScrollbarLoad() {
-    $('.mCustomScrollbar').mCustomScrollbar({ callbacks: {
+    const customScrollBar = $('.mCustomScrollbar');
+    customScrollBar.mCustomScrollbar({ callbacks: {
       onOverflowY: () => {
         $('#txActionsTitle .note').css('display', 'block');
-        $('.mCustomScrollbar').removeClass('mCS_no_scrollbar_y');
+        customScrollBar.removeClass('mCS_no_scrollbar_y');
       },
       onOverflowYNone: () => {
         $('#txActionsTitle .note').css('display', 'none');
-        $('.mCustomScrollbar').addClass('mCS_no_scrollbar_y');
+        customScrollBar.addClass('mCS_no_scrollbar_y');
       },
     },
     theme: 'dark',

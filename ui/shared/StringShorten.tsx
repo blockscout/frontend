@@ -14,7 +14,9 @@ const StringShorten = ({ title, maxLength }: Props) => {
       </Tooltip>
     );
   } else {
-    return title;
+    return (
+      <span>{ title }</span>
+    );
   }
 };
 
