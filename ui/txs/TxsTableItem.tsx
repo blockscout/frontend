@@ -150,7 +150,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress }: Props) => {
         </Td>
       </Hide>
       <Td isNumeric>
-        <CurrencyValue value={ tx.value }/>
+        <CurrencyValue value={ tx.value } accuracy={ 8 }/>
       </Td>
       <Td isNumeric>
         <CurrencyValue value={ tx.fee.value } accuracy={ 8 }/>
