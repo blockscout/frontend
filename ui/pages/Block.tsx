@@ -1,11 +1,15 @@
+import { Flex, Icon, Link, Tooltip } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import { QueryKeys } from 'types/client/queries';
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
+import eastArrowIcon from 'icons/arrows/east.svg';
+import { useAppContext } from 'lib/appContext';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
+import isBrowser from 'lib/isBrowser';
 import BlockDetails from 'ui/block/BlockDetails';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -22,6 +26,8 @@ const TAB_LIST_PROPS = {
 const BlockPageContent = () => {
   const router = useRouter();
   const isMobile = useIsMobile();
+  const isInBrowser = isBrowser();
+  const appProps = useAppContext();
 
   const blockTxsQuery = useQueryWithPages({
     apiPath: `/node-api/blocks/${ router.query.id }/transactions`,
@@ -43,9 +49,18 @@ const BlockPageContent = () => {
   const isPaginatorHidden = !blockTxsQuery.isLoading && !blockTxsQuery.isError && blockTxsQuery.pagination.page === 1 && !blockTxsQuery.pagination.hasNextPage;
   const hasPagination = !isMobile && router.query.tab === 'txs' && !isPaginatorHidden;
 
+  const referrer = isInBrowser ? window.document.referrer : appProps.referrer;
+
   return (
     <Page>
-      <PageTitle text={ `Block #${ router.query.id }` }/>
+      <Flex alignItems="center" columnGap={ 3 }>
+        <Tooltip label="Back to blocks list">
+          <Link mb={ 6 } display="inline-flex" href={ referrer }>
+            <Icon as={ eastArrowIcon } boxSize={ 6 } transform="rotate(180deg)"/>
+          </Link>
+        </Tooltip>
+        <PageTitle text={ `Block #${ router.query.id }` }/>
+      </Flex>
       <RoutedTabs
         tabs={ tabs }
         tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
