@@ -10,11 +10,12 @@ type Props = {
   value: string;
   className?: string;
   tooltipLabel?: React.ReactNode;
+  url?: string;
 }
 
 const LARGEST_BREAKPOINT = '1240px';
 
-const StatsItem = ({ icon, title, value, className, tooltipLabel }: Props) => {
+const StatsItem = ({ icon, title, value, className, tooltipLabel, url }: Props) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const sxContainer = {} as any;
   sxContainer[`@media screen and (min-width: ${ breakpoints.lg }) and (max-width: ${ LARGEST_BREAKPOINT })`] = { flexDirection: 'column' };
@@ -38,6 +39,10 @@ const StatsItem = ({ icon, title, value, className, tooltipLabel }: Props) => {
       className={ className }
       color={ useColorModeValue('black', 'white') }
       position="relative"
+      { ...(url ? {
+        as: 'a',
+        href: url,
+      } : {}) }
     >
       <Icon as={ icon } boxSize={ 7 }/>
       <Flex
@@ -54,7 +59,9 @@ const StatsItem = ({ icon, title, value, className, tooltipLabel }: Props) => {
             <Box
               position="absolute"
               top={{ base: 'calc(50% - 12px)', lg: '10px', xl: 'calc(50% - 12px)' }}
-              right="10px">
+              right="10px"
+              cursor="pointer"
+            >
               <Icon
                 as={ infoIcon }
                 boxSize={ 6 }
