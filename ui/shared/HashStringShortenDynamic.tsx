@@ -22,9 +22,10 @@ const HEAD_MIN_LENGTH = 4;
 interface Props {
   hash: string;
   fontWeight?: string | number;
+  isTooltipDisabled?: boolean;
 }
 
-const HashStringShortenDynamic = ({ hash, fontWeight = '400' }: Props) => {
+const HashStringShortenDynamic = ({ hash, fontWeight = '400', isTooltipDisabled }: Props) => {
   const elementRef = useRef<HTMLSpanElement>(null);
   const [ displayedString, setDisplayedString ] = React.useState(hash);
 
@@ -90,7 +91,7 @@ const HashStringShortenDynamic = ({ hash, fontWeight = '400' }: Props) => {
 
   if (isTruncated) {
     return (
-      <Tooltip label={ hash }>{ content }</Tooltip>
+      <Tooltip label={ hash } isDisabled={ isTooltipDisabled }>{ content }</Tooltip>
     );
   }
 
