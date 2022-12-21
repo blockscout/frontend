@@ -54,7 +54,7 @@ const TxDetailsActions = ({ actions }: Props) => {
           w="100%"
           fontWeight={ 500 }
         >
-          { actions.map((action, index: number) => <TxDetailsAction key={ index } { ...action } isLast={ index === actions.length - 1 }/>) }
+          { actions.map((action, index: number) => <TxDetailsAction key={ index } action={ action } isLast={ index === actions.length - 1 }/>) }
         </Flex>
       </Box>
       { /* eslint-disable-next-line react/jsx-no-bind */ }

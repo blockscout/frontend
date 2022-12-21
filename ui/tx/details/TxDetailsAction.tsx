@@ -12,9 +12,12 @@ import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
 
 const uniswapIconUrl = 'https://raw.githubusercontent.com/trustwallet/assets/master/dapps/app.uniswap.org.png';
 
-type Props = TTxAction;
+interface Props {
+  action: TTxAction;
+  isLast: boolean;
+}
 
-function actionName(actionType: string) {
+function uniswapActionName(actionType: string) {
   switch (actionType) {
     case 'mint': return [ 'Add', 'Liquidity To' ];
     case 'burn': return [ 'Remove', 'Liquidity From' ];
@@ -24,7 +27,13 @@ function actionName(actionType: string) {
   }
 }
 
-const TxDetailsAction = ({ protocol, type, data, isLast }: Props) => {
+function unknownAction() {
+  return (<span>Unrecognized action</span>);
+}
+
+const TxDetailsAction = ({ action, isLast }: Props) => {
+  const { protocol, type, data } = action;
+
   if (protocol === 'uniswap_v3') {
     if ([ 'mint', 'burn', 'collect', 'swap' ].includes(type)) {
       const amount0 = BigNumber(data.amount0).toFormat();
@@ -33,7 +42,7 @@ const TxDetailsAction = ({ protocol, type, data, isLast }: Props) => {
       return (
         <Flex flexWrap="wrap" columnGap={ 1 } rowGap={ 2 } className={ isLast ? 'lastItem' : '' } marginBottom={ isLast ? 5 : 0 }>
           <Text color="gray.500" as="span">
-            { actionName(type)[0] }
+            { uniswapActionName(type)[0] }
           </Text>
 
           <Flex columnGap={ 1 }>
@@ -51,7 +60,7 @@ const TxDetailsAction = ({ protocol, type, data, isLast }: Props) => {
           </Flex>
 
           <Text color="gray.500" as="span">
-            { actionName(type)[1] }
+            { uniswapActionName(type)[1] }
           </Text>
 
           <Flex columnGap={ 1 }>
@@ -100,7 +109,11 @@ const TxDetailsAction = ({ protocol, type, data, isLast }: Props) => {
           </Flex>
         </Flex>
       );
+    } else {
+      return unknownAction();
     }
+  } else {
+    return unknownAction();
   }
 };
 

@@ -1,6 +1,6 @@
 export type TxAction = {
-  protocol: string;
-  type: string;
+  protocol: 'uniswap_v3';
+  type: 'mint' | 'burn' | 'collect' | 'swap' | 'mint_nft';
   data: {
     name: string;
     symbol: string;
@@ -14,5 +14,4 @@ export type TxAction = {
     symbol1: string;
     address1: string;
   };
-  isLast: boolean;
 }
