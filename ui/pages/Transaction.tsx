@@ -27,7 +27,7 @@ import TxTokenTransfer from 'ui/tx/TxTokenTransfer';
 const TABS: Array<RoutedTab> = [
   { id: 'index', title: 'Details', component: <TxDetails/> },
   { id: 'token_transfers', title: 'Token transfers', component: <TxTokenTransfer/> },
-  { id: 'internal', title: 'Internal txn', component: <TxInternals/> },
+  { id: 'internal', title: 'Internal txns', component: <TxInternals/> },
   { id: 'logs', title: 'Logs', component: <TxLogs/> },
   // will be implemented later, api is not ready
   // { id: 'state', title: 'State', component: <TxState/> },

@@ -1,9 +1,10 @@
-import { Tr, Td, Tag, Flex } from '@chakra-ui/react';
+import { Tr, Td, Tag, Flex, Text } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
+import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import AdditionalInfoButton from 'ui/shared/AdditionalInfoButton';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
@@ -16,9 +17,21 @@ import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
 type Props = TokenTransfer & {
   baseAddress?: string;
   showTxInfo?: boolean;
+  enableTimeIncrement?: boolean;
 }
 
-const TokenTransferTableItem = ({ token, total, tx_hash: txHash, from, to, baseAddress, showTxInfo, type }: Props) => {
+const TokenTransferTableItem = ({
+  token,
+  total,
+  tx_hash: txHash,
+  from,
+  to,
+  baseAddress,
+  showTxInfo,
+  type,
+  timestamp,
+  enableTimeIncrement,
+}: Props) => {
   const value = (() => {
     if (!('value' in total)) {
       return '-';
@@ -26,6 +39,8 @@ const TokenTransferTableItem = ({ token, total, tx_hash: txHash, from, to, baseA
 
     return BigNumber(total.value).div(BigNumber(10 ** Number(total.decimals))).dp(8).toFormat();
   })();
+
+  const timeAgo = useTimeAgoIncrement(timestamp, enableTimeIncrement);
 
   return (
     <Tr alignItems="top">
@@ -49,6 +64,7 @@ const TokenTransferTableItem = ({ token, total, tx_hash: txHash, from, to, baseA
           <Address display="inline-flex" maxW="100%" fontWeight={ 600 } lineHeight="30px">
             <AddressLink type="transaction" hash={ txHash }/>
           </Address>
+          { timestamp && <Text color="gray.500" fontWeight="400" mt="10px">{ timeAgo }</Text> }
         </Td>
       ) }
       <Td>

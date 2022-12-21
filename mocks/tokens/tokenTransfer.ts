@@ -37,6 +37,7 @@ export const erc20: TokenTransfer = {
   },
   tx_hash: '0x62d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3193',
   type: 'token_transfer',
+  timestamp: '2022-10-10T14:34:30.000000Z',
 };
 
 export const erc721: TokenTransfer = {
@@ -75,6 +76,7 @@ export const erc721: TokenTransfer = {
   },
   tx_hash: '0xf13bc7afe5e02b494dd2f22078381d36a4800ef94a0ccc147431db56c301e6cc',
   type: 'token_transfer',
+  timestamp: '2022-10-10T14:34:30.000000Z',
 };
 
 export const erc1155: TokenTransfer = {
@@ -115,6 +117,7 @@ export const erc1155: TokenTransfer = {
   },
   tx_hash: '0x05d6589367633c032d757a69c5fb16c0e33e3994b0d9d1483f82aeee1f05d746',
   type: 'token_minting',
+  timestamp: '2022-10-10T14:34:30.000000Z',
 };
 
 export const erc1155multiple: TokenTransfer = {

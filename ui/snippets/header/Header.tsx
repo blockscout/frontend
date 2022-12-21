@@ -2,6 +2,7 @@ import { HStack, Box, Flex, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import { useScrollDirection } from 'lib/contexts/scrollDirection';
+import IndexingAlert from 'ui/home/IndexingAlert';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import ProfileMenuDesktop from 'ui/snippets/profileMenu/ProfileMenuDesktop';
 import ProfileMenuMobile from 'ui/snippets/profileMenu/ProfileMenuMobile';
@@ -44,25 +45,29 @@ const Header = ({ hideOnScrollDown, isHomePage }: Props) => {
         </Flex>
         { !isHomePage && <SearchBar withShadow={ !hideOnScrollDown }/> }
       </Box>
-      { !isHomePage && (
-        <HStack
-          as="header"
-          width="100%"
-          alignItems="center"
-          justifyContent="center"
-          gap={ 12 }
-          display={{ base: 'none', lg: 'flex' }}
-          paddingX={ 12 }
-          paddingTop={ 9 }
-          paddingBottom="52px"
-        >
-          <Box width="100%">
-            <SearchBar/>
-          </Box>
-          <ColorModeToggler/>
-          <ProfileMenuDesktop/>
-        </HStack>
-      ) }
+      <Box
+        paddingX={ 12 }
+        paddingTop={ 9 }
+        display={{ base: 'none', lg: 'block' }}
+      >
+        <IndexingAlert/>
+        { !isHomePage && (
+          <HStack
+            as="header"
+            width="100%"
+            alignItems="center"
+            justifyContent="center"
+            gap={ 12 }
+            paddingBottom="52px"
+          >
+            <Box width="100%">
+              <SearchBar/>
+            </Box>
+            <ColorModeToggler/>
+            <ProfileMenuDesktop/>
+          </HStack>
+        ) }
+      </Box>
     </>
   );
 };
