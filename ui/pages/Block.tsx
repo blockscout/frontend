@@ -49,15 +49,18 @@ const BlockPageContent = () => {
   const hasPagination = !isMobile && router.query.tab === 'txs' && blockTxsQuery.isPaginationVisible;
 
   const referrer = isInBrowser ? window.document.referrer : appProps.referrer;
+  const hasGoBackLink = referrer && referrer.includes('/blocks');
 
   return (
     <Page>
       <Flex alignItems="center" columnGap={ 3 }>
-        <Tooltip label="Back to blocks list">
-          <Link mb={ 6 } display="inline-flex" href={ referrer }>
-            <Icon as={ eastArrowIcon } boxSize={ 6 } transform="rotate(180deg)"/>
-          </Link>
-        </Tooltip>
+        { hasGoBackLink && (
+          <Tooltip label="Back to blocks list">
+            <Link mb={ 6 } display="inline-flex" href={ referrer }>
+              <Icon as={ eastArrowIcon } boxSize={ 6 } transform="rotate(180deg)"/>
+            </Link>
+          </Tooltip>
+        ) }
         <PageTitle text={ `Block #${ router.query.id }` }/>
       </Flex>
       <RoutedTabs
