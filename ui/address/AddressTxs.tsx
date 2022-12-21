@@ -70,6 +70,7 @@ const AddressTxs = () => {
         query={ addressTxsQuery }
         showSocketInfo={ false }
         currentAddress={ typeof router.query.id === 'string' ? router.query.id : undefined }
+        enableTimeIncrement
       />
     </Element>
   );
