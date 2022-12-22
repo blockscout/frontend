@@ -52,34 +52,31 @@ const TransactionPageContent = () => {
       return <ExternalLink key={ explorer.baseUrl } title={ `Open in ${ explorer.title }` } href={ url.toString() }/>;
     });
 
+  const tag = data?.tx_tag ? <Tag my={ 2 }>{ data.tx_tag }</Tag> : undefined;
+
   return (
     <Page>
-      <Flex alignItems="flex-start" flexDir={{ base: 'column', lg: 'row' }}>
-        <Flex alignItems="center" columnGap={ 3 }>
-          { hasGoBackLink && (
-            <Tooltip label="Back to transactions list">
-              <Link display="inline-flex" href={ referrer } mb={ 6 }>
-                <Icon as={ eastArrowIcon } boxSize={ 6 } transform="rotate(180deg)"/>
-              </Link>
-            </Tooltip>
-          ) }
-          <PageTitle text="Transaction details"/>
+      <PageTitle
+        text="Transaction details"
+        additionals={ tag }
+        backLinkUrl={ hasGoBackLink ? referrer : undefined }
+        backLinkLabel="Back to transactions list"
+        withTextAd
+      />
+      { explorersLinks.length > 0 && (
+        <Flex
+          alignItems="center"
+          flexWrap="wrap"
+          columnGap={ 6 }
+          rowGap={ 3 }
+          ml={{ base: 'initial', lg: 'auto' }}
+          mb={ 6 }
+          py={ 2.5 }
+          mt="-16px"
+        >
+          { explorersLinks }
         </Flex>
-        { data?.tx_tag && <Tag my={ 2 } ml={ 3 }>{ data.tx_tag }</Tag> }
-        { explorersLinks.length > 0 && (
-          <Flex
-            alignItems="center"
-            flexWrap="wrap"
-            columnGap={ 6 }
-            rowGap={ 3 }
-            ml={{ base: 'initial', lg: 'auto' }}
-            mb={{ base: 6, lg: 'initial' }}
-            py={ 2.5 }
-          >
-            { explorersLinks }
-          </Flex>
-        ) }
-      </Flex>
+      ) }
       <RoutedTabs tabs={ TABS }/>
       <AdBanner mt={ 6 } justifyContent={{ base: 'center', lg: 'start' }}/>
     </Page>

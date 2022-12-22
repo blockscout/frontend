@@ -40,16 +40,15 @@ const AddressPageContent = () => {
     { id: 'blocks_validated', title: 'Blocks validated', component: <AddressBlocksValidated addressQuery={ addressQuery }/> },
   ];
 
+  const tagsNode = tags.length > 0 ? <Flex columnGap={ 2 }>{ tags }</Flex> : null;
+
   return (
     <Page>
-      <Flex alignItems="center" columnGap={ 3 }>
-        <PageTitle text={ `${ addressQuery.data?.is_contract ? 'Contract' : 'Address' } details` }/>
-        { tags.length > 0 && (
-          <Flex mb={ 6 } columnGap={ 2 }>
-            { tags }
-          </Flex>
-        ) }
-      </Flex>
+      <PageTitle
+        text={ `${ addressQuery.data?.is_contract ? 'Contract' : 'Address' } details` }
+        additionals={ tagsNode }
+        withTextAd
+      />
       <AddressDetails addressQuery={ addressQuery }/>
       <RoutedTabs tabs={ tabs } tabListProps={{ mt: 8 }}/>
     </Page>
