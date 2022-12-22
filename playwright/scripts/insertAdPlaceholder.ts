@@ -1,7 +1,7 @@
 import type { Page } from 'playwright-core';
 
 export default async function insertAdPlaceholder(page: Page) {
-  await page.waitForSelector('#adBanner');
+  await page.waitForSelector('#adBanner', { state: 'attached' });
   await page.evaluate(() => {
     const adContainer = document.getElementById('adBanner');
     const adReplacer = document.createElement('div');
