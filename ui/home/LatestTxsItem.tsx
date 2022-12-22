@@ -37,7 +37,7 @@ type Props = {
 }
 
 const LatestBlocksItem = ({ tx }: Props) => {
-  const borderColor = useColorModeValue('gray.200', 'whiteAlpha.200');
+  const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
   const iconColor = useColorModeValue('blue.600', 'blue.300');
 
   const dataTo = tx.to ? tx.to : tx.created_contract;

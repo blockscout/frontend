@@ -15,7 +15,7 @@ const LatestBlocksItemSkeleton = () => {
       minWidth={{ base: '100%', lg: '280px' }}
       borderRadius="12px"
       border="1px solid"
-      borderColor={ useColorModeValue('gray.200', 'whiteAlpha.200') }
+      borderColor={ useColorModeValue('blackAlpha.200', 'whiteAlpha.200') }
       p={ 6 }
     >
       <Flex justifyContent="space-between" alignItems="center" mb={ 3 }>

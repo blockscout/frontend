@@ -68,7 +68,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }
     </Address>
   );
 
-  const infoBorderColor = useColorModeValue('gray.200', 'whiteAlpha.200');
+  const infoBorderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
   return (
     <Tr>
       <Td pl={ 4 }>
