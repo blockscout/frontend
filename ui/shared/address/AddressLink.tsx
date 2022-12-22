@@ -2,6 +2,7 @@ import { Link, chakra, shouldForwardProp, Tooltip, Box } from '@chakra-ui/react'
 import type { HTMLAttributeAnchorTarget } from 'react';
 import React from 'react';
 
+import useIsMobile from 'lib/hooks/useIsMobile';
 import link from 'lib/link/link';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
@@ -18,6 +19,8 @@ interface Props {
 }
 
 const AddressLink = ({ alias, type, className, truncation = 'dynamic', hash, id, fontWeight, target = '_self' }: Props) => {
+  const isMobile = useIsMobile();
+
   let url;
   if (type === 'transaction') {
     url = link('tx', { id: id || hash });
@@ -34,16 +37,16 @@ const AddressLink = ({ alias, type, className, truncation = 'dynamic', hash, id,
   const content = (() => {
     if (alias) {
       return (
-        <Tooltip label={ hash }>
+        <Tooltip label={ hash } isDisabled={ isMobile }>
           <Box overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">{ alias }</Box>
         </Tooltip>
       );
     }
     switch (truncation) {
       case 'constant':
-        return <HashStringShorten hash={ id || hash }/>;
+        return <HashStringShorten hash={ id || hash } isTooltipDisabled={ isMobile }/>;
       case 'dynamic':
-        return <HashStringShortenDynamic hash={ id || hash } fontWeight={ fontWeight }/>;
+        return <HashStringShortenDynamic hash={ id || hash } fontWeight={ fontWeight } isTooltipDisabled={ isMobile }/>;
       case 'none':
         return <span>{ id || hash }</span>;
     }

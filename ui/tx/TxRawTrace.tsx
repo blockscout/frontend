@@ -46,6 +46,10 @@ const TxRawTrace = () => {
     );
   }
 
+  if (data.length === 0) {
+    return <span>There is no raw trace for this transaction.</span>;
+  }
+
   const text = JSON.stringify(data, undefined, 4);
 
   return (

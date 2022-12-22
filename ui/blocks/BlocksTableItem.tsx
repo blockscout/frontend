@@ -48,7 +48,7 @@ const BlocksTableItem = ({ data, isPending, enableTimeIncrement }: Props) => {
         </Flex>
         <BlockTimestamp ts={ data.timestamp } isEnabled={ enableTimeIncrement }/>
       </Td>
-      <Td fontSize="sm">{ data.size.toLocaleString('en') } bytes</Td>
+      <Td fontSize="sm">{ data.size.toLocaleString('en') }</Td>
       <Td fontSize="sm">
         <AddressLink alias={ data.miner.name } hash={ data.miner.hash } truncation="constant" display="inline-flex" maxW="100%"/>
       </Td>
@@ -60,7 +60,7 @@ const BlocksTableItem = ({ data, isPending, enableTimeIncrement }: Props) => {
           <GasUsedToTargetRatio ml={ 2 } value={ data.gas_target_percentage || undefined }/>
         </Flex>
       </Td>
-      <Td fontSize="sm">{ totalReward }</Td>
+      <Td fontSize="sm">{ totalReward.toFixed(8) }</Td>
       <Td fontSize="sm">
         <Flex alignItems="center" columnGap={ 1 }>
           <Icon as={ flameIcon } boxSize={ 5 } color={ useColorModeValue('gray.500', 'inherit') }/>
