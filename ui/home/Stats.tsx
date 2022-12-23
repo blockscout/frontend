@@ -12,6 +12,7 @@ import gasIcon from 'icons/gas.svg';
 import txIcon from 'icons/transactions.svg';
 import walletIcon from 'icons/wallet.svg';
 import useFetch from 'lib/hooks/useFetch';
+import link from 'lib/link/link';
 
 import StatsGasPrices from './StatsGasPrices';
 import StatsItem from './StatsItem';
@@ -45,13 +46,14 @@ const Stats = () => {
   const lastItemTouchStyle = { gridColumn: { base: 'span 2', lg: 'unset' } };
 
   if (data) {
-    const gasLabel = hasGasTracker ? <StatsGasPrices gasPrices={ data.gas_prices }/> : null;
+    const gasLabel = hasGasTracker && data.gas_prices ? <StatsGasPrices gasPrices={ data.gas_prices }/> : null;
     content = (
       <>
         <StatsItem
           icon={ blockIcon }
           title="Total blocks"
           value={ Number(data.total_blocks).toLocaleString() }
+          url={ link('blocks') }
         />
         { hasAvgBlockTime && (
           <StatsItem
@@ -64,6 +66,7 @@ const Stats = () => {
           icon={ txIcon }
           title="Total transactions"
           value={ Number(data.total_transactions).toLocaleString() }
+          url={ link('txs') }
         />
         <StatsItem
           icon={ walletIcon }
@@ -71,7 +74,7 @@ const Stats = () => {
           value={ Number(data.total_addresses).toLocaleString() }
           _last={ itemsCount % 2 ? lastItemTouchStyle : undefined }
         />
-        { hasGasTracker && (
+        { hasGasTracker && data.gas_prices && (
           <StatsItem
             icon={ gasIcon }
             title="Gas tracker"

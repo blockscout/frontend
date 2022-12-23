@@ -64,7 +64,7 @@ const BlocksListItem = ({ data, isPending, enableTimeIncrement }: Props) => {
       </Box>
       <Flex columnGap={ 2 }>
         <Text fontWeight={ 500 }>Reward { appConfig.network.currency.symbol }</Text>
-        <Text variant="secondary">{ totalReward }</Text>
+        <Text variant="secondary">{ totalReward.toFixed() }</Text>
       </Flex>
       <Box>
         <Text fontWeight={ 500 }>Burnt fees</Text>

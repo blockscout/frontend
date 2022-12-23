@@ -80,18 +80,20 @@ const TxsListItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }:
           </Flex>
           { tx.timestamp && <Text variant="secondary" fontWeight="400" fontSize="sm">{ timeAgo }</Text> }
         </Flex>
-        <Flex mt={ 3 }>
-          <Text as="span" whiteSpace="pre">Method </Text>
-          <Text
-            as="span"
-            variant="secondary"
-            overflow="hidden"
-            whiteSpace="nowrap"
-            textOverflow="ellipsis"
-          >
-            { tx.method }
-          </Text>
-        </Flex>
+        { tx.method && (
+          <Flex mt={ 3 }>
+            <Text as="span" whiteSpace="pre">Method </Text>
+            <Text
+              as="span"
+              variant="secondary"
+              overflow="hidden"
+              whiteSpace="nowrap"
+              textOverflow="ellipsis"
+            >
+              { tx.method }
+            </Text>
+          </Flex>
+        ) }
         { showBlockInfo && tx.block !== null && (
           <Box mt={ 2 }>
             <Text as="span">Block </Text>
