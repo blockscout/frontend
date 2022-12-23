@@ -36,7 +36,7 @@ const AddressBlocksValidatedTableItem = (props: Props) => {
         </Flex>
       </Td>
       <Td isNumeric display="flex" justifyContent="end">
-        { totalReward }
+        { totalReward.toFixed() }
       </Td>
     </Tr>
   );

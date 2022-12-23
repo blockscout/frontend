@@ -1,4 +1,4 @@
-import { InputGroup, Input, InputLeftAddon, InputLeftElement, Icon, chakra, useColorModeValue } from '@chakra-ui/react';
+import { InputGroup, Input, InputLeftElement, Icon, chakra, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 import type { ChangeEvent, FormEvent } from 'react';
 
@@ -18,15 +18,15 @@ const SearchBarDesktop = ({ onChange, onSubmit, isHomepage }: Props) => {
       display={{ base: 'none', lg: 'block' }}
       w="100%"
       backgroundColor={ isHomepage ? 'white' : 'none' }
-      borderRadius="10px"
+      borderRadius="base"
     >
       <InputGroup>
-        <InputLeftAddon w="111px">All filters</InputLeftAddon>
-        <InputLeftElement w={ 6 } ml="132px" mr={ 2.5 }>
+        <InputLeftElement w={ 6 } ml={ 4 }>
           <Icon as={ searchIcon } boxSize={ 6 } color={ useColorModeValue('blackAlpha.600', 'whiteAlpha.600') }/>
         </InputLeftElement>
         <Input
-          paddingInlineStart="50px"
+          // paddingInlineStart="50px"
+          pl="50px"
           placeholder="Search by addresses / transactions / block / token... "
           ml="1px"
           onChange={ onChange }
