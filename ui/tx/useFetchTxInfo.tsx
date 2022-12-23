@@ -8,6 +8,7 @@ import type { Transaction } from 'types/api/transaction';
 import { QueryKeys } from 'types/client/queries';
 
 import delay from 'lib/delay';
+import type { ErrorType } from 'lib/hooks/useFetch';
 import useFetch from 'lib/hooks/useFetch';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
@@ -17,7 +18,7 @@ interface Params {
   updateDelay?: number;
 }
 
-type ReturnType = UseQueryResult<Transaction, unknown> & {
+type ReturnType = UseQueryResult<Transaction, ErrorType<{ status: number }>> & {
   socketStatus: 'close' | 'error' | undefined;
 }
 
@@ -27,7 +28,7 @@ export default function useFetchTxInfo({ onTxStatusUpdate, updateDelay }: Params
   const queryClient = useQueryClient();
   const [ socketStatus, setSocketStatus ] = React.useState<'close' | 'error'>();
 
-  const queryResult = useQuery<unknown, unknown, Transaction>(
+  const queryResult = useQuery<unknown, ErrorType<{ status: number }>, Transaction>(
     [ QueryKeys.tx, router.query.id ],
     async() => await fetch(`/node-api/transactions/${ router.query.id }`),
     {
