@@ -9,6 +9,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/appContext';
 import isBrowser from 'lib/isBrowser';
 import networkExplorers from 'lib/networks/networkExplorers';
+import TextAd from 'ui/shared/ad/TextAd';
 import ExternalLink from 'ui/shared/ExternalLink';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -51,17 +52,9 @@ const TransactionPageContent = () => {
       return <ExternalLink key={ explorer.baseUrl } title={ `Open in ${ explorer.title }` } href={ url.toString() }/>;
     });
 
-  const tag = data?.tx_tag ? <Tag my={ 2 }>{ data.tx_tag }</Tag> : undefined;
-
-  return (
-    <Page>
-      <PageTitle
-        text="Transaction details"
-        additionals={ tag }
-        backLinkUrl={ hasGoBackLink ? referrer : undefined }
-        backLinkLabel="Back to transactions list"
-        withTextAd
-      />
+  const additionals = (
+    <Flex justifyContent="space-between" alignItems="center" flexGrow={ 1 }>
+      { data?.tx_tag && <Tag my={ 2 }>{ data.tx_tag }</Tag> }
       { explorersLinks.length > 0 && (
         <Flex
           alignItems="center"
@@ -69,13 +62,22 @@ const TransactionPageContent = () => {
           columnGap={ 6 }
           rowGap={ 3 }
           ml={{ base: 'initial', lg: 'auto' }}
-          mb={ 6 }
-          py={ 2.5 }
-          mt="-16px"
         >
           { explorersLinks }
         </Flex>
       ) }
+    </Flex>
+  );
+
+  return (
+    <Page>
+      <TextAd mb={ 6 }/>
+      <PageTitle
+        text="Transaction details"
+        additionals={ additionals }
+        backLinkUrl={ hasGoBackLink ? referrer : undefined }
+        backLinkLabel="Back to transactions list"
+      />
       <RoutedTabs tabs={ TABS }/>
     </Page>
   );

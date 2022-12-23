@@ -26,7 +26,7 @@ const PageTitle = ({ text, additionals, withTextAd, backLinkUrl, backLinkLabel, 
       justifyContent="space-between"
       className={ className }
     >
-      <Flex flexWrap="wrap" columnGap={ 3 } alignItems="center">
+      <Flex flexWrap="wrap" columnGap={ 3 } alignItems="center" width={ withTextAd ? 'unset' : '100%' }>
         { backLinkUrl && (
           <Tooltip label={ backLinkLabel }>
             <Link display="inline-flex" href={ backLinkUrl }>

@@ -11,6 +11,7 @@ import AddressDetails from 'ui/address/AddressDetails';
 import AddressInternalTxs from 'ui/address/AddressInternalTxs';
 import AddressTokenTransfers from 'ui/address/AddressTokenTransfers';
 import AddressTxs from 'ui/address/AddressTxs';
+import TextAd from 'ui/shared/ad/TextAd';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
@@ -44,10 +45,10 @@ const AddressPageContent = () => {
 
   return (
     <Page>
+      <TextAd mb={ 6 }/>
       <PageTitle
         text={ `${ addressQuery.data?.is_contract ? 'Contract' : 'Address' } details` }
         additionals={ tagsNode }
-        withTextAd
       />
       <AddressDetails addressQuery={ addressQuery }/>
       <RoutedTabs tabs={ tabs } tabListProps={{ mt: 8 }}/>

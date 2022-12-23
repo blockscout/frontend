@@ -8,6 +8,7 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import isBrowser from 'lib/isBrowser';
 import BlockDetails from 'ui/block/BlockDetails';
+import TextAd from 'ui/shared/ad/TextAd';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/Pagination';
@@ -50,11 +51,11 @@ const BlockPageContent = () => {
 
   return (
     <Page>
+      <TextAd mb={ 6 }/>
       <PageTitle
         text={ `Block #${ router.query.id }` }
         backLinkUrl={ hasGoBackLink ? referrer : undefined }
         backLinkLabel="Back to blocks list"
-        withTextAd
       />
       <RoutedTabs
         tabs={ tabs }
