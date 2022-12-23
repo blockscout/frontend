@@ -53,7 +53,7 @@ const TxInternalsListItem = ({
       </HStack>
       <Box w="100%" display="flex" columnGap={ 3 }>
         <Address width="calc((100% - 48px) / 2)">
-          <AddressIcon hash={ from.hash }/>
+          <AddressIcon address={ from }/>
           <AddressLink ml={ 2 } fontWeight="500" hash={ from.hash }/>
         </Address>
         { (isIn || isOut) ?
@@ -61,7 +61,7 @@ const TxInternalsListItem = ({
           <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500"/>
         }
         <Address width="calc((100% - 48px) / 2)">
-          <AddressIcon hash={ toData.hash }/>
+          <AddressIcon address={ toData }/>
           <AddressLink ml={ 2 } fontWeight="500" hash={ toData.hash }/>
         </Address>
       </Box>

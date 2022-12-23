@@ -102,7 +102,7 @@ const TxsListItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }:
         ) }
         <Flex alignItems="center" height={ 6 } mt={ 6 }>
           <Address width={ `calc((100%-${ currentAddress ? TAG_WIDTH : ARROW_WIDTH + 8 }px)/2)` }>
-            <AddressIcon hash={ tx.from.hash }/>
+            <AddressIcon address={ tx.from }/>
             <AddressLink
               hash={ tx.from.hash }
               alias={ tx.from.name }
@@ -120,7 +120,7 @@ const TxsListItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }:
               />
             ) }
           <Address width="calc((100%-40px)/2)">
-            <AddressIcon hash={ dataTo.hash }/>
+            <AddressIcon address={ dataTo }/>
             <AddressLink
               hash={ dataTo.hash }
               alias={ dataTo.name }

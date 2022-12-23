@@ -16,7 +16,7 @@ const WatchListAddressItem = ({ item }: {item: TWatchlistItem}) => {
 
   return (
     <VStack spacing={ 2 } align="stretch" fontWeight={ 500 }>
-      <AddressSnippet address={ item.address_hash }/>
+      <AddressSnippet address={ item.address }/>
       <Flex fontSize="sm" h={ 6 } pl={ infoItemsPaddingLeft } flexWrap="wrap" alignItems="center" rowGap={ 1 }>
         { appConfig.network.currency.address && (
           <TokenLogo

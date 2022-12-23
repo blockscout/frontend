@@ -25,7 +25,7 @@ const AddressTagListItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   return (
     <ListItemMobile>
       <Flex alignItems="flex-start" flexDirection="column" maxW="100%">
-        <AddressSnippet address={ item.address_hash }/>
+        <AddressSnippet address={ item.address }/>
         <HStack spacing={ 3 } mt={ 4 }>
           <Text fontSize="sm" fontWeight={ 500 }>Private tag</Text>
           <Tag>

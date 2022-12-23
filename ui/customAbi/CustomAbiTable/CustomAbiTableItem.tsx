@@ -28,7 +28,7 @@ const CustomAbiTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   return (
     <Tr alignItems="top" key={ item.id }>
       <Td>
-        <AddressSnippet address={ item.contract_address_hash } subtitle={ item.name } isContract/>
+        <AddressSnippet address={ item.contract_address } subtitle={ item.name }/>
       </Td>
       <Td>
         <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>

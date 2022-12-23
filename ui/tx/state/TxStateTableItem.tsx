@@ -18,7 +18,7 @@ import React, { useRef } from 'react';
 import type { TTxStateItem } from 'data/txState';
 import { nbsp } from 'lib/html-entities';
 import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
+// import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 
 import TxStateStorageItem from './TxStateStorageItem';
@@ -58,7 +58,8 @@ const TxStateTableItem = ({ txStateItem }: { txStateItem: TTxStateItem }) => {
             </Td>
             <Td border={ 0 }>
               <Address height="30px">
-                <AddressIcon hash={ txStateItem.address }/>
+                { /* ??? */ }
+                { /* <AddressIcon hash={ txStateItem.address }/> */ }
                 <AddressLink hash={ txStateItem.address } fontWeight="500" truncation="constant" ml={ 2 }/>
               </Address>
             </Td>
