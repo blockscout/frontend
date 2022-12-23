@@ -14,12 +14,12 @@ import useSocketMessage from 'lib/socket/useSocketMessage';
 import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Pagination from 'ui/shared/Pagination';
-import SkeletonTable from 'ui/shared/SkeletonTable';
+import SkeletonList from 'ui/shared/skeletons/SkeletonList';
+import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 import SocketAlert from 'ui/shared/SocketAlert';
 import { default as Thead } from 'ui/shared/TheadSticky';
 
 import AddressBlocksValidatedListItem from './blocksValidated/AddressBlocksValidatedListItem';
-import AddressBlocksValidatedSkeletonMobile from './blocksValidated/AddressBlocksValidatedSkeletonMobile';
 import AddressBlocksValidatedTableItem from './blocksValidated/AddressBlocksValidatedTableItem';
 
 interface Props {
@@ -79,7 +79,7 @@ const AddressBlocksValidated = ({ addressQuery }: Props) => {
             <SkeletonTable columns={ [ '17%', '17%', '16%', '25%', '25%' ] }/>
           </Hide>
           <Show below="lg">
-            <AddressBlocksValidatedSkeletonMobile/>
+            <SkeletonList/>
           </Show>
         </>
       );

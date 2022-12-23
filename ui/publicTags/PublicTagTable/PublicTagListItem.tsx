@@ -3,8 +3,8 @@ import React, { useCallback } from 'react';
 
 import type { PublicTag } from 'types/api/account';
 
-import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import AddressSnippet from 'ui/shared/AddressSnippet';
+import ListItemMobile from 'ui/shared/ListItemMobile';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
@@ -24,7 +24,7 @@ const PublicTagListItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   }, [ item, onDeleteClick ]);
 
   return (
-    <AccountListItemMobile>
+    <ListItemMobile>
       <VStack spacing={ 3 } alignItems="flex-start" maxW="100%">
         <VStack spacing={ 4 } alignItems="unset" maxW="100%">
           { item.addresses.map((address) => <AddressSnippet key={ address } address={ address }/>) }
@@ -49,7 +49,7 @@ const PublicTagListItem = ({ item, onEditClick, onDeleteClick }: Props) => {
         </HStack>
       </VStack>
       <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
-    </AccountListItemMobile>
+    </ListItemMobile>
   );
 };
 

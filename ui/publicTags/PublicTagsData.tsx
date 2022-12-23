@@ -10,8 +10,8 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import PublicTagListItem from 'ui/publicTags/PublicTagTable/PublicTagListItem';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import SkeletonAccountMobile from 'ui/shared/SkeletonAccountMobile';
-import SkeletonTable from 'ui/shared/SkeletonTable';
+import SkeletonListAccount from 'ui/shared/skeletons/SkeletonListAccount';
+import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 
 import DeletePublicTagModal from './DeletePublicTagModal';
 import PublicTagTable from './PublicTagTable/PublicTagTable';
@@ -58,7 +58,7 @@ const PublicTagsData = ({ changeToFormScreen, onTagDelete }: Props) => {
   );
 
   if (isLoading) {
-    const loader = isMobile ? <SkeletonAccountMobile/> : (
+    const loader = isMobile ? <SkeletonListAccount/> : (
       <>
         <SkeletonTable columns={ [ '50%', '25%', '25%', '108px' ] }/>
         <Skeleton height="48px" width="270px" marginTop={ 8 }/>

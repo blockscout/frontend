@@ -17,11 +17,11 @@ import EmptySearchResult from 'ui/apps/EmptySearchResult';
 import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Pagination from 'ui/shared/Pagination';
-import SkeletonTable from 'ui/shared/SkeletonTable';
+import SkeletonList from 'ui/shared/skeletons/SkeletonList';
+import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 import { flattenTotal } from 'ui/shared/TokenTransfer/helpers';
 import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
 import TokenTransferList from 'ui/shared/TokenTransfer/TokenTransferList';
-import TokenTransferSkeletonMobile from 'ui/shared/TokenTransfer/TokenTransferSkeletonMobile';
 import TokenTransferTable from 'ui/shared/TokenTransfer/TokenTransferTable';
 
 import { TOKEN_TYPE } from './helpers';
@@ -95,7 +95,7 @@ const TokenTransfer = ({
             />
           </Hide>
           <Show below="lg">
-            <TokenTransferSkeletonMobile showTxInfo={ showTxInfo }/>
+            <SkeletonList/>
           </Show>
         </>
       );

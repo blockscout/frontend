@@ -5,18 +5,17 @@ import React from 'react';
 interface Props {
   children: React.ReactNode;
   className?: string;
-  key?: string;
+  isAnimated?: boolean;
 }
 
-const AccountListItemMobile = ({ children, className, key }: Props) => {
+const ListItemMobile = ({ children, className, isAnimated }: Props) => {
   return (
     <Flex
       as={ motion.div }
-      initial={{ opacity: 0, scale: 0.97 }}
+      initial={ isAnimated ? { opacity: 0, scale: 0.97 } : { opacity: 1, scale: 1 } }
       animate={{ opacity: 1, scale: 1 }}
       transitionDuration="normal"
       transitionTimingFunction="linear"
-      key={ key }
       rowGap={ 6 }
       alignItems="flex-start"
       flexDirection="column"
@@ -33,4 +32,4 @@ const AccountListItemMobile = ({ children, className, key }: Props) => {
   );
 };
 
-export default chakra(AccountListItemMobile);
+export default chakra(ListItemMobile);
