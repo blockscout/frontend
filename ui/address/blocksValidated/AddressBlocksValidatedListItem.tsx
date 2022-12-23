@@ -37,7 +37,7 @@ const AddressBlocksValidatedListItem = (props: Props) => {
       </Flex>
       <Flex columnGap={ 2 } w="100%">
         <Text fontWeight={ 500 } flexShrink={ 0 }>Reward { appConfig.network.currency.symbol }</Text>
-        <Text variant="secondary">{ totalReward }</Text>
+        <Text variant="secondary">{ totalReward.toFixed() }</Text>
       </Flex>
     </ListItemMobile>
   );

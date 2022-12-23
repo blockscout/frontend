@@ -1,17 +1,15 @@
 import React from 'react';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
 import Pagination from 'ui/shared/Pagination';
 
 interface Props {
   pagination: PaginationProps;
+  isPaginationVisible: boolean;
 }
 
-const TxsTabSlot = ({ pagination }: Props) => {
-  const isMobile = useIsMobile();
-
-  if (isMobile) {
+const TxsTabSlot = ({ pagination, isPaginationVisible }: Props) => {
+  if (!isPaginationVisible) {
     return null;
   }
 

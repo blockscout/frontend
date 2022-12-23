@@ -35,15 +35,13 @@ const AddressInternalTxs = () => {
   const queryIdArray = castArray(queryId);
   const queryIdStr = queryIdArray[0];
 
-  const { data, isLoading, isError, pagination, onFilterChange } = useQueryWithPages({
+  const { data, isLoading, isError, pagination, onFilterChange, isPaginationVisible } = useQueryWithPages({
     apiPath: `/node-api/addresses/${ queryId }/internal-transactions`,
     queryName: QueryKeys.addressInternalTxs,
     queryIds: queryIdArray,
     filters: { filter: filterValue },
     scroll: { elem: SCROLL_ELEM, offset: SCROLL_OFFSET },
   });
-
-  const isPaginatorHidden = !isLoading && !isError && pagination.page === 1 && !pagination.hasNextPage;
 
   const handleFilterChange = React.useCallback((val: string | Array<string>) => {
 
@@ -94,7 +92,7 @@ const AddressInternalTxs = () => {
           onFilterChange={ handleFilterChange }
           isActive={ Boolean(filterValue) }
         />
-        { !isPaginatorHidden && <Pagination ml="auto" { ...pagination }/> }
+        { isPaginationVisible && <Pagination ml="auto" { ...pagination }/> }
       </ActionBar>
       { content }
     </Element>

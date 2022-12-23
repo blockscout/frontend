@@ -21,7 +21,7 @@ import React from 'react';
 import type { Transaction } from 'types/api/transaction';
 
 import rightArrowIcon from 'icons/arrows/east.svg';
-import dayjs from 'lib/date/dayjs';
+import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import link from 'lib/link/link';
 import AdditionalInfoButton from 'ui/shared/AdditionalInfoButton';
 import Address from 'ui/shared/address/Address';
@@ -39,11 +39,14 @@ type Props = {
   tx: Transaction;
   showBlockInfo: boolean;
   currentAddress?: string;
+  enableTimeIncrement?: boolean;
 }
 
-const TxsTableItem = ({ tx, showBlockInfo, currentAddress }: Props) => {
+const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }: Props) => {
   const isOut = Boolean(currentAddress && currentAddress === tx.from.hash);
   const isIn = Boolean(currentAddress && currentAddress === tx.to?.hash);
+
+  const timeAgo = useTimeAgoIncrement(tx.timestamp, enableTimeIncrement);
 
   const addressFrom = (
     <Address>
@@ -93,7 +96,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress }: Props) => {
               fontWeight="700"
             />
           </Address>
-          <Text color="gray.500" fontWeight="400">{ dayjs(tx.timestamp).fromNow() }</Text>
+          { tx.timestamp && <Text color="gray.500" fontWeight="400">{ timeAgo }</Text> }
         </VStack>
       </Td>
       <Td>
@@ -150,7 +153,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress }: Props) => {
         </Td>
       </Hide>
       <Td isNumeric>
-        <CurrencyValue value={ tx.value }/>
+        <CurrencyValue value={ tx.value } accuracy={ 8 }/>
       </Td>
       <Td isNumeric>
         <CurrencyValue value={ tx.fee.value } accuracy={ 8 }/>

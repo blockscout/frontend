@@ -1,10 +1,12 @@
-import { Text, Flex, Tag, Icon } from '@chakra-ui/react';
+import { Text, Flex, Tag, Icon, useColorModeValue } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import eastArrowIcon from 'icons/arrows/east.svg';
+import transactionIcon from 'icons/transactions.svg';
+import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import AdditionalInfoButton from 'ui/shared/AdditionalInfoButton';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
@@ -18,9 +20,21 @@ import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
 type Props = TokenTransfer & {
   baseAddress?: string;
   showTxInfo?: boolean;
+  enableTimeIncrement?: boolean;
 }
 
-const TokenTransferListItem = ({ token, total, tx_hash: txHash, from, to, baseAddress, showTxInfo, type }: Props) => {
+const TokenTransferListItem = ({
+  token,
+  total,
+  tx_hash: txHash,
+  from,
+  to,
+  baseAddress,
+  showTxInfo,
+  type,
+  timestamp,
+  enableTimeIncrement,
+}: Props) => {
   const value = (() => {
     if (!('value' in total)) {
       return null;
@@ -28,6 +42,10 @@ const TokenTransferListItem = ({ token, total, tx_hash: txHash, from, to, baseAd
 
     return BigNumber(total.value).div(BigNumber(10 ** Number(total.decimals))).dp(8).toFormat();
   })();
+
+  const iconColor = useColorModeValue('blue.600', 'blue.300');
+
+  const timeAgo = useTimeAgoIncrement(timestamp, enableTimeIncrement);
 
   const addressWidth = `calc((100% - ${ baseAddress ? '50px' : '0px' }) / 2)`;
   return (
@@ -40,11 +58,24 @@ const TokenTransferListItem = ({ token, total, tx_hash: txHash, from, to, baseAd
       </Flex>
       { 'token_id' in total && <TokenTransferNft hash={ token.address } id={ total.token_id }/> }
       { showTxInfo && (
-        <Flex columnGap={ 2 } w="100%">
-          <Text fontWeight={ 500 } flexShrink={ 0 }>Txn hash</Text>
-          <Address display="inline-flex" maxW="100%">
-            <AddressLink type="transaction" hash={ txHash }/>
-          </Address>
+        <Flex justifyContent="space-between" alignItems="center" lineHeight="24px" width="100%">
+          <Flex>
+            <Icon
+              as={ transactionIcon }
+              boxSize="30px"
+              mr={ 2 }
+              color={ iconColor }
+            />
+            <Address width="100%">
+              <AddressLink
+                hash={ txHash }
+                type="transaction"
+                fontWeight="700"
+                truncation="constant"
+              />
+            </Address>
+          </Flex>
+          { timestamp && <Text variant="secondary" fontWeight="400" fontSize="sm">{ timeAgo }</Text> }
         </Flex>
       ) }
       <Flex w="100%" columnGap={ 3 }>

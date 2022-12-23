@@ -3,11 +3,12 @@ import React from 'react';
 
 interface Props {
   hash: string;
+  isTooltipDisabled?: boolean;
 }
 
-const HashStringShorten = ({ hash }: Props) => {
+const HashStringShorten = ({ hash, isTooltipDisabled }: Props) => {
   return (
-    <Tooltip label={ hash }>
+    <Tooltip label={ hash } isDisabled={ isTooltipDisabled }>
       { hash.slice(0, 4) + '...' + hash.slice(-4) }
     </Tooltip>
   );

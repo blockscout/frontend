@@ -13,9 +13,10 @@ import Pagination from 'ui/shared/Pagination';
 
 interface Props {
   pagination: PaginationProps;
+  isPaginationVisible: boolean;
 }
 
-const BlocksTabSlot = ({ pagination }: Props) => {
+const BlocksTabSlot = ({ pagination, isPaginationVisible }: Props) => {
   const isMobile = useIsMobile();
   const fetch = useFetch();
 
@@ -41,7 +42,7 @@ const BlocksTabSlot = ({ pagination }: Props) => {
           </Text>
         </Box>
       ) }
-      <Pagination my={ 1 } { ...pagination }/>
+      { isPaginationVisible && <Pagination my={ 1 } { ...pagination }/> }
     </Flex>
   );
 };

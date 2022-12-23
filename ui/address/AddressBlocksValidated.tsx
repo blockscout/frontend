@@ -122,11 +122,9 @@ const AddressBlocksValidated = ({ addressQuery }: Props) => {
     );
   })();
 
-  const isPaginatorHidden = !query.isLoading && !query.isError && query.pagination.page === 1 && !query.pagination.hasNextPage;
-
   return (
     <Box>
-      { !isPaginatorHidden && (
+      { query.isPaginationVisible && (
         <ActionBar mt={ -6 }>
           <Pagination ml="auto" { ...query.pagination }/>
         </ActionBar>

@@ -17,8 +17,8 @@ import type { Transaction } from 'types/api/transaction';
 import appConfig from 'configs/app/config';
 import rightArrowIcon from 'icons/arrows/east.svg';
 import transactionIcon from 'icons/transactions.svg';
-import dayjs from 'lib/date/dayjs';
 import getValueWithUnit from 'lib/getValueWithUnit';
+import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import link from 'lib/link/link';
 import AdditionalInfoButton from 'ui/shared/AdditionalInfoButton';
 import Address from 'ui/shared/address/Address';
@@ -33,12 +33,13 @@ type Props = {
   tx: Transaction;
   showBlockInfo: boolean;
   currentAddress?: string;
+  enableTimeIncrement?: boolean;
 }
 
 const TAG_WIDTH = 48;
 const ARROW_WIDTH = 24;
 
-const TxsListItem = ({ tx, showBlockInfo, currentAddress }: Props) => {
+const TxsListItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const iconColor = useColorModeValue('blue.600', 'blue.300');
@@ -47,6 +48,8 @@ const TxsListItem = ({ tx, showBlockInfo, currentAddress }: Props) => {
 
   const isOut = Boolean(currentAddress && currentAddress === tx.from.hash);
   const isIn = Boolean(currentAddress && currentAddress === tx.to?.hash);
+
+  const timeAgo = useTimeAgoIncrement(tx.timestamp, enableTimeIncrement);
 
   return (
     <>
@@ -58,7 +61,7 @@ const TxsListItem = ({ tx, showBlockInfo, currentAddress }: Props) => {
           </HStack>
           <AdditionalInfoButton onClick={ onOpen }/>
         </Flex>
-        <Flex justifyContent="space-between" lineHeight="24px" mt={ 3 }>
+        <Flex justifyContent="space-between" lineHeight="24px" mt={ 3 } alignItems="center">
           <Flex>
             <Icon
               as={ transactionIcon }
@@ -75,20 +78,22 @@ const TxsListItem = ({ tx, showBlockInfo, currentAddress }: Props) => {
               />
             </Address>
           </Flex>
-          <Text variant="secondary" fontWeight="400" fontSize="sm">{ dayjs(tx.timestamp).fromNow() }</Text>
+          { tx.timestamp && <Text variant="secondary" fontWeight="400" fontSize="sm">{ timeAgo }</Text> }
         </Flex>
-        <Flex mt={ 3 }>
-          <Text as="span" whiteSpace="pre">Method </Text>
-          <Text
-            as="span"
-            variant="secondary"
-            overflow="hidden"
-            whiteSpace="nowrap"
-            textOverflow="ellipsis"
-          >
-            { tx.method }
-          </Text>
-        </Flex>
+        { tx.method && (
+          <Flex mt={ 3 }>
+            <Text as="span" whiteSpace="pre">Method </Text>
+            <Text
+              as="span"
+              variant="secondary"
+              overflow="hidden"
+              whiteSpace="nowrap"
+              textOverflow="ellipsis"
+            >
+              { tx.method }
+            </Text>
+          </Flex>
+        ) }
         { showBlockInfo && tx.block !== null && (
           <Box mt={ 2 }>
             <Text as="span">Block </Text>
