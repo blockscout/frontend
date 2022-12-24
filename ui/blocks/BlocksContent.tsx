@@ -21,6 +21,7 @@ import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 
 type QueryResult = UseQueryResult<BlocksResponse> & {
   pagination: PaginationProps;
+  isPaginationVisible: boolean;
 };
 
 interface Props {
@@ -110,11 +111,9 @@ const BlocksContent = ({ type, query }: Props) => {
 
   })();
 
-  const isPaginatorHidden = !query.isLoading && !query.isError && query.pagination.page === 1 && !query.pagination.hasNextPage;
-
   return (
     <>
-      { isMobile && !isPaginatorHidden && (
+      { isMobile && query.isPaginationVisible && (
         <ActionBar mt={ -6 }>
           <Pagination ml="auto" { ...query.pagination }/>
         </ActionBar>

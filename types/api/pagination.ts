@@ -32,6 +32,17 @@ export type PaginatedQueryKeys =
   QueryKeys.addressCoinBalanceHistory |
   QueryKeys.addressBlocksValidated;
 
+export type PaginatedResources = 'blocks' | 'block_txs';
+
+export type PaginatedResponseX<Q extends PaginatedResources> =
+  Q extends 'blocks' ? BlocksResponse :
+    Q extends 'block_txs' ? BlockTransactionsResponse :
+      never;
+
+export type PaginationFiltersX<Q extends PaginatedResources> =
+  Q extends 'blocks' ? BlockFilters :
+    never;
+
 export type PaginatedResponse<Q extends PaginatedQueryKeys> =
 Q extends QueryKeys.addressInternalTxs ? AddressInternalTxsResponse :
   Q extends QueryKeys.addressTxs ? AddressTransactionsResponse :

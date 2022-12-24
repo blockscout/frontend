@@ -1,3 +1,5 @@
+import type ArrayElement from 'types/utils/ArrayElement';
+
 import appConfig from 'configs/app/config';
 
 export interface ApiResource {
@@ -7,7 +9,7 @@ export interface ApiResource {
 }
 
 export const RESOURCES = {
-  // account
+  // ACCOUNT
   user_info: {
     path: '/api/account/v1/user/info',
   },
@@ -42,11 +44,33 @@ export const RESOURCES = {
     basePath: appConfig.statsApi.basePath,
   },
 
+  // BLOCKS, TXS
+  blocks: {
+    path: '/api/v2/blocks',
+    paginationFields: [ 'block_number' as const, 'items_count' as const ],
+    filterFields: [ 'type' as const ],
+  },
+  block_txs: {
+    path: '/api/v2/blocks/:id/transactions',
+    paginationFields: [ 'block_number' as const, 'items_count' as const, 'index' as const ],
+    filterFields: [],
+  },
+
   // DEPRECATED
   old_api: {
     path: '/api',
   },
 };
+
+export type ResourceName = keyof typeof RESOURCES;
+
+export type ResourceFiltersKey<R extends ResourceName> = typeof RESOURCES[R] extends {filterFields: Array<unknown>} ?
+  ArrayElement<typeof RESOURCES[R]['filterFields']> :
+  never;
+
+export type ResourcePaginationKey<R extends ResourceName> = typeof RESOURCES[R] extends {paginationFields: Array<unknown>} ?
+  ArrayElement<typeof RESOURCES[R]['paginationFields']> :
+  never;
 
 export const resourceKey = (x: keyof typeof RESOURCES) => x;
 

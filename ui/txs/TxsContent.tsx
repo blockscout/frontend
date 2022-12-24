@@ -18,6 +18,7 @@ import useTxsSort from './useTxsSort';
 
 type QueryResult = UseQueryResult<TxsResponse> & {
   pagination: PaginationProps;
+  isPaginationVisible: boolean;
 };
 
 type Props = {
@@ -31,7 +32,6 @@ type Props = {
 
 const TxsContent = ({ filter, query, showBlockInfo = true, showSocketInfo = true, currentAddress, enableTimeIncrement }: Props) => {
   const { data, isLoading, isError, setSortByField, setSortByValue, sorting } = useTxsSort(query);
-  const isPaginatorHidden = !isLoading && !isError && query.pagination.page === 1 && !query.pagination.hasNextPage;
   const isMobile = useIsMobile();
 
   const content = (() => {
@@ -86,7 +86,7 @@ const TxsContent = ({ filter, query, showBlockInfo = true, showSocketInfo = true
             sorting={ sorting }
             showBlockInfo={ showBlockInfo }
             showSocketInfo={ showSocketInfo }
-            top={ isPaginatorHidden ? 0 : 80 }
+            top={ query.isPaginationVisible ? 80 : 0 }
             currentAddress={ currentAddress }
             enableTimeIncrement={ enableTimeIncrement }
           />
@@ -103,7 +103,7 @@ const TxsContent = ({ filter, query, showBlockInfo = true, showSocketInfo = true
           sorting={ sorting }
           setSorting={ setSortByValue }
           paginationProps={ query.pagination }
-          showPagination={ !isPaginatorHidden }
+          showPagination={ query.isPaginationVisible }
           filterComponent={ filter }
         />
       ) }

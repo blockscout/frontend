@@ -2,7 +2,6 @@ import { Flex, Icon, Link, Tooltip } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { QueryKeys } from 'types/client/queries';
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
 import eastArrowIcon from 'icons/arrows/east.svg';
@@ -30,8 +29,7 @@ const BlockPageContent = () => {
   const appProps = useAppContext();
 
   const blockTxsQuery = useQueryWithPages({
-    apiPath: `/node-api/blocks/${ router.query.id }/transactions`,
-    queryName: QueryKeys.blockTxs,
+    resourceName: 'block_txs',
     options: {
       enabled: Boolean(router.query.id && router.query.tab === 'txs'),
     },
