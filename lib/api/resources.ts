@@ -55,6 +55,58 @@ export const RESOURCES = {
     paginationFields: [ 'block_number' as const, 'items_count' as const, 'index' as const ],
     filterFields: [],
   },
+  txs_validated: {
+    path: '/api/v2/transactions',
+    paginationFields: [ 'block_number' as const, 'items_count' as const, 'filter' as const, 'index' as const ],
+    filterFields: [ 'filter' as const, 'type' as const, 'method' as const ],
+  },
+  txs_pending: {
+    path: '/api/v2/transactions',
+    paginationFields: [ 'filter' as const, 'hash' as const, 'inserted_at' as const ],
+    filterFields: [ 'filter' as const, 'type' as const, 'method' as const ],
+  },
+  tx_internal_txs: {
+    path: '/api/v2/transactions/:id/internal-transactions',
+    paginationFields: [ 'block_number' as const, 'items_count' as const, 'transaction_hash' as const, 'index' as const, 'transaction_index' as const ],
+    filterFields: [ ],
+  },
+  tx_logs: {
+    path: '/api/v2/transactions/:id/logs',
+    paginationFields: [ 'items_count' as const, 'transaction_hash' as const, 'index' as const ],
+    filterFields: [ ],
+  },
+  tx_token_transfers: {
+    path: '/api/v2/transactions/:id/token-transfers',
+    paginationFields: [ 'block_number' as const, 'items_count' as const, 'transaction_hash' as const, 'index' as const ],
+    filterFields: [ 'type' as const ],
+  },
+
+  // ADDRESS
+  address_txs: {
+    path: '/api/v2/addresses/:id/transactions',
+    paginationFields: [ 'block_number' as const, 'items_count' as const, 'index' as const ],
+    filterFields: [ 'filter' as const ],
+  },
+  address_internal_txs: {
+    path: '/api/v2/addresses/:id/internal-transactions',
+    paginationFields: [ 'block_number' as const, 'items_count' as const, 'index' as const, 'transaction_index' as const ],
+    filterFields: [ 'filter' as const ],
+  },
+  address_token_transfers: {
+    path: '/api/v2/addresses/:id/token-transfers',
+    paginationFields: [ 'block_number' as const, 'items_count' as const, 'index' as const, 'transaction_index' as const ],
+    filterFields: [ 'filter' as const, 'type' as const ],
+  },
+  address_blocks_validated: {
+    path: '/api/v2/addresses/:id/blocks-validated',
+    paginationFields: [ 'items_count' as const, 'block_number' as const ],
+    filterFields: [ ],
+  },
+  address_coin_balance: {
+    path: '/api/v2/addresses/:id/coin-balance-history',
+    paginationFields: [ 'items_count' as const, 'block_number' as const ],
+    filterFields: [ ],
+  },
 
   // DEPRECATED
   old_api: {

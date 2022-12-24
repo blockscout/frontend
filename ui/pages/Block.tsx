@@ -30,6 +30,7 @@ const BlockPageContent = () => {
 
   const blockTxsQuery = useQueryWithPages({
     resourceName: 'block_txs',
+    pathParams: { id: router.query.id?.toString() },
     options: {
       enabled: Boolean(router.query.id && router.query.tab === 'txs'),
     },

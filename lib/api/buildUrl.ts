@@ -6,7 +6,7 @@ import type { ApiResource } from './resources';
 
 export default function buildUrl(
   resource: ApiResource,
-  pathParams?: Record<string, string>,
+  pathParams?: Record<string, string | undefined>,
   queryParams?: Record<string, string | number | undefined>,
 ) {
   // FIXME

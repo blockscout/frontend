@@ -5,8 +5,8 @@ import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
 import type { BlockType, BlocksResponse } from 'types/api/block';
-import { QueryKeys } from 'types/client/queries';
 
+import { getResourceKey } from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
@@ -35,18 +35,9 @@ const BlocksContent = ({ type, query }: Props) => {
   const [ socketAlert, setSocketAlert ] = React.useState('');
 
   const handleNewBlockMessage: SocketMessage.NewBlock['handler'] = React.useCallback((payload) => {
-    const queryKey = (() => {
-      switch (type) {
-        case 'uncle':
-          return QueryKeys.blocksUncles;
-        case 'reorg':
-          return QueryKeys.blocksReorgs;
-        default:
-          return QueryKeys.blocks;
-      }
-    })();
+    const queryKey = getResourceKey('blocks', { queryParams: { type } });
 
-    queryClient.setQueryData([ queryKey, { page: query.pagination.page, filters: { type } } ], (prevData: BlocksResponse | undefined) => {
+    queryClient.setQueryData(queryKey, (prevData: BlocksResponse | undefined) => {
       const shouldAddToList = !type || type === payload.block.type;
 
       if (!prevData) {
@@ -57,7 +48,7 @@ const BlocksContent = ({ type, query }: Props) => {
       }
       return shouldAddToList ? { ...prevData, items: [ payload.block, ...prevData.items ] } : prevData;
     });
-  }, [ query.pagination.page, queryClient, type ]);
+  }, [ queryClient, type ]);
 
   const handleSocketClose = React.useCallback(() => {
     setSocketAlert('Connection is lost. Please click here to load new blocks.');

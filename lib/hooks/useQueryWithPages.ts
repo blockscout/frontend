@@ -15,7 +15,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 interface Params<Resource extends PaginatedResources> {
   resourceName: Resource;
   options?: UseApiQueryParams<Resource>['queryOptions'];
-  pathParams?: Record<string, string>;
+  pathParams?: UseApiQueryParams<Resource>['pathParams'];
   filters?: PaginationFiltersX<Resource>;
   scroll?: { elem: string; offset: number };
 }
@@ -69,7 +69,7 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
 
     setPageParams((prev) => ({
       ...prev,
-      [page + 1]: mapValues(nextPageParams, (value) => value?.toString()) as NextPageParams,
+      [page + 1]: mapValues(nextPageParams, (value) => String(value)) as NextPageParams,
     }));
     setPage(prev => prev + 1);
 

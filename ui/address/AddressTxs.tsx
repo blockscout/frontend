@@ -5,7 +5,6 @@ import { Element } from 'react-scroll';
 
 import type { AddressFromToFilter } from 'types/api/address';
 import { AddressFromToFilterValues } from 'types/api/address';
-import { QueryKeys } from 'types/client/queries';
 
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -29,9 +28,8 @@ const AddressTxs = () => {
   const [ filterValue, setFilterValue ] = React.useState<AddressFromToFilter>(getFilterValue(router.query.filter));
 
   const addressTxsQuery = useQueryWithPages({
-    apiPath: `/node-api/addresses/${ router.query.id }/transactions`,
-    queryName: QueryKeys.addressTxs,
-    queryIds: castArray(router.query.id),
+    resourceName: 'address_txs',
+    pathParams: { id: castArray(router.query.id)[0] },
     filters: { filter: filterValue },
     scroll: { elem: SCROLL_ELEM, offset: SCROLL_OFFSET },
   });

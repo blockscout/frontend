@@ -9,7 +9,7 @@ import { RESOURCES } from './resources';
 import type { ResourceError, ApiResource } from './resources';
 
 export interface Params {
-  pathParams?: Record<string, string>;
+  pathParams?: Record<string, string | undefined>;
   queryParams?: Record<string, string | number | undefined>;
   fetchParams?: Pick<FetchParams, 'body' | 'method'>;
 }
