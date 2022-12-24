@@ -12,9 +12,9 @@ import { WEI } from 'lib/consts';
 import link from 'lib/link/link';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import BlockTimestamp from 'ui/blocks/BlockTimestamp';
-import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import AddressLink from 'ui/shared/address/AddressLink';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
+import ListItemMobile from 'ui/shared/ListItemMobile';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
 interface Props {
@@ -29,7 +29,7 @@ const BlocksListItem = ({ data, isPending, enableTimeIncrement }: Props) => {
   const txFees = BigNumber(data.tx_fees || 0);
 
   return (
-    <AccountListItemMobile rowGap={ 3 } key={ String(data.height) }>
+    <ListItemMobile rowGap={ 3 } key={ String(data.height) } isAnimated>
       <Flex justifyContent="space-between" w="100%">
         <Flex columnGap={ 2 } alignItems="center">
           { isPending && <Spinner size="sm"/> }
@@ -64,7 +64,7 @@ const BlocksListItem = ({ data, isPending, enableTimeIncrement }: Props) => {
       </Box>
       <Flex columnGap={ 2 }>
         <Text fontWeight={ 500 }>Reward { appConfig.network.currency.symbol }</Text>
-        <Text variant="secondary">{ totalReward }</Text>
+        <Text variant="secondary">{ totalReward.toFixed() }</Text>
       </Flex>
       <Box>
         <Text fontWeight={ 500 }>Burnt fees</Text>
@@ -76,7 +76,7 @@ const BlocksListItem = ({ data, isPending, enableTimeIncrement }: Props) => {
           <Utilization ml={ 4 } value={ burntFees.div(txFees).toNumber() }/>
         </Flex>
       </Box>
-    </AccountListItemMobile>
+    </ListItemMobile>
   );
 };
 

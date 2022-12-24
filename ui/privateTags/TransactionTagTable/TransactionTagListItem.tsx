@@ -3,7 +3,7 @@ import React, { useCallback } from 'react';
 
 import type { TransactionTag } from 'types/api/account';
 
-import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
+import ListItemMobile from 'ui/shared/ListItemMobile';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 import TransactionSnippet from 'ui/shared/TransactionSnippet';
 
@@ -23,7 +23,7 @@ const TransactionTagListItem = ({ item, onEditClick, onDeleteClick }: Props) => 
   }, [ item, onDeleteClick ]);
 
   return (
-    <AccountListItemMobile>
+    <ListItemMobile>
       <Flex alignItems="flex-start" flexDirection="column" maxW="100%">
         <TransactionSnippet hash={ item.transaction_hash }/>
         <HStack spacing={ 3 } mt={ 4 }>
@@ -34,7 +34,7 @@ const TransactionTagListItem = ({ item, onEditClick, onDeleteClick }: Props) => 
         </HStack>
       </Flex>
       <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
-    </AccountListItemMobile>
+    </ListItemMobile>
   );
 };
 

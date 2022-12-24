@@ -96,6 +96,15 @@ const config: PlaywrightTestConfig = {
         colorScheme: 'dark',
       },
     },
+    {
+      name: 'dark color mode desktop xl',
+      grep: /\+@dark-mode-xl/,
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1600, height: 1000 },
+        colorScheme: 'dark',
+      },
+    },
   ],
 };
 

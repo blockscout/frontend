@@ -41,8 +41,10 @@
     "bignumber.js": "^9.1.0",
     "d3": "^7.6.1",
     "dayjs": "^1.11.5",
+    "dom-to-image": "^2.6.0",
     "ethers": "^5.7.1",
     "framer-motion": "^6.5.1",
+    "js-cookie": "^3.0.1",
     "lodash": "^4.0.0",
     "next": "12.2.5",
     "node-fetch": "^3.2.9",
@@ -57,7 +59,6 @@
     "react-identicons": "^1.2.5",
     "react-jazzicon": "^1.0.4",
     "react-scroll": "^1.8.7",
-    "typescript-cookie": "^1.0.4",
     "use-font-face-observer": "^1.2.1"
   },
   "devDependencies": {
@@ -65,7 +66,9 @@
     "@svgr/webpack": "^6.5.1",
     "@testing-library/react": "^13.4.0",
     "@types/d3": "^7.4.0",
+    "@types/dom-to-image": "^2.6.4",
     "@types/jest": "^29.2.0",
+    "@types/js-cookie": "^3.0.2",
     "@types/node": "17.0.36",
     "@types/phoenix": "^1.5.4",
     "@types/qrcode": "^1.5.0",

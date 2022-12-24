@@ -13,8 +13,8 @@ import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import SkeletonAccountMobile from 'ui/shared/SkeletonAccountMobile';
-import SkeletonTable from 'ui/shared/SkeletonTable';
+import SkeletonListAccount from 'ui/shared/skeletons/SkeletonListAccount';
+import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 import AddressModal from 'ui/watchlist/AddressModal/AddressModal';
 import DeleteAddressModal from 'ui/watchlist/DeleteAddressModal';
 import WatchListItem from 'ui/watchlist/WatchlistTable/WatchListItem';
@@ -98,7 +98,7 @@ const WatchList: React.FC = () => {
 
   let content;
   if (isLoading && !data) {
-    const loader = isMobile ? <SkeletonAccountMobile showFooterSlot/> : (
+    const loader = isMobile ? <SkeletonListAccount showFooterSlot/> : (
       <>
         <SkeletonTable columns={ [ '70%', '30%', '160px', '108px' ] }/>
         <Skeleton height="44px" width="156px" marginTop={ 8 }/>

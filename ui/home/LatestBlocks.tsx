@@ -19,7 +19,7 @@ import LatestBlocksItem from './LatestBlocksItem';
 import LatestBlocksItemSkeleton from './LatestBlocksItemSkeleton';
 
 const BLOCK_HEIGHT = 166;
-const BLOCK_MARGIN = 24;
+const BLOCK_MARGIN = 12;
 
 const LatestBlocks = () => {
   const isMobile = useIsMobile();

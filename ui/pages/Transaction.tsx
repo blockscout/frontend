@@ -1,4 +1,4 @@
-import { Flex, Link, Icon, Tag } from '@chakra-ui/react';
+import { Flex, Link, Icon, Tag, Tooltip } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -26,7 +26,7 @@ import TxTokenTransfer from 'ui/tx/TxTokenTransfer';
 const TABS: Array<RoutedTab> = [
   { id: 'index', title: 'Details', component: <TxDetails/> },
   { id: 'token_transfers', title: 'Token transfers', component: <TxTokenTransfer/> },
-  { id: 'internal', title: 'Internal txn', component: <TxInternals/> },
+  { id: 'internal', title: 'Internal txns', component: <TxInternals/> },
   { id: 'logs', title: 'Logs', component: <TxLogs/> },
   // will be implemented later, api is not ready
   // { id: 'state', title: 'State', component: <TxState/> },
@@ -60,14 +60,17 @@ const TransactionPageContent = () => {
 
   return (
     <Page>
-      { hasGoBackLink && (
-        <Link mb={ 6 } display="inline-flex" href={ referrer }>
-          <Icon as={ eastArrowIcon } boxSize={ 6 } mr={ 2 } transform="rotate(180deg)"/>
-            Transactions
-        </Link>
-      ) }
       <Flex alignItems="flex-start" flexDir={{ base: 'column', lg: 'row' }}>
-        <PageTitle text="Transaction details"/>
+        <Flex alignItems="center" columnGap={ 3 }>
+          { hasGoBackLink && (
+            <Tooltip label="Back to transactions list">
+              <Link display="inline-flex" href={ referrer } mb={ 6 }>
+                <Icon as={ eastArrowIcon } boxSize={ 6 } transform="rotate(180deg)"/>
+              </Link>
+            </Tooltip>
+          ) }
+          <PageTitle text="Transaction details"/>
+        </Flex>
         { data?.tx_tag && <Tag my={ 2 } ml={ 3 }>{ data.tx_tag }</Tag> }
         { explorersLinks.length > 0 && (
           <Flex

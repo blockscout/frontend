@@ -8,9 +8,9 @@ import appConfig from 'configs/app/config';
 import { WEI, ZERO } from 'lib/consts';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import link from 'lib/link/link';
-import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import Address from 'ui/shared/address/Address';
 import AddressLink from 'ui/shared/address/AddressLink';
+import ListItemMobile from 'ui/shared/ListItemMobile';
 
 type Props = AddressCoinBalanceHistoryItem & {
   page: number;
@@ -23,7 +23,7 @@ const AddressCoinBalanceListItem = (props: Props) => {
   const timeAgo = useTimeAgoIncrement(props.block_timestamp, props.page === 1);
 
   return (
-    <AccountListItemMobile rowGap={ 2 }>
+    <ListItemMobile rowGap={ 2 } isAnimated>
       <Flex justifyContent="space-between" w="100%">
         <Text fontWeight={ 600 }>{ BigNumber(props.value).div(WEI).toFixed(8) } { appConfig.network.currency.symbol }</Text>
         <Stat flexGrow="0">
@@ -51,7 +51,7 @@ const AddressCoinBalanceListItem = (props: Props) => {
         <Text fontWeight={ 500 } flexShrink={ 0 }>Age</Text>
         <Text variant="secondary">{ timeAgo }</Text>
       </Flex>
-    </AccountListItemMobile>
+    </ListItemMobile>
   );
 };
 

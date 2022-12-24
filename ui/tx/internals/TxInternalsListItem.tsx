@@ -6,10 +6,10 @@ import type { InternalTransaction } from 'types/api/internalTransaction';
 
 import appConfig from 'configs/app/config';
 import eastArrowIcon from 'icons/arrows/east.svg';
-import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
+import ListItemMobile from 'ui/shared/ListItemMobile';
 import TxStatus from 'ui/shared/TxStatus';
 import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
@@ -20,7 +20,7 @@ const TxInternalsListItem = ({ type, from, to, value, success, error, gas_limit:
   const toData = to ? to : createdContract;
 
   return (
-    <AccountListItemMobile rowGap={ 3 }>
+    <ListItemMobile rowGap={ 3 }>
       <Flex>
         { typeTitle && <Tag colorScheme="cyan" mr={ 2 }>{ typeTitle }</Tag> }
         <TxStatus status={ success ? 'ok' : 'error' } errorText={ error }/>
@@ -46,7 +46,7 @@ const TxInternalsListItem = ({ type, from, to, value, success, error, gas_limit:
         <Text fontSize="sm" fontWeight={ 500 }>Gas limit</Text>
         <Text fontSize="sm" variant="secondary">{ BigNumber(gasLimit).toFormat() }</Text>
       </HStack>
-    </AccountListItemMobile>
+    </ListItemMobile>
   );
 };
 

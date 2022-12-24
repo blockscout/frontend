@@ -43,12 +43,6 @@ const AddressTxs = () => {
     addressTxsQuery.onFilterChange({ filter: newVal });
   }, [ addressTxsQuery ]);
 
-  const isPaginatorHidden =
-      !addressTxsQuery.isLoading &&
-      !addressTxsQuery.isError &&
-      addressTxsQuery.pagination.page === 1 &&
-      !addressTxsQuery.pagination.hasNextPage;
-
   const filter = (
     <AddressTxsFilter
       defaultFilter={ filterValue }
@@ -62,7 +56,7 @@ const AddressTxs = () => {
       { !isMobile && (
         <ActionBar mt={ -6 }>
           { filter }
-          { !isPaginatorHidden && <Pagination { ...addressTxsQuery.pagination }/> }
+          { addressTxsQuery.isPaginationVisible && <Pagination { ...addressTxsQuery.pagination }/> }
         </ActionBar>
       ) }
       <TxsContent
@@ -70,6 +64,7 @@ const AddressTxs = () => {
         query={ addressTxsQuery }
         showSocketInfo={ false }
         currentAddress={ typeof router.query.id === 'string' ? router.query.id : undefined }
+        enableTimeIncrement
       />
     </Element>
   );

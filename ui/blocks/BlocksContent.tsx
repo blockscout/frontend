@@ -11,13 +11,13 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import BlocksList from 'ui/blocks/BlocksList';
-import BlocksSkeletonMobile from 'ui/blocks/BlocksSkeletonMobile';
 import BlocksTable from 'ui/blocks/BlocksTable';
 import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Pagination from 'ui/shared/Pagination';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
-import SkeletonTable from 'ui/shared/SkeletonTable';
+import SkeletonList from 'ui/shared/skeletons/SkeletonList';
+import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 
 type QueryResult = UseQueryResult<BlocksResponse> & {
   pagination: PaginationProps;
@@ -83,7 +83,7 @@ const BlocksContent = ({ type, query }: Props) => {
       return (
         <>
           <Show below="lg" key="skeleton-mobile" ssr={ false }>
-            <BlocksSkeletonMobile/>
+            <SkeletonList/>
           </Show>
           <Hide below="lg" key="skeleton-desktop" ssr={ false }>
             <SkeletonTable columns={ [ '125px', '120px', '21%', '64px', '35%', '22%', '22%' ] }/>

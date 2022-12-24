@@ -36,6 +36,7 @@ export default function useQueryWithPages<QueryName extends PaginatedQueryKeys>(
   const fetch = useFetch();
   const isMounted = React.useRef(false);
   const canGoBackwards = React.useRef(!router.query.page);
+  const [ hasPagination, setHasPagination ] = React.useState(page > 1);
 
   const queryKey = [ queryName, ...(queryIds || []), { page, filters } ];
 
@@ -74,6 +75,7 @@ export default function useQueryWithPages<QueryName extends PaginatedQueryKeys>(
     const nextPageQuery = { ...router.query };
     Object.entries(nextPageParams).forEach(([ key, val ]) => nextPageQuery[key] = val.toString());
     nextPageQuery.page = String(page + 1);
+    setHasPagination(true);
 
     router.push({ pathname: router.pathname, query: nextPageQuery }, undefined, { shallow: true })
       .then(() => {
@@ -101,6 +103,7 @@ export default function useQueryWithPages<QueryName extends PaginatedQueryKeys>(
         setPage(prev => prev - 1);
         page === 2 && queryClient.removeQueries({ queryKey: [ queryName ] });
       });
+    setHasPagination(true);
   }, [ router, page, paginationFields, pageParams, queryClient, scrollToTop, queryName ]);
 
   const resetPage = useCallback(() => {
@@ -118,6 +121,8 @@ export default function useQueryWithPages<QueryName extends PaginatedQueryKeys>(
         queryClient.removeQueries({ queryKey: [ queryName ], type: 'inactive' });
       }, 100);
     });
+
+    setHasPagination(true);
   }, [ queryClient, queryName, router, paginationFields, scrollToTop ]);
 
   const onFilterChange = useCallback((newFilters: PaginationFilters<QueryName> | undefined) => {
@@ -156,6 +161,8 @@ export default function useQueryWithPages<QueryName extends PaginatedQueryKeys>(
     canGoBackwards: canGoBackwards.current,
   };
 
+  const isPaginationVisible = hasPagination || (!queryResult.isLoading && !queryResult.isError && pagination.hasNextPage);
+
   React.useEffect(() => {
     if (page !== 1 && isMounted.current) {
       queryClient.cancelQueries({ queryKey });
@@ -171,5 +178,5 @@ export default function useQueryWithPages<QueryName extends PaginatedQueryKeys>(
     }, 0);
   }, []);
 
-  return { ...queryResult, pagination, onFilterChange };
+  return { ...queryResult, pagination, onFilterChange, isPaginationVisible };
 }

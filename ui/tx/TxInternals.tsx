@@ -14,9 +14,9 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 // import FilterInput from 'ui/shared/FilterInput';
 // import TxInternalsFilter from 'ui/tx/internals/TxInternalsFilter';
 import Pagination from 'ui/shared/Pagination';
+import SkeletonList from 'ui/shared/skeletons/SkeletonList';
+import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 import TxInternalsList from 'ui/tx/internals/TxInternalsList';
-import TxInternalsSkeletonDesktop from 'ui/tx/internals/TxInternalsSkeletonDesktop';
-import TxInternalsSkeletonMobile from 'ui/tx/internals/TxInternalsSkeletonMobile';
 import TxInternalsTable from 'ui/tx/internals/TxInternalsTable';
 import type { Sort, SortField } from 'ui/tx/internals/utils';
 import TxPendingAlert from 'ui/tx/TxPendingAlert';
@@ -75,7 +75,7 @@ const TxInternals = () => {
   // const [ searchTerm, setSearchTerm ] = React.useState<string>('');
   const [ sort, setSort ] = React.useState<Sort>();
   const txInfo = useFetchTxInfo({ updateDelay: 5 * SECOND });
-  const { data, isLoading, isError, pagination } = useQueryWithPages({
+  const { data, isLoading, isError, pagination, isPaginationVisible } = useQueryWithPages({
     apiPath: `/node-api/transactions/${ txInfo.data?.hash }/internal-transactions`,
     queryName: QueryKeys.txInternals,
     queryIds: txInfo.data?.hash ? [ txInfo.data.hash ] : undefined,
@@ -83,7 +83,6 @@ const TxInternals = () => {
       enabled: Boolean(txInfo.data?.hash) && Boolean(txInfo.data?.status),
     },
   });
-  const isPaginatorHidden = !isLoading && !isError && pagination.page === 1 && !pagination.hasNextPage;
 
   const isMobile = useIsMobile();
 
@@ -104,8 +103,8 @@ const TxInternals = () => {
   if (isLoading || txInfo.isLoading) {
     return (
       <>
-        <Show below="lg"><TxInternalsSkeletonMobile/></Show>
-        <Hide below="lg"><TxInternalsSkeletonDesktop/></Hide>
+        <Show below="lg"><SkeletonList/></Show>
+        <Hide below="lg"><SkeletonTable columns={ [ '28%', '20%', '24px', '20%', '16%', '16%' ] }/></Hide>
       </>
     );
   }
@@ -131,12 +130,12 @@ const TxInternals = () => {
 
     return isMobile ?
       <TxInternalsList data={ filteredData }/> :
-      <TxInternalsTable data={ filteredData } sort={ sort } onSortToggle={ handleSortToggle } top={ isPaginatorHidden ? 0 : 80 }/>;
+      <TxInternalsTable data={ filteredData } sort={ sort } onSortToggle={ handleSortToggle } top={ isPaginationVisible ? 80 : 0 }/>;
   })();
 
   return (
     <Box>
-      { !isPaginatorHidden && (
+      { isPaginationVisible && (
         <ActionBar mt={ -6 }>
           <Pagination ml="auto" { ...pagination }/>
         </ActionBar>

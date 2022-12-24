@@ -35,7 +35,31 @@ const oldUrls = [
   },
   {
     oldPath: '/block/:id/transactions',
-    newPath: `${ PATHS.block }?tab=txs`,
+    newPath: `${ PATHS.block }`,
+  },
+  {
+    oldPath: '/address/:id/transactions',
+    newPath: `${ PATHS.address_index }`,
+  },
+  {
+    oldPath: '/address/:id/token-transfers',
+    newPath: `${ PATHS.address_index }?tab=token_transfers`,
+  },
+  {
+    oldPath: '/address/:id/tokens',
+    newPath: `${ PATHS.address_index }?tab=tokens`,
+  },
+  {
+    oldPath: '/address/:id/internal-transactions',
+    newPath: `${ PATHS.address_index }?tab=internal_txns`,
+  },
+  {
+    oldPath: '/address/:id/coin-balances',
+    newPath: `${ PATHS.address_index }?tab=coin_balance_history`,
+  },
+  {
+    oldPath: '/address/:id/validations',
+    newPath: `${ PATHS.address_index }?tab=blocks_validated`,
   },
 ];
 

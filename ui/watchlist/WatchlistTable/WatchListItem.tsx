@@ -6,7 +6,7 @@ import type { TWatchlistItem } from 'types/client/account';
 
 import useApiFetch from 'lib/api/useApiFetch';
 import useToast from 'lib/hooks/useToast';
-import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
+import ListItemMobile from 'ui/shared/ListItemMobile';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 
 import WatchListAddressItem from './WatchListAddressItem';
@@ -82,7 +82,7 @@ const WatchListItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   }, [ mutate ]);
 
   return (
-    <AccountListItemMobile>
+    <ListItemMobile>
       <Box maxW="100%">
         <WatchListAddressItem item={ item }/>
         <HStack spacing={ 3 } mt={ 6 }>
@@ -106,7 +106,7 @@ const WatchListItem = ({ item, onEditClick, onDeleteClick }: Props) => {
         </HStack>
         <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
       </Flex>
-    </AccountListItemMobile>
+    </ListItemMobile>
   );
 };
 

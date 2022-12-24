@@ -2,8 +2,8 @@ import React, { useCallback } from 'react';
 
 import type { ApiKey } from 'types/api/account';
 
-import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import ApiKeySnippet from 'ui/shared/ApiKeySnippet';
+import ListItemMobile from 'ui/shared/ListItemMobile';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 
 interface Props {
@@ -23,10 +23,10 @@ const ApiKeyListItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   }, [ item, onDeleteClick ]);
 
   return (
-    <AccountListItemMobile>
+    <ListItemMobile>
       <ApiKeySnippet apiKey={ item.api_key } name={ item.name }/>
       <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
-    </AccountListItemMobile>
+    </ListItemMobile>
   );
 };
 
