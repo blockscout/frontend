@@ -90,6 +90,7 @@ const config = Object.freeze({
     adButlerOn: getEnvValue(process.env.NEXT_PUBLIC_AD_ADBUTLER_ON) === 'true',
   },
   api: {
+    host: apiHost,
     endpoint: apiHost ? `https://${ apiHost }` : 'https://blockscout.com',
     socket: apiHost ? `wss://${ apiHost }` : 'wss://blockscout.com',
     basePath: stripTrailingSlash(getEnvValue(process.env.NEXT_PUBLIC_API_BASE_PATH) || ''),
