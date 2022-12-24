@@ -20,9 +20,13 @@ export default function useFetch() {
   return React.useCallback(<Success, Error>(path: string, params?: Params): Promise<Success | ResourceError<Error>> => {
     const reqParams = {
       ...params,
-      body: params?.method && ![ 'GET', 'HEAD' ].includes(params.method) ?
-        JSON.stringify({ ...params?.body, _csrf_token: token }) :
+      body: params?.method && params?.body && ![ 'GET', 'HEAD' ].includes(params.method) ?
+        JSON.stringify(params.body) :
         undefined,
+      headers: {
+        ...params?.headers,
+        ...(token ? { 'x-csrf-token': token } : {}),
+      },
     };
 
     return fetch(path, reqParams).then(response => {

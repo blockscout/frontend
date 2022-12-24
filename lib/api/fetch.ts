@@ -13,10 +13,12 @@ export default function fetchFactory(
   apiEndpoint: string = appConfig.api.endpoint,
 ) {
   return function fetch(path: string, init?: RequestInit): Promise<Response> {
+    const csrfToken = _req.headers['x-csrf-token']?.toString();
     const headers = {
       accept: 'application/json',
       'content-type': 'application/json',
       cookie: `${ cookies.NAMES.API_TOKEN }=${ _req.cookies[cookies.NAMES.API_TOKEN] }`,
+      ...(csrfToken ? { 'x-csrf-token': csrfToken } : {}),
     };
     const url = new URL(path, apiEndpoint);
 
