@@ -8,11 +8,11 @@ import appConfig from 'configs/app/config';
 import eastArrowIcon from 'icons/arrows/east.svg';
 import dayjs from 'lib/date/dayjs';
 import link from 'lib/link/link';
-import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import InOutTag from 'ui/shared/InOutTag';
+import ListItemMobile from 'ui/shared/ListItemMobile';
 import TxStatus from 'ui/shared/TxStatus';
 import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
@@ -38,7 +38,7 @@ const TxInternalsListItem = ({
   const isIn = Boolean(currentAddress && currentAddress === to?.hash);
 
   return (
-    <AccountListItemMobile rowGap={ 3 }>
+    <ListItemMobile rowGap={ 3 }>
       <Flex>
         { typeTitle && <Tag colorScheme="cyan" mr={ 2 }>{ typeTitle }</Tag> }
         <TxStatus status={ success ? 'ok' : 'error' } errorText={ error }/>
@@ -71,7 +71,7 @@ const TxInternalsListItem = ({
           { BigNumber(value).div(BigNumber(10 ** appConfig.network.currency.decimals)).toFormat() }
         </Text>
       </HStack>
-    </AccountListItemMobile>
+    </ListItemMobile>
   );
 };
 

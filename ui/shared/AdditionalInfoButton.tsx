@@ -1,8 +1,8 @@
 import {
   Icon,
-  Center,
   useColorModeValue,
   chakra,
+  Button,
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -14,13 +14,16 @@ interface Props {
   onClick?: () => void;
 }
 
-const AdditionalInfoButton = ({ isOpen, onClick, className }: Props, ref: React.ForwardedRef<HTMLDivElement>) => {
+const AdditionalInfoButton = ({ isOpen, onClick, className }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
 
   const infoBgColor = useColorModeValue('blue.50', 'gray.600');
   const infoColor = useColorModeValue('blue.600', 'blue.300');
 
   return (
-    <Center
+    <Button
+      variant="unstyled"
+      display="inline-flex"
+      alignItems="center"
       className={ className }
       ref={ ref }
       background={ isOpen ? infoBgColor : 'unset' }
@@ -36,7 +39,7 @@ const AdditionalInfoButton = ({ isOpen, onClick, className }: Props, ref: React.
         color={ infoColor }
         _hover={{ color: 'blue.400' }}
       />
-    </Center>
+    </Button>
   );
 };
 

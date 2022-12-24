@@ -5,7 +5,7 @@ interface Props {
   showFooterSlot?: boolean;
 }
 
-const SkeletonAccountMobile = ({ showFooterSlot }: Props) => {
+const SkeletonListAccount = ({ showFooterSlot }: Props) => {
   const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
 
   return (
@@ -18,9 +18,8 @@ const SkeletonAccountMobile = ({ showFooterSlot }: Props) => {
           paddingY={ 6 }
           borderTopWidth="1px"
           borderColor={ borderColor }
-          _first={{
-            borderTopWidth: '0',
-            pt: '0',
+          _last={{
+            borderBottomWidth: '0px',
           }}
         >
           <Flex columnGap={ 2 } w="100%" alignItems="center">
@@ -45,4 +44,4 @@ const SkeletonAccountMobile = ({ showFooterSlot }: Props) => {
   );
 };
 
-export default SkeletonAccountMobile;
+export default SkeletonListAccount;

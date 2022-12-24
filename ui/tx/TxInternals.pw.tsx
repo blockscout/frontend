@@ -33,8 +33,5 @@ test('base view +@mobile', async({ mount, page }) => {
     { hooksConfig },
   );
 
-  await page.waitForResponse(API_URL_TX),
-  await page.waitForResponse(API_URL_TX_INTERNALS),
-
   await expect(component).toHaveScreenshot();
 });

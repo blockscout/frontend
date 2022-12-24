@@ -17,11 +17,11 @@ import EmptySearchResult from 'ui/apps/EmptySearchResult';
 import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Pagination from 'ui/shared/Pagination';
-import SkeletonTable from 'ui/shared/SkeletonTable';
+import SkeletonList from 'ui/shared/skeletons/SkeletonList';
+import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 import { flattenTotal } from 'ui/shared/TokenTransfer/helpers';
 import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
 import TokenTransferList from 'ui/shared/TokenTransfer/TokenTransferList';
-import TokenTransferSkeletonMobile from 'ui/shared/TokenTransfer/TokenTransferSkeletonMobile';
 import TokenTransferTable from 'ui/shared/TokenTransfer/TokenTransferTable';
 
 import { TOKEN_TYPE } from './helpers';
@@ -61,7 +61,7 @@ const TokenTransfer = ({
     { type: getTokenFilterValue(router.query.type), filter: getAddressFilterValue(router.query.filter) },
   );
 
-  const { isError, isLoading, data, pagination, onFilterChange } = useQueryWithPages({
+  const { isError, isLoading, data, pagination, onFilterChange, isPaginationVisible } = useQueryWithPages({
     apiPath: path,
     queryName,
     queryIds,
@@ -95,7 +95,7 @@ const TokenTransfer = ({
             />
           </Hide>
           <Show below="lg">
-            <TokenTransferSkeletonMobile showTxInfo={ showTxInfo }/>
+            <SkeletonList/>
           </Show>
         </>
       );
@@ -138,7 +138,7 @@ const TokenTransfer = ({
             onAddressFilterChange={ handleAddressFilterChange }
             defaultAddressFilter={ filters.filter }
           />
-          <Pagination ml="auto" { ...pagination }/>
+          { isPaginationVisible && <Pagination ml="auto" { ...pagination }/> }
         </ActionBar>
       ) }
       { content }

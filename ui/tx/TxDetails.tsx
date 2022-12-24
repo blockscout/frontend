@@ -65,6 +65,21 @@ const TxDetails = () => {
     ...toAddress.watchlist_names || [],
   ].map((tag) => <Tag key={ tag.label }>{ tag.display_name }</Tag>);
 
+  const executionSuccessBadge = toAddress.is_contract && data.result === 'success' ? (
+    <Tooltip label="Contract execution completed">
+      <chakra.span display="inline-flex" ml={ 2 } mr={ 1 }>
+        <Icon as={ successIcon } boxSize={ 4 } color="green.500" cursor="pointer"/>
+      </chakra.span>
+    </Tooltip>
+  ) : null;
+  const executionFailedBadge = toAddress.is_contract && Boolean(data.status) && data.result !== 'success' ? (
+    <Tooltip label="Error occurred during contract execution">
+      <chakra.span display="inline-flex" ml={ 2 } mr={ 1 }>
+        <Icon as={ errorIcon } boxSize={ 4 } color="red.500" cursor="pointer"/>
+      </chakra.span>
+    </Tooltip>
+  ) : null;
+
   return (
     <Grid columnGap={ 8 } rowGap={{ base: 3, lg: 3 }} templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }}>
       { socketStatus && (
@@ -144,40 +159,30 @@ const TxDetails = () => {
         ) }
       </DetailsInfoItem>
       <DetailsInfoItem
-        title={ toAddress.is_contract ? 'Interacted with contract' : 'To' }
+        title={ data.to?.is_contract ? 'Interacted with contract' : 'To' }
         hint="Address (external or contract) receiving the transaction."
         flexWrap={{ base: 'wrap', lg: 'nowrap' }}
         columnGap={ 3 }
       >
         { data.to && data.to.hash ? (
-          <Address>
+          <Address alignItems="center">
             <AddressIcon hash={ toAddress.hash }/>
             <AddressLink ml={ 2 } hash={ toAddress.hash }/>
+            { executionSuccessBadge }
+            { executionFailedBadge }
             <CopyToClipboard text={ toAddress.hash }/>
           </Address>
         ) : (
-          <Flex width={{ base: '100%', lg: 'auto' }} whiteSpace="pre">
+          <Flex width={{ base: '100%', lg: 'auto' }} whiteSpace="pre" alignItems="center">
             <span>[Contract </span>
             <AddressLink hash={ toAddress.hash }/>
             <span> created]</span>
+            { executionSuccessBadge }
+            { executionFailedBadge }
             <CopyToClipboard text={ toAddress.hash }/>
           </Flex>
         ) }
         { toAddress.name && <Text>{ toAddress.name }</Text> }
-        { toAddress.is_contract && data.result === 'success' && (
-          <Tooltip label="Contract execution completed">
-            <chakra.span display="inline-flex">
-              <Icon as={ successIcon } boxSize={ 4 } color="green.500" cursor="pointer"/>
-            </chakra.span>
-          </Tooltip>
-        ) }
-        { toAddress.is_contract && Boolean(data.status) && data.result !== 'success' && (
-          <Tooltip label="Error occured during contract execution">
-            <chakra.span display="inline-flex">
-              <Icon as={ errorIcon } boxSize={ 4 } color="red.500" cursor="pointer"/>
-            </chakra.span>
-          </Tooltip>
-        ) }
         { addressToTags.length > 0 && (
           <Flex columnGap={ 3 }>
             { addressToTags }

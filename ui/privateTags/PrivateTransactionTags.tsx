@@ -9,8 +9,8 @@ import useFetch from 'lib/hooks/useFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import SkeletonAccountMobile from 'ui/shared/SkeletonAccountMobile';
-import SkeletonTable from 'ui/shared/SkeletonTable';
+import SkeletonListAccount from 'ui/shared/skeletons/SkeletonListAccount';
+import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 
 import DeletePrivateTagModal from './DeletePrivateTagModal';
 import TransactionModal from './TransactionModal/TransactionModal';
@@ -60,7 +60,7 @@ const PrivateTransactionTags = () => {
   );
 
   if (isLoading && !transactionTagsData) {
-    const loader = isMobile ? <SkeletonAccountMobile/> : (
+    const loader = isMobile ? <SkeletonListAccount/> : (
       <>
         <SkeletonTable columns={ [ '75%', '25%', '108px' ] }/>
         <Skeleton height="44px" width="156px" marginTop={ 8 }/>

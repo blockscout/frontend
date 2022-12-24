@@ -394,4 +394,5 @@ frontend:
     NEXT_PUBLIC_APP_HOST:
       _default: blockscout.com
     NEXT_PUBLIC_NETWORK_EXPLORERS:
-      _default: "[{'title':'Anyblock','baseUrl':'https://explorer.anyblock.tools','paths':{'tx':'/ethereum/poa/core/transaction','address':'/ethereum/poa/core/address'}}]"
+      _default: "[{'title':'Anyblock','baseUrl':'https://explorer.anyblock.tools','paths':{'tx':'/ethereum/ethereum/goerli/transaction','address':'/ethereum/ethereum/goerli/address'}},{'title':'Etherscan','baseUrl':'https://goerli.etherscan.io/','paths':{'tx':'/tx','address':'/address'}}]"
+

@@ -1,4 +1,4 @@
-import { Grid, GridItem, Text, Icon, Link, Box, Tooltip, Alert } from '@chakra-ui/react';
+import { Grid, GridItem, Text, Icon, Link, Box, Tooltip } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import capitalize from 'lodash/capitalize';
@@ -67,7 +67,7 @@ const BlockDetails = () => {
 
   if (isError) {
     const is404 = error?.error?.status === 404;
-    return is404 ? <Alert>This block has not been processed yet.</Alert> : <DataFetchAlert/>;
+    return is404 ? <span>This block has not been processed yet.</span> : <DataFetchAlert/>;
   }
 
   const sectionGap = <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>;

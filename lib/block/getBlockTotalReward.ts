@@ -9,5 +9,5 @@ export default function getBlockTotalReward(block: Block) {
     ?.map(({ reward }) => BigNumber(reward))
     .reduce((result, item) => result.plus(item), ZERO) || ZERO;
 
-  return totalReward.div(WEI).toFixed();
+  return totalReward.div(WEI);
 }

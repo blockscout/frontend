@@ -55,7 +55,7 @@ const BlocksPageContent = () => {
       <RoutedTabs
         tabs={ tabs }
         tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
-        rightSlot={ <BlocksTabSlot pagination={ blocksQuery.pagination }/> }
+        rightSlot={ <BlocksTabSlot pagination={ blocksQuery.pagination } isPaginationVisible={ blocksQuery.isPaginationVisible }/> }
         stickyEnabled={ !isMobile }
       />
     </Page>
