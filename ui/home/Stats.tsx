@@ -1,9 +1,5 @@
 import { Grid } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
 import React from 'react';
-
-import type { HomeStats } from 'types/api/stats';
-import { QueryKeys } from 'types/client/queries';
 
 import appConfig from 'configs/app/config';
 import blockIcon from 'icons/block.svg';
@@ -11,7 +7,7 @@ import clockIcon from 'icons/clock-light.svg';
 import gasIcon from 'icons/gas.svg';
 import txIcon from 'icons/transactions.svg';
 import walletIcon from 'icons/wallet.svg';
-import useFetch from 'lib/hooks/useFetch';
+import useApiQuery from 'lib/api/useApiQuery';
 import link from 'lib/link/link';
 
 import StatsGasPrices from './StatsGasPrices';
@@ -26,12 +22,7 @@ let itemsCount = 5;
 !hasAvgBlockTime && itemsCount--;
 
 const Stats = () => {
-  const fetch = useFetch();
-
-  const { data, isLoading, isError } = useQuery<unknown, unknown, HomeStats>(
-    [ QueryKeys.homeStats ],
-    async() => await fetch(`/node-api/home-stats`),
-  );
+  const { data, isLoading, isError } = useApiQuery('homepage_stats');
 
   if (isError) {
     return null;

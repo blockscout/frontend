@@ -12,10 +12,13 @@ import type {
   AddressTokenTransferFilters,
 } from 'types/api/address';
 import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters } from 'types/api/block';
+import type { ChartMarketResponse, ChartTransactionResponse } from 'types/api/charts';
+import type { IndexingStatus } from 'types/api/indexingStatus';
 import type { InternalTransactionsResponse } from 'types/api/internalTransaction';
+import type { JsonRpcUrlResponse } from 'types/api/jsonRpcUrl';
 import type { LogsResponse } from 'types/api/log';
 import type { RawTracesResponse } from 'types/api/rawTrace';
-import type { Stats, Charts } from 'types/api/stats';
+import type { Stats, Charts, HomeStats } from 'types/api/stats';
 import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
 import type { TransactionsResponseValidated, TransactionsResponsePending, Transaction } from 'types/api/transaction';
 import type { TTxsFilters } from 'types/api/txsFilters';
@@ -147,6 +150,31 @@ export const RESOURCES = {
     filterFields: [ ],
   },
 
+  // HOMEPAGE
+  homepage_stats: {
+    path: '/api/v2/stats',
+  },
+  homepage_chart_txs: {
+    path: '/api/v2/stats/charts/transactions',
+  },
+  homepage_chart_market: {
+    path: '/api/v2/stats/charts/market',
+  },
+  homepage_blocks: {
+    path: '/api/v2/main-page/blocks',
+  },
+  homepage_txs: {
+    path: '/api/v2/main-page/transactions',
+  },
+  homepage_indexing_status: {
+    path: '/api/v2/main-page/indexing-status',
+  },
+
+  // CONFIG
+  config_json_rpc: {
+    path: '/api/v2/config/json-rpc-url',
+  },
+
   // DEPRECATED
   old_api: {
     path: '/api',
@@ -190,6 +218,12 @@ Q extends 'private_tags_address' ? AddressTags :
 Q extends 'private_tags_tx' ? TransactionTags :
 Q extends 'api_keys' ? ApiKeys :
 Q extends 'watchlist' ? Array<WatchlistAddress> :
+Q extends 'homepage_stats' ? HomeStats :
+Q extends 'homepage_chart_txs' ? ChartTransactionResponse :
+Q extends 'homepage_chart_market' ? ChartMarketResponse :
+Q extends 'homepage_blocks' ? Array<Block> :
+Q extends 'homepage_txs' ? Array<Transaction> :
+Q extends 'homepage_indexing_status' ? IndexingStatus :
 Q extends 'stats_counters' ? Stats :
 Q extends 'stats_charts' ? Charts :
 Q extends 'blocks' ? BlocksResponse :
@@ -210,6 +244,7 @@ Q extends 'address_internal_txs' ? AddressInternalTxsResponse :
 Q extends 'address_token_transfers' ? AddressTokenTransferResponse :
 Q extends 'address_blocks_validated' ? AddressBlocksValidatedResponse :
 Q extends 'address_coin_balance' ? AddressCoinBalanceHistoryResponse :
+Q extends 'config_json_rpc' ? JsonRpcUrlResponse :
 never;
 /* eslint-enable @typescript-eslint/indent */
 

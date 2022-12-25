@@ -1,14 +1,12 @@
 import { Box, Heading, Flex, Link, Text, VStack, Skeleton } from '@chakra-ui/react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { AnimatePresence } from 'framer-motion';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
 import type { Block } from 'types/api/block';
-import type { HomeStats } from 'types/api/stats';
-import { QueryKeys } from 'types/client/queries';
 
-import useFetch from 'lib/hooks/useFetch';
+import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp } from 'lib/html-entities';
 import link from 'lib/link/link';
@@ -24,20 +22,13 @@ const BLOCK_MARGIN = 12;
 const LatestBlocks = () => {
   const isMobile = useIsMobile();
   const blocksMaxCount = isMobile ? 2 : 3;
-  const fetch = useFetch();
-  const { data, isLoading, isError } = useQuery<unknown, unknown, Array<Block>>(
-    [ QueryKeys.indexBlocks ],
-    async() => await fetch(`/node-api/index/blocks`),
-  );
+  const { data, isLoading, isError } = useApiQuery('homepage_blocks');
 
   const queryClient = useQueryClient();
-  const statsQueryResult = useQuery<unknown, unknown, HomeStats>(
-    [ QueryKeys.homeStats ],
-    () => fetch('/node-api/home-stats'),
-  );
+  const statsQueryResult = useApiQuery('homepage_stats');
 
   const handleNewBlockMessage: SocketMessage.NewBlock['handler'] = React.useCallback((payload) => {
-    queryClient.setQueryData([ QueryKeys.indexBlocks ], (prevData: Array<Block> | undefined) => {
+    queryClient.setQueryData(getResourceKey('homepage_blocks'), (prevData: Array<Block> | undefined) => {
 
       const newData = prevData ? [ ...prevData ] : [];
 

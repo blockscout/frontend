@@ -1,13 +1,9 @@
 import { Box, Flex, Icon, Skeleton, Text, Tooltip, useColorModeValue } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
 import React from 'react';
-
-import type { HomeStats } from 'types/api/stats';
-import { QueryKeys } from 'types/client/queries';
 
 import appConfig from 'configs/app/config';
 import infoIcon from 'icons/info.svg';
-import useFetch from 'lib/hooks/useFetch';
+import useApiQuery from 'lib/api/useApiQuery';
 
 import ChainIndicatorChartContainer from './ChainIndicatorChartContainer';
 import ChainIndicatorItem from './ChainIndicatorItem';
@@ -32,13 +28,8 @@ const ChainIndicators = () => {
   const [ selectedIndicator, selectIndicator ] = React.useState(indicators[0]?.id);
   const indicator = indicators.find(({ id }) => id === selectedIndicator);
 
-  const queryResult = useFetchChartData(indicator);
-
-  const fetch = useFetch();
-  const statsQueryResult = useQuery<unknown, unknown, HomeStats>(
-    [ QueryKeys.homeStats ],
-    () => fetch('/node-api/home-stats'),
-  );
+  const queryResult = useFetchChartData(indicator!);
+  const statsQueryResult = useApiQuery('homepage_stats');
 
   const bgColorDesktop = useColorModeValue('white', 'gray.900');
   const bgColorMobile = useColorModeValue('white', 'black');
