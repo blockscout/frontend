@@ -50,6 +50,9 @@ export const RESOURCES = {
     paginationFields: [ 'block_number' as const, 'items_count' as const ],
     filterFields: [ 'type' as const ],
   },
+  block: {
+    path: '/api/v2/blocks/:id',
+  },
   block_txs: {
     path: '/api/v2/blocks/:id/transactions',
     paginationFields: [ 'block_number' as const, 'items_count' as const, 'index' as const ],
@@ -64,6 +67,9 @@ export const RESOURCES = {
     path: '/api/v2/transactions',
     paginationFields: [ 'filter' as const, 'hash' as const, 'inserted_at' as const ],
     filterFields: [ 'filter' as const, 'type' as const, 'method' as const ],
+  },
+  tx: {
+    path: '/api/v2/transactions/:id',
   },
   tx_internal_txs: {
     path: '/api/v2/transactions/:id/internal-transactions',
@@ -80,8 +86,20 @@ export const RESOURCES = {
     paginationFields: [ 'block_number' as const, 'items_count' as const, 'transaction_hash' as const, 'index' as const ],
     filterFields: [ 'type' as const ],
   },
+  tx_raw_trace: {
+    path: '/api/v2/transactions/:id/raw-trace',
+  },
 
   // ADDRESS
+  address: {
+    path: '/api/v2/addresses/:id',
+  },
+  address_counters: {
+    path: '/api/v2/addresses/:id/counters',
+  },
+  address_token_balances: {
+    path: '/api/v2/addresses/:id/token-balances',
+  },
   address_txs: {
     path: '/api/v2/addresses/:id/transactions',
     paginationFields: [ 'block_number' as const, 'items_count' as const, 'index' as const ],

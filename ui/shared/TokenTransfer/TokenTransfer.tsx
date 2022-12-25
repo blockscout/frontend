@@ -53,6 +53,7 @@ const TokenTransfer = <Resource extends 'tx_token_transfers' | 'address_token_tr
   baseAddress,
   showTxInfo = true,
   enableTimeIncrement,
+  pathParams,
 }: Props<Resource>) => {
   const router = useRouter();
   const [ filters, setFilters ] = React.useState<AddressTokenTransferFilters & TokenTransferFilters>(
@@ -61,6 +62,7 @@ const TokenTransfer = <Resource extends 'tx_token_transfers' | 'address_token_tr
 
   const { isError, isLoading, data, pagination, onFilterChange, isPaginationVisible } = useQueryWithPages({
     resourceName,
+    pathParams,
     options: { enabled: !isDisabled },
     filters: filters as PaginationFiltersX<Resource>,
     scroll: { elem: SCROLL_ELEM, offset: SCROLL_OFFSET },

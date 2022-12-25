@@ -4,12 +4,11 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { UserInfo } from 'types/api/account';
-import { QueryKeys } from 'types/client/queries';
 
 import starFilledIcon from 'icons/star_filled.svg';
 import starOutlineIcon from 'icons/star_outline.svg';
 import { resourceKey } from 'lib/api/resources';
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import useLoginUrl from 'lib/hooks/useLoginUrl';
 import usePreventFocusAfterModalClosing from 'lib/hooks/usePreventFocusAfterModalClosing';
 import WatchlistAddModal from 'ui/watchlist/AddressModal/AddressModal';
@@ -42,7 +41,8 @@ const AddressFavoriteButton = ({ className, hash, isAdded }: Props) => {
   }, [ addModalProps, deleteModalProps, isAdded, isAuth, loginUrl ]);
 
   const handleAddOrDeleteSuccess = React.useCallback(async() => {
-    await queryClient.refetchQueries({ queryKey: [ QueryKeys.address, router.query.id ] });
+    const queryKey = getResourceKey('address', { pathParams: { id: router.query.id?.toString() } });
+    await queryClient.refetchQueries({ queryKey });
     addModalProps.onClose();
   }, [ addModalProps, queryClient, router.query.id ]);
 

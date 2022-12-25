@@ -3,9 +3,9 @@ import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
 import type { Address } from 'types/api/address';
-import { QueryKeys } from 'types/client/queries';
 
 import appConfig from 'configs/app/config';
+import { getResourceKey } from 'lib/api/useApiQuery';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import CurrencyValue from 'ui/shared/CurrencyValue';
@@ -26,7 +26,8 @@ const AddressBalance = ({ data }: Props) => {
     }
 
     setLastBlockNumber(blockNumber);
-    queryClient.setQueryData([ QueryKeys.address, data.hash ], (prevData: Address | undefined) => {
+    const queryKey = getResourceKey('address', { pathParams: { id: data.hash } });
+    queryClient.setQueryData(queryKey, (prevData: Address | undefined) => {
       if (!prevData) {
         return;
       }

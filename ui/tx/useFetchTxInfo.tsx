@@ -1,14 +1,13 @@
 import type { UseQueryResult } from '@tanstack/react-query';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
 import type { Transaction } from 'types/api/transaction';
-import { QueryKeys } from 'types/client/queries';
 
+import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import delay from 'lib/delay';
-import useFetch from 'lib/hooks/useFetch';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 
@@ -23,23 +22,23 @@ type ReturnType = UseQueryResult<Transaction, unknown> & {
 
 export default function useFetchTxInfo({ onTxStatusUpdate, updateDelay }: Params | undefined = {}): ReturnType {
   const router = useRouter();
-  const fetch = useFetch();
   const queryClient = useQueryClient();
   const [ socketStatus, setSocketStatus ] = React.useState<'close' | 'error'>();
 
-  const queryResult = useQuery<unknown, unknown, Transaction>(
-    [ QueryKeys.tx, router.query.id ],
-    async() => await fetch(`/node-api/transactions/${ router.query.id }`),
-    {
+  const queryResult = useApiQuery('tx', {
+    pathParams: { id: router.query.id?.toString() },
+    queryOptions: {
       enabled: Boolean(router.query.id),
       refetchOnMount: false,
     },
-  );
+  });
   const { data, isError, isLoading } = queryResult;
 
   const handleStatusUpdateMessage: SocketMessage.TxStatusUpdate['handler'] = React.useCallback(async() => {
     updateDelay && await delay(updateDelay);
-    queryClient.invalidateQueries({ queryKey: [ QueryKeys.tx, router.query.id ] });
+    queryClient.invalidateQueries({
+      queryKey: getResourceKey('tx', { pathParams: { id: router.query.id?.toString() } }),
+    });
     onTxStatusUpdate?.();
   }, [ onTxStatusUpdate, queryClient, router.query.id, updateDelay ]);
 
