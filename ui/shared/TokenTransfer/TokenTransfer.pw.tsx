@@ -4,10 +4,11 @@ import React from 'react';
 
 import * as tokenTransferMock from 'mocks/tokens/tokenTransfer';
 import TestApp from 'playwright/TestApp';
+import buildApiUrl from 'playwright/utils/buildApiUrl';
 
 import TokenTransfer from './TokenTransfer';
 
-const API_URL = '/node-api/transactions/1/token-transfers';
+const API_URL = buildApiUrl('tx_token_transfers', { id: '1' });
 
 test('without tx info +@mobile', async({ mount, page }) => {
   await page.route(API_URL, (route) => route.fulfill({

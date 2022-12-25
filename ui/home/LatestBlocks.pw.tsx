@@ -5,11 +5,12 @@ import * as blockMock from 'mocks/blocks/block';
 import * as statsMock from 'mocks/stats/index';
 import * as socketServer from 'playwright/fixtures/socketServer';
 import TestApp from 'playwright/TestApp';
+import buildApiUrl from 'playwright/utils/buildApiUrl';
 
 import LatestBlocks from './LatestBlocks';
 
-const STATS_API_URL = '/node-api/home-stats';
-const BLOCKS_API_URL = '/node-api/index/blocks';
+const STATS_API_URL = buildApiUrl('homepage_stats');
+const BLOCKS_API_URL = buildApiUrl('blocks');
 
 export const test = base.extend<socketServer.SocketServerFixture>({
   createSocket: socketServer.createSocket,

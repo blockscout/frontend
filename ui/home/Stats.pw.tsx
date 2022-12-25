@@ -4,10 +4,11 @@ import React from 'react';
 import * as statsMock from 'mocks/stats/index';
 import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
+import buildApiUrl from 'playwright/utils/buildApiUrl';
 
 import Stats from './Stats';
 
-const API_URL = '/node-api/home-stats';
+const API_URL = buildApiUrl('homepage_stats');
 
 test('all items +@mobile +@dark-mode +@desktop-xl', async({ mount, page }) => {
   await page.route(API_URL, (route) => route.fulfill({
