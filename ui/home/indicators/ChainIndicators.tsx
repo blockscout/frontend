@@ -28,7 +28,7 @@ const ChainIndicators = () => {
   const [ selectedIndicator, selectIndicator ] = React.useState(indicators[0]?.id);
   const indicator = indicators.find(({ id }) => id === selectedIndicator);
 
-  const queryResult = useFetchChartData(indicator!);
+  const queryResult = useFetchChartData(indicator);
   const statsQueryResult = useApiQuery('homepage_stats');
 
   const bgColorDesktop = useColorModeValue('white', 'gray.900');
