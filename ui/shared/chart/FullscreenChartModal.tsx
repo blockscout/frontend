@@ -10,7 +10,7 @@ import ChartWidgetGraph from './ChartWidgetGraph';
 type Props = {
   isOpen: boolean;
   title: string;
-  description: string;
+  description?: string;
   items: Array<TimeChartItem>;
   onClose: () => void;
 }
@@ -56,14 +56,16 @@ const FullscreenChartModal = ({
               { title }
             </Heading>
 
-            <Text
-              gridColumn={ 1 }
-              as="p"
-              variant="secondary"
-              fontSize="xs"
-            >
-              { description }
-            </Text>
+            { description && (
+              <Text
+                gridColumn={ 1 }
+                as="p"
+                variant="secondary"
+                fontSize="xs"
+              >
+                { description }
+              </Text>
+            ) }
 
             { !isZoomResetInitial && (
               <Button
