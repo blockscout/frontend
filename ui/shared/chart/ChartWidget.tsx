@@ -16,13 +16,14 @@ import FullscreenChartModal from './FullscreenChartModal';
 type Props = {
   items?: Array<TimeChartItem>;
   title: string;
-  description: string;
+  description?: string;
   isLoading: boolean;
+  chartHeight?: string;
 }
 
 const DOWNLOAD_IMAGE_SCALE = 5;
 
-const ChartWidget = ({ items, title, description, isLoading }: Props) => {
+const ChartWidget = ({ items, title, description, isLoading, chartHeight }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
   const [ isFullscreen, setIsFullscreen ] = useState(false);
   const [ isZoomResetInitial, setIsZoomResetInitial ] = React.useState(true);
@@ -78,7 +79,7 @@ const ChartWidget = ({ items, title, description, isLoading }: Props) => {
   }, [ title ]);
 
   if (isLoading) {
-    return <ChartWidgetSkeleton/>;
+    return <ChartWidgetSkeleton hasDescription={ Boolean(description) } chartHeight={ chartHeight }/>;
   }
 
   if (items) {
@@ -105,15 +106,17 @@ const ChartWidget = ({ items, title, description, isLoading }: Props) => {
               { title }
             </Text>
 
-            <Text
-              mb={ 1 }
-              gridColumn={ 1 }
-              as="p"
-              variant="secondary"
-              fontSize="xs"
-            >
-              { description }
-            </Text>
+            { description && (
+              <Text
+                mb={ 1 }
+                gridColumn={ 1 }
+                as="p"
+                variant="secondary"
+                fontSize="xs"
+              >
+                { description }
+              </Text>
+            ) }
 
             <Tooltip label="Reset zoom">
               <IconButton
@@ -170,12 +173,14 @@ const ChartWidget = ({ items, title, description, isLoading }: Props) => {
             </Menu>
           </Grid>
 
-          <ChartWidgetGraph
-            items={ items }
-            onZoom={ handleZoom }
-            isZoomResetInitial={ isZoomResetInitial }
-            title={ title }
-          />
+          <Box h={ chartHeight || 'auto' }>
+            <ChartWidgetGraph
+              items={ items }
+              onZoom={ handleZoom }
+              isZoomResetInitial={ isZoomResetInitial }
+              title={ title }
+            />
+          </Box>
         </Box>
 
         <FullscreenChartModal
@@ -192,4 +197,4 @@ const ChartWidget = ({ items, title, description, isLoading }: Props) => {
   return null;
 };
 
-export default ChartWidget;
+export default React.memo(ChartWidget);

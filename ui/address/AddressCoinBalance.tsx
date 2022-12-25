@@ -69,7 +69,7 @@ const AddressCoinBalance = ({ addressQuery }: Props) => {
   return (
     <>
       { socketAlert && <SocketAlert mb={ 6 }/> }
-      <AddressCoinBalanceChart/>
+      <AddressCoinBalanceChart addressQuery={ addressQuery }/>
       <AddressCoinBalanceHistory query={ coinBalanceQuery }/>
     </>
   );
