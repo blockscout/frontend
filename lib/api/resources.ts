@@ -6,6 +6,7 @@ import type {
   AddressTransactionsResponse,
   AddressTokenTransferResponse,
   AddressCoinBalanceHistoryResponse,
+  AddressCoinBalanceHistoryChart,
   AddressBlocksValidatedResponse,
   AddressInternalTxsResponse,
   AddressTxsFilters,
@@ -149,6 +150,9 @@ export const RESOURCES = {
     paginationFields: [ 'items_count' as const, 'block_number' as const ],
     filterFields: [ ],
   },
+  address_coin_balance_chart: {
+    path: '/api/v2/addresses/:id/coin-balance-history-by-day',
+  },
 
   // HOMEPAGE
   homepage_stats: {
@@ -244,6 +248,7 @@ Q extends 'address_internal_txs' ? AddressInternalTxsResponse :
 Q extends 'address_token_transfers' ? AddressTokenTransferResponse :
 Q extends 'address_blocks_validated' ? AddressBlocksValidatedResponse :
 Q extends 'address_coin_balance' ? AddressCoinBalanceHistoryResponse :
+Q extends 'address_coin_balance_chart' ? AddressCoinBalanceHistoryChart :
 Q extends 'config_json_rpc' ? JsonRpcUrlResponse :
 never;
 /* eslint-enable @typescript-eslint/indent */
