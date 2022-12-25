@@ -27,8 +27,6 @@ test('without tx info +@mobile', async({ mount, page }) => {
     </TestApp>,
   );
 
-  await page.waitForResponse(API_URL),
-
   await expect(component).toHaveScreenshot();
 });
 
@@ -48,8 +46,6 @@ test('with tx info +@mobile', async({ mount, page }) => {
       />
     </TestApp>,
   );
-
-  await page.waitForResponse(API_URL),
 
   await expect(component).toHaveScreenshot();
 });

@@ -10,7 +10,7 @@ import buildApiUrl from 'playwright/utils/buildApiUrl';
 import LatestBlocks from './LatestBlocks';
 
 const STATS_API_URL = buildApiUrl('homepage_stats');
-const BLOCKS_API_URL = buildApiUrl('blocks');
+const BLOCKS_API_URL = buildApiUrl('homepage_blocks');
 
 export const test = base.extend<socketServer.SocketServerFixture>({
   createSocket: socketServer.createSocket,

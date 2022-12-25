@@ -3,10 +3,9 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { Element } from 'react-scroll';
 
-import type { AddressTokenTransferFilters, AddressFromToFilter } from 'types/api/address';
+import type { AddressFromToFilter } from 'types/api/address';
 import { AddressFromToFilterValues } from 'types/api/address';
 import type { TokenType } from 'types/api/tokenInfo';
-import type { TokenTransferFilters } from 'types/api/tokenTransfer';
 
 import type { PaginationFilters } from 'lib/api/resources';
 import type { Params as UseApiQueryParams } from 'lib/api/useApiQuery';
@@ -46,6 +45,11 @@ interface Props<Resource extends 'tx_token_transfers' | 'address_token_transfers
   pathParams?: UseApiQueryParams<Resource>['pathParams'];
 }
 
+type State = {
+  type: Array<TokenType> | undefined;
+  filter: AddressFromToFilter;
+}
+
 const TokenTransfer = <Resource extends 'tx_token_transfers' | 'address_token_transfers'>({
   isLoading: isLoadingProp,
   isDisabled,
@@ -56,7 +60,7 @@ const TokenTransfer = <Resource extends 'tx_token_transfers' | 'address_token_tr
   pathParams,
 }: Props<Resource>) => {
   const router = useRouter();
-  const [ filters, setFilters ] = React.useState<AddressTokenTransferFilters & TokenTransferFilters>(
+  const [ filters, setFilters ] = React.useState<State>(
     { type: getTokenFilterValue(router.query.type), filter: getAddressFilterValue(router.query.filter) },
   );
 
@@ -79,7 +83,7 @@ const TokenTransfer = <Resource extends 'tx_token_transfers' | 'address_token_tr
     setFilters((prevState) => ({ ...prevState, filter: filterVal }));
   }, [ filters, onFilterChange ]);
 
-  const numActiveFilters = filters.type.length + (filters.filter ? 1 : 0);
+  const numActiveFilters = (filters.type?.length || 0) + (filters.filter ? 1 : 0);
   const isActionBarHidden = !numActiveFilters && !data?.items.length;
 
   const content = (() => {
