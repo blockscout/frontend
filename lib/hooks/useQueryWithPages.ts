@@ -6,8 +6,7 @@ import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 import { animateScroll, scroller } from 'react-scroll';
 
-import type { PaginatedResponseX, PaginatedResources, PaginationFiltersX } from 'types/api/pagination';
-
+import type { PaginatedResources, PaginatedResponse, PaginationFilters } from 'lib/api/resources';
 import { RESOURCES } from 'lib/api/resources';
 import type { Params as UseApiQueryParams } from 'lib/api/useApiQuery';
 import useApiQuery from 'lib/api/useApiQuery';
@@ -16,7 +15,7 @@ interface Params<Resource extends PaginatedResources> {
   resourceName: Resource;
   options?: UseApiQueryParams<Resource>['queryOptions'];
   pathParams?: UseApiQueryParams<Resource>['pathParams'];
-  filters?: PaginationFiltersX<Resource>;
+  filters?: PaginationFilters<Resource>;
   scroll?: { elem: string; offset: number };
 }
 
@@ -32,7 +31,7 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
   const router = useRouter();
 
   type NextPageParams = {
-    [K in keyof PaginatedResponseX<Resource>['next_page_params']]: string;
+    [K in keyof PaginatedResponse<Resource>['next_page_params']]: string;
   }
   const currPageParams = mapValues(pick(router.query, resource.paginationFields), (value) => value?.toString()) as NextPageParams;
 
@@ -125,7 +124,7 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
     setHasPagination(true);
   }, [ queryClient, resourceName, router, resource.paginationFields, scrollToTop ]);
 
-  const onFilterChange = useCallback((newFilters: PaginationFiltersX<Resource> | undefined) => {
+  const onFilterChange = useCallback((newFilters: PaginationFilters<Resource> | undefined) => {
     const newQuery = omit(router.query, resource.paginationFields, 'page', resource.filterFields);
     if (newFilters) {
       Object.entries(newFilters).forEach(([ key, value ]) => {

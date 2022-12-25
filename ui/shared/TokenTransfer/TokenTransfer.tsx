@@ -5,10 +5,10 @@ import { Element } from 'react-scroll';
 
 import type { AddressTokenTransferFilters, AddressFromToFilter } from 'types/api/address';
 import { AddressFromToFilterValues } from 'types/api/address';
-import type { PaginationFiltersX } from 'types/api/pagination';
 import type { TokenType } from 'types/api/tokenInfo';
 import type { TokenTransferFilters } from 'types/api/tokenTransfer';
 
+import type { PaginationFilters } from 'lib/api/resources';
 import type { Params as UseApiQueryParams } from 'lib/api/useApiQuery';
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
 import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
@@ -64,18 +64,18 @@ const TokenTransfer = <Resource extends 'tx_token_transfers' | 'address_token_tr
     resourceName,
     pathParams,
     options: { enabled: !isDisabled },
-    filters: filters as PaginationFiltersX<Resource>,
+    filters: filters as PaginationFilters<Resource>,
     scroll: { elem: SCROLL_ELEM, offset: SCROLL_OFFSET },
   });
 
   const handleTypeFilterChange = React.useCallback((nextValue: Array<TokenType>) => {
-    onFilterChange({ ...filters, type: nextValue } as PaginationFiltersX<Resource>);
+    onFilterChange({ ...filters, type: nextValue } as PaginationFilters<Resource>);
     setFilters((prevState) => ({ ...prevState, type: nextValue }));
   }, [ filters, onFilterChange ]);
 
   const handleAddressFilterChange = React.useCallback((nextValue: string) => {
     const filterVal = getAddressFilterValue(nextValue);
-    onFilterChange({ ...filters, filter: filterVal } as PaginationFiltersX<Resource>);
+    onFilterChange({ ...filters, filter: filterVal } as PaginationFilters<Resource>);
     setFilters((prevState) => ({ ...prevState, filter: filterVal }));
   }, [ filters, onFilterChange ]);
 
