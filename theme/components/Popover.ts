@@ -14,7 +14,7 @@ const $arrowBg = cssVar('popper-arrow-bg');
 const $arrowShadowColor = cssVar('popper-arrow-shadow-color');
 
 const baseStylePopper = defineStyle({
-  zIndex: 20,
+  zIndex: 'popover',
 });
 
 const baseStyleContent = defineStyle((props) => {
