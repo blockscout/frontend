@@ -9,6 +9,7 @@ import type { ResourceError } from 'lib/api/resources';
 export interface Params {
   method?: RequestInit['method'];
   headers?: RequestInit['headers'];
+  signal?: RequestInit['signal'];
   body?: Record<string, unknown>;
   credentials?: RequestCredentials;
 }

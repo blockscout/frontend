@@ -19,6 +19,7 @@ import type { InternalTransactionsResponse } from 'types/api/internalTransaction
 import type { JsonRpcUrlResponse } from 'types/api/jsonRpcUrl';
 import type { LogsResponse } from 'types/api/log';
 import type { RawTracesResponse } from 'types/api/rawTrace';
+import type { SearchResult } from 'types/api/search';
 import type { Stats, Charts, HomeStats } from 'types/api/stats';
 import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
 import type { TransactionsResponseValidated, TransactionsResponsePending, Transaction } from 'types/api/transaction';
@@ -179,6 +180,11 @@ export const RESOURCES = {
     path: '/api/v2/config/json-rpc-url',
   },
 
+  // SEARCH
+  search: {
+    path: '/api/v2/search',
+  },
+
   // DEPRECATED
   old_api: {
     path: '/api',
@@ -250,6 +256,7 @@ Q extends 'address_blocks_validated' ? AddressBlocksValidatedResponse :
 Q extends 'address_coin_balance' ? AddressCoinBalanceHistoryResponse :
 Q extends 'address_coin_balance_chart' ? AddressCoinBalanceHistoryChart :
 Q extends 'config_json_rpc' ? JsonRpcUrlResponse :
+Q extends 'search' ? SearchResult :
 never;
 /* eslint-enable @typescript-eslint/indent */
 

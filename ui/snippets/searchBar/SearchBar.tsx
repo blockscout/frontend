@@ -1,5 +1,5 @@
 import { Popover, PopoverTrigger, PopoverContent, PopoverBody, useDisclosure } from '@chakra-ui/react';
-import type { ChangeEvent, FormEvent, FocusEvent } from 'react';
+import type { FormEvent, FocusEvent } from 'react';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -7,6 +7,7 @@ import link from 'lib/link/link';
 
 import SearchBarInput from './SearchBarInput';
 import SearchBarSuggest from './SearchBarSuggest';
+import useSearchQuery from './useSearchQuery';
 
 type Props = {
   withShadow?: boolean;
@@ -58,22 +59,19 @@ const data = [
 ];
 
 const SearchBar = ({ isHomepage, withShadow }: Props) => {
-  const [ value, setValue ] = React.useState('');
   const { isOpen, onClose, onOpen } = useDisclosure();
   const inputRef = React.useRef<HTMLFormElement>(null);
   const menuRef = React.useRef<HTMLDivElement>(null);
   const menuWidth = React.useRef<number>(0);
   const isMobile = useIsMobile();
 
-  const handleChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
-  }, []);
+  const { searchTerm, handleSearchTermChange } = useSearchQuery();
 
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const url = link('search_results', undefined, { q: value });
+    const url = link('search_results', undefined, { q: searchTerm });
     window.location.assign(url);
-  }, [ value ]);
+  }, [ searchTerm ]);
 
   const handleFocus = React.useCallback(() => {
     onOpen();
@@ -110,7 +108,7 @@ const SearchBar = ({ isHomepage, withShadow }: Props) => {
       <PopoverTrigger>
         <SearchBarInput
           ref={ inputRef }
-          onChange={ handleChange }
+          onChange={ handleSearchTermChange }
           onSubmit={ handleSubmit }
           onFocus={ handleFocus }
           onBlur={ handleBlur }
