@@ -27,7 +27,6 @@ test('between addresses +@mobile +@dark-mode', async({ mount, page }) => {
     { hooksConfig },
   );
 
-  await page.waitForResponse(API_URL);
   await page.getByText('View details').click();
 
   await expect(component).toHaveScreenshot();
@@ -45,7 +44,6 @@ test('creating contact', async({ mount, page }) => {
     </TestApp>,
     { hooksConfig },
   );
-  await page.waitForResponse(API_URL);
 
   await expect(component).toHaveScreenshot();
 });
@@ -62,7 +60,6 @@ test('with token transfer +@mobile', async({ mount, page }) => {
     </TestApp>,
     { hooksConfig },
   );
-  await page.waitForResponse(API_URL);
 
   await expect(component).toHaveScreenshot();
 });
@@ -79,7 +76,6 @@ test('with decoded revert reason', async({ mount, page }) => {
     </TestApp>,
     { hooksConfig },
   );
-  await page.waitForResponse(API_URL);
 
   await expect(component).toHaveScreenshot();
 });
@@ -96,7 +92,6 @@ test('with decoded raw reason', async({ mount, page }) => {
     </TestApp>,
     { hooksConfig },
   );
-  await page.waitForResponse(API_URL);
 
   await expect(component).toHaveScreenshot();
 });
@@ -113,7 +108,7 @@ test('pending', async({ mount, page }) => {
     </TestApp>,
     { hooksConfig },
   );
-  await page.waitForResponse(API_URL);
+
   await page.getByText('View details').click();
 
   await expect(component).toHaveScreenshot();
