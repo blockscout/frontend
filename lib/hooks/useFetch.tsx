@@ -21,11 +21,14 @@ export default function useFetch() {
     const reqParams = {
       ...params,
       body: params?.method && params?.body && ![ 'GET', 'HEAD' ].includes(params.method) ?
-        JSON.stringify(params.body) :
+        JSON.stringify({
+          ...params.body,
+          _csrf_token: token,
+        }) :
         undefined,
       headers: {
         ...params?.headers,
-        ...(token ? { 'x-csrf-token': token } : {}),
+        // ...(token ? { 'x-csrf-token': token } : {}),
       },
     };
 
