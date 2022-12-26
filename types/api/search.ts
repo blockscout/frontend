@@ -1,4 +1,4 @@
-export type SearchResultType = 'token' | 'address' | 'block' | 'transaction';
+export type SearchResultType = 'token' | 'address' | 'block' | 'transaction' | 'contract';
 
 export interface SearchResultToken {
   type: 'token';
@@ -9,8 +9,8 @@ export interface SearchResultToken {
   address_url: string;
 }
 
-export interface SearchResultAddress {
-  type: 'address';
+export interface SearchResultAddressOrContract {
+  type: 'address' | 'contract';
   name: string | null;
   address: string;
   url: string;
@@ -29,7 +29,7 @@ export interface SearchResultTx {
   url: string;
 }
 
-export type SearchResultItem = SearchResultToken | SearchResultAddress | SearchResultBlock | SearchResultTx;
+export type SearchResultItem = SearchResultToken | SearchResultAddressOrContract | SearchResultBlock | SearchResultTx;
 
 export interface SearchResult {
   items: Array<SearchResultItem>;

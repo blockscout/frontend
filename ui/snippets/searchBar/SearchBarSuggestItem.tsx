@@ -21,6 +21,7 @@ const SearchBarSuggestItem = ({ data, isMobile }: Props) => {
       case 'token': {
         return link('token_index', { hash: data.address });
       }
+      case 'contract':
       case 'address': {
         return link('address_index', { id: data.address });
       }
@@ -51,6 +52,7 @@ const SearchBarSuggestItem = ({ data, isMobile }: Props) => {
           </>
         );
       }
+      case 'contract':
       case 'address': {
         return (
           <Address>
