@@ -24,7 +24,7 @@ export default function buildUrl(
 
   const baseUrl = needProxy ? appConfig.baseUrl : (resource.endpoint || appConfig.api.endpoint);
   const basePath = resource.basePath !== undefined ? resource.basePath : appConfig.api.basePath;
-  const path = needProxy ? '/proxy' + basePath + resource.path : basePath + resource.path;
+  const path = needProxy ? '/node-api/proxy' + basePath + resource.path : basePath + resource.path;
   const url = new URL(compile(path)(pathParams), baseUrl);
 
   queryParams && Object.entries(queryParams).forEach(([ key, value ]) => {

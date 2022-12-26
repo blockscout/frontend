@@ -5,9 +5,12 @@ import React, { useRef, useCallback, useState } from 'react';
 import type { TimeChartItem } from './types';
 
 import imageIcon from 'icons/image.svg';
-import repeatArrow from 'icons/repeat_arrow.svg';
+import repeatArrowIcon from 'icons/repeat_arrow.svg';
 import scopeIcon from 'icons/scope.svg';
+import svgFileIcon from 'icons/svg_file.svg';
 import dotsIcon from 'icons/vertical_dots.svg';
+import dayjs from 'lib/date/dayjs';
+import saveAsCSV from 'lib/saveAsCSV';
 
 import ChartWidgetGraph from './ChartWidgetGraph';
 import ChartWidgetSkeleton from './ChartWidgetSkeleton';
@@ -40,18 +43,10 @@ const ChartWidget = ({ items, title, description, isLoading, chartHeight }: Prop
 
   const showChartFullscreen = useCallback(() => {
     setIsFullscreen(true);
-
-    if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
-      document.documentElement.requestFullscreen();
-    }
   }, []);
 
   const clearFullscreenChart = useCallback(() => {
     setIsFullscreen(false);
-
-    if (document.fullscreenElement) {
-      document.exitFullscreen();
-    }
   }, []);
 
   const handleFileSaveClick = useCallback(() => {
@@ -77,6 +72,19 @@ const ChartWidget = ({ items, title, description, isLoading, chartHeight }: Prop
         });
     }
   }, [ title ]);
+
+  const handleSVGSavingClick = useCallback(() => {
+    if (items) {
+      const headerRows = [
+        'Date', 'Value',
+      ];
+      const dataRows = items.map((item) => [
+        dayjs(item.date).format('YYYY-MM-DD'), String(item.value),
+      ]);
+
+      saveAsCSV(headerRows, dataRows, `${ title } (Blockscout stats)`);
+    }
+  }, [ items, title ]);
 
   if (isLoading) {
     return <ChartWidgetSkeleton hasDescription={ Boolean(description) } chartHeight={ chartHeight }/>;
@@ -132,7 +140,7 @@ const ChartWidget = ({ items, title, description, isLoading, chartHeight }: Prop
                 size="sm"
                 variant="outline"
                 onClick={ handleZoomResetClick }
-                icon={ <Icon as={ repeatArrow } w={ 4 } h={ 4 }/> }
+                icon={ <Icon as={ repeatArrowIcon } w={ 4 } h={ 4 }/> }
               />
             </Tooltip>
 
@@ -161,6 +169,7 @@ const ChartWidget = ({ items, title, description, isLoading, chartHeight }: Prop
                   <Icon as={ scopeIcon } boxSize={ 4 } mr={ 3 }/>
                   View fullscreen
                 </MenuItem>
+
                 <MenuItem
                   display="flex"
                   alignItems="center"
@@ -168,6 +177,15 @@ const ChartWidget = ({ items, title, description, isLoading, chartHeight }: Prop
                 >
                   <Icon as={ imageIcon } boxSize={ 4 } mr={ 3 }/>
                   Save as PNG
+                </MenuItem>
+
+                <MenuItem
+                  display="flex"
+                  alignItems="center"
+                  onClick={ handleSVGSavingClick }
+                >
+                  <Icon as={ svgFileIcon } boxSize={ 4 } mr={ 3 }/>
+                  Save as CSV
                 </MenuItem>
               </MenuList>
             </Menu>

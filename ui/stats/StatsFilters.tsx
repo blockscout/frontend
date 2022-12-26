@@ -46,19 +46,10 @@ const StatsFilters = ({
       templateAreas={{
         base: `"input input"
                 "section interval"`,
-        lg: `"input section interval"`,
+        lg: `"section interval input"`,
       }}
-      gridTemplateColumns={{ base: 'repeat(2, minmax(0, 1fr))', lg: '1fr auto auto' }}
+      gridTemplateColumns={{ base: 'repeat(2, minmax(0, 1fr))', lg: 'auto auto 1fr' }}
     >
-      <GridItem
-        w="100%"
-        area="input"
-      >
-        <FilterInput
-          onChange={ onFilterInputChange }
-          placeholder="Find chart, metric..."/>
-      </GridItem>
-
       <GridItem
         w={{ base: '100%', lg: 'auto' }}
         area="section"
@@ -79,6 +70,15 @@ const StatsFilters = ({
           selectedId={ interval }
           onSelect={ onIntervalChange }
         />
+      </GridItem>
+
+      <GridItem
+        w="100%"
+        area="input"
+      >
+        <FilterInput
+          onChange={ onFilterInputChange }
+          placeholder="Find chart, metric..."/>
       </GridItem>
     </Grid>
   );
