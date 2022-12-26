@@ -1,11 +1,7 @@
 import { Flex, Box, Text, Skeleton } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
-import type { HomeStats } from 'types/api/stats';
-import { QueryKeys } from 'types/client/queries';
-
-import useFetch from 'lib/hooks/useFetch';
+import useApiQuery from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp } from 'lib/html-entities';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
@@ -18,12 +14,7 @@ interface Props {
 
 const BlocksTabSlot = ({ pagination, isPaginationVisible }: Props) => {
   const isMobile = useIsMobile();
-  const fetch = useFetch();
-
-  const statsQuery = useQuery<unknown, unknown, HomeStats>(
-    [ QueryKeys.homeStats ],
-    () => fetch('/node-api/home-stats'),
-  );
+  const statsQuery = useApiQuery('homepage_stats');
 
   if (isMobile) {
     return null;

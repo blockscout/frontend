@@ -1,14 +1,12 @@
 import { Flex, Link, Icon, Tag, Tooltip } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { Transaction } from 'types/api/transaction';
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
 import eastArrowIcon from 'icons/arrows/east.svg';
+import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/appContext';
-import useFetch from 'lib/hooks/useFetch';
 import isBrowser from 'lib/isBrowser';
 import networkExplorers from 'lib/networks/networkExplorers';
 import AdBanner from 'ui/shared/ad/AdBanner';
@@ -35,7 +33,6 @@ const TABS: Array<RoutedTab> = [
 
 const TransactionPageContent = () => {
   const router = useRouter();
-  const fetch = useFetch();
   const appProps = useAppContext();
   const isInBrowser = isBrowser();
 
@@ -43,13 +40,10 @@ const TransactionPageContent = () => {
 
   const hasGoBackLink = referrer && referrer.includes('/txs');
 
-  const { data } = useQuery<unknown, unknown, Transaction>(
-    [ 'tx', router.query.id ],
-    async() => await fetch(`/node-api/transactions/${ router.query.id }`),
-    {
-      enabled: Boolean(router.query.id),
-    },
-  );
+  const { data } = useApiQuery('tx', {
+    pathParams: { id: router.query.id?.toString() },
+    queryOptions: { enabled: Boolean(router.query.id) },
+  });
 
   const explorersLinks = networkExplorers
     .filter((explorer) => explorer.paths.tx)

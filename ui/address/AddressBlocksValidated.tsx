@@ -5,9 +5,9 @@ import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
 import type { Address, AddressBlocksValidatedResponse } from 'types/api/address';
-import { QueryKeys } from 'types/client/queries';
 
 import appConfig from 'configs/app/config';
+import { getResourceKey } from 'lib/api/useApiQuery';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
@@ -31,8 +31,8 @@ const AddressBlocksValidated = ({ addressQuery }: Props) => {
   const queryClient = useQueryClient();
 
   const query = useQueryWithPages({
-    apiPath: `/node-api/addresses/${ addressQuery.data?.hash }/blocks-validated`,
-    queryName: QueryKeys.addressBlocksValidated,
+    resourceName: 'address_blocks_validated',
+    pathParams: { id: addressQuery.data?.hash },
     options: {
       enabled: Boolean(addressQuery.data),
     },
@@ -46,7 +46,7 @@ const AddressBlocksValidated = ({ addressQuery }: Props) => {
     setSocketAlert(false);
 
     queryClient.setQueryData(
-      [ QueryKeys.addressBlocksValidated, { page: query.pagination.page } ],
+      getResourceKey('address_blocks_validated', { pathParams: { id: addressQuery.data?.hash } }),
       (prevData: AddressBlocksValidatedResponse | undefined) => {
         if (!prevData) {
           return;
@@ -57,7 +57,7 @@ const AddressBlocksValidated = ({ addressQuery }: Props) => {
           items: [ payload.block, ...prevData.items ],
         };
       });
-  }, [ query.pagination.page, queryClient ]);
+  }, [ addressQuery.data?.hash, queryClient ]);
 
   const channel = useSocketChannel({
     topic: `blocks:${ addressQuery.data?.hash.toLowerCase() }`,

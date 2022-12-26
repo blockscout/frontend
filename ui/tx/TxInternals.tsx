@@ -2,7 +2,6 @@ import { Box, Text, Show, Hide } from '@chakra-ui/react';
 import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
-import { QueryKeys } from 'types/client/queries';
 
 import { SECOND } from 'lib/consts';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -76,9 +75,8 @@ const TxInternals = () => {
   const [ sort, setSort ] = React.useState<Sort>();
   const txInfo = useFetchTxInfo({ updateDelay: 5 * SECOND });
   const { data, isLoading, isError, pagination, isPaginationVisible } = useQueryWithPages({
-    apiPath: `/node-api/transactions/${ txInfo.data?.hash }/internal-transactions`,
-    queryName: QueryKeys.txInternals,
-    queryIds: txInfo.data?.hash ? [ txInfo.data.hash ] : undefined,
+    resourceName: 'tx_internal_txs',
+    pathParams: { id: txInfo.data?.hash },
     options: {
       enabled: Boolean(txInfo.data?.hash) && Boolean(txInfo.data?.status),
     },

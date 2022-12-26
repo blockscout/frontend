@@ -1,14 +1,13 @@
 import { Box, Flex, Icon, IconButton, Skeleton, Tooltip } from '@chakra-ui/react';
-import { useQuery, useQueryClient, useIsFetching } from '@tanstack/react-query';
+import { useQueryClient, useIsFetching } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
-import type { Address, AddressTokenBalance } from 'types/api/address';
-import { QueryKeys } from 'types/client/queries';
+import type { Address } from 'types/api/address';
 
 import walletIcon from 'icons/wallet.svg';
-import useFetch from 'lib/hooks/useFetch';
+import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
@@ -18,21 +17,20 @@ import TokenSelectMobile from './TokenSelectMobile';
 
 const TokenSelect = () => {
   const router = useRouter();
-  const fetch = useFetch();
   const isMobile = useIsMobile();
   const queryClient = useQueryClient();
   const [ blockNumber, setBlockNumber ] = React.useState<number>();
 
-  const addressQueryData = queryClient.getQueryData<Address>([ QueryKeys.address, router.query.id ]);
+  const addressResourceKey = getResourceKey('address', { pathParams: { id: router.query.id?.toString() } });
 
-  const { data, isError, isLoading, refetch } = useQuery<unknown, unknown, Array<AddressTokenBalance>>(
-    [ QueryKeys.addressTokenBalances, addressQueryData?.hash ],
-    async() => await fetch(`/node-api/addresses/${ addressQueryData?.hash }/token-balances`),
-    {
-      enabled: Boolean(addressQueryData),
-    },
-  );
-  const balancesIsFetching = useIsFetching({ queryKey: [ QueryKeys.addressTokenBalances, addressQueryData?.hash ] });
+  const addressQueryData = queryClient.getQueryData<Address>(addressResourceKey);
+
+  const { data, isError, isLoading, refetch } = useApiQuery('address_token_balances', {
+    pathParams: { id: addressQueryData?.hash },
+    queryOptions: { enabled: Boolean(addressQueryData) },
+  });
+  const balancesResourceKey = getResourceKey('address_token_balances', { pathParams: { id: addressQueryData?.hash } });
+  const balancesIsFetching = useIsFetching({ queryKey: balancesResourceKey });
 
   const handleTokenBalanceMessage: SocketMessage.AddressTokenBalance['handler'] = React.useCallback((payload) => {
     if (payload.block_number !== blockNumber) {

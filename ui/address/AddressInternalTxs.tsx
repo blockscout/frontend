@@ -6,7 +6,6 @@ import { Element } from 'react-scroll';
 
 import type { AddressFromToFilter } from 'types/api/address';
 import { AddressFromToFilterValues } from 'types/api/address';
-import { QueryKeys } from 'types/client/queries';
 
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
@@ -36,9 +35,8 @@ const AddressInternalTxs = () => {
   const queryIdStr = queryIdArray[0];
 
   const { data, isLoading, isError, pagination, onFilterChange, isPaginationVisible } = useQueryWithPages({
-    apiPath: `/node-api/addresses/${ queryId }/internal-transactions`,
-    queryName: QueryKeys.addressInternalTxs,
-    queryIds: queryIdArray,
+    resourceName: 'address_internal_txs',
+    pathParams: { id: queryIdStr },
     filters: { filter: filterValue },
     scroll: { elem: SCROLL_ELEM, offset: SCROLL_OFFSET },
   });

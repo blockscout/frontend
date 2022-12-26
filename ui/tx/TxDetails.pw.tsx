@@ -3,10 +3,11 @@ import React from 'react';
 
 import * as txMock from 'mocks/txs/tx';
 import TestApp from 'playwright/TestApp';
+import buildApiUrl from 'playwright/utils/buildApiUrl';
 
 import TxDetails from './TxDetails';
 
-const API_URL = '/node-api/transactions/1';
+const API_URL = buildApiUrl('tx', { id: '1' });
 const hooksConfig = {
   router: {
     query: { id: 1 },

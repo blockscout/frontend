@@ -4,11 +4,12 @@ import React from 'react';
 
 import * as internalTxsMock from 'mocks/txs/internalTxs';
 import TestApp from 'playwright/TestApp';
+import buildApiUrl from 'playwright/utils/buildApiUrl';
 
 import AddressInternalTxs from './AddressInternalTxs';
 
 const ADDRESS_HASH = internalTxsMock.base.from.hash;
-const API_URL_TX_INTERNALS = `/node-api/addresses/${ ADDRESS_HASH }/internal-transactions`;
+const API_URL_TX_INTERNALS = buildApiUrl('address_internal_txs', { id: ADDRESS_HASH });
 const hooksConfig = {
   router: {
     query: { id: ADDRESS_HASH },
@@ -28,8 +29,6 @@ test('base view +@mobile', async({ mount, page }) => {
     </TestApp>,
     { hooksConfig },
   );
-
-  await page.waitForResponse(API_URL_TX_INTERNALS),
 
   await expect(component).toHaveScreenshot();
 });

@@ -1,13 +1,10 @@
 import { Box, Center, useColorMode } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-import type { JsonRpcUrlResponse } from 'types/api/jsonRpcUrl';
 import type { AppItemOverview } from 'types/client/apps';
-import { QueryKeys } from 'types/client/queries';
 
 import appConfig from 'configs/app/config';
-import useFetch from 'lib/hooks/useFetch';
+import useApiQuery from 'lib/api/useApiQuery';
 import link from 'lib/link/link';
 import ContentLoader from 'ui/shared/ContentLoader';
 import Page from 'ui/shared/Page/Page';
@@ -20,18 +17,15 @@ type Props = {
 const MarketplaceApp = ({ app, isLoading }: Props) => {
   const [ isFrameLoading, setIsFrameLoading ] = useState(isLoading);
   const { colorMode } = useColorMode();
-  const fetch = useFetch();
   const ref = useRef<HTMLIFrameElement>(null);
 
   const handleIframeLoad = useCallback(() => {
     setIsFrameLoading(false);
   }, []);
 
-  const { data: jsonRpcUrlResponse } = useQuery<unknown, unknown, JsonRpcUrlResponse>(
-    [ QueryKeys.jsonRpcUrl ],
-    async() => await fetch(`/node-api/config/json-rpc-url`),
-    { refetchOnMount: false },
-  );
+  const { data: jsonRpcUrlResponse } = useApiQuery('config_json_rpc', {
+    queryOptions: { refetchOnMount: false },
+  });
 
   useEffect(() => {
     if (app && !isFrameLoading) {

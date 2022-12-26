@@ -3,12 +3,12 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { Element } from 'react-scroll';
 
-import type { AddressTokenTransferFilters, AddressFromToFilter } from 'types/api/address';
+import type { AddressFromToFilter } from 'types/api/address';
 import { AddressFromToFilterValues } from 'types/api/address';
 import type { TokenType } from 'types/api/tokenInfo';
-import type { TokenTransferFilters } from 'types/api/tokenTransfer';
-import type { QueryKeys } from 'types/client/queries';
 
+import type { PaginationFilters } from 'lib/api/resources';
+import type { Params as UseApiQueryParams } from 'lib/api/useApiQuery';
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
 import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
@@ -34,54 +34,56 @@ const SCROLL_OFFSET = -100;
 const getTokenFilterValue = (getFilterValuesFromQuery<TokenType>).bind(null, TOKEN_TYPES);
 const getAddressFilterValue = (getFilterValueFromQuery<AddressFromToFilter>).bind(null, AddressFromToFilterValues);
 
-interface Props {
+interface Props<Resource extends 'tx_token_transfers' | 'address_token_transfers'> {
   isLoading?: boolean;
   isDisabled?: boolean;
-  path: string;
-  queryName: QueryKeys.txTokenTransfers | QueryKeys.addressTokenTransfers;
-  queryIds?: Array<string>;
+  resourceName: Resource;
   baseAddress?: string;
   showTxInfo?: boolean;
   txHash?: string;
   enableTimeIncrement?: boolean;
+  pathParams?: UseApiQueryParams<Resource>['pathParams'];
 }
 
-const TokenTransfer = ({
+type State = {
+  type: Array<TokenType> | undefined;
+  filter: AddressFromToFilter;
+}
+
+const TokenTransfer = <Resource extends 'tx_token_transfers' | 'address_token_transfers'>({
   isLoading: isLoadingProp,
   isDisabled,
-  queryName,
-  queryIds,
-  path,
+  resourceName,
   baseAddress,
   showTxInfo = true,
   enableTimeIncrement,
-}: Props) => {
+  pathParams,
+}: Props<Resource>) => {
   const router = useRouter();
-  const [ filters, setFilters ] = React.useState<AddressTokenTransferFilters & TokenTransferFilters>(
+  const [ filters, setFilters ] = React.useState<State>(
     { type: getTokenFilterValue(router.query.type), filter: getAddressFilterValue(router.query.filter) },
   );
 
   const { isError, isLoading, data, pagination, onFilterChange, isPaginationVisible } = useQueryWithPages({
-    apiPath: path,
-    queryName,
-    queryIds,
+    resourceName,
+    pathParams,
     options: { enabled: !isDisabled },
-    filters: filters,
+    filters: filters as PaginationFilters<Resource>,
     scroll: { elem: SCROLL_ELEM, offset: SCROLL_OFFSET },
   });
 
   const handleTypeFilterChange = React.useCallback((nextValue: Array<TokenType>) => {
-    onFilterChange({ ...filters, type: nextValue });
+    onFilterChange({ ...filters, type: nextValue } as PaginationFilters<Resource>);
     setFilters((prevState) => ({ ...prevState, type: nextValue }));
   }, [ filters, onFilterChange ]);
 
   const handleAddressFilterChange = React.useCallback((nextValue: string) => {
     const filterVal = getAddressFilterValue(nextValue);
-    onFilterChange({ ...filters, filter: filterVal });
+    onFilterChange({ ...filters, filter: filterVal } as PaginationFilters<Resource>);
     setFilters((prevState) => ({ ...prevState, filter: filterVal }));
   }, [ filters, onFilterChange ]);
 
-  const numActiveFilters = filters.type.length + (filters.filter ? 1 : 0);
+  const numActiveFilters = (filters.type?.length || 0) + (filters.filter ? 1 : 0);
   const isActionBarHidden = !numActiveFilters && !data?.items.length;
 
   const content = (() => {

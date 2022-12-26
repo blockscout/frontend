@@ -2,10 +2,11 @@ import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import TestApp from 'playwright/TestApp';
+import buildApiUrl from 'playwright/utils/buildApiUrl';
 
 import Page from './Page';
 
-const API_URL = '/node-api/index/indexing-status';
+const API_URL = buildApiUrl('homepage_indexing_status');
 
 test('without indexing alert +@mobile', async({ mount }) => {
   const component = await mount(
