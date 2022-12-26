@@ -11,7 +11,7 @@ export interface SearchResultToken {
 
 export interface SearchResultAddress {
   type: 'address';
-  name: string;
+  name: string | null;
   address: string;
   url: string;
 }
@@ -29,8 +29,10 @@ export interface SearchResultTx {
   url: string;
 }
 
+export type SearchResultItem = SearchResultToken | SearchResultAddress | SearchResultBlock | SearchResultTx;
+
 export interface SearchResult {
-  items: Array<SearchResultToken | SearchResultAddress | SearchResultBlock | SearchResultTx>;
+  items: Array<SearchResultItem>;
   next_page_params: {
     'address_hash': string | null;
     'block_hash': string | null;
@@ -41,5 +43,5 @@ export interface SearchResult {
     'name': string;
     'q': string;
     'tx_hash': string | null;
-  };
+  } | null;
 }
