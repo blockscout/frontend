@@ -67,6 +67,12 @@ export interface WatchlistAddress {
   address?: AddressParam;
 }
 
+export interface WatchlistTokensResponse {
+  message: string;
+  result?: Array<unknown>;
+  status: string;
+}
+
 export interface WatchlistAddressNew {
   addressName: string;
   notificationSettings: NotificationSettings;

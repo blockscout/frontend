@@ -1,11 +1,7 @@
 import { Grid } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
-import type { Stats } from 'types/api/stats';
-import { QueryKeys } from 'types/client/queries';
-
-import useFetch from 'lib/hooks/useFetch';
+import useApiQuery from 'lib/api/useApiQuery';
 
 import NumberWidget from './NumberWidget';
 import NumberWidgetSkeleton from './NumberWidgetSkeleton';
@@ -13,12 +9,7 @@ import NumberWidgetSkeleton from './NumberWidgetSkeleton';
 const skeletonsCount = 8;
 
 const NumberWidgetsList = () => {
-  const fetch = useFetch();
-
-  const { data, isLoading } = useQuery<unknown, unknown, Stats>(
-    [ QueryKeys.stats ],
-    async() => await fetch(`/node-api/stats/counters`),
-  );
+  const { data, isLoading } = useApiQuery('stats_counters');
 
   return (
     <Grid

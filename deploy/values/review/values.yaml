@@ -307,6 +307,7 @@ frontend:
         - "/"
       prefix:
       # - "/(apps|auth/profile|account)"
+        - "/account"
         - "/apps"
         - "/_next"
         - "/node-api"

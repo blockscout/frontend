@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
+import { RESOURCES } from 'lib/api/resources';
 import * as profileMock from 'mocks/user/profile';
 import authFixture from 'playwright/fixtures/auth';
 import TestApp from 'playwright/TestApp';
@@ -33,7 +34,7 @@ test.describe('auth', () => {
   });
 
   extendedTest('+@dark-mode', async({ mount, page }) => {
-    await page.route('/node-api/account/profile', (route) => route.fulfill({
+    await page.route('/proxy/poa/core' + RESOURCES.user_info.path, (route) => route.fulfill({
       status: 200,
       body: JSON.stringify(profileMock.base),
     }));

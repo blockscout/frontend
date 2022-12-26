@@ -1,4 +1,4 @@
-import { VStack, Textarea, Button, Alert, AlertTitle, AlertDescription, Link, Code, Flex, Box } from '@chakra-ui/react';
+import { VStack, Textarea, Button, Alert, AlertTitle, AlertDescription, Code, Flex, Box } from '@chakra-ui/react';
 import * as Sentry from '@sentry/react';
 import type { ChangeEvent } from 'react';
 import React from 'react';
@@ -47,8 +47,6 @@ const Login = () => {
     });
   }, [ toast, token ]);
 
-  const prodUrl = 'https://blockscout.com/poa/core';
-
   const handleNumIncrement = React.useCallback(() => {
     for (let index = 0; index < 5; index++) {
       setNum(5);
@@ -58,19 +56,15 @@ const Login = () => {
   return (
     <Page>
       <VStack gap={ 4 } alignItems="flex-start" maxW="1000px">
-        <PageTitle text="Vercel page"/>
-        <Flex columnGap={ 2 } alignItems="center">
-          <Box w="50px" textAlign="center">{ num }</Box>
-          <Button onClick={ handleNumIncrement } size="sm">add</Button>
-        </Flex>
+        <PageTitle text="Login page 😂"/>
         { isFormVisible && (
           <>
             <Alert status="error" flexDirection="column" alignItems="flex-start">
               <AlertTitle fontSize="md">
-                !!! Temporary solution for authentication !!!
+                !!! Temporary solution for authentication on localhost !!!
               </AlertTitle>
               <AlertDescription mt={ 3 }>
-                    To Sign in go to <Link href={ prodUrl } target="_blank">{ prodUrl }</Link> first, sign in there, copy obtained API token from cookie
+                    To Sign in go to production instance first, sign in there, copy obtained API token from cookie
                 <Code ml={ 1 }>{ cookies.NAMES.API_TOKEN }</Code> and paste it in the form below. After submitting the form you should be successfully
                     authenticated in current environment
               </AlertDescription>
@@ -80,6 +74,10 @@ const Login = () => {
           </>
         ) }
         <Button colorScheme="red" onClick={ checkSentry }>Check Sentry</Button>
+        <Flex columnGap={ 2 } alignItems="center">
+          <Box w="50px" textAlign="center">{ num }</Box>
+          <Button onClick={ handleNumIncrement } size="sm">add</Button>
+        </Flex>
       </VStack>
     </Page>
   );

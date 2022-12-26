@@ -13,10 +13,10 @@ import { QueryKeys } from 'types/client/queries';
 import appConfig from 'configs/app/config';
 import clockIcon from 'icons/clock.svg';
 import flameIcon from 'icons/flame.svg';
+import type { ResourceError } from 'lib/api/resources';
 import getBlockReward from 'lib/block/getBlockReward';
 import { WEI, WEI_IN_GWEI, ZERO } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
-import type { ErrorType } from 'lib/hooks/useFetch';
 import useFetch from 'lib/hooks/useFetch';
 import { space } from 'lib/html-entities';
 import link from 'lib/link/link';
@@ -37,7 +37,7 @@ const BlockDetails = () => {
   const router = useRouter();
   const fetch = useFetch();
 
-  const { data, isLoading, isError, error } = useQuery<unknown, ErrorType<{ status: number }>, Block>(
+  const { data, isLoading, isError, error } = useQuery<unknown, ResourceError<{ status: number }>, Block>(
     [ QueryKeys.block, router.query.id ],
     async() => await fetch(`/node-api/blocks/${ router.query.id }`),
     {
