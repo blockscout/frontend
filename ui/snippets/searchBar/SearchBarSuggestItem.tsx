@@ -1,12 +1,13 @@
-import { chakra, Text, Flex, useColorModeValue } from '@chakra-ui/react';
+import { chakra, Text, Flex, useColorModeValue, Icon } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SearchResultItem } from 'types/api/search';
 
+import blockIcon from 'icons/block.svg';
+import txIcon from 'icons/transactions.svg';
 import link from 'lib/link/link';
-import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
-import HashStringShorten from 'ui/shared/HashStringShorten';
+import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import TokenLogo from 'ui/shared/TokenLogo';
 
 interface Props {
@@ -34,46 +35,97 @@ const SearchBarSuggestItem = ({ data, isMobile }: Props) => {
     }
   })();
 
-  const content = (() => {
+  const firstRow = (() => {
     switch (data.type) {
       case 'token': {
         return (
           <>
-            <Flex>
-              <TokenLogo boxSize={ 6 } hash={ data.address } name={ data.name }/>
-              <Text fontWeight={ 700 } ml={ 2 }>
-                <span>{ data.name }</span>
-                { data.symbol && <span> ({ data.symbol })</span> }
-              </Text>
-            </Flex>
-            <Text variant="secondary" mt={ 2 } overflow="hidden" whiteSpace="nowrap">
-              { isMobile ? <HashStringShorten hash={ data.address } isTooltipDisabled/> : data.address }
+            <TokenLogo boxSize={ 6 } hash={ data.address } name={ data.name } flexShrink={ 0 }/>
+            <Text fontWeight={ 700 } ml={ 2 } w="200px" overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" flexShrink={ 0 }>
+              <span>{ data.name }</span>
+              { data.symbol && <span> ({ data.symbol })</span> }
             </Text>
+            { !isMobile && (
+              <Text overflow="hidden" whiteSpace="nowrap" ml={ 2 } variant="secondary">
+                <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>
+              </Text>
+            ) }
           </>
         );
       }
       case 'contract':
       case 'address': {
         return (
-          <Address>
-            <AddressIcon hash={ data.address }/>
-            <Text fontWeight={ 700 } ml={ 2 }>{ data.name || data.address }</Text>
-          </Address>
+          <>
+            <AddressIcon hash={ data.address } mr={ 2 }/>
+            <chakra.span overflow="hidden" whiteSpace="nowrap" fontWeight={ 700 }>
+              <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>
+            </chakra.span>
+            { !isMobile && (
+              <Text variant="secondary" ml={ 2 }>
+                { data.name }
+              </Text>
+            ) }
+          </>
         );
       }
       case 'block': {
         return (
-          <Text>
-            { data.block_number }
-          </Text>
+          <>
+            <Icon as={ blockIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
+            <chakra.span fontWeight={ 700 }>{ data.block_number }</chakra.span>
+            { !isMobile && (
+              <Text variant="secondary" overflow="hidden" whiteSpace="nowrap" ml={ 2 }>
+                <HashStringShortenDynamic hash={ data.block_hash } isTooltipDisabled/>
+              </Text>
+            ) }
+          </>
         );
       }
       case 'transaction': {
         return (
-          <Text>
-            { data.tx_hash }
+          < >
+            <Icon as={ txIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
+            <chakra.span overflow="hidden" whiteSpace="nowrap" fontWeight={ 700 }>
+              <HashStringShortenDynamic hash={ data.tx_hash } isTooltipDisabled/>
+            </chakra.span>
+          </>
+        );
+      }
+    }
+  })();
+
+  const secondRow = (() => {
+    if (!isMobile) {
+      return null;
+    }
+
+    switch (data.type) {
+      case 'token': {
+        return (
+          <Text variant="secondary" whiteSpace="nowrap" overflow="hidden">
+            <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>
           </Text>
         );
+      }
+      case 'block': {
+        return (
+          <Text variant="secondary" whiteSpace="nowrap" overflow="hidden">
+            <HashStringShortenDynamic hash={ data.block_hash } isTooltipDisabled/>
+          </Text>
+        );
+      }
+      case 'contract':
+      case 'address': {
+        return (
+          <Text variant="secondary" whiteSpace="nowrap" overflow="hidden">
+            { data.name }
+          </Text>
+        );
+      }
+
+      default: {
+        return null;
       }
     }
   })();
@@ -82,7 +134,9 @@ const SearchBarSuggestItem = ({ data, isMobile }: Props) => {
     <chakra.a
       py={ 3 }
       px={ 1 }
-      display="block"
+      display="flex"
+      flexDir="column"
+      rowGap={ 2 }
       borderColor={ useColorModeValue('blackAlpha.200', 'whiteAlpha.200') }
       borderBottomWidth="1px"
       _last={{
@@ -93,8 +147,14 @@ const SearchBarSuggestItem = ({ data, isMobile }: Props) => {
       }}
       fontSize="sm"
       href={ url }
+      _first={{
+        mt: 2,
+      }}
     >
-      { content }
+      <Flex display="flex" alignItems="center">
+        { firstRow }
+      </Flex>
+      { secondRow }
     </chakra.a>
   );
 };

@@ -1,4 +1,4 @@
-import { Tr, Td, Text, Link, Flex, Icon } from '@chakra-ui/react';
+import { Tr, Td, Text, Link, Flex, Icon, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SearchResultItem } from 'types/api/search';
@@ -26,16 +26,17 @@ const SearchResultTableItem = ({ data }: Props) => {
             <Td fontSize="sm">
               <Flex alignItems="center">
                 <TokenLogo boxSize={ 6 } hash={ data.address } name={ data.name }/>
-                <Text fontWeight={ 700 } ml={ 2 }>
-                  <span>{ data.name }</span>
-                  { data.symbol && <span> ({ data.symbol })</span> }
-                </Text>
+                <Link ml={ 2 } href={ link('token_index', { hash: data.address }) } fontWeight={ 700 }>
+                  <span>
+                    { data.name }{ data.symbol ? ` (${ data.symbol })` : '' }
+                  </span>
+                </Link>
               </Flex>
             </Td>
             <Td fontSize="sm" verticalAlign="middle">
-              <Address>
-                <AddressLink hash={ data.address } type="token"/>
-              </Address>
+              <Box whiteSpace="nowrap" overflow="hidden">
+                <HashStringShortenDynamic hash={ data.address }/>
+              </Box>
             </Td>
           </>
         );
@@ -49,13 +50,11 @@ const SearchResultTableItem = ({ data }: Props) => {
               <Td fontSize="sm">
                 <Address>
                   <AddressIcon hash={ data.address }/>
-                  <Text fontWeight={ 700 } ml={ 2 }>{ data.name }</Text>
+                  <AddressLink fontWeight={ 700 } ml={ 2 } hash={ data.address }/>
                 </Address>
               </Td>
               <Td fontSize="sm" verticalAlign="middle">
-                <Address>
-                  <AddressLink hash={ data.address } type="address"/>
-                </Address>
+                { data.name }
               </Td>
             </>
           );
@@ -65,7 +64,7 @@ const SearchResultTableItem = ({ data }: Props) => {
           <Td colSpan={ 2 } fontSize="sm">
             <Address>
               <AddressIcon hash={ data.address }/>
-              <AddressLink hash={ data.address } ml={ 2 } type="address"/>
+              <AddressLink hash={ data.address } ml={ 2 } type="address" fontWeight={ 700 }/>
             </Address>
           </Td>
         );
@@ -77,15 +76,15 @@ const SearchResultTableItem = ({ data }: Props) => {
             <Td fontSize="sm">
               <Flex alignItems="center">
                 <Icon as={ blockIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
-                <Text fontWeight={ 700 }>
+                <Link fontWeight={ 700 } href={ link('block', { id: String(data.block_number) }) }>
                   { data.block_number }
-                </Text>
+                </Link>
               </Flex>
             </Td>
             <Td fontSize="sm" verticalAlign="middle">
-              <Link overflow="hidden" whiteSpace="nowrap" display="block" href={ link('block', { id: String(data.block_number) }) }>
+              <Box overflow="hidden" whiteSpace="nowrap">
                 <HashStringShortenDynamic hash={ data.block_hash }/>
-              </Link>
+              </Box>
             </Td>
           </>
         );
@@ -97,7 +96,7 @@ const SearchResultTableItem = ({ data }: Props) => {
             <Flex alignItems="center">
               <Icon as={ txIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
               <Address>
-                <AddressLink hash={ data.tx_hash } type="transaction"/>
+                <AddressLink hash={ data.tx_hash } type="transaction" fontWeight={ 700 }/>
               </Address>
             </Flex>
           </Td>
@@ -109,7 +108,11 @@ const SearchResultTableItem = ({ data }: Props) => {
   return (
     <Tr>
       { content }
-      <Td fontSize="sm" textTransform="capitalize" verticalAlign="middle">{ data.type }</Td>
+      <Td fontSize="sm" textTransform="capitalize" verticalAlign="middle">
+        <Text variant="secondary">
+          { data.type }
+        </Text>
+      </Td>
     </Tr>
   );
 };
