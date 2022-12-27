@@ -11,4 +11,9 @@ export interface TokenInfo {
   total_supply: string | null;
 }
 
+export interface TokenCounters {
+  token_holders_count: string;
+  transfers_count: string;
+}
+
 export type TokenInfoGeneric<Type extends TokenType> = Omit<TokenInfo, 'type'> & { type: Type };
