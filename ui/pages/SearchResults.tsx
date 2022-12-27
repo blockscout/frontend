@@ -1,9 +1,8 @@
 import { Box, chakra, Table, Tbody, Tr, Th, Skeleton } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
+import type { FormEvent } from 'react';
 import React from 'react';
 
-import useQueryWithPages from 'lib/hooks/useQueryWithPages';
-import useUpdateValueEffect from 'lib/hooks/useUpdateValueEffect';
+import link from 'lib/link/link';
 import SearchResultTableItem from 'ui/searchResults/SearchResultTableItem';
 import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
@@ -12,6 +11,9 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/Pagination';
 import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 import { default as Thead } from 'ui/shared/TheadSticky';
+import Header from 'ui/snippets/header/Header';
+import SearchBarInput from 'ui/snippets/searchBar/SearchBarInput';
+import useSearchQuery from 'ui/snippets/searchBar/useSearchQuery';
 
 // const data = {
 //   items: [
@@ -59,18 +61,16 @@ import { default as Thead } from 'ui/shared/TheadSticky';
 // };
 
 const SearchResultsPageContent = () => {
-  const router = useRouter();
-  const searchTerm = String(router.query.q || '');
-  const { data, isError, isLoading, pagination, isPaginationVisible, onFilterChange } = useQueryWithPages({
-    resourceName: 'search',
-    filters: { q: searchTerm },
-    options: { enabled: Boolean(searchTerm) },
-  });
+  const { query, searchTerm, handleSearchTermChange } = useSearchQuery(true);
+  const { data, isError, isLoading, pagination, isPaginationVisible } = query;
 
-  useUpdateValueEffect(() => {
-    onFilterChange({ q: searchTerm });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, searchTerm);
+  const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (searchTerm) {
+      const url = link('search_results', undefined, { q: searchTerm });
+      window.location.assign(url);
+    }
+  }, [ searchTerm ]);
 
   const content = (() => {
     if (isError) {
@@ -122,8 +122,22 @@ const SearchResultsPageContent = () => {
     );
   })();
 
+  const renderSearchBar = React.useCallback(() => {
+    return (
+      <SearchBarInput
+        onChange={ handleSearchTermChange }
+        onSubmit={ handleSubmit }
+        value={ searchTerm }
+      />
+    );
+  }, [ handleSearchTermChange, handleSubmit, searchTerm ]);
+
+  const renderHeader = React.useCallback(() => {
+    return <Header renderSearchBar={ renderSearchBar }/>;
+  }, [ renderSearchBar ]);
+
   return (
-    <Page isSearchPage>
+    <Page renderHeader={ renderHeader }>
       <PageTitle text="Search results"/>
       { content }
     </Page>

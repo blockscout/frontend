@@ -10,8 +10,8 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 interface Props {
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
-  onBlur: (event: FocusEvent<HTMLFormElement>) => void;
-  onFocus: () => void;
+  onBlur?: (event: FocusEvent<HTMLFormElement>) => void;
+  onFocus?: () => void;
   isHomepage?: boolean;
   withShadow?: boolean;
   value: string;

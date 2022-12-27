@@ -69,9 +69,9 @@ export default function useSearchQuery(isSearchPage = false) {
   }, []);
 
   useUpdateValueEffect(() => {
-    query.onFilterChange({ q: debouncedSearchTerm });
-  // should run only when debouncedSearchTerm updates
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (isSearchPage) {
+      query.onFilterChange({ q: debouncedSearchTerm });
+    }
   }, debouncedSearchTerm);
 
   return {

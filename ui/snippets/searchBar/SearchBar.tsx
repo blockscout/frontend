@@ -12,17 +12,16 @@ import useSearchQuery from './useSearchQuery';
 type Props = {
   withShadow?: boolean;
   isHomepage?: boolean;
-  isSearchPage?: boolean;
 }
 
-const SearchBar = ({ isHomepage, isSearchPage, withShadow }: Props) => {
+const SearchBar = ({ isHomepage, withShadow }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const inputRef = React.useRef<HTMLFormElement>(null);
   const menuRef = React.useRef<HTMLDivElement>(null);
   const menuWidth = React.useRef<number>(0);
   const isMobile = useIsMobile();
 
-  const { searchTerm, handleSearchTermChange, query } = useSearchQuery(isSearchPage);
+  const { searchTerm, handleSearchTermChange, query } = useSearchQuery();
 
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -58,7 +57,7 @@ const SearchBar = ({ isHomepage, isSearchPage, withShadow }: Props) => {
 
   return (
     <Popover
-      isOpen={ isOpen && searchTerm.trim().length > 0 && !isSearchPage }
+      isOpen={ isOpen && searchTerm.trim().length > 0 }
       autoFocus={ false }
       onClose={ onClose }
       placement="bottom-start"
