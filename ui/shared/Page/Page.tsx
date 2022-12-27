@@ -15,6 +15,7 @@ interface Props {
   wrapChildren?: boolean;
   hideMobileHeaderOnScrollDown?: boolean;
   isHomePage?: boolean;
+  isSearchPage?: boolean;
 }
 
 const Page = ({
@@ -22,6 +23,7 @@ const Page = ({
   wrapChildren = true,
   hideMobileHeaderOnScrollDown,
   isHomePage,
+  isSearchPage,
 }: Props) => {
   const fetch = useFetch();
 
@@ -43,7 +45,7 @@ const Page = ({
     <Flex w="100%" minH="100vh" alignItems="stretch">
       <NavigationDesktop/>
       <Flex flexDir="column" flexGrow={ 1 } w={{ base: '100%', lg: 'auto' }}>
-        <Header isHomePage={ isHomePage } hideOnScrollDown={ hideMobileHeaderOnScrollDown }/>
+        <Header isHomePage={ isHomePage } isSearchPage={ isSearchPage } hideOnScrollDown={ hideMobileHeaderOnScrollDown }/>
         <ErrorBoundary renderErrorScreen={ renderErrorScreen }>
           { renderedChildren }
         </ErrorBoundary>

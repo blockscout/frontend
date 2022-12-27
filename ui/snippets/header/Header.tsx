@@ -13,10 +13,11 @@ import ColorModeToggler from './ColorModeToggler';
 
 type Props = {
   isHomePage?: boolean;
+  isSearchPage?: boolean;
   hideOnScrollDown?: boolean;
 }
 
-const Header = ({ hideOnScrollDown, isHomePage }: Props) => {
+const Header = ({ hideOnScrollDown, isHomePage, isSearchPage }: Props) => {
   const bgColor = useColorModeValue('white', 'black');
   const scrollDirection = useScrollDirection();
 
@@ -43,7 +44,7 @@ const Header = ({ hideOnScrollDown, isHomePage }: Props) => {
           <NetworkLogo/>
           <ProfileMenuMobile/>
         </Flex>
-        { !isHomePage && <SearchBar withShadow={ !hideOnScrollDown }/> }
+        { !isHomePage && <SearchBar withShadow={ !hideOnScrollDown } isSearchPage={ isSearchPage }/> }
       </Box>
       <Box
         paddingX={ 12 }
@@ -61,7 +62,7 @@ const Header = ({ hideOnScrollDown, isHomePage }: Props) => {
             paddingBottom="52px"
           >
             <Box width="100%">
-              <SearchBar/>
+              <SearchBar isSearchPage={ isSearchPage }/>
             </Box>
             <ColorModeToggler/>
             <ProfileMenuDesktop/>

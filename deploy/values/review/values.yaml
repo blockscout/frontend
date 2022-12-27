@@ -320,6 +320,7 @@ frontend:
         - "/login"
         - "/address"
         - "/stats"
+        - "/search-results"
   resources:
     limits:
       memory:

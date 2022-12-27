@@ -14,9 +14,10 @@ interface Props {
   onFocus: () => void;
   isHomepage?: boolean;
   withShadow?: boolean;
+  value: string;
 }
 
-const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, withShadow }: Props, ref: React.ForwardedRef<HTMLFormElement>) => {
+const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, withShadow, value }: Props, ref: React.ForwardedRef<HTMLFormElement>) => {
   const [ isSticky, setIsSticky ] = React.useState(false);
   const scrollDirection = useScrollDirection();
   const isMobile = useIsMobile();
@@ -86,6 +87,7 @@ const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, withS
           borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }
           _focusWithin={{ _placeholder: { color: 'gray.300' } }}
           color={ useColorModeValue('black', 'white') }
+          value={ value }
         />
       </InputGroup>
     </chakra.form>
