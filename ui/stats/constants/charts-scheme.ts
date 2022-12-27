@@ -6,7 +6,7 @@ export const statsChartsScheme: Array<StatsSection> = [
     title: 'Blocks',
     charts: [
       {
-        id: 'new-blocks',
+        id: 'newBlocksPerDay',
         title: 'New blocks',
         description: 'New blocks number per day',
       },
