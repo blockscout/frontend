@@ -177,6 +177,14 @@ export const RESOURCES = {
     path: '/api/v2/tokens/:hash/counters',
   },
 
+  // TOKEN
+  token: {
+    path: '/api/v2/tokens/:hash',
+  },
+  token_counters: {
+    path: '/api/v2/tokens/:hash/counters',
+  },
+
   // HOMEPAGE
   homepage_stats: {
     path: '/api/v2/stats',
