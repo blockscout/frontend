@@ -31,6 +31,7 @@ const ChartWidget = ({ items, title, description, isLoading, chartHeight }: Prop
   const [ isFullscreen, setIsFullscreen ] = useState(false);
   const [ isZoomResetInitial, setIsZoomResetInitial ] = React.useState(true);
 
+  const pngBackgroundColor = useColorModeValue('white', 'black');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
 
   const handleZoom = useCallback(() => {
@@ -54,11 +55,12 @@ const ChartWidget = ({ items, title, description, isLoading, chartHeight }: Prop
       domToImage.toPng(ref.current,
         {
           quality: 100,
-          bgcolor: 'white',
+          bgcolor: pngBackgroundColor,
           width: ref.current.offsetWidth * DOWNLOAD_IMAGE_SCALE,
           height: ref.current.offsetHeight * DOWNLOAD_IMAGE_SCALE,
           filter: (node) => node.nodeName !== 'BUTTON',
           style: {
+            borderColor: 'transparent',
             transform: `scale(${ DOWNLOAD_IMAGE_SCALE })`,
             'transform-origin': 'top left',
           },
@@ -71,7 +73,7 @@ const ChartWidget = ({ items, title, description, isLoading, chartHeight }: Prop
           link.remove();
         });
     }
-  }, [ title ]);
+  }, [ pngBackgroundColor, title ]);
 
   const handleSVGSavingClick = useCallback(() => {
     if (items) {
