@@ -19,7 +19,7 @@ import type { InternalTransactionsResponse } from 'types/api/internalTransaction
 import type { JsonRpcUrlResponse } from 'types/api/jsonRpcUrl';
 import type { LogsResponse } from 'types/api/log';
 import type { RawTracesResponse } from 'types/api/rawTrace';
-import type { SearchResult } from 'types/api/search';
+import type { SearchResult, SearchResultFilters } from 'types/api/search';
 import type { Stats, Charts, HomeStats } from 'types/api/stats';
 import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
 import type { TransactionsResponseValidated, TransactionsResponsePending, Transaction } from 'types/api/transaction';
@@ -183,6 +183,18 @@ export const RESOURCES = {
   // SEARCH
   search: {
     path: '/api/v2/search',
+    paginationFields: [
+      'address_hash' as const,
+      'block_hash' as const,
+      'holder_count' as const,
+      'inserted_at' as const,
+      'item_type' as const,
+      'items_count' as const,
+      'name' as const,
+      'q' as const,
+      'tx_hash' as const,
+    ],
+    filterFields: [ 'q' ],
   },
 
   // DEPRECATED
@@ -215,7 +227,8 @@ export type ResourceErrorAccount<T> = ResourceError<{ errors: T }>
 export type PaginatedResources = 'blocks' | 'block_txs' |
 'txs_validated' | 'txs_pending' |
 'tx_internal_txs' | 'tx_logs' | 'tx_token_transfers' |
-'address_txs' | 'address_internal_txs' | 'address_token_transfers' | 'address_blocks_validated' | 'address_coin_balance';
+'address_txs' | 'address_internal_txs' | 'address_token_transfers' | 'address_blocks_validated' | 'address_coin_balance' |
+'search';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
 
@@ -267,5 +280,6 @@ Q extends 'txs_validated' | 'txs_pending' ? TTxsFilters :
 Q extends 'tx_token_transfers' ? TokenTransferFilters :
 Q extends 'address_txs' | 'address_internal_txs' ? AddressTxsFilters :
 Q extends 'address_token_transfers' ? AddressTokenTransferFilters :
+Q extends 'search' ? SearchResultFilters :
 never;
 /* eslint-enable @typescript-eslint/indent */

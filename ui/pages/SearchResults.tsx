@@ -2,11 +2,14 @@ import { Box, chakra, Table, Tbody, Tr, Th, Skeleton } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useQueryWithPages from 'lib/hooks/useQueryWithPages';
+import useUpdateValueEffect from 'lib/hooks/useUpdateValueEffect';
 import SearchResultTableItem from 'ui/searchResults/SearchResultTableItem';
+import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
+import Pagination from 'ui/shared/Pagination';
 import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 import { default as Thead } from 'ui/shared/TheadSticky';
 
@@ -58,12 +61,16 @@ import { default as Thead } from 'ui/shared/TheadSticky';
 const SearchResultsPageContent = () => {
   const router = useRouter();
   const searchTerm = String(router.query.q || '');
-  const { data, isError, isLoading } = useApiQuery('search', {
-    queryParams: { q: searchTerm },
-    queryOptions: {
-      enabled: Boolean(searchTerm),
-    },
+  const { data, isError, isLoading, pagination, isPaginationVisible, onFilterChange } = useQueryWithPages({
+    resourceName: 'search',
+    filters: { q: searchTerm },
+    options: { enabled: Boolean(searchTerm) },
   });
+
+  useUpdateValueEffect(() => {
+    onFilterChange({ q: searchTerm });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, searchTerm);
 
   const content = (() => {
     if (isError) {
@@ -79,17 +86,27 @@ const SearchResultsPageContent = () => {
       );
     }
 
+    const num = pagination.page > 1 ? 50 : data.items.length;
+    const text = (
+      <Box mb={ isPaginationVisible ? 0 : 6 } lineHeight="32px">
+        <span>Found </span>
+        <chakra.span fontWeight={ 700 }>{ num }{ data.next_page_params || pagination.page > 1 ? '+' : '' }</chakra.span>
+        <span> matching results for </span>
+                “<chakra.span fontWeight={ 700 }>{ searchTerm }</chakra.span>”
+      </Box>
+    );
+
     return (
       <>
-        <Box mb={ 6 }>
-          <span>Found </span>
-          <chakra.span fontWeight={ 700 }>{ data.items.length }</chakra.span>
-          <span> matching results for </span>
-            “<chakra.span fontWeight={ 700 }>{ searchTerm }</chakra.span>”
-        </Box>
+        { isPaginationVisible ? (
+          <ActionBar mt={ -6 }>
+            { text }
+            <Pagination { ...pagination }/>
+          </ActionBar>
+        ) : text }
         { data.items.length > 0 && (
           <Table variant="simple" size="md" fontWeight={ 500 }>
-            <Thead top={ 0 }>
+            <Thead top={ isPaginationVisible ? 80 : 0 }>
               <Tr>
                 <Th width="33%">Search Result</Th>
                 <Th width="34%">Hash/address</Th>

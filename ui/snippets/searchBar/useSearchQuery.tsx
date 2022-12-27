@@ -1,15 +1,10 @@
-import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import type { ChangeEvent } from 'react';
 import React from 'react';
 
-import type { SearchResult } from 'types/api/search';
-
-import type { ResourceError } from 'lib/api/resources';
-import useApiFetch from 'lib/api/useApiFetch';
-import { getResourceKey } from 'lib/api/useApiQuery';
 import useDebounce from 'lib/hooks/useDebounce';
-import link from 'lib/link/link';
+import useQueryWithPages from 'lib/hooks/useQueryWithPages';
+import useUpdateValueEffect from 'lib/hooks/useUpdateValueEffect';
 
 // const data = [
 //   {
@@ -60,40 +55,24 @@ export default function useSearchQuery(isSearchPage = false) {
   const initialValue = isSearchPage ? String(router.query.q || '') : '';
 
   const [ searchTerm, setSearchTerm ] = React.useState(initialValue);
-  const abortControllerRef = React.useRef<AbortController>();
-  const apiFetch = useApiFetch();
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
-  const query = useQuery<unknown, ResourceError, SearchResult>(
-    getResourceKey('search', { queryParams: { q: debouncedSearchTerm } }),
-    () => {
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
-      }
-
-      abortControllerRef.current = new AbortController();
-
-      return apiFetch<'search', SearchResult>('search', {
-        queryParams: { q: debouncedSearchTerm },
-        fetchParams: { signal: abortControllerRef.current.signal },
-      });
-    },
-    {
-      enabled: debouncedSearchTerm.trim().length > 0,
-    },
-  );
+  const query = useQueryWithPages({
+    resourceName: 'search',
+    filters: { q: debouncedSearchTerm },
+    options: { enabled: debouncedSearchTerm.trim().length > 0 },
+  });
 
   const handleSearchTermChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   }, []);
 
-  React.useEffect(() => {
-    const url = link('search_results', undefined, debouncedSearchTerm ? { q: debouncedSearchTerm } : undefined);
-    router.push(url, undefined, { shallow: true });
+  useUpdateValueEffect(() => {
+    query.onFilterChange({ q: debouncedSearchTerm });
   // should run only when debouncedSearchTerm updates
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ debouncedSearchTerm ]);
+  }, debouncedSearchTerm);
 
   return {
     searchTerm,

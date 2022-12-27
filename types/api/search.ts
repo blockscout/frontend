@@ -45,3 +45,7 @@ export interface SearchResult {
     'tx_hash': string | null;
   } | null;
 }
+
+export interface SearchResultFilters {
+  q: string;
+}
