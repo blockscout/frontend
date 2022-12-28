@@ -37,7 +37,6 @@ const SearchResultsPageContent = () => {
     if (isLoading) {
       return (
         <Box>
-          <Skeleton h={ 6 } w="280px" borderRadius="full" mb={ 6 }/>
           <Show below="lg">
             <SkeletonList/>
           </Show>
@@ -48,56 +47,64 @@ const SearchResultsPageContent = () => {
       );
     }
 
-    const num = pagination.page > 1 ? 50 : data.items.length;
-    const text = (
-      <Box mb={ isPaginationVisible ? 0 : 6 } lineHeight="32px">
-        <span>Found </span>
-        <chakra.span fontWeight={ 700 }>{ num }{ data.next_page_params || pagination.page > 1 ? '+' : '' }</chakra.span>
-        <span> matching results for </span>
-                “<chakra.span fontWeight={ 700 }>{ debouncedSearchTerm }</chakra.span>”
-      </Box>
-    );
-
-    const bar = (() => {
-      if (!isPaginationVisible) {
-        return text;
-      }
-
-      return (
-        <>
-          <Box display={{ base: 'block', lg: 'none' }}>{ text }</Box>
-          <ActionBar mt={{ base: 0, lg: -6 }}>
-            <Box display={{ base: 'none', lg: 'block' }}>{ text }</Box>
-            <Pagination { ...pagination }/>
-          </ActionBar>
-        </>
-      );
-    })();
+    if (data.items.length === 0) {
+      return null;
+    }
 
     return (
       <>
-        { bar }
-        { data.items.length > 0 && (
-          <>
-            <Show below="lg" ssr={ false }>
-              { data.items.map((item, index) => <SearchResultListItem key={ index } data={ item } searchTerm={ debouncedSearchTerm }/>) }
-            </Show>
-            <Hide below="lg" ssr={ false }>
-              <Table variant="simple" size="md" fontWeight={ 500 }>
-                <Thead top={ isPaginationVisible ? 80 : 0 }>
-                  <Tr>
-                    <Th width="50%">Search Result</Th>
-                    <Th width="50%"/>
-                    <Th width="150px">Category</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  { data.items.map((item, index) => <SearchResultTableItem key={ index } data={ item } searchTerm={ debouncedSearchTerm }/>) }
-                </Tbody>
-              </Table>
-            </Hide>
-          </>
-        ) }
+        <Show below="lg" ssr={ false }>
+          { data.items.map((item, index) => <SearchResultListItem key={ index } data={ item } searchTerm={ debouncedSearchTerm }/>) }
+        </Show>
+        <Hide below="lg" ssr={ false }>
+          <Table variant="simple" size="md" fontWeight={ 500 }>
+            <Thead top={ isPaginationVisible ? 80 : 0 }>
+              <Tr>
+                <Th width="50%">Search Result</Th>
+                <Th width="50%"/>
+                <Th width="150px">Category</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              { data.items.map((item, index) => <SearchResultTableItem key={ index } data={ item } searchTerm={ debouncedSearchTerm }/>) }
+            </Tbody>
+          </Table>
+        </Hide>
+      </>
+    );
+  })();
+
+  const bar = (() => {
+    if (isError) {
+      return null;
+    }
+
+    const text = isLoading ? (
+      <Skeleton h={ 6 } w="280px" borderRadius="full" mb={ isPaginationVisible ? 0 : 6 }/>
+    ) : (
+      (
+        <Box mb={ isPaginationVisible ? 0 : 6 } lineHeight="32px">
+          <span>Found </span>
+          <chakra.span fontWeight={ 700 }>
+            { pagination.page > 1 ? 50 : data.items.length }{ data.next_page_params || pagination.page > 1 ? '+' : '' }
+          </chakra.span>
+          <span> matching results for </span>
+                      “<chakra.span fontWeight={ 700 }>{ debouncedSearchTerm }</chakra.span>”
+        </Box>
+      )
+    );
+
+    if (!isPaginationVisible) {
+      return text;
+    }
+
+    return (
+      <>
+        <Box display={{ base: 'block', lg: 'none' }}>{ text }</Box>
+        <ActionBar mt={{ base: 0, lg: -6 }} alignItems="center">
+          <Box display={{ base: 'none', lg: 'block' }}>{ text }</Box>
+          <Pagination { ...pagination }/>
+        </ActionBar>
       </>
     );
   })();
@@ -126,6 +133,7 @@ const SearchResultsPageContent = () => {
   return (
     <Page renderHeader={ renderHeader }>
       <PageTitle text="Search results"/>
+      { bar }
       { content }
     </Page>
   );

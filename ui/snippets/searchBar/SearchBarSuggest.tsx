@@ -1,4 +1,4 @@
-import { Box, Text } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
@@ -23,7 +23,7 @@ const SearchBarSuggest = ({ query, searchTerm }: Props) => {
     }
 
     if (query.isError) {
-      return <Box>Something went wrong. Try refreshing the page or come back later.</Box>;
+      return <Text>Something went wrong. Try refreshing the page or come back later.</Text>;
     }
 
     const num = query.data.next_page_params ? '50+' : query.data.items.length;

@@ -151,14 +151,12 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
     });
   }, [ router, resource.paginationFields, resource.filterFields, scrollToTop ]);
 
-  const hasPaginationParams = Object.keys(currPageParams || {}).length > 0;
   const nextPageParams = data?.next_page_params;
 
   const pagination = {
     page,
     onNextPageClick,
     onPrevPageClick,
-    hasPaginationParams,
     resetPage,
     hasNextPage: nextPageParams ? Object.keys(nextPageParams).length > 0 : false,
     canGoBackwards: canGoBackwards.current,
