@@ -5,9 +5,9 @@ import * as blockMock from 'mocks/blocks/block';
 import * as dailyTxsMock from 'mocks/stats/daily_txs';
 import * as statsMock from 'mocks/stats/index';
 import * as txMock from 'mocks/txs/tx';
-import insertAdPlaceholder from 'playwright/scripts/insertAdPlaceholder';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
+import insertAdPlaceholder from 'playwright/utils/insertAdPlaceholder';
 
 import Home from './Home';
 

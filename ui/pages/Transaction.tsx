@@ -1,10 +1,9 @@
-import { Flex, Link, Icon, Tag, Tooltip } from '@chakra-ui/react';
+import { Flex, Tag } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
-import eastArrowIcon from 'icons/arrows/east.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/appContext';
 import isBrowser from 'lib/isBrowser';

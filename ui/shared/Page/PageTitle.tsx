@@ -14,7 +14,19 @@ type Props = {
 }
 
 const PageTitle = ({ text, additionals, withTextAd, backLinkUrl, backLinkLabel, className }: Props) => {
-  const title = <Heading as="h1" size="lg" flex="none">{ text }</Heading>;
+  const title = (
+    <Heading
+      as="h1"
+      size="lg"
+      flex="none"
+      overflow="hidden"
+      textOverflow="ellipsis"
+      whiteSpace="nowrap"
+      width={ backLinkUrl ? 'calc(100% - 36px)' : '100%' }
+    >
+      { text }
+    </Heading>
+  );
 
   return (
     <Flex
@@ -27,14 +39,21 @@ const PageTitle = ({ text, additionals, withTextAd, backLinkUrl, backLinkLabel, 
       className={ className }
     >
       <Flex flexWrap="wrap" columnGap={ 3 } alignItems="center" width={ withTextAd ? 'unset' : '100%' }>
-        { backLinkUrl && (
-          <Tooltip label={ backLinkLabel }>
-            <Link display="inline-flex" href={ backLinkUrl }>
-              <Icon as={ eastArrowIcon } boxSize={ 6 } transform="rotate(180deg)"/>
-            </Link>
-          </Tooltip>
-        ) }
-        { title }
+        <Flex
+          flexWrap="nowrap"
+          alignItems="center"
+          columnGap={ 3 }
+          overflow="hidden"
+        >
+          { backLinkUrl && (
+            <Tooltip label={ backLinkLabel }>
+              <Link display="inline-flex" href={ backLinkUrl }>
+                <Icon as={ eastArrowIcon } boxSize={ 6 } transform="rotate(180deg)"/>
+              </Link>
+            </Tooltip>
+          ) }
+          { title }
+        </Flex>
         { additionals }
       </Flex>
       { withTextAd && <TextAd flexShrink={ 100 }/> }
