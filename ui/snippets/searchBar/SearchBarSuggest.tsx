@@ -20,7 +20,6 @@ const SearchBarSuggest = ({ query, searchTerm }: Props) => {
   const content = (() => {
     if (query.isLoading) {
       return <ContentLoader text="We are searching, please wait... "/>;
-      return <Box>loading...</Box>;
     }
 
     if (query.isError) {
@@ -31,7 +30,7 @@ const SearchBarSuggest = ({ query, searchTerm }: Props) => {
 
     return (
       <>
-        <Box fontWeight={ 500 } fontSize="sm">Found <Text fontWeight={ 700 } as="span">{ num }</Text> matching results</Box>
+        <Text fontWeight={ 500 } fontSize="sm">Found <Text fontWeight={ 700 } as="span">{ num }</Text> matching results</Text>
         { query.data.items.map((item, index) => <SearchBarSuggestItem key={ index } data={ item } isMobile={ isMobile } searchTerm={ searchTerm }/>) }
       </>
     );
