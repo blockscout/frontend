@@ -62,6 +62,7 @@ const SearchBar = ({ isHomepage, withShadow }: Props) => {
       onClose={ onClose }
       placement="bottom-start"
       offset={ isMobile && !isHomepage ? [ 16, -12 ] : undefined }
+      isLazy
     >
       <PopoverTrigger>
         <SearchBarInput

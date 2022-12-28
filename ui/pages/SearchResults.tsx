@@ -18,7 +18,7 @@ import SearchBarInput from 'ui/snippets/searchBar/SearchBarInput';
 import useSearchQuery from 'ui/snippets/searchBar/useSearchQuery';
 
 const SearchResultsPageContent = () => {
-  const { query, searchTerm, handleSearchTermChange } = useSearchQuery(true);
+  const { query, searchTerm, debouncedSearchTerm, handleSearchTermChange } = useSearchQuery(true);
   const { data, isError, isLoading, pagination, isPaginationVisible } = query;
 
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
@@ -54,7 +54,7 @@ const SearchResultsPageContent = () => {
         <span>Found </span>
         <chakra.span fontWeight={ 700 }>{ num }{ data.next_page_params || pagination.page > 1 ? '+' : '' }</chakra.span>
         <span> matching results for </span>
-                “<chakra.span fontWeight={ 700 }>{ searchTerm }</chakra.span>”
+                “<chakra.span fontWeight={ 700 }>{ debouncedSearchTerm }</chakra.span>”
       </Box>
     );
 
@@ -80,7 +80,7 @@ const SearchResultsPageContent = () => {
         { data.items.length > 0 && (
           <>
             <Show below="lg" ssr={ false }>
-              { data.items.map((item, index) => <SearchResultListItem key={ index } data={ item } searchTerm={ searchTerm }/>) }
+              { data.items.map((item, index) => <SearchResultListItem key={ index } data={ item } searchTerm={ debouncedSearchTerm }/>) }
             </Show>
             <Hide below="lg" ssr={ false }>
               <Table variant="simple" size="md" fontWeight={ 500 }>
@@ -92,7 +92,7 @@ const SearchResultsPageContent = () => {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  { data.items.map((item, index) => <SearchResultTableItem key={ index } data={ item } searchTerm={ searchTerm }/>) }
+                  { data.items.map((item, index) => <SearchResultTableItem key={ index } data={ item } searchTerm={ debouncedSearchTerm }/>) }
                 </Tbody>
               </Table>
             </Hide>

@@ -76,6 +76,7 @@ export default function useSearchQuery(isSearchPage = false) {
 
   return {
     searchTerm,
+    debouncedSearchTerm,
     handleSearchTermChange,
     query,
   };
