@@ -2,7 +2,6 @@ import { Box, chakra, Table, Tbody, Tr, Th, Skeleton, Show, Hide } from '@chakra
 import type { FormEvent } from 'react';
 import React from 'react';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
 import link from 'lib/link/link';
 import SearchResultListItem from 'ui/searchResults/SearchResultListItem';
 import SearchResultTableItem from 'ui/searchResults/SearchResultTableItem';
@@ -21,7 +20,6 @@ import useSearchQuery from 'ui/snippets/searchBar/useSearchQuery';
 const SearchResultsPageContent = () => {
   const { query, searchTerm, handleSearchTermChange } = useSearchQuery(true);
   const { data, isError, isLoading, pagination, isPaginationVisible } = query;
-  const isMobile = useIsMobile();
 
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -40,10 +38,10 @@ const SearchResultsPageContent = () => {
       return (
         <Box>
           <Skeleton h={ 6 } w="280px" borderRadius="full" mb={ 6 }/>
-          <Show below="lg" ssr={ false }>
+          <Show below="lg">
             <SkeletonList/>
           </Show>
-          <Hide below="lg" ssr={ false }>
+          <Hide below="lg">
             <SkeletonTable columns={ [ '33%', '34%', '33%' ] }/>
           </Hide>
         </Box>
@@ -65,22 +63,14 @@ const SearchResultsPageContent = () => {
         return text;
       }
 
-      if (isMobile) {
-        return (
-          <>
-            { text }
-            <ActionBar>
-              <Pagination { ...pagination } ml="auto"/>
-            </ActionBar>
-          </>
-        );
-      }
-
       return (
-        <ActionBar mt={ -6 }>
-          { text }
-          <Pagination { ...pagination }/>
-        </ActionBar>
+        <>
+          <Box display={{ base: 'block', lg: 'none' }}>{ text }</Box>
+          <ActionBar mt={{ base: 0, lg: -6 }}>
+            <Box display={{ base: 'none', lg: 'block' }}>{ text }</Box>
+            <Pagination { ...pagination }/>
+          </ActionBar>
+        </>
       );
     })();
 
@@ -90,7 +80,7 @@ const SearchResultsPageContent = () => {
         { data.items.length > 0 && (
           <>
             <Show below="lg" ssr={ false }>
-              { data.items.map((item, index) => <SearchResultListItem key={ index } data={ item }/>) }
+              { data.items.map((item, index) => <SearchResultListItem key={ index } data={ item } searchTerm={ searchTerm }/>) }
             </Show>
             <Hide below="lg" ssr={ false }>
               <Table variant="simple" size="md" fontWeight={ 500 }>
@@ -102,7 +92,7 @@ const SearchResultsPageContent = () => {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  { data.items.map((item, index) => <SearchResultTableItem key={ index } data={ item }/>) }
+                  { data.items.map((item, index) => <SearchResultTableItem key={ index } data={ item } searchTerm={ searchTerm }/>) }
                 </Tbody>
               </Table>
             </Hide>

@@ -1,10 +1,11 @@
-import { Text, Link, Flex, Icon } from '@chakra-ui/react';
+import { Text, Link, Flex, Icon, Box, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SearchResultItem } from 'types/api/search';
 
 import blockIcon from 'icons/block.svg';
 import txIcon from 'icons/transactions.svg';
+import highlightText from 'lib/highlightText';
 import link from 'lib/link/link';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
@@ -15,18 +16,21 @@ import TokenLogo from 'ui/shared/TokenLogo';
 
 interface Props {
   data: SearchResultItem;
+  searchTerm: string;
 }
 
-const SearchResultListItem = ({ data }: Props) => {
+const SearchResultListItem = ({ data, searchTerm }: Props) => {
 
   const firstRow = (() => {
     switch (data.type) {
       case 'token': {
+        const name = data.name + (data.symbol ? ` (${ data.symbol })` : '');
+
         return (
           <Flex alignItems="center">
             <TokenLogo boxSize={ 6 } hash={ data.address } name={ data.name }/>
             <Link ml={ 2 } href={ link('token_index', { hash: data.address }) } fontWeight={ 700 }>
-              { data.name }{ data.symbol ? ` (${ data.symbol })` : '' }
+              <span dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}/>
             </Link>
           </Flex>
         );
@@ -34,20 +38,24 @@ const SearchResultListItem = ({ data }: Props) => {
 
       case 'contract':
       case 'address': {
+        const shouldHighlightHash = data.address.toLowerCase() === searchTerm.toLowerCase();
         return (
           <Address>
-            <AddressIcon hash={ data.address }/>
-            <AddressLink hash={ data.address } ml={ 2 } fontWeight={ 700 }/>
+            <AddressIcon hash={ data.address } mr={ 2 }/>
+            <Box as={ shouldHighlightHash ? 'mark' : 'span' } display="block" whiteSpace="nowrap" overflow="hidden">
+              <AddressLink hash={ data.address } fontWeight={ 700 } display="block" w="100%"/>
+            </Box>
           </Address>
         );
       }
 
       case 'block': {
+        const shouldHighlightHash = data.block_hash.toLowerCase() === searchTerm.toLowerCase();
         return (
           <Flex alignItems="center">
             <Icon as={ blockIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
             <Link fontWeight={ 700 } href={ link('block', { id: String(data.block_number) }) }>
-              { data.block_number }
+              <Box as={ shouldHighlightHash ? 'span' : 'mark' }>{ data.block_number }</Box>
             </Link>
           </Flex>
         );
@@ -57,9 +65,9 @@ const SearchResultListItem = ({ data }: Props) => {
         return (
           <Flex alignItems="center" overflow="hidden">
             <Icon as={ txIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
-            <Address>
-              <AddressLink hash={ data.tx_hash } type="transaction" fontWeight={ 700 }/>
-            </Address>
+            <chakra.mark display="block" overflow="hidden">
+              <AddressLink hash={ data.tx_hash } type="transaction" fontWeight={ 700 } display="block"/>
+            </chakra.mark>
           </Flex>
         );
       }
@@ -74,13 +82,17 @@ const SearchResultListItem = ({ data }: Props) => {
         );
       }
       case 'block': {
+        const shouldHighlightHash = data.block_hash.toLowerCase() === searchTerm.toLowerCase();
         return (
-          <HashStringShortenDynamic hash={ data.block_hash }/>
+          <Box as={ shouldHighlightHash ? 'mark' : 'span' } display="block" w="100%" whiteSpace="nowrap" overflow="hidden">
+            <HashStringShortenDynamic hash={ data.block_hash }/>
+          </Box>
         );
       }
       case 'contract':
       case 'address': {
-        return data.name ? <Text>{ data.name }</Text> : null;
+        const shouldHighlightHash = data.address.toLowerCase() === searchTerm.toLowerCase();
+        return data.name ? <span dangerouslySetInnerHTML={{ __html: shouldHighlightHash ? data.name : highlightText(data.name, searchTerm) }}/> : null;
       }
 
       default:

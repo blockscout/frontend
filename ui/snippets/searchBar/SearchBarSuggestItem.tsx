@@ -1,10 +1,11 @@
-import { chakra, Text, Flex, useColorModeValue, Icon } from '@chakra-ui/react';
+import { chakra, Text, Flex, useColorModeValue, Icon, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SearchResultItem } from 'types/api/search';
 
 import blockIcon from 'icons/block.svg';
 import txIcon from 'icons/transactions.svg';
+import highlightText from 'lib/highlightText';
 import link from 'lib/link/link';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
@@ -13,9 +14,10 @@ import TokenLogo from 'ui/shared/TokenLogo';
 interface Props {
   data: SearchResultItem;
   isMobile: boolean | undefined;
+  searchTerm: string;
 }
 
-const SearchBarSuggestItem = ({ data, isMobile }: Props) => {
+const SearchBarSuggestItem = ({ data, isMobile, searchTerm }: Props) => {
 
   const url = (() => {
     switch (data.type) {
@@ -38,12 +40,13 @@ const SearchBarSuggestItem = ({ data, isMobile }: Props) => {
   const firstRow = (() => {
     switch (data.type) {
       case 'token': {
+        const name = data.name + (data.symbol ? ` (${ data.symbol })` : '');
+
         return (
           <>
             <TokenLogo boxSize={ 6 } hash={ data.address } name={ data.name } flexShrink={ 0 }/>
             <Text fontWeight={ 700 } ml={ 2 } w="200px" overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" flexShrink={ 0 }>
-              <span>{ data.name }</span>
-              { data.symbol && <span> ({ data.symbol })</span> }
+              <span dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}/>
             </Text>
             { !isMobile && (
               <Text overflow="hidden" whiteSpace="nowrap" ml={ 2 } variant="secondary">
@@ -55,27 +58,29 @@ const SearchBarSuggestItem = ({ data, isMobile }: Props) => {
       }
       case 'contract':
       case 'address': {
+        const shouldHighlightHash = data.address.toLowerCase() === searchTerm.toLowerCase();
         return (
           <>
             <AddressIcon hash={ data.address } mr={ 2 }/>
-            <chakra.span overflow="hidden" whiteSpace="nowrap" fontWeight={ 700 }>
+            <Box as={ shouldHighlightHash ? 'mark' : 'span' } display="block" overflow="hidden" whiteSpace="nowrap" fontWeight={ 700 }>
               <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>
-            </chakra.span>
-            { !isMobile && (
+            </Box>
+            { !isMobile && data.name && (
               <Text variant="secondary" ml={ 2 }>
-                { data.name }
+                <span dangerouslySetInnerHTML={{ __html: shouldHighlightHash ? data.name : highlightText(data.name, searchTerm) }}/>
               </Text>
             ) }
           </>
         );
       }
       case 'block': {
+        const shouldHighlightHash = data.block_hash.toLowerCase() === searchTerm.toLowerCase();
         return (
           <>
             <Icon as={ blockIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
-            <chakra.span fontWeight={ 700 }>{ data.block_number }</chakra.span>
+            <Box fontWeight={ 700 } as={ shouldHighlightHash ? 'span' : 'mark' }>{ data.block_number }</Box>
             { !isMobile && (
-              <Text variant="secondary" overflow="hidden" whiteSpace="nowrap" ml={ 2 }>
+              <Text variant="secondary" overflow="hidden" whiteSpace="nowrap" ml={ 2 } as={ shouldHighlightHash ? 'mark' : 'span' } display="block">
                 <HashStringShortenDynamic hash={ data.block_hash } isTooltipDisabled/>
               </Text>
             ) }
@@ -86,9 +91,9 @@ const SearchBarSuggestItem = ({ data, isMobile }: Props) => {
         return (
           < >
             <Icon as={ txIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
-            <chakra.span overflow="hidden" whiteSpace="nowrap" fontWeight={ 700 }>
+            <chakra.mark overflow="hidden" whiteSpace="nowrap" fontWeight={ 700 }>
               <HashStringShortenDynamic hash={ data.tx_hash } isTooltipDisabled/>
-            </chakra.span>
+            </chakra.mark>
           </>
         );
       }
@@ -109,17 +114,23 @@ const SearchBarSuggestItem = ({ data, isMobile }: Props) => {
         );
       }
       case 'block': {
+        const shouldHighlightHash = data.block_hash.toLowerCase() === searchTerm.toLowerCase();
         return (
-          <Text variant="secondary" whiteSpace="nowrap" overflow="hidden">
+          <Text variant="secondary" whiteSpace="nowrap" overflow="hidden" as={ shouldHighlightHash ? 'mark' : 'span' } display="block">
             <HashStringShortenDynamic hash={ data.block_hash } isTooltipDisabled/>
           </Text>
         );
       }
       case 'contract':
       case 'address': {
+        if (!data.name) {
+          return null;
+        }
+
+        const shouldHighlightHash = data.address.toLowerCase() === searchTerm.toLowerCase();
         return (
           <Text variant="secondary" whiteSpace="nowrap" overflow="hidden">
-            { data.name }
+            <span dangerouslySetInnerHTML={{ __html: shouldHighlightHash ? data.name : highlightText(data.name, searchTerm) }}/>
           </Text>
         );
       }

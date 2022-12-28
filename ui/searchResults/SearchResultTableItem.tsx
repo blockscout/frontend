@@ -5,6 +5,7 @@ import type { SearchResultItem } from 'types/api/search';
 
 import blockIcon from 'icons/block.svg';
 import txIcon from 'icons/transactions.svg';
+import highlightText from 'lib/highlightText';
 import link from 'lib/link/link';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
@@ -14,22 +15,22 @@ import TokenLogo from 'ui/shared/TokenLogo';
 
 interface Props {
   data: SearchResultItem;
+  searchTerm: string;
 }
 
-const SearchResultTableItem = ({ data }: Props) => {
+const SearchResultTableItem = ({ data, searchTerm }: Props) => {
 
   const content = (() => {
     switch (data.type) {
       case 'token': {
+        const name = data.name + (data.symbol ? ` (${ data.symbol })` : '');
         return (
           <>
             <Td fontSize="sm">
               <Flex alignItems="center">
                 <TokenLogo boxSize={ 6 } hash={ data.address } name={ data.name }/>
                 <Link ml={ 2 } href={ link('token_index', { hash: data.address }) } fontWeight={ 700 }>
-                  <span>
-                    { data.name }{ data.symbol ? ` (${ data.symbol })` : '' }
-                  </span>
+                  <span dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}/>
                 </Link>
               </Flex>
             </Td>
@@ -45,16 +46,21 @@ const SearchResultTableItem = ({ data }: Props) => {
       case 'contract':
       case 'address': {
         if (data.name) {
+          const shouldHighlightHash = data.address.toLowerCase() === searchTerm.toLowerCase();
           return (
             <>
               <Td fontSize="sm">
-                <Address>
-                  <AddressIcon hash={ data.address }/>
-                  <AddressLink fontWeight={ 700 } ml={ 2 } hash={ data.address }/>
-                </Address>
+                <Flex alignItems="center" overflow="hidden">
+                  <AddressIcon hash={ data.address } mr={ 2 }/>
+                  <Link href={ link('address_index', { id: data.address }) } fontWeight={ 700 } overflow="hidden" whiteSpace="nowrap">
+                    <Box as={ shouldHighlightHash ? 'mark' : 'span' } display="block">
+                      <HashStringShortenDynamic hash={ data.address }/>
+                    </Box>
+                  </Link>
+                </Flex>
               </Td>
               <Td fontSize="sm" verticalAlign="middle">
-                { data.name }
+                <span dangerouslySetInnerHTML={{ __html: shouldHighlightHash ? data.name : highlightText(data.name, searchTerm) }}/>
               </Td>
             </>
           );
@@ -63,26 +69,30 @@ const SearchResultTableItem = ({ data }: Props) => {
         return (
           <Td colSpan={ 2 } fontSize="sm">
             <Address>
-              <AddressIcon hash={ data.address }/>
-              <AddressLink hash={ data.address } ml={ 2 } type="address" fontWeight={ 700 }/>
+              <AddressIcon hash={ data.address } mr={ 2 }/>
+              <mark>
+                <AddressLink hash={ data.address } type="address" fontWeight={ 700 }/>
+              </mark>
             </Address>
           </Td>
         );
       }
 
       case 'block': {
+        const shouldHighlightHash = data.block_hash.toLowerCase() === searchTerm.toLowerCase();
+
         return (
           <>
             <Td fontSize="sm">
               <Flex alignItems="center">
                 <Icon as={ blockIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
                 <Link fontWeight={ 700 } href={ link('block', { id: String(data.block_number) }) }>
-                  { data.block_number }
+                  <Box as={ shouldHighlightHash ? 'span' : 'mark' }>{ data.block_number }</Box>
                 </Link>
               </Flex>
             </Td>
             <Td fontSize="sm" verticalAlign="middle">
-              <Box overflow="hidden" whiteSpace="nowrap">
+              <Box overflow="hidden" whiteSpace="nowrap" as={ shouldHighlightHash ? 'mark' : 'span' } display="block">
                 <HashStringShortenDynamic hash={ data.block_hash }/>
               </Box>
             </Td>
@@ -95,9 +105,9 @@ const SearchResultTableItem = ({ data }: Props) => {
           <Td colSpan={ 2 } fontSize="sm">
             <Flex alignItems="center">
               <Icon as={ txIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
-              <Address>
+              <mark>
                 <AddressLink hash={ data.tx_hash } type="transaction" fontWeight={ 700 }/>
-              </Address>
+              </mark>
             </Flex>
           </Td>
         );

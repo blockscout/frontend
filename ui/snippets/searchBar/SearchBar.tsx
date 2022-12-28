@@ -77,7 +77,7 @@ const SearchBar = ({ isHomepage, withShadow }: Props) => {
       </PopoverTrigger>
       <PopoverContent w={ `${ menuWidth.current }px` } maxH={{ base: '300px', lg: '500px' }} overflowY="scroll" ref={ menuRef }>
         <PopoverBody py={ 6 }>
-          <SearchBarSuggest query={ query }/>
+          <SearchBarSuggest query={ query } searchTerm={ searchTerm }/>
         </PopoverBody>
       </PopoverContent>
     </Popover>

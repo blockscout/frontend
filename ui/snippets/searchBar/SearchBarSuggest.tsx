@@ -11,9 +11,10 @@ import SearchBarSuggestItem from './SearchBarSuggestItem';
 
 interface Props {
   query: UseQueryResult<SearchResult>;
+  searchTerm: string;
 }
 
-const SearchBarSuggest = ({ query }: Props) => {
+const SearchBarSuggest = ({ query, searchTerm }: Props) => {
   const isMobile = useIsMobile();
 
   const content = (() => {
@@ -31,7 +32,7 @@ const SearchBarSuggest = ({ query }: Props) => {
     return (
       <>
         <Box fontWeight={ 500 } fontSize="sm">Found <Text fontWeight={ 700 } as="span">{ num }</Text> matching results</Box>
-        { query.data.items.map((item, index) => <SearchBarSuggestItem key={ index } data={ item } isMobile={ isMobile }/>) }
+        { query.data.items.map((item, index) => <SearchBarSuggestItem key={ index } data={ item } isMobile={ isMobile } searchTerm={ searchTerm }/>) }
       </>
     );
   })();
