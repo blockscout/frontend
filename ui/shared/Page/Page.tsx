@@ -13,7 +13,6 @@ import NavigationDesktop from 'ui/snippets/navigation/NavigationDesktop';
 interface Props {
   children: React.ReactNode;
   wrapChildren?: boolean;
-  hideMobileHeaderOnScrollDown?: boolean;
   isHomePage?: boolean;
   renderHeader?: () => React.ReactNode;
 }
@@ -21,7 +20,6 @@ interface Props {
 const Page = ({
   children,
   wrapChildren = true,
-  hideMobileHeaderOnScrollDown,
   isHomePage,
   renderHeader,
 }: Props) => {
@@ -47,7 +45,7 @@ const Page = ({
       <Flex flexDir="column" flexGrow={ 1 } w={{ base: '100%', lg: 'auto' }}>
         { renderHeader ?
           renderHeader() :
-          <Header isHomePage={ isHomePage } hideOnScrollDown={ hideMobileHeaderOnScrollDown }/>
+          <Header isHomePage={ isHomePage }/>
         }
         <ErrorBoundary renderErrorScreen={ renderErrorScreen }>
           { renderedChildren }

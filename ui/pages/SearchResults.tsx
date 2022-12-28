@@ -102,15 +102,22 @@ const SearchResultsPageContent = () => {
     );
   })();
 
+  const inputRef = React.useRef<HTMLFormElement>(null);
+  const handelHide = React.useCallback(() => {
+    inputRef.current?.querySelector('input')?.blur();
+  }, [ ]);
+
   const renderSearchBar = React.useCallback(() => {
     return (
       <SearchBarInput
+        ref={ inputRef }
         onChange={ handleSearchTermChange }
         onSubmit={ handleSubmit }
         value={ searchTerm }
+        onHide={ handelHide }
       />
     );
-  }, [ handleSearchTermChange, handleSubmit, searchTerm ]);
+  }, [ handleSearchTermChange, handleSubmit, searchTerm, handelHide ]);
 
   const renderHeader = React.useCallback(() => {
     return <Header renderSearchBar={ renderSearchBar }/>;

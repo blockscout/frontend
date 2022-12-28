@@ -12,12 +12,12 @@ interface Props {
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
   onBlur?: (event: FocusEvent<HTMLFormElement>) => void;
   onFocus?: () => void;
+  onHide?: () => void;
   isHomepage?: boolean;
-  withShadow?: boolean;
   value: string;
 }
 
-const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, withShadow, value }: Props, ref: React.ForwardedRef<HTMLFormElement>) => {
+const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, onHide, value }: Props, ref: React.ForwardedRef<HTMLFormElement>) => {
   const [ isSticky, setIsSticky ] = React.useState(false);
   const scrollDirection = useScrollDirection();
   const isMobile = useIsMobile();
@@ -28,7 +28,7 @@ const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, withS
     } else {
       setIsSticky(false);
     }
-  }, []);
+  }, [ ]);
 
   React.useEffect(() => {
     if (!isMobile || isHomepage) {
@@ -48,6 +48,12 @@ const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, withS
   const bgColor = useColorModeValue('white', 'black');
   const transformMobile = scrollDirection !== 'down' ? 'translateY(0)' : 'translateY(-100%)';
 
+  React.useEffect(() => {
+    if (isMobile && scrollDirection === 'down') {
+      onHide?.();
+    }
+  }, [ scrollDirection, onHide, isMobile ]);
+
   return (
     <chakra.form
       ref={ ref }
@@ -65,7 +71,7 @@ const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, withS
       paddingX={{ base: isHomepage ? 0 : 4, lg: 0 }}
       paddingTop={{ base: isHomepage ? 0 : 1, lg: 0 }}
       paddingBottom={{ base: isHomepage ? 0 : 4, lg: 0 }}
-      boxShadow={ withShadow && scrollDirection !== 'down' && isSticky ? 'md' : 'none' }
+      boxShadow={ scrollDirection !== 'down' && isSticky ? 'md' : 'none' }
       transform={{ base: isHomepage ? 'none' : transformMobile, lg: 'none' }}
       transitionProperty="transform,box-shadow"
       transitionDuration="slow"

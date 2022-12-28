@@ -1,4 +1,5 @@
 import { Popover, PopoverTrigger, PopoverContent, PopoverBody, useDisclosure } from '@chakra-ui/react';
+import _debounce from 'lodash/debounce';
 import type { FormEvent, FocusEvent } from 'react';
 import React from 'react';
 
@@ -10,11 +11,10 @@ import SearchBarSuggest from './SearchBarSuggest';
 import useSearchQuery from './useSearchQuery';
 
 type Props = {
-  withShadow?: boolean;
   isHomepage?: boolean;
 }
 
-const SearchBar = ({ isHomepage, withShadow }: Props) => {
+const SearchBar = ({ isHomepage }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const inputRef = React.useRef<HTMLFormElement>(null);
   const menuRef = React.useRef<HTMLDivElement>(null);
@@ -35,6 +35,11 @@ const SearchBar = ({ isHomepage, withShadow }: Props) => {
     onOpen();
   }, [ onOpen ]);
 
+  const handelHide = React.useCallback(() => {
+    onClose();
+    inputRef.current?.querySelector('input')?.blur();
+  }, [ onClose ]);
+
   const handleBlur = React.useCallback((event: FocusEvent<HTMLFormElement>) => {
     const isFocusInMenu = menuRef.current?.contains(event.relatedTarget);
     if (!isFocusInMenu) {
@@ -48,10 +53,18 @@ const SearchBar = ({ isHomepage, withShadow }: Props) => {
   }, [ menuPaddingX ]);
 
   React.useEffect(() => {
+    const inputEl = inputRef.current;
+    if (!inputEl) {
+      return;
+    }
     calculateMenuWidth();
-    window.addEventListener('resize', calculateMenuWidth);
+
+    const resizeHandler = _debounce(calculateMenuWidth, 200);
+    const resizeObserver = new ResizeObserver(resizeHandler);
+    resizeObserver.observe(inputRef.current);
+
     return function cleanup() {
-      window.removeEventListener('resize', calculateMenuWidth);
+      resizeObserver.unobserve(inputEl);
     };
   }, [ calculateMenuWidth ]);
 
@@ -71,8 +84,8 @@ const SearchBar = ({ isHomepage, withShadow }: Props) => {
           onSubmit={ handleSubmit }
           onFocus={ handleFocus }
           onBlur={ handleBlur }
+          onHide={ handelHide }
           isHomepage={ isHomepage }
-          withShadow={ withShadow }
           value={ searchTerm }
         />
       </PopoverTrigger>
