@@ -23,9 +23,23 @@ const Page = ({
   hideMobileHeaderOnScrollDown,
   isHomePage,
 }: Props) => {
-  const fetch = useFetch();
+  const customFetch = useFetch();
 
-  useQuery([ 'csrf' ], async() => await fetch('/node-api/csrf'), {
+  useQuery([ 'csrf' ], async() => {
+    const nodeApiResponse = await customFetch('/node-api/csrf');
+    const apiResponse = await fetch('https://blockscout-main.test.aws-k8s.blockscout.com/api/account/v1/get_csrf', { credentials: 'include' });
+
+    const csrfFromHeader = apiResponse.headers.get('x-bs-account-csrf');
+    // eslint-disable-next-line no-console
+    console.log('>>> RESPONSE HEADERS <<<');
+    // eslint-disable-next-line no-console
+    console.table([ {
+      'content-length': apiResponse.headers.get('content-length'),
+      'x-bs-account-csrf': csrfFromHeader,
+    } ]);
+
+    return csrfFromHeader || nodeApiResponse;
+  }, {
     enabled: Boolean(cookies.get(cookies.NAMES.API_TOKEN)),
   });
 
