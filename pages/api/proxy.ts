@@ -2,7 +2,7 @@ import _pick from 'lodash/pick';
 import _pickBy from 'lodash/pickBy';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import fetchFactory from 'lib/api/fetch';
+import fetchFactory from 'lib/api/nodeFetch';
 
 const handler = async(_req: NextApiRequest, res: NextApiResponse) => {
   if (!_req.url) {

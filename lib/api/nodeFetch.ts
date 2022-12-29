@@ -6,12 +6,12 @@ import appConfig from 'configs/app/config';
 import { httpLogger } from 'lib/api/logger';
 import * as cookies from 'lib/cookies';
 
-// first arg can be only a string
-// FIXME migrate to RequestInfo later if needed
 export default function fetchFactory(
   _req: NextApiRequest,
   apiEndpoint: string = appConfig.api.endpoint,
 ) {
+  // first arg can be only a string
+  // FIXME migrate to RequestInfo later if needed
   return function fetch(path: string, init?: RequestInit): Promise<Response> {
     const csrfToken = _req.headers['x-csrf-token']?.toString();
     const headers = {
