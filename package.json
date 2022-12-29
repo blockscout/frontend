@@ -9,6 +9,7 @@
   },
   "scripts": {
     "dev": "next dev",
+    "dev:local": "./node_modules/.bin/dotenv -e ./configs/envs/.env.localhost -e ./configs/envs/.env.secrets next dev | ./node_modules/.bin/pino-pretty",
     "dev:poa_core": "./node_modules/.bin/dotenv -e ./configs/envs/.env.poa_core -e ./configs/envs/.env.common -e ./configs/envs/.env.secrets next dev | ./node_modules/.bin/pino-pretty",
     "dev:goerli": "./node_modules/.bin/dotenv -e ./configs/envs/.env.goerli -e ./configs/envs/.env.common -e ./configs/envs/.env.secrets next dev | ./node_modules/.bin/pino-pretty",
     "build": "next build",
