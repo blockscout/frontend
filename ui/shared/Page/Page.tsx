@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
 import * as cookies from 'lib/cookies';
-import useFetch from 'lib/hooks/useFetch';
+// import useFetch from 'lib/hooks/useFetch';
 import AppError from 'ui/shared/AppError/AppError';
 import ErrorBoundary from 'ui/shared/ErrorBoundary';
 import PageContent from 'ui/shared/Page/PageContent';
@@ -23,10 +23,10 @@ const Page = ({
   hideMobileHeaderOnScrollDown,
   isHomePage,
 }: Props) => {
-  const customFetch = useFetch();
+  // const customFetch = useFetch();
 
   useQuery([ 'csrf' ], async() => {
-    const nodeApiResponse = await customFetch('/node-api/csrf');
+    // const nodeApiResponse = await customFetch('/node-api/csrf');
     const apiResponse = await fetch('https://blockscout-main.test.aws-k8s.blockscout.com/api/account/v1/get_csrf', { credentials: 'include' });
 
     const csrfFromHeader = apiResponse.headers.get('x-bs-account-csrf');
@@ -38,7 +38,7 @@ const Page = ({
       'x-bs-account-csrf': csrfFromHeader,
     } ]);
 
-    return csrfFromHeader ? { token: csrfFromHeader } : nodeApiResponse;
+    return csrfFromHeader ? { token: csrfFromHeader } : undefined;
   }, {
     enabled: Boolean(cookies.get(cookies.NAMES.API_TOKEN)),
   });
