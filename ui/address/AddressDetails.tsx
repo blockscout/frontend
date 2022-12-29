@@ -62,7 +62,7 @@ const AddressDetails = ({ addressQuery }: Props) => {
   return (
     <Box>
       <Flex alignItems="center">
-        <AddressIcon hash={ addressQuery.data.hash }/>
+        <AddressIcon address={ addressQuery.data }/>
         <Text ml={ 2 } fontFamily="heading" fontWeight={ 500 }>
           { isMobile ? <HashStringShorten hash={ addressQuery.data.hash }/> : addressQuery.data.hash }
         </Text>

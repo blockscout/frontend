@@ -50,7 +50,7 @@ const TxLogItem = ({ address, index, topics, data, decoded }: Props) => {
       <RowHeader>Address</RowHeader>
       <GridItem display="flex" alignItems="center">
         <Address mr={{ base: 9, lg: 0 }}>
-          <AddressIcon hash={ address.hash }/>
+          <AddressIcon address={ address }/>
           <AddressLink hash={ address.hash } alias={ address.name } ml={ 2 }/>
         </Address>
         { /* api doesn't have find topic feature yet */ }

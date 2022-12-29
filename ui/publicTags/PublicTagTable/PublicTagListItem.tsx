@@ -27,7 +27,7 @@ const PublicTagListItem = ({ item, onEditClick, onDeleteClick }: Props) => {
     <ListItemMobile>
       <VStack spacing={ 3 } alignItems="flex-start" maxW="100%">
         <VStack spacing={ 4 } alignItems="unset" maxW="100%">
-          { item.addresses.map((address) => <AddressSnippet key={ address } address={ address }/>) }
+          { item.addresses_with_info.map((address) => <AddressSnippet key={ address.hash } address={ address }/>) }
         </VStack>
         <HStack spacing={ 3 }>
           <Text fontSize="sm" fontWeight={ 500 }>Public tags</Text>
