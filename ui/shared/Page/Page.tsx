@@ -38,7 +38,7 @@ const Page = ({
       'x-bs-account-csrf': csrfFromHeader,
     } ]);
 
-    return csrfFromHeader || nodeApiResponse;
+    return csrfFromHeader ? { token: csrfFromHeader } : nodeApiResponse;
   }, {
     enabled: Boolean(cookies.get(cookies.NAMES.API_TOKEN)),
   });
