@@ -9,7 +9,7 @@ import Stats from '../ui/pages/Stats';
 const StatsPage: NextPage = () => {
   return (
     <>
-      <Head><title>{ appConfig.network.name } Stats</title></Head>
+      <Head><title>{ appConfig.network.name } stats</title></Head>
       <Stats/>
     </>
   );
