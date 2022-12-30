@@ -11,6 +11,7 @@ import AddressDetails from 'ui/address/AddressDetails';
 import AddressInternalTxs from 'ui/address/AddressInternalTxs';
 import AddressTokenTransfers from 'ui/address/AddressTokenTransfers';
 import AddressTxs from 'ui/address/AddressTxs';
+import TextAd from 'ui/shared/ad/TextAd';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
@@ -40,16 +41,15 @@ const AddressPageContent = () => {
     { id: 'blocks_validated', title: 'Blocks validated', component: <AddressBlocksValidated addressQuery={ addressQuery }/> },
   ];
 
+  const tagsNode = tags.length > 0 ? <Flex columnGap={ 2 }>{ tags }</Flex> : null;
+
   return (
     <Page>
-      <Flex alignItems="center" columnGap={ 3 }>
-        <PageTitle text={ `${ addressQuery.data?.is_contract ? 'Contract' : 'Address' } details` }/>
-        { tags.length > 0 && (
-          <Flex mb={ 6 } columnGap={ 2 }>
-            { tags }
-          </Flex>
-        ) }
-      </Flex>
+      <TextAd mb={ 6 }/>
+      <PageTitle
+        text={ `${ addressQuery.data?.is_contract ? 'Contract' : 'Address' } details` }
+        additionals={ tagsNode }
+      />
       <AddressDetails addressQuery={ addressQuery }/>
       <RoutedTabs tabs={ tabs } tabListProps={{ mt: 8 }}/>
     </Page>

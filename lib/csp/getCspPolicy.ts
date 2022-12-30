@@ -129,6 +129,7 @@ function makePolicyMap() {
 
       // ad
       'servedbyadbutler.com',
+      'cdn.coinzilla.io',
     ],
 
     'font-src': [

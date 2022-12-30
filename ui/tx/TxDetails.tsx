@@ -1,4 +1,17 @@
-import { Grid, GridItem, Text, Box, Icon, Link, Spinner, Tag, Flex, Tooltip, chakra } from '@chakra-ui/react';
+import {
+  Grid,
+  GridItem,
+  Text,
+  Box,
+  Icon,
+  Link,
+  Spinner,
+  Tag,
+  Flex,
+  Tooltip,
+  chakra,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
@@ -10,7 +23,9 @@ import errorIcon from 'icons/status/error.svg';
 import successIcon from 'icons/status/success.svg';
 import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
+import AdBanner from 'ui/shared/ad/AdBanner';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -33,6 +48,10 @@ import useFetchTxInfo from 'ui/tx/useFetchTxInfo';
 
 const TxDetails = () => {
   const { data, isLoading, isError, socketStatus, error } = useFetchTxInfo();
+
+  const isMobile = useIsMobile();
+
+  const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
 
   const [ isExpanded, setIsExpanded ] = React.useState(false);
 
@@ -148,7 +167,29 @@ const TxDetails = () => {
           <Text variant="secondary">{ getConfirmationDuration(data.confirmation_duration) }</Text>
         </DetailsInfoItem>
       ) }
-      <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 3, lg: 8 }}/>
+      { isMobile ?
+        (
+          <GridItem
+            colSpan={{ base: undefined, lg: 2 }}
+          >
+            <AdBanner justifyContent="center"/>
+          </GridItem>
+        ) :
+        (
+          <DetailsInfoItem
+            title="Sponsored"
+            hint="Sponsored banner advertisement"
+          >
+            <AdBanner/>
+          </DetailsInfoItem>
+        ) }
+      <GridItem
+        colSpan={{ base: undefined, lg: 2 }}
+        mt={{ base: 2, lg: 3 }}
+        mb={{ base: 0, lg: 3 }}
+        borderBottom="1px solid"
+        borderColor={ borderColor }
+      />
       <DetailsInfoItem
         title="From"
         hint="Address (external or contract) sending the transaction."
@@ -199,7 +240,13 @@ const TxDetails = () => {
       </DetailsInfoItem>
       { data.token_transfers && <TxDetailsTokenTransfers data={ data.token_transfers } txHash={ data.hash }/> }
 
-      <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 3, lg: 8 }}/>
+      <GridItem
+        colSpan={{ base: undefined, lg: 2 }}
+        mt={{ base: 2, lg: 3 }}
+        mb={{ base: 0, lg: 3 }}
+        borderBottom="1px solid"
+        borderColor={ borderColor }
+      />
       <DetailsInfoItem
         title="Value"
         hint="Value sent in the native token (and USD) if applicable."
