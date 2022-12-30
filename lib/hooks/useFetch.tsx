@@ -5,6 +5,7 @@ import React from 'react';
 import type { CsrfData } from 'types/client/account';
 
 import type { ResourceError } from 'lib/api/resources';
+import { getResourceKey } from 'lib/api/useApiQuery';
 
 export interface Params {
   method?: RequestInit['method'];
@@ -15,7 +16,7 @@ export interface Params {
 
 export default function useFetch() {
   const queryClient = useQueryClient();
-  const { token } = queryClient.getQueryData<CsrfData>([ 'csrf' ]) || {};
+  const { token } = queryClient.getQueryData<CsrfData>(getResourceKey('csrf')) || {};
 
   return React.useCallback(<Success, Error>(path: string, params?: Params): Promise<Success | ResourceError<Error>> => {
     const reqParams = {
@@ -42,8 +43,6 @@ export default function useFetch() {
 
         return response.json().then(
           (jsonError) => Promise.reject({
-            // DEPRECATED
-            error: jsonError as Error,
             payload: jsonError as Error,
             status: response.status,
             statusText: response.statusText,

@@ -2,10 +2,11 @@ import { compile } from 'path-to-regexp';
 
 import appConfig from 'configs/app/config';
 
-import type { ApiResource } from './resources';
+import { RESOURCES } from './resources';
+import type { ApiResource, ResourceName } from './resources';
 
 export default function buildUrl(
-  resource: ApiResource,
+  _resource: ApiResource | ResourceName,
   pathParams?: Record<string, string | undefined>,
   queryParams?: Record<string, string | number | undefined>,
 ) {
@@ -22,6 +23,7 @@ export default function buildUrl(
   // will need to change the condition if there are more micro services that need authentication and DB state changes
   const needProxy = appConfig.host !== appConfig.api.host;
 
+  const resource: ApiResource = typeof _resource === 'string' ? RESOURCES[_resource] : _resource;
   const baseUrl = needProxy ? appConfig.baseUrl : (resource.endpoint || appConfig.api.endpoint);
   const basePath = resource.basePath !== undefined ? resource.basePath : appConfig.api.basePath;
   const path = needProxy ? '/node-api/proxy' + basePath + resource.path : basePath + resource.path;

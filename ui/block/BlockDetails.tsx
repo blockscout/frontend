@@ -57,11 +57,11 @@ const BlockDetails = () => {
   }
 
   if (isError) {
-    if (error?.error?.status === 404) {
+    if (error?.payload?.status === 404) {
       return <span>This block has not been processed yet.</span>;
     }
 
-    if (error?.error?.status === 422) {
+    if (error?.payload?.status === 422) {
       throw Error('Invalid block number', { cause: error as unknown as Error });
     }
 

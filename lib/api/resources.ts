@@ -35,6 +35,9 @@ export interface ApiResource {
 
 export const RESOURCES = {
   // ACCOUNT
+  csrf: {
+    path: '/api/account/v1/get_csrf',
+  },
   user_info: {
     path: '/api/account/v1/user/info',
   },
@@ -198,7 +201,6 @@ export type ResourcePaginationKey<R extends ResourceName> = typeof RESOURCES[R] 
 export const resourceKey = (x: keyof typeof RESOURCES) => x;
 
 export interface ResourceError<T = unknown> {
-  error?: T;
   payload?: T;
   status: Response['status'];
   statusText: Response['statusText'];
