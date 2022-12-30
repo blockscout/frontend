@@ -22,14 +22,23 @@ const NumberWidgetsList = () => {
       gridGap={ 4 }
     >
       { isLoading ? skeletonElement :
-        numberWidgetsScheme.map(({ id, title }) =>
-          data?.counters[id] ? (
+        numberWidgetsScheme.map(({ id, title, formatFn }) => {
+          if (!data?.counters[id]) {
+            return null;
+          }
+
+          const value = formatNumberToMetricPrefix(Number(data.counters[id]));
+
+          return (
             <NumberWidget
               key={ id }
               label={ title }
-              value={ formatNumberToMetricPrefix(Number(data.counters[id])) }
+              value={ formatFn ?
+                formatFn(value) :
+                value }
             />
-          ) : null) }
+          );
+        }) }
     </Grid>
   );
 };

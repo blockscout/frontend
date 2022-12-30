@@ -2,7 +2,7 @@ import type { Stats } from 'types/api/stats';
 
 type Key = keyof Stats['counters'];
 
-export const numberWidgetsScheme: Array<{id: Key; title: string}> = [
+export const numberWidgetsScheme: Array<{id: Key; title: string; formatFn?: (n: string) => string}> = [
   {
     id: 'totalBlocks',
     title: 'Total blocks',
@@ -10,6 +10,7 @@ export const numberWidgetsScheme: Array<{id: Key; title: string}> = [
   {
     id: 'averageBlockTime',
     title: 'Average block time',
+    formatFn: (n) => `${ n } s`,
   },
   {
     id: 'totalTransactions',
