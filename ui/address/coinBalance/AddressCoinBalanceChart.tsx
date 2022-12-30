@@ -7,6 +7,7 @@ import type { Address } from 'types/api/address';
 import appConfig from 'configs/app/config';
 import useApiQuery from 'lib/api/useApiQuery';
 import ChartWidget from 'ui/shared/chart/ChartWidget';
+import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 interface Props {
   addressQuery: UseQueryResult<Address>;
@@ -23,12 +24,16 @@ const AddressCoinBalanceChart = ({ addressQuery }: Props) => {
     value: BigNumber(value).div(10 ** appConfig.network.currency.decimals).toNumber(),
   })), [ data ]);
 
+  if (isError) {
+    return <DataFetchAlert/>;
+  }
+
   return (
     <ChartWidget
       chartHeight="200px"
       title="Balances"
       items={ items }
-      isLoading={ isLoading || isError }
+      isLoading={ isLoading }
     />
   );
 };
