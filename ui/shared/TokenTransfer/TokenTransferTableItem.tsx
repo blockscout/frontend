@@ -69,7 +69,7 @@ const TokenTransferTableItem = ({
       ) }
       <Td>
         <Address display="inline-flex" maxW="100%" lineHeight="30px">
-          <AddressIcon hash={ from.hash }/>
+          <AddressIcon address={ from }/>
           <AddressLink ml={ 2 } fontWeight="500" hash={ from.hash } alias={ from.name } flexGrow={ 1 }/>
         </Address>
       </Td>
@@ -80,7 +80,7 @@ const TokenTransferTableItem = ({
       ) }
       <Td>
         <Address display="inline-flex" maxW="100%" lineHeight="30px">
-          <AddressIcon hash={ to.hash }/>
+          <AddressIcon address={ to }/>
           <AddressLink ml={ 2 } fontWeight="500" hash={ to.hash } alias={ to.name } flexGrow={ 1 }/>
         </Address>
       </Td>

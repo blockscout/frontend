@@ -9,7 +9,7 @@ import {
 import React from 'react';
 
 const LatestTxsItemSkeleton = () => {
-  const borderColor = useColorModeValue('gray.200', 'whiteAlpha.200');
+  const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
 
   return (
     <Box

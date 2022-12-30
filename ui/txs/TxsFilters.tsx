@@ -72,7 +72,7 @@ const TxsFilters = ({ onFiltersChange, filters, appliedFiltersNum }: Props) => {
     onClose();
   }, [ onClose, onFiltersChange, typeFilter, methodFilter ]);
 
-  const borderColor = useColorModeValue('gray.200', 'whiteAlpha.200');
+  const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
 
   return (
     <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>

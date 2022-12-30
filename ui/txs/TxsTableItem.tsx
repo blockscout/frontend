@@ -51,7 +51,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }
   const addressFrom = (
     <Address>
       <Tooltip label={ tx.from.implementation_name }>
-        <Box display="flex"><AddressIcon hash={ tx.from.hash }/></Box>
+        <Box display="flex"><AddressIcon address={ tx.from }/></Box>
       </Tooltip>
       <AddressLink hash={ tx.from.hash } alias={ tx.from.name } fontWeight="500" ml={ 2 } truncation="constant"/>
     </Address>
@@ -62,13 +62,13 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }
   const addressTo = (
     <Address>
       <Tooltip label={ dataTo.implementation_name }>
-        <Box display="flex"><AddressIcon hash={ dataTo.hash }/></Box>
+        <Box display="flex"><AddressIcon address={ dataTo }/></Box>
       </Tooltip>
       <AddressLink hash={ dataTo.hash } alias={ dataTo.name } fontWeight="500" ml={ 2 } truncation="constant"/>
     </Address>
   );
 
-  const infoBorderColor = useColorModeValue('gray.200', 'whiteAlpha.200');
+  const infoBorderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
   return (
     <Tr>
       <Td pl={ 4 }>

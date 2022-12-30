@@ -57,7 +57,7 @@ const BlockDetails = () => {
   }
 
   if (isError) {
-    const is404 = error?.error?.status === 404;
+    const is404 = error?.payload?.status === 404;
     return is404 ? <span>This block has not been processed yet.</span> : <DataFetchAlert/>;
   }
 

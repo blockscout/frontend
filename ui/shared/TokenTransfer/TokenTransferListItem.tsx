@@ -80,7 +80,7 @@ const TokenTransferListItem = ({
       ) }
       <Flex w="100%" columnGap={ 3 }>
         <Address width={ addressWidth }>
-          <AddressIcon hash={ from.hash }/>
+          <AddressIcon address={ from }/>
           <AddressLink ml={ 2 } fontWeight="500" hash={ from.hash }/>
         </Address>
         { baseAddress ?
@@ -88,7 +88,7 @@ const TokenTransferListItem = ({
           <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500"/>
         }
         <Address width={ addressWidth }>
-          <AddressIcon hash={ to.hash }/>
+          <AddressIcon address={ to }/>
           <AddressLink ml={ 2 } fontWeight="500" hash={ to.hash }/>
         </Address>
       </Flex>

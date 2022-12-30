@@ -37,7 +37,7 @@ type Props = {
 }
 
 const LatestBlocksItem = ({ tx }: Props) => {
-  const borderColor = useColorModeValue('gray.200', 'whiteAlpha.200');
+  const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
   const iconColor = useColorModeValue('blue.600', 'blue.300');
 
   const dataTo = tx.to ? tx.to : tx.created_contract;
@@ -109,7 +109,7 @@ const LatestBlocksItem = ({ tx }: Props) => {
         <Box width={{ base: '100%', lg: '50%' }}>
           <Flex alignItems="center" mb={ 3 } justifyContent={{ base: 'start', lg: 'end' }}>
             <Address>
-              <AddressIcon hash={ tx.from.hash }/>
+              <AddressIcon address={ tx.from }/>
               <AddressLink
                 hash={ tx.from.hash }
                 alias={ tx.from.name }
@@ -126,7 +126,7 @@ const LatestBlocksItem = ({ tx }: Props) => {
               color="gray.500"
             />
             <Address>
-              <AddressIcon hash={ dataTo.hash }/>
+              <AddressIcon address={ dataTo }/>
               <AddressLink
                 hash={ dataTo.hash }
                 alias={ dataTo.name }

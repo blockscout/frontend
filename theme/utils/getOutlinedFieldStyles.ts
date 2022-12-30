@@ -24,7 +24,7 @@ export default function getOutlinedFieldStyles(props: StyleFunctionProps) {
     },
     _disabled: {
       opacity: 1,
-      backgroundColor: mode('gray.200', 'whiteAlpha.200')(props),
+      backgroundColor: mode('blackAlpha.200', 'whiteAlpha.200')(props),
       borderColor: 'transparent',
       cursor: 'not-allowed',
       _hover: {
