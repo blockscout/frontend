@@ -44,10 +44,10 @@ const ChartsWidgetsList = ({ charts, interval }: Props) => {
                 >
                   { section.charts.map((chart) => (
                     <GridItem
-                      key={ chart.id }
+                      key={ chart.apiId }
                     >
                       <ChartWidgetContainer
-                        id={ chart.id }
+                        id={ chart.apiId }
                         title={ chart.title }
                         description={ chart.description }
                         interval={ interval }
