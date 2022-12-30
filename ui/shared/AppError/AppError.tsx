@@ -2,6 +2,7 @@ import { Box, Button, Heading, Icon, Text, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import icon404 from 'icons/error-pages/404.svg';
+import icon422 from 'icons/error-pages/422.svg';
 import icon500 from 'icons/error-pages/500.svg';
 import link from 'lib/link/link';
 
@@ -15,6 +16,11 @@ const ERRORS: Record<string, {icon: React.FunctionComponent<React.SVGAttributes<
     icon: icon404,
     title: 'Page not found',
     text: 'This page is no longer explorable! If you are lost, use the search bar to find what you are looking for.',
+  },
+  '422': {
+    icon: icon422,
+    title: 'Request cannot be processed',
+    text: 'Your request contained an error, perhaps a mistyped tx/block/address hash. Try again, and check the developer tools console for more info.',
   },
   '500': {
     icon: icon500,

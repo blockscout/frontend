@@ -1,4 +1,4 @@
-import { Grid, GridItem, Text, Icon, Link, Box, Tooltip } from '@chakra-ui/react';
+import { Grid, GridItem, Text, Icon, Link, Box, Tooltip, useColorModeValue } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import capitalize from 'lodash/capitalize';
 import NextLink from 'next/link';
@@ -52,16 +52,33 @@ const BlockDetails = () => {
     router.push(url, undefined);
   }, [ router ]);
 
+  const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
+
   if (isLoading) {
     return <BlockDetailsSkeleton/>;
   }
 
   if (isError) {
-    const is404 = error?.payload?.status === 404;
-    return is404 ? <span>This block has not been processed yet.</span> : <DataFetchAlert/>;
+    if (error?.payload?.status === 404) {
+      return <span>This block has not been processed yet.</span>;
+    }
+
+    if (error?.payload?.status === 422) {
+      throw Error('Invalid block number', { cause: error as unknown as Error });
+    }
+
+    return <DataFetchAlert/>;
   }
 
-  const sectionGap = <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>;
+  const sectionGap = (
+    <GridItem
+      colSpan={{ base: undefined, lg: 2 }}
+      mt={{ base: 2, lg: 3 }}
+      mb={{ base: 0, lg: 3 }}
+      borderBottom="1px solid"
+      borderColor={ borderColor }
+    />
+  );
   const { totalReward, staticReward, burntFees, txFees } = getBlockReward(data);
 
   const validatorTitle = getNetworkValidatorTitle();
@@ -255,7 +272,7 @@ const BlockDetails = () => {
       { /* ADDITIONAL INFO */ }
       { isExpanded && (
         <>
-          { sectionGap }
+          <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
 
           <DetailsInfoItem
             title="Difficulty"

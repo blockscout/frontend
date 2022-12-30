@@ -2,17 +2,22 @@ import React from 'react';
 
 interface Props {
   children: React.ReactNode;
-  renderErrorScreen: () => React.ReactNode;
+  renderErrorScreen: (error?: Error) => React.ReactNode;
   onError?: (error: Error) => void;
 }
 
-class ErrorBoundary extends React.PureComponent<Props> {
-  state = {
+interface State {
+  hasError: boolean;
+  error?: Error;
+}
+
+class ErrorBoundary extends React.PureComponent<Props, State> {
+  state: State = {
     hasError: false,
   };
 
-  static getDerivedStateFromError() {
-    return { hasError: true };
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error };
   }
 
   componentDidCatch(error: Error) {
@@ -21,7 +26,7 @@ class ErrorBoundary extends React.PureComponent<Props> {
 
   render() {
     if (this.state.hasError) {
-      return this.props.renderErrorScreen();
+      return this.props.renderErrorScreen(this.state.error);
     }
 
     return this.props.children;
