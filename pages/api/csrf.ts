@@ -1,13 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import buildUrl from 'lib/api/buildUrl';
+import buildUrlNode from 'lib/api/buildUrlNode';
 import { httpLogger } from 'lib/api/logger';
 import fetchFactory from 'lib/api/nodeFetch';
 
 export default async function csrfHandler(_req: NextApiRequest, res: NextApiResponse) {
   httpLogger(_req, res);
 
-  const url = buildUrl('csrf');
+  const url = buildUrlNode('csrf');
   const response = await fetchFactory(_req)(url);
 
   if (response.status === 200) {
