@@ -1,11 +1,7 @@
 import { Box, Heading, Flex, Link, Text, Skeleton } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
-import type { Transaction } from 'types/api/transaction';
-import { QueryKeys } from 'types/client/queries';
-
-import useFetch from 'lib/hooks/useFetch';
+import useApiQuery from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import link from 'lib/link/link';
 import TxsNewItemNotice from 'ui/txs/TxsNewItemNotice';
@@ -16,11 +12,7 @@ import LatestTxsItemSkeleton from './LatestTxsItemSkeleton';
 const LatestTransactions = () => {
   const isMobile = useIsMobile();
   const txsCount = isMobile ? 2 : 6;
-  const fetch = useFetch();
-  const { data, isLoading, isError } = useQuery<unknown, unknown, Array<Transaction>>(
-    [ QueryKeys.indexTxs ],
-    async() => await fetch(`/node-api/index/txs`),
-  );
+  const { data, isLoading, isError } = useApiQuery('homepage_txs');
 
   let content;
 

@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { QueryKeys } from 'types/client/queries';
-
 import { SECOND } from 'lib/consts';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import TokenTransfer from 'ui/shared/TokenTransfer/TokenTransfer';
@@ -20,15 +18,12 @@ const TxTokenTransfer = () => {
     return <DataFetchAlert/>;
   }
 
-  const path = `/node-api/transactions/${ data?.hash }/token-transfers`;
-
   return (
     <TokenTransfer
       isLoading={ isLoading }
       isDisabled={ !data?.status || !data?.hash }
-      path={ path }
-      queryName={ QueryKeys.txTokenTransfers }
-      queryIds={ data?.hash ? [ data.hash ] : undefined }
+      resourceName="tx_token_transfers"
+      pathParams={{ id: data?.hash.toString() }}
       showTxInfo={ false }
       txHash={ data?.hash || '' }
     />

@@ -12,8 +12,8 @@ type Props = UserInfo;
 
 const ProfileMenuContent = ({ name, nickname, email }: Props) => {
   const { accountNavItems, profileItem } = useNavItems();
-  const borderColor = useColorModeValue('gray.200', 'whiteAlpha.200');
-  const primaryTextColor = useColorModeValue('gray.600', 'whiteAlpha.800');
+  const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
+  const primaryTextColor = useColorModeValue('blackAlpha.800', 'whiteAlpha.800');
 
   return (
     <Box>

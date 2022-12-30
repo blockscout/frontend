@@ -12,7 +12,7 @@ export default function useColors() {
       active: useColorModeValue('blue.50', 'gray.800'),
     },
     border: {
-      'default': useColorModeValue('gray.200', 'whiteAlpha.200'),
+      'default': useColorModeValue('blackAlpha.200', 'whiteAlpha.200'),
       active: useColorModeValue('blue.50', 'gray.800'),
     },
   };

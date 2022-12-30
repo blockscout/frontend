@@ -1,5 +1,4 @@
 import { Grid, GridItem, Text, Icon, Link, Box, Tooltip } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import capitalize from 'lodash/capitalize';
 import NextLink from 'next/link';
@@ -7,17 +6,13 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
-import type { Block } from 'types/api/block';
-import { QueryKeys } from 'types/client/queries';
-
 import appConfig from 'configs/app/config';
 import clockIcon from 'icons/clock.svg';
 import flameIcon from 'icons/flame.svg';
+import useApiQuery from 'lib/api/useApiQuery';
 import getBlockReward from 'lib/block/getBlockReward';
 import { WEI, WEI_IN_GWEI, ZERO } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
-import type { ErrorType } from 'lib/hooks/useFetch';
-import useFetch from 'lib/hooks/useFetch';
 import { space } from 'lib/html-entities';
 import link from 'lib/link/link';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
@@ -35,15 +30,11 @@ import Utilization from 'ui/shared/Utilization/Utilization';
 const BlockDetails = () => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
   const router = useRouter();
-  const fetch = useFetch();
 
-  const { data, isLoading, isError, error } = useQuery<unknown, ErrorType<{ status: number }>, Block>(
-    [ QueryKeys.block, router.query.id ],
-    async() => await fetch(`/node-api/blocks/${ router.query.id }`),
-    {
-      enabled: Boolean(router.query.id),
-    },
-  );
+  const { data, isLoading, isError, error } = useApiQuery<'block', { status: number }>('block', {
+    pathParams: { id: router.query.id?.toString() },
+    queryOptions: { enabled: Boolean(router.query.id) },
+  });
 
   const handleCutClick = React.useCallback(() => {
     setIsExpanded((flag) => !flag);

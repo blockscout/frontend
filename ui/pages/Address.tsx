@@ -1,13 +1,10 @@
 import { Flex, Tag } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { Address } from 'types/api/address';
-import { QueryKeys } from 'types/client/queries';
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
-import useFetch from 'lib/hooks/useFetch';
+import useApiQuery from 'lib/api/useApiQuery';
 import AddressBlocksValidated from 'ui/address/AddressBlocksValidated';
 import AddressCoinBalance from 'ui/address/AddressCoinBalance';
 import AddressDetails from 'ui/address/AddressDetails';
@@ -20,15 +17,11 @@ import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
 
 const AddressPageContent = () => {
   const router = useRouter();
-  const fetch = useFetch();
 
-  const addressQuery = useQuery<unknown, unknown, Address>(
-    [ QueryKeys.address, router.query.id ],
-    async() => await fetch(`/node-api/addresses/${ router.query.id }`),
-    {
-      enabled: Boolean(router.query.id),
-    },
-  );
+  const addressQuery = useApiQuery('address', {
+    pathParams: { id: router.query.id?.toString() },
+    queryOptions: { enabled: Boolean(router.query.id) },
+  });
 
   const tags = [
     ...(addressQuery.data?.private_tags || []),

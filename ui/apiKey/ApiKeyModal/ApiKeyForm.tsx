@@ -12,11 +12,11 @@ import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
 import { useForm, Controller } from 'react-hook-form';
 
 import type { ApiKey, ApiKeys, ApiKeyErrors } from 'types/api/account';
-import { QueryKeys } from 'types/client/accountQueries';
 
+import type { ResourceErrorAccount } from 'lib/api/resources';
+import { resourceKey } from 'lib/api/resources';
+import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/getErrorMessage';
-import type { ErrorType } from 'lib/hooks/useFetch';
-import useFetch from 'lib/hooks/useFetch';
 import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
 type Props = {
@@ -40,7 +40,7 @@ const ApiKeyForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
       name: data?.name || '',
     },
   });
-  const fetch = useFetch();
+  const apiFetch = useApiFetch();
   const queryClient = useQueryClient();
   const formBackgroundColor = useColorModeValue('white', 'gray.900');
 
@@ -48,17 +48,20 @@ const ApiKeyForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
     const body = { name: data.name };
 
     if (!data.token) {
-      return fetch('/node-api/account/api-keys', { method: 'POST', body });
+      return apiFetch('api_keys', { fetchParams: { method: 'POST', body } });
     }
 
-    return fetch(`/node-api/account/api-keys/${ data.token }`, { method: 'PUT', body });
+    return apiFetch('api_keys', {
+      pathParams: { id: data.token },
+      fetchParams: { method: 'PUT', body },
+    });
   };
 
   const mutation = useMutation(updateApiKey, {
     onSuccess: async(data) => {
       const response = data as unknown as ApiKey;
 
-      queryClient.setQueryData([ QueryKeys.apiKeys ], (prevData: ApiKeys | undefined) => {
+      queryClient.setQueryData([ resourceKey('api_keys') ], (prevData: ApiKeys | undefined) => {
         const isExisting = prevData && prevData.some((item) => item.api_key === response.api_key);
 
         if (isExisting) {
@@ -76,11 +79,12 @@ const ApiKeyForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
 
       onClose();
     },
-    onError: (e: ErrorType<ApiKeyErrors>) => {
-      if (e?.error?.name) {
-        setError('name', { type: 'custom', message: getErrorMessage(e.error, 'name') });
-      } else if (e?.error?.identity_id) {
-        setError('name', { type: 'custom', message: getErrorMessage(e.error, 'identity_id') });
+    onError: (error: ResourceErrorAccount<ApiKeyErrors>) => {
+      const errorMap = error.payload?.errors;
+      if (errorMap?.name) {
+        setError('name', { type: 'custom', message: getErrorMessage(errorMap, 'name') });
+      } else if (errorMap?.identity_id) {
+        setError('name', { type: 'custom', message: getErrorMessage(errorMap, 'identity_id') });
       } else {
         setAlertVisible(true);
       }

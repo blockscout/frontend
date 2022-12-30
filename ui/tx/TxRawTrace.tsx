@@ -1,13 +1,9 @@
 import { Flex, Textarea, Skeleton } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { RawTracesResponse } from 'types/api/rawTrace';
-import { QueryKeys } from 'types/client/queries';
-
+import useApiQuery from 'lib/api/useApiQuery';
 import { SECOND } from 'lib/consts';
-import useFetch from 'lib/hooks/useFetch';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import TxPendingAlert from 'ui/tx/TxPendingAlert';
@@ -16,16 +12,14 @@ import useFetchTxInfo from 'ui/tx/useFetchTxInfo';
 
 const TxRawTrace = () => {
   const router = useRouter();
-  const fetch = useFetch();
 
   const txInfo = useFetchTxInfo({ updateDelay: 5 * SECOND });
-  const { data, isLoading, isError } = useQuery<unknown, unknown, RawTracesResponse>(
-    [ QueryKeys.txRawTrace, router.query.id ],
-    async() => await fetch(`/node-api/transactions/${ router.query.id }/raw-trace`),
-    {
+  const { data, isLoading, isError } = useApiQuery('tx_raw_trace', {
+    pathParams: { id: router.query.id?.toString() },
+    queryOptions: {
       enabled: Boolean(router.query.id) && Boolean(txInfo.data?.status),
     },
-  );
+  });
 
   if (!txInfo.isLoading && !txInfo.isError && !txInfo.data.status) {
     return txInfo.socketStatus ? <TxSocketAlert status={ txInfo.socketStatus }/> : <TxPendingAlert/>;

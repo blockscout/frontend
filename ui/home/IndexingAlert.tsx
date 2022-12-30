@@ -1,30 +1,25 @@
 import { Alert, AlertIcon, AlertTitle, chakra } from '@chakra-ui/react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
 import type { IndexingStatus } from 'types/api/indexingStatus';
-import { QueryKeys } from 'types/client/queries';
 
-import useFetch from 'lib/hooks/useFetch';
+import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp, ndash } from 'lib/html-entities';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 
 const IndexingAlert = ({ className }: { className?: string }) => {
-  const fetch = useFetch();
   const isMobile = useIsMobile();
 
-  const { data } = useQuery<unknown, unknown, IndexingStatus>(
-    [ QueryKeys.indexingStatus ],
-    async() => await fetch(`/node-api/index/indexing-status`),
-  );
+  const { data } = useApiQuery('homepage_indexing_status');
 
   const queryClient = useQueryClient();
 
   const handleBlocksIndexStatus: SocketMessage.BlocksIndexStatus['handler'] = React.useCallback((payload) => {
-    queryClient.setQueryData([ QueryKeys.indexingStatus ], (prevData: IndexingStatus | undefined) => {
+    queryClient.setQueryData(getResourceKey('homepage_indexing_status'), (prevData: IndexingStatus | undefined) => {
 
       const newData = prevData ? { ...prevData } : {} as IndexingStatus;
       newData.finished_indexing_blocks = payload.finished;
@@ -46,7 +41,7 @@ const IndexingAlert = ({ className }: { className?: string }) => {
   });
 
   const handleIntermalTxsIndexStatus: SocketMessage.InternalTxsIndexStatus['handler'] = React.useCallback((payload) => {
-    queryClient.setQueryData([ QueryKeys.indexingStatus ], (prevData: IndexingStatus | undefined) => {
+    queryClient.setQueryData(getResourceKey('homepage_indexing_status'), (prevData: IndexingStatus | undefined) => {
 
       const newData = prevData ? { ...prevData } : {} as IndexingStatus;
       newData.finished_indexing = payload.finished;

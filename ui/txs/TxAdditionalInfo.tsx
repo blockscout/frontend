@@ -12,7 +12,7 @@ import TextSeparator from 'ui/shared/TextSeparator';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
 const TxAdditionalInfo = ({ tx }: { tx: Transaction }) => {
-  const sectionBorderColor = useColorModeValue('gray.200', 'whiteAlpha.200');
+  const sectionBorderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
   const sectionProps = {
     borderBottom: '1px solid',
     borderColor: sectionBorderColor,

@@ -2,7 +2,6 @@ import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { QueryKeys } from 'types/client/queries';
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
 import appConfig from 'configs/app/config';
@@ -26,8 +25,7 @@ const Transactions = () => {
   const isMobile = useIsMobile();
   const filter = router.query.tab === 'pending' ? 'pending' : 'validated';
   const txsQuery = useQueryWithPages({
-    apiPath: '/node-api/transactions',
-    queryName: filter === 'validated' ? QueryKeys.txsValidate : QueryKeys.txsPending,
+    resourceName: filter === 'validated' ? 'txs_validated' : 'txs_pending',
     filters: { filter },
   });
 

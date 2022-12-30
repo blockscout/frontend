@@ -3,10 +3,11 @@ import React from 'react';
 
 import * as txMock from 'mocks/txs/tx';
 import TestApp from 'playwright/TestApp';
+import buildApiUrl from 'playwright/utils/buildApiUrl';
 
 import TxDetails from './TxDetails';
 
-const API_URL = '/node-api/transactions/1';
+const API_URL = buildApiUrl('tx', { id: '1' });
 const hooksConfig = {
   router: {
     query: { id: 1 },
@@ -26,7 +27,6 @@ test('between addresses +@mobile +@dark-mode', async({ mount, page }) => {
     { hooksConfig },
   );
 
-  await page.waitForResponse(API_URL);
   await page.getByText('View details').click();
 
   await expect(component).toHaveScreenshot();
@@ -44,7 +44,6 @@ test('creating contact', async({ mount, page }) => {
     </TestApp>,
     { hooksConfig },
   );
-  await page.waitForResponse(API_URL);
 
   await expect(component).toHaveScreenshot();
 });
@@ -61,7 +60,6 @@ test('with token transfer +@mobile', async({ mount, page }) => {
     </TestApp>,
     { hooksConfig },
   );
-  await page.waitForResponse(API_URL);
 
   await expect(component).toHaveScreenshot();
 });
@@ -78,7 +76,6 @@ test('with decoded revert reason', async({ mount, page }) => {
     </TestApp>,
     { hooksConfig },
   );
-  await page.waitForResponse(API_URL);
 
   await expect(component).toHaveScreenshot();
 });
@@ -95,7 +92,6 @@ test('with decoded raw reason', async({ mount, page }) => {
     </TestApp>,
     { hooksConfig },
   );
-  await page.waitForResponse(API_URL);
 
   await expect(component).toHaveScreenshot();
 });
@@ -112,7 +108,7 @@ test('pending', async({ mount, page }) => {
     </TestApp>,
     { hooksConfig },
   );
-  await page.waitForResponse(API_URL);
+
   await page.getByText('View details').click();
 
   await expect(component).toHaveScreenshot();

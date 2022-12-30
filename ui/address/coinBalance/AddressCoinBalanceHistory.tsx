@@ -9,11 +9,11 @@ import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
 import Pagination from 'ui/shared/Pagination';
-import SkeletonTable from 'ui/shared/SkeletonTable';
+import SkeletonList from 'ui/shared/skeletons/SkeletonList';
+import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 import { default as Thead } from 'ui/shared/TheadSticky';
 
 import AddressCoinBalanceListItem from './AddressCoinBalanceListItem';
-import AddressCoinBalanceSkeletonMobile from './AddressCoinBalanceSkeletonMobile';
 import AddressCoinBalanceTableItem from './AddressCoinBalanceTableItem';
 
 interface Props {
@@ -33,7 +33,7 @@ const AddressCoinBalanceHistory = ({ query }: Props) => {
             <SkeletonTable columns={ [ '25%', '25%', '25%', '25%', '120px' ] }/>
           </Hide>
           <Show below="lg">
-            <AddressCoinBalanceSkeletonMobile/>
+            <SkeletonList/>
           </Show>
         </>
       );

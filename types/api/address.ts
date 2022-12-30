@@ -80,6 +80,11 @@ export interface AddressCoinBalanceHistoryResponse {
   };
 }
 
+export type AddressCoinBalanceHistoryChart = Array<{
+  date: string;
+  value: string;
+}>
+
 export interface AddressBlocksValidatedResponse {
   items: Array<Block>;
   next_page_params: {

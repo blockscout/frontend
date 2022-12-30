@@ -1,8 +1,6 @@
 import { Box, Text } from '@chakra-ui/react';
 import React from 'react';
 
-import { QueryKeys } from 'types/client/queries';
-
 import { SECOND } from 'lib/consts';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import ActionBar from 'ui/shared/ActionBar';
@@ -17,9 +15,8 @@ import useFetchTxInfo from 'ui/tx/useFetchTxInfo';
 const TxLogs = () => {
   const txInfo = useFetchTxInfo({ updateDelay: 5 * SECOND });
   const { data, isLoading, isError, pagination, isPaginationVisible } = useQueryWithPages({
-    apiPath: `/node-api/transactions/${ txInfo.data?.hash }/logs`,
-    queryName: QueryKeys.txLogs,
-    queryIds: txInfo.data?.hash ? [ txInfo.data.hash ] : undefined,
+    resourceName: 'tx_logs',
+    pathParams: { id: txInfo.data?.hash },
     options: {
       enabled: Boolean(txInfo.data?.hash) && Boolean(txInfo.data?.status),
     },

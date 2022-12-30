@@ -1,16 +1,14 @@
 import { Box, Flex, Text, Icon, Grid, Link } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
-import { useQuery } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { Address as TAddress, AddressCounters, AddressTokenBalance } from 'types/api/address';
-import { QueryKeys } from 'types/client/queries';
+import type { Address as TAddress } from 'types/api/address';
 
 import appConfig from 'configs/app/config';
 import blockIcon from 'icons/block.svg';
-import useFetch from 'lib/hooks/useFetch';
+import useApiQuery from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import link from 'lib/link/link';
 import AddressIcon from 'ui/shared/address/AddressIcon';
@@ -35,24 +33,20 @@ interface Props {
 
 const AddressDetails = ({ addressQuery }: Props) => {
   const router = useRouter();
-  const fetch = useFetch();
   const isMobile = useIsMobile();
 
-  const countersQuery = useQuery<unknown, unknown, AddressCounters>(
-    [ QueryKeys.addressCounters, router.query.id ],
-    async() => await fetch(`/node-api/addresses/${ router.query.id }/counters`),
-    {
+  const countersQuery = useApiQuery('address_counters', {
+    pathParams: { id: router.query.id?.toString() },
+    queryOptions: {
       enabled: Boolean(router.query.id) && Boolean(addressQuery.data),
     },
-  );
-
-  const tokenBalancesQuery = useQuery<unknown, unknown, Array<AddressTokenBalance>>(
-    [ QueryKeys.addressTokenBalances, router.query.id ],
-    async() => await fetch(`/node-api/addresses/${ router.query.id }/token-balances`),
-    {
+  });
+  const tokenBalancesQuery = useApiQuery('address_token_balances', {
+    pathParams: { id: router.query.id?.toString() },
+    queryOptions: {
       enabled: Boolean(router.query.id) && Boolean(addressQuery.data),
     },
-  );
+  });
 
   if (addressQuery.isError) {
     throw Error('Address fetch error', { cause: addressQuery.error as unknown as Error });
@@ -72,7 +66,7 @@ const AddressDetails = ({ addressQuery }: Props) => {
   return (
     <Box>
       <Flex alignItems="center">
-        <AddressIcon hash={ addressQuery.data.hash }/>
+        <AddressIcon address={ addressQuery.data }/>
         <Text ml={ 2 } fontFamily="heading" fontWeight={ 500 }>
           { isMobile ? <HashStringShorten hash={ addressQuery.data.hash }/> : addressQuery.data.hash }
         </Text>

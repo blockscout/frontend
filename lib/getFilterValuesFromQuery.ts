@@ -1,4 +1,8 @@
 export default function getFilterValue<FilterType>(filterValues: ReadonlyArray<FilterType>, val: string | Array<string> | undefined) {
+  if (val === undefined) {
+    return;
+  }
+
   const valArray = [];
   if (typeof val === 'string') {
     valArray.push(...val.split(','));

@@ -23,7 +23,7 @@ import { TOKEN_TYPE } from './helpers';
 
 interface Props {
   appliedFiltersNum?: number;
-  defaultTypeFilters: Array<TokenType>;
+  defaultTypeFilters: Array<TokenType> | undefined;
   onTypeFilterChange: (nextValue: Array<TokenType>) => void;
   withAddressFilter?: boolean;
   onAddressFilterChange?: (nextValue: string) => void;

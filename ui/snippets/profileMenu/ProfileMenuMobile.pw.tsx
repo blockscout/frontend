@@ -4,6 +4,7 @@ import React from 'react';
 import * as profileMock from 'mocks/user/profile';
 import authFixture from 'playwright/fixtures/auth';
 import TestApp from 'playwright/TestApp';
+import buildApiUrl from 'playwright/utils/buildApiUrl';
 
 import ProfileMenuMobile from './ProfileMenuMobile';
 
@@ -29,7 +30,7 @@ test.describe('auth', () => {
   });
 
   extendedTest('base view', async({ mount, page }) => {
-    await page.route('/node-api/account/profile', (route) => route.fulfill({
+    await page.route(buildApiUrl('user_info'), (route) => route.fulfill({
       status: 200,
       body: JSON.stringify(profileMock.base),
     }));

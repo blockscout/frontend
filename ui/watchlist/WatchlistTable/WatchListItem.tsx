@@ -4,9 +4,9 @@ import React, { useCallback, useState } from 'react';
 
 import type { TWatchlistItem } from 'types/client/account';
 
-import useFetch from 'lib/hooks/useFetch';
+import useApiFetch from 'lib/api/useApiFetch';
 import useToast from 'lib/hooks/useToast';
-import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
+import ListItemMobile from 'ui/shared/ListItemMobile';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 
 import WatchListAddressItem from './WatchListAddressItem';
@@ -29,7 +29,7 @@ const WatchListItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   }, [ item, onDeleteClick ]);
 
   const errorToast = useToast();
-  const fetch = useFetch();
+  const apiFetch = useApiFetch();
 
   const showErrorToast = useCallback(() => {
     errorToast({
@@ -61,7 +61,10 @@ const WatchListItem = ({ item, onEditClick, onDeleteClick }: Props) => {
     setSwitchDisabled(true);
     const body = { ...item, notification_methods: { email: !notificationEnabled } };
     setNotificationEnabled(prevState => !prevState);
-    return fetch(`/node-api/account/watchlist/${ item.id }`, { method: 'PUT', body });
+    return apiFetch('watchlist', {
+      pathParams: { id: item.id },
+      fetchParams: { method: 'PUT', body },
+    });
   }, {
     onError: () => {
       showErrorToast();
@@ -79,7 +82,7 @@ const WatchListItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   }, [ mutate ]);
 
   return (
-    <AccountListItemMobile>
+    <ListItemMobile>
       <Box maxW="100%">
         <WatchListAddressItem item={ item }/>
         <HStack spacing={ 3 } mt={ 6 }>
@@ -103,7 +106,7 @@ const WatchListItem = ({ item, onEditClick, onDeleteClick }: Props) => {
         </HStack>
         <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
       </Flex>
-    </AccountListItemMobile>
+    </ListItemMobile>
   );
 };
 

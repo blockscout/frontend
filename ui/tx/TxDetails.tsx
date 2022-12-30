@@ -49,11 +49,11 @@ const TxDetails = () => {
   }
 
   if (isError) {
-    if (error?.error?.status === 422) {
+    if (error?.payload?.status === 422) {
       throw Error('Invalid tx hash', { cause: error as unknown as Error });
     }
 
-    if (error?.error?.status === 404) {
+    if (error?.payload?.status === 404) {
       throw Error('Tx fetch failed', { cause: error as unknown as Error });
     }
 
@@ -155,7 +155,7 @@ const TxDetails = () => {
         columnGap={ 3 }
       >
         <Address>
-          <AddressIcon hash={ data.from.hash }/>
+          <AddressIcon address={ data.from }/>
           <AddressLink ml={ 2 } hash={ data.from.hash }/>
           <CopyToClipboard text={ data.from.hash }/>
         </Address>
@@ -174,7 +174,7 @@ const TxDetails = () => {
       >
         { data.to && data.to.hash ? (
           <Address alignItems="center">
-            <AddressIcon hash={ toAddress.hash }/>
+            <AddressIcon address={ toAddress }/>
             <AddressLink ml={ 2 } hash={ toAddress.hash }/>
             { executionSuccessBadge }
             { executionFailedBadge }

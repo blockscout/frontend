@@ -1,8 +1,5 @@
-import castArray from 'lodash/castArray';
 import { useRouter } from 'next/router';
 import React from 'react';
-
-import { QueryKeys } from 'types/client/queries';
 
 import TokenTransfer from 'ui/shared/TokenTransfer/TokenTransfer';
 
@@ -12,9 +9,8 @@ const AddressTokenTransfers = () => {
   const hash = router.query.id;
   return (
     <TokenTransfer
-      path={ `/node-api/addresses/${ hash }/token-transfers` }
-      queryName={ QueryKeys.addressTokenTransfers }
-      queryIds={ castArray(router.query.id) }
+      resourceName="address_token_transfers"
+      pathParams={{ id: hash?.toString() }}
       baseAddress={ typeof hash === 'string' ? hash : undefined }
       enableTimeIncrement
     />

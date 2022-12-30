@@ -32,7 +32,7 @@ const PublicTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
     <Tr alignItems="top" key={ item.id }>
       <Td>
         <VStack spacing={ 4 } alignItems="unset">
-          { item.addresses.map((address) => <AddressSnippet key={ address } address={ address }/>) }
+          { item.addresses_with_info.map((address) => <AddressSnippet key={ address.hash } address={ address }/>) }
         </VStack>
       </Td>
       <Td>

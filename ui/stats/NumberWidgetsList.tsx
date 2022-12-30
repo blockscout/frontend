@@ -1,24 +1,16 @@
 import { Grid } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
-import type { Stats } from 'types/api/stats';
-import { QueryKeys } from 'types/client/queries';
+import useApiQuery from 'lib/api/useApiQuery';
 
-import useFetch from 'lib/hooks/useFetch';
-
+import { numberWidgetsScheme } from './constants/number-widgets-scheme';
 import NumberWidget from './NumberWidget';
 import NumberWidgetSkeleton from './NumberWidgetSkeleton';
 
 const skeletonsCount = 8;
 
 const NumberWidgetsList = () => {
-  const fetch = useFetch();
-
-  const { data, isLoading } = useQuery<unknown, unknown, Stats>(
-    [ QueryKeys.stats ],
-    async() => await fetch(`/node-api/stats/counters`),
-  );
+  const { data, isLoading } = useApiQuery('stats_counters');
 
   return (
     <Grid
@@ -27,30 +19,8 @@ const NumberWidgetsList = () => {
     >
       { isLoading ? [ ...Array(skeletonsCount) ]
         .map((e, i) => <NumberWidgetSkeleton key={ i }/>) :
-        (
-          <>
-            <NumberWidget
-              label="Total blocks"
-              value={ Number(data?.counters.totalBlocksAllTime).toLocaleString() }
-            />
-            <NumberWidget
-              label="Average block time"
-              value={ Number(data?.counters.averageBlockTime).toLocaleString() }
-            />
-            <NumberWidget
-              label="Completed transactions"
-              value={ Number(data?.counters.completedTransactions).toLocaleString() }
-            />
-            <NumberWidget
-              label="Total transactions"
-              value={ Number(data?.counters.totalTransactions).toLocaleString() }
-            />
-            <NumberWidget
-              label="Total accounts"
-              value={ Number(data?.counters.totalAccounts).toLocaleString() }
-            />
-          </>
-        ) }
+        numberWidgetsScheme.map(({ id, title }) =>
+          data?.counters[id] ? <NumberWidget key={ id } label={ title } value={ Number(data.counters[id]).toLocaleString() }/> : null) }
     </Grid>
   );
 };

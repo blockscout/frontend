@@ -5,9 +5,12 @@ import React, { useRef, useCallback, useState } from 'react';
 import type { TimeChartItem } from './types';
 
 import imageIcon from 'icons/image.svg';
-import repeatArrow from 'icons/repeat_arrow.svg';
+import repeatArrowIcon from 'icons/repeat_arrow.svg';
 import scopeIcon from 'icons/scope.svg';
+import svgFileIcon from 'icons/svg_file.svg';
 import dotsIcon from 'icons/vertical_dots.svg';
+import dayjs from 'lib/date/dayjs';
+import saveAsCSV from 'lib/saveAsCSV';
 
 import ChartWidgetGraph from './ChartWidgetGraph';
 import ChartWidgetSkeleton from './ChartWidgetSkeleton';
@@ -16,17 +19,19 @@ import FullscreenChartModal from './FullscreenChartModal';
 type Props = {
   items?: Array<TimeChartItem>;
   title: string;
-  description: string;
+  description?: string;
   isLoading: boolean;
+  chartHeight?: string;
 }
 
 const DOWNLOAD_IMAGE_SCALE = 5;
 
-const ChartWidget = ({ items, title, description, isLoading }: Props) => {
+const ChartWidget = ({ items, title, description, isLoading, chartHeight }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
   const [ isFullscreen, setIsFullscreen ] = useState(false);
   const [ isZoomResetInitial, setIsZoomResetInitial ] = React.useState(true);
 
+  const pngBackgroundColor = useColorModeValue('white', 'black');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
 
   const handleZoom = useCallback(() => {
@@ -39,18 +44,10 @@ const ChartWidget = ({ items, title, description, isLoading }: Props) => {
 
   const showChartFullscreen = useCallback(() => {
     setIsFullscreen(true);
-
-    if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
-      document.documentElement.requestFullscreen();
-    }
   }, []);
 
   const clearFullscreenChart = useCallback(() => {
     setIsFullscreen(false);
-
-    if (document.fullscreenElement) {
-      document.exitFullscreen();
-    }
   }, []);
 
   const handleFileSaveClick = useCallback(() => {
@@ -58,11 +55,12 @@ const ChartWidget = ({ items, title, description, isLoading }: Props) => {
       domToImage.toPng(ref.current,
         {
           quality: 100,
-          bgcolor: 'white',
+          bgcolor: pngBackgroundColor,
           width: ref.current.offsetWidth * DOWNLOAD_IMAGE_SCALE,
           height: ref.current.offsetHeight * DOWNLOAD_IMAGE_SCALE,
           filter: (node) => node.nodeName !== 'BUTTON',
           style: {
+            borderColor: 'transparent',
             transform: `scale(${ DOWNLOAD_IMAGE_SCALE })`,
             'transform-origin': 'top left',
           },
@@ -75,10 +73,23 @@ const ChartWidget = ({ items, title, description, isLoading }: Props) => {
           link.remove();
         });
     }
-  }, [ title ]);
+  }, [ pngBackgroundColor, title ]);
+
+  const handleSVGSavingClick = useCallback(() => {
+    if (items) {
+      const headerRows = [
+        'Date', 'Value',
+      ];
+      const dataRows = items.map((item) => [
+        dayjs(item.date).format('YYYY-MM-DD'), String(item.value),
+      ]);
+
+      saveAsCSV(headerRows, dataRows, `${ title } (Blockscout stats)`);
+    }
+  }, [ items, title ]);
 
   if (isLoading) {
-    return <ChartWidgetSkeleton/>;
+    return <ChartWidgetSkeleton hasDescription={ Boolean(description) } chartHeight={ chartHeight }/>;
   }
 
   if (items) {
@@ -105,15 +116,17 @@ const ChartWidget = ({ items, title, description, isLoading }: Props) => {
               { title }
             </Text>
 
-            <Text
-              mb={ 1 }
-              gridColumn={ 1 }
-              as="p"
-              variant="secondary"
-              fontSize="xs"
-            >
-              { description }
-            </Text>
+            { description && (
+              <Text
+                mb={ 1 }
+                gridColumn={ 1 }
+                as="p"
+                variant="secondary"
+                fontSize="xs"
+              >
+                { description }
+              </Text>
+            ) }
 
             <Tooltip label="Reset zoom">
               <IconButton
@@ -129,7 +142,7 @@ const ChartWidget = ({ items, title, description, isLoading }: Props) => {
                 size="sm"
                 variant="outline"
                 onClick={ handleZoomResetClick }
-                icon={ <Icon as={ repeatArrow } w={ 4 } h={ 4 }/> }
+                icon={ <Icon as={ repeatArrowIcon } w={ 4 } h={ 4 }/> }
               />
             </Tooltip>
 
@@ -158,6 +171,7 @@ const ChartWidget = ({ items, title, description, isLoading }: Props) => {
                   <Icon as={ scopeIcon } boxSize={ 4 } mr={ 3 }/>
                   View fullscreen
                 </MenuItem>
+
                 <MenuItem
                   display="flex"
                   alignItems="center"
@@ -166,16 +180,27 @@ const ChartWidget = ({ items, title, description, isLoading }: Props) => {
                   <Icon as={ imageIcon } boxSize={ 4 } mr={ 3 }/>
                   Save as PNG
                 </MenuItem>
+
+                <MenuItem
+                  display="flex"
+                  alignItems="center"
+                  onClick={ handleSVGSavingClick }
+                >
+                  <Icon as={ svgFileIcon } boxSize={ 4 } mr={ 3 }/>
+                  Save as CSV
+                </MenuItem>
               </MenuList>
             </Menu>
           </Grid>
 
-          <ChartWidgetGraph
-            items={ items }
-            onZoom={ handleZoom }
-            isZoomResetInitial={ isZoomResetInitial }
-            title={ title }
-          />
+          <Box h={ chartHeight || 'auto' }>
+            <ChartWidgetGraph
+              items={ items }
+              onZoom={ handleZoom }
+              isZoomResetInitial={ isZoomResetInitial }
+              title={ title }
+            />
+          </Box>
         </Box>
 
         <FullscreenChartModal
@@ -192,4 +217,4 @@ const ChartWidget = ({ items, title, description, isLoading }: Props) => {
   return null;
 };
 
-export default ChartWidget;
+export default React.memo(ChartWidget);

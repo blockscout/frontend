@@ -1,6 +1,7 @@
 import type { AddressParam } from './addressParams';
 export interface AddressTag {
   address_hash: string;
+  address: AddressParam;
   name: string;
   id: string;
 }
@@ -64,7 +65,13 @@ export interface WatchlistAddress {
   notification_settings: NotificationSettings;
   notification_methods: NotificationMethods;
   id: string;
-  address?: AddressParam;
+  address: AddressParam;
+}
+
+export interface WatchlistTokensResponse {
+  message: string;
+  result?: Array<unknown>;
+  status: string;
 }
 
 export interface WatchlistAddressNew {
@@ -83,10 +90,11 @@ export interface PublicTag {
   email: string;
   company: string;
   addresses: Array<string>;
+  addresses_with_info: Array<AddressParam>;
   additional_comment: string;
 }
 
-export type PublicTagNew = Omit<PublicTag, 'id'>
+export type PublicTagNew = Omit<PublicTag, 'id' | 'addresses_with_info'>
 
 export type PublicTags = Array<PublicTag>;
 
@@ -96,6 +104,7 @@ export interface CustomAbi {
   name: string;
   id: number;
   contract_address_hash: string;
+  contract_address: AddressParam;
   abi: Array<AbiItem>;
 }
 

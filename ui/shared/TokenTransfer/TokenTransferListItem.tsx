@@ -7,12 +7,12 @@ import type { TokenTransfer } from 'types/api/tokenTransfer';
 import eastArrowIcon from 'icons/arrows/east.svg';
 import transactionIcon from 'icons/transactions.svg';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import AdditionalInfoButton from 'ui/shared/AdditionalInfoButton';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import InOutTag from 'ui/shared/InOutTag';
+import ListItemMobile from 'ui/shared/ListItemMobile';
 import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
 import { getTokenTransferTypeText } from 'ui/shared/TokenTransfer/helpers';
 import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
@@ -49,7 +49,7 @@ const TokenTransferListItem = ({
 
   const addressWidth = `calc((100% - ${ baseAddress ? '50px' : '0px' }) / 2)`;
   return (
-    <AccountListItemMobile rowGap={ 3 }>
+    <ListItemMobile rowGap={ 3 } isAnimated>
       <Flex w="100%" flexWrap="wrap" rowGap={ 1 } position="relative">
         <TokenSnippet hash={ token.address } w="auto" maxW="calc(100% - 140px)" name={ token.name || 'Unnamed token' }/>
         <Tag flexShrink={ 0 } ml={ 2 } mr={ 2 }>{ token.type }</Tag>
@@ -80,7 +80,7 @@ const TokenTransferListItem = ({
       ) }
       <Flex w="100%" columnGap={ 3 }>
         <Address width={ addressWidth }>
-          <AddressIcon hash={ from.hash }/>
+          <AddressIcon address={ from }/>
           <AddressLink ml={ 2 } fontWeight="500" hash={ from.hash }/>
         </Address>
         { baseAddress ?
@@ -88,7 +88,7 @@ const TokenTransferListItem = ({
           <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500"/>
         }
         <Address width={ addressWidth }>
-          <AddressIcon hash={ to.hash }/>
+          <AddressIcon address={ to }/>
           <AddressLink ml={ 2 } fontWeight="500" hash={ to.hash }/>
         </Address>
       </Flex>
@@ -98,7 +98,7 @@ const TokenTransferListItem = ({
           <Text variant="secondary">{ value }</Text>
         </Flex>
       ) }
-    </AccountListItemMobile>
+    </ListItemMobile>
   );
 };
 

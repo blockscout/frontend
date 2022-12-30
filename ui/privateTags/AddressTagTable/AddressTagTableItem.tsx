@@ -29,7 +29,7 @@ const AddressTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   return (
     <Tr alignItems="top" key={ item.id }>
       <Td>
-        <AddressSnippet address={ item.address_hash }/>
+        <AddressSnippet address={ item.address }/>
       </Td>
       <Td whiteSpace="nowrap">
         <TruncatedTextTooltip label={ item.name }>
