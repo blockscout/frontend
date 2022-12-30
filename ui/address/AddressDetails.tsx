@@ -48,6 +48,10 @@ const AddressDetails = ({ addressQuery }: Props) => {
     },
   });
 
+  if (addressQuery.isError) {
+    throw Error('Address fetch error', { cause: addressQuery.error as unknown as Error });
+  }
+
   if (countersQuery.isLoading || addressQuery.isLoading || tokenBalancesQuery.isLoading) {
     return <AddressDetailsSkeleton/>;
   }

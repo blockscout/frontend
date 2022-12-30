@@ -6,6 +6,7 @@ import React from 'react';
 import type { SocketMessage } from 'lib/socket/types';
 import type { Transaction } from 'types/api/transaction';
 
+import type { ResourceError } from 'lib/api/resources';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import delay from 'lib/delay';
 import useSocketChannel from 'lib/socket/useSocketChannel';
@@ -16,7 +17,7 @@ interface Params {
   updateDelay?: number;
 }
 
-type ReturnType = UseQueryResult<Transaction, unknown> & {
+type ReturnType = UseQueryResult<Transaction, ResourceError<{ status: number }>> & {
   socketStatus: 'close' | 'error' | undefined;
 }
 
@@ -25,7 +26,7 @@ export default function useFetchTxInfo({ onTxStatusUpdate, updateDelay }: Params
   const queryClient = useQueryClient();
   const [ socketStatus, setSocketStatus ] = React.useState<'close' | 'error'>();
 
-  const queryResult = useApiQuery('tx', {
+  const queryResult = useApiQuery<'tx', { status: number }>('tx', {
     pathParams: { id: router.query.id?.toString() },
     queryOptions: {
       enabled: Boolean(router.query.id),

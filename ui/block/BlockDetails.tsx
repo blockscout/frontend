@@ -57,8 +57,15 @@ const BlockDetails = () => {
   }
 
   if (isError) {
-    const is404 = error?.payload?.status === 404;
-    return is404 ? <span>This block has not been processed yet.</span> : <DataFetchAlert/>;
+    if (error?.payload?.status === 404) {
+      return <span>This block has not been processed yet.</span>;
+    }
+
+    if (error?.payload?.status === 422) {
+      throw Error('Invalid block number', { cause: error as unknown as Error });
+    }
+
+    return <DataFetchAlert/>;
   }
 
   const sectionGap = <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>;
