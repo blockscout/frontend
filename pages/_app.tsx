@@ -23,7 +23,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         refetchOnWindowFocus: false,
         retry: (failureCount, _error) => {
           const error = _error as ResourceError<{ status: number }>;
-          const status = error?.status || error?.error?.status;
+          const status = error?.status || error?.payload?.status;
           if (status && status >= 400 && status < 500) {
             // don't do retry for client error responses
             return false;

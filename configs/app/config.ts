@@ -27,6 +27,14 @@ const baseUrl = [
 ].filter(Boolean).join('');
 const authUrl = getEnvValue(process.env.NEXT_PUBLIC_AUTH_URL) || baseUrl;
 const apiHost = getEnvValue(process.env.NEXT_PUBLIC_API_HOST);
+const apiSchema = getEnvValue(process.env.NEXT_PUBLIC_API_PROTOCOL) || 'https';
+const apiPort = getEnvValue(process.env.NEXT_PUBLIC_API_PORT);
+const apiEndpoint = apiHost ? [
+  apiSchema || 'https',
+  '://',
+  apiHost,
+  apiPort && ':' + apiPort,
+].filter(Boolean).join('') : 'https://blockscout.com';
 
 const logoutUrl = (() => {
   try {
@@ -91,7 +99,7 @@ const config = Object.freeze({
   },
   api: {
     host: apiHost,
-    endpoint: apiHost ? `https://${ apiHost }` : 'https://blockscout.com',
+    endpoint: apiEndpoint,
     socket: apiHost ? `wss://${ apiHost }` : 'wss://blockscout.com',
     basePath: stripTrailingSlash(getEnvValue(process.env.NEXT_PUBLIC_API_BASE_PATH) || ''),
   },

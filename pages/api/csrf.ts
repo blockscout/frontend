@@ -1,15 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import fetchFactory from 'lib/api/fetch';
-import getUrlWithNetwork from 'lib/api/getUrlWithNetwork';
+import buildUrlNode from 'lib/api/buildUrlNode';
 import { httpLogger } from 'lib/api/logger';
+import fetchFactory from 'lib/api/nodeFetch';
 
 export default async function csrfHandler(_req: NextApiRequest, res: NextApiResponse) {
   httpLogger(_req, res);
 
-  const url = getUrlWithNetwork(_req, `/api/account/v1/get_csrf`);
-  const fetch = fetchFactory(_req);
-  const response = await fetch(url);
+  const url = buildUrlNode('csrf');
+  const response = await fetchFactory(_req)(url);
 
   if (response.status === 200) {
     const token = response.headers.get('x-bs-account-csrf');
