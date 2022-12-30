@@ -28,7 +28,7 @@ const SearchResultListItem = ({ data, searchTerm }: Props) => {
 
         return (
           <Flex alignItems="center">
-            <TokenLogo boxSize={ 6 } hash={ data.address } name={ data.name }/>
+            <TokenLogo boxSize={ 6 } hash={ data.address } name={ data.name } flexShrink={ 0 }/>
             <Link ml={ 2 } href={ link('token_index', { hash: data.address }) } fontWeight={ 700 }>
               <span dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}/>
             </Link>
@@ -41,7 +41,7 @@ const SearchResultListItem = ({ data, searchTerm }: Props) => {
         const shouldHighlightHash = data.address.toLowerCase() === searchTerm.toLowerCase();
         return (
           <Address>
-            <AddressIcon hash={ data.address } mr={ 2 }/>
+            <AddressIcon hash={ data.address } mr={ 2 } flexShrink={ 0 }/>
             <Box as={ shouldHighlightHash ? 'mark' : 'span' } display="block" whiteSpace="nowrap" overflow="hidden">
               <AddressLink hash={ data.address } fontWeight={ 700 } display="block" w="100%"/>
             </Box>

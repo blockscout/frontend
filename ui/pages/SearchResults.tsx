@@ -41,7 +41,7 @@ const SearchResultsPageContent = () => {
             <SkeletonList/>
           </Show>
           <Hide below="lg">
-            <SkeletonTable columns={ [ '33%', '34%', '33%' ] }/>
+            <SkeletonTable columns={ [ '50%', '50%', '150px' ] }/>
           </Hide>
         </Box>
       );

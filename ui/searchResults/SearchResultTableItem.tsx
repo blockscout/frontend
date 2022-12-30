@@ -28,7 +28,7 @@ const SearchResultTableItem = ({ data, searchTerm }: Props) => {
           <>
             <Td fontSize="sm">
               <Flex alignItems="center">
-                <TokenLogo boxSize={ 6 } hash={ data.address } name={ data.name }/>
+                <TokenLogo boxSize={ 6 } hash={ data.address } name={ data.name } flexShrink={ 0 }/>
                 <Link ml={ 2 } href={ link('token_index', { hash: data.address }) } fontWeight={ 700 }>
                   <span dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}/>
                 </Link>
@@ -51,7 +51,7 @@ const SearchResultTableItem = ({ data, searchTerm }: Props) => {
             <>
               <Td fontSize="sm">
                 <Flex alignItems="center" overflow="hidden">
-                  <AddressIcon hash={ data.address } mr={ 2 }/>
+                  <AddressIcon hash={ data.address } mr={ 2 } flexShrink={ 0 }/>
                   <Link href={ link('address_index', { id: data.address }) } fontWeight={ 700 } overflow="hidden" whiteSpace="nowrap">
                     <Box as={ shouldHighlightHash ? 'mark' : 'span' } display="block">
                       <HashStringShortenDynamic hash={ data.address }/>
@@ -69,7 +69,7 @@ const SearchResultTableItem = ({ data, searchTerm }: Props) => {
         return (
           <Td colSpan={ 2 } fontSize="sm">
             <Address>
-              <AddressIcon hash={ data.address } mr={ 2 }/>
+              <AddressIcon hash={ data.address } mr={ 2 } flexShrink={ 0 }/>
               <mark>
                 <AddressLink hash={ data.address } type="address" fontWeight={ 700 }/>
               </mark>
