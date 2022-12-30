@@ -29,9 +29,9 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
   const ref = React.useRef<SVGSVGElement>(null);
   const color = useToken('colors', 'blue.200');
   const overlayRef = React.useRef<SVGRectElement>(null);
-  const chartId = useMemo(() => `chart-${ title.split(' ').join('') }`, [ title ]);
   const [ range, setRange ] = React.useState<[ number, number ]>([ 0, Infinity ]);
   const { width, height, innerWidth, innerHeight } = useChartSize(ref.current, CHART_MARGIN);
+  const chartId = `chart-${ title.split(' ').join('') }-${ isEnlarged ? 'fullscreen' : 'small' }`;
 
   const displayedData = useMemo(() => items.slice(range[0], range[1]), [ items, range ]);
   const chartData = [ { items: items, name: 'Value', color } ];
