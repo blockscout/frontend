@@ -1,4 +1,4 @@
-import { Flex, Tag } from '@chakra-ui/react';
+import { Flex, Skeleton, Tag } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -51,7 +51,11 @@ const AddressPageContent = () => {
   return (
     <Page>
       <Flex alignItems="center" columnGap={ 3 }>
-        <PageTitle text={ `${ addressQuery.data?.is_contract ? 'Contract' : 'Address' } details` }/>
+        { addressQuery.isLoading ? (
+          <Skeleton h={ 10 } w="260px" mb={ 6 }/>
+        ) : (
+          <PageTitle text={ `${ addressQuery.data?.is_contract ? 'Contract' : 'Address' } details` }/>
+        ) }
         { tags.length > 0 && (
           <Flex mb={ 6 } columnGap={ 2 }>
             { tags }
