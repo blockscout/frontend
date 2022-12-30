@@ -35,8 +35,4 @@ export const numberWidgetsScheme: Array<{id: Key; title: string}> = [
     id: 'totalNativeCoinTransfers',
     title: 'Total native coin transfers',
   },
-  {
-    id: 'totalAccounts',
-    title: 'Total accounts',
-  },
 ];
