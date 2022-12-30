@@ -51,7 +51,7 @@ const SearchResultTableItem = ({ data, searchTerm }: Props) => {
             <>
               <Td fontSize="sm">
                 <Flex alignItems="center" overflow="hidden">
-                  <AddressIcon hash={ data.address } mr={ 2 } flexShrink={ 0 }/>
+                  <AddressIcon address={{ hash: data.address, is_contract: data.type === 'contract' }} mr={ 2 } flexShrink={ 0 }/>
                   <Link href={ link('address_index', { id: data.address }) } fontWeight={ 700 } overflow="hidden" whiteSpace="nowrap">
                     <Box as={ shouldHighlightHash ? 'mark' : 'span' } display="block">
                       <HashStringShortenDynamic hash={ data.address }/>
@@ -69,7 +69,7 @@ const SearchResultTableItem = ({ data, searchTerm }: Props) => {
         return (
           <Td colSpan={ 2 } fontSize="sm">
             <Address>
-              <AddressIcon hash={ data.address } mr={ 2 } flexShrink={ 0 }/>
+              <AddressIcon address={{ hash: data.address, is_contract: data.type === 'contract' }} mr={ 2 } flexShrink={ 0 }/>
               <mark>
                 <AddressLink hash={ data.address } type="address" fontWeight={ 700 }/>
               </mark>
