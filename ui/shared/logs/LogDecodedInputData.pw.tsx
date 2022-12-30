@@ -4,12 +4,12 @@ import React from 'react';
 import * as mocks from 'mocks/txs/decodedInputData';
 import TestApp from 'playwright/TestApp';
 
-import TxDecodedInputData from './TxDecodedInputData';
+import LogDecodedInputData from './LogDecodedInputData';
 
 test('with indexed fields +@mobile +@dark-mode', async({ mount }) => {
   const component = await mount(
     <TestApp>
-      <TxDecodedInputData data={ mocks.withIndexedFields }/>
+      <LogDecodedInputData data={ mocks.withIndexedFields }/>
     </TestApp>,
   );
   await expect(component).toHaveScreenshot();
@@ -18,7 +18,7 @@ test('with indexed fields +@mobile +@dark-mode', async({ mount }) => {
 test('without indexed fields +@mobile', async({ mount }) => {
   const component = await mount(
     <TestApp>
-      <TxDecodedInputData data={ mocks.withoutIndexedFields }/>
+      <LogDecodedInputData data={ mocks.withoutIndexedFields }/>
     </TestApp>,
   );
   await expect(component).toHaveScreenshot();

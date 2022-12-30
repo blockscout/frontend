@@ -10,10 +10,12 @@ import notEmpty from 'lib/notEmpty';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
-import TxLogTopic from 'ui/tx/logs/TxLogTopic';
-import DecodedInputData from 'ui/tx/TxDecodedInputData/TxDecodedInputData';
+import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
+import LogTopic from 'ui/shared/logs/LogTopic';
 
-type Props = Log;
+type Props = Log & {
+  type: 'address' | 'tx';
+};
 
 const RowHeader = ({ children }: { children: React.ReactNode }) => (
   <GridItem _notFirst={{ my: { base: 4, lg: 0 } }}>
@@ -21,7 +23,7 @@ const RowHeader = ({ children }: { children: React.ReactNode }) => (
   </GridItem>
 );
 
-const TxLogItem = ({ address, index, topics, data, decoded }: Props) => {
+const TxLogItem = ({ address, index, topics, data, decoded, type }: Props) => {
 
   const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
   const dataBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
@@ -39,7 +41,7 @@ const TxLogItem = ({ address, index, topics, data, decoded }: Props) => {
         pt: 0,
       }}
     >
-      { !decoded && (
+      { !decoded && type === 'tx' && (
         <GridItem colSpan={{ base: 1, lg: 2 }}>
           <Alert status="warning" display="inline-table" whiteSpace="normal">
             To see accurate decoded input data, the contract must be verified.{ space }
@@ -69,14 +71,14 @@ const TxLogItem = ({ address, index, topics, data, decoded }: Props) => {
         <>
           <RowHeader>Decode input data</RowHeader>
           <GridItem>
-            <DecodedInputData data={ decoded }/>
+            <LogDecodedInputData data={ decoded }/>
           </GridItem>
         </>
       ) }
       <RowHeader>Topics</RowHeader>
       <GridItem>
         { topics.filter(notEmpty).map((item, index) => (
-          <TxLogTopic
+          <LogTopic
             key={ index }
             hex={ item }
             index={ index }

@@ -20,6 +20,7 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 // import PrevNext from 'ui/shared/PrevNext';
+import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import RawInputData from 'ui/shared/RawInputData';
 import TextSeparator from 'ui/shared/TextSeparator';
 import TxStatus from 'ui/shared/TxStatus';
@@ -27,7 +28,6 @@ import Utilization from 'ui/shared/Utilization/Utilization';
 import TxDetailsSkeleton from 'ui/tx/details/TxDetailsSkeleton';
 import TxDetailsTokenTransfers from 'ui/tx/details/TxDetailsTokenTransfers';
 import TxRevertReason from 'ui/tx/details/TxRevertReason';
-import TxDecodedInputData from 'ui/tx/TxDecodedInputData/TxDecodedInputData';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
 import useFetchTxInfo from 'ui/tx/useFetchTxInfo';
 
@@ -336,7 +336,7 @@ const TxDetails = () => {
               title="Decoded input data"
               hint="Decoded input data"
             >
-              <TxDecodedInputData data={ data.decoded_input }/>
+              <LogDecodedInputData data={ data.decoded_input }/>
             </DetailsInfoItem>
           ) }
         </>
