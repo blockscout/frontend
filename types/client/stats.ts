@@ -4,6 +4,7 @@ export enum StatsSectionId {
   'all',
   'accounts',
   'blocks',
+  'tokens',
   'transactions',
   'gas',
 }
@@ -19,7 +20,7 @@ export enum StatsIntervalId {
 }
 
 export type StatsChart = {
-  id: string;
+  apiId: string;
   title: string;
   description: string;
 }
