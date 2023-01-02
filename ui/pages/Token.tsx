@@ -6,7 +6,6 @@ import { Element } from 'react-scroll';
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
@@ -29,7 +28,7 @@ const TokenPageContent = () => {
   ];
 
   if (tokenQuery.isError) {
-    return <DataFetchAlert/>;
+    throw Error('Token fetch error', { cause: tokenQuery.error as unknown as Error });
   }
 
   return (
