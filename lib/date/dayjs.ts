@@ -17,7 +17,7 @@ const relativeTimeConfig = {
     { l: 'dd', r: 29, d: 'day' },
     { l: 'M', r: 1 },
     { l: 'MM', r: 11, d: 'month' },
-    { l: 'y' },
+    { l: 'y', r: 17 },
     { l: 'yy', d: 'year' },
   ],
 };
