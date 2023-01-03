@@ -3,7 +3,7 @@ import React from 'react';
 
 import TokenTransfer from 'ui/shared/TokenTransfer/TokenTransfer';
 
-const AddressTokenTransfers = () => {
+const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}) => {
   const router = useRouter();
 
   const hash = router.query.id;
@@ -13,6 +13,7 @@ const AddressTokenTransfers = () => {
       pathParams={{ id: hash?.toString() }}
       baseAddress={ typeof hash === 'string' ? hash : undefined }
       enableTimeIncrement
+      scrollRef={ scrollRef }
     />
   );
 };
