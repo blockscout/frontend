@@ -1,11 +1,25 @@
 import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
+import * as textAdMock from 'mocks/ad/textAd';
 import * as searchMock from 'mocks/search/index';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
 
 import SearchBar from './SearchBar';
+
+test.beforeEach(async({ page }) => {
+  await page.route('https://request-global.czilladx.com/serve/native.php?z=19260bf627546ab7242', (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify(textAdMock.duck),
+  }));
+  await page.route(textAdMock.duck.ad.thumbnail, (route) => {
+    return route.fulfill({
+      status: 200,
+      path: './playwright/image_s.jpg',
+    });
+  });
+});
 
 test('search by name  +@mobile +@dark-mode', async({ mount, page }) => {
   const API_URL = buildApiUrl('search') + '?q=o';

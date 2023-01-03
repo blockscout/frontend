@@ -27,10 +27,10 @@ const SearchResultListItem = ({ data, searchTerm }: Props) => {
         const name = data.name + (data.symbol ? ` (${ data.symbol })` : '');
 
         return (
-          <Flex alignItems="center">
+          <Flex alignItems="flex-start">
             <TokenLogo boxSize={ 6 } hash={ data.address } name={ data.name } flexShrink={ 0 }/>
-            <Link ml={ 2 } href={ link('token_index', { hash: data.address }) } fontWeight={ 700 }>
-              <span dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}/>
+            <Link ml={ 2 } href={ link('token_index', { hash: data.address }) } fontWeight={ 700 } wordBreak="break-all">
+              <chakra.span dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}/>
             </Link>
           </Flex>
         );
@@ -102,7 +102,7 @@ const SearchResultListItem = ({ data, searchTerm }: Props) => {
 
   return (
     <ListItemMobile py={ 3 } fontSize="sm" rowGap={ 2 }>
-      <Flex justifyContent="space-between" w="100%" overflow="hidden">
+      <Flex justifyContent="space-between" w="100%" overflow="hidden" lineHeight={ 6 }>
         { firstRow }
         <Text variant="secondary" ml={ 8 } textTransform="capitalize">{ data.type }</Text>
       </Flex>

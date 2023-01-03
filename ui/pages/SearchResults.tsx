@@ -2,7 +2,6 @@ import { Box, chakra, Table, Tbody, Tr, Th, Skeleton, Show, Hide } from '@chakra
 import type { FormEvent } from 'react';
 import React from 'react';
 
-import link from 'lib/link/link';
 import SearchResultListItem from 'ui/searchResults/SearchResultListItem';
 import SearchResultTableItem from 'ui/searchResults/SearchResultTableItem';
 import ActionBar from 'ui/shared/ActionBar';
@@ -23,11 +22,7 @@ const SearchResultsPageContent = () => {
 
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (searchTerm) {
-      const url = link('search_results', undefined, { q: searchTerm });
-      window.location.assign(url);
-    }
-  }, [ searchTerm ]);
+  }, [ ]);
 
   const content = (() => {
     if (isError) {
@@ -88,7 +83,7 @@ const SearchResultsPageContent = () => {
           <chakra.span fontWeight={ 700 }>
             { pagination.page > 1 ? 50 : data.items.length }{ data.next_page_params || pagination.page > 1 ? '+' : '' }
           </chakra.span>
-          <span> matching results for </span>
+          <span> matching result{ data.items.length > 1 || pagination.page > 1 ? 's' : '' } for </span>
                       “<chakra.span fontWeight={ 700 }>{ debouncedSearchTerm }</chakra.span>”
         </Box>
       )

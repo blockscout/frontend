@@ -29,7 +29,7 @@ const SearchResultTableItem = ({ data, searchTerm }: Props) => {
             <Td fontSize="sm">
               <Flex alignItems="center">
                 <TokenLogo boxSize={ 6 } hash={ data.address } name={ data.name } flexShrink={ 0 }/>
-                <Link ml={ 2 } href={ link('token_index', { hash: data.address }) } fontWeight={ 700 }>
+                <Link ml={ 2 } href={ link('token_index', { hash: data.address }) } fontWeight={ 700 } wordBreak="break-all">
                   <span dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}/>
                 </Link>
               </Flex>
