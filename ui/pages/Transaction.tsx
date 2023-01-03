@@ -1,15 +1,14 @@
-import { Flex, Link, Icon, Tag, Tooltip } from '@chakra-ui/react';
+import { Flex, Tag } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
-import eastArrowIcon from 'icons/arrows/east.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/appContext';
 import isBrowser from 'lib/isBrowser';
 import networkExplorers from 'lib/networks/networkExplorers';
-import AdBanner from 'ui/shared/ad/AdBanner';
+import TextAd from 'ui/shared/ad/TextAd';
 import ExternalLink from 'ui/shared/ExternalLink';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -52,36 +51,33 @@ const TransactionPageContent = () => {
       return <ExternalLink key={ explorer.baseUrl } title={ `Open in ${ explorer.title }` } href={ url.toString() }/>;
     });
 
+  const additionals = (
+    <Flex justifyContent="space-between" alignItems="center" flexGrow={ 1 }>
+      { data?.tx_tag && <Tag my={ 2 }>{ data.tx_tag }</Tag> }
+      { explorersLinks.length > 0 && (
+        <Flex
+          alignItems="center"
+          flexWrap="wrap"
+          columnGap={ 6 }
+          rowGap={ 3 }
+          ml={{ base: 'initial', lg: 'auto' }}
+        >
+          { explorersLinks }
+        </Flex>
+      ) }
+    </Flex>
+  );
+
   return (
     <Page>
-      <Flex alignItems="flex-start" flexDir={{ base: 'column', lg: 'row' }}>
-        <Flex alignItems="center" columnGap={ 3 }>
-          { hasGoBackLink && (
-            <Tooltip label="Back to transactions list">
-              <Link display="inline-flex" href={ referrer } mb={ 6 }>
-                <Icon as={ eastArrowIcon } boxSize={ 6 } transform="rotate(180deg)"/>
-              </Link>
-            </Tooltip>
-          ) }
-          <PageTitle text="Transaction details"/>
-        </Flex>
-        { data?.tx_tag && <Tag my={ 2 } ml={ 3 }>{ data.tx_tag }</Tag> }
-        { explorersLinks.length > 0 && (
-          <Flex
-            alignItems="center"
-            flexWrap="wrap"
-            columnGap={ 6 }
-            rowGap={ 3 }
-            ml={{ base: 'initial', lg: 'auto' }}
-            mb={{ base: 6, lg: 'initial' }}
-            py={ 2.5 }
-          >
-            { explorersLinks }
-          </Flex>
-        ) }
-      </Flex>
+      <TextAd mb={ 6 }/>
+      <PageTitle
+        text="Transaction details"
+        additionals={ additionals }
+        backLinkUrl={ hasGoBackLink ? referrer : undefined }
+        backLinkLabel="Back to transactions list"
+      />
       <RoutedTabs tabs={ TABS }/>
-      <AdBanner mt={ 6 } justifyContent={{ base: 'center', lg: 'start' }}/>
     </Page>
   );
 };

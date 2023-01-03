@@ -30,7 +30,5 @@ test('with indexing alert +@mobile', async({ mount, page }) => {
     </TestApp>,
   );
 
-  await page.waitForResponse(API_URL),
-
   await expect(component).toHaveScreenshot();
 });

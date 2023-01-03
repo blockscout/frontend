@@ -37,7 +37,7 @@ const Transactions = () => {
   return (
     <Page hideMobileHeaderOnScrollDown>
       <Box h="100%">
-        <PageTitle text="Transactions"/>
+        <PageTitle text="Transactions" withTextAd/>
         <RoutedTabs
           tabs={ tabs }
           tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }

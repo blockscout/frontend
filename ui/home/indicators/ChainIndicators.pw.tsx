@@ -26,7 +26,6 @@ test('daily txs chart +@mobile +@dark-mode +@dark-mode-mobile', async({ mount, p
       <ChainIndicators/>
     </TestApp>,
   );
-  await page.waitForResponse(STATS_API_URL),
   await page.hover('.ChartOverlay', { position: { x: 100, y: 100 } });
 
   await expect(component).toHaveScreenshot();
