@@ -1,11 +1,11 @@
-import { Box, Text, Flex, Skeleton, Textarea, Button } from '@chakra-ui/react';
+import { Flex, Skeleton, Button } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import link from 'lib/link/link';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
+import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
 const ContractCode = () => {
   const router = useRouter();
@@ -38,50 +38,33 @@ const ContractCode = () => {
     );
   }
 
+  const verificationButton = (
+    <Button
+      size="sm"
+      ml="auto"
+      mr={ 3 }
+      as="a"
+      href={ link('address_contract_verification', { id: router.query.id?.toString() }) }
+    >
+                Verify & publish
+    </Button>
+  );
+
   return (
     <>
       { data.creation_bytecode && (
-        <Box>
-          <Flex alignItems="center" mb={ 3 }>
-            <Text fontWeight={ 500 }>Contract creation code</Text>
-            <Button
-              size="sm"
-              ml="auto"
-              mr={ 3 }
-              as="a"
-              href={ link('address_contract_verification', { id: router.query.id?.toString() }) }
-            >
-                Verify & publish
-            </Button>
-            <CopyToClipboard text={ data.creation_bytecode }/>
-          </Flex>
-          <Textarea
-            variant="filledInactive"
-            p={ 4 }
-            minHeight="400px"
-            value={ data.creation_bytecode }
-            fontSize="sm"
-            borderRadius="md"
-            readOnly
-          />
-        </Box>
+        <RawDataSnippet
+          data={ data.creation_bytecode }
+          title="Contract creation code"
+          rightSlot={ verificationButton }
+        />
       ) }
       { data.deployed_bytecode && (
-        <Box mt={ 6 }>
-          <Flex justifyContent="space-between" mb={ 3 }>
-            <Text fontWeight={ 500 }>Deployed ByteCode</Text>
-            <CopyToClipboard text={ data.deployed_bytecode }/>
-          </Flex>
-          <Textarea
-            variant="filledInactive"
-            p={ 4 }
-            minHeight="400px"
-            value={ data.deployed_bytecode }
-            fontSize="sm"
-            borderRadius="md"
-            readOnly
-          />
-        </Box>
+        <RawDataSnippet
+          mt={ 6 }
+          data={ data.deployed_bytecode }
+          title="Deployed ByteCode"
+        />
       ) }
     </>
   );

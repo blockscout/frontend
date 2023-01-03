@@ -1,11 +1,11 @@
-import { Flex, Textarea, Skeleton } from '@chakra-ui/react';
+import { Flex, Skeleton } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { SECOND } from 'lib/consts';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
+import RawDataSnippet from 'ui/shared/RawDataSnippet';
 import TxPendingAlert from 'ui/tx/TxPendingAlert';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
 import useFetchTxInfo from 'ui/tx/useFetchTxInfo';
@@ -46,22 +46,7 @@ const TxRawTrace = () => {
 
   const text = JSON.stringify(data, undefined, 4);
 
-  return (
-    <>
-      <Flex justifyContent="end" mb={ 2 }>
-        <CopyToClipboard text={ text }/>
-      </Flex>
-      <Textarea
-        variant="filledInactive"
-        minHeight="500px"
-        p={ 4 }
-        value={ text }
-        fontSize="sm"
-        borderRadius="md"
-        readOnly
-      />
-    </>
-  );
+  return <RawDataSnippet data={ text }/>;
 };
 
 export default TxRawTrace;
