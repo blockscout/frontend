@@ -12,4 +12,4 @@ const AddressContract = ({ tabs }: Props) => {
   return <RoutedTabs tabs={ tabs } variant="outline" colorScheme="gray" size="sm" tabListProps={{ columnGap: 3 }}/>;
 };
 
-export default AddressContract;
+export default React.memo(AddressContract);

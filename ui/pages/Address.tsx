@@ -14,6 +14,7 @@ import AddressInternalTxs from 'ui/address/AddressInternalTxs';
 import AddressLogs from 'ui/address/AddressLogs';
 import AddressTokenTransfers from 'ui/address/AddressTokenTransfers';
 import AddressTxs from 'ui/address/AddressTxs';
+import ContractCode from 'ui/address/contract/ContractCode';
 import TextAd from 'ui/shared/ad/TextAd';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -21,7 +22,7 @@ import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
 import SkeletonTabs from 'ui/shared/skeletons/SkeletonTabs';
 
 const CONTRACT_TABS = [
-  { id: 'contact_code', title: 'Code', component: <div>Code</div> },
+  { id: 'contact_code', title: 'Code', component: <ContractCode/> },
   { id: 'contact_decompiled_code', title: 'Decompiled code', component: <div>Decompiled code</div> },
   { id: 'read_contract', title: 'Read contract', component: <div>Read contract</div> },
   { id: 'read_proxy', title: 'Read proxy', component: <div>Read proxy</div> },
