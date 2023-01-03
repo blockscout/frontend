@@ -19,6 +19,10 @@ const AddressCoinBalanceChart = ({ addressHash }: Props) => {
     value: BigNumber(value).div(10 ** appConfig.network.currency.decimals).toNumber(),
   })), [ data ]);
 
+  if (!items?.length) {
+    return null;
+  }
+
   return (
     <ChartWidget
       chartHeight="200px"
