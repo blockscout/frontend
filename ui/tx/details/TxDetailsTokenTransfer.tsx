@@ -25,7 +25,15 @@ const TxDetailsTokenTransfer = ({ token, total, to, from }: Props) => {
             <Text fontWeight={ 500 } as="span">For:{ space }
               <CurrencyValue value={ payload.value } exchangeRate={ token.exchange_rate } fontWeight={ 600 }/>
             </Text>
-            <TokenSnippet symbol={ token.symbol } hash={ token.address } name={ token.name } w="auto" flexGrow="1"/>
+            <TokenSnippet
+              symbol={ token.symbol }
+              hash={ token.address }
+              name={ token.name }
+              w="auto"
+              flexGrow="1"
+              columnGap={ 1 }
+              logoSize={ 5 }
+            />
           </Flex>
         );
       }

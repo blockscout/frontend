@@ -1,6 +1,7 @@
 import { test as base, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
+import * as textAdMock from 'mocks/ad/textAd';
 import * as blockMock from 'mocks/blocks/block';
 import * as statsMock from 'mocks/stats/index';
 import * as socketServer from 'playwright/fixtures/socketServer';
@@ -25,6 +26,19 @@ const test = base.extend<socketServer.SocketServerFixture>({
 // FIXME
 // test cases which use socket cannot run in parallel since the socket server always run on the same port
 test.describe.configure({ mode: 'serial' });
+
+test.beforeEach(async({ page }) => {
+  await page.route('https://request-global.czilladx.com/serve/native.php?z=19260bf627546ab7242', (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify(textAdMock.duck),
+  }));
+  await page.route(textAdMock.duck.ad.thumbnail, (route) => {
+    return route.fulfill({
+      status: 200,
+      path: './playwright/image_s.jpg',
+    });
+  });
+});
 
 test('base view +@mobile +@dark-mode', async({ mount, page }) => {
   await page.route(BLOCKS_API_URL, (route) => route.fulfill({
