@@ -22,7 +22,7 @@ const Stats = () => {
 
   return (
     <Page>
-      <PageTitle text={ `${ appConfig.network.name } Stats` }/>
+      <PageTitle text={ `${ appConfig.network.name } stats` }/>
 
       <Box mb={{ base: 6, sm: 8 }}>
         <NumberWidgetsList/>
