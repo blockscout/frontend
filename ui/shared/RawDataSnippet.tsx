@@ -8,9 +8,10 @@ interface Props {
   title?: string;
   className?: string;
   rightSlot?: React.ReactNode;
+  textareaMinHeight?: string;
 }
 
-const RawDataSnippet = ({ data, className, title, rightSlot }: Props) => {
+const RawDataSnippet = ({ data, className, title, rightSlot, textareaMinHeight }: Props) => {
   return (
     <Box className={ className }>
       <Flex justifyContent={ title ? 'space-between' : 'flex-end' } alignItems="center" mb={ 3 }>
@@ -21,7 +22,7 @@ const RawDataSnippet = ({ data, className, title, rightSlot }: Props) => {
       <Textarea
         variant="filledInactive"
         p={ 4 }
-        minHeight="400px"
+        minHeight={ textareaMinHeight || '400px' }
         value={ data }
         fontSize="sm"
         borderRadius="md"

@@ -1,4 +1,4 @@
-import { Flex, Skeleton, Button } from '@chakra-ui/react';
+import { Flex, Skeleton, Button, Grid, GridItem, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -6,6 +6,13 @@ import useApiQuery from 'lib/api/useApiQuery';
 import link from 'lib/link/link';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
+
+const InfoItem = ({ label, value }: { label: string; value: string }) => (
+  <GridItem display="flex" columnGap={ 6 }>
+    <Text w="170px" fontWeight={ 500 }>{ label }</Text>
+    <Text>{ value }</Text>
+  </GridItem>
+);
 
 const ContractCode = () => {
   const router = useRouter();
@@ -46,26 +53,44 @@ const ContractCode = () => {
       as="a"
       href={ link('address_contract_verification', { id: router.query.id?.toString() }) }
     >
-                Verify & publish
+        Verify & publish
     </Button>
   );
 
   return (
     <>
-      { data.creation_bytecode && (
-        <RawDataSnippet
-          data={ data.creation_bytecode }
-          title="Contract creation code"
-          rightSlot={ verificationButton }
-        />
+      { data.is_verified && (
+        <Grid templateColumns="1fr 1fr" rowGap={ 4 } columnGap={ 6 } mb={ 8 }>
+          { data.name && <InfoItem label="Contract name" value={ data.name }/> }
+          { data.compiler_version && <InfoItem label="Compiler version" value={ data.compiler_version }/> }
+          { data.evm_version && <InfoItem label="EVM version" value={ data.evm_version }/> }
+          { data.optimization_enabled && <InfoItem label="Optimization enabled" value={ data.optimization_enabled ? 'true' : 'false' }/> }
+          { data.optimization_runs && <InfoItem label="Optimization runs" value={ String(data.optimization_runs) }/> }
+          { data.verified_at && <InfoItem label="Verified at" value={ data.verified_at }/> }
+        </Grid>
       ) }
-      { data.deployed_bytecode && (
-        <RawDataSnippet
-          mt={ 6 }
-          data={ data.deployed_bytecode }
-          title="Deployed ByteCode"
-        />
-      ) }
+      <Flex flexDir="column" rowGap={ 6 }>
+        { data.abi && (
+          <RawDataSnippet
+            data={ JSON.stringify(data.abi) }
+            title="Contract ABI"
+            textareaMinHeight="200px"
+          />
+        ) }
+        { data.creation_bytecode && (
+          <RawDataSnippet
+            data={ data.creation_bytecode }
+            title="Contract creation code"
+            rightSlot={ data.is_verified ? null : verificationButton }
+          />
+        ) }
+        { data.deployed_bytecode && (
+          <RawDataSnippet
+            data={ data.deployed_bytecode }
+            title="Deployed ByteCode"
+          />
+        ) }
+      </Flex>
     </>
   );
 };
