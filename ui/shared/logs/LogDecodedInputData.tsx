@@ -68,7 +68,7 @@ interface Props {
   data: DecodedInput;
 }
 
-const TxDecodedInputData = ({ data }: Props) => {
+const LogDecodedInputData = ({ data }: Props) => {
   const bgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
   const hasIndexed = data.parameters.some(({ indexed }) => indexed !== undefined);
 
@@ -175,4 +175,4 @@ const TxDecodedInputData = ({ data }: Props) => {
   );
 };
 
-export default TxDecodedInputData;
+export default LogDecodedInputData;

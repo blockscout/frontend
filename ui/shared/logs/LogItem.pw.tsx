@@ -5,7 +5,7 @@ import * as addressMocks from 'mocks/address/address';
 import * as inputDataMocks from 'mocks/txs/decodedInputData';
 import TestApp from 'playwright/TestApp';
 
-import TxLogItem from './TxLogItem';
+import LogItem from './LogItem';
 
 const TOPICS = [
   '0x3a4ec416703c36a61a4b1f690847f1963a6829eac0b52debd40a23b66c142a56',
@@ -18,12 +18,13 @@ const DATA = '0x0000000000000000000000000000000000000000000000000070265bf0112cee
 test('with decoded input data +@mobile +@dark-mode', async({ mount }) => {
   const component = await mount(
     <TestApp>
-      <TxLogItem
+      <LogItem
         index={ 42 }
         decoded={ inputDataMocks.withIndexedFields }
         address={ addressMocks.withName }
         topics={ TOPICS }
         data={ DATA }
+        type="tx"
       />
     </TestApp>,
   );
@@ -33,12 +34,13 @@ test('with decoded input data +@mobile +@dark-mode', async({ mount }) => {
 test('without decoded input data +@mobile', async({ mount }) => {
   const component = await mount(
     <TestApp>
-      <TxLogItem
+      <LogItem
         index={ 42 }
         decoded={ null }
         address={ addressMocks.withoutName }
         topics={ TOPICS }
         data={ DATA }
+        type="tx"
       />
     </TestApp>,
   );
