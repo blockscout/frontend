@@ -8,9 +8,9 @@ import type { TokenType } from 'types/api/tokenInfo';
 import arrowIcon from 'icons/arrows/east.svg';
 import searchIcon from 'icons/search.svg';
 
+import type { Sort, EnhancedData } from '../utils/tokenUtils';
+import { sortTokenGroups, sortingFns } from '../utils/tokenUtils';
 import TokenSelectItem from './TokenSelectItem';
-import type { Sort, EnhancedData } from './utils';
-import { sortTokenGroups, sortingFns } from './utils';
 
 interface Props {
   searchTerm: string;

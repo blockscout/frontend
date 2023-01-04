@@ -6,7 +6,7 @@ import link from 'lib/link/link';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import TokenLogo from 'ui/shared/TokenLogo';
 
-import type { EnhancedData } from './utils';
+import type { EnhancedData } from '../utils/tokenUtils';
 
 interface Props {
   data: EnhancedData;
