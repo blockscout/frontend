@@ -1,4 +1,5 @@
 import { Flex, Skeleton, Button, Grid, GridItem, Text } from '@chakra-ui/react';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -7,10 +8,15 @@ import link from 'lib/link/link';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
+const DynamicContractSourceCode = dynamic(
+  () => import('./ContractSourceCode'),
+  { ssr: false },
+);
+
 const InfoItem = ({ label, value }: { label: string; value: string }) => (
   <GridItem display="flex" columnGap={ 6 }>
-    <Text w="170px" fontWeight={ 500 }>{ label }</Text>
-    <Text>{ value }</Text>
+    <Text w="170px" flexShrink={ 0 } fontWeight={ 500 }>{ label }</Text>
+    <Text wordBreak="break-all">{ value }</Text>
   </GridItem>
 );
 
@@ -60,16 +66,23 @@ const ContractCode = () => {
   return (
     <>
       { data.is_verified && (
-        <Grid templateColumns="1fr 1fr" rowGap={ 4 } columnGap={ 6 } mb={ 8 }>
+        <Grid templateColumns={{ base: '1fr', lg: '1fr 1fr' }} rowGap={ 4 } columnGap={ 6 } mb={ 8 }>
           { data.name && <InfoItem label="Contract name" value={ data.name }/> }
           { data.compiler_version && <InfoItem label="Compiler version" value={ data.compiler_version }/> }
           { data.evm_version && <InfoItem label="EVM version" value={ data.evm_version }/> }
-          { data.optimization_enabled && <InfoItem label="Optimization enabled" value={ data.optimization_enabled ? 'true' : 'false' }/> }
+          { typeof data.optimization_enabled === 'boolean' && <InfoItem label="Optimization enabled" value={ data.optimization_enabled ? 'true' : 'false' }/> }
           { data.optimization_runs && <InfoItem label="Optimization runs" value={ String(data.optimization_runs) }/> }
           { data.verified_at && <InfoItem label="Verified at" value={ data.verified_at }/> }
         </Grid>
       ) }
       <Flex flexDir="column" rowGap={ 6 }>
+        { data.source_code && (
+          <DynamicContractSourceCode
+            data={ data.source_code }
+            hasSol2Yml={ Boolean(data.can_be_visualized_via_sol2uml) }
+            address={ router.query.id?.toString() }
+          />
+        ) }
         { data.abi && (
           <RawDataSnippet
             data={ JSON.stringify(data.abi) }

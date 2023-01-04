@@ -10,4 +10,6 @@ export interface SmartContract {
   name: string | null;
   verified_at: string | null;
   is_verified: boolean | null;
+  source_code: string | null;
+  can_be_visualized_via_sol2uml: boolean | null;
 }
