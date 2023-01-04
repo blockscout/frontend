@@ -5,9 +5,9 @@ import { SECOND } from 'lib/consts';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
+import LogItem from 'ui/shared/logs/LogItem';
+import LogSkeleton from 'ui/shared/logs/LogSkeleton';
 import Pagination from 'ui/shared/Pagination';
-import TxLogItem from 'ui/tx/logs/TxLogItem';
-import TxLogSkeleton from 'ui/tx/logs/TxLogSkeleton';
 import TxPendingAlert from 'ui/tx/TxPendingAlert';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
 import useFetchTxInfo from 'ui/tx/useFetchTxInfo';
@@ -33,8 +33,8 @@ const TxLogs = () => {
   if (isLoading || txInfo.isLoading) {
     return (
       <Box>
-        <TxLogSkeleton/>
-        <TxLogSkeleton/>
+        <LogSkeleton/>
+        <LogSkeleton/>
       </Box>
     );
   }
@@ -50,7 +50,7 @@ const TxLogs = () => {
           <Pagination ml="auto" { ...pagination }/>
         </ActionBar>
       ) }
-      { data.items.map((item, index) => <TxLogItem key={ index } { ...item }/>) }
+      { data.items.map((item, index) => <LogItem key={ index } { ...item } type="tx"/>) }
     </Box>
   );
 };

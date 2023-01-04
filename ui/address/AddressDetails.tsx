@@ -98,7 +98,7 @@ const AddressDetails = ({ addressQuery }: Props) => {
           >
             <AddressLink hash={ addressQuery.data.creator_address_hash } truncation="constant"/>
             <Text whiteSpace="pre"> at </Text>
-            <AddressLink hash={ addressQuery.data.creation_tx_hash } truncation="constant"/>
+            <AddressLink hash={ addressQuery.data.creation_tx_hash } type="transaction" truncation="constant"/>
           </DetailsInfoItem>
         ) }
         <AddressBalance data={ addressQuery.data }/>

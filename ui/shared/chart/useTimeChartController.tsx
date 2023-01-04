@@ -3,6 +3,8 @@ import { useMemo } from 'react';
 
 import type { TimeChartData } from 'ui/shared/chart/types';
 
+import formatNumberToMetricPrefix from 'lib/formatNumberToMetricPrefix';
+
 interface Props {
   data: TimeChartData;
   width: number;
@@ -50,7 +52,7 @@ export default function useTimeChartController({ data, width, height }: Props) {
   );
 
   const xTickFormat = (d: d3.AxisDomain) => d.toLocaleString();
-  const yTickFormat = (d: d3.AxisDomain) => d.toLocaleString();
+  const yTickFormat = (d: d3.AxisDomain) => formatNumberToMetricPrefix(Number(d));
 
   return {
     xTickFormat,

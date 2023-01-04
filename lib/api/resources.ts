@@ -17,7 +17,7 @@ import type { ChartMarketResponse, ChartTransactionResponse } from 'types/api/ch
 import type { IndexingStatus } from 'types/api/indexingStatus';
 import type { InternalTransactionsResponse } from 'types/api/internalTransaction';
 import type { JsonRpcUrlResponse } from 'types/api/jsonRpcUrl';
-import type { LogsResponse } from 'types/api/log';
+import type { LogsResponseTx, LogsResponseAddress } from 'types/api/log';
 import type { RawTracesResponse } from 'types/api/rawTrace';
 import type { SearchResult, SearchResultFilters } from 'types/api/search';
 import type { Stats, Charts, HomeStats } from 'types/api/stats';
@@ -157,6 +157,11 @@ export const RESOURCES = {
   address_coin_balance_chart: {
     path: '/api/v2/addresses/:id/coin-balance-history-by-day',
   },
+  address_logs: {
+    path: '/api/v2/addresses/:id/logs',
+    paginationFields: [ 'items_count' as const, 'transaction_index' as const, 'index' as const, 'block_number' as const ],
+    filterFields: [ ],
+  },
 
   // HOMEPAGE
   homepage_stats: {
@@ -230,6 +235,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'txs_validated' | 'txs_pending' |
 'tx_internal_txs' | 'tx_logs' | 'tx_token_transfers' |
 'address_txs' | 'address_internal_txs' | 'address_token_transfers' | 'address_blocks_validated' | 'address_coin_balance' |
+'address_logs' |
 'search';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
@@ -258,7 +264,7 @@ Q extends 'txs_validated' ? TransactionsResponseValidated :
 Q extends 'txs_pending' ? TransactionsResponsePending :
 Q extends 'tx' ? Transaction :
 Q extends 'tx_internal_txs' ? InternalTransactionsResponse :
-Q extends 'tx_logs' ? LogsResponse :
+Q extends 'tx_logs' ? LogsResponseTx :
 Q extends 'tx_token_transfers' ? TokenTransferResponse :
 Q extends 'tx_raw_trace' ? RawTracesResponse :
 Q extends 'address' ? Address :
@@ -270,6 +276,7 @@ Q extends 'address_token_transfers' ? AddressTokenTransferResponse :
 Q extends 'address_blocks_validated' ? AddressBlocksValidatedResponse :
 Q extends 'address_coin_balance' ? AddressCoinBalanceHistoryResponse :
 Q extends 'address_coin_balance_chart' ? AddressCoinBalanceHistoryChart :
+Q extends 'address_logs' ? LogsResponseAddress :
 Q extends 'config_json_rpc' ? JsonRpcUrlResponse :
 Q extends 'search' ? SearchResult :
 never;

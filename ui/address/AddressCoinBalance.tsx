@@ -1,9 +1,9 @@
 import { useQueryClient } from '@tanstack/react-query';
-import type { UseQueryResult } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
-import type { Address, AddressCoinBalanceHistoryResponse } from 'types/api/address';
+import type { AddressCoinBalanceHistoryResponse } from 'types/api/address';
 
 import { getResourceKey } from 'lib/api/useApiQuery';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
@@ -14,20 +14,15 @@ import SocketAlert from 'ui/shared/SocketAlert';
 import AddressCoinBalanceChart from './coinBalance/AddressCoinBalanceChart';
 import AddressCoinBalanceHistory from './coinBalance/AddressCoinBalanceHistory';
 
-interface Props {
-  addressQuery: UseQueryResult<Address>;
-}
-
-const AddressCoinBalance = ({ addressQuery }: Props) => {
+const AddressCoinBalance = () => {
   const [ socketAlert, setSocketAlert ] = React.useState(false);
   const queryClient = useQueryClient();
+  const router = useRouter();
 
+  const addressHash = String(router.query?.id);
   const coinBalanceQuery = useQueryWithPages({
     resourceName: 'address_coin_balance',
-    pathParams: { id: addressQuery.data?.hash },
-    options: {
-      enabled: Boolean(addressQuery.data),
-    },
+    pathParams: { id: addressHash },
   });
 
   const handleSocketError = React.useCallback(() => {
@@ -38,7 +33,7 @@ const AddressCoinBalance = ({ addressQuery }: Props) => {
     setSocketAlert(false);
 
     queryClient.setQueryData(
-      getResourceKey('address_coin_balance', { pathParams: { id: addressQuery.data?.hash } }),
+      getResourceKey('address_coin_balance', { pathParams: { id: addressHash } }),
       (prevData: AddressCoinBalanceHistoryResponse | undefined) => {
         if (!prevData) {
           return;
@@ -52,13 +47,13 @@ const AddressCoinBalance = ({ addressQuery }: Props) => {
           ],
         };
       });
-  }, [ addressQuery.data?.hash, queryClient ]);
+  }, [ addressHash, queryClient ]);
 
   const channel = useSocketChannel({
-    topic: `addresses:${ addressQuery.data?.hash.toLowerCase() }`,
+    topic: `addresses:${ addressHash.toLowerCase() }`,
     onSocketClose: handleSocketError,
     onSocketError: handleSocketError,
-    isDisabled: addressQuery.isLoading || addressQuery.isError || !addressQuery.data.hash || coinBalanceQuery.pagination.page !== 1,
+    isDisabled: !addressHash || coinBalanceQuery.pagination.page !== 1,
   });
   useSocketMessage({
     channel,
@@ -69,7 +64,7 @@ const AddressCoinBalance = ({ addressQuery }: Props) => {
   return (
     <>
       { socketAlert && <SocketAlert mb={ 6 }/> }
-      <AddressCoinBalanceChart addressQuery={ addressQuery }/>
+      <AddressCoinBalanceChart addressHash={ addressHash }/>
       <AddressCoinBalanceHistory query={ coinBalanceQuery }/>
     </>
   );

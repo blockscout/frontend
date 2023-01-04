@@ -4,7 +4,7 @@ import React from 'react';
 import type { TransactionRevertReason } from 'types/api/transaction';
 
 import hexToUtf8 from 'lib/hexToUtf8';
-import TxDecodedInputData from 'ui/tx/TxDecodedInputData/TxDecodedInputData';
+import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 
 type Props = TransactionRevertReason;
 
@@ -31,7 +31,7 @@ const TxRevertReason = (props: Props) => {
     );
   }
 
-  return <TxDecodedInputData data={ props }/>;
+  return <LogDecodedInputData data={ props }/>;
 };
 
 export default React.memo(TxRevertReason);

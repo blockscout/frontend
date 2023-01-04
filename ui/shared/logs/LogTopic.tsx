@@ -24,7 +24,7 @@ const VALUE_CONVERTERS: Record<DataType, (hex: string) => string> = {
 };
 const OPTIONS: Array<DataType> = [ 'hex', 'address', 'text', 'number' ];
 
-const TxLogTopic = ({ hex, index }: Props) => {
+const LogTopic = ({ hex, index }: Props) => {
   const [ selectedDataType, setSelectedDataType ] = React.useState<DataType>('hex');
 
   const handleSelectChange = React.useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -84,4 +84,4 @@ const TxLogTopic = ({ hex, index }: Props) => {
   );
 };
 
-export default React.memo(TxLogTopic);
+export default React.memo(LogTopic);

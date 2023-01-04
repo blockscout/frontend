@@ -15,7 +15,7 @@ const TopicRow = () => (
   </Flex>
 );
 
-const TxLogSkeleton = () => {
+const LogSkeleton = () => {
   const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
 
   return (
@@ -55,4 +55,4 @@ const TxLogSkeleton = () => {
   );
 };
 
-export default TxLogSkeleton;
+export default LogSkeleton;

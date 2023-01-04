@@ -1,10 +1,10 @@
 import { Box, Hide, Show, Table, Tbody, Th, Tr } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
-import type { UseQueryResult } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
-import type { Address, AddressBlocksValidatedResponse } from 'types/api/address';
+import type { AddressBlocksValidatedResponse } from 'types/api/address';
 
 import appConfig from 'configs/app/config';
 import { getResourceKey } from 'lib/api/useApiQuery';
@@ -22,20 +22,15 @@ import { default as Thead } from 'ui/shared/TheadSticky';
 import AddressBlocksValidatedListItem from './blocksValidated/AddressBlocksValidatedListItem';
 import AddressBlocksValidatedTableItem from './blocksValidated/AddressBlocksValidatedTableItem';
 
-interface Props {
-  addressQuery: UseQueryResult<Address>;
-}
-
-const AddressBlocksValidated = ({ addressQuery }: Props) => {
+const AddressBlocksValidated = () => {
   const [ socketAlert, setSocketAlert ] = React.useState(false);
   const queryClient = useQueryClient();
+  const router = useRouter();
 
+  const addressHash = String(router.query?.id);
   const query = useQueryWithPages({
     resourceName: 'address_blocks_validated',
-    pathParams: { id: addressQuery.data?.hash },
-    options: {
-      enabled: Boolean(addressQuery.data),
-    },
+    pathParams: { id: addressHash },
   });
 
   const handleSocketError = React.useCallback(() => {
@@ -46,7 +41,7 @@ const AddressBlocksValidated = ({ addressQuery }: Props) => {
     setSocketAlert(false);
 
     queryClient.setQueryData(
-      getResourceKey('address_blocks_validated', { pathParams: { id: addressQuery.data?.hash } }),
+      getResourceKey('address_blocks_validated', { pathParams: { id: addressHash } }),
       (prevData: AddressBlocksValidatedResponse | undefined) => {
         if (!prevData) {
           return;
@@ -57,13 +52,13 @@ const AddressBlocksValidated = ({ addressQuery }: Props) => {
           items: [ payload.block, ...prevData.items ],
         };
       });
-  }, [ addressQuery.data?.hash, queryClient ]);
+  }, [ addressHash, queryClient ]);
 
   const channel = useSocketChannel({
-    topic: `blocks:${ addressQuery.data?.hash.toLowerCase() }`,
+    topic: `blocks:${ addressHash.toLowerCase() }`,
     onSocketClose: handleSocketError,
     onSocketError: handleSocketError,
-    isDisabled: addressQuery.isLoading || addressQuery.isError || !addressQuery.data.hash || query.pagination.page !== 1,
+    isDisabled: !addressHash || query.pagination.page !== 1,
   });
   useSocketMessage({
     channel,

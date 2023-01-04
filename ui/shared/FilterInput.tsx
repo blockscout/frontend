@@ -1,9 +1,9 @@
-import { chakra, Icon, IconButton, Input, InputGroup, InputLeftElement, InputRightElement, useColorModeValue } from '@chakra-ui/react';
+import { chakra, Icon, Input, InputGroup, InputLeftElement, InputRightElement, useColorModeValue } from '@chakra-ui/react';
 import type { ChangeEvent } from 'react';
 import React, { useCallback, useState } from 'react';
 
-import crossIcon from 'icons/cross.svg';
 import searchIcon from 'icons/search.svg';
+import InputClearButton from 'ui/shared/InputClearButton';
 
 type Props = {
   onChange: (searchTerm: string) => void;
@@ -54,16 +54,7 @@ const FilterInput = ({ onChange, className, size = 'sm', placeholder }: Props) =
 
       { filterQuery ? (
         <InputRightElement>
-          <IconButton
-            colorScheme="gray"
-            aria-label="Clear the filter input"
-            title="Clear the filter input"
-            w={ 6 }
-            h={ 6 }
-            icon={ <Icon as={ crossIcon } w={ 4 } h={ 4 } color={ iconColor }/> }
-            size="sm"
-            onClick={ handleFilterQueryClear }
-          />
+          <InputClearButton onClick={ handleFilterQueryClear }/>
         </InputRightElement>
       ) : null }
     </InputGroup>

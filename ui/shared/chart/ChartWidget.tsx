@@ -51,28 +51,31 @@ const ChartWidget = ({ items, title, description, isLoading, chartHeight }: Prop
   }, []);
 
   const handleFileSaveClick = useCallback(() => {
-    if (ref.current) {
-      domToImage.toPng(ref.current,
-        {
-          quality: 100,
-          bgcolor: pngBackgroundColor,
-          width: ref.current.offsetWidth * DOWNLOAD_IMAGE_SCALE,
-          height: ref.current.offsetHeight * DOWNLOAD_IMAGE_SCALE,
-          filter: (node) => node.nodeName !== 'BUTTON',
-          style: {
-            borderColor: 'transparent',
-            transform: `scale(${ DOWNLOAD_IMAGE_SCALE })`,
-            'transform-origin': 'top left',
-          },
-        })
-        .then((dataUrl) => {
-          const link = document.createElement('a');
-          link.download = `${ title } (Blockscout chart).png`;
-          link.href = dataUrl;
-          link.click();
-          link.remove();
-        });
-    }
+    // wait for context menu to close
+    setTimeout(() => {
+      if (ref.current) {
+        domToImage.toPng(ref.current,
+          {
+            quality: 100,
+            bgcolor: pngBackgroundColor,
+            width: ref.current.offsetWidth * DOWNLOAD_IMAGE_SCALE,
+            height: ref.current.offsetHeight * DOWNLOAD_IMAGE_SCALE,
+            filter: (node) => node.nodeName !== 'BUTTON',
+            style: {
+              borderColor: 'transparent',
+              transform: `scale(${ DOWNLOAD_IMAGE_SCALE })`,
+              'transform-origin': 'top left',
+            },
+          })
+          .then((dataUrl) => {
+            const link = document.createElement('a');
+            link.download = `${ title } (Blockscout chart).png`;
+            link.href = dataUrl;
+            link.click();
+            link.remove();
+          });
+      }
+    }, 100);
   }, [ pngBackgroundColor, title ]);
 
   const handleSVGSavingClick = useCallback(() => {
