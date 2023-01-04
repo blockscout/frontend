@@ -1,4 +1,5 @@
-import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Flex } from '@chakra-ui/react';
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Flex, Link } from '@chakra-ui/react';
+import _range from 'lodash/range';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -10,6 +11,7 @@ import ContractReadItemOutput from './ContractReadItemOutput';
 
 const ContractRead = () => {
   const router = useRouter();
+  const [ expandedSections, setExpandedSections ] = React.useState<Array<number>>([]);
 
   const { data, isLoading, isError } = useApiQuery('contract_methods_read', {
     pathParams: { id: router.query.id?.toString() },
@@ -17,6 +19,22 @@ const ContractRead = () => {
       enabled: Boolean(router.query.id),
     },
   });
+
+  const handleAccordionStateChange = React.useCallback((newValue: Array<number>) => {
+    setExpandedSections(newValue);
+  }, []);
+
+  const handleExpandAll = React.useCallback(() => {
+    if (!data) {
+      return;
+    }
+
+    if (expandedSections.length < data.length) {
+      setExpandedSections(_range(0, data.length));
+    } else {
+      setExpandedSections([]);
+    }
+  }, [ data, expandedSections.length ]);
 
   if (isError) {
     return <DataFetchAlert/>;
@@ -27,7 +45,7 @@ const ContractRead = () => {
   }
 
   return (
-    <Accordion allowMultiple>
+    <Accordion allowMultiple position="relative" onChange={ handleAccordionStateChange } index={ expandedSections }>
       { data.map((item, index) => {
         return (
           <AccordionItem key={ item.name + '_' + item.method_id } as="section">
@@ -51,6 +69,10 @@ const ContractRead = () => {
           </AccordionItem>
         );
       }) }
+      <Flex columnGap={ 3 } position="absolute" top={ 0 } right={ 0 } py={ 3 } lineHeight="27px">
+        <Link onClick={ handleExpandAll }>{ expandedSections.length === data.length ? 'Collapse' : 'Expand' } all</Link>
+        <Link>Reset</Link>
+      </Flex>
     </Accordion>
   );
 };
