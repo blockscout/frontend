@@ -27,15 +27,11 @@ const TokenPageContent = () => {
     { id: 'holders', title: 'Holders', component: null },
   ];
 
-  if (tokenQuery.isError) {
-    throw Error('Token fetch error', { cause: tokenQuery.error as unknown as Error });
-  }
-
   return (
     <Page>
       { tokenQuery.isLoading ?
         <Skeleton w="500px" h={ 10 } mb={ 6 }/> :
-        <PageTitle text={ `${ tokenQuery.data.name } (${ tokenQuery.data.symbol }) token` }/> }
+        <PageTitle text={ `${ tokenQuery.data?.name } (${ tokenQuery.data?.symbol }) token` }/> }
       <TokenContractInfo tokenQuery={ tokenQuery }/>
       <TokenDetails tokenQuery={ tokenQuery }/>
       <Element name="token-tabs"><RoutedTabs tabs={ tabs } tabListProps={{ mt: 8 }}/></Element>

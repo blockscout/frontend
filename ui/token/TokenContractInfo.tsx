@@ -8,7 +8,6 @@ import type { TokenInfo } from 'types/api/tokenInfo';
 import useApiQuery from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import AddressAddToMetaMask from 'ui/address/details/AddressAddToMetaMask';
-import AddressFavoriteButton from 'ui/address/details/AddressFavoriteButton';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
 import AddressContractIcon from 'ui/shared/address/AddressContractIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -34,7 +33,6 @@ const TokenContractInfo = ({ tokenQuery }: Props) => {
         <Skeleton w="400px" h={ 5 } ml={ 2 }/>
         <Skeleton w={ 5 } h={ 5 } ml={ 1 }/>
         <Skeleton w={ 9 } h={ 8 } ml={ 2 }/>
-        <Skeleton w={ 9 } h={ 8 } ml={ 3 }/>
         <Skeleton w={ 9 } h={ 8 } ml={ 2 }/>
       </Flex>
     );
@@ -53,7 +51,6 @@ const TokenContractInfo = ({ tokenQuery }: Props) => {
       <AddressLink hash={ hash } ml={ 2 } truncation={ isMobile ? 'constant' : 'none' }/>
       <CopyToClipboard text={ hash } ml={ 1 }/>
       { contractQuery.data?.token && <AddressAddToMetaMask token={ contractQuery.data?.token } ml={ 2 }/> }
-      <AddressFavoriteButton hash={ hash } isAdded={ Boolean(contractQuery.data?.watchlist_names?.length) } ml={ 3 }/>
       <AddressQrCode hash={ hash } ml={ 2 }/>
     </Flex>
   );

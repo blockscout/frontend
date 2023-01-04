@@ -52,6 +52,10 @@ const TokenDetails = ({ tokenQuery }: Props) => {
     return <Link onClick={ changeUrlAndScroll(tab) }>{ itemValue }</Link>;
   }, [ tokenCountersQuery.data, changeUrlAndScroll ]);
 
+  if (tokenQuery.isError) {
+    throw Error('Token fetch error', { cause: tokenQuery.error as unknown as Error });
+  }
+
   if (tokenQuery.isLoading) {
     return (
       <Grid mt={ 10 } columnGap={ 8 } rowGap={{ base: 5, lg: 7 }} templateColumns={{ base: '1fr', lg: '210px 1fr' }} maxW="1000px">

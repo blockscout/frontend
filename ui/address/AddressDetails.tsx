@@ -72,7 +72,9 @@ const AddressDetails = ({ addressQuery }: Props) => {
         </Text>
         <CopyToClipboard text={ addressQuery.data.hash }/>
         { addressQuery.data.is_contract && addressQuery.data.token && <AddressAddToMetaMask ml={ 2 } token={ addressQuery.data.token }/> }
-        <AddressFavoriteButton hash={ addressQuery.data.hash } isAdded={ Boolean(addressQuery.data.watchlist_names?.length) } ml={ 3 }/>
+        { !addressQuery.data.is_contract && (
+          <AddressFavoriteButton hash={ addressQuery.data.hash } isAdded={ Boolean(addressQuery.data.watchlist_names?.length) } ml={ 3 }/>
+        ) }
         <AddressQrCode hash={ addressQuery.data.hash } ml={ 2 }/>
       </Flex>
       { explorers.length > 0 && (
