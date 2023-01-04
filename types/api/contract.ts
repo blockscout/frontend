@@ -13,3 +13,22 @@ export interface SmartContract {
   source_code: string | null;
   can_be_visualized_via_sol2uml: boolean | null;
 }
+
+export interface SmartContractReadMethod {
+  inputs: Array<SmartContractMethodInput>;
+  outputs: Array<SmartContractMethodOutput>;
+  method_id: string;
+  name: string;
+  stateMutability: string;
+  type: string;
+}
+
+export interface SmartContractMethodInput {
+  internalType: string;
+  name: string;
+  type: string;
+}
+
+export interface SmartContractMethodOutput extends SmartContractMethodInput {
+  value: string;
+}
