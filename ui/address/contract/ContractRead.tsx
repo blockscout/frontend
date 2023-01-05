@@ -11,10 +11,21 @@ import ContractReadItemOutput from './ContractReadItemOutput';
 
 const ContractRead = () => {
   const router = useRouter();
+
   const [ expandedSections, setExpandedSections ] = React.useState<Array<number>>([]);
+  const [ id, setId ] = React.useState(0);
+
+  const addressHash = router.query.id?.toString();
 
   const { data, isLoading, isError } = useApiQuery('contract_methods_read', {
-    pathParams: { id: router.query.id?.toString() },
+    pathParams: { id: addressHash },
+    queryOptions: {
+      enabled: Boolean(router.query.id),
+    },
+  });
+
+  const contractInfo = useApiQuery('contract', {
+    pathParams: { id: addressHash },
     queryOptions: {
       enabled: Boolean(router.query.id),
     },
@@ -35,6 +46,10 @@ const ContractRead = () => {
       setExpandedSections([]);
     }
   }, [ data, expandedSections.length ]);
+
+  const handleReset = React.useCallback(() => {
+    setId((id) => id + 1);
+  }, []);
 
   if (isError) {
     return <DataFetchAlert/>;
@@ -63,7 +78,15 @@ const ContractRead = () => {
                   { item.outputs.map((output, index) => <ContractReadItemOutput key={ index } data={ output }/>) }
                 </Flex>
               ) : (
-                <ContractReadItemInput key={ index } data={ item.inputs }/>
+                <ContractReadItemInput
+                  key={ id + '_' + index }
+                  data={ item.inputs }
+                  address={ addressHash }
+                  abi={ contractInfo.data?.abi }
+                  methodName={ item.name }
+                  methodId={ item.method_id }
+                  outputs={ item.outputs }
+                />
               ) }
             </AccordionPanel>
           </AccordionItem>
@@ -71,7 +94,7 @@ const ContractRead = () => {
       }) }
       <Flex columnGap={ 3 } position="absolute" top={ 0 } right={ 0 } py={ 3 } lineHeight="27px">
         <Link onClick={ handleExpandAll }>{ expandedSections.length === data.length ? 'Collapse' : 'Expand' } all</Link>
-        <Link>Reset</Link>
+        <Link onClick={ handleReset }>Reset</Link>
       </Flex>
     </Accordion>
   );

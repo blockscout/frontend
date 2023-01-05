@@ -1,38 +1,47 @@
-import { Button, FormControl, Input, InputGroup, InputRightElement } from '@chakra-ui/react';
+import { FormControl, Input, InputGroup, InputRightElement } from '@chakra-ui/react';
 import React from 'react';
-import type { Control, ControllerRenderProps } from 'react-hook-form';
+import type { Control, ControllerRenderProps, UseFormSetValue } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 
 import type { MethodInputFields } from './types';
 
+import InputClearButton from 'ui/shared/InputClearButton';
+
 interface Props {
   control: Control<MethodInputFields>;
-  type: string;
+  setValue: UseFormSetValue<MethodInputFields>;
+  placeholder: string;
   name: string;
-  index: number;
 }
 
-const ContractReadItemInputField = ({ control, name, type, index }: Props) => {
-  const fieldName = name || String(index);
-  const renderInput = React.useCallback(({ field }: {field: ControllerRenderProps<MethodInputFields>}) => {
+const ContractReadItemInputField = ({ control, name, placeholder, setValue }: Props) => {
+  const ref = React.useRef<HTMLInputElement>(null);
+
+  const handleClear = React.useCallback(() => {
+    setValue(name, '');
+    ref.current?.focus();
+  }, [ name, setValue ]);
+
+  const renderInput = React.useCallback(({ field }: { field: ControllerRenderProps<MethodInputFields> }) => {
     return (
-      <FormControl id={ fieldName }>
-        <InputGroup key={ fieldName } size="xs">
+      <FormControl id={ name }>
+        <InputGroup size="xs">
           <Input
             { ...field }
-            placeholder={ `${ name }(${ type })` }
+            ref={ ref }
+            placeholder={ placeholder }
           />
           <InputRightElement>
-            <Button size="xs">clear</Button>
+            <InputClearButton onClick={ handleClear }/>
           </InputRightElement>
         </InputGroup>
       </FormControl>
     );
-  }, [ fieldName, name, type ]);
+  }, [ handleClear, name, placeholder ]);
 
   return (
     <Controller
-      name={ fieldName }
+      name={ name }
       control={ control }
       render={ renderInput }
     />

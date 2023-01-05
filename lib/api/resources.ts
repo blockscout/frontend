@@ -171,6 +171,9 @@ export const RESOURCES = {
   contract_methods_read: {
     path: '/api/v2/smart-contracts/:id/methods-read',
   },
+  contract_method_query: {
+    path: '/api/v2/smart-contracts/:id/query-read-method',
+  },
 
   // TOKEN
   token: {
