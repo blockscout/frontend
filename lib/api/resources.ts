@@ -21,6 +21,7 @@ import type { LogsResponseTx, LogsResponseAddress } from 'types/api/log';
 import type { RawTracesResponse } from 'types/api/rawTrace';
 import type { SearchResult, SearchResultFilters } from 'types/api/search';
 import type { Stats, Charts, HomeStats } from 'types/api/stats';
+import type { TokenCounters, TokenInfo } from 'types/api/tokenInfo';
 import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
 import type { TransactionsResponseValidated, TransactionsResponsePending, Transaction } from 'types/api/transaction';
 import type { TTxsFilters } from 'types/api/txsFilters';
@@ -163,6 +164,14 @@ export const RESOURCES = {
     filterFields: [ ],
   },
 
+  // TOKEN
+  token: {
+    path: '/api/v2/tokens/:hash',
+  },
+  token_counters: {
+    path: '/api/v2/tokens/:hash/counters',
+  },
+
   // HOMEPAGE
   homepage_stats: {
     path: '/api/v2/stats',
@@ -277,6 +286,8 @@ Q extends 'address_blocks_validated' ? AddressBlocksValidatedResponse :
 Q extends 'address_coin_balance' ? AddressCoinBalanceHistoryResponse :
 Q extends 'address_coin_balance_chart' ? AddressCoinBalanceHistoryChart :
 Q extends 'address_logs' ? LogsResponseAddress :
+Q extends 'token' ? TokenInfo :
+Q extends 'token_counters' ? TokenCounters :
 Q extends 'config_json_rpc' ? JsonRpcUrlResponse :
 Q extends 'search' ? SearchResult :
 never;

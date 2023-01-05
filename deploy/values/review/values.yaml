@@ -321,6 +321,8 @@ frontend:
         - "/address"
         - "/stats"
         - "/search-results"
+        - "/token"
+
   resources:
     limits:
       memory:
