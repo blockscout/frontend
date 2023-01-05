@@ -24,6 +24,10 @@ const AddressCoinBalanceChart = ({ addressHash }: Props) => {
     return <DataFetchAlert/>;
   }
 
+  if (!items?.length) {
+    return null;
+  }
+
   return (
     <ChartWidget
       chartHeight="200px"

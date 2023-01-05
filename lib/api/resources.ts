@@ -14,6 +14,7 @@ import type {
 } from 'types/api/address';
 import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters } from 'types/api/block';
 import type { ChartMarketResponse, ChartTransactionResponse } from 'types/api/charts';
+import type { SmartContract } from 'types/api/contract';
 import type { IndexingStatus } from 'types/api/indexingStatus';
 import type { InternalTransactionsResponse } from 'types/api/internalTransaction';
 import type { JsonRpcUrlResponse } from 'types/api/jsonRpcUrl';
@@ -163,6 +164,11 @@ export const RESOURCES = {
     filterFields: [ ],
   },
 
+  // CONTRACT
+  contract: {
+    path: '/api/v2/smart-contracts/:id',
+  },
+
   // TOKEN
   token: {
     path: '/api/v2/tokens/:hash',
@@ -270,6 +276,7 @@ Q extends 'address_logs' ? LogsResponseAddress :
 Q extends 'token' ? TokenInfo :
 Q extends 'token_counters' ? TokenCounters :
 Q extends 'config_json_rpc' ? JsonRpcUrlResponse :
+Q extends 'contract' ? SmartContract :
 never;
 /* eslint-enable @typescript-eslint/indent */
 
