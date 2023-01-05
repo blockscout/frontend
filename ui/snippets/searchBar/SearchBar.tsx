@@ -42,10 +42,16 @@ const SearchBar = ({ isHomepage }: Props) => {
 
   const handleBlur = React.useCallback((event: FocusEvent<HTMLFormElement>) => {
     const isFocusInMenu = menuRef.current?.contains(event.relatedTarget);
-    if (!isFocusInMenu) {
+    const isFocusInInput = inputRef.current?.contains(event.relatedTarget);
+    if (!isFocusInMenu && !isFocusInInput) {
       onClose();
     }
   }, [ onClose ]);
+
+  const handleClear = React.useCallback(() => {
+    handleSearchTermChange('');
+    inputRef.current?.querySelector('input')?.focus();
+  }, [ handleSearchTermChange ]);
 
   const menuPaddingX = isMobile && !isHomepage ? 32 : 0;
   const calculateMenuWidth = React.useCallback(() => {
@@ -85,6 +91,7 @@ const SearchBar = ({ isHomepage }: Props) => {
           onFocus={ handleFocus }
           onBlur={ handleBlur }
           onHide={ handelHide }
+          onClear={ handleClear }
           isHomepage={ isHomepage }
           value={ searchTerm }
         />

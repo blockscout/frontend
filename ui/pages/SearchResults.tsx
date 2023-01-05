@@ -109,6 +109,11 @@ const SearchResultsPageContent = () => {
     inputRef.current?.querySelector('input')?.blur();
   }, [ ]);
 
+  const handleClear = React.useCallback(() => {
+    handleSearchTermChange('');
+    inputRef.current?.querySelector('input')?.focus();
+  }, [ handleSearchTermChange ]);
+
   const renderSearchBar = React.useCallback(() => {
     return (
       <SearchBarInput
@@ -117,9 +122,10 @@ const SearchResultsPageContent = () => {
         onSubmit={ handleSubmit }
         value={ searchTerm }
         onHide={ handelHide }
+        onClear={ handleClear }
       />
     );
-  }, [ handleSearchTermChange, handleSubmit, searchTerm, handelHide ]);
+  }, [ handleSearchTermChange, handleSubmit, searchTerm, handelHide, handleClear ]);
 
   const renderHeader = React.useCallback(() => {
     return <Header renderSearchBar={ renderSearchBar }/>;

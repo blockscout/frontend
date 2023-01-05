@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router';
-import type { ChangeEvent } from 'react';
 import React from 'react';
 
 import useDebounce from 'lib/hooks/useDebounce';
@@ -20,10 +19,6 @@ export default function useSearchQuery(isSearchPage = false) {
     options: { enabled: debouncedSearchTerm.trim().length > 0 },
   });
 
-  const handleSearchTermChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
-  }, []);
-
   useUpdateValueEffect(() => {
     if (isSearchPage) {
       query.onFilterChange({ q: debouncedSearchTerm });
@@ -33,7 +28,7 @@ export default function useSearchQuery(isSearchPage = false) {
   return {
     searchTerm,
     debouncedSearchTerm,
-    handleSearchTermChange,
+    handleSearchTermChange: setSearchTerm,
     query,
   };
 }

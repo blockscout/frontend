@@ -1,4 +1,4 @@
-import { InputGroup, Input, InputLeftElement, Icon, chakra, useColorModeValue, forwardRef } from '@chakra-ui/react';
+import { InputGroup, Input, InputLeftElement, Icon, chakra, useColorModeValue, forwardRef, InputRightElement } from '@chakra-ui/react';
 import throttle from 'lodash/throttle';
 import React from 'react';
 import type { ChangeEvent, FormEvent, FocusEvent } from 'react';
@@ -6,18 +6,20 @@ import type { ChangeEvent, FormEvent, FocusEvent } from 'react';
 import searchIcon from 'icons/search.svg';
 import { useScrollDirection } from 'lib/contexts/scrollDirection';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import InputClearButton from 'ui/shared/InputClearButton';
 
 interface Props {
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChange: (value: string) => void;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
   onBlur?: (event: FocusEvent<HTMLFormElement>) => void;
   onFocus?: () => void;
   onHide?: () => void;
+  onClear: () => void;
   isHomepage?: boolean;
   value: string;
 }
 
-const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, onHide, value }: Props, ref: React.ForwardedRef<HTMLFormElement>) => {
+const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, onHide, onClear, value }: Props, ref: React.ForwardedRef<HTMLFormElement>) => {
   const [ isSticky, setIsSticky ] = React.useState(false);
   const scrollDirection = useScrollDirection();
   const isMobile = useIsMobile();
@@ -29,6 +31,10 @@ const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, onHid
       setIsSticky(false);
     }
   }, [ ]);
+
+  const handleChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    onChange(event.target.value);
+  }, [ onChange ]);
 
   React.useEffect(() => {
     if (!isMobile || isHomepage) {
@@ -85,16 +91,25 @@ const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, onHid
           sx={{
             '@media screen and (max-width: 999px)': {
               paddingLeft: isHomepage ? '50px' : '38px',
+              paddingRight: '36px',
+            },
+            '@media screen and (min-width: 1001px)': {
+              paddingRight: '36px',
             },
           }}
           placeholder={ isMobile ? 'Search by addresses / ... ' : 'Search by addresses / transactions / block / token... ' }
-          onChange={ onChange }
+          onChange={ handleChange }
           border={ isHomepage ? 'none' : '2px solid' }
           borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }
           _focusWithin={{ _placeholder: { color: 'gray.300' } }}
           color={ useColorModeValue('black', 'white') }
           value={ value }
         />
+        { value && (
+          <InputRightElement top={{ base: 2, lg: '18px' }} right={ 2 }>
+            <InputClearButton onClick={ onClear }/>
+          </InputRightElement>
+        ) }
       </InputGroup>
     </chakra.form>
   );
