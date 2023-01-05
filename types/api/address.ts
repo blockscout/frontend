@@ -13,6 +13,7 @@ export interface Address {
   creation_tx_hash: string | null;
   exchange_rate: string | null;
   hash: string;
+  has_validated_blocks: boolean;
   implementation_address: string | null;
   implementation_name: string | null;
   is_contract: boolean;
