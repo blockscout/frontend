@@ -168,7 +168,7 @@ export const RESOURCES = {
   contract: {
     path: '/api/v2/smart-contracts/:id',
   },
-  
+
   // TOKEN
   token: {
     path: '/api/v2/tokens/:hash',
