@@ -2,6 +2,7 @@ import { Flex, Skeleton, Tag, Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { TokenType } from 'types/api/tokenInfo';
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
 import useApiQuery from 'lib/api/useApiQuery';
@@ -18,11 +19,24 @@ import AddressTxs from 'ui/address/AddressTxs';
 import ContractCode from 'ui/address/contract/ContractCode';
 import ContractRead from 'ui/address/contract/ContractRead';
 import ContractWrite from 'ui/address/contract/ContractWrite';
+import Tokens from 'ui/address/tokens/Tokens';
 import TextAd from 'ui/shared/ad/TextAd';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
 import SkeletonTabs from 'ui/shared/skeletons/SkeletonTabs';
+
+export const tokenTabsByType: Record<TokenType, string> = {
+  'ERC-20': 'tokens_erc20',
+  'ERC-721': 'tokens_erc721',
+  'ERC-1155': 'tokens_erc1155',
+} as const;
+
+const TOKENS_TABS = [
+  { id: tokenTabsByType['ERC-20'], title: 'ERC-20', component: <Tokens type="ERC-20"/> },
+  { id: tokenTabsByType['ERC-721'], title: 'ERC-721', component: null },
+  { id: tokenTabsByType['ERC-1155'], title: 'ERC-1155', component: null },
+];
 
 const AddressPageContent = () => {
   const router = useRouter();
@@ -73,7 +87,7 @@ const AddressPageContent = () => {
       addressQuery.data?.has_token_transfers ?
         { id: 'token_transfers', title: 'Token transfers', component: <AddressTokenTransfers scrollRef={ tabsScrollRef }/> } :
         undefined,
-      addressQuery.data?.has_tokens ? { id: 'tokens', title: 'Tokens', component: <AddressTokens/> } : undefined,
+      addressQuery.data?.has_tokens ? { id: 'tokens', title: 'Tokens', component: <AddressTokens tabs={ TOKENS_TABS }/>, subTabs: TOKENS_TABS } : undefined,
       { id: 'internal_txns', title: 'Internal txns', component: <AddressInternalTxs scrollRef={ tabsScrollRef }/> },
       { id: 'coin_balance_history', title: 'Coin balance history', component: <AddressCoinBalance/> },
       addressQuery.data?.has_validated_blocks ?
