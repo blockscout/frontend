@@ -3,18 +3,18 @@ import React from 'react';
 import type { Control, ControllerRenderProps, UseFormSetValue } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 
-import type { MethodInputFields } from './types';
+import type { MethodFormFields } from './types';
 
 import InputClearButton from 'ui/shared/InputClearButton';
 
 interface Props {
-  control: Control<MethodInputFields>;
-  setValue: UseFormSetValue<MethodInputFields>;
+  control: Control<MethodFormFields>;
+  setValue: UseFormSetValue<MethodFormFields>;
   placeholder: string;
   name: string;
 }
 
-const ContractReadItemInputField = ({ control, name, placeholder, setValue }: Props) => {
+const ContractMethodField = ({ control, name, placeholder, setValue }: Props) => {
   const ref = React.useRef<HTMLInputElement>(null);
 
   const handleClear = React.useCallback(() => {
@@ -22,7 +22,7 @@ const ContractReadItemInputField = ({ control, name, placeholder, setValue }: Pr
     ref.current?.focus();
   }, [ name, setValue ]);
 
-  const renderInput = React.useCallback(({ field }: { field: ControllerRenderProps<MethodInputFields> }) => {
+  const renderInput = React.useCallback(({ field }: { field: ControllerRenderProps<MethodFormFields> }) => {
     return (
       <FormControl id={ name } maxW={{ base: '100%', lg: 'calc((100% - 24px) / 3)' }}>
         <InputGroup size="xs">
@@ -51,4 +51,4 @@ const ContractReadItemInputField = ({ control, name, placeholder, setValue }: Pr
   );
 };
 
-export default ContractReadItemInputField;
+export default React.memo(ContractMethodField);

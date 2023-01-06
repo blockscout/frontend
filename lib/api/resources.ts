@@ -14,7 +14,7 @@ import type {
 } from 'types/api/address';
 import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters } from 'types/api/block';
 import type { ChartMarketResponse, ChartTransactionResponse } from 'types/api/charts';
-import type { SmartContract, SmartContractReadMethod } from 'types/api/contract';
+import type { SmartContract, SmartContractReadMethod, SmartContractWriteMethod } from 'types/api/contract';
 import type { IndexingStatus } from 'types/api/indexingStatus';
 import type { InternalTransactionsResponse } from 'types/api/internalTransaction';
 import type { JsonRpcUrlResponse } from 'types/api/jsonRpcUrl';
@@ -174,6 +174,9 @@ export const RESOURCES = {
   contract_method_query: {
     path: '/api/v2/smart-contracts/:id/query-read-method',
   },
+  contract_methods_write: {
+    path: '/api/v2/smart-contracts/:id/methods-write',
+  },
 
   // TOKEN
   token: {
@@ -284,6 +287,7 @@ Q extends 'token_counters' ? TokenCounters :
 Q extends 'config_json_rpc' ? JsonRpcUrlResponse :
 Q extends 'contract' ? SmartContract :
 Q extends 'contract_methods_read' ? Array<SmartContractReadMethod> :
+Q extends 'contract_methods_write' ? Array<SmartContractWriteMethod> :
 never;
 /* eslint-enable @typescript-eslint/indent */
 

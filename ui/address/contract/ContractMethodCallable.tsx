@@ -4,21 +4,17 @@ import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 
-import type { MethodInputFields } from './types';
-import type { SmartContract, SmartContractMethodInput, SmartContractMethodOutput } from 'types/api/contract';
+import type { MethodFormFields } from './types';
+import type { SmartContractMethodInput, SmartContractMethod } from 'types/api/contract';
 
+import appConfig from 'configs/app/config';
 import arrowIcon from 'icons/arrows/down-right.svg';
-import useApiFetch from 'lib/api/useApiFetch';
 
-import ContractReadItemInputField from './ContractReadItemInputField';
+import ContractMethodField from './ContractMethodField';
 
-interface Props {
-  data: Array<SmartContractMethodInput>;
-  address?: string;
-  abi?: SmartContract['abi'];
-  methodName: string;
-  methodId: string;
-  outputs: Array<SmartContractMethodOutput>;
+interface Props<T extends SmartContractMethod> {
+  data: T;
+  caller: (data: T, args: Array<string>) => Promise<Array<Array<string>>>;
 }
 
 const getFieldName = (name: string, index: number): string => name || String(index);
@@ -39,36 +35,30 @@ const sortFields = (data: Array<SmartContractMethodInput>) => ([ a ]: [string, s
   return 0;
 };
 
-const ContractReadItemInput = ({ data, address, methodId, methodName, outputs }: Props) => {
-  const { control, handleSubmit, setValue } = useForm<MethodInputFields>({
-    defaultValues: _fromPairs(data.map(({ name }, index) => [ getFieldName(name, index), '' ])),
+const ContractMethodCallable = <T extends SmartContractMethod>({ data, caller }: Props<T>) => {
+
+  const inputs = React.useMemo(() => {
+    return data.payable && (!('inputs' in data) || data.inputs.length === 0) ? [ {
+      name: 'value',
+      type: appConfig.network.currency.symbol,
+      internalType: appConfig.network.currency.symbol,
+    } as SmartContractMethodInput ] : data.inputs;
+  }, [ data ]);
+
+  const { control, handleSubmit, setValue } = useForm<MethodFormFields>({
+    defaultValues: _fromPairs(inputs.map(({ name }, index) => [ getFieldName(name, index), '' ])),
   });
-  const apiFetch = useApiFetch();
-  const [ result, setResult ] = React.useState<Array<[ string, string ]>>([ ]);
+  const [ result, setResult ] = React.useState<Array<Array<string>>>([ ]);
 
-  const onSubmit: SubmitHandler<MethodInputFields> = React.useCallback(async(formData) => {
-    if (!address) {
-      return;
-    }
-
+  const onSubmit: SubmitHandler<MethodFormFields> = React.useCallback(async(formData) => {
     const args = Object.entries(formData)
-      .sort(sortFields(data))
+      .sort(sortFields(inputs))
       .map(([ , value ]) => value);
 
-    // todo_tom delete mock
-    setResult(outputs.map(({ type }, index) => ([ type, args[index] ])));
+    const result = await caller(data, args);
+    setResult(result);
 
-    await apiFetch('contract_method_query', {
-      pathParams: { id: address },
-      fetchParams: {
-        method: 'POST',
-        body: {
-          args,
-          method_id: methodId,
-        },
-      },
-    });
-  }, [ address, apiFetch, data, methodId, outputs ]);
+  }, [ caller, data, inputs ]);
 
   const resultBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
 
@@ -84,10 +74,10 @@ const ContractReadItemInput = ({ data, address, methodId, methodName, outputs }:
         onSubmit={ handleSubmit(onSubmit) }
         flexWrap="wrap"
       >
-        { data.map(({ type, name }, index) => {
+        { inputs.map(({ type, name }, index) => {
           const fieldName = getFieldName(name, index);
           return (
-            <ContractReadItemInputField
+            <ContractMethodField
               key={ fieldName }
               name={ fieldName }
               placeholder={ `${ name }(${ type })` }
@@ -105,14 +95,16 @@ const ContractReadItemInput = ({ data, address, methodId, methodName, outputs }:
           Query
         </Button>
       </chakra.form>
-      <Flex mt={ 3 }>
-        <Icon as={ arrowIcon } boxSize={ 5 } mr={ 1 }/>
-        <Text>{ outputs.map(({ type }) => type).join(', ') }</Text>
-      </Flex>
+      { 'outputs' in data && data.outputs.length > 0 && (
+        <Flex mt={ 3 }>
+          <Icon as={ arrowIcon } boxSize={ 5 } mr={ 1 }/>
+          <Text>{ data.outputs.map(({ type }) => type).join(', ') }</Text>
+        </Flex>
+      ) }
       { result.length > 0 && (
         <Box mt={ 3 } p={ 4 } borderRadius="md" bgColor={ resultBgColor } fontSize="sm">
           <p>
-          [ <chakra.span fontWeight={ 600 }>{ methodName }</chakra.span> method Response ]
+          [ <chakra.span fontWeight={ 600 }>{ 'name' in data ? data.name : '' }</chakra.span> method response ]
           </p>
           <p>[</p>
           { result.map(([ key, value ], index) => (
@@ -125,4 +117,4 @@ const ContractReadItemInput = ({ data, address, methodId, methodName, outputs }:
   );
 };
 
-export default ContractReadItemInput;
+export default React.memo(ContractMethodCallable) as typeof ContractMethodCallable;

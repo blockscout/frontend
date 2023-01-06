@@ -12,12 +12,16 @@ interface Props {
   data: SmartContractMethodOutput;
 }
 
-const ContractReadItemOutput = ({ data }: Props) => {
+const ContractMethodStatic = ({ data }: Props) => {
   const isBigInt = data.type.includes('int256') || data.type.includes('int128');
-  const [ value, setValue ] = React.useState(isBigInt ? BigNumber(data.value).toFixed() : data.value);
+  const [ value, setValue ] = React.useState(isBigInt && data.value ? BigNumber(data.value).toFixed() : data.value);
   const [ label, setLabel ] = React.useState('WEI');
 
   const handleCheckboxChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    if (!data.value) {
+      return;
+    }
+
     if (event.target.checked) {
       setValue(BigNumber(data.value).div(WEI).toFixed());
       setLabel(appConfig.network.currency.symbol || 'ETH');
@@ -35,4 +39,4 @@ const ContractReadItemOutput = ({ data }: Props) => {
   );
 };
 
-export default ContractReadItemOutput;
+export default ContractMethodStatic;

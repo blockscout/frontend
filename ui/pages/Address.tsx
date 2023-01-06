@@ -16,6 +16,7 @@ import AddressTokenTransfers from 'ui/address/AddressTokenTransfers';
 import AddressTxs from 'ui/address/AddressTxs';
 import ContractCode from 'ui/address/contract/ContractCode';
 import ContractRead from 'ui/address/contract/ContractRead';
+import ContractWrite from 'ui/address/contract/ContractWrite';
 import TextAd from 'ui/shared/ad/TextAd';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -27,7 +28,7 @@ const CONTRACT_TABS = [
   { id: 'contact_decompiled_code', title: 'Decompiled code', component: <div>Decompiled code</div> },
   { id: 'read_contract', title: 'Read contract', component: <ContractRead/> },
   { id: 'read_proxy', title: 'Read proxy', component: <div>Read proxy</div> },
-  { id: 'write_contract', title: 'Write contract', component: <div>Write contract</div> },
+  { id: 'write_contract', title: 'Write contract', component: <ContractWrite/> },
   { id: 'write_proxy', title: 'Write proxy', component: <div>Write proxy</div> },
 ];
 

@@ -1,1 +1,1 @@
-export type MethodInputFields = Record<string, string>;
+export type MethodFormFields = Record<string, string>;
