@@ -1,8 +1,8 @@
+import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { TokenType } from 'types/api/tokenInfo';
-import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
@@ -11,22 +11,29 @@ import Pagination from 'ui/shared/Pagination';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
 
 import TokenBalances from './tokens/TokenBalances';
+import TokensWithIds from './tokens/TokensWithIds';
+import TokensWithoutIds from './tokens/TokensWithoutIds';
 
-type Props = {
-  tabs: Array<RoutedTab>;
-}
-
-const AddressTokens = ({ tabs }: Props) => {
+const AddressTokens = () => {
   const router = useRouter();
   const isMobile = useIsMobile();
 
+  const scrollRef = React.useRef<HTMLDivElement>(null);
+
   const tokenType: TokenType = (Object.keys(tokenTabsByType) as Array<TokenType>).find(key => tokenTabsByType[key] === router.query.tab) || 'ERC-20';
 
-  const { pagination, isPaginationVisible } = useQueryWithPages({
+  const tokensQuery = useQueryWithPages({
     resourceName: 'address_tokens',
     pathParams: { id: router.query.id?.toString() },
     filters: { type: tokenType },
+    scrollRef,
   });
+
+  const tabs = [
+    { id: tokenTabsByType['ERC-20'], title: 'ERC-20', component: <TokensWithoutIds tokensQuery={ tokensQuery }/> },
+    { id: tokenTabsByType['ERC-721'], title: 'ERC-721', component: <TokensWithoutIds tokensQuery={ tokensQuery }/> },
+    { id: tokenTabsByType['ERC-1155'], title: 'ERC-1155', component: <TokensWithIds tokensQuery={ tokensQuery }/> },
+  ];
 
   const TAB_LIST_PROPS = {
     marginBottom: 0,
@@ -38,13 +45,15 @@ const AddressTokens = ({ tabs }: Props) => {
   return (
     <>
       <TokenBalances/>
+      { /* should stay before tabs to scroll up whith pagination */ }
+      <Box ref={ scrollRef }></Box>
       <RoutedTabs
         tabs={ tabs }
         variant="outline"
         colorScheme="gray"
         size="sm"
         tabListProps={ isMobile ? { mt: 8, columnGap: 3 } : TAB_LIST_PROPS }
-        rightSlot={ isPaginationVisible && !isMobile ? <Pagination { ...pagination }/> : null }
+        rightSlot={ tokensQuery.isPaginationVisible && !isMobile ? <Pagination { ...tokensQuery.pagination }/> : null }
         stickyEnabled={ !isMobile }
       />
     </>

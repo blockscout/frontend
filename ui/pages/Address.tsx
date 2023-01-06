@@ -19,7 +19,6 @@ import AddressTxs from 'ui/address/AddressTxs';
 import ContractCode from 'ui/address/contract/ContractCode';
 import ContractRead from 'ui/address/contract/ContractRead';
 import ContractWrite from 'ui/address/contract/ContractWrite';
-import Tokens from 'ui/address/tokens/Tokens';
 import TextAd from 'ui/shared/ad/TextAd';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -32,11 +31,7 @@ export const tokenTabsByType: Record<TokenType, string> = {
   'ERC-1155': 'tokens_erc1155',
 } as const;
 
-const TOKENS_TABS = [
-  { id: tokenTabsByType['ERC-20'], title: 'ERC-20', component: <Tokens type="ERC-20"/> },
-  { id: tokenTabsByType['ERC-721'], title: 'ERC-721', component: null },
-  { id: tokenTabsByType['ERC-1155'], title: 'ERC-1155', component: null },
-];
+const TOKEN_TABS = Object.values(tokenTabsByType);
 
 const AddressPageContent = () => {
   const router = useRouter();
@@ -87,7 +82,7 @@ const AddressPageContent = () => {
       addressQuery.data?.has_token_transfers ?
         { id: 'token_transfers', title: 'Token transfers', component: <AddressTokenTransfers scrollRef={ tabsScrollRef }/> } :
         undefined,
-      addressQuery.data?.has_tokens ? { id: 'tokens', title: 'Tokens', component: <AddressTokens tabs={ TOKENS_TABS }/>, subTabs: TOKENS_TABS } : undefined,
+      addressQuery.data?.has_tokens ? { id: 'tokens', title: 'Tokens', component: <AddressTokens/>, subTabs: TOKEN_TABS } : undefined,
       { id: 'internal_txns', title: 'Internal txns', component: <AddressInternalTxs scrollRef={ tabsScrollRef }/> },
       { id: 'coin_balance_history', title: 'Coin balance history', component: <AddressCoinBalance/> },
       addressQuery.data?.has_validated_blocks ?
@@ -98,7 +93,7 @@ const AddressPageContent = () => {
         id: 'contract',
         title: 'Contract',
         component: <AddressContract tabs={ contractTabs }/>,
-        subTabs: contractTabs,
+        subTabs: contractTabs.map(tab => tab.id),
       } : undefined,
     ].filter(notEmpty);
   }, [ addressQuery.data, contractTabs ]);

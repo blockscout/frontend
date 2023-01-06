@@ -6,6 +6,7 @@ import type { AddressTokenBalance } from 'types/api/address';
 import getCurrencyValue from 'lib/getCurrencyValue';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import TokenLogo from 'ui/shared/TokenLogo';
 
 import AddressAddToMetaMask from '../details/AddressAddToMetaMask';
 
@@ -26,7 +27,10 @@ const TokensTableItem = ({
   return (
     <Tr>
       <Td verticalAlign="middle">
-        <AddressLink fontWeight="700" hash={ token.address } type="token" alias={ tokenString }/>
+        <Flex alignItems="center">
+          <TokenLogo hash={ token.address } name={ token.name } boxSize={ 6 } mr={ 2 }/>
+          <AddressLink fontWeight="700" hash={ token.address } type="token" alias={ tokenString }/>
+        </Flex>
       </Td>
       <Td verticalAlign="middle">
         <Flex alignItems="center" width="150px" justifyContent="space-between">

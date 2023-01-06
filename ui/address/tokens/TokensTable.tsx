@@ -17,8 +17,8 @@ const TokensTable = ({ data, top }: Props) => {
     <Table variant="simple" size="sm">
       <Thead top={ top }>
         <Tr>
-          <Th width="20%">Asset</Th>
-          <Th width="40%">Contract address</Th>
+          <Th width="30%">Asset</Th>
+          <Th width="30%">Contract address</Th>
           <Th width="10%" isNumeric>Price</Th>
           <Th width="20%" isNumeric>Quantity</Th>
           <Th width="10%" isNumeric>Value</Th>
