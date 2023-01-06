@@ -14,6 +14,7 @@ import type {
 } from 'types/api/address';
 import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters } from 'types/api/block';
 import type { ChartMarketResponse, ChartTransactionResponse } from 'types/api/charts';
+import type { SmartContract } from 'types/api/contract';
 import type { IndexingStatus } from 'types/api/indexingStatus';
 import type { InternalTransactionsResponse } from 'types/api/internalTransaction';
 import type { JsonRpcUrlResponse } from 'types/api/jsonRpcUrl';
@@ -21,7 +22,7 @@ import type { LogsResponseTx, LogsResponseAddress } from 'types/api/log';
 import type { RawTracesResponse } from 'types/api/rawTrace';
 import type { SearchResult, SearchResultFilters } from 'types/api/search';
 import type { Stats, Charts, HomeStats } from 'types/api/stats';
-import type { TokenCounters, TokenInfo } from 'types/api/tokenInfo';
+import type { TokenCounters, TokenInfo, TokenHolders } from 'types/api/tokenInfo';
 import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
 import type { TransactionsResponseValidated, TransactionsResponsePending, Transaction } from 'types/api/transaction';
 import type { TTxsFilters } from 'types/api/txsFilters';
@@ -164,12 +165,22 @@ export const RESOURCES = {
     filterFields: [ ],
   },
 
+  // CONTRACT
+  contract: {
+    path: '/api/v2/smart-contracts/:id',
+  },
+
   // TOKEN
   token: {
     path: '/api/v2/tokens/:hash',
   },
   token_counters: {
     path: '/api/v2/tokens/:hash/counters',
+  },
+  token_holders: {
+    path: '/api/v2/tokens/:hash/holders',
+    paginationFields: [ 'items_count' as const, 'value' as const ],
+    filterFields: [],
   },
 
   // HOMEPAGE
@@ -245,7 +256,8 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'tx_internal_txs' | 'tx_logs' | 'tx_token_transfers' |
 'address_txs' | 'address_internal_txs' | 'address_token_transfers' | 'address_blocks_validated' | 'address_coin_balance' |
 'address_logs' |
-'search';
+'search' |
+'token_holders';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
 
@@ -288,8 +300,10 @@ Q extends 'address_coin_balance_chart' ? AddressCoinBalanceHistoryChart :
 Q extends 'address_logs' ? LogsResponseAddress :
 Q extends 'token' ? TokenInfo :
 Q extends 'token_counters' ? TokenCounters :
+Q extends 'token_holders' ? TokenHolders :
 Q extends 'config_json_rpc' ? JsonRpcUrlResponse :
 Q extends 'search' ? SearchResult :
+Q extends 'contract' ? SmartContract :
 never;
 /* eslint-enable @typescript-eslint/indent */
 

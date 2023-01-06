@@ -94,9 +94,9 @@ export const ROUTES = {
     pattern: PATHS.search_results,
   },
 
-  // ??? what URL will be here
-  other: {
-    pattern: PATHS.other,
+  // VISUALIZE
+  visualize_sol2uml: {
+    pattern: PATHS.visualize_sol2uml,
   },
 
   // AUTH

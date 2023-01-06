@@ -1,4 +1,4 @@
-import type { ChakraProps } from '@chakra-ui/react';
+import type { ChakraProps, ThemingProps } from '@chakra-ui/react';
 import {
   Tab,
   Tabs,
@@ -7,6 +7,7 @@ import {
   TabPanels,
   Box,
   useColorModeValue,
+  chakra,
 } from '@chakra-ui/react';
 import type { StyleProps } from '@chakra-ui/styled-system';
 import { useRouter } from 'next/router';
@@ -28,14 +29,15 @@ const hiddenItemStyles: StyleProps = {
   visibility: 'hidden',
 };
 
-interface Props {
+interface Props extends ThemingProps<'Tabs'> {
   tabs: Array<RoutedTab>;
   tabListProps?: ChakraProps;
   rightSlot?: React.ReactNode;
   stickyEnabled?: boolean;
+  className?: string;
 }
 
-const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled }: Props) => {
+const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled, className, ...themeProps }: Props) => {
   const router = useRouter();
   const scrollDirection = useScrollDirection();
   const [ activeTabIndex, setActiveTabIndex ] = useState<number>(tabs.length + 1);
@@ -58,8 +60,9 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled }: Props) => 
   useEffect(() => {
     if (router.isReady) {
       let tabIndex = 0;
-      if (router.query.tab) {
-        tabIndex = tabs.findIndex(({ id }) => id === router.query.tab);
+      const tabFromRoute = router.query.tab;
+      if (tabFromRoute) {
+        tabIndex = tabs.findIndex(({ id, subTabs }) => id === tabFromRoute || subTabs?.some(({ id }) => id === tabFromRoute));
         if (tabIndex < 0) {
           tabIndex = 0;
         }
@@ -89,12 +92,14 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled }: Props) => 
 
   return (
     <Tabs
-      variant="soft-rounded"
-      colorScheme="blue"
+      className={ className }
+      variant={ themeProps.variant || 'soft-rounded' }
+      colorScheme={ themeProps.colorScheme || 'blue' }
       isLazy
       onChange={ handleTabChange }
       index={ activeTabIndex }
       position="relative"
+      size={ themeProps.size || 'md' }
     >
       <TabList
         marginBottom={{ base: 6, lg: 8 }}
@@ -155,6 +160,7 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled }: Props) => 
               ref={ tabsRefs[index] }
               { ...(index < tabsCut ? {} : hiddenItemStyles) }
               scrollSnapAlign="start"
+              flexShrink={ 0 }
             >
               { tab.title }
             </Tab>
@@ -169,4 +175,4 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled }: Props) => 
   );
 };
 
-export default React.memo(RoutedTabs);
+export default React.memo(chakra(RoutedTabs));
