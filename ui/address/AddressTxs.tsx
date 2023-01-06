@@ -1,7 +1,6 @@
 import castArray from 'lodash/castArray';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { Element } from 'react-scroll';
 
 import type { AddressFromToFilter } from 'types/api/address';
 import { AddressFromToFilterValues } from 'types/api/address';
@@ -17,10 +16,7 @@ import AddressTxsFilter from './AddressTxsFilter';
 
 const getFilterValue = (getFilterValueFromQuery<AddressFromToFilter>).bind(null, AddressFromToFilterValues);
 
-const SCROLL_ELEM = 'address-txs';
-const SCROLL_OFFSET = -100;
-
-const AddressTxs = () => {
+const AddressTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}) => {
   const router = useRouter();
 
   const isMobile = useIsMobile();
@@ -31,7 +27,7 @@ const AddressTxs = () => {
     resourceName: 'address_txs',
     pathParams: { id: castArray(router.query.id)[0] },
     filters: { filter: filterValue },
-    scroll: { elem: SCROLL_ELEM, offset: SCROLL_OFFSET },
+    scrollRef,
   });
 
   const handleFilterChange = React.useCallback((val: string | Array<string>) => {
@@ -50,7 +46,7 @@ const AddressTxs = () => {
   );
 
   return (
-    <Element name={ SCROLL_ELEM }>
+    <>
       { !isMobile && (
         <ActionBar mt={ -6 }>
           { filter }
@@ -64,7 +60,7 @@ const AddressTxs = () => {
         currentAddress={ typeof router.query.id === 'string' ? router.query.id : undefined }
         enableTimeIncrement
       />
-    </Element>
+    </>
   );
 };
 

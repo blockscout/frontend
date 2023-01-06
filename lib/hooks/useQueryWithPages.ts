@@ -4,7 +4,7 @@ import omit from 'lodash/omit';
 import pick from 'lodash/pick';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
-import { animateScroll, scroller } from 'react-scroll';
+import { animateScroll } from 'react-scroll';
 
 import type { PaginatedResources, PaginatedResponse, PaginationFilters } from 'lib/api/resources';
 import { RESOURCES } from 'lib/api/resources';
@@ -16,7 +16,7 @@ interface Params<Resource extends PaginatedResources> {
   options?: UseApiQueryParams<Resource>['queryOptions'];
   pathParams?: UseApiQueryParams<Resource>['pathParams'];
   filters?: PaginationFilters<Resource>;
-  scroll?: { elem: string; offset: number };
+  scrollRef?: React.RefObject<HTMLDivElement>;
 }
 
 export default function useQueryWithPages<Resource extends PaginatedResources>({
@@ -24,7 +24,7 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
   filters,
   options,
   pathParams,
-  scroll,
+  scrollRef,
 }: Params<Resource>) {
   const resource = RESOURCES[resourceName];
   const queryClient = useQueryClient();
@@ -46,8 +46,8 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
   const queryParams = { ...filters, ...pageParams[page] };
 
   const scrollToTop = useCallback(() => {
-    scroll ? scroller.scrollTo(scroll.elem, { offset: scroll.offset }) : animateScroll.scrollToTop({ duration: 0 });
-  }, [ scroll ]);
+    scrollRef?.current ? scrollRef.current.scrollIntoView(true) : animateScroll.scrollToTop({ duration: 0 });
+  }, [ scrollRef ]);
 
   const queryResult = useApiQuery(resourceName, {
     pathParams,
@@ -77,10 +77,9 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
     nextPageQuery.page = String(page + 1);
     setHasPagination(true);
 
-    router.push({ pathname: router.pathname, query: nextPageQuery }, undefined, { shallow: true })
-      .then(() => {
-        scrollToTop();
-      });
+    scrollToTop();
+
+    router.push({ pathname: router.pathname, query: nextPageQuery }, undefined, { shallow: true });
   }, [ data?.next_page_params, page, router, scrollToTop ]);
 
   const onPrevPageClick = useCallback(() => {
@@ -96,9 +95,9 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
       nextPageQuery.page = String(page - 1);
     }
 
+    scrollToTop();
     router.push({ pathname: router.pathname, query: nextPageQuery }, undefined, { shallow: true })
       .then(() => {
-        scrollToTop();
         setPage(prev => prev - 1);
         page === 2 && queryClient.removeQueries({ queryKey: [ resourceName ] });
       });
@@ -108,9 +107,9 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
   const resetPage = useCallback(() => {
     queryClient.removeQueries({ queryKey: [ resourceName ] });
 
+    scrollToTop();
     router.push({ pathname: router.pathname, query: omit(router.query, resource.paginationFields, 'page') }, undefined, { shallow: true }).then(() => {
       queryClient.removeQueries({ queryKey: [ resourceName ] });
-      scrollToTop();
       setPage(1);
       setPageParams({});
       canGoBackwards.current = true;
@@ -133,6 +132,8 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
         }
       });
     }
+
+    scrollToTop();
     router.push(
       {
         pathname: router.pathname,
@@ -143,7 +144,6 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
     ).then(() => {
       setPage(1);
       setPageParams({});
-      scrollToTop();
     });
   }, [ router, resource.paginationFields, resource.filterFields, scrollToTop ]);
 

@@ -1,7 +1,6 @@
 import { Hide, Show, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { Element } from 'react-scroll';
 
 import type { AddressFromToFilter } from 'types/api/address';
 import { AddressFromToFilterValues } from 'types/api/address';
@@ -28,9 +27,6 @@ import { TOKEN_TYPE } from './helpers';
 
 const TOKEN_TYPES = TOKEN_TYPE.map(i => i.id);
 
-const SCROLL_ELEM = 'token-transfers';
-const SCROLL_OFFSET = -100;
-
 const getTokenFilterValue = (getFilterValuesFromQuery<TokenType>).bind(null, TOKEN_TYPES);
 const getAddressFilterValue = (getFilterValueFromQuery<AddressFromToFilter>).bind(null, AddressFromToFilterValues);
 
@@ -43,6 +39,7 @@ interface Props<Resource extends 'tx_token_transfers' | 'address_token_transfers
   txHash?: string;
   enableTimeIncrement?: boolean;
   pathParams?: UseApiQueryParams<Resource>['pathParams'];
+  scrollRef?: React.RefObject<HTMLDivElement>;
 }
 
 type State = {
@@ -58,6 +55,7 @@ const TokenTransfer = <Resource extends 'tx_token_transfers' | 'address_token_tr
   showTxInfo = true,
   enableTimeIncrement,
   pathParams,
+  scrollRef,
 }: Props<Resource>) => {
   const router = useRouter();
   const [ filters, setFilters ] = React.useState<State>(
@@ -69,7 +67,7 @@ const TokenTransfer = <Resource extends 'tx_token_transfers' | 'address_token_tr
     pathParams,
     options: { enabled: !isDisabled },
     filters: filters as PaginationFilters<Resource>,
-    scroll: { elem: SCROLL_ELEM, offset: SCROLL_OFFSET },
+    scrollRef,
   });
 
   const handleTypeFilterChange = React.useCallback((nextValue: Array<TokenType>) => {
@@ -129,7 +127,7 @@ const TokenTransfer = <Resource extends 'tx_token_transfers' | 'address_token_tr
   })();
 
   return (
-    <Element name={ SCROLL_ELEM }>
+    <>
       { !isActionBarHidden && (
         <ActionBar mt={ -6 }>
           <TokenTransferFilter
@@ -144,7 +142,7 @@ const TokenTransfer = <Resource extends 'tx_token_transfers' | 'address_token_tr
         </ActionBar>
       ) }
       { content }
-    </Element>
+    </>
   );
 };
 
