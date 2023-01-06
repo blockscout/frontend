@@ -24,16 +24,18 @@ const ContractReadItemInputField = ({ control, name, placeholder, setValue }: Pr
 
   const renderInput = React.useCallback(({ field }: { field: ControllerRenderProps<MethodInputFields> }) => {
     return (
-      <FormControl id={ name }>
+      <FormControl id={ name } maxW={{ base: '100%', lg: 'calc((100% - 24px) / 3)' }}>
         <InputGroup size="xs">
           <Input
             { ...field }
             ref={ ref }
             placeholder={ placeholder }
           />
-          <InputRightElement>
-            <InputClearButton onClick={ handleClear }/>
-          </InputRightElement>
+          { field.value && (
+            <InputRightElement>
+              <InputClearButton onClick={ handleClear }/>
+            </InputRightElement>
+          ) }
         </InputGroup>
       </FormControl>
     );

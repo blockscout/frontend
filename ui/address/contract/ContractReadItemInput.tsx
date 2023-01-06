@@ -82,6 +82,7 @@ const ContractReadItemInput = ({ data, address, methodId, methodName, outputs }:
         rowGap={ 2 }
         alignItems={{ base: 'flex-start', lg: 'center' }}
         onSubmit={ handleSubmit(onSubmit) }
+        flexWrap="wrap"
       >
         { data.map(({ type, name }, index) => {
           const fieldName = getFieldName(name, index);

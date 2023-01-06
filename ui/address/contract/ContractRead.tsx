@@ -72,7 +72,7 @@ const ContractRead = () => {
                 <AccordionIcon/>
               </AccordionButton>
             </h2>
-            <AccordionPanel pb={ 4 }>
+            <AccordionPanel pb={ 4 } px={ 0 }>
               { item.inputs.length === 0 ? (
                 <Flex flexDir="column" rowGap={ 1 }>
                   { item.outputs.map((output, index) => <ContractReadItemOutput key={ index } data={ output }/>) }
