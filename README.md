@@ -76,7 +76,7 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_HOMEPAGE_PLATE_GRADIENT | `string` *(optional)* | Gradient value for hero plate on the homepage | `radial-gradient(at 15% 86%, hsla(350,65%,70%,1) 0px, transparent 50%), radial-gradient(at 72% 57%, hsla(14,95%,76%,1) 0px, transparent 50%)` |
 | NEXT_PUBLIC_HOMEPAGE_SHOW_GAS_TRACKER | `boolean` *(optional)* | Set to false if network doesn't have gas tracker | `true` |
 | NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME | `boolean` *(optional)* | Set to false if average block time is useless for the network | `true` |
-| NEXT_PUBLIC_DOMAIN_WITH_AD | `string` *(optional)* | The domain on which we display ads | `blockscout.com` |  
+| NEXT_PUBLIC_DOMAIN_WITH_AD | `string` *(optional)* | The domain on which we display ads | `blockscout.com` |
 | NEXT_PUBLIC_AD_ADBUTLER_ON | `boolean` *(optional)* | Set to true to show Adbutler banner instead of Coinzilla banner | `false` |
 ### App configuration
 
@@ -132,7 +132,7 @@ The app instance could be customized by passing following variables to NodeJS en
 | id | `string` | Used as slug for the app. Must be unique in the app list. | `'app'` |
 | external | `boolean` | If true means that the application opens in a new window, but not in an iframe. | `true` |
 | title | `string` | Displayed title of the app. | `'The App'` |
-| logo | `string` | URL to logo file. Should be at least 144x144. | `'https://foo.app/icon.png'` |
+| logo | `string` | URL to logo file. Should be at least 288x288. | `'https://foo.app/icon.png'` |
 | shortDescription | `string` | Displayed only in the app list. | `'Awesome app'` |
 | categories | `Array<MarketplaceCategoryId>` | Displayed category. Select one of the following bellow. | `['security', 'tools']` |
 | author | `string` | Displayed author of the app | `'Bob'` |
