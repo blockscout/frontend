@@ -13,13 +13,17 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import ContractMethodCallable from './ContractMethodCallable';
 import ContractMethodConstant from './ContractMethodConstant';
 
-const ContractRead = () => {
+interface Props {
+  isProxy?: boolean;
+}
+
+const ContractRead = ({ isProxy }: Props) => {
   const router = useRouter();
   const apiFetch = useApiFetch();
 
   const addressHash = router.query.id?.toString();
 
-  const { data, isLoading, isError } = useApiQuery('contract_methods_read', {
+  const { data, isLoading, isError } = useApiQuery(isProxy ? 'contract_methods_read_proxy' : 'contract_methods_read', {
     pathParams: { id: addressHash },
     queryOptions: {
       enabled: Boolean(router.query.id),
@@ -34,12 +38,13 @@ const ContractRead = () => {
         body: {
           args,
           method_id: item.method_id,
+          contract_type: isProxy ? 'proxy' : 'regular',
         },
       },
     });
 
     return [ [ 'string', 'this is mock' ] ];
-  }, [ addressHash, apiFetch ]);
+  }, [ addressHash, apiFetch, isProxy ]);
 
   const renderContent = React.useCallback((item: SmartContractReadMethod, index: number, id: number) => {
     if (item.inputs.length === 0) {

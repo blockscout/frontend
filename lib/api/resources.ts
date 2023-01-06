@@ -171,11 +171,17 @@ export const RESOURCES = {
   contract_methods_read: {
     path: '/api/v2/smart-contracts/:id/methods-read',
   },
+  contract_methods_read_proxy: {
+    path: '/api/v2/smart-contracts/:id/methods-read-proxy',
+  },
   contract_method_query: {
     path: '/api/v2/smart-contracts/:id/query-read-method',
   },
   contract_methods_write: {
     path: '/api/v2/smart-contracts/:id/methods-write',
+  },
+  contract_methods_write_proxy: {
+    path: '/api/v2/smart-contracts/:id/methods-write-proxy',
   },
 
   // TOKEN
@@ -287,7 +293,9 @@ Q extends 'token_counters' ? TokenCounters :
 Q extends 'config_json_rpc' ? JsonRpcUrlResponse :
 Q extends 'contract' ? SmartContract :
 Q extends 'contract_methods_read' ? Array<SmartContractReadMethod> :
+Q extends 'contract_methods_read_proxy' ? Array<SmartContractReadMethod> :
 Q extends 'contract_methods_write' ? Array<SmartContractWriteMethod> :
+Q extends 'contract_methods_write_proxy' ? Array<SmartContractWriteMethod> :
 never;
 /* eslint-enable @typescript-eslint/indent */
 

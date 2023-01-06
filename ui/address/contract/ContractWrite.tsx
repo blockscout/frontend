@@ -10,12 +10,16 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import ContractMethodCallable from './ContractMethodCallable';
 
-const ContractWrite = () => {
+interface Props {
+  isProxy?: boolean;
+}
+
+const ContractWrite = ({ isProxy }: Props) => {
   const router = useRouter();
 
   const addressHash = router.query.id?.toString();
 
-  const { data, isLoading, isError } = useApiQuery('contract_methods_write', {
+  const { data, isLoading, isError } = useApiQuery(isProxy ? 'contract_methods_write_proxy' : 'contract_methods_write', {
     pathParams: { id: addressHash },
     queryOptions: {
       enabled: Boolean(router.query.id),

@@ -27,9 +27,9 @@ const CONTRACT_TABS = [
   { id: 'contact_code', title: 'Code', component: <ContractCode/> },
   { id: 'contact_decompiled_code', title: 'Decompiled code', component: <div>Decompiled code</div> },
   { id: 'read_contract', title: 'Read contract', component: <ContractRead/> },
-  { id: 'read_proxy', title: 'Read proxy', component: <div>Read proxy</div> },
+  { id: 'read_proxy', title: 'Read proxy', component: <ContractRead isProxy/> },
   { id: 'write_contract', title: 'Write contract', component: <ContractWrite/> },
-  { id: 'write_proxy', title: 'Write proxy', component: <div>Write proxy</div> },
+  { id: 'write_proxy', title: 'Write proxy', component: <ContractWrite isProxy/> },
 ];
 
 const AddressPageContent = () => {
