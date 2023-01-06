@@ -15,6 +15,7 @@ import ContractMethodField from './ContractMethodField';
 interface Props<T extends SmartContractMethod> {
   data: T;
   caller: (data: T, args: Array<string>) => Promise<Array<Array<string>>>;
+  isWrite?: boolean;
 }
 
 const getFieldName = (name: string, index: number): string => name || String(index);
@@ -35,7 +36,7 @@ const sortFields = (data: Array<SmartContractMethodInput>) => ([ a ]: [string, s
   return 0;
 };
 
-const ContractMethodCallable = <T extends SmartContractMethod>({ data, caller }: Props<T>) => {
+const ContractMethodCallable = <T extends SmartContractMethod>({ data, caller, isWrite }: Props<T>) => {
 
   const inputs = React.useMemo(() => {
     return data.payable && (!('inputs' in data) || data.inputs.length === 0) ? [ {
@@ -92,7 +93,7 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, caller }:
           flexShrink={ 0 }
           type="submit"
         >
-          Query
+          { isWrite ? 'Write' : 'Query' }
         </Button>
       </chakra.form>
       { 'outputs' in data && data.outputs.length > 0 && (

@@ -1,8 +1,10 @@
-import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Flex, Link } from '@chakra-ui/react';
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Flex, Icon, Link, Tooltip } from '@chakra-ui/react';
 import _range from 'lodash/range';
 import React from 'react';
 
 import type { SmartContractMethod } from 'types/api/contract';
+
+import infoIcon from 'icons/info.svg';
 
 interface Props<T extends SmartContractMethod> {
   data: Array<T>;
@@ -43,6 +45,19 @@ const ContractMethodsAccordion = <T extends SmartContractMethod>({ data, renderC
                 <Box as="span" fontFamily="heading" fontWeight={ 500 } fontSize="lg" mr={ 1 }>
                   { index + 1 }. { item.type === 'fallback' ? 'fallback' : item.name }
                 </Box>
+                { item.type === 'fallback' && (
+                  <Tooltip
+                    label={ `The fallback function is executed on a call to the contract if none of the other functions match 
+                    the given function signature, or if no data was supplied at all and there is no receive Ether function. 
+                    The fallback function always receives data, but in order to also receive Ether it must be marked payable.` }
+                    placement="top"
+                    maxW="320px"
+                  >
+                    <Box cursor="pointer" display="inherit">
+                      <Icon as={ infoIcon } boxSize={ 5 }/>
+                    </Box>
+                  </Tooltip>
+                ) }
                 <AccordionIcon/>
               </AccordionButton>
             </h2>

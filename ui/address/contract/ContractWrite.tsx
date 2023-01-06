@@ -41,6 +41,7 @@ const ContractWrite = () => {
         key={ id + '_' + index }
         data={ item }
         caller={ contractCaller }
+        isWrite
       />
     );
   }, [ contractCaller ]);
