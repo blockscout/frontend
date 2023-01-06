@@ -1,16 +1,26 @@
-import { Skeleton } from '@chakra-ui/react';
+import { Link, Skeleton } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
+import NextLink from 'next/link';
 import React from 'react';
 
 import type { AddressCounters } from 'types/api/address';
 
+import link from 'lib/link/link';
+
 interface Props {
   prop: keyof AddressCounters;
   query: UseQueryResult<AddressCounters>;
+  address: string;
 }
 
-const AddressCounterItem = ({ prop, query }: Props) => {
+const PROP_TO_TAB = {
+  transactions_count: 'txs',
+  token_transfers_count: 'token_transfers',
+  validations_count: 'blocks_validated',
+};
+
+const AddressCounterItem = ({ prop, query, address }: Props) => {
   if (query.isLoading) {
     return <Skeleton h={ 5 } w="80px" borderRadius="full"/>;
   }
@@ -26,8 +36,18 @@ const AddressCounterItem = ({ prop, query }: Props) => {
       return <span>{ BigNumber(data).toFormat() }</span>;
     case 'transactions_count':
     case 'token_transfers_count':
-    case 'validations_count':
-      return <span>{ Number(data).toLocaleString() }</span>;
+    case 'validations_count': {
+      if (data === '0') {
+        return <span>0</span>;
+      }
+      return (
+        <NextLink href={ link('address_index', { id: address }, { tab: PROP_TO_TAB[prop] }) } passHref>
+          <Link>
+            { Number(data).toLocaleString() }
+          </Link>
+        </NextLink>
+      );
+    }
   }
 };
 

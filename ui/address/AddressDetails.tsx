@@ -97,38 +97,42 @@ const AddressDetails = ({ addressQuery }: Props) => {
           </DetailsInfoItem>
         ) }
         <AddressBalance data={ addressQuery.data }/>
-        <DetailsInfoItem
-          title="Tokens"
-          hint="All tokens in the account and total value."
-          alignSelf="center"
-          py={ 0 }
-        >
-          <TokenSelect/>
-        </DetailsInfoItem>
+        { addressQuery.data.has_tokens && (
+          <DetailsInfoItem
+            title="Tokens"
+            hint="All tokens in the account and total value."
+            alignSelf="center"
+            py={ 0 }
+          >
+            <TokenSelect/>
+          </DetailsInfoItem>
+        ) }
         <DetailsInfoItem
           title="Transactions"
           hint="Number of transactions related to this address."
         >
-          <AddressCounterItem prop="transactions_count" query={ countersQuery }/>
+          <AddressCounterItem prop="transactions_count" query={ countersQuery } address={ addressQuery.data.hash }/>
         </DetailsInfoItem>
-        <DetailsInfoItem
-          title="Transfers"
-          hint="Number of transfers to/from this address."
-        >
-          <AddressCounterItem prop="token_transfers_count" query={ countersQuery }/>
-        </DetailsInfoItem>
+        { addressQuery.data.has_token_transfers && (
+          <DetailsInfoItem
+            title="Transfers"
+            hint="Number of transfers to/from this address."
+          >
+            <AddressCounterItem prop="token_transfers_count" query={ countersQuery } address={ addressQuery.data.hash }/>
+          </DetailsInfoItem>
+        ) }
         <DetailsInfoItem
           title="Gas used"
           hint="Gas used by the address."
         >
-          <AddressCounterItem prop="gas_usage_count" query={ countersQuery }/>
+          <AddressCounterItem prop="gas_usage_count" query={ countersQuery } address={ addressQuery.data.hash }/>
         </DetailsInfoItem>
         { addressQuery.data.has_validated_blocks && (
           <DetailsInfoItem
             title="Blocks validated"
             hint="Number of blocks validated by this validator."
           >
-            <AddressCounterItem prop="validations_count" query={ countersQuery }/>
+            <AddressCounterItem prop="validations_count" query={ countersQuery } address={ addressQuery.data.hash }/>
           </DetailsInfoItem>
         ) }
         { addressQuery.data.block_number_balance_updated_at && (
