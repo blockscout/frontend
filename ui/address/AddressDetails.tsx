@@ -29,9 +29,10 @@ import TokenSelect from './tokenSelect/TokenSelect';
 
 interface Props {
   addressQuery: UseQueryResult<TAddress>;
+  scrollRef?: React.RefObject<HTMLDivElement>;
 }
 
-const AddressDetails = ({ addressQuery }: Props) => {
+const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
   const router = useRouter();
   const isMobile = useIsMobile();
 
@@ -41,6 +42,13 @@ const AddressDetails = ({ addressQuery }: Props) => {
       enabled: Boolean(router.query.id) && Boolean(addressQuery.data),
     },
   });
+
+  const handleCounterItemClick = React.useCallback(() => {
+    window.setTimeout(() => {
+      // cannot do scroll instantly, have to wait a little
+      scrollRef?.current?.scrollIntoView({ behavior: 'smooth' });
+    }, 500);
+  }, [ scrollRef ]);
 
   if (addressQuery.isError) {
     throw Error('Address fetch error', { cause: addressQuery.error as unknown as Error });
@@ -111,28 +119,28 @@ const AddressDetails = ({ addressQuery }: Props) => {
           title="Transactions"
           hint="Number of transactions related to this address."
         >
-          <AddressCounterItem prop="transactions_count" query={ countersQuery } address={ addressQuery.data.hash }/>
+          <AddressCounterItem prop="transactions_count" query={ countersQuery } address={ addressQuery.data.hash } onClick={ handleCounterItemClick }/>
         </DetailsInfoItem>
         { addressQuery.data.has_token_transfers && (
           <DetailsInfoItem
             title="Transfers"
             hint="Number of transfers to/from this address."
           >
-            <AddressCounterItem prop="token_transfers_count" query={ countersQuery } address={ addressQuery.data.hash }/>
+            <AddressCounterItem prop="token_transfers_count" query={ countersQuery } address={ addressQuery.data.hash } onClick={ handleCounterItemClick }/>
           </DetailsInfoItem>
         ) }
         <DetailsInfoItem
           title="Gas used"
           hint="Gas used by the address."
         >
-          <AddressCounterItem prop="gas_usage_count" query={ countersQuery } address={ addressQuery.data.hash }/>
+          <AddressCounterItem prop="gas_usage_count" query={ countersQuery } address={ addressQuery.data.hash } onClick={ handleCounterItemClick }/>
         </DetailsInfoItem>
         { addressQuery.data.has_validated_blocks && (
           <DetailsInfoItem
             title="Blocks validated"
             hint="Number of blocks validated by this validator."
           >
-            <AddressCounterItem prop="validations_count" query={ countersQuery } address={ addressQuery.data.hash }/>
+            <AddressCounterItem prop="validations_count" query={ countersQuery } address={ addressQuery.data.hash } onClick={ handleCounterItemClick }/>
           </DetailsInfoItem>
         ) }
         { addressQuery.data.block_number_balance_updated_at && (

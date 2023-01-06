@@ -99,7 +99,7 @@ const AddressPageContent = () => {
           additionals={ tagsNode }
         />
       ) }
-      <AddressDetails addressQuery={ addressQuery }/>
+      <AddressDetails addressQuery={ addressQuery } scrollRef={ tabsScrollRef }/>
       { /* should stay before tabs to scroll up whith pagination */ }
       <Box ref={ tabsScrollRef }></Box>
       { addressQuery.isLoading ? <SkeletonTabs/> : <RoutedTabs tabs={ tabs } tabListProps={{ mt: 8 }}/> }
