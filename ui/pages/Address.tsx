@@ -1,4 +1,4 @@
-import { Flex, Skeleton, Tag } from '@chakra-ui/react';
+import { Flex, Skeleton, Tag, Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -33,6 +33,8 @@ const CONTRACT_TABS = [
 const AddressPageContent = () => {
   const router = useRouter();
 
+  const tabsScrollRef = React.useRef<HTMLDivElement>(null);
+
   const addressQuery = useApiQuery('address', {
     pathParams: { id: router.query.id?.toString() },
     queryOptions: { enabled: Boolean(router.query.id) },
@@ -48,15 +50,15 @@ const AddressPageContent = () => {
 
   const tabs: Array<RoutedTab> = React.useMemo(() => {
     return [
-      { id: 'txs', title: 'Transactions', component: <AddressTxs/> },
-      { id: 'token_transfers', title: 'Token transfers', component: <AddressTokenTransfers/> },
+      { id: 'txs', title: 'Transactions', component: <AddressTxs scrollRef={ tabsScrollRef }/> },
+      { id: 'token_transfers', title: 'Token transfers', component: <AddressTokenTransfers scrollRef={ tabsScrollRef }/> },
       { id: 'tokens', title: 'Tokens', component: null },
-      { id: 'internal_txns', title: 'Internal txns', component: <AddressInternalTxs/> },
+      { id: 'internal_txns', title: 'Internal txns', component: <AddressInternalTxs scrollRef={ tabsScrollRef }/> },
       { id: 'coin_balance_history', title: 'Coin balance history', component: <AddressCoinBalance/> },
       // temporary show this tab in all address
       // later api will return info about available tabs
       { id: 'blocks_validated', title: 'Blocks validated', component: <AddressBlocksValidated/> },
-      isContract ? { id: 'logs', title: 'Logs', component: <AddressLogs/> } : undefined,
+      isContract ? { id: 'logs', title: 'Logs', component: <AddressLogs scrollRef={ tabsScrollRef }/> } : undefined,
       isContract ? {
         id: 'contract',
         title: 'Contract',
@@ -80,6 +82,8 @@ const AddressPageContent = () => {
         />
       ) }
       <AddressDetails addressQuery={ addressQuery }/>
+      { /* should stay before tabs to scroll up whith pagination */ }
+      <Box ref={ tabsScrollRef }></Box>
       { addressQuery.isLoading ? <SkeletonTabs/> : <RoutedTabs tabs={ tabs } tabListProps={{ mt: 8 }}/> }
     </Page>
   );
