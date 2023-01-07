@@ -20,8 +20,8 @@ const TokensTable = ({ data, top }: Props) => {
           <Th width="30%">Asset</Th>
           <Th width="30%">Contract address</Th>
           <Th width="10%" isNumeric>Price</Th>
-          <Th width="20%" isNumeric>Quantity</Th>
-          <Th width="10%" isNumeric>Value</Th>
+          <Th width="15%" isNumeric>Quantity</Th>
+          <Th width="15%" isNumeric>Value</Th>
         </Tr>
       </Thead>
       <Tbody>

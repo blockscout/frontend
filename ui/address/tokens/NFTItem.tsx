@@ -7,6 +7,7 @@ import type { AddressTokenBalance } from 'types/api/address';
 import NFTIcon from 'icons/nft_shield.svg';
 import link from 'lib/link/link';
 import TokenLogo from 'ui/shared/TokenLogo';
+import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 type Props = AddressTokenBalance;
 
@@ -39,13 +40,16 @@ const NFTItem = ({ token, token_id: tokenId }: Props) => {
       { tokenId && (
         <Flex mb={ 2 } ml={ 1 }>
           <Text whiteSpace="pre" variant="secondary">ID# </Text>
+          { /* TODO: add link href */ }
           <Link>{ tokenId }</Link>
         </Flex>
       ) }
       { token.name && (
-        <Flex>
+        <Flex alignItems="center">
           <TokenLogo hash={ token.address } name={ token.name } boxSize={ 6 } ml={ 1 } mr={ 1 }/>
-          <Text variant="secondary">{ token.name || 'aaaaa' }</Text>
+          <TruncatedTextTooltip label={ token.name }>
+            <Text variant="secondary" overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis">{ token.name }</Text>
+          </TruncatedTextTooltip>
         </Flex>
       ) }
     </Box>
