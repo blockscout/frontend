@@ -16,9 +16,10 @@ interface Props {
   fontWeight?: string;
   id?: string;
   target?: HTMLAttributeAnchorTarget;
+  isDisabled?: boolean;
 }
 
-const AddressLink = ({ alias, type, className, truncation = 'dynamic', hash, id, fontWeight, target = '_self' }: Props) => {
+const AddressLink = ({ alias, type, className, truncation = 'dynamic', hash, id, fontWeight, target = '_self', isDisabled }: Props) => {
   const isMobile = useIsMobile();
 
   let url;
@@ -51,6 +52,18 @@ const AddressLink = ({ alias, type, className, truncation = 'dynamic', hash, id,
         return <span>{ id || hash }</span>;
     }
   })();
+
+  if (isDisabled) {
+    return (
+      <chakra.span
+        className={ className }
+        overflow="hidden"
+        whiteSpace="nowrap"
+      >
+        { content }
+      </chakra.span>
+    );
+  }
 
   return (
     <Link

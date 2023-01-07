@@ -108,6 +108,7 @@ const TxsListItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }:
               alias={ tx.from.name }
               fontWeight="500"
               ml={ 2 }
+              isDisabled={ isOut }
             />
           </Address>
           { (isIn || isOut) ?
@@ -126,6 +127,7 @@ const TxsListItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }:
               alias={ dataTo.name }
               fontWeight="500"
               ml={ 2 }
+              isDisabled={ isIn }
             />
           </Address>
         </Flex>
