@@ -55,7 +55,7 @@ export interface AddressTokensResponse {
     token_name: 'string' | null;
     token_type: TokenType;
     value: number;
-  };
+  } | null;
 }
 
 export interface AddressTransactionsResponse {

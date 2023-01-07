@@ -168,7 +168,7 @@ export const RESOURCES = {
   address_tokens: {
     path: '/api/v2/addresses/:id/tokens',
     paginationFields: [ 'items_count' as const, 'token_name' as const, 'token_type' as const, 'value' as const ],
-    filterFields: [ 'type' ],
+    filterFields: [ 'type' as const ],
   },
 
   // CONTRACT
