@@ -1,4 +1,4 @@
-import { Box, Center, Flex, Icon, Link, Text } from '@chakra-ui/react';
+import { Box, Center, Flex, Icon, Link, Text, useColorModeValue } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -24,7 +24,7 @@ const NFTItem = ({ token, token_id: tokenId }: Props) => {
       w="210px"
       h="272px"
       border="1px solid"
-      borderColor="blackAlpha.100"
+      borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }
       borderRadius="12px"
       p="10px"
       _hover={{ boxShadow: 'md' }}
@@ -34,8 +34,8 @@ const NFTItem = ({ token, token_id: tokenId }: Props) => {
       onClick={ onItemClick }
       cursor="pointer"
     >
-      <Center w="182px" h="182px" bg="blackAlpha.50" mb="18px" borderRadius="12px">
-        <Icon as={ NFTIcon } boxSize="112px" color="blackAlpha.500"/>
+      <Center w="182px" h="182px" bg={ useColorModeValue('blackAlpha.50', 'whiteAlpha.50') } mb="18px" borderRadius="12px">
+        <Icon as={ NFTIcon } boxSize="112px" color={ useColorModeValue('blackAlpha.500', 'whiteAlpha.500') }/>
       </Center>
       { tokenId && (
         <Flex mb={ 2 } ml={ 1 }>

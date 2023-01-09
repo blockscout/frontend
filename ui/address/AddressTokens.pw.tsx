@@ -22,7 +22,7 @@ const nextPageParams = {
   value: 1,
 };
 
-test('erc20 +@mobile', async({ mount, page }) => {
+test('erc20 +@mobile +@dark-mode', async({ mount, page }) => {
   const hooksConfig = {
     router: {
       query: { id: ADDRESS_HASH, tab: 'tokens_erc20' },
@@ -59,7 +59,7 @@ test('erc20 +@mobile', async({ mount, page }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('erc721 +@mobile', async({ mount, page }) => {
+test('erc721 +@mobile +@dark-mode', async({ mount, page }) => {
   const hooksConfig = {
     router: {
       query: { id: ADDRESS_HASH, tab: 'tokens_erc721' },
@@ -96,7 +96,7 @@ test('erc721 +@mobile', async({ mount, page }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('erc1155 +@mobile', async({ mount, page }) => {
+test('erc1155 +@mobile +@dark-mode', async({ mount, page }) => {
   const hooksConfig = {
     router: {
       query: { id: ADDRESS_HASH, tab: 'tokens_erc1155' },
