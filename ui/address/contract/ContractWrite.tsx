@@ -9,6 +9,7 @@ import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import { useContractContext } from './context';
+import ContractConnectWallet from './ContractConnectWallet';
 import ContractMethodCallable from './ContractMethodCallable';
 
 interface Props {
@@ -68,7 +69,12 @@ const ContractWrite = ({ isProxy }: Props) => {
     return <ContentLoader/>;
   }
 
-  return <ContractMethodsAccordion data={ data } renderContent={ renderContent }/>;
+  return (
+    <>
+      <ContractConnectWallet/>
+      <ContractMethodsAccordion data={ data } renderContent={ renderContent }/>
+    </>
+  );
 };
 
 export default ContractWrite;

@@ -7,7 +7,7 @@ import type { AddressParam } from 'types/api/addressParams';
 import AddressContractIcon from 'ui/shared/address/AddressContractIcon';
 
 type Props = {
-  address: AddressParam;
+  address: Pick<AddressParam, 'hash' | 'is_contract'>;
   className?: string;
 }
 

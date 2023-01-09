@@ -40,6 +40,8 @@
     "@tanstack/react-query-devtools": "^4.0.10",
     "@types/papaparse": "^5.3.5",
     "@types/react-scroll": "^1.8.4",
+    "@web3modal/ethereum": "^2.0.0-rc.2",
+    "@web3modal/react": "^2.0.0-rc.2",
     "ace-builds": "^1.14.0",
     "bignumber.js": "^9.1.0",
     "d3": "^7.6.1",
@@ -64,7 +66,8 @@
     "react-identicons": "^1.2.5",
     "react-jazzicon": "^1.0.4",
     "react-scroll": "^1.8.7",
-    "use-font-face-observer": "^1.2.1"
+    "use-font-face-observer": "^1.2.1",
+    "wagmi": "^0.10.6"
   },
   "devDependencies": {
     "@playwright/experimental-ct-react": "^1.28.0",
