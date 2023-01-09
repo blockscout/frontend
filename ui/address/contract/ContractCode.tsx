@@ -27,6 +27,7 @@ const ContractCode = () => {
     pathParams: { id: router.query.id?.toString() },
     queryOptions: {
       enabled: Boolean(router.query.id),
+      refetchOnMount: false,
     },
   });
 

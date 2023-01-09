@@ -14,7 +14,7 @@ import ContractMethodField from './ContractMethodField';
 
 interface Props<T extends SmartContractMethod> {
   data: T;
-  caller: (data: T, args: Array<string>) => Promise<Array<Array<string>>>;
+  caller: (data: T, args: Array<string>) => Promise<Array<Array<string>> | undefined>;
   isWrite?: boolean;
 }
 
@@ -57,7 +57,7 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, caller, i
       .map(([ , value ]) => value);
 
     const result = await caller(data, args);
-    setResult(result);
+    result && setResult(result);
 
   }, [ caller, data, inputs ]);
 

@@ -10,6 +10,7 @@ import ContractMethodsAccordion from 'ui/address/contract/ContractMethodsAccordi
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
+import { useContractContext } from './context';
 import ContractMethodCallable from './ContractMethodCallable';
 import ContractMethodConstant from './ContractMethodConstant';
 
@@ -30,6 +31,8 @@ const ContractRead = ({ isProxy }: Props) => {
     },
   });
 
+  const contract = useContractContext();
+
   const contractCaller = React.useCallback(async(item: SmartContractReadMethod, args: Array<string>) => {
     await apiFetch('contract_method_query', {
       pathParams: { id: addressHash },
@@ -43,8 +46,13 @@ const ContractRead = ({ isProxy }: Props) => {
       },
     });
 
+    const result = await contract?.functions[item.name](...args);
+
+    // eslint-disable-next-line no-console
+    console.log('__>__', { result });
+
     return [ [ 'string', 'this is mock' ] ];
-  }, [ addressHash, apiFetch, isProxy ]);
+  }, [ addressHash, apiFetch, contract, isProxy ]);
 
   const renderContent = React.useCallback((item: SmartContractReadMethod, index: number, id: number) => {
     if (item.inputs.length === 0) {

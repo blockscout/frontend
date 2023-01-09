@@ -8,6 +8,7 @@ import ContractMethodsAccordion from 'ui/address/contract/ContractMethodsAccordi
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
+import { useContractContext } from './context';
 import ContractMethodCallable from './ContractMethodCallable';
 
 interface Props {
@@ -22,22 +23,31 @@ const ContractWrite = ({ isProxy }: Props) => {
   const { data, isLoading, isError } = useApiQuery(isProxy ? 'contract_methods_write_proxy' : 'contract_methods_write', {
     pathParams: { id: addressHash },
     queryOptions: {
-      enabled: Boolean(router.query.id),
+      enabled: Boolean(addressHash),
     },
   });
 
-  const contractInfo = useApiQuery('contract', {
-    pathParams: { id: addressHash },
-    queryOptions: {
-      enabled: Boolean(router.query.id),
-    },
-  });
+  const contract = useContractContext();
 
-  const contractCaller = React.useCallback(async() => {
+  const contractCaller = React.useCallback(async(item: SmartContractWriteMethod, args: Array<string>) => {
+    if (!contract) {
+      return;
+    }
+
+    if (item.type === 'fallback') {
+      return;
+    }
+
+    const methodName = item.name;
+    const result = await contract[methodName](...args, {
+      gasLimit: 100_000,
+    });
+
     // eslint-disable-next-line no-console
-    console.log('__>__', contractInfo);
+    console.log('__>__', { result });
+
     return [ [ 'string', 'this is mock' ] ];
-  }, [ contractInfo ]);
+  }, [ contract ]);
 
   const renderContent = React.useCallback((item: SmartContractWriteMethod, index: number, id: number) => {
     return (
