@@ -40,8 +40,7 @@ const NFTItem = ({ token, token_id: tokenId }: Props) => {
       { tokenId && (
         <Flex mb={ 2 } ml={ 1 }>
           <Text whiteSpace="pre" variant="secondary">ID# </Text>
-          { /* TODO: add link href */ }
-          <Link>{ tokenId }</Link>
+          <Link href={ link('token_instance_item', { hash: token.address, id: tokenId }) }>{ tokenId }</Link>
         </Flex>
       ) }
       { token.name && (
