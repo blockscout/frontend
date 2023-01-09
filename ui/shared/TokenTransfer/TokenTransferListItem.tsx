@@ -81,7 +81,7 @@ const TokenTransferListItem = ({
       <Flex w="100%" columnGap={ 3 }>
         <Address width={ addressWidth }>
           <AddressIcon address={ from }/>
-          <AddressLink ml={ 2 } fontWeight="500" hash={ from.hash }/>
+          <AddressLink ml={ 2 } fontWeight="500" hash={ from.hash } isDisabled={ baseAddress === from.hash }/>
         </Address>
         { baseAddress ?
           <InOutTag isIn={ baseAddress === to.hash } isOut={ baseAddress === from.hash } w="50px" textAlign="center"/> :
@@ -89,7 +89,7 @@ const TokenTransferListItem = ({
         }
         <Address width={ addressWidth }>
           <AddressIcon address={ to }/>
-          <AddressLink ml={ 2 } fontWeight="500" hash={ to.hash }/>
+          <AddressLink ml={ 2 } fontWeight="500" hash={ to.hash } isDisabled={ baseAddress === to.hash }/>
         </Address>
       </Flex>
       { value && (

@@ -62,7 +62,7 @@ const AddressIntTxsTableItem = ({
       <Td verticalAlign="middle">
         <Address display="inline-flex" maxW="100%">
           <AddressIcon address={ from }/>
-          <AddressLink ml={ 2 } fontWeight="500" hash={ from.hash } alias={ from.name } flexGrow={ 1 }/>
+          <AddressLink ml={ 2 } fontWeight="500" hash={ from.hash } alias={ from.name } flexGrow={ 1 } isDisabled={ isOut }/>
         </Address>
       </Td>
       <Td px={ 0 } verticalAlign="middle">
@@ -74,7 +74,7 @@ const AddressIntTxsTableItem = ({
       <Td verticalAlign="middle">
         <Address display="inline-flex" maxW="100%">
           <AddressIcon address={ toData }/>
-          <AddressLink hash={ toData.hash } alias={ toData.name } fontWeight="500" ml={ 2 }/>
+          <AddressLink hash={ toData.hash } alias={ toData.name } fontWeight="500" ml={ 2 } isDisabled={ isIn }/>
         </Address>
       </Td>
       <Td isNumeric verticalAlign="middle">
