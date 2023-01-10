@@ -88,7 +88,7 @@ export interface AddressCoinBalanceHistoryResponse {
   next_page_params: {
     block_number: number;
     items_count: number;
-  };
+  } | null;
 }
 
 export type AddressCoinBalanceHistoryChart = Array<{
