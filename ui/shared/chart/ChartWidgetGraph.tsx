@@ -54,7 +54,7 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
   }, [ isZoomResetInitial ]);
 
   return (
-    <svg width={ width || '100%' } height={ height || 'auto' } ref={ ref } cursor="pointer" id={ chartId } opacity={ width ? 1 : 0 }>
+    <svg width={ width || '100%' } height={ height || '100%' } ref={ ref } cursor="pointer" id={ chartId } opacity={ width ? 1 : 0 }>
 
       <g transform={ `translate(${ CHART_MARGIN?.left || 0 },${ CHART_MARGIN?.top || 0 })` }>
         <ChartGridLine
