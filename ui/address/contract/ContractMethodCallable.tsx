@@ -1,10 +1,10 @@
-import { Box, Button, chakra, Flex, Icon, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Button, chakra, Flex, Icon, Text } from '@chakra-ui/react';
 import _fromPairs from 'lodash/fromPairs';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 
-import type { MethodFormFields } from './types';
+import type { MethodFormFields, ContractMethodCallResult } from './types';
 import type { SmartContractMethodInput, SmartContractMethod } from 'types/api/contract';
 
 import appConfig from 'configs/app/config';
@@ -14,7 +14,8 @@ import ContractMethodField from './ContractMethodField';
 
 interface Props<T extends SmartContractMethod> {
   data: T;
-  caller: (data: T, args: Array<string>) => Promise<Array<Array<string>> | undefined>;
+  onSubmit: (data: T, args: Array<string>) => Promise<ContractMethodCallResult<T>>;
+  renderResult: (data: T, result: ContractMethodCallResult<T>) => React.ReactNode;
   isWrite?: boolean;
 }
 
@@ -36,7 +37,10 @@ const sortFields = (data: Array<SmartContractMethodInput>) => ([ a ]: [string, s
   return 0;
 };
 
-const ContractMethodCallable = <T extends SmartContractMethod>({ data, caller, isWrite }: Props<T>) => {
+const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit, renderResult, isWrite }: Props<T>) => {
+
+  const [ result, setResult ] = React.useState<ContractMethodCallResult<T>>();
+  const [ isLoading, setLoading ] = React.useState(false);
 
   const inputs = React.useMemo(() => {
     return data.payable && (!('inputs' in data) || data.inputs.length === 0) ? [ {
@@ -49,19 +53,24 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, caller, i
   const { control, handleSubmit, setValue } = useForm<MethodFormFields>({
     defaultValues: _fromPairs(inputs.map(({ name }, index) => [ getFieldName(name, index), '' ])),
   });
-  const [ result, setResult ] = React.useState<Array<Array<string>>>([ ]);
 
-  const onSubmit: SubmitHandler<MethodFormFields> = React.useCallback(async(formData) => {
+  const onFormSubmit: SubmitHandler<MethodFormFields> = React.useCallback(async(formData) => {
     const args = Object.entries(formData)
       .sort(sortFields(inputs))
       .map(([ , value ]) => value);
+    setResult(undefined);
+    setLoading(true);
 
-    const result = await caller(data, args);
-    result && setResult(result);
-
-  }, [ caller, data, inputs ]);
-
-  const resultBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
+    onSubmit(data, args)
+      .then((result) => {
+        setResult(result);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setResult(error);
+        setLoading(false);
+      });
+  }, [ onSubmit, data, inputs ]);
 
   return (
     <Box>
@@ -72,7 +81,7 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, caller, i
         flexDir={{ base: 'column', lg: 'row' }}
         rowGap={ 2 }
         alignItems={{ base: 'flex-start', lg: 'center' }}
-        onSubmit={ handleSubmit(onSubmit) }
+        onSubmit={ handleSubmit(onFormSubmit) }
         flexWrap="wrap"
       >
         { inputs.map(({ type, name }, index) => {
@@ -84,10 +93,13 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, caller, i
               placeholder={ `${ name }(${ type })` }
               control={ control }
               setValue={ setValue }
+              isDisabled={ isLoading }
             />
           );
         }) }
         <Button
+          isLoading={ isLoading }
+          loadingText={ isWrite ? 'Write' : 'Query' }
           variant="outline"
           size="sm"
           flexShrink={ 0 }
@@ -102,18 +114,7 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, caller, i
           <Text>{ data.outputs.map(({ type }) => type).join(', ') }</Text>
         </Flex>
       ) }
-      { result.length > 0 && (
-        <Box mt={ 3 } p={ 4 } borderRadius="md" bgColor={ resultBgColor } fontSize="sm">
-          <p>
-          [ <chakra.span fontWeight={ 600 }>{ 'name' in data ? data.name : '' }</chakra.span> method response ]
-          </p>
-          <p>[</p>
-          { result.map(([ key, value ], index) => (
-            <chakra.p key={ index } whiteSpace="break-spaces" wordBreak="break-all">  { key }: { value }</chakra.p>
-          )) }
-          <p>]</p>
-        </Box>
-      ) }
+      { result && renderResult(data, result) }
     </Box>
   );
 };

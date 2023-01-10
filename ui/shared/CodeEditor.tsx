@@ -1,7 +1,7 @@
 import { chakra, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 import AceEditor from 'react-ace';
-import 'ace-builds/src-noconflict/mode-javascript';
+import 'ace-builds/src-noconflict/mode-csharp';
 import 'ace-builds/src-noconflict/theme-tomorrow';
 import 'ace-builds/src-noconflict/theme-tomorrow_night';
 import 'ace-builds/src-noconflict/ext-language_tools';
@@ -19,7 +19,7 @@ const CodeEditorBase = chakra(({ id, value, className }: Props) => {
   return (
     <AceEditor
       className={ className }
-      mode="javascript" // TODO need to find mode for solidity
+      mode="csharp" // TODO need to find mode for solidity
       theme={ theme }
       value={ value }
       name={ id }

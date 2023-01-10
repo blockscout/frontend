@@ -30,7 +30,7 @@ const ContractWrite = ({ isProxy }: Props) => {
 
   const contract = useContractContext();
 
-  const contractCaller = React.useCallback(async(item: SmartContractWriteMethod, args: Array<string>) => {
+  const handleMethodFormSubmit = React.useCallback(async(item: SmartContractWriteMethod, args: Array<string>) => {
     if (!contract) {
       return;
     }
@@ -50,16 +50,21 @@ const ContractWrite = ({ isProxy }: Props) => {
     return [ [ 'string', 'this is mock' ] ];
   }, [ contract ]);
 
+  const renderResult = React.useCallback(() => {
+    return <span>result</span>;
+  }, []);
+
   const renderContent = React.useCallback((item: SmartContractWriteMethod, index: number, id: number) => {
     return (
       <ContractMethodCallable
         key={ id + '_' + index }
         data={ item }
-        caller={ contractCaller }
+        onSubmit={ handleMethodFormSubmit }
+        renderResult={ renderResult }
         isWrite
       />
     );
-  }, [ contractCaller ]);
+  }, [ handleMethodFormSubmit, renderResult ]);
 
   if (isError) {
     return <DataFetchAlert/>;

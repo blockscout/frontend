@@ -1,8 +1,10 @@
-import { Flex } from '@chakra-ui/react';
+import { Alert, Box, chakra, Flex, useColorModeValue } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { useAccount } from 'wagmi';
 
-import type { SmartContractReadMethod } from 'types/api/contract';
+import type { ContractMethodReadResult } from './types';
+import type { SmartContractReadMethod, SmartContractQueryMethodRead } from 'types/api/contract';
 
 import useApiFetch from 'lib/api/useApiFetch';
 import useApiQuery from 'lib/api/useApiQuery';
@@ -10,7 +12,7 @@ import ContractMethodsAccordion from 'ui/address/contract/ContractMethodsAccordi
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
-import { useContractContext } from './context';
+import ContractConnectWallet from './ContractConnectWallet';
 import ContractMethodCallable from './ContractMethodCallable';
 import ContractMethodConstant from './ContractMethodConstant';
 
@@ -21,6 +23,7 @@ interface Props {
 const ContractRead = ({ isProxy }: Props) => {
   const router = useRouter();
   const apiFetch = useApiFetch();
+  const { address: userAddress } = useAccount();
 
   const addressHash = router.query.id?.toString();
 
@@ -31,10 +34,8 @@ const ContractRead = ({ isProxy }: Props) => {
     },
   });
 
-  const contract = useContractContext();
-
-  const contractCaller = React.useCallback(async(item: SmartContractReadMethod, args: Array<string>) => {
-    await apiFetch('contract_method_query', {
+  const handleMethodFormSubmit = React.useCallback(async(item: SmartContractReadMethod, args: Array<string>) => {
+    return apiFetch<'contract_method_query', SmartContractQueryMethodRead>('contract_method_query', {
       pathParams: { id: addressHash },
       fetchParams: {
         method: 'POST',
@@ -42,20 +43,40 @@ const ContractRead = ({ isProxy }: Props) => {
           args,
           method_id: item.method_id,
           contract_type: isProxy ? 'proxy' : 'regular',
+          from: userAddress,
         },
       },
     });
+  }, [ addressHash, apiFetch, isProxy, userAddress ]);
 
-    const result = await contract?.functions[item.name](...args);
+  const resultBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
 
-    // eslint-disable-next-line no-console
-    console.log('__>__', { result });
+  const renderResult = React.useCallback((item: SmartContractReadMethod, result: ContractMethodReadResult) => {
+    if ('status' in result) {
+      return <Alert status="error" mt={ 3 } p={ 4 } borderRadius="md" fontSize="sm">{ result.statusText }</Alert>;
+    }
 
-    return [ [ 'string', 'this is mock' ] ];
-  }, [ addressHash, apiFetch, contract, isProxy ]);
+    if (result.is_error) {
+      const message = 'error' in result.result ? result.result.error : result.result.message;
+      return <Alert status="error" mt={ 3 } p={ 4 } borderRadius="md" fontSize="sm">{ message }</Alert>;
+    }
+
+    return (
+      <Box mt={ 3 } p={ 4 } borderRadius="md" bgColor={ resultBgColor } fontSize="sm">
+        <p>
+          [ <chakra.span fontWeight={ 600 }>{ 'name' in item ? item.name : '' }</chakra.span> method response ]
+        </p>
+        <p>[</p>
+        { result.result.output.map(({ type, value }, index) => (
+          <chakra.p key={ index } whiteSpace="break-spaces" wordBreak="break-all">  { type }: { String(value) }</chakra.p>
+        )) }
+        <p>]</p>
+      </Box>
+    );
+  }, [ resultBgColor ]);
 
   const renderContent = React.useCallback((item: SmartContractReadMethod, index: number, id: number) => {
-    if (item.inputs.length === 0) {
+    if (item.outputs.some(({ value }) => value)) {
       return (
         <Flex flexDir="column" rowGap={ 1 }>
           { item.outputs.map((output, index) => <ContractMethodConstant key={ index } data={ output }/>) }
@@ -67,10 +88,11 @@ const ContractRead = ({ isProxy }: Props) => {
       <ContractMethodCallable
         key={ id + '_' + index }
         data={ item }
-        caller={ contractCaller }
+        onSubmit={ handleMethodFormSubmit }
+        renderResult={ renderResult }
       />
     );
-  }, [ contractCaller ]);
+  }, [ handleMethodFormSubmit, renderResult ]);
 
   if (isError) {
     return <DataFetchAlert/>;
@@ -80,7 +102,12 @@ const ContractRead = ({ isProxy }: Props) => {
     return <ContentLoader/>;
   }
 
-  return <ContractMethodsAccordion data={ data } renderContent={ renderContent }/>;
+  return (
+    <>
+      <ContractConnectWallet/>
+      <ContractMethodsAccordion data={ data } renderContent={ renderContent }/>
+    </>
+  );
 };
 
-export default ContractRead;
+export default React.memo(ContractRead);

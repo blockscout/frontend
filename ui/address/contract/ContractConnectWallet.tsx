@@ -1,4 +1,4 @@
-import { Alert, chakra, Link } from '@chakra-ui/react';
+import { Alert, Button, chakra } from '@chakra-ui/react';
 import { useWeb3Modal } from '@web3modal/react';
 import React from 'react';
 import { useAccount, useDisconnect } from 'wagmi';
@@ -6,7 +6,7 @@ import { useAccount, useDisconnect } from 'wagmi';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 
 const ContractConnectWallet = () => {
-  const { isOpen, open } = useWeb3Modal();
+  const { open } = useWeb3Modal();
   const { address, isDisconnected } = useAccount();
   const { disconnect } = useDisconnect();
 
@@ -19,15 +19,11 @@ const ContractConnectWallet = () => {
   }, [ disconnect ]);
 
   const content = (() => {
-    if (isOpen) {
-      return <span>connecting...</span>;
-    }
-
     if (isDisconnected || !address) {
       return (
         <>
-          <span>Disconnected.</span>
-          <Link ml={ 1 } onClick={ handleConnect }>Connect wallet</Link>
+          <span>Disconnected</span>
+          <Button ml={ 3 } onClick={ handleConnect } size="sm" variant="outline">Connect wallet</Button>
         </>
       );
     }
@@ -37,7 +33,7 @@ const ContractConnectWallet = () => {
         <span>Connected to </span>
         <AddressIcon address={{ hash: address, is_contract: false }} mx={ 2 }/>
         <chakra.span fontWeight={ 600 }>{ address }</chakra.span>
-        <Link ml={ 2 } onClick={ handleDisconnect }>Disconnect</Link>
+        <Button ml={ 3 } onClick={ handleDisconnect } size="sm" variant="outline">Disconnect</Button>
       </>
     );
   })();

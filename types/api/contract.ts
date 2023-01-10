@@ -47,3 +47,27 @@ export interface SmartContractMethodInput {
 export interface SmartContractMethodOutput extends SmartContractMethodInput {
   value?: string;
 }
+
+export interface SmartContractQueryMethodReadSuccess {
+  is_error: false;
+  result: {
+    names: Array<string>;
+    output: Array<{
+      type: string;
+      value: string;
+    }>;
+  };
+}
+
+export interface SmartContractQueryMethodReadError {
+  is_error: true;
+  result: {
+    code: number;
+    message: string;
+    raw?: string;
+  } | {
+    error: string;
+  };
+}
+
+export type SmartContractQueryMethodRead = SmartContractQueryMethodReadSuccess | SmartContractQueryMethodReadError;

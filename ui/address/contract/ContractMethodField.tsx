@@ -12,9 +12,10 @@ interface Props {
   setValue: UseFormSetValue<MethodFormFields>;
   placeholder: string;
   name: string;
+  isDisabled: boolean;
 }
 
-const ContractMethodField = ({ control, name, placeholder, setValue }: Props) => {
+const ContractMethodField = ({ control, name, placeholder, setValue, isDisabled }: Props) => {
   const ref = React.useRef<HTMLInputElement>(null);
 
   const handleClear = React.useCallback(() => {
@@ -24,7 +25,7 @@ const ContractMethodField = ({ control, name, placeholder, setValue }: Props) =>
 
   const renderInput = React.useCallback(({ field }: { field: ControllerRenderProps<MethodFormFields> }) => {
     return (
-      <FormControl id={ name } maxW={{ base: '100%', lg: 'calc((100% - 24px) / 3)' }}>
+      <FormControl id={ name } maxW={{ base: '100%', lg: 'calc((100% - 24px) / 3)' }} isDisabled={ isDisabled }>
         <InputGroup size="xs">
           <Input
             { ...field }
@@ -39,7 +40,7 @@ const ContractMethodField = ({ control, name, placeholder, setValue }: Props) =>
         </InputGroup>
       </FormControl>
     );
-  }, [ handleClear, name, placeholder ]);
+  }, [ handleClear, isDisabled, name, placeholder ]);
 
   return (
     <Controller

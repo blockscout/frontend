@@ -39,7 +39,7 @@ const ContractMethodsAccordion = <T extends SmartContractMethod>({ data, renderC
     <Accordion allowMultiple position="relative" onChange={ handleAccordionStateChange } index={ expandedSections }>
       { data.map((item, index) => {
         return (
-          <AccordionItem key={ index } as="section">
+          <AccordionItem key={ index } as="section" _first={{ borderTopWidth: '0' }}>
             <h2>
               <AccordionButton px={ 0 } py={ 3 } _hover={{ bgColor: 'inherit' }}>
                 <Box as="span" fontFamily="heading" fontWeight={ 500 } fontSize="lg" mr={ 1 }>
