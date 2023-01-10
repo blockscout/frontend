@@ -2,6 +2,7 @@ import type { Channel } from 'phoenix';
 
 import type { AddressCoinBalanceHistoryItem } from 'types/api/address';
 import type { NewBlockSocketResponse } from 'types/api/block';
+import type { Transaction } from 'types/api/transaction';
 
 export type SocketMessageParams = SocketMessage.NewBlock |
 SocketMessage.BlocksIndexStatus |
@@ -13,6 +14,8 @@ SocketMessage.AddressBalance |
 SocketMessage.AddressCurrentCoinBalance |
 SocketMessage.AddressTokenBalance |
 SocketMessage.AddressCoinBalance |
+SocketMessage.AddressTxs |
+SocketMessage.AddressTxsPending |
 SocketMessage.Unknown;
 
 interface SocketMessageParamsGeneric<Event extends string | undefined, Payload extends object | unknown> {
@@ -34,5 +37,7 @@ export namespace SocketMessage {
   SocketMessageParamsGeneric<'current_coin_balance', { coin_balance: string; block_number: number; exchange_rate: string }>;
   export type AddressTokenBalance = SocketMessageParamsGeneric<'token_balance', { block_number: number }>;
   export type AddressCoinBalance = SocketMessageParamsGeneric<'coin_balance', { coin_balance: AddressCoinBalanceHistoryItem }>;
+  export type AddressTxs = SocketMessageParamsGeneric<'transaction', { transaction: Transaction }>;
+  export type AddressTxsPending = SocketMessageParamsGeneric<'pending_transaction', { transaction: Transaction }>;
   export type Unknown = SocketMessageParamsGeneric<undefined, unknown>;
 }

@@ -3,6 +3,7 @@ import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import useNewTxsSocket from 'lib/hooks/useNewTxsSocket';
 import link from 'lib/link/link';
 import TxsNewItemNotice from 'ui/txs/TxsNewItemNotice';
 
@@ -13,6 +14,8 @@ const LatestTransactions = () => {
   const isMobile = useIsMobile();
   const txsCount = isMobile ? 2 : 6;
   const { data, isLoading, isError } = useApiQuery('homepage_txs');
+
+  const { num, socketAlert } = useNewTxsSocket();
 
   let content;
 
@@ -33,7 +36,7 @@ const LatestTransactions = () => {
     const txsUrl = link('txs');
     content = (
       <>
-        <TxsNewItemNotice borderBottomRadius={ 0 } url={ link('txs') }/>
+        <TxsNewItemNotice borderBottomRadius={ 0 } url={ link('txs') } num={ num } alert={ socketAlert }/>
         <Box mb={{ base: 3, lg: 4 }}>
           { data.slice(0, txsCount).map((tx => <LatestTxsItem key={ tx.hash } tx={ tx }/>)) }
         </Box>

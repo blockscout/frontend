@@ -1,4 +1,5 @@
 import { Link, Table, Tbody, Tr, Th, Td, Icon } from '@chakra-ui/react';
+import { AnimatePresence } from 'framer-motion';
 import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
@@ -18,11 +19,24 @@ type Props = {
   top: number;
   showBlockInfo: boolean;
   showSocketInfo: boolean;
+  socketInfoAlert?: string;
+  socketInfoNum?: number;
   currentAddress?: string;
   enableTimeIncrement?: boolean;
 }
 
-const TxsTable = ({ txs, sort, sorting, top, showBlockInfo, showSocketInfo, currentAddress, enableTimeIncrement }: Props) => {
+const TxsTable = ({
+  txs,
+  sort,
+  sorting,
+  top,
+  showBlockInfo,
+  showSocketInfo,
+  socketInfoAlert,
+  socketInfoNum,
+  currentAddress,
+  enableTimeIncrement,
+}: Props) => {
   return (
     <Table variant="simple" minWidth="950px" size="xs">
       <TheadSticky top={ top }>
@@ -53,19 +67,21 @@ const TxsTable = ({ txs, sort, sorting, top, showBlockInfo, showSocketInfo, curr
       </TheadSticky>
       <Tbody>
         { showSocketInfo && (
-          <TxsNewItemNotice borderRadius={ 0 } url={ window.location.href }>
+          <TxsNewItemNotice borderRadius={ 0 } url={ window.location.href } alert={ socketInfoAlert } num={ socketInfoNum }>
             { ({ content }) => <Tr><Td colSpan={ 10 } p={ 0 }>{ content }</Td></Tr> }
           </TxsNewItemNotice>
         ) }
-        { txs.map((item) => (
-          <TxsTableItem
-            key={ item.hash }
-            tx={ item }
-            showBlockInfo={ showBlockInfo }
-            currentAddress={ currentAddress }
-            enableTimeIncrement={ enableTimeIncrement }
-          />
-        )) }
+        <AnimatePresence initial={ false }>
+          { txs.map((item) => (
+            <TxsTableItem
+              key={ item.hash }
+              tx={ item }
+              showBlockInfo={ showBlockInfo }
+              currentAddress={ currentAddress }
+              enableTimeIncrement={ enableTimeIncrement }
+            />
+          )) }
+        </AnimatePresence>
       </Tbody>
     </Table>
   );

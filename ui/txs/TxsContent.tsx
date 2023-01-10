@@ -25,12 +25,23 @@ type Props = {
   query: QueryResult;
   showBlockInfo?: boolean;
   showSocketInfo?: boolean;
+  socketInfoAlert?: string;
+  socketInfoNum?: number;
   currentAddress?: string;
   filter?: React.ReactNode;
   enableTimeIncrement?: boolean;
 }
 
-const TxsContent = ({ filter, query, showBlockInfo = true, showSocketInfo = true, currentAddress, enableTimeIncrement }: Props) => {
+const TxsContent = ({
+  filter,
+  query,
+  showBlockInfo = true,
+  showSocketInfo = true,
+  socketInfoAlert,
+  socketInfoNum,
+  currentAddress,
+  enableTimeIncrement,
+}: Props) => {
   const { data, isLoading, isError, setSortByField, setSortByValue, sorting } = useTxsSort(query);
   const isMobile = useIsMobile();
 
@@ -64,7 +75,7 @@ const TxsContent = ({ filter, query, showBlockInfo = true, showSocketInfo = true
         <Show below="lg" ssr={ false }>
           <Box>
             { showSocketInfo && (
-              <TxsNewItemNotice url={ window.location.href }>
+              <TxsNewItemNotice url={ window.location.href } num={ socketInfoNum } alert={ socketInfoAlert }>
                 { ({ content }) => <Box>{ content }</Box> }
               </TxsNewItemNotice>
             ) }
@@ -86,6 +97,8 @@ const TxsContent = ({ filter, query, showBlockInfo = true, showSocketInfo = true
             sorting={ sorting }
             showBlockInfo={ showBlockInfo }
             showSocketInfo={ showSocketInfo }
+            socketInfoAlert={ socketInfoAlert }
+            socketInfoNum={ socketInfoNum }
             top={ query.isPaginationVisible ? 80 : 0 }
             currentAddress={ currentAddress }
             enableTimeIncrement={ enableTimeIncrement }

@@ -2,8 +2,6 @@ import { Alert, Link, Text, chakra, useTheme, useColorModeValue } from '@chakra-
 import { transparentize } from '@chakra-ui/theme-tools';
 import React from 'react';
 
-import useNewTxsSocket from 'lib/hooks/useNewTxsSocket';
-
 interface InjectedProps {
   content: React.ReactNode;
 }
@@ -12,15 +10,16 @@ interface Props {
   children?: (props: InjectedProps) => JSX.Element;
   className?: string;
   url: string;
+  alert?: string;
+  num?: number;
 }
 
-const TxsNewItemNotice = ({ children, className, url }: Props) => {
-  const { num, socketAlert } = useNewTxsSocket();
+const TxsNewItemNotice = ({ children, className, url, num, alert }: Props) => {
   const theme = useTheme();
 
   const alertContent = (() => {
-    if (socketAlert) {
-      return socketAlert;
+    if (alert) {
+      return alert;
     }
 
     if (!num) {
