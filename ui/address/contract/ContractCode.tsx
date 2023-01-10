@@ -77,6 +77,12 @@ const ContractCode = () => {
         </Grid>
       ) }
       <Flex flexDir="column" rowGap={ 6 }>
+        { data.constructor_args && (
+          <RawDataSnippet
+            data={ data.constructor_args }
+            title="Constructor Arguments"
+          />
+        ) }
         { data.source_code && (
           <DynamicContractSourceCode
             data={ data.source_code }

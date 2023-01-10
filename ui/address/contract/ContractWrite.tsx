@@ -1,6 +1,8 @@
+import { Alert } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { ContractMethodWriteResult } from './types';
 import type { SmartContractWriteMethod } from 'types/api/contract';
 
 import useApiQuery from 'lib/api/useApiQuery';
@@ -11,6 +13,7 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import { useContractContext } from './context';
 import ContractConnectWallet from './ContractConnectWallet';
 import ContractMethodCallable from './ContractMethodCallable';
+import ContractWriteResult from './ContractWriteResult';
 
 interface Props {
   isProxy?: boolean;
@@ -35,7 +38,7 @@ const ContractWrite = ({ isProxy }: Props) => {
       return;
     }
 
-    if (item.type === 'fallback') {
+    if (item.type === 'fallback' || item.type === 'receive') {
       return;
     }
 
@@ -45,13 +48,21 @@ const ContractWrite = ({ isProxy }: Props) => {
     });
 
     // eslint-disable-next-line no-console
-    console.log('__>__', { result });
+    console.log('__>__', { result, args });
 
-    return [ [ 'string', 'this is mock' ] ];
+    return { hash: result.hash as string };
   }, [ contract ]);
 
-  const renderResult = React.useCallback(() => {
-    return <span>result</span>;
+  const renderResult = React.useCallback((item: SmartContractWriteMethod, result: ContractMethodWriteResult) => {
+    if (!result || 'message' in result) {
+      return (
+        <Alert status="error" mt={ 3 } p={ 4 } borderRadius="md" fontSize="sm" wordBreak="break-all">
+          { result ? result.message : 'No result' }
+        </Alert>
+      );
+    }
+
+    return <ContractWriteResult hash={ result.hash as `0x${ string }` }/>;
   }, []);
 
   const renderContent = React.useCallback((item: SmartContractWriteMethod, index: number, id: number) => {

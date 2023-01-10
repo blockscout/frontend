@@ -1,8 +1,7 @@
-import type { ExternalProvider } from '@ethersproject/providers';
 import type { Contract } from 'ethers';
-import { ethers } from 'ethers';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { useContract, useProvider, useSigner } from 'wagmi';
 
 import useApiQuery from 'lib/api/useApiQuery';
 
@@ -15,11 +14,12 @@ type TContractContext = Contract;
 const ContractContext = React.createContext<TContractContext | null>(null);
 
 export function ContractContextProvider({ children }: ProviderProps) {
-  const [ contract, setContract ] = React.useState<TContractContext | null>(null);
   const router = useRouter();
-  const addressHash = router.query.id?.toString();
+  const provider = useProvider();
+  const { data: signer } = useSigner();
 
-  const { data } = useApiQuery('contract', {
+  const addressHash = router.query.id?.toString();
+  const { data: contractInfo } = useApiQuery('contract', {
     pathParams: { id: addressHash },
     queryOptions: {
       enabled: Boolean(addressHash),
@@ -27,18 +27,11 @@ export function ContractContextProvider({ children }: ProviderProps) {
     },
   });
 
-  React.useEffect(() => {
-    if (!addressHash || !data?.abi) {
-      return;
-    }
-
-    const provider = new ethers.providers.Web3Provider(window.ethereum as unknown as ExternalProvider);
-    const signer = provider.getSigner();
-    const contract = new ethers.Contract(addressHash, data.abi, provider);
-    const contractWithSigner = contract.connect(signer);
-    setContract(contractWithSigner);
-
-  }, [ data, addressHash ]);
+  const contract = useContract({
+    address: addressHash,
+    abi: contractInfo?.abi || undefined,
+    signerOrProvider: signer || provider,
+  });
 
   return (
     <ContractContext.Provider value={ contract }>

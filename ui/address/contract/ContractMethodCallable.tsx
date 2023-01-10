@@ -43,11 +43,14 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
   const [ isLoading, setLoading ] = React.useState(false);
 
   const inputs = React.useMemo(() => {
-    return data.payable && (!('inputs' in data) || data.inputs.length === 0) ? [ {
-      name: 'value',
-      type: appConfig.network.currency.symbol,
-      internalType: appConfig.network.currency.symbol,
-    } as SmartContractMethodInput ] : data.inputs;
+    return [
+      ...('inputs' in data ? data.inputs : []),
+      ...(data.stateMutability === 'payable' ? [ {
+        name: 'value',
+        type: appConfig.network.currency.symbol,
+        internalType: appConfig.network.currency.symbol,
+      } as SmartContractMethodInput ] : []),
+    ];
   }, [ data ]);
 
   const { control, handleSubmit, setValue } = useForm<MethodFormFields>({
@@ -67,7 +70,7 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
         setLoading(false);
       })
       .catch((error) => {
-        setResult(error);
+        setResult('error' in error ? error.error : error);
         setLoading(false);
       });
   }, [ onSubmit, data, inputs ]);

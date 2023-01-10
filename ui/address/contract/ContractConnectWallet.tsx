@@ -1,14 +1,17 @@
-import { Alert, Button, chakra } from '@chakra-ui/react';
+import { Alert, Button, Flex } from '@chakra-ui/react';
 import { useWeb3Modal } from '@web3modal/react';
 import React from 'react';
 import { useAccount, useDisconnect } from 'wagmi';
 
+import useIsMobile from 'lib/hooks/useIsMobile';
 import AddressIcon from 'ui/shared/address/AddressIcon';
+import AddressLink from 'ui/shared/address/AddressLink';
 
 const ContractConnectWallet = () => {
   const { open } = useWeb3Modal();
   const { address, isDisconnected } = useAccount();
   const { disconnect } = useDisconnect();
+  const isMobile = useIsMobile();
 
   const handleConnect = React.useCallback(() => {
     open();
@@ -29,12 +32,14 @@ const ContractConnectWallet = () => {
     }
 
     return (
-      <>
-        <span>Connected to </span>
-        <AddressIcon address={{ hash: address, is_contract: false }} mx={ 2 }/>
-        <chakra.span fontWeight={ 600 }>{ address }</chakra.span>
-        <Button ml={ 3 } onClick={ handleDisconnect } size="sm" variant="outline">Disconnect</Button>
-      </>
+      <Flex columnGap={ 3 } rowGap={ 3 } alignItems={{ base: 'flex-start', lg: 'center' }} flexDir={{ base: 'column', lg: 'row' }}>
+        <Flex alignItems="center">
+          <span>Connected to </span>
+          <AddressIcon address={{ hash: address, is_contract: false }} mx={ 2 }/>
+          <AddressLink fontWeight={ 600 } hash={ address } truncation={ isMobile ? 'constant' : 'dynamic' }/>
+        </Flex>
+        <Button onClick={ handleDisconnect } size="sm" variant="outline">Disconnect</Button>
+      </Flex>
     );
   })();
 

@@ -1,8 +1,10 @@
+import type { Abi } from 'abitype';
+
 export interface SmartContract {
   deployed_bytecode: string | null;
   creation_bytecode: string | null;
   is_self_destructed: boolean;
-  abi: Array<Record<string, unknown>> | null;
+  abi: Abi | null;
   compiler_version: string | null;
   evm_version: string | null;
   optimization_enabled: boolean | null;
@@ -11,6 +13,7 @@ export interface SmartContract {
   verified_at: string | null;
   is_verified: boolean | null;
   source_code: string | null;
+  constructor_args: string | null;
   can_be_visualized_via_sol2uml: boolean | null;
 }
 
@@ -19,9 +22,10 @@ export interface SmartContractMethodBase {
   outputs: Array<SmartContractMethodOutput>;
   constant: boolean;
   name: string;
-  stateMutability: string;
+  stateMutability: 'view' | 'nonpayable' | 'payable';
   type: 'function';
   payable: boolean;
+  error?: string;
 }
 
 export interface SmartContractReadMethod extends SmartContractMethodBase {
@@ -29,19 +33,23 @@ export interface SmartContractReadMethod extends SmartContractMethodBase {
 }
 
 export interface SmartContractWriteFallback {
-  payable: true;
   stateMutability: 'payable';
   type: 'fallback';
 }
 
-export type SmartContractWriteMethod = SmartContractMethodBase | SmartContractWriteFallback;
+export interface SmartContractWriteReceive {
+  stateMutability: 'payable';
+  type: 'receive';
+}
+
+export type SmartContractWriteMethod = SmartContractMethodBase | SmartContractWriteFallback | SmartContractWriteReceive;
 
 export type SmartContractMethod = SmartContractReadMethod | SmartContractWriteMethod;
 
 export interface SmartContractMethodInput {
   internalType: string;
   name: string;
-  type: string;
+  type: 'address' | 'uint256' | 'bool';
 }
 
 export interface SmartContractMethodOutput extends SmartContractMethodInput {

@@ -76,6 +76,10 @@ const ContractRead = ({ isProxy }: Props) => {
   }, [ resultBgColor ]);
 
   const renderContent = React.useCallback((item: SmartContractReadMethod, index: number, id: number) => {
+    if (item.error) {
+      return <Alert status="error" fontSize="sm">{ item.error }</Alert>;
+    }
+
     if (item.outputs.some(({ value }) => value)) {
       return (
         <Flex flexDir="column" rowGap={ 1 }>
