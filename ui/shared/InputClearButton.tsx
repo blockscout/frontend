@@ -5,13 +5,15 @@ import crossIcon from 'icons/cross.svg';
 
 interface Props {
   onClick: () => void;
+  isDisabled?: boolean;
 }
 
-const InputClearButton = ({ onClick }: Props) => {
+const InputClearButton = ({ onClick, isDisabled }: Props) => {
   const iconColor = useColorModeValue('blackAlpha.600', 'whiteAlpha.600');
 
   return (
     <IconButton
+      isDisabled={ isDisabled }
       colorScheme="gray"
       aria-label="Clear input"
       title="Clear input"

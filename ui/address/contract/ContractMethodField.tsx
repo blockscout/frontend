@@ -34,7 +34,7 @@ const ContractMethodField = ({ control, name, placeholder, setValue, isDisabled 
           />
           { field.value && (
             <InputRightElement>
-              <InputClearButton onClick={ handleClear }/>
+              <InputClearButton onClick={ handleClear } isDisabled={ isDisabled }/>
             </InputRightElement>
           ) }
         </InputGroup>
