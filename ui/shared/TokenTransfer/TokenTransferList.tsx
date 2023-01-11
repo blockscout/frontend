@@ -15,9 +15,9 @@ interface Props {
 const TokenTransferList = ({ data, baseAddress, showTxInfo, enableTimeIncrement }: Props) => {
   return (
     <Box>
-      { data.map((item, index) => (
+      { data.map((item) => (
+        // eslint-disable-next-line react/jsx-key
         <TokenTransferListItem
-          key={ index }
           { ...item }
           baseAddress={ baseAddress }
           showTxInfo={ showTxInfo }
