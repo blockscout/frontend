@@ -5,6 +5,7 @@ import type { TimeChartData } from 'ui/shared/chart/types';
 
 import ethTokenTransferData from 'data/charts_eth_token_transfer.json';
 import ethTxsData from 'data/charts_eth_txs.json';
+import dayjs from 'lib/date/dayjs';
 import ChartArea from 'ui/shared/chart/ChartArea';
 import ChartAxis from 'ui/shared/chart/ChartAxis';
 import ChartGridLine from 'ui/shared/chart/ChartGridLine';
@@ -22,24 +23,30 @@ const CHART_MARGIN = { bottom: 20, left: 65, right: 30, top: 10 };
 const CHART_OFFSET = {
   y: 26, // legend height
 };
+const RANGE_DEFAULT_START_DATE = dayjs.min(dayjs(ethTokenTransferData[0].date), dayjs(ethTxsData[0].date)).toDate();
+const RANGE_DEFAULT_LAST_DATE = dayjs.max(dayjs(ethTokenTransferData.at(-1)?.date), dayjs(ethTxsData.at(-1)?.date)).toDate();
 
 const EthereumChart = () => {
   const ref = React.useRef<SVGSVGElement>(null);
   const overlayRef = React.useRef<SVGRectElement>(null);
 
   const { width, height, innerWidth, innerHeight } = useChartSize(ref.current, CHART_MARGIN, CHART_OFFSET);
-  const [ range, setRange ] = React.useState<[number, number]>([ 0, Infinity ]);
+  const [ range, setRange ] = React.useState<[ Date, Date ]>([ RANGE_DEFAULT_START_DATE, RANGE_DEFAULT_LAST_DATE ]);
 
   const data: TimeChartData = [
     {
       name: 'Daily txs',
       color: useToken('colors', 'blue.500'),
-      items: ethTxsData.slice(range[0], range[1]).map((d) => ({ ...d, date: new Date(d.date) })),
+      items: ethTxsData
+        .map((d) => ({ ...d, date: new Date(d.date) }))
+        .filter((d) => d.date >= range[0] && d.date <= range[1]),
     },
     {
       name: 'ERC-20 tr.',
       color: useToken('colors', 'green.500'),
-      items: ethTokenTransferData.slice(range[0], range[1]).map((d) => ({ ...d, date: new Date(d.date) })),
+      items: ethTokenTransferData
+        .map((d) => ({ ...d, date: new Date(d.date) }))
+        .filter((d) => d.date >= range[0] && d.date <= range[1]),
     },
   ];
 
@@ -52,12 +59,12 @@ const EthereumChart = () => {
     height: innerHeight,
   });
 
-  const handleRangeSelect = React.useCallback((nextRange: [number, number]) => {
-    setRange([ range[0] + nextRange[0], range[0] + nextRange[1] ]);
-  }, [ range ]);
+  const handleRangeSelect = React.useCallback((nextRange: [ Date, Date ]) => {
+    setRange([ nextRange[0], nextRange[1] ]);
+  }, [ ]);
 
   const handleZoomReset = React.useCallback(() => {
-    setRange([ 0, Infinity ]);
+    setRange([ RANGE_DEFAULT_START_DATE, RANGE_DEFAULT_LAST_DATE ]);
   }, [ ]);
 
   // uncomment if we need brush the chart
@@ -156,7 +163,7 @@ const EthereumChart = () => {
           </ChartOverlay>
         </g>
       </svg>
-      { (range[0] !== 0 || range[1] !== Infinity) && (
+      { (range[0] !== RANGE_DEFAULT_START_DATE || range[1] !== RANGE_DEFAULT_LAST_DATE) && (
         <Button
           size="sm"
           variant="outline"

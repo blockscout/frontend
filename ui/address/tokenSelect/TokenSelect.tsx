@@ -1,5 +1,6 @@
 import { Box, Flex, Icon, IconButton, Skeleton, Tooltip } from '@chakra-ui/react';
 import { useQueryClient, useIsFetching } from '@tanstack/react-query';
+import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -9,6 +10,7 @@ import type { Address } from 'types/api/address';
 import walletIcon from 'icons/wallet.svg';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import link from 'lib/link/link';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 
@@ -21,7 +23,8 @@ const TokenSelect = () => {
   const queryClient = useQueryClient();
   const [ blockNumber, setBlockNumber ] = React.useState<number>();
 
-  const addressResourceKey = getResourceKey('address', { pathParams: { id: router.query.id?.toString() } });
+  const addressHash = router.query.id?.toString();
+  const addressResourceKey = getResourceKey('address', { pathParams: { id: addressHash } });
 
   const addressQueryData = queryClient.getQueryData<Address>(addressResourceKey);
 
@@ -75,14 +78,19 @@ const TokenSelect = () => {
         <TokenSelectDesktop data={ data } isLoading={ balancesIsFetching === 1 }/>
       }
       <Tooltip label="Show all tokens">
-        <IconButton
-          aria-label="Show all tokens"
-          variant="outline"
-          size="sm"
-          pl="6px"
-          pr="6px"
-          icon={ <Icon as={ walletIcon } boxSize={ 5 }/> }
-        />
+        <Box>
+          <NextLink href={ link('address_index', { id: addressHash }, { tab: 'tokens' }) } passHref>
+            <IconButton
+              aria-label="Show all tokens"
+              variant="outline"
+              size="sm"
+              pl="6px"
+              pr="6px"
+              icon={ <Icon as={ walletIcon } boxSize={ 5 }/> }
+              as="a"
+            />
+          </NextLink>
+        </Box>
       </Tooltip>
     </Flex>
   );

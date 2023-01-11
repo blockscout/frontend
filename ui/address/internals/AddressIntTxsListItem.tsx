@@ -54,7 +54,7 @@ const TxInternalsListItem = ({
       <Box w="100%" display="flex" columnGap={ 3 }>
         <Address width="calc((100% - 48px) / 2)">
           <AddressIcon address={ from }/>
-          <AddressLink ml={ 2 } fontWeight="500" hash={ from.hash }/>
+          <AddressLink ml={ 2 } fontWeight="500" hash={ from.hash } isDisabled={ isOut }/>
         </Address>
         { (isIn || isOut) ?
           <InOutTag isIn={ isIn } isOut={ isOut }/> :
@@ -62,7 +62,7 @@ const TxInternalsListItem = ({
         }
         <Address width="calc((100% - 48px) / 2)">
           <AddressIcon address={ toData }/>
-          <AddressLink ml={ 2 } fontWeight="500" hash={ toData.hash }/>
+          <AddressLink ml={ 2 } fontWeight="500" hash={ toData.hash } isDisabled={ isIn }/>
         </Address>
       </Box>
       <HStack spacing={ 3 }>
