@@ -36,15 +36,16 @@ const ContractWrite = ({ isProxy }: Props) => {
     },
   });
 
-  const contract = useContractContext();
+  const { contract, proxy } = useContractContext();
+  const _contract = isProxy ? proxy : contract;
 
   const handleMethodFormSubmit = React.useCallback(async(item: SmartContractWriteMethod, args: Array<string | Array<string>>) => {
     try {
-      if (!contract) {
+      if (!_contract) {
         return;
       }
 
-      if (item.type === 'fallback' || item.type === 'receive') {
+      if (item.type === 'receive') {
         const value = args[0] ? getNativeCoinValue(args[0]) : '0';
         const result = await signer?.sendTransaction({
           to: addressHash,
@@ -55,9 +56,9 @@ const ContractWrite = ({ isProxy }: Props) => {
 
       const _args = item.stateMutability === 'payable' ? args.slice(0, -1) : args;
       const value = item.stateMutability === 'payable' ? getNativeCoinValue(args[args.length - 1]) : undefined;
-      const methodName = item.name;
+      const methodName = item.type === 'fallback' ? 'fallback' : item.name;
 
-      const result = await contract[methodName](..._args, {
+      const result = await _contract[methodName](..._args, {
         gasLimit: 100_000,
         value,
       });
@@ -82,7 +83,7 @@ const ContractWrite = ({ isProxy }: Props) => {
       }
       throw error;
     }
-  }, [ addressHash, contract, signer ]);
+  }, [ _contract, addressHash, signer ]);
 
   const renderResult = React.useCallback((item: SmartContractWriteMethod, result: ContractMethodWriteResult) => {
     if (!result || 'message' in result) {

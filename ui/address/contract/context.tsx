@@ -1,22 +1,32 @@
+import { useQueryClient } from '@tanstack/react-query';
 import type { Contract } from 'ethers';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useContract, useProvider, useSigner } from 'wagmi';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import type { Address } from 'types/api/address';
+
+import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 
 type ProviderProps = {
   children: React.ReactNode;
 }
 
-type TContractContext = Contract;
+type TContractContext = {
+  contract: Contract | null;
+  proxy: Contract | null;
+};
 
-const ContractContext = React.createContext<TContractContext | null>(null);
+const ContractContext = React.createContext<TContractContext>({
+  contract: null,
+  proxy: null,
+});
 
 export function ContractContextProvider({ children }: ProviderProps) {
   const router = useRouter();
   const provider = useProvider();
   const { data: signer } = useSigner();
+  const queryClient = useQueryClient();
 
   const addressHash = router.query.id?.toString();
   const { data: contractInfo } = useApiQuery('contract', {
@@ -27,14 +37,36 @@ export function ContractContextProvider({ children }: ProviderProps) {
     },
   });
 
+  const addressInfo = queryClient.getQueryData<Address>(getResourceKey('address', {
+    pathParams: { id: addressHash },
+  }));
+
+  const { data: proxyInfo } = useApiQuery('contract', {
+    pathParams: { id: addressInfo?.implementation_address || '' },
+    queryOptions: {
+      enabled: Boolean(addressInfo?.implementation_address),
+      refetchOnMount: false,
+    },
+  });
+
   const contract = useContract({
     address: addressHash,
     abi: contractInfo?.abi || undefined,
     signerOrProvider: signer || provider,
   });
+  const proxy = useContract({
+    address: addressInfo?.implementation_address ?? undefined,
+    abi: proxyInfo?.abi ?? undefined,
+    signerOrProvider: signer ?? provider,
+  });
+
+  const value = React.useMemo(() => ({
+    contract,
+    proxy,
+  }), [ contract, proxy ]);
 
   return (
-    <ContractContext.Provider value={ contract }>
+    <ContractContext.Provider value={ value }>
       { children }
     </ContractContext.Provider>
   );
