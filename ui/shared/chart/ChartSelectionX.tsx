@@ -4,14 +4,16 @@ import React from 'react';
 
 import type { TimeChartData, TimeChartItem } from 'ui/shared/chart/types';
 
-const SELECTION_THRESHOLD = 1;
+import dayjs from 'lib/date/dayjs';
+
+const SELECTION_THRESHOLD = 2;
 
 interface Props {
   height: number;
   anchorEl?: SVGRectElement | null;
   scale: d3.ScaleTime<number, number>;
   data: TimeChartData;
-  onSelect: (range: [number, number]) => void;
+  onSelect: (range: [Date, Date]) => void;
 }
 
 const ChartSelectionX = ({ anchorEl, height, scale, data, onSelect }: Props) => {
@@ -51,13 +53,13 @@ const ChartSelectionX = ({ anchorEl, height, scale, data, onSelect }: Props) => 
   }, []);
 
   const handleSelect = React.useCallback((x0: number, x1: number) => {
-    const index0 = getIndexByX(x0);
-    const index1 = getIndexByX(x1);
+    const startDate = scale.invert(x0);
+    const endDate = scale.invert(x1);
 
-    if (Math.abs(index0 - index1) > SELECTION_THRESHOLD) {
-      onSelect([ Math.min(index0, index1), Math.max(index0, index1) ]);
+    if (Math.abs(dayjs(startDate).diff(endDate, 'day')) > SELECTION_THRESHOLD) {
+      onSelect([ dayjs.min(dayjs(startDate), dayjs(endDate)).toDate(), dayjs.max(dayjs(startDate), dayjs(endDate)).toDate() ]);
     }
-  }, [ getIndexByX, onSelect ]);
+  }, [ onSelect, scale ]);
 
   const cleanUp = React.useCallback(() => {
     isActive.current = false;
