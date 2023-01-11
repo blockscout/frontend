@@ -116,6 +116,10 @@ const ContractWrite = ({ isProxy }: Props) => {
     return <ContentLoader/>;
   }
 
+  if (data.length === 0) {
+    return <span>No public write { isProxy ? 'proxy' : '' } functions were found for this contract.</span>;
+  }
+
   return (
     <>
       <ContractConnectWallet/>

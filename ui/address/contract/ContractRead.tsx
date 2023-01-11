@@ -106,6 +106,10 @@ const ContractRead = ({ isProxy }: Props) => {
     return <ContentLoader/>;
   }
 
+  if (data.length === 0) {
+    return <span>No public read { isProxy ? 'proxy' : '' } functions were found for this contract.</span>;
+  }
+
   return (
     <>
       <ContractConnectWallet/>
