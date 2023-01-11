@@ -74,7 +74,8 @@ const config = Object.freeze({
     },
     assetsPathname: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME),
     explorers: parseEnvJson<Array<NetworkExplorer>>(getEnvValue(process.env.NEXT_PUBLIC_NETWORK_EXPLORERS)) || [],
-    verificationType: process.env.NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE || 'mining',
+    verificationType: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE) || 'mining',
+    rpcUrl: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_RPC_URL),
   },
   footerLinks: {
     github: getEnvValue(process.env.NEXT_PUBLIC_FOOTER_GITHUB_LINK),

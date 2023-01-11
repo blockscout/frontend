@@ -3,7 +3,6 @@ import React from 'react';
 
 import config from 'configs/app/config';
 import PlusIcon from 'icons/plus.svg';
-import useApiQuery from 'lib/api/useApiQuery';
 import AppList from 'ui/apps/AppList';
 import AppListSkeleton from 'ui/apps/AppListSkeleton';
 import CategoriesMenu from 'ui/apps/CategoriesMenu';
@@ -24,8 +23,6 @@ const Apps = () => {
     favoriteApps,
     handleFavoriteClick,
   } = useMarketplaceApps();
-
-  useApiQuery('config_json_rpc');
 
   return (
     <>
