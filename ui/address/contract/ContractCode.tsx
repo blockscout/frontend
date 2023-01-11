@@ -1,11 +1,15 @@
-import { Flex, Skeleton, Button, Grid, GridItem, Text } from '@chakra-ui/react';
+import { Flex, Skeleton, Button, Grid, GridItem, Text, Alert, Link, chakra } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import link from 'lib/link/link';
+import Address from 'ui/shared/address/Address';
+import AddressIcon from 'ui/shared/address/AddressIcon';
+import AddressLink from 'ui/shared/address/AddressLink';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
+import ExternalLink from 'ui/shared/ExternalLink';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
 const DynamicContractSourceCode = dynamic(
@@ -23,10 +27,11 @@ const InfoItem = ({ label, value }: { label: string; value: string }) => (
 const ContractCode = () => {
   const router = useRouter();
 
+  const addressHash = router.query.id?.toString();
   const { data, isLoading, isError } = useApiQuery('contract', {
-    pathParams: { id: router.query.id?.toString() },
+    pathParams: { id: addressHash },
     queryOptions: {
-      enabled: Boolean(router.query.id),
+      enabled: Boolean(addressHash),
       refetchOnMount: false,
     },
   });
@@ -58,7 +63,7 @@ const ContractCode = () => {
       ml="auto"
       mr={ 3 }
       as="a"
-      href={ link('address_contract_verification', { id: router.query.id?.toString() }) }
+      href={ link('address_contract_verification', { id: addressHash }) }
     >
         Verify & publish
     </Button>
@@ -66,6 +71,26 @@ const ContractCode = () => {
 
   return (
     <>
+      <Flex flexDir="column" rowGap={ 2 } mb={ 6 }>
+        <Alert status="success">Contract Source Code Verified (Exact Match)</Alert>
+        <Alert status="warning" whiteSpace="pre-wrap" flexWrap="wrap">
+          <span>This contract has been partially verified via Sourcify. </span>
+          <ExternalLink href="https://repo.sourcify.dev/" title="View contract in Sourcify repository" fontSize="md"/>
+        </Alert>
+        <Alert status="warning">
+          Warning! Contract bytecode has been changed and does not match the verified one. Therefore, interaction with this smart contract may be risky.
+        </Alert>
+        <Alert status="warning" whiteSpace="pre-wrap" flexWrap="wrap">
+          <span>Contract is not verified. However, we found a verified contract with the same bytecode in Blockscout DB </span>
+          <Address>
+            <AddressIcon address={{ hash: addressHash || '', is_contract: false }}/>
+            <AddressLink hash={ addressHash || '' } truncation="constant" ml={ 2 }/>
+          </Address>
+          <chakra.span mt={ 1 }>All functions displayed below are from ABI of that contract. In order to verify current contract, proceed with </chakra.span>
+          <Link>Verify & Publish</Link>
+          <span> page</span>
+        </Alert>
+      </Flex>
       { data.is_verified && (
         <Grid templateColumns={{ base: '1fr', lg: '1fr 1fr' }} rowGap={ 4 } columnGap={ 6 } mb={ 8 }>
           { data.name && <InfoItem label="Contract name" value={ data.name }/> }
@@ -87,7 +112,8 @@ const ContractCode = () => {
           <DynamicContractSourceCode
             data={ data.source_code }
             hasSol2Yml={ Boolean(data.can_be_visualized_via_sol2uml) }
-            address={ router.query.id?.toString() }
+            address={ addressHash }
+            isViper={ Boolean(data.is_vyper_contract) }
           />
         ) }
         { data.abi && (
@@ -102,6 +128,12 @@ const ContractCode = () => {
             data={ data.creation_bytecode }
             title="Contract creation code"
             rightSlot={ data.is_verified ? null : verificationButton }
+            beforeSlot={ (
+              <Alert status="info" whiteSpace="pre-wrap" mb={ 3 }>
+                Contracts that self destruct in their constructors have no contract code published and cannot be verified.
+                Displaying the init data provided of the creating transaction.
+              </Alert>
+            ) }
           />
         ) }
         { data.deployed_bytecode && (

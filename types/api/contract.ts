@@ -15,6 +15,7 @@ export interface SmartContract {
   source_code: string | null;
   constructor_args: string | null;
   can_be_visualized_via_sol2uml: boolean | null;
+  is_vyper_contract: boolean | null;
 }
 
 export interface SmartContractMethodBase {

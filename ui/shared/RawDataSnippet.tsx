@@ -8,10 +8,11 @@ interface Props {
   title?: string;
   className?: string;
   rightSlot?: React.ReactNode;
+  beforeSlot?: React.ReactNode;
   textareaMinHeight?: string;
 }
 
-const RawDataSnippet = ({ data, className, title, rightSlot, textareaMinHeight }: Props) => {
+const RawDataSnippet = ({ data, className, title, rightSlot, beforeSlot, textareaMinHeight }: Props) => {
   return (
     <Box className={ className }>
       <Flex justifyContent={ title ? 'space-between' : 'flex-end' } alignItems="center" mb={ 3 }>
@@ -19,6 +20,7 @@ const RawDataSnippet = ({ data, className, title, rightSlot, textareaMinHeight }
         { rightSlot }
         <CopyToClipboard text={ data }/>
       </Flex>
+      { beforeSlot }
       <Textarea
         variant="filledInactive"
         p={ 4 }

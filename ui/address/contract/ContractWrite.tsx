@@ -2,7 +2,7 @@ import { Alert } from '@chakra-ui/react';
 import _capitalize from 'lodash/capitalize';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { useSigner } from 'wagmi';
+import { useAccount, useSigner } from 'wagmi';
 
 import type { ContractMethodWriteResult } from './types';
 import type { SmartContractWriteMethod } from 'types/api/contract';
@@ -28,6 +28,7 @@ const ContractWrite = ({ isProxy }: Props) => {
 
   const addressHash = router.query.id?.toString();
   const { data: signer } = useSigner();
+  const { isConnected } = useAccount();
 
   const { data, isLoading, isError } = useApiQuery(isProxy ? 'contract_methods_write_proxy' : 'contract_methods_write', {
     pathParams: { id: addressHash },
@@ -40,6 +41,11 @@ const ContractWrite = ({ isProxy }: Props) => {
   const _contract = isProxy ? proxy : contract;
 
   const handleMethodFormSubmit = React.useCallback(async(item: SmartContractWriteMethod, args: Array<string | Array<string>>) => {
+    if (!isConnected) {
+      throw new Error('Wallet is not connected');
+
+    }
+
     try {
       if (!_contract) {
         return;
@@ -83,7 +89,7 @@ const ContractWrite = ({ isProxy }: Props) => {
       }
       throw error;
     }
-  }, [ _contract, addressHash, signer ]);
+  }, [ _contract, addressHash, isConnected, signer ]);
 
   const renderResult = React.useCallback((item: SmartContractWriteMethod, result: ContractMethodWriteResult) => {
     if (!result || 'message' in result) {

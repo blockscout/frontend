@@ -9,13 +9,17 @@ interface Props {
   data: string;
   hasSol2Yml: boolean;
   address?: string;
+  isViper: boolean;
 }
 
-const ContractSourceCode = ({ data, hasSol2Yml, address }: Props) => {
+const ContractSourceCode = ({ data, hasSol2Yml, address, isViper }: Props) => {
   return (
     <Box>
       <Flex justifyContent="space-between" alignItems="center" mb={ 3 }>
-        <Text fontWeight={ 500 }>Contract source code</Text>
+        <Text fontWeight={ 500 }>
+          <span>Contract source code</span>
+          <Text whiteSpace="pre" as="span" variant="secondary"> ({ isViper ? 'Vyper' : 'Solidity' })</Text>
+        </Text>
         { hasSol2Yml && address && (
           <Tooltip label="Visualize contract code using Sol2Uml JS library">
             <Link
