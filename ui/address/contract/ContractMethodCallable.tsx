@@ -14,7 +14,7 @@ import ContractMethodField from './ContractMethodField';
 
 interface Props<T extends SmartContractMethod> {
   data: T;
-  onSubmit: (data: T, args: Array<string>) => Promise<ContractMethodCallResult<T>>;
+  onSubmit: (data: T, args: Array<string | Array<string>>) => Promise<ContractMethodCallResult<T>>;
   renderResult: (data: T, result: ContractMethodCallResult<T>) => React.ReactNode;
   isWrite?: boolean;
 }
@@ -36,6 +36,15 @@ const sortFields = (data: Array<SmartContractMethodInput>) => ([ a ]: [string, s
 
   return 0;
 };
+
+const castFieldValue = (data: Array<SmartContractMethodInput>) => ([ key, value ]: [ string, string ], index: number) => {
+  if (data[index].type.includes('[]')) {
+    return [ key, parseArrayValue(value) ];
+  }
+  return [ key, value ];
+};
+
+const parseArrayValue = (value: string) => value.replace(/(\[|\])|\s/g, '').split(',');
 
 const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit, renderResult, isWrite }: Props<T>) => {
 
@@ -60,7 +69,9 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
   const onFormSubmit: SubmitHandler<MethodFormFields> = React.useCallback(async(formData) => {
     const args = Object.entries(formData)
       .sort(sortFields(inputs))
+      .map(castFieldValue(inputs))
       .map(([ , value ]) => value);
+
     setResult(undefined);
     setLoading(true);
 
@@ -70,7 +81,7 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
         setLoading(false);
       })
       .catch((error) => {
-        setResult('error' in error ? error.error : error);
+        setResult(error?.error || error?.data || error);
         setLoading(false);
       });
   }, [ onSubmit, data, inputs ]);

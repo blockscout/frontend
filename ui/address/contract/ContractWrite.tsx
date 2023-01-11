@@ -1,6 +1,7 @@
 import { Alert } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { useSigner } from 'wagmi';
 
 import type { ContractMethodWriteResult } from './types';
 import type { SmartContractWriteMethod } from 'types/api/contract';
@@ -14,6 +15,7 @@ import { useContractContext } from './context';
 import ContractConnectWallet from './ContractConnectWallet';
 import ContractMethodCallable from './ContractMethodCallable';
 import ContractWriteResult from './ContractWriteResult';
+import { getNativeCoinValue } from './utils';
 
 interface Props {
   isProxy?: boolean;
@@ -23,6 +25,7 @@ const ContractWrite = ({ isProxy }: Props) => {
   const router = useRouter();
 
   const addressHash = router.query.id?.toString();
+  const { data: signer } = useSigner();
 
   const { data, isLoading, isError } = useApiQuery(isProxy ? 'contract_methods_write_proxy' : 'contract_methods_write', {
     pathParams: { id: addressHash },
@@ -33,25 +36,31 @@ const ContractWrite = ({ isProxy }: Props) => {
 
   const contract = useContractContext();
 
-  const handleMethodFormSubmit = React.useCallback(async(item: SmartContractWriteMethod, args: Array<string>) => {
+  const handleMethodFormSubmit = React.useCallback(async(item: SmartContractWriteMethod, args: Array<string | Array<string>>) => {
     if (!contract) {
       return;
     }
 
     if (item.type === 'fallback' || item.type === 'receive') {
-      return;
+      const value = args[0] ? getNativeCoinValue(args[0]) : '0';
+      const result = await signer?.sendTransaction({
+        to: addressHash,
+        value,
+      });
+      return { hash: result?.hash as string };
     }
 
+    const _args = item.stateMutability === 'payable' ? args.slice(0, -1) : args;
+    const value = item.stateMutability === 'payable' ? getNativeCoinValue(args[args.length - 1]) : undefined;
     const methodName = item.name;
-    const result = await contract[methodName](...args, {
+
+    const result = await contract[methodName](..._args, {
       gasLimit: 100_000,
+      value,
     });
 
-    // eslint-disable-next-line no-console
-    console.log('__>__', { result, args });
-
     return { hash: result.hash as string };
-  }, [ contract ]);
+  }, [ addressHash, contract, signer ]);
 
   const renderResult = React.useCallback((item: SmartContractWriteMethod, result: ContractMethodWriteResult) => {
     if (!result || 'message' in result) {
