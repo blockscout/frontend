@@ -1,6 +1,5 @@
 import { Box, Flex, Text, Icon, Grid, Link } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
-import BigNumber from 'bignumber.js';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -11,6 +10,7 @@ import blockIcon from 'icons/block.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import link from 'lib/link/link';
+import AddressCounterItem from 'ui/address/details/AddressCounterItem';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
@@ -29,9 +29,10 @@ import TokenSelect from './tokenSelect/TokenSelect';
 
 interface Props {
   addressQuery: UseQueryResult<TAddress>;
+  scrollRef?: React.RefObject<HTMLDivElement>;
 }
 
-const AddressDetails = ({ addressQuery }: Props) => {
+const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
   const router = useRouter();
   const isMobile = useIsMobile();
 
@@ -41,27 +42,27 @@ const AddressDetails = ({ addressQuery }: Props) => {
       enabled: Boolean(router.query.id) && Boolean(addressQuery.data),
     },
   });
-  const tokenBalancesQuery = useApiQuery('address_token_balances', {
-    pathParams: { id: router.query.id?.toString() },
-    queryOptions: {
-      enabled: Boolean(router.query.id) && Boolean(addressQuery.data),
-    },
-  });
+
+  const handleCounterItemClick = React.useCallback(() => {
+    window.setTimeout(() => {
+      // cannot do scroll instantly, have to wait a little
+      scrollRef?.current?.scrollIntoView({ behavior: 'smooth' });
+    }, 500);
+  }, [ scrollRef ]);
 
   if (addressQuery.isError) {
     throw Error('Address fetch error', { cause: addressQuery.error as unknown as Error });
   }
 
-  if (countersQuery.isLoading || addressQuery.isLoading || tokenBalancesQuery.isLoading) {
+  if (addressQuery.isLoading) {
     return <AddressDetailsSkeleton/>;
   }
 
-  if (countersQuery.isError || addressQuery.isError || tokenBalancesQuery.isError) {
+  if (addressQuery.isError) {
     return <DataFetchAlert/>;
   }
 
   const explorers = appConfig.network.explorers.filter(({ paths }) => paths.address);
-  const validationsCount = Number(countersQuery.data.validations_count);
 
   return (
     <Box>
@@ -104,38 +105,42 @@ const AddressDetails = ({ addressQuery }: Props) => {
           </DetailsInfoItem>
         ) }
         <AddressBalance data={ addressQuery.data }/>
-        <DetailsInfoItem
-          title="Tokens"
-          hint="All tokens in the account and total value."
-          alignSelf="center"
-          py={ 0 }
-        >
-          <TokenSelect/>
-        </DetailsInfoItem>
+        { addressQuery.data.has_tokens && (
+          <DetailsInfoItem
+            title="Tokens"
+            hint="All tokens in the account and total value."
+            alignSelf="center"
+            py={ 0 }
+          >
+            <TokenSelect/>
+          </DetailsInfoItem>
+        ) }
         <DetailsInfoItem
           title="Transactions"
           hint="Number of transactions related to this address."
         >
-          { Number(countersQuery.data.transactions_count).toLocaleString() }
+          <AddressCounterItem prop="transactions_count" query={ countersQuery } address={ addressQuery.data.hash } onClick={ handleCounterItemClick }/>
         </DetailsInfoItem>
-        <DetailsInfoItem
-          title="Transfers"
-          hint="Number of transfers to/from this address."
-        >
-          { Number(countersQuery.data.token_transfers_count).toLocaleString() }
-        </DetailsInfoItem>
+        { addressQuery.data.has_token_transfers && (
+          <DetailsInfoItem
+            title="Transfers"
+            hint="Number of transfers to/from this address."
+          >
+            <AddressCounterItem prop="token_transfers_count" query={ countersQuery } address={ addressQuery.data.hash } onClick={ handleCounterItemClick }/>
+          </DetailsInfoItem>
+        ) }
         <DetailsInfoItem
           title="Gas used"
           hint="Gas used by the address."
         >
-          { BigNumber(countersQuery.data.gas_usage_count).toFormat() }
+          <AddressCounterItem prop="gas_usage_count" query={ countersQuery } address={ addressQuery.data.hash } onClick={ handleCounterItemClick }/>
         </DetailsInfoItem>
-        { !Object.is(validationsCount, NaN) && validationsCount > 0 && (
+        { addressQuery.data.has_validated_blocks && (
           <DetailsInfoItem
             title="Blocks validated"
             hint="Number of blocks validated by this validator."
           >
-            { validationsCount.toLocaleString() }
+            <AddressCounterItem prop="validations_count" query={ countersQuery } address={ addressQuery.data.hash } onClick={ handleCounterItemClick }/>
           </DetailsInfoItem>
         ) }
         { addressQuery.data.block_number_balance_updated_at && (

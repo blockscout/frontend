@@ -48,7 +48,7 @@ export const statsChartsScheme: Array<StatsSection> = [
     title: 'Blocks',
     charts: [
       {
-        apiId: 'newBlocksPerDay',
+        apiId: 'newBlocks',
         title: 'New blocks',
         description: 'New blocks number',
       },
@@ -97,7 +97,7 @@ export const statsChartsScheme: Array<StatsSection> = [
       {
         apiId: 'averageGasPrice',
         title: 'Average gas price',
-        description: 'Average gas price for the period',
+        description: 'Average gas price for the period (Gwei)',
       },
     ],
   },

@@ -2,7 +2,6 @@ import { Text, Show, Hide } from '@chakra-ui/react';
 import castArray from 'lodash/castArray';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { Element } from 'react-scroll';
 
 import type { AddressFromToFilter } from 'types/api/address';
 import { AddressFromToFilterValues } from 'types/api/address';
@@ -21,12 +20,9 @@ import Pagination from 'ui/shared/Pagination';
 import AddressTxsFilter from './AddressTxsFilter';
 import AddressIntTxsList from './internals/AddressIntTxsList';
 
-const SCROLL_ELEM = 'address-internas-txs';
-const SCROLL_OFFSET = -100;
-
 const getFilterValue = (getFilterValueFromQuery<AddressFromToFilter>).bind(null, AddressFromToFilterValues);
 
-const AddressInternalTxs = () => {
+const AddressInternalTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}) => {
   const router = useRouter();
   const [ filterValue, setFilterValue ] = React.useState<AddressFromToFilter>(getFilterValue(router.query.filter));
 
@@ -38,7 +34,7 @@ const AddressInternalTxs = () => {
     resourceName: 'address_internal_txs',
     pathParams: { id: queryIdStr },
     filters: { filter: filterValue },
-    scroll: { elem: SCROLL_ELEM, offset: SCROLL_OFFSET },
+    scrollRef,
   });
 
   const handleFilterChange = React.useCallback((val: string | Array<string>) => {
@@ -83,7 +79,7 @@ const AddressInternalTxs = () => {
   }
 
   return (
-    <Element name={ SCROLL_ELEM }>
+    <>
       <ActionBar mt={ -6 }>
         <AddressTxsFilter
           defaultFilter={ filterValue }
@@ -93,7 +89,7 @@ const AddressInternalTxs = () => {
         { isPaginationVisible && <Pagination ml="auto" { ...pagination }/> }
       </ActionBar>
       { content }
-    </Element>
+    </>
   );
 };
 

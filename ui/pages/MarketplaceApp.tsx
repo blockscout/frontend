@@ -4,7 +4,6 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import type { AppItemOverview } from 'types/client/apps';
 
 import appConfig from 'configs/app/config';
-import useApiQuery from 'lib/api/useApiQuery';
 import link from 'lib/link/link';
 import ContentLoader from 'ui/shared/ContentLoader';
 import Page from 'ui/shared/Page/Page';
@@ -23,10 +22,6 @@ const MarketplaceApp = ({ app, isLoading }: Props) => {
     setIsFrameLoading(false);
   }, []);
 
-  const { data: jsonRpcUrlResponse } = useApiQuery('config_json_rpc', {
-    queryOptions: { refetchOnMount: false },
-  });
-
   useEffect(() => {
     if (app && !isFrameLoading) {
       const message = {
@@ -37,12 +32,12 @@ const MarketplaceApp = ({ app, isLoading }: Props) => {
         blockscoutNetworkName: appConfig.network.name,
         blockscoutNetworkId: Number(appConfig.network.id),
         blockscoutNetworkCurrency: appConfig.network.currency,
-        blockscoutNetworkRpc: jsonRpcUrlResponse?.json_rpc_url,
+        blockscoutNetworkRpc: appConfig.network.rpcUrl,
       };
 
       ref?.current?.contentWindow?.postMessage(message, app.url);
     }
-  }, [ isFrameLoading, app, colorMode, ref, jsonRpcUrlResponse ]);
+  }, [ isFrameLoading, app, colorMode, ref ]);
 
   const sandboxAttributeValue = 'allow-forms allow-orientation-lock ' +
       'allow-pointer-lock allow-popups-to-escape-sandbox ' +

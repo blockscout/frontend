@@ -22,7 +22,11 @@ import { default as Thead } from 'ui/shared/TheadSticky';
 import AddressBlocksValidatedListItem from './blocksValidated/AddressBlocksValidatedListItem';
 import AddressBlocksValidatedTableItem from './blocksValidated/AddressBlocksValidatedTableItem';
 
-const AddressBlocksValidated = () => {
+interface Props {
+  scrollRef?: React.RefObject<HTMLDivElement>;
+}
+
+const AddressBlocksValidated = ({ scrollRef }: Props) => {
   const [ socketAlert, setSocketAlert ] = React.useState(false);
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -31,6 +35,7 @@ const AddressBlocksValidated = () => {
   const query = useQueryWithPages({
     resourceName: 'address_blocks_validated',
     pathParams: { id: addressHash },
+    scrollRef,
   });
 
   const handleSocketError = React.useCallback(() => {

@@ -47,7 +47,14 @@ const ChartArea = ({ id, xScale, yScale, color, data, disableAnimation, ...props
 
   return (
     <>
-      <path ref={ ref } d={ d } fill={ color ? `url(#${ gradientColorId })` : 'url(#gradient-chart-area-default)' } opacity={ 0 } { ...props }/>
+      <path
+        ref={ ref }
+        d={ d }
+        fill={ color ? `url(#${ gradientColorId })` : 'url(#gradient-chart-area-default)' }
+        opacity={ 0 }
+        data-name={ id || 'gradient-chart-area' }
+        { ...props }
+      />
       { color ? (
         <defs>
           <linearGradient id={ `${ gradientColorId }` } x1="0%" x2="0%" y1="0%" y2="100%">
