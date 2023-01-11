@@ -1,4 +1,4 @@
-import { useColorModeValue } from '@chakra-ui/react';
+import { useColorModeValue, useToken } from '@chakra-ui/react';
 import {
   EthereumClient,
   modalConnectors,
@@ -11,6 +11,7 @@ import { configureChains, createClient, WagmiConfig } from 'wagmi';
 
 import type { RoutedSubTab } from 'ui/shared/RoutedTabs/types';
 
+import appConfig from 'configs/app/config';
 import { ContractContextProvider } from 'ui/address/contract/context';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
 
@@ -22,27 +23,32 @@ const TAB_LIST_PROPS = {
   columnGap: 3,
 };
 
-export const poa: Chain = {
-  id: 99,
-  name: 'POA',
-  network: 'poa',
+export const currentChain: Chain = {
+  id: Number(appConfig.network.id),
+  name: appConfig.network.name || '',
+  network: appConfig.network.name || '',
   nativeCurrency: {
-    decimals: 18,
-    name: 'POA',
-    symbol: 'POA',
+    decimals: appConfig.network.currency.decimals,
+    name: appConfig.network.currency.name || '',
+    symbol: appConfig.network.currency.symbol || '',
   },
   rpcUrls: {
-    'default': { http: [ 'https://core.poa.network' ] },
+    'default': {
+      http: [ appConfig.network.rpcUrl || '' ],
+    },
   },
   blockExplorers: {
-    'default': { name: 'Blockscout', url: 'https://blockscout.com/poa/core' },
+    'default': {
+      name: 'Blockscout',
+      url: appConfig.baseUrl,
+    },
   },
 };
 
-const chains = [ poa ];
+const chains = [ currentChain ];
 
 const PROJECT_ID = 'b4ed81be141093911032944632465175';
-// Wagmi client
+
 const { provider } = configureChains(chains, [
   walletConnectProvider({ projectId: PROJECT_ID }),
 ]);
@@ -56,6 +62,8 @@ const wagmiClient = createClient({
 const ethereumClient = new EthereumClient(wagmiClient, chains);
 
 const AddressContract = ({ tabs }: Props) => {
+  const modalZIndex = useToken<string>('zIndices', 'modal');
+
   return (
     <WagmiConfig client={ wagmiClient }>
       <ContractContextProvider>
@@ -64,7 +72,7 @@ const AddressContract = ({ tabs }: Props) => {
       <Web3Modal
         projectId={ PROJECT_ID }
         ethereumClient={ ethereumClient }
-        themeZIndex={ 1200 }
+        themeZIndex={ Number(modalZIndex) }
         themeMode={ useColorModeValue('light', 'dark') }
         themeBackground="themeColor"
       />

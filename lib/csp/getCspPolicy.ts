@@ -68,6 +68,9 @@ function makePolicyMap() {
       appConfig.api.socket,
       appConfig.statsApi.endpoint,
 
+      // chain RPC server
+      appConfig.network.rpcUrl,
+
       // ad
       'request-global.czilladx.com',
 
