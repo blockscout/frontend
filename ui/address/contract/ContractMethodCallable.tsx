@@ -81,7 +81,7 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
         setLoading(false);
       })
       .catch((error) => {
-        setResult(error?.error || error?.data || error);
+        setResult(error?.error || error?.data || (error?.reason && { message: error.reason }) || error);
         setLoading(false);
       });
   }, [ onSubmit, data, inputs ]);

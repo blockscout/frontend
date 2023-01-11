@@ -1,4 +1,5 @@
 import { Alert } from '@chakra-ui/react';
+import _capitalize from 'lodash/capitalize';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useSigner } from 'wagmi';
@@ -6,6 +7,7 @@ import { useSigner } from 'wagmi';
 import type { ContractMethodWriteResult } from './types';
 import type { SmartContractWriteMethod } from 'types/api/contract';
 
+import config from 'configs/app/config';
 import useApiQuery from 'lib/api/useApiQuery';
 import ContractMethodsAccordion from 'ui/address/contract/ContractMethodsAccordion';
 import ContentLoader from 'ui/shared/ContentLoader';
@@ -37,29 +39,49 @@ const ContractWrite = ({ isProxy }: Props) => {
   const contract = useContractContext();
 
   const handleMethodFormSubmit = React.useCallback(async(item: SmartContractWriteMethod, args: Array<string | Array<string>>) => {
-    if (!contract) {
-      return;
-    }
+    try {
+      if (!contract) {
+        return;
+      }
 
-    if (item.type === 'fallback' || item.type === 'receive') {
-      const value = args[0] ? getNativeCoinValue(args[0]) : '0';
-      const result = await signer?.sendTransaction({
-        to: addressHash,
+      if (item.type === 'fallback' || item.type === 'receive') {
+        const value = args[0] ? getNativeCoinValue(args[0]) : '0';
+        const result = await signer?.sendTransaction({
+          to: addressHash,
+          value,
+        });
+        return { hash: result?.hash as string };
+      }
+
+      const _args = item.stateMutability === 'payable' ? args.slice(0, -1) : args;
+      const value = item.stateMutability === 'payable' ? getNativeCoinValue(args[args.length - 1]) : undefined;
+      const methodName = item.name;
+
+      const result = await contract[methodName](..._args, {
+        gasLimit: 100_000,
         value,
       });
-      return { hash: result?.hash as string };
+
+      return { hash: result.hash as string };
+    } catch (error) {
+      if (error instanceof Error) {
+        if ('reason' in error && error.reason === 'underlying network changed') {
+
+          if ('detectedNetwork' in error) {
+            const networkName = (error.detectedNetwork as { name: string }).name;
+            if (networkName) {
+              throw new Error(
+                `You connected to ${ _capitalize(networkName) } chain in the wallet, 
+                but the current instance of Blockscout is for ${ config.network.name } chain`,
+              );
+            }
+          }
+
+          throw new Error('Wrong network detected, please make sure you are switched to the correct network, and try again');
+        }
+      }
+      throw error;
     }
-
-    const _args = item.stateMutability === 'payable' ? args.slice(0, -1) : args;
-    const value = item.stateMutability === 'payable' ? getNativeCoinValue(args[args.length - 1]) : undefined;
-    const methodName = item.name;
-
-    const result = await contract[methodName](..._args, {
-      gasLimit: 100_000,
-      value,
-    });
-
-    return { hash: result.hash as string };
   }, [ addressHash, contract, signer ]);
 
   const renderResult = React.useCallback((item: SmartContractWriteMethod, result: ContractMethodWriteResult) => {
