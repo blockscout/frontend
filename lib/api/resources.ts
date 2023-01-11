@@ -17,7 +17,6 @@ import type { ChartMarketResponse, ChartTransactionResponse } from 'types/api/ch
 import type { SmartContract, SmartContractReadMethod, SmartContractWriteMethod } from 'types/api/contract';
 import type { IndexingStatus } from 'types/api/indexingStatus';
 import type { InternalTransactionsResponse } from 'types/api/internalTransaction';
-import type { JsonRpcUrlResponse } from 'types/api/jsonRpcUrl';
 import type { LogsResponseTx, LogsResponseAddress } from 'types/api/log';
 import type { RawTracesResponse } from 'types/api/rawTrace';
 import type { Stats, Charts, HomeStats } from 'types/api/stats';
@@ -212,11 +211,6 @@ export const RESOURCES = {
     path: '/api/v2/main-page/indexing-status',
   },
 
-  // CONFIG
-  config_json_rpc: {
-    path: '/api/v2/config/json-rpc-url',
-  },
-
   // DEPRECATED
   old_api: {
     path: '/api',
@@ -290,7 +284,6 @@ Q extends 'address_coin_balance_chart' ? AddressCoinBalanceHistoryChart :
 Q extends 'address_logs' ? LogsResponseAddress :
 Q extends 'token' ? TokenInfo :
 Q extends 'token_counters' ? TokenCounters :
-Q extends 'config_json_rpc' ? JsonRpcUrlResponse :
 Q extends 'contract' ? SmartContract :
 Q extends 'contract_methods_read' ? Array<SmartContractReadMethod> :
 Q extends 'contract_methods_read_proxy' ? Array<SmartContractReadMethod> :
