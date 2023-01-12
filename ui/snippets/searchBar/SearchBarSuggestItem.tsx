@@ -61,7 +61,7 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm }: Props) => {
         const shouldHighlightHash = data.address.toLowerCase() === searchTerm.toLowerCase();
         return (
           <>
-            <AddressIcon address={{ hash: data.address, is_contract: data.type === 'contract' }} mr={ 2 } flexShrink={ 0 }/>
+            <AddressIcon address={{ hash: data.address, is_contract: data.type === 'contract', implementation_name: null }} mr={ 2 } flexShrink={ 0 }/>
             <Box as={ shouldHighlightHash ? 'mark' : 'span' } display="block" overflow="hidden" whiteSpace="nowrap" fontWeight={ 700 }>
               <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>
             </Box>

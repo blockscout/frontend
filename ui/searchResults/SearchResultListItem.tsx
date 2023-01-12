@@ -41,7 +41,7 @@ const SearchResultListItem = ({ data, searchTerm }: Props) => {
         const shouldHighlightHash = data.address.toLowerCase() === searchTerm.toLowerCase();
         return (
           <Address>
-            <AddressIcon address={{ hash: data.address, is_contract: data.type === 'contract' }} mr={ 2 } flexShrink={ 0 }/>
+            <AddressIcon address={{ hash: data.address, is_contract: data.type === 'contract', implementation_name: null }} mr={ 2 } flexShrink={ 0 }/>
             <Box as={ shouldHighlightHash ? 'mark' : 'span' } display="block" whiteSpace="nowrap" overflow="hidden">
               <AddressLink hash={ data.address } fontWeight={ 700 } display="block" w="100%"/>
             </Box>
