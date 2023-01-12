@@ -1,29 +1,90 @@
-import { Alert, Box, Link } from '@chakra-ui/react';
+import { Box, chakra, Link, Spinner } from '@chakra-ui/react';
 import React from 'react';
 import { useWaitForTransaction } from 'wagmi';
+
+import type { ContractMethodWriteResult } from './types';
 
 import link from 'lib/link/link';
 
 interface Props {
-  hash: `0x${ string }`;
+  result: ContractMethodWriteResult;
 }
 
-const ContractWriteResult = ({ hash }: Props) => {
+const ContractWriteResult = ({ result }: Props) => {
+  const txHash = result && 'hash' in result ? result.hash as `0x${ string }` : undefined;
   const txInfo = useWaitForTransaction({
-    hash,
+    hash: txHash,
   });
 
   // eslint-disable-next-line no-console
   console.log('__>__ txInfo', txInfo);
 
+  if (!result) {
+    return null;
+  }
+
+  const isErrorResult = 'message' in result;
+
+  const txLink = (
+    <Link href={ link('tx', { id: txHash }) }>View transaction details</Link>
+  );
+
+  const content = (() => {
+    if (isErrorResult) {
+      return (
+        <>
+          <span>Error: </span>
+          <span>{ result.message }</span>
+        </>
+      );
+    }
+
+    switch (txInfo.status) {
+      case 'success': {
+        return (
+          <>
+            <span>Transaction has been confirmed. </span>
+            { txLink }
+          </>
+        );
+      }
+
+      case 'loading': {
+        return (
+          <>
+            <Spinner size="sm" mr={ 3 }/>
+            <chakra.span verticalAlign="text-bottom">
+              { 'Waiting for transaction\'s confirmation. ' }
+              { txLink }
+            </chakra.span>
+          </>
+        );
+      }
+
+      case 'error': {
+        return (
+          <>
+            <span>Error: </span>
+            <span>{ txInfo.error ? txInfo.error.message : 'Something went wrong' } </span>
+            { txLink }
+          </>
+        );
+      }
+    }
+  })();
+
   return (
-    <>
-      <Alert status="info" mt={ 3 } p={ 4 } borderRadius="md" fontSize="sm" flexDir="column" alignItems="flex-start">
-        <Box>Tx hash: <Link href={ link('tx', { id: hash }) }>{ hash }</Link></Box>
-        <Box>Status: { txInfo.status }</Box>
-      </Alert>
-      { txInfo.error && <Alert status="error" mt={ 3 } p={ 4 } borderRadius="md" fontSize="sm" wordBreak="break-all">{ txInfo.error.message }</Alert> }
-    </>
+    <Box
+      fontSize="sm"
+      pl={ 3 }
+      mt={ 3 }
+      alignItems="center"
+      whiteSpace="pre-wrap"
+      wordBreak="break-all"
+      color={ txInfo.status === 'error' || isErrorResult ? 'red.600' : undefined }
+    >
+      { content }
+    </Box>
   );
 };
 

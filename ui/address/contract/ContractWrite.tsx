@@ -1,4 +1,3 @@
-import { Alert } from '@chakra-ui/react';
 import _capitalize from 'lodash/capitalize';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -43,7 +42,6 @@ const ContractWrite = ({ isProxy }: Props) => {
   const handleMethodFormSubmit = React.useCallback(async(item: SmartContractWriteMethod, args: Array<string | Array<string>>) => {
     if (!isConnected) {
       throw new Error('Wallet is not connected');
-
     }
 
     try {
@@ -78,8 +76,8 @@ const ContractWrite = ({ isProxy }: Props) => {
             const networkName = (error.detectedNetwork as { name: string }).name;
             if (networkName) {
               throw new Error(
-                `You connected to ${ _capitalize(networkName) } chain in the wallet, 
-                but the current instance of Blockscout is for ${ config.network.name } chain`,
+                // eslint-disable-next-line max-len
+                `You connected to ${ _capitalize(networkName) } chain in the wallet, but the current instance of Blockscout is for ${ config.network.name } chain`,
               );
             }
           }
@@ -92,15 +90,7 @@ const ContractWrite = ({ isProxy }: Props) => {
   }, [ _contract, addressHash, isConnected, signer ]);
 
   const renderResult = React.useCallback((item: SmartContractWriteMethod, result: ContractMethodWriteResult) => {
-    if (!result || 'message' in result) {
-      return (
-        <Alert status="error" mt={ 3 } p={ 4 } borderRadius="md" fontSize="sm" wordBreak="break-all">
-          { result ? result.message : 'No result' }
-        </Alert>
-      );
-    }
-
-    return <ContractWriteResult hash={ result.hash as `0x${ string }` }/>;
+    return <ContractWriteResult result={ result }/>;
   }, []);
 
   const renderContent = React.useCallback((item: SmartContractWriteMethod, index: number, id: number) => {

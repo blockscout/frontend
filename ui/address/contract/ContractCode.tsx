@@ -114,6 +114,15 @@ const ContractCode = () => {
             hasSol2Yml={ Boolean(data.can_be_visualized_via_sol2uml) }
             address={ addressHash }
             isViper={ Boolean(data.is_vyper_contract) }
+            filePath={ data.file_path }
+            additionalSource={ data.additional_sources }
+          />
+        ) }
+        { Boolean(data.compiler_settings) && (
+          <RawDataSnippet
+            data={ JSON.stringify(data.compiler_settings) }
+            title="Compiler Settings"
+            textareaMinHeight="200px"
           />
         ) }
         { data.abi && (
@@ -134,12 +143,14 @@ const ContractCode = () => {
                 Displaying the init data provided of the creating transaction.
               </Alert>
             ) }
+            textareaMinHeight="200px"
           />
         ) }
         { data.deployed_bytecode && (
           <RawDataSnippet
             data={ data.deployed_bytecode }
             title="Deployed ByteCode"
+            textareaMinHeight="200px"
           />
         ) }
       </Flex>
