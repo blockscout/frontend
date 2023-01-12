@@ -15,7 +15,7 @@ import { useContractContext } from './context';
 import ContractConnectWallet from './ContractConnectWallet';
 import ContractMethodCallable from './ContractMethodCallable';
 import ContractWriteResult from './ContractWriteResult';
-import { getNativeCoinValue } from './utils';
+import { getNativeCoinValue, isExtendedError } from './utils';
 
 interface Props {
   isProxy?: boolean;
@@ -68,11 +68,11 @@ const ContractWrite = ({ isProxy }: Props) => {
 
       return { hash: result.hash as string };
     } catch (error) {
-      if (error instanceof Error) {
+      if (isExtendedError(error)) {
         if ('reason' in error && error.reason === 'underlying network changed') {
 
-          if ('detectedNetwork' in error) {
-            const networkName = (error.detectedNetwork as { name: string }).name;
+          if ('detectedNetwork' in error && typeof error.detectedNetwork === 'object' && error.detectedNetwork !== null) {
+            const networkName = error.detectedNetwork.name;
             if (networkName) {
               throw new Error(
                 // eslint-disable-next-line max-len
