@@ -12,10 +12,16 @@ import arrowIcon from 'icons/arrows/down-right.svg';
 
 import ContractMethodField from './ContractMethodField';
 
+interface ResultComponentProps<T extends SmartContractMethod> {
+  item: T;
+  result: ContractMethodCallResult<T>;
+  onSettle: () => void;
+}
+
 interface Props<T extends SmartContractMethod> {
   data: T;
   onSubmit: (data: T, args: Array<string | Array<string>>) => Promise<ContractMethodCallResult<T>>;
-  renderResult: (data: T, result: ContractMethodCallResult<T>, onSettle: () => void) => React.ReactNode;
+  ResultComponent: (props: ResultComponentProps<T>) => JSX.Element | null;
   isWrite?: boolean;
 }
 
@@ -46,7 +52,7 @@ const castFieldValue = (data: Array<SmartContractMethodInput>) => ([ key, value 
 
 const parseArrayValue = (value: string) => value.replace(/(\[|\])|\s/g, '').split(',');
 
-const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit, renderResult, isWrite }: Props<T>) => {
+const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit, ResultComponent, isWrite }: Props<T>) => {
 
   const [ result, setResult ] = React.useState<ContractMethodCallResult<T>>();
   const [ isLoading, setLoading ] = React.useState(false);
@@ -137,7 +143,7 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
           <Text>{ data.outputs.map(({ type }) => type).join(', ') }</Text>
         </Flex>
       ) }
-      { result && renderResult(data, result, handleTxSettle) }
+      { result && <ResultComponent item={ data } result={ result } onSettle={ handleTxSettle }/> }
     </Box>
   );
 };

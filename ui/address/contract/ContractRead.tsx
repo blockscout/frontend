@@ -1,9 +1,8 @@
-import { Alert, Box, chakra, Flex, useColorModeValue } from '@chakra-ui/react';
+import { Alert, Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useAccount } from 'wagmi';
 
-import type { ContractMethodReadResult } from './types';
 import type { SmartContractReadMethod, SmartContractQueryMethodRead } from 'types/api/contract';
 
 import useApiFetch from 'lib/api/useApiFetch';
@@ -15,6 +14,7 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import ContractConnectWallet from './ContractConnectWallet';
 import ContractMethodCallable from './ContractMethodCallable';
 import ContractMethodConstant from './ContractMethodConstant';
+import ContractReadResult from './ContractReadResult';
 
 interface Props {
   isProxy?: boolean;
@@ -49,34 +49,6 @@ const ContractRead = ({ isProxy }: Props) => {
     });
   }, [ addressHash, apiFetch, isProxy, userAddress ]);
 
-  const resultBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
-
-  const renderResult = React.useCallback((item: SmartContractReadMethod, result: ContractMethodReadResult, onSettle: () => void) => {
-    onSettle();
-
-    if ('status' in result) {
-      return <Alert status="error" mt={ 3 } p={ 4 } borderRadius="md" fontSize="sm">{ result.statusText }</Alert>;
-    }
-
-    if (result.is_error) {
-      const message = 'error' in result.result ? result.result.error : result.result.message;
-      return <Alert status="error" mt={ 3 } p={ 4 } borderRadius="md" fontSize="sm">{ message }</Alert>;
-    }
-
-    return (
-      <Box mt={ 3 } p={ 4 } borderRadius="md" bgColor={ resultBgColor } fontSize="sm">
-        <p>
-          [ <chakra.span fontWeight={ 600 }>{ 'name' in item ? item.name : '' }</chakra.span> method response ]
-        </p>
-        <p>[</p>
-        { result.result.output.map(({ type, value }, index) => (
-          <chakra.p key={ index } whiteSpace="break-spaces" wordBreak="break-all">  { type }: { String(value) }</chakra.p>
-        )) }
-        <p>]</p>
-      </Box>
-    );
-  }, [ resultBgColor ]);
-
   const renderContent = React.useCallback((item: SmartContractReadMethod, index: number, id: number) => {
     if (item.error) {
       return <Alert status="error" fontSize="sm">{ item.error }</Alert>;
@@ -95,10 +67,10 @@ const ContractRead = ({ isProxy }: Props) => {
         key={ id + '_' + index }
         data={ item }
         onSubmit={ handleMethodFormSubmit }
-        renderResult={ renderResult }
+        ResultComponent={ ContractReadResult }
       />
     );
-  }, [ handleMethodFormSubmit, renderResult ]);
+  }, [ handleMethodFormSubmit ]);
 
   if (isError) {
     return <DataFetchAlert/>;

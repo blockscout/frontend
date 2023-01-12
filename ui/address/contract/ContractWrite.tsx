@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { useAccount, useSigner } from 'wagmi';
 
-import type { ContractMethodWriteResult } from './types';
 import type { SmartContractWriteMethod } from 'types/api/contract';
 
 import config from 'configs/app/config';
@@ -89,21 +88,17 @@ const ContractWrite = ({ isProxy }: Props) => {
     }
   }, [ _contract, addressHash, isConnected, signer ]);
 
-  const renderResult = React.useCallback((item: SmartContractWriteMethod, result: ContractMethodWriteResult, onSettle: () => void) => {
-    return <ContractWriteResult result={ result } onSettle={ onSettle }/>;
-  }, []);
-
   const renderContent = React.useCallback((item: SmartContractWriteMethod, index: number, id: number) => {
     return (
       <ContractMethodCallable
         key={ id + '_' + index }
         data={ item }
         onSubmit={ handleMethodFormSubmit }
-        renderResult={ renderResult }
+        ResultComponent={ ContractWriteResult }
         isWrite
       />
     );
-  }, [ handleMethodFormSubmit, renderResult ]);
+  }, [ handleMethodFormSubmit ]);
 
   if (isError) {
     return <DataFetchAlert/>;
@@ -125,4 +120,4 @@ const ContractWrite = ({ isProxy }: Props) => {
   );
 };
 
-export default ContractWrite;
+export default React.memo(ContractWrite);

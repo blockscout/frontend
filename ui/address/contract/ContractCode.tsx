@@ -83,7 +83,7 @@ const ContractCode = () => {
         <Alert status="warning" whiteSpace="pre-wrap" flexWrap="wrap">
           <span>Contract is not verified. However, we found a verified contract with the same bytecode in Blockscout DB </span>
           <Address>
-            <AddressIcon address={{ hash: addressHash || '', is_contract: false }}/>
+            <AddressIcon address={{ hash: addressHash || '', is_contract: false, implementation_name: null }}/>
             <AddressLink hash={ addressHash || '' } truncation="constant" ml={ 2 }/>
           </Address>
           <chakra.span mt={ 1 }>All functions displayed below are from ABI of that contract. In order to verify current contract, proceed with </chakra.span>

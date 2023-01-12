@@ -36,7 +36,7 @@ const ContractSourceCode = ({ data, hasSol2Yml, address, isViper, filePath, addi
     </Tooltip>
   ) : null;
 
-  if (!additionalSource) {
+  if (!additionalSource?.length) {
     return (
       <Box>
         <Flex justifyContent="space-between" alignItems="center" mb={ 3 }>
