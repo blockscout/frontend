@@ -91,6 +91,7 @@ const FullscreenChartModal = ({
           h="100%"
         >
           <ChartWidgetGraph
+            margin={{ bottom: 60 }}
             isEnlarged
             items={ items }
             onZoom={ handleZoom }

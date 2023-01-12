@@ -99,6 +99,7 @@ const ChartWidget = ({ items, title, description, isLoading, chartHeight }: Prop
     return (
       <>
         <Box
+          height={ chartHeight }
           ref={ ref }
           padding={{ base: 3, lg: 4 }}
           borderRadius="md"
@@ -198,6 +199,7 @@ const ChartWidget = ({ items, title, description, isLoading, chartHeight }: Prop
 
           <Box h={ chartHeight || 'auto' }>
             <ChartWidgetGraph
+              margin={{ bottom: 20 }}
               items={ items }
               onZoom={ handleZoom }
               isZoomResetInitial={ isZoomResetInitial }

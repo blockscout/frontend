@@ -2,8 +2,10 @@
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
+import minMax from 'dayjs/plugin/minMax';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import updateLocale from 'dayjs/plugin/updateLocale';
+import weekOfYear from 'dayjs/plugin/weekOfYear';
 
 const relativeTimeConfig = {
   thresholds: [
@@ -26,6 +28,8 @@ dayjs.extend(relativeTime, relativeTimeConfig);
 dayjs.extend(updateLocale);
 dayjs.extend(localizedFormat);
 dayjs.extend(duration);
+dayjs.extend(weekOfYear);
+dayjs.extend(minMax);
 
 dayjs.updateLocale('en', {
   formats: {

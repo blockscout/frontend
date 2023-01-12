@@ -11,6 +11,7 @@ import { trackPointer } from 'ui/shared/chart/utils/pointerTracker';
 interface Props {
   chartId?: string;
   width?: number;
+  tooltipWidth?: number;
   height?: number;
   data: TimeChartData;
   xScale: d3.ScaleTime<number, number>;
@@ -23,7 +24,7 @@ const PADDING = 16;
 const LINE_SPACE = 10;
 const POINT_SIZE = 16;
 
-const ChartTooltip = ({ chartId, xScale, yScale, width, height, data, anchorEl, ...props }: Props) => {
+const ChartTooltip = ({ chartId, xScale, yScale, width, tooltipWidth, height, data, anchorEl, ...props }: Props) => {
   const lineColor = useToken('colors', 'gray.400');
   const titleColor = useToken('colors', 'blue.100');
   const textColor = useToken('colors', 'white');
@@ -66,11 +67,14 @@ const ChartTooltip = ({ chartId, xScale, yScale, width, height, data, anchorEl, 
         return `translate(${ translateX }, ${ translateY })`;
       });
 
+      const date = xScale.invert(x);
+      const dateLabel = data[0].items.find((item) => item.date.getTime() === date.getTime())?.dateLabel;
+
       tooltipContent
         .select('.ChartTooltip__contentDate')
-        .text(d3.timeFormat('%e %b %Y')(xScale.invert(x)));
+        .text(dateLabel || d3.timeFormat('%e %b %Y')(xScale.invert(x)));
     },
-    [ xScale, width, height ],
+    [ xScale, data, width, height ],
   );
 
   const updateDisplayedValue = React.useCallback((d: TimeChartItem, i: number) => {
@@ -226,7 +230,7 @@ const ChartTooltip = ({ chartId, xScale, yScale, width, height, data, anchorEl, 
           rx={ 12 }
           ry={ 12 }
           fill={ bgColor }
-          width={ 200 }
+          width={ tooltipWidth || 200 }
           height={ 2 * PADDING + (data.length + 1) * TEXT_LINE_HEIGHT + data.length * LINE_SPACE }
         />
         <g transform={ `translate(${ PADDING },${ PADDING })` }>

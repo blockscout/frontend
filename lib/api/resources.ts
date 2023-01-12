@@ -17,7 +17,6 @@ import type { ChartMarketResponse, ChartTransactionResponse } from 'types/api/ch
 import type { SmartContract } from 'types/api/contract';
 import type { IndexingStatus } from 'types/api/indexingStatus';
 import type { InternalTransactionsResponse } from 'types/api/internalTransaction';
-import type { JsonRpcUrlResponse } from 'types/api/jsonRpcUrl';
 import type { LogsResponseTx, LogsResponseAddress } from 'types/api/log';
 import type { RawTracesResponse } from 'types/api/rawTrace';
 import type { SearchResult, SearchResultFilters } from 'types/api/search';
@@ -203,11 +202,6 @@ export const RESOURCES = {
     path: '/api/v2/main-page/indexing-status',
   },
 
-  // CONFIG
-  config_json_rpc: {
-    path: '/api/v2/config/json-rpc-url',
-  },
-
   // SEARCH
   search: {
     path: '/api/v2/search',
@@ -301,7 +295,6 @@ Q extends 'address_logs' ? LogsResponseAddress :
 Q extends 'token' ? TokenInfo :
 Q extends 'token_counters' ? TokenCounters :
 Q extends 'token_holders' ? TokenHolders :
-Q extends 'config_json_rpc' ? JsonRpcUrlResponse :
 Q extends 'search' ? SearchResult :
 Q extends 'contract' ? SmartContract :
 never;

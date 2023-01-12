@@ -1,5 +1,6 @@
 export interface TimeChartItem {
   date: Date;
+  dateLabel?: string;
   value: number;
 }
 

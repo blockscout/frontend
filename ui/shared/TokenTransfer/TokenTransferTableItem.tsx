@@ -70,7 +70,7 @@ const TokenTransferTableItem = ({
       <Td>
         <Address display="inline-flex" maxW="100%" lineHeight="30px">
           <AddressIcon address={ from }/>
-          <AddressLink ml={ 2 } fontWeight="500" hash={ from.hash } alias={ from.name } flexGrow={ 1 }/>
+          <AddressLink ml={ 2 } fontWeight="500" hash={ from.hash } alias={ from.name } flexGrow={ 1 } isDisabled={ baseAddress === from.hash }/>
         </Address>
       </Td>
       { baseAddress && (
@@ -81,7 +81,7 @@ const TokenTransferTableItem = ({
       <Td>
         <Address display="inline-flex" maxW="100%" lineHeight="30px">
           <AddressIcon address={ to }/>
-          <AddressLink ml={ 2 } fontWeight="500" hash={ to.hash } alias={ to.name } flexGrow={ 1 }/>
+          <AddressLink ml={ 2 } fontWeight="500" hash={ to.hash } alias={ to.name } flexGrow={ 1 } isDisabled={ baseAddress === to.hash }/>
         </Address>
       </Td>
       <Td isNumeric verticalAlign="top" lineHeight="30px">
