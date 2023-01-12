@@ -19,10 +19,6 @@ interface Props {
   tabs: Array<RoutedSubTab>;
 }
 
-const TAB_LIST_PROPS = {
-  columnGap: 3,
-};
-
 export const currentChain: Chain = {
   id: Number(appConfig.network.id),
   name: appConfig.network.name || '',
@@ -58,8 +54,11 @@ const wagmiClient = createClient({
   provider,
 });
 
-// Web3Modal Ethereum Client
 const ethereumClient = new EthereumClient(wagmiClient, chains);
+
+const TAB_LIST_PROPS = {
+  columnGap: 3,
+};
 
 const AddressContract = ({ tabs }: Props) => {
   const modalZIndex = useToken<string>('zIndices', 'modal');

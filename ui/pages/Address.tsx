@@ -1,9 +1,10 @@
-import { Flex, Skeleton, Tag, Box } from '@chakra-ui/react';
+import { Flex, Skeleton, Tag, Box, Icon } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
+import iconSuccess from 'icons/status/success.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import notEmpty from 'lib/notEmpty';
 import AddressBlocksValidated from 'ui/address/AddressBlocksValidated';
@@ -81,7 +82,18 @@ const AddressPageContent = () => {
       addressQuery.data?.has_logs ? { id: 'logs', title: 'Logs', component: <AddressLogs scrollRef={ tabsScrollRef }/> } : undefined,
       addressQuery.data?.is_contract ? {
         id: 'contract',
-        title: 'Contract',
+        title: () => {
+          if (addressQuery.data.is_verified) {
+            return (
+              <>
+                <span>Contract</span>
+                <Icon as={ iconSuccess } boxSize="14px" color="green.500" ml={ 1 }/>
+              </>
+            );
+          }
+
+          return 'Contract';
+        },
         component: <AddressContract tabs={ contractTabs }/>,
         subTabs: contractTabs,
       } : undefined,
