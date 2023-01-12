@@ -9,10 +9,10 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
 import SkeletonList from 'ui/shared/skeletons/SkeletonList';
 import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
+import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 
 import TxsHeaderMobile from './TxsHeaderMobile';
 import TxsListItem from './TxsListItem';
-import TxsNewItemNotice from './TxsNewItemNotice';
 import TxsTable from './TxsTable';
 import useTxsSort from './useTxsSort';
 
@@ -75,9 +75,9 @@ const TxsContent = ({
         <Show below="lg" ssr={ false }>
           <Box>
             { showSocketInfo && (
-              <TxsNewItemNotice url={ window.location.href } num={ socketInfoNum } alert={ socketInfoAlert }>
+              <SocketNewItemsNotice url={ window.location.href } num={ socketInfoNum } alert={ socketInfoAlert }>
                 { ({ content }) => <Box>{ content }</Box> }
-              </TxsNewItemNotice>
+              </SocketNewItemsNotice>
             ) }
             { txs.map(tx => (
               <TxsListItem

@@ -5,7 +5,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useNewTxsSocket from 'lib/hooks/useNewTxsSocket';
 import link from 'lib/link/link';
-import TxsNewItemNotice from 'ui/txs/TxsNewItemNotice';
+import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 
 import LatestTxsItem from './LatestTxsItem';
 import LatestTxsItemSkeleton from './LatestTxsItemSkeleton';
@@ -36,7 +36,7 @@ const LatestTransactions = () => {
     const txsUrl = link('txs');
     content = (
       <>
-        <TxsNewItemNotice borderBottomRadius={ 0 } url={ link('txs') } num={ num } alert={ socketAlert }/>
+        <SocketNewItemsNotice borderBottomRadius={ 0 } url={ link('txs') } num={ num } alert={ socketAlert }/>
         <Box mb={{ base: 3, lg: 4 }}>
           { data.slice(0, txsCount).map((tx => <LatestTxsItem key={ tx.hash } tx={ tx }/>)) }
         </Box>

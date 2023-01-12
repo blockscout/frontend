@@ -3,9 +3,9 @@ import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
+import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import { default as Thead } from 'ui/shared/TheadSticky';
 import TokenTransferTableItem from 'ui/shared/TokenTransfer/TokenTransferTableItem';
-import TxsNewItemNotice from 'ui/txs/TxsNewItemNotice';
 
 interface Props {
   data: Array<TokenTransfer>;
@@ -47,7 +47,14 @@ const TokenTransferTable = ({
         { showSocketInfo && (
           <Tr>
             <Td colSpan={ 10 } p={ 0 }>
-              <TxsNewItemNotice borderRadius={ 0 } pl="10px" url={ window.location.href } alert={ socketInfoAlert } num={ socketInfoNum }/>
+              <SocketNewItemsNotice
+                borderRadius={ 0 }
+                pl="10px"
+                url={ window.location.href }
+                alert={ socketInfoAlert }
+                num={ socketInfoNum }
+                type="token_transfer"
+              />
             </Td>
           </Tr>
         ) }

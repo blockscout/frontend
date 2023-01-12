@@ -22,11 +22,11 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Pagination from 'ui/shared/Pagination';
 import SkeletonList from 'ui/shared/skeletons/SkeletonList';
 import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
+import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import { TOKEN_TYPE, flattenTotal } from 'ui/shared/TokenTransfer/helpers';
 import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
 import TokenTransferList from 'ui/shared/TokenTransfer/TokenTransferList';
 import TokenTransferTable from 'ui/shared/TokenTransfer/TokenTransferTable';
-import TxsNewItemNotice from 'ui/txs/TxsNewItemNotice';
 
 type Filters = {
   type: Array<TokenType>;
@@ -185,7 +185,12 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
           />
         </Hide>
         <Show below="lg">
-          <TxsNewItemNotice url={ window.location.href } num={ newItemsCount } alert={ socketAlert }/>
+          <SocketNewItemsNotice
+            url={ window.location.href }
+            num={ newItemsCount }
+            alert={ socketAlert }
+            type="token_transfer"
+          />
           <TokenTransferList
             data={ items }
             baseAddress={ currentAddress }

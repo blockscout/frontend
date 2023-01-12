@@ -7,9 +7,9 @@ import type { Sort } from 'types/client/txs-sort';
 
 import appConfig from 'configs/app/config';
 import rightArrowIcon from 'icons/arrows/east.svg';
+import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import TheadSticky from 'ui/shared/TheadSticky';
 
-import TxsNewItemNotice from './TxsNewItemNotice';
 import TxsTableItem from './TxsTableItem';
 
 type Props = {
@@ -67,9 +67,9 @@ const TxsTable = ({
       </TheadSticky>
       <Tbody>
         { showSocketInfo && (
-          <TxsNewItemNotice borderRadius={ 0 } url={ window.location.href } alert={ socketInfoAlert } num={ socketInfoNum }>
+          <SocketNewItemsNotice borderRadius={ 0 } url={ window.location.href } alert={ socketInfoAlert } num={ socketInfoNum }>
             { ({ content }) => <Tr><Td colSpan={ 10 } p={ 0 }>{ content }</Td></Tr> }
-          </TxsNewItemNotice>
+          </SocketNewItemsNotice>
         ) }
         <AnimatePresence initial={ false }>
           { txs.map((item) => (

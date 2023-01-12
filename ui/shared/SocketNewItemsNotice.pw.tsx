@@ -4,7 +4,7 @@ import React from 'react';
 import { ROUTES } from 'lib/link/routes';
 import TestApp from 'playwright/TestApp';
 
-import TxsNewItemNotice from './TxsNewItemNotice';
+import SocketNewItemsNotice from './SocketNewItemsNotice';
 
 const hooksConfig = {
   router: {
@@ -16,7 +16,7 @@ const hooksConfig = {
 test('2 new items in validated txs list +@dark-mode', async({ mount }) => {
   const component = await mount(
     <TestApp>
-      <TxsNewItemNotice url="/" num={ 2 }/>
+      <SocketNewItemsNotice url="/" num={ 2 }/>
     </TestApp>,
     { hooksConfig },
   );
@@ -27,7 +27,7 @@ test('2 new items in validated txs list +@dark-mode', async({ mount }) => {
 test('connection loss', async({ mount }) => {
   const component = await mount(
     <TestApp>
-      <TxsNewItemNotice url="/" alert="Connection is lost. Please reload the page."/>
+      <SocketNewItemsNotice url="/" alert="Connection is lost. Please reload the page."/>
     </TestApp>,
     { hooksConfig },
   );
@@ -38,7 +38,7 @@ test('connection loss', async({ mount }) => {
 test('fetching', async({ mount }) => {
   const component = await mount(
     <TestApp>
-      <TxsNewItemNotice url="/"/>
+      <SocketNewItemsNotice url="/"/>
     </TestApp>,
     { hooksConfig },
   );

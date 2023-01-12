@@ -7,6 +7,7 @@ interface InjectedProps {
 }
 
 interface Props {
+  type?: 'transaction' | 'token_transfer';
   children?: (props: InjectedProps) => JSX.Element;
   className?: string;
   url: string;
@@ -14,7 +15,7 @@ interface Props {
   num?: number;
 }
 
-const TxsNewItemNotice = ({ children, className, url, num, alert }: Props) => {
+const SocketNewItemsNotice = ({ children, className, url, num, alert, type = 'transaction' }: Props) => {
   const theme = useTheme();
 
   const alertContent = (() => {
@@ -22,13 +23,15 @@ const TxsNewItemNotice = ({ children, className, url, num, alert }: Props) => {
       return alert;
     }
 
+    const name = type === 'token_transfer' ? 'token transfer' : 'transaction';
+
     if (!num) {
-      return 'scanning new transactions...';
+      return `scanning new ${ name }s...`;
     }
 
     return (
       <>
-        <Link href={ url }>{ num } more transaction{ num > 1 ? 's' : '' }</Link>
+        <Link href={ url }>{ num } more { name }{ num > 1 ? 's' : '' }</Link>
         <Text whiteSpace="pre"> ha{ num > 1 ? 've' : 's' } come in</Text>
       </>
     );
@@ -52,4 +55,4 @@ const TxsNewItemNotice = ({ children, className, url, num, alert }: Props) => {
   return children ? children({ content }) : content;
 };
 
-export default chakra(TxsNewItemNotice);
+export default chakra(SocketNewItemsNotice);
