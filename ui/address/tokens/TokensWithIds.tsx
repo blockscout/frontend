@@ -50,10 +50,11 @@ const TokensWithIds = ({ tokensQuery }: Props) => {
   if (!data.items.length) {
     return <Text as="span">There are no tokens of selected type.</Text>;
   }
+
   return (
     <>
       { bar }
-      <Flex columnGap={ 6 } rowGap={ 6 } flexWrap="wrap">
+      <Flex columnGap={{ base: 3, lg: 6 }} rowGap={{ base: 3, lg: 6 }} flexWrap="wrap">
         { data.items.map(item => <NFTItem key={ item.token.address } { ...item }/>) }
       </Flex>
     </>

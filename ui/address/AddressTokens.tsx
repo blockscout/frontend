@@ -14,6 +14,18 @@ import TokenBalances from './tokens/TokenBalances';
 import TokensWithIds from './tokens/TokensWithIds';
 import TokensWithoutIds from './tokens/TokensWithoutIds';
 
+const TAB_LIST_PROPS = {
+  marginBottom: 0,
+  py: 5,
+  marginTop: 3,
+  columnGap: 3,
+};
+
+const TAB_LIST_PROPS_MOBILE = {
+  mt: 8,
+  columnGap: 3,
+};
+
 const AddressTokens = () => {
   const router = useRouter();
   const isMobile = useIsMobile();
@@ -35,13 +47,6 @@ const AddressTokens = () => {
     { id: tokenTabsByType['ERC-1155'], title: 'ERC-1155', component: <TokensWithIds tokensQuery={ tokensQuery }/> },
   ];
 
-  const TAB_LIST_PROPS = {
-    marginBottom: 0,
-    py: 5,
-    marginTop: 3,
-    columnGap: 3,
-  };
-
   return (
     <>
       <TokenBalances/>
@@ -52,7 +57,7 @@ const AddressTokens = () => {
         variant="outline"
         colorScheme="gray"
         size="sm"
-        tabListProps={ isMobile ? { mt: 8, columnGap: 3 } : TAB_LIST_PROPS }
+        tabListProps={ isMobile ? TAB_LIST_PROPS_MOBILE : TAB_LIST_PROPS }
         rightSlot={ tokensQuery.isPaginationVisible && !isMobile ? <Pagination { ...tokensQuery.pagination }/> : null }
         stickyEnabled={ !isMobile }
       />

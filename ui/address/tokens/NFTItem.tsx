@@ -1,5 +1,4 @@
-import { Box, Center, Flex, Icon, Link, Text, useColorModeValue } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
+import { Center, Flex, Icon, Link, Text, LinkBox, LinkOverlay, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressTokenBalance } from 'types/api/address';
@@ -13,16 +12,11 @@ type Props = AddressTokenBalance;
 
 const NFTItem = ({ token, token_id: tokenId }: Props) => {
   const tokenLink = link('token_index', { hash: token.address });
-  const router = useRouter();
-
-  const onItemClick = React.useCallback(() => {
-    router.push(tokenLink);
-  }, [ router, tokenLink ]);
 
   return (
-    <Box
-      w="210px"
-      h="272px"
+    <LinkBox
+      w={{ base: 'calc((100% - 12px)/2)', lg: '210px' }}
+      h={{ base: 'auto', lg: '272px' }}
       border="1px solid"
       borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }
       borderRadius="12px"
@@ -31,16 +25,30 @@ const NFTItem = ({ token, token_id: tokenId }: Props) => {
       fontSize="sm"
       fontWeight={ 500 }
       lineHeight="20px"
-      onClick={ onItemClick }
-      cursor="pointer"
     >
-      <Center w="182px" h="182px" bg={ useColorModeValue('blackAlpha.50', 'whiteAlpha.50') } mb="18px" borderRadius="12px">
+      <LinkOverlay href={ tokenLink }/>
+      <Center
+        w={{ base: '100%', lg: '182px' }}
+        h={{ base: 'calc((100vw - 36px)/2 - 12px)', lg: '182px' }}
+        bg={ useColorModeValue('blackAlpha.50', 'whiteAlpha.50') }
+        mb="18px"
+        borderRadius="12px"
+      >
         <Icon as={ NFTIcon } boxSize="112px" color={ useColorModeValue('blackAlpha.500', 'whiteAlpha.500') }/>
       </Center>
       { tokenId && (
         <Flex mb={ 2 } ml={ 1 }>
           <Text whiteSpace="pre" variant="secondary">ID# </Text>
-          <Link href={ link('token_instance_item', { hash: token.address, id: tokenId }) }>{ tokenId }</Link>
+          <TruncatedTextTooltip label={ tokenId }>
+            <Link
+              overflow="hidden"
+              whiteSpace="nowrap"
+              textOverflow="ellipsis"
+              href={ link('token_instance_item', { hash: token.address, id: tokenId }) }
+            >
+              { tokenId }
+            </Link>
+          </TruncatedTextTooltip>
         </Flex>
       ) }
       { token.name && (
@@ -51,7 +59,7 @@ const NFTItem = ({ token, token_id: tokenId }: Props) => {
           </TruncatedTextTooltip>
         </Flex>
       ) }
-    </Box>
+    </LinkBox>
   );
 };
 

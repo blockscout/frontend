@@ -1,15 +1,15 @@
-import { Box, Flex, Icon, Skeleton, Text, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Skeleton } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import appConfig from 'configs/app/config';
-import walletIcon from 'icons/wallet.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import getCurrencyValue from 'lib/getCurrencyValue';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import { getTokenBalanceTotal, calculateUsdValue } from '../utils/tokenUtils';
+import TokenBalancesItem from './TokenBalancesItem';
 
 const TokenBalances = () => {
   const router = useRouter();
@@ -23,8 +23,6 @@ const TokenBalances = () => {
     pathParams: { id: addressQuery.data?.hash },
     queryOptions: { enabled: Boolean(addressQuery.data) },
   });
-
-  const bgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
 
   if (addressQuery.isError || balancesQuery.isError) {
     return <DataFetchAlert/>;
@@ -54,39 +52,20 @@ const TokenBalances = () => {
 
   const totalUsd = nativeUsd ? BigNumber(nativeUsd).toNumber() + BigNumber(tokenBalanceBn).toNumber() : undefined;
 
-  const itemProps = {
-    p: 5,
-    bgColor,
-    borderRadius: '16px',
-    alignItems: 'center',
-  };
-
   return (
     <Flex columnGap={ 3 } rowGap={ 3 } mt={{ base: '6px', lg: 0 }} flexDirection={{ base: 'column', lg: 'row' }}>
-      <Flex { ...itemProps }>
-        <Icon as={ walletIcon } boxSize="30px" mr={ 3 }/>
-        <Box>
-          <Text variant="secondary" fontSize="xs">Net Worth</Text>
-          <Text fontWeight="500">{ totalUsd ? `$${ totalUsd } USD` : 'N/A' }</Text>
-        </Box>
-      </Flex>
-      <Flex { ...itemProps }>
-        <Icon as={ walletIcon } boxSize="30px" mr={ 3 }/>
-        <Box>
-          <Text variant="secondary" fontSize="xs">{ `${ appConfig.network.currency.symbol } Balance` }</Text>
-          <Text fontWeight="500">{ nativeUsd && `$${ nativeUsd } USD | ` } { `${ nativeValue } ${ appConfig.network.currency.symbol }` }</Text>
-        </Box>
-      </Flex>
-      <Flex { ...itemProps }>
-        <Icon as={ walletIcon } boxSize="30px" mr={ 3 }/>
-        <Box>
-          <Text variant="secondary" fontSize="xs">Tokens</Text>
-          <Text fontWeight="500">
-            { `$${ tokenBalanceBn } USD ` }
-            { Boolean(balancesQuery.data.length) && ` | ${ balancesQuery.data.length } ${ balancesQuery.data.length === 1 ? 'token' : 'tokens' }` }
-          </Text>
-        </Box>
-      </Flex>
+      <TokenBalancesItem name="Net Worth" value={ totalUsd ? `$${ totalUsd } USD` : 'N/A' }/>
+      <TokenBalancesItem
+        name={ `${ appConfig.network.currency.symbol } Balance` }
+        value={ (nativeUsd ? `$${ nativeUsd } USD | ` : '') + `${ nativeValue } ${ appConfig.network.currency.symbol }` }
+      />
+      <TokenBalancesItem
+        name="Tokens"
+        value={
+          `$${ tokenBalanceBn } USD ` +
+          (balancesQuery.data.length ? ` | ${ balancesQuery.data.length } ${ balancesQuery.data.length === 1 ? 'token' : 'tokens' }` : '')
+        }
+      />
     </Flex>
   );
 };

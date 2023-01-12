@@ -9,6 +9,8 @@ import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import ListItemMobile from 'ui/shared/ListItemMobile';
 import TokenLogo from 'ui/shared/TokenLogo';
 
+import AddressAddToMetaMask from '../details/AddressAddToMetaMask';
+
 type Props = AddressTokenBalance;
 
 const TokensListItem = ({ token, value }: Props) => {
@@ -22,13 +24,14 @@ const TokensListItem = ({ token, value }: Props) => {
 
   return (
     <ListItemMobile rowGap={ 2 }>
-      <Flex alignItems="center">
+      <Flex alignItems="center" width="100%">
         <TokenLogo hash={ token.address } name={ token.name } boxSize={ 6 } mr={ 2 }/>
         <AddressLink fontWeight="700" hash={ token.address } type="token" alias={ tokenString }/>
       </Flex>
-      <Flex alignItems="center">
+      <Flex alignItems="center" pl={ 8 }>
         <AddressLink hash={ token.address } type="address" truncation="constant"/>
         <CopyToClipboard text={ token.address } ml={ 1 }/>
+        <AddressAddToMetaMask token={ token } ml={ 2 }/>
       </Flex>
       { token.exchange_rate !== undefined && token.exchange_rate !== null && (
         <HStack spacing={ 3 }>
