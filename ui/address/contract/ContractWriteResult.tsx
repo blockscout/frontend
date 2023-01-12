@@ -8,13 +8,20 @@ import link from 'lib/link/link';
 
 interface Props {
   result: ContractMethodWriteResult;
+  onSettle: () => void;
 }
 
-const ContractWriteResult = ({ result }: Props) => {
+const ContractWriteResult = ({ result, onSettle }: Props) => {
   const txHash = result && 'hash' in result ? result.hash as `0x${ string }` : undefined;
   const txInfo = useWaitForTransaction({
     hash: txHash,
   });
+
+  React.useEffect(() => {
+    if (txInfo.status !== 'loading') {
+      onSettle();
+    }
+  }, [ onSettle, txInfo.status ]);
 
   // eslint-disable-next-line no-console
   console.log('__>__ txInfo', txInfo);

@@ -51,7 +51,9 @@ const ContractRead = ({ isProxy }: Props) => {
 
   const resultBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
 
-  const renderResult = React.useCallback((item: SmartContractReadMethod, result: ContractMethodReadResult) => {
+  const renderResult = React.useCallback((item: SmartContractReadMethod, result: ContractMethodReadResult, onSettle: () => void) => {
+    onSettle();
+
     if ('status' in result) {
       return <Alert status="error" mt={ 3 } p={ 4 } borderRadius="md" fontSize="sm">{ result.statusText }</Alert>;
     }

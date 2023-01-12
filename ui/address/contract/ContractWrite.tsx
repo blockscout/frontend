@@ -89,8 +89,8 @@ const ContractWrite = ({ isProxy }: Props) => {
     }
   }, [ _contract, addressHash, isConnected, signer ]);
 
-  const renderResult = React.useCallback((item: SmartContractWriteMethod, result: ContractMethodWriteResult) => {
-    return <ContractWriteResult result={ result }/>;
+  const renderResult = React.useCallback((item: SmartContractWriteMethod, result: ContractMethodWriteResult, onSettle: () => void) => {
+    return <ContractWriteResult result={ result } onSettle={ onSettle }/>;
   }, []);
 
   const renderContent = React.useCallback((item: SmartContractWriteMethod, index: number, id: number) => {

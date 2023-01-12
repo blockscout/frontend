@@ -15,7 +15,7 @@ import ContractMethodField from './ContractMethodField';
 interface Props<T extends SmartContractMethod> {
   data: T;
   onSubmit: (data: T, args: Array<string | Array<string>>) => Promise<ContractMethodCallResult<T>>;
-  renderResult: (data: T, result: ContractMethodCallResult<T>) => React.ReactNode;
+  renderResult: (data: T, result: ContractMethodCallResult<T>, onSettle: () => void) => React.ReactNode;
   isWrite?: boolean;
 }
 
@@ -66,6 +66,14 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
     defaultValues: _fromPairs(inputs.map(({ name }, index) => [ getFieldName(name, index), '' ])),
   });
 
+  const handleTxSettle = React.useCallback(() => {
+    setLoading(false);
+  }, []);
+
+  const handleFormChange = React.useCallback(() => {
+    result && setResult(undefined);
+  }, [ result ]);
+
   const onFormSubmit: SubmitHandler<MethodFormFields> = React.useCallback(async(formData) => {
     const args = Object.entries(formData)
       .sort(sortFields(inputs))
@@ -78,7 +86,6 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
     onSubmit(data, args)
       .then((result) => {
         setResult(result);
-        setLoading(false);
       })
       .catch((error) => {
         setResult(error?.error || error?.data || (error?.reason && { message: error.reason }) || error);
@@ -97,6 +104,7 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
         alignItems={{ base: 'flex-start', lg: 'center' }}
         onSubmit={ handleSubmit(onFormSubmit) }
         flexWrap="wrap"
+        onChange={ handleFormChange }
       >
         { inputs.map(({ type, name }, index) => {
           const fieldName = getFieldName(name, index);
@@ -108,6 +116,7 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
               control={ control }
               setValue={ setValue }
               isDisabled={ isLoading }
+              onClear={ handleFormChange }
             />
           );
         }) }
@@ -128,7 +137,7 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
           <Text>{ data.outputs.map(({ type }) => type).join(', ') }</Text>
         </Flex>
       ) }
-      { result && renderResult(data, result) }
+      { result && renderResult(data, result, handleTxSettle) }
     </Box>
   );
 };
