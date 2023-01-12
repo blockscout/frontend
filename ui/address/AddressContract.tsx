@@ -43,10 +43,8 @@ export const currentChain: Chain = {
 
 const chains = [ currentChain ];
 
-const PROJECT_ID = 'b4ed81be141093911032944632465175';
-
 const { provider } = configureChains(chains, [
-  walletConnectProvider({ projectId: PROJECT_ID }),
+  walletConnectProvider({ projectId: appConfig.walletConnect.projectId || '' }),
 ]);
 const wagmiClient = createClient({
   autoConnect: true,
@@ -69,7 +67,7 @@ const AddressContract = ({ tabs }: Props) => {
         <RoutedTabs tabs={ tabs } variant="outline" colorScheme="gray" size="sm" tabListProps={ TAB_LIST_PROPS }/>
       </ContractContextProvider>
       <Web3Modal
-        projectId={ PROJECT_ID }
+        projectId={ appConfig.walletConnect.projectId }
         ethereumClient={ ethereumClient }
         themeZIndex={ Number(modalZIndex) }
         themeMode={ useColorModeValue('light', 'dark') }
