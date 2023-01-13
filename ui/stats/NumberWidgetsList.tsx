@@ -4,7 +4,6 @@ import React from 'react';
 import useApiQuery from 'lib/api/useApiQuery';
 import formatNumberToMetricPrefix from 'lib/formatNumberToMetricPrefix';
 
-import { numberWidgetsScheme } from './constants/number-widgets-scheme';
 import NumberWidget from './NumberWidget';
 import NumberWidgetSkeleton from './NumberWidgetSkeleton';
 
@@ -22,20 +21,13 @@ const NumberWidgetsList = () => {
       gridGap={ 4 }
     >
       { isLoading ? skeletonElement :
-        numberWidgetsScheme.map(({ id, title, formatFn }) => {
-          if (!data?.counters[id]) {
-            return null;
-          }
-
-          const value = formatNumberToMetricPrefix(Number(data.counters[id]));
+        data?.counters?.map(({ id, title, value, units }) => {
 
           return (
             <NumberWidget
               key={ id }
               label={ title }
-              value={ formatFn ?
-                formatFn(value) :
-                value }
+              value={ `${ formatNumberToMetricPrefix(Number(value)) } ${ units }` }
             />
           );
         }) }

@@ -19,21 +19,15 @@ export type GasPrices = {
   slow: number;
 }
 
-export type Stats = {
-  counters: {
-    totalBlocks: string;
-    averageBlockTime: string;
+export type Counters = {
+  counters: Array<Counter>;
+}
 
-    totalTransactions: string;
-    completedTransactions: string;
-
-    totalAccounts: string;
-
-    totalTokens: string;
-
-    totalNativeCoinHolders: string;
-    totalNativeCoinTransfers: string;
-  };
+type Counter = {
+  id: string;
+  value: string;
+  title: string;
+  units: string;
 }
 
 export type Charts = {
