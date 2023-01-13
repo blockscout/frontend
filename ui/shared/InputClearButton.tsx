@@ -1,7 +1,7 @@
 import { chakra, Icon, IconButton, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
-import crossIcon from 'icons/cross.svg';
+import errorIcon from 'icons/status/error.svg';
 
 interface Props {
   onClick: () => void;
@@ -10,17 +10,18 @@ interface Props {
 }
 
 const InputClearButton = ({ onClick, isDisabled, className }: Props) => {
-  const iconColor = useColorModeValue('blackAlpha.600', 'whiteAlpha.600');
+  const iconColor = useColorModeValue('gray.300', 'gray.600');
+  const iconColorHover = useColorModeValue('gray.200', 'gray.500');
 
   return (
     <IconButton
       isDisabled={ isDisabled }
       className={ className }
-      colorScheme="gray"
+      colorScheme="none"
       aria-label="Clear input"
       title="Clear input"
       boxSize={ 6 }
-      icon={ <Icon as={ crossIcon } boxSize={ 4 } color={ iconColor } focusable={ false }/> }
+      icon={ <Icon as={ errorIcon } boxSize={ 3 } color={ iconColor } focusable={ false } _hover={{ color: iconColorHover }}/> }
       size="sm"
       onClick={ onClick }
     />
