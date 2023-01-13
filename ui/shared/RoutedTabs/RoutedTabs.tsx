@@ -90,6 +90,10 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled, className, .
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ activeTabIndex, isMobile ]);
 
+  if (tabs.length === 1) {
+    return <div>{ tabs[0].component }</div>;
+  }
+
   return (
     <Tabs
       className={ className }

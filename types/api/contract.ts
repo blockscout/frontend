@@ -12,13 +12,37 @@ export interface SmartContract {
   name: string | null;
   verified_at: string | null;
   is_verified: boolean | null;
+  is_changed_bytecode: boolean | null;
+  // sourcify info >>>
+  is_verified_via_sourcify: boolean | null;
+  is_fully_verified: boolean | null;
+  is_partially_verified: boolean | null;
+  sourcify_repo_url: string | null;
+  // <<<<
   source_code: string | null;
   constructor_args: string | null;
+  decoded_constructor_args: Array<SmartContractDecodedConstructorArg> | null;
   can_be_visualized_via_sol2uml: boolean | null;
   is_vyper_contract: boolean | null;
   file_path: string;
   additional_sources: Array<{ file_path: string; source_code: string }>;
+  external_libraries: Array<SmartContractExternalLibrary> | null;
   compiler_settings: unknown;
+  verified_twin_address_hash: string | null;
+}
+
+export type SmartContractDecodedConstructorArg = [
+  string,
+  {
+    internalType: string;
+    name: string;
+    type: string;
+  }
+]
+
+export interface SmartContractExternalLibrary {
+  address_hash: string;
+  name: string;
 }
 
 export interface SmartContractMethodBase {
