@@ -320,7 +320,9 @@ frontend:
         - "/login"
         - "/address"
         - "/stats"
+        - "/search-results"
         - "/token"
+
   resources:
     limits:
       memory:

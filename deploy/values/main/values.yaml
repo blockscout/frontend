@@ -471,6 +471,7 @@ frontend:
         - "/block"
         - "/address"
         - "/stats"
+        - "/search-results"
   resources:
     limits:
       memory:

@@ -19,6 +19,7 @@ import type { IndexingStatus } from 'types/api/indexingStatus';
 import type { InternalTransactionsResponse } from 'types/api/internalTransaction';
 import type { LogsResponseTx, LogsResponseAddress } from 'types/api/log';
 import type { RawTracesResponse } from 'types/api/rawTrace';
+import type { SearchResult, SearchResultFilters } from 'types/api/search';
 import type { Stats, Charts, HomeStats } from 'types/api/stats';
 import type { TokenCounters, TokenInfo, TokenHolders } from 'types/api/tokenInfo';
 import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
@@ -201,6 +202,23 @@ export const RESOURCES = {
     path: '/api/v2/main-page/indexing-status',
   },
 
+  // SEARCH
+  search: {
+    path: '/api/v2/search',
+    paginationFields: [
+      'address_hash' as const,
+      'block_hash' as const,
+      'holder_count' as const,
+      'inserted_at' as const,
+      'item_type' as const,
+      'items_count' as const,
+      'name' as const,
+      'q' as const,
+      'tx_hash' as const,
+    ],
+    filterFields: [ 'q' ],
+  },
+
   // DEPRECATED
   old_api: {
     path: '/api',
@@ -232,6 +250,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'tx_internal_txs' | 'tx_logs' | 'tx_token_transfers' |
 'address_txs' | 'address_internal_txs' | 'address_token_transfers' | 'address_blocks_validated' | 'address_coin_balance' |
 'address_logs' |
+'search' |
 'token_holders';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
@@ -276,6 +295,7 @@ Q extends 'address_logs' ? LogsResponseAddress :
 Q extends 'token' ? TokenInfo :
 Q extends 'token_counters' ? TokenCounters :
 Q extends 'token_holders' ? TokenHolders :
+Q extends 'search' ? SearchResult :
 Q extends 'contract' ? SmartContract :
 never;
 /* eslint-enable @typescript-eslint/indent */
@@ -287,5 +307,6 @@ Q extends 'txs_validated' | 'txs_pending' ? TTxsFilters :
 Q extends 'tx_token_transfers' ? TokenTransferFilters :
 Q extends 'address_txs' | 'address_internal_txs' ? AddressTxsFilters :
 Q extends 'address_token_transfers' ? AddressTokenTransferFilters :
+Q extends 'search' ? SearchResultFilters :
 never;
 /* eslint-enable @typescript-eslint/indent */

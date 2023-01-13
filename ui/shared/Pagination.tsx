@@ -9,12 +9,11 @@ export type Props = {
   onPrevPageClick: () => void;
   resetPage: () => void;
   hasNextPage: boolean;
-  hasPaginationParams?: boolean;
   className?: string;
   canGoBackwards: boolean;
 }
 
-const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasNextPage, hasPaginationParams, className, canGoBackwards }: Props) => {
+const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasNextPage, className, canGoBackwards }: Props) => {
 
   return (
     <Flex
@@ -26,7 +25,7 @@ const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasNext
         variant="outline"
         size="sm"
         onClick={ resetPage }
-        disabled={ !hasPaginationParams }
+        disabled={ page === 1 }
         mr={ 4 }
       >
         First
@@ -49,7 +48,6 @@ const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasNext
         fontWeight={ 400 }
         h={ 8 }
         cursor="unset"
-        disabled={ hasPaginationParams && page === 1 }
       >
         { page }
       </Button>

@@ -6,18 +6,18 @@ import useFetch from 'lib/hooks/useFetch';
 
 import buildUrl from './buildUrl';
 import { RESOURCES } from './resources';
-import type { ResourceError, ApiResource } from './resources';
+import type { ApiResource } from './resources';
 
 export interface Params {
   pathParams?: Record<string, string | undefined>;
   queryParams?: Record<string, string | number | undefined>;
-  fetchParams?: Pick<FetchParams, 'body' | 'method'>;
+  fetchParams?: Pick<FetchParams, 'body' | 'method' | 'signal'>;
 }
 
 export default function useApiFetch() {
   const fetch = useFetch();
 
-  return React.useCallback(<R extends keyof typeof RESOURCES, SuccessType = unknown, ErrorType = ResourceError>(
+  return React.useCallback(<R extends keyof typeof RESOURCES, SuccessType = unknown, ErrorType = unknown>(
     resourceName: R,
     { pathParams, queryParams, fetchParams }: Params = {},
   ) => {

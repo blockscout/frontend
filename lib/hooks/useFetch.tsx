@@ -10,6 +10,7 @@ import { getResourceKey } from 'lib/api/useApiQuery';
 export interface Params {
   method?: RequestInit['method'];
   headers?: RequestInit['headers'];
+  signal?: RequestInit['signal'];
   body?: Record<string, unknown>;
   credentials?: RequestCredentials;
 }

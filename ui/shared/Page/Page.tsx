@@ -17,15 +17,15 @@ import NavigationDesktop from 'ui/snippets/navigation/NavigationDesktop';
 interface Props {
   children: React.ReactNode;
   wrapChildren?: boolean;
-  hideMobileHeaderOnScrollDown?: boolean;
   isHomePage?: boolean;
+  renderHeader?: () => React.ReactNode;
 }
 
 const Page = ({
   children,
   wrapChildren = true,
-  hideMobileHeaderOnScrollDown,
   isHomePage,
+  renderHeader,
 }: Props) => {
   const nodeApiFetch = useFetch();
 
@@ -71,7 +71,10 @@ const Page = ({
     <Flex w="100%" minH="100vh" alignItems="stretch">
       <NavigationDesktop/>
       <Flex flexDir="column" flexGrow={ 1 } w={{ base: '100%', lg: 'auto' }}>
-        <Header isHomePage={ isHomePage } hideOnScrollDown={ hideMobileHeaderOnScrollDown }/>
+        { renderHeader ?
+          renderHeader() :
+          <Header isHomePage={ isHomePage }/>
+        }
         <ErrorBoundary renderErrorScreen={ renderErrorScreen }>
           { renderedChildren }
         </ErrorBoundary>
