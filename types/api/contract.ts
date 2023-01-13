@@ -13,3 +13,37 @@ export interface SmartContract {
   source_code: string | null;
   can_be_visualized_via_sol2uml: boolean | null;
 }
+
+export interface SmartContractMethodBase {
+  inputs: Array<SmartContractMethodInput>;
+  outputs: Array<SmartContractMethodOutput>;
+  constant: boolean;
+  name: string;
+  stateMutability: string;
+  type: 'function';
+  payable: boolean;
+}
+
+export interface SmartContractReadMethod extends SmartContractMethodBase {
+  method_id: string;
+}
+
+export interface SmartContractWriteFallback {
+  payable: true;
+  stateMutability: 'payable';
+  type: 'fallback';
+}
+
+export type SmartContractWriteMethod = SmartContractMethodBase | SmartContractWriteFallback;
+
+export type SmartContractMethod = SmartContractReadMethod | SmartContractWriteMethod;
+
+export interface SmartContractMethodInput {
+  internalType: string;
+  name: string;
+  type: string;
+}
+
+export interface SmartContractMethodOutput extends SmartContractMethodInput {
+  value?: string;
+}

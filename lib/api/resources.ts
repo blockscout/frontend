@@ -14,7 +14,7 @@ import type {
 } from 'types/api/address';
 import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters } from 'types/api/block';
 import type { ChartMarketResponse, ChartTransactionResponse } from 'types/api/charts';
-import type { SmartContract } from 'types/api/contract';
+import type { SmartContract, SmartContractReadMethod, SmartContractWriteMethod } from 'types/api/contract';
 import type { IndexingStatus } from 'types/api/indexingStatus';
 import type { InternalTransactionsResponse } from 'types/api/internalTransaction';
 import type { LogsResponseTx, LogsResponseAddress } from 'types/api/log';
@@ -168,6 +168,21 @@ export const RESOURCES = {
   contract: {
     path: '/api/v2/smart-contracts/:id',
   },
+  contract_methods_read: {
+    path: '/api/v2/smart-contracts/:id/methods-read',
+  },
+  contract_methods_read_proxy: {
+    path: '/api/v2/smart-contracts/:id/methods-read-proxy',
+  },
+  contract_method_query: {
+    path: '/api/v2/smart-contracts/:id/query-read-method',
+  },
+  contract_methods_write: {
+    path: '/api/v2/smart-contracts/:id/methods-write',
+  },
+  contract_methods_write_proxy: {
+    path: '/api/v2/smart-contracts/:id/methods-write-proxy',
+  },
 
   // TOKEN
   token: {
@@ -297,6 +312,10 @@ Q extends 'token_counters' ? TokenCounters :
 Q extends 'token_holders' ? TokenHolders :
 Q extends 'search' ? SearchResult :
 Q extends 'contract' ? SmartContract :
+Q extends 'contract_methods_read' ? Array<SmartContractReadMethod> :
+Q extends 'contract_methods_read_proxy' ? Array<SmartContractReadMethod> :
+Q extends 'contract_methods_write' ? Array<SmartContractWriteMethod> :
+Q extends 'contract_methods_write_proxy' ? Array<SmartContractWriteMethod> :
 never;
 /* eslint-enable @typescript-eslint/indent */
 

@@ -15,6 +15,8 @@ import AddressLogs from 'ui/address/AddressLogs';
 import AddressTokenTransfers from 'ui/address/AddressTokenTransfers';
 import AddressTxs from 'ui/address/AddressTxs';
 import ContractCode from 'ui/address/contract/ContractCode';
+import ContractRead from 'ui/address/contract/ContractRead';
+import ContractWrite from 'ui/address/contract/ContractWrite';
 import TextAd from 'ui/shared/ad/TextAd';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -44,19 +46,19 @@ const AddressPageContent = () => {
         { id: 'contact_decompiled_code', title: 'Decompiled code', component: <div>Decompiled code</div> } :
         undefined,
       addressQuery.data?.has_methods_read ?
-        { id: 'read_contract', title: 'Read contract', component: <div>Read contract</div> } :
+        { id: 'read_contract', title: 'Read contract', component: <ContractRead/> } :
         undefined,
       addressQuery.data?.has_methods_read_proxy ?
-        { id: 'read_proxy', title: 'Read proxy', component: <div>Read proxy</div> } :
+        { id: 'read_proxy', title: 'Read proxy', component: <ContractRead isProxy/> } :
         undefined,
       addressQuery.data?.has_custom_methods_read ?
         { id: 'read_custom_methods', title: 'Read custom methods', component: <div>Read custom methods</div> } :
         undefined,
       addressQuery.data?.has_methods_write ?
-        { id: 'write_contract', title: 'Write contract', component: <div>Write contract</div> } :
+        { id: 'write_contract', title: 'Write contract', component: <ContractWrite/> } :
         undefined,
       addressQuery.data?.has_methods_write_proxy ?
-        { id: 'write_proxy', title: 'Write proxy', component: <div>Write proxy</div> } :
+        { id: 'write_proxy', title: 'Write proxy', component: <ContractWrite isProxy/> } :
         undefined,
       addressQuery.data?.has_custom_methods_write ?
         { id: 'write_custom_methods', title: 'Write custom methods', component: <div>Write custom methods</div> } :
