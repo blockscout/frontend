@@ -1,5 +1,4 @@
 import { Flex, Skeleton, Button, Grid, GridItem, Text, Alert, Link, chakra, Box } from '@chakra-ui/react';
-import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -12,10 +11,7 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import ExternalLink from 'ui/shared/ExternalLink';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
-const DynamicContractSourceCode = dynamic(
-  () => import('./ContractSourceCode'),
-  { ssr: false },
-);
+import type TContractSourceCode from './ContractSourceCode';
 
 const InfoItem = ({ label, value }: { label: string; value: string }) => (
   <GridItem display="flex" columnGap={ 6 }>
@@ -26,6 +22,11 @@ const InfoItem = ({ label, value }: { label: string; value: string }) => (
 
 const ContractCode = () => {
   const router = useRouter();
+  const [ ContractSourceCode, setContractSourceCode ] = React.useState<typeof TContractSourceCode | null>(null);
+
+  React.useEffect(() => {
+    import('./ContractSourceCode').then((component) => setContractSourceCode(component.default));
+  }, []);
 
   const addressHash = router.query.id?.toString();
   const { data, isLoading, isError } = useApiQuery('contract', {
@@ -153,8 +154,8 @@ const ContractCode = () => {
             textareaMaxHeight="200px"
           />
         ) }
-        { data.source_code && (
-          <DynamicContractSourceCode
+        { data.source_code && ContractSourceCode && (
+          <ContractSourceCode
             data={ data.source_code }
             hasSol2Yml={ Boolean(data.can_be_visualized_via_sol2uml) }
             address={ addressHash }

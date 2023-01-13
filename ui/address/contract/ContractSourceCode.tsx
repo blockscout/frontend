@@ -38,19 +38,19 @@ const ContractSourceCode = ({ data, hasSol2Yml, address, isViper, filePath, addi
 
   if (!additionalSource?.length) {
     return (
-      <Box>
+      <section>
         <Flex justifyContent="space-between" alignItems="center" mb={ 3 }>
           { heading }
           { diagramLink }
           <CopyToClipboard text={ data }/>
         </Flex>
         <CodeEditor value={ data } id="source_code"/>
-      </Box>
+      </section>
     );
   }
 
   return (
-    <Box>
+    <section>
       <Flex justifyContent="space-between" alignItems="center" mb={ 3 }>
         { heading }
         { diagramLink }
@@ -66,7 +66,7 @@ const ContractSourceCode = ({ data, hasSol2Yml, address, isViper, filePath, addi
           </Box>
         )) }
       </Flex>
-    </Box>
+    </section>
   );
 };
 

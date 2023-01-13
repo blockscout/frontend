@@ -16,7 +16,7 @@ const RawDataSnippet = ({ data, className, title, rightSlot, beforeSlot, textare
   // see issue in theme/components/Textarea.ts
   const bgColor = useColorModeValue('#f5f5f6', '#1a1b1b');
   return (
-    <Box className={ className }>
+    <Box className={ className } as="section" title={ title }>
       <Flex justifyContent={ title ? 'space-between' : 'flex-end' } alignItems="center" mb={ 3 }>
         { title && <Text fontWeight={ 500 }>{ title }</Text> }
         { rightSlot }

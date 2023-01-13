@@ -1,6 +1,7 @@
 import type { PlaywrightTestConfig } from '@playwright/experimental-ct-react';
 import { devices } from '@playwright/experimental-ct-react';
 import react from '@vitejs/plugin-react';
+import dynamicImport from 'vite-plugin-dynamic-import';
 import svgr from 'vite-plugin-svgr';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
@@ -50,6 +51,7 @@ const config: PlaywrightTestConfig = {
         svgr({
           exportAsDefault: true,
         }),
+        dynamicImport(),
       ],
     },
   },

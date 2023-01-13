@@ -1,5 +1,8 @@
 import type { Abi } from 'abitype';
 
+export type SmartContractMethodArgType = 'address' | 'uint256' | 'bool' | 'string' | 'bytes' | 'bytes32';
+export type SmartContractMethodStateMutability = 'view' | 'nonpayable' | 'payable';
+
 export interface SmartContract {
   deployed_bytecode: string | null;
   creation_bytecode: string | null;
@@ -34,9 +37,9 @@ export interface SmartContract {
 export type SmartContractDecodedConstructorArg = [
   string,
   {
-    internalType: string;
+    internalType: SmartContractMethodArgType;
     name: string;
-    type: string;
+    type: SmartContractMethodArgType;
   }
 ]
 
@@ -50,7 +53,7 @@ export interface SmartContractMethodBase {
   outputs: Array<SmartContractMethodOutput>;
   constant: boolean;
   name: string;
-  stateMutability: 'view' | 'nonpayable' | 'payable';
+  stateMutability: SmartContractMethodStateMutability;
   type: 'function';
   payable: boolean;
   error?: string;
@@ -61,11 +64,13 @@ export interface SmartContractReadMethod extends SmartContractMethodBase {
 }
 
 export interface SmartContractWriteFallback {
+  payable?: true;
   stateMutability: 'payable';
   type: 'fallback';
 }
 
 export interface SmartContractWriteReceive {
+  payable?: true;
   stateMutability: 'payable';
   type: 'receive';
 }
@@ -75,9 +80,9 @@ export type SmartContractWriteMethod = SmartContractMethodBase | SmartContractWr
 export type SmartContractMethod = SmartContractReadMethod | SmartContractWriteMethod;
 
 export interface SmartContractMethodInput {
-  internalType: string;
+  internalType?: SmartContractMethodArgType;
   name: string;
-  type: 'address' | 'uint256' | 'bool';
+  type: SmartContractMethodArgType;
 }
 
 export interface SmartContractMethodOutput extends SmartContractMethodInput {

@@ -7096,7 +7096,7 @@ fast-deep-equal@^3.1.1, fast-deep-equal@^3.1.3:
   resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-3.1.3.tgz#3a7d56b559d6cbc3eb512325244e619a65c6c525"
   integrity sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==
 
-fast-glob@^3.2.9:
+fast-glob@^3.2.12, fast-glob@^3.2.9:
   version "3.2.12"
   resolved "https://registry.yarnpkg.com/fast-glob/-/fast-glob-3.2.12.tgz#7f39ec99c2e6ab030337142da9e0c18f37afae80"
   integrity sha512-DVj4CQIYYow0BlaelwK1pHl5n5cRSJfM60UA0zK891sVInoPri2Ekj7+e1CT3/3qxXenpI+nBBmQAcJPJgaj4w==
@@ -11027,6 +11027,13 @@ valtio@1.8.2:
   dependencies:
     proxy-compare "2.4.0"
     use-sync-external-store "1.2.0"
+
+vite-plugin-dynamic-import@^1.2.6:
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/vite-plugin-dynamic-import/-/vite-plugin-dynamic-import-1.2.6.tgz#0e4ff699d4e97cdff3ccf9e979957167bc22654b"
+  integrity sha512-HeO5GsQfsiGfFDLhFOUZeqjM4Y8Xk5ctfRfkw5qLszZT5+N37mMbwqp8TqYxXZ4dd0EBnQ9Zg4Pr5mR2eE9hBA==
+  dependencies:
+    fast-glob "^3.2.12"
 
 vite-plugin-svgr@^2.2.2:
   version "2.2.2"
