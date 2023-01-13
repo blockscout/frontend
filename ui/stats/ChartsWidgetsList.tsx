@@ -1,11 +1,12 @@
 import { Box, Grid, GridItem, Heading, List, ListItem } from '@chakra-ui/react';
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 
 import type { StatsIntervalIds, StatsSection } from 'types/client/stats';
 
 import { apos } from 'lib/html-entities';
 
 import EmptySearchResult from '../apps/EmptySearchResult';
+import ChartsLoadingErrorAlert from './ChartsLoadingErrorAlert';
 import ChartWidgetContainer from './ChartWidgetContainer';
 
 type Props = {
@@ -14,10 +15,19 @@ type Props = {
 }
 
 const ChartsWidgetsList = ({ charts, interval }: Props) => {
+  const [ isSomeChartLoadingError, setIsSomeChartLoadingError ] = useState(false);
   const isAnyChartDisplayed = charts.some((section) => section.charts.length > 0);
+
+  const handleChartLoadingError = useCallback(
+    () => setIsSomeChartLoadingError(true),
+    [ setIsSomeChartLoadingError ]);
 
   return (
     <Box>
+      { isSomeChartLoadingError && (
+        <ChartsLoadingErrorAlert/>
+      ) }
+
       { isAnyChartDisplayed ? (
         <List>
           {
@@ -38,7 +48,7 @@ const ChartsWidgetsList = ({ charts, interval }: Props) => {
 
                 <Grid
                   templateColumns={{
-                    lg: 'repeat(2, 1fr)',
+                    lg: 'repeat(2, minmax(0, 1fr))',
                   }}
                   gap={ 4 }
                 >
@@ -51,6 +61,7 @@ const ChartsWidgetsList = ({ charts, interval }: Props) => {
                         title={ chart.title }
                         description={ chart.description }
                         interval={ interval }
+                        onLoadingError={ handleChartLoadingError }
                       />
                     </GridItem>
                   )) }

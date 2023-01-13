@@ -10,9 +10,19 @@ type AdData = {
     thumbnail: string;
     url: string;
     cta_button: string;
-    impressionUrl: string;
+    impressionUrl?: string;
   };
 }
+
+// const MOCK: AdData = {
+//   ad: {
+//     url: 'https://unsplash.com/s/photos/cute-kitten',
+//     thumbnail: 'https://placekitten.com/40/40',
+//     name: 'All about kitties',
+//     description_short: 'To see millions picture of cute kitties',
+//     cta_button: 'click here',
+//   },
+// };
 
 const CoinzillaTextAd = ({ className }: {className?: string}) => {
   const [ adData, setAdData ] = React.useState<AdData | null>(null);

@@ -65,7 +65,9 @@ blockscout:
   # node label
   nodeSelector:
     enabled: true
-    app: blockscout
+    labels:
+      _default:
+        app: blockscout-prod
   # Blockscout environment variables
   environment:
     ETHEREUM_JSONRPC_TRACE_URL:
@@ -176,6 +178,12 @@ postgres:
         _default: "6Gi"
       cpu:
         _default: "4"
+  # node label
+  nodeSelector:
+    enabled: true
+    labels:
+      _default:
+        app: blockscout-prod
 
   environment:
     POSTGRES_USER:
@@ -463,6 +471,7 @@ frontend:
         - "/block"
         - "/address"
         - "/stats"
+        - "/search-results"
   resources:
     limits:
       memory:
@@ -477,7 +486,9 @@ frontend:
   # node label
   nodeSelector:
     enabled: true
-    app: blockscout
+    labels:
+      _default:
+        app: blockscout
   environment:
     # ui config
     NEXT_PUBLIC_FEATURED_NETWORKS:

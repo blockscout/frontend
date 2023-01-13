@@ -14,7 +14,7 @@ type Props = {
 const AddressIcon = ({ address, className }: Props) => {
   if (address.is_contract) {
     return (
-      <AddressContractIcon/>
+      <AddressContractIcon className={ className }/>
     );
   }
 
