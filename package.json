@@ -104,6 +104,7 @@
     "typescript": "4.7.2",
     "vite-plugin-dynamic-import": "^1.2.6",
     "vite-plugin-svgr": "^2.2.2",
+    "vite-plugin-utils": "^0.4.0",
     "vite-tsconfig-paths": "^3.5.2",
     "ws": "^8.11.0"
   },
