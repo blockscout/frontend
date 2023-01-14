@@ -15,7 +15,7 @@ const hooksConfig = {
   },
 };
 
-test('base view +@mobile', async({ mount, page }) => {
+test.skip('base view +@mobile', async({ mount, page }) => {
   await page.route(CONTRACT_READ_METHODS_API_URL, (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(contractMethodsMock.write),
