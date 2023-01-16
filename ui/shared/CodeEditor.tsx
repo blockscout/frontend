@@ -16,6 +16,11 @@ const CodeEditorBase = chakra(({ id, value, className }: Props) => {
 
   const theme = useColorModeValue('tomorrow', 'tomorrow_night');
 
+  // eslint-disable-next-line no-restricted-properties
+  if (process.env.NEXT_PUBLIC_APP_ENV === 'testing') {
+    return <chakra.div className={ className }>CodeEditorBase</chakra.div>;
+  }
+
   return (
     <AceEditor
       className={ className }
