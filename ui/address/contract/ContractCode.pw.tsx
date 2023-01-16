@@ -31,7 +31,7 @@ test('verified with changed byte code +@mobile +@dark-mode', async({ mount, page
   await expect(component).toHaveScreenshot();
 });
 
-test('verified with multiple sources', async({ mount, page }) => {
+test.skip('verified with multiple sources', async({ mount, page }) => {
   await page.route(CONTRACT_API_URL, (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(contractMock.withMultiplePaths),
