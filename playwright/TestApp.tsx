@@ -12,27 +12,6 @@ import { SocketProvider } from 'lib/socket/context';
 import { PORT } from 'playwright/fixtures/socketServer';
 import theme from 'theme';
 
-const provider = new providers.JsonRpcProvider(
-  'http://localhost:8545',
-  {
-    name: 'POA',
-    chainId: 99,
-  },
-);
-
-const connector = new MockConnector({
-  chains: [ mainnet ],
-  options: {
-    signer: provider.getSigner(),
-  },
-});
-
-const wagmiClient = createClient({
-  autoConnect: true,
-  connectors: [ connector ],
-  provider,
-});
-
 type Props = {
   children: React.ReactNode;
   withSocket?: boolean;
@@ -59,7 +38,35 @@ const TestApp = ({ children, withSocket, withWeb3, appContext = defaultAppContex
     },
   }));
 
-  const content = withWeb3 ? (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [ wagmiClient ] = React.useState<any>(() => {
+    if (!withWeb3) {
+      return;
+    }
+
+    const provider = new providers.JsonRpcProvider(
+      'http://localhost:8545',
+      {
+        name: 'POA',
+        chainId: 99,
+      },
+    );
+
+    const connector = new MockConnector({
+      chains: [ mainnet ],
+      options: {
+        signer: provider.getSigner(),
+      },
+    });
+
+    return createClient({
+      autoConnect: true,
+      connectors: [ connector ],
+      provider,
+    });
+  });
+
+  const content = wagmiClient ? (
     <WagmiConfig client={ wagmiClient }>
       { children }
     </WagmiConfig>
