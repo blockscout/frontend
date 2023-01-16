@@ -26,6 +26,10 @@ const ContractCode = () => {
 
   React.useEffect(() => {
     import('./ContractSourceCode').then((component) => setContractSourceCode(component.default));
+
+    return () => {
+      setContractSourceCode(null);
+    };
   }, []);
 
   const addressHash = router.query.id?.toString();
