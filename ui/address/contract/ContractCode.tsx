@@ -25,7 +25,10 @@ const ContractCode = () => {
   const [ ContractSourceCode, setContractSourceCode ] = React.useState<typeof TContractSourceCode | null>(null);
 
   React.useEffect(() => {
-    import('./ContractSourceCode').then((component) => setContractSourceCode(component.default));
+    // eslint-disable-next-line no-restricted-properties
+    if (process.env.NEXT_PUBLIC_APP_ENV !== 'testing') {
+      import('./ContractSourceCode').then((component) => setContractSourceCode(component.default));
+    }
 
     return () => {
       setContractSourceCode(null);
