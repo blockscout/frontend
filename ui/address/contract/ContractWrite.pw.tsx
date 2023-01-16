@@ -15,14 +15,14 @@ const hooksConfig = {
   },
 };
 
-test.skip('base view +@mobile', async({ mount, page }) => {
+test('base view +@mobile', async({ mount, page }) => {
   await page.route(CONTRACT_READ_METHODS_API_URL, (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(contractMethodsMock.write),
   }));
 
   const component = await mount(
-    <TestApp>
+    <TestApp withWeb3>
       <ContractWrite/>
     </TestApp>,
     { hooksConfig },

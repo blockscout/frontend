@@ -36,6 +36,7 @@ const wagmiClient = createClient({
 type Props = {
   children: React.ReactNode;
   withSocket?: boolean;
+  withWeb3?: boolean;
   appContext?: {
     pageProps: PageProps;
   };
@@ -48,7 +49,7 @@ const defaultAppContext = {
   },
 };
 
-const TestApp = ({ children, withSocket, appContext = defaultAppContext }: Props) => {
+const TestApp = ({ children, withSocket, withWeb3, appContext = defaultAppContext }: Props) => {
   const [ queryClient ] = React.useState(() => new QueryClient({
     defaultOptions: {
       queries: {
@@ -58,14 +59,18 @@ const TestApp = ({ children, withSocket, appContext = defaultAppContext }: Props
     },
   }));
 
+  const content = withWeb3 ? (
+    <WagmiConfig client={ wagmiClient }>
+      { children }
+    </WagmiConfig>
+  ) : children;
+
   return (
     <ChakraProvider theme={ theme }>
       <QueryClientProvider client={ queryClient }>
         <SocketProvider url={ withSocket ? `ws://localhost:${ PORT }` : undefined }>
           <AppContextProvider { ...appContext }>
-            <WagmiConfig client={ wagmiClient }>
-              { children }
-            </WagmiConfig>
+            { content }
           </AppContextProvider>
         </SocketProvider>
       </QueryClientProvider>

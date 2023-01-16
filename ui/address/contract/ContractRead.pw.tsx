@@ -16,7 +16,7 @@ const hooksConfig = {
   },
 };
 
-test.skip('base view +@mobile +@dark-mode', async({ mount, page }) => {
+test('base view +@mobile +@dark-mode', async({ mount, page }) => {
   await page.route(CONTRACT_READ_METHODS_API_URL, (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(contractMethodsMock.read),
@@ -27,7 +27,7 @@ test.skip('base view +@mobile +@dark-mode', async({ mount, page }) => {
   }));
 
   const component = await mount(
-    <TestApp>
+    <TestApp withWeb3>
       <ContractRead/>
     </TestApp>,
     { hooksConfig },
@@ -45,7 +45,7 @@ test.skip('base view +@mobile +@dark-mode', async({ mount, page }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test.skip('error result', async({ mount, page }) => {
+test('error result', async({ mount, page }) => {
   await page.route(CONTRACT_READ_METHODS_API_URL, (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(contractMethodsMock.read),
@@ -56,7 +56,7 @@ test.skip('error result', async({ mount, page }) => {
   }));
 
   const component = await mount(
-    <TestApp>
+    <TestApp withWeb3>
       <ContractRead/>
     </TestApp>,
     { hooksConfig },
