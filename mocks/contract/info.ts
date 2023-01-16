@@ -14,7 +14,7 @@ export const verified: Partial<SmartContract> = {
   name: 'WPOA',
   optimization_enabled: true,
   optimization_runs: 1500,
-  // source_code: 'source_code',
+  source_code: 'source_code',
   verified_at: '2021-08-03T10:40:41.679421Z',
   decoded_constructor_args: [
     [ '0xc59615da2da226613b1c78f0c6676cac497910bc', { internalType: 'address', name: '_token', type: 'address' } ],
