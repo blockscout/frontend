@@ -50,7 +50,7 @@ const AddressAddToMetaMask = ({ className, token }: Props) => {
     }
   }, [ toast, token ]);
 
-  if (token.type !== 'ERC-20' || !('ethereum' in window)) {
+  if (!('ethereum' in window)) {
     return null;
   }
 
