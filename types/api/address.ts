@@ -48,6 +48,16 @@ export interface AddressTokenBalance {
   value: string;
 }
 
+export interface AddressTokensResponse {
+  items: Array<AddressTokenBalance>;
+  next_page_params: {
+    items_count: number;
+    token_name: 'string' | null;
+    token_type: TokenType;
+    value: number;
+  } | null;
+}
+
 export interface AddressTransactionsResponse {
   items: Array<Transaction>;
   next_page_params: {
@@ -73,6 +83,10 @@ export interface AddressTokenTransferResponse {
 export type AddressTokenTransferFilters = {
   filter: AddressFromToFilter;
   type: Array<TokenType>;
+}
+
+export type AddressTokensFilter = {
+  type: TokenType;
 }
 
 export interface AddressCoinBalanceHistoryItem {

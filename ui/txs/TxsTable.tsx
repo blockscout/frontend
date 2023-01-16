@@ -32,9 +32,9 @@ const TxsTable = ({ txs, sort, sorting, top, showBlockInfo, showSocketInfo, curr
           <Th width="160px">Type</Th>
           <Th width="20%">Method</Th>
           { showBlockInfo && <Th width="18%">Block</Th> }
-          <Th width={{ xl: '128px', base: '66px' }}>From</Th>
+          <Th width={{ xl: '132px', base: '66px' }}>From</Th>
           <Th width={{ xl: currentAddress ? '48px' : '36px', base: '0' }}></Th>
-          <Th width={{ xl: '128px', base: '66px' }}>To</Th>
+          <Th width={{ xl: '132px', base: '66px' }}>To</Th>
           <Th width="20%" isNumeric>
             <Link onClick={ sort('val') } display="flex" justifyContent="end">
               { sorting === 'val-asc' && <Icon boxSize={ 5 } as={ rightArrowIcon } transform="rotate(-90deg)"/> }

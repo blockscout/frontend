@@ -2,6 +2,7 @@ import { Flex, Skeleton, Tag, Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { TokenType } from 'types/api/tokenInfo';
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
 import useApiQuery from 'lib/api/useApiQuery';
@@ -12,6 +13,7 @@ import AddressContract from 'ui/address/AddressContract';
 import AddressDetails from 'ui/address/AddressDetails';
 import AddressInternalTxs from 'ui/address/AddressInternalTxs';
 import AddressLogs from 'ui/address/AddressLogs';
+import AddressTokens from 'ui/address/AddressTokens';
 import AddressTokenTransfers from 'ui/address/AddressTokenTransfers';
 import AddressTxs from 'ui/address/AddressTxs';
 import ContractCode from 'ui/address/contract/ContractCode';
@@ -22,6 +24,14 @@ import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
 import SkeletonTabs from 'ui/shared/skeletons/SkeletonTabs';
+
+export const tokenTabsByType: Record<TokenType, string> = {
+  'ERC-20': 'tokens_erc20',
+  'ERC-721': 'tokens_erc721',
+  'ERC-1155': 'tokens_erc1155',
+} as const;
+
+const TOKEN_TABS = Object.values(tokenTabsByType);
 
 const AddressPageContent = () => {
   const router = useRouter();
@@ -72,7 +82,7 @@ const AddressPageContent = () => {
       addressQuery.data?.has_token_transfers ?
         { id: 'token_transfers', title: 'Token transfers', component: <AddressTokenTransfers scrollRef={ tabsScrollRef }/> } :
         undefined,
-      addressQuery.data?.has_tokens ? { id: 'tokens', title: 'Tokens', component: null } : undefined,
+      addressQuery.data?.has_tokens ? { id: 'tokens', title: 'Tokens', component: <AddressTokens/>, subTabs: TOKEN_TABS } : undefined,
       { id: 'internal_txns', title: 'Internal txns', component: <AddressInternalTxs scrollRef={ tabsScrollRef }/> },
       { id: 'coin_balance_history', title: 'Coin balance history', component: <AddressCoinBalance/> },
       addressQuery.data?.has_validated_blocks ?
@@ -83,7 +93,7 @@ const AddressPageContent = () => {
         id: 'contract',
         title: 'Contract',
         component: <AddressContract tabs={ contractTabs }/>,
-        subTabs: contractTabs,
+        subTabs: contractTabs.map(tab => tab.id),
       } : undefined,
     ].filter(notEmpty);
   }, [ addressQuery.data, contractTabs ]);

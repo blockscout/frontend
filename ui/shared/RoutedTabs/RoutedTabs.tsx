@@ -62,7 +62,7 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled, className, .
       let tabIndex = 0;
       const tabFromRoute = router.query.tab;
       if (tabFromRoute) {
-        tabIndex = tabs.findIndex(({ id, subTabs }) => id === tabFromRoute || subTabs?.some(({ id }) => id === tabFromRoute));
+        tabIndex = tabs.findIndex(({ id, subTabs }) => id === tabFromRoute || subTabs?.some((id) => id === tabFromRoute));
         if (tabIndex < 0) {
           tabIndex = 0;
         }

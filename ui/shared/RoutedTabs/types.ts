@@ -2,7 +2,7 @@ export interface RoutedTab {
   id: string;
   title: string;
   component: React.ReactNode;
-  subTabs?: Array<RoutedSubTab>;
+  subTabs?: Array<string>;
 }
 
 export type RoutedSubTab = Omit<RoutedTab, 'subTabs'>;

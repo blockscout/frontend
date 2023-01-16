@@ -4,8 +4,8 @@ import React from 'react';
 
 import type { AddressTokenBalance } from 'types/api/address';
 
-import type { Sort } from './utils';
-import { calculateUsdValue, filterTokens } from './utils';
+import type { Sort } from '../utils/tokenUtils';
+import { calculateUsdValue, filterTokens } from '../utils/tokenUtils';
 
 export default function useData(data: Array<AddressTokenBalance>) {
   const [ searchTerm, setSearchTerm ] = React.useState('');

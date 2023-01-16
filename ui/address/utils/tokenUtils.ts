@@ -3,6 +3,8 @@ import BigNumber from 'bignumber.js';
 import type { AddressTokenBalance } from 'types/api/address';
 import type { TokenType } from 'types/api/tokenInfo';
 
+import { ZERO } from 'lib/consts';
+
 export type EnhancedData = AddressTokenBalance & {
   usd?: BigNumber ;
 }
@@ -76,4 +78,8 @@ export const calculateUsdValue = (data: AddressTokenBalance): EnhancedData => {
     ...data,
     usd: BigNumber(data.value).div(BigNumber(10 ** decimals)).multipliedBy(BigNumber(exchangeRate)),
   };
+};
+
+export const getTokenBalanceTotal = (data: Array<EnhancedData>) => {
+  return data.reduce((result, item) => !item.usd ? result : result.plus(BigNumber(item.usd)), ZERO);
 };
