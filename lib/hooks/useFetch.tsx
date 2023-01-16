@@ -20,7 +20,7 @@ export default function useFetch() {
   const { token } = queryClient.getQueryData<CsrfData>(getResourceKey('csrf')) || {};
 
   return React.useCallback(<Success, Error>(path: string, params?: Params): Promise<Success | ResourceError<Error>> => {
-    const hasBody = params?.method && params?.body && ![ 'GET', 'HEAD' ].includes(params.method);
+    const hasBody = params?.method && ![ 'GET', 'HEAD' ].includes(params.method);
 
     const reqParams = {
       ...params,
