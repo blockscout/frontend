@@ -1,3 +1,6 @@
+// running this test together with other causing JS memory leak
+// presumably because of dynamic import in ui/shared/CodeEditor.tsx
+// I was not able to figure out the exact reason, so for now it is skipped
 import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
