@@ -52,6 +52,13 @@ export const withTwinAddress: Partial<SmartContract> = {
   verified_twin_address_hash: '0xa62744bee8646e237441cdbfdedd3458861748a8',
 };
 
+export const withProxyAddress: Partial<SmartContract> = {
+  ...verified,
+  is_verified: false,
+  verified_twin_address_hash: '0xa62744bee8646e237441cdbfdedd3458861748a8',
+  minimal_proxy_address_hash: '0xa62744bee8646e237441cdbfdedd3458861748a8',
+};
+
 export const selfDestructed: Partial<SmartContract> = {
   ...verified,
   is_self_destructed: true,

@@ -32,6 +32,7 @@ export interface SmartContract {
   external_libraries: Array<SmartContractExternalLibrary> | null;
   compiler_settings: unknown;
   verified_twin_address_hash: string | null;
+  minimal_proxy_address_hash: string | null;
 }
 
 export type SmartContractDecodedConstructorArg = [

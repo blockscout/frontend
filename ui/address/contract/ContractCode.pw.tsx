@@ -98,6 +98,22 @@ test('with twin address alert +@mobile', async({ mount, page }) => {
   await expect(component.getByRole('alert')).toHaveScreenshot();
 });
 
+test('with proxy address alert +@mobile', async({ mount, page }) => {
+  await page.route(CONTRACT_API_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify(contractMock.withProxyAddress),
+  }));
+
+  const component = await mount(
+    <TestApp>
+      <ContractCode/>
+    </TestApp>,
+    { hooksConfig },
+  );
+
+  await expect(component.getByRole('alert')).toHaveScreenshot();
+});
+
 test('non verified', async({ mount, page }) => {
   await page.route(CONTRACT_API_URL, (route) => route.fulfill({
     status: 200,

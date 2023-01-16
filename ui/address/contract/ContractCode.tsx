@@ -118,16 +118,30 @@ const ContractCode = () => {
             Warning! Contract bytecode has been changed and does not match the verified one. Therefore, interaction with this smart contract may be risky.
           </Alert>
         ) }
-        { !data.is_verified && data.verified_twin_address_hash && (
+        { !data.is_verified && data.verified_twin_address_hash && !data.minimal_proxy_address_hash && (
           <Alert status="warning" whiteSpace="pre-wrap" flexWrap="wrap">
             <span>Contract is not verified. However, we found a verified contract with the same bytecode in Blockscout DB </span>
             <Address>
-              <AddressIcon address={{ hash: data.verified_twin_address_hash, is_contract: false, implementation_name: null }}/>
+              <AddressIcon address={{ hash: data.verified_twin_address_hash, is_contract: true, implementation_name: null }}/>
               <AddressLink hash={ data.verified_twin_address_hash } truncation="constant" ml={ 2 }/>
             </Address>
             <chakra.span mt={ 1 }>All functions displayed below are from ABI of that contract. In order to verify current contract, proceed with </chakra.span>
             <Link href={ link('address_contract_verification', { id: data.verified_twin_address_hash }) }>Verify & Publish</Link>
             <span> page</span>
+          </Alert>
+        ) }
+        { data.minimal_proxy_address_hash && (
+          <Alert status="warning" flexWrap="wrap" whiteSpace="pre-wrap">
+            <span>Minimal Proxy Contract for </span>
+            <Address>
+              <AddressIcon address={{ hash: data.minimal_proxy_address_hash, is_contract: true, implementation_name: null }}/>
+              <AddressLink hash={ data.minimal_proxy_address_hash } truncation="constant" ml={ 2 }/>
+            </Address>
+            <span>. </span>
+            <Box>
+              <Link href="https://eips.ethereum.org/EIPS/eip-1167">EIP-1167</Link>
+              <span> - minimal bytecode implementation that delegates all calls to a known address</span>
+            </Box>
           </Alert>
         ) }
       </Flex>
