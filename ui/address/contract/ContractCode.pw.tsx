@@ -15,7 +15,7 @@ const hooksConfig = {
   },
 };
 
-test.skip('verified with changed byte code +@mobile +@dark-mode', async({ mount, page }) => {
+test('verified with changed byte code +@mobile +@dark-mode', async({ mount, page }) => {
   await page.route(CONTRACT_API_URL, (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(contractMock.withChangedByteCode),
@@ -31,7 +31,7 @@ test.skip('verified with changed byte code +@mobile +@dark-mode', async({ mount,
   await expect(component).toHaveScreenshot();
 });
 
-test.skip('verified with multiple sources', async({ mount, page }) => {
+test('verified with multiple sources', async({ mount, page }) => {
   await page.route(CONTRACT_API_URL, (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(contractMock.withMultiplePaths),
@@ -65,7 +65,7 @@ test('verified via sourcify', async({ mount, page }) => {
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 110 } });
 });
 
-test.skip('self destructed', async({ mount, page }) => {
+test('self destructed', async({ mount, page }) => {
   await page.route(CONTRACT_API_URL, (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(contractMock.selfDestructed),
@@ -82,7 +82,7 @@ test.skip('self destructed', async({ mount, page }) => {
   await expect(section).toHaveScreenshot();
 });
 
-test.skip('with twin address alert +@mobile', async({ mount, page }) => {
+test('with twin address alert +@mobile', async({ mount, page }) => {
   await page.route(CONTRACT_API_URL, (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(contractMock.withTwinAddress),
@@ -98,7 +98,7 @@ test.skip('with twin address alert +@mobile', async({ mount, page }) => {
   await expect(component.getByRole('alert')).toHaveScreenshot();
 });
 
-test.skip('non verified', async({ mount, page }) => {
+test('non verified', async({ mount, page }) => {
   await page.route(CONTRACT_API_URL, (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(contractMock.nonVerified),

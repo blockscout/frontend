@@ -11,7 +11,7 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import ExternalLink from 'ui/shared/ExternalLink';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
-import type TContractSourceCode from './ContractSourceCode';
+import ContractSourceCode from './ContractSourceCode';
 
 const InfoItem = ({ label, value }: { label: string; value: string }) => (
   <GridItem display="flex" columnGap={ 6 }>
@@ -22,15 +22,6 @@ const InfoItem = ({ label, value }: { label: string; value: string }) => (
 
 const ContractCode = () => {
   const router = useRouter();
-  const [ ContractSourceCode, setContractSourceCode ] = React.useState<typeof TContractSourceCode | null>(null);
-
-  React.useEffect(() => {
-    import('./ContractSourceCode').then((component) => setContractSourceCode(component.default));
-
-    return () => {
-      setContractSourceCode(null);
-    };
-  }, []);
 
   const addressHash = router.query.id?.toString();
   const { data, isLoading, isError } = useApiQuery('contract', {
@@ -158,7 +149,7 @@ const ContractCode = () => {
             textareaMaxHeight="200px"
           />
         ) }
-        { data.source_code && ContractSourceCode && (
+        { data.source_code && (
           <ContractSourceCode
             data={ data.source_code }
             hasSol2Yml={ Boolean(data.can_be_visualized_via_sol2uml) }

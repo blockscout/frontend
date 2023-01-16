@@ -1,10 +1,6 @@
 import { chakra, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
-import AceEditor from 'react-ace';
-import 'ace-builds/src-noconflict/mode-csharp';
-import 'ace-builds/src-noconflict/theme-tomorrow';
-import 'ace-builds/src-noconflict/theme-tomorrow_night';
-import 'ace-builds/src-noconflict/ext-language_tools';
+import type ReactAce from 'react-ace/lib/ace';
 
 interface Props {
   id: string;
@@ -14,10 +10,33 @@ interface Props {
 
 const CodeEditorBase = chakra(({ id, value, className }: Props) => {
 
+  const [ AceEditor, setAceEditor ] = React.useState<{default: typeof ReactAce} | null>(null);
+
+  React.useEffect(() => {
+    const load = async() => {
+      const component = await import('react-ace');
+      await import('ace-builds/src-noconflict/mode-csharp');
+      await import('ace-builds/src-noconflict/theme-tomorrow');
+      await import('ace-builds/src-noconflict/theme-tomorrow_night');
+      await import('ace-builds/src-noconflict/ext-language_tools');
+      setAceEditor(component);
+    };
+
+    load();
+
+    return () => {
+      setAceEditor(null);
+    };
+  }, []);
+
   const theme = useColorModeValue('tomorrow', 'tomorrow_night');
 
+  if (!AceEditor) {
+    return null;
+  }
+
   return (
-    <AceEditor
+    <AceEditor.default
       className={ className }
       mode="csharp" // TODO need to find mode for solidity
       theme={ theme }
