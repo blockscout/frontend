@@ -68,12 +68,12 @@ const TxDetails = () => {
   }
 
   if (isError) {
-    if (error?.payload?.status === 422) {
+    if (error?.status === 422) {
       throw Error('Invalid tx hash', { cause: error as unknown as Error });
     }
 
-    if (error?.payload?.status === 404) {
-      throw Error('Tx fetch failed', { cause: error as unknown as Error });
+    if (error?.status === 404) {
+      throw Error('Tx not found', { cause: error as unknown as Error });
     }
 
     return <DataFetchAlert/>;
