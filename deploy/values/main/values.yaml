@@ -469,7 +469,7 @@ frontend:
         - "/tx"
         - "/blocks"
         - "/block"
-        - "/address"
+        # - "/address"
         - "/stats"
         - "/search-results"
   resources:
