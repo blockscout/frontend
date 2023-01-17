@@ -25,18 +25,17 @@ const ChartWidgetContainer = ({ id, title, description, interval, onLoadingError
   const endDate = selectedInterval.start ? formatDate(new Date()) : undefined;
   const startDate = selectedInterval.start ? formatDate(selectedInterval.start) : undefined;
 
-  const { data, isLoading, isError } = useApiQuery('stats_charts', {
+  const { data, isLoading, isError } = useApiQuery('stats_line', {
+    pathParams: { id },
     queryParams: {
-      name: id,
       from: startDate,
       to: endDate,
     },
   });
 
-  const items = data?.chart
-    .map((item) => {
-      return { date: new Date(item.date), value: Number(item.value) };
-    });
+  const items = data?.chart?.map((item) => {
+    return { date: new Date(item.date), value: Number(item.value) };
+  });
 
   useEffect(() => {
     if (isError) {
