@@ -12,6 +12,7 @@ import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import ContractConnectWallet from './ContractConnectWallet';
+import ContractImplementationAddress from './ContractImplementationAddress';
 import ContractMethodCallable from './ContractMethodCallable';
 import ContractMethodConstant from './ContractMethodConstant';
 import ContractReadResult from './ContractReadResult';
@@ -80,13 +81,14 @@ const ContractRead = ({ isProxy }: Props) => {
     return <ContentLoader/>;
   }
 
-  if (data.length === 0) {
-    return <span>No public read { isProxy ? 'proxy' : '' } functions were found for this contract.</span>;
+  if (data.length === 0 && !isProxy) {
+    return <span>No public read functions were found for this contract.</span>;
   }
 
   return (
     <>
       <ContractConnectWallet/>
+      { isProxy && <ContractImplementationAddress hash={ addressHash }/> }
       <ContractMethodsAccordion data={ data } renderContent={ renderContent }/>
     </>
   );

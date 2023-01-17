@@ -13,6 +13,7 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import { useContractContext } from './context';
 import ContractConnectWallet from './ContractConnectWallet';
+import ContractImplementationAddress from './ContractImplementationAddress';
 import ContractMethodCallable from './ContractMethodCallable';
 import ContractWriteResult from './ContractWriteResult';
 import { getNativeCoinValue, isExtendedError } from './utils';
@@ -108,13 +109,14 @@ const ContractWrite = ({ isProxy }: Props) => {
     return <ContentLoader/>;
   }
 
-  if (data.length === 0) {
-    return <span>No public write { isProxy ? 'proxy' : '' } functions were found for this contract.</span>;
+  if (data.length === 0 && !isProxy) {
+    return <span>No public write functions were found for this contract.</span>;
   }
 
   return (
     <>
       <ContractConnectWallet/>
+      { isProxy && <ContractImplementationAddress hash={ addressHash }/> }
       <ContractMethodsAccordion data={ data } renderContent={ renderContent }/>
     </>
   );
