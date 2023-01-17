@@ -120,11 +120,11 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
   };
 
   const handleSocketClose = React.useCallback(() => {
-    setSocketAlert('Connection is lost. Please click here to load new token transfers.');
+    setSocketAlert('Connection is lost. Please refresh the page to load new token transfers.');
   }, []);
 
   const handleSocketError = React.useCallback(() => {
-    setSocketAlert('An error has occurred while fetching new token transfers. Please click here to refresh the page.');
+    setSocketAlert('An error has occurred while fetching new token transfers. Please refresh the page.');
   }, []);
 
   const channel = useSocketChannel({
@@ -179,18 +179,21 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
             showTxInfo
             top={ 80 }
             enableTimeIncrement
-            showSocketInfo
+            showSocketInfo={ pagination.page === 1 }
             socketInfoAlert={ socketAlert }
             socketInfoNum={ newItemsCount }
           />
         </Hide>
         <Show below="lg">
-          <SocketNewItemsNotice
-            url={ window.location.href }
-            num={ newItemsCount }
-            alert={ socketAlert }
-            type="token_transfer"
-          />
+          { pagination.page === 1 && (
+            <SocketNewItemsNotice
+              url={ window.location.href }
+              num={ newItemsCount }
+              alert={ socketAlert }
+              type="token_transfer"
+              borderBottomRadius={ 0 }
+            />
+          ) }
           <TokenTransferList
             data={ items }
             baseAddress={ currentAddress }

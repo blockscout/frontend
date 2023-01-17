@@ -75,7 +75,12 @@ const TxsContent = ({
         <Show below="lg" ssr={ false }>
           <Box>
             { showSocketInfo && (
-              <SocketNewItemsNotice url={ window.location.href } num={ socketInfoNum } alert={ socketInfoAlert }>
+              <SocketNewItemsNotice
+                url={ window.location.href }
+                num={ socketInfoNum }
+                alert={ socketInfoAlert }
+                borderBottomRadius={ 0 }
+              >
                 { ({ content }) => <Box>{ content }</Box> }
               </SocketNewItemsNotice>
             ) }

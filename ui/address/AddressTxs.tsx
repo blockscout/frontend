@@ -101,11 +101,11 @@ const AddressTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}
   };
 
   const handleSocketClose = React.useCallback(() => {
-    setSocketAlert('Connection is lost. Please click here to load new transactions.');
+    setSocketAlert('Connection is lost. Please refresh the page to load new transactions.');
   }, []);
 
   const handleSocketError = React.useCallback(() => {
-    setSocketAlert('An error has occurred while fetching new transactions. Please click here to refresh the page.');
+    setSocketAlert('An error has occurred while fetching new transactions. Please refresh the page.');
   }, []);
 
   const channel = useSocketChannel({
