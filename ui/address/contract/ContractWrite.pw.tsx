@@ -22,7 +22,7 @@ test('base view +@mobile', async({ mount, page }) => {
   }));
 
   const component = await mount(
-    <TestApp withWeb3>
+    <TestApp>
       <ContractWrite/>
     </TestApp>,
     { hooksConfig },

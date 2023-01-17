@@ -15,7 +15,6 @@ import theme from 'theme';
 type Props = {
   children: React.ReactNode;
   withSocket?: boolean;
-  withWeb3?: boolean;
   appContext?: {
     pageProps: PageProps;
   };
@@ -28,7 +27,30 @@ const defaultAppContext = {
   },
 };
 
-const TestApp = ({ children, withSocket, withWeb3, appContext = defaultAppContext }: Props) => {
+// >>> Web3 stuff
+const provider = new providers.JsonRpcProvider(
+  'http://localhost:8545',
+  {
+    name: 'POA',
+    chainId: 99,
+  },
+);
+
+const connector = new MockConnector({
+  chains: [ mainnet ],
+  options: {
+    signer: provider.getSigner(),
+  },
+});
+
+const wagmiClient = createClient({
+  autoConnect: true,
+  connectors: [ connector ],
+  provider,
+});
+// <<<<
+
+const TestApp = ({ children, withSocket, appContext = defaultAppContext }: Props) => {
   const [ queryClient ] = React.useState(() => new QueryClient({
     defaultOptions: {
       queries: {
@@ -38,46 +60,14 @@ const TestApp = ({ children, withSocket, withWeb3, appContext = defaultAppContex
     },
   }));
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [ wagmiClient ] = React.useState<any>(() => {
-    if (!withWeb3) {
-      return;
-    }
-
-    const provider = new providers.JsonRpcProvider(
-      'http://localhost:8545',
-      {
-        name: 'POA',
-        chainId: 99,
-      },
-    );
-
-    const connector = new MockConnector({
-      chains: [ mainnet ],
-      options: {
-        signer: provider.getSigner(),
-      },
-    });
-
-    return createClient({
-      autoConnect: true,
-      connectors: [ connector ],
-      provider,
-    });
-  });
-
-  const content = wagmiClient ? (
-    <WagmiConfig client={ wagmiClient }>
-      { children }
-    </WagmiConfig>
-  ) : children;
-
   return (
     <ChakraProvider theme={ theme }>
       <QueryClientProvider client={ queryClient }>
         <SocketProvider url={ withSocket ? `ws://localhost:${ PORT }` : undefined }>
           <AppContextProvider { ...appContext }>
-            { content }
+            <WagmiConfig client={ wagmiClient }>
+              { children }
+            </WagmiConfig>
           </AppContextProvider>
         </SocketProvider>
       </QueryClientProvider>

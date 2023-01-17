@@ -27,7 +27,7 @@ test('base view +@mobile +@dark-mode', async({ mount, page }) => {
   }));
 
   const component = await mount(
-    <TestApp withWeb3>
+    <TestApp>
       <ContractRead/>
     </TestApp>,
     { hooksConfig },
@@ -56,7 +56,7 @@ test('error result', async({ mount, page }) => {
   }));
 
   const component = await mount(
-    <TestApp withWeb3>
+    <TestApp>
       <ContractRead/>
     </TestApp>,
     { hooksConfig },
