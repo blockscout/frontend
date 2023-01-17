@@ -1,4 +1,4 @@
-import { Alert, AlertIcon, AlertTitle, chakra } from '@chakra-ui/react';
+import { Alert, AlertIcon, AlertTitle, chakra, Skeleton } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
@@ -6,6 +6,8 @@ import type { SocketMessage } from 'lib/socket/types';
 import type { IndexingStatus } from 'types/api/indexingStatus';
 
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
+import { useAppContext } from 'lib/appContext';
+import * as cookies from 'lib/cookies';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp, ndash } from 'lib/html-entities';
 import useSocketChannel from 'lib/socket/useSocketChannel';
@@ -14,7 +16,17 @@ import useSocketMessage from 'lib/socket/useSocketMessage';
 const IndexingAlert = ({ className }: { className?: string }) => {
   const isMobile = useIsMobile();
 
-  const { data } = useApiQuery('homepage_indexing_status');
+  const appProps = useAppContext();
+  const cookiesString = appProps.cookies;
+  const [ hasAlertCookie ] = React.useState(cookies.get(cookies.NAMES.INDEXING_ALERT, cookiesString) === 'true');
+
+  const { data, isError, isLoading } = useApiQuery('homepage_indexing_status');
+
+  React.useEffect(() => {
+    if (!isLoading && !isError) {
+      cookies.set(cookies.NAMES.INDEXING_ALERT, data.finished_indexing && data.finished_indexing_blocks ? 'false' : 'true');
+    }
+  }, [ data, isError, isLoading ]);
 
   const queryClient = useQueryClient();
 
@@ -62,8 +74,12 @@ const IndexingAlert = ({ className }: { className?: string }) => {
     handler: handleIntermalTxsIndexStatus,
   });
 
-  if (!data) {
+  if (isError) {
     return null;
+  }
+
+  if (isLoading) {
+    return hasAlertCookie ? <Skeleton h={{ base: '96px', lg: '48px' }} mb={ 6 } w="100%" className={ className }/> : null;
   }
 
   let content;
