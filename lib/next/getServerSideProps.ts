@@ -1,4 +1,4 @@
-import type { GetServerSideProps, GetServerSidePropsResult } from 'next';
+import type { GetServerSideProps } from 'next';
 
 export type Props = {
   cookies: string;
@@ -6,7 +6,7 @@ export type Props = {
   id?: string;
 }
 
-export const getServerSideProps: GetServerSideProps = async({ req, query }): Promise<GetServerSidePropsResult<Props>> => {
+export const getServerSideProps: GetServerSideProps<Props> = async({ req, query }) => {
   return {
     props: {
       cookies: req.headers.cookie || '',
