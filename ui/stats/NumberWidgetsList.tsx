@@ -4,16 +4,21 @@ import React from 'react';
 import useApiQuery from 'lib/api/useApiQuery';
 import formatNumberToMetricPrefix from 'lib/formatNumberToMetricPrefix';
 
+import DataFetchAlert from '../shared/DataFetchAlert';
 import NumberWidget from './NumberWidget';
 import NumberWidgetSkeleton from './NumberWidgetSkeleton';
 
 const skeletonsCount = 8;
 
 const NumberWidgetsList = () => {
-  const { data, isLoading } = useApiQuery('stats_counters');
+  const { data, isLoading, isError } = useApiQuery('stats_counters');
 
   const skeletonElement = [ ...Array(skeletonsCount) ]
     .map((e, i) => <NumberWidgetSkeleton key={ i }/>);
+
+  if (isError) {
+    return <DataFetchAlert/>;
+  }
 
   return (
     <Grid
@@ -27,7 +32,7 @@ const NumberWidgetsList = () => {
             <NumberWidget
               key={ id }
               label={ title }
-              value={ `${ formatNumberToMetricPrefix(Number(value)) } ${ units }` }
+              value={ `${ formatNumberToMetricPrefix(Number(value)) } ${ units ? units : '' }` }
             />
           );
         }) }

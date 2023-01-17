@@ -30,11 +30,25 @@ type Counter = {
   units: string;
 }
 
-export type Charts = {
-  chart: Array<ChartsItem>;
+export type StatsCharts = {
+  sections: Array<StatsChartsSection>;
 }
 
-export type ChartsItem ={
+export type StatsChartsSection = {
+  id: string;
+  title: string;
+  charts: Array<StatsChartInfo>;
+}
+
+export type StatsChartInfo = {
+  id: string;
+  title: string;
+  description: string;
+}
+
+export type StatsChart = { chart: Array<StatsChartItem> };
+
+export type StatsChartItem = {
   date: string;
   value: string;
 }

@@ -12,12 +12,16 @@ import useStats from '../stats/useStats';
 
 const Stats = () => {
   const {
-    section,
+    isLoading,
+    isError,
+    sections,
+    currentSection,
     handleSectionChange,
     interval,
     handleIntervalChange,
     debounceFilterCharts,
     displayedCharts,
+    filterQuery,
   } = useStats();
 
   return (
@@ -30,7 +34,8 @@ const Stats = () => {
 
       <Box mb={{ base: 6, sm: 8 }}>
         <StatsFilters
-          section={ section }
+          sections={ sections }
+          currentSection={ currentSection }
           onSectionChange={ handleSectionChange }
           interval={ interval }
           onIntervalChange={ handleIntervalChange }
@@ -39,6 +44,9 @@ const Stats = () => {
       </Box>
 
       <ChartsWidgetsList
+        filterQuery={ filterQuery }
+        isError={ isError }
+        isLoading={ isLoading }
         charts={ displayedCharts }
         interval={ interval }
       />

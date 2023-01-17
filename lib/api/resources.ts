@@ -22,7 +22,7 @@ import type { InternalTransactionsResponse } from 'types/api/internalTransaction
 import type { LogsResponseTx, LogsResponseAddress } from 'types/api/log';
 import type { RawTracesResponse } from 'types/api/rawTrace';
 import type { SearchResult, SearchResultFilters } from 'types/api/search';
-import type { Counters, Charts, HomeStats } from 'types/api/stats';
+import type { Counters, StatsCharts, StatsChart, HomeStats } from 'types/api/stats';
 import type { TokenCounters, TokenInfo, TokenHolders } from 'types/api/tokenInfo';
 import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
 import type { TransactionsResponseValidated, TransactionsResponsePending, Transaction } from 'types/api/transaction';
@@ -70,8 +70,13 @@ export const RESOURCES = {
     endpoint: appConfig.statsApi.endpoint,
     basePath: appConfig.statsApi.basePath,
   },
-  stats_charts: {
-    path: '/api/v1/charts/line',
+  stats_lines: {
+    path: '/api/v1/lines',
+    endpoint: appConfig.statsApi.endpoint,
+    basePath: appConfig.statsApi.basePath,
+  },
+  stats_line: {
+    path: '/api/v1/lines/:id',
     endpoint: appConfig.statsApi.endpoint,
     basePath: appConfig.statsApi.basePath,
   },
@@ -293,7 +298,8 @@ Q extends 'homepage_blocks' ? Array<Block> :
 Q extends 'homepage_txs' ? Array<Transaction> :
 Q extends 'homepage_indexing_status' ? IndexingStatus :
 Q extends 'stats_counters' ? Counters :
-Q extends 'stats_charts' ? Charts :
+Q extends 'stats_lines' ? StatsCharts :
+Q extends 'stats_line' ? StatsChart :
 Q extends 'blocks' ? BlocksResponse :
 Q extends 'block' ? Block :
 Q extends 'block_txs' ? BlockTransactionsResponse :
