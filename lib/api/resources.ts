@@ -14,6 +14,7 @@ import type {
   AddressTokensFilter,
   AddressTokensResponse,
 } from 'types/api/address';
+import type { AddressesResponse } from 'types/api/addresses';
 import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters } from 'types/api/block';
 import type { ChartMarketResponse, ChartTransactionResponse } from 'types/api/charts';
 import type { SmartContract, SmartContractReadMethod, SmartContractWriteMethod } from 'types/api/contract';
@@ -126,6 +127,13 @@ export const RESOURCES = {
   },
   tx_raw_trace: {
     path: '/api/v2/transactions/:id/raw-trace',
+  },
+
+  // ADDRESSES
+  addresses: {
+    path: '/api/v2/addresses/',
+    paginationFields: [ 'fetched_coin_balance' as const, 'hash' as const, 'items_count' as const ],
+    filterFields: [ ],
   },
 
   // ADDRESS
@@ -286,6 +294,7 @@ export type ResourceErrorAccount<T> = ResourceError<{ errors: T }>
 export type PaginatedResources = 'blocks' | 'block_txs' |
 'txs_validated' | 'txs_pending' |
 'tx_internal_txs' | 'tx_logs' | 'tx_token_transfers' |
+'addresses' |
 'address_txs' | 'address_internal_txs' | 'address_token_transfers' | 'address_blocks_validated' | 'address_coin_balance' |
 'search' |
 'address_logs' | 'address_tokens' |
@@ -321,6 +330,7 @@ Q extends 'tx_internal_txs' ? InternalTransactionsResponse :
 Q extends 'tx_logs' ? LogsResponseTx :
 Q extends 'tx_token_transfers' ? TokenTransferResponse :
 Q extends 'tx_raw_trace' ? RawTracesResponse :
+Q extends 'addresses' ? AddressesResponse :
 Q extends 'address' ? Address :
 Q extends 'address_counters' ? AddressCounters :
 Q extends 'address_token_balances' ? Array<AddressTokenBalance> :
