@@ -44,7 +44,7 @@ test('contract +@mobile', async({ mount, page }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('token +@mobile', async({ mount, page }) => {
+test('token', async({ mount, page }) => {
   await page.route(API_URL_ADDRESS, (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(addressMock.token),
