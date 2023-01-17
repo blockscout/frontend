@@ -16,8 +16,8 @@ const TokenTransferList = ({ data, baseAddress, showTxInfo, enableTimeIncrement 
   return (
     <Box>
       { data.map((item) => (
-        // eslint-disable-next-line react/jsx-key
         <TokenTransferListItem
+          key={ item.tx_hash + item.block_hash + item.log_index }
           { ...item }
           baseAddress={ baseAddress }
           showTxInfo={ showTxInfo }

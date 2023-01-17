@@ -37,6 +37,8 @@ interface TokenTransferBase {
   from: AddressParam;
   to: AddressParam;
   timestamp: string;
+  block_hash: string;
+  log_index: string;
 }
 
 export type TokenTransferPagination = {

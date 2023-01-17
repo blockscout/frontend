@@ -59,8 +59,13 @@ const TokenTransferTable = ({
           </Tr>
         ) }
         { data.map((item) => (
-          // eslint-disable-next-line react/jsx-key
-          <TokenTransferTableItem { ...item } baseAddress={ baseAddress } showTxInfo={ showTxInfo } enableTimeIncrement={ enableTimeIncrement }/>
+          <TokenTransferTableItem
+            key={ item.tx_hash + item.block_hash + item.log_index }
+            { ...item }
+            baseAddress={ baseAddress }
+            showTxInfo={ showTxInfo }
+            enableTimeIncrement={ enableTimeIncrement }
+          />
         )) }
       </Tbody>
     </Table>
