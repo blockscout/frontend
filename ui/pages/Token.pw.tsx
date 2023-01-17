@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
-import { withToken as contract } from 'mocks/address/address';
+import { token as contract } from 'mocks/address/address';
 import { tokenInfo, tokenCounters } from 'mocks/tokens/tokenInfo';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
