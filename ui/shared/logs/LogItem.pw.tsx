@@ -24,7 +24,8 @@ test('with decoded input data +@mobile +@dark-mode', async({ mount }) => {
         address={ addressMocks.withName }
         topics={ TOPICS }
         data={ DATA }
-        type="tx"
+        type="transaction"
+        tx_hash={ null }
       />
     </TestApp>,
   );
@@ -40,7 +41,8 @@ test('without decoded input data +@mobile', async({ mount }) => {
         address={ addressMocks.withoutName }
         topics={ TOPICS }
         data={ DATA }
-        type="tx"
+        type="transaction"
+        tx_hash={ null }
       />
     </TestApp>,
   );
