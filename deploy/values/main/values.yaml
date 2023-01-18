@@ -355,7 +355,7 @@ geth:
 scVerifier:
   enabled: true
   image:
-    _default: ghcr.io/blockscout/smart-contract-verifier:v0.6.0
+    _default: ghcr.io/blockscout/smart-contract-verifier:latest
   replicas:
     app: 1
   docker:
