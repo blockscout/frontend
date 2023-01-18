@@ -28,7 +28,6 @@ export default function useFetch() {
       headers: {
         ...(hasBody ? { 'Content-type': 'application/json' } : undefined),
         ...params?.headers,
-        // ...(token ? { 'x-csrf-token': token } : {}),
       },
     };
 
