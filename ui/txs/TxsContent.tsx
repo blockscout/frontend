@@ -9,10 +9,10 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
 import SkeletonList from 'ui/shared/skeletons/SkeletonList';
 import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
+import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 
 import TxsHeaderMobile from './TxsHeaderMobile';
 import TxsListItem from './TxsListItem';
-import TxsNewItemNotice from './TxsNewItemNotice';
 import TxsTable from './TxsTable';
 import useTxsSort from './useTxsSort';
 
@@ -25,12 +25,23 @@ type Props = {
   query: QueryResult;
   showBlockInfo?: boolean;
   showSocketInfo?: boolean;
+  socketInfoAlert?: string;
+  socketInfoNum?: number;
   currentAddress?: string;
   filter?: React.ReactNode;
   enableTimeIncrement?: boolean;
 }
 
-const TxsContent = ({ filter, query, showBlockInfo = true, showSocketInfo = true, currentAddress, enableTimeIncrement }: Props) => {
+const TxsContent = ({
+  filter,
+  query,
+  showBlockInfo = true,
+  showSocketInfo = true,
+  socketInfoAlert,
+  socketInfoNum,
+  currentAddress,
+  enableTimeIncrement,
+}: Props) => {
   const { data, isLoading, isError, setSortByField, setSortByValue, sorting } = useTxsSort(query);
   const isMobile = useIsMobile();
 
@@ -64,9 +75,14 @@ const TxsContent = ({ filter, query, showBlockInfo = true, showSocketInfo = true
         <Show below="lg" ssr={ false }>
           <Box>
             { showSocketInfo && (
-              <TxsNewItemNotice url={ window.location.href }>
+              <SocketNewItemsNotice
+                url={ window.location.href }
+                num={ socketInfoNum }
+                alert={ socketInfoAlert }
+                borderBottomRadius={ 0 }
+              >
                 { ({ content }) => <Box>{ content }</Box> }
-              </TxsNewItemNotice>
+              </SocketNewItemsNotice>
             ) }
             { txs.map(tx => (
               <TxsListItem
@@ -86,6 +102,8 @@ const TxsContent = ({ filter, query, showBlockInfo = true, showSocketInfo = true
             sorting={ sorting }
             showBlockInfo={ showBlockInfo }
             showSocketInfo={ showSocketInfo }
+            socketInfoAlert={ socketInfoAlert }
+            socketInfoNum={ socketInfoNum }
             top={ query.isPaginationVisible ? 80 : 0 }
             currentAddress={ currentAddress }
             enableTimeIncrement={ enableTimeIncrement }
