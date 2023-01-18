@@ -8,7 +8,7 @@ import type { ApiResource, ResourceName } from './resources';
 export default function buildUrl(
   _resource: ApiResource | ResourceName,
   pathParams?: Record<string, string | undefined>,
-  queryParams?: Record<string, string | number | undefined>,
+  queryParams?: Record<string, string | Array<string> | number | undefined>,
 ) {
   // FIXME
   // 1. I was not able to figure out how to send CORS with credentials from localhost

@@ -25,6 +25,7 @@ import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import InOutTag from 'ui/shared/InOutTag';
+import ListItemMobile from 'ui/shared/ListItemMobile';
 import TxStatus from 'ui/shared/TxStatus';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 import TxType from 'ui/txs/TxType';
@@ -43,7 +44,6 @@ const TxsListItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }:
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const iconColor = useColorModeValue('blue.600', 'blue.300');
-  const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
   const dataTo = tx.to ? tx.to : tx.created_contract;
 
   const isOut = Boolean(currentAddress && currentAddress === tx.from.hash);
@@ -53,7 +53,7 @@ const TxsListItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }:
 
   return (
     <>
-      <Box width="100%" borderBottom="1px solid" borderColor={ borderColor } _first={{ borderTop: '1px solid', borderColor }}>
+      <ListItemMobile display="block" width="100%" isAnimated key={ tx.hash }>
         <Flex justifyContent="space-between" mt={ 4 }>
           <HStack>
             <TxType types={ tx.tx_types }/>
@@ -139,7 +139,7 @@ const TxsListItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }:
           <Text as="span">Fee { appConfig.network.currency.symbol } </Text>
           <Text as="span" variant="secondary">{ getValueWithUnit(tx.fee.value).toFormat() }</Text>
         </Box>
-      </Box>
+      </ListItemMobile>
       <Modal isOpen={ isOpen } onClose={ onClose } size="full">
         <ModalContent paddingTop={ 4 }>
           <ModalCloseButton/>
