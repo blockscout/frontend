@@ -70,7 +70,6 @@ const LogTopic = ({ hex, index }: Props) => {
           borderRadius="base"
           value={ selectedDataType }
           onChange={ handleSelectChange }
-          focusBorderColor="none"
           mr={ 3 }
           flexShrink={ 0 }
           w="auto"
