@@ -1,4 +1,4 @@
-import { Hide, Show, Text } from '@chakra-ui/react';
+import { Flex, Hide, Icon, Show, Text, Tooltip, useColorModeValue } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -9,6 +9,7 @@ import type { AddressFromToFilter, AddressTokenTransferResponse } from 'types/ap
 import type { TokenType } from 'types/api/tokenInfo';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
+import crossIcon from 'icons/cross.svg';
 import { getResourceKey } from 'lib/api/useApiQuery';
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
 import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
@@ -24,6 +25,7 @@ import Pagination from 'ui/shared/Pagination';
 import SkeletonList from 'ui/shared/skeletons/SkeletonList';
 import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
+import TokenLogo from 'ui/shared/TokenLogo';
 import { flattenTotal } from 'ui/shared/TokenTransfer/helpers';
 import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
 import TokenTransferList from 'ui/shared/TokenTransfer/TokenTransferList';
@@ -68,14 +70,19 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
   const [ socketAlert, setSocketAlert ] = React.useState('');
   const [ newItemsCount, setNewItemsCount ] = React.useState(0);
 
+  const tokenFilter = router.query.token ? router.query.token.toString() : undefined;
+
   const [ filters, setFilters ] = React.useState<Filters>(
-    { type: getTokenFilterValue(router.query.type) || [], filter: getAddressFilterValue(router.query.filter) },
+    {
+      type: getTokenFilterValue(router.query.type) || [],
+      filter: getAddressFilterValue(router.query.filter),
+    },
   );
 
   const { isError, isLoading, data, pagination, onFilterChange, isPaginationVisible } = useQueryWithPages({
     resourceName: 'address_token_transfers',
     pathParams: { id: currentAddress },
-    filters: filters,
+    filters: tokenFilter ? { token: tokenFilter } : filters,
     scrollRef,
   });
 
@@ -89,6 +96,13 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
     onFilterChange({ ...filters, filter: filterVal });
     setFilters((prevState) => ({ ...prevState, filter: filterVal }));
   }, [ filters, onFilterChange ]);
+
+  const resetTokenFilter = React.useCallback(() => {
+    onFilterChange({});
+  }, [ onFilterChange ]);
+
+  const resetTokenIconColor = useColorModeValue('blue.600', 'blue.300');
+  const resetTokenIconHoverColor = useColorModeValue('blue.400', 'blue.200');
 
   const handleNewSocketMessage: SocketMessage.AddressTokenTransfer['handler'] = (payload) => {
     setSocketAlert('');
@@ -132,7 +146,7 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
     topic: `addresses:${ (router.query.id as string).toLowerCase() }`,
     onSocketClose: handleSocketClose,
     onSocketError: handleSocketError,
-    isDisabled: pagination.page !== 1,
+    isDisabled: pagination.page !== 1 || Boolean(tokenFilter),
   });
 
   useSocketMessage({
@@ -142,7 +156,7 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
   });
 
   const numActiveFilters = (filters.type?.length || 0) + (filters.filter ? 1 : 0);
-  const isActionBarHidden = !numActiveFilters && !data?.items.length;
+  const isActionBarHidden = !tokenFilter && !numActiveFilters && !data?.items.length;
 
   const content = (() => {
     if (isLoading) {
@@ -180,13 +194,13 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
             showTxInfo
             top={ 80 }
             enableTimeIncrement
-            showSocketInfo={ pagination.page === 1 }
+            showSocketInfo={ pagination.page === 1 && !tokenFilter }
             socketInfoAlert={ socketAlert }
             socketInfoNum={ newItemsCount }
           />
         </Hide>
         <Show below="lg">
-          { pagination.page === 1 && (
+          { pagination.page === 1 && !tokenFilter && (
             <SocketNewItemsNotice
               url={ window.location.href }
               num={ newItemsCount }
@@ -210,14 +224,37 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
     <>
       { !isActionBarHidden && (
         <ActionBar mt={ -6 }>
-          <TokenTransferFilter
-            defaultTypeFilters={ filters.type }
-            onTypeFilterChange={ handleTypeFilterChange }
-            appliedFiltersNum={ numActiveFilters }
-            withAddressFilter
-            onAddressFilterChange={ handleAddressFilterChange }
-            defaultAddressFilter={ filters.filter }
-          />
+          { tokenFilter && (
+            <Flex alignItems="center" py={ 1 }>
+              Filtered by token
+              <TokenLogo hash={ tokenFilter } boxSize={ 6 } mx={ 2 }/>
+              { tokenFilter }
+              { data?.items?.[0].token.name && ` (${ data?.items?.[0].token.name }) ` }
+              <Tooltip label="Reset filter">
+                <Flex>
+                  <Icon
+                    as={ crossIcon }
+                    boxSize={ 6 }
+                    ml={ 1 }
+                    color={ resetTokenIconColor }
+                    cursor="pointer"
+                    _hover={{ color: resetTokenIconHoverColor }}
+                    onClick={ resetTokenFilter }
+                  />
+                </Flex>
+              </Tooltip>
+            </Flex>
+          ) }
+          { !tokenFilter && (
+            <TokenTransferFilter
+              defaultTypeFilters={ filters.type }
+              onTypeFilterChange={ handleTypeFilterChange }
+              appliedFiltersNum={ numActiveFilters }
+              withAddressFilter
+              onAddressFilterChange={ handleAddressFilterChange }
+              defaultAddressFilter={ filters.filter }
+            />
+          ) }
           { isPaginationVisible && <Pagination ml="auto" { ...pagination }/> }
         </ActionBar>
       ) }
