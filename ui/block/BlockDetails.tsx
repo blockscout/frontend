@@ -31,7 +31,7 @@ const BlockDetails = () => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
   const router = useRouter();
 
-  const { data, isLoading, isError, error } = useApiQuery<'block', { status: number }>('block', {
+  const { data, isLoading, isError, error } = useApiQuery('block', {
     pathParams: { id: router.query.id?.toString() },
     queryOptions: { enabled: Boolean(router.query.id) },
   });
@@ -59,11 +59,11 @@ const BlockDetails = () => {
   }
 
   if (isError) {
-    if (error?.payload?.status === 404) {
-      return <span>This block has not been processed yet.</span>;
+    if (error?.status === 404) {
+      throw Error('Block not found', { cause: error as unknown as Error });
     }
 
-    if (error?.payload?.status === 422) {
+    if (error?.status === 422) {
       throw Error('Invalid block number', { cause: error as unknown as Error });
     }
 

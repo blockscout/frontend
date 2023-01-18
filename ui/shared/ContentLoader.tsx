@@ -9,9 +9,10 @@ const runnerAnimation = keyframes`
 
 interface Props {
   className?: string;
+  text?: string;
 }
 
-const ContentLoader = ({ className }: Props) => {
+const ContentLoader = ({ className, text }: Props) => {
   return (
     <Box display="inline-block" className={ className }>
       <Box
@@ -30,7 +31,9 @@ const ContentLoader = ({ className }: Props) => {
           borderRadius: 'full',
         }}
       />
-      <Text mt={ 6 } variant="secondary">Loading data, please wait... </Text>
+      <Text mt={ 6 } variant="secondary">
+        { text || 'Loading data, please wait...' }
+      </Text>
     </Box>
   );
 };

@@ -7,14 +7,14 @@ import type { AddressParam } from 'types/api/addressParams';
 import AddressContractIcon from 'ui/shared/address/AddressContractIcon';
 
 type Props = {
-  address: AddressParam;
+  address: Pick<AddressParam, 'is_contract' | 'hash' | 'implementation_name'>;
   className?: string;
 }
 
 const AddressIcon = ({ address, className }: Props) => {
   if (address.is_contract) {
     return (
-      <AddressContractIcon/>
+      <AddressContractIcon className={ className }/>
     );
   }
 

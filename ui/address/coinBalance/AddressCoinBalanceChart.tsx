@@ -4,7 +4,6 @@ import React from 'react';
 import appConfig from 'configs/app/config';
 import useApiQuery from 'lib/api/useApiQuery';
 import ChartWidget from 'ui/shared/chart/ChartWidget';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 interface Props {
   addressHash: string;
@@ -20,16 +19,9 @@ const AddressCoinBalanceChart = ({ addressHash }: Props) => {
     value: BigNumber(value).div(10 ** appConfig.network.currency.decimals).toNumber(),
   })), [ data ]);
 
-  if (isError) {
-    return <DataFetchAlert/>;
-  }
-
-  if (!items?.length) {
-    return null;
-  }
-
   return (
     <ChartWidget
+      isError={ isError }
       title="Balances"
       items={ items }
       isLoading={ isLoading }

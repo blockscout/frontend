@@ -1,4 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
+import difference from 'lodash/difference';
 import mapValues from 'lodash/mapValues';
 import omit from 'lodash/omit';
 import pick from 'lodash/pick';
@@ -43,7 +44,7 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
 
   const isMounted = React.useRef(false);
   const canGoBackwards = React.useRef(!router.query.page);
-  const queryParams = { ...filters, ...pageParams[page] };
+  const queryParams = { ...pageParams[page], ...filters };
 
   const scrollToTop = useCallback(() => {
     scrollRef?.current ? scrollRef.current.scrollIntoView(true) : animateScroll.scrollToTop({ duration: 0 });
@@ -73,7 +74,7 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
     setPage(prev => prev + 1);
 
     const nextPageQuery = { ...router.query };
-    Object.entries(nextPageParams).forEach(([ key, val ]) => nextPageQuery[key] = val.toString());
+    Object.entries(nextPageParams).forEach(([ key, val ]) => nextPageQuery[key] = String(val));
     nextPageQuery.page = String(page + 1);
     setHasPagination(true);
 
@@ -87,7 +88,7 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
     // we dont have pagination params for the first page
     let nextPageQuery: typeof router.query = { ...router.query };
     if (page === 2) {
-      nextPageQuery = omit(router.query, resource.paginationFields, 'page');
+      nextPageQuery = omit(router.query, difference(resource.paginationFields, resource.filterFields), 'page');
       canGoBackwards.current = true;
     } else {
       const nextPageParams = pageParams[page - 1];
@@ -102,13 +103,14 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
         page === 2 && queryClient.removeQueries({ queryKey: [ resourceName ] });
       });
     setHasPagination(true);
-  }, [ router, page, resource.paginationFields, pageParams, scrollToTop, queryClient, resourceName ]);
+  }, [ router, page, resource.paginationFields, resource.filterFields, pageParams, scrollToTop, queryClient, resourceName ]);
 
   const resetPage = useCallback(() => {
     queryClient.removeQueries({ queryKey: [ resourceName ] });
 
     scrollToTop();
-    router.push({ pathname: router.pathname, query: omit(router.query, resource.paginationFields, 'page') }, undefined, { shallow: true }).then(() => {
+    const nextRouterQuery = omit(router.query, difference(resource.paginationFields, resource.filterFields), 'page');
+    router.push({ pathname: router.pathname, query: nextRouterQuery }, undefined, { shallow: true }).then(() => {
       queryClient.removeQueries({ queryKey: [ resourceName ] });
       setPage(1);
       setPageParams({});
@@ -121,10 +123,10 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
     });
 
     setHasPagination(true);
-  }, [ queryClient, resourceName, router, resource.paginationFields, scrollToTop ]);
+  }, [ queryClient, resourceName, router, resource.paginationFields, resource.filterFields, scrollToTop ]);
 
   const onFilterChange = useCallback((newFilters: PaginationFilters<Resource> | undefined) => {
-    const newQuery = omit(router.query, resource.paginationFields, 'page', resource.filterFields);
+    const newQuery = omit<typeof router.query>(router.query, resource.paginationFields, 'page', resource.filterFields);
     if (newFilters) {
       Object.entries(newFilters).forEach(([ key, value ]) => {
         if (value && value.length) {
@@ -132,7 +134,7 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
         }
       });
     }
-
+    setHasPagination(false);
     scrollToTop();
     router.push(
       {
@@ -147,14 +149,12 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
     });
   }, [ router, resource.paginationFields, resource.filterFields, scrollToTop ]);
 
-  const hasPaginationParams = Object.keys(currPageParams || {}).length > 0;
   const nextPageParams = data?.next_page_params;
 
   const pagination = {
     page,
     onNextPageClick,
     onPrevPageClick,
-    hasPaginationParams,
     resetPage,
     hasNextPage: nextPageParams ? Object.keys(nextPageParams).length > 0 : false,
     canGoBackwards: canGoBackwards.current,

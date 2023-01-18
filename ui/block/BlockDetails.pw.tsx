@@ -27,7 +27,6 @@ test('regular block +@mobile +@dark-mode', async({ mount, page }) => {
     { hooksConfig },
   );
 
-  await page.waitForResponse(API_URL),
   await page.getByText('View details').click();
 
   await expect(component).toHaveScreenshot();
@@ -46,7 +45,6 @@ test('genesis block', async({ mount, page }) => {
     { hooksConfig },
   );
 
-  await page.waitForResponse(API_URL),
   await page.getByText('View details').click();
 
   await expect(component).toHaveScreenshot();

@@ -12,22 +12,22 @@ import NavigationDesktop from 'ui/snippets/navigation/NavigationDesktop';
 interface Props {
   children: React.ReactNode;
   wrapChildren?: boolean;
-  hideMobileHeaderOnScrollDown?: boolean;
   isHomePage?: boolean;
+  renderHeader?: () => React.ReactNode;
 }
 
 const Page = ({
   children,
   wrapChildren = true,
-  hideMobileHeaderOnScrollDown,
   isHomePage,
+  renderHeader,
 }: Props) => {
 
   useGetCsrfToken();
 
   const renderErrorScreen = React.useCallback((error?: Error) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const statusCode = (error?.cause as any)?.error?.status || 500;
+    const statusCode = (error?.cause as any)?.status || 500;
     const isInvalidTxHash = error?.message.includes('Invalid tx hash');
 
     if (wrapChildren) {
@@ -46,7 +46,10 @@ const Page = ({
     <Flex w="100%" minH="100vh" alignItems="stretch">
       <NavigationDesktop/>
       <Flex flexDir="column" flexGrow={ 1 } w={{ base: '100%', lg: 'auto' }}>
-        <Header isHomePage={ isHomePage } hideOnScrollDown={ hideMobileHeaderOnScrollDown }/>
+        { renderHeader ?
+          renderHeader() :
+          <Header isHomePage={ isHomePage }/>
+        }
         <ErrorBoundary renderErrorScreen={ renderErrorScreen }>
           { renderedChildren }
         </ErrorBoundary>

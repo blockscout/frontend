@@ -1,12 +1,4 @@
-import type { StatsSectionIds, StatsIntervalIds } from 'types/client/stats';
-
-export const STATS_SECTIONS: { [key in StatsSectionIds]?: string } = {
-  all: 'All stats',
-  accounts: 'Accounts',
-  blocks: 'Blocks',
-  transactions: 'Transactions',
-  gas: 'Gas',
-};
+import type { StatsIntervalIds } from 'types/client/stats';
 
 export const STATS_INTERVALS: { [key in StatsIntervalIds]: { title: string; start?: Date } } = {
   all: {

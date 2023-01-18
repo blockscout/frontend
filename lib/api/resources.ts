@@ -11,15 +11,18 @@ import type {
   AddressInternalTxsResponse,
   AddressTxsFilters,
   AddressTokenTransferFilters,
+  AddressTokensFilter,
+  AddressTokensResponse,
 } from 'types/api/address';
 import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters } from 'types/api/block';
 import type { ChartMarketResponse, ChartTransactionResponse } from 'types/api/charts';
-import type { SmartContract } from 'types/api/contract';
+import type { SmartContract, SmartContractReadMethod, SmartContractWriteMethod } from 'types/api/contract';
 import type { IndexingStatus } from 'types/api/indexingStatus';
 import type { InternalTransactionsResponse } from 'types/api/internalTransaction';
 import type { LogsResponseTx, LogsResponseAddress } from 'types/api/log';
 import type { RawTracesResponse } from 'types/api/rawTrace';
-import type { Stats, Charts, HomeStats } from 'types/api/stats';
+import type { SearchResult, SearchResultFilters } from 'types/api/search';
+import type { Counters, StatsCharts, StatsChart, HomeStats } from 'types/api/stats';
 import type { TokenCounters, TokenInfo, TokenHolders } from 'types/api/tokenInfo';
 import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
 import type { TransactionsResponseValidated, TransactionsResponsePending, Transaction } from 'types/api/transaction';
@@ -67,8 +70,13 @@ export const RESOURCES = {
     endpoint: appConfig.statsApi.endpoint,
     basePath: appConfig.statsApi.basePath,
   },
-  stats_charts: {
-    path: '/api/v1/charts/line',
+  stats_lines: {
+    path: '/api/v1/lines',
+    endpoint: appConfig.statsApi.endpoint,
+    basePath: appConfig.statsApi.basePath,
+  },
+  stats_line: {
+    path: '/api/v1/lines/:id',
     endpoint: appConfig.statsApi.endpoint,
     basePath: appConfig.statsApi.basePath,
   },
@@ -162,10 +170,30 @@ export const RESOURCES = {
     paginationFields: [ 'items_count' as const, 'transaction_index' as const, 'index' as const, 'block_number' as const ],
     filterFields: [ ],
   },
+  address_tokens: {
+    path: '/api/v2/addresses/:id/tokens',
+    paginationFields: [ 'items_count' as const, 'token_name' as const, 'token_type' as const, 'value' as const ],
+    filterFields: [ 'type' as const ],
+  },
 
   // CONTRACT
   contract: {
     path: '/api/v2/smart-contracts/:id',
+  },
+  contract_methods_read: {
+    path: '/api/v2/smart-contracts/:id/methods-read',
+  },
+  contract_methods_read_proxy: {
+    path: '/api/v2/smart-contracts/:id/methods-read-proxy',
+  },
+  contract_method_query: {
+    path: '/api/v2/smart-contracts/:id/query-read-method',
+  },
+  contract_methods_write: {
+    path: '/api/v2/smart-contracts/:id/methods-write',
+  },
+  contract_methods_write_proxy: {
+    path: '/api/v2/smart-contracts/:id/methods-write-proxy',
   },
 
   // TOKEN
@@ -201,6 +229,23 @@ export const RESOURCES = {
     path: '/api/v2/main-page/indexing-status',
   },
 
+  // SEARCH
+  search: {
+    path: '/api/v2/search',
+    paginationFields: [
+      'address_hash' as const,
+      'block_hash' as const,
+      'holder_count' as const,
+      'inserted_at' as const,
+      'item_type' as const,
+      'items_count' as const,
+      'name' as const,
+      'q' as const,
+      'tx_hash' as const,
+    ],
+    filterFields: [ 'q' ],
+  },
+
   // DEPRECATED
   old_api: {
     path: '/api',
@@ -231,7 +276,8 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'txs_validated' | 'txs_pending' |
 'tx_internal_txs' | 'tx_logs' | 'tx_token_transfers' |
 'address_txs' | 'address_internal_txs' | 'address_token_transfers' | 'address_blocks_validated' | 'address_coin_balance' |
-'address_logs' |
+'search' |
+'address_logs' | 'address_tokens' |
 'token_holders';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
@@ -251,8 +297,9 @@ Q extends 'homepage_chart_market' ? ChartMarketResponse :
 Q extends 'homepage_blocks' ? Array<Block> :
 Q extends 'homepage_txs' ? Array<Transaction> :
 Q extends 'homepage_indexing_status' ? IndexingStatus :
-Q extends 'stats_counters' ? Stats :
-Q extends 'stats_charts' ? Charts :
+Q extends 'stats_counters' ? Counters :
+Q extends 'stats_lines' ? StatsCharts :
+Q extends 'stats_line' ? StatsChart :
 Q extends 'blocks' ? BlocksResponse :
 Q extends 'block' ? Block :
 Q extends 'block_txs' ? BlockTransactionsResponse :
@@ -273,10 +320,16 @@ Q extends 'address_blocks_validated' ? AddressBlocksValidatedResponse :
 Q extends 'address_coin_balance' ? AddressCoinBalanceHistoryResponse :
 Q extends 'address_coin_balance_chart' ? AddressCoinBalanceHistoryChart :
 Q extends 'address_logs' ? LogsResponseAddress :
+Q extends 'address_tokens' ? AddressTokensResponse :
 Q extends 'token' ? TokenInfo :
 Q extends 'token_counters' ? TokenCounters :
 Q extends 'token_holders' ? TokenHolders :
+Q extends 'search' ? SearchResult :
 Q extends 'contract' ? SmartContract :
+Q extends 'contract_methods_read' ? Array<SmartContractReadMethod> :
+Q extends 'contract_methods_read_proxy' ? Array<SmartContractReadMethod> :
+Q extends 'contract_methods_write' ? Array<SmartContractWriteMethod> :
+Q extends 'contract_methods_write_proxy' ? Array<SmartContractWriteMethod> :
 never;
 /* eslint-enable @typescript-eslint/indent */
 
@@ -287,5 +340,7 @@ Q extends 'txs_validated' | 'txs_pending' ? TTxsFilters :
 Q extends 'tx_token_transfers' ? TokenTransferFilters :
 Q extends 'address_txs' | 'address_internal_txs' ? AddressTxsFilters :
 Q extends 'address_token_transfers' ? AddressTokenTransferFilters :
+Q extends 'address_tokens' ? AddressTokensFilter :
+Q extends 'search' ? SearchResultFilters :
 never;
 /* eslint-enable @typescript-eslint/indent */

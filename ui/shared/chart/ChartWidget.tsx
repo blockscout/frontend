@@ -1,4 +1,18 @@
-import { Box, Grid, Icon, IconButton, Menu, MenuButton, MenuItem, MenuList, Text, Tooltip, useColorModeValue, VisuallyHidden } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Grid,
+  Icon,
+  IconButton, Link,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Text,
+  Tooltip,
+  useColorModeValue,
+  VisuallyHidden,
+} from '@chakra-ui/react';
 import domToImage from 'dom-to-image';
 import React, { useRef, useCallback, useState } from 'react';
 
@@ -10,6 +24,7 @@ import scopeIcon from 'icons/scope.svg';
 import svgFileIcon from 'icons/svg_file.svg';
 import dotsIcon from 'icons/vertical_dots.svg';
 import dayjs from 'lib/date/dayjs';
+import { apos } from 'lib/html-entities';
 import saveAsCSV from 'lib/saveAsCSV';
 
 import ChartWidgetGraph from './ChartWidgetGraph';
@@ -22,11 +37,12 @@ type Props = {
   description?: string;
   isLoading: boolean;
   chartHeight?: string;
+  isError: boolean;
 }
 
 const DOWNLOAD_IMAGE_SCALE = 5;
 
-const ChartWidget = ({ items, title, description, isLoading, chartHeight }: Props) => {
+const ChartWidget = ({ items, title, description, isLoading, chartHeight, isError }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
   const [ isFullscreen, setIsFullscreen ] = useState(false);
   const [ isZoomResetInitial, setIsZoomResetInitial ] = React.useState(true);
@@ -92,64 +108,66 @@ const ChartWidget = ({ items, title, description, isLoading, chartHeight }: Prop
   }, [ items, title ]);
 
   if (isLoading) {
-    return <ChartWidgetSkeleton hasDescription={ Boolean(description) } chartHeight={ chartHeight }/>;
+    return <ChartWidgetSkeleton hasDescription={ Boolean(description) }/>;
   }
 
-  if (items) {
-    return (
-      <>
-        <Box
-          height={ chartHeight }
-          ref={ ref }
-          padding={{ base: 3, lg: 4 }}
-          borderRadius="md"
-          border="1px"
-          borderColor={ borderColor }
+  return (
+    <>
+      <Box
+        height={ chartHeight }
+        display="flex"
+        flexDirection="column"
+        ref={ ref }
+        padding={{ base: 3, lg: 4 }}
+        borderRadius="md"
+        border="1px"
+        borderColor={ borderColor }
+      >
+        <Grid
+          gridTemplateColumns="auto auto 36px"
+          gridColumnGap={ 2 }
         >
-          <Grid
-            gridTemplateColumns="auto auto 36px"
-            gridColumnGap={ 2 }
+          <Text
+            fontWeight={ 600 }
+            fontSize="md"
+            lineHeight={ 6 }
+            as="p"
+            size={{ base: 'xs', lg: 'sm' }}
           >
+            { title }
+          </Text>
+
+          { description && (
             <Text
-              fontWeight={ 600 }
-              fontSize="md"
-              lineHeight={ 6 }
+              mb={ 1 }
+              gridColumn={ 1 }
               as="p"
-              size={{ base: 'xs', lg: 'sm' }}
+              variant="secondary"
+              fontSize="xs"
             >
-              { title }
+              { description }
             </Text>
+          ) }
 
-            { description && (
-              <Text
-                mb={ 1 }
-                gridColumn={ 1 }
-                as="p"
-                variant="secondary"
-                fontSize="xs"
-              >
-                { description }
-              </Text>
-            ) }
+          <Tooltip label="Reset zoom">
+            <IconButton
+              hidden={ isZoomResetInitial }
+              aria-label="Reset zoom"
+              colorScheme="blue"
+              w={ 9 }
+              h={ 8 }
+              gridColumn={ 2 }
+              justifySelf="end"
+              alignSelf="top"
+              gridRow="1/3"
+              size="sm"
+              variant="outline"
+              onClick={ handleZoomResetClick }
+              icon={ <Icon as={ repeatArrowIcon } w={ 4 } h={ 4 }/> }
+            />
+          </Tooltip>
 
-            <Tooltip label="Reset zoom">
-              <IconButton
-                hidden={ isZoomResetInitial }
-                aria-label="Reset zoom"
-                colorScheme="blue"
-                w={ 9 }
-                h={ 8 }
-                gridColumn={ 2 }
-                justifySelf="end"
-                alignSelf="top"
-                gridRow="1/3"
-                size="sm"
-                variant="outline"
-                onClick={ handleZoomResetClick }
-                icon={ <Icon as={ repeatArrowIcon } w={ 4 } h={ 4 }/> }
-              />
-            </Tooltip>
-
+          { !isError && (
             <Menu>
               <MenuButton
                 gridColumn={ 3 }
@@ -195,9 +213,11 @@ const ChartWidget = ({ items, title, description, isLoading, chartHeight }: Prop
                 </MenuItem>
               </MenuList>
             </Menu>
-          </Grid>
+          ) }
+        </Grid>
 
-          <Box h={ chartHeight || 'auto' }>
+        { items ? (
+          <Box h={ chartHeight || 'auto' } maxW="100%">
             <ChartWidgetGraph
               margin={{ bottom: 20 }}
               items={ items }
@@ -206,8 +226,26 @@ const ChartWidget = ({ items, title, description, isLoading, chartHeight }: Prop
               title={ title }
             />
           </Box>
-        </Box>
+        ) : (
+          <Flex
+            alignItems="center"
+            justifyContent="center"
+            flexGrow={ 1 }
+            py={ 4 }
+          >
+            <Text
+              variant="secondary"
+              fontSize="sm"
+              textAlign="center"
+            >
+              { `The data didn${ apos }t load. Please, ` }
+              <Link href={ window.document.location.href }>try to reload the page.</Link>
+            </Text>
+          </Flex>
+        ) }
+      </Box>
 
+      { items && (
         <FullscreenChartModal
           isOpen={ isFullscreen }
           items={ items }
@@ -215,11 +253,9 @@ const ChartWidget = ({ items, title, description, isLoading, chartHeight }: Prop
           description={ description }
           onClose={ clearFullscreenChart }
         />
-      </>
-    );
-  }
-
-  return null;
+      ) }
+    </>
+  );
 };
 
 export default React.memo(ChartWidget);
