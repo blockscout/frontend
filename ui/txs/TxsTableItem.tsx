@@ -15,6 +15,7 @@ import {
   Show,
   Hide,
 } from '@chakra-ui/react';
+import { motion } from 'framer-motion';
 import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
@@ -65,7 +66,14 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }
 
   const infoBorderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
   return (
-    <Tr>
+    <Tr
+      as={ motion.tr }
+      initial={{ opacity: 0, scale: 0.97 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transitionDuration="normal"
+      transitionTimingFunction="linear"
+      key={ tx.hash }
+    >
       <Td pl={ 4 }>
         <Popover placement="right-start" openDelay={ 300 } isLazy>
           { ({ isOpen }) => (

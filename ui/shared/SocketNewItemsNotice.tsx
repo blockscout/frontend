@@ -2,34 +2,36 @@ import { Alert, Link, Text, chakra, useTheme, useColorModeValue } from '@chakra-
 import { transparentize } from '@chakra-ui/theme-tools';
 import React from 'react';
 
-import useNewTxsSocket from 'lib/hooks/useNewTxsSocket';
-
 interface InjectedProps {
   content: React.ReactNode;
 }
 
 interface Props {
+  type?: 'transaction' | 'token_transfer';
   children?: (props: InjectedProps) => JSX.Element;
   className?: string;
   url: string;
+  alert?: string;
+  num?: number;
 }
 
-const TxsNewItemNotice = ({ children, className, url }: Props) => {
-  const { num, socketAlert } = useNewTxsSocket();
+const SocketNewItemsNotice = ({ children, className, url, num, alert, type = 'transaction' }: Props) => {
   const theme = useTheme();
 
   const alertContent = (() => {
-    if (socketAlert) {
-      return socketAlert;
+    if (alert) {
+      return alert;
     }
 
+    const name = type === 'token_transfer' ? 'token transfer' : 'transaction';
+
     if (!num) {
-      return 'scanning new transactions...';
+      return `scanning new ${ name }s...`;
     }
 
     return (
       <>
-        <Link href={ url }>{ num } more transaction{ num > 1 ? 's' : '' }</Link>
+        <Link href={ url }>{ num } more { name }{ num > 1 ? 's' : '' }</Link>
         <Text whiteSpace="pre"> ha{ num > 1 ? 've' : 's' } come in</Text>
       </>
     );
@@ -53,4 +55,4 @@ const TxsNewItemNotice = ({ children, className, url }: Props) => {
   return children ? children({ content }) : content;
 };
 
-export default chakra(TxsNewItemNotice);
+export default chakra(SocketNewItemsNotice);
