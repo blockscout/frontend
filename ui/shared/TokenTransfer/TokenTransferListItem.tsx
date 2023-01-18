@@ -1,4 +1,4 @@
-import { Text, Flex, Tag, Icon, useColorModeValue, Box } from '@chakra-ui/react';
+import { Text, Flex, Tag, Icon, useColorModeValue } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -55,9 +55,9 @@ const TokenTransferListItem = ({
         <Tag flexShrink={ 0 } ml={ 2 } mr={ 2 }>{ token.type }</Tag>
         <Tag colorScheme="orange">{ getTokenTransferTypeText(type) }</Tag>
         { showTxInfo && txHash && (
-          <Box position="absolute" top={ 0 } right={ 0 }>
+          <Flex position="absolute" top={ 0 } right={ 0 }>
             <TxAdditionalInfo hash={ txHash } isMobile/>
-          </Box>
+          </Flex>
         ) }
       </Flex>
       { 'token_id' in total && <TokenTransferNft hash={ token.address } id={ total.token_id }/> }
