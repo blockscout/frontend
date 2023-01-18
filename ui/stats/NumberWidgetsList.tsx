@@ -4,17 +4,21 @@ import React from 'react';
 import useApiQuery from 'lib/api/useApiQuery';
 import formatNumberToMetricPrefix from 'lib/formatNumberToMetricPrefix';
 
-import { numberWidgetsScheme } from './constants/number-widgets-scheme';
+import DataFetchAlert from '../shared/DataFetchAlert';
 import NumberWidget from './NumberWidget';
 import NumberWidgetSkeleton from './NumberWidgetSkeleton';
 
 const skeletonsCount = 8;
 
 const NumberWidgetsList = () => {
-  const { data, isLoading } = useApiQuery('stats_counters');
+  const { data, isLoading, isError } = useApiQuery('stats_counters');
 
   const skeletonElement = [ ...Array(skeletonsCount) ]
     .map((e, i) => <NumberWidgetSkeleton key={ i }/>);
+
+  if (isError) {
+    return <DataFetchAlert/>;
+  }
 
   return (
     <Grid
@@ -22,20 +26,13 @@ const NumberWidgetsList = () => {
       gridGap={ 4 }
     >
       { isLoading ? skeletonElement :
-        numberWidgetsScheme.map(({ id, title, formatFn }) => {
-          if (!data?.counters[id]) {
-            return null;
-          }
-
-          const value = formatNumberToMetricPrefix(Number(data.counters[id]));
+        data?.counters?.map(({ id, title, value, units }) => {
 
           return (
             <NumberWidget
               key={ id }
               label={ title }
-              value={ formatFn ?
-                formatFn(value) :
-                value }
+              value={ `${ formatNumberToMetricPrefix(Number(value)) } ${ units ? units : '' }` }
             />
           );
         }) }

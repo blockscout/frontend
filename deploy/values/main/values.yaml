@@ -28,7 +28,7 @@ blockscout:
       - 'nginx.ingress.kubernetes.io/cors-allow-credentials: "true"'
       - 'nginx.ingress.kubernetes.io/cors-allow-methods: PUT, GET, POST, OPTIONS, DELETE, PATCH'
       - 'nginx.ingress.kubernetes.io/enable-cors: "true"'
-      - 'nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-csrf-token"'
+      - 'nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-csrf-token,x-bs-account-csrf"'
     host:
       _default: blockscout.test.blockscout.aws-k8s.blockscout.com
     # enable https
@@ -140,7 +140,7 @@ blockscout:
     ENABLE_RUST_VERIFICATION_SERVICE:
       _default: 'true'
     RUST_VERIFICATION_SERVICE_URL:
-      _default: http://sc-verifier-svc:8043
+      _default: http://sc-verifier-svc:80
     INDEXER_MEMORY_LIMIT:
       _default: 3
     ACCOUNT_ENABLED:
@@ -170,14 +170,14 @@ postgres:
   resources:
     limits:
       memory:
-        _default: "6Gi"
+        _default: "5Gi"
       cpu:
-        _default: "4"
+        _default: "1.5"
     requests:
       memory:
-        _default: "6Gi"
+        _default: "5Gi"
       cpu:
-        _default: "4"
+        _default: "1.5"
   # node label
   nodeSelector:
     enabled: true
@@ -376,14 +376,14 @@ scVerifier:
   resources:
     limits:
       memory:
-        _default: "0.5Gi"
+        _default: "0.05Gi"
       cpu:
-        _default: "0.25"
+        _default: "0.01"
     requests:
       memory:
-        _default: "0.5Gi"
+        _default: "0.05Gi"
       cpu:
-        _default: "0.25"
+        _default: "0.01"
   # node label
   nodeSelector:
     enabled: true
@@ -469,20 +469,20 @@ frontend:
         - "/tx"
         - "/blocks"
         - "/block"
-        - "/address"
+        # - "/address"
         - "/stats"
         - "/search-results"
   resources:
     limits:
       memory:
-        _default: "0.3Gi"
+        _default: "0.1Gi"
       cpu:
-        _default: "0.2"
+        _default: "0.1"
     requests:
       memory:
-        _default: "0.3Gi"
+        _default: "0.1Gi"
       cpu:
-        _default: "0.2"
+        _default: "0.1"
   # node label
   nodeSelector:
     enabled: true
@@ -521,7 +521,7 @@ frontend:
     NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM:
       _default: https://airtable.com/shrqUAcjgGJ4jU88C
     NEXT_PUBLIC_MARKETPLACE_APP_LIST:
-      _default: "[{'author': 'Blockscout','id':'token-approval-tracker','title':'Token Approval Tracker','logo':'https://approval-tracker.apps.blockscout.com/icon-192.png','categories':['security','tools'],'shortDescription':'Token Approval Tracker shows all approvals for any ERC20-compliant tokens and NFTs and lets to revoke them or adjust the approved amount.','site':'https://docs.blockscout.com/for-users/blockscout-apps/token-approval-tracker','description':'Token Approval Tracker shows all approvals for any ERC20-compliant tokens and NFTs and lets to revoke them or adjust the approved amount.','url':'https://approval-tracker.apps.blockscout.com/'},{'author': 'Revoke','id':'revoke.cash','title':'Revoke.cash','logo':'https://www.gitbook.com/cdn-cgi/image/width=32,dpr=2.200000047683716,format=auto/https%3A%2F%2Ffiles.gitbook.com%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F-Lq1XoWGmy8zggj_u2fM%252Fuploads%252FVBMGyUFnd6CScjfK7CYQ%252Frevoke_sing.png%3Falt%3Dmedia%26token%3D9ab94986-7ab1-41c8-bf7e-d9ce11d23182','categories':['security','tools'],'shortDescription': 'Revoke.cash comes in as a preventative tool to manage your token allowances and practice proper wallet hygiene. By regularly revoking active allowances you reduce the chances of becoming the victim of allowance exploits.','site': 'https://revoke.cash/about','description': 'Revoke.cash comes in as a preventative tool to manage your token allowances and practice proper wallet hygiene. By regularly revoking active allowances you reduce the chances of becoming the victim of allowance exploits.','url':'https://revoke.cash/'},{'author':'Aave','id': 'aave','title': 'Aave','logo': 'https://www.gitbook.com/cdn-cgi/image/width=32,dpr=2.200000047683716,format=auto/https%3A%2F%2Ffiles.gitbook.com%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F-Lq1XoWGmy8zggj_u2fM%252Fuploads%252FrZkUTIUCG7Zx8BW6Em34%252FAave.png%3Falt%3Dmedia%26token%3D249797a4-4c1e-4372-9cd2-3e48e05e5f30','categories':['tools'],'shortDescription':'Aave is a decentralised non-custodial liquidity market protocol where users can participate as suppliers or borrowers. Suppliers provide liquidity to the market to earn a passive income, while borrowers are able to borrow in an overcollateralised (perpetually) or undercollateralised (one-block liquidity) fashion.','site': 'https://docs.aave.com/faq/','description': 'Aave is a decentralised non-custodial liquidity market protocol where users can participate as suppliers or borrowers. Suppliers provide liquidity to the market to earn a passive income, while borrowers are able to borrow in an overcollateralised (perpetually) or undercollateralised (one-block liquidity) fashion.','url': 'https://staging.aave.com/'},{'author':'LooksRare','id':'looksrare','external':true,'title':'LooksRare','logo': 'https://www.gitbook.com/cdn-cgi/image/width=32,dpr=2.200000047683716,format=auto/https%3A%2F%2Ffiles.gitbook.com%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F-Lq1XoWGmy8zggj_u2fM%252Fuploads%252FeAI4gy3qPMt68mZOZHAx%252FLooksRare.png%3Falt%3Dmedia%26token%3D44c01439-ae09-40aa-b904-3a9ce5b2e002','categories':['tools'],'shortDescription': 'LooksRare is the web3 NFT Marketplace where traders and collectors have earned over $1.3 Billion in rewards.','site':'https://docs.looksrare.org/about/welcome-to-looksrare','description':'LooksRare is the web3 NFT Marketplace where traders and collectors have earned over $1.3 Billion in rewards.','url': 'https://goerli.looksrare.org/'},{'author':'zkSync Bridge','id':'zksync-bridge','external':true,'title':'zkSync Bridge','logo':'https://www.gitbook.com/cdn-cgi/image/width=32,dpr=2.200000047683716,format=auto/https%3A%2F%2Ffiles.gitbook.com%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F-Lq1XoWGmy8zggj_u2fM%252Fuploads%252FrtQsaAz9BjGBc35tVAnq%252FzkSync.png%3Falt%3Dmedia%26token%3D5c18171c-8ccf-4a88-8f44-680cbf238115','categories':['security','tools'],'shortDescription':'zkSync 2.0 Goerli Bridge','site':'https://v2-docs.zksync.io/dev/','description':'zkSync 2.0 Goerli Bridge','url':'https://portal.zksync.io/bridge'},{'author':'dYdX','id':'dydx','external':true,'title':'dYdX','logo':'https://www.gitbook.com/cdn-cgi/image/width=32,dpr=2.200000047683716,format=auto/https%3A%2F%2Ffiles.gitbook.com%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F-Lq1XoWGmy8zggj_u2fM%252Fuploads%252FCrOglR72wpi0UhEscwe4%252Fdxdy.png%3Falt%3Dmedia%26token%3D8811909e-93e3-487c-9614-dffce37223e9','categories': ['security','tools'],'shortDescription':'dYdX is a leading decentralized exchange that currently supports perpetual trading. dYdX runs on smart contracts on the Ethereum blockchain, and allows users to trade with no intermediaries.','site':'https://help.dydx.exchange/en/articles/3047379-introduction-and-overview','description':'dYdX is a leading decentralized exchange that currently supports perpetual trading. dYdX runs on smart contracts on the Ethereum blockchain, and allows users to trade with no intermediaries.','url':'https://trade.stage.dydx.exchange/portfolio/overview'},{'author':'MetalSwap','id':'metalswap','title':'MetalSwap','logo':'https://www.gitbook.com/cdn-cgi/image/width=32,dpr=2.200000047683716,format=auto/https%3A%2F%2Ffiles.gitbook.com%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F-Lq1XoWGmy8zggj_u2fM%252Fuploads%252F8xqldTvxb6avrwVVc3rS%252FMetalSwap.png%3Falt%3Dmedia%26token%3D92d2db99-853a-487d-8d8c-8cdeaeaaf014','categories':['security','tools'],'shortDescription':'MetalSwap is a decentralised platform that enables hedging swaps in financial markets with the aim of providing a hedge for commodity traders and an investment opportunity for those who contribute to the shared liquidity of the project.','site':'https://docs.metalswap.finance/','description':'MetalSwap is a decentralised platform that enables hedging swaps in financial markets with the aim of providing a hedge for commodity traders and an investment opportunity for those who contribute to the shared liquidity of the project.','url':'https://demo.metalswap.finance/'},{'author':'FaucetDao','id':'faucetdao','title':'FaucetDao','logo':'https://www.gitbook.com/cdn-cgi/image/width=32,dpr=2.200000047683716,format=auto/https%3A%2F%2Ffiles.gitbook.com%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F-Lq1XoWGmy8zggj_u2fM%252Fuploads%252Ffnnt3ZNZhzRwqMM5YYjD%252FPlaceholder.png%3Falt%3Dmedia%26token%3D507571bb-d76f-4d96-a35e-2b278608f7ca','categories':['tools'],'shortDescription':'FaucetDao is a decentralised community fund providing liquidity and support to early-stage well vetted blockchain projects.','site':'https://linktr.ee/faucet_dao','description':'FaucetDao is a decentralised community fund providing liquidity and support to early-stage well vetted blockchain projects.','url':'https://www.faucetdao.shop/swap?chain=goerli'},{'author':'Uniswap','id':'uniswap','title':'Uniswap','logo':'https://www.gitbook.com/cdn-cgi/image/width=32,dpr=2.200000047683716,format=auto/https%3A%2F%2Ffiles.gitbook.com%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F-Lq1XoWGmy8zggj_u2fM%252Fuploads%252FJc0QAyeaBmFIL97tSmGv%252FUniswap.png%3Falt%3Dmedia%26token%3D5d25d796-c273-4e22-92fa-ff85206bec76','categories':['tools'],'shortDescription':'Uniswap is a cryptocurrency exchange which uses a decentralized network protocol.','site':'https://docs.uniswap.org/','description':'Uniswap is a cryptocurrency exchange which uses a decentralized network protocol.','url':'https://app.uniswap.org/swap'}]"
+      _default: "[{'author': 'Blockscout','id':'token-approval-tracker','title':'Token Approval Tracker','logo':'https://approval-tracker-main.test.aws-k8s.blockscout.com/icon-192.png','categories':['security','tools'],'shortDescription':'Token Approval Tracker shows all approvals for any ERC20-compliant tokens and NFTs and lets to revoke them or adjust the approved amount.','site':'https://docs.blockscout.com/for-users/blockscout-apps/token-approval-tracker','description':'Token Approval Tracker shows all approvals for any ERC20-compliant tokens and NFTs and lets to revoke them or adjust the approved amount.','url':'https://approval-tracker-main.test.aws-k8s.blockscout.com/'},{'author': 'Revoke','id':'revoke.cash','title':'Revoke.cash','logo':'https://www.gitbook.com/cdn-cgi/image/width=288,dpr=2.200000047683716,format=auto/https%3A%2F%2Ffiles.gitbook.com%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F-Lq1XoWGmy8zggj_u2fM%252Fuploads%252FVBMGyUFnd6CScjfK7CYQ%252Frevoke_sing.png%3Falt%3Dmedia%26token%3D9ab94986-7ab1-41c8-bf7e-d9ce11d23182','categories':['security','tools'],'shortDescription': 'Revoke.cash comes in as a preventative tool to manage your token allowances and practice proper wallet hygiene. By regularly revoking active allowances you reduce the chances of becoming the victim of allowance exploits.','site': 'https://revoke.cash/about','description': 'Revoke.cash comes in as a preventative tool to manage your token allowances and practice proper wallet hygiene. By regularly revoking active allowances you reduce the chances of becoming the victim of allowance exploits.','url':'https://revoke.cash/'},{'author':'Aave','id': 'aave','title': 'Aave','logo': 'https://www.gitbook.com/cdn-cgi/image/width=288,dpr=2.200000047683716,format=auto/https%3A%2F%2Ffiles.gitbook.com%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F-Lq1XoWGmy8zggj_u2fM%252Fuploads%252FrZkUTIUCG7Zx8BW6Em34%252FAave.png%3Falt%3Dmedia%26token%3D249797a4-4c1e-4372-9cd2-3e48e05e5f30','categories':['tools'],'shortDescription':'Aave is a decentralised non-custodial liquidity market protocol where users can participate as suppliers or borrowers. Suppliers provide liquidity to the market to earn a passive income, while borrowers are able to borrow in an overcollateralised (perpetually) or undercollateralised (one-block liquidity) fashion.','site': 'https://docs.aave.com/faq/','description': 'Aave is a decentralised non-custodial liquidity market protocol where users can participate as suppliers or borrowers. Suppliers provide liquidity to the market to earn a passive income, while borrowers are able to borrow in an overcollateralised (perpetually) or undercollateralised (one-block liquidity) fashion.','url': 'https://staging.aave.com/'},{'author':'LooksRare','id':'looksrare','external':true,'title':'LooksRare','logo': 'https://www.gitbook.com/cdn-cgi/image/width=288,dpr=2.200000047683716,format=auto/https%3A%2F%2Ffiles.gitbook.com%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F-Lq1XoWGmy8zggj_u2fM%252Fuploads%252FeAI4gy3qPMt68mZOZHAx%252FLooksRare.png%3Falt%3Dmedia%26token%3D44c01439-ae09-40aa-b904-3a9ce5b2e002','categories':['tools'],'shortDescription': 'LooksRare is the web3 NFT Marketplace where traders and collectors have earned over $1.3 Billion in rewards.','site':'https://docs.looksrare.org/about/welcome-to-looksrare','description':'LooksRare is the web3 NFT Marketplace where traders and collectors have earned over $1.3 Billion in rewards.','url': 'https://goerli.looksrare.org/'},{'author':'zkSync Bridge','id':'zksync-bridge','external':true,'title':'zkSync Bridge','logo':'https://www.gitbook.com/cdn-cgi/image/width=288,dpr=2.200000047683716,format=auto/https%3A%2F%2Ffiles.gitbook.com%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F-Lq1XoWGmy8zggj_u2fM%252Fuploads%252FrtQsaAz9BjGBc35tVAnq%252FzkSync.png%3Falt%3Dmedia%26token%3D5c18171c-8ccf-4a88-8f44-680cbf238115','categories':['security','tools'],'shortDescription':'zkSync 2.0 Goerli Bridge','site':'https://v2-docs.zksync.io/dev/','description':'zkSync 2.0 Goerli Bridge','url':'https://portal.zksync.io/bridge'},{'author':'dYdX','id':'dydx','external':true,'title':'dYdX','logo':'https://www.gitbook.com/cdn-cgi/image/width=288,dpr=2.200000047683716,format=auto/https%3A%2F%2Ffiles.gitbook.com%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F-Lq1XoWGmy8zggj_u2fM%252Fuploads%252FCrOglR72wpi0UhEscwe4%252Fdxdy.png%3Falt%3Dmedia%26token%3D8811909e-93e3-487c-9614-dffce37223e9','categories': ['security','tools'],'shortDescription':'dYdX is a leading decentralized exchange that currently supports perpetual trading. dYdX runs on smart contracts on the Ethereum blockchain, and allows users to trade with no intermediaries.','site':'https://help.dydx.exchange/en/articles/3047379-introduction-and-overview','description':'dYdX is a leading decentralized exchange that currently supports perpetual trading. dYdX runs on smart contracts on the Ethereum blockchain, and allows users to trade with no intermediaries.','url':'https://trade.stage.dydx.exchange/portfolio/overview'},{'author':'MetalSwap','id':'metalswap','title':'MetalSwap','logo':'https://www.gitbook.com/cdn-cgi/image/width=288,dpr=2.200000047683716,format=auto/https%3A%2F%2Ffiles.gitbook.com%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F-Lq1XoWGmy8zggj_u2fM%252Fuploads%252F8xqldTvxb6avrwVVc3rS%252FMetalSwap.png%3Falt%3Dmedia%26token%3D92d2db99-853a-487d-8d8c-8cdeaeaaf014','categories':['security','tools'],'shortDescription':'MetalSwap is a decentralised platform that enables hedging swaps in financial markets with the aim of providing a hedge for commodity traders and an investment opportunity for those who contribute to the shared liquidity of the project.','site':'https://docs.metalswap.finance/','description':'MetalSwap is a decentralised platform that enables hedging swaps in financial markets with the aim of providing a hedge for commodity traders and an investment opportunity for those who contribute to the shared liquidity of the project.','url':'https://demo.metalswap.finance/'},{'author':'FaucetDao','id':'faucetdao','title':'FaucetDao','logo':'https://www.gitbook.com/cdn-cgi/image/width=288,dpr=2.200000047683716,format=auto/https%3A%2F%2Ffiles.gitbook.com%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F-Lq1XoWGmy8zggj_u2fM%252Fuploads%252Ffnnt3ZNZhzRwqMM5YYjD%252FPlaceholder.png%3Falt%3Dmedia%26token%3D507571bb-d76f-4d96-a35e-2b278608f7ca','categories':['tools'],'shortDescription':'FaucetDao is a decentralised community fund providing liquidity and support to early-stage well vetted blockchain projects.','site':'https://linktr.ee/faucet_dao','description':'FaucetDao is a decentralised community fund providing liquidity and support to early-stage well vetted blockchain projects.','url':'https://www.faucetdao.shop/swap?chain=goerli'},{'author':'Uniswap','id':'uniswap','title':'Uniswap','logo':'https://www.gitbook.com/cdn-cgi/image/width=288,dpr=2.200000047683716,format=auto/https%3A%2F%2Ffiles.gitbook.com%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F-Lq1XoWGmy8zggj_u2fM%252Fuploads%252FJc0QAyeaBmFIL97tSmGv%252FUniswap.png%3Falt%3Dmedia%26token%3D5d25d796-c273-4e22-92fa-ff85206bec76','categories':['tools'],'shortDescription':'Uniswap is a cryptocurrency exchange which uses a decentralized network protocol.','site':'https://docs.uniswap.org/','description':'Uniswap is a cryptocurrency exchange which uses a decentralized network protocol.','url':'https://app.uniswap.org/swap'}]"
     # api config
     NEXT_PUBLIC_API_BASE_PATH:
       _default: /

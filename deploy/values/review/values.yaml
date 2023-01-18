@@ -326,14 +326,14 @@ frontend:
   resources:
     limits:
       memory:
-        _default: "0.3Gi"
+        _default: "0.1Gi"
       cpu:
-        _default: "0.2"
+        _default: "0.1"
     requests:
       memory:
-        _default: "0.3Gi"
+        _default: "0.1Gi"
       cpu:
-        _default: "0.2"
+        _default: "0.1"
   # node label
   nodeSelector:
     enabled: true
@@ -401,4 +401,3 @@ frontend:
       _default: https://rpc.ankr.com/eth_goerli
     NEXT_PUBLIC_NETWORK_EXPLORERS:
       _default: "[{'title':'Anyblock','baseUrl':'https://explorer.anyblock.tools','paths':{'tx':'/ethereum/ethereum/goerli/transaction','address':'/ethereum/ethereum/goerli/address'}},{'title':'Etherscan','baseUrl':'https://goerli.etherscan.io/','paths':{'tx':'/tx','address':'/address'}}]"
-

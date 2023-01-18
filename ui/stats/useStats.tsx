@@ -1,43 +1,47 @@
 import debounce from 'lodash/debounce';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-import type { StatsChart, StatsIntervalIds, StatsSection, StatsSectionIds } from 'types/client/stats';
+import type { StatsChartInfo, StatsChartsSection } from 'types/api/stats';
+import type { StatsIntervalIds } from 'types/client/stats';
 
-import { statsChartsScheme } from './constants/charts-scheme';
+import useApiQuery from 'lib/api/useApiQuery';
 
-function isSectionMatches(section: StatsSection, currentSection: StatsSectionIds): boolean {
+function isSectionMatches(section: StatsChartsSection, currentSection: string): boolean {
   return currentSection === 'all' || section.id === currentSection;
 }
 
-function isChartNameMatches(q: string, chart: StatsChart) {
+function isChartNameMatches(q: string, chart: StatsChartInfo) {
   return chart.title.toLowerCase().includes(q.toLowerCase());
 }
 
 export default function useStats() {
-  const [ displayedCharts, setDisplayedCharts ] = useState<Array<StatsSection>>(statsChartsScheme);
-  const [ section, setSection ] = useState<StatsSectionIds>('all');
-  const [ interval, setInterval ] = useState<StatsIntervalIds>('oneMonth');
+  const { data, isLoading, isError } = useApiQuery('stats_lines');
+
+  const [ currentSection, setCurrentSection ] = useState('all');
   const [ filterQuery, setFilterQuery ] = useState('');
+  const [ displayedCharts, setDisplayedCharts ] = useState(data?.sections);
+  const [ interval, setInterval ] = useState<StatsIntervalIds>('oneMonth');
+  const sectionIds = useMemo(() => data?.sections?.map(({ id }) => id), [ data ]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debounceFilterCharts = useCallback(debounce(q => setFilterQuery(q), 500), []);
 
-  const filterCharts = useCallback((q: string, currentSection: StatsSectionIds) => {
-    const charts = statsChartsScheme
-      ?.map((section: StatsSection) => {
-        const charts = section.charts.filter((chart: StatsChart) => isSectionMatches(section, currentSection) && isChartNameMatches(q, chart));
+  const filterCharts = useCallback((q: string, currentSection: string) => {
+    const charts = data?.sections
+      ?.map((section) => {
+        const charts = section.charts.filter((chart) => isSectionMatches(section, currentSection) && isChartNameMatches(q, chart));
 
         return {
           ...section,
           charts,
         };
-      }).filter((section: StatsSection) => section.charts.length > 0);
+      }).filter((section) => section.charts.length > 0);
 
     setDisplayedCharts(charts || []);
-  }, []);
+  }, [ data ]);
 
-  const handleSectionChange = useCallback((newSection: StatsSectionIds) => {
-    setSection(newSection);
+  const handleSectionChange = useCallback((newSection: string) => {
+    setCurrentSection(newSection);
   }, []);
 
   const handleIntervalChange = useCallback((newInterval: StatsIntervalIds) => {
@@ -45,18 +49,28 @@ export default function useStats() {
   }, []);
 
   useEffect(() => {
-    filterCharts(filterQuery, section);
-  }, [ filterQuery, section, filterCharts ]);
+    filterCharts(filterQuery, currentSection);
+  }, [ filterQuery, currentSection, filterCharts ]);
 
   return React.useMemo(() => ({
-    section,
+    sections: data?.sections,
+    sectionIds,
+    isLoading,
+    isError,
+    filterQuery,
+    currentSection,
     handleSectionChange,
     interval,
     handleIntervalChange,
     debounceFilterCharts,
     displayedCharts,
   }), [
-    section,
+    data,
+    sectionIds,
+    isLoading,
+    isError,
+    filterQuery,
+    currentSection,
     handleSectionChange,
     interval,
     handleIntervalChange,

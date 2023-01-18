@@ -236,9 +236,10 @@ const ChartWidget = ({ items, title, description, isLoading, chartHeight, isErro
             <Text
               variant="secondary"
               fontSize="sm"
+              textAlign="center"
             >
-              { `Data didn${ apos }t load, please ` }
-              <Link href={ window.document.location.href }>try to reload page.</Link>
+              { `The data didn${ apos }t load. Please, ` }
+              <Link href={ window.document.location.href }>try to reload the page.</Link>
             </Text>
           </Flex>
         ) }
