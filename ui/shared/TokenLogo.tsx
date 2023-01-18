@@ -16,6 +16,9 @@ const EmptyElement = ({ className }: { className?: string }) => {
       color={ color }
       borderRadius="base"
       as={ tokenPlaceholderIcon }
+      transitionProperty="background-color,color"
+      transitionDuration="normal"
+      transitionTimingFunction="ease"
     />
   );
 };
