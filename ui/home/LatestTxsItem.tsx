@@ -46,7 +46,7 @@ const LatestBlocksItem = ({ tx }: Props) => {
       _last={{ borderBottom: '1px solid', borderColor }}
     >
       <Flex justifyContent="space-between" width="100%" alignItems="start" flexDirection={{ base: 'column', lg: 'row' }}>
-        { !isMobile && <TxAdditionalInfo tx={ tx }/> }
+        { !isMobile && <Flex mr={ 3 }><TxAdditionalInfo tx={ tx }/></Flex> }
         <Box width={{ base: '100%', lg: 'calc(50% - 32px)' }}>
           <Flex justifyContent="space-between">
             <HStack>
