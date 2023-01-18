@@ -1,4 +1,4 @@
-import { Text, Flex, Tag, Icon, useColorModeValue } from '@chakra-ui/react';
+import { Text, Flex, Tag, Icon, useColorModeValue, Box } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -7,7 +7,6 @@ import type { TokenTransfer } from 'types/api/tokenTransfer';
 import eastArrowIcon from 'icons/arrows/east.svg';
 import transactionIcon from 'icons/transactions.svg';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import AdditionalInfoButton from 'ui/shared/AdditionalInfoButton';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -16,6 +15,7 @@ import ListItemMobile from 'ui/shared/ListItemMobile';
 import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
 import { getTokenTransferTypeText } from 'ui/shared/TokenTransfer/helpers';
 import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
+import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 
 type Props = TokenTransfer & {
   baseAddress?: string;
@@ -54,10 +54,14 @@ const TokenTransferListItem = ({
         <TokenSnippet hash={ token.address } w="auto" maxW="calc(100% - 140px)" name={ token.name || 'Unnamed token' }/>
         <Tag flexShrink={ 0 } ml={ 2 } mr={ 2 }>{ token.type }</Tag>
         <Tag colorScheme="orange">{ getTokenTransferTypeText(type) }</Tag>
-        { showTxInfo && <AdditionalInfoButton position="absolute" top={ 0 } right={ 0 }/> }
+        { showTxInfo && txHash && (
+          <Box position="absolute" top={ 0 } right={ 0 }>
+            <TxAdditionalInfo hash={ txHash } isMobile/>
+          </Box>
+        ) }
       </Flex>
       { 'token_id' in total && <TokenTransferNft hash={ token.address } id={ total.token_id }/> }
-      { showTxInfo && (
+      { showTxInfo && txHash && (
         <Flex justifyContent="space-between" alignItems="center" lineHeight="24px" width="100%">
           <Flex>
             <Icon

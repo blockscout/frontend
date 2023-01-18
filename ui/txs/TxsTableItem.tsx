@@ -7,11 +7,6 @@ import {
   Icon,
   VStack,
   Text,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverBody,
-  useColorModeValue,
   Show,
   Hide,
 } from '@chakra-ui/react';
@@ -22,7 +17,6 @@ import type { Transaction } from 'types/api/transaction';
 import rightArrowIcon from 'icons/arrows/east.svg';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import link from 'lib/link/link';
-import AdditionalInfoButton from 'ui/shared/AdditionalInfoButton';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -63,24 +57,10 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }
     </Address>
   );
 
-  const infoBorderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
   return (
     <Tr>
       <Td pl={ 4 }>
-        <Popover placement="right-start" openDelay={ 300 } isLazy>
-          { ({ isOpen }) => (
-            <>
-              <PopoverTrigger>
-                <AdditionalInfoButton isOpen={ isOpen }/>
-              </PopoverTrigger>
-              <PopoverContent border="1px solid" borderColor={ infoBorderColor }>
-                <PopoverBody>
-                  <TxAdditionalInfo tx={ tx }/>
-                </PopoverBody>
-              </PopoverContent>
-            </>
-          ) }
-        </Popover>
+        <TxAdditionalInfo tx={ tx }/>
       </Td>
       <Td pr={ 4 }>
         <VStack alignItems="start" lineHeight="24px">
