@@ -1,13 +1,20 @@
-import { Hide, Show, Text } from '@chakra-ui/react';
-import React from 'react';
+import { Hide, HStack, Show, Text } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
+import React, { useCallback } from 'react';
 
+import type { TokenType } from 'types/api/tokenInfo';
+
+import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
 import useDebounce from 'lib/hooks/useDebounce';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import { apos } from 'lib/html-entities';
+import TOKEN_TYPE from 'lib/token/tokenTypes';
 import EmptySearchResult from 'ui/apps/EmptySearchResult';
 import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import FilterInput from 'ui/shared/FilterInput';
+import FilterInput from 'ui/shared/filters/FilterInput';
+import PopoverFilter from 'ui/shared/filters/PopoverFilter';
+import TokenTypeFilter from 'ui/shared/filters/TokenTypeFilter';
 import Pagination from 'ui/shared/Pagination';
 import SkeletonList from 'ui/shared/skeletons/SkeletonList';
 import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
@@ -15,39 +22,57 @@ import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 import TokensListItem from './TokensListItem';
 import TokensTable from './TokensTable';
 
+const TOKEN_TYPES = TOKEN_TYPE.map(i => i.id);
+const getTokenFilterValue = (getFilterValuesFromQuery<TokenType>).bind(null, TOKEN_TYPES);
+
 const Tokens = () => {
+  const router = useRouter();
   const [ filter, setFilter ] = React.useState<string>('');
+  const [ type, setType ] = React.useState<Array<TokenType> | undefined>(getTokenFilterValue(router.query.type));
 
   const debouncedFilter = useDebounce(filter, 300);
 
-  const { isError, isLoading, data, isPaginationVisible, pagination } = useQueryWithPages({
+  const { isError, isLoading, data, isPaginationVisible, pagination, onFilterChange } = useQueryWithPages({
     resourceName: 'tokens',
-    filters: { filter: debouncedFilter },
+    filters: { filter: debouncedFilter, type },
   });
+
+  const onSearchChange = useCallback((value: string) => {
+    onFilterChange({ filter: value, type });
+    setFilter(value);
+  }, [ type, onFilterChange ]);
+
+  const onTypeChange = useCallback((value: Array<TokenType>) => {
+    onFilterChange({ filter: debouncedFilter, type: value });
+    setType(value);
+  }, [ debouncedFilter, onFilterChange ]);
 
   if (isError) {
     return <DataFetchAlert/>;
   }
 
+  const typeFilter = (
+    <PopoverFilter isActive={ type && type.length > 0 } contentProps={{ w: '200px' }}>
+      <TokenTypeFilter onChange={ onTypeChange } defaultValue={ type }/>
+    </PopoverFilter>
+  );
+
+  const filterInput = <FilterInput w="100%" size="xs" onChange={ onSearchChange } placeholder="Token name or symbol"/>;
+
   const bar = (
     <>
       <Show below="lg">
-        <FilterInput
-          w="100%"
-          size="xs"
-          onChange={ setFilter }
-          placeholder="Token name or symbol"
-          mb={ 6 }
-        />
+        <HStack spacing={ 3 } mb={ 6 }>
+          { typeFilter }
+          { filterInput }
+        </HStack>
       </Show>
-      <ActionBar mt={ -6 } flexDirection={{ base: 'column', lg: 'row' }} rowGap={ 6 }>
+      <ActionBar mt={ -6 }>
         <Hide below="lg">
-          <FilterInput
-            w="362px"
-            size="xs"
-            onChange={ setFilter }
-            placeholder="Token name or symbol"
-          />
+          <HStack spacing={ 3 }>
+            { typeFilter }
+            { filterInput }
+          </HStack>
         </Hide>
         { isPaginationVisible && <Pagination ml="auto" { ...pagination }/> }
       </ActionBar>

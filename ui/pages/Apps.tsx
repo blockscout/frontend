@@ -6,7 +6,7 @@ import PlusIcon from 'icons/plus.svg';
 import AppList from 'ui/apps/AppList';
 import AppListSkeleton from 'ui/apps/AppListSkeleton';
 import CategoriesMenu from 'ui/apps/CategoriesMenu';
-import FilterInput from 'ui/shared/FilterInput';
+import FilterInput from 'ui/shared/filters/FilterInput';
 
 import useMarketplaceApps from '../apps/useMarketplaceApps';
 

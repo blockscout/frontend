@@ -1,4 +1,4 @@
-import type { TokenInfo } from './tokenInfo';
+import type { TokenInfo, TokenType } from './tokenInfo';
 
 export type TokensResponse = {
   items: Array<TokenInfo>;
@@ -9,4 +9,4 @@ export type TokensResponse = {
   };
 }
 
-export type TokensFilters = { filter: string };
+export type TokensFilters = { filter: string; type: Array<TokenType> | undefined };
