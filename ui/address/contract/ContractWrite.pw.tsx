@@ -8,7 +8,7 @@ import buildApiUrl from 'playwright/utils/buildApiUrl';
 import ContractWrite from './ContractWrite';
 
 const addressHash = 'hash';
-const CONTRACT_READ_METHODS_API_URL = buildApiUrl('contract_methods_write', { id: addressHash });
+const CONTRACT_WRITE_METHODS_API_URL = buildApiUrl('contract_methods_write', { id: addressHash }) + '?is_custom_abi=false';
 const hooksConfig = {
   router: {
     query: { id: addressHash },
@@ -16,7 +16,7 @@ const hooksConfig = {
 };
 
 test('base view +@mobile', async({ mount, page }) => {
-  await page.route(CONTRACT_READ_METHODS_API_URL, (route) => route.fulfill({
+  await page.route(CONTRACT_WRITE_METHODS_API_URL, (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(contractMethodsMock.write),
   }));

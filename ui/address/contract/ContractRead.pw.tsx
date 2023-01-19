@@ -8,7 +8,7 @@ import buildApiUrl from 'playwright/utils/buildApiUrl';
 import ContractRead from './ContractRead';
 
 const addressHash = 'hash';
-const CONTRACT_READ_METHODS_API_URL = buildApiUrl('contract_methods_read', { id: addressHash });
+const CONTRACT_READ_METHODS_API_URL = buildApiUrl('contract_methods_read', { id: addressHash }) + '?is_custom_abi=false';
 const CONTRACT_QUERY_METHOD_API_URL = buildApiUrl('contract_method_query', { id: addressHash });
 const hooksConfig = {
   router: {
