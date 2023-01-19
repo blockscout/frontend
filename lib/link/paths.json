@@ -20,5 +20,6 @@
   "search_results": "/search-results",
   "auth": "/auth/auth0",
   "stats": "/stats",
-  "visualize_sol2uml": "/visualize/sol2uml"
+  "visualize_sol2uml": "/visualize/sol2uml",
+  "csv_export": "/csv-export"
 }

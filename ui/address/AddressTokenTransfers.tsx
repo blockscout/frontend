@@ -28,6 +28,8 @@ import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
 import TokenTransferList from 'ui/shared/TokenTransfer/TokenTransferList';
 import TokenTransferTable from 'ui/shared/TokenTransfer/TokenTransferTable';
 
+import AddressCsvExportLink from './AddressCsvExportLink';
+
 type Filters = {
   type: Array<TokenType>;
   filter: AddressFromToFilter | undefined;
@@ -217,7 +219,8 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
             onAddressFilterChange={ handleAddressFilterChange }
             defaultAddressFilter={ filters.filter }
           />
-          { isPaginationVisible && <Pagination ml="auto" { ...pagination }/> }
+          { currentAddress && <AddressCsvExportLink address={ currentAddress } type="token-transfers" ml={{ base: 2, lg: 'auto' }}/> }
+          { isPaginationVisible && <Pagination ml={{ base: 'auto', lg: 8 }} { ...pagination }/> }
         </ActionBar>
       ) }
       { content }

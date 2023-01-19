@@ -17,6 +17,7 @@ import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Pagination from 'ui/shared/Pagination';
 
+import AddressCsvExportLink from './AddressCsvExportLink';
 import AddressTxsFilter from './AddressTxsFilter';
 import AddressIntTxsList from './internals/AddressIntTxsList';
 
@@ -80,13 +81,14 @@ const AddressInternalTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivE
 
   return (
     <>
-      <ActionBar mt={ -6 }>
+      <ActionBar mt={ -6 } justifyContent="left">
         <AddressTxsFilter
           defaultFilter={ filterValue }
           onFilterChange={ handleFilterChange }
           isActive={ Boolean(filterValue) }
         />
-        { isPaginationVisible && <Pagination ml="auto" { ...pagination }/> }
+        <AddressCsvExportLink address={ queryIdStr } type="internal-transactions" ml={{ base: 2, lg: 'auto' }}/>
+        { isPaginationVisible && <Pagination ml={{ base: 'auto', lg: 8 }} { ...pagination }/> }
       </ActionBar>
       { content }
     </>

@@ -18,9 +18,10 @@ type Props = {
   className?: string;
   showPagination?: boolean;
   filterComponent?: React.ReactNode;
+  linkSlot?: React.ReactNode;
 }
 
-const TxsHeaderMobile = ({ filterComponent, sorting, setSorting, paginationProps, className, showPagination = true }: Props) => {
+const TxsHeaderMobile = ({ filterComponent, sorting, setSorting, paginationProps, className, showPagination = true, linkSlot }: Props) => {
   return (
     <ActionBar className={ className }>
       <HStack>
@@ -38,6 +39,7 @@ const TxsHeaderMobile = ({ filterComponent, sorting, setSorting, paginationProps
           size="xs"
           placeholder="Search by addresses, hash, method..."
         /> */ }
+        { linkSlot }
       </HStack>
       { showPagination && <Pagination { ...paginationProps }/> }
     </ActionBar>
