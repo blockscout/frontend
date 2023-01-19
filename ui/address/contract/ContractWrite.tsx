@@ -20,9 +20,10 @@ import { getNativeCoinValue, isExtendedError } from './utils';
 
 interface Props {
   isProxy?: boolean;
+  isCustomAbi?: boolean;
 }
 
-const ContractWrite = ({ isProxy }: Props) => {
+const ContractWrite = ({ isProxy, isCustomAbi }: Props) => {
   const router = useRouter();
 
   const addressHash = router.query.id?.toString();
@@ -31,6 +32,9 @@ const ContractWrite = ({ isProxy }: Props) => {
 
   const { data, isLoading, isError } = useApiQuery(isProxy ? 'contract_methods_write_proxy' : 'contract_methods_write', {
     pathParams: { id: addressHash },
+    queryParams: {
+      is_custom_abi: isCustomAbi ? 'true' : 'false',
+    },
     queryOptions: {
       enabled: Boolean(addressHash),
     },

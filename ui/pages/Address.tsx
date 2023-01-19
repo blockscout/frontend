@@ -53,9 +53,10 @@ const AddressPageContent = () => {
   const contractTabs = React.useMemo(() => {
     return [
       { id: 'contact_code', title: 'Code', component: <ContractCode/> },
-      addressQuery.data?.has_decompiled_code ?
-        { id: 'contact_decompiled_code', title: 'Decompiled code', component: <div>Decompiled code</div> } :
-        undefined,
+      // this is not implemented in api yet
+      // addressQuery.data?.has_decompiled_code ?
+      //   { id: 'contact_decompiled_code', title: 'Decompiled code', component: <div>Decompiled code</div> } :
+      //   undefined,
       addressQuery.data?.has_methods_read ?
         { id: 'read_contract', title: 'Read contract', component: <ContractRead/> } :
         undefined,
@@ -63,7 +64,7 @@ const AddressPageContent = () => {
         { id: 'read_proxy', title: 'Read proxy', component: <ContractRead isProxy/> } :
         undefined,
       addressQuery.data?.has_custom_methods_read ?
-        { id: 'read_custom_methods', title: 'Read custom methods', component: <div>Read custom methods</div> } :
+        { id: 'read_custom_methods', title: 'Read custom methods', component: <ContractRead isCustomAbi/> } :
         undefined,
       addressQuery.data?.has_methods_write ?
         { id: 'write_contract', title: 'Write contract', component: <ContractWrite/> } :
@@ -72,7 +73,7 @@ const AddressPageContent = () => {
         { id: 'write_proxy', title: 'Write proxy', component: <ContractWrite isProxy/> } :
         undefined,
       addressQuery.data?.has_custom_methods_write ?
-        { id: 'write_custom_methods', title: 'Write custom methods', component: <div>Write custom methods</div> } :
+        { id: 'write_custom_methods', title: 'Write custom methods', component: <ContractWrite isCustomAbi/> } :
         undefined,
     ].filter(notEmpty);
   }, [ addressQuery.data ]);

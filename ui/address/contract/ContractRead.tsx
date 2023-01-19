@@ -19,9 +19,10 @@ import ContractReadResult from './ContractReadResult';
 
 interface Props {
   isProxy?: boolean;
+  isCustomAbi?: boolean;
 }
 
-const ContractRead = ({ isProxy }: Props) => {
+const ContractRead = ({ isProxy, isCustomAbi }: Props) => {
   const router = useRouter();
   const apiFetch = useApiFetch();
   const { address: userAddress } = useAccount();
@@ -30,6 +31,9 @@ const ContractRead = ({ isProxy }: Props) => {
 
   const { data, isLoading, isError } = useApiQuery(isProxy ? 'contract_methods_read_proxy' : 'contract_methods_read', {
     pathParams: { id: addressHash },
+    queryParams: {
+      is_custom_abi: isCustomAbi ? 'true' : 'false',
+    },
     queryOptions: {
       enabled: Boolean(router.query.id),
     },
