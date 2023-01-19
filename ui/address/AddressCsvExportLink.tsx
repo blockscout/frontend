@@ -1,7 +1,7 @@
 import { chakra, Icon, Link, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 
-import svgFileIcon from 'icons/svg_file.svg';
+import svgFileIcon from 'icons/files/csv.svg';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import link from 'lib/link/link';
 
@@ -22,7 +22,7 @@ const AddressCsvExportLink = ({ className, address, type }: Props) => {
         alignItems="center"
         href={ link('csv_export', undefined, { type, address }) }
       >
-        <Icon as={ svgFileIcon } boxSize={ 6 }/>
+        <Icon as={ svgFileIcon } boxSize="30px"/>
         { !isMobile && <chakra.span ml={ 1 }>Download CSV</chakra.span> }
       </Link>
     </Tooltip>
