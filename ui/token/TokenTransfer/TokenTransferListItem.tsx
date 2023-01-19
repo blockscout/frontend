@@ -11,7 +11,6 @@ import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import ListItemMobile from 'ui/shared/ListItemMobile';
-import { getTokenTransferTypeText } from 'ui/shared/TokenTransfer/helpers';
 import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
 
 type Props = TokenTransfer;
@@ -22,7 +21,7 @@ const TokenTransferListItem = ({
   tx_hash: txHash,
   from,
   to,
-  type,
+  method,
   timestamp,
 }: Props) => {
   const value = (() => {
@@ -58,7 +57,7 @@ const TokenTransferListItem = ({
         </Flex>
         { timestamp && <Text variant="secondary" fontWeight="400" fontSize="sm">{ timeAgo }</Text> }
       </Flex>
-      <Tag colorScheme="orange">{ getTokenTransferTypeText(type) }</Tag>
+      { method && <Tag colorScheme="gray">{ method }</Tag> }
       <Flex w="100%" columnGap={ 3 }>
         <Address width="50%">
           <AddressIcon address={ from }/>

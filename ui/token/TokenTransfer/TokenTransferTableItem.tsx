@@ -9,7 +9,6 @@ import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
-import { getTokenTransferTypeText } from 'ui/shared/TokenTransfer/helpers';
 import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
 
 type Props = TokenTransfer
@@ -20,7 +19,7 @@ const TokenTransferTableItem = ({
   tx_hash: txHash,
   from,
   to,
-  type,
+  method,
   timestamp,
 }: Props) => {
   const value = (() => {
@@ -42,7 +41,7 @@ const TokenTransferTableItem = ({
         { timestamp && <Text color="gray.500" fontWeight="400" mt="10px">{ timeAgo }</Text> }
       </Td>
       <Td>
-        <Tag colorScheme="orange">{ getTokenTransferTypeText(type) }</Tag>
+        { method ? <Tag colorScheme="gray">{ method }</Tag> : '-' }
       </Td>
       <Td>
         <Address display="inline-flex" maxW="100%" lineHeight="30px">

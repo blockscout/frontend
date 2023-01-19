@@ -22,6 +22,9 @@ test('erc20 +@mobile', async({ mount }) => {
             next_page_params: null,
           },
           isPaginationVisible: true,
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore:
+          pagination: { page: 1 },
         }}
       />
     </TestApp>,
@@ -44,6 +47,9 @@ test('erc721 +@mobile', async({ mount }) => {
             next_page_params: null,
           },
           isPaginationVisible: true,
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore:
+          pagination: { page: 1 },
         }}
       />
     </TestApp>,
@@ -66,6 +72,9 @@ test('erc1155 +@mobile', async({ mount }) => {
             next_page_params: null,
           },
           isPaginationVisible: true,
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore:
+          pagination: { page: 1 },
         }}
       />
     </TestApp>,
