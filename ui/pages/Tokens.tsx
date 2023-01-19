@@ -4,7 +4,7 @@ import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import TokensList from 'ui/tokens/Tokens';
 
-const Transactions = () => {
+const Tokens = () => {
   return (
     <Page>
       <PageTitle text="Tokens" withTextAd/>
@@ -13,4 +13,4 @@ const Transactions = () => {
   );
 };
 
-export default Transactions;
+export default Tokens;

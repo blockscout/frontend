@@ -5,7 +5,7 @@ import React from 'react';
 import getNetworkTitle from 'lib/networks/getNetworkTitle';
 import Tokens from 'ui/pages/Tokens';
 
-const BlockPage: NextPage = () => {
+const TokensPage: NextPage = () => {
   const title = getNetworkTitle();
   return (
     <>
@@ -17,6 +17,6 @@ const BlockPage: NextPage = () => {
   );
 };
 
-export default BlockPage;
+export default TokensPage;
 
 export { getServerSideProps } from 'lib/next/getServerSideProps';
