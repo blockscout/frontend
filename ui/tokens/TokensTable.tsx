@@ -17,7 +17,6 @@ const TokensTable = ({ items, page }: Props) => {
     <Table style={{ tableLayout: 'auto' }}>
       <Thead top={ 80 }>
         <Tr>
-          <Th width="fit-content"></Th>
           <Th>Token</Th>
           <Th isNumeric>Price</Th>
           <Th isNumeric>On-chain market cap</Th>

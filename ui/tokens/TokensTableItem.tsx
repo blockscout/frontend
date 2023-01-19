@@ -1,4 +1,4 @@
-import { Flex, Td, Tr, Text, Tag } from '@chakra-ui/react';
+import { Box, Flex, Td, Tr, Text, Tag } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInfo } from 'types/api/tokenInfo';
@@ -40,20 +40,32 @@ const TokensTableItem = ({
 
   return (
     <Tr>
-      <Td><Text fontSize="sm" lineHeight="24px" fontWeight={ 600 }>{ (page - 1) * PAGE_SIZE + index + 1 }</Text></Td>
       <Td>
-        <Flex alignItems="center">
-          <TokenLogo hash={ address } name={ name } boxSize={ 6 } mr={ 2 }/>
-          <AddressLink fontSize="sm" fontWeight="700" hash={ address } type="token" alias={ tokenString }/>
+        <Flex>
+          <Text
+            fontSize="sm"
+            lineHeight="24px"
+            fontWeight={ 600 }
+            mr={ 3 }
+            minW="28px"
+          >
+            { (page - 1) * PAGE_SIZE + index + 1 }
+          </Text>
+          <Box>
+            <Flex alignItems="center">
+              <TokenLogo hash={ address } name={ name } boxSize={ 6 } mr={ 2 }/>
+              <AddressLink fontSize="sm" fontWeight="700" hash={ address } type="token" alias={ tokenString }/>
+            </Flex>
+            <Flex alignItems="center" width="136px" justifyContent="space-between" ml={ 8 } mt={ 2 }>
+              <Flex alignItems="center">
+                <AddressLink fontSize="sm" hash={ address } type="address" truncation="constant" fontWeight={ 500 }/>
+                <CopyToClipboard text={ address } ml={ 1 }/>
+              </Flex>
+              <AddressAddToMetaMask token={ token }/>
+            </Flex>
+            <Tag flexShrink={ 0 } ml={ 8 } mt={ 3 }>{ type }</Tag>
+          </Box>
         </Flex>
-        <Flex alignItems="center" width="136px" justifyContent="space-between" ml={ 8 } mt={ 1 }>
-          <Flex alignItems="center">
-            <AddressLink fontSize="sm" hash={ address } type="address" truncation="constant" fontWeight={ 500 }/>
-            <CopyToClipboard text={ address } ml={ 1 }/>
-          </Flex>
-          <AddressAddToMetaMask token={ token }/>
-        </Flex>
-        <Tag flexShrink={ 0 } ml={ 8 } mt={ 3 }>{ type }</Tag>
       </Td>
       <Td isNumeric><Text fontSize="sm" lineHeight="24px" fontWeight={ 500 }>{ exchangeRate ? `$${ exchangeRate }` : '-' }</Text></Td>
       <Td isNumeric maxWidth="300px" width="300px">
