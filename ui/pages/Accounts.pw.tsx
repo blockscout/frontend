@@ -18,7 +18,7 @@ const addresses: AddressesResponse = {
       tx_count: '1',
       coin_balance: '12345678901234567890000',
     }, {
-      ...addressMocks.withToken,
+      ...addressMocks.token,
       tx_count: '109123890123',
       coin_balance: '22222345678901234567890000',
     }, {

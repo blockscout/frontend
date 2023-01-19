@@ -9,6 +9,8 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/Pagination';
+import SkeletonList from 'ui/shared/skeletons/SkeletonList';
+import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 
 const PAGE_SIZE = 50;
 
@@ -29,7 +31,17 @@ const Accounts = () => {
     );
 
     if (isLoading) {
-      return null;
+      return (
+        <>
+          { bar }
+          <Show below="lg">
+            <SkeletonList/>
+          </Show>
+          <Hide below="lg">
+            <SkeletonTable columns={ [ '64px', '30%', '20%', '20%', '15%', '15%' ] }/>
+          </Hide>
+        </>
+      );
     }
 
     const pageStartIndex = (pagination.page - 1) * PAGE_SIZE + 1;
@@ -37,14 +49,14 @@ const Accounts = () => {
     return (
       <>
         { bar }
-        <Hide below="lg">
+        <Hide below="lg" ssr={ false }>
           <AddressesTable
             items={ data.items }
             totalSupply={ data.total_supply }
             pageStartIndex={ pageStartIndex }
           />
         </Hide>
-        <Show below="lg">
+        <Show below="lg" ssr={ false }>
           { data.items.map((item, index) => {
             return (
               <AddressesListItem
