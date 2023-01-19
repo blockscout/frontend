@@ -27,7 +27,7 @@ const getTokenFilterValue = (getFilterValuesFromQuery<TokenType>).bind(null, TOK
 
 const Tokens = () => {
   const router = useRouter();
-  const [ filter, setFilter ] = React.useState<string>('');
+  const [ filter, setFilter ] = React.useState<string>(router.query.filter?.toString() || '');
   const [ type, setType ] = React.useState<Array<TokenType> | undefined>(getTokenFilterValue(router.query.type));
 
   const debouncedFilter = useDebounce(filter, 300);
@@ -57,7 +57,15 @@ const Tokens = () => {
     </PopoverFilter>
   );
 
-  const filterInput = <FilterInput w="100%" size="xs" onChange={ onSearchChange } placeholder="Token name or symbol"/>;
+  const filterInput = (
+    <FilterInput
+      w="100%"
+      size="xs"
+      onChange={ onSearchChange }
+      placeholder="Token name or symbol"
+      initialValue={ filter }
+    />
+  );
 
   const bar = (
     <>
