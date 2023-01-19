@@ -27,7 +27,13 @@ const ContractMethodField = ({ control, name, placeholder, setValue, isDisabled,
 
   const renderInput = React.useCallback(({ field }: { field: ControllerRenderProps<MethodFormFields> }) => {
     return (
-      <FormControl id={ name } flexBasis={{ base: '100%', lg: 'calc((100% - 24px) / 3 - 65px)' }} w="auto" flexGrow={ 1 } isDisabled={ isDisabled }>
+      <FormControl
+        id={ name }
+        flexBasis={{ base: '100%', lg: 'calc((100% - 24px) / 3 - 65px)' }}
+        w={{ base: '100%', lg: 'auto' }}
+        flexGrow={ 1 }
+        isDisabled={ isDisabled
+        }>
         <InputGroup size="xs">
           <Input
             { ...field }

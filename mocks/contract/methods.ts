@@ -57,6 +57,22 @@ export const read: Array<SmartContractReadMethod> = [
     stateMutability: 'view',
     type: 'function',
   },
+  {
+    constant: true,
+    inputs: [],
+    method_id: '165ec2e2',
+    name: 'arianeeWhitelist',
+    outputs: [
+      {
+        name: '',
+        type: 'address',
+        value: '0xd3eee7f8e8021db24825c3457d5479f2b57f40ef',
+      },
+    ],
+    payable: false,
+    stateMutability: 'view',
+    type: 'function',
+  },
 ];
 
 export const readResultSuccess: SmartContractQueryMethodReadSuccess = {

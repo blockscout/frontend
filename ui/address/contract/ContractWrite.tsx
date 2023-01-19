@@ -13,6 +13,7 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import { useContractContext } from './context';
 import ContractConnectWallet from './ContractConnectWallet';
+import ContractCustomAbiAlert from './ContractCustomAbiAlert';
 import ContractImplementationAddress from './ContractImplementationAddress';
 import ContractMethodCallable from './ContractMethodCallable';
 import ContractWriteResult from './ContractWriteResult';
@@ -119,6 +120,7 @@ const ContractWrite = ({ isProxy, isCustomAbi }: Props) => {
 
   return (
     <>
+      { isCustomAbi && <ContractCustomAbiAlert/> }
       <ContractConnectWallet/>
       { isProxy && <ContractImplementationAddress hash={ addressHash }/> }
       <ContractMethodsAccordion data={ data } renderContent={ renderContent }/>

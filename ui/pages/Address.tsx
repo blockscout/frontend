@@ -64,7 +64,7 @@ const AddressPageContent = () => {
         { id: 'read_proxy', title: 'Read proxy', component: <ContractRead isProxy/> } :
         undefined,
       addressQuery.data?.has_custom_methods_read ?
-        { id: 'read_custom_methods', title: 'Read custom methods', component: <ContractRead isCustomAbi/> } :
+        { id: 'read_custom_methods', title: 'Read custom', component: <ContractRead isCustomAbi/> } :
         undefined,
       addressQuery.data?.has_methods_write ?
         { id: 'write_contract', title: 'Write contract', component: <ContractWrite/> } :
@@ -73,7 +73,7 @@ const AddressPageContent = () => {
         { id: 'write_proxy', title: 'Write proxy', component: <ContractWrite isProxy/> } :
         undefined,
       addressQuery.data?.has_custom_methods_write ?
-        { id: 'write_custom_methods', title: 'Write custom methods', component: <ContractWrite isCustomAbi/> } :
+        { id: 'write_custom_methods', title: 'Write custom', component: <ContractWrite isCustomAbi/> } :
         undefined,
     ].filter(notEmpty);
   }, [ addressQuery.data ]);
