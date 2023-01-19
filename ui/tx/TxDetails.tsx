@@ -10,7 +10,6 @@ import {
   Flex,
   Tooltip,
   chakra,
-  useColorModeValue,
 } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
@@ -50,8 +49,6 @@ const TxDetails = () => {
   const { data, isLoading, isError, socketStatus, error } = useFetchTxInfo();
 
   const isMobile = useIsMobile();
-
-  const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
 
   const [ isExpanded, setIsExpanded ] = React.useState(false);
 
@@ -188,7 +185,7 @@ const TxDetails = () => {
         mt={{ base: 2, lg: 3 }}
         mb={{ base: 0, lg: 3 }}
         borderBottom="1px solid"
-        borderColor={ borderColor }
+        borderColor="divider"
       />
       <DetailsInfoItem
         title="From"
@@ -245,7 +242,7 @@ const TxDetails = () => {
         mt={{ base: 2, lg: 3 }}
         mb={{ base: 0, lg: 3 }}
         borderBottom="1px solid"
-        borderColor={ borderColor }
+        borderColor="divider"
       />
       <DetailsInfoItem
         title="Value"

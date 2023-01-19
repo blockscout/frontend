@@ -19,7 +19,7 @@ export default function useColors({ hasIcon }: {hasIcon: boolean}) {
       active: useColorModeValue('blue.50', 'gray.800'),
     },
     border: {
-      'default': useColorModeValue('blackAlpha.200', 'whiteAlpha.200'),
+      'default': 'divider',
       active: useColorModeValue('blue.50', 'gray.800'),
     },
   };

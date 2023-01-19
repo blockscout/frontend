@@ -37,7 +37,6 @@ type Props = {
 }
 
 const LatestBlocksItem = ({ tx }: Props) => {
-  const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
   const iconColor = useColorModeValue('blue.600', 'blue.300');
 
   const dataTo = tx.to ? tx.to : tx.created_contract;
@@ -50,10 +49,10 @@ const LatestBlocksItem = ({ tx }: Props) => {
     <Box
       width="100%"
       borderTop="1px solid"
-      borderColor={ borderColor }
+      borderColor="divider"
       py={ 4 }
       px={{ base: 0, lg: 4 }}
-      _last={{ borderBottom: '1px solid', borderColor }}
+      _last={{ borderBottom: '1px solid', borderColor: 'divider' }}
     >
       <Flex justifyContent="space-between" width="100%" alignItems="start" flexDirection={{ base: 'column', lg: 'row' }}>
         { !isMobile && (
@@ -63,7 +62,7 @@ const LatestBlocksItem = ({ tx }: Props) => {
                 <PopoverTrigger>
                   <AdditionalInfoButton isOpen={ isOpen } mr={ 3 }/>
                 </PopoverTrigger>
-                <PopoverContent border="1px solid" borderColor={ borderColor }>
+                <PopoverContent border="1px solid" borderColor="divider">
                   <PopoverBody>
                     <TxAdditionalInfo tx={ tx }/>
                   </PopoverBody>

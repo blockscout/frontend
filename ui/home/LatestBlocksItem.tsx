@@ -36,7 +36,7 @@ const LatestBlocksItem = ({ block, h }: Props) => {
       transitionTimingFunction="linear"
       borderRadius="12px"
       border="1px solid"
-      borderColor={ useColorModeValue('blackAlpha.200', 'whiteAlpha.200') }
+      borderColor="divider"
       p={ 6 }
       h={ `${ h }px` }
       minWidth={{ base: '100%', lg: '280px' }}

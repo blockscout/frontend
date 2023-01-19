@@ -23,7 +23,7 @@ const variantSimple = definePartsStyle((props) => {
       ...transitionProps,
     },
     td: {
-      borderColor: mode('blackAlpha.200', 'whiteAlpha.200')(props),
+      borderColor: 'divider',
       ...transitionProps,
     },
   };

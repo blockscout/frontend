@@ -1,4 +1,4 @@
-import { useColorModeValue, useToken } from '@chakra-ui/react';
+import { useToken } from '@chakra-ui/react';
 import * as d3 from 'd3';
 import React from 'react';
 
@@ -13,8 +13,7 @@ interface Props extends Omit<React.SVGProps<SVGGElement>, 'scale'> {
 const ChartGridLine = ({ type, scale, ticks, size, disableAnimation, ...props }: Props) => {
   const ref = React.useRef<SVGGElement>(null);
 
-  const strokeColorToken = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
-  const strokeColor = useToken('colors', strokeColorToken);
+  const strokeColor = useToken('colors', 'divider');
 
   React.useEffect(() => {
     if (!ref.current) {

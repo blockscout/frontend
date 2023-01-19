@@ -38,11 +38,10 @@ const NavigationDesktop = () => {
     cookies.set(cookies.NAMES.NAV_BAR_COLLAPSED, isCollapsed ? 'false' : 'true');
   }, [ isCollapsed ]);
 
-  const containerBorderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
   const chevronIconStyles = {
     bgColor: useColorModeValue('white', 'black'),
     color: useColorModeValue('blackAlpha.400', 'whiteAlpha.400'),
-    borderColor: useColorModeValue('blackAlpha.200', 'whiteAlpha.200'),
+    borderColor: 'divider',
   };
 
   const isExpanded = isCollapsed === false;
@@ -54,7 +53,7 @@ const NavigationDesktop = () => {
       flexDirection="column"
       alignItems="flex-start"
       borderRight="1px solid"
-      borderColor={ containerBorderColor }
+      borderColor="divider"
       px={{ lg: isExpanded ? 6 : 4, xl: isCollapsed ? 4 : 6 }}
       py={ 12 }
       width={{ lg: isExpanded ? '229px' : '92px', xl: isCollapsed ? '92px' : '229px' }}

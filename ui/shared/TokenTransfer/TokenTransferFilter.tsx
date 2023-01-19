@@ -10,7 +10,6 @@ import {
   Radio,
   RadioGroup,
   Stack,
-  useColorModeValue,
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -40,8 +39,6 @@ const TokenTransferFilter = ({
 }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
 
-  const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
-
   return (
     <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
       <PopoverTrigger>
@@ -62,7 +59,7 @@ const TokenTransferFilter = ({
                 defaultValue={ defaultAddressFilter || 'all' }
                 paddingBottom={ 4 }
                 borderBottom="1px solid"
-                borderColor={ borderColor }
+                borderColor="divider"
               >
                 <Stack spacing={ 4 }>
                   <Radio value="all"><Text fontSize="md">All</Text></Radio>

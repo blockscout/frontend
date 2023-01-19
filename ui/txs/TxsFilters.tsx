@@ -9,7 +9,6 @@ import {
   PopoverContent,
   PopoverBody,
   Text,
-  useColorModeValue,
   useDisclosure,
   Flex,
 } from '@chakra-ui/react';
@@ -72,8 +71,6 @@ const TxsFilters = ({ onFiltersChange, filters, appliedFiltersNum }: Props) => {
     onClose();
   }, [ onClose, onFiltersChange, typeFilter, methodFilter ]);
 
-  const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
-
   return (
     <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
       <PopoverTrigger>
@@ -86,13 +83,13 @@ const TxsFilters = ({ onFiltersChange, filters, appliedFiltersNum }: Props) => {
       <PopoverContent w={{ md: '100%', lg: '438px' }}>
         <PopoverBody px={ 4 } py={ 6 }>
           <Text variant="secondary" fontWeight="600" fontSize="sm">Type</Text>
-          <Grid gridTemplateColumns="1fr 1fr" rowGap={ 5 } mt={ 4 } mb={ 4 } pb={ 6 } borderBottom="1px solid" borderColor={ borderColor }>
+          <Grid gridTemplateColumns="1fr 1fr" rowGap={ 5 } mt={ 4 } mb={ 4 } pb={ 6 } borderBottom="1px solid" borderColor="divider">
             <CheckboxGroup size="lg" onChange={ onTypeFilterChange } defaultValue={ typeFilter }>
               { TYPE_OPTIONS.map(({ title, id }) => <Checkbox key={ id } value={ id }><Text fontSize="md">{ title }</Text></Checkbox>) }
             </CheckboxGroup>
           </Grid>
           <Text variant="secondary" fontWeight="600" fontSize="sm">Method</Text>
-          <Grid gridTemplateColumns="1fr 1fr" rowGap={ 5 } mt={ 4 } mb={ 4 } pb={ 6 } borderBottom="1px solid" borderColor={ borderColor }>
+          <Grid gridTemplateColumns="1fr 1fr" rowGap={ 5 } mt={ 4 } mb={ 4 } pb={ 6 } borderBottom="1px solid" borderColor="divider">
             <CheckboxGroup size="lg" onChange={ onMethodFilterChange } defaultValue={ methodFilter }>
               { METHOD_OPTIONS.map(({ title, id }) => <Checkbox key={ id } value={ id }><Text fontSize="md">{ title }</Text></Checkbox>) }
             </CheckboxGroup>
