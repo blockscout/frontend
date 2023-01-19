@@ -474,6 +474,7 @@ frontend:
         - "/stats"
         - "/search-results"
         - "/tokens"
+        - "/accounts"
   resources:
     limits:
       memory:

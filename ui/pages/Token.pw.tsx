@@ -46,5 +46,5 @@ test('base view +@dark-mode', async({ mount, page }) => {
     { hooksConfig },
   );
 
-  await expect(component).toHaveScreenshot();
+  await expect(component.locator('main')).toHaveScreenshot();
 });

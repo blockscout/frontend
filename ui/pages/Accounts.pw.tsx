@@ -24,7 +24,7 @@ const addresses: AddressesResponse = {
     }, {
       ...addressMocks.withoutName,
       tx_count: '11',
-      coin_balance: '123456789012000',
+      coin_balance: '1000000000000000000',
     },
   ],
   total_supply: '25222000',
@@ -51,5 +51,5 @@ test('base view +@mobile +@dark-mode', async({ mount, page }) => {
     </TestApp>,
   );
 
-  await expect(component).toHaveScreenshot();
+  await expect(component.locator('main')).toHaveScreenshot();
 });

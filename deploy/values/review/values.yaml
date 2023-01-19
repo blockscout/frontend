@@ -323,6 +323,7 @@ frontend:
         - "/search-results"
         - "/token"
         - "/tokens"
+        - "/accounts"
 
   resources:
     limits:
