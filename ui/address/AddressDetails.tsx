@@ -18,6 +18,7 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import ExternalLink from 'ui/shared/ExternalLink';
 import HashStringShorten from 'ui/shared/HashStringShorten';
+import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 import AddressAddToMetaMask from './details/AddressAddToMetaMask';
 import AddressBalance from './details/AddressBalance';
@@ -100,8 +101,20 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
             hint="Transaction and address of creation."
           >
             <AddressLink hash={ addressQuery.data.creator_address_hash } truncation="constant"/>
-            <Text whiteSpace="pre"> at </Text>
+            <Text whiteSpace="pre"> at txn </Text>
             <AddressLink hash={ addressQuery.data.creation_tx_hash } type="transaction" truncation="constant"/>
+          </DetailsInfoItem>
+        ) }
+        { addressQuery.data.is_contract && addressQuery.data.implementation_address && (
+          <DetailsInfoItem
+            title="Implementation"
+            hint="Implementation address of the proxy contract."
+            columnGap={ 1 }
+          >
+            <Link href={ link('address_index', { id: addressQuery.data.implementation_address }) }>{ addressQuery.data.implementation_name }</Link>
+            <Text variant="secondary" overflow="hidden">
+              <HashStringShortenDynamic hash={ `(${ addressQuery.data.implementation_address })` }/>
+            </Text>
           </DetailsInfoItem>
         ) }
         <AddressBalance data={ addressQuery.data }/>
