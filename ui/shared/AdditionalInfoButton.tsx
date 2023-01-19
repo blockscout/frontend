@@ -17,7 +17,6 @@ interface Props {
 const AdditionalInfoButton = ({ isOpen, onClick, className }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
 
   const infoBgColor = useColorModeValue('blue.50', 'gray.600');
-  const infoColor = useColorModeValue('blue.600', 'blue.300');
 
   return (
     <Button
@@ -36,8 +35,8 @@ const AdditionalInfoButton = ({ isOpen, onClick, className }: Props, ref: React.
       <Icon
         as={ infoIcon }
         boxSize={ 5 }
-        color={ infoColor }
-        _hover={{ color: 'blue.400' }}
+        color="link"
+        _hover={{ color: 'link_hovered' }}
       />
     </Button>
   );

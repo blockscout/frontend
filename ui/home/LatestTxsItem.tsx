@@ -11,7 +11,6 @@ import {
   PopoverTrigger,
   PopoverContent,
   PopoverBody,
-  useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react';
 import React from 'react';
@@ -37,8 +36,6 @@ type Props = {
 }
 
 const LatestBlocksItem = ({ tx }: Props) => {
-  const iconColor = useColorModeValue('blue.600', 'blue.300');
-
   const dataTo = tx.to ? tx.to : tx.created_contract;
   const timeAgo = useTimeAgoIncrement(tx.timestamp || '0', true);
 
@@ -91,7 +88,7 @@ const LatestBlocksItem = ({ tx }: Props) => {
                 as={ transactionIcon }
                 boxSize="30px"
                 mr={ 2 }
-                color={ iconColor }
+                color="link"
               />
               <Address width="100%">
                 <AddressLink

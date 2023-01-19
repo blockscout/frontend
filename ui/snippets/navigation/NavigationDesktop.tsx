@@ -93,7 +93,7 @@ const NavigationDesktop = () => {
         width={ 6 }
         height={ 6 }
         border="1px"
-        _hover={{ color: 'blue.400' }}
+        _hover={{ color: 'link_hovered' }}
         borderRadius="base"
         { ...chevronIconStyles }
         transform={{ lg: isExpanded ? 'rotate(0)' : 'rotate(180deg)', xl: isCollapsed ? 'rotate(180deg)' : 'rotate(0)' }}

@@ -7,7 +7,6 @@ import {
   Icon,
   Link,
   Text,
-  useColorModeValue,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import React from 'react';
@@ -43,7 +42,7 @@ const LatestBlocksItem = ({ block, h }: Props) => {
     >
       <Flex justifyContent="space-between" alignItems="center" mb={ 3 }>
         <HStack spacing={ 2 }>
-          <Icon as={ blockIcon } boxSize="30px" color={ useColorModeValue('blue.600', 'blue.300') }/>
+          <Icon as={ blockIcon } boxSize="30px" color="link"/>
           <Link
             href={ link('block', { id: String(block.height) }) }
             fontSize="xl"
