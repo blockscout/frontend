@@ -18,10 +18,10 @@ import React, { useRef, useCallback, useState } from 'react';
 
 import type { TimeChartItem } from './types';
 
-import imageIcon from 'icons/image.svg';
+import svgFileIcon from 'icons/files/csv.svg';
+import imageIcon from 'icons/files/image.svg';
 import repeatArrowIcon from 'icons/repeat_arrow.svg';
 import scopeIcon from 'icons/scope.svg';
-import svgFileIcon from 'icons/svg_file.svg';
 import dotsIcon from 'icons/vertical_dots.svg';
 import dayjs from 'lib/date/dayjs';
 import { apos } from 'lib/html-entities';
@@ -190,7 +190,7 @@ const ChartWidget = ({ items, title, description, isLoading, chartHeight, isErro
                   alignItems="center"
                   onClick={ showChartFullscreen }
                 >
-                  <Icon as={ scopeIcon } boxSize={ 4 } mr={ 3 }/>
+                  <Icon as={ scopeIcon } boxSize={ 5 } mr={ 3 }/>
                   View fullscreen
                 </MenuItem>
 
@@ -199,7 +199,7 @@ const ChartWidget = ({ items, title, description, isLoading, chartHeight, isErro
                   alignItems="center"
                   onClick={ handleFileSaveClick }
                 >
-                  <Icon as={ imageIcon } boxSize={ 4 } mr={ 3 }/>
+                  <Icon as={ imageIcon } boxSize={ 5 } mr={ 3 }/>
                   Save as PNG
                 </MenuItem>
 
@@ -208,7 +208,7 @@ const ChartWidget = ({ items, title, description, isLoading, chartHeight, isErro
                   alignItems="center"
                   onClick={ handleSVGSavingClick }
                 >
-                  <Icon as={ svgFileIcon } boxSize={ 4 } mr={ 3 }/>
+                  <Icon as={ svgFileIcon } boxSize={ 5 } mr={ 3 }/>
                   Save as CSV
                 </MenuItem>
               </MenuList>

@@ -22,7 +22,7 @@ const AddressCsvExportLink = ({ className, address, type }: Props) => {
         alignItems="center"
         href={ link('csv_export', undefined, { type, address }) }
       >
-        <Icon as={ svgFileIcon } boxSize="30px"/>
+        <Icon as={ svgFileIcon } boxSize={{ base: '30px', lg: 6 }}/>
         { !isMobile && <chakra.span ml={ 1 }>Download CSV</chakra.span> }
       </Link>
     </Tooltip>
