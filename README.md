@@ -125,6 +125,7 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_SENTRY_DSN | `string` *(optional)* | Client key for your Sentry.io app | `<secret>` |
 | SENTRY_CSP_REPORT_URI | `string` *(optional)* | URL for sending CSP-reports to your Sentry.io app | `<secret>` |
 | NEXT_PUBLIC_AUTH0_CLIENT_ID | `string` *(optional)* | Client id for [Auth0](https://auth0.com/) provider | `<secret>` |
+| NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID | `string` | Project id for [WalletConnect](https://docs.walletconnect.com/2.0/web3modal/react/installation#obtain-project-id) integration | `<secret>` |
 
 ### Marketplace app configuration properties
 
