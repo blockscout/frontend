@@ -1,19 +1,15 @@
 import _debounce from 'lodash/debounce';
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import type { ChartMargin, ChartOffset } from 'ui/shared/chart/types';
 
 export default function useChartSize(svgEl: SVGSVGElement | null, margin?: ChartMargin, offsets?: ChartOffset) {
   const [ rect, setRect ] = React.useState<{ width: number; height: number}>({ width: 0, height: 0 });
 
-  const calculateRect = React.useCallback(() => {
-    const rect = svgEl?.getBoundingClientRect();
+  const calculateRect = useCallback((element: SVGSVGElement) => {
+    const rect = element?.getBoundingClientRect();
     return { width: rect?.width || 0, height: rect?.height || 0 };
-  }, [ svgEl ]);
-
-  React.useEffect(() => {
-    setRect(calculateRect());
-  }, [ calculateRect ]);
+  }, []);
 
   React.useEffect(() => {
     const content = window.document.querySelector('main');
@@ -23,9 +19,10 @@ export default function useChartSize(svgEl: SVGSVGElement | null, margin?: Chart
 
     let timeoutId: number;
     const resizeHandler = _debounce(() => {
-      setRect({ width: 0, height: 0 });
       timeoutId = window.setTimeout(() => {
-        setRect(calculateRect());
+        if (svgEl) {
+          setRect(calculateRect(svgEl));
+        }
       }, 100);
     }, 100);
 
@@ -38,7 +35,7 @@ export default function useChartSize(svgEl: SVGSVGElement | null, margin?: Chart
       resizeObserver.unobserve(window.document.body);
       window.clearTimeout(timeoutId);
     };
-  }, [ calculateRect ]);
+  }, [ calculateRect, svgEl ]);
 
   return React.useMemo(() => {
     return {
