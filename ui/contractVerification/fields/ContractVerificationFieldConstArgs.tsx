@@ -11,7 +11,7 @@ interface Props {
   control: Control<FormFields>;
 }
 
-const ContractVerificationFieldIsConstArgs = ({ control }: Props) => {
+const ContractVerificationFieldConstArgs = ({ control }: Props) => {
   const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'constructor_args'>}) => (
     <CheckboxInput<FormFields, 'constructor_args'> text="Try to fetch constructor arguments automatically" field={ field }/>
   ), []);
@@ -30,4 +30,4 @@ const ContractVerificationFieldIsConstArgs = ({ control }: Props) => {
   );
 };
 
-export default React.memo(ContractVerificationFieldIsConstArgs);
+export default React.memo(ContractVerificationFieldConstArgs);

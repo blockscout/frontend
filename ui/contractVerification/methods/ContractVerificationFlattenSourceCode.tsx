@@ -4,11 +4,12 @@ import type { Control } from 'react-hook-form';
 import type { FormFields } from '../types';
 
 import ContractVerificationMethod from '../ContractVerificationMethod';
-import ContractVerificationEvmVersion from '../fields/ContractVerificationEvmVersion';
 import ContractVerificationFieldCode from '../fields/ContractVerificationFieldCode';
 import ContractVerificationFieldCompiler from '../fields/ContractVerificationFieldCompiler';
-import ContractVerificationFieldIsConstArgs from '../fields/ContractVerificationFieldIsConstArgs';
+import ContractVerificationFieldConstArgs from '../fields/ContractVerificationFieldConstArgs';
+import ContractVerificationFieldEvmVersion from '../fields/ContractVerificationFieldEvmVersion';
 import ContractVerificationFieldIsYul from '../fields/ContractVerificationFieldIsYul';
+import ContractVerificationFieldLibraries from '../fields/ContractVerificationFieldLibraries';
 import ContractVerificationFieldName from '../fields/ContractVerificationFieldName';
 import ContractVerificationFieldOptimization from '../fields/ContractVerificationFieldOptimization';
 
@@ -22,10 +23,11 @@ const ContractVerificationFlattenSourceCode = ({ control }: Props) => {
       <ContractVerificationFieldIsYul control={ control }/>
       <ContractVerificationFieldName control={ control }/>
       <ContractVerificationFieldCompiler control={ control }/>
-      <ContractVerificationEvmVersion control={ control }/>
+      <ContractVerificationFieldEvmVersion control={ control }/>
       <ContractVerificationFieldOptimization control={ control }/>
       <ContractVerificationFieldCode control={ control }/>
-      <ContractVerificationFieldIsConstArgs control={ control }/>
+      <ContractVerificationFieldConstArgs control={ control }/>
+      <ContractVerificationFieldLibraries control={ control }/>
     </ContractVerificationMethod>
   );
 };

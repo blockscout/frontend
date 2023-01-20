@@ -15,7 +15,7 @@ interface Props {
   control: Control<FormFields>;
 }
 
-const ContractVerificationEvmVersion = ({ control }: Props) => {
+const ContractVerificationFieldEvmVersion = ({ control }: Props) => {
   const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'evm_version'>}) => {
     return (
       <Select
@@ -46,4 +46,4 @@ const ContractVerificationEvmVersion = ({ control }: Props) => {
   );
 };
 
-export default React.memo(ContractVerificationEvmVersion);
+export default React.memo(ContractVerificationFieldEvmVersion);

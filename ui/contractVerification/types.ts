@@ -1,5 +1,9 @@
 export type VerificationMethod = 'flatten_source_code' | 'standard_input' | 'sourcify' | 'multi_part_file' | 'vyper_contract'
 
+export interface ContractLibrary {
+  name: string;
+  address: string;
+}
 export interface FormFieldsFlattenSourceCode {
   method: 'flatten_source_code';
   is_yul: boolean;
@@ -10,6 +14,7 @@ export interface FormFieldsFlattenSourceCode {
   optimization_runs: string;
   code: string;
   constructor_args: boolean;
+  libraries: Array<ContractLibrary>;
 }
 
 export interface FormFieldsStandardInput {
