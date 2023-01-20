@@ -10,6 +10,7 @@ import Token from './Token';
 
 const TOKEN_API_URL = buildApiUrl('token', { hash: '1' });
 const TOKEN_COUNTERS_API_URL = buildApiUrl('token_counters', { hash: '1' });
+const TOKEN_TRANSFERS_API_URL = buildApiUrl('token_transfers', { hash: '1' });
 const ADDRESS_API_URL = buildApiUrl('address', { id: '1' });
 const hooksConfig = {
   router: {
@@ -32,6 +33,10 @@ test('base view +@dark-mode', async({ mount, page }) => {
   await page.route(TOKEN_COUNTERS_API_URL, (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(tokenCounters),
+  }));
+  await page.route(TOKEN_TRANSFERS_API_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify({}),
   }));
 
   const component = await mount(

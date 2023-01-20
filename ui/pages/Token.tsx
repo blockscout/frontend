@@ -15,6 +15,7 @@ import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
 import TokenContractInfo from 'ui/token/TokenContractInfo';
 import TokenDetails from 'ui/token/TokenDetails';
 import TokenHolders from 'ui/token/TokenHolders/TokenHolders';
+import TokenTransfer from 'ui/token/TokenTransfer/TokenTransfer';
 
 export type TokenTabs = 'token_transfers' | 'holders'
 
@@ -29,13 +30,14 @@ const TokenPageContent = () => {
     queryOptions: { enabled: Boolean(router.query.hash) },
   });
 
-  // const transfersQuery = useQueryWithPages({
-  //   resourceName: 'token_transfers',
-  //   pathParams: { hash: router.query.hash?.toString() },
-  //   options: {
-  //     enabled: Boolean(router.query.hash && router.query.tab === 'holders' && tokenQuery.data),
-  //   },
-  // });
+  const transfersQuery = useQueryWithPages({
+    resourceName: 'token_transfers',
+    pathParams: { hash: router.query.hash?.toString() },
+    scrollRef,
+    options: {
+      enabled: Boolean(router.query.hash && (!router.query.tab || router.query.tab === 'token_transfers') && tokenQuery.data),
+    },
+  });
 
   const holdersQuery = useQueryWithPages({
     resourceName: 'token_holders',
@@ -47,16 +49,18 @@ const TokenPageContent = () => {
   });
 
   const tabs: Array<RoutedTab> = [
-    { id: 'token_transfers', title: 'Token transfers', component: null },
+    { id: 'token_transfers', title: 'Token transfers', component: <TokenTransfer transfersQuery={ transfersQuery } token={ tokenQuery.data }/> },
     { id: 'holders', title: 'Holders', component: <TokenHolders tokenQuery={ tokenQuery } holdersQuery={ holdersQuery }/> },
   ];
 
   let hasPagination;
   let pagination;
-  // if (router.query.tab === 'token_transfers') {
-  //   hasPagination = transfersQuery.isPaginationVisible;
-  //   pagination = transfersQuery.pagination;
-  // }
+
+  if (!router.query.tab || router.query.tab === 'token_transfers') {
+    hasPagination = transfersQuery.isPaginationVisible;
+    pagination = transfersQuery.pagination;
+  }
+
   if (router.query.tab === 'holders') {
     hasPagination = holdersQuery.isPaginationVisible;
     pagination = holdersQuery.pagination;

@@ -208,6 +208,11 @@ export const RESOURCES = {
     paginationFields: [ 'items_count' as const, 'value' as const ],
     filterFields: [],
   },
+  token_transfers: {
+    path: '/api/v2/tokens/:hash/transfers',
+    paginationFields: [ 'block_number' as const, 'items_count' as const, 'index' as const ],
+    filterFields: [],
+  },
 
   // HOMEPAGE
   homepage_stats: {
@@ -278,7 +283,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'address_txs' | 'address_internal_txs' | 'address_token_transfers' | 'address_blocks_validated' | 'address_coin_balance' |
 'search' |
 'address_logs' | 'address_tokens' |
-'token_holders';
+'token_transfers' | 'token_holders';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
 
@@ -323,6 +328,7 @@ Q extends 'address_logs' ? LogsResponseAddress :
 Q extends 'address_tokens' ? AddressTokensResponse :
 Q extends 'token' ? TokenInfo :
 Q extends 'token_counters' ? TokenCounters :
+Q extends 'token_transfers' ? TokenTransferResponse :
 Q extends 'token_holders' ? TokenHolders :
 Q extends 'search' ? SearchResult :
 Q extends 'contract' ? SmartContract :
@@ -338,6 +344,7 @@ export type PaginationFilters<Q extends PaginatedResources> =
 Q extends 'blocks' ? BlockFilters :
 Q extends 'txs_validated' | 'txs_pending' ? TTxsFilters :
 Q extends 'tx_token_transfers' ? TokenTransferFilters :
+Q extends 'token_transfers' ? TokenTransferFilters :
 Q extends 'address_txs' | 'address_internal_txs' ? AddressTxsFilters :
 Q extends 'address_token_transfers' ? AddressTokenTransferFilters :
 Q extends 'address_tokens' ? AddressTokensFilter :

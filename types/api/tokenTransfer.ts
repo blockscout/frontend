@@ -39,6 +39,7 @@ interface TokenTransferBase {
   timestamp: string;
   block_hash: string;
   log_index: string;
+  method?: string;
 }
 
 export type TokenTransferPagination = {
