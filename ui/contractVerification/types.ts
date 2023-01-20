@@ -2,10 +2,13 @@ export type VerificationMethod = 'flatten_source_code' | 'standard_input' | 'sou
 
 export interface FormFieldsFlattenSourceCode {
   method: 'flatten_source_code';
+  is_yul: boolean;
+  name: string;
 }
 
 export interface FormFieldsStandardInput {
   method: 'standard_input';
+  name: string;
 }
 
 export interface FormFieldsSourcify {
@@ -18,6 +21,7 @@ export interface FormFieldsMultiPartFile {
 
 export interface FormFieldsVyperContract {
   method: 'vyper_contract';
+  name: string;
 }
 
 export type FormFields = FormFieldsFlattenSourceCode | FormFieldsStandardInput | FormFieldsSourcify |

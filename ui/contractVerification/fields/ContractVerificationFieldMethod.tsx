@@ -19,7 +19,7 @@ import React from 'react';
 import type { ControllerRenderProps, Control } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 
-import type { FormFields, VerificationMethod } from './types';
+import type { FormFields, VerificationMethod } from '../types';
 
 import infoIcon from 'icons/info.svg';
 
@@ -110,7 +110,7 @@ const ContractVerificationFieldMethod = ({ control, isDisabled }: Props) => {
 
   return (
     <section>
-      <Text variant="secondary" fontSize="sm" mb={ 5 }>New solidity/yul smart contract verification</Text>
+      <Text variant="secondary" fontSize="sm" mb={ 5 }>Smart-contract verification method</Text>
       <Controller
         name="method"
         control={ control }
