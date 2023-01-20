@@ -6,6 +6,10 @@ export interface FormFieldsFlattenSourceCode {
   name: string;
   compiler: string;
   evm_version: string;
+  is_optimization_enabled: boolean;
+  optimization_runs: string;
+  code: string;
+  constructor_args: boolean;
 }
 
 export interface FormFieldsStandardInput {
