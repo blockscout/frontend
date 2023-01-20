@@ -13,6 +13,7 @@ import crossIcon from 'icons/cross.svg';
 import { getResourceKey } from 'lib/api/useApiQuery';
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
 import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import { apos } from 'lib/html-entities';
 import useSocketChannel from 'lib/socket/useSocketChannel';
@@ -64,6 +65,7 @@ const matchFilters = (filters: Filters, tokenTransfer: TokenTransfer, address?: 
 const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}) => {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const isMobile = useIsMobile();
 
   const currentAddress = router.query.id?.toString();
 
@@ -220,31 +222,33 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
     );
   })();
 
+  const tokenFilterComponent = tokenFilter && (
+    <Flex alignItems="center" py={ 1 } flexWrap="wrap" mb={{ base: isPaginationVisible ? 6 : 3, lg: 0 }}>
+      Filtered by token
+      <TokenLogo hash={ tokenFilter } boxSize={ 6 } mx={ 2 }/>
+      { isMobile ? tokenFilter.slice(0, 4) + '...' + tokenFilter.slice(-4) : tokenFilter }
+      <Tooltip label="Reset filter">
+        <Flex>
+          <Icon
+            as={ crossIcon }
+            boxSize={ 6 }
+            ml={ 1 }
+            color={ resetTokenIconColor }
+            cursor="pointer"
+            _hover={{ color: resetTokenIconHoverColor }}
+            onClick={ resetTokenFilter }
+          />
+        </Flex>
+      </Tooltip>
+    </Flex>
+  );
+
   return (
     <>
+      { isMobile && tokenFilterComponent }
       { !isActionBarHidden && (
         <ActionBar mt={ -6 }>
-          { tokenFilter && (
-            <Flex alignItems="center" py={ 1 }>
-              Filtered by token
-              <TokenLogo hash={ tokenFilter } boxSize={ 6 } mx={ 2 }/>
-              { tokenFilter }
-              { data?.items?.[0].token.name && ` (${ data?.items?.[0].token.name }) ` }
-              <Tooltip label="Reset filter">
-                <Flex>
-                  <Icon
-                    as={ crossIcon }
-                    boxSize={ 6 }
-                    ml={ 1 }
-                    color={ resetTokenIconColor }
-                    cursor="pointer"
-                    _hover={{ color: resetTokenIconHoverColor }}
-                    onClick={ resetTokenFilter }
-                  />
-                </Flex>
-              </Tooltip>
-            </Flex>
-          ) }
+          { !isMobile && tokenFilterComponent }
           { !tokenFilter && (
             <TokenTransferFilter
               defaultTypeFilters={ filters.type }

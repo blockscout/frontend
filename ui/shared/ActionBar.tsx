@@ -18,6 +18,10 @@ const ActionBar = ({ children, className }: Props) => {
   const isSticky = useIsSticky(ref, TOP_UP + 5);
   const bgColor = useColorModeValue('white', 'black');
 
+  if (!React.Children.toArray(children).filter(Boolean).length) {
+    return null;
+  }
+
   return (
     <Flex
       className={ className }
