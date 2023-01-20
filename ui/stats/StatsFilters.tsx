@@ -4,7 +4,7 @@ import React from 'react';
 import type { StatsChartsSection } from 'types/api/stats';
 import type { StatsInterval, StatsIntervalIds } from 'types/client/stats';
 
-import FilterInput from 'ui/shared/FilterInput';
+import FilterInput from 'ui/shared/filters/FilterInput';
 
 import { STATS_INTERVALS } from './constants';
 import StatsDropdownMenu from './StatsDropdownMenu';

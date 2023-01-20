@@ -7,6 +7,8 @@ import link from 'lib/link/link';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
+import TruncatedTextTooltip from '../TruncatedTextTooltip';
+
 interface Props {
   type?: 'address' | 'transaction' | 'token' | 'block' | 'token_instance_item';
   alias?: string | null;
@@ -37,9 +39,17 @@ const AddressLink = ({ alias, type, className, truncation = 'dynamic', hash, id,
 
   const content = (() => {
     if (alias) {
+      const text = <Box overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">{ alias }</Box>;
+      if (type === 'token') {
+        return (
+          <TruncatedTextTooltip label={ alias }>
+            { text }
+          </TruncatedTextTooltip>
+        );
+      }
       return (
         <Tooltip label={ hash } isDisabled={ isMobile }>
-          <Box overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">{ alias }</Box>
+          { text }
         </Tooltip>
       );
     }

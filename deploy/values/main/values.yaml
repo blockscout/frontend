@@ -473,6 +473,7 @@ frontend:
         # - "/address"
         - "/stats"
         - "/search-results"
+        - "/tokens"
   resources:
     limits:
       memory:

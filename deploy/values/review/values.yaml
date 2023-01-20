@@ -322,6 +322,7 @@ frontend:
         - "/stats"
         - "/search-results"
         - "/token"
+        - "/tokens"
 
   resources:
     limits:
