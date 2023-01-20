@@ -149,6 +149,6 @@ function groupChartItemsByWeekNumber(items: Array<TimeChartItem>): Array<TimeCha
       value: d3.sum(group, (d) => d.value),
       dateLabel: `${ d3.timeFormat('%e %b %Y')(group[0].date) } – ${ d3.timeFormat('%e %b %Y')(group[group.length - 1].date) }`,
     }),
-    (t) => dayjs(t.date).week(),
+    (t) => `${ dayjs(t.date).week() } / ${ dayjs(t.date).year() }`,
   ).map(([ , v ]) => v);
 }
