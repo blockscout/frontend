@@ -19,9 +19,6 @@ const PageTitle = ({ text, additionals, withTextAd, backLinkUrl, backLinkLabel, 
       as="h1"
       size="lg"
       flex="none"
-      overflow="hidden"
-      textOverflow="ellipsis"
-      whiteSpace="nowrap"
       width={ backLinkUrl ? 'calc(100% - 36px)' : '100%' }
     >
       { text }
@@ -41,13 +38,13 @@ const PageTitle = ({ text, additionals, withTextAd, backLinkUrl, backLinkLabel, 
       <Flex flexWrap="wrap" columnGap={ 3 } alignItems="center" width={ withTextAd ? 'unset' : '100%' }>
         <Flex
           flexWrap="nowrap"
-          alignItems="center"
+          alignItems="start"
           columnGap={ 3 }
           overflow="hidden"
         >
           { backLinkUrl && (
             <Tooltip label={ backLinkLabel }>
-              <Link display="inline-flex" href={ backLinkUrl }>
+              <Link display="inline-flex" href={ backLinkUrl } py={ 2 }>
                 <Icon as={ eastArrowIcon } boxSize={ 6 } transform="rotate(180deg)"/>
               </Link>
             </Tooltip>
