@@ -4,6 +4,8 @@ export interface FormFieldsFlattenSourceCode {
   method: 'flatten_source_code';
   is_yul: boolean;
   name: string;
+  compiler: string;
+  evm_version: string;
 }
 
 export interface FormFieldsStandardInput {

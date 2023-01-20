@@ -101,7 +101,7 @@ const ContractVerificationFieldMethod = ({ control, isDisabled }: Props) => {
       <RadioGroup defaultValue="add" colorScheme="blue" isDisabled={ isDisabled } { ...field }>
         <Stack spacing={ 4 }>
           { VERIFICATION_METHODS.map((method) => {
-            return <Radio key={ method } value={ method }>{ renderItem(method) }</Radio>;
+            return <Radio key={ method } value={ method } size="lg">{ renderItem(method) }</Radio>;
           }) }
         </Stack>
       </RadioGroup>

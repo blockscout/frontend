@@ -11,6 +11,7 @@ import Link from './Link';
 import Modal from './Modal';
 import Popover from './Popover';
 import Radio from './Radio';
+import Select from './Select';
 import Skeleton from './Skeleton';
 import Spinner from './Spinner';
 import Switch from './Switch';
@@ -35,6 +36,7 @@ const components = {
   Modal,
   Popover,
   Radio,
+  Select,
   Skeleton,
   Spinner,
   Switch,
