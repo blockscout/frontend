@@ -4,6 +4,7 @@ import React from 'react';
 
 import { useAppContext } from 'lib/appContext';
 import isBrowser from 'lib/isBrowser';
+import ContractVerificationForm from 'ui/contractVerification/ContractVerificationForm';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
@@ -36,6 +37,7 @@ const ContractVerification = () => {
           <CopyToClipboard text={ hash }/>
         </Address>
       ) }
+      <ContractVerificationForm/>
     </Page>
   );
 };
