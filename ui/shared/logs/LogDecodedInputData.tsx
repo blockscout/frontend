@@ -159,7 +159,7 @@ const LogDecodedInputData = ({ data }: Props) => {
           <TableRow key={ name } name={ name } type={ type } isLast={ index === data.parameters.length - 1 } indexed={ indexed }>
             { type === 'address' ? (
               <Address justifyContent="space-between">
-                <AddressLink hash={ value }/>
+                <AddressLink type="address" hash={ value }/>
                 <CopyToClipboard text={ value }/>
               </Address>
             ) : (

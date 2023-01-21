@@ -34,7 +34,7 @@ const ContractMethodStatic = ({ data }: Props) => {
 
   const content = (() => {
     if (data.type === 'address' && data.value) {
-      return <AddressLink hash={ data.value }/>;
+      return <AddressLink type="address" hash={ data.value }/>;
     }
 
     return <chakra.span wordBreak="break-all">({ data.type }): { value }</chakra.span>;

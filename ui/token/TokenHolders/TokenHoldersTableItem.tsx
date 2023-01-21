@@ -22,7 +22,7 @@ const TokenTransferTableItem = ({ holder, token }: Props) => {
       <Td>
         <Address display="inline-flex" maxW="100%" lineHeight="30px">
           <AddressIcon address={ holder.address }/>
-          <AddressLink ml={ 2 } fontWeight="700" hash={ holder.address.hash } alias={ holder.address.name } flexGrow={ 1 }/>
+          <AddressLink type="address" ml={ 2 } fontWeight="700" hash={ holder.address.hash } alias={ holder.address.name } flexGrow={ 1 }/>
         </Address>
       </Td>
       <Td isNumeric>

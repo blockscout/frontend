@@ -61,7 +61,7 @@ const LatestBlocksItem = ({ block, h }: Props) => {
         <GridItem>Reward</GridItem>
         <GridItem><Text variant="secondary">{ totalReward.toFixed() }</Text></GridItem>
         <GridItem>Miner</GridItem>
-        <GridItem><AddressLink alias={ block.miner.name } hash={ block.miner.hash } truncation="constant" maxW="100%"/></GridItem>
+        <GridItem><AddressLink type="address" alias={ block.miner.name } hash={ block.miner.hash } truncation="constant" maxW="100%"/></GridItem>
       </Grid>
     </Box>
   );

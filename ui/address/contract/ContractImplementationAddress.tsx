@@ -24,7 +24,7 @@ const ContractImplementationAddress = ({ hash }: Props) => {
   return (
     <Address whiteSpace="pre-wrap" flexWrap="wrap" mb={ 6 }>
       <span>Implementation address: </span>
-      <AddressLink hash={ data.implementation_address }/>
+      <AddressLink type="address" hash={ data.implementation_address }/>
     </Address>
   );
 };

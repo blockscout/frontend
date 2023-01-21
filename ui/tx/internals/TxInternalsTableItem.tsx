@@ -33,7 +33,7 @@ const TxInternalTableItem = ({ type, from, to, value, success, error, gas_limit:
       <Td verticalAlign="middle">
         <Address display="inline-flex" maxW="100%">
           <AddressIcon address={ from }/>
-          <AddressLink ml={ 2 } fontWeight="500" hash={ from.hash } alias={ from.name } flexGrow={ 1 }/>
+          <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ from.hash } alias={ from.name } flexGrow={ 1 }/>
         </Address>
       </Td>
       <Td px={ 0 } verticalAlign="middle">
@@ -42,7 +42,7 @@ const TxInternalTableItem = ({ type, from, to, value, success, error, gas_limit:
       <Td verticalAlign="middle">
         <Address display="inline-flex" maxW="100%">
           <AddressIcon address={ toData }/>
-          <AddressLink hash={ toData.hash } alias={ toData.name } fontWeight="500" ml={ 2 }/>
+          <AddressLink type="address" hash={ toData.hash } alias={ toData.name } fontWeight="500" ml={ 2 }/>
         </Address>
       </Td>
       <Td isNumeric verticalAlign="middle">

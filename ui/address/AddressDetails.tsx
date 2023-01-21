@@ -100,7 +100,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
             title="Creator"
             hint="Transaction and address of creation."
           >
-            <AddressLink hash={ addressQuery.data.creator_address_hash } truncation="constant"/>
+            <AddressLink type="address" hash={ addressQuery.data.creator_address_hash } truncation="constant"/>
             <Text whiteSpace="pre"> at txn </Text>
             <AddressLink hash={ addressQuery.data.creation_tx_hash } type="transaction" truncation="constant"/>
           </DetailsInfoItem>

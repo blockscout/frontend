@@ -48,7 +48,7 @@ const TokenContractInfo = ({ tokenQuery }: Props) => {
   return (
     <Flex alignItems="center">
       <AddressContractIcon/>
-      <AddressLink hash={ hash } ml={ 2 } truncation={ isMobile ? 'constant' : 'none' }/>
+      <AddressLink type="address" hash={ hash } ml={ 2 } truncation={ isMobile ? 'constant' : 'none' }/>
       <CopyToClipboard text={ hash } ml={ 1 }/>
       { contractQuery.data?.token && <AddressAddToMetaMask token={ contractQuery.data?.token } ml={ 2 }/> }
       <AddressQrCode hash={ hash } ml={ 2 }/>
