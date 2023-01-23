@@ -1,7 +1,7 @@
 import { chakra, Code, FormControl, Input } from '@chakra-ui/react';
 import React from 'react';
-import type { ControllerRenderProps, Control } from 'react-hook-form';
-import { Controller } from 'react-hook-form';
+import type { ControllerRenderProps } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
 
@@ -10,23 +10,28 @@ import InputPlaceholder from 'ui/shared/InputPlaceholder';
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
 interface Props {
-  control: Control<FormFields>;
   hint?: string;
 }
 
-const ContractVerificationFieldName = ({ control, hint }: Props) => {
+const ContractVerificationFieldName = ({ hint }: Props) => {
+  const { formState, control } = useFormContext<FormFields>();
+
   const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'name'>}) => {
+    const error = 'name' in formState.errors ? formState.errors.name : undefined;
+
     return (
       <FormControl variant="floating" id={ field.name } isRequired size={{ base: 'md', lg: 'lg' }}>
         <Input
           { ...field }
           required
+          isInvalid={ Boolean(error) }
           maxLength={ 255 }
+          isDisabled={ formState.isSubmitting }
         />
-        <InputPlaceholder text="Contract name"/>
+        <InputPlaceholder text="Contract name" error={ error }/>
       </FormControl>
     );
-  }, []);
+  }, [ formState.errors, formState.isSubmitting ]);
 
   return (
     <ContractVerificationFormRow>

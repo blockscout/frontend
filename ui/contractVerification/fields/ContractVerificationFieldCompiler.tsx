@@ -1,7 +1,7 @@
 import { Code, Select, Checkbox } from '@chakra-ui/react';
 import React from 'react';
-import type { ControllerRenderProps, Control } from 'react-hook-form';
-import { Controller } from 'react-hook-form';
+import type { ControllerRenderProps } from 'react-hook-form';
+import { useFormContext, Controller } from 'react-hook-form';
 
 import type { FormFields } from '../types';
 
@@ -20,28 +20,32 @@ const COMPILERS_NIGHTLY = [
 ];
 
 interface Props {
-  control: Control<FormFields>;
   isVyper?: boolean;
 }
 
-const ContractVerificationFieldCompiler = ({ control, isVyper }: Props) => {
+const ContractVerificationFieldCompiler = ({ isVyper }: Props) => {
   const [ isNightly, setIsNightly ] = React.useState(false);
+  const { formState, control } = useFormContext<FormFields>();
 
   const handleCheckboxChange = React.useCallback(() => {
     setIsNightly(prev => !prev);
   }, []);
 
   const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'compiler'>}) => {
+    const error = 'compiler' in formState.errors ? formState.errors.compiler : undefined;
+
     return (
       <Select
         { ...field }
         size={{ base: 'md', lg: 'lg' }}
         placeholder="Compiler"
+        isInvalid={ Boolean(error) }
+        isDisabled={ formState.isSubmitting }
       >
         { [ ...COMPILERS, ...(isNightly ? COMPILERS_NIGHTLY : []) ].map((option) => <option key={ option } value={ option }>{ option }</option>) }
       </Select>
     );
-  }, [ isNightly ]);
+  }, [ formState.errors, formState.isSubmitting, isNightly ]);
 
   return (
     <ContractVerificationFormRow>
@@ -57,6 +61,7 @@ const ContractVerificationFieldCompiler = ({ control, isVyper }: Props) => {
             size="lg"
             mt={ 3 }
             onChange={ handleCheckboxChange }
+            isDisabled={ formState.isSubmitting }
           >
             Include nightly builds
           </Checkbox>

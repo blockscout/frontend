@@ -1,7 +1,7 @@
-import { Box, Flex, Icon, Text, useColorModeValue, chakra } from '@chakra-ui/react';
+import { Box, Flex, Icon, Text, useColorModeValue, IconButton, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import crossIcon from 'icons/cross.svg';
+import CrossIcon from 'icons/cross.svg';
 import imageIcon from 'icons/image.svg';
 import { shortenNumberWithLetter } from 'lib/formatters';
 
@@ -10,9 +10,10 @@ interface Props {
   className?: string;
   index?: number;
   onRemove?: (index?: number) => void;
+  isDisabled?: boolean;
 }
 
-const FileSnippet = ({ file, className, index, onRemove }: Props) => {
+const FileSnippet = ({ file, className, index, onRemove, isDisabled }: Props) => {
 
   const handleRemove = React.useCallback(() => {
     onRemove?.(index);
@@ -33,14 +34,16 @@ const FileSnippet = ({ file, className, index, onRemove }: Props) => {
         <Text fontWeight={ 600 } overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">{ file.name }</Text>
         <Text variant="secondary" mt={ 1 }>{ shortenNumberWithLetter(file.size) }B</Text>
       </Box>
-      <Icon
-        as={ crossIcon }
+      <IconButton
+        aria-label="remove"
+        icon={ <CrossIcon/> }
         boxSize={ 6 }
-        color="link"
-        _hover={{ color: 'link_hovered' }}
-        cursor="pointer"
+        variant="simple"
+        display="inline-block"
+        flexShrink={ 0 }
         ml="auto"
         onClick={ handleRemove }
+        isDisabled={ isDisabled }
       />
     </Flex>
   );

@@ -1,7 +1,4 @@
 import React from 'react';
-import type { Control } from 'react-hook-form';
-
-import type { FormFields } from '../types';
 
 import ContractVerificationMethod from '../ContractVerificationMethod';
 import ContractVerificationFieldCompiler from '../fields/ContractVerificationFieldCompiler';
@@ -10,24 +7,19 @@ import ContractVerificationFieldLibraries from '../fields/ContractVerificationFi
 import ContractVerificationFieldOptimization from '../fields/ContractVerificationFieldOptimization';
 import ContractVerificationFieldSources from '../fields/ContractVerificationFieldSources';
 
-interface Props {
-  control: Control<FormFields>;
-}
-
-const ContractVerificationMultiPartFile = ({ control }: Props) => {
+const ContractVerificationMultiPartFile = () => {
   return (
     <ContractVerificationMethod title="New Solidity/Yul Smart Contract Verification">
-      <ContractVerificationFieldCompiler control={ control }/>
-      <ContractVerificationFieldEvmVersion control={ control }/>
-      <ContractVerificationFieldOptimization control={ control }/>
+      <ContractVerificationFieldCompiler/>
+      <ContractVerificationFieldEvmVersion/>
+      <ContractVerificationFieldOptimization/>
       <ContractVerificationFieldSources
-        control={ control }
         accept=".sol,.yul"
         multiple
         title="Sources *.sol or *.yul files"
         hint="Upload all Solidity or Yul contract source files."
       />
-      <ContractVerificationFieldLibraries control={ control }/>
+      <ContractVerificationFieldLibraries/>
     </ContractVerificationMethod>
   );
 };

@@ -21,14 +21,19 @@ const FileInput = <Values extends FieldValues, Names extends Path<Values>>({ chi
 
     const files = Array.from(fileList);
     field.onChange(files);
+    field.onBlur();
   }, [ field ]);
 
   const handleClick = React.useCallback(() => {
     ref.current?.click();
   }, []);
 
+  const handleInputBlur = React.useCallback(() => {
+    field.onBlur();
+  }, [ field ]);
+
   return (
-    <InputGroup onClick={ handleClick }>
+    <InputGroup onClick={ handleClick } onBlur={ handleInputBlur }>
       <VisuallyHiddenInput
         type="file"
         onChange={ handleInputChange }

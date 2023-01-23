@@ -1,24 +1,19 @@
 import { Checkbox } from '@chakra-ui/react';
 import React from 'react';
-import type { Control } from 'react-hook-form';
-import { useFieldArray } from 'react-hook-form';
+import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 import ContractVerificationFieldLibraryItem from './ContractVerificationFieldLibraryItem';
 
-interface Props {
-  control: Control<FormFields>;
-}
-
-const ContractVerificationFieldLibraries = ({ control }: Props) => {
-  const [ isEnabled, setIsEnabled ] = React.useState(false);
-
+const ContractVerificationFieldLibraries = () => {
+  const { formState, control } = useFormContext<FormFields>();
   const { fields, append, remove, insert } = useFieldArray({
     name: 'libraries',
     control,
   });
+  const [ isEnabled, setIsEnabled ] = React.useState(fields.length > 0);
 
   const handleCheckboxChange = React.useCallback(() => {
     if (!isEnabled) {
@@ -56,6 +51,7 @@ const ContractVerificationFieldLibraries = ({ control }: Props) => {
           fieldsLength={ fields.length }
           onAddFieldClick={ handleAddFieldClick }
           onRemoveFieldClick={ handleRemoveFieldClick }
+          error={ 'libraries' in formState.errors ? formState.errors.libraries?.[index] : undefined }
         />
       )) }
     </>

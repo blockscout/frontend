@@ -1,6 +1,6 @@
 import { Text, Button, Box, chakra } from '@chakra-ui/react';
 import React from 'react';
-import type { ControllerRenderProps, Control } from 'react-hook-form';
+import type { ControllerRenderProps } from 'react-hook-form';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
@@ -11,7 +11,6 @@ import FileSnippet from 'ui/shared/forms/FileSnippet';
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
 interface Props {
-  control: Control<FormFields>;
   accept?: string;
   multiple?: boolean;
   title: string;
@@ -19,8 +18,8 @@ interface Props {
   hint: string;
 }
 
-const ContractVerificationFieldSources = ({ control, accept, multiple, title, className, hint }: Props) => {
-  const { setValue, getValues } = useFormContext();
+const ContractVerificationFieldSources = ({ accept, multiple, title, className, hint }: Props) => {
+  const { setValue, getValues, control, formState } = useFormContext<FormFields>();
 
   const handleFileRemove = React.useCallback((index?: number) => {
     if (index === undefined) {
@@ -43,11 +42,12 @@ const ContractVerificationFieldSources = ({ control, accept, multiple, title, cl
             maxW="initial"
             onRemove={ handleFileRemove }
             index={ index }
+            isDisabled={ formState.isSubmitting }
           />
         )) }
       </Box>
     );
-  }, [ handleFileRemove ]);
+  }, [ formState.isSubmitting, handleFileRemove ]);
 
   const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'sources'>}) => (
     <>
@@ -70,6 +70,7 @@ const ContractVerificationFieldSources = ({ control, accept, multiple, title, cl
           name="sources"
           control={ control }
           render={ renderControl }
+          rules={{ required: true }}
         />
         { hint ? <span>{ hint }</span> : null }
       </ContractVerificationFormRow>

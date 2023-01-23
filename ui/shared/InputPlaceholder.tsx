@@ -4,7 +4,7 @@ import type { FieldError } from 'react-hook-form';
 
 interface Props {
   text: string;
-  error?: FieldError;
+  error?: Partial<FieldError>;
 }
 
 const InputPlaceholder = ({ text, error }: Props) => {

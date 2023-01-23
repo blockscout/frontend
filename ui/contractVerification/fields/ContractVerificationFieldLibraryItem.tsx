@@ -1,6 +1,6 @@
 import { Flex, FormControl, Icon, IconButton, Input, Text } from '@chakra-ui/react';
 import React from 'react';
-import type { Control, ControllerRenderProps } from 'react-hook-form';
+import type { Control, ControllerRenderProps, FieldError } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 
 import type { FormFields } from '../types';
@@ -18,11 +18,15 @@ interface Props {
   control: Control<FormFields>;
   index: number;
   fieldsLength: number;
+  error?: {
+    name?: FieldError;
+    address?: FieldError;
+  };
   onAddFieldClick: (index: number) => void;
   onRemoveFieldClick: (index: number) => void;
 }
 
-const ContractVerificationFieldLibraryItem = ({ control, index, fieldsLength, onAddFieldClick, onRemoveFieldClick }: Props) => {
+const ContractVerificationFieldLibraryItem = ({ control, index, fieldsLength, onAddFieldClick, onRemoveFieldClick, error }: Props) => {
   const ref = React.useRef<HTMLDivElement>(null);
 
   const renderNameControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, `libraries.${ number }.name`>}) => {
@@ -31,24 +35,26 @@ const ContractVerificationFieldLibraryItem = ({ control, index, fieldsLength, on
         <Input
           { ...field }
           required
+          isInvalid={ Boolean(error?.name) }
           maxLength={ 255 }
         />
-        <InputPlaceholder text="Library name (.sol file)"/>
+        <InputPlaceholder text="Library name (.sol file)" error={ error?.name }/>
       </FormControl>
     );
-  }, []);
+  }, [ error?.name ]);
 
   const renderAddressControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, `libraries.${ number }.address`>}) => {
     return (
       <FormControl variant="floating" id={ field.name } isRequired size={{ base: 'md', lg: 'lg' }}>
         <Input
           { ...field }
+          isInvalid={ Boolean(error?.address) }
           required
         />
-        <InputPlaceholder text="Library address (0x...)"/>
+        <InputPlaceholder text="Library address (0x...)" error={ error?.address }/>
       </FormControl>
     );
-  }, []);
+  }, [ error?.address ]);
 
   const handleAddButtonClick = React.useCallback(() => {
     onAddFieldClick(index);

@@ -8,6 +8,7 @@ type Props<TInputs extends FieldValues, TInputName extends Path<TInputs>> = {
   field: ControllerRenderProps<TInputs, TInputName>;
   text: string;
   onChange?: () => void;
+  isDisabled?: boolean;
 }
 
 export default function CheckboxInput<Inputs extends FieldValues, Name extends Path<Inputs>>(
@@ -15,6 +16,7 @@ export default function CheckboxInput<Inputs extends FieldValues, Name extends P
     field,
     text,
     onChange,
+    isDisabled,
   }: Props<Inputs, Name>) {
 
   const handleChange: typeof field.onChange = React.useCallback((...args) => {
@@ -29,6 +31,7 @@ export default function CheckboxInput<Inputs extends FieldValues, Name extends P
       ref={ field.ref }
       colorScheme="blue"
       size="lg"
+      isDisabled={ isDisabled }
     >
       { text }
     </Checkbox>

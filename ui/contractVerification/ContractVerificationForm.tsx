@@ -5,6 +5,8 @@ import { useForm, FormProvider } from 'react-hook-form';
 
 import type { FormFields } from './types';
 
+import delay from 'lib/delay';
+
 import ContractVerificationFieldMethod from './fields/ContractVerificationFieldMethod';
 import ContractVerificationFlattenSourceCode from './methods/ContractVerificationFlattenSourceCode';
 import ContractVerificationMultiPartFile from './methods/ContractVerificationMultiPartFile';
@@ -12,26 +14,29 @@ import ContractVerificationSourcify from './methods/ContractVerificationSourcify
 import ContractVerificationStandardInput from './methods/ContractVerificationStandardInput';
 import ContractVerificationVyperContract from './methods/ContractVerificationVyperContract';
 
-const ContractVerificationForm = () => {
-  const formApi = useForm<FormFields>();
-  const { control, handleSubmit, watch } = formApi;
+const METHODS = {
+  flatten_source_code: <ContractVerificationFlattenSourceCode/>,
+  standard_input: <ContractVerificationStandardInput/>,
+  sourcify: <ContractVerificationSourcify/>,
+  multi_part_file: <ContractVerificationMultiPartFile/>,
+  vyper_contract: <ContractVerificationVyperContract/>,
+};
 
-  const onFormSubmit: SubmitHandler<FormFields> = React.useCallback((data) => {
+const ContractVerificationForm = () => {
+  const formApi = useForm<FormFields>({
+    mode: 'onBlur',
+  });
+  const { control, handleSubmit, watch, formState } = formApi;
+
+  const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(data) => {
     // eslint-disable-next-line no-console
     console.log('__>__', data);
+    await delay(5_000);
   }, []);
-
-  const methods = React.useMemo(() => ({
-    flatten_source_code: <ContractVerificationFlattenSourceCode control={ control }/>,
-    standard_input: <ContractVerificationStandardInput control={ control }/>,
-    sourcify: <ContractVerificationSourcify control={ control }/>,
-    multi_part_file: <ContractVerificationMultiPartFile control={ control }/>,
-    vyper_contract: <ContractVerificationVyperContract control={ control }/>,
-  }), [ control ]);
 
   const method = watch('method');
 
-  const content = methods[method] || null;
+  const content = METHODS[method] || null;
 
   return (
     <FormProvider { ...formApi }>
@@ -40,7 +45,7 @@ const ContractVerificationForm = () => {
         onSubmit={ handleSubmit(onFormSubmit) }
         mt={ 12 }
       >
-        <ContractVerificationFieldMethod control={ control }/>
+        <ContractVerificationFieldMethod control={ control } isDisabled={ Boolean(method) }/>
         { content }
         { Boolean(method) && (
           <Button
@@ -48,6 +53,9 @@ const ContractVerificationForm = () => {
             size="lg"
             type="submit"
             mt={ 12 }
+            isDisabled={ !formState.isValid || !formState.isDirty }
+            isLoading={ formState.isSubmitting }
+            loadingText="Verify & publish"
           >
             Verify & publish
           </Button>

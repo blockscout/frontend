@@ -1,7 +1,7 @@
 import { FormControl, Input } from '@chakra-ui/react';
 import React from 'react';
-import type { ControllerRenderProps, Control } from 'react-hook-form';
-import { Controller } from 'react-hook-form';
+import type { ControllerRenderProps } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
 
@@ -10,20 +10,22 @@ import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
-interface Props {
-  control: Control<FormFields>;
-}
-
-const ContractVerificationFieldOptimization = ({ control }: Props) => {
+const ContractVerificationFieldOptimization = () => {
   const [ isEnabled, setIsEnabled ] = React.useState(false);
+  const { formState, control } = useFormContext<FormFields>();
 
   const handleCheckboxChange = React.useCallback(() => {
     setIsEnabled(prev => !prev);
   }, []);
 
   const renderCheckboxControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'is_optimization_enabled'>}) => (
-    <CheckboxInput<FormFields, 'is_optimization_enabled'> text="Optimization enabled" field={ field } onChange={ handleCheckboxChange }/>
-  ), [ handleCheckboxChange ]);
+    <CheckboxInput<FormFields, 'is_optimization_enabled'>
+      text="Optimization enabled"
+      field={ field }
+      onChange={ handleCheckboxChange }
+      isDisabled={ formState.isSubmitting }
+    />
+  ), [ formState.isSubmitting, handleCheckboxChange ]);
 
   const renderInputControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'optimization_runs'>}) => {
     return (
@@ -32,11 +34,12 @@ const ContractVerificationFieldOptimization = ({ control }: Props) => {
           { ...field }
           required
           maxLength={ 255 }
+          isDisabled={ formState.isSubmitting }
         />
         <InputPlaceholder text="Optimization runs"/>
       </FormControl>
     );
-  }, []);
+  }, [ formState.isSubmitting ]);
 
   return (
     <>
@@ -53,6 +56,7 @@ const ContractVerificationFieldOptimization = ({ control }: Props) => {
             name="optimization_runs"
             control={ control }
             render={ renderInputControl }
+            rules={{ required: true }}
           />
         </ContractVerificationFormRow>
       ) }
