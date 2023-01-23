@@ -194,7 +194,7 @@ const TxDetails = () => {
       >
         <Address>
           <AddressIcon address={ data.from }/>
-          <AddressLink ml={ 2 } hash={ data.from.hash }/>
+          <AddressLink type="address" ml={ 2 } hash={ data.from.hash }/>
           <CopyToClipboard text={ data.from.hash }/>
         </Address>
         { data.from.name && <Text>{ data.from.name }</Text> }
@@ -213,7 +213,7 @@ const TxDetails = () => {
         { data.to && data.to.hash ? (
           <Address alignItems="center">
             <AddressIcon address={ toAddress }/>
-            <AddressLink ml={ 2 } hash={ toAddress.hash }/>
+            <AddressLink type="address" ml={ 2 } hash={ toAddress.hash }/>
             { executionSuccessBadge }
             { executionFailedBadge }
             <CopyToClipboard text={ toAddress.hash }/>
@@ -221,7 +221,7 @@ const TxDetails = () => {
         ) : (
           <Flex width={{ base: '100%', lg: 'auto' }} whiteSpace="pre" alignItems="center">
             <span>[Contract </span>
-            <AddressLink hash={ toAddress.hash }/>
+            <AddressLink type="address" hash={ toAddress.hash }/>
             <span> created]</span>
             { executionSuccessBadge }
             { executionFailedBadge }

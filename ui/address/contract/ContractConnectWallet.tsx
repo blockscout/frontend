@@ -36,7 +36,7 @@ const ContractConnectWallet = () => {
         <Flex alignItems="center">
           <span>Connected to </span>
           <AddressIcon address={{ hash: address, is_contract: false, implementation_name: null }} mx={ 2 }/>
-          <AddressLink fontWeight={ 600 } hash={ address } truncation={ isMobile ? 'constant' : 'dynamic' }/>
+          <AddressLink type="address" fontWeight={ 600 } hash={ address } truncation={ isMobile ? 'constant' : 'dynamic' }/>
         </Flex>
         <Button onClick={ handleDisconnect } size="sm" variant="outline">Disconnect</Button>
       </Flex>

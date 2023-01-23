@@ -18,7 +18,7 @@ const AddressSnippet = ({ address, subtitle }: Props) => {
     <Box maxW="100%">
       <Address>
         <AddressIcon address={ address }/>
-        <AddressLink hash={ address.hash } fontWeight="600" ml={ 2 }/>
+        <AddressLink type="address" hash={ address.hash } fontWeight="600" ml={ 2 }/>
         <CopyToClipboard text={ address.hash } ml={ 1 }/>
       </Address>
       { subtitle && <Text fontSize="sm" variant="secondary" mt={ 0.5 } ml={ 8 }>{ subtitle }</Text> }

@@ -10,10 +10,11 @@ type Props = {
   className?: string;
   size?: 'xs' | 'sm' | 'md' | 'lg';
   placeholder: string;
+  initialValue?: string;
 }
 
-const FilterInput = ({ onChange, className, size = 'sm', placeholder }: Props) => {
-  const [ filterQuery, setFilterQuery ] = useState('');
+const FilterInput = ({ onChange, className, size = 'sm', placeholder, initialValue }: Props) => {
+  const [ filterQuery, setFilterQuery ] = useState(initialValue || '');
   const inputRef = React.useRef<HTMLInputElement>(null);
   const iconColor = useColorModeValue('blackAlpha.600', 'whiteAlpha.600');
 

@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { Sort } from 'types/client/txs-sort';
 
-// import FilterInput from 'ui/shared/FilterInput';
+// import FilterInput from 'ui/shared/filters/FilterInput';
 import ActionBar from 'ui/shared/ActionBar';
 import Pagination from 'ui/shared/Pagination';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';

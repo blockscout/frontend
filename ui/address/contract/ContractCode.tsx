@@ -123,7 +123,7 @@ const ContractCode = () => {
             <span>Contract is not verified. However, we found a verified contract with the same bytecode in Blockscout DB </span>
             <Address>
               <AddressIcon address={{ hash: data.verified_twin_address_hash, is_contract: true, implementation_name: null }}/>
-              <AddressLink hash={ data.verified_twin_address_hash } truncation="constant" ml={ 2 }/>
+              <AddressLink type="address" hash={ data.verified_twin_address_hash } truncation="constant" ml={ 2 }/>
             </Address>
             <chakra.span mt={ 1 }>All functions displayed below are from ABI of that contract. In order to verify current contract, proceed with </chakra.span>
             <Link href={ link('address_contract_verification', { id: data.verified_twin_address_hash }) }>Verify & Publish</Link>
@@ -135,7 +135,7 @@ const ContractCode = () => {
             <span>Minimal Proxy Contract for </span>
             <Address>
               <AddressIcon address={{ hash: data.minimal_proxy_address_hash, is_contract: true, implementation_name: null }}/>
-              <AddressLink hash={ data.minimal_proxy_address_hash } truncation="constant" ml={ 2 }/>
+              <AddressLink type="address" hash={ data.minimal_proxy_address_hash } truncation="constant" ml={ 2 }/>
             </Address>
             <span>. </span>
             <Box>

@@ -28,12 +28,12 @@ const TxInternalsListItem = ({ type, from, to, value, success, error, gas_limit:
       <Box w="100%" display="flex" columnGap={ 3 }>
         <Address width="calc((100% - 48px) / 2)">
           <AddressIcon address={ from }/>
-          <AddressLink ml={ 2 } fontWeight="500" hash={ from.hash }/>
+          <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ from.hash }/>
         </Address>
         <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500"/>
         <Address width="calc((100% - 48px) / 2)">
           <AddressIcon address={ toData }/>
-          <AddressLink ml={ 2 } fontWeight="500" hash={ toData.hash }/>
+          <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ toData.hash }/>
         </Address>
       </Box>
       <HStack spacing={ 3 }>

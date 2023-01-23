@@ -81,8 +81,9 @@ export interface AddressTokenTransferResponse {
 }
 
 export type AddressTokenTransferFilters = {
-  filter: AddressFromToFilter;
-  type: Array<TokenType>;
+  filter?: AddressFromToFilter;
+  type?: Array<TokenType>;
+  token?: string;
 }
 
 export type AddressTokensFilter = {

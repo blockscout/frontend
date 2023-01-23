@@ -40,6 +40,7 @@ export const erc20: TokenTransfer = {
   timestamp: '2022-10-10T14:34:30.000000Z',
   block_hash: '1',
   log_index: '1',
+  method: 'updateSmartAsset',
 };
 
 export const erc721: TokenTransfer = {
@@ -81,6 +82,7 @@ export const erc721: TokenTransfer = {
   timestamp: '2022-10-10T14:34:30.000000Z',
   block_hash: '1',
   log_index: '1',
+  method: 'updateSmartAsset',
 };
 
 export const erc1155: TokenTransfer = {
