@@ -20,6 +20,8 @@ export interface FormFieldsFlattenSourceCode {
 export interface FormFieldsStandardInput {
   method: 'standard_input';
   name: string;
+  compiler: string;
+  sources: Array<File>;
 }
 
 export interface FormFieldsSourcify {
