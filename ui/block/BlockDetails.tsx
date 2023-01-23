@@ -129,7 +129,7 @@ const BlockDetails = () => {
         hint="A block producer who successfully included the block onto the blockchain."
         columnGap={ 1 }
       >
-        <AddressLink hash={ data.miner.hash }/>
+        <AddressLink type="address" hash={ data.miner.hash }/>
         { data.miner.name && <Text>{ `(${ capitalize(validatorTitle) }: ${ data.miner.name })` }</Text> }
         { /* api doesn't return the block processing time yet */ }
         { /* <Text>{ dayjs.duration(block.minedIn, 'second').humanize(true) }</Text> */ }

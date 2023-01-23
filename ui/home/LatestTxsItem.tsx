@@ -111,6 +111,7 @@ const LatestBlocksItem = ({ tx }: Props) => {
             <Address>
               <AddressIcon address={ tx.from }/>
               <AddressLink
+                type="address"
                 hash={ tx.from.hash }
                 alias={ tx.from.name }
                 fontWeight="500"
@@ -128,6 +129,7 @@ const LatestBlocksItem = ({ tx }: Props) => {
             <Address>
               <AddressIcon address={ dataTo }/>
               <AddressLink
+                type="address"
                 hash={ dataTo.hash }
                 alias={ dataTo.name }
                 fontWeight="500"

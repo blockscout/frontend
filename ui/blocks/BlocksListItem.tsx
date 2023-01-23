@@ -48,7 +48,7 @@ const BlocksListItem = ({ data, isPending, enableTimeIncrement }: Props) => {
       </Flex>
       <Flex columnGap={ 2 }>
         <Text fontWeight={ 500 }>{ capitalize(getNetworkValidatorTitle()) }</Text>
-        <AddressLink alias={ data.miner.name } hash={ data.miner.hash } truncation="constant"/>
+        <AddressLink type="address" alias={ data.miner.name } hash={ data.miner.hash } truncation="constant"/>
       </Flex>
       <Flex columnGap={ 2 }>
         <Text fontWeight={ 500 }>Txn</Text>

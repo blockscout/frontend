@@ -9,32 +9,49 @@ import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 import TruncatedTextTooltip from '../TruncatedTextTooltip';
 
-interface Props {
-  type?: 'address' | 'transaction' | 'token' | 'block' | 'token_instance_item';
-  alias?: string | null;
+type CommonProps = {
   className?: string;
-  hash: string;
   truncation?: 'constant' | 'dynamic'| 'none';
-  fontWeight?: string;
-  id?: string;
   target?: HTMLAttributeAnchorTarget;
   isDisabled?: boolean;
+  fontWeight?: string;
+  alias?: string | null;
 }
 
-const AddressLink = ({ alias, type, className, truncation = 'dynamic', hash, id, fontWeight, target = '_self', isDisabled }: Props) => {
+type AddressTokenTxProps = {
+  type: 'address' | 'token' | 'transaction';
+  hash: 'hash';
+}
+
+type BlockProps = {
+  type: 'block';
+  hash: string;
+  id: string;
+}
+
+type AddressTokenProps = {
+  type: 'address_token';
+  hash: string;
+  tokenHash: string;
+}
+
+type Props = CommonProps & (AddressTokenTxProps | BlockProps | AddressTokenProps);
+
+const AddressLink = (props: Props) => {
+  const { alias, type, className, truncation = 'dynamic', hash, fontWeight, target = '_self', isDisabled } = props;
   const isMobile = useIsMobile();
 
   let url;
   if (type === 'transaction') {
-    url = link('tx', { id: id || hash });
+    url = link('tx', { id: hash });
   } else if (type === 'token') {
-    url = link('token_index', { hash: id || hash });
-  } else if (type === 'token_instance_item') {
-    url = link('token_instance_item', { hash, id });
+    url = link('token_index', { hash: hash });
   } else if (type === 'block') {
-    url = link('block', { id: id || hash });
+    url = link('block', { id: props.id });
+  } else if (type === 'address_token') {
+    url = link('address_index', { id: hash }, { tab: 'token_transfers', token: props.tokenHash, scroll_to_tabs: 'true' });
   } else {
-    url = link('address_index', { id: id || hash });
+    url = link('address_index', { id: hash });
   }
 
   const content = (() => {
@@ -55,11 +72,11 @@ const AddressLink = ({ alias, type, className, truncation = 'dynamic', hash, id,
     }
     switch (truncation) {
       case 'constant':
-        return <HashStringShorten hash={ id || hash } isTooltipDisabled={ isMobile }/>;
+        return <HashStringShorten hash={ hash } isTooltipDisabled={ isMobile }/>;
       case 'dynamic':
-        return <HashStringShortenDynamic hash={ id || hash } fontWeight={ fontWeight } isTooltipDisabled={ isMobile }/>;
+        return <HashStringShortenDynamic hash={ hash } fontWeight={ fontWeight } isTooltipDisabled={ isMobile }/>;
       case 'none':
-        return <span>{ id || hash }</span>;
+        return <span>{ hash }</span>;
     }
   })();
 

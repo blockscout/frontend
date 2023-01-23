@@ -46,7 +46,16 @@ const TokenTransferTableItem = ({
       <Td>
         <Address display="inline-flex" maxW="100%" lineHeight="30px">
           <AddressIcon address={ from }/>
-          <AddressLink ml={ 2 } fontWeight="500" hash={ from.hash } alias={ from.name } flexGrow={ 1 } truncation="constant"/>
+          <AddressLink
+            ml={ 2 }
+            flexGrow={ 1 }
+            fontWeight="500"
+            type="address_token"
+            hash={ from.hash }
+            alias={ from.name }
+            tokenHash={ token.address }
+            truncation="constant"
+          />
         </Address>
       </Td>
       <Td px={ 0 }>
@@ -55,7 +64,16 @@ const TokenTransferTableItem = ({
       <Td>
         <Address display="inline-flex" maxW="100%" lineHeight="30px">
           <AddressIcon address={ to }/>
-          <AddressLink ml={ 2 } fontWeight="500" hash={ to.hash } alias={ to.name } flexGrow={ 1 } truncation="constant"/>
+          <AddressLink
+            ml={ 2 }
+            flexGrow={ 1 }
+            fontWeight="500"
+            type="address_token"
+            hash={ to.hash }
+            alias={ to.name }
+            tokenHash={ token.address }
+            truncation="constant"
+          />
         </Address>
       </Td>
       { (token.type === 'ERC-721' || token.type === 'ERC-1155') && (

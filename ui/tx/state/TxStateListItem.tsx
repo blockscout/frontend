@@ -53,7 +53,7 @@ const TxStateListItem = ({ storage, address, miner, after, before, diff }: Props
               <Address flexGrow={ 1 }>
                 { /* ??? */ }
                 { /* <AddressIcon hash={ address }/> */ }
-                <AddressLink hash={ address } ml={ 2 }/>
+                <AddressLink type="address" hash={ address } ml={ 2 }/>
               </Address>
             </Flex>
             { hasStorageData && (

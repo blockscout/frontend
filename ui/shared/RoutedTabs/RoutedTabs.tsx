@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import type { StyleProps } from '@chakra-ui/styled-system';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import type { RoutedTab } from './types';
 
@@ -43,6 +43,7 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled, className, .
   const [ activeTabIndex, setActiveTabIndex ] = useState<number>(tabs.length + 1);
 
   const isMobile = useIsMobile();
+  const tabsRef = useRef<HTMLDivElement>(null);
   const { tabsCut, tabsList, tabsRefs, listRef, rightSlotRef } = useAdaptiveTabs(tabs, isMobile);
   const isSticky = useIsSticky(listRef, 5, stickyEnabled);
   const listBgColor = useColorModeValue('white', 'black');
@@ -56,6 +57,23 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled, className, .
       { shallow: true },
     );
   }, [ tabs, router ]);
+
+  useEffect(() => {
+    if (router.query.scroll_to_tabs) {
+      tabsRef?.current?.scrollIntoView(true);
+      delete router.query.scroll_to_tabs;
+      router.push(
+        {
+          pathname: router.pathname,
+          query: router.query,
+        },
+        undefined,
+        { shallow: true },
+      );
+    }
+  // replicate componentDidMount
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (router.isReady) {
@@ -104,6 +122,7 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled, className, .
       index={ activeTabIndex }
       position="relative"
       size={ themeProps.size || 'md' }
+      ref={ tabsRef }
     >
       <TabList
         marginBottom={{ base: 6, lg: 8 }}
