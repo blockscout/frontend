@@ -9,9 +9,10 @@ import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
 interface Props {
   control: Control<FormFields>;
+  hint?: string;
 }
 
-const ContractVerificationFieldName = ({ control }: Props) => {
+const ContractVerificationFieldName = ({ control, hint }: Props) => {
   const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'name'>}) => {
     return (
       <FormControl variant="floating" id={ field.name } isRequired size={{ base: 'md', lg: 'lg' }}>
@@ -36,9 +37,13 @@ const ContractVerificationFieldName = ({ control }: Props) => {
         />
       </GridItem>
       <GridItem fontSize="sm">
-        <span>Must match the name specified in the code. For example, in </span>
-        <Code>{ `contract MyContract {..}` }</Code>
-        <span>. <chakra.span fontWeight={ 600 }>MyContract</chakra.span> is the contract name.</span>
+        { hint || (
+          <>
+            <span>Must match the name specified in the code. For example, in </span>
+            <Code>{ `contract MyContract {..}` }</Code>
+            <span>. <chakra.span fontWeight={ 600 }>MyContract</chakra.span> is the contract name.</span>
+          </>
+        ) }
       </GridItem>
     </>
   );

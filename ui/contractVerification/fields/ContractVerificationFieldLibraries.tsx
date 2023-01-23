@@ -38,7 +38,7 @@ const ContractVerificationFieldLibraries = ({ control }: Props) => {
 
   return (
     <>
-      <GridItem mt={ 12 }>
+      <GridItem mt={ 9 }>
         <Checkbox
           size="lg"
           onChange={ handleCheckboxChange }

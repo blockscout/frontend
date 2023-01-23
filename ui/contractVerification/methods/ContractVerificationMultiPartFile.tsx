@@ -20,7 +20,13 @@ const ContractVerificationMultiPartFile = ({ control }: Props) => {
       <ContractVerificationFieldCompiler control={ control }/>
       <ContractVerificationFieldEvmVersion control={ control }/>
       <ContractVerificationFieldOptimization control={ control }/>
-      <ContractVerificationFieldSources control={ control } accept=".sol,.yul" multiple title="Sources *.sol or *.yul files"/>
+      <ContractVerificationFieldSources
+        control={ control }
+        accept=".sol,.yul"
+        multiple
+        title="Sources *.sol or *.yul files"
+        hint="Upload all Solidity or Yul contract source files."
+      />
       <ContractVerificationFieldLibraries control={ control }/>
     </ContractVerificationMethod>
   );

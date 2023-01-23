@@ -19,9 +19,10 @@ const COMPILERS_NIGHTLY = [
 
 interface Props {
   control: Control<FormFields>;
+  isVyper?: boolean;
 }
 
-const ContractVerificationFieldCompiler = ({ control }: Props) => {
+const ContractVerificationFieldCompiler = ({ control, isVyper }: Props) => {
   const [ isNightly, setIsNightly ] = React.useState(false);
 
   const handleCheckboxChange = React.useCallback(() => {
@@ -49,21 +50,25 @@ const ContractVerificationFieldCompiler = ({ control }: Props) => {
           render={ renderControl }
           rules={{ required: true }}
         />
-        <Checkbox
-          size="lg"
-          mt={ 3 }
-          onChange={ handleCheckboxChange }
-        >
-          Include nightly builds
-        </Checkbox>
+        { !isVyper && (
+          <Checkbox
+            size="lg"
+            mt={ 3 }
+            onChange={ handleCheckboxChange }
+          >
+            Include nightly builds
+          </Checkbox>
+        ) }
       </GridItem>
-      <GridItem fontSize="sm">
-        <span>The compiler version is specified in </span>
-        <Code>pragma solidity X.X.X</Code>
-        <span>. Use the compiler version rather than the nightly build. If using the Solidity compiler, run </span>
-        <Code>solc —version</Code>
-        <span> to check.</span>
-      </GridItem>
+      { isVyper ? <GridItem/> : (
+        <GridItem fontSize="sm">
+          <span>The compiler version is specified in </span>
+          <Code>pragma solidity X.X.X</Code>
+          <span>. Use the compiler version rather than the nightly build. If using the Solidity compiler, run </span>
+          <Code>solc —version</Code>
+          <span> to check.</span>
+        </GridItem>
+      ) }
     </>
   );
 };

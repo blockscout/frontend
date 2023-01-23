@@ -26,6 +26,7 @@ export interface FormFieldsStandardInput {
 
 export interface FormFieldsSourcify {
   method: 'sourcify';
+  sources: Array<File>;
 }
 
 export interface FormFieldsMultiPartFile {
@@ -40,6 +41,9 @@ export interface FormFieldsMultiPartFile {
 export interface FormFieldsVyperContract {
   method: 'vyper_contract';
   name: string;
+  compiler: string;
+  code: string;
+  abi_encoded_args: string;
 }
 
 export type FormFields = FormFieldsFlattenSourceCode | FormFieldsStandardInput | FormFieldsSourcify |

@@ -19,7 +19,12 @@ const ContractVerificationStandardInput = ({ control }: Props) => {
     <ContractVerificationMethod title="New Smart Contract Verification">
       <ContractVerificationFieldName control={ control }/>
       <ContractVerificationFieldCompiler control={ control }/>
-      <ContractVerificationFieldSources control={ control } accept=".json" title="Standard Input JSON"/>
+      <ContractVerificationFieldSources
+        control={ control }
+        accept=".json"
+        title="Standard Input JSON"
+        hint="Upload the standard input JSON file created during contract compilation."
+      />
       <ContractVerificationFieldConstArgs control={ control }/>
     </ContractVerificationMethod>
   );

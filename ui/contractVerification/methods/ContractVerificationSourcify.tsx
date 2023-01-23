@@ -4,6 +4,7 @@ import type { Control } from 'react-hook-form';
 import type { FormFields } from '../types';
 
 import ContractVerificationMethod from '../ContractVerificationMethod';
+import ContractVerificationFieldSources from '../fields/ContractVerificationFieldSources';
 
 interface Props {
   control: Control<FormFields>;
@@ -13,7 +14,13 @@ interface Props {
 const ContractVerificationSourcify = ({ control }: Props) => {
   return (
     <ContractVerificationMethod title="New Smart Contract Verification">
-      ContractVerificationSourcify
+      <ContractVerificationFieldSources
+        control={ control }
+        accept=".json"
+        multiple
+        title="Sources and Metadata JSON" mt={ 0 }
+        hint="Upload all Solidity contract source files and JSON metadata file(s) created during contract compilation."
+      />
     </ContractVerificationMethod>
   );
 };

@@ -1,4 +1,4 @@
-import { GridItem, Text, Button, Box } from '@chakra-ui/react';
+import { GridItem, Text, Button, Box, chakra } from '@chakra-ui/react';
 import React from 'react';
 import type { ControllerRenderProps, Control } from 'react-hook-form';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -13,9 +13,11 @@ interface Props {
   accept?: string;
   multiple?: boolean;
   title: string;
+  className?: string;
+  hint: string;
 }
 
-const ContractVerificationFieldSources = ({ control, accept, multiple, title }: Props) => {
+const ContractVerificationFieldSources = ({ control, accept, multiple, title, className, hint }: Props) => {
   const { setValue, getValues } = useFormContext();
 
   const handleFileRemove = React.useCallback((index?: number) => {
@@ -58,7 +60,7 @@ const ContractVerificationFieldSources = ({ control, accept, multiple, title }: 
 
   return (
     <>
-      <GridItem mt="30px">
+      <GridItem mt={ 4 } className={ className }>
         <Text fontWeight={ 500 } mb={ 4 }>{ title }</Text>
         <Controller
           name="sources"
@@ -66,9 +68,11 @@ const ContractVerificationFieldSources = ({ control, accept, multiple, title }: 
           render={ renderControl }
         />
       </GridItem>
-      <GridItem/>
+      <GridItem fontSize="sm" mt={ 4 } className={ className }>
+        { hint }
+      </GridItem>
     </>
   );
 };
 
-export default React.memo(ContractVerificationFieldSources);
+export default React.memo(chakra(ContractVerificationFieldSources));

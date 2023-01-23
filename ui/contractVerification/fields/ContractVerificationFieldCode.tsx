@@ -9,9 +9,10 @@ import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
 interface Props {
   control: Control<FormFields>;
+  isVyper?: boolean;
 }
 
-const ContractVerificationFieldCode = ({ control }: Props) => {
+const ContractVerificationFieldCode = ({ control, isVyper }: Props) => {
   const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'code'>}) => {
     return (
       <FormControl variant="floating" id={ field.name } isRequired size={{ base: 'md', lg: 'lg' }}>
@@ -35,12 +36,14 @@ const ContractVerificationFieldCode = ({ control }: Props) => {
           rules={{ required: true }}
         />
       </GridItem>
-      <GridItem fontSize="sm">
-        <span>We recommend using flattened code. This is necessary if your code utilizes a library or inherits dependencies. Use the </span>
-        <Link href="https://github.com/poanetwork/solidity-flattener" target="_blank">POA solidity flattener</Link>
-        <span> or the </span>
-        <Link href="https://www.npmjs.com/package/truffle-flattener" target="_blank">Truffle flattener</Link>
-      </GridItem>
+      { isVyper ? <GridItem/> : (
+        <GridItem fontSize="sm">
+          <span>We recommend using flattened code. This is necessary if your code utilizes a library or inherits dependencies. Use the </span>
+          <Link href="https://github.com/poanetwork/solidity-flattener" target="_blank">POA solidity flattener</Link>
+          <span> or the </span>
+          <Link href="https://www.npmjs.com/package/truffle-flattener" target="_blank">Truffle flattener</Link>
+        </GridItem>
+      ) }
     </>
   );
 };
