@@ -1,13 +1,14 @@
 import { Button, chakra } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
 
-import type { FormFields } from './types';
+import type { FormFields, VerificationMethod } from './types';
 
 import delay from 'lib/delay';
 
-import ContractVerificationFieldMethod from './fields/ContractVerificationFieldMethod';
+import ContractVerificationFieldMethod, { VERIFICATION_METHODS } from './fields/ContractVerificationFieldMethod';
 import ContractVerificationFlattenSourceCode from './methods/ContractVerificationFlattenSourceCode';
 import ContractVerificationMultiPartFile from './methods/ContractVerificationMultiPartFile';
 import ContractVerificationSourcify from './methods/ContractVerificationSourcify';
@@ -23,8 +24,13 @@ const METHODS = {
 };
 
 const ContractVerificationForm = () => {
+  const router = useRouter();
+  const methodFromQuery = router.query.method?.toString() as VerificationMethod;
   const formApi = useForm<FormFields>({
     mode: 'onBlur',
+    defaultValues: {
+      method: VERIFICATION_METHODS.includes(methodFromQuery) ? methodFromQuery : undefined,
+    },
   });
   const { control, handleSubmit, watch, formState } = formApi;
 

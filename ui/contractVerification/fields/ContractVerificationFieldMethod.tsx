@@ -23,7 +23,7 @@ import type { FormFields, VerificationMethod } from '../types';
 
 import infoIcon from 'icons/info.svg';
 
-const VERIFICATION_METHODS: Array<VerificationMethod> = [
+export const VERIFICATION_METHODS: Array<VerificationMethod> = [
   'flatten_source_code',
   'standard_input',
   'sourcify',

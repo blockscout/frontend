@@ -61,6 +61,31 @@ const oldUrls = [
     oldPath: '/address/:id/validations',
     newPath: `${ PATHS.address_index }?tab=blocks_validated`,
   },
+  // contract verification
+  {
+    oldPath: '/address/:id/contract_verifications/new',
+    newPath: `${ PATHS.address_contract_verification }`,
+  },
+  {
+    oldPath: '/address/:id/verify-via-flattened-code/new',
+    newPath: `${ PATHS.address_contract_verification }?method=flatten_source_code`,
+  },
+  {
+    oldPath: '/address/:id/verify-via-standard-json-input/new',
+    newPath: `${ PATHS.address_contract_verification }?method=standard_input`,
+  },
+  {
+    oldPath: '/address/:id/verify-via-metadata-json/new',
+    newPath: `${ PATHS.address_contract_verification }?method=sourcify`,
+  },
+  {
+    oldPath: '/address/:id/verify-via-multi-part-files/new',
+    newPath: `${ PATHS.address_contract_verification }?method=multi_part_file`,
+  },
+  {
+    oldPath: '/address/:id/verify-vyper-contract/new',
+    newPath: `${ PATHS.address_contract_verification }?method=vyper_contract`,
+  },
 ];
 
 async function redirects() {
