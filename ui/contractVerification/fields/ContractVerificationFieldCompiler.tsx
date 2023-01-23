@@ -1,9 +1,11 @@
-import { Code, GridItem, Select, Checkbox } from '@chakra-ui/react';
+import { Code, Select, Checkbox } from '@chakra-ui/react';
 import React from 'react';
 import type { ControllerRenderProps, Control } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 
 import type { FormFields } from '../types';
+
+import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
 const COMPILERS = [
   'v0.8.17+commit.8df45f5f',
@@ -42,8 +44,8 @@ const ContractVerificationFieldCompiler = ({ control, isVyper }: Props) => {
   }, [ isNightly ]);
 
   return (
-    <>
-      <GridItem>
+    <ContractVerificationFormRow>
+      <>
         <Controller
           name="compiler"
           control={ control }
@@ -59,17 +61,17 @@ const ContractVerificationFieldCompiler = ({ control, isVyper }: Props) => {
             Include nightly builds
           </Checkbox>
         ) }
-      </GridItem>
-      { isVyper ? <GridItem/> : (
-        <GridItem fontSize="sm">
+      </>
+      { isVyper ? null : (
+        <>
           <span>The compiler version is specified in </span>
           <Code>pragma solidity X.X.X</Code>
           <span>. Use the compiler version rather than the nightly build. If using the Solidity compiler, run </span>
           <Code>solc —version</Code>
           <span> to check.</span>
-        </GridItem>
+        </>
       ) }
-    </>
+    </ContractVerificationFormRow>
   );
 };
 

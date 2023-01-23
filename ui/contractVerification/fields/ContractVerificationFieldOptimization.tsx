@@ -1,4 +1,4 @@
-import { FormControl, GridItem, Input } from '@chakra-ui/react';
+import { FormControl, Input } from '@chakra-ui/react';
 import React from 'react';
 import type { ControllerRenderProps, Control } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
@@ -7,6 +7,8 @@ import type { FormFields } from '../types';
 
 import CheckboxInput from 'ui/shared/CheckboxInput';
 import InputPlaceholder from 'ui/shared/InputPlaceholder';
+
+import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
 interface Props {
   control: Control<FormFields>;
@@ -38,25 +40,21 @@ const ContractVerificationFieldOptimization = ({ control }: Props) => {
 
   return (
     <>
-      <GridItem>
+      <ContractVerificationFormRow>
         <Controller
           name="is_optimization_enabled"
           control={ control }
           render={ renderCheckboxControl }
         />
-      </GridItem>
-      <GridItem/>
+      </ContractVerificationFormRow>
       { isEnabled && (
-        <>
-          <GridItem>
-            <Controller
-              name="optimization_runs"
-              control={ control }
-              render={ renderInputControl }
-            />
-          </GridItem>
-          <GridItem/>
-        </>
+        <ContractVerificationFormRow>
+          <Controller
+            name="optimization_runs"
+            control={ control }
+            render={ renderInputControl }
+          />
+        </ContractVerificationFormRow>
       ) }
     </>
   );

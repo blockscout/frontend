@@ -1,4 +1,3 @@
-import { GridItem } from '@chakra-ui/react';
 import React from 'react';
 import type { ControllerRenderProps, Control } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
@@ -6,6 +5,8 @@ import { Controller } from 'react-hook-form';
 import type { FormFields } from '../types';
 
 import CheckboxInput from 'ui/shared/CheckboxInput';
+
+import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
 interface Props {
   control: Control<FormFields>;
@@ -17,16 +18,13 @@ const ContractVerificationFieldIsYul = ({ control }: Props) => {
   ), []);
 
   return (
-    <>
-      <GridItem>
-        <Controller
-          name="is_yul"
-          control={ control }
-          render={ renderControl }
-        />
-      </GridItem>
-      <GridItem/>
-    </>
+    <ContractVerificationFormRow>
+      <Controller
+        name="is_yul"
+        control={ control }
+        render={ renderControl }
+      />
+    </ContractVerificationFormRow>
   );
 };
 

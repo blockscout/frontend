@@ -1,9 +1,11 @@
-import { GridItem, Link, Select } from '@chakra-ui/react';
+import { Link, Select } from '@chakra-ui/react';
 import React from 'react';
 import type { ControllerRenderProps, Control } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 
 import type { FormFields } from '../types';
+
+import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
 const VERSIONS = [
   'default',
@@ -29,20 +31,18 @@ const ContractVerificationFieldEvmVersion = ({ control }: Props) => {
   }, [ ]);
 
   return (
-    <>
-      <GridItem>
-        <Controller
-          name="evm_version"
-          control={ control }
-          render={ renderControl }
-          rules={{ required: true }}
-        />
-      </GridItem>
-      <GridItem fontSize="sm">
+    <ContractVerificationFormRow>
+      <Controller
+        name="evm_version"
+        control={ control }
+        render={ renderControl }
+        rules={{ required: true }}
+      />
+      <>
         <span>The EVM version the contract is written for. If the bytecode does not match the version, we try to verify using the latest EVM version. </span>
         <Link href="https://forum.poa.network/t/smart-contract-verification-evm-version-details/2318" target="_blank">EVM version details</Link>
-      </GridItem>
-    </>
+      </>
+    </ContractVerificationFormRow>
   );
 };
 

@@ -1,10 +1,11 @@
-import { Checkbox, GridItem } from '@chakra-ui/react';
+import { Checkbox } from '@chakra-ui/react';
 import React from 'react';
 import type { Control } from 'react-hook-form';
 import { useFieldArray } from 'react-hook-form';
 
 import type { FormFields } from '../types';
 
+import ContractVerificationFormRow from '../ContractVerificationFormRow';
 import ContractVerificationFieldLibraryItem from './ContractVerificationFieldLibraryItem';
 
 interface Props {
@@ -38,15 +39,15 @@ const ContractVerificationFieldLibraries = ({ control }: Props) => {
 
   return (
     <>
-      <GridItem mt={ 9 }>
+      <ContractVerificationFormRow>
         <Checkbox
           size="lg"
           onChange={ handleCheckboxChange }
+          mt={ 9 }
         >
-            Add contract libraries
+          Add contract libraries
         </Checkbox>
-      </GridItem>
-      <GridItem/>
+      </ContractVerificationFormRow>
       { fields.map((field, index) => (
         <ContractVerificationFieldLibraryItem
           key={ field.id }

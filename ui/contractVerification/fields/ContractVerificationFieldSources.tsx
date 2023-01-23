@@ -1,4 +1,4 @@
-import { GridItem, Text, Button, Box, chakra } from '@chakra-ui/react';
+import { Text, Button, Box, chakra } from '@chakra-ui/react';
 import React from 'react';
 import type { ControllerRenderProps, Control } from 'react-hook-form';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -7,6 +7,8 @@ import type { FormFields } from '../types';
 
 import FileInput from 'ui/shared/forms/FileInput';
 import FileSnippet from 'ui/shared/forms/FileSnippet';
+
+import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
 interface Props {
   control: Control<FormFields>;
@@ -60,17 +62,17 @@ const ContractVerificationFieldSources = ({ control, accept, multiple, title, cl
 
   return (
     <>
-      <GridItem mt={ 4 } className={ className }>
-        <Text fontWeight={ 500 } mb={ 4 }>{ title }</Text>
+      <ContractVerificationFormRow >
+        <Text fontWeight={ 500 } className={ className } mt={ 4 }>{ title }</Text>
+      </ContractVerificationFormRow>
+      <ContractVerificationFormRow>
         <Controller
           name="sources"
           control={ control }
           render={ renderControl }
         />
-      </GridItem>
-      <GridItem fontSize="sm" mt={ 4 } className={ className }>
-        { hint }
-      </GridItem>
+        { hint ? <span>{ hint }</span> : null }
+      </ContractVerificationFormRow>
     </>
   );
 };

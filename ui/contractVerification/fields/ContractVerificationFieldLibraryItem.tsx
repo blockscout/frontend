@@ -1,4 +1,4 @@
-import { Flex, FormControl, GridItem, Icon, IconButton, Input, Text } from '@chakra-ui/react';
+import { Flex, FormControl, Icon, IconButton, Input, Text } from '@chakra-ui/react';
 import React from 'react';
 import type { Control, ControllerRenderProps } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
@@ -9,6 +9,8 @@ import minusIcon from 'icons/minus.svg';
 import plusIcon from 'icons/plus.svg';
 import { ADDRESS_REGEXP } from 'lib/validations/address';
 import InputPlaceholder from 'ui/shared/InputPlaceholder';
+
+import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
 const LIMIT = 10;
 
@@ -62,8 +64,8 @@ const ContractVerificationFieldLibraryItem = ({ control, index, fieldsLength, on
 
   return (
     <>
-      <GridItem mt={ index !== 0 ? 12 : 0 } ref={ ref }>
-        <Flex alignItems="center" justifyContent="space-between">
+      <ContractVerificationFormRow>
+        <Flex alignItems="center" justifyContent="space-between" ref={ ref } mt={ index !== 0 ? 6 : 0 }>
           <Text variant="secondary" fontSize="sm">Contract library { index + 1 }</Text>
           <Flex columnGap={ 5 }>
             { fieldsLength > 1 && (
@@ -88,34 +90,33 @@ const ContractVerificationFieldLibraryItem = ({ control, index, fieldsLength, on
             ) }
           </Flex>
         </Flex>
-      </GridItem>
-      <GridItem/>
-      <GridItem>
+      </ContractVerificationFormRow>
+      <ContractVerificationFormRow>
         <Controller
           name={ `libraries.${ index }.name` }
           control={ control }
           render={ renderNameControl }
           rules={{ required: true }}
         />
-      </GridItem>
-      { index === 0 ? (
-        <GridItem fontSize="sm">
+        { index === 0 ? (
+          <>
             A library name called in the .sol file. Multiple libraries (up to 10) may be added for each contract.
-        </GridItem>
-      ) : <GridItem/> }
-      <GridItem>
+          </>
+        ) : null }
+      </ContractVerificationFormRow>
+      <ContractVerificationFormRow>
         <Controller
           name={ `libraries.${ index }.address` }
           control={ control }
           render={ renderAddressControl }
           rules={{ required: true, pattern: ADDRESS_REGEXP }}
         />
-      </GridItem>
-      { index === 0 ? (
-        <GridItem fontSize="sm">
-            The 0x library address. This can be found in the generated json file or Truffle output (if using truffle).
-        </GridItem>
-      ) : <GridItem/> }
+        { index === 0 ? (
+          <>
+              The 0x library address. This can be found in the generated json file or Truffle output (if using truffle).
+          </>
+        ) : null }
+      </ContractVerificationFormRow>
     </>
   );
 };

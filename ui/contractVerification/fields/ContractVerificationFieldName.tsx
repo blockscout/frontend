@@ -1,4 +1,4 @@
-import { chakra, Code, FormControl, GridItem, Input } from '@chakra-ui/react';
+import { chakra, Code, FormControl, Input } from '@chakra-ui/react';
 import React from 'react';
 import type { ControllerRenderProps, Control } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
@@ -6,6 +6,8 @@ import { Controller } from 'react-hook-form';
 import type { FormFields } from '../types';
 
 import InputPlaceholder from 'ui/shared/InputPlaceholder';
+
+import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
 interface Props {
   control: Control<FormFields>;
@@ -27,25 +29,21 @@ const ContractVerificationFieldName = ({ control, hint }: Props) => {
   }, []);
 
   return (
-    <>
-      <GridItem>
-        <Controller
-          name="name"
-          control={ control }
-          render={ renderControl }
-          rules={{ required: true }}
-        />
-      </GridItem>
-      <GridItem fontSize="sm">
-        { hint || (
-          <>
-            <span>Must match the name specified in the code. For example, in </span>
-            <Code>{ `contract MyContract {..}` }</Code>
-            <span>. <chakra.span fontWeight={ 600 }>MyContract</chakra.span> is the contract name.</span>
-          </>
-        ) }
-      </GridItem>
-    </>
+    <ContractVerificationFormRow>
+      <Controller
+        name="name"
+        control={ control }
+        render={ renderControl }
+        rules={{ required: true }}
+      />
+      { hint ? <span>{ hint }</span> : (
+        <>
+          <span>Must match the name specified in the code. For example, in </span>
+          <Code>{ `contract MyContract {..}` }</Code>
+          <span>. <chakra.span fontWeight={ 600 }>MyContract</chakra.span> is the contract name.</span>
+        </>
+      ) }
+    </ContractVerificationFormRow>
   );
 };
 
