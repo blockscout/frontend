@@ -28,6 +28,11 @@ export interface FormFieldsSourcify {
 
 export interface FormFieldsMultiPartFile {
   method: 'multi_part_file';
+  compiler: string;
+  evm_version: string;
+  is_optimization_enabled: boolean;
+  optimization_runs: string;
+  sources: Array<File>;
 }
 
 export interface FormFieldsVyperContract {
