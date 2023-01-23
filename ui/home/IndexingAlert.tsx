@@ -84,11 +84,11 @@ const IndexingAlert = ({ className }: { className?: string }) => {
 
   let content;
   if (data.finished_indexing_blocks === false) {
-    content = `${ data.indexed_blocks_ratio && `${ (Number(data.indexed_blocks_ratio) * 100).toFixed() }% Blocks Indexed${ nbsp }${ ndash } ` }
+    content = `${ data.indexed_blocks_ratio && `${ Math.floor(Number(data.indexed_blocks_ratio) * 100) }% Blocks Indexed${ nbsp }${ ndash } ` }
           We're indexing this chain right now. Some of the counts may be inaccurate.` ;
   } else if (data.finished_indexing === false) {
     content = `${ data.indexed_inernal_transactions_ratio &&
-            `${ (Number(data.indexed_inernal_transactions_ratio) * 100).toFixed() }% Blocks With Internal Transactions Indexed${ nbsp }${ ndash } ` }
+            `${ Math.floor(Number(data.indexed_inernal_transactions_ratio) * 100) }% Blocks With Internal Transactions Indexed${ nbsp }${ ndash } ` }
           We're indexing this chain right now. Some of the counts may be inaccurate.`;
   }
 
