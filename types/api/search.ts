@@ -49,3 +49,9 @@ export interface SearchResult {
 export interface SearchResultFilters {
   q: string;
 }
+
+export interface SearchRedirectResult {
+  parameter: string | null;
+  redirect: boolean;
+  type: 'address' | 'block' | 'transaction' | null;
+}

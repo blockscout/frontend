@@ -1,4 +1,6 @@
+import type { IncomingMessage } from 'http';
 import type { NextApiRequest } from 'next';
+import type { NextApiRequestCookies } from 'next/dist/server/api-utils';
 import type { RequestInit, Response } from 'node-fetch';
 import nodeFetch from 'node-fetch';
 
@@ -6,7 +8,7 @@ import { httpLogger } from 'lib/api/logger';
 import * as cookies from 'lib/cookies';
 
 export default function fetchFactory(
-  _req: NextApiRequest,
+  _req: NextApiRequest | (IncomingMessage & { cookies: NextApiRequestCookies }),
 ) {
   // first arg can be only a string
   // FIXME migrate to RequestInfo later if needed
