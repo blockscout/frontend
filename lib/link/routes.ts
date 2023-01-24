@@ -105,6 +105,10 @@ export const ROUTES = {
     pattern: PATHS.visualize_sol2uml,
   },
 
+  csv_export: {
+    pattern: PATHS.csv_export,
+  },
+
   // AUTH
   auth: {
     pattern: PATHS.auth,

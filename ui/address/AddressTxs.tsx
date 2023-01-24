@@ -1,5 +1,4 @@
 import { useQueryClient } from '@tanstack/react-query';
-import castArray from 'lodash/castArray';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -17,6 +16,7 @@ import ActionBar from 'ui/shared/ActionBar';
 import Pagination from 'ui/shared/Pagination';
 import TxsContent from 'ui/txs/TxsContent';
 
+import AddressCsvExportLink from './AddressCsvExportLink';
 import AddressTxsFilter from './AddressTxsFilter';
 
 const OVERLOAD_COUNT = 75;
@@ -31,12 +31,13 @@ const AddressTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}
   const [ newItemsCount, setNewItemsCount ] = React.useState(0);
 
   const isMobile = useIsMobile();
+  const currentAddress = router.query.id?.toString();
 
   const [ filterValue, setFilterValue ] = React.useState<AddressFromToFilter>(getFilterValue(router.query.filter));
 
   const addressTxsQuery = useQueryWithPages({
     resourceName: 'address_txs',
-    pathParams: { id: castArray(router.query.id)[0] },
+    pathParams: { id: currentAddress },
     filters: { filter: filterValue },
     scrollRef,
   });
@@ -50,8 +51,6 @@ const AddressTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}
 
   const handleNewSocketMessage: SocketMessage.AddressTxs['handler'] = (payload) => {
     setSocketAlert('');
-
-    const currentAddress = router.query.id?.toString();
 
     if (addressTxsQuery.data?.items && addressTxsQuery.data.items.length >= OVERLOAD_COUNT) {
       if (
@@ -109,7 +108,7 @@ const AddressTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}
   }, []);
 
   const channel = useSocketChannel({
-    topic: `addresses:${ (router.query.id as string).toLowerCase() }`,
+    topic: `addresses:${ currentAddress?.toLowerCase() }`,
     onSocketClose: handleSocketClose,
     onSocketError: handleSocketError,
     isDisabled: addressTxsQuery.pagination.page !== 1,
@@ -140,13 +139,14 @@ const AddressTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}
       { !isMobile && (
         <ActionBar mt={ -6 }>
           { filter }
-          { addressTxsQuery.isPaginationVisible && <Pagination { ...addressTxsQuery.pagination }/> }
+          { currentAddress && <AddressCsvExportLink address={ currentAddress } type="transactions" ml="auto"/> }
+          { addressTxsQuery.isPaginationVisible && <Pagination { ...addressTxsQuery.pagination } ml={ 8 }/> }
         </ActionBar>
       ) }
       <TxsContent
         filter={ filter }
         query={ addressTxsQuery }
-        currentAddress={ typeof router.query.id === 'string' ? router.query.id : undefined }
+        currentAddress={ typeof currentAddress === 'string' ? currentAddress : undefined }
         enableTimeIncrement
         showSocketInfo={ addressTxsQuery.pagination.page === 1 }
         socketInfoAlert={ socketAlert }

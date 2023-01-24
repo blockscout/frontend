@@ -5,6 +5,7 @@ import React from 'react';
 import type { TxsResponse } from 'types/api/transaction';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
 import SkeletonList from 'ui/shared/skeletons/SkeletonList';
@@ -123,6 +124,7 @@ const TxsContent = ({
           paginationProps={ query.pagination }
           showPagination={ query.isPaginationVisible }
           filterComponent={ filter }
+          linkSlot={ currentAddress ? <AddressCsvExportLink address={ currentAddress } type="transactions" ml={ 2 }/> : null }
         />
       ) }
       { content }
