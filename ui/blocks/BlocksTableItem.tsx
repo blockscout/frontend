@@ -50,7 +50,7 @@ const BlocksTableItem = ({ data, isPending, enableTimeIncrement }: Props) => {
       </Td>
       <Td fontSize="sm">{ data.size.toLocaleString('en') }</Td>
       <Td fontSize="sm">
-        <AddressLink alias={ data.miner.name } hash={ data.miner.hash } truncation="constant" display="inline-flex" maxW="100%"/>
+        <AddressLink type="address" alias={ data.miner.name } hash={ data.miner.hash } truncation="constant" display="inline-flex" maxW="100%"/>
       </Td>
       <Td isNumeric fontSize="sm">{ data.tx_count }</Td>
       <Td fontSize="sm">

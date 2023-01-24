@@ -1,7 +1,7 @@
-import { Flex, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Skeleton, useColorModeValue, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-const StatsItemSkeleton = () => {
+const StatsItemSkeleton = ({ className }: {className?: string}) => {
   const bgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
 
   return (
@@ -13,6 +13,7 @@ const StatsItemSkeleton = () => {
       alignItems="center"
       columnGap={ 3 }
       rowGap={ 2 }
+      className={ className }
     >
       <Skeleton
         w="40px"
@@ -26,4 +27,4 @@ const StatsItemSkeleton = () => {
   );
 };
 
-export default StatsItemSkeleton;
+export default chakra(StatsItemSkeleton);

@@ -49,11 +49,11 @@ const AddressCoinBalanceHistory = ({ query }: Props) => {
           <Table variant="simple" size="sm">
             <Thead top={ 80 }>
               <Tr>
-                <Th width="25%">Block</Th>
-                <Th width="25%">Txn</Th>
-                <Th width="25%">Age</Th>
-                <Th width="25%" isNumeric pr={ 1 }/>
-                <Th width="120px" isNumeric>Balance { appConfig.network.currency.symbol }</Th>
+                <Th width="20%">Block</Th>
+                <Th width="20%">Txn</Th>
+                <Th width="20%">Age</Th>
+                <Th width="20%" isNumeric pr={ 1 }>Balance { appConfig.network.currency.symbol }</Th>
+                <Th width="20%" isNumeric>Delta</Th>
               </Tr>
             </Thead>
             <Tbody>

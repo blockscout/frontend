@@ -77,6 +77,12 @@ export const ROUTES = {
     crossNetworkNavigation: true,
   },
 
+  // ACCOUNTS
+  accounts: {
+    pattern: PATHS.accounts,
+    crossNetworkNavigation: true,
+  },
+
   // APPS
   apps: {
     pattern: PATHS.apps,
@@ -97,6 +103,10 @@ export const ROUTES = {
   // VISUALIZE
   visualize_sol2uml: {
     pattern: PATHS.visualize_sol2uml,
+  },
+
+  csv_export: {
+    pattern: PATHS.csv_export,
   },
 
   // AUTH

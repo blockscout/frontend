@@ -4,7 +4,6 @@ import {
   HStack,
   Icon,
   Text,
-  useColorModeValue,
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -28,9 +27,6 @@ type Props = {
 }
 
 const LatestBlocksItem = ({ tx }: Props) => {
-  const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
-  const iconColor = useColorModeValue('blue.600', 'blue.300');
-
   const dataTo = tx.to ? tx.to : tx.created_contract;
   const timeAgo = useTimeAgoIncrement(tx.timestamp || '0', true);
 
@@ -40,10 +36,10 @@ const LatestBlocksItem = ({ tx }: Props) => {
     <Box
       width="100%"
       borderTop="1px solid"
-      borderColor={ borderColor }
+      borderColor="divider"
       py={ 4 }
       px={{ base: 0, lg: 4 }}
-      _last={{ borderBottom: '1px solid', borderColor }}
+      _last={{ borderBottom: '1px solid', borderColor: 'divider' }}
     >
       <Flex justifyContent="space-between" width="100%" alignItems="start" flexDirection={{ base: 'column', lg: 'row' }}>
         { !isMobile && <Flex mr={ 3 }><TxAdditionalInfo tx={ tx }/></Flex> }
@@ -67,7 +63,7 @@ const LatestBlocksItem = ({ tx }: Props) => {
                 as={ transactionIcon }
                 boxSize="30px"
                 mr={ 2 }
-                color={ iconColor }
+                color="link"
               />
               <Address width="100%">
                 <AddressLink
@@ -86,6 +82,7 @@ const LatestBlocksItem = ({ tx }: Props) => {
             <Address>
               <AddressIcon address={ tx.from }/>
               <AddressLink
+                type="address"
                 hash={ tx.from.hash }
                 alias={ tx.from.name }
                 fontWeight="500"
@@ -103,6 +100,7 @@ const LatestBlocksItem = ({ tx }: Props) => {
             <Address>
               <AddressIcon address={ dataTo }/>
               <AddressLink
+                type="address"
                 hash={ dataTo.hash }
                 alias={ dataTo.name }
                 fontWeight="500"

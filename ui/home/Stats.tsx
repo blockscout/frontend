@@ -30,13 +30,14 @@ const Stats = () => {
 
   let content;
 
-  if (isLoading) {
-    content = Array.from(Array(itemsCount)).map((item, index) => <StatsItemSkeleton key={ index }/>);
-  }
-
   const lastItemTouchStyle = { gridColumn: { base: 'span 2', lg: 'unset' } };
 
+  if (isLoading) {
+    content = Array.from(Array(itemsCount)).map((item, index) => <StatsItemSkeleton key={ index } _last={ itemsCount % 2 ? lastItemTouchStyle : undefined }/>);
+  }
+
   if (data) {
+    const isOdd = Boolean(hasGasTracker && !data.gas_prices ? (itemsCount - 1) % 2 : itemsCount % 2);
     const gasLabel = hasGasTracker && data.gas_prices ? <StatsGasPrices gasPrices={ data.gas_prices }/> : null;
     content = (
       <>
@@ -63,14 +64,14 @@ const Stats = () => {
           icon={ walletIcon }
           title="Wallet addresses"
           value={ Number(data.total_addresses).toLocaleString() }
-          _last={ itemsCount % 2 ? lastItemTouchStyle : undefined }
+          _last={ isOdd ? lastItemTouchStyle : undefined }
         />
         { hasGasTracker && data.gas_prices && (
           <StatsItem
             icon={ gasIcon }
             title="Gas tracker"
             value={ `${ Number(data.gas_prices.average).toLocaleString() } Gwei` }
-            _last={ itemsCount % 2 ? lastItemTouchStyle : undefined }
+            _last={ isOdd ? lastItemTouchStyle : undefined }
             tooltipLabel={ gasLabel }
           />
         ) }

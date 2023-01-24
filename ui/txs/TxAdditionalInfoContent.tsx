@@ -1,4 +1,4 @@
-import { Box, Heading, Text, Flex, Link, useColorModeValue } from '@chakra-ui/react';
+import { Box, Heading, Text, Flex, Link } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -12,10 +12,9 @@ import TextSeparator from 'ui/shared/TextSeparator';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
 const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
-  const sectionBorderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
   const sectionProps = {
     borderBottom: '1px solid',
-    borderColor: sectionBorderColor,
+    borderColor: 'divider',
     paddingBottom: 4,
   };
 

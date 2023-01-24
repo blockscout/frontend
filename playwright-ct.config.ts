@@ -51,6 +51,12 @@ const config: PlaywrightTestConfig = {
           exportAsDefault: true,
         }),
       ],
+      build: {
+        // it actually frees some memory that vite needs a lot
+        // https://github.com/storybookjs/builder-vite/issues/409#issuecomment-1152848986
+        sourcemap: false,
+        minify: false,
+      },
     },
   },
 

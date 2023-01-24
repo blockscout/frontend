@@ -68,8 +68,16 @@ function makePolicyMap() {
       appConfig.api.socket,
       appConfig.statsApi.endpoint,
 
+      // chain RPC server
+      appConfig.network.rpcUrl,
+
       // ad
       'request-global.czilladx.com',
+
+      // walletconnect
+      '*.walletconnect.com',
+      'wss://*.bridge.walletconnect.org',
+      'wss://www.walletlink.org',
     ],
 
     'script-src': [
@@ -130,6 +138,9 @@ function makePolicyMap() {
       // ad
       'servedbyadbutler.com',
       'cdn.coinzilla.io',
+
+      // walletconnect
+      '*.walletconnect.com',
     ],
 
     'font-src': [

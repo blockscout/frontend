@@ -45,7 +45,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }
   const addressFrom = (
     <Address>
       <AddressIcon address={ tx.from }/>
-      <AddressLink hash={ tx.from.hash } alias={ tx.from.name } fontWeight="500" ml={ 2 } truncation="constant" isDisabled={ isOut }/>
+      <AddressLink type="address" hash={ tx.from.hash } alias={ tx.from.name } fontWeight="500" ml={ 2 } truncation="constant" isDisabled={ isOut }/>
     </Address>
   );
 
@@ -54,7 +54,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }
   const addressTo = (
     <Address>
       <AddressIcon address={ dataTo }/>
-      <AddressLink hash={ dataTo.hash } alias={ dataTo.name } fontWeight="500" ml={ 2 } truncation="constant" isDisabled={ isIn }/>
+      <AddressLink type="address" hash={ dataTo.hash } alias={ dataTo.name } fontWeight="500" ml={ 2 } truncation="constant" isDisabled={ isIn }/>
     </Address>
   );
 

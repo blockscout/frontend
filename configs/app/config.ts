@@ -115,6 +115,9 @@ const config = Object.freeze({
     showGasTracker: getEnvValue(process.env.NEXT_PUBLIC_HOMEPAGE_SHOW_GAS_TRACKER) === 'false' ? false : true,
     showAvgBlockTime: getEnvValue(process.env.NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME) === 'false' ? false : true,
   },
+  walletConnect: {
+    projectId: getEnvValue(process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID),
+  },
 });
 
 export default config;

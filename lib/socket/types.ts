@@ -18,6 +18,7 @@ SocketMessage.AddressCoinBalance |
 SocketMessage.AddressTxs |
 SocketMessage.AddressTxsPending |
 SocketMessage.AddressTokenTransfer |
+SocketMessage.TokenTransfers |
 SocketMessage.Unknown;
 
 interface SocketMessageParamsGeneric<Event extends string | undefined, Payload extends object | unknown> {
@@ -42,5 +43,6 @@ export namespace SocketMessage {
   export type AddressTxs = SocketMessageParamsGeneric<'transaction', { transaction: Transaction }>;
   export type AddressTxsPending = SocketMessageParamsGeneric<'pending_transaction', { transaction: Transaction }>;
   export type AddressTokenTransfer = SocketMessageParamsGeneric<'token_transfer', { token_transfer: TokenTransfer }>;
+  export type TokenTransfers = SocketMessageParamsGeneric<'token_transfer', {token_transfer: number }>
   export type Unknown = SocketMessageParamsGeneric<undefined, unknown>;
 }

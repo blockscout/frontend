@@ -24,8 +24,9 @@ export default function fetchFactory(
     });
 
     return nodeFetch(url, {
-      headers,
       ...init,
+      headers,
+      body: init?.body ? JSON.stringify(init.body) : undefined,
     });
   };
 }

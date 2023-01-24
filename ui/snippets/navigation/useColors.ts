@@ -5,14 +5,14 @@ export default function useColors() {
     text: {
       'default': useColorModeValue('gray.600', 'gray.400'),
       active: useColorModeValue('blue.700', 'gray.50'),
-      hover: 'blue.400',
+      hover: 'link_hovered',
     },
     bg: {
       'default': 'transparent',
       active: useColorModeValue('blue.50', 'gray.800'),
     },
     border: {
-      'default': useColorModeValue('blackAlpha.200', 'whiteAlpha.200'),
+      'default': 'divider',
       active: useColorModeValue('blue.50', 'gray.800'),
     },
   };

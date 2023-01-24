@@ -7,7 +7,6 @@ import {
   PopoverContent,
   PopoverBody,
   useDisclosure,
-  useColorModeValue,
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -32,7 +31,6 @@ type Props =
 
 const TxAdditionalInfo = ({ hash, tx, isMobile }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const popoverBorderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
 
   const content = hash !== undefined ? <TxAdditionalInfoContainer hash={ hash }/> : <TxAdditionalInfoContent tx={ tx }/>;
 
@@ -56,7 +54,7 @@ const TxAdditionalInfo = ({ hash, tx, isMobile }: Props) => {
           <PopoverTrigger>
             <AdditionalInfoButton isOpen={ isOpen }/>
           </PopoverTrigger>
-          <PopoverContent border="1px solid" borderColor={ popoverBorderColor }>
+          <PopoverContent border="1px solid" borderColor="divider">
             <PopoverBody>
               { content }
             </PopoverBody>

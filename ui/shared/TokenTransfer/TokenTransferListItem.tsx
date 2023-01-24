@@ -1,4 +1,4 @@
-import { Text, Flex, Tag, Icon, useColorModeValue } from '@chakra-ui/react';
+import { Text, Flex, Tag, Icon } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -43,8 +43,6 @@ const TokenTransferListItem = ({
     return BigNumber(total.value).div(BigNumber(10 ** Number(total.decimals))).dp(8).toFormat();
   })();
 
-  const iconColor = useColorModeValue('blue.600', 'blue.300');
-
   const timeAgo = useTimeAgoIncrement(timestamp, enableTimeIncrement);
 
   const addressWidth = `calc((100% - ${ baseAddress ? '50px' : '0px' }) / 2)`;
@@ -68,7 +66,7 @@ const TokenTransferListItem = ({
               as={ transactionIcon }
               boxSize="30px"
               mr={ 2 }
-              color={ iconColor }
+              color="link"
             />
             <Address width="100%">
               <AddressLink
@@ -85,7 +83,7 @@ const TokenTransferListItem = ({
       <Flex w="100%" columnGap={ 3 }>
         <Address width={ addressWidth }>
           <AddressIcon address={ from }/>
-          <AddressLink ml={ 2 } fontWeight="500" hash={ from.hash } isDisabled={ baseAddress === from.hash }/>
+          <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ from.hash } isDisabled={ baseAddress === from.hash }/>
         </Address>
         { baseAddress ?
           <InOutTag isIn={ baseAddress === to.hash } isOut={ baseAddress === from.hash } w="50px" textAlign="center"/> :
@@ -93,7 +91,7 @@ const TokenTransferListItem = ({
         }
         <Address width={ addressWidth }>
           <AddressIcon address={ to }/>
-          <AddressLink ml={ 2 } fontWeight="500" hash={ to.hash } isDisabled={ baseAddress === to.hash }/>
+          <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ to.hash } isDisabled={ baseAddress === to.hash }/>
         </Address>
       </Flex>
       { value && (

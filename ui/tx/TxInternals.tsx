@@ -10,7 +10,7 @@ import { apos } from 'lib/html-entities';
 import EmptySearchResult from 'ui/apps/EmptySearchResult';
 import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-// import FilterInput from 'ui/shared/FilterInput';
+// import FilterInput from 'ui/shared/filters/FilterInput';
 // import TxInternalsFilter from 'ui/tx/internals/TxInternalsFilter';
 import Pagination from 'ui/shared/Pagination';
 import SkeletonList from 'ui/shared/skeletons/SkeletonList';
