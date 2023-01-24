@@ -4,6 +4,10 @@ const semanticTokens = {
       'default': 'blackAlpha.200',
       _dark: 'whiteAlpha.200',
     },
+    text_secondary: {
+      'default': 'gray.500',
+      _dark: 'gray.400',
+    },
     link: {
       'default': 'blue.600',
       _dark: 'blue.300',

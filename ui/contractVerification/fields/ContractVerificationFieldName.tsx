@@ -44,7 +44,7 @@ const ContractVerificationFieldName = ({ hint }: Props) => {
       { hint ? <span>{ hint }</span> : (
         <>
           <span>Must match the name specified in the code. For example, in </span>
-          <Code>{ `contract MyContract {..}` }</Code>
+          <Code color="text_secondary">{ `contract MyContract {..}` }</Code>
           <span>. <chakra.span fontWeight={ 600 }>MyContract</chakra.span> is the contract name.</span>
         </>
       ) }

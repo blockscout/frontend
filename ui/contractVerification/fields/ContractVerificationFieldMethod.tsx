@@ -14,6 +14,7 @@ import {
   PopoverBody,
   useColorModeValue,
   DarkMode,
+  useBoolean,
 } from '@chakra-ui/react';
 import React from 'react';
 import type { ControllerRenderProps, Control } from 'react-hook-form';
@@ -37,7 +38,7 @@ interface Props {
 }
 
 const ContractVerificationFieldMethod = ({ control, isDisabled }: Props) => {
-
+  const [ isPopoverOpen, setIsPopoverOpen ] = useBoolean();
   const tooltipBg = useColorModeValue('gray.700', 'gray.900');
 
   const renderItem = React.useCallback((method: VerificationMethod) => {
@@ -48,7 +49,11 @@ const ContractVerificationFieldMethod = ({ control, isDisabled }: Props) => {
         return (
           <>
             <span>Via standard </span>
-            <Link href="https://docs.soliditylang.org/en/latest/using-the-compiler.html#input-description" target="_blank">
+            <Link
+              href={ isDisabled ? undefined : 'https://docs.soliditylang.org/en/latest/using-the-compiler.html#input-description' }
+              target="_blank"
+              cursor={ isDisabled ? 'not-allowed' : 'pointer' }
+            >
                 Input JSON
             </Link>
           </>
@@ -57,9 +62,9 @@ const ContractVerificationFieldMethod = ({ control, isDisabled }: Props) => {
         return (
           <>
             <span>Via sourcify: sources and metadata JSON file</span>
-            <Popover trigger="hover">
+            <Popover trigger="hover" isLazy isOpen={ isDisabled ? false : isPopoverOpen } onOpen={ setIsPopoverOpen.on } onClose={ setIsPopoverOpen.off }>
               <PopoverTrigger>
-                <chakra.span cursor="pointer" display="inline-block" verticalAlign="middle" h="24px" ml={ 1 }>
+                <chakra.span cursor={ isDisabled ? 'not-allowed' : 'pointer' } display="inline-block" verticalAlign="middle" h="24px" ml={ 1 }>
                   <Icon as={ infoIcon } boxSize={ 5 } color="link" _hover={{ color: 'link_hovered' }}/>
                 </chakra.span>
               </PopoverTrigger>
@@ -94,7 +99,7 @@ const ContractVerificationFieldMethod = ({ control, isDisabled }: Props) => {
       default:
         break;
     }
-  }, [ tooltipBg ]);
+  }, [ isDisabled, isPopoverOpen, setIsPopoverOpen.off, setIsPopoverOpen.on, tooltipBg ]);
 
   const renderRadioGroup = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'method'>}) => {
     return (

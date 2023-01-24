@@ -70,9 +70,9 @@ const ContractVerificationFieldCompiler = ({ isVyper }: Props) => {
       { isVyper ? null : (
         <>
           <span>The compiler version is specified in </span>
-          <Code>pragma solidity X.X.X</Code>
+          <Code color="text_secondary">pragma solidity X.X.X</Code>
           <span>. Use the compiler version rather than the nightly build. If using the Solidity compiler, run </span>
-          <Code>solc —version</Code>
+          <Code color="text_secondary">solc —version</Code>
           <span> to check.</span>
         </>
       ) }
