@@ -45,7 +45,7 @@ const TxStateStorageItem = ({ storageItem }: {storageItem: TTxStateItemStorage})
           <GridItem display="flex" flexDir="row" columnGap={ 3 } alignItems="center" >
             { item.select && (
               <Select
-                size="sm"
+                size="xs"
                 borderRadius="base"
                 focusBorderColor="none"
                 display="inline-block"

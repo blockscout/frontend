@@ -53,6 +53,15 @@ const sizes = {
       ...iconSpacing,
     },
   },
+  xs: {
+    ...Input.sizes?.xs,
+    field: {
+      ...Input.sizes?.xs.field,
+      ...iconSpacing,
+      fontSize: 'sm',
+      lineHeight: '20px',
+    },
+  },
 };
 
 const Select = defineMultiStyleConfig({
@@ -62,7 +71,7 @@ const Select = defineMultiStyleConfig({
   },
   sizes,
   defaultProps: {
-    size: 'sm',
+    size: 'xs',
   },
 });
 
