@@ -14,7 +14,7 @@ import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import LogTopic from 'ui/shared/logs/LogTopic';
 
 type Props = Log & {
-  type: 'address' | 'tx';
+  type: 'address' | 'transaction';
 };
 
 const RowHeader = ({ children }: { children: React.ReactNode }) => (
@@ -23,10 +23,12 @@ const RowHeader = ({ children }: { children: React.ReactNode }) => (
   </GridItem>
 );
 
-const TxLogItem = ({ address, index, topics, data, decoded, type }: Props) => {
+const LogItem = ({ address, index, topics, data, decoded, type, tx_hash: txHash }: Props) => {
 
   const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
   const dataBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
+
+  const hasTxInfo = type === 'address' && txHash;
 
   return (
     <Grid
@@ -41,7 +43,7 @@ const TxLogItem = ({ address, index, topics, data, decoded, type }: Props) => {
         pt: 0,
       }}
     >
-      { !decoded && type === 'tx' && (
+      { !decoded && type === 'transaction' && (
         <GridItem colSpan={{ base: 1, lg: 2 }}>
           <Alert status="warning" display="inline-table" whiteSpace="normal">
             To see accurate decoded input data, the contract must be verified.{ space }
@@ -49,11 +51,15 @@ const TxLogItem = ({ address, index, topics, data, decoded, type }: Props) => {
           </Alert>
         </GridItem>
       ) }
-      <RowHeader>Address</RowHeader>
+      { hasTxInfo ? <RowHeader>Transaction</RowHeader> : <RowHeader>Address</RowHeader> }
       <GridItem display="flex" alignItems="center">
         <Address mr={{ base: 9, lg: 0 }}>
-          <AddressIcon address={ address }/>
-          <AddressLink type="address" hash={ address.hash } alias={ address.name } ml={ 2 }/>
+          { !hasTxInfo && <AddressIcon address={ address } mr={ 2 }/> }
+          <AddressLink
+            hash={ hasTxInfo ? txHash : address.hash }
+            alias={ hasTxInfo ? undefined : address.name }
+            type={ type }
+          />
         </Address>
         { /* api doesn't have find topic feature yet */ }
         { /* <Tooltip label="Find matches topic">
@@ -93,4 +99,4 @@ const TxLogItem = ({ address, index, topics, data, decoded, type }: Props) => {
   );
 };
 
-export default React.memo(TxLogItem);
+export default React.memo(LogItem);
