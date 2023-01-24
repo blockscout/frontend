@@ -1,9 +1,7 @@
-import { Skeleton, SkeletonCircle, Flex, Box, useColorModeValue } from '@chakra-ui/react';
+import { Skeleton, SkeletonCircle, Flex, Box } from '@chakra-ui/react';
 import React from 'react';
 
 const TxInternalsSkeletonMobile = () => {
-  const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
-
   return (
     <Box>
       { Array.from(Array(2)).map((item, index) => (
@@ -13,7 +11,7 @@ const TxInternalsSkeletonMobile = () => {
           flexDirection="column"
           paddingY={ 6 }
           borderTopWidth="1px"
-          borderColor={ borderColor }
+          borderColor="divider"
           _last={{
             borderBottomWidth: '1px',
           }}

@@ -1,4 +1,4 @@
-import { Grid, GridItem, Text, Icon, Link, Box, Tooltip, useColorModeValue } from '@chakra-ui/react';
+import { Grid, GridItem, Text, Icon, Link, Box, Tooltip } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import capitalize from 'lodash/capitalize';
 import NextLink from 'next/link';
@@ -52,8 +52,6 @@ const BlockDetails = () => {
     router.push(url, undefined);
   }, [ router ]);
 
-  const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
-
   if (isLoading) {
     return <BlockDetailsSkeleton/>;
   }
@@ -76,7 +74,7 @@ const BlockDetails = () => {
       mt={{ base: 2, lg: 3 }}
       mb={{ base: 0, lg: 3 }}
       borderBottom="1px solid"
-      borderColor={ borderColor }
+      borderColor="divider"
     />
   );
   const { totalReward, staticReward, burntFees, txFees } = getBlockReward(data);

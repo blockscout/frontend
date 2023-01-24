@@ -49,7 +49,7 @@ const TokenSelectItem = ({ data }: Props) => {
       display="flex"
       flexDir="column"
       rowGap={ 2 }
-      borderColor={ useColorModeValue('blackAlpha.200', 'whiteAlpha.200') }
+      borderColor="divider"
       borderBottomWidth="1px"
       _hover={{
         bgColor: useColorModeValue('blue.50', 'gray.800'),

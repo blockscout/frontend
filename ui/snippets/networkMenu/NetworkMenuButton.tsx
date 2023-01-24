@@ -37,7 +37,7 @@ const NetworkMenuButton = ({ isMobile, isActive, onClick, className }: Props, re
         height="36px"
         padding="10px"
         color={ isActive ? iconColorMobile : defaultIconColor }
-        _hover={{ color: isMobile ? undefined : 'blue.400' }}
+        _hover={{ color: isMobile ? undefined : 'link_hovered' }}
         cursor="pointer"
         { ...getDefaultTransitionProps({ transitionProperty: 'margin' }) }
       />

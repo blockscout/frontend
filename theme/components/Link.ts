@@ -8,9 +8,9 @@ const baseStyle = defineStyle(getDefaultTransitionProps());
 
 const variantPrimary = defineStyle((props) => {
   return {
-    color: mode('blue.600', 'blue.300')(props),
+    color: 'link',
     _hover: {
-      color: mode('blue.400', 'blue.200')(props),
+      color: 'link_hovered',
       textDecorationStyle: props.textDecorationStyle || 'solid',
     },
   };

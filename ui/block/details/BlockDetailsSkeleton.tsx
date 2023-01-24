@@ -1,11 +1,9 @@
-import { Grid, GridItem, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { Grid, GridItem, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import DetailsSkeletonRow from 'ui/shared/skeletons/DetailsSkeletonRow';
 
 const BlockDetailsSkeleton = () => {
-
-  const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
 
   const sectionGap = (
     <GridItem
@@ -13,7 +11,7 @@ const BlockDetailsSkeleton = () => {
       mt={{ base: 2, lg: 3 }}
       mb={{ base: 0, lg: 3 }}
       borderBottom="1px solid"
-      borderColor={ borderColor }
+      borderColor="divider"
     />
   );
 

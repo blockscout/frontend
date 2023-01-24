@@ -8,7 +8,6 @@ import {
   ModalContent,
   ModalCloseButton,
   Text,
-  useColorModeValue,
   useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 
@@ -43,7 +42,6 @@ const ARROW_WIDTH = 24;
 const TxsListItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const iconColor = useColorModeValue('blue.600', 'blue.300');
   const dataTo = tx.to ? tx.to : tx.created_contract;
 
   const isOut = Boolean(currentAddress && currentAddress === tx.from.hash);
@@ -67,7 +65,7 @@ const TxsListItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }:
               as={ transactionIcon }
               boxSize="30px"
               mr={ 2 }
-              color={ iconColor }
+              color="link"
             />
             <Address width="100%">
               <AddressLink

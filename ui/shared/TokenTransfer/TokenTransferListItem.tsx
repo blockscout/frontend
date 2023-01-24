@@ -1,4 +1,4 @@
-import { Text, Flex, Tag, Icon, useColorModeValue } from '@chakra-ui/react';
+import { Text, Flex, Tag, Icon } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -43,8 +43,6 @@ const TokenTransferListItem = ({
     return BigNumber(total.value).div(BigNumber(10 ** Number(total.decimals))).dp(8).toFormat();
   })();
 
-  const iconColor = useColorModeValue('blue.600', 'blue.300');
-
   const timeAgo = useTimeAgoIncrement(timestamp, enableTimeIncrement);
 
   const addressWidth = `calc((100% - ${ baseAddress ? '50px' : '0px' }) / 2)`;
@@ -64,7 +62,7 @@ const TokenTransferListItem = ({
               as={ transactionIcon }
               boxSize="30px"
               mr={ 2 }
-              color={ iconColor }
+              color="link"
             />
             <Address width="100%">
               <AddressLink

@@ -11,7 +11,6 @@ import {
   PopoverTrigger,
   PopoverContent,
   PopoverBody,
-  useColorModeValue,
   Show,
   Hide,
 } from '@chakra-ui/react';
@@ -64,7 +63,6 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }
     </Address>
   );
 
-  const infoBorderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
   return (
     <Tr
       as={ motion.tr }
@@ -81,7 +79,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }
               <PopoverTrigger>
                 <AdditionalInfoButton isOpen={ isOpen }/>
               </PopoverTrigger>
-              <PopoverContent border="1px solid" borderColor={ infoBorderColor }>
+              <PopoverContent border="1px solid" borderColor="divider">
                 <PopoverBody>
                   <TxAdditionalInfo tx={ tx }/>
                 </PopoverBody>

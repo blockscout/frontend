@@ -3,7 +3,6 @@ import {
   Radio,
   RadioGroup,
   Stack,
-  useColorModeValue,
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -30,7 +29,6 @@ const TokenTransferFilter = ({
   onAddressFilterChange,
   defaultAddressFilter,
 }: Props) => {
-  const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
 
   return (
     <PopoverFilter appliedFiltersNum={ appliedFiltersNum } contentProps={{ w: '200px' }}>
@@ -43,7 +41,7 @@ const TokenTransferFilter = ({
             defaultValue={ defaultAddressFilter || 'all' }
             paddingBottom={ 4 }
             borderBottom="1px solid"
-            borderColor={ borderColor }
+            borderColor="divider"
           >
             <Stack spacing={ 4 }>
               <Radio value="all"><Text fontSize="md">All</Text></Radio>
