@@ -2,8 +2,26 @@ import { Box, Flex, Icon, Text, useColorModeValue, IconButton, chakra } from '@c
 import React from 'react';
 
 import CrossIcon from 'icons/cross.svg';
-import imageIcon from 'icons/image.svg';
+import imageIcon from 'icons/files/image.svg';
+import jsonIcon from 'icons/files/json.svg';
+import solIcon from 'icons/files/sol.svg';
+import yulIcon from 'icons/files/yul.svg';
 import { shortenNumberWithLetter } from 'lib/formatters';
+
+const FILE_ICONS: Record<string, React.FunctionComponent<React.SVGAttributes<SVGElement>>> = {
+  '.json': jsonIcon,
+  '.sol': solIcon,
+  '.yul': yulIcon,
+};
+
+function getFileExtension(fileName: string) {
+  const chunks = fileName.split('.');
+  if (chunks.length === 1) {
+    return '';
+  }
+
+  return '.' + chunks[chunks.length - 1];
+}
 
 interface Props {
   file: File;
@@ -14,10 +32,12 @@ interface Props {
 }
 
 const FileSnippet = ({ file, className, index, onRemove, isDisabled }: Props) => {
-
   const handleRemove = React.useCallback(() => {
     onRemove?.(index);
   }, [ index, onRemove ]);
+
+  const fileExtension = getFileExtension(file.name);
+  const fileIcon = FILE_ICONS[fileExtension] || imageIcon;
 
   return (
     <Flex
@@ -29,7 +49,7 @@ const FileSnippet = ({ file, className, index, onRemove, isDisabled }: Props) =>
       overflow="hidden"
       className={ className }
     >
-      <Icon as={ imageIcon } boxSize="50px" color={ useColorModeValue('gray.600', 'gray.400') } mr={ 2 }/>
+      <Icon as={ fileIcon } boxSize="50px" color={ useColorModeValue('gray.600', 'gray.400') } mr={ 2 }/>
       <Box width="calc(100% - 58px - 24px)" >
         <Text fontWeight={ 600 } overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">{ file.name }</Text>
         <Text variant="secondary" mt={ 1 }>{ shortenNumberWithLetter(file.size) }B</Text>

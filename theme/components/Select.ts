@@ -1,6 +1,7 @@
 import { selectAnatomy as parts } from '@chakra-ui/anatomy';
 import {
   createMultiStyleConfigHelpers,
+  defineStyle,
 } from '@chakra-ui/styled-system';
 import { mode } from '@chakra-ui/theme-tools';
 
