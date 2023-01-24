@@ -1,4 +1,4 @@
-import { Text, useColorModeValue } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
@@ -40,11 +40,10 @@ const SearchBarSuggest = ({ query, searchTerm }: Props) => {
       </>
     );
   })();
-  const dividerColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
 
   return (
     <>
-      { !isMobile && <TextAd pb={ 4 } mb={ 5 } borderColor={ dividerColor } borderBottomWidth="1px"/> }
+      { !isMobile && <TextAd pb={ 4 } mb={ 5 } borderColor="divider" borderBottomWidth="1px"/> }
       { content }
     </>
   );

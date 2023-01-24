@@ -5,7 +5,6 @@ import {
   GridItem,
   HStack,
   Skeleton,
-  useColorModeValue,
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -15,7 +14,7 @@ const LatestBlocksItemSkeleton = () => {
       minWidth={{ base: '100%', lg: '280px' }}
       borderRadius="12px"
       border="1px solid"
-      borderColor={ useColorModeValue('blackAlpha.200', 'whiteAlpha.200') }
+      borderColor="divider"
       p={ 6 }
     >
       <Flex justifyContent="space-between" alignItems="center" mb={ 3 }>

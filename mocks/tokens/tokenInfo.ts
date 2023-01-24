@@ -15,3 +15,113 @@ export const tokenCounters: TokenCounters = {
   token_holders_count: '8838883',
   transfers_count: '88282281',
 };
+
+export const tokenInfoERC20a: TokenInfo = {
+  address: '0xb2a90505dc6680a7a695f7975d0d32EeF610f456',
+  decimals: '18',
+  exchange_rate: null,
+  holders: '23',
+  name: 'hyfi.token',
+  symbol: 'HyFi',
+  total_supply: '369000000000000000000000000',
+  type: 'ERC-20',
+};
+
+export const tokenInfoERC20b: TokenInfo = {
+  address: '0xc1116c98ba622a6218433fF90a2E40DEa482d7A7',
+  decimals: '6',
+  exchange_rate: '0.982',
+  holders: '17',
+  name: 'USD Coin',
+  symbol: 'USDC',
+  total_supply: '900000000000000000000000000',
+  type: 'ERC-20',
+};
+
+export const tokenInfoERC20c: TokenInfo = {
+  address: '0xc1116c98ba622a6218433fF90a2E40DEa482d7A7',
+  decimals: '18',
+  exchange_rate: '1328.89',
+  holders: '17',
+  name: 'Ethereum',
+  symbol: 'ETH',
+  total_supply: '1000000000000000000000000',
+  type: 'ERC-20',
+};
+
+export const tokenInfoERC20d: TokenInfo = {
+  address: '0xCc7bb2D219A0FC08033E130629C2B854b7bA9195',
+  decimals: '18',
+  exchange_rate: null,
+  holders: '102625',
+  name: 'Zeta',
+  symbol: 'ZETA',
+  total_supply: '2100000000000000000000000000',
+  type: 'ERC-20',
+};
+
+export const tokenInfoERC721a: TokenInfo = {
+  address: '0xDe7cAc71E072FCBd4453E5FB3558C2684d1F88A0',
+  decimals: null,
+  exchange_rate: null,
+  holders: '7',
+  name: 'HyFi Athena',
+  symbol: 'HYFI_ATHENA',
+  total_supply: '105',
+  type: 'ERC-721',
+};
+
+export const tokenInfoERC721b: TokenInfo = {
+  address: '0xA8d5C7beEA8C9bB57f5fBa35fB638BF45550b11F',
+  decimals: null,
+  exchange_rate: null,
+  holders: '2',
+  name: 'World Of Women Galaxy',
+  symbol: 'WOWG',
+  total_supply: null,
+  type: 'ERC-721',
+};
+
+export const tokenInfoERC721c: TokenInfo = {
+  address: '0x47646F1d7dc4Dd2Db5a41D092e2Cf966e27A4992',
+  decimals: null,
+  exchange_rate: null,
+  holders: '12',
+  name: 'Puma',
+  symbol: 'PUMA',
+  total_supply: null,
+  type: 'ERC-721',
+};
+
+export const tokenInfoERC1155a: TokenInfo = {
+  address: '0x4b333DEd10c7ca855EA2C8D4D90A0a8b73788c8e',
+  decimals: null,
+  exchange_rate: null,
+  holders: '22',
+  name: 'HyFi Membership',
+  symbol: 'HYFI_MEMBERSHIP',
+  total_supply: '482',
+  type: 'ERC-1155',
+};
+
+export const tokenInfoERC1155b: TokenInfo = {
+  address: '0xf4b71b179132ad457f6bcae2a55efa9e4b26eefc',
+  decimals: null,
+  exchange_rate: null,
+  holders: '100',
+  name: 'WinkyVerse Collections',
+  symbol: 'WVC',
+  total_supply: '4943',
+  type: 'ERC-1155',
+};
+
+export const tokenInfoERC1155WithoutName: TokenInfo = {
+  address: '0x4b333DEd10c7ca855EA2C8D4D90A0a8b73788c8e',
+  decimals: null,
+  exchange_rate: null,
+  holders: '22',
+  name: null,
+  symbol: null,
+  total_supply: '482',
+  type: 'ERC-1155',
+};

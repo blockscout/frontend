@@ -50,7 +50,7 @@ const CustomErrorComponent = (props: Props) => {
     );
   }
 
-  const colorModeCookie = cookies.getFromCookieString(props.cookies, cookies.NAMES.COLOR_MODE);
+  const colorModeCookie = cookies.getFromCookieString(props.cookies || '', cookies.NAMES.COLOR_MODE);
   return <NextErrorComponent statusCode={ props.statusCode } withDarkMode={ colorModeCookie === 'dark' }/>;
 };
 

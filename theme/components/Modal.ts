@@ -51,7 +51,7 @@ const baseStyleCloseButton = defineStyle((props) => {
     height: 10,
     width: 10,
     color: mode('gray.700', 'gray.500')(props),
-    _hover: { color: 'blue.400' },
+    _hover: { color: 'link_hovered' },
     _active: { bg: 'none' },
   };
 });

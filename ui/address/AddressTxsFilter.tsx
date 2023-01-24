@@ -10,7 +10,7 @@ import React from 'react';
 
 import type { AddressFromToFilter } from 'types/api/address';
 
-import FilterButton from 'ui/shared/FilterButton';
+import FilterButton from 'ui/shared/filters/FilterButton';
 
 interface Props {
   isActive: boolean;

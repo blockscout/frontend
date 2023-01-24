@@ -11,7 +11,6 @@ import {
   PopoverTrigger,
   PopoverContent,
   PopoverBody,
-  useColorModeValue,
   Show,
   Hide,
 } from '@chakra-ui/react';
@@ -51,7 +50,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }
   const addressFrom = (
     <Address>
       <AddressIcon address={ tx.from }/>
-      <AddressLink hash={ tx.from.hash } alias={ tx.from.name } fontWeight="500" ml={ 2 } truncation="constant" isDisabled={ isOut }/>
+      <AddressLink type="address" hash={ tx.from.hash } alias={ tx.from.name } fontWeight="500" ml={ 2 } truncation="constant" isDisabled={ isOut }/>
     </Address>
   );
 
@@ -60,11 +59,10 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }
   const addressTo = (
     <Address>
       <AddressIcon address={ dataTo }/>
-      <AddressLink hash={ dataTo.hash } alias={ dataTo.name } fontWeight="500" ml={ 2 } truncation="constant" isDisabled={ isIn }/>
+      <AddressLink type="address" hash={ dataTo.hash } alias={ dataTo.name } fontWeight="500" ml={ 2 } truncation="constant" isDisabled={ isIn }/>
     </Address>
   );
 
-  const infoBorderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
   return (
     <Tr
       as={ motion.tr }
@@ -81,7 +79,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }
               <PopoverTrigger>
                 <AdditionalInfoButton isOpen={ isOpen }/>
               </PopoverTrigger>
-              <PopoverContent border="1px solid" borderColor={ infoBorderColor }>
+              <PopoverContent border="1px solid" borderColor="divider">
                 <PopoverBody>
                   <TxAdditionalInfo tx={ tx }/>
                 </PopoverBody>

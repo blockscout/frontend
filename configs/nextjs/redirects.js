@@ -61,6 +61,10 @@ const oldUrls = [
     oldPath: '/address/:id/validations',
     newPath: `${ PATHS.address_index }?tab=blocks_validated`,
   },
+  {
+    oldPath: '/address/:id/tokens/:hash/token-transfers',
+    newPath: `${ PATHS.address_index }?tab=token_transfers&token=:hash`,
+  },
   // contract verification
   {
     oldPath: '/address/:id/contract_verifications/new',

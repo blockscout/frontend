@@ -43,7 +43,7 @@ const SearchResultListItem = ({ data, searchTerm }: Props) => {
           <Address>
             <AddressIcon address={{ hash: data.address, is_contract: data.type === 'contract', implementation_name: null }} mr={ 2 } flexShrink={ 0 }/>
             <Box as={ shouldHighlightHash ? 'mark' : 'span' } display="block" whiteSpace="nowrap" overflow="hidden">
-              <AddressLink hash={ data.address } fontWeight={ 700 } display="block" w="100%"/>
+              <AddressLink type="address" hash={ data.address } fontWeight={ 700 } display="block" w="100%"/>
             </Box>
           </Address>
         );
