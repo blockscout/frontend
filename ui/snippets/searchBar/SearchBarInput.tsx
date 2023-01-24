@@ -79,8 +79,9 @@ const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, onHid
       paddingBottom={{ base: isHomepage ? 0 : 4, lg: 0 }}
       boxShadow={ scrollDirection !== 'down' && isSticky ? 'md' : 'none' }
       transform={{ base: isHomepage ? 'none' : transformMobile, lg: 'none' }}
-      transitionProperty="transform,box-shadow"
-      transitionDuration="slow"
+      transitionProperty="transform,box-shadow,background-color,color,border-color"
+      transitionDuration="normal"
+      transitionTimingFunction="ease"
     >
       <InputGroup size={{ base: isHomepage ? 'md' : 'sm', lg: 'md' }}>
         <InputLeftElement w={{ base: isHomepage ? 6 : 4, lg: 6 }} ml={{ base: isHomepage ? 4 : 3, lg: 4 }} h="100%">

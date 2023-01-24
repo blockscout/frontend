@@ -47,7 +47,7 @@ const variantOutline = defineStyle((props) => {
 
   const isGrayTheme = c === 'gray' || c === 'gray-dark';
   const color = isGrayTheme ? mode('blackAlpha.800', 'whiteAlpha.800')(props) : mode(`${ c }.600`, `${ c }.300`)(props);
-  const borderColor = isGrayTheme ? mode('gray.300', 'gray.600')(props) : mode(`${ c }.600`, `${ c }.300`)(props);
+  const borderColor = isGrayTheme ? mode('gray.200', 'gray.600')(props) : mode(`${ c }.600`, `${ c }.300`)(props);
   const activeBg = isGrayTheme ? mode('blue.50', 'gray.600')(props) : mode(`${ c }.50`, 'gray.600')(props);
   const activeColor = (() => {
     if (c === 'gray') {
@@ -70,15 +70,15 @@ const variantOutline = defineStyle((props) => {
     borderColor,
     bg: 'transparent',
     _hover: {
-      color: 'blue.400',
-      borderColor: 'blue.400',
+      color: 'link_hovered',
+      borderColor: 'link_hovered',
       bg: 'transparent',
       _active: {
         bg: props.isActive ? activeBg : 'transparent',
-        borderColor: props.isActive ? activeBg : 'blue.400',
-        color: props.isActive ? activeColor : 'blue.400',
+        borderColor: props.isActive ? activeBg : 'link_hovered',
+        color: props.isActive ? activeColor : 'link_hovered',
         p: {
-          color: 'blue.400',
+          color: 'link_hovered',
         },
       },
       _disabled: {
@@ -86,7 +86,7 @@ const variantOutline = defineStyle((props) => {
         borderColor,
       },
       p: {
-        color: 'blue.400',
+        color: 'link_hovered',
       },
     },
     _disabled: {
@@ -147,7 +147,7 @@ const variantSubtle = defineStyle((props) => {
       bg: mode('blackAlpha.200', 'whiteAlpha.200')(props),
       color: mode('blackAlpha.800', 'whiteAlpha.800')(props),
       _hover: {
-        color: 'blue.400',
+        color: 'link_hovered',
         _disabled: {
           color: mode('blackAlpha.800', 'whiteAlpha.800')(props),
           bg: mode('blackAlpha.200', 'whiteAlpha.200')(props),
@@ -160,7 +160,7 @@ const variantSubtle = defineStyle((props) => {
     bg: `${ c }.100`,
     color: `${ c }.600`,
     _hover: {
-      color: 'blue.400',
+      color: 'link_hovered',
     },
   };
 });

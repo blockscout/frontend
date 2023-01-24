@@ -1,23 +1,13 @@
 import { Grid, GridItem } from '@chakra-ui/react';
 import React from 'react';
 
-import type { StatsInterval, StatsIntervalIds, StatsSection, StatsSectionIds } from 'types/client/stats';
+import type { StatsChartsSection } from 'types/api/stats';
+import type { StatsInterval, StatsIntervalIds } from 'types/client/stats';
 
-import FilterInput from 'ui/shared/FilterInput';
+import FilterInput from 'ui/shared/filters/FilterInput';
 
-import { STATS_INTERVALS, STATS_SECTIONS } from './constants';
-import { statsChartsScheme } from './constants/charts-scheme';
+import { STATS_INTERVALS } from './constants';
 import StatsDropdownMenu from './StatsDropdownMenu';
-
-const listedSections = statsChartsScheme
-  .filter(section => section.charts.length > 0);
-
-const sectionsList = Object.keys(STATS_SECTIONS)
-  .filter(key => key === 'all' || listedSections.some(section => section.id === key))
-  .map((id: string) => ({
-    id: id,
-    title: STATS_SECTIONS[id as StatsSectionIds],
-  })) as Array<StatsSection>;
 
 const intervalList = Object.keys(STATS_INTERVALS).map((id: string) => ({
   id: id,
@@ -25,20 +15,27 @@ const intervalList = Object.keys(STATS_INTERVALS).map((id: string) => ({
 })) as Array<StatsInterval>;
 
 type Props = {
-  section: StatsSectionIds;
-  onSectionChange: (newSection: StatsSectionIds) => void;
+  sections?: Array<StatsChartsSection>;
+  currentSection: string;
+  onSectionChange: (newSection: string) => void;
   interval: StatsIntervalIds;
   onIntervalChange: (newInterval: StatsIntervalIds) => void;
   onFilterInputChange: (q: string) => void;
 }
 
 const StatsFilters = ({
-  section,
+  sections,
+  currentSection,
   onSectionChange,
   interval,
   onIntervalChange,
   onFilterInputChange,
 }: Props) => {
+
+  const sectionsList = [ {
+    id: 'all',
+    title: 'All',
+  }, ... (sections || []) ];
 
   return (
     <Grid
@@ -56,7 +53,7 @@ const StatsFilters = ({
       >
         <StatsDropdownMenu
           items={ sectionsList }
-          selectedId={ section }
+          selectedId={ currentSection }
           onSelect={ onSectionChange }
         />
       </GridItem>

@@ -1,4 +1,4 @@
-import { Box, VStack, Text, Stack, Icon, Link, useColorModeValue } from '@chakra-ui/react';
+import { Box, VStack, Text, Stack, Icon, Link } from '@chakra-ui/react';
 import React from 'react';
 
 import appConfig from 'configs/app/config';
@@ -37,7 +37,7 @@ const NavFooter = ({ isCollapsed, hasAccount }: Props) => {
       as="footer"
       spacing={ 8 }
       borderTop="1px solid"
-      borderColor={ useColorModeValue('blackAlpha.200', 'whiteAlpha.200') }
+      borderColor="divider"
       width={{ base: '100%', lg: isExpanded ? '180px' : '20px', xl: isCollapsed ? '20px' : '180px' }}
       paddingTop={{ base: 6, lg: 8 }}
       marginTop={ marginTop }

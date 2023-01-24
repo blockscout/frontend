@@ -1,4 +1,4 @@
-import { Flex, useColorModeValue, chakra } from '@chakra-ui/react';
+import { Flex, chakra } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import React from 'react';
 
@@ -20,7 +20,7 @@ const ListItemMobile = ({ children, className, isAnimated }: Props) => {
       alignItems="flex-start"
       flexDirection="column"
       paddingY={ 6 }
-      borderColor={ useColorModeValue('blackAlpha.200', 'whiteAlpha.200') }
+      borderColor="divider"
       borderTopWidth="1px"
       _last={{
         borderBottomWidth: '1px',

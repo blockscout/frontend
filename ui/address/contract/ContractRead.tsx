@@ -1,8 +1,9 @@
-import { Flex } from '@chakra-ui/react';
+import { Alert, Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { useAccount } from 'wagmi';
 
-import type { SmartContractReadMethod } from 'types/api/contract';
+import type { SmartContractReadMethod, SmartContractQueryMethodRead } from 'types/api/contract';
 
 import useApiFetch from 'lib/api/useApiFetch';
 import useApiQuery from 'lib/api/useApiQuery';
@@ -10,28 +11,37 @@ import ContractMethodsAccordion from 'ui/address/contract/ContractMethodsAccordi
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
+import ContractConnectWallet from './ContractConnectWallet';
+import ContractCustomAbiAlert from './ContractCustomAbiAlert';
+import ContractImplementationAddress from './ContractImplementationAddress';
 import ContractMethodCallable from './ContractMethodCallable';
 import ContractMethodConstant from './ContractMethodConstant';
+import ContractReadResult from './ContractReadResult';
 
 interface Props {
   isProxy?: boolean;
+  isCustomAbi?: boolean;
 }
 
-const ContractRead = ({ isProxy }: Props) => {
+const ContractRead = ({ isProxy, isCustomAbi }: Props) => {
   const router = useRouter();
   const apiFetch = useApiFetch();
+  const { address: userAddress } = useAccount();
 
   const addressHash = router.query.id?.toString();
 
   const { data, isLoading, isError } = useApiQuery(isProxy ? 'contract_methods_read_proxy' : 'contract_methods_read', {
     pathParams: { id: addressHash },
+    queryParams: {
+      is_custom_abi: isCustomAbi ? 'true' : 'false',
+    },
     queryOptions: {
       enabled: Boolean(router.query.id),
     },
   });
 
-  const contractCaller = React.useCallback(async(item: SmartContractReadMethod, args: Array<string>) => {
-    await apiFetch('contract_method_query', {
+  const handleMethodFormSubmit = React.useCallback(async(item: SmartContractReadMethod, args: Array<string | Array<string>>) => {
+    return apiFetch<'contract_method_query', SmartContractQueryMethodRead>('contract_method_query', {
       pathParams: { id: addressHash },
       fetchParams: {
         method: 'POST',
@@ -39,15 +49,18 @@ const ContractRead = ({ isProxy }: Props) => {
           args,
           method_id: item.method_id,
           contract_type: isProxy ? 'proxy' : 'regular',
+          from: userAddress,
         },
       },
     });
-
-    return [ [ 'string', 'this is mock' ] ];
-  }, [ addressHash, apiFetch, isProxy ]);
+  }, [ addressHash, apiFetch, isProxy, userAddress ]);
 
   const renderContent = React.useCallback((item: SmartContractReadMethod, index: number, id: number) => {
-    if (item.inputs.length === 0) {
+    if (item.error) {
+      return <Alert status="error" fontSize="sm">{ item.error }</Alert>;
+    }
+
+    if (item.outputs.some(({ value }) => value)) {
       return (
         <Flex flexDir="column" rowGap={ 1 }>
           { item.outputs.map((output, index) => <ContractMethodConstant key={ index } data={ output }/>) }
@@ -59,10 +72,11 @@ const ContractRead = ({ isProxy }: Props) => {
       <ContractMethodCallable
         key={ id + '_' + index }
         data={ item }
-        caller={ contractCaller }
+        onSubmit={ handleMethodFormSubmit }
+        ResultComponent={ ContractReadResult }
       />
     );
-  }, [ contractCaller ]);
+  }, [ handleMethodFormSubmit ]);
 
   if (isError) {
     return <DataFetchAlert/>;
@@ -72,7 +86,18 @@ const ContractRead = ({ isProxy }: Props) => {
     return <ContentLoader/>;
   }
 
-  return <ContractMethodsAccordion data={ data } renderContent={ renderContent }/>;
+  if (data.length === 0 && !isProxy) {
+    return <span>No public read functions were found for this contract.</span>;
+  }
+
+  return (
+    <>
+      { isCustomAbi && <ContractCustomAbiAlert/> }
+      <ContractConnectWallet/>
+      { isProxy && <ContractImplementationAddress hash={ addressHash }/> }
+      <ContractMethodsAccordion data={ data } renderContent={ renderContent }/>
+    </>
+  );
 };
 
-export default ContractRead;
+export default React.memo(ContractRead);

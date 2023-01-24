@@ -29,6 +29,7 @@ blockscout:
       - 'nginx.ingress.kubernetes.io/cors-allow-methods: PUT, GET, POST, OPTIONS, DELETE, PATCH'
       - 'nginx.ingress.kubernetes.io/enable-cors: "true"'
       - 'nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-csrf-token"'
+      - 'nginx.ingress.kubernetes.io/cors-expose-headers: "x-bs-account-csrf"'
     host:
       _default: blockscout.test.blockscout.aws-k8s.blockscout.com
     # enable https
@@ -140,7 +141,7 @@ blockscout:
     ENABLE_RUST_VERIFICATION_SERVICE:
       _default: 'true'
     RUST_VERIFICATION_SERVICE_URL:
-      _default: http://sc-verifier-svc:8043
+      _default: http://sc-verifier-svc:80
     INDEXER_MEMORY_LIMIT:
       _default: 3
     ACCOUNT_ENABLED:
@@ -170,14 +171,14 @@ postgres:
   resources:
     limits:
       memory:
-        _default: "6Gi"
+        _default: "5Gi"
       cpu:
-        _default: "4"
+        _default: "1.5"
     requests:
       memory:
-        _default: "6Gi"
+        _default: "5Gi"
       cpu:
-        _default: "4"
+        _default: "1.5"
   # node label
   nodeSelector:
     enabled: true
@@ -376,14 +377,14 @@ scVerifier:
   resources:
     limits:
       memory:
-        _default: "0.5Gi"
+        _default: "0.05Gi"
       cpu:
-        _default: "0.25"
+        _default: "0.01"
     requests:
       memory:
-        _default: "0.5Gi"
+        _default: "0.05Gi"
       cpu:
-        _default: "0.25"
+        _default: "0.01"
   # node label
   nodeSelector:
     enabled: true
@@ -472,17 +473,19 @@ frontend:
         # - "/address"
         - "/stats"
         - "/search-results"
+        - "/tokens"
+        - "/accounts"
   resources:
     limits:
       memory:
-        _default: "0.3Gi"
+        _default: "0.1Gi"
       cpu:
-        _default: "0.2"
+        _default: "0.1"
     requests:
       memory:
-        _default: "0.3Gi"
+        _default: "0.1Gi"
       cpu:
-        _default: "0.2"
+        _default: "0.1"
   # node label
   nodeSelector:
     enabled: true

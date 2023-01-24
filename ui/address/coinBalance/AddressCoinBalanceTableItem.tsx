@@ -46,7 +46,7 @@ const AddressCoinBalanceTableItem = (props: Props) => {
           <StatHelpText display="flex" mb={ 0 } alignItems="center">
             <StatArrow type={ isPositiveDelta ? 'increase' : 'decrease' }/>
             <Text as="span" color={ isPositiveDelta ? 'green.500' : 'red.500' } fontWeight={ 600 }>
-              { deltaBn.toFixed(8) }
+              { deltaBn.toFormat() }
             </Text>
           </StatHelpText>
         </Stat>

@@ -8,7 +8,7 @@ export default function useColors({ hasIcon }: {hasIcon: boolean}) {
     text: {
       'default': useColorModeValue('gray.600', 'gray.400'),
       active: useColorModeValue('blackAlpha.900', 'whiteAlpha.900'),
-      hover: useColorModeValue('blue.600', 'blue.400'),
+      hover: useColorModeValue('blue.600', 'link_hovered'),
     },
     icon: {
       'default': hasIcon ? iconDefaultColor : iconPlaceholderDefaultColor,
@@ -19,7 +19,7 @@ export default function useColors({ hasIcon }: {hasIcon: boolean}) {
       active: useColorModeValue('blue.50', 'gray.800'),
     },
     border: {
-      'default': useColorModeValue('blackAlpha.200', 'whiteAlpha.200'),
+      'default': 'divider',
       active: useColorModeValue('blue.50', 'gray.800'),
     },
   };

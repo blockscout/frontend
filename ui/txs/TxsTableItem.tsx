@@ -7,14 +7,10 @@ import {
   Icon,
   VStack,
   Text,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverBody,
-  useColorModeValue,
   Show,
   Hide,
 } from '@chakra-ui/react';
+import { motion } from 'framer-motion';
 import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
@@ -22,7 +18,6 @@ import type { Transaction } from 'types/api/transaction';
 import rightArrowIcon from 'icons/arrows/east.svg';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import link from 'lib/link/link';
-import AdditionalInfoButton from 'ui/shared/AdditionalInfoButton';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -50,7 +45,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }
   const addressFrom = (
     <Address>
       <AddressIcon address={ tx.from }/>
-      <AddressLink hash={ tx.from.hash } alias={ tx.from.name } fontWeight="500" ml={ 2 } truncation="constant" isDisabled={ isOut }/>
+      <AddressLink type="address" hash={ tx.from.hash } alias={ tx.from.name } fontWeight="500" ml={ 2 } truncation="constant" isDisabled={ isOut }/>
     </Address>
   );
 
@@ -59,28 +54,21 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }
   const addressTo = (
     <Address>
       <AddressIcon address={ dataTo }/>
-      <AddressLink hash={ dataTo.hash } alias={ dataTo.name } fontWeight="500" ml={ 2 } truncation="constant" isDisabled={ isIn }/>
+      <AddressLink type="address" hash={ dataTo.hash } alias={ dataTo.name } fontWeight="500" ml={ 2 } truncation="constant" isDisabled={ isIn }/>
     </Address>
   );
 
-  const infoBorderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
   return (
-    <Tr>
+    <Tr
+      as={ motion.tr }
+      initial={{ opacity: 0, scale: 0.97 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transitionDuration="normal"
+      transitionTimingFunction="linear"
+      key={ tx.hash }
+    >
       <Td pl={ 4 }>
-        <Popover placement="right-start" openDelay={ 300 } isLazy>
-          { ({ isOpen }) => (
-            <>
-              <PopoverTrigger>
-                <AdditionalInfoButton isOpen={ isOpen }/>
-              </PopoverTrigger>
-              <PopoverContent border="1px solid" borderColor={ infoBorderColor }>
-                <PopoverBody>
-                  <TxAdditionalInfo tx={ tx }/>
-                </PopoverBody>
-              </PopoverContent>
-            </>
-          ) }
-        </Popover>
+        <TxAdditionalInfo tx={ tx }/>
       </Td>
       <Td pr={ 4 }>
         <VStack alignItems="start" lineHeight="24px">

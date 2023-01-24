@@ -14,7 +14,7 @@ type Props = {
   data: ApiKey;
 }
 
-const DeleteAddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
+const DeleteApiKeyModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
   const queryClient = useQueryClient();
   const apiFetch = useApiFetch();
 
@@ -49,4 +49,4 @@ const DeleteAddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
   );
 };
 
-export default DeleteAddressModal;
+export default DeleteApiKeyModal;

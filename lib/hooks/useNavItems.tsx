@@ -12,6 +12,7 @@ import publicTagIcon from 'icons/publictags.svg';
 import statsIcon from 'icons/stats.svg';
 import tokensIcon from 'icons/token.svg';
 import transactionsIcon from 'icons/transactions.svg';
+import walletIcon from 'icons/wallet.svg';
 import watchlistIcon from 'icons/watchlist.svg';
 import link from 'lib/link/link';
 import useCurrentRoute from 'lib/link/useCurrentRoute';
@@ -27,6 +28,7 @@ export default function useNavItems() {
       { text: 'Blocks', url: link('blocks'), icon: blocksIcon, isActive: currentRoute.startsWith('block'), isNewUi: false },
       { text: 'Transactions', url: link('txs'), icon: transactionsIcon, isActive: currentRoute.startsWith('tx'), isNewUi: false },
       { text: 'Tokens', url: link('tokens'), icon: tokensIcon, isActive: currentRoute === 'tokens', isNewUi: false },
+      { text: 'Accounts', url: link('accounts'), icon: walletIcon, isActive: currentRoute === 'accounts', isNewUi: false },
       isMarketplaceFilled ?
         { text: 'Apps', url: link('apps'), icon: appsIcon, isActive: currentRoute === 'apps', isNewUi: true } : null,
       { text: 'Charts & stats', url: link('stats'), icon: statsIcon, isActive: currentRoute === 'stats', isNewUi: false },

@@ -1,10 +1,10 @@
-import { Box, Button, chakra, Flex, Icon, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Button, chakra, Flex, Icon, Text } from '@chakra-ui/react';
 import _fromPairs from 'lodash/fromPairs';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 
-import type { MethodFormFields } from './types';
+import type { MethodFormFields, ContractMethodCallResult } from './types';
 import type { SmartContractMethodInput, SmartContractMethod } from 'types/api/contract';
 
 import appConfig from 'configs/app/config';
@@ -12,9 +12,16 @@ import arrowIcon from 'icons/arrows/down-right.svg';
 
 import ContractMethodField from './ContractMethodField';
 
+interface ResultComponentProps<T extends SmartContractMethod> {
+  item: T;
+  result: ContractMethodCallResult<T>;
+  onSettle: () => void;
+}
+
 interface Props<T extends SmartContractMethod> {
   data: T;
-  caller: (data: T, args: Array<string>) => Promise<Array<Array<string>>>;
+  onSubmit: (data: T, args: Array<string | Array<string>>) => Promise<ContractMethodCallResult<T>>;
+  ResultComponent: (props: ResultComponentProps<T>) => JSX.Element | null;
   isWrite?: boolean;
 }
 
@@ -36,32 +43,61 @@ const sortFields = (data: Array<SmartContractMethodInput>) => ([ a ]: [string, s
   return 0;
 };
 
-const ContractMethodCallable = <T extends SmartContractMethod>({ data, caller, isWrite }: Props<T>) => {
+const castFieldValue = (data: Array<SmartContractMethodInput>) => ([ key, value ]: [ string, string ], index: number) => {
+  if (data[index].type.includes('[]')) {
+    return [ key, parseArrayValue(value) ];
+  }
+  return [ key, value ];
+};
+
+const parseArrayValue = (value: string) => value.replace(/(\[|\])|\s/g, '').split(',');
+
+const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit, ResultComponent, isWrite }: Props<T>) => {
+
+  const [ result, setResult ] = React.useState<ContractMethodCallResult<T>>();
+  const [ isLoading, setLoading ] = React.useState(false);
 
   const inputs = React.useMemo(() => {
-    return data.payable && (!('inputs' in data) || data.inputs.length === 0) ? [ {
-      name: 'value',
-      type: appConfig.network.currency.symbol,
-      internalType: appConfig.network.currency.symbol,
-    } as SmartContractMethodInput ] : data.inputs;
+    return [
+      ...('inputs' in data ? data.inputs : []),
+      ...(data.stateMutability === 'payable' ? [ {
+        name: 'value',
+        type: appConfig.network.currency.symbol,
+        internalType: appConfig.network.currency.symbol,
+      } as SmartContractMethodInput ] : []),
+    ];
   }, [ data ]);
 
   const { control, handleSubmit, setValue } = useForm<MethodFormFields>({
     defaultValues: _fromPairs(inputs.map(({ name }, index) => [ getFieldName(name, index), '' ])),
   });
-  const [ result, setResult ] = React.useState<Array<Array<string>>>([ ]);
 
-  const onSubmit: SubmitHandler<MethodFormFields> = React.useCallback(async(formData) => {
+  const handleTxSettle = React.useCallback(() => {
+    setLoading(false);
+  }, []);
+
+  const handleFormChange = React.useCallback(() => {
+    result && setResult(undefined);
+  }, [ result ]);
+
+  const onFormSubmit: SubmitHandler<MethodFormFields> = React.useCallback(async(formData) => {
     const args = Object.entries(formData)
       .sort(sortFields(inputs))
+      .map(castFieldValue(inputs))
       .map(([ , value ]) => value);
 
-    const result = await caller(data, args);
-    setResult(result);
+    setResult(undefined);
+    setLoading(true);
 
-  }, [ caller, data, inputs ]);
-
-  const resultBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
+    onSubmit(data, args)
+      .then((result) => {
+        setResult(result);
+      })
+      .catch((error) => {
+        setResult(error?.error || error?.data || (error?.reason && { message: error.reason }) || error);
+        setLoading(false);
+      });
+  }, [ onSubmit, data, inputs ]);
 
   return (
     <Box>
@@ -72,8 +108,9 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, caller, i
         flexDir={{ base: 'column', lg: 'row' }}
         rowGap={ 2 }
         alignItems={{ base: 'flex-start', lg: 'center' }}
-        onSubmit={ handleSubmit(onSubmit) }
+        onSubmit={ handleSubmit(onFormSubmit) }
         flexWrap="wrap"
+        onChange={ handleFormChange }
       >
         { inputs.map(({ type, name }, index) => {
           const fieldName = getFieldName(name, index);
@@ -84,10 +121,14 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, caller, i
               placeholder={ `${ name }(${ type })` }
               control={ control }
               setValue={ setValue }
+              isDisabled={ isLoading }
+              onClear={ handleFormChange }
             />
           );
         }) }
         <Button
+          isLoading={ isLoading }
+          loadingText={ isWrite ? 'Write' : 'Query' }
           variant="outline"
           size="sm"
           flexShrink={ 0 }
@@ -102,18 +143,7 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, caller, i
           <Text>{ data.outputs.map(({ type }) => type).join(', ') }</Text>
         </Flex>
       ) }
-      { result.length > 0 && (
-        <Box mt={ 3 } p={ 4 } borderRadius="md" bgColor={ resultBgColor } fontSize="sm">
-          <p>
-          [ <chakra.span fontWeight={ 600 }>{ 'name' in data ? data.name : '' }</chakra.span> method response ]
-          </p>
-          <p>[</p>
-          { result.map(([ key, value ], index) => (
-            <chakra.p key={ index } whiteSpace="break-spaces" wordBreak="break-all">  { key }: { value }</chakra.p>
-          )) }
-          <p>]</p>
-        </Box>
-      ) }
+      { result && <ResultComponent item={ data } result={ result } onSettle={ handleTxSettle }/> }
     </Box>
   );
 };

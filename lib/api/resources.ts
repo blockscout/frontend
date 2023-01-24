@@ -14,6 +14,7 @@ import type {
   AddressTokensFilter,
   AddressTokensResponse,
 } from 'types/api/address';
+import type { AddressesResponse } from 'types/api/addresses';
 import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters } from 'types/api/block';
 import type { ChartMarketResponse, ChartTransactionResponse } from 'types/api/charts';
 import type { SmartContract, SmartContractReadMethod, SmartContractWriteMethod } from 'types/api/contract';
@@ -22,8 +23,9 @@ import type { InternalTransactionsResponse } from 'types/api/internalTransaction
 import type { LogsResponseTx, LogsResponseAddress } from 'types/api/log';
 import type { RawTracesResponse } from 'types/api/rawTrace';
 import type { SearchResult, SearchResultFilters } from 'types/api/search';
-import type { Stats, Charts, HomeStats } from 'types/api/stats';
+import type { Counters, StatsCharts, StatsChart, HomeStats } from 'types/api/stats';
 import type { TokenCounters, TokenInfo, TokenHolders } from 'types/api/tokenInfo';
+import type { TokensResponse, TokensFilters } from 'types/api/tokens';
 import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
 import type { TransactionsResponseValidated, TransactionsResponsePending, Transaction } from 'types/api/transaction';
 import type { TTxsFilters } from 'types/api/txsFilters';
@@ -70,8 +72,13 @@ export const RESOURCES = {
     endpoint: appConfig.statsApi.endpoint,
     basePath: appConfig.statsApi.basePath,
   },
-  stats_charts: {
-    path: '/api/v1/charts/line',
+  stats_lines: {
+    path: '/api/v1/lines',
+    endpoint: appConfig.statsApi.endpoint,
+    basePath: appConfig.statsApi.basePath,
+  },
+  stats_line: {
+    path: '/api/v1/lines/:id',
     endpoint: appConfig.statsApi.endpoint,
     basePath: appConfig.statsApi.basePath,
   },
@@ -122,6 +129,13 @@ export const RESOURCES = {
     path: '/api/v2/transactions/:id/raw-trace',
   },
 
+  // ADDRESSES
+  addresses: {
+    path: '/api/v2/addresses/',
+    paginationFields: [ 'fetched_coin_balance' as const, 'hash' as const, 'items_count' as const ],
+    filterFields: [ ],
+  },
+
   // ADDRESS
   address: {
     path: '/api/v2/addresses/:id',
@@ -145,7 +159,7 @@ export const RESOURCES = {
   address_token_transfers: {
     path: '/api/v2/addresses/:id/token-transfers',
     paginationFields: [ 'block_number' as const, 'items_count' as const, 'index' as const, 'transaction_index' as const ],
-    filterFields: [ 'filter' as const, 'type' as const ],
+    filterFields: [ 'filter' as const, 'type' as const, 'token' as const ],
   },
   address_blocks_validated: {
     path: '/api/v2/addresses/:id/blocks-validated',
@@ -202,6 +216,16 @@ export const RESOURCES = {
     path: '/api/v2/tokens/:hash/holders',
     paginationFields: [ 'items_count' as const, 'value' as const ],
     filterFields: [],
+  },
+  token_transfers: {
+    path: '/api/v2/tokens/:hash/transfers',
+    paginationFields: [ 'block_number' as const, 'items_count' as const, 'index' as const ],
+    filterFields: [],
+  },
+  tokens: {
+    path: '/api/v2/tokens',
+    paginationFields: [ 'holder_count' as const, 'items_count' as const, 'name' as const ],
+    filterFields: [ 'filter' as const, 'type' as const ],
   },
 
   // HOMEPAGE
@@ -270,10 +294,11 @@ export type ResourceErrorAccount<T> = ResourceError<{ errors: T }>
 export type PaginatedResources = 'blocks' | 'block_txs' |
 'txs_validated' | 'txs_pending' |
 'tx_internal_txs' | 'tx_logs' | 'tx_token_transfers' |
+'addresses' |
 'address_txs' | 'address_internal_txs' | 'address_token_transfers' | 'address_blocks_validated' | 'address_coin_balance' |
 'search' |
 'address_logs' | 'address_tokens' |
-'token_holders';
+'token_transfers' | 'token_holders' | 'tokens';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
 
@@ -292,8 +317,9 @@ Q extends 'homepage_chart_market' ? ChartMarketResponse :
 Q extends 'homepage_blocks' ? Array<Block> :
 Q extends 'homepage_txs' ? Array<Transaction> :
 Q extends 'homepage_indexing_status' ? IndexingStatus :
-Q extends 'stats_counters' ? Stats :
-Q extends 'stats_charts' ? Charts :
+Q extends 'stats_counters' ? Counters :
+Q extends 'stats_lines' ? StatsCharts :
+Q extends 'stats_line' ? StatsChart :
 Q extends 'blocks' ? BlocksResponse :
 Q extends 'block' ? Block :
 Q extends 'block_txs' ? BlockTransactionsResponse :
@@ -304,6 +330,7 @@ Q extends 'tx_internal_txs' ? InternalTransactionsResponse :
 Q extends 'tx_logs' ? LogsResponseTx :
 Q extends 'tx_token_transfers' ? TokenTransferResponse :
 Q extends 'tx_raw_trace' ? RawTracesResponse :
+Q extends 'addresses' ? AddressesResponse :
 Q extends 'address' ? Address :
 Q extends 'address_counters' ? AddressCounters :
 Q extends 'address_token_balances' ? Array<AddressTokenBalance> :
@@ -317,7 +344,9 @@ Q extends 'address_logs' ? LogsResponseAddress :
 Q extends 'address_tokens' ? AddressTokensResponse :
 Q extends 'token' ? TokenInfo :
 Q extends 'token_counters' ? TokenCounters :
+Q extends 'token_transfers' ? TokenTransferResponse :
 Q extends 'token_holders' ? TokenHolders :
+Q extends 'tokens' ? TokensResponse :
 Q extends 'search' ? SearchResult :
 Q extends 'contract' ? SmartContract :
 Q extends 'contract_methods_read' ? Array<SmartContractReadMethod> :
@@ -332,9 +361,11 @@ export type PaginationFilters<Q extends PaginatedResources> =
 Q extends 'blocks' ? BlockFilters :
 Q extends 'txs_validated' | 'txs_pending' ? TTxsFilters :
 Q extends 'tx_token_transfers' ? TokenTransferFilters :
+Q extends 'token_transfers' ? TokenTransferFilters :
 Q extends 'address_txs' | 'address_internal_txs' ? AddressTxsFilters :
 Q extends 'address_token_transfers' ? AddressTokenTransferFilters :
 Q extends 'address_tokens' ? AddressTokensFilter :
 Q extends 'search' ? SearchResultFilters :
+Q extends 'tokens' ? TokensFilters :
 never;
 /* eslint-enable @typescript-eslint/indent */

@@ -12,19 +12,28 @@ interface Props {
   setValue: UseFormSetValue<MethodFormFields>;
   placeholder: string;
   name: string;
+  isDisabled: boolean;
+  onClear: () => void;
 }
 
-const ContractMethodField = ({ control, name, placeholder, setValue }: Props) => {
+const ContractMethodField = ({ control, name, placeholder, setValue, isDisabled, onClear }: Props) => {
   const ref = React.useRef<HTMLInputElement>(null);
 
   const handleClear = React.useCallback(() => {
     setValue(name, '');
+    onClear();
     ref.current?.focus();
-  }, [ name, setValue ]);
+  }, [ name, onClear, setValue ]);
 
   const renderInput = React.useCallback(({ field }: { field: ControllerRenderProps<MethodFormFields> }) => {
     return (
-      <FormControl id={ name } maxW={{ base: '100%', lg: 'calc((100% - 24px) / 3)' }}>
+      <FormControl
+        id={ name }
+        flexBasis={{ base: '100%', lg: 'calc((100% - 24px) / 3 - 65px)' }}
+        w={{ base: '100%', lg: 'auto' }}
+        flexGrow={ 1 }
+        isDisabled={ isDisabled
+        }>
         <InputGroup size="xs">
           <Input
             { ...field }
@@ -33,13 +42,13 @@ const ContractMethodField = ({ control, name, placeholder, setValue }: Props) =>
           />
           { field.value && (
             <InputRightElement>
-              <InputClearButton onClick={ handleClear }/>
+              <InputClearButton onClick={ handleClear } isDisabled={ isDisabled }/>
             </InputRightElement>
           ) }
         </InputGroup>
       </FormControl>
     );
-  }, [ handleClear, name, placeholder ]);
+  }, [ handleClear, isDisabled, name, placeholder ]);
 
   return (
     <Controller
