@@ -22,6 +22,14 @@ const variantFloating = defineStyle((props) => {
   const { focusPlaceholderColor } = getDefaultFormColors(props);
   const bc = backgroundColor || mode('white', 'black')(props);
 
+  const activeStyles = {
+    backgroundColor: bc,
+    color: getColor(theme, focusPlaceholderColor),
+    fontSize: 'xs',
+    lineHeight: '16px',
+    borderTopRightRadius: 'none',
+  };
+
   return {
     left: '2px',
     top: '2px',
@@ -38,13 +46,8 @@ const variantFloating = defineStyle((props) => {
     overflow: 'hidden',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
-    _focusWithin: {
-      backgroundColor: bc,
-      color: getColor(theme, focusPlaceholderColor),
-      fontSize: 'xs',
-      lineHeight: '16px',
-      borderTopRightRadius: 'none',
-    },
+    _focusWithin: activeStyles,
+    '&[data-active=true]': activeStyles,
   };
 });
 
@@ -55,13 +58,19 @@ const variants = {
 const sizes = {
   lg: defineStyle((props) => {
     if (props.variant === 'floating') {
+      const activeStyles = {
+        padding: '16px 24px 2px 24px',
+      };
+
       return {
         fontSize: 'md',
         lineHeight: '24px',
         padding: '28px 24px',
         right: '26px',
-        _focusWithin: {
-          padding: '16px 24px 2px 24px',
+        _focusWithin: activeStyles,
+        '&[data-active=true]': activeStyles,
+        '&[data-fancy=true]': {
+          right: '36px',
         },
       };
     }
@@ -70,13 +79,19 @@ const sizes = {
   }),
   md: defineStyle((props) => {
     if (props.variant === 'floating') {
+      const activeStyles = {
+        padding: '10px 16px 2px 16px',
+      };
+
       return {
         fontSize: 'md',
         lineHeight: '20px',
         padding: '18px 16px',
         right: '18px',
-        _focusWithin: {
-          padding: '10px 16px 2px 16px',
+        _focusWithin: activeStyles,
+        '&[data-active=true]': activeStyles,
+        '&[data-fancy=true]': {
+          right: '36px',
         },
       };
     }

@@ -4,6 +4,7 @@ import type { StyleFunctionProps } from '@chakra-ui/theme-tools';
 import { getColor } from '@chakra-ui/theme-tools';
 
 import getDefaultFormColors from '../utils/getDefaultFormColors';
+import FancySelect from './FancySelect';
 import FormLabel from './FormLabel';
 import Input from './Input';
 import Textarea from './Textarea';
@@ -67,6 +68,7 @@ function getFloatingVariantStylesForSize(size: 'md' | 'lg', props: StyleFunction
 
       // input styles
       input: Input.sizes?.[size].field,
+      'input[aria-autocomplete=list]': FancySelect.sizes[size].field,
       textarea: Textarea.sizes?.[size],
       'input, textarea': {
         padding: inputPx,

@@ -26,7 +26,6 @@ const ContractVerificationFieldCode = ({ isVyper }: Props) => {
           isInvalid={ Boolean(error) }
           isDisabled={ formState.isSubmitting }
           required
-          maxLength={ 255 }
         />
         <InputPlaceholder text="Contract code" error={ error }/>
       </FormControl>

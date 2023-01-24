@@ -1,9 +1,12 @@
-import { Link, Select } from '@chakra-ui/react';
+import { Link } from '@chakra-ui/react';
 import React from 'react';
 import type { ControllerRenderProps } from 'react-hook-form';
 import { useFormContext, Controller } from 'react-hook-form';
 
 import type { FormFields } from '../types';
+
+import useIsMobile from 'lib/hooks/useIsMobile';
+import FancySelect from 'ui/shared/FancySelect/FancySelect';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
@@ -15,22 +18,27 @@ const VERSIONS = [
 
 const ContractVerificationFieldEvmVersion = () => {
   const { formState, control } = useFormContext<FormFields>();
+  const isMobile = useIsMobile();
+
+  const options = React.useMemo(() => (
+    VERSIONS.map((option) => ({ label: option, value: option }))
+  ), [ ]);
 
   const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'evm_version'>}) => {
     const error = 'evm_version' in formState.errors ? formState.errors.evm_version : undefined;
 
     return (
-      <Select
+      <FancySelect
         { ...field }
-        size={{ base: 'md', lg: 'lg' }}
+        options={ options }
+        size={ isMobile ? 'md' : 'lg' }
         placeholder="EVM Version"
-        isInvalid={ Boolean(error) }
         isDisabled={ formState.isSubmitting }
-      >
-        { VERSIONS.map((option) => <option key={ option } value={ option }>{ option }</option>) }
-      </Select>
+        error={ error }
+        isRequired
+      />
     );
-  }, [ formState.errors, formState.isSubmitting ]);
+  }, [ formState.errors, formState.isSubmitting, isMobile, options ]);
 
   return (
     <ContractVerificationFormRow>

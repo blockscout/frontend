@@ -44,6 +44,7 @@
     "@web3modal/react": "^2.0.0-rc.2",
     "ace-builds": "^1.14.0",
     "bignumber.js": "^9.1.0",
+    "chakra-react-select": "^4.4.3",
     "d3": "^7.6.1",
     "dayjs": "^1.11.5",
     "dom-to-image": "^2.6.0",
