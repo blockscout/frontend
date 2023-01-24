@@ -3,15 +3,7 @@ import {
   Flex,
   HStack,
   Icon,
-  Modal,
-  ModalContent,
-  ModalCloseButton,
   Text,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverBody,
-  useDisclosure,
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -23,7 +15,6 @@ import transactionIcon from 'icons/transactions.svg';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import AdditionalInfoButton from 'ui/shared/AdditionalInfoButton';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -40,7 +31,6 @@ const LatestBlocksItem = ({ tx }: Props) => {
   const timeAgo = useTimeAgoIncrement(tx.timestamp || '0', true);
 
   const isMobile = useIsMobile();
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <Box
@@ -52,29 +42,14 @@ const LatestBlocksItem = ({ tx }: Props) => {
       _last={{ borderBottom: '1px solid', borderColor: 'divider' }}
     >
       <Flex justifyContent="space-between" width="100%" alignItems="start" flexDirection={{ base: 'column', lg: 'row' }}>
-        { !isMobile && (
-          <Popover placement="right-start" openDelay={ 300 } isLazy>
-            { ({ isOpen }) => (
-              <>
-                <PopoverTrigger>
-                  <AdditionalInfoButton isOpen={ isOpen } mr={ 3 }/>
-                </PopoverTrigger>
-                <PopoverContent border="1px solid" borderColor="divider">
-                  <PopoverBody>
-                    <TxAdditionalInfo tx={ tx }/>
-                  </PopoverBody>
-                </PopoverContent>
-              </>
-            ) }
-          </Popover>
-        ) }
+        { !isMobile && <Flex mr={ 3 }><TxAdditionalInfo tx={ tx }/></Flex> }
         <Box width={{ base: '100%', lg: 'calc(50% - 32px)' }}>
           <Flex justifyContent="space-between">
             <HStack>
               <TxType types={ tx.tx_types }/>
               <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined }/>
             </HStack>
-            { isMobile && <AdditionalInfoButton onClick={ onOpen }/> }
+            { isMobile && <TxAdditionalInfo tx={ tx } isMobile/> }
           </Flex>
           <Flex
             mt={ 2 }
@@ -147,12 +122,6 @@ const LatestBlocksItem = ({ tx }: Props) => {
           </Flex>
         </Box>
       </Flex>
-      <Modal isOpen={ isOpen } onClose={ onClose } size="full">
-        <ModalContent paddingTop={ 4 }>
-          <ModalCloseButton/>
-          <TxAdditionalInfo tx={ tx }/>
-        </ModalContent>
-      </Modal>
     </Box>
   );
 };

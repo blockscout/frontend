@@ -29,6 +29,7 @@ const baseStyleContent = defineStyle((props) => {
     _dark: {
       [$popperBg.variable]: `colors.gray.900`,
       [$arrowShadowColor.variable]: `colors.whiteAlpha.300`,
+      boxShadow: 'dark-lg',
     },
     width: 'xs',
     border: 'none',

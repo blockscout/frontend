@@ -50,7 +50,7 @@ const TxLogs = () => {
           <Pagination ml="auto" { ...pagination }/>
         </ActionBar>
       ) }
-      { data.items.map((item, index) => <LogItem key={ index } { ...item } type="tx"/>) }
+      { data.items.map((item, index) => <LogItem key={ index } { ...item } type="transaction"/>) }
     </Box>
   );
 };

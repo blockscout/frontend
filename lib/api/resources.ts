@@ -264,6 +264,9 @@ export const RESOURCES = {
     ],
     filterFields: [ 'q' ],
   },
+  search_check_redirect: {
+    path: '/api/v2/search/check-redirect',
+  },
 
   // DEPRECATED
   old_api: {

@@ -22,6 +22,9 @@ const AddressContractIcon = ({ className }: Props) => {
         alignItems="center"
         justifyContent="center"
         fontWeight="700"
+        transitionProperty="background-color,color"
+        transitionDuration="normal"
+        transitionTimingFunction="ease"
       >
           С
       </Box>
