@@ -60,7 +60,7 @@ const TxStateTableItem = ({ txStateItem }: { txStateItem: TTxStateItem }) => {
               <Address height="30px">
                 { /* ??? */ }
                 { /* <AddressIcon hash={ txStateItem.address }/> */ }
-                <AddressLink hash={ txStateItem.address } fontWeight="500" truncation="constant" ml={ 2 }/>
+                <AddressLink type="address" hash={ txStateItem.address } fontWeight="500" truncation="constant" ml={ 2 }/>
               </Address>
             </Td>
             <Td border={ 0 } lineHeight="30px"><Link>{ txStateItem.miner }</Link></Td>

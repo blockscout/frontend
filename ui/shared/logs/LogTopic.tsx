@@ -51,7 +51,7 @@ const LogTopic = ({ hex, index }: Props) => {
       case 'address': {
         return (
           <Address>
-            <AddressLink hash={ value }/>
+            <AddressLink type="address" hash={ value }/>
             <CopyToClipboard text={ value }/>
           </Address>
         );

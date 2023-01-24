@@ -148,7 +148,7 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm }: Props) => {
       display="flex"
       flexDir="column"
       rowGap={ 2 }
-      borderColor={ useColorModeValue('blackAlpha.200', 'whiteAlpha.200') }
+      borderColor="divider"
       borderBottomWidth="1px"
       _last={{
         borderBottomWidth: '0',

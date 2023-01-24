@@ -16,7 +16,7 @@ const AddressAddToMetaMask = ({ className, token }: Props) => {
 
   const handleClick = React.useCallback(async() => {
     try {
-      const wasAdded = await window.ethereum.request({
+      const wasAdded = await window.ethereum.request?.({
         method: 'wallet_watchAsset',
         params: {
           type: 'ERC20', // Initially only supports ERC20, but eventually more!
@@ -50,7 +50,7 @@ const AddressAddToMetaMask = ({ className, token }: Props) => {
     }
   }, [ toast, token ]);
 
-  if (token.type !== 'ERC-20' || !('ethereum' in window)) {
+  if (!('ethereum' in window)) {
     return null;
   }
 

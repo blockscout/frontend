@@ -77,6 +77,12 @@ export const ROUTES = {
     crossNetworkNavigation: true,
   },
 
+  // ACCOUNTS
+  accounts: {
+    pattern: PATHS.accounts,
+    crossNetworkNavigation: true,
+  },
+
   // APPS
   apps: {
     pattern: PATHS.apps,

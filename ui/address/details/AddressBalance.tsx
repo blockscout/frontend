@@ -71,6 +71,8 @@ const AddressBalance = ({ data }: Props) => {
     <DetailsInfoItem
       title="Balance"
       hint={ `Address balance in ${ appConfig.network.currency.symbol }. Doesn't include ERC20, ERC721 and ERC1155 tokens.` }
+      flexWrap="nowrap"
+      alignItems="flex-start"
     >
       <TokenLogo
         hash={ appConfig.network.currency.address }
@@ -86,6 +88,7 @@ const AddressBalance = ({ data }: Props) => {
         currency={ appConfig.network.currency.symbol }
         accuracyUsd={ 2 }
         accuracy={ 8 }
+        flexWrap="wrap"
       />
     </DetailsInfoItem>
   );

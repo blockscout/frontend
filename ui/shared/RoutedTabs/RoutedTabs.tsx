@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import type { StyleProps } from '@chakra-ui/styled-system';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import type { RoutedTab } from './types';
 
@@ -31,7 +31,7 @@ const hiddenItemStyles: StyleProps = {
 
 interface Props extends ThemingProps<'Tabs'> {
   tabs: Array<RoutedTab>;
-  tabListProps?: ChakraProps;
+  tabListProps?: ChakraProps | (({ isSticky }: { isSticky: boolean }) => ChakraProps);
   rightSlot?: React.ReactNode;
   stickyEnabled?: boolean;
   className?: string;
@@ -43,6 +43,7 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled, className, .
   const [ activeTabIndex, setActiveTabIndex ] = useState<number>(tabs.length + 1);
 
   const isMobile = useIsMobile();
+  const tabsRef = useRef<HTMLDivElement>(null);
   const { tabsCut, tabsList, tabsRefs, listRef, rightSlotRef } = useAdaptiveTabs(tabs, isMobile);
   const isSticky = useIsSticky(listRef, 5, stickyEnabled);
   const listBgColor = useColorModeValue('white', 'black');
@@ -56,6 +57,23 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled, className, .
       { shallow: true },
     );
   }, [ tabs, router ]);
+
+  useEffect(() => {
+    if (router.query.scroll_to_tabs) {
+      tabsRef?.current?.scrollIntoView(true);
+      delete router.query.scroll_to_tabs;
+      router.push(
+        {
+          pathname: router.pathname,
+          query: router.query,
+        },
+        undefined,
+        { shallow: true },
+      );
+    }
+  // replicate componentDidMount
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (router.isReady) {
@@ -90,6 +108,10 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled, className, .
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ activeTabIndex, isMobile ]);
 
+  if (tabs.length === 1) {
+    return <div>{ tabs[0].component }</div>;
+  }
+
   return (
     <Tabs
       className={ className }
@@ -100,6 +122,7 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled, className, .
       index={ activeTabIndex }
       position="relative"
       size={ themeProps.size || 'md' }
+      ref={ tabsRef }
     >
       <TabList
         marginBottom={{ base: 6, lg: 8 }}
@@ -130,7 +153,7 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled, className, .
             zIndex: { base: 'sticky2', lg: 'docked' },
           } : { })
         }
-        { ...tabListProps }
+        { ...(typeof tabListProps === 'function' ? tabListProps({ isSticky }) : tabListProps) }
       >
         { tabsList.map((tab, index) => {
           if (!tab.id) {
@@ -162,7 +185,7 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled, className, .
               scrollSnapAlign="start"
               flexShrink={ 0 }
             >
-              { tab.title }
+              { typeof tab.title === 'function' ? tab.title() : tab.title }
             </Tab>
           );
         }) }

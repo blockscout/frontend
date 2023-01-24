@@ -22,7 +22,7 @@ const TokenHoldersListItem = ({ holder, token }: Props) => {
     <ListItemMobile rowGap={ 3 }>
       <Address display="inline-flex" maxW="100%" lineHeight="30px">
         <AddressIcon address={ holder.address }/>
-        <AddressLink ml={ 2 } fontWeight="700" hash={ holder.address.hash } alias={ holder.address.name } flexGrow={ 1 }/>
+        <AddressLink type="address" ml={ 2 } fontWeight="700" hash={ holder.address.hash } alias={ holder.address.name } flexGrow={ 1 }/>
       </Address>
       <Flex justifyContent="space-between" alignItems="center" width="100%">
         { quantity }

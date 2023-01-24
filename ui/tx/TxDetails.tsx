@@ -10,7 +10,6 @@ import {
   Flex,
   Tooltip,
   chakra,
-  useColorModeValue,
 } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
@@ -50,8 +49,6 @@ const TxDetails = () => {
   const { data, isLoading, isError, socketStatus, error } = useFetchTxInfo();
 
   const isMobile = useIsMobile();
-
-  const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
 
   const [ isExpanded, setIsExpanded ] = React.useState(false);
 
@@ -188,7 +185,7 @@ const TxDetails = () => {
         mt={{ base: 2, lg: 3 }}
         mb={{ base: 0, lg: 3 }}
         borderBottom="1px solid"
-        borderColor={ borderColor }
+        borderColor="divider"
       />
       <DetailsInfoItem
         title="From"
@@ -197,7 +194,7 @@ const TxDetails = () => {
       >
         <Address>
           <AddressIcon address={ data.from }/>
-          <AddressLink ml={ 2 } hash={ data.from.hash }/>
+          <AddressLink type="address" ml={ 2 } hash={ data.from.hash }/>
           <CopyToClipboard text={ data.from.hash }/>
         </Address>
         { data.from.name && <Text>{ data.from.name }</Text> }
@@ -216,7 +213,7 @@ const TxDetails = () => {
         { data.to && data.to.hash ? (
           <Address alignItems="center">
             <AddressIcon address={ toAddress }/>
-            <AddressLink ml={ 2 } hash={ toAddress.hash }/>
+            <AddressLink type="address" ml={ 2 } hash={ toAddress.hash }/>
             { executionSuccessBadge }
             { executionFailedBadge }
             <CopyToClipboard text={ toAddress.hash }/>
@@ -224,7 +221,7 @@ const TxDetails = () => {
         ) : (
           <Flex width={{ base: '100%', lg: 'auto' }} whiteSpace="pre" alignItems="center">
             <span>[Contract </span>
-            <AddressLink hash={ toAddress.hash }/>
+            <AddressLink type="address" hash={ toAddress.hash }/>
             <span> created]</span>
             { executionSuccessBadge }
             { executionFailedBadge }
@@ -245,7 +242,7 @@ const TxDetails = () => {
         mt={{ base: 2, lg: 3 }}
         mb={{ base: 0, lg: 3 }}
         borderBottom="1px solid"
-        borderColor={ borderColor }
+        borderColor="divider"
       />
       <DetailsInfoItem
         title="Value"

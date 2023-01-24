@@ -1,9 +1,7 @@
-import { Box, Flex, Skeleton, SkeletonCircle, useColorModeValue } from '@chakra-ui/react';
+import { Box, Flex, Skeleton, SkeletonCircle } from '@chakra-ui/react';
 import React from 'react';
 
 const SkeletonList = () => {
-  const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
-
   return (
     <Box>
       { Array.from(Array(2)).map((item, index) => (
@@ -13,7 +11,7 @@ const SkeletonList = () => {
           flexDirection="column"
           paddingY={ 6 }
           borderTopWidth="1px"
-          borderColor={ borderColor }
+          borderColor="divider"
           _last={{
             borderBottomWidth: '0px',
           }}

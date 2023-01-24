@@ -15,6 +15,7 @@
   "token_instance_item": "/token/:hash/instance/:id",
   "address_index": "/address/:id",
   "address_contract_verification": "/address/:id/contract_verifications/new",
+  "accounts": "/accounts",
   "apps": "/apps",
   "app_index": "/apps/:id",
   "search_results": "/search-results",

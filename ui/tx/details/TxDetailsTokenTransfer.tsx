@@ -77,9 +77,9 @@ const TxDetailsTokenTransfer = ({ token, total, to, from }: Props) => {
       flexDir={ isColumnLayout ? 'column' : 'row' }
     >
       <Flex alignItems="center">
-        <AddressLink fontWeight="500" hash={ from.hash } truncation="constant"/>
+        <AddressLink type="address" fontWeight="500" hash={ from.hash } truncation="constant"/>
         <Icon as={ rightArrowIcon } boxSize={ 6 } mx={ 2 } color="gray.500"/>
-        <AddressLink fontWeight="500" hash={ to.hash } truncation="constant"/>
+        <AddressLink type="address" fontWeight="500" hash={ to.hash } truncation="constant"/>
       </Flex>
       <Flex flexDir="column" rowGap={ 5 }>
         { content }

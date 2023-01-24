@@ -7,6 +7,7 @@ export enum NAMES {
   API_TOKEN='_explorer_key',
   TXS_SORT='txs_sort',
   COLOR_MODE='chakra-ui-color-mode',
+  INDEXING_ALERT='indexing_alert',
 }
 
 export function get(name?: NAMES | undefined | null, serverCookie?: string) {
