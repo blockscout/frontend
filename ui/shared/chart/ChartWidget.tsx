@@ -1,5 +1,6 @@
 import {
   Box,
+  Center,
   Flex,
   Grid,
   Icon,
@@ -111,6 +112,49 @@ const ChartWidget = ({ items, title, description, isLoading, chartHeight, isErro
     return <ChartWidgetSkeleton hasDescription={ Boolean(description) }/>;
   }
 
+  const hasItems = items && items.length > 2;
+
+  const content = (() => {
+    if (isError) {
+      return (
+        <Flex
+          alignItems="center"
+          justifyContent="center"
+          flexGrow={ 1 }
+          py={ 4 }
+        >
+          <Text
+            variant="secondary"
+            fontSize="sm"
+            textAlign="center"
+          >
+            { `The data didn${ apos }t load. Please, ` }
+            <Link href={ window.document.location.href }>try to reload the page.</Link>
+          </Text>
+        </Flex>
+      );
+    }
+
+    if (!hasItems) {
+      return (
+        <Center flexGrow={ 1 }>
+          <Text variant="secondary" fontSize="sm">No data</Text>
+        </Center>
+      );
+    }
+
+    return (
+      <Box h={ chartHeight || 'auto' } maxW="100%">
+        <ChartWidgetGraph
+          items={ items }
+          onZoom={ handleZoom }
+          isZoomResetInitial={ isZoomResetInitial }
+          title={ title }
+        />
+      </Box>
+    );
+  })();
+
   return (
     <>
       <Box
@@ -167,7 +211,7 @@ const ChartWidget = ({ items, title, description, isLoading, chartHeight, isErro
             />
           </Tooltip>
 
-          { !isError && (
+          { hasItems && (
             <Menu>
               <MenuButton
                 gridColumn={ 3 }
@@ -216,36 +260,10 @@ const ChartWidget = ({ items, title, description, isLoading, chartHeight, isErro
           ) }
         </Grid>
 
-        { items ? (
-          <Box h={ chartHeight || 'auto' } maxW="100%">
-            <ChartWidgetGraph
-              margin={{ bottom: 20 }}
-              items={ items }
-              onZoom={ handleZoom }
-              isZoomResetInitial={ isZoomResetInitial }
-              title={ title }
-            />
-          </Box>
-        ) : (
-          <Flex
-            alignItems="center"
-            justifyContent="center"
-            flexGrow={ 1 }
-            py={ 4 }
-          >
-            <Text
-              variant="secondary"
-              fontSize="sm"
-              textAlign="center"
-            >
-              { `The data didn${ apos }t load. Please, ` }
-              <Link href={ window.document.location.href }>try to reload the page.</Link>
-            </Text>
-          </Flex>
-        ) }
+        { content }
       </Box>
 
-      { items && (
+      { hasItems && (
         <FullscreenChartModal
           isOpen={ isFullscreen }
           items={ items }

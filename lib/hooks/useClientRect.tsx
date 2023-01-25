@@ -2,8 +2,6 @@ import _debounce from 'lodash/debounce';
 import type { LegacyRef } from 'react';
 import React from 'react';
 
-import useUpdateEffect from 'lib/hooks/useUpdateEffect';
-
 export default function useClientRect<E extends Element>(): [ DOMRect | null, LegacyRef<E> | undefined ] {
   const [ rect, setRect ] = React.useState<DOMRect | null>(null);
   const nodeRef = React.useRef<E>();
@@ -15,7 +13,7 @@ export default function useClientRect<E extends Element>(): [ DOMRect | null, Le
     nodeRef.current = node;
   }, []);
 
-  useUpdateEffect(() => {
+  React.useEffect(() => {
     const content = window.document.querySelector('main');
     if (!content) {
       return;
