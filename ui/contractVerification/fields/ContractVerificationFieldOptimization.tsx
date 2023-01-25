@@ -29,7 +29,7 @@ const ContractVerificationFieldOptimization = () => {
 
   const renderInputControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'optimization_runs'>}) => {
     return (
-      <FormControl variant="floating" id={ field.name } size={{ base: 'md', lg: 'lg' }}>
+      <FormControl variant="floating" id={ field.name } size={{ base: 'md', lg: 'lg' }} isRequired>
         <Input
           { ...field }
           required

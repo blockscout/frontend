@@ -40,6 +40,7 @@ const FileInput = <Values extends FieldValues, Names extends Path<Values>>({ chi
         ref={ ref }
         accept={ accept }
         multiple={ multiple }
+        name={ field.name }
       />
       { children }
     </InputGroup>
