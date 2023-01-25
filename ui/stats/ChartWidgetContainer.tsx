@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 import type { StatsIntervalIds } from 'types/client/stats';
 
@@ -33,9 +33,9 @@ const ChartWidgetContainer = ({ id, title, description, interval, onLoadingError
     },
   });
 
-  const items = data?.chart?.map((item) => {
+  const items = useMemo(() => data?.chart?.map((item) => {
     return { date: new Date(item.date), value: Number(item.value) };
-  });
+  }), [ data ]);
 
   useEffect(() => {
     if (isError) {
