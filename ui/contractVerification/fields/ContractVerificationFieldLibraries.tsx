@@ -39,6 +39,7 @@ const ContractVerificationFieldLibraries = () => {
           size="lg"
           onChange={ handleCheckboxChange }
           mt={ 9 }
+          isDisabled={ formState.isSubmitting }
         >
           Add contract libraries
         </Checkbox>
@@ -52,6 +53,7 @@ const ContractVerificationFieldLibraries = () => {
           onAddFieldClick={ handleAddFieldClick }
           onRemoveFieldClick={ handleRemoveFieldClick }
           error={ 'libraries' in formState.errors ? formState.errors.libraries?.[index] : undefined }
+          isDisabled={ formState.isSubmitting }
         />
       )) }
     </>

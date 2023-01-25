@@ -28,7 +28,7 @@ interface Props {
 
 const ContractVerificationFieldCompiler = ({ isVyper }: Props) => {
   const [ isNightly, setIsNightly ] = React.useState(false);
-  const { formState, control } = useFormContext<FormFields>();
+  const { formState, control, getValues, resetField } = useFormContext<FormFields>();
   const isMobile = useIsMobile();
 
   const options = React.useMemo(() => (
@@ -38,8 +38,12 @@ const ContractVerificationFieldCompiler = ({ isVyper }: Props) => {
   ), [ isNightly ]);
 
   const handleCheckboxChange = React.useCallback(() => {
+    if (isNightly) {
+      const value = getValues('compiler');
+      value.includes('nightly') && resetField('compiler');
+    }
     setIsNightly(prev => !prev);
-  }, []);
+  }, [ getValues, isNightly, resetField ]);
 
   const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'compiler'>}) => {
     const error = 'compiler' in formState.errors ? formState.errors.compiler : undefined;

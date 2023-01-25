@@ -1,4 +1,4 @@
-import { FormControl, useBoolean, useToken, useColorMode } from '@chakra-ui/react';
+import { FormControl, useToken, useColorMode } from '@chakra-ui/react';
 import type { Size, CSSObjectWithLabel, OptionsOrGroups, GroupBase, SingleValue, MultiValue } from 'chakra-react-select';
 import { Select } from 'chakra-react-select';
 import React from 'react';
@@ -19,15 +19,25 @@ interface Props {
   isDisabled?: boolean;
   isRequired?: boolean;
   error?: FieldError;
+  value?: string;
 }
 
-const FancySelect = ({ size = 'md', options, placeholder, name, onChange, onBlur, isDisabled, isRequired, error }: Props) => {
-  const [ hasValue, setHasValue ] = useBoolean(false);
+const FancySelect = ({ size = 'md', options, placeholder, name, onChange, onBlur, isDisabled, isRequired, error, value: valueFromProps }: Props) => {
+  const [ value, setValue ] = React.useState<SingleValue<Option> | MultiValue<Option>>();
 
   const menuZIndex = useToken('zIndices', 'dropdown');
   const { colorMode } = useColorMode();
 
+  React.useEffect(() => {
+    if (!valueFromProps && value) {
+      setValue(null);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ valueFromProps ]);
+
   const handleChange = React.useCallback((newValue: SingleValue<Option> | MultiValue<Option>) => {
+    setValue(newValue);
+
     if (Array.isArray(newValue)) {
       return;
     }
@@ -37,9 +47,8 @@ const FancySelect = ({ size = 'md', options, placeholder, name, onChange, onBlur
       return;
     }
 
-    setHasValue.on();
     onChange(_newValue.value);
-  }, [ setHasValue, onChange ]);
+  }, [ onChange ]);
 
   const handleBlur = React.useCallback(() => {
     onBlur?.();
@@ -58,7 +67,7 @@ const FancySelect = ({ size = 'md', options, placeholder, name, onChange, onBlur
       isRequired={ isRequired }
       { ...(error ? { 'aria-invalid': true } : {}) }
       { ...(isDisabled ? { 'aria-disabled': true } : {}) }
-      { ...(hasValue ? { 'aria-active': true } : {}) }
+      { ...(value ? { 'aria-active': true } : {}) }
     >
       <Select
         menuPortalTarget={ window.document.body }
@@ -74,6 +83,7 @@ const FancySelect = ({ size = 'md', options, placeholder, name, onChange, onBlur
         isDisabled={ isDisabled }
         isRequired={ isRequired }
         isInvalid={ Boolean(error) }
+        value={ value }
       />
       <InputPlaceholder
         text={ placeholder }
