@@ -5,6 +5,7 @@ import React, { useEffect, useMemo } from 'react';
 import type { ChartMargin, TimeChartItem } from 'ui/shared/chart/types';
 
 import dayjs from 'lib/date/dayjs';
+import useClientRect from 'lib/hooks/useClientRect';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import ChartArea from 'ui/shared/chart/ChartArea';
 import ChartAxis from 'ui/shared/chart/ChartAxis';
@@ -13,8 +14,8 @@ import ChartLine from 'ui/shared/chart/ChartLine';
 import ChartOverlay from 'ui/shared/chart/ChartOverlay';
 import ChartSelectionX from 'ui/shared/chart/ChartSelectionX';
 import ChartTooltip from 'ui/shared/chart/ChartTooltip';
-import useChartSize from 'ui/shared/chart/useChartSize';
 import useTimeChartController from 'ui/shared/chart/useTimeChartController';
+import calculateInnerSize from 'ui/shared/chart/utils/calculateInnerSize';
 
 interface Props {
   isEnlarged?: boolean;
@@ -31,10 +32,12 @@ const DEFAULT_CHART_MARGIN = { bottom: 20, left: 40, right: 20, top: 10 };
 const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title, margin }: Props) => {
   const isMobile = useIsMobile();
   const color = useToken('colors', 'blue.200');
-  const ref = React.useRef<SVGSVGElement>(null);
   const overlayRef = React.useRef<SVGRectElement>(null);
+
+  const [ rect, ref ] = useClientRect<SVGSVGElement>();
   const chartMargin = { ...DEFAULT_CHART_MARGIN, ...margin };
-  const { width, height, innerWidth, innerHeight } = useChartSize(ref.current, chartMargin);
+  const { innerWidth, innerHeight } = calculateInnerSize(rect, chartMargin);
+
   const chartId = `chart-${ title.split(' ').join('') }-${ isEnlarged ? 'fullscreen' : 'small' }`;
   const [ range, setRange ] = React.useState<[ Date, Date ]>([ items[0].date, items[items.length - 1].date ]);
 
@@ -70,7 +73,7 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
   }, [ isZoomResetInitial, items ]);
 
   return (
-    <svg width="100%" height={ height || '100%' } ref={ ref } cursor="pointer" id={ chartId } opacity={ width ? 1 : 0 }>
+    <svg width="100%" height="100%" ref={ ref } cursor="pointer" id={ chartId } opacity={ rect ? 1 : 0 }>
 
       <g transform={ `translate(${ chartMargin?.left || 0 },${ chartMargin?.top || 0 })` }>
         <ChartGridLine
