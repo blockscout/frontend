@@ -30,7 +30,9 @@ export const getServerSideProps: GetServerSideProps<Props> = async({ req, res, r
   try {
     const q = String(query.q);
     const url = buildUrlNode('search_check_redirect', undefined, { q });
-    const redirectsResponse = await fetchFactory(req)(url);
+    const redirectsResponse = await fetchFactory(req)(url, {
+      signal: AbortSignal.timeout(1_000),
+    });
     const payload = await redirectsResponse.json() as SearchRedirectResult;
 
     if (!payload || typeof payload !== 'object' || !payload.redirect) {
