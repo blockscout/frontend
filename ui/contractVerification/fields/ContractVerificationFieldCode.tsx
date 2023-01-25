@@ -39,6 +39,7 @@ const ContractVerificationFieldCode = ({ isVyper }: Props) => {
         control={ control }
         render={ renderControl }
         rules={{ required: true }}
+        defaultValue=""
       />
       { isVyper ? null : (
         <>

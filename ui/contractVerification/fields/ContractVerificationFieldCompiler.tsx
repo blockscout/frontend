@@ -39,8 +39,8 @@ const ContractVerificationFieldCompiler = ({ isVyper }: Props) => {
 
   const handleCheckboxChange = React.useCallback(() => {
     if (isNightly) {
-      const value = getValues('compiler');
-      value.includes('nightly') && resetField('compiler');
+      const field = getValues('compiler');
+      field.value.includes('nightly') && resetField('compiler', { defaultValue: null });
     }
     setIsNightly(prev => !prev);
   }, [ getValues, isNightly, resetField ]);

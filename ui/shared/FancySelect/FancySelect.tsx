@@ -2,7 +2,7 @@ import { FormControl, useToken, useColorMode } from '@chakra-ui/react';
 import type { Size, CSSObjectWithLabel, OptionsOrGroups, GroupBase, SingleValue, MultiValue } from 'chakra-react-select';
 import { Select } from 'chakra-react-select';
 import React from 'react';
-import type { FieldError } from 'react-hook-form';
+import type { FieldError, FieldErrorsImpl, Merge } from 'react-hook-form';
 
 import type { Option } from './types';
 
@@ -14,45 +14,17 @@ interface Props {
   options: OptionsOrGroups<Option, GroupBase<Option>>;
   placeholder: string;
   name: string;
-  onChange: (newValue: string) => void;
+  onChange: (newValue: SingleValue<Option> | MultiValue<Option>) => void;
   onBlur?: () => void;
   isDisabled?: boolean;
   isRequired?: boolean;
-  error?: FieldError;
-  value?: string;
+  error?: Merge<FieldError, FieldErrorsImpl<Option>> | undefined;
+  value?: SingleValue<Option> | MultiValue<Option>;
 }
 
-const FancySelect = ({ size = 'md', options, placeholder, name, onChange, onBlur, isDisabled, isRequired, error, value: valueFromProps }: Props) => {
-  const [ value, setValue ] = React.useState<SingleValue<Option> | MultiValue<Option>>();
-
+const FancySelect = ({ size = 'md', options, placeholder, name, onChange, onBlur, isDisabled, isRequired, error, value }: Props) => {
   const menuZIndex = useToken('zIndices', 'dropdown');
   const { colorMode } = useColorMode();
-
-  React.useEffect(() => {
-    if (!valueFromProps && value) {
-      setValue(null);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ valueFromProps ]);
-
-  const handleChange = React.useCallback((newValue: SingleValue<Option> | MultiValue<Option>) => {
-    setValue(newValue);
-
-    if (Array.isArray(newValue)) {
-      return;
-    }
-
-    const _newValue = newValue as SingleValue<Option>;
-    if (!_newValue) {
-      return;
-    }
-
-    onChange(_newValue.value);
-  }, [ onChange ]);
-
-  const handleBlur = React.useCallback(() => {
-    onBlur?.();
-  }, [ onBlur ]);
 
   const styles = React.useMemo(() => ({
     menuPortal: (provided: CSSObjectWithLabel) => ({ ...provided, zIndex: menuZIndex }),
@@ -67,7 +39,7 @@ const FancySelect = ({ size = 'md', options, placeholder, name, onChange, onBlur
       isRequired={ isRequired }
       { ...(error ? { 'aria-invalid': true } : {}) }
       { ...(isDisabled ? { 'aria-disabled': true } : {}) }
-      { ...(value ? { 'aria-active': true } : {}) }
+      { ...(value ? { 'data-active': true } : {}) }
     >
       <Select
         menuPortalTarget={ window.document.body }
@@ -78,8 +50,8 @@ const FancySelect = ({ size = 'md', options, placeholder, name, onChange, onBlur
         styles={ styles }
         chakraStyles={ chakraStyles }
         useBasicStyles
-        onChange={ handleChange }
-        onBlur={ handleBlur }
+        onChange={ onChange }
+        onBlur={ onBlur }
         isDisabled={ isDisabled }
         isRequired={ isRequired }
         isInvalid={ Boolean(error) }
@@ -94,4 +66,4 @@ const FancySelect = ({ size = 'md', options, placeholder, name, onChange, onBlur
   );
 };
 
-export default React.memo(FancySelect);
+export default React.memo(React.forwardRef(FancySelect));

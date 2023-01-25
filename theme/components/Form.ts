@@ -58,7 +58,7 @@ function getFloatingVariantStylesForSize(size: 'md' | 'lg', props: StyleFunction
         label: activeLabelStyles,
         'input, textarea': activeInputStyles,
       },
-      '&[aria-active=true] label': activeLabelStyles,
+      '&[data-active=true] label': activeLabelStyles,
 
       // label styles
       label: FormLabel.sizes?.[size](props) || {},

@@ -33,8 +33,8 @@ const ContractVerificationFieldOptimization = () => {
         <Input
           { ...field }
           required
-          maxLength={ 255 }
           isDisabled={ formState.isSubmitting }
+          type="number"
         />
         <InputPlaceholder text="Optimization runs"/>
       </FormControl>
@@ -57,6 +57,7 @@ const ContractVerificationFieldOptimization = () => {
             control={ control }
             render={ renderInputControl }
             rules={{ required: true }}
+            defaultValue=""
           />
         </ContractVerificationFormRow>
       ) }
