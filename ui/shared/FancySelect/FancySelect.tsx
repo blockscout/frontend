@@ -10,7 +10,7 @@ import { getChakraStyles } from 'ui/shared/FancySelect/utils';
 import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
 interface Props {
-  size?: Size;
+  size?: Size; // we don't have styles for sm select/input with floating label yet
   options: OptionsOrGroups<Option, GroupBase<Option>>;
   placeholder: string;
   name: string;
