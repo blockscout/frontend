@@ -6,7 +6,6 @@ import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/appContext';
-import isBrowser from 'lib/isBrowser';
 import networkExplorers from 'lib/networks/networkExplorers';
 import TextAd from 'ui/shared/ad/TextAd';
 import LinkExternal from 'ui/shared/LinkExternal';
@@ -33,11 +32,8 @@ const TABS: Array<RoutedTab> = [
 const TransactionPageContent = () => {
   const router = useRouter();
   const appProps = useAppContext();
-  const isInBrowser = isBrowser();
 
-  const referrer = isInBrowser ? window.document.referrer : appProps.referrer;
-
-  const hasGoBackLink = referrer && referrer.includes('/txs');
+  const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/txs');
 
   const { data } = useApiQuery('tx', {
     pathParams: { id: router.query.id?.toString() },
@@ -74,7 +70,7 @@ const TransactionPageContent = () => {
       <PageTitle
         text="Transaction details"
         additionals={ additionals }
-        backLinkUrl={ hasGoBackLink ? referrer : undefined }
+        backLinkUrl={ hasGoBackLink ? appProps.referrer : undefined }
         backLinkLabel="Back to transactions list"
       />
       <RoutedTabs tabs={ TABS }/>
