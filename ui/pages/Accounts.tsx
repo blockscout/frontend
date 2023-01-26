@@ -34,12 +34,8 @@ const Accounts = () => {
       return (
         <>
           { bar }
-          <Show below="lg">
-            <SkeletonList/>
-          </Show>
-          <Hide below="lg">
-            <SkeletonTable columns={ [ '64px', '30%', '20%', '20%', '15%', '15%' ] }/>
-          </Hide>
+          <SkeletonList display={{ base: 'block', lg: 'none' }}/>
+          <SkeletonTable display={{ base: 'none', lg: 'block' }} columns={ [ '64px', '30%', '20%', '20%', '15%', '15%' ] }/>
         </>
       );
     }

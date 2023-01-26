@@ -75,10 +75,10 @@ const AddressBlocksValidated = ({ scrollRef }: Props) => {
     if (query.isLoading) {
       return (
         <>
-          <Hide below="lg">
+          <Hide below="lg" ssr={ false }>
             <SkeletonTable columns={ [ '17%', '17%', '16%', '25%', '25%' ] }/>
           </Hide>
-          <Show below="lg">
+          <Show below="lg" ssr={ false }>
             <SkeletonList/>
           </Show>
         </>
@@ -95,7 +95,7 @@ const AddressBlocksValidated = ({ scrollRef }: Props) => {
 
     return (
       <>
-        <Hide below="lg">
+        <Hide below="lg" ssr={ false }>
           <Table variant="simple" size="sm">
             <Thead top={ 80 }>
               <Tr>
@@ -113,7 +113,7 @@ const AddressBlocksValidated = ({ scrollRef }: Props) => {
             </Tbody>
           </Table>
         </Hide>
-        <Show below="lg">
+        <Show below="lg" ssr={ false }>
           { query.data.items.map((item) => (
             <AddressBlocksValidatedListItem key={ item.height } { ...item } page={ query.pagination.page }/>
           )) }

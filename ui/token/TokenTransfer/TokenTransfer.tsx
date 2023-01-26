@@ -66,11 +66,11 @@ const TokenTransfer = ({ transfersQuery, token }: Props) => {
     if (isLoading) {
       return (
         <>
-          <Hide below="lg">
+          <Hide below="lg" ssr={ false }>
             <SkeletonTable columns={ [ '45%', '15%', '36px', '15%', '25%' ] }
             />
           </Hide>
-          <Show below="lg">
+          <Show below="lg" ssr={ false }>
             <SkeletonList/>
           </Show>
         </>
@@ -88,7 +88,7 @@ const TokenTransfer = ({ transfersQuery, token }: Props) => {
     const items = data.items.reduce(flattenTotal, []);
     return (
       <>
-        <Hide below="lg">
+        <Hide below="lg" ssr={ false }>
           <TokenTransferTable
             data={ items }
             top={ 80 }
@@ -100,7 +100,7 @@ const TokenTransfer = ({ transfersQuery, token }: Props) => {
             socketInfoNum={ newItemsCount }
           />
         </Hide>
-        <Show below="lg">
+        <Show below="lg" ssr={ false }>
           { pagination.page === 1 && (
             <SocketNewItemsNotice
               url={ window.location.href }
