@@ -69,7 +69,7 @@ const TransactionPageContent = () => {
       <TextAd mb={ 6 }/>
       <PageTitle
         text="Transaction details"
-        additionals={ additionals }
+        additionalsRight={ additionals }
         backLinkUrl={ hasGoBackLink ? appProps.referrer : undefined }
         backLinkLabel="Back to transactions list"
       />

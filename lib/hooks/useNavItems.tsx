@@ -27,7 +27,7 @@ export default function useNavItems() {
     const mainNavItems = [
       { text: 'Blocks', url: link('blocks'), icon: blocksIcon, isActive: currentRoute.startsWith('block'), isNewUi: true },
       { text: 'Transactions', url: link('txs'), icon: transactionsIcon, isActive: currentRoute.startsWith('tx'), isNewUi: true },
-      { text: 'Tokens', url: link('tokens'), icon: tokensIcon, isActive: currentRoute === 'tokens', isNewUi: true },
+      { text: 'Tokens', url: link('tokens'), icon: tokensIcon, isActive: currentRoute.startsWith('token'), isNewUi: true },
       { text: 'Accounts', url: link('accounts'), icon: walletIcon, isActive: currentRoute === 'accounts', isNewUi: true },
       isMarketplaceFilled ?
         { text: 'Apps', url: link('apps'), icon: appsIcon, isActive: currentRoute.startsWith('app'), isNewUi: true } : null,

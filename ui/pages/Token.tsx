@@ -1,17 +1,20 @@
-import { Skeleton, Box } from '@chakra-ui/react';
+import { Skeleton, Box, Flex, SkeletonCircle } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
 import useApiQuery from 'lib/api/useApiQuery';
+import { useAppContext } from 'lib/appContext';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
+import TextAd from 'ui/shared/ad/TextAd';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
 import Pagination from 'ui/shared/Pagination';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
+import TokenLogo from 'ui/shared/TokenLogo';
 import TokenContractInfo from 'ui/token/TokenContractInfo';
 import TokenDetails from 'ui/token/TokenDetails';
 import TokenHolders from 'ui/token/TokenHolders/TokenHolders';
@@ -22,6 +25,10 @@ export type TokenTabs = 'token_transfers' | 'holders'
 const TokenPageContent = () => {
   const router = useRouter();
   const isMobile = useIsMobile();
+
+  const appProps = useAppContext();
+
+  const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/tokens');
 
   const scrollRef = React.useRef<HTMLDivElement>(null);
 
@@ -82,9 +89,24 @@ const TokenPageContent = () => {
 
   return (
     <Page>
-      { tokenQuery.isLoading ?
-        <Skeleton w="500px" h={ 10 } mb={ 6 }/> :
-        <PageTitle text={ `${ tokenQuery.data?.name } (${ tokenQuery.data?.symbol }) token` }/> }
+      { tokenQuery.isLoading ? (
+        <Flex alignItems="center" mb={ 6 }>
+          <SkeletonCircle w={ 6 } h={ 6 } mr={ 3 }/>
+          <Skeleton w="500px" h={ 10 }/>
+        </Flex>
+      ) : (
+        <>
+          <TextAd mb={ 6 }/>
+          <PageTitle
+            text={ `${ tokenQuery.data?.name } (${ tokenQuery.data?.symbol }) token` }
+            backLinkUrl={ hasGoBackLink ? appProps.referrer : undefined }
+            backLinkLabel="Back to tokens list"
+            additionalsLeft={ (
+              <TokenLogo hash={ tokenQuery.data?.address } name={ tokenQuery.data?.name } boxSize={ 6 }/>
+            ) }
+          />
+        </>
+      ) }
       <TokenContractInfo tokenQuery={ tokenQuery }/>
       <TokenDetails tokenQuery={ tokenQuery }/>
 

@@ -69,11 +69,6 @@ const TokenDetails = ({ tokenQuery }: Props) => {
     );
   }
 
-  // we show error in parent component, this is only for TS
-  if (tokenQuery.isError) {
-    return null;
-  }
-
   const {
     exchange_rate: exchangeRate,
     total_supply: totalSupply,

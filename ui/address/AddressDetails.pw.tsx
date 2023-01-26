@@ -5,6 +5,7 @@ import React from 'react';
 
 import type { Address } from 'types/api/address';
 
+import type { ResourceError } from 'lib/api/resources';
 import * as addressMock from 'mocks/address/address';
 import * as countersMock from 'mocks/address/counters';
 import * as tokenBalanceMock from 'mocks/address/tokenBalance';
@@ -36,7 +37,7 @@ test('contract +@mobile', async({ mount, page }) => {
 
   const component = await mount(
     <TestApp>
-      <AddressDetails addressQuery={{ data: addressMock.contract } as UseQueryResult<Address, unknown>}/>
+      <AddressDetails addressQuery={{ data: addressMock.contract } as UseQueryResult<Address, ResourceError>}/>
     </TestApp>,
     { hooksConfig },
   );
@@ -65,7 +66,7 @@ test('token', async({ mount, page }) => {
   const component = await mount(
     <TestApp>
       <MockAddressPage>
-        <AddressDetails addressQuery={{ data: addressMock.token } as UseQueryResult<Address, unknown>}/>
+        <AddressDetails addressQuery={{ data: addressMock.token } as UseQueryResult<Address, ResourceError>}/>
       </MockAddressPage>
     </TestApp>,
     { hooksConfig },
@@ -86,7 +87,7 @@ test('validator +@mobile', async({ mount, page }) => {
 
   const component = await mount(
     <TestApp>
-      <AddressDetails addressQuery={{ data: addressMock.validator } as UseQueryResult<Address, unknown>}/>
+      <AddressDetails addressQuery={{ data: addressMock.validator } as UseQueryResult<Address, ResourceError>}/>
     </TestApp>,
     { hooksConfig },
   );

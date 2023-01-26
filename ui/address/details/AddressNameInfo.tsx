@@ -7,7 +7,7 @@ import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import LinkInternal from 'ui/shared/LinkInternal';
 
 interface Props {
-  data: Address;
+  data: Pick<Address, 'name' | 'token' | 'is_contract'>;
 }
 
 const AddressNameInfo = ({ data }: Props) => {
