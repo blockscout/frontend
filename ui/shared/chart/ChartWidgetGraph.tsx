@@ -23,7 +23,7 @@ interface Props {
   items: Array<TimeChartItem>;
   onZoom: () => void;
   isZoomResetInitial: boolean;
-  margin: ChartMargin;
+  margin?: ChartMargin;
 }
 
 const MAX_SHOW_ITEMS = 100;
