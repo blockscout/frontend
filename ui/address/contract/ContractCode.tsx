@@ -8,7 +8,7 @@ import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import ExternalLink from 'ui/shared/ExternalLink';
+import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
@@ -113,7 +113,7 @@ const ContractCode = () => {
         { data.is_verified_via_sourcify && (
           <Alert status="warning" whiteSpace="pre-wrap" flexWrap="wrap">
             <span>This contract has been { data.is_partially_verified ? 'partially ' : '' }verified via Sourcify. </span>
-            { data.sourcify_repo_url && <ExternalLink href={ data.sourcify_repo_url } title="View contract in Sourcify repository" fontSize="md"/> }
+            { data.sourcify_repo_url && <LinkExternal href={ data.sourcify_repo_url } title="View contract in Sourcify repository" fontSize="md"/> }
           </Alert>
         ) }
         { data.is_changed_bytecode && (

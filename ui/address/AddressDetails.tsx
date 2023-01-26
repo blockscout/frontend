@@ -16,9 +16,9 @@ import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import ExternalLink from 'ui/shared/ExternalLink';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
 
 import AddressAddToMetaMask from './details/AddressAddToMetaMask';
@@ -85,7 +85,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
           <Text fontSize="sm">Verify with other explorers</Text>
           { explorers.map((explorer) => {
             const url = new URL(explorer.paths.address + '/' + router.query.id, explorer.baseUrl);
-            return <ExternalLink key={ explorer.baseUrl } title={ explorer.title } href={ url.toString() }/>;
+            return <LinkExternal key={ explorer.baseUrl } title={ explorer.title } href={ url.toString() }/>;
           }) }
         </Flex>
       ) }

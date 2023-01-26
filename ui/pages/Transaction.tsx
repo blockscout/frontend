@@ -9,7 +9,7 @@ import { useAppContext } from 'lib/appContext';
 import isBrowser from 'lib/isBrowser';
 import networkExplorers from 'lib/networks/networkExplorers';
 import TextAd from 'ui/shared/ad/TextAd';
-import ExternalLink from 'ui/shared/ExternalLink';
+import LinkExternal from 'ui/shared/LinkExternal';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
@@ -48,7 +48,7 @@ const TransactionPageContent = () => {
     .filter((explorer) => explorer.paths.tx)
     .map((explorer) => {
       const url = new URL(explorer.paths.tx + '/' + router.query.id, explorer.baseUrl);
-      return <ExternalLink key={ explorer.baseUrl } title={ `Open in ${ explorer.title }` } href={ url.toString() }/>;
+      return <LinkExternal key={ explorer.baseUrl } title={ `Open in ${ explorer.title }` } href={ url.toString() }/>;
     });
 
   const additionals = (
