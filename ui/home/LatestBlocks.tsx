@@ -32,7 +32,11 @@ const LatestBlocks = () => {
 
       const newData = prevData ? [ ...prevData ] : [];
 
-      return [ payload.block, ...newData ].slice(0, blocksMaxCount);
+      if (newData.some((block => block.height === payload.block.height))) {
+        return newData;
+      }
+
+      return [ payload.block, ...newData ].sort((b1, b2) => b2.height - b1.height).slice(0, blocksMaxCount);
     });
   }, [ queryClient, blocksMaxCount ]);
 
