@@ -5,6 +5,7 @@ import { token as contract } from 'mocks/address/address';
 import { tokenInfo, tokenCounters } from 'mocks/tokens/tokenInfo';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
+import insertAdPlaceholder from 'playwright/utils/insertAdPlaceholder';
 
 import Token from './Token';
 
@@ -50,6 +51,8 @@ test('base view +@dark-mode', async({ mount, page }) => {
     </TestApp>,
     { hooksConfig },
   );
+
+  await insertAdPlaceholder(page);
 
   await expect(component.locator('main')).toHaveScreenshot();
 });
