@@ -83,10 +83,10 @@ const TxTokenTransfer = () => {
     const items = tokenTransferQuery.data.items.reduce(flattenTotal, []);
     return (
       <>
-        <Hide below="lg">
+        <Hide below="lg" ssr={ false }>
           <TokenTransferTable data={ items } top={ 80 }/>
         </Hide>
-        <Show below="lg">
+        <Show below="lg" ssr={ false }>
           <TokenTransferList data={ items }/>
         </Show>
       </>

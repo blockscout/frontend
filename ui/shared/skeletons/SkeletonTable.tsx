@@ -1,13 +1,14 @@
-import { HStack, Skeleton } from '@chakra-ui/react';
+import { Box, HStack, Skeleton, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 interface Props {
   columns: Array<string>;
+  className?: string;
 }
 
-const SkeletonTable = ({ columns }: Props) => {
+const SkeletonTable = ({ columns, className }: Props) => {
   return (
-    <div>
+    <Box className={ className }>
       <Skeleton height={ 10 } width="100%" borderBottomLeftRadius="none" borderBottomRightRadius="none"/>
       { Array.from(Array(3)).map((item, index) => (
         <HStack key={ index } spacing={ 6 } marginTop={ 8 }>
@@ -22,8 +23,8 @@ const SkeletonTable = ({ columns }: Props) => {
           )) }
         </HStack>
       )) }
-    </div>
+    </Box>
   );
 };
 
-export default React.memo(SkeletonTable);
+export default React.memo(chakra(SkeletonTable));

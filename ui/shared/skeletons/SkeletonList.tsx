@@ -1,9 +1,9 @@
-import { Box, Flex, Skeleton, SkeletonCircle } from '@chakra-ui/react';
+import { Box, Flex, Skeleton, SkeletonCircle, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-const SkeletonList = () => {
+const SkeletonList = ({ className }: {className?: string}) => {
   return (
-    <Box>
+    <Box className={ className }>
       { Array.from(Array(2)).map((item, index) => (
         <Flex
           key={ index }
@@ -35,4 +35,4 @@ const SkeletonList = () => {
   );
 };
 
-export default SkeletonList;
+export default chakra(SkeletonList);

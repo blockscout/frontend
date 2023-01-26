@@ -48,8 +48,8 @@ const AddressInternalTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivE
   if (isLoading) {
     return (
       <>
-        <Show below="lg"><AddressIntTxsSkeletonMobile/></Show>
-        <Hide below="lg"><AddressIntTxsSkeletonDesktop/></Hide>
+        <Show below="lg" ssr={ false }><AddressIntTxsSkeletonMobile/></Show>
+        <Hide below="lg" ssr={ false }><AddressIntTxsSkeletonDesktop/></Hide>
       </>
     );
   }
