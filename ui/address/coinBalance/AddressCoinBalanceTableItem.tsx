@@ -1,4 +1,4 @@
-import { Link, Td, Tr, Text, Stat, StatHelpText, StatArrow } from '@chakra-ui/react';
+import { Td, Tr, Text, Stat, StatHelpText, StatArrow } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -9,6 +9,7 @@ import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import link from 'lib/link/link';
 import Address from 'ui/shared/address/Address';
 import AddressLink from 'ui/shared/address/AddressLink';
+import LinkInternal from 'ui/shared/LinkInternal';
 
 type Props = AddressCoinBalanceHistoryItem & {
   page: number;
@@ -23,7 +24,7 @@ const AddressCoinBalanceTableItem = (props: Props) => {
   return (
     <Tr>
       <Td>
-        <Link href={ blockUrl } fontWeight="700">{ props.block_number }</Link>
+        <LinkInternal href={ blockUrl } fontWeight="700">{ props.block_number }</LinkInternal>
       </Td>
       <Td>
         { props.transaction_hash ?

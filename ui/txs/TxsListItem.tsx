@@ -3,7 +3,6 @@ import {
   Box,
   Flex,
   Icon,
-  Link,
   Text,
 } from '@chakra-ui/react';
 import React from 'react';
@@ -20,6 +19,7 @@ import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import InOutTag from 'ui/shared/InOutTag';
+import LinkInternal from 'ui/shared/LinkInternal';
 import ListItemMobile from 'ui/shared/ListItemMobile';
 import TxStatus from 'ui/shared/TxStatus';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
@@ -88,7 +88,7 @@ const TxsListItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }:
       { showBlockInfo && tx.block !== null && (
         <Box mt={ 2 }>
           <Text as="span">Block </Text>
-          <Link href={ link('block', { id: tx.block.toString() }) }>{ tx.block }</Link>
+          <LinkInternal href={ link('block', { id: tx.block.toString() }) }>{ tx.block }</LinkInternal>
         </Box>
       ) }
       <Flex alignItems="center" height={ 6 } mt={ 6 }>

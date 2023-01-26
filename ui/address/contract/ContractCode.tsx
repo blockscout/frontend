@@ -9,6 +9,7 @@ import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import ExternalLink from 'ui/shared/ExternalLink';
+import LinkInternal from 'ui/shared/LinkInternal';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
 import ContractSourceCode from './ContractSourceCode';
@@ -72,7 +73,9 @@ const ContractCode = () => {
 
     const decoded = data.decoded_constructor_args
       .map(([ value, { name, type } ], index) => {
-        const valueEl = type === 'address' ? <Link href={ link('address_index', { id: value }) }>{ value }</Link> : <span>{ value }</span>;
+        const valueEl = type === 'address' ?
+          <LinkInternal href={ link('address_index', { id: value }) }>{ value }</LinkInternal> :
+          <span>{ value }</span>;
         return (
           <Box key={ index }>
             <span>Arg [{ index }] { name || '' } ({ type }): </span>
@@ -98,7 +101,7 @@ const ContractCode = () => {
     return data.external_libraries.map((item) => (
       <Box key={ item.address_hash }>
         <chakra.span fontWeight={ 500 }>{ item.name }: </chakra.span>
-        <Link href={ link('address_index', { id: item.address_hash }, { tab: 'contract' }) }>{ item.address_hash }</Link>
+        <LinkInternal href={ link('address_index', { id: item.address_hash }, { tab: 'contract' }) }>{ item.address_hash }</LinkInternal>
       </Box>
     ));
   })();
@@ -126,7 +129,7 @@ const ContractCode = () => {
               <AddressLink type="address" hash={ data.verified_twin_address_hash } truncation="constant" ml={ 2 }/>
             </Address>
             <chakra.span mt={ 1 }>All functions displayed below are from ABI of that contract. In order to verify current contract, proceed with </chakra.span>
-            <Link href={ link('address_contract_verification', { id: data.verified_twin_address_hash }) }>Verify & Publish</Link>
+            <LinkInternal href={ link('address_contract_verification', { id: data.verified_twin_address_hash }) }>Verify & Publish</LinkInternal>
             <span> page</span>
           </Alert>
         ) }

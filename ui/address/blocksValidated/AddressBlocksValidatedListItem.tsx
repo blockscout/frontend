@@ -1,4 +1,4 @@
-import { Link, Text, Flex } from '@chakra-ui/react';
+import { Text, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -8,6 +8,7 @@ import appConfig from 'configs/app/config';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import link from 'lib/link/link';
+import LinkInternal from 'ui/shared/LinkInternal';
 import ListItemMobile from 'ui/shared/ListItemMobile';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
@@ -23,7 +24,7 @@ const AddressBlocksValidatedListItem = (props: Props) => {
   return (
     <ListItemMobile rowGap={ 2 } isAnimated>
       <Flex justifyContent="space-between" w="100%">
-        <Link href={ blockUrl } fontWeight="700">{ props.height }</Link>
+        <LinkInternal href={ blockUrl } fontWeight="700">{ props.height }</LinkInternal>
         <Text variant="secondary">{ timeAgo }</Text>
       </Flex>
       <Flex columnGap={ 2 } w="100%">

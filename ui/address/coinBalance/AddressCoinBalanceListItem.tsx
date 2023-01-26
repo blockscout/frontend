@@ -1,4 +1,4 @@
-import { Link, Text, Stat, StatHelpText, StatArrow, Flex } from '@chakra-ui/react';
+import { Text, Stat, StatHelpText, StatArrow, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -10,6 +10,7 @@ import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import link from 'lib/link/link';
 import Address from 'ui/shared/address/Address';
 import AddressLink from 'ui/shared/address/AddressLink';
+import LinkInternal from 'ui/shared/LinkInternal';
 import ListItemMobile from 'ui/shared/ListItemMobile';
 
 type Props = AddressCoinBalanceHistoryItem & {
@@ -37,7 +38,7 @@ const AddressCoinBalanceListItem = (props: Props) => {
       </Flex>
       <Flex columnGap={ 2 } w="100%">
         <Text fontWeight={ 500 } flexShrink={ 0 }>Block</Text>
-        <Link href={ blockUrl } fontWeight="700">{ props.block_number }</Link>
+        <LinkInternal href={ blockUrl } fontWeight="700">{ props.block_number }</LinkInternal>
       </Flex>
       { props.transaction_hash && (
         <Flex columnGap={ 2 } w="100%">
