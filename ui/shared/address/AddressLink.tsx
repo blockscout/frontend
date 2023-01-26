@@ -1,4 +1,5 @@
 import { Link, chakra, shouldForwardProp, Tooltip, Box } from '@chakra-ui/react';
+import NextLink from 'next/link';
 import type { HTMLAttributeAnchorTarget } from 'react';
 import React from 'react';
 
@@ -93,15 +94,15 @@ const AddressLink = (props: Props) => {
   }
 
   return (
-    <Link
-      className={ className }
-      href={ url }
-      target={ target }
-      overflow="hidden"
-      whiteSpace="nowrap"
-    >
-      { content }
-    </Link>
+    <NextLink href={ url } passHref target={ target }>
+      <Link
+        className={ className }
+        overflow="hidden"
+        whiteSpace="nowrap"
+      >
+        { content }
+      </Link>
+    </NextLink>
   );
 };
 
