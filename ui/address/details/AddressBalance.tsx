@@ -13,7 +13,7 @@ import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import TokenLogo from 'ui/shared/TokenLogo';
 
 interface Props {
-  data: Address;
+  data: Pick<Address, 'block_number_balance_updated_at' | 'coin_balance' | 'hash' | 'exchange_rate'>;
 }
 
 const AddressBalance = ({ data }: Props) => {
@@ -63,10 +63,6 @@ const AddressBalance = ({ data }: Props) => {
     handler: handleNewCoinBalanceMessage,
   });
 
-  if (!data.coin_balance) {
-    return null;
-  }
-
   return (
     <DetailsInfoItem
       title="Balance"
@@ -82,7 +78,7 @@ const AddressBalance = ({ data }: Props) => {
         fontSize="sm"
       />
       <CurrencyValue
-        value={ data.coin_balance }
+        value={ data.coin_balance || '0' }
         exchangeRate={ data.exchange_rate }
         decimals={ String(appConfig.network.currency.decimals) }
         currency={ appConfig.network.currency.symbol }

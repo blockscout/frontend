@@ -7,7 +7,7 @@ import link from 'lib/link/link';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 
 interface Props {
-  data: Address;
+  data: Pick<Address, 'name' | 'token' | 'is_contract'>;
 }
 
 const AddressNameInfo = ({ data }: Props) => {

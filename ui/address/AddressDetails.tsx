@@ -7,6 +7,7 @@ import type { Address as TAddress } from 'types/api/address';
 
 import appConfig from 'configs/app/config';
 import blockIcon from 'icons/block.svg';
+import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import link from 'lib/link/link';
@@ -29,7 +30,7 @@ import AddressQrCode from './details/AddressQrCode';
 import TokenSelect from './tokenSelect/TokenSelect';
 
 interface Props {
-  addressQuery: UseQueryResult<TAddress>;
+  addressQuery: UseQueryResult<TAddress, ResourceError>;
   scrollRef?: React.RefObject<HTMLDivElement>;
 }
 
@@ -37,8 +38,10 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
   const router = useRouter();
   const isMobile = useIsMobile();
 
+  const addressHash = router.query.id?.toString();
+
   const countersQuery = useApiQuery('address_counters', {
-    pathParams: { id: router.query.id?.toString() },
+    pathParams: { id: addressHash },
     queryOptions: {
       enabled: Boolean(router.query.id) && Boolean(addressQuery.data),
     },
@@ -51,33 +54,54 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
     }, 500);
   }, [ scrollRef ]);
 
-  if (addressQuery.isError) {
+  const errorData = React.useMemo(() => ({
+    hash: addressHash || '',
+    is_contract: false,
+    implementation_name: null,
+    implementation_address: null,
+    token: null,
+    watchlist_names: null,
+    creation_tx_hash: null,
+    block_number_balance_updated_at: null,
+    name: null,
+    exchange_rate: null,
+    coin_balance: null,
+    has_tokens: true,
+    has_token_transfers: true,
+    has_validated_blocks: false,
+  }), [ addressHash ]);
+
+  const is404Error = addressQuery.isError && 'status' in addressQuery.error && addressQuery.error.status === 404;
+  const is422Error = addressQuery.isError && 'status' in addressQuery.error && addressQuery.error.status === 422;
+
+  if (addressQuery.isError && is422Error) {
     throw Error('Address fetch error', { cause: addressQuery.error as unknown as Error });
+  }
+
+  if (addressQuery.isError && !is404Error) {
+    return <DataFetchAlert/>;
   }
 
   if (addressQuery.isLoading) {
     return <AddressDetailsSkeleton/>;
   }
 
-  if (addressQuery.isError) {
-    return <DataFetchAlert/>;
-  }
-
   const explorers = appConfig.network.explorers.filter(({ paths }) => paths.address);
+  const data = addressQuery.isError ? errorData : addressQuery.data;
 
   return (
     <Box>
       <Flex alignItems="center">
-        <AddressIcon address={ addressQuery.data }/>
+        <AddressIcon address={ data }/>
         <Text ml={ 2 } fontFamily="heading" fontWeight={ 500 }>
-          { isMobile ? <HashStringShorten hash={ addressQuery.data.hash }/> : addressQuery.data.hash }
+          { isMobile ? <HashStringShorten hash={ data.hash }/> : data.hash }
         </Text>
-        <CopyToClipboard text={ addressQuery.data.hash }/>
-        { addressQuery.data.is_contract && addressQuery.data.token && <AddressAddToMetaMask ml={ 2 } token={ addressQuery.data.token }/> }
-        { !addressQuery.data.is_contract && (
-          <AddressFavoriteButton hash={ addressQuery.data.hash } isAdded={ Boolean(addressQuery.data.watchlist_names?.length) } ml={ 3 }/>
+        <CopyToClipboard text={ data.hash }/>
+        { data.is_contract && data.token && <AddressAddToMetaMask ml={ 2 } token={ data.token }/> }
+        { !data.is_contract && (
+          <AddressFavoriteButton hash={ data.hash } isAdded={ Boolean(data.watchlist_names?.length) } ml={ 3 }/>
         ) }
-        <AddressQrCode hash={ addressQuery.data.hash } ml={ 2 }/>
+        <AddressQrCode hash={ data.hash } ml={ 2 }/>
       </Flex>
       { explorers.length > 0 && (
         <Flex mt={ 8 } columnGap={ 4 } flexWrap="wrap">
@@ -94,69 +118,77 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
         rowGap={{ base: 1, lg: 3 }}
         templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }} overflow="hidden"
       >
-        <AddressNameInfo data={ addressQuery.data }/>
-        { addressQuery.data.is_contract && addressQuery.data.creation_tx_hash && addressQuery.data.creator_address_hash && (
+        <AddressNameInfo data={ data }/>
+        { data.is_contract && data.creation_tx_hash && data.creator_address_hash && (
           <DetailsInfoItem
             title="Creator"
             hint="Transaction and address of creation."
           >
-            <AddressLink type="address" hash={ addressQuery.data.creator_address_hash } truncation="constant"/>
+            <AddressLink type="address" hash={ data.creator_address_hash } truncation="constant"/>
             <Text whiteSpace="pre"> at txn </Text>
-            <AddressLink hash={ addressQuery.data.creation_tx_hash } type="transaction" truncation="constant"/>
+            <AddressLink hash={ data.creation_tx_hash } type="transaction" truncation="constant"/>
           </DetailsInfoItem>
         ) }
-        { addressQuery.data.is_contract && addressQuery.data.implementation_address && (
+        { data.is_contract && data.implementation_address && (
           <DetailsInfoItem
             title="Implementation"
             hint="Implementation address of the proxy contract."
             columnGap={ 1 }
           >
-            <Link href={ link('address_index', { id: addressQuery.data.implementation_address }) }>{ addressQuery.data.implementation_name }</Link>
+            <Link href={ link('address_index', { id: data.implementation_address }) }>{ data.implementation_name }</Link>
             <Text variant="secondary" overflow="hidden">
-              <HashStringShortenDynamic hash={ `(${ addressQuery.data.implementation_address })` }/>
+              <HashStringShortenDynamic hash={ `(${ data.implementation_address })` }/>
             </Text>
           </DetailsInfoItem>
         ) }
-        <AddressBalance data={ addressQuery.data }/>
-        { addressQuery.data.has_tokens && (
+        <AddressBalance data={ data }/>
+        { data.has_tokens && (
           <DetailsInfoItem
             title="Tokens"
             hint="All tokens in the account and total value."
             alignSelf="center"
             py={ 0 }
           >
-            <TokenSelect/>
+            { addressQuery.data ? <TokenSelect onClick={ handleCounterItemClick }/> : <Box py="6px">0</Box> }
           </DetailsInfoItem>
         ) }
         <DetailsInfoItem
           title="Transactions"
           hint="Number of transactions related to this address."
         >
-          <AddressCounterItem prop="transactions_count" query={ countersQuery } address={ addressQuery.data.hash } onClick={ handleCounterItemClick }/>
+          { addressQuery.data ?
+            <AddressCounterItem prop="transactions_count" query={ countersQuery } address={ data.hash } onClick={ handleCounterItemClick }/> :
+            0 }
         </DetailsInfoItem>
-        { addressQuery.data.has_token_transfers && (
+        { data.has_token_transfers && (
           <DetailsInfoItem
             title="Transfers"
             hint="Number of transfers to/from this address."
           >
-            <AddressCounterItem prop="token_transfers_count" query={ countersQuery } address={ addressQuery.data.hash } onClick={ handleCounterItemClick }/>
+            { addressQuery.data ?
+              <AddressCounterItem prop="token_transfers_count" query={ countersQuery } address={ data.hash } onClick={ handleCounterItemClick }/> :
+              0 }
           </DetailsInfoItem>
         ) }
         <DetailsInfoItem
           title="Gas used"
           hint="Gas used by the address."
         >
-          <AddressCounterItem prop="gas_usage_count" query={ countersQuery } address={ addressQuery.data.hash } onClick={ handleCounterItemClick }/>
+          { addressQuery.data ?
+            <AddressCounterItem prop="gas_usage_count" query={ countersQuery } address={ data.hash } onClick={ handleCounterItemClick }/> :
+            0 }
         </DetailsInfoItem>
-        { addressQuery.data.has_validated_blocks && (
+        { data.has_validated_blocks && (
           <DetailsInfoItem
             title="Blocks validated"
             hint="Number of blocks validated by this validator."
           >
-            <AddressCounterItem prop="validations_count" query={ countersQuery } address={ addressQuery.data.hash } onClick={ handleCounterItemClick }/>
+            { addressQuery.data ?
+              <AddressCounterItem prop="validations_count" query={ countersQuery } address={ data.hash } onClick={ handleCounterItemClick }/> :
+              0 }
           </DetailsInfoItem>
         ) }
-        { addressQuery.data.block_number_balance_updated_at && (
+        { data.block_number_balance_updated_at && (
           <DetailsInfoItem
             title="Last balance update"
             hint="Block number in which the address was updated."
@@ -164,12 +196,12 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
             py={{ base: '2px', lg: 1 }}
           >
             <Link
-              href={ link('block', { id: String(addressQuery.data.block_number_balance_updated_at) }) }
+              href={ link('block', { id: String(data.block_number_balance_updated_at) }) }
               display="flex"
               alignItems="center"
             >
               <Icon as={ blockIcon } boxSize={ 6 } mr={ 2 }/>
-              { addressQuery.data.block_number_balance_updated_at }
+              { data.block_number_balance_updated_at }
             </Link>
           </DetailsInfoItem>
         ) }

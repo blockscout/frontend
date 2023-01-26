@@ -29,7 +29,7 @@ const AddressCounterItem = ({ prop, query, address, onClick }: Props) => {
   const data = query.data?.[prop];
 
   if (query.isError || data === null || data === undefined) {
-    return <span>no data</span>;
+    return <span>0</span>;
   }
 
   switch (prop) {
