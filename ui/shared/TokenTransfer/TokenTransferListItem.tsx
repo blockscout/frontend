@@ -48,14 +48,14 @@ const TokenTransferListItem = ({
   const addressWidth = `calc((100% - ${ baseAddress ? '50px' : '0px' }) / 2)`;
   return (
     <ListItemMobile rowGap={ 3 } isAnimated>
-      <Flex w="100%" flexWrap="wrap" rowGap={ 1 } position="relative">
-        <TokenSnippet hash={ token.address } w="auto" maxW="calc(100% - 140px)" name={ token.name || 'Unnamed token' }/>
-        <Tag flexShrink={ 0 } ml={ 2 } mr={ 2 }>{ token.type }</Tag>
-        <Tag colorScheme="orange">{ getTokenTransferTypeText(type) }</Tag>
+      <Flex w="100%" justifyContent="space-between">
+        <Flex flexWrap="wrap" rowGap={ 1 } mr={ showTxInfo && txHash ? 2 : 0 }>
+          <TokenSnippet hash={ token.address } w="auto" maxW="calc(100% - 140px)" name={ token.name || 'Unnamed token' }/>
+          <Tag flexShrink={ 0 } ml={ 2 } mr={ 2 }>{ token.type }</Tag>
+          <Tag colorScheme="orange">{ getTokenTransferTypeText(type) }</Tag>
+        </Flex>
         { showTxInfo && txHash && (
-          <Flex position="absolute" top={ 0 } right={ 0 }>
-            <TxAdditionalInfo hash={ txHash } isMobile/>
-          </Flex>
+          <TxAdditionalInfo hash={ txHash } isMobile/>
         ) }
       </Flex>
       { 'token_id' in total && <TokenTransferNft hash={ token.address } id={ total.token_id }/> }
