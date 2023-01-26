@@ -35,6 +35,7 @@ const FilterInput = ({ onChange, className, size = 'sm', placeholder, initialVal
     <InputGroup
       size={ size }
       className={ className }
+      minW="250px"
     >
       <InputLeftElement
         pointerEvents="none"
