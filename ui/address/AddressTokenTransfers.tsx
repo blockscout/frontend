@@ -166,10 +166,10 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
     if (isLoading) {
       return (
         <>
-          <Hide below="lg">
+          <Hide below="lg" ssr={ false }>
             <SkeletonTable columns={ [ '44px', '185px', '160px', '25%', '25%', '25%', '25%' ] }/>
           </Hide>
-          <Show below="lg">
+          <Show below="lg" ssr={ false }>
             <SkeletonList/>
           </Show>
         </>
@@ -191,7 +191,7 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
     const items = data.items.reduce(flattenTotal, []);
     return (
       <>
-        <Hide below="lg">
+        <Hide below="lg" ssr={ false }>
           <TokenTransferTable
             data={ items }
             baseAddress={ currentAddress }
@@ -203,7 +203,7 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
             socketInfoNum={ newItemsCount }
           />
         </Hide>
-        <Show below="lg">
+        <Show below="lg" ssr={ false }>
           { pagination.page === 1 && !tokenFilter && (
             <SocketNewItemsNotice
               url={ window.location.href }

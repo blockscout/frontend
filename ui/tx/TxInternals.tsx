@@ -101,8 +101,8 @@ const TxInternals = () => {
   if (isLoading || txInfo.isLoading) {
     return (
       <>
-        <Show below="lg"><SkeletonList/></Show>
-        <Hide below="lg"><SkeletonTable columns={ [ '28%', '20%', '24px', '20%', '16%', '16%' ] }/></Hide>
+        <Show below="lg" ssr={ false }><SkeletonList/></Show>
+        <Hide below="lg" ssr={ false }><SkeletonTable columns={ [ '28%', '20%', '24px', '20%', '16%', '16%' ] }/></Hide>
       </>
     );
   }

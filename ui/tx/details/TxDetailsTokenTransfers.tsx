@@ -61,7 +61,7 @@ const TxDetailsTokenTransfers = ({ data, txHash }: Props) => {
       }) }
       { showViewAllLink && (
         <>
-          <Show above="lg"><GridItem></GridItem></Show>
+          <Show above="lg" ssr={ false }><GridItem></GridItem></Show>
           <GridItem fontSize="sm" alignItems="center" display="inline-flex" pl={{ base: '28px', lg: 0 }}>
             <Icon as={ tokenIcon } boxSize={ 6 }/>
             <LinkInternal href={ viewAllUrl }>
