@@ -3,10 +3,9 @@ import React from 'react';
 
 interface Props {
   hasDescription: boolean;
-  chartHeight?: string;
 }
 
-const ChartWidgetSkeleton = ({ hasDescription, chartHeight }: Props) => {
+const ChartWidgetSkeleton = ({ hasDescription }: Props) => {
   return (
     <Box
       height="235px"
@@ -15,7 +14,7 @@ const ChartWidgetSkeleton = ({ hasDescription, chartHeight }: Props) => {
       <Skeleton w="75%" h="24px"/>
       { hasDescription && <Skeleton w="50%" h="18px" mt={ 1 }/> }
 
-      <Skeleton w="100%" h={ chartHeight || '150px' } mt={ 5 }/>
+      <Skeleton w="100%" h="150px" mt={ 5 }/>
     </Box>
   );
 };

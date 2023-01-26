@@ -45,7 +45,6 @@ const ChartWidgetContainer = ({ id, title, description, interval, onLoadingError
 
   return (
     <ChartWidget
-      chartHeight="100%"
       isError={ isError }
       items={ items }
       title={ title }

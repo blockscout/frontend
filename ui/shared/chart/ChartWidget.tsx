@@ -1,6 +1,7 @@
 import {
   Box,
   Center,
+  chakra,
   Flex,
   Grid,
   Icon,
@@ -37,13 +38,13 @@ type Props = {
   title: string;
   description?: string;
   isLoading: boolean;
-  chartHeight?: string;
+  className?: string;
   isError: boolean;
 }
 
 const DOWNLOAD_IMAGE_SCALE = 5;
 
-const ChartWidget = ({ items, title, description, isLoading, chartHeight, isError }: Props) => {
+const ChartWidget = ({ items, title, description, isLoading, className, isError }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
   const [ isFullscreen, setIsFullscreen ] = useState(false);
   const [ isZoomResetInitial, setIsZoomResetInitial ] = React.useState(true);
@@ -144,7 +145,7 @@ const ChartWidget = ({ items, title, description, isLoading, chartHeight, isErro
     }
 
     return (
-      <Box h={ chartHeight || 'auto' } maxW="100%">
+      <Box h="100%" maxW="100%">
         <ChartWidgetGraph
           items={ items }
           onZoom={ handleZoom }
@@ -158,7 +159,7 @@ const ChartWidget = ({ items, title, description, isLoading, chartHeight, isErro
   return (
     <>
       <Box
-        height={ chartHeight }
+        height="100%"
         display="flex"
         flexDirection="column"
         ref={ ref }
@@ -166,6 +167,7 @@ const ChartWidget = ({ items, title, description, isLoading, chartHeight, isErro
         borderRadius="md"
         border="1px"
         borderColor={ borderColor }
+        className={ className }
       >
         <Grid
           gridTemplateColumns="auto auto 36px"
@@ -276,4 +278,4 @@ const ChartWidget = ({ items, title, description, isLoading, chartHeight, isErro
   );
 };
 
-export default React.memo(ChartWidget);
+export default React.memo(chakra(ChartWidget));
