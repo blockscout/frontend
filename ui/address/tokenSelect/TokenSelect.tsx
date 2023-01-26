@@ -18,7 +18,7 @@ import TokenSelectDesktop from './TokenSelectDesktop';
 import TokenSelectMobile from './TokenSelectMobile';
 
 interface Props {
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const TokenSelect = ({ onClick }: Props) => {
