@@ -8,7 +8,7 @@ export default function getSeo(params: PageParams) {
   return {
     title: params ? `${ params.hash } - ${ networkTitle }` : '',
     description: params ?
-      `${ params.hash }, balances, and analytics on the on the ${ networkTitle }` :
+      `${ params.hash }, balances and analytics on the ${ networkTitle }` :
       '',
   };
 }

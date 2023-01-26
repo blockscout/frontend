@@ -1,6 +1,6 @@
 import { Skeleton, Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
@@ -29,6 +29,20 @@ const TokenPageContent = () => {
     pathParams: { hash: router.query.hash?.toString() },
     queryOptions: { enabled: Boolean(router.query.hash) },
   });
+
+  useEffect(() => {
+    if (tokenQuery.data) {
+      const tokenName = `${ tokenQuery.data.name } (${ tokenQuery.data.symbol })`;
+      const title = document.getElementsByTagName('title')[0];
+      if (title) {
+        title.textContent = title.textContent?.replace(tokenQuery.data.address, tokenName) || title.textContent;
+      }
+      const description = document.getElementsByName('description')[0] as HTMLMetaElement;
+      if (description) {
+        description.content = description.content.replace(tokenQuery.data.address, tokenName) || description.content;
+      }
+    }
+  }, [ tokenQuery.data ]);
 
   const transfersQuery = useQueryWithPages({
     resourceName: 'token_transfers',
