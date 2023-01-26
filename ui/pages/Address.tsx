@@ -113,6 +113,8 @@ const AddressPageContent = () => {
 
   const tagsNode = tags.length > 0 ? <Flex columnGap={ 2 }>{ tags }</Flex> : null;
 
+  const content = addressQuery.isError ? null : <RoutedTabs tabs={ tabs } tabListProps={{ mt: 8 }}/>;
+
   return (
     <Page>
       <TextAd mb={ 6 }/>
@@ -127,7 +129,7 @@ const AddressPageContent = () => {
       <AddressDetails addressQuery={ addressQuery } scrollRef={ tabsScrollRef }/>
       { /* should stay before tabs to scroll up whith pagination */ }
       <Box ref={ tabsScrollRef }></Box>
-      { addressQuery.isLoading ? <SkeletonTabs/> : <RoutedTabs tabs={ tabs } tabListProps={{ mt: 8 }}/> }
+      { addressQuery.isLoading ? <SkeletonTabs/> : content }
     </Page>
   );
 };
