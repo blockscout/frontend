@@ -85,7 +85,7 @@ const ContractWriteResultDumb = ({ result, onSettle, txInfo }: Props) => {
       alignItems="center"
       whiteSpace="pre-wrap"
       wordBreak="break-all"
-      color={ txInfo.status === 'error' || isErrorResult ? 'red.600' : undefined }
+      color={ txInfo.status === 'error' || isErrorResult ? 'error' : undefined }
     >
       { content }
     </Box>

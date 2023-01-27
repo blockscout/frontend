@@ -35,6 +35,7 @@ const ContractVerificationFieldOptimization = () => {
           required
           maxLength={ 255 }
           isDisabled={ formState.isSubmitting }
+          autoComplete="off"
         />
         <InputPlaceholder text="Optimization runs"/>
       </FormControl>

@@ -21,6 +21,8 @@ interface Props {
 const ContractVerificationFieldSources = ({ accept, multiple, title, className, hint }: Props) => {
   const { setValue, getValues, control, formState } = useFormContext<FormFields>();
 
+  const error = 'sources' in formState.errors ? formState.errors.sources : undefined;
+
   const handleFileRemove = React.useCallback((index?: number) => {
     if (index === undefined) {
       return;
@@ -57,8 +59,13 @@ const ContractVerificationFieldSources = ({ accept, multiple, title, className, 
         </Button>
       </FileInput>
       { field.value && field.value.length > 0 && renderFiles(field.value) }
+      { error && (
+        <Box fontSize="sm" mt={ 2 } color="error">
+          { error.type === 'required' ? 'Field is required' : error.message }
+        </Box>
+      ) }
     </>
-  ), [ accept, multiple, renderFiles ]);
+  ), [ accept, error, multiple, renderFiles ]);
 
   return (
     <>

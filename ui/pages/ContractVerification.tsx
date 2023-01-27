@@ -26,7 +26,7 @@ const ContractVerification = () => {
       <PageTitle
         text="New smart contract verification"
         backLinkUrl={ hasGoBackLink ? referrer : undefined }
-        backLinkLabel="Back to address"
+        backLinkLabel="Back to contract"
       />
       { hash && (
         <Address>

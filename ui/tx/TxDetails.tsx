@@ -99,7 +99,7 @@ const TxDetails = () => {
   const executionFailedBadge = toAddress.is_contract && Boolean(data.status) && data.result !== 'success' ? (
     <Tooltip label="Error occurred during contract execution">
       <chakra.span display="inline-flex" ml={ 2 } mr={ 1 }>
-        <Icon as={ errorIcon } boxSize={ 4 } color="red.500" cursor="pointer"/>
+        <Icon as={ errorIcon } boxSize={ 4 } color="error" cursor="pointer"/>
       </chakra.span>
     </Tooltip>
   ) : null;

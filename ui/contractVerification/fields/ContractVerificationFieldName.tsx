@@ -27,6 +27,7 @@ const ContractVerificationFieldName = ({ hint }: Props) => {
           isInvalid={ Boolean(error) }
           maxLength={ 255 }
           isDisabled={ formState.isSubmitting }
+          autoComplete="off"
         />
         <InputPlaceholder text="Contract name" error={ error }/>
       </FormControl>
