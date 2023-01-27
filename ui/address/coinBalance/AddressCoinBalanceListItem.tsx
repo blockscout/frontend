@@ -26,12 +26,12 @@ const AddressCoinBalanceListItem = (props: Props) => {
   return (
     <ListItemMobile rowGap={ 2 } isAnimated>
       <Flex justifyContent="space-between" w="100%">
-        <Text fontWeight={ 600 }>{ BigNumber(props.value).div(WEI).toFixed(8) } { appConfig.network.currency.symbol }</Text>
+        <Text fontWeight={ 600 }>{ BigNumber(props.value).div(WEI).dp(8).toFormat() } { appConfig.network.currency.symbol }</Text>
         <Stat flexGrow="0">
           <StatHelpText display="flex" mb={ 0 } alignItems="center">
             <StatArrow type={ isPositiveDelta ? 'increase' : 'decrease' }/>
             <Text as="span" color={ isPositiveDelta ? 'green.500' : 'red.500' } fontWeight={ 600 }>
-              { deltaBn.toFormat() }
+              { deltaBn.dp(8).toFormat() }
             </Text>
           </StatHelpText>
         </Stat>

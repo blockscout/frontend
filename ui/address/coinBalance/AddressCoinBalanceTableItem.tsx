@@ -40,14 +40,14 @@ const AddressCoinBalanceTableItem = (props: Props) => {
         <Text variant="secondary">{ timeAgo }</Text>
       </Td>
       <Td isNumeric pr={ 1 }>
-        <Text>{ BigNumber(props.value).div(WEI).toFixed(8) }</Text>
+        <Text>{ BigNumber(props.value).div(WEI).dp(8).toFormat() }</Text>
       </Td>
       <Td isNumeric display="flex" justifyContent="end">
         <Stat flexGrow="0">
           <StatHelpText display="flex" mb={ 0 } alignItems="center">
             <StatArrow type={ isPositiveDelta ? 'increase' : 'decrease' }/>
             <Text as="span" color={ isPositiveDelta ? 'green.500' : 'red.500' } fontWeight={ 600 }>
-              { deltaBn.toFormat() }
+              { deltaBn.dp(8).toFormat() }
             </Text>
           </StatHelpText>
         </Stat>
