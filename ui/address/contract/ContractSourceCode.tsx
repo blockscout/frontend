@@ -1,4 +1,4 @@
-import { Box, chakra, Flex, Link, Text, Tooltip } from '@chakra-ui/react';
+import { Box, chakra, Flex, Text, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SmartContract } from 'types/api/contract';
@@ -6,6 +6,7 @@ import type { SmartContract } from 'types/api/contract';
 import link from 'lib/link/link';
 import CodeEditor from 'ui/shared/CodeEditor';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import LinkInternal from 'ui/shared/LinkInternal';
 
 interface Props {
   data: string;
@@ -26,13 +27,13 @@ const ContractSourceCode = ({ data, hasSol2Yml, address, isViper, filePath, addi
 
   const diagramLink = hasSol2Yml && address ? (
     <Tooltip label="Visualize contract code using Sol2Uml JS library">
-      <Link
+      <LinkInternal
         href={ link('visualize_sol2uml', undefined, { address }) }
         ml="auto"
         mr={ 3 }
       >
         View UML diagram
-      </Link>
+      </LinkInternal>
     </Tooltip>
   ) : null;
 

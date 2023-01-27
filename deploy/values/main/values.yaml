@@ -542,6 +542,8 @@ frontend:
       _default: blockscout.com/eth/goerli
     NEXT_PUBLIC_STATS_API_HOST:
       _default: https://stats-test.aws-k8s.blockscout.com/
+    NEXT_PUBLIC_VISUALIZE_API_HOST:
+      _default: http://94.131.100.174:8050
     NEXT_PUBLIC_APP_HOST:
       _default: blockscout.com/eth/goerli
     NEXT_PUBLIC_LOGOUT_URL:
