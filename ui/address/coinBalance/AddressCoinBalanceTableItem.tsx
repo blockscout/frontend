@@ -29,7 +29,7 @@ const AddressCoinBalanceTableItem = (props: Props) => {
       <Td>
         { props.transaction_hash ?
           (
-            <Address maxW="150px" fontWeight="700">
+            <Address w="150px" fontWeight="700" display="block">
               <AddressLink hash={ props.transaction_hash } type="transaction"/>
             </Address>
           ) :
