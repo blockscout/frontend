@@ -1,3 +1,4 @@
+import type { As } from '@chakra-ui/react';
 import { Box, Button, Circle, Icon, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
@@ -9,9 +10,10 @@ interface Props {
   isActive?: boolean;
   appliedFiltersNum?: number;
   onClick: () => void;
+  as?: As;
 }
 
-const FilterButton = ({ isActive, appliedFiltersNum, onClick }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
+const FilterButton = ({ isActive, appliedFiltersNum, onClick, as }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
   const badgeColor = useColorModeValue('white', 'black');
   const badgeBgColor = useColorModeValue('blue.700', 'gray.50');
 
@@ -27,6 +29,7 @@ const FilterButton = ({ isActive, appliedFiltersNum, onClick }: Props, ref: Reac
       isActive={ isActive }
       px={ 1.5 }
       flexShrink={ 0 }
+      as={ as }
     >
       { FilterIcon }
       <Box display={{ base: 'none', lg: 'block' }}>Filter</Box>

@@ -1,4 +1,4 @@
-import { Text, Link, Flex, Icon, Box, chakra } from '@chakra-ui/react';
+import { Text, Flex, Icon, Box, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SearchResultItem } from 'types/api/search';
@@ -11,6 +11,7 @@ import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import LinkInternal from 'ui/shared/LinkInternal';
 import ListItemMobile from 'ui/shared/ListItemMobile';
 import TokenLogo from 'ui/shared/TokenLogo';
 
@@ -29,9 +30,9 @@ const SearchResultListItem = ({ data, searchTerm }: Props) => {
         return (
           <Flex alignItems="flex-start">
             <TokenLogo boxSize={ 6 } hash={ data.address } name={ data.name } flexShrink={ 0 }/>
-            <Link ml={ 2 } href={ link('token_index', { hash: data.address }) } fontWeight={ 700 } wordBreak="break-all">
+            <LinkInternal ml={ 2 } href={ link('token_index', { hash: data.address }) } fontWeight={ 700 } wordBreak="break-all">
               <chakra.span dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}/>
-            </Link>
+            </LinkInternal>
           </Flex>
         );
       }
@@ -54,9 +55,9 @@ const SearchResultListItem = ({ data, searchTerm }: Props) => {
         return (
           <Flex alignItems="center">
             <Icon as={ blockIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
-            <Link fontWeight={ 700 } href={ link('block', { id: String(data.block_number) }) }>
+            <LinkInternal fontWeight={ 700 } href={ link('block', { id: String(data.block_number) }) }>
               <Box as={ shouldHighlightHash ? 'span' : 'mark' }>{ data.block_number }</Box>
-            </Link>
+            </LinkInternal>
           </Flex>
         );
       }

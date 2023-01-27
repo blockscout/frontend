@@ -1,4 +1,4 @@
-import { Flex, Link, Spinner, Text, Box, Icon } from '@chakra-ui/react';
+import { Flex, Spinner, Text, Box, Icon } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import capitalize from 'lodash/capitalize';
 import React from 'react';
@@ -14,6 +14,7 @@ import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import BlockTimestamp from 'ui/blocks/BlockTimestamp';
 import AddressLink from 'ui/shared/address/AddressLink';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
+import LinkInternal from 'ui/shared/LinkInternal';
 import ListItemMobile from 'ui/shared/ListItemMobile';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
@@ -33,12 +34,12 @@ const BlocksListItem = ({ data, isPending, enableTimeIncrement }: Props) => {
       <Flex justifyContent="space-between" w="100%">
         <Flex columnGap={ 2 } alignItems="center">
           { isPending && <Spinner size="sm"/> }
-          <Link
+          <LinkInternal
             fontWeight={ 600 }
             href={ link('block', { id: String(data.height) }) }
           >
             { data.height }
-          </Link>
+          </LinkInternal>
         </Flex>
         <BlockTimestamp ts={ data.timestamp } isEnabled={ enableTimeIncrement }/>
       </Flex>

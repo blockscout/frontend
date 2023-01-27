@@ -1,5 +1,4 @@
-import { Icon, Link, GridItem, Show, Flex } from '@chakra-ui/react';
-import NextLink from 'next/link';
+import { Icon, GridItem, Show, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
@@ -7,6 +6,7 @@ import type { TokenTransfer } from 'types/api/tokenTransfer';
 import tokenIcon from 'icons/token.svg';
 import link from 'lib/link/link';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import LinkInternal from 'ui/shared/LinkInternal';
 import { flattenTotal } from 'ui/shared/TokenTransfer/helpers';
 
 import TxDetailsTokenTransfer from './TxDetailsTokenTransfer';
@@ -61,12 +61,12 @@ const TxDetailsTokenTransfers = ({ data, txHash }: Props) => {
       }) }
       { showViewAllLink && (
         <>
-          <Show above="lg"><GridItem></GridItem></Show>
+          <Show above="lg" ssr={ false }><GridItem></GridItem></Show>
           <GridItem fontSize="sm" alignItems="center" display="inline-flex" pl={{ base: '28px', lg: 0 }}>
             <Icon as={ tokenIcon } boxSize={ 6 }/>
-            <NextLink href={ viewAllUrl } passHref>
-              <Link>View all</Link>
-            </NextLink>
+            <LinkInternal href={ viewAllUrl }>
+              View all
+            </LinkInternal>
           </GridItem>
         </>
       ) }

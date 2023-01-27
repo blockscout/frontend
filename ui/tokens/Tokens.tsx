@@ -69,19 +69,15 @@ const Tokens = () => {
 
   const bar = (
     <>
-      <Show below="lg">
-        <HStack spacing={ 3 } mb={ 6 }>
+      <HStack spacing={ 3 } mb={ 6 } display={{ base: 'flex', lg: 'none' }}>
+        { typeFilter }
+        { filterInput }
+      </HStack>
+      <ActionBar mt={ -6 }>
+        <HStack spacing={ 3 } display={{ base: 'none', lg: 'flex' }}>
           { typeFilter }
           { filterInput }
         </HStack>
-      </Show>
-      <ActionBar mt={ -6 }>
-        <Hide below="lg">
-          <HStack spacing={ 3 }>
-            { typeFilter }
-            { filterInput }
-          </HStack>
-        </Hide>
         { isPaginationVisible && <Pagination ml="auto" { ...pagination }/> }
       </ActionBar>
     </>
@@ -91,10 +87,8 @@ const Tokens = () => {
     return (
       <>
         { bar }
-        <Show below="lg"><SkeletonList/></Show>
-        <Hide below="lg">
-          <SkeletonTable columns={ [ '25px', '33%', '33%', '33%', '110px' ] }/>
-        </Hide>
+        <SkeletonList display={{ base: 'block', lg: 'none' }}/>
+        <SkeletonTable display={{ base: 'none', lg: 'block' }} columns={ [ '25px', '33%', '33%', '33%', '110px' ] }/>
       </>
     );
   }

@@ -21,7 +21,7 @@ export const baseResponse: AddressCoinBalanceHistoryResponse = {
       block_number: 30367234,
       block_timestamp: '2022-10-01T17:55:20Z',
       delta: '1933020674364000',
-      transaction_hash: '0x62d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3193',
+      transaction_hash: null,
       value: '10143933697708939226',
     },
     {

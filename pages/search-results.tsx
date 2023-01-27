@@ -10,6 +10,7 @@ import link from 'lib/link/link';
 import getNetworkTitle from 'lib/networks/getNetworkTitle';
 import type { Props } from 'lib/next/getServerSideProps';
 import { getServerSideProps as getServerSidePropsBase } from 'lib/next/getServerSideProps';
+import * as serverTiming from 'lib/next/serverTiming';
 import SearchResults from 'ui/pages/SearchResults';
 
 const SearchResultsPage: NextPage = () => {
@@ -27,6 +28,8 @@ const SearchResultsPage: NextPage = () => {
 export default SearchResultsPage;
 
 export const getServerSideProps: GetServerSideProps<Props> = async({ req, res, resolvedUrl, query }) => {
+  const start = Date.now();
+
   try {
     const q = String(query.q);
     const url = buildUrlNode('search_check_redirect', undefined, { q });
@@ -62,6 +65,10 @@ export const getServerSideProps: GetServerSideProps<Props> = async({ req, res, r
       },
     };
   } catch (error) {}
+
+  const end = Date.now();
+
+  serverTiming.appendValue(res, 'query.search.check-redirect', end - start);
 
   return getServerSidePropsBase({ req, res, resolvedUrl, query });
 };

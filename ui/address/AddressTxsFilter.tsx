@@ -27,6 +27,7 @@ const AddressTxsFilter = ({ onFilterChange, defaultFilter, isActive }: Props) =>
         <FilterButton
           isActive={ isOpen || isActive }
           onClick={ onToggle }
+          as="div"
         />
       </MenuButton>
       <MenuList zIndex={ 2 }>
