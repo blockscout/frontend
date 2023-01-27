@@ -18,11 +18,13 @@ const AddressCoinBalance = () => {
   const [ socketAlert, setSocketAlert ] = React.useState(false);
   const queryClient = useQueryClient();
   const router = useRouter();
+  const scrollRef = React.useRef<HTMLDivElement>(null);
 
   const addressHash = String(router.query?.id);
   const coinBalanceQuery = useQueryWithPages({
     resourceName: 'address_coin_balance',
     pathParams: { id: addressHash },
+    scrollRef,
   });
 
   const handleSocketError = React.useCallback(() => {
@@ -65,6 +67,7 @@ const AddressCoinBalance = () => {
     <>
       { socketAlert && <SocketAlert mb={ 6 }/> }
       <AddressCoinBalanceChart addressHash={ addressHash }/>
+      <div ref={ scrollRef }></div>
       <AddressCoinBalanceHistory query={ coinBalanceQuery }/>
     </>
   );

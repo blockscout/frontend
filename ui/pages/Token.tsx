@@ -8,7 +8,6 @@ import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/appContext';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
-import isBrowser from 'lib/isBrowser';
 import AdBanner from 'ui/shared/ad/AdBanner';
 import TextAd from 'ui/shared/ad/TextAd';
 import Page from 'ui/shared/Page/Page';
@@ -29,11 +28,8 @@ const TokenPageContent = () => {
   const isMobile = useIsMobile();
 
   const appProps = useAppContext();
-  const isInBrowser = isBrowser();
 
-  const referrer = isInBrowser ? window.document.referrer : appProps.referrer;
-
-  const hasGoBackLink = referrer && referrer.includes('/tokens');
+  const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/tokens');
 
   const scrollRef = React.useRef<HTMLDivElement>(null);
 
@@ -104,7 +100,7 @@ const TokenPageContent = () => {
           <TextAd mb={ 6 }/>
           <PageTitle
             text={ `${ tokenQuery.data?.name } (${ tokenQuery.data?.symbol }) token` }
-            backLinkUrl={ hasGoBackLink ? referrer : undefined }
+            backLinkUrl={ hasGoBackLink ? appProps.referrer : undefined }
             backLinkLabel="Back to tokens list"
             additionalsLeft={ (
               <TokenLogo hash={ tokenQuery.data?.address } name={ tokenQuery.data?.name } boxSize={ 6 }/>

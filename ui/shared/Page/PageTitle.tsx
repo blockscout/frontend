@@ -1,8 +1,9 @@
-import { Heading, Flex, Grid, Tooltip, Link, Icon, chakra } from '@chakra-ui/react';
+import { Heading, Flex, Grid, Tooltip, Icon, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import eastArrowIcon from 'icons/arrows/east.svg';
 import TextAd from 'ui/shared/ad/TextAd';
+import LinkInternal from 'ui/shared/LinkInternal';
 
 type Props = {
   text: string;
@@ -42,9 +43,9 @@ const PageTitle = ({ text, additionalsLeft, additionalsRight, withTextAd, backLi
         >
           { backLinkUrl && (
             <Tooltip label={ backLinkLabel }>
-              <Link display="inline-flex" href={ backLinkUrl } h="40px">
+              <LinkInternal display="inline-flex" href={ backLinkUrl } h="40px">
                 <Icon as={ eastArrowIcon } boxSize={ 6 } transform="rotate(180deg)" margin="auto"/>
-              </Link>
+              </LinkInternal>
             </Tooltip>
           ) }
           { additionalsLeft !== undefined && (

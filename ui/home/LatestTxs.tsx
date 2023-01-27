@@ -1,10 +1,11 @@
-import { Box, Heading, Flex, Link, Text, Skeleton } from '@chakra-ui/react';
+import { Box, Heading, Flex, Text, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useNewTxsSocket from 'lib/hooks/useNewTxsSocket';
 import link from 'lib/link/link';
+import LinkInternal from 'ui/shared/LinkInternal';
 import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 
 import LatestTxsItem from './LatestTxsItem';
@@ -36,12 +37,12 @@ const LatestTransactions = () => {
     const txsUrl = link('txs');
     content = (
       <>
-        <SocketNewItemsNotice borderBottomRadius={ 0 } url={ link('txs') } num={ num } alert={ socketAlert }/>
+        <SocketNewItemsNotice borderBottomRadius={ 0 } url={ txsUrl } num={ num } alert={ socketAlert }/>
         <Box mb={{ base: 3, lg: 4 }}>
           { data.slice(0, txsCount).map((tx => <LatestTxsItem key={ tx.hash } tx={ tx }/>)) }
         </Box>
         <Flex justifyContent="center">
-          <Link fontSize="sm" href={ txsUrl }>View all transactions</Link>
+          <LinkInternal fontSize="sm" href={ txsUrl }>View all transactions</LinkInternal>
         </Flex>
       </>
     );

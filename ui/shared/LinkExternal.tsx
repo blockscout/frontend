@@ -9,7 +9,7 @@ interface Props {
   className?: string;
 }
 
-const ExternalLink = ({ href, title, className }: Props) => {
+const LinkExternal = ({ href, title, className }: Props) => {
   return (
     <Link className={ className } fontSize="sm" display="inline-flex" alignItems="center" target="_blank" href={ href }>
       { title }
@@ -18,4 +18,4 @@ const ExternalLink = ({ href, title, className }: Props) => {
   );
 };
 
-export default React.memo(chakra(ExternalLink));
+export default React.memo(chakra(LinkExternal));

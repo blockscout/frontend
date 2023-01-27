@@ -8,7 +8,6 @@ import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 import iconSuccess from 'icons/status/success.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/appContext';
-import isBrowser from 'lib/isBrowser';
 import notEmpty from 'lib/notEmpty';
 import AddressBlocksValidated from 'ui/address/AddressBlocksValidated';
 import AddressCoinBalance from 'ui/address/AddressCoinBalance';
@@ -41,11 +40,8 @@ const AddressPageContent = () => {
   const router = useRouter();
 
   const appProps = useAppContext();
-  const isInBrowser = isBrowser();
 
-  const referrer = isInBrowser ? window.document.referrer : appProps.referrer;
-
-  const hasGoBackLink = referrer && referrer.includes('/accounts');
+  const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/accounts');
 
   const tabsScrollRef = React.useRef<HTMLDivElement>(null);
 
@@ -134,7 +130,7 @@ const AddressPageContent = () => {
         <PageTitle
           text={ `${ addressQuery.data?.is_contract ? 'Contract' : 'Address' } details` }
           additionalsRight={ tagsNode }
-          backLinkUrl={ hasGoBackLink ? referrer : undefined }
+          backLinkUrl={ hasGoBackLink ? appProps.referrer : undefined }
           backLinkLabel="Back to top accounts list"
         />
       ) }

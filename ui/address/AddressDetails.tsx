@@ -1,4 +1,4 @@
-import { Box, Flex, Text, Icon, Grid, Link } from '@chakra-ui/react';
+import { Box, Flex, Text, Icon, Grid } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -17,9 +17,10 @@ import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import ExternalLink from 'ui/shared/ExternalLink';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import LinkExternal from 'ui/shared/LinkExternal';
+import LinkInternal from 'ui/shared/LinkInternal';
 
 import AddressAddToMetaMask from './details/AddressAddToMetaMask';
 import AddressBalance from './details/AddressBalance';
@@ -107,8 +108,8 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
         <Flex mt={ 8 } columnGap={ 4 } flexWrap="wrap">
           <Text fontSize="sm">Verify with other explorers</Text>
           { explorers.map((explorer) => {
-            const url = new URL(explorer.paths.tx + '/' + router.query.id, explorer.baseUrl);
-            return <ExternalLink key={ explorer.baseUrl } title={ explorer.title } href={ url.toString() }/>;
+            const url = new URL(explorer.paths.address + '/' + router.query.id, explorer.baseUrl);
+            return <LinkExternal key={ explorer.baseUrl } title={ explorer.title } href={ url.toString() }/>;
           }) }
         </Flex>
       ) }
@@ -135,7 +136,9 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
             hint="Implementation address of the proxy contract."
             columnGap={ 1 }
           >
-            <Link href={ link('address_index', { id: data.implementation_address }) }>{ data.implementation_name }</Link>
+            <LinkInternal href={ link('address_index', { id: data.implementation_address }) }>
+              { data.implementation_name }
+            </LinkInternal>
             <Text variant="secondary" overflow="hidden">
               <HashStringShortenDynamic hash={ `(${ data.implementation_address })` }/>
             </Text>
@@ -195,14 +198,14 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
             alignSelf="center"
             py={{ base: '2px', lg: 1 }}
           >
-            <Link
+            <LinkInternal
               href={ link('block', { id: String(data.block_number_balance_updated_at) }) }
               display="flex"
               alignItems="center"
             >
               <Icon as={ blockIcon } boxSize={ 6 } mr={ 2 }/>
               { data.block_number_balance_updated_at }
-            </Link>
+            </LinkInternal>
           </DetailsInfoItem>
         ) }
       </Grid>

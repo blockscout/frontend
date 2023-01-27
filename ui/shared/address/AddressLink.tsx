@@ -1,4 +1,4 @@
-import { Link, chakra, shouldForwardProp, Tooltip, Box } from '@chakra-ui/react';
+import { chakra, shouldForwardProp, Tooltip, Box } from '@chakra-ui/react';
 import type { HTMLAttributeAnchorTarget } from 'react';
 import React from 'react';
 
@@ -6,6 +6,7 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import link from 'lib/link/link';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import LinkInternal from 'ui/shared/LinkInternal';
 
 import TruncatedTextTooltip from '../TruncatedTextTooltip';
 
@@ -93,7 +94,7 @@ const AddressLink = (props: Props) => {
   }
 
   return (
-    <Link
+    <LinkInternal
       className={ className }
       href={ url }
       target={ target }
@@ -101,7 +102,7 @@ const AddressLink = (props: Props) => {
       whiteSpace="nowrap"
     >
       { content }
-    </Link>
+    </LinkInternal>
   );
 };
 

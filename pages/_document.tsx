@@ -1,10 +1,29 @@
 import { ColorModeScript } from '@chakra-ui/react';
+import type { DocumentContext } from 'next/document';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import React from 'react';
 
+import * as serverTiming from 'lib/next/serverTiming';
 import theme from 'theme';
 
 class MyDocument extends Document {
+  static async getInitialProps(ctx: DocumentContext) {
+    const originalRenderPage = ctx.renderPage;
+    ctx.renderPage = async() => {
+      const start = Date.now();
+      const result = await originalRenderPage();
+      const end = Date.now();
+
+      serverTiming.appendValue(ctx.res, 'renderPage', end - start);
+
+      return result;
+    };
+
+    const initialProps = await Document.getInitialProps(ctx);
+
+    return initialProps;
+  }
+
   render() {
     return (
       <Html lang="en">

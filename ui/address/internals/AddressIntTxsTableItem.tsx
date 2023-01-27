@@ -1,4 +1,4 @@
-import { Tr, Td, Tag, Icon, Box, Flex, Text, Link } from '@chakra-ui/react';
+import { Tr, Td, Tag, Icon, Box, Flex, Text } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -12,6 +12,7 @@ import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import InOutTag from 'ui/shared/InOutTag';
+import LinkInternal from 'ui/shared/LinkInternal';
 import TxStatus from 'ui/shared/TxStatus';
 import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
@@ -57,7 +58,7 @@ const AddressIntTxsTableItem = ({
         </Flex>
       </Td>
       <Td verticalAlign="middle">
-        <Link href={ link('block', { id: block.toString() }) }>{ block }</Link>
+        <LinkInternal href={ link('block', { id: block.toString() }) }>{ block }</LinkInternal>
       </Td>
       <Td verticalAlign="middle">
         <Address display="inline-flex" maxW="100%">

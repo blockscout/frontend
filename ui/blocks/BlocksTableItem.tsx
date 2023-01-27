@@ -1,4 +1,4 @@
-import { Tr, Td, Link, Flex, Box, Icon, Tooltip, Spinner, useColorModeValue } from '@chakra-ui/react';
+import { Tr, Td, Flex, Box, Icon, Tooltip, Spinner, useColorModeValue } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import { motion } from 'framer-motion';
 import React from 'react';
@@ -12,6 +12,7 @@ import link from 'lib/link/link';
 import BlockTimestamp from 'ui/blocks/BlockTimestamp';
 import AddressLink from 'ui/shared/address/AddressLink';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
+import LinkInternal from 'ui/shared/LinkInternal';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
 interface Props {
@@ -38,12 +39,12 @@ const BlocksTableItem = ({ data, isPending, enableTimeIncrement }: Props) => {
         <Flex columnGap={ 2 } alignItems="center" mb={ 2 }>
           { isPending && <Spinner size="sm" flexShrink={ 0 }/> }
           <Tooltip isDisabled={ data.type !== 'reorg' } label="Chain reorganizations">
-            <Link
+            <LinkInternal
               fontWeight={ 600 }
               href={ link('block', { id: String(data.height) }) }
             >
               { data.height }
-            </Link>
+            </LinkInternal>
           </Tooltip>
         </Flex>
         <BlockTimestamp ts={ data.timestamp } isEnabled={ enableTimeIncrement }/>
