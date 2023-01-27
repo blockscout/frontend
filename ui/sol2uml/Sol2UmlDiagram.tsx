@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { SmartContract } from 'types/api/contract';
 
+import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import ContentLoader from 'ui/shared/ContentLoader';
 
@@ -26,7 +27,7 @@ function composeSources(contract: SmartContract | undefined) {
 }
 
 const Sol2UmlDiagram = ({ addressHash }: Props) => {
-  const contractQuery = useApiQuery('contract', {
+  const contractQuery = useApiQuery<'contract', ResourceError>('contract', {
     pathParams: { id: addressHash },
     queryOptions: {
       enabled: Boolean(addressHash),
@@ -57,6 +58,10 @@ const Sol2UmlDiagram = ({ addressHash }: Props) => {
     const newWindow = window.open(imgUrl);
     newWindow?.document.write(image.outerHTML);
   }, [ imgUrl ]);
+
+  if (!addressHash) {
+    throw Error('Contract address is not provided', { cause: { status: 404 } as unknown as Error });
+  }
 
   if (contractQuery.isError) {
     throw Error('Contract fetch error', { cause: contractQuery.error as unknown as Error });
