@@ -324,6 +324,7 @@ frontend:
         - "/token"
         - "/tokens"
         - "/accounts"
+        - "/visualize"
 
   resources:
     limits:
