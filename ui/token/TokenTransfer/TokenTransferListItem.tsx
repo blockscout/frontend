@@ -7,6 +7,7 @@ import type { TokenTransfer } from 'types/api/tokenTransfer';
 import eastArrowIcon from 'icons/arrows/east.svg';
 import transactionIcon from 'icons/transactions.svg';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
+import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -69,14 +70,15 @@ const TokenTransferListItem = ({
           <AddressLink ml={ 2 } fontWeight="500" hash={ to.hash } type="address_token" tokenHash={ token.address }/>
         </Address>
       </Flex>
-      { value && (
+      { value && (token.type === 'ERC-20' || token.type === 'ERC-1155') && (
         <Flex columnGap={ 2 } w="100%">
           <Text fontWeight={ 500 } flexShrink={ 0 }>Value</Text>
           <Text variant="secondary">{ value }</Text>
-          <Text>{ token.symbol }</Text>
+          <Text>{ trimTokenSymbol(token.symbol) }</Text>
         </Flex>
       ) }
-      { 'token_id' in total && <TokenTransferNft hash={ token.address } id={ total.token_id }/> }
+      { 'token_id' in total && (token.type === 'ERC-721' || token.type === 'ERC-1155') &&
+         <TokenTransferNft hash={ token.address } id={ total.token_id }/> }
     </ListItemMobile>
   );
 };

@@ -4,6 +4,7 @@ import React from 'react';
 import type { TokenInfo } from 'types/api/tokenInfo';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
+import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import { default as Thead } from 'ui/shared/TheadSticky';
 import TokenTransferTableItem from 'ui/token/TokenTransfer/TokenTransferTableItem';
@@ -28,7 +29,7 @@ const TokenTransferTable = ({ data, top, token, showSocketInfo, socketInfoAlert,
           <Th width="36px" px={ 0 }/>
           <Th width="218px" >To</Th>
           { (token.type === 'ERC-721' || token.type === 'ERC-1155') && <Th width="20%" isNumeric={ token.type === 'ERC-721' }>Token ID</Th> }
-          { (token.type === 'ERC-20' || token.type === 'ERC-1155') && <Th width="20%" isNumeric>Value { token.symbol }</Th> }
+          { (token.type === 'ERC-20' || token.type === 'ERC-1155') && <Th width="20%" isNumeric>Value { trimTokenSymbol(token.symbol) }</Th> }
         </Tr>
       </Thead>
       <Tbody>
