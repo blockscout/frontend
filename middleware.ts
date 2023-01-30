@@ -10,6 +10,7 @@ const cspPolicy = getCspPolicy();
 
 export function middleware(req: NextRequest) {
   const isPageRequest = req.headers.get('accept')?.includes('text/html');
+  const start = Date.now();
 
   if (!isPageRequest) {
     return;
@@ -25,8 +26,11 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(authUrl);
   }
 
+  const end = Date.now();
   const res = NextResponse.next();
   res.headers.append('Content-Security-Policy-Report-Only', cspPolicy);
+  res.headers.append('Server-Timing', `middleware;dur=${ end - start }`);
+
   return res;
 }
 

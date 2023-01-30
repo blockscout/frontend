@@ -1,4 +1,4 @@
-import { Box, Heading, Text, Flex, Link } from '@chakra-ui/react';
+import { Box, Heading, Text, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -8,6 +8,7 @@ import appConfig from 'configs/app/config';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import link from 'lib/link/link';
 import CurrencyValue from 'ui/shared/CurrencyValue';
+import LinkInternal from 'ui/shared/LinkInternal';
 import TextSeparator from 'ui/shared/TextSeparator';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
@@ -89,7 +90,7 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
           <Text fontWeight="600" as="span">{ tx.position }</Text>
         </Box>
       </Box>
-      <Link fontSize="sm" href={ link('tx', { id: tx.hash }) }>More details</Link>
+      <LinkInternal fontSize="sm" href={ link('tx', { id: tx.hash }) }>More details</LinkInternal>
     </>
   );
 };

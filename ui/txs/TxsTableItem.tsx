@@ -3,7 +3,6 @@ import {
   Tr,
   Td,
   Tag,
-  Link,
   Icon,
   VStack,
   Text,
@@ -23,6 +22,7 @@ import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import InOutTag from 'ui/shared/InOutTag';
+import LinkInternal from 'ui/shared/LinkInternal';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 import TxStatus from 'ui/shared/TxStatus';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
@@ -99,7 +99,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }
       </Td>
       { showBlockInfo && (
         <Td>
-          { tx.block && <Link href={ link('block', { id: tx.block.toString() }) }>{ tx.block }</Link> }
+          { tx.block && <LinkInternal href={ link('block', { id: tx.block.toString() }) }>{ tx.block }</LinkInternal> }
         </Td>
       ) }
       <Show above="xl" ssr={ false }>

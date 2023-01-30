@@ -6,7 +6,6 @@ import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 import { useAppContext } from 'lib/appContext';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
-import isBrowser from 'lib/isBrowser';
 import BlockDetails from 'ui/block/BlockDetails';
 import TextAd from 'ui/shared/ad/TextAd';
 import Page from 'ui/shared/Page/Page';
@@ -24,7 +23,6 @@ const TAB_LIST_PROPS = {
 const BlockPageContent = () => {
   const router = useRouter();
   const isMobile = useIsMobile();
-  const isInBrowser = isBrowser();
   const appProps = useAppContext();
 
   const blockTxsQuery = useQueryWithPages({
@@ -46,15 +44,14 @@ const BlockPageContent = () => {
 
   const hasPagination = !isMobile && router.query.tab === 'txs' && blockTxsQuery.isPaginationVisible;
 
-  const referrer = isInBrowser ? window.document.referrer : appProps.referrer;
-  const hasGoBackLink = referrer && referrer.includes('/blocks');
+  const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/blocks');
 
   return (
     <Page>
       <TextAd mb={ 6 }/>
       <PageTitle
         text={ `Block #${ router.query.id }` }
-        backLinkUrl={ hasGoBackLink ? referrer : undefined }
+        backLinkUrl={ hasGoBackLink ? appProps.referrer : undefined }
         backLinkLabel="Back to blocks list"
       />
       <RoutedTabs

@@ -34,7 +34,7 @@ type Inputs = {
 const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
   const apiFetch = useApiFetch();
   const [ pending, setPending ] = useState(false);
-  const { control, handleSubmit, formState: { errors, isValid, isDirty }, setError } = useForm<Inputs>({
+  const { control, handleSubmit, formState: { errors, isDirty }, setError } = useForm<Inputs>({
     mode: 'onTouched',
     defaultValues: {
       address: data?.address_hash || '',
@@ -124,7 +124,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
         <Button
           size="lg"
           type="submit"
-          disabled={ !isValid || !isDirty }
+          disabled={ !isDirty }
           isLoading={ pending }
         >
           { data ? 'Save changes' : 'Add tag' }

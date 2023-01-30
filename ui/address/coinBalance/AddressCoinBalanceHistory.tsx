@@ -29,10 +29,10 @@ const AddressCoinBalanceHistory = ({ query }: Props) => {
     if (query.isLoading) {
       return (
         <>
-          <Hide below="lg">
+          <Hide below="lg" ssr={ false }>
             <SkeletonTable columns={ [ '25%', '25%', '25%', '25%', '120px' ] }/>
           </Hide>
-          <Show below="lg">
+          <Show below="lg" ssr={ false }>
             <SkeletonList/>
           </Show>
         </>
@@ -45,7 +45,7 @@ const AddressCoinBalanceHistory = ({ query }: Props) => {
 
     return (
       <>
-        <Hide below="lg">
+        <Hide below="lg" ssr={ false }>
           <Table variant="simple" size="sm">
             <Thead top={ 80 }>
               <Tr>
@@ -63,7 +63,7 @@ const AddressCoinBalanceHistory = ({ query }: Props) => {
             </Tbody>
           </Table>
         </Hide>
-        <Show below="lg">
+        <Show below="lg" ssr={ false }>
           { query.data.items.map((item) => (
             <AddressCoinBalanceListItem key={ item.block_number } { ...item } page={ query.pagination.page }/>
           )) }

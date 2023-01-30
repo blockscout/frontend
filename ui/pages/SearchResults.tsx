@@ -32,10 +32,10 @@ const SearchResultsPageContent = () => {
     if (isLoading) {
       return (
         <Box>
-          <Show below="lg">
+          <Show below="lg" ssr={ false }>
             <SkeletonList/>
           </Show>
-          <Hide below="lg">
+          <Hide below="lg" ssr={ false }>
             <SkeletonTable columns={ [ '50%', '50%', '150px' ] }/>
           </Hide>
         </Box>

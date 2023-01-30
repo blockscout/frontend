@@ -1,4 +1,4 @@
-import { Flex, Tag, Icon, Box, HStack, Text, Link } from '@chakra-ui/react';
+import { Flex, Tag, Icon, Box, HStack, Text } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -12,6 +12,7 @@ import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import InOutTag from 'ui/shared/InOutTag';
+import LinkInternal from 'ui/shared/LinkInternal';
 import ListItemMobile from 'ui/shared/ListItemMobile';
 import TxStatus from 'ui/shared/TxStatus';
 import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
@@ -49,7 +50,7 @@ const TxInternalsListItem = ({
       </Flex>
       <HStack spacing={ 1 }>
         <Text fontSize="sm" fontWeight={ 500 }>Block</Text>
-        <Link href={ link('block', { id: block.toString() }) }>{ block }</Link>
+        <LinkInternal href={ link('block', { id: block.toString() }) }>{ block }</LinkInternal>
       </HStack>
       <Box w="100%" display="flex" columnGap={ 3 }>
         <Address width="calc((100% - 48px) / 2)">
