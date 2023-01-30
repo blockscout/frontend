@@ -8,6 +8,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/appContext';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
+import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import AdBanner from 'ui/shared/ad/AdBanner';
 import TextAd from 'ui/shared/ad/TextAd';
 import Page from 'ui/shared/Page/Page';
@@ -40,7 +41,8 @@ const TokenPageContent = () => {
 
   useEffect(() => {
     if (tokenQuery.data) {
-      const tokenName = `${ tokenQuery.data.name } (${ tokenQuery.data.symbol })`;
+      const tokenSymbol = tokenQuery.data.symbol ? ` (${ tokenQuery.data.symbol })` : '';
+      const tokenName = `${ tokenQuery.data.name || 'Unnamed' }${ tokenSymbol }`;
       const title = document.getElementsByTagName('title')[0];
       if (title) {
         title.textContent = title.textContent?.replace(tokenQuery.data.address, tokenName) || title.textContent;
@@ -88,6 +90,8 @@ const TokenPageContent = () => {
     pagination = holdersQuery.pagination;
   }
 
+  const tokenSymbolText = tokenQuery.data?.symbol ? ` (${ trimTokenSymbol(tokenQuery.data.symbol) })` : '';
+
   return (
     <Page>
       { tokenQuery.isLoading ? (
@@ -99,7 +103,7 @@ const TokenPageContent = () => {
         <>
           <TextAd mb={ 6 }/>
           <PageTitle
-            text={ `${ tokenQuery.data?.name } (${ tokenQuery.data?.symbol }) token` }
+            text={ `${ tokenQuery.data?.name || 'Unnamed' }${ tokenSymbolText } token` }
             backLinkUrl={ hasGoBackLink ? appProps.referrer : undefined }
             backLinkLabel="Back to tokens list"
             additionalsLeft={ (

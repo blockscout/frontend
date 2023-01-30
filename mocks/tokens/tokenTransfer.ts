@@ -132,12 +132,13 @@ export const erc1155multiple: TokenTransfer = {
   ...erc1155,
   token: {
     ...erc1155.token,
-    name: 'OLYMPIC',
+    name: 'SastanaNFT',
+    symbol: 'ipfs://QmUpFUfVKDCWeZQk5pvDFUxnpQP9N6eLSHhNUy49T1JVtY',
   },
   total: [
+    { token_id: '12345678', value: '100000000000000000000', decimals: null },
+    { token_id: '483200961027732618117991942553110860267520', value: '200000000000000000000', decimals: null },
     { token_id: '456', value: '42', decimals: null },
-    { token_id: '12345678', value: '142', decimals: null },
-    { token_id: '1000006457499', value: '11', decimals: null },
   ],
 };
 
