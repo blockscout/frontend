@@ -29,7 +29,8 @@ export default function useTimeChartController({ data, width, height }: Props) {
   );
 
   const yMin = useMemo(
-    () => d3.min(data, ({ items }) => d3.min(items, ({ value }) => value)) || 0,
+    // use -1 instead of 0 to correctly display the curve between two zero points.
+    () => d3.min(data, ({ items }) => d3.min(items, ({ value }) => value)) || -1,
     [ data ],
   );
 
@@ -51,8 +52,27 @@ export default function useTimeChartController({ data, width, height }: Props) {
     [ height, yMin, yMax ],
   );
 
-  const xTickFormat = (d: d3.AxisDomain) => d.toLocaleString();
-  const yTickFormat = (d: d3.AxisDomain) => formatNumberToMetricPrefix(Number(d));
+  const xTickFormat = (axis: d3.Axis<d3.NumberValue>) => (d: d3.AxisDomain) => {
+    let format: (date: Date) => string;
+    const scale = axis.scale();
+    const extent = scale.domain();
+
+    const span = Number(extent[1]) - Number(extent[0]);
+
+    if (span > 365 * 24 * 60 * 60 * 1000) {
+      format = d3.timeFormat('%Y');
+    } else if (span > 30 * 24 * 60 * 60 * 1000) {
+      format = d3.timeFormat('%b');
+    } else if (span > 7 * 24 * 60 * 60 * 1000) {
+      format = d3.timeFormat('%b %d');
+    } else {
+      format = d3.timeFormat('%a %d');
+    }
+
+    return format(d as Date);
+  };
+
+  const yTickFormat = () => (d: d3.AxisDomain) => formatNumberToMetricPrefix(Number(d));
 
   return {
     xTickFormat,
