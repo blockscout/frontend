@@ -50,12 +50,12 @@ blockscout:
   resources:
     limits:
       memory:
-        _default: "4Gi"
+        _default: "5Gi"
       cpu:
         _default: "4"
     requests:
       memory:
-        _default: "4Gi"
+        _default: "5Gi"
       cpu:
         _default: "4"
   # enable service to connect to RDS
@@ -143,7 +143,7 @@ blockscout:
     RUST_VERIFICATION_SERVICE_URL:
       _default: http://sc-verifier-svc:80
     INDEXER_MEMORY_LIMIT:
-      _default: 3
+      _default: 5
     ACCOUNT_ENABLED:
       _default: 'true'
     API_V2_ENABLED:
@@ -171,14 +171,14 @@ postgres:
   resources:
     limits:
       memory:
-        _default: "5Gi"
+        _default: "6Gi"
       cpu:
-        _default: "1.5"
+        _default: "2"
     requests:
       memory:
-        _default: "5Gi"
+        _default: "6Gi"
       cpu:
-        _default: "1.5"
+        _default: "2"
   # node label
   nodeSelector:
     enabled: true

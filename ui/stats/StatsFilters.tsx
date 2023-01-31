@@ -41,8 +41,8 @@ const StatsFilters = ({
     <Grid
       gap={ 2 }
       templateAreas={{
-        base: `"input input"
-                "section interval"`,
+        base: `"section interval"
+                "input input"`,
         lg: `"section interval input"`,
       }}
       gridTemplateColumns={{ base: 'repeat(2, minmax(0, 1fr))', lg: 'auto auto 1fr' }}

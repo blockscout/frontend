@@ -15,13 +15,14 @@ const TxDetailsSkeleton = () => {
   );
 
   return (
-    <Grid columnGap={ 8 } rowGap={{ base: 5, lg: 7 }} templateColumns={{ base: '1fr', lg: '210px 1fr' }} maxW="1000px">
+    <Grid columnGap={ 8 } rowGap={{ base: 5, lg: 7 }} templateColumns={{ base: '1fr', lg: '210px 1fr' }} maxW="1000px" pt={{ base: 1, lg: 2 }}>
       <DetailsSkeletonRow/>
       <DetailsSkeletonRow w="20%"/>
       <DetailsSkeletonRow w="50%"/>
       <DetailsSkeletonRow/>
       <DetailsSkeletonRow w="70%"/>
       <DetailsSkeletonRow w="70%"/>
+      <GridItem h={{ base: '82px', lg: '38px' }}/>
       { sectionGap }
       <DetailsSkeletonRow w="40%"/>
       <DetailsSkeletonRow w="40%"/>

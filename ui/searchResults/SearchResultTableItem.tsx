@@ -1,4 +1,4 @@
-import { Tr, Td, Text, Link, Flex, Icon, Box } from '@chakra-ui/react';
+import { Tr, Td, Text, Flex, Icon, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SearchResultItem } from 'types/api/search';
@@ -11,6 +11,7 @@ import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import LinkInternal from 'ui/shared/LinkInternal';
 import TokenLogo from 'ui/shared/TokenLogo';
 
 interface Props {
@@ -29,9 +30,9 @@ const SearchResultTableItem = ({ data, searchTerm }: Props) => {
             <Td fontSize="sm">
               <Flex alignItems="center">
                 <TokenLogo boxSize={ 6 } hash={ data.address } name={ data.name } flexShrink={ 0 }/>
-                <Link ml={ 2 } href={ link('token_index', { hash: data.address }) } fontWeight={ 700 } wordBreak="break-all">
+                <LinkInternal ml={ 2 } href={ link('token_index', { hash: data.address }) } fontWeight={ 700 } wordBreak="break-all">
                   <span dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}/>
-                </Link>
+                </LinkInternal>
               </Flex>
             </Td>
             <Td fontSize="sm" verticalAlign="middle">
@@ -52,11 +53,11 @@ const SearchResultTableItem = ({ data, searchTerm }: Props) => {
               <Td fontSize="sm">
                 <Flex alignItems="center" overflow="hidden">
                   <AddressIcon address={{ hash: data.address, is_contract: data.type === 'contract', implementation_name: null }} mr={ 2 } flexShrink={ 0 }/>
-                  <Link href={ link('address_index', { id: data.address }) } fontWeight={ 700 } overflow="hidden" whiteSpace="nowrap">
+                  <LinkInternal href={ link('address_index', { id: data.address }) } fontWeight={ 700 } overflow="hidden" whiteSpace="nowrap">
                     <Box as={ shouldHighlightHash ? 'mark' : 'span' } display="block">
                       <HashStringShortenDynamic hash={ data.address }/>
                     </Box>
-                  </Link>
+                  </LinkInternal>
                 </Flex>
               </Td>
               <Td fontSize="sm" verticalAlign="middle">
@@ -86,9 +87,9 @@ const SearchResultTableItem = ({ data, searchTerm }: Props) => {
             <Td fontSize="sm">
               <Flex alignItems="center">
                 <Icon as={ blockIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
-                <Link fontWeight={ 700 } href={ link('block', { id: String(data.block_number) }) }>
+                <LinkInternal fontWeight={ 700 } href={ link('block', { id: String(data.block_number) }) }>
                   <Box as={ shouldHighlightHash ? 'span' : 'mark' }>{ data.block_number }</Box>
-                </Link>
+                </LinkInternal>
               </Flex>
             </Td>
             <Td fontSize="sm" verticalAlign="middle">

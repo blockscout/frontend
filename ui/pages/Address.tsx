@@ -7,6 +7,7 @@ import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
 import iconSuccess from 'icons/status/success.svg';
 import useApiQuery from 'lib/api/useApiQuery';
+import { useAppContext } from 'lib/appContext';
 import notEmpty from 'lib/notEmpty';
 import AddressBlocksValidated from 'ui/address/AddressBlocksValidated';
 import AddressCoinBalance from 'ui/address/AddressCoinBalance';
@@ -20,6 +21,7 @@ import AddressTxs from 'ui/address/AddressTxs';
 import ContractCode from 'ui/address/contract/ContractCode';
 import ContractRead from 'ui/address/contract/ContractRead';
 import ContractWrite from 'ui/address/contract/ContractWrite';
+import AdBanner from 'ui/shared/ad/AdBanner';
 import TextAd from 'ui/shared/ad/TextAd';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -36,6 +38,10 @@ const TOKEN_TABS = Object.values(tokenTabsByType);
 
 const AddressPageContent = () => {
   const router = useRouter();
+
+  const appProps = useAppContext();
+
+  const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/accounts');
 
   const tabsScrollRef = React.useRef<HTMLDivElement>(null);
 
@@ -113,6 +119,8 @@ const AddressPageContent = () => {
 
   const tagsNode = tags.length > 0 ? <Flex columnGap={ 2 }>{ tags }</Flex> : null;
 
+  const content = addressQuery.isError ? null : <RoutedTabs tabs={ tabs } tabListProps={{ mt: 8 }}/>;
+
   return (
     <Page>
       <TextAd mb={ 6 }/>
@@ -121,13 +129,16 @@ const AddressPageContent = () => {
       ) : (
         <PageTitle
           text={ `${ addressQuery.data?.is_contract ? 'Contract' : 'Address' } details` }
-          additionals={ tagsNode }
+          additionalsRight={ tagsNode }
+          backLinkUrl={ hasGoBackLink ? appProps.referrer : undefined }
+          backLinkLabel="Back to top accounts list"
         />
       ) }
       <AddressDetails addressQuery={ addressQuery } scrollRef={ tabsScrollRef }/>
+      <AdBanner mt={{ base: 6, lg: 8 }} justifyContent="center"/>
       { /* should stay before tabs to scroll up whith pagination */ }
       <Box ref={ tabsScrollRef }></Box>
-      { addressQuery.isLoading ? <SkeletonTabs/> : <RoutedTabs tabs={ tabs } tabListProps={{ mt: 8 }}/> }
+      { addressQuery.isLoading ? <SkeletonTabs/> : content }
     </Page>
   );
 };

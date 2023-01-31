@@ -1,6 +1,8 @@
+// import { Icon } from '@chakra-ui/react';
 import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
+// import plusIcon from 'icons/plus.svg';
 import * as textAdMock from 'mocks/ad/textAd';
 import TestApp from 'playwright/TestApp';
 
@@ -32,6 +34,10 @@ test('default view +@mobile', async({ mount }) => {
 });
 
 test('with text ad, back link and addons +@mobile +@dark-mode', async({ mount }) => {
+  // https://github.com/microsoft/playwright/issues/15620
+  // not possible to pass component as a prop in tests
+  // const left = <Icon as={ plusIcon }/>;
+
   const component = await mount(
     <TestApp>
       <PageTitle
@@ -39,7 +45,8 @@ test('with text ad, back link and addons +@mobile +@dark-mode', async({ mount })
         withTextAd
         backLinkLabel="Back"
         backLinkUrl="back"
-        additionals="Privet"
+        // additionalsLeft={ left }
+        additionalsRight="Privet"
       />
     </TestApp>,
   );
@@ -55,7 +62,7 @@ test('long title with text ad, back link and addons +@mobile', async({ mount }) 
         withTextAd
         backLinkLabel="Back"
         backLinkUrl="back"
-        additionals="Privet, kak dela?"
+        additionalsRight="Privet, kak dela?"
       />
     </TestApp>,
   );

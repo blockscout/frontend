@@ -39,6 +39,7 @@ const ContractVerificationFieldLibraryItem = ({ control, index, fieldsLength, on
           isInvalid={ Boolean(error?.name) }
           isDisabled={ isDisabled }
           maxLength={ 255 }
+          autoComplete="off"
         />
         <InputPlaceholder text="Library name (.sol file)" error={ error?.name }/>
       </FormControl>
@@ -53,6 +54,7 @@ const ContractVerificationFieldLibraryItem = ({ control, index, fieldsLength, on
           isInvalid={ Boolean(error?.address) }
           isDisabled={ isDisabled }
           required
+          autoComplete="off"
         />
         <InputPlaceholder text="Library address (0x...)" error={ error?.address }/>
       </FormControl>

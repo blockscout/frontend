@@ -1,5 +1,7 @@
 import {
   Box,
+  Center,
+  chakra,
   Flex,
   Grid,
   Icon,
@@ -36,13 +38,13 @@ type Props = {
   title: string;
   description?: string;
   isLoading: boolean;
-  chartHeight?: string;
+  className?: string;
   isError: boolean;
 }
 
 const DOWNLOAD_IMAGE_SCALE = 5;
 
-const ChartWidget = ({ items, title, description, isLoading, chartHeight, isError }: Props) => {
+const ChartWidget = ({ items, title, description, isLoading, className, isError }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
   const [ isFullscreen, setIsFullscreen ] = useState(false);
   const [ isZoomResetInitial, setIsZoomResetInitial ] = React.useState(true);
@@ -111,10 +113,53 @@ const ChartWidget = ({ items, title, description, isLoading, chartHeight, isErro
     return <ChartWidgetSkeleton hasDescription={ Boolean(description) }/>;
   }
 
+  const hasItems = items && items.length > 2;
+
+  const content = (() => {
+    if (isError) {
+      return (
+        <Flex
+          alignItems="center"
+          justifyContent="center"
+          flexGrow={ 1 }
+          py={ 4 }
+        >
+          <Text
+            variant="secondary"
+            fontSize="sm"
+            textAlign="center"
+          >
+            { `The data didn${ apos }t load. Please, ` }
+            <Link href={ window.document.location.href }>try to reload the page.</Link>
+          </Text>
+        </Flex>
+      );
+    }
+
+    if (!hasItems) {
+      return (
+        <Center flexGrow={ 1 }>
+          <Text variant="secondary" fontSize="sm">No data</Text>
+        </Center>
+      );
+    }
+
+    return (
+      <Box h="100%" maxW="100%">
+        <ChartWidgetGraph
+          items={ items }
+          onZoom={ handleZoom }
+          isZoomResetInitial={ isZoomResetInitial }
+          title={ title }
+        />
+      </Box>
+    );
+  })();
+
   return (
     <>
       <Box
-        height={ chartHeight }
+        height="100%"
         display="flex"
         flexDirection="column"
         ref={ ref }
@@ -122,6 +167,7 @@ const ChartWidget = ({ items, title, description, isLoading, chartHeight, isErro
         borderRadius="md"
         border="1px"
         borderColor={ borderColor }
+        className={ className }
       >
         <Grid
           gridTemplateColumns="auto auto 36px"
@@ -167,7 +213,7 @@ const ChartWidget = ({ items, title, description, isLoading, chartHeight, isErro
             />
           </Tooltip>
 
-          { !isError && (
+          { hasItems && (
             <Menu>
               <MenuButton
                 gridColumn={ 3 }
@@ -216,36 +262,10 @@ const ChartWidget = ({ items, title, description, isLoading, chartHeight, isErro
           ) }
         </Grid>
 
-        { items ? (
-          <Box h={ chartHeight || 'auto' } maxW="100%">
-            <ChartWidgetGraph
-              margin={{ bottom: 20 }}
-              items={ items }
-              onZoom={ handleZoom }
-              isZoomResetInitial={ isZoomResetInitial }
-              title={ title }
-            />
-          </Box>
-        ) : (
-          <Flex
-            alignItems="center"
-            justifyContent="center"
-            flexGrow={ 1 }
-            py={ 4 }
-          >
-            <Text
-              variant="secondary"
-              fontSize="sm"
-              textAlign="center"
-            >
-              { `The data didn${ apos }t load. Please, ` }
-              <Link href={ window.document.location.href }>try to reload the page.</Link>
-            </Text>
-          </Flex>
-        ) }
+        { content }
       </Box>
 
-      { items && (
+      { hasItems && (
         <FullscreenChartModal
           isOpen={ isFullscreen }
           items={ items }
@@ -258,4 +278,4 @@ const ChartWidget = ({ items, title, description, isLoading, chartHeight, isErro
   );
 };
 
-export default React.memo(ChartWidget);
+export default React.memo(chakra(ChartWidget));

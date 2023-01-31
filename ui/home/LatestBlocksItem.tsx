@@ -5,7 +5,6 @@ import {
   GridItem,
   HStack,
   Icon,
-  Link,
   Text,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
@@ -18,6 +17,7 @@ import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import link from 'lib/link/link';
 import BlockTimestamp from 'ui/blocks/BlockTimestamp';
 import AddressLink from 'ui/shared/address/AddressLink';
+import LinkInternal from 'ui/shared/LinkInternal';
 
 type Props = {
   block: Block;
@@ -43,13 +43,13 @@ const LatestBlocksItem = ({ block, h }: Props) => {
       <Flex justifyContent="space-between" alignItems="center" mb={ 3 }>
         <HStack spacing={ 2 }>
           <Icon as={ blockIcon } boxSize="30px" color="link"/>
-          <Link
+          <LinkInternal
             href={ link('block', { id: String(block.height) }) }
             fontSize="xl"
             fontWeight="500"
           >
             { block.height }
-          </Link>
+          </LinkInternal>
         </HStack>
         <BlockTimestamp ts={ block.timestamp } isEnabled fontSize="sm"/>
       </Flex>

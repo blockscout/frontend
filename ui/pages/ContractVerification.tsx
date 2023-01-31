@@ -4,6 +4,7 @@ import React from 'react';
 
 import { useAppContext } from 'lib/appContext';
 import isBrowser from 'lib/isBrowser';
+import link from 'lib/link/link';
 import ContractVerificationForm from 'ui/contractVerification/ContractVerificationForm';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
@@ -20,13 +21,22 @@ const ContractVerification = () => {
   const router = useRouter();
 
   const hash = router.query.id?.toString();
+  const method = router.query.id?.toString();
+
+  React.useEffect(() => {
+    if (method && hash) {
+      router.replace(link('address_contract_verification', { id: hash }), undefined, { scroll: false, shallow: true });
+    }
+  // onMount only
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ ]);
 
   return (
     <Page>
       <PageTitle
         text="New smart contract verification"
         backLinkUrl={ hasGoBackLink ? referrer : undefined }
-        backLinkLabel="Back to address"
+        backLinkLabel="Back to contract"
       />
       { hash && (
         <Address>

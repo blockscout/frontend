@@ -59,7 +59,6 @@ const ContractVerificationForm = () => {
             size="lg"
             type="submit"
             mt={ 12 }
-            isDisabled={ !formState.isValid || !formState.isDirty }
             isLoading={ formState.isSubmitting }
             loadingText="Verify & publish"
           >

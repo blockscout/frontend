@@ -32,7 +32,7 @@ const CoinzillaBanner = ({ className }: { className?: string }) => {
   }, [ isInBrowser ]);
 
   return (
-    <Flex className={ className } id="adBanner">
+    <Flex className={ className } id="adBanner" h={{ base: '100px', lg: '90px' }}>
       <Script src="https://coinzillatag.com/lib/display.js"/>
       <div className="coinzilla" data-zone="C-26660bf627543e46851"></div>
     </Flex>

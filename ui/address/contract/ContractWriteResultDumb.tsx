@@ -1,9 +1,10 @@
-import { Box, chakra, Link, Spinner } from '@chakra-ui/react';
+import { Box, chakra, Spinner } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ContractMethodWriteResult } from './types';
 
 import link from 'lib/link/link';
+import LinkInternal from 'ui/shared/LinkInternal';
 
 interface Props {
   result: ContractMethodWriteResult;
@@ -30,7 +31,7 @@ const ContractWriteResultDumb = ({ result, onSettle, txInfo }: Props) => {
   const isErrorResult = 'message' in result;
 
   const txLink = (
-    <Link href={ link('tx', { id: txHash }) }>View transaction details</Link>
+    <LinkInternal href={ link('tx', { id: txHash }) }>View transaction details</LinkInternal>
   );
 
   const content = (() => {
@@ -85,7 +86,7 @@ const ContractWriteResultDumb = ({ result, onSettle, txInfo }: Props) => {
       alignItems="center"
       whiteSpace="pre-wrap"
       wordBreak="break-all"
-      color={ txInfo.status === 'error' || isErrorResult ? 'red.600' : undefined }
+      color={ txInfo.status === 'error' || isErrorResult ? 'error' : undefined }
     >
       { content }
     </Box>

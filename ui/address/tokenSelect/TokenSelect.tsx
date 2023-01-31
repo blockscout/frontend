@@ -17,7 +17,11 @@ import useSocketMessage from 'lib/socket/useSocketMessage';
 import TokenSelectDesktop from './TokenSelectDesktop';
 import TokenSelectMobile from './TokenSelectMobile';
 
-const TokenSelect = () => {
+interface Props {
+  onClick?: () => void;
+}
+
+const TokenSelect = ({ onClick }: Props) => {
   const router = useRouter();
   const isMobile = useIsMobile();
   const queryClient = useQueryClient();
@@ -88,6 +92,7 @@ const TokenSelect = () => {
               pr="6px"
               icon={ <Icon as={ walletIcon } boxSize={ 5 }/> }
               as="a"
+              onClick={ onClick }
             />
           </NextLink>
         </Box>

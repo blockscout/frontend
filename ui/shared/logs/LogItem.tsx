@@ -58,7 +58,7 @@ const LogItem = ({ address, index, topics, data, decoded, type, tx_hash: txHash 
           <AddressLink
             hash={ hasTxInfo ? txHash : address.hash }
             alias={ hasTxInfo ? undefined : address.name }
-            type={ type }
+            type={ type === 'address' ? 'transaction' : 'address' }
           />
         </Address>
         { /* api doesn't have find topic feature yet */ }

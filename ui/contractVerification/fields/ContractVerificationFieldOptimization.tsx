@@ -34,6 +34,7 @@ const ContractVerificationFieldOptimization = () => {
           { ...field }
           required
           isDisabled={ formState.isSubmitting }
+          autoComplete="off"
           type="number"
         />
         <InputPlaceholder text="Optimization runs"/>

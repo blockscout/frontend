@@ -46,7 +46,13 @@ const BlocksContent = ({ type, query }: Props) => {
           next_page_params: null,
         };
       }
-      return shouldAddToList ? { ...prevData, items: [ payload.block, ...prevData.items ] } : prevData;
+
+      if (!shouldAddToList || prevData.items.some((block => block.height === payload.block.height))) {
+        return prevData;
+      }
+
+      const newItems = [ payload.block, ...prevData.items ].sort((b1, b2) => b2.height - b1.height);
+      return { ...prevData, items: newItems };
     });
   }, [ queryClient, type ]);
 

@@ -1,13 +1,13 @@
-import { Link } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Address } from 'types/api/address';
 
 import link from 'lib/link/link';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import LinkInternal from 'ui/shared/LinkInternal';
 
 interface Props {
-  data: Address;
+  data: Pick<Address, 'name' | 'token' | 'is_contract'>;
 }
 
 const AddressNameInfo = ({ data }: Props) => {
@@ -17,9 +17,9 @@ const AddressNameInfo = ({ data }: Props) => {
         title="Token name"
         hint="Token name and symbol"
       >
-        <Link href={ link('token_index', { hash: data.token.address }) }>
+        <LinkInternal href={ link('token_index', { hash: data.token.address }) }>
           { data.token.name } ({ data.token.symbol })
-        </Link>
+        </LinkInternal>
       </DetailsInfoItem>
     );
   }

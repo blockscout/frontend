@@ -1,4 +1,4 @@
-import { Box, Heading, Flex, Link, Text, VStack, Skeleton } from '@chakra-ui/react';
+import { Box, Heading, Flex, Text, VStack, Skeleton } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { AnimatePresence } from 'framer-motion';
 import React from 'react';
@@ -12,6 +12,7 @@ import { nbsp } from 'lib/html-entities';
 import link from 'lib/link/link';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
+import LinkInternal from 'ui/shared/LinkInternal';
 
 import LatestBlocksItem from './LatestBlocksItem';
 import LatestBlocksItemSkeleton from './LatestBlocksItemSkeleton';
@@ -32,7 +33,11 @@ const LatestBlocks = () => {
 
       const newData = prevData ? [ ...prevData ] : [];
 
-      return [ payload.block, ...newData ].slice(0, blocksMaxCount);
+      if (newData.some((block => block.height === payload.block.height))) {
+        return newData;
+      }
+
+      return [ payload.block, ...newData ].sort((b1, b2) => b2.height - b1.height).slice(0, blocksMaxCount);
     });
   }, [ queryClient, blocksMaxCount ]);
 
@@ -93,7 +98,7 @@ const LatestBlocks = () => {
           </AnimatePresence>
         </VStack>
         <Flex justifyContent="center">
-          <Link fontSize="sm" href={ link('blocks') }>View all blocks</Link>
+          <LinkInternal fontSize="sm" href={ link('blocks') }>View all blocks</LinkInternal>
         </Flex>
       </>
     );

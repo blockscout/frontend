@@ -5,6 +5,7 @@ import { token as contract } from 'mocks/address/address';
 import { tokenInfo, tokenCounters } from 'mocks/tokens/tokenInfo';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
+import insertAdPlaceholder from 'playwright/utils/insertAdPlaceholder';
 
 import Token from './Token';
 
@@ -22,6 +23,11 @@ const hooksConfig = {
 // FIXME: idk why mobile test doesn't work (it's ok locally)
 // test('base view +@mobile +@dark-mode', async({ mount, page }) => {
 test('base view +@dark-mode', async({ mount, page }) => {
+  await page.route('https://request-global.czilladx.com/serve/native.php?z=19260bf627546ab7242', (route) => route.fulfill({
+    status: 200,
+    body: '',
+  }));
+
   await page.route(TOKEN_API_URL, (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(tokenInfo),
@@ -45,6 +51,8 @@ test('base view +@dark-mode', async({ mount, page }) => {
     </TestApp>,
     { hooksConfig },
   );
+
+  await insertAdPlaceholder(page);
 
   await expect(component.locator('main')).toHaveScreenshot();
 });
