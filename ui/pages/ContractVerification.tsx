@@ -9,7 +9,7 @@ import { useAppContext } from 'lib/appContext';
 import isBrowser from 'lib/isBrowser';
 import link from 'lib/link/link';
 import ContractVerificationForm from 'ui/contractVerification/ContractVerificationForm';
-import { isValidVerificationMethod } from 'ui/contractVerification/utils';
+import { isValidVerificationMethod, sortVerificationMethods } from 'ui/contractVerification/utils';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import ContentLoader from 'ui/shared/ContentLoader';
@@ -35,7 +35,7 @@ const ContractVerification = () => {
         const _data = data as SmartContractVerificationConfigRaw;
         return {
           ..._data,
-          verification_options: _data.verification_options.filter(isValidVerificationMethod),
+          verification_options: _data.verification_options.filter(isValidVerificationMethod).sort(sortVerificationMethods),
         };
       },
       enabled: Boolean(hash),
@@ -51,7 +51,7 @@ const ContractVerification = () => {
   }, [ ]);
 
   const content = (() => {
-    if (configQuery.isError) {
+    if (configQuery.isError || !hash) {
       return <DataFetchAlert/>;
     }
 
@@ -63,6 +63,7 @@ const ContractVerification = () => {
       <ContractVerificationForm
         method={ method && configQuery.data.verification_options.includes(method) ? method : undefined }
         config={ configQuery.data }
+        hash={ hash }
       />
     );
   })();

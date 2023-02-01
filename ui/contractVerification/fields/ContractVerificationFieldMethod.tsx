@@ -87,7 +87,7 @@ const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props
         );
       case 'multi_part':
         return 'Via multi-part files';
-      case 'vyper_multi_part':
+      case 'vyper_code':
         return 'Vyper contract';
 
       default:

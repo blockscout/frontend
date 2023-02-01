@@ -207,6 +207,9 @@ export const RESOURCES = {
   contract_verification_config: {
     path: '/api/v2/smart-contracts/verification/config',
   },
+  contract_verification_via: {
+    path: '/api/v2/smart-contracts/:id/verification/via/:method',
+  },
 
   // TOKEN
   token: {

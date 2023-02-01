@@ -4,9 +4,12 @@ import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
 
 import type { FormFields } from './types';
+import type { SocketMessage } from 'lib/socket/types';
 import type { SmartContractVerificationMethod, SmartContractVerificationConfig } from 'types/api/contract';
 
-import delay from 'lib/delay';
+import useApiFetch from 'lib/api/useApiFetch';
+import useSocketChannel from 'lib/socket/useSocketChannel';
+import useSocketMessage from 'lib/socket/useSocketMessage';
 
 import ContractVerificationFieldMethod from './fields/ContractVerificationFieldMethod';
 import ContractVerificationFlattenSourceCode from './methods/ContractVerificationFlattenSourceCode';
@@ -14,21 +17,23 @@ import ContractVerificationMultiPartFile from './methods/ContractVerificationMul
 import ContractVerificationSourcify from './methods/ContractVerificationSourcify';
 import ContractVerificationStandardInput from './methods/ContractVerificationStandardInput';
 import ContractVerificationVyperContract from './methods/ContractVerificationVyperContract';
+import { prepareRequestBody, METHOD_TO_ENDPOINT_MAP } from './utils';
 
 const METHOD_COMPONENTS = {
   flattened_code: <ContractVerificationFlattenSourceCode/>,
   standard_input: <ContractVerificationStandardInput/>,
   sourcify: <ContractVerificationSourcify/>,
   multi_part: <ContractVerificationMultiPartFile/>,
-  vyper_multi_part: <ContractVerificationVyperContract/>,
+  vyper_code: <ContractVerificationVyperContract/>,
 };
 
 interface Props {
   method?: SmartContractVerificationMethod;
   config: SmartContractVerificationConfig;
+  hash: string;
 }
 
-const ContractVerificationForm = ({ method: methodFromQuery, config }: Props) => {
+const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Props) => {
   const formApi = useForm<FormFields>({
     mode: 'onBlur',
     defaultValues: {
@@ -36,15 +41,55 @@ const ContractVerificationForm = ({ method: methodFromQuery, config }: Props) =>
     },
   });
   const { control, handleSubmit, watch, formState } = formApi;
+  const submitPromiseResolver = React.useRef<(value: unknown) => void>();
+
+  const apiFetch = useApiFetch();
 
   const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(data) => {
     // eslint-disable-next-line no-console
     console.log('__>__', data);
-    await delay(5_000);
+
+    const body = prepareRequestBody(data);
+
+    try {
+      await apiFetch('contract_verification_via', {
+        pathParams: { method: METHOD_TO_ENDPOINT_MAP[data.method], id: hash },
+        fetchParams: {
+          method: 'POST',
+          body,
+        },
+      });
+    } catch (error) {
+      return;
+    }
+
+    return new Promise((resolve) => {
+      submitPromiseResolver.current = resolve;
+    });
+  }, [ apiFetch, hash ]);
+
+  const handleNewSocketMessage: SocketMessage.ContractVerification['handler'] = React.useCallback((payload) => {
+    // eslint-disable-next-line no-console
+    console.log('__>__', payload);
   }, []);
 
-  const method = watch('method');
+  const handleSocketError = React.useCallback(() => {
+    submitPromiseResolver.current?.(null);
+  }, []);
 
+  const channel = useSocketChannel({
+    topic: `address:${ hash }`,
+    onSocketClose: handleSocketError,
+    onSocketError: handleSocketError,
+    isDisabled: !formState.isSubmitting,
+  });
+  useSocketMessage({
+    channel,
+    event: 'verification',
+    handler: handleNewSocketMessage,
+  });
+
+  const method = watch('method');
   const content = METHOD_COMPONENTS[method] || null;
 
   return (

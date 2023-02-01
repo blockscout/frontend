@@ -13,6 +13,7 @@ const hooksConfig = {
   },
 };
 
+const hash = '0x2F99338637F027CFB7494E46B49987457beCC6E3';
 const formConfig: SmartContractVerificationConfig = {
   solidity_compiler_versions: [
     'v0.8.17+commit.8df45f5f',
@@ -32,7 +33,7 @@ const formConfig: SmartContractVerificationConfig = {
     'standard_input',
     'sourcify',
     'multi_part',
-    'vyper_multi_part',
+    'vyper_code',
   ],
   vyper_compiler_versions: [
     'v0.3.7+commit.6020b8bb',
@@ -54,7 +55,7 @@ const formConfig: SmartContractVerificationConfig = {
 test('flatten source code method +@dark-mode +@mobile', async({ mount, page }) => {
   const component = await mount(
     <TestApp>
-      <ContractVerificationForm config={ formConfig }/>
+      <ContractVerificationForm config={ formConfig } hash={ hash }/>
     </TestApp>,
     { hooksConfig },
   );
@@ -70,7 +71,7 @@ test('flatten source code method +@dark-mode +@mobile', async({ mount, page }) =
 test('standard input json method', async({ mount, page }) => {
   const component = await mount(
     <TestApp>
-      <ContractVerificationForm config={ formConfig }/>
+      <ContractVerificationForm config={ formConfig } hash={ hash }/>
     </TestApp>,
     { hooksConfig },
   );
@@ -83,7 +84,7 @@ test('standard input json method', async({ mount, page }) => {
 test('sourcify method +@dark-mode +@mobile', async({ mount, page }) => {
   const component = await mount(
     <TestApp>
-      <ContractVerificationForm config={ formConfig }/>
+      <ContractVerificationForm config={ formConfig } hash={ hash }/>
     </TestApp>,
     { hooksConfig },
   );
@@ -102,7 +103,7 @@ test('sourcify method +@dark-mode +@mobile', async({ mount, page }) => {
 test('multi-part files method', async({ mount, page }) => {
   const component = await mount(
     <TestApp>
-      <ContractVerificationForm config={ formConfig }/>
+      <ContractVerificationForm config={ formConfig } hash={ hash }/>
     </TestApp>,
     { hooksConfig },
   );
@@ -115,7 +116,7 @@ test('multi-part files method', async({ mount, page }) => {
 test('vyper contract method', async({ mount, page }) => {
   const component = await mount(
     <TestApp>
-      <ContractVerificationForm config={ formConfig }/>
+      <ContractVerificationForm config={ formConfig } hash={ hash }/>
     </TestApp>,
     { hooksConfig },
   );

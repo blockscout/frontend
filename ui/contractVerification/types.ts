@@ -22,6 +22,7 @@ export interface FormFieldsStandardInput {
   name: string;
   compiler: Option;
   sources: Array<File>;
+  constructor_args: boolean;
 }
 
 export interface FormFieldsSourcify {
@@ -36,10 +37,11 @@ export interface FormFieldsMultiPartFile {
   is_optimization_enabled: boolean;
   optimization_runs: string;
   sources: Array<File>;
+  libraries: Array<ContractLibrary>;
 }
 
 export interface FormFieldsVyperContract {
-  method: 'vyper_multi_part';
+  method: 'vyper_code';
   name: string;
   compiler: Option;
   code: string;
