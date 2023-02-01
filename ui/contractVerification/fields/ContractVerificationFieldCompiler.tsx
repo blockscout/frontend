@@ -1,49 +1,31 @@
-import { Code, Checkbox } from '@chakra-ui/react';
+import { Code } from '@chakra-ui/react';
+import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 import type { ControllerRenderProps } from 'react-hook-form';
 import { useFormContext, Controller } from 'react-hook-form';
 
 import type { FormFields } from '../types';
+import type { SmartContractVerificationConfig } from 'types/api/contract';
 
+import { getResourceKey } from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import FancySelect from 'ui/shared/FancySelect/FancySelect';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
-
-const COMPILERS = [
-  'v0.8.17+commit.8df45f5f',
-  'v0.8.16+commit.07a7930e',
-  'v0.8.15+commit.e14f2714',
-];
-
-const COMPILERS_NIGHTLY = [
-  'v0.8.18-nightly.2022.11.23+commit.eb2f874e',
-  'v0.8.17-nightly.2022.8.24+commit.22a0c46e',
-  'v0.8.16-nightly.2022.7.6+commit.b6f11b33',
-];
 
 interface Props {
   isVyper?: boolean;
 }
 
 const ContractVerificationFieldCompiler = ({ isVyper }: Props) => {
-  const [ isNightly, setIsNightly ] = React.useState(false);
-  const { formState, control, getValues, resetField } = useFormContext<FormFields>();
+  const { formState, control } = useFormContext<FormFields>();
   const isMobile = useIsMobile();
+  const queryClient = useQueryClient();
+  const config = queryClient.getQueryData<SmartContractVerificationConfig>(getResourceKey('contract_verification_config'));
 
   const options = React.useMemo(() => (
-    [
-      ...COMPILERS, ...(isNightly ? COMPILERS_NIGHTLY : []),
-    ].map((option) => ({ label: option, value: option }))
-  ), [ isNightly ]);
-
-  const handleCheckboxChange = React.useCallback(() => {
-    if (isNightly) {
-      const field = getValues('compiler');
-      field.value.includes('nightly') && resetField('compiler', { defaultValue: null });
-    }
-    setIsNightly(prev => !prev);
-  }, [ getValues, isNightly, resetField ]);
+    (isVyper ? config?.vyper_compiler_versions : config?.solidity_compiler_versions)?.map((option) => ({ label: option, value: option })) || []
+  ), [ config?.solidity_compiler_versions, config?.vyper_compiler_versions, isVyper ]);
 
   const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'compiler'>}) => {
     const error = 'compiler' in formState.errors ? formState.errors.compiler : undefined;
@@ -63,24 +45,12 @@ const ContractVerificationFieldCompiler = ({ isVyper }: Props) => {
 
   return (
     <ContractVerificationFormRow>
-      <>
-        <Controller
-          name="compiler"
-          control={ control }
-          render={ renderControl }
-          rules={{ required: true }}
-        />
-        { !isVyper && (
-          <Checkbox
-            size="lg"
-            mt={ 3 }
-            onChange={ handleCheckboxChange }
-            isDisabled={ formState.isSubmitting }
-          >
-            Include nightly builds
-          </Checkbox>
-        ) }
-      </>
+      <Controller
+        name="compiler"
+        control={ control }
+        render={ renderControl }
+        rules={{ required: true }}
+      />
       { isVyper ? null : (
         <>
           <span>The compiler version is specified in </span>

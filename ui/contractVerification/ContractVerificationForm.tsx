@@ -1,35 +1,38 @@
 import { Button, chakra } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
 
-import type { FormFields, VerificationMethod } from './types';
+import type { FormFields } from './types';
+import type { SmartContractVerificationMethod, SmartContractVerificationConfig } from 'types/api/contract';
 
 import delay from 'lib/delay';
 
-import ContractVerificationFieldMethod, { VERIFICATION_METHODS } from './fields/ContractVerificationFieldMethod';
+import ContractVerificationFieldMethod from './fields/ContractVerificationFieldMethod';
 import ContractVerificationFlattenSourceCode from './methods/ContractVerificationFlattenSourceCode';
 import ContractVerificationMultiPartFile from './methods/ContractVerificationMultiPartFile';
 import ContractVerificationSourcify from './methods/ContractVerificationSourcify';
 import ContractVerificationStandardInput from './methods/ContractVerificationStandardInput';
 import ContractVerificationVyperContract from './methods/ContractVerificationVyperContract';
 
-const METHODS = {
-  flatten_source_code: <ContractVerificationFlattenSourceCode/>,
+const METHOD_COMPONENTS = {
+  flattened_code: <ContractVerificationFlattenSourceCode/>,
   standard_input: <ContractVerificationStandardInput/>,
   sourcify: <ContractVerificationSourcify/>,
-  multi_part_file: <ContractVerificationMultiPartFile/>,
-  vyper_contract: <ContractVerificationVyperContract/>,
+  multi_part: <ContractVerificationMultiPartFile/>,
+  vyper_multi_part: <ContractVerificationVyperContract/>,
 };
 
-const ContractVerificationForm = () => {
-  const router = useRouter();
-  const methodFromQuery = router.query.method?.toString() as VerificationMethod;
+interface Props {
+  method?: SmartContractVerificationMethod;
+  config: SmartContractVerificationConfig;
+}
+
+const ContractVerificationForm = ({ method: methodFromQuery, config }: Props) => {
   const formApi = useForm<FormFields>({
     mode: 'onBlur',
     defaultValues: {
-      method: VERIFICATION_METHODS.includes(methodFromQuery) ? methodFromQuery : undefined,
+      method: methodFromQuery,
     },
   });
   const { control, handleSubmit, watch, formState } = formApi;
@@ -42,16 +45,19 @@ const ContractVerificationForm = () => {
 
   const method = watch('method');
 
-  const content = METHODS[method] || null;
+  const content = METHOD_COMPONENTS[method] || null;
 
   return (
     <FormProvider { ...formApi }>
       <chakra.form
         noValidate
         onSubmit={ handleSubmit(onFormSubmit) }
-        mt={ 12 }
       >
-        <ContractVerificationFieldMethod control={ control } isDisabled={ Boolean(method) }/>
+        <ContractVerificationFieldMethod
+          control={ control }
+          isDisabled={ Boolean(method) }
+          methods={ config.verification_options }
+        />
         { content }
         { Boolean(method) && (
           <Button

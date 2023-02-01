@@ -113,3 +113,19 @@ export interface SmartContractQueryMethodReadError {
 }
 
 export type SmartContractQueryMethodRead = SmartContractQueryMethodReadSuccess | SmartContractQueryMethodReadError;
+
+// VERIFICATION
+
+export type SmartContractVerificationMethod = 'flattened_code' | 'standard_input' | 'sourcify' | 'multi_part' | 'vyper_multi_part';
+
+export interface SmartContractVerificationConfigRaw {
+  solidity_compiler_versions: Array<string>;
+  solidity_evm_versions: Array<string>;
+  verification_options: Array<string>;
+  vyper_compiler_versions: Array<string>;
+  vyper_evm_versions: Array<string>;
+}
+
+export interface SmartContractVerificationConfig extends SmartContractVerificationConfigRaw {
+  verification_options: Array<SmartContractVerificationMethod>;
+}
