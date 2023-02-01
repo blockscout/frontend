@@ -1,6 +1,7 @@
 import { selectAnatomy as parts } from '@chakra-ui/anatomy';
 import {
   createMultiStyleConfigHelpers,
+  defineStyle,
 } from '@chakra-ui/styled-system';
 import { mode } from '@chakra-ui/theme-tools';
 
@@ -26,10 +27,51 @@ const variantOutline = definePartsStyle((props) => {
   };
 });
 
+const iconSpacing = defineStyle({
+  paddingInlineEnd: '8',
+});
+
+const sizes = {
+  lg: {
+    ...Input.sizes?.lg,
+    field: {
+      ...Input.sizes?.lg.field,
+      ...iconSpacing,
+    },
+  },
+  md: {
+    ...Input.sizes?.md,
+    field: {
+      ...Input.sizes?.md.field,
+      ...iconSpacing,
+    },
+  },
+  sm: {
+    ...Input.sizes?.sm,
+    field: {
+      ...Input.sizes?.sm.field,
+      ...iconSpacing,
+    },
+  },
+  xs: {
+    ...Input.sizes?.xs,
+    field: {
+      ...Input.sizes?.xs.field,
+      ...iconSpacing,
+      fontSize: 'sm',
+      lineHeight: '20px',
+    },
+  },
+};
+
 const Select = defineMultiStyleConfig({
   variants: {
     ...Input.variants,
     outline: variantOutline,
+  },
+  sizes,
+  defaultProps: {
+    size: 'xs',
   },
 });
 
