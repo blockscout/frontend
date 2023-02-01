@@ -29,13 +29,13 @@ const ContractVerificationFieldOptimization = () => {
 
   const renderInputControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'optimization_runs'>}) => {
     return (
-      <FormControl variant="floating" id={ field.name } size={{ base: 'md', lg: 'lg' }}>
+      <FormControl variant="floating" id={ field.name } size={{ base: 'md', lg: 'lg' }} isRequired>
         <Input
           { ...field }
           required
-          maxLength={ 255 }
           isDisabled={ formState.isSubmitting }
           autoComplete="off"
+          type="number"
         />
         <InputPlaceholder text="Optimization runs"/>
       </FormControl>
@@ -58,6 +58,7 @@ const ContractVerificationFieldOptimization = () => {
             control={ control }
             render={ renderInputControl }
             rules={{ required: true }}
+            defaultValue=""
           />
         </ContractVerificationFormRow>
       ) }

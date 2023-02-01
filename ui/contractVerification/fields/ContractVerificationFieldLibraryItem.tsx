@@ -24,9 +24,10 @@ interface Props {
   };
   onAddFieldClick: (index: number) => void;
   onRemoveFieldClick: (index: number) => void;
+  isDisabled?: boolean;
 }
 
-const ContractVerificationFieldLibraryItem = ({ control, index, fieldsLength, onAddFieldClick, onRemoveFieldClick, error }: Props) => {
+const ContractVerificationFieldLibraryItem = ({ control, index, fieldsLength, onAddFieldClick, onRemoveFieldClick, error, isDisabled }: Props) => {
   const ref = React.useRef<HTMLDivElement>(null);
 
   const renderNameControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, `libraries.${ number }.name`>}) => {
@@ -36,13 +37,14 @@ const ContractVerificationFieldLibraryItem = ({ control, index, fieldsLength, on
           { ...field }
           required
           isInvalid={ Boolean(error?.name) }
+          isDisabled={ isDisabled }
           maxLength={ 255 }
           autoComplete="off"
         />
         <InputPlaceholder text="Library name (.sol file)" error={ error?.name }/>
       </FormControl>
     );
-  }, [ error?.name ]);
+  }, [ error?.name, isDisabled ]);
 
   const renderAddressControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, `libraries.${ number }.address`>}) => {
     return (
@@ -50,13 +52,14 @@ const ContractVerificationFieldLibraryItem = ({ control, index, fieldsLength, on
         <Input
           { ...field }
           isInvalid={ Boolean(error?.address) }
+          isDisabled={ isDisabled }
           required
           autoComplete="off"
         />
         <InputPlaceholder text="Library address (0x...)" error={ error?.address }/>
       </FormControl>
     );
-  }, [ error?.address ]);
+  }, [ error?.address, isDisabled ]);
 
   const handleAddButtonClick = React.useCallback(() => {
     onAddFieldClick(index);
@@ -84,6 +87,7 @@ const ContractVerificationFieldLibraryItem = ({ control, index, fieldsLength, on
                 h="30px"
                 onClick={ handleRemoveButtonClick }
                 icon={ <Icon as={ minusIcon } w="20px" h="20px"/> }
+                isDisabled={ isDisabled }
               />
             ) }
             { fieldsLength < LIMIT && (
@@ -94,6 +98,7 @@ const ContractVerificationFieldLibraryItem = ({ control, index, fieldsLength, on
                 h="30px"
                 onClick={ handleAddButtonClick }
                 icon={ <Icon as={ plusIcon } w="20px" h="20px"/> }
+                isDisabled={ isDisabled }
               />
             ) }
           </Flex>

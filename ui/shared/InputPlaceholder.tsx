@@ -5,9 +5,11 @@ import type { FieldError } from 'react-hook-form';
 interface Props {
   text: string;
   error?: Partial<FieldError>;
+  className?: string;
+  isFancy?: boolean;
 }
 
-const InputPlaceholder = ({ text, error }: Props) => {
+const InputPlaceholder = ({ text, error, className, isFancy }: Props) => {
   let errorMessage = error?.message;
 
   if (!errorMessage && error?.type === 'pattern') {
@@ -15,11 +17,14 @@ const InputPlaceholder = ({ text, error }: Props) => {
   }
 
   return (
-    <FormLabel>
+    <FormLabel
+      className={ className }
+      { ...(isFancy ? { 'data-fancy': true } : {}) }
+    >
       <chakra.span>{ text }</chakra.span>
       { errorMessage && <chakra.span order={ 3 } whiteSpace="pre"> - { errorMessage }</chakra.span> }
     </FormLabel>
   );
 };
 
-export default InputPlaceholder;
+export default chakra(InputPlaceholder);

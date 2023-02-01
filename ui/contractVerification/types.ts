@@ -1,3 +1,5 @@
+import type { Option } from 'ui/shared/FancySelect/types';
+
 export type VerificationMethod = 'flatten_source_code' | 'standard_input' | 'sourcify' | 'multi_part_file' | 'vyper_contract'
 
 export interface ContractLibrary {
@@ -8,8 +10,8 @@ export interface FormFieldsFlattenSourceCode {
   method: 'flatten_source_code';
   is_yul: boolean;
   name: string;
-  compiler: string;
-  evm_version: string;
+  compiler: Option;
+  evm_version: Option;
   is_optimization_enabled: boolean;
   optimization_runs: string;
   code: string;
@@ -20,7 +22,7 @@ export interface FormFieldsFlattenSourceCode {
 export interface FormFieldsStandardInput {
   method: 'standard_input';
   name: string;
-  compiler: string;
+  compiler: Option;
   sources: Array<File>;
 }
 
@@ -31,8 +33,8 @@ export interface FormFieldsSourcify {
 
 export interface FormFieldsMultiPartFile {
   method: 'multi_part_file';
-  compiler: string;
-  evm_version: string;
+  compiler: Option;
+  evm_version: Option;
   is_optimization_enabled: boolean;
   optimization_runs: string;
   sources: Array<File>;
@@ -41,7 +43,7 @@ export interface FormFieldsMultiPartFile {
 export interface FormFieldsVyperContract {
   method: 'vyper_contract';
   name: string;
-  compiler: string;
+  compiler: Option;
   code: string;
   abi_encoded_args: string;
 }

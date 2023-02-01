@@ -1,9 +1,12 @@
-import { Code, Select, Checkbox } from '@chakra-ui/react';
+import { Code, Checkbox } from '@chakra-ui/react';
 import React from 'react';
 import type { ControllerRenderProps } from 'react-hook-form';
 import { useFormContext, Controller } from 'react-hook-form';
 
 import type { FormFields } from '../types';
+
+import useIsMobile from 'lib/hooks/useIsMobile';
+import FancySelect from 'ui/shared/FancySelect/FancySelect';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
@@ -25,27 +28,38 @@ interface Props {
 
 const ContractVerificationFieldCompiler = ({ isVyper }: Props) => {
   const [ isNightly, setIsNightly ] = React.useState(false);
-  const { formState, control } = useFormContext<FormFields>();
+  const { formState, control, getValues, resetField } = useFormContext<FormFields>();
+  const isMobile = useIsMobile();
+
+  const options = React.useMemo(() => (
+    [
+      ...COMPILERS, ...(isNightly ? COMPILERS_NIGHTLY : []),
+    ].map((option) => ({ label: option, value: option }))
+  ), [ isNightly ]);
 
   const handleCheckboxChange = React.useCallback(() => {
+    if (isNightly) {
+      const field = getValues('compiler');
+      field.value.includes('nightly') && resetField('compiler', { defaultValue: null });
+    }
     setIsNightly(prev => !prev);
-  }, []);
+  }, [ getValues, isNightly, resetField ]);
 
   const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'compiler'>}) => {
     const error = 'compiler' in formState.errors ? formState.errors.compiler : undefined;
 
     return (
-      <Select
+      <FancySelect
         { ...field }
-        size={{ base: 'md', lg: 'lg' }}
+        options={ options }
+        size={ isMobile ? 'md' : 'lg' }
         placeholder="Compiler"
-        isInvalid={ Boolean(error) }
         isDisabled={ formState.isSubmitting }
-      >
-        { [ ...COMPILERS, ...(isNightly ? COMPILERS_NIGHTLY : []) ].map((option) => <option key={ option } value={ option }>{ option }</option>) }
-      </Select>
+        error={ error }
+        isRequired
+      />
     );
-  }, [ formState.errors, formState.isSubmitting, isNightly ]);
+  }, [ formState.errors, formState.isSubmitting, isMobile, options ]);
 
   return (
     <ContractVerificationFormRow>

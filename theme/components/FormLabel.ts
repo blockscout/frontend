@@ -63,6 +63,9 @@ const sizes = {
         _focusWithin: {
           padding: '16px 24px 2px 24px',
         },
+        '&[data-fancy=true]': {
+          right: '36px',
+        },
       };
     }
 
@@ -77,6 +80,9 @@ const sizes = {
         right: '18px',
         _focusWithin: {
           padding: '10px 16px 2px 16px',
+        },
+        '&[data-fancy=true]': {
+          right: '36px',
         },
       };
     }
