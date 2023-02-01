@@ -49,3 +49,5 @@ yarn-error.log*
 /playwright/.cache/
 /playwright/.browser/
 /playwright/envs.js
+
+**.dec**
