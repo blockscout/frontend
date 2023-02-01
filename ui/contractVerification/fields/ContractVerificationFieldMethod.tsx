@@ -89,6 +89,8 @@ const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props
         return 'Via multi-part files';
       case 'vyper_code':
         return 'Vyper contract';
+      case 'vyper_multi_part':
+        return 'Via multi-part Vyper files';
 
       default:
         break;
@@ -97,7 +99,7 @@ const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props
 
   const renderRadioGroup = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'method'>}) => {
     return (
-      <RadioGroup defaultValue="add" colorScheme="blue" isDisabled={ isDisabled } { ...field }>
+      <RadioGroup defaultValue="add" colorScheme="blue" isDisabled={ isDisabled } isFocusable={ !isDisabled } { ...field } >
         <Stack spacing={ 4 }>
           { methods.map((method) => {
             return <Radio key={ method } value={ method } size="lg">{ renderItem(method) }</Radio>;

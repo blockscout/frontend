@@ -48,5 +48,12 @@ export interface FormFieldsVyperContract {
   abi_encoded_args: string;
 }
 
+export interface FormFieldsVyperMultiPartFile {
+  method: 'vyper_multi_part';
+  compiler: Option;
+  evm_version: Option;
+  sources: Array<File>;
+}
+
 export type FormFields = FormFieldsFlattenSourceCode | FormFieldsStandardInput | FormFieldsSourcify |
-FormFieldsMultiPartFile | FormFieldsVyperContract;
+FormFieldsMultiPartFile | FormFieldsVyperContract | FormFieldsVyperMultiPartFile;

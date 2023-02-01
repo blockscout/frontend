@@ -17,6 +17,7 @@ import ContractVerificationMultiPartFile from './methods/ContractVerificationMul
 import ContractVerificationSourcify from './methods/ContractVerificationSourcify';
 import ContractVerificationStandardInput from './methods/ContractVerificationStandardInput';
 import ContractVerificationVyperContract from './methods/ContractVerificationVyperContract';
+import ContractVerificationVyperMultiPartFile from './methods/ContractVerificationVyperMultiPartFile';
 import { prepareRequestBody, METHOD_TO_ENDPOINT_MAP } from './utils';
 
 const METHOD_COMPONENTS = {
@@ -25,6 +26,7 @@ const METHOD_COMPONENTS = {
   sourcify: <ContractVerificationSourcify/>,
   multi_part: <ContractVerificationMultiPartFile/>,
   vyper_code: <ContractVerificationVyperContract/>,
+  vyper_multi_part: <ContractVerificationVyperMultiPartFile/>,
 };
 
 interface Props {

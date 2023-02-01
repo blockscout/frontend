@@ -116,7 +116,7 @@ export type SmartContractQueryMethodRead = SmartContractQueryMethodReadSuccess |
 
 // VERIFICATION
 
-export type SmartContractVerificationMethod = 'flattened_code' | 'standard_input' | 'sourcify' | 'multi_part' | 'vyper_code';
+export type SmartContractVerificationMethod = 'flattened_code' | 'standard_input' | 'sourcify' | 'multi_part' | 'vyper_code' | 'vyper_multi_part';
 
 export interface SmartContractVerificationConfigRaw {
   solidity_compiler_versions: Array<string>;

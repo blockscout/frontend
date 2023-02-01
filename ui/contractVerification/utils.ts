@@ -9,6 +9,7 @@ export const SUPPORTED_VERIFICATION_METHODS: Array<SmartContractVerificationMeth
   'sourcify',
   'multi_part',
   'vyper_code',
+  'vyper_multi_part',
 ];
 
 export const METHOD_TO_ENDPOINT_MAP: Record<SmartContractVerificationMethod, string> = {
@@ -17,6 +18,7 @@ export const METHOD_TO_ENDPOINT_MAP: Record<SmartContractVerificationMethod, str
   sourcify: 'sourcify',
   multi_part: 'multi-part',
   vyper_code: 'vyper-code',
+  vyper_multi_part: 'vyper-multi-part',
 };
 
 export function isValidVerificationMethod(method?: string): method is SmartContractVerificationMethod {
