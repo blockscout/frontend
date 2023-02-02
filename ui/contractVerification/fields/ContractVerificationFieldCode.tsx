@@ -5,6 +5,7 @@ import { useFormContext, Controller } from 'react-hook-form';
 
 import type { FormFields } from '../types';
 
+import FieldError from 'ui/shared/forms/FieldError';
 import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
@@ -27,7 +28,8 @@ const ContractVerificationFieldCode = ({ isVyper }: Props) => {
           isDisabled={ formState.isSubmitting }
           required
         />
-        <InputPlaceholder text="Contract code" error={ error }/>
+        <InputPlaceholder text="Contract code"/>
+        { error?.message && <FieldError message={ error?.message }/> }
       </FormControl>
     );
   }, [ formState.errors, formState.isSubmitting ]);

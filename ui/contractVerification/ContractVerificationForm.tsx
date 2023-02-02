@@ -8,6 +8,7 @@ import type { SocketMessage } from 'lib/socket/types';
 import type { SmartContractVerificationMethod, SmartContractVerificationConfig } from 'types/api/contract';
 
 import useApiFetch from 'lib/api/useApiFetch';
+import useToast from 'lib/hooks/useToast';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 
@@ -18,7 +19,7 @@ import ContractVerificationSourcify from './methods/ContractVerificationSourcify
 import ContractVerificationStandardInput from './methods/ContractVerificationStandardInput';
 import ContractVerificationVyperContract from './methods/ContractVerificationVyperContract';
 import ContractVerificationVyperMultiPartFile from './methods/ContractVerificationVyperMultiPartFile';
-import { prepareRequestBody, METHOD_TO_ENDPOINT_MAP } from './utils';
+import { prepareRequestBody, METHOD_TO_ENDPOINT_MAP, formatSocketErrors } from './utils';
 
 const METHOD_COMPONENTS = {
   flattened_code: <ContractVerificationFlattenSourceCode/>,
@@ -42,10 +43,11 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
       method: methodFromQuery,
     },
   });
-  const { control, handleSubmit, watch, formState } = formApi;
+  const { control, handleSubmit, watch, formState, setError } = formApi;
   const submitPromiseResolver = React.useRef<(value: unknown) => void>();
 
   const apiFetch = useApiFetch();
+  const toast = useToast();
 
   const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(data) => {
     // eslint-disable-next-line no-console
@@ -72,22 +74,40 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
 
   const handleNewSocketMessage: SocketMessage.ContractVerification['handler'] = React.useCallback((payload) => {
     // eslint-disable-next-line no-console
-    console.log('__>__', payload);
-  }, []);
+    console.log('__>__ handleNewSocketMessage', payload);
+
+    if (payload.status === 'error') {
+      const errors = formatSocketErrors(payload.errors);
+      errors.forEach(([ field, error ]) => setError(field, error));
+    }
+
+    submitPromiseResolver.current?.(null);
+  }, [ setError ]);
 
   const handleSocketError = React.useCallback(() => {
     submitPromiseResolver.current?.(null);
-  }, []);
+
+    const toastId = 'socket-error';
+    !toast.isActive(toastId) && toast({
+      id: toastId,
+      position: 'top-right',
+      title: 'Error',
+      description: 'There was an error with socket connection. Try again later.',
+      status: 'error',
+      variant: 'subtle',
+      isClosable: true,
+    });
+  }, [ toast ]);
 
   const channel = useSocketChannel({
-    topic: `address:${ hash }`,
+    topic: `addresses:${ hash.toLowerCase() }`,
     onSocketClose: handleSocketError,
     onSocketError: handleSocketError,
     isDisabled: !formState.isSubmitting,
   });
   useSocketMessage({
     channel,
-    event: 'verification',
+    event: 'verification_result',
     handler: handleNewSocketMessage,
   });
 

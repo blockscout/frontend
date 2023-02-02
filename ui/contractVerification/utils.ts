@@ -1,5 +1,7 @@
+import type { FieldPath, ErrorOption } from 'react-hook-form';
+
 import type { ContractLibrary, FormFields } from './types';
-import type { SmartContractVerificationMethod } from 'types/api/contract';
+import type { SmartContractVerificationMethod, SmartContractVerificationError } from 'types/api/contract';
 
 import type { Params as FetchParams } from 'lib/hooks/useFetch';
 
@@ -44,13 +46,13 @@ export function prepareRequestBody(data: FormFields): FetchParams['body'] {
   switch (data.method) {
     case 'flattened_code': {
       return {
-        compiler_version: data.compiler.value,
+        compiler_version: data.compiler?.value,
         source_code: data.code,
         is_optimization_enabled: data.is_optimization_enabled,
         optimization_runs: data.optimization_runs,
         contract_name: data.name,
         libraries: reduceLibrariesArray(data.libraries),
-        evm_version: data.evm_version.value,
+        evm_version: data.evm_version?.value,
         autodetect_constructor_args: data.autodetect_constructor_args,
         constructor_args: data.constructor_args,
       };
@@ -58,7 +60,7 @@ export function prepareRequestBody(data: FormFields): FetchParams['body'] {
 
     case 'standard_input': {
       const body = new FormData();
-      body.set('compiler_version', data.compiler.value);
+      body.set('compiler_version', data.compiler?.value);
       body.set('contract_name', data.name);
       body.set('autodetect_constructor_args', String(Boolean(data.autodetect_constructor_args)));
       body.set('constructor_args', data.constructor_args);
@@ -76,8 +78,8 @@ export function prepareRequestBody(data: FormFields): FetchParams['body'] {
 
     case 'multi_part': {
       const body = new FormData();
-      body.set('compiler_version', data.compiler.value);
-      body.set('evm_version', data.evm_version.value);
+      body.set('compiler_version', data.compiler?.value);
+      body.set('evm_version', data.evm_version?.value);
       body.set('is_optimization_enabled', String(Boolean(data.is_optimization_enabled)));
       data.is_optimization_enabled && body.set('optimization_runs', data.optimization_runs);
 
@@ -90,7 +92,7 @@ export function prepareRequestBody(data: FormFields): FetchParams['body'] {
 
     case 'vyper_code': {
       return {
-        compiler_version: data.compiler.value,
+        compiler_version: data.compiler?.value,
         source_code: data.code,
         contract_name: data.name,
         constructor_args: data.constructor_args,
@@ -99,8 +101,8 @@ export function prepareRequestBody(data: FormFields): FetchParams['body'] {
 
     case 'vyper_multi_part': {
       const body = new FormData();
-      body.set('compiler_version', data.compiler.value);
-      body.set('evm_version', data.evm_version.value);
+      body.set('compiler_version', data.compiler?.value);
+      body.set('evm_version', data.evm_version?.value);
       addFilesToFormData(body, data.sources);
 
       return body;
@@ -123,9 +125,27 @@ function reduceLibrariesArray(libraries: Array<ContractLibrary> | undefined) {
   }, {});
 }
 
-function addFilesToFormData(body: FormData, files: Array<File>) {
+function addFilesToFormData(body: FormData, files: Array<File> | undefined) {
+  if (!files) {
+    return;
+  }
+
   for (let index = 0; index < files.length; index++) {
     const file = files[index];
     body.set(`files[${ index }]`, file, file.name);
   }
+}
+
+const API_ERROR_TO_FORM_FIELD: Record<keyof SmartContractVerificationError, FieldPath<FormFields>> = {
+  contract_source_code: 'code',
+  files: 'sources',
+  compiler_version: 'compiler',
+  constructor_arguments: 'constructor_args',
+  name: 'name',
+};
+
+export function formatSocketErrors(errors: SmartContractVerificationError): Array<[FieldPath<FormFields>, ErrorOption]> {
+  return Object.entries(errors).map(([ key, value ]) => {
+    return [ API_ERROR_TO_FORM_FIELD[key as keyof SmartContractVerificationError], { message: value.join(',') } ];
+  });
 }

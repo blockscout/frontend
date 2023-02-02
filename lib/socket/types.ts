@@ -2,6 +2,7 @@ import type { Channel } from 'phoenix';
 
 import type { AddressCoinBalanceHistoryItem } from 'types/api/address';
 import type { NewBlockSocketResponse } from 'types/api/block';
+import type { SmartContractVerificationResponse } from 'types/api/contract';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 import type { Transaction } from 'types/api/transaction';
 
@@ -45,6 +46,6 @@ export namespace SocketMessage {
   export type AddressTxsPending = SocketMessageParamsGeneric<'pending_transaction', { transaction: Transaction }>;
   export type AddressTokenTransfer = SocketMessageParamsGeneric<'token_transfer', { token_transfer: TokenTransfer }>;
   export type TokenTransfers = SocketMessageParamsGeneric<'token_transfer', {token_transfer: number }>;
-  export type ContractVerification = SocketMessageParamsGeneric<'verification_result', unknown>;
+  export type ContractVerification = SocketMessageParamsGeneric<'verification_result', SmartContractVerificationResponse>;
   export type Unknown = SocketMessageParamsGeneric<undefined, unknown>;
 }

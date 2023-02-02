@@ -129,3 +129,18 @@ export interface SmartContractVerificationConfigRaw {
 export interface SmartContractVerificationConfig extends SmartContractVerificationConfigRaw {
   verification_options: Array<SmartContractVerificationMethod>;
 }
+
+export type SmartContractVerificationResponse = {
+  status: 'error';
+  errors: SmartContractVerificationError;
+} | {
+  status: 'success';
+}
+
+export interface SmartContractVerificationError {
+  contract_source_code?: Array<string>;
+  files?: Array<string>;
+  compiler_version?: Array<string>;
+  constructor_arguments?: Array<string>;
+  name?: Array<string>;
+}
