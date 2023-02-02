@@ -19,7 +19,7 @@ interface Props {
 }
 
 const ContractVerificationFieldSources = ({ accept, multiple, title, className, hint }: Props) => {
-  const { setValue, getValues, control, formState } = useFormContext<FormFields>();
+  const { setValue, getValues, control, formState, clearErrors } = useFormContext<FormFields>();
 
   const error = 'sources' in formState.errors ? formState.errors.sources : undefined;
 
@@ -31,8 +31,9 @@ const ContractVerificationFieldSources = ({ accept, multiple, title, className, 
     const value = getValues('sources').slice();
     value.splice(index, 1);
     setValue('sources', value);
+    clearErrors('sources');
 
-  }, [ getValues, setValue ]);
+  }, [ getValues, clearErrors, setValue ]);
 
   const renderFiles = React.useCallback((files: Array<File>) => {
     return (
@@ -54,7 +55,12 @@ const ContractVerificationFieldSources = ({ accept, multiple, title, className, 
   const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'sources'>}) => (
     <>
       <FileInput<FormFields, 'sources'> accept={ accept } multiple={ multiple } field={ field }>
-        <Button variant="outline" size="sm" display={ field.value && field.value.length > 0 ? 'none' : 'block' }>
+        <Button
+          variant="outline"
+          size="sm"
+          display={ field.value && field.value.length > 0 && !multiple ? 'none' : 'block' }
+          mb={ field.value && field.value.length > 0 ? 2 : 0 }
+        >
           Upload file{ multiple ? 's' : '' }
         </Button>
       </FileInput>

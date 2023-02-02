@@ -20,7 +20,7 @@ const FileInput = <Values extends FieldValues, Names extends Path<Values>>({ chi
     }
 
     const files = Array.from(fileList);
-    field.onChange(files);
+    field.onChange([ ...(field.value || []), ...files ]);
     field.onBlur();
   }, [ field ]);
 
