@@ -9,10 +9,10 @@ import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
-const ContractVerificationFieldAbiEncodedArgs = () => {
+const ContractVerificationFieldConstructorArgs = () => {
   const { formState, control } = useFormContext<FormFields>();
 
-  const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'abi_encoded_args'>}) => {
+  const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'constructor_args'>}) => {
     return (
       <FormControl variant="floating" id={ field.name } size={{ base: 'md', lg: 'lg' }}>
         <Textarea
@@ -28,7 +28,7 @@ const ContractVerificationFieldAbiEncodedArgs = () => {
   return (
     <ContractVerificationFormRow>
       <Controller
-        name="abi_encoded_args"
+        name="constructor_args"
         control={ control }
         render={ renderControl }
       />
@@ -44,4 +44,4 @@ const ContractVerificationFieldAbiEncodedArgs = () => {
   );
 };
 
-export default React.memo(ContractVerificationFieldAbiEncodedArgs);
+export default React.memo(ContractVerificationFieldConstructorArgs);

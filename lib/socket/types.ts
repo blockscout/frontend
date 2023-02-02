@@ -45,6 +45,6 @@ export namespace SocketMessage {
   export type AddressTxsPending = SocketMessageParamsGeneric<'pending_transaction', { transaction: Transaction }>;
   export type AddressTokenTransfer = SocketMessageParamsGeneric<'token_transfer', { token_transfer: TokenTransfer }>;
   export type TokenTransfers = SocketMessageParamsGeneric<'token_transfer', {token_transfer: number }>;
-  export type ContractVerification = SocketMessageParamsGeneric<'verification', unknown>;
+  export type ContractVerification = SocketMessageParamsGeneric<'verification_result', unknown>;
   export type Unknown = SocketMessageParamsGeneric<undefined, unknown>;
 }

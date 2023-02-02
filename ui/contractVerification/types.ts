@@ -13,7 +13,8 @@ export interface FormFieldsFlattenSourceCode {
   is_optimization_enabled: boolean;
   optimization_runs: string;
   code: string;
-  constructor_args: boolean;
+  autodetect_constructor_args: boolean;
+  constructor_args: string;
   libraries: Array<ContractLibrary>;
 }
 
@@ -22,7 +23,8 @@ export interface FormFieldsStandardInput {
   name: string;
   compiler: Option;
   sources: Array<File>;
-  constructor_args: boolean;
+  autodetect_constructor_args: boolean;
+  constructor_args: string;
 }
 
 export interface FormFieldsSourcify {
@@ -45,7 +47,7 @@ export interface FormFieldsVyperContract {
   name: string;
   compiler: Option;
   code: string;
-  abi_encoded_args: string;
+  constructor_args: string;
 }
 
 export interface FormFieldsVyperMultiPartFile {

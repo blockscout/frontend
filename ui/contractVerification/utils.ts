@@ -51,7 +51,8 @@ export function prepareRequestBody(data: FormFields): FetchParams['body'] {
         contract_name: data.name,
         libraries: reduceLibrariesArray(data.libraries),
         evm_version: data.evm_version.value,
-        autodetect_constructor_args: data.constructor_args,
+        autodetect_constructor_args: data.autodetect_constructor_args,
+        constructor_args: data.constructor_args,
       };
     }
 
@@ -59,7 +60,8 @@ export function prepareRequestBody(data: FormFields): FetchParams['body'] {
       const body = new FormData();
       body.set('compiler_version', data.compiler.value);
       body.set('contract_name', data.name);
-      body.set('autodetect_constructor_args', String(Boolean(data.constructor_args)));
+      body.set('autodetect_constructor_args', String(Boolean(data.autodetect_constructor_args)));
+      body.set('constructor_args', data.constructor_args);
       addFilesToFormData(body, data.sources);
 
       return body;
@@ -91,8 +93,17 @@ export function prepareRequestBody(data: FormFields): FetchParams['body'] {
         compiler_version: data.compiler.value,
         source_code: data.code,
         contract_name: data.name,
-        constructor_args: data.abi_encoded_args,
+        constructor_args: data.constructor_args,
       };
+    }
+
+    case 'vyper_multi_part': {
+      const body = new FormData();
+      body.set('compiler_version', data.compiler.value);
+      body.set('evm_version', data.evm_version.value);
+      addFilesToFormData(body, data.sources);
+
+      return body;
     }
 
     default: {
