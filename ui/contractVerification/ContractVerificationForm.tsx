@@ -1,4 +1,5 @@
 import { Button, chakra } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -9,6 +10,7 @@ import type { SmartContractVerificationMethod, SmartContractVerificationConfig }
 
 import useApiFetch from 'lib/api/useApiFetch';
 import useToast from 'lib/hooks/useToast';
+import link from 'lib/link/link';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 
@@ -48,6 +50,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
 
   const apiFetch = useApiFetch();
   const toast = useToast();
+  const router = useRouter();
 
   const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(data) => {
     // eslint-disable-next-line no-console
@@ -79,10 +82,22 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
     if (payload.status === 'error') {
       const errors = formatSocketErrors(payload.errors);
       errors.forEach(([ field, error ]) => setError(field, error));
+      submitPromiseResolver.current?.(null);
+      return;
     }
 
-    submitPromiseResolver.current?.(null);
-  }, [ setError ]);
+    toast({
+      position: 'top-right',
+      title: 'Success',
+      description: 'Contract is successfully verified.',
+      status: 'success',
+      variant: 'subtle',
+      isClosable: true,
+      onCloseComplete: () => {
+        router.push(link('address_index', { id: hash }, { tab: 'contract' }), undefined, { shallow: true });
+      },
+    });
+  }, [ hash, router, setError, toast ]);
 
   const handleSocketError = React.useCallback(() => {
     submitPromiseResolver.current?.(null);
