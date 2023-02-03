@@ -41,7 +41,7 @@ const ContractVerificationFieldSources = ({ accept, multiple, title, className, 
       <Box display="grid" gridTemplateColumns={{ base: '1fr', lg: '1fr 1fr' }} columnGap={ 3 } rowGap={ 3 }>
         { files.map((file, index) => (
           <FileSnippet
-            key={ file.name + file.lastModified }
+            key={ file.name + file.lastModified + index }
             file={ file }
             maxW="initial"
             onRemove={ handleFileRemove }

@@ -2,6 +2,8 @@ import { Box } from '@chakra-ui/react';
 import type { DragEvent } from 'react';
 import React from 'react';
 
+import { getAllFileEntries, convertFileEntryToFile } from './utils/files';
+
 interface Props {
   onDrop: (files: Array<File>) => void;
 }
@@ -11,7 +13,9 @@ const DragAndDropArea = ({ onDrop }: Props) => {
 
   const handleDrop = React.useCallback(async(event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-    const files = Array.from(event.dataTransfer.files);
+
+    const fileEntries = await getAllFileEntries(event.dataTransfer.items);
+    const files = await Promise.all(fileEntries.map(convertFileEntryToFile));
 
     onDrop(files);
     setIsDragOver(false);
