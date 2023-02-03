@@ -5,13 +5,15 @@ import ContractVerificationFieldCompiler from '../fields/ContractVerificationFie
 import ContractVerificationFieldEvmVersion from '../fields/ContractVerificationFieldEvmVersion';
 import ContractVerificationFieldSources from '../fields/ContractVerificationFieldSources';
 
+const FILE_TYPES = [ '.vy' as const ];
+
 const ContractVerificationVyperMultiPartFile = () => {
   return (
     <ContractVerificationMethod title="New Vyper Smart Contract Verification">
       <ContractVerificationFieldCompiler isVyper/>
       <ContractVerificationFieldEvmVersion isVyper/>
       <ContractVerificationFieldSources
-        accept=".vy"
+        fileTypes={ FILE_TYPES }
         multiple
         title="Sources *.vy files"
         hint="Upload all Vyper contract source files."

@@ -6,13 +6,15 @@ import ContractVerificationFieldCompiler from '../fields/ContractVerificationFie
 import ContractVerificationFieldName from '../fields/ContractVerificationFieldName';
 import ContractVerificationFieldSources from '../fields/ContractVerificationFieldSources';
 
+const FILE_TYPES = [ '.json' as const ];
+
 const ContractVerificationStandardInput = () => {
   return (
     <ContractVerificationMethod title="New Smart Contract Verification">
       <ContractVerificationFieldName/>
       <ContractVerificationFieldCompiler/>
       <ContractVerificationFieldSources
-        accept=".json"
+        fileTypes={ FILE_TYPES }
         title="Standard Input JSON"
         hint="Upload the standard input JSON file created during contract compilation."
       />
