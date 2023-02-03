@@ -1,10 +1,11 @@
-import { Text, Button, Box, chakra } from '@chakra-ui/react';
+import { Text, Button, Box, chakra, Flex } from '@chakra-ui/react';
 import React from 'react';
 import type { ControllerRenderProps } from 'react-hook-form';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
 
+import DragAndDropArea from 'ui/shared/forms/DragAndDropArea';
 import FileInput from 'ui/shared/forms/FileInput';
 import FileSnippet from 'ui/shared/forms/FileSnippet';
 
@@ -55,14 +56,25 @@ const ContractVerificationFieldSources = ({ accept, multiple, title, className, 
   const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'sources'>}) => (
     <>
       <FileInput<FormFields, 'sources'> accept={ accept } multiple={ multiple } field={ field }>
-        <Button
-          variant="outline"
-          size="sm"
-          display={ field.value && field.value.length > 0 && !multiple ? 'none' : 'block' }
-          mb={ field.value && field.value.length > 0 ? 2 : 0 }
-        >
-          Upload file{ multiple ? 's' : '' }
-        </Button>
+        { ({ onChange }) => (
+          <Flex
+            flexDir="column"
+            alignItems="flex-start"
+            rowGap={ 2 }
+            w="100%"
+            display={ field.value && field.value.length > 0 && !multiple ? 'none' : 'block' }
+            mb={ field.value && field.value.length > 0 ? 2 : 0 }
+          >
+            <Button
+              variant="outline"
+              size="sm"
+              mb={ 2 }
+            >
+              Upload file{ multiple ? 's' : '' }
+            </Button>
+            <DragAndDropArea onDrop={ onChange }/>
+          </Flex>
+        ) }
       </FileInput>
       { field.value && field.value.length > 0 && renderFiles(field.value) }
       { error && (
