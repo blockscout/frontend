@@ -3,15 +3,15 @@ export async function getAllFileEntries(dataTransferItemList: DataTransferItemLi
   const fileEntries: Array<FileSystemFileEntry> = [];
 
   // Use BFS to traverse entire directory/file structure
-  const queue: Array<FileSystemEntry | FileSystemDirectoryEntry | null> = [];
+  const queue: Array<FileSystemFileEntry | FileSystemDirectoryEntry> = [];
 
   // Unfortunately dataTransferItemList is not iterable i.e. no forEach
   for (let i = 0; i < dataTransferItemList.length; i++) {
     // Note webkitGetAsEntry a non-standard feature and may change
     // Usage is necessary for handling directories
     // + typescript types are kinda wrong - https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItem/webkitGetAsEntry
-    const item = dataTransferItemList[i].webkitGetAsEntry();
-    queue.push(item);
+    const item = dataTransferItemList[i].webkitGetAsEntry() as FileSystemFileEntry | FileSystemDirectoryEntry | null;
+    item && queue.push(item);
   }
 
   while (queue.length > 0) {
@@ -28,7 +28,7 @@ export async function getAllFileEntries(dataTransferItemList: DataTransferItemLi
 // Get all the entries (files or sub-directories) in a directory
 // by calling readEntries until it returns empty array
 async function readAllDirectoryEntries(directoryReader: DirectoryReader) {
-  const entries: Array<FileSystemEntry> = [];
+  const entries: Array<FileSystemFileEntry> = [];
   let readEntries = await readEntriesPromise(directoryReader);
 
   while (readEntries && readEntries.length > 0) {
@@ -41,10 +41,15 @@ async function readAllDirectoryEntries(directoryReader: DirectoryReader) {
 // Wrap readEntries in a promise to make working with readEntries easier
 // readEntries will return only some of the entries in a directory
 // e.g. Chrome returns at most 100 entries at a time
-async function readEntriesPromise(directoryReader: DirectoryReader): Promise<Array<FileSystemEntry> | undefined> {
+async function readEntriesPromise(directoryReader: DirectoryReader): Promise<Array<FileSystemFileEntry> | undefined> {
   try {
     return await new Promise((resolve, reject) => {
-      directoryReader.readEntries(resolve, reject);
+      directoryReader.readEntries(
+        (fileEntry) => {
+          resolve(fileEntry as Array<FileSystemFileEntry>);
+        },
+        reject,
+      );
     });
   } catch (err) {}
 }
