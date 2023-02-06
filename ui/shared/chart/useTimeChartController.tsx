@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 
 import type { TimeChartData } from 'ui/shared/chart/types';
 
+import { WEEK, MONTH, YEAR } from 'lib/consts';
 import formatNumberToMetricPrefix from 'lib/formatNumberToMetricPrefix';
 
 interface Props {
@@ -59,11 +60,11 @@ export default function useTimeChartController({ data, width, height }: Props) {
 
     const span = Number(extent[1]) - Number(extent[0]);
 
-    if (span > 365 * 24 * 60 * 60 * 1000) {
+    if (span > YEAR) {
       format = d3.timeFormat('%Y');
-    } else if (span > 30 * 24 * 60 * 60 * 1000) {
+    } else if (span > 2 * MONTH) {
       format = d3.timeFormat('%b');
-    } else if (span > 7 * 24 * 60 * 60 * 1000) {
+    } else if (span > WEEK) {
       format = d3.timeFormat('%b %d');
     } else {
       format = d3.timeFormat('%a %d');
