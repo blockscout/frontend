@@ -286,6 +286,15 @@ export const RESOURCES = {
   old_api: {
     path: '/api',
   },
+  csv_export_txs: {
+    path: '/transactions-csv',
+  },
+  csv_export_internal_txs: {
+    path: '/internal-transactions-csv',
+  },
+  csv_export_token_transfers: {
+    path: '/token-transfers-csv',
+  },
 };
 
 export type ResourceName = keyof typeof RESOURCES;

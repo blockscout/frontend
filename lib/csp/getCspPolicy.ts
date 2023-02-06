@@ -97,6 +97,11 @@ function makePolicyMap() {
       'servedbyadbutler.com',
       '\'sha256-wMOeDjJaOTjCfNjluteV+tSqHW547T89sgxd8W6tQJM=\'',
       '\'sha256-FcyIn1h7zra8TVnnRhYrwrplxJW7dpD5TV7kP2AG/kI=\'',
+
+      // reCAPTCHA from google
+      'https://www.google.com/recaptcha/api.js',
+      'https://www.gstatic.com',
+      '\'sha256-FDyPg8CqqIpPAfGVKx1YeKduyLs0ghNYWII21wL+7HM=\'',
     ],
 
     'style-src': [
@@ -147,7 +152,7 @@ function makePolicyMap() {
       KEY_WORDS.DATA,
 
       // google fonts
-      '*.gstatic.com',
+      'fonts.gstatic.com',
       'fonts.googleapis.com',
     ],
 
@@ -168,6 +173,11 @@ function makePolicyMap() {
 
       // ad
       'request-global.czilladx.com',
+
+      // reCAPTCHA from google
+      // 'https://www.google.com/',
+      'https://www.google.com/recaptcha/api2/anchor',
+      'https://www.google.com/recaptcha/api2/bframe',
     ],
 
     ...(REPORT_URI ? {

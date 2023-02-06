@@ -6,7 +6,6 @@ import type { SmartContractVerificationConfigRaw, SmartContractVerificationMetho
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/appContext';
-import isBrowser from 'lib/isBrowser';
 import link from 'lib/link/link';
 import ContractVerificationForm from 'ui/contractVerification/ContractVerificationForm';
 import { isValidVerificationMethod, sortVerificationMethods } from 'ui/contractVerification/utils';
@@ -21,9 +20,7 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 
 const ContractVerification = () => {
   const appProps = useAppContext();
-  const isInBrowser = isBrowser();
-  const referrer = isInBrowser ? window.document.referrer : appProps.referrer;
-  const hasGoBackLink = referrer && referrer.includes('/address');
+  const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/address');
   const router = useRouter();
 
   const hash = router.query.id?.toString();
@@ -91,7 +88,7 @@ const ContractVerification = () => {
     <Page>
       <PageTitle
         text="New smart contract verification"
-        backLinkUrl={ hasGoBackLink ? referrer : undefined }
+        backLinkUrl={ hasGoBackLink ? appProps.referrer : undefined }
         backLinkLabel="Back to contract"
       />
       { hash && (
