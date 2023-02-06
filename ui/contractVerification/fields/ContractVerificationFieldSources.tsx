@@ -6,7 +6,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import type { FormFields } from '../types';
 
 import { Mb } from 'lib/consts';
-import DragAndDropArea from 'ui/shared/forms/DragAndDropArea';
+// import DragAndDropArea from 'ui/shared/forms/DragAndDropArea';
 import FieldError from 'ui/shared/forms/FieldError';
 import FileInput from 'ui/shared/forms/FileInput';
 import FileSnippet from 'ui/shared/forms/FileSnippet';
@@ -66,7 +66,7 @@ const ContractVerificationFieldSources = ({ fileTypes, multiple, title, classNam
   const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'sources'>}) => (
     <>
       <FileInput<FormFields, 'sources'> accept={ fileTypes.join(',') } multiple={ multiple } field={ field }>
-        { ({ onChange }) => (
+        { () => (
           <Flex
             flexDir="column"
             alignItems="flex-start"
@@ -78,11 +78,12 @@ const ContractVerificationFieldSources = ({ fileTypes, multiple, title, classNam
             <Button
               variant="outline"
               size="sm"
-              mb={ 2 }
+              // mb={ 2 }
             >
               Upload file{ multiple ? 's' : '' }
             </Button>
-            <DragAndDropArea onDrop={ onChange }/>
+            { /* design is not ready */ }
+            { /* <DragAndDropArea onDrop={ onChange }/> */ }
           </Flex>
         ) }
       </FileInput>
