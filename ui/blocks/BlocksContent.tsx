@@ -101,8 +101,12 @@ const BlocksContent = ({ type, query }: Props) => {
     return (
       <>
         { socketAlert && <Alert status="warning" mb={ 6 } as="a" href={ window.document.location.href }>{ socketAlert }</Alert> }
-        <Show below="lg" key="content-mobile" ssr={ false }><BlocksList data={ query.data.items }/></Show>
-        <Hide below="lg" key="content-desktop" ssr={ false }><BlocksTable data={ query.data.items } top={ 80 } page={ 1 }/></Hide>
+        <Show below="lg" key="content-mobile" ssr={ false }>
+          <BlocksList data={ query.data.items }/>
+        </Show>
+        <Hide below="lg" key="content-desktop" ssr={ false }>
+          <BlocksTable data={ query.data.items } top={ query.isPaginationVisible ? 80 : 0 } page={ query.pagination.page }/>
+        </Hide>
       </>
     );
 

@@ -97,7 +97,7 @@ const AddressBlocksValidated = ({ scrollRef }: Props) => {
       <>
         <Hide below="lg" ssr={ false }>
           <Table variant="simple" size="sm">
-            <Thead top={ 80 }>
+            <Thead top={ query.isPaginationVisible ? 80 : 0 }>
               <Tr>
                 <Th width="17%">Block</Th>
                 <Th width="17%">Age</Th>

@@ -9,12 +9,13 @@ import TokenHoldersTableItem from 'ui/token/TokenHolders/TokenHoldersTableItem';
 interface Props {
   data: Array<TokenHolder>;
   token: TokenInfo;
+  top: number;
 }
 
-const TokenHoldersTable = ({ data, token }: Props) => {
+const TokenHoldersTable = ({ data, token, top }: Props) => {
   return (
     <Table variant="simple" size="sm">
-      <Thead top={ 80 }>
+      <Thead top={ top }>
         <Tr>
           <Th>Holder</Th>
           <Th isNumeric width="300px">Quantity</Th>

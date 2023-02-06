@@ -84,7 +84,7 @@ const TxTokenTransfer = () => {
     return (
       <>
         <Hide below="lg" ssr={ false }>
-          <TokenTransferTable data={ items } top={ 80 }/>
+          <TokenTransferTable data={ items } top={ isActionBarHidden ? 0 : 80 }/>
         </Hide>
         <Show below="lg" ssr={ false }>
           <TokenTransferList data={ items }/>

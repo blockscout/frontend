@@ -12,13 +12,14 @@ interface Props {
   items: Array<AddressesItem>;
   totalSupply: string;
   pageStartIndex: number;
+  top: number;
 }
 
-const AddressesTable = ({ items, totalSupply, pageStartIndex }: Props) => {
+const AddressesTable = ({ items, totalSupply, pageStartIndex, top }: Props) => {
   const hasPercentage = Boolean(totalSupply && totalSupply !== '0');
   return (
     <Table variant="simple" size="sm">
-      <Thead top={ 80 }>
+      <Thead top={ top }>
         <Tr>
           <Th width="64px">Rank</Th>
           <Th width={ hasPercentage ? '30%' : '40%' }>Address</Th>
