@@ -7,11 +7,11 @@ interface Props extends Omit<React.SVGProps<SVGGElement>, 'scale'> {
   scale: d3.ScaleTime<number, number> | d3.ScaleLinear<number, number>;
   disableAnimation?: boolean;
   ticks: number;
-  tickFormat?: (domainValue: d3.AxisDomain, index: number) => string;
+  tickFormatGenerator?: (axis: d3.Axis<d3.NumberValue>) => (domainValue: d3.AxisDomain, index: number) => string;
   anchorEl?: SVGRectElement | null;
 }
 
-const ChartAxis = ({ type, scale, ticks, tickFormat, disableAnimation, anchorEl, ...props }: Props) => {
+const ChartAxis = ({ type, scale, ticks, tickFormatGenerator, disableAnimation, anchorEl, ...props }: Props) => {
   const ref = React.useRef<SVGGElement>(null);
 
   const textColorToken = useColorModeValue('blackAlpha.600', 'whiteAlpha.500');
@@ -23,10 +23,14 @@ const ChartAxis = ({ type, scale, ticks, tickFormat, disableAnimation, anchorEl,
     }
 
     const axisGenerator = type === 'left' ? d3.axisLeft : d3.axisBottom;
-    const axis = tickFormat ?
-      axisGenerator(scale).ticks(ticks).tickFormat(tickFormat) :
-      axisGenerator(scale).ticks(ticks);
+    const axis = axisGenerator(scale).ticks(ticks);
+
+    if (tickFormatGenerator) {
+      axis.tickFormat(tickFormatGenerator(axis));
+    }
+
     const axisGroup = d3.select(ref.current);
+
     if (disableAnimation) {
       axisGroup.call(axis);
     } else {
@@ -38,7 +42,7 @@ const ChartAxis = ({ type, scale, ticks, tickFormat, disableAnimation, anchorEl,
       .attr('opacity', 1)
       .attr('color', textColor)
       .attr('font-size', '0.75rem');
-  }, [ scale, ticks, tickFormat, disableAnimation, type, textColor ]);
+  }, [ scale, ticks, tickFormatGenerator, disableAnimation, type, textColor ]);
 
   React.useEffect(() => {
     if (!anchorEl) {

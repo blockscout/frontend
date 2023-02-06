@@ -55,7 +55,7 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
   }, [ isGroupedValues, rangedItems ]);
   const chartData = [ { items: displayedData, name: 'Value', color } ];
 
-  const { yTickFormat, xScale, yScale } = useTimeChartController({
+  const { xTickFormat, yTickFormat, xScale, yScale } = useTimeChartController({
     data: [ { items: displayedData, name: title, color } ],
     width: innerWidth,
     height: innerHeight,
@@ -105,7 +105,7 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
           type="left"
           scale={ yScale }
           ticks={ isEnlarged ? 6 : 3 }
-          tickFormat={ yTickFormat }
+          tickFormatGenerator={ yTickFormat }
           disableAnimation
         />
 
@@ -115,6 +115,7 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
           transform={ `translate(0, ${ innerHeight })` }
           ticks={ isMobile ? 1 : 4 }
           anchorEl={ overlayRef.current }
+          tickFormatGenerator={ xTickFormat }
           disableAnimation
         />
 
