@@ -103,7 +103,7 @@ const ApiKeyForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
           { ...field }
           disabled={ true }
         />
-        <FormLabel>Auto-generated API key token</FormLabel>
+        <FormLabel data-in-modal="true">Auto-generated API key token</FormLabel>
       </FormControl>
     );
   }, []);

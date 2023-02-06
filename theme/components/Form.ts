@@ -1,7 +1,7 @@
 import { formAnatomy as parts } from '@chakra-ui/anatomy';
 import { createMultiStyleConfigHelpers } from '@chakra-ui/styled-system';
 import type { StyleFunctionProps } from '@chakra-ui/theme-tools';
-import { getColor } from '@chakra-ui/theme-tools';
+import { getColor, mode } from '@chakra-ui/theme-tools';
 
 import getDefaultFormColors from '../utils/getDefaultFormColors';
 import FancySelect from './FancySelect';
@@ -81,10 +81,17 @@ function getFloatingVariantStylesForSize(size: 'md' | 'lg', props: StyleFunction
       'input:not(:placeholder-shown), textarea:not(:placeholder-shown)': activeInputStyles,
       [`
         input[disabled] + label, 
-        textarea[disabled] + label,
         &[aria-disabled=true] label
       `]: {
         backgroundColor: 'transparent',
+      },
+      // in textarea bg of label could not be transparent; it should match the background color of input but without alpha
+      // so we have to use non-standard colors here
+      'textarea[disabled] + label': {
+        backgroundColor: mode('#ececec', '#232425')(props),
+      },
+      'textarea[disabled] + label[data-in-modal=true]': {
+        backgroundColor: mode('#ececec', '#292b34')(props),
       },
 
       // indicator styles
