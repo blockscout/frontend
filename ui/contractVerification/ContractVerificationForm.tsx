@@ -76,9 +76,6 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
   }, [ apiFetch, hash ]);
 
   const handleNewSocketMessage: SocketMessage.ContractVerification['handler'] = React.useCallback((payload) => {
-    // eslint-disable-next-line no-console
-    console.log('__>__ handleNewSocketMessage', payload);
-
     if (payload.status === 'error') {
       const errors = formatSocketErrors(payload.errors);
       errors.forEach(([ field, error ]) => setError(field, error));
@@ -100,6 +97,10 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
   }, [ hash, router, setError, toast ]);
 
   const handleSocketError = React.useCallback(() => {
+    if (!formState.isSubmitting) {
+      return;
+    }
+
     submitPromiseResolver.current?.(null);
 
     const toastId = 'socket-error';
@@ -112,13 +113,13 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
       variant: 'subtle',
       isClosable: true,
     });
-  }, [ toast ]);
+  }, [ formState.isSubmitting, toast ]);
 
   const channel = useSocketChannel({
     topic: `addresses:${ hash.toLowerCase() }`,
     onSocketClose: handleSocketError,
     onSocketError: handleSocketError,
-    isDisabled: !formState.isSubmitting,
+    isDisabled: false,
   });
   useSocketMessage({
     channel,

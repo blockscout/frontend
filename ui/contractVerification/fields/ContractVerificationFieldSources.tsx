@@ -5,6 +5,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
 
+import { Mb } from 'lib/consts';
 import DragAndDropArea from 'ui/shared/forms/DragAndDropArea';
 import FieldError from 'ui/shared/forms/FieldError';
 import FileInput from 'ui/shared/forms/FileInput';
@@ -45,7 +46,7 @@ const ContractVerificationFieldSources = ({ fileTypes, multiple, title, classNam
     const errorList = fileError?.message?.split(';');
 
     return (
-      <Box display="grid" gridTemplateColumns={{ base: '1fr', lg: '1fr 1fr' }} columnGap={ 3 } rowGap={ 3 }>
+      <Box display="grid" gridTemplateColumns={{ base: 'minmax(0, 1fr)', lg: 'minmax(0, 1fr) minmax(0, 1fr)' }} columnGap={ 3 } rowGap={ 3 }>
         { files.map((file, index) => (
           <Box key={ file.name + file.lastModified + index }>
             <FileSnippet
@@ -92,7 +93,8 @@ const ContractVerificationFieldSources = ({ fileTypes, multiple, title, classNam
 
   const validateFileType = React.useCallback(async(value: FieldPathValue<FormFields, 'sources'>): Promise<ValidateResult> => {
     if (Array.isArray(value)) {
-      const errors = value.map(({ name }) => fileTypes.some((ext) => name.endsWith(ext)) ? '' : 'Wrong file type');
+      const errorText = `Wrong file type. Allowed files types are ${ fileTypes.join(',') }.`;
+      const errors = value.map(({ name }) => fileTypes.some((ext) => name.endsWith(ext)) ? '' : errorText);
       if (errors.some((item) => item !== '')) {
         return errors.join(';');
       }
@@ -102,8 +104,8 @@ const ContractVerificationFieldSources = ({ fileTypes, multiple, title, classNam
 
   const validateFileSize = React.useCallback(async(value: FieldPathValue<FormFields, 'sources'>): Promise<ValidateResult> => {
     if (Array.isArray(value)) {
-      const FILE_SIZE_LIMIT = 260;
-      const errors = value.map(({ size }) => size > FILE_SIZE_LIMIT ? 'File is too big' : '');
+      const FILE_SIZE_LIMIT = 20 * Mb;
+      const errors = value.map(({ size }) => size > FILE_SIZE_LIMIT ? 'File is too big. Maximum size is 20 Mb.' : '');
       if (errors.some((item) => item !== '')) {
         return errors.join(';');
       }

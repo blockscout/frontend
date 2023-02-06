@@ -29,6 +29,17 @@ const ContractVerification = () => {
   const hash = router.query.id?.toString();
   const method = router.query.id?.toString() as SmartContractVerificationMethod | undefined;
 
+  const contractQuery = useApiQuery('contract', {
+    pathParams: { id: hash },
+    queryOptions: {
+      enabled: Boolean(hash),
+    },
+  });
+
+  if (contractQuery.isError && contractQuery.error.status === 404) {
+    throw Error('Not found', { cause: contractQuery.error as unknown as Error });
+  }
+
   const configQuery = useApiQuery('contract_verification_config', {
     queryOptions: {
       select: (data: unknown) => {
@@ -50,12 +61,20 @@ const ContractVerification = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ ]);
 
+  const isVerifiedContract = contractQuery.data?.is_verified;
+
+  React.useEffect(() => {
+    if (isVerifiedContract) {
+      router.push(link('address_index', { id: hash }, { tab: 'contract' }), undefined, { scroll: false, shallow: true });
+    }
+  }, [ hash, isVerifiedContract, router ]);
+
   const content = (() => {
-    if (configQuery.isError || !hash) {
+    if (configQuery.isError || !hash || contractQuery.isError) {
       return <DataFetchAlert/>;
     }
 
-    if (configQuery.isLoading) {
+    if (configQuery.isLoading || contractQuery.isLoading || isVerifiedContract) {
       return <ContentLoader/>;
     }
 
