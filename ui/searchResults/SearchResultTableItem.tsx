@@ -7,6 +7,7 @@ import blockIcon from 'icons/block.svg';
 import txIcon from 'icons/transactions.svg';
 import highlightText from 'lib/highlightText';
 import link from 'lib/link/link';
+import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -24,7 +25,7 @@ const SearchResultTableItem = ({ data, searchTerm }: Props) => {
   const content = (() => {
     switch (data.type) {
       case 'token': {
-        const name = data.name + (data.symbol ? ` (${ data.symbol })` : '');
+        const name = data.name + (data.symbol ? ` (${ trimTokenSymbol(data.symbol) })` : '');
         return (
           <>
             <Td fontSize="sm">

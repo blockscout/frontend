@@ -3,6 +3,7 @@ import React from 'react';
 import type { Address } from 'types/api/address';
 
 import link from 'lib/link/link';
+import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import LinkInternal from 'ui/shared/LinkInternal';
 
@@ -12,13 +13,14 @@ interface Props {
 
 const AddressNameInfo = ({ data }: Props) => {
   if (data.token) {
+    const symbol = data.token.symbol ? ` (${ trimTokenSymbol(data.token.symbol) })` : '';
     return (
       <DetailsInfoItem
         title="Token name"
         hint="Token name and symbol"
       >
         <LinkInternal href={ link('token_index', { hash: data.token.address }) }>
-          { data.token.name } ({ data.token.symbol })
+          { data.token.name }{ symbol }
         </LinkInternal>
       </DetailsInfoItem>
     );

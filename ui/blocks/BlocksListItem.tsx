@@ -53,7 +53,13 @@ const BlocksListItem = ({ data, isPending, enableTimeIncrement }: Props) => {
       </Flex>
       <Flex columnGap={ 2 }>
         <Text fontWeight={ 500 }>Txn</Text>
-        <Text variant="secondary">{ data.tx_count }</Text>
+        { data.tx_count > 0 ? (
+          <LinkInternal href={ link('block', { id: String(data.height) }, { tab: 'txs' }) }>
+            { data.tx_count }
+          </LinkInternal>
+        ) :
+          <Text variant="secondary">{ data.tx_count }</Text>
+        }
       </Flex>
       <Box>
         <Text fontWeight={ 500 }>Gas used</Text>

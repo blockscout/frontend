@@ -66,7 +66,7 @@ const LogTopic = ({ hex, index }: Props) => {
       </Button>
       { index !== 0 && (
         <Select
-          size="sm"
+          size="xs"
           borderRadius="base"
           value={ selectedDataType }
           onChange={ handleSelectChange }

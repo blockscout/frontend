@@ -63,7 +63,7 @@ test('erc1155 +@mobile', async({ mount }) => {
     <TestApp>
       <Box h={{ base: '134px', lg: '100px' }}/>
       <TokenTransfer
-        token={{ ...tokenInfo, type: 'ERC-1155' }}
+        token={{ ...tokenInfo, type: 'ERC-1155', symbol: tokenTransferMock.erc1155multiple.token.symbol }}
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore:
         transfersQuery={{

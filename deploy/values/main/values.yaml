@@ -166,7 +166,7 @@ postgres:
   # strategy: Recreate
 
   persistence: true
-  storage: 1000Gi
+  storage: 1200Gi
 
   resources:
     limits:

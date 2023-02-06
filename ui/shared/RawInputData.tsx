@@ -21,7 +21,7 @@ const RawInputData = ({ hex }: Props) => {
   return (
     <Box w="100%">
       <Flex justifyContent="space-between" alignItems="center">
-        <Select size="sm" borderRadius="base" value={ selectedDataType } onChange={ handleSelectChange } focusBorderColor="none" w="auto">
+        <Select size="xs" borderRadius="base" value={ selectedDataType } onChange={ handleSelectChange } focusBorderColor="none" w="auto">
           { OPTIONS.map((option) => <option key={ option } value={ option }>{ option }</option>) }
         </Select>
         <CopyToClipboard text={ hex }/>

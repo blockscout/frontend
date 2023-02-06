@@ -126,6 +126,37 @@ test('filter', async({ mount, page }) => {
   await expect(page).toHaveScreenshot({ clip: CLIPPING_AREA });
 });
 
+base('long values', async({ mount, page }) => {
+  await page.route(ASSET_URL, (route) => {
+    return route.fulfill({
+      status: 200,
+      path: './playwright/image_s.jpg',
+    });
+  });
+  await page.route(ADDRESS_API_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify({ hash: '1' }),
+  }), { times: 1 });
+  await page.route(TOKENS_API_URL, async(route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify(tokenBalanceMock.longValuesList),
+  }), { times: 1 });
+
+  await mount(
+    <TestApp>
+      <MockAddressPage>
+        <Flex>
+          <TokenSelect/>
+        </Flex>
+      </MockAddressPage>
+    </TestApp>,
+    { hooksConfig },
+  );
+  await page.getByRole('button', { name: /select/i }).click();
+
+  await expect(page).toHaveScreenshot({ clip: CLIPPING_AREA });
+});
+
 test.describe('socket', () => {
   const testWithSocket = test.extend<socketServer.SocketServerFixture>({
     createSocket: socketServer.createSocket,

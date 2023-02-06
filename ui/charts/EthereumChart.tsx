@@ -130,7 +130,7 @@ const EthereumChart = () => {
             type="left"
             scale={ yScale }
             ticks={ 5 }
-            tickFormat={ yTickFormat }
+            tickFormatGenerator={ yTickFormat }
             disableAnimation
           />
           <ChartOverlay ref={ overlayRef } width={ innerWidth } height={ innerHeight }>

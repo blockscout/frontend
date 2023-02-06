@@ -5,6 +5,7 @@ import type { TokenTransfer as TTokenTransfer, Erc20TotalPayload, Erc721TotalPay
 
 import rightArrowIcon from 'icons/arrows/east.svg';
 import { space } from 'lib/html-entities';
+import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
@@ -26,7 +27,7 @@ const TxDetailsTokenTransfer = ({ token, total, to, from }: Props) => {
               <CurrencyValue value={ payload.value } exchangeRate={ token.exchange_rate } fontWeight={ 600 }/>
             </Text>
             <TokenSnippet
-              symbol={ token.symbol }
+              symbol={ trimTokenSymbol(token.symbol) }
               hash={ token.address }
               name={ token.name }
               w="auto"
@@ -46,7 +47,7 @@ const TxDetailsTokenTransfer = ({ token, total, to, from }: Props) => {
             tokenId={ payload.token_id }
             value="1"
             hash={ token.address }
-            symbol={ token.symbol }
+            symbol={ trimTokenSymbol(token.symbol) }
           />
         );
       }
@@ -61,7 +62,7 @@ const TxDetailsTokenTransfer = ({ token, total, to, from }: Props) => {
             tokenId={ item.token_id }
             value={ item.value }
             hash={ token.address }
-            symbol={ token.symbol }
+            symbol={ trimTokenSymbol(token.symbol) }
           />
         ));
       }

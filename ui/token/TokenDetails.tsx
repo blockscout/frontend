@@ -103,15 +103,15 @@ const TokenDetails = ({ tokenQuery }: Props) => {
           { `$${ totalValue?.usd }` }
         </DetailsInfoItem>
       ) }
-      { totalValue?.valueStr && (
-        <DetailsInfoItem
-          title="Max total supply"
-          hint="The total amount of tokens issued."
-          alignSelf="center"
-        >
-          { `${ totalValue.valueStr } ${ symbol }` }
-        </DetailsInfoItem>
-      ) }
+      <DetailsInfoItem
+        title="Max total supply"
+        hint="The total amount of tokens issued."
+        alignSelf="center"
+        wordBreak="break-word"
+        whiteSpace="pre-wrap"
+      >
+        { `${ totalValue?.valueStr || 0 } ${ symbol || '' }` }
+      </DetailsInfoItem>
       <DetailsInfoItem
         title="Holders"
         hint="Number of accounts holding the token."

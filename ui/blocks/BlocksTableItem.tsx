@@ -53,7 +53,13 @@ const BlocksTableItem = ({ data, isPending, enableTimeIncrement }: Props) => {
       <Td fontSize="sm">
         <AddressLink type="address" alias={ data.miner.name } hash={ data.miner.hash } truncation="constant" display="inline-flex" maxW="100%"/>
       </Td>
-      <Td isNumeric fontSize="sm">{ data.tx_count }</Td>
+      <Td isNumeric fontSize="sm">
+        { data.tx_count > 0 ? (
+          <LinkInternal href={ link('block', { id: String(data.height) }, { tab: 'txs' }) }>
+            { data.tx_count }
+          </LinkInternal>
+        ) : data.tx_count }
+      </Td>
       <Td fontSize="sm">
         <Box>{ BigNumber(data.gas_used || 0).toFormat() }</Box>
         <Flex mt={ 2 }>
