@@ -32,7 +32,7 @@ export const withMultiplePaths: Partial<SmartContract> = {
   file_path: './simple_storage.sol',
   additional_sources: [
     {
-      file_path: 'contracts/1_Storage.sol',
+      file_path: '/contracts/protocol/libraries/logic/GenericLogic.sol',
       source_code: '// SPDX-License-Identifier: GPL-3.0 \n pragma solidity >=0.7.0 <0.9.0;      \n           contract Storage {\n //2112313123; \nuint256 number; \n function store(uint256 num) public {\nnumber = num;\n}\n function retrieve() public view returns (uint256)\n {\nreturn number;\n}\n}',
     },
   ],

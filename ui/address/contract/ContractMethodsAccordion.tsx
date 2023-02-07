@@ -39,9 +39,9 @@ const ContractMethodsAccordion = <T extends SmartContractMethod>({ data, renderC
     <Accordion allowMultiple position="relative" onChange={ handleAccordionStateChange } index={ expandedSections }>
       { data.map((item, index) => {
         return (
-          <AccordionItem key={ index } as="section" _first={{ borderTopWidth: '0' }}>
+          <AccordionItem key={ index } as="section" _first={{ borderTopWidth: '0', '.chakra-accordion__button': { pr: '150px' } }}>
             <h2>
-              <AccordionButton px={ 0 } py={ 3 } _hover={{ bgColor: 'inherit' }}>
+              <AccordionButton px={ 0 } py={ 3 } _hover={{ bgColor: 'inherit' }} wordBreak="break-all" textAlign="left">
                 <Box as="span" fontFamily="heading" fontWeight={ 500 } fontSize="lg" mr={ 1 }>
                   { index + 1 }. { item.type === 'fallback' || item.type === 'receive' ? item.type : item.name }
                 </Box>
