@@ -1,19 +1,15 @@
-import { Flex, Link, Icon, Tag, Tooltip } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
+import { Flex, Tag } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import Script from 'next/script';
 import React from 'react';
 
-import type { Transaction } from 'types/api/transaction';
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
-import eastArrowIcon from 'icons/arrows/east.svg';
+import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/appContext';
-import useFetch from 'lib/hooks/useFetch';
-import isBrowser from 'lib/isBrowser';
 import networkExplorers from 'lib/networks/networkExplorers';
-import AdBanner from 'ui/shared/ad/AdBanner';
-import ExternalLink from 'ui/shared/ExternalLink';
+import TextAd from 'ui/shared/ad/TextAd';
+import LinkExternal from 'ui/shared/LinkExternal';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
@@ -36,59 +32,49 @@ const TABS: Array<RoutedTab> = [
 
 const TransactionPageContent = () => {
   const router = useRouter();
-  const fetch = useFetch();
   const appProps = useAppContext();
-  const isInBrowser = isBrowser();
 
-  const referrer = isInBrowser ? window.document.referrer : appProps.referrer;
+  const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/txs');
 
-  const hasGoBackLink = referrer && referrer.includes('/txs');
-
-  const { data } = useQuery<unknown, unknown, Transaction>(
-    [ 'tx', router.query.id ],
-    async() => await fetch(`/node-api/transactions/${ router.query.id }`),
-    {
-      enabled: Boolean(router.query.id),
-    },
-  );
+  const { data } = useApiQuery('tx', {
+    pathParams: { id: router.query.id?.toString() },
+    queryOptions: { enabled: Boolean(router.query.id) },
+  });
 
   const explorersLinks = networkExplorers
     .filter((explorer) => explorer.paths.tx)
     .map((explorer) => {
       const url = new URL(explorer.paths.tx + '/' + router.query.id, explorer.baseUrl);
-      return <ExternalLink key={ explorer.baseUrl } title={ `Open in ${ explorer.title }` } href={ url.toString() }/>;
+      return <LinkExternal key={ explorer.baseUrl } title={ `Open in ${ explorer.title }` } href={ url.toString() }/>;
     });
+
+  const additionals = (
+    <Flex justifyContent="space-between" alignItems="center" flexGrow={ 1 }>
+      { data?.tx_tag && <Tag my={ 2 }>{ data.tx_tag }</Tag> }
+      { explorersLinks.length > 0 && (
+        <Flex
+          alignItems="center"
+          flexWrap="wrap"
+          columnGap={ 6 }
+          rowGap={ 3 }
+          ml={{ base: 'initial', lg: 'auto' }}
+        >
+          { explorersLinks }
+        </Flex>
+      ) }
+    </Flex>
+  );
 
   return (
     <Page>
-      <Flex alignItems="flex-start" flexDir={{ base: 'column', lg: 'row' }}>
-        <Flex alignItems="center" columnGap={ 3 }>
-          { hasGoBackLink && (
-            <Tooltip label="Back to transactions list">
-              <Link display="inline-flex" href={ referrer } mb={ 6 }>
-                <Icon as={ eastArrowIcon } boxSize={ 6 } transform="rotate(180deg)"/>
-              </Link>
-            </Tooltip>
-          ) }
-          <PageTitle text="Transaction details"/>
-        </Flex>
-        { data?.tx_tag && <Tag my={ 2 } ml={ 3 }>{ data.tx_tag }</Tag> }
-        { explorersLinks.length > 0 && (
-          <Flex
-            alignItems="center"
-            flexWrap="wrap"
-            columnGap={ 6 }
-            rowGap={ 3 }
-            ml={{ base: 'initial', lg: 'auto' }}
-            mb={{ base: 6, lg: 'initial' }}
-            py={ 2.5 }
-          >
-            { explorersLinks }
-          </Flex>
-        ) }
-      </Flex>
+      <TextAd mb={ 6 }/>
+      <PageTitle
+        text="Transaction details"
+        additionalsRight={ additionals }
+        backLinkUrl={ hasGoBackLink ? appProps.referrer : undefined }
+        backLinkLabel="Back to transactions list"
+      />
       <RoutedTabs tabs={ TABS }/>
-      <AdBanner mt={ 6 } justifyContent={{ base: 'center', lg: 'start' }}/>
       <Script src="/static/js/jquery.min.js" strategy="beforeInteractive"/>
     </Page>
   );

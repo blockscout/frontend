@@ -1,11 +1,9 @@
 import { Box, Button, Stack, Link, Text, Skeleton, useDisclosure } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
-import type { ApiKey, ApiKeys } from 'types/api/account';
-import { QueryKeys } from 'types/client/accountQueries';
+import type { ApiKey } from 'types/api/account';
 
-import useFetch from 'lib/hooks/useFetch';
+import useApiQuery from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import { space } from 'lib/html-entities';
@@ -17,8 +15,8 @@ import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import SkeletonAccountMobile from 'ui/shared/SkeletonAccountMobile';
-import SkeletonTable from 'ui/shared/SkeletonTable';
+import SkeletonListAccount from 'ui/shared/skeletons/SkeletonListAccount';
+import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 
 const DATA_LIMIT = 3;
 
@@ -26,13 +24,12 @@ const ApiKeysPage: React.FC = () => {
   const apiKeyModalProps = useDisclosure();
   const deleteModalProps = useDisclosure();
   const isMobile = useIsMobile();
-  const fetch = useFetch();
   useRedirectForInvalidAuthToken();
 
   const [ apiKeyModalData, setApiKeyModalData ] = useState<ApiKey>();
   const [ deleteModalData, setDeleteModalData ] = useState<ApiKey>();
 
-  const { data, isLoading, isError } = useQuery<unknown, unknown, ApiKeys>([ QueryKeys.apiKeys ], async() => await fetch('/node-api/account/api-keys'));
+  const { data, isLoading, isError } = useApiQuery('api_keys');
 
   const onEditClick = useCallback((data: ApiKey) => {
     setApiKeyModalData(data);
@@ -63,7 +60,7 @@ const ApiKeysPage: React.FC = () => {
 
   const content = (() => {
     if (isLoading && !data) {
-      const loader = isMobile ? <SkeletonAccountMobile/> : (
+      const loader = isMobile ? <SkeletonListAccount/> : (
         <>
           <SkeletonTable columns={ [ '100%', '108px' ] }/>
           <Skeleton height="48px" width="156px" marginTop={ 8 }/>

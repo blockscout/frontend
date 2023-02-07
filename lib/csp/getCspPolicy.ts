@@ -55,6 +55,7 @@ function makePolicyMap() {
 
     'connect-src': [
       KEY_WORDS.SELF,
+      ...MAIN_DOMAINS,
 
       // webpack hmr in safari doesn't recognize localhost as 'self' for some reason
       appConfig.isDev ? 'ws://localhost:3000/_next/webpack-hmr' : '',
@@ -62,10 +63,21 @@ function makePolicyMap() {
       // client error monitoring
       'sentry.io', '*.sentry.io',
 
+      // API
+      appConfig.api.endpoint,
       appConfig.api.socket,
+      appConfig.statsApi.endpoint,
+
+      // chain RPC server
+      appConfig.network.rpcUrl,
 
       // ad
       'request-global.czilladx.com',
+
+      // walletconnect
+      '*.walletconnect.com',
+      'wss://*.bridge.walletconnect.org',
+      'wss://www.walletlink.org',
     ],
 
     'script-src': [
@@ -125,6 +137,10 @@ function makePolicyMap() {
 
       // ad
       'servedbyadbutler.com',
+      'cdn.coinzilla.io',
+
+      // walletconnect
+      '*.walletconnect.com',
     ],
 
     'font-src': [

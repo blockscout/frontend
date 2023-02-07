@@ -16,8 +16,8 @@ const size = {
   xs: defineStyle({
     fontSize: 'md',
     lineHeight: '24px',
-    px: '4px',
-    py: '12px',
+    px: '8px',
+    py: '4px',
     h: '32px',
     borderRadius: 'base',
   }),

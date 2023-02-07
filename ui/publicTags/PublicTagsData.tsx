@@ -1,17 +1,15 @@
 import { Box, Button, Skeleton, useDisclosure } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
-import type { PublicTags, PublicTag } from 'types/api/account';
-import { QueryKeys } from 'types/client/accountQueries';
+import type { PublicTag } from 'types/api/account';
 
-import useFetch from 'lib/hooks/useFetch';
+import useApiQuery from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import PublicTagListItem from 'ui/publicTags/PublicTagTable/PublicTagListItem';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import SkeletonAccountMobile from 'ui/shared/SkeletonAccountMobile';
-import SkeletonTable from 'ui/shared/SkeletonTable';
+import SkeletonListAccount from 'ui/shared/skeletons/SkeletonListAccount';
+import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 
 import DeletePublicTagModal from './DeletePublicTagModal';
 import PublicTagTable from './PublicTagTable/PublicTagTable';
@@ -25,10 +23,8 @@ const PublicTagsData = ({ changeToFormScreen, onTagDelete }: Props) => {
   const deleteModalProps = useDisclosure();
   const [ deleteModalData, setDeleteModalData ] = useState<PublicTag>();
   const isMobile = useIsMobile();
-  const fetch = useFetch();
 
-  const { data, isLoading, isError } = useQuery<unknown, unknown, PublicTags>([ QueryKeys.publicTags ], async() =>
-    await fetch('/node-api/account/public-tags'));
+  const { data, isLoading, isError } = useApiQuery('public_tags');
 
   const onDeleteModalClose = useCallback(() => {
     setDeleteModalData(undefined);
@@ -58,7 +54,7 @@ const PublicTagsData = ({ changeToFormScreen, onTagDelete }: Props) => {
   );
 
   if (isLoading) {
-    const loader = isMobile ? <SkeletonAccountMobile/> : (
+    const loader = isMobile ? <SkeletonListAccount/> : (
       <>
         <SkeletonTable columns={ [ '50%', '25%', '25%', '108px' ] }/>
         <Skeleton height="48px" width="270px" marginTop={ 8 }/>

@@ -5,11 +5,11 @@ import type { AppProps } from 'next/app';
 import React, { useState } from 'react';
 
 import appConfig from 'configs/app/config';
+import type { ResourceError } from 'lib/api/resources';
 import { AppContextProvider } from 'lib/appContext';
 import { Chakra } from 'lib/Chakra';
 import { ScrollDirectionProvider } from 'lib/contexts/scrollDirection';
 import useConfigSentry from 'lib/hooks/useConfigSentry';
-import type { ErrorType } from 'lib/hooks/useFetch';
 import { SocketProvider } from 'lib/socket/context';
 import theme from 'theme';
 import AppError from 'ui/shared/AppError/AppError';
@@ -22,8 +22,8 @@ function MyApp({ Component, pageProps }: AppProps) {
       queries: {
         refetchOnWindowFocus: false,
         retry: (failureCount, _error) => {
-          const error = _error as ErrorType<{ status: number }>;
-          const status = error?.error?.status;
+          const error = _error as ResourceError<{ status: number }>;
+          const status = error?.status || error?.payload?.status;
           if (status && status >= 400 && status < 500) {
             // don't do retry for client error responses
             return false;

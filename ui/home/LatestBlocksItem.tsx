@@ -5,9 +5,7 @@ import {
   GridItem,
   HStack,
   Icon,
-  Link,
   Text,
-  useColorModeValue,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import React from 'react';
@@ -19,6 +17,7 @@ import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import link from 'lib/link/link';
 import BlockTimestamp from 'ui/blocks/BlockTimestamp';
 import AddressLink from 'ui/shared/address/AddressLink';
+import LinkInternal from 'ui/shared/LinkInternal';
 
 type Props = {
   block: Block;
@@ -36,21 +35,21 @@ const LatestBlocksItem = ({ block, h }: Props) => {
       transitionTimingFunction="linear"
       borderRadius="12px"
       border="1px solid"
-      borderColor={ useColorModeValue('gray.200', 'whiteAlpha.200') }
+      borderColor="divider"
       p={ 6 }
       h={ `${ h }px` }
       minWidth={{ base: '100%', lg: '280px' }}
     >
       <Flex justifyContent="space-between" alignItems="center" mb={ 3 }>
         <HStack spacing={ 2 }>
-          <Icon as={ blockIcon } boxSize="30px" color={ useColorModeValue('blue.600', 'blue.300') }/>
-          <Link
+          <Icon as={ blockIcon } boxSize="30px" color="link"/>
+          <LinkInternal
             href={ link('block', { id: String(block.height) }) }
             fontSize="xl"
             fontWeight="500"
           >
             { block.height }
-          </Link>
+          </LinkInternal>
         </HStack>
         <BlockTimestamp ts={ block.timestamp } isEnabled fontSize="sm"/>
       </Flex>
@@ -61,7 +60,7 @@ const LatestBlocksItem = ({ block, h }: Props) => {
         <GridItem>Reward</GridItem>
         <GridItem><Text variant="secondary">{ totalReward.toFixed() }</Text></GridItem>
         <GridItem>Miner</GridItem>
-        <GridItem><AddressLink alias={ block.miner.name } hash={ block.miner.hash } truncation="constant" maxW="100%"/></GridItem>
+        <GridItem><AddressLink type="address" alias={ block.miner.name } hash={ block.miner.hash } truncation="constant" maxW="100%"/></GridItem>
       </Grid>
     </Box>
   );

@@ -13,12 +13,14 @@ import ColorModeToggler from './ColorModeToggler';
 
 type Props = {
   isHomePage?: boolean;
-  hideOnScrollDown?: boolean;
+  renderSearchBar?: () => React.ReactNode;
 }
 
-const Header = ({ hideOnScrollDown, isHomePage }: Props) => {
+const Header = ({ isHomePage, renderSearchBar }: Props) => {
   const bgColor = useColorModeValue('white', 'black');
   const scrollDirection = useScrollDirection();
+
+  const searchBar = renderSearchBar ? renderSearchBar() : <SearchBar/>;
 
   return (
     <>
@@ -37,13 +39,13 @@ const Header = ({ hideOnScrollDown, isHomePage }: Props) => {
           zIndex="sticky2"
           transitionProperty="box-shadow"
           transitionDuration="slow"
-          boxShadow={ !hideOnScrollDown && scrollDirection === 'down' ? 'md' : 'none' }
+          boxShadow={ scrollDirection === 'down' ? 'md' : 'none' }
         >
           <Burger/>
           <NetworkLogo/>
           <ProfileMenuMobile/>
         </Flex>
-        { !isHomePage && <SearchBar withShadow={ !hideOnScrollDown }/> }
+        { !isHomePage && searchBar }
       </Box>
       <Box
         paddingX={ 12 }
@@ -61,7 +63,7 @@ const Header = ({ hideOnScrollDown, isHomePage }: Props) => {
             paddingBottom="52px"
           >
             <Box width="100%">
-              <SearchBar/>
+              { searchBar }
             </Box>
             <ColorModeToggler/>
             <ProfileMenuDesktop/>

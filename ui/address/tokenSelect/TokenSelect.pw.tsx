@@ -6,13 +6,14 @@ import * as coinBalanceMock from 'mocks/address/coinBalanceHistory';
 import * as tokenBalanceMock from 'mocks/address/tokenBalance';
 import * as socketServer from 'playwright/fixtures/socketServer';
 import TestApp from 'playwright/TestApp';
+import buildApiUrl from 'playwright/utils/buildApiUrl';
 import MockAddressPage from 'ui/address/testUtils/MockAddressPage';
 
 import TokenSelect from './TokenSelect';
 
 const ASSET_URL = 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/poa/assets/0xb2a90505dc6680a7a695f7975d0d32EeF610f456/logo.png';
-const TOKENS_API_URL = '/node-api/addresses/1/token-balances';
-const ADDRESS_API_URL = '/node-api/addresses/1';
+const TOKENS_API_URL = buildApiUrl('address_token_balances', { id: '1' });
+const ADDRESS_API_URL = buildApiUrl('address', { id: '1' });
 const hooksConfig = {
   router: {
     query: { id: '1' },
@@ -121,6 +122,37 @@ test('filter', async({ mount, page }) => {
   );
   await page.getByRole('button', { name: /select/i }).click();
   await page.getByPlaceholder('Search by token name').type('c');
+
+  await expect(page).toHaveScreenshot({ clip: CLIPPING_AREA });
+});
+
+base('long values', async({ mount, page }) => {
+  await page.route(ASSET_URL, (route) => {
+    return route.fulfill({
+      status: 200,
+      path: './playwright/image_s.jpg',
+    });
+  });
+  await page.route(ADDRESS_API_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify({ hash: '1' }),
+  }), { times: 1 });
+  await page.route(TOKENS_API_URL, async(route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify(tokenBalanceMock.longValuesList),
+  }), { times: 1 });
+
+  await mount(
+    <TestApp>
+      <MockAddressPage>
+        <Flex>
+          <TokenSelect/>
+        </Flex>
+      </MockAddressPage>
+    </TestApp>,
+    { hooksConfig },
+  );
+  await page.getByRole('button', { name: /select/i }).click();
 
   await expect(page).toHaveScreenshot({ clip: CLIPPING_AREA });
 });

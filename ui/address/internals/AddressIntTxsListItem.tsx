@@ -1,4 +1,4 @@
-import { Flex, Tag, Icon, Box, HStack, Text, Link } from '@chakra-ui/react';
+import { Flex, Tag, Icon, Box, HStack, Text } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -8,11 +8,12 @@ import appConfig from 'configs/app/config';
 import eastArrowIcon from 'icons/arrows/east.svg';
 import dayjs from 'lib/date/dayjs';
 import link from 'lib/link/link';
-import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import InOutTag from 'ui/shared/InOutTag';
+import LinkInternal from 'ui/shared/LinkInternal';
+import ListItemMobile from 'ui/shared/ListItemMobile';
 import TxStatus from 'ui/shared/TxStatus';
 import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
@@ -38,7 +39,7 @@ const TxInternalsListItem = ({
   const isIn = Boolean(currentAddress && currentAddress === to?.hash);
 
   return (
-    <AccountListItemMobile rowGap={ 3 }>
+    <ListItemMobile rowGap={ 3 }>
       <Flex>
         { typeTitle && <Tag colorScheme="cyan" mr={ 2 }>{ typeTitle }</Tag> }
         <TxStatus status={ success ? 'ok' : 'error' } errorText={ error }/>
@@ -49,20 +50,20 @@ const TxInternalsListItem = ({
       </Flex>
       <HStack spacing={ 1 }>
         <Text fontSize="sm" fontWeight={ 500 }>Block</Text>
-        <Link href={ link('block', { id: block.toString() }) }>{ block }</Link>
+        <LinkInternal href={ link('block', { id: block.toString() }) }>{ block }</LinkInternal>
       </HStack>
       <Box w="100%" display="flex" columnGap={ 3 }>
         <Address width="calc((100% - 48px) / 2)">
-          <AddressIcon hash={ from.hash }/>
-          <AddressLink ml={ 2 } fontWeight="500" hash={ from.hash }/>
+          <AddressIcon address={ from }/>
+          <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ from.hash } isDisabled={ isOut }/>
         </Address>
         { (isIn || isOut) ?
           <InOutTag isIn={ isIn } isOut={ isOut }/> :
           <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500"/>
         }
         <Address width="calc((100% - 48px) / 2)">
-          <AddressIcon hash={ toData.hash }/>
-          <AddressLink ml={ 2 } fontWeight="500" hash={ toData.hash }/>
+          <AddressIcon address={ toData }/>
+          <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ toData.hash } isDisabled={ isIn }/>
         </Address>
       </Box>
       <HStack spacing={ 3 }>
@@ -71,7 +72,7 @@ const TxInternalsListItem = ({
           { BigNumber(value).div(BigNumber(10 ** appConfig.network.currency.decimals)).toFormat() }
         </Text>
       </HStack>
-    </AccountListItemMobile>
+    </ListItemMobile>
   );
 };
 

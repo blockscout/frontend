@@ -4,10 +4,11 @@ import React from 'react';
 
 import { base as txMock } from 'mocks/txs/tx';
 import TestApp from 'playwright/TestApp';
+import buildApiUrl from 'playwright/utils/buildApiUrl';
 
 import AddressTxs from './AddressTxs';
 
-const API_URL = '/node-api/addresses/0xd789a607CEac2f0E14867de4EB15b15C9FFB5859/transactions';
+const API_URL = buildApiUrl('address_txs', { id: '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859' });
 
 const hooksConfig = {
   router: {
@@ -28,8 +29,6 @@ test('address txs +@mobile +@desktop-xl', async({ mount, page }) => {
     </TestApp>,
     { hooksConfig },
   );
-
-  await page.waitForResponse(API_URL),
 
   await expect(component).toHaveScreenshot();
 });

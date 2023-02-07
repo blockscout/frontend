@@ -1,13 +1,9 @@
 import { Box, Center, useColorMode } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-import type { JsonRpcUrlResponse } from 'types/api/jsonRpcUrl';
 import type { AppItemOverview } from 'types/client/apps';
-import { QueryKeys } from 'types/client/queries';
 
 import appConfig from 'configs/app/config';
-import useFetch from 'lib/hooks/useFetch';
 import link from 'lib/link/link';
 import ContentLoader from 'ui/shared/ContentLoader';
 import Page from 'ui/shared/Page/Page';
@@ -20,18 +16,11 @@ type Props = {
 const MarketplaceApp = ({ app, isLoading }: Props) => {
   const [ isFrameLoading, setIsFrameLoading ] = useState(isLoading);
   const { colorMode } = useColorMode();
-  const fetch = useFetch();
   const ref = useRef<HTMLIFrameElement>(null);
 
   const handleIframeLoad = useCallback(() => {
     setIsFrameLoading(false);
   }, []);
-
-  const { data: jsonRpcUrlResponse } = useQuery<unknown, unknown, JsonRpcUrlResponse>(
-    [ QueryKeys.jsonRpcUrl ],
-    async() => await fetch(`/node-api/config/json-rpc-url`),
-    { refetchOnMount: false },
-  );
 
   useEffect(() => {
     if (app && !isFrameLoading) {
@@ -43,12 +32,12 @@ const MarketplaceApp = ({ app, isLoading }: Props) => {
         blockscoutNetworkName: appConfig.network.name,
         blockscoutNetworkId: Number(appConfig.network.id),
         blockscoutNetworkCurrency: appConfig.network.currency,
-        blockscoutNetworkRpc: jsonRpcUrlResponse?.json_rpc_url,
+        blockscoutNetworkRpc: appConfig.network.rpcUrl,
       };
 
       ref?.current?.contentWindow?.postMessage(message, app.url);
     }
-  }, [ isFrameLoading, app, colorMode, ref, jsonRpcUrlResponse ]);
+  }, [ isFrameLoading, app, colorMode, ref ]);
 
   const sandboxAttributeValue = 'allow-forms allow-orientation-lock ' +
       'allow-pointer-lock allow-popups-to-escape-sandbox ' +

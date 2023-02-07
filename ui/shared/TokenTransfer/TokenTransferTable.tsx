@@ -1,8 +1,9 @@
-import { Table, Tbody, Tr, Th } from '@chakra-ui/react';
+import { Table, Tbody, Tr, Th, Td } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
+import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import { default as Thead } from 'ui/shared/TheadSticky';
 import TokenTransferTableItem from 'ui/shared/TokenTransfer/TokenTransferTableItem';
 
@@ -12,9 +13,21 @@ interface Props {
   showTxInfo?: boolean;
   top: number;
   enableTimeIncrement?: boolean;
+  showSocketInfo?: boolean;
+  socketInfoAlert?: string;
+  socketInfoNum?: number;
 }
 
-const TokenTransferTable = ({ data, baseAddress, showTxInfo, top, enableTimeIncrement }: Props) => {
+const TokenTransferTable = ({
+  data,
+  baseAddress,
+  showTxInfo,
+  top,
+  enableTimeIncrement,
+  showSocketInfo,
+  socketInfoAlert,
+  socketInfoNum,
+}: Props) => {
 
   return (
     <Table variant="simple" size="sm">
@@ -31,8 +44,28 @@ const TokenTransferTable = ({ data, baseAddress, showTxInfo, top, enableTimeIncr
         </Tr>
       </Thead>
       <Tbody>
-        { data.map((item, index) => (
-          <TokenTransferTableItem key={ index } { ...item } baseAddress={ baseAddress } showTxInfo={ showTxInfo } enableTimeIncrement={ enableTimeIncrement }/>
+        { showSocketInfo && (
+          <Tr>
+            <Td colSpan={ 10 } p={ 0 }>
+              <SocketNewItemsNotice
+                borderRadius={ 0 }
+                pl="10px"
+                url={ window.location.href }
+                alert={ socketInfoAlert }
+                num={ socketInfoNum }
+                type="token_transfer"
+              />
+            </Td>
+          </Tr>
+        ) }
+        { data.map((item) => (
+          <TokenTransferTableItem
+            key={ item.tx_hash + item.block_hash + item.log_index }
+            { ...item }
+            baseAddress={ baseAddress }
+            showTxInfo={ showTxInfo }
+            enableTimeIncrement={ enableTimeIncrement }
+          />
         )) }
       </Tbody>
     </Table>

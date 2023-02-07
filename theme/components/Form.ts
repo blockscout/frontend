@@ -4,6 +4,7 @@ import type { StyleFunctionProps } from '@chakra-ui/theme-tools';
 import { getColor } from '@chakra-ui/theme-tools';
 
 import getDefaultFormColors from '../utils/getDefaultFormColors';
+import FancySelect from './FancySelect';
 import FormLabel from './FormLabel';
 import Input from './Input';
 import Textarea from './Textarea';
@@ -57,22 +58,32 @@ function getFloatingVariantStylesForSize(size: 'md' | 'lg', props: StyleFunction
         label: activeLabelStyles,
         'input, textarea': activeInputStyles,
       },
+      '&[data-active=true] label': activeLabelStyles,
 
       // label styles
       label: FormLabel.sizes?.[size](props) || {},
       'input:not(:placeholder-shown) + label, textarea:not(:placeholder-shown) + label': activeLabelStyles,
-      'input[aria-invalid=true] + label, textarea[aria-invalid=true] + label': {
+      [`
+        input[aria-invalid=true] + label, 
+        textarea[aria-invalid=true] + label,
+        &[aria-invalid=true] label
+      `]: {
         color: getColor(theme, errorColor),
       },
 
       // input styles
       input: Input.sizes?.[size].field,
+      'input[aria-autocomplete=list]': FancySelect.sizes[size].field,
       textarea: Textarea.sizes?.[size],
       'input, textarea': {
         padding: inputPx,
       },
       'input:not(:placeholder-shown), textarea:not(:placeholder-shown)': activeInputStyles,
-      'input[disabled] + label, textarea[disabled] + label': {
+      [`
+        input[disabled] + label, 
+        textarea[disabled] + label,
+        &[aria-disabled=true] label
+      `]: {
         backgroundColor: 'transparent',
       },
 
@@ -80,7 +91,11 @@ function getFloatingVariantStylesForSize(size: 'md' | 'lg', props: StyleFunction
       'input:not(:placeholder-shown) + label .chakra-form__required-indicator, textarea:not(:placeholder-shown) + label .chakra-form__required-indicator': {
         color: getColor(theme, focusPlaceholderColor),
       },
-      'input[aria-invalid=true] + label .chakra-form__required-indicator, textarea[aria-invalid=true] + label .chakra-form__required-indicator': {
+      [`
+        input[aria-invalid=true] + label .chakra-form__required-indicator,
+        textarea[aria-invalid=true] + label .chakra-form__required-indicator,
+        &[aria-invalid=true] .chakra-form__required-indicator
+      `]: {
         color: getColor(theme, errorColor),
       },
     },

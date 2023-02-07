@@ -18,6 +18,10 @@ const ActionBar = ({ children, className }: Props) => {
   const isSticky = useIsSticky(ref, TOP_UP + 5);
   const bgColor = useColorModeValue('white', 'black');
 
+  if (!React.Children.toArray(children).filter(Boolean).length) {
+    return null;
+  }
+
   return (
     <Flex
       className={ className }
@@ -30,7 +34,7 @@ const ActionBar = ({ children, className }: Props) => {
       position="sticky"
       top={{ base: scrollDirection === 'down' ? `${ TOP_DOWN }px` : `${ TOP_UP }px`, lg: 0 }}
       transitionProperty="top,box-shadow,background-color,color"
-      transitionDuration="slow"
+      transitionDuration="normal"
       zIndex={{ base: 'sticky2', lg: 'docked' }}
       boxShadow={{ base: isSticky ? 'md' : 'none', lg: 'none' }}
       ref={ ref }

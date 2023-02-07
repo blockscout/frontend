@@ -3,8 +3,9 @@ import { useQueryClient } from '@tanstack/react-query';
 import React, { useCallback } from 'react';
 
 import type { CustomAbi, CustomAbis } from 'types/api/account';
-import { QueryKeys } from 'types/client/accountQueries';
 
+import { resourceKey } from 'lib/api/resources';
+import useApiFetch from 'lib/api/useApiFetch';
 import DeleteModal from 'ui/shared/DeleteModal';
 
 type Props = {
@@ -16,13 +17,17 @@ type Props = {
 const DeleteCustomAbiModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
 
   const queryClient = useQueryClient();
+  const apiFetch = useApiFetch();
 
   const mutationFn = useCallback(() => {
-    return fetch(`/node-api/account/custom-abis/${ data.id }`, { method: 'DELETE' });
-  }, [ data ]);
+    return apiFetch('custom_abi', {
+      pathParams: { id: String(data.id) },
+      fetchParams: { method: 'DELETE' },
+    });
+  }, [ apiFetch, data.id ]);
 
   const onSuccess = useCallback(async() => {
-    queryClient.setQueryData([ QueryKeys.customAbis ], (prevData: CustomAbis | undefined) => {
+    queryClient.setQueryData([ resourceKey('custom_abi') ], (prevData: CustomAbis | undefined) => {
       return prevData?.filter((item) => item.id !== data.id);
     });
   }, [ data, queryClient ]);

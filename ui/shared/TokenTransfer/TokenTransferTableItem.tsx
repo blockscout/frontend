@@ -5,7 +5,6 @@ import React from 'react';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import AdditionalInfoButton from 'ui/shared/AdditionalInfoButton';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -13,6 +12,7 @@ import InOutTag from 'ui/shared/InOutTag';
 import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
 import { getTokenTransferTypeText } from 'ui/shared/TokenTransfer/helpers';
 import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
+import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 
 type Props = TokenTransfer & {
   baseAddress?: string;
@@ -44,9 +44,9 @@ const TokenTransferTableItem = ({
 
   return (
     <Tr alignItems="top">
-      { showTxInfo && (
+      { showTxInfo && txHash && (
         <Td>
-          <AdditionalInfoButton/>
+          <TxAdditionalInfo hash={ txHash }/>
         </Td>
       ) }
       <Td>
@@ -59,7 +59,7 @@ const TokenTransferTableItem = ({
       <Td lineHeight="30px">
         { 'token_id' in total ? <TokenTransferNft hash={ token.address } id={ total.token_id }/> : '-' }
       </Td>
-      { showTxInfo && (
+      { showTxInfo && txHash && (
         <Td>
           <Address display="inline-flex" maxW="100%" fontWeight={ 600 } lineHeight="30px">
             <AddressLink type="transaction" hash={ txHash }/>
@@ -69,8 +69,8 @@ const TokenTransferTableItem = ({
       ) }
       <Td>
         <Address display="inline-flex" maxW="100%" lineHeight="30px">
-          <AddressIcon hash={ from.hash }/>
-          <AddressLink ml={ 2 } fontWeight="500" hash={ from.hash } alias={ from.name } flexGrow={ 1 }/>
+          <AddressIcon address={ from }/>
+          <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ from.hash } alias={ from.name } flexGrow={ 1 } isDisabled={ baseAddress === from.hash }/>
         </Address>
       </Td>
       { baseAddress && (
@@ -80,8 +80,8 @@ const TokenTransferTableItem = ({
       ) }
       <Td>
         <Address display="inline-flex" maxW="100%" lineHeight="30px">
-          <AddressIcon hash={ to.hash }/>
-          <AddressLink ml={ 2 } fontWeight="500" hash={ to.hash } alias={ to.name } flexGrow={ 1 }/>
+          <AddressIcon address={ to }/>
+          <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ to.hash } alias={ to.name } flexGrow={ 1 } isDisabled={ baseAddress === to.hash }/>
         </Address>
       </Td>
       <Td isNumeric verticalAlign="top" lineHeight="30px">

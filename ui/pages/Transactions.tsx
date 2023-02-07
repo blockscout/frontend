@@ -2,11 +2,11 @@ import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { QueryKeys } from 'types/client/queries';
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
 import appConfig from 'configs/app/config';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import useNewTxsSocket from 'lib/hooks/useNewTxsSocket';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -26,20 +26,30 @@ const Transactions = () => {
   const isMobile = useIsMobile();
   const filter = router.query.tab === 'pending' ? 'pending' : 'validated';
   const txsQuery = useQueryWithPages({
-    apiPath: '/node-api/transactions',
-    queryName: filter === 'validated' ? QueryKeys.txsValidate : QueryKeys.txsPending,
+    resourceName: filter === 'validated' ? 'txs_validated' : 'txs_pending',
     filters: { filter },
   });
 
+  const { num, socketAlert } = useNewTxsSocket();
+
+  const isFirstPage = txsQuery.pagination.page === 1;
+
   const tabs: Array<RoutedTab> = [
-    { id: 'validated', title: verifiedTitle, component: <TxsContent query={ txsQuery }/> },
-    { id: 'pending', title: 'Pending', component: <TxsContent query={ txsQuery } showBlockInfo={ false }/> },
+    {
+      id: 'validated',
+      title: verifiedTitle,
+      component: <TxsContent query={ txsQuery } showSocketInfo={ isFirstPage } socketInfoNum={ num } socketInfoAlert={ socketAlert }/> },
+    {
+      id: 'pending',
+      title: 'Pending',
+      component: <TxsContent query={ txsQuery } showBlockInfo={ false } showSocketInfo={ isFirstPage } socketInfoNum={ num } socketInfoAlert={ socketAlert }/>,
+    },
   ];
 
   return (
-    <Page hideMobileHeaderOnScrollDown>
+    <Page>
       <Box h="100%">
-        <PageTitle text="Transactions"/>
+        <PageTitle text="Transactions" withTextAd/>
         <RoutedTabs
           tabs={ tabs }
           tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }

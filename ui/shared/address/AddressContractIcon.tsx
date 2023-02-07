@@ -1,4 +1,4 @@
-import { Box, chakra, Tooltip } from '@chakra-ui/react';
+import { Box, chakra, Tooltip, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 type Props = {
@@ -6,6 +6,9 @@ type Props = {
 }
 
 const AddressContractIcon = ({ className }: Props) => {
+  const bgColor = useColorModeValue('gray.200', 'gray.600');
+  const color = useColorModeValue('gray.400', 'gray.200');
+
   return (
     <Tooltip label="Contract">
       <Box
@@ -13,12 +16,15 @@ const AddressContractIcon = ({ className }: Props) => {
         width="24px"
         height="24px"
         borderRadius="12px"
-        backgroundColor="gray.200"
-        color="gray.400"
+        backgroundColor={ bgColor }
+        color={ color }
         display="inline-flex"
         alignItems="center"
         justifyContent="center"
         fontWeight="700"
+        transitionProperty="background-color,color"
+        transitionDuration="normal"
+        transitionTimingFunction="ease"
       >
           С
       </Box>

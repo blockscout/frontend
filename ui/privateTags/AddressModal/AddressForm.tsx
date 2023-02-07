@@ -9,11 +9,11 @@ import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
 import { useForm, Controller } from 'react-hook-form';
 
 import type { AddressTag, AddressTagErrors } from 'types/api/account';
-import { QueryKeys } from 'types/client/accountQueries';
 
+import type { ResourceErrorAccount } from 'lib/api/resources';
+import { resourceKey } from 'lib/api/resources';
+import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/getErrorMessage';
-import type { ErrorType } from 'lib/hooks/useFetch';
-import useFetch from 'lib/hooks/useFetch';
 import { ADDRESS_REGEXP } from 'lib/validations/address';
 import AddressInput from 'ui/shared/AddressInput';
 import TagInput from 'ui/shared/TagInput';
@@ -32,9 +32,9 @@ type Inputs = {
 }
 
 const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
-  const fetch = useFetch();
+  const apiFetch = useApiFetch();
   const [ pending, setPending ] = useState(false);
-  const { control, handleSubmit, formState: { errors, isValid, isDirty }, setError } = useForm<Inputs>({
+  const { control, handleSubmit, formState: { errors, isDirty }, setError } = useForm<Inputs>({
     mode: 'onTouched',
     defaultValues: {
       address: data?.address_hash || '',
@@ -54,24 +54,28 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
 
     const isEdit = data?.id;
     if (isEdit) {
-      return fetch(`/node-api/account/private-tags/address/${ data.id }`, { method: 'PUT', body });
+      return apiFetch('private_tags_address', {
+        pathParams: { id: data.id },
+        fetchParams: { method: 'PUT', body },
+      });
     }
 
-    return fetch('/node-api/account/private-tags/address', { method: 'POST', body });
+    return apiFetch('private_tags_address', { fetchParams: { method: 'POST', body } });
   }, {
-    onError: (e: ErrorType<AddressTagErrors>) => {
+    onError: (error: ResourceErrorAccount<AddressTagErrors>) => {
       setPending(false);
-      if (e?.error?.address_hash || e?.error?.name) {
-        e?.error?.address_hash && setError('address', { type: 'custom', message: getErrorMessage(e.error, 'address_hash') });
-        e?.error?.name && setError('tag', { type: 'custom', message: getErrorMessage(e.error, 'name') });
-      } else if (e?.error?.identity_id) {
-        setError('address', { type: 'custom', message: getErrorMessage(e.error, 'identity_id') });
+      const errorMap = error.payload?.errors;
+      if (errorMap?.address_hash || errorMap?.name) {
+        errorMap?.address_hash && setError('address', { type: 'custom', message: getErrorMessage(errorMap, 'address_hash') });
+        errorMap?.name && setError('tag', { type: 'custom', message: getErrorMessage(errorMap, 'name') });
+      } else if (errorMap?.identity_id) {
+        setError('address', { type: 'custom', message: getErrorMessage(errorMap, 'identity_id') });
       } else {
         setAlertVisible(true);
       }
     },
     onSuccess: () => {
-      queryClient.refetchQueries([ QueryKeys.addressTags ]).then(() => {
+      queryClient.refetchQueries([ resourceKey('private_tags_address') ]).then(() => {
         onClose();
         setPending(false);
       });
@@ -120,7 +124,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
         <Button
           size="lg"
           type="submit"
-          disabled={ !isValid || !isDirty }
+          disabled={ !isDirty }
           isLoading={ pending }
         >
           { data ? 'Save changes' : 'Add tag' }

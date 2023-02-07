@@ -3,9 +3,9 @@ import { useQueryClient } from '@tanstack/react-query';
 import React, { useCallback } from 'react';
 
 import type { ApiKey, ApiKeys } from 'types/api/account';
-import { QueryKeys } from 'types/client/accountQueries';
 
-import useFetch from 'lib/hooks/useFetch';
+import { resourceKey } from 'lib/api/resources';
+import useApiFetch from 'lib/api/useApiFetch';
 import DeleteModal from 'ui/shared/DeleteModal';
 
 type Props = {
@@ -14,16 +14,19 @@ type Props = {
   data: ApiKey;
 }
 
-const DeleteAddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
+const DeleteApiKeyModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
   const queryClient = useQueryClient();
-  const fetch = useFetch();
+  const apiFetch = useApiFetch();
 
   const mutationFn = useCallback(() => {
-    return fetch(`/node-api/account/api-keys/${ data.api_key }`, { method: 'DELETE' });
-  }, [ data.api_key, fetch ]);
+    return apiFetch('api_keys', {
+      pathParams: { id: data.api_key },
+      fetchParams: { method: 'DELETE' },
+    });
+  }, [ data.api_key, apiFetch ]);
 
   const onSuccess = useCallback(async() => {
-    queryClient.setQueryData([ QueryKeys.apiKeys ], (prevData: ApiKeys | undefined) => {
+    queryClient.setQueryData([ resourceKey('api_keys') ], (prevData: ApiKeys | undefined) => {
       return prevData?.filter((item) => item.api_key !== data.api_key);
     });
   }, [ data, queryClient ]);
@@ -46,4 +49,4 @@ const DeleteAddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
   );
 };
 
-export default DeleteAddressModal;
+export default DeleteApiKeyModal;

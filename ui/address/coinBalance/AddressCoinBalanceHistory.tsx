@@ -9,11 +9,11 @@ import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
 import Pagination from 'ui/shared/Pagination';
-import SkeletonTable from 'ui/shared/SkeletonTable';
+import SkeletonList from 'ui/shared/skeletons/SkeletonList';
+import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 import { default as Thead } from 'ui/shared/TheadSticky';
 
 import AddressCoinBalanceListItem from './AddressCoinBalanceListItem';
-import AddressCoinBalanceSkeletonMobile from './AddressCoinBalanceSkeletonMobile';
 import AddressCoinBalanceTableItem from './AddressCoinBalanceTableItem';
 
 interface Props {
@@ -29,11 +29,11 @@ const AddressCoinBalanceHistory = ({ query }: Props) => {
     if (query.isLoading) {
       return (
         <>
-          <Hide below="lg">
+          <Hide below="lg" ssr={ false }>
             <SkeletonTable columns={ [ '25%', '25%', '25%', '25%', '120px' ] }/>
           </Hide>
-          <Show below="lg">
-            <AddressCoinBalanceSkeletonMobile/>
+          <Show below="lg" ssr={ false }>
+            <SkeletonList/>
           </Show>
         </>
       );
@@ -45,15 +45,15 @@ const AddressCoinBalanceHistory = ({ query }: Props) => {
 
     return (
       <>
-        <Hide below="lg">
+        <Hide below="lg" ssr={ false }>
           <Table variant="simple" size="sm">
             <Thead top={ 80 }>
               <Tr>
-                <Th width="25%">Block</Th>
-                <Th width="25%">Txn</Th>
-                <Th width="25%">Age</Th>
-                <Th width="25%" isNumeric pr={ 1 }/>
-                <Th width="120px" isNumeric>Balance { appConfig.network.currency.symbol }</Th>
+                <Th width="20%">Block</Th>
+                <Th width="20%">Txn</Th>
+                <Th width="20%">Age</Th>
+                <Th width="20%" isNumeric pr={ 1 }>Balance { appConfig.network.currency.symbol }</Th>
+                <Th width="20%" isNumeric>Delta</Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -63,7 +63,7 @@ const AddressCoinBalanceHistory = ({ query }: Props) => {
             </Tbody>
           </Table>
         </Hide>
-        <Show below="lg">
+        <Show below="lg" ssr={ false }>
           { query.data.items.map((item) => (
             <AddressCoinBalanceListItem key={ item.block_number } { ...item } page={ query.pagination.page }/>
           )) }

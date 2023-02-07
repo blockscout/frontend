@@ -1,7 +1,13 @@
+import type { Address } from 'types/api/address';
 import type { AddressParam } from 'types/api/addressParams';
 
+import { publicTag, privateTag, watchlistName } from 'mocks/address/tag';
+import { tokenInfo } from 'mocks/tokens/tokenInfo';
+
+export const hash = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859';
+
 export const withName: AddressParam = {
-  hash: '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859',
+  hash: hash,
   implementation_name: null,
   is_contract: true,
   is_verified: null,
@@ -12,7 +18,7 @@ export const withName: AddressParam = {
 };
 
 export const withoutName: AddressParam = {
-  hash: '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859',
+  hash: hash,
   implementation_name: null,
   is_contract: true,
   is_verified: null,
@@ -20,4 +26,91 @@ export const withoutName: AddressParam = {
   private_tags: [],
   watchlist_names: [],
   public_tags: [],
+};
+
+export const token: Address = {
+  hash: hash,
+  implementation_name: null,
+  is_contract: true,
+  is_verified: false,
+  name: null,
+  private_tags: [],
+  watchlist_names: [],
+  public_tags: [],
+  token: tokenInfo,
+  block_number_balance_updated_at: 8201413,
+  coin_balance: '1',
+  creation_tx_hash: '0xc38cf7377bf72d6436f63c37b01b24d032101f20ec1849286dc703c712f10c98',
+  creator_address_hash: '0x34A9c688512ebdB575e82C50c9803F6ba2916E72',
+  exchange_rate: null,
+  implementation_address: null,
+  has_custom_methods_read: false,
+  has_custom_methods_write: false,
+  has_decompiled_code: false,
+  has_logs: false,
+  has_methods_read: false,
+  has_methods_read_proxy: false,
+  has_methods_write: false,
+  has_methods_write_proxy: false,
+  has_token_transfers: true,
+  has_tokens: true,
+  has_validated_blocks: false,
+};
+
+export const contract: Address = {
+  block_number_balance_updated_at: 30811263,
+  coin_balance: '27826501896887194214322205',
+  creation_tx_hash: '0xf2aff6501b632604c39978b47d309813d8a1bcca721864bbe86abf59704f195e',
+  creator_address_hash: '0x803ad3F50b9e1fF68615e8B053A186e1be288943',
+  exchange_rate: '0.04311',
+  has_custom_methods_read: false,
+  has_custom_methods_write: false,
+  has_decompiled_code: false,
+  has_logs: true,
+  has_methods_read: true,
+  has_methods_read_proxy: true,
+  has_methods_write: true,
+  has_methods_write_proxy: true,
+  has_token_transfers: false,
+  has_tokens: false,
+  has_validated_blocks: false,
+  hash: hash,
+  implementation_address: '0x2F4F4A52295940C576417d29F22EEb92B440eC89',
+  implementation_name: 'HomeBridge',
+  is_contract: true,
+  is_verified: true,
+  name: 'EternalStorageProxy',
+  private_tags: [ publicTag ],
+  public_tags: [ privateTag ],
+  token: null,
+  watchlist_names: [ watchlistName ],
+};
+
+export const validator: Address = {
+  block_number_balance_updated_at: 30811932,
+  coin_balance: '22910462800601256910890',
+  creation_tx_hash: null,
+  creator_address_hash: null,
+  exchange_rate: '0.00432018',
+  has_custom_methods_read: false,
+  has_custom_methods_write: false,
+  has_decompiled_code: false,
+  has_logs: false,
+  has_methods_read: false,
+  has_methods_read_proxy: false,
+  has_methods_write: false,
+  has_methods_write_proxy: false,
+  has_token_transfers: false,
+  has_tokens: false,
+  has_validated_blocks: true,
+  hash: hash,
+  implementation_address: null,
+  implementation_name: null,
+  is_contract: false,
+  is_verified: false,
+  name: 'Kiryl Ihnatsyeu',
+  private_tags: [],
+  public_tags: [],
+  token: null,
+  watchlist_names: [],
 };

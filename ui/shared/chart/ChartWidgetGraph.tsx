@@ -1,8 +1,11 @@
 import { useToken } from '@chakra-ui/react';
+import * as d3 from 'd3';
 import React, { useEffect, useMemo } from 'react';
 
-import type { TimeChartItem } from 'ui/shared/chart/types';
+import type { ChartMargin, TimeChartItem } from 'ui/shared/chart/types';
 
+import dayjs from 'lib/date/dayjs';
+import useClientRect from 'lib/hooks/useClientRect';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import ChartArea from 'ui/shared/chart/ChartArea';
 import ChartAxis from 'ui/shared/chart/ChartAxis';
@@ -11,8 +14,8 @@ import ChartLine from 'ui/shared/chart/ChartLine';
 import ChartOverlay from 'ui/shared/chart/ChartOverlay';
 import ChartSelectionX from 'ui/shared/chart/ChartSelectionX';
 import ChartTooltip from 'ui/shared/chart/ChartTooltip';
-import useChartSize from 'ui/shared/chart/useChartSize';
 import useTimeChartController from 'ui/shared/chart/useTimeChartController';
+import calculateInnerSize from 'ui/shared/chart/utils/calculateInnerSize';
 
 interface Props {
   isEnlarged?: boolean;
@@ -20,44 +23,59 @@ interface Props {
   items: Array<TimeChartItem>;
   onZoom: () => void;
   isZoomResetInitial: boolean;
+  margin?: ChartMargin;
 }
 
-const CHART_MARGIN = { bottom: 20, left: 30, right: 20, top: 10 };
+const MAX_SHOW_ITEMS = 100;
+const DEFAULT_CHART_MARGIN = { bottom: 20, left: 40, right: 20, top: 10 };
 
-const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title }: Props) => {
+const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title, margin }: Props) => {
   const isMobile = useIsMobile();
-  const ref = React.useRef<SVGSVGElement>(null);
   const color = useToken('colors', 'blue.200');
   const overlayRef = React.useRef<SVGRectElement>(null);
-  const chartId = useMemo(() => `chart-${ title.split(' ').join('') }`, [ title ]);
-  const [ range, setRange ] = React.useState<[ number, number ]>([ 0, Infinity ]);
-  const { innerWidth, innerHeight } = useChartSize(ref.current, CHART_MARGIN);
 
-  const displayedData = useMemo(() => items.slice(range[0], range[1]).map((d) =>
-    ({ ...d, date: new Date(d.date) })), [ items, range ]);
-  const chartData = [ { items: items, name: 'Value', color } ];
+  const [ rect, ref ] = useClientRect<SVGSVGElement>();
+  const chartMargin = { ...DEFAULT_CHART_MARGIN, ...margin };
+  const { innerWidth, innerHeight } = calculateInnerSize(rect, chartMargin);
 
-  const { yTickFormat, xScale, yScale } = useTimeChartController({
+  const chartId = `chart-${ title.split(' ').join('') }-${ isEnlarged ? 'fullscreen' : 'small' }`;
+  const [ range, setRange ] = React.useState<[ Date, Date ]>([ items[0].date, items[items.length - 1].date ]);
+
+  const rangedItems = useMemo(() =>
+    items.filter((item) => item.date >= range[0] && item.date <= range[1]),
+  [ items, range ]);
+  const isGroupedValues = rangedItems.length > MAX_SHOW_ITEMS;
+
+  const displayedData = useMemo(() => {
+    if (isGroupedValues) {
+      return groupChartItemsByWeekNumber(rangedItems);
+    } else {
+      return rangedItems;
+    }
+  }, [ isGroupedValues, rangedItems ]);
+  const chartData = [ { items: displayedData, name: 'Value', color } ];
+
+  const { xTickFormat, yTickFormat, xScale, yScale } = useTimeChartController({
     data: [ { items: displayedData, name: title, color } ],
     width: innerWidth,
     height: innerHeight,
   });
 
-  const handleRangeSelect = React.useCallback((nextRange: [ number, number ]) => {
-    setRange([ range[0] + nextRange[0], range[0] + nextRange[1] ]);
+  const handleRangeSelect = React.useCallback((nextRange: [ Date, Date ]) => {
+    setRange([ nextRange[0], nextRange[1] ]);
     onZoom();
-  }, [ onZoom, range ]);
+  }, [ onZoom ]);
 
   useEffect(() => {
     if (isZoomResetInitial) {
-      setRange([ 0, Infinity ]);
+      setRange([ items[0].date, items[items.length - 1].date ]);
     }
-  }, [ isZoomResetInitial ]);
+  }, [ isZoomResetInitial, items ]);
 
   return (
-    <svg width="100%" height="100%" ref={ ref } cursor="pointer" id={ chartId }>
+    <svg width="100%" height="100%" ref={ ref } cursor="pointer" id={ chartId } opacity={ rect ? 1 : 0 }>
 
-      <g transform={ `translate(${ CHART_MARGIN?.left || 0 },${ CHART_MARGIN?.top || 0 })` } opacity={ innerWidth ? 1 : 0 }>
+      <g transform={ `translate(${ chartMargin?.left || 0 },${ chartMargin?.top || 0 })` }>
         <ChartGridLine
           type="horizontal"
           scale={ yScale }
@@ -87,7 +105,7 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
           type="left"
           scale={ yScale }
           ticks={ isEnlarged ? 6 : 3 }
-          tickFormat={ yTickFormat }
+          tickFormatGenerator={ yTickFormat }
           disableAnimation
         />
 
@@ -97,6 +115,7 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
           transform={ `translate(0, ${ innerHeight })` }
           ticks={ isMobile ? 1 : 4 }
           anchorEl={ overlayRef.current }
+          tickFormatGenerator={ xTickFormat }
           disableAnimation
         />
 
@@ -105,6 +124,7 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
             chartId={ chartId }
             anchorEl={ overlayRef.current }
             width={ innerWidth }
+            tooltipWidth={ isGroupedValues ? 280 : 200 }
             height={ innerHeight }
             xScale={ xScale }
             yScale={ yScale }
@@ -125,3 +145,14 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
 };
 
 export default React.memo(ChartWidgetGraph);
+
+function groupChartItemsByWeekNumber(items: Array<TimeChartItem>): Array<TimeChartItem> {
+  return d3.rollups(items,
+    (group) => ({
+      date: group[0].date,
+      value: d3.sum(group, (d) => d.value),
+      dateLabel: `${ d3.timeFormat('%e %b %Y')(group[0].date) } – ${ d3.timeFormat('%e %b %Y')(group[group.length - 1].date) }`,
+    }),
+    (t) => `${ dayjs(t.date).week() } / ${ dayjs(t.date).year() }`,
+  ).map(([ , v ]) => v);
+}

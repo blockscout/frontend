@@ -27,6 +27,14 @@ const baseUrl = [
 ].filter(Boolean).join('');
 const authUrl = getEnvValue(process.env.NEXT_PUBLIC_AUTH_URL) || baseUrl;
 const apiHost = getEnvValue(process.env.NEXT_PUBLIC_API_HOST);
+const apiSchema = getEnvValue(process.env.NEXT_PUBLIC_API_PROTOCOL) || 'https';
+const apiPort = getEnvValue(process.env.NEXT_PUBLIC_API_PORT);
+const apiEndpoint = apiHost ? [
+  apiSchema || 'https',
+  '://',
+  apiHost,
+  apiPort && ':' + apiPort,
+].filter(Boolean).join('') : 'https://blockscout.com';
 
 const logoutUrl = (() => {
   try {
@@ -66,7 +74,8 @@ const config = Object.freeze({
     },
     assetsPathname: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME),
     explorers: parseEnvJson<Array<NetworkExplorer>>(getEnvValue(process.env.NEXT_PUBLIC_NETWORK_EXPLORERS)) || [],
-    verificationType: process.env.NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE || 'mining',
+    verificationType: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE) || 'mining',
+    rpcUrl: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_RPC_URL),
   },
   footerLinks: {
     github: getEnvValue(process.env.NEXT_PUBLIC_FOOTER_GITHUB_LINK),
@@ -90,12 +99,18 @@ const config = Object.freeze({
     adButlerOn: getEnvValue(process.env.NEXT_PUBLIC_AD_ADBUTLER_ON) === 'true',
   },
   api: {
-    endpoint: apiHost ? `https://${ apiHost }` : 'https://blockscout.com',
+    host: apiHost,
+    endpoint: apiEndpoint,
     socket: apiHost ? `wss://${ apiHost }` : 'wss://blockscout.com',
     basePath: stripTrailingSlash(getEnvValue(process.env.NEXT_PUBLIC_API_BASE_PATH) || ''),
   },
   statsApi: {
     endpoint: getEnvValue(process.env.NEXT_PUBLIC_STATS_API_HOST),
+    basePath: '',
+  },
+  visualizeApi: {
+    endpoint: getEnvValue(process.env.NEXT_PUBLIC_VISUALIZE_API_HOST),
+    basePath: '',
   },
   homepage: {
     charts: parseEnvJson<Array<ChainIndicatorId>>(getEnvValue(process.env.NEXT_PUBLIC_HOMEPAGE_CHARTS)) || [],
@@ -103,6 +118,9 @@ const config = Object.freeze({
       'radial-gradient(103.03% 103.03% at 0% 0%, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%)',
     showGasTracker: getEnvValue(process.env.NEXT_PUBLIC_HOMEPAGE_SHOW_GAS_TRACKER) === 'false' ? false : true,
     showAvgBlockTime: getEnvValue(process.env.NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME) === 'false' ? false : true,
+  },
+  walletConnect: {
+    projectId: getEnvValue(process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID),
   },
 });
 

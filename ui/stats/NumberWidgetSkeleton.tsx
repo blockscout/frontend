@@ -2,10 +2,11 @@ import { Box, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 const NumberWidgetSkeleton = () => {
+  const bgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
+
   return (
     <Box
-      border="1px"
-      borderColor={ useColorModeValue('gray.200', 'gray.600') }
+      backgroundColor={ bgColor }
       p={ 3 }
       borderRadius={ 12 }
     >

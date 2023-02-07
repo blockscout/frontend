@@ -1,9 +1,5 @@
 import { Grid } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
 import React from 'react';
-
-import type { HomeStats } from 'types/api/stats';
-import { QueryKeys } from 'types/client/queries';
 
 import appConfig from 'configs/app/config';
 import blockIcon from 'icons/block.svg';
@@ -11,7 +7,7 @@ import clockIcon from 'icons/clock-light.svg';
 import gasIcon from 'icons/gas.svg';
 import txIcon from 'icons/transactions.svg';
 import walletIcon from 'icons/wallet.svg';
-import useFetch from 'lib/hooks/useFetch';
+import useApiQuery from 'lib/api/useApiQuery';
 import link from 'lib/link/link';
 
 import StatsGasPrices from './StatsGasPrices';
@@ -26,12 +22,7 @@ let itemsCount = 5;
 !hasAvgBlockTime && itemsCount--;
 
 const Stats = () => {
-  const fetch = useFetch();
-
-  const { data, isLoading, isError } = useQuery<unknown, unknown, HomeStats>(
-    [ QueryKeys.homeStats ],
-    async() => await fetch(`/node-api/home-stats`),
-  );
+  const { data, isLoading, isError } = useApiQuery('homepage_stats');
 
   if (isError) {
     return null;
@@ -39,13 +30,14 @@ const Stats = () => {
 
   let content;
 
-  if (isLoading) {
-    content = Array.from(Array(itemsCount)).map((item, index) => <StatsItemSkeleton key={ index }/>);
-  }
-
   const lastItemTouchStyle = { gridColumn: { base: 'span 2', lg: 'unset' } };
 
+  if (isLoading) {
+    content = Array.from(Array(itemsCount)).map((item, index) => <StatsItemSkeleton key={ index } _last={ itemsCount % 2 ? lastItemTouchStyle : undefined }/>);
+  }
+
   if (data) {
+    const isOdd = Boolean(hasGasTracker && !data.gas_prices ? (itemsCount - 1) % 2 : itemsCount % 2);
     const gasLabel = hasGasTracker && data.gas_prices ? <StatsGasPrices gasPrices={ data.gas_prices }/> : null;
     content = (
       <>
@@ -72,14 +64,14 @@ const Stats = () => {
           icon={ walletIcon }
           title="Wallet addresses"
           value={ Number(data.total_addresses).toLocaleString() }
-          _last={ itemsCount % 2 ? lastItemTouchStyle : undefined }
+          _last={ isOdd ? lastItemTouchStyle : undefined }
         />
         { hasGasTracker && data.gas_prices && (
           <StatsItem
             icon={ gasIcon }
             title="Gas tracker"
             value={ `${ Number(data.gas_prices.average).toLocaleString() } Gwei` }
-            _last={ itemsCount % 2 ? lastItemTouchStyle : undefined }
+            _last={ isOdd ? lastItemTouchStyle : undefined }
             tooltipLabel={ gasLabel }
           />
         ) }

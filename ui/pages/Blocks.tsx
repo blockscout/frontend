@@ -2,7 +2,6 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { BlockType } from 'types/api/block';
-import { QueryKeys } from 'types/client/queries';
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -19,12 +18,6 @@ const TAB_TO_TYPE: Record<string, BlockType> = {
   uncles: 'uncle',
 };
 
-const TAB_TO_QUERY: Record<string, QueryKeys.blocks | QueryKeys.blocksReorgs | QueryKeys.blocksUncles> = {
-  blocks: QueryKeys.blocks,
-  reorgs: QueryKeys.blocksReorgs,
-  uncles: QueryKeys.blocksUncles,
-};
-
 const TAB_LIST_PROPS = {
   marginBottom: 0,
   py: 5,
@@ -35,11 +28,9 @@ const BlocksPageContent = () => {
   const router = useRouter();
   const isMobile = useIsMobile();
   const type = router.query.tab && !Array.isArray(router.query.tab) ? TAB_TO_TYPE[router.query.tab] : 'block';
-  const queryName = router.query.tab && !Array.isArray(router.query.tab) ? TAB_TO_QUERY[router.query.tab] : QueryKeys.blocks;
 
   const blocksQuery = useQueryWithPages({
-    apiPath: '/node-api/blocks',
-    queryName,
+    resourceName: 'blocks',
     filters: { type },
   });
 
@@ -51,7 +42,7 @@ const BlocksPageContent = () => {
 
   return (
     <Page>
-      <PageTitle text="Blocks"/>
+      <PageTitle text="Blocks" withTextAd/>
       <RoutedTabs
         tabs={ tabs }
         tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }

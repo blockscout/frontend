@@ -1,4 +1,4 @@
-import { Link, Text, Flex } from '@chakra-ui/react';
+import { Text, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -8,7 +8,8 @@ import appConfig from 'configs/app/config';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import link from 'lib/link/link';
-import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
+import LinkInternal from 'ui/shared/LinkInternal';
+import ListItemMobile from 'ui/shared/ListItemMobile';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
 type Props = Block & {
@@ -21,9 +22,9 @@ const AddressBlocksValidatedListItem = (props: Props) => {
   const totalReward = getBlockTotalReward(props);
 
   return (
-    <AccountListItemMobile rowGap={ 2 }>
+    <ListItemMobile rowGap={ 2 } isAnimated>
       <Flex justifyContent="space-between" w="100%">
-        <Link href={ blockUrl } fontWeight="700">{ props.height }</Link>
+        <LinkInternal href={ blockUrl } fontWeight="700">{ props.height }</LinkInternal>
         <Text variant="secondary">{ timeAgo }</Text>
       </Flex>
       <Flex columnGap={ 2 } w="100%">
@@ -39,7 +40,7 @@ const AddressBlocksValidatedListItem = (props: Props) => {
         <Text fontWeight={ 500 } flexShrink={ 0 }>Reward { appConfig.network.currency.symbol }</Text>
         <Text variant="secondary">{ totalReward.toFixed() }</Text>
       </Flex>
-    </AccountListItemMobile>
+    </ListItemMobile>
   );
 };
 

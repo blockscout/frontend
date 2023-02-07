@@ -1,16 +1,11 @@
 /* eslint-disable max-len */
 import { Flex, chakra } from '@chakra-ui/react';
+import Script from 'next/script';
 import React from 'react';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-// const adbutlerHTML = require('ui/shared/ad/adbutler.html');
-
-// didn't find a way to raw-load html that works both for webpack (app build) and vite (playwright build)
-const adbutlerHTML = `
-  <div id="ad-banner"></div>
-  <script type="text/javascript">if (!window.AdButler){(function(){var s = document.createElement("script"); s.async = true; s.type = "text/javascript";s.src = 'https://servedbyadbutler.com/app.js';var n = document.getElementsByTagName("script")[0]; n.parentNode.insertBefore(s, n);}());}</script>
-  <script type="text/javascript">
-  var AdButler = AdButler || {}; AdButler.ads = AdButler.ads || [];
+const scriptText1 = `if (!window.AdButler){(function(){var s = document.createElement("script"); s.async = true; s.type = "text/javascript";s.src = 'https://servedbyadbutler.com/app.js';var n = document.getElementsByTagName("script")[0]; n.parentNode.insertBefore(s, n);}());}`;
+const scriptText2 = `
+var AdButler = AdButler || {}; AdButler.ads = AdButler.ads || [];
   var abkw = window.abkw || '';
   const isMobile = window.matchMedia("only screen and (max-width: 760px)").matches;
   if (isMobile) {
@@ -23,12 +18,15 @@ const adbutlerHTML = `
       document.getElementById('ad-banner').innerHTML += '<'+'div id="placement_523705_'+plc523705+'"></'+'div>';
       AdButler.ads.push({handler: function(opt){ AdButler.register(182226, 523705, [728,90], 'placement_523705_'+opt.place, opt); }, opt: { place: plc523705++, keywords: abkw, domain: 'servedbyadbutler.com', click:'CLICK_MACRO_PLACEHOLDER' }});
   }
-  </script>
 `;
 
 const AdbutlerBanner = ({ className }: { className?: string }) => {
   return (
-    <Flex className={ className } dangerouslySetInnerHTML={{ __html: adbutlerHTML }}/>
+    <Flex className={ className } id="adBanner" h={{ base: '100px', lg: '90px' }}>
+      <div id="ad-banner"></div>
+      <Script id="ad-butler-1">{ scriptText1 }</Script>
+      <Script id="ad-butler-2">{ scriptText2 }</Script>
+    </Flex>
   );
 };
 

@@ -1,38 +1,43 @@
 import { Box, Flex, Icon, IconButton, Skeleton, Tooltip } from '@chakra-ui/react';
-import { useQuery, useQueryClient, useIsFetching } from '@tanstack/react-query';
+import { useQueryClient, useIsFetching } from '@tanstack/react-query';
+import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
-import type { Address, AddressTokenBalance } from 'types/api/address';
-import { QueryKeys } from 'types/client/queries';
+import type { Address } from 'types/api/address';
 
 import walletIcon from 'icons/wallet.svg';
-import useFetch from 'lib/hooks/useFetch';
+import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import link from 'lib/link/link';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 
 import TokenSelectDesktop from './TokenSelectDesktop';
 import TokenSelectMobile from './TokenSelectMobile';
 
-const TokenSelect = () => {
+interface Props {
+  onClick?: () => void;
+}
+
+const TokenSelect = ({ onClick }: Props) => {
   const router = useRouter();
-  const fetch = useFetch();
   const isMobile = useIsMobile();
   const queryClient = useQueryClient();
   const [ blockNumber, setBlockNumber ] = React.useState<number>();
 
-  const addressQueryData = queryClient.getQueryData<Address>([ QueryKeys.address, router.query.id ]);
+  const addressHash = router.query.id?.toString();
+  const addressResourceKey = getResourceKey('address', { pathParams: { id: addressHash } });
 
-  const { data, isError, isLoading, refetch } = useQuery<unknown, unknown, Array<AddressTokenBalance>>(
-    [ QueryKeys.addressTokenBalances, addressQueryData?.hash ],
-    async() => await fetch(`/node-api/addresses/${ addressQueryData?.hash }/token-balances`),
-    {
-      enabled: Boolean(addressQueryData),
-    },
-  );
-  const balancesIsFetching = useIsFetching({ queryKey: [ QueryKeys.addressTokenBalances, addressQueryData?.hash ] });
+  const addressQueryData = queryClient.getQueryData<Address>(addressResourceKey);
+
+  const { data, isError, isLoading, refetch } = useApiQuery('address_token_balances', {
+    pathParams: { id: addressQueryData?.hash },
+    queryOptions: { enabled: Boolean(addressQueryData) },
+  });
+  const balancesResourceKey = getResourceKey('address_token_balances', { pathParams: { id: addressQueryData?.hash } });
+  const balancesIsFetching = useIsFetching({ queryKey: balancesResourceKey });
 
   const handleTokenBalanceMessage: SocketMessage.AddressTokenBalance['handler'] = React.useCallback((payload) => {
     if (payload.block_number !== blockNumber) {
@@ -77,14 +82,20 @@ const TokenSelect = () => {
         <TokenSelectDesktop data={ data } isLoading={ balancesIsFetching === 1 }/>
       }
       <Tooltip label="Show all tokens">
-        <IconButton
-          aria-label="Show all tokens"
-          variant="outline"
-          size="sm"
-          pl="6px"
-          pr="6px"
-          icon={ <Icon as={ walletIcon } boxSize={ 5 }/> }
-        />
+        <Box>
+          <NextLink href={ link('address_index', { id: addressHash }, { tab: 'tokens' }) } passHref>
+            <IconButton
+              aria-label="Show all tokens"
+              variant="outline"
+              size="sm"
+              pl="6px"
+              pr="6px"
+              icon={ <Icon as={ walletIcon } boxSize={ 5 }/> }
+              as="a"
+              onClick={ onClick }
+            />
+          </NextLink>
+        </Box>
       </Tooltip>
     </Flex>
   );

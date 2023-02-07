@@ -7,13 +7,24 @@ export interface Log {
   data: string;
   index: number;
   decoded: DecodedInput | null;
+  tx_hash: string | null;
 }
 
-export interface LogsResponse {
+export interface LogsResponseTx {
   items: Array<Log>;
   next_page_params: {
     index: number;
     items_count: number;
     transaction_hash: string;
+  };
+}
+
+export interface LogsResponseAddress {
+  items: Array<Log>;
+  next_page_params: {
+    index: number;
+    items_count: number;
+    transaction_index: number;
+    block_number: number;
   };
 }

@@ -307,6 +307,7 @@ frontend:
         - "/"
       prefix:
       # - "/(apps|auth/profile|account)"
+        - "/account"
         - "/apps"
         - "/_next"
         - "/node-api"
@@ -319,17 +320,23 @@ frontend:
         - "/login"
         - "/address"
         - "/stats"
+        - "/search-results"
+        - "/token"
+        - "/tokens"
+        - "/accounts"
+        - "/visualize"
+
   resources:
     limits:
       memory:
-        _default: "0.3Gi"
+        _default: "0.1Gi"
       cpu:
-        _default: "0.2"
+        _default: "0.1"
     requests:
       memory:
-        _default: "0.3Gi"
+        _default: "0.1Gi"
       cpu:
-        _default: "0.2"
+        _default: "0.1"
   # node label
   nodeSelector:
     enabled: true
@@ -376,6 +383,8 @@ frontend:
       review: blockscout-main.test.aws-k8s.blockscout.com
     NEXT_PUBLIC_STATS_API_HOST:
       _default: https://stats-test.aws-k8s.blockscout.com/
+    NEXT_PUBLIC_VISUALIZE_API_HOST:
+      _default: https://visualizer.aws-k8s.blockscout.com
     NEXT_PUBLIC_AUTH_URL:
       _default: https://blockscout-main.test.aws-k8s.blockscout.com
     NEXT_PUBLIC_API_BASE_PATH:
@@ -393,6 +402,7 @@ frontend:
       _default: "['daily_txs','coin_price','market_cup']"
     NEXT_PUBLIC_APP_HOST:
       _default: blockscout.com
+    NEXT_PUBLIC_NETWORK_RPC_URL:
+      _default: https://rpc.ankr.com/eth_goerli
     NEXT_PUBLIC_NETWORK_EXPLORERS:
       _default: "[{'title':'Anyblock','baseUrl':'https://explorer.anyblock.tools','paths':{'tx':'/ethereum/ethereum/goerli/transaction','address':'/ethereum/ethereum/goerli/address'}},{'title':'Etherscan','baseUrl':'https://goerli.etherscan.io/','paths':{'tx':'/tx','address':'/address'}}]"
-

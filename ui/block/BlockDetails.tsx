@@ -1,23 +1,17 @@
 import { Grid, GridItem, Text, Icon, Link, Box, Tooltip } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import capitalize from 'lodash/capitalize';
-import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
-import type { Block } from 'types/api/block';
-import { QueryKeys } from 'types/client/queries';
-
 import appConfig from 'configs/app/config';
 import clockIcon from 'icons/clock.svg';
 import flameIcon from 'icons/flame.svg';
+import useApiQuery from 'lib/api/useApiQuery';
 import getBlockReward from 'lib/block/getBlockReward';
 import { WEI, WEI_IN_GWEI, ZERO } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
-import type { ErrorType } from 'lib/hooks/useFetch';
-import useFetch from 'lib/hooks/useFetch';
 import { space } from 'lib/html-entities';
 import link from 'lib/link/link';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
@@ -28,6 +22,7 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import LinkInternal from 'ui/shared/LinkInternal';
 import PrevNext from 'ui/shared/PrevNext';
 import TextSeparator from 'ui/shared/TextSeparator';
 import Utilization from 'ui/shared/Utilization/Utilization';
@@ -35,15 +30,11 @@ import Utilization from 'ui/shared/Utilization/Utilization';
 const BlockDetails = () => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
   const router = useRouter();
-  const fetch = useFetch();
 
-  const { data, isLoading, isError, error } = useQuery<unknown, ErrorType<{ status: number }>, Block>(
-    [ QueryKeys.block, router.query.id ],
-    async() => await fetch(`/node-api/blocks/${ router.query.id }`),
-    {
-      enabled: Boolean(router.query.id),
-    },
-  );
+  const { data, isLoading, isError, error } = useApiQuery('block', {
+    pathParams: { id: router.query.id?.toString() },
+    queryOptions: { enabled: Boolean(router.query.id) },
+  });
 
   const handleCutClick = React.useCallback(() => {
     setIsExpanded((flag) => !flag);
@@ -66,11 +57,26 @@ const BlockDetails = () => {
   }
 
   if (isError) {
-    const is404 = error?.error?.status === 404;
-    return is404 ? <span>This block has not been processed yet.</span> : <DataFetchAlert/>;
+    if (error?.status === 404) {
+      throw Error('Block not found', { cause: error as unknown as Error });
+    }
+
+    if (error?.status === 422) {
+      throw Error('Invalid block number', { cause: error as unknown as Error });
+    }
+
+    return <DataFetchAlert/>;
   }
 
-  const sectionGap = <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>;
+  const sectionGap = (
+    <GridItem
+      colSpan={{ base: undefined, lg: 2 }}
+      mt={{ base: 2, lg: 3 }}
+      mb={{ base: 0, lg: 3 }}
+      borderBottom="1px solid"
+      borderColor="divider"
+    />
+  );
   const { totalReward, staticReward, burntFees, txFees } = getBlockReward(data);
 
   const validatorTitle = getNetworkValidatorTitle();
@@ -110,18 +116,16 @@ const BlockDetails = () => {
         title="Transactions"
         hint="The number of transactions in the block."
       >
-        <NextLink href={ link('block', { id: router.query.id }, { tab: 'txs' }) } passHref>
-          <Link>
-            { data.tx_count } transactions
-          </Link>
-        </NextLink>
+        <LinkInternal href={ link('block', { id: router.query.id }, { tab: 'txs' }) }>
+          { data.tx_count } transactions
+        </LinkInternal>
       </DetailsInfoItem>
       <DetailsInfoItem
         title={ appConfig.network.verificationType === 'validation' ? 'Validated by' : 'Mined by' }
         hint="A block producer who successfully included the block onto the blockchain."
         columnGap={ 1 }
       >
-        <AddressLink hash={ data.miner.hash }/>
+        <AddressLink type="address" hash={ data.miner.hash }/>
         { data.miner.name && <Text>{ `(${ capitalize(validatorTitle) }: ${ data.miner.name })` }</Text> }
         { /* api doesn't return the block processing time yet */ }
         { /* <Text>{ dayjs.duration(block.minedIn, 'second').humanize(true) }</Text> */ }
@@ -264,7 +268,7 @@ const BlockDetails = () => {
       { /* ADDITIONAL INFO */ }
       { isExpanded && (
         <>
-          { sectionGap }
+          <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
 
           <DetailsInfoItem
             title="Difficulty"

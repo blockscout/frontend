@@ -8,10 +8,10 @@ import appConfig from 'configs/app/config';
 import type { data } from 'data/txState';
 import { nbsp } from 'lib/html-entities';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
-import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
+// import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
+import ListItemMobile from 'ui/shared/ListItemMobile';
 
 import TxStateStorageItem from './TxStateStorageItem';
 
@@ -22,7 +22,7 @@ const TxStateListItem = ({ storage, address, miner, after, before, diff }: Props
   const hasStorageData = Boolean(storage?.length);
 
   return (
-    <AccountListItemMobile>
+    <ListItemMobile>
       <AccordionItem isDisabled={ !hasStorageData } border={ 0 } w="100%" display="flex" flexDirection="column">
         { ({ isExpanded }) => (
           <>
@@ -51,8 +51,9 @@ const TxStateListItem = ({ storage, address, miner, after, before, diff }: Props
                 <AccordionIcon color="blue.600" width="30px"/>
               </AccordionButton>
               <Address flexGrow={ 1 }>
-                <AddressIcon hash={ address }/>
-                <AddressLink hash={ address } ml={ 2 }/>
+                { /* ??? */ }
+                { /* <AddressIcon hash={ address }/> */ }
+                <AddressLink type="address" hash={ address } ml={ 2 }/>
               </Address>
             </Flex>
             { hasStorageData && (
@@ -94,7 +95,7 @@ const TxStateListItem = ({ storage, address, miner, after, before, diff }: Props
           </>
         ) }
       </AccordionItem>
-    </AccountListItemMobile>
+    </ListItemMobile>
   );
 };
 

@@ -4,12 +4,13 @@ import React from 'react';
 import * as internalTxsMock from 'mocks/txs/internalTxs';
 import * as txMock from 'mocks/txs/tx';
 import TestApp from 'playwright/TestApp';
+import buildApiUrl from 'playwright/utils/buildApiUrl';
 
 import TxInternals from './TxInternals';
 
 const TX_HASH = txMock.base.hash;
-const API_URL_TX = `/node-api/transactions/${ TX_HASH }`;
-const API_URL_TX_INTERNALS = `/node-api/transactions/${ TX_HASH }/internal-transactions`;
+const API_URL_TX = buildApiUrl('tx', { id: TX_HASH });
+const API_URL_TX_INTERNALS = buildApiUrl('tx_internal_txs', { id: TX_HASH });
 const hooksConfig = {
   router: {
     query: { id: TX_HASH },

@@ -1,25 +1,27 @@
-import { Link } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Address } from 'types/api/address';
 
 import link from 'lib/link/link';
+import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import LinkInternal from 'ui/shared/LinkInternal';
 
 interface Props {
-  data: Address;
+  data: Pick<Address, 'name' | 'token' | 'is_contract'>;
 }
 
 const AddressNameInfo = ({ data }: Props) => {
   if (data.token) {
+    const symbol = data.token.symbol ? ` (${ trimTokenSymbol(data.token.symbol) })` : '';
     return (
       <DetailsInfoItem
         title="Token name"
         hint="Token name and symbol"
       >
-        <Link href={ link('token_index', { hash: data.token.address }) }>
-          { data.token.name } ({ data.token.symbol })
-        </Link>
+        <LinkInternal href={ link('token_index', { hash: data.token.address }) }>
+          { data.token.name }{ symbol }
+        </LinkInternal>
       </DetailsInfoItem>
     );
   }

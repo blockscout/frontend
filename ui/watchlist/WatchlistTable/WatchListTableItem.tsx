@@ -9,7 +9,7 @@ import React, { useCallback, useState } from 'react';
 
 import type { TWatchlistItem } from 'types/client/account';
 
-import useFetch from 'lib/hooks/useFetch';
+import useApiFetch from 'lib/api/useApiFetch';
 import useToast from 'lib/hooks/useToast';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
@@ -34,7 +34,7 @@ const WatchlistTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   }, [ item, onDeleteClick ]);
 
   const errorToast = useToast();
-  const fetch = useFetch();
+  const apiFetch = useApiFetch();
 
   const showErrorToast = useCallback(() => {
     errorToast({
@@ -66,7 +66,10 @@ const WatchlistTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
     setSwitchDisabled(true);
     const body = { ...item, notification_methods: { email: !notificationEnabled } };
     setNotificationEnabled(prevState => !prevState);
-    return fetch(`/node-api/account/watchlist/${ item.id }`, { method: 'PUT', body });
+    return apiFetch('watchlist', {
+      pathParams: { id: item.id },
+      fetchParams: { method: 'PUT', body },
+    });
   }, {
     onError: () => {
       showErrorToast();

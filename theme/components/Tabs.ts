@@ -6,6 +6,8 @@ import { mode } from '@chakra-ui/theme-tools';
 const { defineMultiStyleConfig, definePartsStyle } =
   createMultiStyleConfigHelpers(parts.keys);
 
+import Button from './Button/Button';
+
 const variantSoftRounded = definePartsStyle((props) => {
   return {
     tab: {
@@ -20,17 +22,38 @@ const variantSoftRounded = definePartsStyle((props) => {
         },
       },
       _hover: {
-        color: 'blue.400',
+        color: 'link_hovered',
       },
     },
   };
 });
 
+const variantOutline = definePartsStyle((props) => {
+  return {
+    tab: {
+      ...Button.variants?.outline(props),
+      ...Button.baseStyle,
+      _selected: Button.variants?.outline(props)._active,
+    },
+  };
+});
+
+const sizes = {
+  sm: definePartsStyle({
+    tab: Button.sizes?.sm,
+  }),
+  md: definePartsStyle({
+    tab: Button.sizes?.md,
+  }),
+};
+
 const variants = {
   'soft-rounded': variantSoftRounded,
+  outline: variantOutline,
 };
 
 const Tabs = defineMultiStyleConfig({
+  sizes,
   variants,
 });
 

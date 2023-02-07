@@ -15,9 +15,9 @@ interface Props {
 const TokenTransferList = ({ data, baseAddress, showTxInfo, enableTimeIncrement }: Props) => {
   return (
     <Box>
-      { data.map((item, index) => (
+      { data.map((item) => (
         <TokenTransferListItem
-          key={ index }
+          key={ item.tx_hash + item.block_hash + item.log_index }
           { ...item }
           baseAddress={ baseAddress }
           showTxInfo={ showTxInfo }

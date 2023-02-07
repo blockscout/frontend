@@ -19,21 +19,36 @@ export type GasPrices = {
   slow: number;
 }
 
-export type Stats = {
-  counters: {
-    averageBlockTime: string;
-    completedTransactions: string;
-    totalAccounts: string;
-    totalBlocksAllTime: string;
-    totalTransactions: string;
-  };
+export type Counters = {
+  counters: Array<Counter>;
 }
 
-export type Charts = {
-  chart: Array<ChartsItem>;
+type Counter = {
+  id: string;
+  value: string;
+  title: string;
+  units: string;
 }
 
-export type ChartsItem ={
+export type StatsCharts = {
+  sections: Array<StatsChartsSection>;
+}
+
+export type StatsChartsSection = {
+  id: string;
+  title: string;
+  charts: Array<StatsChartInfo>;
+}
+
+export type StatsChartInfo = {
+  id: string;
+  title: string;
+  description: string;
+}
+
+export type StatsChart = { chart: Array<StatsChartItem> };
+
+export type StatsChartItem = {
   date: string;
   value: string;
 }

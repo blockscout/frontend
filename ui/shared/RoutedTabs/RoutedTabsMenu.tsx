@@ -56,7 +56,7 @@ const RoutedTabsMenu = ({ tabs, tabsCut, isActive, styles, onItemClick, buttonRe
               justifyContent="left"
               data-index={ index }
             >
-              { tab.title }
+              { typeof tab.title === 'function' ? tab.title() : tab.title }
             </Button>
           )) }
         </PopoverBody>

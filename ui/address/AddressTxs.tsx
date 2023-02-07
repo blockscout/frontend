@@ -1,39 +1,45 @@
-import castArray from 'lodash/castArray';
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { Element } from 'react-scroll';
 
-import type { AddressFromToFilter } from 'types/api/address';
+import type { SocketMessage } from 'lib/socket/types';
+import type { AddressFromToFilter, AddressTransactionsResponse } from 'types/api/address';
 import { AddressFromToFilterValues } from 'types/api/address';
-import { QueryKeys } from 'types/client/queries';
 
+import { getResourceKey } from 'lib/api/useApiQuery';
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
+import useSocketChannel from 'lib/socket/useSocketChannel';
+import useSocketMessage from 'lib/socket/useSocketMessage';
 import ActionBar from 'ui/shared/ActionBar';
 import Pagination from 'ui/shared/Pagination';
 import TxsContent from 'ui/txs/TxsContent';
 
+import AddressCsvExportLink from './AddressCsvExportLink';
 import AddressTxsFilter from './AddressTxsFilter';
+
+const OVERLOAD_COUNT = 75;
 
 const getFilterValue = (getFilterValueFromQuery<AddressFromToFilter>).bind(null, AddressFromToFilterValues);
 
-const SCROLL_ELEM = 'address-txs';
-const SCROLL_OFFSET = -100;
-
-const AddressTxs = () => {
+const AddressTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}) => {
   const router = useRouter();
+  const queryClient = useQueryClient();
+
+  const [ socketAlert, setSocketAlert ] = React.useState('');
+  const [ newItemsCount, setNewItemsCount ] = React.useState(0);
 
   const isMobile = useIsMobile();
+  const currentAddress = router.query.id?.toString();
 
   const [ filterValue, setFilterValue ] = React.useState<AddressFromToFilter>(getFilterValue(router.query.filter));
 
   const addressTxsQuery = useQueryWithPages({
-    apiPath: `/node-api/addresses/${ router.query.id }/transactions`,
-    queryName: QueryKeys.addressTxs,
-    queryIds: castArray(router.query.id),
+    resourceName: 'address_txs',
+    pathParams: { id: currentAddress },
     filters: { filter: filterValue },
-    scroll: { elem: SCROLL_ELEM, offset: SCROLL_OFFSET },
+    scrollRef,
   });
 
   const handleFilterChange = React.useCallback((val: string | Array<string>) => {
@@ -42,6 +48,83 @@ const AddressTxs = () => {
     setFilterValue(newVal);
     addressTxsQuery.onFilterChange({ filter: newVal });
   }, [ addressTxsQuery ]);
+
+  const handleNewSocketMessage: SocketMessage.AddressTxs['handler'] = (payload) => {
+    setSocketAlert('');
+
+    if (addressTxsQuery.data?.items && addressTxsQuery.data.items.length >= OVERLOAD_COUNT) {
+      if (
+        !filterValue ||
+        (filterValue === 'from' && payload.transaction.from.hash === currentAddress) ||
+        (filterValue === 'to' && payload.transaction.to?.hash === currentAddress)
+      ) {
+        setNewItemsCount(prev => prev + 1);
+      }
+    }
+
+    queryClient.setQueryData(
+      getResourceKey('address_txs', { pathParams: { id: router.query.id?.toString() }, queryParams: { filter: filterValue } }),
+      (prevData: AddressTransactionsResponse | undefined) => {
+        if (!prevData) {
+          return;
+        }
+
+        const currIndex = prevData.items.findIndex((tx) => tx.hash === payload.transaction.hash);
+
+        if (currIndex > -1) {
+          prevData.items[currIndex] = payload.transaction;
+          return prevData;
+        }
+
+        if (prevData.items.length >= OVERLOAD_COUNT) {
+          return prevData;
+        }
+
+        if (filterValue) {
+          if (
+            (filterValue === 'from' && payload.transaction.from.hash !== currentAddress) ||
+              (filterValue === 'to' && payload.transaction.to?.hash !== currentAddress)
+          ) {
+            return prevData;
+          }
+        }
+
+        return {
+          ...prevData,
+          items: [
+            payload.transaction,
+            ...prevData.items,
+          ],
+        };
+      });
+  };
+
+  const handleSocketClose = React.useCallback(() => {
+    setSocketAlert('Connection is lost. Please refresh the page to load new transactions.');
+  }, []);
+
+  const handleSocketError = React.useCallback(() => {
+    setSocketAlert('An error has occurred while fetching new transactions. Please refresh the page.');
+  }, []);
+
+  const channel = useSocketChannel({
+    topic: `addresses:${ currentAddress?.toLowerCase() }`,
+    onSocketClose: handleSocketClose,
+    onSocketError: handleSocketError,
+    isDisabled: addressTxsQuery.pagination.page !== 1,
+  });
+
+  useSocketMessage({
+    channel,
+    event: 'transaction',
+    handler: handleNewSocketMessage,
+  });
+
+  useSocketMessage({
+    channel,
+    event: 'pending_transaction',
+    handler: handleNewSocketMessage,
+  });
 
   const filter = (
     <AddressTxsFilter
@@ -52,21 +135,24 @@ const AddressTxs = () => {
   );
 
   return (
-    <Element name={ SCROLL_ELEM }>
+    <>
       { !isMobile && (
         <ActionBar mt={ -6 }>
           { filter }
-          { addressTxsQuery.isPaginationVisible && <Pagination { ...addressTxsQuery.pagination }/> }
+          { currentAddress && <AddressCsvExportLink address={ currentAddress } type="transactions" ml="auto"/> }
+          { addressTxsQuery.isPaginationVisible && <Pagination { ...addressTxsQuery.pagination } ml={ 8 }/> }
         </ActionBar>
       ) }
       <TxsContent
         filter={ filter }
         query={ addressTxsQuery }
-        showSocketInfo={ false }
-        currentAddress={ typeof router.query.id === 'string' ? router.query.id : undefined }
+        currentAddress={ typeof currentAddress === 'string' ? currentAddress : undefined }
         enableTimeIncrement
+        showSocketInfo={ addressTxsQuery.pagination.page === 1 }
+        socketInfoAlert={ socketAlert }
+        socketInfoNum={ newItemsCount }
       />
-    </Element>
+    </>
   );
 };
 

@@ -16,6 +16,15 @@ test('status code 404', async({ mount }) => {
   await expect(component).toHaveScreenshot();
 });
 
+test('status code 422', async({ mount }) => {
+  const component = await mount(
+    <TestApp>
+      <AppError statusCode={ 422 }/>
+    </TestApp>,
+  );
+  await expect(component).toHaveScreenshot();
+});
+
 test('status code 500', async({ mount }) => {
   const component = await mount(
     <TestApp>

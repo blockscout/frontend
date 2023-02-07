@@ -1,14 +1,12 @@
-import { Box, Heading, Flex, Link, Text, Skeleton } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
+import { Box, Heading, Flex, Text, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
-import type { Transaction } from 'types/api/transaction';
-import { QueryKeys } from 'types/client/queries';
-
-import useFetch from 'lib/hooks/useFetch';
+import useApiQuery from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import useNewTxsSocket from 'lib/hooks/useNewTxsSocket';
 import link from 'lib/link/link';
-import TxsNewItemNotice from 'ui/txs/TxsNewItemNotice';
+import LinkInternal from 'ui/shared/LinkInternal';
+import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 
 import LatestTxsItem from './LatestTxsItem';
 import LatestTxsItemSkeleton from './LatestTxsItemSkeleton';
@@ -16,11 +14,9 @@ import LatestTxsItemSkeleton from './LatestTxsItemSkeleton';
 const LatestTransactions = () => {
   const isMobile = useIsMobile();
   const txsCount = isMobile ? 2 : 6;
-  const fetch = useFetch();
-  const { data, isLoading, isError } = useQuery<unknown, unknown, Array<Transaction>>(
-    [ QueryKeys.indexTxs ],
-    async() => await fetch(`/node-api/index/txs`),
-  );
+  const { data, isLoading, isError } = useApiQuery('homepage_txs');
+
+  const { num, socketAlert } = useNewTxsSocket();
 
   let content;
 
@@ -41,12 +37,12 @@ const LatestTransactions = () => {
     const txsUrl = link('txs');
     content = (
       <>
-        <TxsNewItemNotice borderBottomRadius={ 0 } url={ link('txs') }/>
+        <SocketNewItemsNotice borderBottomRadius={ 0 } url={ txsUrl } num={ num } alert={ socketAlert }/>
         <Box mb={{ base: 3, lg: 4 }}>
           { data.slice(0, txsCount).map((tx => <LatestTxsItem key={ tx.hash } tx={ tx }/>)) }
         </Box>
         <Flex justifyContent="center">
-          <Link fontSize="sm" href={ txsUrl }>View all transactions</Link>
+          <LinkInternal fontSize="sm" href={ txsUrl }>View all transactions</LinkInternal>
         </Flex>
       </>
     );

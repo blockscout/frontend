@@ -4,27 +4,31 @@ import React from 'react';
 
 import type { CsrfData } from 'types/client/account';
 
-export interface ErrorType<T> {
-  error?: T;
-  status: Response['status'];
-  statusText: Response['statusText'];
-}
+import type { ResourceError } from 'lib/api/resources';
+import { getResourceKey } from 'lib/api/useApiQuery';
 
-interface Params {
+export interface Params {
   method?: RequestInit['method'];
+  headers?: RequestInit['headers'];
+  signal?: RequestInit['signal'];
   body?: Record<string, unknown>;
+  credentials?: RequestCredentials;
 }
 
 export default function useFetch() {
   const queryClient = useQueryClient();
-  const { token } = queryClient.getQueryData<CsrfData>([ 'csrf' ]) || {};
+  const { token } = queryClient.getQueryData<CsrfData>(getResourceKey('csrf')) || {};
 
-  return React.useCallback(<Success, Error>(path: string, params?: Params): Promise<Success | ErrorType<Error>> => {
+  return React.useCallback(<Success, Error>(path: string, params?: Params): Promise<Success | ResourceError<Error>> => {
+    const hasBody = params?.method && ![ 'GET', 'HEAD' ].includes(params.method);
+
     const reqParams = {
       ...params,
-      body: params?.method && ![ 'GET', 'HEAD' ].includes(params.method) ?
-        JSON.stringify({ ...params?.body, _csrf_token: token }) :
-        undefined,
+      body: hasBody ? JSON.stringify({ ...params.body, _csrf_token: token }) : undefined,
+      headers: {
+        ...(hasBody ? { 'Content-type': 'application/json' } : undefined),
+        ...params?.headers,
+      },
     };
 
     return fetch(path, reqParams).then(response => {
@@ -37,7 +41,7 @@ export default function useFetch() {
 
         return response.json().then(
           (jsonError) => Promise.reject({
-            error: jsonError as Error,
+            payload: jsonError as Error,
             status: response.status,
             statusText: response.statusText,
           }),

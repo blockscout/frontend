@@ -1,4 +1,16 @@
-import { Grid, GridItem, Text, Box, Icon, Link, Spinner, Tag, Flex, Tooltip, Divider, chakra } from '@chakra-ui/react';
+import {
+  Grid,
+  GridItem,
+  Text,
+  Box,
+  Icon,
+  Link,
+  Spinner,
+  Tag,
+  Flex,
+  Tooltip,
+  chakra,
+} from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
@@ -10,7 +22,9 @@ import errorIcon from 'icons/status/error.svg';
 import successIcon from 'icons/status/success.svg';
 import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
+import AdBanner from 'ui/shared/ad/AdBanner';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -20,6 +34,7 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 // import PrevNext from 'ui/shared/PrevNext';
+import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import RawInputData from 'ui/shared/RawInputData';
 import TextSeparator from 'ui/shared/TextSeparator';
 import TxStatus from 'ui/shared/TxStatus';
@@ -28,12 +43,13 @@ import TxDetailsActions from 'ui/tx/details/TxDetailsActions';
 import TxDetailsSkeleton from 'ui/tx/details/TxDetailsSkeleton';
 import TxDetailsTokenTransfers from 'ui/tx/details/TxDetailsTokenTransfers';
 import TxRevertReason from 'ui/tx/details/TxRevertReason';
-import TxDecodedInputData from 'ui/tx/TxDecodedInputData/TxDecodedInputData';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
 import useFetchTxInfo from 'ui/tx/useFetchTxInfo';
 
 const TxDetails = () => {
-  const { data, isLoading, isError, socketStatus } = useFetchTxInfo();
+  const { data, isLoading, isError, socketStatus, error } = useFetchTxInfo();
+
+  const isMobile = useIsMobile();
 
   const [ isExpanded, setIsExpanded ] = React.useState(false);
 
@@ -50,6 +66,14 @@ const TxDetails = () => {
   }
 
   if (isError) {
+    if (error?.status === 422) {
+      throw Error('Invalid tx hash', { cause: error as unknown as Error });
+    }
+
+    if (error?.status === 404) {
+      throw Error('Tx not found', { cause: error as unknown as Error });
+    }
+
     return <DataFetchAlert/>;
   }
 
@@ -78,10 +102,20 @@ const TxDetails = () => {
   const executionFailedBadge = toAddress.is_contract && Boolean(data.status) && data.result !== 'success' ? (
     <Tooltip label="Error occurred during contract execution">
       <chakra.span display="inline-flex" ml={ 2 } mr={ 1 }>
-        <Icon as={ errorIcon } boxSize={ 4 } color="red.500" cursor="pointer"/>
+        <Icon as={ errorIcon } boxSize={ 4 } color="error" cursor="pointer"/>
       </chakra.span>
     </Tooltip>
   ) : null;
+
+  const divider = (
+    <GridItem
+      colSpan={{ base: undefined, lg: 2 }}
+      mt={{ base: 2, lg: 3 }}
+      mb={{ base: 0, lg: 3 }}
+      borderBottom="1px solid"
+      borderColor="divider"
+    />
+  );
 
   return (
     <Grid columnGap={ 8 } rowGap={{ base: 3, lg: 3 }} templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }}>
@@ -143,18 +177,40 @@ const TxDetails = () => {
           <Text variant="secondary">{ getConfirmationDuration(data.confirmation_duration) }</Text>
         </DetailsInfoItem>
       ) }
-      { actionsExist && (<GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 3, lg: 3 }}><Divider/></GridItem>) }
-      { actionsExist && (<TxDetailsActions actions={ data.actions }/>) }
-      { actionsExist && (<GridItem colSpan={{ base: undefined, lg: 2 }} mb={{ base: 0, lg: 3 }}><Divider/></GridItem>) }
-      { !actionsExist && (<GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 3, lg: 8 }}/>) }
+      { isMobile ?
+        (
+          <GridItem
+            colSpan={{ base: undefined, lg: 2 }}
+          >
+            <AdBanner justifyContent="center"/>
+          </GridItem>
+        ) :
+        (
+          <DetailsInfoItem
+            title="Sponsored"
+            hint="Sponsored banner advertisement"
+          >
+            <AdBanner/>
+          </DetailsInfoItem>
+        ) }
+
+      { divider }
+
+      { actionsExist && (
+        <>
+          <TxDetailsActions actions={ data.actions }/>
+          { divider }
+        </>
+      ) }
+
       <DetailsInfoItem
         title="From"
         hint="Address (external or contract) sending the transaction."
         columnGap={ 3 }
       >
         <Address>
-          <AddressIcon hash={ data.from.hash }/>
-          <AddressLink ml={ 2 } hash={ data.from.hash }/>
+          <AddressIcon address={ data.from }/>
+          <AddressLink type="address" ml={ 2 } hash={ data.from.hash }/>
           <CopyToClipboard text={ data.from.hash }/>
         </Address>
         { data.from.name && <Text>{ data.from.name }</Text> }
@@ -172,8 +228,8 @@ const TxDetails = () => {
       >
         { data.to && data.to.hash ? (
           <Address alignItems="center">
-            <AddressIcon hash={ toAddress.hash }/>
-            <AddressLink ml={ 2 } hash={ toAddress.hash }/>
+            <AddressIcon address={ toAddress }/>
+            <AddressLink type="address" ml={ 2 } hash={ toAddress.hash }/>
             { executionSuccessBadge }
             { executionFailedBadge }
             <CopyToClipboard text={ toAddress.hash }/>
@@ -181,7 +237,7 @@ const TxDetails = () => {
         ) : (
           <Flex width={{ base: '100%', lg: 'auto' }} whiteSpace="pre" alignItems="center">
             <span>[Contract </span>
-            <AddressLink hash={ toAddress.hash }/>
+            <AddressLink type="address" hash={ toAddress.hash }/>
             <span> created]</span>
             { executionSuccessBadge }
             { executionFailedBadge }
@@ -197,7 +253,8 @@ const TxDetails = () => {
       </DetailsInfoItem>
       { data.token_transfers && <TxDetailsTokenTransfers data={ data.token_transfers } txHash={ data.hash }/> }
 
-      <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 3, lg: 8 }}/>
+      { divider }
+
       <DetailsInfoItem
         title="Value"
         hint="Value sent in the native token (and USD) if applicable."
@@ -334,7 +391,7 @@ const TxDetails = () => {
               title="Decoded input data"
               hint="Decoded input data"
             >
-              <TxDecodedInputData data={ data.decoded_input }/>
+              <LogDecodedInputData data={ data.decoded_input }/>
             </DetailsInfoItem>
           ) }
         </>

@@ -15,7 +15,7 @@ const variantSimple = definePartsStyle((props) => {
   return {
     th: {
       border: 0,
-      color: mode('gray.600', 'whiteAlpha.700')(props),
+      color: mode('blackAlpha.700', 'whiteAlpha.700')(props),
       backgroundColor: mode('blackAlpha.100', 'whiteAlpha.200')(props),
       ...transitionProps,
     },
@@ -23,7 +23,7 @@ const variantSimple = definePartsStyle((props) => {
       ...transitionProps,
     },
     td: {
-      borderColor: mode('blackAlpha.200', 'whiteAlpha.200')(props),
+      borderColor: 'divider',
       ...transitionProps,
     },
   };

@@ -1,19 +1,18 @@
-import { Box, Heading, Flex, Link, Text, VStack, Skeleton } from '@chakra-ui/react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { Box, Heading, Flex, Text, VStack, Skeleton } from '@chakra-ui/react';
+import { useQueryClient } from '@tanstack/react-query';
 import { AnimatePresence } from 'framer-motion';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
 import type { Block } from 'types/api/block';
-import type { HomeStats } from 'types/api/stats';
-import { QueryKeys } from 'types/client/queries';
 
-import useFetch from 'lib/hooks/useFetch';
+import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp } from 'lib/html-entities';
 import link from 'lib/link/link';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
+import LinkInternal from 'ui/shared/LinkInternal';
 
 import LatestBlocksItem from './LatestBlocksItem';
 import LatestBlocksItemSkeleton from './LatestBlocksItemSkeleton';
@@ -24,24 +23,21 @@ const BLOCK_MARGIN = 12;
 const LatestBlocks = () => {
   const isMobile = useIsMobile();
   const blocksMaxCount = isMobile ? 2 : 3;
-  const fetch = useFetch();
-  const { data, isLoading, isError } = useQuery<unknown, unknown, Array<Block>>(
-    [ QueryKeys.indexBlocks ],
-    async() => await fetch(`/node-api/index/blocks`),
-  );
+  const { data, isLoading, isError } = useApiQuery('homepage_blocks');
 
   const queryClient = useQueryClient();
-  const statsQueryResult = useQuery<unknown, unknown, HomeStats>(
-    [ QueryKeys.homeStats ],
-    () => fetch('/node-api/home-stats'),
-  );
+  const statsQueryResult = useApiQuery('homepage_stats');
 
   const handleNewBlockMessage: SocketMessage.NewBlock['handler'] = React.useCallback((payload) => {
-    queryClient.setQueryData([ QueryKeys.indexBlocks ], (prevData: Array<Block> | undefined) => {
+    queryClient.setQueryData(getResourceKey('homepage_blocks'), (prevData: Array<Block> | undefined) => {
 
       const newData = prevData ? [ ...prevData ] : [];
 
-      return [ payload.block, ...newData ].slice(0, blocksMaxCount);
+      if (newData.some((block => block.height === payload.block.height))) {
+        return newData;
+      }
+
+      return [ payload.block, ...newData ].sort((b1, b2) => b2.height - b1.height).slice(0, blocksMaxCount);
     });
   }, [ queryClient, blocksMaxCount ]);
 
@@ -102,7 +98,7 @@ const LatestBlocks = () => {
           </AnimatePresence>
         </VStack>
         <Flex justifyContent="center">
-          <Link fontSize="sm" href={ link('blocks') }>View all blocks</Link>
+          <LinkInternal fontSize="sm" href={ link('blocks') }>View all blocks</LinkInternal>
         </Flex>
       </>
     );

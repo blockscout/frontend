@@ -3,8 +3,8 @@ import React, { useCallback } from 'react';
 
 import type { AddressTag } from 'types/api/account';
 
-import AccountListItemMobile from 'ui/shared/AccountListItemMobile';
 import AddressSnippet from 'ui/shared/AddressSnippet';
+import ListItemMobile from 'ui/shared/ListItemMobile';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 
 interface Props {
@@ -23,9 +23,9 @@ const AddressTagListItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   }, [ item, onDeleteClick ]);
 
   return (
-    <AccountListItemMobile>
+    <ListItemMobile>
       <Flex alignItems="flex-start" flexDirection="column" maxW="100%">
-        <AddressSnippet address={ item.address_hash }/>
+        <AddressSnippet address={ item.address }/>
         <HStack spacing={ 3 } mt={ 4 }>
           <Text fontSize="sm" fontWeight={ 500 }>Private tag</Text>
           <Tag>
@@ -34,7 +34,7 @@ const AddressTagListItem = ({ item, onEditClick, onDeleteClick }: Props) => {
         </HStack>
       </Flex>
       <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
-    </AccountListItemMobile>
+    </ListItemMobile>
   );
 };
 

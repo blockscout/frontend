@@ -4,7 +4,7 @@ import React from 'react';
 import type { TransactionRevertReason } from 'types/api/transaction';
 
 import hexToUtf8 from 'lib/hexToUtf8';
-import TxDecodedInputData from 'ui/tx/TxDecodedInputData/TxDecodedInputData';
+import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 
 type Props = TransactionRevertReason;
 
@@ -12,6 +12,7 @@ const TxRevertReason = (props: Props) => {
   const bgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
 
   if ('raw' in props) {
+    const decoded = hexToUtf8(props.raw);
     return (
       <Grid
         bgColor={ bgColor }
@@ -25,13 +26,17 @@ const TxRevertReason = (props: Props) => {
       >
         <GridItem fontWeight={ 500 }>Raw:</GridItem>
         <GridItem>{ props.raw }</GridItem>
-        <GridItem fontWeight={ 500 }>Decoded:</GridItem>
-        <GridItem>{ hexToUtf8(props.raw) }</GridItem>
+        { decoded.replace(/\s|\0/g, '') && (
+          <>
+            <GridItem fontWeight={ 500 }>Decoded:</GridItem>
+            <GridItem>{ decoded }</GridItem>
+          </>
+        ) }
       </Grid>
     );
   }
 
-  return <TxDecodedInputData data={ props }/>;
+  return <LogDecodedInputData data={ props }/>;
 };
 
 export default React.memo(TxRevertReason);

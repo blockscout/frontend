@@ -6,6 +6,7 @@ import * as statsMock from 'mocks/stats/index';
 import * as txMock from 'mocks/txs/tx';
 import * as socketServer from 'playwright/fixtures/socketServer';
 import TestApp from 'playwright/TestApp';
+import buildApiUrl from 'playwright/utils/buildApiUrl';
 
 import LatestTxs from './LatestTxs';
 
@@ -14,11 +15,11 @@ export const test = base.extend<socketServer.SocketServerFixture>({
 });
 
 test('default view +@mobile +@dark-mode', async({ mount, page }) => {
-  await page.route('/node-api/home-stats', (route) => route.fulfill({
+  await page.route(buildApiUrl('homepage_stats'), (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(statsMock.base),
   }));
-  await page.route('/node-api/index/txs', (route) => route.fulfill({
+  await page.route(buildApiUrl('homepage_txs'), (route) => route.fulfill({
     status: 200,
     body: JSON.stringify([
       txMock.base,
@@ -47,11 +48,11 @@ test.describe('socket', () => {
   };
 
   test('new item', async({ mount, page, createSocket }) => {
-    await page.route('/node-api/home-stats', (route) => route.fulfill({
+    await page.route(buildApiUrl('homepage_stats'), (route) => route.fulfill({
       status: 200,
       body: JSON.stringify(statsMock.base),
     }));
-    await page.route('/node-api/index/txs', (route) => route.fulfill({
+    await page.route(buildApiUrl('homepage_txs'), (route) => route.fulfill({
       status: 200,
       body: JSON.stringify([
         txMock.base,

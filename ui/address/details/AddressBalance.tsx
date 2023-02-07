@@ -3,9 +3,9 @@ import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
 import type { Address } from 'types/api/address';
-import { QueryKeys } from 'types/client/queries';
 
 import appConfig from 'configs/app/config';
+import { getResourceKey } from 'lib/api/useApiQuery';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import CurrencyValue from 'ui/shared/CurrencyValue';
@@ -13,7 +13,7 @@ import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import TokenLogo from 'ui/shared/TokenLogo';
 
 interface Props {
-  data: Address;
+  data: Pick<Address, 'block_number_balance_updated_at' | 'coin_balance' | 'hash' | 'exchange_rate'>;
 }
 
 const AddressBalance = ({ data }: Props) => {
@@ -26,7 +26,8 @@ const AddressBalance = ({ data }: Props) => {
     }
 
     setLastBlockNumber(blockNumber);
-    queryClient.setQueryData([ QueryKeys.address, data.hash ], (prevData: Address | undefined) => {
+    const queryKey = getResourceKey('address', { pathParams: { id: data.hash } });
+    queryClient.setQueryData(queryKey, (prevData: Address | undefined) => {
       if (!prevData) {
         return;
       }
@@ -62,14 +63,12 @@ const AddressBalance = ({ data }: Props) => {
     handler: handleNewCoinBalanceMessage,
   });
 
-  if (!data.coin_balance) {
-    return null;
-  }
-
   return (
     <DetailsInfoItem
       title="Balance"
       hint={ `Address balance in ${ appConfig.network.currency.symbol }. Doesn't include ERC20, ERC721 and ERC1155 tokens.` }
+      flexWrap="nowrap"
+      alignItems="flex-start"
     >
       <TokenLogo
         hash={ appConfig.network.currency.address }
@@ -79,12 +78,13 @@ const AddressBalance = ({ data }: Props) => {
         fontSize="sm"
       />
       <CurrencyValue
-        value={ data.coin_balance }
+        value={ data.coin_balance || '0' }
         exchangeRate={ data.exchange_rate }
         decimals={ String(appConfig.network.currency.decimals) }
         currency={ appConfig.network.currency.symbol }
         accuracyUsd={ 2 }
         accuracy={ 8 }
+        flexWrap="wrap"
       />
     </DetailsInfoItem>
   );

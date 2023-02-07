@@ -1,9 +1,33 @@
-import { Box } from '@chakra-ui/react';
+import BigNumber from 'bignumber.js';
 import React from 'react';
 
-const AddressCoinBalanceChart = () => {
-  // chart will be added after stats feature is finalized
-  return <Box p={ 4 } borderColor="gray.200" borderRadius="md" borderWidth="1px">Here will be coin balance chart</Box>;
+import appConfig from 'configs/app/config';
+import useApiQuery from 'lib/api/useApiQuery';
+import ChartWidget from 'ui/shared/chart/ChartWidget';
+
+interface Props {
+  addressHash: string;
+}
+
+const AddressCoinBalanceChart = ({ addressHash }: Props) => {
+  const { data, isLoading, isError } = useApiQuery('address_coin_balance_chart', {
+    pathParams: { id: addressHash },
+  });
+
+  const items = React.useMemo(() => data?.map(({ date, value }) => ({
+    date: new Date(date),
+    value: BigNumber(value).div(10 ** appConfig.network.currency.decimals).toNumber(),
+  })), [ data ]);
+
+  return (
+    <ChartWidget
+      isError={ isError }
+      title="Balances"
+      items={ items }
+      isLoading={ isLoading }
+      h="250px"
+    />
+  );
 };
 
-export default AddressCoinBalanceChart;
+export default React.memo(AddressCoinBalanceChart);

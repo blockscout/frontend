@@ -24,11 +24,15 @@ export default function getOutlinedFieldStyles(props: StyleFunctionProps) {
     },
     _disabled: {
       opacity: 1,
-      backgroundColor: mode('gray.200', 'whiteAlpha.200')(props),
+      backgroundColor: mode('blackAlpha.200', 'whiteAlpha.200')(props),
       borderColor: 'transparent',
       cursor: 'not-allowed',
       _hover: {
         borderColor: 'transparent',
+      },
+      ':-webkit-autofill': {
+        // background color for disabled input which value was selected from browser autocomplete popup
+        '-webkit-box-shadow': `0 0 0px 1000px ${ mode('rgba(16, 17, 18, 0.08)', 'rgba(255, 255, 255, 0.08)')(props) } inset`,
       },
     },
     _invalid: {

@@ -1,11 +1,11 @@
 import { useQueryClient } from '@tanstack/react-query';
-import type { UseQueryResult } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
-import type { Address, AddressCoinBalanceHistoryResponse } from 'types/api/address';
-import { QueryKeys } from 'types/client/queries';
+import type { AddressCoinBalanceHistoryResponse } from 'types/api/address';
 
+import { getResourceKey } from 'lib/api/useApiQuery';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
@@ -14,20 +14,17 @@ import SocketAlert from 'ui/shared/SocketAlert';
 import AddressCoinBalanceChart from './coinBalance/AddressCoinBalanceChart';
 import AddressCoinBalanceHistory from './coinBalance/AddressCoinBalanceHistory';
 
-interface Props {
-  addressQuery: UseQueryResult<Address>;
-}
-
-const AddressCoinBalance = ({ addressQuery }: Props) => {
+const AddressCoinBalance = () => {
   const [ socketAlert, setSocketAlert ] = React.useState(false);
   const queryClient = useQueryClient();
+  const router = useRouter();
+  const scrollRef = React.useRef<HTMLDivElement>(null);
 
+  const addressHash = String(router.query?.id);
   const coinBalanceQuery = useQueryWithPages({
-    apiPath: `/node-api/addresses/${ addressQuery.data?.hash }/coin-balance-history`,
-    queryName: QueryKeys.addressCoinBalanceHistory,
-    options: {
-      enabled: Boolean(addressQuery.data),
-    },
+    resourceName: 'address_coin_balance',
+    pathParams: { id: addressHash },
+    scrollRef,
   });
 
   const handleSocketError = React.useCallback(() => {
@@ -38,7 +35,7 @@ const AddressCoinBalance = ({ addressQuery }: Props) => {
     setSocketAlert(false);
 
     queryClient.setQueryData(
-      [ QueryKeys.addressCoinBalanceHistory, { page: coinBalanceQuery.pagination.page } ],
+      getResourceKey('address_coin_balance', { pathParams: { id: addressHash } }),
       (prevData: AddressCoinBalanceHistoryResponse | undefined) => {
         if (!prevData) {
           return;
@@ -52,13 +49,13 @@ const AddressCoinBalance = ({ addressQuery }: Props) => {
           ],
         };
       });
-  }, [ coinBalanceQuery.pagination.page, queryClient ]);
+  }, [ addressHash, queryClient ]);
 
   const channel = useSocketChannel({
-    topic: `addresses:${ addressQuery.data?.hash.toLowerCase() }`,
+    topic: `addresses:${ addressHash.toLowerCase() }`,
     onSocketClose: handleSocketError,
     onSocketError: handleSocketError,
-    isDisabled: addressQuery.isLoading || addressQuery.isError || !addressQuery.data.hash || coinBalanceQuery.pagination.page !== 1,
+    isDisabled: !addressHash || coinBalanceQuery.pagination.page !== 1,
   });
   useSocketMessage({
     channel,
@@ -69,7 +66,8 @@ const AddressCoinBalance = ({ addressQuery }: Props) => {
   return (
     <>
       { socketAlert && <SocketAlert mb={ 6 }/> }
-      <AddressCoinBalanceChart/>
+      <AddressCoinBalanceChart addressHash={ addressHash }/>
+      <div ref={ scrollRef }></div>
       <AddressCoinBalanceHistory query={ coinBalanceQuery }/>
     </>
   );

@@ -4,7 +4,16 @@ import React from 'react';
 import DetailsSkeletonRow from 'ui/shared/skeletons/DetailsSkeletonRow';
 
 const BlockDetailsSkeleton = () => {
-  const sectionGap = <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>;
+
+  const sectionGap = (
+    <GridItem
+      colSpan={{ base: undefined, lg: 2 }}
+      mt={{ base: 2, lg: 3 }}
+      mb={{ base: 0, lg: 3 }}
+      borderBottom="1px solid"
+      borderColor="divider"
+    />
+  );
 
   return (
     <Grid columnGap={ 8 } rowGap={{ base: 5, lg: 7 }} templateColumns={{ base: '1fr', lg: '210px 1fr' }} maxW="1000px">

@@ -5,24 +5,25 @@ import * as blockMock from 'mocks/blocks/block';
 import * as dailyTxsMock from 'mocks/stats/daily_txs';
 import * as statsMock from 'mocks/stats/index';
 import * as txMock from 'mocks/txs/tx';
-import insertAdText from 'playwright/scripts/insertAdText';
 import TestApp from 'playwright/TestApp';
+import buildApiUrl from 'playwright/utils/buildApiUrl';
+import insertAdPlaceholder from 'playwright/utils/insertAdPlaceholder';
 
 import Home from './Home';
 
 test('default view -@default +@desktop-xl +@mobile +@dark-mode', async({ mount, page }) => {
-  await page.route('/node-api/home-stats', (route) => route.fulfill({
+  await page.route(buildApiUrl('homepage_stats'), (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(statsMock.base),
   }));
-  await page.route('/node-api/index/blocks', (route) => route.fulfill({
+  await page.route(buildApiUrl('homepage_blocks'), (route) => route.fulfill({
     status: 200,
     body: JSON.stringify([
       blockMock.base,
       blockMock.base2,
     ]),
   }));
-  await page.route('/node-api/index/txs', (route) => route.fulfill({
+  await page.route(buildApiUrl('homepage_txs'), (route) => route.fulfill({
     status: 200,
     body: JSON.stringify([
       txMock.base,
@@ -30,7 +31,7 @@ test('default view -@default +@desktop-xl +@mobile +@dark-mode', async({ mount, 
       txMock.withTokenTransfer,
     ]),
   }));
-  await page.route('/node-api/home-stats/charts/transactions', (route) => route.fulfill({
+  await page.route(buildApiUrl('homepage_chart_txs'), (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(dailyTxsMock.base),
   }));
@@ -41,7 +42,7 @@ test('default view -@default +@desktop-xl +@mobile +@dark-mode', async({ mount, 
     </TestApp>,
   );
 
-  await page.evaluate(insertAdText);
+  await insertAdPlaceholder(page);
 
   await expect(component.locator('main')).toHaveScreenshot();
 });

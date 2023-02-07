@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { Sort } from 'types/client/txs-sort';
 
-// import FilterInput from 'ui/shared/FilterInput';
+// import FilterInput from 'ui/shared/filters/FilterInput';
 import ActionBar from 'ui/shared/ActionBar';
 import Pagination from 'ui/shared/Pagination';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
@@ -18,9 +18,10 @@ type Props = {
   className?: string;
   showPagination?: boolean;
   filterComponent?: React.ReactNode;
+  linkSlot?: React.ReactNode;
 }
 
-const TxsHeaderMobile = ({ filterComponent, sorting, setSorting, paginationProps, className, showPagination = true }: Props) => {
+const TxsHeaderMobile = ({ filterComponent, sorting, setSorting, paginationProps, className, showPagination = true, linkSlot }: Props) => {
   return (
     <ActionBar className={ className }>
       <HStack>
@@ -38,6 +39,7 @@ const TxsHeaderMobile = ({ filterComponent, sorting, setSorting, paginationProps
           size="xs"
           placeholder="Search by addresses, hash, method..."
         /> */ }
+        { linkSlot }
       </HStack>
       { showPagination && <Pagination { ...paginationProps }/> }
     </ActionBar>

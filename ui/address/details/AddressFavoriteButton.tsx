@@ -1,16 +1,14 @@
 import { Icon, chakra, Tooltip, IconButton, useDisclosure } from '@chakra-ui/react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { UserInfo } from 'types/api/account';
-import type { TWatchlist } from 'types/client/account';
-import { QueryKeys as AccountQueryKeys } from 'types/client/accountQueries';
-import { QueryKeys } from 'types/client/queries';
 
 import starFilledIcon from 'icons/star_filled.svg';
 import starOutlineIcon from 'icons/star_outline.svg';
-import useFetch from 'lib/hooks/useFetch';
+import { resourceKey } from 'lib/api/resources';
+import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import useLoginUrl from 'lib/hooks/useLoginUrl';
 import usePreventFocusAfterModalClosing from 'lib/hooks/usePreventFocusAfterModalClosing';
 import WatchlistAddModal from 'ui/watchlist/AddressModal/AddressModal';
@@ -27,19 +25,12 @@ const AddressFavoriteButton = ({ className, hash, isAdded }: Props) => {
   const deleteModalProps = useDisclosure();
   const queryClient = useQueryClient();
   const router = useRouter();
-  const fetch = useFetch();
 
-  const profileData = queryClient.getQueryData<UserInfo>([ AccountQueryKeys.profile ]);
+  const profileData = queryClient.getQueryData<UserInfo>([ resourceKey('user_info') ]);
   const isAuth = Boolean(profileData);
   const loginUrl = useLoginUrl();
 
-  const watchListQuery = useQuery<unknown, unknown, TWatchlist>(
-    [ AccountQueryKeys.watchlist ],
-    async() => fetch('/node-api/account/watchlist'),
-    {
-      enabled: isAdded,
-    },
-  );
+  const watchListQuery = useApiQuery('watchlist', { queryOptions: { enabled: isAdded } });
 
   const handleClick = React.useCallback(() => {
     if (!isAuth) {
@@ -50,7 +41,8 @@ const AddressFavoriteButton = ({ className, hash, isAdded }: Props) => {
   }, [ addModalProps, deleteModalProps, isAdded, isAuth, loginUrl ]);
 
   const handleAddOrDeleteSuccess = React.useCallback(async() => {
-    await queryClient.refetchQueries({ queryKey: [ QueryKeys.address, router.query.id ] });
+    const queryKey = getResourceKey('address', { pathParams: { id: router.query.id?.toString() } });
+    await queryClient.refetchQueries({ queryKey });
     addModalProps.onClose();
   }, [ addModalProps, queryClient, router.query.id ]);
 

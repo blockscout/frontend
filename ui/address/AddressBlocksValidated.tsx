@@ -1,41 +1,41 @@
 import { Box, Hide, Show, Table, Tbody, Th, Tr } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
-import type { UseQueryResult } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
-import type { Address, AddressBlocksValidatedResponse } from 'types/api/address';
-import { QueryKeys } from 'types/client/queries';
+import type { AddressBlocksValidatedResponse } from 'types/api/address';
 
 import appConfig from 'configs/app/config';
+import { getResourceKey } from 'lib/api/useApiQuery';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Pagination from 'ui/shared/Pagination';
-import SkeletonTable from 'ui/shared/SkeletonTable';
+import SkeletonList from 'ui/shared/skeletons/SkeletonList';
+import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 import SocketAlert from 'ui/shared/SocketAlert';
 import { default as Thead } from 'ui/shared/TheadSticky';
 
 import AddressBlocksValidatedListItem from './blocksValidated/AddressBlocksValidatedListItem';
-import AddressBlocksValidatedSkeletonMobile from './blocksValidated/AddressBlocksValidatedSkeletonMobile';
 import AddressBlocksValidatedTableItem from './blocksValidated/AddressBlocksValidatedTableItem';
 
 interface Props {
-  addressQuery: UseQueryResult<Address>;
+  scrollRef?: React.RefObject<HTMLDivElement>;
 }
 
-const AddressBlocksValidated = ({ addressQuery }: Props) => {
+const AddressBlocksValidated = ({ scrollRef }: Props) => {
   const [ socketAlert, setSocketAlert ] = React.useState(false);
   const queryClient = useQueryClient();
+  const router = useRouter();
 
+  const addressHash = String(router.query?.id);
   const query = useQueryWithPages({
-    apiPath: `/node-api/addresses/${ addressQuery.data?.hash }/blocks-validated`,
-    queryName: QueryKeys.addressBlocksValidated,
-    options: {
-      enabled: Boolean(addressQuery.data),
-    },
+    resourceName: 'address_blocks_validated',
+    pathParams: { id: addressHash },
+    scrollRef,
   });
 
   const handleSocketError = React.useCallback(() => {
@@ -46,7 +46,7 @@ const AddressBlocksValidated = ({ addressQuery }: Props) => {
     setSocketAlert(false);
 
     queryClient.setQueryData(
-      [ QueryKeys.addressBlocksValidated, { page: query.pagination.page } ],
+      getResourceKey('address_blocks_validated', { pathParams: { id: addressHash } }),
       (prevData: AddressBlocksValidatedResponse | undefined) => {
         if (!prevData) {
           return;
@@ -57,13 +57,13 @@ const AddressBlocksValidated = ({ addressQuery }: Props) => {
           items: [ payload.block, ...prevData.items ],
         };
       });
-  }, [ query.pagination.page, queryClient ]);
+  }, [ addressHash, queryClient ]);
 
   const channel = useSocketChannel({
-    topic: `blocks:${ addressQuery.data?.hash.toLowerCase() }`,
+    topic: `blocks:${ addressHash.toLowerCase() }`,
     onSocketClose: handleSocketError,
     onSocketError: handleSocketError,
-    isDisabled: addressQuery.isLoading || addressQuery.isError || !addressQuery.data.hash || query.pagination.page !== 1,
+    isDisabled: !addressHash || query.pagination.page !== 1,
   });
   useSocketMessage({
     channel,
@@ -75,11 +75,11 @@ const AddressBlocksValidated = ({ addressQuery }: Props) => {
     if (query.isLoading) {
       return (
         <>
-          <Hide below="lg">
+          <Hide below="lg" ssr={ false }>
             <SkeletonTable columns={ [ '17%', '17%', '16%', '25%', '25%' ] }/>
           </Hide>
-          <Show below="lg">
-            <AddressBlocksValidatedSkeletonMobile/>
+          <Show below="lg" ssr={ false }>
+            <SkeletonList/>
           </Show>
         </>
       );
@@ -95,7 +95,7 @@ const AddressBlocksValidated = ({ addressQuery }: Props) => {
 
     return (
       <>
-        <Hide below="lg">
+        <Hide below="lg" ssr={ false }>
           <Table variant="simple" size="sm">
             <Thead top={ 80 }>
               <Tr>
@@ -113,7 +113,7 @@ const AddressBlocksValidated = ({ addressQuery }: Props) => {
             </Tbody>
           </Table>
         </Hide>
-        <Show below="lg">
+        <Show below="lg" ssr={ false }>
           { query.data.items.map((item) => (
             <AddressBlocksValidatedListItem key={ item.height } { ...item } page={ query.pagination.page }/>
           )) }

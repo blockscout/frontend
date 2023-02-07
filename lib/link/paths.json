@@ -14,11 +14,13 @@
   "token_index": "/token/:hash",
   "token_instance_item": "/token/:hash/instance/:id",
   "address_index": "/address/:id",
-  "address_contract_verification": "/address/:id/contract_verifications/new",
+  "address_contract_verification": "/address/:id/contract_verification",
+  "accounts": "/accounts",
   "apps": "/apps",
   "app_index": "/apps/:id",
   "search_results": "/search-results",
-  "other": "/search-results",
   "auth": "/auth/auth0",
-  "stats": "/stats"
+  "stats": "/stats",
+  "visualize_sol2uml": "/visualize/sol2uml",
+  "csv_export": "/csv-export"
 }

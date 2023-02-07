@@ -3,13 +3,14 @@ import React from 'react';
 
 import * as blockMock from 'mocks/blocks/block';
 import TestApp from 'playwright/TestApp';
+import buildApiUrl from 'playwright/utils/buildApiUrl';
 
 import BlockDetails from './BlockDetails';
 
-const API_URL = '/node-api/blocks/1';
+const API_URL = buildApiUrl('block', { id: '1' });
 const hooksConfig = {
   router: {
-    query: { id: 1 },
+    query: { id: '1' },
   },
 };
 
@@ -26,7 +27,6 @@ test('regular block +@mobile +@dark-mode', async({ mount, page }) => {
     { hooksConfig },
   );
 
-  await page.waitForResponse(API_URL),
   await page.getByText('View details').click();
 
   await expect(component).toHaveScreenshot();
@@ -45,7 +45,6 @@ test('genesis block', async({ mount, page }) => {
     { hooksConfig },
   );
 
-  await page.waitForResponse(API_URL),
   await page.getByText('View details').click();
 
   await expect(component).toHaveScreenshot();

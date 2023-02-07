@@ -2,11 +2,9 @@ import { Text, Show, Hide } from '@chakra-ui/react';
 import castArray from 'lodash/castArray';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { Element } from 'react-scroll';
 
 import type { AddressFromToFilter } from 'types/api/address';
 import { AddressFromToFilterValues } from 'types/api/address';
-import { QueryKeys } from 'types/client/queries';
 
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
@@ -19,15 +17,13 @@ import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Pagination from 'ui/shared/Pagination';
 
+import AddressCsvExportLink from './AddressCsvExportLink';
 import AddressTxsFilter from './AddressTxsFilter';
 import AddressIntTxsList from './internals/AddressIntTxsList';
 
-const SCROLL_ELEM = 'address-internas-txs';
-const SCROLL_OFFSET = -100;
-
 const getFilterValue = (getFilterValueFromQuery<AddressFromToFilter>).bind(null, AddressFromToFilterValues);
 
-const AddressInternalTxs = () => {
+const AddressInternalTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}) => {
   const router = useRouter();
   const [ filterValue, setFilterValue ] = React.useState<AddressFromToFilter>(getFilterValue(router.query.filter));
 
@@ -36,11 +32,10 @@ const AddressInternalTxs = () => {
   const queryIdStr = queryIdArray[0];
 
   const { data, isLoading, isError, pagination, onFilterChange, isPaginationVisible } = useQueryWithPages({
-    apiPath: `/node-api/addresses/${ queryId }/internal-transactions`,
-    queryName: QueryKeys.addressInternalTxs,
-    queryIds: queryIdArray,
+    resourceName: 'address_internal_txs',
+    pathParams: { id: queryIdStr },
     filters: { filter: filterValue },
-    scroll: { elem: SCROLL_ELEM, offset: SCROLL_OFFSET },
+    scrollRef,
   });
 
   const handleFilterChange = React.useCallback((val: string | Array<string>) => {
@@ -53,8 +48,8 @@ const AddressInternalTxs = () => {
   if (isLoading) {
     return (
       <>
-        <Show below="lg"><AddressIntTxsSkeletonMobile/></Show>
-        <Hide below="lg"><AddressIntTxsSkeletonDesktop/></Hide>
+        <Show below="lg" ssr={ false }><AddressIntTxsSkeletonMobile/></Show>
+        <Hide below="lg" ssr={ false }><AddressIntTxsSkeletonDesktop/></Hide>
       </>
     );
   }
@@ -85,17 +80,18 @@ const AddressInternalTxs = () => {
   }
 
   return (
-    <Element name={ SCROLL_ELEM }>
-      <ActionBar mt={ -6 }>
+    <>
+      <ActionBar mt={ -6 } justifyContent="left">
         <AddressTxsFilter
           defaultFilter={ filterValue }
           onFilterChange={ handleFilterChange }
           isActive={ Boolean(filterValue) }
         />
-        { isPaginationVisible && <Pagination ml="auto" { ...pagination }/> }
+        <AddressCsvExportLink address={ queryIdStr } type="internal-transactions" ml={{ base: 2, lg: 'auto' }}/>
+        { isPaginationVisible && <Pagination ml={{ base: 'auto', lg: 8 }} { ...pagination }/> }
       </ActionBar>
       { content }
-    </Element>
+    </>
   );
 };
 

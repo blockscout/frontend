@@ -1,4 +1,4 @@
-import { Link, Td, Tr, Text, Box, Flex } from '@chakra-ui/react';
+import { Td, Tr, Text, Box, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -7,6 +7,7 @@ import type { Block } from 'types/api/block';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import link from 'lib/link/link';
+import LinkInternal from 'ui/shared/LinkInternal';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
 type Props = Block & {
@@ -21,7 +22,7 @@ const AddressBlocksValidatedTableItem = (props: Props) => {
   return (
     <Tr>
       <Td>
-        <Link href={ blockUrl } fontWeight="700">{ props.height }</Link>
+        <LinkInternal href={ blockUrl } fontWeight="700">{ props.height }</LinkInternal>
       </Td>
       <Td>
         <Text variant="secondary">{ timeAgo }</Text>

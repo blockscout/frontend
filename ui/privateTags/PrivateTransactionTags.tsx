@@ -1,16 +1,14 @@
 import { Box, Button, Skeleton, useDisclosure } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
-import type { TransactionTags, TransactionTag } from 'types/api/account';
-import { QueryKeys } from 'types/client/accountQueries';
+import type { TransactionTag } from 'types/api/account';
 
-import useFetch from 'lib/hooks/useFetch';
+import useApiQuery from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import SkeletonAccountMobile from 'ui/shared/SkeletonAccountMobile';
-import SkeletonTable from 'ui/shared/SkeletonTable';
+import SkeletonListAccount from 'ui/shared/skeletons/SkeletonListAccount';
+import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 
 import DeletePrivateTagModal from './DeletePrivateTagModal';
 import TransactionModal from './TransactionModal/TransactionModal';
@@ -18,16 +16,11 @@ import TransactionTagListItem from './TransactionTagTable/TransactionTagListItem
 import TransactionTagTable from './TransactionTagTable/TransactionTagTable';
 
 const PrivateTransactionTags = () => {
-  const { data: transactionTagsData, isLoading, isError } =
-    useQuery<unknown, unknown, TransactionTags>(
-      [ QueryKeys.transactionTags ],
-      async() => fetch('/node-api/account/private-tags/transaction'), { refetchOnMount: false },
-    );
+  const { data: transactionTagsData, isLoading, isError } = useApiQuery('private_tags_tx', { queryOptions: { refetchOnMount: false } });
 
   const transactionModalProps = useDisclosure();
   const deleteModalProps = useDisclosure();
   const isMobile = useIsMobile();
-  const fetch = useFetch();
 
   const [ transactionModalData, setTransactionModalData ] = useState<TransactionTag>();
   const [ deleteModalData, setDeleteModalData ] = useState<TransactionTag>();
@@ -60,7 +53,7 @@ const PrivateTransactionTags = () => {
   );
 
   if (isLoading && !transactionTagsData) {
-    const loader = isMobile ? <SkeletonAccountMobile/> : (
+    const loader = isMobile ? <SkeletonListAccount/> : (
       <>
         <SkeletonTable columns={ [ '75%', '25%', '108px' ] }/>
         <Skeleton height="44px" width="156px" marginTop={ 8 }/>

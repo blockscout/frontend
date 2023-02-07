@@ -1,4 +1,4 @@
-import type { ChakraProps } from '@chakra-ui/react';
+import type { ChakraProps, ThemingProps } from '@chakra-ui/react';
 import {
   Tab,
   Tabs,
@@ -7,10 +7,11 @@ import {
   TabPanels,
   Box,
   useColorModeValue,
+  chakra,
 } from '@chakra-ui/react';
 import type { StyleProps } from '@chakra-ui/styled-system';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import type { RoutedTab } from './types';
 
@@ -28,19 +29,21 @@ const hiddenItemStyles: StyleProps = {
   visibility: 'hidden',
 };
 
-interface Props {
+interface Props extends ThemingProps<'Tabs'> {
   tabs: Array<RoutedTab>;
-  tabListProps?: ChakraProps;
+  tabListProps?: ChakraProps | (({ isSticky }: { isSticky: boolean }) => ChakraProps);
   rightSlot?: React.ReactNode;
   stickyEnabled?: boolean;
+  className?: string;
 }
 
-const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled }: Props) => {
+const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled, className, ...themeProps }: Props) => {
   const router = useRouter();
   const scrollDirection = useScrollDirection();
   const [ activeTabIndex, setActiveTabIndex ] = useState<number>(tabs.length + 1);
 
   const isMobile = useIsMobile();
+  const tabsRef = useRef<HTMLDivElement>(null);
   const { tabsCut, tabsList, tabsRefs, listRef, rightSlotRef } = useAdaptiveTabs(tabs, isMobile);
   const isSticky = useIsSticky(listRef, 5, stickyEnabled);
   const listBgColor = useColorModeValue('white', 'black');
@@ -56,10 +59,28 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled }: Props) => 
   }, [ tabs, router ]);
 
   useEffect(() => {
+    if (router.query.scroll_to_tabs) {
+      tabsRef?.current?.scrollIntoView(true);
+      delete router.query.scroll_to_tabs;
+      router.push(
+        {
+          pathname: router.pathname,
+          query: router.query,
+        },
+        undefined,
+        { shallow: true },
+      );
+    }
+  // replicate componentDidMount
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     if (router.isReady) {
       let tabIndex = 0;
-      if (router.query.tab) {
-        tabIndex = tabs.findIndex(({ id }) => id === router.query.tab);
+      const tabFromRoute = router.query.tab;
+      if (tabFromRoute) {
+        tabIndex = tabs.findIndex(({ id, subTabs }) => id === tabFromRoute || subTabs?.some((id) => id === tabFromRoute));
         if (tabIndex < 0) {
           tabIndex = 0;
         }
@@ -87,14 +108,21 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled }: Props) => 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ activeTabIndex, isMobile ]);
 
+  if (tabs.length === 1) {
+    return <div>{ tabs[0].component }</div>;
+  }
+
   return (
     <Tabs
-      variant="soft-rounded"
-      colorScheme="blue"
+      className={ className }
+      variant={ themeProps.variant || 'soft-rounded' }
+      colorScheme={ themeProps.colorScheme || 'blue' }
       isLazy
       onChange={ handleTabChange }
       index={ activeTabIndex }
       position="relative"
+      size={ themeProps.size || 'md' }
+      ref={ tabsRef }
     >
       <TabList
         marginBottom={{ base: 6, lg: 8 }}
@@ -125,7 +153,7 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled }: Props) => 
             zIndex: { base: 'sticky2', lg: 'docked' },
           } : { })
         }
-        { ...tabListProps }
+        { ...(typeof tabListProps === 'function' ? tabListProps({ isSticky }) : tabListProps) }
       >
         { tabsList.map((tab, index) => {
           if (!tab.id) {
@@ -155,8 +183,9 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled }: Props) => 
               ref={ tabsRefs[index] }
               { ...(index < tabsCut ? {} : hiddenItemStyles) }
               scrollSnapAlign="start"
+              flexShrink={ 0 }
             >
-              { tab.title }
+              { typeof tab.title === 'function' ? tab.title() : tab.title }
             </Tab>
           );
         }) }
@@ -169,4 +198,4 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled }: Props) => 
   );
 };
 
-export default React.memo(RoutedTabs);
+export default React.memo(chakra(RoutedTabs));

@@ -3,16 +3,7 @@ import {
   Flex,
   HStack,
   Icon,
-  Modal,
-  ModalContent,
-  ModalCloseButton,
   Text,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverBody,
-  useColorModeValue,
-  useDisclosure,
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -24,7 +15,6 @@ import transactionIcon from 'icons/transactions.svg';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import AdditionalInfoButton from 'ui/shared/AdditionalInfoButton';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -37,48 +27,29 @@ type Props = {
 }
 
 const LatestBlocksItem = ({ tx }: Props) => {
-  const borderColor = useColorModeValue('gray.200', 'whiteAlpha.200');
-  const iconColor = useColorModeValue('blue.600', 'blue.300');
-
   const dataTo = tx.to ? tx.to : tx.created_contract;
   const timeAgo = useTimeAgoIncrement(tx.timestamp || '0', true);
 
   const isMobile = useIsMobile();
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <Box
       width="100%"
       borderTop="1px solid"
-      borderColor={ borderColor }
+      borderColor="divider"
       py={ 4 }
       px={{ base: 0, lg: 4 }}
-      _last={{ borderBottom: '1px solid', borderColor }}
+      _last={{ borderBottom: '1px solid', borderColor: 'divider' }}
     >
       <Flex justifyContent="space-between" width="100%" alignItems="start" flexDirection={{ base: 'column', lg: 'row' }}>
-        { !isMobile && (
-          <Popover placement="right-start" openDelay={ 300 } isLazy>
-            { ({ isOpen }) => (
-              <>
-                <PopoverTrigger>
-                  <AdditionalInfoButton isOpen={ isOpen } mr={ 3 }/>
-                </PopoverTrigger>
-                <PopoverContent border="1px solid" borderColor={ borderColor }>
-                  <PopoverBody>
-                    <TxAdditionalInfo tx={ tx }/>
-                  </PopoverBody>
-                </PopoverContent>
-              </>
-            ) }
-          </Popover>
-        ) }
+        { !isMobile && <Flex mr={ 3 }><TxAdditionalInfo tx={ tx }/></Flex> }
         <Box width={{ base: '100%', lg: 'calc(50% - 32px)' }}>
           <Flex justifyContent="space-between">
             <HStack>
               <TxType types={ tx.tx_types }/>
               <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined }/>
             </HStack>
-            { isMobile && <AdditionalInfoButton onClick={ onOpen }/> }
+            { isMobile && <TxAdditionalInfo tx={ tx } isMobile/> }
           </Flex>
           <Flex
             mt={ 2 }
@@ -92,7 +63,7 @@ const LatestBlocksItem = ({ tx }: Props) => {
                 as={ transactionIcon }
                 boxSize="30px"
                 mr={ 2 }
-                color={ iconColor }
+                color="link"
               />
               <Address width="100%">
                 <AddressLink
@@ -109,8 +80,9 @@ const LatestBlocksItem = ({ tx }: Props) => {
         <Box width={{ base: '100%', lg: '50%' }}>
           <Flex alignItems="center" mb={ 3 } justifyContent={{ base: 'start', lg: 'end' }}>
             <Address>
-              <AddressIcon hash={ tx.from.hash }/>
+              <AddressIcon address={ tx.from }/>
               <AddressLink
+                type="address"
                 hash={ tx.from.hash }
                 alias={ tx.from.name }
                 fontWeight="500"
@@ -126,8 +98,9 @@ const LatestBlocksItem = ({ tx }: Props) => {
               color="gray.500"
             />
             <Address>
-              <AddressIcon hash={ dataTo.hash }/>
+              <AddressIcon address={ dataTo }/>
               <AddressLink
+                type="address"
                 hash={ dataTo.hash }
                 alias={ dataTo.name }
                 fontWeight="500"
@@ -149,12 +122,6 @@ const LatestBlocksItem = ({ tx }: Props) => {
           </Flex>
         </Box>
       </Flex>
-      <Modal isOpen={ isOpen } onClose={ onClose } size="full">
-        <ModalContent paddingTop={ 4 }>
-          <ModalCloseButton/>
-          <TxAdditionalInfo tx={ tx }/>
-        </ModalContent>
-      </Modal>
     </Box>
   );
 };

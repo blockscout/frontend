@@ -12,8 +12,7 @@ type Props = UserInfo;
 
 const ProfileMenuContent = ({ name, nickname, email }: Props) => {
   const { accountNavItems, profileItem } = useNavItems();
-  const borderColor = useColorModeValue('gray.200', 'whiteAlpha.200');
-  const primaryTextColor = useColorModeValue('gray.600', 'whiteAlpha.800');
+  const primaryTextColor = useColorModeValue('blackAlpha.800', 'whiteAlpha.800');
 
   return (
     <Box>
@@ -35,12 +34,12 @@ const ProfileMenuContent = ({ name, nickname, email }: Props) => {
         { email }
       </Text>
       <NavLink { ...profileItem } isActive={ undefined } px="0px" isCollapsed={ false }/>
-      <Box as="nav" mt={ 2 } pt={ 2 } borderTopColor={ borderColor } borderTopWidth="1px" { ...getDefaultTransitionProps() }>
+      <Box as="nav" mt={ 2 } pt={ 2 } borderTopColor="divider" borderTopWidth="1px" { ...getDefaultTransitionProps() }>
         <VStack as="ul" spacing="0" alignItems="flex-start" overflow="hidden">
           { accountNavItems.map((item) => <NavLink key={ item.text } { ...item } isActive={ undefined } isCollapsed={ false } px="0px"/>) }
         </VStack>
       </Box>
-      <Box mt={ 2 } pt={ 3 } borderTopColor={ borderColor } borderTopWidth="1px" { ...getDefaultTransitionProps() }>
+      <Box mt={ 2 } pt={ 3 } borderTopColor="divider" borderTopWidth="1px" { ...getDefaultTransitionProps() }>
         <Button size="sm" width="full" variant="outline" as="a" href={ appConfig.logoutUrl }>Sign Out</Button>
       </Box>
     </Box>

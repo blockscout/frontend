@@ -9,11 +9,11 @@ import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
 import { useForm, Controller } from 'react-hook-form';
 
 import type { TransactionTag, TransactionTagErrors } from 'types/api/account';
-import { QueryKeys } from 'types/client/accountQueries';
 
+import type { ResourceErrorAccount } from 'lib/api/resources';
+import { resourceKey } from 'lib/api/resources';
+import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/getErrorMessage';
-import type { ErrorType } from 'lib/hooks/useFetch';
-import useFetch from 'lib/hooks/useFetch';
 import { TRANSACTION_HASH_REGEXP } from 'lib/validations/transaction';
 import TagInput from 'ui/shared/TagInput';
 import TransactionInput from 'ui/shared/TransactionInput';
@@ -35,7 +35,7 @@ const TransactionForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) =>
   const [ pending, setPending ] = useState(false);
   const formBackgroundColor = useColorModeValue('white', 'gray.900');
 
-  const { control, handleSubmit, formState: { errors, isValid, isDirty }, setError } = useForm<Inputs>({
+  const { control, handleSubmit, formState: { errors, isDirty }, setError } = useForm<Inputs>({
     mode: 'onTouched',
     defaultValues: {
       transaction: data?.transaction_hash || '',
@@ -44,7 +44,7 @@ const TransactionForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) =>
   });
 
   const queryClient = useQueryClient();
-  const fetch = useFetch();
+  const apiFetch = useApiFetch();
 
   const { mutate } = useMutation((formData: Inputs) => {
     const body = {
@@ -54,24 +54,28 @@ const TransactionForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) =>
     const isEdit = data?.id;
 
     if (isEdit) {
-      return fetch(`/node-api/account/private-tags/transaction/${ data.id }`, { method: 'PUT', body });
+      return apiFetch('private_tags_tx', {
+        pathParams: { id: data.id },
+        fetchParams: { method: 'PUT', body },
+      });
     }
 
-    return fetch('/node-api/account/private-tags/transaction', { method: 'POST', body });
+    return apiFetch('private_tags_tx', { fetchParams: { method: 'POST', body } });
   }, {
-    onError: (e: ErrorType<TransactionTagErrors>) => {
+    onError: (error: ResourceErrorAccount<TransactionTagErrors>) => {
       setPending(false);
-      if (e?.error?.tx_hash || e?.error?.name) {
-        e?.error?.tx_hash && setError('transaction', { type: 'custom', message: getErrorMessage(e.error, 'tx_hash') });
-        e?.error?.name && setError('tag', { type: 'custom', message: getErrorMessage(e.error, 'name') });
-      } else if (e?.error?.identity_id) {
-        setError('transaction', { type: 'custom', message: getErrorMessage(e.error, 'identity_id') });
+      const errorMap = error.payload?.errors;
+      if (errorMap?.tx_hash || errorMap?.name) {
+        errorMap?.tx_hash && setError('transaction', { type: 'custom', message: getErrorMessage(errorMap, 'tx_hash') });
+        errorMap?.name && setError('tag', { type: 'custom', message: getErrorMessage(errorMap, 'name') });
+      } else if (errorMap?.identity_id) {
+        setError('transaction', { type: 'custom', message: getErrorMessage(errorMap, 'identity_id') });
       } else {
         setAlertVisible(true);
       }
     },
     onSuccess: () => {
-      queryClient.refetchQueries([ QueryKeys.transactionTags ]).then(() => {
+      queryClient.refetchQueries([ resourceKey('private_tags_tx') ]).then(() => {
         onClose();
         setPending(false);
       });
@@ -119,7 +123,7 @@ const TransactionForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) =>
         <Button
           size="lg"
           type="submit"
-          disabled={ !isValid || !isDirty }
+          disabled={ !isDirty }
           isLoading={ pending }
         >
           { data ? 'Save changes' : 'Add tag' }

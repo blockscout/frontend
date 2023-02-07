@@ -1,12 +1,11 @@
 import { Box, Button, Icon, Skeleton, Text, useColorModeValue } from '@chakra-ui/react';
-import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import arrowIcon from 'icons/arrows/east-mini.svg';
 import tokensIcon from 'icons/tokens.svg';
-import { ZERO } from 'lib/consts';
 
-import type { EnhancedData } from './utils';
+import type { EnhancedData } from '../utils/tokenUtils';
+import { getTokenBalanceTotal } from '../utils/tokenUtils';
 
 interface Props {
   isOpen: boolean;
@@ -16,7 +15,7 @@ interface Props {
 }
 
 const TokenSelectButton = ({ isOpen, isLoading, onClick, data }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
-  const totalBn = data.reduce((result, item) => !item.usd ? result : result.plus(BigNumber(item.usd)), ZERO);
+  const totalBn = getTokenBalanceTotal(data);
   const skeletonBgColor = useColorModeValue('white', 'black');
 
   const handleClick = React.useCallback(() => {
