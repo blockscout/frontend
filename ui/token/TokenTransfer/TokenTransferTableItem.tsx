@@ -1,4 +1,4 @@
-import { Tr, Td, Tag, Text, Icon } from '@chakra-ui/react';
+import { Tr, Td, Tag, Text, Icon, Grid } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -35,10 +35,12 @@ const TokenTransferTableItem = ({
   return (
     <Tr alignItems="top">
       <Td>
-        <Address display="inline-flex" maxW="100%" fontWeight={ 600 } lineHeight="30px">
-          <AddressLink type="transaction" hash={ txHash }/>
-        </Address>
-        { timestamp && <Text color="gray.500" fontWeight="400" mt="10px">{ timeAgo }</Text> }
+        <Grid alignItems="center" gridTemplateColumns="auto 130px" width="fit-content">
+          <Address display="inline-flex" fontWeight={ 600 } lineHeight="30px">
+            <AddressLink type="transaction" hash={ txHash }/>
+          </Address>
+          { timestamp && <Text color="gray.500" fontWeight="400" ml="10px">{ timeAgo }</Text> }
+        </Grid>
       </Td>
       <Td>
         { method ? <Tag colorScheme="gray">{ method }</Tag> : '-' }
