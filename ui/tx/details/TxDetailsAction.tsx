@@ -87,7 +87,7 @@ const TxDetailsAction = ({ action, isLast }: Props) => {
             </Flex>
             <Flex columnGap={ 1 }>
               <Text as="span">To</Text>
-              <AddressLink hash={ data.to }/>
+              <AddressLink hash={ data.to } type="address"/>
             </Flex>
           </Flex>
           <Flex columnGap={ 1 } rowGap={ 2 } marginLeft={ 3 } flexDirection="column">

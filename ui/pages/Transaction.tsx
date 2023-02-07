@@ -1,6 +1,5 @@
 import { Flex, Tag } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import Script from 'next/script';
 import React from 'react';
 
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
@@ -75,7 +74,6 @@ const TransactionPageContent = () => {
         backLinkLabel="Back to transactions list"
       />
       <RoutedTabs tabs={ TABS }/>
-      <Script src="/static/js/jquery.min.js" strategy="beforeInteractive"/>
     </Page>
   );
 };
