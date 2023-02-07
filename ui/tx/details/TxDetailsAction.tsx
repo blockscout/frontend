@@ -1,119 +1,116 @@
-import { Flex, Image, Link, Text } from '@chakra-ui/react';
+import { Flex, Link, Icon, chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type { TxAction as TTxAction } from 'types/api/txAction';
+import type { TxAction, TxActionGeneral } from 'types/api/txAction';
 
-import { space } from 'lib/html-entities';
+import appConfig from 'configs/app/config';
+import uniswapIcon from 'icons/uniswap.svg';
 import link from 'lib/link/link';
+import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import AddressLink from 'ui/shared/address/AddressLink';
-import StringShorten from 'ui/shared/StringShorten';
 import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
 
-const uniswapIconUrl = 'https://raw.githubusercontent.com/trustwallet/assets/master/dapps/app.uniswap.org.png';
-
 interface Props {
-  action: TTxAction;
-  isLast: boolean;
+  action: TxAction;
 }
 
-function uniswapActionName(actionType: string) {
+function getActionText(actionType: TxActionGeneral['type']) {
   switch (actionType) {
-    case 'mint': return [ 'Add', 'Liquidity To' ];
-    case 'burn': return [ 'Remove', 'Liquidity From' ];
+    case 'mint': return [ 'Add', 'Liquidity to' ];
+    case 'burn': return [ 'Remove', 'Liquidity from' ];
     case 'collect': return [ 'Collect', 'From' ];
     case 'swap': return [ 'Swap', 'On' ];
-    default: return [ '', '' ];
   }
 }
 
-function unknownAction() {
-  return (<span>Unrecognized action</span>);
-}
-
-const TxDetailsAction = ({ action, isLast }: Props) => {
+const TxDetailsAction = ({ action }: Props) => {
   const { protocol, type, data } = action;
 
-  if (protocol === 'uniswap_v3') {
-    if ([ 'mint', 'burn', 'collect', 'swap' ].includes(type)) {
+  if (protocol !== 'uniswap_v3') {
+    return null;
+  }
+
+  switch (type) {
+    case 'mint':
+    case 'burn':
+    case 'collect':
+    case 'swap': {
       const amount0 = BigNumber(data.amount0).toFormat();
       const amount1 = BigNumber(data.amount1).toFormat();
+      const [ text0, text1 ] = getActionText(type);
 
       return (
-        <Flex flexWrap="wrap" columnGap={ 1 } rowGap={ 2 } className={ isLast ? 'lastItem' : '' } marginBottom={ isLast ? 5 : 0 }>
-          <Text color="gray.500" as="span">
-            { uniswapActionName(type)[0] }
-          </Text>
+        <Flex flexWrap="wrap" columnGap={ 1 } rowGap={ 2 } alignItems="center">
+          <chakra.span color="text_secondary">{ text0 }: </chakra.span>
 
-          <Flex columnGap={ 1 }>
-            <Text as="span">{ amount0 }</Text>
-            { data.symbol0 === 'Ether' ? <Text as="span">Ether</Text> : <TokenSnippet name={ data.symbol0 } hash={ data.address0 }/> }
-          </Flex>
+          <chakra.span fontWeight={ 600 }>{ amount0 }</chakra.span>
+          <TokenSnippet
+            name={ data.symbol0 === 'Ether' ? appConfig.network.currency.symbol : data.symbol0 }
+            hash={ data.symbol0 === 'Ether' ? appConfig.network.currency.address || '' : data.address1 }
+            w="auto"
+            columnGap={ 1 }
+            logoSize={ 5 }
+            isDisabled={ data.symbol0 === 'Ether' }
+          />
 
-          <Text color="gray.500" as="span">
-            { type === 'swap' ? 'For' : 'And' }
-          </Text>
+          <chakra.span color="text_secondary">{ type === 'swap' ? 'For' : 'And' }: </chakra.span>
 
-          <Flex columnGap={ 1 }>
-            <Text as="span">{ amount1 }</Text>
-            { data.symbol1 === 'Ether' ? <Text as="span">Ether</Text> : <TokenSnippet name={ data.symbol1 } hash={ data.address1 }/> }
-          </Flex>
+          <chakra.span fontWeight={ 600 }>{ amount1 }</chakra.span>
+          <TokenSnippet
+            name={ data.symbol1 === 'Ether' ? appConfig.network.currency.symbol : data.symbol1 }
+            hash={ data.symbol1 === 'Ether' ? appConfig.network.currency.address || '' : data.address1 }
+            w="auto"
+            columnGap={ 1 }
+            logoSize={ 5 }
+            isDisabled={ data.symbol1 === 'Ether' }
+          />
 
-          <Text color="gray.500" as="span">
-            { uniswapActionName(type)[1] }
-          </Text>
-
-          <Flex columnGap={ 1 }>
-            <Image src={ uniswapIconUrl } boxSize={ 5 } fallback={ <Text as="span"/> } alt=""/>
-            <Text color="gray.500" as="span">
-              Uniswap V3
-            </Text>
-          </Flex>
+          <chakra.span color="text_secondary">{ text1 } </chakra.span>
+          <Icon as={ uniswapIcon } boxSize={ 5 } color="white" bgColor="#ff007a" borderRadius="full" p="2px"/>
+          <chakra.span color="text_secondary">Uniswap V3</chakra.span>
         </Flex>
       );
-    } else if (type === 'mint_nft') {
-      const tokenUrl = link('token_index', { hash: data.address });
+    }
+
+    case 'mint_nft' : {
       return (
-        <Flex rowGap={ 2 } flexDirection="column" className={ isLast ? 'lastItem' : '' } marginBottom={ isLast ? 5 : 0 }>
-          <Flex flexWrap="wrap" columnGap={ 1 } rowGap={ 2 }>
-            <Flex columnGap={ 1 }>
-              <Text as="span">Mint of</Text>
-              <Image src={ uniswapIconUrl } boxSize={ 5 } fallback={ <Text as="span"/> } alt=""/>
-              <Link href={ tokenUrl } target="_blank" overflow="hidden" whiteSpace="nowrap">
-                <StringShorten title={ data.name } maxLength={ 12 }/>
-                { space }
-                (<StringShorten title={ data.symbol } maxLength={ 6 }/>)
-              </Link>
-            </Flex>
-            <Flex columnGap={ 1 }>
-              <Text as="span">To</Text>
-              <AddressLink hash={ data.to } type="address"/>
-            </Flex>
+        <div>
+          <Flex rowGap={ 2 } flexWrap="wrap" whiteSpace="pre-wrap">
+            <span>Mint of </span>
+            <TokenSnippet
+              name={ data.name }
+              hash={ data.address }
+              symbol={ trimTokenSymbol(data.symbol) }
+              w="auto"
+              columnGap={ 1 }
+              logoSize={ 5 }
+            />
+            <span> to </span>
+            <AddressLink hash={ data.to } type="address" truncation="constant"/>
           </Flex>
-          <Flex columnGap={ 1 } rowGap={ 2 } marginLeft={ 3 } flexDirection="column">
+
+          <Flex columnGap={ 1 } rowGap={ 2 } pl={ 3 } flexDirection="column" mt={ 2 }>
             {
               data.ids.map((id: string) => {
                 const url = link('token_instance_item', { hash: data.address, id });
                 return (
-                  <Flex key={ id }>
-                    <Flex columnGap={ 1 }>
-                      <Text>1 of</Text>
-                      <Text color="gray.500">Token ID [</Text>
-                    </Flex>
+                  <Flex key={ data.address + id } whiteSpace="pre-wrap">
+                    <span>1 of </span>
+                    <chakra.span color="text_secondary">Token ID [</chakra.span>
                     <Link href={ url }>{ id }</Link>
-                    <Text color="gray.500">]</Text>
+                    <chakra.span color="text_secondary">]</chakra.span>
                   </Flex>
                 );
               })
             }
           </Flex>
-        </Flex>
+        </div>
       );
-    } else {
-      return unknownAction();
     }
-  } else {
-    return unknownAction();
+
+    default:
+      return null;
   }
 };
 

@@ -23,9 +23,8 @@ const TxDetailsActions = ({ actions }: Props) => {
         alignItems="flex-start"
         rowGap={ 5 }
         w="100%"
-        fontWeight={ 500 }
       >
-        { actions.map((action, index: number) => <TxDetailsAction key={ index } action={ action } isLast={ index === actions.length - 1 }/>) }
+        { actions.map((action, index: number) => <TxDetailsAction key={ index } action={ action }/>) }
       </Flex>
     </DetailsInfoItem>
   );

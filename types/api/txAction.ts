@@ -1,12 +1,6 @@
-export type TxAction = {
-  protocol: 'uniswap_v3';
-  type: 'mint' | 'burn' | 'collect' | 'swap' | 'mint_nft';
+export interface TxActionGeneral {
+  type: 'mint' | 'burn' | 'collect' | 'swap';
   data: {
-    name: string;
-    symbol: string;
-    address: string;
-    to: string;
-    ids: Array<string>;
     amount0: string;
     symbol0: string;
     address0: string;
@@ -15,3 +9,18 @@ export type TxAction = {
     address1: string;
   };
 }
+
+export interface TxActionNft {
+  type: 'mint_nft';
+  data: {
+    name: string;
+    symbol: string;
+    address: string;
+    to: string;
+    ids: Array<string>;
+  };
+}
+
+export type TxAction = {
+  protocol: 'uniswap_v3';
+} & (TxActionGeneral | TxActionNft)
