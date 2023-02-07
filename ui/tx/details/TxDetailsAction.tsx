@@ -67,8 +67,10 @@ const TxDetailsAction = ({ action }: Props) => {
           />
 
           <chakra.span color="text_secondary">{ text1 } </chakra.span>
-          <Icon as={ uniswapIcon } boxSize={ 5 } color="white" bgColor="#ff007a" borderRadius="full" p="2px"/>
-          <chakra.span color="text_secondary">Uniswap V3</chakra.span>
+          <Flex columnGap={ 1 }>
+            <Icon as={ uniswapIcon } boxSize={ 5 } color="white" bgColor="#ff007a" borderRadius="full" p="2px"/>
+            <chakra.span color="text_secondary">Uniswap V3</chakra.span>
+          </Flex>
         </Flex>
       );
     }
@@ -76,8 +78,8 @@ const TxDetailsAction = ({ action }: Props) => {
     case 'mint_nft' : {
       return (
         <div>
-          <Flex rowGap={ 2 } flexWrap="wrap" whiteSpace="pre-wrap">
-            <span>Mint of </span>
+          <Flex rowGap={ 2 } flexWrap="wrap" alignItems="center" whiteSpace="pre-wrap">
+            <chakra.span>Mint of </chakra.span>
             <TokenSnippet
               name={ data.name }
               hash={ data.address }
@@ -85,8 +87,10 @@ const TxDetailsAction = ({ action }: Props) => {
               w="auto"
               columnGap={ 1 }
               logoSize={ 5 }
+              rowGap={ 2 }
+              flexWrap="wrap"
             />
-            <span> to </span>
+            <chakra.span> to </chakra.span>
             <AddressLink hash={ data.to } type="address" truncation="constant"/>
           </Flex>
 
