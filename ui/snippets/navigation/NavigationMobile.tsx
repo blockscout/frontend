@@ -7,6 +7,8 @@ import useNavItems from 'lib/hooks/useNavItems';
 import NavFooter from 'ui/snippets/navigation/NavFooter';
 import NavLink from 'ui/snippets/navigation/NavLink';
 
+import NavLinkGroup from './NavLinkGroup';
+
 const NavigationMobile = () => {
   const { mainNavItems, accountNavItems } = useNavItems();
 
@@ -17,7 +19,13 @@ const NavigationMobile = () => {
     <>
       <Box as="nav" mt={ 6 }>
         <VStack as="ul" spacing="1" alignItems="flex-start">
-          { mainNavItems.map((item) => <NavLink key={ item.text } { ...item }/>) }
+          { mainNavItems.map((item) => {
+            if (item.subItems) {
+              return <NavLinkGroup key={ item.text } { ...item }/>;
+            } else {
+              return <NavLink key={ item.text } { ...item }/>;
+            }
+          }) }
         </VStack>
       </Box>
       { isAuth && (

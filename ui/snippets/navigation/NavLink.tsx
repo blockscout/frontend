@@ -21,7 +21,7 @@ const NavLink = ({ text, nextRoute, icon, isCollapsed, isActive, px, isNewUi }: 
   const content = (
     <Link
       { ...(isNewUi ? {} : { href: route(nextRoute) }) }
-      w={{ base: '100%', lg: isExpanded ? '180px' : '60px', xl: isCollapsed ? '60px' : '180px' }}
+      w={{ base: '100%', lg: isExpanded ? '100%' : '60px', xl: isCollapsed ? '60px' : '100%' }}
       px={ px || { base: 3, lg: isExpanded ? 3 : '15px', xl: isCollapsed ? '15px' : 3 } }
       py={ 2.5 }
       display="flex"

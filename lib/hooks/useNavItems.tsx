@@ -7,14 +7,16 @@ import abiIcon from 'icons/ABI.svg';
 import apiKeysIcon from 'icons/API.svg';
 import appsIcon from 'icons/apps.svg';
 import blocksIcon from 'icons/block.svg';
+import globeIcon from 'icons/globe-b.svg';
 // import gearIcon from 'icons/gear.svg';
 import privateTagIcon from 'icons/privattags.svg';
 import profileIcon from 'icons/profile.svg';
 import publicTagIcon from 'icons/publictags.svg';
 import statsIcon from 'icons/stats.svg';
 import tokensIcon from 'icons/token.svg';
+import topAccountsIcon from 'icons/top-accounts.svg';
 import transactionsIcon from 'icons/transactions.svg';
-import walletIcon from 'icons/wallet.svg';
+// import verifiedIcon from 'icons/verified.svg';
 import watchlistIcon from 'icons/watchlist.svg';
 import notEmpty from 'lib/notEmpty';
 
@@ -26,8 +28,16 @@ export interface NavItem {
   isNewUi?: boolean;
 }
 
+export interface NavGroupItem {
+  text: string;
+  icon: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
+  isActive?: boolean;
+  isNewUi?: boolean;
+  subItems: Array<NavItem>;
+}
+
 interface ReturnType {
-  mainNavItems: Array<NavItem>;
+  mainNavItems: Array<NavItem | NavGroupItem>;
   accountNavItems: Array<NavItem>;
   profileItem: NavItem;
 }
@@ -39,11 +49,23 @@ export default function useNavItems(): ReturnType {
   const pathname = router.pathname;
 
   return React.useMemo(() => {
-    const mainNavItems = [
+    const blockchainNavItems = [
+      { text: 'Top accounts', nextRoute: { pathname: '/accounts' as const }, icon: topAccountsIcon, isActive: pathname === '/accounts', isNewUi: true },
       { text: 'Blocks', nextRoute: { pathname: '/blocks' as const }, icon: blocksIcon, isActive: pathname.startsWith('/block'), isNewUi: true },
       { text: 'Transactions', nextRoute: { pathname: '/txs' as const }, icon: transactionsIcon, isActive: pathname.startsWith('/tx'), isNewUi: true },
+      // eslint-disable-next-line max-len
+      // { text: 'Verified contracts', nextRoute: { pathname: '/verified_contracts' as const }, icon: verifiedIcon, isActive: pathname === '/verified_contracts', isNewUi: false },
+    ];
+
+    const mainNavItems = [
+      {
+        text: 'Blockchain',
+        icon: globeIcon,
+        isActive: pathname.startsWith('block' || 'tx') || pathname === '/accounts',
+        isNewUi: true,
+        subItems: blockchainNavItems,
+      },
       { text: 'Tokens', nextRoute: { pathname: '/tokens' as const }, icon: tokensIcon, isActive: pathname.startsWith('/token'), isNewUi: true },
-      { text: 'Accounts', nextRoute: { pathname: '/accounts' as const }, icon: walletIcon, isActive: pathname === '/accounts', isNewUi: true },
       isMarketplaceFilled ?
         { text: 'Apps', nextRoute: { pathname: '/apps' as const }, icon: appsIcon, isActive: pathname.startsWith('/app'), isNewUi: true } : null,
       { text: 'Charts & stats', nextRoute: { pathname: '/stats' as const }, icon: statsIcon, isActive: pathname === '/stats', isNewUi: true },

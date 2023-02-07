@@ -70,6 +70,21 @@ test('with tooltips +@desktop-xl -@default', async({ mount, page }) => {
   await expect(component).toHaveScreenshot();
 });
 
+test('with submenu +@desktop-xl', async({ mount, page }) => {
+  const component = await mount(
+    <TestApp>
+      <Flex w="100%" minH="100vh" alignItems="stretch">
+        <NavigationDesktop/>
+        <Box bgColor="lightpink" w="100%"/>
+      </Flex>
+    </TestApp>,
+    { hooksConfig },
+  );
+  await page.locator('div[aria-label="Blockchain link group"]').hover();
+
+  await expect(component).toHaveScreenshot();
+});
+
 test.describe('cookie set to false', () => {
   const extendedTest = test.extend({
     context: ({ context }, use) => {

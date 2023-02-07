@@ -12,6 +12,7 @@ import NetworkMenu from 'ui/snippets/networkMenu/NetworkMenu';
 
 import NavFooter from './NavFooter';
 import NavLink from './NavLink';
+import NavLinkGroup from './NavLinkGroup';
 
 const NavigationDesktop = () => {
   const appProps = useAppContext();
@@ -66,7 +67,8 @@ const NavigationDesktop = () => {
         alignItems="center"
         flexDirection="row"
         w="100%"
-        px={{ lg: isExpanded ? 3 : '15px', xl: isCollapsed ? '15px' : 3 }}
+        pl={{ lg: isExpanded ? 3 : '15px', xl: isCollapsed ? '15px' : 3 }}
+        pr={{ lg: isExpanded ? 0 : '15px', xl: isCollapsed ? '15px' : 0 }}
         h={ 10 }
         transitionProperty="padding"
         transitionDuration="normal"
@@ -77,7 +79,13 @@ const NavigationDesktop = () => {
       </Box>
       <Box as="nav" mt={ 8 }>
         <VStack as="ul" spacing="1" alignItems="flex-start">
-          { mainNavItems.map((item) => <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed }/>) }
+          { mainNavItems.map((item) => {
+            if (item.subItems) {
+              return <NavLinkGroup key={ item.text } { ...item } isCollapsed={ isCollapsed }/>;
+            } else {
+              return <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed }/>;
+            }
+          }) }
         </VStack>
       </Box>
       { hasAccount && (
