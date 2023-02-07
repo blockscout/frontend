@@ -136,12 +136,14 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
             hint="Implementation address of the proxy contract."
             columnGap={ 1 }
           >
-            <LinkInternal href={ link('address_index', { id: data.implementation_address }) }>
-              { data.implementation_name }
+            <LinkInternal href={ link('address_index', { id: data.implementation_address }) } overflow="hidden">
+              { data.implementation_name || <HashStringShortenDynamic hash={ data.implementation_address }/> }
             </LinkInternal>
-            <Text variant="secondary" overflow="hidden">
-              <HashStringShortenDynamic hash={ `(${ data.implementation_address })` }/>
-            </Text>
+            { data.implementation_name && (
+              <Text variant="secondary" overflow="hidden">
+                <HashStringShortenDynamic hash={ `(${ data.implementation_address })` }/>
+              </Text>
+            ) }
           </DetailsInfoItem>
         ) }
         <AddressBalance data={ data }/>

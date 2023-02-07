@@ -82,10 +82,12 @@ const ContractMethodsAccordion = <T extends SmartContractMethod>({ data, renderC
           </AccordionItem>
         );
       }) }
-      <Flex columnGap={ 3 } position="absolute" top={ 0 } right={ 0 } py={ 3 } lineHeight="27px">
-        <Link onClick={ handleExpandAll }>{ expandedSections.length === data.length ? 'Collapse' : 'Expand' } all</Link>
-        <Link onClick={ handleReset }>Reset</Link>
-      </Flex>
+      { data.length > 0 && (
+        <Flex columnGap={ 3 } position="absolute" top={ 0 } right={ 0 } py={ 3 } lineHeight="27px">
+          <Link onClick={ handleExpandAll }>{ expandedSections.length === data.length ? 'Collapse' : 'Expand' } all</Link>
+          <Link onClick={ handleReset }>Reset</Link>
+        </Flex>
+      ) }
     </Accordion>
   );
 };
