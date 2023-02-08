@@ -6,12 +6,7 @@ import React from 'react';
 import type { TokenInfo } from 'types/api/tokenInfo';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import AddressAddToMetaMask from 'ui/address/details/AddressAddToMetaMask';
-import AddressQrCode from 'ui/address/details/AddressQrCode';
-import AddressContractIcon from 'ui/shared/address/AddressContractIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import AddressHeadingInfo from 'ui/shared/AddressHeadingInfo';
 
 interface Props {
   tokenQuery: UseQueryResult<TokenInfo>;
@@ -19,7 +14,6 @@ interface Props {
 
 const TokenContractInfo = ({ tokenQuery }: Props) => {
   const router = useRouter();
-  const isMobile = useIsMobile();
 
   const contractQuery = useApiQuery('address', {
     pathParams: { id: router.query.hash?.toString() },
@@ -43,17 +37,14 @@ const TokenContractInfo = ({ tokenQuery }: Props) => {
     return null;
   }
 
-  const hash = tokenQuery.data.address;
+  const address = {
+    hash: tokenQuery.data.address,
+    is_contract: true,
+    implementation_name: null,
+    watchlist_names: [],
+  };
 
-  return (
-    <Flex alignItems="center">
-      <AddressContractIcon/>
-      <AddressLink type="address" hash={ hash } ml={ 2 } truncation={ isMobile ? 'constant' : 'none' }/>
-      <CopyToClipboard text={ hash } ml={ 1 }/>
-      { contractQuery.data?.token && <AddressAddToMetaMask token={ contractQuery.data?.token } ml={ 2 }/> }
-      <AddressQrCode hash={ hash } ml={ 2 }/>
-    </Flex>
-  );
+  return <AddressHeadingInfo address={ address } token={ contractQuery.data?.token }/>;
 };
 
 export default React.memo(TokenContractInfo);
