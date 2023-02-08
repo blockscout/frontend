@@ -15,6 +15,7 @@ import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
 import TokenLogo from 'ui/shared/TokenLogo';
+import TokenInstanceDetails from 'ui/tokenInstance/TokenInstanceDetails';
 
 export type TokenTabs = 'token_transfers' | 'holders'
 
@@ -76,6 +77,8 @@ const TokenInstance = () => {
         />
 
         <AddressHeadingInfo address={ address } token={ tokenInstanceQuery.data.token }/>
+
+        <TokenInstanceDetails data={ tokenInstanceQuery.data } scrollRef={ scrollRef }/>
 
         <AdBanner mt={{ base: 6, lg: 8 }} justifyContent="center"/>
 

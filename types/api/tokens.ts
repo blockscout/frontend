@@ -23,3 +23,7 @@ export interface TokenInstance {
   owner: AddressParam;
   token: TokenInfo;
 }
+
+export interface TokenInstanceTransfersCount {
+  transfers_count: number;
+}
