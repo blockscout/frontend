@@ -66,7 +66,7 @@ test('error result', async({ mount, page }) => {
   await component.getByPlaceholder(/address/i).type('address-hash');
   await component.getByText(/query/i).click();
 
-  const section = page.locator('section', { hasText: 'balanceOf' });
+  const section = page.locator('section', { hasText: 'FLASHLOAN_PREMIUM_TOTAL' });
 
   await expect(section).toHaveScreenshot();
 });

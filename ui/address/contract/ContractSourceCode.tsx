@@ -59,9 +59,11 @@ const ContractSourceCode = ({ data, hasSol2Yml, address, isViper, filePath, addi
       <Flex flexDir="column" rowGap={ 3 }>
         { [ { file_path: filePath, source_code: data }, ...additionalSource ].map((item, index, array) => (
           <Box key={ index }>
-            <Flex justifyContent="space-between" alignItems="center" mb={ 3 }>
-              <chakra.span fontSize="sm">File { index + 1 } of { array.length }: { item.file_path }</chakra.span>
-              <CopyToClipboard text={ item.source_code }/>
+            <Flex justifyContent="space-between" alignItems="flex-end" mb={ 3 }>
+              <chakra.span fontSize="sm" wordBreak="break-all" lineHeight="20px">
+                File { index + 1 } of { array.length }: { item.file_path }
+              </chakra.span>
+              <CopyToClipboard text={ item.source_code } ml={ 4 }/>
             </Flex>
             <CodeEditor value={ item.source_code } id={ `source_code_${ index }` }/>
           </Box>
