@@ -1,4 +1,4 @@
-import { Flex, Grid } from '@chakra-ui/react';
+import { Box, Flex, Grid } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInstance } from 'types/api/tokens';
@@ -8,6 +8,7 @@ import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import NftImage from 'ui/shared/NftImage';
 import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
 
@@ -28,7 +29,7 @@ const TokenInstanceDetails = ({ data, scrollRef }: Props) => {
   }, [ scrollRef ]);
 
   return (
-    <Flex alignItems="flex-start" mt={ 8 } flexDir={{ base: 'column', lg: 'row' }} columnGap={ 6 } rowGap={ 6 }>
+    <Flex alignItems="flex-start" mt={ 8 } flexDir={{ base: 'column-reverse', lg: 'row' }} columnGap={ 6 } rowGap={ 6 }>
       <Grid
         flexGrow={ 1 }
         columnGap={ 8 }
@@ -56,8 +57,12 @@ const TokenInstanceDetails = ({ data, scrollRef }: Props) => {
           title="Token ID"
           hint="This token instance unique token ID."
         >
-          { data.id }
-          <CopyToClipboard text={ data.id } ml={ 1 }/>
+          <Flex alignItems="center" overflow="hidden">
+            <Box overflow="hidden" display="inline-block" w="100%">
+              <HashStringShortenDynamic hash={ data.id }/>
+            </Box>
+            <CopyToClipboard text={ data.id } ml={ 1 }/>
+          </Flex>
         </DetailsInfoItem>
         <DetailsInfoItem
           title="Quantity"
@@ -67,7 +72,7 @@ const TokenInstanceDetails = ({ data, scrollRef }: Props) => {
         </DetailsInfoItem>
         <TokenInstanceTransfersCount hash={ data.token.address } id={ data.id } onClick={ handleCounterItemClick }/>
       </Grid>
-      <NftImage url={ data.image_url } w="250px" flexShrink={ 0 }/>
+      <NftImage url={ data.image_url } w="250px" flexShrink={ 0 } alignSelf={{ base: 'center', lg: 'flex-start' }}/>
     </Flex>
   );
 };

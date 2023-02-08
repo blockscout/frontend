@@ -33,6 +33,11 @@ const NftImage = ({ url, className, fallbackPadding }: Props) => {
       bgColor={ useColorModeValue('blackAlpha.50', 'whiteAlpha.50') }
       overflow="hidden"
       borderRadius="md"
+      sx={{
+        '&>img': {
+          objectFit: 'contain',
+        },
+      }}
     >
       <Image
         w="100%"

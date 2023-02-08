@@ -21,6 +21,7 @@ const PageTitle = ({ text, additionalsLeft, additionalsRight, withTextAd, backLi
       as="h1"
       size="lg"
       flex="none"
+      wordBreak="break-all"
     >
       { text }
     </Heading>
