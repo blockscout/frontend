@@ -1,4 +1,4 @@
-import { Box, Flex, Grid } from '@chakra-ui/react';
+import { Flex, Grid } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInstance } from 'types/api/tokens';
@@ -8,6 +8,7 @@ import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import NftImage from 'ui/shared/NftImage';
 import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
 
 import TokenInstanceCreatorAddress from './details/TokenInstanceCreatorAddress';
@@ -66,7 +67,7 @@ const TokenInstanceDetails = ({ data, scrollRef }: Props) => {
         </DetailsInfoItem>
         <TokenInstanceTransfersCount hash={ data.token.address } id={ data.id } onClick={ handleCounterItemClick }/>
       </Grid>
-      <Box boxSize="250px" bgColor="lightpink" flexShrink={ 0 }/>
+      <NftImage url={ data.image_url } w="250px" flexShrink={ 0 }/>
     </Flex>
   );
 };

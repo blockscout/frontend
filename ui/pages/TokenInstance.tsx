@@ -27,7 +27,7 @@ const TokenInstance = () => {
   const hash = router.query.hash?.toString();
   const id = router.query.id?.toString();
 
-  const hasGoBackLink = appProps.referrer && appProps.referrer.includes(`/token/${ hash }`);
+  const hasGoBackLink = appProps.referrer && appProps.referrer.includes(`/token/${ hash }`) && !appProps.referrer.includes('instance');
 
   const scrollRef = React.useRef<HTMLDivElement>(null);
 

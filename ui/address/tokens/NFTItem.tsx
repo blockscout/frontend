@@ -1,10 +1,10 @@
-import { Center, Flex, Icon, Link, Text, LinkBox, LinkOverlay, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Link, Text, LinkBox, LinkOverlay, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressTokenBalance } from 'types/api/address';
 
-import NFTIcon from 'icons/nft_shield.svg';
 import link from 'lib/link/link';
+import NftImage from 'ui/shared/NftImage';
 import TokenLogo from 'ui/shared/TokenLogo';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
@@ -16,7 +16,6 @@ const NFTItem = ({ token, token_id: tokenId }: Props) => {
   return (
     <LinkBox
       w={{ base: 'calc((100% - 12px)/2)', lg: '210px' }}
-      h={{ base: 'auto', lg: '272px' }}
       border="1px solid"
       borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }
       borderRadius="12px"
@@ -27,15 +26,11 @@ const NFTItem = ({ token, token_id: tokenId }: Props) => {
       lineHeight="20px"
     >
       <LinkOverlay href={ tokenLink }/>
-      <Center
-        w={{ base: '100%', lg: '182px' }}
-        h={{ base: 'calc((100vw - 36px)/2 - 12px)', lg: '182px' }}
-        bg={ useColorModeValue('blackAlpha.50', 'whiteAlpha.50') }
+      <NftImage
         mb="18px"
-        borderRadius="12px"
-      >
-        <Icon as={ NFTIcon } boxSize="112px" color={ useColorModeValue('blackAlpha.500', 'whiteAlpha.500') }/>
-      </Center>
+        url={ null }
+        fallbackPadding="30px"
+      />
       { tokenId && (
         <Flex mb={ 2 } ml={ 1 }>
           <Text whiteSpace="pre" variant="secondary">ID# </Text>
