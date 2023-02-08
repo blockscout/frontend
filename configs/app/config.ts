@@ -95,6 +95,8 @@ const config = Object.freeze({
   baseUrl,
   authUrl,
   logoutUrl,
+  isL2Network: getEnvValue(process.env.NEXT_PUBLIC_IS_L2_NETWORK) === 'true',
+  l1BaseUrl: getEnvValue(process.env.NEXT_PUBLIC_L1_BASE_URL),
   ad: {
     domainWithAd: getEnvValue(process.env.NEXT_PUBLIC_AD_DOMAIN_WITH_AD) || 'blockscout.com',
     adButlerOn: getEnvValue(process.env.NEXT_PUBLIC_AD_ADBUTLER_ON) === 'true',

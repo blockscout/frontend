@@ -140,6 +140,12 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_IS_L2_NETWORK | `boolean` *(optional)* | Set to true for L2 solutions (Optimism Bedrock based)  | false |
 | NEXT_PUBLIC_L1_BASE_URL | `string` *(optional)* | Base Blockscout URL for L1 network | `'http://eth-goerli.blockscout.com'` |
 
+### L2 configuration
+| Variable | Type | Description | Default value
+| --- | --- | --- | --- |
+| NEXT_PUBLIC_IS_L2_NETWORK | `boolean` *(optional)* | Set to true for L2 solutions (Optimism Bedrock based)  | false |
+| NEXT_PUBLIC_L1_BASE_URL | `string` *(optional)* | Base Blockscout URL for L1 network | `'http://eth-goerli.blockscout.com'` |
+
 ### Marketplace app configuration properties
 
 | Property | Type | Description | Example value
