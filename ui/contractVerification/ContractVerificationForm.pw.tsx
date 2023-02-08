@@ -29,11 +29,11 @@ const formConfig: SmartContractVerificationConfig = {
     'berlin',
   ],
   verification_options: [
-    'flattened_code',
-    'standard_input',
+    'flattened-code',
+    'standard-input',
     'sourcify',
-    'multi_part',
-    'vyper_code',
+    'multi-part',
+    'vyper-code',
   ],
   vyper_compiler_versions: [
     'v0.3.7+commit.6020b8bb',

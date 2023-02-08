@@ -21,15 +21,15 @@ import ContractVerificationSourcify from './methods/ContractVerificationSourcify
 import ContractVerificationStandardInput from './methods/ContractVerificationStandardInput';
 import ContractVerificationVyperContract from './methods/ContractVerificationVyperContract';
 import ContractVerificationVyperMultiPartFile from './methods/ContractVerificationVyperMultiPartFile';
-import { prepareRequestBody, METHOD_TO_ENDPOINT_MAP, formatSocketErrors } from './utils';
+import { prepareRequestBody, formatSocketErrors } from './utils';
 
 const METHOD_COMPONENTS = {
-  flattened_code: <ContractVerificationFlattenSourceCode/>,
-  standard_input: <ContractVerificationStandardInput/>,
+  'flattened-code': <ContractVerificationFlattenSourceCode/>,
+  'standard-input': <ContractVerificationStandardInput/>,
   sourcify: <ContractVerificationSourcify/>,
-  multi_part: <ContractVerificationMultiPartFile/>,
-  vyper_code: <ContractVerificationVyperContract/>,
-  vyper_multi_part: <ContractVerificationVyperMultiPartFile/>,
+  'multi-part': <ContractVerificationMultiPartFile/>,
+  'vyper-code': <ContractVerificationVyperContract/>,
+  'vyper-multi-part': <ContractVerificationVyperMultiPartFile/>,
 };
 
 interface Props {
@@ -53,14 +53,11 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
   const router = useRouter();
 
   const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(data) => {
-    // eslint-disable-next-line no-console
-    console.log('__>__', data);
-
     const body = prepareRequestBody(data);
 
     try {
       await apiFetch('contract_verification_via', {
-        pathParams: { method: METHOD_TO_ENDPOINT_MAP[data.method], id: hash },
+        pathParams: { method: data.method, id: hash },
         fetchParams: {
           method: 'POST',
           body,

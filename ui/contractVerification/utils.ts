@@ -6,22 +6,13 @@ import type { SmartContractVerificationMethod, SmartContractVerificationError } 
 import type { Params as FetchParams } from 'lib/hooks/useFetch';
 
 export const SUPPORTED_VERIFICATION_METHODS: Array<SmartContractVerificationMethod> = [
-  'flattened_code',
-  'standard_input',
+  'flattened-code',
+  'standard-input',
   'sourcify',
-  'multi_part',
-  'vyper_code',
-  'vyper_multi_part',
+  'multi-part',
+  'vyper-code',
+  'vyper-multi-part',
 ];
-
-export const METHOD_TO_ENDPOINT_MAP: Record<SmartContractVerificationMethod, string> = {
-  flattened_code: 'flattened-code',
-  standard_input: 'standard-input',
-  sourcify: 'sourcify',
-  multi_part: 'multi-part',
-  vyper_code: 'vyper-code',
-  vyper_multi_part: 'vyper-multi-part',
-};
 
 export function isValidVerificationMethod(method?: string): method is SmartContractVerificationMethod {
   return method && SUPPORTED_VERIFICATION_METHODS.includes(method as SmartContractVerificationMethod) ? true : false;
@@ -44,11 +35,12 @@ export function sortVerificationMethods(methodA: SmartContractVerificationMethod
 
 export function prepareRequestBody(data: FormFields): FetchParams['body'] {
   switch (data.method) {
-    case 'flattened_code': {
+    case 'flattened-code': {
       return {
         compiler_version: data.compiler?.value,
         source_code: data.code,
         is_optimization_enabled: data.is_optimization_enabled,
+        is_yul_contract: data.is_yul,
         optimization_runs: data.optimization_runs,
         contract_name: data.name,
         libraries: reduceLibrariesArray(data.libraries),
@@ -58,7 +50,7 @@ export function prepareRequestBody(data: FormFields): FetchParams['body'] {
       };
     }
 
-    case 'standard_input': {
+    case 'standard-input': {
       const body = new FormData();
       body.set('compiler_version', data.compiler?.value);
       body.set('contract_name', data.name);
@@ -76,7 +68,7 @@ export function prepareRequestBody(data: FormFields): FetchParams['body'] {
       return body;
     }
 
-    case 'multi_part': {
+    case 'multi-part': {
       const body = new FormData();
       body.set('compiler_version', data.compiler?.value);
       body.set('evm_version', data.evm_version?.value);
@@ -90,7 +82,7 @@ export function prepareRequestBody(data: FormFields): FetchParams['body'] {
       return body;
     }
 
-    case 'vyper_code': {
+    case 'vyper-code': {
       return {
         compiler_version: data.compiler?.value,
         source_code: data.code,
@@ -99,7 +91,7 @@ export function prepareRequestBody(data: FormFields): FetchParams['body'] {
       };
     }
 
-    case 'vyper_multi_part': {
+    case 'vyper-multi-part': {
       const body = new FormData();
       body.set('compiler_version', data.compiler?.value);
       body.set('evm_version', data.evm_version?.value);

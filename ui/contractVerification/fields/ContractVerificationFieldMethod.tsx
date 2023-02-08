@@ -37,9 +37,9 @@ const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props
 
   const renderItem = React.useCallback((method: SmartContractVerificationMethod) => {
     switch (method) {
-      case 'flattened_code':
+      case 'flattened-code':
         return 'Via flattened source code';
-      case 'standard_input':
+      case 'standard-input':
         return (
           <>
             <span>Via standard </span>
@@ -85,11 +85,11 @@ const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props
             </Popover>
           </>
         );
-      case 'multi_part':
+      case 'multi-part':
         return 'Via multi-part files';
-      case 'vyper_code':
+      case 'vyper-code':
         return 'Vyper contract';
-      case 'vyper_multi_part':
+      case 'vyper-multi-part':
         return 'Via multi-part Vyper files';
 
       default:

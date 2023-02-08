@@ -5,7 +5,7 @@ export interface ContractLibrary {
   address: string;
 }
 export interface FormFieldsFlattenSourceCode {
-  method: 'flattened_code';
+  method: 'flattened-code';
   is_yul: boolean;
   name: string;
   compiler: Option;
@@ -19,7 +19,7 @@ export interface FormFieldsFlattenSourceCode {
 }
 
 export interface FormFieldsStandardInput {
-  method: 'standard_input';
+  method: 'standard-input';
   name: string;
   compiler: Option;
   sources: Array<File>;
@@ -33,7 +33,7 @@ export interface FormFieldsSourcify {
 }
 
 export interface FormFieldsMultiPartFile {
-  method: 'multi_part';
+  method: 'multi-part';
   compiler: Option;
   evm_version: Option;
   is_optimization_enabled: boolean;
@@ -43,7 +43,7 @@ export interface FormFieldsMultiPartFile {
 }
 
 export interface FormFieldsVyperContract {
-  method: 'vyper_code';
+  method: 'vyper-code';
   name: string;
   compiler: Option;
   code: string;
@@ -51,7 +51,7 @@ export interface FormFieldsVyperContract {
 }
 
 export interface FormFieldsVyperMultiPartFile {
-  method: 'vyper_multi_part';
+  method: 'vyper-multi-part';
   compiler: Option;
   evm_version: Option;
   sources: Array<File>;
