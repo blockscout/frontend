@@ -2,7 +2,7 @@ import { Hide, Show, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { TokenType } from 'types/api/tokenInfo';
+import type { TokenType } from 'types/api/token';
 
 import { SECOND } from 'lib/consts';
 import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';

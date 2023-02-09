@@ -1,7 +1,7 @@
 import { Table, Tbody, Tr, Th, Td } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenInfo } from 'types/api/tokenInfo';
+import type { TokenInfo } from 'types/api/token';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import trimTokenSymbol from 'lib/token/trimTokenSymbol';

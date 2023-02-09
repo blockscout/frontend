@@ -1,4 +1,4 @@
-import type { TokenHolders } from 'types/api/tokenInfo';
+import type { TokenHolders } from 'types/api/token';
 
 import { withName, withoutName } from 'mocks/address/address';
 
