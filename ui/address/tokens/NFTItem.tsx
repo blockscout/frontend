@@ -30,6 +30,7 @@ const NFTItem = ({ token, token_id: tokenId }: Props) => {
         mb="18px"
         url={ null }
         fallbackPadding="30px"
+        cursor="pointer"
       />
       { tokenId && (
         <Flex mb={ 2 } ml={ 1 }>
