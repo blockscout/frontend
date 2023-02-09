@@ -39,9 +39,9 @@ const TokensWithIds = ({ tokensQuery }: Props) => {
       <>
         { bar }
         <Flex columnGap={ 6 } rowGap={ 6 } flexWrap="wrap">
-          <Skeleton w="210px" h="272px"/>
-          <Skeleton w="210px" h="272px"/>
-          <Skeleton w="210px" h="272px"/>
+          <Skeleton w={{ base: 'calc((100% - 12px)/2)', lg: '210px' }} h="272px"/>
+          <Skeleton w={{ base: 'calc((100% - 12px)/2)', lg: '210px' }} h="272px"/>
+          <Skeleton w={{ base: 'calc((100% - 12px)/2)', lg: '210px' }} h="272px"/>
         </Flex>
       </>
     );
@@ -54,7 +54,7 @@ const TokensWithIds = ({ tokensQuery }: Props) => {
   return (
     <>
       { bar }
-      <Flex columnGap={{ base: 3, lg: 6 }} rowGap={{ base: 3, lg: 6 }} flexWrap="wrap">
+      <Flex columnGap={{ base: 3, lg: 6 }} rowGap={{ base: 3, lg: 6 }} flexWrap="wrap" justifyContent="space-between">
         { data.items.map(item => <NFTItem key={ item.token.address } { ...item }/>) }
       </Flex>
     </>

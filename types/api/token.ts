@@ -34,3 +34,28 @@ export type TokenHoldersPagination = {
   items_count: number;
   value: string;
 }
+
+export interface TokenInstance {
+  is_unique: boolean;
+  id: string;
+  holder_address_hash: string | null;
+  image_url: string | null;
+  animation_url: string | null;
+  external_app_url: string | null;
+  metadata: unknown;
+  owner: AddressParam;
+  token: TokenInfo;
+}
+
+export interface TokenInstanceTransfersCount {
+  transfers_count: number;
+}
+
+export interface TokenInventory {
+  items: Array<TokenInstance>;
+  next_page_params: TokenInventoryPagination;
+}
+
+export type TokenInventoryPagination = {
+  unique_token: number;
+}
