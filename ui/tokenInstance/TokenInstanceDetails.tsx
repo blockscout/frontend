@@ -9,7 +9,7 @@ import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import NftImage from 'ui/shared/NftImage';
+import NftMedia from 'ui/shared/nft/NftMedia';
 import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
 
 import TokenInstanceCreatorAddress from './details/TokenInstanceCreatorAddress';
@@ -66,7 +66,13 @@ const TokenInstanceDetails = ({ data, scrollRef }: Props) => {
         </DetailsInfoItem>
         <TokenInstanceTransfersCount hash={ data.token.address } id={ data.id } onClick={ handleCounterItemClick }/>
       </Grid>
-      <NftImage url={ data.image_url } w="250px" flexShrink={ 0 } alignSelf={{ base: 'center', lg: 'flex-start' }}/>
+      <NftMedia
+        imageUrl={ data.image_url }
+        animationUrl={ data.animation_url }
+        w="250px"
+        flexShrink={ 0 }
+        alignSelf={{ base: 'center', lg: 'flex-start' }}
+      />
     </Flex>
   );
 };

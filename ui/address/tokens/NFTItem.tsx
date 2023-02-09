@@ -4,7 +4,7 @@ import React from 'react';
 import type { AddressTokenBalance } from 'types/api/address';
 
 import link from 'lib/link/link';
-import NftImage from 'ui/shared/NftImage';
+import NftImage from 'ui/shared/nft/NftImage';
 import TokenLogo from 'ui/shared/TokenLogo';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
