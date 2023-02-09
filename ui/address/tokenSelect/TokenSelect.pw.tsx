@@ -136,7 +136,7 @@ test('filter', async({ mount, page }) => {
   await expect(page).toHaveScreenshot({ clip: CLIPPING_AREA });
 });
 
-base.only('long values', async({ mount, page }) => {
+base('long values', async({ mount, page }) => {
   await page.route(ASSET_URL, (route) => {
     return route.fulfill({
       status: 200,
