@@ -14,7 +14,7 @@ const API_URL_TOKEN_TRANSFERS_COUNT = buildApiUrl('token_instance_transfers_coun
   hash: tokenInstanceMock.base.token.address,
 });
 
-test('base view +@mobile +@dark-mode', async({ mount, page }) => {
+test('base view +@dark-mode', async({ mount, page }) => {
   await page.route(API_URL_ADDRESS, (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(addressMock.contract),
