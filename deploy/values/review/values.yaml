@@ -238,10 +238,10 @@ scVerifier:
   # probes
   livenessProbe:
     enabled: true
-    path: /health
+    # path: /health
   readinessProbe:
     enabled: true
-    path: /health
+    # path: /health
   # enable Horizontal Pod Autoscaler
   hpa:
     enabled: true
