@@ -2,7 +2,6 @@ import type { UserInfo, CustomAbis, PublicTags, AddressTags, TransactionTags, Ap
 import type {
   Address,
   AddressCounters,
-  AddressTokenBalance,
   AddressTransactionsResponse,
   AddressTokenTransferResponse,
   AddressCoinBalanceHistoryResponse,
@@ -151,9 +150,10 @@ export const RESOURCES = {
   address_counters: {
     path: '/api/v2/addresses/:id/counters',
   },
-  address_token_balances: {
-    path: '/api/v2/addresses/:id/token-balances',
-  },
+  // this resource doesn't have pagination, so causing huge problems on some addresses page
+  // address_token_balances: {
+  //   path: '/api/v2/addresses/:id/token-balances',
+  // },
   address_txs: {
     path: '/api/v2/addresses/:id/transactions',
     paginationFields: [ 'block_number' as const, 'items_count' as const, 'index' as const ],
@@ -344,7 +344,6 @@ Q extends 'tx_raw_trace' ? RawTracesResponse :
 Q extends 'addresses' ? AddressesResponse :
 Q extends 'address' ? Address :
 Q extends 'address_counters' ? AddressCounters :
-Q extends 'address_token_balances' ? Array<AddressTokenBalance> :
 Q extends 'address_txs' ? AddressTransactionsResponse :
 Q extends 'address_internal_txs' ? AddressInternalTxsResponse :
 Q extends 'address_token_transfers' ? AddressTokenTransferResponse :

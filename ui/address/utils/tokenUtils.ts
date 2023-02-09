@@ -1,17 +1,28 @@
 import BigNumber from 'bignumber.js';
+import fpAdd from 'lodash/fp/add';
 
 import type { AddressTokenBalance } from 'types/api/address';
 import type { TokenType } from 'types/api/tokenInfo';
 
+import sumBnReducer from 'lib/bigint/sumBnReducer';
 import { ZERO } from 'lib/consts';
 
-export type EnhancedData = AddressTokenBalance & {
+export type TokenEnhancedData = AddressTokenBalance & {
   usd?: BigNumber ;
 }
 
 export type Sort = 'desc' | 'asc';
+
+export type TokenSelectData = Record<TokenType, TokenSelectDataItem>;
+
+export interface TokenSelectDataItem {
+  items: Array<TokenEnhancedData>;
+  isOverflow: boolean;
+}
+
+type TokenGroup = [string, TokenSelectDataItem];
+
 const TOKEN_GROUPS_ORDER: Array<TokenType> = [ 'ERC-20', 'ERC-721', 'ERC-1155' ];
-type TokenGroup = [string, Array<AddressTokenBalance>];
 
 export const sortTokenGroups = (groupA: TokenGroup, groupB: TokenGroup) => {
   return TOKEN_GROUPS_ORDER.indexOf(groupA[0] as TokenType) > TOKEN_GROUPS_ORDER.indexOf(groupB[0] as TokenType) ? 1 : -1;
@@ -27,7 +38,7 @@ const sortErc1155Tokens = (sort: Sort) => (dataA: AddressTokenBalance, dataB: Ad
 
   return Number(dataA.value) > Number(dataB.value) ? 1 : -1;
 };
-const sortErc20Tokens = (sort: Sort) => (dataA: EnhancedData, dataB: EnhancedData) => {
+const sortErc20Tokens = (sort: Sort) => (dataA: TokenEnhancedData, dataB: TokenEnhancedData) => {
   if (!dataA.usd && !dataB.usd) {
     return 0;
   }
@@ -63,7 +74,7 @@ export const filterTokens = (searchTerm: string) => ({ token }: AddressTokenBala
   return token.name?.toLowerCase().includes(searchTerm);
 };
 
-export const calculateUsdValue = (data: AddressTokenBalance): EnhancedData => {
+export const calculateUsdValue = (data: AddressTokenBalance): TokenEnhancedData => {
   if (data.token.type !== 'ERC-20') {
     return data;
   }
@@ -80,6 +91,18 @@ export const calculateUsdValue = (data: AddressTokenBalance): EnhancedData => {
   };
 };
 
-export const getTokenBalanceTotal = (data: Array<EnhancedData>) => {
-  return data.reduce((result, item) => !item.usd ? result : result.plus(BigNumber(item.usd)), ZERO);
+export const getTokensTotalInfo = (data: TokenSelectData) => {
+  const usd = Object.values(data)
+    .map(({ items }) => items.reduce(usdValueReducer, ZERO))
+    .reduce(sumBnReducer, ZERO);
+
+  const num = Object.values(data)
+    .map(({ items }) => items.length)
+    .reduce(fpAdd, 0);
+
+  const isOverflow = Object.values(data).some(({ isOverflow }) => isOverflow);
+
+  return { usd, num, isOverflow };
 };
+
+const usdValueReducer = (result: BigNumber, item: TokenEnhancedData) => !item.usd ? result : result.plus(BigNumber(item.usd));
