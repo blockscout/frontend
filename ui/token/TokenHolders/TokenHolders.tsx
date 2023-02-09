@@ -57,7 +57,7 @@ const TokenHoldersContent = ({ holdersQuery, tokenQuery }: Props) => {
   return (
     <>
       { bar }
-      { !isMobile && <TokenHoldersTable data={ items } token={ tokenQuery.data }/> }
+      { !isMobile && <TokenHoldersTable data={ items } token={ tokenQuery.data } top={ holdersQuery.isPaginationVisible ? 80 : 0 }/> }
       { isMobile && <TokenHoldersList data={ items } token={ tokenQuery.data }/> }
     </>
   );

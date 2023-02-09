@@ -196,7 +196,7 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
             data={ items }
             baseAddress={ currentAddress }
             showTxInfo
-            top={ 80 }
+            top={ isActionBarHidden ? 0 : 80 }
             enableTimeIncrement
             showSocketInfo={ pagination.page === 1 && !tokenFilter }
             socketInfoAlert={ socketAlert }

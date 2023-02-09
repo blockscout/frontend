@@ -12,7 +12,7 @@ test('base view', async({ mount }) => {
   const component = await mount(
     <TestApp>
       <Box h="128px"/>
-      <TokenHoldersTable data={ tokenHolders.items } token={ tokenInfo }/>
+      <TokenHoldersTable data={ tokenHolders.items } token={ tokenInfo } top={ 80 }/>
     </TestApp>,
   );
 
