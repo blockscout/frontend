@@ -18,19 +18,14 @@ const NftMedia = ({ imageUrl, animationUrl, className }: Props) => {
       return;
     }
 
-    const xhr = new XMLHttpRequest();
-    xhr.open('HEAD', animationUrl, true);
+    // media could be either gif or video
+    // so we pre-fetch the resources in order to get its content type
+    fetch(animationUrl, { method: 'HEAD' })
+      .then((response) => {
+        const contentType = response.headers.get('content-type');
+        setType(contentType?.startsWith('video') ? 'video' : 'image');
+      });
 
-    xhr.onload = function() {
-      const contentType = xhr.getResponseHeader('Content-Type');
-      setType(contentType?.startsWith('video') ? 'video' : 'image');
-    };
-
-    xhr.send();
-
-    return () => {
-      xhr.abort();
-    };
   }, [ animationUrl ]);
 
   if (!type) {
