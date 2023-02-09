@@ -13,7 +13,7 @@ export type TokensResponse = {
 export type TokensFilters = { filter: string; type: Array<TokenType> | undefined };
 
 export interface TokenInstance {
-  is_unique: string;
+  is_unique: boolean;
   id: string;
   holder_address_hash: string | null;
   image_url: string | null;

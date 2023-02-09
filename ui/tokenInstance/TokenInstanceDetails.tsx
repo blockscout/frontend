@@ -64,12 +64,6 @@ const TokenInstanceDetails = ({ data, scrollRef }: Props) => {
             <CopyToClipboard text={ data.id } ml={ 1 }/>
           </Flex>
         </DetailsInfoItem>
-        <DetailsInfoItem
-          title="Quantity"
-          hint="Current quantity of this token instance."
-        >
-          1
-        </DetailsInfoItem>
         <TokenInstanceTransfersCount hash={ data.token.address } id={ data.id } onClick={ handleCounterItemClick }/>
       </Grid>
       <NftImage url={ data.image_url } w="250px" flexShrink={ 0 } alignSelf={{ base: 'center', lg: 'flex-start' }}/>
