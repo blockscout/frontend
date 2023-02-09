@@ -92,7 +92,7 @@ const TxsListItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }:
         </Box>
       ) }
       <Flex alignItems="center" height={ 6 } mt={ 6 }>
-        <Address width={ `calc((100%-${ currentAddress ? TAG_WIDTH : ARROW_WIDTH + 8 }px)/2)` }>
+        <Address maxWidth={ `calc((100% - ${ currentAddress ? TAG_WIDTH + 16 : ARROW_WIDTH + 8 }px)/2)` }>
           <AddressIcon address={ tx.from }/>
           <AddressLink
             type="address"
@@ -104,7 +104,7 @@ const TxsListItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }:
           />
         </Address>
         { (isIn || isOut) ?
-          <InOutTag isIn={ isIn } isOut={ isOut } width="48px" mr={ 2 }/> : (
+          <InOutTag isIn={ isIn } isOut={ isOut } width="48px" mx={ 2 }/> : (
             <Icon
               as={ rightArrowIcon }
               boxSize={ 6 }
@@ -112,7 +112,7 @@ const TxsListItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }:
               color="gray.500"
             />
           ) }
-        <Address width="calc((100%-40px)/2)">
+        <Address maxWidth={ `calc((100% - ${ currentAddress ? TAG_WIDTH + 16 : ARROW_WIDTH + 8 }px)/2)` }>
           <AddressIcon address={ dataTo }/>
           <AddressLink
             type="address"
