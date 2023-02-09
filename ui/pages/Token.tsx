@@ -89,7 +89,7 @@ const TokenPageContent = () => {
   ];
 
   if (tokenQuery.data?.type === 'ERC-1155' || tokenQuery.data?.type === 'ERC-721') {
-    tabs.push({ id: 'inventory', title: 'Inventory', component: <TokenInventory tokenQuery={ tokenQuery } inventoryQuery={ inventoryQuery }/> });
+    tabs.push({ id: 'inventory', title: 'Inventory', component: <TokenInventory inventoryQuery={ inventoryQuery }/> });
   }
 
   let hasPagination;
