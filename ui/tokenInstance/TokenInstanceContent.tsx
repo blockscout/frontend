@@ -7,14 +7,18 @@ import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/appContext';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import AdBanner from 'ui/shared/ad/AdBanner';
 import TextAd from 'ui/shared/ad/TextAd';
 import AddressHeadingInfo from 'ui/shared/AddressHeadingInfo';
 import PageTitle from 'ui/shared/Page/PageTitle';
+import Pagination from 'ui/shared/Pagination';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
 import TokenLogo from 'ui/shared/TokenLogo';
-import TokenInstanceDetails from 'ui/tokenInstance/TokenInstanceDetails';
-import TokenInstanceSkeleton from 'ui/tokenInstance/TokenInstanceSkeleton';
+import TokenTransfer from 'ui/token/TokenTransfer/TokenTransfer';
+
+import TokenInstanceDetails from './TokenInstanceDetails';
+import TokenInstanceSkeleton from './TokenInstanceSkeleton';
 
 export type TokenTabs = 'token_transfers' | 'holders'
 
@@ -25,6 +29,7 @@ const TokenInstanceContent = () => {
 
   const hash = router.query.hash?.toString();
   const id = router.query.id?.toString();
+  const tab = router.query.tab?.toString();
 
   const hasGoBackLink = appProps.referrer && appProps.referrer.includes(`/token/${ hash }`) && !appProps.referrer.includes('instance');
 
@@ -35,9 +40,19 @@ const TokenInstanceContent = () => {
     queryOptions: { enabled: Boolean(hash && id) },
   });
 
+  const transfersQuery = useQueryWithPages({
+    resourceName: 'token_instance_transfers',
+    pathParams: { hash, id },
+    scrollRef,
+    options: {
+      enabled: Boolean(hash && (!tab || tab === 'token_transfers') && tokenInstanceQuery.data),
+    },
+  });
+
   const tabs: Array<RoutedTab> = [
-    { id: 'token_transfers', title: 'Token transfers', component: <span>Token transfers</span> },
-    { id: 'holders', title: 'Holders', component: <span>Holders</span> },
+    { id: 'token_transfers', title: 'Token transfers', component: <TokenTransfer transfersQuery={ transfersQuery } tokenId={ id }/> },
+    // there is no api for this tab yet
+    // { id: 'holders', title: 'Holders', component: <span>Holders</span> },
     { id: 'metadata', title: 'Metadata', component: <span>Metadata</span> },
   ];
 
@@ -81,6 +96,8 @@ const TokenInstanceContent = () => {
       <RoutedTabs
         tabs={ tabs }
         tabListProps={ isMobile ? { mt: 8 } : { mt: 3, py: 5, marginBottom: 0 } }
+        rightSlot={ !isMobile && transfersQuery.isPaginationVisible ? <Pagination { ...transfersQuery.pagination }/> : null }
+        stickyEnabled={ !isMobile }
       />
     </>
   );

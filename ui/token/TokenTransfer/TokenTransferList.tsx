@@ -7,15 +7,17 @@ import TokenTransferListItem from 'ui/token/TokenTransfer/TokenTransferListItem'
 
 interface Props {
   data: Array<TokenTransfer>;
+  tokenId?: string;
 }
 
-const TokenTransferList = ({ data }: Props) => {
+const TokenTransferList = ({ data, tokenId }: Props) => {
   return (
     <Box>
       { data.map((item, index) => (
         <TokenTransferListItem
           key={ index }
           { ...item }
+          tokenId={ tokenId }
         />
       )) }
     </Box>

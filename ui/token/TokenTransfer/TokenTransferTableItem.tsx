@@ -11,7 +11,7 @@ import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
 
-type Props = TokenTransfer
+type Props = TokenTransfer & { tokenId?: string }
 
 const TokenTransferTableItem = ({
   token,
@@ -21,6 +21,7 @@ const TokenTransferTableItem = ({
   to,
   method,
   timestamp,
+  tokenId,
 }: Props) => {
   const value = (() => {
     if (!('value' in total)) {
@@ -82,7 +83,9 @@ const TokenTransferTableItem = ({
             <TokenTransferNft
               hash={ token.address }
               id={ total.token_id }
-              justifyContent={ token.type === 'ERC-721' ? 'end' : 'start' }/>
+              justifyContent={ token.type === 'ERC-721' ? 'end' : 'start' }
+              isDisabled={ Boolean(tokenId && tokenId === total.token_id) }
+            />
           ) : '-'
           }
         </Td>

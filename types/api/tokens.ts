@@ -1,5 +1,6 @@
 import type { AddressParam } from './addressParams';
 import type { TokenInfo, TokenType } from './tokenInfo';
+import type { TokenTransfer } from './tokenTransfer';
 
 export type TokensResponse = {
   items: Array<TokenInfo>;
@@ -26,4 +27,16 @@ export interface TokenInstance {
 
 export interface TokenInstanceTransfersCount {
   transfers_count: number;
+}
+
+export interface TokenInstanceTransferResponse {
+  items: Array<TokenTransfer>;
+  next_page_params: TokenInstanceTransferPagination | null;
+}
+
+export interface TokenInstanceTransferPagination {
+  block_number: number;
+  index: number;
+  items_count: number;
+  token_id: string;
 }

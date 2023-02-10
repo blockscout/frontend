@@ -1,7 +1,6 @@
 import { Table, Tbody, Tr, Th, Td } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenInfo } from 'types/api/tokenInfo';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import trimTokenSymbol from 'lib/token/trimTokenSymbol';
@@ -12,13 +11,16 @@ import TokenTransferTableItem from 'ui/token/TokenTransfer/TokenTransferTableIte
 interface Props {
   data: Array<TokenTransfer>;
   top: number;
-  token: TokenInfo;
   showSocketInfo: boolean;
   socketInfoAlert?: string;
   socketInfoNum?: number;
+  tokenId?: string;
 }
 
-const TokenTransferTable = ({ data, top, token, showSocketInfo, socketInfoAlert, socketInfoNum }: Props) => {
+const TokenTransferTable = ({ data, top, showSocketInfo, socketInfoAlert, socketInfoNum, tokenId }: Props) => {
+  const tokenType = data[0].token.type;
+  const tokenSymbol = data[0].token.symbol;
+
   return (
     <Table variant="simple" size="sm">
       <Thead top={ top }>
@@ -28,8 +30,8 @@ const TokenTransferTable = ({ data, top, token, showSocketInfo, socketInfoAlert,
           <Th width="148px">From</Th>
           <Th width="36px" px={ 0 }/>
           <Th width="218px" >To</Th>
-          { (token.type === 'ERC-721' || token.type === 'ERC-1155') && <Th width="20%" isNumeric={ token.type === 'ERC-721' }>Token ID</Th> }
-          { (token.type === 'ERC-20' || token.type === 'ERC-1155') && <Th width="20%" isNumeric>Value { trimTokenSymbol(token.symbol) }</Th> }
+          { (tokenType === 'ERC-721' || tokenType === 'ERC-1155') && <Th width="20%" isNumeric={ tokenType === 'ERC-721' }>Token ID</Th> }
+          { (tokenType === 'ERC-20' || tokenType === 'ERC-1155') && <Th width="20%" isNumeric>Value { trimTokenSymbol(tokenSymbol) }</Th> }
         </Tr>
       </Thead>
       <Tbody>
@@ -48,7 +50,7 @@ const TokenTransferTable = ({ data, top, token, showSocketInfo, socketInfoAlert,
           </Tr>
         ) }
         { data.map((item, index) => (
-          <TokenTransferTableItem key={ index } { ...item }/>
+          <TokenTransferTableItem key={ index } { ...item } tokenId={ tokenId }/>
         )) }
       </Tbody>
     </Table>
