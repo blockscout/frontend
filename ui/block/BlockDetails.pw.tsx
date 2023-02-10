@@ -10,7 +10,7 @@ import BlockDetails from './BlockDetails';
 const API_URL = buildApiUrl('block', { id: '1' });
 const hooksConfig = {
   router: {
-    query: { id: '1' },
+    query: { height: '1' },
   },
 };
 
