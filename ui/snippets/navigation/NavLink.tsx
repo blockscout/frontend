@@ -1,30 +1,26 @@
 import { Link, Icon, Text, HStack, Tooltip, Box } from '@chakra-ui/react';
-import type { LinkProps } from 'next/link';
 import NextLink from 'next/link';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
+import type { NavItem } from 'lib/hooks/useNavItems';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 
 import useColors from './useColors';
 
-interface Props {
+type Props = NavItem & {
   isCollapsed?: boolean;
-  isActive?: boolean;
-  url: string;
-  text: string;
-  icon: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
   px?: string | number;
-  isNewUi: boolean;
 }
 
-const NavLink = ({ text, url, icon, isCollapsed, isActive, px, isNewUi }: Props) => {
+const NavLink = ({ text, nextRoute, icon, isCollapsed, isActive, px, isNewUi }: Props) => {
   const colors = useColors();
 
   const isExpanded = isCollapsed === false;
 
   const content = (
     <Link
-      { ...(isNewUi ? {} : { href: url }) }
+      { ...(isNewUi ? {} : { href: route(nextRoute) }) }
       w={{ base: '100%', lg: isExpanded ? '180px' : '60px', xl: isCollapsed ? '60px' : '180px' }}
       px={ px || { base: 3, lg: isExpanded ? 3 : '15px', xl: isCollapsed ? '15px' : 3 } }
       py={ 2.5 }
@@ -69,7 +65,7 @@ const NavLink = ({ text, url, icon, isCollapsed, isActive, px, isNewUi }: Props)
       { /* why not NextLink in all cases? since prev UI and new one are hosting in the same domain and global routing is managed by nginx */ }
       { /* we have to hard reload page on every transition between urls from different part of the app */ }
       { isNewUi ? (
-        <NextLink href={ url as LinkProps['href'] } passHref>
+        <NextLink href={ nextRoute } passHref>
           { content }
         </NextLink>
       ) : content }

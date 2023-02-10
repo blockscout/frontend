@@ -98,10 +98,10 @@ export const RESOURCES = {
     filterFields: [ 'type' as const ],
   },
   block: {
-    path: '/api/v2/blocks/:id',
+    path: '/api/v2/blocks/:height',
   },
   block_txs: {
-    path: '/api/v2/blocks/:id/transactions',
+    path: '/api/v2/blocks/:height/transactions',
     paginationFields: [ 'block_number' as const, 'items_count' as const, 'index' as const ],
     filterFields: [],
   },

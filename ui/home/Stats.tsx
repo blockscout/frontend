@@ -1,4 +1,5 @@
 import { Grid } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import appConfig from 'configs/app/config';
@@ -45,7 +46,7 @@ const Stats = () => {
           icon={ blockIcon }
           title="Total blocks"
           value={ Number(data.total_blocks).toLocaleString() }
-          url={ link('blocks') }
+          url={ route({ pathname: '/blocks' }) }
         />
         { hasAvgBlockTime && (
           <StatsItem

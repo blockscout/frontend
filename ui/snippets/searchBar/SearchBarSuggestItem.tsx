@@ -1,4 +1,5 @@
 import { chakra, Text, Flex, useColorModeValue, Icon, Box } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { SearchResultItem } from 'types/api/search';
@@ -32,7 +33,7 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm }: Props) => {
         return link('tx', { id: data.tx_hash });
       }
       case 'block': {
-        return link('block', { id: String(data.block_number) });
+        return route({ pathname: '/block/[height]', query: { height: String(data.block_number) } });
       }
     }
   })();

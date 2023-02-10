@@ -46,13 +46,13 @@ export const ROUTES = {
   },
 
   // BLOCKS
-  blocks: {
-    pattern: PATHS.blocks,
-    crossNetworkNavigation: true,
-  },
-  block: {
-    pattern: PATHS.block,
-  },
+  // blocks: {
+  //   pattern: PATHS.blocks,
+  //   crossNetworkNavigation: true,
+  // },
+  // block: {
+  //   pattern: PATHS.block,
+  // },
 
   // TOKENS
   tokens: {
