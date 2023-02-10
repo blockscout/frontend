@@ -2,8 +2,6 @@ import { Button } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import React from 'react';
 
-import link from 'lib/link/link';
-
 type Props = {
   id: string;
   url: string;
@@ -29,7 +27,7 @@ const AppModalLink = ({ url, external, id }: Props) => {
       { ...buttonProps }
     >Launch app</Button>
   ) : (
-    <NextLink href={ link('app_index', { id: id }) } passHref>
+    <NextLink href={{ pathname: '/apps/[id]', query: { id } }} passHref>
       <Button
         as="a"
         { ...buttonProps }

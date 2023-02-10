@@ -4,7 +4,6 @@ import React from 'react';
 
 import { useAppContext } from 'lib/appContext';
 import isBrowser from 'lib/isBrowser';
-import link from 'lib/link/link';
 import ContractVerificationForm from 'ui/contractVerification/ContractVerificationForm';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
@@ -25,7 +24,7 @@ const ContractVerification = () => {
 
   React.useEffect(() => {
     if (method && hash) {
-      router.replace(link('address_contract_verification', { id: hash }), undefined, { scroll: false, shallow: true });
+      router.replace({ pathname: '/address/[id]/contract_verification', query: { id: hash } }, undefined, { scroll: false, shallow: true });
     }
   // onMount only
   // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -10,7 +10,6 @@ import type { Address } from 'types/api/address';
 import walletIcon from 'icons/wallet.svg';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import link from 'lib/link/link';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 
@@ -83,7 +82,7 @@ const TokenSelect = ({ onClick }: Props) => {
       }
       <Tooltip label="Show all tokens">
         <Box>
-          <NextLink href={ link('address_index', { id: addressHash }, { tab: 'tokens' }) } passHref>
+          <NextLink href={{ pathname: '/address/[id]', query: { id: addressHash || '', tab: 'tokens' } }} passHref>
             <IconButton
               aria-label="Show all tokens"
               variant="outline"

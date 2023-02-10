@@ -48,8 +48,7 @@ const BlockDetails = () => {
     const increment = direction === 'next' ? +1 : -1;
     const nextId = String(Number(router.query.id) + increment);
 
-    const url = link('block', { id: nextId });
-    router.push(url, undefined);
+    router.push({ pathname: '/block/[id]', query: { id: nextId } }, undefined);
   }, [ router ]);
 
   if (isLoading) {
