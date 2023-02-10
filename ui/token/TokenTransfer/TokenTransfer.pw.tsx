@@ -2,7 +2,6 @@ import { Box } from '@chakra-ui/react';
 import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
-import { tokenInfo } from 'mocks/tokens/tokenInfo';
 import * as tokenTransferMock from 'mocks/tokens/tokenTransfer';
 import TestApp from 'playwright/TestApp';
 
@@ -13,7 +12,6 @@ test('erc20 +@mobile', async({ mount }) => {
     <TestApp>
       <Box h={{ base: '134px', lg: '100px' }}/>
       <TokenTransfer
-        token={ tokenInfo }
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore:
         transfersQuery={{
@@ -38,7 +36,6 @@ test('erc721 +@mobile', async({ mount }) => {
     <TestApp>
       <Box h={{ base: '134px', lg: '100px' }}/>
       <TokenTransfer
-        token={{ ...tokenInfo, type: 'ERC-721' }}
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore:
         transfersQuery={{
@@ -63,7 +60,6 @@ test('erc1155 +@mobile', async({ mount }) => {
     <TestApp>
       <Box h={{ base: '134px', lg: '100px' }}/>
       <TokenTransfer
-        token={{ ...tokenInfo, type: 'ERC-1155', symbol: tokenTransferMock.erc1155multiple.token.symbol }}
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore:
         transfersQuery={{
