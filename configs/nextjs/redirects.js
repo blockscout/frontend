@@ -35,7 +35,7 @@ const oldUrls = [
   },
   {
     oldPath: '/block/:height/transactions',
-    newPath: `${ PATHS.block }`,
+    newPath: `${ PATHS.block }?tab=txs`,
   },
   {
     oldPath: '/address/:id/transactions',

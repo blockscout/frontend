@@ -1,4 +1,5 @@
 import { Text, Flex, Icon, Box, chakra } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { SearchResultItem } from 'types/api/search';
@@ -56,7 +57,7 @@ const SearchResultListItem = ({ data, searchTerm }: Props) => {
         return (
           <Flex alignItems="center">
             <Icon as={ blockIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
-            <LinkInternal fontWeight={ 700 } href={ link('block', { id: String(data.block_number) }) }>
+            <LinkInternal fontWeight={ 700 } href={ route({ pathname: '/block/[height]', query: { height: String(data.block_number) } }) }>
               <Box as={ shouldHighlightHash ? 'span' : 'mark' }>{ data.block_number }</Box>
             </LinkInternal>
           </Flex>

@@ -8,13 +8,13 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { Block } from 'types/api/block';
 
 import blockIcon from 'icons/block.svg';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
-import link from 'lib/link/link';
 import BlockTimestamp from 'ui/blocks/BlockTimestamp';
 import AddressLink from 'ui/shared/address/AddressLink';
 import LinkInternal from 'ui/shared/LinkInternal';
@@ -44,7 +44,7 @@ const LatestBlocksItem = ({ block, h }: Props) => {
         <HStack spacing={ 2 }>
           <Icon as={ blockIcon } boxSize="30px" color="link"/>
           <LinkInternal
-            href={ link('block', { id: String(block.height) }) }
+            href={ route({ pathname: '/block/[height]', query: { height: String(block.height) } }) }
             fontSize="xl"
             fontWeight="500"
           >

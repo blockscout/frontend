@@ -19,7 +19,7 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/apps/[id]", { "id": string }>
     | StaticRoute<"/apps">
     | StaticRoute<"/auth/profile">
-    | DynamicRoute<"/block/[id]", { "id": string }>
+    | DynamicRoute<"/block/[height]", { "height": string }>
     | StaticRoute<"/blocks">
     | StaticRoute<"/graph">
     | StaticRoute<"/">

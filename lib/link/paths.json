@@ -9,7 +9,7 @@
   "txs": "/txs",
   "tx": "/tx/:id",
   "blocks": "/blocks",
-  "block": "/block/:id",
+  "block": "/block/:height",
   "tokens": "/tokens",
   "token_index": "/token/:hash",
   "token_instance_item": "/token/:hash/instance/:id",

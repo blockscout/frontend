@@ -1,6 +1,7 @@
 import { Box, Flex, Text, Icon, Grid } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { Address as TAddress } from 'types/api/address';
@@ -183,7 +184,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
             py={{ base: '2px', lg: 1 }}
           >
             <LinkInternal
-              href={ link('block', { id: String(data.block_number_balance_updated_at) }) }
+              href={ route({ pathname: '/block/[height]', query: { height: String(data.block_number_balance_updated_at) } }) }
               display="flex"
               alignItems="center"
             >
