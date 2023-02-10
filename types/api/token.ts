@@ -51,7 +51,7 @@ export interface TokenInstanceTransfersCount {
   transfers_count: number;
 }
 
-export interface TokenInventory {
+export interface TokenInventoryResponse {
   items: Array<TokenInstance>;
   next_page_params: TokenInventoryPagination;
 }

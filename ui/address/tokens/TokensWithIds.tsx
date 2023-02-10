@@ -1,4 +1,4 @@
-import { Flex, Skeleton, Text } from '@chakra-ui/react';
+import { Grid, Skeleton, Text } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
@@ -38,11 +38,18 @@ const TokensWithIds = ({ tokensQuery }: Props) => {
     return (
       <>
         { bar }
-        <Flex columnGap={ 6 } rowGap={ 6 } flexWrap="wrap">
-          <Skeleton w={{ base: 'calc((100% - 12px)/2)', lg: '210px' }} h="272px"/>
-          <Skeleton w={{ base: 'calc((100% - 12px)/2)', lg: '210px' }} h="272px"/>
-          <Skeleton w={{ base: 'calc((100% - 12px)/2)', lg: '210px' }} h="272px"/>
-        </Flex>
+        <Grid
+          w="100%"
+          columnGap={{ base: 3, lg: 6 }}
+          rowGap={{ base: 3, lg: 6 }}
+          gridTemplateColumns={{ base: 'repeat(2, calc((100% - 12px)/2))', lg: 'repeat(auto-fill, minmax(210px, 1fr))' }}
+        >
+          <Skeleton w={{ base: '100%', lg: '210px' }} h="272px"/>
+          <Skeleton w={{ base: '100%', lg: '210px' }} h="272px"/>
+          <Skeleton w={{ base: '100%', lg: '210px' }} h="272px"/>
+          <Skeleton w={{ base: '100%', lg: '210px' }} h="272px"/>
+          <Skeleton w={{ base: '100%', lg: '210px' }} h="272px"/>
+        </Grid>
       </>
     );
   }
@@ -54,9 +61,14 @@ const TokensWithIds = ({ tokensQuery }: Props) => {
   return (
     <>
       { bar }
-      <Flex columnGap={{ base: 3, lg: 6 }} rowGap={{ base: 3, lg: 6 }} flexWrap="wrap" justifyContent="space-between">
+      <Grid
+        w="100%"
+        columnGap={{ base: 3, lg: 6 }}
+        rowGap={{ base: 3, lg: 6 }}
+        gridTemplateColumns={{ base: 'repeat(2, calc((100% - 12px)/2))', lg: 'repeat(auto-fill, minmax(210px, 1fr))' }}
+      >
         { data.items.map(item => <NFTItem key={ item.token.address } { ...item }/>) }
-      </Flex>
+      </Grid>
     </>
   );
 };

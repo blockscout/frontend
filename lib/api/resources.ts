@@ -24,7 +24,7 @@ import type { LogsResponseTx, LogsResponseAddress } from 'types/api/log';
 import type { RawTracesResponse } from 'types/api/rawTrace';
 import type { SearchResult, SearchResultFilters } from 'types/api/search';
 import type { Counters, StatsCharts, StatsChart, HomeStats } from 'types/api/stats';
-import type { TokenCounters, TokenInfo, TokenHolders, TokenInventory, TokenInstance, TokenInstanceTransfersCount } from 'types/api/token';
+import type { TokenCounters, TokenInfo, TokenHolders, TokenInventoryResponse, TokenInstance, TokenInstanceTransfersCount } from 'types/api/token';
 import type { TokensResponse, TokensFilters } from 'types/api/tokens';
 import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
 import type { TransactionsResponseValidated, TransactionsResponsePending, Transaction } from 'types/api/transaction';
@@ -372,7 +372,7 @@ Q extends 'token_transfers' ? TokenTransferResponse :
 Q extends 'token_holders' ? TokenHolders :
 Q extends 'token_instance' ? TokenInstance :
 Q extends 'token_instance_transfers_count' ? TokenInstanceTransfersCount :
-Q extends 'token_inventory' ? TokenInventory :
+Q extends 'token_inventory' ? TokenInventoryResponse :
 Q extends 'tokens' ? TokensResponse :
 Q extends 'search' ? SearchResult :
 Q extends 'contract' ? SmartContract :
