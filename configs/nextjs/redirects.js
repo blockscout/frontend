@@ -34,7 +34,7 @@ const oldUrls = [
     newPath: `${ PATHS.blocks }?tab=reorgs`,
   },
   {
-    oldPath: '/block/:id/transactions',
+    oldPath: '/block/:height/transactions',
     newPath: `${ PATHS.block }`,
   },
   {

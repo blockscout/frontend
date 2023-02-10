@@ -52,7 +52,7 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled, className, .
     const nextTab = tabs[index];
 
     router.push(
-      { pathname: router.asPath.split('?')[0], query: { tab: nextTab.id } },
+      { pathname: router.asPath.split('?')[0], query: { tab: nextTab.id } } as Parameters<typeof router.push>[0],
       undefined,
       { shallow: true },
     );
