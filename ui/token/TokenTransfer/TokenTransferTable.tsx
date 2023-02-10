@@ -23,7 +23,7 @@ const TokenTransferTable = ({ data, top, token, showSocketInfo, socketInfoAlert,
     <Table variant="simple" size="sm">
       <Thead top={ top }>
         <Tr>
-          <Th width="40%">Txn hash</Th>
+          <Th width={ token.type === 'ERC-1155' ? '60%' : '80%' }>Txn hash</Th>
           <Th width="164px">Method</Th>
           <Th width="148px">From</Th>
           <Th width="36px" px={ 0 }/>
