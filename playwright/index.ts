@@ -5,6 +5,7 @@ import * as router from 'next/router';
 
 const NEXT_ROUTER_MOCK = {
   query: {},
+  pathname: '',
 };
 
 beforeMount(async({ hooksConfig }) => {
