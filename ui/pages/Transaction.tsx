@@ -48,7 +48,7 @@ const TransactionPageContent = () => {
     });
 
   const additionals = (
-    <Flex justifyContent="space-between" alignItems="center" flexGrow={ 1 }>
+    <Flex justifyContent="space-between" alignItems="center" flexGrow={ 1 } flexWrap="wrap">
       { data?.tx_tag && <Tag my={ 2 }>{ data.tx_tag }</Tag> }
       { explorersLinks.length > 0 && (
         <Flex

@@ -47,7 +47,7 @@ const AddressCoinBalanceHistory = ({ query }: Props) => {
       <>
         <Hide below="lg" ssr={ false }>
           <Table variant="simple" size="sm">
-            <Thead top={ 80 }>
+            <Thead top={ query.isPaginationVisible ? 80 : 0 }>
               <Tr>
                 <Th width="20%">Block</Th>
                 <Th width="20%">Txn</Th>

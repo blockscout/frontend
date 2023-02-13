@@ -29,6 +29,7 @@ import type { TokensResponse, TokensFilters } from 'types/api/tokens';
 import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
 import type { TransactionsResponseValidated, TransactionsResponsePending, Transaction } from 'types/api/transaction';
 import type { TTxsFilters } from 'types/api/txsFilters';
+import type { VisualizedContract } from 'types/api/visualization';
 import type ArrayElement from 'types/utils/ArrayElement';
 
 import appConfig from 'configs/app/config';
@@ -81,6 +82,13 @@ export const RESOURCES = {
     path: '/api/v1/lines/:id',
     endpoint: appConfig.statsApi.endpoint,
     basePath: appConfig.statsApi.basePath,
+  },
+
+  // VISUALIZATION
+  visualize_sol2uml: {
+    path: '/api/v1/solidity\\:visualize-contracts',
+    endpoint: appConfig.visualizeApi.endpoint,
+    basePath: appConfig.visualizeApi.basePath,
   },
 
   // BLOCKS, TXS
@@ -362,6 +370,7 @@ Q extends 'contract_methods_read' ? Array<SmartContractReadMethod> :
 Q extends 'contract_methods_read_proxy' ? Array<SmartContractReadMethod> :
 Q extends 'contract_methods_write' ? Array<SmartContractWriteMethod> :
 Q extends 'contract_methods_write_proxy' ? Array<SmartContractWriteMethod> :
+Q extends 'visualize_sol2uml' ? VisualizedContract :
 Q extends 'contract_verification_config' ? SmartContractVerificationConfig :
 never;
 /* eslint-enable @typescript-eslint/indent */

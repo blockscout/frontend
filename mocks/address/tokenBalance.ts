@@ -26,6 +26,12 @@ export const erc20d: AddressTokenBalance = {
   value: '39000000000000000000',
 };
 
+export const erc20LongSymbol: AddressTokenBalance = {
+  token: tokens.tokenInfoERC20LongSymbol,
+  token_id: null,
+  value: '39000000000000000000',
+};
+
 export const erc721a: AddressTokenBalance = {
   token: tokens.tokenInfoERC721a,
   token_id: null,
@@ -40,6 +46,12 @@ export const erc721b: AddressTokenBalance = {
 
 export const erc721c: AddressTokenBalance = {
   token: tokens.tokenInfoERC721c,
+  token_id: null,
+  value: '5',
+};
+
+export const erc721LongSymbol: AddressTokenBalance = {
+  token: tokens.tokenInfoERC721LongSymbol,
   token_id: null,
   value: '5',
 };
@@ -62,6 +74,12 @@ export const erc1155withoutName: AddressTokenBalance = {
   value: '42',
 };
 
+export const erc1155LongId: AddressTokenBalance = {
+  token: tokens.tokenInfoERC1155b,
+  token_id: '483200961027732618117991942553110860267520',
+  value: '42',
+};
+
 export const baseList = [
   erc20a,
   erc20b,
@@ -72,4 +90,10 @@ export const baseList = [
   erc1155withoutName,
   erc1155a,
   erc1155b,
+];
+
+export const longValuesList = [
+  erc20LongSymbol,
+  erc721LongSymbol,
+  erc1155LongId,
 ];

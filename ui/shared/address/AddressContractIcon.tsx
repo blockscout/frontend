@@ -14,6 +14,7 @@ const AddressContractIcon = ({ className }: Props) => {
       <Box
         className={ className }
         width="24px"
+        minWidth="24px"
         height="24px"
         borderRadius="12px"
         backgroundColor={ bgColor }

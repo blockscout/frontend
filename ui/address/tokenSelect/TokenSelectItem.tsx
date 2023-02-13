@@ -1,8 +1,9 @@
-import { Flex, Text, useColorModeValue } from '@chakra-ui/react';
+import { chakra, Flex, Text, useColorModeValue } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import link from 'lib/link/link';
+import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import TokenLogo from 'ui/shared/TokenLogo';
 
@@ -20,19 +21,23 @@ const TokenSelectItem = ({ data }: Props) => {
         const tokenDecimals = Number(data.token.decimals) || 18;
         return (
           <>
-            <Text >{ BigNumber(data.value).dividedBy(10 ** tokenDecimals).toFormat(2) } { data.token.symbol }</Text>
-            { data.token.exchange_rate && <Text >@{ data.token.exchange_rate }</Text> }
+            <span >{ BigNumber(data.value).dividedBy(10 ** tokenDecimals).toFormat(2) } { trimTokenSymbol(data.token.symbol) }</span>
+            { data.token.exchange_rate && <span >@{ data.token.exchange_rate }</span> }
           </>
         );
       }
       case 'ERC-721': {
-        return <Text >{ BigNumber(data.value).toFormat() } { data.token.symbol }</Text>;
+        return <chakra.span textOverflow="ellipsis" overflow="hidden">{ BigNumber(data.value).toFormat() } { data.token.symbol }</chakra.span>;
       }
       case 'ERC-1155': {
         return (
           <>
-            <Text >#{ data.token_id || 0 }</Text>
-            <Text >{ BigNumber(data.value).toFormat() }</Text>
+            <chakra.span textOverflow="ellipsis" overflow="hidden" mr={ 6 }>
+              #{ data.token_id || 0 }
+            </chakra.span>
+            <span>
+              { BigNumber(data.value).toFormat() }
+            </span>
           </>
         );
       }
@@ -64,7 +69,7 @@ const TokenSelectItem = ({ data }: Props) => {
         <Text fontWeight={ 700 } ml={ 2 }>{ data.token.name || <HashStringShorten hash={ data.token.address }/> }</Text>
         { data.usd && <Text fontWeight={ 700 } ml="auto">${ data.usd.toFormat(2) }</Text> }
       </Flex>
-      <Flex alignItems="center" justifyContent="space-between" w="100%">
+      <Flex alignItems="center" justifyContent="space-between" w="100%" whiteSpace="nowrap">
         { secondRow }
       </Flex>
     </Flex>

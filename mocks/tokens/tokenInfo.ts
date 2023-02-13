@@ -60,6 +60,17 @@ export const tokenInfoERC20d: TokenInfo = {
   type: 'ERC-20',
 };
 
+export const tokenInfoERC20LongSymbol: TokenInfo = {
+  address: '0xCc7bb2D219A0FC08033E130629C2B854b7bA9195',
+  decimals: '18',
+  exchange_rate: '1328.89',
+  holders: '102625',
+  name: 'Zeta',
+  symbol: 'ipfs://QmUpFUfVKDCWeZQk5pvDFUxnpQP9N6eLSHhNUy49T1JVtY',
+  total_supply: '2100000000000000000000000000',
+  type: 'ERC-20',
+};
+
 export const tokenInfoERC721a: TokenInfo = {
   address: '0xDe7cAc71E072FCBd4453E5FB3558C2684d1F88A0',
   decimals: null,
@@ -89,6 +100,17 @@ export const tokenInfoERC721c: TokenInfo = {
   holders: '12',
   name: 'Puma',
   symbol: 'PUMA',
+  total_supply: null,
+  type: 'ERC-721',
+};
+
+export const tokenInfoERC721LongSymbol: TokenInfo = {
+  address: '0x47646F1d7dc4Dd2Db5a41D092e2Cf966e27A4992',
+  decimals: null,
+  exchange_rate: null,
+  holders: '12',
+  name: 'Puma',
+  symbol: 'ipfs://QmUpFUfVKDCWeZQk5pvDFUxnpQP9N6eLSHhNUy49T1JVtY',
   total_supply: null,
   type: 'ERC-721',
 };

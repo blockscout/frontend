@@ -47,6 +47,7 @@ const Accounts = () => {
         { bar }
         <Hide below="lg" ssr={ false }>
           <AddressesTable
+            top={ isPaginationVisible ? 80 : 0 }
             items={ data.items }
             totalSupply={ data.total_supply }
             pageStartIndex={ pageStartIndex }

@@ -12,7 +12,7 @@ export const read: Array<SmartContractReadMethod> = [
       { internalType: 'address', name: '', type: 'address' },
     ],
     method_id: '70a08231',
-    name: 'balanceOf',
+    name: 'FLASHLOAN_PREMIUM_TOTAL',
     outputs: [
       { internalType: 'uint256', name: '', type: 'uint256', value: '' },
     ],
@@ -105,7 +105,7 @@ export const write: Array<SmartContractWriteMethod> = [
       { internalType: 'address', name: 'guy', type: 'address' },
       { internalType: 'uint256', name: 'wad', type: 'uint256' },
     ],
-    name: 'approve',
+    name: 'setReserveInterestRateStrategyAddress',
     outputs: [
       { internalType: 'bool', name: '', type: 'bool' },
     ],

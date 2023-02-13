@@ -1,4 +1,4 @@
-import { Box, chakra, Flex, Link, Text, Tooltip } from '@chakra-ui/react';
+import { Box, chakra, Flex, Text, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SmartContract } from 'types/api/contract';
@@ -6,6 +6,7 @@ import type { SmartContract } from 'types/api/contract';
 import link from 'lib/link/link';
 import CodeEditor from 'ui/shared/CodeEditor';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import LinkInternal from 'ui/shared/LinkInternal';
 
 interface Props {
   data: string;
@@ -26,13 +27,13 @@ const ContractSourceCode = ({ data, hasSol2Yml, address, isViper, filePath, addi
 
   const diagramLink = hasSol2Yml && address ? (
     <Tooltip label="Visualize contract code using Sol2Uml JS library">
-      <Link
+      <LinkInternal
         href={ link('visualize_sol2uml', undefined, { address }) }
         ml="auto"
         mr={ 3 }
       >
         View UML diagram
-      </Link>
+      </LinkInternal>
     </Tooltip>
   ) : null;
 
@@ -58,9 +59,11 @@ const ContractSourceCode = ({ data, hasSol2Yml, address, isViper, filePath, addi
       <Flex flexDir="column" rowGap={ 3 }>
         { [ { file_path: filePath, source_code: data }, ...additionalSource ].map((item, index, array) => (
           <Box key={ index }>
-            <Flex justifyContent="space-between" alignItems="center" mb={ 3 }>
-              <chakra.span fontSize="sm">File { index + 1 } of { array.length }: { item.file_path }</chakra.span>
-              <CopyToClipboard text={ item.source_code }/>
+            <Flex justifyContent="space-between" alignItems="flex-end" mb={ 3 }>
+              <chakra.span fontSize="sm" wordBreak="break-all" lineHeight="20px">
+                File { index + 1 } of { array.length }: { item.file_path }
+              </chakra.span>
+              <CopyToClipboard text={ item.source_code } ml={ 4 }/>
             </Flex>
             <CodeEditor value={ item.source_code } id={ `source_code_${ index }` }/>
           </Box>

@@ -39,6 +39,7 @@ import RawInputData from 'ui/shared/RawInputData';
 import TextSeparator from 'ui/shared/TextSeparator';
 import TxStatus from 'ui/shared/TxStatus';
 import Utilization from 'ui/shared/Utilization/Utilization';
+import TxDetailsActions from 'ui/tx/details/TxDetailsActions';
 import TxDetailsSkeleton from 'ui/tx/details/TxDetailsSkeleton';
 import TxDetailsTokenTransfers from 'ui/tx/details/TxDetailsTokenTransfers';
 import TxRevertReason from 'ui/tx/details/TxRevertReason';
@@ -89,6 +90,8 @@ const TxDetails = () => {
     ...toAddress.watchlist_names || [],
   ].map((tag) => <Tag key={ tag.label }>{ tag.display_name }</Tag>);
 
+  const actionsExist = data.actions && data.actions.length > 0;
+
   const executionSuccessBadge = toAddress.is_contract && data.result === 'success' ? (
     <Tooltip label="Contract execution completed">
       <chakra.span display="inline-flex" ml={ 2 } mr={ 1 }>
@@ -103,6 +106,16 @@ const TxDetails = () => {
       </chakra.span>
     </Tooltip>
   ) : null;
+
+  const divider = (
+    <GridItem
+      colSpan={{ base: undefined, lg: 2 }}
+      mt={{ base: 2, lg: 3 }}
+      mb={{ base: 0, lg: 3 }}
+      borderBottom="1px solid"
+      borderColor="divider"
+    />
+  );
 
   return (
     <Grid columnGap={ 8 } rowGap={{ base: 3, lg: 3 }} templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }}>
@@ -180,13 +193,16 @@ const TxDetails = () => {
             <AdBanner/>
           </DetailsInfoItem>
         ) }
-      <GridItem
-        colSpan={{ base: undefined, lg: 2 }}
-        mt={{ base: 2, lg: 3 }}
-        mb={{ base: 0, lg: 3 }}
-        borderBottom="1px solid"
-        borderColor="divider"
-      />
+
+      { divider }
+
+      { actionsExist && (
+        <>
+          <TxDetailsActions actions={ data.actions }/>
+          { divider }
+        </>
+      ) }
+
       <DetailsInfoItem
         title="From"
         hint="Address (external or contract) sending the transaction."
@@ -237,13 +253,8 @@ const TxDetails = () => {
       </DetailsInfoItem>
       { data.token_transfers && <TxDetailsTokenTransfers data={ data.token_transfers } txHash={ data.hash }/> }
 
-      <GridItem
-        colSpan={{ base: undefined, lg: 2 }}
-        mt={{ base: 2, lg: 3 }}
-        mb={{ base: 0, lg: 3 }}
-        borderBottom="1px solid"
-        borderColor="divider"
-      />
+      { divider }
+
       <DetailsInfoItem
         title="Value"
         hint="Value sent in the native token (and USD) if applicable."

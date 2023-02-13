@@ -91,7 +91,7 @@ const TokenTransfer = ({ transfersQuery, token }: Props) => {
         <Hide below="lg" ssr={ false }>
           <TokenTransferTable
             data={ items }
-            top={ 80 }
+            top={ isPaginationVisible ? 80 : 0 }
             // token transfers query depends on token data
             // so if we are here, we definitely have token data
             token={ token as TokenInfo }

@@ -356,13 +356,13 @@ geth:
 scVerifier:
   enabled: true
   image:
-    _default: ghcr.io/blockscout/smart-contract-verifier:latest
+    _default: ghcr.io/blockscout/smart-contract-verifier:main
   replicas:
     app: 1
-  docker:
-    port: 80
-    targetPort: 8043
-    metricsPort: 6060
+  # docker:
+  #   port: 80
+  #   targetPort: 8043
+  #   metricsPort: 6060
   service:
     # ClusterIP, NodePort or LoadBalancer
     type: ClusterIP
@@ -392,10 +392,10 @@ scVerifier:
   # probes
   livenessProbe:
     enabled: true
-    path: /health
+    # path: /health
   readinessProbe:
     enabled: true
-    path: /health
+    # path: /health
   # enable Horizontal Pod Autoscaler
   hpa:
     enabled: true
@@ -403,8 +403,10 @@ scVerifier:
     maxReplicas: 10
     cpuTarget: 90
   environment:
-    SMART_CONTRACT_VERIFIER__SERVER__ADDR:
-      _default: 0.0.0.0:8043
+    SMART_CONTRACT_VERIFIER__SERVER__HTTP__ADDR:
+      _default: 0.0.0.0:8050
+    SMART_CONTRACT_VERIFIER__SERVER__GRPC__ADDR:
+      _default: 0.0.0.0:8051
     # SMART_CONTRACT_VERIFIER__SOLIDITY__ENABLED:
     #   _default: 'true'
     SMART_CONTRACT_VERIFIER__SOLIDITY__COMPILERS_DIR:
@@ -470,11 +472,14 @@ frontend:
         - "/tx"
         - "/blocks"
         - "/block"
-        # - "/address"
+        - "/address"
         - "/stats"
         - "/search-results"
         - "/tokens"
+        - "/token"
         - "/accounts"
+        - "/visualize"
+
   resources:
     limits:
       memory:
@@ -542,6 +547,8 @@ frontend:
       _default: blockscout.com/eth/goerli
     NEXT_PUBLIC_STATS_API_HOST:
       _default: https://stats-test.aws-k8s.blockscout.com/
+    NEXT_PUBLIC_VISUALIZE_API_HOST:
+      _default: https://visualizer.aws-k8s.blockscout.com
     NEXT_PUBLIC_APP_HOST:
       _default: blockscout.com/eth/goerli
     NEXT_PUBLIC_LOGOUT_URL:
