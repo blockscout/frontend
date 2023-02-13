@@ -1,3 +1,4 @@
+// https://hexdocs.pm/phoenix/js/
 import type { SocketConnectOption } from 'phoenix';
 import { Socket } from 'phoenix';
 import React, { useEffect, useState } from 'react';

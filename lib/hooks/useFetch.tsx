@@ -11,7 +11,7 @@ export interface Params {
   method?: RequestInit['method'];
   headers?: RequestInit['headers'];
   signal?: RequestInit['signal'];
-  body?: Record<string, unknown>;
+  body?: Record<string, unknown> | FormData;
   credentials?: RequestCredentials;
 }
 
@@ -20,13 +20,27 @@ export default function useFetch() {
   const { token } = queryClient.getQueryData<CsrfData>(getResourceKey('csrf')) || {};
 
   return React.useCallback(<Success, Error>(path: string, params?: Params): Promise<Success | ResourceError<Error>> => {
-    const hasBody = params?.method && ![ 'GET', 'HEAD' ].includes(params.method);
+    const _body = params?.body;
+    const isFormData = _body instanceof FormData;
+    const isBodyAllowed = params?.method && ![ 'GET', 'HEAD' ].includes(params.method);
+
+    const body: FormData | string | undefined = (() => {
+      if (!isBodyAllowed) {
+        return;
+      }
+
+      if (isFormData) {
+        return _body;
+      }
+
+      return JSON.stringify({ ..._body, _csrf_token: token });
+    })();
 
     const reqParams = {
       ...params,
-      body: hasBody ? JSON.stringify({ ...params.body, _csrf_token: token }) : undefined,
+      body,
       headers: {
-        ...(hasBody ? { 'Content-type': 'application/json' } : undefined),
+        ...(isBodyAllowed && !isFormData ? { 'Content-type': 'application/json' } : undefined),
         ...params?.headers,
       },
     };

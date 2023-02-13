@@ -1,9 +1,9 @@
 import React from 'react';
 
 import ContractVerificationMethod from '../ContractVerificationMethod';
-import ContractVerificationFieldAbiEncodedArgs from '../fields/ContractVerificationFieldAbiEncodedArgs';
 import ContractVerificationFieldCode from '../fields/ContractVerificationFieldCode';
 import ContractVerificationFieldCompiler from '../fields/ContractVerificationFieldCompiler';
+import ContractVerificationFieldConstructorArgs from '../fields/ContractVerificationFieldConstructorArgs';
 import ContractVerificationFieldName from '../fields/ContractVerificationFieldName';
 
 const ContractVerificationVyperContract = () => {
@@ -12,7 +12,7 @@ const ContractVerificationVyperContract = () => {
       <ContractVerificationFieldName hint="Must match the name specified in the code."/>
       <ContractVerificationFieldCompiler isVyper/>
       <ContractVerificationFieldCode isVyper/>
-      <ContractVerificationFieldAbiEncodedArgs/>
+      <ContractVerificationFieldConstructorArgs/>
     </ContractVerificationMethod>
   );
 };

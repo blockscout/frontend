@@ -35,7 +35,7 @@ const Page = ({
       return <PageContent isHomePage={ isHomePage }>{ content }</PageContent>;
     }
 
-    return isInvalidTxHash ? <ErrorInvalidTxHash/> : <AppError statusCode={ 500 }/>;
+    return isInvalidTxHash ? <ErrorInvalidTxHash/> : <AppError statusCode={ statusCode }/>;
   }, [ isHomePage, wrapChildren ]);
 
   const renderedChildren = wrapChildren ? (

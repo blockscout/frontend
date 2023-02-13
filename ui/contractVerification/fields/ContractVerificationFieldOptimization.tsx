@@ -11,7 +11,7 @@ import InputPlaceholder from 'ui/shared/InputPlaceholder';
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
 const ContractVerificationFieldOptimization = () => {
-  const [ isEnabled, setIsEnabled ] = React.useState(false);
+  const [ isEnabled, setIsEnabled ] = React.useState(true);
   const { formState, control } = useFormContext<FormFields>();
 
   const handleCheckboxChange = React.useCallback(() => {
@@ -49,6 +49,7 @@ const ContractVerificationFieldOptimization = () => {
           name="is_optimization_enabled"
           control={ control }
           render={ renderCheckboxControl }
+          defaultValue={ true }
         />
       </ContractVerificationFormRow>
       { isEnabled && (
@@ -58,7 +59,7 @@ const ContractVerificationFieldOptimization = () => {
             control={ control }
             render={ renderInputControl }
             rules={{ required: true }}
-            defaultValue=""
+            defaultValue="200"
           />
         </ContractVerificationFormRow>
       ) }

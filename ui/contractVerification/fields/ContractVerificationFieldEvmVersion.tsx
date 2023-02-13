@@ -1,28 +1,31 @@
 import { Link } from '@chakra-ui/react';
+import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 import type { ControllerRenderProps } from 'react-hook-form';
 import { useFormContext, Controller } from 'react-hook-form';
 
 import type { FormFields } from '../types';
+import type { SmartContractVerificationConfig } from 'types/api/contract';
 
+import { getResourceKey } from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import FancySelect from 'ui/shared/FancySelect/FancySelect';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
-const VERSIONS = [
-  'default',
-  'london',
-  'berlin',
-];
+interface Props {
+  isVyper?: boolean;
+}
 
-const ContractVerificationFieldEvmVersion = () => {
+const ContractVerificationFieldEvmVersion = ({ isVyper }: Props) => {
   const { formState, control } = useFormContext<FormFields>();
   const isMobile = useIsMobile();
+  const queryClient = useQueryClient();
+  const config = queryClient.getQueryData<SmartContractVerificationConfig>(getResourceKey('contract_verification_config'));
 
   const options = React.useMemo(() => (
-    VERSIONS.map((option) => ({ label: option, value: option }))
-  ), [ ]);
+    (isVyper ? config?.vyper_evm_versions : config?.solidity_evm_versions)?.map((option) => ({ label: option, value: option })) || []
+  ), [ config?.solidity_evm_versions, config?.vyper_evm_versions, isVyper ]);
 
   const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'evm_version'>}) => {
     const error = 'evm_version' in formState.errors ? formState.errors.evm_version : undefined;
