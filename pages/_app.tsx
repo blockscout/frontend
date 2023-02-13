@@ -35,10 +35,13 @@ function MyApp({ Component, pageProps }: AppProps) {
     },
   }));
 
-  const renderErrorScreen = React.useCallback(() => {
+  const renderErrorScreen = React.useCallback((error?: Error) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const statusCode = (error?.cause as any)?.status || 500;
+
     return (
       <AppError
-        statusCode={ 500 }
+        statusCode={ statusCode }
         height="100vh"
         display="flex"
         flexDirection="column"

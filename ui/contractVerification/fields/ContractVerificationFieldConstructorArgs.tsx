@@ -5,32 +5,39 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
 
+import FieldError from 'ui/shared/forms/FieldError';
 import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
-const ContractVerificationFieldAbiEncodedArgs = () => {
+const ContractVerificationFieldConstructorArgs = () => {
   const { formState, control } = useFormContext<FormFields>();
 
-  const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'abi_encoded_args'>}) => {
+  const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'constructor_args'>}) => {
+    const error = 'constructor_args' in formState.errors ? formState.errors.constructor_args : undefined;
+
     return (
-      <FormControl variant="floating" id={ field.name } size={{ base: 'md', lg: 'lg' }}>
+      <FormControl variant="floating" id={ field.name } size={{ base: 'md', lg: 'lg' }} isRequired>
         <Textarea
           { ...field }
           maxLength={ 255 }
           isDisabled={ formState.isSubmitting }
+          isInvalid={ Boolean(error) }
+          required
         />
         <InputPlaceholder text="ABI-encoded Constructor Arguments"/>
+        { error?.message && <FieldError message={ error?.message }/> }
       </FormControl>
     );
-  }, [ formState.isSubmitting ]);
+  }, [ formState.errors, formState.isSubmitting ]);
 
   return (
     <ContractVerificationFormRow>
       <Controller
-        name="abi_encoded_args"
+        name="constructor_args"
         control={ control }
         render={ renderControl }
+        rules={{ required: true }}
       />
       <>
         <span>Add arguments in </span>
@@ -44,4 +51,4 @@ const ContractVerificationFieldAbiEncodedArgs = () => {
   );
 };
 
-export default React.memo(ContractVerificationFieldAbiEncodedArgs);
+export default React.memo(ContractVerificationFieldConstructorArgs);

@@ -20,32 +20,26 @@ import React from 'react';
 import type { ControllerRenderProps, Control } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 
-import type { FormFields, VerificationMethod } from '../types';
+import type { FormFields } from '../types';
+import type { SmartContractVerificationMethod, SmartContractVerificationConfig } from 'types/api/contract';
 
 import infoIcon from 'icons/info.svg';
-
-export const VERIFICATION_METHODS: Array<VerificationMethod> = [
-  'flatten_source_code',
-  'standard_input',
-  'sourcify',
-  'multi_part_file',
-  'vyper_contract',
-];
 
 interface Props {
   control: Control<FormFields>;
   isDisabled?: boolean;
+  methods: SmartContractVerificationConfig['verification_options'];
 }
 
-const ContractVerificationFieldMethod = ({ control, isDisabled }: Props) => {
+const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props) => {
   const [ isPopoverOpen, setIsPopoverOpen ] = useBoolean();
   const tooltipBg = useColorModeValue('gray.700', 'gray.900');
 
-  const renderItem = React.useCallback((method: VerificationMethod) => {
+  const renderItem = React.useCallback((method: SmartContractVerificationMethod) => {
     switch (method) {
-      case 'flatten_source_code':
+      case 'flattened-code':
         return 'Via flattened source code';
-      case 'standard_input':
+      case 'standard-input':
         return (
           <>
             <span>Via standard </span>
@@ -91,10 +85,12 @@ const ContractVerificationFieldMethod = ({ control, isDisabled }: Props) => {
             </Popover>
           </>
         );
-      case 'multi_part_file':
+      case 'multi-part':
         return 'Via multi-part files';
-      case 'vyper_contract':
+      case 'vyper-code':
         return 'Vyper contract';
+      case 'vyper-multi-part':
+        return 'Via multi-part Vyper files';
 
       default:
         break;
@@ -103,15 +99,15 @@ const ContractVerificationFieldMethod = ({ control, isDisabled }: Props) => {
 
   const renderRadioGroup = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'method'>}) => {
     return (
-      <RadioGroup defaultValue="add" colorScheme="blue" isDisabled={ isDisabled } { ...field }>
+      <RadioGroup defaultValue="add" colorScheme="blue" isDisabled={ isDisabled } isFocusable={ !isDisabled } { ...field } >
         <Stack spacing={ 4 }>
-          { VERIFICATION_METHODS.map((method) => {
+          { methods.map((method) => {
             return <Radio key={ method } value={ method } size="lg">{ renderItem(method) }</Radio>;
           }) }
         </Stack>
       </RadioGroup>
     );
-  }, [ isDisabled, renderItem ]);
+  }, [ isDisabled, methods, renderItem ]);
 
   return (
     <section>

@@ -129,7 +129,7 @@ const ContractCode = () => {
               <AddressLink type="address" hash={ data.verified_twin_address_hash } truncation="constant" ml={ 2 }/>
             </Address>
             <chakra.span mt={ 1 }>All functions displayed below are from ABI of that contract. In order to verify current contract, proceed with </chakra.span>
-            <LinkInternal href={ link('address_contract_verification', { id: data.verified_twin_address_hash }) }>Verify & Publish</LinkInternal>
+            <LinkInternal href={ link('address_contract_verification', { id: addressHash }) }>Verify & Publish</LinkInternal>
             <span> page</span>
           </Alert>
         ) }
