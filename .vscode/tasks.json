@@ -161,6 +161,26 @@
                 "instanceLimit": 1
             }
         },
+        {
+            "type": "shell",
+            "command": "npx playwright show-report",
+            "problemMatcher": [],
+            "label": "pw: report",
+            "detail": "serve test report",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "close": true,
+                "revealProblems": "onProblem",
+            },
+            "icon": {
+                "color": "terminal.ansiBlue",
+                "id": "output"
+            },
+            "runOptions": {
+                "instanceLimit": 1
+            }
+        },
 
         // JEST TESTS
         {
