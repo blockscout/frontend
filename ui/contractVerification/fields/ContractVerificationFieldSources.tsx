@@ -1,4 +1,4 @@
-import { Text, Button, Box, chakra, Flex } from '@chakra-ui/react';
+import { Text, Button, Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 import type { ControllerRenderProps, FieldPathValue, ValidateResult } from 'react-hook-form';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -6,7 +6,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import type { FormFields } from '../types';
 
 import { Mb } from 'lib/consts';
-// import DragAndDropArea from 'ui/shared/forms/DragAndDropArea';
+import DragAndDropArea from 'ui/shared/forms/DragAndDropArea';
 import FieldError from 'ui/shared/forms/FieldError';
 import FileInput from 'ui/shared/forms/FileInput';
 import FileSnippet from 'ui/shared/forms/FileSnippet';
@@ -19,11 +19,10 @@ interface Props {
   fileTypes: Array<FileTypes>;
   multiple?: boolean;
   title: string;
-  className?: string;
   hint: string;
 }
 
-const ContractVerificationFieldSources = ({ fileTypes, multiple, title, className, hint }: Props) => {
+const ContractVerificationFieldSources = ({ fileTypes, multiple, title, hint }: Props) => {
   const { setValue, getValues, control, formState, clearErrors } = useFormContext<FormFields>();
 
   const error = 'sources' in formState.errors ? formState.errors.sources : undefined;
@@ -42,11 +41,28 @@ const ContractVerificationFieldSources = ({ fileTypes, multiple, title, classNam
 
   }, [ getValues, clearErrors, setValue ]);
 
+  const renderUploadButton = React.useCallback(() => {
+    return (
+      <div>
+        <Text fontWeight={ 500 } color="text_secondary" mb={ 3 }>{ title }</Text>
+        <Button size="sm" variant="outline">
+            Drop file{ multiple ? 's' : '' } or click here
+        </Button>
+      </div>
+    );
+  }, [ multiple, title ]);
+
   const renderFiles = React.useCallback((files: Array<File>) => {
     const errorList = fileError?.message?.split(';');
 
     return (
-      <Box display="grid" gridTemplateColumns={{ base: 'minmax(0, 1fr)', lg: 'minmax(0, 1fr) minmax(0, 1fr)' }} columnGap={ 3 } rowGap={ 3 }>
+      <Box
+        display="grid"
+        gridTemplateColumns={{ base: 'minmax(0, 1fr)', lg: 'minmax(0, 1fr) minmax(0, 1fr)' }}
+        columnGap={ 3 }
+        rowGap={ 3 }
+        w="100%"
+      >
         { files.map((file, index) => (
           <Box key={ file.name + file.lastModified + index }>
             <FileSnippet
@@ -55,42 +71,36 @@ const ContractVerificationFieldSources = ({ fileTypes, multiple, title, classNam
               onRemove={ handleFileRemove }
               index={ index }
               isDisabled={ formState.isSubmitting }
+              error={ errorList?.[index] }
             />
-            { errorList?.[index] && <FieldError message={ errorList?.[index] } mt={ 1 } px={ 3 }/> }
           </Box>
         )) }
       </Box>
     );
   }, [ formState.isSubmitting, handleFileRemove, fileError ]);
 
-  const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'sources'>}) => (
-    <>
-      <FileInput<FormFields, 'sources'> accept={ fileTypes.join(',') } multiple={ multiple } field={ field }>
-        { () => (
-          <Flex
-            flexDir="column"
-            alignItems="flex-start"
-            rowGap={ 2 }
-            w="100%"
-            display={ field.value && field.value.length > 0 && !multiple ? 'none' : 'block' }
-            mb={ field.value && field.value.length > 0 ? 2 : 0 }
-          >
-            <Button
-              variant="outline"
-              size="sm"
-              // mb={ 2 }
+  const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'sources'>}) => {
+    const hasValue = field.value && field.value.length > 0;
+    return (
+      <>
+        <FileInput<FormFields, 'sources'> accept={ fileTypes.join(',') } multiple={ multiple } field={ field }>
+          { ({ onChange }) => (
+            <Flex
+              flexDir="column"
+              alignItems="flex-start"
+              rowGap={ 2 }
+              w="100%"
             >
-              Upload file{ multiple ? 's' : '' }
-            </Button>
-            { /* design is not ready */ }
-            { /* <DragAndDropArea onDrop={ onChange }/> */ }
-          </Flex>
-        ) }
-      </FileInput>
-      { field.value && field.value.length > 0 && renderFiles(field.value) }
-      { commonError?.message && <FieldError message={ commonError.type === 'required' ? 'Field is required' : commonError.message }/> }
-    </>
-  ), [ fileTypes, commonError, multiple, renderFiles ]);
+              <DragAndDropArea onDrop={ onChange } p={{ base: 3, lg: 6 }}>
+                { hasValue ? renderFiles(field.value) : renderUploadButton() }
+              </DragAndDropArea>
+            </Flex>
+          ) }
+        </FileInput>
+        { commonError?.message && <FieldError message={ commonError.type === 'required' ? 'Field is required' : commonError.message }/> }
+      </>
+    );
+  }, [ fileTypes, multiple, renderFiles, commonError, renderUploadButton ]);
 
   const validateFileType = React.useCallback(async(value: FieldPathValue<FormFields, 'sources'>): Promise<ValidateResult> => {
     if (Array.isArray(value)) {
@@ -114,30 +124,34 @@ const ContractVerificationFieldSources = ({ fileTypes, multiple, title, classNam
     return true;
   }, []);
 
+  const validateQuantity = React.useCallback(async(value: FieldPathValue<FormFields, 'sources'>): Promise<ValidateResult> => {
+    if (!multiple && Array.isArray(value) && value.length > 1) {
+      return 'You can upload only one file';
+    }
+
+    return true;
+  }, [ multiple ]);
+
   const rules = React.useMemo(() => ({
     required: true,
     validate: {
       file_type: validateFileType,
       file_size: validateFileSize,
+      quantity: validateQuantity,
     },
-  }), [ validateFileSize, validateFileType ]);
+  }), [ validateFileSize, validateFileType, validateQuantity ]);
 
   return (
-    <>
-      <ContractVerificationFormRow >
-        <Text fontWeight={ 500 } className={ className } mt={ 4 }>{ title }</Text>
-      </ContractVerificationFormRow>
-      <ContractVerificationFormRow>
-        <Controller
-          name="sources"
-          control={ control }
-          render={ renderControl }
-          rules={ rules }
-        />
-        { hint ? <span>{ hint }</span> : null }
-      </ContractVerificationFormRow>
-    </>
+    <ContractVerificationFormRow>
+      <Controller
+        name="sources"
+        control={ control }
+        render={ renderControl }
+        rules={ rules }
+      />
+      { hint ? <span>{ hint }</span> : null }
+    </ContractVerificationFormRow>
   );
 };
 
-export default React.memo(chakra(ContractVerificationFieldSources));
+export default React.memo(ContractVerificationFieldSources);
