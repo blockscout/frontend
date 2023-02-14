@@ -1,5 +1,4 @@
 import _capitalize from 'lodash/capitalize';
-import { useRouter } from 'next/router';
 import React from 'react';
 import { useAccount, useSigner } from 'wagmi';
 
@@ -21,14 +20,12 @@ import ContractWriteResult from './ContractWriteResult';
 import { getNativeCoinValue, isExtendedError } from './utils';
 
 interface Props {
+  addressHash?: string;
   isProxy?: boolean;
   isCustomAbi?: boolean;
 }
 
-const ContractWrite = ({ isProxy, isCustomAbi }: Props) => {
-  const router = useRouter();
-
-  const addressHash = getQueryParamString(router.query.hash);
+const ContractWrite = ({ addressHash, isProxy, isCustomAbi }: Props) => {
   const { data: signer } = useSigner();
   const { isConnected } = useAccount();
 
