@@ -23,7 +23,7 @@ test('base view +@mobile', async({ mount, page }) => {
 
   const component = await mount(
     <TestApp>
-      <ContractWrite/>
+      <ContractWrite addressHash={ addressHash }/>
     </TestApp>,
     { hooksConfig },
   );
