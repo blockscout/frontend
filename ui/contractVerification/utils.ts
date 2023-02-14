@@ -1,6 +1,15 @@
 import type { FieldPath, ErrorOption } from 'react-hook-form';
 
-import type { ContractLibrary, FormFields } from './types';
+import type {
+  ContractLibrary,
+  FormFields,
+  FormFieldsFlattenSourceCode,
+  FormFieldsMultiPartFile,
+  FormFieldsSourcify,
+  FormFieldsStandardInput,
+  FormFieldsVyperContract,
+  FormFieldsVyperMultiPartFile,
+} from './types';
 import type { SmartContractVerificationMethod, SmartContractVerificationError } from 'types/api/contract';
 
 import type { Params as FetchParams } from 'lib/hooks/useFetch';
@@ -13,6 +22,15 @@ export const SUPPORTED_VERIFICATION_METHODS: Array<SmartContractVerificationMeth
   'vyper-code',
   'vyper-multi-part',
 ];
+
+export const METHOD_LABELS: Record<SmartContractVerificationMethod, string> = {
+  'flattened-code': 'Solidity (Flattened source code)',
+  'standard-input': 'Solidity (Standart JSON input)',
+  sourcify: 'Solidity (Sourcify)',
+  'multi-part': 'Solidity (Multi-part files)',
+  'vyper-code': 'Vyper (Сontract)',
+  'vyper-multi-part': 'Vyper (Multi-part files)',
+};
 
 export function isValidVerificationMethod(method?: string): method is SmartContractVerificationMethod {
   return method && SUPPORTED_VERIFICATION_METHODS.includes(method as SmartContractVerificationMethod) ? true : false;
@@ -34,68 +52,78 @@ export function sortVerificationMethods(methodA: SmartContractVerificationMethod
 }
 
 export function prepareRequestBody(data: FormFields): FetchParams['body'] {
-  switch (data.method) {
+  switch (data.method.value) {
     case 'flattened-code': {
+      const _data = data as FormFieldsFlattenSourceCode;
       return {
-        compiler_version: data.compiler?.value,
-        source_code: data.code,
-        is_optimization_enabled: data.is_optimization_enabled,
-        is_yul_contract: data.is_yul,
-        optimization_runs: data.optimization_runs,
-        contract_name: data.name,
-        libraries: reduceLibrariesArray(data.libraries),
-        evm_version: data.evm_version?.value,
-        autodetect_constructor_args: data.autodetect_constructor_args,
-        constructor_args: data.constructor_args,
+        compiler_version: _data.compiler?.value,
+        source_code: _data.code,
+        is_optimization_enabled: _data.is_optimization_enabled,
+        is_yul_contract: _data.is_yul,
+        optimization_runs: _data.optimization_runs,
+        contract_name: _data.name,
+        libraries: reduceLibrariesArray(_data.libraries),
+        evm_version: _data.evm_version?.value,
+        autodetect_constructor_args: _data.autodetect_constructor_args,
+        constructor_args: _data.constructor_args,
       };
     }
 
     case 'standard-input': {
+      const _data = data as FormFieldsStandardInput;
+
       const body = new FormData();
-      body.set('compiler_version', data.compiler?.value);
-      body.set('contract_name', data.name);
-      body.set('autodetect_constructor_args', String(Boolean(data.autodetect_constructor_args)));
-      body.set('constructor_args', data.constructor_args);
-      addFilesToFormData(body, data.sources);
+      body.set('compiler_version', _data.compiler?.value);
+      body.set('contract_name', _data.name);
+      body.set('autodetect_constructor_args', String(Boolean(_data.autodetect_constructor_args)));
+      body.set('constructor_args', _data.constructor_args);
+      addFilesToFormData(body, _data.sources);
 
       return body;
     }
 
     case 'sourcify': {
+      const _data = data as FormFieldsSourcify;
       const body = new FormData();
-      addFilesToFormData(body, data.sources);
+      addFilesToFormData(body, _data.sources);
 
       return body;
     }
 
     case 'multi-part': {
-      const body = new FormData();
-      body.set('compiler_version', data.compiler?.value);
-      body.set('evm_version', data.evm_version?.value);
-      body.set('is_optimization_enabled', String(Boolean(data.is_optimization_enabled)));
-      data.is_optimization_enabled && body.set('optimization_runs', data.optimization_runs);
+      const _data = data as FormFieldsMultiPartFile;
 
-      const libraries = reduceLibrariesArray(data.libraries);
+      const body = new FormData();
+      body.set('compiler_version', _data.compiler?.value);
+      body.set('evm_version', _data.evm_version?.value);
+      body.set('is_optimization_enabled', String(Boolean(_data.is_optimization_enabled)));
+      _data.is_optimization_enabled && body.set('optimization_runs', _data.optimization_runs);
+
+      const libraries = reduceLibrariesArray(_data.libraries);
       libraries && body.set('libraries', JSON.stringify(libraries));
-      addFilesToFormData(body, data.sources);
+      addFilesToFormData(body, _data.sources);
 
       return body;
     }
 
     case 'vyper-code': {
+      const _data = data as FormFieldsVyperContract;
+
       return {
-        compiler_version: data.compiler?.value,
-        source_code: data.code,
-        contract_name: data.name,
-        constructor_args: data.constructor_args,
+        compiler_version: _data.compiler?.value,
+        source_code: _data.code,
+        contract_name: _data.name,
+        constructor_args: _data.constructor_args,
       };
     }
 
     case 'vyper-multi-part': {
+      const _data = data as FormFieldsVyperMultiPartFile;
+
       const body = new FormData();
-      body.set('compiler_version', data.compiler?.value);
-      body.set('evm_version', data.evm_version?.value);
-      addFilesToFormData(body, data.sources);
+      body.set('compiler_version', _data.compiler?.value);
+      body.set('evm_version', _data.evm_version?.value);
+      addFilesToFormData(body, _data.sources);
 
       return body;
     }

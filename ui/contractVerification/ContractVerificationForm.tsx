@@ -21,7 +21,7 @@ import ContractVerificationSourcify from './methods/ContractVerificationSourcify
 import ContractVerificationStandardInput from './methods/ContractVerificationStandardInput';
 import ContractVerificationVyperContract from './methods/ContractVerificationVyperContract';
 import ContractVerificationVyperMultiPartFile from './methods/ContractVerificationVyperMultiPartFile';
-import { prepareRequestBody, formatSocketErrors } from './utils';
+import { prepareRequestBody, formatSocketErrors, METHOD_LABELS } from './utils';
 
 const METHOD_COMPONENTS = {
   'flattened-code': <ContractVerificationFlattenSourceCode/>,
@@ -42,7 +42,10 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
   const formApi = useForm<FormFields>({
     mode: 'onBlur',
     defaultValues: {
-      method: methodFromQuery,
+      method: methodFromQuery ? {
+        value: methodFromQuery,
+        label: METHOD_LABELS[methodFromQuery],
+      } : undefined,
     },
   });
   const { control, handleSubmit, watch, formState, setError } = formApi;
@@ -57,7 +60,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
 
     try {
       await apiFetch('contract_verification_via', {
-        pathParams: { method: data.method, id: hash },
+        pathParams: { method: data.method.value, id: hash },
         fetchParams: {
           method: 'POST',
           body,
@@ -125,7 +128,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
   });
 
   const method = watch('method');
-  const content = METHOD_COMPONENTS[method] || null;
+  const content = METHOD_COMPONENTS[method?.value] || null;
 
   return (
     <FormProvider { ...formApi }>
@@ -135,8 +138,8 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
       >
         <ContractVerificationFieldMethod
           control={ control }
-          isDisabled={ Boolean(method) }
           methods={ config.verification_options }
+          isDisabled={ formState.isSubmitting }
         />
         { content }
         { Boolean(method) && (
