@@ -6,7 +6,7 @@ import React from 'react';
 import type { SocketMessage } from 'lib/socket/types';
 import { AddressFromToFilterValues } from 'types/api/address';
 import type { AddressFromToFilter, AddressTokenTransferResponse } from 'types/api/address';
-import type { TokenType } from 'types/api/tokenInfo';
+import type { TokenType } from 'types/api/token';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import crossIcon from 'icons/cross.svg';

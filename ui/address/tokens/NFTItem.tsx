@@ -15,7 +15,7 @@ const NFTItem = ({ token, token_id: tokenId }: Props) => {
 
   return (
     <LinkBox
-      w={{ base: 'calc((100% - 12px)/2)', lg: '210px' }}
+      w={{ base: '100%', lg: '210px' }}
       border="1px solid"
       borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }
       borderRadius="12px"
@@ -25,13 +25,14 @@ const NFTItem = ({ token, token_id: tokenId }: Props) => {
       fontWeight={ 500 }
       lineHeight="20px"
     >
-      <LinkOverlay href={ tokenLink }/>
-      <NftImage
-        mb="18px"
-        url={ null }
-        fallbackPadding="30px"
-        cursor="pointer"
-      />
+      <LinkOverlay href={ tokenLink }>
+        <NftImage
+          mb="18px"
+          url={ null }
+          fallbackPadding="30px"
+          cursor="pointer"
+        />
+      </LinkOverlay>
       { tokenId && (
         <Flex mb={ 2 } ml={ 1 }>
           <Text whiteSpace="pre" variant="secondary">ID# </Text>

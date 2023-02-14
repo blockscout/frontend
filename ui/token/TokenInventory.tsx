@@ -1,8 +1,8 @@
-import { Grid, Skeleton, Text } from '@chakra-ui/react';
+import { Grid, Text, Skeleton } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
-import type { AddressTokensResponse } from 'types/api/address';
+import type { TokenInventoryResponse } from 'types/api/token';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import ActionBar from 'ui/shared/ActionBar';
@@ -10,31 +10,28 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
 import Pagination from 'ui/shared/Pagination';
 
-import NFTItem from './NFTItem';
+import TokenInventoryItem from './TokenInventoryItem';
 
 type Props = {
-  tokensQuery: UseQueryResult<AddressTokensResponse> & {
+  inventoryQuery: UseQueryResult<TokenInventoryResponse> & {
     pagination: PaginationProps;
     isPaginationVisible: boolean;
   };
 }
 
-const TokensWithIds = ({ tokensQuery }: Props) => {
+const TokenInventory = ({ inventoryQuery }: Props) => {
   const isMobile = useIsMobile();
-
-  const { isError, isLoading, data, pagination, isPaginationVisible } = tokensQuery;
-
-  if (isError) {
+  if (inventoryQuery.isError) {
     return <DataFetchAlert/>;
   }
 
-  const bar = isMobile && isPaginationVisible && (
+  const bar = isMobile && inventoryQuery.isPaginationVisible && (
     <ActionBar mt={ -6 }>
-      <Pagination ml="auto" { ...pagination }/>
+      <Pagination ml="auto" { ...inventoryQuery.pagination }/>
     </ActionBar>
   );
 
-  if (isLoading) {
+  if (inventoryQuery.isLoading) {
     return (
       <>
         { bar }
@@ -54,8 +51,10 @@ const TokensWithIds = ({ tokensQuery }: Props) => {
     );
   }
 
-  if (!data.items.length) {
-    return <Text as="span">There are no tokens of selected type.</Text>;
+  const items = inventoryQuery.data.items;
+
+  if (!items?.length) {
+    return <Text as="span">There are no tokens.</Text>;
   }
 
   return (
@@ -67,10 +66,9 @@ const TokensWithIds = ({ tokensQuery }: Props) => {
         rowGap={{ base: 3, lg: 6 }}
         gridTemplateColumns={{ base: 'repeat(2, calc((100% - 12px)/2))', lg: 'repeat(auto-fill, minmax(210px, 1fr))' }}
       >
-        { data.items.map(item => <NFTItem key={ item.token.address } { ...item }/>) }
-      </Grid>
-    </>
+        { items.map((item) => <TokenInventoryItem key={ item.token.address } item={ item }/>) }
+      </Grid></>
   );
 };
 
-export default TokensWithIds;
+export default TokenInventory;

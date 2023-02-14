@@ -1,4 +1,4 @@
-import type { TokenInstance } from 'types/api/tokens';
+import type { TokenInstance } from 'types/api/token';
 
 import * as addressMock from '../address/address';
 import { tokenInfoERC721a } from './tokenInfo';

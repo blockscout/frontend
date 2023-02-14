@@ -24,8 +24,8 @@ import type { LogsResponseTx, LogsResponseAddress } from 'types/api/log';
 import type { RawTracesResponse } from 'types/api/rawTrace';
 import type { SearchResult, SearchResultFilters } from 'types/api/search';
 import type { Counters, StatsCharts, StatsChart, HomeStats } from 'types/api/stats';
-import type { TokenCounters, TokenInfo, TokenHolders } from 'types/api/tokenInfo';
-import type { TokensResponse, TokensFilters, TokenInstance, TokenInstanceTransfersCount } from 'types/api/tokens';
+import type { TokenCounters, TokenInfo, TokenHolders, TokenInventoryResponse, TokenInstance, TokenInstanceTransfersCount } from 'types/api/token';
+import type { TokensResponse, TokensFilters } from 'types/api/tokens';
 import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
 import type { TransactionsResponseValidated, TransactionsResponsePending, Transaction } from 'types/api/transaction';
 import type { TTxsFilters } from 'types/api/txsFilters';
@@ -230,6 +230,11 @@ export const RESOURCES = {
     paginationFields: [ 'block_number' as const, 'items_count' as const, 'index' as const ],
     filterFields: [],
   },
+  token_inventory: {
+    path: '/api/v2/tokens/:hash/instances',
+    paginationFields: [ 'unique_token' as const ],
+    filterFields: [],
+  },
   tokens: {
     path: '/api/v2/tokens',
     paginationFields: [ 'holder_count' as const, 'items_count' as const, 'name' as const ],
@@ -317,7 +322,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'address_txs' | 'address_internal_txs' | 'address_token_transfers' | 'address_blocks_validated' | 'address_coin_balance' |
 'search' |
 'address_logs' | 'address_tokens' |
-'token_transfers' | 'token_holders' | 'tokens';
+'token_transfers' | 'token_holders' | 'token_inventory' | 'tokens';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
 
@@ -367,6 +372,7 @@ Q extends 'token_transfers' ? TokenTransferResponse :
 Q extends 'token_holders' ? TokenHolders :
 Q extends 'token_instance' ? TokenInstance :
 Q extends 'token_instance_transfers_count' ? TokenInstanceTransfersCount :
+Q extends 'token_inventory' ? TokenInventoryResponse :
 Q extends 'tokens' ? TokensResponse :
 Q extends 'search' ? SearchResult :
 Q extends 'contract' ? SmartContract :

@@ -7,7 +7,7 @@ import {
 import React from 'react';
 
 import type { AddressFromToFilter } from 'types/api/address';
-import type { TokenType } from 'types/api/tokenInfo';
+import type { TokenType } from 'types/api/token';
 
 import PopoverFilter from 'ui/shared/filters/PopoverFilter';
 import TokenTypeFilter from 'ui/shared/filters/TokenTypeFilter';
