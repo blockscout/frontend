@@ -1,8 +1,8 @@
-import { GridItem, Icon, Flex, Tooltip, Box, Text } from '@chakra-ui/react';
+import { GridItem, Flex, Text } from '@chakra-ui/react';
 import type { HTMLChakraProps } from '@chakra-ui/system';
 import React from 'react';
 
-import infoIcon from 'icons/info.svg';
+import Hint from 'ui/shared/Hint';
 
 interface Props extends Omit<HTMLChakraProps<'div'>, 'title'> {
   title: React.ReactNode;
@@ -16,15 +16,7 @@ const DetailsInfoItem = ({ title, hint, note, children, id, ...styles }: Props) 
     <>
       <GridItem py={{ base: 1, lg: 2 }} id={ id } lineHeight={ 5 } { ...styles } whiteSpace="nowrap" _notFirst={{ mt: { base: 3, lg: 0 } }}>
         <Flex columnGap={ 2 } alignItems="flex-start">
-          <Tooltip
-            label={ hint }
-            placement="top"
-            maxW="320px"
-          >
-            <Box cursor="pointer" display="inherit">
-              <Icon as={ infoIcon } boxSize={ 5 }/>
-            </Box>
-          </Tooltip>
+          <Hint text={ hint }/>
           <Text fontWeight={{ base: 700, lg: 500 }}>
             { title }
             { note && <Text fontWeight={ 500 } variant="secondary" fontSize="xs" className="note" align="right">{ note }</Text> }
