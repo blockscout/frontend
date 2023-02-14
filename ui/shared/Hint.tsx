@@ -1,22 +1,31 @@
+import type { TooltipProps } from '@chakra-ui/react';
 import { chakra, IconButton, Tooltip, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 
 import InfoIcon from 'icons/info.svg';
 
 interface Props {
-  text: string;
+  label: string | React.ReactNode;
   className?: string;
+  tooltipProps?: Partial<TooltipProps>;
 }
 
-const Hint = ({ text, className }: Props) => {
+const Hint = ({ label, className, tooltipProps }: Props) => {
+  // have to implement controlled tooltip because of the issue - https://github.com/chakra-ui/chakra-ui/issues/7107
   const { isOpen, onOpen, onToggle, onClose } = useDisclosure();
+
+  const handleClick = React.useCallback((event: React.MouseEvent) => {
+    event.stopPropagation();
+    onToggle();
+  }, [ onToggle ]);
 
   return (
     <Tooltip
-      label={ text }
+      label={ label }
       placement="top"
       maxW="320px"
       isOpen={ isOpen }
+      { ...tooltipProps }
     >
       <IconButton
         colorScheme="none"
@@ -29,7 +38,7 @@ const Hint = ({ text, className }: Props) => {
         className={ className }
         onMouseEnter={ onOpen }
         onMouseLeave={ onClose }
-        onClick={ onToggle }
+        onClick={ handleClick }
       />
     </Tooltip>
   );
