@@ -1,4 +1,4 @@
-import { Button, chakra } from '@chakra-ui/react';
+import { Button, chakra, useUpdateEffect } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
@@ -21,7 +21,7 @@ import ContractVerificationSourcify from './methods/ContractVerificationSourcify
 import ContractVerificationStandardInput from './methods/ContractVerificationStandardInput';
 import ContractVerificationVyperContract from './methods/ContractVerificationVyperContract';
 import ContractVerificationVyperMultiPartFile from './methods/ContractVerificationVyperMultiPartFile';
-import { prepareRequestBody, formatSocketErrors, METHOD_LABELS } from './utils';
+import { prepareRequestBody, formatSocketErrors, DEFAULT_VALUES } from './utils';
 
 const METHOD_COMPONENTS = {
   'flattened-code': <ContractVerificationFlattenSourceCode/>,
@@ -41,14 +41,9 @@ interface Props {
 const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Props) => {
   const formApi = useForm<FormFields>({
     mode: 'onBlur',
-    defaultValues: {
-      method: methodFromQuery ? {
-        value: methodFromQuery,
-        label: METHOD_LABELS[methodFromQuery],
-      } : undefined,
-    },
+    defaultValues: methodFromQuery ? DEFAULT_VALUES[methodFromQuery] : undefined,
   });
-  const { control, handleSubmit, watch, formState, setError } = formApi;
+  const { control, handleSubmit, watch, formState, setError, reset } = formApi;
   const submitPromiseResolver = React.useRef<(value: unknown) => void>();
 
   const apiFetch = useApiFetch();
@@ -129,6 +124,14 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
 
   const method = watch('method');
   const content = METHOD_COMPONENTS[method?.value] || null;
+  const methodValue = method?.value;
+
+  useUpdateEffect(() => {
+    if (methodValue) {
+      reset(DEFAULT_VALUES[methodValue]);
+    }
+  // !!! should run only when method is changed
+  }, [ methodValue ]);
 
   return (
     <FormProvider { ...formApi }>

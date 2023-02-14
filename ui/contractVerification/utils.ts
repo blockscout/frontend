@@ -32,6 +32,74 @@ export const METHOD_LABELS: Record<SmartContractVerificationMethod, string> = {
   'vyper-multi-part': 'Vyper (Multi-part files)',
 };
 
+export const DEFAULT_VALUES = {
+  'flattened-code': {
+    method: {
+      value: 'flattened-code' as const,
+      label: METHOD_LABELS['flattened-code'],
+    },
+    is_yul: false,
+    name: '',
+    compiler: null,
+    evm_version: null,
+    is_optimization_enabled: true,
+    optimization_runs: '200',
+    code: '',
+    autodetect_constructor_args: true,
+    constructor_args: '',
+    libraries: [],
+  },
+  'standard-input': {
+    method: {
+      value: 'standard-input' as const,
+      label: METHOD_LABELS['standard-input'],
+    },
+    name: '',
+    compiler: null,
+    sources: [],
+    autodetect_constructor_args: true,
+    constructor_args: '',
+  },
+  sourcify: {
+    method: {
+      value: 'sourcify' as const,
+      label: METHOD_LABELS.sourcify,
+    },
+    sources: [],
+  },
+  'multi-part': {
+    method: {
+      value: 'multi-part' as const,
+      label: METHOD_LABELS['multi-part'],
+    },
+    compiler: null,
+    evm_version: null,
+    is_optimization_enabled: true,
+    optimization_runs: 200,
+    sources: [],
+    libraries: [],
+  },
+  'vyper-code': {
+    method: {
+      value: 'vyper-code' as const,
+      label: METHOD_LABELS['vyper-code'],
+    },
+    name: '',
+    compiler: null,
+    code: '',
+    constructor_args: '',
+  },
+  'vyper-multi-part': {
+    method: {
+      value: 'vyper-multi-part' as const,
+      label: METHOD_LABELS['vyper-multi-part'],
+    },
+    compiler: null,
+    evm_version: null,
+    sources: [],
+  },
+};
+
 export function isValidVerificationMethod(method?: string): method is SmartContractVerificationMethod {
   return method && SUPPORTED_VERIFICATION_METHODS.includes(method as SmartContractVerificationMethod) ? true : false;
 }

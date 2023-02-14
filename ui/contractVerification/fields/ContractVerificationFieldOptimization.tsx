@@ -55,7 +55,6 @@ const ContractVerificationFieldOptimization = () => {
           name="is_optimization_enabled"
           control={ control }
           render={ renderCheckboxControl }
-          defaultValue={ true }
         />
         { isEnabled && (
           <Controller
@@ -63,7 +62,6 @@ const ContractVerificationFieldOptimization = () => {
             control={ control }
             render={ renderInputControl }
             rules={{ required: true }}
-            defaultValue="200"
           />
         ) }
       </Flex>
