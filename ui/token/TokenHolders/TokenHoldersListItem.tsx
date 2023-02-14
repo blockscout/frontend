@@ -2,7 +2,7 @@ import { Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type { TokenHolder, TokenInfo } from 'types/api/tokenInfo';
+import type { TokenHolder, TokenInfo } from 'types/api/token';
 
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';

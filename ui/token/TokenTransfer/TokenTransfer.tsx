@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
-import type { TokenInfo } from 'types/api/tokenInfo';
+import type { TokenInfo } from 'types/api/token';
 import type { TokenTransferResponse } from 'types/api/tokenTransfer';
 
 import useGradualIncrement from 'lib/hooks/useGradualIncrement';

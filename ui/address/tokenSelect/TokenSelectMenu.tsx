@@ -3,7 +3,7 @@ import type { Dictionary } from 'lodash';
 import type { ChangeEvent } from 'react';
 import React from 'react';
 
-import type { TokenType } from 'types/api/tokenInfo';
+import type { TokenType } from 'types/api/token';
 
 import arrowIcon from 'icons/arrows/east.svg';
 import searchIcon from 'icons/search.svg';

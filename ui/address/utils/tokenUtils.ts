@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 
 import type { AddressTokenBalance } from 'types/api/address';
-import type { TokenType } from 'types/api/tokenInfo';
+import type { TokenType } from 'types/api/token';
 
 import { ZERO } from 'lib/consts';
 

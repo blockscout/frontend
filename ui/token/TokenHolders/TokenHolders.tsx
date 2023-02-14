@@ -2,7 +2,7 @@ import { Text } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
-import type { TokenHolders, TokenInfo } from 'types/api/tokenInfo';
+import type { TokenHolders, TokenInfo } from 'types/api/token';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import ActionBar from 'ui/shared/ActionBar';

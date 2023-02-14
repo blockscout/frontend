@@ -1,4 +1,4 @@
-import type { TokenInfo, TokenType } from './tokenInfo';
+import type { TokenInfo, TokenType } from './token';
 
 export type TokensResponse = {
   items: Array<TokenInfo>;
