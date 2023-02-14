@@ -1,10 +1,9 @@
 import { Box } from '@chakra-ui/react';
-import { test, expect } from '@playwright/experimental-ct-react';
+import { test as base, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import { withName } from 'mocks/address/address';
-import * as tokenBalanceMock from 'mocks/address/tokenBalance';
-import { baseList } from 'mocks/address/tokenBalance';
+import * as tokensMock from 'mocks/address/tokens';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
 
@@ -12,7 +11,6 @@ import AddressTokens from './AddressTokens';
 
 const ADDRESS_HASH = withName.hash;
 const API_URL_ADDRESS = buildApiUrl('address', { id: ADDRESS_HASH });
-const API_URL_ADDRESS_TOKEN_BALANCES = buildApiUrl('address_token_balances', { id: ADDRESS_HASH });
 const API_URL_TOKENS = buildApiUrl('address_tokens', { id: ADDRESS_HASH });
 
 const nextPageParams = {
@@ -22,7 +20,43 @@ const nextPageParams = {
   value: 1,
 };
 
-test('erc20 +@mobile +@dark-mode', async({ mount, page }) => {
+const test = base.extend({
+  page: async({ page }, use) => {
+    const response20 = {
+      items: [ tokensMock.erc20a, tokensMock.erc20b, tokensMock.erc20c, tokensMock.erc20d ],
+      next_page_params: nextPageParams,
+    };
+    const response721 = {
+      items: [ tokensMock.erc721a, tokensMock.erc721b, tokensMock.erc721c ],
+      next_page_params: nextPageParams,
+    };
+    const response1155 = {
+      items: [ tokensMock.erc1155a, tokensMock.erc1155b ],
+      next_page_params: nextPageParams,
+    };
+
+    await page.route(API_URL_ADDRESS, (route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify(withName),
+    }));
+    await page.route(API_URL_TOKENS + '?type=ERC-20', (route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify(response20),
+    }));
+    await page.route(API_URL_TOKENS + '?type=ERC-721', (route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify(response721),
+    }));
+    await page.route(API_URL_TOKENS + '?type=ERC-1155', (route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify(response1155),
+    }));
+
+    use(page);
+  },
+});
+
+test('erc20 +@mobile +@dark-mode', async({ mount }) => {
   const hooksConfig = {
     router: {
       query: { id: ADDRESS_HASH, tab: 'tokens_erc20' },
@@ -30,24 +64,6 @@ test('erc20 +@mobile +@dark-mode', async({ mount, page }) => {
     },
   };
 
-  const response20 = {
-    items: [ tokenBalanceMock.erc20a, tokenBalanceMock.erc20b, tokenBalanceMock.erc20c, tokenBalanceMock.erc20d ],
-    next_page_params: nextPageParams,
-  };
-
-  await page.route(API_URL_ADDRESS, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(withName),
-  }));
-  await page.route(API_URL_ADDRESS_TOKEN_BALANCES, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(baseList),
-  }));
-  await page.route(API_URL_TOKENS + '?type=ERC-20', (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(response20),
-  }));
-
   const component = await mount(
     <TestApp>
       <Box h={{ base: '134px', lg: 6 }}/>
@@ -59,7 +75,7 @@ test('erc20 +@mobile +@dark-mode', async({ mount, page }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('erc721 +@mobile +@dark-mode', async({ mount, page }) => {
+test('erc721 +@mobile +@dark-mode', async({ mount }) => {
   const hooksConfig = {
     router: {
       query: { id: ADDRESS_HASH, tab: 'tokens_erc721' },
@@ -67,24 +83,6 @@ test('erc721 +@mobile +@dark-mode', async({ mount, page }) => {
     },
   };
 
-  const response20 = {
-    items: [ tokenBalanceMock.erc721a, tokenBalanceMock.erc721b, tokenBalanceMock.erc721c ],
-    next_page_params: nextPageParams,
-  };
-
-  await page.route(API_URL_ADDRESS, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(withName),
-  }));
-  await page.route(API_URL_ADDRESS_TOKEN_BALANCES, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(baseList),
-  }));
-  await page.route(API_URL_TOKENS + '?type=ERC-721', (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(response20),
-  }));
-
   const component = await mount(
     <TestApp>
       <Box h={{ base: '134px', lg: 6 }}/>
@@ -96,31 +94,13 @@ test('erc721 +@mobile +@dark-mode', async({ mount, page }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('erc1155 +@mobile +@dark-mode', async({ mount, page }) => {
+test('erc1155 +@mobile +@dark-mode', async({ mount }) => {
   const hooksConfig = {
     router: {
       query: { id: ADDRESS_HASH, tab: 'tokens_erc1155' },
       isReady: true,
     },
   };
-
-  const response20 = {
-    items: [ tokenBalanceMock.erc1155a, tokenBalanceMock.erc1155b ],
-    next_page_params: nextPageParams,
-  };
-
-  await page.route(API_URL_ADDRESS, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(withName),
-  }));
-  await page.route(API_URL_ADDRESS_TOKEN_BALANCES, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(baseList),
-  }));
-  await page.route(API_URL_TOKENS + '?type=ERC-1155', (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(response20),
-  }));
 
   const component = await mount(
     <TestApp>

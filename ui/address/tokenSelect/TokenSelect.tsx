@@ -1,5 +1,6 @@
 import { Box, Flex, Icon, IconButton, Skeleton, Tooltip } from '@chakra-ui/react';
 import { useQueryClient, useIsFetching } from '@tanstack/react-query';
+import _sumBy from 'lodash/sumBy';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -8,12 +9,13 @@ import type { SocketMessage } from 'lib/socket/types';
 import type { Address } from 'types/api/address';
 
 import walletIcon from 'icons/wallet.svg';
-import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
+import { getResourceKey } from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import link from 'lib/link/link';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 
+import useFetchTokens from '../utils/useFetchTokens';
 import TokenSelectDesktop from './TokenSelectDesktop';
 import TokenSelectMobile from './TokenSelectMobile';
 
@@ -32,12 +34,9 @@ const TokenSelect = ({ onClick }: Props) => {
 
   const addressQueryData = queryClient.getQueryData<Address>(addressResourceKey);
 
-  const { data, isError, isLoading, refetch } = useApiQuery('address_token_balances', {
-    pathParams: { id: addressQueryData?.hash },
-    queryOptions: { enabled: Boolean(addressQueryData) },
-  });
-  const balancesResourceKey = getResourceKey('address_token_balances', { pathParams: { id: addressQueryData?.hash } });
-  const balancesIsFetching = useIsFetching({ queryKey: balancesResourceKey });
+  const { data, isError, isLoading, refetch } = useFetchTokens({ hash: addressQueryData?.hash });
+  const tokensResourceKey = getResourceKey('address_tokens', { pathParams: { id: addressQueryData?.hash }, queryParams: { type: 'ERC-20' } });
+  const tokensIsFetching = useIsFetching({ queryKey: tokensResourceKey });
 
   const handleTokenBalanceMessage: SocketMessage.AddressTokenBalance['handler'] = React.useCallback((payload) => {
     if (payload.block_number !== blockNumber) {
@@ -71,15 +70,16 @@ const TokenSelect = ({ onClick }: Props) => {
     return <Skeleton h={ 8 } w="160px"/>;
   }
 
-  if (isError || data.length === 0) {
+  const hasTokens = _sumBy(Object.values(data), ({ items }) => items.length) > 0;
+  if (isError || !hasTokens) {
     return <Box py="6px">0</Box>;
   }
 
   return (
     <Flex columnGap={ 3 } mt={{ base: '6px', lg: 0 }}>
       { isMobile ?
-        <TokenSelectMobile data={ data } isLoading={ balancesIsFetching === 1 }/> :
-        <TokenSelectDesktop data={ data } isLoading={ balancesIsFetching === 1 }/>
+        <TokenSelectMobile data={ data } isLoading={ tokensIsFetching === 1 }/> :
+        <TokenSelectDesktop data={ data } isLoading={ tokensIsFetching === 1 }/>
       }
       <Tooltip label="Show all tokens">
         <Box>

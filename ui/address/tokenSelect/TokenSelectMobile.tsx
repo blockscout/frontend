@@ -1,14 +1,14 @@
 import { useDisclosure, Modal, ModalContent, ModalCloseButton } from '@chakra-ui/react';
 import React from 'react';
 
-import type { AddressTokenBalance } from 'types/api/address';
+import type { FormattedData } from './types';
 
 import TokenSelectButton from './TokenSelectButton';
 import TokenSelectMenu from './TokenSelectMenu';
 import useTokenSelect from './useTokenSelect';
 
 interface Props {
-  data: Array<AddressTokenBalance>;
+  data: FormattedData;
   isLoading: boolean;
 }
 
@@ -18,7 +18,7 @@ const TokenSelectMobile = ({ data, isLoading }: Props) => {
 
   return (
     <>
-      <TokenSelectButton isOpen={ isOpen } onClick={ onToggle } data={ result.modifiedData } isLoading={ isLoading }/>
+      <TokenSelectButton isOpen={ isOpen } onClick={ onToggle } data={ result.data } isLoading={ isLoading }/>
       <Modal isOpen={ isOpen } onClose={ onClose } size="full">
         <ModalContent>
           <ModalCloseButton/>

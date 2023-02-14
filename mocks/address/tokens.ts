@@ -80,20 +80,26 @@ export const erc1155LongId: AddressTokenBalance = {
   value: '42',
 };
 
-export const baseList = [
-  erc20a,
-  erc20b,
-  erc20c,
-  erc721a,
-  erc721b,
-  erc721c,
-  erc1155withoutName,
-  erc1155a,
-  erc1155b,
-];
+export const erc20List = {
+  items: [
+    erc20a,
+    erc20b,
+    erc20c,
+  ],
+};
 
-export const longValuesList = [
-  erc20LongSymbol,
-  erc721LongSymbol,
-  erc1155LongId,
-];
+export const erc721List = {
+  items: [
+    erc721a,
+    erc721b,
+    erc721c,
+  ],
+};
+
+export const erc1155List = {
+  items: [
+    erc1155withoutName,
+    erc1155a,
+    erc1155b,
+  ],
+};

@@ -7,10 +7,10 @@ import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import TokenLogo from 'ui/shared/TokenLogo';
 
-import type { EnhancedData } from '../utils/tokenUtils';
+import type { TokenEnhancedData } from '../utils/tokenUtils';
 
 interface Props {
-  data: EnhancedData;
+  data: TokenEnhancedData;
 }
 
 const TokenSelectItem = ({ data }: Props) => {

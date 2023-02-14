@@ -3,7 +3,7 @@ import { test as base, expect, devices } from '@playwright/experimental-ct-react
 import React from 'react';
 
 import * as coinBalanceMock from 'mocks/address/coinBalanceHistory';
-import * as tokenBalanceMock from 'mocks/address/tokenBalance';
+import * as tokensMock from 'mocks/address/tokens';
 import * as socketServer from 'playwright/fixtures/socketServer';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
@@ -12,7 +12,9 @@ import MockAddressPage from 'ui/address/testUtils/MockAddressPage';
 import TokenSelect from './TokenSelect';
 
 const ASSET_URL = 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/poa/assets/0xb2a90505dc6680a7a695f7975d0d32EeF610f456/logo.png';
-const TOKENS_API_URL = buildApiUrl('address_token_balances', { id: '1' });
+const TOKENS_ERC20_API_URL = buildApiUrl('address_tokens', { id: '1' }) + '?type=ERC-20';
+const TOKENS_ERC721_API_URL = buildApiUrl('address_tokens', { id: '1' }) + '?type=ERC-721';
+const TOKENS_ER1155_API_URL = buildApiUrl('address_tokens', { id: '1' }) + '?type=ERC-1155';
 const ADDRESS_API_URL = buildApiUrl('address', { id: '1' });
 const hooksConfig = {
   router: {
@@ -33,9 +35,17 @@ const test = base.extend({
       status: 200,
       body: JSON.stringify({ hash: '1' }),
     }), { times: 1 });
-    await page.route(TOKENS_API_URL, async(route) => route.fulfill({
+    await page.route(TOKENS_ERC20_API_URL, async(route) => route.fulfill({
       status: 200,
-      body: JSON.stringify(tokenBalanceMock.baseList),
+      body: JSON.stringify(tokensMock.erc20List),
+    }), { times: 1 });
+    await page.route(TOKENS_ERC721_API_URL, async(route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify(tokensMock.erc721List),
+    }), { times: 1 });
+    await page.route(TOKENS_ER1155_API_URL, async(route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify(tokensMock.erc1155List),
     }), { times: 1 });
 
     use(page);
@@ -137,9 +147,17 @@ base('long values', async({ mount, page }) => {
     status: 200,
     body: JSON.stringify({ hash: '1' }),
   }), { times: 1 });
-  await page.route(TOKENS_API_URL, async(route) => route.fulfill({
+  await page.route(TOKENS_ERC20_API_URL, async(route) => route.fulfill({
     status: 200,
-    body: JSON.stringify(tokenBalanceMock.longValuesList),
+    body: JSON.stringify({ items: [ tokensMock.erc20LongSymbol ] }),
+  }), { times: 1 });
+  await page.route(TOKENS_ERC721_API_URL, async(route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify({ items: [ tokensMock.erc721LongSymbol ] }),
+  }), { times: 1 });
+  await page.route(TOKENS_ER1155_API_URL, async(route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify({ items: [ tokensMock.erc1155LongId ] }),
   }), { times: 1 });
 
   await mount(
@@ -175,13 +193,15 @@ test.describe('socket', () => {
       { hooksConfig },
     );
 
-    await page.route(TOKENS_API_URL, (route) => route.fulfill({
+    await page.route(TOKENS_ERC20_API_URL, async(route) => route.fulfill({
       status: 200,
-      body: JSON.stringify([
-        ...tokenBalanceMock.baseList,
-        tokenBalanceMock.erc20d,
-      ]),
-    }));
+      body: JSON.stringify({
+        items: [
+          ...tokensMock.erc20List.items,
+          tokensMock.erc20d,
+        ],
+      }),
+    }), { times: 1 });
 
     const socket = await createSocket();
     const channel = await socketServer.joinChannel(socket, 'addresses:1');
@@ -206,13 +226,15 @@ test.describe('socket', () => {
       { hooksConfig },
     );
 
-    await page.route(TOKENS_API_URL, (route) => route.fulfill({
+    await page.route(TOKENS_ERC20_API_URL, async(route) => route.fulfill({
       status: 200,
-      body: JSON.stringify([
-        ...tokenBalanceMock.baseList,
-        tokenBalanceMock.erc20d,
-      ]),
-    }));
+      body: JSON.stringify({
+        items: [
+          ...tokensMock.erc20List.items,
+          tokensMock.erc20d,
+        ],
+      }),
+    }), { times: 1 });
 
     const socket = await createSocket();
     const channel = await socketServer.joinChannel(socket, 'addresses:1');
