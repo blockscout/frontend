@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js';
 import fpAdd from 'lodash/fp/add';
 
 import type { AddressTokenBalance } from 'types/api/address';
-import type { TokenType } from 'types/api/tokenInfo';
+import type { TokenType } from 'types/api/token';
 
 import sumBnReducer from 'lib/bigint/sumBnReducer';
 import { ZERO } from 'lib/consts';

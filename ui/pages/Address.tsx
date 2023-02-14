@@ -2,7 +2,7 @@ import { Flex, Skeleton, Tag, Box, Icon } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { TokenType } from 'types/api/tokenInfo';
+import type { TokenType } from 'types/api/token';
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
 import iconSuccess from 'icons/status/success.svg';

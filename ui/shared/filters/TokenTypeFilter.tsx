@@ -1,7 +1,7 @@
 import { CheckboxGroup, Checkbox, Text } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenType } from 'types/api/tokenInfo';
+import type { TokenType } from 'types/api/token';
 
 import TOKEN_TYPE from 'lib/token/tokenTypes';
 

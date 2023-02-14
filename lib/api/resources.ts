@@ -16,14 +16,14 @@ import type {
 import type { AddressesResponse } from 'types/api/addresses';
 import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters } from 'types/api/block';
 import type { ChartMarketResponse, ChartTransactionResponse } from 'types/api/charts';
-import type { SmartContract, SmartContractReadMethod, SmartContractWriteMethod } from 'types/api/contract';
+import type { SmartContract, SmartContractReadMethod, SmartContractWriteMethod, SmartContractVerificationConfig } from 'types/api/contract';
 import type { IndexingStatus } from 'types/api/indexingStatus';
 import type { InternalTransactionsResponse } from 'types/api/internalTransaction';
 import type { LogsResponseTx, LogsResponseAddress } from 'types/api/log';
 import type { RawTracesResponse } from 'types/api/rawTrace';
 import type { SearchResult, SearchResultFilters } from 'types/api/search';
 import type { Counters, StatsCharts, StatsChart, HomeStats } from 'types/api/stats';
-import type { TokenCounters, TokenInfo, TokenHolders } from 'types/api/tokenInfo';
+import type { TokenCounters, TokenInfo, TokenHolders, TokenInventoryResponse, TokenInstance, TokenInstanceTransfersCount } from 'types/api/token';
 import type { TokensResponse, TokensFilters } from 'types/api/tokens';
 import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
 import type { TransactionsResponseValidated, TransactionsResponsePending, Transaction } from 'types/api/transaction';
@@ -212,6 +212,12 @@ export const RESOURCES = {
   contract_methods_write_proxy: {
     path: '/api/v2/smart-contracts/:id/methods-write-proxy',
   },
+  contract_verification_config: {
+    path: '/api/v2/smart-contracts/verification/config',
+  },
+  contract_verification_via: {
+    path: '/api/v2/smart-contracts/:id/verification/via/:method',
+  },
 
   // TOKEN
   token: {
@@ -230,10 +236,23 @@ export const RESOURCES = {
     paginationFields: [ 'block_number' as const, 'items_count' as const, 'index' as const ],
     filterFields: [],
   },
+  token_inventory: {
+    path: '/api/v2/tokens/:hash/instances',
+    paginationFields: [ 'unique_token' as const ],
+    filterFields: [],
+  },
   tokens: {
     path: '/api/v2/tokens',
     paginationFields: [ 'holder_count' as const, 'items_count' as const, 'name' as const ],
     filterFields: [ 'filter' as const, 'type' as const ],
+  },
+
+  // TOKEN INSTANCE
+  token_instance: {
+    path: '/api/v2/tokens/:hash/instances/:id',
+  },
+  token_instance_transfers_count: {
+    path: '/api/v2/tokens/:hash/instances/:id/transfers-count',
   },
 
   // HOMEPAGE
@@ -309,7 +328,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'address_txs' | 'address_internal_txs' | 'address_token_transfers' | 'address_blocks_validated' | 'address_coin_balance' |
 'search' |
 'address_logs' | 'address_tokens' |
-'token_transfers' | 'token_holders' | 'tokens';
+'token_transfers' | 'token_holders' | 'token_inventory' | 'tokens';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
 
@@ -356,6 +375,9 @@ Q extends 'token' ? TokenInfo :
 Q extends 'token_counters' ? TokenCounters :
 Q extends 'token_transfers' ? TokenTransferResponse :
 Q extends 'token_holders' ? TokenHolders :
+Q extends 'token_instance' ? TokenInstance :
+Q extends 'token_instance_transfers_count' ? TokenInstanceTransfersCount :
+Q extends 'token_inventory' ? TokenInventoryResponse :
 Q extends 'tokens' ? TokensResponse :
 Q extends 'search' ? SearchResult :
 Q extends 'contract' ? SmartContract :
@@ -364,6 +386,7 @@ Q extends 'contract_methods_read_proxy' ? Array<SmartContractReadMethod> :
 Q extends 'contract_methods_write' ? Array<SmartContractWriteMethod> :
 Q extends 'contract_methods_write_proxy' ? Array<SmartContractWriteMethod> :
 Q extends 'visualize_sol2uml' ? VisualizedContract :
+Q extends 'contract_verification_config' ? SmartContractVerificationConfig :
 never;
 /* eslint-enable @typescript-eslint/indent */
 

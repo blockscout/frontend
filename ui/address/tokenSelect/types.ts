@@ -1,4 +1,4 @@
-import type { TokenType } from 'types/api/tokenInfo';
+import type { TokenType } from 'types/api/token';
 
 import type { TokenEnhancedData } from 'ui/address/utils/tokenUtils';
 

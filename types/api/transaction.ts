@@ -3,6 +3,7 @@ import type { BlockTransactionsResponse } from './block';
 import type { DecodedInput } from './decodedInput';
 import type { Fee } from './fee';
 import type { TokenTransfer } from './tokenTransfer';
+import type { TxAction } from './txAction';
 
 export type TransactionRevertReason = {
   raw: string;
@@ -48,6 +49,7 @@ export type Transaction = (
   method: string | null;
   tx_types: Array<TransactionType>;
   tx_tag: string | null;
+  actions: Array<TxAction>;
 }
 
 export type TransactionsResponse = TransactionsResponseValidated | TransactionsResponsePending;

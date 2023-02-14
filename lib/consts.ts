@@ -12,3 +12,6 @@ export const DAY = 24 * HOUR;
 export const WEEK = 7 * DAY;
 export const MONTH = 30 * DAY;
 export const YEAR = 365 * DAY;
+
+export const Kb = 1_000;
+export const Mb = 1_000 * Kb;

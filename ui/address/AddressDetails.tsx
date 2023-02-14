@@ -9,25 +9,19 @@ import appConfig from 'configs/app/config';
 import blockIcon from 'icons/block.svg';
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import link from 'lib/link/link';
 import AddressCounterItem from 'ui/address/details/AddressCounterItem';
-import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import AddressHeadingInfo from 'ui/shared/AddressHeadingInfo';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import HashStringShorten from 'ui/shared/HashStringShorten';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
 
-import AddressAddToMetaMask from './details/AddressAddToMetaMask';
 import AddressBalance from './details/AddressBalance';
 import AddressDetailsSkeleton from './details/AddressDetailsSkeleton';
-import AddressFavoriteButton from './details/AddressFavoriteButton';
 import AddressNameInfo from './details/AddressNameInfo';
-import AddressQrCode from './details/AddressQrCode';
 import TokenSelect from './tokenSelect/TokenSelect';
 
 interface Props {
@@ -37,7 +31,6 @@ interface Props {
 
 const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
   const router = useRouter();
-  const isMobile = useIsMobile();
 
   const addressHash = router.query.id?.toString();
 
@@ -92,18 +85,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
 
   return (
     <Box>
-      <Flex alignItems="center">
-        <AddressIcon address={ data }/>
-        <Text ml={ 2 } fontFamily="heading" fontWeight={ 500 }>
-          { isMobile ? <HashStringShorten hash={ data.hash }/> : data.hash }
-        </Text>
-        <CopyToClipboard text={ data.hash }/>
-        { data.is_contract && data.token && <AddressAddToMetaMask ml={ 2 } token={ data.token }/> }
-        { !data.is_contract && (
-          <AddressFavoriteButton hash={ data.hash } isAdded={ Boolean(data.watchlist_names?.length) } ml={ 3 }/>
-        ) }
-        <AddressQrCode hash={ data.hash } ml={ 2 }/>
-      </Flex>
+      <AddressHeadingInfo address={ data } token={ data.token } isLinkDisabled/>
       { explorers.length > 0 && (
         <Flex mt={ 8 } columnGap={ 4 } flexWrap="wrap">
           <Text fontSize="sm">Verify with other explorers</Text>

@@ -60,7 +60,11 @@ export default function useSocketChannel({ topic, params, isDisabled, onJoin, on
     } else {
       ch = socket.channel(topic);
       CHANNEL_REGISTRY[topic] = ch;
-      ch.join().receive('ok', (message) => onJoinRef.current?.(ch, message));
+      ch.join()
+        .receive('ok', (message) => onJoinRef.current?.(ch, message))
+        .receive('error', () => {
+          onSocketError?.();
+        });
     }
 
     setChannel(ch);
@@ -70,7 +74,7 @@ export default function useSocketChannel({ topic, params, isDisabled, onJoin, on
       delete CHANNEL_REGISTRY[topic];
       setChannel(undefined);
     };
-  }, [ socket, topic, params, isDisabled ]);
+  }, [ socket, topic, params, isDisabled, onSocketError ]);
 
   return channel;
 }
