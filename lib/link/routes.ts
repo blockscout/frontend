@@ -11,30 +11,31 @@ export type RouteName = keyof typeof ROUTES;
 
 export const ROUTES = {
   // NETWORK MAIN PAGE
+  // todo_tom need full url builder
   network_index: {
     pattern: PATHS.network_index,
     crossNetworkNavigation: true,
   },
 
   // ACCOUNT
-  watchlist: {
-    pattern: PATHS.watchlist,
-  },
-  private_tags: {
-    pattern: PATHS.private_tags,
-  },
-  public_tags: {
-    pattern: PATHS.public_tags,
-  },
-  api_keys: {
-    pattern: PATHS.api_keys,
-  },
-  custom_abi: {
-    pattern: PATHS.custom_abi,
-  },
-  profile: {
-    pattern: PATHS.profile,
-  },
+  // watchlist: {
+  //   pattern: PATHS.watchlist,
+  // },
+  // private_tags: {
+  //   pattern: PATHS.private_tags,
+  // },
+  // public_tags: {
+  //   pattern: PATHS.public_tags,
+  // },
+  // api_keys: {
+  //   pattern: PATHS.api_keys,
+  // },
+  // custom_abi: {
+  //   pattern: PATHS.custom_abi,
+  // },
+  // profile: {
+  //   pattern: PATHS.profile,
+  // },
 
   // TRANSACTIONS
   txs: {
