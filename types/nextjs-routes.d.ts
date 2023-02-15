@@ -18,6 +18,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/api/proxy">
     | DynamicRoute<"/apps/[id]", { "id": string }>
     | StaticRoute<"/apps">
+    | StaticRoute<"/auth">
     | StaticRoute<"/auth/profile">
     | DynamicRoute<"/block/[height]", { "height": string }>
     | StaticRoute<"/blocks">

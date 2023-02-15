@@ -11,11 +11,10 @@ export type RouteName = keyof typeof ROUTES;
 
 export const ROUTES = {
   // NETWORK MAIN PAGE
-  // todo_tom need full url builder
-  network_index: {
-    pattern: PATHS.network_index,
-    crossNetworkNavigation: true,
-  },
+  // network_index: {
+  //   pattern: PATHS.network_index,
+  //   crossNetworkNavigation: true,
+  // },
 
   // ACCOUNT
   // watchlist: {
@@ -43,10 +42,9 @@ export const ROUTES = {
   //   crossNetworkNavigation: true,
   // },
 
-  // todo_tom need full url builder
-  tx: {
-    pattern: PATHS.tx,
-  },
+  // tx: {
+  //   pattern: PATHS.tx,
+  // },
 
   // BLOCKS
   // blocks: {
@@ -113,9 +111,10 @@ export const ROUTES = {
   },
 
   // AUTH
-  auth: {
-    pattern: PATHS.auth,
-  },
+  // todo_tom need add page to the app
+  // auth: {
+  //   pattern: PATHS.auth,
+  // },
 };
 
 // !!! for development purpose only !!!

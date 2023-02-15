@@ -1,10 +1,10 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
+import { route } from 'nextjs-routes';
 
 import appConfig from 'configs/app/config';
 import { NAMES } from 'lib/cookies';
 import getCspPolicy from 'lib/csp/getCspPolicy';
-import link from 'lib/link/link';
 
 const cspPolicy = getCspPolicy();
 
@@ -22,7 +22,7 @@ export function middleware(req: NextRequest) {
   const apiToken = req.cookies.get(NAMES.API_TOKEN);
 
   if ((isAccountRoute || isProfileRoute) && !apiToken && appConfig.isAccountSupported) {
-    const authUrl = link('auth', undefined, { path: req.nextUrl.pathname });
+    const authUrl = appConfig.authUrl + route({ pathname: '/auth', query: { path: req.nextUrl.pathname } });
     return NextResponse.redirect(authUrl);
   }
 

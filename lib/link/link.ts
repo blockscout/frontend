@@ -28,7 +28,8 @@ export default function link(
 
     return paramValue ? `/${ paramValue }` : '';
   });
-  const baseUrl = routeName === 'auth' ? appConfig.authUrl : appConfig.baseUrl;
+  // const baseUrl = routeName === 'auth' ? appConfig.authUrl : appConfig.baseUrl;
+  const baseUrl = appConfig.baseUrl;
 
   const url = new URL(path, baseUrl);
 

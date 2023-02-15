@@ -1,8 +1,9 @@
 import { useRouter } from 'next/router';
+import { route } from 'nextjs-routes';
 
-import link from 'lib/link/link';
+import appConfig from 'configs/app/config';
 
 export default function useLoginUrl() {
   const router = useRouter();
-  return link('auth', {}, { path: router.asPath });
+  return appConfig.authUrl + route({ pathname: '/auth', query: { path: router.asPath } });
 }
