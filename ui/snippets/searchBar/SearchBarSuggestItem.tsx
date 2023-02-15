@@ -23,7 +23,7 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm }: Props) => {
   const url = (() => {
     switch (data.type) {
       case 'token': {
-        return link('token_index', { hash: data.address });
+        return route({ pathname: '/token/[hash]', query: { hash: data.address } });
       }
       case 'contract':
       case 'address': {

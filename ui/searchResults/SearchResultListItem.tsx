@@ -7,7 +7,6 @@ import type { SearchResultItem } from 'types/api/search';
 import blockIcon from 'icons/block.svg';
 import txIcon from 'icons/transactions.svg';
 import highlightText from 'lib/highlightText';
-import link from 'lib/link/link';
 import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
@@ -32,7 +31,7 @@ const SearchResultListItem = ({ data, searchTerm }: Props) => {
         return (
           <Flex alignItems="flex-start">
             <TokenLogo boxSize={ 6 } hash={ data.address } name={ data.name } flexShrink={ 0 }/>
-            <LinkInternal ml={ 2 } href={ link('token_index', { hash: data.address }) } fontWeight={ 700 } wordBreak="break-all">
+            <LinkInternal ml={ 2 } href={ route({ pathname: '/token/[hash]', query: { hash: data.address } }) } fontWeight={ 700 } wordBreak="break-all">
               <chakra.span dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}/>
             </LinkInternal>
           </Flex>

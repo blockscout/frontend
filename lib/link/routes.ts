@@ -58,14 +58,14 @@ export const ROUTES = {
   // },
 
   // TOKENS
-  tokens: {
-    pattern: PATHS.tokens,
-    crossNetworkNavigation: true,
-  },
-  token_index: {
-    pattern: PATHS.token_index,
-    crossNetworkNavigation: true,
-  },
+  // tokens: {
+  //   pattern: PATHS.tokens,
+  //   crossNetworkNavigation: true,
+  // },
+  // token_index: {
+  //   pattern: PATHS.token_index,
+  //   crossNetworkNavigation: true,
+  // },
   token_instance_item: {
     pattern: PATHS.token_instance_item,
   },
@@ -81,32 +81,32 @@ export const ROUTES = {
   },
 
   // ACCOUNTS
-  accounts: {
-    pattern: PATHS.accounts,
-    crossNetworkNavigation: true,
-  },
+  // accounts: {
+  //   pattern: PATHS.accounts,
+  //   crossNetworkNavigation: true,
+  // },
 
   // APPS
-  apps: {
-    pattern: PATHS.apps,
-  },
-  app_index: {
-    pattern: PATHS.app_index,
-  },
+  // apps: {
+  //   pattern: PATHS.apps,
+  // },
+  // app_index: {
+  //   pattern: PATHS.app_index,
+  // },
 
-  stats: {
-    pattern: PATHS.stats,
-  },
+  // stats: {
+  //   pattern: PATHS.stats,
+  // },
 
   // SEARCH
-  search_results: {
-    pattern: PATHS.search_results,
-  },
+  // search_results: {
+  //   pattern: PATHS.search_results,
+  // },
 
   // VISUALIZE
-  visualize_sol2uml: {
-    pattern: PATHS.visualize_sol2uml,
-  },
+  // visualize_sol2uml: {
+  //   pattern: PATHS.visualize_sol2uml,
+  // },
 
   csv_export: {
     pattern: PATHS.csv_export,

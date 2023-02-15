@@ -1,8 +1,8 @@
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { Address } from 'types/api/address';
 
-import link from 'lib/link/link';
 import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import LinkInternal from 'ui/shared/LinkInternal';
@@ -19,7 +19,7 @@ const AddressNameInfo = ({ data }: Props) => {
         title="Token name"
         hint="Token name and symbol"
       >
-        <LinkInternal href={ link('token_index', { hash: data.token.address }) }>
+        <LinkInternal href={ route({ pathname: '/token/[hash]', query: { hash: data.token.address } }) }>
           { data.token.name }{ symbol }
         </LinkInternal>
       </DetailsInfoItem>
