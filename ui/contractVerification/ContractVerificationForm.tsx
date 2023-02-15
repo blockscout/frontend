@@ -108,7 +108,10 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
       variant: 'subtle',
       isClosable: true,
     });
-  }, [ formState.isSubmitting, toast ]);
+  // callback should not change when form is submitted
+  // otherwise it will resubscribe to channel, but we don't want that since in that case we might miss verification result message
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ toast ]);
 
   const channel = useSocketChannel({
     topic: `addresses:${ hash.toLowerCase() }`,

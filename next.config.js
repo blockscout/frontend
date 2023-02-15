@@ -31,6 +31,11 @@ const moduleExports = {
   redirects,
   headers,
   output: 'standalone',
+  api: {
+    // disable body parser since we use next.js api only for local development and as a proxy
+    // otherwise it is impossible to upload large files (over 1Mb)
+    bodyParser: false,
+  },
 };
 
 module.exports = moduleExports;
