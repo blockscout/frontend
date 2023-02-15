@@ -30,7 +30,7 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm }: Props) => {
         return link('address_index', { id: data.address });
       }
       case 'transaction': {
-        return link('tx', { id: data.tx_hash });
+        return route({ pathname: '/tx/[hash]', query: { hash: data.tx_hash } });
       }
       case 'block': {
         return route({ pathname: '/block/[height]', query: { height: String(data.block_number) } });

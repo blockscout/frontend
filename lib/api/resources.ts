@@ -115,25 +115,25 @@ export const RESOURCES = {
     filterFields: [ 'filter' as const, 'type' as const, 'method' as const ],
   },
   tx: {
-    path: '/api/v2/transactions/:id',
+    path: '/api/v2/transactions/:hash',
   },
   tx_internal_txs: {
-    path: '/api/v2/transactions/:id/internal-transactions',
+    path: '/api/v2/transactions/:hash/internal-transactions',
     paginationFields: [ 'block_number' as const, 'items_count' as const, 'transaction_hash' as const, 'index' as const, 'transaction_index' as const ],
     filterFields: [ ],
   },
   tx_logs: {
-    path: '/api/v2/transactions/:id/logs',
+    path: '/api/v2/transactions/:hash/logs',
     paginationFields: [ 'items_count' as const, 'transaction_hash' as const, 'index' as const ],
     filterFields: [ ],
   },
   tx_token_transfers: {
-    path: '/api/v2/transactions/:id/token-transfers',
+    path: '/api/v2/transactions/:hash/token-transfers',
     paginationFields: [ 'block_number' as const, 'items_count' as const, 'transaction_hash' as const, 'index' as const ],
     filterFields: [ 'type' as const ],
   },
   tx_raw_trace: {
-    path: '/api/v2/transactions/:id/raw-trace',
+    path: '/api/v2/transactions/:hash/raw-trace',
   },
 
   // ADDRESSES

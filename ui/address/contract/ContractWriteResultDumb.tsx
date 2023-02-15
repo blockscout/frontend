@@ -1,9 +1,9 @@
 import { Box, chakra, Spinner } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { ContractMethodWriteResult } from './types';
 
-import link from 'lib/link/link';
 import LinkInternal from 'ui/shared/LinkInternal';
 
 interface Props {
@@ -30,9 +30,9 @@ const ContractWriteResultDumb = ({ result, onSettle, txInfo }: Props) => {
 
   const isErrorResult = 'message' in result;
 
-  const txLink = (
-    <LinkInternal href={ link('tx', { id: txHash }) }>View transaction details</LinkInternal>
-  );
+  const txLink = txHash ? (
+    <LinkInternal href={ route({ pathname: '/tx/[hash]', query: { hash: txHash } }) }>View transaction details</LinkInternal>
+  ) : null;
 
   const content = (() => {
     if (isErrorResult) {

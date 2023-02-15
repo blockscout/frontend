@@ -76,7 +76,7 @@ const TxInternals = () => {
   const txInfo = useFetchTxInfo({ updateDelay: 5 * SECOND });
   const { data, isLoading, isError, pagination, isPaginationVisible } = useQueryWithPages({
     resourceName: 'tx_internal_txs',
-    pathParams: { id: txInfo.data?.hash },
+    pathParams: { hash: txInfo.data?.hash },
     options: {
       enabled: Boolean(txInfo.data?.hash) && Boolean(txInfo.data?.status),
     },

@@ -45,7 +45,7 @@ const AddressLink = (props: Props) => {
 
   let url;
   if (type === 'transaction') {
-    url = link('tx', { id: hash });
+    url = route({ pathname: '/tx/[hash]', query: { hash } });
   } else if (type === 'token') {
     url = link('token_index', { hash: hash });
   } else if (type === 'block') {

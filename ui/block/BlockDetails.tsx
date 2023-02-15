@@ -117,7 +117,7 @@ const BlockDetails = () => {
         title="Transactions"
         hint="The number of transactions in the block."
       >
-        <LinkInternal href={ route({ pathname: '/block/[height]', query: { height: router.query.height?.toString() || '', tab: 'txs' } }) }>
+        <LinkInternal href={ route({ pathname: '/block/[height]', query: { height, tab: 'txs' } }) }>
           { data.tx_count } transactions
         </LinkInternal>
       </DetailsInfoItem>

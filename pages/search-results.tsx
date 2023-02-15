@@ -50,7 +50,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async({ req, res, r
           return link('address_index', { id: payload.parameter || q });
         }
         case 'transaction': {
-          return link('tx', { id: q });
+          return route({ pathname: '/tx/[hash]', query: { hash: q } });
         }
       }
     })();

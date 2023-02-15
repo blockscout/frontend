@@ -9,6 +9,7 @@ import type { Transaction } from 'types/api/transaction';
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import delay from 'lib/delay';
+import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 
@@ -25,11 +26,12 @@ export default function useFetchTxInfo({ onTxStatusUpdate, updateDelay }: Params
   const router = useRouter();
   const queryClient = useQueryClient();
   const [ socketStatus, setSocketStatus ] = React.useState<'close' | 'error'>();
+  const hash = getQueryParamString(router.query.hash);
 
   const queryResult = useApiQuery<'tx', { status: number }>('tx', {
-    pathParams: { id: router.query.id?.toString() },
+    pathParams: { hash },
     queryOptions: {
-      enabled: Boolean(router.query.id),
+      enabled: Boolean(hash),
       refetchOnMount: false,
     },
   });
@@ -38,10 +40,10 @@ export default function useFetchTxInfo({ onTxStatusUpdate, updateDelay }: Params
   const handleStatusUpdateMessage: SocketMessage.TxStatusUpdate['handler'] = React.useCallback(async() => {
     updateDelay && await delay(updateDelay);
     queryClient.invalidateQueries({
-      queryKey: getResourceKey('tx', { pathParams: { id: router.query.id?.toString() } }),
+      queryKey: getResourceKey('tx', { pathParams: { hash } }),
     });
     onTxStatusUpdate?.();
-  }, [ onTxStatusUpdate, queryClient, router.query.id, updateDelay ]);
+  }, [ onTxStatusUpdate, queryClient, hash, updateDelay ]);
 
   const handleSocketClose = React.useCallback(() => {
     setSocketStatus('close');
@@ -52,7 +54,7 @@ export default function useFetchTxInfo({ onTxStatusUpdate, updateDelay }: Params
   }, []);
 
   const channel = useSocketChannel({
-    topic: `transactions:${ router.query.id }`,
+    topic: `transactions:${ hash }`,
     onSocketClose: handleSocketClose,
     onSocketError: handleSocketError,
     isDisabled: isLoading || isError || data.status !== null,

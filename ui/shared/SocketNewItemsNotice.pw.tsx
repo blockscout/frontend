@@ -1,14 +1,13 @@
 import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
-import { ROUTES } from 'lib/link/routes';
 import TestApp from 'playwright/TestApp';
 
 import SocketNewItemsNotice from './SocketNewItemsNotice';
 
 const hooksConfig = {
   router: {
-    pathname: ROUTES.txs.pattern,
+    pathname: '/tx/[hash]',
     query: {},
   },
 };

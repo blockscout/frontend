@@ -38,10 +38,12 @@ export const ROUTES = {
   // },
 
   // TRANSACTIONS
-  txs: {
-    pattern: PATHS.txs,
-    crossNetworkNavigation: true,
-  },
+  // txs: {
+  //   pattern: PATHS.txs,
+  //   crossNetworkNavigation: true,
+  // },
+
+  // todo_tom need full url builder
   tx: {
     pattern: PATHS.tx,
   },
