@@ -58,4 +58,16 @@ test.describe('auth', () => {
     await component.locator('svg[aria-label="Menu button"]').click();
     await expect(page).toHaveScreenshot();
   });
+
+  extendedTest('submenu', async({ mount, page }) => {
+    const component = await mount(
+      <TestApp>
+        <Burger/>
+      </TestApp>,
+    );
+
+    await component.locator('svg[aria-label="Menu button"]').click();
+    await page.locator('div[aria-label="Blockchain link group"]').click();
+    await expect(page).toHaveScreenshot();
+  });
 });

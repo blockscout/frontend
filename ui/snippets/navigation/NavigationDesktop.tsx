@@ -12,7 +12,7 @@ import NetworkMenu from 'ui/snippets/networkMenu/NetworkMenu';
 
 import NavFooter from './NavFooter';
 import NavLink from './NavLink';
-import NavLinkGroup from './NavLinkGroup';
+import NavLinkGroupDesktop from './NavLinkGroupDesktop';
 
 const NavigationDesktop = () => {
   const appProps = useAppContext();
@@ -81,7 +81,7 @@ const NavigationDesktop = () => {
         <VStack as="ul" spacing="1" alignItems="flex-start">
           { mainNavItems.map((item) => {
             if (item.subItems) {
-              return <NavLinkGroup key={ item.text } { ...item } isCollapsed={ isCollapsed }/>;
+              return <NavLinkGroupDesktop key={ item.text } { ...item } isCollapsed={ isCollapsed }/>;
             } else {
               return <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed }/>;
             }

@@ -70,7 +70,7 @@ test('with tooltips +@desktop-xl -@default', async({ mount, page }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('with submenu +@desktop-xl', async({ mount, page }) => {
+test('with submenu +@desktop-xl +@dark-mode', async({ mount, page }) => {
   const component = await mount(
     <TestApp>
       <Flex w="100%" minH="100vh" alignItems="stretch">
