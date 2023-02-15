@@ -154,6 +154,14 @@ blockscout:
       _default: '[{"title": "Marketplace", "url": "/apps", "embedded?": true}]'
     SESSION_COOKIE_DOMAIN:
       _default: blockscout-main.test.aws-k8s.blockscout.com
+    FIRST_BLOCK:
+      _default: '8446041'
+    LAST_BLOCK:
+      _default: '8446041'
+    TRACE_FIRST_BLOCK:
+      _default: '8446041'
+    TRACE_LAST_BLOCK:
+      _default: '8446041'
 
 postgres:
   enabled: true
