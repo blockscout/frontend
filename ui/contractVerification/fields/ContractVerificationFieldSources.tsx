@@ -91,7 +91,7 @@ const ContractVerificationFieldSources = ({ fileTypes, multiple, title, hint }: 
               rowGap={ 2 }
               w="100%"
             >
-              <DragAndDropArea onDrop={ onChange } p={{ base: 3, lg: 6 }}>
+              <DragAndDropArea onDrop={ onChange } p={{ base: 3, lg: 6 }} isDisabled={ formState.isSubmitting }>
                 { hasValue ? renderFiles(field.value) : renderUploadButton() }
               </DragAndDropArea>
             </Flex>
@@ -100,7 +100,7 @@ const ContractVerificationFieldSources = ({ fileTypes, multiple, title, hint }: 
         { commonError?.message && <FieldError message={ commonError.type === 'required' ? 'Field is required' : commonError.message }/> }
       </>
     );
-  }, [ fileTypes, multiple, renderFiles, commonError, renderUploadButton ]);
+  }, [ fileTypes, multiple, commonError, formState.isSubmitting, renderFiles, renderUploadButton ]);
 
   const validateFileType = React.useCallback(async(value: FieldPathValue<FormFields, 'sources'>): Promise<ValidateResult> => {
     if (Array.isArray(value)) {
