@@ -9,7 +9,7 @@ import buildApiUrl from 'playwright/utils/buildApiUrl';
 import AddressTokenTransfers from './AddressTokenTransfers';
 
 const API_URL = buildApiUrl('address_token_transfers', { hash: '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859' }) +
- '?token_hash=0x1189a607CEac2f0E14867de4EB15b15C9FFB5859';
+ '?token=0x1189a607CEac2f0E14867de4EB15b15C9FFB5859';
 
 const hooksConfig = {
   router: {
