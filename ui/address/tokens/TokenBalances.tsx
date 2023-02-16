@@ -15,10 +15,10 @@ import TokenBalancesItem from './TokenBalancesItem';
 const TokenBalances = () => {
   const router = useRouter();
 
-  const hash = router.query.id?.toString();
+  const hash = router.query.hash?.toString();
 
   const addressQuery = useApiQuery('address', {
-    pathParams: { id: hash },
+    pathParams: { hash },
     queryOptions: { enabled: Boolean(hash) },
   });
 

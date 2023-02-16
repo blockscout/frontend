@@ -1,10 +1,10 @@
 import { Box, Button, Heading, Icon, Text, chakra } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import icon404 from 'icons/error-pages/404.svg';
 import icon422 from 'icons/error-pages/422.svg';
 import icon500 from 'icons/error-pages/500.svg';
-import link from 'lib/link/link';
 
 interface Props {
   statusCode: number;
@@ -42,7 +42,7 @@ const AppError = ({ statusCode, className }: Props) => {
         size="lg"
         variant="outline"
         as="a"
-        href={ link('network_index') }
+        href={ route({ pathname: '/' }) }
       >
         Back to home
       </Button>

@@ -1,12 +1,12 @@
 import { Flex, Link, Icon, chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { TxAction, TxActionGeneral } from 'types/api/txAction';
 
 import appConfig from 'configs/app/config';
 import uniswapIcon from 'icons/uniswap.svg';
-import link from 'lib/link/link';
 import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import AddressLink from 'ui/shared/address/AddressLink';
 import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
@@ -97,7 +97,7 @@ const TxDetailsAction = ({ action }: Props) => {
           <Flex columnGap={ 1 } rowGap={ 2 } pl={ 3 } flexDirection="column" mt={ 2 }>
             {
               data.ids.map((id: string) => {
-                const url = link('token_instance_item', { hash: data.address, id });
+                const url = route({ pathname: '/token/[hash]/instance/[id]', query: { hash: data.address, id } });
                 return (
                   <Flex key={ data.address + id } whiteSpace="pre-wrap">
                     <span>1 of </span>

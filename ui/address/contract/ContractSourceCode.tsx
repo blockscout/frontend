@@ -1,9 +1,9 @@
 import { Box, chakra, Flex, Text, Tooltip } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { SmartContract } from 'types/api/contract';
 
-import link from 'lib/link/link';
 import CodeEditor from 'ui/shared/CodeEditor';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import LinkInternal from 'ui/shared/LinkInternal';
@@ -28,7 +28,7 @@ const ContractSourceCode = ({ data, hasSol2Yml, address, isViper, filePath, addi
   const diagramLink = hasSol2Yml && address ? (
     <Tooltip label="Visualize contract code using Sol2Uml JS library">
       <LinkInternal
-        href={ link('visualize_sol2uml', undefined, { address }) }
+        href={ route({ pathname: '/visualize/sol2uml', query: { address } }) }
         ml="auto"
         mr={ 3 }
       >

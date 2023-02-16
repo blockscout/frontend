@@ -28,9 +28,9 @@ export function ContractContextProvider({ children }: ProviderProps) {
   const { data: signer } = useSigner();
   const queryClient = useQueryClient();
 
-  const addressHash = router.query.id?.toString();
+  const addressHash = router.query.hash?.toString();
   const { data: contractInfo } = useApiQuery('contract', {
-    pathParams: { id: addressHash },
+    pathParams: { hash: addressHash },
     queryOptions: {
       enabled: Boolean(addressHash),
       refetchOnMount: false,
@@ -38,11 +38,11 @@ export function ContractContextProvider({ children }: ProviderProps) {
   });
 
   const addressInfo = queryClient.getQueryData<Address>(getResourceKey('address', {
-    pathParams: { id: addressHash },
+    pathParams: { hash: addressHash },
   }));
 
   const { data: proxyInfo } = useApiQuery('contract', {
-    pathParams: { id: addressInfo?.implementation_address || '' },
+    pathParams: { hash: addressInfo?.implementation_address || '' },
     queryOptions: {
       enabled: Boolean(addressInfo?.implementation_address),
       refetchOnMount: false,

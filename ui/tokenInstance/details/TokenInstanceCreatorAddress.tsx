@@ -14,7 +14,7 @@ interface Props {
 
 const TokenInstanceCreatorAddress = ({ hash }: Props) => {
   const addressQuery = useApiQuery('address', {
-    pathParams: { id: hash },
+    pathParams: { hash },
   });
 
   if (addressQuery.isError) {

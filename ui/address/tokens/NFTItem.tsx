@@ -1,9 +1,9 @@
 import { Flex, Link, Text, LinkBox, LinkOverlay, useColorModeValue } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { AddressTokenBalance } from 'types/api/address';
 
-import link from 'lib/link/link';
 import NftImage from 'ui/shared/nft/NftImage';
 import TokenLogo from 'ui/shared/TokenLogo';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
@@ -11,7 +11,7 @@ import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 type Props = AddressTokenBalance;
 
 const NFTItem = ({ token, token_id: tokenId }: Props) => {
-  const tokenLink = link('token_index', { hash: token.address });
+  const tokenLink = route({ pathname: '/token/[hash]', query: { hash: token.address } });
 
   return (
     <LinkBox
@@ -41,7 +41,7 @@ const NFTItem = ({ token, token_id: tokenId }: Props) => {
               overflow="hidden"
               whiteSpace="nowrap"
               textOverflow="ellipsis"
-              href={ link('token_instance_item', { hash: token.address, id: tokenId }) }
+              href={ route({ pathname: '/token/[hash]/instance/[id]', query: { hash: token.address, id: tokenId } }) }
             >
               { tokenId }
             </Link>

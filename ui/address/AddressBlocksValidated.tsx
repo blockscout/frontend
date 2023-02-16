@@ -31,10 +31,10 @@ const AddressBlocksValidated = ({ scrollRef }: Props) => {
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  const addressHash = String(router.query?.id);
+  const addressHash = String(router.query.hash);
   const query = useQueryWithPages({
     resourceName: 'address_blocks_validated',
-    pathParams: { id: addressHash },
+    pathParams: { hash: addressHash },
     scrollRef,
   });
 
@@ -46,7 +46,7 @@ const AddressBlocksValidated = ({ scrollRef }: Props) => {
     setSocketAlert(false);
 
     queryClient.setQueryData(
-      getResourceKey('address_blocks_validated', { pathParams: { id: addressHash } }),
+      getResourceKey('address_blocks_validated', { pathParams: { hash: addressHash } }),
       (prevData: AddressBlocksValidatedResponse | undefined) => {
         if (!prevData) {
           return;

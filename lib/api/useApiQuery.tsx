@@ -5,7 +5,7 @@ import type { ResourceError, ResourceName, ResourcePayload } from './resources';
 import type { Params as ApiFetchParams } from './useApiFetch';
 import useApiFetch from './useApiFetch';
 
-export interface Params<R extends ResourceName, E = unknown> extends ApiFetchParams {
+export interface Params<R extends ResourceName, E = unknown> extends ApiFetchParams<R> {
   queryOptions?: Omit<UseQueryOptions<unknown, ResourceError<E>, ResourcePayload<R>>, 'queryKey' | 'queryFn'>;
 }
 

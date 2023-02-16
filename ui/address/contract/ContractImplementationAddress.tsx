@@ -14,7 +14,7 @@ interface Props {
 const ContractImplementationAddress = ({ hash }: Props) => {
   const queryClient = useQueryClient();
   const data = queryClient.getQueryData<TAddress>(getResourceKey('address', {
-    pathParams: { id: hash },
+    pathParams: { hash },
   }));
 
   if (!data?.implementation_address) {

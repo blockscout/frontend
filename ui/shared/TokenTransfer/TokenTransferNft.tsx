@@ -1,8 +1,8 @@
 import { Box, Icon, Link, chakra } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import nftPlaceholder from 'icons/nft_shield.svg';
-import link from 'lib/link/link';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 interface Props {
@@ -14,7 +14,7 @@ interface Props {
 const TokenTransferNft = ({ hash, id, className }: Props) => {
   return (
     <Link
-      href={ link('token_instance_item', { hash, id }) }
+      href={ route({ pathname: '/token/[hash]/instance/[id]', query: { hash, id } }) }
       overflow="hidden"
       whiteSpace="nowrap"
       display="flex"

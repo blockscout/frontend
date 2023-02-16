@@ -10,8 +10,8 @@ import buildApiUrl from 'playwright/utils/buildApiUrl';
 import AddressTokens from './AddressTokens';
 
 const ADDRESS_HASH = withName.hash;
-const API_URL_ADDRESS = buildApiUrl('address', { id: ADDRESS_HASH });
-const API_URL_TOKENS = buildApiUrl('address_tokens', { id: ADDRESS_HASH });
+const API_URL_ADDRESS = buildApiUrl('address', { hash: ADDRESS_HASH });
+const API_URL_TOKENS = buildApiUrl('address_tokens', { hash: ADDRESS_HASH });
 
 const nextPageParams = {
   items_count: 50,
@@ -59,7 +59,7 @@ const test = base.extend({
 test('erc20 +@mobile +@dark-mode', async({ mount }) => {
   const hooksConfig = {
     router: {
-      query: { id: ADDRESS_HASH, tab: 'tokens_erc20' },
+      query: { hash: ADDRESS_HASH, tab: 'tokens_erc20' },
       isReady: true,
     },
   };
@@ -78,7 +78,7 @@ test('erc20 +@mobile +@dark-mode', async({ mount }) => {
 test('erc721 +@mobile +@dark-mode', async({ mount }) => {
   const hooksConfig = {
     router: {
-      query: { id: ADDRESS_HASH, tab: 'tokens_erc721' },
+      query: { hash: ADDRESS_HASH, tab: 'tokens_erc721' },
       isReady: true,
     },
   };
@@ -97,7 +97,7 @@ test('erc721 +@mobile +@dark-mode', async({ mount }) => {
 test('erc1155 +@mobile +@dark-mode', async({ mount }) => {
   const hooksConfig = {
     router: {
-      query: { id: ADDRESS_HASH, tab: 'tokens_erc1155' },
+      query: { hash: ADDRESS_HASH, tab: 'tokens_erc1155' },
       isReady: true,
     },
   };

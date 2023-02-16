@@ -10,17 +10,17 @@ interface Props {
 
 export default function useFetchTokens({ hash }: Props) {
   const erc20query = useApiQuery('address_tokens', {
-    pathParams: { id: hash },
+    pathParams: { hash },
     queryParams: { type: 'ERC-20' },
     queryOptions: { enabled: Boolean(hash), refetchOnMount: false },
   });
   const erc721query = useApiQuery('address_tokens', {
-    pathParams: { id: hash },
+    pathParams: { hash },
     queryParams: { type: 'ERC-721' },
     queryOptions: { enabled: Boolean(hash), refetchOnMount: false },
   });
   const erc1155query = useApiQuery('address_tokens', {
-    pathParams: { id: hash },
+    pathParams: { hash },
     queryParams: { type: 'ERC-1155' },
     queryOptions: { enabled: Boolean(hash), refetchOnMount: false },
   });

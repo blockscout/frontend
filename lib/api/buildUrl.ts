@@ -4,14 +4,14 @@ import appConfig from 'configs/app/config';
 
 import isNeedProxy from './isNeedProxy';
 import { RESOURCES } from './resources';
-import type { ApiResource, ResourceName } from './resources';
+import type { ApiResource, ResourceName, ResourcePathParams } from './resources';
 
-export default function buildUrl(
-  _resource: ApiResource | ResourceName,
-  pathParams?: Record<string, string | undefined>,
+export default function buildUrl<R extends ResourceName>(
+  resourceName: R,
+  pathParams?: ResourcePathParams<R>,
   queryParams?: Record<string, string | Array<string> | number | undefined>,
-) {
-  const resource: ApiResource = typeof _resource === 'string' ? RESOURCES[_resource] : _resource;
+): string {
+  const resource: ApiResource = RESOURCES[resourceName];
   const baseUrl = isNeedProxy() ? appConfig.baseUrl : (resource.endpoint || appConfig.api.endpoint);
   const basePath = resource.basePath !== undefined ? resource.basePath : appConfig.api.basePath;
   const path = isNeedProxy() ? '/node-api/proxy' + basePath + resource.path : basePath + resource.path;

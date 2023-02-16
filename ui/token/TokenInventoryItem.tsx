@@ -1,9 +1,9 @@
 import { Flex, Link, Text, LinkBox, LinkOverlay, useColorModeValue, Hide } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { TokenInstance } from 'types/api/token';
 
-import link from 'lib/link/link';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -13,7 +13,7 @@ import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 type Props = { item: TokenInstance };
 
 const NFTItem = ({ item }: Props) => {
-  const tokenLink = link('token_instance_item', { hash: item.token.address, id: item.id });
+  const tokenLink = route({ pathname: '/token/[hash]/instance/[id]', query: { hash: item.token.address, id: item.id } });
 
   return (
     <LinkBox

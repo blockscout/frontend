@@ -12,23 +12,26 @@ declare module "nextjs-routes" {
     | StaticRoute<"/account/tag_address">
     | StaticRoute<"/account/watchlist">
     | StaticRoute<"/accounts">
-    | DynamicRoute<"/address/[id]/contract_verification", { "id": string }>
-    | DynamicRoute<"/address/[id]", { "id": string }>
+    | DynamicRoute<"/address/[hash]/contract_verification", { "hash": string }>
+    | DynamicRoute<"/address/[hash]", { "hash": string }>
     | StaticRoute<"/api/csrf">
     | StaticRoute<"/api/proxy">
     | DynamicRoute<"/apps/[id]", { "id": string }>
     | StaticRoute<"/apps">
+    | StaticRoute<"/auth/auth0">
     | StaticRoute<"/auth/profile">
     | DynamicRoute<"/block/[height]", { "height": string }>
     | StaticRoute<"/blocks">
+    | StaticRoute<"/csv-export">
     | StaticRoute<"/graph">
     | StaticRoute<"/">
     | StaticRoute<"/login">
     | StaticRoute<"/search-results">
     | StaticRoute<"/stats">
     | DynamicRoute<"/token/[hash]", { "hash": string }>
+    | DynamicRoute<"/token/[hash]/instance/[id]", { "hash": string; "id": string }>
     | StaticRoute<"/tokens">
-    | DynamicRoute<"/tx/[id]", { "id": string }>
+    | DynamicRoute<"/tx/[hash]", { "hash": string }>
     | StaticRoute<"/txs">
     | StaticRoute<"/visualize/sol2uml">;
 

@@ -9,6 +9,7 @@ import iconSuccess from 'icons/status/success.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/appContext';
 import notEmpty from 'lib/notEmpty';
+import getQueryParamString from 'lib/router/getQueryParamString';
 import AddressBlocksValidated from 'ui/address/AddressBlocksValidated';
 import AddressCoinBalance from 'ui/address/AddressCoinBalance';
 import AddressContract from 'ui/address/AddressContract';
@@ -44,10 +45,11 @@ const AddressPageContent = () => {
   const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/accounts');
 
   const tabsScrollRef = React.useRef<HTMLDivElement>(null);
+  const hash = getQueryParamString(router.query.hash);
 
   const addressQuery = useApiQuery('address', {
-    pathParams: { id: router.query.id?.toString() },
-    queryOptions: { enabled: Boolean(router.query.id) },
+    pathParams: { hash },
+    queryOptions: { enabled: Boolean(hash) },
   });
 
   const tags = [

@@ -9,7 +9,6 @@ import gasIcon from 'icons/gas.svg';
 import txIcon from 'icons/transactions.svg';
 import walletIcon from 'icons/wallet.svg';
 import useApiQuery from 'lib/api/useApiQuery';
-import link from 'lib/link/link';
 
 import StatsGasPrices from './StatsGasPrices';
 import StatsItem from './StatsItem';
@@ -59,7 +58,7 @@ const Stats = () => {
           icon={ txIcon }
           title="Total transactions"
           value={ Number(data.total_transactions).toLocaleString() }
-          url={ link('txs') }
+          url={ route({ pathname: '/txs' }) }
         />
         <StatsItem
           icon={ walletIcon }

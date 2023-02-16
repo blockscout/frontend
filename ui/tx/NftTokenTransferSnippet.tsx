@@ -1,8 +1,8 @@
 import { Flex, Link, Text, Icon, Box } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import nftIcon from 'icons/nft_shield.svg';
-import link from 'lib/link/link';
 import AddressLink from 'ui/shared/address/AddressLink';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
@@ -17,7 +17,7 @@ interface Props {
 
 const NftTokenTransferSnippet = ({ value, name, hash, symbol, tokenId }: Props) => {
   const num = value === '1' ? '' : value;
-  const url = link('token_instance_item', { hash: hash, id: tokenId });
+  const url = route({ pathname: '/token/[hash]/instance/[id]', query: { hash: hash, id: tokenId } });
 
   return (
     <Flex alignItems="center" columnGap={ 3 } rowGap={ 2 } flexWrap="wrap">

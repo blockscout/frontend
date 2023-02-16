@@ -1,8 +1,8 @@
 import { chakra, Flex, Text, useColorModeValue } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
-import link from 'lib/link/link';
 import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import TokenLogo from 'ui/shared/TokenLogo';
@@ -45,7 +45,7 @@ const TokenSelectItem = ({ data }: Props) => {
   })();
 
   // TODO add filter param when token page is ready
-  const url = link('token_index', { hash: data.token.address });
+  const url = route({ pathname: '/token/[hash]', query: { hash: data.token.address } });
 
   return (
     <Flex

@@ -8,10 +8,10 @@ import buildApiUrl from 'playwright/utils/buildApiUrl';
 import ContractCode from './ContractCode';
 
 const addressHash = 'hash';
-const CONTRACT_API_URL = buildApiUrl('contract', { id: addressHash });
+const CONTRACT_API_URL = buildApiUrl('contract', { hash: addressHash });
 const hooksConfig = {
   router: {
-    query: { id: addressHash },
+    query: { hash: addressHash },
   },
 };
 

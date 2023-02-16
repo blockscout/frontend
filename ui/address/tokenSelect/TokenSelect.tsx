@@ -11,6 +11,7 @@ import type { Address } from 'types/api/address';
 import walletIcon from 'icons/wallet.svg';
 import { getResourceKey } from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 
@@ -28,13 +29,13 @@ const TokenSelect = ({ onClick }: Props) => {
   const queryClient = useQueryClient();
   const [ blockNumber, setBlockNumber ] = React.useState<number>();
 
-  const addressHash = router.query.id?.toString();
-  const addressResourceKey = getResourceKey('address', { pathParams: { id: addressHash } });
+  const addressHash = getQueryParamString(router.query.hash);
+  const addressResourceKey = getResourceKey('address', { pathParams: { hash: addressHash } });
 
   const addressQueryData = queryClient.getQueryData<Address>(addressResourceKey);
 
   const { data, isError, isLoading, refetch } = useFetchTokens({ hash: addressQueryData?.hash });
-  const tokensResourceKey = getResourceKey('address_tokens', { pathParams: { id: addressQueryData?.hash }, queryParams: { type: 'ERC-20' } });
+  const tokensResourceKey = getResourceKey('address_tokens', { pathParams: { hash: addressQueryData?.hash }, queryParams: { type: 'ERC-20' } });
   const tokensIsFetching = useIsFetching({ queryKey: tokensResourceKey });
 
   const handleTokenBalanceMessage: SocketMessage.AddressTokenBalance['handler'] = React.useCallback((payload) => {
@@ -82,7 +83,7 @@ const TokenSelect = ({ onClick }: Props) => {
       }
       <Tooltip label="Show all tokens">
         <Box>
-          <NextLink href={{ pathname: '/address/[id]', query: { id: addressHash || '', tab: 'tokens' } }} passHref>
+          <NextLink href={{ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'tokens' } }} passHref>
             <IconButton
               aria-label="Show all tokens"
               variant="outline"

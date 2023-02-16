@@ -36,7 +36,7 @@ const TxTokenTransfer = () => {
 
   const tokenTransferQuery = useQueryWithPages({
     resourceName: 'tx_token_transfers',
-    pathParams: { id: txsInfo.data?.hash.toString() },
+    pathParams: { hash: txsInfo.data?.hash.toString() },
     options: { enabled: Boolean(txsInfo.data?.status && txsInfo.data?.hash) },
     filters: { type: typeFilter },
   });

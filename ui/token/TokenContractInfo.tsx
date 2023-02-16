@@ -16,7 +16,7 @@ const TokenContractInfo = ({ tokenQuery }: Props) => {
   const router = useRouter();
 
   const contractQuery = useApiQuery('address', {
-    pathParams: { id: router.query.hash?.toString() },
+    pathParams: { hash: router.query.hash?.toString() },
     queryOptions: { enabled: Boolean(router.query.hash) },
   });
 

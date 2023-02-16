@@ -1,12 +1,12 @@
 import { Box, Heading, Text, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
 
 import appConfig from 'configs/app/config';
 import getValueWithUnit from 'lib/getValueWithUnit';
-import link from 'lib/link/link';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import LinkInternal from 'ui/shared/LinkInternal';
 import TextSeparator from 'ui/shared/TextSeparator';
@@ -90,7 +90,7 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
           <Text fontWeight="600" as="span">{ tx.position }</Text>
         </Box>
       </Box>
-      <LinkInternal fontSize="sm" href={ link('tx', { id: tx.hash }) }>More details</LinkInternal>
+      <LinkInternal fontSize="sm" href={ route({ pathname: '/tx/[hash]', query: { hash: tx.hash } }) }>More details</LinkInternal>
     </>
   );
 };
