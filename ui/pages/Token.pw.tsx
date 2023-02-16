@@ -12,7 +12,7 @@ import Token from './Token';
 const TOKEN_API_URL = buildApiUrl('token', { hash: '1' });
 const TOKEN_COUNTERS_API_URL = buildApiUrl('token_counters', { hash: '1' });
 const TOKEN_TRANSFERS_API_URL = buildApiUrl('token_transfers', { hash: '1' });
-const ADDRESS_API_URL = buildApiUrl('address', { id: '1' });
+const ADDRESS_API_URL = buildApiUrl('address', { hash: '1' });
 const hooksConfig = {
   router: {
     query: { hash: 1, tab: 'token_transfers' },

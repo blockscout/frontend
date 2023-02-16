@@ -145,78 +145,78 @@ export const RESOURCES = {
 
   // ADDRESS
   address: {
-    path: '/api/v2/addresses/:id',
+    path: '/api/v2/addresses/:hash',
   },
   address_counters: {
-    path: '/api/v2/addresses/:id/counters',
+    path: '/api/v2/addresses/:hash/counters',
   },
   // this resource doesn't have pagination, so causing huge problems on some addresses page
   // address_token_balances: {
-  //   path: '/api/v2/addresses/:id/token-balances',
+  //   path: '/api/v2/addresses/:hash/token-balances',
   // },
   address_txs: {
-    path: '/api/v2/addresses/:id/transactions',
+    path: '/api/v2/addresses/:hash/transactions',
     paginationFields: [ 'block_number' as const, 'items_count' as const, 'index' as const ],
     filterFields: [ 'filter' as const ],
   },
   address_internal_txs: {
-    path: '/api/v2/addresses/:id/internal-transactions',
+    path: '/api/v2/addresses/:hash/internal-transactions',
     paginationFields: [ 'block_number' as const, 'items_count' as const, 'index' as const, 'transaction_index' as const ],
     filterFields: [ 'filter' as const ],
   },
   address_token_transfers: {
-    path: '/api/v2/addresses/:id/token-transfers',
+    path: '/api/v2/addresses/:hash/token-transfers',
     paginationFields: [ 'block_number' as const, 'items_count' as const, 'index' as const, 'transaction_index' as const ],
     filterFields: [ 'filter' as const, 'type' as const, 'token' as const ],
   },
   address_blocks_validated: {
-    path: '/api/v2/addresses/:id/blocks-validated',
+    path: '/api/v2/addresses/:hash/blocks-validated',
     paginationFields: [ 'items_count' as const, 'block_number' as const ],
     filterFields: [ ],
   },
   address_coin_balance: {
-    path: '/api/v2/addresses/:id/coin-balance-history',
+    path: '/api/v2/addresses/:hash/coin-balance-history',
     paginationFields: [ 'items_count' as const, 'block_number' as const ],
     filterFields: [ ],
   },
   address_coin_balance_chart: {
-    path: '/api/v2/addresses/:id/coin-balance-history-by-day',
+    path: '/api/v2/addresses/:hash/coin-balance-history-by-day',
   },
   address_logs: {
-    path: '/api/v2/addresses/:id/logs',
+    path: '/api/v2/addresses/:hash/logs',
     paginationFields: [ 'items_count' as const, 'transaction_index' as const, 'index' as const, 'block_number' as const ],
     filterFields: [ ],
   },
   address_tokens: {
-    path: '/api/v2/addresses/:id/tokens',
+    path: '/api/v2/addresses/:hash/tokens',
     paginationFields: [ 'items_count' as const, 'token_name' as const, 'token_type' as const, 'value' as const ],
     filterFields: [ 'type' as const ],
   },
 
   // CONTRACT
   contract: {
-    path: '/api/v2/smart-contracts/:id',
+    path: '/api/v2/smart-contracts/:hash',
   },
   contract_methods_read: {
-    path: '/api/v2/smart-contracts/:id/methods-read',
+    path: '/api/v2/smart-contracts/:hash/methods-read',
   },
   contract_methods_read_proxy: {
-    path: '/api/v2/smart-contracts/:id/methods-read-proxy',
+    path: '/api/v2/smart-contracts/:hash/methods-read-proxy',
   },
   contract_method_query: {
-    path: '/api/v2/smart-contracts/:id/query-read-method',
+    path: '/api/v2/smart-contracts/:hash/query-read-method',
   },
   contract_methods_write: {
-    path: '/api/v2/smart-contracts/:id/methods-write',
+    path: '/api/v2/smart-contracts/:hash/methods-write',
   },
   contract_methods_write_proxy: {
-    path: '/api/v2/smart-contracts/:id/methods-write-proxy',
+    path: '/api/v2/smart-contracts/:hash/methods-write-proxy',
   },
   contract_verification_config: {
     path: '/api/v2/smart-contracts/verification/config',
   },
   contract_verification_via: {
-    path: '/api/v2/smart-contracts/:id/verification/via/:method',
+    path: '/api/v2/smart-contracts/:hash/verification/via/:method',
   },
 
   // TOKEN

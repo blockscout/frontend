@@ -26,11 +26,11 @@ const ContractVerification = () => {
   const hasGoBackLink = referrer && referrer.includes('/address');
   const router = useRouter();
 
-  const hash = getQueryParamString(router.query.id);
+  const hash = getQueryParamString(router.query.hash);
   const method = getQueryParamString(router.query.method) as SmartContractVerificationMethod;
 
   const contractQuery = useApiQuery('contract', {
-    pathParams: { id: hash },
+    pathParams: { hash },
     queryOptions: {
       enabled: Boolean(hash),
     },
@@ -55,7 +55,7 @@ const ContractVerification = () => {
 
   React.useEffect(() => {
     if (method && hash) {
-      router.replace({ pathname: '/address/[id]/contract_verification', query: { id: hash } }, undefined, { scroll: false, shallow: true });
+      router.replace({ pathname: '/address/[hash]/contract_verification', query: { hash } }, undefined, { scroll: false, shallow: true });
     }
   // onMount only
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -65,7 +65,7 @@ const ContractVerification = () => {
 
   React.useEffect(() => {
     if (isVerifiedContract) {
-      router.push({ pathname: '/address/[id]', query: { id: hash, tab: 'contract' } }, undefined, { scroll: false, shallow: true });
+      router.push({ pathname: '/address/[hash]', query: { hash, tab: 'contract' } }, undefined, { scroll: false, shallow: true });
     }
   }, [ hash, isVerifiedContract, router ]);
 

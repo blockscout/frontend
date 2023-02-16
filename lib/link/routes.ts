@@ -69,14 +69,14 @@ export const ROUTES = {
   },
 
   // ADDRESSES
-  address_index: {
-    pattern: PATHS.address_index,
-    crossNetworkNavigation: true,
-  },
-  address_contract_verification: {
-    pattern: PATHS.address_contract_verification,
-    crossNetworkNavigation: true,
-  },
+  // address_index: {
+  //   pattern: PATHS.address_index,
+  //   crossNetworkNavigation: true,
+  // },
+  // address_contract_verification: {
+  //   pattern: PATHS.address_contract_verification,
+  //   crossNetworkNavigation: true,
+  // },
 
   // ACCOUNTS
   // accounts: {

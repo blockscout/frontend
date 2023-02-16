@@ -4,7 +4,6 @@ import type { HTMLAttributeAnchorTarget } from 'react';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-import link from 'lib/link/link';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkInternal from 'ui/shared/LinkInternal';
@@ -51,9 +50,9 @@ const AddressLink = (props: Props) => {
   } else if (type === 'block') {
     url = route({ pathname: '/block/[height]', query: { height: props.height } });
   } else if (type === 'address_token') {
-    url = link('address_index', { id: hash }, { tab: 'token_transfers', token: props.tokenHash, scroll_to_tabs: 'true' });
+    url = route({ pathname: '/address/[hash]', query: { hash, tab: 'token_transfers', token_hash: props.tokenHash, scroll_to_tabs: 'true' } });
   } else {
-    url = link('address_index', { id: hash });
+    url = route({ pathname: '/address/[hash]', query: { hash } });
   }
 
   const content = (() => {

@@ -36,7 +36,7 @@ const AddressTokens = () => {
 
   const tokensQuery = useQueryWithPages({
     resourceName: 'address_tokens',
-    pathParams: { id: router.query.id?.toString() },
+    pathParams: { hash: router.query.hash?.toString() },
     filters: { type: tokenType },
     scrollRef,
   });

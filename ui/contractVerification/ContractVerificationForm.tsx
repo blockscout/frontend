@@ -56,7 +56,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
 
     try {
       await apiFetch('contract_verification_via', {
-        pathParams: { method: data.method, id: hash },
+        pathParams: { method: data.method, hash },
         fetchParams: {
           method: 'POST',
           body,
@@ -87,7 +87,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
       variant: 'subtle',
       isClosable: true,
       onCloseComplete: () => {
-        router.push({ pathname: '/address/[id]', query: { id: hash, tab: 'contract' } }, undefined, { shallow: true });
+        router.push({ pathname: '/address/[hash]', query: { hash, tab: 'contract' } }, undefined, { shallow: true });
       },
     });
   }, [ hash, router, setError, toast ]);

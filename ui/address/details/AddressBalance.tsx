@@ -26,7 +26,7 @@ const AddressBalance = ({ data }: Props) => {
     }
 
     setLastBlockNumber(blockNumber);
-    const queryKey = getResourceKey('address', { pathParams: { id: data.hash } });
+    const queryKey = getResourceKey('address', { pathParams: { hash: data.hash } });
     queryClient.setQueryData(queryKey, (prevData: Address | undefined) => {
       if (!prevData) {
         return;

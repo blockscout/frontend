@@ -12,13 +12,13 @@ import MockAddressPage from 'ui/address/testUtils/MockAddressPage';
 import TokenSelect from './TokenSelect';
 
 const ASSET_URL = 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/poa/assets/0xb2a90505dc6680a7a695f7975d0d32EeF610f456/logo.png';
-const TOKENS_ERC20_API_URL = buildApiUrl('address_tokens', { id: '1' }) + '?type=ERC-20';
-const TOKENS_ERC721_API_URL = buildApiUrl('address_tokens', { id: '1' }) + '?type=ERC-721';
-const TOKENS_ER1155_API_URL = buildApiUrl('address_tokens', { id: '1' }) + '?type=ERC-1155';
+const TOKENS_ERC20_API_URL = buildApiUrl('address_tokens', { hash: '1' }) + '?type=ERC-20';
+const TOKENS_ERC721_API_URL = buildApiUrl('address_tokens', { hash: '1' }) + '?type=ERC-721';
+const TOKENS_ER1155_API_URL = buildApiUrl('address_tokens', { hash: '1' }) + '?type=ERC-1155';
 const ADDRESS_API_URL = buildApiUrl('address', { id: '1' });
 const hooksConfig = {
   router: {
-    query: { id: '1' },
+    query: { hash: '1' },
   },
 };
 const CLIPPING_AREA = { x: 0, y: 0, width: 360, height: 500 };

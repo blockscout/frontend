@@ -7,7 +7,6 @@ import type { SearchResultItem } from 'types/api/search';
 import blockIcon from 'icons/block.svg';
 import txIcon from 'icons/transactions.svg';
 import highlightText from 'lib/highlightText';
-import link from 'lib/link/link';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import TokenLogo from 'ui/shared/TokenLogo';
@@ -27,7 +26,7 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm }: Props) => {
       }
       case 'contract':
       case 'address': {
-        return link('address_index', { id: data.address });
+        return route({ pathname: '/address/[hash]', query: { hash: data.address } });
       }
       case 'transaction': {
         return route({ pathname: '/tx/[hash]', query: { hash: data.tx_hash } });

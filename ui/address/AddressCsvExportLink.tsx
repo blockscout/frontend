@@ -21,6 +21,7 @@ const AddressCsvExportLink = ({ className, address, type }: Props) => {
         display="inline-flex"
         alignItems="center"
         href={ link('csv_export', undefined, { type, address }) }
+        flexShrink={ 0 }
       >
         <Icon as={ svgFileIcon } boxSize={{ base: '30px', lg: 6 }}/>
         <Hide ssr={ false } below="lg"><chakra.span ml={ 1 }>Download CSV</chakra.span></Hide>

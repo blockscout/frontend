@@ -7,7 +7,6 @@ import type { SearchResultItem } from 'types/api/search';
 import blockIcon from 'icons/block.svg';
 import txIcon from 'icons/transactions.svg';
 import highlightText from 'lib/highlightText';
-import link from 'lib/link/link';
 import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
@@ -55,7 +54,12 @@ const SearchResultTableItem = ({ data, searchTerm }: Props) => {
               <Td fontSize="sm">
                 <Flex alignItems="center" overflow="hidden">
                   <AddressIcon address={{ hash: data.address, is_contract: data.type === 'contract', implementation_name: null }} mr={ 2 } flexShrink={ 0 }/>
-                  <LinkInternal href={ link('address_index', { id: data.address }) } fontWeight={ 700 } overflow="hidden" whiteSpace="nowrap">
+                  <LinkInternal
+                    href={ route({ pathname: '/address/[hash]', query: { hash: data.address } }) }
+                    fontWeight={ 700 }
+                    overflow="hidden"
+                    whiteSpace="nowrap"
+                  >
                     <Box as={ shouldHighlightHash ? 'mark' : 'span' } display="block">
                       <HashStringShortenDynamic hash={ data.address }/>
                     </Box>

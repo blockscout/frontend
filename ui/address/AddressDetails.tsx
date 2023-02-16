@@ -10,7 +10,7 @@ import appConfig from 'configs/app/config';
 import blockIcon from 'icons/block.svg';
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
-import link from 'lib/link/link';
+import getQueryParamString from 'lib/router/getQueryParamString';
 import AddressCounterItem from 'ui/address/details/AddressCounterItem';
 import AddressLink from 'ui/shared/address/AddressLink';
 import AddressHeadingInfo from 'ui/shared/AddressHeadingInfo';
@@ -33,12 +33,12 @@ interface Props {
 const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
   const router = useRouter();
 
-  const addressHash = router.query.id?.toString();
+  const addressHash = getQueryParamString(router.query.hash);
 
   const countersQuery = useApiQuery('address_counters', {
-    pathParams: { id: addressHash },
+    pathParams: { hash: addressHash },
     queryOptions: {
-      enabled: Boolean(router.query.id) && Boolean(addressQuery.data),
+      enabled: Boolean(addressHash) && Boolean(addressQuery.data),
     },
   });
 
@@ -91,7 +91,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
         <Flex mt={ 8 } columnGap={ 4 } flexWrap="wrap">
           <Text fontSize="sm">Verify with other explorers</Text>
           { explorers.map((explorer) => {
-            const url = new URL(explorer.paths.address + '/' + router.query.id, explorer.baseUrl);
+            const url = new URL(explorer.paths.address + '/' + addressHash, explorer.baseUrl);
             return <LinkExternal key={ explorer.baseUrl } title={ explorer.title } href={ url.toString() }/>;
           }) }
         </Flex>
@@ -119,7 +119,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
             hint="Implementation address of the proxy contract."
             columnGap={ 1 }
           >
-            <LinkInternal href={ link('address_index', { id: data.implementation_address }) } overflow="hidden">
+            <LinkInternal href={ route({ pathname: '/address/[hash]', query: { hash: data.implementation_address } }) } overflow="hidden">
               { data.implementation_name || <HashStringShortenDynamic hash={ data.implementation_address }/> }
             </LinkInternal>
             { data.implementation_name && (

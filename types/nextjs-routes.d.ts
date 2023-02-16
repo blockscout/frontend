@@ -12,8 +12,8 @@ declare module "nextjs-routes" {
     | StaticRoute<"/account/tag_address">
     | StaticRoute<"/account/watchlist">
     | StaticRoute<"/accounts">
-    | DynamicRoute<"/address/[id]/contract_verification", { "id": string }>
-    | DynamicRoute<"/address/[id]", { "id": string }>
+    | DynamicRoute<"/address/[hash]/contract_verification", { "hash": string }>
+    | DynamicRoute<"/address/[hash]", { "hash": string }>
     | StaticRoute<"/api/csrf">
     | StaticRoute<"/api/proxy">
     | DynamicRoute<"/apps/[id]", { "id": string }>

@@ -16,6 +16,7 @@ import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import { apos } from 'lib/html-entities';
+import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import TOKEN_TYPE from 'lib/token/tokenTypes';
@@ -69,12 +70,12 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
   const queryClient = useQueryClient();
   const isMobile = useIsMobile();
 
-  const currentAddress = router.query.id?.toString();
+  const currentAddress = getQueryParamString(router.query.hash);
 
   const [ socketAlert, setSocketAlert ] = React.useState('');
   const [ newItemsCount, setNewItemsCount ] = React.useState(0);
 
-  const tokenFilter = router.query.token ? router.query.token.toString() : undefined;
+  const tokenFilter = getQueryParamString(router.query.token_hash) || undefined;
 
   const [ filters, setFilters ] = React.useState<Filters>(
     {
@@ -85,7 +86,7 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
 
   const { isError, isLoading, data, pagination, onFilterChange, isPaginationVisible } = useQueryWithPages({
     resourceName: 'address_token_transfers',
-    pathParams: { id: currentAddress },
+    pathParams: { hash: currentAddress },
     filters: tokenFilter ? { token: tokenFilter } : filters,
     scrollRef,
   });
@@ -117,7 +118,7 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
       }
     } else {
       queryClient.setQueryData(
-        getResourceKey('address_token_transfers', { pathParams: { id: router.query.id?.toString() }, queryParams: { ...filters } }),
+        getResourceKey('address_token_transfers', { pathParams: { hash: currentAddress }, queryParams: { ...filters } }),
         (prevData: AddressTokenTransferResponse | undefined) => {
           if (!prevData) {
             return;
@@ -147,7 +148,7 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
   }, []);
 
   const channel = useSocketChannel({
-    topic: `addresses:${ (router.query.id as string).toLowerCase() }`,
+    topic: `addresses:${ currentAddress.toLowerCase() }`,
     onSocketClose: handleSocketClose,
     onSocketError: handleSocketError,
     isDisabled: pagination.page !== 1 || Boolean(tokenFilter),

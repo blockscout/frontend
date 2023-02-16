@@ -27,7 +27,7 @@ const MarketplaceApp = ({ app, isLoading }: Props) => {
       const message = {
         blockscoutColorMode: colorMode,
         blockscoutRootUrl: appConfig.baseUrl + route({ pathname: '/' }),
-        blockscoutAddressExplorerUrl: appConfig.baseUrl + route({ pathname: '/address/[id]', query: { id: '' } }),
+        blockscoutAddressExplorerUrl: appConfig.baseUrl + route({ pathname: '/address/[hash]', query: { hash: '' } }),
         blockscoutTransactionExplorerUrl: appConfig.baseUrl + route({ pathname: '/tx/[hash]', query: { hash: '' } }),
         blockscoutNetworkName: appConfig.network.name,
         blockscoutNetworkId: Number(appConfig.network.id),

@@ -8,11 +8,11 @@ import buildApiUrl from 'playwright/utils/buildApiUrl';
 import AddressCoinBalance from './AddressCoinBalance';
 
 const addressHash = 'hash';
-const BALANCE_HISTORY_API_URL = buildApiUrl('address_coin_balance', { id: addressHash });
-const BALANCE_HISTORY_CHART_API_URL = buildApiUrl('address_coin_balance_chart', { id: addressHash });
+const BALANCE_HISTORY_API_URL = buildApiUrl('address_coin_balance', { hash: addressHash });
+const BALANCE_HISTORY_CHART_API_URL = buildApiUrl('address_coin_balance_chart', { hash: addressHash });
 const hooksConfig = {
   router: {
-    query: { id: addressHash },
+    query: { hash: addressHash },
   },
 };
 

@@ -7,7 +7,6 @@ import type { SearchRedirectResult } from 'types/api/search';
 
 import buildUrlNode from 'lib/api/buildUrlNode';
 import fetchFactory from 'lib/api/nodeFetch';
-import link from 'lib/link/link';
 import getNetworkTitle from 'lib/networks/getNetworkTitle';
 import type { Props } from 'lib/next/getServerSideProps';
 import { getServerSideProps as getServerSidePropsBase } from 'lib/next/getServerSideProps';
@@ -47,7 +46,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async({ req, res, r
           return route({ pathname: '/block/[height]', query: { height: q } });
         }
         case 'address': {
-          return link('address_index', { id: payload.parameter || q });
+          return route({ pathname: '/address/[hash]', query: { hash: payload.parameter || q } });
         }
         case 'transaction': {
           return route({ pathname: '/tx/[hash]', query: { hash: q } });
