@@ -1,4 +1,4 @@
-import { IconButton, Tooltip, useClipboard, chakra } from '@chakra-ui/react';
+import { IconButton, Tooltip, useClipboard, chakra, useDisclosure } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 
 import CopyIcon from 'icons/copy.svg';
@@ -6,6 +6,8 @@ import CopyIcon from 'icons/copy.svg';
 const CopyToClipboard = ({ text, className }: {text: string; className?: string}) => {
   const { hasCopied, onCopy } = useClipboard(text, 3000);
   const [ copied, setCopied ] = useState(false);
+  // have to implement controlled tooltip because of the issue - https://github.com/chakra-ui/chakra-ui/issues/7107
+  const { isOpen, onOpen, onToggle, onClose } = useDisclosure();
 
   useEffect(() => {
     if (hasCopied) {
@@ -15,8 +17,13 @@ const CopyToClipboard = ({ text, className }: {text: string; className?: string}
     }
   }, [ hasCopied ]);
 
+  const handleClick = React.useCallback(() => {
+    onToggle();
+    onCopy();
+  }, [ onCopy, onToggle ]);
+
   return (
-    <Tooltip label={ copied ? 'Copied' : 'Copy to clipboard' } closeOnClick={ false }>
+    <Tooltip label={ copied ? 'Copied' : 'Copy to clipboard' } isOpen={ isOpen }>
       <IconButton
         aria-label="copy"
         icon={ <CopyIcon/> }
@@ -25,11 +32,13 @@ const CopyToClipboard = ({ text, className }: {text: string; className?: string}
         variant="simple"
         display="inline-block"
         flexShrink={ 0 }
-        onClick={ onCopy }
+        onClick={ handleClick }
         className={ className }
+        onMouseEnter={ onOpen }
+        onMouseLeave={ onClose }
       />
     </Tooltip>
   );
 };
 
-export default chakra(CopyToClipboard);
+export default React.memo(chakra(CopyToClipboard));
