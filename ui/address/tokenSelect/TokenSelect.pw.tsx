@@ -15,7 +15,7 @@ const ASSET_URL = 'https://raw.githubusercontent.com/trustwallet/assets/master/b
 const TOKENS_ERC20_API_URL = buildApiUrl('address_tokens', { hash: '1' }) + '?type=ERC-20';
 const TOKENS_ERC721_API_URL = buildApiUrl('address_tokens', { hash: '1' }) + '?type=ERC-721';
 const TOKENS_ER1155_API_URL = buildApiUrl('address_tokens', { hash: '1' }) + '?type=ERC-1155';
-const ADDRESS_API_URL = buildApiUrl('address', { id: '1' });
+const ADDRESS_API_URL = buildApiUrl('address', { hash: '1' });
 const hooksConfig = {
   router: {
     query: { hash: '1' },

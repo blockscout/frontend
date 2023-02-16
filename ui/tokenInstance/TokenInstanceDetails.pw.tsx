@@ -8,7 +8,7 @@ import buildApiUrl from 'playwright/utils/buildApiUrl';
 
 import TokenInstanceDetails from './TokenInstanceDetails';
 
-const API_URL_ADDRESS = buildApiUrl('address', { id: tokenInstanceMock.base.token.address });
+const API_URL_ADDRESS = buildApiUrl('address', { hash: tokenInstanceMock.base.token.address });
 const API_URL_TOKEN_TRANSFERS_COUNT = buildApiUrl('token_instance_transfers_count', {
   id: tokenInstanceMock.base.id,
   hash: tokenInstanceMock.base.token.address,
