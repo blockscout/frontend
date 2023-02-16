@@ -129,7 +129,7 @@ blockscout:
     ENABLE_RUST_VERIFICATION_SERVICE:
       _default: 'true'
     RUST_VERIFICATION_SERVICE_URL:
-      _default: http://sc-verifier-svc:80
+      _default: http://sc-verifier-svc:8050
     INDEXER_MEMORY_LIMIT:
       _default: 5
     ACCOUNT_ENABLED:
