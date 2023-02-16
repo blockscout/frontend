@@ -37,6 +37,7 @@ export interface FormFieldsStandardInput {
 export interface FormFieldsSourcify {
   method: MethodOption;
   sources: Array<File>;
+  contract_index?: Option;
 }
 
 export interface FormFieldsMultiPartFile {

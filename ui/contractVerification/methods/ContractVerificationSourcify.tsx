@@ -1,6 +1,7 @@
 import React from 'react';
 
 import ContractVerificationMethod from '../ContractVerificationMethod';
+import ContractVerificationFieldContractIndex from '../fields/ContractVerificationFieldContractIndex';
 import ContractVerificationFieldSources from '../fields/ContractVerificationFieldSources';
 
 const FILE_TYPES = [ '.json' as const, '.sol' as const ];
@@ -14,6 +15,7 @@ const ContractVerificationSourcify = () => {
         title="Sources and Metadata JSON"
         hint="Upload all Solidity contract source files and JSON metadata file(s) created during contract compilation."
       />
+      <ContractVerificationFieldContractIndex/>
     </ContractVerificationMethod>
   );
 };

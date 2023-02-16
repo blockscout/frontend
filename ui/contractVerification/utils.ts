@@ -154,6 +154,7 @@ export function prepareRequestBody(data: FormFields): FetchParams['body'] {
       const _data = data as FormFieldsSourcify;
       const body = new FormData();
       addFilesToFormData(body, _data.sources);
+      _data.contract_index && body.set('chosen_contract_index', _data.contract_index.value);
 
       return body;
     }

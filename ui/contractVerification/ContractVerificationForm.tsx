@@ -55,7 +55,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
 
     try {
       await apiFetch('contract_verification_via', {
-        pathParams: { method: data.method.value, id: hash },
+        pathParams: { method: data.method.value, id: hash.toLowerCase() },
         fetchParams: {
           method: 'POST',
           body,
