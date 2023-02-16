@@ -10,6 +10,7 @@ import {
   chakra,
 } from '@chakra-ui/react';
 import type { StyleProps } from '@chakra-ui/styled-system';
+import _pickBy from 'lodash/pickBy';
 import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -51,8 +52,9 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled, className, .
   const handleTabChange = React.useCallback((index: number) => {
     const nextTab = tabs[index];
 
+    const queryForPathname = _pickBy(router.query, (value, key) => router.pathname.includes(`[${ key }]`));
     router.push(
-      { pathname: router.asPath.split('?')[0], query: { tab: nextTab.id } } as Parameters<typeof router.push>[0],
+      { pathname: router.pathname, query: { ...queryForPathname, tab: nextTab.id } },
       undefined,
       { shallow: true },
     );

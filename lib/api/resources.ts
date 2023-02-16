@@ -167,7 +167,7 @@ export const RESOURCES = {
   address_token_transfers: {
     path: '/api/v2/addresses/:hash/token-transfers',
     paginationFields: [ 'block_number' as const, 'items_count' as const, 'index' as const, 'transaction_index' as const ],
-    filterFields: [ 'filter' as const, 'type' as const, 'token' as const ],
+    filterFields: [ 'filter' as const, 'type' as const, 'token_hash' as const ],
   },
   address_blocks_validated: {
     path: '/api/v2/addresses/:hash/blocks-validated',
