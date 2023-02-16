@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { SmartContractVerificationConfig } from 'types/api/contract';
 
+import * as socketServer from 'playwright/fixtures/socketServer';
 import TestApp from 'playwright/TestApp';
 
 import ContractVerificationForm from './ContractVerificationForm';
@@ -85,26 +86,54 @@ test('standard input json method', async({ mount, page }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('sourcify method +@dark-mode +@mobile', async({ mount, page }) => {
-  const component = await mount(
-    <TestApp>
-      <ContractVerificationForm config={ formConfig } hash={ hash }/>
-    </TestApp>,
-    { hooksConfig },
-  );
+test.describe('sourcify', () => {
+  const testWithSocket = test.extend<socketServer.SocketServerFixture>({
+    createSocket: socketServer.createSocket,
+  });
+  testWithSocket.describe.configure({ mode: 'serial', timeout: 20_000 });
 
-  await component.getByLabel(/verification method/i).focus();
-  await component.getByLabel(/verification method/i).type('solidity');
-  await page.getByRole('button', { name: /sourcify/i }).click();
+  testWithSocket.only('with multiple contracts', async({ mount, page, createSocket }) => {
+    const component = await mount(
+      <TestApp withSocket>
+        <ContractVerificationForm config={ formConfig } hash={ hash }/>
+      </TestApp>,
+      { hooksConfig },
+    );
 
-  await page.getByText(/drop files/i).click();
-  await page.locator('input[name="sources"]').setInputFiles([
-    './playwright/mocks/file_mock_1.json',
-    './playwright/mocks/file_mock_2.json',
-    './playwright/mocks/file_mock_with_very_long_name.json',
-  ]);
+    await component.getByLabel(/verification method/i).focus();
+    await component.getByLabel(/verification method/i).type('solidity');
+    await page.getByRole('button', { name: /sourcify/i }).click();
 
-  await expect(component).toHaveScreenshot();
+    await page.getByText(/drop files/i).click();
+    await page.locator('input[name="sources"]').setInputFiles([
+      './playwright/mocks/file_mock_1.json',
+      './playwright/mocks/file_mock_2.json',
+      './playwright/mocks/file_mock_with_very_long_name.json',
+    ]);
+
+    await expect(component).toHaveScreenshot();
+
+    const socket = await createSocket();
+    const channel = await socketServer.joinChannel(socket, `addresses:${ hash.toLowerCase() }`);
+
+    await page.getByRole('button', { name: /verify/i }).click();
+
+    socketServer.sendMessage(socket, channel, 'verification_result', {
+      status: 'error',
+      errors: {
+        // eslint-disable-next-line max-len
+        files: [ 'Detected 5 contracts (ERC20, IERC20, IERC20Metadata, Context, MockERC20), but can only verify 1 at a time. Please choose a main contract and click Verify again.' ],
+      },
+    });
+
+    await component.getByLabel(/contract name/i).focus();
+    await component.getByLabel(/contract name/i).type('e');
+    const contractNameOption = page.getByRole('button', { name: /MockERC20/i });
+
+    await expect(contractNameOption).toBeVisible();
+
+    await expect(component).toHaveScreenshot();
+  });
 });
 
 test('multi-part files method', async({ mount, page }) => {
