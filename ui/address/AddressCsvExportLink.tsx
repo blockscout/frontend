@@ -20,6 +20,7 @@ const AddressCsvExportLink = ({ className, address, type }: Props) => {
         className={ className }
         display="inline-flex"
         alignItems="center"
+        whiteSpace="nowrap"
         href={ route({ pathname: '/csv-export', query: { type, address } }) }
         flexShrink={ 0 }
       >

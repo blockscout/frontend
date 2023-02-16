@@ -23,6 +23,7 @@ import TOKEN_TYPE from 'lib/token/tokenTypes';
 import EmptySearchResult from 'ui/apps/EmptySearchResult';
 import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
+import HashStringShorten from 'ui/shared/HashStringShorten';
 import Pagination from 'ui/shared/Pagination';
 import SkeletonList from 'ui/shared/skeletons/SkeletonList';
 import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
@@ -161,7 +162,7 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
   });
 
   const numActiveFilters = (filters.type?.length || 0) + (filters.filter ? 1 : 0);
-  const isActionBarHidden = !tokenFilter && !numActiveFilters && !data?.items.length;
+  const isActionBarHidden = !tokenFilter && !numActiveFilters && !data?.items.length && !currentAddress;
 
   const content = (() => {
     if (isLoading) {
@@ -226,23 +227,25 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
   })();
 
   const tokenFilterComponent = tokenFilter && (
-    <Flex alignItems="center" py={ 1 } flexWrap="wrap" mb={{ base: isPaginationVisible ? 6 : 3, lg: 0 }}>
-      Filtered by token
-      <TokenLogo hash={ tokenFilter } boxSize={ 6 } mx={ 2 }/>
-      { isMobile ? tokenFilter.slice(0, 4) + '...' + tokenFilter.slice(-4) : tokenFilter }
-      <Tooltip label="Reset filter">
-        <Flex>
-          <Icon
-            as={ crossIcon }
-            boxSize={ 6 }
-            ml={ 1 }
-            color={ resetTokenIconColor }
-            cursor="pointer"
-            _hover={{ color: resetTokenIconHoverColor }}
-            onClick={ resetTokenFilter }
-          />
-        </Flex>
-      </Tooltip>
+    <Flex alignItems="center" flexWrap="wrap" mb={{ base: isActionBarHidden ? 3 : 6, lg: 0 }} mr={ 4 }>
+      <Text whiteSpace="nowrap" mr={ 2 } py={ 1 }>Filtered by token</Text>
+      <Flex alignItems="center" py={ 1 }>
+        <TokenLogo hash={ tokenFilter } boxSize={ 6 } mr={ 2 }/>
+        { isMobile ? <HashStringShorten hash={ tokenFilter }/> : tokenFilter }
+        <Tooltip label="Reset filter">
+          <Flex>
+            <Icon
+              as={ crossIcon }
+              boxSize={ 6 }
+              ml={ 1 }
+              color={ resetTokenIconColor }
+              cursor="pointer"
+              _hover={{ color: resetTokenIconHoverColor }}
+              onClick={ resetTokenFilter }
+            />
+          </Flex>
+        </Tooltip>
+      </Flex>
     </Flex>
   );
 

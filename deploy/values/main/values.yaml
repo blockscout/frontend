@@ -157,7 +157,7 @@ blockscout:
     DISABLE_EXCHANGE_RATES:
       _default: 'true'
     DISABLE_INDEXER:
-      _default: 'true'
+      _default: 'false'
     FIRST_BLOCK:
       _default: '8446041'
     LAST_BLOCK:
