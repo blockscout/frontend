@@ -30,7 +30,7 @@ const TokenTransferTable = ({
 }: Props) => {
 
   return (
-    <Table variant="simple" size="sm">
+    <Table variant="simple" size="sm" minW="950px">
       <Thead top={ top }>
         <Tr>
           { showTxInfo && <Th width="44px"></Th> }

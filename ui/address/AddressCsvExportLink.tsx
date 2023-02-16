@@ -20,6 +20,7 @@ const AddressCsvExportLink = ({ className, address, type }: Props) => {
         className={ className }
         display="inline-flex"
         alignItems="center"
+        whiteSpace="nowrap"
         href={ link('csv_export', undefined, { type, address }) }
       >
         <Icon as={ svgFileIcon } boxSize={{ base: '30px', lg: 6 }}/>
