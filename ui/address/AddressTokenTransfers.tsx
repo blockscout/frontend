@@ -87,7 +87,7 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
   const { isError, isLoading, data, pagination, onFilterChange, isPaginationVisible } = useQueryWithPages({
     resourceName: 'address_token_transfers',
     pathParams: { hash: currentAddress },
-    filters: tokenFilter ? { token: tokenFilter } : filters,
+    filters: tokenFilter ? { token_hash: tokenFilter } : filters,
     scrollRef,
   });
 

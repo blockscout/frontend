@@ -22,7 +22,7 @@ export function middleware(req: NextRequest) {
   const apiToken = req.cookies.get(NAMES.API_TOKEN);
 
   if ((isAccountRoute || isProfileRoute) && !apiToken && appConfig.isAccountSupported) {
-    const authUrl = appConfig.authUrl + route({ pathname: '/auth', query: { path: req.nextUrl.pathname } });
+    const authUrl = appConfig.authUrl + route({ pathname: '/auth/auth0', query: { path: req.nextUrl.pathname } });
     return NextResponse.redirect(authUrl);
   }
 
