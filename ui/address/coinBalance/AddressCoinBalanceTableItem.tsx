@@ -1,12 +1,12 @@
 import { Td, Tr, Text, Stat, StatHelpText, StatArrow } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { AddressCoinBalanceHistoryItem } from 'types/api/address';
 
 import { WEI, ZERO } from 'lib/consts';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import link from 'lib/link/link';
 import Address from 'ui/shared/address/Address';
 import AddressLink from 'ui/shared/address/AddressLink';
 import LinkInternal from 'ui/shared/LinkInternal';
@@ -16,7 +16,7 @@ type Props = AddressCoinBalanceHistoryItem & {
 };
 
 const AddressCoinBalanceTableItem = (props: Props) => {
-  const blockUrl = link('block', { id: String(props.block_number) });
+  const blockUrl = route({ pathname: '/block/[height]', query: { height: String(props.block_number) } });
   const deltaBn = BigNumber(props.delta).div(WEI);
   const isPositiveDelta = deltaBn.gte(ZERO);
   const timeAgo = useTimeAgoIncrement(props.block_timestamp, props.page === 1);

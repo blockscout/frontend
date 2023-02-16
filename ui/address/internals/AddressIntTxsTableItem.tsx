@@ -1,5 +1,6 @@
 import { Tr, Td, Tag, Icon, Box, Flex, Text } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
@@ -7,7 +8,6 @@ import type { InternalTransaction } from 'types/api/internalTransaction';
 import appConfig from 'configs/app/config';
 import rightArrowIcon from 'icons/arrows/east.svg';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import link from 'lib/link/link';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -58,7 +58,7 @@ const AddressIntTxsTableItem = ({
         </Flex>
       </Td>
       <Td verticalAlign="middle">
-        <LinkInternal href={ link('block', { id: block.toString() }) }>{ block }</LinkInternal>
+        <LinkInternal href={ route({ pathname: '/block/[height]', query: { height: block.toString() } }) }>{ block }</LinkInternal>
       </Td>
       <Td verticalAlign="middle">
         <Address display="inline-flex" maxW="100%">

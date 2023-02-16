@@ -5,6 +5,9 @@ import type { RouteName } from './routes';
 
 const PATH_PARAM_REGEXP = /\/:(\w+)/g;
 
+/**
+ * @deprecated Please consider to use "import { route } from 'nextjs-routes';" instead
+ */
 export default function link(
   routeName: RouteName,
   urlParams?: Record<string, Array<string> | string | undefined>,

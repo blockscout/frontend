@@ -1,5 +1,6 @@
 import type { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { SearchRedirectResult } from 'types/api/search';
@@ -43,7 +44,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async({ req, res, r
     const redirectUrl = (() => {
       switch (payload.type) {
         case 'block': {
-          return link('block', { id: q });
+          return route({ pathname: '/block/[height]', query: { height: q } });
         }
         case 'address': {
           return link('address_index', { id: payload.parameter || q });

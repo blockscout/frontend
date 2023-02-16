@@ -6,6 +6,7 @@ import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 import { useAppContext } from 'lib/appContext';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
+import getQueryParamString from 'lib/router/getQueryParamString';
 import BlockDetails from 'ui/block/BlockDetails';
 import TextAd from 'ui/shared/ad/TextAd';
 import Page from 'ui/shared/Page/Page';
@@ -24,17 +25,19 @@ const BlockPageContent = () => {
   const router = useRouter();
   const isMobile = useIsMobile();
   const appProps = useAppContext();
+  const height = getQueryParamString(router.query.height);
+  const tab = getQueryParamString(router.query.tab);
 
   const blockTxsQuery = useQueryWithPages({
     resourceName: 'block_txs',
-    pathParams: { id: router.query.id?.toString() },
+    pathParams: { height },
     options: {
-      enabled: Boolean(router.query.id && router.query.tab === 'txs'),
+      enabled: Boolean(height && tab === 'txs'),
     },
   });
 
-  if (!router.query.id) {
-    return null;
+  if (!height) {
+    throw new Error('Block not found', { cause: { status: 404 } });
   }
 
   const tabs: Array<RoutedTab> = [
@@ -42,7 +45,7 @@ const BlockPageContent = () => {
     { id: 'txs', title: 'Transactions', component: <TxsContent query={ blockTxsQuery } showBlockInfo={ false } showSocketInfo={ false }/> },
   ];
 
-  const hasPagination = !isMobile && router.query.tab === 'txs' && blockTxsQuery.isPaginationVisible;
+  const hasPagination = !isMobile && tab === 'txs' && blockTxsQuery.isPaginationVisible;
 
   const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/blocks');
 
@@ -50,7 +53,7 @@ const BlockPageContent = () => {
     <Page>
       <TextAd mb={ 6 }/>
       <PageTitle
-        text={ `Block #${ router.query.id }` }
+        text={ `Block #${ height }` }
         backLinkUrl={ hasGoBackLink ? appProps.referrer : undefined }
         backLinkLabel="Back to blocks list"
       />

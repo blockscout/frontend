@@ -1,4 +1,5 @@
 import { chakra, shouldForwardProp, Tooltip, Box } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import type { HTMLAttributeAnchorTarget } from 'react';
 import React from 'react';
 
@@ -27,7 +28,7 @@ type AddressTokenTxProps = {
 type BlockProps = {
   type: 'block';
   hash: string;
-  id: string;
+  height: string;
 }
 
 type AddressTokenProps = {
@@ -48,7 +49,7 @@ const AddressLink = (props: Props) => {
   } else if (type === 'token') {
     url = link('token_index', { hash: hash });
   } else if (type === 'block') {
-    url = link('block', { id: props.id });
+    url = route({ pathname: '/block/[height]', query: { height: props.height } });
   } else if (type === 'address_token') {
     url = link('address_index', { id: hash }, { tab: 'token_transfers', token: props.tokenHash, scroll_to_tabs: 'true' });
   } else {
