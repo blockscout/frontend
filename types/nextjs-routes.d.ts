@@ -22,12 +22,14 @@ declare module "nextjs-routes" {
     | StaticRoute<"/auth/profile">
     | DynamicRoute<"/block/[height]", { "height": string }>
     | StaticRoute<"/blocks">
+    | StaticRoute<"/csv-export">
     | StaticRoute<"/graph">
     | StaticRoute<"/">
     | StaticRoute<"/login">
     | StaticRoute<"/search-results">
     | StaticRoute<"/stats">
     | DynamicRoute<"/token/[hash]", { "hash": string }>
+    | DynamicRoute<"/token/[hash]/instance/[id]", { "hash": string; "id": string }>
     | StaticRoute<"/tokens">
     | DynamicRoute<"/tx/[hash]", { "hash": string }>
     | StaticRoute<"/txs">

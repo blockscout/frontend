@@ -4,7 +4,6 @@ import React from 'react';
 
 import type { AddressTokenBalance } from 'types/api/address';
 
-import link from 'lib/link/link';
 import NftImage from 'ui/shared/nft/NftImage';
 import TokenLogo from 'ui/shared/TokenLogo';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
@@ -42,7 +41,7 @@ const NFTItem = ({ token, token_id: tokenId }: Props) => {
               overflow="hidden"
               whiteSpace="nowrap"
               textOverflow="ellipsis"
-              href={ link('token_instance_item', { hash: token.address, id: tokenId }) }
+              href={ route({ pathname: '/token/[hash]/instance/[id]', query: { hash: token.address, id: tokenId } }) }
             >
               { tokenId }
             </Link>

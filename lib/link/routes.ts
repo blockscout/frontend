@@ -1,6 +1,6 @@
 import appConfig from 'configs/app/config';
 
-import PATHS from './paths.json';
+// import PATHS from './paths.json';
 
 export interface Route {
   pattern: string;
@@ -64,9 +64,9 @@ export const ROUTES = {
   //   pattern: PATHS.token_index,
   //   crossNetworkNavigation: true,
   // },
-  token_instance_item: {
-    pattern: PATHS.token_instance_item,
-  },
+  // token_instance_item: {
+  //   pattern: PATHS.token_instance_item,
+  // },
 
   // ADDRESSES
   // address_index: {
@@ -106,9 +106,9 @@ export const ROUTES = {
   //   pattern: PATHS.visualize_sol2uml,
   // },
 
-  csv_export: {
-    pattern: PATHS.csv_export,
-  },
+  // csv_export: {
+  //   pattern: PATHS.csv_export,
+  // },
 
   // AUTH
   // todo_tom need add page to the app

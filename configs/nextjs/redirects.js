@@ -10,19 +10,19 @@ const oldUrls = [
     newPath: `${ PATHS.txs }?tab=pending`,
   },
   {
-    oldPath: '/tx/:id/internal-transactions',
+    oldPath: '/tx/:hash/internal-transactions',
     newPath: `${ PATHS.tx }?tab=internal`,
   },
   {
-    oldPath: '/tx/:id/logs',
+    oldPath: '/tx/:hash/logs',
     newPath: `${ PATHS.tx }?tab=logs`,
   },
   {
-    oldPath: '/tx/:id/raw-trace',
+    oldPath: '/tx/:hash/raw-trace',
     newPath: `${ PATHS.tx }?tab=raw_trace`,
   },
   {
-    oldPath: '/tx/:id/state',
+    oldPath: '/tx/:hash/state',
     newPath: `${ PATHS.tx }?tab=state`,
   },
   {
