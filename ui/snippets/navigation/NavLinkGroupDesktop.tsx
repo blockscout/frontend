@@ -76,7 +76,12 @@ const NavLinkGroupDesktop = ({ text, subItems, icon, isCollapsed, isActive }: Pr
                   { text }
                 </Text>
               </HStack>
-              { isExpanded && <Icon as={ chevronIcon } transform="rotate(180deg)" boxSize={ 6 }/> }
+              <Icon
+                as={ chevronIcon }
+                transform="rotate(180deg)"
+                boxSize={ 6 }
+                display={{ lg: isExpanded ? 'block' : 'none', xl: isCollapsed ? 'none' : 'block' }}
+              />
             </Flex>
           </Box>
         </PopoverTrigger>
