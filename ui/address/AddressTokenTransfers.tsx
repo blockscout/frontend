@@ -6,7 +6,7 @@ import React from 'react';
 import type { SocketMessage } from 'lib/socket/types';
 import { AddressFromToFilterValues } from 'types/api/address';
 import type { AddressFromToFilter, AddressTokenTransferResponse } from 'types/api/address';
-import type { TokenType } from 'types/api/tokenInfo';
+import type { TokenType } from 'types/api/token';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import crossIcon from 'icons/cross.svg';
@@ -16,12 +16,14 @@ import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import { apos } from 'lib/html-entities';
+import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import TOKEN_TYPE from 'lib/token/tokenTypes';
 import EmptySearchResult from 'ui/apps/EmptySearchResult';
 import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
+import HashStringShorten from 'ui/shared/HashStringShorten';
 import Pagination from 'ui/shared/Pagination';
 import SkeletonList from 'ui/shared/skeletons/SkeletonList';
 import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
@@ -69,12 +71,12 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
   const queryClient = useQueryClient();
   const isMobile = useIsMobile();
 
-  const currentAddress = router.query.id?.toString();
+  const currentAddress = getQueryParamString(router.query.hash);
 
   const [ socketAlert, setSocketAlert ] = React.useState('');
   const [ newItemsCount, setNewItemsCount ] = React.useState(0);
 
-  const tokenFilter = router.query.token ? router.query.token.toString() : undefined;
+  const tokenFilter = getQueryParamString(router.query.token_hash) || undefined;
 
   const [ filters, setFilters ] = React.useState<Filters>(
     {
@@ -85,7 +87,7 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
 
   const { isError, isLoading, data, pagination, onFilterChange, isPaginationVisible } = useQueryWithPages({
     resourceName: 'address_token_transfers',
-    pathParams: { id: currentAddress },
+    pathParams: { hash: currentAddress },
     filters: tokenFilter ? { token: tokenFilter } : filters,
     scrollRef,
   });
@@ -117,7 +119,7 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
       }
     } else {
       queryClient.setQueryData(
-        getResourceKey('address_token_transfers', { pathParams: { id: router.query.id?.toString() }, queryParams: { ...filters } }),
+        getResourceKey('address_token_transfers', { pathParams: { hash: currentAddress }, queryParams: { ...filters } }),
         (prevData: AddressTokenTransferResponse | undefined) => {
           if (!prevData) {
             return;
@@ -147,7 +149,7 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
   }, []);
 
   const channel = useSocketChannel({
-    topic: `addresses:${ (router.query.id as string).toLowerCase() }`,
+    topic: `addresses:${ currentAddress.toLowerCase() }`,
     onSocketClose: handleSocketClose,
     onSocketError: handleSocketError,
     isDisabled: pagination.page !== 1 || Boolean(tokenFilter),
@@ -160,7 +162,7 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
   });
 
   const numActiveFilters = (filters.type?.length || 0) + (filters.filter ? 1 : 0);
-  const isActionBarHidden = !tokenFilter && !numActiveFilters && !data?.items.length;
+  const isActionBarHidden = !tokenFilter && !numActiveFilters && !data?.items.length && !currentAddress;
 
   const content = (() => {
     if (isLoading) {
@@ -225,23 +227,25 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
   })();
 
   const tokenFilterComponent = tokenFilter && (
-    <Flex alignItems="center" py={ 1 } flexWrap="wrap" mb={{ base: isPaginationVisible ? 6 : 3, lg: 0 }}>
-      Filtered by token
-      <TokenLogo hash={ tokenFilter } boxSize={ 6 } mx={ 2 }/>
-      { isMobile ? tokenFilter.slice(0, 4) + '...' + tokenFilter.slice(-4) : tokenFilter }
-      <Tooltip label="Reset filter">
-        <Flex>
-          <Icon
-            as={ crossIcon }
-            boxSize={ 6 }
-            ml={ 1 }
-            color={ resetTokenIconColor }
-            cursor="pointer"
-            _hover={{ color: resetTokenIconHoverColor }}
-            onClick={ resetTokenFilter }
-          />
-        </Flex>
-      </Tooltip>
+    <Flex alignItems="center" flexWrap="wrap" mb={{ base: isActionBarHidden ? 3 : 6, lg: 0 }} mr={ 4 }>
+      <Text whiteSpace="nowrap" mr={ 2 } py={ 1 }>Filtered by token</Text>
+      <Flex alignItems="center" py={ 1 }>
+        <TokenLogo hash={ tokenFilter } boxSize={ 6 } mr={ 2 }/>
+        { isMobile ? <HashStringShorten hash={ tokenFilter }/> : tokenFilter }
+        <Tooltip label="Reset filter">
+          <Flex>
+            <Icon
+              as={ crossIcon }
+              boxSize={ 6 }
+              ml={ 1 }
+              color={ resetTokenIconColor }
+              cursor="pointer"
+              _hover={{ color: resetTokenIconHoverColor }}
+              onClick={ resetTokenFilter }
+            />
+          </Flex>
+        </Tooltip>
+      </Flex>
     </Flex>
   );
 

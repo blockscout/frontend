@@ -1,5 +1,7 @@
 import BigNumber from 'bignumber.js';
 
+import { ZERO } from 'lib/consts';
+
 interface Params {
   value: string;
   exchangeRate?: string | null;
@@ -13,10 +15,11 @@ export default function getCurrencyValue({ value, accuracy, accuracyUsd, decimal
   const valueResult = accuracy ? valueCurr.dp(accuracy).toFormat() : valueCurr.toFormat();
 
   let usdResult: string | undefined;
+  let usdBn = ZERO;
 
   if (exchangeRate) {
     const exchangeRateBn = new BigNumber(exchangeRate);
-    const usdBn = valueCurr.times(exchangeRateBn);
+    usdBn = valueCurr.times(exchangeRateBn);
     if (accuracyUsd && !usdBn.isEqualTo(0)) {
       const usdBnDp = usdBn.dp(accuracyUsd);
       usdResult = usdBnDp.isEqualTo(0) ? usdBn.precision(accuracyUsd).toFormat() : usdBnDp.toFormat();
@@ -25,5 +28,5 @@ export default function getCurrencyValue({ value, accuracy, accuracyUsd, decimal
     }
   }
 
-  return { valueStr: valueResult, usd: usdResult };
+  return { valueStr: valueResult, usd: usdResult, usdBn };
 }

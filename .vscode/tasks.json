@@ -44,8 +44,8 @@
             }
         },
         {
-            "type": "npm",
-            "script": "dev:goerli",
+            "type": "shell",
+            "command": "NEXT_PUBLIC_API_HOST=${input:goerliApiHost} yarn dev:goerli",
             "problemMatcher": [],
             "label": "dev server: goerli",
             "detail": "start local dev server for Goerli network",
@@ -156,6 +156,26 @@
             "icon": {
                 "color": "terminal.ansiBlue",
                 "id": "beaker"
+            },
+            "runOptions": {
+                "instanceLimit": 1
+            }
+        },
+        {
+            "type": "shell",
+            "command": "npx playwright show-report",
+            "problemMatcher": [],
+            "label": "pw: report",
+            "detail": "serve test report",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "close": true,
+                "revealProblems": "onProblem",
+            },
+            "icon": {
+                "color": "terminal.ansiBlue",
+                "id": "output"
             },
             "runOptions": {
                 "instanceLimit": 1
@@ -304,6 +324,16 @@
             "options": [
               "",
               "--update-snapshots",
+            ],
+            "default": ""
+        },
+        {
+            "type": "pickString",
+            "id": "goerliApiHost",
+            "description": "Choose API host:",
+            "options": [
+              "blockscout-main.test.aws-k8s.blockscout.com",
+              "eth-goerli.blockscout.com",
             ],
             "default": ""
         },

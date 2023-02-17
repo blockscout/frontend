@@ -1,7 +1,7 @@
 import { Box, chakra, Icon, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenInfo } from 'types/api/tokenInfo';
+import type { TokenInfo } from 'types/api/token';
 
 import metamaskIcon from 'icons/metamask.svg';
 import useToast from 'lib/hooks/useToast';

@@ -3,7 +3,7 @@ import type { Transaction } from 'types/api/transaction';
 import type { AddressTag, WatchlistName } from './addressParams';
 import type { Block } from './block';
 import type { InternalTransaction } from './internalTransaction';
-import type { TokenInfo, TokenType } from './tokenInfo';
+import type { TokenInfo, TokenType } from './token';
 import type { TokenTransfer, TokenTransferPagination } from './tokenTransfer';
 
 export interface Address {

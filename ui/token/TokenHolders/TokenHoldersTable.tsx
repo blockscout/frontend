@@ -1,7 +1,7 @@
 import { Table, Tbody, Tr, Th } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenHolder, TokenInfo } from 'types/api/tokenInfo';
+import type { TokenHolder, TokenInfo } from 'types/api/token';
 
 import { default as Thead } from 'ui/shared/TheadSticky';
 import TokenHoldersTableItem from 'ui/token/TokenHolders/TokenHoldersTableItem';

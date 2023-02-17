@@ -2,6 +2,7 @@ import { Grid, GridItem, Text, Icon, Link, Box, Tooltip } from '@chakra-ui/react
 import BigNumber from 'bignumber.js';
 import capitalize from 'lodash/capitalize';
 import { useRouter } from 'next/router';
+import { route } from 'nextjs-routes';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
@@ -13,8 +14,8 @@ import getBlockReward from 'lib/block/getBlockReward';
 import { WEI, WEI_IN_GWEI, ZERO } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
 import { space } from 'lib/html-entities';
-import link from 'lib/link/link';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
+import getQueryParamString from 'lib/router/getQueryParamString';
 import BlockDetailsSkeleton from 'ui/block/details/BlockDetailsSkeleton';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
@@ -30,10 +31,11 @@ import Utilization from 'ui/shared/Utilization/Utilization';
 const BlockDetails = () => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
   const router = useRouter();
+  const height = getQueryParamString(router.query.height);
 
   const { data, isLoading, isError, error } = useApiQuery('block', {
-    pathParams: { id: router.query.id?.toString() },
-    queryOptions: { enabled: Boolean(router.query.id) },
+    pathParams: { height },
+    queryOptions: { enabled: Boolean(height) },
   });
 
   const handleCutClick = React.useCallback(() => {
@@ -46,11 +48,10 @@ const BlockDetails = () => {
 
   const handlePrevNextClick = React.useCallback((direction: 'prev' | 'next') => {
     const increment = direction === 'next' ? +1 : -1;
-    const nextId = String(Number(router.query.id) + increment);
+    const nextId = String(Number(height) + increment);
 
-    const url = link('block', { id: nextId });
-    router.push(url, undefined);
-  }, [ router ]);
+    router.push({ pathname: '/block/[height]', query: { height: nextId } }, undefined);
+  }, [ height, router ]);
 
   if (isLoading) {
     return <BlockDetailsSkeleton/>;
@@ -85,7 +86,7 @@ const BlockDetails = () => {
     <Grid columnGap={ 8 } rowGap={{ base: 3, lg: 3 }} templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }} overflow="hidden">
       <DetailsInfoItem
         title="Block height"
-        hint="The block height of a particular block is defined as the number of blocks preceding it in the blockchain."
+        hint="The block height of a particular block is defined as the number of blocks preceding it in the blockchain"
       >
         { data.height }
         { data.height === 0 && <Text whiteSpace="pre"> - Genesis Block</Text> }
@@ -99,7 +100,7 @@ const BlockDetails = () => {
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Size"
-        hint="Size of the block in bytes."
+        hint="Size of the block in bytes"
       >
         { data.size.toLocaleString('en') }
       </DetailsInfoItem>
@@ -114,15 +115,15 @@ const BlockDetails = () => {
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Transactions"
-        hint="The number of transactions in the block."
+        hint="The number of transactions in the block"
       >
-        <LinkInternal href={ link('block', { id: router.query.id }, { tab: 'txs' }) }>
+        <LinkInternal href={ route({ pathname: '/block/[height]', query: { height, tab: 'txs' } }) }>
           { data.tx_count } transactions
         </LinkInternal>
       </DetailsInfoItem>
       <DetailsInfoItem
         title={ appConfig.network.verificationType === 'validation' ? 'Validated by' : 'Mined by' }
-        hint="A block producer who successfully included the block onto the blockchain."
+        hint="A block producer who successfully included the block onto the blockchain"
         columnGap={ 1 }
       >
         <AddressLink type="address" hash={ data.miner.hash }/>
@@ -135,7 +136,7 @@ const BlockDetails = () => {
           title="Block reward"
           hint={
             `For each block, the ${ validatorTitle } is rewarded with a finite amount of ${ appConfig.network.currency.symbol || 'native token' } 
-          on top of the fees paid for all transactions in the block.`
+          on top of the fees paid for all transactions in the block`
           }
           columnGap={ 1 }
         >
@@ -172,7 +173,7 @@ const BlockDetails = () => {
             key={ type }
             title={ type }
             // is this text correct for validators?
-            hint={ `Amount of distributed reward. ${ capitalize(validatorTitle) }s receive a static block reward + Tx fees + uncle fees.` }
+            hint={ `Amount of distributed reward. ${ capitalize(validatorTitle) }s receive a static block reward + Tx fees + uncle fees` }
           >
             { BigNumber(reward).dividedBy(WEI).toFixed() } { appConfig.network.currency.symbol }
           </DetailsInfoItem>
@@ -183,7 +184,7 @@ const BlockDetails = () => {
 
       <DetailsInfoItem
         title="Gas used"
-        hint="The total gas amount used in the block and its percentage of gas filled in the block."
+        hint="The total gas amount used in the block and its percentage of gas filled in the block"
       >
         <Text>{ BigNumber(data.gas_used || 0).toFormat() }</Text>
         <Utilization
@@ -196,14 +197,14 @@ const BlockDetails = () => {
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Gas limit"
-        hint="Total gas limit provided by all transactions in the block."
+        hint="Total gas limit provided by all transactions in the block"
       >
         <Text>{ BigNumber(data.gas_limit).toFormat() }</Text>
       </DetailsInfoItem>
       { data.base_fee_per_gas && (
         <DetailsInfoItem
           title="Base fee per gas"
-          hint="Minimum fee required per unit of gas. Fee adjusts based on network congestion."
+          hint="Minimum fee required per unit of gas. Fee adjusts based on network congestion"
         >
           <Text>{ BigNumber(data.base_fee_per_gas).dividedBy(WEI).toFixed() } { appConfig.network.currency.symbol } </Text>
           <Text variant="secondary" whiteSpace="pre">
@@ -216,7 +217,7 @@ const BlockDetails = () => {
         hint={
           `Amount of ${ appConfig.network.currency.symbol || 'native token' } burned from transactions included in the block.
 
-          Equals Block Base Fee per Gas * Gas Used.`
+          Equals Block Base Fee per Gas * Gas Used`
         }
       >
         <Icon as={ flameIcon } boxSize={ 5 } color="gray.500"/>
@@ -235,7 +236,7 @@ const BlockDetails = () => {
       { data.priority_fee !== null && BigNumber(data.priority_fee).gt(ZERO) && (
         <DetailsInfoItem
           title="Priority fee / Tip"
-          hint="User-defined tips sent to validator for transaction priority/inclusion."
+          hint="User-defined tips sent to validator for transaction priority/inclusion"
         >
           { BigNumber(data.priority_fee).dividedBy(WEI).toFixed() } { appConfig.network.currency.symbol }
         </DetailsInfoItem>
@@ -243,7 +244,7 @@ const BlockDetails = () => {
       { /* api doesn't support extra data yet */ }
       { /* <DetailsInfoItem
         title="Extra data"
-        hint={ `Any data that can be included by the ${ validatorTitle } in the block.` }
+        hint={ `Any data that can be included by the ${ validatorTitle } in the block` }
       >
         <Text whiteSpace="pre">{ data.extra_data } </Text>
         <Text variant="secondary">(Hex: { data.extra_data })</Text>
@@ -272,7 +273,7 @@ const BlockDetails = () => {
 
           <DetailsInfoItem
             title="Difficulty"
-            hint={ `Block difficulty for ${ validatorTitle }, used to calibrate block generation time.` }
+            hint={ `Block difficulty for ${ validatorTitle }, used to calibrate block generation time` }
             whiteSpace="normal"
             wordBreak="break-all"
           >
@@ -280,7 +281,7 @@ const BlockDetails = () => {
           </DetailsInfoItem>
           <DetailsInfoItem
             title="Total difficulty"
-            hint="Total difficulty of the chain until this block."
+            hint="Total difficulty of the chain until this block"
             whiteSpace="normal"
             wordBreak="break-all"
           >
@@ -291,7 +292,7 @@ const BlockDetails = () => {
 
           <DetailsInfoItem
             title="Hash"
-            hint="The SHA256 hash of the block."
+            hint="The SHA256 hash of the block"
             flexWrap="nowrap"
           >
             <Box overflow="hidden">
@@ -302,7 +303,7 @@ const BlockDetails = () => {
           { data.height > 0 && (
             <DetailsInfoItem
               title="Parent hash"
-              hint="The hash of the block from which this block was generated."
+              hint="The hash of the block from which this block was generated"
               flexWrap="nowrap"
             >
               <AddressLink hash={ data.parent_hash } type="block" id={ String(data.height - 1) }/>
@@ -312,13 +313,13 @@ const BlockDetails = () => {
           { /* api doesn't support state root yet */ }
           { /* <DetailsInfoItem
             title="State root"
-            hint="The root of the state trie."
+            hint="The root of the state trie"
           >
             <Text wordBreak="break-all" whiteSpace="break-spaces">{ data.state_root }</Text>
           </DetailsInfoItem> */ }
           <DetailsInfoItem
             title="Nonce"
-            hint="Block nonce is a value used during mining to demonstrate proof of work for a block."
+            hint="Block nonce is a value used during mining to demonstrate proof of work for a block"
           >
             { data.nonce }
           </DetailsInfoItem>

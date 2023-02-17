@@ -126,7 +126,7 @@ const TxDetails = () => {
       ) }
       <DetailsInfoItem
         title="Transaction hash"
-        hint="Unique character string (TxID) assigned to every verified transaction."
+        hint="Unique character string (TxID) assigned to every verified transaction"
         flexWrap="nowrap"
       >
         { data.status === null && <Spinner mr={ 2 } size="sm" flexShrink={ 0 }/> }
@@ -146,14 +146,14 @@ const TxDetails = () => {
       { data.revert_reason && (
         <DetailsInfoItem
           title="Revert reason"
-          hint="The revert reason of the transaction."
+          hint="The revert reason of the transaction"
         >
           <TxRevertReason { ...data.revert_reason }/>
         </DetailsInfoItem>
       ) }
       <DetailsInfoItem
         title="Block"
-        hint="Block number containing the transaction."
+        hint="Block number containing the transaction"
       >
         <Text>{ data.block === null ? 'Pending' : data.block }</Text>
         { Boolean(data.confirmations) && (
@@ -168,7 +168,7 @@ const TxDetails = () => {
       { data.timestamp && (
         <DetailsInfoItem
           title="Timestamp"
-          hint="Date & time of transaction inclusion, including length of time for confirmation."
+          hint="Date & time of transaction inclusion, including length of time for confirmation"
         >
           <Icon as={ clockIcon } boxSize={ 5 } color="gray.500"/>
           <Text ml={ 1 }>{ dayjs(data.timestamp).fromNow() }</Text>
@@ -205,7 +205,7 @@ const TxDetails = () => {
 
       <DetailsInfoItem
         title="From"
-        hint="Address (external or contract) sending the transaction."
+        hint="Address (external or contract) sending the transaction"
         columnGap={ 3 }
       >
         <Address>
@@ -222,7 +222,7 @@ const TxDetails = () => {
       </DetailsInfoItem>
       <DetailsInfoItem
         title={ data.to?.is_contract ? 'Interacted with contract' : 'To' }
-        hint="Address (external or contract) receiving the transaction."
+        hint="Address (external or contract) receiving the transaction"
         flexWrap={{ base: 'wrap', lg: 'nowrap' }}
         columnGap={ 3 }
       >
@@ -257,13 +257,13 @@ const TxDetails = () => {
 
       <DetailsInfoItem
         title="Value"
-        hint="Value sent in the native token (and USD) if applicable."
+        hint="Value sent in the native token (and USD) if applicable"
       >
         <CurrencyValue value={ data.value } currency={ appConfig.network.currency.symbol } exchangeRate={ data.exchange_rate }/>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Transaction fee"
-        hint="Total transaction fee."
+        hint="Total transaction fee"
       >
         <CurrencyValue
           value={ data.fee.value }
@@ -274,14 +274,14 @@ const TxDetails = () => {
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Gas price"
-        hint="Price per unit of gas specified by the sender. Higher gas prices can prioritize transaction inclusion during times of high usage."
+        hint="Price per unit of gas specified by the sender. Higher gas prices can prioritize transaction inclusion during times of high usage"
       >
         <Text mr={ 1 }>{ BigNumber(data.gas_price).dividedBy(WEI).toFixed() } { appConfig.network.currency.symbol }</Text>
         <Text variant="secondary">({ BigNumber(data.gas_price).dividedBy(WEI_IN_GWEI).toFixed() } Gwei)</Text>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Gas limit & usage by txn"
-        hint="Actual gas amount used by the transaction."
+        hint="Actual gas amount used by the transaction"
       >
         <Text>{ BigNumber(data.gas_used || 0).toFormat() }</Text>
         <TextSeparator/>
@@ -292,7 +292,7 @@ const TxDetails = () => {
         <DetailsInfoItem
           title="Gas fees (Gwei)"
           // eslint-disable-next-line max-len
-          hint="Base Fee refers to the network Base Fee at the time of the block, while Max Fee & Max Priority Fee refer to the max amount a user is willing to pay for their tx & to give to the miner respectively."
+          hint="Base Fee refers to the network Base Fee at the time of the block, while Max Fee & Max Priority Fee refer to the max amount a user is willing to pay for their tx & to give to the miner respectively"
         >
           { data.base_fee_per_gas && (
             <Box>
@@ -319,7 +319,7 @@ const TxDetails = () => {
       { data.tx_burnt_fee && (
         <DetailsInfoItem
           title="Burnt fees"
-          hint={ `Amount of ${ appConfig.network.currency.symbol } burned for this transaction. Equals Block Base Fee per Gas * Gas Used.` }
+          hint={ `Amount of ${ appConfig.network.currency.symbol } burned for this transaction. Equals Block Base Fee per Gas * Gas Used` }
         >
           <Icon as={ flameIcon } mr={ 1 } boxSize={ 5 } color="gray.500"/>
           <CurrencyValue
@@ -349,7 +349,7 @@ const TxDetails = () => {
           <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
           <DetailsInfoItem
             title="Other"
-            hint="Other data related to this transaction."
+            hint="Other data related to this transaction"
           >
             {
               [
@@ -382,7 +382,7 @@ const TxDetails = () => {
           </DetailsInfoItem>
           <DetailsInfoItem
             title="Raw input"
-            hint="Binary data included with the transaction. See logs tab for additional info."
+            hint="Binary data included with the transaction. See logs tab for additional info"
           >
             <RawInputData hex={ data.raw_input }/>
           </DetailsInfoItem>

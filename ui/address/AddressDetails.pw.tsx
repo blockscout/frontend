@@ -8,7 +8,7 @@ import type { Address } from 'types/api/address';
 import type { ResourceError } from 'lib/api/resources';
 import * as addressMock from 'mocks/address/address';
 import * as countersMock from 'mocks/address/counters';
-import * as tokenBalanceMock from 'mocks/address/tokenBalance';
+import * as tokensMock from 'mocks/address/tokens';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
 
@@ -16,12 +16,14 @@ import AddressDetails from './AddressDetails';
 import MockAddressPage from './testUtils/MockAddressPage';
 
 const ADDRESS_HASH = addressMock.hash;
-const API_URL_ADDRESS = buildApiUrl('address', { id: ADDRESS_HASH });
-const API_URL_COUNTERS = buildApiUrl('address_counters', { id: ADDRESS_HASH });
-const API_URL_TOKEN_BALANCES = buildApiUrl('address_token_balances', { id: ADDRESS_HASH });
+const API_URL_ADDRESS = buildApiUrl('address', { hash: ADDRESS_HASH });
+const API_URL_COUNTERS = buildApiUrl('address_counters', { hash: ADDRESS_HASH });
+const API_URL_TOKENS_ERC20 = buildApiUrl('address_tokens', { hash: ADDRESS_HASH }) + '?type=ERC-20';
+const API_URL_TOKENS_ERC721 = buildApiUrl('address_tokens', { hash: ADDRESS_HASH }) + '?type=ERC-721';
+const API_URL_TOKENS_ER1155 = buildApiUrl('address_tokens', { hash: ADDRESS_HASH }) + '?type=ERC-1155';
 const hooksConfig = {
   router: {
-    query: { id: ADDRESS_HASH },
+    query: { hash: ADDRESS_HASH },
   },
 };
 
@@ -54,10 +56,18 @@ test('token', async({ mount, page }) => {
     status: 200,
     body: JSON.stringify(countersMock.forToken),
   }));
-  await page.route(API_URL_TOKEN_BALANCES, (route) => route.fulfill({
+  await page.route(API_URL_TOKENS_ERC20, async(route) => route.fulfill({
     status: 200,
-    body: JSON.stringify(tokenBalanceMock.baseList),
-  }));
+    body: JSON.stringify(tokensMock.erc20List),
+  }), { times: 1 });
+  await page.route(API_URL_TOKENS_ERC721, async(route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify(tokensMock.erc721List),
+  }), { times: 1 });
+  await page.route(API_URL_TOKENS_ER1155, async(route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify(tokensMock.erc1155List),
+  }), { times: 1 });
 
   await page.evaluate(() => {
     window.ethereum = { } as MetaMaskInpageProvider;

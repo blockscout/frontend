@@ -28,7 +28,7 @@ function composeSources(contract: SmartContract | undefined) {
 
 const Sol2UmlDiagram = ({ addressHash }: Props) => {
   const contractQuery = useApiQuery<'contract', ResourceError>('contract', {
-    pathParams: { id: addressHash },
+    pathParams: { hash: addressHash },
     queryOptions: {
       enabled: Boolean(addressHash),
       refetchOnMount: false,

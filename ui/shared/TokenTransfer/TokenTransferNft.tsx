@@ -1,20 +1,24 @@
-import { Box, Icon, Link, chakra } from '@chakra-ui/react';
+import { Box, Icon, chakra } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import nftPlaceholder from 'icons/nft_shield.svg';
-import link from 'lib/link/link';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import LinkInternal from 'ui/shared/LinkInternal';
 
 interface Props {
   hash: string;
   id: string;
   className?: string;
+  isDisabled?: boolean;
 }
 
-const TokenTransferNft = ({ hash, id, className }: Props) => {
+const TokenTransferNft = ({ hash, id, className, isDisabled }: Props) => {
+  const Component = isDisabled ? Box : LinkInternal;
+
   return (
-    <Link
-      href={ link('token_instance_item', { hash, id }) }
+    <Component
+      href={ isDisabled ? undefined : route({ pathname: '/token/[hash]/instance/[id]', query: { hash, id } }) }
       overflow="hidden"
       whiteSpace="nowrap"
       display="flex"
@@ -26,7 +30,7 @@ const TokenTransferNft = ({ hash, id, className }: Props) => {
       <Box maxW="calc(100% - 34px)">
         <HashStringShortenDynamic hash={ id } fontWeight={ 500 }/>
       </Box>
-    </Link>
+    </Component>
   );
 };
 

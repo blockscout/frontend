@@ -10,7 +10,6 @@ import type { SmartContractVerificationMethod, SmartContractVerificationConfig }
 
 import useApiFetch from 'lib/api/useApiFetch';
 import useToast from 'lib/hooks/useToast';
-import link from 'lib/link/link';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 
@@ -57,7 +56,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
 
     try {
       await apiFetch('contract_verification_via', {
-        pathParams: { method: data.method, id: hash },
+        pathParams: { method: data.method, hash },
         fetchParams: {
           method: 'POST',
           body,
@@ -88,7 +87,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
       variant: 'subtle',
       isClosable: true,
       onCloseComplete: () => {
-        router.push(link('address_index', { id: hash }, { tab: 'contract' }), undefined, { shallow: true });
+        router.push({ pathname: '/address/[hash]', query: { hash, tab: 'contract' } }, undefined, { shallow: true });
       },
     });
   }, [ hash, router, setError, toast ]);

@@ -7,6 +7,7 @@ import type { SmartContractWriteMethod } from 'types/api/contract';
 
 import config from 'configs/app/config';
 import useApiQuery from 'lib/api/useApiQuery';
+import getQueryParamString from 'lib/router/getQueryParamString';
 import ContractMethodsAccordion from 'ui/address/contract/ContractMethodsAccordion';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
@@ -27,12 +28,12 @@ interface Props {
 const ContractWrite = ({ isProxy, isCustomAbi }: Props) => {
   const router = useRouter();
 
-  const addressHash = router.query.id?.toString();
+  const addressHash = getQueryParamString(router.query.hash);
   const { data: signer } = useSigner();
   const { isConnected } = useAccount();
 
   const { data, isLoading, isError } = useApiQuery(isProxy ? 'contract_methods_write_proxy' : 'contract_methods_write', {
-    pathParams: { id: addressHash },
+    pathParams: { hash: addressHash },
     queryParams: {
       is_custom_abi: isCustomAbi ? 'true' : 'false',
     },
@@ -41,8 +42,18 @@ const ContractWrite = ({ isProxy, isCustomAbi }: Props) => {
     },
   });
 
-  const { contract, proxy } = useContractContext();
-  const _contract = isProxy ? proxy : contract;
+  const { contract, proxy, custom } = useContractContext();
+  const _contract = (() => {
+    if (isProxy) {
+      return proxy;
+    }
+
+    if (isCustomAbi) {
+      return custom;
+    }
+
+    return contract;
+  })();
 
   const handleMethodFormSubmit = React.useCallback(async(item: SmartContractWriteMethod, args: Array<string | Array<string>>) => {
     if (!isConnected) {
@@ -51,7 +62,7 @@ const ContractWrite = ({ isProxy, isCustomAbi }: Props) => {
 
     try {
       if (!_contract) {
-        return;
+        throw new Error('Something went wrong. Try again later.');
       }
 
       if (item.type === 'receive') {

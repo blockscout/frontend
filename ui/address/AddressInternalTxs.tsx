@@ -1,5 +1,4 @@
 import { Text, Show, Hide } from '@chakra-ui/react';
-import castArray from 'lodash/castArray';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -9,6 +8,7 @@ import { AddressFromToFilterValues } from 'types/api/address';
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import { apos } from 'lib/html-entities';
+import getQueryParamString from 'lib/router/getQueryParamString';
 import AddressIntTxsSkeletonDesktop from 'ui/address/internals/AddressIntTxsSkeletonDesktop';
 import AddressIntTxsSkeletonMobile from 'ui/address/internals/AddressIntTxsSkeletonMobile';
 import AddressIntTxsTable from 'ui/address/internals/AddressIntTxsTable';
@@ -27,13 +27,11 @@ const AddressInternalTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivE
   const router = useRouter();
   const [ filterValue, setFilterValue ] = React.useState<AddressFromToFilter>(getFilterValue(router.query.filter));
 
-  const queryId = router.query.id;
-  const queryIdArray = castArray(queryId);
-  const queryIdStr = queryIdArray[0];
+  const hash = getQueryParamString(router.query.hash);
 
   const { data, isLoading, isError, pagination, onFilterChange, isPaginationVisible } = useQueryWithPages({
     resourceName: 'address_internal_txs',
-    pathParams: { id: queryIdStr },
+    pathParams: { hash },
     filters: { filter: filterValue },
     scrollRef,
   });
@@ -70,10 +68,10 @@ const AddressInternalTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivE
     content = (
       <>
         <Show below="lg" ssr={ false }>
-          <AddressIntTxsList data={ data.items } currentAddress={ queryIdStr }/>
+          <AddressIntTxsList data={ data.items } currentAddress={ hash }/>
         </Show>
         <Hide below="lg" ssr={ false }>
-          <AddressIntTxsTable data={ data.items } currentAddress={ queryIdStr }/>
+          <AddressIntTxsTable data={ data.items } currentAddress={ hash }/>
         </Hide>
       </>
     );
@@ -87,7 +85,7 @@ const AddressInternalTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivE
           onFilterChange={ handleFilterChange }
           isActive={ Boolean(filterValue) }
         />
-        <AddressCsvExportLink address={ queryIdStr } type="internal-transactions" ml={{ base: 2, lg: 'auto' }}/>
+        <AddressCsvExportLink address={ hash } type="internal-transactions" ml={{ base: 2, lg: 'auto' }}/>
         { isPaginationVisible && <Pagination ml={{ base: 'auto', lg: 8 }} { ...pagination }/> }
       </ActionBar>
       { content }

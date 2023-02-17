@@ -1,9 +1,9 @@
-import { Box, Flex, Icon, Skeleton, Text, Tooltip, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Skeleton, Text, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import appConfig from 'configs/app/config';
-import infoIcon from 'icons/info.svg';
 import useApiQuery from 'lib/api/useApiQuery';
+import Hint from 'ui/shared/Hint';
 
 import ChainIndicatorChartContainer from './ChainIndicatorChartContainer';
 import ChainIndicatorItem from './ChainIndicatorItem';
@@ -72,13 +72,7 @@ const ChainIndicators = () => {
       <Flex flexGrow={ 1 } flexDir="column" order={{ base: 2, lg: 1 }} p={{ base: 6, lg: 0 }}>
         <Flex alignItems="center">
           <Text fontWeight={ 500 } fontFamily="heading" fontSize="lg">{ indicator?.title }</Text>
-          { indicator?.hint && (
-            <Tooltip label={ indicator.hint } maxW="300px">
-              <Box display="inline-flex" cursor="pointer" ml={ 1 }>
-                <Icon as={ infoIcon } boxSize={ 4 }/>
-              </Box>
-            </Tooltip>
-          ) }
+          { indicator?.hint && <Hint label={ indicator.hint } ml={ 1 }/> }
         </Flex>
         { valueTitle }
         <ChainIndicatorChartContainer { ...queryResult }/>

@@ -1,5 +1,6 @@
 import { Text, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { Block } from 'types/api/block';
@@ -7,7 +8,6 @@ import type { Block } from 'types/api/block';
 import appConfig from 'configs/app/config';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import link from 'lib/link/link';
 import LinkInternal from 'ui/shared/LinkInternal';
 import ListItemMobile from 'ui/shared/ListItemMobile';
 import Utilization from 'ui/shared/Utilization/Utilization';
@@ -17,7 +17,7 @@ type Props = Block & {
 };
 
 const AddressBlocksValidatedListItem = (props: Props) => {
-  const blockUrl = link('block', { id: String(props.height) });
+  const blockUrl = route({ pathname: '/block/[height]', query: { height: props.height.toString() } });
   const timeAgo = useTimeAgoIncrement(props.timestamp, props.page === 1);
   const totalReward = getBlockTotalReward(props);
 

@@ -1,6 +1,7 @@
 import { Flex, Spinner, Text, Box, Icon } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import capitalize from 'lodash/capitalize';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { Block } from 'types/api/block';
@@ -9,7 +10,6 @@ import appConfig from 'configs/app/config';
 import flameIcon from 'icons/flame.svg';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import { WEI } from 'lib/consts';
-import link from 'lib/link/link';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import BlockTimestamp from 'ui/blocks/BlockTimestamp';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -36,7 +36,7 @@ const BlocksListItem = ({ data, isPending, enableTimeIncrement }: Props) => {
           { isPending && <Spinner size="sm"/> }
           <LinkInternal
             fontWeight={ 600 }
-            href={ link('block', { id: String(data.height) }) }
+            href={ route({ pathname: '/block/[height]', query: { height: String(data.height) } }) }
           >
             { data.height }
           </LinkInternal>
@@ -54,7 +54,7 @@ const BlocksListItem = ({ data, isPending, enableTimeIncrement }: Props) => {
       <Flex columnGap={ 2 }>
         <Text fontWeight={ 500 }>Txn</Text>
         { data.tx_count > 0 ? (
-          <LinkInternal href={ link('block', { id: String(data.height) }, { tab: 'txs' }) }>
+          <LinkInternal href={ route({ pathname: '/block/[height]', query: { height: String(data.height), tab: 'txs' } }) }>
             { data.tx_count }
           </LinkInternal>
         ) :

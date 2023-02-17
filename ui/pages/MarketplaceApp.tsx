@@ -1,10 +1,10 @@
 import { Box, Center, useColorMode } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import type { AppItemOverview } from 'types/client/apps';
 
 import appConfig from 'configs/app/config';
-import link from 'lib/link/link';
 import ContentLoader from 'ui/shared/ContentLoader';
 import Page from 'ui/shared/Page/Page';
 
@@ -26,9 +26,9 @@ const MarketplaceApp = ({ app, isLoading }: Props) => {
     if (app && !isFrameLoading) {
       const message = {
         blockscoutColorMode: colorMode,
-        blockscoutRootUrl: link('network_index'),
-        blockscoutAddressExplorerUrl: link('address_index'),
-        blockscoutTransactionExplorerUrl: link('tx'),
+        blockscoutRootUrl: appConfig.baseUrl + route({ pathname: '/' }),
+        blockscoutAddressExplorerUrl: appConfig.baseUrl + route({ pathname: '/address/[hash]', query: { hash: '' } }),
+        blockscoutTransactionExplorerUrl: appConfig.baseUrl + route({ pathname: '/tx/[hash]', query: { hash: '' } }),
         blockscoutNetworkName: appConfig.network.name,
         blockscoutNetworkId: Number(appConfig.network.id),
         blockscoutNetworkCurrency: appConfig.network.currency,

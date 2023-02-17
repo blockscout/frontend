@@ -53,7 +53,7 @@ const CsvExport = () => {
   const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/address');
 
   const addressQuery = useApiQuery('address', {
-    pathParams: { id: addressHash },
+    pathParams: { hash: addressHash },
     queryOptions: {
       enabled: Boolean(addressHash),
     },

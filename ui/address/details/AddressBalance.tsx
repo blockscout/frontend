@@ -26,7 +26,7 @@ const AddressBalance = ({ data }: Props) => {
     }
 
     setLastBlockNumber(blockNumber);
-    const queryKey = getResourceKey('address', { pathParams: { id: data.hash } });
+    const queryKey = getResourceKey('address', { pathParams: { hash: data.hash } });
     queryClient.setQueryData(queryKey, (prevData: Address | undefined) => {
       if (!prevData) {
         return;
@@ -66,7 +66,7 @@ const AddressBalance = ({ data }: Props) => {
   return (
     <DetailsInfoItem
       title="Balance"
-      hint={ `Address balance in ${ appConfig.network.currency.symbol }. Doesn't include ERC20, ERC721 and ERC1155 tokens.` }
+      hint={ `Address balance in ${ appConfig.network.currency.symbol }. Doesn't include ERC20, ERC721 and ERC1155 tokens` }
       flexWrap="nowrap"
       alignItems="flex-start"
     >

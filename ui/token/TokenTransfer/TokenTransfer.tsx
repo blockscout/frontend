@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
-import type { TokenInfo } from 'types/api/tokenInfo';
 import type { TokenTransferResponse } from 'types/api/tokenTransfer';
 
 import useGradualIncrement from 'lib/hooks/useGradualIncrement';
@@ -23,14 +22,14 @@ import TokenTransferList from 'ui/token/TokenTransfer/TokenTransferList';
 import TokenTransferTable from 'ui/token/TokenTransfer/TokenTransferTable';
 
 type Props = {
-  token?: TokenInfo;
   transfersQuery: UseQueryResult<TokenTransferResponse> & {
     pagination: PaginationProps;
     isPaginationVisible: boolean;
   };
+  tokenId?: string;
 }
 
-const TokenTransfer = ({ transfersQuery, token }: Props) => {
+const TokenTransfer = ({ transfersQuery, tokenId }: Props) => {
   const isMobile = useIsMobile();
   const router = useRouter();
   const { isError, isLoading, data, pagination, isPaginationVisible } = transfersQuery;
@@ -92,12 +91,10 @@ const TokenTransfer = ({ transfersQuery, token }: Props) => {
           <TokenTransferTable
             data={ items }
             top={ isPaginationVisible ? 80 : 0 }
-            // token transfers query depends on token data
-            // so if we are here, we definitely have token data
-            token={ token as TokenInfo }
             showSocketInfo={ pagination.page === 1 }
             socketInfoAlert={ socketAlert }
             socketInfoNum={ newItemsCount }
+            tokenId={ tokenId }
           />
         </Hide>
         <Show below="lg" ssr={ false }>
@@ -110,7 +107,7 @@ const TokenTransfer = ({ transfersQuery, token }: Props) => {
               borderBottomRadius={ 0 }
             />
           ) }
-          <TokenTransferList data={ items }/>
+          <TokenTransferList data={ items } tokenId={ tokenId }/>
         </Show>
       </>
     );

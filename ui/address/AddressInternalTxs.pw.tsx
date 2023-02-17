@@ -9,10 +9,10 @@ import buildApiUrl from 'playwright/utils/buildApiUrl';
 import AddressInternalTxs from './AddressInternalTxs';
 
 const ADDRESS_HASH = internalTxsMock.base.from.hash;
-const API_URL_TX_INTERNALS = buildApiUrl('address_internal_txs', { id: ADDRESS_HASH });
+const API_URL_TX_INTERNALS = buildApiUrl('address_internal_txs', { hash: ADDRESS_HASH });
 const hooksConfig = {
   router: {
-    query: { id: ADDRESS_HASH },
+    query: { hash: ADDRESS_HASH },
   },
 };
 

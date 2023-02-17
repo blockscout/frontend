@@ -146,6 +146,9 @@ function makePolicyMap() {
 
       // walletconnect
       '*.walletconnect.com',
+
+      // token's media
+      'ipfs.io',
     ],
 
     'font-src': [

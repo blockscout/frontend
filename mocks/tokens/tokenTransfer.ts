@@ -112,7 +112,7 @@ export const erc1155: TokenTransfer = {
     exchange_rate: null,
     holders: '1',
     name: null,
-    symbol: null,
+    symbol: 'MY_SYMBOL_IS_VERY_LONG',
     type: 'ERC-1155',
     total_supply: '0',
   },

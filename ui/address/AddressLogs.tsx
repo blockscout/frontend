@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
+import getQueryParamString from 'lib/router/getQueryParamString';
 import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import LogItem from 'ui/shared/logs/LogItem';
@@ -12,10 +13,10 @@ import Pagination from 'ui/shared/Pagination';
 const AddressLogs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}) => {
   const router = useRouter();
 
-  const addressHash = String(router.query?.id);
+  const hash = getQueryParamString(router.query.hash);
   const { data, isLoading, isError, pagination, isPaginationVisible } = useQueryWithPages({
     resourceName: 'address_logs',
-    pathParams: { id: addressHash },
+    pathParams: { hash },
     scrollRef,
   });
 
