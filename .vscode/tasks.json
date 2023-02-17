@@ -44,8 +44,8 @@
             }
         },
         {
-            "type": "npm",
-            "script": "dev:goerli",
+            "type": "shell",
+            "command": "NEXT_PUBLIC_API_HOST=${input:goerliApiHost} yarn dev:goerli",
             "problemMatcher": [],
             "label": "dev server: goerli",
             "detail": "start local dev server for Goerli network",
@@ -324,6 +324,16 @@
             "options": [
               "",
               "--update-snapshots",
+            ],
+            "default": ""
+        },
+        {
+            "type": "pickString",
+            "id": "goerliApiHost",
+            "description": "Choose API host:",
+            "options": [
+              "blockscout-main.test.aws-k8s.blockscout.com",
+              "eth-goerli.blockscout.com",
             ],
             "default": ""
         },
