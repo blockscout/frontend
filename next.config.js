@@ -1,3 +1,8 @@
+const withTM = require('next-transpile-modules')([
+  'react-syntax-highlighter',
+  'swagger-client',
+  'swagger-ui-react',
+]);
 const withRoutes = require('nextjs-routes/config')({
   outDir: 'types',
 });
@@ -7,7 +12,7 @@ const headers = require('./configs/nextjs/headers');
 const redirects = require('./configs/nextjs/redirects');
 const rewrites = require('./configs/nextjs/rewrites');
 
-const moduleExports = {
+const moduleExports = withTM({
   include: path.resolve(__dirname, 'icons'),
   reactStrictMode: true,
   webpack(config, { webpack }) {
@@ -39,6 +44,6 @@ const moduleExports = {
     // otherwise it is impossible to upload large files (over 1Mb)
     bodyParser: false,
   },
-};
+});
 
 module.exports = withRoutes(moduleExports);
