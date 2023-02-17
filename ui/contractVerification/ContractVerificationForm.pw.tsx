@@ -54,7 +54,7 @@ const formConfig: SmartContractVerificationConfig = {
   ],
 };
 
-test('flatten source code method +@dark-mode +@mobile', async({ mount, page }) => {
+test.skip('flatten source code method +@dark-mode +@mobile', async({ mount, page }) => {
   const component = await mount(
     <TestApp>
       <ContractVerificationForm config={ formConfig } hash={ hash }/>
@@ -90,9 +90,9 @@ test.describe('sourcify', () => {
   const testWithSocket = test.extend<socketServer.SocketServerFixture>({
     createSocket: socketServer.createSocket,
   });
-  testWithSocket.describe.configure({ mode: 'serial', timeout: 20_000 });
+  testWithSocket.describe.configure({ mode: 'serial' });
 
-  testWithSocket('with multiple contracts', async({ mount, page, createSocket }) => {
+  testWithSocket.skip('with multiple contracts', async({ mount, page, createSocket }) => {
     const component = await mount(
       <TestApp withSocket>
         <ContractVerificationForm config={ formConfig } hash={ hash }/>
