@@ -31,6 +31,7 @@ type Props = {
   currentAddress?: string;
   filter?: React.ReactNode;
   enableTimeIncrement?: boolean;
+  top?: number;
 }
 
 const TxsContent = ({
@@ -42,6 +43,7 @@ const TxsContent = ({
   socketInfoNum,
   currentAddress,
   enableTimeIncrement,
+  top,
 }: Props) => {
   const { data, isLoading, isError, setSortByField, setSortByValue, sorting } = useTxsSort(query);
   const isMobile = useIsMobile();
@@ -105,7 +107,7 @@ const TxsContent = ({
             showSocketInfo={ showSocketInfo }
             socketInfoAlert={ socketInfoAlert }
             socketInfoNum={ socketInfoNum }
-            top={ query.isPaginationVisible ? 80 : 0 }
+            top={ top || query.isPaginationVisible ? 80 : 0 }
             currentAddress={ currentAddress }
             enableTimeIncrement={ enableTimeIncrement }
           />

@@ -152,6 +152,7 @@ const AddressTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}
         showSocketInfo={ addressTxsQuery.pagination.page === 1 }
         socketInfoAlert={ socketAlert }
         socketInfoNum={ newItemsCount }
+        top={ 80 }
       />
     </>
   );

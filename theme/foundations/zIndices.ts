@@ -3,6 +3,7 @@ const zIndices = {
   auto: 'auto',
   base: 0,
   docked: 10,
+  overDocked: 11,
   tooltip: 900,
   dropdown: 1000,
   sticky: 1100,
