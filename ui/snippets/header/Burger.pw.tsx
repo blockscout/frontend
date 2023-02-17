@@ -8,11 +8,20 @@ import Burger from './Burger';
 
 test.use({ viewport: devices['iPhone 13 Pro'].viewport });
 
+const hooksConfig = {
+  router: {
+    route: '/blocks',
+    query: { id: '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859' },
+    pathname: '/blocks',
+  },
+};
+
 test('base view', async({ mount, page }) => {
   const component = await mount(
     <TestApp>
       <Burger/>
     </TestApp>,
+    { hooksConfig },
   );
 
   await component.locator('svg[aria-label="Menu button"]').click();
@@ -30,6 +39,7 @@ test.describe('dark mode', () => {
       <TestApp>
         <Burger/>
       </TestApp>,
+      { hooksConfig },
     );
 
     await component.locator('svg[aria-label="Menu button"]').click();
@@ -53,6 +63,7 @@ test.describe('auth', () => {
       <TestApp>
         <Burger/>
       </TestApp>,
+      { hooksConfig },
     );
 
     await component.locator('svg[aria-label="Menu button"]').click();
@@ -64,6 +75,7 @@ test.describe('auth', () => {
       <TestApp>
         <Burger/>
       </TestApp>,
+      { hooksConfig },
     );
 
     await component.locator('svg[aria-label="Menu button"]').click();

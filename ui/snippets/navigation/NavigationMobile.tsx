@@ -74,6 +74,7 @@ const NavigationMobile = () => {
         { openedGroupIndex >= 0 && (
           <Box
             as={ motion.nav }
+            w="100%"
             mt={ 6 }
             position="absolute"
             top={ 0 }
