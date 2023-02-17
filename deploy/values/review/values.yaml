@@ -409,3 +409,5 @@ frontend:
       _default: https://rpc.ankr.com/eth_goerli
     NEXT_PUBLIC_NETWORK_EXPLORERS:
       _default: "[{'title':'Anyblock','baseUrl':'https://explorer.anyblock.tools','paths':{'tx':'/ethereum/ethereum/goerli/transaction','address':'/ethereum/ethereum/goerli/address'}},{'title':'Etherscan','baseUrl':'https://goerli.etherscan.io/','paths':{'tx':'/tx','address':'/address'}}]"
+    NEXT_PUBLIC_API_SPEC_URL: 
+      _default: https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml

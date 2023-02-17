@@ -79,6 +79,7 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME | `boolean` *(optional)* | Set to false if average block time is useless for the network | `true` |
 | NEXT_PUBLIC_DOMAIN_WITH_AD | `string` *(optional)* | The domain on which we display ads | `blockscout.com` |
 | NEXT_PUBLIC_AD_ADBUTLER_ON | `boolean` *(optional)* | Set to true to show Adbutler banner instead of Coinzilla banner | `false` |
+| NEXT_PUBLIC_API_SPEC_URL | `string` *(optional)* | Spec to be displayed on api-docs page | `https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml` |
 ### App configuration
 
 | Variable | Type | Description | Default value
