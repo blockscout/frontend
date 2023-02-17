@@ -491,6 +491,7 @@ frontend:
         - "/token"
         - "/accounts"
         - "/visualize"
+        - "/csv-export"
 
   resources:
     limits:

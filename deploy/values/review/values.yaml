@@ -327,6 +327,7 @@ frontend:
         - "/tokens"
         - "/accounts"
         - "/visualize"
+        - "/csv-export"
 
   resources:
     limits:
