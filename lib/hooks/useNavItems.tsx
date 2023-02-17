@@ -42,6 +42,13 @@ interface ReturnType {
   profileItem: NavItem;
 }
 
+export function isGroupItem(item: NavItem | NavGroupItem): item is NavGroupItem {
+  if ((item as NavGroupItem).subItems) {
+    return true;
+  }
+  return false;
+}
+
 export default function useNavItems(): ReturnType {
   const isMarketplaceFilled = appConfig.marketplaceAppList.length > 0;
 
@@ -49,7 +56,7 @@ export default function useNavItems(): ReturnType {
   const pathname = router.pathname;
 
   return React.useMemo(() => {
-    const blockchainNavItems = [
+    const blockchainNavItems: Array<NavItem> = [
       { text: 'Top accounts', nextRoute: { pathname: '/accounts' as const }, icon: topAccountsIcon, isActive: pathname === '/accounts', isNewUi: true },
       { text: 'Blocks', nextRoute: { pathname: '/blocks' as const }, icon: blocksIcon, isActive: pathname.startsWith('/block'), isNewUi: true },
       { text: 'Transactions', nextRoute: { pathname: '/txs' as const }, icon: transactionsIcon, isActive: pathname.startsWith('/tx'), isNewUi: true },

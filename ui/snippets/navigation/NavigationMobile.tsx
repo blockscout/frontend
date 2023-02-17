@@ -5,7 +5,7 @@ import React, { useCallback } from 'react';
 import appConfig from 'configs/app/config';
 import chevronIcon from 'icons/arrows/east-mini.svg';
 import * as cookies from 'lib/cookies';
-import useNavItems from 'lib/hooks/useNavItems';
+import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
 import NavFooter from 'ui/snippets/navigation/NavFooter';
 import NavLink from 'ui/snippets/navigation/NavLink';
 
@@ -35,6 +35,8 @@ const NavigationMobile = () => {
 
   const iconColor = useColorModeValue('blue.600', 'blue.300');
 
+  const openedItem = mainNavItems[openedGroupIndex];
+
   return (
     <>
       <Box position="relative">
@@ -50,7 +52,7 @@ const NavigationMobile = () => {
             alignItems="flex-start"
           >
             { mainNavItems.map((item, index) => {
-              if (item.subItems) {
+              if (isGroupItem(item)) {
                 return <NavLinkGroupMobile key={ item.text } { ...item } onClick={ onGroupItemOpen(index) }/>;
               } else {
                 return <NavLink key={ item.text } { ...item }/>;
@@ -88,7 +90,7 @@ const NavigationMobile = () => {
                 <Icon as={ chevronIcon } boxSize={ 6 } mr={ 2 } color={ iconColor }/>
                 <Text variant="secondary" fontSize="sm">{ mainNavItems[openedGroupIndex].text }</Text>
               </Flex>
-              { mainNavItems[openedGroupIndex].subItems?.map((item) => <NavLink key={ item.text } { ...item }/>) }
+              { isGroupItem(openedItem) && openedItem.subItems?.map((item) => <NavLink key={ item.text } { ...item }/>) }
             </VStack>
           </Box>
         ) }

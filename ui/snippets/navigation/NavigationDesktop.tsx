@@ -5,7 +5,7 @@ import appConfig from 'configs/app/config';
 import chevronIcon from 'icons/arrows/east-mini.svg';
 import { useAppContext } from 'lib/appContext';
 import * as cookies from 'lib/cookies';
-import useNavItems from 'lib/hooks/useNavItems';
+import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import NetworkMenu from 'ui/snippets/networkMenu/NetworkMenu';
@@ -80,7 +80,7 @@ const NavigationDesktop = () => {
       <Box as="nav" mt={ 8 }>
         <VStack as="ul" spacing="1" alignItems="flex-start">
           { mainNavItems.map((item) => {
-            if (item.subItems) {
+            if (isGroupItem(item)) {
               return <NavLinkGroupDesktop key={ item.text } { ...item } isCollapsed={ isCollapsed }/>;
             } else {
               return <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed }/>;

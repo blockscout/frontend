@@ -8,24 +8,13 @@ import {
 import React from 'react';
 
 import chevronIcon from 'icons/arrows/east-mini.svg';
+import type { NavGroupItem } from 'lib/hooks/useNavItems';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 
 import useColors from './useColors';
 
-type NavigationLink = {
-  text: string;
-  url: string;
-  icon: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
-  isNewUi: boolean;
-  isActive: boolean;
-}
-
-interface Props {
+type Props = NavGroupItem & {
   isCollapsed?: boolean;
-  isActive?: boolean;
-  subItems: Array<NavigationLink>;
-  text: string;
-  icon: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
   onClick: () => void;
 }
 
