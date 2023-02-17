@@ -8,7 +8,7 @@ import { Box, Spinner, useColorModeValue } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-import spec from '../lib/spec.json';
+import appConfig from 'configs/app/config';
 
 import 'swagger-ui-react/swagger-ui.css';
 
@@ -47,7 +47,7 @@ const SwaggerUI = () => {
 
   return (
     <Box sx={ swaggerStyle }>
-      <SwaggerUIReact spec={ spec } plugins={ [ NeverShowInfoPlugin ] }/>
+      <SwaggerUIReact url={ appConfig.apiDoc.specUrl } plugins={ [ NeverShowInfoPlugin ] }/>
     </Box>
   );
 };

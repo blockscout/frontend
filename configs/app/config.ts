@@ -126,6 +126,9 @@ const config = Object.freeze({
   walletConnect: {
     projectId: getEnvValue(process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID),
   },
+  apiDoc: {
+    specUrl: getEnvValue(process.env.NEXT_PUBLIC_API_SPEC_URL),
+  },
 });
 
 export default config;

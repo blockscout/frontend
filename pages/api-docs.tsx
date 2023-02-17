@@ -1,8 +1,11 @@
-import type { NextPage } from 'next';
+import type { NextPage, GetServerSideProps } from 'next';
 import Head from 'next/head';
 import React from 'react';
 
+import appConfig from 'configs/app/config';
 import getNetworkTitle from 'lib/networks/getNetworkTitle';
+import { getServerSideProps as getServerSidePropsBase } from 'lib/next/getServerSideProps';
+import type { Props } from 'lib/next/getServerSideProps';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import SwaggerUI from 'ui/SwaggerUI';
@@ -21,4 +24,12 @@ const AppsPage: NextPage = () => {
 
 export default AppsPage;
 
-export { getServerSideProps } from 'lib/next/getServerSideProps';
+export const getServerSideProps: GetServerSideProps<Props> = async(args) => {
+  if (!appConfig.apiDoc.specUrl) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return getServerSidePropsBase(args);
+};
