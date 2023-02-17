@@ -46,7 +46,6 @@ export type TokenTransferPagination = {
   block_number: number;
   index: number;
   items_count: number;
-  transaction_hash: string;
 }
 
 export interface TokenTransferResponse {
