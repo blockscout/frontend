@@ -17,10 +17,10 @@ interface Props {
 }
 
 const TOKEN_TRANSFERS_TYPES = [
-  { title: 'Tokens transferred', hint: 'List of tokens transferred in the transaction.', type: 'token_transfer' },
-  { title: 'Tokens minted', hint: 'List of tokens minted in the transaction.', type: 'token_minting' },
-  { title: 'Tokens burnt', hint: 'List of tokens burnt in the transaction.', type: 'token_burning' },
-  { title: 'Tokens created', hint: 'List of tokens created in the transaction.', type: 'token_spawning' },
+  { title: 'Tokens transferred', hint: 'List of tokens transferred in the transaction', type: 'token_transfer' },
+  { title: 'Tokens minted', hint: 'List of tokens minted in the transaction', type: 'token_minting' },
+  { title: 'Tokens burnt', hint: 'List of tokens burnt in the transaction', type: 'token_burning' },
+  { title: 'Tokens created', hint: 'List of tokens created in the transaction', type: 'token_spawning' },
 ];
 const VISIBLE_ITEMS_NUM = 3;
 

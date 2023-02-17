@@ -38,13 +38,13 @@ const TokenInstanceDetails = ({ data, scrollRef }: Props) => {
       >
         <DetailsInfoItem
           title="Token"
-          hint="Token name."
+          hint="Token name"
         >
           <TokenSnippet hash={ data.token.address } name={ data.token.name }/>
         </DetailsInfoItem>
         <DetailsInfoItem
           title="Owner"
-          hint="Current owner of this token instance."
+          hint="Current owner of this token instance"
         >
           <Address>
             <AddressIcon address={ data.owner }/>
@@ -55,7 +55,7 @@ const TokenInstanceDetails = ({ data, scrollRef }: Props) => {
         <TokenInstanceCreatorAddress hash={ data.token.address }/>
         <DetailsInfoItem
           title="Token ID"
-          hint="This token instance unique token ID."
+          hint="This token instance unique token ID"
         >
           <Flex alignItems="center" overflow="hidden">
             <Box overflow="hidden" display="inline-block" w="100%">

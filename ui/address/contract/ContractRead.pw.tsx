@@ -9,7 +9,7 @@ import ContractRead from './ContractRead';
 
 const addressHash = 'hash';
 const CONTRACT_READ_METHODS_API_URL = buildApiUrl('contract_methods_read', { hash: addressHash }) + '?is_custom_abi=false';
-const CONTRACT_QUERY_METHOD_API_URL = buildApiUrl('contract_method_query', { hash: addressHash });
+const CONTRACT_QUERY_METHOD_API_URL = buildApiUrl('contract_method_query', { hash: addressHash }) + '?is_custom_abi=false';
 const hooksConfig = {
   router: {
     query: { hash: addressHash },
