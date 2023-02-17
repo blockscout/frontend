@@ -1,6 +1,7 @@
 import { Tr, Td, Flex, Box, Icon, Tooltip, Spinner, useColorModeValue } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import { motion } from 'framer-motion';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { Block } from 'types/api/block';
@@ -8,7 +9,6 @@ import type { Block } from 'types/api/block';
 import flameIcon from 'icons/flame.svg';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import { WEI } from 'lib/consts';
-import link from 'lib/link/link';
 import BlockTimestamp from 'ui/blocks/BlockTimestamp';
 import AddressLink from 'ui/shared/address/AddressLink';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
@@ -41,7 +41,7 @@ const BlocksTableItem = ({ data, isPending, enableTimeIncrement }: Props) => {
           <Tooltip isDisabled={ data.type !== 'reorg' } label="Chain reorganizations">
             <LinkInternal
               fontWeight={ 600 }
-              href={ link('block', { id: String(data.height) }) }
+              href={ route({ pathname: '/block/[height]', query: { height: String(data.height) } }) }
             >
               { data.height }
             </LinkInternal>
@@ -55,7 +55,7 @@ const BlocksTableItem = ({ data, isPending, enableTimeIncrement }: Props) => {
       </Td>
       <Td isNumeric fontSize="sm">
         { data.tx_count > 0 ? (
-          <LinkInternal href={ link('block', { id: String(data.height) }, { tab: 'txs' }) }>
+          <LinkInternal href={ route({ pathname: '/block/[height]', query: { height: String(data.height), tab: 'txs' } }) }>
             { data.tx_count }
           </LinkInternal>
         ) : data.tx_count }

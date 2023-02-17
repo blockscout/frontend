@@ -1,5 +1,6 @@
 import type { LinkProps } from '@chakra-ui/react';
 import { Link } from '@chakra-ui/react';
+import type { LinkProps as NextLinkProps } from 'next/link';
 import NextLink from 'next/link';
 import type { LegacyRef } from 'react';
 import React from 'react';
@@ -11,7 +12,7 @@ const LinkInternal = (props: LinkProps, ref: LegacyRef<HTMLAnchorElement>) => {
   }
 
   return (
-    <NextLink href={ props.href } passHref target={ props.target }>
+    <NextLink href={ props.href as NextLinkProps['href'] } passHref target={ props.target }>
       <Link { ...props } ref={ ref }/>
     </NextLink>
   );

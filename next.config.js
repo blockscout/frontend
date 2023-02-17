@@ -1,3 +1,6 @@
+const withRoutes = require('nextjs-routes/config')({
+  outDir: 'types',
+});
 const path = require('path');
 
 const headers = require('./configs/nextjs/headers');
@@ -38,4 +41,4 @@ const moduleExports = {
   },
 };
 
-module.exports = moduleExports;
+module.exports = withRoutes(moduleExports);

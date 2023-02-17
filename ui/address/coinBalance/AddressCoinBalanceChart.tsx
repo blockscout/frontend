@@ -11,7 +11,7 @@ interface Props {
 
 const AddressCoinBalanceChart = ({ addressHash }: Props) => {
   const { data, isLoading, isError } = useApiQuery('address_coin_balance_chart', {
-    pathParams: { id: addressHash },
+    pathParams: { hash: addressHash },
   });
 
   const items = React.useMemo(() => data?.map(({ date, value }) => ({

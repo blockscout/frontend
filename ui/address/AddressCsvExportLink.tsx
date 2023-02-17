@@ -1,9 +1,9 @@
 import { chakra, Icon, Link, Tooltip, Hide } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import svgFileIcon from 'icons/files/csv.svg';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import link from 'lib/link/link';
 
 interface Props {
   address: string;
@@ -20,7 +20,9 @@ const AddressCsvExportLink = ({ className, address, type }: Props) => {
         className={ className }
         display="inline-flex"
         alignItems="center"
-        href={ link('csv_export', undefined, { type, address }) }
+        whiteSpace="nowrap"
+        href={ route({ pathname: '/csv-export', query: { type, address } }) }
+        flexShrink={ 0 }
       >
         <Icon as={ svgFileIcon } boxSize={{ base: '30px', lg: 6 }}/>
         <Hide ssr={ false } below="lg"><chakra.span ml={ 1 }>Download CSV</chakra.span></Hide>

@@ -4,11 +4,10 @@ import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 import { scroller } from 'react-scroll';
 
-import type { TokenInfo } from 'types/api/tokenInfo';
+import type { TokenInfo } from 'types/api/token';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import getCurrencyValue from 'lib/getCurrencyValue';
-import link from 'lib/link/link';
 import type { TokenTabs } from 'ui/pages/Token';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsSkeletonRow from 'ui/shared/skeletons/DetailsSkeletonRow';
@@ -26,9 +25,8 @@ const TokenDetails = ({ tokenQuery }: Props) => {
   });
 
   const changeUrlAndScroll = useCallback((tab: TokenTabs) => () => {
-    const newLink = link('token_index', { hash: router.query.hash }, { tab: tab });
     router.push(
-      newLink,
+      { pathname: '/token/[hash]', query: { hash: router.query.hash?.toString() || '', tab } },
       undefined,
       { shallow: true },
     );
@@ -88,7 +86,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
       { exchangeRate && (
         <DetailsInfoItem
           title="Price"
-          hint="Price per token on the exchanges."
+          hint="Price per token on the exchanges"
           alignSelf="center"
         >
           { `$${ exchangeRate }` }
@@ -97,7 +95,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
       { totalValue?.usd && (
         <DetailsInfoItem
           title="Fully diluted market cap"
-          hint="Total supply * Price."
+          hint="Total supply * Price"
           alignSelf="center"
         >
           { `$${ totalValue?.usd }` }
@@ -105,7 +103,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
       ) }
       <DetailsInfoItem
         title="Max total supply"
-        hint="The total amount of tokens issued."
+        hint="The total amount of tokens issued"
         alignSelf="center"
         wordBreak="break-word"
         whiteSpace="pre-wrap"
@@ -114,7 +112,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Holders"
-        hint="Number of accounts holding the token."
+        hint="Number of accounts holding the token"
         alignSelf="center"
       >
         { tokenCountersQuery.isLoading && <Skeleton w={ 20 } h={ 4 }/> }
@@ -122,7 +120,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Transfers"
-        hint="Number of transfer for the token."
+        hint="Number of transfer for the token"
         alignSelf="center"
       >
         { tokenCountersQuery.isLoading && <Skeleton w={ 20 } h={ 4 }/> }
@@ -131,7 +129,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
       { decimals && (
         <DetailsInfoItem
           title="Decimals"
-          hint="Number of digits that come after the decimal place when displaying token value."
+          hint="Number of digits that come after the decimal place when displaying token value"
           alignSelf="center"
         >
           { decimals }

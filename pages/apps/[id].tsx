@@ -16,7 +16,7 @@ const AppPage: NextPage = () => {
   const [ isLoading, setIsLoading ] = useState(true);
   const [ app, setApp ] = useState<AppItemOverview | undefined>(undefined);
 
-  const { id }: { id?: string } = router.query;
+  const id = router.query.id;
 
   useEffect(() => {
     if (!id) {

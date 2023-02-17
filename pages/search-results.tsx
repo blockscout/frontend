@@ -1,12 +1,12 @@
 import type { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { SearchRedirectResult } from 'types/api/search';
 
 import buildUrlNode from 'lib/api/buildUrlNode';
 import fetchFactory from 'lib/api/nodeFetch';
-import link from 'lib/link/link';
 import getNetworkTitle from 'lib/networks/getNetworkTitle';
 import type { Props } from 'lib/next/getServerSideProps';
 import { getServerSideProps as getServerSidePropsBase } from 'lib/next/getServerSideProps';
@@ -43,13 +43,13 @@ export const getServerSideProps: GetServerSideProps<Props> = async({ req, res, r
     const redirectUrl = (() => {
       switch (payload.type) {
         case 'block': {
-          return link('block', { id: q });
+          return route({ pathname: '/block/[height]', query: { height: q } });
         }
         case 'address': {
-          return link('address_index', { id: payload.parameter || q });
+          return route({ pathname: '/address/[hash]', query: { hash: payload.parameter || q } });
         }
         case 'transaction': {
-          return link('tx', { id: q });
+          return route({ pathname: '/tx/[hash]', query: { hash: q } });
         }
       }
     })();

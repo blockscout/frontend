@@ -1,94 +1,92 @@
-const PATHS = require('../../lib/link/paths.json');
-
 const oldUrls = [
   {
     oldPath: '/account/tag_transaction',
-    newPath: `${ PATHS.private_tags }?tab=tx`,
+    newPath: '/account/tag_address?tab=tx',
   },
   {
     oldPath: '/pending-transactions',
-    newPath: `${ PATHS.txs }?tab=pending`,
+    newPath: '/txs?tab=pending',
   },
   {
-    oldPath: '/tx/:id/internal-transactions',
-    newPath: `${ PATHS.tx }?tab=internal`,
+    oldPath: '/tx/:hash/internal-transactions',
+    newPath: '/tx/:hash?tab=internal',
   },
   {
-    oldPath: '/tx/:id/logs',
-    newPath: `${ PATHS.tx }?tab=logs`,
+    oldPath: '/tx/:hash/logs',
+    newPath: '/tx/:hash?tab=logs',
   },
   {
-    oldPath: '/tx/:id/raw-trace',
-    newPath: `${ PATHS.tx }?tab=raw_trace`,
+    oldPath: '/tx/:hash/raw-trace',
+    newPath: '/tx/:hash?tab=raw_trace',
   },
   {
-    oldPath: '/tx/:id/state',
-    newPath: `${ PATHS.tx }?tab=state`,
+    oldPath: '/tx/:hash/state',
+    newPath: '/tx/:hash?tab=state',
   },
   {
     oldPath: '/uncles',
-    newPath: `${ PATHS.blocks }?tab=uncles`,
+    newPath: '/blocks?tab=uncles',
   },
   {
     oldPath: '/reorgs',
-    newPath: `${ PATHS.blocks }?tab=reorgs`,
+    newPath: '/blocks?tab=reorgs',
   },
   {
-    oldPath: '/block/:id/transactions',
-    newPath: `${ PATHS.block }`,
+    oldPath: '/block/:height/transactions',
+    newPath: '/block/:height?tab=txs',
   },
   {
-    oldPath: '/address/:id/transactions',
-    newPath: `${ PATHS.address_index }`,
+    oldPath: '/address/:hash/transactions',
+    newPath: '/address/:hash',
   },
   {
-    oldPath: '/address/:id/token-transfers',
-    newPath: `${ PATHS.address_index }?tab=token_transfers`,
+    oldPath: '/address/:hash/token-transfers',
+    newPath: '/address/:hash?tab=token_transfers',
   },
   {
-    oldPath: '/address/:id/tokens',
-    newPath: `${ PATHS.address_index }?tab=tokens`,
+    oldPath: '/address/:hash/tokens',
+    newPath: '/address/:hash?tab=tokens',
   },
   {
-    oldPath: '/address/:id/internal-transactions',
-    newPath: `${ PATHS.address_index }?tab=internal_txns`,
+    oldPath: '/address/:hash/internal-transactions',
+    newPath: '/address/:hash?tab=internal_txns',
   },
   {
-    oldPath: '/address/:id/coin-balances',
-    newPath: `${ PATHS.address_index }?tab=coin_balance_history`,
+    oldPath: '/address/:hash/coin-balances',
+    newPath: '/address/:hash?tab=coin_balance_history',
   },
   {
-    oldPath: '/address/:id/validations',
-    newPath: `${ PATHS.address_index }?tab=blocks_validated`,
+    oldPath: '/address/:hash/validations',
+    newPath: '/address/:hash?tab=blocks_validated',
   },
   {
-    oldPath: '/address/:id/tokens/:hash/token-transfers',
-    newPath: `${ PATHS.address_index }?tab=token_transfers&token=:hash`,
+    oldPath: '/address/:hash/tokens/:token_hash/token-transfers',
+    newPath: '/address/:hash?tab=token_transfers&token=:token_hash',
   },
   // contract verification
   {
-    oldPath: '/address/:id/contract_verifications/new',
-    newPath: `${ PATHS.address_contract_verification }`,
+    oldPath: '/address/:hash/contract_verifications/new',
+    newPath: '/address/:hash/contract_verification',
   },
   {
-    oldPath: '/address/:id/verify-via-flattened-code/new',
-    newPath: `${ PATHS.address_contract_verification }?method=flatten_source_code`,
+    oldPath: '/address/:hash/verify-via-flattened-code/new',
+    newPath: '/address/:hash/contract_verification?method=flatten_source_code',
   },
   {
-    oldPath: '/address/:id/verify-via-standard-json-input/new',
-    newPath: `${ PATHS.address_contract_verification }?method=standard_input`,
+    oldPath: '/address/:hash/verify-via-standard-json-input/new',
+    newPath: '/address/:hash/contract_verification?method=standard_input',
   },
   {
-    oldPath: '/address/:id/verify-via-metadata-json/new',
-    newPath: `${ PATHS.address_contract_verification }?method=sourcify`,
+    oldPath: '/address/:hash/verify-via-metadata-json/new',
+    newPath: '/address/:hash/contract_verification?method=sourcify',
   },
   {
-    oldPath: '/address/:id/verify-via-multi-part-files/new',
-    newPath: `${ PATHS.address_contract_verification }?method=multi_part_file`,
+    oldPath: '/address/:hash/verify-via-multi-part-files/new',
+    newPath: '/address/:hash/contract_verification?method=multi_part_file',
   },
   {
-    oldPath: '/address/:id/verify-vyper-contract/new',
-    newPath: `${ PATHS.address_contract_verification }?method=vyper_contract`,
+    oldPath: '/address/:hash/verify-vyper-contract/new',
+    newPath: '/address/:hash/contract_verification?method=vyper_contract',
   },
 ];
 

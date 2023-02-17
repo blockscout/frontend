@@ -1,8 +1,9 @@
-import { Box, Flex, Icon, Text, useColorModeValue, chakra, Tooltip, LightMode } from '@chakra-ui/react';
+import type { TooltipProps } from '@chakra-ui/react';
+import { Flex, Icon, Text, useColorModeValue, chakra, LightMode } from '@chakra-ui/react';
 import React from 'react';
 
-import infoIcon from 'icons/info.svg';
 import breakpoints from 'theme/foundations/breakpoints';
+import Hint from 'ui/shared/Hint';
 
 type Props = {
   icon: React.FC<React.SVGAttributes<SVGElement>>;
@@ -14,6 +15,14 @@ type Props = {
 }
 
 const LARGEST_BREAKPOINT = '1240px';
+
+const TOOLTIP_PROPS: Partial<TooltipProps> = {
+  hasArrow: false,
+  borderRadius: 'md',
+  placement: 'bottom-end',
+  offset: [ 0, 0 ],
+  bgColor: 'blackAlpha.900',
+};
 
 const StatsItem = ({ icon, title, value, className, tooltipLabel, url }: Props) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -55,20 +64,15 @@ const StatsItem = ({ icon, title, value, className, tooltipLabel, url }: Props) 
       </Flex>
       { tooltipLabel && (
         <LightMode>
-          <Tooltip label={ tooltipLabel } hasArrow={ false } borderRadius="12px" placement="bottom-end" offset={ [ 0, 0 ] } bgColor="blackAlpha.900">
-            <Box
-              position="absolute"
-              top={{ base: 'calc(50% - 12px)', lg: '10px', xl: 'calc(50% - 12px)' }}
-              right="10px"
-              cursor="pointer"
-            >
-              <Icon
-                as={ infoIcon }
-                boxSize={ 6 }
-                color={ infoColor }
-              />
-            </Box>
-          </Tooltip>
+          <Hint
+            label={ tooltipLabel }
+            tooltipProps={ TOOLTIP_PROPS }
+            boxSize={ 6 }
+            color={ infoColor }
+            position="absolute"
+            top={{ base: 'calc(50% - 12px)', lg: '10px', xl: 'calc(50% - 12px)' }}
+            right="10px"
+          />
         </LightMode>
       ) }
     </Flex>

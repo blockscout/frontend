@@ -1,6 +1,7 @@
 import { Box, Flex, Text, Icon, Grid } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { Address as TAddress } from 'types/api/address';
@@ -9,25 +10,19 @@ import appConfig from 'configs/app/config';
 import blockIcon from 'icons/block.svg';
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import link from 'lib/link/link';
+import getQueryParamString from 'lib/router/getQueryParamString';
 import AddressCounterItem from 'ui/address/details/AddressCounterItem';
-import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import AddressHeadingInfo from 'ui/shared/AddressHeadingInfo';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import HashStringShorten from 'ui/shared/HashStringShorten';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
 
-import AddressAddToMetaMask from './details/AddressAddToMetaMask';
 import AddressBalance from './details/AddressBalance';
 import AddressDetailsSkeleton from './details/AddressDetailsSkeleton';
-import AddressFavoriteButton from './details/AddressFavoriteButton';
 import AddressNameInfo from './details/AddressNameInfo';
-import AddressQrCode from './details/AddressQrCode';
 import TokenSelect from './tokenSelect/TokenSelect';
 
 interface Props {
@@ -37,14 +32,13 @@ interface Props {
 
 const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
   const router = useRouter();
-  const isMobile = useIsMobile();
 
-  const addressHash = router.query.id?.toString();
+  const addressHash = getQueryParamString(router.query.hash);
 
   const countersQuery = useApiQuery('address_counters', {
-    pathParams: { id: addressHash },
+    pathParams: { hash: addressHash },
     queryOptions: {
-      enabled: Boolean(router.query.id) && Boolean(addressQuery.data),
+      enabled: Boolean(addressHash) && Boolean(addressQuery.data),
     },
   });
 
@@ -92,23 +86,12 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
 
   return (
     <Box>
-      <Flex alignItems="center">
-        <AddressIcon address={ data }/>
-        <Text ml={ 2 } fontFamily="heading" fontWeight={ 500 }>
-          { isMobile ? <HashStringShorten hash={ data.hash }/> : data.hash }
-        </Text>
-        <CopyToClipboard text={ data.hash }/>
-        { data.is_contract && data.token && <AddressAddToMetaMask ml={ 2 } token={ data.token }/> }
-        { !data.is_contract && (
-          <AddressFavoriteButton hash={ data.hash } isAdded={ Boolean(data.watchlist_names?.length) } ml={ 3 }/>
-        ) }
-        <AddressQrCode hash={ data.hash } ml={ 2 }/>
-      </Flex>
+      <AddressHeadingInfo address={ data } token={ data.token } isLinkDisabled/>
       { explorers.length > 0 && (
         <Flex mt={ 8 } columnGap={ 4 } flexWrap="wrap">
           <Text fontSize="sm">Verify with other explorers</Text>
           { explorers.map((explorer) => {
-            const url = new URL(explorer.paths.address + '/' + router.query.id, explorer.baseUrl);
+            const url = new URL(explorer.paths.address + '/' + addressHash, explorer.baseUrl);
             return <LinkExternal key={ explorer.baseUrl } title={ explorer.title } href={ url.toString() }/>;
           }) }
         </Flex>
@@ -123,7 +106,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
         { data.is_contract && data.creation_tx_hash && data.creator_address_hash && (
           <DetailsInfoItem
             title="Creator"
-            hint="Transaction and address of creation."
+            hint="Transaction and address of creation"
           >
             <AddressLink type="address" hash={ data.creator_address_hash } truncation="constant"/>
             <Text whiteSpace="pre"> at txn </Text>
@@ -133,10 +116,10 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
         { data.is_contract && data.implementation_address && (
           <DetailsInfoItem
             title="Implementation"
-            hint="Implementation address of the proxy contract."
+            hint="Implementation address of the proxy contract"
             columnGap={ 1 }
           >
-            <LinkInternal href={ link('address_index', { id: data.implementation_address }) } overflow="hidden">
+            <LinkInternal href={ route({ pathname: '/address/[hash]', query: { hash: data.implementation_address } }) } overflow="hidden">
               { data.implementation_name || <HashStringShortenDynamic hash={ data.implementation_address }/> }
             </LinkInternal>
             { data.implementation_name && (
@@ -150,7 +133,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
         { data.has_tokens && (
           <DetailsInfoItem
             title="Tokens"
-            hint="All tokens in the account and total value."
+            hint="All tokens in the account and total value"
             alignSelf="center"
             py={ 0 }
           >
@@ -159,7 +142,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
         ) }
         <DetailsInfoItem
           title="Transactions"
-          hint="Number of transactions related to this address."
+          hint="Number of transactions related to this address"
         >
           { addressQuery.data ?
             <AddressCounterItem prop="transactions_count" query={ countersQuery } address={ data.hash } onClick={ handleCounterItemClick }/> :
@@ -168,7 +151,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
         { data.has_token_transfers && (
           <DetailsInfoItem
             title="Transfers"
-            hint="Number of transfers to/from this address."
+            hint="Number of transfers to/from this address"
           >
             { addressQuery.data ?
               <AddressCounterItem prop="token_transfers_count" query={ countersQuery } address={ data.hash } onClick={ handleCounterItemClick }/> :
@@ -177,7 +160,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
         ) }
         <DetailsInfoItem
           title="Gas used"
-          hint="Gas used by the address."
+          hint="Gas used by the address"
         >
           { addressQuery.data ?
             <AddressCounterItem prop="gas_usage_count" query={ countersQuery } address={ data.hash } onClick={ handleCounterItemClick }/> :
@@ -186,7 +169,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
         { data.has_validated_blocks && (
           <DetailsInfoItem
             title="Blocks validated"
-            hint="Number of blocks validated by this validator."
+            hint="Number of blocks validated by this validator"
           >
             { addressQuery.data ?
               <AddressCounterItem prop="validations_count" query={ countersQuery } address={ data.hash } onClick={ handleCounterItemClick }/> :
@@ -196,12 +179,12 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
         { data.block_number_balance_updated_at && (
           <DetailsInfoItem
             title="Last balance update"
-            hint="Block number in which the address was updated."
+            hint="Block number in which the address was updated"
             alignSelf="center"
             py={{ base: '2px', lg: 1 }}
           >
             <LinkInternal
-              href={ link('block', { id: String(data.block_number_balance_updated_at) }) }
+              href={ route({ pathname: '/block/[height]', query: { height: String(data.block_number_balance_updated_at) } }) }
               display="flex"
               alignItems="center"
             >

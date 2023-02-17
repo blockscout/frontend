@@ -81,7 +81,7 @@ blockscout:
     #   # _default: ws://geth-svc:8546
     #   _default: ws://geth-svc.goerli.svc.cluster.local:8546
     BLOCKSCOUT_VERSION:
-      _default: v4.1.8-beta
+      _default: v5.1.0-beta
     ECTO_USE_SSL:
       _default: 'false'
     ETHEREUM_JSONRPC_VARIANT:
@@ -116,24 +116,12 @@ blockscout:
       _default: 1
     COIN_BALANCE_HISTORY_DAYS:
       _default: 90
-    GAS_PRICE_ORACLE_NUM_OF_BLOCKS:
-      _default: 200
-    GAS_PRICE_ORACLE_SAFELOW_PERCENTILE:
-      _default: 35
-    GAS_PRICE_ORACLE_AVERAGE_PERCENTILE:
-      _default: 60
-    GAS_PRICE_ORACLE_FAST_PERCENTILE:
-      _default: 90
-    GAS_PRICE_ORACLE_CACHE_PERIOD:
-      _default: 300
     POOL_SIZE:
       _default: 100
     DISPLAY_TOKEN_ICONS:
       _default: 'true'
     FETCH_REWARDS_WAY:
       _default: manual
-    INDEXER_DISABLE_PENDING_TRANSACTIONS_FETCHER:
-      _default: 'true'
     SHOW_TESTNET_LABEL:
       _default: 'true'
     CHAIN_ID:
@@ -141,7 +129,7 @@ blockscout:
     ENABLE_RUST_VERIFICATION_SERVICE:
       _default: 'true'
     RUST_VERIFICATION_SERVICE_URL:
-      _default: http://sc-verifier-svc:80
+      _default: http://sc-verifier-svc:8050
     INDEXER_MEMORY_LIMIT:
       _default: 5
     ACCOUNT_ENABLED:
@@ -154,6 +142,30 @@ blockscout:
       _default: '[{"title": "Marketplace", "url": "/apps", "embedded?": true}]'
     SESSION_COOKIE_DOMAIN:
       _default: blockscout-main.test.aws-k8s.blockscout.com
+    ETHEREUM_JSONRPC_DEBUG_TRACE_TRANSACTION_TIMEOUT:
+      _default: '20s'
+    INDEXER_INTERNAL_TRANSACTIONS_BATCH_SIZE:
+      _default: 15
+    INDEXER_DISABLE_EMPTY_BLOCK_SANITIZER:
+      _default: 'true'
+    INDEXER_DISABLE_PENDING_TRANSACTIONS_FETCHER:
+      _default: 'true'
+    INDEXER_RECEIPTS_BATCH_SIZE:
+      _default: 50
+    INDEXER_COIN_BALANCES_BATCH_SIZE:
+      _default: 50
+    DISABLE_EXCHANGE_RATES:
+      _default: 'true'
+    DISABLE_INDEXER:
+      _default: 'false'
+    FIRST_BLOCK:
+      _default: '8446041'
+    LAST_BLOCK:
+      _default: '8446041'
+    TRACE_FIRST_BLOCK:
+      _default: '8446041'
+    TRACE_LAST_BLOCK:
+      _default: '8446041'
 
 postgres:
   enabled: true

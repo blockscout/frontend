@@ -3,14 +3,13 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import useGradualIncrement from 'lib/hooks/useGradualIncrement';
-import { ROUTES } from 'lib/link/routes';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 
 function getSocketParams(router: NextRouter) {
 
   if (
-    router.pathname === ROUTES.txs.pattern &&
+    router.pathname === '/txs' &&
     (router.query.tab === 'validated' || router.query.tab === undefined) &&
     !router.query.block_number &&
     !router.query.page
@@ -18,12 +17,12 @@ function getSocketParams(router: NextRouter) {
     return { topic: 'transactions:new_transaction' as const, event: 'transaction' as const };
   }
 
-  if (router.pathname === ROUTES.network_index.pattern) {
+  if (router.pathname === '/') {
     return { topic: 'transactions:new_transaction' as const, event: 'transaction' as const };
   }
 
   if (
-    router.pathname === ROUTES.txs.pattern &&
+    router.pathname === '/txs' &&
     router.query.tab === 'pending' &&
     !router.query.block_number &&
     !router.query.page

@@ -1,22 +1,21 @@
-import { Center, Flex, Icon, Link, Text, LinkBox, LinkOverlay, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Link, Text, LinkBox, LinkOverlay, useColorModeValue } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { AddressTokenBalance } from 'types/api/address';
 
-import NFTIcon from 'icons/nft_shield.svg';
-import link from 'lib/link/link';
+import NftImage from 'ui/shared/nft/NftImage';
 import TokenLogo from 'ui/shared/TokenLogo';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 type Props = AddressTokenBalance;
 
 const NFTItem = ({ token, token_id: tokenId }: Props) => {
-  const tokenLink = link('token_index', { hash: token.address });
+  const tokenLink = route({ pathname: '/token/[hash]', query: { hash: token.address } });
 
   return (
     <LinkBox
-      w={{ base: 'calc((100% - 12px)/2)', lg: '210px' }}
-      h={{ base: 'auto', lg: '272px' }}
+      w={{ base: '100%', lg: '210px' }}
       border="1px solid"
       borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }
       borderRadius="12px"
@@ -26,16 +25,14 @@ const NFTItem = ({ token, token_id: tokenId }: Props) => {
       fontWeight={ 500 }
       lineHeight="20px"
     >
-      <LinkOverlay href={ tokenLink }/>
-      <Center
-        w={{ base: '100%', lg: '182px' }}
-        h={{ base: 'calc((100vw - 36px)/2 - 12px)', lg: '182px' }}
-        bg={ useColorModeValue('blackAlpha.50', 'whiteAlpha.50') }
-        mb="18px"
-        borderRadius="12px"
-      >
-        <Icon as={ NFTIcon } boxSize="112px" color={ useColorModeValue('blackAlpha.500', 'whiteAlpha.500') }/>
-      </Center>
+      <LinkOverlay href={ tokenLink }>
+        <NftImage
+          mb="18px"
+          url={ null }
+          fallbackPadding="30px"
+          cursor="pointer"
+        />
+      </LinkOverlay>
       { tokenId && (
         <Flex mb={ 2 } ml={ 1 }>
           <Text whiteSpace="pre" variant="secondary">ID# </Text>
@@ -44,7 +41,7 @@ const NFTItem = ({ token, token_id: tokenId }: Props) => {
               overflow="hidden"
               whiteSpace="nowrap"
               textOverflow="ellipsis"
-              href={ link('token_instance_item', { hash: token.address, id: tokenId }) }
+              href={ route({ pathname: '/token/[hash]/instance/[id]', query: { hash: token.address, id: tokenId } }) }
             >
               { tokenId }
             </Link>

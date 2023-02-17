@@ -7,7 +7,7 @@ import type { SmartContractVerificationConfigRaw, SmartContractVerificationMetho
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/appContext';
 import isBrowser from 'lib/isBrowser';
-import link from 'lib/link/link';
+import getQueryParamString from 'lib/router/getQueryParamString';
 import ContractVerificationForm from 'ui/contractVerification/ContractVerificationForm';
 import { isValidVerificationMethod, sortVerificationMethods } from 'ui/contractVerification/utils';
 import Address from 'ui/shared/address/Address';
@@ -26,11 +26,11 @@ const ContractVerification = () => {
   const hasGoBackLink = referrer && referrer.includes('/address');
   const router = useRouter();
 
-  const hash = router.query.id?.toString();
-  const method = router.query.id?.toString() as SmartContractVerificationMethod | undefined;
+  const hash = getQueryParamString(router.query.hash);
+  const method = getQueryParamString(router.query.method) as SmartContractVerificationMethod;
 
   const contractQuery = useApiQuery('contract', {
-    pathParams: { id: hash },
+    pathParams: { hash },
     queryOptions: {
       enabled: Boolean(hash),
     },
@@ -55,7 +55,7 @@ const ContractVerification = () => {
 
   React.useEffect(() => {
     if (method && hash) {
-      router.replace(link('address_contract_verification', { id: hash }), undefined, { scroll: false, shallow: true });
+      router.replace({ pathname: '/address/[hash]/contract_verification', query: { hash } }, undefined, { scroll: false, shallow: true });
     }
   // onMount only
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -65,7 +65,7 @@ const ContractVerification = () => {
 
   React.useEffect(() => {
     if (isVerifiedContract) {
-      router.push(link('address_index', { id: hash }, { tab: 'contract' }), undefined, { scroll: false, shallow: true });
+      router.push({ pathname: '/address/[hash]', query: { hash, tab: 'contract' } }, undefined, { scroll: false, shallow: true });
     }
   }, [ hash, isVerifiedContract, router ]);
 

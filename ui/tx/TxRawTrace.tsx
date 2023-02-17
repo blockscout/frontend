@@ -4,6 +4,7 @@ import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { SECOND } from 'lib/consts';
+import getQueryParamString from 'lib/router/getQueryParamString';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 import TxPendingAlert from 'ui/tx/TxPendingAlert';
@@ -12,12 +13,13 @@ import useFetchTxInfo from 'ui/tx/useFetchTxInfo';
 
 const TxRawTrace = () => {
   const router = useRouter();
+  const hash = getQueryParamString(router.query.hash);
 
   const txInfo = useFetchTxInfo({ updateDelay: 5 * SECOND });
   const { data, isLoading, isError } = useApiQuery('tx_raw_trace', {
-    pathParams: { id: router.query.id?.toString() },
+    pathParams: { hash },
     queryOptions: {
-      enabled: Boolean(router.query.id) && Boolean(txInfo.data?.status),
+      enabled: Boolean(hash) && Boolean(txInfo.data?.status),
     },
   });
 

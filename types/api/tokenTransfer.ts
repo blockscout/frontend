@@ -1,5 +1,5 @@
 import type { AddressParam } from './addressParams';
-import type { TokenInfoGeneric, TokenType } from './tokenInfo';
+import type { TokenInfoGeneric, TokenType } from './token';
 
 export type Erc20TotalPayload = {
   decimals: string | null;
@@ -46,7 +46,6 @@ export type TokenTransferPagination = {
   block_number: number;
   index: number;
   items_count: number;
-  transaction_hash: string;
 }
 
 export interface TokenTransferResponse {

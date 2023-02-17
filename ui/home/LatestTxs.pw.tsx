@@ -1,7 +1,6 @@
 import { test as base, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
-import { ROUTES } from 'lib/link/routes';
 import * as statsMock from 'mocks/stats/index';
 import * as txMock from 'mocks/txs/tx';
 import * as socketServer from 'playwright/fixtures/socketServer';
@@ -42,7 +41,7 @@ test.describe('socket', () => {
 
   const hooksConfig = {
     router: {
-      pathname: ROUTES.network_index.pattern,
+      pathname: '/',
       query: {},
     },
   };

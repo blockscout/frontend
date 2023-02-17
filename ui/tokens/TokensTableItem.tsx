@@ -1,7 +1,7 @@
 import { Box, Flex, Td, Tr, Text, Tag } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenInfo } from 'types/api/tokenInfo';
+import type { TokenInfo } from 'types/api/token';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
 import AddressAddToMetaMask from 'ui/address/details/AddressAddToMetaMask';

@@ -14,7 +14,7 @@ import AddressLink from 'ui/shared/address/AddressLink';
 import ListItemMobile from 'ui/shared/ListItemMobile';
 import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
 
-type Props = TokenTransfer;
+type Props = TokenTransfer & {tokenId?: string};
 
 const TokenTransferListItem = ({
   token,
@@ -24,6 +24,7 @@ const TokenTransferListItem = ({
   to,
   method,
   timestamp,
+  tokenId,
 }: Props) => {
   const value = (() => {
     if (!('value' in total)) {
@@ -78,7 +79,7 @@ const TokenTransferListItem = ({
         </Flex>
       ) }
       { 'token_id' in total && (token.type === 'ERC-721' || token.type === 'ERC-1155') &&
-         <TokenTransferNft hash={ token.address } id={ total.token_id }/> }
+         <TokenTransferNft hash={ token.address } id={ total.token_id } isDisabled={ Boolean(tokenId && tokenId === total.token_id) }/> }
     </ListItemMobile>
   );
 };

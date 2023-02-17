@@ -10,13 +10,13 @@ import {
   Hide,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
 
 import rightArrowIcon from 'icons/arrows/east.svg';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import link from 'lib/link/link';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -99,7 +99,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }
       </Td>
       { showBlockInfo && (
         <Td>
-          { tx.block && <LinkInternal href={ link('block', { id: tx.block.toString() }) }>{ tx.block }</LinkInternal> }
+          { tx.block && <LinkInternal href={ route({ pathname: '/block/[height]', query: { height: tx.block.toString() } }) }>{ tx.block }</LinkInternal> }
         </Td>
       ) }
       <Show above="xl" ssr={ false }>
