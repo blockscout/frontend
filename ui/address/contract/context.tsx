@@ -15,11 +15,13 @@ type ProviderProps = {
 type TContractContext = {
   contract: Contract | null;
   proxy: Contract | null;
+  custom: Contract | null;
 };
 
 const ContractContext = React.createContext<TContractContext>({
   contract: null,
   proxy: null,
+  custom: null,
 });
 
 export function ContractContextProvider({ children }: ProviderProps) {
@@ -49,21 +51,36 @@ export function ContractContextProvider({ children }: ProviderProps) {
     },
   });
 
+  const { data: customInfo } = useApiQuery('contract_methods_write', {
+    pathParams: { hash: addressHash },
+    queryParams: { is_custom_abi: 'true' },
+    queryOptions: {
+      enabled: Boolean(addressInfo?.has_custom_methods_write),
+      refetchOnMount: false,
+    },
+  });
+
   const contract = useContract({
     address: addressHash,
-    abi: contractInfo?.abi || undefined,
-    signerOrProvider: signer || provider,
+    abi: contractInfo?.abi ?? undefined,
+    signerOrProvider: signer ?? provider,
   });
   const proxy = useContract({
     address: addressInfo?.implementation_address ?? undefined,
     abi: proxyInfo?.abi ?? undefined,
     signerOrProvider: signer ?? provider,
   });
+  const custom = useContract({
+    address: addressHash,
+    abi: customInfo ?? undefined,
+    signerOrProvider: signer ?? provider,
+  });
 
   const value = React.useMemo(() => ({
     contract,
     proxy,
-  }), [ contract, proxy ]);
+    custom,
+  }), [ contract, proxy, custom ]);
 
   return (
     <ContractContext.Provider value={ value }>

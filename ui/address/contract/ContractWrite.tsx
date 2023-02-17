@@ -42,8 +42,18 @@ const ContractWrite = ({ isProxy, isCustomAbi }: Props) => {
     },
   });
 
-  const { contract, proxy } = useContractContext();
-  const _contract = isProxy ? proxy : contract;
+  const { contract, proxy, custom } = useContractContext();
+  const _contract = (() => {
+    if (isProxy) {
+      return proxy;
+    }
+
+    if (isCustomAbi) {
+      return custom;
+    }
+
+    return contract;
+  })();
 
   const handleMethodFormSubmit = React.useCallback(async(item: SmartContractWriteMethod, args: Array<string | Array<string>>) => {
     if (!isConnected) {
@@ -52,7 +62,7 @@ const ContractWrite = ({ isProxy, isCustomAbi }: Props) => {
 
     try {
       if (!_contract) {
-        return;
+        throw new Error('Something went wrong. Try again later.');
       }
 
       if (item.type === 'receive') {
