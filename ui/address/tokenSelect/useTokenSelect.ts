@@ -1,13 +1,13 @@
-import _groupBy from 'lodash/groupBy';
+import _mapValues from 'lodash/mapValues';
 import type { ChangeEvent } from 'react';
 import React from 'react';
 
-import type { AddressTokenBalance } from 'types/api/address';
+import type { FormattedData } from './types';
 
 import type { Sort } from '../utils/tokenUtils';
-import { calculateUsdValue, filterTokens } from '../utils/tokenUtils';
+import { filterTokens } from '../utils/tokenUtils';
 
-export default function useData(data: Array<AddressTokenBalance>) {
+export default function useTokenSelect(data: FormattedData) {
   const [ searchTerm, setSearchTerm ] = React.useState('');
   const [ erc1155sort, setErc1155Sort ] = React.useState<Sort>('desc');
   const [ erc20sort, setErc20Sort ] = React.useState<Sort>('desc');
@@ -26,12 +26,12 @@ export default function useData(data: Array<AddressTokenBalance>) {
     }
   }, []);
 
-  const modifiedData = React.useMemo(() => {
-    return data.filter(filterTokens(searchTerm.toLowerCase())).map(calculateUsdValue);
+  const filteredData = React.useMemo(() => {
+    return _mapValues(data, ({ items, isOverflow }) => ({
+      isOverflow,
+      items: items.filter(filterTokens(searchTerm.toLowerCase())),
+    }));
   }, [ data, searchTerm ]);
-  const groupedData = React.useMemo(() => {
-    return _groupBy(modifiedData, 'token.type');
-  }, [ modifiedData ]);
 
   return {
     searchTerm,
@@ -39,7 +39,7 @@ export default function useData(data: Array<AddressTokenBalance>) {
     erc1155sort,
     onInputChange,
     onSortClick,
-    modifiedData,
-    groupedData,
+    data,
+    filteredData,
   };
 }

@@ -1,11 +1,11 @@
 import { Text, Grid, GridItem, Tooltip, Button, useColorModeValue, Alert, Link } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { Log } from 'types/api/log';
 
 // import searchIcon from 'icons/search.svg';
 import { space } from 'lib/html-entities';
-import link from 'lib/link/link';
 import notEmpty from 'lib/notEmpty';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
@@ -47,7 +47,7 @@ const LogItem = ({ address, index, topics, data, decoded, type, tx_hash: txHash 
         <GridItem colSpan={{ base: 1, lg: 2 }}>
           <Alert status="warning" display="inline-table" whiteSpace="normal">
             To see accurate decoded input data, the contract must be verified.{ space }
-            <Link href={ link('address_contract_verification', { id: address.hash }) }>Verify the contract here</Link>
+            <Link href={ route({ pathname: '/address/[hash]/contract_verification', query: { hash: address.hash } }) }>Verify the contract here</Link>
           </Alert>
         </GridItem>
       ) }

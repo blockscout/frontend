@@ -41,10 +41,10 @@ const AddressFavoriteButton = ({ className, hash, isAdded }: Props) => {
   }, [ addModalProps, deleteModalProps, isAdded, isAuth, loginUrl ]);
 
   const handleAddOrDeleteSuccess = React.useCallback(async() => {
-    const queryKey = getResourceKey('address', { pathParams: { id: router.query.id?.toString() } });
+    const queryKey = getResourceKey('address', { pathParams: { hash: router.query.hash?.toString() } });
     await queryClient.refetchQueries({ queryKey });
     addModalProps.onClose();
-  }, [ addModalProps, queryClient, router.query.id ]);
+  }, [ addModalProps, queryClient, router.query.hash ]);
 
   const handleAddModalClose = React.useCallback(() => {
     addModalProps.onClose();

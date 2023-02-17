@@ -2,7 +2,7 @@ import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressParam } from 'types/api/addressParams';
-import type { TokenInfo } from 'types/api/tokenInfo';
+import type { TokenInfo } from 'types/api/token';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import AddressAddToMetaMask from 'ui/address/details/AddressAddToMetaMask';

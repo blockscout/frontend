@@ -12,6 +12,7 @@ test('no auth', async({ mount, page }) => {
   const hooksConfig = {
     router: {
       asPath: '/',
+      pathname: '/',
     },
   };
   const component = await mount(

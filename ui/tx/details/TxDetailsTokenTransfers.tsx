@@ -1,10 +1,10 @@
 import { Icon, GridItem, Show, Flex } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import tokenIcon from 'icons/token.svg';
-import link from 'lib/link/link';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import LinkInternal from 'ui/shared/LinkInternal';
 import { flattenTotal } from 'ui/shared/TokenTransfer/helpers';
@@ -25,7 +25,7 @@ const TOKEN_TRANSFERS_TYPES = [
 const VISIBLE_ITEMS_NUM = 3;
 
 const TxDetailsTokenTransfers = ({ data, txHash }: Props) => {
-  const viewAllUrl = link('tx', { id: txHash }, { tab: 'token_transfers' });
+  const viewAllUrl = route({ pathname: '/tx/[hash]', query: { hash: txHash, tab: 'token_transfers' } });
 
   const formattedData = data.reduce(flattenTotal, []);
   const transferGroups = TOKEN_TRANSFERS_TYPES.map((group) => ({

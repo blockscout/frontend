@@ -1,7 +1,7 @@
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import link from 'lib/link/link';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import LinkInternal from 'ui/shared/LinkInternal';
 import DetailsSkeletonRow from 'ui/shared/skeletons/DetailsSkeletonRow';
@@ -30,7 +30,7 @@ const TokenInstanceTransfersCount = ({ hash, id, onClick }: Props) => {
   }
 
   const url = transfersCountQuery.data.transfers_count > 0 ?
-    link('token_instance_item', { id, hash }, { tab: 'token_transfers' }) :
+    route({ pathname: '/token/[hash]/instance/[id]', query: { hash, id, tab: 'token_transfers' } }) :
     undefined;
 
   return (

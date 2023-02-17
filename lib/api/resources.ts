@@ -2,7 +2,6 @@ import type { UserInfo, CustomAbis, PublicTags, AddressTags, TransactionTags, Ap
 import type {
   Address,
   AddressCounters,
-  AddressTokenBalance,
   AddressTransactionsResponse,
   AddressTokenTransferResponse,
   AddressCoinBalanceHistoryResponse,
@@ -17,15 +16,22 @@ import type {
 import type { AddressesResponse } from 'types/api/addresses';
 import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters } from 'types/api/block';
 import type { ChartMarketResponse, ChartTransactionResponse } from 'types/api/charts';
-import type { SmartContract, SmartContractReadMethod, SmartContractWriteMethod } from 'types/api/contract';
+import type { SmartContract, SmartContractReadMethod, SmartContractWriteMethod, SmartContractVerificationConfig } from 'types/api/contract';
 import type { IndexingStatus } from 'types/api/indexingStatus';
 import type { InternalTransactionsResponse } from 'types/api/internalTransaction';
 import type { LogsResponseTx, LogsResponseAddress } from 'types/api/log';
 import type { RawTracesResponse } from 'types/api/rawTrace';
 import type { SearchResult, SearchResultFilters } from 'types/api/search';
 import type { Counters, StatsCharts, StatsChart, HomeStats } from 'types/api/stats';
-import type { TokenCounters, TokenInfo, TokenHolders } from 'types/api/tokenInfo';
-import type { TokensResponse, TokensFilters, TokenInstance, TokenInstanceTransfersCount, TokenInstanceTransferResponse } from 'types/api/tokens';
+import type {
+  TokenCounters,
+  TokenInfo,
+  TokenHolders,
+  TokenInventoryResponse,
+  TokenInstance,
+  TokenInstanceTransfersCount,
+} from 'types/api/token';
+import type { TokensResponse, TokensFilters, TokenInstanceTransferResponse } from 'types/api/tokens';
 import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
 import type { TransactionsResponseValidated, TransactionsResponsePending, Transaction } from 'types/api/transaction';
 import type { TTxsFilters } from 'types/api/txsFilters';
@@ -38,6 +44,7 @@ export interface ApiResource {
   path: string;
   endpoint?: string;
   basePath?: string;
+  pathParams?: Array<string>;
 }
 
 export const RESOURCES = {
@@ -50,21 +57,27 @@ export const RESOURCES = {
   },
   custom_abi: {
     path: '/api/account/v1/user/custom_abis/:id?',
+    pathParams: [ 'id' as const ],
   },
   watchlist: {
     path: '/api/account/v1/user/watchlist/:id?',
+    pathParams: [ 'id' as const ],
   },
   public_tags: {
     path: '/api/account/v1/user/public_tags/:id?',
+    pathParams: [ 'id' as const ],
   },
   private_tags_address: {
     path: '/api/account/v1/user/tags/address/:id?',
+    pathParams: [ 'id' as const ],
   },
   private_tags_tx: {
     path: '/api/account/v1/user/tags/transaction/:id?',
+    pathParams: [ 'id' as const ],
   },
   api_keys: {
     path: '/api/account/v1/user/api_keys/:id?',
+    pathParams: [ 'id' as const ],
   },
 
   // STATS
@@ -80,6 +93,7 @@ export const RESOURCES = {
   },
   stats_line: {
     path: '/api/v1/lines/:id',
+    pathParams: [ 'id' as const ],
     endpoint: appConfig.statsApi.endpoint,
     basePath: appConfig.statsApi.basePath,
   },
@@ -98,10 +112,12 @@ export const RESOURCES = {
     filterFields: [ 'type' as const ],
   },
   block: {
-    path: '/api/v2/blocks/:id',
+    path: '/api/v2/blocks/:height',
+    pathParams: [ 'height' as const ],
   },
   block_txs: {
-    path: '/api/v2/blocks/:id/transactions',
+    path: '/api/v2/blocks/:height/transactions',
+    pathParams: [ 'height' as const ],
     paginationFields: [ 'block_number' as const, 'items_count' as const, 'index' as const ],
     filterFields: [],
   },
@@ -116,25 +132,30 @@ export const RESOURCES = {
     filterFields: [ 'filter' as const, 'type' as const, 'method' as const ],
   },
   tx: {
-    path: '/api/v2/transactions/:id',
+    path: '/api/v2/transactions/:hash',
+    pathParams: [ 'hash' as const ],
   },
   tx_internal_txs: {
-    path: '/api/v2/transactions/:id/internal-transactions',
+    path: '/api/v2/transactions/:hash/internal-transactions',
+    pathParams: [ 'hash' as const ],
     paginationFields: [ 'block_number' as const, 'items_count' as const, 'transaction_hash' as const, 'index' as const, 'transaction_index' as const ],
     filterFields: [ ],
   },
   tx_logs: {
-    path: '/api/v2/transactions/:id/logs',
+    path: '/api/v2/transactions/:hash/logs',
+    pathParams: [ 'hash' as const ],
     paginationFields: [ 'items_count' as const, 'transaction_hash' as const, 'index' as const ],
     filterFields: [ ],
   },
   tx_token_transfers: {
-    path: '/api/v2/transactions/:id/token-transfers',
+    path: '/api/v2/transactions/:hash/token-transfers',
+    pathParams: [ 'hash' as const ],
     paginationFields: [ 'block_number' as const, 'items_count' as const, 'transaction_hash' as const, 'index' as const ],
     filterFields: [ 'type' as const ],
   },
   tx_raw_trace: {
-    path: '/api/v2/transactions/:id/raw-trace',
+    path: '/api/v2/transactions/:hash/raw-trace',
+    pathParams: [ 'hash' as const ],
   },
 
   // ADDRESSES
@@ -146,88 +167,122 @@ export const RESOURCES = {
 
   // ADDRESS
   address: {
-    path: '/api/v2/addresses/:id',
+    path: '/api/v2/addresses/:hash',
+    pathParams: [ 'hash' as const ],
   },
   address_counters: {
-    path: '/api/v2/addresses/:id/counters',
+    path: '/api/v2/addresses/:hash/counters',
+    pathParams: [ 'hash' as const ],
   },
-  address_token_balances: {
-    path: '/api/v2/addresses/:id/token-balances',
-  },
+  // this resource doesn't have pagination, so causing huge problems on some addresses page
+  // address_token_balances: {
+  //   path: '/api/v2/addresses/:hash/token-balances',
+  // },
   address_txs: {
-    path: '/api/v2/addresses/:id/transactions',
+    path: '/api/v2/addresses/:hash/transactions',
+    pathParams: [ 'hash' as const ],
     paginationFields: [ 'block_number' as const, 'items_count' as const, 'index' as const ],
     filterFields: [ 'filter' as const ],
   },
   address_internal_txs: {
-    path: '/api/v2/addresses/:id/internal-transactions',
+    path: '/api/v2/addresses/:hash/internal-transactions',
+    pathParams: [ 'hash' as const ],
     paginationFields: [ 'block_number' as const, 'items_count' as const, 'index' as const, 'transaction_index' as const ],
     filterFields: [ 'filter' as const ],
   },
   address_token_transfers: {
-    path: '/api/v2/addresses/:id/token-transfers',
+    path: '/api/v2/addresses/:hash/token-transfers',
+    pathParams: [ 'hash' as const ],
     paginationFields: [ 'block_number' as const, 'items_count' as const, 'index' as const, 'transaction_index' as const ],
     filterFields: [ 'filter' as const, 'type' as const, 'token' as const ],
   },
   address_blocks_validated: {
-    path: '/api/v2/addresses/:id/blocks-validated',
+    path: '/api/v2/addresses/:hash/blocks-validated',
+    pathParams: [ 'hash' as const ],
     paginationFields: [ 'items_count' as const, 'block_number' as const ],
     filterFields: [ ],
   },
   address_coin_balance: {
-    path: '/api/v2/addresses/:id/coin-balance-history',
+    path: '/api/v2/addresses/:hash/coin-balance-history',
+    pathParams: [ 'hash' as const ],
     paginationFields: [ 'items_count' as const, 'block_number' as const ],
     filterFields: [ ],
   },
   address_coin_balance_chart: {
-    path: '/api/v2/addresses/:id/coin-balance-history-by-day',
+    path: '/api/v2/addresses/:hash/coin-balance-history-by-day',
+    pathParams: [ 'hash' as const ],
   },
   address_logs: {
-    path: '/api/v2/addresses/:id/logs',
+    path: '/api/v2/addresses/:hash/logs',
+    pathParams: [ 'hash' as const ],
     paginationFields: [ 'items_count' as const, 'transaction_index' as const, 'index' as const, 'block_number' as const ],
     filterFields: [ ],
   },
   address_tokens: {
-    path: '/api/v2/addresses/:id/tokens',
+    path: '/api/v2/addresses/:hash/tokens',
+    pathParams: [ 'hash' as const ],
     paginationFields: [ 'items_count' as const, 'token_name' as const, 'token_type' as const, 'value' as const ],
     filterFields: [ 'type' as const ],
   },
 
   // CONTRACT
   contract: {
-    path: '/api/v2/smart-contracts/:id',
+    path: '/api/v2/smart-contracts/:hash',
+    pathParams: [ 'hash' as const ],
   },
   contract_methods_read: {
-    path: '/api/v2/smart-contracts/:id/methods-read',
+    path: '/api/v2/smart-contracts/:hash/methods-read',
+    pathParams: [ 'hash' as const ],
   },
   contract_methods_read_proxy: {
-    path: '/api/v2/smart-contracts/:id/methods-read-proxy',
+    path: '/api/v2/smart-contracts/:hash/methods-read-proxy',
+    pathParams: [ 'hash' as const ],
   },
   contract_method_query: {
-    path: '/api/v2/smart-contracts/:id/query-read-method',
+    path: '/api/v2/smart-contracts/:hash/query-read-method',
+    pathParams: [ 'hash' as const ],
   },
   contract_methods_write: {
-    path: '/api/v2/smart-contracts/:id/methods-write',
+    path: '/api/v2/smart-contracts/:hash/methods-write',
+    pathParams: [ 'hash' as const ],
   },
   contract_methods_write_proxy: {
-    path: '/api/v2/smart-contracts/:id/methods-write-proxy',
+    path: '/api/v2/smart-contracts/:hash/methods-write-proxy',
+    pathParams: [ 'hash' as const ],
+  },
+  contract_verification_config: {
+    path: '/api/v2/smart-contracts/verification/config',
+  },
+  contract_verification_via: {
+    path: '/api/v2/smart-contracts/:hash/verification/via/:method',
+    pathParams: [ 'hash' as const, 'method' as const ],
   },
 
   // TOKEN
   token: {
     path: '/api/v2/tokens/:hash',
+    pathParams: [ 'hash' as const ],
   },
   token_counters: {
     path: '/api/v2/tokens/:hash/counters',
+    pathParams: [ 'hash' as const ],
   },
   token_holders: {
     path: '/api/v2/tokens/:hash/holders',
+    pathParams: [ 'hash' as const ],
     paginationFields: [ 'items_count' as const, 'value' as const ],
     filterFields: [],
   },
   token_transfers: {
     path: '/api/v2/tokens/:hash/transfers',
+    pathParams: [ 'hash' as const ],
     paginationFields: [ 'block_number' as const, 'items_count' as const, 'index' as const ],
+    filterFields: [],
+  },
+  token_inventory: {
+    path: '/api/v2/tokens/:hash/instances',
+    pathParams: [ 'hash' as const ],
+    paginationFields: [ 'unique_token' as const ],
     filterFields: [],
   },
   tokens: {
@@ -239,12 +294,15 @@ export const RESOURCES = {
   // TOKEN INSTANCE
   token_instance: {
     path: '/api/v2/tokens/:hash/instances/:id',
+    pathParams: [ 'hash' as const, 'id' as const ],
   },
   token_instance_transfers_count: {
     path: '/api/v2/tokens/:hash/instances/:id/transfers-count',
+    pathParams: [ 'hash' as const, 'id' as const ],
   },
   token_instance_transfers: {
     path: '/api/v2/tokens/:hash/instances/:id/transfers',
+    pathParams: [ 'hash' as const, 'id' as const ],
     paginationFields: [ 'block_number' as const, 'items_count' as const, 'index' as const, 'token_id' as const ],
     filterFields: [],
   },
@@ -307,6 +365,15 @@ export type ResourcePaginationKey<R extends ResourceName> = typeof RESOURCES[R] 
 
 export const resourceKey = (x: keyof typeof RESOURCES) => x;
 
+type ResourcePathParamName<Resource extends ResourceName> =
+  typeof RESOURCES[Resource] extends { pathParams: Array<string> } ?
+    ArrayElement<typeof RESOURCES[Resource]['pathParams']> :
+    string;
+
+export type ResourcePathParams<Resource extends ResourceName> = typeof RESOURCES[Resource] extends { pathParams: Array<string> } ?
+  Record<ResourcePathParamName<Resource>, string | undefined> :
+  never;
+
 export interface ResourceError<T = unknown> {
   payload?: T;
   status: Response['status'];
@@ -322,7 +389,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'address_txs' | 'address_internal_txs' | 'address_token_transfers' | 'address_blocks_validated' | 'address_coin_balance' |
 'search' |
 'address_logs' | 'address_tokens' |
-'token_transfers' | 'token_holders' | 'tokens' |
+'token_transfers' | 'token_holders' | 'token_inventory' | 'tokens' |
 'token_instance_transfers';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
@@ -358,7 +425,6 @@ Q extends 'tx_raw_trace' ? RawTracesResponse :
 Q extends 'addresses' ? AddressesResponse :
 Q extends 'address' ? Address :
 Q extends 'address_counters' ? AddressCounters :
-Q extends 'address_token_balances' ? Array<AddressTokenBalance> :
 Q extends 'address_txs' ? AddressTransactionsResponse :
 Q extends 'address_internal_txs' ? AddressInternalTxsResponse :
 Q extends 'address_token_transfers' ? AddressTokenTransferResponse :
@@ -374,6 +440,7 @@ Q extends 'token_holders' ? TokenHolders :
 Q extends 'token_instance' ? TokenInstance :
 Q extends 'token_instance_transfers_count' ? TokenInstanceTransfersCount :
 Q extends 'token_instance_transfers' ? TokenInstanceTransferResponse :
+Q extends 'token_inventory' ? TokenInventoryResponse :
 Q extends 'tokens' ? TokensResponse :
 Q extends 'search' ? SearchResult :
 Q extends 'contract' ? SmartContract :
@@ -382,6 +449,7 @@ Q extends 'contract_methods_read_proxy' ? Array<SmartContractReadMethod> :
 Q extends 'contract_methods_write' ? Array<SmartContractWriteMethod> :
 Q extends 'contract_methods_write_proxy' ? Array<SmartContractWriteMethod> :
 Q extends 'visualize_sol2uml' ? VisualizedContract :
+Q extends 'contract_verification_config' ? SmartContractVerificationConfig :
 never;
 /* eslint-enable @typescript-eslint/indent */
 

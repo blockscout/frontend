@@ -12,7 +12,7 @@ type Props = {
   data?: ApiKey;
 }
 
-const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
+const ApiKeyModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
   const title = data ? 'Edit API key' : 'New API key';
   const text = !data ? 'Add an application name to identify your API key. Click the button below to auto-generate the associated key.' : '';
 
@@ -34,4 +34,4 @@ const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
   );
 };
 
-export default AddressModal;
+export default ApiKeyModal;

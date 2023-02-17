@@ -1,5 +1,5 @@
 import type { AddressParam } from './addressParams';
-import type { TokenInfoGeneric, TokenType } from './tokenInfo';
+import type { TokenInfoGeneric, TokenType } from './token';
 
 export type Erc20TotalPayload = {
   decimals: string | null;

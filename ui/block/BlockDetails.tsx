@@ -2,6 +2,7 @@ import { Grid, GridItem, Text, Icon, Link, Box, Tooltip } from '@chakra-ui/react
 import BigNumber from 'bignumber.js';
 import capitalize from 'lodash/capitalize';
 import { useRouter } from 'next/router';
+import { route } from 'nextjs-routes';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
@@ -13,8 +14,8 @@ import getBlockReward from 'lib/block/getBlockReward';
 import { WEI, WEI_IN_GWEI, ZERO } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
 import { space } from 'lib/html-entities';
-import link from 'lib/link/link';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
+import getQueryParamString from 'lib/router/getQueryParamString';
 import BlockDetailsSkeleton from 'ui/block/details/BlockDetailsSkeleton';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
@@ -30,10 +31,11 @@ import Utilization from 'ui/shared/Utilization/Utilization';
 const BlockDetails = () => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
   const router = useRouter();
+  const height = getQueryParamString(router.query.height);
 
   const { data, isLoading, isError, error } = useApiQuery('block', {
-    pathParams: { id: router.query.id?.toString() },
-    queryOptions: { enabled: Boolean(router.query.id) },
+    pathParams: { height },
+    queryOptions: { enabled: Boolean(height) },
   });
 
   const handleCutClick = React.useCallback(() => {
@@ -46,11 +48,10 @@ const BlockDetails = () => {
 
   const handlePrevNextClick = React.useCallback((direction: 'prev' | 'next') => {
     const increment = direction === 'next' ? +1 : -1;
-    const nextId = String(Number(router.query.id) + increment);
+    const nextId = String(Number(height) + increment);
 
-    const url = link('block', { id: nextId });
-    router.push(url, undefined);
-  }, [ router ]);
+    router.push({ pathname: '/block/[height]', query: { height: nextId } }, undefined);
+  }, [ height, router ]);
 
   if (isLoading) {
     return <BlockDetailsSkeleton/>;
@@ -116,7 +117,7 @@ const BlockDetails = () => {
         title="Transactions"
         hint="The number of transactions in the block."
       >
-        <LinkInternal href={ link('block', { id: router.query.id }, { tab: 'txs' }) }>
+        <LinkInternal href={ route({ pathname: '/block/[height]', query: { height, tab: 'txs' } }) }>
           { data.tx_count } transactions
         </LinkInternal>
       </DetailsInfoItem>

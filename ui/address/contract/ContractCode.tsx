@@ -1,9 +1,10 @@
 import { Flex, Skeleton, Button, Grid, GridItem, Text, Alert, Link, chakra, Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import link from 'lib/link/link';
+import getQueryParamString from 'lib/router/getQueryParamString';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -24,9 +25,9 @@ const InfoItem = ({ label, value }: { label: string; value: string }) => (
 const ContractCode = () => {
   const router = useRouter();
 
-  const addressHash = router.query.id?.toString();
+  const addressHash = getQueryParamString(router.query.hash);
   const { data, isLoading, isError } = useApiQuery('contract', {
-    pathParams: { id: addressHash },
+    pathParams: { hash: addressHash },
     queryOptions: {
       enabled: Boolean(addressHash),
       refetchOnMount: false,
@@ -60,7 +61,7 @@ const ContractCode = () => {
       ml="auto"
       mr={ 3 }
       as="a"
-      href={ link('address_contract_verification', { id: addressHash }) }
+      href={ route({ pathname: '/address/[hash]/contract_verification', query: { hash: addressHash } }) }
     >
         Verify & publish
     </Button>
@@ -74,7 +75,7 @@ const ContractCode = () => {
     const decoded = data.decoded_constructor_args
       .map(([ value, { name, type } ], index) => {
         const valueEl = type === 'address' ?
-          <LinkInternal href={ link('address_index', { id: value }) }>{ value }</LinkInternal> :
+          <LinkInternal href={ route({ pathname: '/address/[hash]', query: { hash: value } }) }>{ value }</LinkInternal> :
           <span>{ value }</span>;
         return (
           <Box key={ index }>
@@ -101,7 +102,7 @@ const ContractCode = () => {
     return data.external_libraries.map((item) => (
       <Box key={ item.address_hash }>
         <chakra.span fontWeight={ 500 }>{ item.name }: </chakra.span>
-        <LinkInternal href={ link('address_index', { id: item.address_hash }, { tab: 'contract' }) }>{ item.address_hash }</LinkInternal>
+        <LinkInternal href={ route({ pathname: '/address/[hash]', query: { hash: item.address_hash, tab: 'contract' } }) }>{ item.address_hash }</LinkInternal>
       </Box>
     ));
   })();
@@ -129,7 +130,7 @@ const ContractCode = () => {
               <AddressLink type="address" hash={ data.verified_twin_address_hash } truncation="constant" ml={ 2 }/>
             </Address>
             <chakra.span mt={ 1 }>All functions displayed below are from ABI of that contract. In order to verify current contract, proceed with </chakra.span>
-            <LinkInternal href={ link('address_contract_verification', { id: data.verified_twin_address_hash }) }>Verify & Publish</LinkInternal>
+            <LinkInternal href={ route({ pathname: '/address/[hash]/contract_verification', query: { hash: addressHash } }) }>Verify & Publish</LinkInternal>
             <span> page</span>
           </Alert>
         ) }

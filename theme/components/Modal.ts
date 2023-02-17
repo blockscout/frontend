@@ -22,7 +22,7 @@ const baseStyleDialog = defineStyle((props) => {
 const baseStyleDialogContainer = defineStyle({
   '::-webkit-scrollbar': { display: 'none' },
   'scrollbar-width': 'none',
-  '@supports (height: -webkit-fill-available)': { height: '-webkit-fill-available' },
+  // '@supports (height: -webkit-fill-available)': { height: '-webkit-fill-available' },
 });
 
 const baseStyleHeader = defineStyle((props) => ({

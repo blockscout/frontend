@@ -1,4 +1,4 @@
-import type { TokenCounters, TokenInfo } from 'types/api/tokenInfo';
+import type { TokenCounters, TokenInfo } from 'types/api/token';
 
 export const tokenInfo: TokenInfo = {
   address: '0x55d536e4d6c1993d8ef2e2a4ef77f02088419420',

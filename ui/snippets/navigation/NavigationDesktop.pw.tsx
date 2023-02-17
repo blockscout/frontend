@@ -12,6 +12,7 @@ const hooksConfig = {
   router: {
     route: '/blocks',
     query: { id: '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859' },
+    pathname: '/blocks',
   },
 };
 

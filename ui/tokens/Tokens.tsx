@@ -2,7 +2,7 @@ import { Hide, HStack, Show, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 
-import type { TokenType } from 'types/api/tokenInfo';
+import type { TokenType } from 'types/api/token';
 
 import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
 import useDebounce from 'lib/hooks/useDebounce';

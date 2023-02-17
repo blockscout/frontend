@@ -8,10 +8,10 @@ import insertAdPlaceholder from 'playwright/utils/insertAdPlaceholder';
 
 import TxDetails from './TxDetails';
 
-const API_URL = buildApiUrl('tx', { id: '1' });
+const API_URL = buildApiUrl('tx', { hash: '1' });
 const hooksConfig = {
   router: {
-    query: { id: 1 },
+    query: { hash: 1 },
   },
 };
 
@@ -122,5 +122,22 @@ test('pending', async({ mount, page }) => {
   await page.getByText('View details').click();
   await insertAdPlaceholder(page);
 
+  await expect(component).toHaveScreenshot();
+});
+
+test('with actions uniswap +@mobile +@dark-mode', async({ mount, page }) => {
+  await page.route(API_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify(txMock.withActionsUniswap),
+  }));
+
+  const component = await mount(
+    <TestApp>
+      <TxDetails/>
+    </TestApp>,
+    { hooksConfig },
+  );
+
+  await insertAdPlaceholder(page);
   await expect(component).toHaveScreenshot();
 });

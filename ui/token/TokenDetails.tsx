@@ -4,11 +4,10 @@ import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 import { scroller } from 'react-scroll';
 
-import type { TokenInfo } from 'types/api/tokenInfo';
+import type { TokenInfo } from 'types/api/token';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import getCurrencyValue from 'lib/getCurrencyValue';
-import link from 'lib/link/link';
 import type { TokenTabs } from 'ui/pages/Token';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsSkeletonRow from 'ui/shared/skeletons/DetailsSkeletonRow';
@@ -26,9 +25,8 @@ const TokenDetails = ({ tokenQuery }: Props) => {
   });
 
   const changeUrlAndScroll = useCallback((tab: TokenTabs) => () => {
-    const newLink = link('token_index', { hash: router.query.hash }, { tab: tab });
     router.push(
-      newLink,
+      { pathname: '/token/[hash]', query: { hash: router.query.hash?.toString() || '', tab } },
       undefined,
       { shallow: true },
     );

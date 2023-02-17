@@ -1,4 +1,4 @@
-import type { TokenType } from 'types/api/tokenInfo';
+import type { TokenType } from 'types/api/token';
 
 const TOKEN_TYPE: Array<{ title: string; id: TokenType }> = [
   { title: 'ERC-20', id: 'ERC-20' },

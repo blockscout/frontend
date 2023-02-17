@@ -1,10 +1,10 @@
 import { Icon, Box, Image, useColorModeValue } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import appConfig from 'configs/app/config';
 import smallLogoPlaceholder from 'icons/networks/icons/placeholder.svg';
 import logoPlaceholder from 'icons/networks/logos/blockscout.svg';
-import link from 'lib/link/link';
 import ASSETS from 'lib/networks/networkAssets';
 
 interface Props {
@@ -14,7 +14,7 @@ interface Props {
 
 const NetworkLogo = ({ isCollapsed, onClick }: Props) => {
   const logoColor = useColorModeValue('blue.600', 'white');
-  const href = link('network_index');
+  const href = route({ pathname: '/' });
   const [ isLogoError, setLogoError ] = React.useState(false);
   const [ isSmallLogoError, setSmallLogoError ] = React.useState(false);
 

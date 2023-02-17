@@ -7,6 +7,7 @@ import type { AddressCoinBalanceHistoryResponse } from 'types/api/address';
 
 import { getResourceKey } from 'lib/api/useApiQuery';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
+import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import SocketAlert from 'ui/shared/SocketAlert';
@@ -20,10 +21,10 @@ const AddressCoinBalance = () => {
   const router = useRouter();
   const scrollRef = React.useRef<HTMLDivElement>(null);
 
-  const addressHash = String(router.query?.id);
+  const addressHash = getQueryParamString(router.query.hash);
   const coinBalanceQuery = useQueryWithPages({
     resourceName: 'address_coin_balance',
-    pathParams: { id: addressHash },
+    pathParams: { hash: addressHash },
     scrollRef,
   });
 
@@ -35,7 +36,7 @@ const AddressCoinBalance = () => {
     setSocketAlert(false);
 
     queryClient.setQueryData(
-      getResourceKey('address_coin_balance', { pathParams: { id: addressHash } }),
+      getResourceKey('address_coin_balance', { pathParams: { hash: addressHash } }),
       (prevData: AddressCoinBalanceHistoryResponse | undefined) => {
         if (!prevData) {
           return;

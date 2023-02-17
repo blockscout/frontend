@@ -7,6 +7,7 @@ import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/appContext';
 import networkExplorers from 'lib/networks/networkExplorers';
+import getQueryParamString from 'lib/router/getQueryParamString';
 import TextAd from 'ui/shared/ad/TextAd';
 import LinkExternal from 'ui/shared/LinkExternal';
 import Page from 'ui/shared/Page/Page';
@@ -34,21 +35,22 @@ const TransactionPageContent = () => {
   const appProps = useAppContext();
 
   const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/txs');
+  const hash = getQueryParamString(router.query.hash);
 
   const { data } = useApiQuery('tx', {
-    pathParams: { id: router.query.id?.toString() },
-    queryOptions: { enabled: Boolean(router.query.id) },
+    pathParams: { hash },
+    queryOptions: { enabled: Boolean(hash) },
   });
 
   const explorersLinks = networkExplorers
     .filter((explorer) => explorer.paths.tx)
     .map((explorer) => {
-      const url = new URL(explorer.paths.tx + '/' + router.query.id, explorer.baseUrl);
+      const url = new URL(explorer.paths.tx + '/' + hash, explorer.baseUrl);
       return <LinkExternal key={ explorer.baseUrl } title={ `Open in ${ explorer.title }` } href={ url.toString() }/>;
     });
 
   const additionals = (
-    <Flex justifyContent="space-between" alignItems="center" flexGrow={ 1 }>
+    <Flex justifyContent="space-between" alignItems="center" flexGrow={ 1 } flexWrap="wrap">
       { data?.tx_tag && <Tag my={ 2 }>{ data.tx_tag }</Tag> }
       { explorersLinks.length > 0 && (
         <Flex

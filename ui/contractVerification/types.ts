@@ -1,13 +1,11 @@
 import type { Option } from 'ui/shared/FancySelect/types';
 
-export type VerificationMethod = 'flatten_source_code' | 'standard_input' | 'sourcify' | 'multi_part_file' | 'vyper_contract'
-
 export interface ContractLibrary {
   name: string;
   address: string;
 }
 export interface FormFieldsFlattenSourceCode {
-  method: 'flatten_source_code';
+  method: 'flattened-code';
   is_yul: boolean;
   name: string;
   compiler: Option;
@@ -15,15 +13,18 @@ export interface FormFieldsFlattenSourceCode {
   is_optimization_enabled: boolean;
   optimization_runs: string;
   code: string;
-  constructor_args: boolean;
+  autodetect_constructor_args: boolean;
+  constructor_args: string;
   libraries: Array<ContractLibrary>;
 }
 
 export interface FormFieldsStandardInput {
-  method: 'standard_input';
+  method: 'standard-input';
   name: string;
   compiler: Option;
   sources: Array<File>;
+  autodetect_constructor_args: boolean;
+  constructor_args: string;
 }
 
 export interface FormFieldsSourcify {
@@ -32,21 +33,29 @@ export interface FormFieldsSourcify {
 }
 
 export interface FormFieldsMultiPartFile {
-  method: 'multi_part_file';
+  method: 'multi-part';
   compiler: Option;
   evm_version: Option;
   is_optimization_enabled: boolean;
   optimization_runs: string;
   sources: Array<File>;
+  libraries: Array<ContractLibrary>;
 }
 
 export interface FormFieldsVyperContract {
-  method: 'vyper_contract';
+  method: 'vyper-code';
   name: string;
   compiler: Option;
   code: string;
-  abi_encoded_args: string;
+  constructor_args: string;
+}
+
+export interface FormFieldsVyperMultiPartFile {
+  method: 'vyper-multi-part';
+  compiler: Option;
+  evm_version: Option;
+  sources: Array<File>;
 }
 
 export type FormFields = FormFieldsFlattenSourceCode | FormFieldsStandardInput | FormFieldsSourcify |
-FormFieldsMultiPartFile | FormFieldsVyperContract;
+FormFieldsMultiPartFile | FormFieldsVyperContract | FormFieldsVyperMultiPartFile;

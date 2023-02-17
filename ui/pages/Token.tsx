@@ -16,13 +16,15 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
 import Pagination from 'ui/shared/Pagination';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
+import SkeletonTabs from 'ui/shared/skeletons/SkeletonTabs';
 import TokenLogo from 'ui/shared/TokenLogo';
 import TokenContractInfo from 'ui/token/TokenContractInfo';
 import TokenDetails from 'ui/token/TokenDetails';
 import TokenHolders from 'ui/token/TokenHolders/TokenHolders';
+import TokenInventory from 'ui/token/TokenInventory';
 import TokenTransfer from 'ui/token/TokenTransfer/TokenTransfer';
 
-export type TokenTabs = 'token_transfers' | 'holders'
+export type TokenTabs = 'token_transfers' | 'holders' | 'inventory';
 
 const TokenPageContent = () => {
   const router = useRouter();
@@ -72,10 +74,23 @@ const TokenPageContent = () => {
     },
   });
 
+  const inventoryQuery = useQueryWithPages({
+    resourceName: 'token_inventory',
+    pathParams: { hash: router.query.hash?.toString() },
+    scrollRef,
+    options: {
+      enabled: Boolean(router.query.hash && router.query.tab === 'inventory' && tokenQuery.data),
+    },
+  });
+
   const tabs: Array<RoutedTab> = [
     { id: 'token_transfers', title: 'Token transfers', component: <TokenTransfer transfersQuery={ transfersQuery }/> },
     { id: 'holders', title: 'Holders', component: <TokenHolders tokenQuery={ tokenQuery } holdersQuery={ holdersQuery }/> },
   ];
+
+  if (tokenQuery.data?.type === 'ERC-1155' || tokenQuery.data?.type === 'ERC-721') {
+    tabs.push({ id: 'inventory', title: 'Inventory', component: <TokenInventory inventoryQuery={ inventoryQuery }/> });
+  }
 
   let hasPagination;
   let pagination;
@@ -88,6 +103,11 @@ const TokenPageContent = () => {
   if (router.query.tab === 'holders') {
     hasPagination = holdersQuery.isPaginationVisible;
     pagination = holdersQuery.pagination;
+  }
+
+  if (router.query.tab === 'inventory') {
+    hasPagination = inventoryQuery.isPaginationVisible;
+    pagination = inventoryQuery.pagination;
   }
 
   const tokenSymbolText = tokenQuery.data?.symbol ? ` (${ trimTokenSymbol(tokenQuery.data.symbol) })` : '';
@@ -118,12 +138,14 @@ const TokenPageContent = () => {
       { /* should stay before tabs to scroll up whith pagination */ }
       <Box ref={ scrollRef }></Box>
 
-      <RoutedTabs
-        tabs={ tabs }
-        tabListProps={ isMobile ? { mt: 8 } : { mt: 3, py: 5, marginBottom: 0 } }
-        rightSlot={ !isMobile && hasPagination ? <Pagination { ...(pagination as PaginationProps) }/> : null }
-        stickyEnabled={ !isMobile }
-      />
+      { tokenQuery.isLoading ? <SkeletonTabs/> : (
+        <RoutedTabs
+          tabs={ tabs }
+          tabListProps={ isMobile ? { mt: 8 } : { mt: 3, py: 5, marginBottom: 0 } }
+          rightSlot={ !isMobile && hasPagination ? <Pagination { ...(pagination as PaginationProps) }/> : null }
+          stickyEnabled={ !isMobile }
+        />
+      ) }
     </Page>
   );
 };

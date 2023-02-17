@@ -1,6 +1,7 @@
 import { Box, Heading, Flex, Text, VStack, Skeleton } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { AnimatePresence } from 'framer-motion';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
@@ -9,7 +10,6 @@ import type { Block } from 'types/api/block';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp } from 'lib/html-entities';
-import link from 'lib/link/link';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import LinkInternal from 'ui/shared/LinkInternal';
@@ -98,7 +98,7 @@ const LatestBlocks = () => {
           </AnimatePresence>
         </VStack>
         <Flex justifyContent="center">
-          <LinkInternal fontSize="sm" href={ link('blocks') }>View all blocks</LinkInternal>
+          <LinkInternal fontSize="sm" href={ route({ pathname: '/blocks' }) }>View all blocks</LinkInternal>
         </Flex>
       </>
     );

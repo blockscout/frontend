@@ -1,10 +1,10 @@
 import { Box, Heading, Flex, Text, Skeleton } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useNewTxsSocket from 'lib/hooks/useNewTxsSocket';
-import link from 'lib/link/link';
 import LinkInternal from 'ui/shared/LinkInternal';
 import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 
@@ -34,7 +34,7 @@ const LatestTransactions = () => {
   }
 
   if (data) {
-    const txsUrl = link('txs');
+    const txsUrl = route({ pathname: '/txs' });
     content = (
       <>
         <SocketNewItemsNotice borderBottomRadius={ 0 } url={ txsUrl } num={ num } alert={ socketAlert }/>

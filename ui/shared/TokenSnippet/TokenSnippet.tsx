@@ -10,13 +10,14 @@ interface Props {
   name?: string | null;
   className?: string;
   logoSize?: number;
+  isDisabled?: boolean;
 }
 
-const TokenSnippet = ({ symbol, hash, name, className, logoSize = 6 }: Props) => {
+const TokenSnippet = ({ symbol, hash, name, className, logoSize = 6, isDisabled }: Props) => {
   return (
     <Flex className={ className } alignItems="center" columnGap={ 2 } w="100%">
       <TokenLogo boxSize={ logoSize } hash={ hash } name={ name }/>
-      <AddressLink hash={ hash } alias={ name } type="token"/>
+      <AddressLink hash={ hash } alias={ name } type="token" isDisabled={ isDisabled }/>
       { symbol && <Text variant="secondary">({ symbol })</Text> }
     </Flex>
   );

@@ -9,6 +9,7 @@ jobs:
   jest_tests:
     name: Run tests with Jest
     runs-on: ubuntu-latest
+    if: ${{ false }}  # disable since there are no jest test yet
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-node@v3

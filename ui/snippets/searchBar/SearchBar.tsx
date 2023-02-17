@@ -1,10 +1,10 @@
 import { Popover, PopoverTrigger, PopoverContent, PopoverBody, useDisclosure } from '@chakra-ui/react';
 import _debounce from 'lodash/debounce';
+import { route } from 'nextjs-routes';
 import type { FormEvent, FocusEvent } from 'react';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-import link from 'lib/link/link';
 
 import SearchBarInput from './SearchBarInput';
 import SearchBarSuggest from './SearchBarSuggest';
@@ -26,7 +26,7 @@ const SearchBar = ({ isHomepage }: Props) => {
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (searchTerm) {
-      const url = link('search_results', undefined, { q: searchTerm });
+      const url = route({ pathname: '/search-results', query: { q: searchTerm } });
       window.location.assign(url);
     }
   }, [ searchTerm ]);

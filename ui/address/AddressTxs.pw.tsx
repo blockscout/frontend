@@ -8,11 +8,11 @@ import buildApiUrl from 'playwright/utils/buildApiUrl';
 
 import AddressTxs from './AddressTxs';
 
-const API_URL = buildApiUrl('address_txs', { id: '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859' });
+const API_URL = buildApiUrl('address_txs', { hash: '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859' });
 
 const hooksConfig = {
   router: {
-    query: { id: '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859' },
+    query: { hash: '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859' },
   },
 };
 

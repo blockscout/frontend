@@ -7,8 +7,8 @@ const MockAddressPage = ({ children }: { children: JSX.Element }): JSX.Element =
   const router = useRouter();
 
   const { data } = useApiQuery('address', {
-    pathParams: { id: router.query.id?.toString() },
-    queryOptions: { enabled: Boolean(router.query.id) },
+    pathParams: { hash: router.query.hash?.toString() },
+    queryOptions: { enabled: Boolean(router.query.hash) },
   });
 
   if (!data) {

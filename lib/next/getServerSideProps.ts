@@ -4,6 +4,8 @@ export type Props = {
   cookies: string;
   referrer: string;
   id?: string;
+  height?: string;
+  hash?: string;
 }
 
 export const getServerSideProps: GetServerSideProps<Props> = async({ req, query }) => {
@@ -12,6 +14,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async({ req, query 
       cookies: req.headers.cookie || '',
       referrer: req.headers.referer || '',
       id: query.id?.toString() || '',
+      height: query.height?.toString() || '',
+      hash: query.hash?.toString() || '',
     },
   };
 };

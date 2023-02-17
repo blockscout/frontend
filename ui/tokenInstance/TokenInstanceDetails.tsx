@@ -1,7 +1,7 @@
 import { Box, Flex, Grid } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenInstance } from 'types/api/tokens';
+import type { TokenInstance } from 'types/api/token';
 
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';

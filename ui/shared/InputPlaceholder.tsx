@@ -7,9 +7,10 @@ interface Props {
   error?: Partial<FieldError>;
   className?: string;
   isFancy?: boolean;
+  isInModal?: boolean;
 }
 
-const InputPlaceholder = ({ text, error, className, isFancy }: Props) => {
+const InputPlaceholder = ({ text, error, className, isFancy, isInModal }: Props) => {
   let errorMessage = error?.message;
 
   if (!errorMessage && error?.type === 'pattern') {
@@ -20,6 +21,7 @@ const InputPlaceholder = ({ text, error, className, isFancy }: Props) => {
     <FormLabel
       className={ className }
       { ...(isFancy ? { 'data-fancy': true } : {}) }
+      { ...(isInModal ? { 'data-in-modal': true } : {}) }
     >
       <chakra.span>{ text }</chakra.span>
       { errorMessage && <chakra.span order={ 3 } whiteSpace="pre"> - { errorMessage }</chakra.span> }

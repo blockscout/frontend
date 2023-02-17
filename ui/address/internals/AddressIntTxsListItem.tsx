@@ -1,5 +1,6 @@
 import { Flex, Tag, Icon, Box, HStack, Text } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
@@ -7,7 +8,6 @@ import type { InternalTransaction } from 'types/api/internalTransaction';
 import appConfig from 'configs/app/config';
 import eastArrowIcon from 'icons/arrows/east.svg';
 import dayjs from 'lib/date/dayjs';
-import link from 'lib/link/link';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -50,7 +50,7 @@ const TxInternalsListItem = ({
       </Flex>
       <HStack spacing={ 1 }>
         <Text fontSize="sm" fontWeight={ 500 }>Block</Text>
-        <LinkInternal href={ link('block', { id: block.toString() }) }>{ block }</LinkInternal>
+        <LinkInternal href={ route({ pathname: '/block/[height]', query: { height: block.toString() } }) }>{ block }</LinkInternal>
       </HStack>
       <Box w="100%" display="flex" columnGap={ 3 }>
         <Address width="calc((100% - 48px) / 2)">

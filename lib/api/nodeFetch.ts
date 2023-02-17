@@ -13,9 +13,10 @@ export default function fetchFactory(
   // first arg can be only a string
   // FIXME migrate to RequestInfo later if needed
   return function fetch(url: string, init?: RequestInit): Promise<Response> {
+    const incomingContentType = _req.headers['content-type'];
     const headers = {
       accept: 'application/json',
-      'content-type': 'application/json',
+      'content-type': incomingContentType?.match(/^multipart\/form-data/) ? incomingContentType : 'application/json',
       cookie: `${ cookies.NAMES.API_TOKEN }=${ _req.cookies[cookies.NAMES.API_TOKEN] }`,
     };
 
@@ -25,10 +26,23 @@ export default function fetchFactory(
       req: _req,
     });
 
+    const body = (() => {
+      const _body = init?.body;
+      if (!_body) {
+        return;
+      }
+
+      if (typeof _body === 'string') {
+        return _body;
+      }
+
+      return JSON.stringify(_body);
+    })();
+
     return nodeFetch(url, {
       ...init,
       headers,
-      body: init?.body ? JSON.stringify(init.body) : undefined,
+      body,
     });
   };
 }

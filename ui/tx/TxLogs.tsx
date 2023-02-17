@@ -16,7 +16,7 @@ const TxLogs = () => {
   const txInfo = useFetchTxInfo({ updateDelay: 5 * SECOND });
   const { data, isLoading, isError, pagination, isPaginationVisible } = useQueryWithPages({
     resourceName: 'tx_logs',
-    pathParams: { id: txInfo.data?.hash },
+    pathParams: { hash: txInfo.data?.hash },
     options: {
       enabled: Boolean(txInfo.data?.hash) && Boolean(txInfo.data?.status),
     },

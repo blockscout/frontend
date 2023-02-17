@@ -5,6 +5,7 @@ import {
   Icon,
   Text,
 } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
@@ -14,7 +15,6 @@ import rightArrowIcon from 'icons/arrows/east.svg';
 import transactionIcon from 'icons/transactions.svg';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import link from 'lib/link/link';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -88,7 +88,7 @@ const TxsListItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }:
       { showBlockInfo && tx.block !== null && (
         <Box mt={ 2 }>
           <Text as="span">Block </Text>
-          <LinkInternal href={ link('block', { id: tx.block.toString() }) }>{ tx.block }</LinkInternal>
+          <LinkInternal href={ route({ pathname: '/block/[height]', query: { height: tx.block.toString() } }) }>{ tx.block }</LinkInternal>
         </Box>
       ) }
       <Flex alignItems="center" height={ 6 } mt={ 6 }>

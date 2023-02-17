@@ -10,6 +10,7 @@ import { getResourceKey } from 'lib/api/useApiQuery';
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
+import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import ActionBar from 'ui/shared/ActionBar';
@@ -31,13 +32,13 @@ const AddressTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}
   const [ newItemsCount, setNewItemsCount ] = React.useState(0);
 
   const isMobile = useIsMobile();
-  const currentAddress = router.query.id?.toString();
+  const currentAddress = getQueryParamString(router.query.hash);
 
   const [ filterValue, setFilterValue ] = React.useState<AddressFromToFilter>(getFilterValue(router.query.filter));
 
   const addressTxsQuery = useQueryWithPages({
     resourceName: 'address_txs',
-    pathParams: { id: currentAddress },
+    pathParams: { hash: currentAddress },
     filters: { filter: filterValue },
     scrollRef,
   });
@@ -63,7 +64,7 @@ const AddressTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}
     }
 
     queryClient.setQueryData(
-      getResourceKey('address_txs', { pathParams: { id: router.query.id?.toString() }, queryParams: { filter: filterValue } }),
+      getResourceKey('address_txs', { pathParams: { hash: currentAddress }, queryParams: { filter: filterValue } }),
       (prevData: AddressTransactionsResponse | undefined) => {
         if (!prevData) {
           return;

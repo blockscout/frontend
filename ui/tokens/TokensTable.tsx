@@ -1,7 +1,7 @@
 import { Table, Tbody, Th, Tr } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenInfo } from 'types/api/tokenInfo';
+import type { TokenInfo } from 'types/api/token';
 
 import { default as Thead } from 'ui/shared/TheadSticky';
 

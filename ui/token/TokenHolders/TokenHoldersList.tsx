@@ -1,7 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenHolder, TokenInfo } from 'types/api/tokenInfo';
+import type { TokenHolder, TokenInfo } from 'types/api/token';
 
 import TokenHoldersListItem from './TokenHoldersListItem';
 
