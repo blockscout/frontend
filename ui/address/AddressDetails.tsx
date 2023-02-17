@@ -106,7 +106,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
         { data.is_contract && data.creation_tx_hash && data.creator_address_hash && (
           <DetailsInfoItem
             title="Creator"
-            hint="Transaction and address of creation."
+            hint="Transaction and address of creation"
           >
             <AddressLink type="address" hash={ data.creator_address_hash } truncation="constant"/>
             <Text whiteSpace="pre"> at txn </Text>
@@ -116,7 +116,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
         { data.is_contract && data.implementation_address && (
           <DetailsInfoItem
             title="Implementation"
-            hint="Implementation address of the proxy contract."
+            hint="Implementation address of the proxy contract"
             columnGap={ 1 }
           >
             <LinkInternal href={ route({ pathname: '/address/[hash]', query: { hash: data.implementation_address } }) } overflow="hidden">
@@ -133,7 +133,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
         { data.has_tokens && (
           <DetailsInfoItem
             title="Tokens"
-            hint="All tokens in the account and total value."
+            hint="All tokens in the account and total value"
             alignSelf="center"
             py={ 0 }
           >
@@ -142,7 +142,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
         ) }
         <DetailsInfoItem
           title="Transactions"
-          hint="Number of transactions related to this address."
+          hint="Number of transactions related to this address"
         >
           { addressQuery.data ?
             <AddressCounterItem prop="transactions_count" query={ countersQuery } address={ data.hash } onClick={ handleCounterItemClick }/> :
@@ -151,7 +151,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
         { data.has_token_transfers && (
           <DetailsInfoItem
             title="Transfers"
-            hint="Number of transfers to/from this address."
+            hint="Number of transfers to/from this address"
           >
             { addressQuery.data ?
               <AddressCounterItem prop="token_transfers_count" query={ countersQuery } address={ data.hash } onClick={ handleCounterItemClick }/> :
@@ -160,7 +160,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
         ) }
         <DetailsInfoItem
           title="Gas used"
-          hint="Gas used by the address."
+          hint="Gas used by the address"
         >
           { addressQuery.data ?
             <AddressCounterItem prop="gas_usage_count" query={ countersQuery } address={ data.hash } onClick={ handleCounterItemClick }/> :
@@ -169,7 +169,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
         { data.has_validated_blocks && (
           <DetailsInfoItem
             title="Blocks validated"
-            hint="Number of blocks validated by this validator."
+            hint="Number of blocks validated by this validator"
           >
             { addressQuery.data ?
               <AddressCounterItem prop="validations_count" query={ countersQuery } address={ data.hash } onClick={ handleCounterItemClick }/> :
@@ -179,7 +179,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
         { data.block_number_balance_updated_at && (
           <DetailsInfoItem
             title="Last balance update"
-            hint="Block number in which the address was updated."
+            hint="Block number in which the address was updated"
             alignSelf="center"
             py={{ base: '2px', lg: 1 }}
           >
