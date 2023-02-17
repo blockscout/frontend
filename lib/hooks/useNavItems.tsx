@@ -43,10 +43,7 @@ interface ReturnType {
 }
 
 export function isGroupItem(item: NavItem | NavGroupItem): item is NavGroupItem {
-  if ((item as NavGroupItem).subItems) {
-    return true;
-  }
-  return false;
+  return 'subItems' in item;
 }
 
 export default function useNavItems(): ReturnType {
