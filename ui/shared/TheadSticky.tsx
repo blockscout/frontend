@@ -36,7 +36,7 @@ const TheadSticky = ({ top, children, ...restProps }: Props) => {
     top: `${ top }px` || 0,
     backgroundColor: useColorModeValue('white', 'black'),
     boxShadow: isSticky ? 'md' : 'none',
-    zIndex: 'overDocked',
+    zIndex: '1',
   };
 
   return (

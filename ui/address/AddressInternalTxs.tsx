@@ -43,29 +43,29 @@ const AddressInternalTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivE
     onFilterChange({ filter: newVal });
   }, [ onFilterChange ]);
 
-  if (isLoading) {
+  const content = (() => {
+    if (isError) {
+      return <DataFetchAlert/>;
+    }
+
+    if (isLoading) {
+      return (
+        <>
+          <Show below="lg" ssr={ false }><AddressIntTxsSkeletonMobile/></Show>
+          <Hide below="lg" ssr={ false }><AddressIntTxsSkeletonDesktop/></Hide>
+        </>
+      );
+    }
+
+    if (data.items.length === 0 && !filterValue) {
+      return <Text as="span">There are no internal transactions for this address.</Text>;
+    }
+
+    if (data.items.length === 0) {
+      return <EmptySearchResult text={ `Couldn${ apos }t find any transaction that matches your query.` }/>;
+    }
+
     return (
-      <>
-        <Show below="lg" ssr={ false }><AddressIntTxsSkeletonMobile/></Show>
-        <Hide below="lg" ssr={ false }><AddressIntTxsSkeletonDesktop/></Hide>
-      </>
-    );
-  }
-
-  if (isError) {
-    return <DataFetchAlert/>;
-  }
-
-  if (data.items.length === 0 && !filterValue) {
-    return <Text as="span">There are no internal transactions for this address.</Text>;
-  }
-
-  let content;
-
-  if (data.items.length === 0) {
-    content = <EmptySearchResult text={ `Couldn${ apos }t find any transaction that matches your query.` }/>;
-  } else {
-    content = (
       <>
         <Show below="lg" ssr={ false }>
           <AddressIntTxsList data={ data.items } currentAddress={ hash }/>
@@ -75,7 +75,7 @@ const AddressInternalTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivE
         </Hide>
       </>
     );
-  }
+  })();
 
   return (
     <>
