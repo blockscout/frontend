@@ -66,7 +66,7 @@ const TokenInventory = ({ inventoryQuery }: Props) => {
         rowGap={{ base: 3, lg: 6 }}
         gridTemplateColumns={{ base: 'repeat(2, calc((100% - 12px)/2))', lg: 'repeat(auto-fill, minmax(210px, 1fr))' }}
       >
-        { items.map((item) => <TokenInventoryItem key={ item.token.address } item={ item }/>) }
+        { items.map((item) => <TokenInventoryItem key={ item.token.address + '_' + item.id } item={ item }/>) }
       </Grid></>
   );
 };
