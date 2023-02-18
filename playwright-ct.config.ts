@@ -56,9 +56,6 @@ const config: PlaywrightTestConfig = {
         // https://github.com/storybookjs/builder-vite/issues/409#issuecomment-1152848986
         sourcemap: false,
         minify: false,
-        rollupOptions: {
-          cache: false,
-        },
       },
     },
   },

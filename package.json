@@ -21,7 +21,7 @@
     "lint:tsc": "./node_modules/.bin/tsc -p ./tsconfig.json",
     "prepare": "husky install",
     "format-svg": "./node_modules/.bin/svgo -r ./icons",
-    "test:pw": "./playwright/make-envs-script.sh && NODE_OPTIONS=\"--max-old-space-size=6144\" playwright test -c playwright-ct.config.ts",
+    "test:pw": "./playwright/make-envs-script.sh && NODE_OPTIONS=\"--max-old-space-size=4096\" playwright test -c playwright-ct.config.ts",
     "test:pw:local": "export NODE_PATH=$(pwd)/node_modules && yarn test:pw",
     "test:pw:docker": "docker run --rm --network host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.28.0-focal ./playwright/run-tests.sh",
     "test:jest": "jest",

@@ -11,7 +11,8 @@ import FancySelect from 'ui/shared/FancySelect/FancySelect';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
-const SOURCIFY_ERROR_REGEXP = /(?<=\bcontracts\s\([^()]*)\w+/gi;
+// const SOURCIFY_ERROR_REGEXP = /(?<=\bcontracts\s\([^()]*)\w+/gi;
+const SOURCIFY_ERROR_REGEXP = /\(([^()]*)\)/;
 
 const ContractVerificationFieldContractIndex = () => {
   const [ options, setOptions ] = React.useState<Array<Option>>([]);
@@ -26,7 +27,8 @@ const ContractVerificationFieldContractIndex = () => {
       return;
     }
 
-    const parsedMethods = sourcesError.match(SOURCIFY_ERROR_REGEXP);
+    const matchResult = sourcesError.match(SOURCIFY_ERROR_REGEXP);
+    const parsedMethods = matchResult?.[1].split(',');
     if (!Array.isArray(parsedMethods) || parsedMethods.length === 0) {
       return;
     }
