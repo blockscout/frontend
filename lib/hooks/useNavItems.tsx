@@ -28,11 +28,7 @@ export interface NavItem {
   isNewUi?: boolean;
 }
 
-export interface NavGroupItem {
-  text: string;
-  icon: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
-  isActive?: boolean;
-  isNewUi?: boolean;
+export interface NavGroupItem extends Omit<NavItem, 'nextRoute'> {
   subItems: Array<NavItem>;
 }
 

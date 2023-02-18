@@ -4,9 +4,9 @@ import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { NavItem } from 'lib/hooks/useNavItems';
-import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 
 import useColors from './useColors';
+import useNavLinkStyleProps from './useNavLinkStyleProps';
 
 type Props = NavItem & {
   isCollapsed?: boolean;
@@ -15,23 +15,19 @@ type Props = NavItem & {
 
 const NavLink = ({ text, nextRoute, icon, isCollapsed, isActive, px, isNewUi }: Props) => {
   const colors = useColors();
-
   const isExpanded = isCollapsed === false;
+
+  const styleProps = useNavLinkStyleProps({ isCollapsed, isExpanded, isActive });
 
   const content = (
     <Link
       { ...(isNewUi ? {} : { href: route(nextRoute) }) }
+      { ...styleProps.itemProps }
       w={{ base: '100%', lg: isExpanded ? '100%' : '60px', xl: isCollapsed ? '60px' : '100%' }}
-      px={ px || { base: 3, lg: isExpanded ? 3 : '15px', xl: isCollapsed ? '15px' : 3 } }
-      py={ 2.5 }
       display="flex"
-      color={ isActive ? colors.text.active : colors.text.default }
-      bgColor={ isActive ? colors.bg.active : colors.bg.default }
-      _hover={{ color: isActive ? colors.text.active : colors.text.hover }}
-      borderRadius="base"
-      whiteSpace="nowrap"
+      px={ px || { base: 3, lg: isExpanded ? 3 : '15px', xl: isCollapsed ? '15px' : 3 } }
       aria-label={ `${ text } link` }
-      { ...getDefaultTransitionProps({ transitionProperty: 'width, padding' }) }
+      whiteSpace="nowrap"
     >
       <Tooltip
         label={ text }
@@ -44,15 +40,7 @@ const NavLink = ({ text, nextRoute, icon, isCollapsed, isActive, px, isNewUi }: 
       >
         <HStack spacing={ 3 } overflow="hidden">
           <Icon as={ icon } boxSize="30px"/>
-          <Text
-            variant="inherit"
-            fontSize="sm"
-            lineHeight="20px"
-            opacity={{ base: '1', lg: isExpanded ? '1' : '0', xl: isCollapsed ? '0' : '1' }}
-            transitionProperty="opacity"
-            transitionDuration="normal"
-            transitionTimingFunction="ease"
-          >
+          <Text { ...styleProps.textProps }>
             { text }
           </Text>
         </HStack>

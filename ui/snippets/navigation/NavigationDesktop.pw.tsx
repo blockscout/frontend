@@ -80,7 +80,7 @@ test('with submenu +@desktop-xl +@dark-mode', async({ mount, page }) => {
     </TestApp>,
     { hooksConfig },
   );
-  await page.locator('div[aria-label="Blockchain link group"]').hover();
+  await page.locator('a[aria-label="Blockchain link group"]').hover();
 
   await expect(component).toHaveScreenshot();
 });
