@@ -46,7 +46,7 @@ const TransactionPageContent = () => {
     .filter((explorer) => explorer.paths.tx)
     .map((explorer) => {
       const url = new URL(explorer.paths.tx + '/' + hash, explorer.baseUrl);
-      return <LinkExternal key={ explorer.baseUrl } title={ `Open in ${ explorer.title }` } href={ url.toString() }/>;
+      return <LinkExternal key={ explorer.baseUrl } href={ url.toString() }>{ `Open in ${ explorer.title }` }</LinkExternal>;
     });
 
   const additionals = (
