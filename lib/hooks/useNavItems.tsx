@@ -33,7 +33,7 @@ interface ReturnType {
 }
 
 export default function useNavItems(): ReturnType {
-  const isMarketplaceFilled = appConfig.marketplaceAppList.length > 0;
+  const isMarketplaceFilled = appConfig.marketplaceAppList.length > 0 && appConfig.network.rpcUrl;
 
   const router = useRouter();
   const pathname = router.pathname;
