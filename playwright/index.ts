@@ -1,4 +1,5 @@
 import './fonts.css';
+import './index.css';
 import { beforeMount } from '@playwright/experimental-ct-react/hooks';
 import _defaultsDeep from 'lodash/defaultsDeep';
 import MockDate from 'mockdate';
