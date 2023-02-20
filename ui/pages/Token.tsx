@@ -146,6 +146,8 @@ const TokenPageContent = () => {
           stickyEnabled={ !isMobile }
         />
       ) }
+
+      { !tokenQuery.isLoading && !tokenQuery.isError && <Box h={{ base: 0, lg: '40vh' }}/> }
     </Page>
   );
 };

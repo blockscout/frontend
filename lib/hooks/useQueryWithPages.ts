@@ -5,7 +5,7 @@ import omit from 'lodash/omit';
 import pick from 'lodash/pick';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
-// import { animateScroll } from 'react-scroll';
+import { animateScroll } from 'react-scroll';
 
 import type { PaginatedResources, PaginatedResponse, PaginationFilters } from 'lib/api/resources';
 import { RESOURCES } from 'lib/api/resources';
@@ -25,7 +25,7 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
   filters,
   options,
   pathParams,
-  // scrollRef,
+  scrollRef,
 }: Params<Resource>) {
   const resource = RESOURCES[resourceName];
   const queryClient = useQueryClient();
@@ -47,8 +47,8 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
   const queryParams = { ...pageParams[page], ...filters };
 
   const scrollToTop = useCallback(() => {
-    // scrollRef?.current ? scrollRef.current.scrollIntoView(true) : animateScroll.scrollToTop({ duration: 0 });
-  }, [ ]);
+    scrollRef?.current ? scrollRef.current.scrollIntoView(true) : animateScroll.scrollToTop({ duration: 0 });
+  }, [ scrollRef ]);
 
   const queryResult = useApiQuery(resourceName, {
     pathParams,
