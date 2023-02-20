@@ -1,40 +1,58 @@
 import { Flex, Hide, Show, Skeleton, Text } from '@chakra-ui/react';
 import React from 'react';
 
-import { data as dataMock } from 'data/withdrawals';
-import { rightLineArrow } from 'lib/html-entities';
-import isBrowser from 'lib/isBrowser';
+import useIsMobile from 'lib/hooks/useIsMobile';
+import useQueryWithPages from 'lib/hooks/useQueryWithPages';
+import { rightLineArrow, nbsp } from 'lib/html-entities';
+import ActionBar from 'ui/shared/ActionBar';
+import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
+import Pagination from 'ui/shared/Pagination';
 import SkeletonList from 'ui/shared/skeletons/SkeletonList';
 import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 import WithdrawalsListItem from 'ui/withdrawals/WithdrawalsListItem';
 import WithdrawalsTable from 'ui/withdrawals/WithdrawalsTable';
 
 const Withdrawals = () => {
-  // request!!
-  const [ isLoading, setIsLoading ] = React.useState(true);
-  React.useEffect(() => {
-    if (isBrowser()) {
-      setTimeout(() => setIsLoading(false), 2000);
-    }
-  }, []);
+  const isMobile = useIsMobile();
 
-  const data = dataMock;
-  const isPaginationVisible = false;
+  const { data, isError, isLoading, isPaginationVisible, pagination } = useQueryWithPages({
+    resourceName: 'withdrawals',
+  });
 
   const content = (() => {
+    if (isError) {
+      return <DataFetchAlert/>;
+    }
+
+    const text = isLoading ?
+      <Skeleton w="400px" h="26px" mb={{ base: 6, lg: 0 }}/> :
+      <Text mb={{ base: 6, lg: 0 }}>A total of { data.total } withdrawals found</Text>;
+
+    const bar = (
+      <>
+        { isMobile && text }
+        <ActionBar mt={ -6 }>
+          <Flex alignItems="center" justifyContent="space-between" w="100%">
+            { !isMobile && text }
+            { isPaginationVisible && <Pagination ml="auto" { ...pagination }/> }
+          </Flex>
+        </ActionBar>
+      </>
+    );
     if (isLoading) {
       return (
         <>
+          { bar }
           <SkeletonList display={{ base: 'block', lg: 'none' }}/>
-          { /* !!! */ }
-          <SkeletonTable display={{ base: 'none', lg: 'block' }} columns={ [ '130px', '120px', '15%', '45%', '35%' ] }/>
+          <SkeletonTable display={{ base: 'none', lg: 'block' }} columns={ Array(7).fill(`${ 100 / 7 }%`) }/>
         </>
       );
     }
     return (
       <>
+        { bar }
         <Show below="lg" ssr={ false }>{ data.items.map((item => <WithdrawalsListItem key={ item.l2_tx_hash } { ...item }/>)) }</Show>
         <Hide below="lg" ssr={ false }><WithdrawalsTable items={ data.items } top={ isPaginationVisible ? 80 : 0 }/></Hide>
       </>
@@ -43,9 +61,7 @@ const Withdrawals = () => {
 
   return (
     <Page>
-      <PageTitle text={ `Withdrawals (L2 ${ rightLineArrow } L1)` } withTextAd/>
-      { isLoading ? <Skeleton w="400px" h="26px" mb={ 7 }/> : <Text>A total of { data.total } withdrawals found</Text> }
-      { /* Pagination */ }
+      <PageTitle text={ `Withdrawals (L2${ nbsp }${ rightLineArrow }${ nbsp }L1)` } withTextAd/>
       { content }
     </Page>
   );

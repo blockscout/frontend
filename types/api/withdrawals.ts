@@ -1,6 +1,8 @@
+import type { AddressParam } from './addressParams';
+
 export type WithdrawalsItem = {
   'challenge_period_end': string | null;
-  'from': string | null;
+  'from': AddressParam | null;
   'l1_tx_hash': string | null;
   'l2_timestamp': string | null;
   'l2_tx_hash': string;

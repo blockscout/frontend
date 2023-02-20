@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Box, Flex, Td, Tr, Text, Icon } from '@chakra-ui/react';
+import { Box, Td, Tr, Text, Icon } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
@@ -7,20 +7,17 @@ import type { WithdrawalsItem } from 'types/api/withdrawals';
 
 import appConfig from 'configs/app/config';
 import txIcon from 'icons/transactions.svg';
-import txBatchIcon from 'icons/txBatch.svg';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import HashStringShorten from 'ui/shared/HashStringShorten';
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
 
  type Props = WithdrawalsItem;
 
-const OutputRootsTableItem = ({
+const WithdrawalsTableItem = ({
   msg_nonce,
   msg_nonce_version,
   l1_tx_hash,
@@ -30,7 +27,10 @@ const OutputRootsTableItem = ({
   status,
   challenge_period_end,
 }: Props) => {
-  const timeAgo = l2_timestamp ? useTimeAgoIncrement(l2_timestamp, false) : 'N/A';
+  const timeAgo = useTimeAgoIncrement(l2_timestamp, false) || 'N/A';
+  const timeToEnd = useTimeAgoIncrement(challenge_period_end, false) || '-';
+  // const timeToEnd = challenge_period_end ? dayjs(challenge_period_end).fromNow() : '-';
+
   return (
     <Tr>
       <Td verticalAlign="middle" fontWeight={ 600 }>
@@ -39,9 +39,8 @@ const OutputRootsTableItem = ({
       <Td verticalAlign="middle">
         { from ? (
           <Address>
-            { /* address info?? */ }
-            <AddressIcon address={{ hash: from, is_contract: false, implementation_name: null }}/>
-            <AddressLink hash={ from } type="address" truncation="constant" ml={ 2 }/>
+            <AddressIcon address={ from }/>
+            <AddressLink hash={ from.hash } type="address" truncation="constant" ml={ 2 }/>
           </Address>
         ) : 'N/A' }
       </Td>
@@ -56,22 +55,21 @@ const OutputRootsTableItem = ({
       </Td>
       <Td verticalAlign="middle">
         { status === 'Ready for Relay' ?
-          <LinkExternal title={ status } href={ appConfig.l2.withdrawalUrl }/> :
+          <LinkExternal href={ appConfig.L2.withdrawalUrl }>{ status }</LinkExternal> :
           <Text>{ status }</Text>
         }
       </Td>
       <Td verticalAlign="middle">
-        { l1_tx_hash ? 
-        //!!!
-          <LinkExternal title='aaa' href={ appConfig.l2.withdrawalUrl }/> :
+        { l1_tx_hash ?
+          <LinkExternal href={ appConfig.L2.withdrawalUrl }><HashStringShorten hash={ l1_tx_hash }/></LinkExternal> :
           'N/A'
         }
       </Td>
       <Td verticalAlign="middle">
-        { challenge_period_end ? challenge_period_end : '-'}
+        { timeToEnd }
       </Td>
     </Tr>
   );
 };
 
-export default OutputRootsTableItem;
+export default WithdrawalsTableItem;
