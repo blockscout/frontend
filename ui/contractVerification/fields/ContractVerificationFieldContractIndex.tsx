@@ -11,7 +11,6 @@ import FancySelect from 'ui/shared/FancySelect/FancySelect';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
-// const SOURCIFY_ERROR_REGEXP = /(?<=\bcontracts\s\([^()]*)\w+/gi;
 const SOURCIFY_ERROR_REGEXP = /\(([^()]*)\)/;
 
 const ContractVerificationFieldContractIndex = () => {

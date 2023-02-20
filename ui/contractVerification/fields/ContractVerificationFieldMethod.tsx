@@ -65,7 +65,7 @@ const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props
             <chakra.span fontWeight={ 500 } fontSize="lg" fontFamily="heading">
             Currently, Blockscout supports { methods.length } contract verification methods
             </chakra.span>
-            <Popover trigger="hover" isLazy placement={ isMobile ? 'bottom-end' : 'right-start' }>
+            <Popover trigger="hover" isLazy placement={ isMobile ? 'bottom-end' : 'right-start' } offset={ [ -8, 8 ] }>
               <PopoverTrigger>
                 <chakra.span display="inline-block" ml={ 1 } cursor="pointer" verticalAlign="middle" h="22px">
                   <Icon as={ infoIcon } boxSize={ 5 } color="link" _hover={{ color: 'link_hovered' }}/>
@@ -76,7 +76,7 @@ const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props
                   <PopoverArrow bgColor={ tooltipBg }/>
                   <PopoverBody color="white">
                     <DarkMode>
-                      <span>Currently, Blockscout supports 6 methods:</span>
+                      <span>Currently, Blockscout supports { methods.length } methods:</span>
                       <OrderedList>
                         <ListItem>Verification through flattened source code.</ListItem>
                         <ListItem>
