@@ -61,7 +61,7 @@ export default function useNavItems(): ReturnType {
       {
         text: 'Blockchain',
         icon: globeIcon,
-        isActive: pathname.startsWith('/block') || pathname.startsWith('/tx') || pathname === '/accounts',
+        isActive: blockchainNavItems.some(item => item.isActive),
         isNewUi: true,
         subItems: blockchainNavItems,
       },
