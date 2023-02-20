@@ -5,7 +5,7 @@ import type { Props } from 'lib/next/getServerSideProps';
 import { getServerSideProps as getServerSidePropsBase } from 'lib/next/getServerSideProps';
 
 export const getServerSideProps: GetServerSideProps<Props> = async(args) => {
-  if (!appConfig.isL2Network) {
+  if (!appConfig.L2.isL2Network) {
     return {
       notFound: true,
     };
