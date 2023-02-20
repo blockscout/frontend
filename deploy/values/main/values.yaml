@@ -571,3 +571,5 @@ frontend:
       _default: https://rpc.ankr.com/eth_goerli
     NEXT_PUBLIC_HOMEPAGE_CHARTS:
       _default: "['daily_txs','coin_price','market_cup']"
+    NEXT_PUBLIC_IS_TESTNET:
+      _default: true
