@@ -17,6 +17,7 @@ import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
 
 interface Props {
   tabs: Array<RoutedSubTab>;
+  addressHash?: string;
 }
 
 export const currentChain: Chain = {
@@ -58,12 +59,12 @@ const TAB_LIST_PROPS = {
   columnGap: 3,
 };
 
-const AddressContract = ({ tabs }: Props) => {
+const AddressContract = ({ addressHash, tabs }: Props) => {
   const modalZIndex = useToken<string>('zIndices', 'modal');
 
   return (
     <WagmiConfig client={ wagmiClient }>
-      <ContractContextProvider>
+      <ContractContextProvider addressHash={ addressHash }>
         <RoutedTabs tabs={ tabs } variant="outline" colorScheme="gray" size="sm" tabListProps={ TAB_LIST_PROPS }/>
       </ContractContextProvider>
       <Web3Modal

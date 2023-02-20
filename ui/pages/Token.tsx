@@ -1,14 +1,18 @@
-import { Skeleton, Box, Flex, SkeletonCircle } from '@chakra-ui/react';
+import { Skeleton, Box, Flex, SkeletonCircle, Icon } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
+import iconSuccess from 'icons/status/success.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/appContext';
+import useContractTabs from 'lib/hooks/useContractTabs';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
+import notEmpty from 'lib/notEmpty';
 import trimTokenSymbol from 'lib/token/trimTokenSymbol';
+import AddressContract from 'ui/address/AddressContract';
 import AdBanner from 'ui/shared/ad/AdBanner';
 import TextAd from 'ui/shared/ad/TextAd';
 import Page from 'ui/shared/Page/Page';
@@ -36,8 +40,10 @@ const TokenPageContent = () => {
 
   const scrollRef = React.useRef<HTMLDivElement>(null);
 
+  const hashString = router.query.hash?.toString();
+
   const tokenQuery = useApiQuery('token', {
-    pathParams: { hash: router.query.hash?.toString() },
+    pathParams: { hash: hashString },
     queryOptions: { enabled: Boolean(router.query.hash) },
   });
 
@@ -58,7 +64,7 @@ const TokenPageContent = () => {
 
   const transfersQuery = useQueryWithPages({
     resourceName: 'token_transfers',
-    pathParams: { hash: router.query.hash?.toString() },
+    pathParams: { hash: hashString },
     scrollRef,
     options: {
       enabled: Boolean(router.query.hash && (!router.query.tab || router.query.tab === 'token_transfers') && tokenQuery.data),
@@ -67,7 +73,7 @@ const TokenPageContent = () => {
 
   const holdersQuery = useQueryWithPages({
     resourceName: 'token_holders',
-    pathParams: { hash: router.query.hash?.toString() },
+    pathParams: { hash: hashString },
     scrollRef,
     options: {
       enabled: Boolean(router.query.hash && router.query.tab === 'holders' && tokenQuery.data),
@@ -76,21 +82,44 @@ const TokenPageContent = () => {
 
   const inventoryQuery = useQueryWithPages({
     resourceName: 'token_inventory',
-    pathParams: { hash: router.query.hash?.toString() },
+    pathParams: { hash: hashString },
     scrollRef,
     options: {
       enabled: Boolean(router.query.hash && router.query.tab === 'inventory' && tokenQuery.data),
     },
   });
 
+  const contractQuery = useApiQuery('address', {
+    pathParams: { hash: hashString },
+    queryOptions: { enabled: Boolean(router.query.hash) },
+  });
+
+  const contractTabs = useContractTabs(contractQuery.data);
+
   const tabs: Array<RoutedTab> = [
     { id: 'token_transfers', title: 'Token transfers', component: <TokenTransfer transfersQuery={ transfersQuery }/> },
     { id: 'holders', title: 'Holders', component: <TokenHolders tokenQuery={ tokenQuery } holdersQuery={ holdersQuery }/> },
-  ];
+    (tokenQuery.data?.type === 'ERC-1155' || tokenQuery.data?.type === 'ERC-721') ?
+      { id: 'inventory', title: 'Inventory', component: <TokenInventory inventoryQuery={ inventoryQuery }/> } :
+      undefined,
+    contractQuery.data?.is_contract ? {
+      id: 'contract',
+      title: () => {
+        if (contractQuery.data.is_verified) {
+          return (
+            <>
+              <span>Contract</span>
+              <Icon as={ iconSuccess } boxSize="14px" color="green.500" ml={ 1 }/>
+            </>
+          );
+        }
 
-  if (tokenQuery.data?.type === 'ERC-1155' || tokenQuery.data?.type === 'ERC-721') {
-    tabs.push({ id: 'inventory', title: 'Inventory', component: <TokenInventory inventoryQuery={ inventoryQuery }/> });
-  }
+        return 'Contract';
+      },
+      component: <AddressContract tabs={ contractTabs } addressHash={ hashString }/>,
+      subTabs: contractTabs.map(tab => tab.id),
+    } : undefined,
+  ].filter(notEmpty);
 
   let hasPagination;
   let pagination;
@@ -138,7 +167,7 @@ const TokenPageContent = () => {
       { /* should stay before tabs to scroll up whith pagination */ }
       <Box ref={ scrollRef }></Box>
 
-      { tokenQuery.isLoading ? <SkeletonTabs/> : (
+      { tokenQuery.isLoading || contractQuery.isLoading ? <SkeletonTabs/> : (
         <RoutedTabs
           tabs={ tabs }
           tabListProps={ isMobile ? { mt: 8 } : { mt: 3, py: 5, marginBottom: 0 } }

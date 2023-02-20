@@ -1,11 +1,9 @@
 import { Flex, Skeleton, Button, Grid, GridItem, Text, Alert, Link, chakra, Box } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import dayjs from 'lib/date/dayjs';
-import getQueryParamString from 'lib/router/getQueryParamString';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -16,6 +14,10 @@ import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
 import ContractSourceCode from './ContractSourceCode';
 
+type Props = {
+  addressHash?: string;
+}
+
 const InfoItem = chakra(({ label, value, className }: { label: string; value: string; className?: string }) => (
   <GridItem display="flex" columnGap={ 6 } wordBreak="break-all" className={ className }>
     <Text w="170px" flexShrink={ 0 } fontWeight={ 500 }>{ label }</Text>
@@ -23,10 +25,7 @@ const InfoItem = chakra(({ label, value, className }: { label: string; value: st
   </GridItem>
 ));
 
-const ContractCode = () => {
-  const router = useRouter();
-
-  const addressHash = getQueryParamString(router.query.hash);
+const ContractCode = ({ addressHash }: Props) => {
   const { data, isLoading, isError } = useApiQuery('contract', {
     pathParams: { hash: addressHash },
     queryOptions: {
@@ -62,7 +61,7 @@ const ContractCode = () => {
       ml="auto"
       mr={ 3 }
       as="a"
-      href={ route({ pathname: '/address/[hash]/contract_verification', query: { hash: addressHash } }) }
+      href={ route({ pathname: '/address/[hash]/contract_verification', query: { hash: addressHash || '' } }) }
     >
         Verify & publish
     </Button>
@@ -131,7 +130,9 @@ const ContractCode = () => {
               <AddressLink type="address" hash={ data.verified_twin_address_hash } truncation="constant" ml={ 2 }/>
             </Address>
             <chakra.span mt={ 1 }>All functions displayed below are from ABI of that contract. In order to verify current contract, proceed with </chakra.span>
-            <LinkInternal href={ route({ pathname: '/address/[hash]/contract_verification', query: { hash: addressHash } }) }>Verify & Publish</LinkInternal>
+            <LinkInternal href={ route({ pathname: '/address/[hash]/contract_verification', query: { hash: addressHash || '' } }) }>
+              Verify & Publish
+            </LinkInternal>
             <span> page</span>
           </Alert>
         ) }
