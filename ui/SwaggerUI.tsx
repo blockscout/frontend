@@ -12,6 +12,8 @@ import appConfig from 'configs/app/config';
 
 import 'swagger-ui-react/swagger-ui.css';
 
+const DEFAULT_SERVER = 'blockscout.com/poa/core';
+
 const NeverShowInfoPlugin = () => {
   return {
     components: {
@@ -47,7 +49,17 @@ const SwaggerUI = () => {
 
   return (
     <Box sx={ swaggerStyle }>
-      <SwaggerUIReact url={ appConfig.apiDoc.specUrl } plugins={ [ NeverShowInfoPlugin ] }/>
+      <SwaggerUIReact
+        url={ appConfig.apiDoc.specUrl }
+        plugins={ [ NeverShowInfoPlugin ] }
+        // eslint-disable-next-line react/jsx-no-bind
+        requestInterceptor={ (req) => {
+          if (!req.loadSpec) {
+            req.url = req.url.replace(DEFAULT_SERVER, appConfig.api.host);
+          }
+          return req;
+        } }
+      />
     </Box>
   );
 };
