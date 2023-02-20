@@ -32,6 +32,7 @@ type Props = {
   filter?: React.ReactNode;
   enableTimeIncrement?: boolean;
   top?: number;
+  hasLongSkeleton?: boolean;
 }
 
 const TxsContent = ({
@@ -43,6 +44,7 @@ const TxsContent = ({
   socketInfoNum,
   currentAddress,
   enableTimeIncrement,
+  hasLongSkeleton,
   top,
 }: Props) => {
   const { data, isLoading, isError, setSortByField, setSortByValue, sorting } = useTxsSort(query);
@@ -58,10 +60,13 @@ const TxsContent = ({
         <>
           <Show below="lg" ssr={ false }><SkeletonList/></Show>
           <Hide below="lg" ssr={ false }>
-            <SkeletonTable columns={ showBlockInfo ?
-              [ '32px', '22%', '160px', '20%', '18%', '292px', '20%', '20%' ] :
-              [ '32px', '22%', '160px', '20%', '292px', '20%', '20%' ]
-            }/>
+            <SkeletonTable
+              columns={ showBlockInfo ?
+                [ '32px', '22%', '160px', '20%', '18%', '292px', '20%', '20%' ] :
+                [ '32px', '22%', '160px', '20%', '292px', '20%', '20%' ]
+              }
+              isLong={ hasLongSkeleton }
+            />
           </Hide>
         </>
       );

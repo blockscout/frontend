@@ -138,7 +138,7 @@ const AddressTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}
   return (
     <>
       { !isMobile && (
-        <ActionBar mt={ -6 }>
+        <ActionBar mt={ -6 } showShadow={ addressTxsQuery.isLoading }>
           { filter }
           { currentAddress && <AddressCsvExportLink address={ currentAddress } type="transactions" ml="auto"/> }
           { addressTxsQuery.isPaginationVisible && <Pagination { ...addressTxsQuery.pagination } ml={ 8 }/> }
@@ -153,6 +153,7 @@ const AddressTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}
         socketInfoAlert={ socketAlert }
         socketInfoNum={ newItemsCount }
         top={ 80 }
+        hasLongSkeleton
       />
     </>
   );

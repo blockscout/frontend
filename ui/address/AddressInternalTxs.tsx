@@ -9,13 +9,13 @@ import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import AddressIntTxsSkeletonDesktop from 'ui/address/internals/AddressIntTxsSkeletonDesktop';
-import AddressIntTxsSkeletonMobile from 'ui/address/internals/AddressIntTxsSkeletonMobile';
 import AddressIntTxsTable from 'ui/address/internals/AddressIntTxsTable';
 import EmptySearchResult from 'ui/apps/EmptySearchResult';
 import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Pagination from 'ui/shared/Pagination';
+import SkeletonList from 'ui/shared/skeletons/SkeletonList';
+import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 
 import AddressCsvExportLink from './AddressCsvExportLink';
 import AddressTxsFilter from './AddressTxsFilter';
@@ -51,8 +51,12 @@ const AddressInternalTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivE
     if (isLoading) {
       return (
         <>
-          <Show below="lg" ssr={ false }><AddressIntTxsSkeletonMobile/></Show>
-          <Hide below="lg" ssr={ false }><AddressIntTxsSkeletonDesktop/></Hide>
+          <Show below="lg" ssr={ false }>
+            <SkeletonList/>
+          </Show>
+          <Hide below="lg" ssr={ false }>
+            <SkeletonTable columns={ [ '15%', '15%', '10%', '20%', '20%', '20%' ] } isLong/>
+          </Hide>
         </>
       );
     }
@@ -79,7 +83,7 @@ const AddressInternalTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivE
 
   return (
     <>
-      <ActionBar mt={ -6 } justifyContent="left">
+      <ActionBar mt={ -6 } justifyContent="left" showShadow={ isLoading }>
         <AddressTxsFilter
           defaultFilter={ filterValue }
           onFilterChange={ handleFilterChange }

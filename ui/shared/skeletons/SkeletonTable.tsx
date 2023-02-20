@@ -4,13 +4,16 @@ import React from 'react';
 interface Props {
   columns: Array<string>;
   className?: string;
+  isLong?: boolean;
 }
 
-const SkeletonTable = ({ columns, className }: Props) => {
+const SkeletonTable = ({ columns, className, isLong }: Props) => {
+  const rowsNum = isLong ? 50 : 3;
+
   return (
     <Box className={ className }>
       <Skeleton height={ 10 } width="100%" borderBottomLeftRadius="none" borderBottomRightRadius="none"/>
-      { Array.from(Array(50)).map((item, index) => (
+      { Array.from(Array(rowsNum)).map((item, index) => (
         <HStack key={ index } spacing={ 6 } marginTop={ 8 }>
           { columns.map((width, index) => (
             <Skeleton

@@ -7,12 +7,13 @@ import useIsSticky from 'lib/hooks/useIsSticky';
 type Props = {
   children: React.ReactNode;
   className?: string;
+  showShadow?: boolean;
 }
 
 const TOP_UP = 106;
 const TOP_DOWN = 0;
 
-const ActionBar = ({ children, className }: Props) => {
+const ActionBar = ({ children, className, showShadow }: Props) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const scrollDirection = useScrollDirection();
   const isSticky = useIsSticky(ref, TOP_UP + 5);
@@ -38,7 +39,7 @@ const ActionBar = ({ children, className }: Props) => {
       zIndex={{ base: 'sticky2', lg: 'docked' }}
       boxShadow={{
         base: isSticky ? 'md' : 'none',
-        lg: isSticky ? '0 4px 6px -6px rgb(0 0 0 / 10%), 0 2px 4px -4px rgb(0 0 0 / 6%)' : 'none',
+        lg: isSticky && showShadow ? 'action_bar' : 'none',
       }}
       ref={ ref }
     >
