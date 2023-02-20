@@ -92,7 +92,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
           <Text fontSize="sm">Verify with other explorers</Text>
           { explorers.map((explorer) => {
             const url = new URL(explorer.paths.address + '/' + addressHash, explorer.baseUrl);
-            return <LinkExternal key={ explorer.baseUrl } title={ explorer.title } href={ url.toString() }/>;
+            return <LinkExternal key={ explorer.baseUrl } href={ url.toString() }>{ explorer.title }</LinkExternal>;
           }) }
         </Flex>
       ) }

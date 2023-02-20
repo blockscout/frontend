@@ -1,5 +1,4 @@
 import { Alert, Flex } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React from 'react';
 import { useAccount } from 'wagmi';
 
@@ -7,7 +6,6 @@ import type { SmartContractReadMethod, SmartContractQueryMethodRead } from 'type
 
 import useApiFetch from 'lib/api/useApiFetch';
 import useApiQuery from 'lib/api/useApiQuery';
-import getQueryParamString from 'lib/router/getQueryParamString';
 import ContractMethodsAccordion from 'ui/address/contract/ContractMethodsAccordion';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
@@ -20,16 +18,14 @@ import ContractMethodConstant from './ContractMethodConstant';
 import ContractReadResult from './ContractReadResult';
 
 interface Props {
+  addressHash?: string;
   isProxy?: boolean;
   isCustomAbi?: boolean;
 }
 
-const ContractRead = ({ isProxy, isCustomAbi }: Props) => {
-  const router = useRouter();
+const ContractRead = ({ addressHash, isProxy, isCustomAbi }: Props) => {
   const apiFetch = useApiFetch();
   const { address: userAddress } = useAccount();
-
-  const addressHash = getQueryParamString(router.query.hash);
 
   const { data, isLoading, isError } = useApiQuery(isProxy ? 'contract_methods_read_proxy' : 'contract_methods_read', {
     pathParams: { hash: addressHash },

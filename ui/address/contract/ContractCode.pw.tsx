@@ -23,7 +23,7 @@ test('verified with changed byte code +@mobile +@dark-mode', async({ mount, page
 
   const component = await mount(
     <TestApp>
-      <ContractCode/>
+      <ContractCode addressHash={ addressHash }/>
     </TestApp>,
     { hooksConfig },
   );
@@ -39,7 +39,7 @@ test('verified with multiple sources +@mobile', async({ mount, page }) => {
 
   await mount(
     <TestApp>
-      <ContractCode/>
+      <ContractCode addressHash={ addressHash }/>
     </TestApp>,
     { hooksConfig },
   );
@@ -57,7 +57,7 @@ test('verified via sourcify', async({ mount, page }) => {
 
   await mount(
     <TestApp>
-      <ContractCode/>
+      <ContractCode addressHash={ addressHash }/>
     </TestApp>,
     { hooksConfig },
   );
@@ -73,7 +73,7 @@ test('self destructed', async({ mount, page }) => {
 
   await mount(
     <TestApp>
-      <ContractCode/>
+      <ContractCode addressHash={ addressHash }/>
     </TestApp>,
     { hooksConfig },
   );
@@ -90,7 +90,7 @@ test('with twin address alert +@mobile', async({ mount, page }) => {
 
   const component = await mount(
     <TestApp>
-      <ContractCode/>
+      <ContractCode addressHash={ addressHash }/>
     </TestApp>,
     { hooksConfig },
   );
@@ -106,7 +106,7 @@ test('with proxy address alert +@mobile', async({ mount, page }) => {
 
   const component = await mount(
     <TestApp>
-      <ContractCode/>
+      <ContractCode addressHash={ addressHash }/>
     </TestApp>,
     { hooksConfig },
   );
@@ -122,7 +122,7 @@ test('non verified', async({ mount, page }) => {
 
   const component = await mount(
     <TestApp>
-      <ContractCode/>
+      <ContractCode addressHash={ addressHash }/>
     </TestApp>,
     { hooksConfig },
   );
