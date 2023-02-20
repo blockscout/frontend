@@ -64,6 +64,26 @@
             }
         },
         {
+            "type": "shell",
+            "command": "NEXT_PUBLIC_L1_BASE_URL=https://${input:goerliApiHost} yarn dev:goerli:optimism",
+            "problemMatcher": [],
+            "label": "dev server: goerli optimism",
+            "detail": "start local dev server for Goerli Optimism network",
+            "presentation": {
+                "reveal": "silent",
+                "panel": "shared",
+                "close": true,
+                "revealProblems": "onProblem",
+            },
+            "icon": {
+                "color": "terminal.ansiMagenta",
+                "id": "server-process"
+            },
+            "runOptions": {
+                "instanceLimit": 1
+            }
+        },
+        {
             "type": "typescript",
             "label": "tsc build",
             "detail": "compile typescript",
