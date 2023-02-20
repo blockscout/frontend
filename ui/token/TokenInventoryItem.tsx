@@ -1,5 +1,5 @@
-import { Flex, Link, Text, LinkBox, LinkOverlay, useColorModeValue, Hide } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
+import { Flex, Text, LinkBox, LinkOverlay, useColorModeValue, Hide } from '@chakra-ui/react';
+import NextLink from 'next/link';
 import React from 'react';
 
 import type { TokenInstance } from 'types/api/token';
@@ -7,14 +7,13 @@ import type { TokenInstance } from 'types/api/token';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
+import LinkInternal from 'ui/shared/LinkInternal';
 import NftMedia from 'ui/shared/nft/NftMedia';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 type Props = { item: TokenInstance };
 
 const NFTItem = ({ item }: Props) => {
-  const tokenLink = route({ pathname: '/token/[hash]/instance/[id]', query: { hash: item.token.address, id: item.id } });
-
   return (
     <LinkBox
       w={{ base: '100%', lg: '210px' }}
@@ -27,24 +26,26 @@ const NFTItem = ({ item }: Props) => {
       fontWeight={ 500 }
       lineHeight="20px"
     >
-      <LinkOverlay href={ tokenLink }>
-        <NftMedia
-          mb="18px"
-          imageUrl={ item.image_url }
-          animationUrl={ item.animation_url }
-        />
-      </LinkOverlay>
+      <NextLink href={{ pathname: '/token/[hash]/instance/[id]', query: { hash: item.token.address, id: item.id } }} passHref>
+        <LinkOverlay>
+          <NftMedia
+            mb="18px"
+            imageUrl={ item.image_url }
+            animationUrl={ item.animation_url }
+          />
+        </LinkOverlay>
+      </NextLink>
       { item.id && (
         <Flex mb={ 2 } ml={ 1 }>
           <Text whiteSpace="pre" variant="secondary">ID# </Text>
           <TruncatedTextTooltip label={ item.id }>
-            <Link
+            <LinkInternal
               overflow="hidden"
               whiteSpace="nowrap"
               textOverflow="ellipsis"
             >
               { item.id }
-            </Link>
+            </LinkInternal>
           </TruncatedTextTooltip>
         </Flex>
       ) }

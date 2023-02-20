@@ -1,4 +1,5 @@
 import type { TokenInfo, TokenType } from './token';
+import type { TokenTransfer } from './tokenTransfer';
 
 export type TokensResponse = {
   items: Array<TokenInfo>;
@@ -10,3 +11,15 @@ export type TokensResponse = {
 }
 
 export type TokensFilters = { filter: string; type: Array<TokenType> | undefined };
+
+export interface TokenInstanceTransferResponse {
+  items: Array<TokenTransfer>;
+  next_page_params: TokenInstanceTransferPagination | null;
+}
+
+export interface TokenInstanceTransferPagination {
+  block_number: number;
+  index: number;
+  items_count: number;
+  token_id: string;
+}

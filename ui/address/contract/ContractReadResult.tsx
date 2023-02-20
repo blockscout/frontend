@@ -18,12 +18,12 @@ const ContractReadResult = ({ item, result, onSettle }: Props) => {
   }, [ onSettle ]);
 
   if ('status' in result) {
-    return <Alert status="error" mt={ 3 } p={ 4 } borderRadius="md" fontSize="sm">{ result.statusText }</Alert>;
+    return <Alert status="error" mt={ 3 } p={ 4 } borderRadius="md" fontSize="sm" wordBreak="break-word">{ result.statusText }</Alert>;
   }
 
   if (result.is_error) {
     const message = 'error' in result.result ? result.result.error : result.result.message;
-    return <Alert status="error" mt={ 3 } p={ 4 } borderRadius="md" fontSize="sm">{ message }</Alert>;
+    return <Alert status="error" mt={ 3 } p={ 4 } borderRadius="md" fontSize="sm" wordBreak="break-word">{ message }</Alert>;
   }
 
   return (

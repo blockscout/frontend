@@ -35,6 +35,7 @@ const ContractRead = ({ isProxy, isCustomAbi }: Props) => {
     pathParams: { hash: addressHash },
     queryParams: {
       is_custom_abi: isCustomAbi ? 'true' : 'false',
+      from: userAddress,
     },
     queryOptions: {
       enabled: Boolean(addressHash),
@@ -44,6 +45,9 @@ const ContractRead = ({ isProxy, isCustomAbi }: Props) => {
   const handleMethodFormSubmit = React.useCallback(async(item: SmartContractReadMethod, args: Array<string | Array<string>>) => {
     return apiFetch<'contract_method_query', SmartContractQueryMethodRead>('contract_method_query', {
       pathParams: { hash: addressHash },
+      queryParams: {
+        is_custom_abi: isCustomAbi ? 'true' : 'false',
+      },
       fetchParams: {
         method: 'POST',
         body: {
@@ -54,11 +58,11 @@ const ContractRead = ({ isProxy, isCustomAbi }: Props) => {
         },
       },
     });
-  }, [ addressHash, apiFetch, isProxy, userAddress ]);
+  }, [ addressHash, apiFetch, isCustomAbi, isProxy, userAddress ]);
 
   const renderContent = React.useCallback((item: SmartContractReadMethod, index: number, id: number) => {
     if (item.error) {
-      return <Alert status="error" fontSize="sm">{ item.error }</Alert>;
+      return <Alert status="error" fontSize="sm" wordBreak="break-word">{ item.error }</Alert>;
     }
 
     if (item.outputs.some(({ value }) => value)) {

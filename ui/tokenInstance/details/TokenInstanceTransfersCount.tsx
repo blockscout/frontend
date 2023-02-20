@@ -36,7 +36,7 @@ const TokenInstanceTransfersCount = ({ hash, id, onClick }: Props) => {
   return (
     <DetailsInfoItem
       title="Transfers"
-      hint="Number of transfer for the token instance."
+      hint="Number of transfer for the token instance"
     >
       <LinkInternal
         href={ url }

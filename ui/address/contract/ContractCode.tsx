@@ -4,6 +4,7 @@ import { route } from 'nextjs-routes';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
+import dayjs from 'lib/date/dayjs';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
@@ -15,12 +16,12 @@ import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
 import ContractSourceCode from './ContractSourceCode';
 
-const InfoItem = ({ label, value }: { label: string; value: string }) => (
-  <GridItem display="flex" columnGap={ 6 }>
+const InfoItem = chakra(({ label, value, className }: { label: string; value: string; className?: string }) => (
+  <GridItem display="flex" columnGap={ 6 } wordBreak="break-all" className={ className }>
     <Text w="170px" flexShrink={ 0 } fontWeight={ 500 }>{ label }</Text>
-    <Text wordBreak="break-all">{ value }</Text>
+    <Text>{ value }</Text>
   </GridItem>
-);
+));
 
 const ContractCode = () => {
   const router = useRouter();
@@ -153,10 +154,10 @@ const ContractCode = () => {
         <Grid templateColumns={{ base: '1fr', lg: '1fr 1fr' }} rowGap={ 4 } columnGap={ 6 } mb={ 8 }>
           { data.name && <InfoItem label="Contract name" value={ data.name }/> }
           { data.compiler_version && <InfoItem label="Compiler version" value={ data.compiler_version }/> }
-          { data.evm_version && <InfoItem label="EVM version" value={ data.evm_version }/> }
+          { data.evm_version && <InfoItem label="EVM version" value={ data.evm_version } textTransform="capitalize"/> }
           { typeof data.optimization_enabled === 'boolean' && <InfoItem label="Optimization enabled" value={ data.optimization_enabled ? 'true' : 'false' }/> }
           { data.optimization_runs && <InfoItem label="Optimization runs" value={ String(data.optimization_runs) }/> }
-          { data.verified_at && <InfoItem label="Verified at" value={ data.verified_at }/> }
+          { data.verified_at && <InfoItem label="Verified at" value={ dayjs(data.verified_at).format('LLLL') } wordBreak="break-word"/> }
         </Grid>
       ) }
       <Flex flexDir="column" rowGap={ 6 }>
