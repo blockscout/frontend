@@ -6,7 +6,6 @@ import type { SmartContractWriteMethod } from 'types/api/contract';
 
 import config from 'configs/app/config';
 import useApiQuery from 'lib/api/useApiQuery';
-import getQueryParamString from 'lib/router/getQueryParamString';
 import ContractMethodsAccordion from 'ui/address/contract/ContractMethodsAccordion';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';

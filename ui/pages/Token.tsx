@@ -90,7 +90,7 @@ const TokenPageContent = () => {
   });
 
   const contractQuery = useApiQuery('address', {
-    pathParams: { id: hashString },
+    pathParams: { hash: hashString },
     queryOptions: { enabled: Boolean(router.query.hash) },
   });
 
