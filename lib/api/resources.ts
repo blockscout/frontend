@@ -38,6 +38,7 @@ import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/toke
 import type { TransactionsResponseValidated, TransactionsResponsePending, Transaction } from 'types/api/transaction';
 import type { TTxsFilters } from 'types/api/txsFilters';
 import type { VisualizedContract } from 'types/api/visualization';
+import type { WithdrawalsResponse } from 'types/api/withdrawals';
 import type ArrayElement from 'types/utils/ArrayElement';
 
 import appConfig from 'configs/app/config';
@@ -361,7 +362,14 @@ export const RESOURCES = {
   // GraphQL
   graphql: {
     path: '/graphql',
-  }, 
+  },
+
+  // L2
+  withdrawals: {
+    path: '/api/v2/optimism/withdrawals',
+    paginationFields: [ 'nonce' as const, 'items_count' as const ],
+    filterFields: [],
+  },
 
   output_roots: {
     path: '/api/v2/optimism/output-roots',
@@ -428,7 +436,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'token_transfers' | 'token_holders' | 'token_inventory' | 'tokens' |
 'token_instance_transfers' |
 'verified_contracts' |
-'output_roots';
+'output_roots' | 'withdrawals';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
 
@@ -491,6 +499,7 @@ Q extends 'verified_contracts_counters' ? VerifiedContractsCounters :
 Q extends 'visualize_sol2uml' ? VisualizedContract :
 Q extends 'contract_verification_config' ? SmartContractVerificationConfig :
 Q extends 'output_roots' ? OutputRootsResponse :
+Q extends 'withdrawals' ? WithdrawalsResponse :
 never;
 /* eslint-enable @typescript-eslint/indent */
 
