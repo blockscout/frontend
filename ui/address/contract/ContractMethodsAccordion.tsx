@@ -35,50 +35,55 @@ const ContractMethodsAccordion = <T extends SmartContractMethod>({ data, renderC
     setId((id) => id + 1);
   }, []);
 
+  if (data.length === 0) {
+    return null;
+  }
+
   return (
-    <Accordion allowMultiple position="relative" onChange={ handleAccordionStateChange } index={ expandedSections }>
-      { data.map((item, index) => {
-        return (
-          <AccordionItem key={ index } as="section" _first={{ borderTopWidth: '0', '.chakra-accordion__button': { pr: '150px' } }}>
-            <h2>
-              <AccordionButton px={ 0 } py={ 3 } _hover={{ bgColor: 'inherit' }} wordBreak="break-all" textAlign="left">
-                <Box as="span" fontFamily="heading" fontWeight={ 500 } fontSize="lg" mr={ 1 }>
-                  { index + 1 }. { item.type === 'fallback' || item.type === 'receive' ? item.type : item.name }
-                </Box>
-                { item.type === 'fallback' && (
-                  <Hint
-                    label={
-                      `The fallback function is executed on a call to the contract if none of the other functions match 
+    <>
+      <Flex mb={ 3 }>
+        <Box fontWeight={ 500 }>Contract information</Box>
+        <Link onClick={ handleExpandAll } ml="auto">{ expandedSections.length === data.length ? 'Collapse' : 'Expand' } all</Link>
+        <Link onClick={ handleReset } ml={ 3 }>Reset</Link>
+      </Flex>
+      <Accordion allowMultiple position="relative" onChange={ handleAccordionStateChange } index={ expandedSections }>
+        { data.map((item, index) => {
+          return (
+            <AccordionItem key={ index } as="section" _first={{ borderTopWidth: '0' }}>
+              <h2>
+                <AccordionButton px={ 0 } py={ 3 } _hover={{ bgColor: 'inherit' }} wordBreak="break-all" textAlign="left">
+                  <Box as="span" fontWeight={ 500 } mr={ 1 }>
+                    { index + 1 }. { item.type === 'fallback' || item.type === 'receive' ? item.type : item.name }
+                  </Box>
+                  { item.type === 'fallback' && (
+                    <Hint
+                      label={
+                        `The fallback function is executed on a call to the contract if none of the other functions match 
                         the given function signature, or if no data was supplied at all and there is no receive Ether function. 
                         The fallback function always receives data, but in order to also receive Ether it must be marked payable.`
-                    }/>
-                ) }
-                { item.type === 'receive' && (
-                  <Hint
-                    label={
-                      `The receive function is executed on a call to the contract with empty calldata. 
+                      }/>
+                  ) }
+                  { item.type === 'receive' && (
+                    <Hint
+                      label={
+                        `The receive function is executed on a call to the contract with empty calldata. 
                         This is the function that is executed on plain Ether transfers (e.g. via .send() or .transfer()). 
                         If no such function exists, but a payable fallback function exists, the fallback function will be called on a plain Ether transfer. 
                         If neither a receive Ether nor a payable fallback function is present, 
                         the contract cannot receive Ether through regular transactions and throws an exception.`
-                    }/>
-                ) }
-                <AccordionIcon/>
-              </AccordionButton>
-            </h2>
-            <AccordionPanel pb={ 4 } px={ 0 }>
-              { renderContent(item, index, id) }
-            </AccordionPanel>
-          </AccordionItem>
-        );
-      }) }
-      { data.length > 0 && (
-        <Flex columnGap={ 3 } position="absolute" top={ 0 } right={ 0 } py={ 3 } lineHeight="27px">
-          <Link onClick={ handleExpandAll }>{ expandedSections.length === data.length ? 'Collapse' : 'Expand' } all</Link>
-          <Link onClick={ handleReset }>Reset</Link>
-        </Flex>
-      ) }
-    </Accordion>
+                      }/>
+                  ) }
+                  <AccordionIcon/>
+                </AccordionButton>
+              </h2>
+              <AccordionPanel pb={ 4 } px={ 0 }>
+                { renderContent(item, index, id) }
+              </AccordionPanel>
+            </AccordionItem>
+          );
+        }) }
+      </Accordion>
+    </>
   );
 };
 
