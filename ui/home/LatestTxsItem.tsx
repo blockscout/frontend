@@ -26,7 +26,7 @@ type Props = {
   tx: Transaction;
 }
 
-const LatestBlocksItem = ({ tx }: Props) => {
+const LatestTxsItem = ({ tx }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
   const timeAgo = useTimeAgoIncrement(tx.timestamp || '0', true);
 
@@ -126,4 +126,4 @@ const LatestBlocksItem = ({ tx }: Props) => {
   );
 };
 
-export default LatestBlocksItem;
+export default React.memo(LatestTxsItem);
