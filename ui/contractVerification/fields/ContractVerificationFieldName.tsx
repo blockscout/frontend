@@ -41,7 +41,6 @@ const ContractVerificationFieldName = ({ hint }: Props) => {
         control={ control }
         render={ renderControl }
         rules={{ required: true }}
-        defaultValue=""
       />
       { hint ? <span>{ hint }</span> : (
         <>

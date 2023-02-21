@@ -1,11 +1,18 @@
+import type { SmartContractVerificationMethod } from 'types/api/contract';
 import type { Option } from 'ui/shared/FancySelect/types';
 
 export interface ContractLibrary {
   name: string;
   address: string;
 }
+
+interface MethodOption {
+  label: string;
+  value: SmartContractVerificationMethod;
+}
+
 export interface FormFieldsFlattenSourceCode {
-  method: 'flattened-code';
+  method: MethodOption;
   is_yul: boolean;
   name: string;
   compiler: Option;
@@ -19,7 +26,7 @@ export interface FormFieldsFlattenSourceCode {
 }
 
 export interface FormFieldsStandardInput {
-  method: 'standard-input';
+  method: MethodOption;
   name: string;
   compiler: Option;
   sources: Array<File>;
@@ -28,12 +35,13 @@ export interface FormFieldsStandardInput {
 }
 
 export interface FormFieldsSourcify {
-  method: 'sourcify';
+  method: MethodOption;
   sources: Array<File>;
+  contract_index?: Option;
 }
 
 export interface FormFieldsMultiPartFile {
-  method: 'multi-part';
+  method: MethodOption;
   compiler: Option;
   evm_version: Option;
   is_optimization_enabled: boolean;
@@ -43,7 +51,7 @@ export interface FormFieldsMultiPartFile {
 }
 
 export interface FormFieldsVyperContract {
-  method: 'vyper-code';
+  method: MethodOption;
   name: string;
   compiler: Option;
   code: string;
@@ -51,7 +59,7 @@ export interface FormFieldsVyperContract {
 }
 
 export interface FormFieldsVyperMultiPartFile {
-  method: 'vyper-multi-part';
+  method: MethodOption;
   compiler: Option;
   evm_version: Option;
   sources: Array<File>;

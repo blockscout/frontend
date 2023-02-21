@@ -10,7 +10,7 @@ const FILE_TYPES = [ '.json' as const ];
 
 const ContractVerificationStandardInput = () => {
   return (
-    <ContractVerificationMethod title="New Smart Contract Verification">
+    <ContractVerificationMethod title="Contract verification via Solidity (standard JSON input) ">
       <ContractVerificationFieldName/>
       <ContractVerificationFieldCompiler/>
       <ContractVerificationFieldSources

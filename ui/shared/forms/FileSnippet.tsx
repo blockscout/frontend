@@ -1,11 +1,12 @@
-import { Box, Flex, Icon, Text, useColorModeValue, IconButton, chakra } from '@chakra-ui/react';
+import { Box, Flex, Icon, Text, useColorModeValue, IconButton, chakra, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 
 import CrossIcon from 'icons/cross.svg';
-import imageIcon from 'icons/files/image.svg';
 import jsonIcon from 'icons/files/json.svg';
+import placeholderIcon from 'icons/files/placeholder.svg';
 import solIcon from 'icons/files/sol.svg';
 import yulIcon from 'icons/files/yul.svg';
+import infoIcon from 'icons/info.svg';
 import { shortenNumberWithLetter } from 'lib/formatters';
 
 const FILE_ICONS: Record<string, React.FunctionComponent<React.SVGAttributes<SVGElement>>> = {
@@ -29,42 +30,79 @@ interface Props {
   index?: number;
   onRemove?: (index?: number) => void;
   isDisabled?: boolean;
+  error?: string;
 }
 
-const FileSnippet = ({ file, className, index, onRemove, isDisabled }: Props) => {
-  const handleRemove = React.useCallback(() => {
+const FileSnippet = ({ file, className, index, onRemove, isDisabled, error }: Props) => {
+  const handleRemove = React.useCallback((event: React.MouseEvent) => {
+    event.stopPropagation();
     onRemove?.(index);
   }, [ index, onRemove ]);
 
+  const handleErrorHintIconClick = React.useCallback((event: React.MouseEvent) => {
+    event.stopPropagation();
+
+  }, []);
+
   const fileExtension = getFileExtension(file.name);
-  const fileIcon = FILE_ICONS[fileExtension] || imageIcon;
+  const fileIcon = FILE_ICONS[fileExtension] || placeholderIcon;
+  const iconColor = useColorModeValue('gray.600', 'gray.400');
 
   return (
     <Flex
-      p={ 3 }
-      borderWidth="2px"
-      borderRadius="md"
-      borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }
       maxW="300px"
       overflow="hidden"
       className={ className }
+      alignItems="center"
+      textAlign="left"
     >
-      <Icon as={ fileIcon } boxSize="50px" color={ useColorModeValue('gray.600', 'gray.400') } mr={ 2 }/>
-      <Box width="calc(100% - 58px - 24px)" >
-        <Text fontWeight={ 600 } overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">{ file.name }</Text>
+      <Icon
+        as={ fileIcon }
+        boxSize="74px"
+        color={ error ? 'error' : iconColor }
+        mr={ 2 }
+        borderWidth="2px"
+        borderRadius="md"
+        borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }
+        p={ 3 }
+      />
+      <Box maxW="calc(100% - 58px - 24px)">
+        <Flex alignItems="center">
+          <Text
+            fontWeight={ 600 }
+            overflow="hidden"
+            textOverflow="ellipsis"
+            whiteSpace="nowrap"
+            color={ error ? 'error' : 'initial' }
+          >
+            { file.name }
+          </Text>
+          { Boolean(error) && (
+            <Tooltip
+              label={ error }
+              placement="top"
+              maxW="320px"
+            >
+              <Box cursor="pointer" display="inherit" onClick={ handleErrorHintIconClick } ml={ 1 }>
+                <Icon as={ infoIcon } boxSize={ 5 } color="error"/>
+              </Box>
+            </Tooltip>
+          ) }
+          <IconButton
+            aria-label="remove"
+            icon={ <CrossIcon/> }
+            boxSize={ 6 }
+            variant="simple"
+            display="inline-block"
+            flexShrink={ 0 }
+            ml="auto"
+            onClick={ handleRemove }
+            isDisabled={ isDisabled }
+            alignSelf="flex-start"
+          />
+        </Flex>
         <Text variant="secondary" mt={ 1 }>{ shortenNumberWithLetter(file.size) }B</Text>
       </Box>
-      <IconButton
-        aria-label="remove"
-        icon={ <CrossIcon/> }
-        boxSize={ 6 }
-        variant="simple"
-        display="inline-block"
-        flexShrink={ 0 }
-        ml="auto"
-        onClick={ handleRemove }
-        isDisabled={ isDisabled }
-      />
     </Flex>
   );
 };

@@ -9,7 +9,7 @@ const FILE_TYPES = [ '.vy' as const ];
 
 const ContractVerificationVyperMultiPartFile = () => {
   return (
-    <ContractVerificationMethod title="New Vyper Smart Contract Verification">
+    <ContractVerificationMethod title="Contract verification via Vyper (multi-part files)">
       <ContractVerificationFieldCompiler isVyper/>
       <ContractVerificationFieldEvmVersion isVyper/>
       <ContractVerificationFieldSources
