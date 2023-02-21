@@ -1,4 +1,4 @@
-import { Box, Flex, Text, Icon, Grid, GridItem } from '@chakra-ui/react';
+import { Box, Flex, Text, Icon, Grid } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { route } from 'nextjs-routes';
@@ -10,14 +10,13 @@ import appConfig from 'configs/app/config';
 import blockIcon from 'icons/block.svg';
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import AddressCounterItem from 'ui/address/details/AddressCounterItem';
-import AdBanner from 'ui/shared/ad/AdBanner';
 import AddressLink from 'ui/shared/address/AddressLink';
 import AddressHeadingInfo from 'ui/shared/AddressHeadingInfo';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
@@ -34,7 +33,6 @@ interface Props {
 
 const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
   const router = useRouter();
-  const isMobile = useIsMobile();
 
   const addressHash = getQueryParamString(router.query.hash);
 
@@ -196,20 +194,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
             </LinkInternal>
           </DetailsInfoItem>
         ) }
-        { isMobile ?
-          (
-            <GridItem mt={ 5 }>
-              <AdBanner justifyContent="center"/>
-            </GridItem>
-          ) :
-          (
-            <DetailsInfoItem
-              title="Sponsored"
-              hint="Sponsored banner advertisement"
-            >
-              <AdBanner/>
-            </DetailsInfoItem>
-          ) }
+        <DetailsSponsoredItem/>
       </Grid>
     </Box>
   );

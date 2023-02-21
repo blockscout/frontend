@@ -8,7 +8,6 @@ import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/appContext';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
-import AdBanner from 'ui/shared/ad/AdBanner';
 import TextAd from 'ui/shared/ad/TextAd';
 import AddressHeadingInfo from 'ui/shared/AddressHeadingInfo';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -88,8 +87,6 @@ const TokenInstanceContent = () => {
       <AddressHeadingInfo address={ address } token={ tokenInstanceQuery.data.token }/>
 
       <TokenInstanceDetails data={ tokenInstanceQuery.data } scrollRef={ scrollRef }/>
-
-      <AdBanner mt={{ base: 6, lg: 8 }} justifyContent="center"/>
 
       { /* should stay before tabs to scroll up with pagination */ }
       <Box ref={ scrollRef }></Box>

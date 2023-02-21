@@ -8,6 +8,7 @@ import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import NftMedia from 'ui/shared/nft/NftMedia';
 import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
@@ -65,6 +66,7 @@ const TokenInstanceDetails = ({ data, scrollRef }: Props) => {
           </Flex>
         </DetailsInfoItem>
         <TokenInstanceTransfersCount hash={ data.token.address } id={ data.id } onClick={ handleCounterItemClick }/>
+        <DetailsSponsoredItem/>
       </Grid>
       <NftMedia
         imageUrl={ data.image_url }
