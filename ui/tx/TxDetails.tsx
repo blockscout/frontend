@@ -12,6 +12,7 @@ import {
   chakra,
 } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
+import { route } from 'nextjs-routes';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
@@ -33,6 +34,7 @@ import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 // import PrevNext from 'ui/shared/PrevNext';
+import LinkInternal from 'ui/shared/LinkInternal';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import RawInputData from 'ui/shared/RawInputData';
 import TextSeparator from 'ui/shared/TextSeparator';
@@ -152,7 +154,9 @@ const TxDetails = () => {
         title="Block"
         hint="Block number containing the transaction"
       >
-        <Text>{ data.block === null ? 'Pending' : data.block }</Text>
+        { data.block === null ?
+          <Text>Pending</Text> :
+          <LinkInternal href={ route({ pathname: '/block/[height]', query: { height: String(data.block) } }) }>{ data.block }</LinkInternal> }
         { Boolean(data.confirmations) && (
           <>
             <TextSeparator color="gray.500"/>
