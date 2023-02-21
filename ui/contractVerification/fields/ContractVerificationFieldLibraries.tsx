@@ -1,4 +1,4 @@
-import { Checkbox } from '@chakra-ui/react';
+import { Checkbox, useUpdateEffect } from '@chakra-ui/react';
 import React from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
@@ -8,12 +8,20 @@ import ContractVerificationFormRow from '../ContractVerificationFormRow';
 import ContractVerificationFieldLibraryItem from './ContractVerificationFieldLibraryItem';
 
 const ContractVerificationFieldLibraries = () => {
-  const { formState, control } = useFormContext<FormFields>();
+  const { formState, control, getValues } = useFormContext<FormFields>();
   const { fields, append, remove, insert } = useFieldArray({
     name: 'libraries',
     control,
   });
   const [ isEnabled, setIsEnabled ] = React.useState(fields.length > 0);
+
+  const value = getValues('libraries');
+
+  useUpdateEffect(() => {
+    if (!value || value.length === 0) {
+      setIsEnabled(false);
+    }
+  }, [ value ]);
 
   const handleCheckboxChange = React.useCallback(() => {
     if (!isEnabled) {

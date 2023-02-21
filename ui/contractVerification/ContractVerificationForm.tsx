@@ -1,4 +1,4 @@
-import { Button, chakra } from '@chakra-ui/react';
+import { Button, chakra, useUpdateEffect } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
@@ -20,7 +20,7 @@ import ContractVerificationSourcify from './methods/ContractVerificationSourcify
 import ContractVerificationStandardInput from './methods/ContractVerificationStandardInput';
 import ContractVerificationVyperContract from './methods/ContractVerificationVyperContract';
 import ContractVerificationVyperMultiPartFile from './methods/ContractVerificationVyperMultiPartFile';
-import { prepareRequestBody, formatSocketErrors } from './utils';
+import { prepareRequestBody, formatSocketErrors, DEFAULT_VALUES } from './utils';
 
 const METHOD_COMPONENTS = {
   'flattened-code': <ContractVerificationFlattenSourceCode/>,
@@ -40,11 +40,9 @@ interface Props {
 const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Props) => {
   const formApi = useForm<FormFields>({
     mode: 'onBlur',
-    defaultValues: {
-      method: methodFromQuery,
-    },
+    defaultValues: methodFromQuery ? DEFAULT_VALUES[methodFromQuery] : undefined,
   });
-  const { control, handleSubmit, watch, formState, setError } = formApi;
+  const { control, handleSubmit, watch, formState, setError, reset } = formApi;
   const submitPromiseResolver = React.useRef<(value: unknown) => void>();
 
   const apiFetch = useApiFetch();
@@ -56,7 +54,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
 
     try {
       await apiFetch('contract_verification_via', {
-        pathParams: { method: data.method, hash },
+        pathParams: { method: data.method.value, hash: hash.toLowerCase() },
         fetchParams: {
           method: 'POST',
           body,
@@ -109,7 +107,10 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
       variant: 'subtle',
       isClosable: true,
     });
-  }, [ formState.isSubmitting, toast ]);
+  // callback should not change when form is submitted
+  // otherwise it will resubscribe to channel, but we don't want that since in that case we might miss verification result message
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ toast ]);
 
   const channel = useSocketChannel({
     topic: `addresses:${ hash.toLowerCase() }`,
@@ -124,7 +125,15 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
   });
 
   const method = watch('method');
-  const content = METHOD_COMPONENTS[method] || null;
+  const content = METHOD_COMPONENTS[method?.value] || null;
+  const methodValue = method?.value;
+
+  useUpdateEffect(() => {
+    if (methodValue) {
+      reset(DEFAULT_VALUES[methodValue]);
+    }
+  // !!! should run only when method is changed
+  }, [ methodValue ]);
 
   return (
     <FormProvider { ...formApi }>
@@ -134,8 +143,8 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
       >
         <ContractVerificationFieldMethod
           control={ control }
-          isDisabled={ Boolean(method) }
           methods={ config.verification_options }
+          isDisabled={ formState.isSubmitting }
         />
         { content }
         { Boolean(method) && (

@@ -5,13 +5,14 @@ import appConfig from 'configs/app/config';
 import chevronIcon from 'icons/arrows/east-mini.svg';
 import { useAppContext } from 'lib/appContext';
 import * as cookies from 'lib/cookies';
-import useNavItems from 'lib/hooks/useNavItems';
+import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import NetworkMenu from 'ui/snippets/networkMenu/NetworkMenu';
 
 import NavFooter from './NavFooter';
 import NavLink from './NavLink';
+import NavLinkGroupDesktop from './NavLinkGroupDesktop';
 
 const NavigationDesktop = () => {
   const appProps = useAppContext();
@@ -51,7 +52,7 @@ const NavigationDesktop = () => {
       display={{ base: 'none', lg: 'flex' }}
       position="relative"
       flexDirection="column"
-      alignItems="flex-start"
+      alignItems="stretch"
       borderRight="1px solid"
       borderColor="divider"
       px={{ lg: isExpanded ? 6 : 4, xl: isCollapsed ? 4 : 6 }}
@@ -66,7 +67,8 @@ const NavigationDesktop = () => {
         alignItems="center"
         flexDirection="row"
         w="100%"
-        px={{ lg: isExpanded ? 3 : '15px', xl: isCollapsed ? '15px' : 3 }}
+        pl={{ lg: isExpanded ? 3 : '15px', xl: isCollapsed ? '15px' : 3 }}
+        pr={{ lg: isExpanded ? 0 : '15px', xl: isCollapsed ? '15px' : 0 }}
         h={ 10 }
         transitionProperty="padding"
         transitionDuration="normal"
@@ -77,7 +79,13 @@ const NavigationDesktop = () => {
       </Box>
       <Box as="nav" mt={ 8 }>
         <VStack as="ul" spacing="1" alignItems="flex-start">
-          { mainNavItems.map((item) => <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed }/>) }
+          { mainNavItems.map((item) => {
+            if (isGroupItem(item)) {
+              return <NavLinkGroupDesktop key={ item.text } { ...item } isCollapsed={ isCollapsed }/>;
+            } else {
+              return <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed }/>;
+            }
+          }) }
         </VStack>
       </Box>
       { hasAccount && (

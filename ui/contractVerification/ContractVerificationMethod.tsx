@@ -15,8 +15,8 @@ const ContractVerificationMethod = ({ title, children }: Props) => {
 
   return (
     <section ref={ ref }>
-      <Text variant="secondary" mt={ 12 } mb={ 5 } fontSize="sm">{ title }</Text>
-      <Grid columnGap="30px" rowGap={{ base: 2, lg: 4 }} templateColumns={{ base: '1fr', lg: 'minmax(auto, 680px) minmax(0, 340px)' }}>
+      <Text fontWeight={ 500 } fontSize="lg" fontFamily="heading" mt={ 12 } mb={ 5 }>{ title }</Text>
+      <Grid columnGap="30px" rowGap={{ base: 2, lg: 5 }} templateColumns={{ base: '1fr', lg: 'minmax(0, 680px) minmax(0, 340px)' }}>
         { children }
       </Grid>
     </section>

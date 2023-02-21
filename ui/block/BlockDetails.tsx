@@ -118,7 +118,7 @@ const BlockDetails = () => {
         hint="The number of transactions in the block"
       >
         <LinkInternal href={ route({ pathname: '/block/[height]', query: { height, tab: 'txs' } }) }>
-          { data.tx_count } transactions
+          { data.tx_count } transaction{ data.tx_count === 1 ? '' : 's' }
         </LinkInternal>
       </DetailsInfoItem>
       <DetailsInfoItem
@@ -274,18 +274,18 @@ const BlockDetails = () => {
           <DetailsInfoItem
             title="Difficulty"
             hint={ `Block difficulty for ${ validatorTitle }, used to calibrate block generation time` }
-            whiteSpace="normal"
-            wordBreak="break-all"
           >
-            { BigNumber(data.difficulty).toFormat() }
+            <Box whiteSpace="nowrap" overflow="hidden">
+              <HashStringShortenDynamic hash={ BigNumber(data.difficulty).toFormat() }/>
+            </Box>
           </DetailsInfoItem>
           <DetailsInfoItem
             title="Total difficulty"
             hint="Total difficulty of the chain until this block"
-            whiteSpace="normal"
-            wordBreak="break-all"
           >
-            { BigNumber(data.total_difficulty).toFormat() }
+            <Box whiteSpace="nowrap" overflow="hidden">
+              <HashStringShortenDynamic hash={ BigNumber(data.total_difficulty).toFormat() }/>
+            </Box>
           </DetailsInfoItem>
 
           { sectionGap }

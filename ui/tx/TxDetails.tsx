@@ -12,6 +12,7 @@ import {
   chakra,
 } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
+import { route } from 'nextjs-routes';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
@@ -22,9 +23,7 @@ import errorIcon from 'icons/status/error.svg';
 import successIcon from 'icons/status/success.svg';
 import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
-import AdBanner from 'ui/shared/ad/AdBanner';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -32,8 +31,10 @@ import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 // import PrevNext from 'ui/shared/PrevNext';
+import LinkInternal from 'ui/shared/LinkInternal';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import RawInputData from 'ui/shared/RawInputData';
 import TextSeparator from 'ui/shared/TextSeparator';
@@ -48,8 +49,6 @@ import useFetchTxInfo from 'ui/tx/useFetchTxInfo';
 
 const TxDetails = () => {
   const { data, isLoading, isError, socketStatus, error } = useFetchTxInfo();
-
-  const isMobile = useIsMobile();
 
   const [ isExpanded, setIsExpanded ] = React.useState(false);
 
@@ -155,7 +154,9 @@ const TxDetails = () => {
         title="Block"
         hint="Block number containing the transaction"
       >
-        <Text>{ data.block === null ? 'Pending' : data.block }</Text>
+        { data.block === null ?
+          <Text>Pending</Text> :
+          <LinkInternal href={ route({ pathname: '/block/[height]', query: { height: String(data.block) } }) }>{ data.block }</LinkInternal> }
         { Boolean(data.confirmations) && (
           <>
             <TextSeparator color="gray.500"/>
@@ -177,22 +178,7 @@ const TxDetails = () => {
           <Text variant="secondary">{ getConfirmationDuration(data.confirmation_duration) }</Text>
         </DetailsInfoItem>
       ) }
-      { isMobile ?
-        (
-          <GridItem
-            colSpan={{ base: undefined, lg: 2 }}
-          >
-            <AdBanner justifyContent="center"/>
-          </GridItem>
-        ) :
-        (
-          <DetailsInfoItem
-            title="Sponsored"
-            hint="Sponsored banner advertisement"
-          >
-            <AdBanner/>
-          </DetailsInfoItem>
-        ) }
+      <DetailsSponsoredItem/>
 
       { divider }
 

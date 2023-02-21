@@ -5,6 +5,7 @@ import * as addressMock from 'mocks/address/address';
 import * as tokenInstanceMock from 'mocks/tokens/tokenInstance';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
+import insertAdPlaceholder from 'playwright/utils/insertAdPlaceholder';
 
 import TokenInstanceDetails from './TokenInstanceDetails';
 
@@ -29,6 +30,8 @@ test('base view +@dark-mode', async({ mount, page }) => {
       <TokenInstanceDetails data={ tokenInstanceMock.base }/>
     </TestApp>,
   );
+
+  await insertAdPlaceholder(page);
 
   await expect(component).toHaveScreenshot();
 });

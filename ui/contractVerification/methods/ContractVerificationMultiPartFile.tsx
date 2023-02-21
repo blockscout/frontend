@@ -11,7 +11,7 @@ const FILE_TYPES = [ '.sol' as const, '.yul' as const ];
 
 const ContractVerificationMultiPartFile = () => {
   return (
-    <ContractVerificationMethod title="New Solidity/Yul Smart Contract Verification">
+    <ContractVerificationMethod title="Contract verification via Solidity (multi-part files)">
       <ContractVerificationFieldCompiler/>
       <ContractVerificationFieldEvmVersion/>
       <ContractVerificationFieldOptimization/>

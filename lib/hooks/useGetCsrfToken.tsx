@@ -14,14 +14,6 @@ export default function useGetCsrfToken() {
       const url = buildUrl('csrf');
       const apiResponse = await fetch(url, { credentials: 'include' });
       const csrfFromHeader = apiResponse.headers.get('x-bs-account-csrf');
-      // eslint-disable-next-line no-console
-      console.log('>>> RESPONSE HEADERS <<<');
-      // eslint-disable-next-line no-console
-      console.table([ {
-        'content-length': apiResponse.headers.get('content-length'),
-        'x-bs-account-csrf': csrfFromHeader,
-      } ]);
-
       return csrfFromHeader ? { token: csrfFromHeader } : undefined;
     }
 

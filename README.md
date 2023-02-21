@@ -46,7 +46,7 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_NETWORK_SHORT_NAME | `string` *(optional)* | Used for SEO attributes (page title and description) | `OoG` |
 | NEXT_PUBLIC_NETWORK_TYPE | `string` *(optional)* | Network type (used for matching pre-defined assets, e.g network logo and icon, which are stored in the project). See all possible values here | `xdai_mainnet` |
 | NEXT_PUBLIC_NETWORK_ID | `number` | Chain id, see [https://chainlist.org/](https://chainlist.org/) for the reference | `99` |
-| NEXT_PUBLIC_NETWORK_RPC_URL | `string` | Chain server RPC url, see [https://chainlist.org/](https://chainlist.org/) for the reference | `https://core.poa.network` |
+| NEXT_PUBLIC_NETWORK_RPC_URL | `string` *(optional)* | Chain server RPC url, see [https://chainlist.org/](https://chainlist.org/) for the reference. If not provided, some functionality of the explorer, related to smart contracts interaction and third-party apps integration, will be unavailable | `https://core.poa.network` |
 | NEXT_PUBLIC_NETWORK_CURRENCY_NAME | `string` | Network currency name | `Ether` |
 | NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL | `string` | Network currency symbol | `ETH` |
 | NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS | `string` | Network currency decimals | `18` |

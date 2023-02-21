@@ -16,6 +16,7 @@ import AddressLink from 'ui/shared/address/AddressLink';
 import AddressHeadingInfo from 'ui/shared/AddressHeadingInfo';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
@@ -193,6 +194,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
             </LinkInternal>
           </DetailsInfoItem>
         ) }
+        <DetailsSponsoredItem/>
       </Grid>
     </Box>
   );

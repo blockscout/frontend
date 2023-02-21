@@ -20,40 +20,47 @@ interface Props {
   addressHash?: string;
 }
 
-export const currentChain: Chain = {
-  id: Number(appConfig.network.id),
-  name: appConfig.network.name || '',
-  network: appConfig.network.name || '',
-  nativeCurrency: {
-    decimals: appConfig.network.currency.decimals,
-    name: appConfig.network.currency.name || '',
-    symbol: appConfig.network.currency.symbol || '',
-  },
-  rpcUrls: {
-    'default': {
-      http: [ appConfig.network.rpcUrl || '' ],
-    },
-  },
-  blockExplorers: {
-    'default': {
-      name: 'Blockscout',
-      url: appConfig.baseUrl,
-    },
-  },
-};
+const { wagmiClient, ethereumClient } = (() => {
+  try {
+    const currentChain: Chain = {
+      id: Number(appConfig.network.id),
+      name: appConfig.network.name || '',
+      network: appConfig.network.name || '',
+      nativeCurrency: {
+        decimals: appConfig.network.currency.decimals,
+        name: appConfig.network.currency.name || '',
+        symbol: appConfig.network.currency.symbol || '',
+      },
+      rpcUrls: {
+        'default': {
+          http: [ appConfig.network.rpcUrl || '' ],
+        },
+      },
+      blockExplorers: {
+        'default': {
+          name: 'Blockscout',
+          url: appConfig.baseUrl,
+        },
+      },
+    };
 
-const chains = [ currentChain ];
+    const chains = [ currentChain ];
 
-const { provider } = configureChains(chains, [
-  walletConnectProvider({ projectId: appConfig.walletConnect.projectId || '' }),
-]);
-const wagmiClient = createClient({
-  autoConnect: true,
-  connectors: modalConnectors({ appName: 'web3Modal', chains }),
-  provider,
-});
+    const { provider } = configureChains(chains, [
+      walletConnectProvider({ projectId: appConfig.walletConnect.projectId || '' }),
+    ]);
+    const wagmiClient = createClient({
+      autoConnect: true,
+      connectors: modalConnectors({ appName: 'web3Modal', chains }),
+      provider,
+    });
+    const ethereumClient = new EthereumClient(wagmiClient, chains);
 
-const ethereumClient = new EthereumClient(wagmiClient, chains);
+    return { wagmiClient, ethereumClient };
+  } catch (error) {
+    return { wagmiClient: undefined, ethereumClient: undefined };
+  }
+})();
 
 const TAB_LIST_PROPS = {
   columnGap: 3,
@@ -61,6 +68,12 @@ const TAB_LIST_PROPS = {
 
 const AddressContract = ({ addressHash, tabs }: Props) => {
   const modalZIndex = useToken<string>('zIndices', 'modal');
+  const web3ModalTheme = useColorModeValue('light', 'dark');
+
+  const noProviderTabs = React.useMemo(() => tabs.filter(({ id }) => id === 'contact_code'), [ tabs ]);
+  if (!wagmiClient || !ethereumClient) {
+    return <RoutedTabs tabs={ noProviderTabs } variant="outline" colorScheme="gray" size="sm" tabListProps={ TAB_LIST_PROPS }/>;
+  }
 
   return (
     <WagmiConfig client={ wagmiClient }>
@@ -71,7 +84,7 @@ const AddressContract = ({ addressHash, tabs }: Props) => {
         projectId={ appConfig.walletConnect.projectId }
         ethereumClient={ ethereumClient }
         themeZIndex={ Number(modalZIndex) }
-        themeMode={ useColorModeValue('light', 'dark') }
+        themeMode={ web3ModalTheme }
         themeBackground="themeColor"
       />
     </WagmiConfig>
