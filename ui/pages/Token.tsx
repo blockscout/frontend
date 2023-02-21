@@ -143,10 +143,13 @@ const TokenPageContent = () => {
   return (
     <Page>
       { tokenQuery.isLoading ? (
-        <Flex alignItems="center" mb={ 6 }>
-          <SkeletonCircle w={ 6 } h={ 6 } mr={ 3 }/>
-          <Skeleton w="500px" h={ 10 }/>
-        </Flex>
+        <>
+          <Skeleton h={{ base: 12, lg: 6 }} mb={ 6 } w="100%" maxW="680px"/>
+          <Flex alignItems="center" mb={ 6 }>
+            <SkeletonCircle w={ 6 } h={ 6 } mr={ 3 }/>
+            <Skeleton w="500px" h={ 10 }/>
+          </Flex>
+        </>
       ) : (
         <>
           <TextAd mb={ 6 }/>

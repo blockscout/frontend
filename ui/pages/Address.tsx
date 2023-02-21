@@ -101,7 +101,7 @@ const AddressPageContent = () => {
 
   return (
     <Page>
-      <TextAd mb={ 6 }/>
+      { addressQuery.isLoading ? <Skeleton h={{ base: 12, lg: 6 }} mb={ 6 } w="100%" maxW="680px"/> : <TextAd mb={ 6 }/> }
       { addressQuery.isLoading ? (
         <Skeleton h={ 10 } w="260px" mb={ 6 }/>
       ) : (
