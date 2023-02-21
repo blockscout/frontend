@@ -1,4 +1,4 @@
-import { Link, Icon, Text, HStack, Tooltip, Box } from '@chakra-ui/react';
+import { Link, Icon, Text, HStack, Tooltip, Box, useBreakpointValue, chakra } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { route } from 'nextjs-routes';
 import React from 'react';
@@ -11,13 +11,16 @@ import useNavLinkStyleProps from './useNavLinkStyleProps';
 type Props = NavItem & {
   isCollapsed?: boolean;
   px?: string | number;
+  className?: string;
 }
 
-const NavLink = ({ text, nextRoute, icon, isCollapsed, isActive, px, isNewUi }: Props) => {
+const NavLink = ({ text, nextRoute, icon, isCollapsed, isActive, px, isNewUi, className }: Props) => {
   const colors = useColors();
   const isExpanded = isCollapsed === false;
 
   const styleProps = useNavLinkStyleProps({ isCollapsed, isExpanded, isActive });
+
+  const isXLScreen = useBreakpointValue({ base: false, xl: true });
 
   const content = (
     <Link
@@ -32,7 +35,7 @@ const NavLink = ({ text, nextRoute, icon, isCollapsed, isActive, px, isNewUi }: 
       <Tooltip
         label={ text }
         hasArrow={ false }
-        isDisabled={ !isCollapsed }
+        isDisabled={ isCollapsed === false || (isCollapsed === undefined && isXLScreen) }
         placement="right"
         variant="nav"
         gutter={ 20 }
@@ -49,7 +52,7 @@ const NavLink = ({ text, nextRoute, icon, isCollapsed, isActive, px, isNewUi }: 
   );
 
   return (
-    <Box as="li" listStyleType="none" w="100%">
+    <Box as="li" listStyleType="none" w="100%" className={ className }>
       { /* why not NextLink in all cases? since prev UI and new one are hosting in the same domain and global routing is managed by nginx */ }
       { /* we have to hard reload page on every transition between urls from different part of the app */ }
       { isNewUi ? (
@@ -61,4 +64,4 @@ const NavLink = ({ text, nextRoute, icon, isCollapsed, isActive, px, isNewUi }: 
   );
 };
 
-export default React.memo(NavLink);
+export default React.memo(chakra(NavLink));
