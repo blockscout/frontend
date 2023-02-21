@@ -20,7 +20,7 @@ import type { ControllerRenderProps, Control } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 
 import type { FormFields } from '../types';
-import type { SmartContractVerificationConfig } from 'types/api/contract';
+import type { SmartContractVerificationConfig, SmartContractVerificationMethod } from 'types/api/contract';
 
 import infoIcon from 'icons/info.svg';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -57,6 +57,34 @@ const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props
     );
   }, [ isDisabled, isMobile, options ]);
 
+  const renderPopoverListItem = React.useCallback((method: SmartContractVerificationMethod) => {
+    switch (method) {
+      case 'flattened-code':
+        return <ListItem>Verification through flattened source code.</ListItem>;
+      case 'multi-part':
+        return <ListItem>Verification of multi-part Solidity files.</ListItem>;
+      case 'sourcify':
+        return <ListItem>Verification through <Link href="https://sourcify.dev/" target="_blank">Sourcify</Link>.</ListItem>;
+      case 'standard-input':
+        return (
+          <ListItem>
+            <span>Verification using </span>
+            <Link
+              href="https://docs.soliditylang.org/en/latest/using-the-compiler.html#input-description"
+              target="_blank"
+            >
+              Standard input JSON
+            </Link>
+            <span> file.</span>
+          </ListItem>
+        );
+      case 'vyper-code':
+        return <ListItem>Verification of Vyper contract.</ListItem>;
+      case 'vyper-multi-part':
+        return <ListItem>Verification of multi-part Vyper files.</ListItem>;
+    }
+  }, []);
+
   return (
     <section>
       <Grid columnGap="30px" rowGap={{ base: 2, lg: 4 }} templateColumns={{ base: '1fr', lg: 'minmax(auto, 680px) minmax(0, 340px)' }}>
@@ -78,23 +106,7 @@ const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props
                     <DarkMode>
                       <span>Currently, Blockscout supports { methods.length } methods:</span>
                       <OrderedList>
-                        <ListItem>Verification through flattened source code.</ListItem>
-                        <ListItem>
-                          <span>Verification using </span>
-                          <Link
-                            href="https://docs.soliditylang.org/en/latest/using-the-compiler.html#input-description"
-                            target="_blank"
-                          >
-                            Standard input JSON
-                          </Link>
-                          <span> file.</span>
-                        </ListItem>
-                        <ListItem>
-                          Verification through <Link href="https://sourcify.dev/" target="_blank">Sourcify</Link>.
-                        </ListItem>
-                        <ListItem>Verification of multi-part Solidity files.</ListItem>
-                        <ListItem>Verification of Vyper contract.</ListItem>
-                        <ListItem>Verification of multi-part Vyper files.</ListItem>
+                        { methods.map(renderPopoverListItem) }
                       </OrderedList>
                     </DarkMode>
                   </PopoverBody>
