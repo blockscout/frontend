@@ -20,7 +20,6 @@ import AddressLogs from 'ui/address/AddressLogs';
 import AddressTokens from 'ui/address/AddressTokens';
 import AddressTokenTransfers from 'ui/address/AddressTokenTransfers';
 import AddressTxs from 'ui/address/AddressTxs';
-import AdBanner from 'ui/shared/ad/AdBanner';
 import TextAd from 'ui/shared/ad/TextAd';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -114,7 +113,6 @@ const AddressPageContent = () => {
         />
       ) }
       <AddressDetails addressQuery={ addressQuery } scrollRef={ tabsScrollRef }/>
-      <AdBanner mt={{ base: 6, lg: 8 }} justifyContent="center"/>
       { /* should stay before tabs to scroll up whith pagination */ }
       <Box ref={ tabsScrollRef }></Box>
       { addressQuery.isLoading ? <SkeletonTabs/> : content }

@@ -1,4 +1,4 @@
-import { Grid, Link, Skeleton } from '@chakra-ui/react';
+import { Grid, GridItem, Link, Skeleton } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
@@ -8,7 +8,9 @@ import type { TokenInfo } from 'types/api/token';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import getCurrencyValue from 'lib/getCurrencyValue';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import type { TokenTabs } from 'ui/pages/Token';
+import AdBanner from 'ui/shared/ad/AdBanner';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsSkeletonRow from 'ui/shared/skeletons/DetailsSkeletonRow';
 
@@ -18,6 +20,7 @@ interface Props {
 
 const TokenDetails = ({ tokenQuery }: Props) => {
   const router = useRouter();
+  const isMobile = useIsMobile();
 
   const tokenCountersQuery = useApiQuery('token_counters', {
     pathParams: { hash: router.query.hash?.toString() },
@@ -135,6 +138,20 @@ const TokenDetails = ({ tokenQuery }: Props) => {
           { decimals }
         </DetailsInfoItem>
       ) }
+      { isMobile ?
+        (
+          <GridItem mt={ 5 }>
+            <AdBanner justifyContent="center"/>
+          </GridItem>
+        ) :
+        (
+          <DetailsInfoItem
+            title="Sponsored"
+            hint="Sponsored banner advertisement"
+          >
+            <AdBanner/>
+          </DetailsInfoItem>
+        ) }
     </Grid>
   );
 };

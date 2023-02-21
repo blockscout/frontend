@@ -179,9 +179,7 @@ const TxDetails = () => {
       ) }
       { isMobile ?
         (
-          <GridItem
-            colSpan={{ base: undefined, lg: 2 }}
-          >
+          <GridItem>
             <AdBanner justifyContent="center"/>
           </GridItem>
         ) :
