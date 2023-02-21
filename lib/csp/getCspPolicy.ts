@@ -16,22 +16,21 @@ const MAIN_DOMAINS = [ `*.${ appConfig.host }`, appConfig.host ];
 // eslint-disable-next-line no-restricted-properties
 const REPORT_URI = process.env.SENTRY_CSP_REPORT_URI;
 
-function getNetworksExternalAssets() {
+function getNetworksExternalAssetsHosts() {
   const icons = featuredNetworks
     .filter(({ icon }) => typeof icon === 'string')
-    .map(({ icon }) => new URL(icon as string));
+    .map(({ icon }) => new URL(icon as string).host);
 
-  const logo = appConfig.network.logo ? new URL(appConfig.network.logo) : undefined;
+  const logo = appConfig.network.logo ? new URL(appConfig.network.logo).host : undefined;
 
   return logo ? icons.concat(logo) : icons;
 }
 
-function getMarketplaceAppsOrigins() {
-  return appConfig.marketplaceAppList.map(({ url }) => url);
-}
-
-function getMarketplaceAppsLogosOrigins() {
-  return appConfig.marketplaceAppList.map(({ logo }) => new URL(logo));
+function getMarketplaceAppsHosts() {
+  return {
+    frames: appConfig.marketplaceAppList.map(({ url }) => new URL(url).host),
+    logos: appConfig.marketplaceAppList.map(({ logo }) => new URL(logo).host),
+  };
 }
 
 // we cannot use lodash/uniq in middleware code since it calls new Set() and it'is causing an error in Nextjs
@@ -46,7 +45,7 @@ function unique(array: Array<string | undefined>) {
 }
 
 function makePolicyMap() {
-  const networkExternalAssets = getNetworksExternalAssets();
+  const marketplaceAppsHosts = getMarketplaceAppsHosts();
 
   return {
     'default-src': [
@@ -130,10 +129,10 @@ function makePolicyMap() {
       'avatars.githubusercontent.com', // github avatars
 
       // network assets
-      ...networkExternalAssets.map((url) => url.host),
+      ...getNetworksExternalAssetsHosts(),
 
       // marketplace apps logos
-      ...getMarketplaceAppsLogosOrigins().map((url) => url.host),
+      ...marketplaceAppsHosts.logos,
 
       // ad
       'servedbyadbutler.com',
@@ -167,7 +166,7 @@ function makePolicyMap() {
     ],
 
     'frame-src': [
-      ...getMarketplaceAppsOrigins(),
+      ...marketplaceAppsHosts.frames,
 
       // ad
       'request-global.czilladx.com',
