@@ -169,7 +169,7 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
       return (
         <>
           <Hide below="lg" ssr={ false }>
-            <SkeletonTable columns={ [ '44px', '185px', '160px', '25%', '25%', '25%', '25%' ] }/>
+            <SkeletonTable columns={ [ '44px', '185px', '160px', '25%', '25%', '25%', '25%' ] } isLong/>
           </Hide>
           <Show below="lg" ssr={ false }>
             <SkeletonList/>
@@ -253,7 +253,7 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
     <>
       { isMobile && tokenFilterComponent }
       { !isActionBarHidden && (
-        <ActionBar mt={ -6 }>
+        <ActionBar mt={ -6 } showShadow={ isLoading }>
           { !isMobile && tokenFilterComponent }
           { !tokenFilter && (
             <TokenTransferFilter

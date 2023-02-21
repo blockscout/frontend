@@ -140,6 +140,19 @@ const TokenPageContent = () => {
 
   const tokenSymbolText = tokenQuery.data?.symbol ? ` (${ trimTokenSymbol(tokenQuery.data.symbol) })` : '';
 
+  const tabListProps = React.useCallback(({ isSticky, activeTabIndex }: { isSticky: boolean; activeTabIndex: number }) => {
+    if (isMobile) {
+      return { mt: 8 };
+    }
+
+    return {
+      mt: 3,
+      py: 5,
+      marginBottom: 0,
+      boxShadow: activeTabIndex === 2 && isSticky ? 'action_bar' : 'none',
+    };
+  }, [ isMobile ]);
+
   return (
     <Page>
       { tokenQuery.isLoading ? (
@@ -172,11 +185,13 @@ const TokenPageContent = () => {
       { tokenQuery.isLoading || contractQuery.isLoading ? <SkeletonTabs/> : (
         <RoutedTabs
           tabs={ tabs }
-          tabListProps={ isMobile ? { mt: 8 } : { mt: 3, py: 5, marginBottom: 0 } }
+          tabListProps={ tabListProps }
           rightSlot={ !isMobile && hasPagination ? <Pagination { ...(pagination as PaginationProps) }/> : null }
           stickyEnabled={ !isMobile }
         />
       ) }
+
+      { !tokenQuery.isLoading && !tokenQuery.isError && <Box h={{ base: 0, lg: '40vh' }}/> }
     </Page>
   );
 };
