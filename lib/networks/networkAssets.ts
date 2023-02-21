@@ -4,6 +4,7 @@ import type { PreDefinedNetwork } from 'types/networks';
 
 import arbitrumIcon from 'icons/networks/icons/arbitrum.svg';
 import artisIcon from 'icons/networks/icons/artis.svg';
+import baseIcon from 'icons/networks/icons/base.svg';
 import ethereumClassicIcon from 'icons/networks/icons/ethereum-classic.svg';
 import ethereumIcon from 'icons/networks/icons/ethereum.svg';
 import gnosisIcon from 'icons/networks/icons/gnosis.svg';
@@ -14,6 +15,7 @@ import poaIcon from 'icons/networks/icons/poa.svg';
 import rskIcon from 'icons/networks/icons/rsk.svg';
 import artisLogo from 'icons/networks/logos/artis.svg';
 import astarLogo from 'icons/networks/logos/astar.svg';
+import baseLogo from 'icons/networks/logos/base.svg';
 import etcLogo from 'icons/networks/logos/etc.svg';
 import ethLogo from 'icons/networks/logos/eth.svg';
 import gnosisLogo from 'icons/networks/logos/gnosis.svg';
@@ -85,6 +87,10 @@ const networkAssets: Partial<Record<PreDefinedNetwork, NetworkAssets>> = {
   goerli: {
     logo: goerliLogo,
     icon: goerliIcon,
+  },
+  base_goerli: {
+    logo: baseLogo,
+    icon: baseIcon,
   },
 };
 

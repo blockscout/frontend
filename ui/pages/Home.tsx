@@ -28,10 +28,10 @@ const Home = () => {
             as="h1"
             size={{ base: 'md', lg: 'xl' }}
             lineHeight={{ base: '32px', lg: '50px' }}
-            fontWeight={ 500 }
+            fontWeight={ 600 }
             color="white"
           >
-            Welcome to Blockscout explorer
+            Welcome to { appConfig.network.name } explorer
           </Heading>
           <Flex
             alignItems="center"

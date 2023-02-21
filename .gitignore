@@ -32,9 +32,6 @@ yarn-error.log*
 /configs/envs/.env.secrets
 /configs/envs/.samples
 
-# vercel
-.vercel
-
 # typescript
 *.tsbuildinfo
 
