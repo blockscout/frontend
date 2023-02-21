@@ -118,7 +118,7 @@ const BlockDetails = () => {
         hint="The number of transactions in the block"
       >
         <LinkInternal href={ route({ pathname: '/block/[height]', query: { height, tab: 'txs' } }) }>
-          { data.tx_count } transactions
+          { data.tx_count } transaction{ data.tx_count === 1 ? '' : 's' }
         </LinkInternal>
       </DetailsInfoItem>
       <DetailsInfoItem
