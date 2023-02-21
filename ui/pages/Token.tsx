@@ -1,4 +1,4 @@
-import { Skeleton, Box, Flex, SkeletonCircle, Icon } from '@chakra-ui/react';
+import { Skeleton, Box, Flex, SkeletonCircle, Icon, Tag } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
@@ -158,6 +158,7 @@ const TokenPageContent = () => {
             additionalsLeft={ (
               <TokenLogo hash={ tokenQuery.data?.address } name={ tokenQuery.data?.name } boxSize={ 6 }/>
             ) }
+            additionalsRight={ <Tag>{ tokenQuery.data?.type }</Tag> }
           />
         </>
       ) }

@@ -51,10 +51,15 @@ const AddressPageContent = () => {
   });
 
   const tags = [
+    addressQuery.data?.is_contract ? { label: 'contract', display_name: 'Contract' } : { label: 'eoa', display_name: 'EOA' },
+    addressQuery.data?.implementation_address ? { label: 'proxy', display_name: 'Proxy' } : undefined,
+    addressQuery.data?.token ? { label: 'token', display_name: 'Token' } : undefined,
     ...(addressQuery.data?.private_tags || []),
     ...(addressQuery.data?.public_tags || []),
     ...(addressQuery.data?.watchlist_names || []),
-  ].map((tag) => <Tag key={ tag.label }>{ tag.display_name }</Tag>);
+  ]
+    .filter(notEmpty)
+    .map((tag) => <Tag key={ tag.label }>{ tag.display_name }</Tag>);
 
   const contractTabs = useContractTabs(addressQuery.data);
 
