@@ -1,5 +1,5 @@
 import type { PlaywrightTestConfig } from '@playwright/experimental-ct-react';
-import { devices } from '@playwright/experimental-ct-react';
+import { devices, defineConfig } from '@playwright/experimental-ct-react';
 import react from '@vitejs/plugin-react';
 import svgr from 'vite-plugin-svgr';
 import tsconfigPaths from 'vite-tsconfig-paths';
@@ -7,7 +7,7 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-const config: PlaywrightTestConfig = {
+const config: PlaywrightTestConfig = defineConfig({
   testDir: './',
 
   testMatch: /.*\.pw\.tsx/,
@@ -112,6 +112,6 @@ const config: PlaywrightTestConfig = {
       },
     },
   ],
-};
+});
 
 export default config;

@@ -33,7 +33,12 @@ export const getServerSideProps: GetServerSideProps<Props> = async({ req, res, r
   try {
     const q = String(query.q);
     const url = buildUrlNode('search_check_redirect', undefined, { q });
-    const redirectsResponse = await fetchFactory(req)(url);
+    const redirectsResponse = await fetchFactory(req)(url, {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore:next-line timeout property exist for AbortSignal since Node.js 17 - https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal
+      // but @types/node has not updated their types yet, see issue https://github.com/DefinitelyTyped/DefinitelyTyped/issues/60868
+      signal: AbortSignal.timeout(1_000),
+    });
     const payload = await redirectsResponse.json() as SearchRedirectResult;
 
     if (!payload || typeof payload !== 'object' || !payload.redirect) {
