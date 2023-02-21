@@ -1,4 +1,4 @@
-import { Grid, Link, Skeleton } from '@chakra-ui/react';
+import { Box, Flex, Grid, Link, Skeleton } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
@@ -11,6 +11,7 @@ import getCurrencyValue from 'lib/getCurrencyValue';
 import type { TokenTabs } from 'ui/pages/Token';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
+import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import DetailsSkeletonRow from 'ui/shared/skeletons/DetailsSkeletonRow';
 
 interface Props {
@@ -109,7 +110,12 @@ const TokenDetails = ({ tokenQuery }: Props) => {
         wordBreak="break-word"
         whiteSpace="pre-wrap"
       >
-        { `${ totalValue?.valueStr || 0 } ${ symbol || '' }` }
+        <Flex w="100%">
+          <Box whiteSpace="nowrap" overflow="hidden">
+            <HashStringShortenDynamic hash={ totalValue?.valueStr || '0' }/>
+          </Box>
+          <Box flexShrink={ 0 }> { symbol || '' }</Box>
+        </Flex>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Holders"
