@@ -52,7 +52,7 @@ const NavigationDesktop = () => {
       display={{ base: 'none', lg: 'flex' }}
       position="relative"
       flexDirection="column"
-      alignItems="flex-start"
+      alignItems="stretch"
       borderRight="1px solid"
       borderColor="divider"
       px={{ lg: isExpanded ? 6 : 4, xl: isCollapsed ? 4 : 6 }}

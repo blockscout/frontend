@@ -7,6 +7,7 @@ import SkeletonTabs from 'ui/shared/skeletons/SkeletonTabs';
 const TokenInstanceSkeleton = () => {
   return (
     <Box>
+      <Skeleton h={{ base: 12, lg: 6 }} mb={ 6 } w="100%" maxW="680px"/>
       <Skeleton h={ 10 } maxW="400px" w="100%" mb={ 6 }/>
       <Flex align="center">
         <SkeletonCircle boxSize={ 6 } flexShrink={ 0 }/>

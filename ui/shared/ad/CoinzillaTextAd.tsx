@@ -26,6 +26,8 @@ type AdData = {
 
 const CoinzillaTextAd = ({ className }: {className?: string}) => {
   const [ adData, setAdData ] = React.useState<AdData | null>(null);
+  const [ isLoading, setIsLoading ] = React.useState(true);
+
   useEffect(() => {
     fetch('https://request-global.czilladx.com/serve/native.php?z=19260bf627546ab7242')
       .then(res => res.status === 200 ? res.json() : null)
@@ -34,8 +36,15 @@ const CoinzillaTextAd = ({ className }: {className?: string}) => {
         if (data?.ad?.impressionUrl) {
           fetch(data.ad.impressionUrl);
         }
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, []);
+
+  if (isLoading) {
+    return <Box className={ className } h={{ base: 12, lg: 6 }}/>;
+  }
 
   if (!adData) {
     return null;
@@ -52,7 +61,7 @@ const CoinzillaTextAd = ({ className }: {className?: string}) => {
         mr={ 3 }
         display={{ base: 'none', lg: 'inline' }}
       >
-        ADs:
+        Ads:
       </Text>
       { urlObject.hostname === 'nifty.ink' ?
         <Text as="span" mr={ 1 }>🎨</Text> :

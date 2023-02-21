@@ -1,4 +1,4 @@
-import { Skeleton, Box, Flex, SkeletonCircle, Icon } from '@chakra-ui/react';
+import { Skeleton, Box, Flex, SkeletonCircle, Icon, Tag } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
@@ -13,7 +13,6 @@ import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import notEmpty from 'lib/notEmpty';
 import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import AddressContract from 'ui/address/AddressContract';
-import AdBanner from 'ui/shared/ad/AdBanner';
 import TextAd from 'ui/shared/ad/TextAd';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -144,10 +143,13 @@ const TokenPageContent = () => {
   return (
     <Page>
       { tokenQuery.isLoading ? (
-        <Flex alignItems="center" mb={ 6 }>
-          <SkeletonCircle w={ 6 } h={ 6 } mr={ 3 }/>
-          <Skeleton w="500px" h={ 10 }/>
-        </Flex>
+        <>
+          <Skeleton h={{ base: 12, lg: 6 }} mb={ 6 } w="100%" maxW="680px"/>
+          <Flex alignItems="center" mb={ 6 }>
+            <SkeletonCircle w={ 6 } h={ 6 } mr={ 3 }/>
+            <Skeleton w="500px" h={ 10 }/>
+          </Flex>
+        </>
       ) : (
         <>
           <TextAd mb={ 6 }/>
@@ -158,12 +160,12 @@ const TokenPageContent = () => {
             additionalsLeft={ (
               <TokenLogo hash={ tokenQuery.data?.address } name={ tokenQuery.data?.name } boxSize={ 6 }/>
             ) }
+            additionalsRight={ <Tag>{ tokenQuery.data?.type }</Tag> }
           />
         </>
       ) }
       <TokenContractInfo tokenQuery={ tokenQuery }/>
       <TokenDetails tokenQuery={ tokenQuery }/>
-      <AdBanner mt={{ base: 6, lg: 8 }} justifyContent="center"/>
       { /* should stay before tabs to scroll up whith pagination */ }
       <Box ref={ scrollRef }></Box>
 
