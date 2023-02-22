@@ -129,6 +129,9 @@ const config = Object.freeze({
   apiDoc: {
     specUrl: getEnvValue(process.env.NEXT_PUBLIC_API_SPEC_URL),
   },
+  reCaptcha: {
+    siteKey: getEnvValue(process.env.NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY) || '',
+  },
 });
 
 export default config;

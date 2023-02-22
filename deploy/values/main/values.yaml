@@ -492,6 +492,7 @@ frontend:
         - "/accounts"
         - "/visualize"
         - "/api-docs"
+        - "/csv-export"
 
   resources:
     limits:
