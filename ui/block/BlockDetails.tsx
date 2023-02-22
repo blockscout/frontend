@@ -306,7 +306,7 @@ const BlockDetails = () => {
               hint="The hash of the block from which this block was generated"
               flexWrap="nowrap"
             >
-              <AddressLink hash={ data.parent_hash } type="block" id={ String(data.height - 1) }/>
+              <AddressLink hash={ data.parent_hash } type="block" blockHeight={ String(data.height - 1) }/>
               <CopyToClipboard text={ data.parent_hash }/>
             </DetailsInfoItem>
           ) }
