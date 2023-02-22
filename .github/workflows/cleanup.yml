@@ -14,3 +14,9 @@ jobs:
       appNamespace: review-front-$GITHUB_REF_NAME_SLUG
       dockerImage: prerelease-$GITHUB_REF_NAME_SLUG
     secrets: inherit
+  cleanup_l2:
+    uses: blockscout/blockscout-ci-cd/.github/workflows/cleanup.yaml@master
+    with:
+      appNamespace: review-front-l2-$GITHUB_REF_NAME_SLUG
+      dockerImage: prerelease-$GITHUB_REF_NAME_SLUG
+    secrets: inherit
