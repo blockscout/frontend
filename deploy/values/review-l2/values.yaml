@@ -41,6 +41,7 @@ frontend:
         - "/verified-contracts"
         - "/graphiql"
         - "/output-roots"
+        - "/withdrawals"
 
   resources:
     limits:

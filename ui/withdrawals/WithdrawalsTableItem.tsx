@@ -60,8 +60,13 @@ const WithdrawalsTableItem = ({
         }
       </Td>
       <Td verticalAlign="middle">
-        { l1_tx_hash ?
-          <LinkExternal href={ appConfig.L2.withdrawalUrl }><HashStringShorten hash={ l1_tx_hash }/></LinkExternal> :
+        { l1_tx_hash ? (
+          <LinkExternal
+            href={ appConfig.L2.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: l1_tx_hash } }) }
+          >
+            <HashStringShorten hash={ l1_tx_hash }/>
+          </LinkExternal>
+        ) :
           'N/A'
         }
       </Td>
