@@ -38,6 +38,7 @@ frontend:
         - "/visualize"
         - "/api-docs"
         - "/csv-export"
+        - "/output-roots"
 
   resources:
     limits:

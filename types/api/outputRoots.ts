@@ -9,6 +9,7 @@ export type OutputRootsItem = {
 
 export type OutputRootsResponse = {
   items: Array<OutputRootsItem>;
+  total: number;
   next_page_params: {
     index: number;
     items_count: number;

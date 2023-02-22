@@ -14,14 +14,14 @@ type Props = {
 
 const OutputRootsTable = ({ items, top }: Props) => {
   return (
-    <Table variant="simple" size="sm">
+    <Table variant="simple" size="sm" minW="900px">
       <Thead top={ top }>
         <Tr>
-          <Th width="130px">L2 output index</Th>
-          <Th width="120px">Age</Th>
-          <Th width="15%">L2 block #</Th>
-          <Th width="45%">L1 txn hash</Th>
-          <Th width="35%">Output root</Th>
+          <Th width="140px">L2 output index</Th>
+          <Th width="20%">Age</Th>
+          <Th width="20%">L2 block #</Th>
+          <Th width="30%">L1 txn hash</Th>
+          <Th width="30%">Output root</Th>
         </Tr>
       </Thead>
       <Tbody>
