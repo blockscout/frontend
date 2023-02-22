@@ -57,6 +57,9 @@ const SwaggerUI = () => {
   const reqInterceptor = React.useCallback((req: any) => {
     if (!req.loadSpec) {
       req.url = req.url.replace(DEFAULT_SERVER, appConfig.api.host);
+      const url = new URL(req.url);
+      url.protocol = 'https';
+      req.url = url;
     }
     return req;
   }, []);
