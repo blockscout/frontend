@@ -6,9 +6,9 @@ import appConfig from 'configs/app/config';
 import getNetworkTitle from 'lib/networks/getNetworkTitle';
 import { getServerSideProps as getServerSidePropsBase } from 'lib/next/getServerSideProps';
 import type { Props } from 'lib/next/getServerSideProps';
+import SwaggerUI from 'ui/apiDocs/SwaggerUI';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import SwaggerUI from 'ui/SwaggerUI';
 
 const AppsPage: NextPage = () => {
   const networkTitle = getNetworkTitle();

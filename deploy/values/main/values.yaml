@@ -491,6 +491,7 @@ frontend:
         - "/token"
         - "/accounts"
         - "/visualize"
+        - "/api-docs"
 
   resources:
     limits:

@@ -45,20 +45,28 @@ const SwaggerUI = () => {
     '.swagger-ui .opblock .opblock-section-header': {
       background: useColorModeValue('whiteAlpha.800', 'blackAlpha.800'),
     },
+    '.swagger-ui .response-col_description__inner p, .swagger-ui .parameters-col_description p': {
+      margin: 0,
+    },
+    '.swagger-ui .wrapper': {
+      padding: 0,
+    },
   };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const reqInterceptor = React.useCallback((req: any) => {
+    if (!req.loadSpec) {
+      req.url = req.url.replace(DEFAULT_SERVER, appConfig.api.host);
+    }
+    return req;
+  }, []);
 
   return (
     <Box sx={ swaggerStyle }>
       <SwaggerUIReact
         url={ appConfig.apiDoc.specUrl }
         plugins={ [ NeverShowInfoPlugin ] }
-        // eslint-disable-next-line react/jsx-no-bind
-        requestInterceptor={ (req) => {
-          if (!req.loadSpec) {
-            req.url = req.url.replace(DEFAULT_SERVER, appConfig.api.host);
-          }
-          return req;
-        } }
+        requestInterceptor={ reqInterceptor }
       />
     </Box>
   );
