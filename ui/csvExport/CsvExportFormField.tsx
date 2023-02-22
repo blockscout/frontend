@@ -29,6 +29,7 @@ const CsvExportFormField = ({ formApi, name }: Props) => {
           type="date"
           isDisabled={ formState.isSubmitting }
           autoComplete="off"
+          max={ dayjs().format('YYYY-MM-DD') }
         />
         <InputPlaceholder text={ _capitalize(field.name) } error={ error }/>
       </FormControl>
