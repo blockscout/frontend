@@ -20,7 +20,7 @@ const AddressNameInfo = ({ data }: Props) => {
         hint="Token name and symbol"
       >
         <LinkInternal href={ route({ pathname: '/token/[hash]', query: { hash: data.token.address } }) }>
-          { data.token.name }{ symbol }
+          { data.token.name || 'Unnamed token' }{ symbol }
         </LinkInternal>
       </DetailsInfoItem>
     );

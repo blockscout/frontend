@@ -66,8 +66,7 @@ const TokenTransfer = ({ transfersQuery, tokenId }: Props) => {
       return (
         <>
           <Hide below="lg" ssr={ false }>
-            <SkeletonTable columns={ [ '45%', '15%', '36px', '15%', '25%' ] }
-            />
+            <SkeletonTable columns={ [ '45%', '15%', '36px', '15%', '25%' ] } isLong/>
           </Hide>
           <Show below="lg" ssr={ false }>
             <SkeletonList/>

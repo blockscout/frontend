@@ -12,9 +12,9 @@ import ContractVerificationFieldOptimization from '../fields/ContractVerificatio
 
 const ContractVerificationFlattenSourceCode = () => {
   return (
-    <ContractVerificationMethod title="New Solidity/Yul Smart Contract Verification">
-      <ContractVerificationFieldIsYul/>
+    <ContractVerificationMethod title="Contract verification via Solidity (fattened source code)">
       <ContractVerificationFieldName/>
+      <ContractVerificationFieldIsYul/>
       <ContractVerificationFieldCompiler/>
       <ContractVerificationFieldEvmVersion/>
       <ContractVerificationFieldOptimization/>

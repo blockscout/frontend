@@ -127,6 +127,12 @@ const config = Object.freeze({
   walletConnect: {
     projectId: getEnvValue(process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID),
   },
+  apiDoc: {
+    specUrl: getEnvValue(process.env.NEXT_PUBLIC_API_SPEC_URL),
+  },
+  reCaptcha: {
+    siteKey: getEnvValue(process.env.NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY) || '',
+  },
 });
 
 export default config;

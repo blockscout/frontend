@@ -80,6 +80,7 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME | `boolean` *(optional)* | Set to false if average block time is useless for the network | `true` |
 | NEXT_PUBLIC_DOMAIN_WITH_AD | `string` *(optional)* | The domain on which we display ads | `blockscout.com` |
 | NEXT_PUBLIC_AD_ADBUTLER_ON | `boolean` *(optional)* | Set to true to show Adbutler banner instead of Coinzilla banner | `false` |
+| NEXT_PUBLIC_API_SPEC_URL | `string` *(optional)* | Spec to be displayed on api-docs page | `https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml` |
 ### App configuration
 
 | Variable | Type | Description | Default value
@@ -126,8 +127,9 @@ The app instance could be customized by passing following variables to NodeJS en
 | --- | --- | --- | --- |
 | NEXT_PUBLIC_SENTRY_DSN | `string` *(optional)* | Client key for your Sentry.io app | `<secret>` |
 | SENTRY_CSP_REPORT_URI | `string` *(optional)* | URL for sending CSP-reports to your Sentry.io app | `<secret>` |
-| NEXT_PUBLIC_AUTH0_CLIENT_ID | `string` *(optional)* | Client id for [Auth0](https://auth0.com/) provider | `<secret>` |
+| NEXT_PUBLIC_AUTH0_CLIENT_ID | `string` | Client id for [Auth0](https://auth0.com/) provider | `<secret>` |
 | NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID | `string` | Project id for [WalletConnect](https://docs.walletconnect.com/2.0/web3modal/react/installation#obtain-project-id) integration | `<secret>` |
+| NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY | `string` | Site key for [reCAPTCHA](https://developers.google.com/recaptcha) service | `<secret>` |
 
 ### L2 configuration
 | Variable | Type | Description | Default value

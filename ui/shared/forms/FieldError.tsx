@@ -7,7 +7,7 @@ interface Props {
 }
 
 const FieldError = ({ message, className }: Props) => {
-  return <Box className={ className } color="error" fontSize="sm" mt={ 2 } wordBreak="break-all">{ message }</Box>;
+  return <Box className={ className } color="error" fontSize="sm" mt={ 2 } wordBreak="break-word">{ message }</Box>;
 };
 
 export default chakra(FieldError);

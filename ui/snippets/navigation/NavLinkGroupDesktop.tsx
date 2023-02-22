@@ -45,6 +45,7 @@ const NavLinkGroupDesktop = ({ text, subItems, icon, isCollapsed, isActive }: Pr
             display="grid"
             gridColumnGap={ 3 }
             gridTemplateColumns="auto, 30px"
+            overflow="hidden"
           >
             <Flex justifyContent="space-between" width="100%" alignItems="center" pr={ 1 }>
               <HStack spacing={ 3 } overflow="hidden">

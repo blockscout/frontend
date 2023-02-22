@@ -4,6 +4,7 @@ import { WebSocketServer } from 'ws';
 
 import type { AddressCoinBalanceHistoryItem } from 'types/api/address';
 import type { NewBlockSocketResponse } from 'types/api/block';
+import type { SmartContractVerificationResponse } from 'types/api/contract';
 
 type ReturnType = () => Promise<WebSocket>;
 
@@ -59,6 +60,7 @@ export function sendMessage(socket: WebSocket, channel: Channel, msg: 'token_bal
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'transaction', payload: { transaction: number }): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'pending_transaction', payload: { pending_transaction: number }): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'new_block', payload: NewBlockSocketResponse): void;
+export function sendMessage(socket: WebSocket, channel: Channel, msg: 'verification_result', payload: SmartContractVerificationResponse): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: string, payload: unknown): void {
   socket.send(JSON.stringify([
     ...channel,

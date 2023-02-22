@@ -25,7 +25,7 @@ const AddressLogs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>
   }
 
   const bar = isPaginationVisible ? (
-    <ActionBar mt={ -6 }>
+    <ActionBar mt={ -6 } showShadow>
       <Pagination ml="auto" { ...pagination }/>
     </ActionBar>
   ) : null;

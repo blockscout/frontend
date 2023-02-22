@@ -20,7 +20,6 @@ import AddressLogs from 'ui/address/AddressLogs';
 import AddressTokens from 'ui/address/AddressTokens';
 import AddressTokenTransfers from 'ui/address/AddressTokenTransfers';
 import AddressTxs from 'ui/address/AddressTxs';
-import AdBanner from 'ui/shared/ad/AdBanner';
 import TextAd from 'ui/shared/ad/TextAd';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -51,10 +50,15 @@ const AddressPageContent = () => {
   });
 
   const tags = [
+    addressQuery.data?.is_contract ? { label: 'contract', display_name: 'Contract' } : { label: 'eoa', display_name: 'EOA' },
+    addressQuery.data?.implementation_address ? { label: 'proxy', display_name: 'Proxy' } : undefined,
+    addressQuery.data?.token ? { label: 'token', display_name: 'Token' } : undefined,
     ...(addressQuery.data?.private_tags || []),
     ...(addressQuery.data?.public_tags || []),
     ...(addressQuery.data?.watchlist_names || []),
-  ].map((tag) => <Tag key={ tag.label }>{ tag.display_name }</Tag>);
+  ]
+    .filter(notEmpty)
+    .map((tag) => <Tag key={ tag.label }>{ tag.display_name }</Tag>);
 
   const contractTabs = useContractTabs(addressQuery.data);
 
@@ -97,7 +101,7 @@ const AddressPageContent = () => {
 
   return (
     <Page>
-      <TextAd mb={ 6 }/>
+      { addressQuery.isLoading ? <Skeleton h={{ base: 12, lg: 6 }} mb={ 6 } w="100%" maxW="680px"/> : <TextAd mb={ 6 }/> }
       { addressQuery.isLoading ? (
         <Skeleton h={ 10 } w="260px" mb={ 6 }/>
       ) : (
@@ -109,10 +113,10 @@ const AddressPageContent = () => {
         />
       ) }
       <AddressDetails addressQuery={ addressQuery } scrollRef={ tabsScrollRef }/>
-      <AdBanner mt={{ base: 6, lg: 8 }} justifyContent="center"/>
       { /* should stay before tabs to scroll up whith pagination */ }
       <Box ref={ tabsScrollRef }></Box>
       { addressQuery.isLoading ? <SkeletonTabs/> : content }
+      { !addressQuery.isLoading && !addressQuery.isError && <Box h={{ base: 0, lg: '40vh' }}/> }
     </Page>
   );
 };

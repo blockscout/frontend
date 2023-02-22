@@ -9,13 +9,13 @@ import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import AddressIntTxsSkeletonDesktop from 'ui/address/internals/AddressIntTxsSkeletonDesktop';
-import AddressIntTxsSkeletonMobile from 'ui/address/internals/AddressIntTxsSkeletonMobile';
 import AddressIntTxsTable from 'ui/address/internals/AddressIntTxsTable';
 import EmptySearchResult from 'ui/apps/EmptySearchResult';
 import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Pagination from 'ui/shared/Pagination';
+import SkeletonList from 'ui/shared/skeletons/SkeletonList';
+import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 
 import AddressCsvExportLink from './AddressCsvExportLink';
 import AddressTxsFilter from './AddressTxsFilter';
@@ -43,29 +43,33 @@ const AddressInternalTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivE
     onFilterChange({ filter: newVal });
   }, [ onFilterChange ]);
 
-  if (isLoading) {
+  const content = (() => {
+    if (isError) {
+      return <DataFetchAlert/>;
+    }
+
+    if (isLoading) {
+      return (
+        <>
+          <Show below="lg" ssr={ false }>
+            <SkeletonList/>
+          </Show>
+          <Hide below="lg" ssr={ false }>
+            <SkeletonTable columns={ [ '15%', '15%', '10%', '20%', '20%', '20%' ] } isLong/>
+          </Hide>
+        </>
+      );
+    }
+
+    if (data.items.length === 0 && !filterValue) {
+      return <Text as="span">There are no internal transactions for this address.</Text>;
+    }
+
+    if (data.items.length === 0) {
+      return <EmptySearchResult text={ `Couldn${ apos }t find any transaction that matches your query.` }/>;
+    }
+
     return (
-      <>
-        <Show below="lg" ssr={ false }><AddressIntTxsSkeletonMobile/></Show>
-        <Hide below="lg" ssr={ false }><AddressIntTxsSkeletonDesktop/></Hide>
-      </>
-    );
-  }
-
-  if (isError) {
-    return <DataFetchAlert/>;
-  }
-
-  if (data.items.length === 0 && !filterValue) {
-    return <Text as="span">There are no internal transactions for this address.</Text>;
-  }
-
-  let content;
-
-  if (data.items.length === 0) {
-    content = <EmptySearchResult text={ `Couldn${ apos }t find any transaction that matches your query.` }/>;
-  } else {
-    content = (
       <>
         <Show below="lg" ssr={ false }>
           <AddressIntTxsList data={ data.items } currentAddress={ hash }/>
@@ -75,11 +79,11 @@ const AddressInternalTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivE
         </Hide>
       </>
     );
-  }
+  })();
 
   return (
     <>
-      <ActionBar mt={ -6 } justifyContent="left">
+      <ActionBar mt={ -6 } justifyContent="left" showShadow={ isLoading }>
         <AddressTxsFilter
           defaultFilter={ filterValue }
           onFilterChange={ handleFilterChange }

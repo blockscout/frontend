@@ -491,6 +491,8 @@ frontend:
         - "/token"
         - "/accounts"
         - "/visualize"
+        - "/api-docs"
+        - "/csv-export"
 
   resources:
     limits:
@@ -571,5 +573,7 @@ frontend:
       _default: https://rpc.ankr.com/eth_goerli
     NEXT_PUBLIC_HOMEPAGE_CHARTS:
       _default: "['daily_txs','coin_price','market_cup']"
+    NEXT_PUBLIC_API_SPEC_URL: 
+      _default: https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml
     NEXT_PUBLIC_IS_TESTNET:
       _default: true

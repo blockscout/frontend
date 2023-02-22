@@ -76,7 +76,7 @@ const AddressBlocksValidated = ({ scrollRef }: Props) => {
       return (
         <>
           <Hide below="lg" ssr={ false }>
-            <SkeletonTable columns={ [ '17%', '17%', '16%', '25%', '25%' ] }/>
+            <SkeletonTable columns={ [ '17%', '17%', '16%', '25%', '25%' ] } isLong/>
           </Hide>
           <Show below="lg" ssr={ false }>
             <SkeletonList/>
@@ -125,7 +125,7 @@ const AddressBlocksValidated = ({ scrollRef }: Props) => {
   return (
     <Box>
       { query.isPaginationVisible && (
-        <ActionBar mt={ -6 }>
+        <ActionBar mt={ -6 } showShadow={ query.isLoading }>
           <Pagination ml="auto" { ...query.pagination }/>
         </ActionBar>
       ) }
