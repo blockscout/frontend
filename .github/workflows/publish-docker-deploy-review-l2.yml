@@ -1,4 +1,4 @@
-name: Deploy review environment (manually)
+name: Deploy l2 review environment (manually)
 
 on:
   # pull_request:
@@ -63,17 +63,17 @@ jobs:
           build-args: |
             GIT_COMMIT_SHA=${{ env.GITHUB_EVENT_PULL_REQUEST_HEAD_SHA_SHORT }}
 
-  deploy_review:
-    name: Deploy review
+  deploy_review_l2:
+    name: Deploy review l2
     needs: push_to_registry
     uses: blockscout/blockscout-ci-cd/.github/workflows/deploy.yaml@master
     with:
-      env_vars: VALUES_DIR=deploy/values/review,APP_NAME=bs-stack,DOCKER_IMAGE=prerelease-$GITHUB_REF_NAME_SLUG,K8S_DOMAIN=blockscout-main.test.aws-k8s.blockscout.com
+      env_vars: VALUES_DIR=deploy/values/review-l2,APP_NAME=bs-stack,DOCKER_IMAGE=prerelease-$GITHUB_REF_NAME_SLUG,K8S_DOMAIN=blockscout-main.test.aws-k8s.blockscout.com
       globalEnv: review
-      appNamespace: review-front-$GITHUB_REF_NAME_SLUG
-      blockscoutIngressHost: review-front
-      frontendIngressHost: review-front
+      appNamespace: review-front-l2-$GITHUB_REF_NAME_SLUG
+      blockscoutIngressHost: review-front-l2
+      frontendIngressHost: review-front-l2
       frontendImage: ghcr.io/blockscout/frontend:prerelease-$GITHUB_REF_NAME_SLUG
-      gethIngressHost: review-front-geth
-      scVerifierIngressHost: review-front-sc-verifier
+      gethIngressHost: review-front-geth-l2
+      scVerifierIngressHost: review-front-sc-verifier-l2
     secrets: inherit

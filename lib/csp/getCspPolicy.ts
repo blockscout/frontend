@@ -77,6 +77,9 @@ function makePolicyMap() {
       '*.walletconnect.com',
       'wss://*.bridge.walletconnect.org',
       'wss://www.walletlink.org',
+
+      // github (spec for api-docs page)
+      'raw.githubusercontent.com',
     ],
 
     'script-src': [
