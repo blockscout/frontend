@@ -320,7 +320,7 @@ frontend:
         - "/csv-export"
         - "/verified-contracts"
         - "/graphiql"
-
+        - "/output-roots"
   resources:
     limits:
       memory:

@@ -21,6 +21,7 @@ import type { VerifiedContractsResponse, VerifiedContractsFilters, VerifiedContr
 import type { IndexingStatus } from 'types/api/indexingStatus';
 import type { InternalTransactionsResponse } from 'types/api/internalTransaction';
 import type { LogsResponseTx, LogsResponseAddress } from 'types/api/log';
+import type { OutputRootsResponse } from 'types/api/outputRoots';
 import type { RawTracesResponse } from 'types/api/rawTrace';
 import type { SearchResult, SearchResultFilters } from 'types/api/search';
 import type { Counters, StatsCharts, StatsChart, HomeStats } from 'types/api/stats';
@@ -360,6 +361,12 @@ export const RESOURCES = {
   // GraphQL
   graphql: {
     path: '/graphql',
+  }, 
+
+  output_roots: {
+    path: '/api/v2/optimism/output-roots',
+    paginationFields: [ 'index' as const, 'items_count' as const ],
+    filterFields: [],
   },
 
   // DEPRECATED
@@ -420,7 +427,8 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'address_logs' | 'address_tokens' |
 'token_transfers' | 'token_holders' | 'token_inventory' | 'tokens' |
 'token_instance_transfers' |
-'verified_contracts';
+'verified_contracts' |
+'output_roots';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
 
@@ -482,6 +490,7 @@ Q extends 'verified_contracts' ? VerifiedContractsResponse :
 Q extends 'verified_contracts_counters' ? VerifiedContractsCounters :
 Q extends 'visualize_sol2uml' ? VisualizedContract :
 Q extends 'contract_verification_config' ? SmartContractVerificationConfig :
+Q extends 'output_roots' ? OutputRootsResponse :
 never;
 /* eslint-enable @typescript-eslint/indent */
 
