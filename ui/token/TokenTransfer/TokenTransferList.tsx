@@ -24,4 +24,4 @@ const TokenTransferList = ({ data, tokenId }: Props) => {
   );
 };
 
-export default TokenTransferList;
+export default React.memo(TokenTransferList);

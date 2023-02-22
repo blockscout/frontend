@@ -136,4 +136,4 @@ const TxsListItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }:
   );
 };
 
-export default TxsListItem;
+export default React.memo(TxsListItem);
