@@ -98,7 +98,7 @@ const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, onHid
               paddingRight: '36px',
             },
           }}
-          placeholder={ isMobile ? 'Search by addresses / ... ' : 'Search by addresses / transactions / block / token... ' }
+          placeholder={ isMobile ? 'Search by address / ... ' : 'Search by address / txn hash / block / token... ' }
           onChange={ handleChange }
           border={ isHomepage ? 'none' : '2px solid' }
           borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }
