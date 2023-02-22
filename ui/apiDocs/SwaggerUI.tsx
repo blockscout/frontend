@@ -58,8 +58,8 @@ const SwaggerUI = () => {
     if (!req.loadSpec) {
       req.url = req.url.replace(DEFAULT_SERVER, appConfig.api.host);
       const url = new URL(req.url);
-      url.protocol = 'https';
-      req.url = url;
+      url.protocol = 'https:';
+      req.url = url.toString();
     }
     return req;
   }, []);
