@@ -55,6 +55,7 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_NETWORK_LOGO | `string` *(optional)* | Network logo; if not provided, will fallback to logo predefined in the project; if the project doesn't have logo for such network then the common placeholder will be shown; *Note* that logo height should be 20px and width less than 120px | `https://www.fillmurray.com/240/40` |
 | NEXT_PUBLIC_NETWORK_SMALL_LOGO | `string` *(optional)* | Small version of network logo; if not provided, will fallback to logo predefined in the project; if the project doesn't have logo for such network then the common placeholder will be shown; *Note* that logo should have square format (e.g 60px by 60px) | `https://www.fillmurray.com/60/60` |
 | NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED | `boolean` *(optional)* | Set to true if network has account feature | `true` |
+| NEXT_PUBLIC_IS_TESTNET | `boolean` *(optional)* | Set to true if network is testnet | `true` |
 
 ### UI configuration
 

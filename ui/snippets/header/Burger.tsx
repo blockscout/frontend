@@ -2,6 +2,7 @@ import { Icon, Box, Flex, Drawer, DrawerOverlay, DrawerContent, DrawerBody, useC
 import React from 'react';
 
 import burgerIcon from 'icons/burger.svg';
+import testnetIcon from 'icons/testnet.svg';
 import NavigationMobile from 'ui/snippets/navigation/NavigationMobile';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import NetworkMenuButton from 'ui/snippets/networkMenu/NetworkMenuButton';
@@ -41,6 +42,7 @@ const Burger = () => {
         <DrawerOverlay/>
         <DrawerContent maxWidth="260px">
           <DrawerBody p={ 6 } display="flex" flexDirection="column">
+            <Icon as={ testnetIcon } h="14px" w="auto" color="red.400" alignSelf="flex-start"/>
             <Flex alignItems="center" justifyContent="space-between">
               <NetworkLogo onClick={ handleNetworkLogoClick }/>
               <NetworkMenuButton

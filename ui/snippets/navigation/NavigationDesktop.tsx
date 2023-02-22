@@ -3,6 +3,7 @@ import React from 'react';
 
 import appConfig from 'configs/app/config';
 import chevronIcon from 'icons/arrows/east-mini.svg';
+import testnetIcon from 'icons/testnet.svg';
 import { useAppContext } from 'lib/appContext';
 import * as cookies from 'lib/cookies';
 import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
@@ -60,6 +61,7 @@ const NavigationDesktop = () => {
       width={{ lg: isExpanded ? '229px' : '92px', xl: isCollapsed ? '92px' : '229px' }}
       { ...getDefaultTransitionProps({ transitionProperty: 'width, padding' }) }
     >
+      <Icon as={ testnetIcon } h="14px" w="auto" color="red.400" pl={ 3 } alignSelf="flex-start"/>
       <Box
         as="header"
         display="flex"
