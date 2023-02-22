@@ -36,8 +36,10 @@ export function middleware(req: NextRequest) {
 
 /**
  * Configure which routes should pass through the Middleware.
- * Exclude all `_next` urls.
  */
 export const config = {
   matcher: [ '/', '/:notunderscore((?!_next).+)' ],
+  // matcher: [
+  //   '/((?!.*\\.|api\\/|node-api\\/).*)', // exclude all static + api + node-api routes
+  // ],
 };

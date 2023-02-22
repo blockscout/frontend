@@ -46,7 +46,7 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_NETWORK_SHORT_NAME | `string` *(optional)* | Used for SEO attributes (page title and description) | `OoG` |
 | NEXT_PUBLIC_NETWORK_TYPE | `string` *(optional)* | Network type (used for matching pre-defined assets, e.g network logo and icon, which are stored in the project). See all possible values here | `xdai_mainnet` |
 | NEXT_PUBLIC_NETWORK_ID | `number` | Chain id, see [https://chainlist.org/](https://chainlist.org/) for the reference | `99` |
-| NEXT_PUBLIC_NETWORK_RPC_URL | `string` | Chain server RPC url, see [https://chainlist.org/](https://chainlist.org/) for the reference | `https://core.poa.network` |
+| NEXT_PUBLIC_NETWORK_RPC_URL | `string` *(optional)* | Chain server RPC url, see [https://chainlist.org/](https://chainlist.org/) for the reference. If not provided, some functionality of the explorer, related to smart contracts interaction and third-party apps integration, will be unavailable | `https://core.poa.network` |
 | NEXT_PUBLIC_NETWORK_CURRENCY_NAME | `string` | Network currency name | `Ether` |
 | NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL | `string` | Network currency symbol | `ETH` |
 | NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS | `string` | Network currency decimals | `18` |
@@ -79,6 +79,7 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME | `boolean` *(optional)* | Set to false if average block time is useless for the network | `true` |
 | NEXT_PUBLIC_DOMAIN_WITH_AD | `string` *(optional)* | The domain on which we display ads | `blockscout.com` |
 | NEXT_PUBLIC_AD_ADBUTLER_ON | `boolean` *(optional)* | Set to true to show Adbutler banner instead of Coinzilla banner | `false` |
+| NEXT_PUBLIC_API_SPEC_URL | `string` *(optional)* | Spec to be displayed on api-docs page | `https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml` |
 ### App configuration
 
 | Variable | Type | Description | Default value
@@ -128,6 +129,12 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_AUTH0_CLIENT_ID | `string` | Client id for [Auth0](https://auth0.com/) provider | `<secret>` |
 | NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID | `string` | Project id for [WalletConnect](https://docs.walletconnect.com/2.0/web3modal/react/installation#obtain-project-id) integration | `<secret>` |
 | NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY | `string` | Site key for [reCAPTCHA](https://developers.google.com/recaptcha) service | `<secret>` |
+
+### L2 configuration
+| Variable | Type | Description | Default value
+| --- | --- | --- | --- |
+| NEXT_PUBLIC_IS_L2_NETWORK | `boolean` *(optional)* | Set to true for L2 solutions (Optimism Bedrock based)  | false |
+| NEXT_PUBLIC_L1_BASE_URL | `string` *(optional)* | Base Blockscout URL for L1 network | `'http://eth-goerli.blockscout.com'` |
 
 ### Marketplace app configuration properties
 

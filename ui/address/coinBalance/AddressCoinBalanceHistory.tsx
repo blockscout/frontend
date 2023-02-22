@@ -43,6 +43,10 @@ const AddressCoinBalanceHistory = ({ query }: Props) => {
       return <DataFetchAlert/>;
     }
 
+    if (query.data.items.length === 0 && !query.isPaginationVisible) {
+      return <span>There is no coin balance history for this address</span>;
+    }
+
     return (
       <>
         <Hide below="lg" ssr={ false }>

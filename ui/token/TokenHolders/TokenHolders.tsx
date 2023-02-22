@@ -42,7 +42,7 @@ const TokenHoldersContent = ({ holdersQuery, tokenQuery }: Props) => {
         { bar }
         { isMobile && <SkeletonList/> }
         { !isMobile && (
-          <SkeletonTable columns={ [ '100%', '300px', '175px' ] }/>
+          <SkeletonTable columns={ [ '100%', '300px', '175px' ] } isLong/>
         ) }
       </>
     );

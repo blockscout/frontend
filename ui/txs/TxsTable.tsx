@@ -87,4 +87,4 @@ const TxsTable = ({
   );
 };
 
-export default TxsTable;
+export default React.memo(TxsTable);

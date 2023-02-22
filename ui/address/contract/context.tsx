@@ -1,6 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
 import type { Contract } from 'ethers';
-import { useRouter } from 'next/router';
 import React from 'react';
 import { useContract, useProvider, useSigner } from 'wagmi';
 
@@ -9,6 +8,7 @@ import type { Address } from 'types/api/address';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 
 type ProviderProps = {
+  addressHash?: string;
   children: React.ReactNode;
 }
 
@@ -24,13 +24,11 @@ const ContractContext = React.createContext<TContractContext>({
   custom: null,
 });
 
-export function ContractContextProvider({ children }: ProviderProps) {
-  const router = useRouter();
+export function ContractContextProvider({ addressHash, children }: ProviderProps) {
   const provider = useProvider();
   const { data: signer } = useSigner();
   const queryClient = useQueryClient();
 
-  const addressHash = router.query.hash?.toString();
   const { data: contractInfo } = useApiQuery('contract', {
     pathParams: { hash: addressHash },
     queryOptions: {

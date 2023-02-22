@@ -8,7 +8,7 @@ import ContractVerificationFieldName from '../fields/ContractVerificationFieldNa
 
 const ContractVerificationVyperContract = () => {
   return (
-    <ContractVerificationMethod title="New Vyper Smart Contract Verification">
+    <ContractVerificationMethod title="Contract verification via Vyper (contract)">
       <ContractVerificationFieldName hint="Must match the name specified in the code."/>
       <ContractVerificationFieldCompiler isVyper/>
       <ContractVerificationFieldCode isVyper/>

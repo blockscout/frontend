@@ -104,6 +104,10 @@ const config = Object.freeze({
     socket: apiHost ? `wss://${ apiHost }` : 'wss://blockscout.com',
     basePath: stripTrailingSlash(getEnvValue(process.env.NEXT_PUBLIC_API_BASE_PATH) || ''),
   },
+  L2: {
+    isL2Network: getEnvValue(process.env.NEXT_PUBLIC_IS_L2_NETWORK) === 'true',
+    L1BaseUrl: getEnvValue(process.env.NEXT_PUBLIC_L1_BASE_URL),
+  },
   statsApi: {
     endpoint: getEnvValue(process.env.NEXT_PUBLIC_STATS_API_HOST),
     basePath: '',
@@ -121,6 +125,9 @@ const config = Object.freeze({
   },
   walletConnect: {
     projectId: getEnvValue(process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID),
+  },
+  apiDoc: {
+    specUrl: getEnvValue(process.env.NEXT_PUBLIC_API_SPEC_URL),
   },
   reCaptcha: {
     siteKey: getEnvValue(process.env.NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY) || '',

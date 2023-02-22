@@ -145,4 +145,4 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }
   );
 };
 
-export default TxsTableItem;
+export default React.memo(TxsTableItem);

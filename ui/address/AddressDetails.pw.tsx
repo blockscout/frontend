@@ -11,6 +11,7 @@ import * as countersMock from 'mocks/address/counters';
 import * as tokensMock from 'mocks/address/tokens';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
+import insertAdPlaceholder from 'playwright/utils/insertAdPlaceholder';
 
 import AddressDetails from './AddressDetails';
 import MockAddressPage from './testUtils/MockAddressPage';
@@ -43,6 +44,8 @@ test('contract +@mobile', async({ mount, page }) => {
     </TestApp>,
     { hooksConfig },
   );
+
+  await insertAdPlaceholder(page);
 
   await expect(component).toHaveScreenshot();
 });
@@ -82,6 +85,8 @@ test('token', async({ mount, page }) => {
     { hooksConfig },
   );
 
+  await insertAdPlaceholder(page);
+
   await expect(component).toHaveScreenshot();
 });
 
@@ -101,6 +106,8 @@ test('validator +@mobile', async({ mount, page }) => {
     </TestApp>,
     { hooksConfig },
   );
+
+  await insertAdPlaceholder(page);
 
   await expect(component).toHaveScreenshot();
 });

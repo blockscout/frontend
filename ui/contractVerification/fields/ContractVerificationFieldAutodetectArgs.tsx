@@ -34,7 +34,6 @@ const ContractVerificationFieldAutodetectArgs = () => {
           name="autodetect_constructor_args"
           control={ control }
           render={ renderControl }
-          defaultValue={ true }
         />
       </ContractVerificationFormRow>
       { !isOn && <ContractVerificationFieldConstructorArgs/> }

@@ -8,7 +8,6 @@ import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/appContext';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
-import AdBanner from 'ui/shared/ad/AdBanner';
 import TextAd from 'ui/shared/ad/TextAd';
 import AddressHeadingInfo from 'ui/shared/AddressHeadingInfo';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -18,6 +17,7 @@ import TokenLogo from 'ui/shared/TokenLogo';
 import TokenTransfer from 'ui/token/TokenTransfer/TokenTransfer';
 
 import TokenInstanceDetails from './TokenInstanceDetails';
+import TokenInstanceMetadata from './TokenInstanceMetadata';
 import TokenInstanceSkeleton from './TokenInstanceSkeleton';
 
 export type TokenTabs = 'token_transfers' | 'holders'
@@ -53,7 +53,7 @@ const TokenInstanceContent = () => {
     { id: 'token_transfers', title: 'Token transfers', component: <TokenTransfer transfersQuery={ transfersQuery } tokenId={ id }/> },
     // there is no api for this tab yet
     // { id: 'holders', title: 'Holders', component: <span>Holders</span> },
-    { id: 'metadata', title: 'Metadata', component: <span>Metadata</span> },
+    { id: 'metadata', title: 'Metadata', component: <TokenInstanceMetadata data={ tokenInstanceQuery.data?.metadata }/> },
   ];
 
   if (tokenInstanceQuery.isError) {
@@ -88,15 +88,13 @@ const TokenInstanceContent = () => {
 
       <TokenInstanceDetails data={ tokenInstanceQuery.data } scrollRef={ scrollRef }/>
 
-      <AdBanner mt={{ base: 6, lg: 8 }} justifyContent="center"/>
-
       { /* should stay before tabs to scroll up with pagination */ }
       <Box ref={ scrollRef }></Box>
 
       <RoutedTabs
         tabs={ tabs }
         tabListProps={ isMobile ? { mt: 8 } : { mt: 3, py: 5, marginBottom: 0 } }
-        rightSlot={ !isMobile && transfersQuery.isPaginationVisible ? <Pagination { ...transfersQuery.pagination }/> : null }
+        rightSlot={ !isMobile && transfersQuery.isPaginationVisible && tab !== 'metadata' ? <Pagination { ...transfersQuery.pagination }/> : null }
         stickyEnabled={ !isMobile }
       />
     </>

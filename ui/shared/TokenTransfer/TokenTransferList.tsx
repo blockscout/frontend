@@ -28,4 +28,4 @@ const TokenTransferList = ({ data, baseAddress, showTxInfo, enableTimeIncrement 
   );
 };
 
-export default TokenTransferList;
+export default React.memo(TokenTransferList);

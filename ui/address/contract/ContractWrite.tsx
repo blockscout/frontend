@@ -1,5 +1,4 @@
 import _capitalize from 'lodash/capitalize';
-import { useRouter } from 'next/router';
 import React from 'react';
 import { useAccount, useSigner } from 'wagmi';
 
@@ -7,7 +6,6 @@ import type { SmartContractWriteMethod } from 'types/api/contract';
 
 import config from 'configs/app/config';
 import useApiQuery from 'lib/api/useApiQuery';
-import getQueryParamString from 'lib/router/getQueryParamString';
 import ContractMethodsAccordion from 'ui/address/contract/ContractMethodsAccordion';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
@@ -21,14 +19,12 @@ import ContractWriteResult from './ContractWriteResult';
 import { getNativeCoinValue, isExtendedError } from './utils';
 
 interface Props {
+  addressHash?: string;
   isProxy?: boolean;
   isCustomAbi?: boolean;
 }
 
-const ContractWrite = ({ isProxy, isCustomAbi }: Props) => {
-  const router = useRouter();
-
-  const addressHash = getQueryParamString(router.query.hash);
+const ContractWrite = ({ addressHash, isProxy, isCustomAbi }: Props) => {
   const { data: signer } = useSigner();
   const { isConnected } = useAccount();
 

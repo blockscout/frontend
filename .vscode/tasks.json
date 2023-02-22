@@ -251,7 +251,7 @@
             "presentation": {
                 "reveal": "always",
                 "panel": "shared",
-                "close": true,
+                "close": false,
                 "revealProblems": "onProblem",
                 "focus": true,
             },

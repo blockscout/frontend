@@ -32,7 +32,7 @@ const hiddenItemStyles: StyleProps = {
 
 interface Props extends ThemingProps<'Tabs'> {
   tabs: Array<RoutedTab>;
-  tabListProps?: ChakraProps | (({ isSticky }: { isSticky: boolean }) => ChakraProps);
+  tabListProps?: ChakraProps | (({ isSticky, activeTabIndex }: { isSticky: boolean; activeTabIndex: number }) => ChakraProps);
   rightSlot?: React.ReactNode;
   stickyEnabled?: boolean;
   className?: string;
@@ -155,7 +155,7 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled, className, .
             zIndex: { base: 'sticky2', lg: 'docked' },
           } : { })
         }
-        { ...(typeof tabListProps === 'function' ? tabListProps({ isSticky }) : tabListProps) }
+        { ...(typeof tabListProps === 'function' ? tabListProps({ isSticky, activeTabIndex }) : tabListProps) }
       >
         { tabsList.map((tab, index) => {
           if (!tab.id) {

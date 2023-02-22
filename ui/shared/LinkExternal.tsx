@@ -5,14 +5,14 @@ import arrowIcon from 'icons/arrows/north-east.svg';
 
 interface Props {
   href: string;
-  title: string;
   className?: string;
+  children: React.ReactNode;
 }
 
-const LinkExternal = ({ href, title, className }: Props) => {
+const LinkExternal = ({ href, children, className }: Props) => {
   return (
     <Link className={ className } fontSize="sm" display="inline-flex" alignItems="center" target="_blank" href={ href }>
-      { title }
+      { children }
       <Icon as={ arrowIcon } boxSize={ 4 }/>
     </Link>
   );
