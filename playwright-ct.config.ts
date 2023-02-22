@@ -57,6 +57,9 @@ const config: PlaywrightTestConfig = defineConfig({
         sourcemap: false,
         minify: false,
       },
+      define: {
+        'process.env': 'process.env', // Port over window.process envs
+      },
     },
   },
 
