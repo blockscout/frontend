@@ -68,7 +68,11 @@ export default function useNavItems(): ReturnType {
     if (appConfig.L2.isL2Network) {
       blockchainNavItems = [
         [
-          topAccounts,
+          txs,
+          // eslint-disable-next-line max-len
+          // { text: `Deposits (L1${ rightLineArrow }L2)`, nextRoute: { pathname: '/deposits' as const }, icon: depositsIcon, isActive: pathname === '/deposits', isNewUi: true },
+          // eslint-disable-next-line max-len
+          // { text: `Withdrawals (L2${ rightLineArrow }L1)`, nextRoute: { pathname: '/withdrawals' as const }, icon: withdrawalsIcon, isActive: pathname === '/withdrawals', isNewUi: true },
         ],
         [
           blocks,
@@ -78,11 +82,7 @@ export default function useNavItems(): ReturnType {
           // { text: 'Output roots', nextRoute: { pathname: '/output-roots' as const }, icon: outputRootsIcon, isActive: pathname === '/output-roots', isNewUi: true },
         ],
         [
-          txs,
-          // eslint-disable-next-line max-len
-          // { text: `Deposits (L1${ rightLineArrow }L2)`, nextRoute: { pathname: '/deposits' as const }, icon: depositsIcon, isActive: pathname === '/deposits', isNewUi: true },
-          // eslint-disable-next-line max-len
-          // { text: `Withdrawals (L2${ rightLineArrow }L1)`, nextRoute: { pathname: '/withdrawals' as const }, icon: withdrawalsIcon, isActive: pathname === '/withdrawals', isNewUi: true },
+          topAccounts,
         ],
         // [
         //   verifiedContracts
@@ -90,9 +90,9 @@ export default function useNavItems(): ReturnType {
       ];
     } else {
       blockchainNavItems = [
-        topAccounts,
-        blocks,
         txs,
+        blocks,
+        topAccounts,
         // verifiedContracts,
       ];
     }
