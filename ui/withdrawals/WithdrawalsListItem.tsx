@@ -64,7 +64,11 @@ const WithdrawalsListItem = ({
       { l1_tx_hash && (
         <HStack spacing={ 3 } width="100%">
           <Text fontSize="sm" fontWeight={ 500 } whiteSpace="nowrap">L1 txn hash</Text>
-          <LinkExternal href={ appConfig.L2.withdrawalUrl }><HashStringShorten hash={ l1_tx_hash }/></LinkExternal>
+          <LinkExternal
+            href={ appConfig.L2.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: l1_tx_hash } }) }
+          >
+            <HashStringShorten hash={ l1_tx_hash }/>
+          </LinkExternal>
         </HStack>
       ) }
       { challenge_period_end && (

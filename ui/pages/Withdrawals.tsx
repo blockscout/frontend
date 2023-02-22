@@ -26,33 +26,29 @@ const Withdrawals = () => {
       return <DataFetchAlert/>;
     }
 
-    const text = isLoading ?
-      <Skeleton w="400px" h="26px" mb={{ base: 6, lg: 0 }}/> :
-      <Text mb={{ base: 6, lg: 0 }}>A total of { data.total } withdrawals found</Text>;
-
-    const bar = (
-      <>
-        { isMobile && text }
-        <ActionBar mt={ -6 }>
-          <Flex alignItems="center" justifyContent="space-between" w="100%">
-            { !isMobile && text }
-            { isPaginationVisible && <Pagination ml="auto" { ...pagination }/> }
-          </Flex>
-        </ActionBar>
-      </>
-    );
     if (isLoading) {
       return (
         <>
-          { bar }
+          <Skeleton w={{ base: '100%', lg: '320px' }} h="26px" mb={{ base: 6, lg: 7 }} mt={{ base: 0, lg: 7 }}/>
           <SkeletonList display={{ base: 'block', lg: 'none' }}/>
-          <SkeletonTable display={{ base: 'none', lg: 'block' }} columns={ Array(7).fill(`${ 100 / 7 }%`) }/>
+          <SkeletonTable minW="950px" display={{ base: 'none', lg: 'block' }} columns={ Array(7).fill(`${ 100 / 7 }%`) }/>
         </>
       );
     }
+
+    const text = <Text mb={{ base: 6, lg: 0 }}>A total of { data.total.toLocaleString('en') } withdrawals found</Text>;
+
     return (
       <>
-        { bar }
+        { (isMobile || !isPaginationVisible) && text }
+        { isPaginationVisible && (
+          <ActionBar mt={ -6 }>
+            <Flex alignItems="center" justifyContent="space-between" w="100%">
+              { !isMobile && text }
+              <Pagination ml="auto" { ...pagination }/>
+            </Flex>
+          </ActionBar>
+        ) }
         <Show below="lg" ssr={ false }>{ data.items.map((item => <WithdrawalsListItem key={ item.l2_tx_hash } { ...item }/>)) }</Show>
         <Hide below="lg" ssr={ false }><WithdrawalsTable items={ data.items } top={ isPaginationVisible ? 80 : 0 }/></Hide>
       </>
