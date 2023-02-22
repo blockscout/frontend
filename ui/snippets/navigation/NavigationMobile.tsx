@@ -64,6 +64,9 @@ const NavigationMobile = () => {
           <Box
             as={ motion.nav }
             mt={ 6 }
+            pt={ 6 }
+            borderTopWidth="1px"
+            borderColor="divider"
             style={{ x: mainX }}
           >
             <VStack as="ul" spacing="1" alignItems="flex-start">

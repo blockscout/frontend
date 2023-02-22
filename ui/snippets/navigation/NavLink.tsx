@@ -1,4 +1,4 @@
-import { Link, Icon, Text, HStack, Tooltip, Box, useBreakpointValue, chakra } from '@chakra-ui/react';
+import { Link, Icon, Text, HStack, Tooltip, Box, useBreakpointValue, chakra, shouldForwardProp } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { route } from 'nextjs-routes';
 import React from 'react';
@@ -64,4 +64,16 @@ const NavLink = ({ text, nextRoute, icon, isCollapsed, isActive, px, isNewUi, cl
   );
 };
 
-export default React.memo(chakra(NavLink));
+const NavLinkChakra = chakra(NavLink, {
+  shouldForwardProp: (prop) => {
+    const isChakraProp = !shouldForwardProp(prop);
+
+    if (isChakraProp && prop !== 'px') {
+      return false;
+    }
+
+    return true;
+  },
+});
+
+export default React.memo(NavLinkChakra);

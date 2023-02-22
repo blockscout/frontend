@@ -91,7 +91,7 @@ const NavigationDesktop = () => {
         </VStack>
       </Box>
       { hasAccount && (
-        <Box as="nav" mt={ 8 } w="100%">
+        <Box as="nav" borderTopWidth="1px" borderColor="divider" w="100%" mt={ 6 } pt={ 6 }>
           <VStack as="ul" spacing="1" alignItems="flex-start">
             { accountNavItems.map((item) => <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed }/>) }
           </VStack>
