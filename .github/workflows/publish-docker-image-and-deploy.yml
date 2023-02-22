@@ -52,7 +52,7 @@ jobs:
             GIT_COMMIT_SHA=${{ env.SHORT_SHA }}
 
   deploy_main:
-    name: Deploy frontend app
+    name: Deploy frontend
     needs: push_to_registry
     uses: blockscout/blockscout-ci-cd/.github/workflows/deploy.yaml@master
     with:
@@ -65,7 +65,7 @@ jobs:
       scVerifierIngressHost: sc-verifier
     secrets: inherit
   deploy_l2:
-    name: Deploy frontend app (L2)
+    name: Deploy frontend (L2)
     needs: push_to_registry
     uses: blockscout/blockscout-ci-cd/.github/workflows/deploy.yaml@master
     with:
