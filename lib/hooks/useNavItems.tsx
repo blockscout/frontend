@@ -7,8 +7,8 @@ import abiIcon from 'icons/ABI.svg';
 import apiKeysIcon from 'icons/API.svg';
 import appsIcon from 'icons/apps.svg';
 import blocksIcon from 'icons/block.svg';
+import gearIcon from 'icons/gear.svg';
 import globeIcon from 'icons/globe-b.svg';
-// import gearIcon from 'icons/gear.svg';
 import privateTagIcon from 'icons/privattags.svg';
 import profileIcon from 'icons/profile.svg';
 import publicTagIcon from 'icons/publictags.svg';
@@ -44,6 +44,7 @@ export function isGroupItem(item: NavItem | NavGroupItem): item is NavGroupItem 
 
 export default function useNavItems(): ReturnType {
   const isMarketplaceFilled = appConfig.marketplaceAppList.length > 0 && appConfig.network.rpcUrl;
+  const hasAPIDocs = appConfig.apiDoc.specUrl;
 
   const router = useRouter();
   const pathname = router.pathname;
@@ -56,6 +57,17 @@ export default function useNavItems(): ReturnType {
       // eslint-disable-next-line max-len
       // { text: 'Verified contracts', nextRoute: { pathname: '/verified_contracts' as const }, icon: verifiedIcon, isActive: pathname === '/verified_contracts', isNewUi: false },
     ];
+
+    const otherNavItems: Array<NavItem> = [
+      hasAPIDocs ? {
+        text: 'API documentation',
+        nextRoute: { pathname: '/api-docs' as const },
+        // FIXME: need icon for this item
+        icon: topAccountsIcon,
+        isActive: pathname === '/api-docs',
+        isNewUi: true,
+      } : null,
+    ].filter(notEmpty);
 
     const mainNavItems = [
       {
@@ -72,7 +84,8 @@ export default function useNavItems(): ReturnType {
       // there should be custom site sections like Stats, Faucet, More, etc but never an 'other'
       // examples https://explorer-edgenet.polygon.technology/ and https://explorer.celo.org/
       // at this stage custom menu items is under development, we will implement it later
-      // { text: 'Other', url: link('other'), icon: gearIcon, isActive: pathname === 'other' },
+      otherNavItems.length > 0 ?
+        { text: 'Other', icon: gearIcon, isActive: otherNavItems.some(item => item.isActive), subItems: otherNavItems } : null,
     ].filter(notEmpty);
 
     const accountNavItems = [
@@ -109,5 +122,5 @@ export default function useNavItems(): ReturnType {
       text: 'My profile', nextRoute: { pathname: '/auth/profile' as const }, icon: profileIcon, isActive: pathname === '/auth/profile', isNewUi: true };
 
     return { mainNavItems, accountNavItems, profileItem };
-  }, [ isMarketplaceFilled, pathname ]);
+  }, [ hasAPIDocs, isMarketplaceFilled, pathname ]);
 }
