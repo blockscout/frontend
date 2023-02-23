@@ -10,6 +10,7 @@ import {
   Flex,
   Tooltip,
   chakra,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import { route } from 'nextjs-routes';
@@ -59,6 +60,7 @@ const TxDetails = () => {
       smooth: true,
     });
   }, []);
+  const executionSuccessIconColor = useColorModeValue('blackAlpha.800', 'whiteAlpha.800');
 
   if (isLoading) {
     return <TxDetailsSkeleton/>;
@@ -94,7 +96,7 @@ const TxDetails = () => {
   const executionSuccessBadge = toAddress.is_contract && data.result === 'success' ? (
     <Tooltip label="Contract execution completed">
       <chakra.span display="inline-flex" ml={ 2 } mr={ 1 }>
-        <Icon as={ successIcon } boxSize={ 4 } color="green.500" cursor="pointer"/>
+        <Icon as={ successIcon } boxSize={ 4 } color={ executionSuccessIconColor } cursor="pointer"/>
       </chakra.span>
     </Tooltip>
   ) : null;
