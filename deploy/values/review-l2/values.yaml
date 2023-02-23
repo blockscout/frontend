@@ -96,6 +96,7 @@ frontend:
       _default: "[{'title':'Göerli','url':'https://eth-goerli.blockscout.com/','group':'testnets','type':'goerli'},{'title':'Base Göerli','url':'https://l2-goerli.blockscout.com/','group':'testnets','type':'base_goerli'}]"
     NEXT_PUBLIC_API_HOST:
       _default: blockscout-optimism-goerli.test.aws-k8s.blockscout.com
+      review: blockscout-optimism-goerli.test.aws-k8s.blockscout.com
     NEXT_PUBLIC_APP_HOST:
       _default: blockscout-optimism-goerli.test.aws-k8s.blockscout.com
     NEXT_PUBLIC_API_BASE_PATH:
@@ -108,6 +109,7 @@ frontend:
       _default: https://blockscoutcom.us.auth0.com/v2/logout
     NEXT_PUBLIC_LOGOUT_RETURN_URL:
       _default: http://blockscout-optimism-goerli.test.aws-k8s.blockscout.com/auth/logout
+      review: http://blockscout-optimism-goerli.test.aws-k8s.blockscout.com/auth/logout
     NEXT_PUBLIC_STATS_API_HOST:
       _default: https://stats-optimism-goerli.test.aws-k8s.blockscout.com
     NEXT_PUBLIC_API_SPEC_URL:
