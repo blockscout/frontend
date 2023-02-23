@@ -19,6 +19,7 @@ export interface ChartOffset {
 export interface TimeChartDataItem {
   items: Array<TimeChartItem>;
   name: string;
+  units?: string;
   color?: string;
   valueFormatter?: (value: number) => string;
 }

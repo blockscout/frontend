@@ -99,6 +99,7 @@ const ChartsWidgetsList = ({ filterQuery, isError, isLoading, charts, interval }
                       title={ chart.title }
                       description={ chart.description }
                       interval={ interval }
+                      units={ chart.units || undefined }
                       onLoadingError={ handleChartLoadingError }
                     />
                   </GridItem>

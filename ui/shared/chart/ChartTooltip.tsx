@@ -80,7 +80,10 @@ const ChartTooltip = ({ chartId, xScale, yScale, width, tooltipWidth, height, da
   const updateDisplayedValue = React.useCallback((d: TimeChartItem, i: number) => {
     d3.selectAll(`${ chartId ? `#${ chartId }` : '' } .ChartTooltip__value`)
       .filter((td, tIndex) => tIndex === i)
-      .text(data[i].valueFormatter?.(d.value) || d.value.toLocaleString());
+      .text(
+        (data[i].valueFormatter?.(d.value) || d.value.toLocaleString()) +
+        (data[i].units ? ` ${ data[i].units }` : ''),
+      );
   }, [ data, chartId ]);
 
   const drawPoints = React.useCallback((x: number) => {
