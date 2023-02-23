@@ -33,7 +33,7 @@ import ChartWidgetGraph from './ChartWidgetGraph';
 import ChartWidgetSkeleton from './ChartWidgetSkeleton';
 import FullscreenChartModal from './FullscreenChartModal';
 
-type Props = {
+export type Props = {
   items?: Array<TimeChartItem>;
   title: string;
   description?: string;
