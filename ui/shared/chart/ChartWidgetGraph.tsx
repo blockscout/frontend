@@ -122,7 +122,6 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
 
         <ChartOverlay ref={ overlayRef } width={ innerWidth } height={ innerHeight }>
           <ChartTooltip
-            chartId={ chartId }
             anchorEl={ overlayRef.current }
             width={ innerWidth }
             tooltipWidth={ isGroupedValues ? 280 : 200 }
