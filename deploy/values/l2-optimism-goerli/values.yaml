@@ -316,6 +316,7 @@ frontend:
         - "/api-docs"
         - "/csv-export"
         - "/verified-contracts"
+        - "/graphiql"
 
   resources:
     limits:
