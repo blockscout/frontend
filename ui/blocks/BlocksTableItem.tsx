@@ -63,8 +63,16 @@ const BlocksTableItem = ({ data, isPending, enableTimeIncrement }: Props) => {
       <Td fontSize="sm">
         <Box>{ BigNumber(data.gas_used || 0).toFormat() }</Box>
         <Flex mt={ 2 }>
-          <Utilization colorScheme="gray" value={ BigNumber(data.gas_used || 0).dividedBy(BigNumber(data.gas_limit)).toNumber() }/>
-          <GasUsedToTargetRatio ml={ 2 } value={ data.gas_target_percentage || undefined }/>
+          <Tooltip label="Gas Used %">
+            <Box>
+              <Utilization colorScheme="gray" value={ BigNumber(data.gas_used || 0).dividedBy(BigNumber(data.gas_limit)).toNumber() }/>
+            </Box>
+          </Tooltip>
+          <Tooltip label="% of Gas Target">
+            <Box>
+              <GasUsedToTargetRatio ml={ 2 } value={ data.gas_target_percentage || undefined }/>
+            </Box>
+          </Tooltip>
         </Flex>
       </Td>
       <Td fontSize="sm">{ totalReward.toFixed(8) }</Td>
