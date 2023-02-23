@@ -1,4 +1,5 @@
 import { Grid, GridItem, Text, Icon, Link, Box, Tooltip } from '@chakra-ui/react';
+import type { UseQueryResult } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import capitalize from 'lodash/capitalize';
 import { useRouter } from 'next/router';
@@ -6,10 +7,12 @@ import { route } from 'nextjs-routes';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
+import type { Block } from 'types/api/block';
+
 import appConfig from 'configs/app/config';
 import clockIcon from 'icons/clock.svg';
 import flameIcon from 'icons/flame.svg';
-import useApiQuery from 'lib/api/useApiQuery';
+import type { ResourceError } from 'lib/api/resources';
 import getBlockReward from 'lib/block/getBlockReward';
 import { WEI, WEI_IN_GWEI, ZERO } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
@@ -28,15 +31,16 @@ import PrevNext from 'ui/shared/PrevNext';
 import TextSeparator from 'ui/shared/TextSeparator';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
-const BlockDetails = () => {
+interface Props {
+  query: UseQueryResult<Block, ResourceError>;
+}
+
+const BlockDetails = ({ query }: Props) => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
   const router = useRouter();
-  const height = getQueryParamString(router.query.height);
+  const heightOrHash = getQueryParamString(router.query.height);
 
-  const { data, isLoading, isError, error } = useApiQuery('block', {
-    pathParams: { height },
-    queryOptions: { enabled: Boolean(height) },
-  });
+  const { data, isLoading, isError, error } = query;
 
   const handleCutClick = React.useCallback(() => {
     setIsExpanded((flag) => !flag);
@@ -47,11 +51,15 @@ const BlockDetails = () => {
   }, []);
 
   const handlePrevNextClick = React.useCallback((direction: 'prev' | 'next') => {
+    if (!data) {
+      return;
+    }
+
     const increment = direction === 'next' ? +1 : -1;
-    const nextId = String(Number(height) + increment);
+    const nextId = String(data.height + increment);
 
     router.push({ pathname: '/block/[height]', query: { height: nextId } }, undefined);
-  }, [ height, router ]);
+  }, [ data, router ]);
 
   if (isLoading) {
     return <BlockDetailsSkeleton/>;
@@ -85,7 +93,7 @@ const BlockDetails = () => {
   return (
     <Grid columnGap={ 8 } rowGap={{ base: 3, lg: 3 }} templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }} overflow="hidden">
       <DetailsInfoItem
-        title="Block height"
+        title={ `${ data.type === 'reorg' ? 'Reorg' : 'Block' } height` }
         hint="The block height of a particular block is defined as the number of blocks preceding it in the blockchain"
       >
         { data.height }
@@ -117,7 +125,7 @@ const BlockDetails = () => {
         title="Transactions"
         hint="The number of transactions in the block"
       >
-        <LinkInternal href={ route({ pathname: '/block/[height]', query: { height, tab: 'txs' } }) }>
+        <LinkInternal href={ route({ pathname: '/block/[height]', query: { height: heightOrHash, tab: 'txs' } }) }>
           { data.tx_count } transaction{ data.tx_count === 1 ? '' : 's' }
         </LinkInternal>
       </DetailsInfoItem>
