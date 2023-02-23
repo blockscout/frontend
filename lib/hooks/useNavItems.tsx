@@ -6,9 +6,11 @@ import appConfig from 'configs/app/config';
 import abiIcon from 'icons/ABI.svg';
 import apiKeysIcon from 'icons/API.svg';
 import appsIcon from 'icons/apps.svg';
+// import withdrawalsIcon from 'icons/arrows/north-east.svg';
 import blocksIcon from 'icons/block.svg';
 import gearIcon from 'icons/gear.svg';
 import globeIcon from 'icons/globe-b.svg';
+// import outputRootsIcon from 'icons/output_roots.svg';
 import privateTagIcon from 'icons/privattags.svg';
 import profileIcon from 'icons/profile.svg';
 import publicTagIcon from 'icons/publictags.svg';
@@ -16,8 +18,11 @@ import statsIcon from 'icons/stats.svg';
 import tokensIcon from 'icons/token.svg';
 import topAccountsIcon from 'icons/top-accounts.svg';
 import transactionsIcon from 'icons/transactions.svg';
+// import depositsIcon from 'icons/arrows/south-east.svg';
+// import txnBatchIcon from 'icons/txn_batches.svg';
 // import verifiedIcon from 'icons/verified.svg';
 import watchlistIcon from 'icons/watchlist.svg';
+// import { rightLineArrow } from 'lib/html-entities';
 import notEmpty from 'lib/notEmpty';
 
 export interface NavItem {
@@ -29,7 +34,7 @@ export interface NavItem {
 }
 
 export interface NavGroupItem extends Omit<NavItem, 'nextRoute'> {
-  subItems: Array<NavItem>;
+  subItems: Array<NavItem> | Array<Array<NavItem>>;
 }
 
 interface ReturnType {
@@ -50,13 +55,47 @@ export default function useNavItems(): ReturnType {
   const pathname = router.pathname;
 
   return React.useMemo(() => {
-    const blockchainNavItems: Array<NavItem> = [
-      { text: 'Top accounts', nextRoute: { pathname: '/accounts' as const }, icon: topAccountsIcon, isActive: pathname === '/accounts', isNewUi: true },
-      { text: 'Blocks', nextRoute: { pathname: '/blocks' as const }, icon: blocksIcon, isActive: pathname.startsWith('/block'), isNewUi: true },
-      { text: 'Transactions', nextRoute: { pathname: '/txs' as const }, icon: transactionsIcon, isActive: pathname.startsWith('/tx'), isNewUi: true },
-      // eslint-disable-next-line max-len
-      // { text: 'Verified contracts', nextRoute: { pathname: '/verified_contracts' as const }, icon: verifiedIcon, isActive: pathname === '/verified_contracts', isNewUi: false },
-    ];
+    let blockchainNavItems: Array<NavItem> | Array<Array<NavItem>> = [];
+
+    const topAccounts =
+      { text: 'Top accounts', nextRoute: { pathname: '/accounts' as const }, icon: topAccountsIcon, isActive: pathname === '/accounts', isNewUi: true };
+    const blocks = { text: 'Blocks', nextRoute: { pathname: '/blocks' as const }, icon: blocksIcon, isActive: pathname.startsWith('/block'), isNewUi: true };
+    const txs = { text: 'Transactions', nextRoute: { pathname: '/txs' as const }, icon: transactionsIcon, isActive: pathname.startsWith('/tx'), isNewUi: true };
+    // const verifiedContracts =
+    // eslint-disable-next-line max-len
+    //  { text: 'Verified contracts', nextRoute: { pathname: '/verified_contracts' as const }, icon: verifiedIcon, isActive: pathname === '/verified_contracts', isNewUi: false },
+
+    if (appConfig.L2.isL2Network) {
+      blockchainNavItems = [
+        [
+          txs,
+          // eslint-disable-next-line max-len
+          // { text: `Deposits (L1${ rightLineArrow }L2)`, nextRoute: { pathname: '/deposits' as const }, icon: depositsIcon, isActive: pathname === '/deposits', isNewUi: true },
+          // eslint-disable-next-line max-len
+          // { text: `Withdrawals (L2${ rightLineArrow }L1)`, nextRoute: { pathname: '/withdrawals' as const }, icon: withdrawalsIcon, isActive: pathname === '/withdrawals', isNewUi: true },
+        ],
+        [
+          blocks,
+          // eslint-disable-next-line max-len
+          // { text: 'Txn batches', nextRoute: { pathname: '/txn-batches' as const }, icon: txnBatchIcon, isActive: pathname === '/txn-batches', isNewUi: true },
+          // eslint-disable-next-line max-len
+          // { text: 'Output roots', nextRoute: { pathname: '/output-roots' as const }, icon: outputRootsIcon, isActive: pathname === '/output-roots', isNewUi: true },
+        ],
+        [
+          topAccounts,
+        ],
+        // [
+        //   verifiedContracts
+        // ],
+      ];
+    } else {
+      blockchainNavItems = [
+        txs,
+        blocks,
+        topAccounts,
+        // verifiedContracts,
+      ];
+    }
 
     const otherNavItems: Array<NavItem> = [
       hasAPIDocs ? {
@@ -73,7 +112,7 @@ export default function useNavItems(): ReturnType {
       {
         text: 'Blockchain',
         icon: globeIcon,
-        isActive: blockchainNavItems.some(item => item.isActive),
+        isActive: blockchainNavItems.flat().some(item => item.isActive),
         isNewUi: true,
         subItems: blockchainNavItems,
       },
@@ -86,7 +125,7 @@ export default function useNavItems(): ReturnType {
       // at this stage custom menu items is under development, we will implement it later
       otherNavItems.length > 0 ?
         { text: 'Other', icon: gearIcon, isActive: otherNavItems.some(item => item.isActive), subItems: otherNavItems } : null,
-    ].filter(notEmpty);
+    ].filter(notEmpty) as Array<NavItem | NavGroupItem>;
 
     const accountNavItems = [
       {

@@ -2,7 +2,6 @@ import {
   Icon,
   Text,
   HStack,
-  Flex,
   Box,
   Link,
   Popover,
@@ -42,22 +41,19 @@ const NavLinkGroupDesktop = ({ text, subItems, icon, isCollapsed, isActive }: Pr
             pl={{ lg: isExpanded ? 3 : '15px', xl: isCollapsed ? '15px' : 3 }}
             pr={{ lg: isExpanded ? 0 : '15px', xl: isCollapsed ? '15px' : 0 }}
             aria-label={ `${ text } link group` }
-            display="grid"
-            gridColumnGap={ 3 }
-            gridTemplateColumns="auto, 30px"
-            overflow="hidden"
+            position="relative"
           >
-            <Flex justifyContent="space-between" width="100%" alignItems="center" pr={ 1 }>
-              <HStack spacing={ 3 } overflow="hidden">
-                <Icon as={ icon } boxSize="30px"/>
-                <Text
-                  { ...styleProps.textProps }
-                >
-                  { text }
-                </Text>
-              </HStack>
+            <HStack spacing={ 3 } overflow="hidden">
+              <Icon as={ icon } boxSize="30px"/>
+              <Text
+                { ...styleProps.textProps }
+              >
+                { text }
+              </Text>
               <Icon
                 as={ chevronIcon }
+                position="absolute"
+                right="7px"
                 transform="rotate(180deg)"
                 boxSize={ 6 }
                 opacity={{ lg: isExpanded ? '1' : '0', xl: isCollapsed ? '0' : '1' }}
@@ -65,16 +61,31 @@ const NavLinkGroupDesktop = ({ text, subItems, icon, isCollapsed, isActive }: Pr
                 transitionDuration="normal"
                 transitionTimingFunction="ease"
               />
-            </Flex>
+            </HStack>
           </Link>
         </PopoverTrigger>
-        <PopoverContent width="auto" top={{ lg: isExpanded ? '-16px' : 0, xl: isCollapsed ? 0 : '-16px' }}>
+        <PopoverContent width="252px" top={{ lg: isExpanded ? '-16px' : 0, xl: isCollapsed ? 0 : '-16px' }}>
           <PopoverBody p={ 4 }>
             <Text variant="secondary" fontSize="sm" mb={ 2 } display={{ lg: isExpanded ? 'none' : 'block', xl: isCollapsed ? 'block' : 'none' }}>
               { text }
             </Text>
             <VStack spacing={ 1 } alignItems="start">
-              { subItems.map(item => <NavLink key={ item.text } { ...item } isCollapsed={ false }/>) }
+              { subItems.map(item => Array.isArray(item) ? (
+                <Box
+                  w="100%"
+                  as="ul"
+                  _notLast={{
+                    mb: 2,
+                    pb: 2,
+                    borderBottomWidth: '1px',
+                    borderColor: 'divider',
+                  }}
+                >
+                  { item.map(subItem => <NavLink key={ subItem.text } { ...subItem } isCollapsed={ false }/>) }
+                </Box>
+              ) :
+                <NavLink key={ item.text } { ...item } isCollapsed={ false }/>,
+              ) }
             </VStack>
           </PopoverBody>
         </PopoverContent>

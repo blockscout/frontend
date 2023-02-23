@@ -64,6 +64,9 @@ const NavigationMobile = () => {
           <Box
             as={ motion.nav }
             mt={ 6 }
+            pt={ 6 }
+            borderTopWidth="1px"
+            borderColor="divider"
             style={{ x: mainX }}
           >
             <VStack as="ul" spacing="1" alignItems="flex-start">
@@ -81,18 +84,32 @@ const NavigationMobile = () => {
             style={{ x: subX }}
             key="sub"
           >
-            <VStack
+            <Flex alignItems="center" px={ 3 } py={ 2.5 } w="100%" h="50px" onClick={ onGroupItemClose } mb={ 1 }>
+              <Icon as={ chevronIcon } boxSize={ 6 } mr={ 2 } color={ iconColor }/>
+              <Text variant="secondary" fontSize="sm">{ mainNavItems[openedGroupIndex].text }</Text>
+            </Flex>
+            <Box
               w="100%"
               as="ul"
-              spacing="1"
-              alignItems="flex-start"
             >
-              <Flex alignItems="center" px={ 3 } py={ 2.5 } w="100%" h="50px" onClick={ onGroupItemClose }>
-                <Icon as={ chevronIcon } boxSize={ 6 } mr={ 2 } color={ iconColor }/>
-                <Text variant="secondary" fontSize="sm">{ mainNavItems[openedGroupIndex].text }</Text>
-              </Flex>
-              { isGroupItem(openedItem) && openedItem.subItems?.map((item) => <NavLink key={ item.text } { ...item }/>) }
-            </VStack>
+              { isGroupItem(openedItem) && openedItem.subItems?.map(
+                item => Array.isArray(item) ? (
+                  <Box
+                    w="100%"
+                    as="ul"
+                    _notLast={{
+                      mb: 2,
+                      pb: 2,
+                      borderBottomWidth: '1px',
+                      borderColor: 'divider',
+                    }}
+                  >
+                    { item.map(subItem => <NavLink key={ subItem.text } { ...subItem }/>) }
+                  </Box>
+                ) :
+                  <NavLink key={ item.text } { ...item } mb={ 1 }/>,
+              ) }
+            </Box>
           </Box>
         ) }
       </Box>
