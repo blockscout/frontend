@@ -1,5 +1,5 @@
 import type { PlaywrightTestConfig } from '@playwright/experimental-ct-react';
-import { devices } from '@playwright/experimental-ct-react';
+import { devices, defineConfig } from '@playwright/experimental-ct-react';
 import react from '@vitejs/plugin-react';
 import svgr from 'vite-plugin-svgr';
 import tsconfigPaths from 'vite-tsconfig-paths';
@@ -7,7 +7,7 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-const config: PlaywrightTestConfig = {
+const config: PlaywrightTestConfig = defineConfig({
   testDir: './',
 
   testMatch: /.*\.pw\.tsx/,
@@ -56,6 +56,9 @@ const config: PlaywrightTestConfig = {
         // https://github.com/storybookjs/builder-vite/issues/409#issuecomment-1152848986
         sourcemap: false,
         minify: false,
+      },
+      define: {
+        'process.env': 'process.env', // Port over window.process envs
       },
     },
   },
@@ -112,6 +115,6 @@ const config: PlaywrightTestConfig = {
       },
     },
   ],
-};
+});
 
 export default config;

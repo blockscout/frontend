@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "https://github.com/blockscout/frontend#readme",
   "engines": {
-    "node": "16",
+    "node": "18",
     "npm": "8"
   },
   "scripts": {
@@ -23,8 +23,8 @@
     "prepare": "husky install",
     "format-svg": "./node_modules/.bin/svgo -r ./icons",
     "test:pw": "./playwright/make-envs-script.sh && NODE_OPTIONS=\"--max-old-space-size=4096\" playwright test -c playwright-ct.config.ts",
-    "test:pw:local": "export NODE_PATH=$(pwd)/node_modules && yarn test:pw",
-    "test:pw:docker": "docker run --rm --network host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.28.0-focal ./playwright/run-tests.sh",
+    "test:pw:local": "export NODE_PATH=$(pwd)/node_modules && rm -rf ./playwright/.cache && yarn test:pw",
+    "test:pw:docker": "docker run --rm --network host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.31.0-focal ./playwright/run-tests.sh",
     "test:jest": "jest",
     "test:jest:watch": "jest --watch"
   },
@@ -75,7 +75,7 @@
     "wagmi": "^0.10.6"
   },
   "devDependencies": {
-    "@playwright/experimental-ct-react": "^1.28.0",
+    "@playwright/experimental-ct-react": "1.31.0",
     "@svgr/webpack": "^6.5.1",
     "@testing-library/react": "^13.4.0",
     "@types/d3": "^7.4.0",
@@ -105,7 +105,7 @@
     "lint-staged": ">=10",
     "mockdate": "^3.0.5",
     "next-transpile-modules": "^10.0.0",
-    "playwright": "^1.28.0",
+    "playwright": "1.31.0",
     "svgo": "^2.8.0",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",
