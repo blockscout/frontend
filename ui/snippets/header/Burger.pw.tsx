@@ -25,7 +25,7 @@ test('base view', async({ mount, page }) => {
   );
 
   await component.locator('svg[aria-label="Menu button"]').click();
-  await expect(page).toHaveScreenshot();
+  await expect(page.locator('.chakra-modal__content-container')).toHaveScreenshot();
 
   await page.locator('button[aria-label="Network menu"]').click();
   await expect(page).toHaveScreenshot();
@@ -50,6 +50,19 @@ test.describe('dark mode', () => {
   });
 });
 
+test('submenu', async({ mount, page }) => {
+  const component = await mount(
+    <TestApp>
+      <Burger/>
+    </TestApp>,
+    { hooksConfig },
+  );
+
+  await component.locator('svg[aria-label="Menu button"]').click();
+  await page.locator('div[aria-label="Blockchain link group"]').click();
+  await expect(page).toHaveScreenshot();
+});
+
 test.describe('auth', () => {
   const extendedTest = test.extend({
     context: ({ context }, use) => {
@@ -57,6 +70,8 @@ test.describe('auth', () => {
       use(context);
     },
   });
+
+  extendedTest.use({ viewport: { width: devices['iPhone 13 Pro'].viewport.width, height: 1000 } });
 
   extendedTest('base view', async({ mount, page }) => {
     const component = await mount(
@@ -67,19 +82,6 @@ test.describe('auth', () => {
     );
 
     await component.locator('svg[aria-label="Menu button"]').click();
-    await expect(page).toHaveScreenshot();
-  });
-
-  extendedTest('submenu', async({ mount, page }) => {
-    const component = await mount(
-      <TestApp>
-        <Burger/>
-      </TestApp>,
-      { hooksConfig },
-    );
-
-    await component.locator('svg[aria-label="Menu button"]').click();
-    await page.locator('div[aria-label="Blockchain link group"]').click();
     await expect(page).toHaveScreenshot();
   });
 });
