@@ -37,6 +37,7 @@ const Home = () => {
             alignItems="center"
             display={{ base: 'none', lg: 'flex' }}
             columnGap={ 12 }
+            pl={ 4 }
           >
             <ColorModeToggler trackBg="whiteAlpha.500"/>
             <ProfileMenuDesktop/>
