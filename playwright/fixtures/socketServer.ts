@@ -35,7 +35,7 @@ export const joinChannel = async(socket: WebSocket, channelName: string) => {
   return new Promise<[string, string, string]>((resolve, reject) => {
     socket.on('message', (msg) => {
       try {
-        const payload: Array<string> = JSON.parse(msg.toString());
+        const payload = JSON.parse(msg.toString()) as Array<string>;
 
         if (channelName === payload[2] && payload[3] === 'phx_join') {
           socket.send(JSON.stringify([

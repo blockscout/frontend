@@ -7,7 +7,6 @@ import type { AppItemPreview } from 'types/client/apps';
 import northEastIcon from 'icons/arrows/north-east.svg';
 import starFilledIcon from 'icons/star_filled.svg';
 import starOutlineIcon from 'icons/star_outline.svg';
-import notEmpty from 'lib/notEmpty';
 
 import AppCardLink from './AppCardLink';
 import { APP_CATEGORIES } from './constants';
@@ -30,7 +29,7 @@ const AppCard = ({
   isFavorite,
   onFavoriteClick,
 }: Props) => {
-  const categoriesLabel = categories.map(c => APP_CATEGORIES[c]).filter(notEmpty).join(', ');
+  const categoriesLabel = categories.map(c => APP_CATEGORIES[c]).filter(Boolean).join(', ');
 
   const handleInfoClick = useCallback((event: MouseEvent) => {
     event.preventDefault();

@@ -9,7 +9,6 @@ import iconSuccess from 'icons/status/success.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/appContext';
 import useContractTabs from 'lib/hooks/useContractTabs';
-import notEmpty from 'lib/notEmpty';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import AddressBlocksValidated from 'ui/address/AddressBlocksValidated';
 import AddressCoinBalance from 'ui/address/AddressCoinBalance';
@@ -57,7 +56,7 @@ const AddressPageContent = () => {
     ...(addressQuery.data?.public_tags || []),
     ...(addressQuery.data?.watchlist_names || []),
   ]
-    .filter(notEmpty)
+    .filter(Boolean)
     .map((tag) => <Tag key={ tag.label }>{ tag.display_name }</Tag>);
 
   const contractTabs = useContractTabs(addressQuery.data);
@@ -92,7 +91,7 @@ const AddressPageContent = () => {
         component: <AddressContract tabs={ contractTabs } addressHash={ hash }/>,
         subTabs: contractTabs.map(tab => tab.id),
       } : undefined,
-    ].filter(notEmpty);
+    ].filter(Boolean);
   }, [ addressQuery.data, contractTabs, hash ]);
 
   const tagsNode = tags.length > 0 ? <Flex columnGap={ 2 }>{ tags }</Flex> : null;

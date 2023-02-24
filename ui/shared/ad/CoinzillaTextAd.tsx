@@ -31,7 +31,8 @@ const CoinzillaTextAd = ({ className }: {className?: string}) => {
   useEffect(() => {
     fetch('https://request-global.czilladx.com/serve/native.php?z=19260bf627546ab7242')
       .then(res => res.status === 200 ? res.json() : null)
-      .then((data) => {
+      .then((_data) => {
+        const data = _data as AdData;
         setAdData(data);
         if (data?.ad?.impressionUrl) {
           fetch(data.ad.impressionUrl);

@@ -1,5 +1,5 @@
-export default function getFilterValue<FilterType>(filterValues: ReadonlyArray<FilterType>, val: string | Array<string> | undefined) {
-  if (typeof val === 'string' && filterValues.includes(val as unknown as FilterType)) {
-    return val as unknown as FilterType;
+export default function getFilterValue<FilterType>(filterValues: ReadonlyArray<FilterType>, val: string | Array<string> | undefined): FilterType | undefined {
+  if (typeof val === 'string' && filterValues.includes(val as FilterType)) {
+    return val as FilterType;
   }
 }

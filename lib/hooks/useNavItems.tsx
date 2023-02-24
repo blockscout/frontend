@@ -23,7 +23,6 @@ import transactionsIcon from 'icons/transactions.svg';
 import verifiedIcon from 'icons/verified.svg';
 import watchlistIcon from 'icons/watchlist.svg';
 // import { rightLineArrow } from 'lib/html-entities';
-import notEmpty from 'lib/notEmpty';
 
 export interface NavItem {
   text: string;
@@ -106,7 +105,7 @@ export default function useNavItems(): ReturnType {
       } : null,
       // FIXME: need icon for this item
       { text: 'GraphQL', nextRoute: { pathname: '/graphiql' as const }, icon: topAccountsIcon, isActive: false, isNewUi: false },
-    ].filter(notEmpty);
+    ].filter(Boolean);
 
     const mainNavItems = [
       {
@@ -125,7 +124,7 @@ export default function useNavItems(): ReturnType {
       // at this stage custom menu items is under development, we will implement it later
       otherNavItems.length > 0 ?
         { text: 'Other', icon: gearIcon, isActive: otherNavItems.some(item => item.isActive), subItems: otherNavItems } : null,
-    ].filter(notEmpty) as Array<NavItem | NavGroupItem>;
+    ].filter(Boolean);
 
     const accountNavItems = [
       {

@@ -9,7 +9,7 @@ const favoriteAppsLocalStorageKey = 'favoriteApps';
 
 function getFavoriteApps() {
   try {
-    return JSON.parse(localStorage.getItem(favoriteAppsLocalStorageKey) || '[]');
+    return JSON.parse(localStorage.getItem(favoriteAppsLocalStorageKey) || '[]') as Array<string>;
   } catch (e) {
     return [];
   }

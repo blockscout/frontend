@@ -15,7 +15,6 @@ import starFilledIcon from 'icons/star_filled.svg';
 import starOutlineIcon from 'icons/star_outline.svg';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp } from 'lib/html-entities';
-import notEmpty from 'lib/notEmpty';
 
 import AppModalLink from './AppModalLink';
 import { APP_CATEGORIES } from './constants';
@@ -60,7 +59,7 @@ const AppModal = ({
       icon: ghIcon,
       url: github,
     } : null,
-  ].filter(notEmpty);
+  ].filter(Boolean);
 
   const handleFavoriteClick = useCallback(() => {
     onFavoriteClick(id, isFavorite);

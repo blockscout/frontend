@@ -1,8 +1,6 @@
 import type { Channel } from 'phoenix';
 import { useEffect, useRef, useState } from 'react';
 
-import notEmpty from 'lib/notEmpty';
-
 import { useSocket } from './context';
 
 const CHANNEL_REGISTRY: Record<string, Channel> = {};
@@ -27,7 +25,7 @@ export default function useSocketChannel({ topic, params, isDisabled, onJoin, on
 
   useEffect(() => {
     const cleanUpRefs = () => {
-      const refs = [ onCloseRef.current, onErrorRef.current ].filter(notEmpty);
+      const refs = [ onCloseRef.current, onErrorRef.current ].filter(Boolean);
       refs.length > 0 && socket?.off(refs);
     };
 

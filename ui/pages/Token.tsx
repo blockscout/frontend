@@ -10,7 +10,6 @@ import { useAppContext } from 'lib/appContext';
 import useContractTabs from 'lib/hooks/useContractTabs';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
-import notEmpty from 'lib/notEmpty';
 import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import AddressContract from 'ui/address/AddressContract';
 import TextAd from 'ui/shared/ad/TextAd';
@@ -118,7 +117,7 @@ const TokenPageContent = () => {
       component: <AddressContract tabs={ contractTabs } addressHash={ hashString }/>,
       subTabs: contractTabs.map(tab => tab.id),
     } : undefined,
-  ].filter(notEmpty);
+  ].filter(Boolean);
 
   let hasPagination;
   let pagination;
