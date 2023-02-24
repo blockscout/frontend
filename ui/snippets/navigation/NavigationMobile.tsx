@@ -55,7 +55,7 @@ const NavigationMobile = () => {
               if (isGroupItem(item)) {
                 return <NavLinkGroupMobile key={ item.text } { ...item } onClick={ onGroupItemOpen(index) }/>;
               } else {
-                return <NavLink key={ item.text } { ...item }/>;
+                return <NavLink key={ item.text } item={ item }/>;
               }
             }) }
           </VStack>
@@ -70,7 +70,7 @@ const NavigationMobile = () => {
             style={{ x: mainX }}
           >
             <VStack as="ul" spacing="1" alignItems="flex-start">
-              { accountNavItems.map((item) => <NavLink key={ item.text } { ...item }/>) }
+              { accountNavItems.map((item) => <NavLink key={ item.text } item={ item }/>) }
             </VStack>
           </Box>
         ) }
@@ -105,10 +105,10 @@ const NavigationMobile = () => {
                       borderColor: 'divider',
                     }}
                   >
-                    { item.map(subItem => <NavLink key={ subItem.text } { ...subItem }/>) }
+                    { item.map(subItem => <NavLink key={ subItem.text } item={ subItem }/>) }
                   </Box>
                 ) :
-                  <NavLink key={ item.text } { ...item } mb={ 1 }/>,
+                  <NavLink key={ item.text } item={ item } mb={ 1 }/>,
               ) }
             </Box>
           </Box>

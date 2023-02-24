@@ -85,7 +85,7 @@ const NavigationDesktop = () => {
             if (isGroupItem(item)) {
               return <NavLinkGroupDesktop key={ item.text } { ...item } isCollapsed={ isCollapsed }/>;
             } else {
-              return <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed }/>;
+              return <NavLink key={ item.text } item={ item } isCollapsed={ isCollapsed }/>;
             }
           }) }
         </VStack>
@@ -93,7 +93,7 @@ const NavigationDesktop = () => {
       { hasAccount && (
         <Box as="nav" borderTopWidth="1px" borderColor="divider" w="100%" mt={ 6 } pt={ 6 }>
           <VStack as="ul" spacing="1" alignItems="flex-start">
-            { accountNavItems.map((item) => <NavLink key={ item.text } { ...item } isCollapsed={ isCollapsed }/>) }
+            { accountNavItems.map((item) => <NavLink key={ item.text } item={ item } isCollapsed={ isCollapsed }/>) }
           </VStack>
         </Box>
       ) }
