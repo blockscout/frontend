@@ -2,7 +2,7 @@ import { Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { SmartContractVerificationConfigRaw, SmartContractVerificationMethod } from 'types/api/contract';
+import type { SmartContractVerificationMethod } from 'types/api/contract';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/appContext';
@@ -39,11 +39,10 @@ const ContractVerification = () => {
 
   const configQuery = useApiQuery('contract_verification_config', {
     queryOptions: {
-      select: (data: unknown) => {
-        const _data = data as SmartContractVerificationConfigRaw;
+      select: (data) => {
         return {
-          ..._data,
-          verification_options: _data.verification_options.filter(isValidVerificationMethod).sort(sortVerificationMethods),
+          ...data,
+          verification_options: data.verification_options.filter(isValidVerificationMethod).sort(sortVerificationMethods),
         };
       },
       enabled: Boolean(hash),
