@@ -27,7 +27,8 @@ interface Props {
   margin?: ChartMargin;
 }
 
-const MAX_SHOW_ITEMS = 100;
+// temporarily turn off the data aggregation, we need a better algorithm for that
+const MAX_SHOW_ITEMS = 100_000_000_000;
 const DEFAULT_CHART_MARGIN = { bottom: 20, left: 40, right: 20, top: 10 };
 
 const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title, margin, units }: Props) => {
