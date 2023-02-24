@@ -93,8 +93,9 @@ const NavigationMobile = () => {
               as="ul"
             >
               { isGroupItem(openedItem) && openedItem.subItems?.map(
-                item => Array.isArray(item) ? (
+                (item, index) => Array.isArray(item) ? (
                   <Box
+                    key={ index }
                     w="100%"
                     as="ul"
                     _notLast={{
