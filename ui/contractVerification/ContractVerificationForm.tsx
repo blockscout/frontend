@@ -84,10 +84,9 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
       status: 'success',
       variant: 'subtle',
       isClosable: true,
-      onCloseComplete: () => {
-        router.push({ pathname: '/address/[hash]', query: { hash, tab: 'contract' } }, undefined, { shallow: true });
-      },
     });
+
+    router.push({ pathname: '/address/[hash]', query: { hash, tab: 'contract' } }, undefined, { shallow: false });
   }, [ hash, router, setError, toast ]);
 
   const handleSocketError = React.useCallback(() => {

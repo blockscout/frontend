@@ -137,7 +137,7 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
           { isWrite ? 'Write' : 'Query' }
         </Button>
       </chakra.form>
-      { 'outputs' in data && data.outputs.length > 0 && (
+      { 'outputs' in data && !isWrite && data.outputs.length > 0 && (
         <Flex mt={ 3 }>
           <Icon as={ arrowIcon } boxSize={ 5 } mr={ 1 }/>
           <Text>{ data.outputs.map(({ type }) => type).join(', ') }</Text>
