@@ -13,7 +13,7 @@ export type WithdrawalsItem = {
 
 export type WithdrawalStatus =
   'In challenge period' |
-  'Ready for Relay' |
+  'Ready for relay' |
   'Relayed' |
   'Waiting for state root' |
   'Ready to prove';

@@ -49,7 +49,7 @@ const Withdrawals = () => {
             </Flex>
           </ActionBar>
         ) }
-        <Show below="lg" ssr={ false }>{ data.items.map((item => <WithdrawalsListItem key={ item.l2_tx_hash } { ...item }/>)) }</Show>
+        <Show below="lg" ssr={ false }>{ data.items.map((item => <WithdrawalsListItem key={ item.l2_tx_hash } item={ item }/>)) }</Show>
         <Hide below="lg" ssr={ false }><WithdrawalsTable items={ data.items } top={ isPaginationVisible ? 80 : 0 }/></Hide>
       </>
     );
