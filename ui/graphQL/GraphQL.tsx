@@ -24,6 +24,7 @@ const GraphQL = () => {
   }`;
   const fetcher = createGraphiQLFetcher({
     url: 'https://base-goerli.blockscout.com/graphiql',
+    subscriptionUrl: 'wss://blockscout-main.test.aws-k8s.blockscout.com/socket/v2/websocket?vsn=2.0.0',
   });
 
   return (

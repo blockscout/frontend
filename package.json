@@ -53,6 +53,7 @@
     "framer-motion": "^6.5.1",
     "graphiql": "^2.2.0",
     "graphql": "^16.6.0",
+    "graphql-ws": "^5.11.3",
     "js-cookie": "^3.0.1",
     "lodash": "^4.0.0",
     "next": "12.2.5",
