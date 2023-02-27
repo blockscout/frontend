@@ -55,7 +55,7 @@ const OutputRoots = () => {
             </Flex>
           </ActionBar>
         ) }
-        <Show below="lg" ssr={ false }>{ data.items.map((item => <OutputRootsListItem key={ item.l2_output_index } { ...item }/>)) }</Show>
+        <Show below="lg" ssr={ false }>{ data.items.map((item => <OutputRootsListItem key={ item.l2_output_index } item={ item }/>)) }</Show>
         <Hide below="lg" ssr={ false }><OutputRootsTable items={ data.items } top={ isPaginationVisible ? 80 : 0 }/></Hide>
       </>
     );
