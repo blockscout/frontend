@@ -17,6 +17,7 @@ import type { AddressesResponse } from 'types/api/addresses';
 import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters } from 'types/api/block';
 import type { ChartMarketResponse, ChartTransactionResponse } from 'types/api/charts';
 import type { SmartContract, SmartContractReadMethod, SmartContractWriteMethod, SmartContractVerificationConfig } from 'types/api/contract';
+import type { VerifiedContractsResponse, VerifiedContractsFilters } from 'types/api/contracts';
 import type { IndexingStatus } from 'types/api/indexingStatus';
 import type { InternalTransactionsResponse } from 'types/api/internalTransaction';
 import type { LogsResponseTx, LogsResponseAddress } from 'types/api/log';
@@ -258,6 +259,12 @@ export const RESOURCES = {
     pathParams: [ 'hash' as const, 'method' as const ],
   },
 
+  verified_contracts: {
+    path: '/api/v2/smart-contracts',
+    paginationFields: [ 'items_count' as const, 'smart_contract_id' as const ],
+    filterFields: [ 'q' as const, 'filter' as const ],
+  },
+
   // TOKEN
   token: {
     path: '/api/v2/tokens/:hash',
@@ -399,7 +406,8 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'search' |
 'address_logs' | 'address_tokens' |
 'token_transfers' | 'token_holders' | 'token_inventory' | 'tokens' |
-'token_instance_transfers';
+'token_instance_transfers' |
+'verified_contracts';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
 
@@ -457,6 +465,7 @@ Q extends 'contract_methods_read' ? Array<SmartContractReadMethod> :
 Q extends 'contract_methods_read_proxy' ? Array<SmartContractReadMethod> :
 Q extends 'contract_methods_write' ? Array<SmartContractWriteMethod> :
 Q extends 'contract_methods_write_proxy' ? Array<SmartContractWriteMethod> :
+Q extends 'verified_contracts' ? VerifiedContractsResponse :
 Q extends 'visualize_sol2uml' ? VisualizedContract :
 Q extends 'contract_verification_config' ? SmartContractVerificationConfig :
 never;
@@ -473,5 +482,6 @@ Q extends 'address_token_transfers' ? AddressTokenTransferFilters :
 Q extends 'address_tokens' ? AddressTokensFilter :
 Q extends 'search' ? SearchResultFilters :
 Q extends 'tokens' ? TokensFilters :
+Q extends 'verified_contracts' ? VerifiedContractsFilters :
 never;
 /* eslint-enable @typescript-eslint/indent */
