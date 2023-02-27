@@ -12,7 +12,11 @@ const KEY_WORDS = {
   UNSAFE_EVAL: '\'unsafe-eval\'',
 };
 
-const MAIN_DOMAINS = [ `*.${ appConfig.host }`, appConfig.host ];
+const MAIN_DOMAINS = [
+  `*.${ appConfig.host }`,
+  appConfig.host,
+  appConfig.visualizeApi.endpoint,
+].filter(Boolean);
 // eslint-disable-next-line no-restricted-properties
 const REPORT_URI = process.env.SENTRY_CSP_REPORT_URI;
 
@@ -49,7 +53,9 @@ function makePolicyMap() {
 
   return {
     'default-src': [
-      KEY_WORDS.NONE,
+      // KEY_WORDS.NONE,
+      // temporarily, see if warnings for "/_next/static/chunks/8861-ad3efb7f624b7bc1.js" go away
+      ...MAIN_DOMAINS,
     ],
 
     'connect-src': [
@@ -78,6 +84,9 @@ function makePolicyMap() {
       'wss://*.bridge.walletconnect.org',
       'wss://www.walletlink.org',
 
+      // RPC providers
+      'https://infragrid.v.network',
+
       // github (spec for api-docs page)
       'raw.githubusercontent.com',
     ],
@@ -103,6 +112,7 @@ function makePolicyMap() {
       // reCAPTCHA from google
       'https://www.google.com/recaptcha/api.js',
       'https://www.gstatic.com',
+      'https://translate.google.com',
       '\'sha256-FDyPg8CqqIpPAfGVKx1YeKduyLs0ghNYWII21wL+7HM=\'',
     ],
 
@@ -112,6 +122,9 @@ function makePolicyMap() {
 
       // google fonts
       'fonts.googleapis.com',
+
+      // reCAPTCHA from google
+      'https://www.gstatic.com',
 
       // yes, it is unsafe as it stands, but
       // - we cannot use hashes because all styles are generated dynamically
@@ -151,6 +164,10 @@ function makePolicyMap() {
 
       // token's media
       'ipfs.io',
+
+      // reCAPTCHA from google
+      'https://translate.google.com',
+      'https://www.gstatic.com',
     ],
 
     'font-src': [
