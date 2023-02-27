@@ -28,7 +28,7 @@ const WithdrawalsTable = ({ items, top }: Props) => {
       </Thead>
       <Tbody>
         { items.map((item) => (
-          <WithdrawalsTableItem key={ item.l2_tx_hash } { ...item }/>
+          <WithdrawalsTableItem key={ item.l2_tx_hash } item={ item }/>
         )) }
       </Tbody>
     </Table>
