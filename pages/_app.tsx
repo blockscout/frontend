@@ -9,6 +9,7 @@ import type { ResourceError } from 'lib/api/resources';
 import { AppContextProvider } from 'lib/appContext';
 import { Chakra } from 'lib/Chakra';
 import { ScrollDirectionProvider } from 'lib/contexts/scrollDirection';
+import getErrorStatusCode from 'lib/errors/getErrorStatusCode';
 import useConfigSentry from 'lib/hooks/useConfigSentry';
 import { SocketProvider } from 'lib/socket/context';
 import theme from 'theme';
@@ -36,12 +37,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   }));
 
   const renderErrorScreen = React.useCallback((error?: Error) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const statusCode = (error?.cause as any)?.status || 500;
+    const statusCode = getErrorStatusCode(error);
 
     return (
       <AppError
-        statusCode={ statusCode }
+        statusCode={ statusCode || 500 }
         height="100vh"
         display="flex"
         flexDirection="column"

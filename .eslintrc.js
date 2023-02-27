@@ -30,6 +30,7 @@ module.exports = {
     'jsx-a11y',
     'eslint-plugin-import-helpers',
     'jest',
+    'eslint-plugin-no-cyrillic-string',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -117,7 +118,7 @@ module.exports = {
     '@typescript-eslint/type-annotation-spacing': 'error',
     '@typescript-eslint/no-explicit-any': [ 'error', { ignoreRestArgs: true } ],
 
-    // отключены в пользу @typescript-eslint
+    // disabled in favor of @typescript-eslint
     'brace-style': 'off',
     camelcase: 'off',
     indent: 'off',
@@ -269,7 +270,7 @@ module.exports = {
     'regexp/no-empty-capturing-group': 'error',
     'regexp/no-lazy-ends': 'error',
     'regexp/no-obscure-range': [ 'error', {
-      allowed: [ 'alphanumeric', 'А-Я', 'а-я' ],
+      allowed: [ 'alphanumeric' ],
     } ],
     'regexp/no-optional-assertion': 'error',
     'regexp/no-unused-capturing-group': [ 'error', {
@@ -277,6 +278,8 @@ module.exports = {
     } ],
     'regexp/no-useless-character-class': 'error',
     'regexp/no-useless-dollar-replacements': 'error',
+
+    'no-cyrillic-string/no-cyrillic-string': 'error',
   },
   overrides: [
     {

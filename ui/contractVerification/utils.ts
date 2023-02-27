@@ -101,7 +101,7 @@ export const DEFAULT_VALUES = {
 };
 
 export function isValidVerificationMethod(method?: string): method is SmartContractVerificationMethod {
-  return method && SUPPORTED_VERIFICATION_METHODS.includes(method as SmartContractVerificationMethod) ? true : false;
+  return method && SUPPORTED_VERIFICATION_METHODS.includes(method) ? true : false;
 }
 
 export function sortVerificationMethods(methodA: SmartContractVerificationMethod, methodB: SmartContractVerificationMethod) {

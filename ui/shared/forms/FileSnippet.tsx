@@ -7,7 +7,6 @@ import placeholderIcon from 'icons/files/placeholder.svg';
 import solIcon from 'icons/files/sol.svg';
 import yulIcon from 'icons/files/yul.svg';
 import infoIcon from 'icons/info.svg';
-import { shortenNumberWithLetter } from 'lib/formatters';
 
 const FILE_ICONS: Record<string, React.FunctionComponent<React.SVGAttributes<SVGElement>>> = {
   '.json': jsonIcon,
@@ -101,7 +100,9 @@ const FileSnippet = ({ file, className, index, onRemove, isDisabled, error }: Pr
             alignSelf="flex-start"
           />
         </Flex>
-        <Text variant="secondary" mt={ 1 }>{ shortenNumberWithLetter(file.size) }B</Text>
+        <Text variant="secondary" mt={ 1 }>
+          { file.size.toLocaleString('en', { notation: 'compact', maximumFractionDigits: 2, unit: 'byte', unitDisplay: 'narrow', style: 'unit' }) }
+        </Text>
       </Box>
     </Flex>
   );

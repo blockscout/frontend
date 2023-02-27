@@ -4,7 +4,6 @@ import { useMemo } from 'react';
 import type { TimeChartData } from 'ui/shared/chart/types';
 
 import { WEEK, MONTH, YEAR } from 'lib/consts';
-import formatNumberToMetricPrefix from 'lib/formatNumberToMetricPrefix';
 
 interface Props {
   data: TimeChartData;
@@ -73,7 +72,7 @@ export default function useTimeChartController({ data, width, height }: Props) {
     return format(d as Date);
   };
 
-  const yTickFormat = () => (d: d3.AxisDomain) => formatNumberToMetricPrefix(Number(d));
+  const yTickFormat = () => (d: d3.AxisDomain) => Number(d).toLocaleString('en', { maximumFractionDigits: 3, notation: 'compact' });
 
   return {
     xTickFormat,
