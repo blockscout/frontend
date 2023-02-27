@@ -26,7 +26,7 @@ const OutputRootsTable = ({ items, top }: Props) => {
       </Thead>
       <Tbody>
         { items.map((item) => (
-          <OutputRootsTableItem key={ item.l2_output_index } { ...item }/>
+          <OutputRootsTableItem key={ item.l2_output_index } item={ item }/>
         )) }
       </Tbody>
     </Table>

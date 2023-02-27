@@ -5,7 +5,7 @@ import React from 'react';
 import getNetworkTitle from 'lib/networks/getNetworkTitle';
 import OutputRoots from 'ui/pages/OutputRoots';
 
-const TokensPage: NextPage = () => {
+const OutputRootsPage: NextPage = () => {
   const title = getNetworkTitle();
   return (
     <>
@@ -17,6 +17,6 @@ const TokensPage: NextPage = () => {
   );
 };
 
-export default TokensPage;
+export default OutputRootsPage;
 
 export { getServerSideProps } from 'lib/next/getServerSidePropsL2';
