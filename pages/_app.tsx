@@ -2,6 +2,7 @@ import * as Sentry from '@sentry/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { AppProps } from 'next/app';
+import Script from 'next/script';
 import React, { useState } from 'react';
 
 import appConfig from 'configs/app/config';
@@ -58,20 +59,32 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, []);
 
   return (
-    <Chakra theme={ theme } cookies={ pageProps.cookies }>
-      <ErrorBoundary renderErrorScreen={ renderErrorScreen } onError={ handleError }>
-        <AppContextProvider pageProps={ pageProps }>
-          <QueryClientProvider client={ queryClient }>
-            <ScrollDirectionProvider>
-              <SocketProvider url={ `${ appConfig.api.socket }${ appConfig.api.basePath }/socket/v2` }>
-                <Component { ...pageProps }/>
-              </SocketProvider>
-            </ScrollDirectionProvider>
-            <ReactQueryDevtools/>
-          </QueryClientProvider>
-        </AppContextProvider>
-      </ErrorBoundary>
-    </Chakra>
+    <>
+      <Chakra theme={ theme } cookies={ pageProps.cookies }>
+        <ErrorBoundary renderErrorScreen={ renderErrorScreen } onError={ handleError }>
+          <AppContextProvider pageProps={ pageProps }>
+            <QueryClientProvider client={ queryClient }>
+              <ScrollDirectionProvider>
+                <SocketProvider url={ `${ appConfig.api.socket }${ appConfig.api.basePath }/socket/v2` }>
+                  <Component { ...pageProps }/>
+                </SocketProvider>
+              </ScrollDirectionProvider>
+              <ReactQueryDevtools/>
+            </QueryClientProvider>
+          </AppContextProvider>
+        </ErrorBoundary>
+      </Chakra>
+      { /* <!-- Google tag (gtag.js) --> */ }
+      <Script src="https://www.googletagmanager.com/gtag/js?id=UA-125140709-1"/>
+      <Script id="google-analytics">
+        { `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'UA-125140709-1');
+        ` }
+      </Script>
+    </>
   );
 }
 
