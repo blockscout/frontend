@@ -7,7 +7,7 @@ export interface VerifiedContract {
   language: 'vyper' | 'yul' | 'solidity';
   has_constructor_args: boolean;
   optimization_enabled: boolean;
-  tx_count: number;
+  tx_count: number | null;
   verified_at: string;
   market_cap: string | null;
 }
