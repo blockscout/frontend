@@ -11,6 +11,7 @@ type Props = {
   id: string;
   title: string;
   description: string;
+  units?: string;
   interval: StatsIntervalIds;
   onLoadingError: () => void;
 }
@@ -19,7 +20,7 @@ function formatDate(date: Date) {
   return date.toISOString().substring(0, 10);
 }
 
-const ChartWidgetContainer = ({ id, title, description, interval, onLoadingError }: Props) => {
+const ChartWidgetContainer = ({ id, title, description, interval, onLoadingError, units }: Props) => {
   const selectedInterval = STATS_INTERVALS[interval];
 
   const endDate = selectedInterval.start ? formatDate(new Date()) : undefined;
@@ -48,6 +49,7 @@ const ChartWidgetContainer = ({ id, title, description, interval, onLoadingError
       isError={ isError }
       items={ items }
       title={ title }
+      units={ units }
       description={ description }
       isLoading={ isLoading }
     />

@@ -33,10 +33,11 @@ import ChartWidgetGraph from './ChartWidgetGraph';
 import ChartWidgetSkeleton from './ChartWidgetSkeleton';
 import FullscreenChartModal from './FullscreenChartModal';
 
-type Props = {
+export type Props = {
   items?: Array<TimeChartItem>;
   title: string;
   description?: string;
+  units?: string;
   isLoading: boolean;
   className?: string;
   isError: boolean;
@@ -44,7 +45,7 @@ type Props = {
 
 const DOWNLOAD_IMAGE_SCALE = 5;
 
-const ChartWidget = ({ items, title, description, isLoading, className, isError }: Props) => {
+const ChartWidget = ({ items, title, description, isLoading, className, isError, units }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
   const [ isFullscreen, setIsFullscreen ] = useState(false);
   const [ isZoomResetInitial, setIsZoomResetInitial ] = React.useState(true);
@@ -151,6 +152,7 @@ const ChartWidget = ({ items, title, description, isLoading, className, isError 
           onZoom={ handleZoom }
           isZoomResetInitial={ isZoomResetInitial }
           title={ title }
+          units={ units }
         />
       </Box>
     );

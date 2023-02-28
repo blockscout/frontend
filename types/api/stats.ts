@@ -44,6 +44,7 @@ export type StatsChartInfo = {
   id: string;
   title: string;
   description: string;
+  units: string | null;
 }
 
 export type StatsChart = { chart: Array<StatsChartItem> };

@@ -9,7 +9,6 @@ import type { Pointer } from 'ui/shared/chart/utils/pointerTracker';
 import { trackPointer } from 'ui/shared/chart/utils/pointerTracker';
 
 interface Props {
-  chartId?: string;
   width?: number;
   tooltipWidth?: number;
   height?: number;
@@ -23,8 +22,9 @@ const TEXT_LINE_HEIGHT = 12;
 const PADDING = 16;
 const LINE_SPACE = 10;
 const POINT_SIZE = 16;
+const LABEL_WIDTH = 80;
 
-const ChartTooltip = ({ chartId, xScale, yScale, width, tooltipWidth, height, data, anchorEl, ...props }: Props) => {
+const ChartTooltip = ({ xScale, yScale, width, tooltipWidth = 200, height, data, anchorEl, ...props }: Props) => {
   const lineColor = useToken('colors', 'gray.400');
   const titleColor = useToken('colors', 'blue.100');
   const textColor = useToken('colors', 'white');
@@ -78,10 +78,23 @@ const ChartTooltip = ({ chartId, xScale, yScale, width, tooltipWidth, height, da
   );
 
   const updateDisplayedValue = React.useCallback((d: TimeChartItem, i: number) => {
-    d3.selectAll(`${ chartId ? `#${ chartId }` : '' } .ChartTooltip__value`)
+    const nodes = d3.select(ref.current)
+      .selectAll<Element, TimeChartData>('.ChartTooltip__value')
       .filter((td, tIndex) => tIndex === i)
-      .text(data[i].valueFormatter?.(d.value) || d.value.toLocaleString());
-  }, [ data, chartId ]);
+      .text(
+        (data[i].valueFormatter?.(d.value) || d.value.toLocaleString()) +
+        (data[i].units ? ` ${ data[i].units }` : ''),
+      )
+      .nodes();
+
+    const widthLimit = tooltipWidth - 2 * PADDING - LABEL_WIDTH;
+    const width = nodes.map((node) => node?.getBoundingClientRect?.().width);
+    const maxNodeWidth = Math.max(...width);
+    d3.select(ref.current)
+      .select('.ChartTooltip__contentBg')
+      .attr('width', tooltipWidth + Math.max(0, (maxNodeWidth - widthLimit)));
+
+  }, [ data, tooltipWidth ]);
 
   const drawPoints = React.useCallback((x: number) => {
     const xDate = xScale.invert(x);
@@ -230,7 +243,7 @@ const ChartTooltip = ({ chartId, xScale, yScale, width, tooltipWidth, height, da
           rx={ 12 }
           ry={ 12 }
           fill={ bgColor }
-          width={ tooltipWidth || 200 }
+          width={ tooltipWidth }
           height={ 2 * PADDING + (data.length + 1) * TEXT_LINE_HEIGHT + data.length * LINE_SPACE }
         />
         <g transform={ `translate(${ PADDING },${ PADDING })` }>
@@ -246,7 +259,7 @@ const ChartTooltip = ({ chartId, xScale, yScale, width, tooltipWidth, height, da
           </text>
           <text
             className="ChartTooltip__contentDate"
-            transform="translate(80,0)"
+            transform={ `translate(${ LABEL_WIDTH },0)` }
             fontSize="12px"
             fontWeight="500"
             fill={ textColor }
@@ -269,7 +282,7 @@ const ChartTooltip = ({ chartId, xScale, yScale, width, tooltipWidth, height, da
               { name }
             </text>
             <text
-              transform="translate(80,0)"
+              transform={ `translate(${ LABEL_WIDTH },0)` }
               className="ChartTooltip__value"
               fontSize="12px"
               fill={ textColor }

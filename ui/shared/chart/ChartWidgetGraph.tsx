@@ -20,16 +20,18 @@ import calculateInnerSize from 'ui/shared/chart/utils/calculateInnerSize';
 interface Props {
   isEnlarged?: boolean;
   title: string;
+  units?: string;
   items: Array<TimeChartItem>;
   onZoom: () => void;
   isZoomResetInitial: boolean;
   margin?: ChartMargin;
 }
 
-const MAX_SHOW_ITEMS = 100;
+// temporarily turn off the data aggregation, we need a better algorithm for that
+const MAX_SHOW_ITEMS = 100_000_000_000;
 const DEFAULT_CHART_MARGIN = { bottom: 20, left: 40, right: 20, top: 10 };
 
-const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title, margin }: Props) => {
+const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title, margin, units }: Props) => {
   const isMobile = useIsMobile();
   const color = useToken('colors', 'blue.200');
   const overlayRef = React.useRef<SVGRectElement>(null);
@@ -53,7 +55,7 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
       return rangedItems;
     }
   }, [ isGroupedValues, rangedItems ]);
-  const chartData = [ { items: displayedData, name: 'Value', color } ];
+  const chartData = React.useMemo(() => ([ { items: displayedData, name: 'Value', color, units } ]), [ color, displayedData, units ]);
 
   const { xTickFormat, yTickFormat, xScale, yScale } = useTimeChartController({
     data: [ { items: displayedData, name: title, color } ],
@@ -121,7 +123,6 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
 
         <ChartOverlay ref={ overlayRef } width={ innerWidth } height={ innerHeight }>
           <ChartTooltip
-            chartId={ chartId }
             anchorEl={ overlayRef.current }
             width={ innerWidth }
             tooltipWidth={ isGroupedValues ? 280 : 200 }
