@@ -89,6 +89,11 @@ function makePolicyMap() {
 
       // github (spec for api-docs page)
       'raw.githubusercontent.com',
+
+      // google analytics
+      'https://www.googletagmanager.com',
+      'https://www.google-analytics.com',
+      'https://stats.g.doubleclick.net',
     ],
 
     'script-src': [
@@ -114,6 +119,11 @@ function makePolicyMap() {
       'https://www.gstatic.com',
       'https://translate.google.com',
       '\'sha256-FDyPg8CqqIpPAfGVKx1YeKduyLs0ghNYWII21wL+7HM=\'',
+
+      // google analytics
+      '\'sha256-NTmEg2dBnojQfTYrYJEmp3nG7V66756qPbQMCIBrctk=\'',
+      'https://www.googletagmanager.com',
+      'https://www.google-analytics.com',
     ],
 
     'style-src': [
@@ -168,6 +178,9 @@ function makePolicyMap() {
       // reCAPTCHA from google
       'https://translate.google.com',
       'https://www.gstatic.com',
+
+      // google analytics
+      'https://www.google-analytics.com',
     ],
 
     'font-src': [

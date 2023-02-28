@@ -133,6 +133,9 @@ const config = Object.freeze({
   reCaptcha: {
     siteKey: getEnvValue(process.env.NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY) || '',
   },
+  googleAnalytics: {
+    propertyId: getEnvValue(process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID),
+  },
 });
 
 export default config;

@@ -15,6 +15,7 @@ import { SocketProvider } from 'lib/socket/context';
 import theme from 'theme';
 import AppError from 'ui/shared/AppError/AppError';
 import ErrorBoundary from 'ui/shared/ErrorBoundary';
+import GoogleAnalytics from 'ui/shared/GoogleAnalytics';
 
 function MyApp({ Component, pageProps }: AppProps) {
   useConfigSentry();
@@ -68,6 +69,7 @@ function MyApp({ Component, pageProps }: AppProps) {
               </SocketProvider>
             </ScrollDirectionProvider>
             <ReactQueryDevtools/>
+            <GoogleAnalytics/>
           </QueryClientProvider>
         </AppContextProvider>
       </ErrorBoundary>
