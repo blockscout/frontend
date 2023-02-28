@@ -23,14 +23,20 @@ export default function useApiFetch() {
   ) => {
     const resource: ApiResource = RESOURCES[resourceName];
     const url = buildUrl(resourceName, pathParams, queryParams);
-    return fetch<SuccessType, ErrorType>(url, {
-      credentials: 'include',
-      ...(resource.endpoint && appConfig.host === 'localhost' ? {
-        headers: {
-          'x-endpoint': resource.endpoint,
-        },
-      } : {}),
-      ...fetchParams,
-    });
+    return fetch<SuccessType, ErrorType>(
+      url,
+      {
+        credentials: 'include',
+        ...(resource.endpoint && appConfig.host === 'localhost' ? {
+          headers: {
+            'x-endpoint': resource.endpoint,
+          },
+        } : {}),
+        ...fetchParams,
+      },
+      {
+        resource: resource.path,
+      },
+    );
   }, [ fetch ]);
 }

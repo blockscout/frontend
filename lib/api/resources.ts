@@ -41,7 +41,7 @@ import type ArrayElement from 'types/utils/ArrayElement';
 import appConfig from 'configs/app/config';
 
 export interface ApiResource {
-  path: string;
+  path: ResourcePath;
   endpoint?: string;
   basePath?: string;
   pathParams?: Array<string>;
@@ -363,6 +363,11 @@ export const RESOURCES = {
 };
 
 export type ResourceName = keyof typeof RESOURCES;
+
+type ResourcePathMap = {
+  [K in ResourceName]: typeof RESOURCES[K]['path']
+}
+export type ResourcePath = ResourcePathMap[keyof ResourcePathMap]
 
 export type ResourceFiltersKey<R extends ResourceName> = typeof RESOURCES[R] extends {filterFields: Array<unknown>} ?
   ArrayElement<typeof RESOURCES[R]['filterFields']> :

@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/react';
 import { useQuery } from '@tanstack/react-query';
 
 import buildUrl from 'lib/api/buildUrl';
@@ -14,7 +15,13 @@ export default function useGetCsrfToken() {
       const url = buildUrl('csrf');
       const apiResponse = await fetch(url, { credentials: 'include' });
       const csrfFromHeader = apiResponse.headers.get('x-bs-account-csrf');
-      return csrfFromHeader ? { token: csrfFromHeader } : undefined;
+
+      if (!csrfFromHeader) {
+        Sentry.captureException(new Error('Unable to get csrf token'), { tags: { source: 'csrf_token' } });
+        return;
+      }
+
+      return { token: csrfFromHeader };
     }
 
     return nodeApiFetch('/node-api/csrf');

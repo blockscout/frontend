@@ -19,7 +19,7 @@ export default function useRedirectForInvalidAuthToken() {
       const apiToken = cookies.get(cookies.NAMES.API_TOKEN);
 
       if (apiToken) {
-        Sentry.captureException(new Error('Invalid api token'), { tags: { source: 'fetch' } });
+        Sentry.captureException(new Error('Invalid api token'), { tags: { source: 'invalid_api_token' } });
         window.location.assign(loginUrl);
       }
     }

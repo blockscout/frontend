@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { CsrfData } from 'types/client/account';
 
-import type { ResourceError } from 'lib/api/resources';
+import type { ResourceError, ResourcePath } from 'lib/api/resources';
 import { getResourceKey } from 'lib/api/useApiQuery';
 
 export interface Params {
@@ -15,11 +15,15 @@ export interface Params {
   credentials?: RequestCredentials;
 }
 
+interface Meta {
+  resource?: ResourcePath;
+}
+
 export default function useFetch() {
   const queryClient = useQueryClient();
   const { token } = queryClient.getQueryData<CsrfData>(getResourceKey('csrf')) || {};
 
-  return React.useCallback(<Success, Error>(path: string, params?: Params): Promise<Success | ResourceError<Error>> => {
+  return React.useCallback(<Success, Error>(path: string, params?: Params, meta?: Meta): Promise<Success | ResourceError<Error>> => {
     const _body = params?.body;
     const isFormData = _body instanceof FormData;
     const isBodyAllowed = params?.method && ![ 'GET', 'HEAD' ].includes(params.method);
@@ -51,7 +55,7 @@ export default function useFetch() {
           status: response.status,
           statusText: response.statusText,
         };
-        Sentry.captureException(new Error('Client fetch failed'), { extra: error, tags: { source: 'fetch' } });
+        Sentry.captureException(new Error('Client fetch failed'), { extra: { ...error, ...meta }, tags: { source: 'api_fetch' } });
 
         return response.json().then(
           (jsonError) => Promise.reject({

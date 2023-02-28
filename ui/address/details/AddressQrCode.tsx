@@ -26,7 +26,7 @@ const AddressQrCode = ({ hash, className }: Props) => {
       QRCode.toString(hash, SVG_OPTIONS, (error: Error | null | undefined, svg: string) => {
         if (error) {
           setError('We were unable to generate QR code.');
-          Sentry.captureException(error, { tags: { source: 'QR code' } });
+          Sentry.captureException(error, { tags: { source: 'qr_code' } });
           return;
         }
 
