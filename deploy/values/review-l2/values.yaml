@@ -17,11 +17,11 @@ frontend:
         # - "/(apps|auth/profile|account)"
         - "/"
       prefix:
-      # - "/(apps|auth/profile|account)"
-        - "/account"
-        - "/apps"
+        # - "/(apps|auth/profile|account)"
         - "/_next"
         - "/node-api"
+        - "/account"
+        - "/apps"
         - "/static"
         - "/auth/profile"
         - "/txs"
@@ -38,6 +38,7 @@ frontend:
         - "/visualize"
         - "/api-docs"
         - "/csv-export"
+        - "/verified-contracts"
 
   resources:
     limits:
