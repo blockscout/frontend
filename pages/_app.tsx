@@ -9,11 +9,13 @@ import type { ResourceError } from 'lib/api/resources';
 import { AppContextProvider } from 'lib/appContext';
 import { Chakra } from 'lib/Chakra';
 import { ScrollDirectionProvider } from 'lib/contexts/scrollDirection';
+import getErrorStatusCode from 'lib/errors/getErrorStatusCode';
 import useConfigSentry from 'lib/hooks/useConfigSentry';
 import { SocketProvider } from 'lib/socket/context';
 import theme from 'theme';
 import AppError from 'ui/shared/AppError/AppError';
 import ErrorBoundary from 'ui/shared/ErrorBoundary';
+import GoogleAnalytics from 'ui/shared/GoogleAnalytics';
 
 function MyApp({ Component, pageProps }: AppProps) {
   useConfigSentry();
@@ -36,12 +38,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   }));
 
   const renderErrorScreen = React.useCallback((error?: Error) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const statusCode = (error?.cause as any)?.status || 500;
+    const statusCode = getErrorStatusCode(error);
 
     return (
       <AppError
-        statusCode={ statusCode }
+        statusCode={ statusCode || 500 }
         height="100vh"
         display="flex"
         flexDirection="column"
@@ -68,6 +69,7 @@ function MyApp({ Component, pageProps }: AppProps) {
               </SocketProvider>
             </ScrollDirectionProvider>
             <ReactQueryDevtools/>
+            <GoogleAnalytics/>
           </QueryClientProvider>
         </AppContextProvider>
       </ErrorBoundary>

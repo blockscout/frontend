@@ -1,4 +1,4 @@
-import type { TooltipProps } from '@chakra-ui/react';
+import type { SystemStyleObject, TooltipProps } from '@chakra-ui/react';
 import { Flex, Icon, Text, useColorModeValue, chakra, LightMode } from '@chakra-ui/react';
 import React from 'react';
 
@@ -25,13 +25,13 @@ const TOOLTIP_PROPS: Partial<TooltipProps> = {
 };
 
 const StatsItem = ({ icon, title, value, className, tooltipLabel, url }: Props) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const sxContainer = {} as any;
-  sxContainer[`@media screen and (min-width: ${ breakpoints.lg }) and (max-width: ${ LARGEST_BREAKPOINT })`] = { flexDirection: 'column' };
+  const sxContainer: SystemStyleObject = {
+    [`@media screen and (min-width: ${ breakpoints.lg }) and (max-width: ${ LARGEST_BREAKPOINT })`]: { flexDirection: 'column' },
+  };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const sxText = {} as any;
-  sxText[`@media screen and (min-width: ${ breakpoints.lg }) and (max-width: ${ LARGEST_BREAKPOINT })`] = { alignItems: 'center' };
+  const sxText: SystemStyleObject = {
+    [`@media screen and (min-width: ${ breakpoints.lg }) and (max-width: ${ LARGEST_BREAKPOINT })`]: { alignItems: 'center' },
+  };
 
   const infoColor = useColorModeValue('gray.600', 'gray.400');
 

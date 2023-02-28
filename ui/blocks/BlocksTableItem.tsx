@@ -41,7 +41,7 @@ const BlocksTableItem = ({ data, isPending, enableTimeIncrement }: Props) => {
           <Tooltip isDisabled={ data.type !== 'reorg' } label="Chain reorganizations">
             <LinkInternal
               fontWeight={ 600 }
-              href={ route({ pathname: '/block/[height]', query: { height: String(data.height) } }) }
+              href={ route({ pathname: '/block/[height]', query: { height: data.type === 'reorg' ? String(data.hash) : String(data.height) } }) }
             >
               { data.height }
             </LinkInternal>

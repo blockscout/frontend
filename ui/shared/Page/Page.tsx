@@ -1,6 +1,7 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import getErrorStatusCode from 'lib/errors/getErrorStatusCode';
 import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';
 import AppError from 'ui/shared/AppError/AppError';
 import ErrorBoundary from 'ui/shared/ErrorBoundary';
@@ -26,8 +27,7 @@ const Page = ({
   useGetCsrfToken();
 
   const renderErrorScreen = React.useCallback((error?: Error) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const statusCode = (error?.cause as any)?.status || 500;
+    const statusCode = getErrorStatusCode(error) || 500;
     const isInvalidTxHash = error?.message.includes('Invalid tx hash');
 
     if (wrapChildren) {

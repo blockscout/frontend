@@ -258,126 +258,12 @@ geth:
     enabled: false
   files:
     enabled: true
-# geth:
-#   enabled: true
-#   image:
-#     _default: ethereum/client-go:stable
-#   replicas:
-#     app: 1
-#   portHttp: 8545
-#   portWs: 8546
-#   portAuth: 8551
-#   command:
-#     - /bin/sh
-#     - -c
-#     - |-
-#       /root/init.sh --fakepow --dev --dev.period=1 --datadir=/root/.ethereum/devnet --keystore=/root/.ethereum/devnet/keystore --password=/root/password.txt --unlock=0 --unlock=1 --mine --miner.threads=1 --miner.etherbase=0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 --ipcpath=/root/geth.ipc --http --http.vhosts=* --http.addr=0.0.0.0 --http.port=8545 --http.api=eth,net,web3,debug,txpool --ws --ws.origins=* --ws.addr=0.0.0.0 --ws.port=8546 --ws.api=eth,net,web3,debug,txpool --graphql --graphql.corsdomain=* --allow-insecure-unlock --rpc.allow-unprotected-txs --http.corsdomain=* --vmdebug --networkid=1337 --rpc.txfeecap=0
-#   # command: '["geth"]'
-#   # args: '["--goerli", "--datadir=/.ethereum", "--gcmode=archive", "--http", "--http.vhosts=*", "--http.addr=0.0.0.0", "--http.port=8545", "--http.api=eth,net,web3,debug,txpool", "--ws", "--ws.origins=*", "--ws.addr=0.0.0.0", "--ws.port=8546", "--ws.api=eth,net,web3,debug,txpool", "--allow-insecure-unlock", "--rpc.allow-unprotected-txs", "--http.corsdomain=*", "--vmdebug", "--rpc.txfeecap=0"]'
-#   environment: {}
-#   persistence:
-#     enabled: true
-#     mountPath: /geth
-#     storageClass: gp3-new
-#     storage: 1000Gi
-#   resources:
-#     limits:
-#       memory:
-#         _default: "8Gi"
-#       cpu:
-#         _default: "2"
-#     requests:
-#       memory:
-#         _default: "8Gi"
-#       cpu:
-#         _default: "2"
-#   # node label
-#   nodeSelector:
-#     enabled: true
-#     app: blockscout
-#   service:
-#     # ClusterIP, NodePort or LoadBalancer
-#     type: ClusterIP
-#   # enable ingress
-#   ingress:
-#     enabled: true
-#     host:
-#       _default: node.test.blockscout.aws-k8s.blockscout.com
-#     # enable https
-#     tls:
-#       enabled: false
-#   jwt:
-#     enabled: true
-#     mountPath: /geth/geth/jwtsecret
-#   files:
-#     enabled: false
-#   # enable client deploy (Prysm, lighthouse, nimbus, etc.)
-#   client:
-#     enabled: true
-#     image:
-#       _default: gcr.io/prysmaticlabs/prysm/beacon-chain:stable
-#     # command: '["sh","./root/init.sh"]'
-#     args: '["--goerli", "--datadir=/data", "--jwt-secret=/geth/geth/jwtsecret", "--rpc-host=0.0.0.0", "--grpc-gateway-host=0.0.0.0", "--monitoring-host=0.0.0.0", "--execution-endpoint=http://geth-svc:8545", "--checkpoint-sync-url=https://goerli.checkpoint-sync.ethdevops.io", "--genesis-beacon-api-url=https://goerli.checkpoint-sync.ethdevops.io"]'
-#     ports:
-#       port-tcp:
-#         number: 13000
-#         protocol: TCP
-#       port-udp:
-#         number: 12000
-#         protocol: UDP
-#       port-rpc:
-#         number: 4000
-#         protocol: TCP
-#       port-rpc-gtw:
-#         number: 3500
-#         protocol: TCP
-#       port-monitoring:
-#         number: 8080
-#         protocol: TCP
-#     persistence:
-#       enabled: false
-#       mountPath: path
-#       storageClass: gp3-new
-#       storage: 100Gi
-#     files:
-#       enabled: false
-#       list: {}
-#     service:
-#       # ClusterIP, NodePort or LoadBalancer
-#       type: ClusterIP
-#     # enable ingress
-#     ingress:
-#       enabled: false
-#       host:
-#       # enable https
-#       tls:
-#         enabled: false
-#     environment: {}
-#     resources:
-#       limits:
-#         memory:
-#           _default: "6Gi"
-#         cpu:
-#           _default: "3"
-#       requests:
-#         memory:
-#           _default: "6Gi"
-#         cpu:
-#           _default: "3"
+
 # enable Smart-contract-verifier deploy
 scVerifier:
   enabled: true
   image:
     _default: ghcr.io/blockscout/smart-contract-verifier:main
-  replicas:
-    app: 1
-  # docker:
-  #   port: 80
-  #   targetPort: 8043
-  #   metricsPort: 6060
-  service:
-    # ClusterIP, NodePort or LoadBalancer
-    type: ClusterIP
   # enable ingress
   ingress:
     enabled: true
@@ -397,23 +283,6 @@ scVerifier:
         _default: "0.05Gi"
       cpu:
         _default: "0.01"
-  # node label
-  nodeSelector:
-    enabled: true
-    app: blockscout
-  # probes
-  livenessProbe:
-    enabled: true
-    # path: /health
-  readinessProbe:
-    enabled: true
-    # path: /health
-  # enable Horizontal Pod Autoscaler
-  hpa:
-    enabled: true
-    minReplicas: 1
-    maxReplicas: 10
-    cpuTarget: 90
   environment:
     SMART_CONTRACT_VERIFIER__SERVER__HTTP__ADDR:
       _default: 0.0.0.0:8050
@@ -505,12 +374,6 @@ frontend:
         _default: "0.1Gi"
       cpu:
         _default: "0.1"
-  # node label
-  nodeSelector:
-    enabled: true
-    labels:
-      _default:
-        app: blockscout
   environment:
     # ui config
     NEXT_PUBLIC_FEATURED_NETWORKS:
@@ -573,7 +436,7 @@ frontend:
       _default: https://rpc.ankr.com/eth_goerli
     NEXT_PUBLIC_HOMEPAGE_CHARTS:
       _default: "['daily_txs','coin_price','market_cup']"
-    NEXT_PUBLIC_API_SPEC_URL: 
+    NEXT_PUBLIC_API_SPEC_URL:
       _default: https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml
     NEXT_PUBLIC_IS_TESTNET:
       _default: true

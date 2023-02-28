@@ -6,14 +6,13 @@ import type { TChainIndicator } from '../types';
 import appConfig from 'configs/app/config';
 import globeIcon from 'icons/globe.svg';
 import txIcon from 'icons/transactions.svg';
-import { shortenNumberWithLetter } from 'lib/formatters';
 import { sortByDateDesc } from 'ui/shared/chart/utils/sorts';
 import TokenLogo from 'ui/shared/TokenLogo';
 
 const dailyTxsIndicator: TChainIndicator<'homepage_chart_txs'> = {
   id: 'daily_txs',
   title: 'Daily transactions',
-  value: (stats) => shortenNumberWithLetter(Number(stats.transactions_today), undefined, { maximumFractionDigits: 2 }),
+  value: (stats) => Number(stats.transactions_today).toLocaleString('en', { maximumFractionDigits: 2, notation: 'compact' }),
   icon: <Icon as={ txIcon } boxSize={ 6 } bgColor="#56ACD1" borderRadius="base" color="white"/>,
   hint: `The total daily number of transactions on the blockchain for the last month.`,
   api: {
@@ -23,7 +22,7 @@ const dailyTxsIndicator: TChainIndicator<'homepage_chart_txs'> = {
         .map((item) => ({ date: new Date(item.date), value: item.tx_count }))
         .sort(sortByDateDesc),
       name: 'Tx/day',
-      valueFormatter: (x: number) => shortenNumberWithLetter(x, undefined, { maximumFractionDigits: 2 }),
+      valueFormatter: (x: number) => x.toLocaleString('en', { maximumFractionDigits: 2, notation: 'compact' }),
     } ]),
   },
 };
@@ -49,7 +48,7 @@ const coinPriceIndicator: TChainIndicator<'homepage_chart_market'> = {
 const marketPriceIndicator: TChainIndicator<'homepage_chart_market'> = {
   id: 'market_cup',
   title: 'Market cap',
-  value: (stats) => '$' + shortenNumberWithLetter(Number(stats.market_cap), undefined, { maximumFractionDigits: 0 }),
+  value: (stats) => '$' + Number(stats.market_cap).toLocaleString('en', { maximumFractionDigits: 0, notation: 'compact' }),
   icon: <Icon as={ globeIcon } boxSize={ 6 } bgColor="#6A5DCC" borderRadius="base" color="white"/>,
   // eslint-disable-next-line max-len
   hint: 'The total market value of a cryptocurrency\'s circulating supply. It is analogous to the free-float capitalization in the stock market. Market Cap = Current Price x Circulating Supply.',
@@ -60,7 +59,7 @@ const marketPriceIndicator: TChainIndicator<'homepage_chart_market'> = {
         .map((item) => ({ date: new Date(item.date), value: Number(item.closing_price) * Number(response.available_supply) }))
         .sort(sortByDateDesc),
       name: 'Market cap',
-      valueFormatter: (x: number) => '$' + shortenNumberWithLetter(x, undefined, { maximumFractionDigits: 0 }),
+      valueFormatter: (x: number) => '$' + x.toLocaleString('en', { maximumFractionDigits: 0 }),
     } ]),
   },
 };

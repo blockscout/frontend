@@ -2,7 +2,6 @@ import { Grid } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import formatNumberToMetricPrefix from 'lib/formatNumberToMetricPrefix';
 
 import DataFetchAlert from '../shared/DataFetchAlert';
 import NumberWidget from './NumberWidget';
@@ -32,7 +31,7 @@ const NumberWidgetsList = () => {
             <NumberWidget
               key={ id }
               label={ title }
-              value={ `${ formatNumberToMetricPrefix(Number(value)) } ${ units ? units : '' }` }
+              value={ `${ Number(value).toLocaleString('en', { maximumFractionDigits: 3, notation: 'compact' }) } ${ units ? units : '' }` }
             />
           );
         }) }

@@ -27,7 +27,7 @@ const AddressContractIcon = ({ className }: Props) => {
         transitionDuration="normal"
         transitionTimingFunction="ease"
       >
-          С
+          C
       </Box>
     </Tooltip>
   );

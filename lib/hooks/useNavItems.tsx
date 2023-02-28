@@ -20,10 +20,9 @@ import topAccountsIcon from 'icons/top-accounts.svg';
 import transactionsIcon from 'icons/transactions.svg';
 // import depositsIcon from 'icons/arrows/south-east.svg';
 // import txnBatchIcon from 'icons/txn_batches.svg';
-// import verifiedIcon from 'icons/verified.svg';
+import verifiedIcon from 'icons/verified.svg';
 import watchlistIcon from 'icons/watchlist.svg';
 // import { rightLineArrow } from 'lib/html-entities';
-import notEmpty from 'lib/notEmpty';
 
 export interface NavItem {
   text: string;
@@ -61,9 +60,9 @@ export default function useNavItems(): ReturnType {
       { text: 'Top accounts', nextRoute: { pathname: '/accounts' as const }, icon: topAccountsIcon, isActive: pathname === '/accounts', isNewUi: true };
     const blocks = { text: 'Blocks', nextRoute: { pathname: '/blocks' as const }, icon: blocksIcon, isActive: pathname.startsWith('/block'), isNewUi: true };
     const txs = { text: 'Transactions', nextRoute: { pathname: '/txs' as const }, icon: transactionsIcon, isActive: pathname.startsWith('/tx'), isNewUi: true };
-    // const verifiedContracts =
+    const verifiedContracts =
     // eslint-disable-next-line max-len
-    //  { text: 'Verified contracts', nextRoute: { pathname: '/verified_contracts' as const }, icon: verifiedIcon, isActive: pathname === '/verified_contracts', isNewUi: false },
+     { text: 'Verified contracts', nextRoute: { pathname: '/verified-contracts' as const }, icon: verifiedIcon, isActive: false, isNewUi: false };
 
     if (appConfig.L2.isL2Network) {
       blockchainNavItems = [
@@ -83,17 +82,15 @@ export default function useNavItems(): ReturnType {
         ],
         [
           topAccounts,
+          verifiedContracts,
         ],
-        // [
-        //   verifiedContracts
-        // ],
       ];
     } else {
       blockchainNavItems = [
         txs,
         blocks,
         topAccounts,
-        // verifiedContracts,
+        verifiedContracts,
       ];
     }
 
@@ -106,7 +103,9 @@ export default function useNavItems(): ReturnType {
         isActive: pathname === '/api-docs',
         isNewUi: true,
       } : null,
-    ].filter(notEmpty);
+      // FIXME: need icon for this item
+      { text: 'GraphQL', nextRoute: { pathname: '/graphiql' as const }, icon: topAccountsIcon, isActive: false, isNewUi: false },
+    ].filter(Boolean);
 
     const mainNavItems = [
       {
@@ -125,7 +124,7 @@ export default function useNavItems(): ReturnType {
       // at this stage custom menu items is under development, we will implement it later
       otherNavItems.length > 0 ?
         { text: 'Other', icon: gearIcon, isActive: otherNavItems.some(item => item.isActive), subItems: otherNavItems } : null,
-    ].filter(notEmpty) as Array<NavItem | NavGroupItem>;
+    ].filter(Boolean);
 
     const accountNavItems = [
       {

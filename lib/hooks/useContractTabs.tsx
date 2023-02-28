@@ -2,7 +2,6 @@ import React from 'react';
 
 import type { Address } from 'types/api/address';
 
-import notEmpty from 'lib/notEmpty';
 import ContractCode from 'ui/address/contract/ContractCode';
 import ContractRead from 'ui/address/contract/ContractRead';
 import ContractWrite from 'ui/address/contract/ContractWrite';
@@ -33,6 +32,6 @@ export default function useContractTabs(data: Address | undefined) {
       data?.has_custom_methods_write ?
         { id: 'write_custom_methods', title: 'Write custom', component: <ContractWrite addressHash={ data?.hash } isCustomAbi/> } :
         undefined,
-    ].filter(notEmpty);
+    ].filter(Boolean);
   }, [ data ]);
 }

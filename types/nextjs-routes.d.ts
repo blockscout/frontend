@@ -25,6 +25,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/blocks">
     | StaticRoute<"/csv-export">
     | StaticRoute<"/graph">
+    | StaticRoute<"/graphiql">
     | StaticRoute<"/">
     | StaticRoute<"/login">
     | StaticRoute<"/search-results">
@@ -34,6 +35,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/tokens">
     | DynamicRoute<"/tx/[hash]", { "hash": string }>
     | StaticRoute<"/txs">
+    | StaticRoute<"/verified-contracts">
     | StaticRoute<"/visualize/sol2uml">;
 
   interface StaticRoute<Pathname> {

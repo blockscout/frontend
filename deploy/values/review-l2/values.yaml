@@ -5,15 +5,8 @@ frontend:
   enabled: true
   image:
     _default: ghcr.io/blockscout/frontend:main
-  replicas:
-    app: 1
-  docker:
-    port: 80
-    targetPort: 3000
   ingress:
     enabled: true
-    # annotations:
-    #   - 'nginx.ingress.kubernetes.io/use-regex: "true"'
     host:
       _default: frontend.test.blockscout.aws-k8s.blockscout.com
     # enable https
@@ -57,10 +50,6 @@ frontend:
         _default: "0.1Gi"
       cpu:
         _default: "0.1"
-  # node label
-  nodeSelector:
-    enabled: true
-    app: blockscout
   environment:
     NEXT_PUBLIC_BLOCKSCOUT_VERSION:
       _default: v5.1.0-beta

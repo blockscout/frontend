@@ -70,8 +70,9 @@ const NavLinkGroupDesktop = ({ text, subItems, icon, isCollapsed, isActive }: Pr
               { text }
             </Text>
             <VStack spacing={ 1 } alignItems="start">
-              { subItems.map(item => Array.isArray(item) ? (
+              { subItems.map((item, index) => Array.isArray(item) ? (
                 <Box
+                  key={ index }
                   w="100%"
                   as="ul"
                   _notLast={{

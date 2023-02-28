@@ -6,7 +6,6 @@ import type { Log } from 'types/api/log';
 
 // import searchIcon from 'icons/search.svg';
 import { space } from 'lib/html-entities';
-import notEmpty from 'lib/notEmpty';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -83,7 +82,7 @@ const LogItem = ({ address, index, topics, data, decoded, type, tx_hash: txHash 
       ) }
       <RowHeader>Topics</RowHeader>
       <GridItem>
-        { topics.filter(notEmpty).map((item, index) => (
+        { topics.filter(Boolean).map((item, index) => (
           <LogTopic
             key={ index }
             hex={ item }

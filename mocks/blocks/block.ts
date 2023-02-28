@@ -49,7 +49,7 @@ export const base: Block = {
   uncles_hashes: [],
 };
 
-export const genesis = {
+export const genesis: Block = {
   base_fee_per_gas: null,
   burnt_fees: null,
   burnt_fees_percentage: null,

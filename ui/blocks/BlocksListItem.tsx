@@ -36,7 +36,7 @@ const BlocksListItem = ({ data, isPending, enableTimeIncrement }: Props) => {
           { isPending && <Spinner size="sm"/> }
           <LinkInternal
             fontWeight={ 600 }
-            href={ route({ pathname: '/block/[height]', query: { height: String(data.height) } }) }
+            href={ route({ pathname: '/block/[height]', query: { height: data.type === 'reorg' ? String(data.hash) : String(data.height) } }) }
           >
             { data.height }
           </LinkInternal>

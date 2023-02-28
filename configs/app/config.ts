@@ -6,7 +6,7 @@ import type { ChainIndicatorId } from 'ui/home/indicators/types';
 const getEnvValue = (env: string | undefined) => env?.replaceAll('\'', '"');
 const parseEnvJson = <DataType>(env: string | undefined): DataType | null => {
   try {
-    return JSON.parse(env || 'null');
+    return JSON.parse(env || 'null') as DataType | null;
   } catch (error) {
     return null;
   }
@@ -132,6 +132,9 @@ const config = Object.freeze({
   },
   reCaptcha: {
     siteKey: getEnvValue(process.env.NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY) || '',
+  },
+  googleAnalytics: {
+    propertyId: getEnvValue(process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID),
   },
 });
 

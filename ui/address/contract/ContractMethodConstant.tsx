@@ -7,7 +7,9 @@ import type { SmartContractMethodOutput } from 'types/api/contract';
 
 import appConfig from 'configs/app/config';
 import { WEI } from 'lib/consts';
+import Address from 'ui/shared/address/Address';
 import AddressLink from 'ui/shared/address/AddressLink';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 interface Props {
   data: SmartContractMethodOutput;
@@ -34,7 +36,12 @@ const ContractMethodStatic = ({ data }: Props) => {
 
   const content = (() => {
     if (data.type === 'address' && data.value) {
-      return <AddressLink type="address" hash={ data.value }/>;
+      return (
+        <Address>
+          <AddressLink type="address" hash={ data.value }/>
+          <CopyToClipboard text={ data.value }/>
+        </Address>
+      );
     }
 
     return <chakra.span wordBreak="break-all">({ data.type }): { value }</chakra.span>;
