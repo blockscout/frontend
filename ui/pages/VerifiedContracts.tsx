@@ -19,6 +19,8 @@ import SkeletonList from 'ui/shared/skeletons/SkeletonList';
 import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 import type { Sort, SortField } from 'ui/verifiedContracts/utils';
 import VerifiedContractsFilter from 'ui/verifiedContracts/VerifiedContractsFilter';
+import VerifiedContractsList from 'ui/verifiedContracts/VerifiedContractsList';
+import VerifiedContractsSort from 'ui/verifiedContracts/VerifiedContractsSort';
 import VerifiedContractsTable from 'ui/verifiedContracts/VerifiedContractsTable';
 
 const SORT_SEQUENCE: Record<SortField, Array<Sort | undefined>> = {
@@ -111,10 +113,19 @@ const VerifiedContracts = () => {
     />
   );
 
+  const sortButton = (
+    <VerifiedContractsSort
+      sort={ sort }
+      setSort={ setSort }
+      isActive={ Boolean(sort) }
+    />
+  );
+
   const bar = (
     <>
       <Flex columnGap={ 3 } mb={ 6 } display={{ base: 'flex', lg: 'none' }}>
         { typeFilter }
+        { sortButton }
         { filterInput }
       </Flex>
       <ActionBar mt={ -6 }>
@@ -139,7 +150,7 @@ const VerifiedContracts = () => {
             <SkeletonList/>
           </Show>
           <Hide below="lg" ssr={ false }>
-            <SkeletonTable columns={ [ '50%', '130px', '130px', '50%', '80px', '110px', '120px' ] }/>
+            <SkeletonTable columns={ [ '50%', '130px', '130px', '50%', '80px', '110px' ] }/>
           </Hide>
         </>
       );
@@ -158,7 +169,7 @@ const VerifiedContracts = () => {
     return (
       <>
         <Show below="lg" ssr={ false }>
-          { '<AddressIntTxsList data={ data.items } currentAddress={ hash }/>' }
+          <VerifiedContractsList data={ sortedData }/>
         </Show>
         <Hide below="lg" ssr={ false }>
           <VerifiedContractsTable data={ sortedData } sort={ sort } onSortToggle={ handleSortToggle }/>

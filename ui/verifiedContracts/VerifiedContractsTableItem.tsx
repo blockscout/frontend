@@ -19,7 +19,7 @@ interface Props {
 
 const VerifiedContractsTableItem = ({ data }: Props) => {
   const balance = data.coin_balance && data.coin_balance !== '0' ?
-    BigNumber(data.coin_balance).div(10 ** appConfig.network.currency.decimals).toFormat(2) :
+    BigNumber(data.coin_balance).div(10 ** appConfig.network.currency.decimals).dp(6).toFormat() :
     '0';
 
   return (
@@ -71,9 +71,9 @@ const VerifiedContractsTableItem = ({ data }: Props) => {
           </chakra.span>
         </Flex>
       </Td>
-      <Td lineHeight={ 6 }>
+      { /* <Td lineHeight={ 6 }>
         N/A
-      </Td>
+      </Td> */ }
     </Tr>
   );
 };

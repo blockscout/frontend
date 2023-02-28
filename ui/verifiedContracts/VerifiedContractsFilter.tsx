@@ -30,7 +30,7 @@ const VerifiedContractsFilter = ({ onChange, defaultValue, isActive }: Props) =>
           as="div"
         />
       </MenuButton>
-      <MenuList zIndex={ 2 }>
+      <MenuList zIndex="popover">
         <MenuOptionGroup defaultValue={ defaultValue || 'all' } title="Filter" type="radio" onChange={ onChange }>
           <MenuItemOption value="all">All</MenuItemOption>
           <MenuItemOption value="solidity">Solidity</MenuItemOption>
