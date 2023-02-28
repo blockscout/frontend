@@ -93,6 +93,7 @@ function makePolicyMap() {
       // google analytics
       'https://www.googletagmanager.com',
       'https://www.google-analytics.com',
+      'https://stats.g.doubleclick.net',
     ],
 
     'script-src': [
