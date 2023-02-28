@@ -9,25 +9,20 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-import SortButton from 'ui/shared/SortButton';
+import SortButton from './SortButton';
 
-import type { Sort } from './utils';
-
-interface Props {
-  isActive: boolean;
-  sort: Sort | undefined;
-  setSort: (val: Sort | undefined) => void;
+export interface Option<Sort extends string> {
+  title: string;
+  id: Sort | undefined;
 }
 
-const SORT_OPTIONS = [
-  { title: 'Default', id: undefined },
-  { title: 'Balance ascending', id: 'balance-asc' },
-  { title: 'Balance descending', id: 'balance-desc' },
-  { title: 'Txs count ascending', id: 'txs-asc' },
-  { title: 'Txs count descending', id: 'txs-desc' },
-];
+interface Props<Sort extends string> {
+  options: Array<Option<Sort>>;
+  sort: Sort | undefined;
+  setSort: (value: Sort | undefined) => void;
+}
 
-const VerifiedContractSorting = ({ isActive, sort, setSort }: Props) => {
+const Sort = <Sort extends string>({ sort, setSort, options }: Props<Sort>) => {
   const { isOpen, onToggle } = useDisclosure();
 
   const setSortingFromMenu = React.useCallback((val: string | Array<string>) => {
@@ -39,13 +34,13 @@ const VerifiedContractSorting = ({ isActive, sort, setSort }: Props) => {
     <Menu>
       <MenuButton>
         <SortButton
-          isActive={ isOpen || isActive }
+          isActive={ isOpen || Boolean(sort) }
           onClick={ onToggle }
         />
       </MenuButton>
       <MenuList minWidth="240px" zIndex="popover">
         <MenuOptionGroup value={ sort } title="Sort by" type="radio" onChange={ setSortingFromMenu }>
-          { SORT_OPTIONS.map((option) => (
+          { options.map((option) => (
             <MenuItemOption
               key={ option.id || 'default' }
               value={ option.id }
@@ -59,4 +54,4 @@ const VerifiedContractSorting = ({ isActive, sort, setSort }: Props) => {
   );
 };
 
-export default React.memo(chakra(VerifiedContractSorting));
+export default React.memo(chakra(Sort)) as typeof Sort;

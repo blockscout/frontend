@@ -2,9 +2,8 @@ import { Box, Flex, Hide, Show, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { VerifiedContract, VerifiedContractsFilters } from 'types/api/contracts';
+import type { VerifiedContractsFilters } from 'types/api/contracts';
 
-import compareBns from 'lib/bigint/compareBns';
 import useDebounce from 'lib/hooks/useDebounce';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import { apos } from 'lib/html-entities';
@@ -17,56 +16,18 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/Pagination';
 import SkeletonList from 'ui/shared/skeletons/SkeletonList';
 import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
-import type { Sort, SortField } from 'ui/verifiedContracts/utils';
+import Sort from 'ui/shared/sort/Sort';
+import type { SortField, Sort as TSort } from 'ui/verifiedContracts/utils';
+import { SORT_OPTIONS, sortFn, getNextSortValue } from 'ui/verifiedContracts/utils';
 import VerifiedContractsFilter from 'ui/verifiedContracts/VerifiedContractsFilter';
 import VerifiedContractsList from 'ui/verifiedContracts/VerifiedContractsList';
-import VerifiedContractsSort from 'ui/verifiedContracts/VerifiedContractsSort';
 import VerifiedContractsTable from 'ui/verifiedContracts/VerifiedContractsTable';
-
-const SORT_SEQUENCE: Record<SortField, Array<Sort | undefined>> = {
-  balance: [ 'balance-desc', 'balance-asc', undefined ],
-  txs: [ 'txs-desc', 'txs-asc', undefined ],
-};
-
-const getNextSortValue = (field: SortField) => (prevValue: Sort | undefined) => {
-  const sequence = SORT_SEQUENCE[field];
-  const curIndex = sequence.findIndex((sort) => sort === prevValue);
-  const nextIndex = curIndex + 1 > sequence.length - 1 ? 0 : curIndex + 1;
-  return sequence[nextIndex];
-};
-
-const sortFn = (sort: Sort | undefined) => (a: VerifiedContract, b: VerifiedContract) => {
-  switch (sort) {
-    case 'balance-desc': {
-      const result = compareBns(b.coin_balance, a.coin_balance);
-      return a.coin_balance === b.coin_balance ? 0 : result;
-    }
-
-    case 'balance-asc': {
-      const result = compareBns(a.coin_balance, b.coin_balance);
-      return a.coin_balance === b.coin_balance ? 0 : result;
-    }
-
-    case 'txs-desc': {
-      const result = (a.tx_count || 0) > (b.tx_count || 0) ? -1 : 1;
-      return a.tx_count === b.tx_count ? 0 : result;
-    }
-
-    case 'txs-asc': {
-      const result = (a.tx_count || 0) > (b.tx_count || 0) ? 1 : -1;
-      return a.tx_count === b.tx_count ? 0 : result;
-    }
-
-    default:
-      return 0;
-  }
-};
 
 const VerifiedContracts = () => {
   const router = useRouter();
   const [ searchTerm, setSearchTerm ] = React.useState(getQueryParamString(router.query.q) || undefined);
   const [ type, setType ] = React.useState(getQueryParamString(router.query.filter) as VerifiedContractsFilters['filter'] || undefined);
-  const [ sort, setSort ] = React.useState<Sort>();
+  const [ sort, setSort ] = React.useState<TSort>();
 
   const debouncedSearchTerm = useDebounce(searchTerm || '', 300);
 
@@ -114,25 +75,29 @@ const VerifiedContracts = () => {
   );
 
   const sortButton = (
-    <VerifiedContractsSort
+    <Sort
+      options={ SORT_OPTIONS }
       sort={ sort }
       setSort={ setSort }
-      isActive={ Boolean(sort) }
     />
   );
 
   const bar = (
     <>
-      <Flex columnGap={ 3 } mb={ 6 } display={{ base: 'flex', lg: 'none' }}>
-        { typeFilter }
-        { sortButton }
-        { filterInput }
-      </Flex>
-      <ActionBar mt={ -6 }>
-        <Flex columnGap={ 3 } display={{ base: 'none', lg: 'flex' }}>
+      <Show below="lg" ssr={ false }>
+        <Flex columnGap={ 3 } mb={ 6 }>
           { typeFilter }
+          { sortButton }
           { filterInput }
         </Flex>
+      </Show>
+      <ActionBar mt={ -6 }>
+        <Hide below="lg" ssr={ false }>
+          <Flex columnGap={ 3 }>
+            { typeFilter }
+            { filterInput }
+          </Flex>
+        </Hide>
         { isPaginationVisible && <Pagination ml="auto" { ...pagination }/> }
       </ActionBar>
     </>
