@@ -36,6 +36,7 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/token/[hash]/instance/[id]", { "hash": string; "id": string }>
     | StaticRoute<"/tokens">
     | DynamicRoute<"/tx/[hash]", { "hash": string }>
+    | StaticRoute<"/txn-batches">
     | StaticRoute<"/txs">
     | StaticRoute<"/verified-contracts">
     | StaticRoute<"/visualize/sol2uml">
