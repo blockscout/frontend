@@ -10,7 +10,7 @@ export type TokensResponse = {
   };
 }
 
-export type TokensFilters = { filter: string; type: Array<TokenType> | undefined };
+export type TokensFilters = { q: string; type: Array<TokenType> | undefined };
 
 export interface TokenInstanceTransferResponse {
   items: Array<TokenTransfer>;

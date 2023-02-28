@@ -34,16 +34,16 @@ const Tokens = () => {
 
   const { isError, isLoading, data, isPaginationVisible, pagination, onFilterChange } = useQueryWithPages({
     resourceName: 'tokens',
-    filters: { filter: debouncedFilter, type },
+    filters: { q: debouncedFilter, type },
   });
 
   const onSearchChange = useCallback((value: string) => {
-    onFilterChange({ filter: value, type });
+    onFilterChange({ q: value, type });
     setFilter(value);
   }, [ type, onFilterChange ]);
 
   const onTypeChange = useCallback((value: Array<TokenType>) => {
-    onFilterChange({ filter: debouncedFilter, type: value });
+    onFilterChange({ q: debouncedFilter, type: value });
     setType(value);
   }, [ debouncedFilter, onFilterChange ]);
 
