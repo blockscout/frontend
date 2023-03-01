@@ -33,10 +33,10 @@ const ProfileMenuContent = ({ name, nickname, email }: Props) => {
       >
         { email }
       </Text>
-      <NavLink { ...profileItem } isActive={ undefined } px="0px" isCollapsed={ false }/>
+      <NavLink item={ profileItem } isActive={ undefined } px="0px" isCollapsed={ false }/>
       <Box as="nav" mt={ 2 } pt={ 2 } borderTopColor="divider" borderTopWidth="1px" { ...getDefaultTransitionProps() }>
         <VStack as="ul" spacing="0" alignItems="flex-start" overflow="hidden">
-          { accountNavItems.map((item) => <NavLink key={ item.text } { ...item } isActive={ undefined } isCollapsed={ false } px="0px"/>) }
+          { accountNavItems.map((item) => <NavLink key={ item.text } item={ item } isActive={ undefined } isCollapsed={ false } px="0px"/>) }
         </VStack>
       </Box>
       <Box mt={ 2 } pt={ 3 } borderTopColor="divider" borderTopWidth="1px" { ...getDefaultTransitionProps() }>

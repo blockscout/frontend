@@ -82,10 +82,10 @@ const NavLinkGroupDesktop = ({ text, subItems, icon, isCollapsed, isActive }: Pr
                     borderColor: 'divider',
                   }}
                 >
-                  { item.map(subItem => <NavLink key={ subItem.text } { ...subItem } isCollapsed={ false }/>) }
+                  { item.map(subItem => <NavLink key={ subItem.text } item={ subItem } isCollapsed={ false }/>) }
                 </Box>
               ) :
-                <NavLink key={ item.text } { ...item } isCollapsed={ false }/>,
+                <NavLink key={ item.text } item={ item } isCollapsed={ false }/>,
               ) }
             </VStack>
           </PopoverBody>
