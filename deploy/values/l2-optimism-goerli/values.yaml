@@ -309,6 +309,7 @@ frontend:
         - "/address"
         - "/stats"
         - "/token"
+        - "/output-roots"
   resources:
     limits:
       memory:
