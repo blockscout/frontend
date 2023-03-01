@@ -419,7 +419,7 @@ frontend:
     NEXT_PUBLIC_APP_ENV:
       _default: stable
     NEXT_PUBLIC_APP_INSTANCE:
-      _default: unknown
+      _default: eth_goerli
     NEXT_PUBLIC_API_HOST:
       _default: blockscout.com/eth/goerli
     NEXT_PUBLIC_STATS_API_HOST:

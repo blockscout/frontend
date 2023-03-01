@@ -60,7 +60,7 @@ frontend:
     NEXT_PUBLIC_APP_ENV:
       _default: preview
     NEXT_PUBLIC_APP_INSTANCE:
-      _default: unknown
+      _default: eth_goerli
     NEXT_PUBLIC_FOOTER_TELEGRAM_LINK:
       _default: https://t.me/poa_network
     NEXT_PUBLIC_FOOTER_STAKING_LINK:
