@@ -35,6 +35,7 @@ import type {
 import type { TokensResponse, TokensFilters, TokenInstanceTransferResponse } from 'types/api/tokens';
 import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
 import type { TransactionsResponseValidated, TransactionsResponsePending, Transaction } from 'types/api/transaction';
+import type { TxnBatchesResponse } from 'types/api/txnBatches';
 import type { TTxsFilters } from 'types/api/txsFilters';
 import type { VisualizedContract } from 'types/api/visualization';
 import type { WithdrawalsResponse } from 'types/api/withdrawals';
@@ -361,6 +362,12 @@ export const RESOURCES = {
     filterFields: [],
   },
 
+  txn_batches: {
+    path: '/api/v2/optimism/txn-batches',
+    paginationFields: [ 'block_number' as const, 'items_count' as const ],
+    filterFields: [],
+  },
+
   // DEPRECATED
   old_api: {
     path: '/api',
@@ -414,7 +421,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'address_logs' | 'address_tokens' |
 'token_transfers' | 'token_holders' | 'token_inventory' | 'tokens' |
 'token_instance_transfers' |
-'output_roots' | 'withdrawals';
+'output_roots' | 'withdrawals' | 'txn_batches';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
 
@@ -476,6 +483,7 @@ Q extends 'visualize_sol2uml' ? VisualizedContract :
 Q extends 'contract_verification_config' ? SmartContractVerificationConfig :
 Q extends 'output_roots' ? OutputRootsResponse :
 Q extends 'withdrawals' ? WithdrawalsResponse :
+Q extends 'txn_batches' ? TxnBatchesResponse :
 never;
 /* eslint-enable @typescript-eslint/indent */
 
