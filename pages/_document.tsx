@@ -51,6 +51,7 @@ class MyDocument extends Document {
           <meta property="og:site_name" content="Blockscout"/>
           <meta property="og:type" content="website"/>
           <meta name="twitter:card" content="summary_large_image"/>
+          <meta property="twitter:image" content={ appConfig.baseUrl + '/static/og_twitter.png' }/>
         </Head>
         <body>
           <ColorModeScript initialColorMode={ theme.config.initialColorMode }/>
