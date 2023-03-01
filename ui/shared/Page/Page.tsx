@@ -2,6 +2,7 @@ import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import getErrorStatusCode from 'lib/errors/getErrorStatusCode';
+import useAdblockDetect from 'lib/hooks/useAdblockDetect';
 import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';
 import AppError from 'ui/shared/AppError/AppError';
 import ErrorBoundary from 'ui/shared/ErrorBoundary';
@@ -25,6 +26,8 @@ const Page = ({
 }: Props) => {
 
   useGetCsrfToken();
+
+  useAdblockDetect();
 
   const renderErrorScreen = React.useCallback((error?: Error) => {
     const statusCode = getErrorStatusCode(error) || 500;

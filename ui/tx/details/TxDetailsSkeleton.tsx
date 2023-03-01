@@ -22,7 +22,6 @@ const TxDetailsSkeleton = () => {
       <DetailsSkeletonRow/>
       <DetailsSkeletonRow w="70%"/>
       <DetailsSkeletonRow w="70%"/>
-      <GridItem h={{ base: '82px', lg: '38px' }}/>
       { sectionGap }
       <DetailsSkeletonRow w="40%"/>
       <DetailsSkeletonRow w="40%"/>

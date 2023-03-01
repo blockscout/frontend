@@ -8,6 +8,7 @@ export enum NAMES {
   TXS_SORT='txs_sort',
   COLOR_MODE='chakra-ui-color-mode',
   INDEXING_ALERT='indexing_alert',
+  ADBLOCK_DETECTED='adblock_detected',
 }
 
 export function get(name?: NAMES | undefined | null, serverCookie?: string) {
