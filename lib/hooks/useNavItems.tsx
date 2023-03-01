@@ -95,7 +95,7 @@ export default function useNavItems(): ReturnType {
     };
     const verifiedContracts =
     // eslint-disable-next-line max-len
-     { text: 'Verified contracts', nextRoute: { pathname: '/verified-contracts' as const }, icon: verifiedIcon, isActive: false, isNewUi: true };
+     { text: 'Verified contracts', nextRoute: { pathname: '/verified-contracts' as const }, icon: verifiedIcon, isActive: false, isNewUi: false };
 
     if (appConfig.L2.isL2Network) {
       blockchainNavItems = [
@@ -140,7 +140,7 @@ export default function useNavItems(): ReturnType {
         nextRoute: { pathname: '/graphiql' as const },
         icon: graphQLIcon,
         isActive: pathname === '/graphiql',
-        isNewUi: true,
+        isNewUi: false,
       },
       {
         text: 'RPC API',

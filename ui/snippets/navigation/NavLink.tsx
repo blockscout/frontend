@@ -27,7 +27,7 @@ const NavLink = ({ item, isCollapsed, px, className }: Props) => {
   let href: string| undefined;
 
   if (isInternalItem(item)) {
-    item.isNewUi ? route(item.nextRoute) : undefined;
+    href = !item.isNewUi ? route(item.nextRoute) : undefined;
   } else {
     href = item.url;
   }
