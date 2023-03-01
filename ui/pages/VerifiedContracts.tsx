@@ -36,7 +36,7 @@ const VerifiedContracts = () => {
     filters: { q: debouncedSearchTerm, filter: type },
   });
 
-  const handleSearchTemChange = React.useCallback((value: string) => {
+  const handleSearchTermChange = React.useCallback((value: string) => {
     onFilterChange({ q: value, filter: type });
     setSearchTerm(value);
   }, [ type, onFilterChange ]);
@@ -68,7 +68,7 @@ const VerifiedContracts = () => {
     <FilterInput
       w={{ base: '100%', lg: '350px' }}
       size="xs"
-      onChange={ handleSearchTemChange }
+      onChange={ handleSearchTermChange }
       placeholder="Search by contract name or address"
       initialValue={ searchTerm }
     />
