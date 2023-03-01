@@ -10,6 +10,10 @@ const graphQLStyle = {
   },
 };
 
+// транзакция из переменных
+// минимальная ширина (мобилка)
+// сокет??????
+
 const GraphQL = () => {
 
   const initialQuery = `{
