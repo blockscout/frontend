@@ -309,7 +309,11 @@ frontend:
         - "/address"
         - "/stats"
         - "/token"
+        - "/accounts"
+        - "/visualize"
+        - "/api-docs"
         - "/output-roots"
+        - "/withdrawals"
   resources:
     limits:
       memory:
