@@ -354,6 +354,11 @@ export const RESOURCES = {
     path: '/api/v2/search/check-redirect',
   },
 
+  // GraphQL
+  graphql: {
+    path: '/graphiql',
+  },
+
   // DEPRECATED
   old_api: {
     path: '/api',

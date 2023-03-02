@@ -10,16 +10,15 @@ import React from 'react';
 
 import isBrowser from 'lib/isBrowser';
 import Page from 'ui/shared/Page/Page';
+import PageTitle from 'ui/shared/Page/PageTitle';
 
 const AppsPage: NextPage = () => {
   const { colorMode } = useColorMode();
   const [ show, setShow ] = React.useState(true);
 
   React.useEffect(() => {
-    if (!show) {
-      // force re-render GraphQL component to apply new theme
-      setShow(true);
-    }
+    // force re-render GraphQL component to apply new theme
+    setShow(true);
   }, [ show ]);
 
   React.useEffect(() => {
@@ -35,6 +34,7 @@ const AppsPage: NextPage = () => {
   return (
     <Page>
       <Head><title>Graph Page</title></Head>
+      <PageTitle text="GraphQL playground"/>
       { show && <GraphQL key={ colorMode }/> }
     </Page>
   );

@@ -125,3 +125,5 @@ frontend:
       _default: https://blockscout-main.test.aws-k8s.blockscout.com
     NEXT_PUBLIC_L2_WITHDRAWAL_URL:
       _default: https://app.optimism.io/bridge/withdraw
+    NEXT_PUBLIC_GRAPHIQL_TRANSACTION: 
+      _default: 0x4a0ed8ddf751a7cb5297f827699117b0f6d21a0b2907594d300dc9fed75c7e62
