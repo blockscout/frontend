@@ -137,10 +137,10 @@ export default function useNavItems(): ReturnType {
       } : null,
       {
         text: 'GraphQL',
-        nextRoute: { pathname: '/graphiql' as const },
+        nextRoute: { pathname: '/graphql' as const },
         icon: graphQLIcon,
-        isActive: pathname === '/graphiql',
-        isNewUi: false,
+        isActive: pathname === '/graphql',
+        isNewUi: true,
       },
       {
         text: 'RPC API',
