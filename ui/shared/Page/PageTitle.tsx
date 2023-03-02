@@ -37,7 +37,7 @@ const PageTitle = ({ text, additionalsLeft, additionalsRight, withTextAd, backLi
       justifyContent="space-between"
       className={ className }
     >
-      <Flex flexWrap="wrap" columnGap={ 3 } alignItems="center" width={ withTextAd ? 'unset' : '100%' }>
+      <Flex flexWrap="wrap" columnGap={ 3 } alignItems="center" width={ withTextAd ? 'unset' : '100%' } flexShrink={ 0 }>
         <Grid
           templateColumns={ [ backLinkUrl && 'auto', additionalsLeft && 'auto', '1fr' ].filter(Boolean).join(' ') }
           columnGap={ 3 }

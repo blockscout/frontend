@@ -95,7 +95,7 @@ export default function useNavItems(): ReturnType {
     };
     const verifiedContracts =
     // eslint-disable-next-line max-len
-     { text: 'Verified contracts', nextRoute: { pathname: '/verified-contracts' as const }, icon: verifiedIcon, isActive: false, isNewUi: false };
+     { text: 'Verified contracts', nextRoute: { pathname: '/verified-contracts' as const }, icon: verifiedIcon, isActive: pathname === '/verified-contracts', isNewUi: true };
 
     if (appConfig.L2.isL2Network) {
       blockchainNavItems = [

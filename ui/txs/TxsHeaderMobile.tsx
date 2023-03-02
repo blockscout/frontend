@@ -1,19 +1,28 @@
 import { HStack, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { Sort } from 'types/client/txs-sort';
+import type { Sort as TSort } from 'types/client/txs-sort';
 
 // import FilterInput from 'ui/shared/filters/FilterInput';
 import ActionBar from 'ui/shared/ActionBar';
 import Pagination from 'ui/shared/Pagination';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
-import TxsSorting from 'ui/txs/TxsSorting';
+import type { Option } from 'ui/shared/sort/Sort';
+import Sort from 'ui/shared/sort/Sort';
 
 // import TxsFilters from './TxsFilters';
 
+const SORT_OPTIONS: Array<Option<TSort>> = [
+  { title: 'Default', id: undefined },
+  { title: 'Value ascending', id: 'val-asc' },
+  { title: 'Value descending', id: 'val-desc' },
+  { title: 'Fee ascending', id: 'fee-asc' },
+  { title: 'Fee descending', id: 'fee-desc' },
+];
+
 type Props = {
-  sorting: Sort;
-  setSorting: (val: Sort) => void;
+  sorting: TSort;
+  setSorting: (val: TSort | undefined) => void;
   paginationProps: PaginationProps;
   className?: string;
   showPagination?: boolean;
@@ -26,10 +35,10 @@ const TxsHeaderMobile = ({ filterComponent, sorting, setSorting, paginationProps
     <ActionBar className={ className }>
       <HStack>
         { filterComponent }
-        <TxsSorting
-          isActive={ Boolean(sorting) }
-          setSorting={ setSorting }
-          sorting={ sorting }
+        <Sort
+          options={ SORT_OPTIONS }
+          setSort={ setSorting }
+          sort={ sorting }
         />
         { /* api is not implemented */ }
         { /* <FilterInput

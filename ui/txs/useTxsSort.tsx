@@ -10,7 +10,7 @@ import sortTxs from 'lib/tx/sortTxs';
 type HookResult = UseQueryResult<TxsResponse> & {
   sorting: Sort;
   setSortByField: (field: 'val' | 'fee') => () => void;
-  setSortByValue: (value: Sort) => void;
+  setSortByValue: (value: Sort | undefined) => void;
 }
 
 export default function useTxsSort(
@@ -45,7 +45,7 @@ export default function useTxsSort(
     });
   }, [ ]);
 
-  const setSortByValue = React.useCallback((value: Sort) => {
+  const setSortByValue = React.useCallback((value: Sort | undefined) => {
     setSorting((prevVal: Sort) => {
       let newVal: Sort = '';
       if (value !== prevVal) {
