@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react';
+import { Box, useColorMode } from '@chakra-ui/react';
 import { createGraphiQLFetcher } from '@graphiql/toolkit';
 import { GraphiQL } from 'graphiql';
 import React from 'react';
@@ -6,6 +6,7 @@ import React from 'react';
 import appConfig from 'configs/app/config';
 import buildUrl from 'lib/api/buildUrl';
 import 'graphiql/graphiql.css';
+import isBrowser from 'lib/isBrowser';
 
 const graphQLStyle = {
   '.graphiql-container': {
@@ -14,6 +15,21 @@ const graphQLStyle = {
 };
 
 const GraphQL = () => {
+
+  const { colorMode } = useColorMode();
+
+  // use colorModeState as a key to re-render GraphiQL conponent after color mode change
+  const [ colorModeState, setColorModeState ] = React.useState(colorMode);
+
+  React.useEffect(() => {
+    if (isBrowser()) {
+      const graphqlTheme = window.localStorage.getItem('graphiql:theme');
+      if (graphqlTheme !== colorMode) {
+        window.localStorage.setItem('graphiql:theme', colorMode);
+        setColorModeState(colorMode);
+      }
+    }
+  }, [ colorMode ]);
 
   const initialQuery = `{
     transaction(
@@ -40,7 +56,7 @@ const GraphQL = () => {
   return (
     <Box h="100vh" overflowX="scroll" sx={ graphQLStyle }>
       <Box h="100vh" minW="900px" sx={ graphQLStyle }>
-        <GraphiQL fetcher={ fetcher } defaultQuery={ initialQuery }/>
+        <GraphiQL fetcher={ fetcher } defaultQuery={ initialQuery } key={ colorModeState }/>
       </Box>
     </Box>
   );
