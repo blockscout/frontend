@@ -12,6 +12,18 @@ async function headers() {
           key: 'X-Content-Type-Options',
           value: 'nosniff',
         },
+        {
+          key: 'X-XSS-Protection',
+          value: '1; mode=block',
+        },
+        {
+          key: 'X-DNS-Prefetch-Control',
+          value: 'on',
+        },
+        {
+          key: 'Cross-Origin-Opener-Policy',
+          value: 'same-origin',
+        },
       ],
     },
   ];
