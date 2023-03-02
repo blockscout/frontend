@@ -4,9 +4,9 @@ import { route } from 'nextjs-routes';
 
 import appConfig from 'configs/app/config';
 import { NAMES } from 'lib/cookies';
-import getCspPolicy from 'lib/csp/getCspPolicy';
+import generateCspPolicy from 'lib/csp/generateCspPolicy';
 
-const cspPolicy = getCspPolicy();
+const cspPolicy = generateCspPolicy();
 
 export function middleware(req: NextRequest) {
   const isPageRequest = req.headers.get('accept')?.includes('text/html');

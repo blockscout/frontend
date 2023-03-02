@@ -3897,6 +3897,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/csp-dev@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@types/csp-dev/-/csp-dev-1.0.0.tgz#59e2fd69f276988b349765c2f6a39ea0a4a1a161"
+  integrity sha512-OTHJTGqXvgFu1AE4Eo8cu+jgkQChpzTOHpMDrVkxAmNORVz7/11Zjj2NXZyWQcxibf18C966bU1JWtANrR8uJQ==
+
 "@types/d3-array@*":
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/@types/d3-array/-/d3-array-3.0.3.tgz#87d990bf504d14ad6b16766979d04e943c046dac"

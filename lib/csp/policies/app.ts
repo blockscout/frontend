@@ -1,16 +1,9 @@
+import type CspDev from 'csp-dev';
+
 import appConfig from 'configs/app/config';
 import featuredNetworks from 'lib/networks/featuredNetworks';
 
-const KEY_WORDS = {
-  BLOB: 'blob:',
-  DATA: 'data:',
-  NONE: '\'none\'',
-  REPORT_SAMPLE: `'report-sample'`,
-  SELF: '\'self\'',
-  STRICT_DYNAMIC: `'strict-dynamic'`,
-  UNSAFE_INLINE: '\'unsafe-inline\'',
-  UNSAFE_EVAL: '\'unsafe-eval\'',
-};
+import { KEY_WORDS } from '../utils';
 
 const MAIN_DOMAINS = [
   `*.${ appConfig.host }`,
@@ -37,25 +30,12 @@ function getMarketplaceAppsHosts() {
   };
 }
 
-// we cannot use lodash/uniq in middleware code since it calls new Set() and it'is causing an error in Nextjs
-// "Dynamic Code Evaluation (e. g. 'eval', 'new Function', 'WebAssembly.compile') not allowed in Edge Runtime"
-function unique(array: Array<string | undefined>) {
-  const set: Record<string, boolean> = {};
-  for (const item of array) {
-    item && (set[item] = true);
-  }
-
-  return Object.keys(set);
-}
-
-function makePolicyMap() {
+export default function generateAppDescriptor(): CspDev.DirectiveDescriptor {
   const marketplaceAppsHosts = getMarketplaceAppsHosts();
 
   return {
     'default-src': [
-      // KEY_WORDS.NONE,
-      // temporarily, see if warnings for "/_next/static/chunks/8861-ad3efb7f624b7bc1.js" go away
-      ...MAIN_DOMAINS,
+      KEY_WORDS.NONE,
     ],
 
     'connect-src': [
@@ -65,9 +45,6 @@ function makePolicyMap() {
       // webpack hmr in safari doesn't recognize localhost as 'self' for some reason
       appConfig.isDev ? 'ws://localhost:3000/_next/webpack-hmr' : '',
 
-      // client error monitoring
-      'sentry.io', '*.sentry.io',
-
       // API
       appConfig.api.endpoint,
       appConfig.api.socket,
@@ -75,66 +52,27 @@ function makePolicyMap() {
 
       // chain RPC server
       appConfig.network.rpcUrl,
-
-      // ad
-      'request-global.czilladx.com',
-
-      // walletconnect
-      '*.walletconnect.com',
-      'wss://*.bridge.walletconnect.org',
-      'wss://www.walletlink.org',
-
-      // RPC providers
-      'https://infragrid.v.network',
+      'https://infragrid.v.network', // RPC providers
 
       // github (spec for api-docs page)
       'raw.githubusercontent.com',
-
-      // google analytics
-      'https://www.googletagmanager.com',
-      'https://www.google-analytics.com',
-      'https://stats.g.doubleclick.net',
-    ],
+    ].filter(Boolean),
 
     'script-src': [
       KEY_WORDS.SELF,
+      ...MAIN_DOMAINS,
 
       // next.js generates and rebuilds source maps in dev using eval()
       // https://github.com/vercel/next.js/issues/14221#issuecomment-657258278
       appConfig.isDev ? KEY_WORDS.UNSAFE_EVAL : '',
 
-      ...MAIN_DOMAINS,
-
       // hash of ColorModeScript
       '\'sha256-e7MRMmTzLsLQvIy1iizO1lXf7VWYoQ6ysj5fuUzvRwE=\'',
-
-      // ad
-      'coinzillatag.com',
-      'servedbyadbutler.com',
-      '\'sha256-wMOeDjJaOTjCfNjluteV+tSqHW547T89sgxd8W6tQJM=\'',
-      '\'sha256-FcyIn1h7zra8TVnnRhYrwrplxJW7dpD5TV7kP2AG/kI=\'',
-
-      // reCAPTCHA from google
-      'https://www.google.com/recaptcha/api.js',
-      'https://www.gstatic.com',
-      'https://translate.google.com',
-      '\'sha256-FDyPg8CqqIpPAfGVKx1YeKduyLs0ghNYWII21wL+7HM=\'',
-
-      // google analytics
-      '\'sha256-NTmEg2dBnojQfTYrYJEmp3nG7V66756qPbQMCIBrctk=\'',
-      'https://www.googletagmanager.com',
-      'https://www.google-analytics.com',
     ],
 
     'style-src': [
       KEY_WORDS.SELF,
       ...MAIN_DOMAINS,
-
-      // google fonts
-      'fonts.googleapis.com',
-
-      // reCAPTCHA from google
-      'https://www.gstatic.com',
 
       // yes, it is unsafe as it stands, but
       // - we cannot use hashes because all styles are generated dynamically
@@ -147,7 +85,6 @@ function makePolicyMap() {
     'img-src': [
       KEY_WORDS.SELF,
       KEY_WORDS.DATA,
-
       ...MAIN_DOMAINS,
 
       // github assets (e.g trustwallet token icons)
@@ -165,34 +102,12 @@ function makePolicyMap() {
       // marketplace apps logos
       ...marketplaceAppsHosts.logos,
 
-      // ad
-      'servedbyadbutler.com',
-      'cdn.coinzilla.io',
-
-      // walletconnect
-      '*.walletconnect.com',
-
       // token's media
       'ipfs.io',
-
-      // reCAPTCHA from google
-      'https://translate.google.com',
-      'https://www.gstatic.com',
-
-      // google analytics
-      'https://www.google-analytics.com',
     ],
 
     'font-src': [
       KEY_WORDS.DATA,
-
-      // google fonts
-      'fonts.gstatic.com',
-      'fonts.googleapis.com',
-    ],
-
-    'prefetch-src': [
-      ...MAIN_DOMAINS,
     ],
 
     'object-src': [
@@ -205,40 +120,12 @@ function makePolicyMap() {
 
     'frame-src': [
       ...marketplaceAppsHosts.frames,
-
-      // ad
-      'request-global.czilladx.com',
-
-      // reCAPTCHA from google
-      // 'https://www.google.com/',
-      'https://www.google.com/recaptcha/api2/anchor',
-      'https://www.google.com/recaptcha/api2/bframe',
     ],
 
-    ...(REPORT_URI ? {
+    ...(REPORT_URI && !appConfig.isDev ? {
       'report-uri': [
         REPORT_URI,
       ],
     } : {}),
   };
 }
-
-function getCspPolicy() {
-  const policyMap = makePolicyMap();
-
-  const policyString = Object.entries(policyMap)
-    .map(([ key, value ]) => {
-      if (!value || value.length === 0) {
-        return;
-      }
-
-      const uniqueValues = unique(value);
-      return [ key, uniqueValues.join(' ') ].join(' ');
-    })
-    .filter(Boolean)
-    .join(';');
-
-  return policyString;
-}
-
-export default getCspPolicy;
