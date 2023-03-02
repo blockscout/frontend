@@ -7,7 +7,7 @@ import type { TxnBatchesItem } from 'types/api/txnBatches';
 import appConfig from 'configs/app/config';
 import txIcon from 'icons/transactions.svg';
 import txBatchIcon from 'icons/txBatch.svg';
-import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
+import dayjs from 'lib/date/dayjs';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
@@ -15,7 +15,7 @@ import LinkInternal from 'ui/shared/LinkInternal';
 type Props = { item: TxnBatchesItem };
 
 const TxnBatchesTableItem = ({ item }: Props) => {
-  const timeAgo = useTimeAgoIncrement(item.l1_tx_timestamp, false);
+  const timeAgo = dayjs(item.l1_tx_timestamp).fromNow();
 
   return (
     <Tr>

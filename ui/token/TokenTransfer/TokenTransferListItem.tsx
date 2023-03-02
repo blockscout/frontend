@@ -11,7 +11,7 @@ import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
-import ListItemMobile from 'ui/shared/ListItemMobile';
+import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
 
 type Props = TokenTransfer & {tokenId?: string};

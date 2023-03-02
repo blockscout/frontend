@@ -7,7 +7,7 @@ import type { OutputRootsItem } from 'types/api/outputRoots';
 import appConfig from 'configs/app/config';
 import txIcon from 'icons/transactions.svg';
 import txBatchIcon from 'icons/txBatch.svg';
-import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
+import dayjs from 'lib/date/dayjs';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkExternal from 'ui/shared/LinkExternal';
@@ -16,7 +16,7 @@ import LinkInternal from 'ui/shared/LinkInternal';
 type Props = { item: OutputRootsItem };
 
 const OutputRootsTableItem = ({ item }: Props) => {
-  const timeAgo = useTimeAgoIncrement(item.l1_timestamp, false);
+  const timeAgo = dayjs(item.l1_timestamp).fromNow();
 
   return (
     <Tr>

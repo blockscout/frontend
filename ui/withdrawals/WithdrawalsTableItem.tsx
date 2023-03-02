@@ -7,7 +7,6 @@ import type { WithdrawalsItem } from 'types/api/withdrawals';
 import appConfig from 'configs/app/config';
 import txIcon from 'icons/transactions.svg';
 import dayjs from 'lib/date/dayjs';
-import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -18,7 +17,7 @@ import LinkInternal from 'ui/shared/LinkInternal';
  type Props = { item: WithdrawalsItem };
 
 const WithdrawalsTableItem = ({ item }: Props) => {
-  const timeAgo = useTimeAgoIncrement(item.l2_timestamp, false) || 'N/A';
+  const timeAgo = item.l2_timestamp ? dayjs(item.l2_timestamp).fromNow() : 'N/A';
   const timeToEnd = item.challenge_period_end ? dayjs(item.challenge_period_end).fromNow(true) + ' left' : '-';
 
   return (
@@ -66,7 +65,7 @@ const WithdrawalsTableItem = ({ item }: Props) => {
         }
       </Td>
       <Td verticalAlign="middle">
-        { timeToEnd }
+        <Text variant="secondary">{ timeToEnd }</Text>
       </Td>
     </Tr>
   );
