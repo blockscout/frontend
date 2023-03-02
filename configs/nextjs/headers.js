@@ -24,6 +24,10 @@ async function headers() {
           key: 'Cross-Origin-Opener-Policy',
           value: 'same-origin',
         },
+        {
+          key: 'Referrer-Policy',
+          value: 'origin-when-cross-origin',
+        },
       ],
     },
   ];
