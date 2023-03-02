@@ -3,7 +3,7 @@ import React, { useCallback } from 'react';
 import type { CustomAbi } from 'types/api/account';
 
 import AddressSnippet from 'ui/shared/AddressSnippet';
-import ListItemMobile from 'ui/shared/ListItemMobile';
+import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 
 interface Props {

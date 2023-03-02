@@ -9,7 +9,7 @@ import OutputRoots from './OutputRoots';
 
 const OUTPUT_ROOTS_API_URL = buildApiUrl('output_roots');
 
-test('base view +@dark-mode', async({ mount, page }) => {
+test('base view +@mobile', async({ mount, page }) => {
   await page.route('https://request-global.czilladx.com/serve/native.php?z=19260bf627546ab7242', (route) => route.fulfill({
     status: 200,
     body: '',
