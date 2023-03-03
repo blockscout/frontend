@@ -63,7 +63,7 @@ const NftImage = ({ url, className, fallbackPadding, objectFit }: Props) => {
         fallback={ url && isLoading ? <Skeleton/> : <Fallback className={ className } padding={ fallbackPadding }/> }
         onError={ handleLoadError }
         onLoad={ handleLoad }
-        loading="lazy"
+        loading={ url ? 'lazy' : undefined }
       />
     </AspectRatio>
   );
