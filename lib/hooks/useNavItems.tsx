@@ -137,9 +137,9 @@ export default function useNavItems(): ReturnType {
       } : null,
       {
         text: 'GraphQL',
-        nextRoute: { pathname: '/graphql' as const },
+        nextRoute: { pathname: '/graphiql' as const },
         icon: graphQLIcon,
-        isActive: pathname === '/graphql',
+        isActive: pathname === '/graphiql',
         isNewUi: true,
       },
       {

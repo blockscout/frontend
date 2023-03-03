@@ -25,7 +25,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/blocks">
     | StaticRoute<"/csv-export">
     | StaticRoute<"/graph">
-    | StaticRoute<"/graphql">
+    | StaticRoute<"/graphiql">
     | StaticRoute<"/">
     | StaticRoute<"/login">
     | StaticRoute<"/search-results">

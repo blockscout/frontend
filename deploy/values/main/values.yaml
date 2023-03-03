@@ -364,7 +364,7 @@ frontend:
         - "/api-docs"
         - "/csv-export"
         - "/verified-contracts"
-        - "/graphql"
+        - "/graphiql"
 
   resources:
     limits:

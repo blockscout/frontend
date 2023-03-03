@@ -356,7 +356,7 @@ export const RESOURCES = {
 
   // GraphQL
   graphql: {
-    path: '/graphiql',
+    path: '/graphql',
   },
 
   // DEPRECATED
