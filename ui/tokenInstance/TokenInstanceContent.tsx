@@ -8,6 +8,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/appContext';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
+import parseMetadata from 'lib/token/parseMetadata';
 import TextAd from 'ui/shared/ad/TextAd';
 import AddressHeadingInfo from 'ui/shared/AddressHeadingInfo';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -49,6 +50,10 @@ const TokenInstanceContent = () => {
     },
   });
 
+  const metadata = React.useMemo(() => {
+    return parseMetadata(tokenInstanceQuery.data?.metadata);
+  }, [ tokenInstanceQuery.data?.metadata ]);
+
   const tabs: Array<RoutedTab> = [
     { id: 'token_transfers', title: 'Token transfers', component: <TokenTransfer transfersQuery={ transfersQuery } tokenId={ id }/> },
     // there is no api for this tab yet
@@ -86,7 +91,7 @@ const TokenInstanceContent = () => {
 
       <AddressHeadingInfo address={ address } token={ tokenInstanceQuery.data.token }/>
 
-      <TokenInstanceDetails data={ tokenInstanceQuery.data } scrollRef={ scrollRef }/>
+      <TokenInstanceDetails data={ tokenInstanceQuery.data } metadata={ metadata } scrollRef={ scrollRef }/>
 
       { /* should stay before tabs to scroll up with pagination */ }
       <Box ref={ scrollRef }></Box>
