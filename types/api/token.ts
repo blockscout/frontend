@@ -2,9 +2,9 @@ import type { AddressParam } from './addressParams';
 
 export type TokenType = 'ERC-20' | 'ERC-721' | 'ERC-1155';
 
-export interface TokenInfo {
+export interface TokenInfo<T extends TokenType = TokenType> {
   address: string;
-  type: TokenType;
+  type: T;
   symbol: string | null;
   name: string | null;
   decimals: string | null;

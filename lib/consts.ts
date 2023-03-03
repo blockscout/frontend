@@ -15,3 +15,5 @@ export const YEAR = 365 * DAY;
 
 export const Kb = 1_000;
 export const Mb = 1_000 * Kb;
+
+export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
