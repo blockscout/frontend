@@ -2,7 +2,7 @@ import type CspDev from 'csp-dev';
 
 import isSelfHosted from 'lib/isSelfHosted';
 
-export default function generateAdDescriptor(): CspDev.DirectiveDescriptor {
+export function ad(): CspDev.DirectiveDescriptor {
   if (!isSelfHosted()) {
     return {};
   }

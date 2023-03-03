@@ -2,7 +2,7 @@ import type CspDev from 'csp-dev';
 
 import appConfig from 'configs/app/config';
 
-export default function generateGoogleAnalyticsDescriptor(): CspDev.DirectiveDescriptor {
+export function googleAnalytics(): CspDev.DirectiveDescriptor {
   if (!appConfig.googleAnalytics.propertyId) {
     return {};
   }

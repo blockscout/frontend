@@ -1,6 +1,6 @@
 import type CspDev from 'csp-dev';
 
-export default function generateGoogleFontsDescriptor(): CspDev.DirectiveDescriptor {
+export function googleFonts(): CspDev.DirectiveDescriptor {
   // we use Inter and Poppins in the app
 
   return {

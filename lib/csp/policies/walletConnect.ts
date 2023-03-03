@@ -2,7 +2,7 @@ import type CspDev from 'csp-dev';
 
 import appConfig from 'configs/app/config';
 
-export default function generateWalletConnectDescriptor(): CspDev.DirectiveDescriptor {
+export function walletConnect(): CspDev.DirectiveDescriptor {
   if (!appConfig.walletConnect.projectId || !appConfig.network.rpcUrl) {
     return {};
   }

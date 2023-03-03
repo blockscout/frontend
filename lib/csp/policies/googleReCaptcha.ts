@@ -2,7 +2,7 @@ import type CspDev from 'csp-dev';
 
 import appConfig from 'configs/app/config';
 
-export default function generateGoogleReCaptchaDescriptor(): CspDev.DirectiveDescriptor {
+export function googleReCaptcha(): CspDev.DirectiveDescriptor {
   if (!appConfig.reCaptcha.siteKey) {
     return {};
   }

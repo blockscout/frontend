@@ -19,7 +19,7 @@ function getMarketplaceAppsHosts() {
   };
 }
 
-export default function generateAppDescriptor(): CspDev.DirectiveDescriptor {
+export function app(): CspDev.DirectiveDescriptor {
   const marketplaceAppsHosts = getMarketplaceAppsHosts();
 
   return {

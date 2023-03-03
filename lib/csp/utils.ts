@@ -11,7 +11,7 @@ export const KEY_WORDS = {
   UNSAFE_EVAL: '\'unsafe-eval\'',
 };
 
-// we cannot use lodash/uniq in middleware code since it calls new Set() and it'is causing an error in Nextjs
+// we cannot use lodash/uniq and lodash/mergeWith in middleware code since it calls new Set() and it'is causing an error in Next.js
 // "Dynamic Code Evaluation (e. g. 'eval', 'new Function', 'WebAssembly.compile') not allowed in Edge Runtime"
 export function unique(array: Array<string | undefined>) {
   const set: Record<string, boolean> = {};
@@ -20,6 +20,27 @@ export function unique(array: Array<string | undefined>) {
   }
 
   return Object.keys(set);
+}
+
+export function mergeDescriptors(...descriptors: Array<CspDev.DirectiveDescriptor>) {
+  return descriptors.reduce((result, item) => {
+    for (const _key in item) {
+      const key = _key as CspDev.Directive;
+      const value = item[key];
+
+      if (!value) {
+        continue;
+      }
+
+      if (result[key]) {
+        result[key]?.push(...value);
+      } else {
+        result[key] = [ ...value ];
+      }
+    }
+
+    return result;
+  }, {} as CspDev.DirectiveDescriptor);
 }
 
 export function makePolicyString(policyDescriptor: CspDev.DirectiveDescriptor) {
