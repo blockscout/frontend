@@ -37,9 +37,9 @@ const NftMedia = ({ imageUrl, animationUrl, className }: Props) => {
     const url = route({ pathname: '/api/media-type', query: { url: animationUrl } });
     fetch(url)
       .then((response) => response.json())
-      .then((_response) => {
-        const response = _response as { type: MediaType | undefined };
-        setType(response.type || 'image');
+      .then((_data) => {
+        const data = _data as { type: MediaType | undefined };
+        setType(data.type || 'image');
       })
       .catch(() => {
         setType('image');
