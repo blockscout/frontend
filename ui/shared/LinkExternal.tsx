@@ -11,9 +11,9 @@ interface Props {
 
 const LinkExternal = ({ href, children, className }: Props) => {
   return (
-    <Link className={ className } fontSize="sm" display="inline-flex" alignItems="center" target="_blank" href={ href }>
+    <Link className={ className } fontSize="sm" display="inline-block" alignItems="center" target="_blank" href={ href }>
       { children }
-      <Icon as={ arrowIcon } boxSize={ 4 }/>
+      <Icon as={ arrowIcon } boxSize={ 4 } verticalAlign="middle"/>
     </Link>
   );
 };

@@ -2,8 +2,8 @@ import { Box, Flex, Grid, GridItem, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInstance } from 'types/api/token';
-import type { Metadata } from 'types/client/token';
 
+import parseMetadata from 'lib/token/parseMetadata';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -20,10 +20,9 @@ import TokenInstanceTransfersCount from './details/TokenInstanceTransfersCount';
 interface Props {
   data: TokenInstance;
   scrollRef?: React.RefObject<HTMLDivElement>;
-  metadata?: Metadata;
 }
 
-const TokenInstanceDetails = ({ data, scrollRef, metadata }: Props) => {
+const TokenInstanceDetails = ({ data, scrollRef }: Props) => {
   const handleCounterItemClick = React.useCallback(() => {
     window.setTimeout(() => {
       // cannot do scroll instantly, have to wait a little
@@ -31,6 +30,7 @@ const TokenInstanceDetails = ({ data, scrollRef, metadata }: Props) => {
     }, 500);
   }, [ scrollRef ]);
 
+  const metadata = parseMetadata(data.metadata);
   const hasMetadata = metadata && Boolean((metadata.name || metadata.description || metadata.attributes));
   const attributeBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
 
