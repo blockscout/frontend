@@ -174,7 +174,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
         <Button
           size="lg"
           type="submit"
-          disabled={ !isDirty }
+          isDisabled={ !isDirty }
           isLoading={ mutation.isLoading }
         >
           { data ? 'Save' : 'Create custom ABI' }

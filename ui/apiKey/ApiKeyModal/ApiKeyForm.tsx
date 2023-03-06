@@ -101,7 +101,7 @@ const ApiKeyForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
       <FormControl variant="floating" id="address">
         <Input
           { ...field }
-          disabled={ true }
+          isDisabled={ true }
         />
         <FormLabel data-in-modal="true">Auto-generated API key token</FormLabel>
       </FormControl>
@@ -147,7 +147,7 @@ const ApiKeyForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
         <Button
           size="lg"
           type="submit"
-          disabled={ !isDirty }
+          isDisabled={ !isDirty }
           isLoading={ mutation.isLoading }
         >
           { data ? 'Save' : 'Generate API key' }

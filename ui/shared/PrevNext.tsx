@@ -32,7 +32,7 @@ const PrevNext = ({ className, onClick, prevLabel, nextLabel, isPrevDisabled, is
           variant="subtle"
           colorScheme="gray"
           onClick={ handelPrevClick }
-          disabled={ isPrevDisabled }
+          isDisabled={ isPrevDisabled }
         />
       </Tooltip>
       <Tooltip label={ nextLabel }>
@@ -45,7 +45,7 @@ const PrevNext = ({ className, onClick, prevLabel, nextLabel, isPrevDisabled, is
           colorScheme="gray"
           ml="10px"
           onClick={ handelNextClick }
-          disabled={ isNextDisabled }
+          isDisabled={ isNextDisabled }
         />
       </Tooltip>
     </Box>
