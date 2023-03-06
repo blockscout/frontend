@@ -364,6 +364,7 @@ frontend:
         - "/api-docs"
         - "/csv-export"
         - "/verified-contracts"
+        - "/graphiql"
 
   resources:
     limits:
@@ -442,3 +443,5 @@ frontend:
       _default: https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml
     NEXT_PUBLIC_IS_TESTNET:
       _default: true
+    NEXT_PUBLIC_GRAPHIQL_TRANSACTION: 
+      _default: 0xf7d4972356e6ae44ae948d0cf19ef2beaf0e574c180997e969a2837da15e349d
