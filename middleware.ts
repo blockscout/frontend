@@ -4,9 +4,9 @@ import { route } from 'nextjs-routes';
 
 import appConfig from 'configs/app/config';
 import { NAMES } from 'lib/cookies';
-import getCspPolicy from 'lib/csp/getCspPolicy';
+import generateCspPolicy from 'lib/csp/generateCspPolicy';
 
-const cspPolicy = getCspPolicy();
+const cspPolicy = generateCspPolicy();
 
 export function middleware(req: NextRequest) {
   const isPageRequest = req.headers.get('accept')?.includes('text/html');
@@ -28,7 +28,7 @@ export function middleware(req: NextRequest) {
 
   const end = Date.now();
   const res = NextResponse.next();
-  res.headers.append('Content-Security-Policy-Report-Only', cspPolicy);
+  res.headers.append(appConfig.isDev ? 'Content-Security-Policy' : 'Content-Security-Policy-Report-Only', cspPolicy);
   res.headers.append('Server-Timing', `middleware;dur=${ end - start }`);
 
   return res;
