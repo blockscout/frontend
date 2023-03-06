@@ -1,14 +1,15 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 const SwaggerUIReact = dynamic(() => import('swagger-ui-react'), {
-  loading: () => <Spinner/>,
+  loading: () => <ContentLoader/>,
   ssr: false,
 });
 
-import { Box, Spinner, useColorModeValue } from '@chakra-ui/react';
+import { Box, useColorModeValue } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
 import appConfig from 'configs/app/config';
+import ContentLoader from 'ui/shared/ContentLoader';
 
 import 'swagger-ui-react/swagger-ui.css';
 

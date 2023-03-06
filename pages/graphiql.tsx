@@ -1,17 +1,17 @@
-import { Spinner } from '@chakra-ui/react';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 const GraphQL = dynamic(() => import('ui/graphQL/GraphQL'), {
-  loading: () => <Spinner/>,
+  loading: () => <ContentLoader/>,
   ssr: false,
 });
 import Head from 'next/head';
 import React from 'react';
 
+import ContentLoader from 'ui/shared/ContentLoader';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
-const AppsPage: NextPage = () => {
+const GraphiqlPage: NextPage = () => {
 
   return (
     <Page>
@@ -22,6 +22,6 @@ const AppsPage: NextPage = () => {
   );
 };
 
-export default AppsPage;
+export default GraphiqlPage;
 
 export { getServerSideProps } from 'lib/next/getServerSideProps';
