@@ -50,7 +50,7 @@ const AddressTokens = () => {
   return (
     <>
       <TokenBalances/>
-      { /* should stay before tabs to scroll up whith pagination */ }
+      { /* should stay before tabs to scroll up with pagination */ }
       <Box ref={ scrollRef }></Box>
       <RoutedTabs
         tabs={ tabs }
