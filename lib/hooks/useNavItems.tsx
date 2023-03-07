@@ -6,12 +6,12 @@ import appConfig from 'configs/app/config';
 import abiIcon from 'icons/ABI.svg';
 import apiKeysIcon from 'icons/API.svg';
 import appsIcon from 'icons/apps.svg';
-// import withdrawalsIcon from 'icons/arrows/north-east.svg';
+import withdrawalsIcon from 'icons/arrows/north-east.svg';
 import blocksIcon from 'icons/block.svg';
 import gearIcon from 'icons/gear.svg';
 import globeIcon from 'icons/globe-b.svg';
 import graphQLIcon from 'icons/graphQL.svg';
-// import outputRootsIcon from 'icons/output_roots.svg';
+import outputRootsIcon from 'icons/output_roots.svg';
 import privateTagIcon from 'icons/privattags.svg';
 import profileIcon from 'icons/profile.svg';
 import publicTagIcon from 'icons/publictags.svg';
@@ -22,10 +22,10 @@ import tokensIcon from 'icons/token.svg';
 import topAccountsIcon from 'icons/top-accounts.svg';
 import transactionsIcon from 'icons/transactions.svg';
 // import depositsIcon from 'icons/arrows/south-east.svg';
-// import txnBatchIcon from 'icons/txn_batches.svg';
+import txnBatchIcon from 'icons/txn_batches.svg';
 import verifiedIcon from 'icons/verified.svg';
 import watchlistIcon from 'icons/watchlist.svg';
-// import { rightLineArrow } from 'lib/html-entities';
+import { rightLineArrow } from 'lib/html-entities';
 
 type NavItemCommon = {
   text: string;
@@ -83,14 +83,15 @@ export default function useNavItems(): ReturnType {
     const blocks = {
       text: 'Blocks',
       nextRoute: { pathname: '/blocks' as const },
-      icon: blocksIcon, isActive: pathname.startsWith('/block'),
+      icon: blocksIcon,
+      isActive: pathname === '/blocks' || pathname === '/block/[height]',
       isNewUi: true,
     };
     const txs = {
       text: 'Transactions',
       nextRoute: { pathname: '/txs' as const },
       icon: transactionsIcon,
-      isActive: pathname.startsWith('/tx'),
+      isActive: pathname === '/txs' || pathname === '/tx/[hash]',
       isNewUi: true,
     };
     const verifiedContracts =
@@ -104,14 +105,14 @@ export default function useNavItems(): ReturnType {
           // eslint-disable-next-line max-len
           // { text: `Deposits (L1${ rightLineArrow }L2)`, nextRoute: { pathname: '/deposits' as const }, icon: depositsIcon, isActive: pathname === '/deposits', isNewUi: true },
           // eslint-disable-next-line max-len
-          // { text: `Withdrawals (L2${ rightLineArrow }L1)`, nextRoute: { pathname: '/withdrawals' as const }, icon: withdrawalsIcon, isActive: pathname === '/withdrawals', isNewUi: true },
+          { text: `Withdrawals (L2${ rightLineArrow }L1)`, nextRoute: { pathname: '/withdrawals' as const }, icon: withdrawalsIcon, isActive: pathname === '/withdrawals', isNewUi: true },
         ],
         [
           blocks,
           // eslint-disable-next-line max-len
-          // { text: 'Txn batches', nextRoute: { pathname: '/txn-batches' as const }, icon: txnBatchIcon, isActive: pathname === '/txn-batches', isNewUi: true },
+          { text: 'Txn batches', nextRoute: { pathname: '/txn-batches' as const }, icon: txnBatchIcon, isActive: pathname === '/txn-batches', isNewUi: true },
           // eslint-disable-next-line max-len
-          // { text: 'Output roots', nextRoute: { pathname: '/output-roots' as const }, icon: outputRootsIcon, isActive: pathname === '/output-roots', isNewUi: true },
+          { text: 'Output roots', nextRoute: { pathname: '/output-roots' as const }, icon: outputRootsIcon, isActive: pathname === '/output-roots', isNewUi: true },
         ],
         [
           topAccounts,
