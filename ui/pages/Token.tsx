@@ -178,7 +178,7 @@ const TokenPageContent = () => {
       ) }
       <TokenContractInfo tokenQuery={ tokenQuery }/>
       <TokenDetails tokenQuery={ tokenQuery }/>
-      { /* should stay before tabs to scroll up whith pagination */ }
+      { /* should stay before tabs to scroll up with pagination */ }
       <Box ref={ scrollRef }></Box>
 
       { tokenQuery.isLoading || contractQuery.isLoading ? <SkeletonTabs/> : (
