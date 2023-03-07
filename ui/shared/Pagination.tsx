@@ -25,7 +25,7 @@ const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasNext
         variant="outline"
         size="sm"
         onClick={ resetPage }
-        disabled={ page === 1 }
+        isDisabled={ page === 1 }
         mr={ 4 }
       >
         First
@@ -38,7 +38,7 @@ const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasNext
         w="36px"
         icon={ <Icon as={ arrowIcon } w={ 5 } h={ 5 }/> }
         mr={ 3 }
-        disabled={ !canGoBackwards || page === 1 }
+        isDisabled={ !canGoBackwards || page === 1 }
       />
       <Button
         variant="outline"
@@ -59,7 +59,7 @@ const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasNext
         w="36px"
         icon={ <Icon as={ arrowIcon } w={ 5 } h={ 5 } transform="rotate(180deg)"/> }
         ml={ 3 }
-        disabled={ !hasNextPage }
+        isDisabled={ !hasNextPage }
       />
       { /* not implemented yet */ }
       { /* <Flex alignItems="center" width="132px" ml={ 16 } display={{ base: 'none', lg: 'flex' }}>

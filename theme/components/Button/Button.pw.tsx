@@ -28,7 +28,7 @@ import TestApp from 'playwright/TestApp';
     test('disabled', async({ mount }) => {
       const component = await mount(
         <TestApp>
-          <Button variant={ variant } colorScheme={ colorScheme } disabled>Click me</Button>
+          <Button variant={ variant } colorScheme={ colorScheme } isDisabled>Click me</Button>
         </TestApp>,
       );
       await expect(component.locator('button')).toHaveScreenshot();
