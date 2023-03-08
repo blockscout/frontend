@@ -3,6 +3,7 @@ import NextLink from 'next/link';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
+import useIsMobile from 'lib/hooks/useIsMobile';
 import type { NavItem } from 'lib/hooks/useNavItems';
 import { isInternalItem } from 'lib/hooks/useNavItems';
 
@@ -17,6 +18,7 @@ type Props = {
 }
 
 const NavLink = ({ item, isCollapsed, px, className }: Props) => {
+  const isMobile = useIsMobile();
   const colors = useColors();
   const isExpanded = isCollapsed === false;
 
@@ -45,7 +47,7 @@ const NavLink = ({ item, isCollapsed, px, className }: Props) => {
       <Tooltip
         label={ item.text }
         hasArrow={ false }
-        isDisabled={ isCollapsed === false || (isCollapsed === undefined && isXLScreen) }
+        isDisabled={ isMobile || isCollapsed === false || (isCollapsed === undefined && isXLScreen) }
         placement="right"
         variant="nav"
         gutter={ 20 }
