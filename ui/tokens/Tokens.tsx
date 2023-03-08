@@ -94,7 +94,7 @@ const Tokens = () => {
   }
 
   if (!data.items.length) {
-    if (debouncedFilter) {
+    if (debouncedFilter || type) {
       return (
         <>
           { bar }
