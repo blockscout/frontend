@@ -1,70 +1,34 @@
-import { Box, Flex } from '@chakra-ui/react';
+import { Accordion } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenInstance } from 'types/api/token';
-import type { ExcludeNull } from 'types/utils/ExcludeNull';
-
-import LinkExternal from 'ui/shared/LinkExternal';
-
-import { formatName } from './utils';
+import TokenInstanceMetadataAccordionItem from './TokenInstanceMetadataAccordionItem';
 
 interface Props {
-  data: ExcludeNull<TokenInstance['metadata']>;
+  data: Record<string, unknown>;
+  level?: number;
 }
 
-const TokenInstanceMetadataAccordion = ({ data }: Props) => {
+const TokenInstanceMetadataAccordion = ({ data, level = 0 }: Props) => {
 
-  const renderContent = React.useCallback((value: unknown) => {
-    switch (typeof value) {
-      case 'string': {
-        try {
-          if (!value.includes('http')) {
-            throw new Error();
-          }
-          const url = new URL(value);
-          return <LinkExternal href={ url.toString() }>{ value }</LinkExternal>;
-        } catch (error) {
-          return value;
-        }
-      }
-
-      case 'number':
-      case 'boolean': {
-        return value;
-      }
-
-      default: {
-        return '-';
-      }
+  const ml = (() => {
+    if (level === 0) {
+      return 0;
     }
-  }, []);
+
+    if (level === 1) {
+      return 126;
+    }
+
+    return 24;
+  })();
 
   return (
-    <ul>
+    <Accordion allowMultiple fontSize="sm" ml={ `${ ml }px` } defaultIndex={ level === 0 ? [ 0 ] : undefined }>
       { Object.entries(data).map(([ key, value ]) => {
-        return (
-          <Flex
-            as="li"
-            key={ key }
-            alignItems="flex-start"
-            py={ 2 }
-            pl={{ base: 0, lg: 6 }}
-            columnGap={ 3 }
-            borderTopWidth="1px"
-            borderColor="divider"
-            _last={{
-              borderBottomWidth: '1px',
-            }}
-            wordBreak="break-word"
-            fontSize="sm"
-          >
-            <Box w="90px" flexShrink={ 0 } fontWeight={ 600 }>{ formatName(key) }</Box>
-            <Box>{ renderContent(value) }</Box>
-          </Flex>
-        );
+        return <TokenInstanceMetadataAccordionItem key={ key } name={ key } value={ value } level={ level }/>;
       }) }
-    </ul>
+    </Accordion>
   );
 };
 
-export default TokenInstanceMetadataAccordion;
+export default React.memo(TokenInstanceMetadataAccordion);
