@@ -4,7 +4,7 @@ import React from 'react';
 
 import LinkExternal from 'ui/shared/LinkExternal';
 
-import TokenInstanceMetadataAccordion from './TokenInstanceMetadataAccordion';
+import MetadataAccordion from './MetadataAccordion';
 import { formatName } from './utils';
 
 interface Props {
@@ -13,7 +13,7 @@ interface Props {
   level: number;
 }
 
-const TokenInstanceMetadataAccordionItem = ({ name, value, level }: Props) => {
+const MetadataAccordionItem = ({ name, value, level }: Props) => {
 
   const title = <Box w="90px" flexShrink={ 0 } fontWeight={ 600 } wordBreak="break-word">{ formatName(name) }</Box>;
 
@@ -112,7 +112,7 @@ const TokenInstanceMetadataAccordionItem = ({ name, value, level }: Props) => {
             { title }
           </AccordionButton>
           <AccordionPanel p={ 0 }>
-            <TokenInstanceMetadataAccordion data={ value as Record<string, unknown> } level={ level + 1 }/>
+            <MetadataAccordion data={ value as Record<string, unknown> } level={ level + 1 }/>
           </AccordionPanel>
         </AccordionItem>
       );
@@ -127,4 +127,4 @@ const TokenInstanceMetadataAccordionItem = ({ name, value, level }: Props) => {
   );
 };
 
-export default React.memo(TokenInstanceMetadataAccordionItem);
+export default React.memo(MetadataAccordionItem);
