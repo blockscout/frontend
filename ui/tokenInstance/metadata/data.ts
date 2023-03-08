@@ -97,6 +97,32 @@ const data = {
     primary: [
       'QmPGMksnyQemncHKQ67zGiuTAsnFi8HTJkY9ebQ6eVVQLv',
       'https://nftu.com/nft/92ee5f5c-bce9-4d64-8a25-c7e1e6305572/949',
+      {
+        label: 'foo',
+        data: [
+          {
+            name: 'John',
+            email: 'john@foo.com',
+          },
+          {
+            name: 'Mary',
+            email: 'mary@foo.com',
+          },
+          [ 1, 2 ],
+        ],
+      },
+      [
+        {
+          address: 'foo',
+          age: 523,
+          gender: 'male',
+        },
+        {
+          address: 'bar',
+          age: 24,
+          gender: 'https://nftu.com/nft/92ee5f5c-bce9-4d64-8a25-c7e1e6305572/949',
+        },
+      ],
     ],
   },
   royalty_amount: 1000,

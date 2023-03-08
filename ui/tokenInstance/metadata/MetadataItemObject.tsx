@@ -15,7 +15,7 @@ const MetadataItemObject = ({ name, value, level }: Props) => {
 
   if (level >= 4) {
     return (
-      <MetadataAccordionItem level={ level }>
+      <MetadataAccordionItem level={ level } pl={{ base: 0, lg: 0 }}>
         <MetadataAccordionItemTitle name={ name }/>
         <Box whiteSpace="pre-wrap">{ JSON.stringify(value, undefined, 2) }</Box>
       </MetadataAccordionItem>

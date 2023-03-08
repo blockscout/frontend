@@ -24,21 +24,23 @@ const MetadataAccordion = ({ data, level = 0 }: Props) => {
     return 24;
   })();
 
+  const isFlat = Object.entries(data).every(([ , value ]) => typeof value !== 'object');
+
   const renderItem = React.useCallback((name: string, value: unknown) => {
     switch (typeof value) {
       case 'string':
       case 'number':
       case 'boolean': {
-        return <MetadataItemPrimitive name={ name } value={ value }/>;
+        return <MetadataItemPrimitive name={ name } value={ value } isFlat={ isFlat }/>;
       }
 
       case 'object': {
         if (value === null) {
-          return <MetadataItemPrimitive name={ name } value={ value }/>;
+          return <MetadataItemPrimitive name={ name } value={ value } isFlat={ isFlat }/>;
         }
 
         if (Array.isArray(value) && value.length > 0) {
-          return <MetadataItemArray name={ name } value={ value }/>;
+          return <MetadataItemArray name={ name } value={ value } level={ level }/>;
         }
 
         if (Object.keys(value).length > 0) {
@@ -47,16 +49,14 @@ const MetadataAccordion = ({ data, level = 0 }: Props) => {
       }
       // eslint-disable-next-line no-fallthrough
       default: {
-        return <MetadataItemPrimitive name={ name } value={ String(value) }/>;
+        return <MetadataItemPrimitive name={ name } value={ String(value) } isFlat={ isFlat }/>;
       }
     }
-  }, [ level ]);
+  }, [ level, isFlat ]);
 
   return (
     <Accordion allowMultiple fontSize="sm" ml={ `${ ml }px` } defaultIndex={ level === 0 ? [ 0 ] : undefined }>
-      { Object.entries(data).map(([ key, value ]) => {
-        return renderItem(key, value);
-      }) }
+      { Object.entries(data).map(([ key, value ]) => renderItem(key, value)) }
     </Accordion>
   );
 };

@@ -1,3 +1,4 @@
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 import type { Primitive } from 'react-hook-form';
 
@@ -9,9 +10,13 @@ import MetadataAccordionItemTitle from './MetadataAccordionItemTitle';
 interface Props {
   name?: string;
   value: Primitive;
+  isItem?: boolean;
+  isFlat?: boolean;
 }
 
-const MetadataItemPrimitive = ({ name, value }: Props) => {
+const MetadataItemPrimitive = ({ name, value, isItem = true, isFlat }: Props) => {
+
+  const Component = isItem ? MetadataAccordionItem : Box;
 
   const content = (() => {
     switch (typeof value) {
@@ -29,14 +34,13 @@ const MetadataItemPrimitive = ({ name, value }: Props) => {
         return <div>{ String(value) }</div>;
       }
     }
-
   })();
 
   return (
-    <MetadataAccordionItem>
+    <Component { ...(isFlat ? { pl: { base: 0, lg: 0 } } : {}) }>
       { name && <MetadataAccordionItemTitle name={ name }/> }
       { content }
-    </MetadataAccordionItem>
+    </Component>
   );
 };
 

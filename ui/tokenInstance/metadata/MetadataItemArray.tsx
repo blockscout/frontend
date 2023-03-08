@@ -1,15 +1,17 @@
-import { AccordionButton, AccordionIcon, AccordionPanel, Box, Flex } from '@chakra-ui/react';
+import { AccordionButton, AccordionIcon, AccordionPanel, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import MetadataAccordionItem from './MetadataAccordionItem';
 import MetadataAccordionItemTitle from './MetadataAccordionItemTitle';
+import MetadataItemPrimitive from './MetadataItemPrimitive';
 
 interface Props {
   name: string;
   value: Array<unknown>;
+  level: number;
 }
 
-const MetadataItemArray = ({ name, value }: Props) => {
+const MetadataItemArray = ({ name, value, level }: Props) => {
 
   return (
     <MetadataAccordionItem
@@ -32,25 +34,35 @@ const MetadataItemArray = ({ name, value }: Props) => {
         <AccordionIcon boxSize={ 6 } p={ 1 }/>
         <MetadataAccordionItemTitle name={ name }/>
       </AccordionButton>
-      <AccordionPanel p={ 0 } ml={ 126 }>
+      <AccordionPanel p={ 0 } ml={ level === 0 ? '126px' : '24px' }>
         { value.map((item, index) => {
-
           const content = (() => {
             switch (typeof item) {
+              case 'string':
+              case 'number':
+              case 'boolean': {
+                return <MetadataItemPrimitive value={ item } isItem={ false }/>;
+              }
               case 'object': {
-                if (item && !Array.isArray(item)) {
-                  return Object.entries(item).map(([ name, value ], index) => (
-                    <Flex key={ index } columnGap={ 3 }>
-                      <MetadataAccordionItemTitle name={ name } w="70px" fontWeight={ 400 }/>
-                      <Box>{ value }</Box>
-                    </Flex>
-                  ));
+                if (item) {
+                  if (Array.isArray(item)) {
+                    return <span>{ JSON.stringify(item, undefined, 2) }</span>;
+                  } else {
+                    return Object.entries(item).map(([ name, value ], index) => {
+                      return (
+                        <Flex key={ index } columnGap={ 3 }>
+                          <MetadataAccordionItemTitle name={ name } fontWeight={ 400 }/>
+                          <MetadataItemPrimitive value={ typeof value === 'object' ? JSON.stringify(value, undefined, 2) : value } isItem={ false }/>
+                        </Flex>
+                      );
+                    });
+                  }
+                } else {
+                  return <span>{ String(item) }</span>;
                 }
               }
-
-              // eslint-disable-next-line no-fallthrough
               default: {
-                return <span>{ JSON.stringify(item) }</span>;
+                return <span>{ String(item) }</span>;
               }
             }
           })();
