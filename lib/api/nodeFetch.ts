@@ -13,10 +13,12 @@ export default function fetchFactory(
   // first arg can be only a string
   // FIXME migrate to RequestInfo later if needed
   return function fetch(url: string, init?: RequestInit): Promise<Response> {
+    const csrfToken = _req.headers['x-csrf-token'];
     const headers = {
       accept: _req.headers['accept'] || 'application/json',
       'content-type': _req.headers['content-type'] || 'application/json',
       cookie: `${ cookies.NAMES.API_TOKEN }=${ _req.cookies[cookies.NAMES.API_TOKEN] }`,
+      ...(csrfToken ? { 'x-csrf-token': String(csrfToken) } : {}),
     };
 
     httpLogger.logger.info({

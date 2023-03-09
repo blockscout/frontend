@@ -37,7 +37,7 @@ export default function useFetch() {
         return _body;
       }
 
-      return JSON.stringify({ ..._body, _csrf_token: token });
+      return JSON.stringify(_body);
     })();
 
     const reqParams = {
@@ -45,6 +45,7 @@ export default function useFetch() {
       body,
       headers: {
         ...(isBodyAllowed && !isFormData ? { 'Content-type': 'application/json' } : undefined),
+        ...(isBodyAllowed && token ? { 'x-csrf-token': token } : undefined),
         ...params?.headers,
       },
     };
