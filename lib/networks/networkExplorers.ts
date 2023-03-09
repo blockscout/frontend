@@ -26,7 +26,7 @@ import appConfig from 'configs/app/config';
 // ]).replaceAll('"', '\'');
 
 const stripTrailingSlash = (str: string) => str[str.length - 1] === '/' ? str.slice(0, -1) : str;
-const addLeadingSlash = (str: string) => str.at(0) === '/' ? str : '/' + str;
+const addLeadingSlash = (str: string) => str[0] === '/' ? str : '/' + str;
 
 const networkExplorers: Array<NetworkExplorer> = (() => {
   return appConfig.network.explorers.map((explorer) => ({
