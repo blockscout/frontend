@@ -21,6 +21,8 @@ jobs:
 
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
+        with:
+          useRollingCache: true
 
       - name: Run ESLint
         run: yarn lint:eslint
@@ -40,6 +42,8 @@ jobs:
 
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
+        with:
+          useRollingCache: true
 
       - name: Compile TypeScript
         run: yarn lint:tsc
@@ -61,6 +65,8 @@ jobs:
 
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
+        with:
+          useRollingCache: true
 
       - name: Run Jest
         run: yarn test:jest
@@ -89,6 +95,8 @@ jobs:
 
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
+        with:
+          useRollingCache: true
 
       - name: Run PlayWright
         run: HOME=/root yarn test:pw
