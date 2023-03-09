@@ -154,11 +154,11 @@ const data = {
     //   value: 'F',
     //   trait_type: 'Player Position',
     // },
-    // {
-    //   value: '15',
-    //   trait_type: 'Player Jersey Number',
-    //   display_type: 'number',
-    // },
+    {
+      value: '15',
+      trait_type: 'Player Jersey Number',
+      display_type: 'number',
+    },
     // {
     //   value: 'Freshman',
     //   trait_type: 'Player Year',

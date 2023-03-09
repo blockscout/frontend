@@ -34,6 +34,16 @@ const TokenInstanceDetails = ({ data, scrollRef }: Props) => {
   const hasMetadata = metadata && Boolean((metadata.name || metadata.description || metadata.attributes));
   const attributeBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
 
+  const divider = (
+    <GridItem
+      colSpan={{ base: undefined, lg: 2 }}
+      mt={{ base: 2, lg: 3 }}
+      mb={{ base: 0, lg: 3 }}
+      borderBottom="1px solid"
+      borderColor="divider"
+    />
+  );
+
   return (
     <>
       <Flex alignItems="flex-start" mt={ 8 } flexDir={{ base: 'column-reverse', lg: 'row' }} columnGap={ 6 } rowGap={ 6 }>
@@ -73,7 +83,6 @@ const TokenInstanceDetails = ({ data, scrollRef }: Props) => {
             </Flex>
           </DetailsInfoItem>
           <TokenInstanceTransfersCount hash={ data.token.address } id={ data.id } onClick={ handleCounterItemClick }/>
-          <DetailsSponsoredItem/>
         </Grid>
         <NftMedia
           imageUrl={ data.image_url }
@@ -83,56 +92,63 @@ const TokenInstanceDetails = ({ data, scrollRef }: Props) => {
           alignSelf={{ base: 'center', lg: 'flex-start' }}
         />
       </Flex>
-      { hasMetadata && (
-        <Grid
-          mt={ 8 }
-          columnGap={ 8 }
-          rowGap={{ base: 1, lg: 3 }}
-          templateColumns={{ base: 'minmax(0, 1fr)', lg: '200px minmax(0, 1fr)' }}
-          overflow="hidden"
-        >
-          { metadata?.name && (
-            <DetailsInfoItem
-              title="Name"
-              hint="NFT name"
-              whiteSpace="normal"
-            >
-              { metadata.name }
-            </DetailsInfoItem>
-          ) }
-          { metadata?.description && (
-            <DetailsInfoItem
-              title="Description"
-              hint="NFT description"
-              whiteSpace="normal"
-            >
-              { metadata.description }
-            </DetailsInfoItem>
-          ) }
-          { metadata?.attributes && (
-            <DetailsInfoItem
-              title="Attributes"
-              hint="NFT attributes"
-              whiteSpace="normal"
-            >
-              <Grid gap={ 2 } templateColumns="repeat(auto-fit, minmax(160px, 1fr))" w="100%">
-                { metadata.attributes.map((attribute, index) => (
-                  <GridItem
-                    key={ index }
-                    bgColor={ attributeBgColor }
-                    borderRadius="md"
-                    px={ 4 }
-                    py={ 2 }
-                  >
-                    <Box fontSize="xs" color="text_secondary" fontWeight={ 500 }>{ attribute.trait_type }</Box>
-                    <Box fontSize="sm">{ attribute.value }</Box>
-                  </GridItem>
-                )) }
-              </Grid>
-            </DetailsInfoItem>
-          ) }
-        </Grid>
-      ) }
+      <Grid
+        mt={ 8 }
+        columnGap={ 8 }
+        rowGap={{ base: 1, lg: 3 }}
+        templateColumns={{ base: 'minmax(0, 1fr)', lg: '200px minmax(0, 1fr)' }}
+        overflow="hidden"
+      >
+        { divider }
+        <DetailsSponsoredItem/>
+        { hasMetadata && (
+          <>
+            { divider }
+            { metadata?.name && (
+              <DetailsInfoItem
+                title="Name"
+                hint="NFT name"
+                whiteSpace="normal"
+                wordBreak="break-word"
+              >
+                { metadata.name }
+              </DetailsInfoItem>
+            ) }
+            { metadata?.description && (
+              <DetailsInfoItem
+                title="Description"
+                hint="NFT description"
+                whiteSpace="normal"
+                wordBreak="break-word"
+              >
+                { metadata.description }
+              </DetailsInfoItem>
+            ) }
+            { metadata?.attributes && (
+              <DetailsInfoItem
+                title="Attributes"
+                hint="NFT attributes"
+                whiteSpace="normal"
+              >
+                <Grid gap={ 2 } templateColumns="repeat(auto-fit, minmax(160px, 1fr))" w="100%">
+                  { metadata.attributes.map((attribute, index) => (
+                    <GridItem
+                      key={ index }
+                      bgColor={ attributeBgColor }
+                      borderRadius="md"
+                      px={ 4 }
+                      py={ 2 }
+                    >
+                      <Box fontSize="xs" color="text_secondary" fontWeight={ 500 }>{ attribute.trait_type }</Box>
+                      <Box fontSize="sm">{ attribute.value }</Box>
+                    </GridItem>
+                  )) }
+                </Grid>
+              </DetailsInfoItem>
+            ) }
+          </>
+        ) }
+      </Grid>
     </>
   );
 };

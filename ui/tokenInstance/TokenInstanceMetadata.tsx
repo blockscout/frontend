@@ -6,7 +6,7 @@ import type { TokenInstance } from 'types/api/token';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
-import TokenInstanceMetadataAccordion from './metadata/TokenInstanceMetadataAccordion';
+import MetadataAccordion from './metadata/MetadataAccordion';
 
 type Format = 'JSON' | 'Table'
 
@@ -26,7 +26,7 @@ const TokenInstanceMetadata = ({ data }: Props) => {
   }
 
   const content = format === 'Table' ?
-    <TokenInstanceMetadataAccordion data={ data }/> :
+    <MetadataAccordion data={ data }/> :
     <RawDataSnippet data={ JSON.stringify(data, undefined, 4) } showCopy={ false }/>;
 
   return (

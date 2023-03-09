@@ -10,7 +10,7 @@ interface Props {
 
 const MetadataAccordionItemTitle = ({ name, className }: Props) => {
   return (
-    <Box w="90px" flexShrink={ 0 } fontWeight={ 600 } wordBreak="break-word" className={ className }>
+    <Box w={{ base: 'auto', lg: '90px' }} flexShrink={ 0 } fontWeight={ 600 } wordBreak="break-word" className={ className }>
       { formatName(name) }
     </Box>
   );

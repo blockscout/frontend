@@ -11,7 +11,6 @@ interface Props {
 }
 
 const MetadataAccordion = ({ data, level = 0 }: Props) => {
-
   const ml = (() => {
     if (level === 0) {
       return 0;
@@ -31,12 +30,12 @@ const MetadataAccordion = ({ data, level = 0 }: Props) => {
       case 'string':
       case 'number':
       case 'boolean': {
-        return <MetadataItemPrimitive name={ name } value={ value } isFlat={ isFlat }/>;
+        return <MetadataItemPrimitive name={ name } value={ value } isFlat={ isFlat } level={ level }/>;
       }
 
       case 'object': {
         if (value === null) {
-          return <MetadataItemPrimitive name={ name } value={ value } isFlat={ isFlat }/>;
+          return <MetadataItemPrimitive name={ name } value={ value } isFlat={ isFlat } level={ level }/>;
         }
 
         if (Array.isArray(value) && value.length > 0) {
@@ -49,13 +48,13 @@ const MetadataAccordion = ({ data, level = 0 }: Props) => {
       }
       // eslint-disable-next-line no-fallthrough
       default: {
-        return <MetadataItemPrimitive name={ name } value={ String(value) } isFlat={ isFlat }/>;
+        return <MetadataItemPrimitive name={ name } value={ String(value) } isFlat={ isFlat } level={ level }/>;
       }
     }
   }, [ level, isFlat ]);
 
   return (
-    <Accordion allowMultiple fontSize="sm" ml={ `${ ml }px` } defaultIndex={ level === 0 ? [ 0 ] : undefined }>
+    <Accordion allowMultiple fontSize="sm" ml={{ base: level === 0 ? 0 : 6, lg: `${ ml }px` }} defaultIndex={ level === 0 ? [ 0 ] : undefined }>
       { Object.entries(data).map(([ key, value ]) => renderItem(key, value)) }
     </Accordion>
   );

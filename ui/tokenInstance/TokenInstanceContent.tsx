@@ -1,19 +1,20 @@
-import { Box, Tag } from '@chakra-ui/react';
+import { Box, Tag, Icon } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
+import nftIcon from 'icons/nft_shield.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/appContext';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import TextAd from 'ui/shared/ad/TextAd';
 import AddressHeadingInfo from 'ui/shared/AddressHeadingInfo';
+import LinkExternal from 'ui/shared/LinkExternal';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/Pagination';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
-import TokenLogo from 'ui/shared/TokenLogo';
 import TokenTransfer from 'ui/token/TokenTransfer/TokenTransfer';
 
 import TokenInstanceDetails from './TokenInstanceDetails';
@@ -64,7 +65,7 @@ const TokenInstanceContent = () => {
     return <TokenInstanceSkeleton/>;
   }
 
-  const tokenLogo = <TokenLogo hash={ tokenInstanceQuery.data.token.address } name={ tokenInstanceQuery.data.token.name } boxSize={ 6 }/>;
+  const nftShieldIcon = <Icon as={ nftIcon } boxSize={ 6 }/>;
   const tokenTag = <Tag>{ tokenInstanceQuery.data.token.type }</Tag>;
   const address = {
     hash: hash || '',
@@ -72,6 +73,31 @@ const TokenInstanceContent = () => {
     implementation_name: null,
     watchlist_names: [],
   };
+  const appLink = (() => {
+    if (!tokenInstanceQuery.data.external_app_url) {
+      return null;
+    }
+
+    try {
+      const url = new URL(tokenInstanceQuery.data.external_app_url);
+      return (
+        <Box fontSize="sm" mt={ 6 }>
+          <span>View in app </span>
+          <LinkExternal href={ tokenInstanceQuery.data.external_app_url }>
+            { url.hostname }
+          </LinkExternal>
+        </Box>
+      );
+    } catch (error) {
+      return (
+        <Box fontSize="sm" mt={ 6 }>
+          <LinkExternal href={ tokenInstanceQuery.data.external_app_url }>
+            View in app
+          </LinkExternal>
+        </Box>
+      );
+    }
+  })();
 
   return (
     <>
@@ -80,11 +106,13 @@ const TokenInstanceContent = () => {
         text={ `${ tokenInstanceQuery.data.token.name } #${ tokenInstanceQuery.data.id }` }
         backLinkUrl={ hasGoBackLink ? appProps.referrer : undefined }
         backLinkLabel="Back to token page"
-        additionalsLeft={ tokenLogo }
+        additionalsLeft={ nftShieldIcon }
         additionalsRight={ tokenTag }
       />
 
       <AddressHeadingInfo address={ address } token={ tokenInstanceQuery.data.token }/>
+
+      { appLink }
 
       <TokenInstanceDetails data={ tokenInstanceQuery.data } scrollRef={ scrollRef }/>
 

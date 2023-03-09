@@ -15,7 +15,7 @@ const MetadataItemObject = ({ name, value, level }: Props) => {
 
   if (level >= 4) {
     return (
-      <MetadataAccordionItem level={ level } pl={{ base: 0, lg: 0 }}>
+      <MetadataAccordionItem level={ level } isFlat>
         <MetadataAccordionItemTitle name={ name }/>
         <Box whiteSpace="pre-wrap">{ JSON.stringify(value, undefined, 2) }</Box>
       </MetadataAccordionItem>
@@ -24,10 +24,10 @@ const MetadataItemObject = ({ name, value, level }: Props) => {
 
   return (
     <MetadataAccordionItem
-      flexDir="column"
+      flexDir={{ lg: 'column' }}
       alignItems="stretch"
-      pl={{ base: 0, lg: 0 }}
       py={ 0 }
+      isFlat
       level={ level }
     >
       <AccordionButton

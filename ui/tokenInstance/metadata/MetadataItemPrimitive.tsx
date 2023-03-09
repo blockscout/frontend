@@ -12,9 +12,10 @@ interface Props {
   value: Primitive;
   isItem?: boolean;
   isFlat?: boolean;
+  level: number;
 }
 
-const MetadataItemPrimitive = ({ name, value, isItem = true, isFlat }: Props) => {
+const MetadataItemPrimitive = ({ name, value, isItem = true, isFlat, level }: Props) => {
 
   const Component = isItem ? MetadataAccordionItem : Box;
 
@@ -37,7 +38,7 @@ const MetadataItemPrimitive = ({ name, value, isItem = true, isFlat }: Props) =>
   })();
 
   return (
-    <Component { ...(isFlat ? { pl: { base: 0, lg: 0 } } : {}) }>
+    <Component level={ level } isFlat={ isFlat }>
       { name && <MetadataAccordionItemTitle name={ name }/> }
       { content }
     </Component>
