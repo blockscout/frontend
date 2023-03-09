@@ -130,7 +130,7 @@ const TokenInstanceDetails = ({ data, scrollRef }: Props) => {
                 hint="NFT attributes"
                 whiteSpace="normal"
               >
-                <Grid gap={ 2 } templateColumns="repeat(auto-fit, minmax(160px, 1fr))" w="100%">
+                <Grid gap={ 2 } templateColumns="repeat(auto-fill,minmax(160px, 1fr))" w="100%">
                   { metadata.attributes.map((attribute, index) => (
                     <GridItem
                       key={ index }
