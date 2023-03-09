@@ -1,8 +1,11 @@
 import { AspectRatio, chakra, Skeleton } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import NftImage from './NftImage';
 import NftVideo from './NftVideo';
+import type { MediaType } from './utils';
+import { getPreliminaryMediaType } from './utils';
 
 interface Props {
   imageUrl: string | null;
@@ -11,7 +14,7 @@ interface Props {
 }
 
 const NftMedia = ({ imageUrl, animationUrl, className }: Props) => {
-  const [ type, setType ] = React.useState<'image' | 'video' | undefined>(!animationUrl ? 'image' : undefined);
+  const [ type, setType ] = React.useState<MediaType | undefined>(!animationUrl ? 'image' : undefined);
 
   React.useEffect(() => {
     if (!animationUrl) {
@@ -20,10 +23,26 @@ const NftMedia = ({ imageUrl, animationUrl, className }: Props) => {
 
     // media could be either gif or video
     // so we pre-fetch the resources in order to get its content type
-    fetch(animationUrl, { method: 'HEAD' })
-      .then((response) => {
-        const contentType = response.headers.get('content-type');
-        setType(contentType?.startsWith('video') ? 'video' : 'image');
+    // have to do it via Node.js due to strict CSP for connect-src
+    // but in order not to abuse our server firstly we check file url extension
+    // and if it is valid we will trust it and display corresponding media component
+
+    const preliminaryType = getPreliminaryMediaType(animationUrl);
+
+    if (preliminaryType) {
+      setType(preliminaryType);
+      return;
+    }
+
+    const url = route({ pathname: '/api/media-type', query: { url: animationUrl } });
+    fetch(url)
+      .then((response) => response.json())
+      .then((_data) => {
+        const data = _data as { type: MediaType | undefined };
+        setType(data.type || 'image');
+      })
+      .catch(() => {
+        setType('image');
       });
 
   }, [ animationUrl ]);

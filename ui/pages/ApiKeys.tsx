@@ -113,7 +113,7 @@ const ApiKeysPage: React.FC = () => {
           <Button
             size="lg"
             onClick={ apiKeyModalProps.onOpen }
-            disabled={ !canAdd }
+            isDisabled={ !canAdd }
           >
             Add API key
           </Button>

@@ -236,7 +236,7 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
         <Button
           size="lg"
           type="submit"
-          disabled={ !isDirty }
+          isDisabled={ !isDirty }
           isLoading={ mutation.isLoading }
         >
           Send request

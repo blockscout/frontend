@@ -29,7 +29,7 @@
     "test:jest:watch": "jest --watch"
   },
   "dependencies": {
-    "@chakra-ui/react": "2.4.3",
+    "@chakra-ui/react": "2.5.1",
     "@chakra-ui/theme-tools": "^2.0.14",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
@@ -51,6 +51,9 @@
     "dom-to-image": "^2.6.0",
     "ethers": "^5.7.2",
     "framer-motion": "^6.5.1",
+    "graphiql": "^2.2.0",
+    "graphql": "^16.6.0",
+    "graphql-ws": "^5.11.3",
     "js-cookie": "^3.0.1",
     "lodash": "^4.0.0",
     "next": "12.2.5",
@@ -79,6 +82,7 @@
     "@svgr/webpack": "^6.5.1",
     "@testing-library/react": "^13.4.0",
     "@total-typescript/ts-reset": "^0.3.7",
+    "@types/csp-dev": "^1.0.0",
     "@types/d3": "^7.4.0",
     "@types/dom-to-image": "^2.6.4",
     "@types/jest": "^29.2.0",

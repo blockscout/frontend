@@ -10,7 +10,7 @@ import SwaggerUI from 'ui/apiDocs/SwaggerUI';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
-const AppsPage: NextPage = () => {
+const APIDocsPage: NextPage = () => {
   const networkTitle = getNetworkTitle();
 
   return (
@@ -22,7 +22,7 @@ const AppsPage: NextPage = () => {
   );
 };
 
-export default AppsPage;
+export default APIDocsPage;
 
 export const getServerSideProps: GetServerSideProps<Props> = async(args) => {
   if (!appConfig.apiDoc.specUrl) {

@@ -140,7 +140,7 @@ export default function useNavItems(): ReturnType {
         nextRoute: { pathname: '/graphiql' as const },
         icon: graphQLIcon,
         isActive: pathname === '/graphiql',
-        isNewUi: false,
+        isNewUi: true,
       },
       {
         text: 'RPC API',

@@ -1,13 +1,27 @@
 import type { NextPage } from 'next';
+import dynamic from 'next/dynamic';
+const GraphQL = dynamic(() => import('ui/graphQL/GraphQL'), {
+  loading: () => <ContentLoader/>,
+  ssr: false,
+});
+import Head from 'next/head';
+import React from 'react';
 
-const GraphQLPage: NextPage = () => {
-  return null;
+import ContentLoader from 'ui/shared/ContentLoader';
+import Page from 'ui/shared/Page/Page';
+import PageTitle from 'ui/shared/Page/PageTitle';
+
+const GraphiqlPage: NextPage = () => {
+
+  return (
+    <Page>
+      <Head><title>Graph Page</title></Head>
+      <PageTitle text="GraphQL playground"/>
+      <GraphQL/>
+    </Page>
+  );
 };
 
-export default GraphQLPage;
+export default GraphiqlPage;
 
-export async function getServerSideProps() {
-  return {
-    notFound: true,
-  };
-}
+export { getServerSideProps } from 'lib/next/getServerSideProps';

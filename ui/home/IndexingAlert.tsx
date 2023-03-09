@@ -52,12 +52,12 @@ const IndexingAlert = ({ className }: { className?: string }) => {
     handler: handleBlocksIndexStatus,
   });
 
-  const handleIntermalTxsIndexStatus: SocketMessage.InternalTxsIndexStatus['handler'] = React.useCallback((payload) => {
+  const handleInternalTxsIndexStatus: SocketMessage.InternalTxsIndexStatus['handler'] = React.useCallback((payload) => {
     queryClient.setQueryData(getResourceKey('homepage_indexing_status'), (prevData: IndexingStatus | undefined) => {
 
       const newData = prevData ? { ...prevData } : {} as IndexingStatus;
       newData.finished_indexing = payload.finished;
-      newData.indexed_inernal_transactions_ratio = payload.ratio;
+      newData.indexed_internal_transactions_ratio = payload.ratio;
 
       return newData;
     });
@@ -71,7 +71,7 @@ const IndexingAlert = ({ className }: { className?: string }) => {
   useSocketMessage({
     channel: internalTxsIndexingChannel,
     event: 'internal_txs_index_status',
-    handler: handleIntermalTxsIndexStatus,
+    handler: handleInternalTxsIndexStatus,
   });
 
   if (isError) {
@@ -87,8 +87,8 @@ const IndexingAlert = ({ className }: { className?: string }) => {
     content = `${ data.indexed_blocks_ratio && `${ Math.floor(Number(data.indexed_blocks_ratio) * 100) }% Blocks Indexed${ nbsp }${ ndash } ` }
           We're indexing this chain right now. Some of the counts may be inaccurate.` ;
   } else if (data.finished_indexing === false) {
-    content = `${ data.indexed_inernal_transactions_ratio &&
-            `${ Math.floor(Number(data.indexed_inernal_transactions_ratio) * 100) }% Blocks With Internal Transactions Indexed${ nbsp }${ ndash } ` }
+    content = `${ data.indexed_internal_transactions_ratio &&
+            `${ Math.floor(Number(data.indexed_internal_transactions_ratio) * 100) }% Blocks With Internal Transactions Indexed${ nbsp }${ ndash } ` }
           We're indexing this chain right now. Some of the counts may be inaccurate.`;
   }
 

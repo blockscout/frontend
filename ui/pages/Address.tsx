@@ -112,7 +112,7 @@ const AddressPageContent = () => {
         />
       ) }
       <AddressDetails addressQuery={ addressQuery } scrollRef={ tabsScrollRef }/>
-      { /* should stay before tabs to scroll up whith pagination */ }
+      { /* should stay before tabs to scroll up with pagination */ }
       <Box ref={ tabsScrollRef }></Box>
       { addressQuery.isLoading ? <SkeletonTabs/> : content }
       { !addressQuery.isLoading && !addressQuery.isError && <Box h={{ base: 0, lg: '40vh' }}/> }

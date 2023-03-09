@@ -72,7 +72,7 @@ const DeleteModal: React.FC<Props> = ({
             onClick={ onDeleteClick }
             isLoading={ mutation.isLoading }
             // FIXME: chackra's button is disabled when isLoading
-            disabled={ false }
+            isDisabled={ false }
           >
               Delete
           </Button>

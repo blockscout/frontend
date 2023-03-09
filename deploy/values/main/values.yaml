@@ -129,7 +129,7 @@ blockscout:
     ENABLE_RUST_VERIFICATION_SERVICE:
       _default: 'true'
     RUST_VERIFICATION_SERVICE_URL:
-      _default: http://sc-verifier-svc:8050
+      _default: http://eth-bytecode-db-svc:80
     INDEXER_MEMORY_LIMIT:
       _default: 5
     ACCOUNT_ENABLED:
@@ -272,6 +272,7 @@ scVerifier:
     # enable https
     tls:
       enabled: true
+      createSecret: true
   resources:
     limits:
       memory:
@@ -364,6 +365,7 @@ frontend:
         - "/api-docs"
         - "/csv-export"
         - "/verified-contracts"
+        - "/graphiql"
 
   resources:
     limits:
@@ -442,3 +444,68 @@ frontend:
       _default: https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml
     NEXT_PUBLIC_IS_TESTNET:
       _default: true
+    NEXT_PUBLIC_GRAPHIQL_TRANSACTION:
+      _default: 0xf7d4972356e6ae44ae948d0cf19ef2beaf0e574c180997e969a2837da15e349d
+
+# enable eth-bytecode-db deploy
+ethBytecodeDb:
+  enabled: true
+  image:
+    _default: ghcr.io/blockscout/eth-bytecode-db:main
+
+  replicas:
+    app: 1
+  docker:
+    port: 80
+    targetPort: 8050
+    metricsPort: 6060
+
+  strategy: RollingUpdate
+
+  service:
+    # ClusterIP, NodePort or LoadBalancer
+    type: ClusterIP
+
+  # enable ingress
+  ingress:
+    enabled: true
+    annotations: {}
+    host:
+      _default: eth-bytecode-db-test.aws-k8s.blockscout.com
+      main: eth-bytecode-db-main.test.aws-k8s.blockscout.com
+    # enable https
+    tls:
+      enabled: true
+
+  resources:
+    limits:
+      memory:
+        _default: "0.5Gi"
+      cpu:
+        _default: "0.25"
+    requests:
+      memory:
+        _default: "0.5Gi"
+      cpu:
+        _default: "0.25"
+
+  environment:
+    ETH_BYTECODE_DB__SERVER__HTTP__MAX_BODY_SIZE:
+      _default: '10485760' # 10 Mb
+    ETH_BYTECODE_DB__VERIFIER__URI:
+      _default: https://grpc.sc-verifier-main.test.aws-k8s.blockscout.com
+    ETH_BYTECODE_DB__DATABASE__RUN_MIGRATIONS:
+      _default: true
+    ETH_BYTECODE_DB__TRACING__FORMAT:
+      _default: json
+    ETH_BYTECODE_DB__METRICS__ENABLED:
+      _default: true
+    # ENV:
+    #   _default: 'true'
+    ########### just example
+    ########### put DATABASE envs in secrets.yaml under ethBytecodeDb.environment
+    # DATABASE_URL:
+    # # postgres pod
+    #   _default: postgresql://<user>:<pass>@postgres:5432/<db>
+    # # RDS
+    #   _default: postgresql://<user>:<pass>@db-eth-bytecode-db-svc:5432/<db>

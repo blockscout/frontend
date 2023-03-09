@@ -124,7 +124,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
         <Button
           size="lg"
           type="submit"
-          disabled={ !isDirty }
+          isDisabled={ !isDirty }
           isLoading={ pending }
         >
           { data ? 'Save changes' : 'Add tag' }
