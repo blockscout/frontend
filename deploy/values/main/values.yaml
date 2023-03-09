@@ -320,6 +320,10 @@ scVerifier:
       _default: /metrics
     SMART_CONTRACT_VERIFIER__JAEGER__ENABLED:
       _default: 'false'
+    SMART_CONTRACT_VERIFIER__SERVER__GRPC__ENABLED:
+      _default: 'true'
+    RUST_LOG:
+      _default: debug
 frontend:
   app: blockscout
   enabled: true
@@ -495,11 +499,13 @@ ethBytecodeDb:
     ETH_BYTECODE_DB__VERIFIER__URI:
       _default: https://grpc.sc-verifier-main.test.aws-k8s.blockscout.com
     ETH_BYTECODE_DB__DATABASE__RUN_MIGRATIONS:
-      _default: true
+      _default: 'true'
     ETH_BYTECODE_DB__TRACING__FORMAT:
       _default: json
     ETH_BYTECODE_DB__METRICS__ENABLED:
-      _default: true
+      _default: 'true'
+    RUST_LOG:
+      _default: debug
     # ENV:
     #   _default: 'true'
     ########### just example
