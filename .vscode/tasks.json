@@ -10,9 +10,10 @@
             "label": "dev server",
             "detail": "start local dev server",
             "presentation": {
-                "reveal": "silent",
+                "reveal": "always",
                 "panel": "shared",
-                "close": true,
+                "focus": true,
+                "close": false,
                 "revealProblems": "onProblem",
             },
             "icon": {
@@ -30,9 +31,10 @@
             "label": "dev server: poa",
             "detail": "start local dev server for POA network",
             "presentation": {
-                "reveal": "silent",
+                "reveal": "always",
                 "panel": "shared",
-                "close": true,
+                "focus": true,
+                "close": false,
                 "revealProblems": "onProblem",
             },
             "icon": {
@@ -50,9 +52,10 @@
             "label": "dev server: goerli",
             "detail": "start local dev server for Goerli network",
             "presentation": {
-                "reveal": "silent",
+                "reveal": "always",
                 "panel": "shared",
-                "close": true,
+                "focus": true,
+                "close": false,
                 "revealProblems": "onProblem",
             },
             "icon": {
@@ -70,9 +73,10 @@
             "label": "dev server: goerli optimism",
             "detail": "start local dev server for Goerli Optimism network",
             "presentation": {
-                "reveal": "silent",
+                "reveal": "always",
                 "panel": "shared",
-                "close": true,
+                "focus": true,
+                "close": false,
                 "revealProblems": "onProblem",
             },
             "icon": {
@@ -96,9 +100,10 @@
                 "id": "symbol-type-parameter"
             },
             "presentation": {
-                "reveal": "never",
+                "reveal": "always",
                 "panel": "shared",
-                "close": true,
+                "focus": true,
+                "close": false,
                 "revealProblems": "onProblem",
             },
             "group": "build",
@@ -110,8 +115,10 @@
             "label": "eslint",
             "detail": "run eslint",
             "presentation": {
-                "reveal": "silent",
+                "reveal": "always",
                 "panel": "shared",
+                "focus": true,
+                "close": false,
                 "revealProblems": "onProblem",
             },
             "icon": {
@@ -134,6 +141,8 @@
                 "reveal": "always",
                 "panel": "shared",
                 "focus": true,
+                "close": false,
+                "revealProblems": "onProblem",
             },
             "icon": {
                 "color": "terminal.ansiBlue",
@@ -153,6 +162,8 @@
                 "reveal": "always",
                 "panel": "shared",
                 "focus": true,
+                "close": false,
+                "revealProblems": "onProblem",
             },
             "icon": {
                 "color": "terminal.ansiBlue",
@@ -172,6 +183,8 @@
                 "reveal": "always",
                 "panel": "shared",
                 "focus": true,
+                "close": false,
+                "revealProblems": "onProblem",
             },
             "icon": {
                 "color": "terminal.ansiBlue",
@@ -190,7 +203,8 @@
             "presentation": {
                 "reveal": "always",
                 "panel": "shared",
-                "close": true,
+                "focus": true,
+                "close": false,
                 "revealProblems": "onProblem",
             },
             "icon": {
@@ -213,6 +227,8 @@
                 "reveal": "always",
                 "panel": "shared",
                 "focus": true,
+                "close": false,
+                "revealProblems": "onProblem",
             },
             "icon": {
                 "color": "terminal.ansiBlue",
@@ -231,8 +247,9 @@
             "presentation": {
                 "reveal": "always",
                 "panel": "shared",
-                "close": true,
                 "focus": true,
+                "close": false,
+                "revealProblems": "onProblem",
             },
             "icon": {
                 "color": "terminal.ansiBlue",
@@ -252,6 +269,8 @@
                 "reveal": "always",
                 "panel": "shared",
                 "focus": true,
+                "close": false,
+                "revealProblems": "onProblem",
             },
             "icon": {
                 "color": "terminal.ansiBlue",
@@ -271,9 +290,9 @@
             "presentation": {
                 "reveal": "always",
                 "panel": "shared",
+                "focus": true,
                 "close": false,
                 "revealProblems": "onProblem",
-                "focus": true,
             },
             "icon": {
                 "color": "terminal.ansiRed",
@@ -290,9 +309,10 @@
             "label": "docker: run poa",
             "detail": "run docker container for POA network",
             "presentation": {
-                "reveal": "silent",
+                "reveal": "always",
                 "panel": "shared",
-                "close": true,
+                "focus": true,
+                "close": false,
                 "revealProblems": "onProblem",
             },
             "icon": {
@@ -310,9 +330,10 @@
             "label": "format svg",
             "detail": "format svg files with svgo",
             "presentation": {
-                "reveal": "silent",
+                "reveal": "always",
                 "panel": "shared",
-                "close": true,
+                "focus": true,
+                "close": false,
                 "revealProblems": "onProblem",
             },
             "icon": {
