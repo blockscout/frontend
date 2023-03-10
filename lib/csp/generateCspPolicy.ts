@@ -8,6 +8,7 @@ function generateCspPolicy() {
     descriptors.googleAnalytics(),
     descriptors.googleFonts(),
     descriptors.googleReCaptcha(),
+    descriptors.monaco(),
     descriptors.sentry(),
     descriptors.walletConnect(),
   );

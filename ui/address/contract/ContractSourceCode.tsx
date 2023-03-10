@@ -1,11 +1,10 @@
-import { Box, chakra, Flex, Text, Tooltip } from '@chakra-ui/react';
+import { Flex, Text, Tooltip } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { SmartContract } from 'types/api/contract';
 
-import CodeEditor from 'ui/shared/CodeEditor';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import CodeEditorMonaco from 'ui/shared/CodeEditorMonaco';
 import LinkInternal from 'ui/shared/LinkInternal';
 
 interface Props {
@@ -37,18 +36,7 @@ const ContractSourceCode = ({ data, hasSol2Yml, address, isViper, filePath, addi
     </Tooltip>
   ) : null;
 
-  if (!additionalSource?.length) {
-    return (
-      <section>
-        <Flex justifyContent="space-between" alignItems="center" mb={ 3 }>
-          { heading }
-          { diagramLink }
-          <CopyToClipboard text={ data }/>
-        </Flex>
-        <CodeEditor value={ data } id="source_code"/>
-      </section>
-    );
-  }
+  const code = [ { file_path: filePath || 'index.sol', source_code: data }, ...(additionalSource || []) ];
 
   return (
     <section>
@@ -56,19 +44,7 @@ const ContractSourceCode = ({ data, hasSol2Yml, address, isViper, filePath, addi
         { heading }
         { diagramLink }
       </Flex>
-      <Flex flexDir="column" rowGap={ 3 }>
-        { [ { file_path: filePath, source_code: data }, ...additionalSource ].map((item, index, array) => (
-          <Box key={ index }>
-            <Flex justifyContent="space-between" alignItems="flex-end" mb={ 3 }>
-              <chakra.span fontSize="sm" wordBreak="break-all" lineHeight="20px">
-                File { index + 1 } of { array.length }: { item.file_path }
-              </chakra.span>
-              <CopyToClipboard text={ item.source_code } ml={ 4 }/>
-            </Flex>
-            <CodeEditor value={ item.source_code } id={ `source_code_${ index }` }/>
-          </Box>
-        )) }
-      </Flex>
+      <CodeEditorMonaco data={ code }/>
     </section>
   );
 };
