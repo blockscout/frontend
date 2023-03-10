@@ -16,9 +16,6 @@ blockscout:
     enabled: true
     image:
       _default: *image
-  service:
-    # ClusterIP, NodePort or LoadBalancer
-    type: ClusterIP
   # enable ingress
   ingress:
     enabled: true
@@ -58,11 +55,6 @@ blockscout:
         _default: "5Gi"
       cpu:
         _default: "4"
-  # enable service to connect to RDS
-  rds:
-    enabled: false
-    endpoint:
-      _default: <endpoint>.<region>.rds.amazonaws.com
   # node label
   nodeSelector:
     enabled: true
@@ -129,7 +121,7 @@ blockscout:
     ENABLE_RUST_VERIFICATION_SERVICE:
       _default: 'true'
     RUST_VERIFICATION_SERVICE_URL:
-      _default: http://eth-bytecode-db-svc:80
+      _default: http://eth-bytecode-db-svc.eth-bytecode-db-testing.svc.cluster.local:80
     INDEXER_MEMORY_LIMIT:
       _default: 5
     ACCOUNT_ENABLED:
@@ -259,71 +251,6 @@ geth:
   files:
     enabled: true
 
-# enable Smart-contract-verifier deploy
-scVerifier:
-  enabled: true
-  image:
-    _default: ghcr.io/blockscout/smart-contract-verifier:main
-  # enable ingress
-  ingress:
-    enabled: true
-    host:
-      _default: verifier.test.blockscout.aws-k8s.blockscout.com
-    # enable https
-    tls:
-      enabled: true
-      createSecret: true
-  resources:
-    limits:
-      memory:
-        _default: "0.05Gi"
-      cpu:
-        _default: "0.01"
-    requests:
-      memory:
-        _default: "0.05Gi"
-      cpu:
-        _default: "0.01"
-  environment:
-    SMART_CONTRACT_VERIFIER__SERVER__HTTP__ADDR:
-      _default: 0.0.0.0:8050
-    SMART_CONTRACT_VERIFIER__SERVER__GRPC__ADDR:
-      _default: 0.0.0.0:8051
-    # SMART_CONTRACT_VERIFIER__SOLIDITY__ENABLED:
-    #   _default: 'true'
-    SMART_CONTRACT_VERIFIER__SOLIDITY__COMPILERS_DIR:
-      _default: /tmp/solidity-compilers
-    SMART_CONTRACT_VERIFIER__SOLIDITY__REFRESH_VERSIONS_SCHEDULE:
-      _default: 0 0 * * * * *
-    # It depends on the OS you are running the service on
-    # SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__LIST__LIST_URL:
-    #   _default: https://solc-bin.ethereum.org/linux-amd64/list.json
-    #SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__LIST__LIST_URL=https://solc-bin.ethereum.org/macosx-amd64/list.json
-    #SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__LIST__LIST_URL=https://solc-bin.ethereum.org/windows-amd64/list.json
-    SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__REGION:
-      _default: ""
-    SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__ENDPOINT:
-      _default: https://storage.googleapis.com
-    SMART_CONTRACT_VERIFIER__SOURCIFY__ENABLED:
-      _default: 'true'
-    SMART_CONTRACT_VERIFIER__SOURCIFY__API_URL:
-      _default: https://sourcify.dev/server/
-    SMART_CONTRACT_VERIFIER__SOURCIFY__VERIFICATION_ATTEMPTS:
-      _default: 3
-    SMART_CONTRACT_VERIFIER__SOURCIFY__REQUEST_TIMEOUT:
-      _default: 10
-    SMART_CONTRACT_VERIFIER__METRICS__ENABLED:
-      _default: 'true'
-    SMART_CONTRACT_VERIFIER__METRICS__ADDR:
-      _default: 0.0.0.0:6060
-    SMART_CONTRACT_VERIFIER__METRICS__ROUTE:
-      _default: /metrics
-    SMART_CONTRACT_VERIFIER__JAEGER__ENABLED:
-      _default: 'false'
-    SMART_CONTRACT_VERIFIER__SERVER__GRPC__ENABLED:
-      _default: 'true'
-    RUST_LOG:
-      _default: debug
 frontend:
   app: blockscout
   enabled: true
@@ -450,68 +377,3 @@ frontend:
       _default: true
     NEXT_PUBLIC_GRAPHIQL_TRANSACTION:
       _default: 0xf7d4972356e6ae44ae948d0cf19ef2beaf0e574c180997e969a2837da15e349d
-
-# enable eth-bytecode-db deploy
-ethBytecodeDb:
-  enabled: true
-  image:
-    _default: ghcr.io/blockscout/eth-bytecode-db:main
-
-  replicas:
-    app: 1
-  docker:
-    port: 80
-    targetPort: 8050
-    metricsPort: 6060
-
-  strategy: RollingUpdate
-
-  service:
-    # ClusterIP, NodePort or LoadBalancer
-    type: ClusterIP
-
-  # enable ingress
-  ingress:
-    enabled: true
-    annotations: {}
-    host:
-      _default: eth-bytecode-db-test.aws-k8s.blockscout.com
-      main: eth-bytecode-db-main.test.aws-k8s.blockscout.com
-    # enable https
-    tls:
-      enabled: true
-
-  resources:
-    limits:
-      memory:
-        _default: "0.5Gi"
-      cpu:
-        _default: "0.25"
-    requests:
-      memory:
-        _default: "0.5Gi"
-      cpu:
-        _default: "0.25"
-
-  environment:
-    ETH_BYTECODE_DB__SERVER__HTTP__MAX_BODY_SIZE:
-      _default: '10485760' # 10 Mb
-    ETH_BYTECODE_DB__VERIFIER__URI:
-      _default: https://grpc.sc-verifier-main.test.aws-k8s.blockscout.com
-    ETH_BYTECODE_DB__DATABASE__RUN_MIGRATIONS:
-      _default: 'true'
-    ETH_BYTECODE_DB__TRACING__FORMAT:
-      _default: json
-    ETH_BYTECODE_DB__METRICS__ENABLED:
-      _default: 'true'
-    RUST_LOG:
-      _default: debug
-    # ENV:
-    #   _default: 'true'
-    ########### just example
-    ########### put DATABASE envs in secrets.yaml under ethBytecodeDb.environment
-    # DATABASE_URL:
-    # # postgres pod
-    #   _default: postgresql://<user>:<pass>@postgres:5432/<db>
-    # # RDS
-    #   _default: postgresql://<user>:<pass>@db-eth-bytecode-db-svc:5432/<db>
