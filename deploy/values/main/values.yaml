@@ -303,12 +303,12 @@ frontend:
       memory:
         _default: "0.1Gi"
       cpu:
-        _default: "0.1"
+        _default: "0.2"
     requests:
       memory:
         _default: "0.1Gi"
       cpu:
-        _default: "0.1"
+        _default: "0.2"
   environment:
     # ui config
     NEXT_PUBLIC_FEATURED_NETWORKS:
