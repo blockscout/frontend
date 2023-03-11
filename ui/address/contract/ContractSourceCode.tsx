@@ -4,8 +4,8 @@ import React from 'react';
 
 import type { SmartContract } from 'types/api/contract';
 
-import CodeEditorMonaco from 'ui/shared/CodeEditorMonaco';
 import LinkInternal from 'ui/shared/LinkInternal';
+import CodeEditor from 'ui/shared/monaco/CodeEditor';
 
 interface Props {
   data: string;
@@ -36,7 +36,10 @@ const ContractSourceCode = ({ data, hasSol2Yml, address, isViper, filePath, addi
     </Tooltip>
   ) : null;
 
-  const code = [ { file_path: filePath || 'index.sol', source_code: data }, ...(additionalSource || []) ];
+  const editorData = React.useMemo(() => {
+    const defaultName = isViper ? 'index.vy' : 'index.sol';
+    return [ { file_path: filePath || defaultName, source_code: data }, ...(additionalSource || []) ];
+  }, [ additionalSource, data, filePath, isViper ]);
 
   return (
     <section>
@@ -44,7 +47,7 @@ const ContractSourceCode = ({ data, hasSol2Yml, address, isViper, filePath, addi
         { heading }
         { diagramLink }
       </Flex>
-      <CodeEditorMonaco data={ code }/>
+      <CodeEditor data={ editorData }/>
     </section>
   );
 };
