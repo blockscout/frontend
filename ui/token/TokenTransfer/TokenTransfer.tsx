@@ -1,4 +1,4 @@
-import { Hide, Show, Text } from '@chakra-ui/react';
+import { Hide, Show } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -11,11 +11,9 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import ActionBar from 'ui/shared/ActionBar';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
+import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/Pagination';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
-import SkeletonList from 'ui/shared/skeletons/SkeletonList';
-import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import { flattenTotal } from 'ui/shared/TokenTransfer/helpers';
 import TokenTransferList from 'ui/token/TokenTransfer/TokenTransferList';
@@ -61,66 +59,53 @@ const TokenTransfer = ({ transfersQuery, tokenId }: Props) => {
     handler: handleNewTransfersMessage,
   });
 
-  const content = (() => {
-    if (isLoading) {
-      return (
-        <>
-          <Hide below="lg" ssr={ false }>
-            <SkeletonTable columns={ [ '45%', '15%', '36px', '15%', '25%' ] } isLong/>
-          </Hide>
-          <Show below="lg" ssr={ false }>
-            <SkeletonList/>
-          </Show>
-        </>
-      );
-    }
+  const items = data?.items?.reduce(flattenTotal, []);
 
-    if (isError) {
-      return <DataFetchAlert/>;
-    }
+  const content = items ? (
 
-    if (!data.items?.length) {
-      return <Text as="span">There are no token transfers</Text>;
-    }
-
-    const items = data.items.reduce(flattenTotal, []);
-    return (
-      <>
-        <Hide below="lg" ssr={ false }>
-          <TokenTransferTable
-            data={ items }
-            top={ isPaginationVisible ? 80 : 0 }
-            showSocketInfo={ pagination.page === 1 }
-            socketInfoAlert={ socketAlert }
-            socketInfoNum={ newItemsCount }
-            tokenId={ tokenId }
+    <>
+      <Hide below="lg" ssr={ false }>
+        <TokenTransferTable
+          data={ items }
+          top={ isPaginationVisible ? 80 : 0 }
+          showSocketInfo={ pagination.page === 1 }
+          socketInfoAlert={ socketAlert }
+          socketInfoNum={ newItemsCount }
+          tokenId={ tokenId }
+        />
+      </Hide>
+      <Show below="lg" ssr={ false }>
+        { pagination.page === 1 && (
+          <SocketNewItemsNotice
+            url={ window.location.href }
+            num={ newItemsCount }
+            alert={ socketAlert }
+            type="token_transfer"
+            borderBottomRadius={ 0 }
           />
-        </Hide>
-        <Show below="lg" ssr={ false }>
-          { pagination.page === 1 && (
-            <SocketNewItemsNotice
-              url={ window.location.href }
-              num={ newItemsCount }
-              alert={ socketAlert }
-              type="token_transfer"
-              borderBottomRadius={ 0 }
-            />
-          ) }
-          <TokenTransferList data={ items } tokenId={ tokenId }/>
-        </Show>
-      </>
-    );
-  })();
+        ) }
+        <TokenTransferList data={ items } tokenId={ tokenId }/>
+      </Show>
+    </>
+  ) : null;
+
+  const actionBar = isMobile && isPaginationVisible ? (
+    <ActionBar mt={ -6 }>
+      <Pagination ml="auto" { ...pagination }/>
+    </ActionBar>
+  ) : null;
 
   return (
-    <>
-      { isMobile && isPaginationVisible && (
-        <ActionBar mt={ -6 }>
-          <Pagination ml="auto" { ...pagination }/>
-        </ActionBar>
-      ) }
-      { content }
-    </>
+    <DataListDisplay
+      isError={ isError }
+      isLoading={ isLoading }
+      items={ data?.items }
+      isLongSkeleton
+      skeletonDesktopColumns={ [ '45%', '15%', '36px', '15%', '25%' ] }
+      emptyText="There are no token transfers."
+      content={ content }
+      actionBar={ actionBar }
+    />
   );
 };
 

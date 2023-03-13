@@ -1,4 +1,4 @@
-import { Box, Flex, Hide, Show, Text } from '@chakra-ui/react';
+import { Box, Flex, Hide, Show } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -8,14 +8,11 @@ import useDebounce from 'lib/hooks/useDebounce';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import EmptySearchResult from 'ui/apps/EmptySearchResult';
 import ActionBar from 'ui/shared/ActionBar';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
+import DataListDisplay from 'ui/shared/DataListDisplay';
 import FilterInput from 'ui/shared/filters/FilterInput';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/Pagination';
-import SkeletonList from 'ui/shared/skeletons/SkeletonList';
-import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 import Sort from 'ui/shared/sort/Sort';
 import type { SortField, Sort as TSort } from 'ui/verifiedContracts/utils';
 import { SORT_OPTIONS, sortFn, getNextSortValue } from 'ui/verifiedContracts/utils';
@@ -82,7 +79,7 @@ const VerifiedContracts = () => {
     />
   );
 
-  const bar = (
+  const actionBar = (
     <>
       <Show below="lg" ssr={ false }>
         <Flex columnGap={ 3 } mb={ 6 }>
@@ -103,51 +100,33 @@ const VerifiedContracts = () => {
     </>
   );
 
-  const content = (() => {
-    if (isError) {
-      return <DataFetchAlert/>;
-    }
+  const sortedData = data?.items.slice().sort(sortFn(sort));
 
-    if (isLoading) {
-      return (
-        <>
-          <Show below="lg" ssr={ false }>
-            <SkeletonList/>
-          </Show>
-          <Hide below="lg" ssr={ false }>
-            <SkeletonTable columns={ [ '50%', '130px', '130px', '50%', '80px', '110px' ] }/>
-          </Hide>
-        </>
-      );
-    }
-
-    if (data.items.length === 0 && !searchTerm && !type) {
-      return <Text as="span">There are no verified contracts</Text>;
-    }
-
-    if (data.items.length === 0) {
-      return <EmptySearchResult text={ `Couldn${ apos }t find any contract that matches your query.` }/>;
-    }
-
-    const sortedData = data.items.slice().sort(sortFn(sort));
-
-    return (
-      <>
-        <Show below="lg" ssr={ false }>
-          <VerifiedContractsList data={ sortedData }/>
-        </Show>
-        <Hide below="lg" ssr={ false }>
-          <VerifiedContractsTable data={ sortedData } sort={ sort } onSortToggle={ handleSortToggle }/>
-        </Hide>
-      </>
-    );
-  })();
+  const content = sortedData ? (
+    <>
+      <Show below="lg" ssr={ false }>
+        <VerifiedContractsList data={ sortedData }/>
+      </Show>
+      <Hide below="lg" ssr={ false }>
+        <VerifiedContractsTable data={ sortedData } sort={ sort } onSortToggle={ handleSortToggle }/>
+      </Hide>
+    </>
+  ) : null;
 
   return (
     <Box>
       <PageTitle text="Verified contracts" withTextAd/>
-      { bar }
-      { content }
+      <DataListDisplay
+        isError={ isError }
+        isLoading={ isLoading }
+        items={ data?.items }
+        skeletonDesktopColumns={ [ '50%', '130px', '130px', '50%', '80px', '110px' ] }
+        emptyText="There are no verified contracts."
+        emptyFilteredText={ `Couldn${ apos }t find any contract that matches your query.` }
+        hasActiveFilters={ Boolean(searchTerm || type) }
+        content={ content }
+        actionBar={ actionBar }
+      />
     </Box>
   );
 };

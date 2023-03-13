@@ -5,12 +5,10 @@ import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import AddressesListItem from 'ui/addresses/AddressesListItem';
 import AddressesTable from 'ui/addresses/AddressesTable';
 import ActionBar from 'ui/shared/ActionBar';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
+import DataListDisplay from 'ui/shared/DataListDisplay';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/Pagination';
-import SkeletonList from 'ui/shared/skeletons/SkeletonList';
-import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 
 const PAGE_SIZE = 50;
 
@@ -19,60 +17,50 @@ const Accounts = () => {
     resourceName: 'addresses',
   });
 
-  const content = (() => {
-    if (isError) {
-      return <DataFetchAlert/>;
-    }
+  const actionBar = isPaginationVisible && (
+    <ActionBar mt={ -6 }>
+      <Pagination ml="auto" { ...pagination }/>
+    </ActionBar>
+  );
 
-    const bar = isPaginationVisible && (
-      <ActionBar mt={ -6 }>
-        <Pagination ml="auto" { ...pagination }/>
-      </ActionBar>
-    );
-
-    if (isLoading) {
-      return (
-        <>
-          { bar }
-          <SkeletonList display={{ base: 'block', lg: 'none' }}/>
-          <SkeletonTable display={{ base: 'none', lg: 'block' }} columns={ [ '64px', '30%', '20%', '20%', '15%', '15%' ] }/>
-        </>
-      );
-    }
-
-    const pageStartIndex = (pagination.page - 1) * PAGE_SIZE + 1;
-
-    return (
-      <>
-        { bar }
-        <Hide below="lg" ssr={ false }>
-          <AddressesTable
-            top={ isPaginationVisible ? 80 : 0 }
-            items={ data.items }
-            totalSupply={ data.total_supply }
-            pageStartIndex={ pageStartIndex }
-          />
-        </Hide>
-        <Show below="lg" ssr={ false }>
-          { data.items.map((item, index) => {
-            return (
-              <AddressesListItem
-                key={ item.hash }
-                item={ item }
-                index={ pageStartIndex + index }
-                totalSupply={ data.total_supply }
-              />
-            );
-          }) }
-        </Show>
-      </>
-    );
-  })();
+  const pageStartIndex = (pagination.page - 1) * PAGE_SIZE + 1;
+  const content = data?.items ? (
+    <>
+      <Hide below="lg" ssr={ false }>
+        <AddressesTable
+          top={ isPaginationVisible ? 80 : 0 }
+          items={ data.items }
+          totalSupply={ data.total_supply }
+          pageStartIndex={ pageStartIndex }
+        />
+      </Hide>
+      <Show below="lg" ssr={ false }>
+        { data.items.map((item, index) => {
+          return (
+            <AddressesListItem
+              key={ item.hash }
+              item={ item }
+              index={ pageStartIndex + index }
+              totalSupply={ data.total_supply }
+            />
+          );
+        }) }
+      </Show>
+    </>
+  ) : null;
 
   return (
     <Page>
       <PageTitle text="Top accounts" withTextAd/>
-      { content }
+      <DataListDisplay
+        isError={ isError }
+        isLoading={ isLoading }
+        items={ data?.items }
+        skeletonDesktopColumns={ [ '64px', '30%', '20%', '20%', '15%', '15%' ] }
+        emptyText="There are no accounts."
+        content={ content }
+        actionBar={ actionBar }
+      />
     </Page>
   );
 };

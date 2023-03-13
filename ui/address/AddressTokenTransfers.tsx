@@ -20,13 +20,10 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import TOKEN_TYPE from 'lib/token/tokenTypes';
-import EmptySearchResult from 'ui/apps/EmptySearchResult';
 import ActionBar from 'ui/shared/ActionBar';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
+import DataListDisplay from 'ui/shared/DataListDisplay';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import Pagination from 'ui/shared/Pagination';
-import SkeletonList from 'ui/shared/skeletons/SkeletonList';
-import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import TokenLogo from 'ui/shared/TokenLogo';
 import { flattenTotal } from 'ui/shared/TokenTransfer/helpers';
@@ -164,67 +161,40 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
   const numActiveFilters = (filters.type?.length || 0) + (filters.filter ? 1 : 0);
   const isActionBarHidden = !tokenFilter && !numActiveFilters && !data?.items.length && !currentAddress;
 
-  const content = (() => {
-    if (isLoading) {
-      return (
-        <>
-          <Hide below="lg" ssr={ false }>
-            <SkeletonTable columns={ [ '44px', '185px', '160px', '25%', '25%', '25%', '25%' ] } isLong/>
-          </Hide>
-          <Show below="lg" ssr={ false }>
-            <SkeletonList/>
-          </Show>
-        </>
-      );
-    }
-
-    if (isError) {
-      return <DataFetchAlert/>;
-    }
-
-    if (!data.items?.length && !numActiveFilters) {
-      return <Text as="span">There are no token transfers</Text>;
-    }
-
-    if (!data.items?.length) {
-      return <EmptySearchResult text={ `Couldn${ apos }t find any token transfer that matches your query.` }/>;
-    }
-
-    const items = data.items.reduce(flattenTotal, []);
-    return (
-      <>
-        <Hide below="lg" ssr={ false }>
-          <TokenTransferTable
-            data={ items }
-            baseAddress={ currentAddress }
-            showTxInfo
-            top={ isActionBarHidden ? 0 : 80 }
-            enableTimeIncrement
-            showSocketInfo={ pagination.page === 1 && !tokenFilter }
-            socketInfoAlert={ socketAlert }
-            socketInfoNum={ newItemsCount }
+  const items = data?.items?.reduce(flattenTotal, []);
+  const content = items ? (
+    <>
+      <Hide below="lg" ssr={ false }>
+        <TokenTransferTable
+          data={ items }
+          baseAddress={ currentAddress }
+          showTxInfo
+          top={ isActionBarHidden ? 0 : 80 }
+          enableTimeIncrement
+          showSocketInfo={ pagination.page === 1 && !tokenFilter }
+          socketInfoAlert={ socketAlert }
+          socketInfoNum={ newItemsCount }
+        />
+      </Hide>
+      <Show below="lg" ssr={ false }>
+        { pagination.page === 1 && !tokenFilter && (
+          <SocketNewItemsNotice
+            url={ window.location.href }
+            num={ newItemsCount }
+            alert={ socketAlert }
+            type="token_transfer"
+            borderBottomRadius={ 0 }
           />
-        </Hide>
-        <Show below="lg" ssr={ false }>
-          { pagination.page === 1 && !tokenFilter && (
-            <SocketNewItemsNotice
-              url={ window.location.href }
-              num={ newItemsCount }
-              alert={ socketAlert }
-              type="token_transfer"
-              borderBottomRadius={ 0 }
-            />
-          ) }
-          <TokenTransferList
-            data={ items }
-            baseAddress={ currentAddress }
-            showTxInfo
-            enableTimeIncrement
-          />
-        </Show>
-      </>
-    );
-  })();
+        ) }
+        <TokenTransferList
+          data={ items }
+          baseAddress={ currentAddress }
+          showTxInfo
+          enableTimeIncrement
+        />
+      </Show>
+    </>
+  ) : null;
 
   const tokenFilterComponent = tokenFilter && (
     <Flex alignItems="center" flexWrap="wrap" mb={{ base: isActionBarHidden ? 3 : 6, lg: 0 }} mr={ 4 }>
@@ -249,7 +219,7 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
     </Flex>
   );
 
-  return (
+  const actionBar = (
     <>
       { isMobile && tokenFilterComponent }
       { !isActionBarHidden && (
@@ -269,8 +239,22 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
           { isPaginationVisible && <Pagination ml={{ base: 'auto', lg: 8 }} { ...pagination }/> }
         </ActionBar>
       ) }
-      { content }
     </>
+  );
+
+  return (
+    <DataListDisplay
+      isError={ isError }
+      isLoading={ isLoading }
+      items={ data?.items }
+      isLongSkeleton
+      skeletonDesktopColumns={ [ '44px', '185px', '160px', '25%', '25%', '25%', '25%' ] }
+      emptyText="There are no token transfers."
+      emptyFilteredText={ `Couldn${ apos }t find any token transfer that matches your query.` }
+      hasActiveFilters={ Boolean(numActiveFilters) }
+      content={ content }
+      actionBar={ actionBar }
+    />
   );
 };
 

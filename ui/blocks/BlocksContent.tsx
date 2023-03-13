@@ -1,4 +1,4 @@
-import { Text, Show, Hide, Alert } from '@chakra-ui/react';
+import { Show, Hide, Alert } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
@@ -13,11 +13,9 @@ import useSocketMessage from 'lib/socket/useSocketMessage';
 import BlocksList from 'ui/blocks/BlocksList';
 import BlocksTable from 'ui/blocks/BlocksTable';
 import ActionBar from 'ui/shared/ActionBar';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
+import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/Pagination';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
-import SkeletonList from 'ui/shared/skeletons/SkeletonList';
-import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 
 type QueryResult = UseQueryResult<BlocksResponse> & {
   pagination: PaginationProps;
@@ -76,51 +74,34 @@ const BlocksContent = ({ type, query }: Props) => {
     handler: handleNewBlockMessage,
   });
 
-  const content = (() => {
-    if (query.isLoading) {
-      return (
-        <>
-          <Show below="lg" key="skeleton-mobile" ssr={ false }>
-            <SkeletonList/>
-          </Show>
-          <Hide below="lg" key="skeleton-desktop" ssr={ false }>
-            <SkeletonTable columns={ [ '125px', '120px', '21%', '64px', '35%', '22%', '22%' ] }/>
-          </Hide>
-        </>
-      );
-    }
+  const content = query.data?.items ? (
+    <>
+      { socketAlert && <Alert status="warning" mb={ 6 } as="a" href={ window.document.location.href }>{ socketAlert }</Alert> }
+      <Show below="lg" key="content-mobile" ssr={ false }>
+        <BlocksList data={ query.data.items }/>
+      </Show>
+      <Hide below="lg" key="content-desktop" ssr={ false }>
+        <BlocksTable data={ query.data.items } top={ query.isPaginationVisible ? 80 : 0 } page={ query.pagination.page }/>
+      </Hide>
+    </>
+  ) : null;
 
-    if (query.isError) {
-      return <DataFetchAlert/>;
-    }
-
-    if (query.data.items.length === 0) {
-      return <Text as="span">There are no blocks.</Text>;
-    }
-
-    return (
-      <>
-        { socketAlert && <Alert status="warning" mb={ 6 } as="a" href={ window.document.location.href }>{ socketAlert }</Alert> }
-        <Show below="lg" key="content-mobile" ssr={ false }>
-          <BlocksList data={ query.data.items }/>
-        </Show>
-        <Hide below="lg" key="content-desktop" ssr={ false }>
-          <BlocksTable data={ query.data.items } top={ query.isPaginationVisible ? 80 : 0 } page={ query.pagination.page }/>
-        </Hide>
-      </>
-    );
-
-  })();
+  const actionBar = isMobile && query.isPaginationVisible ? (
+    <ActionBar mt={ -6 }>
+      <Pagination ml="auto" { ...query.pagination }/>
+    </ActionBar>
+  ) : null;
 
   return (
-    <>
-      { isMobile && query.isPaginationVisible && (
-        <ActionBar mt={ -6 }>
-          <Pagination ml="auto" { ...query.pagination }/>
-        </ActionBar>
-      ) }
-      { content }
-    </>
+    <DataListDisplay
+      isError={ query.isError }
+      isLoading={ query.isLoading }
+      items={ query.data?.items }
+      skeletonDesktopColumns={ [ '125px', '120px', '21%', '64px', '35%', '22%', '22%' ] }
+      emptyText="There are no blocks."
+      content={ content }
+      actionBar={ actionBar }
+    />
   );
 };
 

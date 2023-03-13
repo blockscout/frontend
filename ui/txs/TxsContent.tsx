@@ -1,4 +1,4 @@
-import { Text, Box, Show, Hide } from '@chakra-ui/react';
+import { Box, Show, Hide } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
@@ -6,10 +6,8 @@ import type { TxsResponse } from 'types/api/transaction';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
+import DataListDisplay from 'ui/shared/DataListDisplay';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
-import SkeletonList from 'ui/shared/skeletons/SkeletonList';
-import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 
 import TxsHeaderMobile from './TxsHeaderMobile';
@@ -50,92 +48,74 @@ const TxsContent = ({
   const { data, isLoading, isError, setSortByField, setSortByValue, sorting } = useTxsSort(query);
   const isMobile = useIsMobile();
 
-  const content = (() => {
-    if (isError) {
-      return <DataFetchAlert/>;
-    }
-
-    if (isLoading) {
-      return (
-        <>
-          <Show below="lg" ssr={ false }><SkeletonList/></Show>
-          <Hide below="lg" ssr={ false }>
-            <SkeletonTable
-              columns={ showBlockInfo ?
-                [ '32px', '22%', '160px', '20%', '18%', '292px', '20%', '20%' ] :
-                [ '32px', '22%', '160px', '20%', '292px', '20%', '20%' ]
-              }
-              isLong={ hasLongSkeleton }
+  const content = data?.items ? (
+    <>
+      <Show below="lg" ssr={ false }>
+        <Box>
+          { showSocketInfo && (
+            <SocketNewItemsNotice
+              url={ window.location.href }
+              num={ socketInfoNum }
+              alert={ socketInfoAlert }
+              borderBottomRadius={ 0 }
+            >
+              { ({ content }) => <Box>{ content }</Box> }
+            </SocketNewItemsNotice>
+          ) }
+          { data.items.map(tx => (
+            <TxsListItem
+              tx={ tx }
+              key={ tx.hash }
+              showBlockInfo={ showBlockInfo }
+              currentAddress={ currentAddress }
+              enableTimeIncrement={ enableTimeIncrement }
             />
-          </Hide>
-        </>
-      );
-    }
+          )) }
+        </Box>
+      </Show>
+      <Hide below="lg" ssr={ false }>
+        <TxsTable
+          txs={ data.items }
+          sort={ setSortByField }
+          sorting={ sorting }
+          showBlockInfo={ showBlockInfo }
+          showSocketInfo={ showSocketInfo }
+          socketInfoAlert={ socketInfoAlert }
+          socketInfoNum={ socketInfoNum }
+          top={ top || query.isPaginationVisible ? 80 : 0 }
+          currentAddress={ currentAddress }
+          enableTimeIncrement={ enableTimeIncrement }
+        />
+      </Hide>
+    </>
+  ) : null;
 
-    const txs = data.items;
-
-    if (!txs.length) {
-      return <Text as="span">There are no transactions.</Text>;
-    }
-
-    return (
-      <>
-        <Show below="lg" ssr={ false }>
-          <Box>
-            { showSocketInfo && (
-              <SocketNewItemsNotice
-                url={ window.location.href }
-                num={ socketInfoNum }
-                alert={ socketInfoAlert }
-                borderBottomRadius={ 0 }
-              >
-                { ({ content }) => <Box>{ content }</Box> }
-              </SocketNewItemsNotice>
-            ) }
-            { txs.map(tx => (
-              <TxsListItem
-                tx={ tx }
-                key={ tx.hash }
-                showBlockInfo={ showBlockInfo }
-                currentAddress={ currentAddress }
-                enableTimeIncrement={ enableTimeIncrement }
-              />
-            )) }
-          </Box>
-        </Show>
-        <Hide below="lg" ssr={ false }>
-          <TxsTable
-            txs={ txs }
-            sort={ setSortByField }
-            sorting={ sorting }
-            showBlockInfo={ showBlockInfo }
-            showSocketInfo={ showSocketInfo }
-            socketInfoAlert={ socketInfoAlert }
-            socketInfoNum={ socketInfoNum }
-            top={ top || query.isPaginationVisible ? 80 : 0 }
-            currentAddress={ currentAddress }
-            enableTimeIncrement={ enableTimeIncrement }
-          />
-        </Hide>
-      </>
-    );
-  })();
+  const actionBar = isMobile ? (
+    <TxsHeaderMobile
+      mt={ -6 }
+      sorting={ sorting }
+      setSorting={ setSortByValue }
+      paginationProps={ query.pagination }
+      showPagination={ query.isPaginationVisible }
+      filterComponent={ filter }
+      linkSlot={ currentAddress ? <AddressCsvExportLink address={ currentAddress } type="transactions" ml={ 2 }/> : null }
+    />
+  ) : null;
 
   return (
-    <>
-      { isMobile && (
-        <TxsHeaderMobile
-          mt={ -6 }
-          sorting={ sorting }
-          setSorting={ setSortByValue }
-          paginationProps={ query.pagination }
-          showPagination={ query.isPaginationVisible }
-          filterComponent={ filter }
-          linkSlot={ currentAddress ? <AddressCsvExportLink address={ currentAddress } type="transactions" ml={ 2 }/> : null }
-        />
-      ) }
-      { content }
-    </>
+    <DataListDisplay
+      isError={ isError }
+      isLoading={ isLoading }
+      items={ data?.items }
+      isLongSkeleton={ hasLongSkeleton }
+      skeletonDesktopColumns={ showBlockInfo ?
+        [ '32px', '22%', '160px', '20%', '18%', '292px', '20%', '20%' ] :
+        [ '32px', '22%', '160px', '20%', '292px', '20%', '20%' ]
+      }
+      emptyText="There are no transactions."
+      content={ content }
+      actionBar={ actionBar }
+    />
   );
 };
 
