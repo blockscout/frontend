@@ -3,29 +3,29 @@ import MonacoEditor from '@monaco-editor/react';
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import React from 'react';
 
-import type { File } from './types';
+import type { File, Monaco } from './types';
 
 import CodeEditorSideBar from './CodeEditorSideBar';
 import * as themes from './utils/themes';
-
-export type Monaco = typeof monaco;
 
 interface Props {
   data: Array<File>;
 }
 
 const CodeEditor = ({ data }: Props) => {
-  const instance = React.useRef<Monaco>();
+  const [ instance, setInstance ] = React.useState<Monaco | undefined>();
   const [ index, setIndex ] = React.useState(0);
+  const editorRef = React.useRef<monaco.editor.IStandaloneCodeEditor>();
 
   const { colorMode } = useColorMode();
 
   React.useEffect(() => {
-    instance.current?.editor.setTheme(colorMode === 'light' ? 'blockscout-light' : 'blockscout-dark');
-  }, [ colorMode ]);
+    instance?.editor.setTheme(colorMode === 'light' ? 'blockscout-light' : 'blockscout-dark');
+  }, [ colorMode, instance?.editor ]);
 
   const handleEditorDidMount = React.useCallback((editor: monaco.editor.IStandaloneCodeEditor, monaco: Monaco) => {
-    instance.current = monaco;
+    setInstance(monaco);
+    editorRef.current = editor;
 
     monaco.editor.defineTheme('blockscout-light', themes.light);
     monaco.editor.defineTheme('blockscout-dark', themes.dark);
@@ -33,6 +33,13 @@ const CodeEditor = ({ data }: Props) => {
   // componentDidMount
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ ]);
+
+  const handleSelectFile = React.useCallback((index: number, lineNumber?: number) => {
+    setIndex(index);
+    if (lineNumber !== undefined && !Object.is(lineNumber, NaN)) {
+      editorRef.current?.revealLineInCenter(lineNumber);
+    }
+  }, []);
 
   return (
     <Flex overflow="hidden" borderRadius="md" height="500px">
@@ -45,7 +52,7 @@ const CodeEditor = ({ data }: Props) => {
           onMount={ handleEditorDidMount }
         />
       </Box>
-      <CodeEditorSideBar data={ data } onFileSelect={ setIndex }/>
+      <CodeEditorSideBar data={ data } onFileSelect={ handleSelectFile } monaco={ instance }/>
     </Flex>
   );
 };
