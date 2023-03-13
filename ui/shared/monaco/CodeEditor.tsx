@@ -5,7 +5,7 @@ import React from 'react';
 
 import type { File } from './types';
 
-import CodeEditorFileExplorer from './CodeEditorFileExplorer';
+import CodeEditorSideBar from './CodeEditorSideBar';
 import * as themes from './utils/themes';
 
 export type Monaco = typeof monaco;
@@ -16,7 +16,7 @@ interface Props {
 
 const CodeEditor = ({ data }: Props) => {
   const instance = React.useRef<Monaco>();
-  const [ index ] = React.useState(0);
+  const [ index, setIndex ] = React.useState(0);
 
   const { colorMode } = useColorMode();
 
@@ -35,10 +35,9 @@ const CodeEditor = ({ data }: Props) => {
   }, [ ]);
 
   return (
-    <Flex overflow="hidden" borderRadius="md">
+    <Flex overflow="hidden" borderRadius="md" height="500px">
       <Box flexGrow={ 1 }>
         <MonacoEditor
-          height="500px"
           language="sol"
           path={ data[index].file_path }
           defaultValue={ data[index].source_code }
@@ -46,9 +45,7 @@ const CodeEditor = ({ data }: Props) => {
           onMount={ handleEditorDidMount }
         />
       </Box>
-      <Box w="250px" flexShrink={ 0 } bgColor="lightpink" fontSize="sm">
-        <CodeEditorFileExplorer data={ data }/>
-      </Box>
+      <CodeEditorSideBar data={ data } onFileSelect={ setIndex }/>
     </Flex>
   );
 };
