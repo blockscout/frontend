@@ -1,11 +1,10 @@
-import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import ActionBar from 'ui/shared/ActionBar';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
+import DataListDisplay from 'ui/shared/DataListDisplay';
 import LogItem from 'ui/shared/logs/LogItem';
 import LogSkeleton from 'ui/shared/logs/LogSkeleton';
 import Pagination from 'ui/shared/Pagination';
@@ -20,35 +19,26 @@ const AddressLogs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>
     scrollRef,
   });
 
-  if (isError) {
-    return <DataFetchAlert/>;
-  }
-
-  const bar = isPaginationVisible ? (
+  const actionBar = isPaginationVisible ? (
     <ActionBar mt={ -6 } showShadow>
       <Pagination ml="auto" { ...pagination }/>
     </ActionBar>
   ) : null;
 
-  if (isLoading) {
-    return (
-      <Box>
-        { bar }
-        <LogSkeleton/>
-        <LogSkeleton/>
-      </Box>
-    );
-  }
+  const content = data?.items ? data.items.map((item, index) => <LogItem key={ index } { ...item } type="address"/>) : null;
 
-  if (data.items.length === 0) {
-    return <span>There are no logs for this address.</span>;
-  }
+  const skeleton = <><LogSkeleton/><LogSkeleton/></>;
 
   return (
-    <>
-      { bar }
-      { data.items.map((item, index) => <LogItem key={ index } { ...item } type="address"/>) }
-    </>
+    <DataListDisplay
+      isError={ isError }
+      isLoading={ isLoading }
+      items={ data?.items }
+      emptyText="There are no logs for this address."
+      content={ content }
+      actionBar={ actionBar }
+      customSkeleton={ skeleton }
+    />
   );
 };
 

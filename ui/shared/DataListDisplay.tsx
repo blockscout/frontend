@@ -13,10 +13,11 @@ type Props = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   items?: Array<any>;
   emptyText: string;
-  skeletonDesktopColumns: Array<string>;
+  skeletonDesktopColumns?: Array<string>;
   isLongSkeleton?: boolean;
   actionBar?: React.ReactNode;
   content: React.ReactNode;
+  customSkeleton?: React.ReactNode;
   className?: string;
   hasActiveFilters?: boolean;
   emptyFilteredText?: string;
@@ -28,15 +29,20 @@ const DataListDisplay = (props: Props) => {
   }
 
   if (props.isLoading) {
+
     return (
       <>
         { props.actionBar }
-        <SkeletonList display={{ base: 'block', lg: 'none' }}/>
-        <SkeletonTable
-          display={{ base: 'none', lg: 'block' }}
-          columns={ props.skeletonDesktopColumns }
-          isLong={ props.isLongSkeleton }
-        />
+        { props.customSkeleton || (
+          <>
+            <SkeletonList display={{ base: 'block', lg: 'none' }}/>
+            <SkeletonTable
+              display={{ base: 'none', lg: 'block' }}
+              columns={ props.skeletonDesktopColumns || [] }
+              isLong={ props.isLongSkeleton }
+            />
+          </>
+        ) }
       </>
     );
   }

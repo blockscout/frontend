@@ -42,6 +42,7 @@ const TokensWithoutIds = ({ tokensQuery }: Props) => {
       isError={ isError }
       isLoading={ isLoading }
       items={ data?.items }
+      isLongSkeleton
       skeletonDesktopColumns={ [ '30%', '30%', '10%', '20%', '10%' ] }
       emptyText="There are no tokens of selected type."
       content={ content }
