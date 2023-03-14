@@ -77,7 +77,7 @@ const TokenInstanceContent = () => {
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
-        text={ `${ tokenInstanceQuery.data.token.name } #${ tokenInstanceQuery.data.id }` }
+        text={ `${ tokenInstanceQuery.data.token.name || 'Unnamed token' } #${ tokenInstanceQuery.data.id }` }
         backLinkUrl={ hasGoBackLink ? appProps.referrer : undefined }
         backLinkLabel="Back to token page"
         additionalsLeft={ tokenLogo }
