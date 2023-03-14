@@ -107,11 +107,12 @@ const TxsContent = ({
       isError={ isError }
       isLoading={ isLoading }
       items={ data?.items }
-      isLongSkeleton={ hasLongSkeleton }
-      skeletonDesktopColumns={ showBlockInfo ?
-        [ '32px', '22%', '160px', '20%', '18%', '292px', '20%', '20%' ] :
-        [ '32px', '22%', '160px', '20%', '292px', '20%', '20%' ]
-      }
+      skeletonProps={{
+        isLongSkeleton: hasLongSkeleton,
+        skeletonDesktopColumns: showBlockInfo ?
+          [ '32px', '22%', '160px', '20%', '18%', '292px', '20%', '20%' ] :
+          [ '32px', '22%', '160px', '20%', '292px', '20%', '20%' ],
+      }}
       emptyText="There are no transactions."
       content={ content }
       actionBar={ actionBar }

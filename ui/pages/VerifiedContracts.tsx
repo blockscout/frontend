@@ -120,10 +120,12 @@ const VerifiedContracts = () => {
         isError={ isError }
         isLoading={ isLoading }
         items={ data?.items }
-        skeletonDesktopColumns={ [ '50%', '130px', '130px', '50%', '80px', '110px' ] }
+        skeletonProps={{ skeletonDesktopColumns: [ '50%', '130px', '130px', '50%', '80px', '110px' ] }}
         emptyText="There are no verified contracts."
-        emptyFilteredText={ `Couldn${ apos }t find any contract that matches your query.` }
-        hasActiveFilters={ Boolean(searchTerm || type) }
+        filterProps={{
+          emptyFilteredText: `Couldn${ apos }t find any contract that matches your query.`,
+          hasActiveFilters: Boolean(searchTerm || type),
+        }}
         content={ content }
         actionBar={ actionBar }
       />

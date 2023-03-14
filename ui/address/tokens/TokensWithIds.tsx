@@ -64,7 +64,7 @@ const TokensWithIds = ({ tokensQuery }: Props) => {
       emptyText="There are no tokens of selected type."
       content={ content }
       actionBar={ actionBar }
-      customSkeleton={ skeleton }
+      skeletonProps={{ customSkeleton: skeleton }}
     />
   );
 };

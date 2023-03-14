@@ -37,7 +37,7 @@ const AddressLogs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>
       emptyText="There are no logs for this address."
       content={ content }
       actionBar={ actionBar }
-      customSkeleton={ skeleton }
+      skeletonProps={{ customSkeleton: skeleton }}
     />
   );
 };

@@ -109,8 +109,7 @@ const AddressBlocksValidated = ({ scrollRef }: Props) => {
       isError={ query.isError }
       isLoading={ query.isLoading }
       items={ query.data?.items }
-      isLongSkeleton
-      skeletonDesktopColumns={ [ '17%', '17%', '16%', '25%', '25%' ] }
+      skeletonProps={{ isLongSkeleton: true, skeletonDesktopColumns: [ '17%', '17%', '16%', '25%', '25%' ] }}
       emptyText="There are no validated blocks for this address."
       content={ content }
       actionBar={ actionBar }

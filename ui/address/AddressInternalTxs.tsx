@@ -68,11 +68,9 @@ const AddressInternalTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivE
       isError={ isError }
       isLoading={ isLoading }
       items={ data?.items }
-      isLongSkeleton
-      skeletonDesktopColumns={ [ '15%', '15%', '10%', '20%', '20%', '20%' ] }
+      skeletonProps={{ isLongSkeleton: true, skeletonDesktopColumns: [ '15%', '15%', '10%', '20%', '20%', '20%' ] }}
+      filterProps={{ emptyFilteredText: `Couldn${ apos }t find any transaction that matches your query.`, hasActiveFilters: Boolean(filterValue) }}
       emptyText="There are no internal transactions for this address."
-      emptyFilteredText={ `Couldn${ apos }t find any transaction that matches your query.` }
-      hasActiveFilters={ Boolean(filterValue) }
       content={ content }
       actionBar={ actionBar }
     />

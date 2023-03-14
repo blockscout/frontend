@@ -84,11 +84,15 @@ const TxTokenTransfer = () => {
       isError={ txsInfo.isError || tokenTransferQuery.isError }
       isLoading={ txsInfo.isLoading || tokenTransferQuery.isLoading }
       items={ tokenTransferQuery.data?.items }
-      isLongSkeleton
-      skeletonDesktopColumns={ [ '185px', '25%', '25%', '25%', '25%' ] }
+      skeletonProps={{
+        isLongSkeleton: true,
+        skeletonDesktopColumns: [ '185px', '25%', '25%', '25%', '25%' ],
+      }}
       emptyText="There are no token transfers."
-      emptyFilteredText={ `Couldn${ apos }t find any token transfer that matches your query.` }
-      hasActiveFilters={ Boolean(numActiveFilters) }
+      filterProps={{
+        emptyFilteredText: `Couldn${ apos }t find any token transfer that matches your query.`,
+        hasActiveFilters: Boolean(numActiveFilters),
+      }}
       content={ content }
       actionBar={ actionBar }
     />

@@ -64,7 +64,7 @@ const TokenInventory = ({ inventoryQuery }: Props) => {
       emptyText="There are no tokens."
       content={ content }
       actionBar={ actionBar }
-      customSkeleton={ skeleton }
+      skeletonProps={{ customSkeleton: skeleton }}
     />
   );
 };

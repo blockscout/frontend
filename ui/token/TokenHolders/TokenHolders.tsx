@@ -48,7 +48,7 @@ const TokenHoldersContent = ({ holdersQuery, tokenQuery }: Props) => {
       isError={ holdersQuery.isError || tokenQuery.isError }
       isLoading={ holdersQuery.isLoading || tokenQuery.isLoading }
       items={ holdersQuery.data?.items }
-      skeletonDesktopColumns={ [ '100%', '300px', '175px' ] }
+      skeletonProps={{ skeletonDesktopColumns: [ '100%', '300px', '175px' ] }}
       emptyText="There are no holders for this token."
       content={ content }
       actionBar={ actionBar }

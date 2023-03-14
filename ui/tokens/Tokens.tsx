@@ -94,10 +94,12 @@ const Tokens = () => {
       isError={ isError }
       isLoading={ isLoading }
       items={ data?.items }
-      skeletonDesktopColumns={ [ '25px', '33%', '33%', '33%', '110px' ] }
+      skeletonProps={{ skeletonDesktopColumns: [ '25px', '33%', '33%', '33%', '110px' ] }}
       emptyText="There are no tokens."
-      emptyFilteredText={ `Couldn${ apos }t find token that matches your filter query.` }
-      hasActiveFilters={ Boolean(debouncedFilter || type) }
+      filterProps={{
+        emptyFilteredText: `Couldn${ apos }t find token that matches your filter query.`,
+        hasActiveFilters: Boolean(debouncedFilter || type),
+      }}
       content={ content }
       actionBar={ actionBar }
     />

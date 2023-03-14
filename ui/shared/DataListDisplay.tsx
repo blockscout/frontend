@@ -7,20 +7,29 @@ import DataFetchAlert from './DataFetchAlert';
 import SkeletonList from './skeletons/SkeletonList';
 import SkeletonTable from './skeletons/SkeletonTable';
 
+type SkeletonProps =
+  { customSkeleton: React.ReactNode } |
+  {
+    skeletonDesktopColumns: Array<string>;
+    isLongSkeleton?: boolean;
+  }
+
+type FilterProps = {
+  hasActiveFilters: boolean;
+  emptyFilteredText: string;
+};
+
 type Props = {
   isError: boolean;
   isLoading: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   items?: Array<any>;
   emptyText: string;
-  skeletonDesktopColumns?: Array<string>;
-  isLongSkeleton?: boolean;
   actionBar?: React.ReactNode;
   content: React.ReactNode;
-  customSkeleton?: React.ReactNode;
   className?: string;
-  hasActiveFilters?: boolean;
-  emptyFilteredText?: string;
+  skeletonProps: SkeletonProps;
+  filterProps?: FilterProps;
 }
 
 const DataListDisplay = (props: Props) => {
@@ -33,13 +42,14 @@ const DataListDisplay = (props: Props) => {
     return (
       <>
         { props.actionBar }
-        { props.customSkeleton || (
+        { 'customSkeleton' in props.skeletonProps && props.skeletonProps.customSkeleton }
+        { 'skeletonDesktopColumns' in props.skeletonProps && (
           <>
             <SkeletonList display={{ base: 'block', lg: 'none' }}/>
             <SkeletonTable
               display={{ base: 'none', lg: 'block' }}
-              columns={ props.skeletonDesktopColumns || [] }
-              isLong={ props.isLongSkeleton }
+              columns={ props.skeletonProps.skeletonDesktopColumns || [] }
+              isLong={ props.skeletonProps.isLongSkeleton }
             />
           </>
         ) }
@@ -47,11 +57,11 @@ const DataListDisplay = (props: Props) => {
     );
   }
 
-  if (props.hasActiveFilters && !props.items?.length) {
+  if (props.filterProps?.hasActiveFilters && !props.items?.length) {
     return (
       <>
         { props.actionBar }
-        <EmptySearchResult text={ props.emptyFilteredText }/>
+        <EmptySearchResult text={ props.filterProps.emptyFilteredText }/>
       </>
     );
   }

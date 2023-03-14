@@ -56,7 +56,7 @@ const Accounts = () => {
         isError={ isError }
         isLoading={ isLoading }
         items={ data?.items }
-        skeletonDesktopColumns={ [ '64px', '30%', '20%', '20%', '15%', '15%' ] }
+        skeletonProps={{ skeletonDesktopColumns: [ '64px', '30%', '20%', '20%', '15%', '15%' ] }}
         emptyText="There are no accounts."
         content={ content }
         actionBar={ actionBar }

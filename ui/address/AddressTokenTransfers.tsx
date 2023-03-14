@@ -247,11 +247,15 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
       isError={ isError }
       isLoading={ isLoading }
       items={ data?.items }
-      isLongSkeleton
-      skeletonDesktopColumns={ [ '44px', '185px', '160px', '25%', '25%', '25%', '25%' ] }
+      skeletonProps={{
+        isLongSkeleton: true,
+        skeletonDesktopColumns: [ '44px', '185px', '160px', '25%', '25%', '25%', '25%' ],
+      }}
       emptyText="There are no token transfers."
-      emptyFilteredText={ `Couldn${ apos }t find any token transfer that matches your query.` }
-      hasActiveFilters={ Boolean(numActiveFilters) }
+      filterProps={{
+        emptyFilteredText: `Couldn${ apos }t find any token transfer that matches your query.`,
+        hasActiveFilters: Boolean(numActiveFilters),
+      }}
       content={ content }
       actionBar={ actionBar }
     />

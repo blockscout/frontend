@@ -97,7 +97,7 @@ const BlocksContent = ({ type, query }: Props) => {
       isError={ query.isError }
       isLoading={ query.isLoading }
       items={ query.data?.items }
-      skeletonDesktopColumns={ [ '125px', '120px', '21%', '64px', '35%', '22%', '22%' ] }
+      skeletonProps={{ skeletonDesktopColumns: [ '125px', '120px', '21%', '64px', '35%', '22%', '22%' ] }}
       emptyText="There are no blocks."
       content={ content }
       actionBar={ actionBar }

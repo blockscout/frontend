@@ -100,8 +100,10 @@ const TokenTransfer = ({ transfersQuery, tokenId }: Props) => {
       isError={ isError }
       isLoading={ isLoading }
       items={ data?.items }
-      isLongSkeleton
-      skeletonDesktopColumns={ [ '45%', '15%', '36px', '15%', '25%' ] }
+      skeletonProps={{
+        isLongSkeleton: true,
+        skeletonDesktopColumns: [ '45%', '15%', '36px', '15%', '25%' ],
+      }}
       emptyText="There are no token transfers."
       content={ content }
       actionBar={ actionBar }
