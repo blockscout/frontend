@@ -28,7 +28,9 @@ const NavLink = ({ item, isCollapsed, px, className }: Props) => {
 
   let href: string| undefined;
 
-  if (isInternalItem(item)) {
+  const isInternal = isInternalItem(item);
+
+  if (isInternal) {
     href = !item.isNewUi ? route(item.nextRoute) : undefined;
   } else {
     href = item.url;
@@ -37,6 +39,7 @@ const NavLink = ({ item, isCollapsed, px, className }: Props) => {
   const content = (
     <Link
       href={ href }
+      target={ isInternal ? '_self' : '_blank' }
       { ...styleProps.itemProps }
       w={{ base: '100%', lg: isExpanded ? '100%' : '60px', xl: isCollapsed ? '60px' : '100%' }}
       display="flex"
