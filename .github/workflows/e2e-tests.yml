@@ -3,6 +3,7 @@ name: Run E2E tests k8s
 on:
   push:
     tags:
+      - '*'
   # pull_request_review:
   #   types: [submitted]
   workflow_dispatch:
@@ -38,8 +39,6 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ghcr.io/blockscout/frontend
-          tags: |
-            type=ref,event=tag
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
