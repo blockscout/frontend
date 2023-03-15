@@ -44,12 +44,12 @@ frontend:
   resources:
     limits:
       memory:
-        _default: "0.5Gi"
+        _default: "1Gi"
       cpu:
         _default: "0.5"
     requests:
       memory:
-        _default: "0.5Gi"
+        _default: "1Gi"
       cpu:
         _default: "0.5"
   environment:
