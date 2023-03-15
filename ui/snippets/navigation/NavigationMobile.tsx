@@ -38,12 +38,19 @@ const NavigationMobile = () => {
   const openedItem = mainNavItems[openedGroupIndex];
 
   return (
-    <>
-      <Box position="relative">
+    <Flex position="relative" flexDirection="column" flexGrow={ 1 }>
+      <Box
+        display="flex"
+        flexDirection="column"
+        flexGrow={ 1 }
+        as={ motion.div }
+        style={{ x: mainX }}
+        maxHeight={ openedGroupIndex > -1 ? '100vh' : 'unset' }
+        overflowY={ openedGroupIndex > -1 ? 'hidden' : 'unset' }
+      >
         <Box
-          as={ motion.nav }
+          as="nav"
           mt={ 6 }
-          style={{ x: mainX }}
         >
           <VStack
             w="100%"
@@ -62,60 +69,59 @@ const NavigationMobile = () => {
         </Box>
         { isAuth && (
           <Box
-            as={ motion.nav }
+            as="nav"
             mt={ 6 }
             pt={ 6 }
             borderTopWidth="1px"
             borderColor="divider"
-            style={{ x: mainX }}
           >
             <VStack as="ul" spacing="1" alignItems="flex-start">
               { accountNavItems.map((item) => <NavLink key={ item.text } item={ item }/>) }
             </VStack>
           </Box>
         ) }
-        { openedGroupIndex >= 0 && (
-          <Box
-            as={ motion.nav }
-            w="100%"
-            mt={ 6 }
-            position="absolute"
-            top={ 0 }
-            style={{ x: subX }}
-            key="sub"
-          >
-            <Flex alignItems="center" px={ 3 } py={ 2.5 } w="100%" h="50px" onClick={ onGroupItemClose } mb={ 1 }>
-              <Icon as={ chevronIcon } boxSize={ 6 } mr={ 2 } color={ iconColor }/>
-              <Text variant="secondary" fontSize="sm">{ mainNavItems[openedGroupIndex].text }</Text>
-            </Flex>
-            <Box
-              w="100%"
-              as="ul"
-            >
-              { isGroupItem(openedItem) && openedItem.subItems?.map(
-                (item, index) => Array.isArray(item) ? (
-                  <Box
-                    key={ index }
-                    w="100%"
-                    as="ul"
-                    _notLast={{
-                      mb: 2,
-                      pb: 2,
-                      borderBottomWidth: '1px',
-                      borderColor: 'divider',
-                    }}
-                  >
-                    { item.map(subItem => <NavLink key={ subItem.text } item={ subItem }/>) }
-                  </Box>
-                ) :
-                  <NavLink key={ item.text } item={ item } mb={ 1 }/>,
-              ) }
-            </Box>
-          </Box>
-        ) }
+        <NavFooter hasAccount={ hasAccount }/>
       </Box>
-      <NavFooter hasAccount={ hasAccount }/>
-    </>
+      { openedGroupIndex >= 0 && (
+        <Box
+          as={ motion.nav }
+          w="100%"
+          mt={ 6 }
+          position="absolute"
+          top={ 0 }
+          style={{ x: subX }}
+          key="sub"
+        >
+          <Flex alignItems="center" px={ 3 } py={ 2.5 } w="100%" h="50px" onClick={ onGroupItemClose } mb={ 1 }>
+            <Icon as={ chevronIcon } boxSize={ 6 } mr={ 2 } color={ iconColor }/>
+            <Text variant="secondary" fontSize="sm">{ mainNavItems[openedGroupIndex].text }</Text>
+          </Flex>
+          <Box
+            w="100%"
+            as="ul"
+          >
+            { isGroupItem(openedItem) && openedItem.subItems?.map(
+              (item, index) => Array.isArray(item) ? (
+                <Box
+                  key={ index }
+                  w="100%"
+                  as="ul"
+                  _notLast={{
+                    mb: 2,
+                    pb: 2,
+                    borderBottomWidth: '1px',
+                    borderColor: 'divider',
+                  }}
+                >
+                  { item.map(subItem => <NavLink key={ subItem.text } item={ subItem }/>) }
+                </Box>
+              ) :
+                <NavLink key={ item.text } item={ item } mb={ 1 }/>,
+            ) }
+          </Box>
+        </Box>
+      ) }
+    </Flex>
   );
 };
 
