@@ -24,7 +24,7 @@ const TxDetailsTokenTransfer = ({ token, total, to, from }: Props) => {
         return (
           <Flex flexWrap="wrap" columnGap={ 3 } rowGap={ 2 }>
             <Text fontWeight={ 500 } as="span">For:{ space }
-              <CurrencyValue value={ payload.value } exchangeRate={ token.exchange_rate } fontWeight={ 600 }/>
+              <CurrencyValue value={ payload.value } exchangeRate={ token.exchange_rate } fontWeight={ 600 } decimals={ payload.decimals }/>
             </Text>
             <TokenSnippet
               symbol={ trimTokenSymbol(token.symbol) }
