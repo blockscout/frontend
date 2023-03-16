@@ -10,18 +10,21 @@ interface Props {
   rightSlot?: React.ReactNode;
   beforeSlot?: React.ReactNode;
   textareaMaxHeight?: string;
+  showCopy?: boolean;
 }
 
-const RawDataSnippet = ({ data, className, title, rightSlot, beforeSlot, textareaMaxHeight }: Props) => {
+const RawDataSnippet = ({ data, className, title, rightSlot, beforeSlot, textareaMaxHeight, showCopy = true }: Props) => {
   // see issue in theme/components/Textarea.ts
   const bgColor = useColorModeValue('#f5f5f6', '#1a1b1b');
   return (
     <Box className={ className } as="section" title={ title }>
-      <Flex justifyContent={ title ? 'space-between' : 'flex-end' } alignItems="center" mb={ 3 }>
-        { title && <Text fontWeight={ 500 }>{ title }</Text> }
-        { rightSlot }
-        { typeof data === 'string' && <CopyToClipboard text={ data }/> }
-      </Flex>
+      { (title || rightSlot || showCopy) && (
+        <Flex justifyContent={ title ? 'space-between' : 'flex-end' } alignItems="center" mb={ 3 }>
+          { title && <Text fontWeight={ 500 }>{ title }</Text> }
+          { rightSlot }
+          { typeof data === 'string' && showCopy && <CopyToClipboard text={ data }/> }
+        </Flex>
+      ) }
       { beforeSlot }
       <Box
         p={ 4 }

@@ -1,1 +1,3 @@
-export type KeysOfObjectOrNull<T> = T extends null ? never : keyof T;
+import type { ExcludeNull } from './ExcludeNull';
+
+export type KeysOfObjectOrNull<T> = keyof ExcludeNull<T>;
