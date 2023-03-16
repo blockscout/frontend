@@ -1,4 +1,5 @@
-import { Box, Flex, Tooltip } from '@chakra-ui/react';
+import type { HTMLChakraProps } from '@chakra-ui/react';
+import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import React from 'react';
 
 import type { File, Monaco } from './types';
@@ -13,40 +14,37 @@ interface Props {
 }
 
 const CodeEditorSideBar = ({ onFileSelect, data, monaco }: Props) => {
-  const [ activePanelIndex, setActivePanelIndex ] = React.useState(0);
 
-  const PANELS = React.useMemo(() => ([
-    { id: 'explorer', label: 'Explorer', text: 'E', component: <CodeEditorFileExplorer data={ data } onFileSelect={ onFileSelect }/> },
-    { id: 'search', label: 'Search', text: 'S', component: <CodeEditorSearch data={ data } onFileSelect={ onFileSelect } monaco={ monaco }/> },
-  ]), [ data, monaco, onFileSelect ]);
-
-  const activePanel = PANELS[activePanelIndex];
-
-  const handleTabClick = React.useCallback((event: React.MouseEvent) => {
-    const id = (event.currentTarget as HTMLDivElement).getAttribute('data-id');
-    const index = PANELS.findIndex((item) => item.id === id);
-    if (index > -1) {
-      setActivePanelIndex(index);
-    }
-  }, [ PANELS ]);
+  const tabProps: HTMLChakraProps<'button'> = {
+    fontFamily: 'heading',
+    textTransform: 'uppercase',
+    fontSize: 'xs',
+    fontWeight: 500,
+    color: 'gray.600',
+    _selected: {
+      color: 'black',
+    },
+    px: 0,
+    letterSpacing: 0.3,
+  };
 
   return (
-    <Box w="250px" flexShrink={ 0 } bgColor="lightpink" fontSize="sm" overflowY="scroll" px={ 3 }>
-      <Flex>
-        <Box fontFamily="heading" letterSpacing={ 0.5 } fontWeight={ 600 } textTransform="uppercase" lineHeight={ 6 }>
-          { activePanel.label }
-        </Box>
-        <Flex ml="auto" columnGap={ 2 }>
-          { PANELS.map(({ id, text, label }) => (
-            <Tooltip key={ id } label={ label }>
-              <Box data-id={ id } boxSize={ 6 } cursor="pointer" textAlign="center" bgColor="lightblue" onClick={ handleTabClick }>
-                { text }
-              </Box>
-            </Tooltip>
-          )) }
-        </Flex>
-      </Flex>
-      { activePanel.component }
+    <Box w="250px" flexShrink={ 0 } bgColor="lightpink" fontSize="sm" overflowY="scroll" px={ 3 } position="relative">
+      <Tabs isLazy lazyBehavior="keepMounted" variant="unstyled" size="sm">
+        <TabList columnGap={ 3 }>
+          <Tab { ...tabProps }>Explorer</Tab>
+          <Tab { ...tabProps }>Search</Tab>
+        </TabList>
+
+        <TabPanels>
+          <TabPanel p={ 0 }>
+            <CodeEditorFileExplorer data={ data } onFileSelect={ onFileSelect }/>
+          </TabPanel>
+          <TabPanel p={ 0 }>
+            <CodeEditorSearch data={ data } onFileSelect={ onFileSelect } monaco={ monaco }/>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </Box>
   );
 };

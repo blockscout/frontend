@@ -7,10 +7,11 @@ import type { FileTree } from './types';
 interface Props {
   tree: FileTree;
   level?: number;
+  isCollapsed?: boolean;
   onItemClick: (event: React.MouseEvent) => void;
 }
 
-const CodeEditorFileTree = ({ tree, level = 0, onItemClick }: Props) => {
+const CodeEditorFileTree = ({ tree, level = 0, onItemClick, isCollapsed }: Props) => {
   const itemProps: ChakraProps = {
     ml: level ? 4 : 0,
     borderWidth: '0px',
@@ -21,7 +22,7 @@ const CodeEditorFileTree = ({ tree, level = 0, onItemClick }: Props) => {
   };
 
   return (
-    <Accordion allowMultiple defaultIndex={ tree.map((item, index) => index) } reduceMotion>
+    <Accordion allowMultiple defaultIndex={ isCollapsed ? undefined : tree.map((item, index) => index) } reduceMotion>
       {
         tree.map((leaf, index) => {
           if ('children' in leaf) {
@@ -32,7 +33,7 @@ const CodeEditorFileTree = ({ tree, level = 0, onItemClick }: Props) => {
                   <span>{ leaf.name }</span>
                 </AccordionButton>
                 <AccordionPanel p={ 0 }>
-                  <CodeEditorFileTree tree={ leaf.children } level={ level + 1 } onItemClick={ onItemClick }/>
+                  <CodeEditorFileTree tree={ leaf.children } level={ level + 1 } onItemClick={ onItemClick } isCollapsed={ isCollapsed }/>
                 </AccordionPanel>
               </AccordionItem>
             );

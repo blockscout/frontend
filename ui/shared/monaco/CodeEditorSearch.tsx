@@ -6,6 +6,7 @@ import type { File, Monaco, SearchResult } from './types';
 import useDebounce from 'lib/hooks/useDebounce';
 
 import CodeEditorSearchSection from './CodeEditorSearchSection';
+import CoderEditorCollapseButton from './CoderEditorCollapseButton';
 
 interface Props {
   data: Array<File>;
@@ -16,6 +17,7 @@ interface Props {
 const CodeEditorSearch = ({ monaco, data, onFileSelect }: Props) => {
   const [ searchTerm, changeSearchTerm ] = React.useState('');
   const [ searchResults, setSearchResults ] = React.useState<Array<SearchResult>>([]);
+  const [ expandedSections, setExpandedSections ] = React.useState<Array<number>>([]);
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
@@ -41,6 +43,10 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect }: Props) => {
     setSearchResults(result.length > 0 ? result : []);
   }, [ debouncedSearchTerm, monaco ]);
 
+  React.useEffect(() => {
+    setExpandedSections(searchResults.map((item, index) => index));
+  }, [ searchResults ]);
+
   const handleSearchTermChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     changeSearchTerm(event.target.value);
   }, []);
@@ -52,13 +58,31 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect }: Props) => {
     }
   }, [ data, onFileSelect ]);
 
+  const handleAccordionStateChange = React.useCallback((newValue: Array<number>) => {
+    setExpandedSections(newValue);
+  }, []);
+
+  const handleToggleCollapseClick = React.useCallback(() => {
+    if (expandedSections.length === 0) {
+      setExpandedSections(searchResults.map((item, index) => index));
+    } else {
+      setExpandedSections([]);
+    }
+  }, [ expandedSections.length, searchResults ]);
+
   return (
     <Box>
+      <CoderEditorCollapseButton
+        onClick={ handleToggleCollapseClick }
+        label={ expandedSections.length === 0 ? 'Expand all' : 'Collapse all' }
+        isDisabled={ searchResults.length === 0 }
+      />
       <Input size="xs" onChange={ handleSearchTermChange } value={ searchTerm } placeholder="Search"/>
       <Accordion
         key={ debouncedSearchTerm }
         allowMultiple
-        defaultIndex={ searchResults.map((item, index) => index) }
+        index={ expandedSections }
+        onChange={ handleAccordionStateChange }
         reduceMotion
         mt={ 3 }
       >

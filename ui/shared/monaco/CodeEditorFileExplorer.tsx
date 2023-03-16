@@ -4,6 +4,7 @@ import React from 'react';
 import type { File } from './types';
 
 import CodeEditorFileTree from './CodeEditorFileTree';
+import CoderEditorCollapseButton from './CoderEditorCollapseButton';
 import composeFileTree from './utils/composeFileTree';
 
 interface Props {
@@ -12,6 +13,7 @@ interface Props {
 }
 
 const CodeEditorFileExplorer = ({ data, onFileSelect }: Props) => {
+  const [ key, setKey ] = React.useState(0);
   const tree = React.useMemo(() => {
     return composeFileTree(data);
   }, [ data ]);
@@ -25,9 +27,14 @@ const CodeEditorFileExplorer = ({ data, onFileSelect }: Props) => {
     }
   }, [ data, onFileSelect ]);
 
+  const handleCollapseButtonClick = React.useCallback(() => {
+    setKey((prev) => prev + 1);
+  }, []);
+
   return (
     <Box>
-      <CodeEditorFileTree tree={ tree } onItemClick={ handleFileClick }/>
+      <CoderEditorCollapseButton onClick={ handleCollapseButtonClick } label="Collapse folders"/>
+      <CodeEditorFileTree key={ key } tree={ tree } onItemClick={ handleFileClick } isCollapsed={ key > 0 }/>
     </Box>
   );
 };
