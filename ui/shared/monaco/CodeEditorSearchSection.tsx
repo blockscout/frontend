@@ -4,6 +4,7 @@ import React from 'react';
 import type { SearchResult } from './types';
 
 import CodeEditorSearchResultItem from './CodeEditorSearchResultItem';
+import getFileName from './utils/getFileName';
 
 interface Props {
   data: SearchResult;
@@ -11,7 +12,7 @@ interface Props {
 }
 
 const CodeEditorSearchSection = ({ data, onItemClick }: Props) => {
-  const fileName = data.file_path.split('/').at(-1);
+  const fileName = getFileName(data.file_path);
 
   const handleFileLineClick = React.useCallback((event: React.MouseEvent) => {
     const lineNumber = Number((event.currentTarget as HTMLDivElement).getAttribute('data-line-number'));

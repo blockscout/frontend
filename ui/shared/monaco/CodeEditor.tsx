@@ -6,6 +6,7 @@ import React from 'react';
 import type { File, Monaco } from './types';
 
 import CodeEditorSideBar from './CodeEditorSideBar';
+import CodeEditorTabs from './CodeEditorTabs';
 import * as themes from './utils/themes';
 
 const EDITOR_OPTIONS = {
@@ -20,6 +21,7 @@ interface Props {
 const CodeEditor = ({ data }: Props) => {
   const [ instance, setInstance ] = React.useState<Monaco | undefined>();
   const [ index, setIndex ] = React.useState(0);
+  const [ tabs, setTabs ] = React.useState([ data[index].file_path ]);
   const editorRef = React.useRef<monaco.editor.IStandaloneCodeEditor>();
 
   const { colorMode } = useColorMode();
@@ -45,16 +47,43 @@ const CodeEditor = ({ data }: Props) => {
 
   const handleSelectFile = React.useCallback((index: number, lineNumber?: number) => {
     setIndex(index);
+    setTabs((prev) => prev.some((item) => item === data[index].file_path) ? prev : ([ ...prev, data[index].file_path ]));
     if (lineNumber !== undefined && !Object.is(lineNumber, NaN)) {
       window.setTimeout(() => {
         editorRef.current?.revealLineInCenter(lineNumber);
       }, 0);
     }
-  }, []);
+  }, [ data ]);
+
+  const handleTabSelect = React.useCallback((path: string) => {
+    const index = data.findIndex((item) => item.file_path === path);
+    if (index > -1) {
+      setIndex(index);
+    }
+  }, [ data ]);
+
+  const handleTabClose = React.useCallback((path: string) => {
+    setTabs((prev) => {
+      if (prev.length > 1) {
+        const tabIndex = prev.findIndex((item) => item === path);
+        const isActive = data[index].file_path === path;
+
+        if (isActive) {
+          const nextActiveIndex = data.findIndex((item) => item.file_path === prev[Math.max(0, tabIndex - 1)]);
+          setIndex(nextActiveIndex);
+        }
+
+        return prev.filter((item) => item !== path);
+      }
+
+      return prev;
+    });
+  }, [ data, index ]);
 
   return (
-    <Flex overflow="hidden" borderRadius="md" height="500px">
+    <Flex overflow="hidden" borderRadius="md" height="540px">
       <Box flexGrow={ 1 }>
+        <CodeEditorTabs tabs={ tabs } activeTab={ data[index].file_path } onTabSelect={ handleTabSelect } onTabClose={ handleTabClose }/>
         <MonacoEditor
           language="sol"
           path={ data[index].file_path }
