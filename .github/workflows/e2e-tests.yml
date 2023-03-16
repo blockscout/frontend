@@ -68,7 +68,7 @@ jobs:
             GIT_COMMIT_SHA=${{ env.GITHUB_SHA_SHORT }}
 
   deploy_and_tests:
-    if: github.event.review.state == 'approved'
+    # if: github.event.review.state == 'approved'
     needs: push_to_registry
     uses: blockscout/blockscout-ci-cd/.github/workflows/e2e_new.yaml@master
     with:
