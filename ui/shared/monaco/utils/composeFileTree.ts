@@ -2,17 +2,7 @@ import type { File, FileTree } from '../types';
 
 import sortFileTree from './sortFileTree';
 
-const stripLeadingSlash = (str: string) => {
-  if (str[0] === '.' && str[1] === '/') {
-    return str.slice(2);
-  }
-
-  if (str[0] === '/') {
-    return str.slice(1);
-  }
-
-  return str;
-};
+const stripLeadingSlash = (str: string) => str[0] === '/' ? str.slice(1) : str;
 
 export default function composeFileTree(files: Array<File>) {
   const result: FileTree = [];

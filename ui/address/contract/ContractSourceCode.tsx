@@ -6,6 +6,7 @@ import type { SmartContract } from 'types/api/contract';
 
 import LinkInternal from 'ui/shared/LinkInternal';
 import CodeEditor from 'ui/shared/monaco/CodeEditor';
+import formatFilePath from 'ui/shared/monaco/utils/formatFilePath';
 
 interface Props {
   data: string;
@@ -37,8 +38,10 @@ const ContractSourceCode = ({ data, hasSol2Yml, address, isViper, filePath, addi
   ) : null;
 
   const editorData = React.useMemo(() => {
-    const defaultName = isViper ? 'index.vy' : 'index.sol';
-    return [ { file_path: filePath || defaultName, source_code: data }, ...(additionalSource || []) ];
+    const defaultName = isViper ? '/index.vy' : '/index.sol';
+    return [
+      { file_path: formatFilePath(filePath || defaultName), source_code: data },
+      ...(additionalSource || []).map((source) => ({ ...source, file_path: formatFilePath(source.file_path) })) ];
   }, [ additionalSource, data, filePath, isViper ]);
 
   return (
