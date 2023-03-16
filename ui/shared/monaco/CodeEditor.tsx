@@ -8,6 +8,11 @@ import type { File, Monaco } from './types';
 import CodeEditorSideBar from './CodeEditorSideBar';
 import * as themes from './utils/themes';
 
+const EDITOR_OPTIONS = {
+  readOnly: true,
+  minimap: { enabled: false },
+};
+
 interface Props {
   data: Array<File>;
 }
@@ -30,6 +35,10 @@ const CodeEditor = ({ data }: Props) => {
     monaco.editor.defineTheme('blockscout-light', themes.light);
     monaco.editor.defineTheme('blockscout-dark', themes.dark);
     monaco.editor.setTheme(colorMode === 'light' ? 'blockscout-light' : 'blockscout-dark');
+
+    data.slice(1).forEach((file) => {
+      monaco.editor.createModel(file.source_code, 'sol', monaco.Uri.parse(file.file_path));
+    });
   // componentDidMount
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ ]);
@@ -37,7 +46,9 @@ const CodeEditor = ({ data }: Props) => {
   const handleSelectFile = React.useCallback((index: number, lineNumber?: number) => {
     setIndex(index);
     if (lineNumber !== undefined && !Object.is(lineNumber, NaN)) {
-      editorRef.current?.revealLineInCenter(lineNumber);
+      window.setTimeout(() => {
+        editorRef.current?.revealLineInCenter(lineNumber);
+      }, 0);
     }
   }, []);
 
@@ -48,7 +59,7 @@ const CodeEditor = ({ data }: Props) => {
           language="sol"
           path={ data[index].file_path }
           defaultValue={ data[index].source_code }
-          options={{ readOnly: true, inlayHints: { enabled: 'off' }, minimap: { enabled: false } }}
+          options={ EDITOR_OPTIONS }
           onMount={ handleEditorDidMount }
         />
       </Box>

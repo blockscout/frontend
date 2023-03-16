@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react';
+import { Box, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SearchResult } from './types';
@@ -9,7 +9,25 @@ interface Props extends ArrayElement<SearchResult['matches']> {
   onClick: (event: React.MouseEvent) => void;
 }
 
-const CodeEditorSearchResultItem = ({ lineContent, filePath, onClick, startLineNumber }: Props) => {
+const calculateStartPosition = (lineContent: string, startColumn: number) => {
+
+  let start = 0;
+
+  for (let index = 0; index < startColumn; index++) {
+    const element = lineContent[index];
+
+    if (element === ' ') {
+      start = index + 1;
+      continue;
+    }
+  }
+
+  return start ? start - 1 : 0;
+};
+
+const CodeEditorSearchResultItem = ({ lineContent, filePath, onClick, startLineNumber, startColumn, endColumn }: Props) => {
+  const start = calculateStartPosition(lineContent, startColumn);
+
   return (
     <Box
       whiteSpace="nowrap"
@@ -20,7 +38,9 @@ const CodeEditorSearchResultItem = ({ lineContent, filePath, onClick, startLineN
       data-line-number={ startLineNumber }
       onClick={ onClick }
     >
-      { lineContent }
+      <span>{ lineContent.slice(start, startColumn - 1) }</span>
+      <chakra.span bgColor="lime">{ lineContent.slice(startColumn - 1, endColumn - 1) }</chakra.span>
+      <span>{ lineContent.slice(endColumn - 1) }</span>
     </Box>
   );
 };
