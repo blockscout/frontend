@@ -1,17 +1,22 @@
 import { Box, useColorMode, Flex } from '@chakra-ui/react';
+import type { EditorProps } from '@monaco-editor/react';
 import MonacoEditor from '@monaco-editor/react';
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import React from 'react';
 
 import type { File, Monaco } from './types';
 
+import CodeEditorBreadcrumbs from './CodeEditorBreadcrumbs';
 import CodeEditorSideBar from './CodeEditorSideBar';
 import CodeEditorTabs from './CodeEditorTabs';
 import * as themes from './utils/themes';
 
-const EDITOR_OPTIONS = {
+const EDITOR_OPTIONS: EditorProps['options'] = {
   readOnly: true,
   minimap: { enabled: false },
+  scrollbar: {
+    alwaysConsumeMouseWheel: true,
+  },
 };
 
 interface Props {
@@ -84,6 +89,7 @@ const CodeEditor = ({ data }: Props) => {
     <Flex overflow="hidden" borderRadius="md" height="540px" position="relative">
       <Box flexGrow={ 1 }>
         <CodeEditorTabs tabs={ tabs } activeTab={ data[index].file_path } onTabSelect={ handleTabSelect } onTabClose={ handleTabClose }/>
+        <CodeEditorBreadcrumbs path={ data[index].file_path }/>
         <MonacoEditor
           language="sol"
           path={ data[index].file_path }
