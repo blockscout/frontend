@@ -12,7 +12,7 @@ interface Props {
 const CoderEditorCollapseButton = ({ onClick, label, isDisabled }: Props) => {
   return (
     <Tooltip label={ label } isDisabled={ isDisabled }>
-      <Flex position="absolute" right={ 3 } top={ 2 }>
+      <Flex position="absolute" right={ 3 } top={ 2 } zIndex="sticky">
         <IconButton
           as={ iconCopy }
           boxSize={ 4 }

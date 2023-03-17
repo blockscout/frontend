@@ -1,9 +1,9 @@
-import { Flex, IconButton } from '@chakra-ui/react';
+import { Flex, IconButton, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import iconCross from 'icons/cross.svg';
 
-import getFileName from './utils/getFileName';
+import getFilePathParts from './utils/getFilePathParts';
 
 interface Props {
   isActive?: boolean;
@@ -11,10 +11,11 @@ interface Props {
   onClick: (path: string) => void;
   onClose: (path: string) => void;
   isCloseDisabled: boolean;
+  tabsPathChunks: Array<Array<string>>;
 }
 
-const CodeEditorTab = ({ isActive, path, onClick, onClose, isCloseDisabled }: Props) => {
-  const name = getFileName(path);
+const CodeEditorTab = ({ isActive, path, onClick, onClose, isCloseDisabled, tabsPathChunks }: Props) => {
+  const [ fileName, folderName ] = getFilePathParts(path, tabsPathChunks);
 
   const handleClick = React.useCallback(() => {
     onClick(path);
@@ -49,7 +50,8 @@ const CodeEditorTab = ({ isActive, path, onClick, onClose, isCloseDisabled }: Pr
         },
       }}
     >
-      <span>{ name }</span>
+      <span>{ fileName }</span>
+      { folderName && <chakra.span fontSize="xs" color="text_secondary" ml={ 1 }>{ folderName[0] === '.' ? '' : '...' }{ folderName }</chakra.span> }
       <IconButton
         as={ iconCross }
         boxSize={ 5 }

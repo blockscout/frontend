@@ -29,9 +29,9 @@ const CodeEditorSideBar = ({ onFileSelect, data, monaco }: Props) => {
   };
 
   return (
-    <Box w="250px" flexShrink={ 0 } bgColor="lightpink" fontSize="sm" overflowY="scroll" px={ 3 } position="relative">
+    <Box w="250px" flexShrink={ 0 } bgColor="lightpink" fontSize="sm" overflowY="scroll" px={ 3 }>
       <Tabs isLazy lazyBehavior="keepMounted" variant="unstyled" size="sm">
-        <TabList columnGap={ 3 }>
+        <TabList columnGap={ 3 } position="sticky" top={ 0 } left={ 0 } bgColor="lightcoral" zIndex="sticky">
           <Tab { ...tabProps }>Explorer</Tab>
           <Tab { ...tabProps }>Search</Tab>
         </TabList>

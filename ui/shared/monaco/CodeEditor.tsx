@@ -81,7 +81,7 @@ const CodeEditor = ({ data }: Props) => {
   }, [ data, index ]);
 
   return (
-    <Flex overflow="hidden" borderRadius="md" height="540px">
+    <Flex overflow="hidden" borderRadius="md" height="540px" position="relative">
       <Box flexGrow={ 1 }>
         <CodeEditorTabs tabs={ tabs } activeTab={ data[index].file_path } onTabSelect={ handleTabSelect } onTabClose={ handleTabClose }/>
         <MonacoEditor

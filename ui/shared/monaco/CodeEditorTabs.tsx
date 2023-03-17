@@ -11,6 +11,10 @@ interface Props {
 }
 
 const CodeEditorTabs = ({ tabs, activeTab, onTabSelect, onTabClose }: Props) => {
+  const tabsPathChunks = React.useMemo(() => {
+    return tabs.map((tab) => tab.split('/'));
+  }, [ tabs ]);
+
   return (
     <Flex
       bgColor="lightblue"
@@ -26,6 +30,7 @@ const CodeEditorTabs = ({ tabs, activeTab, onTabSelect, onTabClose }: Props) => 
           onClick={ onTabSelect }
           onClose={ onTabClose }
           isCloseDisabled={ tabs.length === 1 }
+          tabsPathChunks={ tabsPathChunks }
         />
       )) }
     </Flex>
