@@ -31,7 +31,6 @@ blockscout:
       enabled: true
     path:
       prefix:
-        # - "/poa/sokol(/|$)(.*)"
         - "/"
   # probes
   livenessProbe:
@@ -50,12 +49,12 @@ blockscout:
   resources:
     limits:
       memory:
-        _default: "1Gi"
+        _default: "2Gi"
       cpu:
         _default: "1"
     requests:
       memory:
-        _default: "1Gi"
+        _default: "2Gi"
       cpu:
         _default: "1"
   # Blockscout environment variables
@@ -400,7 +399,7 @@ frontend:
       _default: https://blockscout-main.test.aws-k8s.blockscout.com
     NEXT_PUBLIC_L2_WITHDRAWAL_URL:
       _default: https://app.optimism.io/bridge/withdraw
-    NEXT_PUBLIC_GRAPHIQL_TRANSACTION: 
+    NEXT_PUBLIC_GRAPHIQL_TRANSACTION:
       _default: 0x4a0ed8ddf751a7cb5297f827699117b0f6d21a0b2907594d300dc9fed75c7e62
 # enable blockscout-allowance
 allowance:
@@ -460,17 +459,6 @@ visualizer:
   image:
     _default: ghcr.io/blockscout/visualizer:latest
 
-  replicas:
-    app: 1
-  docker:
-    port: 80
-    targetPort: 8050
-    # metricsPort: 6060
-
-  service:
-    # ClusterIP, NodePort or LoadBalancer
-    type: ClusterIP
-
   # enable ingress
   ingress:
     enabled: true
@@ -493,13 +481,6 @@ visualizer:
       cpu:
         _default: "0.05"
 
-  # node label
-  nodeSelector:
-    enabled: true
-    labels:
-      _default:
-        app: blockscout
-
   # probes
   livenessProbe:
     enabled: true
@@ -507,13 +488,6 @@ visualizer:
   readinessProbe:
     enabled: true
     path: /health
-
-  # enable Horizontal Pod Autoscaler
-  hpa:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 10
-    cpuTarget: 90
 
   environment:
     VISUALIZER__SERVER__HTTP__ENABLED:
