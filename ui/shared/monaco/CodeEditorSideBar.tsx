@@ -24,9 +24,9 @@ const CodeEditorSideBar = ({ onFileSelect, data, monaco }: Props) => {
     fontSize: '11px',
     lineHeight: '35px',
     fontWeight: 500,
-    color: 'gray.600',
+    color: useColorModeValue('gray.600', 'gray.500'),
     _selected: {
-      color: 'black',
+      color: useColorModeValue('black', 'white'),
     },
     px: 0,
     letterSpacing: 0.3,
@@ -39,7 +39,7 @@ const CodeEditorSideBar = ({ onFileSelect, data, monaco }: Props) => {
   }, 100));
 
   return (
-    <Box w="250px" flexShrink={ 0 } bgColor={ bgColor } fontSize="13px" overflowY="scroll" onScroll={ handleScrollThrottled.current }>
+    <Box w="250px" flexShrink={ 0 } bgColor={ bgColor } fontSize="13px" overflowY="scroll" onScroll={ handleScrollThrottled.current } pb="22px">
       <Tabs isLazy lazyBehavior="keepMounted" variant="unstyled" size="13px">
         <TabList
           columnGap={ 3 }
@@ -50,7 +50,7 @@ const CodeEditorSideBar = ({ onFileSelect, data, monaco }: Props) => {
           zIndex="1"
           px={ 2 }
           boxShadow={ isStuck ? 'md' : 'none' }
-          borderTopRadius="md"
+          borderTopRightRadius="md"
         >
           <Tab { ...tabProps }>Explorer</Tab>
           <Tab { ...tabProps }>Search</Tab>
@@ -61,7 +61,7 @@ const CodeEditorSideBar = ({ onFileSelect, data, monaco }: Props) => {
             <CodeEditorFileExplorer data={ data } onFileSelect={ onFileSelect }/>
           </TabPanel>
           <TabPanel p={ 0 }>
-            <CodeEditorSearch data={ data } onFileSelect={ onFileSelect } monaco={ monaco }/>
+            <CodeEditorSearch data={ data } onFileSelect={ onFileSelect } monaco={ monaco } isInputStuck={ isStuck }/>
           </TabPanel>
         </TabPanels>
       </Tabs>

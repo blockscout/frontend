@@ -1,4 +1,4 @@
-import { Accordion, Box, Input } from '@chakra-ui/react';
+import { Accordion, Box, Input, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import type { File, Monaco, SearchResult } from './types';
@@ -12,9 +12,10 @@ interface Props {
   data: Array<File>;
   monaco: Monaco | undefined;
   onFileSelect: (index: number, lineNumber?: number) => void;
+  isInputStuck: boolean;
 }
 
-const CodeEditorSearch = ({ monaco, data, onFileSelect }: Props) => {
+const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck }: Props) => {
   const [ searchTerm, changeSearchTerm ] = React.useState('');
   const [ searchResults, setSearchResults ] = React.useState<Array<SearchResult>>([]);
   const [ expandedSections, setExpandedSections ] = React.useState<Array<number>>([]);
@@ -70,15 +71,41 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect }: Props) => {
     }
   }, [ expandedSections.length, searchResults ]);
 
+  const inputColor = useColorModeValue('rgb(97, 97, 97)', 'rgb(204, 204, 204)');
+  const inputBgColor = useColorModeValue('white', 'rgb(60, 60, 60)');
+  const inputFocusBorderColor = useColorModeValue('#0090f1', '#007fd4');
+  const bgColor = useColorModeValue('#eee', '#222');
+
   return (
-    <Box px={ 2 }>
+    <Box>
       <CoderEditorCollapseButton
         onClick={ handleToggleCollapseClick }
         label={ expandedSections.length === 0 ? 'Expand all' : 'Collapse all' }
         isDisabled={ searchResults.length === 0 }
         isCollapsed={ expandedSections.length === 0 }
       />
-      <Input size="xs" onChange={ handleSearchTermChange } value={ searchTerm } placeholder="Search"/>
+      <Box px={ 2 } position="sticky" top="35px" left="0" zIndex="2" bgColor={ bgColor } pb="8px" boxShadow={ isInputStuck ? 'md' : 'none' }>
+        <Input
+          size="xs"
+          onChange={ handleSearchTermChange }
+          value={ searchTerm }
+          placeholder="Search"
+          variant="unstyled"
+          color={ inputColor }
+          bgColor={ inputBgColor }
+          borderRadius="none"
+          fontSize="13px"
+          lineHeight="19px"
+          borderWidth="1px"
+          borderColor={ inputBgColor }
+          py="2px"
+          px="4px"
+          transitionDuration="0"
+          _focus={{
+            borderColor: inputFocusBorderColor,
+          }}
+        />
+      </Box>
       <Accordion
         key={ debouncedSearchTerm }
         allowMultiple

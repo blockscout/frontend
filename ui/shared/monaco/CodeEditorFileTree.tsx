@@ -48,7 +48,7 @@ const CodeEditorFileTree = ({ tree, level = 0, onItemClick, isCollapsed }: Props
                       h="22px"
                       transitionDuration="0"
                     >
-                      <AccordionIcon transform={ isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)' } boxSize="16px"/>
+                      <AccordionIcon transform={ isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)' } boxSize="16px" color="#616161"/>
                       <Icon as={ isExpanded ? iconFolderOpen : iconFolder } boxSize="16px" mr="4px"/>
                       { leafName }
                     </AccordionButton>

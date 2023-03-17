@@ -32,7 +32,7 @@ const CodeEditorFileExplorer = ({ data, onFileSelect }: Props) => {
   }, []);
 
   return (
-    <Box pb="22px">
+    <Box>
       <CoderEditorCollapseButton onClick={ handleCollapseButtonClick } label="Collapse folders"/>
       <CodeEditorFileTree key={ key } tree={ tree } onItemClick={ handleFileClick } isCollapsed={ key > 0 }/>
     </Box>
