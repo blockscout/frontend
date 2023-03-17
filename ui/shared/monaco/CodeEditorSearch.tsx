@@ -71,11 +71,12 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect }: Props) => {
   }, [ expandedSections.length, searchResults ]);
 
   return (
-    <Box>
+    <Box px={ 2 }>
       <CoderEditorCollapseButton
         onClick={ handleToggleCollapseClick }
         label={ expandedSections.length === 0 ? 'Expand all' : 'Collapse all' }
         isDisabled={ searchResults.length === 0 }
+        isCollapsed={ expandedSections.length === 0 }
       />
       <Input size="xs" onChange={ handleSearchTermChange } value={ searchTerm } placeholder="Search"/>
       <Accordion
