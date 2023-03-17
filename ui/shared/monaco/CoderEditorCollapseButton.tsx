@@ -1,5 +1,7 @@
-import { Tooltip, Box, useColorModeValue } from '@chakra-ui/react';
+import { Tooltip, Box } from '@chakra-ui/react';
 import React from 'react';
+
+import useColors from './utils/useColors';
 
 interface Props {
   onClick: () => void;
@@ -9,7 +11,7 @@ interface Props {
 }
 
 const CoderEditorCollapseButton = ({ onClick, label, isDisabled, isCollapsed }: Props) => {
-  const hoverBgColor = useColorModeValue('rgba(184, 184, 184, 0.31)', 'rgba(90, 93, 94, 0.31)');
+  const colors = useColors();
   return (
     <Tooltip label={ label } isDisabled={ isDisabled }>
       <Box
@@ -26,7 +28,7 @@ const CoderEditorCollapseButton = ({ onClick, label, isDisabled, isCollapsed }: 
           content: isCollapsed ? '"\\eb95"' : '"\\eac5"',
         }}
         _hover={{
-          bgColor: hoverBgColor,
+          bgColor: colors.buttons.bgColorHover,
         }}
         onClick={ onClick }
         cursor="pointer"

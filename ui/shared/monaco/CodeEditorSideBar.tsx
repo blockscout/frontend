@@ -7,6 +7,7 @@ import type { File, Monaco } from './types';
 
 import CodeEditorFileExplorer from './CodeEditorFileExplorer';
 import CodeEditorSearch from './CodeEditorSearch';
+import useColors from './utils/useColors';
 
 interface Props {
   monaco: Monaco | undefined;
@@ -32,21 +33,21 @@ const CodeEditorSideBar = ({ onFileSelect, data, monaco }: Props) => {
     letterSpacing: 0.3,
   };
 
-  const bgColor = useColorModeValue('#eee', '#222');
+  const colors = useColors();
 
   const handleScrollThrottled = React.useRef(_throttle((event: React.SyntheticEvent) => {
     setIsStuck((event.target as HTMLDivElement).scrollTop > 0);
   }, 100));
 
   return (
-    <Box w="250px" flexShrink={ 0 } bgColor={ bgColor } fontSize="13px" overflowY="scroll" onScroll={ handleScrollThrottled.current } pb="22px">
+    <Box w="250px" flexShrink={ 0 } bgColor={ colors.panels.bgColor } fontSize="13px" overflowY="scroll" onScroll={ handleScrollThrottled.current } pb="22px">
       <Tabs isLazy lazyBehavior="keepMounted" variant="unstyled" size="13px">
         <TabList
           columnGap={ 3 }
           position="sticky"
           top={ 0 }
           left={ 0 }
-          bgColor={ bgColor }
+          bgColor={ colors.panels.bgColor }
           zIndex="1"
           px={ 2 }
           boxShadow={ isStuck ? 'md' : 'none' }

@@ -7,6 +7,7 @@ import CodeEditorSearchResultItem from './CodeEditorSearchResultItem';
 import iconFile from './icons/file.svg';
 import iconSolidity from './icons/solidity.svg';
 import getFileName from './utils/getFileName';
+import useColors from './utils/useColors';
 
 interface Props {
   data: SearchResult;
@@ -27,6 +28,7 @@ const CodeEditorSearchSection = ({ data, onItemClick }: Props) => {
   const icon = /.sol|.yul|.vy$/.test(fileName) ? iconSolidity : iconFile;
 
   const badgeBgColor = useColorModeValue('#c4c4c4', '#4d4d4d');
+  const colors = useColors();
 
   return (
     <AccordionItem borderWidth="0px" _last={{ borderBottomWidth: '0px' }} >
@@ -41,7 +43,7 @@ const CodeEditorSearchSection = ({ data, onItemClick }: Props) => {
             lineHeight="22px"
             alignItems="center"
           >
-            <AccordionIcon transform={ isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)' } boxSize="16px" color="#616161"/>
+            <AccordionIcon transform={ isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)' } boxSize="16px" color={ colors.buttons.color }/>
             <Icon as={ icon } boxSize="16px" mr="4px"/>
             <span>{ fileName }</span>
             <Box className="monaco-count-badge" ml="auto" bgColor={ badgeBgColor }>{ data.matches.length }</Box>

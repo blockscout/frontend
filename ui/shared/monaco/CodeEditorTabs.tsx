@@ -2,6 +2,7 @@ import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import CodeEditorTab from './CodeEditorTab';
+import useColors from './utils/useColors';
 
 interface Props {
   tabs: Array<string>;
@@ -11,15 +12,15 @@ interface Props {
 }
 
 const CodeEditorTabs = ({ tabs, activeTab, onTabSelect, onTabClose }: Props) => {
+  const colors = useColors();
+
   const tabsPathChunks = React.useMemo(() => {
     return tabs.map((tab) => tab.split('/'));
   }, [ tabs ]);
 
   return (
     <Flex
-      bgColor="lightblue"
-      borderBottomWidth="1px"
-      borderColor="divider"
+      bgColor={ colors.panels.bgColor }
       flexWrap="wrap"
     >
       { tabs.map((tab) => (

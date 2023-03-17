@@ -7,6 +7,7 @@ import useDebounce from 'lib/hooks/useDebounce';
 
 import CodeEditorSearchSection from './CodeEditorSearchSection';
 import CoderEditorCollapseButton from './CoderEditorCollapseButton';
+import useColors from './utils/useColors';
 
 interface Props {
   data: Array<File>;
@@ -74,7 +75,7 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck }: Props) =
   const inputColor = useColorModeValue('rgb(97, 97, 97)', 'rgb(204, 204, 204)');
   const inputBgColor = useColorModeValue('white', 'rgb(60, 60, 60)');
   const inputFocusBorderColor = useColorModeValue('#0090f1', '#007fd4');
-  const bgColor = useColorModeValue('#eee', '#222');
+  const colors = useColors();
 
   return (
     <Box>
@@ -84,7 +85,7 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck }: Props) =
         isDisabled={ searchResults.length === 0 }
         isCollapsed={ expandedSections.length === 0 }
       />
-      <Box px={ 2 } position="sticky" top="35px" left="0" zIndex="2" bgColor={ bgColor } pb="8px" boxShadow={ isInputStuck ? 'md' : 'none' }>
+      <Box px={ 2 } position="sticky" top="35px" left="0" zIndex="2" bgColor={ colors.panels.bgColor } pb="8px" boxShadow={ isInputStuck ? 'md' : 'none' }>
         <Input
           size="xs"
           onChange={ handleSearchTermChange }

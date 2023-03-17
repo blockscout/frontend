@@ -1,10 +1,13 @@
-import { Flex, IconButton, chakra } from '@chakra-ui/react';
+import { Flex, IconButton, Icon, chakra, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import iconCross from 'icons/cross.svg';
 
+import iconFile from './icons/file.svg';
+import iconSolidity from './icons/solidity.svg';
 import getFilePathParts from './utils/getFilePathParts';
-
+import * as themes from './utils/themes';
+import useColors from './utils/useColors';
 interface Props {
   isActive?: boolean;
   path: string;
@@ -16,6 +19,7 @@ interface Props {
 
 const CodeEditorTab = ({ isActive, path, onClick, onClose, isCloseDisabled, tabsPathChunks }: Props) => {
   const [ fileName, folderName ] = getFilePathParts(path, tabsPathChunks);
+  const colors = useColors();
 
   const handleClick = React.useCallback(() => {
     onClick(path);
@@ -26,41 +30,50 @@ const CodeEditorTab = ({ isActive, path, onClick, onClose, isCloseDisabled, tabs
     !isCloseDisabled && onClose(path);
   }, [ isCloseDisabled, onClose, path ]);
 
+  const bgColor = useColorModeValue(themes.light.colors['editor.background'], themes.dark.colors['editor.background']);
+  const bgColorInactive = useColorModeValue('rgb(236, 236, 236)', 'rgb(45, 45, 45)');
+  const icon = /.sol|.yul|.vy$/.test(fileName) ? iconSolidity : iconFile;
+  const borderColorInactive = useColorModeValue('rgb(243, 243, 243)', 'rgb(37, 37, 38)');
+
   return (
     <Flex
-      py={ 1 }
-      pl={ 3 }
-      pr={ isActive ? 0 : 5 }
-      fontSize="sm"
-      lineHeight={ 6 }
+      pl="10px"
+      pr={ isActive ? '4px' : '28px' }
+      fontSize="13px"
+      lineHeight="34px"
+      bgColor={ isActive ? bgColor : bgColorInactive }
       borderRightWidth="1px"
-      borderRightColor="divider"
+      borderRightColor={ borderColorInactive }
       borderBottomWidth="1px"
-      borderBottomColor={ isActive ? 'deeppink' : 'divider' }
+      borderBottomColor={ isActive ? 'transparent' : borderColorInactive }
       color={ isActive ? 'black' : 'gray.600' }
       alignItems="center"
       fontWeight={ 500 }
-      mb="-1px"
       cursor="pointer"
       onClick={ handleClick }
       _hover={{
-        pr: '0',
+        pr: '4px',
         svg: {
           display: 'block',
         },
       }}
     >
+      <Icon as={ icon } boxSize="16px" mr="4px"/>
       <span>{ fileName }</span>
       { folderName && <chakra.span fontSize="xs" color="text_secondary" ml={ 1 }>{ folderName[0] === '.' ? '' : '...' }{ folderName }</chakra.span> }
       <IconButton
         as={ iconCross }
         boxSize={ 5 }
+        ml="4px"
         p="2px"
         variant="unstyled"
         aria-label="close"
         onClick={ handleClose }
         isDisabled={ isCloseDisabled }
         display={ isActive ? 'block' : 'none' }
+        borderRadius="sm"
+        color={ colors.buttons.color }
+        _hover={{ bgColor: colors.buttons.bgColorHover }}
       />
     </Flex>
   );

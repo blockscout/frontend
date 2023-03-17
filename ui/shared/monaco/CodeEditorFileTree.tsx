@@ -8,6 +8,7 @@ import iconFile from './icons/file.svg';
 import iconFolderOpen from './icons/folder-open.svg';
 import iconFolder from './icons/folder.svg';
 import iconSolidity from './icons/solidity.svg';
+import useColors from './utils/useColors';
 
 interface Props {
   tree: FileTree;
@@ -26,6 +27,7 @@ const CodeEditorFileTree = ({ tree, level = 0, onItemClick, isCollapsed }: Props
     },
   };
   const rowHoverBgColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
+  const colors = useColors();
 
   return (
     <Accordion allowMultiple defaultIndex={ isCollapsed ? undefined : tree.map((item, index) => index) } reduceMotion>
@@ -48,7 +50,7 @@ const CodeEditorFileTree = ({ tree, level = 0, onItemClick, isCollapsed }: Props
                       h="22px"
                       transitionDuration="0"
                     >
-                      <AccordionIcon transform={ isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)' } boxSize="16px" color="#616161"/>
+                      <AccordionIcon transform={ isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)' } boxSize="16px" color={ colors.buttons.color }/>
                       <Icon as={ isExpanded ? iconFolderOpen : iconFolder } boxSize="16px" mr="4px"/>
                       { leafName }
                     </AccordionButton>
