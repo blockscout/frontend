@@ -98,7 +98,7 @@ const CodeEditor = ({ data }: Props) => {
           onMount={ handleEditorDidMount }
         />
       </Box>
-      <CodeEditorSideBar data={ data } onFileSelect={ handleSelectFile } monaco={ instance }/>
+      <CodeEditorSideBar data={ data } onFileSelect={ handleSelectFile } monaco={ instance } selectedFile={ data[index].file_path }/>
     </Flex>
   );
 };

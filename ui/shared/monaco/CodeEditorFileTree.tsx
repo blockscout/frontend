@@ -15,9 +15,10 @@ interface Props {
   level?: number;
   isCollapsed?: boolean;
   onItemClick: (event: React.MouseEvent) => void;
+  selectedFile: string;
 }
 
-const CodeEditorFileTree = ({ tree, level = 0, onItemClick, isCollapsed }: Props) => {
+const CodeEditorFileTree = ({ tree, level = 0, onItemClick, isCollapsed, selectedFile }: Props) => {
   const itemProps: ChakraProps = {
     borderWidth: '0px',
     cursor: 'pointer',
@@ -55,7 +56,13 @@ const CodeEditorFileTree = ({ tree, level = 0, onItemClick, isCollapsed }: Props
                       { leafName }
                     </AccordionButton>
                     <AccordionPanel p="0">
-                      <CodeEditorFileTree tree={ leaf.children } level={ level + 1 } onItemClick={ onItemClick } isCollapsed={ isCollapsed }/>
+                      <CodeEditorFileTree
+                        tree={ leaf.children }
+                        level={ level + 1 }
+                        onItemClick={ onItemClick }
+                        isCollapsed={ isCollapsed }
+                        selectedFile={ selectedFile }
+                      />
                     </AccordionPanel>
                   </>
                 ) }
@@ -77,8 +84,9 @@ const CodeEditorFileTree = ({ tree, level = 0, onItemClick, isCollapsed }: Props
               alignItems="center"
               overflow="hidden"
               _hover={{
-                bgColor: rowHoverBgColor,
+                bgColor: selectedFile === leaf.file_path ? colors.selection.bgColorSelected : rowHoverBgColor,
               }}
+              bgColor={ selectedFile === leaf.file_path ? colors.selection.bgColorSelected : 'none' }
             >
               <Icon as={ icon } boxSize="16px" mr="4px"/>
               { leafName }

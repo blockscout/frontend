@@ -10,9 +10,10 @@ import composeFileTree from './utils/composeFileTree';
 interface Props {
   data: Array<File>;
   onFileSelect: (index: number) => void;
+  selectedFile: string;
 }
 
-const CodeEditorFileExplorer = ({ data, onFileSelect }: Props) => {
+const CodeEditorFileExplorer = ({ data, onFileSelect, selectedFile }: Props) => {
   const [ key, setKey ] = React.useState(0);
   const tree = React.useMemo(() => {
     return composeFileTree(data);
@@ -34,7 +35,7 @@ const CodeEditorFileExplorer = ({ data, onFileSelect }: Props) => {
   return (
     <Box>
       <CoderEditorCollapseButton onClick={ handleCollapseButtonClick } label="Collapse folders"/>
-      <CodeEditorFileTree key={ key } tree={ tree } onItemClick={ handleFileClick } isCollapsed={ key > 0 }/>
+      <CodeEditorFileTree key={ key } tree={ tree } onItemClick={ handleFileClick } isCollapsed={ key > 0 } selectedFile={ selectedFile }/>
     </Box>
   );
 };

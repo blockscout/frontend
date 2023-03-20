@@ -13,9 +13,10 @@ interface Props {
   monaco: Monaco | undefined;
   data: Array<File>;
   onFileSelect: (index: number, lineNumber?: number) => void;
+  selectedFile: string;
 }
 
-const CodeEditorSideBar = ({ onFileSelect, data, monaco }: Props) => {
+const CodeEditorSideBar = ({ onFileSelect, data, monaco, selectedFile }: Props) => {
 
   const [ isStuck, setIsStuck ] = React.useState(false);
 
@@ -59,7 +60,7 @@ const CodeEditorSideBar = ({ onFileSelect, data, monaco }: Props) => {
 
         <TabPanels>
           <TabPanel p={ 0 }>
-            <CodeEditorFileExplorer data={ data } onFileSelect={ onFileSelect }/>
+            <CodeEditorFileExplorer data={ data } onFileSelect={ onFileSelect } selectedFile={ selectedFile }/>
           </TabPanel>
           <TabPanel p={ 0 }>
             <CodeEditorSearch data={ data } onFileSelect={ onFileSelect } monaco={ monaco } isInputStuck={ isStuck }/>
