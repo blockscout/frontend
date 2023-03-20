@@ -1,7 +1,5 @@
-import { Flex, IconButton, Icon, chakra, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Icon, chakra, useColorModeValue, Box } from '@chakra-ui/react';
 import React from 'react';
-
-import iconCross from 'icons/cross.svg';
 
 import iconFile from './icons/file.svg';
 import iconSolidity from './icons/solidity.svg';
@@ -40,7 +38,7 @@ const CodeEditorTab = ({ isActive, path, onClick, onClose, isCloseDisabled, tabs
   return (
     <Flex
       pl="10px"
-      pr={ isActive ? '4px' : '28px' }
+      pr="4px"
       fontSize="13px"
       lineHeight="34px"
       bgColor={ isActive ? bgColor : bgColorInactive }
@@ -54,9 +52,8 @@ const CodeEditorTab = ({ isActive, path, onClick, onClose, isCloseDisabled, tabs
       cursor="pointer"
       onClick={ handleClick }
       _hover={{
-        pr: '4px',
-        svg: {
-          display: 'block',
+        '.codicon-close': {
+          visibility: 'visible',
         },
       }}
       userSelect="none"
@@ -64,19 +61,19 @@ const CodeEditorTab = ({ isActive, path, onClick, onClose, isCloseDisabled, tabs
       <Icon as={ icon } boxSize="16px" mr="4px"/>
       <span>{ fileName }</span>
       { folderName && <chakra.span fontSize="xs" color="text_secondary" ml={ 1 }>{ folderName[0] === '.' ? '' : '...' }{ folderName }</chakra.span> }
-      <IconButton
-        as={ iconCross }
-        boxSize={ 5 }
+      <Box
+        className="codicon codicon-close"
+        boxSize="20px"
         ml="4px"
         p="2px"
-        variant="unstyled"
-        aria-label="close"
+        title="Close"
+        aria-label="Close"
         onClick={ handleClose }
-        isDisabled={ isCloseDisabled }
-        display={ isActive ? 'block' : 'none' }
         borderRadius="sm"
+        opacity={ isCloseDisabled ? 0.3 : 1 }
+        visibility={ isActive ? 'visible' : 'hidden' }
         color={ colors.buttons.color }
-        _hover={{ bgColor: colors.buttons.bgColorHover }}
+        _hover={{ bgColor: isCloseDisabled ? 'transparent' : colors.buttons.bgColorHover }}
       />
     </Flex>
   );

@@ -1,4 +1,5 @@
-import { Accordion, Box, Input, useColorModeValue } from '@chakra-ui/react';
+import type { ChakraProps } from '@chakra-ui/react';
+import { Accordion, Box, Input, InputGroup, InputRightElement, useColorModeValue, useBoolean } from '@chakra-ui/react';
 import React from 'react';
 
 import type { File, Monaco, SearchResult } from './types';
@@ -20,6 +21,9 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck }: Props) =
   const [ searchTerm, changeSearchTerm ] = React.useState('');
   const [ searchResults, setSearchResults ] = React.useState<Array<SearchResult>>([]);
   const [ expandedSections, setExpandedSections ] = React.useState<Array<number>>([]);
+  const [ isMatchCase, setMatchCase ] = useBoolean();
+  const [ isMatchWholeWord, setMatchWholeWord ] = useBoolean();
+  const [ isMatchRegex, setMatchRegex ] = useBoolean();
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
@@ -34,7 +38,7 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck }: Props) =
 
     const result: Array<SearchResult> = monaco.editor.getModels()
       .map((model) => {
-        const matches = model.findMatches(debouncedSearchTerm, false, false, false, null, false);
+        const matches = model.findMatches(debouncedSearchTerm, false, isMatchRegex, isMatchCase, isMatchWholeWord ? 'true' : null, false);
         return {
           file_path: model.uri.path,
           matches: matches.map(({ range }) => ({ ...range, lineContent: model.getLineContent(range.startLineNumber) })),
@@ -43,7 +47,7 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck }: Props) =
       .filter(({ matches }) => matches.length > 0);
 
     setSearchResults(result.length > 0 ? result : []);
-  }, [ debouncedSearchTerm, monaco ]);
+  }, [ debouncedSearchTerm, isMatchCase, isMatchRegex, isMatchWholeWord, monaco ]);
 
   React.useEffect(() => {
     setExpandedSections(searchResults.map((item, index) => index));
@@ -75,7 +79,16 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck }: Props) =
   const inputColor = useColorModeValue('rgb(97, 97, 97)', 'rgb(204, 204, 204)');
   const inputBgColor = useColorModeValue('white', 'rgb(60, 60, 60)');
   const inputFocusBorderColor = useColorModeValue('#0090f1', '#007fd4');
+  const buttonActiveBgColor = useColorModeValue('rgba(0, 144, 241, 0.2)', 'rgba(0, 127, 212, 0.4)');
   const colors = useColors();
+  const buttonProps: ChakraProps = {
+    boxSize: '20px',
+    p: '1px',
+    cursor: 'pointer',
+    borderRadius: '3px',
+    borderWidth: '1px',
+    borderColor: 'transparent',
+  };
 
   return (
     <Box>
@@ -85,7 +98,16 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck }: Props) =
         isDisabled={ searchResults.length === 0 }
         isCollapsed={ expandedSections.length === 0 }
       />
-      <Box px={ 2 } position="sticky" top="35px" left="0" zIndex="2" bgColor={ colors.panels.bgColor } pb="8px" boxShadow={ isInputStuck ? 'md' : 'none' }>
+      <InputGroup
+        px="8px"
+        position="sticky"
+        top="35px"
+        left="0"
+        zIndex="2"
+        bgColor={ colors.panels.bgColor }
+        pb="8px"
+        boxShadow={ isInputStuck ? 'md' : 'none' }
+      >
         <Input
           size="xs"
           onChange={ handleSearchTermChange }
@@ -96,7 +118,7 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck }: Props) =
           bgColor={ inputBgColor }
           borderRadius="none"
           fontSize="13px"
-          lineHeight="19px"
+          lineHeight="20px"
           borderWidth="1px"
           borderColor={ inputBgColor }
           py="2px"
@@ -106,14 +128,43 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck }: Props) =
             borderColor: inputFocusBorderColor,
           }}
         />
-      </Box>
+        <InputRightElement w="auto" h="auto" right="12px" top="3px" columnGap="2px">
+          <Box
+            { ...buttonProps }
+            className="codicon codicon-case-sensitive"
+            onClick={ setMatchCase.toggle }
+            bgColor={ isMatchCase ? buttonActiveBgColor : 'transparent' }
+            _hover={{ bgColor: isMatchCase ? buttonActiveBgColor : colors.buttons.bgColorHover }}
+            title="Match Case"
+            aria-label="Match Case"
+          />
+          <Box
+            { ...buttonProps }
+            className="codicon codicon-whole-word"
+            bgColor={ isMatchWholeWord ? buttonActiveBgColor : 'transparent' }
+            onClick={ setMatchWholeWord.toggle }
+            _hover={{ bgColor: isMatchWholeWord ? buttonActiveBgColor : colors.buttons.bgColorHover }}
+            title="Match Whole Word"
+            aria-label="Match Whole Word"
+          />
+          <Box
+            { ...buttonProps }
+            className="codicon codicon-regex"
+            bgColor={ isMatchRegex ? buttonActiveBgColor : 'transparent' }
+            onClick={ setMatchRegex.toggle }
+            _hover={{ bgColor: isMatchRegex ? buttonActiveBgColor : colors.buttons.bgColorHover }}
+            title="Use Regular Expression"
+            aria-label="Use Regular Expression"
+          />
+        </InputRightElement>
+      </InputGroup>
       <Accordion
         key={ debouncedSearchTerm }
         allowMultiple
         index={ expandedSections }
         onChange={ handleAccordionStateChange }
         reduceMotion
-        mt={ 3 }
+        mt="4px"
       >
         { searchResults.map((item) => <CodeEditorSearchSection key={ item.file_path } data={ item } onItemClick={ handleResultItemClick }/>) }
       </Accordion>
