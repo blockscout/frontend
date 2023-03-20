@@ -4,6 +4,7 @@ import React from 'react';
 
 import type { SmartContract } from 'types/api/contract';
 
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import LinkInternal from 'ui/shared/LinkInternal';
 import CodeEditor from 'ui/shared/monaco/CodeEditor';
 import formatFilePath from 'ui/shared/monaco/utils/formatFilePath';
@@ -44,11 +45,16 @@ const ContractSourceCode = ({ data, hasSol2Yml, address, isViper, filePath, addi
       ...(additionalSource || []).map((source) => ({ ...source, file_path: formatFilePath(source.file_path) })) ];
   }, [ additionalSource, data, filePath, isViper ]);
 
+  const copyToClipboard = editorData.length === 1 ?
+    <CopyToClipboard text={ editorData[0].source_code }/> :
+    null;
+
   return (
     <section>
       <Flex justifyContent="space-between" alignItems="center" mb={ 3 }>
         { heading }
         { diagramLink }
+        { copyToClipboard }
       </Flex>
       <CodeEditor data={ editorData }/>
     </section>

@@ -88,6 +88,20 @@ const CodeEditor = ({ data }: Props) => {
     });
   }, [ data, index ]);
 
+  if (data.length === 1) {
+    return (
+      <Box overflow="hidden" borderRadius="md" height="540px">
+        <MonacoEditor
+          language="sol"
+          path={ data[index].file_path }
+          defaultValue={ data[index].source_code }
+          options={ EDITOR_OPTIONS }
+          onMount={ handleEditorDidMount }
+        />
+      </Box>
+    );
+  }
+
   return (
     <Flex overflow="hidden" borderRadius="md" height="540px" position="relative">
       <Box flexGrow={ 1 }>

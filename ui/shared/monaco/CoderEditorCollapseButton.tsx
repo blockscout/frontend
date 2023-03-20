@@ -28,7 +28,7 @@ const CoderEditorCollapseButton = ({ onClick, label, isDisabled, isCollapsed }: 
         content: isCollapsed ? '"\\eb95"' : '"\\eac5"',
       }}
       _hover={{
-        bgColor: themeColors['inputOption.hoverBackground'],
+        bgColor: themeColors['custom.inputOption.hoverBackground'],
       }}
       onClick={ onClick }
       cursor="pointer"

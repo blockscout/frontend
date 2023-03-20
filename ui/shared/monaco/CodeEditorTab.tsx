@@ -69,7 +69,7 @@ const CodeEditorTab = ({ isActive, path, onClick, onClose, isCloseDisabled, tabs
         opacity={ isCloseDisabled ? 0.3 : 1 }
         visibility={ isActive ? 'visible' : 'hidden' }
         color={ themeColors['icon.foreground'] }
-        _hover={{ bgColor: isCloseDisabled ? 'transparent' : themeColors['inputOption.hoverBackground'] }}
+        _hover={{ bgColor: isCloseDisabled ? 'transparent' : themeColors['custom.inputOption.hoverBackground'] }}
       />
     </Flex>
   );

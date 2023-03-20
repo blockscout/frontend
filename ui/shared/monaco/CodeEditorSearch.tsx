@@ -152,26 +152,26 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck }: Props) =
             { ...buttonProps }
             className="codicon codicon-case-sensitive"
             onClick={ setMatchCase.toggle }
-            bgColor={ isMatchCase ? themeColors['inputOption.activeBackground'] : 'transparent' }
-            _hover={{ bgColor: isMatchCase ? themeColors['inputOption.activeBackground'] : themeColors['inputOption.hoverBackground'] }}
+            bgColor={ isMatchCase ? themeColors['custom.inputOption.activeBackground'] : 'transparent' }
+            _hover={{ bgColor: isMatchCase ? themeColors['custom.inputOption.activeBackground'] : themeColors['custom.inputOption.hoverBackground'] }}
             title="Match Case"
             aria-label="Match Case"
           />
           <Box
             { ...buttonProps }
             className="codicon codicon-whole-word"
-            bgColor={ isMatchWholeWord ? themeColors['inputOption.activeBackground'] : 'transparent' }
+            bgColor={ isMatchWholeWord ? themeColors['custom.inputOption.activeBackground'] : 'transparent' }
             onClick={ setMatchWholeWord.toggle }
-            _hover={{ bgColor: isMatchWholeWord ? themeColors['inputOption.activeBackground'] : themeColors['inputOption.hoverBackground'] }}
+            _hover={{ bgColor: isMatchWholeWord ? themeColors['custom.inputOption.activeBackground'] : themeColors['custom.inputOption.hoverBackground'] }}
             title="Match Whole Word"
             aria-label="Match Whole Word"
           />
           <Box
             { ...buttonProps }
             className="codicon codicon-regex"
-            bgColor={ isMatchRegex ? themeColors['inputOption.activeBackground'] : 'transparent' }
+            bgColor={ isMatchRegex ? themeColors['custom.inputOption.activeBackground'] : 'transparent' }
             onClick={ setMatchRegex.toggle }
-            _hover={{ bgColor: isMatchRegex ? themeColors['inputOption.activeBackground'] : themeColors['inputOption.hoverBackground'] }}
+            _hover={{ bgColor: isMatchRegex ? themeColors['custom.inputOption.activeBackground'] : themeColors['custom.inputOption.hoverBackground'] }}
             title="Use Regular Expression"
             aria-label="Use Regular Expression"
           />
