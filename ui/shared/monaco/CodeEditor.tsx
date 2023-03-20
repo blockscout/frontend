@@ -43,9 +43,12 @@ const CodeEditor = ({ data }: Props) => {
     monaco.editor.defineTheme('blockscout-dark', themes.dark);
     monaco.editor.setTheme(colorMode === 'light' ? 'blockscout-light' : 'blockscout-dark');
 
-    data.slice(1).forEach((file) => {
-      monaco.editor.createModel(file.source_code, 'sol', monaco.Uri.parse(file.file_path));
-    });
+    const loadedModelsPaths = monaco.editor.getModels().map((model) => model.uri.path);
+    data.slice(1)
+      .filter((file) => !loadedModelsPaths.includes(file.file_path))
+      .forEach((file) => {
+        monaco.editor.createModel(file.source_code, 'sol', monaco.Uri.parse(file.file_path));
+      });
   // componentDidMount
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ ]);
