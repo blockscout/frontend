@@ -14,7 +14,7 @@ interface Props {
 }
 
 const TxStateTableItem = ({ data }: Props) => {
-  const { before, after, change, hint } = getStateElements(data);
+  const { before, after, change, hint, tokenId } = getStateElements(data);
 
   return (
     <Tr>
@@ -30,6 +30,7 @@ const TxStateTableItem = ({ data }: Props) => {
       <Td isNumeric lineHeight="30px">{ before }</Td>
       <Td isNumeric lineHeight="30px">{ after }</Td>
       <Td isNumeric lineHeight="30px"> { change } </Td>
+      <Td lineHeight="30px">{ tokenId || '-' }</Td>
     </Tr>
   );
 };

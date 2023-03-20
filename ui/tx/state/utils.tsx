@@ -1,4 +1,4 @@
-import { Box, Flex, Stat, StatArrow, StatHelpText } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -25,12 +25,16 @@ export function getStateElements(data: TxStateChange) {
     }
 
     if (data.address.hash === ZERO_ADDRESS) {
-      return (
-        <Flex align="center" columnGap={ 1 }>
-          <Hint label="Address used in tokens mintings and burnings"/>
-          <Box color="text_secondary" whiteSpace="nowrap">Burn address</Box>
-        </Flex>
-      );
+      const changeDirection = Array.isArray(data.change) ? data.change[0].direction : null;
+      if (changeDirection) {
+        const text = changeDirection === 'from' ? 'Mint' : 'Burn';
+        return (
+          <Flex align="center" columnGap={ 1 }>
+            <Hint label="Address used in tokens mintings and burnings"/>
+            <Box color="text_secondary" whiteSpace="nowrap">{ text } address</Box>
+          </Flex>
+        );
+      }
     }
 
     return null;
@@ -41,85 +45,63 @@ export function getStateElements(data: TxStateChange) {
       const beforeBn = BigNumber(data.balance_before || '0').div(10 ** appConfig.network.currency.decimals);
       const afterBn = BigNumber(data.balance_after || '0').div(10 ** appConfig.network.currency.decimals);
       const differenceBn = afterBn.minus(beforeBn);
+      const changeColor = beforeBn.lte(afterBn) ? 'green.500' : 'red.500';
+      const changeSign = beforeBn.lte(afterBn) ? '+' : '-';
 
       return {
         before: <Box>{ beforeBn.toFormat() } { appConfig.network.currency.symbol }</Box>,
         after: <Box>{ afterBn.toFormat() } { appConfig.network.currency.symbol }</Box>,
-        change: (
-          <Stat>
-            { differenceBn.toFormat() }
-            <StatArrow ml={ 2 } type={ beforeBn.lte(afterBn) ? 'increase' : 'decrease' }/>
-          </Stat>
-        ),
+        change: <Box color={ changeColor }>{ changeSign }{ nbsp }{ differenceBn.abs().toFormat() }</Box>,
         hint,
       };
     }
     case 'token': {
       const tokenLink = <AddressLink type="token" hash={ data.token.address } alias={ trimTokenSymbol(data.token?.symbol || data.token.address) }/>;
+      const before = Number(data.balance_before);
+      const after = Number(data.balance_after);
+      const difference = after - before;
+      const changeColor = difference >= 0 ? 'green.500' : 'red.500';
+      const changeSign = difference >= 0 ? '+' : '-';
+      const tokenIdValue = Array.isArray(data.change) ? data.change[0].total.token_id : null;
 
       const change = (() => {
-        const difference = Number(data.balance_after) - Number(data.balance_before);
+        if (!before && !after && data.address.hash === ZERO_ADDRESS) {
+          const changeDirection = Array.isArray(data.change) ? data.change[0].direction : null;
 
-        switch (data.token.type) {
-          case 'ERC-20': {
+          if (changeDirection) {
             return (
-              <Stat>
-                <StatHelpText display="flex" justifyContent={{ base: 'flex-start', lg: 'flex-end' }} alignItems="center" flexWrap="nowrap">
-                  { difference }{ nbsp }
-                  { tokenLink }
-                  <StatArrow ml={ 2 } type={ difference > 0 ? 'increase' : 'decrease' }/>
-                </StatHelpText>
-              </Stat>
+              <Box color={ changeDirection === 'from' ? 'green.500' : 'red.500' }>
+                { changeDirection === 'from' ? 'Mint' : 'Burn' }
+              </Box>
             );
           }
-          case 'ERC-721':
-          case 'ERC-1155': {
-            if (typeof data.change === 'string') {
-              return null;
-            }
-
-            return data.change.map((item, index) => {
-              if (Array.isArray(item.total)) {
-                return item.total.map((element, index) => {
-                  return (
-                    <Stat key={ index }>
-                      <StatHelpText display="flex" justifyContent={{ base: 'flex-start', lg: 'flex-end' }} alignItems="center" flexWrap="nowrap">
-                        <TokenTransferNft hash={ data.token.address } id={ element.token_id } w="auto"/>
-                        <StatArrow ml={ 2 } type={ item.direction === 'to' ? 'increase' : 'decrease' }/>
-                      </StatHelpText>
-                    </Stat>
-                  );
-                });
-              }
-
-              return (
-                <Stat key={ index }>
-                  <StatHelpText display="flex" justifyContent={{ base: 'flex-start', lg: 'flex-end' }} alignItems="center" flexWrap="nowrap">
-                    <TokenTransferNft hash={ data.token.address } id={ item.total.token_id } w="auto"/>
-                    <StatArrow ml={ 2 } type={ item.direction === 'to' ? 'increase' : 'decrease' }/>
-                  </StatHelpText>
-                </Stat>
-              );
-            });
-          }
         }
+
+        if (!difference) {
+          return <Box>0</Box>;
+        }
+
+        return <Box color={ changeColor }>{ changeSign }{ nbsp }{ Math.abs(difference).toLocaleString() }</Box>;
       })();
 
       return {
         before: data.balance_before ? (
           <Flex whiteSpace="pre-wrap" justifyContent={{ base: 'flex-start', lg: 'flex-end' }}>
-            <span>{ Number(data.balance_before).toLocaleString() } </span>
+            <span>{ before.toLocaleString() } </span>
             { tokenLink }
           </Flex>
         ) : null,
         after: data.balance_after ? (
           <Flex whiteSpace="pre-wrap" justifyContent={{ base: 'flex-start', lg: 'flex-end' }}>
-            <span>{ Number(data.balance_after).toLocaleString() } </span>
+            <span>{ after.toLocaleString() } </span>
             { tokenLink }
           </Flex>
         ) : null,
         change,
         hint,
+        tokenId: tokenIdValue ?
+          <TokenTransferNft hash={ data.token.address } id={ tokenIdValue } w="auto" truncation="constant" my={{ base: '-3px', lg: 0 }}/> :
+          null,
       };
     }
   }

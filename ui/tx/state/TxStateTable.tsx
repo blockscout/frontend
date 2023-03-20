@@ -25,6 +25,7 @@ const TxStateTable = ({ data }: Props) => {
           <Th width="33%" isNumeric>Before</Th>
           <Th width="33%" isNumeric>After</Th>
           <Th width="33%" isNumeric>Change</Th>
+          <Th width="150px" minW="80px" maxW="150px">Token ID</Th>
         </Tr>
       </Thead>
       <Tbody>

@@ -16,7 +16,7 @@ interface Props {
 
 const TxStateListItem = ({ data }: Props) => {
 
-  const { before, after, change, hint } = getStateElements(data);
+  const { before, after, change, hint, tokenId } = getStateElements(data);
 
   return (
     <ListItemMobile>
@@ -40,6 +40,12 @@ const TxStateListItem = ({ data }: Props) => {
         ) }
         <GridItem fontWeight={ 500 }>Change</GridItem>
         <GridItem>{ change }</GridItem>
+        { tokenId && (
+          <>
+            <GridItem fontWeight={ 500 }>Token ID</GridItem>
+            <GridItem>{ tokenId }</GridItem>
+          </>
+        ) }
       </Grid>
     </ListItemMobile>
   );

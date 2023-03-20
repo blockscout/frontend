@@ -38,7 +38,7 @@ export interface TxStateChangeTokenErc721 {
 export interface TxStateChangeTokenErc1155 {
   type: 'token';
   token: TokenInfo<'ERC-1155'>;
-  change: Array<NftTokenChange<Erc1155TotalPayload | Array<Erc1155TotalPayload>>>;
+  change: Array<NftTokenChange<Erc1155TotalPayload>>;
 }
 
 export type TxStateChanges = Array<TxStateChange>;

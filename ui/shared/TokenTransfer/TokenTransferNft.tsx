@@ -3,6 +3,7 @@ import { route } from 'nextjs-routes';
 import React from 'react';
 
 import nftPlaceholder from 'icons/nft_shield.svg';
+import HashStringShorten from 'ui/shared/HashStringShorten';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkInternal from 'ui/shared/LinkInternal';
 
@@ -11,9 +12,10 @@ interface Props {
   id: string;
   className?: string;
   isDisabled?: boolean;
+  truncation?: 'dynamic' | 'constant';
 }
 
-const TokenTransferNft = ({ hash, id, className, isDisabled }: Props) => {
+const TokenTransferNft = ({ hash, id, className, isDisabled, truncation = 'dynamic' }: Props) => {
   const Component = isDisabled ? Box : LinkInternal;
 
   return (
@@ -28,7 +30,7 @@ const TokenTransferNft = ({ hash, id, className, isDisabled }: Props) => {
     >
       <Icon as={ nftPlaceholder } boxSize="30px" mr={ 1 } color="inherit"/>
       <Box maxW="calc(100% - 34px)">
-        <HashStringShortenDynamic hash={ id } fontWeight={ 500 }/>
+        { truncation === 'constant' ? <HashStringShorten hash={ id }/> : <HashStringShortenDynamic hash={ id } fontWeight={ 500 }/> }
       </Box>
     </Component>
   );
