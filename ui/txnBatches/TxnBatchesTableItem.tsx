@@ -15,7 +15,7 @@ import LinkInternal from 'ui/shared/LinkInternal';
 type Props = { item: TxnBatchesItem };
 
 const TxnBatchesTableItem = ({ item }: Props) => {
-  const timeAgo = dayjs(item.l1_tx_timestamp).fromNow();
+  const timeAgo = dayjs(item.l1_timestamp).fromNow();
 
   return (
     <Tr>

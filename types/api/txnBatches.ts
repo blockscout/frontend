@@ -1,7 +1,7 @@
 export type TxnBatchesItem = {
   epoch_number: number;
   l1_tx_hashes: Array<string>;
-  l1_tx_timestamp: string;
+  l1_timestamp: string;
   l2_block_number: number;
   tx_count: number;
 }

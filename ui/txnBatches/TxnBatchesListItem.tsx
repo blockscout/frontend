@@ -16,7 +16,7 @@ import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 type Props = { item: TxnBatchesItem };
 
 const TxnBatchesListItem = ({ item }: Props) => {
-  const timeAgo = dayjs(item.l1_tx_timestamp).fromNow();
+  const timeAgo = dayjs(item.l1_timestamp).fromNow();
 
   const items = [
     {
