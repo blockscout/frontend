@@ -30,6 +30,8 @@ const CodeEditorTab = ({ isActive, path, onClick, onClose, isCloseDisabled, tabs
     !isCloseDisabled && onClose(path);
   }, [ isCloseDisabled, onClose, path ]);
 
+  const color = useColorModeValue('black', 'white');
+  const colorInactive = useColorModeValue('gray.600', 'gray.400');
   const bgColor = useColorModeValue(themes.light.colors['editor.background'], themes.dark.colors['editor.background']);
   const bgColorInactive = useColorModeValue('rgb(236, 236, 236)', 'rgb(45, 45, 45)');
   const icon = /.sol|.yul|.vy$/.test(fileName) ? iconSolidity : iconFile;
@@ -46,7 +48,7 @@ const CodeEditorTab = ({ isActive, path, onClick, onClose, isCloseDisabled, tabs
       borderRightColor={ borderColorInactive }
       borderBottomWidth="1px"
       borderBottomColor={ isActive ? 'transparent' : borderColorInactive }
-      color={ isActive ? 'black' : 'gray.600' }
+      color={ isActive ? color : colorInactive }
       alignItems="center"
       fontWeight={ 500 }
       cursor="pointer"
@@ -57,6 +59,7 @@ const CodeEditorTab = ({ isActive, path, onClick, onClose, isCloseDisabled, tabs
           display: 'block',
         },
       }}
+      userSelect="none"
     >
       <Icon as={ icon } boxSize="16px" mr="4px"/>
       <span>{ fileName }</span>

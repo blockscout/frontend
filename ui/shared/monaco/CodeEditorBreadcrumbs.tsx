@@ -1,7 +1,8 @@
-import { Flex, Box } from '@chakra-ui/react';
+import { Flex, Box, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import stripLeadingSlash from 'lib/stripLeadingSlash';
+import * as themes from 'ui/shared/monaco/utils/themes';
 
 interface Props {
   path: string;
@@ -9,13 +10,30 @@ interface Props {
 
 const CodeEditorBreadcrumbs = ({ path }: Props) => {
   const chunks = stripLeadingSlash(path).split('/');
-  return (
-    <Flex fontSize="sm" color="text_secondary" pl={ 2 } flexWrap="wrap">
-      { chunks.map((chunk, index) => {
+  const bgColor = useColorModeValue(themes.light.colors['editor.background'], themes.dark.colors['editor.background']);
 
+  return (
+    <Flex
+      color="text_secondary"
+      bgColor={ bgColor }
+      pl="16px"
+      pr="8px"
+      flexWrap="wrap"
+      fontSize="13px"
+      lineHeight="22px"
+      alignItems="center"
+    >
+      { chunks.map((chunk, index) => {
         return (
           <React.Fragment key={ index }>
-            { index !== 0 && <Box mx={ 1 }>{ '>' }</Box> }
+            { index !== 0 && (
+              <Box
+                className="codicon codicon-breadcrumb-separator"
+                boxSize="16px"
+                _before={{
+                  content: '"\\eab6"',
+                }}/>
+            ) }
             <Box>{ chunk }</Box>
           </React.Fragment>
         );

@@ -25,7 +25,7 @@ const CodeEditorSideBar = ({ onFileSelect, data, monaco }: Props) => {
     fontSize: '11px',
     lineHeight: '35px',
     fontWeight: 500,
-    color: useColorModeValue('gray.600', 'gray.500'),
+    color: useColorModeValue('gray.600', 'gray.400'),
     _selected: {
       color: useColorModeValue('black', 'white'),
     },
