@@ -21,8 +21,7 @@ const hooksConfig = {
 };
 
 // FIXME: idk why mobile test doesn't work (it's ok locally)
-// test('base view +@mobile +@dark-mode', async({ mount, page }) => {
-test('base view +@dark-mode', async({ mount, page }) => {
+test('base view +@mobile +@dark-mode', async({ mount, page }) => {
   await page.route('https://request-global.czilladx.com/serve/native.php?z=19260bf627546ab7242', (route) => route.fulfill({
     status: 200,
     body: '',

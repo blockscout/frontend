@@ -1,4 +1,4 @@
-import { Hide, HStack, Show, Text } from '@chakra-ui/react';
+import { Hide, HStack, Show } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 
@@ -9,15 +9,13 @@ import useDebounce from 'lib/hooks/useDebounce';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import { apos } from 'lib/html-entities';
 import TOKEN_TYPE from 'lib/token/tokenTypes';
-import EmptySearchResult from 'ui/apps/EmptySearchResult';
 import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
+import DataListDisplay from 'ui/shared/DataListDisplay';
 import FilterInput from 'ui/shared/filters/FilterInput';
 import PopoverFilter from 'ui/shared/filters/PopoverFilter';
 import TokenTypeFilter from 'ui/shared/filters/TokenTypeFilter';
 import Pagination from 'ui/shared/Pagination';
-import SkeletonList from 'ui/shared/skeletons/SkeletonList';
-import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 
 import TokensListItem from './TokensListItem';
 import TokensTable from './TokensTable';
@@ -67,7 +65,7 @@ const Tokens = () => {
     />
   );
 
-  const bar = (
+  const actionBar = (
     <>
       <HStack spacing={ 3 } mb={ 6 } display={{ base: 'flex', lg: 'none' }}>
         { typeFilter }
@@ -83,36 +81,28 @@ const Tokens = () => {
     </>
   );
 
-  if (isLoading) {
-    return (
-      <>
-        { bar }
-        <SkeletonList display={{ base: 'block', lg: 'none' }}/>
-        <SkeletonTable display={{ base: 'none', lg: 'block' }} columns={ [ '25px', '33%', '33%', '33%', '110px' ] }/>
-      </>
-    );
-  }
-
-  if (!data.items.length) {
-    if (debouncedFilter || type) {
-      return (
-        <>
-          { bar }
-          <EmptySearchResult text={ `Couldn${ apos }t find token that matches your filter query.` }/>;
-        </>
-      );
-    }
-    return <Text as="span">There are no tokens</Text>;
-  }
-
-  return (
+  const content = data?.items ? (
     <>
-      { bar }
       <Show below="lg" ssr={ false }>
         { data.items.map((item, index) => <TokensListItem key={ item.address } token={ item } index={ index } page={ pagination.page }/>) }
       </Show>
-      <Hide below="lg" ssr={ false }><TokensTable items={ data.items } page={ pagination.page }/></Hide>
-    </>
+      <Hide below="lg" ssr={ false }><TokensTable items={ data.items } page={ pagination.page }/></Hide></>
+  ) : null;
+
+  return (
+    <DataListDisplay
+      isError={ isError }
+      isLoading={ isLoading }
+      items={ data?.items }
+      skeletonProps={{ skeletonDesktopColumns: [ '25px', '33%', '33%', '33%', '110px' ] }}
+      emptyText="There are no tokens."
+      filterProps={{
+        emptyFilteredText: `Couldn${ apos }t find token that matches your filter query.`,
+        hasActiveFilters: Boolean(debouncedFilter || type),
+      }}
+      content={ content }
+      actionBar={ actionBar }
+    />
   );
 };
 
