@@ -70,9 +70,11 @@ export function getStateElements(data: TxStateChange) {
 
           if (changeDirection) {
             return (
-              <Box color={ changeDirection === 'from' ? 'green.500' : 'red.500' }>
+              <Flex color={ changeDirection === 'from' ? 'green.500' : 'red.500' } justifyContent={{ base: 'flex-start', lg: 'flex-end' }}>
                 { changeDirection === 'from' ? 'Mint' : 'Burn' }
-              </Box>
+                { nbsp }
+                { tokenLink }
+              </Flex>
             );
           }
         }

@@ -7,7 +7,6 @@ export type TxStateChange = (TxStateChangeCoin | TxStateChangeToken) & {
   is_miner: boolean;
   balance_before: string | null;
   balance_after: string | null;
-  storage: Array<unknown> | null;
 }
 
 export interface TxStateChangeCoin {
