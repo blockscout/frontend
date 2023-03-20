@@ -90,6 +90,28 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck }: Props) =
     borderColor: 'transparent',
   };
 
+  const searchResultNum = (() => {
+    if (!debouncedSearchTerm) {
+      return null;
+    }
+
+    const totalResults = searchResults.map(({ matches }) => matches.length).reduce((result, item) => result + item, 0);
+
+    if (!totalResults) {
+      return (
+        <Box px="8px" fontSize="13px" lineHeight="18px" mb="8px">
+          No results found. Review your settings for configured exclusions.
+        </Box>
+      );
+    }
+
+    return (
+      <Box px="8px" fontSize="13px" lineHeight="18px" mb="8px">
+        { totalResults } result{ totalResults > 1 ? 's' : '' } in { searchResults.length } file{ searchResults.length > 1 ? 's' : '' }
+      </Box>
+    );
+  })();
+
   return (
     <Box>
       <CoderEditorCollapseButton
@@ -158,13 +180,13 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck }: Props) =
           />
         </InputRightElement>
       </InputGroup>
+      { searchResultNum }
       <Accordion
         key={ debouncedSearchTerm }
         allowMultiple
         index={ expandedSections }
         onChange={ handleAccordionStateChange }
         reduceMotion
-        mt="4px"
       >
         { searchResults.map((item) => <CodeEditorSearchSection key={ item.file_path } data={ item } onItemClick={ handleResultItemClick }/>) }
       </Accordion>
