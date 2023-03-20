@@ -34,7 +34,7 @@ const CodeEditorSearchResultItem = ({ lineContent, filePath, onClick, startLineN
   return (
     <Box
       pr="8px"
-      pl="32px"
+      pl="36px"
       fontSize="13px"
       lineHeight="22px"
       whiteSpace="nowrap"

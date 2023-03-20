@@ -1,5 +1,5 @@
 import type { ChakraProps } from '@chakra-ui/react';
-import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Icon, chakra } from '@chakra-ui/react';
+import { Box, Accordion, AccordionButton, AccordionItem, AccordionPanel, Icon, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { FileTree } from './types';
@@ -50,7 +50,12 @@ const CodeEditorFileTree = ({ tree, level = 0, onItemClick, isCollapsed, selecte
                       h="22px"
                       transitionDuration="0"
                     >
-                      <AccordionIcon transform={ isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)' } boxSize="16px" color={ themeColors['icon.foreground'] }/>
+                      <Box
+                        className="codicon codicon-tree-item-expanded"
+                        transform={ isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)' }
+                        boxSize="16px"
+                        mr="2px"
+                      />
                       <Icon as={ isExpanded ? iconFolderOpen : iconFolder } boxSize="16px" mr="4px"/>
                       { leafName }
                     </AccordionButton>
@@ -75,7 +80,7 @@ const CodeEditorFileTree = ({ tree, level = 0, onItemClick, isCollapsed, selecte
             <AccordionItem
               key={ index }
               { ...itemProps }
-              pl={ `${ 24 + (level * 8) }px` }
+              pl={ `${ 26 + (level * 8) }px` }
               pr="8px"
               onClick={ onItemClick }
               data-file-path={ leaf.file_path }

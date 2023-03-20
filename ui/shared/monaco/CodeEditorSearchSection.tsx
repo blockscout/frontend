@@ -1,4 +1,4 @@
-import { AccordionButton, AccordionItem, AccordionIcon, AccordionPanel, Icon, Box } from '@chakra-ui/react';
+import { AccordionButton, AccordionItem, AccordionPanel, Icon, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SearchResult } from './types';
@@ -41,7 +41,13 @@ const CodeEditorSearchSection = ({ data, onItemClick }: Props) => {
             lineHeight="22px"
             alignItems="center"
           >
-            <AccordionIcon transform={ isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)' } boxSize="16px" color={ themeColors['icon.foreground'] }/>
+            <Box
+              className="codicon codicon-tree-item-expanded"
+              transform={ isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)' }
+              width="20px"
+              height="22px"
+              py="3px"
+            />
             <Icon as={ icon } boxSize="16px" mr="4px"/>
             <span>{ fileName }</span>
             <Box className="monaco-count-badge" ml="auto" bgColor={ themeColors['badge.background'] }>{ data.matches.length }</Box>
