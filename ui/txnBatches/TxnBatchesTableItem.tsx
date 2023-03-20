@@ -44,6 +44,7 @@ const TxnBatchesTableItem = ({ item }: Props) => {
           href={ appConfig.L2.L1BaseUrl + route({ pathname: '/block/[height]', query: { height: item.epoch_number.toString() } }) }
           fontWeight={ 600 }
           lineHeight="24px"
+          display="inline-flex"
         >
           { item.epoch_number }
         </LinkExternal>
@@ -51,7 +52,12 @@ const TxnBatchesTableItem = ({ item }: Props) => {
       <Td pr={ 12 }>
         <VStack spacing={ 3 }>
           { item.l1_tx_hashes.map(hash => (
-            <LinkExternal w="100%" key={ hash } href={ appConfig.L2.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: hash } }) }>
+            <LinkExternal
+              w="100%"
+              display="inline-flex"
+              key={ hash }
+              href={ appConfig.L2.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: hash } }) }
+            >
               <Icon as={ txIcon } boxSize={ 6 } mr={ 1 }/>
               <Box w="calc(100% - 36px)" overflow="hidden" whiteSpace="nowrap"><HashStringShortenDynamic hash={ hash }/></Box>
             </LinkExternal>

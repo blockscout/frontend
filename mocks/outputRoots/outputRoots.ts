@@ -29,5 +29,4 @@ export const outputRootsData = {
     index: 9877,
     items_count: 50,
   },
-  total: 9927,
 };

@@ -8,6 +8,7 @@ import buildApiUrl from 'playwright/utils/buildApiUrl';
 import Withdrawals from './Withdrawals';
 
 const WITHDRAWALS_API_URL = buildApiUrl('withdrawals');
+const WITHDRAWALS_COUNT_API_URL = buildApiUrl('withdrawals_count');
 
 test('base view +@mobile', async({ mount, page }) => {
   await page.route('https://request-global.czilladx.com/serve/native.php?z=19260bf627546ab7242', (route) => route.fulfill({
@@ -18,6 +19,11 @@ test('base view +@mobile', async({ mount, page }) => {
   await page.route(WITHDRAWALS_API_URL, (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(withdrawalsData),
+  }));
+
+  await page.route(WITHDRAWALS_COUNT_API_URL, (route) => route.fulfill({
+    status: 200,
+    body: '397',
   }));
 
   const component = await mount(

@@ -372,16 +372,28 @@ export const RESOURCES = {
     filterFields: [],
   },
 
+  withdrawals_count: {
+    path: '/api/v2/optimism/withdrawals-count',
+  },
+
   output_roots: {
     path: '/api/v2/optimism/output-roots',
     paginationFields: [ 'index' as const, 'items_count' as const ],
     filterFields: [],
   },
 
+  output_roots_count: {
+    path: '/api/v2/optimism/output-roots-count',
+  },
+
   txn_batches: {
     path: '/api/v2/optimism/txn-batches',
     paginationFields: [ 'block_number' as const, 'items_count' as const ],
     filterFields: [],
+  },
+
+  txn_batches_count: {
+    path: '/api/v2/optimism/txn-batches-count',
   },
 
   // DEPRECATED
@@ -508,6 +520,9 @@ Q extends 'contract_verification_config' ? SmartContractVerificationConfig :
 Q extends 'output_roots' ? OutputRootsResponse :
 Q extends 'withdrawals' ? WithdrawalsResponse :
 Q extends 'txn_batches' ? TxnBatchesResponse :
+Q extends 'output_roots_count' ? number :
+Q extends 'withdrawals_count' ? number :
+Q extends 'txn_batches_count' ? number :
 never;
 /* eslint-enable @typescript-eslint/indent */
 

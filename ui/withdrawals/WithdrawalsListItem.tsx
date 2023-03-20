@@ -67,6 +67,7 @@ const WithdrawalsListItem = ({ item }: Props) => {
         <LinkExternal
           href={ appConfig.L2.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: item.l1_tx_hash } }) }
           w="100%"
+          display="inline-flex"
           overflow="hidden"
         >
           <Box w="calc(100% - 16px)" overflow="hidden" whiteSpace="nowrap"><HashStringShortenDynamic hash={ item.l1_tx_hash }/></Box>

@@ -33,5 +33,4 @@ export const txnBatchesData = {
     block_number: 5902834,
     items_count: 50,
   },
-  total: 1235016,
 };

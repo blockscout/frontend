@@ -47,6 +47,7 @@ const TxnBatchesListItem = ({ item }: Props) => {
       value: (
         <LinkExternal
           fontWeight={ 600 }
+          display="inline-flex"
           href={ appConfig.L2.L1BaseUrl + route({ pathname: '/block/[height]', query: { height: item.epoch_number.toString() } }) }
         >
           { item.epoch_number }
@@ -60,6 +61,7 @@ const TxnBatchesListItem = ({ item }: Props) => {
           { item.l1_tx_hashes.map(hash => (
             <LinkExternal
               w="100%"
+              display="inline-flex"
               href={ appConfig.L2.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: hash } }) }
               key={ hash }
             >

@@ -40,7 +40,11 @@ const OutputRootsTableItem = ({ item }: Props) => {
       </Td>
       <Td verticalAlign="middle" pr={ 12 }>
         <Flex>
-          <LinkExternal w="100%" href={ appConfig.L2.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: item.l1_tx_hash } }) }>
+          <LinkExternal
+            w="100%"
+            display="inline-flex"
+            href={ appConfig.L2.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: item.l1_tx_hash } }) }
+          >
             <Icon as={ txIcon } boxSize={ 6 } mr={ 1 }/>
             <Box w="calc(100% - 36px)" overflow="hidden" whiteSpace="nowrap"><HashStringShortenDynamic hash={ item.l1_tx_hash }/></Box>
           </LinkExternal>
