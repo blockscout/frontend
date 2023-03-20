@@ -34,8 +34,6 @@ const VerifiedContracts = () => {
     filters: { q: debouncedSearchTerm, filter: type },
   });
 
-  // const counters = useQuery
-
   const handleSearchTermChange = React.useCallback((value: string) => {
     onFilterChange({ q: value, filter: type });
     setSearchTerm(value);
