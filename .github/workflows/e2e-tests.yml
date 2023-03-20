@@ -73,7 +73,7 @@ jobs:
     uses: blockscout/blockscout-ci-cd/.github/workflows/e2e_new.yaml@master
     with:
       appNamespace: e2e-front-$GITHUB_SHA_SHORT
-      frontendImage: ghcr.io/blockscout/frontend:${{ needs.push_to_registry.outputs.tags }}
+      frontendImage: ${{ needs.push_to_registry.outputs.tags }}
       blockscoutIngressHost: e2e-blockscout-$GITHUB_SHA_SHORT
       frontendIngressHost: e2e-blockscout-$GITHUB_SHA_SHORT
       gethIngressHost: e2e-geth-$GITHUB_SHA_SHORT
