@@ -1,7 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import useColors from './utils/useColors';
+import useThemeColors from './utils/useThemeColors';
 
 interface Props {
   onClick: () => void;
@@ -11,7 +11,8 @@ interface Props {
 }
 
 const CoderEditorCollapseButton = ({ onClick, label, isDisabled, isCollapsed }: Props) => {
-  const colors = useColors();
+  const themeColors = useThemeColors();
+
   return (
     <Box
       position="absolute"
@@ -27,7 +28,7 @@ const CoderEditorCollapseButton = ({ onClick, label, isDisabled, isCollapsed }: 
         content: isCollapsed ? '"\\eb95"' : '"\\eac5"',
       }}
       _hover={{
-        bgColor: colors.buttons.bgColorHover,
+        bgColor: themeColors['inputOption.hoverBackground'],
       }}
       onClick={ onClick }
       cursor="pointer"

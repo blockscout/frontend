@@ -1,5 +1,5 @@
 import type { HTMLChakraProps } from '@chakra-ui/react';
-import { Box, Tab, TabList, TabPanel, TabPanels, Tabs, useColorModeValue } from '@chakra-ui/react';
+import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import _throttle from 'lodash/throttle';
 import React from 'react';
 
@@ -7,7 +7,7 @@ import type { File, Monaco } from './types';
 
 import CodeEditorFileExplorer from './CodeEditorFileExplorer';
 import CodeEditorSearch from './CodeEditorSearch';
-import useColors from './utils/useColors';
+import useThemeColors from './utils/useThemeColors';
 
 interface Props {
   monaco: Monaco | undefined;
@@ -20,35 +20,43 @@ const CodeEditorSideBar = ({ onFileSelect, data, monaco, selectedFile }: Props) 
 
   const [ isStuck, setIsStuck ] = React.useState(false);
 
+  const themeColors = useThemeColors();
+
   const tabProps: HTMLChakraProps<'button'> = {
     fontFamily: 'heading',
     textTransform: 'uppercase',
     fontSize: '11px',
     lineHeight: '35px',
     fontWeight: 500,
-    color: useColorModeValue('gray.600', 'gray.400'),
+    color: themeColors['tab.inactiveForeground'],
     _selected: {
-      color: useColorModeValue('black', 'white'),
+      color: themeColors['tab.activeForeground'],
     },
     px: 0,
     letterSpacing: 0.3,
   };
-
-  const colors = useColors();
 
   const handleScrollThrottled = React.useRef(_throttle((event: React.SyntheticEvent) => {
     setIsStuck((event.target as HTMLDivElement).scrollTop > 0);
   }, 100));
 
   return (
-    <Box w="250px" flexShrink={ 0 } bgColor={ colors.panels.bgColor } fontSize="13px" overflowY="scroll" onScroll={ handleScrollThrottled.current } pb="22px">
+    <Box
+      w="250px"
+      flexShrink={ 0 }
+      bgColor={ themeColors['sideBar.background'] }
+      fontSize="13px"
+      overflowY="scroll"
+      onScroll={ handleScrollThrottled.current }
+      pb="22px"
+    >
       <Tabs isLazy lazyBehavior="keepMounted" variant="unstyled" size="13px">
         <TabList
           columnGap={ 3 }
           position="sticky"
           top={ 0 }
           left={ 0 }
-          bgColor={ colors.panels.bgColor }
+          bgColor={ themeColors['sideBar.background'] }
           zIndex="1"
           px={ 2 }
           boxShadow={ isStuck ? 'md' : 'none' }

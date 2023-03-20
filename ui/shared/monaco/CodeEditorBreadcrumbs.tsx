@@ -1,8 +1,8 @@
-import { Flex, Box, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import stripLeadingSlash from 'lib/stripLeadingSlash';
-import * as themes from 'ui/shared/monaco/utils/themes';
+import useThemeColors from 'ui/shared/monaco/utils/useThemeColors';
 
 interface Props {
   path: string;
@@ -10,12 +10,12 @@ interface Props {
 
 const CodeEditorBreadcrumbs = ({ path }: Props) => {
   const chunks = stripLeadingSlash(path).split('/');
-  const bgColor = useColorModeValue(themes.light.colors['editor.background'], themes.dark.colors['editor.background']);
+  const themeColors = useThemeColors();
 
   return (
     <Flex
-      color="text_secondary"
-      bgColor={ bgColor }
+      color={ themeColors['breadcrumbs.foreground'] }
+      bgColor={ themeColors['editor.background'] }
       pl="16px"
       pr="8px"
       flexWrap="wrap"

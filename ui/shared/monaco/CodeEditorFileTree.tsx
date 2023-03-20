@@ -1,5 +1,5 @@
 import type { ChakraProps } from '@chakra-ui/react';
-import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Icon, chakra, useColorModeValue } from '@chakra-ui/react';
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Icon, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { FileTree } from './types';
@@ -8,7 +8,7 @@ import iconFile from './icons/file.svg';
 import iconFolderOpen from './icons/folder-open.svg';
 import iconFolder from './icons/folder.svg';
 import iconSolidity from './icons/solidity.svg';
-import useColors from './utils/useColors';
+import useThemeColors from './utils/useThemeColors';
 
 interface Props {
   tree: FileTree;
@@ -27,8 +27,7 @@ const CodeEditorFileTree = ({ tree, level = 0, onItemClick, isCollapsed, selecte
       borderBottomWidth: '0px',
     },
   };
-  const rowHoverBgColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
-  const colors = useColors();
+  const themeColors = useThemeColors();
 
   return (
     <Accordion allowMultiple defaultIndex={ isCollapsed ? undefined : tree.map((item, index) => index) } reduceMotion>
@@ -45,13 +44,13 @@ const CodeEditorFileTree = ({ tree, level = 0, onItemClick, isCollapsed, selecte
                       pr="8px"
                       py="0"
                       pl={ `${ 8 + 8 * level }px` }
-                      _hover={{ bgColor: rowHoverBgColor }}
+                      _hover={{ bgColor: themeColors['list.hoverBackground'] }}
                       fontSize="13px"
                       lineHeight="22px"
                       h="22px"
                       transitionDuration="0"
                     >
-                      <AccordionIcon transform={ isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)' } boxSize="16px" color={ colors.buttons.color }/>
+                      <AccordionIcon transform={ isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)' } boxSize="16px" color={ themeColors['icon.foreground'] }/>
                       <Icon as={ isExpanded ? iconFolderOpen : iconFolder } boxSize="16px" mr="4px"/>
                       { leafName }
                     </AccordionButton>
@@ -84,9 +83,9 @@ const CodeEditorFileTree = ({ tree, level = 0, onItemClick, isCollapsed, selecte
               alignItems="center"
               overflow="hidden"
               _hover={{
-                bgColor: selectedFile === leaf.file_path ? colors.selection.bgColorSelected : rowHoverBgColor,
+                bgColor: selectedFile === leaf.file_path ? themeColors['list.inactiveSelectionBackground'] : themeColors['list.hoverBackground'],
               }}
-              bgColor={ selectedFile === leaf.file_path ? colors.selection.bgColorSelected : 'none' }
+              bgColor={ selectedFile === leaf.file_path ? themeColors['list.inactiveSelectionBackground'] : 'none' }
             >
               <Icon as={ icon } boxSize="16px" mr="4px"/>
               { leafName }

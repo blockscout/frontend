@@ -1,11 +1,12 @@
-import { Flex, Icon, chakra, useColorModeValue, Box } from '@chakra-ui/react';
+import { Flex, Icon, chakra, Box } from '@chakra-ui/react';
 import React from 'react';
+
+import useThemeColors from 'ui/shared/monaco/utils/useThemeColors';
 
 import iconFile from './icons/file.svg';
 import iconSolidity from './icons/solidity.svg';
 import getFilePathParts from './utils/getFilePathParts';
-import * as themes from './utils/themes';
-import useColors from './utils/useColors';
+
 interface Props {
   isActive?: boolean;
   path: string;
@@ -17,7 +18,7 @@ interface Props {
 
 const CodeEditorTab = ({ isActive, path, onClick, onClose, isCloseDisabled, tabsPathChunks }: Props) => {
   const [ fileName, folderName ] = getFilePathParts(path, tabsPathChunks);
-  const colors = useColors();
+  const themeColors = useThemeColors();
 
   const handleClick = React.useCallback(() => {
     onClick(path);
@@ -28,12 +29,7 @@ const CodeEditorTab = ({ isActive, path, onClick, onClose, isCloseDisabled, tabs
     !isCloseDisabled && onClose(path);
   }, [ isCloseDisabled, onClose, path ]);
 
-  const color = useColorModeValue('black', 'white');
-  const colorInactive = useColorModeValue('gray.600', 'gray.400');
-  const bgColor = useColorModeValue(themes.light.colors['editor.background'], themes.dark.colors['editor.background']);
-  const bgColorInactive = useColorModeValue('rgb(236, 236, 236)', 'rgb(45, 45, 45)');
   const icon = /.sol|.yul|.vy$/.test(fileName) ? iconSolidity : iconFile;
-  const borderColorInactive = useColorModeValue('rgb(243, 243, 243)', 'rgb(37, 37, 38)');
 
   return (
     <Flex
@@ -41,12 +37,12 @@ const CodeEditorTab = ({ isActive, path, onClick, onClose, isCloseDisabled, tabs
       pr="4px"
       fontSize="13px"
       lineHeight="34px"
-      bgColor={ isActive ? bgColor : bgColorInactive }
+      bgColor={ isActive ? themeColors['tab.activeBackground'] : themeColors['tab.inactiveBackground'] }
       borderRightWidth="1px"
-      borderRightColor={ borderColorInactive }
+      borderRightColor={ themeColors['tab.border'] }
       borderBottomWidth="1px"
-      borderBottomColor={ isActive ? 'transparent' : borderColorInactive }
-      color={ isActive ? color : colorInactive }
+      borderBottomColor={ isActive ? 'transparent' : themeColors['tab.border'] }
+      color={ isActive ? themeColors['tab.activeForeground'] : themeColors['tab.inactiveForeground'] }
       alignItems="center"
       fontWeight={ 400 }
       cursor="pointer"
@@ -60,7 +56,7 @@ const CodeEditorTab = ({ isActive, path, onClick, onClose, isCloseDisabled, tabs
     >
       <Icon as={ icon } boxSize="16px" mr="4px"/>
       <span>{ fileName }</span>
-      { folderName && <chakra.span fontSize="xs" color="text_secondary" ml={ 1 }>{ folderName[0] === '.' ? '' : '...' }{ folderName }</chakra.span> }
+      { folderName && <chakra.span fontSize="11px" opacity={ 0.8 } ml={ 1 }>{ folderName[0] === '.' ? '' : '...' }{ folderName }</chakra.span> }
       <Box
         className="codicon codicon-close"
         boxSize="20px"
@@ -72,8 +68,8 @@ const CodeEditorTab = ({ isActive, path, onClick, onClose, isCloseDisabled, tabs
         borderRadius="sm"
         opacity={ isCloseDisabled ? 0.3 : 1 }
         visibility={ isActive ? 'visible' : 'hidden' }
-        color={ colors.buttons.color }
-        _hover={{ bgColor: isCloseDisabled ? 'transparent' : colors.buttons.bgColorHover }}
+        color={ themeColors['icon.foreground'] }
+        _hover={{ bgColor: isCloseDisabled ? 'transparent' : themeColors['inputOption.hoverBackground'] }}
       />
     </Flex>
   );

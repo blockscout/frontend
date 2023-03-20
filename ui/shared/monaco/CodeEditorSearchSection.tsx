@@ -1,4 +1,4 @@
-import { AccordionButton, AccordionItem, AccordionIcon, AccordionPanel, useColorModeValue, Icon, Box } from '@chakra-ui/react';
+import { AccordionButton, AccordionItem, AccordionIcon, AccordionPanel, Icon, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SearchResult } from './types';
@@ -7,7 +7,7 @@ import CodeEditorSearchResultItem from './CodeEditorSearchResultItem';
 import iconFile from './icons/file.svg';
 import iconSolidity from './icons/solidity.svg';
 import getFileName from './utils/getFileName';
-import useColors from './utils/useColors';
+import useThemeColors from './utils/useThemeColors';
 
 interface Props {
   data: SearchResult;
@@ -24,11 +24,9 @@ const CodeEditorSearchSection = ({ data, onItemClick }: Props) => {
     }
   }, [ data.file_path, onItemClick ]);
 
-  const rowHoverBgColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
   const icon = /.sol|.yul|.vy$/.test(fileName) ? iconSolidity : iconFile;
 
-  const badgeBgColor = useColorModeValue('#c4c4c4', '#4d4d4d');
-  const colors = useColors();
+  const themeColors = useThemeColors();
 
   return (
     <AccordionItem borderWidth="0px" _last={{ borderBottomWidth: '0px' }} >
@@ -37,16 +35,16 @@ const CodeEditorSearchSection = ({ data, onItemClick }: Props) => {
           <AccordionButton
             py={ 0 }
             px={ 2 }
-            _hover={{ bgColor: rowHoverBgColor }}
+            _hover={{ bgColor: themeColors['list.hoverBackground'] }}
             fontSize="13px"
             transitionDuration="0"
             lineHeight="22px"
             alignItems="center"
           >
-            <AccordionIcon transform={ isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)' } boxSize="16px" color={ colors.buttons.color }/>
+            <AccordionIcon transform={ isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)' } boxSize="16px" color={ themeColors['icon.foreground'] }/>
             <Icon as={ icon } boxSize="16px" mr="4px"/>
             <span>{ fileName }</span>
-            <Box className="monaco-count-badge" ml="auto" bgColor={ badgeBgColor }>{ data.matches.length }</Box>
+            <Box className="monaco-count-badge" ml="auto" bgColor={ themeColors['badge.background'] }>{ data.matches.length }</Box>
           </AccordionButton>
           <AccordionPanel p={ 0 }>
             { data.matches.map((match) => (

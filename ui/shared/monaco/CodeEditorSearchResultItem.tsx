@@ -1,8 +1,10 @@
-import { Box, chakra, useColorModeValue } from '@chakra-ui/react';
+import { Box, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SearchResult } from './types';
 import type ArrayElement from 'types/utils/ArrayElement';
+
+import useThemeColors from './utils/useThemeColors';
 
 interface Props extends ArrayElement<SearchResult['matches']> {
   filePath: string;
@@ -27,7 +29,7 @@ const calculateStartPosition = (lineContent: string, startColumn: number) => {
 
 const CodeEditorSearchResultItem = ({ lineContent, filePath, onClick, startLineNumber, startColumn, endColumn }: Props) => {
   const start = calculateStartPosition(lineContent, startColumn);
-  const rowHoverBgColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
+  const themeColors = useThemeColors();
 
   return (
     <Box
@@ -43,10 +45,12 @@ const CodeEditorSearchResultItem = ({ lineContent, filePath, onClick, startLineN
       data-line-number={ startLineNumber }
       onClick={ onClick }
       transitionDuration="0"
-      _hover={{ bgColor: rowHoverBgColor }}
+      _hover={{ bgColor: themeColors['list.hoverBackground'] }}
     >
       <span>{ lineContent.slice(start, startColumn - 1) }</span>
-      <chakra.span bgColor="rgba(234, 92, 0, 0.33)">{ lineContent.slice(startColumn - 1, endColumn - 1) }</chakra.span>
+      <chakra.span bgColor={ themeColors['editor.findMatchHighlightBackground'] }>
+        { lineContent.slice(startColumn - 1, endColumn - 1) }
+      </chakra.span>
       <span>{ lineContent.slice(endColumn - 1) }</span>
     </Box>
   );

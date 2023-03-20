@@ -1,5 +1,5 @@
 import type { ChakraProps } from '@chakra-ui/react';
-import { Accordion, Box, Input, InputGroup, InputRightElement, useColorModeValue, useBoolean } from '@chakra-ui/react';
+import { Accordion, Box, Input, InputGroup, InputRightElement, useBoolean } from '@chakra-ui/react';
 import React from 'react';
 
 import type { File, Monaco, SearchResult } from './types';
@@ -8,7 +8,7 @@ import useDebounce from 'lib/hooks/useDebounce';
 
 import CodeEditorSearchSection from './CodeEditorSearchSection';
 import CoderEditorCollapseButton from './CoderEditorCollapseButton';
-import useColors from './utils/useColors';
+import useThemeColors from './utils/useThemeColors';
 
 interface Props {
   data: Array<File>;
@@ -24,6 +24,8 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck }: Props) =
   const [ isMatchCase, setMatchCase ] = useBoolean();
   const [ isMatchWholeWord, setMatchWholeWord ] = useBoolean();
   const [ isMatchRegex, setMatchRegex ] = useBoolean();
+
+  const themeColors = useThemeColors();
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
@@ -76,11 +78,6 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck }: Props) =
     }
   }, [ expandedSections.length, searchResults ]);
 
-  const inputColor = useColorModeValue('rgb(97, 97, 97)', 'rgb(204, 204, 204)');
-  const inputBgColor = useColorModeValue('white', 'rgb(60, 60, 60)');
-  const inputFocusBorderColor = useColorModeValue('#0090f1', '#007fd4');
-  const buttonActiveBgColor = useColorModeValue('rgba(0, 144, 241, 0.2)', 'rgba(0, 127, 212, 0.4)');
-  const colors = useColors();
   const buttonProps: ChakraProps = {
     boxSize: '20px',
     p: '1px',
@@ -126,7 +123,7 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck }: Props) =
         top="35px"
         left="0"
         zIndex="2"
-        bgColor={ colors.panels.bgColor }
+        bgColor={ themeColors['sideBar.background'] }
         pb="8px"
         boxShadow={ isInputStuck ? 'md' : 'none' }
       >
@@ -136,18 +133,18 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck }: Props) =
           value={ searchTerm }
           placeholder="Search"
           variant="unstyled"
-          color={ inputColor }
-          bgColor={ inputBgColor }
+          color={ themeColors['input.foreground'] }
+          bgColor={ themeColors['input.background'] }
           borderRadius="none"
           fontSize="13px"
           lineHeight="20px"
           borderWidth="1px"
-          borderColor={ inputBgColor }
+          borderColor={ themeColors['input.background'] }
           py="2px"
           px="4px"
           transitionDuration="0"
           _focus={{
-            borderColor: inputFocusBorderColor,
+            borderColor: themeColors.focusBorder,
           }}
         />
         <InputRightElement w="auto" h="auto" right="12px" top="3px" columnGap="2px">
@@ -155,26 +152,26 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck }: Props) =
             { ...buttonProps }
             className="codicon codicon-case-sensitive"
             onClick={ setMatchCase.toggle }
-            bgColor={ isMatchCase ? buttonActiveBgColor : 'transparent' }
-            _hover={{ bgColor: isMatchCase ? buttonActiveBgColor : colors.buttons.bgColorHover }}
+            bgColor={ isMatchCase ? themeColors['inputOption.activeBackground'] : 'transparent' }
+            _hover={{ bgColor: isMatchCase ? themeColors['inputOption.activeBackground'] : themeColors['inputOption.hoverBackground'] }}
             title="Match Case"
             aria-label="Match Case"
           />
           <Box
             { ...buttonProps }
             className="codicon codicon-whole-word"
-            bgColor={ isMatchWholeWord ? buttonActiveBgColor : 'transparent' }
+            bgColor={ isMatchWholeWord ? themeColors['inputOption.activeBackground'] : 'transparent' }
             onClick={ setMatchWholeWord.toggle }
-            _hover={{ bgColor: isMatchWholeWord ? buttonActiveBgColor : colors.buttons.bgColorHover }}
+            _hover={{ bgColor: isMatchWholeWord ? themeColors['inputOption.activeBackground'] : themeColors['inputOption.hoverBackground'] }}
             title="Match Whole Word"
             aria-label="Match Whole Word"
           />
           <Box
             { ...buttonProps }
             className="codicon codicon-regex"
-            bgColor={ isMatchRegex ? buttonActiveBgColor : 'transparent' }
+            bgColor={ isMatchRegex ? themeColors['inputOption.activeBackground'] : 'transparent' }
             onClick={ setMatchRegex.toggle }
-            _hover={{ bgColor: isMatchRegex ? buttonActiveBgColor : colors.buttons.bgColorHover }}
+            _hover={{ bgColor: isMatchRegex ? themeColors['inputOption.activeBackground'] : themeColors['inputOption.hoverBackground'] }}
             title="Use Regular Expression"
             aria-label="Use Regular Expression"
           />
