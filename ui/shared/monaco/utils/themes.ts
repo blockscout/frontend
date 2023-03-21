@@ -4,6 +4,7 @@ export const light = {
   rules: [],
   colors: {
     'editor.background': '#f5f5f6',
+    'editorWidget.background': '#f5f5f6',
 
     'tab.activeBackground': '#f5f5f6',
     'tab.inactiveBackground': 'rgb(236, 236, 236)',
@@ -40,6 +41,7 @@ export const dark = {
   rules: [],
   colors: {
     'editor.background': '#1a1b1b',
+    'editorWidget.background': '#1a1b1b',
 
     'tab.activeBackground': '#1a1b1b', // black
     'tab.inactiveBackground': 'rgb(45, 45, 45)',

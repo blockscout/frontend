@@ -6,6 +6,8 @@ import React from 'react';
 
 import type { File, Monaco } from './types';
 
+import useClientRect from 'lib/hooks/useClientRect';
+
 import CodeEditorBreadcrumbs from './CodeEditorBreadcrumbs';
 import CodeEditorSideBar from './CodeEditorSideBar';
 import CodeEditorTabs from './CodeEditorTabs';
@@ -19,6 +21,11 @@ const EDITOR_OPTIONS: EditorProps['options'] = {
   },
 };
 
+const TABS_HEIGHT = 35;
+const BREADCRUMBS_HEIGHT = 22;
+const SIDE_BAR_WIDTH = 250;
+const EDITOR_HEIGHT = 500;
+
 interface Props {
   data: Array<File>;
 }
@@ -27,9 +34,12 @@ const CodeEditor = ({ data }: Props) => {
   const [ instance, setInstance ] = React.useState<Monaco | undefined>();
   const [ index, setIndex ] = React.useState(0);
   const [ tabs, setTabs ] = React.useState([ data[index].file_path ]);
+
   const editorRef = React.useRef<monaco.editor.IStandaloneCodeEditor>();
+  const [ containerRect, containerNodeRef ] = useClientRect<HTMLDivElement>();
 
   const { colorMode } = useColorMode();
+  const editorWidth = containerRect ? containerRect.width - SIDE_BAR_WIDTH : 0;
 
   React.useEffect(() => {
     instance?.editor.setTheme(colorMode === 'light' ? 'blockscout-light' : 'blockscout-dark');
@@ -88,9 +98,19 @@ const CodeEditor = ({ data }: Props) => {
     });
   }, [ data, index ]);
 
+  const containerSx = React.useMemo(() => ({
+    '.editor-container': {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: `${ editorWidth }px`,
+      height: '100%',
+    },
+  }), [ editorWidth ]);
+
   if (data.length === 1) {
     return (
-      <Box overflow="hidden" borderRadius="md" height="540px">
+      <Box overflow="hidden" borderRadius="md" height={ `${ EDITOR_HEIGHT }px` }>
         <MonacoEditor
           language="sol"
           path={ data[index].file_path }
@@ -103,11 +123,21 @@ const CodeEditor = ({ data }: Props) => {
   }
 
   return (
-    <Flex overflow="hidden" borderRadius="md" height="540px" position="relative">
+    <Flex
+      overflow="hidden"
+      borderRadius="md"
+      width="100%"
+      height={ `${ EDITOR_HEIGHT + TABS_HEIGHT + BREADCRUMBS_HEIGHT }px` }
+      position="relative"
+      ref={ containerNodeRef }
+      sx={ containerSx }
+    >
       <Box flexGrow={ 1 }>
         <CodeEditorTabs tabs={ tabs } activeTab={ data[index].file_path } onTabSelect={ handleTabSelect } onTabClose={ handleTabClose }/>
         <CodeEditorBreadcrumbs path={ data[index].file_path }/>
         <MonacoEditor
+          className="editor-container"
+          height={ `${ EDITOR_HEIGHT }px` }
           language="sol"
           path={ data[index].file_path }
           defaultValue={ data[index].source_code }
