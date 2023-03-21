@@ -14,6 +14,7 @@ import CodeEditorLoading from './CodeEditorLoading';
 import CodeEditorSideBar, { CONTAINER_WIDTH as SIDE_BAR_WIDTH } from './CodeEditorSideBar';
 import CodeEditorTabs from './CodeEditorTabs';
 import * as themes from './utils/themes';
+import useThemeColors from './utils/useThemeColors';
 
 const EDITOR_OPTIONS: EditorProps['options'] = {
   readOnly: true,
@@ -41,6 +42,7 @@ const CodeEditor = ({ data }: Props) => {
 
   const { colorMode } = useColorMode();
   const isMobile = useIsMobile();
+  const themeColors = useThemeColors();
 
   const editorWidth = containerRect ? containerRect.width - (isMobile ? 0 : SIDE_BAR_WIDTH) : 0;
 
@@ -109,7 +111,10 @@ const CodeEditor = ({ data }: Props) => {
       width: `${ editorWidth }px`,
       height: '100%',
     },
-  }), [ editorWidth ]);
+    '.highlight': {
+      backgroundColor: themeColors['custom.findMatchHighlightBackground'],
+    },
+  }), [ editorWidth, themeColors ]);
 
   if (data.length === 1) {
     return (

@@ -1,5 +1,6 @@
 import type { ChakraProps } from '@chakra-ui/react';
 import { Accordion, Box, Input, InputGroup, InputRightElement, useBoolean } from '@chakra-ui/react';
+import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import React from 'react';
 
 import type { File, Monaco, SearchResult } from './types';
@@ -26,6 +27,7 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck, isActive, 
   const [ isMatchCase, setMatchCase ] = useBoolean();
   const [ isMatchWholeWord, setMatchWholeWord ] = useBoolean();
   const [ isMatchRegex, setMatchRegex ] = useBoolean();
+  const decorations = React.useRef<Record<string, Array<string>>>({});
 
   const themeColors = useThemeColors();
 
@@ -40,12 +42,24 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck, isActive, 
       setSearchResults([]);
     }
 
-    const result: Array<SearchResult> = monaco.editor.getModels()
-      .map((model) => {
-        const matches = model.findMatches(debouncedSearchTerm, false, isMatchRegex, isMatchCase, isMatchWholeWord ? 'true' : null, false);
+    const models = monaco.editor.getModels();
+    const matches = models.map((model) => model.findMatches(debouncedSearchTerm, false, isMatchRegex, isMatchCase, isMatchWholeWord ? 'true' : null, false));
+
+    models.forEach((model, index) => {
+      const filePath = model.uri.path;
+      const prevDecorations = decorations.current[filePath] || [];
+      const newDecorations: Array<monaco.editor.IModelDeltaDecoration> = matches[index].map(({ range }) => ({ range, options: { className: 'highlight' } }));
+
+      const newDecorationsIds = model.deltaDecorations(prevDecorations, newDecorations);
+      decorations.current[filePath] = newDecorationsIds;
+    });
+
+    const result: Array<SearchResult> = matches
+      .map((match, index) => {
+        const model = models[index];
         return {
           file_path: model.uri.path,
-          matches: matches.map(({ range }) => ({ ...range, lineContent: model.getLineContent(range.startLineNumber) })),
+          matches: match.map(({ range }) => ({ ...range, lineContent: model.getLineContent(range.startLineNumber) })),
         };
       })
       .filter(({ matches }) => matches.length > 0);
