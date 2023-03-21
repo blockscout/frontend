@@ -7,6 +7,7 @@ import React from 'react';
 import type { File, Monaco } from './types';
 
 import useClientRect from 'lib/hooks/useClientRect';
+import useIsMobile from 'lib/hooks/useIsMobile';
 
 import CodeEditorBreadcrumbs from './CodeEditorBreadcrumbs';
 import CodeEditorLoading from './CodeEditorLoading';
@@ -40,7 +41,9 @@ const CodeEditor = ({ data }: Props) => {
   const [ containerRect, containerNodeRef ] = useClientRect<HTMLDivElement>();
 
   const { colorMode } = useColorMode();
-  const editorWidth = containerRect ? containerRect.width - SIDE_BAR_WIDTH : 0;
+  const isMobile = useIsMobile();
+
+  const editorWidth = containerRect ? containerRect.width - (isMobile ? 0 : SIDE_BAR_WIDTH) : 0;
 
   React.useEffect(() => {
     instance?.editor.setTheme(colorMode === 'light' ? 'blockscout-light' : 'blockscout-dark');

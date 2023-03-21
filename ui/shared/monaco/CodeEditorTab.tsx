@@ -67,7 +67,7 @@ const CodeEditorTab = ({ isActive, path, onClick, onClose, isCloseDisabled, tabs
         onClick={ handleClose }
         borderRadius="sm"
         opacity={ isCloseDisabled ? 0.3 : 1 }
-        visibility={ isActive ? 'visible' : 'hidden' }
+        visibility={{ base: 'visible', lg: isActive ? 'visible' : 'hidden' }}
         color={ themeColors['icon.foreground'] }
         _hover={{ bgColor: isCloseDisabled ? 'transparent' : themeColors['custom.inputOption.hoverBackground'] }}
       />
