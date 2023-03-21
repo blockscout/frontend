@@ -17,7 +17,7 @@ import type { AddressesResponse } from 'types/api/addresses';
 import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters } from 'types/api/block';
 import type { ChartMarketResponse, ChartTransactionResponse } from 'types/api/charts';
 import type { SmartContract, SmartContractReadMethod, SmartContractWriteMethod, SmartContractVerificationConfig } from 'types/api/contract';
-import type { VerifiedContractsResponse, VerifiedContractsFilters } from 'types/api/contracts';
+import type { VerifiedContractsResponse, VerifiedContractsFilters, VerifiedContractsCounters } from 'types/api/contracts';
 import type { IndexingStatus } from 'types/api/indexingStatus';
 import type { InternalTransactionsResponse } from 'types/api/internalTransaction';
 import type { LogsResponseTx, LogsResponseAddress } from 'types/api/log';
@@ -264,6 +264,9 @@ export const RESOURCES = {
     paginationFields: [ 'items_count' as const, 'smart_contract_id' as const ],
     filterFields: [ 'q' as const, 'filter' as const ],
   },
+  verified_contracts_counters: {
+    path: '/api/v2/smart-contracts/counters',
+  },
 
   // TOKEN
   token: {
@@ -476,6 +479,7 @@ Q extends 'contract_methods_read_proxy' ? Array<SmartContractReadMethod> :
 Q extends 'contract_methods_write' ? Array<SmartContractWriteMethod> :
 Q extends 'contract_methods_write_proxy' ? Array<SmartContractWriteMethod> :
 Q extends 'verified_contracts' ? VerifiedContractsResponse :
+Q extends 'verified_contracts_counters' ? VerifiedContractsCounters :
 Q extends 'visualize_sol2uml' ? VisualizedContract :
 Q extends 'contract_verification_config' ? SmartContractVerificationConfig :
 never;

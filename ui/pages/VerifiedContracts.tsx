@@ -1,4 +1,4 @@
-import { Box, Flex, Hide, Show } from '@chakra-ui/react';
+import { Box, Hide, HStack, Show } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -16,6 +16,7 @@ import Pagination from 'ui/shared/Pagination';
 import Sort from 'ui/shared/sort/Sort';
 import type { SortField, Sort as TSort } from 'ui/verifiedContracts/utils';
 import { SORT_OPTIONS, sortFn, getNextSortValue } from 'ui/verifiedContracts/utils';
+import VerifiedContractsCounters from 'ui/verifiedContracts/VerifiedContractsCounters';
 import VerifiedContractsFilter from 'ui/verifiedContracts/VerifiedContractsFilter';
 import VerifiedContractsList from 'ui/verifiedContracts/VerifiedContractsList';
 import VerifiedContractsTable from 'ui/verifiedContracts/VerifiedContractsTable';
@@ -81,20 +82,16 @@ const VerifiedContracts = () => {
 
   const actionBar = (
     <>
-      <Show below="lg" ssr={ false }>
-        <Flex columnGap={ 3 } mb={ 6 }>
-          { typeFilter }
-          { sortButton }
-          { filterInput }
-        </Flex>
-      </Show>
+      <HStack spacing={ 3 } mb={ 6 } display={{ base: 'flex', lg: 'none' }}>
+        { typeFilter }
+        { sortButton }
+        { filterInput }
+      </HStack>
       <ActionBar mt={ -6 }>
-        <Hide below="lg" ssr={ false }>
-          <Flex columnGap={ 3 }>
-            { typeFilter }
-            { filterInput }
-          </Flex>
-        </Hide>
+        <HStack spacing={ 3 } display={{ base: 'none', lg: 'flex' }}>
+          { typeFilter }
+          { filterInput }
+        </HStack>
         { isPaginationVisible && <Pagination ml="auto" { ...pagination }/> }
       </ActionBar>
     </>
@@ -116,6 +113,7 @@ const VerifiedContracts = () => {
   return (
     <Box>
       <PageTitle text="Verified contracts" withTextAd/>
+      <VerifiedContractsCounters/>
       <DataListDisplay
         isError={ isError }
         isLoading={ isLoading }
