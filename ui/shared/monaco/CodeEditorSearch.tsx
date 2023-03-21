@@ -15,9 +15,11 @@ interface Props {
   monaco: Monaco | undefined;
   onFileSelect: (index: number, lineNumber?: number) => void;
   isInputStuck: boolean;
+  isActive: boolean;
+  setActionBarRenderer: React.Dispatch<React.SetStateAction<(() => JSX.Element) | undefined>>;
 }
 
-const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck }: Props) => {
+const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck, isActive, setActionBarRenderer }: Props) => {
   const [ searchTerm, changeSearchTerm ] = React.useState('');
   const [ searchResults, setSearchResults ] = React.useState<Array<SearchResult>>([]);
   const [ expandedSections, setExpandedSections ] = React.useState<Array<number>>([]);
@@ -78,6 +80,21 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck }: Props) =
     }
   }, [ expandedSections.length, searchResults ]);
 
+  const renderActionBar = React.useCallback(() => {
+    return (
+      <CoderEditorCollapseButton
+        onClick={ handleToggleCollapseClick }
+        label={ expandedSections.length === 0 ? 'Expand all' : 'Collapse all' }
+        isDisabled={ searchResults.length === 0 }
+        isCollapsed={ expandedSections.length === 0 }
+      />
+    );
+  }, [ expandedSections.length, handleToggleCollapseClick, searchResults.length ]);
+
+  React.useEffect(() => {
+    isActive && setActionBarRenderer(() => renderActionBar);
+  }, [ isActive, renderActionBar, setActionBarRenderer ]);
+
   const buttonProps: ChakraProps = {
     boxSize: '20px',
     p: '1px',
@@ -111,12 +128,6 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck }: Props) =
 
   return (
     <Box>
-      <CoderEditorCollapseButton
-        onClick={ handleToggleCollapseClick }
-        label={ expandedSections.length === 0 ? 'Expand all' : 'Collapse all' }
-        isDisabled={ searchResults.length === 0 }
-        isCollapsed={ expandedSections.length === 0 }
-      />
       <InputGroup
         px="8px"
         position="sticky"

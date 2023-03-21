@@ -15,10 +15,8 @@ const CoderEditorCollapseButton = ({ onClick, label, isDisabled, isCollapsed }: 
 
   return (
     <Box
-      position="absolute"
-      right="12px"
-      top="8px"
-      zIndex="sticky1"
+      ml="auto"
+      alignSelf="center"
       className={ isCollapsed ? 'codicon codicon-search-expand-results' : 'codicon codicon-collapse-all' }
       opacity={ isDisabled ? 0.6 : 1 }
       boxSize="20px"

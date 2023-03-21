@@ -11,13 +11,25 @@ interface Props {
   data: Array<File>;
   onFileSelect: (index: number) => void;
   selectedFile: string;
+  isActive: boolean;
+  setActionBarRenderer: React.Dispatch<React.SetStateAction<(() => JSX.Element) | undefined>>;
 }
 
-const CodeEditorFileExplorer = ({ data, onFileSelect, selectedFile }: Props) => {
+const CodeEditorFileExplorer = ({ data, onFileSelect, selectedFile, isActive, setActionBarRenderer }: Props) => {
   const [ key, setKey ] = React.useState(0);
   const tree = React.useMemo(() => {
     return composeFileTree(data);
   }, [ data ]);
+
+  const handleCollapseButtonClick = React.useCallback(() => {
+    setKey((prev) => prev + 1);
+  }, []);
+
+  const renderActionBar = React.useCallback(() => {
+    return (
+      <CoderEditorCollapseButton onClick={ handleCollapseButtonClick } label="Collapse folders"/>
+    );
+  }, [ handleCollapseButtonClick ]);
 
   const handleFileClick = React.useCallback((event: React.MouseEvent) => {
     const filePath = (event.currentTarget as HTMLDivElement).getAttribute('data-file-path');
@@ -28,13 +40,12 @@ const CodeEditorFileExplorer = ({ data, onFileSelect, selectedFile }: Props) => 
     }
   }, [ data, onFileSelect ]);
 
-  const handleCollapseButtonClick = React.useCallback(() => {
-    setKey((prev) => prev + 1);
-  }, []);
+  React.useEffect(() => {
+    isActive && setActionBarRenderer(() => renderActionBar);
+  }, [ isActive, renderActionBar, setActionBarRenderer ]);
 
   return (
     <Box>
-      <CoderEditorCollapseButton onClick={ handleCollapseButtonClick } label="Collapse folders"/>
       <CodeEditorFileTree key={ key } tree={ tree } onItemClick={ handleFileClick } isCollapsed={ key > 0 } selectedFile={ selectedFile }/>
     </Box>
   );

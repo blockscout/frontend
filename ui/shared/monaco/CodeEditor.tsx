@@ -11,7 +11,7 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 
 import CodeEditorBreadcrumbs from './CodeEditorBreadcrumbs';
 import CodeEditorLoading from './CodeEditorLoading';
-import CodeEditorSideBar from './CodeEditorSideBar';
+import CodeEditorSideBar, { CONTAINER_WIDTH as SIDE_BAR_WIDTH } from './CodeEditorSideBar';
 import CodeEditorTabs from './CodeEditorTabs';
 import * as themes from './utils/themes';
 
@@ -25,7 +25,6 @@ const EDITOR_OPTIONS: EditorProps['options'] = {
 
 const TABS_HEIGHT = 35;
 const BREADCRUMBS_HEIGHT = 22;
-const SIDE_BAR_WIDTH = 250;
 const EDITOR_HEIGHT = 500;
 
 interface Props {

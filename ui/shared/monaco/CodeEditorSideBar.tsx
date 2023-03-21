@@ -16,12 +16,14 @@ interface Props {
   selectedFile: string;
 }
 
-const CONTAINER_WIDTH = 250;
+export const CONTAINER_WIDTH = 250;
 
 const CodeEditorSideBar = ({ onFileSelect, data, monaco, selectedFile }: Props) => {
 
   const [ isStuck, setIsStuck ] = React.useState(false);
   const [ isDrawerOpen, setIsDrawerOpen ] = useBoolean(false);
+  const [ tabIndex, setTabIndex ] = React.useState(0);
+  const [ actionBarRenderer, setActionBarRenderer ] = React.useState<() => JSX.Element>();
 
   const themeColors = useThemeColors();
 
@@ -57,8 +59,8 @@ const CodeEditorSideBar = ({ onFileSelect, data, monaco, selectedFile }: Props) 
         fontSize="13px"
         overflowY="scroll"
         onScroll={ handleScrollThrottled.current }
-        position={{ base: 'absolute', lg: 'static' }}
-        right={{ base: isDrawerOpen ? '0' : `-${ CONTAINER_WIDTH }px`, lg: undefined }}
+        position={{ base: 'absolute', lg: 'relative' }}
+        right={{ base: isDrawerOpen ? '0' : `-${ CONTAINER_WIDTH }px`, lg: '0' }}
         top={{ base: 0, lg: undefined }}
         h="100%"
         pb="22px"
@@ -70,7 +72,7 @@ const CodeEditorSideBar = ({ onFileSelect, data, monaco, selectedFile }: Props) 
         borderTopRightRadius="md"
         borderBottomRightRadius="md"
       >
-        <Tabs isLazy lazyBehavior="keepMounted" variant="unstyled" size="13px">
+        <Tabs isLazy lazyBehavior="keepMounted" variant="unstyled" size="13px" index={ tabIndex } onChange={ setTabIndex }>
           <TabList
             columnGap={ 3 }
             position="sticky"
@@ -84,14 +86,27 @@ const CodeEditorSideBar = ({ onFileSelect, data, monaco, selectedFile }: Props) 
           >
             <Tab { ...tabProps }>Explorer</Tab>
             <Tab { ...tabProps }>Search</Tab>
+            { actionBarRenderer?.() }
           </TabList>
-
           <TabPanels>
             <TabPanel p={ 0 }>
-              <CodeEditorFileExplorer data={ data } onFileSelect={ handleFileSelect } selectedFile={ selectedFile }/>
+              <CodeEditorFileExplorer
+                data={ data }
+                onFileSelect={ handleFileSelect }
+                selectedFile={ selectedFile }
+                isActive={ tabIndex === 0 }
+                setActionBarRenderer={ setActionBarRenderer }
+              />
             </TabPanel>
             <TabPanel p={ 0 }>
-              <CodeEditorSearch data={ data } onFileSelect={ handleFileSelect } monaco={ monaco } isInputStuck={ isStuck }/>
+              <CodeEditorSearch
+                data={ data }
+                onFileSelect={ handleFileSelect }
+                monaco={ monaco }
+                isInputStuck={ isStuck }
+                isActive={ tabIndex === 1 }
+                setActionBarRenderer={ setActionBarRenderer }
+              />
             </TabPanel>
           </TabPanels>
         </Tabs>
