@@ -9,6 +9,7 @@ import type { File, Monaco } from './types';
 import useClientRect from 'lib/hooks/useClientRect';
 
 import CodeEditorBreadcrumbs from './CodeEditorBreadcrumbs';
+import CodeEditorLoading from './CodeEditorLoading';
 import CodeEditorSideBar from './CodeEditorSideBar';
 import CodeEditorTabs from './CodeEditorTabs';
 import * as themes from './utils/themes';
@@ -143,6 +144,7 @@ const CodeEditor = ({ data }: Props) => {
           defaultValue={ data[index].source_code }
           options={ EDITOR_OPTIONS }
           onMount={ handleEditorDidMount }
+          loading={ <CodeEditorLoading/> }
         />
       </Box>
       <CodeEditorSideBar data={ data } onFileSelect={ handleSelectFile } monaco={ instance } selectedFile={ data[index].file_path }/>
