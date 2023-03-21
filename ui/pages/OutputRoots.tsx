@@ -38,7 +38,7 @@ const OutputRoots = () => {
     }
 
     return (
-      <Flex mb={{ base: 6, lg: 0 }} flexWrap="wrap">
+      <Flex mb={{ base: 6, lg: isPaginationVisible ? 0 : 6 }} flexWrap="wrap">
       L2 output index
         <Text fontWeight={ 600 } whiteSpace="pre"> #{ data.items[0].l2_output_index } </Text>to
         <Text fontWeight={ 600 } whiteSpace="pre"> #{ data.items[data.items.length - 1].l2_output_index } </Text>

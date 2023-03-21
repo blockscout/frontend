@@ -16,10 +16,15 @@ import WithdrawalsTable from 'ui/withdrawals/WithdrawalsTable';
 const Withdrawals = () => {
   const isMobile = useIsMobile();
 
-  const { data, isError, isLoading, isPaginationVisible, pagination } = useQueryWithPages({
+  // const { data, isError, isLoading, isPaginationVisible, pagination } = useQueryWithPages({
+  //   resourceName: 'withdrawals',
+  // });
+
+  const { data, isError, isLoading, pagination } = useQueryWithPages({
     resourceName: 'withdrawals',
   });
 
+  const isPaginationVisible = false;
   const countersQuery = useApiQuery('withdrawals_count');
 
   const content = data?.items ? (
@@ -31,14 +36,14 @@ const Withdrawals = () => {
 
   const text = (() => {
     if (countersQuery.isLoading) {
-      return <Skeleton w={{ base: '100%', lg: '320px' }} h="26px" mb={{ base: 6, lg: 7 }} mt={{ base: 0, lg: 7 }}/>;
+      return <Skeleton w={{ base: '100%', lg: '320px' }} h="26px" mb={ 6 } mt={{ base: 0, lg: 6 }}/>;
     }
 
     if (countersQuery.isError) {
       return null;
     }
 
-    return <Text mb={{ base: 6, lg: 0 }}>A total of { countersQuery.data.toLocaleString('en') } withdrawals found</Text>;
+    return <Text mb={{ base: 6, lg: isPaginationVisible ? 0 : 6 }}>A total of { countersQuery.data.toLocaleString('en') } withdrawals found</Text>;
   })();
 
   const actionBar = (
