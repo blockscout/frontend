@@ -125,6 +125,7 @@ const CodeEditor = ({ data }: Props) => {
           defaultValue={ data[index].source_code }
           options={ EDITOR_OPTIONS }
           onMount={ handleEditorDidMount }
+          loading={ <CodeEditorLoading/> }
         />
       </Box>
     );
