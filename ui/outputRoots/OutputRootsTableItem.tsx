@@ -41,7 +41,7 @@ const OutputRootsTableItem = ({ item }: Props) => {
       <Td verticalAlign="middle" pr={ 12 }>
         <Flex>
           <LinkExternal
-            w="100%"
+            maxW="100%"
             display="inline-flex"
             href={ appConfig.L2.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: item.l1_tx_hash } }) }
           >

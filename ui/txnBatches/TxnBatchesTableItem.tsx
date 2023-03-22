@@ -53,7 +53,7 @@ const TxnBatchesTableItem = ({ item }: Props) => {
         <VStack spacing={ 3 }>
           { item.l1_tx_hashes.map(hash => (
             <LinkExternal
-              w="100%"
+              maxW="100%"
               display="inline-flex"
               key={ hash }
               href={ appConfig.L2.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: hash } }) }

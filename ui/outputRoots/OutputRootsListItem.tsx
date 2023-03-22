@@ -44,7 +44,7 @@ const OutputRootsListItem = ({ item }: Props) => {
       name: 'L1 txn hash',
       value: (
         <LinkExternal
-          w="100%"
+          maxW="100%"
           display="inline-flex"
           overflow="hidden"
           href={ appConfig.L2.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: item.l1_tx_hash } }) }

@@ -16,15 +16,10 @@ import WithdrawalsTable from 'ui/withdrawals/WithdrawalsTable';
 const Withdrawals = () => {
   const isMobile = useIsMobile();
 
-  // const { data, isError, isLoading, isPaginationVisible, pagination } = useQueryWithPages({
-  //   resourceName: 'withdrawals',
-  // });
-
-  const { data, isError, isLoading, pagination } = useQueryWithPages({
+  const { data, isError, isLoading, isPaginationVisible, pagination } = useQueryWithPages({
     resourceName: 'withdrawals',
   });
 
-  const isPaginationVisible = false;
   const countersQuery = useApiQuery('withdrawals_count');
 
   const content = data?.items ? (
