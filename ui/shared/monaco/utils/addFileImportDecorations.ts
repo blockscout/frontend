@@ -11,7 +11,7 @@ export default function addFileImportDecorations(model: monaco.editor.ITextModel
     options: {
       inlineClassName: 'import-link',
       hoverMessage: {
-        value: 'Click to open file',
+        value: 'Cmd/Win + click to open file',
       },
     },
   }));

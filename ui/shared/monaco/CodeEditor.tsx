@@ -9,6 +9,7 @@ import type { File, Monaco } from './types';
 
 import useClientRect from 'lib/hooks/useClientRect';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import isMetaKey from 'lib/isMetaKey';
 
 import CodeEditorBreadcrumbs from './CodeEditorBreadcrumbs';
 import CodeEditorLoading from './CodeEditorLoading';
@@ -40,6 +41,7 @@ const CodeEditor = ({ data }: Props) => {
   const [ instance, setInstance ] = React.useState<Monaco | undefined>();
   const [ index, setIndex ] = React.useState(0);
   const [ tabs, setTabs ] = React.useState([ data[index].file_path ]);
+  const [ isMetaPressed, setIsMetaPressed ] = React.useState(false);
 
   const editorRef = React.useRef<monaco.editor.IStandaloneCodeEditor>();
   const [ containerRect, containerNodeRef ] = useClientRect<HTMLDivElement>();
@@ -81,6 +83,7 @@ const CodeEditor = ({ data }: Props) => {
         editorRef.current?.revealLineInCenter(lineNumber);
       }, 0);
     }
+    editorRef.current?.focus();
   }, [ data ]);
 
   const handleTabSelect = React.useCallback((path: string) => {
@@ -109,6 +112,10 @@ const CodeEditor = ({ data }: Props) => {
   }, [ data, index ]);
 
   const handleClick = React.useCallback((event: React.MouseEvent) => {
+    if (!isMetaPressed && !isMobile) {
+      return;
+    }
+
     const target = event.target as HTMLSpanElement;
     const isImportLink = target.classList.contains('import-link');
     if (isImportLink) {
@@ -116,10 +123,19 @@ const CodeEditor = ({ data }: Props) => {
       const fullPath = getFullPathOfImportedFile(data[index].file_path, path);
       const fileIndex = data.findIndex((file) => file.file_path === fullPath);
       if (fileIndex > -1) {
+        event.stopPropagation();
         handleSelectFile(fileIndex);
       }
     }
-  }, [ data, handleSelectFile, index ]);
+  }, [ data, handleSelectFile, index, isMetaPressed, isMobile ]);
+
+  const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
+    isMetaKey(event) && setIsMetaPressed(true);
+  }, []);
+
+  const handleKeyUp = React.useCallback(() => {
+    setIsMetaPressed(false);
+  }, []);
 
   const containerSx: SystemStyleObject = React.useMemo(() => ({
     '.editor-container': {
@@ -132,7 +148,7 @@ const CodeEditor = ({ data }: Props) => {
     '.highlight': {
       backgroundColor: themeColors['custom.findMatchHighlightBackground'],
     },
-    '.import-link': {
+    '&&.meta-pressed .import-link': {
       _hover: {
         color: themeColors['custom.fileLink.hoverForeground'],
         textDecoration: 'underline',
@@ -158,6 +174,7 @@ const CodeEditor = ({ data }: Props) => {
 
   return (
     <Flex
+      className={ isMetaPressed ? 'meta-pressed' : undefined }
       overflow="hidden"
       borderRadius="md"
       width="100%"
@@ -166,6 +183,8 @@ const CodeEditor = ({ data }: Props) => {
       ref={ containerNodeRef }
       sx={ containerSx }
       onClick={ handleClick }
+      onKeyDown={ handleKeyDown }
+      onKeyUp={ handleKeyUp }
     >
       <Box flexGrow={ 1 }>
         <CodeEditorTabs tabs={ tabs } activeTab={ data[index].file_path } onTabSelect={ handleTabSelect } onTabClose={ handleTabClose }/>
