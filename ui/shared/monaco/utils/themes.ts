@@ -32,6 +32,9 @@ export const light = {
     'custom.findMatchHighlightBackground': 'rgba(234,92,0,0.33)',
     'custom.inputOption.activeBackground': 'rgba(0, 144, 241, 0.2)',
     'custom.inputOption.hoverBackground': 'rgba(184, 184, 184, 0.31)',
+
+    // don't know the name of this variables in vscode
+    'custom.fileLink.hoverForeground': '#4299E1', // blue.400
   } as const,
 };
 
@@ -69,5 +72,8 @@ export const dark = {
     'custom.findMatchHighlightBackground': 'rgba(234,92,0,0.33)',
     'custom.inputOption.activeBackground': 'rgba(0, 127, 212, 0.4)',
     'custom.inputOption.hoverBackground': 'rgba(90, 93, 94, 0.31)',
+
+    // don't know the name of this variables in vscode
+    'custom.fileLink.hoverForeground': '#4299E1', // blue.400
   } as const,
 };

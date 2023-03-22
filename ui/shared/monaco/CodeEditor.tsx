@@ -1,3 +1,4 @@
+import type { SystemStyleObject } from '@chakra-ui/react';
 import { Box, useColorMode, Flex } from '@chakra-ui/react';
 import type { EditorProps } from '@monaco-editor/react';
 import MonacoEditor from '@monaco-editor/react';
@@ -13,6 +14,8 @@ import CodeEditorBreadcrumbs from './CodeEditorBreadcrumbs';
 import CodeEditorLoading from './CodeEditorLoading';
 import CodeEditorSideBar, { CONTAINER_WIDTH as SIDE_BAR_WIDTH } from './CodeEditorSideBar';
 import CodeEditorTabs from './CodeEditorTabs';
+import addFileImportDecorations from './utils/addFileImportDecorations';
+import getFullPathOfImportedFile from './utils/getFullPathOfImportedFile';
 import * as themes from './utils/themes';
 import useThemeColors from './utils/useThemeColors';
 
@@ -22,6 +25,7 @@ const EDITOR_OPTIONS: EditorProps['options'] = {
   scrollbar: {
     alwaysConsumeMouseWheel: true,
   },
+  dragAndDrop: false,
 };
 
 const TABS_HEIGHT = 35;
@@ -58,12 +62,13 @@ const CodeEditor = ({ data }: Props) => {
     monaco.editor.defineTheme('blockscout-dark', themes.dark);
     monaco.editor.setTheme(colorMode === 'light' ? 'blockscout-light' : 'blockscout-dark');
 
-    const loadedModelsPaths = monaco.editor.getModels().map((model) => model.uri.path);
-    data.slice(1)
+    const loadedModels = monaco.editor.getModels();
+    const loadedModelsPaths = loadedModels.map((model) => model.uri.path);
+    const newModels = data.slice(1)
       .filter((file) => !loadedModelsPaths.includes(file.file_path))
-      .forEach((file) => {
-        monaco.editor.createModel(file.source_code, 'sol', monaco.Uri.parse(file.file_path));
-      });
+      .map((file) => monaco.editor.createModel(file.source_code, 'sol', monaco.Uri.parse(file.file_path)));
+
+    loadedModels.concat(newModels).forEach(addFileImportDecorations);
   // componentDidMount
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ ]);
@@ -103,7 +108,20 @@ const CodeEditor = ({ data }: Props) => {
     });
   }, [ data, index ]);
 
-  const containerSx = React.useMemo(() => ({
+  const handleClick = React.useCallback((event: React.MouseEvent) => {
+    const target = event.target as HTMLSpanElement;
+    const isImportLink = target.classList.contains('import-link');
+    if (isImportLink) {
+      const path = target.innerText;
+      const fullPath = getFullPathOfImportedFile(data[index].file_path, path);
+      const fileIndex = data.findIndex((file) => file.file_path === fullPath);
+      if (fileIndex > -1) {
+        handleSelectFile(fileIndex);
+      }
+    }
+  }, [ data, handleSelectFile, index ]);
+
+  const containerSx: SystemStyleObject = React.useMemo(() => ({
     '.editor-container': {
       position: 'absolute',
       top: 0,
@@ -113,6 +131,13 @@ const CodeEditor = ({ data }: Props) => {
     },
     '.highlight': {
       backgroundColor: themeColors['custom.findMatchHighlightBackground'],
+    },
+    '.import-link': {
+      _hover: {
+        color: themeColors['custom.fileLink.hoverForeground'],
+        textDecoration: 'underline',
+        cursor: 'pointer',
+      },
     },
   }), [ editorWidth, themeColors ]);
 
@@ -140,6 +165,7 @@ const CodeEditor = ({ data }: Props) => {
       position="relative"
       ref={ containerNodeRef }
       sx={ containerSx }
+      onClick={ handleClick }
     >
       <Box flexGrow={ 1 }>
         <CodeEditorTabs tabs={ tabs } activeTab={ data[index].file_path } onTabSelect={ handleTabSelect } onTabClose={ handleTabClose }/>

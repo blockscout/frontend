@@ -50,7 +50,7 @@ const ContractSourceCode = ({ data, hasSol2Yml, address, isViper, filePath, addi
     null;
 
   return (
-    <section title="Source code">
+    <section>
       <Flex justifyContent="space-between" alignItems="center" mb={ 3 }>
         { heading }
         { diagramLink }
