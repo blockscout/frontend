@@ -321,6 +321,7 @@ frontend:
         - "/visualize"
         - "/api-docs"
         - "/output-roots"
+        - "/txn-batches"
         - "/withdrawals"
   resources:
     limits:
