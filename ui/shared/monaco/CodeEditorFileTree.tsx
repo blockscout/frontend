@@ -44,7 +44,7 @@ const CodeEditorFileTree = ({ tree, level = 0, onItemClick, isCollapsed, selecte
                       pr="8px"
                       py="0"
                       pl={ `${ 8 + 8 * level }px` }
-                      _hover={{ bgColor: themeColors['list.hoverBackground'] }}
+                      _hover={{ bgColor: themeColors['custom.list.hoverBackground'] }}
                       fontSize="13px"
                       lineHeight="22px"
                       h="22px"
@@ -88,7 +88,7 @@ const CodeEditorFileTree = ({ tree, level = 0, onItemClick, isCollapsed, selecte
               alignItems="center"
               overflow="hidden"
               _hover={{
-                bgColor: selectedFile === leaf.file_path ? themeColors['list.inactiveSelectionBackground'] : themeColors['list.hoverBackground'],
+                bgColor: selectedFile === leaf.file_path ? themeColors['list.inactiveSelectionBackground'] : themeColors['custom.list.hoverBackground'],
               }}
               bgColor={ selectedFile === leaf.file_path ? themeColors['list.inactiveSelectionBackground'] : 'none' }
             >

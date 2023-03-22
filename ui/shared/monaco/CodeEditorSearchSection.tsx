@@ -35,7 +35,7 @@ const CodeEditorSearchSection = ({ data, onItemClick }: Props) => {
           <AccordionButton
             py={ 0 }
             px={ 2 }
-            _hover={{ bgColor: themeColors['list.hoverBackground'] }}
+            _hover={{ bgColor: themeColors['custom.list.hoverBackground'] }}
             fontSize="13px"
             transitionDuration="0"
             lineHeight="22px"

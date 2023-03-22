@@ -45,7 +45,7 @@ const CodeEditorSearchResultItem = ({ lineContent, filePath, onClick, startLineN
       data-line-number={ startLineNumber }
       onClick={ onClick }
       transitionDuration="0"
-      _hover={{ bgColor: themeColors['list.hoverBackground'] }}
+      _hover={{ bgColor: themeColors['custom.list.hoverBackground'] }}
     >
       <span>{ lineContent.slice(start, startColumn - 1) }</span>
       <chakra.span bgColor={ themeColors['custom.findMatchHighlightBackground'] }>

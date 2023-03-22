@@ -17,7 +17,6 @@ export const light = {
     'input.foreground': '#616161',
     'input.background': '#fff',
 
-    'list.hoverBackground': 'rgba(16, 17, 18, 0.08)', // blackAlpha.200
     'list.inactiveSelectionBackground': '#e4e6f1',
 
     'breadcrumbs.foreground': 'rgb(97, 97, 97)',
@@ -29,6 +28,7 @@ export const light = {
     focusBorder: '#0090f1',
 
     // not able to use rgba for standard variables, so we use custom prefix here
+    'custom.list.hoverBackground': 'rgba(16, 17, 18, 0.08)', // blackAlpha.200
     'custom.findMatchHighlightBackground': 'rgba(234,92,0,0.33)',
     'custom.inputOption.activeBackground': 'rgba(0, 144, 241, 0.2)',
     'custom.inputOption.hoverBackground': 'rgba(184, 184, 184, 0.31)',
@@ -57,7 +57,6 @@ export const dark = {
     'input.foreground': '#cccccc',
     'input.background': '#3c3c3c',
 
-    'list.hoverBackground': 'rgba(255, 255, 255, 0.08)', // whiteAlpha.200
     'list.inactiveSelectionBackground': '#37373d',
 
     'badge.background': '#4d4d4d',
@@ -69,6 +68,7 @@ export const dark = {
     focusBorder: '#007fd4',
 
     // not able to use rgba for standard variables, so we use custom prefix here
+    'custom.list.hoverBackground': 'rgba(255, 255, 255, 0.08)', // whiteAlpha.200
     'custom.findMatchHighlightBackground': 'rgba(234,92,0,0.33)',
     'custom.inputOption.activeBackground': 'rgba(0, 127, 212, 0.4)',
     'custom.inputOption.hoverBackground': 'rgba(90, 93, 94, 0.31)',
