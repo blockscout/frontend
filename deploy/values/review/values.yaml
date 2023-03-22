@@ -44,14 +44,14 @@ frontend:
   resources:
     limits:
       memory:
-        _default: "0.1Gi"
+        _default: "1Gi"
       cpu:
-        _default: "0.1"
+        _default: "0.5"
     requests:
       memory:
-        _default: "0.1Gi"
+        _default: "1Gi"
       cpu:
-        _default: "0.1"
+        _default: "0.5"
   environment:
     NEXT_PUBLIC_BLOCKSCOUT_VERSION:
       _default: v4.1.8-beta
