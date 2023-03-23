@@ -5,12 +5,12 @@ import {
   PopoverContent,
   PopoverTrigger,
   Portal,
-  IconButton,
   Button,
   List,
   ListItem,
   Icon,
   useDisclosure,
+  Input,
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -20,6 +20,7 @@ import { times } from 'lib/html-entities';
 
 const ContractMethodFieldZeroes = () => {
   const [ selectedOption, setSelectedOption ] = React.useState<number>();
+  const [ customValue, setCustomValue ] = React.useState<number>();
   const { isOpen, onToggle, onClose } = useDisclosure();
 
   const handleOptionClick = React.useCallback((event: React.MouseEvent) => {
@@ -30,9 +31,16 @@ const ContractMethodFieldZeroes = () => {
     }
   }, [ onClose ]);
 
+  const handleInputChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    setCustomValue(Number(event.target.value));
+    setSelectedOption(undefined);
+  }, []);
+
+  const value = selectedOption || customValue;
+
   return (
     <>
-      { selectedOption && (
+      { Boolean(value) && (
         <Button
           px={ 1 }
           lineHeight={ 6 }
@@ -47,25 +55,22 @@ const ContractMethodFieldZeroes = () => {
         >
           { times }
           <chakra.span>10</chakra.span>
-          <chakra.span fontSize="xs" lineHeight={ 4 } verticalAlign="super">{ selectedOption }</chakra.span>
+          <chakra.span fontSize="xs" lineHeight={ 4 } verticalAlign="super">{ value }</chakra.span>
         </Button>
       ) }
       <Popover placement="bottom-end" isLazy isOpen={ isOpen } onClose={ onClose }>
         <PopoverTrigger>
-          <div>
-            <IconButton
-              transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' }
-              transitionDuration="none"
-              variant="subtle"
-              colorScheme="gray"
-              as={ iconEastMini }
-              boxSize={ 6 }
-              aria-label="Open menu"
-              cursor="pointer"
-              ml={ 1 }
-              onClick={ onToggle }
-            />
-          </div>
+          <Button
+            variant="subtle"
+            colorScheme="gray"
+            size="xs"
+            cursor="pointer"
+            ml={ 1 }
+            p={ 0 }
+            onClick={ onToggle }
+          >
+            <Icon as={ iconEastMini } transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } boxSize={ 6 }/>
+          </Button>
         </PopoverTrigger>
         <Portal>
           <PopoverContent w="110px">
@@ -86,6 +91,23 @@ const ContractMethodFieldZeroes = () => {
                     { selectedOption === id && <Icon as={ iconCheck } boxSize={ 6 } color="blue.600"/> }
                   </ListItem>
                 )) }
+                <ListItem
+                  py={ 2 }
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                >
+                  <span>10*</span>
+                  <Input
+                    type="number"
+                    min={ 0 }
+                    max={ 100 }
+                    ml={ 3 }
+                    size="xs"
+                    onChange={ handleInputChange }
+                    value={ customValue || '' }
+                  />
+                </ListItem>
               </List>
             </PopoverBody>
           </PopoverContent>
