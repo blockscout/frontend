@@ -118,6 +118,7 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
             <ContractMethodField
               key={ fieldName }
               name={ fieldName }
+              valueType={ type }
               placeholder={ `${ name }(${ type })` }
               control={ control }
               setValue={ setValue }
