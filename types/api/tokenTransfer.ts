@@ -27,7 +27,7 @@ export type TokenTransfer = (
   } |
   {
     token: TokenInfoGeneric<'ERC-1155'>;
-    total: Erc1155TotalPayload | Array<Erc1155TotalPayload>;
+    total: Erc1155TotalPayload;
   }
 ) & TokenTransferBase
 

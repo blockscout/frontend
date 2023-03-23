@@ -64,7 +64,12 @@ test('erc1155 +@mobile', async({ mount }) => {
         // @ts-ignore:
         transfersQuery={{
           data: {
-            items: [ tokenTransferMock.erc1155, tokenTransferMock.erc1155multiple ],
+            items: [
+              tokenTransferMock.erc1155A,
+              tokenTransferMock.erc1155B,
+              tokenTransferMock.erc1155C,
+              tokenTransferMock.erc1155D,
+            ],
             next_page_params: null,
           },
           isPaginationVisible: true,

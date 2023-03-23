@@ -7,7 +7,6 @@ import type { TokenTransfer } from 'types/api/tokenTransfer';
 import tokenIcon from 'icons/token.svg';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import LinkInternal from 'ui/shared/LinkInternal';
-import { flattenTotal } from 'ui/shared/TokenTransfer/helpers';
 
 import TxDetailsTokenTransfer from './TxDetailsTokenTransfer';
 
@@ -27,10 +26,9 @@ const VISIBLE_ITEMS_NUM = 3;
 const TxDetailsTokenTransfers = ({ data, txHash }: Props) => {
   const viewAllUrl = route({ pathname: '/tx/[hash]', query: { hash: txHash, tab: 'token_transfers' } });
 
-  const formattedData = data.reduce(flattenTotal, []);
   const transferGroups = TOKEN_TRANSFERS_TYPES.map((group) => ({
     ...group,
-    items: formattedData?.filter((token) => token.type === group.type) || [],
+    items: data?.filter((token) => token.type === group.type) || [],
   }));
   const showViewAllLink = transferGroups.some(({ items }) => items.length > VISIBLE_ITEMS_NUM);
 

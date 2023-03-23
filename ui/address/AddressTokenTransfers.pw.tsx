@@ -2,7 +2,7 @@ import { Box } from '@chakra-ui/react';
 import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
-import { erc1155 } from 'mocks/tokens/tokenTransfer';
+import { erc1155A } from 'mocks/tokens/tokenTransfer';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
 
@@ -20,7 +20,7 @@ const hooksConfig = {
 test('with token filter and pagination +@mobile', async({ mount, page }) => {
   await page.route(API_URL, (route) => route.fulfill({
     status: 200,
-    body: JSON.stringify({ items: [ erc1155 ], next_page_params: { block_number: 1 } }),
+    body: JSON.stringify({ items: [ erc1155A ], next_page_params: { block_number: 1 } }),
   }));
 
   const component = await mount(
@@ -37,7 +37,7 @@ test('with token filter and pagination +@mobile', async({ mount, page }) => {
 test('with token filter and no pagination +@mobile', async({ mount, page }) => {
   await page.route(API_URL, (route) => route.fulfill({
     status: 200,
-    body: JSON.stringify({ items: [ erc1155 ] }),
+    body: JSON.stringify({ items: [ erc1155A ] }),
   }));
 
   const component = await mount(

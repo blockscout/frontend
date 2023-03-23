@@ -26,7 +26,6 @@ import HashStringShorten from 'ui/shared/HashStringShorten';
 import Pagination from 'ui/shared/Pagination';
 import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import TokenLogo from 'ui/shared/TokenLogo';
-import { flattenTotal } from 'ui/shared/TokenTransfer/helpers';
 import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
 import TokenTransferList from 'ui/shared/TokenTransfer/TokenTransferList';
 import TokenTransferTable from 'ui/shared/TokenTransfer/TokenTransferTable';
@@ -161,12 +160,11 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
   const numActiveFilters = (filters.type?.length || 0) + (filters.filter ? 1 : 0);
   const isActionBarHidden = !tokenFilter && !numActiveFilters && !data?.items.length && !currentAddress;
 
-  const items = data?.items?.reduce(flattenTotal, []);
-  const content = items ? (
+  const content = data?.items ? (
     <>
       <Hide below="lg" ssr={ false }>
         <TokenTransferTable
-          data={ items }
+          data={ data?.items }
           baseAddress={ currentAddress }
           showTxInfo
           top={ isActionBarHidden ? 0 : 80 }
@@ -187,7 +185,7 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
           />
         ) }
         <TokenTransferList
-          data={ items }
+          data={ data?.items }
           baseAddress={ currentAddress }
           showTxInfo
           enableTimeIncrement
