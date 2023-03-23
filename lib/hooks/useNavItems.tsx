@@ -7,6 +7,7 @@ import abiIcon from 'icons/ABI.svg';
 import apiKeysIcon from 'icons/API.svg';
 import appsIcon from 'icons/apps.svg';
 import withdrawalsIcon from 'icons/arrows/north-east.svg';
+import depositsIcon from 'icons/arrows/south-east.svg';
 import blocksIcon from 'icons/block.svg';
 import gearIcon from 'icons/gear.svg';
 import globeIcon from 'icons/globe-b.svg';
@@ -21,7 +22,6 @@ import statsIcon from 'icons/stats.svg';
 import tokensIcon from 'icons/token.svg';
 import topAccountsIcon from 'icons/top-accounts.svg';
 import transactionsIcon from 'icons/transactions.svg';
-// import depositsIcon from 'icons/arrows/south-east.svg';
 import txnBatchIcon from 'icons/txn_batches.svg';
 import verifiedIcon from 'icons/verified.svg';
 import watchlistIcon from 'icons/watchlist.svg';
@@ -103,7 +103,7 @@ export default function useNavItems(): ReturnType {
         [
           txs,
           // eslint-disable-next-line max-len
-          // { text: `Deposits (L1${ rightLineArrow }L2)`, nextRoute: { pathname: '/deposits' as const }, icon: depositsIcon, isActive: pathname === '/deposits', isNewUi: true },
+          { text: `Deposits (L1${ rightLineArrow }L2)`, nextRoute: { pathname: '/deposits' as const }, icon: depositsIcon, isActive: pathname === '/deposits', isNewUi: true },
           // eslint-disable-next-line max-len
           { text: `Withdrawals (L2${ rightLineArrow }L1)`, nextRoute: { pathname: '/withdrawals' as const }, icon: withdrawalsIcon, isActive: pathname === '/withdrawals', isNewUi: true },
         ],

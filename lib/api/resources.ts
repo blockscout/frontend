@@ -18,6 +18,7 @@ import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters } f
 import type { ChartMarketResponse, ChartTransactionResponse } from 'types/api/charts';
 import type { SmartContract, SmartContractReadMethod, SmartContractWriteMethod, SmartContractVerificationConfig } from 'types/api/contract';
 import type { VerifiedContractsResponse, VerifiedContractsFilters, VerifiedContractsCounters } from 'types/api/contracts';
+import type { DepositsResponse } from 'types/api/deposits';
 import type { IndexingStatus } from 'types/api/indexingStatus';
 import type { InternalTransactionsResponse } from 'types/api/internalTransaction';
 import type { LogsResponseTx, LogsResponseAddress } from 'types/api/log';
@@ -366,6 +367,16 @@ export const RESOURCES = {
   },
 
   // L2
+  deposits: {
+    path: '/api/v2/optimism/deposits',
+    paginationFields: [ 'nonce' as const, 'items_count' as const ],
+    filterFields: [],
+  },
+
+  deposits_count: {
+    path: '/api/v2/optimism/deposits-count',
+  },
+
   withdrawals: {
     path: '/api/v2/optimism/withdrawals',
     paginationFields: [ 'nonce' as const, 'items_count' as const ],
@@ -455,7 +466,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'token_transfers' | 'token_holders' | 'token_inventory' | 'tokens' |
 'token_instance_transfers' |
 'verified_contracts' |
-'output_roots' | 'withdrawals' | 'txn_batches';
+'output_roots' | 'withdrawals' | 'txn_batches' | 'deposits';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
 
@@ -519,9 +530,11 @@ Q extends 'visualize_sol2uml' ? VisualizedContract :
 Q extends 'contract_verification_config' ? SmartContractVerificationConfig :
 Q extends 'output_roots' ? OutputRootsResponse :
 Q extends 'withdrawals' ? WithdrawalsResponse :
+Q extends 'deposits' ? DepositsResponse :
 Q extends 'txn_batches' ? TxnBatchesResponse :
 Q extends 'output_roots_count' ? number :
 Q extends 'withdrawals_count' ? number :
+Q extends 'deposits_count' ? number :
 Q extends 'txn_batches_count' ? number :
 never;
 /* eslint-enable @typescript-eslint/indent */

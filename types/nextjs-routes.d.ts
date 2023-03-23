@@ -25,6 +25,7 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/block/[height]", { "height": string }>
     | StaticRoute<"/blocks">
     | StaticRoute<"/csv-export">
+    | StaticRoute<"/deposits">
     | StaticRoute<"/graph">
     | StaticRoute<"/graphiql">
     | StaticRoute<"/">
