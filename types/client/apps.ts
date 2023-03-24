@@ -1,25 +1,11 @@
-export enum MarketplaceCategoryId {
-  'all',
-  'favorites',
-  'defi',
-  'exchanges',
-  'finance',
-  'games',
-  'marketplaces',
-  'nft',
-  'security',
-  'social',
-  'tools',
-  'yieldFarming',
-}
-
-export type MarketplaceCategoriesIds = keyof typeof MarketplaceCategoryId;
+export type MarketplaceCategoriesIds = 'all' | 'favorites' | 'defi' | 'exchanges' | 'finance' | 'games' | 'marketplaces' | 'nft' |
+'security' | 'social' | 'tools' | 'yieldFarming';
 
 export type MarketplaceCategory = { id: MarketplaceCategoriesIds; name: string }
 
 export type AppItemPreview = {
   id: string;
-  external: boolean;
+  external?: boolean;
   title: string;
   logo: string;
   shortDescription: string;

@@ -5,7 +5,7 @@ import React from 'react';
 type Props = {
   id: string;
   url: string;
-  external: boolean;
+  external?: boolean;
   title: string;
 }
 

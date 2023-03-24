@@ -48,3 +48,6 @@ yarn-error.log*
 /playwright/envs.js
 
 **.dec**
+
+# tools
+tools/marketplace-config-validator/schema.*

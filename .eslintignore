@@ -2,3 +2,4 @@ node_modules
 node_modules_linux
 
 playwright/envs.js
+tools/marketplace-config-validator/schema.*

@@ -115,10 +115,12 @@
     "svgo": "^2.8.0",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",
+    "ts-to-zod": "^3.0.0",
     "typescript": "4.9.5",
     "vite-plugin-svgr": "^2.2.2",
     "vite-tsconfig-paths": "^3.5.2",
-    "ws": "^8.11.0"
+    "ws": "^8.11.0",
+    "zod": "^3.21.4"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint --cache --fix"

@@ -14,4 +14,8 @@ for file in `git diff --diff-filter=ACMRT --cached --name-only | grep ".svg\$"`
         git add $file
     done
 
+# format svg
+echo 🧿 Running marketplace config validator...
+./deploy/scripts/validate_marketplace_config.sh
+
 echo ✅ All pre-commit jobs are done
