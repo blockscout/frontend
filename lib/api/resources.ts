@@ -374,7 +374,7 @@ export const RESOURCES = {
   },
 
   deposits_count: {
-    path: '/api/v2/optimism/deposits-count',
+    path: '/api/v2/optimism/deposits/count',
   },
 
   withdrawals: {
@@ -384,7 +384,7 @@ export const RESOURCES = {
   },
 
   withdrawals_count: {
-    path: '/api/v2/optimism/withdrawals-count',
+    path: '/api/v2/optimism/withdrawals/count',
   },
 
   output_roots: {
@@ -394,7 +394,7 @@ export const RESOURCES = {
   },
 
   output_roots_count: {
-    path: '/api/v2/optimism/output-roots-count',
+    path: '/api/v2/optimism/output-roots/count',
   },
 
   txn_batches: {
@@ -404,7 +404,7 @@ export const RESOURCES = {
   },
 
   txn_batches_count: {
-    path: '/api/v2/optimism/txn-batches-count',
+    path: '/api/v2/optimism/txn-batches/count',
   },
 
   // DEPRECATED
