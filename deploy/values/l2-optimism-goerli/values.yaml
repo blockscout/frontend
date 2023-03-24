@@ -323,6 +323,7 @@ frontend:
         - "/output-roots"
         - "/txn-batches"
         - "/withdrawals"
+        - "/deposits"
   resources:
     limits:
       memory:
