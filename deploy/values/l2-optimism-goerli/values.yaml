@@ -403,7 +403,7 @@ frontend:
     NEXT_PUBLIC_IS_L2_NETWORK:
       _default: "true"
     NEXT_PUBLIC_L1_BASE_URL:
-      _default: https://blockscout-main.test.aws-k8s.blockscout.com
+      _default: https://eth-goerli.blockscout.com/
     NEXT_PUBLIC_L2_WITHDRAWAL_URL:
       _default: https://app.optimism.io/bridge/withdraw
     NEXT_PUBLIC_GRAPHIQL_TRANSACTION:
