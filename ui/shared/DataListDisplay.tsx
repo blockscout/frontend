@@ -12,6 +12,7 @@ type SkeletonProps =
   {
     skeletonDesktopColumns: Array<string>;
     isLongSkeleton?: boolean;
+    skeletonDesktopMinW?: string;
   }
 
 type FilterProps = {
@@ -50,6 +51,7 @@ const DataListDisplay = (props: Props) => {
               display={{ base: 'none', lg: 'block' }}
               columns={ props.skeletonProps.skeletonDesktopColumns || [] }
               isLong={ props.skeletonProps.isLongSkeleton }
+              minW={ props.skeletonProps.skeletonDesktopMinW }
             />
           </>
         ) }

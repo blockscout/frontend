@@ -7,7 +7,7 @@ import getCurrencyValue from 'lib/getCurrencyValue';
 import AddressAddToMetaMask from 'ui/address/details/AddressAddToMetaMask';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import ListItemMobile from 'ui/shared/ListItemMobile';
+import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TokenLogo from 'ui/shared/TokenLogo';
 
 type Props = {

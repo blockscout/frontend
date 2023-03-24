@@ -139,6 +139,7 @@ The app instance could be customized by passing following variables to NodeJS en
 | --- | --- | --- | --- |
 | NEXT_PUBLIC_IS_L2_NETWORK | `boolean` *(optional)* | Set to true for L2 solutions (Optimism Bedrock based)  | false |
 | NEXT_PUBLIC_L1_BASE_URL | `string` *(optional)* | Base Blockscout URL for L1 network | `'http://eth-goerli.blockscout.com'` |
+| NEXT_PUBLIC_L2_WITHDRAWAL_URL | `string` *(optional)* | URL for L2 -> L1 withdrawals | `https://app.optimism.io/bridge/withdraw` |
 
 ### Marketplace app configuration properties
 

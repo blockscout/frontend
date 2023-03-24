@@ -9,7 +9,7 @@ import appConfig from 'configs/app/config';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import LinkInternal from 'ui/shared/LinkInternal';
-import ListItemMobile from 'ui/shared/ListItemMobile';
+import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
 type Props = Block & {

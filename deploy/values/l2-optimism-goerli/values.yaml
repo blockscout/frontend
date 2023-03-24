@@ -314,13 +314,16 @@ frontend:
         - "/search-results"
         - "/token"
         - "/tokens"
-        - "/accounts"
-        - "/visualize"
-        - "/api-docs"
         - "/csv-export"
         - "/verified-contracts"
         - "/graphiql"
-
+        - "/accounts"
+        - "/visualize"
+        - "/api-docs"
+        - "/output-roots"
+        - "/txn-batches"
+        - "/withdrawals"
+        - "/deposits"
   resources:
     limits:
       memory:
