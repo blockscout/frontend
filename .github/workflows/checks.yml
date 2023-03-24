@@ -8,6 +8,7 @@ on:
 jobs:
   marketplace_config_check:
     name: Validate marketplace config
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
