@@ -33,13 +33,9 @@ const Page = ({
     const statusCode = getErrorStatusCode(error) || 500;
     const isInvalidTxHash = error?.message.includes('Invalid tx hash');
 
-    if (wrapChildren) {
-      const content = isInvalidTxHash ? <ErrorInvalidTxHash/> : <AppError statusCode={ statusCode } mt="50px"/>;
-      return <PageContent isHomePage={ isHomePage }>{ content }</PageContent>;
-    }
-
-    return isInvalidTxHash ? <ErrorInvalidTxHash/> : <AppError statusCode={ statusCode }/>;
-  }, [ isHomePage, wrapChildren ]);
+    const content = isInvalidTxHash ? <ErrorInvalidTxHash/> : <AppError statusCode={ statusCode } mt="50px"/>;
+    return <PageContent isHomePage={ isHomePage }>{ content }</PageContent>;
+  }, [ isHomePage ]);
 
   const renderedChildren = wrapChildren ? (
     <PageContent isHomePage={ isHomePage }>{ children }</PageContent>

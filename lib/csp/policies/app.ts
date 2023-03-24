@@ -12,16 +12,7 @@ const MAIN_DOMAINS = [
 // eslint-disable-next-line no-restricted-properties
 const REPORT_URI = process.env.SENTRY_CSP_REPORT_URI;
 
-function getMarketplaceAppsHosts() {
-  return {
-    frames: appConfig.marketplaceAppList.map(({ url }) => new URL(url).host),
-    logos: appConfig.marketplaceAppList.map(({ logo }) => new URL(logo).host),
-  };
-}
-
 export function app(): CspDev.DirectiveDescriptor {
-  const marketplaceAppsHosts = getMarketplaceAppsHosts();
-
   return {
     'default-src': [
       KEY_WORDS.NONE,
@@ -108,7 +99,8 @@ export function app(): CspDev.DirectiveDescriptor {
     ],
 
     'frame-src': [
-      ...marketplaceAppsHosts.frames,
+      // improve: allow only frames from marketplace config
+      '*',
     ],
 
     ...(REPORT_URI && !appConfig.isDev ? {

@@ -3,7 +3,6 @@ import React from 'react';
 
 import type { MarketplaceCategoriesIds, MarketplaceCategory } from 'types/client/apps';
 
-import appConfig from 'configs/app/config';
 import eastMiniArrowIcon from 'icons/arrows/east-mini.svg';
 
 import CategoriesMenuItem from './CategoriesMenuItem';
@@ -15,16 +14,16 @@ const categoriesList = Object.keys(APP_CATEGORIES).map((id: string) => ({
 })) as Array<MarketplaceCategory>;
 
 type Props = {
+  categories: Array<MarketplaceCategoriesIds>;
   selectedCategoryId: MarketplaceCategoriesIds;
   onSelect: (category: MarketplaceCategoriesIds) => void;
 }
 
-const CategoriesMenu = ({ selectedCategoryId, onSelect }: Props) => {
+const CategoriesMenu = ({ selectedCategoryId, onSelect, categories }: Props) => {
   const selectedCategory = categoriesList.find(category => category.id === selectedCategoryId);
-  const actualCategories = appConfig.marketplaceAppList.map(app => app.categories).flat();
   const displayedCategories = categoriesList.filter(category => category.id === 'all' ||
       category.id === 'favorites' ||
-      actualCategories.includes(category.id));
+      categories.includes(category.id));
 
   return (
     <Menu>

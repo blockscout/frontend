@@ -10,7 +10,7 @@ const AppsPage: NextPage = () => {
   return (
     <Page>
       <PageTitle text="Apps"/>
-      <Head><title>Apps</title></Head>
+      <Head><title>Blockscout | Marketplace</title></Head>
 
       <Apps/>
     </Page>
