@@ -1,5 +1,4 @@
 /* eslint-disable no-restricted-properties */
-import type { AppItemOverview } from 'types/client/apps';
 import type { FeaturedNetwork, NetworkExplorer, PreDefinedNetwork } from 'types/networks';
 import type { ChainIndicatorId } from 'ui/home/indicators/types';
 
@@ -87,7 +86,7 @@ const config = Object.freeze({
   featuredNetworks: parseEnvJson<Array<FeaturedNetwork>>(getEnvValue(process.env.NEXT_PUBLIC_FEATURED_NETWORKS)) || [],
   blockScoutVersion: getEnvValue(process.env.NEXT_PUBLIC_BLOCKSCOUT_VERSION),
   isAccountSupported: getEnvValue(process.env.NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED) === 'true',
-  marketplaceAppList: parseEnvJson<Array<AppItemOverview>>(getEnvValue(process.env.NEXT_PUBLIC_MARKETPLACE_APP_LIST)) || [],
+  isMarketplaceAvailable: Boolean(getEnvValue(process.env.NEXT_PUBLIC_MARKETPLACE_CONFIG_URL)),
   marketplaceSubmitForm: getEnvValue(process.env.NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM),
   protocol: appSchema,
   host: appHost,
