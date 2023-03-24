@@ -18,8 +18,12 @@ import iconEastMini from 'icons/arrows/east-mini.svg';
 import iconCheck from 'icons/check.svg';
 import { times } from 'lib/html-entities';
 
-const ContractMethodFieldZeroes = () => {
-  const [ selectedOption, setSelectedOption ] = React.useState<number>();
+interface Props {
+  onClick: (power: number) => void;
+}
+
+const ContractMethodFieldZeroes = ({ onClick }: Props) => {
+  const [ selectedOption, setSelectedOption ] = React.useState<number | undefined>(18);
   const [ customValue, setCustomValue ] = React.useState<number>();
   const { isOpen, onToggle, onClose } = useDisclosure();
 
@@ -27,6 +31,7 @@ const ContractMethodFieldZeroes = () => {
     const id = Number((event.currentTarget as HTMLDivElement).getAttribute('data-id'));
     if (!Object.is(id, NaN)) {
       setSelectedOption((prev) => prev === id ? undefined : id);
+      setCustomValue(undefined);
       onClose();
     }
   }, [ onClose ]);
@@ -37,6 +42,10 @@ const ContractMethodFieldZeroes = () => {
   }, []);
 
   const value = selectedOption || customValue;
+
+  const handleButtonClick = React.useCallback(() => {
+    value && onClick(value);
+  }, [ onClick, value ]);
 
   return (
     <>
@@ -50,8 +59,7 @@ const ContractMethodFieldZeroes = () => {
           variant="subtle"
           colorScheme="gray"
           display="inline"
-          _hover={{ color: 'inherit' }}
-          cursor="default"
+          onClick={ handleButtonClick }
         >
           { times }
           <chakra.span>10</chakra.span>
