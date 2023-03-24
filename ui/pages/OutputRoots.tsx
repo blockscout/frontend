@@ -30,7 +30,14 @@ const OutputRoots = () => {
 
   const text = (() => {
     if (countersQuery.isLoading || isLoading) {
-      return <Skeleton w={{ base: '100%', lg: '400px' }} h={{ base: '48px', lg: '26px' }} mb={{ base: 6, lg: 7 }} mt={{ base: 0, lg: 7 }}/>;
+      return (
+        <Skeleton
+          w={{ base: '100%', lg: '400px' }}
+          h={{ base: '48px', lg: '24px' }}
+          mb={{ base: 6, lg: isPaginationVisible ? 0 : 7 }}
+          mt={{ base: 0, lg: isPaginationVisible ? 0 : 7 }}
+        />
+      );
     }
 
     if (countersQuery.isError || isError || data?.items.length === 0) {

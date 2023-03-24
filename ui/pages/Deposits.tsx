@@ -31,14 +31,25 @@ const Deposits = () => {
 
   const text = (() => {
     if (countersQuery.isLoading) {
-      return <Skeleton w={{ base: '100%', lg: '320px' }} h="26px" mb={ 6 } mt={{ base: 0, lg: 6 }}/>;
+      return (
+        <Skeleton
+          w={{ base: '100%', lg: '320px' }}
+          h="24px"
+          mb={{ base: 6, lg: isPaginationVisible ? 0 : 7 }}
+          mt={{ base: 0, lg: isPaginationVisible ? 0 : 7 }}
+        />
+      );
     }
 
     if (countersQuery.isError) {
       return null;
     }
 
-    return <Text mb={{ base: 6, lg: isPaginationVisible ? 0 : 6 }}>A total of { countersQuery.data.toLocaleString('en') } deposits found</Text>;
+    return (
+      <Text mb={{ base: 6, lg: isPaginationVisible ? 0 : 6 }} lineHeight="32px">
+        A total of { countersQuery.data.toLocaleString('en') } deposits found
+      </Text>
+    );
   })();
 
   const actionBar = (
