@@ -14,6 +14,7 @@ import type { SmartContractMethodArgType } from 'types/api/contract';
 import InputClearButton from 'ui/shared/InputClearButton';
 
 import ContractMethodFieldZeroes from './ContractMethodFieldZeroes';
+import { addZeroesAllowed } from './utils';
 
 interface Props {
   control: Control<MethodFormFields>;
@@ -43,7 +44,7 @@ const ContractMethodField = ({ control, name, valueType, placeholder, setValue, 
     onChange();
   }, [ getValues, name, onChange, setValue ]);
 
-  const hasZerosControl = valueType.includes('int') && !valueType.includes('[]');
+  const hasZerosControl = addZeroesAllowed(valueType);
 
   const renderInput = React.useCallback(({ field }: { field: ControllerRenderProps<MethodFormFields> }) => {
     return (
