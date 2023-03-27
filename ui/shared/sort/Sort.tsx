@@ -32,7 +32,7 @@ const Sort = <Sort extends string>({ sort, setSort, options }: Props<Sort>) => {
 
   return (
     <Menu>
-      <MenuButton>
+      <MenuButton as="div">
         <SortButton
           isActive={ isOpen || Boolean(sort) }
           onClick={ onToggle }
