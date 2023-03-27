@@ -52,7 +52,6 @@ jobs:
     name: Run unit tests with Jest
     needs: [ lint, type_check ]
     runs-on: ubuntu-latest
-    if: ${{ false }}  # disable since there are no jest test yet
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
