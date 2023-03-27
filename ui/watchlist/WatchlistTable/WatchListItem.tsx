@@ -6,7 +6,7 @@ import type { TWatchlistItem } from 'types/client/account';
 
 import useApiFetch from 'lib/api/useApiFetch';
 import useToast from 'lib/hooks/useToast';
-import ListItemMobile from 'ui/shared/ListItemMobile';
+import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 
 import WatchListAddressItem from './WatchListAddressItem';

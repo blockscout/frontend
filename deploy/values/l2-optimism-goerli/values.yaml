@@ -5,7 +5,7 @@ blockscout:
   app: blockscout
   enabled: true
   image:
-    _default: &image blockscout/blockscout-optimism-l2-advanced:5.1.0-prerelease-b1a57fa1
+    _default: &image blockscout/blockscout-optimism-l2-advanced:5.1.0-prerelease-303a0afa
   replicas:
     app: 1
   # init container
@@ -118,7 +118,7 @@ blockscout:
     TRACE_LAST_BLOCK:
       _default: '4677000'
     DISABLE_REALTIME_INDEXER:
-      _default: 'true'
+      _default: 'false'
     INDEXER_OPTIMISM_L1_RPC:
       _default: http://65.108.226.29:8545
     INDEXER_OPTIMISM_L1_PORTAL_CONTRACT:
@@ -314,13 +314,16 @@ frontend:
         - "/search-results"
         - "/token"
         - "/tokens"
-        - "/accounts"
-        - "/visualize"
-        - "/api-docs"
         - "/csv-export"
         - "/verified-contracts"
         - "/graphiql"
-
+        - "/accounts"
+        - "/visualize"
+        - "/api-docs"
+        - "/output-roots"
+        - "/txn-batches"
+        - "/withdrawals"
+        - "/deposits"
   resources:
     limits:
       memory:
@@ -400,7 +403,7 @@ frontend:
     NEXT_PUBLIC_IS_L2_NETWORK:
       _default: "true"
     NEXT_PUBLIC_L1_BASE_URL:
-      _default: https://blockscout-main.test.aws-k8s.blockscout.com
+      _default: https://eth-goerli.blockscout.com/
     NEXT_PUBLIC_L2_WITHDRAWAL_URL:
       _default: https://app.optimism.io/bridge/withdraw
     NEXT_PUBLIC_GRAPHIQL_TRANSACTION:

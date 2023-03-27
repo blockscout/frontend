@@ -8,6 +8,7 @@ const global = (props: StyleFunctionProps) => ({
     bg: mode('white', 'black')(props),
     ...getDefaultTransitionProps(),
     '-webkit-tap-highlight-color': 'transparent',
+    'font-variant-ligatures': 'no-contextual',
   },
   mark: {
     bgColor: 'yellow.200',

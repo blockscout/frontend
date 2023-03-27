@@ -18,9 +18,11 @@ import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters } f
 import type { ChartMarketResponse, ChartTransactionResponse } from 'types/api/charts';
 import type { SmartContract, SmartContractReadMethod, SmartContractWriteMethod, SmartContractVerificationConfig } from 'types/api/contract';
 import type { VerifiedContractsResponse, VerifiedContractsFilters, VerifiedContractsCounters } from 'types/api/contracts';
+import type { DepositsResponse } from 'types/api/deposits';
 import type { IndexingStatus } from 'types/api/indexingStatus';
 import type { InternalTransactionsResponse } from 'types/api/internalTransaction';
 import type { LogsResponseTx, LogsResponseAddress } from 'types/api/log';
+import type { OutputRootsResponse } from 'types/api/outputRoots';
 import type { RawTracesResponse } from 'types/api/rawTrace';
 import type { SearchResult, SearchResultFilters } from 'types/api/search';
 import type { Counters, StatsCharts, StatsChart, HomeStats } from 'types/api/stats';
@@ -35,8 +37,10 @@ import type {
 import type { TokensResponse, TokensFilters, TokenInstanceTransferResponse } from 'types/api/tokens';
 import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
 import type { TransactionsResponseValidated, TransactionsResponsePending, Transaction } from 'types/api/transaction';
+import type { TxnBatchesResponse } from 'types/api/txnBatches';
 import type { TTxsFilters } from 'types/api/txsFilters';
 import type { VisualizedContract } from 'types/api/visualization';
+import type { WithdrawalsResponse } from 'types/api/withdrawals';
 import type ArrayElement from 'types/utils/ArrayElement';
 
 import appConfig from 'configs/app/config';
@@ -362,6 +366,47 @@ export const RESOURCES = {
     path: '/graphql',
   },
 
+  // L2
+  deposits: {
+    path: '/api/v2/optimism/deposits',
+    paginationFields: [ 'nonce' as const, 'items_count' as const ],
+    filterFields: [],
+  },
+
+  deposits_count: {
+    path: '/api/v2/optimism/deposits/count',
+  },
+
+  withdrawals: {
+    path: '/api/v2/optimism/withdrawals',
+    paginationFields: [ 'nonce' as const, 'items_count' as const ],
+    filterFields: [],
+  },
+
+  withdrawals_count: {
+    path: '/api/v2/optimism/withdrawals/count',
+  },
+
+  output_roots: {
+    path: '/api/v2/optimism/output-roots',
+    paginationFields: [ 'index' as const, 'items_count' as const ],
+    filterFields: [],
+  },
+
+  output_roots_count: {
+    path: '/api/v2/optimism/output-roots/count',
+  },
+
+  txn_batches: {
+    path: '/api/v2/optimism/txn-batches',
+    paginationFields: [ 'block_number' as const, 'items_count' as const ],
+    filterFields: [],
+  },
+
+  txn_batches_count: {
+    path: '/api/v2/optimism/txn-batches/count',
+  },
+
   // DEPRECATED
   old_api: {
     path: '/api',
@@ -420,7 +465,8 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'address_logs' | 'address_tokens' |
 'token_transfers' | 'token_holders' | 'token_inventory' | 'tokens' |
 'token_instance_transfers' |
-'verified_contracts';
+'verified_contracts' |
+'output_roots' | 'withdrawals' | 'txn_batches' | 'deposits';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
 
@@ -482,6 +528,14 @@ Q extends 'verified_contracts' ? VerifiedContractsResponse :
 Q extends 'verified_contracts_counters' ? VerifiedContractsCounters :
 Q extends 'visualize_sol2uml' ? VisualizedContract :
 Q extends 'contract_verification_config' ? SmartContractVerificationConfig :
+Q extends 'output_roots' ? OutputRootsResponse :
+Q extends 'withdrawals' ? WithdrawalsResponse :
+Q extends 'deposits' ? DepositsResponse :
+Q extends 'txn_batches' ? TxnBatchesResponse :
+Q extends 'output_roots_count' ? number :
+Q extends 'withdrawals_count' ? number :
+Q extends 'deposits_count' ? number :
+Q extends 'txn_batches_count' ? number :
 never;
 /* eslint-enable @typescript-eslint/indent */
 

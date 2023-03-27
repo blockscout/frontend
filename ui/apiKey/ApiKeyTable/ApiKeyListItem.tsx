@@ -3,7 +3,7 @@ import React, { useCallback } from 'react';
 import type { ApiKey } from 'types/api/account';
 
 import ApiKeySnippet from 'ui/shared/ApiKeySnippet';
-import ListItemMobile from 'ui/shared/ListItemMobile';
+import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 
 interface Props {

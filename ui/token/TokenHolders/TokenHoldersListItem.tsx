@@ -7,7 +7,7 @@ import type { TokenHolder, TokenInfo } from 'types/api/token';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
-import ListItemMobile from 'ui/shared/ListItemMobile';
+import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
 interface Props {

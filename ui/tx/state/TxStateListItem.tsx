@@ -11,7 +11,7 @@ import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import Address from 'ui/shared/address/Address';
 // import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
-import ListItemMobile from 'ui/shared/ListItemMobile';
+import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 
 import TxStateStorageItem from './TxStateStorageItem';
 

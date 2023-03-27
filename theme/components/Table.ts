@@ -96,6 +96,7 @@ const baseStyle = definePartsStyle({
     borderTopRightRadius: 'base',
     overflow: 'unset',
     fontVariant: 'normal',
+    fontVariantLigatures: 'no-contextual',
   },
 });
 

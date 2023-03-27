@@ -40,6 +40,10 @@ frontend:
         - "/csv-export"
         - "/verified-contracts"
         - "/graphiql"
+        - "/output-roots"
+        - "/txn-batches"
+        - "/withdrawals"
+        - "/deposits"
 
   resources:
     limits:

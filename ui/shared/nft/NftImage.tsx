@@ -1,5 +1,5 @@
 import type { ResponsiveValue } from '@chakra-ui/react';
-import { AspectRatio, chakra, Icon, Image, shouldForwardProp, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { Box, AspectRatio, chakra, Icon, Image, shouldForwardProp, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import type { Property } from 'csstype';
 import React from 'react';
 
@@ -30,6 +30,7 @@ const Fallback = ({ className, padding }: FallbackProps) => {
 
 const NftImage = ({ url, className, fallbackPadding, objectFit }: Props) => {
   const [ isLoading, setIsLoading ] = React.useState(true);
+  const [ isError, setIsError ] = React.useState(false);
 
   const handleLoad = React.useCallback(() => {
     setIsLoading(false);
@@ -37,9 +38,36 @@ const NftImage = ({ url, className, fallbackPadding, objectFit }: Props) => {
 
   const handleLoadError = React.useCallback(() => {
     setIsLoading(false);
+    setIsError(true);
   }, []);
 
   const _objectFit = objectFit || 'contain';
+
+  const content = (() => {
+    // as of ChakraUI v2.5.3
+    // fallback prop of Image component doesn't work well with loading prop lazy strategy
+    // so we have to render fallback and loader manually
+    if (isError || !url) {
+      return <Fallback className={ className } padding={ fallbackPadding }/>;
+    }
+
+    return (
+      <Box>
+        { isLoading && <Skeleton position="absolute" left={ 0 } top={ 0 } w="100%" h="100%" zIndex="1"/> }
+        <Image
+          w="100%"
+          h="100%"
+          objectFit={ _objectFit }
+          src={ url }
+          opacity={ isLoading ? 0 : 1 }
+          alt="Token instance image"
+          onError={ handleLoadError }
+          onLoad={ handleLoad }
+          loading={ url ? 'lazy' : undefined }
+        />
+      </Box>
+    );
+  })();
 
   return (
     <AspectRatio
@@ -54,17 +82,7 @@ const NftImage = ({ url, className, fallbackPadding, objectFit }: Props) => {
         },
       }}
     >
-      <Image
-        w="100%"
-        h="100%"
-        objectFit={ _objectFit }
-        src={ url || undefined }
-        alt="Token instance image"
-        fallback={ url && isLoading ? <Skeleton/> : <Fallback className={ className } padding={ fallbackPadding }/> }
-        onError={ handleLoadError }
-        onLoad={ handleLoad }
-        loading={ url ? 'lazy' : undefined }
-      />
+      { content }
     </AspectRatio>
   );
 };

@@ -3,7 +3,7 @@ import React, { useCallback } from 'react';
 
 import type { TransactionTag } from 'types/api/account';
 
-import ListItemMobile from 'ui/shared/ListItemMobile';
+import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 import TransactionSnippet from 'ui/shared/TransactionSnippet';
 

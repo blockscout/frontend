@@ -25,19 +25,23 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/block/[height]", { "height": string }>
     | StaticRoute<"/blocks">
     | StaticRoute<"/csv-export">
+    | StaticRoute<"/deposits">
     | StaticRoute<"/graph">
     | StaticRoute<"/graphiql">
     | StaticRoute<"/">
     | StaticRoute<"/login">
+    | StaticRoute<"/output-roots">
     | StaticRoute<"/search-results">
     | StaticRoute<"/stats">
     | DynamicRoute<"/token/[hash]", { "hash": string }>
     | DynamicRoute<"/token/[hash]/instance/[id]", { "hash": string; "id": string }>
     | StaticRoute<"/tokens">
     | DynamicRoute<"/tx/[hash]", { "hash": string }>
+    | StaticRoute<"/txn-batches">
     | StaticRoute<"/txs">
     | StaticRoute<"/verified-contracts">
-    | StaticRoute<"/visualize/sol2uml">;
+    | StaticRoute<"/visualize/sol2uml">
+    | StaticRoute<"/withdrawals">;
 
   interface StaticRoute<Pathname> {
     pathname: Pathname;
