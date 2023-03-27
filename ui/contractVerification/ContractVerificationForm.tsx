@@ -1,5 +1,5 @@
 import { Button, chakra, useUpdateEffect } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
+import { route } from 'nextjs-routes';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -20,7 +20,7 @@ import ContractVerificationSourcify from './methods/ContractVerificationSourcify
 import ContractVerificationStandardInput from './methods/ContractVerificationStandardInput';
 import ContractVerificationVyperContract from './methods/ContractVerificationVyperContract';
 import ContractVerificationVyperMultiPartFile from './methods/ContractVerificationVyperMultiPartFile';
-import { prepareRequestBody, formatSocketErrors, DEFAULT_VALUES } from './utils';
+import { prepareRequestBody, formatSocketErrors, getDefaultValues } from './utils';
 
 const METHOD_COMPONENTS = {
   'flattened-code': <ContractVerificationFlattenSourceCode/>,
@@ -40,14 +40,13 @@ interface Props {
 const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Props) => {
   const formApi = useForm<FormFields>({
     mode: 'onBlur',
-    defaultValues: methodFromQuery ? DEFAULT_VALUES[methodFromQuery] : undefined,
+    defaultValues: methodFromQuery ? getDefaultValues(methodFromQuery, config) : undefined,
   });
   const { control, handleSubmit, watch, formState, setError, reset } = formApi;
   const submitPromiseResolver = React.useRef<(value: unknown) => void>();
 
   const apiFetch = useApiFetch();
   const toast = useToast();
-  const router = useRouter();
 
   const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(data) => {
     const body = prepareRequestBody(data);
@@ -86,8 +85,8 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
       isClosable: true,
     });
 
-    router.push({ pathname: '/address/[hash]', query: { hash, tab: 'contract' } }, undefined, { shallow: false });
-  }, [ hash, router, setError, toast ]);
+    window.location.assign(route({ pathname: '/address/[hash]', query: { hash, tab: 'contract' } }));
+  }, [ hash, setError, toast ]);
 
   const handleSocketError = React.useCallback(() => {
     if (!formState.isSubmitting) {
@@ -129,7 +128,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
 
   useUpdateEffect(() => {
     if (methodValue) {
-      reset(DEFAULT_VALUES[methodValue]);
+      reset(getDefaultValues(methodValue, config));
     }
   // !!! should run only when method is changed
   }, [ methodValue ]);
