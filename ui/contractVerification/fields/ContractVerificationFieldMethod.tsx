@@ -60,14 +60,14 @@ const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props
   const renderPopoverListItem = React.useCallback((method: SmartContractVerificationMethod) => {
     switch (method) {
       case 'flattened-code':
-        return <ListItem>Verification through flattened source code.</ListItem>;
+        return <ListItem key={ method }>Verification through flattened source code.</ListItem>;
       case 'multi-part':
-        return <ListItem>Verification of multi-part Solidity files.</ListItem>;
+        return <ListItem key={ method }>Verification of multi-part Solidity files.</ListItem>;
       case 'sourcify':
-        return <ListItem>Verification through <Link href="https://sourcify.dev/" target="_blank">Sourcify</Link>.</ListItem>;
+        return <ListItem key={ method }>Verification through <Link href="https://sourcify.dev/" target="_blank">Sourcify</Link>.</ListItem>;
       case 'standard-input':
         return (
-          <ListItem>
+          <ListItem key={ method }>
             <span>Verification using </span>
             <Link
               href="https://docs.soliditylang.org/en/latest/using-the-compiler.html#input-description"
@@ -79,9 +79,9 @@ const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props
           </ListItem>
         );
       case 'vyper-code':
-        return <ListItem>Verification of Vyper contract.</ListItem>;
+        return <ListItem key={ method }>Verification of Vyper contract.</ListItem>;
       case 'vyper-multi-part':
-        return <ListItem>Verification of multi-part Vyper files.</ListItem>;
+        return <ListItem key={ method }>Verification of multi-part Vyper files.</ListItem>;
     }
   }, []);
 
