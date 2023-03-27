@@ -5,6 +5,7 @@ import React from 'react';
 import type { VerifiedContractsFilters } from 'types/api/contracts';
 
 import useDebounce from 'lib/hooks/useDebounce';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -28,6 +29,8 @@ const VerifiedContracts = () => {
   const [ sort, setSort ] = React.useState<TSort>();
 
   const debouncedSearchTerm = useDebounce(searchTerm || '', 300);
+
+  const isMobile = useIsMobile();
 
   const { isError, isLoading, data, isPaginationVisible, pagination, onFilterChange } = useQueryWithPages({
     resourceName: 'verified_contracts',
@@ -87,13 +90,15 @@ const VerifiedContracts = () => {
         { sortButton }
         { filterInput }
       </HStack>
-      <ActionBar mt={ -6 }>
-        <HStack spacing={ 3 } display={{ base: 'none', lg: 'flex' }}>
-          { typeFilter }
-          { filterInput }
-        </HStack>
-        { isPaginationVisible && <Pagination ml="auto" { ...pagination }/> }
-      </ActionBar>
+      { (!isMobile || isPaginationVisible) && (
+        <ActionBar mt={ -6 }>
+          <HStack spacing={ 3 } display={{ base: 'none', lg: 'flex' }}>
+            { typeFilter }
+            { filterInput }
+          </HStack>
+          { isPaginationVisible && <Pagination ml="auto" { ...pagination }/> }
+        </ActionBar>
+      ) }
     </>
   );
 
