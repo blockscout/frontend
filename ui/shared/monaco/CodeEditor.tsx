@@ -39,11 +39,11 @@ interface Props {
 
 const CodeEditor = ({ data }: Props) => {
   const [ instance, setInstance ] = React.useState<Monaco | undefined>();
+  const [ editor, setEditor ] = React.useState<monaco.editor.IStandaloneCodeEditor | undefined>();
   const [ index, setIndex ] = React.useState(0);
   const [ tabs, setTabs ] = React.useState([ data[index].file_path ]);
   const [ isMetaPressed, setIsMetaPressed ] = React.useState(false);
 
-  const editorRef = React.useRef<monaco.editor.IStandaloneCodeEditor>();
   const [ containerRect, containerNodeRef ] = useClientRect<HTMLDivElement>();
 
   const { colorMode } = useColorMode();
@@ -58,7 +58,7 @@ const CodeEditor = ({ data }: Props) => {
 
   const handleEditorDidMount = React.useCallback((editor: monaco.editor.IStandaloneCodeEditor, monaco: Monaco) => {
     setInstance(monaco);
-    editorRef.current = editor;
+    setEditor(editor);
 
     monaco.editor.defineTheme('blockscout-light', themes.light);
     monaco.editor.defineTheme('blockscout-dark', themes.dark);
@@ -71,6 +71,23 @@ const CodeEditor = ({ data }: Props) => {
       .map((file) => monaco.editor.createModel(file.source_code, 'sol', monaco.Uri.parse(file.file_path)));
 
     loadedModels.concat(newModels).forEach(addFileImportDecorations);
+
+    editor.addAction({
+      id: 'close-tab',
+      label: 'Close current tab',
+      keybindings: [
+        monaco.KeyMod.Alt | monaco.KeyCode.KeyW,
+      ],
+      contextMenuGroupId: 'navigation',
+      contextMenuOrder: 1.7,
+      run: function(editor) {
+        const model = editor.getModel();
+        const path = model?.uri.path;
+        if (path) {
+          handleTabClose(path, true);
+        }
+      },
+    });
   // componentDidMount
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ ]);
@@ -80,11 +97,11 @@ const CodeEditor = ({ data }: Props) => {
     setTabs((prev) => prev.some((item) => item === data[index].file_path) ? prev : ([ ...prev, data[index].file_path ]));
     if (lineNumber !== undefined && !Object.is(lineNumber, NaN)) {
       window.setTimeout(() => {
-        editorRef.current?.revealLineInCenter(lineNumber);
+        editor?.revealLineInCenter(lineNumber);
       }, 0);
     }
-    editorRef.current?.focus();
-  }, [ data ]);
+    editor?.focus();
+  }, [ data, editor ]);
 
   const handleTabSelect = React.useCallback((path: string) => {
     const index = data.findIndex((item) => item.file_path === path);
@@ -93,14 +110,14 @@ const CodeEditor = ({ data }: Props) => {
     }
   }, [ data ]);
 
-  const handleTabClose = React.useCallback((path: string) => {
+  const handleTabClose = React.useCallback((path: string, _isActive?: boolean) => {
     setTabs((prev) => {
       if (prev.length > 1) {
         const tabIndex = prev.findIndex((item) => item === path);
-        const isActive = data[index].file_path === path;
+        const isActive = _isActive !== undefined ? _isActive : data[index].file_path === path;
 
         if (isActive) {
-          const nextActiveIndex = data.findIndex((item) => item.file_path === prev[Math.max(0, tabIndex - 1)]);
+          const nextActiveIndex = data.findIndex((item) => item.file_path === prev[(tabIndex === 0 ? 1 : tabIndex - 1)]);
           setIndex(nextActiveIndex);
         }
 
@@ -200,7 +217,13 @@ const CodeEditor = ({ data }: Props) => {
           loading={ <CodeEditorLoading/> }
         />
       </Box>
-      <CodeEditorSideBar data={ data } onFileSelect={ handleSelectFile } monaco={ instance } selectedFile={ data[index].file_path }/>
+      <CodeEditorSideBar
+        data={ data }
+        onFileSelect={ handleSelectFile }
+        monaco={ instance }
+        editor={ editor }
+        selectedFile={ data[index].file_path }
+      />
     </Flex>
   );
 };
