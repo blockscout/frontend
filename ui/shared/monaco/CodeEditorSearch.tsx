@@ -18,9 +18,10 @@ interface Props {
   isInputStuck: boolean;
   isActive: boolean;
   setActionBarRenderer: React.Dispatch<React.SetStateAction<(() => JSX.Element) | undefined>>;
+  defaultValue: string;
 }
 
-const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck, isActive, setActionBarRenderer }: Props) => {
+const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck, isActive, setActionBarRenderer, defaultValue }: Props) => {
   const [ searchTerm, changeSearchTerm ] = React.useState('');
   const [ searchResults, setSearchResults ] = React.useState<Array<SearchResult>>([]);
   const [ expandedSections, setExpandedSections ] = React.useState<Array<number>>([]);
@@ -32,6 +33,10 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck, isActive, 
   const themeColors = useThemeColors();
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
+
+  React.useEffect(() => {
+    changeSearchTerm(defaultValue);
+  }, [ defaultValue ]);
 
   React.useEffect(() => {
     if (!monaco) {
@@ -166,7 +171,8 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck, isActive, 
           borderWidth="1px"
           borderColor={ themeColors['input.background'] }
           py="2px"
-          px="4px"
+          pl="4px"
+          pr="75px"
           transitionDuration="0"
           _focus={{
             borderColor: themeColors.focusBorder,

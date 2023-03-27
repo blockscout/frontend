@@ -1,6 +1,7 @@
 import { Flex, Icon, chakra, Box } from '@chakra-ui/react';
 import React from 'react';
 
+import { alt } from 'lib/html-entities';
 import useThemeColors from 'ui/shared/monaco/utils/useThemeColors';
 
 import iconFile from './icons/file.svg';
@@ -62,7 +63,7 @@ const CodeEditorTab = ({ isActive, path, onClick, onClose, isCloseDisabled, tabs
         boxSize="20px"
         ml="4px"
         p="2px"
-        title="Close"
+        title={ `Close ${ isActive ? `(${ alt }W)` : '' }` }
         aria-label="Close"
         onClick={ handleClose }
         borderRadius="sm"

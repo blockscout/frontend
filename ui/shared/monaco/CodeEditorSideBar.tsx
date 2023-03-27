@@ -1,9 +1,12 @@
 import type { HTMLChakraProps } from '@chakra-ui/react';
 import { Box, Tab, TabList, TabPanel, TabPanels, Tabs, useBoolean } from '@chakra-ui/react';
 import _throttle from 'lodash/throttle';
+import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import React from 'react';
 
 import type { File, Monaco } from './types';
+
+import { shift, cmd } from 'lib/html-entities';
 
 import CodeEditorFileExplorer from './CodeEditorFileExplorer';
 import CodeEditorSearch from './CodeEditorSearch';
@@ -11,6 +14,7 @@ import useThemeColors from './utils/useThemeColors';
 
 interface Props {
   monaco: Monaco | undefined;
+  editor: monaco.editor.IStandaloneCodeEditor | undefined;
   data: Array<File>;
   onFileSelect: (index: number, lineNumber?: number) => void;
   selectedFile: string;
@@ -18,11 +22,12 @@ interface Props {
 
 export const CONTAINER_WIDTH = 250;
 
-const CodeEditorSideBar = ({ onFileSelect, data, monaco, selectedFile }: Props) => {
+const CodeEditorSideBar = ({ onFileSelect, data, monaco, editor, selectedFile }: Props) => {
 
   const [ isStuck, setIsStuck ] = React.useState(false);
   const [ isDrawerOpen, setIsDrawerOpen ] = useBoolean(false);
   const [ tabIndex, setTabIndex ] = React.useState(0);
+  const [ searchValue, setSearchValue ] = React.useState('');
   const [ actionBarRenderer, setActionBarRenderer ] = React.useState<() => JSX.Element>();
 
   const themeColors = useThemeColors();
@@ -49,6 +54,39 @@ const CodeEditorSideBar = ({ onFileSelect, data, monaco, selectedFile }: Props) 
     isDrawerOpen && setIsDrawerOpen.off();
     onFileSelect(index, lineNumber);
   }, [ isDrawerOpen, onFileSelect, setIsDrawerOpen ]);
+
+  React.useEffect(() => {
+    if (editor && monaco) {
+      editor.addAction({
+        id: 'file-explorer',
+        label: 'Show File Explorer',
+        keybindings: [
+          monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KeyE,
+        ],
+        contextMenuGroupId: 'navigation',
+        contextMenuOrder: 1.5,
+        run: function() {
+          setTabIndex(0);
+        },
+      });
+
+      editor.addAction({
+        id: 'search-in-files',
+        label: 'Show Search in Files',
+        keybindings: [
+          monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KeyF,
+        ],
+        contextMenuGroupId: 'navigation',
+        contextMenuOrder: 1.6,
+        run: function(editor) {
+          setTabIndex(1);
+          const selection = editor.getSelection();
+          const selectedValue = selection ? editor.getModel()?.getValueInRange(selection) : '';
+          setSearchValue(selectedValue || '');
+        },
+      });
+    }
+  }, [ editor, monaco ]);
 
   return (
     <>
@@ -84,8 +122,8 @@ const CodeEditorSideBar = ({ onFileSelect, data, monaco, selectedFile }: Props) 
             boxShadow={ isStuck ? 'md' : 'none' }
             borderTopRightRadius="md"
           >
-            <Tab { ...tabProps }>Explorer</Tab>
-            <Tab { ...tabProps }>Search</Tab>
+            <Tab { ...tabProps } title={ `File explorer (${ shift + cmd }E)` }>Explorer</Tab>
+            <Tab { ...tabProps } title={ `Search in files (${ shift + cmd }F)` }>Search</Tab>
             { actionBarRenderer?.() }
           </TabList>
           <TabPanels>
@@ -106,6 +144,7 @@ const CodeEditorSideBar = ({ onFileSelect, data, monaco, selectedFile }: Props) 
                 isInputStuck={ isStuck }
                 isActive={ tabIndex === 1 }
                 setActionBarRenderer={ setActionBarRenderer }
+                defaultValue={ searchValue }
               />
             </TabPanel>
           </TabPanels>
