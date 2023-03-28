@@ -38,7 +38,7 @@ const VerifiedContractsTable = ({ data, sort, onSortToggle }: Props) => {
           </Th>
           <Th width="50%">Compiler / version</Th>
           <Th width="80px">Settings</Th>
-          <Th width="110px">Verified</Th>
+          <Th width="150px">Verified</Th>
           { /* <Th width="120px">Market cap</Th> */ }
         </Tr>
       </Thead>
