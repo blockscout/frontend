@@ -1,0 +1,30 @@
+import { Alert, Box, Button, chakra, Flex } from '@chakra-ui/react';
+import React from 'react';
+
+interface Props {
+  onShowListClick: () => void;
+  onAddTokenClick: () => void;
+}
+
+const AddressVerificationStepSuccess = ({ onAddTokenClick, onShowListClick }: Props) => {
+  return (
+    <Box>
+      <Alert status="success" flexWrap="wrap" whiteSpace="pre-wrap" wordBreak="break-word" mb={ 3 } display="inline-block">
+        <span>The address ownership for </span>
+        <chakra.span fontWeight={ 700 }>0xaba7161a7fb69c88e16ed9f455ce62b791ee4d03</chakra.span>
+        <span> is verified.</span>
+      </Alert>
+      <p>You may now submit the “Add token information” request</p>
+      <Flex alignItems="center" mt={ 8 } columnGap={ 5 } flexWrap="wrap" rowGap={ 5 }>
+        <Button size="lg" variant="outline" onClick={ onShowListClick }>
+          View my verified addresses
+        </Button>
+        <Button size="lg" onClick={ onAddTokenClick }>
+          Add token information
+        </Button>
+      </Flex>
+    </Box>
+  );
+};
+
+export default React.memo(AddressVerificationStepSuccess);

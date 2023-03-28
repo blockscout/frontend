@@ -1,11 +1,16 @@
-import { UnorderedList, ListItem, chakra, Button } from '@chakra-ui/react';
+import { UnorderedList, ListItem, chakra, Button, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 
+import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
+import AddressVerificationModal from 'ui/addressVerification/AddressVerificationModal';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 const VerifiedAddresses = () => {
+  useRedirectForInvalidAuthToken();
+
+  const modalProps = useDisclosure();
 
   return (
     <Page>
@@ -27,9 +32,10 @@ const VerifiedAddresses = () => {
             Find out more about verify address ownership.
         </chakra.p>
       </AccountPageDescription>
-      <Button size="lg">
+      <Button size="lg" onClick={ modalProps.onOpen }>
         Add address
       </Button>
+      <AddressVerificationModal isOpen={ modalProps.isOpen } onClose={ modalProps.onClose }/>
     </Page>
   );
 };
