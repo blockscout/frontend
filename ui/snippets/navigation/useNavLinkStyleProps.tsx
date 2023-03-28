@@ -30,6 +30,8 @@ export default function useNavLinkProps({ isExpanded, isCollapsed, isActive }: P
       transitionProperty: 'opacity',
       transitionDuration: 'normal',
       transitionTimingFunction: 'ease',
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
     },
   };
 }

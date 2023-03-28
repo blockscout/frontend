@@ -4,7 +4,7 @@ import React, { useRef, useEffect, useState, useCallback } from 'react';
 
 const CUT_HEIGHT = 144;
 
-const AccountPageDescription = ({ children }: {children: React.ReactNode}) => {
+const AccountPageDescription = ({ children, allowCut = true }: { children: React.ReactNode; allowCut?: boolean }) => {
   const ref = useRef<HTMLParagraphElement>(null);
 
   const [ needCut, setNeedCut ] = useState(false);
@@ -20,6 +20,10 @@ const AccountPageDescription = ({ children }: {children: React.ReactNode}) => {
   }, [ needCut ]);
 
   useEffect(() => {
+    if (!allowCut) {
+      return;
+    }
+
     calculateCut();
     const resizeHandler = _debounce(calculateCut, 300);
     window.addEventListener('resize', resizeHandler);
@@ -44,7 +48,6 @@ const AccountPageDescription = ({ children }: {children: React.ReactNode}) => {
         ref={ ref }
         maxHeight={ needCut && !expanded ? `${ CUT_HEIGHT }px` : 'auto' }
         overflow="hidden"
-
         style={ needCut && !expanded ? { WebkitLineClamp: '6', WebkitBoxOrient: 'vertical', display: '-webkit-box' } : {} }
       >
         { children }
