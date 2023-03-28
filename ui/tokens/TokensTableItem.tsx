@@ -58,10 +58,10 @@ const TokensTableItem = ({
             </Flex>
             <Flex alignItems="center" width="136px" justifyContent="space-between" ml={ 8 } mt={ 2 }>
               <Flex alignItems="center">
-                <AddressLink fontSize="sm" hash={ address } type="address" truncation="constant" fontWeight={ 500 }/>
+                <AddressLink fontSize="sm" hash={ address } type="address" truncation="dynamic" fontWeight={ 500 }/>
                 <CopyToClipboard text={ address } ml={ 1 }/>
               </Flex>
-              <AddressAddToMetaMask token={ token }/>
+              <AddressAddToMetaMask token={ token } ml={ 1 }/>
             </Flex>
             <Tag flexShrink={ 0 } ml={ 8 } mt={ 3 }>{ type }</Tag>
           </Box>
