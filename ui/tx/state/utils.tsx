@@ -2,7 +2,8 @@ import { Box, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type { TxStateChange } from 'types/api/txStateChanges';
+import type { TxStateChange, TxStateChangeTokenErc1155, TxStateChangeTokenErc1155Single, TxStateChangeTokenErc721 } from 'types/api/txStateChanges';
+import type ArrayElement from 'types/utils/ArrayElement';
 
 import appConfig from 'configs/app/config';
 import { ZERO_ADDRESS } from 'lib/consts';
@@ -62,7 +63,6 @@ export function getStateElements(data: TxStateChange) {
       const difference = after - before;
       const changeColor = difference >= 0 ? 'green.500' : 'red.500';
       const changeSign = difference >= 0 ? '+' : '-';
-      const tokenIdValue = Array.isArray(data.change) ? data.change[0].total.token_id : null;
 
       const change = (() => {
         if (!before && !after && data.address.hash === ZERO_ADDRESS) {
@@ -86,6 +86,27 @@ export function getStateElements(data: TxStateChange) {
         return <Box color={ changeColor }>{ changeSign }{ nbsp }{ Math.abs(difference).toLocaleString() }</Box>;
       })();
 
+      const tokenId = (() => {
+        if (!Array.isArray(data.change)) {
+          return null;
+        }
+
+        return (data.change as Array<TxStateChangeNftItem>)
+          .reduce(flattenTotal, [])
+          .map((change, index) => {
+            return (
+              <TokenTransferNft
+                key={ index }
+                hash={ data.token.address }
+                id={ change.total.token_id }
+                w="auto"
+                truncation="constant"
+                my={{ base: '-3px', lg: 0 }}
+              />
+            );
+          });
+      })();
+
       return {
         before: data.balance_before ? (
           <Flex whiteSpace="pre-wrap" justifyContent={{ base: 'flex-start', lg: 'flex-end' }}>
@@ -101,10 +122,21 @@ export function getStateElements(data: TxStateChange) {
         ) : null,
         change,
         hint,
-        tokenId: tokenIdValue ?
-          <TokenTransferNft hash={ data.token.address } id={ tokenIdValue } w="auto" truncation="constant" my={{ base: '-3px', lg: 0 }}/> :
-          null,
+        tokenId,
       };
     }
   }
+}
+
+type TxStateChangeNftItem = ArrayElement<TxStateChangeTokenErc721['change'] | TxStateChangeTokenErc1155['change']>;
+type TxStateChangeNftItemFlatten = ArrayElement<TxStateChangeTokenErc721['change'] | TxStateChangeTokenErc1155Single['change']>;
+
+function flattenTotal(result: Array<TxStateChangeNftItemFlatten>, item: TxStateChangeNftItem): Array<TxStateChangeNftItemFlatten> {
+  if (Array.isArray(item.total)) {
+    result.push(...item.total.map((total) => ({ ...item, total })));
+  } else {
+    result.push({ ...item, total: item.total });
+  }
+
+  return result;
 }

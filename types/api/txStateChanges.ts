@@ -17,10 +17,7 @@ export interface TxStateChangeCoin {
 
 export type TxStateChangeToken = TxStateChangeTokenErc20 | TxStateChangeTokenErc721 | TxStateChangeTokenErc1155;
 
-type NftTokenChange<T> = {
-  direction: 'from' | 'to';
-  total: T;
-}
+type ChangeDirection = 'from' | 'to';
 
 export interface TxStateChangeTokenErc20 {
   type: 'token';
@@ -31,13 +28,30 @@ export interface TxStateChangeTokenErc20 {
 export interface TxStateChangeTokenErc721 {
   type: 'token';
   token: TokenInfo<'ERC-721'>;
-  change: Array<NftTokenChange<Erc721TotalPayload>>;
+  change: Array<{
+    direction: ChangeDirection;
+    total: Erc721TotalPayload;
+  }>;
 }
 
-export interface TxStateChangeTokenErc1155 {
+export type TxStateChangeTokenErc1155 = TxStateChangeTokenErc1155Single | TxStateChangeTokenErc1155Batch;
+
+export interface TxStateChangeTokenErc1155Single {
   type: 'token';
   token: TokenInfo<'ERC-1155'>;
-  change: Array<NftTokenChange<Erc1155TotalPayload>>;
+  change: Array<{
+    direction: ChangeDirection;
+    total: Erc1155TotalPayload;
+  }>;
+}
+
+export interface TxStateChangeTokenErc1155Batch {
+  type: 'token';
+  token: TokenInfo<'ERC-1155'>;
+  change: Array<{
+    direction: ChangeDirection;
+    total: Array<Erc1155TotalPayload>;
+  }>;
 }
 
 export type TxStateChanges = Array<TxStateChange>;
