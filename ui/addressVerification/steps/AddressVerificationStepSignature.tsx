@@ -1,8 +1,11 @@
 import { Box, Button, Flex, Link } from '@chakra-ui/react';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
+import { useSignMessage } from 'wagmi';
 
 import type { AddressVerificationFormFields } from '../types';
+
+import useToast from 'lib/hooks/useToast';
 
 import AddressVerificationFieldAddress from '../fields/AddressVerificationFieldAddress';
 import AddressVerificationFieldMessage from '../fields/AddressVerificationFieldMessage';
@@ -10,12 +13,30 @@ import AddressVerificationFieldSignature from '../fields/AddressVerificationFiel
 
 interface Props {
   onContinue: () => void;
+  onSubmit: () => void;
 }
 
-const AddressVerificationStepSignature = ({ onContinue }: Props) => {
+const AddressVerificationStepSignature = ({ onContinue, onSubmit }: Props) => {
   const [ isManualSigning, setIsManualSigning ] = React.useState(false);
 
-  const { formState, trigger } = useFormContext<AddressVerificationFormFields>();
+  const toast = useToast();
+  const { formState, trigger, getValues, setValue } = useFormContext<AddressVerificationFormFields>();
+  const { signMessage } = useSignMessage({
+    onSuccess: (data) => {
+      setValue('signature', data);
+      onSubmit();
+    },
+    onError: (error) => {
+      toast({
+        position: 'top-right',
+        title: 'Error',
+        description: (error as Error)?.message || 'Something went wrong',
+        status: 'error',
+        variant: 'subtle',
+        isClosable: true,
+      });
+    },
+  });
 
   const handleVerifyButtonClick = React.useCallback(() => {
     if (!formState.isValid) {
@@ -27,8 +48,9 @@ const AddressVerificationStepSignature = ({ onContinue }: Props) => {
   }, [ formState, onContinue, trigger ]);
 
   const handleWeb3SignClick = React.useCallback(() => {
-
-  }, []);
+    const message = getValues('message');
+    signMessage({ message });
+  }, [ getValues, signMessage ]);
 
   const handleManualSignClick = React.useCallback(() => {
     setIsManualSigning(true);

@@ -5,6 +5,8 @@ import { useForm, FormProvider } from 'react-hook-form';
 
 import type { AddressVerificationFormFields } from './types';
 
+import Web3ModalProvider from 'ui/shared/Web3ModalProvider';
+
 import AddressVerificationStepAddress from './steps/AddressVerificationStepAddress';
 import AddressVerificationStepSignature from './steps/AddressVerificationStepSignature';
 import AddressVerificationStepSuccess from './steps/AddressVerificationStepSuccess';
@@ -32,17 +34,18 @@ const AddressVerificationModal = ({ isOpen, onClose }: Props) => {
     formApi.reset();
   }, [ formApi, onClose ]);
 
-  const steps = [
-    { title: 'Verify new address ownership', content: <AddressVerificationStepAddress onContinue={ handleGoToNextStep }/> },
-    { title: 'Copy message to sign', content: <AddressVerificationStepSignature onContinue={ handleGoToNextStep }/> },
-    { title: 'Congrats! Address is verified.', content: <AddressVerificationStepSuccess onShowListClick={ handleClose } onAddTokenClick={ handleClose }/> },
-  ];
-
   const onFormSubmit: SubmitHandler<AddressVerificationFormFields> = React.useCallback(async(data) => {
     // eslint-disable-next-line no-console
     console.log('__>__', data);
   }, [ ]);
 
+  const onSubmit = handleSubmit(onFormSubmit);
+
+  const steps = [
+    { title: 'Verify new address ownership', content: <AddressVerificationStepAddress onContinue={ handleGoToNextStep }/> },
+    { title: 'Copy message to sign', content: <AddressVerificationStepSignature onContinue={ handleGoToNextStep } onSubmit={ onSubmit }/> },
+    { title: 'Congrats! Address is verified.', content: <AddressVerificationStepSuccess onShowListClick={ handleClose } onAddTokenClick={ handleClose }/> },
+  ];
   const step = steps[stepIndex];
 
   return (
@@ -52,11 +55,13 @@ const AddressVerificationModal = ({ isOpen, onClose }: Props) => {
         <ModalHeader fontWeight="500" textStyle="h3" mb={ 6 }>{ step.title }</ModalHeader>
         <ModalCloseButton/>
         <ModalBody mb={ 0 }>
-          <FormProvider { ...formApi }>
-            <form noValidate onSubmit={ handleSubmit(onFormSubmit) }>
-              { step.content }
-            </form>
-          </FormProvider>
+          <Web3ModalProvider>
+            <FormProvider { ...formApi }>
+              <form noValidate onSubmit={ onSubmit }>
+                { step.content }
+              </form>
+            </FormProvider>
+          </Web3ModalProvider>
         </ModalBody>
       </ModalContent>
     </Modal>
