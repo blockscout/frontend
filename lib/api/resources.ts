@@ -86,6 +86,14 @@ export const RESOURCES = {
     pathParams: [ 'id' as const ],
   },
 
+  // ACCOUNT: VERIFICATIONS
+  address_verification: {
+    path: '/api/v1/chains/:chainId/verified-addresses\\:verify',
+    pathParams: [ 'chainId' as const ],
+    endpoint: appConfig.contractInfoApi.endpoint,
+    basePath: appConfig.contractInfoApi.basePath,
+  },
+
   // STATS
   stats_counters: {
     path: '/api/v1/counters',

@@ -5,6 +5,8 @@ import { useForm, FormProvider } from 'react-hook-form';
 
 import type { AddressVerificationFormFields } from './types';
 
+import appConfig from 'configs/app/config';
+import useApiFetch from 'lib/api/useApiFetch';
 import Web3ModalProvider from 'ui/shared/Web3ModalProvider';
 
 import AddressVerificationStepAddress from './steps/AddressVerificationStepAddress';
@@ -19,6 +21,7 @@ interface Props {
 const AddressVerificationModal = ({ isOpen, onClose }: Props) => {
   const [ stepIndex, setStepIndex ] = React.useState(0);
 
+  const apiFetch = useApiFetch();
   const formApi = useForm<AddressVerificationFormFields>({
     mode: 'onBlur',
   });
@@ -37,7 +40,16 @@ const AddressVerificationModal = ({ isOpen, onClose }: Props) => {
   const onFormSubmit: SubmitHandler<AddressVerificationFormFields> = React.useCallback(async(data) => {
     // eslint-disable-next-line no-console
     console.log('__>__', data);
-  }, [ ]);
+    const body = {
+      contractAddress: data.address,
+      message: data.message,
+      signature: data.signature,
+    };
+    await apiFetch('address_verification', {
+      fetchParams: { method: 'POST', body },
+      pathParams: { chainId: appConfig.network.id },
+    });
+  }, [ apiFetch ]);
 
   const onSubmit = handleSubmit(onFormSubmit);
 
