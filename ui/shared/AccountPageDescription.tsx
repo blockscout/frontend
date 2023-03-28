@@ -1,4 +1,4 @@
-import { Box, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, useColorModeValue } from '@chakra-ui/react';
 import _debounce from 'lodash/debounce';
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 
@@ -44,14 +44,14 @@ const AccountPageDescription = ({ children, allowCut = true }: { children: React
 
   return (
     <Box position="relative" marginBottom={{ base: 6, lg: 8 }}>
-      <Text
+      <Box
         ref={ ref }
         maxHeight={ needCut && !expanded ? `${ CUT_HEIGHT }px` : 'auto' }
         overflow="hidden"
         style={ needCut && !expanded ? { WebkitLineClamp: '6', WebkitBoxOrient: 'vertical', display: '-webkit-box' } : {} }
       >
         { children }
-      </Text>
+      </Box>
       { needCut && !expanded && (
         <Box
           position="absolute"
