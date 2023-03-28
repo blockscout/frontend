@@ -1,4 +1,4 @@
-import { Hide, Show, Text } from '@chakra-ui/react';
+import { Hide, Show } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -9,12 +9,10 @@ import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import { apos } from 'lib/html-entities';
 import TOKEN_TYPE from 'lib/token/tokenTypes';
-import EmptySearchResult from 'ui/apps/EmptySearchResult';
 import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
+import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/Pagination';
-import SkeletonList from 'ui/shared/skeletons/SkeletonList';
-import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 import { flattenTotal } from 'ui/shared/TokenTransfer/helpers';
 import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
 import TokenTransferList from 'ui/shared/TokenTransfer/TokenTransferList';
@@ -57,56 +55,47 @@ const TxTokenTransfer = () => {
   const numActiveFilters = typeFilter.length;
   const isActionBarHidden = !numActiveFilters && !tokenTransferQuery.data?.items.length;
 
-  const content = (() => {
-    if (txsInfo.isLoading || tokenTransferQuery.isLoading) {
-      return (
-        <>
-          <Hide below="lg" ssr={ false }>
-            <SkeletonTable columns={ [ '185px', '25%', '25%', '25%', '25%' ] }
-            />
-          </Hide>
-          <Show below="lg" ssr={ false }>
-            <SkeletonList/>
-          </Show>
-        </>
-      );
-    }
+  const items = tokenTransferQuery.data?.items?.reduce(flattenTotal, []);
 
-    if (!tokenTransferQuery.data.items?.length && !numActiveFilters) {
-      return <Text as="span">There are no token transfers</Text>;
-    }
+  const content = items ? (
+    <>
+      <Hide below="lg" ssr={ false }>
+        <TokenTransferTable data={ items } top={ isActionBarHidden ? 0 : 80 }/>
+      </Hide>
+      <Show below="lg" ssr={ false }>
+        <TokenTransferList data={ items }/>
+      </Show>
+    </>
+  ) : null;
 
-    if (!tokenTransferQuery.data.items?.length) {
-      return <EmptySearchResult text={ `Couldn${ apos }t find any token transfer that matches your query.` }/>;
-    }
-
-    const items = tokenTransferQuery.data.items.reduce(flattenTotal, []);
-    return (
-      <>
-        <Hide below="lg" ssr={ false }>
-          <TokenTransferTable data={ items } top={ isActionBarHidden ? 0 : 80 }/>
-        </Hide>
-        <Show below="lg" ssr={ false }>
-          <TokenTransferList data={ items }/>
-        </Show>
-      </>
-    );
-  })();
+  const actionBar = !isActionBarHidden ? (
+    <ActionBar mt={ -6 }>
+      <TokenTransferFilter
+        defaultTypeFilters={ typeFilter }
+        onTypeFilterChange={ handleTypeFilterChange }
+        appliedFiltersNum={ numActiveFilters }
+      />
+      { tokenTransferQuery.isPaginationVisible && <Pagination ml="auto" { ...tokenTransferQuery.pagination }/> }
+    </ActionBar>
+  ) : null;
 
   return (
-    <>
-      { !isActionBarHidden && (
-        <ActionBar mt={ -6 }>
-          <TokenTransferFilter
-            defaultTypeFilters={ typeFilter }
-            onTypeFilterChange={ handleTypeFilterChange }
-            appliedFiltersNum={ numActiveFilters }
-          />
-          { tokenTransferQuery.isPaginationVisible && <Pagination ml="auto" { ...tokenTransferQuery.pagination }/> }
-        </ActionBar>
-      ) }
-      { content }
-    </>
+    <DataListDisplay
+      isError={ txsInfo.isError || tokenTransferQuery.isError }
+      isLoading={ txsInfo.isLoading || tokenTransferQuery.isLoading }
+      items={ tokenTransferQuery.data?.items }
+      skeletonProps={{
+        isLongSkeleton: true,
+        skeletonDesktopColumns: [ '185px', '25%', '25%', '25%', '25%' ],
+      }}
+      emptyText="There are no token transfers."
+      filterProps={{
+        emptyFilteredText: `Couldn${ apos }t find any token transfer that matches your query.`,
+        hasActiveFilters: Boolean(numActiveFilters),
+      }}
+      content={ content }
+      actionBar={ actionBar }
+    />
   );
 };
 

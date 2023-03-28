@@ -1,12 +1,13 @@
-import { Box, chakra, Flex, Text, Tooltip } from '@chakra-ui/react';
+import { Flex, Text, Tooltip } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { SmartContract } from 'types/api/contract';
 
-import CodeEditor from 'ui/shared/CodeEditor';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import LinkInternal from 'ui/shared/LinkInternal';
+import CodeEditor from 'ui/shared/monaco/CodeEditor';
+import formatFilePath from 'ui/shared/monaco/utils/formatFilePath';
 
 interface Props {
   data: string;
@@ -37,38 +38,25 @@ const ContractSourceCode = ({ data, hasSol2Yml, address, isViper, filePath, addi
     </Tooltip>
   ) : null;
 
-  if (!additionalSource?.length) {
-    return (
-      <section>
-        <Flex justifyContent="space-between" alignItems="center" mb={ 3 }>
-          { heading }
-          { diagramLink }
-          <CopyToClipboard text={ data }/>
-        </Flex>
-        <CodeEditor value={ data } id="source_code"/>
-      </section>
-    );
-  }
+  const editorData = React.useMemo(() => {
+    const defaultName = isViper ? '/index.vy' : '/index.sol';
+    return [
+      { file_path: formatFilePath(filePath || defaultName), source_code: data },
+      ...(additionalSource || []).map((source) => ({ ...source, file_path: formatFilePath(source.file_path) })) ];
+  }, [ additionalSource, data, filePath, isViper ]);
+
+  const copyToClipboard = editorData.length === 1 ?
+    <CopyToClipboard text={ editorData[0].source_code }/> :
+    null;
 
   return (
     <section>
       <Flex justifyContent="space-between" alignItems="center" mb={ 3 }>
         { heading }
         { diagramLink }
+        { copyToClipboard }
       </Flex>
-      <Flex flexDir="column" rowGap={ 3 }>
-        { [ { file_path: filePath, source_code: data }, ...additionalSource ].map((item, index, array) => (
-          <Box key={ index }>
-            <Flex justifyContent="space-between" alignItems="flex-end" mb={ 3 }>
-              <chakra.span fontSize="sm" wordBreak="break-all" lineHeight="20px">
-                File { index + 1 } of { array.length }: { item.file_path }
-              </chakra.span>
-              <CopyToClipboard text={ item.source_code } ml={ 4 }/>
-            </Flex>
-            <CodeEditor value={ item.source_code } id={ `source_code_${ index }` }/>
-          </Box>
-        )) }
-      </Flex>
+      <CodeEditor data={ editorData }/>
     </section>
   );
 };

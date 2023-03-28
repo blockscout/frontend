@@ -5,7 +5,7 @@ blockscout:
   app: blockscout
   enabled: true
   image:
-    _default: &image blockscout/blockscout-optimism-l2-advanced:5.1.0-prerelease-7a8c745e
+    _default: &image blockscout/blockscout-optimism-l2-advanced:5.1.0-prerelease-303a0afa
   replicas:
     app: 1
   # init container
@@ -110,33 +110,37 @@ blockscout:
     API_V2_ENABLED:
       _default: 'true'
     FIRST_BLOCK:
-      _default: '4066066'
+      _default: '4667000'
     TRACE_FIRST_BLOCK:
-      _default: '4066066'
+      _default: '4667000'
     LAST_BLOCK:
-      _default: '4076066'
+      _default: '4677000'
     TRACE_LAST_BLOCK:
-      _default: '4076066'
+      _default: '4677000'
     DISABLE_REALTIME_INDEXER:
-      _default: 'true'
-    INDEXER_OPTIMISM_PORTAL_L1:
+      _default: 'false'
+    INDEXER_OPTIMISM_L1_RPC:
+      _default: http://65.108.226.29:8545
+    INDEXER_OPTIMISM_L1_PORTAL_CONTRACT:
       _default: 0x5b47E1A08Ea6d985D6649300584e6722Ec4B1383
-    INDEXER_OPTIMISM_WITHDRAWALS_START_BLOCK_L1:
+    INDEXER_OPTIMISM_L1_WITHDRAWALS_START_BLOCK:
       _default: '8299683'
-    INDEXER_OPTIMISM_WITHDRAWALS_START_BLOCK_L2:
+    INDEXER_OPTIMISM_L2_WITHDRAWALS_START_BLOCK:
       _default: '4066066'
-    INDEXER_OPTIMISM_MESSAGE_PASSER_L2:
+    INDEXER_OPTIMISM_L2_MESSAGE_PASSER_CONTRACT:
       _default: 0x4200000000000000000000000000000000000016
-    INDEXER_OPTIMISM_OUTPUT_ROOTS_START_BLOCK_L1:
+    INDEXER_OPTIMISM_L1_OUTPUT_ROOTS_START_BLOCK:
       _default: '8299683'
-    INDEXER_OPTIMISM_OUTPUT_ORACLE_L1:
+    INDEXER_OPTIMISM_L1_OUTPUT_ORACLE_CONTRACT:
       _default: 0xE6Dfba0953616Bacab0c9A8ecb3a9BBa77FC15c0
-    INDEXER_OPTIMISM_BATCH_START_BLOCK_L1:
+    INDEXER_OPTIMISM_L1_BATCH_START_BLOCK:
       _default: '8381594'
-    INDEXER_OPTIMISM_BATCH_INBOX:
+    INDEXER_OPTIMISM_L1_BATCH_INBOX:
       _default: 0xff00000000000000000000000000000000000420
-    INDEXER_OPTIMISM_BATCH_SUBMITTER:
+    INDEXER_OPTIMISM_L1_BATCH_SUBMITTER:
       _default: 0x7431310e026b69bfc676c0013e12a1a11411eec9
+    INDEXER_OPTIMISM_L1_DEPOSITS_START_BLOCK:
+      _default: '8381594'
 
 postgres:
   enabled: true
@@ -310,13 +314,16 @@ frontend:
         - "/search-results"
         - "/token"
         - "/tokens"
-        - "/accounts"
-        - "/visualize"
-        - "/api-docs"
         - "/csv-export"
         - "/verified-contracts"
         - "/graphiql"
-
+        - "/accounts"
+        - "/visualize"
+        - "/api-docs"
+        - "/output-roots"
+        - "/txn-batches"
+        - "/withdrawals"
+        - "/deposits"
   resources:
     limits:
       memory:
@@ -396,7 +403,7 @@ frontend:
     NEXT_PUBLIC_IS_L2_NETWORK:
       _default: "true"
     NEXT_PUBLIC_L1_BASE_URL:
-      _default: https://blockscout-main.test.aws-k8s.blockscout.com
+      _default: https://eth-goerli.blockscout.com/
     NEXT_PUBLIC_L2_WITHDRAWAL_URL:
       _default: https://app.optimism.io/bridge/withdraw
     NEXT_PUBLIC_GRAPHIQL_TRANSACTION:

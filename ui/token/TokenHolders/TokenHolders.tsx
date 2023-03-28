@@ -1,4 +1,3 @@
-import { Text } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
@@ -7,10 +6,9 @@ import type { TokenHolders, TokenInfo } from 'types/api/token';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
+import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/Pagination';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
-import SkeletonList from 'ui/shared/skeletons/SkeletonList';
-import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 
 import TokenHoldersList from './TokenHoldersList';
 import TokenHoldersTable from './TokenHoldersTable';
@@ -30,36 +28,31 @@ const TokenHoldersContent = ({ holdersQuery, tokenQuery }: Props) => {
     return <DataFetchAlert/>;
   }
 
-  const bar = isMobile && holdersQuery.isPaginationVisible && (
+  const actionBar = isMobile && holdersQuery.isPaginationVisible && (
     <ActionBar mt={ -6 }>
       <Pagination ml="auto" { ...holdersQuery.pagination }/>
     </ActionBar>
   );
 
-  if (holdersQuery.isLoading || tokenQuery.isLoading) {
-    return (
-      <>
-        { bar }
-        { isMobile && <SkeletonList/> }
-        { !isMobile && (
-          <SkeletonTable columns={ [ '100%', '300px', '175px' ] } isLong/>
-        ) }
-      </>
-    );
-  }
+  const items = holdersQuery.data?.items;
 
-  const items = holdersQuery.data.items;
-
-  if (!items?.length) {
-    return <Text as="span">There are no holders for this token.</Text>;
-  }
-
-  return (
+  const content = items && tokenQuery.data ? (
     <>
-      { bar }
       { !isMobile && <TokenHoldersTable data={ items } token={ tokenQuery.data } top={ holdersQuery.isPaginationVisible ? 80 : 0 }/> }
       { isMobile && <TokenHoldersList data={ items } token={ tokenQuery.data }/> }
     </>
+  ) : null;
+
+  return (
+    <DataListDisplay
+      isError={ holdersQuery.isError || tokenQuery.isError }
+      isLoading={ holdersQuery.isLoading || tokenQuery.isLoading }
+      items={ holdersQuery.data?.items }
+      skeletonProps={{ skeletonDesktopColumns: [ '100%', '300px', '175px' ] }}
+      emptyText="There are no holders for this token."
+      content={ content }
+      actionBar={ actionBar }
+    />
   );
 };
 

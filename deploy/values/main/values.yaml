@@ -175,12 +175,12 @@ postgres:
   resources:
     limits:
       memory:
-        _default: "6Gi"
+        _default: "8Gi"
       cpu:
         _default: "2"
     requests:
       memory:
-        _default: "6Gi"
+        _default: "8Gi"
       cpu:
         _default: "2"
   # node label
@@ -303,12 +303,12 @@ frontend:
       memory:
         _default: "0.1Gi"
       cpu:
-        _default: "0.2"
+        _default: "0.5"
     requests:
       memory:
         _default: "0.1Gi"
       cpu:
-        _default: "0.2"
+        _default: "0.5"
   environment:
     # ui config
     NEXT_PUBLIC_FEATURED_NETWORKS:

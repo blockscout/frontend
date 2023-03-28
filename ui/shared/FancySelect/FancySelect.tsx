@@ -25,7 +25,7 @@ interface AsyncSelectProps extends AsyncProps<Option, boolean, GroupBase<Option>
 
 type Props = RegularSelectProps | AsyncSelectProps;
 
-const FancySelect = (props: Props) => {
+const FancySelect = (props: Props, ref: React.LegacyRef<HTMLDivElement>) => {
   const menuZIndex = useToken('zIndices', 'dropdown');
   const { colorMode } = useColorMode();
 
@@ -42,6 +42,7 @@ const FancySelect = (props: Props) => {
       variant="floating"
       size={ props.size || 'md' }
       isRequired={ props.isRequired }
+      ref={ ref }
       { ...(props.error ? { 'aria-invalid': true } : {}) }
       { ...(props.isDisabled ? { 'aria-disabled': true } : {}) }
       { ...(props.value ? { 'data-active': true } : {}) }

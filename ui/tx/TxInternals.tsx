@@ -1,20 +1,16 @@
-import { Box, Text, Show, Hide } from '@chakra-ui/react';
+import { Show, Hide } from '@chakra-ui/react';
 import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
 
 import { SECOND } from 'lib/consts';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
-import { apos } from 'lib/html-entities';
-import EmptySearchResult from 'ui/apps/EmptySearchResult';
+// import { apos } from 'lib/html-entities';
 import ActionBar from 'ui/shared/ActionBar';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
+import DataListDisplay from 'ui/shared/DataListDisplay';
 // import FilterInput from 'ui/shared/filters/FilterInput';
 // import TxInternalsFilter from 'ui/tx/internals/TxInternalsFilter';
 import Pagination from 'ui/shared/Pagination';
-import SkeletonList from 'ui/shared/skeletons/SkeletonList';
-import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 import TxInternalsList from 'ui/tx/internals/TxInternalsList';
 import TxInternalsTable from 'ui/tx/internals/TxInternalsTable';
 import type { Sort, SortField } from 'ui/tx/internals/utils';
@@ -82,8 +78,6 @@ const TxInternals = () => {
     },
   });
 
-  const isMobile = useIsMobile();
-
   // const handleFilterChange = React.useCallback((nextValue: Array<TxInternalsType>) => {
   //   setFilters(nextValue);
   // }, []);
@@ -98,52 +92,43 @@ const TxInternals = () => {
     return txInfo.socketStatus ? <TxSocketAlert status={ txInfo.socketStatus }/> : <TxPendingAlert/>;
   }
 
-  if (isLoading || txInfo.isLoading) {
-    return (
-      <>
-        <Show below="lg" ssr={ false }><SkeletonList/></Show>
-        <Hide below="lg" ssr={ false }><SkeletonTable columns={ [ '28%', '20%', '24px', '20%', '16%', '16%' ] }/></Hide>
-      </>
-    );
-  }
+  const filteredData = data?.items
+    .slice()
+  // .filter(({ type }) => filters.length > 0 ? filters.includes(type) : true)
+  // .filter(searchFn(searchTerm))
+    .sort(sortFn(sort));
 
-  if (isError || txInfo.isError) {
-    return <DataFetchAlert/>;
-  }
+  const content = filteredData ? (
+    <>
+      <Show below="lg" ssr={ false }><TxInternalsList data={ filteredData }/></Show>
+      <Hide below="lg" ssr={ false }>
+        <TxInternalsTable data={ filteredData } sort={ sort } onSortToggle={ handleSortToggle } top={ isPaginationVisible ? 80 : 0 }/>
+      </Hide>
+    </>
+  ) : null;
 
-  if (data.items.length === 0) {
-    return <Text as="span">There are no internal transactions for this transaction.</Text>;
-  }
-
-  const content = (() => {
-    const filteredData = data.items
-      .slice()
-      // .filter(({ type }) => filters.length > 0 ? filters.includes(type) : true)
-      // .filter(searchFn(searchTerm))
-      .sort(sortFn(sort));
-
-    if (filteredData.length === 0) {
-      return <EmptySearchResult text={ `Couldn${ apos }t find any transaction that matches your query.` }/>;
-    }
-
-    return isMobile ?
-      <TxInternalsList data={ filteredData }/> :
-      <TxInternalsTable data={ filteredData } sort={ sort } onSortToggle={ handleSortToggle } top={ isPaginationVisible ? 80 : 0 }/>;
-  })();
+  const actionBar = isPaginationVisible ? (
+    <ActionBar mt={ -6 }>
+      { /* <TxInternalsFilter onFilterChange={ handleFilterChange } defaultFilters={ filters } appliedFiltersNum={ filters.length }/> */ }
+      { /* <FilterInput onChange={ setSearchTerm } maxW="360px" ml={ 3 } size="xs" placeholder="Search by addresses, hash, method..."/> */ }
+      <Pagination ml="auto" { ...pagination }/>
+    </ActionBar>
+  ) : null;
 
   return (
-    <Box>
-      { isPaginationVisible && (
-        <ActionBar mt={ -6 }>
-          <Pagination ml="auto" { ...pagination }/>
-        </ActionBar>
-      ) }
-      { /* <Flex mb={ 6 }>
-        <TxInternalsFilter onFilterChange={ handleFilterChange } defaultFilters={ filters } appliedFiltersNum={ filters.length }/>
-        <FilterInput onChange={ setSearchTerm } maxW="360px" ml={ 3 } size="xs" placeholder="Search by addresses, hash, method..."/>
-      </Flex> */ }
-      { content }
-    </Box>
+    <DataListDisplay
+      isError={ isError || txInfo.isError }
+      isLoading={ isLoading || txInfo.isLoading }
+      items={ data?.items }
+      skeletonProps={{ skeletonDesktopColumns: [ '28%', '20%', '24px', '20%', '16%', '16%' ] }}
+      emptyText="There are no internal transactions for this transaction."
+      // filterProps={{
+      // emptyFilteredText: `Couldn${ apos }t find any transaction that matches your query.`.
+      // hasActiveFilters: Boolean(filters.length || searchTerm),
+      // }}
+      content={ content }
+      actionBar={ actionBar }
+    />
   );
 };
 
