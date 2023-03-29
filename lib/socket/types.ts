@@ -20,6 +20,7 @@ SocketMessage.AddressTxs |
 SocketMessage.AddressTxsPending |
 SocketMessage.AddressTokenTransfer |
 SocketMessage.TokenTransfers |
+SocketMessage.TokenTotalSupply |
 SocketMessage.ContractVerification |
 SocketMessage.Unknown;
 
@@ -46,6 +47,7 @@ export namespace SocketMessage {
   export type AddressTxsPending = SocketMessageParamsGeneric<'pending_transaction', { transaction: Transaction }>;
   export type AddressTokenTransfer = SocketMessageParamsGeneric<'token_transfer', { token_transfer: TokenTransfer }>;
   export type TokenTransfers = SocketMessageParamsGeneric<'token_transfer', {token_transfer: number }>;
+  export type TokenTotalSupply = SocketMessageParamsGeneric<'total_supply', {total_supply: number }>;
   export type ContractVerification = SocketMessageParamsGeneric<'verification_result', SmartContractVerificationResponse>;
   export type Unknown = SocketMessageParamsGeneric<undefined, unknown>;
 }
