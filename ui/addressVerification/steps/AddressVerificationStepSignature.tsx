@@ -1,99 +1,72 @@
-import { Box, Button, Flex, Link } from '@chakra-ui/react';
+import { Alert, Box, Button, Flex, Radio, RadioGroup } from '@chakra-ui/react';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useSignMessage } from 'wagmi';
 
 import type { AddressVerificationFormFields } from '../types';
 
-import useToast from 'lib/hooks/useToast';
-
-import AddressVerificationFieldAddress from '../fields/AddressVerificationFieldAddress';
 import AddressVerificationFieldMessage from '../fields/AddressVerificationFieldMessage';
 import AddressVerificationFieldSignature from '../fields/AddressVerificationFieldSignature';
 
 interface Props {
-  onContinue: () => void;
   onSubmit: () => void;
+  onSign: () => void;
 }
 
-const AddressVerificationStepSignature = ({ onContinue, onSubmit }: Props) => {
-  const [ isManualSigning, setIsManualSigning ] = React.useState(false);
+const AddressVerificationStepSignature = ({ onSubmit, onSign }: Props) => {
+  const [ signMethod, setSignMethod ] = React.useState<'wallet' | 'manually'>('wallet');
+  const [ error, setError ] = React.useState('');
 
-  const toast = useToast();
-  const { formState, trigger, getValues, setValue } = useFormContext<AddressVerificationFormFields>();
-  const { signMessage } = useSignMessage({
+  const { getValues, setValue, formState } = useFormContext<AddressVerificationFormFields>();
+  const { signMessage, isLoading: isSigning } = useSignMessage({
     onSuccess: (data) => {
       setValue('signature', data);
       onSubmit();
     },
     onError: (error) => {
-      toast({
-        position: 'top-right',
-        title: 'Error',
-        description: (error as Error)?.message || 'Something went wrong',
-        status: 'error',
-        variant: 'subtle',
-        isClosable: true,
-      });
+      setError((error as Error)?.message || 'Something went wrong');
     },
   });
 
-  const handleVerifyButtonClick = React.useCallback(() => {
-    if (!formState.isValid) {
-      trigger('signature');
-      trigger('message');
-      return;
-    }
-    onContinue();
-  }, [ formState, onContinue, trigger ]);
-
-  const handleWeb3SignClick = React.useCallback(() => {
-    const message = getValues('message');
-    signMessage({ message });
-  }, [ getValues, signMessage ]);
-
-  const handleManualSignClick = React.useCallback(() => {
-    setIsManualSigning(true);
+  const handleSignMethodChange = React.useCallback((value: typeof signMethod) => {
+    setSignMethod(value);
+    setError('');
   }, []);
 
-  const buttons = isManualSigning ? (
-    <>
-      <Button size="lg" onClick={ handleVerifyButtonClick }>
-          Verify ownership
-      </Button>
-      <Box>
-        <span>Contact </span>
-        <Link>support@blockscout.com</Link>
-      </Box>
-    </>
-  ) : (
-    <>
-      <Button size="lg" onClick={ handleManualSignClick }>
-        Sign manually
-      </Button>
-      <Button size="lg" onClick={ handleWeb3SignClick }>
-        Sign via web3 wallet
-      </Button>
-    </>
-  );
+  const handleWeb3SignClick = React.useCallback(() => {
+    onSign();
+    const message = getValues('message');
+    signMessage({ message });
+  }, [ getValues, onSign, signMessage ]);
+
+  const handleManualSignClick = React.useCallback(() => {
+    onSign();
+    onSubmit();
+  }, [ onSign, onSubmit ]);
 
   return (
     <Box>
+      { error && <Alert status="warning" mb={ 6 }>{ error }</Alert> }
       <Box mb={ 8 }>
-        Copy the message below and sign it using the Blockscout sign message provider of your choice.
+        Please select the address to sign and copy the message below and sign it using the Blockscout sign message provider of your choice...
       </Box>
       <Flex rowGap={ 5 } flexDir="column">
-        <AddressVerificationFieldAddress isDisabled/>
-        <AddressVerificationFieldMessage isDisabled={ !isManualSigning }/>
-        { isManualSigning && <AddressVerificationFieldSignature/> }
+        <AddressVerificationFieldMessage isDisabled/>
+        <RadioGroup onChange={ handleSignMethodChange } value={ signMethod } display="flex" flexDir="column" rowGap={ 4 }>
+          <Radio value="wallet">Sign via Web3 wallet</Radio>
+          <Radio value="manually">Sign manually</Radio>
+        </RadioGroup>
+        { signMethod === 'manually' && <AddressVerificationFieldSignature/> }
       </Flex>
-      <Box mt={ 8 }>
-        <span>{ `Check our article on "` }</span>
-        <Link>How to sign message?</Link>
-        <span>{ `" if you have not done before.` }</span>
-      </Box>
       <Flex alignItems="center" mt={ 8 } columnGap={ 5 }>
-        { buttons }
+        <Button
+          size="lg"
+          onClick={ signMethod === 'manually' ? handleManualSignClick : handleWeb3SignClick }
+          isLoading={ formState.isSubmitting || isSigning }
+          loadingText={ isSigning ? 'Signing' : 'Verifying' }
+        >
+          { signMethod === 'manually' ? 'Verify' : 'Sign and verify' }
+        </Button>
       </Flex>
     </Box>
   );

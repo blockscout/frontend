@@ -5,7 +5,6 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 import type { AddressVerificationFormFields } from '../types';
 
-import appConfig from 'configs/app/config';
 import dayjs from 'lib/date/dayjs';
 import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
@@ -36,7 +35,7 @@ const AddressVerificationFieldMessage = ({ isDisabled }: Props) => {
 
   const address = getValues('address');
   // eslint-disable-next-line max-len
-  const defaultValue = `[${ appConfig.host } ${ dayjs().format('YYYY-MM-DD HH:mm:ss') }] I hereby verify that I am the owner/creator of the address ${ address }.`;
+  const defaultValue = `[Blockscout.com] [${ dayjs().format('YYYY-MM-DD HH:mm:ss') }] I, hereby verify that I am the owner/creator of the address [${ address }]`;
 
   return (
     <Controller
