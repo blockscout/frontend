@@ -22,17 +22,18 @@ const TxStateTokenIdList = ({ items, tokenAddress }: Props) => {
           id={ item.total.token_id }
           w="auto"
           truncation="constant"
-          my={{ base: '-3px', lg: 0 }}
         />
       )) }
-      <Link
-        fontWeight={ 400 }
-        textDecoration="underline dashed"
-        _hover={{ textDecoration: 'underline dashed', color: 'link_hovered' }}
-        onClick={ setIsCut.toggle }
-      >
+      { items.length > 3 && (
+        <Link
+          fontWeight={ 400 }
+          textDecoration="underline dashed"
+          _hover={{ textDecoration: 'underline dashed', color: 'link_hovered' }}
+          onClick={ setIsCut.toggle }
+        >
         View { isCut ? 'more' : 'less' }
-      </Link>
+        </Link>
+      ) }
     </Flex>
   );
 };

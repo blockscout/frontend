@@ -1,4 +1,4 @@
-import { Grid, Text, chakra } from '@chakra-ui/react';
+import { Grid, chakra, GridItem } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import React from 'react';
 
@@ -22,10 +22,11 @@ const ListItemMobileGrid = ({ isAnimated, items, className }: Props) => {
       animate={{ opacity: 1, scale: 1 }}
       transitionDuration="normal"
       transitionTimingFunction="linear"
-      rowGap={ 4 }
+      rowGap={ 2 }
       columnGap={ 2 }
-      gridTemplateColumns="max-content auto"
-      paddingY={ 6 }
+      gridTemplateColumns="86px auto"
+      gridTemplateRows="minmax(30px, max-content)"
+      paddingY={ 4 }
       borderColor="divider"
       borderTopWidth="1px"
       _last={{
@@ -36,8 +37,10 @@ const ListItemMobileGrid = ({ isAnimated, items, className }: Props) => {
     >
       { items.map(item => Boolean(item.value) && (
         <>
-          <Text >{ item.name }</Text>
-          { typeof item.value === 'string' ? <Text variant="secondary">{ item.value }</Text> : item.value }
+          <GridItem fontWeight={ 500 } lineHeight="30px">{ item.name }</GridItem>
+          <GridItem alignSelf="center">
+            { typeof item.value === 'string' ? <chakra.span color="text_secondary">{ item.value }</chakra.span> : item.value }
+          </GridItem>
         </>
       )) }
     </Grid>

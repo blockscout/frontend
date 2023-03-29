@@ -19,7 +19,7 @@ export function getStateElements(data: TxStateChange) {
   const hint = (() => {
     if (data.is_miner) {
       return (
-        <Flex align="center" columnGap={ 1 }>
+        <Flex align="center" columnGap={ 1 } flexDir={{ base: 'row-reverse', lg: 'row' }}>
           <Hint label="A block producer who successfully included the block into the blockchain"/>
           <Box color="text_secondary" textTransform="capitalize">{ getNetworkValidatorTitle() }</Box>
         </Flex>
@@ -31,7 +31,7 @@ export function getStateElements(data: TxStateChange) {
       if (changeDirection) {
         const text = changeDirection === 'from' ? 'Mint' : 'Burn';
         return (
-          <Flex align="center" columnGap={ 1 }>
+          <Flex align="center" columnGap={ 1 } flexDir={{ base: 'row-reverse', lg: 'row' }}>
             <Hint label="Address used in tokens mintings and burnings"/>
             <Box color="text_secondary" whiteSpace="nowrap">{ text } address</Box>
           </Flex>
