@@ -41,6 +41,7 @@ const AddressVerificationModal = ({ isOpen, onClose }: Props) => {
   const handleClose = React.useCallback(() => {
     onClose();
     setStepIndex(0);
+    setError('');
     formApi.reset();
   }, [ formApi, onClose ]);
 

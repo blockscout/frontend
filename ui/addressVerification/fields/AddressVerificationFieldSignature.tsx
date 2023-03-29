@@ -5,6 +5,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 import type { AddressVerificationFormFields } from '../types';
 
+import { SIGNATURE_REGEXP } from 'lib/validations/signature';
 import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
 const AddressVerificationFieldSignature = () => {
@@ -32,7 +33,7 @@ const AddressVerificationFieldSignature = () => {
       name="signature"
       control={ control }
       render={ renderControl }
-      rules={{ required: true }}
+      rules={{ required: true, pattern: SIGNATURE_REGEXP }}
     />
   );
 };
