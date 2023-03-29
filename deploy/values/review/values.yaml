@@ -17,7 +17,6 @@ frontend:
         # - "/(apps|auth/profile|account)"
         - "/"
       prefix:
-        # - "/(apps|auth/profile|account)"
         - "/_next"
         - "/node-api"
         - "/account"
