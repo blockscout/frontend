@@ -151,13 +151,13 @@ blockscout:
     DISABLE_INDEXER:
       _default: 'false'
     FIRST_BLOCK:
-      _default: '8446041'
+      _default: '8739119'
     LAST_BLOCK:
-      _default: '8446041'
+      _default: '8739119'
     TRACE_FIRST_BLOCK:
-      _default: '8446041'
+      _default: '8739119'
     TRACE_LAST_BLOCK:
-      _default: '8446041'
+      _default: '8739119'
 
 postgres:
   enabled: true
