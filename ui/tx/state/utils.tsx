@@ -12,7 +12,8 @@ import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import AddressLink from 'ui/shared/address/AddressLink';
 import Hint from 'ui/shared/Hint';
-import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
+
+import TxStateTokenIdList from './TxStateTokenIdList';
 
 export function getStateElements(data: TxStateChange) {
   const hint = (() => {
@@ -91,20 +92,8 @@ export function getStateElements(data: TxStateChange) {
           return null;
         }
 
-        return (data.change as Array<TxStateChangeNftItem>)
-          .reduce(flattenTotal, [])
-          .map((change, index) => {
-            return (
-              <TokenTransferNft
-                key={ index }
-                hash={ data.token.address }
-                id={ change.total.token_id }
-                w="auto"
-                truncation="constant"
-                my={{ base: '-3px', lg: 0 }}
-              />
-            );
-          });
+        const items = (data.change as Array<TxStateChangeNftItem>).reduce(flattenTotal, []);
+        return <TxStateTokenIdList items={ items } tokenAddress={ data.token.address }/>;
       })();
 
       return {
@@ -128,8 +117,8 @@ export function getStateElements(data: TxStateChange) {
   }
 }
 
-type TxStateChangeNftItem = ArrayElement<TxStateChangeTokenErc721['change'] | TxStateChangeTokenErc1155['change']>;
-type TxStateChangeNftItemFlatten = ArrayElement<TxStateChangeTokenErc721['change'] | TxStateChangeTokenErc1155Single['change']>;
+export type TxStateChangeNftItem = ArrayElement<TxStateChangeTokenErc721['change'] | TxStateChangeTokenErc1155['change']>;
+export type TxStateChangeNftItemFlatten = ArrayElement<TxStateChangeTokenErc721['change'] | TxStateChangeTokenErc1155Single['change']>;
 
 function flattenTotal(result: Array<TxStateChangeNftItemFlatten>, item: TxStateChangeNftItem): Array<TxStateChangeNftItemFlatten> {
   if (Array.isArray(item.total)) {
