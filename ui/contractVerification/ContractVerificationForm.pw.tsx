@@ -16,6 +16,7 @@ const hooksConfig = {
 
 const hash = '0x2F99338637F027CFB7494E46B49987457beCC6E3';
 const formConfig: SmartContractVerificationConfig = {
+  is_rust_verifier_microservice_enabled: true,
   solidity_compiler_versions: [
     'v0.8.17+commit.8df45f5f',
     'v0.8.16+commit.07a7930e',
