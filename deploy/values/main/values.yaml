@@ -295,12 +295,12 @@ frontend:
   resources:
     limits:
       memory:
-        _default: "0.1Gi"
+        _default: "0.5Gi"
       cpu:
         _default: "0.5"
     requests:
       memory:
-        _default: "0.1Gi"
+        _default: "0.5Gi"
       cpu:
         _default: "0.5"
   environment:
