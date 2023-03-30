@@ -43,8 +43,12 @@ const TxStateListItem = ({ data }: Props) => {
         </>
       ) }
 
-      <ListItemMobileGrid.Label>Change</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>{ change }</ListItemMobileGrid.Value>
+      { change && (
+        <>
+          <ListItemMobileGrid.Label>Change</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Value>{ change }</ListItemMobileGrid.Value>
+        </>
+      ) }
 
       { tokenId && (
         <>

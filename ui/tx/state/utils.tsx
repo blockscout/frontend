@@ -25,7 +25,14 @@ export function getStateElements(data: TxStateChange) {
     }
 
     if (data.address.hash === ZERO_ADDRESS) {
-      const changeDirection = Array.isArray(data.change) ? data.change[0].direction : null;
+      const changeDirection = (() => {
+        if (Array.isArray(data.change)) {
+          const firstChange = data.change[0];
+          return firstChange.direction;
+        }
+        return Number(data.change) > 0 ? 'to' : 'from';
+      })();
+
       if (changeDirection) {
         const text = changeDirection === 'from' ? 'Mint' : 'Burn';
         return (
@@ -58,28 +65,15 @@ export function getStateElements(data: TxStateChange) {
       const tokenLink = <AddressLink type="token" hash={ data.token.address } alias={ trimTokenSymbol(data.token?.symbol || data.token.address) }/>;
       const before = Number(data.balance_before);
       const after = Number(data.balance_after);
-      const difference = after - before;
-      const changeColor = difference >= 0 ? 'green.500' : 'red.500';
-      const changeSign = difference >= 0 ? '+' : '-';
-
       const change = (() => {
-        if (!before && !after && data.address.hash === ZERO_ADDRESS) {
-          const changeDirection = Array.isArray(data.change) ? data.change[0].direction : null;
-
-          if (changeDirection) {
-            return (
-              <Flex color={ changeDirection === 'from' ? 'green.500' : 'red.500' } justifyContent={{ base: 'flex-start', lg: 'flex-end' }}>
-                { changeDirection === 'from' ? 'Mint' : 'Burn' }
-                { nbsp }
-                { tokenLink }
-              </Flex>
-            );
-          }
-        }
+        const difference = typeof data.change === 'string' ? Number(data.change) : after - before;
 
         if (!difference) {
-          return <Box>0</Box>;
+          return null;
         }
+
+        const changeColor = difference >= 0 ? 'green.500' : 'red.500';
+        const changeSign = difference >= 0 ? '+' : '-';
 
         return <Box color={ changeColor }>{ changeSign }{ nbsp }{ Math.abs(difference).toLocaleString() }</Box>;
       })();
