@@ -149,6 +149,9 @@ postgres:
 
   command: '["docker-entrypoint.sh", "-c"]'
   args: '["max_connections=300"]'
+  
+  customShm:
+    enabled: false
 
   files:
     enabled: true
