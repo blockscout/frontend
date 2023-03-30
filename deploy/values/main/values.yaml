@@ -73,23 +73,17 @@ blockscout:
     #   # _default: ws://geth-svc:8546
     #   _default: ws://geth-svc.goerli.svc.cluster.local:8546
     BLOCKSCOUT_VERSION:
-      _default: v5.1.0-beta
+      _default: v5.1.2-beta
     ECTO_USE_SSL:
       _default: 'false'
     ETHEREUM_JSONRPC_VARIANT:
       _default: geth
     HEART_BEAT_TIMEOUT:
       _default: 30
-    SHOW_PRICE_CHART:
-      _default: false
-    CACHE_BLOCK_COUNT_PERIOD:
-      _default: 7200
     PORT:
       _default: 4000
     SUBNETWORK:
       _default: Ethereum
-    HEALTHY_BLOCKS_PERIOD:
-      _default: 60
     NETWORK:
       _default: (Goerli)
     NETWORK_ICON:
@@ -100,10 +94,6 @@ blockscout:
       _default: ETH
     LOGO:
       _default: /images/goerli_logo.svg
-    HISTORY_FETCH_INTERVAL:
-      _default: 60
-    TXS_HISTORIAN_INIT_LAG:
-      _default: 0
     TXS_STATS_DAYS_TO_COMPILE_AT_INIT:
       _default: 1
     COIN_BALANCE_HISTORY_DAYS:
@@ -138,7 +128,7 @@ blockscout:
       _default: '20s'
     INDEXER_INTERNAL_TRANSACTIONS_BATCH_SIZE:
       _default: 15
-    INDEXER_DISABLE_EMPTY_BLOCK_SANITIZER:
+    INDEXER_DISABLE_EMPTY_BLOCKS_SANITIZER:
       _default: 'true'
     INDEXER_DISABLE_PENDING_TRANSACTIONS_FETCHER:
       _default: 'true'
