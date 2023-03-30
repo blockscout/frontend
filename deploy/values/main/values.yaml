@@ -170,6 +170,10 @@ postgres:
   # strategy: Recreate
 
   persistence: true
+  customShm:
+    enabled: true
+    sizeLimit: 256Mi
+
   storage: 1400Gi
 
   resources:
