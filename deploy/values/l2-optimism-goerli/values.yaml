@@ -118,7 +118,7 @@ blockscout:
     TRACE_LAST_BLOCK:
       _default: '4677000'
     DISABLE_REALTIME_INDEXER:
-      _default: 'false'
+      _default: 'true'
     INDEXER_OPTIMISM_L1_RPC:
       _default: http://65.108.226.29:8545
     INDEXER_OPTIMISM_L1_PORTAL_CONTRACT:
