@@ -30,8 +30,9 @@ const TxStateTokenIdList = ({ items, tokenAddress }: Props) => {
           textDecoration="underline dashed"
           _hover={{ textDecoration: 'underline dashed', color: 'link_hovered' }}
           onClick={ setIsCut.toggle }
+          pb={{ base: '5px', md: 0 }}
         >
-        View { isCut ? 'more' : 'less' }
+          View { isCut ? 'more' : 'less' }
         </Link>
       ) }
     </Flex>

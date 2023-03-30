@@ -17,21 +17,44 @@ const TxStateListItem = ({ data }: Props) => {
 
   const { before, after, change, hint, tokenId } = getStateElements(data);
 
-  const items = [
-    { name: 'Address', value: (
-      <Address flexGrow={ 1 } w="100%">
-        <AddressIcon address={ data.address }/>
-        <AddressLink type="address" hash={ data.address.hash } ml={ 2 } truncation="constant" mr="auto"/>
-        { hint }
-      </Address>
-    ) },
-    { name: 'Before', value: before },
-    { name: 'After', value: after },
-    { name: 'Change', value: change },
-    { name: 'Token ID', value: tokenId },
-  ];
+  return (
+    <ListItemMobileGrid.Container>
 
-  return <ListItemMobileGrid items={ items }/>;
+      <ListItemMobileGrid.Label>Address</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value py="3px">
+        <Address flexGrow={ 1 } w="100%" alignSelf="center">
+          <AddressIcon address={ data.address }/>
+          <AddressLink type="address" hash={ data.address.hash } ml={ 2 } truncation="constant" mr="auto"/>
+          { hint }
+        </Address>
+      </ListItemMobileGrid.Value>
+
+      { before && (
+        <>
+          <ListItemMobileGrid.Label>Before</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Value>{ before }</ListItemMobileGrid.Value>
+        </>
+      ) }
+
+      { after && (
+        <>
+          <ListItemMobileGrid.Label>After</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Value>{ after }</ListItemMobileGrid.Value>
+        </>
+      ) }
+
+      <ListItemMobileGrid.Label>Change</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>{ change }</ListItemMobileGrid.Value>
+
+      { tokenId && (
+        <>
+          <ListItemMobileGrid.Label>Token ID</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Value py="0">{ tokenId }</ListItemMobileGrid.Value>
+        </>
+      ) }
+
+    </ListItemMobileGrid.Container>
+  );
 };
 
 export default TxStateListItem;
