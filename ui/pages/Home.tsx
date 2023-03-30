@@ -13,6 +13,8 @@ import ProfileMenuDesktop from 'ui/snippets/profileMenu/ProfileMenuDesktop';
 import SearchBar from 'ui/snippets/searchBar/SearchBar';
 
 const Home = () => {
+  // eslint-disable-next-line no-console
+  console.log('check check');
   return (
     <Page isHomePage>
       <Box
