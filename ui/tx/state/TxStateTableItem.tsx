@@ -14,12 +14,12 @@ interface Props {
 }
 
 const TxStateTableItem = ({ data }: Props) => {
-  const { before, after, change, hint, tokenId } = getStateElements(data);
+  const { before, after, change, tag, tokenId } = getStateElements(data);
 
   return (
     <Tr>
       <Td lineHeight="30px">
-        { hint || '-' }
+        { tag || '-' }
       </Td>
       <Td>
         <Address height="30px">

@@ -1,4 +1,4 @@
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Flex, Tag, Tooltip } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -11,18 +11,16 @@ import { nbsp } from 'lib/html-entities';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import AddressLink from 'ui/shared/address/AddressLink';
-import Hint from 'ui/shared/Hint';
 
 import TxStateTokenIdList from './TxStateTokenIdList';
 
 export function getStateElements(data: TxStateChange) {
-  const hint = (() => {
+  const tag = (() => {
     if (data.is_miner) {
       return (
-        <Flex align="center" columnGap={ 1 } flexDir={{ base: 'row-reverse', lg: 'row' }}>
-          <Hint label="A block producer who successfully included the block into the blockchain"/>
-          <Box color="text_secondary" textTransform="capitalize">{ getNetworkValidatorTitle() }</Box>
-        </Flex>
+        <Tooltip label="A block producer who successfully included the block into the blockchain">
+          <Tag textTransform="capitalize" colorScheme="yellow">{ getNetworkValidatorTitle() }</Tag>
+        </Tooltip>
       );
     }
 
@@ -31,10 +29,9 @@ export function getStateElements(data: TxStateChange) {
       if (changeDirection) {
         const text = changeDirection === 'from' ? 'Mint' : 'Burn';
         return (
-          <Flex align="center" columnGap={ 1 } flexDir={{ base: 'row-reverse', lg: 'row' }}>
-            <Hint label="Address used in tokens mintings and burnings"/>
-            <Box color="text_secondary" whiteSpace="nowrap">{ text } address</Box>
-          </Flex>
+          <Tooltip label="Address used in tokens mintings and burnings">
+            <Tag textTransform="capitalize" colorScheme="yellow">{ text } address</Tag>
+          </Tooltip>
         );
       }
     }
@@ -54,7 +51,7 @@ export function getStateElements(data: TxStateChange) {
         before: <Box>{ beforeBn.toFormat() } { appConfig.network.currency.symbol }</Box>,
         after: <Box>{ afterBn.toFormat() } { appConfig.network.currency.symbol }</Box>,
         change: <Box color={ changeColor }>{ changeSign }{ nbsp }{ differenceBn.abs().toFormat() }</Box>,
-        hint,
+        tag,
       };
     }
     case 'token': {
@@ -110,7 +107,7 @@ export function getStateElements(data: TxStateChange) {
           </Flex>
         ) : null,
         change,
-        hint,
+        tag,
         tokenId,
       };
     }

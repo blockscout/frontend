@@ -20,7 +20,7 @@ const TxStateTable = ({ data }: Props) => {
     <Table variant="simple" minWidth="1000px" size="sm" w="auto" mt={ 6 }>
       <Thead top={ 0 }>
         <Tr>
-          <Th width="140px"/>
+          <Th width="140px">Type</Th>
           <Th width="146px">Address</Th>
           <Th width="33%" isNumeric>Before</Th>
           <Th width="33%" isNumeric>After</Th>

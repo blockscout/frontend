@@ -15,7 +15,7 @@ interface Props {
 
 const TxStateListItem = ({ data }: Props) => {
 
-  const { before, after, change, hint, tokenId } = getStateElements(data);
+  const { before, after, change, tag, tokenId } = getStateElements(data);
 
   return (
     <ListItemMobileGrid.Container>
@@ -24,8 +24,8 @@ const TxStateListItem = ({ data }: Props) => {
       <ListItemMobileGrid.Value py="3px">
         <Address flexGrow={ 1 } w="100%" alignSelf="center">
           <AddressIcon address={ data.address }/>
-          <AddressLink type="address" hash={ data.address.hash } ml={ 2 } truncation="constant" mr="auto"/>
-          { hint }
+          <AddressLink type="address" hash={ data.address.hash } ml={ 2 } truncation="constant" mr={ 3 }/>
+          { tag }
         </Address>
       </ListItemMobileGrid.Value>
 
