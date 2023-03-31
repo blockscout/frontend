@@ -13,6 +13,7 @@ import BlockTimestamp from 'ui/blocks/BlockTimestamp';
 import AddressLink from 'ui/shared/address/AddressLink';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
 import LinkInternal from 'ui/shared/LinkInternal';
+import TextSeparator from 'ui/shared/TextSeparator';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
 interface Props {
@@ -25,6 +26,8 @@ const BlocksTableItem = ({ data, isPending, enableTimeIncrement }: Props) => {
   const totalReward = getBlockTotalReward(data);
   const burntFees = BigNumber(data.burnt_fees || 0);
   const txFees = BigNumber(data.tx_fees || 0);
+
+  const separatorColor = useColorModeValue('gray.200', 'gray.700');
 
   return (
     <Tr
@@ -68,11 +71,12 @@ const BlocksTableItem = ({ data, isPending, enableTimeIncrement }: Props) => {
               <Utilization colorScheme="gray" value={ BigNumber(data.gas_used || 0).dividedBy(BigNumber(data.gas_limit)).toNumber() }/>
             </Box>
           </Tooltip>
-          <Tooltip label="% of Gas Target">
-            <Box>
-              <GasUsedToTargetRatio ml={ 2 } value={ data.gas_target_percentage || undefined }/>
-            </Box>
-          </Tooltip>
+          { data.gas_target_percentage && (
+            <>
+              <TextSeparator color={ separatorColor } mx={ 1 }/>
+              <GasUsedToTargetRatio value={ data.gas_target_percentage }/>
+            </>
+          ) }
         </Flex>
       </Td>
       <Td fontSize="sm">{ totalReward.toFixed(8) }</Td>
