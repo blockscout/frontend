@@ -1,7 +1,7 @@
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 
 export default function addFileImportDecorations(model: monaco.editor.ITextModel) {
-  const matches = model.findMatches('^import "((\\/|\\.)(\\w|\\.|\\/|-)+)"', false, true, false, null, true);
+  const matches = model.findMatches('^import (\'|")((\\/|\\.)(\\w|\\.|\\/|-)+)(\'|")', false, true, false, null, true);
   const decorations: Array<monaco.editor.IModelDeltaDecoration> = matches.map(({ range }) => ({
     range: {
       ...range,
