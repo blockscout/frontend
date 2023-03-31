@@ -27,8 +27,20 @@ const MarketplaceApp = () => {
   const id = getQueryParamString(router.query.id);
 
   const { isLoading, isError, error, data } = useQuery<unknown, ResourceError<unknown>, AppItemOverview>(
-    [ 'marketplace-app', { id } ],
-    async() => apiFetch(`/node-api/marketplace/${ id }`),
+    [ 'marketplace-apps' ],
+    async() => {
+      const result = await apiFetch<Array<AppItemOverview>, unknown>(appConfig.marketplaceConfigUrl || '');
+      if (!Array.isArray(result)) {
+        throw result;
+      }
+
+      const item = result.find((app: AppItemOverview) => app.id === id);
+      if (!item) {
+        throw { status: 404 };
+      }
+
+      return item;
+    },
   );
 
   const [ isFrameLoading, setIsFrameLoading ] = useState(isLoading);

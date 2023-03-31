@@ -64,7 +64,7 @@ export function isInternalItem(item: NavItem): item is NavItemInternal {
 }
 
 export default function useNavItems(): ReturnType {
-  const isMarketplaceAvailable = appConfig.isMarketplaceAvailable && appConfig.network.rpcUrl;
+  const isMarketplaceAvailable = Boolean(appConfig.marketplaceConfigUrl && appConfig.network.rpcUrl);
   const hasAPIDocs = appConfig.apiDoc.specUrl;
 
   const router = useRouter();

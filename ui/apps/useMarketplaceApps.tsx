@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import type { AppItemOverview, MarketplaceCategoriesIds } from 'types/client/apps';
 
+import appConfig from 'configs/app/config';
 import type { ResourceError } from 'lib/api/resources';
 import useDebounce from 'lib/hooks/useDebounce';
 import useApiFetch from 'lib/hooks/useFetch';
@@ -36,7 +37,7 @@ export default function useMarketplaceApps() {
   const apiFetch = useApiFetch();
   const { isLoading, isError, error, data } = useQuery<unknown, ResourceError<unknown>, Array<AppItemOverview>>(
     [ 'marketplace-apps' ],
-    async() => apiFetch('/node-api/marketplace'),
+    async() => apiFetch(appConfig.marketplaceConfigUrl || ''),
     {
       select: (data) => (data as Array<AppItemOverview>).sort((a, b) => a.title.localeCompare(b.title)),
     });
