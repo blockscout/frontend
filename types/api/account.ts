@@ -160,3 +160,14 @@ export type PublicTagErrors = {
   full_name: Array<string>;
   tags: Array<string>;
 }
+
+export interface VerifiedAddress {
+  userId: string;
+  chainId: string;
+  contractAddress: string;
+  verifiedDate: string;
+}
+
+export interface VerifiedAddressResponse {
+  verifiedAddresses: Array<VerifiedAddress>;
+}

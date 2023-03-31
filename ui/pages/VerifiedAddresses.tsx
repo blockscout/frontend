@@ -1,16 +1,60 @@
-import { UnorderedList, ListItem, chakra, Button, useDisclosure } from '@chakra-ui/react';
+import { UnorderedList, ListItem, chakra, Button, useDisclosure, Show, Hide, Skeleton, Box } from '@chakra-ui/react';
 import React from 'react';
 
+import appConfig from 'configs/app/config';
+import useApiQuery from 'lib/api/useApiQuery';
 import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import AddressVerificationModal from 'ui/addressVerification/AddressVerificationModal';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
+import DataListDisplay from 'ui/shared/DataListDisplay';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
+import SkeletonListAccount from 'ui/shared/skeletons/SkeletonListAccount';
+import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
+import VerifiedAddressesTable from 'ui/verifiedAddresses/VerifiedAddressesTable';
 
 const VerifiedAddresses = () => {
   useRedirectForInvalidAuthToken();
 
   const modalProps = useDisclosure();
+  const { data, isLoading, isError } = useApiQuery('verified_addresses', {
+    pathParams: { chainId: appConfig.network.id },
+  });
+
+  const handleItemEdit = React.useCallback(() => {}, []);
+  const handleItemDelete = React.useCallback(() => {}, []);
+
+  const addButton = (
+    <Button size="lg" onClick={ modalProps.onOpen } marginTop={ 8 }>
+        Add address
+    </Button>
+  );
+
+  const skeleton = (
+    <>
+      <Box display={{ base: 'block', lg: 'none' }}>
+        <SkeletonListAccount/>
+        <Skeleton height="44px" width="156px" marginTop={ 8 }/>
+      </Box>
+      <Box display={{ base: 'none', lg: 'block' }}>
+        <SkeletonTable columns={ [ '100%', '180px', '260px', '160px' ] }/>
+        <Skeleton height="44px" width="156px" marginTop={ 8 }/>
+      </Box>
+    </>
+  );
+
+  const content = data?.verifiedAddresses ? (
+    <>
+      <Show below="lg" key="content-mobile" ssr={ false }>
+        mobile view
+        { addButton }
+      </Show>
+      <Hide below="lg" key="content-desktop" ssr={ false }>
+        <VerifiedAddressesTable data={ data.verifiedAddresses } onItemEdit={ handleItemEdit } onItemDelete={ handleItemDelete }/>
+        { addButton }
+      </Hide>
+    </>
+  ) : null;
 
   return (
     <Page>
@@ -28,9 +72,14 @@ const VerifiedAddresses = () => {
             Find out more about verify address ownership.
         </chakra.div>
       </AccountPageDescription>
-      <Button size="lg" onClick={ modalProps.onOpen }>
-        Add address
-      </Button>
+      <DataListDisplay
+        isLoading={ isLoading }
+        isError={ isError }
+        items={ data?.verifiedAddresses }
+        content={ content }
+        emptyText=""
+        skeletonProps={{ customSkeleton: skeleton }}
+      />
       <AddressVerificationModal isOpen={ modalProps.isOpen } onClose={ modalProps.onClose }/>
     </Page>
   );
