@@ -117,6 +117,8 @@ frontend:
       _default: "[{'title':'Anyblock','baseUrl':'https://explorer.anyblock.tools','paths':{'tx':'/ethereum/ethereum/goerli/transaction','address':'/ethereum/ethereum/goerli/address'}},{'title':'Etherscan','baseUrl':'https://goerli.etherscan.io/','paths':{'tx':'/tx','address':'/address'}}]"
     NEXT_PUBLIC_API_SPEC_URL:
       _default: https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml
+    NEXT_PUBLIC_MARKETPLACE_CONFIG_URL:
+      _default: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/marketplace/eth-goerli.json
     NEXT_PUBLIC_IS_TESTNET:
       _default: true
     NEXT_PUBLIC_GRAPHIQL_TRANSACTION: 
