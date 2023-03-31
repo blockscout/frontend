@@ -10,7 +10,7 @@ import type {
   FormFieldsVyperContract,
   FormFieldsVyperMultiPartFile,
 } from './types';
-import type { SmartContractVerificationMethod, SmartContractVerificationError } from 'types/api/contract';
+import type { SmartContractVerificationMethod, SmartContractVerificationError, SmartContractVerificationConfig } from 'types/api/contract';
 
 import type { Params as FetchParams } from 'lib/hooks/useFetch';
 
@@ -32,7 +32,7 @@ export const METHOD_LABELS: Record<SmartContractVerificationMethod, string> = {
   'vyper-multi-part': 'Vyper (Multi-part files)',
 };
 
-export const DEFAULT_VALUES = {
+export const DEFAULT_VALUES: Record<SmartContractVerificationMethod, FormFields> = {
   'flattened-code': {
     method: {
       value: 'flattened-code' as const,
@@ -75,7 +75,7 @@ export const DEFAULT_VALUES = {
     compiler: null,
     evm_version: null,
     is_optimization_enabled: true,
-    optimization_runs: 200,
+    optimization_runs: '200',
     sources: [],
     libraries: [],
   },
@@ -99,6 +99,22 @@ export const DEFAULT_VALUES = {
     sources: [],
   },
 };
+
+export function getDefaultValues(method: SmartContractVerificationMethod, config: SmartContractVerificationConfig) {
+  const defaultValues = DEFAULT_VALUES[method];
+
+  if ('evm_version' in defaultValues) {
+    if (method === 'flattened-code' || method === 'multi-part') {
+      defaultValues.evm_version = config.solidity_evm_versions.find((value) => value === 'default') ? { label: 'default', value: 'default' } : null;
+    }
+
+    if (method === 'vyper-multi-part') {
+      defaultValues.evm_version = config.vyper_evm_versions.find((value) => value === 'default') ? { label: 'default', value: 'default' } : null;
+    }
+  }
+
+  return defaultValues;
+}
 
 export function isValidVerificationMethod(method?: string): method is SmartContractVerificationMethod {
   return method && SUPPORTED_VERIFICATION_METHODS.includes(method) ? true : false;
@@ -141,7 +157,7 @@ export function prepareRequestBody(data: FormFields): FetchParams['body'] {
       const _data = data as FormFieldsStandardInput;
 
       const body = new FormData();
-      body.set('compiler_version', _data.compiler?.value);
+      _data.compiler && body.set('compiler_version', _data.compiler.value);
       body.set('contract_name', _data.name);
       body.set('autodetect_constructor_args', String(Boolean(_data.autodetect_constructor_args)));
       body.set('constructor_args', _data.constructor_args);
@@ -163,8 +179,8 @@ export function prepareRequestBody(data: FormFields): FetchParams['body'] {
       const _data = data as FormFieldsMultiPartFile;
 
       const body = new FormData();
-      body.set('compiler_version', _data.compiler?.value);
-      body.set('evm_version', _data.evm_version?.value);
+      _data.compiler && body.set('compiler_version', _data.compiler.value);
+      _data.evm_version && body.set('evm_version', _data.evm_version.value);
       body.set('is_optimization_enabled', String(Boolean(_data.is_optimization_enabled)));
       _data.is_optimization_enabled && body.set('optimization_runs', _data.optimization_runs);
 
@@ -190,8 +206,8 @@ export function prepareRequestBody(data: FormFields): FetchParams['body'] {
       const _data = data as FormFieldsVyperMultiPartFile;
 
       const body = new FormData();
-      body.set('compiler_version', _data.compiler?.value);
-      body.set('evm_version', _data.evm_version?.value);
+      _data.compiler && body.set('compiler_version', _data.compiler.value);
+      _data.evm_version && body.set('evm_version', _data.evm_version.value);
       addFilesToFormData(body, _data.sources);
 
       return body;

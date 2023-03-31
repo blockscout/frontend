@@ -92,7 +92,7 @@ test.describe('sourcify', () => {
   });
   testWithSocket.describe.configure({ mode: 'serial', timeout: 20_000 });
 
-  testWithSocket('with multiple contracts +@mobile', async({ mount, page, createSocket }) => {
+  testWithSocket('with multiple contracts', async({ mount, page, createSocket }) => {
     const component = await mount(
       <TestApp withSocket>
         <ContractVerificationForm config={ formConfig } hash={ hash }/>

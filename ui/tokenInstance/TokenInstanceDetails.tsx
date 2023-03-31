@@ -93,14 +93,12 @@ const TokenInstanceDetails = ({ data, scrollRef }: Props) => {
         />
       </Flex>
       <Grid
-        mt={ 8 }
+        mt={ 5 }
         columnGap={ 8 }
         rowGap={{ base: 1, lg: 3 }}
         templateColumns={{ base: 'minmax(0, 1fr)', lg: '200px minmax(0, 1fr)' }}
         overflow="hidden"
       >
-        { divider }
-        <DetailsSponsoredItem/>
         { hasMetadata && (
           <>
             { divider }
@@ -148,6 +146,8 @@ const TokenInstanceDetails = ({ data, scrollRef }: Props) => {
             ) }
           </>
         ) }
+        { divider }
+        <DetailsSponsoredItem/>
       </Grid>
     </>
   );

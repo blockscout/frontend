@@ -7,6 +7,24 @@ export const getNativeCoinValue = (value: string | Array<string>) => {
   return BigNumber(_value).times(10 ** config.network.currency.decimals).toString();
 };
 
+export const addZeroesAllowed = (valueType: string) => {
+  if (valueType.includes('[]')) {
+    return false;
+  }
+
+  const REGEXP = /u?int(\d+)/i;
+
+  const match = valueType.match(REGEXP);
+  const power = match?.[1];
+
+  if (power) {
+    // show control for all inputs which allows to insert 10^18 or greater numbers
+    return Number(power) >= 64;
+  }
+
+  return false;
+};
+
 interface ExtendedError extends Error {
   detectedNetwork?: {
     chain: number;

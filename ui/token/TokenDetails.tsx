@@ -74,9 +74,19 @@ const TokenDetails = ({ tokenQuery }: Props) => {
     total_supply: totalSupply,
     decimals,
     symbol,
+    type,
   } = tokenQuery.data;
 
-  const totalValue = totalSupply !== null ? getCurrencyValue({ value: totalSupply, accuracy: 3, accuracyUsd: 2, exchangeRate, decimals }) : undefined;
+  let marketcap;
+  let totalSupplyValue;
+
+  if (type === 'ERC-20') {
+    const totalValue = totalSupply !== null ? getCurrencyValue({ value: totalSupply, accuracy: 3, accuracyUsd: 2, exchangeRate, decimals }) : undefined;
+    marketcap = totalValue?.usd;
+    totalSupplyValue = totalValue?.valueStr;
+  } else {
+    totalSupplyValue = Number(totalSupply).toLocaleString('en');
+  }
 
   return (
     <Grid
@@ -94,13 +104,13 @@ const TokenDetails = ({ tokenQuery }: Props) => {
           { `$${ exchangeRate }` }
         </DetailsInfoItem>
       ) }
-      { totalValue?.usd && (
+      { marketcap && (
         <DetailsInfoItem
           title="Fully diluted market cap"
           hint="Total supply * Price"
           alignSelf="center"
         >
-          { `$${ totalValue?.usd }` }
+          { `$${ marketcap }` }
         </DetailsInfoItem>
       ) }
       <DetailsInfoItem
@@ -112,7 +122,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
       >
         <Flex w="100%">
           <Box whiteSpace="nowrap" overflow="hidden">
-            <HashStringShortenDynamic hash={ totalValue?.valueStr || '0' }/>
+            <HashStringShortenDynamic hash={ totalSupplyValue || '0' }/>
           </Box>
           <Box flexShrink={ 0 }> { symbol || '' }</Box>
         </Flex>

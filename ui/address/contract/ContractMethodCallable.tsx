@@ -68,7 +68,7 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
     ];
   }, [ data ]);
 
-  const { control, handleSubmit, setValue } = useForm<MethodFormFields>({
+  const { control, handleSubmit, setValue, getValues } = useForm<MethodFormFields>({
     defaultValues: _fromPairs(inputs.map(({ name }, index) => [ getFieldName(name, index), '' ])),
   });
 
@@ -118,11 +118,13 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
             <ContractMethodField
               key={ fieldName }
               name={ fieldName }
+              valueType={ type }
               placeholder={ `${ name }(${ type })` }
               control={ control }
               setValue={ setValue }
+              getValues={ getValues }
               isDisabled={ isLoading }
-              onClear={ handleFormChange }
+              onChange={ handleFormChange }
             />
           );
         }) }

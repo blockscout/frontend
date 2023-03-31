@@ -5,7 +5,7 @@ blockscout:
   app: blockscout
   enabled: true
   image:
-    _default: &image blockscout/blockscout-optimism-l2-advanced:5.1.0-prerelease-303a0afa
+    _default: &image blockscout/blockscout-optimism-l2-advanced:5.1.2-prerelease-84e22ed2
   replicas:
     app: 1
   # init container
@@ -93,13 +93,7 @@ blockscout:
       _default: 'true'
     BLOCKSCOUT_HOST:
       _default: 'blockscout-optimism-goerli.test.aws-k8s.blockscout.com'
-    SOCKET_ROOT:
-      _default: "/"
     NETWORK_PATH:
-      _default: "/"
-    API_PATH:
-      _default: "/"
-    API_BASE_PATH:
       _default: "/"
     APPS_MENU:
       _default: 'true'
@@ -149,6 +143,9 @@ postgres:
 
   command: '["docker-entrypoint.sh", "-c"]'
   args: '["max_connections=300"]'
+  
+  customShm:
+    enabled: false
 
   files:
     enabled: true
@@ -337,7 +334,7 @@ frontend:
         _default: "0.2"
   environment:
     NEXT_PUBLIC_BLOCKSCOUT_VERSION:
-      _default: v5.1.0-beta
+      _default: v5.1.2-beta
     NEXT_PUBLIC_FOOTER_GITHUB_LINK:
       _default: https://github.com/blockscout/blockscout
     NEXT_PUBLIC_FOOTER_TWITTER_LINK:

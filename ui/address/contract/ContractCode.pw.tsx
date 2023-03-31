@@ -20,6 +20,7 @@ test('verified with changed byte code +@mobile +@dark-mode', async({ mount, page
     status: 200,
     body: JSON.stringify(contractMock.withChangedByteCode),
   }));
+  await page.route('https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0/**', (route) => route.abort());
 
   const component = await mount(
     <TestApp>
@@ -36,6 +37,7 @@ test('verified with multiple sources +@mobile', async({ mount, page }) => {
     status: 200,
     body: JSON.stringify(contractMock.withMultiplePaths),
   }));
+  await page.route('https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0/**', (route) => route.abort());
 
   await mount(
     <TestApp>
@@ -54,6 +56,7 @@ test('verified via sourcify', async({ mount, page }) => {
     status: 200,
     body: JSON.stringify(contractMock.verifiedViaSourcify),
   }));
+  await page.route('https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0/**', (route) => route.abort());
 
   await mount(
     <TestApp>
@@ -70,6 +73,7 @@ test('self destructed', async({ mount, page }) => {
     status: 200,
     body: JSON.stringify(contractMock.selfDestructed),
   }));
+  await page.route('https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0/**', (route) => route.abort());
 
   await mount(
     <TestApp>
@@ -87,6 +91,7 @@ test('with twin address alert +@mobile', async({ mount, page }) => {
     status: 200,
     body: JSON.stringify(contractMock.withTwinAddress),
   }));
+  await page.route('https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0/**', (route) => route.abort());
 
   const component = await mount(
     <TestApp>
@@ -103,6 +108,7 @@ test('with proxy address alert +@mobile', async({ mount, page }) => {
     status: 200,
     body: JSON.stringify(contractMock.withProxyAddress),
   }));
+  await page.route('https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0/**', (route) => route.abort());
 
   const component = await mount(
     <TestApp>
@@ -119,6 +125,7 @@ test('non verified', async({ mount, page }) => {
     status: 200,
     body: JSON.stringify(contractMock.nonVerified),
   }));
+  await page.route('https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0/**', (route) => route.abort());
 
   const component = await mount(
     <TestApp>
