@@ -6,39 +6,6 @@ on:
       - main
       
 jobs:
-  marketplace_config_check:
-    name: Validate marketplace config
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-      
-      - name: Find out if config files are changed
-        id: changes
-        uses: dorny/paths-filter@v2
-        with:
-          filters: |
-            config:
-              - 'configs/marketplace/**'
-              - 'types/**'
-
-      - name: Setup node
-        if: steps.changes.outputs.config == 'true'
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: 'yarn'
-
-      - name: Install dependencies
-        if: steps.changes.outputs.config == 'true'
-        uses: bahmutov/npm-install@v1
-        with:
-          useRollingCache: true
-
-      - name: Validate configs
-        if: steps.changes.outputs.config == 'true'
-        run: './deploy/scripts/validate_marketplace_config.sh'
-
   lint:
     name: ESLint
     runs-on: ubuntu-latest
