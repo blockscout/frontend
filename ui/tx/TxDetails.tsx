@@ -268,7 +268,7 @@ const TxDetails = () => {
         <Text variant="secondary">({ BigNumber(data.gas_price).dividedBy(WEI_IN_GWEI).toFixed() } Gwei)</Text>
       </DetailsInfoItem>
       <DetailsInfoItem
-        title="Gas limit & usage by txn"
+        title="Gas usage & limit by txn"
         hint="Actual gas amount used by the transaction"
       >
         <Text>{ BigNumber(data.gas_used || 0).toFormat() }</Text>
