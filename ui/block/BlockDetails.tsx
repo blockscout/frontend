@@ -1,4 +1,4 @@
-import { Grid, GridItem, Text, Icon, Link, Box, Tooltip } from '@chakra-ui/react';
+import { Grid, GridItem, Text, Icon, Link, Box, Tooltip, useColorModeValue } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import capitalize from 'lodash/capitalize';
@@ -39,6 +39,8 @@ const BlockDetails = ({ query }: Props) => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
   const router = useRouter();
   const heightOrHash = getQueryParamString(router.query.height);
+
+  const separatorColor = useColorModeValue('gray.200', 'gray.700');
 
   const { data, isLoading, isError, error } = query;
 
@@ -197,11 +199,15 @@ const BlockDetails = ({ query }: Props) => {
         <Text>{ BigNumber(data.gas_used || 0).toFormat() }</Text>
         <Utilization
           ml={ 4 }
-          mr={ 5 }
           colorScheme="gray"
           value={ BigNumber(data.gas_used || 0).dividedBy(BigNumber(data.gas_limit)).toNumber() }
         />
-        <GasUsedToTargetRatio value={ data.gas_target_percentage || undefined }/>
+        { data.gas_target_percentage && (
+          <>
+            <TextSeparator color={ separatorColor } mx={ 1 }/>
+            <GasUsedToTargetRatio value={ data.gas_target_percentage }/>
+          </>
+        ) }
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Gas limit"
