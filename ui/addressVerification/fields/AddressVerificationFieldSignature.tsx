@@ -3,19 +3,21 @@ import React from 'react';
 import type { Control, ControllerRenderProps, FormState } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 
-import type { AddressVerificationFormSecondStepFields } from '../types';
+import type { AddressVerificationFormSecondStepFields, RootFields } from '../types';
 
 import { SIGNATURE_REGEXP } from 'lib/validations/signature';
 import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
+type Fields = RootFields & AddressVerificationFormSecondStepFields;
+
 interface Props {
-  formState: FormState<AddressVerificationFormSecondStepFields>;
-  control: Control<AddressVerificationFormSecondStepFields>;
+  formState: FormState<Fields>;
+  control: Control<Fields>;
 }
 
 const AddressVerificationFieldSignature = ({ formState, control }: Props) => {
 
-  const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<AddressVerificationFormSecondStepFields, 'signature'>}) => {
+  const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<Fields, 'signature'>}) => {
     const error = 'signature' in formState.errors ? formState.errors.signature : undefined;
 
     return (

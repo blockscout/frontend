@@ -26,7 +26,29 @@ export type AddressCheckResponseSuccess = {
 { status: 'SOURCE_CODE_NOT_VERIFIED_ERROR' } |
 { status: 'INVALID_ADDRESS_ERROR' };
 
-export interface AddressCheckResponseError {
+export interface AddressVerificationResponseError {
   code: number;
   message: string;
 }
+
+export type AddressValidationResponseSuccess = {
+  status: 'SUCCESS';
+  result: {
+    verifiedAddress: {
+      chainId: string;
+      contractAddress: string;
+      userId: string;
+      verifiedDate: string;
+    };
+  };
+} |
+{
+  status: 'INVALID_SIGNER_ERROR';
+  invalidSigner: {
+    signer: string;
+    validAddresses: Array<string>;
+  };
+} |
+{ status: 'VALIDITY_EXPIRED_ERROR' } |
+{ status: 'INVALID_SIGNATURE_ERROR' } |
+{ status: 'UNKNOWN_STATUS' }

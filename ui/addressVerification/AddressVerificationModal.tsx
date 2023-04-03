@@ -24,6 +24,10 @@ const AddressVerificationModal = ({ isOpen, onClose }: Props) => {
     setStepIndex((prev) => prev + 1);
   }, []);
 
+  const handleGoToThirdStep = React.useCallback(() => {
+    setStepIndex((prev) => prev + 1);
+  }, []);
+
   const handleGoToPrevStep = React.useCallback(() => {
     setStepIndex((prev) => prev - 1);
   }, []);
@@ -35,7 +39,7 @@ const AddressVerificationModal = ({ isOpen, onClose }: Props) => {
 
   const steps = [
     { title: 'Verify new address ownership', content: <AddressVerificationStepAddress onContinue={ handleGoToSecondStep }/> },
-    { title: 'Sign message', content: <AddressVerificationStepSignature { ...data }/> },
+    { title: 'Copy and sign message', content: <AddressVerificationStepSignature { ...data } onContinue={ handleGoToThirdStep }/> },
     { title: 'Congrats! Address is verified.', content: <AddressVerificationStepSuccess onShowListClick={ handleClose } onAddTokenClick={ handleClose }/> },
   ];
   const step = steps[stepIndex];

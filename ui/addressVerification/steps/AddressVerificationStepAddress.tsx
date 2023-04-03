@@ -4,7 +4,7 @@ import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 
 import type {
-  AddressCheckResponseError,
+  AddressVerificationResponseError,
   AddressCheckResponseSuccess,
   AddressCheckStatusSuccess,
   AddressVerificationFormFirstStepFields,
@@ -12,6 +12,7 @@ import type {
 } from '../types';
 
 import appConfig from 'configs/app/config';
+import type { ResourceError } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 
 import AddressVerificationFieldAddress from '../fields/AddressVerificationFieldAddress';
@@ -35,36 +36,42 @@ const AddressVerificationStepAddress = ({ onContinue }: Props) => {
   }, [ address, clearErrors ]);
 
   const onFormSubmit: SubmitHandler<Fields> = React.useCallback(async(data) => {
-    const body = {
-      contractAddress: data.address,
-    };
-    const response = await apiFetch<'address_verification', AddressCheckResponseSuccess, AddressCheckResponseError>('address_verification', {
-      fetchParams: { method: 'POST', body },
-      pathParams: { chainId: appConfig.network.id, type: ':prepare' },
-    });
+    try {
+      const body = {
+        contractAddress: data.address,
+      };
+      const response = await apiFetch<'address_verification', AddressCheckResponseSuccess, AddressVerificationResponseError>('address_verification', {
+        fetchParams: { method: 'POST', body },
+        pathParams: { chainId: appConfig.network.id, type: ':prepare' },
+      });
 
-    if (response.status !== 'SUCCESS') {
-      switch (response.status) {
-        case 'INVALID_ADDRESS_ERROR': {
-          return setError('root', { type: 'manual', message: 'Specified address either does not exist or is EOA' });
-        }
-        case 'IS_OWNER_ERROR': {
-          return setError('root', { type: 'manual', message: 'User is already an owner of the address' });
-        }
-        case 'OWNERSHIP_VERIFIED_ERROR': {
-          return setError('root', { type: 'manual', message: 'Address ownership has been verified by another account' });
-        }
-        case 'SOURCE_CODE_NOT_VERIFIED_ERROR': {
-          return setError('root', { type: 'manual', message: 'Contract source code has not been verified' });
-        }
+      if (response.status !== 'SUCCESS') {
+        switch (response.status) {
+          case 'INVALID_ADDRESS_ERROR': {
+            return setError('root', { type: 'manual', message: 'Specified address either does not exist or is EOA' });
+          }
+          case 'IS_OWNER_ERROR': {
+            return setError('root', { type: 'manual', message: 'User is already an owner of the address' });
+          }
+          case 'OWNERSHIP_VERIFIED_ERROR': {
+            return setError('root', { type: 'manual', message: 'Address ownership has been verified by another account' });
+          }
+          case 'SOURCE_CODE_NOT_VERIFIED_ERROR': {
+            return setError('root', { type: 'manual', message: 'Contract source code has not been verified' });
+          }
 
-        default: {
-          return setError('root', { type: 'manual', message: response.payload?.message || 'Oops! Something went wrong' });
+          default: {
+            return setError('root', { type: 'manual', message: response.payload?.message || 'Oops! Something went wrong' });
+          }
         }
       }
+
+      onContinue({ ...response.result, address: data.address });
+    } catch (_error) {
+      const error = _error as ResourceError<AddressVerificationResponseError>;
+      setError('root', { type: 'manual', message: error.payload?.message || 'Oops! Something went wrong' });
     }
 
-    onContinue({ ...response.result, address: data.address });
   }, [ apiFetch, onContinue, setError ]);
 
   const onSubmit = handleSubmit(onFormSubmit);
