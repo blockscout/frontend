@@ -24,7 +24,10 @@ export function app(): CspDev.DirectiveDescriptor {
 
   return {
     'default-src': [
-      KEY_WORDS.NONE,
+      // KEY_WORDS.NONE,
+      // https://bugzilla.mozilla.org/show_bug.cgi?id=1242902
+      // need 'self' here to avoid an error with prefetch nextjs chunks in firefox
+      KEY_WORDS.SELF,
     ],
 
     'connect-src': [
