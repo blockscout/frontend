@@ -12,6 +12,7 @@ import type {
   AddressVerificationResponseError,
   AddressValidationResponseSuccess,
 } from '../types';
+import type { VerifiedAddress } from 'types/api/account';
 
 import appConfig from 'configs/app/config';
 import type { ResourceError } from 'lib/api/resources';
@@ -23,7 +24,7 @@ import AddressVerificationFieldSignature from '../fields/AddressVerificationFiel
 type Fields = RootFields & AddressVerificationFormSecondStepFields;
 
 interface Props extends AddressVerificationFormFirstStepFields, AddressCheckStatusSuccess{
-  onContinue: () => void;
+  onContinue: (newItem: VerifiedAddress) => void;
 }
 
 const AddressVerificationStepSignature = ({ address, signingMessage, contractCreator, contractOwner, onContinue }: Props) => {
@@ -79,7 +80,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
         }
       }
 
-      onContinue();
+      onContinue(response.result.verifiedAddress);
     } catch (_error: unknown) {
       const error = _error as ResourceError<AddressVerificationResponseError>;
       setError('root', { type: 'manual', message: error.payload?.message || 'Oops! Something went wrong' });

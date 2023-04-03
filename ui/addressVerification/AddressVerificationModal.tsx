@@ -1,9 +1,13 @@
 import { Icon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Link } from '@chakra-ui/react';
+import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
 import type { AddressVerificationFormFirstStepFields, AddressCheckStatusSuccess } from './types';
+import type { VerifiedAddress, VerifiedAddressResponse } from 'types/api/account';
 
+import appConfig from 'configs/app/config';
 import eastArrowIcon from 'icons/arrows/east.svg';
+import { getResourceKey } from 'lib/api/useApiQuery';
 import Web3ModalProvider from 'ui/shared/Web3ModalProvider';
 
 import AddressVerificationStepAddress from './steps/AddressVerificationStepAddress';
@@ -19,14 +23,27 @@ const AddressVerificationModal = ({ isOpen, onClose }: Props) => {
   const [ stepIndex, setStepIndex ] = React.useState(0);
   const [ data, setData ] = React.useState<AddressVerificationFormFirstStepFields & AddressCheckStatusSuccess>({ address: '', signingMessage: '' });
 
+  const queryClient = useQueryClient();
+
   const handleGoToSecondStep = React.useCallback((firstStepResult: typeof data) => {
     setData(firstStepResult);
     setStepIndex((prev) => prev + 1);
   }, []);
 
-  const handleGoToThirdStep = React.useCallback(() => {
+  const handleGoToThirdStep = React.useCallback((newItem: VerifiedAddress) => {
+    queryClient.setQueryData(
+      getResourceKey('verified_addresses', { pathParams: { chainId: appConfig.network.id } }),
+      (prevData: VerifiedAddressResponse | undefined) => {
+        if (!prevData) {
+          return { verifiedAddresses: [ newItem ] };
+        }
+
+        return {
+          verifiedAddresses: [ newItem, ...prevData.verifiedAddresses ],
+        };
+      });
     setStepIndex((prev) => prev + 1);
-  }, []);
+  }, [ queryClient ]);
 
   const handleGoToPrevStep = React.useCallback(() => {
     setStepIndex((prev) => prev - 1);
