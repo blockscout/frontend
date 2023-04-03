@@ -17,6 +17,7 @@ import type { VerifiedAddress } from 'types/api/account';
 import appConfig from 'configs/app/config';
 import type { ResourceError } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 import AddressVerificationFieldMessage from '../fields/AddressVerificationFieldMessage';
 import AddressVerificationFieldSignature from '../fields/AddressVerificationFieldSignature';
@@ -137,7 +138,10 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
         </Flex>
       ) }
       <Flex rowGap={ 5 } flexDir="column">
-        <AddressVerificationFieldMessage formState={ formState } control={ control }/>
+        <div>
+          <CopyToClipboard text={ signingMessage } ml="auto" display="block"/>
+          <AddressVerificationFieldMessage formState={ formState } control={ control }/>
+        </div>
         <RadioGroup onChange={ handleSignMethodChange } value={ signMethod } display="flex" flexDir="column" rowGap={ 4 }>
           <Radio value="wallet">Sign via Web3 wallet</Radio>
           <Radio value="manually">Sign manually</Radio>
