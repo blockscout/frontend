@@ -3,6 +3,7 @@ import type { Channel } from 'phoenix';
 import type { AddressCoinBalanceHistoryItem } from 'types/api/address';
 import type { NewBlockSocketResponse } from 'types/api/block';
 import type { SmartContractVerificationResponse } from 'types/api/contract';
+import type { RawTracesResponse } from 'types/api/rawTrace';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 import type { Transaction } from 'types/api/transaction';
 
@@ -10,6 +11,7 @@ export type SocketMessageParams = SocketMessage.NewBlock |
 SocketMessage.BlocksIndexStatus |
 SocketMessage.InternalTxsIndexStatus |
 SocketMessage.TxStatusUpdate |
+SocketMessage.TxRawTrace |
 SocketMessage.NewTx |
 SocketMessage.NewPendingTx |
 SocketMessage.AddressBalance |
@@ -36,6 +38,7 @@ export namespace SocketMessage {
   export type BlocksIndexStatus = SocketMessageParamsGeneric<'block_index_status', {finished: boolean; ratio: string}>;
   export type InternalTxsIndexStatus = SocketMessageParamsGeneric<'internal_txs_index_status', {finished: boolean; ratio: string}>;
   export type TxStatusUpdate = SocketMessageParamsGeneric<'collated', NewBlockSocketResponse>;
+  export type TxRawTrace = SocketMessageParamsGeneric<'raw_trace', RawTracesResponse>;
   export type NewTx = SocketMessageParamsGeneric<'transaction', { transaction: number }>;
   export type NewPendingTx = SocketMessageParamsGeneric<'pending_transaction', { pending_transaction: number }>;
   export type AddressBalance = SocketMessageParamsGeneric<'balance', { balance: string; block_number: number; exchange_rate: string }>;
