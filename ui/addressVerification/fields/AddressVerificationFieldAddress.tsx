@@ -1,21 +1,21 @@
 import { FormControl, Input } from '@chakra-ui/react';
 import React from 'react';
-import type { ControllerRenderProps } from 'react-hook-form';
-import { Controller, useFormContext } from 'react-hook-form';
+import type { Control, ControllerRenderProps, FormState } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 
-import type { AddressVerificationFormFields } from '../types';
+import type { AddressVerificationFormFirstStepFields, RootFields } from '../types';
 
 import { ADDRESS_REGEXP, ADDRESS_LENGTH } from 'lib/validations/address';
 import InputPlaceholder from 'ui/shared/InputPlaceholder';
+type Fields = RootFields & AddressVerificationFormFirstStepFields;
 
 interface Props {
-  isDisabled?: boolean;
+  formState: FormState<Fields>;
+  control: Control<Fields>;
 }
 
-const AddressVerificationFieldAddress = ({ isDisabled }: Props) => {
-  const { formState, control } = useFormContext<AddressVerificationFormFields>();
-
-  const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<AddressVerificationFormFields, 'address'>}) => {
+const AddressVerificationFieldAddress = ({ formState, control }: Props) => {
+  const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<Fields, 'address'>}) => {
     const error = 'address' in formState.errors ? formState.errors.address : undefined;
 
     return (
@@ -25,13 +25,13 @@ const AddressVerificationFieldAddress = ({ isDisabled }: Props) => {
           required
           isInvalid={ Boolean(error) }
           maxLength={ ADDRESS_LENGTH }
-          isDisabled={ isDisabled || formState.isSubmitting }
+          isDisabled={ formState.isSubmitting }
           autoComplete="off"
         />
         <InputPlaceholder text="Smart contract address (0x...)" error={ error }/>
       </FormControl>
     );
-  }, [ formState.errors, formState.isSubmitting, isDisabled ]);
+  }, [ formState.errors, formState.isSubmitting ]);
 
   return (
     <Controller

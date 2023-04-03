@@ -88,8 +88,8 @@ export const RESOURCES = {
 
   // ACCOUNT: ADDRESS VERIFICATION & TOKEN INFO
   address_verification: {
-    path: '/api/v1/chains/:chainId/verified-addresses\\:verify',
-    pathParams: [ 'chainId' as const ],
+    path: '/api/v1/chains/:chainId/verified-addresses:type',
+    pathParams: [ 'chainId' as const, 'type' as const ],
     endpoint: appConfig.contractInfoApi.endpoint,
     basePath: appConfig.contractInfoApi.basePath,
   },

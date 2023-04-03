@@ -1,17 +1,21 @@
 import { FormControl, Input } from '@chakra-ui/react';
 import React from 'react';
-import type { ControllerRenderProps } from 'react-hook-form';
-import { Controller, useFormContext } from 'react-hook-form';
+import type { Control, ControllerRenderProps, FormState } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 
-import type { AddressVerificationFormFields } from '../types';
+import type { AddressVerificationFormSecondStepFields } from '../types';
 
 import { SIGNATURE_REGEXP } from 'lib/validations/signature';
 import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
-const AddressVerificationFieldSignature = () => {
-  const { formState, control } = useFormContext<AddressVerificationFormFields>();
+interface Props {
+  formState: FormState<AddressVerificationFormSecondStepFields>;
+  control: Control<AddressVerificationFormSecondStepFields>;
+}
 
-  const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<AddressVerificationFormFields, 'signature'>}) => {
+const AddressVerificationFieldSignature = ({ formState, control }: Props) => {
+
+  const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<AddressVerificationFormSecondStepFields, 'signature'>}) => {
     const error = 'signature' in formState.errors ? formState.errors.signature : undefined;
 
     return (
