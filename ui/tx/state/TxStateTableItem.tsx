@@ -19,7 +19,7 @@ const TxStateTableItem = ({ data }: Props) => {
   return (
     <Tr>
       <Td lineHeight="30px">
-        { tag || '-' }
+        { tag }
       </Td>
       <Td>
         <Address height="30px">
@@ -30,7 +30,7 @@ const TxStateTableItem = ({ data }: Props) => {
       <Td isNumeric lineHeight="30px">{ before }</Td>
       <Td isNumeric lineHeight="30px">{ after }</Td>
       <Td isNumeric lineHeight="30px"> { change } </Td>
-      <Td lineHeight="30px">{ tokenId || '-' }</Td>
+      <Td lineHeight="30px">{ tokenId }</Td>
     </Tr>
   );
 };
