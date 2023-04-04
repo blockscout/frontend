@@ -1,4 +1,3 @@
-import { Flex, Skeleton, SkeletonCircle } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -6,6 +5,7 @@ import React from 'react';
 import type { TokenInfo } from 'types/api/token';
 
 import useApiQuery from 'lib/api/useApiQuery';
+import * as stubs from 'stubs/address';
 import AddressHeadingInfo from 'ui/shared/AddressHeadingInfo';
 
 interface Props {
@@ -17,20 +17,8 @@ const TokenContractInfo = ({ tokenQuery }: Props) => {
 
   const contractQuery = useApiQuery('address', {
     pathParams: { hash: router.query.hash?.toString() },
-    queryOptions: { enabled: Boolean(router.query.hash) },
+    queryOptions: { enabled: Boolean(router.query.hash), placeholderData: stubs.ADDRESS_INFO },
   });
-
-  if (tokenQuery.isLoading || contractQuery.isLoading) {
-    return (
-      <Flex alignItems="center">
-        <SkeletonCircle boxSize={ 6 }/>
-        <Skeleton w="400px" h={ 5 } ml={ 2 }/>
-        <Skeleton w={ 5 } h={ 5 } ml={ 1 }/>
-        <Skeleton w={ 9 } h={ 8 } ml={ 2 }/>
-        <Skeleton w={ 9 } h={ 8 } ml={ 2 }/>
-      </Flex>
-    );
-  }
 
   // we show error in parent component, this is only for TS
   if (tokenQuery.isError) {
@@ -38,13 +26,19 @@ const TokenContractInfo = ({ tokenQuery }: Props) => {
   }
 
   const address = {
-    hash: tokenQuery.data.address,
+    hash: tokenQuery.data?.address || '',
     is_contract: true,
     implementation_name: null,
     watchlist_names: [],
   };
 
-  return <AddressHeadingInfo address={ address } token={ contractQuery.data?.token }/>;
+  return (
+    <AddressHeadingInfo
+      address={ address }
+      token={ contractQuery.data?.token }
+      isLoading={ tokenQuery.isPlaceholderData || contractQuery.isPlaceholderData }
+    />
+  );
 };
 
 export default React.memo(TokenContractInfo);

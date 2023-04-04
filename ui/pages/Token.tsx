@@ -1,4 +1,4 @@
-import { Skeleton, Box, Flex, SkeletonCircle, Icon, Tag } from '@chakra-ui/react';
+import { Skeleton, Box, Icon, Tag } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
@@ -11,6 +11,7 @@ import useContractTabs from 'lib/hooks/useContractTabs';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import trimTokenSymbol from 'lib/token/trimTokenSymbol';
+import * as stubs from 'stubs/token';
 import AddressContract from 'ui/address/AddressContract';
 import TextAd from 'ui/shared/ad/TextAd';
 import Page from 'ui/shared/Page/Page';
@@ -42,7 +43,7 @@ const TokenPageContent = () => {
 
   const tokenQuery = useApiQuery('token', {
     pathParams: { hash: hashString },
-    queryOptions: { enabled: Boolean(router.query.hash) },
+    queryOptions: { enabled: Boolean(router.query.hash), placeholderData: stubs.TOKEN_INFO },
   });
 
   useEffect(() => {
@@ -154,28 +155,17 @@ const TokenPageContent = () => {
 
   return (
     <Page>
-      { tokenQuery.isLoading ? (
-        <>
-          <Skeleton h={{ base: 12, lg: 6 }} mb={ 6 } w="100%" maxW="680px"/>
-          <Flex alignItems="center" mb={ 6 }>
-            <SkeletonCircle w={ 6 } h={ 6 } mr={ 3 }/>
-            <Skeleton w="500px" h={ 10 }/>
-          </Flex>
-        </>
-      ) : (
-        <>
-          <TextAd mb={ 6 }/>
-          <PageTitle
-            text={ `${ tokenQuery.data?.name || 'Unnamed' }${ tokenSymbolText } token` }
-            backLinkUrl={ hasGoBackLink ? appProps.referrer : undefined }
-            backLinkLabel="Back to tokens list"
-            additionalsLeft={ (
-              <TokenLogo hash={ tokenQuery.data?.address } name={ tokenQuery.data?.name } boxSize={ 6 }/>
-            ) }
-            additionalsRight={ <Tag>{ tokenQuery.data?.type }</Tag> }
-          />
-        </>
-      ) }
+      <TextAd mb={ 6 }/>
+      <PageTitle
+        isLoading={ tokenQuery.isPlaceholderData }
+        text={ `${ tokenQuery.data?.name || 'Unnamed' }${ tokenSymbolText } token` }
+        backLinkUrl={ hasGoBackLink ? appProps.referrer : undefined }
+        backLinkLabel="Back to tokens list"
+        additionalsLeft={ (
+          <TokenLogo hash={ tokenQuery.data?.address } name={ tokenQuery.data?.name } boxSize={ 6 } isLoading={ tokenQuery.isPlaceholderData }/>
+        ) }
+        additionalsRight={ <Skeleton isLoaded={ !tokenQuery.isPlaceholderData } borderRadius="sm"><Tag>{ tokenQuery.data?.type }</Tag></Skeleton> }
+      />
       <TokenContractInfo tokenQuery={ tokenQuery }/>
       <TokenDetails tokenQuery={ tokenQuery }/>
       { /* should stay before tabs to scroll up with pagination */ }

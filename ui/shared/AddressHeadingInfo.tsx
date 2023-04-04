@@ -16,14 +16,15 @@ interface Props {
   address: Pick<AddressParam, 'hash' | 'is_contract' | 'implementation_name' | 'watchlist_names'>;
   token?: TokenInfo | null;
   isLinkDisabled?: boolean;
+  isLoading?: boolean;
 }
 
-const AddressHeadingInfo = ({ address, token, isLinkDisabled }: Props) => {
+const AddressHeadingInfo = ({ address, token, isLinkDisabled, isLoading }: Props) => {
   const isMobile = useIsMobile();
 
   return (
     <Flex alignItems="center">
-      <AddressIcon address={ address }/>
+      <AddressIcon address={ address } isLoading={ isLoading }/>
       <AddressLink
         type="address"
         hash={ address.hash }
@@ -32,13 +33,14 @@ const AddressHeadingInfo = ({ address, token, isLinkDisabled }: Props) => {
         fontWeight={ 500 }
         truncation={ isMobile ? 'constant' : 'none' }
         isDisabled={ isLinkDisabled }
+        isLoading={ isLoading }
       />
-      <CopyToClipboard text={ address.hash }/>
-      { address.is_contract && token && <AddressAddToMetaMask ml={ 2 } token={ token }/> }
-      { !address.is_contract && (
+      <CopyToClipboard text={ address.hash } isLoading={ isLoading }/>
+      { !isLoading && address.is_contract && token && <AddressAddToMetaMask ml={ 2 } token={ token }/> }
+      { !isLoading && !address.is_contract && (
         <AddressFavoriteButton hash={ address.hash } isAdded={ Boolean(address.watchlist_names?.length) } ml={ 3 }/>
       ) }
-      <AddressQrCode hash={ address.hash } ml={ 2 }/>
+      <AddressQrCode hash={ address.hash } ml={ 2 } isLoading={ isLoading }/>
     </Flex>
   );
 };
