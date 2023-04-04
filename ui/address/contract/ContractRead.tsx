@@ -38,7 +38,7 @@ const ContractRead = ({ addressHash, isProxy, isCustomAbi }: Props) => {
     },
   });
 
-  const handleMethodFormSubmit = React.useCallback(async(item: SmartContractReadMethod, args: Array<string | Array<string>>) => {
+  const handleMethodFormSubmit = React.useCallback(async(item: SmartContractReadMethod, args: Array<string | Array<unknown>>) => {
     return apiFetch<'contract_method_query', SmartContractQueryMethodRead>('contract_method_query', {
       pathParams: { hash: addressHash },
       queryParams: {
