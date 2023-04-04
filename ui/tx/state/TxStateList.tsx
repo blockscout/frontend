@@ -1,13 +1,18 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import { data } from 'data/txState';
+import type { TxStateChanges } from 'types/api/txStateChanges';
+
 import TxStateListItem from 'ui/tx/state/TxStateListItem';
 
-const TxStateList = () => {
+interface Props {
+  data: TxStateChanges;
+}
+
+const TxStateList = ({ data }: Props) => {
   return (
     <Box mt={ 6 }>
-      { data.map((item, index) => <TxStateListItem key={ index } { ...item }/>) }
+      { data.map((item, index) => <TxStateListItem key={ index } data={ item }/>) }
     </Box>
   );
 };

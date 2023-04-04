@@ -23,8 +23,7 @@ type FilterProps = {
 type Props = {
   isError: boolean;
   isLoading: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  items?: Array<any>;
+  items?: Array<unknown>;
   emptyText: string;
   actionBar?: React.ReactNode;
   content: React.ReactNode;

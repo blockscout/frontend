@@ -20,10 +20,11 @@ type Props = { item: DepositsItem };
 const DepositsListItem = ({ item }: Props) => {
   const timeAgo = dayjs(item.l1_block_timestamp).fromNow();
 
-  const items = [
-    {
-      name: 'L1 block No',
-      value: (
+  return (
+    <ListItemMobileGrid.Container>
+
+      <ListItemMobileGrid.Label>L1 block No</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
         <LinkExternal
           href={ appConfig.L2.L1BaseUrl + route({ pathname: '/block/[height]', query: { height: item.l1_block_number.toString() } }) }
           fontWeight={ 600 }
@@ -32,11 +33,10 @@ const DepositsListItem = ({ item }: Props) => {
           <Icon as={ blockIcon } boxSize={ 6 } mr={ 1 }/>
           { item.l1_block_number }
         </LinkExternal>
-      ),
-    },
-    {
-      name: 'L2 txn hash',
-      value: (
+      </ListItemMobileGrid.Value>
+
+      <ListItemMobileGrid.Label>L2 txn hash</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
         <LinkInternal
           href={ route({ pathname: '/tx/[hash]', query: { hash: item.l2_tx_hash } }) }
           display="flex"
@@ -48,15 +48,13 @@ const DepositsListItem = ({ item }: Props) => {
           <Icon as={ txIcon } boxSize={ 6 } mr={ 1 }/>
           <Box w="calc(100% - 36px)" overflow="hidden" whiteSpace="nowrap"><HashStringShortenDynamic hash={ item.l2_tx_hash }/></Box>
         </LinkInternal>
-      ),
-    },
-    {
-      name: 'Age',
-      value: timeAgo,
-    },
-    {
-      name: 'L1 txn hash',
-      value: (
+      </ListItemMobileGrid.Value>
+
+      <ListItemMobileGrid.Label>Age</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>{ timeAgo }</ListItemMobileGrid.Value>
+
+      <ListItemMobileGrid.Label>L1 txn hash</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
         <LinkExternal
           href={ appConfig.L2.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: item.l1_tx_hash } }) }
           maxW="100%"
@@ -66,11 +64,10 @@ const DepositsListItem = ({ item }: Props) => {
           <Icon as={ txIcon } boxSize={ 6 } mr={ 1 }/>
           <Box w="calc(100% - 44px)" overflow="hidden" whiteSpace="nowrap"><HashStringShortenDynamic hash={ item.l1_tx_hash }/></Box>
         </LinkExternal>
-      ),
-    },
-    {
-      name: 'L1 txn origin',
-      value: (
+      </ListItemMobileGrid.Value>
+
+      <ListItemMobileGrid.Label>L1 txn origin</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
         <LinkExternal
           href={ appConfig.L2.L1BaseUrl + route({ pathname: '/address/[hash]', query: { hash: item.l1_tx_origin } }) }
           maxW="100%"
@@ -80,15 +77,13 @@ const DepositsListItem = ({ item }: Props) => {
           <AddressIcon address={{ hash: item.l1_tx_origin, is_contract: false, implementation_name: '' }} mr={ 2 }/>
           <Box w="calc(100% - 44px)" overflow="hidden" whiteSpace="nowrap"><HashStringShortenDynamic hash={ item.l1_tx_origin }/></Box>
         </LinkExternal>
-      ),
-    },
-    {
-      name: 'Gas limit',
-      value: BigNumber(item.l2_tx_gas_limit).toFormat(),
-    },
-  ];
+      </ListItemMobileGrid.Value>
 
-  return <ListItemMobileGrid items={ items } gridTemplateColumns="92px auto"/>;
+      <ListItemMobileGrid.Label>Gas limit</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>{ BigNumber(item.l2_tx_gas_limit).toFormat() }</ListItemMobileGrid.Value>
+
+    </ListItemMobileGrid.Container>
+  );
 };
 
 export default DepositsListItem;

@@ -39,6 +39,7 @@ import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/toke
 import type { TransactionsResponseValidated, TransactionsResponsePending, Transaction } from 'types/api/transaction';
 import type { TxnBatchesResponse } from 'types/api/txnBatches';
 import type { TTxsFilters } from 'types/api/txsFilters';
+import type { TxStateChanges } from 'types/api/txStateChanges';
 import type { VisualizedContract } from 'types/api/visualization';
 import type { WithdrawalsResponse } from 'types/api/withdrawals';
 import type ArrayElement from 'types/utils/ArrayElement';
@@ -160,6 +161,10 @@ export const RESOURCES = {
   },
   tx_raw_trace: {
     path: '/api/v2/transactions/:hash/raw-trace',
+    pathParams: [ 'hash' as const ],
+  },
+  tx_state_changes: {
+    path: '/api/v2/transactions/:hash/state-changes',
     pathParams: [ 'hash' as const ],
   },
 
@@ -498,6 +503,7 @@ Q extends 'tx_internal_txs' ? InternalTransactionsResponse :
 Q extends 'tx_logs' ? LogsResponseTx :
 Q extends 'tx_token_transfers' ? TokenTransferResponse :
 Q extends 'tx_raw_trace' ? RawTracesResponse :
+Q extends 'tx_state_changes' ? TxStateChanges :
 Q extends 'addresses' ? AddressesResponse :
 Q extends 'address' ? Address :
 Q extends 'address_counters' ? AddressCounters :
