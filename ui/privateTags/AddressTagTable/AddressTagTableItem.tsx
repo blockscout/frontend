@@ -2,6 +2,7 @@ import {
   Tag,
   Tr,
   Td,
+  Skeleton,
 } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
@@ -15,9 +16,10 @@ interface Props {
   item: AddressTag;
   onEditClick: (data: AddressTag) => void;
   onDeleteClick: (data: AddressTag) => void;
+  isLoading: boolean;
 }
 
-const AddressTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
+const AddressTagTableItem = ({ item, onEditClick, onDeleteClick, isLoading }: Props) => {
   const onItemEditClick = useCallback(() => {
     return onEditClick(item);
   }, [ item, onEditClick ]);
@@ -29,17 +31,19 @@ const AddressTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   return (
     <Tr alignItems="top" key={ item.id }>
       <Td>
-        <AddressSnippet address={ item.address }/>
+        <AddressSnippet address={ item.address } isLoading={ isLoading }/>
       </Td>
       <Td whiteSpace="nowrap">
         <TruncatedTextTooltip label={ item.name }>
-          <Tag>
-            { item.name }
-          </Tag>
+          <Skeleton isLoaded={ !isLoading } display="inline-block" borderRadius="sm">
+            <Tag>
+              { item.name }
+            </Tag>
+          </Skeleton>
         </TruncatedTextTooltip>
       </Td>
       <Td>
-        <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
+        <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick } isLoading={ isLoading }/>
       </Td>
     </Tr>
   );

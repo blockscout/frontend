@@ -1,4 +1,4 @@
-import { chakra, shouldForwardProp, Tooltip, Box } from '@chakra-ui/react';
+import { chakra, shouldForwardProp, Tooltip, Box, Skeleton } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import type { HTMLAttributeAnchorTarget } from 'react';
 import React from 'react';
@@ -17,6 +17,7 @@ type CommonProps = {
   isDisabled?: boolean;
   fontWeight?: string;
   alias?: string | null;
+  isLoading?: boolean;
 }
 
 type AddressTokenTxProps = {
@@ -39,7 +40,7 @@ type AddressTokenProps = {
 type Props = CommonProps & (AddressTokenTxProps | BlockProps | AddressTokenProps);
 
 const AddressLink = (props: Props) => {
-  const { alias, type, className, truncation = 'dynamic', hash, fontWeight, target = '_self', isDisabled } = props;
+  const { alias, type, className, truncation = 'dynamic', hash, fontWeight, target = '_self', isDisabled, isLoading } = props;
   const isMobile = useIsMobile();
 
   let url;
@@ -80,6 +81,10 @@ const AddressLink = (props: Props) => {
         return <span>{ hash }</span>;
     }
   })();
+
+  if (isLoading) {
+    return <Skeleton className={ className } overflow="hidden" whiteSpace="nowrap">{ content }</Skeleton>;
+  }
 
   if (isDisabled) {
     return (

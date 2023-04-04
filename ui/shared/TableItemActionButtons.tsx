@@ -1,4 +1,4 @@
-import { Tooltip, IconButton, Icon, HStack } from '@chakra-ui/react';
+import { Tooltip, IconButton, HStack, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import DeleteIcon from 'icons/delete.svg';
@@ -8,10 +8,20 @@ import usePreventFocusAfterModalClosing from 'lib/hooks/usePreventFocusAfterModa
 type Props = {
   onEditClick: () => void;
   onDeleteClick: () => void;
+  isLoading?: boolean;
 }
 
-const TableItemActionButtons = ({ onEditClick, onDeleteClick }: Props) => {
+const TableItemActionButtons = ({ onEditClick, onDeleteClick, isLoading }: Props) => {
   const onFocusCapture = usePreventFocusAfterModalClosing();
+
+  if (isLoading) {
+    return (
+      <HStack spacing={ 6 } alignSelf="flex-end">
+        <Skeleton boxSize={ 5 } flexShrink={ 0 } borderRadius="base"/>
+        <Skeleton boxSize={ 5 } flexShrink={ 0 } borderRadius="base"/>
+      </HStack>
+    );
+  }
 
   return (
     <HStack spacing={ 6 } alignSelf="flex-end">
@@ -19,22 +29,26 @@ const TableItemActionButtons = ({ onEditClick, onDeleteClick }: Props) => {
         <IconButton
           aria-label="edit"
           variant="simple"
-          w="30px"
-          h="30px"
+          boxSize={ 5 }
           onClick={ onEditClick }
-          icon={ <Icon as={ EditIcon } w="20px" h="20px"/> }
+          icon={ <EditIcon/> }
           onFocusCapture={ onFocusCapture }
+          display="inline-block"
+          flexShrink={ 0 }
+          borderRadius="none"
         />
       </Tooltip>
       <Tooltip label="Delete">
         <IconButton
           aria-label="delete"
           variant="simple"
-          w="30px"
-          h="30px"
+          boxSize={ 5 }
           onClick={ onDeleteClick }
-          icon={ <Icon as={ DeleteIcon } w="20px" h="20px"/> }
+          icon={ <DeleteIcon/> }
           onFocusCapture={ onFocusCapture }
+          display="inline-block"
+          flexShrink={ 0 }
+          borderRadius="none"
         />
       </Tooltip>
     </HStack>
