@@ -2,8 +2,12 @@ import { Flex, Skeleton, Button, Grid, GridItem, Text, Alert, Link, chakra, Box 
 import { route } from 'nextjs-routes';
 import React from 'react';
 
+import type { SocketMessage } from 'lib/socket/types';
+
 import useApiQuery from 'lib/api/useApiQuery';
 import dayjs from 'lib/date/dayjs';
+import useSocketChannel from 'lib/socket/useSocketChannel';
+import useSocketMessage from 'lib/socket/useSocketMessage';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -26,12 +30,30 @@ const InfoItem = chakra(({ label, value, className }: { label: string; value: st
 ));
 
 const ContractCode = ({ addressHash }: Props) => {
+  const [ isSocketOpen, setIsSocketOpen ] = React.useState(false);
+  const [ isChangedBytecodeSocket, setIsChangedBytecodeSocket ] = React.useState<boolean>();
+
   const { data, isLoading, isError } = useApiQuery('contract', {
     pathParams: { hash: addressHash },
     queryOptions: {
-      enabled: Boolean(addressHash),
+      enabled: Boolean(addressHash) && isSocketOpen,
       refetchOnMount: false,
     },
+  });
+
+  const handleChangedBytecodeMessage: SocketMessage.AddressChangedBytecode['handler'] = React.useCallback(() => {
+    setIsChangedBytecodeSocket(true);
+  }, [ ]);
+
+  const channel = useSocketChannel({
+    topic: `addresses:${ addressHash?.toLowerCase() }`,
+    isDisabled: !addressHash,
+    onJoin: () => setIsSocketOpen(true),
+  });
+  useSocketMessage({
+    channel,
+    event: 'changed_bytecode',
+    handler: handleChangedBytecodeMessage,
   });
 
   if (isError) {
@@ -117,7 +139,7 @@ const ContractCode = ({ addressHash }: Props) => {
             { data.sourcify_repo_url && <LinkExternal href={ data.sourcify_repo_url } fontSize="md">View contract in Sourcify repository</LinkExternal> }
           </Alert>
         ) }
-        { data.is_changed_bytecode && (
+        { (data.is_changed_bytecode || isChangedBytecodeSocket) && (
           <Alert status="warning">
             Warning! Contract bytecode has been changed and does not match the verified one. Therefore, interaction with this smart contract may be risky.
           </Alert>
