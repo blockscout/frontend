@@ -3,7 +3,7 @@ import React from 'react';
 import type { Control, ControllerRenderProps, FormState } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 
-import type { Fields } from '../types';
+import type { Fields, TickerUrlFields } from '../types';
 
 import { validator } from 'lib/validations/url';
 import InputPlaceholder from 'ui/shared/InputPlaceholder';
@@ -12,7 +12,7 @@ interface Props {
   formState: FormState<Fields>;
   control: Control<Fields>;
   isReadOnly?: boolean;
-  name: 'ticker_coin_gecko' | 'ticker_coin_market_cap' | 'ticker_defi_llama';
+  name: keyof TickerUrlFields;
   label: string;
 }
 

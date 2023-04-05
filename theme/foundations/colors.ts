@@ -50,6 +50,12 @@ const colors = {
     '800': 'RGBA(16, 17, 18, 0.80)',
     '900': 'RGBA(16, 17, 18, 0.92)',
   },
+  github: '#171923',
+  telegram: '#2775CA',
+  linkedin: '#1564BA',
+  discord: '#9747FF',
+  slack: '#1BA27A',
+  twitter: '#63B3ED',
 };
 
 export default colors;

@@ -21,6 +21,7 @@ import TokenInfoFieldProjectSector from './fields/TokenInfoFieldProjectSector';
 import TokenInfoFieldProjectWebsite from './fields/TokenInfoFieldProjectWebsite';
 import TokenInfoFieldRequesterEmail from './fields/TokenInfoFieldRequesterEmail';
 import TokenInfoFieldRequesterName from './fields/TokenInfoFieldRequesterName';
+import TokenInfoFieldSocialLink from './fields/TokenInfoFieldSocialLink';
 import TokenInfoFieldSupport from './fields/TokenInfoFieldSupport';
 import TokenInfoFormSectionHeader from './TokenInfoFormSectionHeader';
 
@@ -83,6 +84,18 @@ const TokenInfoForm = ({ id }: Props) => {
         <GridItem colSpan={ 2 }>
           <TokenInfoFieldProjectDescription { ...fieldProps }/>
         </GridItem>
+
+        <TokenInfoFormSectionHeader>Links</TokenInfoFormSectionHeader>
+        <TokenInfoFieldSocialLink { ...fieldProps } name="github"/>
+        <TokenInfoFieldSocialLink { ...fieldProps } name="twitter"/>
+        <TokenInfoFieldSocialLink { ...fieldProps } name="telegram"/>
+        <TokenInfoFieldSocialLink { ...fieldProps } name="opensea"/>
+        <TokenInfoFieldSocialLink { ...fieldProps } name="linkedin"/>
+        <TokenInfoFieldSocialLink { ...fieldProps } name="facebook"/>
+        <TokenInfoFieldSocialLink { ...fieldProps } name="discord"/>
+        <TokenInfoFieldSocialLink { ...fieldProps } name="medium"/>
+        <TokenInfoFieldSocialLink { ...fieldProps } name="slack"/>
+        <TokenInfoFieldSocialLink { ...fieldProps } name="reddit"/>
 
         <TokenInfoFormSectionHeader>Price data</TokenInfoFormSectionHeader>
         <TokenInfoFieldPriceTicker { ...fieldProps } name="ticker_coin_market_cap" label="CoinMarketCap URL"/>
