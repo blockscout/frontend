@@ -1,8 +1,9 @@
 import { Alert, Box, Button, chakra, Flex, Link, Radio, RadioGroup } from '@chakra-ui/react';
+import { useWeb3Modal } from '@web3modal/react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
-import { useSignMessage } from 'wagmi';
+import { useSignMessage, useAccount } from 'wagmi';
 
 import type {
   AddressVerificationFormSecondStepFields,
@@ -17,6 +18,7 @@ import type { VerifiedAddress } from 'types/api/account';
 import appConfig from 'configs/app/config';
 import type { ResourceError } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
+import shortenString from 'lib/shortenString';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 import AddressVerificationFieldMessage from '../fields/AddressVerificationFieldMessage';
@@ -30,6 +32,9 @@ interface Props extends AddressVerificationFormFirstStepFields, AddressCheckStat
 
 const AddressVerificationStepSignature = ({ address, signingMessage, contractCreator, contractOwner, onContinue }: Props) => {
   const [ signMethod, setSignMethod ] = React.useState<'wallet' | 'manually'>('wallet');
+
+  const { open: openWeb3Modal } = useWeb3Modal();
+  const { isConnected } = useAccount();
 
   const formApi = useForm<Fields>({
     mode: 'onBlur',
@@ -68,7 +73,9 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
             return setError('root', { type: 'manual', message: 'Message validity expired' });
           }
           case 'INVALID_SIGNER_ERROR': {
-            const message = `Invalid signer ${ response.invalidSigner.signer }. Expected: ${ response.invalidSigner.validAddresses.join(', ') }.`;
+            const signer = shortenString(response.invalidSigner.signer);
+            const expectedSigners = [ contractCreator, contractOwner ].filter(Boolean).map(shortenString).join(', ');
+            const message = `Invalid signer ${ signer }. Expected: ${ expectedSigners }.`;
             return setError('root', { type: 'manual', message });
           }
           case 'UNKNOWN_STATUS': {
@@ -86,7 +93,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
       const error = _error as ResourceError<AddressVerificationResponseError>;
       setError('root', { type: 'manual', message: error.payload?.message || 'Oops! Something went wrong' });
     }
-  }, [ address, apiFetch, onContinue, setError ]);
+  }, [ address, apiFetch, contractCreator, contractOwner, onContinue, setError ]);
 
   const onSubmit = handleSubmit(onFormSubmit);
 
@@ -105,14 +112,47 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
     clearErrors('root');
   }, [ clearErrors ]);
 
+  const handleOpenWeb3Modal = React.useCallback(() => {
+    openWeb3Modal();
+  }, [ openWeb3Modal ]);
+
   const handleWeb3SignClick = React.useCallback(() => {
+    if (!isConnected) {
+      return setError('root', { type: 'manual', message: 'Please connect to your Web3 wallet first' });
+    }
     const message = getValues('message');
     signMessage({ message });
-  }, [ getValues, signMessage ]);
+  }, [ getValues, signMessage, isConnected, setError ]);
 
   const handleManualSignClick = React.useCallback(() => {
     onSubmit();
   }, [ onSubmit ]);
+
+  const button = (() => {
+    if (signMethod === 'manually') {
+      return (
+        <Button
+          size="lg"
+          onClick={ handleManualSignClick }
+          isLoading={ formState.isSubmitting }
+          loadingText="Verifying"
+        >
+          Verify
+        </Button>
+      );
+    }
+
+    return (
+      <Button
+        size="lg"
+        onClick={ isConnected ? handleWeb3SignClick : handleOpenWeb3Modal }
+        isLoading={ formState.isSubmitting || isSigning }
+        loadingText={ isSigning ? 'Signing' : 'Verifying' }
+      >
+        { isConnected ? 'Sign and verify' : 'Connect wallet' }
+      </Button>
+    );
+  })();
 
   return (
     <form noValidate onSubmit={ onSubmit }>
@@ -149,14 +189,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
         { signMethod === 'manually' && <AddressVerificationFieldSignature formState={ formState } control={ control }/> }
       </Flex>
       <Flex alignItems="center" mt={ 8 } columnGap={ 5 }>
-        <Button
-          size="lg"
-          onClick={ signMethod === 'manually' ? handleManualSignClick : handleWeb3SignClick }
-          isLoading={ formState.isSubmitting || isSigning }
-          loadingText={ isSigning ? 'Signing' : 'Verifying' }
-        >
-          { signMethod === 'manually' ? 'Verify' : 'Sign and verify' }
-        </Button>
+        { button }
       </Flex>
     </form>
   );

@@ -1,4 +1,4 @@
-import { FormControl, Textarea } from '@chakra-ui/react';
+import { FormControl, Textarea, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 import type { Control, ControllerRenderProps, FormState } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
@@ -15,11 +15,13 @@ interface Props {
 }
 
 const AddressVerificationFieldMessage = ({ formState, control }: Props) => {
+  const backgroundColor = useColorModeValue('white', 'gray.900');
+
   const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<Fields, 'message'>}) => {
     const error = 'message' in formState.errors ? formState.errors.message : undefined;
 
     return (
-      <FormControl variant="floating" id={ field.name } isRequired size="md">
+      <FormControl variant="floating" id={ field.name } isRequired size="md" backgroundColor={ backgroundColor }>
         <Textarea
           { ...field }
           required
@@ -28,10 +30,10 @@ const AddressVerificationFieldMessage = ({ formState, control }: Props) => {
           autoComplete="off"
           maxH="105px"
         />
-        <InputPlaceholder text="Message to sign" error={ error }/>
+        <InputPlaceholder text="Message to sign" error={ error } isInModal/>
       </FormControl>
     );
-  }, [ formState.errors ]);
+  }, [ formState.errors, backgroundColor ]);
 
   return (
     <Controller
