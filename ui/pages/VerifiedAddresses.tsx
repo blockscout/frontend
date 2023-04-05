@@ -1,4 +1,4 @@
-import { UnorderedList, ListItem, chakra, Button, useDisclosure, Show, Hide, Skeleton, Box } from '@chakra-ui/react';
+import { OrderedList, ListItem, chakra, Button, useDisclosure, Show, Hide, Skeleton, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import appConfig from 'configs/app/config';
@@ -60,16 +60,21 @@ const VerifiedAddresses = () => {
     <Page>
       <PageTitle text="My verified addresses"/>
       <AccountPageDescription allowCut={ false }>
-        <span>Before you claim the ownership of your contract address and update your token’s information, make sure that:</span>
-        <UnorderedList>
-          <ListItem>the source code has already been deployed onto the Ethereum blockchain</ListItem>
-          <ListItem>the source code has already been verified (if you have not yet verified the source code, please do so using this tool)</ListItem>
-        </UnorderedList>
-        <chakra.div mt={ 3 }>
-            The verify address ownership process involves verifying the ownership of an “Network name” address used to create an “Network name” smart contract.
-            This verification will be linked to an “Network name” account. Once a user has claimed ownership of an address,
-            the user will be able to update token information and address name tags without needing to sign a new message each time.
-            Find out more about verify address ownership.
+        <span>
+          Verify ownership of a smart contract address to easily update information in Blockscout.
+          You will sign a single message to verify contract ownership.
+          Once verified, you can update token information, address name tags, and address labels from the
+          Blockscout console without needing to sign additional messages.
+        </span>
+        <chakra.p fontWeight={ 600 } mt={ 5 }>
+          Before starting, make sure that:
+        </chakra.p>
+        <OrderedList>
+          <ListItem>The source code for the smart contract is deployed on “Network Name”.</ListItem>
+          <ListItem>The source code is verified (if not yet verified, you can use this tool).</ListItem>
+        </OrderedList>
+        <chakra.div mt={ 5 }>
+          Once these steps are complete, click the Add address button below to get started.
         </chakra.div>
       </AccountPageDescription>
       <DataListDisplay
