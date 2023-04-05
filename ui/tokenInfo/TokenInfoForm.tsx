@@ -13,6 +13,7 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import TokenInfoFieldAddress from './fields/TokenInfoFieldAddress';
 import TokenInfoFieldDocs from './fields/TokenInfoFieldDocs';
 import TokenInfoFieldIconUrl from './fields/TokenInfoFieldIconUrl';
+import TokenInfoFieldPriceTicker from './fields/TokenInfoFieldPriceTicker';
 import TokenInfoFieldProjectDescription from './fields/TokenInfoFieldProjectDescription';
 import TokenInfoFieldProjectEmail from './fields/TokenInfoFieldProjectEmail';
 import TokenInfoFieldProjectName from './fields/TokenInfoFieldProjectName';
@@ -62,9 +63,13 @@ const TokenInfoForm = ({ id }: Props) => {
     <form noValidate onSubmit={ onSubmit }>
       <div>Requests are sent to a moderator for review and approval. This process can take several days.</div>
       <Grid mt={ 8 } gridTemplateColumns="1fr 1fr" columnGap={ 5 } rowGap={ 5 }>
-        <GridItem colSpan={ 2 }><TokenInfoFieldAddress { ...fieldProps }/></GridItem>
+
+        <GridItem colSpan={ 2 }>
+          <TokenInfoFieldAddress { ...fieldProps }/>
+        </GridItem>
         <TokenInfoFieldRequesterName { ...fieldProps }/>
         <TokenInfoFieldRequesterEmail { ...fieldProps }/>
+
         <TokenInfoFormSectionHeader>Project info</TokenInfoFormSectionHeader>
         <TokenInfoFieldProjectName { ...fieldProps }/>
         <TokenInfoFieldProjectSector { ...fieldProps } config={ configQuery.data.projectSectors }/>
@@ -72,8 +77,19 @@ const TokenInfoForm = ({ id }: Props) => {
         <TokenInfoFieldProjectWebsite { ...fieldProps }/>
         <TokenInfoFieldDocs { ...fieldProps }/>
         <TokenInfoFieldSupport { ...fieldProps }/>
-        <GridItem colSpan={ 2 }><TokenInfoFieldIconUrl { ...fieldProps }/></GridItem>
-        <GridItem colSpan={ 2 }><TokenInfoFieldProjectDescription { ...fieldProps }/></GridItem>
+        <GridItem colSpan={ 2 }>
+          <TokenInfoFieldIconUrl { ...fieldProps }/>
+        </GridItem>
+        <GridItem colSpan={ 2 }>
+          <TokenInfoFieldProjectDescription { ...fieldProps }/>
+        </GridItem>
+
+        <TokenInfoFormSectionHeader>Price data</TokenInfoFormSectionHeader>
+        <TokenInfoFieldPriceTicker { ...fieldProps } name="ticker_coin_market_cap" label="CoinMarketCap URL"/>
+        <TokenInfoFieldPriceTicker { ...fieldProps } name="ticker_coin_gecko" label="CoinGecko URL"/>
+        <GridItem colSpan={ 2 }>
+          <TokenInfoFieldPriceTicker { ...fieldProps } name="ticker_defi_llama" label="DefiLlama URL "/>
+        </GridItem>
       </Grid>
       <Button type="submit" size="lg" mt={ 8 }>Send request</Button>
     </form>

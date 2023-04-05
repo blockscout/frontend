@@ -12,4 +12,7 @@ export interface Fields {
   docs?: string;
   support?: string;
   icon_url: string;
+  ticker_coin_gecko?: string;
+  ticker_coin_market_cap?: string;
+  ticker_defi_llama?: string;
 }
