@@ -54,7 +54,18 @@ const BlockPageContent = () => {
 
   const hasPagination = !isMobile && tab === 'txs' && blockTxsQuery.isPaginationVisible;
 
-  const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/blocks');
+  const backLink = React.useMemo(() => {
+    const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/blocks');
+
+    if (!hasGoBackLink) {
+      return;
+    }
+
+    return {
+      label: 'Back to blocks list',
+      url: appProps.referrer,
+    };
+  }, [ appProps.referrer ]);
 
   return (
     <Page>
@@ -64,8 +75,7 @@ const BlockPageContent = () => {
       ) : (
         <PageTitle
           text={ `Block #${ blockQuery.data?.height }` }
-          backLinkUrl={ hasGoBackLink ? appProps.referrer : undefined }
-          backLinkLabel="Back to blocks list"
+          backLink={ backLink }
         />
       ) }
       <RoutedTabs

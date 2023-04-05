@@ -33,7 +33,6 @@ const TransactionPageContent = () => {
   const router = useRouter();
   const appProps = useAppContext();
 
-  const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/txs');
   const hash = getQueryParamString(router.query.hash);
 
   const { data } = useApiQuery('tx', {
@@ -65,14 +64,26 @@ const TransactionPageContent = () => {
     </Flex>
   );
 
+  const backLink = React.useMemo(() => {
+    const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/txs');
+
+    if (!hasGoBackLink) {
+      return;
+    }
+
+    return {
+      label: 'Back to transactions list',
+      url: appProps.referrer,
+    };
+  }, [ appProps.referrer ]);
+
   return (
     <Page>
       <TextAd mb={ 6 }/>
       <PageTitle
         text="Transaction details"
         additionalsRight={ additionals }
-        backLinkUrl={ hasGoBackLink ? appProps.referrer : undefined }
-        backLinkLabel="Back to transactions list"
+        backLink={ backLink }
       />
       <RoutedTabs tabs={ TABS }/>
     </Page>

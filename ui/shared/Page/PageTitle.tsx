@@ -1,9 +1,11 @@
-import { Heading, Flex, Grid, Tooltip, Icon, chakra } from '@chakra-ui/react';
+import { Heading, Flex, Grid, Tooltip, Icon, Link, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import eastArrowIcon from 'icons/arrows/east.svg';
 import TextAd from 'ui/shared/ad/TextAd';
 import LinkInternal from 'ui/shared/LinkInternal';
+
+type BackLinkProp = { label: string; url: string } | { label: string; onClick: () => void };
 
 type Props = {
   text: string;
@@ -11,11 +13,10 @@ type Props = {
   additionalsRight?: React.ReactNode;
   withTextAd?: boolean;
   className?: string;
-  backLinkLabel?: string;
-  backLinkUrl?: string;
+  backLink?: BackLinkProp;
 }
 
-const PageTitle = ({ text, additionalsLeft, additionalsRight, withTextAd, backLinkUrl, backLinkLabel, className }: Props) => {
+const PageTitle = ({ text, additionalsLeft, additionalsRight, withTextAd, backLink, className }: Props) => {
   const title = (
     <Heading
       as="h1"
@@ -26,6 +27,32 @@ const PageTitle = ({ text, additionalsLeft, additionalsRight, withTextAd, backLi
       { text }
     </Heading>
   );
+
+  const backLinkComponent = (() => {
+    if (!backLink) {
+      return null;
+    }
+
+    const icon = <Icon as={ eastArrowIcon } boxSize={ 6 } transform="rotate(180deg)" margin="auto"/>;
+
+    if ('url' in backLink) {
+      return (
+        <Tooltip label={ backLink.label }>
+          <LinkInternal display="inline-flex" href={ backLink.url } h="40px">
+            { icon }
+          </LinkInternal>
+        </Tooltip>
+      );
+    }
+
+    return (
+      <Tooltip label={ backLink.label }>
+        <Link display="inline-flex" onClick={ backLink.onClick } h="40px">
+          { icon }
+        </Link>
+      </Tooltip>
+    );
+  })();
 
   return (
     <Flex
@@ -39,16 +66,10 @@ const PageTitle = ({ text, additionalsLeft, additionalsRight, withTextAd, backLi
     >
       <Flex flexWrap="wrap" columnGap={ 3 } alignItems="center" width={ withTextAd ? 'unset' : '100%' } flexShrink={ 0 }>
         <Grid
-          templateColumns={ [ backLinkUrl && 'auto', additionalsLeft && 'auto', '1fr' ].filter(Boolean).join(' ') }
+          templateColumns={ [ backLinkComponent && 'auto', additionalsLeft && 'auto', '1fr' ].filter(Boolean).join(' ') }
           columnGap={ 3 }
         >
-          { backLinkUrl && (
-            <Tooltip label={ backLinkLabel }>
-              <LinkInternal display="inline-flex" href={ backLinkUrl } h="40px">
-                <Icon as={ eastArrowIcon } boxSize={ 6 } transform="rotate(180deg)" margin="auto"/>
-              </LinkInternal>
-            </Tooltip>
-          ) }
+          { backLinkComponent }
           { additionalsLeft !== undefined && (
             <Flex h="40px" alignItems="center">
               { additionalsLeft }

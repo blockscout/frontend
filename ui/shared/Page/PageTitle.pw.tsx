@@ -43,8 +43,7 @@ test('with text ad, back link and addons +@mobile +@dark-mode', async({ mount })
       <PageTitle
         text="Title"
         withTextAd
-        backLinkLabel="Back"
-        backLinkUrl="back"
+        backLink={{ label: 'Back', url: 'back' }}
         // additionalsLeft={ left }
         additionalsRight="Privet"
       />
@@ -60,8 +59,7 @@ test('long title with text ad, back link and addons +@mobile', async({ mount }) 
       <PageTitle
         text="This title is long, really long"
         withTextAd
-        backLinkLabel="Back"
-        backLinkUrl="back"
+        backLink={{ label: 'Back', url: 'back' }}
         additionalsRight="Privet, kak dela?"
       />
     </TestApp>,
