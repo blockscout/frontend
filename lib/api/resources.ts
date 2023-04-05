@@ -1,4 +1,14 @@
-import type { UserInfo, CustomAbis, PublicTags, AddressTags, TransactionTags, ApiKeys, WatchlistAddress, VerifiedAddressResponse } from 'types/api/account';
+import type {
+  UserInfo,
+  CustomAbis,
+  PublicTags,
+  AddressTags,
+  TransactionTags,
+  ApiKeys,
+  WatchlistAddress,
+  VerifiedAddressResponse,
+  TokenInfoApplicationConfig,
+} from 'types/api/account';
 import type {
   Address,
   AddressCounters,
@@ -99,6 +109,13 @@ export const RESOURCES = {
     pathParams: [ 'chainId' as const ],
     endpoint: appConfig.contractInfoApi.endpoint,
     basePath: appConfig.contractInfoApi.basePath,
+  },
+
+  token_info_application_config: {
+    path: '/api/v1/chains/:chainId/token-info-submissions/selectors',
+    pathParams: [ 'chainId' as const ],
+    endpoint: appConfig.adminServiceApi.endpoint,
+    basePath: appConfig.adminServiceApi.basePath,
   },
 
   // STATS
@@ -500,6 +517,7 @@ Q extends 'private_tags_tx' ? TransactionTags :
 Q extends 'api_keys' ? ApiKeys :
 Q extends 'watchlist' ? Array<WatchlistAddress> :
 Q extends 'verified_addresses' ? VerifiedAddressResponse :
+Q extends 'token_info_application_config' ? TokenInfoApplicationConfig :
 Q extends 'homepage_stats' ? HomeStats :
 Q extends 'homepage_chart_txs' ? ChartTransactionResponse :
 Q extends 'homepage_chart_market' ? ChartMarketResponse :

@@ -171,3 +171,7 @@ export interface VerifiedAddress {
 export interface VerifiedAddressResponse {
   verifiedAddresses: Array<VerifiedAddress>;
 }
+
+export interface TokenInfoApplicationConfig {
+  projectSectors: Array<string>;
+}
