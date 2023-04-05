@@ -11,18 +11,27 @@ import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import SkeletonListAccount from 'ui/shared/skeletons/SkeletonListAccount';
 import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
+import TokenInfoForm from 'ui/tokenInfo/TokenInfoForm';
 import VerifiedAddressesTable from 'ui/verifiedAddresses/VerifiedAddressesTable';
 
 const VerifiedAddresses = () => {
   useRedirectForInvalidAuthToken();
+
+  const [ submissionId, setSubmissionId ] = React.useState<number>();
 
   const modalProps = useDisclosure();
   const { data, isLoading, isError } = useApiQuery('verified_addresses', {
     pathParams: { chainId: appConfig.network.id },
   });
 
+  const handleGoBack = React.useCallback(() => {
+    setSubmissionId(undefined);
+  }, []);
+
+  const handleItemAdd = React.useCallback(() => {
+    setSubmissionId(NaN);
+  }, []);
   const handleItemEdit = React.useCallback(() => {}, []);
-  const handleItemDelete = React.useCallback(() => {}, []);
 
   const addButton = (
     <Button size="lg" onClick={ modalProps.onOpen } marginTop={ 8 }>
@@ -43,14 +52,34 @@ const VerifiedAddresses = () => {
     </>
   );
 
+  const backLink = React.useMemo(() => {
+    if (submissionId === undefined) {
+      return;
+    }
+
+    return {
+      label: 'Back to my verified addresses',
+      onClick: handleGoBack,
+    };
+  }, [ handleGoBack, submissionId ]);
+
+  if (submissionId !== undefined) {
+    return (
+      <Page>
+        <PageTitle text="Token info application form" backLink={ backLink }/>
+        <TokenInfoForm id={ submissionId }/>
+      </Page>
+    );
+  }
+
   const content = data?.verifiedAddresses ? (
     <>
       <Show below="lg" key="content-mobile" ssr={ false }>
-        mobile view
+        <div>mobile view</div>
         { addButton }
       </Show>
       <Hide below="lg" key="content-desktop" ssr={ false }>
-        <VerifiedAddressesTable data={ data.verifiedAddresses } onItemEdit={ handleItemEdit } onItemDelete={ handleItemDelete }/>
+        <VerifiedAddressesTable data={ data.verifiedAddresses } onItemEdit={ handleItemEdit } onItemAdd={ handleItemAdd }/>
         { addButton }
       </Hide>
     </>

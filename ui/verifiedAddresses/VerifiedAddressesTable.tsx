@@ -7,11 +7,11 @@ import VerifiedAddressesTableItem from './VerifiedAddressesTableItem';
 
 interface Props {
   data: Array<VerifiedAddress>;
+  onItemAdd: (address: string) => void;
   onItemEdit: (item: VerifiedAddress) => void;
-  onItemDelete: (item: VerifiedAddress) => void;
 }
 
-const VerifiedAddressesTable = ({ data, onItemEdit, onItemDelete }: Props) => {
+const VerifiedAddressesTable = ({ data, onItemEdit, onItemAdd }: Props) => {
   return (
     <Table variant="simple">
       <Thead>
@@ -27,8 +27,8 @@ const VerifiedAddressesTable = ({ data, onItemEdit, onItemDelete }: Props) => {
           <VerifiedAddressesTableItem
             key={ item.contractAddress }
             item={ item }
+            onAdd={ onItemAdd }
             onEdit={ onItemEdit }
-            onDelete={ onItemDelete }
           />
         )) }
       </Tbody>
