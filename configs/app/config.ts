@@ -122,6 +122,10 @@ const config = Object.freeze({
     endpoint: getEnvValue(process.env.NEXT_PUBLIC_CONTRACT_INFO_API_HOST),
     basePath: '',
   },
+  adminServiceApi: {
+    endpoint: getEnvValue(process.env.NEXT_PUBLIC_ADMIN_SERVICE_API_HOST),
+    basePath: '',
+  },
   homepage: {
     charts: parseEnvJson<Array<ChainIndicatorId>>(getEnvValue(process.env.NEXT_PUBLIC_HOMEPAGE_CHARTS)) || [],
     plateGradient: getEnvValue(process.env.NEXT_PUBLIC_HOMEPAGE_PLATE_GRADIENT) ||

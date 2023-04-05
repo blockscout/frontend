@@ -102,6 +102,7 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_STATS_API_HOST | `string` | Pass the Stats API host in this variable  | `https://my-host.com` |
 | NEXT_PUBLIC_VISUALIZE_API_HOST | `string` | Pass the Visualize API host in this variable  | `https://my-host.com` |
 | NEXT_PUBLIC_CONTRACT_INFO_API_HOST | `string` *(optional)* | Pass the Contract Info API host in this variable if token info submission feature should be available in the app  | `https://my-host.com` |
+| NEXT_PUBLIC_ADMIN_SERVICE_API_HOST | `string` | Pass the Admin Service API host in this variable if token info submission feature should be available in the app  | `https://my-host.com` |
 
 ### Featured network configuration properties
 
