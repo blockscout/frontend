@@ -50,7 +50,7 @@ export namespace SocketMessage {
   export type AddressTxs = SocketMessageParamsGeneric<'transaction', { transaction: Transaction }>;
   export type AddressTxsPending = SocketMessageParamsGeneric<'pending_transaction', { transaction: Transaction }>;
   export type AddressTokenTransfer = SocketMessageParamsGeneric<'token_transfer', { token_transfer: TokenTransfer }>;
-  export type AddressChangedBytecode = SocketMessageParamsGeneric<'changed_bytecode', never>;
+  export type AddressChangedBytecode = SocketMessageParamsGeneric<'changed_bytecode', Record<string, never>>;
   export type TokenTransfers = SocketMessageParamsGeneric<'token_transfer', {token_transfer: number }>;
   export type TokenTotalSupply = SocketMessageParamsGeneric<'total_supply', {total_supply: number }>;
   export type ContractVerification = SocketMessageParamsGeneric<'verification_result', SmartContractVerificationResponse>;
