@@ -62,6 +62,7 @@ export function sendMessage(socket: WebSocket, channel: Channel, msg: 'pending_t
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'new_block', payload: NewBlockSocketResponse): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'verification_result', payload: SmartContractVerificationResponse): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'total_supply', payload: { total_supply: number}): void;
+export function sendMessage(socket: WebSocket, channel: Channel, msg: 'changed_bytecode', payload: Record<string, never>): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: string, payload: unknown): void {
   socket.send(JSON.stringify([
     ...channel,

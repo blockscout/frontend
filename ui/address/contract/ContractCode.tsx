@@ -20,6 +20,8 @@ import ContractSourceCode from './ContractSourceCode';
 
 type Props = {
   addressHash?: string;
+  // prop for pw tests only
+  noSocket?: boolean;
 }
 
 const InfoItem = chakra(({ label, value, className }: { label: string; value: string; className?: string }) => (
@@ -29,14 +31,14 @@ const InfoItem = chakra(({ label, value, className }: { label: string; value: st
   </GridItem>
 ));
 
-const ContractCode = ({ addressHash }: Props) => {
+const ContractCode = ({ addressHash, noSocket }: Props) => {
   const [ isSocketOpen, setIsSocketOpen ] = React.useState(false);
   const [ isChangedBytecodeSocket, setIsChangedBytecodeSocket ] = React.useState<boolean>();
 
   const { data, isLoading, isError } = useApiQuery('contract', {
     pathParams: { hash: addressHash },
     queryOptions: {
-      enabled: Boolean(addressHash) && isSocketOpen,
+      enabled: Boolean(addressHash) && (noSocket || isSocketOpen),
       refetchOnMount: false,
     },
   });
