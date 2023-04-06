@@ -4,6 +4,7 @@ import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 
 import type { Fields } from './types';
+import type { TokenInfoApplication } from 'types/api/account';
 
 import appConfig from 'configs/app/config';
 import useApiFetch from 'lib/api/useApiFetch';
@@ -25,13 +26,14 @@ import TokenInfoFieldRequesterName from './fields/TokenInfoFieldRequesterName';
 import TokenInfoFieldSocialLink from './fields/TokenInfoFieldSocialLink';
 import TokenInfoFieldSupport from './fields/TokenInfoFieldSupport';
 import TokenInfoFormSectionHeader from './TokenInfoFormSectionHeader';
-import { prepareRequestBody } from './utils';
+import { getFormDefaultValues, prepareRequestBody } from './utils';
 
 interface Props {
   address: string;
+  application?: TokenInfoApplication;
 }
 
-const TokenInfoForm = ({ address }: Props) => {
+const TokenInfoForm = ({ address, application }: Props) => {
 
   const apiFetch = useApiFetch();
 
@@ -41,9 +43,7 @@ const TokenInfoForm = ({ address }: Props) => {
 
   const formApi = useForm<Fields>({
     mode: 'onBlur',
-    defaultValues: {
-      address,
-    },
+    defaultValues: getFormDefaultValues(address, application),
   });
   const { handleSubmit, formState, control, trigger } = formApi;
 
@@ -70,7 +70,7 @@ const TokenInfoForm = ({ address }: Props) => {
     return <ContentLoader/>;
   }
 
-  const fieldProps = { control };
+  const fieldProps = { control, isReadOnly: application?.status === 'IN_PROCESS' };
 
   return (
     <form noValidate onSubmit={ onSubmit } autoComplete="off">
@@ -122,6 +122,7 @@ const TokenInfoForm = ({ address }: Props) => {
         mt={ 8 }
         isLoading={ formState.isSubmitting }
         loadingText="Send request"
+        isDisabled={ application?.status === 'IN_PROCESS' }
       >
         Send request
       </Button>

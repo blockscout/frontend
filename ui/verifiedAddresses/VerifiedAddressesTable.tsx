@@ -1,25 +1,26 @@
 import { Table, Tbody, Th, Thead, Tr } from '@chakra-ui/react';
 import React from 'react';
 
-import type { VerifiedAddress } from 'types/api/account';
+import type { TokenInfoApplication, VerifiedAddress } from 'types/api/account';
 
 import VerifiedAddressesTableItem from './VerifiedAddressesTableItem';
 
 interface Props {
   data: Array<VerifiedAddress>;
+  applications: Array<TokenInfoApplication> | undefined;
   onItemAdd: (address: string) => void;
-  onItemEdit: (item: VerifiedAddress) => void;
+  onItemEdit: (address: string) => void;
 }
 
-const VerifiedAddressesTable = ({ data, onItemEdit, onItemAdd }: Props) => {
+const VerifiedAddressesTable = ({ data, applications, onItemEdit, onItemAdd }: Props) => {
   return (
     <Table variant="simple">
       <Thead>
         <Tr>
           <Th>Address</Th>
-          <Th w="180px">Token info</Th>
-          <Th w="260px">Request status</Th>
-          <Th w="160px">Actions</Th>
+          <Th w="232px">Token info</Th>
+          <Th w="160px">Request status</Th>
+          <Th w="150px">Date</Th>
         </Tr>
       </Thead>
       <Tbody>
@@ -27,6 +28,7 @@ const VerifiedAddressesTable = ({ data, onItemEdit, onItemAdd }: Props) => {
           <VerifiedAddressesTableItem
             key={ item.contractAddress }
             item={ item }
+            application={ applications?.find(({ tokenAddress }) => tokenAddress === item.contractAddress) }
             onAdd={ onItemAdd }
             onEdit={ onItemEdit }
           />

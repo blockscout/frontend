@@ -8,6 +8,7 @@ import type {
   WatchlistAddress,
   VerifiedAddressResponse,
   TokenInfoApplicationConfig,
+  TokenInfoApplications,
 } from 'types/api/account';
 import type {
   Address,
@@ -525,6 +526,7 @@ Q extends 'api_keys' ? ApiKeys :
 Q extends 'watchlist' ? Array<WatchlistAddress> :
 Q extends 'verified_addresses' ? VerifiedAddressResponse :
 Q extends 'token_info_application_config' ? TokenInfoApplicationConfig :
+Q extends 'token_info_application' ? TokenInfoApplications :
 Q extends 'homepage_stats' ? HomeStats :
 Q extends 'homepage_chart_txs' ? ChartTransactionResponse :
 Q extends 'homepage_chart_market' ? ChartMarketResponse :
