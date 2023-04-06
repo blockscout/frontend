@@ -26,10 +26,10 @@ import TokenInfoFieldSupport from './fields/TokenInfoFieldSupport';
 import TokenInfoFormSectionHeader from './TokenInfoFormSectionHeader';
 
 interface Props {
-  id: number;
+  address: string;
 }
 
-const TokenInfoForm = ({ id }: Props) => {
+const TokenInfoForm = ({ address }: Props) => {
 
   const configQuery = useApiQuery('token_info_application_config', {
     pathParams: { chainId: appConfig.network.id },
@@ -38,15 +38,15 @@ const TokenInfoForm = ({ id }: Props) => {
   const formApi = useForm<Fields>({
     mode: 'onBlur',
     defaultValues: {
-      address: '0x9d2a7b2b09b1d4786e36699d9f56b8c04e92cbb9',
+      address,
     },
   });
   const { handleSubmit, formState, control, trigger } = formApi;
 
   const onFormSubmit: SubmitHandler<Fields> = React.useCallback(async(data) => {
     // eslint-disable-next-line no-console
-    console.log('__>__', id, data);
-  }, [ id ]);
+    console.log('__>__', data);
+  }, [ ]);
 
   const onSubmit = handleSubmit(onFormSubmit);
 

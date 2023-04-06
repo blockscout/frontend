@@ -18,7 +18,7 @@ import VerifiedAddressesTable from 'ui/verifiedAddresses/VerifiedAddressesTable'
 const VerifiedAddresses = () => {
   useRedirectForInvalidAuthToken();
 
-  const [ submissionId, setSubmissionId ] = React.useState<number>();
+  const [ selectedAddress, setSelectedAddress ] = React.useState<string>();
 
   const modalProps = useDisclosure();
   const { data, isLoading, isError } = useApiQuery('verified_addresses', {
@@ -26,11 +26,11 @@ const VerifiedAddresses = () => {
   });
 
   const handleGoBack = React.useCallback(() => {
-    setSubmissionId(undefined);
+    setSelectedAddress(undefined);
   }, []);
 
-  const handleItemAdd = React.useCallback(() => {
-    setSubmissionId(NaN);
+  const handleItemAdd = React.useCallback((address: string) => {
+    setSelectedAddress(address);
   }, []);
   const handleItemEdit = React.useCallback(() => {}, []);
 
@@ -56,7 +56,7 @@ const VerifiedAddresses = () => {
   );
 
   const backLink = React.useMemo(() => {
-    if (submissionId === undefined) {
+    if (!selectedAddress) {
       return;
     }
 
@@ -64,13 +64,13 @@ const VerifiedAddresses = () => {
       label: 'Back to my verified addresses',
       onClick: handleGoBack,
     };
-  }, [ handleGoBack, submissionId ]);
+  }, [ handleGoBack, selectedAddress ]);
 
-  if (submissionId !== undefined) {
+  if (selectedAddress) {
     return (
       <Page>
         <PageTitle text="Token info application form" backLink={ backLink }/>
-        <TokenInfoForm id={ submissionId }/>
+        <TokenInfoForm address={ selectedAddress }/>
       </Page>
     );
   }
