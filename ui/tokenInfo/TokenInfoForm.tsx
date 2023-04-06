@@ -73,11 +73,11 @@ const TokenInfoForm = ({ address }: Props) => {
   const fieldProps = { control };
 
   return (
-    <form noValidate onSubmit={ onSubmit }>
+    <form noValidate onSubmit={ onSubmit } autoComplete="off">
       <div>Requests are sent to a moderator for review and approval. This process can take several days.</div>
-      <Grid mt={ 8 } gridTemplateColumns="1fr 1fr" columnGap={ 5 } rowGap={ 5 }>
+      <Grid mt={ 8 } gridTemplateColumns={{ base: '1fr', lg: '1fr 1fr' }} columnGap={ 5 } rowGap={ 5 }>
 
-        <GridItem colSpan={ 2 }>
+        <GridItem colSpan={{ base: 1, lg: 2 }}>
           <TokenInfoFieldAddress { ...fieldProps }/>
         </GridItem>
         <TokenInfoFieldRequesterName { ...fieldProps }/>
@@ -90,10 +90,10 @@ const TokenInfoForm = ({ address }: Props) => {
         <TokenInfoFieldProjectWebsite { ...fieldProps }/>
         <TokenInfoFieldDocs { ...fieldProps }/>
         <TokenInfoFieldSupport { ...fieldProps }/>
-        <GridItem colSpan={ 2 }>
+        <GridItem colSpan={{ base: 1, lg: 2 }}>
           <TokenInfoFieldIconUrl { ...fieldProps } trigger={ trigger }/>
         </GridItem>
-        <GridItem colSpan={ 2 }>
+        <GridItem colSpan={{ base: 1, lg: 2 }}>
           <TokenInfoFieldProjectDescription { ...fieldProps }/>
         </GridItem>
 
@@ -112,7 +112,7 @@ const TokenInfoForm = ({ address }: Props) => {
         <TokenInfoFormSectionHeader>Price data</TokenInfoFormSectionHeader>
         <TokenInfoFieldPriceTicker { ...fieldProps } name="ticker_coin_market_cap" label="CoinMarketCap URL"/>
         <TokenInfoFieldPriceTicker { ...fieldProps } name="ticker_coin_gecko" label="CoinGecko URL"/>
-        <GridItem colSpan={ 2 }>
+        <GridItem colSpan={{ base: 1, lg: 2 }}>
           <TokenInfoFieldPriceTicker { ...fieldProps } name="ticker_defi_llama" label="DefiLlama URL "/>
         </GridItem>
       </Grid>

@@ -18,7 +18,7 @@ interface Props {
 const TokenInfoFieldPriceTicker = ({ control, isReadOnly, name, label }: Props) => {
   const renderControl: ControllerProps<Fields, typeof name>['render'] = React.useCallback(({ field, fieldState, formState }) => {
     return (
-      <FormControl variant="floating" id={ field.name } size="lg">
+      <FormControl variant="floating" id={ field.name } size={{ base: 'md', lg: 'lg' }}>
         <Input
           { ...field }
           isInvalid={ Boolean(fieldState.error) }

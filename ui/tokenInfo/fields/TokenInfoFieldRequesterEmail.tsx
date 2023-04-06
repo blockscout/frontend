@@ -16,7 +16,7 @@ interface Props {
 const TokenInfoFieldRequesterEmail = ({ control, isReadOnly }: Props) => {
   const renderControl: ControllerProps<Fields, 'requester_email'>['render'] = React.useCallback(({ field, fieldState, formState }) => {
     return (
-      <FormControl variant="floating" id={ field.name } isRequired size="lg">
+      <FormControl variant="floating" id={ field.name } isRequired size={{ base: 'md', lg: 'lg' }}>
         <Input
           { ...field }
           required

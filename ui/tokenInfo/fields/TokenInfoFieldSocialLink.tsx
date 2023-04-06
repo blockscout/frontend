@@ -45,7 +45,7 @@ interface Props {
 const TokenInfoFieldSocialLink = ({ control, isReadOnly, name }: Props) => {
   const renderControl: ControllerProps<Fields, typeof name>['render'] = React.useCallback(({ field, fieldState, formState }) => {
     return (
-      <FormControl variant="floating" id={ field.name } size="lg" sx={{ '.chakra-input__group input': { pr: '60px' } }}>
+      <FormControl variant="floating" id={ field.name } size={{ base: 'md', lg: 'lg' }} sx={{ '.chakra-input__group input': { pr: '60px' } }}>
         <InputGroup>
           <Input
             { ...field }
