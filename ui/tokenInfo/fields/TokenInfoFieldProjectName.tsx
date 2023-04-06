@@ -1,6 +1,6 @@
 import { FormControl, Input } from '@chakra-ui/react';
 import React from 'react';
-import type { Control, ControllerRenderProps, FormState } from 'react-hook-form';
+import type { Control, ControllerProps } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 
 import type { Fields } from '../types';
@@ -8,27 +8,25 @@ import type { Fields } from '../types';
 import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
 interface Props {
-  formState: FormState<Fields>;
   control: Control<Fields>;
   isReadOnly?: boolean;
 }
 
-const TokenInfoFieldProjectName = ({ formState, control, isReadOnly }: Props) => {
-  const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<Fields, 'project_name'>}) => {
-    const error = 'project_name' in formState.errors ? formState.errors.project_name : undefined;
+const TokenInfoFieldProjectName = ({ control, isReadOnly }: Props) => {
+  const renderControl: ControllerProps<Fields, 'project_name'>['render'] = React.useCallback(({ field, fieldState, formState }) => {
 
     return (
       <FormControl variant="floating" id={ field.name } size="lg">
         <Input
           { ...field }
-          isInvalid={ Boolean(error) }
+          isInvalid={ Boolean(fieldState.error) }
           isDisabled={ formState.isSubmitting || isReadOnly }
           autoComplete="off"
         />
-        <InputPlaceholder text="Project name" error={ error }/>
+        <InputPlaceholder text="Project name" error={ fieldState.error }/>
       </FormControl>
     );
-  }, [ formState.errors, formState.isSubmitting, isReadOnly ]);
+  }, [ isReadOnly ]);
 
   return (
     <Controller

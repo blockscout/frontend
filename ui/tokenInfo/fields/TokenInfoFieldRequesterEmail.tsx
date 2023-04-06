@@ -1,6 +1,6 @@
 import { FormControl, Input } from '@chakra-ui/react';
 import React from 'react';
-import type { Control, ControllerRenderProps, FormState } from 'react-hook-form';
+import type { Control, ControllerProps } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 
 import type { Fields } from '../types';
@@ -9,28 +9,25 @@ import { EMAIL_REGEXP } from 'lib/validations/email';
 import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
 interface Props {
-  formState: FormState<Fields>;
   control: Control<Fields>;
   isReadOnly?: boolean;
 }
 
-const TokenInfoFieldRequesterEmail = ({ formState, control, isReadOnly }: Props) => {
-  const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<Fields, 'requester_email'>}) => {
-    const error = 'requester_email' in formState.errors ? formState.errors.requester_email : undefined;
-
+const TokenInfoFieldRequesterEmail = ({ control, isReadOnly }: Props) => {
+  const renderControl: ControllerProps<Fields, 'requester_email'>['render'] = React.useCallback(({ field, fieldState, formState }) => {
     return (
       <FormControl variant="floating" id={ field.name } isRequired size="lg">
         <Input
           { ...field }
           required
-          isInvalid={ Boolean(error) }
+          isInvalid={ Boolean(fieldState.error) }
           isDisabled={ formState.isSubmitting || isReadOnly }
           autoComplete="off"
         />
-        <InputPlaceholder text="Requester email" error={ error }/>
+        <InputPlaceholder text="Requester email" error={ fieldState.error }/>
       </FormControl>
     );
-  }, [ formState.errors, formState.isSubmitting, isReadOnly ]);
+  }, [ isReadOnly ]);
 
   return (
     <Controller
