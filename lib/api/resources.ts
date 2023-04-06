@@ -118,6 +118,13 @@ export const RESOURCES = {
     basePath: appConfig.adminServiceApi.basePath,
   },
 
+  token_info_application: {
+    path: '/api/v1/chains/:chainId/token-info-submissions',
+    pathParams: [ 'chainId' as const ],
+    endpoint: appConfig.adminServiceApi.endpoint,
+    basePath: appConfig.adminServiceApi.basePath,
+  },
+
   // STATS
   stats_counters: {
     path: '/api/v1/counters',

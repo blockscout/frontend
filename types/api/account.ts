@@ -175,3 +175,32 @@ export interface VerifiedAddressResponse {
 export interface TokenInfoApplicationConfig {
   projectSectors: Array<string>;
 }
+
+export interface TokenInfoApplication {
+  coinGeckoTicker?: string;
+  coinMarketCapTicker?: string;
+  defiLlamaTicker?: string;
+  discord?: string;
+  docs?: string;
+  facebook?: string;
+  github?: string;
+  iconUrl: string;
+  id: string;
+  linkedin?: string;
+  medium?: string;
+  openSea?: string;
+  projectDescription?: string;
+  projectEmail: string;
+  projectName?: string;
+  projectSector?: string;
+  projectWebsite: string;
+  reddit?: string;
+  requesterEmail: string;
+  requesterName: string;
+  slack?: string;
+  status: 'STATUS_UNKNOWN' | 'IN_PROCESS' | 'APPROVED' | 'REJECTED' | 'UPDATE_REQUIRED';
+  support?: string;
+  telegram?: string;
+  tokenAddress: string;
+  twitter?: string;
+}

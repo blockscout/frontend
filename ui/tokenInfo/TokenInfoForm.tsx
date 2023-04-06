@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import type { Fields } from './types';
 
 import appConfig from 'configs/app/config';
+import useApiFetch from 'lib/api/useApiFetch';
 import useApiQuery from 'lib/api/useApiQuery';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
@@ -24,12 +25,15 @@ import TokenInfoFieldRequesterName from './fields/TokenInfoFieldRequesterName';
 import TokenInfoFieldSocialLink from './fields/TokenInfoFieldSocialLink';
 import TokenInfoFieldSupport from './fields/TokenInfoFieldSupport';
 import TokenInfoFormSectionHeader from './TokenInfoFormSectionHeader';
+import { prepareRequestBody } from './utils';
 
 interface Props {
   address: string;
 }
 
 const TokenInfoForm = ({ address }: Props) => {
+
+  const apiFetch = useApiFetch();
 
   const configQuery = useApiQuery('token_info_application_config', {
     pathParams: { chainId: appConfig.network.id },
@@ -44,9 +48,17 @@ const TokenInfoForm = ({ address }: Props) => {
   const { handleSubmit, formState, control, trigger } = formApi;
 
   const onFormSubmit: SubmitHandler<Fields> = React.useCallback(async(data) => {
-    // eslint-disable-next-line no-console
-    console.log('__>__', data);
-  }, [ ]);
+    try {
+      const submission = prepareRequestBody(data);
+      await apiFetch('token_info_application', {
+        pathParams: { chainId: appConfig.network.id },
+        fetchParams: {
+          method: 'POST',
+          body: { submission },
+        },
+      });
+    } catch (error) {}
+  }, [ apiFetch ]);
 
   const onSubmit = handleSubmit(onFormSubmit);
 
