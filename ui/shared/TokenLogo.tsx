@@ -1,27 +1,8 @@
-import { Image, chakra, useColorModeValue, Icon } from '@chakra-ui/react';
+import { Image, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import appConfig from 'configs/app/config';
-import tokenPlaceholderIcon from 'icons/token-placeholder.svg';
-
-const EmptyElement = ({ className }: { className?: string }) => {
-  const bgColor = useColorModeValue('gray.200', 'gray.600');
-  const color = useColorModeValue('gray.400', 'gray.200');
-
-  return (
-    <Icon
-      className={ className }
-      fontWeight={ 600 }
-      bgColor={ bgColor }
-      color={ color }
-      borderRadius="base"
-      as={ tokenPlaceholderIcon }
-      transitionProperty="background-color,color"
-      transitionDuration="normal"
-      transitionTimingFunction="ease"
-    />
-  );
-};
+import TokenLogoPlaceholder from 'ui/shared/TokenLogoPlaceholder';
 
 interface Props {
   hash?: string;
@@ -44,7 +25,7 @@ const TokenLogo = ({ hash, name, className }: Props) => {
       className={ className }
       src={ logoSrc }
       alt={ `${ name || 'token' } logo` }
-      fallback={ <EmptyElement className={ className }/> }
+      fallback={ <TokenLogoPlaceholder className={ className }/> }
     />
   );
 };
