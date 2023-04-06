@@ -14,7 +14,7 @@ interface Props {
 const TokenInfoFieldAddress = ({ control }: Props) => {
   const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<Fields, 'address'>}) => {
     return (
-      <FormControl variant="floating" id={ field.name } isRequired size="lg">
+      <FormControl variant="floating" id={ field.name } isRequired size={{ base: 'md', lg: 'lg' }}>
         <Input
           { ...field }
           required

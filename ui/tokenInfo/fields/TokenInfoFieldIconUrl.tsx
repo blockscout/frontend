@@ -54,7 +54,7 @@ const TokenInfoFieldIconUrl = ({ control, isReadOnly, trigger }: Props) => {
 
   return (
     <Flex columnGap={ 5 }>
-      <FormControl variant="floating" id={ field.name } size="lg" isRequired>
+      <FormControl variant="floating" id={ field.name } size={{ base: 'md', lg: 'lg' }} isRequired>
         <Input
           { ...field }
           onBlur={ handleBlur }

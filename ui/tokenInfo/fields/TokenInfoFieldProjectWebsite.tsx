@@ -16,7 +16,7 @@ interface Props {
 const TokenInfoFieldProjectWebsite = ({ control, isReadOnly }: Props) => {
   const renderControl: ControllerProps<Fields, 'project_website'>['render'] = React.useCallback(({ field, fieldState, formState }) => {
     return (
-      <FormControl variant="floating" id={ field.name } size="lg" isRequired>
+      <FormControl variant="floating" id={ field.name } size={{ base: 'md', lg: 'lg' }} isRequired>
         <Input
           { ...field }
           isInvalid={ Boolean(fieldState.error) }

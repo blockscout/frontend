@@ -18,7 +18,7 @@ const TokenInfoIconPreview = ({ url, onError, onLoad, isInvalid }: Props) => {
 
   return (
     <Center
-      boxSize="80px"
+      boxSize={{ base: '60px', lg: '80px' }}
       flexShrink={ 0 }
       borderWidth="2px"
       borderColor={ url ? borderColorActive : borderColor }
@@ -28,9 +28,9 @@ const TokenInfoIconPreview = ({ url, onError, onLoad, isInvalid }: Props) => {
         borderRadius="base"
         src={ url }
         alt="Token logo preview"
-        boxSize={ 12 }
+        boxSize={{ base: 10, lg: 12 }}
         objectFit="cover"
-        fallback={ url && !isInvalid ? <Skeleton boxSize={ 12 }/> : <TokenLogoPlaceholder boxSize={ 12 }/> }
+        fallback={ url && !isInvalid ? <Skeleton boxSize={{ base: 10, lg: 12 }}/> : <TokenLogoPlaceholder boxSize={{ base: 10, lg: 12 }}/> }
         onError={ onError }
         onLoad={ onLoad }
       />

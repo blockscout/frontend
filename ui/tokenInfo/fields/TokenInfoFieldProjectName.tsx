@@ -16,7 +16,7 @@ const TokenInfoFieldProjectName = ({ control, isReadOnly }: Props) => {
   const renderControl: ControllerProps<Fields, 'project_name'>['render'] = React.useCallback(({ field, fieldState, formState }) => {
 
     return (
-      <FormControl variant="floating" id={ field.name } size="lg">
+      <FormControl variant="floating" id={ field.name } size={{ base: 'md', lg: 'lg' }}>
         <Input
           { ...field }
           isInvalid={ Boolean(fieldState.error) }

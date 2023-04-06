@@ -7,7 +7,7 @@ interface Props {
 
 const TokenInfoFormSectionHeader = ({ children }: Props) => {
   return (
-    <GridItem colSpan={ 2 } fontFamily="heading" fontSize="lg" fontWeight={ 500 } mt={ 3 }>
+    <GridItem colSpan={{ base: 1, lg: 2 }} fontFamily="heading" fontSize="lg" fontWeight={ 500 } mt={ 3 }>
       { children }
     </GridItem>
   );
