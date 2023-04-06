@@ -1,6 +1,6 @@
 import { FormControl, Icon, Input, InputRightElement, InputGroup } from '@chakra-ui/react';
 import React from 'react';
-import type { Control, ControllerRenderProps, FormState } from 'react-hook-form';
+import type { Control, ControllerProps } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 
 import type { Fields, SocialLinkFields } from '../types';
@@ -37,33 +37,30 @@ const SETTINGS: Record<keyof SocialLinkFields, Item> = {
 };
 
 interface Props {
-  formState: FormState<Fields>;
   control: Control<Fields>;
   isReadOnly?: boolean;
   name: keyof SocialLinkFields;
 }
 
-const TokenInfoFieldSocialLink = ({ formState, control, isReadOnly, name }: Props) => {
-  const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<Fields, typeof name>}) => {
-    const error = name in formState.errors ? formState.errors[name] : undefined;
-
+const TokenInfoFieldSocialLink = ({ control, isReadOnly, name }: Props) => {
+  const renderControl: ControllerProps<Fields, typeof name>['render'] = React.useCallback(({ field, fieldState, formState }) => {
     return (
       <FormControl variant="floating" id={ field.name } size="lg" sx={{ '.chakra-input__group input': { pr: '60px' } }}>
         <InputGroup>
           <Input
             { ...field }
-            isInvalid={ Boolean(error) }
+            isInvalid={ Boolean(fieldState.error) }
             isDisabled={ formState.isSubmitting || isReadOnly }
             autoComplete="off"
           />
-          <InputPlaceholder text={ SETTINGS[name].label } error={ error }/>
+          <InputPlaceholder text={ SETTINGS[name].label } error={ fieldState.error }/>
           <InputRightElement h="100%">
             <Icon as={ SETTINGS[name].icon } boxSize={ 6 } color={ field.value ? SETTINGS[name].color : '#718096' }/>
           </InputRightElement>
         </InputGroup>
       </FormControl>
     );
-  }, [ formState.errors, formState.isSubmitting, isReadOnly, name ]);
+  }, [ isReadOnly, name ]);
 
   return (
     <Controller

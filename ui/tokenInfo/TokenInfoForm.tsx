@@ -58,7 +58,7 @@ const TokenInfoForm = ({ id }: Props) => {
     return <ContentLoader/>;
   }
 
-  const fieldProps = { control, formState };
+  const fieldProps = { control };
 
   return (
     <form noValidate onSubmit={ onSubmit }>
@@ -104,7 +104,15 @@ const TokenInfoForm = ({ id }: Props) => {
           <TokenInfoFieldPriceTicker { ...fieldProps } name="ticker_defi_llama" label="DefiLlama URL "/>
         </GridItem>
       </Grid>
-      <Button type="submit" size="lg" mt={ 8 }>Send request</Button>
+      <Button
+        type="submit"
+        size="lg"
+        mt={ 8 }
+        isLoading={ formState.isSubmitting }
+        loadingText="Send request"
+      >
+        Send request
+      </Button>
     </form>
   );
 };

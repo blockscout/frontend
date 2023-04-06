@@ -1,6 +1,6 @@
 import { FormControl, Input } from '@chakra-ui/react';
 import React from 'react';
-import type { Control, ControllerRenderProps, FormState } from 'react-hook-form';
+import type { Control, ControllerProps } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 
 import type { Fields } from '../types';
@@ -9,28 +9,25 @@ import { validator } from 'lib/validations/url';
 import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
 interface Props {
-  formState: FormState<Fields>;
   control: Control<Fields>;
   isReadOnly?: boolean;
 }
 
-const TokenInfoFieldProjectWebsite = ({ formState, control, isReadOnly }: Props) => {
-  const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<Fields, 'project_website'>}) => {
-    const error = 'project_website' in formState.errors ? formState.errors.project_website : undefined;
-
+const TokenInfoFieldProjectWebsite = ({ control, isReadOnly }: Props) => {
+  const renderControl: ControllerProps<Fields, 'project_website'>['render'] = React.useCallback(({ field, fieldState, formState }) => {
     return (
       <FormControl variant="floating" id={ field.name } size="lg" isRequired>
         <Input
           { ...field }
-          isInvalid={ Boolean(error) }
+          isInvalid={ Boolean(fieldState.error) }
           isDisabled={ formState.isSubmitting || isReadOnly }
           autoComplete="off"
           required
         />
-        <InputPlaceholder text="Official project website" error={ error }/>
+        <InputPlaceholder text="Official project website" error={ fieldState.error }/>
       </FormControl>
     );
-  }, [ formState.errors, formState.isSubmitting, isReadOnly ]);
+  }, [ isReadOnly ]);
 
   return (
     <Controller
