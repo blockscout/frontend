@@ -5,7 +5,8 @@ import { Controller } from 'react-hook-form';
 
 import type { Fields } from '../types';
 
-import { validator } from 'lib/validations/url';
+import { validator as emailValidator } from 'lib/validations/email';
+import { validator as urlValidator } from 'lib/validations/url';
 import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
 interface Props {
@@ -24,17 +25,28 @@ const TokenInfoFieldSupport = ({ control, isReadOnly }: Props) => {
           isDisabled={ formState.isSubmitting || isReadOnly }
           autoComplete="off"
         />
-        <InputPlaceholder text="Support" error={ fieldState.error }/>
+        <InputPlaceholder text="Support URL or email" error={ fieldState.error }/>
       </FormControl>
     );
   }, [ isReadOnly ]);
+
+  const validate = React.useCallback((newValue: string | undefined) => {
+    const urlValidationResult = urlValidator(newValue);
+    const emailValidationResult = emailValidator(newValue || '');
+
+    if (urlValidationResult === true || emailValidationResult === true) {
+      return true;
+    }
+
+    return 'Invalid format';
+  }, []);
 
   return (
     <Controller
       name="support"
       control={ control }
       render={ renderControl }
-      rules={{ validate: validator }}
+      rules={{ validate }}
     />
   );
 };
