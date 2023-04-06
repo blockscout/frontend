@@ -1,45 +1,77 @@
-import { FormControl, Input } from '@chakra-ui/react';
+import { FormControl, Flex, Input } from '@chakra-ui/react';
 import React from 'react';
-import type { Control, ControllerRenderProps, FormState } from 'react-hook-form';
-import { Controller } from 'react-hook-form';
+import type { Control, UseFormTrigger } from 'react-hook-form';
+import { useController } from 'react-hook-form';
 
 import type { Fields } from '../types';
 
 import { times } from 'lib/html-entities';
-import { validator } from 'lib/validations/url';
+import { validator as validateUrl } from 'lib/validations/url';
 import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
+import TokenInfoIconPreview from '../TokenInfoIconPreview';
+
 interface Props {
-  formState: FormState<Fields>;
   control: Control<Fields>;
   isReadOnly?: boolean;
+  trigger: UseFormTrigger<Fields>;
 }
 
-const TokenInfoFieldIconUrl = ({ formState, control, isReadOnly }: Props) => {
-  const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<Fields, 'icon_url'>}) => {
-    const error = 'icon_url' in formState.errors ? formState.errors.icon_url : undefined;
+const TokenInfoFieldIconUrl = ({ control, isReadOnly, trigger }: Props) => {
 
-    return (
+  const [ valueForPreview, setValueForPreview ] = React.useState<string>();
+  const imageLoadError = React.useRef(false);
+
+  const validatePreview = React.useCallback(() => {
+    return imageLoadError.current ? 'Unable to load image' : true;
+  }, [ ]);
+
+  const { field, formState, fieldState } = useController({
+    name: 'icon_url',
+    control,
+    rules: {
+      required: true,
+      validate: { url: validateUrl, preview: validatePreview },
+    },
+  });
+
+  const handleImageLoadSuccess = React.useCallback(() => {
+    imageLoadError.current = false;
+    trigger('icon_url');
+  }, [ trigger ]);
+
+  const handleImageLoadError = React.useCallback(() => {
+    imageLoadError.current = true;
+    trigger('icon_url');
+  }, [ trigger ]);
+
+  const handleBlur = React.useCallback(() => {
+    // make trigger()
+    field.onBlur();
+    const isValidUrl = validateUrl(field.value);
+    isValidUrl === true && setValueForPreview(field.value);
+  }, [ field ]);
+
+  return (
+    <Flex columnGap={ 5 }>
       <FormControl variant="floating" id={ field.name } size="lg" isRequired>
         <Input
           { ...field }
-          isInvalid={ Boolean(error) }
+          onBlur={ handleBlur }
+          isInvalid={ Boolean(fieldState.error) }
           isDisabled={ formState.isSubmitting || isReadOnly }
           autoComplete="off"
           required
         />
-        <InputPlaceholder text={ `Link to icon URL, link to download a SVG or 48${ times }48 PNG icon logo` } error={ error }/>
+        <InputPlaceholder text={ `Link to icon URL, link to download a SVG or 48${ times }48 PNG icon logo` } error={ fieldState.error }/>
       </FormControl>
-    );
-  }, [ formState.errors, formState.isSubmitting, isReadOnly ]);
-
-  return (
-    <Controller
-      name="icon_url"
-      control={ control }
-      render={ renderControl }
-      rules={{ required: true, validate: validator }}
-    />
+      <TokenInfoIconPreview
+        url={ fieldState.error?.type === 'url' ? undefined : valueForPreview }
+        onLoad={ handleImageLoadSuccess }
+        onError={ !isReadOnly ? handleImageLoadError : undefined }
+        isInvalid={ fieldState.error?.type === 'preview' }
+      />
+    </Flex>
   );
 };
 

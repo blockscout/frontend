@@ -41,7 +41,7 @@ const TokenInfoForm = ({ id }: Props) => {
       address: '0x9d2a7b2b09b1d4786e36699d9f56b8c04e92cbb9',
     },
   });
-  const { handleSubmit, formState, control } = formApi;
+  const { handleSubmit, formState, control, trigger } = formApi;
 
   const onFormSubmit: SubmitHandler<Fields> = React.useCallback(async(data) => {
     // eslint-disable-next-line no-console
@@ -79,7 +79,7 @@ const TokenInfoForm = ({ id }: Props) => {
         <TokenInfoFieldDocs { ...fieldProps }/>
         <TokenInfoFieldSupport { ...fieldProps }/>
         <GridItem colSpan={ 2 }>
-          <TokenInfoFieldIconUrl { ...fieldProps }/>
+          <TokenInfoFieldIconUrl { ...fieldProps } trigger={ trigger }/>
         </GridItem>
         <GridItem colSpan={ 2 }>
           <TokenInfoFieldProjectDescription { ...fieldProps }/>
