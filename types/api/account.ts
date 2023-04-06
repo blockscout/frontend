@@ -204,3 +204,7 @@ export interface TokenInfoApplication {
   tokenAddress: string;
   twitter?: string;
 }
+
+export interface TokenInfoApplications {
+  submissions: Array<TokenInfoApplication>;
+}

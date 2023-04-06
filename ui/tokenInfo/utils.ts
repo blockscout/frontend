@@ -1,6 +1,39 @@
 import type { Fields } from './types';
 import type { TokenInfoApplication } from 'types/api/account';
 
+export function getFormDefaultValues(address: string, application: TokenInfoApplication | undefined): Partial<Fields> {
+  if (!application) {
+    return { address };
+  }
+
+  return {
+    address,
+    requester_name: application.requesterName,
+    requester_email: application.requesterEmail,
+    project_name: application.projectName,
+    project_sector: application.projectSector ? { value: application.projectSector, label: application.projectSector } : null,
+    project_email: application.projectEmail,
+    project_website: application.projectWebsite,
+    project_description: application.projectDescription || '',
+    docs: application.docs || '',
+    support: application.support || '',
+    icon_url: application.iconUrl,
+    ticker_coin_gecko: application.coinGeckoTicker || '',
+    ticker_coin_market_cap: application.coinMarketCapTicker,
+    ticker_defi_llama: application.defiLlamaTicker,
+    github: application.github || '',
+    telegram: application.telegram || '',
+    linkedin: application.linkedin || '',
+    discord: application.discord || '',
+    slack: application.slack || '',
+    twitter: application.twitter || '',
+    opensea: application.openSea || '',
+    facebook: application.facebook || '',
+    medium: application.medium || '',
+    reddit: application.reddit || '',
+  };
+}
+
 export function prepareRequestBody(data: Fields): Omit<TokenInfoApplication, 'id' | 'status'> {
   return {
     coinGeckoTicker: data.ticker_coin_gecko,

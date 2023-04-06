@@ -21,7 +21,10 @@ const VerifiedAddresses = () => {
   const [ selectedAddress, setSelectedAddress ] = React.useState<string>();
 
   const modalProps = useDisclosure();
-  const { data, isLoading, isError } = useApiQuery('verified_addresses', {
+  const addressesQuery = useApiQuery('verified_addresses', {
+    pathParams: { chainId: appConfig.network.id },
+  });
+  const applicationsQuery = useApiQuery('token_info_application', {
     pathParams: { chainId: appConfig.network.id },
   });
 
@@ -32,7 +35,9 @@ const VerifiedAddresses = () => {
   const handleItemAdd = React.useCallback((address: string) => {
     setSelectedAddress(address);
   }, []);
-  const handleItemEdit = React.useCallback(() => {}, []);
+  const handleItemEdit = React.useCallback((address: string) => {
+    setSelectedAddress(address);
+  }, []);
 
   const addButton = (
     <Box marginTop={ 8 }>
@@ -70,12 +75,15 @@ const VerifiedAddresses = () => {
     return (
       <Page>
         <PageTitle text="Token info application form" backLink={ backLink }/>
-        <TokenInfoForm address={ selectedAddress }/>
+        <TokenInfoForm
+          address={ selectedAddress }
+          application={ applicationsQuery.data?.submissions.find(({ tokenAddress }) => tokenAddress === selectedAddress) }
+        />
       </Page>
     );
   }
 
-  const content = data?.verifiedAddresses ? (
+  const content = addressesQuery.data?.verifiedAddresses ? (
     <>
       <Show below="lg" key="content-mobile" ssr={ false }>
         { data.verifiedAddresses.map((item) => (
@@ -88,7 +96,12 @@ const VerifiedAddresses = () => {
         )) }
       </Show>
       <Hide below="lg" key="content-desktop" ssr={ false }>
-        <VerifiedAddressesTable data={ data.verifiedAddresses } onItemEdit={ handleItemEdit } onItemAdd={ handleItemAdd }/>
+        <VerifiedAddressesTable
+          data={ addressesQuery.data.verifiedAddresses }
+          applications={ applicationsQuery.data?.submissions }
+          onItemEdit={ handleItemEdit }
+          onItemAdd={ handleItemAdd }
+        />
       </Hide>
     </>
   ) : null;
@@ -115,9 +128,9 @@ const VerifiedAddresses = () => {
         </chakra.div>
       </AccountPageDescription>
       <DataListDisplay
-        isLoading={ isLoading }
-        isError={ isError }
-        items={ data?.verifiedAddresses }
+        isLoading={ addressesQuery.isLoading || applicationsQuery.isLoading }
+        isError={ addressesQuery.isError || applicationsQuery.isError }
+        items={ addressesQuery.data?.verifiedAddresses }
         content={ content }
         emptyText=""
         skeletonProps={{ customSkeleton: skeleton }}
