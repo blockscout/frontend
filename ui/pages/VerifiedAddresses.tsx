@@ -66,7 +66,10 @@ const VerifiedAddresses = () => {
           return { submissions: [ newItem ] };
         }
 
-        const submissions = prevData.submissions.map((item) => item.id === newItem.id ? newItem : item);
+        const isExisting = prevData.submissions.some((item) => item.id === newItem.id);
+        const submissions = isExisting ?
+          prevData.submissions.map((item) => item.id === newItem.id ? newItem : item) :
+          [ newItem, ...prevData.submissions ];
         return { submissions };
       });
   }, [ queryClient ]);
