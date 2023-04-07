@@ -136,7 +136,15 @@ const CodeEditor = ({ data }: Props) => {
     const target = event.target as HTMLSpanElement;
     const isImportLink = target.classList.contains('import-link');
     if (isImportLink) {
-      const path = target.innerText;
+      const path = [
+        target.previousElementSibling as HTMLSpanElement,
+        target,
+        target.nextElementSibling as HTMLSpanElement,
+      ]
+        .filter((element) => element?.classList.contains('import-link'))
+        .map((element: HTMLSpanElement) => element.innerText)
+        .join('');
+
       const fullPath = getFullPathOfImportedFile(data[index].file_path, path);
       const fileIndex = data.findIndex((file) => file.file_path === fullPath);
       if (fileIndex > -1) {
@@ -165,12 +173,10 @@ const CodeEditor = ({ data }: Props) => {
     '.highlight': {
       backgroundColor: themeColors['custom.findMatchHighlightBackground'],
     },
-    '&&.meta-pressed .import-link': {
-      _hover: {
-        color: themeColors['custom.fileLink.hoverForeground'],
-        textDecoration: 'underline',
-        cursor: 'pointer',
-      },
+    '&&.meta-pressed .import-link:hover, &&.meta-pressed .import-link:hover + .import-link': {
+      color: themeColors['custom.fileLink.hoverForeground'],
+      textDecoration: 'underline',
+      cursor: 'pointer',
     },
   }), [ editorWidth, themeColors ]);
 
