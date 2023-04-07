@@ -112,14 +112,14 @@ export const RESOURCES = {
     basePath: appConfig.contractInfoApi.basePath,
   },
 
-  token_info_application_config: {
+  token_info_applications_config: {
     path: '/api/v1/chains/:chainId/token-info-submissions/selectors',
     pathParams: [ 'chainId' as const ],
     endpoint: appConfig.adminServiceApi.endpoint,
     basePath: appConfig.adminServiceApi.basePath,
   },
 
-  token_info_application: {
+  token_info_applications: {
     path: '/api/v1/chains/:chainId/token-info-submissions',
     pathParams: [ 'chainId' as const ],
     endpoint: appConfig.adminServiceApi.endpoint,
@@ -525,8 +525,8 @@ Q extends 'private_tags_tx' ? TransactionTags :
 Q extends 'api_keys' ? ApiKeys :
 Q extends 'watchlist' ? Array<WatchlistAddress> :
 Q extends 'verified_addresses' ? VerifiedAddressResponse :
-Q extends 'token_info_application_config' ? TokenInfoApplicationConfig :
-Q extends 'token_info_application' ? TokenInfoApplications :
+Q extends 'token_info_applications_config' ? TokenInfoApplicationConfig :
+Q extends 'token_info_applications' ? TokenInfoApplications :
 Q extends 'homepage_stats' ? HomeStats :
 Q extends 'homepage_chart_txs' ? ChartTransactionResponse :
 Q extends 'homepage_chart_market' ? ChartMarketResponse :

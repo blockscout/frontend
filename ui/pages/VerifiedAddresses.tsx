@@ -1,8 +1,11 @@
 import { OrderedList, ListItem, chakra, Button, useDisclosure, Show, Hide, Skeleton, Box } from '@chakra-ui/react';
+import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
+import type { VerifiedAddress, TokenInfoApplication, TokenInfoApplications, VerifiedAddressResponse } from 'types/api/account';
+
 import appConfig from 'configs/app/config';
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import AddressVerificationModal from 'ui/addressVerification/AddressVerificationModal';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
@@ -23,9 +26,10 @@ const VerifiedAddresses = () => {
   const addressesQuery = useApiQuery('verified_addresses', {
     pathParams: { chainId: appConfig.network.id },
   });
-  const applicationsQuery = useApiQuery('token_info_application', {
+  const applicationsQuery = useApiQuery('token_info_applications', {
     pathParams: { chainId: appConfig.network.id },
   });
+  const queryClient = useQueryClient();
 
   const handleGoBack = React.useCallback(() => {
     setSelectedAddress(undefined);
@@ -37,6 +41,33 @@ const VerifiedAddresses = () => {
   const handleItemEdit = React.useCallback((address: string) => {
     setSelectedAddress(address);
   }, []);
+
+  const handleAddressSubmit = React.useCallback((newItem: VerifiedAddress) => {
+    queryClient.setQueryData(
+      getResourceKey('verified_addresses', { pathParams: { chainId: appConfig.network.id } }),
+      (prevData: VerifiedAddressResponse | undefined) => {
+        if (!prevData) {
+          return { verifiedAddresses: [ newItem ] };
+        }
+
+        return {
+          verifiedAddresses: [ newItem, ...prevData.verifiedAddresses ],
+        };
+      });
+  }, [ queryClient ]);
+
+  const handleApplicationSubmit = React.useCallback((newItem: TokenInfoApplication) => {
+    queryClient.setQueryData(
+      getResourceKey('token_info_applications', { pathParams: { chainId: appConfig.network.id } }),
+      (prevData: TokenInfoApplications | undefined) => {
+        if (!prevData) {
+          return { submissions: [ newItem ] };
+        }
+
+        const submissions = prevData.submissions.map((item) => item.id === newItem.id ? newItem : item);
+        return { submissions };
+      });
+  }, [ queryClient ]);
 
   const addButton = (
     <Button size="lg" onClick={ modalProps.onOpen } marginTop={ 8 }>
@@ -75,6 +106,7 @@ const VerifiedAddresses = () => {
         <TokenInfoForm
           address={ selectedAddress }
           application={ applicationsQuery.data?.submissions.find(({ tokenAddress }) => tokenAddress === selectedAddress) }
+          onSubmit={ handleApplicationSubmit }
         />
       </Page>
     );
@@ -127,7 +159,7 @@ const VerifiedAddresses = () => {
         emptyText=""
         skeletonProps={{ customSkeleton: skeleton }}
       />
-      <AddressVerificationModal isOpen={ modalProps.isOpen } onClose={ modalProps.onClose }/>
+      <AddressVerificationModal isOpen={ modalProps.isOpen } onClose={ modalProps.onClose } onSubmit={ handleAddressSubmit }/>
     </Page>
   );
 };
