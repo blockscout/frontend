@@ -35,9 +35,10 @@ const EDITOR_HEIGHT = 500;
 
 interface Props {
   data: Array<File>;
+  remappings?: Array<string>;
 }
 
-const CodeEditor = ({ data }: Props) => {
+const CodeEditor = ({ data, remappings }: Props) => {
   const [ instance, setInstance ] = React.useState<Monaco | undefined>();
   const [ editor, setEditor ] = React.useState<monaco.editor.IStandaloneCodeEditor | undefined>();
   const [ index, setIndex ] = React.useState(0);
@@ -145,14 +146,14 @@ const CodeEditor = ({ data }: Props) => {
         .map((element: HTMLSpanElement) => element.innerText)
         .join('');
 
-      const fullPath = getFullPathOfImportedFile(data[index].file_path, path);
+      const fullPath = getFullPathOfImportedFile(data[index].file_path, path, remappings);
       const fileIndex = data.findIndex((file) => file.file_path === fullPath);
       if (fileIndex > -1) {
         event.stopPropagation();
         handleSelectFile(fileIndex);
       }
     }
-  }, [ data, handleSelectFile, index, isMetaPressed, isMobile ]);
+  }, [ data, handleSelectFile, index, isMetaPressed, isMobile, remappings ]);
 
   const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
     isMetaKey(event) && setIsMetaPressed(true);

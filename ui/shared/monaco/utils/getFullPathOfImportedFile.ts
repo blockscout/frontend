@@ -1,8 +1,17 @@
 import stripLeadingSlash from 'lib/stripLeadingSlash';
 
-export default function getFullPathOfImportedFile(baseFilePath: string, importedFilePath: string) {
+export default function getFullPathOfImportedFile(baseFilePath: string, importedFilePath: string, remappings?: Array<string>) {
   if (importedFilePath[0] !== '.') {
-    return importedFilePath[0] === '/' ? importedFilePath : '/' + importedFilePath;
+    let result = importedFilePath;
+
+    if (remappings && remappings.length > 0) {
+      const [ alias, target ] = remappings.map((item) => item.split('=')).find(([ key ]) => importedFilePath.startsWith(key)) || [];
+      if (alias) {
+        result = importedFilePath.replace(alias, target);
+      }
+    }
+
+    return result[0] === '/' ? result : '/' + result;
   }
 
   const baseFileChunks = stripLeadingSlash(baseFilePath).split('/');

@@ -30,7 +30,10 @@ export interface SmartContract {
   file_path: string;
   additional_sources: Array<{ file_path: string; source_code: string }>;
   external_libraries: Array<SmartContractExternalLibrary> | null;
-  compiler_settings: unknown;
+  compiler_settings?: {
+    evmVersion?: string;
+    remappings?: Array<string>;
+  };
   verified_twin_address_hash: string | null;
   minimal_proxy_address_hash: string | null;
 }
