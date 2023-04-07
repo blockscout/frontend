@@ -7,6 +7,7 @@ import type { Fields } from './types';
 import type { TokenInfoApplication } from 'types/api/account';
 
 import appConfig from 'configs/app/config';
+import type { ResourceError } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 import useApiQuery from 'lib/api/useApiQuery';
 import useToast from 'lib/hooks/useToast';
@@ -56,10 +57,12 @@ const TokenInfoForm = ({ address, application, onSubmit }: Props) => {
   const onFormSubmit: SubmitHandler<Fields> = React.useCallback(async(data) => {
     try {
       const submission = prepareRequestBody(data);
+      const isNewApplication = !application?.id || [ 'REJECTED', 'APPROVED' ].includes(application.status);
+
       const result = await apiFetch<'token_info_applications', TokenInfoApplication, { message: string }>('token_info_applications', {
-        pathParams: { chainId: appConfig.network.id, id: application?.id },
+        pathParams: { chainId: appConfig.network.id, id: !isNewApplication ? application.id : undefined },
         fetchParams: {
-          method: application?.id ? 'PUT' : 'POST',
+          method: isNewApplication ? 'POST' : 'PUT',
           body: { submission },
         },
       });
@@ -73,13 +76,13 @@ const TokenInfoForm = ({ address, application, onSubmit }: Props) => {
       toast({
         position: 'top-right',
         title: 'Error',
-        description: (error as Error)?.message || 'Something went wrong. Try again later.',
+        description: (error as ResourceError<{ message: string }>)?.payload?.message || 'Something went wrong. Try again later.',
         status: 'error',
         variant: 'subtle',
         isClosable: true,
       });
     }
-  }, [ apiFetch, application?.id, onSubmit, toast ]);
+  }, [ apiFetch, application?.id, application?.status, onSubmit, toast ]);
 
   useUpdateEffect(() => {
     if (formState.submitCount > 0 && !formState.isValid) {
