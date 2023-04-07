@@ -8,7 +8,7 @@ export default function addFileImportDecorations(model: monaco.editor.ITextModel
     },
   };
 
-  const regularImportMatches = model.findMatches('^import (\'|")((\\/|\\.).+)(\'|")', false, true, false, null, true);
+  const regularImportMatches = model.findMatches('^import (\'|")(.+)(\'|")', false, true, false, null, true);
   const regularImportDecorations: Array<monaco.editor.IModelDeltaDecoration> = regularImportMatches.map(({ range }) => ({
     range: {
       ...range,
@@ -18,7 +18,7 @@ export default function addFileImportDecorations(model: monaco.editor.ITextModel
     options,
   }));
 
-  const namedImportMatches = model.findMatches('(^import \\{.+\\} from )(\'|")((\\/|\\.).+)(\'|")', false, true, false, null, true);
+  const namedImportMatches = model.findMatches('(^import \\{.+\\} from )(\'|")(.+)(\'|")', false, true, false, null, true);
   const namedImportDecorations: Array<monaco.editor.IModelDeltaDecoration> = namedImportMatches.map(({ range, matches }) => ({
     range: {
       ...range,

@@ -1,12 +1,8 @@
 import stripLeadingSlash from 'lib/stripLeadingSlash';
 
 export default function getFullPathOfImportedFile(baseFilePath: string, importedFilePath: string) {
-  if (importedFilePath[0] === '/') {
-    return importedFilePath;
-  }
-
   if (importedFilePath[0] !== '.') {
-    return;
+    return importedFilePath[0] === '/' ? importedFilePath : '/' + importedFilePath;
   }
 
   const baseFileChunks = stripLeadingSlash(baseFilePath).split('/');
