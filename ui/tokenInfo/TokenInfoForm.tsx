@@ -1,4 +1,4 @@
-import { Button, Grid, GridItem } from '@chakra-ui/react';
+import { Alert, Button, Grid, GridItem } from '@chakra-ui/react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
@@ -9,6 +9,7 @@ import type { TokenInfoApplication } from 'types/api/account';
 import appConfig from 'configs/app/config';
 import useApiFetch from 'lib/api/useApiFetch';
 import useApiQuery from 'lib/api/useApiQuery';
+import useToast from 'lib/hooks/useToast';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
@@ -31,13 +32,15 @@ import { getFormDefaultValues, prepareRequestBody } from './utils';
 interface Props {
   address: string;
   application?: TokenInfoApplication;
+  onSubmit: (application: TokenInfoApplication) => void;
 }
 
-const TokenInfoForm = ({ address, application }: Props) => {
+const TokenInfoForm = ({ address, application, onSubmit }: Props) => {
 
   const apiFetch = useApiFetch();
+  const toast = useToast();
 
-  const configQuery = useApiQuery('token_info_application_config', {
+  const configQuery = useApiQuery('token_info_applications_config', {
     pathParams: { chainId: appConfig.network.id },
   });
 
@@ -50,17 +53,30 @@ const TokenInfoForm = ({ address, application }: Props) => {
   const onFormSubmit: SubmitHandler<Fields> = React.useCallback(async(data) => {
     try {
       const submission = prepareRequestBody(data);
-      await apiFetch('token_info_application', {
+      const result = await apiFetch<'token_info_applications', TokenInfoApplication, { message: string }>('token_info_applications', {
         pathParams: { chainId: appConfig.network.id },
         fetchParams: {
           method: 'POST',
           body: { submission },
         },
       });
-    } catch (error) {}
-  }, [ apiFetch ]);
 
-  const onSubmit = handleSubmit(onFormSubmit);
+      if ('id' in result) {
+        onSubmit(result);
+      } else {
+        throw result;
+      }
+    } catch (error) {
+      toast({
+        position: 'top-right',
+        title: 'Error',
+        description: (error as Error)?.message || 'Something went wrong. Try again later.',
+        status: 'error',
+        variant: 'subtle',
+        isClosable: true,
+      });
+    }
+  }, [ apiFetch, onSubmit, toast ]);
 
   if (configQuery.isError) {
     return <DataFetchAlert/>;
@@ -73,8 +89,10 @@ const TokenInfoForm = ({ address, application }: Props) => {
   const fieldProps = { control, isReadOnly: application?.status === 'IN_PROCESS' };
 
   return (
-    <form noValidate onSubmit={ onSubmit } autoComplete="off">
+    <form noValidate onSubmit={ handleSubmit(onFormSubmit) } autoComplete="off">
       <div>Requests are sent to a moderator for review and approval. This process can take several days.</div>
+      { application?.status === 'IN_PROCESS' &&
+        <Alert status="warning" mt={ 6 }>Request in progress. Once an admin approves your request you can edit token info.</Alert> }
       <Grid mt={ 8 } gridTemplateColumns={{ base: '1fr', lg: '1fr 1fr' }} columnGap={ 5 } rowGap={ 5 }>
 
         <GridItem colSpan={{ base: 1, lg: 2 }}>

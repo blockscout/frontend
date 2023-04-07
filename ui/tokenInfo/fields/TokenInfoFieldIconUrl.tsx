@@ -19,9 +19,6 @@ interface Props {
 
 const TokenInfoFieldIconUrl = ({ control, isReadOnly, trigger }: Props) => {
 
-  const [ valueForPreview, setValueForPreview ] = React.useState<string>();
-  const imageLoadError = React.useRef(false);
-
   const validatePreview = React.useCallback(() => {
     return imageLoadError.current ? 'Unable to load image' : true;
   }, [ ]);
@@ -35,6 +32,9 @@ const TokenInfoFieldIconUrl = ({ control, isReadOnly, trigger }: Props) => {
     },
   });
 
+  const [ valueForPreview, setValueForPreview ] = React.useState<string>(field.value);
+  const imageLoadError = React.useRef(false);
+
   const handleImageLoadSuccess = React.useCallback(() => {
     imageLoadError.current = false;
     trigger('icon_url');
@@ -46,7 +46,6 @@ const TokenInfoFieldIconUrl = ({ control, isReadOnly, trigger }: Props) => {
   }, [ trigger ]);
 
   const handleBlur = React.useCallback(() => {
-    // make trigger()
     field.onBlur();
     const isValidUrl = validateUrl(field.value);
     isValidUrl === true && setValueForPreview(field.value);
