@@ -10,6 +10,7 @@ import appConfig from 'configs/app/config';
 import useApiFetch from 'lib/api/useApiFetch';
 import useApiQuery from 'lib/api/useApiQuery';
 import useToast from 'lib/hooks/useToast';
+import useUpdateEffect from 'lib/hooks/useUpdateEffect';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
@@ -37,6 +38,8 @@ interface Props {
 
 const TokenInfoForm = ({ address, application, onSubmit }: Props) => {
 
+  const containerRef = React.useRef<HTMLFormElement>(null);
+
   const apiFetch = useApiFetch();
   const toast = useToast();
 
@@ -54,9 +57,9 @@ const TokenInfoForm = ({ address, application, onSubmit }: Props) => {
     try {
       const submission = prepareRequestBody(data);
       const result = await apiFetch<'token_info_applications', TokenInfoApplication, { message: string }>('token_info_applications', {
-        pathParams: { chainId: appConfig.network.id },
+        pathParams: { chainId: appConfig.network.id, id: application?.id },
         fetchParams: {
-          method: 'POST',
+          method: application?.id ? 'PUT' : 'POST',
           body: { submission },
         },
       });
@@ -76,7 +79,13 @@ const TokenInfoForm = ({ address, application, onSubmit }: Props) => {
         isClosable: true,
       });
     }
-  }, [ apiFetch, onSubmit, toast ]);
+  }, [ apiFetch, application?.id, onSubmit, toast ]);
+
+  useUpdateEffect(() => {
+    if (formState.submitCount > 0 && !formState.isValid) {
+      containerRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [ formState.isValid, formState.submitCount ]);
 
   if (configQuery.isError) {
     return <DataFetchAlert/>;
@@ -89,7 +98,7 @@ const TokenInfoForm = ({ address, application, onSubmit }: Props) => {
   const fieldProps = { control, isReadOnly: application?.status === 'IN_PROCESS' };
 
   return (
-    <form noValidate onSubmit={ handleSubmit(onFormSubmit) } autoComplete="off">
+    <form noValidate onSubmit={ handleSubmit(onFormSubmit) } autoComplete="off" ref={ containerRef }>
       <div>Requests are sent to a moderator for review and approval. This process can take several days.</div>
       { application?.status === 'IN_PROCESS' &&
         <Alert status="warning" mt={ 6 }>Request in progress. Once an admin approves your request you can edit token info.</Alert> }

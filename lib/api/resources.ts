@@ -120,8 +120,8 @@ export const RESOURCES = {
   },
 
   token_info_applications: {
-    path: '/api/v1/chains/:chainId/token-info-submissions',
-    pathParams: [ 'chainId' as const ],
+    path: '/api/v1/chains/:chainId/token-info-submissions/:id?',
+    pathParams: [ 'chainId' as const, 'id' as const ],
     endpoint: appConfig.adminServiceApi.endpoint,
     basePath: appConfig.adminServiceApi.basePath,
   },

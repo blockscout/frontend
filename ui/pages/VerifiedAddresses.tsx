@@ -28,7 +28,7 @@ const VerifiedAddresses = () => {
     pathParams: { chainId: appConfig.network.id },
   });
   const applicationsQuery = useApiQuery('token_info_applications', {
-    pathParams: { chainId: appConfig.network.id },
+    pathParams: { chainId: appConfig.network.id, id: undefined },
   });
   const queryClient = useQueryClient();
 
@@ -58,8 +58,9 @@ const VerifiedAddresses = () => {
   }, [ queryClient ]);
 
   const handleApplicationSubmit = React.useCallback((newItem: TokenInfoApplication) => {
+    setSelectedAddress(undefined);
     queryClient.setQueryData(
-      getResourceKey('token_info_applications', { pathParams: { chainId: appConfig.network.id } }),
+      getResourceKey('token_info_applications', { pathParams: { chainId: appConfig.network.id, id: undefined } }),
       (prevData: TokenInfoApplications | undefined) => {
         if (!prevData) {
           return { submissions: [ newItem ] };

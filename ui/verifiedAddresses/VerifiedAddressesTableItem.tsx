@@ -50,7 +50,7 @@ const VerifiedAddressesTableItem = ({ item, application, onAdd, onEdit }: Props)
       <Td>
         <AddressSnippet address={{ hash: item.contractAddress, is_contract: true, implementation_name: null }}/>
       </Td>
-      <Td>
+      <Td fontSize="sm">
         { application ? (
           <Flex alignItems="center" columnGap={ 2 } w="100%">
             <Image
@@ -84,8 +84,8 @@ const VerifiedAddressesTableItem = ({ item, application, onAdd, onEdit }: Props)
           <Link onClick={ handleAddClick }>Add details</Link>
         ) }
       </Td>
-      <Td>{ status }</Td>
-      <Td></Td>
+      <Td fontSize="sm">{ status }</Td>
+      <Td fontSize="sm"></Td>
     </Tr>
   );
 };
