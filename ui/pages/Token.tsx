@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
+import appConfig from 'configs/app/config';
 import iconSuccess from 'icons/status/success.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/appContext';
@@ -88,6 +89,12 @@ const TokenPageContent = () => {
   const contractQuery = useApiQuery('address', {
     pathParams: { hash: hashString },
     queryOptions: { enabled: Boolean(router.query.hash) },
+  });
+
+  const isVerifiedInfoEnabled = Boolean(appConfig.contractInfoApi.endpoint);
+  const verifiedInfoQuery = useApiQuery('token_verified_info', {
+    pathParams: { hash: hashString, chainId: appConfig.network.id },
+    queryOptions: { enabled: Boolean(tokenQuery.data) && isVerifiedInfoEnabled },
   });
 
   const contractTabs = useContractTabs(contractQuery.data);
@@ -187,7 +194,7 @@ const TokenPageContent = () => {
         </>
       ) }
       <TokenContractInfo tokenQuery={ tokenQuery }/>
-      <TokenDetails tokenQuery={ tokenQuery }/>
+      <TokenDetails tokenQuery={ tokenQuery } verifiedInfoQuery={ verifiedInfoQuery } isVerifiedInfoEnabled={ isVerifiedInfoEnabled }/>
       { /* should stay before tabs to scroll up with pagination */ }
       <Box ref={ scrollRef }></Box>
 
