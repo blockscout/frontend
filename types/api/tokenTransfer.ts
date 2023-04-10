@@ -1,5 +1,5 @@
 import type { AddressParam } from './addressParams';
-import type { TokenInfoGeneric, TokenType } from './token';
+import type { TokenInfo, TokenType } from './token';
 
 export type Erc20TotalPayload = {
   decimals: string | null;
@@ -18,20 +18,20 @@ export type Erc1155TotalPayload = {
 
 export type TokenTransfer = (
   {
-    token: TokenInfoGeneric<'ERC-20'>;
+    token: TokenInfo<'ERC-20'>;
     total: Erc20TotalPayload;
   } |
   {
-    token: TokenInfoGeneric<'ERC-721'>;
+    token: TokenInfo<'ERC-721'>;
     total: Erc721TotalPayload;
   } |
   {
-    token: TokenInfoGeneric<'ERC-1155'>;
-    total: Erc1155TotalPayload | Array<Erc1155TotalPayload>;
+    token: TokenInfo<'ERC-1155'>;
+    total: Erc1155TotalPayload;
   }
 ) & TokenTransferBase
 
-export type TokenTotal = Erc20TotalPayload | Erc721TotalPayload | Erc1155TotalPayload | Array<Erc1155TotalPayload>;
+export type TokenTotal = Erc20TotalPayload | Erc721TotalPayload | Erc1155TotalPayload;
 
 interface TokenTransferBase {
   type: 'token_transfer' | 'token_burning' | 'token_spawning' | 'token_minting';
