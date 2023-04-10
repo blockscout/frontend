@@ -14,7 +14,7 @@ interface MethodOption {
 export interface FormFieldsFlattenSourceCode {
   method: MethodOption;
   is_yul: boolean;
-  name: string;
+  name: string | undefined;
   compiler: Option | null;
   evm_version: Option | null;
   is_optimization_enabled: boolean;
@@ -53,9 +53,10 @@ export interface FormFieldsMultiPartFile {
 export interface FormFieldsVyperContract {
   method: MethodOption;
   name: string;
+  evm_version: Option | null;
   compiler: Option | null;
   code: string;
-  constructor_args: string;
+  constructor_args: string | undefined;
 }
 
 export interface FormFieldsVyperMultiPartFile {
