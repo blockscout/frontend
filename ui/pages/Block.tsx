@@ -11,7 +11,6 @@ import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import BlockDetails from 'ui/block/BlockDetails';
 import TextAd from 'ui/shared/ad/TextAd';
-import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/Pagination';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
@@ -39,12 +38,16 @@ const BlockPageContent = () => {
     resourceName: 'block_txs',
     pathParams: { height },
     options: {
-      enabled: Boolean(height && tab === 'txs'),
+      enabled: Boolean(blockQuery.data?.height && tab === 'txs'),
     },
   });
 
   if (!height) {
     throw new Error('Block not found', { cause: { status: 404 } });
+  }
+
+  if (blockQuery.isError) {
+    throw new Error(undefined, { cause: blockQuery.error });
   }
 
   const tabs: Array<RoutedTab> = React.useMemo(() => ([
@@ -57,7 +60,7 @@ const BlockPageContent = () => {
   const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/blocks');
 
   return (
-    <Page>
+    <>
       { blockQuery.isLoading ? <Skeleton h={{ base: 12, lg: 6 }} mb={ 6 } w="100%" maxW="680px"/> : <TextAd mb={ 6 }/> }
       { blockQuery.isLoading ? (
         <Skeleton h={ 10 } w="300px" mb={ 6 }/>
@@ -74,7 +77,7 @@ const BlockPageContent = () => {
         rightSlot={ hasPagination ? <Pagination { ...blockTxsQuery.pagination }/> : null }
         stickyEnabled={ hasPagination }
       />
-    </Page>
+    </>
   );
 };
 
