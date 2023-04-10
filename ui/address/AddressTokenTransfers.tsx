@@ -72,7 +72,7 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
   const [ socketAlert, setSocketAlert ] = React.useState('');
   const [ newItemsCount, setNewItemsCount ] = React.useState(0);
 
-  const tokenFilter = getQueryParamString(router.query.token_hash) || undefined;
+  const tokenFilter = getQueryParamString(router.query.token) || undefined;
 
   const [ filters, setFilters ] = React.useState<Filters>(
     {

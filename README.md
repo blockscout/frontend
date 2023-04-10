@@ -45,8 +45,8 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_NETWORK_NAME | `string` | Displayed name of the network | `Gnosis Chain` |
 | NEXT_PUBLIC_NETWORK_SHORT_NAME | `string` *(optional)* | Used for SEO attributes (page title and description) | `OoG` |
 | NEXT_PUBLIC_NETWORK_TYPE | `string` *(optional)* | Network type (used for matching pre-defined assets, e.g network logo and icon, which are stored in the project). See all possible values here | `xdai_mainnet` |
-| NEXT_PUBLIC_NETWORK_ID | `number` | Chain id, see [https://chainlist.org/](https://chainlist.org/) for the reference | `99` |
-| NEXT_PUBLIC_NETWORK_RPC_URL | `string` *(optional)* | Chain server RPC url, see [https://chainlist.org/](https://chainlist.org/) for the reference. If not provided, some functionality of the explorer, related to smart contracts interaction and third-party apps integration, will be unavailable | `https://core.poa.network` |
+| NEXT_PUBLIC_NETWORK_ID | `number` | Chain id, see [https://chainlist.org](https://chainlist.org) for the reference | `99` |
+| NEXT_PUBLIC_NETWORK_RPC_URL | `string` *(optional)* | Chain server RPC url, see [https://chainlist.org](https://chainlist.org) for the reference. If not provided, some functionality of the explorer, related to smart contracts interaction and third-party apps integration, will be unavailable | `https://core.poa.network` |
 | NEXT_PUBLIC_NETWORK_CURRENCY_NAME | `string` | Network currency name | `Ether` |
 | NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL | `string` | Network currency symbol | `ETH` |
 | NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS | `string` | Network currency decimals | `18` |
@@ -139,6 +139,7 @@ The app instance could be customized by passing following variables to NodeJS en
 | --- | --- | --- | --- |
 | NEXT_PUBLIC_IS_L2_NETWORK | `boolean` *(optional)* | Set to true for L2 solutions (Optimism Bedrock based)  | false |
 | NEXT_PUBLIC_L1_BASE_URL | `string` *(optional)* | Base Blockscout URL for L1 network | `'http://eth-goerli.blockscout.com'` |
+| NEXT_PUBLIC_L2_WITHDRAWAL_URL | `string` *(optional)* | URL for L2 -> L1 withdrawals | `https://app.optimism.io/bridge/withdraw` |
 
 ### Marketplace app configuration properties
 

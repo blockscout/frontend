@@ -1,4 +1,4 @@
-import { Flex, Spinner, Text, Box, Icon } from '@chakra-ui/react';
+import { Flex, Spinner, Text, Box, Icon, useColorModeValue } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import capitalize from 'lodash/capitalize';
 import { route } from 'nextjs-routes';
@@ -15,7 +15,8 @@ import BlockTimestamp from 'ui/blocks/BlockTimestamp';
 import AddressLink from 'ui/shared/address/AddressLink';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
 import LinkInternal from 'ui/shared/LinkInternal';
-import ListItemMobile from 'ui/shared/ListItemMobile';
+import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
+import TextSeparator from 'ui/shared/TextSeparator';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
 interface Props {
@@ -28,6 +29,8 @@ const BlocksListItem = ({ data, isPending, enableTimeIncrement }: Props) => {
   const totalReward = getBlockTotalReward(data);
   const burntFees = BigNumber(data.burnt_fees || 0);
   const txFees = BigNumber(data.tx_fees || 0);
+
+  const separatorColor = useColorModeValue('gray.200', 'gray.700');
 
   return (
     <ListItemMobile rowGap={ 3 } key={ String(data.height) } isAnimated>
@@ -63,26 +66,35 @@ const BlocksListItem = ({ data, isPending, enableTimeIncrement }: Props) => {
       </Flex>
       <Box>
         <Text fontWeight={ 500 }>Gas used</Text>
-        <Flex columnGap={ 4 } mt={ 2 }>
-          <Text variant="secondary">{ BigNumber(data.gas_used || 0).toFormat() }</Text>
+        <Flex mt={ 2 }>
+          <Text variant="secondary" mr={ 4 }>{ BigNumber(data.gas_used || 0).toFormat() }</Text>
           <Utilization colorScheme="gray" value={ BigNumber(data.gas_used || 0).div(BigNumber(data.gas_limit)).toNumber() }/>
-          <GasUsedToTargetRatio value={ data.gas_target_percentage || undefined }/>
+          { data.gas_target_percentage && (
+            <>
+              <TextSeparator color={ separatorColor } mx={ 1 }/>
+              <GasUsedToTargetRatio value={ data.gas_target_percentage }/>
+            </>
+          ) }
         </Flex>
       </Box>
-      <Flex columnGap={ 2 }>
-        <Text fontWeight={ 500 }>Reward { appConfig.network.currency.symbol }</Text>
-        <Text variant="secondary">{ totalReward.toFixed() }</Text>
-      </Flex>
-      <Box>
-        <Text fontWeight={ 500 }>Burnt fees</Text>
-        <Flex columnGap={ 4 } mt={ 2 }>
-          <Flex>
-            <Icon as={ flameIcon } boxSize={ 5 } color="gray.500"/>
-            <Text variant="secondary" ml={ 1 }>{ burntFees.div(WEI).toFixed() }</Text>
+      { !appConfig.L2.isL2Network && (
+        <Flex columnGap={ 2 }>
+          <Text fontWeight={ 500 }>Reward { appConfig.network.currency.symbol }</Text>
+          <Text variant="secondary">{ totalReward.toFixed() }</Text>
+        </Flex>
+      ) }
+      { !appConfig.L2.isL2Network && (
+        <Box>
+          <Text fontWeight={ 500 }>Burnt fees</Text>
+          <Flex columnGap={ 4 } mt={ 2 }>
+            <Flex>
+              <Icon as={ flameIcon } boxSize={ 5 } color="gray.500"/>
+              <Text variant="secondary" ml={ 1 }>{ burntFees.div(WEI).toFixed() }</Text>
+            </Flex>
+            <Utilization ml={ 4 } value={ burntFees.div(txFees).toNumber() }/>
           </Flex>
-          <Utilization ml={ 4 } value={ burntFees.div(txFees).toNumber() }/>
-        </Flex>
-      </Box>
+        </Box>
+      ) }
     </ListItemMobile>
   );
 };

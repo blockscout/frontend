@@ -13,7 +13,7 @@ import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkInternal from 'ui/shared/LinkInternal';
-import ListItemMobile from 'ui/shared/ListItemMobile';
+import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TokenLogo from 'ui/shared/TokenLogo';
 
 interface Props {

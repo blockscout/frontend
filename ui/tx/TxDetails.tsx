@@ -268,7 +268,7 @@ const TxDetails = () => {
         <Text variant="secondary">({ BigNumber(data.gas_price).dividedBy(WEI_IN_GWEI).toFixed() } Gwei)</Text>
       </DetailsInfoItem>
       <DetailsInfoItem
-        title="Gas limit & usage by txn"
+        title="Gas usage & limit by txn"
         hint="Actual gas amount used by the transaction"
       >
         <Text>{ BigNumber(data.gas_used || 0).toFormat() }</Text>
@@ -304,7 +304,7 @@ const TxDetails = () => {
           ) }
         </DetailsInfoItem>
       ) }
-      { data.tx_burnt_fee && (
+      { data.tx_burnt_fee && !appConfig.L2.isL2Network && (
         <DetailsInfoItem
           title="Burnt fees"
           hint={ `Amount of ${ appConfig.network.currency.symbol } burned for this transaction. Equals Block Base Fee per Gas * Gas Used` }

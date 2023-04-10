@@ -19,3 +19,6 @@ export const minus = String.fromCharCode(8722); // −
 export const leftLineArrow = String.fromCharCode(8592); // ←
 export const rightLineArrow = String.fromCharCode(8594); // →
 export const apos = String.fromCharCode(39); // apostrophe '
+export const shift = String.fromCharCode(8679); // upwards white arrow ⇧
+export const cmd = String.fromCharCode(8984); // place of interest sign ⌘
+export const alt = String.fromCharCode(9095); // alternate key symbol ⎇

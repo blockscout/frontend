@@ -1,8 +1,9 @@
-import { test, expect } from '@playwright/experimental-ct-react';
+import { test as base, expect, devices } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import { token as contract } from 'mocks/address/address';
 import { tokenInfo, tokenCounters } from 'mocks/tokens/tokenInfo';
+import * as socketServer from 'playwright/fixtures/socketServer';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
 import insertAdPlaceholder from 'playwright/utils/insertAdPlaceholder';
@@ -20,8 +21,15 @@ const hooksConfig = {
   },
 };
 
-// FIXME: idk why mobile test doesn't work (it's ok locally)
-test('base view +@mobile +@dark-mode', async({ mount, page }) => {
+const test = base.extend<socketServer.SocketServerFixture>({
+  createSocket: socketServer.createSocket,
+});
+
+// FIXME
+// test cases which use socket cannot run in parallel since the socket server always run on the same port
+test.describe.configure({ mode: 'serial' });
+
+test.beforeEach(async({ page }) => {
   await page.route('https://request-global.czilladx.com/serve/native.php?z=19260bf627546ab7242', (route) => route.fulfill({
     status: 200,
     body: '',
@@ -43,15 +51,41 @@ test('base view +@mobile +@dark-mode', async({ mount, page }) => {
     status: 200,
     body: JSON.stringify({}),
   }));
+});
 
+test('base view', async({ mount, page, createSocket }) => {
   const component = await mount(
-    <TestApp>
+    <TestApp withSocket>
       <Token/>
     </TestApp>,
     { hooksConfig },
   );
 
+  const socket = await createSocket();
+  const channel = await socketServer.joinChannel(socket, 'tokens:1');
+  socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });
+
   await insertAdPlaceholder(page);
 
   await expect(component.locator('main')).toHaveScreenshot();
+});
+
+test.describe('mobile', () => {
+  test.use({ viewport: devices['iPhone 13 Pro'].viewport });
+  test('base view', async({ mount, page, createSocket }) => {
+    const component = await mount(
+      <TestApp withSocket>
+        <Token/>
+      </TestApp>,
+      { hooksConfig },
+    );
+
+    const socket = await createSocket();
+    const channel = await socketServer.joinChannel(socket, 'tokens:1');
+    socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });
+
+    await insertAdPlaceholder(page);
+
+    await expect(component.locator('main')).toHaveScreenshot();
+  });
 });

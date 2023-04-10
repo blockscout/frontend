@@ -31,6 +31,8 @@ export type TokenTransfer = (
   }
 ) & TokenTransferBase
 
+export type TokenTotal = Erc20TotalPayload | Erc721TotalPayload | Erc1155TotalPayload | Array<Erc1155TotalPayload>;
+
 interface TokenTransferBase {
   type: 'token_transfer' | 'token_burning' | 'token_spawning' | 'token_minting';
   tx_hash: string;

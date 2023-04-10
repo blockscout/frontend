@@ -6,6 +6,7 @@ import React from 'react';
 
 import type { Block } from 'types/api/block';
 
+import appConfig from 'configs/app/config';
 import flameIcon from 'icons/flame.svg';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import { WEI } from 'lib/consts';
@@ -13,6 +14,7 @@ import BlockTimestamp from 'ui/blocks/BlockTimestamp';
 import AddressLink from 'ui/shared/address/AddressLink';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
 import LinkInternal from 'ui/shared/LinkInternal';
+import TextSeparator from 'ui/shared/TextSeparator';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
 interface Props {
@@ -26,6 +28,8 @@ const BlocksTableItem = ({ data, isPending, enableTimeIncrement }: Props) => {
   const burntFees = BigNumber(data.burnt_fees || 0);
   const txFees = BigNumber(data.tx_fees || 0);
 
+  const separatorColor = useColorModeValue('gray.200', 'gray.700');
+  const burntFeesIconColor = useColorModeValue('gray.500', 'inherit');
   return (
     <Tr
       as={ motion.tr }
@@ -60,33 +64,38 @@ const BlocksTableItem = ({ data, isPending, enableTimeIncrement }: Props) => {
           </LinkInternal>
         ) : data.tx_count }
       </Td>
-      <Td fontSize="sm">
-        <Box>{ BigNumber(data.gas_used || 0).toFormat() }</Box>
-        <Flex mt={ 2 }>
-          <Tooltip label="Gas Used %">
-            <Box>
-              <Utilization colorScheme="gray" value={ BigNumber(data.gas_used || 0).dividedBy(BigNumber(data.gas_limit)).toNumber() }/>
-            </Box>
-          </Tooltip>
-          <Tooltip label="% of Gas Target">
-            <Box>
-              <GasUsedToTargetRatio ml={ 2 } value={ data.gas_target_percentage || undefined }/>
-            </Box>
-          </Tooltip>
-        </Flex>
-      </Td>
+      { !appConfig.L2.isL2Network && (
+        <Td fontSize="sm">
+          <Box>{ BigNumber(data.gas_used || 0).toFormat() }</Box>
+          <Flex mt={ 2 }>
+            <Tooltip label="Gas Used %">
+              <Box>
+                <Utilization colorScheme="gray" value={ BigNumber(data.gas_used || 0).dividedBy(BigNumber(data.gas_limit)).toNumber() }/>
+              </Box>
+            </Tooltip>
+            { data.gas_target_percentage && (
+              <>
+                <TextSeparator color={ separatorColor } mx={ 1 }/>
+                <GasUsedToTargetRatio value={ data.gas_target_percentage }/>
+              </>
+            ) }
+          </Flex>
+        </Td>
+      ) }
       <Td fontSize="sm">{ totalReward.toFixed(8) }</Td>
-      <Td fontSize="sm">
-        <Flex alignItems="center" columnGap={ 1 }>
-          <Icon as={ flameIcon } boxSize={ 5 } color={ useColorModeValue('gray.500', 'inherit') }/>
-          { burntFees.dividedBy(WEI).toFixed(8) }
-        </Flex>
-        <Tooltip label="Burnt fees / Txn fees * 100%">
-          <Box w="min-content">
-            <Utilization mt={ 2 } value={ burntFees.div(txFees).toNumber() }/>
-          </Box>
-        </Tooltip>
-      </Td>
+      { !appConfig.L2.isL2Network && (
+        <Td fontSize="sm">
+          <Flex alignItems="center" columnGap={ 1 }>
+            <Icon as={ flameIcon } boxSize={ 5 } color={ burntFeesIconColor }/>
+            { burntFees.dividedBy(WEI).toFixed(8) }
+          </Flex>
+          <Tooltip label="Burnt fees / Txn fees * 100%">
+            <Box w="min-content">
+              <Utilization mt={ 2 } value={ burntFees.div(txFees).toNumber() }/>
+            </Box>
+          </Tooltip>
+        </Td>
+      ) }
     </Tr>
   );
 };

@@ -9,7 +9,7 @@ import eastArrowIcon from 'icons/arrows/east.svg';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
-import ListItemMobile from 'ui/shared/ListItemMobile';
+import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TxStatus from 'ui/shared/TxStatus';
 import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 

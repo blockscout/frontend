@@ -13,7 +13,7 @@ import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import HashStringShorten from 'ui/shared/HashStringShorten';
-import ListItemMobile from 'ui/shared/ListItemMobile';
+import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 
 interface Props {
   data: VerifiedContract;

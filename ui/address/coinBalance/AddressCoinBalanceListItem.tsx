@@ -11,7 +11,7 @@ import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Address from 'ui/shared/address/Address';
 import AddressLink from 'ui/shared/address/AddressLink';
 import LinkInternal from 'ui/shared/LinkInternal';
-import ListItemMobile from 'ui/shared/ListItemMobile';
+import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 
 type Props = AddressCoinBalanceHistoryItem & {
   page: number;

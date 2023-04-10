@@ -12,6 +12,7 @@ type SkeletonProps =
   {
     skeletonDesktopColumns: Array<string>;
     isLongSkeleton?: boolean;
+    skeletonDesktopMinW?: string;
   }
 
 type FilterProps = {
@@ -22,8 +23,7 @@ type FilterProps = {
 type Props = {
   isError: boolean;
   isLoading: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  items?: Array<any>;
+  items?: Array<unknown>;
   emptyText: string;
   actionBar?: React.ReactNode;
   content: React.ReactNode;
@@ -50,6 +50,7 @@ const DataListDisplay = (props: Props) => {
               display={{ base: 'none', lg: 'block' }}
               columns={ props.skeletonProps.skeletonDesktopColumns || [] }
               isLong={ props.skeletonProps.isLongSkeleton }
+              minW={ props.skeletonProps.skeletonDesktopMinW }
             />
           </>
         ) }
