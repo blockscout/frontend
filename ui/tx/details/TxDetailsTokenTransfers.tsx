@@ -52,7 +52,7 @@ const TxDetailsTokenTransfers = ({ data, txHash }: Props) => {
               rowGap={ 5 }
               w="100%"
             >
-              { items.slice(0, VISIBLE_ITEMS_NUM).map((item, index) => <TxDetailsTokenTransfer key={ index } { ...item }/>) }
+              { items.slice(0, VISIBLE_ITEMS_NUM).map((item, index) => <TxDetailsTokenTransfer key={ index } data={ item }/>) }
             </Flex>
           </DetailsInfoItem>
         );
