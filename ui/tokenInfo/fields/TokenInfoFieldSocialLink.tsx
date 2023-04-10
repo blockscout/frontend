@@ -30,10 +30,10 @@ const SETTINGS: Record<keyof SocialLinkFields, Item> = {
   discord: { label: 'Discord', icon: iconDiscord, color: 'discord' },
   slack: { label: 'Slack', icon: iconSlack, color: 'slack' },
   twitter: { label: 'Twitter', icon: iconTwitter, color: 'twitter' },
-  opensea: { label: 'OpenSea', icon: iconOpenSea, color: 'orange' },
-  facebook: { label: 'Facebook', icon: iconFacebook, color: 'orange' },
-  medium: { label: 'Medium', icon: iconMedium, color: 'orange' },
-  reddit: { label: 'Reddit', icon: iconReddit, color: 'orange' },
+  opensea: { label: 'OpenSea', icon: iconOpenSea, color: 'opensea' },
+  facebook: { label: 'Facebook', icon: iconFacebook, color: 'facebook' },
+  medium: { label: 'Medium', icon: iconMedium, color: 'inherit' },
+  reddit: { label: 'Reddit', icon: iconReddit, color: 'reddit' },
 };
 
 interface Props {
