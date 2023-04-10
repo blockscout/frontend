@@ -56,6 +56,10 @@ const colors = {
   discord: '#9747FF',
   slack: '#1BA27A',
   twitter: '#63B3ED',
+  opensea: '#2081E2',
+  facebook: '#4460A0',
+  medium: '#231F20',
+  reddit: '#FF4500',
 };
 
 export default colors;
