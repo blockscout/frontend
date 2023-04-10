@@ -36,6 +36,7 @@ export const token: Address = {
   name: null,
   private_tags: [],
   watchlist_names: [],
+  watchlist_address_id: null,
   public_tags: [],
   token: tokenInfo,
   block_number_balance_updated_at: 8201413,
@@ -84,6 +85,7 @@ export const contract: Address = {
   public_tags: [ privateTag ],
   token: null,
   watchlist_names: [ watchlistName ],
+  watchlist_address_id: 42,
 };
 
 export const validator: Address = {
@@ -113,4 +115,5 @@ export const validator: Address = {
   public_tags: [],
   token: null,
   watchlist_names: [],
+  watchlist_address_id: null,
 };
