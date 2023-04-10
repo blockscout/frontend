@@ -1,4 +1,4 @@
-import { Box, Button, Heading, Icon, chakra } from '@chakra-ui/react';
+import { Box, Button, Heading, Icon, Text, chakra } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
@@ -13,7 +13,8 @@ const AppErrorBlockConsensus = ({ hash, className }: Props) => {
   return (
     <Box className={ className }>
       <Icon as={ icon404 } width="200px" height="auto"/>
-      <Heading mt={ 8 } size="2xl" fontFamily="body">Block has lost consensus</Heading>
+      <Heading mt={ 8 } size="2xl" fontFamily="body">Block not found</Heading>
+      <Text variant="secondary" mt={ 3 }>Block removed due to chain reorganization.</Text>
       <Button
         mt={ 8 }
         size="lg"
