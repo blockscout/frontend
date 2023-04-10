@@ -34,9 +34,11 @@ const VerifiedAddresses = () => {
   const handleItemEdit = React.useCallback(() => {}, []);
 
   const addButton = (
-    <Button size="lg" onClick={ modalProps.onOpen } marginTop={ 8 }>
-        Add address
-    </Button>
+    <Box marginTop={ 8 }>
+      <Button size="lg" onClick={ modalProps.onOpen }>
+          Add address
+      </Button>
+    </Box>
   );
 
   const skeleton = (
@@ -76,11 +78,9 @@ const VerifiedAddresses = () => {
     <>
       <Show below="lg" key="content-mobile" ssr={ false }>
         <div>mobile view</div>
-        { addButton }
       </Show>
       <Hide below="lg" key="content-desktop" ssr={ false }>
         <VerifiedAddressesTable data={ data.verifiedAddresses } onItemEdit={ handleItemEdit } onItemAdd={ handleItemAdd }/>
-        { addButton }
       </Hide>
     </>
   ) : null;
@@ -114,6 +114,7 @@ const VerifiedAddresses = () => {
         emptyText=""
         skeletonProps={{ customSkeleton: skeleton }}
       />
+      { addButton }
       <AddressVerificationModal isOpen={ modalProps.isOpen } onClose={ modalProps.onClose }/>
     </Page>
   );

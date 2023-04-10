@@ -21,7 +21,7 @@ const AddressVerificationFieldAddress = ({ formState, control }: Props) => {
     const error = 'address' in formState.errors ? formState.errors.address : undefined;
 
     return (
-      <FormControl variant="floating" id={ field.name } isRequired size="md" backgroundColor={ backgroundColor }>
+      <FormControl variant="floating" id={ field.name } isRequired size="md" backgroundColor={ backgroundColor } mt={ 8 }>
         <Input
           { ...field }
           required

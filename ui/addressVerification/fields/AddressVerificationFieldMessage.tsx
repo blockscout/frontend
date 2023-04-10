@@ -28,7 +28,7 @@ const AddressVerificationFieldMessage = ({ formState, control }: Props) => {
           isInvalid={ Boolean(error) }
           isDisabled
           autoComplete="off"
-          maxH="105px"
+          maxH={{ base: '140px', lg: '80px' }}
         />
         <InputPlaceholder text="Message to sign" error={ error } isInModal/>
       </FormControl>
