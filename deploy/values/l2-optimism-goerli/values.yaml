@@ -83,9 +83,9 @@ blockscout:
       _default: prod
     ECTO_USE_SSL:
       _default: 'false'
-    ENABLE_RUST_VERIFICATION_SERVICE:
+    MICROSERVICE_SC_VERIFIER_ENABLED:
       _default: 'true'
-    RUST_VERIFICATION_SERVICE_URL:
+    MICROSERVICE_SC_VERIFIER_URL:
       _default: http://sc-verifier-svc:8043
     ACCOUNT_ENABLED:
       _default: 'true'
