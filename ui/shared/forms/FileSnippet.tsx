@@ -101,7 +101,7 @@ const FileSnippet = ({ file, className, index, onRemove, isDisabled, error }: Pr
           />
         </Flex>
         <Text variant="secondary" mt={ 1 }>
-          { file.size.toLocaleString('en', { notation: 'compact', maximumFractionDigits: 2, unit: 'byte', unitDisplay: 'narrow', style: 'unit' }) }
+          { file.size.toLocaleString(undefined, { notation: 'compact', maximumFractionDigits: 2, unit: 'byte', unitDisplay: 'narrow', style: 'unit' }) }
         </Text>
       </Box>
     </Flex>
