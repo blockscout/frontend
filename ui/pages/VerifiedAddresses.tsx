@@ -12,6 +12,7 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import SkeletonListAccount from 'ui/shared/skeletons/SkeletonListAccount';
 import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 import TokenInfoForm from 'ui/tokenInfo/TokenInfoForm';
+import VerifiedAddressesListItem from 'ui/verifiedAddresses/VerifiedAddressesListItem';
 import VerifiedAddressesTable from 'ui/verifiedAddresses/VerifiedAddressesTable';
 
 const VerifiedAddresses = () => {
@@ -77,7 +78,14 @@ const VerifiedAddresses = () => {
   const content = data?.verifiedAddresses ? (
     <>
       <Show below="lg" key="content-mobile" ssr={ false }>
-        <div>mobile view</div>
+        { data.verifiedAddresses.map((item) => (
+          <VerifiedAddressesListItem
+            key={ item.contractAddress }
+            item={ item }
+            onAdd={ handleItemAdd }
+            onEdit={ handleItemEdit }
+          />
+        )) }
       </Show>
       <Hide below="lg" key="content-desktop" ssr={ false }>
         <VerifiedAddressesTable data={ data.verifiedAddresses } onItemEdit={ handleItemEdit } onItemAdd={ handleItemAdd }/>
