@@ -1,4 +1,4 @@
-import { Box, Heading, Flex, Text, Skeleton } from '@chakra-ui/react';
+import { Box, Flex, Text, Skeleton } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
@@ -18,10 +18,8 @@ const LatestTransactions = () => {
 
   const { num, socketAlert } = useNewTxsSocket();
 
-  let content;
-
   if (isLoading) {
-    content = (
+    return (
       <>
         <Skeleton h="32px" w="100%" borderBottomLeftRadius={ 0 } borderBottomRightRadius={ 0 }/>
         { Array.from(Array(txsCount)).map((item, index) => <LatestTxsItemSkeleton key={ index }/>) }
@@ -30,12 +28,12 @@ const LatestTransactions = () => {
   }
 
   if (isError) {
-    content = <Text mt={ 4 }>No data. Please reload page.</Text>;
+    return <Text mt={ 4 }>No data. Please reload page.</Text>;
   }
 
   if (data) {
     const txsUrl = route({ pathname: '/txs' });
-    content = (
+    return (
       <>
         <SocketNewItemsNotice borderBottomRadius={ 0 } url={ txsUrl } num={ num } alert={ socketAlert }/>
         <Box mb={{ base: 3, lg: 4 }}>
@@ -48,12 +46,7 @@ const LatestTransactions = () => {
     );
   }
 
-  return (
-    <Box flexGrow={ 1 }>
-      <Heading as="h4" size="sm" mb={ 4 }>Latest transactions</Heading>
-      { content }
-    </Box>
-  );
+  return null;
 };
 
 export default LatestTransactions;

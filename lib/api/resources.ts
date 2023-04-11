@@ -18,7 +18,7 @@ import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters } f
 import type { ChartMarketResponse, ChartTransactionResponse } from 'types/api/charts';
 import type { SmartContract, SmartContractReadMethod, SmartContractWriteMethod, SmartContractVerificationConfig } from 'types/api/contract';
 import type { VerifiedContractsResponse, VerifiedContractsFilters, VerifiedContractsCounters } from 'types/api/contracts';
-import type { DepositsResponse } from 'types/api/deposits';
+import type { DepositsResponse, DepositsItem } from 'types/api/deposits';
 import type { IndexingStatus } from 'types/api/indexingStatus';
 import type { InternalTransactionsResponse } from 'types/api/internalTransaction';
 import type { LogsResponseTx, LogsResponseAddress } from 'types/api/log';
@@ -339,6 +339,9 @@ export const RESOURCES = {
   homepage_blocks: {
     path: '/api/v2/main-page/blocks',
   },
+  homepage_deposits: {
+    path: '/api/v2/main-page/optimism-deposits',
+  },
   homepage_txs: {
     path: '/api/v2/main-page/transactions',
   },
@@ -489,6 +492,7 @@ Q extends 'homepage_chart_txs' ? ChartTransactionResponse :
 Q extends 'homepage_chart_market' ? ChartMarketResponse :
 Q extends 'homepage_blocks' ? Array<Block> :
 Q extends 'homepage_txs' ? Array<Transaction> :
+Q extends 'homepage_deposits' ? Array<DepositsItem> :
 Q extends 'homepage_indexing_status' ? IndexingStatus :
 Q extends 'stats_counters' ? Counters :
 Q extends 'stats_lines' ? StatsCharts :
