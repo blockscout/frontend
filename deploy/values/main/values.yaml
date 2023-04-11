@@ -108,9 +108,9 @@ blockscout:
       _default: 'true'
     CHAIN_ID:
       _default: 5
-    ENABLE_RUST_VERIFICATION_SERVICE:
+    MICROSERVICE_SC_VERIFIER_ENABLED:
       _default: 'true'
-    RUST_VERIFICATION_SERVICE_URL:
+    MICROSERVICE_SC_VERIFIER_URL:
       _default: http://eth-bytecode-db-svc.eth-bytecode-db-testing.svc.cluster.local:80
     INDEXER_MEMORY_LIMIT:
       _default: 5
