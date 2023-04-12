@@ -223,13 +223,13 @@ export default function useNavItems(): ReturnType {
         isActive: pathname === '/account/custom_abi',
         isNewUi: true,
       },
-      // appConfig.contractInfoApi.endpoint && {
-      //   text: 'Verified addresses',
-      //   nextRoute: { pathname: '/account/verified_addresses' as const },
-      //   icon: verifiedIcon,
-      //   isActive: pathname === '/account/verified_addresses',
-      //   isNewUi: true,
-      // },
+      appConfig.contractInfoApi.endpoint && {
+        text: 'Verified addrs',
+        nextRoute: { pathname: '/account/verified_addresses' as const },
+        icon: verifiedIcon,
+        isActive: pathname === '/account/verified_addresses',
+        isNewUi: true,
+      },
     ].filter(Boolean);
 
     const profileItem = {
