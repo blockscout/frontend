@@ -5,8 +5,11 @@ import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
 
+import appConfig from 'configs/app/config';
 import useApiQuery from 'lib/api/useApiQuery';
 import AddressHeadingInfo from 'ui/shared/AddressHeadingInfo';
+
+import TokenDetailsActions from './TokenDetails/TokenDetailsActions';
 
 interface Props {
   tokenQuery: UseQueryResult<TokenInfo>;
@@ -44,7 +47,13 @@ const TokenContractInfo = ({ tokenQuery }: Props) => {
     watchlist_names: [],
   };
 
-  return <AddressHeadingInfo address={ address } token={ contractQuery.data?.token }/>;
+  return (
+    <AddressHeadingInfo
+      address={ address }
+      token={ contractQuery.data?.token }
+      after={ appConfig.isAccountSupported ? <TokenDetailsActions/> : null }
+    />
+  );
 };
 
 export default React.memo(TokenContractInfo);

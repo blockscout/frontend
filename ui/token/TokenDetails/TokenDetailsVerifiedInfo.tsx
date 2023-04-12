@@ -78,7 +78,7 @@ const TokenDetailsVerifiedInfo = ({ data }: Props) => {
         <Flex alignItems={{ base: 'flex-start', lg: 'center' }} flexDir={{ base: 'column', lg: 'row' }} rowGap={ 2 } columnGap={ 6 }>
           { websiteName && <LinkExternal href={ data.projectWebsite } fontSize="md">{ websiteName }</LinkExternal> }
           { socialLinks.length > 0 && (
-            <Flex columnGap={ 2 }>
+            <Flex columnGap={ 2 } flexWrap="wrap">
               { socialLinks.map((link) => (
                 <Link
                   key={ link.field }
