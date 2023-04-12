@@ -34,7 +34,7 @@ export function getFormDefaultValues(address: string, application: TokenInfoAppl
   };
 }
 
-export function prepareRequestBody(data: Fields): Omit<TokenInfoApplication, 'id' | 'status'> {
+export function prepareRequestBody(data: Fields): Omit<TokenInfoApplication, 'id' | 'status' | 'updatedAt'> {
   return {
     coinGeckoTicker: data.ticker_coin_gecko,
     coinMarketCapTicker: data.ticker_coin_market_cap,

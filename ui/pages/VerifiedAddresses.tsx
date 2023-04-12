@@ -15,6 +15,7 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import SkeletonListAccount from 'ui/shared/skeletons/SkeletonListAccount';
 import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 import TokenInfoForm from 'ui/tokenInfo/TokenInfoForm';
+import VerifiedAddressesListItem from 'ui/verifiedAddresses/VerifiedAddressesListItem';
 import VerifiedAddressesTable from 'ui/verifiedAddresses/VerifiedAddressesTable';
 
 const VerifiedAddresses = () => {
@@ -28,6 +29,14 @@ const VerifiedAddresses = () => {
   });
   const applicationsQuery = useApiQuery('token_info_applications', {
     pathParams: { chainId: appConfig.network.id, id: undefined },
+    queryOptions: {
+      select: (data) => {
+        return {
+          ...data,
+          submissions: data.submissions.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)),
+        };
+      },
+    },
   });
   const queryClient = useQueryClient();
 
@@ -74,9 +83,11 @@ const VerifiedAddresses = () => {
   }, [ queryClient ]);
 
   const addButton = (
-    <Button size="lg" onClick={ modalProps.onOpen } marginTop={ 8 }>
-        Add address
-    </Button>
+    <Box marginTop={ 8 }>
+      <Button size="lg" onClick={ modalProps.onOpen }>
+          Add address
+      </Button>
+    </Box>
   );
 
   const skeleton = (
@@ -119,8 +130,15 @@ const VerifiedAddresses = () => {
   const content = addressesQuery.data?.verifiedAddresses ? (
     <>
       <Show below="lg" key="content-mobile" ssr={ false }>
-        <div>mobile view</div>
-        { addButton }
+        { addressesQuery.data.verifiedAddresses.map((item) => (
+          <VerifiedAddressesListItem
+            key={ item.contractAddress }
+            item={ item }
+            application={ applicationsQuery.data?.submissions?.find(({ tokenAddress }) => tokenAddress === item.contractAddress) }
+            onAdd={ handleItemAdd }
+            onEdit={ handleItemEdit }
+          />
+        )) }
       </Show>
       <Hide below="lg" key="content-desktop" ssr={ false }>
         <VerifiedAddressesTable
@@ -129,7 +147,6 @@ const VerifiedAddresses = () => {
           onItemEdit={ handleItemEdit }
           onItemAdd={ handleItemAdd }
         />
-        { addButton }
       </Hide>
     </>
   ) : null;
@@ -147,8 +164,8 @@ const VerifiedAddresses = () => {
         <chakra.p fontWeight={ 600 } mt={ 5 }>
           Before starting, make sure that:
         </chakra.p>
-        <OrderedList>
-          <ListItem>The source code for the smart contract is deployed on “Network Name”.</ListItem>
+        <OrderedList ml={ 6 }>
+          <ListItem>The source code for the smart contract is deployed on “{ appConfig.network.name }”.</ListItem>
           <ListItem>The source code is verified (if not yet verified, you can use this tool).</ListItem>
         </OrderedList>
         <chakra.div mt={ 5 }>
@@ -163,9 +180,15 @@ const VerifiedAddresses = () => {
         emptyText=""
         skeletonProps={{ customSkeleton: skeleton }}
       />
-      <AddressVerificationModal isOpen={ modalProps.isOpen } onClose={ modalProps.onClose } onSubmit={ handleAddressSubmit }/>
+      { addButton }
+      <AddressVerificationModal
+        isOpen={ modalProps.isOpen }
+        onClose={ modalProps.onClose }
+        onSubmit={ handleAddressSubmit }
+        onAddTokenInfoClick={ handleItemAdd }
+      />
     </Page>
   );
 };
 
-export default VerifiedAddresses;
+export default React.memo(VerifiedAddresses);

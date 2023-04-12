@@ -1,4 +1,5 @@
 import { Alert, Box, Button, Flex, Link } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
@@ -14,6 +15,7 @@ import type {
 import appConfig from 'configs/app/config';
 import type { ResourceError } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
+import LinkInternal from 'ui/shared/LinkInternal';
 
 import AddressVerificationFieldAddress from '../fields/AddressVerificationFieldAddress';
 type Fields = RootFields & AddressVerificationFormFirstStepFields;
@@ -46,24 +48,9 @@ const AddressVerificationStepAddress = ({ onContinue }: Props) => {
       });
 
       if (response.status !== 'SUCCESS') {
-        switch (response.status) {
-          case 'INVALID_ADDRESS_ERROR': {
-            return setError('root', { type: 'manual', message: 'Specified address either does not exist or is EOA' });
-          }
-          case 'IS_OWNER_ERROR': {
-            return setError('root', { type: 'manual', message: 'User is already an owner of the address' });
-          }
-          case 'OWNERSHIP_VERIFIED_ERROR': {
-            return setError('root', { type: 'manual', message: 'Address ownership has been verified by another account' });
-          }
-          case 'SOURCE_CODE_NOT_VERIFIED_ERROR': {
-            return setError('root', { type: 'manual', message: 'Contract source code has not been verified' });
-          }
-
-          default: {
-            return setError('root', { type: 'manual', message: response.payload?.message || 'Oops! Something went wrong' });
-          }
-        }
+        const type = typeof response.status === 'number' ? 'UNKNOWN_ERROR' : response.status;
+        const message = ('payload' in response ? response.payload?.message : undefined) || 'Oops! Something went wrong';
+        return setError('root', { type, message });
       }
 
       onContinue({ ...response.result, address: data.address });
@@ -76,10 +63,40 @@ const AddressVerificationStepAddress = ({ onContinue }: Props) => {
 
   const onSubmit = handleSubmit(onFormSubmit);
 
+  const rootError = (() => {
+    switch (formState.errors.root?.type) {
+      case 'INVALID_ADDRESS_ERROR': {
+        return <span>Specified address either does not exist or is EOA.</span>;
+      }
+      case 'IS_OWNER_ERROR': {
+        return <span>Ownership of this contract address ownership is already verified by this account.</span>;
+      }
+      case 'OWNERSHIP_VERIFIED_ERROR': {
+        return <span>Ownership of this contract address is already verified by another account.</span>;
+      }
+      case 'SOURCE_CODE_NOT_VERIFIED_ERROR': {
+        const href = route({ pathname: '/address/[hash]/contract_verification', query: { hash: address } });
+        return (
+          <Box>
+            <span>The contract source code you entered is not yet verified. Please follow these steps to </span>
+            <LinkInternal href={ href }>verify the contract</LinkInternal>
+            <span>.</span>
+          </Box>
+        );
+      }
+      case undefined: {
+        return null;
+      }
+      default: {
+        return formState.errors.root?.message;
+      }
+    }
+  })();
+
   return (
     <form noValidate onSubmit={ onSubmit }>
-      { formState.errors.root?.type === 'manual' && <Alert status="warning" mb={ 6 }>{ formState.errors.root?.message }</Alert> }
-      <Box mb={ 8 }>Let’s check your address...</Box>
+      <Box>Let’s check your address...</Box>
+      { rootError && <Alert status="warning" mt={ 3 }>{ rootError }</Alert> }
       <AddressVerificationFieldAddress formState={ formState } control={ control }/>
       <Flex alignItems="center" mt={ 8 } columnGap={ 5 }>
         <Button size="lg" type="submit" isDisabled={ formState.isSubmitting }>

@@ -203,6 +203,7 @@ export interface TokenInfoApplication {
   telegram?: string;
   tokenAddress: string;
   twitter?: string;
+  updatedAt: string;
 }
 
 export interface TokenInfoApplications {

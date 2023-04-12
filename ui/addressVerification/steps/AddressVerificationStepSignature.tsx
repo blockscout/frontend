@@ -16,7 +16,6 @@ import type {
 import type { VerifiedAddress } from 'types/api/account';
 
 import appConfig from 'configs/app/config';
-import type { ResourceError } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 import shortenString from 'lib/shortenString';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
@@ -65,35 +64,15 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
       });
 
       if (response.status !== 'SUCCESS') {
-        switch (response.status) {
-          case 'INVALID_SIGNATURE_ERROR': {
-            return setError('root', { type: 'manual', message: 'Invalid signature' });
-          }
-          case 'VALIDITY_EXPIRED_ERROR': {
-            return setError('root', { type: 'manual', message: 'Message validity expired' });
-          }
-          case 'INVALID_SIGNER_ERROR': {
-            const signer = shortenString(response.invalidSigner.signer);
-            const expectedSigners = [ contractCreator, contractOwner ].filter(Boolean).map(shortenString).join(', ');
-            const message = `Invalid signer ${ signer }. Expected: ${ expectedSigners }.`;
-            return setError('root', { type: 'manual', message });
-          }
-          case 'UNKNOWN_STATUS': {
-            return setError('root', { type: 'manual', message: 'Oops! Something went wrong' });
-          }
-
-          default: {
-            return setError('root', { type: 'manual', message: response.payload?.message || 'Oops! Something went wrong' });
-          }
-        }
+        const type = typeof response.status === 'number' ? 'UNKNOWN_STATUS' : response.status;
+        return setError('root', { type, message: response.status === 'INVALID_SIGNER_ERROR' ? response.invalidSigner.signer : undefined });
       }
 
       onContinue(response.result.verifiedAddress);
-    } catch (_error: unknown) {
-      const error = _error as ResourceError<AddressVerificationResponseError>;
-      setError('root', { type: 'manual', message: error.payload?.message || 'Oops! Something went wrong' });
+    } catch (error) {
+      setError('root', { type: 'UNKNOWN_STATUS' });
     }
-  }, [ address, apiFetch, contractCreator, contractOwner, onContinue, setError ]);
+  }, [ address, apiFetch, onContinue, setError ]);
 
   const onSubmit = handleSubmit(onFormSubmit);
 
@@ -103,7 +82,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
       onSubmit();
     },
     onError: (error) => {
-      return setError('root', { type: 'manual', message: (error as Error)?.message || 'Oops! Something went wrong' });
+      return setError('root', { type: 'SIGNING_FAIL', message: (error as Error)?.message || 'Oops! Something went wrong' });
     },
   });
 
@@ -154,15 +133,61 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
     );
   })();
 
+  const contactUsLink = <Link>contact us</Link>;
+
+  const rootError = (() => {
+    switch (formState.errors.root?.type) {
+      case 'INVALID_SIGNATURE_ERROR': {
+        return <span>The signature could not be processed.</span>;
+      }
+      case 'VALIDITY_EXPIRED_ERROR': {
+        return <span>This verification message has expired. Add the contract address to restart the process.</span>;
+      }
+      case 'SIGNING_FAIL': {
+        return <span>{ formState.errors.root.message }</span>;
+      }
+      case 'INVALID_SIGNER_ERROR': {
+        const signer = shortenString(formState.errors.root.message || '');
+        const expectedSigners = [ contractCreator, contractOwner ].filter(Boolean).map(shortenString).join(', ');
+        return (
+          <Box>
+            <span>This address </span>
+            <span>{ signer }</span>
+            <span> is not a creator/owner of the requested contract and cannot claim ownership. Only </span>
+            <span>{ expectedSigners }2</span>
+            <span> can verify ownership of this contract.</span>
+          </Box>
+        );
+      }
+      case 'UNKNOWN_STATUS': {
+        return (
+          <Box>
+            <span>We are not able to process the verify account ownership for this contract address. Kindly </span>
+            { contactUsLink }
+            <span> for further assistance.</span>
+          </Box>
+        );
+      }
+      case undefined: {
+        return null;
+      }
+    }
+  })();
+
   return (
     <form noValidate onSubmit={ onSubmit }>
-      { formState.errors.root?.type === 'manual' && <Alert status="warning" mb={ 6 }>{ formState.errors.root.message }</Alert> }
+      { rootError && <Alert status="warning" mb={ 6 }>{ rootError }</Alert> }
       <Box mb={ 8 }>
-        <span>Please select the address below you will use to sign, copy the message, and sign it using your preferred method. </span>
-        <Link>Additional instructions</Link>
+        <span>Please select the address to sign and copy the message and sign it using the Blockscout message provider of your choice. </span>
+        <Link href="https://docs.blockscout.com/for-users/my-account/verified-addresses/copy-and-sign-message" target="_blank">
+          Additional instructions
+        </Link>
+        <span>. If you do not see your address here but are sure that you are the owner of the contract, kindly </span>
+        { contactUsLink }
+        <span> for further assistance.</span>
       </Box>
       { (contractOwner || contractCreator) && (
-        <Flex flexDir="column" rowGap={ 4 } mb={ 8 }>
+        <Flex flexDir="column" rowGap={ 4 } mb={ 4 }>
           { contractCreator && (
             <Box>
               <chakra.span fontWeight={ 600 }>Contract creator: </chakra.span>
