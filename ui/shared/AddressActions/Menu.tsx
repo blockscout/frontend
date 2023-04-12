@@ -6,6 +6,7 @@ import iconArrow from 'icons/arrows/east-mini.svg';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
 import PrivateTagMenuItem from './PrivateTagMenuItem';
+import PublicTagMenuItem from './PublicTagMenuItem';
 
 const AddressActions = () => {
   const router = useRouter();
@@ -29,9 +30,7 @@ const AddressActions = () => {
         <MenuItem py={ 2 } px={ 4 }>
             Add token info
         </MenuItem>
-        <MenuItem py={ 2 } px={ 4 }>
-            Add public tag
-        </MenuItem>
+        <PublicTagMenuItem py={ 2 } px={ 4 } hash={ hash }/>
         <PrivateTagMenuItem py={ 2 } px={ 4 } hash={ hash }/>
       </MenuList>
     </Menu>

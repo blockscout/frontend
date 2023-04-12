@@ -1,4 +1,5 @@
 import { Link, Text, Icon } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React, { useCallback, useState } from 'react';
 import { animateScroll } from 'react-scroll';
 
@@ -8,6 +9,7 @@ import eastArrowIcon from 'icons/arrows/east.svg';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import useToast from 'lib/hooks/useToast';
+import getQueryParamString from 'lib/router/getQueryParamString';
 import PublicTagsData from 'ui/publicTags/PublicTagsData';
 import PublicTagsForm from 'ui/publicTags/PublicTagsForm/PublicTagsForm';
 import Page from 'ui/shared/Page/Page';
@@ -23,12 +25,20 @@ const toastDescriptions = {
 } as Record<TToastAction, string>;
 
 const PublicTagsComponent: React.FC = () => {
-  const [ screen, setScreen ] = useState<TScreen>('data');
-  const [ formData, setFormData ] = useState<PublicTag>();
+  const router = useRouter();
+  const addressHash = getQueryParamString(router.query.address);
+
+  const [ screen, setScreen ] = useState<TScreen>(addressHash ? 'form' : 'data');
+  const [ formData, setFormData ] = useState<Partial<PublicTag> | undefined>(addressHash ? { addresses: [ addressHash ] } : undefined);
 
   const toast = useToast();
   const isMobile = useIsMobile();
   useRedirectForInvalidAuthToken();
+
+  React.useEffect(() => {
+    router.replace({ pathname: '/account/public_tags_request' });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ ]);
 
   const showToast = useCallback((action: TToastAction) => {
     toast({
