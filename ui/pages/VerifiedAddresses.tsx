@@ -29,6 +29,14 @@ const VerifiedAddresses = () => {
   });
   const applicationsQuery = useApiQuery('token_info_applications', {
     pathParams: { chainId: appConfig.network.id, id: undefined },
+    queryOptions: {
+      select: (data) => {
+        return {
+          ...data,
+          submissions: data.submissions.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)),
+        };
+      },
+    },
   });
   const queryClient = useQueryClient();
 
@@ -155,8 +163,8 @@ const VerifiedAddresses = () => {
         <chakra.p fontWeight={ 600 } mt={ 5 }>
           Before starting, make sure that:
         </chakra.p>
-        <OrderedList>
-          <ListItem>The source code for the smart contract is deployed on “Network Name”.</ListItem>
+        <OrderedList ml={ 6 }>
+          <ListItem>The source code for the smart contract is deployed on “{ appConfig.network.name }”.</ListItem>
           <ListItem>The source code is verified (if not yet verified, you can use this tool).</ListItem>
         </OrderedList>
         <chakra.div mt={ 5 }>
@@ -172,7 +180,12 @@ const VerifiedAddresses = () => {
         skeletonProps={{ customSkeleton: skeleton }}
       />
       { addButton }
-      <AddressVerificationModal isOpen={ modalProps.isOpen } onClose={ modalProps.onClose } onSubmit={ handleAddressSubmit }/>
+      <AddressVerificationModal
+        isOpen={ modalProps.isOpen }
+        onClose={ modalProps.onClose }
+        onSubmit={ handleAddressSubmit }
+        onAddTokenInfoClick={ handleItemAdd }
+      />
     </Page>
   );
 };

@@ -3,10 +3,10 @@ import React from 'react';
 
 interface Props {
   onShowListClick: () => void;
-  onAddTokenClick: () => void;
+  onAddTokenInfoClick: () => void;
 }
 
-const AddressVerificationStepSuccess = ({ onAddTokenClick, onShowListClick }: Props) => {
+const AddressVerificationStepSuccess = ({ onAddTokenInfoClick, onShowListClick }: Props) => {
   return (
     <Box>
       <Alert status="success" flexWrap="wrap" whiteSpace="pre-wrap" wordBreak="break-word" mb={ 3 } display="inline-block">
@@ -19,7 +19,7 @@ const AddressVerificationStepSuccess = ({ onAddTokenClick, onShowListClick }: Pr
         <Button size="lg" variant="outline" onClick={ onShowListClick }>
           View my verified addresses
         </Button>
-        <Button size="lg" onClick={ onAddTokenClick }>
+        <Button size="lg" onClick={ onAddTokenInfoClick }>
           Add token information
         </Button>
       </Flex>

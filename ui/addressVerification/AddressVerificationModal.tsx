@@ -15,9 +15,10 @@ interface Props {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (address: VerifiedAddress) => void;
+  onAddTokenInfoClick: (address: string) => void;
 }
 
-const AddressVerificationModal = ({ isOpen, onClose, onSubmit }: Props) => {
+const AddressVerificationModal = ({ isOpen, onClose, onSubmit, onAddTokenInfoClick }: Props) => {
   const [ stepIndex, setStepIndex ] = React.useState(0);
   const [ data, setData ] = React.useState<AddressVerificationFormFirstStepFields & AddressCheckStatusSuccess>({ address: '', signingMessage: '' });
 
@@ -38,12 +39,27 @@ const AddressVerificationModal = ({ isOpen, onClose, onSubmit }: Props) => {
   const handleClose = React.useCallback(() => {
     onClose();
     setStepIndex(0);
+    setData({ address: '', signingMessage: '' });
   }, [ onClose ]);
 
+  const handleAddTokenInfoClick = React.useCallback(() => {
+    onAddTokenInfoClick(data.address);
+    handleClose();
+  }, [ handleClose, data.address, onAddTokenInfoClick ]);
+
   const steps = [
-    { title: 'Verify new address ownership', content: <AddressVerificationStepAddress onContinue={ handleGoToSecondStep }/> },
-    { title: 'Copy and sign message', content: <AddressVerificationStepSignature { ...data } onContinue={ handleGoToThirdStep }/> },
-    { title: 'Congrats! Address is verified.', content: <AddressVerificationStepSuccess onShowListClick={ handleClose } onAddTokenClick={ handleClose }/> },
+    {
+      title: 'Verify new address ownership',
+      content: <AddressVerificationStepAddress onContinue={ handleGoToSecondStep }/>,
+    },
+    {
+      title: 'Copy and sign message',
+      content: <AddressVerificationStepSignature { ...data } onContinue={ handleGoToThirdStep }/>,
+    },
+    {
+      title: 'Congrats! Address is verified.',
+      content: <AddressVerificationStepSuccess onShowListClick={ handleClose } onAddTokenInfoClick={ handleAddTokenInfoClick }/>,
+    },
   ];
   const step = steps[stepIndex];
 
