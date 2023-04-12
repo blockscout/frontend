@@ -1,5 +1,6 @@
 import { OrderedList, ListItem, chakra, Button, useDisclosure, Show, Hide, Skeleton, Box } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { VerifiedAddress, TokenInfoApplication, TokenInfoApplications, VerifiedAddressResponse } from 'types/api/account';
@@ -7,6 +8,7 @@ import type { VerifiedAddress, TokenInfoApplication, TokenInfoApplications, Veri
 import appConfig from 'configs/app/config';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
+import getQueryParamString from 'lib/router/getQueryParamString';
 import AddressVerificationModal from 'ui/addressVerification/AddressVerificationModal';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataListDisplay from 'ui/shared/DataListDisplay';
@@ -21,7 +23,16 @@ import VerifiedAddressesTable from 'ui/verifiedAddresses/VerifiedAddressesTable'
 const VerifiedAddresses = () => {
   useRedirectForInvalidAuthToken();
 
-  const [ selectedAddress, setSelectedAddress ] = React.useState<string>();
+  const router = useRouter();
+  const addressHash = getQueryParamString(router.query.address);
+
+  const [ selectedAddress, setSelectedAddress ] = React.useState<string | undefined>(addressHash);
+
+  React.useEffect(() => {
+    addressHash && router.replace({ pathname: '/account/verified_addresses' });
+  // componentDidMount
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ ]);
 
   const modalProps = useDisclosure();
   const addressesQuery = useApiQuery('verified_addresses', {
@@ -186,6 +197,7 @@ const VerifiedAddresses = () => {
         onClose={ modalProps.onClose }
         onSubmit={ handleAddressSubmit }
         onAddTokenInfoClick={ handleItemAdd }
+        onShowListClick={ modalProps.onClose }
       />
     </Page>
   );

@@ -1,12 +1,14 @@
-import { Button, Menu, MenuButton, MenuItem, MenuList, Icon, Flex } from '@chakra-ui/react';
+import { Button, Menu, MenuButton, MenuList, Icon, Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import appConfig from 'configs/app/config';
 import iconArrow from 'icons/arrows/east-mini.svg';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
 import PrivateTagMenuItem from './PrivateTagMenuItem';
 import PublicTagMenuItem from './PublicTagMenuItem';
+import TokenInfoMenuItem from './TokenInfoMenuItem';
 
 const AddressActions = () => {
   const router = useRouter();
@@ -27,9 +29,7 @@ const AddressActions = () => {
         </Flex>
       </MenuButton>
       <MenuList minWidth="180px" zIndex="popover">
-        <MenuItem py={ 2 } px={ 4 }>
-            Add token info
-        </MenuItem>
+        { appConfig.contractInfoApi.endpoint && appConfig.adminServiceApi.endpoint && <TokenInfoMenuItem py={ 2 } px={ 4 } hash={ hash }/> }
         <PublicTagMenuItem py={ 2 } px={ 4 } hash={ hash }/>
         <PrivateTagMenuItem py={ 2 } px={ 4 } hash={ hash }/>
       </MenuList>
