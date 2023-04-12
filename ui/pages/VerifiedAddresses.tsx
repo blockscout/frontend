@@ -130,10 +130,11 @@ const VerifiedAddresses = () => {
   const content = addressesQuery.data?.verifiedAddresses ? (
     <>
       <Show below="lg" key="content-mobile" ssr={ false }>
-        { data.verifiedAddresses.map((item) => (
+        { addressesQuery.data.verifiedAddresses.map((item) => (
           <VerifiedAddressesListItem
             key={ item.contractAddress }
             item={ item }
+            application={ applicationsQuery.data?.submissions?.find(({ tokenAddress }) => tokenAddress === item.contractAddress) }
             onAdd={ handleItemAdd }
             onEdit={ handleItemEdit }
           />
@@ -190,4 +191,4 @@ const VerifiedAddresses = () => {
   );
 };
 
-export default VerifiedAddresses;
+export default React.memo(VerifiedAddresses);

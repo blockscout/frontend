@@ -19,6 +19,7 @@ const VerifiedAddressesTable = ({ data, applications, onItemEdit, onItemAdd }: P
         <Tr>
           <Th>Address</Th>
           <Th w="232px">Token info</Th>
+          <Th w="94px"></Th>
           <Th w="160px">Request status</Th>
           <Th w="150px">Date</Th>
         </Tr>
