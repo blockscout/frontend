@@ -50,6 +50,10 @@ export type Transaction = (
   tx_types: Array<TransactionType>;
   tx_tag: string | null;
   actions: Array<TxAction>;
+  l1_fee?: string;
+  l1_fee_scalar?: string;
+  l1_gas_price?: string;
+  l1_gas_used?: string;
 }
 
 export type TransactionsResponse = TransactionsResponseValidated | TransactionsResponsePending;
