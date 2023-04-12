@@ -99,14 +99,7 @@ const TokenDetails = ({ tokenQuery, verifiedInfoQuery, isVerifiedInfoEnabled }: 
       rowGap={{ base: 1, lg: 3 }}
       templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }} overflow="hidden"
     >
-      { verifiedInfoQuery.data && (
-        <DetailsInfoItem
-          title="Links"
-          hint="Links"
-        >
-          <TokenDetailsVerifiedInfo data={ verifiedInfoQuery.data }/>
-        </DetailsInfoItem>
-      ) }
+      { verifiedInfoQuery.data && <TokenDetailsVerifiedInfo data={ verifiedInfoQuery.data }/> }
       { exchangeRate && (
         <DetailsInfoItem
           title="Price"
