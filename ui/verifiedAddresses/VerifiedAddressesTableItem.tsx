@@ -4,6 +4,7 @@ import React from 'react';
 import type { TokenInfoApplication, VerifiedAddress } from 'types/api/account';
 
 import editIcon from 'icons/edit.svg';
+import dayjs from 'lib/date/dayjs';
 import AddressLink from 'ui/shared/address/AddressLink';
 import AddressSnippet from 'ui/shared/AddressSnippet';
 import TokenLogoPlaceholder from 'ui/shared/TokenLogoPlaceholder';
@@ -50,7 +51,7 @@ const VerifiedAddressesTableItem = ({ item, application, onAdd, onEdit }: Props)
       <Td>
         <AddressSnippet address={{ hash: item.contractAddress, is_contract: true, implementation_name: null }}/>
       </Td>
-      <Td fontSize="sm">
+      <Td fontSize="sm" verticalAlign="middle">
         { application ? (
           <Flex alignItems="center" columnGap={ 2 } w="100%">
             <Image
@@ -85,7 +86,7 @@ const VerifiedAddressesTableItem = ({ item, application, onAdd, onEdit }: Props)
         ) }
       </Td>
       <Td fontSize="sm">{ status }</Td>
-      <Td fontSize="sm"></Td>
+      <Td fontSize="sm" color="text_secondary">{ dayjs(application?.updatedAt).format('MMM DD, YYYY') }</Td>
     </Tr>
   );
 };
