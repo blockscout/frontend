@@ -44,7 +44,7 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_HOMEPAGE_PLATE_GRADIENT | `string` | Gradient value for hero plate on the homepage | - | `radial-gradient(103.03% 103.03% at 0% 0%, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%)` | `radial-gradient(at 15% 86%, hsla(350,65%,70%,1) 0px, transparent 50%), radial-gradient(at 72% 57%, hsla(14,95%,76%,1) 0px, transparent 50%)` |
 | NEXT_PUBLIC_HOMEPAGE_SHOW_GAS_TRACKER | `boolean` | Set to false if network doesn't have gas tracker | - | `true` | `false` |
 | NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME | `boolean` | Set to false if average block time is useless for the network | - | `true` | `false` |
-| NEXT_PUBLIC_DOMAIN_WITH_AD | `string` | The domain on which we display ads | - | - | `blockscout.com` |
+| NEXT_PUBLIC_AD_DOMAIN_WITH_AD | `string` | The domain on which we display ads | - | - | `blockscout.com` |
 | NEXT_PUBLIC_AD_ADBUTLER_ON | `boolean` | Set to true to show Adbutler banner instead of Coinzilla banner | - | `false` | `true` |
 | NEXT_PUBLIC_API_SPEC_URL | `string` | Spec to be displayed on api-docs page | - | - | `https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml` |
 | NEXT_PUBLIC_GRAPHIQL_TRANSACTION | `string` | Txn hash for default query at GraphQl playground page | - | - | `0x69e3923eef50eada197c3336d546936d0c994211492c9f947a24c02827568f9f` |
