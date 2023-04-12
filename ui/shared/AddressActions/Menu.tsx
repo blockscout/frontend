@@ -1,9 +1,17 @@
 import { Button, Menu, MenuButton, MenuItem, MenuList, Icon, Flex } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import iconArrow from 'icons/arrows/east-mini.svg';
+import getQueryParamString from 'lib/router/getQueryParamString';
 
-const TokenDetailsActions = () => {
+import PrivateTagMenuItem from './PrivateTagMenuItem';
+
+const AddressActions = () => {
+  const router = useRouter();
+
+  const hash = getQueryParamString(router.query.hash);
+
   return (
     <Menu>
       <MenuButton
@@ -24,12 +32,10 @@ const TokenDetailsActions = () => {
         <MenuItem py={ 2 } px={ 4 }>
             Add public tag
         </MenuItem>
-        <MenuItem py={ 2 } px={ 4 }>
-            Add private tag
-        </MenuItem>
+        <PrivateTagMenuItem py={ 2 } px={ 4 } hash={ hash }/>
       </MenuList>
     </Menu>
   );
 };
 
-export default React.memo(TokenDetailsActions);
+export default React.memo(AddressActions);

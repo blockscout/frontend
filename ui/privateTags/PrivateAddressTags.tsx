@@ -16,7 +16,7 @@ import AddressTagTable from './AddressTagTable/AddressTagTable';
 import DeletePrivateTagModal from './DeletePrivateTagModal';
 
 const PrivateAddressTags = () => {
-  const { data: addressTagsData, isLoading, isError } = useApiQuery('private_tags_address', { queryOptions: { refetchOnMount: false } });
+  const { data: addressTagsData, isLoading, isError, refetch } = useApiQuery('private_tags_address', { queryOptions: { refetchOnMount: false } });
 
   const addressModalProps = useDisclosure();
   const deleteModalProps = useDisclosure();
@@ -29,6 +29,10 @@ const PrivateAddressTags = () => {
     setAddressModalData(data);
     addressModalProps.onOpen();
   }, [ addressModalProps ]);
+
+  const onAddOrEditSuccess = useCallback(async() => {
+    await refetch();
+  }, [ refetch ]);
 
   const onAddressModalClose = useCallback(() => {
     setAddressModalData(undefined);
@@ -103,7 +107,7 @@ const PrivateAddressTags = () => {
           Add address tag
         </Button>
       </Box>
-      <AddressModal { ...addressModalProps } onClose={ onAddressModalClose } data={ addressModalData }/>
+      <AddressModal { ...addressModalProps } onClose={ onAddressModalClose } data={ addressModalData } onSuccess={ onAddOrEditSuccess }/>
       { deleteModalData && (
         <DeletePrivateTagModal
           { ...deleteModalProps }
