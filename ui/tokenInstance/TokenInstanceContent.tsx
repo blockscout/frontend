@@ -14,7 +14,10 @@ import AddressHeadingInfo from 'ui/shared/AddressHeadingInfo';
 import LinkExternal from 'ui/shared/LinkExternal';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/Pagination';
+import type { Props as PaginationProps } from 'ui/shared/Pagination';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
+import SkeletonTabs from 'ui/shared/skeletons/SkeletonTabs';
+import TokenHolders from 'ui/token/TokenHolders/TokenHolders';
 import TokenTransfer from 'ui/token/TokenTransfer/TokenTransfer';
 
 import TokenInstanceDetails from './TokenInstanceDetails';
@@ -50,12 +53,24 @@ const TokenInstanceContent = () => {
     },
   });
 
+  const shouldFetchHolders = tokenInstanceQuery.data && !tokenInstanceQuery.data.is_unique;
+
+  const holdersQuery = useQueryWithPages({
+    resourceName: 'token_instance_holders',
+    pathParams: { hash, id },
+    scrollRef,
+    options: {
+      enabled: Boolean(hash && (!tab || tab === 'holders') && shouldFetchHolders),
+    },
+  });
+
   const tabs: Array<RoutedTab> = [
     { id: 'token_transfers', title: 'Token transfers', component: <TokenTransfer transfersQuery={ transfersQuery } tokenId={ id }/> },
-    // there is no api for this tab yet
-    // { id: 'holders', title: 'Holders', component: <span>Holders</span> },
+    shouldFetchHolders ?
+      { id: 'holders', title: 'Holders', component: <TokenHolders holdersQuery={ holdersQuery } token={ tokenInstanceQuery.data?.token }/> } :
+      undefined,
     { id: 'metadata', title: 'Metadata', component: <TokenInstanceMetadata data={ tokenInstanceQuery.data?.metadata }/> },
-  ];
+  ].filter(Boolean);
 
   if (tokenInstanceQuery.isError) {
     throw Error('Token instance fetch failed', { cause: tokenInstanceQuery.error });
@@ -100,6 +115,17 @@ const TokenInstanceContent = () => {
     }
   })();
 
+  let pagination;
+  let isPaginationVisible;
+
+  if (tab === 'token_transfers') {
+    pagination = transfersQuery.pagination;
+    isPaginationVisible = transfersQuery.isPaginationVisible;
+  } else if (tab === 'holders') {
+    pagination = holdersQuery.pagination;
+    isPaginationVisible = holdersQuery.isPaginationVisible;
+  }
+
   return (
     <>
       <TextAd mb={ 6 }/>
@@ -120,12 +146,14 @@ const TokenInstanceContent = () => {
       { /* should stay before tabs to scroll up with pagination */ }
       <Box ref={ scrollRef }></Box>
 
-      <RoutedTabs
-        tabs={ tabs }
-        tabListProps={ isMobile ? { mt: 8 } : { mt: 3, py: 5, marginBottom: 0 } }
-        rightSlot={ !isMobile && transfersQuery.isPaginationVisible && tab !== 'metadata' ? <Pagination { ...transfersQuery.pagination }/> : null }
-        stickyEnabled={ !isMobile }
-      />
+      { tokenInstanceQuery.isLoading ? <SkeletonTabs/> : (
+        <RoutedTabs
+          tabs={ tabs }
+          tabListProps={ isMobile ? { mt: 8 } : { mt: 3, py: 5, marginBottom: 0 } }
+          rightSlot={ !isMobile && isPaginationVisible ? <Pagination { ...(pagination as PaginationProps) }/> : null }
+          stickyEnabled={ !isMobile }
+        />
+      ) }
 
       { !tokenInstanceQuery.isLoading && !tokenInstanceQuery.isError && <Box h={{ base: 0, lg: '40vh' }}/> }
     </>

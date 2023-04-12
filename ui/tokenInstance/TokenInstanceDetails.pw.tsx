@@ -11,8 +11,8 @@ import TokenInstanceDetails from './TokenInstanceDetails';
 
 const API_URL_ADDRESS = buildApiUrl('address', { hash: tokenInstanceMock.base.token.address });
 const API_URL_TOKEN_TRANSFERS_COUNT = buildApiUrl('token_instance_transfers_count', {
-  id: tokenInstanceMock.base.id,
-  hash: tokenInstanceMock.base.token.address,
+  id: tokenInstanceMock.unique.id,
+  hash: tokenInstanceMock.unique.token.address,
 });
 
 test('base view +@dark-mode +@mobile', async({ mount, page }) => {
@@ -27,7 +27,7 @@ test('base view +@dark-mode +@mobile', async({ mount, page }) => {
 
   const component = await mount(
     <TestApp>
-      <TokenInstanceDetails data={ tokenInstanceMock.base }/>
+      <TokenInstanceDetails data={ tokenInstanceMock.unique }/>
     </TestApp>,
   );
 

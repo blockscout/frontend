@@ -14,17 +14,17 @@ import TokenHoldersList from './TokenHoldersList';
 import TokenHoldersTable from './TokenHoldersTable';
 
 type Props = {
-  tokenQuery: UseQueryResult<TokenInfo>;
+  token?: TokenInfo;
   holdersQuery: UseQueryResult<TokenHolders> & {
     pagination: PaginationProps;
     isPaginationVisible: boolean;
   };
 }
 
-const TokenHoldersContent = ({ holdersQuery, tokenQuery }: Props) => {
+const TokenHoldersContent = ({ holdersQuery, token }: Props) => {
 
   const isMobile = useIsMobile();
-  if (holdersQuery.isError || tokenQuery.isError) {
+  if (holdersQuery.isError) {
     return <DataFetchAlert/>;
   }
 
@@ -36,17 +36,17 @@ const TokenHoldersContent = ({ holdersQuery, tokenQuery }: Props) => {
 
   const items = holdersQuery.data?.items;
 
-  const content = items && tokenQuery.data ? (
+  const content = items && token ? (
     <>
-      { !isMobile && <TokenHoldersTable data={ items } token={ tokenQuery.data } top={ holdersQuery.isPaginationVisible ? 80 : 0 }/> }
-      { isMobile && <TokenHoldersList data={ items } token={ tokenQuery.data }/> }
+      { !isMobile && <TokenHoldersTable data={ items } token={ token } top={ holdersQuery.isPaginationVisible ? 80 : 0 }/> }
+      { isMobile && <TokenHoldersList data={ items } token={ token }/> }
     </>
   ) : null;
 
   return (
     <DataListDisplay
-      isError={ holdersQuery.isError || tokenQuery.isError }
-      isLoading={ holdersQuery.isLoading || tokenQuery.isLoading }
+      isError={ holdersQuery.isError }
+      isLoading={ holdersQuery.isLoading }
       items={ holdersQuery.data?.items }
       skeletonProps={{ skeletonDesktopColumns: [ '100%', '300px', '175px' ] }}
       emptyText="There are no holders for this token."
