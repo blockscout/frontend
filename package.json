@@ -16,6 +16,7 @@
     "build": "next build",
     "build:docker": "docker build --build-arg GIT_COMMIT_SHA=$(git rev-parse HEAD) -t blockscout ./",
     "start": "next start",
+    "start:docker:local": "docker run -p 3000:3000 --env-file .env.local blockscout",
     "start:docker:poa_core": "docker run -p 3000:3000 --env-file ./configs/envs/.env.common --env-file ./configs/envs/.env.poa_core --env-file ./configs/envs/.env.secrets blockscout",
     "lint:eslint": "./node_modules/.bin/eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:eslint:fix": "./node_modules/.bin/eslint . --ext .js,.jsx,.ts,.tsx --fix",
