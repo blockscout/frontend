@@ -14,6 +14,7 @@ const AddressActions = () => {
   const router = useRouter();
 
   const hash = getQueryParamString(router.query.hash);
+  const isTokenPage = router.pathname === '/token/[hash]';
 
   return (
     <Menu>
@@ -29,7 +30,7 @@ const AddressActions = () => {
         </Flex>
       </MenuButton>
       <MenuList minWidth="180px" zIndex="popover">
-        { appConfig.contractInfoApi.endpoint && appConfig.adminServiceApi.endpoint && <TokenInfoMenuItem py={ 2 } px={ 4 } hash={ hash }/> }
+        { isTokenPage && appConfig.contractInfoApi.endpoint && appConfig.adminServiceApi.endpoint && <TokenInfoMenuItem py={ 2 } px={ 4 } hash={ hash }/> }
         <PublicTagMenuItem py={ 2 } px={ 4 } hash={ hash }/>
         <PrivateTagMenuItem py={ 2 } px={ 4 } hash={ hash }/>
       </MenuList>

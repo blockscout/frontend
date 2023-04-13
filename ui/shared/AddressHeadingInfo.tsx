@@ -11,16 +11,16 @@ import AddressFavoriteButton from 'ui/address/details/AddressFavoriteButton';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
+import AddressActionsMenu from 'ui/shared/AddressActions/Menu';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 interface Props {
   address: Pick<AddressParam, 'hash' | 'is_contract' | 'implementation_name' | 'watchlist_names'>;
   token?: TokenInfo | null;
   isLinkDisabled?: boolean;
-  after?: React.ReactNode;
 }
 
-const AddressHeadingInfo = ({ address, token, isLinkDisabled, after }: Props) => {
+const AddressHeadingInfo = ({ address, token, isLinkDisabled }: Props) => {
   const isMobile = useIsMobile();
 
   return (
@@ -41,7 +41,7 @@ const AddressHeadingInfo = ({ address, token, isLinkDisabled, after }: Props) =>
         <AddressFavoriteButton hash={ address.hash } isAdded={ Boolean(address.watchlist_names?.length) } ml={ 3 }/>
       ) }
       <AddressQrCode hash={ address.hash } ml={ 2 }/>
-      { after }
+      { appConfig.isAccountSupported && <AddressActionsMenu/> }
     </Flex>
   );
 };

@@ -170,6 +170,16 @@ const TokenPageContent = () => {
     };
   }, [ appProps.referrer ]);
 
+  const tags = [
+    { label: tokenQuery.data?.type, display_name: tokenQuery.data?.type },
+    ...(contractQuery.data?.private_tags || []),
+    ...(contractQuery.data?.public_tags || []),
+    ...(contractQuery.data?.watchlist_names || []),
+  ]
+    .filter(Boolean)
+    .map((tag) => <Tag key={ tag.label }>{ tag.display_name }</Tag>);
+  const tagsNode = tags.length > 0 ? <Flex columnGap={ 2 }>{ tags }</Flex> : null;
+
   return (
     <Page>
       { tokenQuery.isLoading ? (
@@ -189,7 +199,7 @@ const TokenPageContent = () => {
             additionalsLeft={ (
               <TokenLogo hash={ tokenQuery.data?.address } name={ tokenQuery.data?.name } boxSize={ 6 }/>
             ) }
-            additionalsRight={ <Tag>{ tokenQuery.data?.type }</Tag> }
+            additionalsRight={ tagsNode }
           />
         </>
       ) }

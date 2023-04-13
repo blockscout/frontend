@@ -5,9 +5,7 @@ import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
 
-import appConfig from 'configs/app/config';
 import useApiQuery from 'lib/api/useApiQuery';
-import AddressActionsMenu from 'ui/shared/AddressActions/Menu';
 import AddressHeadingInfo from 'ui/shared/AddressHeadingInfo';
 
 interface Props {
@@ -50,7 +48,6 @@ const TokenContractInfo = ({ tokenQuery }: Props) => {
     <AddressHeadingInfo
       address={ address }
       token={ contractQuery.data?.token }
-      after={ appConfig.isAccountSupported ? <AddressActionsMenu/> : null }
     />
   );
 };
