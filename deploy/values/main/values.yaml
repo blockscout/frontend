@@ -357,6 +357,8 @@ frontend:
       _default: https://visualizer.aws-k8s.blockscout.com
     NEXT_PUBLIC_CONTRACT_INFO_API_HOST:
       _default: https://contracts-info-test.aws-k8s.blockscout.com
+    NEXT_PUBLIC_ADMIN_SERVICE_API_HOST:
+      _default: https://admin-rs-test.aws-k8s.blockscout.com
     NEXT_PUBLIC_APP_HOST:
       _default: blockscout.com/eth/goerli
     NEXT_PUBLIC_LOGOUT_URL:

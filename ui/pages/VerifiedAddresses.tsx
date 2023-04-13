@@ -1,8 +1,11 @@
 import { OrderedList, ListItem, chakra, Button, useDisclosure, Show, Hide, Skeleton, Box } from '@chakra-ui/react';
+import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
+import type { VerifiedAddress, TokenInfoApplication, TokenInfoApplications, VerifiedAddressResponse } from 'types/api/account';
+
 import appConfig from 'configs/app/config';
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import AddressVerificationModal from 'ui/addressVerification/AddressVerificationModal';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
@@ -18,21 +21,66 @@ import VerifiedAddressesTable from 'ui/verifiedAddresses/VerifiedAddressesTable'
 const VerifiedAddresses = () => {
   useRedirectForInvalidAuthToken();
 
-  const [ submissionId, setSubmissionId ] = React.useState<number>();
+  const [ selectedAddress, setSelectedAddress ] = React.useState<string>();
 
   const modalProps = useDisclosure();
-  const { data, isLoading, isError } = useApiQuery('verified_addresses', {
+  const addressesQuery = useApiQuery('verified_addresses', {
     pathParams: { chainId: appConfig.network.id },
   });
+  const applicationsQuery = useApiQuery('token_info_applications', {
+    pathParams: { chainId: appConfig.network.id, id: undefined },
+    queryOptions: {
+      select: (data) => {
+        return {
+          ...data,
+          submissions: data.submissions.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)),
+        };
+      },
+    },
+  });
+  const queryClient = useQueryClient();
 
   const handleGoBack = React.useCallback(() => {
-    setSubmissionId(undefined);
+    setSelectedAddress(undefined);
   }, []);
 
-  const handleItemAdd = React.useCallback(() => {
-    setSubmissionId(NaN);
+  const handleItemAdd = React.useCallback((address: string) => {
+    setSelectedAddress(address);
   }, []);
-  const handleItemEdit = React.useCallback(() => {}, []);
+  const handleItemEdit = React.useCallback((address: string) => {
+    setSelectedAddress(address);
+  }, []);
+
+  const handleAddressSubmit = React.useCallback((newItem: VerifiedAddress) => {
+    queryClient.setQueryData(
+      getResourceKey('verified_addresses', { pathParams: { chainId: appConfig.network.id } }),
+      (prevData: VerifiedAddressResponse | undefined) => {
+        if (!prevData) {
+          return { verifiedAddresses: [ newItem ] };
+        }
+
+        return {
+          verifiedAddresses: [ newItem, ...prevData.verifiedAddresses ],
+        };
+      });
+  }, [ queryClient ]);
+
+  const handleApplicationSubmit = React.useCallback((newItem: TokenInfoApplication) => {
+    setSelectedAddress(undefined);
+    queryClient.setQueryData(
+      getResourceKey('token_info_applications', { pathParams: { chainId: appConfig.network.id, id: undefined } }),
+      (prevData: TokenInfoApplications | undefined) => {
+        if (!prevData) {
+          return { submissions: [ newItem ] };
+        }
+
+        const isExisting = prevData.submissions.some((item) => item.id === newItem.id);
+        const submissions = isExisting ?
+          prevData.submissions.map((item) => item.id === newItem.id ? newItem : item) :
+          [ newItem, ...prevData.submissions ];
+        return { submissions };
+      });
+  }, [ queryClient ]);
 
   const addButton = (
     <Box marginTop={ 8 }>
@@ -56,7 +104,7 @@ const VerifiedAddresses = () => {
   );
 
   const backLink = React.useMemo(() => {
-    if (submissionId === undefined) {
+    if (!selectedAddress) {
       return;
     }
 
@@ -64,31 +112,41 @@ const VerifiedAddresses = () => {
       label: 'Back to my verified addresses',
       onClick: handleGoBack,
     };
-  }, [ handleGoBack, submissionId ]);
+  }, [ handleGoBack, selectedAddress ]);
 
-  if (submissionId !== undefined) {
+  if (selectedAddress) {
     return (
       <Page>
         <PageTitle text="Token info application form" backLink={ backLink }/>
-        <TokenInfoForm id={ submissionId }/>
+        <TokenInfoForm
+          address={ selectedAddress }
+          application={ applicationsQuery.data?.submissions.find(({ tokenAddress }) => tokenAddress === selectedAddress) }
+          onSubmit={ handleApplicationSubmit }
+        />
       </Page>
     );
   }
 
-  const content = data?.verifiedAddresses ? (
+  const content = addressesQuery.data?.verifiedAddresses ? (
     <>
       <Show below="lg" key="content-mobile" ssr={ false }>
-        { data.verifiedAddresses.map((item) => (
+        { addressesQuery.data.verifiedAddresses.map((item) => (
           <VerifiedAddressesListItem
             key={ item.contractAddress }
             item={ item }
+            application={ applicationsQuery.data?.submissions?.find(({ tokenAddress }) => tokenAddress === item.contractAddress) }
             onAdd={ handleItemAdd }
             onEdit={ handleItemEdit }
           />
         )) }
       </Show>
       <Hide below="lg" key="content-desktop" ssr={ false }>
-        <VerifiedAddressesTable data={ data.verifiedAddresses } onItemEdit={ handleItemEdit } onItemAdd={ handleItemAdd }/>
+        <VerifiedAddressesTable
+          data={ addressesQuery.data.verifiedAddresses }
+          applications={ applicationsQuery.data?.submissions }
+          onItemEdit={ handleItemEdit }
+          onItemAdd={ handleItemAdd }
+        />
       </Hide>
     </>
   ) : null;
@@ -106,8 +164,8 @@ const VerifiedAddresses = () => {
         <chakra.p fontWeight={ 600 } mt={ 5 }>
           Before starting, make sure that:
         </chakra.p>
-        <OrderedList>
-          <ListItem>The source code for the smart contract is deployed on “Network Name”.</ListItem>
+        <OrderedList ml={ 6 }>
+          <ListItem>The source code for the smart contract is deployed on “{ appConfig.network.name }”.</ListItem>
           <ListItem>The source code is verified (if not yet verified, you can use this tool).</ListItem>
         </OrderedList>
         <chakra.div mt={ 5 }>
@@ -115,17 +173,22 @@ const VerifiedAddresses = () => {
         </chakra.div>
       </AccountPageDescription>
       <DataListDisplay
-        isLoading={ isLoading }
-        isError={ isError }
-        items={ data?.verifiedAddresses }
+        isLoading={ addressesQuery.isLoading || applicationsQuery.isLoading }
+        isError={ addressesQuery.isError || applicationsQuery.isError }
+        items={ addressesQuery.data?.verifiedAddresses }
         content={ content }
         emptyText=""
         skeletonProps={{ customSkeleton: skeleton }}
       />
       { addButton }
-      <AddressVerificationModal isOpen={ modalProps.isOpen } onClose={ modalProps.onClose }/>
+      <AddressVerificationModal
+        isOpen={ modalProps.isOpen }
+        onClose={ modalProps.onClose }
+        onSubmit={ handleAddressSubmit }
+        onAddTokenInfoClick={ handleItemAdd }
+      />
     </Page>
   );
 };
 
-export default VerifiedAddresses;
+export default React.memo(VerifiedAddresses);

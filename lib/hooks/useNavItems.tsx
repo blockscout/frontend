@@ -223,7 +223,7 @@ export default function useNavItems(): ReturnType {
         isActive: pathname === '/account/custom_abi',
         isNewUi: true,
       },
-      appConfig.contractInfoApi.endpoint && {
+      appConfig.contractInfoApi.endpoint && appConfig.adminServiceApi.endpoint && {
         text: 'Verified addrs',
         nextRoute: { pathname: '/account/verified_addresses' as const },
         icon: verifiedIcon,
