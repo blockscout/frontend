@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import * as txMock from 'mocks/txs/tx';
+import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
 import insertAdPlaceholder from 'playwright/utils/insertAdPlaceholder';
@@ -139,5 +140,30 @@ test('with actions uniswap +@mobile +@dark-mode', async({ mount, page }) => {
   );
 
   await insertAdPlaceholder(page);
+  await expect(component).toHaveScreenshot();
+});
+
+const l2Test = test.extend({
+  context: contextWithEnvs([
+    { name: 'NEXT_PUBLIC_IS_L2_NETWORK', value: 'true' },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ]) as any,
+});
+
+l2Test('l2', async({ mount, page }) => {
+  await page.route(API_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify(txMock.l2tx),
+  }));
+
+  const component = await mount(
+    <TestApp>
+      <TxDetails/>
+    </TestApp>,
+    { hooksConfig },
+  );
+
+  await insertAdPlaceholder(page);
+
   await expect(component).toHaveScreenshot();
 });

@@ -242,3 +242,11 @@ export const withActionsUniswap: Transaction = {
     },
   ],
 };
+
+export const l2tx: Transaction = {
+  ...base,
+  l1_gas_price: '82702201886',
+  l1_fee_scalar: '1.0',
+  l1_gas_used: '17060',
+  l1_fee: '1584574188135760',
+};
