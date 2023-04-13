@@ -32,7 +32,7 @@ test('no auth +@desktop-xl +@dark-mode-xl', async({ mount }) => {
 
 test.describe('auth', () => {
   const extendedTest = test.extend({
-    context: ({ context }, use) => {
+    context: async({ context }, use) => {
       authFixture(context);
       use(context);
     },

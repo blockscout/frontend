@@ -221,7 +221,7 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
           <RawDataSnippet
             data={ data.creation_bytecode }
             title="Contract creation code"
-            rightSlot={ data.is_verified ? null : verificationButton }
+            rightSlot={ data.is_verified || data.is_self_destructed ? null : verificationButton }
             beforeSlot={ data.is_self_destructed ? (
               <Alert status="info" whiteSpace="pre-wrap" mb={ 3 }>
                 Contracts that self destruct in their constructors have no contract code published and cannot be verified.

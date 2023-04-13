@@ -20,7 +20,6 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 
 const ContractVerification = () => {
   const appProps = useAppContext();
-  const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/address');
   const router = useRouter();
 
   const hash = getQueryParamString(router.query.hash);
@@ -83,12 +82,24 @@ const ContractVerification = () => {
     );
   })();
 
+  const backLink = React.useMemo(() => {
+    const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/address');
+
+    if (!hasGoBackLink) {
+      return;
+    }
+
+    return {
+      label: 'Back to contract',
+      url: appProps.referrer,
+    };
+  }, [ appProps.referrer ]);
+
   return (
     <Page>
       <PageTitle
         text="New smart contract verification"
-        backLinkUrl={ hasGoBackLink ? appProps.referrer : undefined }
-        backLinkLabel="Back to contract"
+        backLink={ backLink }
       />
       { hash && (
         <Address mb={ 12 }>

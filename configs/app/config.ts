@@ -26,7 +26,8 @@ const baseUrl = [
   appPort && ':' + appPort,
 ].filter(Boolean).join('');
 const authUrl = getEnvValue(process.env.NEXT_PUBLIC_AUTH_URL) || baseUrl;
-const apiHost = getEnvValue(process.env.NEXT_PUBLIC_API_HOST);
+// const apiHost = getEnvValue(process.env.NEXT_PUBLIC_API_HOST);
+const apiHost = 'eth-goerli.blockscout.com';
 const apiSchema = getEnvValue(process.env.NEXT_PUBLIC_API_PROTOCOL) || 'https';
 const apiPort = getEnvValue(process.env.NEXT_PUBLIC_API_PORT);
 const apiEndpoint = apiHost ? [
@@ -116,6 +117,10 @@ const config = Object.freeze({
   },
   visualizeApi: {
     endpoint: getEnvValue(process.env.NEXT_PUBLIC_VISUALIZE_API_HOST),
+    basePath: '',
+  },
+  contractInfoApi: {
+    endpoint: getEnvValue(process.env.NEXT_PUBLIC_CONTRACT_INFO_API_HOST),
     basePath: '',
   },
   homepage: {

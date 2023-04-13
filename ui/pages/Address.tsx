@@ -38,8 +38,6 @@ const AddressPageContent = () => {
 
   const appProps = useAppContext();
 
-  const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/accounts');
-
   const tabsScrollRef = React.useRef<HTMLDivElement>(null);
   const hash = getQueryParamString(router.query.hash);
 
@@ -98,6 +96,19 @@ const AddressPageContent = () => {
 
   const content = addressQuery.isError ? null : <RoutedTabs tabs={ tabs } tabListProps={{ mt: 8 }}/>;
 
+  const backLink = React.useMemo(() => {
+    const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/accounts');
+
+    if (!hasGoBackLink) {
+      return;
+    }
+
+    return {
+      label: 'Back to top accounts list',
+      url: appProps.referrer,
+    };
+  }, [ appProps.referrer ]);
+
   return (
     <Page>
       { addressQuery.isLoading ? <Skeleton h={{ base: 12, lg: 6 }} mb={ 6 } w="100%" maxW="680px"/> : <TextAd mb={ 6 }/> }
@@ -107,8 +118,7 @@ const AddressPageContent = () => {
         <PageTitle
           text={ `${ addressQuery.data?.is_contract ? 'Contract' : 'Address' } details` }
           additionalsRight={ tagsNode }
-          backLinkUrl={ hasGoBackLink ? appProps.referrer : undefined }
-          backLinkLabel="Back to top accounts list"
+          backLink={ backLink }
         />
       ) }
       <AddressDetails addressQuery={ addressQuery } scrollRef={ tabsScrollRef }/>

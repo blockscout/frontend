@@ -9,7 +9,7 @@ import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 interface Props {
-  address: AddressParam;
+  address: Pick<AddressParam, 'hash' | 'is_contract' | 'implementation_name'>;
   subtitle?: string;
 }
 

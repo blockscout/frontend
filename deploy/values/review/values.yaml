@@ -95,6 +95,8 @@ frontend:
       _default: https://stats-test.aws-k8s.blockscout.com/
     NEXT_PUBLIC_VISUALIZE_API_HOST:
       _default: https://visualizer.aws-k8s.blockscout.com
+    NEXT_PUBLIC_CONTRACT_INFO_API_HOST:
+      _default: https://contracts-info-test.aws-k8s.blockscout.com
     NEXT_PUBLIC_AUTH_URL:
       _default: https://blockscout-main.test.aws-k8s.blockscout.com
     NEXT_PUBLIC_API_BASE_PATH:

@@ -41,8 +41,6 @@ const TokenPageContent = () => {
 
   const appProps = useAppContext();
 
-  const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/tokens');
-
   const scrollRef = React.useRef<HTMLDivElement>(null);
 
   const hashString = router.query.hash?.toString();
@@ -194,6 +192,19 @@ const TokenPageContent = () => {
     };
   }, [ isMobile ]);
 
+  const backLink = React.useMemo(() => {
+    const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/tokens');
+
+    if (!hasGoBackLink) {
+      return;
+    }
+
+    return {
+      label: 'Back to tokens list',
+      url: appProps.referrer,
+    };
+  }, [ appProps.referrer ]);
+
   return (
     <Page>
       { tokenQuery.isLoading ? (
@@ -209,8 +220,7 @@ const TokenPageContent = () => {
           <TextAd mb={ 6 }/>
           <PageTitle
             text={ `${ tokenQuery.data?.name || 'Unnamed' }${ tokenSymbolText } token` }
-            backLinkUrl={ hasGoBackLink ? appProps.referrer : undefined }
-            backLinkLabel="Back to tokens list"
+            backLink={ backLink }
             additionalsLeft={ (
               <TokenLogo hash={ tokenQuery.data?.address } name={ tokenQuery.data?.name } boxSize={ 6 }/>
             ) }

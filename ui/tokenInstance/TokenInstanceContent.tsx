@@ -32,8 +32,6 @@ const TokenInstanceContent = () => {
   const id = router.query.id?.toString();
   const tab = router.query.tab?.toString();
 
-  const hasGoBackLink = appProps.referrer && appProps.referrer.includes(`/token/${ hash }`) && !appProps.referrer.includes('instance');
-
   const scrollRef = React.useRef<HTMLDivElement>(null);
 
   const tokenInstanceQuery = useApiQuery('token_instance', {
@@ -49,6 +47,19 @@ const TokenInstanceContent = () => {
       enabled: Boolean(hash && (!tab || tab === 'token_transfers') && tokenInstanceQuery.data),
     },
   });
+
+  const backLink = React.useMemo(() => {
+    const hasGoBackLink = appProps.referrer && appProps.referrer.includes(`/token/${ hash }`) && !appProps.referrer.includes('instance');
+
+    if (!hasGoBackLink) {
+      return;
+    }
+
+    return {
+      label: 'Back to token page',
+      url: appProps.referrer,
+    };
+  }, [ appProps.referrer, hash ]);
 
   const tabs: Array<RoutedTab> = [
     { id: 'token_transfers', title: 'Token transfers', component: <TokenTransfer transfersQuery={ transfersQuery } tokenId={ id }/> },
@@ -104,8 +115,7 @@ const TokenInstanceContent = () => {
       <TextAd mb={ 6 }/>
       <PageTitle
         text={ `${ tokenInstanceQuery.data.token.name || 'Unnamed token' } #${ tokenInstanceQuery.data.id }` }
-        backLinkUrl={ hasGoBackLink ? appProps.referrer : undefined }
-        backLinkLabel="Back to token page"
+        backLink={ backLink }
         additionalsLeft={ nftShieldIcon }
         additionalsRight={ tokenTag }
       />

@@ -99,9 +99,9 @@ The app instance could be customized by passing following variables to NodeJS en
 | --- | --- | --- | --- |
 | NEXT_PUBLIC_API_HOST | `string` *(optional)* | By default the API endpoint base URL will be set as `https://blockscout.com`. If it is not the case, pass the API host in this variable  | `my-host.com` |
 | NEXT_PUBLIC_API_BASE_PATH | `string` *(optional)* | Base path for API endpoint url  | `/poa/core` |
-| NEXT_PUBLIC_STATS_API_HOST | `string` *(optional)* | Pass the Stats API host in this variable  | `https://my-host.com` |
-| NEXT_PUBLIC_VISUALIZE_API_HOST | `string` *(optional)* | Pass the Visualize API host in this variable  | `https://my-host.com` |
-
+| NEXT_PUBLIC_STATS_API_HOST | `string` | Pass the Stats API host in this variable  | `https://my-host.com` |
+| NEXT_PUBLIC_VISUALIZE_API_HOST | `string` | Pass the Visualize API host in this variable  | `https://my-host.com` |
+| NEXT_PUBLIC_CONTRACT_INFO_API_HOST | `string` *(optional)* | Pass the Contract Info API host in this variable if token info submission feature should be available in the app  | `https://my-host.com` |
 
 ### Featured network configuration properties
 
