@@ -340,7 +340,8 @@ const TxDetails = () => {
           { data.l1_fee && (
             <DetailsInfoItem
               title="L1 fee"
-              hint="L1 fee"
+              // eslint-disable-next-line max-len
+              hint={ `L1 Data Fee which is used to cover the L1 "security" cost from the batch submission mechanism. In combination with L2 execution fee, L1 fee makes the total amount of fees that a transaction pays.` }
             >
               <CurrencyValue
                 value={ data.l1_fee }
@@ -353,7 +354,7 @@ const TxDetails = () => {
           { data.l1_fee_scalar && (
             <DetailsInfoItem
               title="L1 fee scalar"
-              hint="L1 fee scalar"
+              hint="A Dynamic overhead (fee scalar) premium, which serves as a buffer in case L1 prices rapidly increase."
             >
               <Text>{ data.l1_fee_scalar }</Text>
             </DetailsInfoItem>
