@@ -34,29 +34,33 @@ const VerifiedAddressesListItem = ({ item, application, onAdd, onEdit }: Props) 
         <AddressSnippet address={{ hash: item.contractAddress, is_contract: true, implementation_name: null }}/>
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label>Token Info</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value py={ application ? '3px' : '5px' } display="flex" alignItems="center">
-        { application ? (
-          <>
-            <VerifiedAddressesTokenSnippet application={ application }/>
-            <Tooltip label="Edit">
-              <IconButton
-                aria-label="edit"
-                variant="simple"
-                boxSize={ 5 }
-                borderRadius="none"
-                flexShrink={ 0 }
-                onClick={ handleEditClick }
-                icon={ <Icon as={ editIcon }/> }
-              />
-            </Tooltip>
-          </>
-        ) : (
-          <Link onClick={ handleAddClick }>Add details</Link>
-        ) }
-      </ListItemMobileGrid.Value>
+      { item.metadata.tokenName && (
+        <>
+          <ListItemMobileGrid.Label>Token Info</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Value py={ application ? '3px' : '5px' } display="flex" alignItems="center">
+            { application ? (
+              <>
+                <VerifiedAddressesTokenSnippet application={ application } name={ item.metadata.tokenName }/>
+                <Tooltip label="Edit">
+                  <IconButton
+                    aria-label="edit"
+                    variant="simple"
+                    boxSize={ 5 }
+                    borderRadius="none"
+                    flexShrink={ 0 }
+                    onClick={ handleEditClick }
+                    icon={ <Icon as={ editIcon }/> }
+                  />
+                </Tooltip>
+              </>
+            ) : (
+              <Link onClick={ handleAddClick }>Add details</Link>
+            ) }
+          </ListItemMobileGrid.Value>
+        </>
+      ) }
 
-      { application && (
+      { item.metadata.tokenName && application && (
         <>
           <ListItemMobileGrid.Label>Status</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
@@ -65,7 +69,7 @@ const VerifiedAddressesListItem = ({ item, application, onAdd, onEdit }: Props) 
         </>
       ) }
 
-      { application && (
+      { item.metadata.tokenName && application && (
         <>
           <ListItemMobileGrid.Label>Date</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>

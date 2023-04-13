@@ -166,6 +166,10 @@ export interface VerifiedAddress {
   chainId: string;
   contractAddress: string;
   verifiedDate: string;
+  metadata: {
+    tokenName: string | null;
+    tokenSymbol: string | null;
+  };
 }
 
 export interface VerifiedAddressResponse {

@@ -8,9 +8,10 @@ import TokenLogoPlaceholder from 'ui/shared/TokenLogoPlaceholder';
 
 interface Props {
   application: TokenInfoApplication;
+  name: string;
 }
 
-const VerifiedAddressesTokenSnippet = ({ application }: Props) => {
+const VerifiedAddressesTokenSnippet = ({ application, name }: Props) => {
   return (
     <Flex alignItems="center" columnGap={ 2 } w="100%">
       <Image
@@ -23,7 +24,7 @@ const VerifiedAddressesTokenSnippet = ({ application }: Props) => {
       />
       <AddressLink
         hash={ application.tokenAddress }
-        alias={ application.projectName }
+        alias={ name }
         type="token"
         isDisabled={ application.status === 'IN_PROCESS' }
         fontWeight={ 500 }

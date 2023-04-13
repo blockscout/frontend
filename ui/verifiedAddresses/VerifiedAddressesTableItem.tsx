@@ -27,33 +27,43 @@ const VerifiedAddressesTableItem = ({ item, application, onAdd, onEdit }: Props)
     onEdit(item.contractAddress);
   }, [ item, onEdit ]);
 
+  const tokenInfo = (() => {
+    if (!item.metadata.tokenName) {
+      return <span>Not a token</span>;
+    }
+
+    if (!application) {
+      return <Link onClick={ handleAddClick }>Add details</Link>;
+    }
+
+    return <VerifiedAddressesTokenSnippet application={ application } name={ item.metadata.tokenName }/>;
+  })();
+
   return (
     <Tr>
       <Td>
         <AddressSnippet address={{ hash: item.contractAddress, is_contract: true, implementation_name: null }}/>
       </Td>
       <Td fontSize="sm" verticalAlign="middle">
-        { application ? (
-          <VerifiedAddressesTokenSnippet application={ application }/>
-        ) : (
-          <Link onClick={ handleAddClick }>Add details</Link>
-        ) }
+        { tokenInfo }
       </Td>
-      <Td>{ application ? (
-        <Tooltip label="Edit">
-          <IconButton
-            aria-label="edit"
-            variant="simple"
-            boxSize={ 5 }
-            borderRadius="none"
-            flexShrink={ 0 }
-            onClick={ handleEditClick }
-            icon={ <Icon as={ editIcon }/> }
-          />
-        </Tooltip>
-      ) : null }</Td>
-      <Td fontSize="sm"><VerifiedAddressesStatus status={ application?.status }/></Td>
-      <Td fontSize="sm" color="text_secondary">{ dayjs(application?.updatedAt).format('MMM DD, YYYY') }</Td>
+      <Td>
+        { item.metadata.tokenName && application ? (
+          <Tooltip label="Edit">
+            <IconButton
+              aria-label="edit"
+              variant="simple"
+              boxSize={ 5 }
+              borderRadius="none"
+              flexShrink={ 0 }
+              onClick={ handleEditClick }
+              icon={ <Icon as={ editIcon }/> }
+            />
+          </Tooltip>
+        ) : null }
+      </Td>
+      <Td fontSize="sm"><VerifiedAddressesStatus status={ item.metadata.tokenName ? application?.status : undefined }/></Td>
+      <Td fontSize="sm" color="text_secondary">{ item.metadata.tokenName ? dayjs(application?.updatedAt).format('MMM DD, YYYY') : null }</Td>
     </Tr>
   );
 };
