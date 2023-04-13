@@ -14,7 +14,6 @@ import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import * as stubs from 'stubs/token';
 import AddressContract from 'ui/address/AddressContract';
 import TextAd from 'ui/shared/ad/TextAd';
-import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
 import Pagination from 'ui/shared/Pagination';
@@ -154,7 +153,7 @@ const TokenPageContent = () => {
   }, [ isMobile ]);
 
   return (
-    <Page>
+    <>
       <TextAd mb={ 6 }/>
       <PageTitle
         isLoading={ tokenQuery.isPlaceholderData }
@@ -181,7 +180,7 @@ const TokenPageContent = () => {
       ) }
 
       { !tokenQuery.isLoading && !tokenQuery.isError && <Box h={{ base: 0, lg: '40vh' }}/> }
-    </Page>
+    </>
   );
 };
 
