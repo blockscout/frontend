@@ -40,7 +40,7 @@ const Home = () => {
             pl={ 4 }
           >
             <ColorModeToggler trackBg="whiteAlpha.500"/>
-            <ProfileMenuDesktop/>
+            { appConfig.isAccountSupported && <ProfileMenuDesktop/> }
           </Flex>
         </Flex>
         <LightMode>
