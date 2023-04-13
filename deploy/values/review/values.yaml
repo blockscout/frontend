@@ -39,6 +39,7 @@ frontend:
         - "/csv-export"
         - "/verified-contracts"
         - "/graphiql"
+        - "/login"
 
   resources:
     limits:

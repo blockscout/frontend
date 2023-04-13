@@ -104,7 +104,7 @@ const AddressVerificationStepAddress = ({ onContinue }: Props) => {
         </Button>
         <Box>
           <span>Contact </span>
-          <Link>support@blockscout.com</Link>
+          <Link href="mailto:help@blockscout.com">help@blockscout.com</Link>
         </Box>
       </Flex>
     </form>

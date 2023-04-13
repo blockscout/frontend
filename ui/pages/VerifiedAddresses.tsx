@@ -1,4 +1,4 @@
-import { OrderedList, ListItem, chakra, Button, useDisclosure, Show, Hide, Skeleton, Box } from '@chakra-ui/react';
+import { OrderedList, ListItem, chakra, Button, useDisclosure, Show, Hide, Skeleton, Box, Link } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
@@ -170,6 +170,11 @@ const VerifiedAddresses = () => {
         </OrderedList>
         <chakra.div mt={ 5 }>
           Once these steps are complete, click the Add address button below to get started.
+        </chakra.div>
+        <chakra.div>
+          <span>Need help? Contact admin team at </span>
+          <Link href="mailto:help@blockscout.com">help@blockscout.com</Link>
+          <span> for assistance!</span>
         </chakra.div>
       </AccountPageDescription>
       <DataListDisplay
