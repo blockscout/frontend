@@ -1,4 +1,4 @@
-import { Tr, Td } from '@chakra-ui/react';
+import { Tr, Td, Skeleton } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -12,28 +12,40 @@ import Utilization from 'ui/shared/Utilization/Utilization';
 type Props = {
   holder: TokenHolder;
   token: TokenInfo;
+  isLoading?: boolean;
 }
 
-const TokenTransferTableItem = ({ holder, token }: Props) => {
+const TokenTransferTableItem = ({ holder, token, isLoading }: Props) => {
   const quantity = BigNumber(holder.value).div(BigNumber(10 ** Number(token.decimals))).toFormat();
 
   return (
     <Tr>
-      <Td>
-        <Address display="inline-flex" maxW="100%" lineHeight="30px">
-          <AddressIcon address={ holder.address }/>
-          <AddressLink type="address" ml={ 2 } fontWeight="700" hash={ holder.address.hash } alias={ holder.address.name } flexGrow={ 1 }/>
+      <Td verticalAlign="middle">
+        <Address display="inline-flex" maxW="100%">
+          <AddressIcon address={ holder.address } isLoading={ isLoading }/>
+          <AddressLink
+            type="address"
+            ml={ 2 }
+            fontWeight="700"
+            hash={ holder.address.hash }
+            alias={ holder.address.name }
+            flexGrow={ 1 }
+            isLoading={ isLoading }
+          />
         </Address>
       </Td>
-      <Td isNumeric>
-        { quantity }
+      <Td verticalAlign="middle" isNumeric>
+        <Skeleton isLoaded={ !isLoading } display="inline-block">
+          { quantity }
+        </Skeleton>
       </Td>
       { token.total_supply && (
-        <Td isNumeric>
+        <Td verticalAlign="middle" isNumeric>
           <Utilization
             value={ BigNumber(holder.value).div(BigNumber(token.total_supply)).dp(4).toNumber() }
             colorScheme="green"
             display="inline-flex"
+            isLoading={ isLoading }
           />
         </Td>
       ) }

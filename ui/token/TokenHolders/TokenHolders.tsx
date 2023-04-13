@@ -38,15 +38,28 @@ const TokenHoldersContent = ({ holdersQuery, tokenQuery }: Props) => {
 
   const content = items && tokenQuery.data ? (
     <>
-      { !isMobile && <TokenHoldersTable data={ items } token={ tokenQuery.data } top={ holdersQuery.isPaginationVisible ? 80 : 0 }/> }
-      { isMobile && <TokenHoldersList data={ items } token={ tokenQuery.data }/> }
+      { !isMobile && (
+        <TokenHoldersTable
+          data={ items }
+          token={ tokenQuery.data }
+          top={ holdersQuery.isPaginationVisible ? 80 : 0 }
+          isLoading={ tokenQuery.isPlaceholderData || holdersQuery.isPlaceholderData }
+        />
+      ) }
+      { isMobile && (
+        <TokenHoldersList
+          data={ items }
+          token={ tokenQuery.data }
+          isLoading={ tokenQuery.isPlaceholderData || holdersQuery.isPlaceholderData }
+        />
+      ) }
     </>
   ) : null;
 
   return (
     <DataListDisplay
       isError={ holdersQuery.isError || tokenQuery.isError }
-      isLoading={ holdersQuery.isLoading || tokenQuery.isLoading }
+      isLoading={ false }
       items={ holdersQuery.data?.items }
       skeletonProps={{ skeletonDesktopColumns: [ '100%', '300px', '175px' ] }}
       emptyText="There are no holders for this token."

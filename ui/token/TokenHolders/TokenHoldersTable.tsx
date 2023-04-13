@@ -10,9 +10,10 @@ interface Props {
   data: Array<TokenHolder>;
   token: TokenInfo;
   top: number;
+  isLoading?: boolean;
 }
 
-const TokenHoldersTable = ({ data, token, top }: Props) => {
+const TokenHoldersTable = ({ data, token, top, isLoading }: Props) => {
   return (
     <Table variant="simple" size="sm">
       <Thead top={ top }>
@@ -23,8 +24,8 @@ const TokenHoldersTable = ({ data, token, top }: Props) => {
         </Tr>
       </Thead>
       <Tbody>
-        { data.map((item) => (
-          <TokenHoldersTableItem key={ item.address.hash } holder={ item } token={ token }/>
+        { data.map((item, index) => (
+          <TokenHoldersTableItem key={ item.address.hash + (isLoading ? index : '') } holder={ item } token={ token } isLoading={ isLoading }/>
         )) }
       </Tbody>
     </Table>

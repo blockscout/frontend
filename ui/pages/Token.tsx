@@ -75,6 +75,7 @@ const TokenPageContent = () => {
     scrollRef,
     options: {
       enabled: Boolean(router.query.hash && router.query.tab === 'holders' && tokenQuery.data),
+      placeholderData: { items: Array(50).fill(stubs.TOKEN_HOLDER), next_page_params: null },
     },
   });
 

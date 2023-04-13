@@ -22,7 +22,7 @@ export type TokenInfoGeneric<Type extends TokenType> = Omit<TokenInfo, 'type'> &
 
 export interface TokenHolders {
   items: Array<TokenHolder>;
-  next_page_params: TokenHoldersPagination;
+  next_page_params: TokenHoldersPagination | null;
 }
 
 export type TokenHolder = {
