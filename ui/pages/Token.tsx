@@ -7,6 +7,7 @@ import type { SocketMessage } from 'lib/socket/types';
 import type { TokenInfo } from 'types/api/token';
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
+import appConfig from 'configs/app/config';
 import iconSuccess from 'icons/status/success.svg';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/appContext';
@@ -132,6 +133,12 @@ const TokenPageContent = () => {
     queryOptions: { enabled: Boolean(router.query.hash) },
   });
 
+  const isVerifiedInfoEnabled = Boolean(appConfig.contractInfoApi.endpoint);
+  const verifiedInfoQuery = useApiQuery('token_verified_info', {
+    pathParams: { hash: hashString, chainId: appConfig.network.id },
+    queryOptions: { enabled: Boolean(tokenQuery.data) && isVerifiedInfoEnabled },
+  });
+
   const contractTabs = useContractTabs(contractQuery.data);
 
   const tabs: Array<RoutedTab> = [
@@ -205,6 +212,16 @@ const TokenPageContent = () => {
     };
   }, [ appProps.referrer ]);
 
+  const tags = [
+    { label: tokenQuery.data?.type, display_name: tokenQuery.data?.type },
+    ...(contractQuery.data?.private_tags || []),
+    ...(contractQuery.data?.public_tags || []),
+    ...(contractQuery.data?.watchlist_names || []),
+  ]
+    .filter(Boolean)
+    .map((tag) => <Tag key={ tag.label }>{ tag.display_name }</Tag>);
+  const tagsNode = tags.length > 0 ? <Flex columnGap={ 2 }>{ tags }</Flex> : null;
+
   return (
     <Page>
       { tokenQuery.isLoading ? (
@@ -224,12 +241,13 @@ const TokenPageContent = () => {
             additionalsLeft={ (
               <TokenLogo hash={ tokenQuery.data?.address } name={ tokenQuery.data?.name } boxSize={ 6 }/>
             ) }
-            additionalsRight={ <Tag>{ tokenQuery.data?.type }</Tag> }
+            additionalsRight={ tagsNode }
+            afterTitle={ verifiedInfoQuery.data ? <Icon as={ iconSuccess } color="green.500" boxSize={ 4 } verticalAlign="top"/> : null }
           />
         </>
       ) }
       <TokenContractInfo tokenQuery={ tokenQuery }/>
-      <TokenDetails tokenQuery={ tokenQuery }/>
+      <TokenDetails tokenQuery={ tokenQuery } verifiedInfoQuery={ verifiedInfoQuery } isVerifiedInfoEnabled={ isVerifiedInfoEnabled }/>
       { /* should stay before tabs to scroll up with pagination */ }
       <Box ref={ scrollRef }></Box>
 

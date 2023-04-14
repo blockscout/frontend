@@ -3,14 +3,11 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { UserInfo } from 'types/api/account';
-
 import starFilledIcon from 'icons/star_filled.svg';
 import starOutlineIcon from 'icons/star_outline.svg';
-import { resourceKey } from 'lib/api/resources';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
-import useLoginUrl from 'lib/hooks/useLoginUrl';
 import usePreventFocusAfterModalClosing from 'lib/hooks/usePreventFocusAfterModalClosing';
+import useRedirectIfNotAuth from 'lib/hooks/useRedirectIfNotAuth';
 import WatchlistAddModal from 'ui/watchlist/AddressModal/AddressModal';
 import DeleteAddressModal from 'ui/watchlist/DeleteAddressModal';
 
@@ -25,20 +22,15 @@ const AddressFavoriteButton = ({ className, hash, isAdded }: Props) => {
   const deleteModalProps = useDisclosure();
   const queryClient = useQueryClient();
   const router = useRouter();
-
-  const profileData = queryClient.getQueryData<UserInfo>([ resourceKey('user_info') ]);
-  const isAuth = Boolean(profileData);
-  const loginUrl = useLoginUrl();
-
+  const redirectIfNotAuth = useRedirectIfNotAuth();
   const watchListQuery = useApiQuery('watchlist', { queryOptions: { enabled: isAdded } });
 
   const handleClick = React.useCallback(() => {
-    if (!isAuth) {
-      window.location.assign(loginUrl);
+    if (redirectIfNotAuth()) {
       return;
     }
     isAdded ? deleteModalProps.onOpen() : addModalProps.onOpen();
-  }, [ addModalProps, deleteModalProps, isAdded, isAuth, loginUrl ]);
+  }, [ addModalProps, deleteModalProps, isAdded, redirectIfNotAuth ]);
 
   const handleAddOrDeleteSuccess = React.useCallback(async() => {
     const queryKey = getResourceKey('address', { pathParams: { hash: router.query.hash?.toString() } });

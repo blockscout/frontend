@@ -1,3 +1,4 @@
+import type { TokenInfoApplication } from './account';
 import type { AddressParam } from './addressParams';
 
 export type TokenType = 'ERC-20' | 'ERC-721' | 'ERC-1155';
@@ -57,3 +58,5 @@ export interface TokenInventoryResponse {
 export type TokenInventoryPagination = {
   unique_token: number;
 }
+
+export type TokenVerifiedInfo = Omit<TokenInfoApplication, 'id' | 'status'>;

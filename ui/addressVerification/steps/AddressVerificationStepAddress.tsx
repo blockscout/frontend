@@ -21,12 +21,16 @@ import AddressVerificationFieldAddress from '../fields/AddressVerificationFieldA
 type Fields = RootFields & AddressVerificationFormFirstStepFields;
 
 interface Props {
+  defaultAddress?: string;
   onContinue: (data: AddressVerificationFormFirstStepFields & AddressCheckStatusSuccess) => void;
 }
 
-const AddressVerificationStepAddress = ({ onContinue }: Props) => {
+const AddressVerificationStepAddress = ({ defaultAddress, onContinue }: Props) => {
   const formApi = useForm<Fields>({
     mode: 'onBlur',
+    defaultValues: {
+      address: defaultAddress,
+    },
   });
   const { handleSubmit, formState, control, setError, clearErrors, watch } = formApi;
   const apiFetch = useApiFetch();

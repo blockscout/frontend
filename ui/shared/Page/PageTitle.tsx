@@ -14,9 +14,10 @@ type Props = {
   withTextAd?: boolean;
   className?: string;
   backLink?: BackLinkProp;
+  afterTitle?: React.ReactNode;
 }
 
-const PageTitle = ({ text, additionalsLeft, additionalsRight, withTextAd, backLink, className }: Props) => {
+const PageTitle = ({ text, additionalsLeft, additionalsRight, withTextAd, backLink, className, afterTitle }: Props) => {
   const title = (
     <Heading
       as="h1"
@@ -25,6 +26,7 @@ const PageTitle = ({ text, additionalsLeft, additionalsRight, withTextAd, backLi
       wordBreak="break-word"
     >
       { text }
+      { afterTitle }
     </Heading>
   );
 

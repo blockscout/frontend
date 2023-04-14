@@ -44,6 +44,7 @@ import type {
   TokenInventoryResponse,
   TokenInstance,
   TokenInstanceTransfersCount,
+  TokenVerifiedInfo,
 } from 'types/api/token';
 import type { TokensResponse, TokensFilters, TokenInstanceTransferResponse } from 'types/api/tokens';
 import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
@@ -322,6 +323,12 @@ export const RESOURCES = {
     path: '/api/v2/tokens/:hash',
     pathParams: [ 'hash' as const ],
   },
+  token_verified_info: {
+    path: '/api/v1/chains/:chainId/token-infos/:hash',
+    pathParams: [ 'chainId' as const, 'hash' as const ],
+    endpoint: appConfig.contractInfoApi.endpoint,
+    basePath: appConfig.contractInfoApi.basePath,
+  },
   token_counters: {
     path: '/api/v2/tokens/:hash/counters',
     pathParams: [ 'hash' as const ],
@@ -559,6 +566,7 @@ Q extends 'address_coin_balance_chart' ? AddressCoinBalanceHistoryChart :
 Q extends 'address_logs' ? LogsResponseAddress :
 Q extends 'address_tokens' ? AddressTokensResponse :
 Q extends 'token' ? TokenInfo :
+Q extends 'token_verified_info' ? TokenVerifiedInfo :
 Q extends 'token_counters' ? TokenCounters :
 Q extends 'token_transfers' ? TokenTransferResponse :
 Q extends 'token_holders' ? TokenHolders :

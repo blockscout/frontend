@@ -18,9 +18,11 @@ interface Props {
   onClose: () => void;
   onSubmit: (address: VerifiedAddress) => void;
   onAddTokenInfoClick: (address: string) => void;
+  onShowListClick: () => void;
+  defaultAddress?: string;
 }
 
-const AddressVerificationModal = ({ isOpen, onClose, onSubmit, onAddTokenInfoClick }: Props) => {
+const AddressVerificationModal = ({ defaultAddress, isOpen, onClose, onSubmit, onAddTokenInfoClick, onShowListClick }: Props) => {
   const [ stepIndex, setStepIndex ] = React.useState(0);
   const [ data, setData ] = React.useState<StateData>({ address: '', signingMessage: '' });
 
@@ -53,7 +55,7 @@ const AddressVerificationModal = ({ isOpen, onClose, onSubmit, onAddTokenInfoCli
   const steps = [
     {
       title: 'Verify new address ownership',
-      content: <AddressVerificationStepAddress onContinue={ handleGoToSecondStep }/>,
+      content: <AddressVerificationStepAddress onContinue={ handleGoToSecondStep } defaultAddress={ defaultAddress }/>,
     },
     {
       title: 'Copy and sign message',
@@ -63,7 +65,7 @@ const AddressVerificationModal = ({ isOpen, onClose, onSubmit, onAddTokenInfoCli
       title: 'Congrats! Address is verified.',
       content: (
         <AddressVerificationStepSuccess
-          onShowListClick={ handleClose }
+          onShowListClick={ onShowListClick }
           onAddTokenInfoClick={ handleAddTokenInfoClick }
           isToken={ data.isToken }
           address={ data.address }

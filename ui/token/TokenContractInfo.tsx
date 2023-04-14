@@ -44,7 +44,12 @@ const TokenContractInfo = ({ tokenQuery }: Props) => {
     watchlist_names: [],
   };
 
-  return <AddressHeadingInfo address={ address } token={ contractQuery.data?.token }/>;
+  return (
+    <AddressHeadingInfo
+      address={ address }
+      token={ contractQuery.data?.token }
+    />
+  );
 };
 
 export default React.memo(TokenContractInfo);
