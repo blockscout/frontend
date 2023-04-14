@@ -1,4 +1,4 @@
-import { Box, Icon, chakra } from '@chakra-ui/react';
+import { Box, Icon, chakra, Skeleton } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
@@ -13,9 +13,10 @@ interface Props {
   className?: string;
   isDisabled?: boolean;
   truncation?: 'dynamic' | 'constant';
+  isLoading?: boolean;
 }
 
-const TokenTransferNft = ({ hash, id, className, isDisabled, truncation = 'dynamic' }: Props) => {
+const TokenTransferNft = ({ hash, id, className, isDisabled, isLoading, truncation = 'dynamic' }: Props) => {
   const Component = isDisabled ? Box : LinkInternal;
 
   return (
@@ -29,9 +30,9 @@ const TokenTransferNft = ({ hash, id, className, isDisabled, truncation = 'dynam
       className={ className }
     >
       <Icon as={ nftPlaceholder } boxSize="30px" mr={ 1 } color="inherit"/>
-      <Box maxW="calc(100% - 34px)">
+      <Skeleton isLoaded={ !isLoading } maxW="calc(100% - 34px)">
         { truncation === 'constant' ? <HashStringShorten hash={ id }/> : <HashStringShortenDynamic hash={ id } fontWeight={ 500 }/> }
-      </Box>
+      </Skeleton>
     </Component>
   );
 };

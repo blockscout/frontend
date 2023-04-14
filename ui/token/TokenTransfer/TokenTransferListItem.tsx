@@ -1,4 +1,4 @@
-import { Text, Flex, Tag, Icon, useColorModeValue } from '@chakra-ui/react';
+import { Text, Flex, Tag, Icon, useColorModeValue, Skeleton } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -14,7 +14,7 @@ import AddressLink from 'ui/shared/address/AddressLink';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
 
-type Props = TokenTransfer & {tokenId?: string};
+type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean };
 
 const TokenTransferListItem = ({
   token,
@@ -25,6 +25,7 @@ const TokenTransferListItem = ({
   method,
   timestamp,
   tokenId,
+  isLoading,
 }: Props) => {
   const value = (() => {
     if (!('value' in total)) {
@@ -54,32 +55,47 @@ const TokenTransferListItem = ({
               type="transaction"
               fontWeight="700"
               truncation="constant"
+              isLoading={ isLoading }
             />
           </Address>
         </Flex>
-        { timestamp && <Text variant="secondary" fontWeight="400" fontSize="sm">{ timeAgo }</Text> }
+        { timestamp && (
+          <Text variant="secondary" fontWeight="400" fontSize="sm">
+            <Skeleton isLoaded={ !isLoading } display="inline-block">
+              { timeAgo }
+            </Skeleton>
+          </Text>
+        ) }
       </Flex>
-      { method && <Tag colorScheme="gray">{ method }</Tag> }
+      { method && <Skeleton isLoaded={ !isLoading } borderRadius="sm"><Tag colorScheme="gray">{ method }</Tag></Skeleton> }
       <Flex w="100%" columnGap={ 3 }>
         <Address width="50%">
-          <AddressIcon address={ from }/>
-          <AddressLink ml={ 2 } fontWeight="500" hash={ from.hash } type="address_token" tokenHash={ token.address }/>
+          <AddressIcon address={ from } isLoading={ isLoading }/>
+          <AddressLink ml={ 2 } fontWeight="500" hash={ from.hash } type="address_token" tokenHash={ token.address } isLoading={ isLoading }/>
         </Address>
         <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500"/>
         <Address width="50%">
-          <AddressIcon address={ to }/>
-          <AddressLink ml={ 2 } fontWeight="500" hash={ to.hash } type="address_token" tokenHash={ token.address }/>
+          <AddressIcon address={ to } isLoading={ isLoading }/>
+          <AddressLink ml={ 2 } fontWeight="500" hash={ to.hash } type="address_token" tokenHash={ token.address } isLoading={ isLoading }/>
         </Address>
       </Flex>
       { value && (token.type === 'ERC-20' || token.type === 'ERC-1155') && (
         <Flex columnGap={ 2 } w="100%">
           <Text fontWeight={ 500 } flexShrink={ 0 }>Value</Text>
-          <Text variant="secondary">{ value }</Text>
-          <Text>{ trimTokenSymbol(token.symbol) }</Text>
+          <Skeleton isLoaded={ !isLoading } variant="secondary">
+            { value }
+          </Skeleton>
+          <Skeleton isLoaded={ !isLoading }>{ trimTokenSymbol(token.symbol) }</Skeleton>
         </Flex>
       ) }
-      { 'token_id' in total && (token.type === 'ERC-721' || token.type === 'ERC-1155') &&
-         <TokenTransferNft hash={ token.address } id={ total.token_id } isDisabled={ Boolean(tokenId && tokenId === total.token_id) }/> }
+      { 'token_id' in total && (token.type === 'ERC-721' || token.type === 'ERC-1155') && (
+        <TokenTransferNft
+          hash={ token.address }
+          id={ total.token_id }
+          isDisabled={ Boolean(tokenId && tokenId === total.token_id) }
+          isLoading={ isLoading }
+        />
+      ) }
     </ListItemMobile>
   );
 };

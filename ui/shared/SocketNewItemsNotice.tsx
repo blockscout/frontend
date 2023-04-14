@@ -1,4 +1,4 @@
-import { Alert, Link, Text, chakra, useTheme, useColorModeValue } from '@chakra-ui/react';
+import { Alert, Link, Text, chakra, useTheme, useColorModeValue, Skeleton } from '@chakra-ui/react';
 import { transparentize } from '@chakra-ui/theme-tools';
 import React from 'react';
 
@@ -13,9 +13,10 @@ interface Props {
   url: string;
   alert?: string;
   num?: number;
+  isLoading?: boolean;
 }
 
-const SocketNewItemsNotice = ({ children, className, url, num, alert, type = 'transaction' }: Props) => {
+const SocketNewItemsNotice = ({ children, className, url, num, alert, type = 'transaction', isLoading }: Props) => {
   const theme = useTheme();
 
   const alertContent = (() => {
@@ -37,7 +38,10 @@ const SocketNewItemsNotice = ({ children, className, url, num, alert, type = 'tr
     );
   })();
 
-  const content = (
+  const color = useColorModeValue('blackAlpha.800', 'whiteAlpha.800');
+  const bgColor = useColorModeValue('orange.50', transparentize('orange.200', 0.16)(theme));
+
+  const content = !isLoading ? (
     <Alert
       className={ className }
       status="warning"
@@ -45,12 +49,12 @@ const SocketNewItemsNotice = ({ children, className, url, num, alert, type = 'tr
       py="6px"
       fontWeight={ 400 }
       fontSize="sm"
-      bgColor={ useColorModeValue('orange.50', transparentize('orange.200', 0.16)(theme)) }
-      color={ useColorModeValue('blackAlpha.800', 'whiteAlpha.800') }
+      bgColor={ bgColor }
+      color={ color }
     >
       { alertContent }
     </Alert>
-  );
+  ) : <Skeleton className={ className } h="33px"/>;
 
   return children ? children({ content }) : content;
 };

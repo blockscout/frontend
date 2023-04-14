@@ -42,7 +42,7 @@ const TokenPageContent = () => {
 
   const tokenQuery = useApiQuery('token', {
     pathParams: { hash: hashString },
-    queryOptions: { enabled: Boolean(router.query.hash), placeholderData: stubs.TOKEN_INFO },
+    queryOptions: { enabled: Boolean(router.query.hash), placeholderData: stubs.TOKEN_INFO_ERC_20 },
   });
 
   useEffect(() => {
@@ -66,6 +66,7 @@ const TokenPageContent = () => {
     scrollRef,
     options: {
       enabled: Boolean(router.query.hash && (!router.query.tab || router.query.tab === 'token_transfers') && tokenQuery.data),
+      placeholderData: stubs.getTokenTransfersStub(tokenQuery.data?.type),
     },
   });
 
@@ -101,10 +102,10 @@ const TokenPageContent = () => {
     (tokenQuery.data?.type === 'ERC-1155' || tokenQuery.data?.type === 'ERC-721') ?
       { id: 'inventory', title: 'Inventory', component: <TokenInventory inventoryQuery={ inventoryQuery }/> } :
       undefined,
-    contractQuery.data?.is_contract ? {
+    {
       id: 'contract',
       title: () => {
-        if (contractQuery.data.is_verified) {
+        if (contractQuery.data?.is_verified) {
           return (
             <>
               <span>Contract</span>
@@ -117,7 +118,7 @@ const TokenPageContent = () => {
       },
       component: <AddressContract tabs={ contractTabs } addressHash={ hashString }/>,
       subTabs: contractTabs.map(tab => tab.id),
-    } : undefined,
+    },
   ].filter(Boolean);
 
   let hasPagination;

@@ -1,4 +1,4 @@
-import { Table, Tbody, Tr, Th, Td } from '@chakra-ui/react';
+import { Table, Tbody, Tr, Th, Td, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
@@ -15,9 +15,10 @@ interface Props {
   socketInfoAlert?: string;
   socketInfoNum?: number;
   tokenId?: string;
+  isLoading?: boolean;
 }
 
-const TokenTransferTable = ({ data, top, showSocketInfo, socketInfoAlert, socketInfoNum, tokenId }: Props) => {
+const TokenTransferTable = ({ data, top, showSocketInfo, socketInfoAlert, socketInfoNum, tokenId, isLoading }: Props) => {
   const tokenType = data[0].token.type;
   const tokenSymbol = data[0].token.symbol;
 
@@ -38,19 +39,23 @@ const TokenTransferTable = ({ data, top, showSocketInfo, socketInfoAlert, socket
         { showSocketInfo && (
           <Tr>
             <Td colSpan={ 10 } p={ 0 }>
-              <SocketNewItemsNotice
-                borderRadius={ 0 }
-                pl="10px"
-                url={ window.location.href }
-                alert={ socketInfoAlert }
-                num={ socketInfoNum }
-                type="token_transfer"
-              />
+              { isLoading ? (
+                <Skeleton my="6px" mx="10px" h={ 4 } maxW="215px" w="100%" borderRadius="sm"/>
+              ) : (
+                <SocketNewItemsNotice
+                  borderRadius={ 0 }
+                  pl="10px"
+                  url={ window.location.href }
+                  alert={ socketInfoAlert }
+                  num={ socketInfoNum }
+                  type="token_transfer"
+                />
+              ) }
             </Td>
           </Tr>
         ) }
         { data.map((item, index) => (
-          <TokenTransferTableItem key={ index } { ...item } tokenId={ tokenId }/>
+          <TokenTransferTableItem key={ index } { ...item } tokenId={ tokenId } isLoading={ isLoading }/>
         )) }
       </Tbody>
     </Table>
