@@ -1,3 +1,5 @@
+import type { VerifiedAddress } from 'types/api/account';
+
 export interface AddressVerificationFormFirstStepFields {
   address: string;
 }
@@ -34,12 +36,7 @@ export interface AddressVerificationResponseError {
 export type AddressValidationResponseSuccess = {
   status: 'SUCCESS';
   result: {
-    verifiedAddress: {
-      chainId: string;
-      contractAddress: string;
-      userId: string;
-      verifiedDate: string;
-    };
+    verifiedAddress: VerifiedAddress;
   };
 } |
 {

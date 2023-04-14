@@ -108,9 +108,9 @@ blockscout:
       _default: 'true'
     CHAIN_ID:
       _default: 5
-    ENABLE_RUST_VERIFICATION_SERVICE:
+    MICROSERVICE_SC_VERIFIER_ENABLED:
       _default: 'true'
-    RUST_VERIFICATION_SERVICE_URL:
+    MICROSERVICE_SC_VERIFIER_URL:
       _default: http://eth-bytecode-db-svc.eth-bytecode-db-testing.svc.cluster.local:80
     INDEXER_MEMORY_LIMIT:
       _default: 5
@@ -311,9 +311,9 @@ frontend:
       _default: "[{'title':'Anyblock','baseUrl':'https://explorer.anyblock.tools','paths':{'tx':'/ethereum/ethereum/goerli/transaction','address':'/ethereum/ethereum/goerli/address'}},{'title':'Etherscan','baseUrl':'https://goerli.etherscan.io/','paths':{'tx':'/tx','address':'/address'}}]"
     # network config
     NEXT_PUBLIC_NETWORK_NAME:
-      _default: Ethereum
+      _default: Göerli
     NEXT_PUBLIC_NETWORK_SHORT_NAME:
-      _default: Goerli
+      _default: Göerli
     NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME:
       _default: ethereum
     NEXT_PUBLIC_NETWORK_TYPE:

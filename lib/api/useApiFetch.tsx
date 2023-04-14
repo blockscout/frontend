@@ -1,6 +1,6 @@
 import React from 'react';
 
-import appConfig from 'configs/app/config';
+import isNeedProxy from 'lib/api/isNeedProxy';
 import type { Params as FetchParams } from 'lib/hooks/useFetch';
 import useFetch from 'lib/hooks/useFetch';
 
@@ -27,7 +27,7 @@ export default function useApiFetch() {
       url,
       {
         credentials: 'include',
-        ...(resource.endpoint && appConfig.host === 'localhost' ? {
+        ...(resource.endpoint && isNeedProxy() ? {
           headers: {
             'x-endpoint': resource.endpoint,
           },

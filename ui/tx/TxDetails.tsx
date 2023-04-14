@@ -304,7 +304,7 @@ const TxDetails = () => {
           ) }
         </DetailsInfoItem>
       ) }
-      { data.tx_burnt_fee && (
+      { data.tx_burnt_fee && !appConfig.L2.isL2Network && (
         <DetailsInfoItem
           title="Burnt fees"
           hint={ `Amount of ${ appConfig.network.currency.symbol } burned for this transaction. Equals Block Base Fee per Gas * Gas Used` }

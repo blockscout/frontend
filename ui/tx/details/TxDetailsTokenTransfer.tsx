@@ -11,25 +11,25 @@ import CurrencyValue from 'ui/shared/CurrencyValue';
 import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
 import NftTokenTransferSnippet from 'ui/tx/NftTokenTransferSnippet';
 
-type Props = TTokenTransfer;
+interface Props {
+  data: TTokenTransfer;
+}
 
-const TxDetailsTokenTransfer = ({ token, total, to, from }: Props) => {
-
-  const isColumnLayout = token.type === 'ERC-1155' && Array.isArray(total);
+const TxDetailsTokenTransfer = ({ data }: Props) => {
 
   const content = (() => {
-    switch (token.type) {
+    switch (data.token.type) {
       case 'ERC-20': {
-        const payload = total as Erc20TotalPayload;
+        const total = data.total as Erc20TotalPayload;
         return (
           <Flex flexWrap="wrap" columnGap={ 3 } rowGap={ 2 }>
             <Text fontWeight={ 500 } as="span">For:{ space }
-              <CurrencyValue value={ payload.value } exchangeRate={ token.exchange_rate } fontWeight={ 600 } decimals={ payload.decimals }/>
+              <CurrencyValue value={ total.value } exchangeRate={ data.token.exchange_rate } fontWeight={ 600 } decimals={ total.decimals }/>
             </Text>
             <TokenSnippet
-              symbol={ trimTokenSymbol(token.symbol) }
-              hash={ token.address }
-              name={ token.name }
+              symbol={ trimTokenSymbol(data.token.symbol) }
+              hash={ data.token.address }
+              name={ data.token.name }
               w="auto"
               flexGrow="1"
               columnGap={ 1 }
@@ -40,47 +40,46 @@ const TxDetailsTokenTransfer = ({ token, total, to, from }: Props) => {
       }
 
       case 'ERC-721': {
-        const payload = total as Erc721TotalPayload;
+        const total = data.total as Erc721TotalPayload;
         return (
           <NftTokenTransferSnippet
-            name={ token.name }
-            tokenId={ payload.token_id }
+            name={ data.token.name }
+            tokenId={ total.token_id }
             value="1"
-            hash={ token.address }
-            symbol={ trimTokenSymbol(token.symbol) }
+            hash={ data.token.address }
+            symbol={ trimTokenSymbol(data.token.symbol) }
           />
         );
       }
 
       case 'ERC-1155': {
-        const payload = total as Erc1155TotalPayload | Array<Erc1155TotalPayload>;
-        const items = Array.isArray(payload) ? payload : [ payload ];
-        return items.map((item) => (
+        const total = data.total as Erc1155TotalPayload;
+        return (
           <NftTokenTransferSnippet
-            name={ token.name }
-            key={ item.token_id }
-            tokenId={ item.token_id }
-            value={ item.value }
-            hash={ token.address }
-            symbol={ trimTokenSymbol(token.symbol) }
+            name={ data.token.name }
+            key={ total.token_id }
+            tokenId={ total.token_id }
+            value={ total.value }
+            hash={ data.token.address }
+            symbol={ trimTokenSymbol(data.token.symbol) }
           />
-        ));
+        );
       }
     }
   })();
 
   return (
     <Flex
-      alignItems={ isColumnLayout ? 'flex-start' : 'center' }
+      alignItems="center"
       flexWrap="wrap"
       columnGap={ 3 }
       rowGap={ 3 }
-      flexDir={ isColumnLayout ? 'column' : 'row' }
+      flexDir="row"
     >
       <Flex alignItems="center">
-        <AddressLink type="address" fontWeight="500" hash={ from.hash } truncation="constant"/>
+        <AddressLink type="address" fontWeight="500" hash={ data.from.hash } truncation="constant"/>
         <Icon as={ rightArrowIcon } boxSize={ 6 } mx={ 2 } color="gray.500"/>
-        <AddressLink type="address" fontWeight="500" hash={ to.hash } truncation="constant"/>
+        <AddressLink type="address" fontWeight="500" hash={ data.to.hash } truncation="constant"/>
       </Flex>
       <Flex flexDir="column" rowGap={ 5 }>
         { content }

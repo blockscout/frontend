@@ -11,6 +11,8 @@ import AddressVerificationStepAddress from './steps/AddressVerificationStepAddre
 import AddressVerificationStepSignature from './steps/AddressVerificationStepSignature';
 import AddressVerificationStepSuccess from './steps/AddressVerificationStepSuccess';
 
+type StateData = AddressVerificationFormFirstStepFields & AddressCheckStatusSuccess & { isToken?: boolean };
+
 interface Props {
   isOpen: boolean;
   onClose: () => void;
@@ -22,7 +24,7 @@ interface Props {
 
 const AddressVerificationModal = ({ defaultAddress, isOpen, onClose, onSubmit, onAddTokenInfoClick, onShowListClick }: Props) => {
   const [ stepIndex, setStepIndex ] = React.useState(0);
-  const [ data, setData ] = React.useState<AddressVerificationFormFirstStepFields & AddressCheckStatusSuccess>({ address: '', signingMessage: '' });
+  const [ data, setData ] = React.useState<StateData>({ address: '', signingMessage: '' });
 
   const handleGoToSecondStep = React.useCallback((firstStepResult: typeof data) => {
     setData(firstStepResult);
@@ -32,6 +34,7 @@ const AddressVerificationModal = ({ defaultAddress, isOpen, onClose, onSubmit, o
   const handleGoToThirdStep = React.useCallback((address: VerifiedAddress) => {
     onSubmit(address);
     setStepIndex((prev) => prev + 1);
+    setData((prev) => ({ ...prev, isToken: Boolean(address.metadata.tokenName) }));
   }, [ onSubmit ]);
 
   const handleGoToPrevStep = React.useCallback(() => {
@@ -60,7 +63,14 @@ const AddressVerificationModal = ({ defaultAddress, isOpen, onClose, onSubmit, o
     },
     {
       title: 'Congrats! Address is verified.',
-      content: <AddressVerificationStepSuccess onShowListClick={ onShowListClick } onAddTokenInfoClick={ handleAddTokenInfoClick }/>,
+      content: (
+        <AddressVerificationStepSuccess
+          onShowListClick={ onShowListClick }
+          onAddTokenInfoClick={ handleAddTokenInfoClick }
+          isToken={ data.isToken }
+          address={ data.address }
+        />
+      ),
     },
   ];
   const step = steps[stepIndex];

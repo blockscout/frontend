@@ -133,7 +133,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
     );
   })();
 
-  const contactUsLink = <Link>contact us</Link>;
+  const contactUsLink = <span>contact us <Link href="mailto:help@blockscout.com">help@blockscout.com</Link></span>;
 
   const rootError = (() => {
     switch (formState.errors.root?.type) {
@@ -215,6 +215,10 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
       </Flex>
       <Flex alignItems="center" mt={ 8 } columnGap={ 5 }>
         { button }
+        <Box>
+          <span>Contact </span>
+          <Link href="mailto:help@blockscout.com">help@blockscout.com</Link>
+        </Box>
       </Flex>
     </form>
   );

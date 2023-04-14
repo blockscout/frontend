@@ -19,4 +19,4 @@ const WatchListPage: NextPage = () => {
 
 export default WatchListPage;
 
-export { getServerSideProps } from 'lib/next/getServerSideProps';
+export { getServerSideProps } from 'lib/next/account/getServerSideProps';

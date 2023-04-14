@@ -13,6 +13,7 @@ type Props = {
   description?: string;
   items: Array<TimeChartItem>;
   onClose: () => void;
+  units?: string;
 }
 
 const FullscreenChartModal = ({
@@ -20,6 +21,7 @@ const FullscreenChartModal = ({
   title,
   description,
   items,
+  units,
   onClose,
 }: Props) => {
   const [ isZoomResetInitial, setIsZoomResetInitial ] = React.useState(true);
@@ -94,6 +96,7 @@ const FullscreenChartModal = ({
             margin={{ bottom: 60 }}
             isEnlarged
             items={ items }
+            units={ units }
             onZoom={ handleZoom }
             isZoomResetInitial={ isZoomResetInitial }
             title={ title }

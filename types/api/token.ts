@@ -19,8 +19,6 @@ export interface TokenCounters {
   transfers_count: string;
 }
 
-export type TokenInfoGeneric<Type extends TokenType> = Omit<TokenInfo, 'type'> & { type: Type };
-
 export interface TokenHolders {
   items: Array<TokenHolder>;
   next_page_params: TokenHoldersPagination;
