@@ -18,8 +18,8 @@ const VerifiedAddressesTable = ({ data, applications, onItemEdit, onItemAdd }: P
       <Thead>
         <Tr>
           <Th>Address</Th>
-          <Th w="232px">Token info</Th>
-          <Th w="94px"></Th>
+          <Th w="168px" pr={ 1 }>Token info</Th>
+          <Th w="36px" pl="0"></Th>
           <Th w="160px">Request status</Th>
           <Th w="150px">Date</Th>
         </Tr>

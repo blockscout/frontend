@@ -44,10 +44,10 @@ const VerifiedAddressesTableItem = ({ item, application, onAdd, onEdit }: Props)
       <Td>
         <AddressSnippet address={{ hash: item.contractAddress, is_contract: true, implementation_name: null }}/>
       </Td>
-      <Td fontSize="sm" verticalAlign="middle">
+      <Td fontSize="sm" verticalAlign="middle" pr={ 1 }>
         { tokenInfo }
       </Td>
-      <Td>
+      <Td pl="0">
         { item.metadata.tokenName && application ? (
           <Tooltip label="Edit">
             <IconButton
@@ -63,7 +63,7 @@ const VerifiedAddressesTableItem = ({ item, application, onAdd, onEdit }: Props)
         ) : null }
       </Td>
       <Td fontSize="sm"><VerifiedAddressesStatus status={ item.metadata.tokenName ? application?.status : undefined }/></Td>
-      <Td fontSize="sm" color="text_secondary">{ item.metadata.tokenName ? dayjs(application?.updatedAt).format('MMM DD, YYYY') : null }</Td>
+      <Td fontSize="sm" color="text_secondary">{ item.metadata.tokenName && application ? dayjs(application.updatedAt).format('MMM DD, YYYY') : null }</Td>
     </Tr>
   );
 };
