@@ -1,4 +1,4 @@
-import { chakra } from '@chakra-ui/react';
+import { chakra, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import appConfig from 'configs/app/config';
@@ -9,7 +9,7 @@ import isSelfHosted from 'lib/isSelfHosted';
 import AdbutlerBanner from './AdbutlerBanner';
 import CoinzillaBanner from './CoinzillaBanner';
 
-const AdBanner = ({ className }: { className?: string }) => {
+const AdBanner = ({ className, isLoading }: { className?: string; isLoading?: boolean }) => {
   const hasAdblockCookie = cookies.get(cookies.NAMES.ADBLOCK_DETECTED, useAppContext().cookies);
 
   if (!isSelfHosted() || hasAdblockCookie) {
@@ -17,10 +17,10 @@ const AdBanner = ({ className }: { className?: string }) => {
   }
 
   if (appConfig.ad.adButlerOn) {
-    return <AdbutlerBanner className={ className }/>;
+    return <Skeleton className={ className } isLoaded={ !isLoading } borderRadius="none"><AdbutlerBanner className={ className }/></Skeleton>;
   }
 
-  return <CoinzillaBanner className={ className }/>;
+  return <Skeleton className={ className } isLoaded={ !isLoading } borderRadius="none"><CoinzillaBanner className={ className }/></Skeleton>;
 };
 
 export default chakra(AdBanner);
