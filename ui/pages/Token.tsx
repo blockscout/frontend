@@ -200,6 +200,7 @@ const TokenPageContent = () => {
               <TokenLogo hash={ tokenQuery.data?.address } name={ tokenQuery.data?.name } boxSize={ 6 }/>
             ) }
             additionalsRight={ tagsNode }
+            afterTitle={ verifiedInfoQuery.data ? <Icon as={ iconSuccess } color="green.500" boxSize={ 4 } verticalAlign="top"/> : null }
           />
         </>
       ) }

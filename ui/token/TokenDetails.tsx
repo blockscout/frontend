@@ -1,4 +1,4 @@
-import { Box, Flex, Grid, Link, Skeleton } from '@chakra-ui/react';
+import { Box, Flex, Grid, GridItem, Link, Skeleton } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
@@ -92,6 +92,14 @@ const TokenDetails = ({ tokenQuery, verifiedInfoQuery, isVerifiedInfoEnabled }: 
     totalSupplyValue = Number(totalSupply).toLocaleString('en');
   }
 
+  const divider = (
+    <GridItem
+      colSpan={{ base: undefined, lg: 2 }}
+      borderBottom="1px solid"
+      borderColor="divider"
+    />
+  );
+
   return (
     <Grid
       mt={ 8 }
@@ -99,7 +107,12 @@ const TokenDetails = ({ tokenQuery, verifiedInfoQuery, isVerifiedInfoEnabled }: 
       rowGap={{ base: 1, lg: 3 }}
       templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }} overflow="hidden"
     >
-      { verifiedInfoQuery.data && <TokenDetailsVerifiedInfo data={ verifiedInfoQuery.data }/> }
+      { verifiedInfoQuery.data && (
+        <>
+          <TokenDetailsVerifiedInfo data={ verifiedInfoQuery.data }/>
+          { divider }
+        </>
+      ) }
       { exchangeRate && (
         <DetailsInfoItem
           title="Price"
