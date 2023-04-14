@@ -10,6 +10,7 @@ import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
+import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean }
 
@@ -37,7 +38,7 @@ const TokenTransferTableItem = ({
   return (
     <Tr alignItems="top">
       <Td>
-        <Grid alignItems="center" gridTemplateColumns="auto 130px" width="fit-content">
+        <Grid alignItems="center" gridTemplateColumns="auto 130px" width="fit-content" py="7px">
           <Address display="inline-flex" fontWeight={ 600 }>
             <AddressLink type="transaction" hash={ txHash } isLoading={ isLoading }/>
           </Address>
@@ -51,12 +52,14 @@ const TokenTransferTableItem = ({
         </Grid>
       </Td>
       <Td>
-        <Skeleton isLoaded={ !isLoading } display="inline-block" borderRadius="sm">
-          { method ? <Tag colorScheme="gray">{ method }</Tag> : '-' }
+        <Skeleton isLoaded={ !isLoading } display="inline-block" borderRadius="sm" maxW="100%" py="3px">
+          <TruncatedTextTooltip label={ method || '' }>
+            { method ? <Tag> { method } </Tag> : '-' }
+          </TruncatedTextTooltip>
         </Skeleton>
       </Td>
       <Td>
-        <Address display="inline-flex" maxW="100%">
+        <Address display="inline-flex" maxW="100%" py="3px">
           <AddressIcon address={ from } isLoading={ isLoading }/>
           <AddressLink
             ml={ 2 }
@@ -72,10 +75,10 @@ const TokenTransferTableItem = ({
         </Address>
       </Td>
       <Td px={ 0 }>
-        <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500"/>
+        <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500" my="3px"/>
       </Td>
       <Td>
-        <Address display="inline-flex" maxW="100%">
+        <Address display="inline-flex" maxW="100%" py="3px">
           <AddressIcon address={ to } isLoading={ isLoading }/>
           <AddressLink
             ml={ 2 }
@@ -106,7 +109,7 @@ const TokenTransferTableItem = ({
       ) }
       { (token.type === 'ERC-20' || token.type === 'ERC-1155') && (
         <Td isNumeric verticalAlign="top">
-          <Skeleton isLoaded={ !isLoading }>
+          <Skeleton isLoaded={ !isLoading } py="7px">
             { value || '-' }
           </Skeleton>
         </Td>

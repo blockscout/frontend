@@ -1,7 +1,7 @@
 import type { Address } from 'types/api/address';
 import type { AddressParam } from 'types/api/addressParams';
 
-import { TOKEN_INFO } from './token';
+import { TOKEN_INFO_ERC_20 } from './token';
 
 export const ADDRESS_HASH = '0x2B51Ae4412F79c3c1cB12AA40Ea4ECEb4e80511a';
 
@@ -39,7 +39,7 @@ export const ADDRESS_INFO: Address = {
   is_contract: false,
   is_verified: false,
   name: 'ChainLink Token (goerli)',
-  token: TOKEN_INFO,
+  token: TOKEN_INFO_ERC_20,
   private_tags: [],
   public_tags: [],
   watchlist_names: [],

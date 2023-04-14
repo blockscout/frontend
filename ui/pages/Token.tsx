@@ -11,7 +11,8 @@ import useContractTabs from 'lib/hooks/useContractTabs';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import trimTokenSymbol from 'lib/token/trimTokenSymbol';
-import * as stubs from 'stubs/token';
+import * as addressStubs from 'stubs/address';
+import * as tokenStubs from 'stubs/token';
 import AddressContract from 'ui/address/AddressContract';
 import TextAd from 'ui/shared/ad/TextAd';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -42,7 +43,12 @@ const TokenPageContent = () => {
 
   const tokenQuery = useApiQuery('token', {
     pathParams: { hash: hashString },
-    queryOptions: { enabled: Boolean(router.query.hash), placeholderData: stubs.TOKEN_INFO_ERC_20 },
+    queryOptions: { enabled: Boolean(router.query.hash), placeholderData: tokenStubs.TOKEN_INFO_ERC_20 },
+  });
+
+  const contractQuery = useApiQuery('address', {
+    pathParams: { hash: hashString },
+    queryOptions: { enabled: Boolean(router.query.hash), placeholderData: addressStubs.ADDRESS_INFO },
   });
 
   useEffect(() => {
@@ -65,8 +71,8 @@ const TokenPageContent = () => {
     pathParams: { hash: hashString },
     scrollRef,
     options: {
-      enabled: Boolean(router.query.hash && (!router.query.tab || router.query.tab === 'token_transfers') && tokenQuery.data),
-      placeholderData: stubs.getTokenTransfersStub(tokenQuery.data?.type),
+      enabled: Boolean(router.query.hash && (!router.query.tab || router.query.tab === 'token_transfers') && tokenQuery.data && contractQuery.data),
+      placeholderData: tokenStubs.getTokenTransfersStub(tokenQuery.data?.type),
     },
   });
 
@@ -75,8 +81,8 @@ const TokenPageContent = () => {
     pathParams: { hash: hashString },
     scrollRef,
     options: {
-      enabled: Boolean(router.query.hash && router.query.tab === 'holders' && tokenQuery.data),
-      placeholderData: stubs.TOKEN_HOLDERS,
+      enabled: Boolean(router.query.hash && router.query.tab === 'holders' && tokenQuery.data && contractQuery.data),
+      placeholderData: tokenStubs.TOKEN_HOLDERS,
     },
   });
 
@@ -85,14 +91,9 @@ const TokenPageContent = () => {
     pathParams: { hash: hashString },
     scrollRef,
     options: {
-      enabled: Boolean(router.query.hash && router.query.tab === 'inventory' && tokenQuery.data),
-      placeholderData: stubs.TOKEN_INSTANCES,
+      enabled: Boolean(router.query.hash && router.query.tab === 'inventory' && tokenQuery.data && contractQuery.data),
+      placeholderData: tokenStubs.TOKEN_INSTANCES,
     },
-  });
-
-  const contractQuery = useApiQuery('address', {
-    pathParams: { hash: hashString },
-    queryOptions: { enabled: Boolean(router.query.hash) },
   });
 
   const contractTabs = useContractTabs(contractQuery.data);
@@ -168,7 +169,7 @@ const TokenPageContent = () => {
         ) }
         additionalsRight={ <Skeleton isLoaded={ !tokenQuery.isPlaceholderData } borderRadius="sm"><Tag>{ tokenQuery.data?.type }</Tag></Skeleton> }
       />
-      <TokenContractInfo tokenQuery={ tokenQuery }/>
+      <TokenContractInfo tokenQuery={ tokenQuery } contractQuery={ contractQuery }/>
       <TokenDetails tokenQuery={ tokenQuery }/>
       { /* should stay before tabs to scroll up with pagination */ }
       <Box ref={ scrollRef }></Box>

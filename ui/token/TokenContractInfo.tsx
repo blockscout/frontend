@@ -1,25 +1,17 @@
 import type { UseQueryResult } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { Address } from 'types/api/address';
 import type { TokenInfo } from 'types/api/token';
 
-import useApiQuery from 'lib/api/useApiQuery';
-import * as stubs from 'stubs/address';
 import AddressHeadingInfo from 'ui/shared/AddressHeadingInfo';
 
 interface Props {
   tokenQuery: UseQueryResult<TokenInfo>;
+  contractQuery: UseQueryResult<Address>;
 }
 
-const TokenContractInfo = ({ tokenQuery }: Props) => {
-  const router = useRouter();
-
-  const contractQuery = useApiQuery('address', {
-    pathParams: { hash: router.query.hash?.toString() },
-    queryOptions: { enabled: Boolean(router.query.hash), placeholderData: stubs.ADDRESS_INFO },
-  });
-
+const TokenContractInfo = ({ tokenQuery, contractQuery }: Props) => {
   // we show error in parent component, this is only for TS
   if (tokenQuery.isError) {
     return null;

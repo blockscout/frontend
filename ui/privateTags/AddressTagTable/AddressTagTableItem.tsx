@@ -34,13 +34,11 @@ const AddressTagTableItem = ({ item, onEditClick, onDeleteClick, isLoading }: Pr
         <AddressSnippet address={ item.address } isLoading={ isLoading }/>
       </Td>
       <Td whiteSpace="nowrap">
-        <TruncatedTextTooltip label={ item.name }>
-          <Skeleton isLoaded={ !isLoading } display="inline-block" borderRadius="sm">
-            <Tag>
-              { item.name }
-            </Tag>
-          </Skeleton>
-        </TruncatedTextTooltip>
+        <Skeleton isLoaded={ !isLoading } display="inline-block" borderRadius="sm" maxW="100%">
+          <TruncatedTextTooltip label={ item.name }>
+            <Tag>{ item.name }</Tag>
+          </TruncatedTextTooltip>
+        </Skeleton>
       </Td>
       <Td>
         <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick } isLoading={ isLoading }/>
