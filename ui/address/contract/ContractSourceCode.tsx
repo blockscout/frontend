@@ -1,4 +1,4 @@
-import { Flex, Text, Tooltip } from '@chakra-ui/react';
+import { Flex, Skeleton, Text, Tooltip } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
@@ -16,14 +16,15 @@ interface Props {
   isViper: boolean;
   filePath?: string;
   additionalSource?: SmartContract['additional_sources'];
+  isLoading?: boolean;
 }
 
-const ContractSourceCode = ({ data, hasSol2Yml, address, isViper, filePath, additionalSource }: Props) => {
+const ContractSourceCode = ({ data, hasSol2Yml, address, isViper, filePath, additionalSource, isLoading }: Props) => {
   const heading = (
-    <Text fontWeight={ 500 }>
+    <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>
       <span>Contract source code</span>
       <Text whiteSpace="pre" as="span" variant="secondary"> ({ isViper ? 'Vyper' : 'Solidity' })</Text>
-    </Text>
+    </Skeleton>
   );
 
   const diagramLink = hasSol2Yml && address ? (
@@ -31,9 +32,10 @@ const ContractSourceCode = ({ data, hasSol2Yml, address, isViper, filePath, addi
       <LinkInternal
         href={ route({ pathname: '/visualize/sol2uml', query: { address } }) }
         ml="auto"
-        mr={ 3 }
       >
-        View UML diagram
+        <Skeleton isLoaded={ !isLoading }>
+          View UML diagram
+        </Skeleton>
       </LinkInternal>
     </Tooltip>
   ) : null;
@@ -46,7 +48,7 @@ const ContractSourceCode = ({ data, hasSol2Yml, address, isViper, filePath, addi
   }, [ additionalSource, data, filePath, isViper ]);
 
   const copyToClipboard = editorData.length === 1 ?
-    <CopyToClipboard text={ editorData[0].source_code }/> :
+    <CopyToClipboard text={ editorData[0].source_code } isLoading={ isLoading } ml={ 3 }/> :
     null;
 
   return (
@@ -56,7 +58,7 @@ const ContractSourceCode = ({ data, hasSol2Yml, address, isViper, filePath, addi
         { diagramLink }
         { copyToClipboard }
       </Flex>
-      <CodeEditor data={ editorData }/>
+      { isLoading ? <Skeleton h="557px" w="100%"/> : <CodeEditor data={ editorData }/> }
     </section>
   );
 };
