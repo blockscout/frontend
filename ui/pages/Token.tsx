@@ -173,14 +173,16 @@ const TokenPageContent = () => {
       { /* should stay before tabs to scroll up with pagination */ }
       <Box ref={ scrollRef }></Box>
 
-      { tokenQuery.isLoading || contractQuery.isLoading ? <SkeletonTabs/> : (
-        <RoutedTabs
-          tabs={ tabs }
-          tabListProps={ tabListProps }
-          rightSlot={ !isMobile && hasPagination ? <Pagination { ...(pagination as PaginationProps) }/> : null }
-          stickyEnabled={ !isMobile }
-        />
-      ) }
+      { tokenQuery.isPlaceholderData || contractQuery.isPlaceholderData ?
+        <SkeletonTabs tabs={ tabs }/> :
+        (
+          <RoutedTabs
+            tabs={ tabs }
+            tabListProps={ tabListProps }
+            rightSlot={ !isMobile && hasPagination ? <Pagination { ...(pagination as PaginationProps) }/> : null }
+            stickyEnabled={ !isMobile }
+          />
+        ) }
 
       { !tokenQuery.isLoading && !tokenQuery.isError && <Box h={{ base: 0, lg: '40vh' }}/> }
     </>
