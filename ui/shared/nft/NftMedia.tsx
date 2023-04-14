@@ -11,13 +11,14 @@ interface Props {
   imageUrl: string | null;
   animationUrl: string | null;
   className?: string;
+  isLoading?: boolean;
 }
 
-const NftMedia = ({ imageUrl, animationUrl, className }: Props) => {
+const NftMedia = ({ imageUrl, animationUrl, className, isLoading }: Props) => {
   const [ type, setType ] = React.useState<MediaType | undefined>(!animationUrl ? 'image' : undefined);
 
   React.useEffect(() => {
-    if (!animationUrl) {
+    if (!animationUrl || isLoading) {
       return;
     }
 
@@ -45,9 +46,9 @@ const NftMedia = ({ imageUrl, animationUrl, className }: Props) => {
         setType('image');
       });
 
-  }, [ animationUrl ]);
+  }, [ animationUrl, isLoading ]);
 
-  if (!type) {
+  if (!type || isLoading) {
     return (
       <AspectRatio
         className={ className }

@@ -1,4 +1,4 @@
-import { Flex, Text, LinkBox, LinkOverlay, useColorModeValue, Hide } from '@chakra-ui/react';
+import { Flex, Text, LinkBox, LinkOverlay, useColorModeValue, Hide, Skeleton } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import React from 'react';
 
@@ -11,9 +11,9 @@ import LinkInternal from 'ui/shared/LinkInternal';
 import NftMedia from 'ui/shared/nft/NftMedia';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
-type Props = { item: TokenInstance };
+type Props = { item: TokenInstance; isLoading: boolean };
 
-const NFTItem = ({ item }: Props) => {
+const NFTItem = ({ item, isLoading }: Props) => {
   return (
     <LinkBox
       w={{ base: '100%', lg: '210px' }}
@@ -32,6 +32,7 @@ const NFTItem = ({ item }: Props) => {
             mb="18px"
             imageUrl={ item.image_url }
             animationUrl={ item.animation_url }
+            isLoading={ isLoading }
           />
         </LinkOverlay>
       </NextLink>
@@ -44,7 +45,9 @@ const NFTItem = ({ item }: Props) => {
               whiteSpace="nowrap"
               textOverflow="ellipsis"
             >
-              { item.id }
+              <Skeleton isLoaded={ !isLoading }>
+                { item.id }
+              </Skeleton>
             </LinkInternal>
           </TruncatedTextTooltip>
         </Flex>
@@ -53,8 +56,8 @@ const NFTItem = ({ item }: Props) => {
         <Flex mb={ 2 } ml={ 1 }>
           <Text whiteSpace="pre" variant="secondary" mr={ 2 } lineHeight="24px">Owner</Text>
           <Address>
-            <Hide below="lg" ssr={ false }><AddressIcon address={ item.owner } mr={ 1 }/></Hide>
-            <AddressLink hash={ item.owner.hash } alias={ item.owner.name } type="address" truncation="constant"/>
+            <Hide below="lg" ssr={ false }><AddressIcon address={ item.owner } mr={ 1 } isLoading={ isLoading }/></Hide>
+            <AddressLink hash={ item.owner.hash } alias={ item.owner.name } type="address" truncation="constant" isLoading={ isLoading }/>
           </Address>
         </Flex>
       ) }
