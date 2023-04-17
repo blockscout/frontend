@@ -42,7 +42,7 @@ import type { TTxsFilters } from 'types/api/txsFilters';
 import type { TxStateChanges } from 'types/api/txStateChanges';
 import type { VisualizedContract } from 'types/api/visualization';
 import type { WithdrawalsResponse } from 'types/api/withdrawals';
-import type ArrayElement from 'types/utils/ArrayElement';
+import type { ArrayElement } from 'types/utils';
 
 import appConfig from 'configs/app/config';
 
