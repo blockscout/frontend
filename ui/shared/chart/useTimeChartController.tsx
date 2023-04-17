@@ -72,7 +72,7 @@ export default function useTimeChartController({ data, width, height }: Props) {
     return format(d as Date);
   };
 
-  const yTickFormat = () => (d: d3.AxisDomain) => Number(d).toLocaleString('en', { maximumFractionDigits: 3, notation: 'compact' });
+  const yTickFormat = () => (d: d3.AxisDomain) => Number(d).toLocaleString(undefined, { maximumFractionDigits: 3, notation: 'compact' });
 
   return {
     xTickFormat,

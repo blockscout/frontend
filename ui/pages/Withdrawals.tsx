@@ -47,7 +47,7 @@ const Withdrawals = () => {
 
     return (
       <Text mb={{ base: 6, lg: isPaginationVisible ? 0 : 6 }} lineHeight={{ base: '24px', lg: '32px' }}>
-        A total of { countersQuery.data.toLocaleString('en') } withdrawals found
+        A total of { countersQuery.data.toLocaleString() } withdrawals found
       </Text>
     );
   })();

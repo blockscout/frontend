@@ -31,7 +31,7 @@ const SocketNewItemsNotice = ({ children, className, url, num, alert, type = 'tr
 
     return (
       <>
-        <Link href={ url }>{ num } more { name }{ num > 1 ? 's' : '' }</Link>
+        <Link href={ url }>{ num.toLocaleString() } more { name }{ num > 1 ? 's' : '' }</Link>
         <Text whiteSpace="pre"> ha{ num > 1 ? 've' : 's' } come in</Text>
       </>
     );

@@ -17,6 +17,8 @@ import AppError from 'ui/shared/AppError/AppError';
 import ErrorBoundary from 'ui/shared/ErrorBoundary';
 import GoogleAnalytics from 'ui/shared/GoogleAnalytics';
 
+import 'lib/setLocale';
+
 function MyApp({ Component, pageProps }: AppProps) {
   useConfigSentry();
   const [ queryClient ] = useState(() => new QueryClient({

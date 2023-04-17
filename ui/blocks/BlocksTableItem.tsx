@@ -53,7 +53,7 @@ const BlocksTableItem = ({ data, isPending, enableTimeIncrement }: Props) => {
         </Flex>
         <BlockTimestamp ts={ data.timestamp } isEnabled={ enableTimeIncrement }/>
       </Td>
-      <Td fontSize="sm">{ data.size.toLocaleString('en') }</Td>
+      <Td fontSize="sm">{ data.size.toLocaleString() }</Td>
       <Td fontSize="sm">
         <AddressLink type="address" alias={ data.miner.name } hash={ data.miner.hash } truncation="constant" display="inline-flex" maxW="100%"/>
       </Td>

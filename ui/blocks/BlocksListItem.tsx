@@ -48,7 +48,7 @@ const BlocksListItem = ({ data, isPending, enableTimeIncrement }: Props) => {
       </Flex>
       <Flex columnGap={ 2 }>
         <Text fontWeight={ 500 }>Size</Text>
-        <Text variant="secondary">{ data.size.toLocaleString('en') } bytes</Text>
+        <Text variant="secondary">{ data.size.toLocaleString() } bytes</Text>
       </Flex>
       <Flex columnGap={ 2 }>
         <Text fontWeight={ 500 }>{ capitalize(getNetworkValidatorTitle()) }</Text>
