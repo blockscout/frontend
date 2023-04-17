@@ -9,16 +9,9 @@ export type TransactionRevertReason = {
   raw: string;
 } | DecodedInput;
 
-export type Transaction = (
-  {
-    to: AddressParam;
-    created_contract: null;
-  } |
-  {
-    to: null;
-    created_contract: AddressParam;
-  }
-) & {
+export type Transaction = {
+  to: AddressParam | null;
+  created_contract: AddressParam | null;
   hash: string;
   result: string;
   confirmations: number;
