@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
+import type { TokenInfo } from 'types/api/token';
 import type { TokenTransferResponse } from 'types/api/tokenTransfer';
 
 import useGradualIncrement from 'lib/hooks/useGradualIncrement';
@@ -25,9 +26,10 @@ type Props = {
     isPaginationVisible: boolean;
   };
   tokenId?: string;
+  token?: TokenInfo;
 }
 
-const TokenTransfer = ({ transfersQuery, tokenId }: Props) => {
+const TokenTransfer = ({ transfersQuery, tokenId, token }: Props) => {
   const isMobile = useIsMobile();
   const router = useRouter();
   const { isError, isLoading, isPlaceholderData, data, pagination, isPaginationVisible } = transfersQuery;
@@ -72,6 +74,7 @@ const TokenTransfer = ({ transfersQuery, tokenId }: Props) => {
           socketInfoAlert={ socketAlert }
           socketInfoNum={ newItemsCount }
           tokenId={ tokenId }
+          token={ token }
           isLoading={ isPlaceholderData }
         />
       </Hide>

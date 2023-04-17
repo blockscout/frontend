@@ -1,6 +1,7 @@
 import { Table, Tbody, Tr, Th, Td, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
+import type { TokenInfo } from 'types/api/token';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import trimTokenSymbol from 'lib/token/trimTokenSymbol';
@@ -16,11 +17,11 @@ interface Props {
   socketInfoNum?: number;
   tokenId?: string;
   isLoading?: boolean;
+  token?: TokenInfo;
 }
 
-const TokenTransferTable = ({ data, top, showSocketInfo, socketInfoAlert, socketInfoNum, tokenId, isLoading }: Props) => {
+const TokenTransferTable = ({ data, top, showSocketInfo, socketInfoAlert, socketInfoNum, tokenId, isLoading, token }: Props) => {
   const tokenType = data[0].token.type;
-  const tokenSymbol = data[0].token.symbol;
 
   return (
     <Table variant="simple" size="sm" minW="950px">
@@ -32,7 +33,8 @@ const TokenTransferTable = ({ data, top, showSocketInfo, socketInfoAlert, socket
           <Th width="36px" px={ 0 }/>
           <Th width="218px" >To</Th>
           { (tokenType === 'ERC-721' || tokenType === 'ERC-1155') && <Th width="20%" isNumeric={ tokenType === 'ERC-721' }>Token ID</Th> }
-          { (tokenType === 'ERC-20' || tokenType === 'ERC-1155') && <Th width="20%" isNumeric whiteSpace="nowrap">Value { trimTokenSymbol(tokenSymbol) }</Th> }
+          { (tokenType === 'ERC-20' || tokenType === 'ERC-1155') &&
+            <Th width="20%" isNumeric whiteSpace="nowrap">Value { trimTokenSymbol(token?.symbol || '') }</Th> }
         </Tr>
       </Thead>
       <Tbody>

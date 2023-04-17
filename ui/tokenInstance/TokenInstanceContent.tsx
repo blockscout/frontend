@@ -51,7 +51,11 @@ const TokenInstanceContent = () => {
   });
 
   const tabs: Array<RoutedTab> = [
-    { id: 'token_transfers', title: 'Token transfers', component: <TokenTransfer transfersQuery={ transfersQuery } tokenId={ id }/> },
+    {
+      id: 'token_transfers',
+      title: 'Token transfers',
+      component: <TokenTransfer transfersQuery={ transfersQuery } tokenId={ id } token={ tokenInstanceQuery.data?.token }/>,
+    },
     // there is no api for this tab yet
     // { id: 'holders', title: 'Holders', component: <span>Holders</span> },
     { id: 'metadata', title: 'Metadata', component: <TokenInstanceMetadata data={ tokenInstanceQuery.data?.metadata }/> },
