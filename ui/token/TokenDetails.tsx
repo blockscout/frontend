@@ -149,7 +149,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
           </Skeleton>
         </DetailsInfoItem>
       ) }
-      <DetailsSponsoredItem isLoading={ tokenCountersQuery.isPlaceholderData }/>
+      <DetailsSponsoredItem isLoading={ tokenQuery.isPlaceholderData }/>
     </Grid>
   );
 };

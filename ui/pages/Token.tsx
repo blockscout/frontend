@@ -104,7 +104,7 @@ const TokenPageContent = () => {
     (tokenQuery.data?.type === 'ERC-1155' || tokenQuery.data?.type === 'ERC-721') ?
       { id: 'inventory', title: 'Inventory', component: <TokenInventory inventoryQuery={ inventoryQuery }/> } :
       undefined,
-    {
+    contractQuery.data?.is_contract ? {
       id: 'contract',
       title: () => {
         if (contractQuery.data?.is_verified) {
@@ -120,7 +120,7 @@ const TokenPageContent = () => {
       },
       component: <AddressContract tabs={ contractTabs } addressHash={ hashString }/>,
       subTabs: contractTabs.map(tab => tab.id),
-    },
+    } : undefined,
   ].filter(Boolean);
 
   let hasPagination;
