@@ -318,6 +318,49 @@ const TxDetails = () => {
           />
         </DetailsInfoItem>
       ) }
+      { appConfig.L2.isL2Network && (
+        <>
+          { data.l1_gas_used && (
+            <DetailsInfoItem
+              title="L1 gas used by txn"
+              hint="L1 gas used by transaction"
+            >
+              <Text>{ BigNumber(data.l1_gas_used).toFormat() }</Text>
+            </DetailsInfoItem>
+          ) }
+          { data.l1_gas_price && (
+            <DetailsInfoItem
+              title="L1 gas price"
+              hint="L1 gas price"
+            >
+              <Text mr={ 1 }>{ BigNumber(data.l1_gas_price).dividedBy(WEI).toFixed() } { appConfig.network.currency.symbol }</Text>
+              <Text variant="secondary">({ BigNumber(data.l1_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } Gwei)</Text>
+            </DetailsInfoItem>
+          ) }
+          { data.l1_fee && (
+            <DetailsInfoItem
+              title="L1 fee"
+              // eslint-disable-next-line max-len
+              hint={ `L1 Data Fee which is used to cover the L1 "security" cost from the batch submission mechanism. In combination with L2 execution fee, L1 fee makes the total amount of fees that a transaction pays.` }
+            >
+              <CurrencyValue
+                value={ data.l1_fee }
+                currency={ appConfig.network.currency.symbol }
+                exchangeRate={ data.exchange_rate }
+                flexWrap="wrap"
+              />
+            </DetailsInfoItem>
+          ) }
+          { data.l1_fee_scalar && (
+            <DetailsInfoItem
+              title="L1 fee scalar"
+              hint="A Dynamic overhead (fee scalar) premium, which serves as a buffer in case L1 prices rapidly increase."
+            >
+              <Text>{ data.l1_fee_scalar }</Text>
+            </DetailsInfoItem>
+          ) }
+        </>
+      ) }
       <GridItem colSpan={{ base: undefined, lg: 2 }}>
         <Element name="TxDetails__cutLink">
           <Link
