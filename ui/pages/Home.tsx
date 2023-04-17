@@ -4,8 +4,8 @@ import React from 'react';
 import appConfig from 'configs/app/config';
 import ChainIndicators from 'ui/home/indicators/ChainIndicators';
 import LatestBlocks from 'ui/home/LatestBlocks';
-import LatestTxs from 'ui/home/LatestTxs';
 import Stats from 'ui/home/Stats';
+import Transactions from 'ui/home/Transactions';
 import AdBanner from 'ui/shared/ad/AdBanner';
 import Page from 'ui/shared/Page/Page';
 import ColorModeToggler from 'ui/snippets/header/ColorModeToggler';
@@ -52,7 +52,9 @@ const Home = () => {
       <AdBanner mt={{ base: 6, lg: 8 }} justifyContent="center"/>
       <Flex mt={ 8 } direction={{ base: 'column', lg: 'row' }} columnGap={ 12 } rowGap={ 8 }>
         <LatestBlocks/>
-        <LatestTxs/>
+        <Box flexGrow={ 1 }>
+          <Transactions/>
+        </Box>
       </Flex>
     </Page>
   );

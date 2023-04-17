@@ -7,7 +7,7 @@ interface InjectedProps {
 }
 
 interface Props {
-  type?: 'transaction' | 'token_transfer';
+  type?: 'transaction' | 'token_transfer' | 'deposit';
   children?: (props: InjectedProps) => JSX.Element;
   className?: string;
   url: string;
@@ -23,7 +23,19 @@ const SocketNewItemsNotice = ({ children, className, url, num, alert, type = 'tr
       return alert;
     }
 
-    const name = type === 'token_transfer' ? 'token transfer' : 'transaction';
+    let name;
+
+    switch (type) {
+      case 'token_transfer':
+        name = 'token transfer';
+        break;
+      case 'deposit':
+        name = 'deposit';
+        break;
+      default:
+        name = 'transaction';
+        break;
+    }
 
     if (!num) {
       return `scanning new ${ name }s...`;

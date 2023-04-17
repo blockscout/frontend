@@ -14,6 +14,7 @@ SocketMessage.TxStatusUpdate |
 SocketMessage.TxRawTrace |
 SocketMessage.NewTx |
 SocketMessage.NewPendingTx |
+SocketMessage.NewDeposits |
 SocketMessage.AddressBalance |
 SocketMessage.AddressCurrentCoinBalance |
 SocketMessage.AddressTokenBalance |
@@ -42,6 +43,7 @@ export namespace SocketMessage {
   export type TxRawTrace = SocketMessageParamsGeneric<'raw_trace', RawTracesResponse>;
   export type NewTx = SocketMessageParamsGeneric<'transaction', { transaction: number }>;
   export type NewPendingTx = SocketMessageParamsGeneric<'pending_transaction', { pending_transaction: number }>;
+  export type NewDeposits = SocketMessageParamsGeneric<'deposits', { deposits: number }>;
   export type AddressBalance = SocketMessageParamsGeneric<'balance', { balance: string; block_number: number; exchange_rate: string }>;
   export type AddressCurrentCoinBalance =
   SocketMessageParamsGeneric<'current_coin_balance', { coin_balance: string; block_number: number; exchange_rate: string }>;
