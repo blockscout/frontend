@@ -52,7 +52,7 @@ const TokenTransferTableItem = ({
         </Grid>
       </Td>
       <Td>
-        <Skeleton isLoaded={ !isLoading } display="inline-block" borderRadius="sm" maxW="100%" py="3px">
+        <Skeleton isLoaded={ !isLoading } display="inline-block" borderRadius="sm" maxW="100%" my="3px">
           <TruncatedTextTooltip label={ method || '' }>
             { method ? <Tag> { method } </Tag> : '-' }
           </TruncatedTextTooltip>
@@ -109,7 +109,7 @@ const TokenTransferTableItem = ({
       ) }
       { (token.type === 'ERC-20' || token.type === 'ERC-1155') && (
         <Td isNumeric verticalAlign="top">
-          <Skeleton isLoaded={ !isLoading } py="7px">
+          <Skeleton isLoaded={ !isLoading } my="7px">
             { value || '-' }
           </Skeleton>
         </Td>

@@ -29,7 +29,7 @@ const RawDataSnippet = ({ data, className, title, rightSlot, beforeSlot, textare
       { beforeSlot }
       <Skeleton
         p={ 4 }
-        bgColor={ bgColor }
+        bgColor={ isLoading ? 'inherit' : bgColor }
         maxH={ textareaMaxHeight || '400px' }
         minH={ isLoading ? '200px' : undefined }
         fontSize="sm"
