@@ -201,6 +201,7 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
             isViper={ Boolean(data.is_vyper_contract) }
             filePath={ data.file_path }
             additionalSource={ data.additional_sources }
+            remappings={ data.compiler_settings?.remappings }
           />
         ) }
         { Boolean(data.compiler_settings) && (

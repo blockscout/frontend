@@ -8,7 +8,12 @@ export const verified: Partial<SmartContract> = {
   constructor_args: 'constructor_args',
   creation_bytecode: 'creation_bytecode',
   deployed_bytecode: 'deployed_bytecode',
-  compiler_settings: 'compiler_settings',
+  compiler_settings: {
+    evmVersion: 'london',
+    remappings: [
+      '@openzeppelin/=node_modules/@openzeppelin/',
+    ],
+  },
   evm_version: 'default',
   is_verified: true,
   name: 'WPOA',
