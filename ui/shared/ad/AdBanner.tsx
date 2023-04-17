@@ -16,11 +16,19 @@ const AdBanner = ({ className, isLoading }: { className?: string; isLoading?: bo
     return null;
   }
 
-  if (appConfig.ad.adButlerOn) {
-    return <Skeleton className={ className } isLoaded={ !isLoading } borderRadius="none"><AdbutlerBanner className={ className }/></Skeleton>;
-  }
+  const content = appConfig.ad.adButlerOn ? <AdbutlerBanner/> : <CoinzillaBanner/>;
 
-  return <Skeleton className={ className } isLoaded={ !isLoading } borderRadius="none"><CoinzillaBanner className={ className }/></Skeleton>;
+  return (
+    <Skeleton
+      className={ className }
+      isLoaded={ !isLoading }
+      borderRadius="none"
+      maxW={ appConfig.ad.adButlerOn ? '760px' : '728px' }
+      w="100%"
+    >
+      { content }
+    </Skeleton>
+  );
 };
 
 export default chakra(AdBanner);
