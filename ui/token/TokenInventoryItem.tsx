@@ -26,7 +26,7 @@ const NFTItem = ({ item }: Props) => {
       fontWeight={ 500 }
       lineHeight="20px"
     >
-      <NextLink href={{ pathname: '/token/[hash]/instance/[id]', query: { hash: item.token.address, id: item.id } }} passHref>
+      <NextLink href={{ pathname: '/token/[hash]/instance/[id]', query: { hash: item.token.address, id: item.id } }} passHref legacyBehavior>
         <LinkOverlay>
           <NftMedia
             mb="18px"
