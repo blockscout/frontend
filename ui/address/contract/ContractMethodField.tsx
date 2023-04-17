@@ -64,7 +64,7 @@ const ContractMethodField = ({ control, name, valueType, placeholder, setValue, 
           />
           <InputRightElement w="auto" right={ 1 }>
             { field.value && <InputClearButton onClick={ handleClear } isDisabled={ isDisabled }/> }
-            { hasZerosControl && <ContractMethodFieldZeroes onClick={ handleAddZeroesClick }/> }
+            { hasZerosControl && <ContractMethodFieldZeroes onClick={ handleAddZeroesClick } isDisabled={ isDisabled }/> }
           </InputRightElement>
         </InputGroup>
       </FormControl>
