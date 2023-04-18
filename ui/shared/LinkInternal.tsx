@@ -12,7 +12,7 @@ const LinkInternal = (props: LinkProps, ref: LegacyRef<HTMLAnchorElement>) => {
   }
 
   return (
-    <NextLink href={ props.href as NextLinkProps['href'] } passHref target={ props.target }>
+    <NextLink href={ props.href as NextLinkProps['href'] } passHref target={ props.target } legacyBehavior>
       <Link { ...props } ref={ ref }/>
     </NextLink>
   );
