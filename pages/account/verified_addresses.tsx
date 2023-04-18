@@ -4,13 +4,16 @@ import React from 'react';
 
 import getNetworkTitle from 'lib/networks/getNetworkTitle';
 import VerifiedAddresses from 'ui/pages/VerifiedAddresses';
+import Page from 'ui/shared/Page/Page';
 
 const VerifiedAddressesPage: NextPage = () => {
   const title = getNetworkTitle();
   return (
     <>
       <Head><title>{ title }</title></Head>
-      <VerifiedAddresses/>
+      <Page>
+        <VerifiedAddresses/>
+      </Page>
     </>
   );
 };

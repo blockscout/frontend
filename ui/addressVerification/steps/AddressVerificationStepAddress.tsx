@@ -103,8 +103,8 @@ const AddressVerificationStepAddress = ({ defaultAddress, onContinue }: Props) =
       <Box>Enter the contract address you are verifying ownership for.</Box>
       { rootError && <Alert status="warning" mt={ 3 }>{ rootError }</Alert> }
       <AddressVerificationFieldAddress formState={ formState } control={ control }/>
-      <Flex alignItems="center" mt={ 8 } columnGap={ 5 }>
-        <Button size="lg" type="submit" isDisabled={ formState.isSubmitting }>
+      <Flex alignItems={{ base: 'flex-start', lg: 'center' }} mt={ 8 } columnGap={ 5 } rowGap={ 2 } flexDir={{ base: 'column', lg: 'row' }}>
+        <Button size="lg" type="submit" isDisabled={ formState.isSubmitting } flexShrink={ 0 }>
             Continue
         </Button>
         <AdminSupportText/>

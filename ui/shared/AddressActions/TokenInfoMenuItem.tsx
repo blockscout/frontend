@@ -45,7 +45,7 @@ const TokenInfoMenuItem = ({ className, hash }: Props) => {
   }, [ router ]);
 
   const content = (() => {
-    if (!verifiedAddressesQuery.data?.verifiedAddresses.find(({ contractAddress }) => contractAddress === hash)) {
+    if (!verifiedAddressesQuery.data?.verifiedAddresses.find(({ contractAddress }) => contractAddress.toLowerCase() === hash.toLowerCase())) {
       return (
         <MenuItem className={ className } onClick={ handleAddAddressClick }>
           Add token info
@@ -55,7 +55,11 @@ const TokenInfoMenuItem = ({ className, hash }: Props) => {
 
     return (
       <MenuItem className={ className } onClick={ handleAddApplicationClick }>
-        { applicationsQuery.data?.submissions.some(({ tokenAddress }) => tokenAddress === hash) ? 'Update token info' : 'Add token info' }
+        {
+          applicationsQuery.data?.submissions.some(({ tokenAddress }) => tokenAddress.toLowerCase() === hash.toLowerCase()) ?
+            'Update token info' :
+            'Add token info'
+        }
       </MenuItem>
     );
   })();

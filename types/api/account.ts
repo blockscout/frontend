@@ -183,6 +183,7 @@ export interface TokenInfoApplicationConfig {
 export interface TokenInfoApplication {
   coinGeckoTicker?: string;
   coinMarketCapTicker?: string;
+  comment?: string;
   defiLlamaTicker?: string;
   discord?: string;
   docs?: string;

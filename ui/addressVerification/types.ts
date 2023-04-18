@@ -43,7 +43,6 @@ export type AddressValidationResponseSuccess = {
   status: 'INVALID_SIGNER_ERROR';
   invalidSigner: {
     signer: string;
-    validAddresses: Array<string>;
   };
 } |
 { status: 'VALIDITY_EXPIRED_ERROR' } |

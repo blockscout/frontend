@@ -55,7 +55,7 @@ const { wagmiClient, ethereumClient } = (() => {
 
 interface Props {
   children: React.ReactNode;
-  fallback?: () => JSX.Element;
+  fallback?: JSX.Element | (() => JSX.Element);
 }
 
 const Web3ModalProvider = ({ children, fallback }: Props) => {
@@ -63,7 +63,7 @@ const Web3ModalProvider = ({ children, fallback }: Props) => {
   const web3ModalTheme = useColorModeValue('light', 'dark');
 
   if (!wagmiClient || !ethereumClient) {
-    return fallback?.() || null;
+    return typeof fallback === 'function' ? fallback() : (fallback || null);
   }
 
   return (

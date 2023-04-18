@@ -60,6 +60,7 @@ const AddressVerificationModal = ({ defaultAddress, isOpen, onClose, onSubmit, o
     {
       title: 'Copy and sign message',
       content: <AddressVerificationStepSignature { ...data } onContinue={ handleGoToThirdStep }/>,
+      fallback: <AddressVerificationStepSignature { ...data } onContinue={ handleGoToThirdStep } noWeb3Provider/>,
     },
     {
       title: 'Congrats! Address is verified.',
@@ -89,7 +90,7 @@ const AddressVerificationModal = ({ defaultAddress, isOpen, onClose, onSubmit, o
         </ModalHeader>
         <ModalCloseButton/>
         <ModalBody mb={ 0 }>
-          <Web3ModalProvider>
+          <Web3ModalProvider fallback={ step?.fallback || step.content }>
             { step.content }
           </Web3ModalProvider>
         </ModalBody>

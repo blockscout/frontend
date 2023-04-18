@@ -12,7 +12,6 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import AddressVerificationModal from 'ui/addressVerification/AddressVerificationModal';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import SkeletonListAccount from 'ui/shared/skeletons/SkeletonListAccount';
 import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
@@ -86,9 +85,9 @@ const VerifiedAddresses = () => {
           return { submissions: [ newItem ] };
         }
 
-        const isExisting = prevData.submissions.some((item) => item.id === newItem.id);
+        const isExisting = prevData.submissions.some((item) => item.id.toLowerCase() === newItem.id.toLowerCase());
         const submissions = isExisting ?
-          prevData.submissions.map((item) => item.id === newItem.id ? newItem : item) :
+          prevData.submissions.map((item) => item.id.toLowerCase() === newItem.id.toLowerCase() ? newItem : item) :
           [ newItem, ...prevData.submissions ];
         return { submissions };
       });
@@ -128,14 +127,14 @@ const VerifiedAddresses = () => {
 
   if (selectedAddress) {
     return (
-      <Page>
+      <>
         <PageTitle text="Token info application form" backLink={ backLink }/>
         <TokenInfoForm
           address={ selectedAddress }
-          application={ applicationsQuery.data?.submissions.find(({ tokenAddress }) => tokenAddress === selectedAddress) }
+          application={ applicationsQuery.data?.submissions.find(({ tokenAddress }) => tokenAddress.toLowerCase() === selectedAddress.toLowerCase()) }
           onSubmit={ handleApplicationSubmit }
         />
-      </Page>
+      </>
     );
   }
 
@@ -146,7 +145,7 @@ const VerifiedAddresses = () => {
           <VerifiedAddressesListItem
             key={ item.contractAddress }
             item={ item }
-            application={ applicationsQuery.data?.submissions?.find(({ tokenAddress }) => tokenAddress === item.contractAddress) }
+            application={ applicationsQuery.data?.submissions?.find(({ tokenAddress }) => tokenAddress.toLowerCase() === item.contractAddress.toLowerCase()) }
             onAdd={ handleItemAdd }
             onEdit={ handleItemEdit }
           />
@@ -164,7 +163,7 @@ const VerifiedAddresses = () => {
   ) : null;
 
   return (
-    <Page>
+    <>
       <PageTitle text="My verified addresses"/>
       <AccountPageDescription allowCut={ false }>
         <span>
@@ -205,7 +204,7 @@ const VerifiedAddresses = () => {
         onAddTokenInfoClick={ handleItemAdd }
         onShowListClick={ modalProps.onClose }
       />
-    </Page>
+    </>
   );
 };
 

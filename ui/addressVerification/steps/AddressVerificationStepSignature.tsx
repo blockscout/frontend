@@ -28,10 +28,11 @@ type Fields = RootFields & AddressVerificationFormSecondStepFields;
 
 interface Props extends AddressVerificationFormFirstStepFields, AddressCheckStatusSuccess{
   onContinue: (newItem: VerifiedAddress) => void;
+  noWeb3Provider?: boolean;
 }
 
-const AddressVerificationStepSignature = ({ address, signingMessage, contractCreator, contractOwner, onContinue }: Props) => {
-  const [ signMethod, setSignMethod ] = React.useState<'wallet' | 'manually'>('wallet');
+const AddressVerificationStepSignature = ({ address, signingMessage, contractCreator, contractOwner, onContinue, noWeb3Provider }: Props) => {
+  const [ signMethod, setSignMethod ] = React.useState<'wallet' | 'manually'>(noWeb3Provider ? 'manually' : 'wallet');
 
   const { open: openWeb3Modal } = useWeb3Modal();
   const { isConnected } = useAccount();
@@ -208,13 +209,15 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
           <CopyToClipboard text={ signingMessage } ml="auto" display="block"/>
           <AddressVerificationFieldMessage formState={ formState } control={ control }/>
         </div>
-        <RadioGroup onChange={ handleSignMethodChange } value={ signMethod } display="flex" flexDir="column" rowGap={ 4 }>
-          <Radio value="wallet">Sign via Web3 wallet</Radio>
-          <Radio value="manually">Sign manually</Radio>
-        </RadioGroup>
+        { !noWeb3Provider && (
+          <RadioGroup onChange={ handleSignMethodChange } value={ signMethod } display="flex" flexDir="column" rowGap={ 4 }>
+            <Radio value="wallet">Sign via Web3 wallet</Radio>
+            <Radio value="manually">Sign manually</Radio>
+          </RadioGroup>
+        ) }
         { signMethod === 'manually' && <AddressVerificationFieldSignature formState={ formState } control={ control }/> }
       </Flex>
-      <Flex alignItems="center" mt={ 8 } columnGap={ 5 }>
+      <Flex alignItems={{ base: 'flex-start', lg: 'center' }} mt={ 8 } columnGap={ 5 } rowGap={ 2 } flexDir={{ base: 'column', lg: 'row' }}>
         { button }
         <AdminSupportText/>
       </Flex>

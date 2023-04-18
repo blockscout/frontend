@@ -29,7 +29,7 @@ const VerifiedAddressesTable = ({ data, applications, onItemEdit, onItemAdd }: P
           <VerifiedAddressesTableItem
             key={ item.contractAddress }
             item={ item }
-            application={ applications?.find(({ tokenAddress }) => tokenAddress === item.contractAddress) }
+            application={ applications?.find(({ tokenAddress }) => tokenAddress.toLowerCase() === item.contractAddress.toLowerCase()) }
             onAdd={ onItemAdd }
             onEdit={ onItemEdit }
           />
