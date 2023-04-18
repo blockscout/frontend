@@ -4,6 +4,7 @@ import React from 'react';
 
 import type { CsvExportType } from 'types/client/address';
 
+import appConfig from 'configs/app/config';
 import svgFileIcon from 'icons/files/csv.svg';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import LinkInternal from 'ui/shared/LinkInternal';
@@ -16,6 +17,10 @@ interface Props {
 
 const AddressCsvExportLink = ({ className, address, type }: Props) => {
   const isMobile = useIsMobile();
+
+  if (!appConfig.reCaptcha.siteKey) {
+    return null;
+  }
 
   return (
     <Tooltip isDisabled={ !isMobile } label="Download CSV">

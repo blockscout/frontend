@@ -62,7 +62,7 @@ test('search by address hash +@mobile', async({ mount, page }) => {
 test('search by block number +@mobile', async({ mount, page }) => {
   const hooksConfig = {
     router: {
-      query: { q: searchMock.block1.block_number },
+      query: { q: String(searchMock.block1.block_number) },
     },
   };
   await page.route(buildApiUrl('search') + `?q=${ searchMock.block1.block_number }`, (route) => route.fulfill({

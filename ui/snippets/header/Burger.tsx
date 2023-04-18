@@ -1,6 +1,7 @@
 import { Icon, Box, Flex, Drawer, DrawerOverlay, DrawerContent, DrawerBody, useColorModeValue, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 
+import appConfig from 'configs/app/config';
 import burgerIcon from 'icons/burger.svg';
 import testnetIcon from 'icons/testnet.svg';
 import NavigationMobile from 'ui/snippets/navigation/NavigationMobile';
@@ -45,11 +46,13 @@ const Burger = () => {
             <Icon as={ testnetIcon } h="14px" w="auto" color="red.400" alignSelf="flex-start"/>
             <Flex alignItems="center" justifyContent="space-between">
               <NetworkLogo onClick={ handleNetworkLogoClick }/>
-              <NetworkMenuButton
-                isMobile
-                isActive={ isNetworkMenuOpened }
-                onClick={ handleNetworkMenuButtonClick }
-              />
+              { appConfig.featuredNetworks.length > 0 ? (
+                <NetworkMenuButton
+                  isMobile
+                  isActive={ isNetworkMenuOpened }
+                  onClick={ handleNetworkMenuButtonClick }
+                />
+              ) : <Box boxSize={ 9 }/> }
             </Flex>
             { isNetworkMenuOpened ? <NetworkMenuContentMobile/> : <NavigationMobile/> }
           </DrawerBody>

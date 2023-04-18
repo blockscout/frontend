@@ -51,7 +51,7 @@ const ContractWrite = ({ addressHash, isProxy, isCustomAbi }: Props) => {
     return contract;
   })();
 
-  const handleMethodFormSubmit = React.useCallback(async(item: SmartContractWriteMethod, args: Array<string | Array<string>>) => {
+  const handleMethodFormSubmit = React.useCallback(async(item: SmartContractWriteMethod, args: Array<string | Array<unknown>>) => {
     if (!isConnected) {
       throw new Error('Wallet is not connected');
     }

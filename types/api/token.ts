@@ -42,7 +42,7 @@ export interface TokenInstance {
   animation_url: string | null;
   external_app_url: string | null;
   metadata: Record<string, unknown> | null;
-  owner: AddressParam;
+  owner: AddressParam | null;
   token: TokenInfo;
 }
 

@@ -9,7 +9,7 @@ const GasUsedToTargetRatio = ({ value }: Props) => {
   return (
     <Tooltip label="% of Gas Target">
       <Text variant="secondary">
-        { (value > 0 ? '+' : '') + value.toLocaleString('en', { maximumFractionDigits: 2 }) }%
+        { (value > 0 ? '+' : '') + value.toLocaleString(undefined, { maximumFractionDigits: 2 }) }%
       </Text>
     </Tooltip>
   );

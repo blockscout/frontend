@@ -60,16 +60,18 @@ const TokenInstanceDetails = ({ data, scrollRef }: Props) => {
           >
             <TokenSnippet hash={ data.token.address } name={ data.token.name }/>
           </DetailsInfoItem>
-          <DetailsInfoItem
-            title="Owner"
-            hint="Current owner of this token instance"
-          >
-            <Address>
-              <AddressIcon address={ data.owner }/>
-              <AddressLink type="address" hash={ data.owner.hash } ml={ 2 }/>
-              <CopyToClipboard text={ data.owner.hash }/>
-            </Address>
-          </DetailsInfoItem>
+          { data.owner && (
+            <DetailsInfoItem
+              title="Owner"
+              hint="Current owner of this token instance"
+            >
+              <Address>
+                <AddressIcon address={ data.owner }/>
+                <AddressLink type="address" hash={ data.owner.hash } ml={ 2 }/>
+                <CopyToClipboard text={ data.owner.hash }/>
+              </Address>
+            </DetailsInfoItem>
+          ) }
           <TokenInstanceCreatorAddress hash={ data.token.address }/>
           <DetailsInfoItem
             title="Token ID"

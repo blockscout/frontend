@@ -112,7 +112,7 @@ const BlockDetails = ({ query }: Props) => {
         title="Size"
         hint="Size of the block in bytes"
       >
-        { data.size.toLocaleString('en') }
+        { data.size.toLocaleString() }
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Timestamp"

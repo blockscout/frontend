@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { TxStateChange, TxStateChangeTokenErc1155, TxStateChangeTokenErc1155Single, TxStateChangeTokenErc721 } from 'types/api/txStateChanges';
-import type ArrayElement from 'types/utils/ArrayElement';
+import type { ArrayElement } from 'types/utils';
 
 import appConfig from 'configs/app/config';
 import { ZERO_ADDRESS } from 'lib/consts';

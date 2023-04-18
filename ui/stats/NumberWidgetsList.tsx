@@ -31,7 +31,7 @@ const NumberWidgetsList = () => {
             <NumberWidget
               key={ id }
               label={ title }
-              value={ `${ Number(value).toLocaleString('en', { maximumFractionDigits: 3, notation: 'compact' }) } ${ units ? units : '' }` }
+              value={ `${ Number(value).toLocaleString(undefined, { maximumFractionDigits: 3, notation: 'compact' }) } ${ units ? units : '' }` }
             />
           );
         }) }

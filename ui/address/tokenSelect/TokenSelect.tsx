@@ -83,7 +83,7 @@ const TokenSelect = ({ onClick }: Props) => {
       }
       <Tooltip label="Show all tokens">
         <Box>
-          <NextLink href={{ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'tokens' } }} passHref>
+          <NextLink href={{ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'tokens' } }} passHref legacyBehavior>
             <IconButton
               aria-label="Show all tokens"
               variant="outline"

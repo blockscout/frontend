@@ -60,7 +60,7 @@ const AddressesTableItem = ({
         </Td>
       ) }
       <Td isNumeric>
-        <Text lineHeight="24px">{ Number(item.tx_count).toLocaleString('en') }</Text>
+        <Text lineHeight="24px">{ Number(item.tx_count).toLocaleString() }</Text>
       </Td>
     </Tr>
   );

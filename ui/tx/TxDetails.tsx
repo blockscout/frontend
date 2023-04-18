@@ -86,21 +86,21 @@ const TxDetails = () => {
 
   const toAddress = data.to ? data.to : data.created_contract;
   const addressToTags = [
-    ...toAddress.private_tags || [],
-    ...toAddress.public_tags || [],
-    ...toAddress.watchlist_names || [],
+    ...toAddress?.private_tags || [],
+    ...toAddress?.public_tags || [],
+    ...toAddress?.watchlist_names || [],
   ].map((tag) => <Tag key={ tag.label }>{ tag.display_name }</Tag>);
 
   const actionsExist = data.actions && data.actions.length > 0;
 
-  const executionSuccessBadge = toAddress.is_contract && data.result === 'success' ? (
+  const executionSuccessBadge = toAddress?.is_contract && data.result === 'success' ? (
     <Tooltip label="Contract execution completed">
       <chakra.span display="inline-flex" ml={ 2 } mr={ 1 }>
         <Icon as={ successIcon } boxSize={ 4 } color={ executionSuccessIconColor } cursor="pointer"/>
       </chakra.span>
     </Tooltip>
   ) : null;
-  const executionFailedBadge = toAddress.is_contract && Boolean(data.status) && data.result !== 'success' ? (
+  const executionFailedBadge = toAddress?.is_contract && Boolean(data.status) && data.result !== 'success' ? (
     <Tooltip label="Error occurred during contract execution">
       <chakra.span display="inline-flex" ml={ 2 } mr={ 1 }>
         <Icon as={ errorIcon } boxSize={ 4 } color="error" cursor="pointer"/>
@@ -214,29 +214,35 @@ const TxDetails = () => {
         flexWrap={{ base: 'wrap', lg: 'nowrap' }}
         columnGap={ 3 }
       >
-        { data.to && data.to.hash ? (
-          <Address alignItems="center">
-            <AddressIcon address={ toAddress }/>
-            <AddressLink type="address" ml={ 2 } hash={ toAddress.hash }/>
-            { executionSuccessBadge }
-            { executionFailedBadge }
-            <CopyToClipboard text={ toAddress.hash }/>
-          </Address>
+        { toAddress ? (
+          <>
+            { data.to && data.to.hash ? (
+              <Address alignItems="center">
+                <AddressIcon address={ toAddress }/>
+                <AddressLink type="address" ml={ 2 } hash={ toAddress.hash }/>
+                { executionSuccessBadge }
+                { executionFailedBadge }
+                <CopyToClipboard text={ toAddress.hash }/>
+              </Address>
+            ) : (
+              <Flex width={{ base: '100%', lg: 'auto' }} whiteSpace="pre" alignItems="center">
+                <span>[Contract </span>
+                <AddressLink type="address" hash={ toAddress.hash }/>
+                <span> created]</span>
+                { executionSuccessBadge }
+                { executionFailedBadge }
+                <CopyToClipboard text={ toAddress.hash }/>
+              </Flex>
+            ) }
+            { toAddress.name && <Text>{ toAddress.name }</Text> }
+            { addressToTags.length > 0 && (
+              <Flex columnGap={ 3 }>
+                { addressToTags }
+              </Flex>
+            ) }
+          </>
         ) : (
-          <Flex width={{ base: '100%', lg: 'auto' }} whiteSpace="pre" alignItems="center">
-            <span>[Contract </span>
-            <AddressLink type="address" hash={ toAddress.hash }/>
-            <span> created]</span>
-            { executionSuccessBadge }
-            { executionFailedBadge }
-            <CopyToClipboard text={ toAddress.hash }/>
-          </Flex>
-        ) }
-        { toAddress.name && <Text>{ toAddress.name }</Text> }
-        { addressToTags.length > 0 && (
-          <Flex columnGap={ 3 }>
-            { addressToTags }
-          </Flex>
+          <span>[ Contract creation ]</span>
         ) }
       </DetailsInfoItem>
       { data.token_transfers && <TxDetailsTokenTransfers data={ data.token_transfers } txHash={ data.hash }/> }
@@ -317,6 +323,49 @@ const TxDetails = () => {
             flexWrap="wrap"
           />
         </DetailsInfoItem>
+      ) }
+      { appConfig.L2.isL2Network && (
+        <>
+          { data.l1_gas_used && (
+            <DetailsInfoItem
+              title="L1 gas used by txn"
+              hint="L1 gas used by transaction"
+            >
+              <Text>{ BigNumber(data.l1_gas_used).toFormat() }</Text>
+            </DetailsInfoItem>
+          ) }
+          { data.l1_gas_price && (
+            <DetailsInfoItem
+              title="L1 gas price"
+              hint="L1 gas price"
+            >
+              <Text mr={ 1 }>{ BigNumber(data.l1_gas_price).dividedBy(WEI).toFixed() } { appConfig.network.currency.symbol }</Text>
+              <Text variant="secondary">({ BigNumber(data.l1_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } Gwei)</Text>
+            </DetailsInfoItem>
+          ) }
+          { data.l1_fee && (
+            <DetailsInfoItem
+              title="L1 fee"
+              // eslint-disable-next-line max-len
+              hint={ `L1 Data Fee which is used to cover the L1 "security" cost from the batch submission mechanism. In combination with L2 execution fee, L1 fee makes the total amount of fees that a transaction pays.` }
+            >
+              <CurrencyValue
+                value={ data.l1_fee }
+                currency={ appConfig.network.currency.symbol }
+                exchangeRate={ data.exchange_rate }
+                flexWrap="wrap"
+              />
+            </DetailsInfoItem>
+          ) }
+          { data.l1_fee_scalar && (
+            <DetailsInfoItem
+              title="L1 fee scalar"
+              hint="A Dynamic overhead (fee scalar) premium, which serves as a buffer in case L1 prices rapidly increase."
+            >
+              <Text>{ data.l1_fee_scalar }</Text>
+            </DetailsInfoItem>
+          ) }
+        </>
       ) }
       <GridItem colSpan={{ base: undefined, lg: 2 }}>
         <Element name="TxDetails__cutLink">

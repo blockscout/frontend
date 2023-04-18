@@ -18,10 +18,10 @@ const VerifiedContractsCountersItem = ({ name, total, new24 }: Props) => {
     >
       <Text variant="secondary" fontSize="xs">{ name }</Text>
       <Flex alignItems="baseline">
-        <Text fontWeight={ 600 } mr={ 2 } fontSize="lg">{ Number(total).toLocaleString('en') }</Text>
+        <Text fontWeight={ 600 } mr={ 2 } fontSize="lg">{ Number(total).toLocaleString() }</Text>
         { Number(new24) > 0 && (
           <>
-            <Text fontWeight={ 600 } mr={ 1 } fontSize="lg" color="green.500">+{ Number(new24).toLocaleString('en') }</Text>
+            <Text fontWeight={ 600 } mr={ 1 } fontSize="lg" color="green.500">+{ Number(new24).toLocaleString() }</Text>
             <Text variant="secondary" fontSize="sm">(24h)</Text>
           </>
         ) }

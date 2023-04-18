@@ -20,9 +20,10 @@ import { times } from 'lib/html-entities';
 
 interface Props {
   onClick: (power: number) => void;
+  isDisabled?: boolean;
 }
 
-const ContractMethodFieldZeroes = ({ onClick }: Props) => {
+const ContractMethodFieldZeroes = ({ onClick, isDisabled }: Props) => {
   const [ selectedOption, setSelectedOption ] = React.useState<number | undefined>(18);
   const [ customValue, setCustomValue ] = React.useState<number>();
   const { isOpen, onToggle, onClose } = useDisclosure();
@@ -60,6 +61,7 @@ const ContractMethodFieldZeroes = ({ onClick }: Props) => {
           colorScheme="gray"
           display="inline"
           onClick={ handleButtonClick }
+          isDisabled={ isDisabled }
         >
           { times }
           <chakra.span>10</chakra.span>
@@ -76,6 +78,7 @@ const ContractMethodFieldZeroes = ({ onClick }: Props) => {
             ml={ 1 }
             p={ 0 }
             onClick={ onToggle }
+            isDisabled={ isDisabled }
           >
             <Icon as={ iconEastMini } transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } boxSize={ 6 }/>
           </Button>

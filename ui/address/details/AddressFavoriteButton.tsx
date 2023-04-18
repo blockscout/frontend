@@ -5,7 +5,7 @@ import React from 'react';
 
 import starFilledIcon from 'icons/star_filled.svg';
 import starOutlineIcon from 'icons/star_outline.svg';
-import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
+import { getResourceKey } from 'lib/api/useApiQuery';
 import usePreventFocusAfterModalClosing from 'lib/hooks/usePreventFocusAfterModalClosing';
 import useRedirectIfNotAuth from 'lib/hooks/useRedirectIfNotAuth';
 import WatchlistAddModal from 'ui/watchlist/AddressModal/AddressModal';
@@ -14,23 +14,22 @@ import DeleteAddressModal from 'ui/watchlist/DeleteAddressModal';
 interface Props {
   className?: string;
   hash: string;
-  isAdded: boolean;
+  watchListId: number | null;
 }
 
-const AddressFavoriteButton = ({ className, hash, isAdded }: Props) => {
+const AddressFavoriteButton = ({ className, hash, watchListId }: Props) => {
   const addModalProps = useDisclosure();
   const deleteModalProps = useDisclosure();
   const queryClient = useQueryClient();
   const router = useRouter();
   const redirectIfNotAuth = useRedirectIfNotAuth();
-  const watchListQuery = useApiQuery('watchlist', { queryOptions: { enabled: isAdded } });
 
   const handleClick = React.useCallback(() => {
     if (redirectIfNotAuth()) {
       return;
     }
-    isAdded ? deleteModalProps.onOpen() : addModalProps.onOpen();
-  }, [ addModalProps, deleteModalProps, isAdded, redirectIfNotAuth ]);
+    watchListId ? deleteModalProps.onOpen() : addModalProps.onOpen();
+  }, [ addModalProps, deleteModalProps, watchListId, redirectIfNotAuth ]);
 
   const handleAddOrDeleteSuccess = React.useCallback(async() => {
     const queryKey = getResourceKey('address', { pathParams: { hash: router.query.hash?.toString() } });
@@ -49,18 +48,15 @@ const AddressFavoriteButton = ({ className, hash, isAdded }: Props) => {
   const formData = React.useMemo(() => {
     return {
       address_hash: hash,
-      // FIXME temporary solution
-      // there is no endpoint in api what can return watchlist address info by its hash
-      // so we look up in the whole watchlist and hope we can find a necessary item
-      id: watchListQuery.data?.find((address) => address.address?.hash === hash)?.id || '',
+      id: String(watchListId),
     };
-  }, [ hash, watchListQuery.data ]);
+  }, [ hash, watchListId ]);
 
   return (
     <>
-      <Tooltip label={ `${ isAdded ? 'Remove address from Watch list' : 'Add address to Watch list' }` }>
+      <Tooltip label={ `${ watchListId ? 'Remove address from Watch list' : 'Add address to Watch list' }` }>
         <IconButton
-          isActive={ isAdded }
+          isActive={ Boolean(watchListId) }
           className={ className }
           aria-label="edit"
           variant="outline"
@@ -68,7 +64,7 @@ const AddressFavoriteButton = ({ className, hash, isAdded }: Props) => {
           pl="6px"
           pr="6px"
           onClick={ handleClick }
-          icon={ <Icon as={ isAdded ? starFilledIcon : starOutlineIcon } boxSize={ 5 }/> }
+          icon={ <Icon as={ watchListId ? starFilledIcon : starOutlineIcon } boxSize={ 5 }/> }
           onFocusCapture={ usePreventFocusAfterModalClosing() }
         />
       </Tooltip>

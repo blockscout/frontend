@@ -2,7 +2,7 @@ import { Box, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SearchResult } from './types';
-import type ArrayElement from 'types/utils/ArrayElement';
+import type { ArrayElement } from 'types/utils';
 
 import useThemeColors from './utils/useThemeColors';
 

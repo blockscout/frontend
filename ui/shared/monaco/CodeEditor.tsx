@@ -35,9 +35,10 @@ const EDITOR_HEIGHT = 500;
 
 interface Props {
   data: Array<File>;
+  remappings?: Array<string>;
 }
 
-const CodeEditor = ({ data }: Props) => {
+const CodeEditor = ({ data, remappings }: Props) => {
   const [ instance, setInstance ] = React.useState<Monaco | undefined>();
   const [ editor, setEditor ] = React.useState<monaco.editor.IStandaloneCodeEditor | undefined>();
   const [ index, setIndex ] = React.useState(0);
@@ -136,15 +137,23 @@ const CodeEditor = ({ data }: Props) => {
     const target = event.target as HTMLSpanElement;
     const isImportLink = target.classList.contains('import-link');
     if (isImportLink) {
-      const path = target.innerText;
-      const fullPath = getFullPathOfImportedFile(data[index].file_path, path);
+      const path = [
+        target.previousElementSibling as HTMLSpanElement,
+        target,
+        target.nextElementSibling as HTMLSpanElement,
+      ]
+        .filter((element) => element?.classList.contains('import-link'))
+        .map((element: HTMLSpanElement) => element.innerText)
+        .join('');
+
+      const fullPath = getFullPathOfImportedFile(data[index].file_path, path, remappings);
       const fileIndex = data.findIndex((file) => file.file_path === fullPath);
       if (fileIndex > -1) {
         event.stopPropagation();
         handleSelectFile(fileIndex);
       }
     }
-  }, [ data, handleSelectFile, index, isMetaPressed, isMobile ]);
+  }, [ data, handleSelectFile, index, isMetaPressed, isMobile, remappings ]);
 
   const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
     isMetaKey(event) && setIsMetaPressed(true);
@@ -165,12 +174,10 @@ const CodeEditor = ({ data }: Props) => {
     '.highlight': {
       backgroundColor: themeColors['custom.findMatchHighlightBackground'],
     },
-    '&&.meta-pressed .import-link': {
-      _hover: {
-        color: themeColors['custom.fileLink.hoverForeground'],
-        textDecoration: 'underline',
-        cursor: 'pointer',
-      },
+    '&&.meta-pressed .import-link:hover, &&.meta-pressed .import-link:hover + .import-link': {
+      color: themeColors['custom.fileLink.hoverForeground'],
+      textDecoration: 'underline',
+      cursor: 'pointer',
     },
   }), [ editorWidth, themeColors ]);
 

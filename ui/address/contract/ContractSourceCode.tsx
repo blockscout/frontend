@@ -16,9 +16,10 @@ interface Props {
   isViper: boolean;
   filePath?: string;
   additionalSource?: SmartContract['additional_sources'];
+  remappings?: Array<string>;
 }
 
-const ContractSourceCode = ({ data, hasSol2Yml, address, isViper, filePath, additionalSource }: Props) => {
+const ContractSourceCode = ({ data, hasSol2Yml, address, isViper, filePath, additionalSource, remappings }: Props) => {
   const heading = (
     <Text fontWeight={ 500 }>
       <span>Contract source code</span>
@@ -56,7 +57,7 @@ const ContractSourceCode = ({ data, hasSol2Yml, address, isViper, filePath, addi
         { diagramLink }
         { copyToClipboard }
       </Flex>
-      <CodeEditor data={ editorData }/>
+      <CodeEditor data={ editorData } remappings={ remappings }/>
     </section>
   );
 };

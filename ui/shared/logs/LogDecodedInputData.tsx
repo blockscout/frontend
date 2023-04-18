@@ -155,19 +155,37 @@ const LogDecodedInputData = ({ data }: Props) => {
         </>
       ) }
       { data.parameters.map(({ name, type, value, indexed }, index) => {
-        return (
-          <TableRow key={ name } name={ name } type={ type } isLast={ index === data.parameters.length - 1 } indexed={ indexed }>
-            { type === 'address' ? (
+        const content = (() => {
+          if (type === 'address' && typeof value === 'string') {
+            return (
               <Address justifyContent="space-between">
                 <AddressLink type="address" hash={ value }/>
                 <CopyToClipboard text={ value }/>
               </Address>
-            ) : (
+            );
+          }
+
+          if (typeof value === 'object') {
+            const text = JSON.stringify(value, undefined, 4);
+            return (
               <Flex alignItems="flex-start" justifyContent="space-between" whiteSpace="normal" wordBreak="break-all">
-                <Text>{ String(value) }</Text>
-                <CopyToClipboard text={ value }/>
+                <div>{ text }</div>
+                <CopyToClipboard text={ text }/>
               </Flex>
-            ) }
+            );
+          }
+
+          return (
+            <Flex alignItems="flex-start" justifyContent="space-between" whiteSpace="normal" wordBreak="break-all">
+              <Text>{ value }</Text>
+              <CopyToClipboard text={ value }/>
+            </Flex>
+          );
+        })();
+
+        return (
+          <TableRow key={ name } name={ name } type={ type } isLast={ index === data.parameters.length - 1 } indexed={ indexed }>
+            { content }
           </TableRow>
         );
       }) }
