@@ -15,7 +15,7 @@ const AppLink = ({ url, external, id, title }: Props) => {
       { title }
     </LinkOverlay>
   ) : (
-    <NextLink href={{ pathname: '/apps/[id]', query: { id } }} passHref>
+    <NextLink href={{ pathname: '/apps/[id]', query: { id } }} passHref legacyBehavior>
       <LinkOverlay>
         { title }
       </LinkOverlay>
