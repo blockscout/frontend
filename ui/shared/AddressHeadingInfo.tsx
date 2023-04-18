@@ -4,6 +4,7 @@ import React from 'react';
 import type { Address } from 'types/api/address';
 import type { TokenInfo } from 'types/api/token';
 
+import config from 'configs/app/config';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import AddressAddToMetaMask from 'ui/address/details/AddressAddToMetaMask';
 import AddressFavoriteButton from 'ui/address/details/AddressFavoriteButton';
@@ -35,7 +36,7 @@ const AddressHeadingInfo = ({ address, token, isLinkDisabled }: Props) => {
       />
       <CopyToClipboard text={ address.hash }/>
       { address.is_contract && token && <AddressAddToMetaMask ml={ 2 } token={ token }/> }
-      { !address.is_contract && (
+      { !address.is_contract && config.isAccountSupported && (
         <AddressFavoriteButton hash={ address.hash } watchListId={ address.watchlist_address_id } ml={ 3 }/>
       ) }
       <AddressQrCode hash={ address.hash } ml={ 2 }/>
