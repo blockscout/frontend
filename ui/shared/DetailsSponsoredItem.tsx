@@ -3,6 +3,7 @@ import React from 'react';
 
 import * as cookies from 'lib/cookies';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import isSelfHosted from 'lib/isSelfHosted';
 import AdBanner from 'ui/shared/ad/AdBanner';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 
@@ -10,7 +11,7 @@ const DetailsSponsoredItem = () => {
   const isMobile = useIsMobile();
   const hasAdblockCookie = cookies.get(cookies.NAMES.ADBLOCK_DETECTED);
 
-  if (hasAdblockCookie) {
+  if (hasAdblockCookie || !isSelfHosted()) {
     return null;
   }
 
