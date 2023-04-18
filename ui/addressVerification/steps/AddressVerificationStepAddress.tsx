@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Flex, Link } from '@chakra-ui/react';
+import { Alert, Box, Button, Flex } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
@@ -16,6 +16,7 @@ import appConfig from 'configs/app/config';
 import type { ResourceError } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 import LinkInternal from 'ui/shared/LinkInternal';
+import AdminSupportText from 'ui/shared/texts/AdminSupportText';
 
 import AddressVerificationFieldAddress from '../fields/AddressVerificationFieldAddress';
 type Fields = RootFields & AddressVerificationFormFirstStepFields;
@@ -99,17 +100,14 @@ const AddressVerificationStepAddress = ({ defaultAddress, onContinue }: Props) =
 
   return (
     <form noValidate onSubmit={ onSubmit }>
-      <Box>Let’s check your address...</Box>
+      <Box>Enter the contract address you are verifying ownership for.</Box>
       { rootError && <Alert status="warning" mt={ 3 }>{ rootError }</Alert> }
       <AddressVerificationFieldAddress formState={ formState } control={ control }/>
       <Flex alignItems="center" mt={ 8 } columnGap={ 5 }>
         <Button size="lg" type="submit" isDisabled={ formState.isSubmitting }>
             Continue
         </Button>
-        <Box>
-          <span>Contact </span>
-          <Link href="mailto:help@blockscout.com">help@blockscout.com</Link>
-        </Box>
+        <AdminSupportText/>
       </Flex>
     </form>
   );

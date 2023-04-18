@@ -16,6 +16,7 @@ import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import SkeletonListAccount from 'ui/shared/skeletons/SkeletonListAccount';
 import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
+import AdminSupportText from 'ui/shared/texts/AdminSupportText';
 import TokenInfoForm from 'ui/tokenInfo/TokenInfoForm';
 import VerifiedAddressesListItem from 'ui/verifiedAddresses/VerifiedAddressesListItem';
 import VerifiedAddressesTable from 'ui/verifiedAddresses/VerifiedAddressesTable';
@@ -177,16 +178,16 @@ const VerifiedAddresses = () => {
         </chakra.p>
         <OrderedList ml={ 6 }>
           <ListItem>The source code for the smart contract is deployed on “{ appConfig.network.name }”.</ListItem>
-          <ListItem>The source code is verified (if not yet verified, you can use this tool).</ListItem>
+          <ListItem>
+            <span>The source code is verified (if not yet verified, you can use </span>
+            <Link href="https://docs.blockscout.com/for-users/verifying-a-smart-contract" target="_blank">this tool</Link>
+            <span>).</span>
+          </ListItem>
         </OrderedList>
         <chakra.div mt={ 5 }>
           Once these steps are complete, click the Add address button below to get started.
         </chakra.div>
-        <chakra.div>
-          <span>Need help? Contact admin team at </span>
-          <Link href="mailto:help@blockscout.com">help@blockscout.com</Link>
-          <span> for assistance!</span>
-        </chakra.div>
+        <AdminSupportText mt={ 5 }/>
       </AccountPageDescription>
       <DataListDisplay
         isLoading={ addressesQuery.isLoading || applicationsQuery.isLoading }

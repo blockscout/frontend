@@ -19,6 +19,7 @@ import appConfig from 'configs/app/config';
 import useApiFetch from 'lib/api/useApiFetch';
 import shortenString from 'lib/shortenString';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import AdminSupportText from 'ui/shared/texts/AdminSupportText';
 
 import AddressVerificationFieldMessage from '../fields/AddressVerificationFieldMessage';
 import AddressVerificationFieldSignature from '../fields/AddressVerificationFieldSignature';
@@ -215,10 +216,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
       </Flex>
       <Flex alignItems="center" mt={ 8 } columnGap={ 5 }>
         { button }
-        <Box>
-          <span>Contact </span>
-          <Link href="mailto:help@blockscout.com">help@blockscout.com</Link>
-        </Box>
+        <AdminSupportText/>
       </Flex>
     </form>
   );
