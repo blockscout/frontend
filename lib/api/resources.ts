@@ -24,7 +24,7 @@ import type { InternalTransactionsResponse } from 'types/api/internalTransaction
 import type { LogsResponseTx, LogsResponseAddress } from 'types/api/log';
 import type { OutputRootsResponse } from 'types/api/outputRoots';
 import type { RawTracesResponse } from 'types/api/rawTrace';
-import type { SearchResult, SearchResultFilters } from 'types/api/search';
+import type { SearchRedirectResult, SearchResult, SearchResultFilters } from 'types/api/search';
 import type { Counters, StatsCharts, StatsChart, HomeStats } from 'types/api/stats';
 import type {
   TokenCounters,
@@ -529,6 +529,7 @@ Q extends 'token_instance_transfers' ? TokenInstanceTransferResponse :
 Q extends 'token_inventory' ? TokenInventoryResponse :
 Q extends 'tokens' ? TokensResponse :
 Q extends 'search' ? SearchResult :
+Q extends 'search_check_redirect' ? SearchRedirectResult :
 Q extends 'contract' ? SmartContract :
 Q extends 'contract_methods_read' ? Array<SmartContractReadMethod> :
 Q extends 'contract_methods_read_proxy' ? Array<SmartContractReadMethod> :

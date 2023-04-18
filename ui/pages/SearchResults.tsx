@@ -1,4 +1,5 @@
 import { Box, chakra, Table, Tbody, Tr, Th, Skeleton, Show, Hide } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import type { FormEvent } from 'react';
 import React from 'react';
 
@@ -17,8 +18,28 @@ import SearchBarInput from 'ui/snippets/searchBar/SearchBarInput';
 import useSearchQuery from 'ui/snippets/searchBar/useSearchQuery';
 
 const SearchResultsPageContent = () => {
-  const { query, searchTerm, debouncedSearchTerm, handleSearchTermChange } = useSearchQuery(true);
+  const router = useRouter();
+  const { query, redirectCheckQuery, searchTerm, debouncedSearchTerm, handleSearchTermChange } = useSearchQuery(true);
   const { data, isError, isLoading, pagination, isPaginationVisible } = query;
+
+  React.useEffect(() => {
+    if (redirectCheckQuery.data?.redirect && redirectCheckQuery.data.parameter) {
+      switch (redirectCheckQuery.data.type) {
+        case 'block': {
+          router.push({ pathname: '/block/[height]', query: { height: redirectCheckQuery.data.parameter } });
+          return;
+        }
+        case 'address': {
+          router.push({ pathname: '/address/[hash]', query: { hash: redirectCheckQuery.data.parameter } });
+          return;
+        }
+        case 'transaction': {
+          router.push({ pathname: '/tx/[hash]', query: { hash: redirectCheckQuery.data.parameter } });
+          return;
+        }
+      }
+    }
+  }, [ redirectCheckQuery.data, router ]);
 
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -29,7 +50,7 @@ const SearchResultsPageContent = () => {
       return <DataFetchAlert/>;
     }
 
-    if (isLoading) {
+    if (isLoading || redirectCheckQuery.isLoading) {
       return (
         <Box>
           <SkeletonList display={{ base: 'block', lg: 'none' }}/>
@@ -70,7 +91,7 @@ const SearchResultsPageContent = () => {
       return null;
     }
 
-    const text = isLoading ? (
+    const text = isLoading || redirectCheckQuery.isLoading ? (
       <Skeleton h={ 6 } w="280px" borderRadius="full" mb={ isPaginationVisible ? 0 : 6 }/>
     ) : (
       (
@@ -129,7 +150,10 @@ const SearchResultsPageContent = () => {
 
   return (
     <Page renderHeader={ renderHeader }>
-      <PageTitle text="Search results"/>
+      { isLoading || redirectCheckQuery.isLoading ?
+        <Skeleton h={ 10 } mb={ 6 } w="100%" maxW="222px"/> :
+        <PageTitle text="Search results"/>
+      }
       { bar }
       { content }
     </Page>
