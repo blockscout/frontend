@@ -317,10 +317,10 @@ frontend:
         - "/accounts"
         - "/visualize"
         - "/api-docs"
-        - "/output-roots"
-        - "/txn-batches"
-        - "/withdrawals"
-        - "/deposits"
+        - "/l2-output-roots"
+        - "/l2-txn-batches"
+        - "/l2-withdrawals"
+        - "/l2-deposits"
   resources:
     limits:
       memory:

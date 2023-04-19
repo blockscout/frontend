@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
-import * as depositMock from 'mocks/deposits/deposits';
+import * as depositMock from 'mocks/l2deposits/deposits';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
 
