@@ -1,13 +1,14 @@
 import type { Fields } from './types';
 import type { TokenInfoApplication } from 'types/api/account';
 
-export function getFormDefaultValues(address: string, application: TokenInfoApplication | undefined): Partial<Fields> {
+export function getFormDefaultValues(address: string, tokenName: string, application: TokenInfoApplication | undefined): Partial<Fields> {
   if (!application) {
-    return { address };
+    return { address, token_name: tokenName };
   }
 
   return {
     address,
+    token_name: tokenName,
     requester_name: application.requesterName,
     requester_email: application.requesterEmail,
     project_name: application.projectName,

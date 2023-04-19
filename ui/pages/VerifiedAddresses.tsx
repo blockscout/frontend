@@ -126,11 +126,14 @@ const VerifiedAddresses = () => {
   }, [ handleGoBack, selectedAddress ]);
 
   if (selectedAddress) {
+    const addressInfo = addressesQuery.data?.verifiedAddresses.find(({ contractAddress }) => contractAddress.toLowerCase() === selectedAddress.toLowerCase());
+    const tokenName = addressInfo ? `${ addressInfo.metadata.tokenName } (${ addressInfo.metadata.tokenSymbol })` : '';
     return (
       <>
         <PageTitle text="Token info application form" backLink={ backLink }/>
         <TokenInfoForm
           address={ selectedAddress }
+          tokenName={ tokenName }
           application={ applicationsQuery.data?.submissions.find(({ tokenAddress }) => tokenAddress.toLowerCase() === selectedAddress.toLowerCase()) }
           onSubmit={ handleApplicationSubmit }
         />

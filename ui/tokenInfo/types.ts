@@ -2,6 +2,7 @@ import type { Option } from 'ui/shared/FancySelect/types';
 
 export interface Fields extends SocialLinkFields, TickerUrlFields {
   address: string;
+  token_name: string;
   requester_name: string;
   requester_email: string;
   project_name?: string;

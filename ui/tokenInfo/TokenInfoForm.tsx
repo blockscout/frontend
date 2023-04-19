@@ -28,16 +28,18 @@ import TokenInfoFieldRequesterEmail from './fields/TokenInfoFieldRequesterEmail'
 import TokenInfoFieldRequesterName from './fields/TokenInfoFieldRequesterName';
 import TokenInfoFieldSocialLink from './fields/TokenInfoFieldSocialLink';
 import TokenInfoFieldSupport from './fields/TokenInfoFieldSupport';
+import TokenInfoFieldTokenName from './fields/TokenInfoFieldTokenName';
 import TokenInfoFormSectionHeader from './TokenInfoFormSectionHeader';
 import { getFormDefaultValues, prepareRequestBody } from './utils';
 
 interface Props {
   address: string;
+  tokenName: string;
   application?: TokenInfoApplication;
   onSubmit: (application: TokenInfoApplication) => void;
 }
 
-const TokenInfoForm = ({ address, application, onSubmit }: Props) => {
+const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => {
 
   const containerRef = React.useRef<HTMLFormElement>(null);
 
@@ -50,7 +52,7 @@ const TokenInfoForm = ({ address, application, onSubmit }: Props) => {
 
   const formApi = useForm<Fields>({
     mode: 'onBlur',
-    defaultValues: getFormDefaultValues(address, application),
+    defaultValues: getFormDefaultValues(address, tokenName, application),
   });
   const { handleSubmit, formState, control, trigger } = formApi;
 
@@ -107,9 +109,8 @@ const TokenInfoForm = ({ address, application, onSubmit }: Props) => {
         <Alert status="warning" mt={ 6 }>Request in progress. Once an admin approves your request you can edit token info.</Alert> }
       <Grid mt={ 8 } gridTemplateColumns={{ base: '1fr', lg: '1fr 1fr' }} columnGap={ 5 } rowGap={ 5 }>
 
-        <GridItem colSpan={{ base: 1, lg: 2 }}>
-          <TokenInfoFieldAddress { ...fieldProps }/>
-        </GridItem>
+        <TokenInfoFieldAddress { ...fieldProps }/>
+        <TokenInfoFieldTokenName { ...fieldProps }/>
         <TokenInfoFieldRequesterName { ...fieldProps }/>
         <TokenInfoFieldRequesterEmail { ...fieldProps }/>
 
