@@ -1,7 +1,10 @@
 /* eslint-disable no-restricted-properties */
 import type { AppItemOverview } from 'types/client/apps';
+import type { WalletType } from 'types/client/wallets';
 import type { FeaturedNetwork, NetworkExplorer, PreDefinedNetwork } from 'types/networks';
 import type { ChainIndicatorId } from 'ui/home/indicators/types';
+
+import { SUPPORTED_WALLETS } from 'lib/web3/wallets';
 
 const getEnvValue = (env: string | undefined) => env?.replaceAll('\'', '"');
 const parseEnvJson = <DataType>(env: string | undefined): DataType | null => {
@@ -12,6 +15,10 @@ const parseEnvJson = <DataType>(env: string | undefined): DataType | null => {
   }
 };
 const stripTrailingSlash = (str: string) => str[str.length - 1] === '/' ? str.slice(0, -1) : str;
+const getWeb3DefaultWallet = (): WalletType => {
+  const envValue = getEnvValue(process.env.NEXT_PUBLIC_WEB3_DEFAULT_WALLET);
+  return (envValue && SUPPORTED_WALLETS.includes(envValue) ? envValue : 'metamask') as WalletType;
+};
 
 const env = process.env.NODE_ENV;
 const isDev = env === 'development';
@@ -98,6 +105,9 @@ const config = Object.freeze({
   ad: {
     domainWithAd: getEnvValue(process.env.NEXT_PUBLIC_AD_DOMAIN_WITH_AD) || 'blockscout.com',
     adButlerOn: getEnvValue(process.env.NEXT_PUBLIC_AD_ADBUTLER_ON) === 'true',
+  },
+  web3: {
+    defaultWallet: getWeb3DefaultWallet(),
   },
   api: {
     host: apiHost,
