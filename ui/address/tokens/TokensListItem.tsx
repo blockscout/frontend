@@ -4,12 +4,11 @@ import React from 'react';
 import type { AddressTokenBalance } from 'types/api/address';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
+import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TokenLogo from 'ui/shared/TokenLogo';
-
-import AddressAddToMetaMask from '../details/AddressAddToMetaMask';
 
 type Props = AddressTokenBalance;
 
@@ -31,7 +30,7 @@ const TokensListItem = ({ token, value }: Props) => {
       <Flex alignItems="center" pl={ 8 }>
         <AddressLink hash={ token.address } type="address" truncation="constant"/>
         <CopyToClipboard text={ token.address } ml={ 1 }/>
-        <AddressAddToMetaMask token={ token } ml={ 2 }/>
+        <AddressAddToWallet token={ token } ml={ 2 }/>
       </Flex>
       { token.exchange_rate !== undefined && token.exchange_rate !== null && (
         <HStack spacing={ 3 }>

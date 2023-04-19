@@ -4,7 +4,7 @@ import React from 'react';
 import type { TokenInfo } from 'types/api/token';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
-import AddressAddToMetaMask from 'ui/address/details/AddressAddToMetaMask';
+import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
@@ -60,7 +60,7 @@ const TokensTableItem = ({
             <AddressLink fontSize="sm" hash={ address } type="address" truncation="constant"/>
             <CopyToClipboard text={ address } ml={ 1 }/>
           </Flex>
-          <AddressAddToMetaMask token={ token }/>
+          <AddressAddToWallet token={ token }/>
         </Flex>
       </Flex>
       { exchangeRate && (

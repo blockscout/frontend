@@ -11,7 +11,7 @@ interface Props {
   token: TokenInfo;
 }
 
-const AddressAddToMetaMask = ({ className, token }: Props) => {
+const AddressAddToWallet = ({ className, token }: Props) => {
   const toast = useToast();
 
   const handleClick = React.useCallback(async() => {
@@ -63,4 +63,4 @@ const AddressAddToMetaMask = ({ className, token }: Props) => {
   );
 };
 
-export default React.memo(chakra(AddressAddToMetaMask));
+export default React.memo(chakra(AddressAddToWallet));
