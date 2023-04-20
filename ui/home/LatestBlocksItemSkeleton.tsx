@@ -8,6 +8,8 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
+import appConfig from 'configs/app/config';
+
 const LatestBlocksItemSkeleton = () => {
   return (
     <Box
@@ -27,10 +29,14 @@ const LatestBlocksItemSkeleton = () => {
       <Grid gridGap={ 2 } templateColumns="auto minmax(0, 1fr)" fontSize="sm">
         <GridItem><Skeleton w="30px" h="15px"/></GridItem>
         <GridItem><Skeleton w="93px" h="15px"/></GridItem>
-        <GridItem><Skeleton w="30px" h="15px"/></GridItem>
-        <GridItem><Skeleton w="93px" h="15px"/></GridItem>
-        <GridItem><Skeleton w="30px" h="15px"/></GridItem>
-        <GridItem><Skeleton w="93px" h="15px"/></GridItem>
+        { !appConfig.L2.isL2Network && (
+          <>
+            <GridItem><Skeleton w="30px" h="15px"/></GridItem>
+            <GridItem><Skeleton w="93px" h="15px"/></GridItem>
+            <GridItem><Skeleton w="30px" h="15px"/></GridItem>
+            <GridItem><Skeleton w="93px" h="15px"/></GridItem>
+          </>
+        ) }
       </Grid>
     </Box>
   );

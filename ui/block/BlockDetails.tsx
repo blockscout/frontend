@@ -112,7 +112,7 @@ const BlockDetails = ({ query }: Props) => {
         title="Size"
         hint="Size of the block in bytes"
       >
-        { data.size.toLocaleString('en') }
+        { data.size.toLocaleString() }
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Timestamp"
@@ -141,7 +141,7 @@ const BlockDetails = ({ query }: Props) => {
         { /* api doesn't return the block processing time yet */ }
         { /* <Text>{ dayjs.duration(block.minedIn, 'second').humanize(true) }</Text> */ }
       </DetailsInfoItem>
-      { !totalReward.isEqualTo(ZERO) && (
+      { !appConfig.L2.isL2Network && !totalReward.isEqualTo(ZERO) && (
         <DetailsInfoItem
           title="Block reward"
           hint={

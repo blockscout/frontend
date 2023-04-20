@@ -7,6 +7,10 @@ interface Props {
 }
 
 const HashStringShorten = ({ hash, isTooltipDisabled }: Props) => {
+  if (hash.length <= 8) {
+    return <span>{ hash }</span>;
+  }
+
   return (
     <Tooltip label={ hash } isDisabled={ isTooltipDisabled }>
       { hash.slice(0, 4) + '...' + hash.slice(-4) }

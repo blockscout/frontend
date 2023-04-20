@@ -5,17 +5,14 @@ import React from 'react';
 import * as tokenTransferMock from 'mocks/tokens/tokenTransfer';
 import TestApp from 'playwright/TestApp';
 
-import { flattenTotal } from './helpers';
 import TokenTransferTable from './TokenTransferTable';
-
-const flattenData = tokenTransferMock.mixTokens.items.reduce(flattenTotal, []);
 
 test('without tx info', async({ mount }) => {
   const component = await mount(
     <TestApp>
       <Box h={{ base: '134px', lg: 6 }}/>
       <TokenTransferTable
-        data={ flattenData }
+        data={ tokenTransferMock.mixTokens.items }
         top={ 0 }
         showTxInfo={ false }
       />
@@ -30,7 +27,7 @@ test('with tx info', async({ mount }) => {
     <TestApp>
       <Box h={{ base: '134px', lg: 6 }}/>
       <TokenTransferTable
-        data={ flattenData }
+        data={ tokenTransferMock.mixTokens.items }
         top={ 0 }
         showTxInfo={ true }
       />

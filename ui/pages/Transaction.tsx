@@ -17,16 +17,15 @@ import TxDetails from 'ui/tx/TxDetails';
 import TxInternals from 'ui/tx/TxInternals';
 import TxLogs from 'ui/tx/TxLogs';
 import TxRawTrace from 'ui/tx/TxRawTrace';
+import TxState from 'ui/tx/TxState';
 import TxTokenTransfer from 'ui/tx/TxTokenTransfer';
-// import TxState from 'ui/tx/TxState';
 
 const TABS: Array<RoutedTab> = [
   { id: 'index', title: 'Details', component: <TxDetails/> },
   { id: 'token_transfers', title: 'Token transfers', component: <TxTokenTransfer/> },
   { id: 'internal', title: 'Internal txns', component: <TxInternals/> },
   { id: 'logs', title: 'Logs', component: <TxLogs/> },
-  // will be implemented later, api is not ready
-  // { id: 'state', title: 'State', component: <TxState/> },
+  { id: 'state', title: 'State', component: <TxState/> },
   { id: 'raw_trace', title: 'Raw trace', component: <TxRawTrace/> },
 ];
 

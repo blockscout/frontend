@@ -50,7 +50,7 @@ const TxnBatches = () => {
       Tx batch (L2 block)
         <Text fontWeight={ 600 } whiteSpace="pre"> #{ data.items[0].l2_block_number } </Text>to
         <Text fontWeight={ 600 } whiteSpace="pre"> #{ data.items[data.items.length - 1].l2_block_number } </Text>
-      (total of { countersQuery.data.toLocaleString('en') } batches)
+      (total of { countersQuery.data.toLocaleString() } batches)
       </Flex>
     );
   })();

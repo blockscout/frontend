@@ -84,8 +84,9 @@ export const DEFAULT_VALUES: Record<SmartContractVerificationMethod, FormFields>
       value: 'vyper-code' as const,
       label: METHOD_LABELS['vyper-code'],
     },
-    name: '',
+    name: 'Vyper_contract',
     compiler: null,
+    evm_version: null,
     code: '',
     constructor_args: '',
   },
@@ -110,6 +111,13 @@ export function getDefaultValues(method: SmartContractVerificationMethod, config
 
     if (method === 'vyper-multi-part') {
       defaultValues.evm_version = config.vyper_evm_versions.find((value) => value === 'default') ? { label: 'default', value: 'default' } : null;
+    }
+  }
+
+  if (config.is_rust_verifier_microservice_enabled) {
+    if (method === 'flattened-code') {
+      'name' in defaultValues && (defaultValues.name = undefined);
+      'autodetect_constructor_args' in defaultValues && (defaultValues.autodetect_constructor_args = false);
     }
   }
 
@@ -145,7 +153,7 @@ export function prepareRequestBody(data: FormFields): FetchParams['body'] {
         is_optimization_enabled: _data.is_optimization_enabled,
         is_yul_contract: _data.is_yul,
         optimization_runs: _data.optimization_runs,
-        contract_name: _data.name,
+        contract_name: _data.name || undefined,
         libraries: reduceLibrariesArray(_data.libraries),
         evm_version: _data.evm_version?.value,
         autodetect_constructor_args: _data.autodetect_constructor_args,
@@ -196,6 +204,7 @@ export function prepareRequestBody(data: FormFields): FetchParams['body'] {
 
       return {
         compiler_version: _data.compiler?.value,
+        evm_version: _data.evm_version?.value,
         source_code: _data.code,
         contract_name: _data.name,
         constructor_args: _data.constructor_args,

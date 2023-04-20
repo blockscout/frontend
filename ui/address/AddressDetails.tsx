@@ -56,6 +56,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
     implementation_name: null,
     implementation_address: null,
     token: null,
+    watchlist_address_id: null,
     watchlist_names: null,
     creation_tx_hash: null,
     block_number_balance_updated_at: null,

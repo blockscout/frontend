@@ -18,18 +18,19 @@ type Props = { item: OutputRootsItem };
 const OutputRootsListItem = ({ item }: Props) => {
   const timeAgo = dayjs(item.l1_timestamp).fromNow();
 
-  const items = [
-    {
-      name: 'L2 output index',
-      value: item.l2_output_index,
-    },
-    {
-      name: 'Age',
-      value: timeAgo,
-    },
-    {
-      name: 'L2 block #',
-      value: (
+  return (
+    <ListItemMobileGrid.Container>
+
+      <ListItemMobileGrid.Label>L2 output index</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value fontWeight={ 600 } color="text">
+        { item.l2_output_index }
+      </ListItemMobileGrid.Value>
+
+      <ListItemMobileGrid.Label>Age</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>{ timeAgo }</ListItemMobileGrid.Value>
+
+      <ListItemMobileGrid.Label>L2 block #</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
         <LinkInternal
           display="flex"
           width="fit-content"
@@ -38,11 +39,10 @@ const OutputRootsListItem = ({ item }: Props) => {
         >
           { item.l2_block_number }
         </LinkInternal>
-      ),
-    },
-    {
-      name: 'L1 txn hash',
-      value: (
+      </ListItemMobileGrid.Value>
+
+      <ListItemMobileGrid.Label>L1 txn hash</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
         <LinkExternal
           maxW="100%"
           display="inline-flex"
@@ -52,20 +52,18 @@ const OutputRootsListItem = ({ item }: Props) => {
           <Icon as={ txIcon } boxSize={ 6 } mr={ 1 }/>
           <Box w="calc(100% - 36px)" overflow="hidden" whiteSpace="nowrap"><HashStringShortenDynamic hash={ item.l1_tx_hash }/></Box>
         </LinkExternal>
-      ),
-    },
-    {
-      name: 'Output root',
-      value: (
+      </ListItemMobileGrid.Value>
+
+      <ListItemMobileGrid.Label>Output root</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
         <Flex overflow="hidden" whiteSpace="nowrap" alignItems="center" w="100%" justifyContent="space-between">
           <Text variant="secondary" w="calc(100% - 24px)"><HashStringShortenDynamic hash={ item.output_root }/></Text>
           <CopyToClipboard text={ item.output_root }/>
         </Flex>
-      ),
-    },
-  ];
+      </ListItemMobileGrid.Value>
 
-  return <ListItemMobileGrid items={ items } gridTemplateColumns="100px auto"/>;
+    </ListItemMobileGrid.Container>
+  );
 };
 
 export default OutputRootsListItem;

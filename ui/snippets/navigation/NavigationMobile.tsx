@@ -67,7 +67,7 @@ const NavigationMobile = () => {
             }) }
           </VStack>
         </Box>
-        { isAuth && (
+        { hasAccount && (
           <Box
             as="nav"
             mt={ 6 }

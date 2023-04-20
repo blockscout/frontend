@@ -5,10 +5,7 @@ import React from 'react';
 import * as tokenTransferMock from 'mocks/tokens/tokenTransfer';
 import TestApp from 'playwright/TestApp';
 
-import { flattenTotal } from './helpers';
 import TokenTransferList from './TokenTransferList';
-
-const flattenData = tokenTransferMock.mixTokens.items.reduce(flattenTotal, []);
 
 test.use({ viewport: devices['iPhone 13 Pro'].viewport });
 
@@ -17,7 +14,7 @@ test('without tx info', async({ mount }) => {
     <TestApp>
       <Box h={{ base: '134px', lg: 6 }}/>
       <TokenTransferList
-        data={ flattenData }
+        data={ tokenTransferMock.mixTokens.items }
         showTxInfo={ false }
       />
     </TestApp>,
@@ -31,7 +28,7 @@ test('with tx info', async({ mount }) => {
     <TestApp>
       <Box h={{ base: '134px', lg: 6 }}/>
       <TokenTransferList
-        data={ flattenData }
+        data={ tokenTransferMock.mixTokens.items }
         showTxInfo={ true }
       />
     </TestApp>,

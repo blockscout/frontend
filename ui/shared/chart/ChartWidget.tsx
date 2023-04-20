@@ -274,6 +274,7 @@ const ChartWidget = ({ items, title, description, isLoading, className, isError,
           title={ title }
           description={ description }
           onClose={ clearFullscreenChart }
+          units={ units }
         />
       ) }
     </>

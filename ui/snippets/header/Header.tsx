@@ -1,6 +1,7 @@
 import { HStack, Box, Flex, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
+import appConfig from 'configs/app/config';
 import { useScrollDirection } from 'lib/contexts/scrollDirection';
 import IndexingAlert from 'ui/home/IndexingAlert';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
@@ -43,7 +44,7 @@ const Header = ({ isHomePage, renderSearchBar }: Props) => {
         >
           <Burger/>
           <NetworkLogo/>
-          <ProfileMenuMobile/>
+          { appConfig.isAccountSupported ? <ProfileMenuMobile/> : <Box boxSize={ 10 }/> }
         </Flex>
         { !isHomePage && searchBar }
       </Box>
@@ -66,7 +67,7 @@ const Header = ({ isHomePage, renderSearchBar }: Props) => {
               { searchBar }
             </Box>
             <ColorModeToggler/>
-            <ProfileMenuDesktop/>
+            { appConfig.isAccountSupported && <ProfileMenuDesktop/> }
           </HStack>
         ) }
       </Box>

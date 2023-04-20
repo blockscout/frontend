@@ -22,15 +22,6 @@ import ContractVerificationVyperContract from './methods/ContractVerificationVyp
 import ContractVerificationVyperMultiPartFile from './methods/ContractVerificationVyperMultiPartFile';
 import { prepareRequestBody, formatSocketErrors, getDefaultValues } from './utils';
 
-const METHOD_COMPONENTS = {
-  'flattened-code': <ContractVerificationFlattenSourceCode/>,
-  'standard-input': <ContractVerificationStandardInput/>,
-  sourcify: <ContractVerificationSourcify/>,
-  'multi-part': <ContractVerificationMultiPartFile/>,
-  'vyper-code': <ContractVerificationVyperContract/>,
-  'vyper-multi-part': <ContractVerificationVyperMultiPartFile/>,
-};
-
 interface Props {
   method?: SmartContractVerificationMethod;
   config: SmartContractVerificationConfig;
@@ -122,8 +113,18 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
     handler: handleNewSocketMessage,
   });
 
+  const methods = React.useMemo(() => {
+    return {
+      'flattened-code': <ContractVerificationFlattenSourceCode config={ config }/>,
+      'standard-input': <ContractVerificationStandardInput/>,
+      sourcify: <ContractVerificationSourcify/>,
+      'multi-part': <ContractVerificationMultiPartFile/>,
+      'vyper-code': <ContractVerificationVyperContract config={ config }/>,
+      'vyper-multi-part': <ContractVerificationVyperMultiPartFile/>,
+    };
+  }, [ config ]);
   const method = watch('method');
-  const content = METHOD_COMPONENTS[method?.value] || null;
+  const content = methods[method?.value] || null;
   const methodValue = method?.value;
 
   useUpdateEffect(() => {

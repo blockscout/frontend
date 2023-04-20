@@ -2,9 +2,9 @@ import type { AddressParam } from './addressParams';
 
 export type TokenType = 'ERC-20' | 'ERC-721' | 'ERC-1155';
 
-export interface TokenInfo {
+export interface TokenInfo<T extends TokenType = TokenType> {
   address: string;
-  type: TokenType;
+  type: T;
   symbol: string | null;
   name: string | null;
   decimals: string | null;
@@ -17,8 +17,6 @@ export interface TokenCounters {
   token_holders_count: string;
   transfers_count: string;
 }
-
-export type TokenInfoGeneric<Type extends TokenType> = Omit<TokenInfo, 'type'> & { type: Type };
 
 export interface TokenHolders {
   items: Array<TokenHolder>;
@@ -43,7 +41,7 @@ export interface TokenInstance {
   animation_url: string | null;
   external_app_url: string | null;
   metadata: Record<string, unknown> | null;
-  owner: AddressParam;
+  owner: AddressParam | null;
   token: TokenInfo;
 }
 

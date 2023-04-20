@@ -71,7 +71,7 @@ const NavLink = ({ item, isCollapsed, px, className }: Props) => {
       { /* why not NextLink in all cases? since prev UI and new one are hosting in the same domain and global routing is managed by nginx */ }
       { /* we have to hard reload page on every transition between urls from different part of the app */ }
       { isInternalItem(item) && item.isNewUi ? (
-        <NextLink href={ item.nextRoute } passHref>
+        <NextLink href={ item.nextRoute } passHref legacyBehavior>
           { content }
         </NextLink>
       ) : content }

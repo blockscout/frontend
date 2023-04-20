@@ -41,7 +41,7 @@ const ChartArea = ({ id, xScale, yScale, color, data, disableAnimation, ...props
       .x(({ date }) => xScale(date))
       .y1(({ value }) => yScale(value))
       .y0(() => yScale(yScale.domain()[0]))
-      .curve(d3.curveCatmullRom);
+      .curve(d3.curveMonotoneX);
     return area(data) || undefined;
   }, [ xScale, yScale, data ]);
 

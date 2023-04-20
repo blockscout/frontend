@@ -49,7 +49,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
 
     const tab: TokenTabs = item === 'token_holders_count' ? 'holders' : 'token_transfers';
 
-    return <Link onClick={ changeUrlAndScroll(tab) }>{ itemValue }</Link>;
+    return <Link onClick={ changeUrlAndScroll(tab) }>{ Number(itemValue).toLocaleString() }</Link>;
   }, [ tokenCountersQuery.data, changeUrlAndScroll ]);
 
   if (tokenQuery.isError) {
@@ -85,7 +85,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
     marketcap = totalValue?.usd;
     totalSupplyValue = totalValue?.valueStr;
   } else {
-    totalSupplyValue = Number(totalSupply).toLocaleString('en');
+    totalSupplyValue = Number(totalSupply).toLocaleString();
   }
 
   return (

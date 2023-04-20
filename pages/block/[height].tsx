@@ -5,6 +5,7 @@ import React from 'react';
 
 import getSeo from 'lib/next/block/getSeo';
 import Block from 'ui/pages/Block';
+import Page from 'ui/shared/Page/Page';
 
 const BlockPage: NextPage<RoutedQuery<'/block/[height]'>> = ({ height }: RoutedQuery<'/block/[height]'>) => {
   const { title, description } = getSeo({ height });
@@ -14,7 +15,9 @@ const BlockPage: NextPage<RoutedQuery<'/block/[height]'>> = ({ height }: RoutedQ
         <title>{ title }</title>
         <meta name="description" content={ description }/>
       </Head>
-      <Block/>
+      <Page>
+        <Block/>
+      </Page>
     </>
   );
 };

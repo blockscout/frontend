@@ -39,7 +39,7 @@ type Props = {
 const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
   const isOut = Boolean(currentAddress && currentAddress === tx.from.hash);
-  const isIn = Boolean(currentAddress && currentAddress === dataTo.hash);
+  const isIn = Boolean(currentAddress && currentAddress === dataTo?.hash);
 
   const timeAgo = useTimeAgoIncrement(tx.timestamp, enableTimeIncrement);
 
@@ -50,12 +50,12 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }
     </Address>
   );
 
-  const addressTo = (
+  const addressTo = dataTo ? (
     <Address>
       <AddressIcon address={ dataTo }/>
       <AddressLink type="address" hash={ dataTo.hash } alias={ dataTo.name } fontWeight="500" ml={ 2 } truncation="constant" isDisabled={ isIn }/>
     </Address>
-  );
+  ) : '-';
 
   return (
     <Tr

@@ -12,7 +12,7 @@ import TokenLogo from 'ui/shared/TokenLogo';
 const dailyTxsIndicator: TChainIndicator<'homepage_chart_txs'> = {
   id: 'daily_txs',
   title: 'Daily transactions',
-  value: (stats) => Number(stats.transactions_today).toLocaleString('en', { maximumFractionDigits: 2, notation: 'compact' }),
+  value: (stats) => Number(stats.transactions_today).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }),
   icon: <Icon as={ txIcon } boxSize={ 6 } bgColor="#56ACD1" borderRadius="base" color="white"/>,
   hint: `The total daily number of transactions on the blockchain for the last month.`,
   api: {
@@ -22,7 +22,7 @@ const dailyTxsIndicator: TChainIndicator<'homepage_chart_txs'> = {
         .map((item) => ({ date: new Date(item.date), value: item.tx_count }))
         .sort(sortByDateDesc),
       name: 'Tx/day',
-      valueFormatter: (x: number) => x.toLocaleString('en', { maximumFractionDigits: 2, notation: 'compact' }),
+      valueFormatter: (x: number) => x.toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }),
     } ]),
   },
 };
@@ -48,7 +48,7 @@ const coinPriceIndicator: TChainIndicator<'homepage_chart_market'> = {
 const marketPriceIndicator: TChainIndicator<'homepage_chart_market'> = {
   id: 'market_cup',
   title: 'Market cap',
-  value: (stats) => '$' + Number(stats.market_cap).toLocaleString('en', { maximumFractionDigits: 0, notation: 'compact' }),
+  value: (stats) => '$' + Number(stats.market_cap).toLocaleString(undefined, { maximumFractionDigits: 0, notation: 'compact' }),
   icon: <Icon as={ globeIcon } boxSize={ 6 } bgColor="#6A5DCC" borderRadius="base" color="white"/>,
   // eslint-disable-next-line max-len
   hint: 'The total market value of a cryptocurrency\'s circulating supply. It is analogous to the free-float capitalization in the stock market. Market Cap = Current Price x Circulating Supply.',
@@ -59,7 +59,7 @@ const marketPriceIndicator: TChainIndicator<'homepage_chart_market'> = {
         .map((item) => ({ date: new Date(item.date), value: Number(item.closing_price) * Number(response.available_supply) }))
         .sort(sortByDateDesc),
       name: 'Market cap',
-      valueFormatter: (x: number) => '$' + x.toLocaleString('en', { maximumFractionDigits: 0 }),
+      valueFormatter: (x: number) => '$' + x.toLocaleString(undefined, { maximumFractionDigits: 0 }),
     } ]),
   },
 };

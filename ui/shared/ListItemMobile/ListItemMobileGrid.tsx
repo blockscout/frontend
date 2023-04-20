@@ -1,19 +1,14 @@
-import { Grid, Text, chakra } from '@chakra-ui/react';
+import { Grid, chakra, GridItem } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import React from 'react';
 
-type Item = {
-  name: string;
-  value: string | React.ReactNode;
-}
-
-interface Props {
-  items: Array<Item>;
+interface ContainerProps {
   className?: string;
   isAnimated?: boolean;
+  children: React.ReactNode;
 }
 
-const ListItemMobileGrid = ({ isAnimated, items, className }: Props) => {
+const Container = chakra(({ isAnimated, children, className }: ContainerProps) => {
   return (
     <Grid
       as={ motion.div }
@@ -22,10 +17,11 @@ const ListItemMobileGrid = ({ isAnimated, items, className }: Props) => {
       animate={{ opacity: 1, scale: 1 }}
       transitionDuration="normal"
       transitionTimingFunction="linear"
-      rowGap={ 4 }
+      rowGap={ 2 }
       columnGap={ 2 }
-      gridTemplateColumns="max-content auto"
-      paddingY={ 6 }
+      gridTemplateColumns="86px auto"
+      gridTemplateRows="minmax(30px, max-content)"
+      paddingY={ 4 }
       borderColor="divider"
       borderTopWidth="1px"
       _last={{
@@ -34,14 +30,46 @@ const ListItemMobileGrid = ({ isAnimated, items, className }: Props) => {
       className={ className }
       fontSize="sm"
     >
-      { items.map(item => Boolean(item.value) && (
-        <>
-          <Text >{ item.name }</Text>
-          { typeof item.value === 'string' ? <Text variant="secondary">{ item.value }</Text> : item.value }
-        </>
-      )) }
+      { children }
     </Grid>
   );
+});
+
+interface LabelProps {
+  className?: string;
+  children: React.ReactNode;
+}
+
+const Label = chakra(({ children, className }: LabelProps) => {
+  return (
+    <GridItem className={ className } fontWeight={ 500 } lineHeight="20px" py="5px">
+      { children }
+    </GridItem>
+  );
+});
+
+interface ValueProps {
+  className?: string;
+  children: React.ReactNode;
+}
+
+const Value = chakra(({ children, className }: ValueProps) => {
+  return (
+    <GridItem
+      className={ className }
+      py="5px"
+      color="text_secondary"
+      overflow="hidden"
+    >
+      { children }
+    </GridItem>
+  );
+});
+
+const ListItemMobileGrid = {
+  Container,
+  Label,
+  Value,
 };
 
-export default chakra(ListItemMobileGrid);
+export default ListItemMobileGrid;

@@ -2,9 +2,11 @@ import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import getErrorStatusCode from 'lib/errors/getErrorStatusCode';
+import getResourceErrorPayload from 'lib/errors/getResourceErrorPayload';
 import useAdblockDetect from 'lib/hooks/useAdblockDetect';
 import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';
 import AppError from 'ui/shared/AppError/AppError';
+import AppErrorBlockConsensus from 'ui/shared/AppError/AppErrorBlockConsensus';
 import ErrorBoundary from 'ui/shared/ErrorBoundary';
 import ErrorInvalidTxHash from 'ui/shared/ErrorInvalidTxHash';
 import PageContent from 'ui/shared/Page/PageContent';
@@ -31,10 +33,26 @@ const Page = ({
 
   const renderErrorScreen = React.useCallback((error?: Error) => {
     const statusCode = getErrorStatusCode(error) || 500;
-    const isInvalidTxHash = error?.message.includes('Invalid tx hash');
+    const resourceErrorPayload = getResourceErrorPayload(error);
+    const messageInPayload = resourceErrorPayload && 'message' in resourceErrorPayload && typeof resourceErrorPayload.message === 'string' ?
+      resourceErrorPayload.message :
+      undefined;
 
-    const content = isInvalidTxHash ? <ErrorInvalidTxHash/> : <AppError statusCode={ statusCode } mt="50px"/>;
-    return <PageContent isHomePage={ isHomePage }>{ content }</PageContent>;
+    const isInvalidTxHash = error?.message.includes('Invalid tx hash');
+    const isBlockConsensus = messageInPayload?.includes('Block lost consensus');
+
+    if (isInvalidTxHash) {
+      return <PageContent isHomePage={ isHomePage }><ErrorInvalidTxHash/></PageContent>;
+    }
+
+    if (isBlockConsensus) {
+      const hash = resourceErrorPayload && 'hash' in resourceErrorPayload && typeof resourceErrorPayload.hash === 'string' ?
+        resourceErrorPayload.hash :
+        undefined;
+      return <PageContent isHomePage={ isHomePage }><AppErrorBlockConsensus hash={ hash } mt="50px"/></PageContent>;
+    }
+
+    return <PageContent isHomePage={ isHomePage }><AppError statusCode={ statusCode } mt="50px"/></PageContent>;
   }, [ isHomePage ]);
 
   const renderedChildren = wrapChildren ? (

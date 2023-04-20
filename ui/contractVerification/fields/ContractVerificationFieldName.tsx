@@ -11,9 +11,10 @@ import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
 interface Props {
   hint?: string;
+  isReadOnly?: boolean;
 }
 
-const ContractVerificationFieldName = ({ hint }: Props) => {
+const ContractVerificationFieldName = ({ hint, isReadOnly }: Props) => {
   const { formState, control } = useFormContext<FormFields>();
 
   const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'name'>}) => {
@@ -26,13 +27,13 @@ const ContractVerificationFieldName = ({ hint }: Props) => {
           required
           isInvalid={ Boolean(error) }
           maxLength={ 255 }
-          isDisabled={ formState.isSubmitting }
+          isDisabled={ formState.isSubmitting || isReadOnly }
           autoComplete="off"
         />
         <InputPlaceholder text="Contract name" error={ error }/>
       </FormControl>
     );
-  }, [ formState.errors, formState.isSubmitting ]);
+  }, [ formState.errors, formState.isSubmitting, isReadOnly ]);
 
   return (
     <ContractVerificationFormRow>

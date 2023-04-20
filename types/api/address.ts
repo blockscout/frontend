@@ -32,6 +32,7 @@ export interface Address {
   private_tags: Array<AddressTag> | null;
   public_tags: Array<AddressTag> | null;
   token: TokenInfo | null;
+  watchlist_address_id: number | null;
   watchlist_names: Array<WatchlistName> | null;
 }
 

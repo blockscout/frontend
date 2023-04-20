@@ -18,13 +18,13 @@ import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters } f
 import type { ChartMarketResponse, ChartTransactionResponse } from 'types/api/charts';
 import type { SmartContract, SmartContractReadMethod, SmartContractWriteMethod, SmartContractVerificationConfig } from 'types/api/contract';
 import type { VerifiedContractsResponse, VerifiedContractsFilters, VerifiedContractsCounters } from 'types/api/contracts';
-import type { DepositsResponse } from 'types/api/deposits';
+import type { DepositsResponse, DepositsItem } from 'types/api/deposits';
 import type { IndexingStatus } from 'types/api/indexingStatus';
 import type { InternalTransactionsResponse } from 'types/api/internalTransaction';
 import type { LogsResponseTx, LogsResponseAddress } from 'types/api/log';
 import type { OutputRootsResponse } from 'types/api/outputRoots';
 import type { RawTracesResponse } from 'types/api/rawTrace';
-import type { SearchResult, SearchResultFilters } from 'types/api/search';
+import type { SearchRedirectResult, SearchResult, SearchResultFilters } from 'types/api/search';
 import type { Counters, StatsCharts, StatsChart, HomeStats } from 'types/api/stats';
 import type {
   TokenCounters,
@@ -39,9 +39,10 @@ import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/toke
 import type { TransactionsResponseValidated, TransactionsResponsePending, Transaction } from 'types/api/transaction';
 import type { TxnBatchesResponse } from 'types/api/txnBatches';
 import type { TTxsFilters } from 'types/api/txsFilters';
+import type { TxStateChanges } from 'types/api/txStateChanges';
 import type { VisualizedContract } from 'types/api/visualization';
 import type { WithdrawalsResponse } from 'types/api/withdrawals';
-import type ArrayElement from 'types/utils/ArrayElement';
+import type { ArrayElement } from 'types/utils';
 
 import appConfig from 'configs/app/config';
 
@@ -160,6 +161,10 @@ export const RESOURCES = {
   },
   tx_raw_trace: {
     path: '/api/v2/transactions/:hash/raw-trace',
+    pathParams: [ 'hash' as const ],
+  },
+  tx_state_changes: {
+    path: '/api/v2/transactions/:hash/state-changes',
     pathParams: [ 'hash' as const ],
   },
 
@@ -334,6 +339,9 @@ export const RESOURCES = {
   homepage_blocks: {
     path: '/api/v2/main-page/blocks',
   },
+  homepage_deposits: {
+    path: '/api/v2/main-page/optimism-deposits',
+  },
   homepage_txs: {
     path: '/api/v2/main-page/transactions',
   },
@@ -484,6 +492,7 @@ Q extends 'homepage_chart_txs' ? ChartTransactionResponse :
 Q extends 'homepage_chart_market' ? ChartMarketResponse :
 Q extends 'homepage_blocks' ? Array<Block> :
 Q extends 'homepage_txs' ? Array<Transaction> :
+Q extends 'homepage_deposits' ? Array<DepositsItem> :
 Q extends 'homepage_indexing_status' ? IndexingStatus :
 Q extends 'stats_counters' ? Counters :
 Q extends 'stats_lines' ? StatsCharts :
@@ -498,6 +507,7 @@ Q extends 'tx_internal_txs' ? InternalTransactionsResponse :
 Q extends 'tx_logs' ? LogsResponseTx :
 Q extends 'tx_token_transfers' ? TokenTransferResponse :
 Q extends 'tx_raw_trace' ? RawTracesResponse :
+Q extends 'tx_state_changes' ? TxStateChanges :
 Q extends 'addresses' ? AddressesResponse :
 Q extends 'address' ? Address :
 Q extends 'address_counters' ? AddressCounters :
@@ -519,6 +529,7 @@ Q extends 'token_instance_transfers' ? TokenInstanceTransferResponse :
 Q extends 'token_inventory' ? TokenInventoryResponse :
 Q extends 'tokens' ? TokensResponse :
 Q extends 'search' ? SearchResult :
+Q extends 'search_check_redirect' ? SearchRedirectResult :
 Q extends 'contract' ? SmartContract :
 Q extends 'contract_methods_read' ? Array<SmartContractReadMethod> :
 Q extends 'contract_methods_read_proxy' ? Array<SmartContractReadMethod> :

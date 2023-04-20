@@ -18,10 +18,11 @@ type Props = { item: TxnBatchesItem };
 const TxnBatchesListItem = ({ item }: Props) => {
   const timeAgo = dayjs(item.l1_timestamp).fromNow();
 
-  const items = [
-    {
-      name: 'L2 block #',
-      value: (
+  return (
+    <ListItemMobileGrid.Container>
+
+      <ListItemMobileGrid.Label>L2 block #</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
         <LinkInternal
           fontWeight={ 600 }
           display="flex"
@@ -32,19 +33,17 @@ const TxnBatchesListItem = ({ item }: Props) => {
           <Icon as={ txBatchIcon } boxSize={ 6 } mr={ 1 }/>
           { item.l2_block_number }
         </LinkInternal>
-      ),
-    },
-    {
-      name: 'L2 block txn count',
-      value: (
+      </ListItemMobileGrid.Value>
+
+      <ListItemMobileGrid.Label>L2 block txn count</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
         <LinkInternal href={ route({ pathname: '/block/[height]', query: { height: item.l2_block_number.toString(), tab: 'txs' } }) }>
           { item.tx_count }
         </LinkInternal>
-      ),
-    },
-    {
-      name: 'Epoch number',
-      value: (
+      </ListItemMobileGrid.Value>
+
+      <ListItemMobileGrid.Label>Epoch number</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
         <LinkExternal
           fontWeight={ 600 }
           display="inline-flex"
@@ -52,11 +51,10 @@ const TxnBatchesListItem = ({ item }: Props) => {
         >
           { item.epoch_number }
         </LinkExternal>
-      ),
-    },
-    {
-      name: 'L1 txn hash',
-      value: (
+      </ListItemMobileGrid.Value>
+
+      <ListItemMobileGrid.Label>L1 txn hash</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
         <VStack spacing={ 3 } w="100%" overflow="hidden">
           { item.l1_tx_hashes.map(hash => (
             <LinkExternal
@@ -70,15 +68,13 @@ const TxnBatchesListItem = ({ item }: Props) => {
             </LinkExternal>
           )) }
         </VStack>
-      ),
-    },
-    {
-      name: 'Age',
-      value: timeAgo,
-    },
-  ];
+      </ListItemMobileGrid.Value>
 
-  return <ListItemMobileGrid items={ items } gridTemplateColumns="100px auto"/>;
+      <ListItemMobileGrid.Label>Age</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>{ timeAgo }</ListItemMobileGrid.Value>
+
+    </ListItemMobileGrid.Container>
+  );
 };
 
 export default TxnBatchesListItem;

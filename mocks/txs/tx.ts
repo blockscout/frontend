@@ -100,8 +100,10 @@ export const withTokenTransfer: Transaction = {
   token_transfers: [
     tokenTransferMock.erc20,
     tokenTransferMock.erc721,
-    tokenTransferMock.erc1155,
-    tokenTransferMock.erc1155multiple,
+    tokenTransferMock.erc1155A,
+    tokenTransferMock.erc1155B,
+    tokenTransferMock.erc1155C,
+    tokenTransferMock.erc1155D,
   ],
   tx_types: [
     'token_transfer',
@@ -239,4 +241,12 @@ export const withActionsUniswap: Transaction = {
       type: 'collect',
     },
   ],
+};
+
+export const l2tx: Transaction = {
+  ...base,
+  l1_gas_price: '82702201886',
+  l1_fee_scalar: '1.0',
+  l1_gas_used: '17060',
+  l1_fee: '1584574188135760',
 };

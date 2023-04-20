@@ -97,18 +97,20 @@ const LatestTxsItem = ({ tx }: Props) => {
               mx={ 2 }
               color="gray.500"
             />
-            <Address>
-              <AddressIcon address={ dataTo }/>
-              <AddressLink
-                type="address"
-                hash={ dataTo.hash }
-                alias={ dataTo.name }
-                fontWeight="500"
-                ml={ 2 }
-                truncation="constant"
-                fontSize="sm"
-              />
-            </Address>
+            { dataTo && (
+              <Address>
+                <AddressIcon address={ dataTo }/>
+                <AddressLink
+                  type="address"
+                  hash={ dataTo.hash }
+                  alias={ dataTo.name }
+                  fontWeight="500"
+                  ml={ 2 }
+                  truncation="constant"
+                  fontSize="sm"
+                />
+              </Address>
+            ) }
           </Flex>
           <Flex fontSize="sm" justifyContent="end" flexDirection={{ base: 'column', lg: 'row' }}>
             <Box mr={{ base: 0, lg: 3 }} mb={{ base: 2, lg: 0 }}>

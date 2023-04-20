@@ -24,11 +24,11 @@ const BlocksTable = ({ data, top, page }: Props) => {
         <Tr>
           <Th width="125px">Block</Th>
           <Th width="120px">Size, bytes</Th>
-          <Th width="21%" minW="144px">{ capitalize(getNetworkValidatorTitle()) }</Th>
+          <Th width={ appConfig.L2.isL2Network ? '37%' : '21%' } minW="144px">{ capitalize(getNetworkValidatorTitle()) }</Th>
           <Th width="64px" isNumeric>Txn</Th>
-          <Th width="35%">Gas used</Th>
-          <Th width="22%">Reward { appConfig.network.currency.symbol }</Th>
-          <Th width="22%">Burnt fees { appConfig.network.currency.symbol }</Th>
+          <Th width={ appConfig.L2.isL2Network ? '63%' : '35%' }>Gas used</Th>
+          { !appConfig.L2.isL2Network && <Th width="22%">Reward { appConfig.network.currency.symbol }</Th> }
+          { !appConfig.L2.isL2Network && <Th width="22%">Burnt fees { appConfig.network.currency.symbol }</Th> }
         </Tr>
       </Thead>
       <Tbody>

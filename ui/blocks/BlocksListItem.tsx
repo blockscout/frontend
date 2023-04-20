@@ -48,7 +48,7 @@ const BlocksListItem = ({ data, isPending, enableTimeIncrement }: Props) => {
       </Flex>
       <Flex columnGap={ 2 }>
         <Text fontWeight={ 500 }>Size</Text>
-        <Text variant="secondary">{ data.size.toLocaleString('en') } bytes</Text>
+        <Text variant="secondary">{ data.size.toLocaleString() } bytes</Text>
       </Flex>
       <Flex columnGap={ 2 }>
         <Text fontWeight={ 500 }>{ capitalize(getNetworkValidatorTitle()) }</Text>
@@ -77,20 +77,24 @@ const BlocksListItem = ({ data, isPending, enableTimeIncrement }: Props) => {
           ) }
         </Flex>
       </Box>
-      <Flex columnGap={ 2 }>
-        <Text fontWeight={ 500 }>Reward { appConfig.network.currency.symbol }</Text>
-        <Text variant="secondary">{ totalReward.toFixed() }</Text>
-      </Flex>
-      <Box>
-        <Text fontWeight={ 500 }>Burnt fees</Text>
-        <Flex columnGap={ 4 } mt={ 2 }>
-          <Flex>
-            <Icon as={ flameIcon } boxSize={ 5 } color="gray.500"/>
-            <Text variant="secondary" ml={ 1 }>{ burntFees.div(WEI).toFixed() }</Text>
-          </Flex>
-          <Utilization ml={ 4 } value={ burntFees.div(txFees).toNumber() }/>
+      { !appConfig.L2.isL2Network && (
+        <Flex columnGap={ 2 }>
+          <Text fontWeight={ 500 }>Reward { appConfig.network.currency.symbol }</Text>
+          <Text variant="secondary">{ totalReward.toFixed() }</Text>
         </Flex>
-      </Box>
+      ) }
+      { !appConfig.L2.isL2Network && (
+        <Box>
+          <Text fontWeight={ 500 }>Burnt fees</Text>
+          <Flex columnGap={ 4 } mt={ 2 }>
+            <Flex>
+              <Icon as={ flameIcon } boxSize={ 5 } color="gray.500"/>
+              <Text variant="secondary" ml={ 1 }>{ burntFees.div(WEI).toFixed() }</Text>
+            </Flex>
+            <Utilization ml={ 4 } value={ burntFees.div(txFees).toNumber() }/>
+          </Flex>
+        </Box>
+      ) }
     </ListItemMobile>
   );
 };
