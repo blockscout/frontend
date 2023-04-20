@@ -1,7 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
+import _unique from 'lodash/uniq';
 import React, { useCallback, useEffect, useState } from 'react';
 
-import type { AppItemOverview, MarketplaceCategoriesIds } from 'types/client/apps';
+import type { AppItemOverview } from 'types/client/apps';
+import { AppCategory } from 'types/client/apps';
 
 import appConfig from 'configs/app/config';
 import type { ResourceError } from 'lib/api/resources';
@@ -22,15 +24,15 @@ function isAppNameMatches(q: string, app: AppItemOverview) {
   return app.title.toLowerCase().includes(q.toLowerCase());
 }
 
-function isAppCategoryMatches(category: MarketplaceCategoriesIds, app: AppItemOverview, favoriteApps: Array<string>) {
-  return category === 'all' ||
-      (category === 'favorites' && favoriteApps.includes(app.id)) ||
+function isAppCategoryMatches(category: string, app: AppItemOverview, favoriteApps: Array<string>) {
+  return category === AppCategory.ALL ||
+      (category === AppCategory.FAVORITES && favoriteApps.includes(app.id)) ||
       app.categories.includes(category);
 }
 
 export default function useMarketplaceApps() {
   const [ selectedAppId, setSelectedAppId ] = useState<string | null>(null);
-  const [ selectedCategoryId, setSelectedCategoryId ] = useState<MarketplaceCategoriesIds>('all');
+  const [ selectedCategoryId, setSelectedCategoryId ] = useState<string>(AppCategory.ALL);
   const [ filterQuery, setFilterQuery ] = useState('');
   const [ favoriteApps, setFavoriteApps ] = useState<Array<string>>([]);
 
@@ -63,7 +65,7 @@ export default function useMarketplaceApps() {
   const debouncedFilterQuery = useDebounce(filterQuery, 500);
   const clearSelectedAppId = useCallback(() => setSelectedAppId(null), []);
 
-  const handleCategoryChange = useCallback((newCategory: MarketplaceCategoriesIds) => {
+  const handleCategoryChange = useCallback((newCategory: string) => {
     setSelectedCategoryId(newCategory);
   }, []);
 
@@ -72,7 +74,7 @@ export default function useMarketplaceApps() {
   }, [ selectedCategoryId, data, debouncedFilterQuery, favoriteApps ]);
 
   const categories = React.useMemo(() => {
-    return data?.map(app => app.categories).flat() || [];
+    return _unique(data?.map(app => app.categories).flat()) || [];
   }, [ data ]);
 
   useEffect(() => {

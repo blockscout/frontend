@@ -4,7 +4,7 @@ import {
 } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
-import type { AppItemOverview, MarketplaceCategoriesIds } from 'types/client/apps';
+import type { AppItemOverview } from 'types/client/apps';
 
 import linkIcon from 'icons/link.svg';
 import ghIcon from 'icons/social/git.svg';
@@ -155,7 +155,7 @@ const AppModal = ({
           </Heading>
 
           <Box marginBottom={ 2 }>
-            { categories.map((category: MarketplaceCategoriesIds) => (
+            { categories.map((category) => (
               <Tag
                 colorScheme="blue"
                 marginRight={ 2 }

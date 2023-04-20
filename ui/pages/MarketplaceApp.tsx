@@ -27,7 +27,7 @@ const MarketplaceApp = () => {
   const id = getQueryParamString(router.query.id);
 
   const { isLoading, isError, error, data } = useQuery<unknown, ResourceError<unknown>, AppItemOverview>(
-    [ 'marketplace-apps' ],
+    [ 'marketplace-apps', id ],
     async() => {
       const result = await apiFetch<Array<AppItemOverview>, unknown>(appConfig.marketplaceConfigUrl || '');
       if (!Array.isArray(result)) {
