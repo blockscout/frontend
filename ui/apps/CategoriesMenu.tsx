@@ -6,12 +6,6 @@ import type { MarketplaceCategoriesIds, MarketplaceCategory } from 'types/client
 import eastMiniArrowIcon from 'icons/arrows/east-mini.svg';
 
 import CategoriesMenuItem from './CategoriesMenuItem';
-import { APP_CATEGORIES } from './constants';
-
-const categoriesList = Object.keys(APP_CATEGORIES).map((id: string) => ({
-  id: id,
-  name: APP_CATEGORIES[id as MarketplaceCategoriesIds],
-})) as Array<MarketplaceCategory>;
 
 type Props = {
   categories: Array<MarketplaceCategoriesIds>;
@@ -20,10 +14,12 @@ type Props = {
 }
 
 const CategoriesMenu = ({ selectedCategoryId, onSelect, categories }: Props) => {
-  const selectedCategory = categoriesList.find(category => category.id === selectedCategoryId);
-  const displayedCategories = categoriesList.filter(category => category.id === 'all' ||
-      category.id === 'favorites' ||
-      categories.includes(category.id));
+  const options = React.useMemo(() => ([
+    { id: 'Favorites', name: 'Favorites' },
+    { id: 'App apps', name: 'App apps' },
+    ...categories.map((category) => ({ id: category, name: category })),
+  ]), [ categories ]);
+  const selectedCategory = options.find(category => category.id === selectedCategoryId);
 
   return (
     <Menu>
@@ -47,7 +43,7 @@ const CategoriesMenu = ({ selectedCategoryId, onSelect, categories }: Props) => 
       </MenuButton>
 
       <MenuList zIndex={ 3 }>
-        { displayedCategories.map((category: MarketplaceCategory) => (
+        { options.map((category: MarketplaceCategory) => (
           <CategoriesMenuItem
             key={ category.id }
             id={ category.id }

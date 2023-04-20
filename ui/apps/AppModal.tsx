@@ -16,7 +16,6 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp } from 'lib/html-entities';
 
 import AppModalLink from './AppModalLink';
-import { APP_CATEGORIES } from './constants';
 
 type Props = {
   onClose: () => void;
@@ -156,14 +155,14 @@ const AppModal = ({
           </Heading>
 
           <Box marginBottom={ 2 }>
-            { categories.map((category: MarketplaceCategoriesIds) => APP_CATEGORIES[category] && (
+            { categories.map((category: MarketplaceCategoriesIds) => (
               <Tag
                 colorScheme="blue"
                 marginRight={ 2 }
                 marginBottom={ 2 }
                 key={ category }
               >
-                { APP_CATEGORIES[category] }
+                { category }
               </Tag>
             )) }
           </Box>

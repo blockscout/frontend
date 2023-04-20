@@ -9,7 +9,6 @@ import starFilledIcon from 'icons/star_filled.svg';
 import starOutlineIcon from 'icons/star_outline.svg';
 
 import AppCardLink from './AppCardLink';
-import { APP_CATEGORIES } from './constants';
 
 interface Props extends AppItemPreview {
   onInfoClick: (id: string) => void;
@@ -29,7 +28,7 @@ const AppCard = ({
   isFavorite,
   onFavoriteClick,
 }: Props) => {
-  const categoriesLabel = categories.map(c => APP_CATEGORIES[c]).filter(Boolean).join(', ');
+  const categoriesLabel = categories.join(', ');
 
   const handleInfoClick = useCallback((event: MouseEvent) => {
     event.preventDefault();

@@ -117,7 +117,7 @@ frontend:
     NEXT_PUBLIC_API_SPEC_URL:
       _default: https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml
     NEXT_PUBLIC_MARKETPLACE_CONFIG_URL:
-      _default: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/marketplace/eth-goerli.json
+      _default: https://raw.githubusercontent.com/blockscout/frontend-configs/dev/configs/marketplace/eth-goerli.json
     NEXT_PUBLIC_IS_TESTNET:
       _default: true
     NEXT_PUBLIC_GRAPHIQL_TRANSACTION: 
