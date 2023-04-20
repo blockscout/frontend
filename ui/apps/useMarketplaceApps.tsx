@@ -1,9 +1,14 @@
-import debounce from 'lodash/debounce';
+import { useQuery } from '@tanstack/react-query';
+import _unique from 'lodash/uniq';
 import React, { useCallback, useEffect, useState } from 'react';
 
-import type { AppItemOverview, MarketplaceCategoriesIds } from 'types/client/apps';
+import type { AppItemOverview } from 'types/client/apps';
+import { AppCategory } from 'types/client/apps';
 
 import appConfig from 'configs/app/config';
+import type { ResourceError } from 'lib/api/resources';
+import useDebounce from 'lib/hooks/useDebounce';
+import useApiFetch from 'lib/hooks/useFetch';
 
 const favoriteAppsLocalStorageKey = 'favoriteApps';
 
@@ -19,20 +24,25 @@ function isAppNameMatches(q: string, app: AppItemOverview) {
   return app.title.toLowerCase().includes(q.toLowerCase());
 }
 
-function isAppCategoryMatches(category: MarketplaceCategoriesIds, app: AppItemOverview, favoriteApps: Array<string>) {
-  return category === 'all' ||
-      (category === 'favorites' && favoriteApps.includes(app.id)) ||
+function isAppCategoryMatches(category: string, app: AppItemOverview, favoriteApps: Array<string>) {
+  return category === AppCategory.ALL ||
+      (category === AppCategory.FAVORITES && favoriteApps.includes(app.id)) ||
       app.categories.includes(category);
 }
 
 export default function useMarketplaceApps() {
-  const [ isLoading, setIsLoading ] = useState(true);
-  const [ defaultAppList, setDefaultAppList ] = useState<Array<AppItemOverview>>();
-  const [ displayedApps, setDisplayedApps ] = useState<Array<AppItemOverview>>([]);
-  const [ displayedAppId, setDisplayedAppId ] = useState<string | null>(null);
-  const [ category, setCategory ] = useState<MarketplaceCategoriesIds>('all');
+  const [ selectedAppId, setSelectedAppId ] = useState<string | null>(null);
+  const [ selectedCategoryId, setSelectedCategoryId ] = useState<string>(AppCategory.ALL);
   const [ filterQuery, setFilterQuery ] = useState('');
   const [ favoriteApps, setFavoriteApps ] = useState<Array<string>>([]);
+
+  const apiFetch = useApiFetch();
+  const { isLoading, isError, error, data } = useQuery<unknown, ResourceError<unknown>, Array<AppItemOverview>>(
+    [ 'marketplace-apps' ],
+    async() => apiFetch(appConfig.marketplaceConfigUrl || ''),
+    {
+      select: (data) => (data as Array<AppItemOverview>).sort((a, b) => a.title.localeCompare(b.title)),
+    });
 
   const handleFavoriteClick = useCallback((id: string, isFavorite: boolean) => {
     const favoriteApps = getFavoriteApps();
@@ -49,61 +59,53 @@ export default function useMarketplaceApps() {
   }, [ ]);
 
   const showAppInfo = useCallback((id: string) => {
-    setDisplayedAppId(id);
+    setSelectedAppId(id);
   }, []);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debounceFilterApps = useCallback(debounce(q => setFilterQuery(q), 500), []);
-  const clearDisplayedAppId = useCallback(() => setDisplayedAppId(null), []);
+  const debouncedFilterQuery = useDebounce(filterQuery, 500);
+  const clearSelectedAppId = useCallback(() => setSelectedAppId(null), []);
 
-  const filterApps = useCallback((q: string, category: MarketplaceCategoriesIds) => {
-    const apps = defaultAppList
-      ?.filter(app => {
-        return isAppNameMatches(q, app) && isAppCategoryMatches(category, app, favoriteApps);
-      });
-
-    setDisplayedApps(apps || []);
-  }, [ defaultAppList, favoriteApps ]);
-
-  const handleCategoryChange = useCallback((newCategory: MarketplaceCategoriesIds) => {
-    setCategory(newCategory);
+  const handleCategoryChange = useCallback((newCategory: string) => {
+    setSelectedCategoryId(newCategory);
   }, []);
+
+  const displayedApps = React.useMemo(() => {
+    return data?.filter(app => isAppNameMatches(debouncedFilterQuery, app) && isAppCategoryMatches(selectedCategoryId, app, favoriteApps)) || [];
+  }, [ selectedCategoryId, data, debouncedFilterQuery, favoriteApps ]);
+
+  const categories = React.useMemo(() => {
+    return _unique(data?.map(app => app.categories).flat()) || [];
+  }, [ data ]);
 
   useEffect(() => {
     setFavoriteApps(getFavoriteApps());
   }, [ ]);
 
-  useEffect(() => {
-    filterApps(filterQuery, category);
-  }, [ filterQuery, category, filterApps ]);
-
-  useEffect(() => {
-    const defaultDisplayedApps = [ ...appConfig.marketplaceAppList ]
-      .sort((a, b) => a.title.localeCompare(b.title));
-
-    setDefaultAppList(defaultDisplayedApps);
-    setDisplayedApps(defaultDisplayedApps);
-    setIsLoading(false);
-  }, [ ]);
-
   return React.useMemo(() => ({
-    category,
-    handleCategoryChange,
-    debounceFilterApps,
+    selectedCategoryId,
+    onCategoryChange: handleCategoryChange,
+    onSearchInputChange: setFilterQuery,
     isLoading,
+    isError,
+    error,
+    categories,
     displayedApps,
     showAppInfo,
-    displayedAppId,
-    clearDisplayedAppId,
+    selectedAppId,
+    clearSelectedAppId,
     favoriteApps,
-    handleFavoriteClick,
-  }), [ category,
-    clearDisplayedAppId,
-    debounceFilterApps,
-    displayedAppId, displayedApps,
+    onFavoriteClick: handleFavoriteClick,
+  }), [
+    selectedCategoryId,
+    categories,
+    clearSelectedAppId,
+    selectedAppId,
+    displayedApps,
+    error,
     favoriteApps,
     handleCategoryChange,
     handleFavoriteClick,
+    isError,
     isLoading,
     showAppInfo,
   ]);
