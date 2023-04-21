@@ -119,8 +119,11 @@ const config = Object.freeze({
   },
   homepage: {
     charts: parseEnvJson<Array<ChainIndicatorId>>(getEnvValue(process.env.NEXT_PUBLIC_HOMEPAGE_CHARTS)) || [],
-    plateGradient: getEnvValue(process.env.NEXT_PUBLIC_HOMEPAGE_PLATE_GRADIENT) ||
-      'radial-gradient(103.03% 103.03% at 0% 0%, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%)',
+    plate: {
+      gradient: getEnvValue(process.env.NEXT_PUBLIC_HOMEPAGE_PLATE_GRADIENT) ||
+        'radial-gradient(103.03% 103.03% at 0% 0%, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%)',
+      textColor: getEnvValue(process.env.NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR) || 'white',
+    },
     showGasTracker: getEnvValue(process.env.NEXT_PUBLIC_HOMEPAGE_SHOW_GAS_TRACKER) === 'false' ? false : true,
     showAvgBlockTime: getEnvValue(process.env.NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME) === 'false' ? false : true,
   },

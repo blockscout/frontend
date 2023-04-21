@@ -13,6 +13,7 @@ import optimismIcon from 'icons/networks/icons/optimism.svg';
 import poaSokolIcon from 'icons/networks/icons/poa-sokol.svg';
 import poaIcon from 'icons/networks/icons/poa.svg';
 import rskIcon from 'icons/networks/icons/rsk.svg';
+import zetachainIcon from 'icons/networks/icons/zetachain.svg';
 import artisLogo from 'icons/networks/logos/artis.svg';
 import astarLogo from 'icons/networks/logos/astar.svg';
 import baseLogo from 'icons/networks/logos/base.svg';
@@ -26,6 +27,7 @@ import rskLogo from 'icons/networks/logos/rsk.svg';
 import shibuyaLogo from 'icons/networks/logos/shibuya.svg';
 import shidenLogo from 'icons/networks/logos/shiden.svg';
 import sokolLogo from 'icons/networks/logos/sokol.svg';
+import zetachainLogo from 'icons/networks/logos/zetachain.svg';
 
 interface NetworkAssets {
   icon?: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
@@ -91,6 +93,10 @@ const networkAssets: Partial<Record<PreDefinedNetwork, NetworkAssets>> = {
   base_goerli: {
     logo: baseLogo,
     icon: baseIcon,
+  },
+  zetachain: {
+    logo: zetachainLogo,
+    icon: zetachainIcon,
   },
 };
 
