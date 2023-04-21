@@ -52,9 +52,9 @@ blockscout:
         _default: "3"
     requests:
       memory:
-        _default: "4Gi"
+        _default: "2Gi"
       cpu:
-        _default: "3"
+        _default: "2"
   # node label
   nodeSelector:
     enabled: true
@@ -176,7 +176,7 @@ postgres:
       memory:
         _default: "8Gi"
       cpu:
-        _default: "2"
+        _default: "1"
   # node label
   nodeSelector:
     enabled: true
@@ -295,14 +295,14 @@ frontend:
   resources:
     limits:
       memory:
-        _default: "0.3Gi"
+        _default: 768Mi
       cpu:
-        _default: "0.5"
+        _default: 500m
     requests:
       memory:
-        _default: "0.3Gi"
+        _default: 384Mi
       cpu:
-        _default: "0.5"
+        _default: 250m
   environment:
     # ui config
     NEXT_PUBLIC_FEATURED_NETWORKS:
