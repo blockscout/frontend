@@ -114,7 +114,7 @@ import ASSETS from 'lib/networks/networkAssets';
 const featuredNetworks: Array<FeaturedNetwork> = (() => {
   return appConfig.featuredNetworks.map((network) => ({
     ...network,
-    icon: network.icon || (network.type ? ASSETS[network.type]?.icon : undefined),
+    icon: network.icon || (network.type ? ASSETS[network.type]?.smallLogo : undefined),
   }));
 })();
 

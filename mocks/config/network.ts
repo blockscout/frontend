@@ -2,7 +2,6 @@ import type { FeaturedNetwork } from 'types/networks';
 
 const FEATURED_NETWORKS: Array<FeaturedNetwork> = [
   { title: 'Gnosis Chain', url: 'https://blockscout.com/xdai/mainnet', group: 'mainnets', type: 'xdai_mainnet' },
-  { title: 'Optimism on Gnosis Chain', url: 'https://blockscout.com/xdai/optimism', group: 'mainnets', type: 'xdai_optimism' },
   { title: 'Arbitrum on xDai', url: 'https://blockscout.com/xdai/aox', group: 'mainnets' },
   { title: 'Ethereum', url: 'https://blockscout.com/eth/mainnet', group: 'mainnets', type: 'eth_mainnet' },
   { title: 'Ethereum Classic', url: 'https://blockscout.com/etx/mainnet', group: 'mainnets', type: 'etc_mainnet', icon: 'https://example.com/my-logo.png' },
