@@ -10,10 +10,13 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import BlockDetails from 'ui/block/BlockDetails';
+import BlockWithdrawals from 'ui/block/BlockWithdrawals';
 import TextAd from 'ui/shared/ad/TextAd';
 import PageTitle from 'ui/shared/Page/PageTitle';
+import type { Props as PaginationProps } from 'ui/shared/Pagination';
 import Pagination from 'ui/shared/Pagination';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
+import SkeletonTabs from 'ui/shared/skeletons/SkeletonTabs';
 import TxsContent from 'ui/txs/TxsContent';
 
 const TAB_LIST_PROPS = {
@@ -42,6 +45,14 @@ const BlockPageContent = () => {
     },
   });
 
+  const blockWithdrawalsQuery = useQueryWithPages({
+    resourceName: 'block_withdrawals',
+    pathParams: { height },
+    options: {
+      enabled: Boolean(blockQuery.data?.height && tab === 'withdrawals'),
+    },
+  });
+
   if (!height) {
     throw new Error('Block not found', { cause: { status: 404 } });
   }
@@ -53,9 +64,22 @@ const BlockPageContent = () => {
   const tabs: Array<RoutedTab> = React.useMemo(() => ([
     { id: 'index', title: 'Details', component: <BlockDetails query={ blockQuery }/> },
     { id: 'txs', title: 'Transactions', component: <TxsContent query={ blockTxsQuery } showBlockInfo={ false } showSocketInfo={ false }/> },
-  ]), [ blockQuery, blockTxsQuery ]);
+    blockQuery.data?.has_beacon_chain_withdrawals ?
+      { id: 'withdrawals', title: 'Withdrawals', component: <BlockWithdrawals blockWithdrawalsQuery={ blockWithdrawalsQuery }/> } :
+      null,
+  ].filter(Boolean)), [ blockQuery, blockTxsQuery, blockWithdrawalsQuery ]);
 
-  const hasPagination = !isMobile && tab === 'txs' && blockTxsQuery.isPaginationVisible;
+  const hasPagination = !isMobile && (
+    (tab === 'txs' && blockTxsQuery.isPaginationVisible) ||
+    (tab === 'withdrawals' && blockWithdrawalsQuery.isPaginationVisible)
+  );
+
+  let pagination;
+  if (tab === 'txs') {
+    pagination = blockTxsQuery.pagination;
+  } else if (tab === 'withdrawals') {
+    pagination = blockWithdrawalsQuery.pagination;
+  }
 
   const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/blocks');
 
@@ -71,12 +95,14 @@ const BlockPageContent = () => {
           backLinkLabel="Back to blocks list"
         />
       ) }
-      <RoutedTabs
-        tabs={ tabs }
-        tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
-        rightSlot={ hasPagination ? <Pagination { ...blockTxsQuery.pagination }/> : null }
-        stickyEnabled={ hasPagination }
-      />
+      { blockQuery.isLoading ? <SkeletonTabs/> : (
+        <RoutedTabs
+          tabs={ tabs }
+          tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
+          rightSlot={ hasPagination ? <Pagination { ...(pagination as PaginationProps) }/> : null }
+          stickyEnabled={ hasPagination }
+        />
+      ) }
     </>
   );
 };
