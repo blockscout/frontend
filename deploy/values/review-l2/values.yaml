@@ -48,14 +48,14 @@ frontend:
   resources:
     limits:
       memory:
-        _default: "1Gi"
+        _default: 768Mi
       cpu:
-        _default: "0.5"
+        _default: "1"
     requests:
       memory:
-        _default: "1Gi"
+        _default: 384Mi
       cpu:
-        _default: "0.5"
+        _default: 250m
   environment:
     NEXT_PUBLIC_BLOCKSCOUT_VERSION:
       _default: v5.1.0-beta
@@ -129,5 +129,5 @@ frontend:
       _default: https://blockscout-main.test.aws-k8s.blockscout.com
     NEXT_PUBLIC_L2_WITHDRAWAL_URL:
       _default: https://app.optimism.io/bridge/withdraw
-    NEXT_PUBLIC_GRAPHIQL_TRANSACTION: 
+    NEXT_PUBLIC_GRAPHIQL_TRANSACTION:
       _default: 0x4a0ed8ddf751a7cb5297f827699117b0f6d21a0b2907594d300dc9fed75c7e62

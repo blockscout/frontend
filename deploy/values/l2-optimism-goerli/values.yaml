@@ -143,7 +143,7 @@ postgres:
 
   command: '["docker-entrypoint.sh", "-c"]'
   args: '["max_connections=300"]'
-  
+
   customShm:
     enabled: false
 
@@ -439,14 +439,14 @@ allowance:
   resources:
     limits:
       memory:
-        _default: "0.3Gi"
+        _default: 768Mi
       cpu:
-        _default: "0.2"
+        _default: 500m
     requests:
       memory:
-        _default: "0.3Gi"
+        _default: 384Mi
       cpu:
-        _default: "0.2"
+        _default: 250m
 
   # node label
   nodeSelector:
