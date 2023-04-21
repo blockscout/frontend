@@ -9,9 +9,11 @@ import ethereumClassicIcon from 'icons/networks/icons/ethereum-classic.svg';
 import ethereumIcon from 'icons/networks/icons/ethereum.svg';
 import gnosisIcon from 'icons/networks/icons/gnosis.svg';
 import goerliIcon from 'icons/networks/icons/goerli.svg';
+import liFiIcon from 'icons/networks/icons/li-fi.svg';
 import optimismIcon from 'icons/networks/icons/optimism.svg';
 import poaSokolIcon from 'icons/networks/icons/poa-sokol.svg';
 import poaIcon from 'icons/networks/icons/poa.svg';
+import rootstockIcon from 'icons/networks/icons/rootstock.svg';
 import rskIcon from 'icons/networks/icons/rsk.svg';
 import zetachainIcon from 'icons/networks/icons/zetachain.svg';
 import artisLogo from 'icons/networks/logos/artis.svg';
@@ -21,8 +23,10 @@ import etcLogo from 'icons/networks/logos/etc.svg';
 import ethLogo from 'icons/networks/logos/eth.svg';
 import gnosisLogo from 'icons/networks/logos/gnosis.svg';
 import goerliLogo from 'icons/networks/logos/goerli.svg';
+import liFiLogo from 'icons/networks/logos/li-fi.svg';
 import luksoLogo from 'icons/networks/logos/lukso.svg';
 import poaLogo from 'icons/networks/logos/poa.svg';
+import rootstockLogo from 'icons/networks/logos/rootstock.svg';
 import rskLogo from 'icons/networks/logos/rsk.svg';
 import shibuyaLogo from 'icons/networks/logos/shibuya.svg';
 import shidenLogo from 'icons/networks/logos/shiden.svg';
@@ -36,6 +40,10 @@ interface NetworkAssets {
 }
 
 const networkAssets: Partial<Record<PreDefinedNetwork, NetworkAssets>> = {
+  gnosis: {
+    icon: gnosisIcon,
+    logo: gnosisLogo,
+  },
   xdai_mainnet: {
     icon: gnosisIcon,
     logo: gnosisLogo,
@@ -97,6 +105,14 @@ const networkAssets: Partial<Record<PreDefinedNetwork, NetworkAssets>> = {
   zetachain: {
     logo: zetachainLogo,
     icon: zetachainIcon,
+  },
+  rootstock: {
+    logo: rootstockLogo,
+    icon: rootstockIcon,
+  },
+  'li-fi': {
+    logo: liFiLogo,
+    icon: liFiIcon,
   },
 };
 
