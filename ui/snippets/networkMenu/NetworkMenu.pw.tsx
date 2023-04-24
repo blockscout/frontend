@@ -7,9 +7,11 @@ import TestApp from 'playwright/TestApp';
 
 import NetworkMenu from './NetworkMenu';
 
+const FEATURED_NETWORKS_URL = 'https://example.com/featured-networks.json';
+
 const extendedTest = test.extend({
   context: contextWithEnvs([
-    { name: 'NEXT_PUBLIC_FEATURED_NETWORKS', value: FEATURED_NETWORKS_MOCK },
+    { name: 'NEXT_PUBLIC_FEATURED_NETWORKS', value: FEATURED_NETWORKS_URL },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ]) as any,
 });
@@ -22,6 +24,12 @@ extendedTest('base view +@dark-mode', async({ mount, page }) => {
     return route.fulfill({
       status: 200,
       path: './playwright/image_s.jpg',
+    });
+  });
+  await page.route(FEATURED_NETWORKS_URL, (route) => {
+    return route.fulfill({
+      status: 200,
+      body: JSON.stringify(FEATURED_NETWORKS_MOCK),
     });
   });
 

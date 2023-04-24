@@ -8,20 +8,21 @@ import NavigationMobile from 'ui/snippets/navigation/NavigationMobile';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import NetworkMenuButton from 'ui/snippets/networkMenu/NetworkMenuButton';
 import NetworkMenuContentMobile from 'ui/snippets/networkMenu/NetworkMenuContentMobile';
+import useNetworkMenu from 'ui/snippets/networkMenu/useNetworkMenu';
 
 const Burger = () => {
   const iconColor = useColorModeValue('gray.600', 'white');
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [ isNetworkMenuOpened, setNetworkMenuVisibility ] = React.useState(false);
+  const networkMenu = useNetworkMenu();
 
   const handleNetworkMenuButtonClick = React.useCallback(() => {
-    setNetworkMenuVisibility((flag) => !flag);
-  }, []);
+    networkMenu.onToggle();
+  }, [ networkMenu ]);
 
   const handleNetworkLogoClick = React.useCallback((event: React.SyntheticEvent) => {
-    isNetworkMenuOpened && event.preventDefault();
-    setNetworkMenuVisibility(false);
-  }, [ isNetworkMenuOpened ]);
+    networkMenu.isOpen && event.preventDefault();
+    networkMenu.onClose();
+  }, [ networkMenu ]);
 
   return (
     <>
@@ -46,15 +47,15 @@ const Burger = () => {
             <Icon as={ testnetIcon } h="14px" w="auto" color="red.400" alignSelf="flex-start"/>
             <Flex alignItems="center" justifyContent="space-between">
               <NetworkLogo onClick={ handleNetworkLogoClick }/>
-              { appConfig.featuredNetworks.length > 0 ? (
+              { appConfig.featuredNetworks ? (
                 <NetworkMenuButton
                   isMobile
-                  isActive={ isNetworkMenuOpened }
+                  isActive={ networkMenu.isOpen }
                   onClick={ handleNetworkMenuButtonClick }
                 />
               ) : <Box boxSize={ 9 }/> }
             </Flex>
-            { isNetworkMenuOpened ? <NetworkMenuContentMobile/> : <NavigationMobile/> }
+            { networkMenu.isOpen ? <NetworkMenuContentMobile tabs={ networkMenu.availableTabs } items={ networkMenu.data }/> : <NavigationMobile/> }
           </DrawerBody>
         </DrawerContent>
       </Drawer>

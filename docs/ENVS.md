@@ -28,7 +28,7 @@ The app instance could be customized by passing following variables to NodeJS en
 
 | Variable | Type| Description | Is required  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_FEATURED_NETWORKS | `Array<FeaturedNetwork>` where `FeaturedNetwork` can have following [properties](#featured-network-configuration-properties) | Configuration of featured networks that will be shown in the network menu | - | - | `[{'title':'Gnosis Chain','url':'https://blockscout.com/xdai/mainnet','group':'mainnets'}]` |
+| NEXT_PUBLIC_FEATURED_NETWORKS | `string` | URL of configuration file (`.json` format only) which contains list of featured networks that will be shown in the network menu. See [below](#featured-network-configuration-properties) list of available properties for particular network | - | - | `https://example.com/featured_networks_config.json` |
 | NEXT_PUBLIC_BLOCKSCOUT_VERSION | `string` | Current running version of Blockscout (used to display link to release in the footer) | - | - | `v.5.1.0-beta`
 | NEXT_PUBLIC_FOOTER_GITHUB_LINK | `string` | Link to Github in the footer | - | - | `https://github.com/blockscout/blockscout` |
 | NEXT_PUBLIC_FOOTER_TWITTER_LINK | `string` | Link to Twitter in the footer | - | - | `https://www.twitter.com/blockscoutcom` |
@@ -90,9 +90,9 @@ For each application, you need to specify the `MarketplaceCategoryId` to which i
 | --- | --- | --- | --- | --- | --- |
 | title | `string` | Displayed name of the network | yes | - | `Gnosis Chain` |
 | url | `string` | Network explorer main page url | yes | - | `https://blockscout.com/xdai/mainnet` |
-| group | `mainnets \| testnets \| other` | Indicates in which tab network appears in the menu | yes | - | `mainnets` |
-| icon | `string` | Network icon; if not provided, will fallback to  icon predefined in the project; if the project doesn't have icon for such network then the common placeholder will be shown; *Note* that icon size should be at least 30px by 30px | - | - | `https://placekitten.com/60/60` |
-| type | `string` | Network type (used for matching pre-defined network icon, which is stored in the project). See all possible values here | - | - | `xdai_mainnet` |
+| group | `Mainnets \| Testnets \| Other` | Indicates in which tab network appears in the menu | yes | - | `Mainnets` |
+| icon | `string` | Network icon; if not provided, the common placeholder will be shown; *Note* that icon size should be at least 60px by 60px | - | - | `https://placekitten.com/60/60` |
+| isActive | `boolean` | Pass `true` if item should be shonw as active in the menu | - | - | `true` |
 
 ### Network explorer configuration properties
 

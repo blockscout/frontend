@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-properties */
-import type { FeaturedNetwork, NetworkExplorer } from 'types/networks';
+import type { NetworkExplorer } from 'types/networks';
 import type { ChainIndicatorId } from 'ui/home/indicators/types';
 
 const getEnvValue = (env: string | undefined) => env?.replaceAll('\'', '"');
@@ -88,7 +88,7 @@ const config = Object.freeze({
     telegram: getEnvValue(process.env.NEXT_PUBLIC_FOOTER_TELEGRAM_LINK),
     staking: getEnvValue(process.env.NEXT_PUBLIC_FOOTER_STAKING_LINK),
   },
-  featuredNetworks: parseEnvJson<Array<FeaturedNetwork>>(getEnvValue(process.env.NEXT_PUBLIC_FEATURED_NETWORKS)) || [],
+  featuredNetworks: getEnvValue(process.env.NEXT_PUBLIC_FEATURED_NETWORKS),
   blockScoutVersion: getEnvValue(process.env.NEXT_PUBLIC_BLOCKSCOUT_VERSION),
   isAccountSupported: getEnvValue(process.env.NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED) === 'true',
   marketplaceConfigUrl: getEnvValue(process.env.NEXT_PUBLIC_MARKETPLACE_CONFIG_URL),

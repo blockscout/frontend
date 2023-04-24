@@ -366,7 +366,7 @@ frontend:
     NEXT_PUBLIC_NETWORK_ICON:
       _default: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-icons/base.svg
     NEXT_PUBLIC_FEATURED_NETWORKS:
-      _default: "[{'title':'Göerli','url':'https://eth-goerli.blockscout.com/','group':'testnets','type':'goerli'},{'title':'Base Göerli','url':'https://l2-goerli.blockscout.com/','group':'testnets','type':'base_goerli'}]"
+      _default: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/featured-networks/base-goerli.json
     NEXT_PUBLIC_API_HOST:
       _default: blockscout-optimism-goerli.test.aws-k8s.blockscout.com
     NEXT_PUBLIC_APP_HOST:
