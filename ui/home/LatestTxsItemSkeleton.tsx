@@ -17,39 +17,63 @@ const LatestTxsItemSkeleton = () => {
       px={{ base: 0, lg: 4 }}
       _last={{ borderBottom: '1px solid', borderColor: 'divider' }}
     >
-      <Flex justifyContent="space-between" width="100%" alignItems="start" flexDirection={{ base: 'column', lg: 'row' }}>
-        <Box width="100%">
-          <HStack spacing={ 2 }>
-            <Skeleton w="101px" h="24px"/>
-            <Skeleton w="101px" h="24px"/>
-          </HStack>
-          <Flex
-            mt={ 2 }
-            alignItems="center"
-            width="100%"
-            justifyContent={{ base: 'space-between', lg: 'start' }}
-            mb={{ base: 6, lg: 0 }}
-          >
-            <Flex mr={ 3 } alignItems="center">
+      <Box width="100%" display={{ base: 'block', lg: 'none' }}>
+        <HStack spacing={ 2 }>
+          <Skeleton w="101px" h="24px"/>
+          <Skeleton w="101px" h="24px"/>
+        </HStack>
+        <Flex
+          mt={ 2 }
+          alignItems="center"
+          width="100%"
+          justifyContent="space-between"
+          mb={ 6 }
+        >
+          <Flex mr={ 3 } alignItems="center">
+            <Skeleton w="30px" h="30px" mr={ 2 }/>
+            <Skeleton w="101px" h="12px"/>
+          </Flex>
+          <Skeleton w="40px" h="12px"/>
+        </Flex>
+        <Flex alignItems="center" mb={ 3 }>
+          <SkeletonCircle w="30px" h="30px" mr={ 2 }/>
+          <Skeleton w="101px" h="12px" mr={ 5 }/>
+          <SkeletonCircle w="30px" h="30px" mr={ 2 }/>
+          <Skeleton w="101px" h="12px"/>
+        </Flex>
+        <Skeleton w="123px" h="12px" mb={ 2 } mt={ 3 }/>
+        <Skeleton w="123px" h="12px"/>
+      </Box>
+      <Box display={{ base: 'none', lg: 'grid' }} width="100%" gridTemplateColumns="3fr 2fr 150px" gridGap={ 8 }>
+        <Flex w="100%">
+          <Skeleton w={ 5 } h={ 5 } mr={ 3 }/>
+          <Box w="100%">
+            <HStack>
+              <Skeleton w="101px" h="24px"/>
+              <Skeleton w="101px" h="24px"/>
+            </HStack>
+            <Flex alignItems="center" mt={ 2 }>
               <Skeleton w="30px" h="30px" mr={ 2 }/>
-              <Skeleton w="101px" h="12px"/>
+              <Skeleton w="calc(100% - 100px)" h="20px" mr={ 5 }/>
+              <Skeleton w="40px" h="16px"/>
             </Flex>
-            <Skeleton w="40px" h="12px"/>
+          </Box>
+        </Flex>
+        <Box>
+          <Flex alignItems="center" mb={ 2 } mt={ 1 }>
+            <SkeletonCircle w="24px" h="24px" mr={ 2 }/>
+            <Skeleton w="100%" h="16px"/>
+          </Flex>
+          <Flex alignItems="center">
+            <SkeletonCircle w="24px" h="24px" mr={ 2 }/>
+            <Skeleton w="100%" h="16px"/>
           </Flex>
         </Box>
         <Box>
-          <Flex alignItems="center" mb={ 3 }>
-            <SkeletonCircle w="30px" h="30px" mr={ 2 }/>
-            <Skeleton w="101px" h="12px" mr={ 5 }/>
-            <SkeletonCircle w="30px" h="30px" mr={ 2 }/>
-            <Skeleton w="101px" h="12px"/>
-          </Flex>
-          <Flex fontSize="sm" mt={ 3 } justifyContent="end" flexDirection={{ base: 'column', lg: 'row' }}>
-            <Skeleton w="123px" h="12px" mr={{ base: 0, lg: 9 }} mb={{ base: 2, lg: 0 }}/>
-            <Skeleton w="123px" h="12px"/>
-          </Flex>
+          <Skeleton w="123px" h="16px" mb={ 4 } mt={ 2 }/>
+          <Skeleton w="123px" h="16px"/>
         </Box>
-      </Flex>
+      </Box>
     </Box>
   );
 };
