@@ -37,11 +37,11 @@ test.describe('placeholder logo', () => {
 
 test.describe('custom logo', () => {
   const LOGO_URL = 'https://example.com/my-logo.png';
-  const SMALL_LOGO_URL = 'https://example.com/my-logo-short.png';
+  const ICON_URL = 'https://example.com/my-icon.png';
   const extendedTest = test.extend({
     context: contextWithEnvs([
       { name: 'NEXT_PUBLIC_NETWORK_LOGO', value: LOGO_URL },
-      { name: 'NEXT_PUBLIC_NETWORK_SMALL_LOGO', value: SMALL_LOGO_URL },
+      { name: 'NEXT_PUBLIC_NETWORK_ICON', value: ICON_URL },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ]) as any,
   });
@@ -53,7 +53,7 @@ test.describe('custom logo', () => {
         path: './playwright/giant_duck_long.jpg',
       });
     });
-    await page.route(SMALL_LOGO_URL, (route) => {
+    await page.route(ICON_URL, (route) => {
       return route.fulfill({
         status: 200,
         path: './playwright/image_s.jpg',
