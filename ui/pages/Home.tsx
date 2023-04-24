@@ -39,7 +39,7 @@ const Home = () => {
             columnGap={ 12 }
             pl={ 4 }
           >
-            <ColorModeToggler trackBg="whiteAlpha.500"/>
+            <ColorModeToggler trackBg="blackAlpha.900"/>
             { appConfig.isAccountSupported && <ProfileMenuDesktop/> }
           </Flex>
         </Flex>
