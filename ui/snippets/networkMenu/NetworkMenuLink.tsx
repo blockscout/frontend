@@ -9,7 +9,7 @@ import placeholderIcon from 'icons/networks/icon-placeholder.svg';
 import useColors from './useColors';
 
 interface Props extends FeaturedNetwork {
-  isActive: boolean;
+  isActive?: boolean;
   isMobile?: boolean;
 }
 

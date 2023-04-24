@@ -4,16 +4,16 @@ import React from 'react';
 
 import type { NetworkGroup } from 'types/networks';
 
-import useNetworkNavigationItems from 'lib/networks/useNetworkNavigationItems';
+import featuredNetworks from 'lib/networks/featuredNetworks';
 
 import NetworkMenuLink from './NetworkMenuLink';
 
 const TABS: Array<NetworkGroup> = [ 'mainnets', 'testnets', 'other' ];
+const availableTabs = TABS.filter((tab) => featuredNetworks.some(({ group }) => group === tab));
 
 const NetworkMenuContentMobile = () => {
-  const items = useNetworkNavigationItems();
-  const selectedNetwork = items.find(({ isActive }) => isActive);
-  const [ selectedTab, setSelectedTab ] = React.useState<NetworkGroup>(TABS.find((tab) => selectedNetwork?.group === tab) || 'mainnets');
+  const selectedNetwork = featuredNetworks.find(({ isActive }) => isActive);
+  const [ selectedTab, setSelectedTab ] = React.useState<NetworkGroup>(availableTabs.find((tab) => selectedNetwork?.group === tab) || 'mainnets');
 
   const handleSelectChange = React.useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedTab(event.target.value as NetworkGroup);
@@ -22,10 +22,10 @@ const NetworkMenuContentMobile = () => {
   return (
     <Box mt={ 6 }>
       <Select size="xs" borderRadius="base" value={ selectedTab } onChange={ handleSelectChange } focusBorderColor="none">
-        { TABS.map((tab) => <option key={ tab } value={ tab }>{ capitalize(tab) }</option>) }
+        { availableTabs.map((tab) => <option key={ tab } value={ tab }>{ capitalize(tab) }</option>) }
       </Select>
       <VStack as="ul" spacing={ 2 } alignItems="stretch" mt={ 6 }>
-        { items
+        { featuredNetworks
           .filter(({ group }) => group === selectedTab)
           .map((network) => (
             <NetworkMenuLink

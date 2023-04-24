@@ -31,6 +31,7 @@ export interface FeaturedNetwork {
   group: NetworkGroup;
   icon?: FunctionComponent<SVGAttributes<SVGElement>> | string;
   type?: PreDefinedNetwork;
+  isActive?: boolean;
 }
 
 export interface NetworkExplorer {

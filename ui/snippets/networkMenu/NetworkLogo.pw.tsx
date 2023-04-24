@@ -17,14 +17,7 @@ test('fallback logo +@desktop-xl +@dark-mode +@dark-mode-xl', async({ mount }) =
 });
 
 test.describe('placeholder logo', () => {
-  const extendedTest = test.extend({
-    context: contextWithEnvs([
-      { name: 'NEXT_PUBLIC_NETWORK_TYPE', value: 'unknown' },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ]) as any,
-  });
-
-  extendedTest('+@desktop-xl +@dark-mode +@dark-mode-xl', async({ mount }) => {
+  test('+@desktop-xl +@dark-mode +@dark-mode-xl', async({ mount }) => {
     const component = await mount(
       <TestApp>
         <NetworkLogo/>

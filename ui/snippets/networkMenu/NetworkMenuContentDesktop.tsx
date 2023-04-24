@@ -4,7 +4,6 @@ import React from 'react';
 import type { NetworkGroup } from 'types/networks';
 
 import featuredNetworks from 'lib/networks/featuredNetworks';
-import useNetworkNavigationItems from 'lib/networks/useNetworkNavigationItems';
 
 import NetworkMenuLink from './NetworkMenuLink';
 
@@ -12,8 +11,7 @@ const TABS: Array<NetworkGroup> = [ 'mainnets', 'testnets', 'other' ];
 const availableTabs = TABS.filter((tab) => featuredNetworks.some(({ group }) => group === tab));
 
 const NetworkMenuPopup = () => {
-  const items = useNetworkNavigationItems();
-  const selectedNetwork = items.find(({ isActive }) => isActive);
+  const selectedNetwork = featuredNetworks.find(({ isActive }) => isActive);
   const selectedTab = availableTabs.findIndex((tab) => selectedNetwork?.group === tab);
 
   return (
@@ -30,7 +28,7 @@ const NetworkMenuPopup = () => {
             { availableTabs.map((tab) => (
               <TabPanel key={ tab } p={ 0 }>
                 <VStack as="ul" spacing={ 2 } alignItems="stretch" mt={ 4 }>
-                  { items
+                  { featuredNetworks
                     .filter((network) => network.group === tab)
                     .map((network) => (
                       <NetworkMenuLink

@@ -349,8 +349,6 @@ frontend:
       _default: Base
     NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME:
       _default: optimism
-    NEXT_PUBLIC_NETWORK_TYPE:
-      _default: base_goerli
     NEXT_PUBLIC_NETWORK_ID:
       _default: 420
     NEXT_PUBLIC_NETWORK_CURRENCY_NAME:

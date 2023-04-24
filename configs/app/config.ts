@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-properties */
-import type { FeaturedNetwork, NetworkExplorer, PreDefinedNetwork } from 'types/networks';
+import type { FeaturedNetwork, NetworkExplorer } from 'types/networks';
 import type { ChainIndicatorId } from 'ui/home/indicators/types';
 
 const getEnvValue = (env: string | undefined) => env?.replaceAll('\'', '"');
@@ -59,7 +59,6 @@ const config = Object.freeze({
   env,
   isDev,
   network: {
-    type: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_TYPE) as PreDefinedNetwork | undefined,
     logo: {
       'default': getEnvValue(process.env.NEXT_PUBLIC_NETWORK_LOGO),
       dark: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_LOGO_DARK),
