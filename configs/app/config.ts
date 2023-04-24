@@ -60,8 +60,14 @@ const config = Object.freeze({
   isDev,
   network: {
     type: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_TYPE) as PreDefinedNetwork | undefined,
-    logo: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_LOGO),
-    smallLogo: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_SMALL_LOGO),
+    logo: {
+      'default': getEnvValue(process.env.NEXT_PUBLIC_NETWORK_LOGO),
+      dark: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_LOGO_DARK),
+    },
+    icon: {
+      'default': getEnvValue(process.env.NEXT_PUBLIC_NETWORK_ICON),
+      dark: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_ICON_DARK),
+    },
     name: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_NAME),
     id: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_ID),
     shortName: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_SHORT_NAME),

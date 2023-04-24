@@ -4,7 +4,7 @@ import React from 'react';
 import type { FeaturedNetwork } from 'types/networks';
 
 import checkIcon from 'icons/check.svg';
-import placeholderIcon from 'icons/networks/icons/placeholder.svg';
+import placeholderIcon from 'icons/networks/icon-placeholder.svg';
 
 import useColors from './useColors';
 

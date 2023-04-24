@@ -1,7 +1,6 @@
 import type { FeaturedNetwork } from 'types/networks';
 
 import appConfig from 'configs/app/config';
-import ASSETS from 'lib/networks/networkAssets';
 
 // for easy .env.example update
 // const FEATURED_NETWORKS = JSON.stringify([
@@ -114,7 +113,7 @@ import ASSETS from 'lib/networks/networkAssets';
 const featuredNetworks: Array<FeaturedNetwork> = (() => {
   return appConfig.featuredNetworks.map((network) => ({
     ...network,
-    icon: network.icon || (network.type ? ASSETS[network.type]?.smallLogo : undefined),
+    icon: network.icon,
   }));
 })();
 

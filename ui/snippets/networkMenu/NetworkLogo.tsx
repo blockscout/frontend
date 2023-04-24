@@ -3,7 +3,8 @@ import { route } from 'nextjs-routes';
 import React from 'react';
 
 import appConfig from 'configs/app/config';
-import ASSETS from 'lib/networks/networkAssets';
+import iconPlaceholder from 'icons/networks/icon-placeholder.svg';
+import logoPlaceholder from 'icons/networks/logo-placeholder.svg';
 
 interface Props {
   isCollapsed?: boolean;
@@ -11,12 +12,7 @@ interface Props {
 }
 
 const LogoFallback = ({ isCollapsed, isSmall }: { isCollapsed?: boolean; isSmall?: boolean }) => {
-  const type = appConfig.network.type || 'fallback' as const;
-
-  const field = isSmall ? 'smallLogo' : 'logo';
-  const fieldDark = isSmall ? 'smallLogoDark' : 'logoDark';
-  const logo = useColorModeValue(ASSETS[type][field], ASSETS[type][fieldDark]);
-  const style = useColorModeValue({}, { filter: 'brightness(0) invert(1)' });
+  const field = isSmall ? 'icon' : 'logo';
   const logoColor = useColorModeValue('blue.600', 'white');
 
   const display = isSmall ? {
@@ -29,23 +25,28 @@ const LogoFallback = ({ isCollapsed, isSmall }: { isCollapsed?: boolean; isSmall
     xl: isCollapsed ? 'none' : 'block',
   };
 
-  if (appConfig.network[field]) {
+  if (appConfig.network[field].default) {
     return <Skeleton w="100%" borderRadius="sm" display={ display }/>;
   }
 
   return (
     <Icon
-      as={ logo || ASSETS[type][field] }
+      as={ isSmall ? iconPlaceholder : logoPlaceholder }
       width="auto"
       height="100%"
-      color={ type === 'fallback' ? logoColor : undefined }
+      color={ logoColor }
       display={ display }
-      style={ logo ? undefined : style }
     />
   );
 };
 
 const NetworkLogo = ({ isCollapsed, onClick }: Props) => {
+
+  const logoSrc = useColorModeValue(appConfig.network.logo.default, appConfig.network.logo.dark || appConfig.network.logo.default);
+  const iconSrc = useColorModeValue(appConfig.network.icon.default, appConfig.network.icon.dark || appConfig.network.icon.default);
+  const darkModeFilter = { filter: 'brightness(0) invert(1)' };
+  const logoStyle = useColorModeValue({}, !appConfig.network.logo.dark ? darkModeFilter : {});
+  const iconStyle = useColorModeValue({}, !appConfig.network.icon.dark ? darkModeFilter : {});
 
   return (
     // TODO switch to <NextLink href={ href } passHref> when main page for network will be ready
@@ -64,19 +65,21 @@ const NetworkLogo = ({ isCollapsed, onClick }: Props) => {
       <Image
         w="auto"
         h="100%"
-        src={ appConfig.network.logo }
-        display={{ base: 'block', lg: isCollapsed === false ? 'block' : 'none', xl: isCollapsed ? 'none' : 'block' }}
+        src={ logoSrc }
         alt={ `${ appConfig.network.name } network logo` }
         fallback={ <LogoFallback isCollapsed={ isCollapsed }/> }
+        display={{ base: 'block', lg: isCollapsed === false ? 'block' : 'none', xl: isCollapsed ? 'none' : 'block' }}
+        style={ logoStyle }
       />
       { /* small logo */ }
       <Image
         w="auto"
         h="100%"
-        src={ appConfig.network.smallLogo }
-        display={{ base: 'none', lg: isCollapsed === false ? 'none' : 'block', xl: isCollapsed ? 'block' : 'none' }}
+        src={ iconSrc }
         alt={ `${ appConfig.network.name } network logo` }
         fallback={ <LogoFallback isCollapsed={ isCollapsed } isSmall/> }
+        display={{ base: 'none', lg: isCollapsed === false ? 'none' : 'block', xl: isCollapsed ? 'block' : 'none' }}
+        style={ iconStyle }
       />
     </Box>
   );
