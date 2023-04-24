@@ -66,7 +66,7 @@ const TokensTableItem = ({
       { exchangeRate && (
         <HStack spacing={ 3 }>
           <Text fontSize="sm" fontWeight={ 500 }>Price</Text>
-          <Text fontSize="sm" variant="secondary">{ exchangeRate || '-' }</Text>
+          <Text fontSize="sm" variant="secondary">{ exchangeRate }</Text>
         </HStack>
       ) }
       { totalValue?.usd && (

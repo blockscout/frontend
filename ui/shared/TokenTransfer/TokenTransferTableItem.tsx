@@ -32,14 +32,6 @@ const TokenTransferTableItem = ({
   timestamp,
   enableTimeIncrement,
 }: Props) => {
-  const value = (() => {
-    if (!('value' in total)) {
-      return '-';
-    }
-
-    return BigNumber(total.value).div(BigNumber(10 ** Number(total.decimals))).dp(8).toFormat();
-  })();
-
   const timeAgo = useTimeAgoIncrement(timestamp, enableTimeIncrement);
 
   return (
@@ -57,7 +49,7 @@ const TokenTransferTableItem = ({
         </Flex>
       </Td>
       <Td lineHeight="30px">
-        { 'token_id' in total ? <TokenTransferNft hash={ token.address } id={ total.token_id }/> : '-' }
+        { 'token_id' in total && <TokenTransferNft hash={ token.address } id={ total.token_id }/> }
       </Td>
       { showTxInfo && txHash && (
         <Td>
@@ -85,7 +77,7 @@ const TokenTransferTableItem = ({
         </Address>
       </Td>
       <Td isNumeric verticalAlign="top" lineHeight="30px">
-        { value }
+        { 'value' in total && BigNumber(total.value).div(BigNumber(10 ** Number(total.decimals))).dp(8).toFormat() }
       </Td>
     </Tr>
   );

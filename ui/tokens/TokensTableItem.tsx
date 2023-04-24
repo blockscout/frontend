@@ -67,9 +67,9 @@ const TokensTableItem = ({
           </Box>
         </Flex>
       </Td>
-      <Td isNumeric><Text fontSize="sm" lineHeight="24px" fontWeight={ 500 }>{ exchangeRate ? `$${ exchangeRate }` : '-' }</Text></Td>
+      <Td isNumeric><Text fontSize="sm" lineHeight="24px" fontWeight={ 500 }>{ exchangeRate && `$${ exchangeRate }` }</Text></Td>
       <Td isNumeric maxWidth="300px" width="300px">
-        <Text fontSize="sm" lineHeight="24px" fontWeight={ 500 }>{ totalValue?.usd ? `$${ totalValue.usd }` : '-' }</Text>
+        <Text fontSize="sm" lineHeight="24px" fontWeight={ 500 }>{ totalValue?.usd && `$${ totalValue.usd }` }</Text>
       </Td>
       <Td isNumeric><Text fontSize="sm" lineHeight="24px" fontWeight={ 500 }>{ Number(holders).toLocaleString() }</Text></Td>
     </Tr>

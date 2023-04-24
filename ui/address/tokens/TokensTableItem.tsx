@@ -42,13 +42,13 @@ const TokensTableItem = ({
         </Flex>
       </Td>
       <Td isNumeric verticalAlign="middle">
-        { token.exchange_rate ? `$${ token.exchange_rate }` : '-' }
+        { token.exchange_rate && `$${ token.exchange_rate }` }
       </Td>
       <Td isNumeric verticalAlign="middle">
         { tokenQuantity }
       </Td>
       <Td isNumeric verticalAlign="middle">
-        { tokenValue ? `$${ tokenValue }` : '-' }
+        { tokenValue && `$${ tokenValue }` }
       </Td>
     </Tr>
   );
