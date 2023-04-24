@@ -1,7 +1,7 @@
 import type { FeaturedNetwork } from 'types/networks';
 
 const FEATURED_NETWORKS: Array<FeaturedNetwork> = [
-  { title: 'Gnosis Chain', url: 'https://blockscout.com/xdai/mainnet', group: 'Mainnets' },
+  { title: 'Gnosis Chain', url: 'https://blockscout.com/xdai/mainnet', group: 'Mainnets', isActive: true },
   { title: 'Arbitrum on xDai', url: 'https://blockscout.com/xdai/aox', group: 'Mainnets' },
   { title: 'Ethereum', url: 'https://blockscout.com/eth/mainnet', group: 'Mainnets' },
   { title: 'Ethereum Classic', url: 'https://blockscout.com/etx/mainnet', group: 'Mainnets', icon: 'https://example.com/my-logo.png' },
@@ -14,4 +14,4 @@ const FEATURED_NETWORKS: Array<FeaturedNetwork> = [
   { title: 'Astar', url: 'https://blockscout.com/astar', group: 'Other' },
 ];
 
-export const FEATURED_NETWORKS_MOCK = JSON.stringify(FEATURED_NETWORKS).replaceAll('"', '\'');
+export const FEATURED_NETWORKS_MOCK = JSON.stringify(FEATURED_NETWORKS);

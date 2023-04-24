@@ -26,7 +26,7 @@ do
 
         # if there is a value, escape it and add line to target file
         escapedConfigValue=$(echo $configValue | sed s/\'/\"/g);
-        echo "window.process.env.${configName} = localStorage.getItem('${configName}') || '${escapedConfigValue}';" >> $targetFile;
+        echo "window.process.env.${configName} = localStorage.getItem('${configName}') ?? '${escapedConfigValue}';" >> $targetFile;
     done < $envFile
 done
 

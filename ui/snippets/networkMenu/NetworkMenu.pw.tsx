@@ -29,7 +29,7 @@ extendedTest('base view +@dark-mode', async({ mount, page }) => {
   await page.route(FEATURED_NETWORKS_URL, (route) => {
     return route.fulfill({
       status: 200,
-      body: JSON.stringify(FEATURED_NETWORKS_MOCK),
+      body: FEATURED_NETWORKS_MOCK,
     });
   });
 
@@ -47,6 +47,6 @@ extendedTest('base view +@dark-mode', async({ mount, page }) => {
   await component.locator('button[aria-label="Network menu"]').click();
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 450, height: 550 } });
 
-  await component.getByText(/optimism/i).hover();
+  await component.getByText(/poa/i).hover();
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 450, height: 550 } });
 });
