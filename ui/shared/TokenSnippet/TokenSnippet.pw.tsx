@@ -43,7 +43,5 @@ test('with logo', async({ mount, page }) => {
     </TestApp>,
   );
 
-  await page.waitForResponse(API_URL),
-
   await expect(component).toHaveScreenshot();
 });

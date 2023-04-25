@@ -7,6 +7,9 @@ export default function useColors() {
       active: useColorModeValue('blackAlpha.900', 'whiteAlpha.900'),
       hover: useColorModeValue('blue.600', 'link_hovered'),
     },
+    iconPlaceholder: {
+      'default': useColorModeValue('blackAlpha.100', 'whiteAlpha.300'),
+    },
     bg: {
       'default': 'transparent',
       active: useColorModeValue('blue.50', 'gray.800'),

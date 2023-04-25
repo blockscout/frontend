@@ -4,7 +4,7 @@ const FEATURED_NETWORKS: Array<FeaturedNetwork> = [
   { title: 'Gnosis Chain', url: 'https://blockscout.com/xdai/mainnet', group: 'Mainnets', isActive: true },
   { title: 'Arbitrum on xDai', url: 'https://blockscout.com/xdai/aox', group: 'Mainnets' },
   { title: 'Ethereum', url: 'https://blockscout.com/eth/mainnet', group: 'Mainnets' },
-  { title: 'Ethereum Classic', url: 'https://blockscout.com/etx/mainnet', group: 'Mainnets', icon: 'https://example.com/my-logo.png' },
+  { title: 'Ethereum Classic', url: 'https://blockscout.com/etx/mainnet', group: 'Mainnets', icon: 'https://localhost:3000/my-logo.png' },
   { title: 'POA', url: 'https://blockscout.com/poa/core', group: 'Mainnets' },
   { title: 'RSK', url: 'https://blockscout.com/rsk/mainnet', group: 'Mainnets' },
   { title: 'Gnosis Chain Testnet', url: 'https://blockscout.com/xdai/testnet', group: 'Testnets' },

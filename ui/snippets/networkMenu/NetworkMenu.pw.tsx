@@ -7,7 +7,7 @@ import TestApp from 'playwright/TestApp';
 
 import NetworkMenu from './NetworkMenu';
 
-const FEATURED_NETWORKS_URL = 'https://example.com/featured-networks.json';
+const FEATURED_NETWORKS_URL = 'https://localhost:3000/featured-networks.json';
 
 const extendedTest = test.extend({
   context: contextWithEnvs([
@@ -19,7 +19,7 @@ const extendedTest = test.extend({
 extendedTest.use({ viewport: { width: 1600, height: 1000 } });
 
 extendedTest('base view +@dark-mode', async({ mount, page }) => {
-  const LOGO_URL = 'https://example.com/my-logo.png';
+  const LOGO_URL = 'https://localhost:3000/my-logo.png';
   await page.route(LOGO_URL, (route) => {
     return route.fulfill({
       status: 200,

@@ -2,7 +2,7 @@
 
 targetFile='./playwright/envs.js'
 
-declare -a envFiles=('./configs/envs/.env.pw' './configs/envs/.env.poa_core')
+declare -a envFiles=('./configs/envs/.env.pw')
 
 touch $targetFile;
 truncate -s 0 $targetFile;

@@ -27,8 +27,8 @@ test.describe('placeholder logo', () => {
 });
 
 test.describe('custom logo', () => {
-  const LOGO_URL = 'https://example.com/my-logo.png';
-  const ICON_URL = 'https://example.com/my-icon.png';
+  const LOGO_URL = 'https://localhost:3000/my-logo.png';
+  const ICON_URL = 'https://localhost:3000/my-icon.png';
   const extendedTest = test.extend({
     context: contextWithEnvs([
       { name: 'NEXT_PUBLIC_NETWORK_LOGO', value: LOGO_URL },
@@ -62,8 +62,8 @@ test.describe('custom logo', () => {
 });
 
 test.describe('custom logo with dark option', () => {
-  const LOGO_URL = 'https://example.com/my-logo.png';
-  const ICON_URL = 'https://example.com/my-icon.png';
+  const LOGO_URL = 'https://localhost:3000/my-logo.png';
+  const ICON_URL = 'https://localhost:3000/my-icon.png';
   const extendedTest = test.extend({
     context: contextWithEnvs([
       { name: 'NEXT_PUBLIC_NETWORK_LOGO', value: LOGO_URL },

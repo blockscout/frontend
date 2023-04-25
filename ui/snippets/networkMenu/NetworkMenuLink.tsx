@@ -24,7 +24,7 @@ const NetworkMenuLink = ({ title, icon, isActive, isMobile, url, invertIconInDar
     <Icon
       as={ placeholderIcon }
       boxSize="30px"
-      color="blue.600"
+      color={ colors.iconPlaceholder.default }
     />
   );
 
