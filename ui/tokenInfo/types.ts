@@ -13,6 +13,7 @@ export interface Fields extends SocialLinkFields, TickerUrlFields {
   docs?: string;
   support?: string;
   icon_url: string;
+  comment?: string;
 }
 
 export interface TickerUrlFields {

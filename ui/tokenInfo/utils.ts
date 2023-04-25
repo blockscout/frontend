@@ -32,6 +32,7 @@ export function getFormDefaultValues(address: string, tokenName: string, applica
     facebook: application.facebook || '',
     medium: application.medium || '',
     reddit: application.reddit || '',
+    comment: application.comment || '',
   };
 }
 
@@ -61,5 +62,6 @@ export function prepareRequestBody(data: Fields): Omit<TokenInfoApplication, 'id
     telegram: data.telegram,
     tokenAddress: data.address,
     twitter: data.twitter,
+    comment: data.comment,
   };
 }

@@ -72,7 +72,7 @@ test('base view', async({ mount, page, createSocket }) => {
 });
 
 test('with verified info', async({ mount, page, createSocket }) => {
-  const VERIFIED_INFO_URL = buildApiUrl('token_verified_info', { chainId: '99', hash: '1' }, true);
+  const VERIFIED_INFO_URL = buildApiUrl('token_verified_info', { chainId: '1', hash: '1' });
   await page.route(VERIFIED_INFO_URL, (route) => route.fulfill({
     body: JSON.stringify(verifiedAddressesMocks.TOKEN_INFO_APPLICATION.APPROVED),
   }));
@@ -113,7 +113,7 @@ test.describe('mobile', () => {
   });
 
   test('with verified info', async({ mount, page, createSocket }) => {
-    const VERIFIED_INFO_URL = buildApiUrl('token_verified_info', { chainId: '99', hash: '1' }, true);
+    const VERIFIED_INFO_URL = buildApiUrl('token_verified_info', { chainId: '1', hash: '1' });
     await page.route(VERIFIED_INFO_URL, (route) => route.fulfill({
       body: JSON.stringify(verifiedAddressesMocks.TOKEN_INFO_APPLICATION.APPROVED),
     }));

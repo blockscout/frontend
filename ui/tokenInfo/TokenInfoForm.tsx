@@ -1,4 +1,4 @@
-import { Alert, Button, Grid, GridItem } from '@chakra-ui/react';
+import { Button, Grid, GridItem } from '@chakra-ui/react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
@@ -16,6 +16,7 @@ import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import TokenInfoFieldAddress from './fields/TokenInfoFieldAddress';
+import TokenInfoFieldComment from './fields/TokenInfoFieldComment';
 import TokenInfoFieldDocs from './fields/TokenInfoFieldDocs';
 import TokenInfoFieldIconUrl from './fields/TokenInfoFieldIconUrl';
 import TokenInfoFieldPriceTicker from './fields/TokenInfoFieldPriceTicker';
@@ -30,6 +31,7 @@ import TokenInfoFieldSocialLink from './fields/TokenInfoFieldSocialLink';
 import TokenInfoFieldSupport from './fields/TokenInfoFieldSupport';
 import TokenInfoFieldTokenName from './fields/TokenInfoFieldTokenName';
 import TokenInfoFormSectionHeader from './TokenInfoFormSectionHeader';
+import TokenInfoFormStatusText from './TokenInfoFormStatusText';
 import { getFormDefaultValues, prepareRequestBody } from './utils';
 
 interface Props {
@@ -104,13 +106,11 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
 
   return (
     <form noValidate onSubmit={ handleSubmit(onFormSubmit) } autoComplete="off" ref={ containerRef }>
-      <div>Requests are sent to a moderator for review and approval. This process can take several days.</div>
-      { application?.status === 'IN_PROCESS' &&
-        <Alert status="warning" mt={ 6 }>Request in progress. Once an admin approves your request you can edit token info.</Alert> }
+      <TokenInfoFormStatusText application={ application }/>
       <Grid mt={ 8 } gridTemplateColumns={{ base: '1fr', lg: '1fr 1fr' }} columnGap={ 5 } rowGap={ 5 }>
 
-        <TokenInfoFieldAddress { ...fieldProps }/>
         <TokenInfoFieldTokenName { ...fieldProps }/>
+        <TokenInfoFieldAddress { ...fieldProps }/>
         <TokenInfoFieldRequesterName { ...fieldProps }/>
         <TokenInfoFieldRequesterEmail { ...fieldProps }/>
 
@@ -145,6 +145,10 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
         <TokenInfoFieldPriceTicker { ...fieldProps } name="ticker_coin_gecko" label="CoinGecko URL"/>
         <GridItem colSpan={{ base: 1, lg: 2 }}>
           <TokenInfoFieldPriceTicker { ...fieldProps } name="ticker_defi_llama" label="DefiLlama URL "/>
+        </GridItem>
+
+        <GridItem colSpan={{ base: 1, lg: 2 }}>
+          <TokenInfoFieldComment { ...fieldProps }/>
         </GridItem>
       </Grid>
       <Button

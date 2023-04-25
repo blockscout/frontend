@@ -7,7 +7,7 @@ import buildApiUrl from 'playwright/utils/buildApiUrl';
 
 import AddressVerificationStepAddress from './AddressVerificationStepAddress';
 
-const CHECK_ADDRESS_URL = buildApiUrl('address_verification', { chainId: '99', type: ':prepare' }, true);
+const CHECK_ADDRESS_URL = buildApiUrl('address_verification', { chainId: '1', type: ':prepare' });
 
 test('base view', async({ mount, page }) => {
   await page.route(CHECK_ADDRESS_URL, (route) => route.fulfill({

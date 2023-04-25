@@ -181,6 +181,7 @@ export interface TokenInfoApplicationConfig {
 }
 
 export interface TokenInfoApplication {
+  adminComments?: string;
   coinGeckoTicker?: string;
   coinMarketCapTicker?: string;
   comment?: string;

@@ -7,7 +7,7 @@ import buildApiUrl from 'playwright/utils/buildApiUrl';
 
 import AddressVerificationStepSignature from './AddressVerificationStepSignature';
 
-const VERIFY_ADDRESS_URL = buildApiUrl('address_verification', { chainId: '99', type: ':verify' }, true);
+const VERIFY_ADDRESS_URL = buildApiUrl('address_verification', { chainId: '1', type: ':verify' });
 
 test('base view', async({ mount, page }) => {
   await page.route(VERIFY_ADDRESS_URL, (route) => route.fulfill({

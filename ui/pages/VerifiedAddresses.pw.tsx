@@ -7,8 +7,8 @@ import buildApiUrl from 'playwright/utils/buildApiUrl';
 
 import VerifiedAddresses from './VerifiedAddresses';
 
-const VERIFIED_ADDRESS_URL = buildApiUrl('verified_addresses', { chainId: '99' }, true);
-const TOKEN_INFO_APPLICATIONS_URL = buildApiUrl('token_info_applications', { chainId: '99', id: undefined }, true);
+const VERIFIED_ADDRESS_URL = buildApiUrl('verified_addresses', { chainId: '1' });
+const TOKEN_INFO_APPLICATIONS_URL = buildApiUrl('token_info_applications', { chainId: '1', id: undefined });
 
 test.beforeEach(async({ context }) => {
   await context.route(mocks.TOKEN_INFO_APPLICATION_BASE.iconUrl, (route) => {
@@ -38,8 +38,8 @@ test('base view +@mobile', async({ mount, page }) => {
 });
 
 test('address verification flow', async({ mount, page }) => {
-  const CHECK_ADDRESS_URL = buildApiUrl('address_verification', { chainId: '99', type: ':prepare' }, true);
-  const VERIFY_ADDRESS_URL = buildApiUrl('address_verification', { chainId: '99', type: ':verify' }, true);
+  const CHECK_ADDRESS_URL = buildApiUrl('address_verification', { chainId: '1', type: ':prepare' });
+  const VERIFY_ADDRESS_URL = buildApiUrl('address_verification', { chainId: '1', type: ':verify' });
 
   await page.route(VERIFIED_ADDRESS_URL, (route) => route.fulfill({
     body: JSON.stringify(mocks.VERIFIED_ADDRESS_RESPONSE.DEFAULT),
@@ -87,8 +87,8 @@ test('address verification flow', async({ mount, page }) => {
 });
 
 test('application update flow', async({ mount, page }) => {
-  const TOKEN_INFO_APPLICATION_URL = buildApiUrl('token_info_applications', { chainId: '99', id: mocks.TOKEN_INFO_APPLICATION.UPDATED_ITEM.id }, true);
-  const FORM_CONFIG_URL = buildApiUrl('token_info_applications_config', { chainId: '99' }, true);
+  const TOKEN_INFO_APPLICATION_URL = buildApiUrl('token_info_applications', { chainId: '1', id: mocks.TOKEN_INFO_APPLICATION.UPDATED_ITEM.id });
+  const FORM_CONFIG_URL = buildApiUrl('token_info_applications_config', { chainId: '1' });
 
   await page.route(VERIFIED_ADDRESS_URL, (route) => route.fulfill({
     body: JSON.stringify(mocks.VERIFIED_ADDRESS_RESPONSE.DEFAULT),
