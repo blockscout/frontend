@@ -112,6 +112,7 @@ const config = Object.freeze({
   },
   web3: {
     defaultWallet: getWeb3DefaultWallet(),
+    disableAddTokenToWallet: getEnvValue(process.env.NEXT_PUBLIC_WEB3_DISABLE_ADD_TOKEN_TO_WALLET) === 'true',
   },
   api: {
     host: apiHost,
