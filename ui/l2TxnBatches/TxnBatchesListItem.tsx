@@ -19,7 +19,7 @@ const TxnBatchesListItem = ({ item }: Props) => {
   const timeAgo = dayjs(item.l1_timestamp).fromNow();
 
   return (
-    <ListItemMobileGrid.Container>
+    <ListItemMobileGrid.Container gridTemplateColumns="100px auto">
 
       <ListItemMobileGrid.Label>L2 block #</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>

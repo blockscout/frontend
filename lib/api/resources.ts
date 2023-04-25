@@ -12,9 +12,10 @@ import type {
   AddressTokenTransferFilters,
   AddressTokensFilter,
   AddressTokensResponse,
+  AddressWithdrawalsResponse,
 } from 'types/api/address';
 import type { AddressesResponse } from 'types/api/addresses';
-import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters } from 'types/api/block';
+import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters, BlockWithdrawalsResponse } from 'types/api/block';
 import type { ChartMarketResponse, ChartTransactionResponse } from 'types/api/charts';
 import type { SmartContract, SmartContractReadMethod, SmartContractWriteMethod, SmartContractVerificationConfig } from 'types/api/contract';
 import type { VerifiedContractsResponse, VerifiedContractsFilters, VerifiedContractsCounters } from 'types/api/contracts';
@@ -42,6 +43,7 @@ import type { TransactionsResponseValidated, TransactionsResponsePending, Transa
 import type { TTxsFilters } from 'types/api/txsFilters';
 import type { TxStateChanges } from 'types/api/txStateChanges';
 import type { VisualizedContract } from 'types/api/visualization';
+import type { WithdrawalsResponse } from 'types/api/withdrawals';
 import type { ArrayElement } from 'types/utils';
 
 import appConfig from 'configs/app/config';
@@ -127,6 +129,12 @@ export const RESOURCES = {
     paginationFields: [ 'block_number' as const, 'items_count' as const, 'index' as const ],
     filterFields: [],
   },
+  block_withdrawals: {
+    path: '/api/v2/blocks/:height/withdrawals',
+    pathParams: [ 'height' as const ],
+    paginationFields: [ 'items_count' as const, 'index' as const ],
+    filterFields: [],
+  },
   txs_validated: {
     path: '/api/v2/transactions',
     paginationFields: [ 'block_number' as const, 'items_count' as const, 'filter' as const, 'index' as const ],
@@ -166,6 +174,11 @@ export const RESOURCES = {
   tx_state_changes: {
     path: '/api/v2/transactions/:hash/state-changes',
     pathParams: [ 'hash' as const ],
+  },
+  withdrawals: {
+    path: '/api/v2/withdrawals',
+    paginationFields: [ 'index' as const, 'items_count' as const ],
+    filterFields: [],
   },
 
   // ADDRESSES
@@ -233,6 +246,12 @@ export const RESOURCES = {
     pathParams: [ 'hash' as const ],
     paginationFields: [ 'items_count' as const, 'token_name' as const, 'token_type' as const, 'value' as const ],
     filterFields: [ 'type' as const ],
+  },
+  address_withdrawals: {
+    path: '/api/v2/addresses/:hash/withdrawals',
+    pathParams: [ 'hash' as const ],
+    paginationFields: [ 'items_count' as const, 'index' as const ],
+    filterFields: [],
   },
 
   // CONTRACT
@@ -474,7 +493,8 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'token_transfers' | 'token_holders' | 'token_inventory' | 'tokens' |
 'token_instance_transfers' |
 'verified_contracts' |
-'l2_output_roots' | 'l2_withdrawals' | 'l2_txn_batches' | 'l2_deposits';
+'l2_output_roots' | 'l2_withdrawals' | 'l2_txn_batches' | 'l2_deposits' |
+'withdrawals' | 'address_withdrawals' | 'block_withdrawals';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
 
@@ -500,6 +520,7 @@ Q extends 'stats_line' ? StatsChart :
 Q extends 'blocks' ? BlocksResponse :
 Q extends 'block' ? Block :
 Q extends 'block_txs' ? BlockTransactionsResponse :
+Q extends 'block_withdrawals' ? BlockWithdrawalsResponse :
 Q extends 'txs_validated' ? TransactionsResponseValidated :
 Q extends 'txs_pending' ? TransactionsResponsePending :
 Q extends 'tx' ? Transaction :
@@ -519,6 +540,7 @@ Q extends 'address_coin_balance' ? AddressCoinBalanceHistoryResponse :
 Q extends 'address_coin_balance_chart' ? AddressCoinBalanceHistoryChart :
 Q extends 'address_logs' ? LogsResponseAddress :
 Q extends 'address_tokens' ? AddressTokensResponse :
+Q extends 'address_withdrawals' ? AddressWithdrawalsResponse :
 Q extends 'token' ? TokenInfo :
 Q extends 'token_counters' ? TokenCounters :
 Q extends 'token_transfers' ? TokenTransferResponse :
@@ -539,6 +561,7 @@ Q extends 'verified_contracts' ? VerifiedContractsResponse :
 Q extends 'verified_contracts_counters' ? VerifiedContractsCounters :
 Q extends 'visualize_sol2uml' ? VisualizedContract :
 Q extends 'contract_verification_config' ? SmartContractVerificationConfig :
+Q extends 'withdrawals' ? WithdrawalsResponse :
 Q extends 'l2_output_roots' ? L2OutputRootsResponse :
 Q extends 'l2_withdrawals' ? L2WithdrawalsResponse :
 Q extends 'l2_deposits' ? L2DepositsResponse :

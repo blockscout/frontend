@@ -125,7 +125,14 @@ export default function useNavItems(): ReturnType {
         blocks,
         topAccounts,
         verifiedContracts,
-      ];
+        appConfig.beaconChain.hasBeaconChain && {
+          text: 'Withdrawals',
+          nextRoute: { pathname: '/withdrawals' as const },
+          icon: withdrawalsIcon,
+          isActive: pathname === '/withdrawals',
+          isNewUi: true,
+        },
+      ].filter(Boolean);
     }
 
     const otherNavItems: Array<NavItem> = [
