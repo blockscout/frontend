@@ -5,7 +5,7 @@ import TestApp from 'playwright/TestApp';
 
 import TokenSnippet from './TokenSnippet';
 
-const API_URL = 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/poa/assets/0x363574E6C5C71c343d7348093D84320c76d5Dd29/logo.png';
+const API_URL = 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x363574E6C5C71c343d7348093D84320c76d5Dd29/logo.png';
 
 test.use(devices['iPhone 13 Pro']);
 
