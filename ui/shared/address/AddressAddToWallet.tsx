@@ -15,7 +15,6 @@ interface Props {
 
 const AddressAddToWallet = ({ className, token }: Props) => {
   const toast = useToast();
-
   const provider = useProvider();
 
   const handleClick = React.useCallback(async() => {
