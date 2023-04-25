@@ -10,7 +10,6 @@ The app instance could be customized by passing following variables to NodeJS en
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_NETWORK_NAME | `string` | Displayed name of the network | yes | - | `Gnosis Chain` |
 | NEXT_PUBLIC_NETWORK_SHORT_NAME | `string` | Used for SEO attributes (page title and description) | - | -  | `OoG` |
-| NEXT_PUBLIC_NETWORK_TYPE | `string` | Network type (used for matching pre-defined assets, e.g network logo and icon, which are stored in the project). See all possible values here | - | -  | `xdai_mainnet` |
 | NEXT_PUBLIC_NETWORK_ID | `number` | Chain id, see [https://chainlist.org](https://chainlist.org) for the reference | yes | -  | `99` |
 | NEXT_PUBLIC_NETWORK_RPC_URL | `string` | Chain server RPC url, see [https://chainlist.org](https://chainlist.org) for the reference. If not provided, some functionality of the explorer, related to smart contracts interaction and third-party apps integration, will be unavailable | - | - | `https://core.poa.network` |
 | NEXT_PUBLIC_NETWORK_CURRENCY_NAME | `string` | Network currency name | - | - | `Ether` |
@@ -18,8 +17,10 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS | `string` | Network currency decimals | - | `18` | `6` |
 | NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS | `string` | Address of network's native token | - | - | `0x029a799563238d0e75e20be2f4bda0ea68d00172` |
 | NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME | `string` | Network name for constructing url of token logos according to template `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${assetsNamePath}/assets/${tokenAddress}/logo.png`. It should match network name in TrustWallet assets repo, see the full list [here](https://github.com/trustwallet/assets/tree/master/blockchains) | - | - | `ethereum` |
-| NEXT_PUBLIC_NETWORK_LOGO | `string` | Network logo; if not provided, will fallback to logo predefined in the project; if the project doesn't have logo for such network then the common placeholder will be shown; *Note* that logo height should be 20px and width less than 120px | - | - | `https://placekitten.com/240/40` |
-| NEXT_PUBLIC_NETWORK_SMALL_LOGO | `string` | Small version of network logo; if not provided, will fallback to logo predefined in the project; if the project doesn't have logo for such network then the common placeholder will be shown; *Note* that logo should have square format (e.g 60px by 60px) | - | - | `https://placekitten.com/60/60` |
+| NEXT_PUBLIC_NETWORK_LOGO | `string` | Network logo; if not provided, placeholder will be shown; *Note* the logo height should be 20px and width less than 120px | - | - | `https://placekitten.com/240/40` |
+| NEXT_PUBLIC_NETWORK_LOGO_DARK | `string` | Network logo for dark color mode; if not provided, **inverted** regular logo will be used instead | - | - | `https://placekitten.com/240/40` |
+| NEXT_PUBLIC_NETWORK_ICON | `string` | Network icon; used as a replacement for regular network logo when nav bar is collapsed; if not provided, placeholder will be shown; *Note* the icon size should be at least 60px by 60px | - | - | `https://placekitten.com/60/60` |
+| NEXT_PUBLIC_NETWORK_ICON_DARK | `string` | Network icon for dark color mode; if not provided, **inverted** regular icon will be used instead | - | - | `https://placekitten.com/60/60` |
 | NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED | `boolean` | Set to true if network has account feature | - | `false` | `true` |
 | NEXT_PUBLIC_IS_TESTNET | `boolean`| Set to true if network is testnet | - | `false` | `true` |
 
@@ -27,7 +28,7 @@ The app instance could be customized by passing following variables to NodeJS en
 
 | Variable | Type| Description | Is required  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_FEATURED_NETWORKS | `Array<FeaturedNetwork>` where `FeaturedNetwork` can have following [properties](#featured-network-configuration-properties) | Configuration of featured networks that will be shown in the network menu | - | - | `[{'title':'Gnosis Chain','url':'https://blockscout.com/xdai/mainnet','group':'mainnets'}]` |
+| NEXT_PUBLIC_FEATURED_NETWORKS | `string` | URL of configuration file (`.json` format only) which contains list of featured networks that will be shown in the network menu. See [below](#featured-network-configuration-properties) list of available properties for particular network | - | - | `https://example.com/featured_networks_config.json` |
 | NEXT_PUBLIC_BLOCKSCOUT_VERSION | `string` | Current running version of Blockscout (used to display link to release in the footer) | - | - | `v.5.1.0-beta`
 | NEXT_PUBLIC_FOOTER_GITHUB_LINK | `string` | Link to Github in the footer | - | - | `https://github.com/blockscout/blockscout` |
 | NEXT_PUBLIC_FOOTER_TWITTER_LINK | `string` | Link to Twitter in the footer | - | - | `https://www.twitter.com/blockscoutcom` |
@@ -41,6 +42,7 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_LOGOUT_URL | `string` | Account logout url. Required if account is supported for the app instance. | - | - | `https://blockscoutcom.us.auth0.com/v2/logout` |
 | NEXT_PUBLIC_LOGOUT_RETURN_URL | `string` | Account logout return url. Required if account is supported for the app instance. | - | - | `https://blockscout.com/poa/core/auth/logout` |
 | NEXT_PUBLIC_HOMEPAGE_CHARTS | `Array<'daily_txs' \| 'coin_price' \| 'market_cup'>` | List of charts displayed on the home page | - | - | `['daily_txs','coin_price','market_cup']` |
+| NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR | `string` | Text color of the hero plate on the homepage | `#FFFFFF` | `'#DCFE76'` |
 | NEXT_PUBLIC_HOMEPAGE_PLATE_GRADIENT | `string` | Gradient value for hero plate on the homepage | - | `radial-gradient(103.03% 103.03% at 0% 0%, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%)` | `radial-gradient(at 15% 86%, hsla(350,65%,70%,1) 0px, transparent 50%), radial-gradient(at 72% 57%, hsla(14,95%,76%,1) 0px, transparent 50%)` |
 | NEXT_PUBLIC_HOMEPAGE_SHOW_GAS_TRACKER | `boolean` | Set to false if network doesn't have gas tracker | - | `true` | `false` |
 | NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME | `boolean` | Set to false if average block time is useless for the network | - | `true` | `false` |
@@ -88,9 +90,9 @@ For each application, you need to specify the `MarketplaceCategoryId` to which i
 | --- | --- | --- | --- | --- | --- |
 | title | `string` | Displayed name of the network | yes | - | `Gnosis Chain` |
 | url | `string` | Network explorer main page url | yes | - | `https://blockscout.com/xdai/mainnet` |
-| group | `mainnets \| testnets \| other` | Indicates in which tab network appears in the menu | yes | - | `mainnets` |
-| icon | `string` | Network icon; if not provided, will fallback to  icon predefined in the project; if the project doesn't have icon for such network then the common placeholder will be shown; *Note* that icon size should be at least 30px by 30px | - | - | `https://placekitten.com/60/60` |
-| type | `string` | Network type (used for matching pre-defined network icon, which is stored in the project). See all possible values here | - | - | `xdai_mainnet` |
+| group | `Mainnets \| Testnets \| Other` | Indicates in which tab network appears in the menu | yes | - | `Mainnets` |
+| icon | `string` | Network icon; if not provided, the common placeholder will be shown; *Note* that icon size should be at least 60px by 60px | - | - | `https://placekitten.com/60/60` |
+| isActive | `boolean` | Pass `true` if item should be shonw as active in the menu | - | - | `true` |
 
 ### Network explorer configuration properties
 
