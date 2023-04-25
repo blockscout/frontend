@@ -4,6 +4,7 @@ import React from 'react';
 
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
+import appConfig from 'configs/app/config';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/appContext';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -49,7 +50,7 @@ const BlockPageContent = () => {
     resourceName: 'block_withdrawals',
     pathParams: { height },
     options: {
-      enabled: Boolean(blockQuery.data?.height && tab === 'withdrawals'),
+      enabled: Boolean(blockQuery.data?.height && appConfig.beaconChain.hasBeaconChain && tab === 'withdrawals'),
     },
   });
 
@@ -64,7 +65,7 @@ const BlockPageContent = () => {
   const tabs: Array<RoutedTab> = React.useMemo(() => ([
     { id: 'index', title: 'Details', component: <BlockDetails query={ blockQuery }/> },
     { id: 'txs', title: 'Transactions', component: <TxsContent query={ blockTxsQuery } showBlockInfo={ false } showSocketInfo={ false }/> },
-    blockQuery.data?.has_beacon_chain_withdrawals ?
+    appConfig.beaconChain.hasBeaconChain && blockQuery.data?.has_beacon_chain_withdrawals ?
       { id: 'withdrawals', title: 'Withdrawals', component: <BlockWithdrawals blockWithdrawalsQuery={ blockWithdrawalsQuery }/> } :
       null,
   ].filter(Boolean)), [ blockQuery, blockTxsQuery, blockWithdrawalsQuery ]);
