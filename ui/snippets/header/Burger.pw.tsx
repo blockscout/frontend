@@ -1,12 +1,17 @@
-import { test, expect, devices } from '@playwright/experimental-ct-react';
+import { test as base, expect, devices } from '@playwright/experimental-ct-react';
 import React from 'react';
 
+import { FEATURED_NETWORKS_MOCK } from 'mocks/config/network';
 import authFixture from 'playwright/fixtures/auth';
+import contextWithEnvs, { createContextWithEnvs } from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
 
 import Burger from './Burger';
 
-test.use({ viewport: devices['iPhone 13 Pro'].viewport });
+const FEATURED_NETWORKS_URL = 'https://localhost:3000/featured-networks.json';
+const LOGO_URL = 'https://localhost:3000/my-logo.png';
+
+base.use({ viewport: devices['iPhone 13 Pro'].viewport });
 
 const hooksConfig = {
   router: {
@@ -16,7 +21,26 @@ const hooksConfig = {
   },
 };
 
+const test = base.extend({
+  context: contextWithEnvs([
+    { name: 'NEXT_PUBLIC_FEATURED_NETWORKS', value: FEATURED_NETWORKS_URL },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ]) as any,
+});
+
 test('base view', async({ mount, page }) => {
+  await page.route(FEATURED_NETWORKS_URL, (route) => {
+    return route.fulfill({
+      body: FEATURED_NETWORKS_MOCK,
+    });
+  });
+  await page.route(LOGO_URL, (route) => {
+    return route.fulfill({
+      status: 200,
+      path: './playwright/image_s.jpg',
+    });
+  });
+
   const component = await mount(
     <TestApp>
       <Burger/>
@@ -35,6 +59,18 @@ test.describe('dark mode', () => {
   test.use({ colorScheme: 'dark' });
 
   test('base view', async({ mount, page }) => {
+    await page.route(FEATURED_NETWORKS_URL, (route) => {
+      return route.fulfill({
+        body: FEATURED_NETWORKS_MOCK,
+      });
+    });
+    await page.route(LOGO_URL, (route) => {
+      return route.fulfill({
+        status: 200,
+        path: './playwright/image_s.jpg',
+      });
+    });
+
     const component = await mount(
       <TestApp>
         <Burger/>
@@ -64,8 +100,11 @@ test('submenu', async({ mount, page }) => {
 });
 
 test.describe('auth', () => {
-  const extendedTest = test.extend({
-    context: ({ context }, use) => {
+  const extendedTest = base.extend({
+    context: async({ browser }, use) => {
+      const context = await createContextWithEnvs(browser, [
+        { name: 'NEXT_PUBLIC_FEATURED_NETWORKS', value: FEATURED_NETWORKS_URL },
+      ]);
       authFixture(context);
       use(context);
     },

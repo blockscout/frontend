@@ -5,6 +5,7 @@ import config from 'configs/app/config';
 import PlusIcon from 'icons/plus.svg';
 import AppList from 'ui/apps/AppList';
 import AppListSkeleton from 'ui/apps/AppListSkeleton';
+import AppModal from 'ui/apps/AppModal';
 import CategoriesMenu from 'ui/apps/CategoriesMenu';
 import FilterInput from 'ui/shared/filters/FilterInput';
 
@@ -13,16 +14,25 @@ import useMarketplaceApps from '../apps/useMarketplaceApps';
 const Apps = () => {
   const {
     isLoading,
-    category,
-    handleCategoryChange,
-    debounceFilterApps,
+    isError,
+    error,
+    selectedCategoryId,
+    categories,
+    onCategoryChange,
+    onSearchInputChange,
     showAppInfo,
     displayedApps,
-    displayedAppId,
-    clearDisplayedAppId,
+    selectedAppId,
+    clearSelectedAppId,
     favoriteApps,
-    handleFavoriteClick,
+    onFavoriteClick,
   } = useMarketplaceApps();
+
+  if (isError) {
+    throw new Error('Unable to get apps list', { cause: error });
+  }
+
+  const selectedApp = displayedApps.find(app => app.id === selectedAppId);
 
   return (
     <>
@@ -31,21 +41,29 @@ const Apps = () => {
         flexDirection={{ base: 'column', sm: 'row' }}
       >
         <CategoriesMenu
-          selectedCategoryId={ category }
-          onSelect={ handleCategoryChange }
+          categories={ categories }
+          selectedCategoryId={ selectedCategoryId }
+          onSelect={ onCategoryChange }
         />
 
-        <FilterInput onChange={ debounceFilterApps } marginBottom={{ base: '4', lg: '6' }} placeholder="Find app"/>
+        <FilterInput onChange={ onSearchInputChange } marginBottom={{ base: '4', lg: '6' }} placeholder="Find app"/>
       </Box>
 
       { isLoading ? <AppListSkeleton/> : (
         <AppList
           apps={ displayedApps }
           onAppClick={ showAppInfo }
-          displayedAppId={ displayedAppId }
-          onModalClose={ clearDisplayedAppId }
           favoriteApps={ favoriteApps }
-          onFavoriteClick={ handleFavoriteClick }
+          onFavoriteClick={ onFavoriteClick }
+        />
+      ) }
+
+      { selectedApp && (
+        <AppModal
+          onClose={ clearSelectedAppId }
+          isFavorite={ favoriteApps.includes(selectedApp.id) }
+          onFavoriteClick={ onFavoriteClick }
+          data={ selectedApp }
         />
       ) }
 

@@ -17,7 +17,7 @@ const Home = () => {
     <Page isHomePage>
       <Box
         w="100%"
-        backgroundImage={ appConfig.homepage.plateGradient }
+        backgroundImage={ appConfig.homepage.plate.gradient }
         backgroundColor="blue.400"
         borderRadius="24px"
         padding={{ base: '24px', lg: '48px' }}
@@ -29,7 +29,7 @@ const Home = () => {
             size={{ base: 'md', lg: 'xl' }}
             lineHeight={{ base: '32px', lg: '50px' }}
             fontWeight={ 600 }
-            color="white"
+            color={ appConfig.homepage.plate.textColor }
           >
             Welcome to { appConfig.network.name } explorer
           </Heading>
@@ -39,7 +39,7 @@ const Home = () => {
             columnGap={ 12 }
             pl={ 4 }
           >
-            <ColorModeToggler trackBg="whiteAlpha.500"/>
+            <ColorModeToggler trackBg="blackAlpha.900"/>
             { appConfig.isAccountSupported && <ProfileMenuDesktop/> }
           </Flex>
         </Flex>

@@ -64,7 +64,7 @@ export function isInternalItem(item: NavItem): item is NavItemInternal {
 }
 
 export default function useNavItems(): ReturnType {
-  const isMarketplaceFilled = appConfig.marketplaceAppList.length > 0 && appConfig.network.rpcUrl;
+  const isMarketplaceAvailable = Boolean(appConfig.marketplaceConfigUrl && appConfig.network.rpcUrl);
   const hasAPIDocs = appConfig.apiDoc.specUrl;
 
   const router = useRouter();
@@ -103,16 +103,16 @@ export default function useNavItems(): ReturnType {
         [
           txs,
           // eslint-disable-next-line max-len
-          { text: `Deposits (L1${ rightLineArrow }L2)`, nextRoute: { pathname: '/deposits' as const }, icon: depositsIcon, isActive: pathname === '/deposits', isNewUi: true },
+          { text: `Deposits (L1${ rightLineArrow }L2)`, nextRoute: { pathname: '/l2-deposits' as const }, icon: depositsIcon, isActive: pathname === '/l2-deposits', isNewUi: true },
           // eslint-disable-next-line max-len
-          { text: `Withdrawals (L2${ rightLineArrow }L1)`, nextRoute: { pathname: '/withdrawals' as const }, icon: withdrawalsIcon, isActive: pathname === '/withdrawals', isNewUi: true },
+          { text: `Withdrawals (L2${ rightLineArrow }L1)`, nextRoute: { pathname: '/l2-withdrawals' as const }, icon: withdrawalsIcon, isActive: pathname === '/l2-withdrawals', isNewUi: true },
         ],
         [
           blocks,
           // eslint-disable-next-line max-len
-          { text: 'Txn batches', nextRoute: { pathname: '/txn-batches' as const }, icon: txnBatchIcon, isActive: pathname === '/txn-batches', isNewUi: true },
+          { text: 'Txn batches', nextRoute: { pathname: '/l2-txn-batches' as const }, icon: txnBatchIcon, isActive: pathname === '/l2-txn-batches', isNewUi: true },
           // eslint-disable-next-line max-len
-          { text: 'Output roots', nextRoute: { pathname: '/output-roots' as const }, icon: outputRootsIcon, isActive: pathname === '/output-roots', isNewUi: true },
+          { text: 'Output roots', nextRoute: { pathname: '/l2-output-roots' as const }, icon: outputRootsIcon, isActive: pathname === '/l2-output-roots', isNewUi: true },
         ],
         [
           topAccounts,
@@ -170,7 +170,7 @@ export default function useNavItems(): ReturnType {
         isActive: pathname.startsWith('/token'),
         isNewUi: true,
       },
-      isMarketplaceFilled ? {
+      isMarketplaceAvailable ? {
         text: 'Apps',
         nextRoute: { pathname: '/apps' as const },
         icon: appsIcon,
@@ -234,5 +234,5 @@ export default function useNavItems(): ReturnType {
     };
 
     return { mainNavItems, accountNavItems, profileItem };
-  }, [ hasAPIDocs, isMarketplaceFilled, pathname ]);
+  }, [ hasAPIDocs, isMarketplaceAvailable, pathname ]);
 }
