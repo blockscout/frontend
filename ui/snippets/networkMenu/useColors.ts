@@ -1,18 +1,11 @@
 import { useColorModeValue } from '@chakra-ui/react';
 
-export default function useColors({ hasIcon }: {hasIcon: boolean}) {
-  const iconDefaultColor = useColorModeValue('blackAlpha.600', 'whiteAlpha.600');
-  const iconPlaceholderDefaultColor = useColorModeValue('blackAlpha.100', 'whiteAlpha.100');
-
+export default function useColors() {
   return {
     text: {
       'default': useColorModeValue('gray.600', 'gray.400'),
       active: useColorModeValue('blackAlpha.900', 'whiteAlpha.900'),
       hover: useColorModeValue('blue.600', 'link_hovered'),
-    },
-    icon: {
-      'default': hasIcon ? iconDefaultColor : iconPlaceholderDefaultColor,
-      active: useColorModeValue('blackAlpha.900', 'whiteAlpha.900'),
     },
     bg: {
       'default': 'transparent',

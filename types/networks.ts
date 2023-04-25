@@ -6,6 +6,7 @@ export interface FeaturedNetwork {
   group: NetworkGroup;
   icon?: string;
   isActive?: boolean;
+  invertIconInDarkMode?: boolean;
 }
 
 export interface NetworkExplorer {
