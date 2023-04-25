@@ -36,8 +36,8 @@ const ColorModeToggler = forwardRef<ColorModeTogglerProps, 'input'>((props, ref)
     getRootProps,
   } = useCheckbox({ ...ownProps, isChecked: colorMode === 'light' });
 
-  const trackBg = useColorModeValue('blackAlpha.100', 'whiteAlpha.200');
-  const thumbBg = useColorModeValue('white', 'black');
+  const trackBg = useColorModeValue('blackAlpha.100', 'whiteAlpha.100');
+  const thumbBg = 'white';
   const transitionProps = getDefaultTransitionProps();
 
   const trackStyles: SystemStyleObject = React.useMemo(() => ({
@@ -96,7 +96,7 @@ const ColorModeToggler = forwardRef<ColorModeTogglerProps, 'input'>((props, ref)
           margin={ 2 }
           zIndex="docked"
           as={ moonIcon }
-          color={ useColorModeValue('blue.600', 'white') }
+          color={ useColorModeValue('blue.300', 'blackAlpha.900') }
           { ...transitionProps }
         />
         <chakra.div
@@ -109,7 +109,7 @@ const ColorModeToggler = forwardRef<ColorModeTogglerProps, 'input'>((props, ref)
           margin={ 1.5 }
           zIndex="docked"
           as={ sunIcon }
-          color={ useColorModeValue('gray.500', 'blue.600') }
+          color={ useColorModeValue('blackAlpha.900', 'blue.300') }
           { ...transitionProps }
         />
       </chakra.div>

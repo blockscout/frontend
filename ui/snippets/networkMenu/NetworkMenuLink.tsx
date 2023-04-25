@@ -1,29 +1,30 @@
-import { Box, Flex, Icon, Text, Image } from '@chakra-ui/react';
+import { Box, Flex, Icon, Text, Image, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import type { FeaturedNetwork } from 'types/networks';
 
 import checkIcon from 'icons/check.svg';
-import placeholderIcon from 'icons/networks/icons/placeholder.svg';
+import placeholderIcon from 'icons/networks/icon-placeholder.svg';
 
 import useColors from './useColors';
 
 interface Props extends FeaturedNetwork {
-  isActive: boolean;
+  isActive?: boolean;
   isMobile?: boolean;
 }
 
-const NetworkMenuLink = ({ title, icon, isActive, isMobile, url }: Props) => {
-  const hasIcon = Boolean(icon);
-  const colors = useColors({ hasIcon });
+const NetworkMenuLink = ({ title, icon, isActive, isMobile, url, invertIconInDarkMode }: Props) => {
+  const colors = useColors();
+  const darkModeFilter = { filter: 'brightness(0) invert(1)' };
+  const style = useColorModeValue({}, invertIconInDarkMode ? darkModeFilter : {});
 
-  const iconEl = typeof icon === 'string' ? (
-    <Image w="30px" h="30px" src={ icon } alt={ `${ title } network icon` }/>
+  const iconEl = icon ? (
+    <Image w="30px" h="30px" src={ icon } alt={ `${ title } network icon` } style={ style }/>
   ) : (
     <Icon
-      as={ hasIcon ? icon : placeholderIcon }
+      as={ placeholderIcon }
       boxSize="30px"
-      color={ isActive ? colors.icon.active : colors.icon.default }
+      color={ colors.iconPlaceholder.default }
     />
   );
 

@@ -1,6 +1,5 @@
 /* eslint-disable no-restricted-properties */
-import type { AppItemOverview } from 'types/client/apps';
-import type { FeaturedNetwork, NetworkExplorer, PreDefinedNetwork } from 'types/networks';
+import type { NetworkExplorer } from 'types/networks';
 import type { ChainIndicatorId } from 'ui/home/indicators/types';
 
 const getEnvValue = (env: string | undefined) => env?.replaceAll('\'', '"');
@@ -61,9 +60,14 @@ const config = Object.freeze({
   env,
   isDev,
   network: {
-    type: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_TYPE) as PreDefinedNetwork | undefined,
-    logo: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_LOGO),
-    smallLogo: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_SMALL_LOGO),
+    logo: {
+      'default': getEnvValue(process.env.NEXT_PUBLIC_NETWORK_LOGO),
+      dark: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_LOGO_DARK),
+    },
+    icon: {
+      'default': getEnvValue(process.env.NEXT_PUBLIC_NETWORK_ICON),
+      dark: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_ICON_DARK),
+    },
     name: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_NAME),
     id: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_ID),
     shortName: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_SHORT_NAME),
@@ -85,10 +89,10 @@ const config = Object.freeze({
     telegram: getEnvValue(process.env.NEXT_PUBLIC_FOOTER_TELEGRAM_LINK),
     staking: getEnvValue(process.env.NEXT_PUBLIC_FOOTER_STAKING_LINK),
   },
-  featuredNetworks: parseEnvJson<Array<FeaturedNetwork>>(getEnvValue(process.env.NEXT_PUBLIC_FEATURED_NETWORKS)) || [],
+  featuredNetworks: getEnvValue(process.env.NEXT_PUBLIC_FEATURED_NETWORKS),
   blockScoutVersion: getEnvValue(process.env.NEXT_PUBLIC_BLOCKSCOUT_VERSION),
   isAccountSupported: getEnvValue(process.env.NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED) === 'true',
-  marketplaceAppList: parseEnvJson<Array<AppItemOverview>>(getEnvValue(process.env.NEXT_PUBLIC_MARKETPLACE_APP_LIST)) || [],
+  marketplaceConfigUrl: getEnvValue(process.env.NEXT_PUBLIC_MARKETPLACE_CONFIG_URL),
   marketplaceSubmitForm: getEnvValue(process.env.NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM),
   protocol: appSchema,
   host: appHost,
@@ -129,8 +133,11 @@ const config = Object.freeze({
   },
   homepage: {
     charts: parseEnvJson<Array<ChainIndicatorId>>(getEnvValue(process.env.NEXT_PUBLIC_HOMEPAGE_CHARTS)) || [],
-    plateGradient: getEnvValue(process.env.NEXT_PUBLIC_HOMEPAGE_PLATE_GRADIENT) ||
-      'radial-gradient(103.03% 103.03% at 0% 0%, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%)',
+    plate: {
+      gradient: getEnvValue(process.env.NEXT_PUBLIC_HOMEPAGE_PLATE_GRADIENT) ||
+        'radial-gradient(103.03% 103.03% at 0% 0%, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%)',
+      textColor: getEnvValue(process.env.NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR) || 'white',
+    },
     showGasTracker: getEnvValue(process.env.NEXT_PUBLIC_HOMEPAGE_SHOW_GAS_TRACKER) === 'false' ? false : true,
     showAvgBlockTime: getEnvValue(process.env.NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME) === 'false' ? false : true,
   },

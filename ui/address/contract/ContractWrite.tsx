@@ -1,6 +1,5 @@
-import _capitalize from 'lodash/capitalize';
 import React from 'react';
-import { useAccount, useSigner } from 'wagmi';
+import { useAccount, useSigner, useNetwork, useSwitchNetwork } from 'wagmi';
 
 import type { SmartContractWriteMethod } from 'types/api/contract';
 
@@ -16,7 +15,7 @@ import ContractCustomAbiAlert from './ContractCustomAbiAlert';
 import ContractImplementationAddress from './ContractImplementationAddress';
 import ContractMethodCallable from './ContractMethodCallable';
 import ContractWriteResult from './ContractWriteResult';
-import { getNativeCoinValue, isExtendedError } from './utils';
+import { getNativeCoinValue } from './utils';
 
 interface Props {
   addressHash?: string;
@@ -27,6 +26,8 @@ interface Props {
 const ContractWrite = ({ addressHash, isProxy, isCustomAbi }: Props) => {
   const { data: signer } = useSigner();
   const { isConnected } = useAccount();
+  const { chain } = useNetwork();
+  const { switchNetworkAsync } = useSwitchNetwork();
 
   const { data, isLoading, isError } = useApiQuery(isProxy ? 'contract_methods_write_proxy' : 'contract_methods_write', {
     pathParams: { hash: addressHash },
@@ -56,50 +57,34 @@ const ContractWrite = ({ addressHash, isProxy, isCustomAbi }: Props) => {
       throw new Error('Wallet is not connected');
     }
 
-    try {
-      if (!_contract) {
-        throw new Error('Something went wrong. Try again later.');
-      }
+    if (chain?.id && String(chain.id) !== config.network.id) {
+      await switchNetworkAsync?.(Number(config.network.id));
+    }
 
-      if (item.type === 'receive') {
-        const value = args[0] ? getNativeCoinValue(args[0]) : '0';
-        const result = await signer?.sendTransaction({
-          to: addressHash,
-          value,
-        });
-        return { hash: result?.hash as string };
-      }
+    if (!_contract) {
+      throw new Error('Something went wrong. Try again later.');
+    }
 
-      const _args = item.stateMutability === 'payable' ? args.slice(0, -1) : args;
-      const value = item.stateMutability === 'payable' ? getNativeCoinValue(args[args.length - 1]) : undefined;
-      const methodName = item.type === 'fallback' ? 'fallback' : item.name;
-
-      const result = await _contract[methodName](..._args, {
-        gasLimit: 100_000,
+    if (item.type === 'receive') {
+      const value = args[0] ? getNativeCoinValue(args[0]) : '0';
+      const result = await signer?.sendTransaction({
+        to: addressHash,
         value,
       });
-
-      return { hash: result.hash as string };
-    } catch (error) {
-      if (isExtendedError(error)) {
-        if ('reason' in error && error.reason === 'underlying network changed') {
-
-          if ('detectedNetwork' in error && typeof error.detectedNetwork === 'object' && error.detectedNetwork !== null) {
-            const networkName = error.detectedNetwork.name;
-            if (networkName) {
-              throw new Error(
-                // eslint-disable-next-line max-len
-                `You connected to ${ _capitalize(networkName) } chain in the wallet, but the current instance of Blockscout is for ${ config.network.name } chain`,
-              );
-            }
-          }
-
-          throw new Error('Wrong network detected, please make sure you are switched to the correct network, and try again');
-        }
-      }
-      throw error;
+      return { hash: result?.hash as string };
     }
-  }, [ _contract, addressHash, isConnected, signer ]);
+
+    const _args = item.stateMutability === 'payable' ? args.slice(0, -1) : args;
+    const value = item.stateMutability === 'payable' ? getNativeCoinValue(args[args.length - 1]) : undefined;
+    const methodName = item.type === 'fallback' ? 'fallback' : item.name;
+
+    const result = await _contract[methodName](..._args, {
+      gasLimit: 100_000,
+      value,
+    });
+
+    return { hash: result.hash as string };
+  }, [ _contract, addressHash, chain, isConnected, signer, switchNetworkAsync ]);
 
   const renderContent = React.useCallback((item: SmartContractWriteMethod, index: number, id: number) => {
     return (

@@ -1,5 +1,4 @@
 import {
-  Box,
   Tr,
   Td,
   Tag,
@@ -8,6 +7,7 @@ import {
   Text,
   Show,
   Hide,
+  Flex,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { route } from 'nextjs-routes';
@@ -44,14 +44,14 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }
   const timeAgo = useTimeAgoIncrement(tx.timestamp, enableTimeIncrement);
 
   const addressFrom = (
-    <Address>
+    <Address w="100%">
       <AddressIcon address={ tx.from }/>
       <AddressLink type="address" hash={ tx.from.hash } alias={ tx.from.name } fontWeight="500" ml={ 2 } truncation="constant" isDisabled={ isOut }/>
     </Address>
   );
 
   const addressTo = dataTo ? (
-    <Address>
+    <Address w="100%">
       <AddressIcon address={ dataTo }/>
       <AddressLink type="address" hash={ dataTo.hash } alias={ dataTo.name } fontWeight="500" ml={ 2 } truncation="constant" isDisabled={ isIn }/>
     </Address>
@@ -117,21 +117,23 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }
       </Show>
       <Hide above="xl" ssr={ false }>
         <Td colSpan={ 3 }>
-          <Box>
-            { addressFrom }
+          <Flex alignItems="center">
             { (isIn || isOut) ?
-              <InOutTag isIn={ isIn } isOut={ isOut } width="48px" my={ 2 }/> : (
+              <InOutTag isIn={ isIn } isOut={ isOut } width="48px"/> :
+              (
                 <Icon
                   as={ rightArrowIcon }
                   boxSize={ 6 }
-                  mt={ 2 }
-                  mb={ 1 }
                   color="gray.500"
                   transform="rotate(90deg)"
                 />
-              ) }
-            { addressTo }
-          </Box>
+              )
+            }
+            <VStack alignItems="start" overflow="hidden" ml={ 1 }>
+              { addressFrom }
+              { addressTo }
+            </VStack>
+          </Flex>
         </Td>
       </Hide>
       <Td isNumeric>

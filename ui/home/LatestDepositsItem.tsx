@@ -8,7 +8,7 @@ import {
 import { route } from 'nextjs-routes';
 import React from 'react';
 
-import type { DepositsItem } from 'types/api/deposits';
+import type { L2DepositsItem } from 'types/api/l2Deposits';
 
 import appConfig from 'configs/app/config';
 import blockIcon from 'icons/block.svg';
@@ -20,7 +20,7 @@ import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
 
 type Props = {
-  item: DepositsItem;
+  item: L2DepositsItem;
 }
 
 const LatestTxsItem = ({ item }: Props) => {

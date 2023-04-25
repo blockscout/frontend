@@ -1,5 +1,5 @@
 import type { test } from '@playwright/experimental-ct-react';
-import type { PlaywrightWorkerArgs } from '@playwright/test';
+import type { Browser } from '@playwright/test';
 
 interface Env {
   name: string;
@@ -16,7 +16,7 @@ export default function contextWithEnvsFixture(envs: Array<Env>): Parameters<typ
   };
 }
 
-export function createContextWithEnvs(browser: PlaywrightWorkerArgs['browser'], envs: Array<Env>) {
+export async function createContextWithEnvs(browser: Browser, envs: Array<Env>) {
   return browser.newContext({
     storageState: {
       origins: [

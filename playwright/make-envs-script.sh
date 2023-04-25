@@ -2,7 +2,7 @@
 
 targetFile='./playwright/envs.js'
 
-declare -a envFiles=('./configs/envs/.env.pw' './configs/envs/.env.poa_core')
+declare -a envFiles=('./configs/envs/.env.pw')
 
 touch $targetFile;
 truncate -s 0 $targetFile;
@@ -26,7 +26,7 @@ do
 
         # if there is a value, escape it and add line to target file
         escapedConfigValue=$(echo $configValue | sed s/\'/\"/g);
-        echo "window.process.env.${configName} = localStorage.getItem('${configName}') || '${escapedConfigValue}';" >> $targetFile;
+        echo "window.process.env.${configName} = localStorage.getItem('${configName}') ?? '${escapedConfigValue}';" >> $targetFile;
     done < $envFile
 done
 
