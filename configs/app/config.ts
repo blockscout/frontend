@@ -3,8 +3,6 @@ import type { WalletType } from 'types/client/wallets';
 import type { NetworkExplorer } from 'types/networks';
 import type { ChainIndicatorId } from 'ui/home/indicators/types';
 
-import { SUPPORTED_WALLETS } from 'lib/web3/wallets';
-
 const getEnvValue = (env: string | undefined) => env?.replaceAll('\'', '"');
 const parseEnvJson = <DataType>(env: string | undefined): DataType | null => {
   try {
@@ -16,6 +14,11 @@ const parseEnvJson = <DataType>(env: string | undefined): DataType | null => {
 const stripTrailingSlash = (str: string) => str[str.length - 1] === '/' ? str.slice(0, -1) : str;
 const getWeb3DefaultWallet = (): WalletType => {
   const envValue = getEnvValue(process.env.NEXT_PUBLIC_WEB3_DEFAULT_WALLET);
+  const SUPPORTED_WALLETS: Array<WalletType> = [
+    'metamask',
+    'coinbase',
+  ];
+
   return (envValue && SUPPORTED_WALLETS.includes(envValue) ? envValue : 'metamask') as WalletType;
 };
 

@@ -1,10 +1,12 @@
 import type { providers } from 'ethers';
 
-import type { ArrayElement } from 'types/utils';
+export type WalletType = 'metamask' | 'coinbase';
 
-import type { SUPPORTED_WALLETS } from 'lib/web3/wallets';
-
-export type WalletType = ArrayElement<typeof SUPPORTED_WALLETS>;
+export interface WalletInfo {
+  add_token_text: string;
+  add_network_text: string;
+  icon: React.ElementType;
+}
 
 export interface ExternalProvider extends providers.ExternalProvider {
   isCoinbaseWallet?: boolean;
