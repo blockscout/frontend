@@ -54,7 +54,6 @@ const NavigationDesktop = () => {
       position="relative"
       flexDirection="column"
       alignItems="stretch"
-      alignSelf="flex-start"
       px={{ lg: isExpanded ? 6 : 4, xl: isCollapsed ? 4 : 6 }}
       py={ 12 }
       minH="100vh"

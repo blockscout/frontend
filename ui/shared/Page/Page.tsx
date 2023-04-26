@@ -60,7 +60,7 @@ const Page = ({
   ) : children;
 
   return (
-    <Flex w="100%" minH="100vh" alignItems="stretch">
+    <Flex w="100%" minH="100vh" alignItems="flex-start">
       <NavigationDesktop/>
       <Flex
         flexDir="column"
