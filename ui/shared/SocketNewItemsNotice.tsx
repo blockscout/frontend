@@ -1,4 +1,4 @@
-import { Alert, Link, Text, chakra, useTheme, useColorModeValue, Skeleton } from '@chakra-ui/react';
+import { Alert, Link, Text, chakra, useTheme, useColorModeValue, Skeleton, Tr, Td } from '@chakra-ui/react';
 import { transparentize } from '@chakra-ui/theme-tools';
 import React from 'react';
 
@@ -16,7 +16,7 @@ interface Props {
   isLoading?: boolean;
 }
 
-const SocketNewItemsNotice = ({ children, className, url, num, alert, type = 'transaction', isLoading }: Props) => {
+const SocketNewItemsNotice = chakra(({ children, className, url, num, alert, type = 'transaction', isLoading }: Props) => {
   const theme = useTheme();
 
   const alertContent = (() => {
@@ -69,6 +69,31 @@ const SocketNewItemsNotice = ({ children, className, url, num, alert, type = 'tr
   ) : <Skeleton className={ className } h="33px"/>;
 
   return children ? children({ content }) : content;
+});
+
+export default SocketNewItemsNotice;
+
+export const Desktop = ({ ...props }: Props) => {
+  return (
+    <SocketNewItemsNotice
+      borderRadius={ props.isLoading ? 'sm' : 0 }
+      h={ props.isLoading ? 4 : 'auto' }
+      maxW={ props.isLoading ? '215px' : undefined }
+      w="100%"
+      mx={ props.isLoading ? 4 : 0 }
+      my={ props.isLoading ? '6px' : 0 }
+      { ...props }
+    >
+      { ({ content }) => <Tr><Td colSpan={ 100 } p={ 0 }>{ content }</Td></Tr> }
+    </SocketNewItemsNotice>
+  );
 };
 
-export default chakra(SocketNewItemsNotice);
+export const Mobile = ({ ...props }: Props) => {
+  return (
+    <SocketNewItemsNotice
+      borderBottomRadius={ 0 }
+      { ...props }
+    />
+  );
+};

@@ -15,7 +15,7 @@ import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/Pagination';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
-import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
+import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import TokenTransferList from 'ui/token/TokenTransfer/TokenTransferList';
 import TokenTransferTable from 'ui/token/TokenTransfer/TokenTransferTable';
 
@@ -77,12 +77,11 @@ const TokenTransfer = ({ transfersQuery, tokenId, token }: Props) => {
       </Box>
       <Box display={{ base: 'block', lg: 'none' }}>
         { pagination.page === 1 && (
-          <SocketNewItemsNotice
+          <SocketNewItemsNotice.Mobile
             url={ window.location.href }
             num={ newItemsCount }
             alert={ socketAlert }
             type="token_transfer"
-            borderBottomRadius={ 0 }
             isLoading={ isPlaceholderData }
           />
         ) }
