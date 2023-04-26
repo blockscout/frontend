@@ -1,20 +1,7 @@
 import type { Address } from 'types/api/address';
-import type { AddressParam } from 'types/api/addressParams';
 
+import { ADDRESS_HASH } from './addressParams';
 import { TOKEN_INFO_ERC_20 } from './token';
-
-export const ADDRESS_HASH = '0x2B51Ae4412F79c3c1cB12AA40Ea4ECEb4e80511a';
-
-export const ADDRESS_PARAMS: AddressParam = {
-  hash: ADDRESS_HASH,
-  implementation_name: null,
-  is_contract: false,
-  is_verified: null,
-  name: null,
-  private_tags: [],
-  public_tags: [],
-  watchlist_names: [],
-};
 
 export const ADDRESS_INFO: Address = {
   block_number_balance_updated_at: 8774377,

@@ -1,4 +1,4 @@
-import { ADDRESS_PARAMS, ADDRESS_HASH } from './address';
+import { ADDRESS_PARAMS, ADDRESS_HASH } from './addressParams';
 
 export const PRIVATE_TAG_ADDRESS = {
   address: ADDRESS_PARAMS,

@@ -1,19 +1,12 @@
 import type { TokenCounters, TokenHolder, TokenHolders, TokenInfo, TokenInstance, TokenInventoryResponse, TokenType } from 'types/api/token';
 import type { TokenTransfer, TokenTransferResponse } from 'types/api/tokenTransfer';
 
-const ADDRESS_PARAMS = {
-  hash: '0x2B51Ae4412F79c3c1cB12AA40Ea4ECEb4e80511a',
-  implementation_name: null,
-  is_contract: false,
-  is_verified: null,
-  name: null,
-  private_tags: [],
-  public_tags: [],
-  watchlist_names: [],
-};
+import { ADDRESS_PARAMS, ADDRESS_HASH } from './addressParams';
+import { BLOCK_HASH } from './block';
+import { TX_HASH } from './tx';
 
 export const TOKEN_INFO_ERC_20: TokenInfo<'ERC-20'> = {
-  address: '0x2B51Ae4412F79c3c1cB12AA40Ea4ECEb4e80511a',
+  address: ADDRESS_HASH,
   decimals: '18',
   exchange_rate: null,
   holders: '16026',
@@ -46,7 +39,7 @@ export const TOKEN_HOLDER: TokenHolder = {
 export const TOKEN_HOLDERS: TokenHolders = { items: Array(50).fill(TOKEN_HOLDER), next_page_params: null };
 
 export const TOKEN_TRANSFER_ERC_20: TokenTransfer = {
-  block_hash: '0x8fa7b9e5e5e79deeb62d608db22ba9a5cb45388c7ebb9223ae77331c6080dc70',
+  block_hash: BLOCK_HASH,
   from: ADDRESS_PARAMS,
   log_index: '4',
   method: 'addLiquidity',
@@ -57,7 +50,7 @@ export const TOKEN_TRANSFER_ERC_20: TokenTransfer = {
     decimals: '18',
     value: '9851351626684503',
   },
-  tx_hash: '0x3ed9d81e7c1001bdda1caa1dc62c0acbbe3d2c671cdc20dc1e65efdaa4186967',
+  tx_hash: TX_HASH,
   type: 'token_minting',
 };
 
@@ -105,7 +98,7 @@ export const TOKEN_INSTANCE: TokenInstance = {
   },
   owner: ADDRESS_PARAMS,
   token: TOKEN_INFO_ERC_1155,
-  holder_address_hash: '0x2B51Ae4412F79c3c1cB12AA40Ea4ECEb4e80511a',
+  holder_address_hash: ADDRESS_HASH,
 };
 
 export const TOKEN_INSTANCES: TokenInventoryResponse = {
