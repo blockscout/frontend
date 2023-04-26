@@ -60,14 +60,9 @@ const Page = ({
   ) : children;
 
   return (
-    <Flex w="100%" minH="100vh" alignItems="flex-start">
+    <Flex w="100%" minH="100vh" alignItems="stretch">
       <NavigationDesktop/>
-      <Flex
-        flexDir="column"
-        flexGrow={ 1 } w={{ base: '100%', lg: 'auto' }}
-        borderLeft="1px solid"
-        borderColor="divider"
-      >
+      <Flex flexDir="column" flexGrow={ 1 } w={{ base: '100%', lg: 'auto' }}>
         { renderHeader ?
           renderHeader() :
           <Header isHomePage={ isHomePage }/>
