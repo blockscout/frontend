@@ -1,4 +1,4 @@
-import { Skeleton, Box, Icon, Tag } from '@chakra-ui/react';
+import { Box, Icon } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
@@ -20,6 +20,7 @@ import * as addressStubs from 'stubs/address';
 import * as tokenStubs from 'stubs/token';
 import AddressContract from 'ui/address/AddressContract';
 import TextAd from 'ui/shared/ad/TextAd';
+import Tag from 'ui/shared/chakra/Tag';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
 import Pagination from 'ui/shared/Pagination';
@@ -217,7 +218,7 @@ const TokenPageContent = () => {
         additionalsLeft={ (
           <TokenLogo hash={ tokenQuery.data?.address } name={ tokenQuery.data?.name } boxSize={ 6 } isLoading={ tokenQuery.isPlaceholderData }/>
         ) }
-        additionalsRight={ <Skeleton isLoaded={ !tokenQuery.isPlaceholderData } borderRadius="sm"><Tag>{ tokenQuery.data?.type }</Tag></Skeleton> }
+        additionalsRight={ <Tag isLoading={ tokenQuery.isPlaceholderData }>{ tokenQuery.data?.type }</Tag> }
       />
       <TokenContractInfo tokenQuery={ tokenQuery } contractQuery={ contractQuery }/>
       <TokenDetails tokenQuery={ tokenQuery }/>

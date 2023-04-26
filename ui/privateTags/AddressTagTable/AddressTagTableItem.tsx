@@ -1,16 +1,14 @@
 import {
-  Tag,
   Tr,
   Td,
-  Skeleton,
 } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
 import type { AddressTag } from 'types/api/account';
 
 import AddressSnippet from 'ui/shared/AddressSnippet';
+import Tag from 'ui/shared/chakra/Tag';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
-import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 interface Props {
   item: AddressTag;
@@ -34,11 +32,7 @@ const AddressTagTableItem = ({ item, onEditClick, onDeleteClick, isLoading }: Pr
         <AddressSnippet address={ item.address } isLoading={ isLoading }/>
       </Td>
       <Td whiteSpace="nowrap">
-        <Skeleton isLoaded={ !isLoading } display="inline-block" borderRadius="sm" maxW="100%">
-          <TruncatedTextTooltip label={ item.name }>
-            <Tag>{ item.name }</Tag>
-          </TruncatedTextTooltip>
-        </Skeleton>
+        <Tag isLoading={ isLoading } isTruncated>{ item.name }</Tag>
       </Td>
       <Td>
         <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick } isLoading={ isLoading }/>

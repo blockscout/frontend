@@ -1,4 +1,4 @@
-import { Tr, Td, Tag, Text, Icon, Grid, Skeleton } from '@chakra-ui/react';
+import { Tr, Td, Icon, Grid, Skeleton, Box } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -9,8 +9,8 @@ import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
+import Tag from 'ui/shared/chakra/Tag';
 import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
-import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean }
 
@@ -43,20 +43,16 @@ const TokenTransferTableItem = ({
             <AddressLink type="transaction" hash={ txHash } isLoading={ isLoading }/>
           </Address>
           { timestamp && (
-            <Text color="gray.500" fontWeight="400" ml="10px">
-              <Skeleton isLoaded={ !isLoading } display="inline-block">
-                { timeAgo }
-              </Skeleton>
-            </Text>
+            <Skeleton isLoaded={ !isLoading } display="inline-block" color="gray.500" fontWeight="400" ml="10px">
+              { timeAgo }
+            </Skeleton>
           ) }
         </Grid>
       </Td>
       <Td>
-        <Skeleton isLoaded={ !isLoading } display="inline-block" borderRadius="sm" maxW="100%" my="3px">
-          <TruncatedTextTooltip label={ method || '' }>
-            { method ? <Tag> { method } </Tag> : '-' }
-          </TruncatedTextTooltip>
-        </Skeleton>
+        <Box my="3px">
+          <Tag isLoading={ isLoading } isTruncated>{ method }</Tag>
+        </Box>
       </Td>
       <Td>
         <Address display="inline-flex" maxW="100%" py="3px">
