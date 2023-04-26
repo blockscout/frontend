@@ -1,7 +1,8 @@
-import { test, expect } from '@playwright/experimental-ct-react';
+import { test as base, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import * as contractMock from 'mocks/contract/info';
+import * as socketServer from 'playwright/fixtures/socketServer';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
 
@@ -15,6 +16,14 @@ const hooksConfig = {
   },
 };
 
+const test = base.extend<socketServer.SocketServerFixture>({
+  createSocket: socketServer.createSocket,
+});
+
+// FIXME
+// test cases which use socket cannot run in parallel since the socket server always run on the same port
+test.describe.configure({ mode: 'serial' });
+
 test('verified with changed byte code +@mobile +@dark-mode', async({ mount, page }) => {
   await page.route(CONTRACT_API_URL, (route) => route.fulfill({
     status: 200,
@@ -24,10 +33,31 @@ test('verified with changed byte code +@mobile +@dark-mode', async({ mount, page
 
   const component = await mount(
     <TestApp>
+      <ContractCode addressHash={ addressHash } noSocket/>
+    </TestApp>,
+    { hooksConfig },
+  );
+
+  await expect(component).toHaveScreenshot();
+});
+
+test('verified with changed byte code socket', async({ mount, page, createSocket }) => {
+  await page.route(CONTRACT_API_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify(contractMock.verified),
+  }));
+  await page.route('https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0/**', (route) => route.abort());
+
+  const component = await mount(
+    <TestApp withSocket>
       <ContractCode addressHash={ addressHash }/>
     </TestApp>,
     { hooksConfig },
   );
+
+  const socket = await createSocket();
+  const channel = await socketServer.joinChannel(socket, 'addresses:' + addressHash.toLowerCase());
+  socketServer.sendMessage(socket, channel, 'changed_bytecode', {});
 
   await expect(component).toHaveScreenshot();
 });
@@ -41,7 +71,7 @@ test('verified with multiple sources +@mobile', async({ mount, page }) => {
 
   await mount(
     <TestApp>
-      <ContractCode addressHash={ addressHash }/>
+      <ContractCode addressHash={ addressHash } noSocket/>
     </TestApp>,
     { hooksConfig },
   );
@@ -60,7 +90,7 @@ test('verified via sourcify', async({ mount, page }) => {
 
   await mount(
     <TestApp>
-      <ContractCode addressHash={ addressHash }/>
+      <ContractCode addressHash={ addressHash } noSocket/>
     </TestApp>,
     { hooksConfig },
   );
@@ -77,7 +107,7 @@ test('self destructed', async({ mount, page }) => {
 
   await mount(
     <TestApp>
-      <ContractCode addressHash={ addressHash }/>
+      <ContractCode addressHash={ addressHash } noSocket/>
     </TestApp>,
     { hooksConfig },
   );
@@ -95,7 +125,7 @@ test('with twin address alert +@mobile', async({ mount, page }) => {
 
   const component = await mount(
     <TestApp>
-      <ContractCode addressHash={ addressHash }/>
+      <ContractCode addressHash={ addressHash } noSocket/>
     </TestApp>,
     { hooksConfig },
   );
@@ -112,7 +142,7 @@ test('with proxy address alert +@mobile', async({ mount, page }) => {
 
   const component = await mount(
     <TestApp>
-      <ContractCode addressHash={ addressHash }/>
+      <ContractCode addressHash={ addressHash } noSocket/>
     </TestApp>,
     { hooksConfig },
   );
@@ -129,7 +159,7 @@ test('non verified', async({ mount, page }) => {
 
   const component = await mount(
     <TestApp>
-      <ContractCode addressHash={ addressHash }/>
+      <ContractCode addressHash={ addressHash } noSocket/>
     </TestApp>,
     { hooksConfig },
   );

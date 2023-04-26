@@ -79,7 +79,7 @@ const AddressBlocksValidated = ({ scrollRef }: Props) => {
               <Th width="17%">Block</Th>
               <Th width="17%">Age</Th>
               <Th width="16%">Txn</Th>
-              <Th width="25%">GasUsed</Th>
+              <Th width="25%">Gas used</Th>
               <Th width="25%" isNumeric>Reward { appConfig.network.currency.symbol }</Th>
             </Tr>
           </Thead>

@@ -77,7 +77,7 @@ const TokensTableItem = ({
       ) }
       <HStack spacing={ 3 }>
         <Text fontSize="sm" fontWeight={ 500 }>Holders</Text>
-        <Text fontSize="sm" variant="secondary">{ holders }</Text>
+        <Text fontSize="sm" variant="secondary">{ Number(holders).toLocaleString() }</Text>
       </HStack>
     </ListItemMobile>
   );

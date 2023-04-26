@@ -5,5 +5,5 @@ import { RESOURCES } from 'lib/api/resources';
 
 export default function buildApiUrl<R extends ResourceName>(resourceName: R, pathParams?: ResourcePathParams<R>) {
   const resource = RESOURCES[resourceName];
-  return compile('/node-api/proxy/poa/core' + resource.path)(pathParams);
+  return compile('/node-api/proxy' + resource.path)(pathParams);
 }

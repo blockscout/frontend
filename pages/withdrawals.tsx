@@ -19,4 +19,4 @@ const WithdrawalsPage: NextPage = () => {
 
 export default WithdrawalsPage;
 
-export { getServerSideProps } from 'lib/next/getServerSidePropsL2';
+export { getServerSideProps } from 'lib/next/getServerSidePropsBeacon';

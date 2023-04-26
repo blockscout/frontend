@@ -13,6 +13,7 @@ import React from 'react';
 
 import type { Block } from 'types/api/block';
 
+import appConfig from 'configs/app/config';
 import blockIcon from 'icons/block.svg';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import BlockTimestamp from 'ui/blocks/BlockTimestamp';
@@ -56,11 +57,14 @@ const LatestBlocksItem = ({ block, h }: Props) => {
       <Grid gridGap={ 2 } templateColumns="auto minmax(0, 1fr)" fontSize="sm">
         <GridItem>Txn</GridItem>
         <GridItem><Text variant="secondary">{ block.tx_count }</Text></GridItem>
-        { /*  */ }
-        <GridItem>Reward</GridItem>
-        <GridItem><Text variant="secondary">{ totalReward.toFixed() }</Text></GridItem>
-        <GridItem>Miner</GridItem>
-        <GridItem><AddressLink type="address" alias={ block.miner.name } hash={ block.miner.hash } truncation="constant" maxW="100%"/></GridItem>
+        { !appConfig.L2.isL2Network && (
+          <>
+            <GridItem>Reward</GridItem>
+            <GridItem><Text variant="secondary">{ totalReward.toFixed() }</Text></GridItem>
+            <GridItem>Miner</GridItem>
+            <GridItem><AddressLink type="address" alias={ block.miner.name } hash={ block.miner.hash } truncation="constant" maxW="100%"/></GridItem>
+          </>
+        ) }
       </Grid>
     </Box>
   );

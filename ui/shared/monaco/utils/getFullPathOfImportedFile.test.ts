@@ -18,20 +18,32 @@ it('returns undefined if imported file is outside the base file folder', () => {
   expect(result).toBeUndefined();
 });
 
-it('returns unmodified path if it is already absolute', () => {
-  const result = getFullPathOfImportedFile(
-    '/index.sol',
-    '/abc/contract.sol',
-  );
+describe('returns unmodified path if it is already absolute', () => {
+  it('with prefix', () => {
+    const result = getFullPathOfImportedFile(
+      '/index.sol',
+      '/abc/contract.sol',
+    );
 
-  expect(result).toBe('/abc/contract.sol');
+    expect(result).toBe('/abc/contract.sol');
+  });
+
+  it('without prefix', () => {
+    const result = getFullPathOfImportedFile(
+      '/index.sol',
+      'abc/contract.sol',
+    );
+
+    expect(result).toBe('/abc/contract.sol');
+  });
 });
 
-it('returns undefined for external path', () => {
+it('correctly manages remappings', () => {
   const result = getFullPathOfImportedFile(
     '/index.sol',
-    'https://github.com/ethereum/dapp/contract.sol',
+    'node_modules/@openzeppelin/contracts/access/AccessControl.sol',
+    [ '@ensdomains/=node_modules/@ensdomains/', '@openzeppelin/=node_modules/@openzeppelin/' ],
   );
 
-  expect(result).toBeUndefined();
+  expect(result).toBe('/node_modules/@openzeppelin/contracts/access/AccessControl.sol');
 });

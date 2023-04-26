@@ -20,7 +20,7 @@ interface ResultComponentProps<T extends SmartContractMethod> {
 
 interface Props<T extends SmartContractMethod> {
   data: T;
-  onSubmit: (data: T, args: Array<string | Array<string>>) => Promise<ContractMethodCallResult<T>>;
+  onSubmit: (data: T, args: Array<string | Array<unknown>>) => Promise<ContractMethodCallResult<T>>;
   ResultComponent: (props: ResultComponentProps<T>) => JSX.Element | null;
   isWrite?: boolean;
 }
@@ -44,13 +44,23 @@ const sortFields = (data: Array<SmartContractMethodInput>) => ([ a ]: [string, s
 };
 
 const castFieldValue = (data: Array<SmartContractMethodInput>) => ([ key, value ]: [ string, string ], index: number) => {
-  if (data[index].type.includes('[]')) {
+  if (data[index].type.includes('[')) {
     return [ key, parseArrayValue(value) ];
   }
   return [ key, value ];
 };
 
-const parseArrayValue = (value: string) => value.replace(/(\[|\])|\s/g, '').split(',');
+const parseArrayValue = (value: string) => {
+  try {
+    const parsedResult = JSON.parse(value);
+    if (Array.isArray(parsedResult)) {
+      return parsedResult;
+    }
+    throw new Error('Not an array');
+  } catch (error) {
+    return '';
+  }
+};
 
 const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit, ResultComponent, isWrite }: Props<T>) => {
 

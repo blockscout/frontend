@@ -16,10 +16,11 @@ interface Props {
   isViper: boolean;
   filePath?: string;
   additionalSource?: SmartContract['additional_sources'];
+  remappings?: Array<string>;
   isLoading?: boolean;
 }
 
-const ContractSourceCode = ({ data, hasSol2Yml, address, isViper, filePath, additionalSource, isLoading }: Props) => {
+const ContractSourceCode = ({ data, hasSol2Yml, address, isViper, filePath, additionalSource, remappings, isLoading }: Props) => {
   const heading = (
     <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>
       <span>Contract source code</span>
@@ -58,7 +59,7 @@ const ContractSourceCode = ({ data, hasSol2Yml, address, isViper, filePath, addi
         { diagramLink }
         { copyToClipboard }
       </Flex>
-      { isLoading ? <Skeleton h="557px" w="100%"/> : <CodeEditor data={ editorData }/> }
+      { isLoading ? <Skeleton h="557px" w="100%"/> : <CodeEditor data={ editorData } remappings={ remappings }/> }
     </section>
   );
 };

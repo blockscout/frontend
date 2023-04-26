@@ -1,15 +1,20 @@
 import { Skeleton, Box, Icon, Tag } from '@chakra-ui/react';
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
+import type { SocketMessage } from 'lib/socket/types';
+import type { TokenInfo } from 'types/api/token';
 import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
 import iconSuccess from 'icons/status/success.svg';
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/appContext';
 import useContractTabs from 'lib/hooks/useContractTabs';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
+import useSocketChannel from 'lib/socket/useSocketChannel';
+import useSocketMessage from 'lib/socket/useSocketMessage';
 import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import * as addressStubs from 'stubs/address';
 import * as tokenStubs from 'stubs/token';
@@ -30,6 +35,8 @@ import TokenTransfer from 'ui/token/TokenTransfer/TokenTransfer';
 export type TokenTabs = 'token_transfers' | 'holders' | 'inventory';
 
 const TokenPageContent = () => {
+  const [ isSocketOpen, setIsSocketOpen ] = React.useState(false);
+  const [ totalSupplySocket, setTotalSupplySocket ] = React.useState<number>();
   const router = useRouter();
   const isMobile = useIsMobile();
 
@@ -41,6 +48,8 @@ const TokenPageContent = () => {
 
   const hashString = router.query.hash?.toString();
 
+  const queryClient = useQueryClient();
+
   const tokenQuery = useApiQuery('token', {
     pathParams: { hash: hashString },
     queryOptions: { enabled: Boolean(router.query.hash), placeholderData: tokenStubs.TOKEN_INFO_ERC_20 },
@@ -48,7 +57,40 @@ const TokenPageContent = () => {
 
   const contractQuery = useApiQuery('address', {
     pathParams: { hash: hashString },
-    queryOptions: { enabled: Boolean(router.query.hash), placeholderData: addressStubs.ADDRESS_INFO },
+    queryOptions: { enabled: isSocketOpen && Boolean(router.query.hash), placeholderData: addressStubs.ADDRESS_INFO },
+  });
+
+  React.useEffect(() => {
+    if (tokenQuery.data && totalSupplySocket) {
+      queryClient.setQueryData(getResourceKey('token', { pathParams: { hash: hashString } }), (prevData: TokenInfo | undefined) => {
+        if (prevData) {
+          return { ...prevData, total_supply: totalSupplySocket.toString() };
+        }
+      });
+    }
+  }, [ tokenQuery.data, totalSupplySocket, hashString, queryClient ]);
+
+  const handleTotalSupplyMessage: SocketMessage.TokenTotalSupply['handler'] = React.useCallback((payload) => {
+    const prevData = queryClient.getQueryData(getResourceKey('token', { pathParams: { hash: hashString } }));
+    if (!prevData) {
+      setTotalSupplySocket(payload.total_supply);
+    }
+    queryClient.setQueryData(getResourceKey('token', { pathParams: { hash: hashString } }), (prevData: TokenInfo | undefined) => {
+      if (prevData) {
+        return { ...prevData, total_supply: payload.total_supply.toString() };
+      }
+    });
+  }, [ queryClient, hashString ]);
+
+  const channel = useSocketChannel({
+    topic: `tokens:${ hashString?.toLowerCase() }`,
+    isDisabled: !hashString,
+    onJoin: () => setIsSocketOpen(true),
+  });
+  useSocketMessage({
+    channel,
+    event: 'total_supply',
+    handler: handleTotalSupplyMessage,
   });
 
   useEffect(() => {

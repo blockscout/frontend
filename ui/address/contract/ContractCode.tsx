@@ -3,10 +3,13 @@ import { useQueryClient } from '@tanstack/react-query';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
+import type { SocketMessage } from 'lib/socket/types';
 import type { Address as AddressInfo } from 'types/api/address';
 
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import dayjs from 'lib/date/dayjs';
+import useSocketChannel from 'lib/socket/useSocketChannel';
+import useSocketMessage from 'lib/socket/useSocketMessage';
 import * as stubs from 'stubs/contract';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
@@ -20,6 +23,8 @@ import ContractSourceCode from './ContractSourceCode';
 
 type Props = {
   addressHash?: string;
+  // prop for pw tests only
+  noSocket?: boolean;
 }
 
 const InfoItem = chakra(({ label, value, className, isLoading }: { label: string; value: string; className?: string; isLoading: boolean }) => (
@@ -29,17 +34,35 @@ const InfoItem = chakra(({ label, value, className, isLoading }: { label: string
   </GridItem>
 ));
 
-const ContractCode = ({ addressHash }: Props) => {
+const ContractCode = ({ addressHash, noSocket }: Props) => {
+  const [ isSocketOpen, setIsSocketOpen ] = React.useState(false);
+  const [ isChangedBytecodeSocket, setIsChangedBytecodeSocket ] = React.useState<boolean>();
+
   const queryClient = useQueryClient();
   const addressInfo = queryClient.getQueryData<AddressInfo>(getResourceKey('address', { pathParams: { hash: addressHash } }));
 
   const { data, isPlaceholderData, isError } = useApiQuery('contract', {
     pathParams: { hash: addressHash },
     queryOptions: {
-      enabled: Boolean(addressHash),
+      enabled: Boolean(addressHash) && (noSocket || isSocketOpen),
       refetchOnMount: false,
       placeholderData: addressInfo?.is_verified ? stubs.CONTRACT_CODE_VERIFIED : stubs.CONTRACT_CODE_UNVERIFIED,
     },
+  });
+
+  const handleChangedBytecodeMessage: SocketMessage.AddressChangedBytecode['handler'] = React.useCallback(() => {
+    setIsChangedBytecodeSocket(true);
+  }, [ ]);
+
+  const channel = useSocketChannel({
+    topic: `addresses:${ addressHash?.toLowerCase() }`,
+    isDisabled: !addressHash,
+    onJoin: () => setIsSocketOpen(true),
+  });
+  useSocketMessage({
+    channel,
+    event: 'changed_bytecode',
+    handler: handleChangedBytecodeMessage,
   });
 
   if (isError) {
@@ -112,7 +135,7 @@ const ContractCode = ({ addressHash }: Props) => {
             { data.sourcify_repo_url && <LinkExternal href={ data.sourcify_repo_url } fontSize="md">View contract in Sourcify repository</LinkExternal> }
           </Alert>
         ) }
-        { data?.is_changed_bytecode && (
+        { (data?.is_changed_bytecode || isChangedBytecodeSocket) && (
           <Alert status="warning">
             Warning! Contract bytecode has been changed and does not match the verified one. Therefore, interaction with this smart contract may be risky.
           </Alert>
@@ -175,6 +198,7 @@ const ContractCode = ({ addressHash }: Props) => {
             isViper={ Boolean(data.is_vyper_contract) }
             filePath={ data.file_path }
             additionalSource={ data.additional_sources }
+            remappings={ data.compiler_settings?.remappings }
             isLoading={ isPlaceholderData }
           />
         ) }

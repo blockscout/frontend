@@ -5,7 +5,7 @@ import React from 'react';
 type Props = {
   id: string;
   url: string;
-  external: boolean;
+  external?: boolean;
   title: string;
 }
 
@@ -27,7 +27,7 @@ const AppModalLink = ({ url, external, id }: Props) => {
       { ...buttonProps }
     >Launch app</Button>
   ) : (
-    <NextLink href={{ pathname: '/apps/[id]', query: { id } }} passHref>
+    <NextLink href={{ pathname: '/apps/[id]', query: { id } }} passHref legacyBehavior>
       <Button
         as="a"
         { ...buttonProps }

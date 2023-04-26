@@ -1,9 +1,10 @@
 import { Box, Flex } from '@chakra-ui/react';
-import { test, expect } from '@playwright/experimental-ct-react';
+import { test as base, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import * as cookies from 'lib/cookies';
 import authFixture from 'playwright/fixtures/auth';
+import contextWithEnvs, { createContextWithEnvs } from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
 
 import NavigationDesktop from './NavigationDesktop';
@@ -15,6 +16,15 @@ const hooksConfig = {
     pathname: '/blocks',
   },
 };
+
+const FEATURED_NETWORKS_URL = 'https://localhost:3000/featured-networks.json';
+
+const test = base.extend({
+  context: contextWithEnvs([
+    { name: 'NEXT_PUBLIC_FEATURED_NETWORKS', value: FEATURED_NETWORKS_URL },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ]) as any,
+});
 
 test('no auth +@desktop-xl +@dark-mode-xl', async({ mount }) => {
   const component = await mount(
@@ -30,15 +40,18 @@ test('no auth +@desktop-xl +@dark-mode-xl', async({ mount }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test.describe('auth', () => {
-  const extendedTest = test.extend({
-    context: ({ context }, use) => {
+base.describe('auth', () => {
+  const test = base.extend({
+    context: async({ browser }, use) => {
+      const context = await createContextWithEnvs(browser, [
+        { name: 'NEXT_PUBLIC_FEATURED_NETWORKS', value: FEATURED_NETWORKS_URL },
+      ]);
       authFixture(context);
       use(context);
     },
   });
 
-  extendedTest('+@desktop-xl +@dark-mode-xl', async({ mount }) => {
+  test('+@desktop-xl +@dark-mode-xl', async({ mount }) => {
     const component = await mount(
       <TestApp>
         <Flex w="100%" minH="100vh" alignItems="stretch">
@@ -85,15 +98,18 @@ test('with submenu +@desktop-xl +@dark-mode', async({ mount, page }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test.describe('cookie set to false', () => {
-  const extendedTest = test.extend({
-    context: ({ context }, use) => {
+base.describe('cookie set to false', () => {
+  const test = base.extend({
+    context: async({ browser }, use) => {
+      const context = await createContextWithEnvs(browser, [
+        { name: 'NEXT_PUBLIC_FEATURED_NETWORKS', value: FEATURED_NETWORKS_URL },
+      ]);
       context.addCookies([ { name: cookies.NAMES.NAV_BAR_COLLAPSED, value: 'false', domain: 'localhost', path: '/' } ]);
       use(context);
     },
   });
 
-  extendedTest('navbar is opened +@desktop-xl', async({ mount }) => {
+  test('navbar is opened +@desktop-xl', async({ mount }) => {
     const component = await mount(
       <TestApp>
         <Flex w="100%" minH="100vh" alignItems="stretch">
@@ -109,15 +125,18 @@ test.describe('cookie set to false', () => {
   });
 });
 
-test.describe('cookie set to true', () => {
-  const extendedTest = test.extend({
-    context: ({ context }, use) => {
+base.describe('cookie set to true', () => {
+  const test = base.extend({
+    context: async({ browser }, use) => {
+      const context = await createContextWithEnvs(browser, [
+        { name: 'NEXT_PUBLIC_FEATURED_NETWORKS', value: FEATURED_NETWORKS_URL },
+      ]);
       context.addCookies([ { name: cookies.NAMES.NAV_BAR_COLLAPSED, value: 'true', domain: 'localhost', path: '/' } ]);
       use(context);
     },
   });
 
-  extendedTest('navbar is collapsed', async({ mount }) => {
+  test('navbar is collapsed', async({ mount }) => {
     const component = await mount(
       <TestApp>
         <Flex w="100%" minH="100vh" alignItems="stretch">

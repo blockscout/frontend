@@ -7,6 +7,7 @@ import React from 'react';
 import type { SocketMessage } from 'lib/socket/types';
 import type { Block } from 'types/api/block';
 
+import appConfig from 'configs/app/config';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp } from 'lib/html-entities';
@@ -17,12 +18,20 @@ import LinkInternal from 'ui/shared/LinkInternal';
 import LatestBlocksItem from './LatestBlocksItem';
 import LatestBlocksItemSkeleton from './LatestBlocksItemSkeleton';
 
-const BLOCK_HEIGHT = 166;
+const BLOCK_HEIGHT_L1 = 166;
+const BLOCK_HEIGHT_L2 = 112;
 const BLOCK_MARGIN = 12;
 
 const LatestBlocks = () => {
+  const blockHeight = appConfig.L2.isL2Network ? BLOCK_HEIGHT_L2 : BLOCK_HEIGHT_L1;
   const isMobile = useIsMobile();
-  const blocksMaxCount = isMobile ? 2 : 3;
+  // const blocksMaxCount = isMobile ? 2 : 3;
+  let blocksMaxCount: number;
+  if (appConfig.L2.isL2Network) {
+    blocksMaxCount = isMobile ? 4 : 5;
+  } else {
+    blocksMaxCount = isMobile ? 2 : 3;
+  }
   const { data, isLoading, isError } = useApiQuery('homepage_blocks');
 
   const queryClient = useQueryClient();
@@ -60,7 +69,7 @@ const LatestBlocks = () => {
         <VStack
           spacing={ `${ BLOCK_MARGIN }px` }
           mb={ 6 }
-          height={ `${ BLOCK_HEIGHT * blocksMaxCount + BLOCK_MARGIN * (blocksMaxCount - 1) }px` }
+          height={ `${ blockHeight * blocksMaxCount + BLOCK_MARGIN * (blocksMaxCount - 1) }px` }
           overflow="hidden"
         >
           { Array.from(Array(blocksMaxCount)).map((item, index) => <LatestBlocksItemSkeleton key={ index }/>) }
@@ -92,9 +101,9 @@ const LatestBlocks = () => {
             </Text>
           </Box>
         ) }
-        <VStack spacing={ `${ BLOCK_MARGIN }px` } mb={ 4 } height={ `${ BLOCK_HEIGHT * blocksCount + BLOCK_MARGIN * (blocksCount - 1) }px` } overflow="hidden">
+        <VStack spacing={ `${ BLOCK_MARGIN }px` } mb={ 4 } height={ `${ blockHeight * blocksCount + BLOCK_MARGIN * (blocksCount - 1) }px` } overflow="hidden">
           <AnimatePresence initial={ false } >
-            { dataToShow.map((block => <LatestBlocksItem key={ block.height } block={ block } h={ BLOCK_HEIGHT }/>)) }
+            { dataToShow.map((block => <LatestBlocksItem key={ block.height } block={ block } h={ blockHeight }/>)) }
           </AnimatePresence>
         </VStack>
         <Flex justifyContent="center">

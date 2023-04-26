@@ -365,6 +365,7 @@
             "options": [
               "",
               "--update-snapshots",
+              "--ui",
             ],
             "default": ""
         },

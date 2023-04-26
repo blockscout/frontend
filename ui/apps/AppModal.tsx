@@ -4,9 +4,8 @@ import {
 } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
-import type { AppItemOverview, MarketplaceCategoriesIds } from 'types/client/apps';
+import type { AppItemOverview } from 'types/client/apps';
 
-import appConfig from 'configs/app/config';
 import linkIcon from 'icons/link.svg';
 import ghIcon from 'icons/social/git.svg';
 import tgIcon from 'icons/social/telega.svg';
@@ -17,20 +16,19 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp } from 'lib/html-entities';
 
 import AppModalLink from './AppModalLink';
-import { APP_CATEGORIES } from './constants';
 
 type Props = {
-  id: string;
   onClose: () => void;
   isFavorite: boolean;
   onFavoriteClick: (id: string, isFavorite: boolean) => void;
+  data: AppItemOverview;
 }
 
 const AppModal = ({
-  id,
   onClose,
   isFavorite,
   onFavoriteClick,
+  data,
 }: Props) => {
   const {
     title,
@@ -44,7 +42,7 @@ const AppModal = ({
     twitter,
     logo,
     categories,
-  } = appConfig.marketplaceAppList.find(app => app.id === id) as AppItemOverview;
+  } = data;
 
   const socialLinks = [
     telegram ? {
@@ -62,14 +60,14 @@ const AppModal = ({
   ].filter(Boolean);
 
   const handleFavoriteClick = useCallback(() => {
-    onFavoriteClick(id, isFavorite);
-  }, [ onFavoriteClick, id, isFavorite ]);
+    onFavoriteClick(data.id, isFavorite);
+  }, [ onFavoriteClick, data.id, isFavorite ]);
 
   const isMobile = useIsMobile();
 
   return (
     <Modal
-      isOpen={ Boolean(id) }
+      isOpen={ Boolean(data.id) }
       onClose={ onClose }
       size={ isMobile ? 'full' : 'md' }
       isCentered
@@ -123,7 +121,7 @@ const AppModal = ({
           >
             <Box display="flex">
               <AppModalLink
-                id={ id }
+                id={ data.id }
                 url={ url }
                 external={ external }
                 title={ title }
@@ -157,14 +155,14 @@ const AppModal = ({
           </Heading>
 
           <Box marginBottom={ 2 }>
-            { categories.map((category: MarketplaceCategoriesIds) => APP_CATEGORIES[category] && (
+            { categories.map((category) => (
               <Tag
                 colorScheme="blue"
                 marginRight={ 2 }
                 marginBottom={ 2 }
                 key={ category }
               >
-                { APP_CATEGORIES[category] }
+                { category }
               </Tag>
             )) }
           </Box>

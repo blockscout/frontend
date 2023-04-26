@@ -43,4 +43,5 @@ export const ADDRESS_INFO: Address = {
   private_tags: [],
   public_tags: [],
   watchlist_names: [],
+  watchlist_address_id: null,
 };

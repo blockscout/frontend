@@ -1,96 +1,84 @@
-import { Box, Icon } from '@chakra-ui/react';
+import { Icon } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
+import type { AddressWithdrawalsItem } from 'types/api/address';
+import type { BlockWithdrawalsItem } from 'types/api/block';
 import type { WithdrawalsItem } from 'types/api/withdrawals';
 
 import appConfig from 'configs/app/config';
-import txIcon from 'icons/transactions.svg';
+import blockIcon from 'icons/block.svg';
 import dayjs from 'lib/date/dayjs';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import LinkExternal from 'ui/shared/LinkExternal';
+import CurrencyValue from 'ui/shared/CurrencyValue';
 import LinkInternal from 'ui/shared/LinkInternal';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 
-type Props = { item: WithdrawalsItem };
+type Props = {
+  item: WithdrawalsItem;
+  view: 'list';
+} | {
+  item: AddressWithdrawalsItem;
+  view: 'address';
+} | {
+  item: BlockWithdrawalsItem;
+  view: 'block';
+};
 
-const WithdrawalsListItem = ({ item }: Props) => {
-  const timeAgo = item.l2_timestamp ? dayjs(item.l2_timestamp).fromNow() : null;
-  const timeToEnd = item.challenge_period_end ? dayjs(item.challenge_period_end).fromNow(true) + ' left' : null;
-
+const WithdrawalsListItem = ({ item, view }: Props) => {
   return (
-    <ListItemMobileGrid.Container>
+    <ListItemMobileGrid.Container gridTemplateColumns="100px auto">
 
-      <ListItemMobileGrid.Label>Msg nonce</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label>Index</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        { item.msg_nonce_version + '-' + item.msg_nonce }
+        { item.index }
       </ListItemMobileGrid.Value>
 
-      { item.from && (
+      <ListItemMobileGrid.Label>Validator index</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
+        { item.validator_index }
+      </ListItemMobileGrid.Value>
+
+      { view !== 'block' && (
         <>
-          <ListItemMobileGrid.Label>From</ListItemMobileGrid.Label>
-          <ListItemMobileGrid.Value>
+          <ListItemMobileGrid.Label>Block</ListItemMobileGrid.Label><ListItemMobileGrid.Value>
+            <LinkInternal
+              href={ route({ pathname: '/block/[height]', query: { height: item.block_number.toString() } }) }
+              display="flex"
+              width="fit-content"
+              alignItems="center"
+            >
+              <Icon as={ blockIcon } boxSize={ 6 } mr={ 1 }/>
+              { item.block_number }
+            </LinkInternal>
+          </ListItemMobileGrid.Value>
+        </>
+      ) }
+
+      { view !== 'address' && (
+        <>
+          <ListItemMobileGrid.Label>To</ListItemMobileGrid.Label><ListItemMobileGrid.Value>
             <Address>
-              <AddressIcon address={ item.from }/>
-              <AddressLink hash={ item.from.hash } type="address" truncation="dynamic" ml={ 2 }/>
+              <AddressIcon address={ item.receiver }/>
+              <AddressLink type="address" hash={ item.receiver.hash } truncation="dynamic" ml={ 2 }/>
             </Address>
           </ListItemMobileGrid.Value>
         </>
       ) }
 
-      <ListItemMobileGrid.Label>L2 txn hash</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>
-        <LinkInternal
-          href={ route({ pathname: '/tx/[hash]', query: { hash: item.l2_tx_hash } }) }
-          display="flex"
-          width="fit-content"
-          alignItems="center"
-          overflow="hidden"
-          w="100%"
-        >
-          <Icon as={ txIcon } boxSize={ 6 } mr={ 1 }/>
-          <Box w="calc(100% - 36px)" overflow="hidden" whiteSpace="nowrap"><HashStringShortenDynamic hash={ item.l2_tx_hash }/></Box>
-        </LinkInternal>
-      </ListItemMobileGrid.Value>
-
-      { timeAgo && (
+      { view !== 'block' && (
         <>
           <ListItemMobileGrid.Label>Age</ListItemMobileGrid.Label>
-          <ListItemMobileGrid.Value>{ timeAgo }</ListItemMobileGrid.Value>
-        </>
-      ) }
-
-      <ListItemMobileGrid.Label>Status</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>
-        { item.status === 'Ready for relay' ?
-          <LinkExternal href={ appConfig.L2.withdrawalUrl }>{ item.status }</LinkExternal> :
-          item.status }
-      </ListItemMobileGrid.Value>
-
-      { item.l1_tx_hash && (
-        <>
-          <ListItemMobileGrid.Label>L1 txn hash</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <LinkExternal
-              href={ appConfig.L2.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: item.l1_tx_hash } }) }
-              maxW="100%"
-              display="inline-flex"
-              overflow="hidden"
-            >
-              <Icon as={ txIcon } boxSize={ 6 } mr={ 1 }/>
-              <Box w="calc(100% - 44px)" overflow="hidden" whiteSpace="nowrap"><HashStringShortenDynamic hash={ item.l1_tx_hash }/></Box>
-            </LinkExternal>
+            { dayjs(item.timestamp).fromNow() }
           </ListItemMobileGrid.Value>
-        </>
-      ) }
 
-      { timeToEnd && (
-        <>
-          <ListItemMobileGrid.Label>Time left</ListItemMobileGrid.Label>
-          <ListItemMobileGrid.Value>{ timeToEnd }</ListItemMobileGrid.Value>
+          <ListItemMobileGrid.Label>Value</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Value>
+            <CurrencyValue value={ item.amount } currency={ appConfig.network.currency.symbol }/>
+          </ListItemMobileGrid.Value>
         </>
       ) }
 

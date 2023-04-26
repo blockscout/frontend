@@ -22,6 +22,7 @@ const TokenContractInfo = ({ tokenQuery, contractQuery }: Props) => {
     is_contract: true,
     implementation_name: null,
     watchlist_names: [],
+    watchlist_address_id: null,
   };
 
   return (

@@ -55,7 +55,7 @@ const AddressesListItem = ({
       ) }
       <HStack spacing={ 3 }>
         <Text fontSize="sm" fontWeight={ 500 }>Txn count</Text>
-        <Text fontSize="sm" variant="secondary">{ Number(item.tx_count).toLocaleString('en') }</Text>
+        <Text fontSize="sm" variant="secondary">{ Number(item.tx_count).toLocaleString() }</Text>
       </HStack>
     </ListItemMobile>
   );

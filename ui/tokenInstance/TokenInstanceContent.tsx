@@ -76,6 +76,7 @@ const TokenInstanceContent = () => {
     is_contract: true,
     implementation_name: null,
     watchlist_names: [],
+    watchlist_address_id: null,
   };
   const appLink = (() => {
     if (!tokenInstanceQuery.data.external_app_url) {

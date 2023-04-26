@@ -4,6 +4,7 @@ import {
   HStack,
   Icon,
   Text,
+  Grid,
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -32,71 +33,67 @@ const LatestTxsItem = ({ tx }: Props) => {
 
   const isMobile = useIsMobile();
 
-  return (
-    <Box
-      width="100%"
-      borderTop="1px solid"
-      borderColor="divider"
-      py={ 4 }
-      px={{ base: 0, lg: 4 }}
-      _last={{ borderBottom: '1px solid', borderColor: 'divider' }}
-    >
-      <Flex justifyContent="space-between" width="100%" alignItems="start" flexDirection={{ base: 'column', lg: 'row' }}>
-        { !isMobile && <Flex mr={ 3 }><TxAdditionalInfo tx={ tx }/></Flex> }
-        <Box width={{ base: '100%', lg: 'calc(50% - 32px)' }}>
-          <Flex justifyContent="space-between">
-            <HStack>
-              <TxType types={ tx.tx_types }/>
-              <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined }/>
-            </HStack>
-            { isMobile && <TxAdditionalInfo tx={ tx } isMobile/> }
-          </Flex>
-          <Flex
-            mt={ 2 }
-            alignItems="center"
-            width="100%"
-            justifyContent={{ base: 'space-between', lg: 'start' }}
-            mb={{ base: 6, lg: 0 }}
-          >
-            <Flex mr={ 3 }>
-              <Icon
-                as={ transactionIcon }
-                boxSize="30px"
-                mr={ 2 }
-                color="link"
-              />
-              <Address width="100%">
-                <AddressLink
-                  hash={ tx.hash }
-                  type="transaction"
-                  fontWeight="700"
-                  truncation="constant"
-                />
-              </Address>
-            </Flex>
-            { tx.timestamp && <Text variant="secondary" fontWeight="400" fontSize="sm">{ timeAgo }</Text> }
-          </Flex>
-        </Box>
-        <Box width={{ base: '100%', lg: '50%' }}>
-          <Flex alignItems="center" mb={ 3 } justifyContent={{ base: 'start', lg: 'end' }}>
-            <Address>
-              <AddressIcon address={ tx.from }/>
+  if (isMobile) {
+    return (
+      <Box
+        width="100%"
+        borderTop="1px solid"
+        borderColor="divider"
+        py={ 4 }
+        _last={{ borderBottom: '1px solid', borderColor: 'divider' }}
+      >
+        <Flex justifyContent="space-between">
+          <HStack>
+            <TxType types={ tx.tx_types }/>
+            <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined }/>
+          </HStack>
+          <TxAdditionalInfo tx={ tx } isMobile/>
+        </Flex>
+        <Flex
+          mt={ 2 }
+          alignItems="center"
+          width="100%"
+          justifyContent="space-between"
+          mb={ 6 }
+        >
+          <Flex mr={ 3 }>
+            <Icon
+              as={ transactionIcon }
+              boxSize="30px"
+              mr={ 2 }
+              color="link"
+            />
+            <Address width="100%">
               <AddressLink
-                type="address"
-                hash={ tx.from.hash }
-                alias={ tx.from.name }
-                fontWeight="500"
-                ml={ 2 }
+                hash={ tx.hash }
+                type="transaction"
+                fontWeight="700"
                 truncation="constant"
-                fontSize="sm"
               />
             </Address>
-            <Icon
-              as={ rightArrowIcon }
-              boxSize={ 6 }
-              mx={ 2 }
-              color="gray.500"
+          </Flex>
+          { tx.timestamp && <Text variant="secondary" fontWeight="400" fontSize="sm">{ timeAgo }</Text> }
+        </Flex>
+        <Flex alignItems="center" mb={ 3 }>
+          <Address>
+            <AddressIcon address={ tx.from }/>
+            <AddressLink
+              type="address"
+              hash={ tx.from.hash }
+              alias={ tx.from.name }
+              fontWeight="500"
+              ml={ 2 }
+              truncation="constant"
+              fontSize="sm"
             />
+          </Address>
+          <Icon
+            as={ rightArrowIcon }
+            boxSize={ 6 }
+            mx={ 2 }
+            color="gray.500"
+          />
+          { dataTo && (
             <Address>
               <AddressIcon address={ dataTo }/>
               <AddressLink
@@ -109,19 +106,104 @@ const LatestTxsItem = ({ tx }: Props) => {
                 fontSize="sm"
               />
             </Address>
-          </Flex>
-          <Flex fontSize="sm" justifyContent="end" flexDirection={{ base: 'column', lg: 'row' }}>
-            <Box mr={{ base: 0, lg: 3 }} mb={{ base: 2, lg: 0 }}>
-              <Text as="span">Value { appConfig.network.currency.symbol } </Text>
-              <Text as="span" variant="secondary">{ getValueWithUnit(tx.value).dp(5).toFormat() }</Text>
-            </Box>
-            <Box>
-              <Text as="span">Fee { appConfig.network.currency.symbol } </Text>
-              <Text as="span" variant="secondary">{ getValueWithUnit(tx.fee.value).dp(5).toFormat() }</Text>
-            </Box>
-          </Flex>
+          ) }
+        </Flex>
+        <Box mb={ 2 } fontSize="sm">
+          <Text as="span">Value { appConfig.network.currency.symbol } </Text>
+          <Text as="span" variant="secondary">{ getValueWithUnit(tx.value).dp(5).toFormat() }</Text>
         </Box>
-      </Flex>
+        <Box fontSize="sm">
+          <Text as="span">Fee { appConfig.network.currency.symbol } </Text>
+          <Text as="span" variant="secondary">{ getValueWithUnit(tx.fee.value).dp(5).toFormat() }</Text>
+        </Box>
+      </Box>
+    );
+  }
+
+  return (
+    <Box
+      width="100%"
+      minW="700px"
+      borderTop="1px solid"
+      borderColor="divider"
+      p={ 4 }
+      _last={{ borderBottom: '1px solid', borderColor: 'divider' }}
+    >
+      <Grid width="100%" gridTemplateColumns="3fr 2fr 150px" gridGap={ 8 }>
+        <Flex overflow="hidden" w="100%">
+          <TxAdditionalInfo tx={ tx }/>
+          <Box ml={ 3 } w="calc(100% - 40px)">
+            <HStack>
+              <TxType types={ tx.tx_types }/>
+              <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined }/>
+            </HStack>
+            <Flex
+              mt={ 2 }
+              alignItems="center"
+            >
+              <Icon
+                as={ transactionIcon }
+                boxSize="30px"
+                color="link"
+                display="inline"
+                mr={ 2 }
+              />
+              <Address overflow="hidden" w="calc(100% - 130px)" maxW="calc(100% - 130px)" mr={ 2 }>
+                <AddressLink
+                  hash={ tx.hash }
+                  type="transaction"
+                  fontWeight="700"
+                />
+              </Address>
+              { tx.timestamp && <Text variant="secondary" fontWeight="400" fontSize="sm">{ timeAgo }</Text> }
+            </Flex>
+          </Box>
+        </Flex>
+        <Grid alignItems="center" templateColumns="24px auto">
+          <Icon
+            as={ rightArrowIcon }
+            boxSize={ 6 }
+            color="gray.500"
+            transform="rotate(90deg)"
+          />
+          <Box overflow="hidden" ml={ 1 }>
+            <Address mb={ 2 }>
+              <AddressIcon address={ tx.from }/>
+              <AddressLink
+                type="address"
+                hash={ tx.from.hash }
+                alias={ tx.from.name }
+                fontWeight="500"
+                ml={ 2 }
+                fontSize="sm"
+              />
+            </Address>
+            { dataTo && (
+              <Address>
+                <AddressIcon address={ dataTo }/>
+                <AddressLink
+                  type="address"
+                  hash={ dataTo.hash }
+                  alias={ dataTo.name }
+                  fontWeight="500"
+                  ml={ 2 }
+                  fontSize="sm"
+                />
+              </Address>
+            ) }
+          </Box>
+        </Grid>
+        <Box>
+          <Box mb={ 2 }>
+            <Text as="span" whiteSpace="pre">{ appConfig.network.currency.symbol } </Text>
+            <Text as="span" variant="secondary">{ getValueWithUnit(tx.value).dp(5).toFormat() }</Text>
+          </Box>
+          <Box>
+            <Text as="span">Fee </Text>
+            <Text as="span" variant="secondary">{ getValueWithUnit(tx.fee.value).dp(5).toFormat() }</Text>
+          </Box>
+        </Box>
+      </Grid>
     </Box>
   );
 };

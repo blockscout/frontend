@@ -13,7 +13,6 @@ import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/Pagination';
-import { flattenTotal } from 'ui/shared/TokenTransfer/helpers';
 import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
 import TokenTransferList from 'ui/shared/TokenTransfer/TokenTransferList';
 import TokenTransferTable from 'ui/shared/TokenTransfer/TokenTransferTable';
@@ -55,15 +54,13 @@ const TxTokenTransfer = () => {
   const numActiveFilters = typeFilter.length;
   const isActionBarHidden = !numActiveFilters && !tokenTransferQuery.data?.items.length;
 
-  const items = tokenTransferQuery.data?.items?.reduce(flattenTotal, []);
-
-  const content = items ? (
+  const content = tokenTransferQuery.data?.items ? (
     <>
       <Hide below="lg" ssr={ false }>
-        <TokenTransferTable data={ items } top={ isActionBarHidden ? 0 : 80 }/>
+        <TokenTransferTable data={ tokenTransferQuery.data?.items } top={ isActionBarHidden ? 0 : 80 }/>
       </Hide>
       <Show below="lg" ssr={ false }>
-        <TokenTransferList data={ items }/>
+        <TokenTransferList data={ tokenTransferQuery.data?.items }/>
       </Show>
     </>
   ) : null;

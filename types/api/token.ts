@@ -18,8 +18,6 @@ export interface TokenCounters {
   transfers_count: string;
 }
 
-export type TokenInfoGeneric<Type extends TokenType> = Omit<TokenInfo, 'type'> & { type: Type };
-
 export interface TokenHolders {
   items: Array<TokenHolder>;
   next_page_params: TokenHoldersPagination | null;
@@ -43,7 +41,7 @@ export interface TokenInstance {
   animation_url: string | null;
   external_app_url: string | null;
   metadata: Record<string, unknown> | null;
-  owner: AddressParam;
+  owner: AddressParam | null;
   token: TokenInfo;
 }
 

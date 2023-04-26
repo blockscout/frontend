@@ -62,7 +62,7 @@ const ChartLine = ({ xScale, yScale, data, animation, ...props }: Props) => {
   const line = d3.line<TimeChartItem>()
     .x((d) => xScale(d.date))
     .y((d) => yScale(d.value))
-    .curve(d3.curveCatmullRom);
+    .curve(d3.curveMonotoneX);
 
   return (
     <path

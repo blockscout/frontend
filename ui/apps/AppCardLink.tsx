@@ -5,7 +5,7 @@ import React from 'react';
 type Props = {
   id: string;
   url: string;
-  external: boolean;
+  external?: boolean;
   title: string;
 }
 
@@ -15,7 +15,7 @@ const AppLink = ({ url, external, id, title }: Props) => {
       { title }
     </LinkOverlay>
   ) : (
-    <NextLink href={{ pathname: '/apps/[id]', query: { id } }} passHref>
+    <NextLink href={{ pathname: '/apps/[id]', query: { id } }} passHref legacyBehavior>
       <LinkOverlay>
         { title }
       </LinkOverlay>

@@ -12,19 +12,22 @@ import type {
   AddressTokenTransferFilters,
   AddressTokensFilter,
   AddressTokensResponse,
+  AddressWithdrawalsResponse,
 } from 'types/api/address';
 import type { AddressesResponse } from 'types/api/addresses';
-import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters } from 'types/api/block';
+import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters, BlockWithdrawalsResponse } from 'types/api/block';
 import type { ChartMarketResponse, ChartTransactionResponse } from 'types/api/charts';
 import type { SmartContract, SmartContractReadMethod, SmartContractWriteMethod, SmartContractVerificationConfig } from 'types/api/contract';
 import type { VerifiedContractsResponse, VerifiedContractsFilters, VerifiedContractsCounters } from 'types/api/contracts';
-import type { DepositsResponse } from 'types/api/deposits';
 import type { IndexingStatus } from 'types/api/indexingStatus';
 import type { InternalTransactionsResponse } from 'types/api/internalTransaction';
+import type { L2DepositsResponse, L2DepositsItem } from 'types/api/l2Deposits';
+import type { L2OutputRootsResponse } from 'types/api/l2OutputRoots';
+import type { L2TxnBatchesResponse } from 'types/api/l2TxnBatches';
+import type { L2WithdrawalsResponse } from 'types/api/l2Withdrawals';
 import type { LogsResponseTx, LogsResponseAddress } from 'types/api/log';
-import type { OutputRootsResponse } from 'types/api/outputRoots';
 import type { RawTracesResponse } from 'types/api/rawTrace';
-import type { SearchResult, SearchResultFilters } from 'types/api/search';
+import type { SearchRedirectResult, SearchResult, SearchResultFilters } from 'types/api/search';
 import type { Counters, StatsCharts, StatsChart, HomeStats } from 'types/api/stats';
 import type {
   TokenCounters,
@@ -37,12 +40,11 @@ import type {
 import type { TokensResponse, TokensFilters, TokenInstanceTransferResponse } from 'types/api/tokens';
 import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
 import type { TransactionsResponseValidated, TransactionsResponsePending, Transaction } from 'types/api/transaction';
-import type { TxnBatchesResponse } from 'types/api/txnBatches';
 import type { TTxsFilters } from 'types/api/txsFilters';
 import type { TxStateChanges } from 'types/api/txStateChanges';
 import type { VisualizedContract } from 'types/api/visualization';
 import type { WithdrawalsResponse } from 'types/api/withdrawals';
-import type ArrayElement from 'types/utils/ArrayElement';
+import type { ArrayElement } from 'types/utils';
 
 import appConfig from 'configs/app/config';
 
@@ -127,6 +129,12 @@ export const RESOURCES = {
     paginationFields: [ 'block_number' as const, 'items_count' as const, 'index' as const ],
     filterFields: [],
   },
+  block_withdrawals: {
+    path: '/api/v2/blocks/:height/withdrawals',
+    pathParams: [ 'height' as const ],
+    paginationFields: [ 'items_count' as const, 'index' as const ],
+    filterFields: [],
+  },
   txs_validated: {
     path: '/api/v2/transactions',
     paginationFields: [ 'block_number' as const, 'items_count' as const, 'filter' as const, 'index' as const ],
@@ -166,6 +174,11 @@ export const RESOURCES = {
   tx_state_changes: {
     path: '/api/v2/transactions/:hash/state-changes',
     pathParams: [ 'hash' as const ],
+  },
+  withdrawals: {
+    path: '/api/v2/withdrawals',
+    paginationFields: [ 'index' as const, 'items_count' as const ],
+    filterFields: [],
   },
 
   // ADDRESSES
@@ -233,6 +246,12 @@ export const RESOURCES = {
     pathParams: [ 'hash' as const ],
     paginationFields: [ 'items_count' as const, 'token_name' as const, 'token_type' as const, 'value' as const ],
     filterFields: [ 'type' as const ],
+  },
+  address_withdrawals: {
+    path: '/api/v2/addresses/:hash/withdrawals',
+    pathParams: [ 'hash' as const ],
+    paginationFields: [ 'items_count' as const, 'index' as const ],
+    filterFields: [],
   },
 
   // CONTRACT
@@ -339,6 +358,9 @@ export const RESOURCES = {
   homepage_blocks: {
     path: '/api/v2/main-page/blocks',
   },
+  homepage_deposits: {
+    path: '/api/v2/main-page/optimism-deposits',
+  },
   homepage_txs: {
     path: '/api/v2/main-page/transactions',
   },
@@ -372,43 +394,43 @@ export const RESOURCES = {
   },
 
   // L2
-  deposits: {
+  l2_deposits: {
     path: '/api/v2/optimism/deposits',
     paginationFields: [ 'nonce' as const, 'items_count' as const ],
     filterFields: [],
   },
 
-  deposits_count: {
+  l2_deposits_count: {
     path: '/api/v2/optimism/deposits/count',
   },
 
-  withdrawals: {
+  l2_withdrawals: {
     path: '/api/v2/optimism/withdrawals',
     paginationFields: [ 'nonce' as const, 'items_count' as const ],
     filterFields: [],
   },
 
-  withdrawals_count: {
+  l2_withdrawals_count: {
     path: '/api/v2/optimism/withdrawals/count',
   },
 
-  output_roots: {
+  l2_output_roots: {
     path: '/api/v2/optimism/output-roots',
     paginationFields: [ 'index' as const, 'items_count' as const ],
     filterFields: [],
   },
 
-  output_roots_count: {
+  l2_output_roots_count: {
     path: '/api/v2/optimism/output-roots/count',
   },
 
-  txn_batches: {
+  l2_txn_batches: {
     path: '/api/v2/optimism/txn-batches',
     paginationFields: [ 'block_number' as const, 'items_count' as const ],
     filterFields: [],
   },
 
-  txn_batches_count: {
+  l2_txn_batches_count: {
     path: '/api/v2/optimism/txn-batches/count',
   },
 
@@ -471,7 +493,8 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'token_transfers' | 'token_holders' | 'token_inventory' | 'tokens' |
 'token_instance_transfers' |
 'verified_contracts' |
-'output_roots' | 'withdrawals' | 'txn_batches' | 'deposits';
+'l2_output_roots' | 'l2_withdrawals' | 'l2_txn_batches' | 'l2_deposits' |
+'withdrawals' | 'address_withdrawals' | 'block_withdrawals';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
 
@@ -489,6 +512,7 @@ Q extends 'homepage_chart_txs' ? ChartTransactionResponse :
 Q extends 'homepage_chart_market' ? ChartMarketResponse :
 Q extends 'homepage_blocks' ? Array<Block> :
 Q extends 'homepage_txs' ? Array<Transaction> :
+Q extends 'homepage_deposits' ? Array<L2DepositsItem> :
 Q extends 'homepage_indexing_status' ? IndexingStatus :
 Q extends 'stats_counters' ? Counters :
 Q extends 'stats_lines' ? StatsCharts :
@@ -496,6 +520,7 @@ Q extends 'stats_line' ? StatsChart :
 Q extends 'blocks' ? BlocksResponse :
 Q extends 'block' ? Block :
 Q extends 'block_txs' ? BlockTransactionsResponse :
+Q extends 'block_withdrawals' ? BlockWithdrawalsResponse :
 Q extends 'txs_validated' ? TransactionsResponseValidated :
 Q extends 'txs_pending' ? TransactionsResponsePending :
 Q extends 'tx' ? Transaction :
@@ -515,6 +540,7 @@ Q extends 'address_coin_balance' ? AddressCoinBalanceHistoryResponse :
 Q extends 'address_coin_balance_chart' ? AddressCoinBalanceHistoryChart :
 Q extends 'address_logs' ? LogsResponseAddress :
 Q extends 'address_tokens' ? AddressTokensResponse :
+Q extends 'address_withdrawals' ? AddressWithdrawalsResponse :
 Q extends 'token' ? TokenInfo :
 Q extends 'token_counters' ? TokenCounters :
 Q extends 'token_transfers' ? TokenTransferResponse :
@@ -525,6 +551,7 @@ Q extends 'token_instance_transfers' ? TokenInstanceTransferResponse :
 Q extends 'token_inventory' ? TokenInventoryResponse :
 Q extends 'tokens' ? TokensResponse :
 Q extends 'search' ? SearchResult :
+Q extends 'search_check_redirect' ? SearchRedirectResult :
 Q extends 'contract' ? SmartContract :
 Q extends 'contract_methods_read' ? Array<SmartContractReadMethod> :
 Q extends 'contract_methods_read_proxy' ? Array<SmartContractReadMethod> :
@@ -534,14 +561,15 @@ Q extends 'verified_contracts' ? VerifiedContractsResponse :
 Q extends 'verified_contracts_counters' ? VerifiedContractsCounters :
 Q extends 'visualize_sol2uml' ? VisualizedContract :
 Q extends 'contract_verification_config' ? SmartContractVerificationConfig :
-Q extends 'output_roots' ? OutputRootsResponse :
 Q extends 'withdrawals' ? WithdrawalsResponse :
-Q extends 'deposits' ? DepositsResponse :
-Q extends 'txn_batches' ? TxnBatchesResponse :
-Q extends 'output_roots_count' ? number :
-Q extends 'withdrawals_count' ? number :
-Q extends 'deposits_count' ? number :
-Q extends 'txn_batches_count' ? number :
+Q extends 'l2_output_roots' ? L2OutputRootsResponse :
+Q extends 'l2_withdrawals' ? L2WithdrawalsResponse :
+Q extends 'l2_deposits' ? L2DepositsResponse :
+Q extends 'l2_txn_batches' ? L2TxnBatchesResponse :
+Q extends 'l2_output_roots_count' ? number :
+Q extends 'l2_withdrawals_count' ? number :
+Q extends 'l2_deposits_count' ? number :
+Q extends 'l2_txn_batches_count' ? number :
 never;
 /* eslint-enable @typescript-eslint/indent */
 

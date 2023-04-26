@@ -85,7 +85,7 @@ export const erc721: TokenTransfer = {
   method: 'updateSmartAsset',
 };
 
-export const erc1155: TokenTransfer = {
+export const erc1155A: TokenTransfer = {
   from: {
     hash: '0x0000000000000000000000000000000000000000',
     implementation_name: null,
@@ -128,26 +128,44 @@ export const erc1155: TokenTransfer = {
   log_index: '1',
 };
 
-export const erc1155multiple: TokenTransfer = {
-  ...erc1155,
+export const erc1155B: TokenTransfer = {
+  ...erc1155A,
   token: {
-    ...erc1155.token,
+    ...erc1155A.token,
     name: 'SastanaNFT',
     symbol: 'ipfs://QmUpFUfVKDCWeZQk5pvDFUxnpQP9N6eLSHhNUy49T1JVtY',
   },
-  total: [
-    { token_id: '12345678', value: '100000000000000000000', decimals: null },
-    { token_id: '483200961027732618117991942553110860267520', value: '200000000000000000000', decimals: null },
-    { token_id: '456', value: '42', decimals: null },
-  ],
+  total: { token_id: '12345678', value: '100000000000000000000', decimals: null },
+};
+
+export const erc1155C: TokenTransfer = {
+  ...erc1155A,
+  token: {
+    ...erc1155A.token,
+    name: 'SastanaNFT',
+    symbol: 'ipfs://QmUpFUfVKDCWeZQk5pvDFUxnpQP9N6eLSHhNUy49T1JVtY',
+  },
+  total: { token_id: '483200961027732618117991942553110860267520', value: '200000000000000000000', decimals: null },
+};
+
+export const erc1155D: TokenTransfer = {
+  ...erc1155A,
+  token: {
+    ...erc1155A.token,
+    name: 'SastanaNFT',
+    symbol: 'ipfs://QmUpFUfVKDCWeZQk5pvDFUxnpQP9N6eLSHhNUy49T1JVtY',
+  },
+  total: { token_id: '456', value: '42', decimals: null },
 };
 
 export const mixTokens: TokenTransferResponse = {
   items: [
     erc20,
     erc721,
-    erc1155,
-    erc1155multiple,
+    erc1155A,
+    erc1155B,
+    erc1155C,
+    erc1155D,
   ],
   next_page_params: null,
 };

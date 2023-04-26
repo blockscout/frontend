@@ -12,7 +12,7 @@ interface Props {
 const WIDTH = 50;
 
 const Utilization = ({ className, value, colorScheme = 'green', isLoading }: Props) => {
-  const valueString = (clamp(value * 100 || 0, 0, 100)).toLocaleString('en', { maximumFractionDigits: 2 }) + '%';
+  const valueString = (clamp(value * 100 || 0, 0, 100)).toLocaleString(undefined, { maximumFractionDigits: 2 }) + '%';
   const colorGrayScheme = useColorModeValue('gray.500', 'gray.400');
   const color = colorScheme === 'gray' ? colorGrayScheme : 'green.500';
 

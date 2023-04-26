@@ -7,6 +7,6 @@ export interface DecodedInput {
 export interface DecodedInputParams {
   name: string;
   type: string;
-  value: string;
+  value: string | Array<unknown> | Record<string, unknown>;
   indexed?: boolean;
 }

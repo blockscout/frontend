@@ -28,7 +28,7 @@ export function middleware(req: NextRequest) {
 
   const end = Date.now();
   const res = NextResponse.next();
-  res.headers.append(appConfig.isDev ? 'Content-Security-Policy' : 'Content-Security-Policy-Report-Only', cspPolicy);
+  res.headers.append('Content-Security-Policy', cspPolicy);
   res.headers.append('Server-Timing', `middleware;dur=${ end - start }`);
 
   return res;

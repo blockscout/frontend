@@ -2,13 +2,18 @@ import BigNumber from 'bignumber.js';
 
 import config from 'configs/app/config';
 
-export const getNativeCoinValue = (value: string | Array<string>) => {
+export const getNativeCoinValue = (value: string | Array<unknown>) => {
   const _value = Array.isArray(value) ? value[0] : value;
+
+  if (typeof _value !== 'string') {
+    return '0';
+  }
+
   return BigNumber(_value).times(10 ** config.network.currency.decimals).toString();
 };
 
 export const addZeroesAllowed = (valueType: string) => {
-  if (valueType.includes('[]')) {
+  if (valueType.includes('[')) {
     return false;
   }
 

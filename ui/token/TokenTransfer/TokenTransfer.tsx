@@ -16,7 +16,6 @@ import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/Pagination';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
 import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
-import { flattenTotal } from 'ui/shared/TokenTransfer/helpers';
 import TokenTransferList from 'ui/token/TokenTransfer/TokenTransferList';
 import TokenTransferTable from 'ui/token/TokenTransfer/TokenTransferTable';
 
@@ -61,14 +60,12 @@ const TokenTransfer = ({ transfersQuery, tokenId, token }: Props) => {
     handler: handleNewTransfersMessage,
   });
 
-  const items = data?.items?.reduce(flattenTotal, []);
-
-  const content = items ? (
+  const content = data?.items ? (
 
     <>
       <Hide below="lg" ssr={ false }>
         <TokenTransferTable
-          data={ items }
+          data={ data?.items }
           top={ isPaginationVisible ? 80 : 0 }
           showSocketInfo={ pagination.page === 1 }
           socketInfoAlert={ socketAlert }
@@ -89,7 +86,7 @@ const TokenTransfer = ({ transfersQuery, tokenId, token }: Props) => {
             isLoading={ isPlaceholderData }
           />
         ) }
-        <TokenTransferList data={ items } tokenId={ tokenId } isLoading={ isPlaceholderData }/>
+        <TokenTransferList data={ data?.items } tokenId={ tokenId } isLoading={ isPlaceholderData }/>
       </Show>
     </>
   ) : null;

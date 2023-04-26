@@ -12,6 +12,7 @@ export interface Address {
   creator_address_hash: string | null;
   creation_tx_hash: string | null;
   exchange_rate: string | null;
+  has_beacon_chain_withdrawals?: boolean;
   has_custom_methods_read: boolean;
   has_custom_methods_write: boolean;
   has_decompiled_code: boolean;
@@ -32,6 +33,7 @@ export interface Address {
   private_tags: Array<AddressTag> | null;
   public_tags: Array<AddressTag> | null;
   token: TokenInfo | null;
+  watchlist_address_id: number | null;
   watchlist_names: Array<WatchlistName> | null;
 }
 
@@ -126,4 +128,20 @@ export interface AddressInternalTxsResponse {
     items_count: number;
     transaction_index: number;
   } | null;
+}
+
+export type AddressWithdrawalsResponse = {
+  items: Array<AddressWithdrawalsItem>;
+  next_page_params: {
+    index: number;
+    items_count: number;
+  };
+}
+
+export type AddressWithdrawalsItem = {
+  amount: string;
+  block_number: number;
+  index: number;
+  timestamp: string;
+  validator_index: number;
 }

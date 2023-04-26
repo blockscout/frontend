@@ -1,71 +1,67 @@
-import { Box, Td, Tr, Text, Icon } from '@chakra-ui/react';
+import { Td, Tr, Text, Icon } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
+import type { AddressWithdrawalsItem } from 'types/api/address';
+import type { BlockWithdrawalsItem } from 'types/api/block';
 import type { WithdrawalsItem } from 'types/api/withdrawals';
 
-import appConfig from 'configs/app/config';
-import txIcon from 'icons/transactions.svg';
+import blockIcon from 'icons/block.svg';
 import dayjs from 'lib/date/dayjs';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
-import HashStringShorten from 'ui/shared/HashStringShorten';
-import LinkExternal from 'ui/shared/LinkExternal';
+import CurrencyValue from 'ui/shared/CurrencyValue';
 import LinkInternal from 'ui/shared/LinkInternal';
 
- type Props = { item: WithdrawalsItem };
+ type Props = {
+   item: WithdrawalsItem;
+   view: 'list';
+ } | {
+   item: AddressWithdrawalsItem;
+   view: 'address';
+ } | {
+   item: BlockWithdrawalsItem;
+   view: 'block';
+ };
 
-const WithdrawalsTableItem = ({ item }: Props) => {
-  const timeAgo = item.l2_timestamp ? dayjs(item.l2_timestamp).fromNow() : 'N/A';
-  const timeToEnd = item.challenge_period_end ? dayjs(item.challenge_period_end).fromNow(true) + ' left' : '-';
-
+const WithdrawalsTableItem = ({ item, view }: Props) => {
   return (
     <Tr>
-      <Td verticalAlign="middle" fontWeight={ 600 }>
-        <Text>{ item.msg_nonce_version + '-' + item.msg_nonce }</Text>
+      <Td verticalAlign="middle">
+        <Text>{ item.index }</Text>
       </Td>
       <Td verticalAlign="middle">
-        { item.from ? (
-          <Address>
-            <AddressIcon address={ item.from }/>
-            <AddressLink hash={ item.from.hash } type="address" truncation="constant" ml={ 2 }/>
-          </Address>
-        ) : 'N/A' }
+        <Text>{ item.validator_index }</Text>
       </Td>
-      <Td verticalAlign="middle">
-        <LinkInternal
-          href={ route({ pathname: '/tx/[hash]', query: { hash: item.l2_tx_hash } }) }
-          display="flex"
-          width="fit-content"
-          alignItems="center"
-        >
-          <Icon as={ txIcon } boxSize={ 6 } mr={ 1 }/>
-          <Box w="calc(100% - 36px)" overflow="hidden" whiteSpace="nowrap"><HashStringShorten hash={ item.l2_tx_hash }/></Box>
-        </LinkInternal>
-      </Td>
-      <Td verticalAlign="middle" pr={ 12 }>
-        <Text variant="secondary">{ timeAgo }</Text>
-      </Td>
-      <Td verticalAlign="middle">
-        { item.status === 'Ready for relay' ?
-          <LinkExternal href={ appConfig.L2.withdrawalUrl }>{ item.status }</LinkExternal> :
-          <Text>{ item.status }</Text>
-        }
-      </Td>
-      <Td verticalAlign="middle">
-        { item.l1_tx_hash ? (
-          <LinkExternal
-            href={ appConfig.L2.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: item.l1_tx_hash } }) }
+      { view !== 'block' && (
+        <Td verticalAlign="middle">
+          <LinkInternal
+            href={ route({ pathname: '/block/[height]', query: { height: item.block_number.toString() } }) }
+            display="flex"
+            width="fit-content"
+            alignItems="center"
           >
-            <HashStringShorten hash={ item.l1_tx_hash }/>
-          </LinkExternal>
-        ) :
-          'N/A'
-        }
-      </Td>
+            <Icon as={ blockIcon } boxSize={ 6 } mr={ 1 }/>
+            { item.block_number }
+          </LinkInternal>
+        </Td>
+      ) }
+      { view !== 'address' && (
+        <Td verticalAlign="middle">
+          <Address>
+            <AddressIcon address={ item.receiver }/>
+            <AddressLink type="address" hash={ item.receiver.hash } truncation="constant" ml={ 2 }/>
+          </Address>
+        </Td>
+      ) }
+      { view !== 'block' && (
+        <Td verticalAlign="middle" pr={ 12 }>
+          <Text variant="secondary">{ dayjs(item.timestamp).fromNow() }</Text>
+        </Td>
+      ) }
       <Td verticalAlign="middle">
-        <Text variant="secondary">{ timeToEnd }</Text>
+        <CurrencyValue value={ item.amount }/>
       </Td>
     </Tr>
   );
