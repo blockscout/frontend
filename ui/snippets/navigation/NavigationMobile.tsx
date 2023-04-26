@@ -71,6 +71,7 @@ const NavigationMobile = () => {
           <Box
             as="nav"
             mt={ 6 }
+            mb={ 6 }
             pt={ 6 }
             borderTopWidth="1px"
             borderColor="divider"
@@ -80,7 +81,7 @@ const NavigationMobile = () => {
             </VStack>
           </Box>
         ) }
-        <NavFooter hasAccount={ hasAccount }/>
+        <NavFooter/>
       </Box>
       { openedGroupIndex >= 0 && (
         <Box

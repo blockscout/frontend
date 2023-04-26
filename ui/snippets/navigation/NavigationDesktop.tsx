@@ -54,10 +54,9 @@ const NavigationDesktop = () => {
       position="relative"
       flexDirection="column"
       alignItems="stretch"
-      borderRight="1px solid"
-      borderColor="divider"
       px={{ lg: isExpanded ? 6 : 4, xl: isCollapsed ? 4 : 6 }}
       py={ 12 }
+      minH="100vh"
       width={{ lg: isExpanded ? '229px' : '92px', xl: isCollapsed ? '92px' : '229px' }}
       { ...getDefaultTransitionProps({ transitionProperty: 'width, padding' }) }
     >
@@ -91,13 +90,13 @@ const NavigationDesktop = () => {
         </VStack>
       </Box>
       { hasAccount && (
-        <Box as="nav" borderTopWidth="1px" borderColor="divider" w="100%" mt={ 6 } pt={ 6 }>
+        <Box as="nav" borderTopWidth="1px" borderColor="divider" w="100%" mt={ 6 } pt={ 6 } mb={ 20 }>
           <VStack as="ul" spacing="1" alignItems="flex-start">
             { accountNavItems.map((item) => <NavLink key={ item.text } item={ item } isCollapsed={ isCollapsed }/>) }
           </VStack>
         </Box>
       ) }
-      <NavFooter isCollapsed={ isCollapsed } hasAccount={ hasAccount }/>
+      <NavFooter isCollapsed={ isCollapsed }/>
       <Icon
         as={ chevronIcon }
         width={ 6 }

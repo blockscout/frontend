@@ -20,18 +20,10 @@ const VERSION_URL = `https://github.com/blockscout/blockscout/tree/${ appConfig.
 
 interface Props {
   isCollapsed?: boolean;
-  hasAccount?: boolean;
 }
 
-const NavFooter = ({ isCollapsed, hasAccount }: Props) => {
+const NavFooter = ({ isCollapsed }: Props) => {
   const isExpanded = isCollapsed === false;
-  const marginTop = (() => {
-    if (!hasAccount) {
-      return 'auto';
-    }
-
-    return { base: 6, lg: 20 };
-  })();
 
   return (
     <VStack
@@ -39,7 +31,7 @@ const NavFooter = ({ isCollapsed, hasAccount }: Props) => {
       borderTop="1px solid"
       borderColor="divider"
       width={{ base: '100%', lg: isExpanded ? '180px' : '20px', xl: isCollapsed ? '20px' : '180px' }}
-      marginTop={ marginTop }
+      marginTop="auto"
       alignItems="flex-start"
       alignSelf="center"
       color="gray.500"
