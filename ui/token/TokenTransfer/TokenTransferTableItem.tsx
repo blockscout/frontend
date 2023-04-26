@@ -75,7 +75,9 @@ const TokenTransferTableItem = ({
         </Address>
       </Td>
       <Td px={ 0 }>
-        <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500" my="3px"/>
+        <Skeleton isLoaded={ !isLoading } boxSize={ 6 } my="3px">
+          <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500"/>
+        </Skeleton>
       </Td>
       <Td>
         <Address display="inline-flex" maxW="100%" py="3px">

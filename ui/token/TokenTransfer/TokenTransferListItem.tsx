@@ -43,12 +43,13 @@ const TokenTransferListItem = ({
     <ListItemMobile rowGap={ 3 } isAnimated>
       <Flex justifyContent="space-between" alignItems="center" lineHeight="24px" width="100%">
         <Flex>
-          <Icon
-            as={ transactionIcon }
-            boxSize="30px"
-            mr={ 2 }
-            color={ iconColor }
-          />
+          <Skeleton isLoaded={ !isLoading } boxSize="30px" mr={ 2 }>
+            <Icon
+              as={ transactionIcon }
+              boxSize="30px"
+              color={ iconColor }
+            />
+          </Skeleton>
           <Address width="100%">
             <AddressLink
               hash={ txHash }
@@ -73,7 +74,9 @@ const TokenTransferListItem = ({
           <AddressIcon address={ from } isLoading={ isLoading }/>
           <AddressLink ml={ 2 } fontWeight="500" hash={ from.hash } type="address_token" tokenHash={ token.address } isLoading={ isLoading }/>
         </Address>
-        <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500"/>
+        <Skeleton isLoaded={ !isLoading } boxSize={ 6 }>
+          <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500"/>
+        </Skeleton>
         <Address width="50%">
           <AddressIcon address={ to } isLoading={ isLoading }/>
           <AddressLink ml={ 2 } fontWeight="500" hash={ to.hash } type="address_token" tokenHash={ token.address } isLoading={ isLoading }/>
@@ -81,7 +84,9 @@ const TokenTransferListItem = ({
       </Flex>
       { value && (token.type === 'ERC-20' || token.type === 'ERC-1155') && (
         <Flex columnGap={ 2 } w="100%">
-          <Text fontWeight={ 500 } flexShrink={ 0 }>Value</Text>
+          <Skeleton isLoaded={ !isLoading } flexShrink={ 0 } fontWeight={ 500 }>
+            Value
+          </Skeleton>
           <Skeleton isLoaded={ !isLoading } variant="secondary">
             { value }
           </Skeleton>

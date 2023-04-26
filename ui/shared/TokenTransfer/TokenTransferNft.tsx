@@ -17,7 +17,7 @@ interface Props {
 }
 
 const TokenTransferNft = ({ hash, id, className, isDisabled, isLoading, truncation = 'dynamic' }: Props) => {
-  const Component = isDisabled ? Box : LinkInternal;
+  const Component = isDisabled || isLoading ? Box : LinkInternal;
 
   return (
     <Component
@@ -29,7 +29,9 @@ const TokenTransferNft = ({ hash, id, className, isDisabled, isLoading, truncati
       w="100%"
       className={ className }
     >
-      <Icon as={ nftPlaceholder } boxSize="30px" mr={ 1 } color="inherit"/>
+      <Skeleton isLoaded={ !isLoading } boxSize="30px" mr={ 1 } borderRadius="base">
+        <Icon as={ nftPlaceholder } boxSize="30px" color="inherit"/>
+      </Skeleton>
       <Skeleton isLoaded={ !isLoading } maxW="calc(100% - 34px)">
         { truncation === 'constant' ? <HashStringShorten hash={ id }/> : <HashStringShortenDynamic hash={ id } fontWeight={ 500 }/> }
       </Skeleton>
