@@ -128,6 +128,9 @@ const config = Object.freeze({
     L1BaseUrl: getEnvValue(process.env.NEXT_PUBLIC_L1_BASE_URL),
     withdrawalUrl: getEnvValue(process.env.NEXT_PUBLIC_L2_WITHDRAWAL_URL) || '',
   },
+  beaconChain: {
+    hasBeaconChain: getEnvValue(process.env.NEXT_PUBLIC_HAS_BEACON_CHAIN) === 'true',
+  },
   statsApi: {
     endpoint: getEnvValue(process.env.NEXT_PUBLIC_STATS_API_HOST),
     basePath: '',

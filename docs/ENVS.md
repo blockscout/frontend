@@ -147,6 +147,15 @@ For each application, you need to specify the `MarketplaceCategoryId` to which i
 | NEXT_PUBLIC_L1_BASE_URL | `string` | Base Blockscout URL for L1 network | yes | - | `'http://eth-goerli.blockscout.com'` |
 | NEXT_PUBLIC_L2_WITHDRAWAL_URL | `string` | URL for L2 -> L1 withdrawals | yes | - | `https://app.optimism.io/bridge/withdraw` |
 
+## Beacon chain configuration
+
+| Variable | Type| Description | Is required  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_HAS_BEACON_CHAIN | `boolean` | Set to true for networks with the beacon chain | - | - | `true` |
+
+
+
+
 # How to add new environment variable
 
 If the variable should be exposed to the browser don't forget to add prefix `NEXT_PUBLIC_` to its name.
