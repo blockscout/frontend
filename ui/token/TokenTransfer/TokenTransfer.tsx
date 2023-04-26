@@ -1,4 +1,4 @@
-import { Hide, Show } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -63,7 +63,7 @@ const TokenTransfer = ({ transfersQuery, tokenId, token }: Props) => {
   const content = data?.items ? (
 
     <>
-      <Hide below="lg" ssr={ false }>
+      <Box display={{ base: 'none', lg: 'block' }}>
         <TokenTransferTable
           data={ data?.items }
           top={ isPaginationVisible ? 80 : 0 }
@@ -74,8 +74,8 @@ const TokenTransfer = ({ transfersQuery, tokenId, token }: Props) => {
           token={ token }
           isLoading={ isPlaceholderData }
         />
-      </Hide>
-      <Show below="lg" ssr={ false }>
+      </Box>
+      <Box display={{ base: 'block', lg: 'none' }}>
         { pagination.page === 1 && (
           <SocketNewItemsNotice
             url={ window.location.href }
@@ -87,7 +87,7 @@ const TokenTransfer = ({ transfersQuery, tokenId, token }: Props) => {
           />
         ) }
         <TokenTransferList data={ data?.items } tokenId={ tokenId } isLoading={ isPlaceholderData }/>
-      </Show>
+      </Box>
     </>
   ) : null;
 

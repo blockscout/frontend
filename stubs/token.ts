@@ -12,7 +12,7 @@ export const TOKEN_INFO_ERC_20: TokenInfo<'ERC-20'> = {
   holders: '16026',
   name: 'Stub Token (goerli)',
   symbol: 'STUB',
-  total_supply: '6000000000000000',
+  total_supply: '6000000000000000000',
   type: 'ERC-20',
 };
 
@@ -33,7 +33,7 @@ export const TOKEN_COUNTERS: TokenCounters = {
 
 export const TOKEN_HOLDER: TokenHolder = {
   address: ADDRESS_PARAMS,
-  value: '1021378038331138520668',
+  value: '1021378038331138520',
 };
 
 export const TOKEN_HOLDERS: TokenHolders = { items: Array(50).fill(TOKEN_HOLDER), next_page_params: null };

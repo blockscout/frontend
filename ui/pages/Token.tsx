@@ -52,12 +52,18 @@ const TokenPageContent = () => {
 
   const tokenQuery = useApiQuery('token', {
     pathParams: { hash: hashString },
-    queryOptions: { enabled: Boolean(router.query.hash), placeholderData: tokenStubs.TOKEN_INFO_ERC_20 },
+    queryOptions: {
+      enabled: Boolean(router.query.hash),
+      placeholderData: tokenStubs.TOKEN_INFO_ERC_20,
+    },
   });
 
   const contractQuery = useApiQuery('address', {
     pathParams: { hash: hashString },
-    queryOptions: { enabled: isSocketOpen && Boolean(router.query.hash), placeholderData: addressStubs.ADDRESS_INFO },
+    queryOptions: {
+      enabled: isSocketOpen && Boolean(router.query.hash),
+      placeholderData: addressStubs.ADDRESS_INFO,
+    },
   });
 
   React.useEffect(() => {
@@ -94,7 +100,7 @@ const TokenPageContent = () => {
   });
 
   useEffect(() => {
-    if (tokenQuery.data) {
+    if (tokenQuery.data && !tokenQuery.isPlaceholderData) {
       const tokenSymbol = tokenQuery.data.symbol ? ` (${ tokenQuery.data.symbol })` : '';
       const tokenName = `${ tokenQuery.data.name || 'Unnamed' }${ tokenSymbol }`;
       const title = document.getElementsByTagName('title')[0];
@@ -106,14 +112,16 @@ const TokenPageContent = () => {
         description.content = description.content.replace(tokenQuery.data.address, tokenName) || description.content;
       }
     }
-  }, [ tokenQuery.data ]);
+  }, [ tokenQuery.data, tokenQuery.isPlaceholderData ]);
+
+  const hasData = (tokenQuery.data && !tokenQuery.isPlaceholderData) && (contractQuery.data && !contractQuery.isPlaceholderData);
 
   const transfersQuery = useQueryWithPages({
     resourceName: 'token_transfers',
     pathParams: { hash: hashString },
     scrollRef,
     options: {
-      enabled: Boolean(router.query.hash && (!router.query.tab || router.query.tab === 'token_transfers') && tokenQuery.data && contractQuery.data),
+      enabled: Boolean(hashString && (!router.query.tab || router.query.tab === 'token_transfers') && hasData),
       placeholderData: tokenStubs.getTokenTransfersStub(tokenQuery.data?.type),
     },
   });
@@ -123,7 +131,7 @@ const TokenPageContent = () => {
     pathParams: { hash: hashString },
     scrollRef,
     options: {
-      enabled: Boolean(router.query.hash && router.query.tab === 'holders' && tokenQuery.data && contractQuery.data),
+      enabled: Boolean(router.query.hash && router.query.tab === 'holders' && hasData),
       placeholderData: tokenStubs.TOKEN_HOLDERS,
     },
   });
@@ -133,7 +141,7 @@ const TokenPageContent = () => {
     pathParams: { hash: hashString },
     scrollRef,
     options: {
-      enabled: Boolean(router.query.hash && router.query.tab === 'inventory' && tokenQuery.data && contractQuery.data),
+      enabled: Boolean(router.query.hash && router.query.tab === 'inventory' && hasData),
       placeholderData: tokenStubs.TOKEN_INSTANCES,
     },
   });

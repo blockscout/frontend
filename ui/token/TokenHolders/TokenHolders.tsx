@@ -1,3 +1,4 @@
+import { Box } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
@@ -38,21 +39,21 @@ const TokenHoldersContent = ({ holdersQuery, tokenQuery }: Props) => {
 
   const content = items && tokenQuery.data ? (
     <>
-      { !isMobile && (
+      <Box display={{ base: 'none', lg: 'block' }}>
         <TokenHoldersTable
           data={ items }
           token={ tokenQuery.data }
           top={ holdersQuery.isPaginationVisible ? 80 : 0 }
           isLoading={ tokenQuery.isPlaceholderData || holdersQuery.isPlaceholderData }
         />
-      ) }
-      { isMobile && (
+      </Box>
+      <Box display={{ base: 'block', lg: 'none' }}>
         <TokenHoldersList
           data={ items }
           token={ tokenQuery.data }
           isLoading={ tokenQuery.isPlaceholderData || holdersQuery.isPlaceholderData }
         />
-      ) }
+      </Box>
     </>
   ) : null;
 
