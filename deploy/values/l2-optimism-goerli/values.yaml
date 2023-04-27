@@ -174,7 +174,7 @@ postgres:
 scVerifier:
   enabled: true
   image:
-    _default: ghcr.io/blockscout/smart-contract-verifier:v1.0.8
+    _default: ghcr.io/blockscout/smart-contract-verifier:main
   # enable ingress
   ingress:
     enabled: true
@@ -277,7 +277,7 @@ frontend:
   app: blockscout
   enabled: true
   image:
-    _default: ghcr.io/blockscout/frontend:main
+    _default: ghcr.io/blockscout/frontend:v1.0.8
   ingress:
     enabled: true
     # annotations:
