@@ -174,7 +174,7 @@ postgres:
 scVerifier:
   enabled: true
   image:
-    _default: ghcr.io/blockscout/smart-contract-verifier:main
+    _default: ghcr.io/blockscout/smart-contract-verifier:v1.0.8
   # enable ingress
   ingress:
     enabled: true
