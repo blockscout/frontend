@@ -1,4 +1,4 @@
-import { Text, Flex, Tag, Icon, useColorModeValue, Skeleton } from '@chakra-ui/react';
+import { Text, Flex, Icon, useColorModeValue, Skeleton } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -11,6 +11,7 @@ import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
+import Tag from 'ui/shared/chakra/Tag';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
 
@@ -63,12 +64,14 @@ const TokenTransferListItem = ({
         { timestamp && (
           <Text variant="secondary" fontWeight="400" fontSize="sm">
             <Skeleton isLoaded={ !isLoading } display="inline-block">
-              { timeAgo }
+              <span>
+                { timeAgo }
+              </span>
             </Skeleton>
           </Text>
         ) }
       </Flex>
-      { method && <Skeleton isLoaded={ !isLoading } borderRadius="sm"><Tag colorScheme="gray">{ method }</Tag></Skeleton> }
+      { method && <Tag isLoading={ isLoading }>{ method }</Tag> }
       <Flex w="100%" columnGap={ 3 }>
         <Address width="50%">
           <AddressIcon address={ from } isLoading={ isLoading }/>

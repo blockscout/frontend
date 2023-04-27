@@ -40,15 +40,16 @@ const NFTItem = ({ item, isLoading }: Props) => {
         <Flex mb={ 2 } ml={ 1 }>
           <Text whiteSpace="pre" variant="secondary">ID# </Text>
           <TruncatedTextTooltip label={ item.id }>
-            <LinkInternal
-              overflow="hidden"
-              whiteSpace="nowrap"
-              textOverflow="ellipsis"
-            >
-              <Skeleton isLoaded={ !isLoading }>
+            <Skeleton isLoaded={ !isLoading } overflow="hidden">
+              <LinkInternal
+                overflow="hidden"
+                textOverflow="ellipsis"
+                whiteSpace="nowrap"
+                display="block"
+              >
                 { item.id }
-              </Skeleton>
-            </LinkInternal>
+              </LinkInternal>
+            </Skeleton>
           </TruncatedTextTooltip>
         </Flex>
       ) }

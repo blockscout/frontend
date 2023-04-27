@@ -1,4 +1,4 @@
-import { Box, Flex, Text, chakra, useColorModeValue, Skeleton } from '@chakra-ui/react';
+import { Box, Flex, chakra, useColorModeValue, Skeleton } from '@chakra-ui/react';
 import clamp from 'lodash/clamp';
 import React from 'react';
 
@@ -18,13 +18,15 @@ const Utilization = ({ className, value, colorScheme = 'green', isLoading }: Pro
 
   return (
     <Flex className={ className } alignItems="center" columnGap="10px">
-      <Skeleton isLoaded={ !isLoading }>
-        <Box bg={ useColorModeValue('blackAlpha.200', 'whiteAlpha.200') } w={ `${ WIDTH }px` } h="4px" borderRadius="full" overflow="hidden">
+      <Skeleton isLoaded={ !isLoading } w={ `${ WIDTH }px` } h="4px" borderRadius="full" overflow="hidden">
+        <Box bg={ useColorModeValue('blackAlpha.200', 'whiteAlpha.200') } h="100%">
           <Box bg={ color } w={ valueString } h="100%"/>
         </Box>
       </Skeleton>
-      <Skeleton isLoaded={ !isLoading }>
-        <Text color={ color } fontWeight="bold">{ valueString }</Text>
+      <Skeleton isLoaded={ !isLoading } color={ color } fontWeight="bold">
+        <span>
+          { valueString }
+        </span>
       </Skeleton>
     </Flex>
   );

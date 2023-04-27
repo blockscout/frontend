@@ -44,15 +44,19 @@ const TokenTransferTableItem = ({
           </Address>
           { timestamp && (
             <Skeleton isLoaded={ !isLoading } display="inline-block" color="gray.500" fontWeight="400" ml="10px">
-              { timeAgo }
+              <span>
+                { timeAgo }
+              </span>
             </Skeleton>
           ) }
         </Grid>
       </Td>
       <Td>
-        <Box my="3px">
-          <Tag isLoading={ isLoading } isTruncated>{ method }</Tag>
-        </Box>
+        { method ? (
+          <Box my="3px">
+            <Tag isLoading={ isLoading } isTruncated>{ method }</Tag>
+          </Box>
+        ) : null }
       </Td>
       <Td>
         <Address display="inline-flex" maxW="100%" py="3px">

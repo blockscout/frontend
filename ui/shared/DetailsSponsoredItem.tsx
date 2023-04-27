@@ -22,7 +22,7 @@ const DetailsSponsoredItem = ({ isLoading }: Props) => {
   if (isMobile) {
     return (
       <GridItem mt={ 5 }>
-        <AdBanner mx="auto" isLoading={ isLoading }/>
+        <AdBanner mx="auto" isLoading={ isLoading } display="flex" justifyContent="center"/>
       </GridItem>
     );
   }
