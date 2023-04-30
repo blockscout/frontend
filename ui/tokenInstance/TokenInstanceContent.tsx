@@ -115,7 +115,7 @@ const TokenInstanceContent = () => {
     }
   })();
 
-  let pagination;
+  let pagination: PaginationProps | undefined;
   let isPaginationVisible;
 
   if (tab === 'token_transfers') {
@@ -150,7 +150,7 @@ const TokenInstanceContent = () => {
         <RoutedTabs
           tabs={ tabs }
           tabListProps={ isMobile ? { mt: 8 } : { mt: 3, py: 5, marginBottom: 0 } }
-          rightSlot={ !isMobile && isPaginationVisible ? <Pagination { ...(pagination as PaginationProps) }/> : null }
+          rightSlot={ !isMobile && isPaginationVisible && pagination ? <Pagination { ...pagination }/> : null }
           stickyEnabled={ !isMobile }
         />
       ) }
