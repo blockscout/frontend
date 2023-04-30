@@ -61,10 +61,12 @@ const TxInternalsListItem = ({
           <InOutTag isIn={ isIn } isOut={ isOut }/> :
           <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500"/>
         }
-        <Address width="calc((100% - 48px) / 2)">
-          <AddressIcon address={ toData }/>
-          <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ toData.hash } isDisabled={ isIn }/>
-        </Address>
+        { toData && (
+          <Address width="calc((100% - 48px) / 2)">
+            <AddressIcon address={ toData }/>
+            <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ toData.hash } isDisabled={ isIn }/>
+          </Address>
+        ) }
       </Box>
       <HStack spacing={ 3 }>
         <Text fontSize="sm" fontWeight={ 500 }>Value { appConfig.network.currency.symbol }</Text>

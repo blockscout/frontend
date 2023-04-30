@@ -40,10 +40,12 @@ const TxInternalTableItem = ({ type, from, to, value, success, error, gas_limit:
         <Icon as={ rightArrowIcon } boxSize={ 6 } color="gray.500"/>
       </Td>
       <Td verticalAlign="middle">
-        <Address display="inline-flex" maxW="100%">
-          <AddressIcon address={ toData }/>
-          <AddressLink type="address" hash={ toData.hash } alias={ toData.name } fontWeight="500" ml={ 2 }/>
-        </Address>
+        { toData && (
+          <Address display="inline-flex" maxW="100%">
+            <AddressIcon address={ toData }/>
+            <AddressLink type="address" hash={ toData.hash } alias={ toData.name } fontWeight="500" ml={ 2 }/>
+          </Address>
+        ) }
       </Td>
       <Td isNumeric verticalAlign="middle">
         { BigNumber(value).div(BigNumber(10 ** appConfig.network.currency.decimals)).toFormat() }
