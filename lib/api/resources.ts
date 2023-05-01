@@ -344,6 +344,12 @@ export const RESOURCES = {
     paginationFields: [ 'block_number' as const, 'items_count' as const, 'index' as const, 'token_id' as const ],
     filterFields: [],
   },
+  token_instance_holders: {
+    path: '/api/v2/tokens/:hash/instances/:id/holders',
+    pathParams: [ 'hash' as const, 'id' as const ],
+    paginationFields: [ 'items_count' as const, 'token_id' as const, 'value' as const ],
+    filterFields: [],
+  },
 
   // HOMEPAGE
   homepage_stats: {
@@ -491,7 +497,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'search' |
 'address_logs' | 'address_tokens' |
 'token_transfers' | 'token_holders' | 'token_inventory' | 'tokens' |
-'token_instance_transfers' |
+'token_instance_transfers' | 'token_instance_holders' |
 'verified_contracts' |
 'l2_output_roots' | 'l2_withdrawals' | 'l2_txn_batches' | 'l2_deposits' |
 'withdrawals' | 'address_withdrawals' | 'block_withdrawals';
@@ -548,6 +554,7 @@ Q extends 'token_holders' ? TokenHolders :
 Q extends 'token_instance' ? TokenInstance :
 Q extends 'token_instance_transfers_count' ? TokenInstanceTransfersCount :
 Q extends 'token_instance_transfers' ? TokenInstanceTransferResponse :
+Q extends 'token_instance_holders' ? TokenHolders :
 Q extends 'token_inventory' ? TokenInventoryResponse :
 Q extends 'tokens' ? TokensResponse :
 Q extends 'search' ? SearchResult :

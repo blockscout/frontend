@@ -42,7 +42,7 @@ const TokenInstanceTransfersCount = ({ hash, id, onClick }: Props) => {
         href={ url }
         onClick={ transfersCountQuery.data.transfers_count > 0 ? onClick : undefined }
       >
-        { transfersCountQuery.data.transfers_count }
+        { transfersCountQuery.data.transfers_count.toLocaleString() }
       </LinkInternal>
     </DetailsInfoItem>
   );
