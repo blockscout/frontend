@@ -119,8 +119,10 @@ For each application, you need to specify the `MarketplaceCategoryId` to which i
 
 | Variable | Type| Description | Is required  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_API_PROTOCOL | `http \| https` | Main API protocol | - | `https` | `http` |
 | NEXT_PUBLIC_API_HOST | `string` | Main API host | - | `blockscout.com` | `my-host.com` |
 | NEXT_PUBLIC_API_BASE_PATH | `string` | Base path for Main API endpoint url | - | - | `/poa/core` |
+| NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL | `ws \| wss` | Main API websocket protocol | - | `wss` | `ws` |
 | NEXT_PUBLIC_STATS_API_HOST | `string` | Stats API endpoint url | - | - | `https://my-host.com` |
 | NEXT_PUBLIC_VISUALIZE_API_HOST | `string` | Visualize API endpoint url | - | - | `https://my-host.com` |
 

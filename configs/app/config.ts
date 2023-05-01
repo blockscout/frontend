@@ -35,6 +35,8 @@ const apiEndpoint = apiHost ? [
   apiPort && ':' + apiPort,
 ].filter(Boolean).join('') : 'https://blockscout.com';
 
+const socketSchema = getEnvValue(process.env.NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL) || 'wss';
+
 const logoutUrl = (() => {
   try {
     const envUrl = getEnvValue(process.env.NEXT_PUBLIC_LOGOUT_URL);
@@ -106,7 +108,7 @@ const config = Object.freeze({
   api: {
     host: apiHost,
     endpoint: apiEndpoint,
-    socket: apiHost ? `wss://${ apiHost }` : 'wss://blockscout.com',
+    socket: apiHost ? `${ socketSchema }://${ apiHost }` : 'wss://blockscout.com',
     basePath: stripTrailingSlash(getEnvValue(process.env.NEXT_PUBLIC_API_BASE_PATH) || ''),
   },
   L2: {
