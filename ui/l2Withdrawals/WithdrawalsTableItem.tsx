@@ -18,7 +18,7 @@ import LinkInternal from 'ui/shared/LinkInternal';
 
 const WithdrawalsTableItem = ({ item }: Props) => {
   const timeAgo = item.l2_timestamp ? dayjs(item.l2_timestamp).fromNow() : 'N/A';
-  const timeToEnd = item.challenge_period_end ? dayjs(item.challenge_period_end).fromNow(true) + ' left' : '-';
+  const timeToEnd = item.challenge_period_end ? dayjs(item.challenge_period_end).fromNow(true) + ' left' : '';
 
   return (
     <Tr>

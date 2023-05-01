@@ -23,14 +23,6 @@ const TokenTransferTableItem = ({
   timestamp,
   tokenId,
 }: Props) => {
-  const value = (() => {
-    if (!('value' in total)) {
-      return '-';
-    }
-
-    return BigNumber(total.value).div(BigNumber(10 ** Number(total.decimals))).dp(8).toFormat();
-  })();
-
   const timeAgo = useTimeAgoIncrement(timestamp, true);
 
   return (
@@ -44,7 +36,7 @@ const TokenTransferTableItem = ({
         </Grid>
       </Td>
       <Td>
-        { method ? <Tag colorScheme="gray">{ method }</Tag> : '-' }
+        { method && <Tag colorScheme="gray">{ method }</Tag> }
       </Td>
       <Td>
         <Address display="inline-flex" maxW="100%" lineHeight="30px">
@@ -88,13 +80,13 @@ const TokenTransferTableItem = ({
               justifyContent={ token.type === 'ERC-721' ? 'end' : 'start' }
               isDisabled={ Boolean(tokenId && tokenId === total.token_id) }
             />
-          ) : '-'
+          ) : ''
           }
         </Td>
       ) }
       { (token.type === 'ERC-20' || token.type === 'ERC-1155') && (
         <Td isNumeric verticalAlign="top" lineHeight="30px">
-          { value || '-' }
+          { 'value' in total && BigNumber(total.value).div(BigNumber(10 ** Number(total.decimals))).dp(8).toFormat() }
         </Td>
       ) }
     </Tr>
