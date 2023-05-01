@@ -27,13 +27,12 @@ const AddressCoinBalanceTableItem = (props: Props) => {
         <LinkInternal href={ blockUrl } fontWeight="700">{ props.block_number }</LinkInternal>
       </Td>
       <Td>
-        { props.transaction_hash ?
+        { props.transaction_hash &&
           (
             <Address w="150px" fontWeight="700">
               <AddressLink hash={ props.transaction_hash } type="transaction"/>
             </Address>
-          ) :
-          <Text fontWeight="700">-</Text>
+          )
         }
       </Td>
       <Td>
