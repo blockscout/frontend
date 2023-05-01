@@ -391,6 +391,10 @@ frontend:
       _default: ''
     NEXT_PUBLIC_NETWORK_RPC_URL:
       _default: https://goerli.optimism.io
+    NEXT_PUBLIC_WEB3_DEFAULT_WALLET:
+      _default: coinbase
+    NEXT_PUBLIC_WEB3_DISABLE_ADD_TOKEN_TO_WALLET:
+      _default: true
     NEXT_PUBLIC_HOMEPAGE_CHARTS:
       _default: "['daily_txs']"
     NEXT_PUBLIC_IS_TESTNET:

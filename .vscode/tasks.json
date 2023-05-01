@@ -68,7 +68,7 @@
         },
         {
             "type": "shell",
-            "command": "NEXT_PUBLIC_L1_BASE_URL=https://${input:goerliApiHost} yarn dev:goerli:optimism",
+            "command": "NEXT_PUBLIC_API_HOST=${input:L2ApiHost} NEXT_PUBLIC_L1_BASE_URL=https://${input:goerliApiHost} yarn dev:goerli:optimism",
             "problemMatcher": [],
             "label": "dev server: goerli optimism",
             "detail": "start local dev server for Goerli Optimism network",
@@ -376,6 +376,16 @@
             "options": [
               "blockscout-main.test.aws-k8s.blockscout.com",
               "eth-goerli.blockscout.com",
+            ],
+            "default": ""
+        },
+        {
+            "type": "pickString",
+            "id": "L2ApiHost",
+            "description": "Choose L2 API host:",
+            "options": [
+              "blockscout-optimism-goerli.test.aws-k8s.blockscout.com",
+              "base-goerli.blockscout.com",
             ],
             "default": ""
         },

@@ -26,7 +26,13 @@ const test = base.extend({
   ]) as any,
 });
 
-test('no auth +@desktop-xl +@dark-mode-xl', async({ mount }) => {
+test('no auth +@desktop-xl +@dark-mode-xl', async({ page, mount }) => {
+  await page.evaluate(() => {
+    window.ethereum = {
+      providers: [ { isMetaMask: true } ],
+    };
+  });
+
   const component = await mount(
     <TestApp>
       <Flex w="100%" minH="100vh" alignItems="stretch">

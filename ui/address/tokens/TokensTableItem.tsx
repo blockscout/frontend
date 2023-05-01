@@ -4,11 +4,10 @@ import React from 'react';
 import type { AddressTokenBalance } from 'types/api/address';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
+import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import TokenLogo from 'ui/shared/TokenLogo';
-
-import AddressAddToMetaMask from '../details/AddressAddToMetaMask';
 
 type Props = AddressTokenBalance;
 
@@ -38,7 +37,7 @@ const TokensTableItem = ({
             <AddressLink hash={ token.address } type="address" truncation="constant"/>
             <CopyToClipboard text={ token.address } ml={ 1 }/>
           </Flex>
-          <AddressAddToMetaMask token={ token } ml={ 4 }/>
+          <AddressAddToWallet token={ token } ml={ 4 }/>
         </Flex>
       </Td>
       <Td isNumeric verticalAlign="middle">

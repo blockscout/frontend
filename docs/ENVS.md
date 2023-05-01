@@ -50,6 +50,8 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_AD_ADBUTLER_ON | `boolean` | Set to true to show Adbutler banner instead of Coinzilla banner | - | `false` | `true` |
 | NEXT_PUBLIC_API_SPEC_URL | `string` | Spec to be displayed on api-docs page | - | - | `https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml` |
 | NEXT_PUBLIC_GRAPHIQL_TRANSACTION | `string` | Txn hash for default query at GraphQl playground page | - | - | `0x69e3923eef50eada197c3336d546936d0c994211492c9f947a24c02827568f9f` |
+| NEXT_PUBLIC_WEB3_DEFAULT_WALLET | `metamask` \| `coinbase`| Type of Web3 wallet which will be used by default to add tokens or chains to | - | `metamask` | `coinbase` |
+| NEXT_PUBLIC_WEB3_DISABLE_ADD_TOKEN_TO_WALLET | `boolean`| Set to `true` to hide icon "Add to your wallet" next to token addresses | - | `false` | `true` |
 
 ### Marketplace app configuration properties
 
