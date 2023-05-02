@@ -8,11 +8,13 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import { tokenTabsByType } from 'ui/pages/Address';
 import Pagination from 'ui/shared/Pagination';
+import type { Props as PaginationProps } from 'ui/shared/Pagination';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
 
+import ERC1155Tokens from './tokens/ERC1155Tokens';
+import ERC20Tokens from './tokens/ERC20Tokens';
+import ERC721Tokens from './tokens/ERC721Tokens';
 import TokenBalances from './tokens/TokenBalances';
-import TokensWithIds from './tokens/TokensWithIds';
-import TokensWithoutIds from './tokens/TokensWithoutIds';
 
 const TAB_LIST_PROPS = {
   marginBottom: 0,
@@ -32,20 +34,58 @@ const AddressTokens = () => {
 
   const scrollRef = React.useRef<HTMLDivElement>(null);
 
-  const tokenType: TokenType = (Object.keys(tokenTabsByType) as Array<TokenType>).find(key => tokenTabsByType[key] === router.query.tab) || 'ERC-20';
+  const tab = router.query.tab?.toString();
+  const tokenType: TokenType = (Object.keys(tokenTabsByType) as Array<TokenType>).find(key => tokenTabsByType[key] === tab) || 'ERC-20';
 
-  const tokensQuery = useQueryWithPages({
+  const erc20Query = useQueryWithPages({
     resourceName: 'address_tokens',
     pathParams: { hash: router.query.hash?.toString() },
-    filters: { type: tokenType },
+    filters: { type: 'ERC-20' },
     scrollRef,
+    options: {
+      enabled: tokenType === 'ERC-20',
+    },
+  });
+
+  const erc721Query = useQueryWithPages({
+    resourceName: 'address_tokens',
+    pathParams: { hash: router.query.hash?.toString() },
+    filters: { type: 'ERC-721' },
+    scrollRef,
+    options: {
+      enabled: tokenType === 'ERC-721',
+    },
+  });
+
+  const erc1155Query = useQueryWithPages({
+    resourceName: 'address_tokens',
+    pathParams: { hash: router.query.hash?.toString() },
+    filters: { type: 'ERC-1155' },
+    scrollRef,
+    options: {
+      enabled: tokenType === 'ERC-1155',
+    },
   });
 
   const tabs = [
-    { id: tokenTabsByType['ERC-20'], title: 'ERC-20', component: <TokensWithoutIds tokensQuery={ tokensQuery }/> },
-    { id: tokenTabsByType['ERC-721'], title: 'ERC-721', component: <TokensWithoutIds tokensQuery={ tokensQuery }/> },
-    { id: tokenTabsByType['ERC-1155'], title: 'ERC-1155', component: <TokensWithIds tokensQuery={ tokensQuery }/> },
+    { id: tokenTabsByType['ERC-20'], title: 'ERC-20', component: <ERC20Tokens tokensQuery={ erc20Query }/> },
+    { id: tokenTabsByType['ERC-721'], title: 'ERC-721', component: <ERC721Tokens tokensQuery={ erc721Query }/> },
+    { id: tokenTabsByType['ERC-1155'], title: 'ERC-1155', component: <ERC1155Tokens tokensQuery={ erc1155Query }/> },
   ];
+
+  let isPaginationVisible;
+  let pagination: PaginationProps | undefined;
+
+  if (tab === tokenTabsByType['ERC-1155']) {
+    isPaginationVisible = erc1155Query.isPaginationVisible;
+    pagination = erc1155Query.pagination;
+  } else if (tab === tokenTabsByType['ERC-721']) {
+    isPaginationVisible = erc721Query.isPaginationVisible;
+    pagination = erc721Query.pagination;
+  } else {
+    isPaginationVisible = erc20Query.isPaginationVisible;
+    pagination = erc20Query.pagination;
+  }
 
   return (
     <>
@@ -58,7 +98,7 @@ const AddressTokens = () => {
         colorScheme="gray"
         size="sm"
         tabListProps={ isMobile ? TAB_LIST_PROPS_MOBILE : TAB_LIST_PROPS }
-        rightSlot={ tokensQuery.isPaginationVisible && !isMobile ? <Pagination { ...tokensQuery.pagination }/> : null }
+        rightSlot={ isPaginationVisible && !isMobile ? <Pagination { ...pagination }/> : null }
         stickyEnabled={ !isMobile }
       />
     </>

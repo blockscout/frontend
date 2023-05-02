@@ -3,7 +3,6 @@ import React from 'react';
 
 import type { AddressTokenBalance } from 'types/api/address';
 
-import getCurrencyValue from 'lib/getCurrencyValue';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
@@ -12,14 +11,9 @@ import TokenLogo from 'ui/shared/TokenLogo';
 
 type Props = AddressTokenBalance;
 
-const TokensListItem = ({ token, value }: Props) => {
+const ERC721TokensListItem = ({ token, value }: Props) => {
 
   const tokenString = [ token.name, token.symbol && `(${ token.symbol })` ].filter(Boolean).join(' ');
-
-  const {
-    valueStr: tokenQuantity,
-    usd: tokenValue,
-  } = getCurrencyValue({ value: value, exchangeRate: token.exchange_rate, decimals: token.decimals, accuracy: 8, accuracyUsd: 2 });
 
   return (
     <ListItemMobile rowGap={ 2 }>
@@ -32,24 +26,12 @@ const TokensListItem = ({ token, value }: Props) => {
         <CopyToClipboard text={ token.address } ml={ 1 }/>
         <AddressAddToWallet token={ token } ml={ 2 }/>
       </Flex>
-      { token.exchange_rate !== undefined && token.exchange_rate !== null && (
-        <HStack spacing={ 3 }>
-          <Text fontSize="sm" fontWeight={ 500 }>Price</Text>
-          <Text fontSize="sm" variant="secondary">{ `$${ token.exchange_rate }` }</Text>
-        </HStack>
-      ) }
       <HStack spacing={ 3 }>
         <Text fontSize="sm" fontWeight={ 500 }>Quantity</Text>
-        <Text fontSize="sm" variant="secondary">{ tokenQuantity }</Text>
+        <Text fontSize="sm" variant="secondary">{ value }</Text>
       </HStack>
-      { tokenValue !== undefined && (
-        <HStack spacing={ 3 }>
-          <Text fontSize="sm" fontWeight={ 500 }>Value</Text>
-          <Text fontSize="sm" variant="secondary">{ tokenValue }</Text>
-        </HStack>
-      ) }
     </ListItemMobile>
   );
 };
 
-export default TokensListItem;
+export default ERC721TokensListItem;
