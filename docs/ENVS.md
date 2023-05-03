@@ -95,6 +95,7 @@ For each application, you need to specify the `MarketplaceCategoryId` to which i
 | group | `Mainnets \| Testnets \| Other` | Indicates in which tab network appears in the menu | yes | - | `Mainnets` |
 | icon | `string` | Network icon; if not provided, the common placeholder will be shown; *Note* that icon size should be at least 60px by 60px | - | - | `https://placekitten.com/60/60` |
 | isActive | `boolean` | Pass `true` if item should be shonw as active in the menu | - | - | `true` |
+| invertIconInDarkMode | `boolean` | Pass `true` if icon colors should be inverted in dark mode | - | - | `true` |
 
 ### Network explorer configuration properties
 
