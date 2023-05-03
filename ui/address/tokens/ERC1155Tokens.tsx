@@ -19,7 +19,7 @@ type Props = {
   };
 }
 
-const TokensWithIds = ({ tokensQuery }: Props) => {
+const ERC1155Tokens = ({ tokensQuery }: Props) => {
   const isMobile = useIsMobile();
 
   const { isError, isLoading, data, pagination, isPaginationVisible } = tokensQuery;
@@ -69,4 +69,4 @@ const TokensWithIds = ({ tokensQuery }: Props) => {
   );
 };
 
-export default TokensWithIds;
+export default ERC1155Tokens;
