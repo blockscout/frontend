@@ -375,6 +375,9 @@ export const RESOURCES = {
   homepage_txs: {
     path: '/api/v2/main-page/transactions',
   },
+  homepage_txs_watchlist: {
+    path: '/api/v2/main-page/transactions/watchlist',
+  },
   homepage_indexing_status: {
     path: '/api/v2/main-page/indexing-status',
   },
@@ -523,6 +526,7 @@ Q extends 'homepage_chart_txs' ? ChartTransactionResponse :
 Q extends 'homepage_chart_market' ? ChartMarketResponse :
 Q extends 'homepage_blocks' ? Array<Block> :
 Q extends 'homepage_txs' ? Array<Transaction> :
+Q extends 'homepage_txs_watchlist' ? Array<Transaction> :
 Q extends 'homepage_deposits' ? Array<L2DepositsItem> :
 Q extends 'homepage_indexing_status' ? IndexingStatus :
 Q extends 'stats_counters' ? Counters :
