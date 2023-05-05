@@ -1,3 +1,4 @@
+import type { LazyMode } from '@chakra-ui/lazy-utils';
 import type { ChakraProps, ThemingProps } from '@chakra-ui/react';
 import {
   Tab,
@@ -10,11 +11,9 @@ import {
   chakra,
 } from '@chakra-ui/react';
 import type { StyleProps } from '@chakra-ui/styled-system';
-import _pickBy from 'lodash/pickBy';
-import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react';
 
-import type { RoutedTab } from './types';
+import type { TabItem } from './types';
 
 import { useScrollDirection } from 'lib/contexts/scrollDirection';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -31,18 +30,29 @@ const hiddenItemStyles: StyleProps = {
 };
 
 interface Props extends ThemingProps<'Tabs'> {
-  tabs: Array<RoutedTab>;
+  tabs: Array<TabItem>;
+  lazyBehavior?: LazyMode;
   tabListProps?: ChakraProps | (({ isSticky, activeTabIndex }: { isSticky: boolean; activeTabIndex: number }) => ChakraProps);
   rightSlot?: React.ReactNode;
   stickyEnabled?: boolean;
+  onTabChange?: (index: number) => void;
+  activeTabIndex?: number;
   className?: string;
 }
 
-const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled, className, ...themeProps }: Props) => {
-  const router = useRouter();
+const TabsWithScroll = ({
+  tabs,
+  lazyBehavior,
+  tabListProps,
+  rightSlot,
+  stickyEnabled,
+  onTabChange,
+  activeTabIndex: activeTabIndexProps,
+  className,
+  ...themeProps
+}: Props) => {
   const scrollDirection = useScrollDirection();
-  const [ activeTabIndex, setActiveTabIndex ] = useState<number>(tabs.length + 1);
-
+  const [ activeTabIndex, setActiveTabIndex ] = useState<number>(activeTabIndexProps || 0);
   const isMobile = useIsMobile();
   const tabsRef = useRef<HTMLDivElement>(null);
   const { tabsCut, tabsList, tabsRefs, listRef, rightSlotRef } = useAdaptiveTabs(tabs, isMobile);
@@ -50,46 +60,14 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled, className, .
   const listBgColor = useColorModeValue('white', 'black');
 
   const handleTabChange = React.useCallback((index: number) => {
-    const nextTab = tabs[index];
-
-    const queryForPathname = _pickBy(router.query, (value, key) => router.pathname.includes(`[${ key }]`));
-    router.push(
-      { pathname: router.pathname, query: { ...queryForPathname, tab: nextTab.id } },
-      undefined,
-      { shallow: true },
-    );
-  }, [ tabs, router ]);
+    onTabChange ? onTabChange(index) : setActiveTabIndex(index);
+  }, [ onTabChange ]);
 
   useEffect(() => {
-    if (router.query.scroll_to_tabs) {
-      tabsRef?.current?.scrollIntoView(true);
-      delete router.query.scroll_to_tabs;
-      router.push(
-        {
-          pathname: router.pathname,
-          query: router.query,
-        },
-        undefined,
-        { shallow: true },
-      );
+    if (activeTabIndexProps !== undefined) {
+      setActiveTabIndex(activeTabIndexProps);
     }
-  // replicate componentDidMount
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if (router.isReady) {
-      let tabIndex = 0;
-      const tabFromRoute = router.query.tab;
-      if (tabFromRoute) {
-        tabIndex = tabs.findIndex(({ id, subTabs }) => id === tabFromRoute || subTabs?.some((id) => id === tabFromRoute));
-        if (tabIndex < 0) {
-          tabIndex = 0;
-        }
-      }
-      setActiveTabIndex(tabIndex);
-    }
-  }, [ tabs, router, activeTabIndex ]);
+  }, [ activeTabIndexProps ]);
 
   useEffect(() => {
     if (activeTabIndex < tabs.length && isMobile) {
@@ -97,7 +75,6 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled, className, .
         const activeTabRef = tabsRefs[activeTabIndex];
         if (activeTabRef.current && listRef.current) {
           const activeTabRect = activeTabRef.current.getBoundingClientRect();
-
           listRef.current.scrollTo({
             left: activeTabRect.left + listRef.current.scrollLeft - 16,
             behavior: 'smooth',
@@ -125,6 +102,7 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled, className, .
       position="relative"
       size={ themeProps.size || 'md' }
       ref={ tabsRef }
+      lazyBehavior={ lazyBehavior }
     >
       <TabList
         marginBottom={{ base: 6, lg: 8 }}
@@ -201,4 +179,4 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled, className, .
   );
 };
 
-export default React.memo(chakra(RoutedTabs));
+export default React.memo(chakra(TabsWithScroll));

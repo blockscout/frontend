@@ -2,7 +2,7 @@ import { Skeleton } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
+import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import appConfig from 'configs/app/config';
 import useApiQuery from 'lib/api/useApiQuery';
@@ -16,8 +16,8 @@ import TextAd from 'ui/shared/ad/TextAd';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
 import Pagination from 'ui/shared/Pagination';
-import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
 import SkeletonTabs from 'ui/shared/skeletons/SkeletonTabs';
+import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TxsContent from 'ui/txs/TxsContent';
 
 const TAB_LIST_PROPS = {

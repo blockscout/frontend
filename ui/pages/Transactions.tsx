@@ -2,7 +2,7 @@ import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
+import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import appConfig from 'configs/app/config';
 import useHasAccount from 'lib/hooks/useHasAccount';
@@ -11,7 +11,7 @@ import useNewTxsSocket from 'lib/hooks/useNewTxsSocket';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
+import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TxsContent from 'ui/txs/TxsContent';
 import TxsTabSlot from 'ui/txs/TxsTabSlot';
 import TxsWatchlist from 'ui/txs/TxsWatchlist';
@@ -65,7 +65,7 @@ const Transactions = () => {
     },
     hasAccount ? {
       id: 'watchlist',
-      title: 'Watchlist',
+      title: 'Watch list',
       component: <TxsWatchlist query={ txsWatchlistQuery }/>,
     } : undefined,
   ].filter(Boolean);

@@ -9,11 +9,11 @@ import React from 'react';
 import type { Chain } from 'wagmi';
 import { configureChains, createClient, WagmiConfig } from 'wagmi';
 
-import type { RoutedSubTab } from 'ui/shared/RoutedTabs/types';
+import type { RoutedSubTab } from 'ui/shared/Tabs/types';
 
 import appConfig from 'configs/app/config';
 import { ContractContextProvider } from 'ui/address/contract/context';
-import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
+import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 
 interface Props {
   tabs: Array<RoutedSubTab>;

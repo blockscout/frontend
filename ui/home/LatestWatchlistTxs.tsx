@@ -24,6 +24,10 @@ const LatestWatchlistTxs = () => {
     return <Text mt={ 4 }>No data. Please reload page.</Text>;
   }
 
+  if (data.length === 0) {
+    return <Text mt={ 4 }>There are no transactions.</Text>;
+  }
+
   if (data) {
     const txsUrl = route({ pathname: '/txs', query: { tab: 'watchlist' } });
     return (
@@ -32,7 +36,7 @@ const LatestWatchlistTxs = () => {
           { data.slice(0, txsCount).map((tx => <LatestTxsItem key={ tx.hash } tx={ tx }/>)) }
         </Box>
         <Flex justifyContent="center">
-          <LinkInternal fontSize="sm" href={ txsUrl }>View all watchlist transactions</LinkInternal>
+          <LinkInternal fontSize="sm" href={ txsUrl }>View all watch list transactions</LinkInternal>
         </Flex>
       </>
     );
