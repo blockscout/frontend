@@ -2,21 +2,21 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import React from 'react';
 
-import Apps from 'ui/pages/Apps';
+import Marketplace from 'ui/pages/Marketplace';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
-const AppsPage: NextPage = () => {
+const MarketplacePage: NextPage = () => {
   return (
     <Page>
-      <PageTitle text="Apps"/>
+      <PageTitle text="Marketplace"/>
       <Head><title>Blockscout | Marketplace</title></Head>
 
-      <Apps/>
+      <Marketplace/>
     </Page>
   );
 };
 
-export default AppsPage;
+export default MarketplacePage;
 
 export { getServerSideProps } from 'lib/next/getServerSideProps';

@@ -3,15 +3,15 @@ import React from 'react';
 
 import config from 'configs/app/config';
 import PlusIcon from 'icons/plus.svg';
-import AppList from 'ui/apps/AppList';
-import AppListSkeleton from 'ui/apps/AppListSkeleton';
-import AppModal from 'ui/apps/AppModal';
-import CategoriesMenu from 'ui/apps/CategoriesMenu';
+import MarketplaceAppModal from 'ui/marketplace/MarketplaceAppModal';
+import MarketplaceCategoriesMenu from 'ui/marketplace/MarketplaceCategoriesMenu';
+import MarketplaceList from 'ui/marketplace/MarketplaceList';
+import MarketplaceListSkeleton from 'ui/marketplace/MarketplaceListSkeleton';
 import FilterInput from 'ui/shared/filters/FilterInput';
 
-import useMarketplaceApps from '../apps/useMarketplaceApps';
+import useMarketplace from '../marketplace/useMarketplace';
 
-const Apps = () => {
+const Marketplace = () => {
   const {
     isLoading,
     isError,
@@ -26,7 +26,7 @@ const Apps = () => {
     clearSelectedAppId,
     favoriteApps,
     onFavoriteClick,
-  } = useMarketplaceApps();
+  } = useMarketplace();
 
   if (isError) {
     throw new Error('Unable to get apps list', { cause: error });
@@ -40,7 +40,7 @@ const Apps = () => {
         display="flex"
         flexDirection={{ base: 'column', sm: 'row' }}
       >
-        <CategoriesMenu
+        <MarketplaceCategoriesMenu
           categories={ categories }
           selectedCategoryId={ selectedCategoryId }
           onSelect={ onCategoryChange }
@@ -49,8 +49,8 @@ const Apps = () => {
         <FilterInput onChange={ onSearchInputChange } marginBottom={{ base: '4', lg: '6' }} placeholder="Find app"/>
       </Box>
 
-      { isLoading ? <AppListSkeleton/> : (
-        <AppList
+      { isLoading ? <MarketplaceListSkeleton/> : (
+        <MarketplaceList
           apps={ displayedApps }
           onAppClick={ showAppInfo }
           favoriteApps={ favoriteApps }
@@ -59,7 +59,7 @@ const Apps = () => {
       ) }
 
       { selectedApp && (
-        <AppModal
+        <MarketplaceAppModal
           onClose={ clearSelectedAppId }
           isFavorite={ favoriteApps.includes(selectedApp.id) }
           onFavoriteClick={ onFavoriteClick }
@@ -90,4 +90,4 @@ const Apps = () => {
   );
 };
 
-export default Apps;
+export default Marketplace;

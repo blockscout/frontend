@@ -1,11 +1,11 @@
 import { Box, Button, Icon, Menu, MenuButton, MenuList } from '@chakra-ui/react';
 import React from 'react';
 
-import { AppCategory } from 'types/client/apps';
+import { MarketplaceCategory } from 'types/client/marketplace';
 
 import eastMiniArrowIcon from 'icons/arrows/east-mini.svg';
 
-import CategoriesMenuItem from './CategoriesMenuItem';
+import MarketplaceCategoriesMenuItem from './MarketplaceCategoriesMenuItem';
 
 type Props = {
   categories: Array<string>;
@@ -13,10 +13,10 @@ type Props = {
   onSelect: (category: string) => void;
 }
 
-const CategoriesMenu = ({ selectedCategoryId, onSelect, categories }: Props) => {
+const MarketplaceCategoriesMenu = ({ selectedCategoryId, onSelect, categories }: Props) => {
   const options = React.useMemo(() => ([
-    AppCategory.FAVORITES,
-    AppCategory.ALL,
+    MarketplaceCategory.FAVORITES,
+    MarketplaceCategory.ALL,
     ...categories,
   ]), [ categories ]);
 
@@ -43,7 +43,7 @@ const CategoriesMenu = ({ selectedCategoryId, onSelect, categories }: Props) => 
 
       <MenuList zIndex={ 3 }>
         { options.map((category: string) => (
-          <CategoriesMenuItem
+          <MarketplaceCategoriesMenuItem
             key={ category }
             id={ category }
             onClick={ onSelect }
@@ -54,4 +54,4 @@ const CategoriesMenu = ({ selectedCategoryId, onSelect, categories }: Props) => 
   );
 };
 
-export default React.memo(CategoriesMenu);
+export default React.memo(MarketplaceCategoriesMenu);

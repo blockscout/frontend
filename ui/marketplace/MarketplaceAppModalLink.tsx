@@ -9,7 +9,7 @@ type Props = {
   title: string;
 }
 
-const AppModalLink = ({ url, external, id }: Props) => {
+const MarketplaceAppModalLink = ({ url, external, id }: Props) => {
   const buttonProps = {
     size: 'sm',
     marginRight: 2,
@@ -36,4 +36,4 @@ const AppModalLink = ({ url, external, id }: Props) => {
   );
 };
 
-export default AppModalLink;
+export default MarketplaceAppModalLink;

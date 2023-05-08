@@ -2,21 +2,21 @@ import { Box, Heading, Icon, IconButton, Image, Link, LinkBox, Text, useColorMod
 import type { MouseEvent } from 'react';
 import React, { useCallback } from 'react';
 
-import type { AppItemPreview } from 'types/client/apps';
+import type { MarketplaceAppPreview } from 'types/client/marketplace';
 
 import northEastIcon from 'icons/arrows/north-east.svg';
 import starFilledIcon from 'icons/star_filled.svg';
 import starOutlineIcon from 'icons/star_outline.svg';
 
-import AppCardLink from './AppCardLink';
+import MarketplaceAppCardLink from './MarketplaceAppCardLink';
 
-interface Props extends AppItemPreview {
+interface Props extends MarketplaceAppPreview {
   onInfoClick: (id: string) => void;
   isFavorite: boolean;
   onFavoriteClick: (id: string, isFavorite: boolean) => void;
 }
 
-const AppCard = ({
+const MarketplaceAppCard = ({
   id,
   url,
   external,
@@ -85,7 +85,7 @@ const AppCard = ({
           size={{ base: 'xs', sm: 'sm' }}
           fontWeight="semibold"
         >
-          <AppCardLink
+          <MarketplaceAppCardLink
             id={ id }
             url={ url }
             external={ external }
@@ -158,4 +158,4 @@ const AppCard = ({
   );
 };
 
-export default React.memo(AppCard);
+export default React.memo(MarketplaceAppCard);

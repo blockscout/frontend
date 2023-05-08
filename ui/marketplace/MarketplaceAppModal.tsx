@@ -4,7 +4,7 @@ import {
 } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
-import type { AppItemOverview } from 'types/client/apps';
+import type { MarketplaceAppOverview } from 'types/client/marketplace';
 
 import linkIcon from 'icons/link.svg';
 import ghIcon from 'icons/social/git.svg';
@@ -15,16 +15,16 @@ import starOutlineIcon from 'icons/star_outline.svg';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp } from 'lib/html-entities';
 
-import AppModalLink from './AppModalLink';
+import MarketplaceAppModalLink from './MarketplaceAppModalLink';
 
 type Props = {
   onClose: () => void;
   isFavorite: boolean;
   onFavoriteClick: (id: string, isFavorite: boolean) => void;
-  data: AppItemOverview;
+  data: MarketplaceAppOverview;
 }
 
-const AppModal = ({
+const MarketplaceAppModal = ({
   onClose,
   isFavorite,
   onFavoriteClick,
@@ -120,7 +120,7 @@ const AppModal = ({
             marginTop={{ base: 6, sm: 0 }}
           >
             <Box display="flex">
-              <AppModalLink
+              <MarketplaceAppModalLink
                 id={ data.id }
                 url={ url }
                 external={ external }
@@ -241,4 +241,4 @@ const AppModal = ({
   );
 };
 
-export default AppModal;
+export default MarketplaceAppModal;
