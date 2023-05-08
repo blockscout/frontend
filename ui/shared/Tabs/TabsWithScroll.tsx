@@ -19,7 +19,7 @@ import { useScrollDirection } from 'lib/contexts/scrollDirection';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useIsSticky from 'lib/hooks/useIsSticky';
 
-import RoutedTabsMenu from './RoutedTabsMenu';
+import TabsMenu from './TabsMenu';
 import useAdaptiveTabs from './useAdaptiveTabs';
 
 const hiddenItemStyles: StyleProps = {
@@ -36,7 +36,7 @@ interface Props extends ThemingProps<'Tabs'> {
   rightSlot?: React.ReactNode;
   stickyEnabled?: boolean;
   onTabChange?: (index: number) => void;
-  activeTabIndex?: number;
+  defaultTabIndex?: number;
   className?: string;
 }
 
@@ -47,12 +47,12 @@ const TabsWithScroll = ({
   rightSlot,
   stickyEnabled,
   onTabChange,
-  activeTabIndex: activeTabIndexProps,
+  defaultTabIndex,
   className,
   ...themeProps
 }: Props) => {
   const scrollDirection = useScrollDirection();
-  const [ activeTabIndex, setActiveTabIndex ] = useState<number>(activeTabIndexProps || 0);
+  const [ activeTabIndex, setActiveTabIndex ] = useState<number>(defaultTabIndex || 0);
   const isMobile = useIsMobile();
   const tabsRef = useRef<HTMLDivElement>(null);
   const { tabsCut, tabsList, tabsRefs, listRef, rightSlotRef } = useAdaptiveTabs(tabs, isMobile);
@@ -64,10 +64,10 @@ const TabsWithScroll = ({
   }, [ onTabChange ]);
 
   useEffect(() => {
-    if (activeTabIndexProps !== undefined) {
-      setActiveTabIndex(activeTabIndexProps);
+    if (defaultTabIndex !== undefined) {
+      setActiveTabIndex(defaultTabIndex);
     }
-  }, [ activeTabIndexProps ]);
+  }, [ defaultTabIndex ]);
 
   useEffect(() => {
     if (activeTabIndex < tabs.length && isMobile) {
@@ -138,7 +138,7 @@ const TabsWithScroll = ({
         { tabsList.map((tab, index) => {
           if (!tab.id) {
             return (
-              <RoutedTabsMenu
+              <TabsMenu
                 key="menu"
                 tabs={ tabs }
                 activeTab={ tabs[activeTabIndex] }

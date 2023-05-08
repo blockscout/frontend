@@ -2,7 +2,7 @@ import type { ChakraProps, ThemingProps } from '@chakra-ui/react';
 import { chakra } from '@chakra-ui/react';
 import _pickBy from 'lodash/pickBy';
 import { useRouter } from 'next/router';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import type { RoutedTab } from './types';
 
@@ -18,7 +18,15 @@ interface Props extends ThemingProps<'Tabs'> {
 
 const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled, className, ...themeProps }: Props) => {
   const router = useRouter();
-  const [ activeTabIndex, setActiveTabIndex ] = useState<number>(tabs.length + 1);
+
+  let tabIndex = 0;
+  const tabFromRoute = router.query.tab;
+  if (tabFromRoute) {
+    tabIndex = tabs.findIndex(({ id, subTabs }) => id === tabFromRoute || subTabs?.some((id) => id === tabFromRoute));
+    if (tabIndex < 0) {
+      tabIndex = 0;
+    }
+  }
 
   const tabsRef = useRef<HTMLDivElement>(null);
 
@@ -50,21 +58,6 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled, className, .
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    if (router.isReady) {
-
-      let tabIndex = 0;
-      const tabFromRoute = router.query.tab;
-      if (tabFromRoute) {
-        tabIndex = tabs.findIndex(({ id, subTabs }) => id === tabFromRoute || subTabs?.some((id) => id === tabFromRoute));
-        if (tabIndex < 0) {
-          tabIndex = 0;
-        }
-      }
-      setActiveTabIndex(tabIndex);
-    }
-  }, [ tabs, router, activeTabIndex ]);
-
   return (
     <TabsWithScroll
       tabs={ tabs }
@@ -72,7 +65,7 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled, className, .
       rightSlot={ rightSlot }
       stickyEnabled={ stickyEnabled }
       onTabChange={ handleTabChange }
-      activeTabIndex={ activeTabIndex }
+      defaultTabIndex={ tabIndex }
       { ...themeProps }
     />
   );
