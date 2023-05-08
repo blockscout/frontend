@@ -19,6 +19,7 @@ const Marketplace = () => {
     selectedCategoryId,
     categories,
     onCategoryChange,
+    filterQuery,
     onSearchInputChange,
     showAppInfo,
     displayedApps,
@@ -46,7 +47,12 @@ const Marketplace = () => {
           onSelect={ onCategoryChange }
         />
 
-        <FilterInput onChange={ onSearchInputChange } marginBottom={{ base: '4', lg: '6' }} placeholder="Find app"/>
+        <FilterInput
+          initialValue={ filterQuery }
+          onChange={ onSearchInputChange }
+          marginBottom={{ base: '4', lg: '6' }}
+          placeholder="Find app"
+        />
       </Box>
 
       { isLoading ? <MarketplaceListSkeleton/> : (
