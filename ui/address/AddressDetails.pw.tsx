@@ -1,4 +1,3 @@
-import type { MetaMaskInpageProvider } from '@metamask/providers';
 import { test, expect } from '@playwright/experimental-ct-react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
@@ -73,7 +72,9 @@ test('token', async({ mount, page }) => {
   }), { times: 1 });
 
   await page.evaluate(() => {
-    window.ethereum = { } as MetaMaskInpageProvider;
+    window.ethereum = {
+      providers: [ { isMetaMask: true } ],
+    };
   });
 
   const component = await mount(

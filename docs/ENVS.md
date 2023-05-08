@@ -42,14 +42,16 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_LOGOUT_URL | `string` | Account logout url. Required if account is supported for the app instance. | - | - | `https://blockscoutcom.us.auth0.com/v2/logout` |
 | NEXT_PUBLIC_LOGOUT_RETURN_URL | `string` | Account logout return url. Required if account is supported for the app instance. | - | - | `https://blockscout.com/poa/core/auth/logout` |
 | NEXT_PUBLIC_HOMEPAGE_CHARTS | `Array<'daily_txs' \| 'coin_price' \| 'market_cup'>` | List of charts displayed on the home page | - | - | `['daily_txs','coin_price','market_cup']` |
-| NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR | `string` | Text color of the hero plate on the homepage | `#FFFFFF` | `'#DCFE76'` |
-| NEXT_PUBLIC_HOMEPAGE_PLATE_GRADIENT | `string` | Gradient value for hero plate on the homepage | - | `radial-gradient(103.03% 103.03% at 0% 0%, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%)` | `radial-gradient(at 15% 86%, hsla(350,65%,70%,1) 0px, transparent 50%), radial-gradient(at 72% 57%, hsla(14,95%,76%,1) 0px, transparent 50%)` |
+| NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR | `string` | Text color of the hero plate on the homepage (escape "#" symbol if you use HEX color codes) | `\#FFFFFF \| rgb(220, 254, 118)` | `\#DCFE76` |
+| NEXT_PUBLIC_HOMEPAGE_PLATE_GRADIENT | `string` | Gradient value for hero plate on the homepage (escape "#" symbol if you use HEX color codes) | - | `radial-gradient(103.03% 103.03% at 0% 0%, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%)` | `radial-gradient(at 15% 86%, hsla(350,65%,70%,1) 0px, transparent 50%), radial-gradient(at 72% 57%, hsla(14,95%,76%,1) 0px, transparent 50%)` |
 | NEXT_PUBLIC_HOMEPAGE_SHOW_GAS_TRACKER | `boolean` | Set to false if network doesn't have gas tracker | - | `true` | `false` |
 | NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME | `boolean` | Set to false if average block time is useless for the network | - | `true` | `false` |
 | NEXT_PUBLIC_AD_DOMAIN_WITH_AD | `string` | The domain on which we display ads | - | - | `blockscout.com` |
 | NEXT_PUBLIC_AD_ADBUTLER_ON | `boolean` | Set to true to show Adbutler banner instead of Coinzilla banner | - | `false` | `true` |
 | NEXT_PUBLIC_API_SPEC_URL | `string` | Spec to be displayed on api-docs page | - | - | `https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml` |
 | NEXT_PUBLIC_GRAPHIQL_TRANSACTION | `string` | Txn hash for default query at GraphQl playground page | - | - | `0x69e3923eef50eada197c3336d546936d0c994211492c9f947a24c02827568f9f` |
+| NEXT_PUBLIC_WEB3_DEFAULT_WALLET | `metamask` \| `coinbase`| Type of Web3 wallet which will be used by default to add tokens or chains to | - | `metamask` | `coinbase` |
+| NEXT_PUBLIC_WEB3_DISABLE_ADD_TOKEN_TO_WALLET | `boolean`| Set to `true` to hide icon "Add to your wallet" next to token addresses | - | `false` | `true` |
 
 ### Marketplace app configuration properties
 
@@ -93,6 +95,7 @@ For each application, you need to specify the `MarketplaceCategoryId` to which i
 | group | `Mainnets \| Testnets \| Other` | Indicates in which tab network appears in the menu | yes | - | `Mainnets` |
 | icon | `string` | Network icon; if not provided, the common placeholder will be shown; *Note* that icon size should be at least 60px by 60px | - | - | `https://placekitten.com/60/60` |
 | isActive | `boolean` | Pass `true` if item should be shonw as active in the menu | - | - | `true` |
+| invertIconInDarkMode | `boolean` | Pass `true` if icon colors should be inverted in dark mode | - | - | `true` |
 
 ### Network explorer configuration properties
 
@@ -119,8 +122,10 @@ For each application, you need to specify the `MarketplaceCategoryId` to which i
 
 | Variable | Type| Description | Is required  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_API_PROTOCOL | `http \| https` | Main API protocol | - | `https` | `http` |
 | NEXT_PUBLIC_API_HOST | `string` | Main API host | - | `blockscout.com` | `my-host.com` |
 | NEXT_PUBLIC_API_BASE_PATH | `string` | Base path for Main API endpoint url | - | - | `/poa/core` |
+| NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL | `ws \| wss` | Main API websocket protocol | - | `wss` | `ws` |
 | NEXT_PUBLIC_STATS_API_HOST | `string` | Stats API endpoint url | - | - | `https://my-host.com` |
 | NEXT_PUBLIC_VISUALIZE_API_HOST | `string` | Visualize API endpoint url | - | - | `https://my-host.com` |
 

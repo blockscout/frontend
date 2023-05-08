@@ -31,10 +31,12 @@ const TxInternalsListItem = ({ type, from, to, value, success, error, gas_limit:
           <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ from.hash }/>
         </Address>
         <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500"/>
-        <Address width="calc((100% - 48px) / 2)">
-          <AddressIcon address={ toData }/>
-          <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ toData.hash }/>
-        </Address>
+        { toData && (
+          <Address width="calc((100% - 48px) / 2)">
+            <AddressIcon address={ toData }/>
+            <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ toData.hash }/>
+          </Address>
+        ) }
       </Box>
       <HStack spacing={ 3 }>
         <Text fontSize="sm" fontWeight={ 500 }>Value { appConfig.network.currency.symbol }</Text>

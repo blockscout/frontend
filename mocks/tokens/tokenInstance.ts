@@ -179,3 +179,8 @@ export const withRichMetadata: TokenInstance = {
     status: null,
   },
 };
+
+export const unique: TokenInstance = {
+  ...base,
+  is_unique: true,
+};

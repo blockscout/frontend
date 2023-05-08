@@ -4,7 +4,7 @@ import React from 'react';
 import type { TokenInfo } from 'types/api/token';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
-import AddressAddToMetaMask from 'ui/address/details/AddressAddToMetaMask';
+import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import TokenLogo from 'ui/shared/TokenLogo';
@@ -61,15 +61,15 @@ const TokensTableItem = ({
                 <AddressLink fontSize="sm" hash={ address } type="address" truncation="constant" fontWeight={ 500 }/>
                 <CopyToClipboard text={ address } ml={ 1 }/>
               </Flex>
-              <AddressAddToMetaMask token={ token }/>
+              <AddressAddToWallet token={ token }/>
             </Flex>
             <Tag flexShrink={ 0 } ml={ 8 } mt={ 3 }>{ type }</Tag>
           </Box>
         </Flex>
       </Td>
-      <Td isNumeric><Text fontSize="sm" lineHeight="24px" fontWeight={ 500 }>{ exchangeRate ? `$${ exchangeRate }` : '-' }</Text></Td>
+      <Td isNumeric><Text fontSize="sm" lineHeight="24px" fontWeight={ 500 }>{ exchangeRate && `$${ exchangeRate }` }</Text></Td>
       <Td isNumeric maxWidth="300px" width="300px">
-        <Text fontSize="sm" lineHeight="24px" fontWeight={ 500 }>{ totalValue?.usd ? `$${ totalValue.usd }` : '-' }</Text>
+        <Text fontSize="sm" lineHeight="24px" fontWeight={ 500 }>{ totalValue?.usd && `$${ totalValue.usd }` }</Text>
       </Td>
       <Td isNumeric><Text fontSize="sm" lineHeight="24px" fontWeight={ 500 }>{ Number(holders).toLocaleString() }</Text></Td>
     </Tr>

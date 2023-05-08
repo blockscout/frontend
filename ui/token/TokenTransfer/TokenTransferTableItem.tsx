@@ -25,14 +25,6 @@ const TokenTransferTableItem = ({
   tokenId,
   isLoading,
 }: Props) => {
-  const value = (() => {
-    if (!('value' in total)) {
-      return '-';
-    }
-
-    return BigNumber(total.value).div(BigNumber(10 ** Number(total.decimals))).dp(8).toFormat();
-  })();
-
   const timeAgo = useTimeAgoIncrement(timestamp, true);
 
   return (
@@ -105,14 +97,14 @@ const TokenTransferTableItem = ({
               isDisabled={ Boolean(tokenId && tokenId === total.token_id) }
               isLoading={ isLoading }
             />
-          ) : '-'
+          ) : ''
           }
         </Td>
       ) }
       { (token.type === 'ERC-20' || token.type === 'ERC-1155') && (
         <Td isNumeric verticalAlign="top">
           <Skeleton isLoaded={ !isLoading } my="7px">
-            { value || '-' }
+            { 'value' in total && BigNumber(total.value).div(BigNumber(10 ** Number(total.decimals))).dp(8).toFormat() }
           </Skeleton>
         </Td>
       ) }

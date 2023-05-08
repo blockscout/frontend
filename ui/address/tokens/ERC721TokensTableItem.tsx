@@ -3,26 +3,19 @@ import React from 'react';
 
 import type { AddressTokenBalance } from 'types/api/address';
 
-import getCurrencyValue from 'lib/getCurrencyValue';
+import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import TokenLogo from 'ui/shared/TokenLogo';
 
-import AddressAddToMetaMask from '../details/AddressAddToMetaMask';
-
 type Props = AddressTokenBalance;
 
-const TokensTableItem = ({
+const ERC721TokensTableItem = ({
   token,
   value,
 }: Props) => {
 
   const tokenString = [ token.name, token.symbol && `(${ token.symbol })` ].filter(Boolean).join(' ');
-
-  const {
-    valueStr: tokenQuantity,
-    usd: tokenValue,
-  } = getCurrencyValue({ value: value, exchangeRate: token.exchange_rate, decimals: token.decimals, accuracy: 8, accuracyUsd: 2 });
 
   return (
     <Tr>
@@ -35,23 +28,17 @@ const TokensTableItem = ({
       <Td verticalAlign="middle">
         <Flex alignItems="center" width="150px" justifyContent="space-between">
           <Flex alignItems="center">
-            <AddressLink hash={ token.address } type="address" truncation="constant"/>
+            <AddressLink hash={ token.address } type="address" truncation="dynamic"/>
             <CopyToClipboard text={ token.address } ml={ 1 }/>
           </Flex>
-          <AddressAddToMetaMask token={ token } ml={ 4 }/>
+          <AddressAddToWallet token={ token } ml={ 4 }/>
         </Flex>
       </Td>
       <Td isNumeric verticalAlign="middle">
-        { token.exchange_rate ? `$${ token.exchange_rate }` : '-' }
-      </Td>
-      <Td isNumeric verticalAlign="middle">
-        { tokenQuantity }
-      </Td>
-      <Td isNumeric verticalAlign="middle">
-        { tokenValue ? `$${ tokenValue }` : '-' }
+        { value }
       </Td>
     </Tr>
   );
 };
 
-export default React.memo(TokensTableItem);
+export default React.memo(ERC721TokensTableItem);

@@ -63,15 +63,6 @@ blockscout:
         app: blockscout-prod
   # Blockscout environment variables
   environment:
-    ETHEREUM_JSONRPC_TRACE_URL:
-      # _default: http://geth-svc:8545
-      _default: http://65.108.226.29:8545
-    ETHEREUM_JSONRPC_HTTP_URL:
-      # _default: http://geth-svc:8545
-      _default: http://65.108.226.29:8545
-    # ETHEREUM_JSONRPC_WS_URL:
-    #   # _default: ws://geth-svc:8546
-    #   _default: ws://geth-svc.goerli.svc.cluster.local:8546
     BLOCKSCOUT_VERSION:
       _default: v5.1.2-beta
     ECTO_USE_SSL:

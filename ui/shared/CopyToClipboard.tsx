@@ -34,6 +34,7 @@ const CopyToClipboard = ({ text, className, isLoading }: Props) => {
         icon={ <CopyIcon/> }
         w="20px"
         h="20px"
+        color="gray.500"
         variant="simple"
         display="inline-block"
         flexShrink={ 0 }

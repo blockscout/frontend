@@ -88,13 +88,13 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }
         </VStack>
       </Td>
       <Td whiteSpace="nowrap">
-        { tx.method ? (
+        { tx.method && (
           <TruncatedTextTooltip label={ tx.method }>
             <Tag colorScheme={ tx.method === 'Multicall' ? 'teal' : 'gray' }>
               { tx.method }
             </Tag>
           </TruncatedTextTooltip>
-        ) : '-' }
+        ) }
       </Td>
       { showBlockInfo && (
         <Td>

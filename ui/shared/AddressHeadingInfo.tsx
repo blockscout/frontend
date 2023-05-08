@@ -6,9 +6,9 @@ import type { TokenInfo } from 'types/api/token';
 
 import config from 'configs/app/config';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import AddressAddToMetaMask from 'ui/address/details/AddressAddToMetaMask';
 import AddressFavoriteButton from 'ui/address/details/AddressFavoriteButton';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
+import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
@@ -37,7 +37,7 @@ const AddressHeadingInfo = ({ address, token, isLinkDisabled, isLoading }: Props
         isLoading={ isLoading }
       />
       <CopyToClipboard text={ address.hash } isLoading={ isLoading }/>
-      { !isLoading && address.is_contract && token && <AddressAddToMetaMask ml={ 2 } token={ token }/> }
+      { !isLoading && address.is_contract && token && <AddressAddToWallet ml={ 2 } token={ token }/> }
       { !isLoading && !address.is_contract && config.isAccountSupported && (
         <AddressFavoriteButton hash={ address.hash } watchListId={ address.watchlist_address_id } ml={ 3 }/>
       ) }

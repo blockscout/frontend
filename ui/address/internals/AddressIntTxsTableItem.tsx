@@ -73,10 +73,12 @@ const AddressIntTxsTableItem = ({
         }
       </Td>
       <Td verticalAlign="middle">
-        <Address display="inline-flex" maxW="100%">
-          <AddressIcon address={ toData }/>
-          <AddressLink type="address" hash={ toData.hash } alias={ toData.name } fontWeight="500" ml={ 2 } isDisabled={ isIn }/>
-        </Address>
+        { toData && (
+          <Address display="inline-flex" maxW="100%">
+            <AddressIcon address={ toData }/>
+            <AddressLink type="address" hash={ toData.hash } alias={ toData.name } fontWeight="500" ml={ 2 } isDisabled={ isIn }/>
+          </Address>
+        ) }
       </Td>
       <Td isNumeric verticalAlign="middle">
         { BigNumber(value).div(BigNumber(10 ** appConfig.network.currency.decimals)).toFormat() }

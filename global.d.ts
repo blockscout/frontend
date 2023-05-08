@@ -1,4 +1,4 @@
-import type { MetaMaskInpageProvider } from '@metamask/providers';
+import type { ExternalProvider } from 'types/client/wallets';
 
 type CPreferences = {
   zone: string;
@@ -7,8 +7,10 @@ type CPreferences = {
 }
 
 declare global {
-  interface Window {
-    ethereum: MetaMaskInpageProvider;
+  export interface Window {
+    ethereum?: {
+      providers?: Array<ExternalProvider>;
+    };
     coinzilla_display: Array<CPreferences>;
   }
 }

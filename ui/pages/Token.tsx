@@ -151,7 +151,7 @@ const TokenPageContent = () => {
 
   const tabs: Array<RoutedTab> = [
     { id: 'token_transfers', title: 'Token transfers', component: <TokenTransfer transfersQuery={ transfersQuery } token={ tokenQuery.data }/> },
-    { id: 'holders', title: 'Holders', component: <TokenHolders tokenQuery={ tokenQuery } holdersQuery={ holdersQuery }/> },
+    { id: 'holders', title: 'Holders', component: <TokenHolders token={ tokenQuery.data } holdersQuery={ holdersQuery }/> },
     (tokenQuery.data?.type === 'ERC-1155' || tokenQuery.data?.type === 'ERC-721') ?
       { id: 'inventory', title: 'Inventory', component: <TokenInventory inventoryQuery={ inventoryQuery }/> } :
       undefined,
@@ -175,7 +175,7 @@ const TokenPageContent = () => {
   ].filter(Boolean);
 
   let hasPagination;
-  let pagination;
+  let pagination: PaginationProps | undefined;
 
   if (!router.query.tab || router.query.tab === 'token_transfers') {
     hasPagination = transfersQuery.isPaginationVisible;
@@ -231,7 +231,7 @@ const TokenPageContent = () => {
           <RoutedTabs
             tabs={ tabs }
             tabListProps={ tabListProps }
-            rightSlot={ !isMobile && hasPagination ? <Pagination { ...(pagination as PaginationProps) }/> : null }
+            rightSlot={ !isMobile && hasPagination && pagination ? <Pagination { ...pagination }/> : null }
             stickyEnabled={ !isMobile }
           />
         ) }
