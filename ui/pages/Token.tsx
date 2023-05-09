@@ -31,6 +31,7 @@ import TokenDetails from 'ui/token/TokenDetails';
 import TokenHolders from 'ui/token/TokenHolders/TokenHolders';
 import TokenInventory from 'ui/token/TokenInventory';
 import TokenTransfer from 'ui/token/TokenTransfer/TokenTransfer';
+import TokenVerifiedInfo from 'ui/token/TokenVerifiedInfo';
 
 export type TokenTabs = 'token_transfers' | 'holders' | 'inventory';
 
@@ -251,7 +252,8 @@ const TokenPageContent = () => {
         </>
       ) }
       <TokenContractInfo tokenQuery={ tokenQuery }/>
-      <TokenDetails tokenQuery={ tokenQuery } verifiedInfoQuery={ verifiedInfoQuery } isVerifiedInfoEnabled={ isVerifiedInfoEnabled }/>
+      <TokenVerifiedInfo verifiedInfoQuery={ verifiedInfoQuery } isVerifiedInfoEnabled={ isVerifiedInfoEnabled }/>
+      <TokenDetails tokenQuery={ tokenQuery }/>
       { /* should stay before tabs to scroll up with pagination */ }
       <Box ref={ scrollRef }></Box>
 

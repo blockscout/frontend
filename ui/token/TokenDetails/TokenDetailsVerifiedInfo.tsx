@@ -63,6 +63,7 @@ const ServiceLink = ({ href, hint, icon }: TServiceLink & { href: string | undef
   </Link>
 );
 
+// todo_tom DELETE ME
 const TokenDetailsVerifiedInfo = ({ data }: Props) => {
   const websiteLink = (() => {
     try {

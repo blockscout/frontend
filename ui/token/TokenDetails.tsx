@@ -1,10 +1,10 @@
-import { Box, Flex, Grid, GridItem, Link, Skeleton } from '@chakra-ui/react';
+import { Box, Flex, Grid, Link, Skeleton } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 import { scroller } from 'react-scroll';
 
-import type { TokenInfo, TokenVerifiedInfo } from 'types/api/token';
+import type { TokenInfo } from 'types/api/token';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import getCurrencyValue from 'lib/getCurrencyValue';
@@ -14,15 +14,11 @@ import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import DetailsSkeletonRow from 'ui/shared/skeletons/DetailsSkeletonRow';
 
-import TokenDetailsVerifiedInfo from './TokenDetails/TokenDetailsVerifiedInfo';
-
 interface Props {
   tokenQuery: UseQueryResult<TokenInfo>;
-  verifiedInfoQuery: UseQueryResult<TokenVerifiedInfo>;
-  isVerifiedInfoEnabled: boolean;
 }
 
-const TokenDetails = ({ tokenQuery, verifiedInfoQuery, isVerifiedInfoEnabled }: Props) => {
+const TokenDetails = ({ tokenQuery }: Props) => {
   const router = useRouter();
 
   const tokenCountersQuery = useApiQuery('token_counters', {
@@ -60,7 +56,7 @@ const TokenDetails = ({ tokenQuery, verifiedInfoQuery, isVerifiedInfoEnabled }: 
     throw Error('Token fetch error', { cause: tokenQuery.error as unknown as Error });
   }
 
-  if (tokenQuery.isLoading || (isVerifiedInfoEnabled && verifiedInfoQuery.isLoading)) {
+  if (tokenQuery.isLoading) {
     return (
       <Grid mt={ 10 } columnGap={ 8 } rowGap={{ base: 5, lg: 7 }} templateColumns={{ base: '1fr', lg: '210px 1fr' }} maxW="1000px">
         <DetailsSkeletonRow w="10%"/>
@@ -92,14 +88,6 @@ const TokenDetails = ({ tokenQuery, verifiedInfoQuery, isVerifiedInfoEnabled }: 
     totalSupplyValue = Number(totalSupply).toLocaleString();
   }
 
-  const divider = (
-    <GridItem
-      colSpan={{ base: undefined, lg: 2 }}
-      borderBottom="1px solid"
-      borderColor="divider"
-    />
-  );
-
   return (
     <Grid
       mt={ 8 }
@@ -107,12 +95,6 @@ const TokenDetails = ({ tokenQuery, verifiedInfoQuery, isVerifiedInfoEnabled }: 
       rowGap={{ base: 1, lg: 3 }}
       templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }} overflow="hidden"
     >
-      { verifiedInfoQuery.data && (
-        <>
-          <TokenDetailsVerifiedInfo data={ verifiedInfoQuery.data }/>
-          { divider }
-        </>
-      ) }
       { exchangeRate && (
         <DetailsInfoItem
           title="Price"
