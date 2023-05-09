@@ -10,6 +10,7 @@ export interface Block {
   tx_count: number;
   miner: AddressParam;
   size: number;
+  has_beacon_chain_withdrawals?: boolean;
   hash: string;
   parent_hash: string;
   difficulty: string;
@@ -55,4 +56,19 @@ export interface NewBlockSocketResponse {
 
 export interface BlockFilters {
   type?: BlockType;
+}
+
+export type BlockWithdrawalsResponse = {
+  items: Array<BlockWithdrawalsItem>;
+  next_page_params: {
+    index: number;
+    items_count: number;
+  };
+}
+
+export type BlockWithdrawalsItem = {
+  amount: string;
+  index: number;
+  receiver: AddressParam;
+  validator_index: number;
 }

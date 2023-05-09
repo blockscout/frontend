@@ -199,7 +199,7 @@ module.exports = {
         groups: [
           'module',
           '/types/',
-          [ '/^configs/', '/^data/', '/^deploy/', '/^icons/', '/^lib/', '/^mocks/', '/^pages/', '/^playwright/', '/^theme/', '/^ui/' ],
+          [ '/^configs/', '/^data/', '/^deploy/', '/^icons/', '/^lib/', '/^mocks/', '/^pages/', '/^playwright/', '/^stubs/', '/^theme/', '/^ui/' ],
           [ 'parent', 'sibling', 'index' ],
         ],
         alphabetize: { order: 'asc', ignoreCase: true },

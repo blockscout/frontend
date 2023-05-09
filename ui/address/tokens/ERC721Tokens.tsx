@@ -10,8 +10,8 @@ import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/Pagination';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
 
-import TokensListItem from './TokensListItem';
-import TokensTable from './TokensTable';
+import ERC721TokensListItem from './ERC721TokensListItem';
+import ERC721TokensTable from './ERC721TokensTable';
 
 type Props = {
   tokensQuery: UseQueryResult<AddressTokensResponse> & {
@@ -20,7 +20,7 @@ type Props = {
   };
 }
 
-const TokensWithoutIds = ({ tokensQuery }: Props) => {
+const ERC721Tokens = ({ tokensQuery }: Props) => {
   const isMobile = useIsMobile();
 
   const { isError, isLoading, data, pagination, isPaginationVisible } = tokensQuery;
@@ -33,8 +33,8 @@ const TokensWithoutIds = ({ tokensQuery }: Props) => {
 
   const content = data?.items ? (
     <>
-      <Hide below="lg" ssr={ false }><TokensTable data={ data.items } top={ isPaginationVisible ? 72 : 0 }/></Hide>
-      <Show below="lg" ssr={ false }>{ data.items.map(item => <TokensListItem key={ item.token.address } { ...item }/>) }</Show></>
+      <Hide below="lg" ssr={ false }><ERC721TokensTable data={ data.items } top={ isPaginationVisible ? 72 : 0 }/></Hide>
+      <Show below="lg" ssr={ false }>{ data.items.map(item => <ERC721TokensListItem key={ item.token.address } { ...item }/>) }</Show></>
   ) : null;
 
   return (
@@ -44,7 +44,7 @@ const TokensWithoutIds = ({ tokensQuery }: Props) => {
       items={ data?.items }
       skeletonProps={{
         isLongSkeleton: true,
-        skeletonDesktopColumns: [ '30%', '30%', '10%', '20%', '10%' ],
+        skeletonDesktopColumns: [ '40%', '40%', '20%' ],
       }}
       emptyText="There are no tokens of selected type."
       content={ content }
@@ -54,4 +54,4 @@ const TokensWithoutIds = ({ tokensQuery }: Props) => {
 
 };
 
-export default TokensWithoutIds;
+export default ERC721Tokens;

@@ -8,11 +8,11 @@ import type { TokenInfo } from 'types/api/token';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import getCurrencyValue from 'lib/getCurrencyValue';
+import { TOKEN_COUNTERS } from 'stubs/token';
 import type { TokenTabs } from 'ui/pages/Token';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import DetailsSkeletonRow from 'ui/shared/skeletons/DetailsSkeletonRow';
 
 interface Props {
   tokenQuery: UseQueryResult<TokenInfo>;
@@ -23,7 +23,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
 
   const tokenCountersQuery = useApiQuery('token_counters', {
     pathParams: { hash: router.query.hash?.toString() },
-    queryOptions: { enabled: Boolean(router.query.hash) },
+    queryOptions: { enabled: Boolean(router.query.hash), placeholderData: TOKEN_COUNTERS },
   });
 
   const changeUrlAndScroll = useCallback((tab: TokenTabs) => () => {
@@ -56,32 +56,19 @@ const TokenDetails = ({ tokenQuery }: Props) => {
     throw Error('Token fetch error', { cause: tokenQuery.error as unknown as Error });
   }
 
-  if (tokenQuery.isLoading) {
-    return (
-      <Grid mt={ 10 } columnGap={ 8 } rowGap={{ base: 5, lg: 7 }} templateColumns={{ base: '1fr', lg: '210px 1fr' }} maxW="1000px">
-        <DetailsSkeletonRow w="10%"/>
-        <DetailsSkeletonRow w="30%"/>
-        <DetailsSkeletonRow w="30%"/>
-        <DetailsSkeletonRow w="20%"/>
-        <DetailsSkeletonRow w="20%"/>
-        <DetailsSkeletonRow w="10%"/>
-      </Grid>
-    );
-  }
-
   const {
     exchange_rate: exchangeRate,
     total_supply: totalSupply,
     decimals,
     symbol,
     type,
-  } = tokenQuery.data;
+  } = tokenQuery.data || {};
 
   let marketcap;
   let totalSupplyValue;
 
   if (type === 'ERC-20') {
-    const totalValue = totalSupply !== null ? getCurrencyValue({ value: totalSupply, accuracy: 3, accuracyUsd: 2, exchangeRate, decimals }) : undefined;
+    const totalValue = totalSupply ? getCurrencyValue({ value: totalSupply, accuracy: 3, accuracyUsd: 2, exchangeRate, decimals }) : undefined;
     marketcap = totalValue?.usd;
     totalSupplyValue = totalValue?.valueStr;
   } else {
@@ -119,40 +106,50 @@ const TokenDetails = ({ tokenQuery }: Props) => {
         alignSelf="center"
         wordBreak="break-word"
         whiteSpace="pre-wrap"
+        isLoading={ tokenQuery.isPlaceholderData }
       >
-        <Flex w="100%">
-          <Box whiteSpace="nowrap" overflow="hidden">
-            <HashStringShortenDynamic hash={ totalSupplyValue || '0' }/>
-          </Box>
-          <Box flexShrink={ 0 }> { symbol || '' }</Box>
-        </Flex>
+        <Skeleton isLoaded={ !tokenQuery.isPlaceholderData }>
+          <Flex w="100%">
+            <Box whiteSpace="nowrap" overflow="hidden">
+              <HashStringShortenDynamic hash={ totalSupplyValue || '0' }/>
+            </Box>
+            <Box flexShrink={ 0 }> { symbol || '' }</Box>
+          </Flex>
+        </Skeleton>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Holders"
         hint="Number of accounts holding the token"
         alignSelf="center"
+        isLoading={ tokenQuery.isPlaceholderData }
       >
-        { tokenCountersQuery.isLoading && <Skeleton w={ 20 } h={ 4 }/> }
-        { !tokenCountersQuery.isLoading && countersItem('token_holders_count') }
+        <Skeleton isLoaded={ !tokenCountersQuery.isPlaceholderData }>
+          { countersItem('token_holders_count') }
+        </Skeleton>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Transfers"
         hint="Number of transfer for the token"
         alignSelf="center"
+        isLoading={ tokenQuery.isPlaceholderData }
       >
-        { tokenCountersQuery.isLoading && <Skeleton w={ 20 } h={ 4 }/> }
-        { !tokenCountersQuery.isLoading && countersItem('transfers_count') }
+        <Skeleton isLoaded={ !tokenCountersQuery.isPlaceholderData }>
+          { countersItem('transfers_count') }
+        </Skeleton>
       </DetailsInfoItem>
       { decimals && (
         <DetailsInfoItem
           title="Decimals"
           hint="Number of digits that come after the decimal place when displaying token value"
           alignSelf="center"
+          isLoading={ tokenQuery.isPlaceholderData }
         >
-          { decimals }
+          <Skeleton isLoaded={ !tokenQuery.isPlaceholderData } minW={ 6 }>
+            { decimals }
+          </Skeleton>
         </DetailsInfoItem>
       ) }
-      <DetailsSponsoredItem/>
+      <DetailsSponsoredItem isLoading={ tokenQuery.isPlaceholderData }/>
     </Grid>
   );
 };

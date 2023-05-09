@@ -1,4 +1,4 @@
-import { Skeleton, Box, Flex, SkeletonCircle, Icon, Tag } from '@chakra-ui/react';
+import { Box, Icon, Flex } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
@@ -18,9 +18,11 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import trimTokenSymbol from 'lib/token/trimTokenSymbol';
+import * as addressStubs from 'stubs/address';
+import * as tokenStubs from 'stubs/token';
 import AddressContract from 'ui/address/AddressContract';
 import TextAd from 'ui/shared/ad/TextAd';
-import Page from 'ui/shared/Page/Page';
+import Tag from 'ui/shared/chakra/Tag';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
 import Pagination from 'ui/shared/Pagination';
@@ -52,7 +54,18 @@ const TokenPageContent = () => {
 
   const tokenQuery = useApiQuery('token', {
     pathParams: { hash: hashString },
-    queryOptions: { enabled: isSocketOpen && Boolean(router.query.hash) },
+    queryOptions: {
+      enabled: Boolean(router.query.hash),
+      placeholderData: tokenStubs.TOKEN_INFO_ERC_20,
+    },
+  });
+
+  const contractQuery = useApiQuery('address', {
+    pathParams: { hash: hashString },
+    queryOptions: {
+      enabled: isSocketOpen && Boolean(router.query.hash),
+      placeholderData: addressStubs.ADDRESS_INFO,
+    },
   });
 
   React.useEffect(() => {
@@ -89,7 +102,7 @@ const TokenPageContent = () => {
   });
 
   useEffect(() => {
-    if (tokenQuery.data) {
+    if (tokenQuery.data && !tokenQuery.isPlaceholderData) {
       const tokenSymbol = tokenQuery.data.symbol ? ` (${ tokenQuery.data.symbol })` : '';
       const tokenName = `${ tokenQuery.data.name || 'Unnamed' }${ tokenSymbol }`;
       const title = document.getElementsByTagName('title')[0];
@@ -101,14 +114,17 @@ const TokenPageContent = () => {
         description.content = description.content.replace(tokenQuery.data.address, tokenName) || description.content;
       }
     }
-  }, [ tokenQuery.data ]);
+  }, [ tokenQuery.data, tokenQuery.isPlaceholderData ]);
+
+  const hasData = (tokenQuery.data && !tokenQuery.isPlaceholderData) && (contractQuery.data && !contractQuery.isPlaceholderData);
 
   const transfersQuery = useQueryWithPages({
     resourceName: 'token_transfers',
     pathParams: { hash: hashString },
     scrollRef,
     options: {
-      enabled: Boolean(router.query.hash && (!router.query.tab || router.query.tab === 'token_transfers') && tokenQuery.data),
+      enabled: Boolean(hashString && (!router.query.tab || router.query.tab === 'token_transfers') && hasData),
+      placeholderData: tokenStubs.getTokenTransfersStub(tokenQuery.data?.type),
     },
   });
 
@@ -117,7 +133,8 @@ const TokenPageContent = () => {
     pathParams: { hash: hashString },
     scrollRef,
     options: {
-      enabled: Boolean(router.query.hash && router.query.tab === 'holders' && tokenQuery.data),
+      enabled: Boolean(router.query.hash && router.query.tab === 'holders' && hasData),
+      placeholderData: tokenStubs.TOKEN_HOLDERS,
     },
   });
 
@@ -126,13 +143,9 @@ const TokenPageContent = () => {
     pathParams: { hash: hashString },
     scrollRef,
     options: {
-      enabled: Boolean(router.query.hash && router.query.tab === 'inventory' && tokenQuery.data),
+      enabled: Boolean(router.query.hash && router.query.tab === 'inventory' && hasData),
+      placeholderData: tokenStubs.TOKEN_INSTANCES,
     },
-  });
-
-  const contractQuery = useApiQuery('address', {
-    pathParams: { hash: hashString },
-    queryOptions: { enabled: Boolean(router.query.hash) },
   });
 
   const isVerifiedInfoEnabled = Boolean(appConfig.contractInfoApi.endpoint);
@@ -144,15 +157,15 @@ const TokenPageContent = () => {
   const contractTabs = useContractTabs(contractQuery.data);
 
   const tabs: Array<RoutedTab> = [
-    { id: 'token_transfers', title: 'Token transfers', component: <TokenTransfer transfersQuery={ transfersQuery }/> },
-    { id: 'holders', title: 'Holders', component: <TokenHolders tokenQuery={ tokenQuery } holdersQuery={ holdersQuery }/> },
+    { id: 'token_transfers', title: 'Token transfers', component: <TokenTransfer transfersQuery={ transfersQuery } token={ tokenQuery.data }/> },
+    { id: 'holders', title: 'Holders', component: <TokenHolders token={ tokenQuery.data } holdersQuery={ holdersQuery }/> },
     (tokenQuery.data?.type === 'ERC-1155' || tokenQuery.data?.type === 'ERC-721') ?
       { id: 'inventory', title: 'Inventory', component: <TokenInventory inventoryQuery={ inventoryQuery }/> } :
       undefined,
     contractQuery.data?.is_contract ? {
       id: 'contract',
       title: () => {
-        if (contractQuery.data.is_verified) {
+        if (contractQuery.data?.is_verified) {
           return (
             <>
               <span>Contract</span>
@@ -169,7 +182,7 @@ const TokenPageContent = () => {
   ].filter(Boolean);
 
   let hasPagination;
-  let pagination;
+  let pagination: PaginationProps | undefined;
 
   if (!router.query.tab || router.query.tab === 'token_transfers') {
     hasPagination = transfersQuery.isPaginationVisible;
@@ -225,50 +238,41 @@ const TokenPageContent = () => {
   const tagsNode = tags.length > 0 ? <Flex columnGap={ 2 }>{ tags }</Flex> : null;
 
   return (
-    <Page>
-      { tokenQuery.isLoading ? (
-        <>
-          <Skeleton h={{ base: 12, lg: 6 }} mb={ 6 } w="100%" maxW="680px"/>
-          <Flex alignItems="center" mb={ 6 }>
-            <SkeletonCircle w={ 6 } h={ 6 } mr={ 3 }/>
-            <Skeleton w="500px" h={ 10 }/>
-          </Flex>
-        </>
-      ) : (
-        <>
-          <TextAd mb={ 6 }/>
-          <PageTitle
-            text={ `${ tokenQuery.data?.name || 'Unnamed' }${ tokenSymbolText } token` }
-            backLink={ backLink }
-            additionalsLeft={ (
-              <TokenLogo hash={ tokenQuery.data?.address } name={ tokenQuery.data?.name } boxSize={ 6 }/>
-            ) }
-            additionalsRight={ tagsNode }
-            afterTitle={
-              verifiedInfoQuery.data ?
-                <Icon as={ iconSuccess } color="green.500" boxSize={ 4 } verticalAlign="top"/> :
-                <Box boxSize={ 4 } display="inline-block"/>
-            }
-          />
-        </>
-      ) }
-      <TokenContractInfo tokenQuery={ tokenQuery }/>
+    <>
+      <TextAd mb={ 6 }/>
+      <PageTitle
+        isLoading={ tokenQuery.isPlaceholderData }
+        text={ `${ tokenQuery.data?.name || 'Unnamed' }${ tokenSymbolText } token` }
+        backLink={ backLink }
+        additionalsLeft={ (
+          <TokenLogo hash={ tokenQuery.data?.address } name={ tokenQuery.data?.name } boxSize={ 6 } isLoading={ tokenQuery.isPlaceholderData }/>
+        ) }
+        additionalsRight={ tagsNode }
+        afterTitle={
+          verifiedInfoQuery.data ?
+            <Icon as={ iconSuccess } color="green.500" boxSize={ 4 } verticalAlign="top"/> :
+            <Box boxSize={ 4 } display="inline-block"/>
+        }
+      />
+      <TokenContractInfo tokenQuery={ tokenQuery } contractQuery={ contractQuery }/>
       <TokenVerifiedInfo hash={ hashString } verifiedInfoQuery={ verifiedInfoQuery } isVerifiedInfoEnabled={ isVerifiedInfoEnabled }/>
       <TokenDetails tokenQuery={ tokenQuery }/>
       { /* should stay before tabs to scroll up with pagination */ }
       <Box ref={ scrollRef }></Box>
 
-      { tokenQuery.isLoading || contractQuery.isLoading ? <SkeletonTabs/> : (
-        <RoutedTabs
-          tabs={ tabs }
-          tabListProps={ tabListProps }
-          rightSlot={ !isMobile && hasPagination ? <Pagination { ...(pagination as PaginationProps) }/> : null }
-          stickyEnabled={ !isMobile }
-        />
-      ) }
+      { tokenQuery.isPlaceholderData || contractQuery.isPlaceholderData ?
+        <SkeletonTabs tabs={ tabs }/> :
+        (
+          <RoutedTabs
+            tabs={ tabs }
+            tabListProps={ tabListProps }
+            rightSlot={ !isMobile && hasPagination && pagination ? <Pagination { ...pagination }/> : null }
+            stickyEnabled={ !isMobile }
+          />
+        ) }
 
       { !tokenQuery.isLoading && !tokenQuery.isError && <Box h={{ base: 0, lg: '40vh' }}/> }
-    </Page>
+    </>
   );
 };
 

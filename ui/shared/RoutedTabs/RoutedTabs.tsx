@@ -175,6 +175,7 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled, className, .
                 }
                 onItemClick={ handleTabChange }
                 buttonRef={ tabsRefs[index] }
+                size={ themeProps.size || 'md' }
               />
             );
           }

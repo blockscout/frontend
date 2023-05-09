@@ -42,7 +42,8 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/tx/[hash]", { "hash": string }>
     | StaticRoute<"/txs">
     | StaticRoute<"/verified-contracts">
-    | StaticRoute<"/visualize/sol2uml">;
+    | StaticRoute<"/visualize/sol2uml">
+    | StaticRoute<"/withdrawals">;
 
   interface StaticRoute<Pathname> {
     pathname: Pathname;

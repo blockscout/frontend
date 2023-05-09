@@ -21,7 +21,7 @@ export interface TokenCounters {
 
 export interface TokenHolders {
   items: Array<TokenHolder>;
-  next_page_params: TokenHoldersPagination;
+  next_page_params: TokenHoldersPagination | null;
 }
 
 export type TokenHolder = {
@@ -52,7 +52,7 @@ export interface TokenInstanceTransfersCount {
 
 export interface TokenInventoryResponse {
   items: Array<TokenInstance>;
-  next_page_params: TokenInventoryPagination;
+  next_page_params: TokenInventoryPagination | null;
 }
 
 export type TokenInventoryPagination = {

@@ -14,6 +14,8 @@ import { getTokenTransferTypeText } from 'ui/shared/TokenTransfer/helpers';
 import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 
+import CopyToClipboard from '../CopyToClipboard';
+
 type Props = TokenTransfer & {
   baseAddress?: string;
   showTxInfo?: boolean;
@@ -32,14 +34,6 @@ const TokenTransferTableItem = ({
   timestamp,
   enableTimeIncrement,
 }: Props) => {
-  const value = (() => {
-    if (!('value' in total)) {
-      return '-';
-    }
-
-    return BigNumber(total.value).div(BigNumber(10 ** Number(total.decimals))).dp(8).toFormat();
-  })();
-
   const timeAgo = useTimeAgoIncrement(timestamp, enableTimeIncrement);
 
   return (
@@ -57,7 +51,7 @@ const TokenTransferTableItem = ({
         </Flex>
       </Td>
       <Td lineHeight="30px">
-        { 'token_id' in total ? <TokenTransferNft hash={ token.address } id={ total.token_id }/> : '-' }
+        { 'token_id' in total && <TokenTransferNft hash={ token.address } id={ total.token_id }/> }
       </Td>
       { showTxInfo && txHash && (
         <Td>
@@ -71,6 +65,7 @@ const TokenTransferTableItem = ({
         <Address display="inline-flex" maxW="100%" lineHeight="30px">
           <AddressIcon address={ from }/>
           <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ from.hash } alias={ from.name } flexGrow={ 1 } isDisabled={ baseAddress === from.hash }/>
+          { baseAddress !== from.hash && <CopyToClipboard text={ from.hash }/> }
         </Address>
       </Td>
       { baseAddress && (
@@ -82,10 +77,11 @@ const TokenTransferTableItem = ({
         <Address display="inline-flex" maxW="100%" lineHeight="30px">
           <AddressIcon address={ to }/>
           <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ to.hash } alias={ to.name } flexGrow={ 1 } isDisabled={ baseAddress === to.hash }/>
+          { baseAddress !== to.hash && <CopyToClipboard text={ to.hash }/> }
         </Address>
       </Td>
       <Td isNumeric verticalAlign="top" lineHeight="30px">
-        { value }
+        { 'value' in total && BigNumber(total.value).div(BigNumber(10 ** Number(total.decimals))).dp(8).toFormat() }
       </Td>
     </Tr>
   );

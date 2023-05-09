@@ -11,6 +11,7 @@ import dayjs from 'lib/date/dayjs';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import InOutTag from 'ui/shared/InOutTag';
 import LinkInternal from 'ui/shared/LinkInternal';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
@@ -56,15 +57,19 @@ const TxInternalsListItem = ({
         <Address width="calc((100% - 48px) / 2)">
           <AddressIcon address={ from }/>
           <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ from.hash } isDisabled={ isOut }/>
+          { isIn && <CopyToClipboard text={ from.hash }/> }
         </Address>
         { (isIn || isOut) ?
           <InOutTag isIn={ isIn } isOut={ isOut }/> :
           <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500"/>
         }
-        <Address width="calc((100% - 48px) / 2)">
-          <AddressIcon address={ toData }/>
-          <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ toData.hash } isDisabled={ isIn }/>
-        </Address>
+        { toData && (
+          <Address width="calc((100% - 48px) / 2)">
+            <AddressIcon address={ toData }/>
+            <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ toData.hash } isDisabled={ isIn }/>
+            { isOut && <CopyToClipboard text={ toData.hash }/> }
+          </Address>
+        ) }
       </Box>
       <HStack spacing={ 3 }>
         <Text fontSize="sm" fontWeight={ 500 }>Value { appConfig.network.currency.symbol }</Text>

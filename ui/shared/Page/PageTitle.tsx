@@ -1,4 +1,4 @@
-import { Heading, Flex, Grid, Tooltip, Icon, Link, chakra } from '@chakra-ui/react';
+import { Heading, Flex, Grid, Tooltip, Icon, Link, chakra, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import eastArrowIcon from 'icons/arrows/east.svg';
@@ -15,19 +15,22 @@ type Props = {
   className?: string;
   backLink?: BackLinkProp;
   afterTitle?: React.ReactNode;
+  isLoading?: boolean;
 }
 
-const PageTitle = ({ text, additionalsLeft, additionalsRight, withTextAd, backLink, className, afterTitle }: Props) => {
+const PageTitle = ({ text, additionalsLeft, additionalsRight, withTextAd, backLink, className, isLoading, afterTitle }: Props) => {
   const title = (
-    <Heading
-      as="h1"
-      size="lg"
-      flex="none"
-      wordBreak="break-word"
-    >
-      { text }
-      { afterTitle }
-    </Heading>
+    <Skeleton isLoaded={ !isLoading }>
+      <Heading
+        as="h1"
+        size="lg"
+        flex="none"
+        wordBreak="break-word"
+      >
+        { text }
+        { afterTitle }
+      </Heading>
+    </Skeleton>
   );
 
   const backLinkComponent = (() => {
