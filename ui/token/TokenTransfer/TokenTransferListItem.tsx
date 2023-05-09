@@ -11,6 +11,7 @@ import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
 
@@ -64,11 +65,13 @@ const TokenTransferListItem = ({
         <Address width="50%">
           <AddressIcon address={ from }/>
           <AddressLink ml={ 2 } fontWeight="500" hash={ from.hash } type="address_token" tokenHash={ token.address }/>
+          <CopyToClipboard text={ from.hash }/>
         </Address>
         <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500"/>
         <Address width="50%">
           <AddressIcon address={ to }/>
           <AddressLink ml={ 2 } fontWeight="500" hash={ to.hash } type="address_token" tokenHash={ token.address }/>
+          <CopyToClipboard text={ to.hash }/>
         </Address>
       </Flex>
       { value && (token.type === 'ERC-20' || token.type === 'ERC-1155') && (

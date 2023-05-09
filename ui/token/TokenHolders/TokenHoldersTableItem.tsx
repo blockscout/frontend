@@ -7,6 +7,7 @@ import type { TokenHolder, TokenInfo } from 'types/api/token';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
 type Props = {
@@ -23,6 +24,7 @@ const TokenTransferTableItem = ({ holder, token }: Props) => {
         <Address display="inline-flex" maxW="100%" lineHeight="30px">
           <AddressIcon address={ holder.address }/>
           <AddressLink type="address" ml={ 2 } fontWeight="700" hash={ holder.address.hash } alias={ holder.address.name } flexGrow={ 1 }/>
+          <CopyToClipboard text={ holder.address.hash }/>
         </Address>
       </Td>
       <Td isNumeric>

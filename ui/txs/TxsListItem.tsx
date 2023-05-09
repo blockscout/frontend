@@ -18,6 +18,7 @@ import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import InOutTag from 'ui/shared/InOutTag';
 import LinkInternal from 'ui/shared/LinkInternal';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
@@ -102,6 +103,7 @@ const TxsListItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }:
             ml={ 2 }
             isDisabled={ isOut }
           />
+          { !isOut && <CopyToClipboard text={ tx.from.hash }/> }
         </Address>
         { (isIn || isOut) ?
           <InOutTag isIn={ isIn } isOut={ isOut } width="48px" mx={ 2 }/> : (
@@ -123,6 +125,7 @@ const TxsListItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }:
               ml={ 2 }
               isDisabled={ isIn }
             />
+            { !isIn && <CopyToClipboard text={ dataTo.hash }/> }
           </Address>
         ) : '-' }
       </Flex>
