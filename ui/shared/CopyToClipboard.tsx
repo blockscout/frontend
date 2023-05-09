@@ -42,6 +42,7 @@ const CopyToClipboard = ({ text, className, isLoading }: Props) => {
         className={ className }
         onMouseEnter={ onOpen }
         onMouseLeave={ onClose }
+        ml={ 1 }
       />
     </Tooltip>
   );
