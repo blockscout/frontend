@@ -6,10 +6,9 @@ import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/appContext';
-import networkExplorers from 'lib/networks/networkExplorers';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import TextAd from 'ui/shared/ad/TextAd';
-import LinkExternal from 'ui/shared/LinkExternal';
+import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
@@ -40,27 +39,10 @@ const TransactionPageContent = () => {
     queryOptions: { enabled: Boolean(hash) },
   });
 
-  const explorersLinks = networkExplorers
-    .filter((explorer) => explorer.paths.tx)
-    .map((explorer) => {
-      const url = new URL(explorer.paths.tx + '/' + hash, explorer.baseUrl);
-      return <LinkExternal key={ explorer.baseUrl } href={ url.toString() }>Open in { explorer.title }</LinkExternal>;
-    });
-
   const additionals = (
     <Flex justifyContent="space-between" alignItems="center" flexGrow={ 1 } flexWrap="wrap">
       { data?.tx_tag && <Tag my={ 2 }>{ data.tx_tag }</Tag> }
-      { explorersLinks.length > 0 && (
-        <Flex
-          alignItems="center"
-          flexWrap="wrap"
-          columnGap={ 6 }
-          rowGap={ 3 }
-          ml={{ base: 'initial', lg: 'auto' }}
-        >
-          { explorersLinks }
-        </Flex>
-      ) }
+      <NetworkExplorers type="tx" pathParam={ hash } ml={{ base: 'initial', lg: 'auto' }}/>
     </Flex>
   );
 

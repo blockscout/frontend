@@ -14,6 +14,7 @@ import { useAppContext } from 'lib/appContext';
 import useContractTabs from 'lib/hooks/useContractTabs';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
+import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import trimTokenSymbol from 'lib/token/trimTokenSymbol';
@@ -45,7 +46,7 @@ const TokenPageContent = () => {
 
   const scrollRef = React.useRef<HTMLDivElement>(null);
 
-  const hashString = router.query.hash?.toString();
+  const hashString = getQueryParamString(router.query.hash);
 
   const queryClient = useQueryClient();
 
@@ -252,7 +253,7 @@ const TokenPageContent = () => {
         </>
       ) }
       <TokenContractInfo tokenQuery={ tokenQuery }/>
-      <TokenVerifiedInfo verifiedInfoQuery={ verifiedInfoQuery } isVerifiedInfoEnabled={ isVerifiedInfoEnabled }/>
+      <TokenVerifiedInfo hash={ hashString } verifiedInfoQuery={ verifiedInfoQuery } isVerifiedInfoEnabled={ isVerifiedInfoEnabled }/>
       <TokenDetails tokenQuery={ tokenQuery }/>
       { /* should stay before tabs to scroll up with pagination */ }
       <Box ref={ scrollRef }></Box>
