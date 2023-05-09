@@ -9,6 +9,7 @@ import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
 
 type Props = TokenTransfer & { tokenId?: string }
@@ -51,6 +52,7 @@ const TokenTransferTableItem = ({
             tokenHash={ token.address }
             truncation="constant"
           />
+          <CopyToClipboard text={ from.hash }/>
         </Address>
       </Td>
       <Td px={ 0 }>
@@ -69,6 +71,7 @@ const TokenTransferTableItem = ({
             tokenHash={ token.address }
             truncation="constant"
           />
+          <CopyToClipboard text={ to.hash }/>
         </Address>
       </Td>
       { (token.type === 'ERC-721' || token.type === 'ERC-1155') && (
