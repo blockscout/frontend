@@ -234,7 +234,7 @@ const TokenPageContent = () => {
     ...(contractQuery.data?.watchlist_names || []),
   ]
     .filter(Boolean)
-    .map((tag) => <Tag key={ tag.label }>{ tag.display_name }</Tag>);
+    .map((tag) => <Tag key={ tag.label } isLoading={ tokenQuery.isPlaceholderData }>{ tag.display_name }</Tag>);
   const tagsNode = tags.length > 0 ? <Flex columnGap={ 2 }>{ tags }</Flex> : null;
 
   return (
