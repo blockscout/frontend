@@ -7,6 +7,8 @@ import type { TokenVerifiedInfo as TTokenVerifiedInfo } from 'types/api/token';
 import LinkExternal from 'ui/shared/LinkExternal';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 
+import TokenProjectInfo from './TokenProjectInfo';
+
 interface Props {
   verifiedInfoQuery: UseQueryResult<TTokenVerifiedInfo>;
   isVerifiedInfoEnabled: boolean;
@@ -53,7 +55,7 @@ const TokenVerifiedInfo = ({ verifiedInfoQuery, isVerifiedInfoEnabled, hash }: P
     return (
       <>
         { websiteLink }
-        <Skeleton w="130px" h="30px" borderRadius="base"/>
+        { Boolean(data) && <TokenProjectInfo data={ data }/> }
         { explorers }
       </>
     );
