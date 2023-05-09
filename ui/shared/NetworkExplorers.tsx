@@ -3,9 +3,9 @@ import React from 'react';
 
 import type { NetworkExplorer as TNetworkExplorer } from 'types/networks';
 
+import appConfig from 'configs/app/config';
 import arrowIcon from 'icons/arrows/east-mini.svg';
 import searchIcon from 'icons/search.svg';
-import networkExplorers from 'lib/networks/networkExplorers';
 import LinkExternal from 'ui/shared/LinkExternal';
 
 interface Props {
@@ -17,7 +17,7 @@ interface Props {
 const NetworkExplorers = ({ className, type, pathParam }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
 
-  const explorersLinks = networkExplorers
+  const explorersLinks = appConfig.network.explorers
     .filter((explorer) => explorer.paths[type])
     .map((explorer) => {
       const url = new URL(explorer.paths[type] + '/' + pathParam, explorer.baseUrl);
