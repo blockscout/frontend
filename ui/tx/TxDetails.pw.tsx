@@ -150,7 +150,7 @@ const l2Test = test.extend({
   ]) as any,
 });
 
-l2Test.only('l2', async({ mount, page }) => {
+l2Test('l2', async({ mount, page }) => {
   await page.route(API_URL, (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(txMock.l2tx),
