@@ -1,5 +1,4 @@
 import {
-  Tag,
   Tr,
   Td,
 } from '@chakra-ui/react';
@@ -8,16 +7,17 @@ import React, { useCallback } from 'react';
 import type { AddressTag } from 'types/api/account';
 
 import AddressSnippet from 'ui/shared/AddressSnippet';
+import Tag from 'ui/shared/chakra/Tag';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
-import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 interface Props {
   item: AddressTag;
   onEditClick: (data: AddressTag) => void;
   onDeleteClick: (data: AddressTag) => void;
+  isLoading: boolean;
 }
 
-const AddressTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
+const AddressTagTableItem = ({ item, onEditClick, onDeleteClick, isLoading }: Props) => {
   const onItemEditClick = useCallback(() => {
     return onEditClick(item);
   }, [ item, onEditClick ]);
@@ -29,17 +29,13 @@ const AddressTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   return (
     <Tr alignItems="top" key={ item.id }>
       <Td>
-        <AddressSnippet address={ item.address }/>
+        <AddressSnippet address={ item.address } isLoading={ isLoading }/>
       </Td>
       <Td whiteSpace="nowrap">
-        <TruncatedTextTooltip label={ item.name }>
-          <Tag>
-            { item.name }
-          </Tag>
-        </TruncatedTextTooltip>
+        <Tag isLoading={ isLoading } isTruncated>{ item.name }</Tag>
       </Td>
       <Td>
-        <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
+        <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick } isLoading={ isLoading }/>
       </Td>
     </Tr>
   );

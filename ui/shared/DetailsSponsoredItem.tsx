@@ -7,18 +7,22 @@ import isSelfHosted from 'lib/isSelfHosted';
 import AdBanner from 'ui/shared/ad/AdBanner';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 
-const DetailsSponsoredItem = () => {
+interface Props {
+  isLoading?: boolean;
+}
+
+const DetailsSponsoredItem = ({ isLoading }: Props) => {
   const isMobile = useIsMobile();
   const hasAdblockCookie = cookies.get(cookies.NAMES.ADBLOCK_DETECTED);
 
-  if (hasAdblockCookie || !isSelfHosted()) {
+  if (!isSelfHosted() || hasAdblockCookie) {
     return null;
   }
 
   if (isMobile) {
     return (
       <GridItem mt={ 5 }>
-        <AdBanner justifyContent="center"/>
+        <AdBanner mx="auto" isLoading={ isLoading } display="flex" justifyContent="center"/>
       </GridItem>
     );
   }
@@ -27,8 +31,9 @@ const DetailsSponsoredItem = () => {
     <DetailsInfoItem
       title="Sponsored"
       hint="Sponsored banner advertisement"
+      isLoading={ isLoading }
     >
-      <AdBanner/>
+      <AdBanner isLoading={ isLoading }/>
     </DetailsInfoItem>
   );
 };

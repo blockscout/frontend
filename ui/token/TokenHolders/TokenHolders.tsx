@@ -1,3 +1,4 @@
+import { Box } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
@@ -38,15 +39,28 @@ const TokenHoldersContent = ({ holdersQuery, token }: Props) => {
 
   const content = items && token ? (
     <>
-      { !isMobile && <TokenHoldersTable data={ items } token={ token } top={ holdersQuery.isPaginationVisible ? 80 : 0 }/> }
-      { isMobile && <TokenHoldersList data={ items } token={ token }/> }
+      <Box display={{ base: 'none', lg: 'block' }}>
+        <TokenHoldersTable
+          data={ items }
+          token={ token }
+          top={ holdersQuery.isPaginationVisible ? 80 : 0 }
+          isLoading={ holdersQuery.isPlaceholderData }
+        />
+      </Box>
+      <Box display={{ base: 'block', lg: 'none' }}>
+        <TokenHoldersList
+          data={ items }
+          token={ token }
+          isLoading={ holdersQuery.isPlaceholderData }
+        />
+      </Box>
     </>
   ) : null;
 
   return (
     <DataListDisplay
       isError={ holdersQuery.isError }
-      isLoading={ holdersQuery.isLoading }
+      isLoading={ false }
       items={ holdersQuery.data?.items }
       skeletonProps={{ skeletonDesktopColumns: [ '100%', '300px', '175px' ] }}
       emptyText="There are no holders for this token."

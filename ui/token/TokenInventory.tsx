@@ -1,4 +1,4 @@
-import { Grid, Skeleton } from '@chakra-ui/react';
+import { Grid } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
@@ -28,21 +28,6 @@ const TokenInventory = ({ inventoryQuery }: Props) => {
     </ActionBar>
   );
 
-  const skeleton = (
-    <Grid
-      w="100%"
-      columnGap={{ base: 3, lg: 6 }}
-      rowGap={{ base: 3, lg: 6 }}
-      gridTemplateColumns={{ base: 'repeat(2, calc((100% - 12px)/2))', lg: 'repeat(auto-fill, minmax(210px, 1fr))' }}
-    >
-      <Skeleton w={{ base: '100%', lg: '210px' }} h="272px"/>
-      <Skeleton w={{ base: '100%', lg: '210px' }} h="272px"/>
-      <Skeleton w={{ base: '100%', lg: '210px' }} h="272px"/>
-      <Skeleton w={{ base: '100%', lg: '210px' }} h="272px"/>
-      <Skeleton w={{ base: '100%', lg: '210px' }} h="272px"/>
-    </Grid>
-  );
-
   const items = inventoryQuery.data?.items;
 
   const content = items ? (
@@ -52,19 +37,25 @@ const TokenInventory = ({ inventoryQuery }: Props) => {
       rowGap={{ base: 3, lg: 6 }}
       gridTemplateColumns={{ base: 'repeat(2, calc((100% - 12px)/2))', lg: 'repeat(auto-fill, minmax(210px, 1fr))' }}
     >
-      { items.map((item) => <TokenInventoryItem key={ item.token.address + '_' + item.id } item={ item }/>) }
+      { items.map((item, index) => (
+        <TokenInventoryItem
+          key={ item.token.address + '_' + item.id + (inventoryQuery.isPlaceholderData ? '_' + index : '') }
+          item={ item }
+          isLoading={ inventoryQuery.isPlaceholderData }
+        />
+      )) }
     </Grid>
   ) : null;
 
   return (
     <DataListDisplay
       isError={ inventoryQuery.isError }
-      isLoading={ inventoryQuery.isLoading }
+      isLoading={ false }
       items={ items }
       emptyText="There are no tokens."
       content={ content }
       actionBar={ actionBar }
-      skeletonProps={{ customSkeleton: skeleton }}
+      skeletonProps={{ customSkeleton: null }}
     />
   );
 };

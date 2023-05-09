@@ -8,9 +8,10 @@ import TokenTransferListItem from 'ui/token/TokenTransfer/TokenTransferListItem'
 interface Props {
   data: Array<TokenTransfer>;
   tokenId?: string;
+  isLoading?: boolean;
 }
 
-const TokenTransferList = ({ data, tokenId }: Props) => {
+const TokenTransferList = ({ data, tokenId, isLoading }: Props) => {
   return (
     <Box>
       { data.map((item, index) => (
@@ -18,6 +19,7 @@ const TokenTransferList = ({ data, tokenId }: Props) => {
           key={ index }
           { ...item }
           tokenId={ tokenId }
+          isLoading={ isLoading }
         />
       )) }
     </Box>

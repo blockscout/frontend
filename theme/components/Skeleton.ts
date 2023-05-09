@@ -26,7 +26,7 @@ const baseStyle = defineStyle((props) => {
 
   return {
     opacity: 1,
-    borderRadius: 'base',
+    borderRadius: 'md',
     borderColor: start,
     background: `linear-gradient(90deg, ${ start } 8%, ${ end } 18%, ${ start } 33%)`,
     backgroundSize: '200% 100%',
