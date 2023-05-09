@@ -1,8 +1,9 @@
-import { MenuItem, chakra, useDisclosure } from '@chakra-ui/react';
+import { MenuItem, Icon, chakra, useDisclosure } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import appConfig from 'configs/app/config';
+import iconEdit from 'icons/edit.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import useRedirectIfNotAuth from 'lib/hooks/useRedirectIfNotAuth';
 import AddressVerificationModal from 'ui/addressVerification/AddressVerificationModal';
@@ -44,22 +45,28 @@ const TokenInfoMenuItem = ({ className, hash }: Props) => {
     router.push({ pathname: '/account/verified_addresses' });
   }, [ router ]);
 
+  const icon = <Icon as={ iconEdit } boxSize={ 6 } mr={ 2 } p={ 1 }/>;
+
   const content = (() => {
     if (!verifiedAddressesQuery.data?.verifiedAddresses.find(({ contractAddress }) => contractAddress.toLowerCase() === hash.toLowerCase())) {
       return (
         <MenuItem className={ className } onClick={ handleAddAddressClick }>
-          Add token info
+          { icon }
+          <span>Add token info</span>
         </MenuItem>
       );
     }
 
     return (
       <MenuItem className={ className } onClick={ handleAddApplicationClick }>
-        {
-          applicationsQuery.data?.submissions.some(({ tokenAddress }) => tokenAddress.toLowerCase() === hash.toLowerCase()) ?
-            'Update token info' :
-            'Add token info'
-        }
+        { icon }
+        <span>
+          {
+            applicationsQuery.data?.submissions.some(({ tokenAddress }) => tokenAddress.toLowerCase() === hash.toLowerCase()) ?
+              'Update token info' :
+              'Add token info'
+          }
+        </span>
       </MenuItem>
     );
   })();

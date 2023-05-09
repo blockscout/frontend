@@ -1,9 +1,10 @@
-import { MenuItem, chakra, useDisclosure } from '@chakra-ui/react';
+import { MenuItem, Icon, chakra, useDisclosure } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
 import type { Address } from 'types/api/address';
 
+import iconPrivateTags from 'icons/privattags.svg';
 import { getResourceKey } from 'lib/api/useApiQuery';
 import useRedirectIfNotAuth from 'lib/hooks/useRedirectIfNotAuth';
 import PrivateTagModal from 'ui/privateTags/AddressModal/AddressModal';
@@ -46,8 +47,9 @@ const PrivateTagMenuItem = ({ className, hash }: Props) => {
 
   return (
     <>
-      <MenuItem className={ className }onClick={ handleClick }>
-        Add private tag
+      <MenuItem className={ className } onClick={ handleClick }>
+        <Icon as={ iconPrivateTags } boxSize={ 6 } mr={ 2 }/>
+        <span>Add private tag</span>
       </MenuItem>
       <PrivateTagModal isOpen={ modal.isOpen } onClose={ modal.onClose } onSuccess={ handleAddPrivateTag } data={ formData }/>
     </>

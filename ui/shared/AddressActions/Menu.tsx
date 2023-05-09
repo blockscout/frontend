@@ -31,8 +31,8 @@ const AddressActions = () => {
       </MenuButton>
       <MenuList minWidth="180px" zIndex="popover">
         { isTokenPage && appConfig.contractInfoApi.endpoint && appConfig.adminServiceApi.endpoint && <TokenInfoMenuItem py={ 2 } px={ 4 } hash={ hash }/> }
-        <PublicTagMenuItem py={ 2 } px={ 4 } hash={ hash }/>
         <PrivateTagMenuItem py={ 2 } px={ 4 } hash={ hash }/>
+        <PublicTagMenuItem py={ 2 } px={ 4 } hash={ hash }/>
       </MenuList>
     </Menu>
   );

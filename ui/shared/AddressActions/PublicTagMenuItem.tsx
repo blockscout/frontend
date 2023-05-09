@@ -1,7 +1,8 @@
-import { MenuItem, chakra } from '@chakra-ui/react';
+import { MenuItem, Icon, chakra } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import iconPublicTags from 'icons/publictags.svg';
 import useRedirectIfNotAuth from 'lib/hooks/useRedirectIfNotAuth';
 
 interface Props {
@@ -23,7 +24,8 @@ const PublicTagMenuItem = ({ className, hash }: Props) => {
 
   return (
     <MenuItem className={ className }onClick={ handleClick }>
-      Add public tag
+      <Icon as={ iconPublicTags } boxSize={ 6 } mr={ 2 }/>
+      <span>Add public tag</span>
     </MenuItem>
   );
 };
