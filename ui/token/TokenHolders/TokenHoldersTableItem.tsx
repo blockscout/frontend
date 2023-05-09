@@ -7,6 +7,7 @@ import type { TokenHolder, TokenInfo } from 'types/api/token';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
 type Props = {
@@ -32,6 +33,7 @@ const TokenTransferTableItem = ({ holder, token, isLoading }: Props) => {
             flexGrow={ 1 }
             isLoading={ isLoading }
           />
+          <CopyToClipboard text={ holder.address.hash } isLoading={ isLoading }/>
         </Address>
       </Td>
       <Td verticalAlign="middle" isNumeric>

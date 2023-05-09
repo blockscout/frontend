@@ -7,6 +7,7 @@ import type { TokenHolder, TokenInfo } from 'types/api/token';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
@@ -32,6 +33,7 @@ const TokenHoldersListItem = ({ holder, token, isLoading }: Props) => {
           flexGrow={ 1 }
           isLoading={ isLoading }
         />
+        <CopyToClipboard text={ holder.address.hash } isLoading={ isLoading }/>
       </Address>
       <Flex justifyContent="space-between" alignItems="center" width="100%">
         <Skeleton isLoaded={ !isLoading } display="inline-block">

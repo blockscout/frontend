@@ -10,6 +10,7 @@ import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import Tag from 'ui/shared/chakra/Tag';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
 
 type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean }
@@ -64,6 +65,7 @@ const TokenTransferTableItem = ({
             truncation="constant"
             isLoading={ isLoading }
           />
+          <CopyToClipboard text={ from.hash } isLoading={ isLoading }/>
         </Address>
       </Td>
       <Td px={ 0 }>
@@ -85,6 +87,7 @@ const TokenTransferTableItem = ({
             truncation="constant"
             isLoading={ isLoading }
           />
+          <CopyToClipboard text={ to.hash } isLoading={ isLoading }/>
         </Address>
       </Td>
       { (token.type === 'ERC-721' || token.type === 'ERC-1155') && (

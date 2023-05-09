@@ -12,6 +12,7 @@ import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import Tag from 'ui/shared/chakra/Tag';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
 
@@ -76,6 +77,7 @@ const TokenTransferListItem = ({
         <Address width="50%">
           <AddressIcon address={ from } isLoading={ isLoading }/>
           <AddressLink ml={ 2 } fontWeight="500" hash={ from.hash } type="address_token" tokenHash={ token.address } isLoading={ isLoading }/>
+          <CopyToClipboard text={ from.hash } isLoading={ isLoading }/>
         </Address>
         <Skeleton isLoaded={ !isLoading } boxSize={ 6 }>
           <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500"/>
@@ -83,6 +85,7 @@ const TokenTransferListItem = ({
         <Address width="50%">
           <AddressIcon address={ to } isLoading={ isLoading }/>
           <AddressLink ml={ 2 } fontWeight="500" hash={ to.hash } type="address_token" tokenHash={ token.address } isLoading={ isLoading }/>
+          <CopyToClipboard text={ to.hash } isLoading={ isLoading }/>
         </Address>
       </Flex>
       { value && (token.type === 'ERC-20' || token.type === 'ERC-1155') && (

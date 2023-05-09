@@ -20,6 +20,7 @@ import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import InOutTag from 'ui/shared/InOutTag';
 import LinkInternal from 'ui/shared/LinkInternal';
@@ -47,6 +48,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }
     <Address w="100%">
       <AddressIcon address={ tx.from }/>
       <AddressLink type="address" hash={ tx.from.hash } alias={ tx.from.name } fontWeight="500" ml={ 2 } truncation="constant" isDisabled={ isOut }/>
+      { !isOut && <CopyToClipboard text={ tx.from.hash }/> }
     </Address>
   );
 
@@ -54,6 +56,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement }
     <Address w="100%">
       <AddressIcon address={ dataTo }/>
       <AddressLink type="address" hash={ dataTo.hash } alias={ dataTo.name } fontWeight="500" ml={ 2 } truncation="constant" isDisabled={ isIn }/>
+      { !isIn && <CopyToClipboard text={ dataTo.hash }/> }
     </Address>
   ) : '-';
 
