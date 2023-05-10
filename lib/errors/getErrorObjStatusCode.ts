@@ -3,9 +3,9 @@ import getErrorObj from './getErrorObj';
 export default function getErrorObjStatusCode(error: unknown) {
   const errorObj = getErrorObj(error);
 
-  if (!errorObj || !('statusCode' in errorObj) || typeof errorObj.statusCode !== 'number') {
+  if (!errorObj || !('status' in errorObj) || typeof errorObj.status !== 'number') {
     return;
   }
 
-  return errorObj.statusCode;
+  return errorObj.status;
 }
