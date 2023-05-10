@@ -36,6 +36,7 @@ const MarketplaceList = ({ apps, onAppClick, favoriteApps, onFavoriteClick }: Pr
             url={ app.url }
             title={ app.title }
             logo={ app.logo }
+            logoDarkMode={ app.logoDarkMode }
             shortDescription={ app.shortDescription }
             categories={ app.categories }
             isFavorite={ favoriteApps.includes(app.id) }
