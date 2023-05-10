@@ -22,6 +22,7 @@ const MarketplaceAppCard = ({
   external,
   title,
   logo,
+  logoDarkMode,
   shortDescription,
   categories,
   onInfoClick,
@@ -38,6 +39,8 @@ const MarketplaceAppCard = ({
   const handleFavoriteClick = useCallback(() => {
     onFavoriteClick(id, isFavorite);
   }, [ onFavoriteClick, id, isFavorite ]);
+
+  const logoUrl = useColorModeValue(logo, logoDarkMode || logo);
 
   return (
     <LinkBox
@@ -73,7 +76,7 @@ const MarketplaceAppCard = ({
           justifyContent="center"
         >
           <Image
-            src={ logo }
+            src={ logoUrl }
             alt={ `${ title } app icon` }
           />
         </Box>

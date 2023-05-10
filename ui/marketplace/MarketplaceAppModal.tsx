@@ -1,6 +1,6 @@
 import {
   Box, Flex, Heading, Icon, IconButton, Image, Link, List, Modal, ModalBody,
-  ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tag, Text,
+  ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tag, Text, useColorModeValue,
 } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
@@ -41,6 +41,7 @@ const MarketplaceAppModal = ({
     telegram,
     twitter,
     logo,
+    logoDarkMode,
     categories,
   } = data;
 
@@ -64,6 +65,7 @@ const MarketplaceAppModal = ({
   }, [ onFavoriteClick, data.id, isFavorite ]);
 
   const isMobile = useIsMobile();
+  const logoUrl = useColorModeValue(logo, logoDarkMode || logo);
 
   return (
     <Modal
@@ -89,7 +91,7 @@ const MarketplaceAppModal = ({
             gridRow={{ base: '1 / 3', sm: '1 / 4' }}
           >
             <Image
-              src={ logo }
+              src={ logoUrl }
               alt={ `${ title } app icon` }
             />
           </Flex>
