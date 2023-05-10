@@ -2,7 +2,7 @@ import { Box, Tag, Icon } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
+import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import nftIcon from 'icons/nft_shield.svg';
 import useApiQuery from 'lib/api/useApiQuery';
@@ -15,8 +15,8 @@ import LinkExternal from 'ui/shared/LinkExternal';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/Pagination';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
-import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
 import SkeletonTabs from 'ui/shared/skeletons/SkeletonTabs';
+import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TokenHolders from 'ui/token/TokenHolders/TokenHolders';
 import TokenTransfer from 'ui/token/TokenTransfer/TokenTransfer';
 

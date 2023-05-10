@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { BlockType } from 'types/api/block';
-import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
+import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
@@ -10,7 +10,7 @@ import BlocksContent from 'ui/blocks/BlocksContent';
 import BlocksTabSlot from 'ui/blocks/BlocksTabSlot';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
+import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 
 const TAB_TO_TYPE: Record<string, BlockType> = {
   blocks: 'block',

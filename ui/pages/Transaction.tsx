@@ -2,7 +2,7 @@ import { Flex, Tag } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
+import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/appContext';
@@ -12,7 +12,7 @@ import TextAd from 'ui/shared/ad/TextAd';
 import LinkExternal from 'ui/shared/LinkExternal';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
+import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TxDetails from 'ui/tx/TxDetails';
 import TxInternals from 'ui/tx/TxInternals';
 import TxLogs from 'ui/tx/TxLogs';
