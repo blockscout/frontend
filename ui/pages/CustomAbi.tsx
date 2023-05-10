@@ -11,6 +11,7 @@ import CustomAbiListItem from 'ui/customAbi/CustomAbiTable/CustomAbiListItem';
 import CustomAbiTable from 'ui/customAbi/CustomAbiTable/CustomAbiTable';
 import DeleteCustomAbiModal from 'ui/customAbi/DeleteCustomAbiModal';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
+import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import SkeletonListAccount from 'ui/shared/skeletons/SkeletonListAccount';
 import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
@@ -70,7 +71,10 @@ const CustomAbiPage: React.FC = () => {
     }
 
     if (isError) {
-      throw new Error('Custom ABI fetch error', { cause: error });
+      if (error.status === 403) {
+        throw new Error('Unverified email error', { cause: error });
+      }
+      return <DataFetchAlert/>;
     }
 
     const list = isMobile ? (

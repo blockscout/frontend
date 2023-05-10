@@ -7,6 +7,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { PRIVATE_TAG_ADDRESS } from 'stubs/account';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
+import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import AddressModal from './AddressModal/AddressModal';
 import AddressTagListItem from './AddressTagTable/AddressTagListItem';
@@ -49,7 +50,10 @@ const PrivateAddressTags = () => {
   }, [ deleteModalProps ]);
 
   if (isError) {
-    throw new Error('Private tags fetch error', { cause: error });
+    if (error.status === 403) {
+      throw new Error('Unverified email error', { cause: error });
+    }
+    return <DataFetchAlert/>;
   }
 
   const list = isMobile ? (

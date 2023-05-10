@@ -12,6 +12,7 @@ import ApiKeyListItem from 'ui/apiKey/ApiKeyTable/ApiKeyListItem';
 import ApiKeyTable from 'ui/apiKey/ApiKeyTable/ApiKeyTable';
 import DeleteApiKeyModal from 'ui/apiKey/DeleteApiKeyModal';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
+import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import SkeletonListAccount from 'ui/shared/skeletons/SkeletonListAccount';
 import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
@@ -74,7 +75,10 @@ const ApiKeysPage: React.FC = () => {
     }
 
     if (isError) {
-      throw new Error('API keys fetch error', { cause: error });
+      if (error.status === 403) {
+        throw new Error('Unverified email error', { cause: error });
+      }
+      return <DataFetchAlert/>;
     }
 
     const list = isMobile ? (

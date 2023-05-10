@@ -5,11 +5,13 @@ import React, { useCallback, useState } from 'react';
 import type { WatchlistAddress, WatchlistTokensResponse } from 'types/api/account';
 import type { TWatchlist, TWatchlistItem } from 'types/client/account';
 
+import type { ResourceError } from 'lib/api/resources';
 import { resourceKey } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
+import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import SkeletonListAccount from 'ui/shared/skeletons/SkeletonListAccount';
 import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
@@ -20,7 +22,7 @@ import WatchlistTable from 'ui/watchlist/WatchlistTable/WatchlistTable';
 
 const WatchList: React.FC = () => {
   const apiFetch = useApiFetch();
-  const { data, isLoading, isError, error } = useQuery<unknown, unknown, TWatchlist>([ resourceKey('watchlist') ], async() => {
+  const { data, isLoading, isError, error } = useQuery<unknown, ResourceError, TWatchlist>([ resourceKey('watchlist') ], async() => {
     const watchlistAddresses = await apiFetch<'watchlist', Array<WatchlistAddress>>('watchlist');
 
     if (!Array.isArray(watchlistAddresses)) {
@@ -91,7 +93,10 @@ const WatchList: React.FC = () => {
   );
 
   if (isError) {
-    throw new Error('Watch list fetch error', { cause: error });
+    if (error.status === 403) {
+      throw new Error('Unverified email error', { cause: error });
+    }
+    return <DataFetchAlert/>;
   }
 
   const content = (() => {

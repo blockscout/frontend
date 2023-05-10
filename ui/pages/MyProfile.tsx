@@ -4,6 +4,7 @@ import React from 'react';
 import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
 import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import ContentLoader from 'ui/shared/ContentLoader';
+import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import UserAvatar from 'ui/shared/UserAvatar';
 
@@ -17,7 +18,10 @@ const MyProfile = () => {
     }
 
     if (isError) {
-      throw new Error('My profile fetch error', { cause: error });
+      if (error.status === 403) {
+        throw new Error('Unverified email error', { cause: error });
+      }
+      return <DataFetchAlert/>;
     }
 
     return (

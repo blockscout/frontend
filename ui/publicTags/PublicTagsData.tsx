@@ -7,6 +7,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import PublicTagListItem from 'ui/publicTags/PublicTagTable/PublicTagListItem';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
+import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import SkeletonListAccount from 'ui/shared/skeletons/SkeletonListAccount';
 import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 
@@ -69,7 +70,10 @@ const PublicTagsData = ({ changeToFormScreen, onTagDelete }: Props) => {
   }
 
   if (isError) {
-    throw new Error('Public tags fetch error', { cause: error });
+    if (error.status === 403) {
+      throw new Error('Unverified email error', { cause: error });
+    }
+    return <DataFetchAlert/>;
   }
 
   const list = isMobile ? (
