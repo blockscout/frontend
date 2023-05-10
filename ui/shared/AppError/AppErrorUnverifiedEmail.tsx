@@ -3,6 +3,7 @@ import React from 'react';
 
 import icon404 from 'icons/error-pages/404.svg';
 import useApiFetch from 'lib/api/useApiFetch';
+import dayjs from 'lib/date/dayjs';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import getErrorObjStatusCode from 'lib/errors/getErrorObjStatusCode';
 import useToast from 'lib/hooks/useToast';
@@ -31,8 +32,20 @@ const AppErrorUnverifiedEmail = ({ className }: Props) => {
       });
     } catch (error) {
       const statusCode = getErrorObjStatusCode(error);
-      const payload = getErrorObjPayload<{ message: string }>(error);
-      const message = statusCode === 429 ? payload?.message : undefined;
+
+      const message = (() => {
+        if (statusCode !== 429) {
+          return;
+        }
+
+        const payload = getErrorObjPayload<{ seconds_before_next_resend: number }>(error);
+        if (!payload) {
+          return;
+        }
+
+        const timeUntilNextResend = dayjs().add(payload.seconds_before_next_resend, 'seconds').fromNow();
+        return `Email resend is available ${ timeUntilNextResend }.`;
+      })();
 
       !toast.isActive(toastId) && toast({
         id: toastId,
