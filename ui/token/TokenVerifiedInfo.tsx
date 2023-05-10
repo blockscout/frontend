@@ -38,7 +38,7 @@ const TokenVerifiedInfo = ({ verifiedInfoQuery, isVerifiedInfoEnabled, hash }: P
     }
 
     if (isError) {
-      return null;
+      return explorers;
     }
 
     const websiteLink = (() => {

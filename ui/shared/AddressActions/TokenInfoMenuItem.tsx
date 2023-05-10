@@ -1,10 +1,11 @@
 import { MenuItem, Icon, chakra, useDisclosure } from '@chakra-ui/react';
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import appConfig from 'configs/app/config';
 import iconEdit from 'icons/edit.svg';
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import useRedirectIfNotAuth from 'lib/hooks/useRedirectIfNotAuth';
 import AddressVerificationModal from 'ui/addressVerification/AddressVerificationModal';
 
@@ -17,6 +18,7 @@ const TokenInfoMenuItem = ({ className, hash }: Props) => {
   const router = useRouter();
   const modal = useDisclosure();
   const redirectIfNotAuth = useRedirectIfNotAuth();
+  const queryClient = useQueryClient();
 
   const verifiedAddressesQuery = useApiQuery('verified_addresses', {
     pathParams: { chainId: appConfig.network.id },
@@ -48,21 +50,25 @@ const TokenInfoMenuItem = ({ className, hash }: Props) => {
   const icon = <Icon as={ iconEdit } boxSize={ 6 } mr={ 2 } p={ 1 }/>;
 
   const content = (() => {
+    const verifiedTokenInfo = queryClient.getQueryData(getResourceKey('token_verified_info', { pathParams: { hash, chainId: appConfig.network.id } }));
+
     if (!verifiedAddressesQuery.data?.verifiedAddresses.find(({ contractAddress }) => contractAddress.toLowerCase() === hash.toLowerCase())) {
       return (
         <MenuItem className={ className } onClick={ handleAddAddressClick }>
           { icon }
-          <span>Add token info</span>
+          <span>{ verifiedTokenInfo ? 'Update token info' : 'Add token info' }</span>
         </MenuItem>
       );
     }
+
+    const hasApplication = applicationsQuery.data?.submissions.some(({ tokenAddress }) => tokenAddress.toLowerCase() === hash.toLowerCase());
 
     return (
       <MenuItem className={ className } onClick={ handleAddApplicationClick }>
         { icon }
         <span>
           {
-            applicationsQuery.data?.submissions.some(({ tokenAddress }) => tokenAddress.toLowerCase() === hash.toLowerCase()) ?
+            hasApplication || verifiedTokenInfo ?
               'Update token info' :
               'Add token info'
           }
