@@ -9,6 +9,7 @@ import eastArrowIcon from 'icons/arrows/east.svg';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TxStatus from 'ui/shared/TxStatus';
 import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
@@ -29,12 +30,14 @@ const TxInternalsListItem = ({ type, from, to, value, success, error, gas_limit:
         <Address width="calc((100% - 48px) / 2)">
           <AddressIcon address={ from }/>
           <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ from.hash }/>
+          <CopyToClipboard text={ from.hash }/>
         </Address>
         <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500"/>
         { toData && (
           <Address width="calc((100% - 48px) / 2)">
             <AddressIcon address={ toData }/>
             <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ toData.hash }/>
+            <CopyToClipboard text={ toData.hash }/>
           </Address>
         ) }
       </Box>

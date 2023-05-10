@@ -1,4 +1,4 @@
-import { GridItem, Flex, Text } from '@chakra-ui/react';
+import { GridItem, Flex, Text, Skeleton } from '@chakra-ui/react';
 import type { HTMLChakraProps } from '@chakra-ui/system';
 import React from 'react';
 
@@ -9,18 +9,21 @@ interface Props extends Omit<HTMLChakraProps<'div'>, 'title'> {
   hint: string;
   children: React.ReactNode;
   note?: string;
+  isLoading?: boolean;
 }
 
-const DetailsInfoItem = ({ title, hint, note, children, id, ...styles }: Props) => {
+const DetailsInfoItem = ({ title, hint, note, children, id, isLoading, ...styles }: Props) => {
   return (
     <>
       <GridItem py={{ base: 1, lg: 2 }} id={ id } lineHeight={ 5 } { ...styles } whiteSpace="nowrap" _notFirst={{ mt: { base: 3, lg: 0 } }}>
         <Flex columnGap={ 2 } alignItems="flex-start">
-          <Hint label={ hint }/>
-          <Text fontWeight={{ base: 700, lg: 500 }}>
-            { title }
-            { note && <Text fontWeight={ 500 } variant="secondary" fontSize="xs" className="note" align="right">{ note }</Text> }
-          </Text>
+          <Hint label={ hint } isLoading={ isLoading }/>
+          <Skeleton isLoaded={ !isLoading }>
+            <Text fontWeight={{ base: 700, lg: 500 }}>
+              { title }
+              { note && <Text fontWeight={ 500 } variant="secondary" fontSize="xs" className="note" align="right">{ note }</Text> }
+            </Text>
+          </Skeleton>
         </Flex>
       </GridItem>
       <GridItem

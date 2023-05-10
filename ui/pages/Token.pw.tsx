@@ -67,7 +67,7 @@ test('base view', async({ mount, page, createSocket }) => {
 
   await insertAdPlaceholder(page);
 
-  await expect(component.locator('main')).toHaveScreenshot();
+  await expect(component).toHaveScreenshot();
 });
 
 test.describe('mobile', () => {
@@ -86,6 +86,6 @@ test.describe('mobile', () => {
 
     await insertAdPlaceholder(page);
 
-    await expect(component.locator('main')).toHaveScreenshot();
+    await expect(component).toHaveScreenshot();
   });
 });

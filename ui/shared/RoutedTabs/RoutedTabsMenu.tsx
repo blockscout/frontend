@@ -1,3 +1,5 @@
+import type {
+  ButtonProps } from '@chakra-ui/react';
 import { Popover,
   PopoverTrigger,
   PopoverContent,
@@ -20,9 +22,10 @@ interface Props {
   styles?: StyleProps;
   onItemClick: (index: number) => void;
   buttonRef: React.RefObject<HTMLButtonElement>;
+  size: ButtonProps['size'];
 }
 
-const RoutedTabsMenu = ({ tabs, tabsCut, isActive, styles, onItemClick, buttonRef, activeTab }: Props) => {
+const RoutedTabsMenu = ({ tabs, tabsCut, isActive, styles, onItemClick, buttonRef, activeTab, size }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   const handleItemClick = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
@@ -40,6 +43,7 @@ const RoutedTabsMenu = ({ tabs, tabsCut, isActive, styles, onItemClick, buttonRe
           variant="ghost"
           isActive={ isOpen || isActive }
           ref={ buttonRef }
+          size={ size }
           { ...styles }
         >
           { menuButton.title }
