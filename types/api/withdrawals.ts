@@ -16,3 +16,8 @@ export type WithdrawalsItem = {
   timestamp: string;
   validator_index: number;
 }
+
+export type WithdrawalsCounters = {
+  withdrawal_count: string;
+  withdrawal_sum: string;
+}

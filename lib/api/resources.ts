@@ -43,7 +43,7 @@ import type { TransactionsResponseValidated, TransactionsResponsePending, Transa
 import type { TTxsFilters } from 'types/api/txsFilters';
 import type { TxStateChanges } from 'types/api/txStateChanges';
 import type { VisualizedContract } from 'types/api/visualization';
-import type { WithdrawalsResponse } from 'types/api/withdrawals';
+import type { WithdrawalsResponse, WithdrawalsCounters } from 'types/api/withdrawals';
 import type { ArrayElement } from 'types/utils';
 
 import appConfig from 'configs/app/config';
@@ -179,6 +179,9 @@ export const RESOURCES = {
     path: '/api/v2/withdrawals',
     paginationFields: [ 'index' as const, 'items_count' as const ],
     filterFields: [],
+  },
+  withdrawals_counters: {
+    path: '/api/v2/withdrawals/counters',
   },
 
   // ADDRESSES
@@ -569,6 +572,7 @@ Q extends 'verified_contracts_counters' ? VerifiedContractsCounters :
 Q extends 'visualize_sol2uml' ? VisualizedContract :
 Q extends 'contract_verification_config' ? SmartContractVerificationConfig :
 Q extends 'withdrawals' ? WithdrawalsResponse :
+Q extends 'withdrawals_counters' ? WithdrawalsCounters :
 Q extends 'l2_output_roots' ? L2OutputRootsResponse :
 Q extends 'l2_withdrawals' ? L2WithdrawalsResponse :
 Q extends 'l2_deposits' ? L2DepositsResponse :
