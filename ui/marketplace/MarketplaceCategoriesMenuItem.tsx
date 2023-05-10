@@ -2,7 +2,7 @@ import { Icon, MenuItem } from '@chakra-ui/react';
 import type { FunctionComponent, SVGAttributes } from 'react';
 import React, { useCallback } from 'react';
 
-import { AppCategory } from 'types/client/apps';
+import { MarketplaceCategory } from 'types/client/marketplace';
 
 import starFilledIcon from 'icons/star_filled.svg';
 
@@ -12,10 +12,10 @@ type Props = {
 }
 
 const ICONS: Record<string, FunctionComponent<SVGAttributes<SVGElement>>> = {
-  [AppCategory.FAVORITES]: starFilledIcon,
+  [MarketplaceCategory.FAVORITES]: starFilledIcon,
 };
 
-const CategoriesMenuItem = ({ id, onClick }: Props) => {
+const MarketplaceCategoriesMenuItem = ({ id, onClick }: Props) => {
   const handleSelection = useCallback(() => {
     onClick(id);
   }, [ id, onClick ]);
@@ -33,4 +33,4 @@ const CategoriesMenuItem = ({ id, onClick }: Props) => {
   );
 };
 
-export default CategoriesMenuItem;
+export default MarketplaceCategoriesMenuItem;

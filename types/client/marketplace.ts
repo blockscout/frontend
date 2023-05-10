@@ -1,14 +1,15 @@
-export type AppItemPreview = {
+export type MarketplaceAppPreview = {
   id: string;
   external?: boolean;
   title: string;
   logo: string;
+  logoDarkMode?: string;
   shortDescription: string;
   categories: Array<string>;
   url: string;
 }
 
-export type AppItemOverview = AppItemPreview & {
+export type MarketplaceAppOverview = MarketplaceAppPreview & {
   author: string;
   description: string;
   site?: string;
@@ -17,7 +18,7 @@ export type AppItemOverview = AppItemPreview & {
   github?: string;
 }
 
-export enum AppCategory {
+export enum MarketplaceCategory {
   ALL = 'All apps',
   FAVORITES = 'Favorites',
 }

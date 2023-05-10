@@ -9,7 +9,7 @@ type Props = {
   title: string;
 }
 
-const AppLink = ({ url, external, id, title }: Props) => {
+const MarketplaceAppCardLink = ({ url, external, id, title }: Props) => {
   return external ? (
     <LinkOverlay href={ url } isExternal={ true }>
       { title }
@@ -23,4 +23,4 @@ const AppLink = ({ url, external, id, title }: Props) => {
   );
 };
 
-export default AppLink;
+export default MarketplaceAppCardLink;

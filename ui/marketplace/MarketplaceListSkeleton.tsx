@@ -1,11 +1,11 @@
 import { Grid, GridItem } from '@chakra-ui/react';
 import React from 'react';
 
-import { AppCardSkeleton } from 'ui/apps/AppCardSkeleton';
+import MarketplaceAppCardSkeleton from './MarketplaceAppCardSkeleton';
 
 const applicationStubs = [ ...Array(12) ];
 
-const AppListSkeleton = () => {
+const MarketplaceListSkeleton = () => {
   return (
     <Grid
       templateColumns={{
@@ -19,11 +19,11 @@ const AppListSkeleton = () => {
         <GridItem
           key={ index }
         >
-          <AppCardSkeleton/>
+          <MarketplaceAppCardSkeleton/>
         </GridItem>
       )) }
     </Grid>
   );
 };
 
-export default AppListSkeleton;
+export default MarketplaceListSkeleton;

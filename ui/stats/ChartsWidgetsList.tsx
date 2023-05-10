@@ -5,9 +5,9 @@ import type { StatsChartsSection } from 'types/api/stats';
 import type { StatsIntervalIds } from 'types/client/stats';
 
 import { apos } from 'lib/html-entities';
+import ChartWidgetSkeleton from 'ui/shared/chart/ChartWidgetSkeleton';
+import EmptySearchResult from 'ui/shared/EmptySearchResult';
 
-import EmptySearchResult from '../apps/EmptySearchResult';
-import ChartWidgetSkeleton from '../shared/chart/ChartWidgetSkeleton';
 import ChartsLoadingErrorAlert from './ChartsLoadingErrorAlert';
 import ChartWidgetContainer from './ChartWidgetContainer';
 

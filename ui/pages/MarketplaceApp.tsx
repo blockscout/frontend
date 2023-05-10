@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { route } from 'nextjs-routes';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-import type { AppItemOverview } from 'types/client/apps';
+import type { MarketplaceAppOverview } from 'types/client/marketplace';
 
 import appConfig from 'configs/app/config';
 import type { ResourceError } from 'lib/api/resources';
@@ -26,15 +26,15 @@ const MarketplaceApp = () => {
   const router = useRouter();
   const id = getQueryParamString(router.query.id);
 
-  const { isLoading, isError, error, data } = useQuery<unknown, ResourceError<unknown>, AppItemOverview>(
+  const { isLoading, isError, error, data } = useQuery<unknown, ResourceError<unknown>, MarketplaceAppOverview>(
     [ 'marketplace-apps', id ],
     async() => {
-      const result = await apiFetch<Array<AppItemOverview>, unknown>(appConfig.marketplaceConfigUrl || '');
+      const result = await apiFetch<Array<MarketplaceAppOverview>, unknown>(appConfig.marketplaceConfigUrl || '');
       if (!Array.isArray(result)) {
         throw result;
       }
 
-      const item = result.find((app: AppItemOverview) => app.id === id);
+      const item = result.find((app: MarketplaceAppOverview) => app.id === id);
       if (!item) {
         throw { status: 404 };
       }
