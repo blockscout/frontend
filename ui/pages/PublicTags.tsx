@@ -10,7 +10,6 @@ import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthT
 import useToast from 'lib/hooks/useToast';
 import PublicTagsData from 'ui/publicTags/PublicTagsData';
 import PublicTagsForm from 'ui/publicTags/PublicTagsForm/PublicTagsForm';
-import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 type TScreen = 'data' | 'form';
@@ -78,7 +77,7 @@ const PublicTagsComponent: React.FC = () => {
   }
 
   return (
-    <Page>
+    <>
       { screen === 'form' && (
         <Link display="inline-flex" alignItems="center" mb={ 6 } onClick={ onGoBack }>
           <Icon as={ eastArrowIcon } boxSize={ 6 } transform="rotate(180deg)"/>
@@ -87,7 +86,7 @@ const PublicTagsComponent: React.FC = () => {
       ) }
       <PageTitle text={ header } display={{ base: 'block', lg: 'inline-flex' }} ml={{ base: 0, lg: 3 }}/>
       { content }
-    </Page>
+    </>
   );
 };
 

@@ -4,13 +4,11 @@ import React from 'react';
 import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
 import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import ContentLoader from 'ui/shared/ContentLoader';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import UserAvatar from 'ui/shared/UserAvatar';
 
 const MyProfile = () => {
-  const { data, isLoading, isError, isFetched } = useFetchProfileInfo();
+  const { data, isLoading, isError, error, isFetched } = useFetchProfileInfo();
   useRedirectForInvalidAuthToken();
 
   const content = (() => {
@@ -19,7 +17,7 @@ const MyProfile = () => {
     }
 
     if (isError) {
-      return <DataFetchAlert/>;
+      throw new Error('My profile fetch error', { cause: error });
     }
 
     return (
@@ -54,10 +52,10 @@ const MyProfile = () => {
   })();
 
   return (
-    <Page>
+    <>
       <PageTitle text="My profile"/>
       { content }
-    </Page>
+    </>
   );
 };
 

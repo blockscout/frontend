@@ -7,7 +7,6 @@ import useApiQuery from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { PRIVATE_TAG_ADDRESS } from 'stubs/account';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import AddressModal from './AddressModal/AddressModal';
 import AddressTagListItem from './AddressTagTable/AddressTagListItem';
@@ -15,7 +14,7 @@ import AddressTagTable from './AddressTagTable/AddressTagTable';
 import DeletePrivateTagModal from './DeletePrivateTagModal';
 
 const PrivateAddressTags = () => {
-  const { data: addressTagsData, isError, isPlaceholderData } = useApiQuery('private_tags_address', {
+  const { data: addressTagsData, isError, error, isPlaceholderData } = useApiQuery('private_tags_address', {
     queryOptions: {
       refetchOnMount: false,
       placeholderData: Array(3).fill(PRIVATE_TAG_ADDRESS),
@@ -50,7 +49,7 @@ const PrivateAddressTags = () => {
   }, [ deleteModalProps ]);
 
   if (isError) {
-    return <DataFetchAlert/>;
+    throw new Error('Private tags fetch error', { cause: error });
   }
 
   const list = isMobile ? (

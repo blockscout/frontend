@@ -6,7 +6,6 @@ import type { TransactionTag } from 'types/api/account';
 import useApiQuery from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import SkeletonListAccount from 'ui/shared/skeletons/SkeletonListAccount';
 import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 
@@ -16,7 +15,7 @@ import TransactionTagListItem from './TransactionTagTable/TransactionTagListItem
 import TransactionTagTable from './TransactionTagTable/TransactionTagTable';
 
 const PrivateTransactionTags = () => {
-  const { data: transactionTagsData, isLoading, isError } = useApiQuery('private_tags_tx', { queryOptions: { refetchOnMount: false } });
+  const { data: transactionTagsData, isLoading, isError, error } = useApiQuery('private_tags_tx', { queryOptions: { refetchOnMount: false } });
 
   const transactionModalProps = useDisclosure();
   const deleteModalProps = useDisclosure();
@@ -69,7 +68,7 @@ const PrivateTransactionTags = () => {
   }
 
   if (isError) {
-    return <DataFetchAlert/>;
+    throw new Error('Private tags fetch error', { cause: error });
   }
 
   const list = isMobile ? (

@@ -7,7 +7,6 @@ import useApiQuery from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import PublicTagListItem from 'ui/publicTags/PublicTagTable/PublicTagListItem';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import SkeletonListAccount from 'ui/shared/skeletons/SkeletonListAccount';
 import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 
@@ -24,7 +23,7 @@ const PublicTagsData = ({ changeToFormScreen, onTagDelete }: Props) => {
   const [ deleteModalData, setDeleteModalData ] = useState<PublicTag>();
   const isMobile = useIsMobile();
 
-  const { data, isLoading, isError } = useApiQuery('public_tags');
+  const { data, isLoading, isError, error } = useApiQuery('public_tags');
 
   const onDeleteModalClose = useCallback(() => {
     setDeleteModalData(undefined);
@@ -70,7 +69,7 @@ const PublicTagsData = ({ changeToFormScreen, onTagDelete }: Props) => {
   }
 
   if (isError) {
-    return <DataFetchAlert/>;
+    throw new Error('Public tags fetch error', { cause: error });
   }
 
   const list = isMobile ? (
