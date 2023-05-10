@@ -1,4 +1,4 @@
-import { Tag, Flex, HStack, Text } from '@chakra-ui/react';
+import { Tag, Flex, HStack, Text, Skeleton } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
 import type { AddressTag } from 'types/api/account';
@@ -11,9 +11,10 @@ interface Props {
   item: AddressTag;
   onEditClick: (data: AddressTag) => void;
   onDeleteClick: (data: AddressTag) => void;
+  isLoading?: boolean;
 }
 
-const AddressTagListItem = ({ item, onEditClick, onDeleteClick }: Props) => {
+const AddressTagListItem = ({ item, onEditClick, onDeleteClick, isLoading }: Props) => {
   const onItemEditClick = useCallback(() => {
     return onEditClick(item);
   }, [ item, onEditClick ]);
@@ -25,15 +26,17 @@ const AddressTagListItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   return (
     <ListItemMobile>
       <Flex alignItems="flex-start" flexDirection="column" maxW="100%">
-        <AddressSnippet address={ item.address }/>
+        <AddressSnippet address={ item.address } isLoading={ isLoading }/>
         <HStack spacing={ 3 } mt={ 4 }>
           <Text fontSize="sm" fontWeight={ 500 }>Private tag</Text>
-          <Tag>
-            { item.name }
-          </Tag>
+          <Skeleton isLoaded={ !isLoading } display="inline-block" borderRadius="sm">
+            <Tag>
+              { item.name }
+            </Tag>
+          </Skeleton>
         </HStack>
       </Flex>
-      <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
+      <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick } isLoading={ isLoading }/>
     </ListItemMobile>
   );
 };

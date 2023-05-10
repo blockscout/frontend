@@ -1,4 +1,4 @@
-import { Box, Image, Link, Text, chakra } from '@chakra-ui/react';
+import { Box, Image, Link, Text, chakra, Skeleton } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 
 import { useAppContext } from 'lib/appContext';
@@ -55,7 +55,7 @@ const CoinzillaTextAd = ({ className }: {className?: string}) => {
   }
 
   if (isLoading) {
-    return <Box className={ className } h={{ base: 12, lg: 6 }}/>;
+    return <Skeleton className={ className } h={{ base: 12, lg: 6 }} maxW="1000px"/>;
   }
 
   if (!adData) {

@@ -1,9 +1,10 @@
-import { Hide, Show } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
+import type { TokenInfo } from 'types/api/token';
 import type { TokenTransferResponse } from 'types/api/tokenTransfer';
 
 import useGradualIncrement from 'lib/hooks/useGradualIncrement';
@@ -14,7 +15,7 @@ import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/Pagination';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
-import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
+import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import TokenTransferList from 'ui/token/TokenTransfer/TokenTransferList';
 import TokenTransferTable from 'ui/token/TokenTransfer/TokenTransferTable';
 
@@ -24,12 +25,13 @@ type Props = {
     isPaginationVisible: boolean;
   };
   tokenId?: string;
+  token?: TokenInfo;
 }
 
-const TokenTransfer = ({ transfersQuery, tokenId }: Props) => {
+const TokenTransfer = ({ transfersQuery, tokenId, token }: Props) => {
   const isMobile = useIsMobile();
   const router = useRouter();
-  const { isError, isLoading, data, pagination, isPaginationVisible } = transfersQuery;
+  const { isError, isLoading, isPlaceholderData, data, pagination, isPaginationVisible } = transfersQuery;
 
   const [ newItemsCount, setNewItemsCount ] = useGradualIncrement(0);
   const [ socketAlert, setSocketAlert ] = React.useState('');
@@ -61,7 +63,7 @@ const TokenTransfer = ({ transfersQuery, tokenId }: Props) => {
   const content = data?.items ? (
 
     <>
-      <Hide below="lg" ssr={ false }>
+      <Box display={{ base: 'none', lg: 'block' }}>
         <TokenTransferTable
           data={ data?.items }
           top={ isPaginationVisible ? 80 : 0 }
@@ -69,20 +71,22 @@ const TokenTransfer = ({ transfersQuery, tokenId }: Props) => {
           socketInfoAlert={ socketAlert }
           socketInfoNum={ newItemsCount }
           tokenId={ tokenId }
+          token={ token }
+          isLoading={ isPlaceholderData }
         />
-      </Hide>
-      <Show below="lg" ssr={ false }>
+      </Box>
+      <Box display={{ base: 'block', lg: 'none' }}>
         { pagination.page === 1 && (
-          <SocketNewItemsNotice
+          <SocketNewItemsNotice.Mobile
             url={ window.location.href }
             num={ newItemsCount }
             alert={ socketAlert }
             type="token_transfer"
-            borderBottomRadius={ 0 }
+            isLoading={ isPlaceholderData }
           />
         ) }
-        <TokenTransferList data={ data?.items } tokenId={ tokenId }/>
-      </Show>
+        <TokenTransferList data={ data?.items } tokenId={ tokenId } isLoading={ isPlaceholderData }/>
+      </Box>
     </>
   ) : null;
 
@@ -95,7 +99,7 @@ const TokenTransfer = ({ transfersQuery, tokenId }: Props) => {
   return (
     <DataListDisplay
       isError={ isError }
-      isLoading={ isLoading }
+      isLoading={ !isPlaceholderData && isLoading }
       items={ data?.items }
       skeletonProps={{
         isLongSkeleton: true,

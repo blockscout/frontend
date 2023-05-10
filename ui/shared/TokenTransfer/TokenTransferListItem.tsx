@@ -17,6 +17,8 @@ import { getTokenTransferTypeText } from 'ui/shared/TokenTransfer/helpers';
 import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 
+import CopyToClipboard from '../CopyToClipboard';
+
 type Props = TokenTransfer & {
   baseAddress?: string;
   showTxInfo?: boolean;
@@ -84,6 +86,7 @@ const TokenTransferListItem = ({
         <Address width={ addressWidth }>
           <AddressIcon address={ from }/>
           <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ from.hash } isDisabled={ baseAddress === from.hash }/>
+          { baseAddress !== from.hash && <CopyToClipboard text={ from.hash }/> }
         </Address>
         { baseAddress ?
           <InOutTag isIn={ baseAddress === to.hash } isOut={ baseAddress === from.hash } w="50px" textAlign="center"/> :
@@ -92,6 +95,7 @@ const TokenTransferListItem = ({
         <Address width={ addressWidth }>
           <AddressIcon address={ to }/>
           <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ to.hash } isDisabled={ baseAddress === to.hash }/>
+          { baseAddress !== to.hash && <CopyToClipboard text={ to.hash }/> }
         </Address>
       </Flex>
       { value && (

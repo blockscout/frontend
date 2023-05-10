@@ -26,6 +26,8 @@ const ListItemMobile = ({ children, className, isAnimated }: Props) => {
         borderBottomWidth: '1px',
       }}
       className={ className }
+      fontSize="16px"
+      lineHeight="20px"
     >
       { children }
     </Flex>
