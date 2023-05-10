@@ -163,6 +163,9 @@ const config = Object.freeze({
   googleAnalytics: {
     propertyId: getEnvValue(process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID),
   },
+  mixpanel: {
+    projectToken: getEnvValue(process.env.NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN),
+  },
   graphQL: {
     defaultTxnHash: getEnvValue(process.env.NEXT_PUBLIC_GRAPHIQL_TRANSACTION) || '',
   },

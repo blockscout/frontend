@@ -11,6 +11,7 @@ import { Chakra } from 'lib/Chakra';
 import { ScrollDirectionProvider } from 'lib/contexts/scrollDirection';
 import getErrorStatusCode from 'lib/errors/getErrorStatusCode';
 import useConfigSentry from 'lib/hooks/useConfigSentry';
+import useMixpanelInit from 'lib/hooks/useMixpanelInit';
 import { SocketProvider } from 'lib/socket/context';
 import theme from 'theme';
 import AppError from 'ui/shared/AppError/AppError';
@@ -20,7 +21,11 @@ import GoogleAnalytics from 'ui/shared/GoogleAnalytics';
 import 'lib/setLocale';
 
 function MyApp({ Component, pageProps }: AppProps) {
+
   useConfigSentry();
+
+  useMixpanelInit();
+
   const [ queryClient ] = useState(() => new QueryClient({
     defaultOptions: {
       queries: {
