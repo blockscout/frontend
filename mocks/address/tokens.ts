@@ -1,6 +1,7 @@
 import type { AddressTokenBalance } from 'types/api/address';
 
 import * as tokens from 'mocks/tokens/tokenInfo';
+import * as tokenInstance from 'mocks/tokens/tokenInstance';
 
 export const erc20a: AddressTokenBalance = {
   token: tokens.tokenInfoERC20a,
@@ -59,24 +60,28 @@ export const erc721LongSymbol: AddressTokenBalance = {
 export const erc1155a: AddressTokenBalance = {
   token: tokens.tokenInfoERC1155a,
   token_id: '42',
+  token_instance: tokenInstance.base,
   value: '24',
 };
 
 export const erc1155b: AddressTokenBalance = {
   token: tokens.tokenInfoERC1155b,
   token_id: '100010000000001',
+  token_instance: tokenInstance.base,
   value: '11',
 };
 
 export const erc1155withoutName: AddressTokenBalance = {
   token: tokens.tokenInfoERC1155WithoutName,
   token_id: '64532245',
+  token_instance: tokenInstance.base,
   value: '42',
 };
 
 export const erc1155LongId: AddressTokenBalance = {
   token: tokens.tokenInfoERC1155b,
   token_id: '483200961027732618117991942553110860267520',
+  token_instance: tokenInstance.base,
   value: '42',
 };
 
