@@ -48,7 +48,10 @@ const Page = ({
     }
 
     if (isUnverifiedEmail) {
-      return <PageContent isHomePage={ isHomePage }><AppErrorUnverifiedEmail mt="50px"/></PageContent>;
+      const email = resourceErrorPayload && 'email' in resourceErrorPayload && typeof resourceErrorPayload.email === 'string' ?
+        resourceErrorPayload.email :
+        undefined;
+      return <PageContent isHomePage={ isHomePage }><AppErrorUnverifiedEmail mt="50px" email={ email }/></PageContent>;
     }
 
     if (isBlockConsensus) {
