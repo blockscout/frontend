@@ -1,6 +1,5 @@
 import { Text } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
-import type { Route } from 'nextjs-routes';
 import React from 'react';
 
 import type { SearchResult } from 'types/api/search';
@@ -17,10 +16,10 @@ interface Props {
     pagination: PaginationProps;
   };
   searchTerm: string;
-  pathname: Route['pathname'];
+  onItemClick: (event: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 
-const SearchBarSuggest = ({ query, searchTerm, pathname }: Props) => {
+const SearchBarSuggest = ({ query, searchTerm, onItemClick }: Props) => {
   const isMobile = useIsMobile();
 
   const content = (() => {
@@ -39,7 +38,7 @@ const SearchBarSuggest = ({ query, searchTerm, pathname }: Props) => {
       <>
         <Text fontWeight={ 500 } fontSize="sm">Found <Text fontWeight={ 700 } as="span">{ num }</Text> matching { resultText }</Text>
         { query.data.items.map((item, index) =>
-          <SearchBarSuggestItem key={ index } data={ item } isMobile={ isMobile } searchTerm={ searchTerm } pathname={ pathname }/>) }
+          <SearchBarSuggestItem key={ index } data={ item } isMobile={ isMobile } searchTerm={ searchTerm } onClick={ onItemClick }/>) }
       </>
     );
   })();
