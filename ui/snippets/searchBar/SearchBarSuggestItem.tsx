@@ -1,5 +1,6 @@
 import { chakra, Text, Flex, useColorModeValue, Icon, Box } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
+import type { Route } from 'nextjs-routes';
 import React from 'react';
 
 import type { SearchResultItem } from 'types/api/search';
@@ -7,6 +8,7 @@ import type { SearchResultItem } from 'types/api/search';
 import blockIcon from 'icons/block.svg';
 import txIcon from 'icons/transactions.svg';
 import highlightText from 'lib/highlightText';
+import * as mixpanel from 'lib/mixpanel/index';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import TokenLogo from 'ui/shared/TokenLogo';
@@ -15,9 +17,18 @@ interface Props {
   data: SearchResultItem;
   isMobile: boolean | undefined;
   searchTerm: string;
+  pathname: Route['pathname'];
 }
 
-const SearchBarSuggestItem = ({ data, isMobile, searchTerm }: Props) => {
+const SearchBarSuggestItem = ({ data, isMobile, searchTerm, pathname }: Props) => {
+
+  const handleClick = React.useCallback((event: React.MouseEvent<HTMLAnchorElement>) => {
+    mixpanel.logEvent(mixpanel.EventTypes.SEARCH_QUERY, {
+      'Search query': searchTerm,
+      'Source page type': mixpanel.getPageType(pathname),
+      'Result URL': event.currentTarget.href,
+    });
+  }, [ searchTerm, pathname ]);
 
   const url = (() => {
     switch (data.type) {
@@ -161,6 +172,7 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm }: Props) => {
       _first={{
         mt: 2,
       }}
+      onClick={ handleClick }
     >
       <Flex display="flex" alignItems="center">
         { firstRow }

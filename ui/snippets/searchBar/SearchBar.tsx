@@ -5,6 +5,7 @@ import type { FormEvent, FocusEvent } from 'react';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import * as mixpanel from 'lib/mixpanel/index';
 
 import SearchBarInput from './SearchBarInput';
 import SearchBarSuggest from './SearchBarSuggest';
@@ -21,15 +22,20 @@ const SearchBar = ({ isHomepage }: Props) => {
   const menuWidth = React.useRef<number>(0);
   const isMobile = useIsMobile();
 
-  const { searchTerm, handleSearchTermChange, query } = useSearchQuery();
+  const { searchTerm, handleSearchTermChange, query, pathname } = useSearchQuery();
 
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (searchTerm) {
       const url = route({ pathname: '/search-results', query: { q: searchTerm } });
+      mixpanel.logEvent(mixpanel.EventTypes.SEARCH_QUERY, {
+        'Search query': searchTerm,
+        'Source page type': mixpanel.getPageType(pathname),
+        'Result URL': url,
+      });
       window.location.assign(url);
     }
-  }, [ searchTerm ]);
+  }, [ searchTerm, pathname ]);
 
   const handleFocus = React.useCallback(() => {
     onOpen();
@@ -98,7 +104,7 @@ const SearchBar = ({ isHomepage }: Props) => {
       </PopoverTrigger>
       <PopoverContent w={ `${ menuWidth.current }px` } maxH={{ base: '300px', lg: '500px' }} overflowY="scroll" ref={ menuRef }>
         <PopoverBody py={ 6 }>
-          <SearchBarSuggest query={ query } searchTerm={ searchTerm }/>
+          <SearchBarSuggest query={ query } searchTerm={ searchTerm } pathname={ pathname }/>
         </PopoverBody>
       </PopoverContent>
     </Popover>

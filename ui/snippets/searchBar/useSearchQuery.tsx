@@ -15,6 +15,7 @@ export default function useSearchQuery(isSearchPage = false) {
   const [ searchTerm, setSearchTerm ] = React.useState(initialValue);
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  const pathname = router.pathname;
 
   const query = useQueryWithPages({
     resourceName: 'search',
@@ -39,5 +40,6 @@ export default function useSearchQuery(isSearchPage = false) {
     handleSearchTermChange: setSearchTerm,
     query,
     redirectCheckQuery,
+    pathname,
   };
 }

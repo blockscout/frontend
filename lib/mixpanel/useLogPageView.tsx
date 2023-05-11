@@ -1,4 +1,3 @@
-import mixpanel from 'mixpanel-browser';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -7,6 +6,8 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 
 import getPageType from './getPageType';
 import getTabName from './getTabName';
+import logEvent from './logEvent';
+import { EventTypes } from './utils';
 
 export default function useLogPageView(isInited: boolean) {
   const router = useRouter();
@@ -19,9 +20,9 @@ export default function useLogPageView(isInited: boolean) {
       return;
     }
 
-    mixpanel.track('Page view', {
-      page_type: getPageType(pathname),
-      tab: getTabName(tab),
+    logEvent(EventTypes.PAGE_VIEW, {
+      'Page type': getPageType(pathname),
+      Tab: getTabName(tab),
     });
   }, [ isInited, pathname, tab ]);
 }
