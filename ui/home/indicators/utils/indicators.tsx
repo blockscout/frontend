@@ -46,7 +46,7 @@ const coinPriceIndicator: TChainIndicator<'homepage_chart_market'> = {
 };
 
 const marketPriceIndicator: TChainIndicator<'homepage_chart_market'> = {
-  id: 'market_cup',
+  id: 'market_cap',
   title: 'Market cap',
   value: (stats) => '$' + Number(stats.market_cap).toLocaleString(undefined, { maximumFractionDigits: 0, notation: 'compact' }),
   icon: <Icon as={ globeIcon } boxSize={ 6 } bgColor="#6A5DCC" borderRadius="base" color="white"/>,

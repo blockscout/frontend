@@ -109,7 +109,7 @@ frontend:
       _default: https://blockscout.com/auth/logout
       review: blockscout-main.test.aws-k8s.blockscout.com/auth/logout
     NEXT_PUBLIC_HOMEPAGE_CHARTS:
-      _default: "['daily_txs','coin_price','market_cup']"
+      _default: "['daily_txs','coin_price','market_cap']"
     NEXT_PUBLIC_APP_HOST:
       _default: blockscout.com
     NEXT_PUBLIC_NETWORK_RPC_URL:
