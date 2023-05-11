@@ -29,7 +29,7 @@ import { rightLineArrow } from 'lib/html-entities';
 
 type NavItemCommon = {
   text: string;
-  icon: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
+  icon?: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
 }
 
 type NavItemInternal = NavItemCommon & {
@@ -135,7 +135,7 @@ export default function useNavItems(): ReturnType {
       ].filter(Boolean);
     }
 
-    const otherNavItems: Array<NavItem> = [
+    const apiNavItems: Array<NavItem> = [
       hasAPIDocs ? {
         text: 'REST API',
         nextRoute: { pathname: '/api-docs' as const },
@@ -188,11 +188,16 @@ export default function useNavItems(): ReturnType {
       // there should be custom site sections like Stats, Faucet, More, etc but never an 'other'
       // examples https://explorer-edgenet.polygon.technology/ and https://explorer.celo.org/
       // at this stage custom menu items is under development, we will implement it later
-      otherNavItems.length > 0 ? {
+      {
+        text: 'API',
+        icon: apiDocsIcon,
+        isActive: apiNavItems.some(item => isInternalItem(item) && item.isActive),
+        subItems: apiNavItems,
+      },
+      appConfig.otherLinks.length > 0 ? {
         text: 'Other',
         icon: gearIcon,
-        isActive: otherNavItems.some(item => isInternalItem(item) && item.isActive),
-        subItems: otherNavItems,
+        subItems: appConfig.otherLinks,
       } : null,
     ].filter(Boolean) as Array<NavItem | NavGroupItem>;
 

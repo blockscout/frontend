@@ -57,7 +57,7 @@ const NavLink = ({ item, isCollapsed, px, className }: Props) => {
         color={ isInternalItem(item) && item.isActive ? colors.text.active : colors.text.hover }
       >
         <HStack spacing={ 3 } overflow="hidden">
-          <Icon as={ item.icon } boxSize="30px"/>
+          { item.icon && <Icon as={ item.icon } boxSize="30px"/> }
           <Text { ...styleProps.textProps }>
             { item.text }
           </Text>
