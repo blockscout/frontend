@@ -9,6 +9,7 @@ export enum NAMES {
   COLOR_MODE='chakra-ui-color-mode',
   INDEXING_ALERT='indexing_alert',
   ADBLOCK_DETECTED='adblock_detected',
+  MIXPANEL_DEBUG='_mixpanel_debug',
 }
 
 export function get(name?: NAMES | undefined | null, serverCookie?: string) {
