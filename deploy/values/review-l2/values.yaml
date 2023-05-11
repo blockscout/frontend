@@ -126,7 +126,7 @@ frontend:
     NEXT_PUBLIC_HOMEPAGE_CHARTS:
       _default: "['daily_txs']"
     NEXT_PUBLIC_IS_TESTNET:
-      _default: "true"
+      _default: true
     NEXT_PUBLIC_VISUALIZE_API_HOST:
       _default: https://visualizer-optimism-goerli.test.aws-k8s.blockscout.com
     NEXT_PUBLIC_IS_L2_NETWORK:
