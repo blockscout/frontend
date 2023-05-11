@@ -14,6 +14,7 @@ export default function useLogPageView(isInited: boolean) {
 
   const pathname = router.pathname;
   const tab = getQueryParamString(router.query.tab);
+  const page = getQueryParamString(router.query.page);
 
   React.useEffect(() => {
     if (!appConfig.mixpanel.projectToken || !isInited) {
@@ -23,6 +24,7 @@ export default function useLogPageView(isInited: boolean) {
     logEvent(EventTypes.PAGE_VIEW, {
       'Page type': getPageType(pathname),
       Tab: getTabName(tab),
+      Page: page || undefined,
     });
-  }, [ isInited, pathname, tab ]);
+  }, [ isInited, page, pathname, tab ]);
 }
