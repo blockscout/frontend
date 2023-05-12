@@ -1,4 +1,4 @@
-import { Text, Box } from '@chakra-ui/react';
+import { Box, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressParam } from 'types/api/addressParams';
@@ -22,7 +22,11 @@ const AddressSnippet = ({ address, subtitle, isLoading }: Props) => {
         <AddressLink type="address" hash={ address.hash } fontWeight="600" ml={ 2 } isLoading={ isLoading }/>
         <CopyToClipboard text={ address.hash } ml={ 1 } isLoading={ isLoading }/>
       </Address>
-      { subtitle && <Text fontSize="sm" variant="secondary" mt={ 0.5 } ml={ 8 }>{ subtitle }</Text> }
+      { subtitle && (
+        <Skeleton fontSize="sm" color="text_secondary" mt={ 0.5 } ml={ 8 } display="inline-block" isLoaded={ !isLoading }>
+          <span>{ subtitle }</span>
+        </Skeleton>
+      ) }
     </Box>
   );
 };

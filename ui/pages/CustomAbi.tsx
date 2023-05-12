@@ -1,11 +1,11 @@
-import { Box, Button, HStack, Skeleton, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, Skeleton, useDisclosure } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 
 import type { CustomAbi } from 'types/api/account';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
+import { CUSTOM_ABI } from 'stubs/account';
 import CustomAbiModal from 'ui/customAbi/CustomAbiModal/CustomAbiModal';
 import CustomAbiListItem from 'ui/customAbi/CustomAbiTable/CustomAbiListItem';
 import CustomAbiTable from 'ui/customAbi/CustomAbiTable/CustomAbiTable';
@@ -13,19 +13,20 @@ import DeleteCustomAbiModal from 'ui/customAbi/DeleteCustomAbiModal';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import SkeletonListAccount from 'ui/shared/skeletons/SkeletonListAccount';
-import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 
 const CustomAbiPage: React.FC = () => {
   const customAbiModalProps = useDisclosure();
   const deleteModalProps = useDisclosure();
-  const isMobile = useIsMobile();
   useRedirectForInvalidAuthToken();
 
   const [ customAbiModalData, setCustomAbiModalData ] = useState<CustomAbi>();
   const [ deleteModalData, setDeleteModalData ] = useState<CustomAbi>();
 
-  const { data, isLoading, isError, error } = useApiQuery('custom_abi');
+  const { data, isPlaceholderData, isError, error } = useApiQuery('custom_abi', {
+    queryOptions: {
+      placeholderData: Array(3).fill(CUSTOM_ABI),
+    },
+  });
 
   const onEditClick = useCallback((data: CustomAbi) => {
     setCustomAbiModalData(data);
@@ -54,22 +55,6 @@ const CustomAbiPage: React.FC = () => {
   );
 
   const content = (() => {
-    if (isLoading && !data) {
-      const loader = isMobile ? <SkeletonListAccount/> : (
-        <>
-          <SkeletonTable columns={ [ '100%', '108px' ] }/>
-          <Skeleton height="44px" width="156px" marginTop={ 8 }/>
-        </>
-      );
-
-      return (
-        <>
-          { description }
-          { loader }
-        </>
-      );
-    }
-
     if (isError) {
       if (error.status === 403) {
         throw new Error('Unverified email error', { cause: error });
@@ -77,37 +62,42 @@ const CustomAbiPage: React.FC = () => {
       return <DataFetchAlert/>;
     }
 
-    const list = isMobile ? (
-      <Box>
-        { data.map((item) => (
-          <CustomAbiListItem
-            item={ item }
-            key={ item.id }
+    const list = (
+      <>
+        <Box display={{ base: 'block', lg: 'none' }}>
+          { data?.map((item, index) => (
+            <CustomAbiListItem
+              key={ item.id + (isPlaceholderData ? index : '') }
+              item={ item }
+              isLoading={ isPlaceholderData }
+              onDeleteClick={ onDeleteClick }
+              onEditClick={ onEditClick }
+            />
+          )) }
+        </Box>
+        <Box display={{ base: 'none', lg: 'block' }}>
+          <CustomAbiTable
+            data={ data }
+            isLoading={ isPlaceholderData }
             onDeleteClick={ onDeleteClick }
             onEditClick={ onEditClick }
           />
-        )) }
-      </Box>
-    ) : (
-      <CustomAbiTable
-        data={ data }
-        onDeleteClick={ onDeleteClick }
-        onEditClick={ onEditClick }
-      />
+        </Box>
+      </>
     );
 
     return (
       <>
         { description }
-        { data.length > 0 && list }
-        <HStack marginTop={ 8 } spacing={ 5 }>
+        { Boolean(data?.length) && list }
+        <Skeleton mt={ 8 } isLoaded={ !isPlaceholderData } display="inline-block">
           <Button
             size="lg"
             onClick={ customAbiModalProps.onOpen }
           >
             Add custom ABI
           </Button>
-        </HStack>
+        </Skeleton>
         <CustomAbiModal { ...customAbiModalProps } onClose={ onCustomAbiModalClose } data={ customAbiModalData }/>
         { deleteModalData && <DeleteCustomAbiModal { ...deleteModalProps } onClose={ onDeleteModalClose } data={ deleteModalData }/> }
       </>

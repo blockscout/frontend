@@ -1,4 +1,4 @@
-import type { PublicTag, AddressTag, TransactionTag, ApiKey } from 'types/api/account';
+import type { PublicTag, AddressTag, TransactionTag, ApiKey, CustomAbi } from 'types/api/account';
 import type { TWatchlistItem } from 'types/client/account';
 
 import { ADDRESS_PARAMS, ADDRESS_HASH } from './addressParams';
@@ -59,5 +59,23 @@ export const WATCH_LIST_ITEM_WITH_TOKEN_INFO: TWatchlistItem = {
 
 export const API_KEY: ApiKey = {
   api_key: '9c3ecf44-a1ca-4ff1-b28e-329e8b65f652',
+  name: 'placeholder',
+};
+
+export const CUSTOM_ABI: CustomAbi = {
+  abi: [
+    {
+      constant: false,
+      payable: false,
+      inputs: [ { name: 'target', type: 'address' } ],
+      name: 'unknownWriteMethod',
+      outputs: [ { name: 'result', type: 'address' } ],
+      stateMutability: 'nonpayable',
+      type: 'function',
+    },
+  ],
+  contract_address: ADDRESS_PARAMS,
+  contract_address_hash: ADDRESS_HASH,
+  id: '1',
   name: 'placeholder',
 };

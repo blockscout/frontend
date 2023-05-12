@@ -12,12 +12,13 @@ import type { CustomAbis, CustomAbi } from 'types/api/account';
 import CustomAbiTableItem from './CustomAbiTableItem';
 
 interface Props {
-  data: CustomAbis;
+  data?: CustomAbis;
+  isLoading?: boolean;
   onEditClick: (item: CustomAbi) => void;
   onDeleteClick: (item: CustomAbi) => void;
 }
 
-const CustomAbiTable = ({ data, onDeleteClick, onEditClick }: Props) => {
+const CustomAbiTable = ({ data, isLoading, onDeleteClick, onEditClick }: Props) => {
   return (
     <Table variant="simple" minWidth="600px">
       <Thead>
@@ -27,10 +28,11 @@ const CustomAbiTable = ({ data, onDeleteClick, onEditClick }: Props) => {
         </Tr>
       </Thead>
       <Tbody>
-        { data.map((item) => (
+        { data?.map((item, index) => (
           <CustomAbiTableItem
+            key={ item.id + (isLoading ? index : '') }
             item={ item }
-            key={ item.id }
+            isLoading={ isLoading }
             onDeleteClick={ onDeleteClick }
             onEditClick={ onEditClick }
           />

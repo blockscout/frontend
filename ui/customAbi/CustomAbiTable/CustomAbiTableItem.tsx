@@ -11,11 +11,12 @@ import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 
 interface Props {
   item: CustomAbi;
+  isLoading?: boolean;
   onEditClick: (item: CustomAbi) => void;
   onDeleteClick: (item: CustomAbi) => void;
 }
 
-const CustomAbiTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
+const CustomAbiTableItem = ({ item, isLoading, onEditClick, onDeleteClick }: Props) => {
 
   const onItemEditClick = useCallback(() => {
     return onEditClick(item);
@@ -28,10 +29,10 @@ const CustomAbiTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   return (
     <Tr alignItems="top" key={ item.id }>
       <Td>
-        <AddressSnippet address={ item.contract_address } subtitle={ item.name }/>
+        <AddressSnippet address={ item.contract_address } subtitle={ item.name } isLoading={ isLoading }/>
       </Td>
       <Td>
-        <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
+        <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick } isLoading={ isLoading }/>
       </Td>
     </Tr>
   );
