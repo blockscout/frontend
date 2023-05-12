@@ -12,12 +12,13 @@ import type { PublicTags, PublicTag } from 'types/api/account';
 import PublicTagTableItem from './PublicTagTableItem';
 
 interface Props {
-  data: PublicTags;
+  data?: PublicTags;
+  isLoading?: boolean;
   onEditClick: (data: PublicTag) => void;
   onDeleteClick: (data: PublicTag) => void;
 }
 
-const PublicTagTable = ({ data, onEditClick, onDeleteClick }: Props) => {
+const PublicTagTable = ({ data, isLoading, onEditClick, onDeleteClick }: Props) => {
   return (
     <Table variant="simple" minWidth="600px">
       <Thead>
@@ -29,10 +30,11 @@ const PublicTagTable = ({ data, onEditClick, onDeleteClick }: Props) => {
         </Tr>
       </Thead>
       <Tbody>
-        { data.map((item) => (
+        { data?.map((item, index) => (
           <PublicTagTableItem
+            key={ item.id + (isLoading ? String(index) : '') }
             item={ item }
-            key={ item.id }
+            isLoading={ isLoading }
             onDeleteClick={ onDeleteClick }
             onEditClick={ onEditClick }
           />

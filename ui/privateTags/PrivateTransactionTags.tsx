@@ -4,7 +4,6 @@ import React, { useCallback, useState } from 'react';
 import type { TransactionTag } from 'types/api/account';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import { PRIVATE_TAG_TX } from 'stubs/account';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
@@ -24,7 +23,6 @@ const PrivateTransactionTags = () => {
 
   const transactionModalProps = useDisclosure();
   const deleteModalProps = useDisclosure();
-  const isMobile = useIsMobile();
 
   const [ transactionModalData, setTransactionModalData ] = useState<TransactionTag>();
   const [ deleteModalData, setDeleteModalData ] = useState<TransactionTag>();
@@ -63,25 +61,28 @@ const PrivateTransactionTags = () => {
     return <DataFetchAlert/>;
   }
 
-  const list = isMobile ? (
-    <Box>
-      { transactionTagsData?.map((item, index) => (
-        <TransactionTagListItem
-          key={ item.id + (isPlaceholderData ? index : '') }
-          item={ item }
+  const list = (
+    <>
+      <Box display={{ base: 'block', lg: 'none' }}>
+        { transactionTagsData?.map((item, index) => (
+          <TransactionTagListItem
+            key={ item.id + (isPlaceholderData ? index : '') }
+            item={ item }
+            isLoading={ isPlaceholderData }
+            onDeleteClick={ onDeleteClick }
+            onEditClick={ onEditClick }
+          />
+        )) }
+      </Box>
+      <Box display={{ base: 'none', lg: 'block' }}>
+        <TransactionTagTable
+          data={ transactionTagsData }
           isLoading={ isPlaceholderData }
           onDeleteClick={ onDeleteClick }
           onEditClick={ onEditClick }
         />
-      )) }
-    </Box>
-  ) : (
-    <TransactionTagTable
-      data={ transactionTagsData }
-      isLoading={ isPlaceholderData }
-      onDeleteClick={ onDeleteClick }
-      onEditClick={ onEditClick }
-    />
+      </Box>
+    </>
   );
 
   return (

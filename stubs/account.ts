@@ -13,3 +13,17 @@ export const PRIVATE_TAG_TX = {
   name: 'placeholder',
   transaction_hash: TX_HASH,
 };
+
+export const PUBLIC_TAG = {
+  additional_comment: 'my comment',
+  addresses: [ ADDRESS_HASH ],
+  addresses_with_info: [ ADDRESS_PARAMS ],
+  company: null,
+  email: 'john.doe@example.com',
+  full_name: 'name',
+  id: 1,
+  is_owner: true,
+  submission_date: '2022-11-11T11:11:11.000000Z',
+  tags: 'placeholder',
+  website: null,
+};
