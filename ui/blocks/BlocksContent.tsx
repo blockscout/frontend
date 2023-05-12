@@ -1,4 +1,4 @@
-import { Show, Hide, Alert } from '@chakra-ui/react';
+import { Alert, Box } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
@@ -77,12 +77,12 @@ const BlocksContent = ({ type, query }: Props) => {
   const content = query.data?.items ? (
     <>
       { socketAlert && <Alert status="warning" mb={ 6 } as="a" href={ window.document.location.href }>{ socketAlert }</Alert> }
-      <Show below="lg" key="content-mobile" ssr={ false }>
+      <Box display={{ base: 'block', lg: 'none' }}>
         <BlocksList data={ query.data.items } isLoading={ query.isPlaceholderData } page={ query.pagination.page }/>
-      </Show>
-      <Hide below="lg" key="content-desktop" ssr={ false }>
+      </Box>
+      <Box display={{ base: 'none', lg: 'block' }}>
         <BlocksTable data={ query.data.items } top={ query.isPaginationVisible ? 80 : 0 } page={ query.pagination.page } isLoading={ query.isPlaceholderData }/>
-      </Hide>
+      </Box>
     </>
   ) : null;
 

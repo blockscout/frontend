@@ -36,7 +36,7 @@ const BlocksTable = ({ data, isLoading, top, page }: Props) => {
         <AnimatePresence initial={ false }>
           { data.map((item, index) => (
             <BlocksTableItem
-              key={ item.height + (isLoading ? String(index) : '') }
+              key={ item.height + (isLoading ? `${ index }_${ page }` : '') }
               data={ item }
               enableTimeIncrement={ page === 1 && !isLoading }
               isLoading={ isLoading }
