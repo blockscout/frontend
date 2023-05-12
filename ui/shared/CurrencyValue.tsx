@@ -1,4 +1,4 @@
-import { Box, Text, chakra } from '@chakra-ui/react';
+import { Box, Text, chakra, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
@@ -11,9 +11,16 @@ interface Props {
   accuracy?: number;
   accuracyUsd?: number;
   decimals?: string | null;
+  isLoading?: boolean;
 }
 
-const CurrencyValue = ({ value, currency = '', decimals, exchangeRate, className, accuracy, accuracyUsd }: Props) => {
+const CurrencyValue = ({ value, currency = '', decimals, exchangeRate, className, accuracy, accuracyUsd, isLoading }: Props) => {
+  if (isLoading) {
+    return (
+      <Skeleton className={ className } display="inline-block">0.00 ($0.00)</Skeleton>
+    );
+  }
+
   if (value === undefined || value === null) {
     return (
       <Box as="span" className={ className }>
