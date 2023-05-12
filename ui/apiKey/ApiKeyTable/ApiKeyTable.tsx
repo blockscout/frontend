@@ -12,13 +12,14 @@ import type { ApiKeys, ApiKey } from 'types/api/account';
 import ApiKeyTableItem from './ApiKeyTableItem';
 
 interface Props {
-  data: ApiKeys;
+  data?: ApiKeys;
+  isLoading?: boolean;
   onEditClick: (item: ApiKey) => void;
   onDeleteClick: (item: ApiKey) => void;
   limit: number;
 }
 
-const ApiKeyTable = ({ data, onDeleteClick, onEditClick, limit }: Props) => {
+const ApiKeyTable = ({ data, isLoading, onDeleteClick, onEditClick, limit }: Props) => {
   return (
     <Table variant="simple" minWidth="600px">
       <Thead>
@@ -28,10 +29,11 @@ const ApiKeyTable = ({ data, onDeleteClick, onEditClick, limit }: Props) => {
         </Tr>
       </Thead>
       <Tbody>
-        { data.map((item) => (
+        { data?.map((item, index) => (
           <ApiKeyTableItem
+            key={ item.api_key + (isLoading ? index : '') }
             item={ item }
-            key={ item.api_key }
+            isLoading={ isLoading }
             onDeleteClick={ onDeleteClick }
             onEditClick={ onEditClick }
           />

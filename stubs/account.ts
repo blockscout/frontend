@@ -1,4 +1,4 @@
-import type { PublicTag, AddressTag, TransactionTag } from 'types/api/account';
+import type { PublicTag, AddressTag, TransactionTag, ApiKey } from 'types/api/account';
 import type { TWatchlistItem } from 'types/client/account';
 
 import { ADDRESS_PARAMS, ADDRESS_HASH } from './addressParams';
@@ -55,4 +55,9 @@ export const WATCH_LIST_ITEM_WITH_TOKEN_INFO: TWatchlistItem = {
     },
   },
   tokens_count: 42,
+};
+
+export const API_KEY: ApiKey = {
+  api_key: '9c3ecf44-a1ca-4ff1-b28e-329e8b65f652',
+  name: 'placeholder',
 };
