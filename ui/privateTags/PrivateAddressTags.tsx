@@ -84,16 +84,14 @@ const PrivateAddressTags = () => {
         Private tags are saved in your account and are only visible when you are logged in.
       </AccountPageDescription>
       { Boolean(addressTagsData?.length) && list }
-      <Box marginTop={ 8 }>
-        <Skeleton isLoaded={ !isPlaceholderData } display="inline-block">
-          <Button
-            size="lg"
-            onClick={ addressModalProps.onOpen }
-          >
+      <Skeleton mt={ 8 } isLoaded={ !isPlaceholderData } display="inline-block">
+        <Button
+          size="lg"
+          onClick={ addressModalProps.onOpen }
+        >
             Add address tag
-          </Button>
-        </Skeleton>
-      </Box>
+        </Button>
+      </Skeleton>
       <AddressModal { ...addressModalProps } onClose={ onAddressModalClose } data={ addressModalData }/>
       { deleteModalData && (
         <DeletePrivateTagModal

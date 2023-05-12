@@ -1,23 +1,23 @@
 import {
-  Tag,
   Tr,
   Td,
-  Tooltip,
 } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
 import type { TransactionTag } from 'types/api/account';
 
+import Tag from 'ui/shared/chakra/Tag';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 import TransactionSnippet from 'ui/shared/TransactionSnippet';
 
 interface Props {
   item: TransactionTag;
+  isLoading?: boolean;
   onEditClick: (data: TransactionTag) => void;
   onDeleteClick: (data: TransactionTag) => void;
 }
 
-const TransactionTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
+const TransactionTagTableItem = ({ item, isLoading, onEditClick, onDeleteClick }: Props) => {
   const onItemEditClick = useCallback(() => {
     return onEditClick(item);
   }, [ item, onEditClick ]);
@@ -29,17 +29,13 @@ const TransactionTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) =>
   return (
     <Tr alignItems="top" key={ item.id }>
       <Td>
-        <TransactionSnippet hash={ item.transaction_hash }/>
+        <TransactionSnippet hash={ item.transaction_hash } isLoading={ isLoading }/>
       </Td>
       <Td>
-        <Tooltip label={ item.name }>
-          <Tag>
-            { item.name }
-          </Tag>
-        </Tooltip>
+        <Tag isLoading={ isLoading } isTruncated>{ item.name }</Tag>
       </Td>
       <Td>
-        <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
+        <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick } isLoading={ isLoading }/>
       </Td>
     </Tr>
   );
