@@ -12,11 +12,12 @@ import { default as Thead } from 'ui/shared/TheadSticky';
 
 interface Props {
   data: Array<Block>;
+  isLoading?: boolean;
   top: number;
   page: number;
 }
 
-const BlocksTable = ({ data, top, page }: Props) => {
+const BlocksTable = ({ data, isLoading, top, page }: Props) => {
 
   return (
     <Table variant="simple" minWidth="1040px" size="md" fontWeight={ 500 }>
@@ -33,7 +34,14 @@ const BlocksTable = ({ data, top, page }: Props) => {
       </Thead>
       <Tbody>
         <AnimatePresence initial={ false }>
-          { data.map((item) => <BlocksTableItem key={ item.height } data={ item } enableTimeIncrement={ page === 1 }/>) }
+          { data.map((item, index) => (
+            <BlocksTableItem
+              key={ item.height + (isLoading ? String(index) : '') }
+              data={ item }
+              enableTimeIncrement={ page === 1 && !isLoading }
+              isLoading={ isLoading }
+            />
+          )) }
         </AnimatePresence>
       </Tbody>
     </Table>

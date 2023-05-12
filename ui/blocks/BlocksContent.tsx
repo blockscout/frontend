@@ -66,7 +66,7 @@ const BlocksContent = ({ type, query }: Props) => {
     topic: 'blocks:new_block',
     onSocketClose: handleSocketClose,
     onSocketError: handleSocketError,
-    isDisabled: query.isLoading || query.isError || query.pagination.page !== 1,
+    isDisabled: query.isPlaceholderData || query.isError || query.pagination.page !== 1,
   });
   useSocketMessage({
     channel,
@@ -78,10 +78,10 @@ const BlocksContent = ({ type, query }: Props) => {
     <>
       { socketAlert && <Alert status="warning" mb={ 6 } as="a" href={ window.document.location.href }>{ socketAlert }</Alert> }
       <Show below="lg" key="content-mobile" ssr={ false }>
-        <BlocksList data={ query.data.items }/>
+        <BlocksList data={ query.data.items } isLoading={ query.isPlaceholderData } page={ query.pagination.page }/>
       </Show>
       <Hide below="lg" key="content-desktop" ssr={ false }>
-        <BlocksTable data={ query.data.items } top={ query.isPaginationVisible ? 80 : 0 } page={ query.pagination.page }/>
+        <BlocksTable data={ query.data.items } top={ query.isPaginationVisible ? 80 : 0 } page={ query.pagination.page } isLoading={ query.isPlaceholderData }/>
       </Hide>
     </>
   ) : null;
@@ -95,7 +95,7 @@ const BlocksContent = ({ type, query }: Props) => {
   return (
     <DataListDisplay
       isError={ query.isError }
-      isLoading={ query.isLoading }
+      isLoading={ false }
       items={ query.data?.items }
       skeletonProps={{ skeletonDesktopColumns: [ '125px', '120px', '21%', '64px', '35%', '22%', '22%' ] }}
       emptyText="There are no blocks."
