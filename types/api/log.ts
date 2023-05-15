@@ -16,7 +16,7 @@ export interface LogsResponseTx {
     index: number;
     items_count: number;
     transaction_hash: string;
-  };
+  } | null;
 }
 
 export interface LogsResponseAddress {
@@ -26,5 +26,5 @@ export interface LogsResponseAddress {
     items_count: number;
     transaction_index: number;
     block_number: number;
-  };
+  } | null;
 }
