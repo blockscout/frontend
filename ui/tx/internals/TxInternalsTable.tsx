@@ -14,9 +14,10 @@ interface Props {
   sort: Sort | undefined;
   onSortToggle: (field: SortField) => () => void;
   top: number;
+  isLoading?: boolean;
 }
 
-const TxInternalsTable = ({ data, sort, onSortToggle, top }: Props) => {
+const TxInternalsTable = ({ data, sort, onSortToggle, top, isLoading }: Props) => {
   const sortIconTransform = sort?.includes('asc') ? 'rotate(-90deg)' : 'rotate(90deg)';
 
   return (
@@ -42,8 +43,8 @@ const TxInternalsTable = ({ data, sort, onSortToggle, top }: Props) => {
         </Tr>
       </Thead>
       <Tbody>
-        { data.map((item) => (
-          <TxInternalsTableItem key={ item.transaction_hash } { ...item }/>
+        { data.map((item, index) => (
+          <TxInternalsTableItem key={ item.transaction_hash + (isLoading ? index : '') } { ...item } isLoading={ isLoading }/>
         )) }
       </Tbody>
     </Table>
