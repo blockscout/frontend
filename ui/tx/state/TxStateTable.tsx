@@ -13,9 +13,10 @@ import TxStateTableItem from 'ui/tx/state/TxStateTableItem';
 
 interface Props {
   data: TxStateChanges;
+  isLoading?: boolean;
 }
 
-const TxStateTable = ({ data }: Props) => {
+const TxStateTable = ({ data, isLoading }: Props) => {
   return (
     <Table variant="simple" minWidth="1000px" size="sm" w="auto" mt={ 6 }>
       <Thead top={ 0 }>
@@ -29,7 +30,7 @@ const TxStateTable = ({ data }: Props) => {
         </Tr>
       </Thead>
       <Tbody>
-        { data.map((item, index) => <TxStateTableItem data={ item } key={ index }/>) }
+        { data.map((item, index) => <TxStateTableItem data={ item } key={ index } isLoading={ isLoading }/>) }
       </Tbody>
     </Table>
   );
