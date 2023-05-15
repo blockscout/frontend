@@ -55,7 +55,7 @@ const CoinzillaTextAd = ({ className }: {className?: string}) => {
   }
 
   if (isLoading) {
-    return <Skeleton className={ className } h={{ base: 12, lg: 6 }} maxW="1000px"/>;
+    return <Skeleton className={ className } h={{ base: 12, lg: 6 }} w="100%" maxW="1000px"/>;
   }
 
   if (!adData) {
