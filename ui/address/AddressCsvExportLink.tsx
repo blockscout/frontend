@@ -1,4 +1,4 @@
-import { chakra, Icon, Tooltip, Hide } from '@chakra-ui/react';
+import { chakra, Icon, Tooltip, Hide, Skeleton, Flex } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
@@ -13,13 +13,25 @@ interface Props {
   address: string;
   type: CsvExportType;
   className?: string;
+  isLoading?: boolean;
 }
 
-const AddressCsvExportLink = ({ className, address, type }: Props) => {
+const AddressCsvExportLink = ({ className, address, type, isLoading }: Props) => {
   const isMobile = useIsMobile();
 
   if (!appConfig.reCaptcha.siteKey) {
     return null;
+  }
+
+  if (isLoading) {
+    return (
+      <Flex className={ className } flexShrink={ 0 } alignItems="center">
+        <Skeleton boxSize={{ base: '32px', lg: 6 }} borderRadius="base"/>
+        <Hide ssr={ false } below="lg">
+          <Skeleton w="112px" h={ 6 } ml={ 1 }/>
+        </Hide>
+      </Flex>
+    );
   }
 
   return (

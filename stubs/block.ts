@@ -1,6 +1,7 @@
-import type { Block, BlocksResponse } from 'types/api/block';
+import type { Block, BlocksResponse, BlockTransactionsResponse } from 'types/api/block';
 
 import { ADDRESS_PARAMS } from './addressParams';
+import { TX } from './tx';
 
 export const BLOCK_HASH = '0x8fa7b9e5e5e79deeb62d608db22ba9a5cb45388c7ebb9223ae77331c6080dc70';
 
@@ -41,6 +42,15 @@ export const BLOCKS: BlocksResponse = {
   items: Array(50).fill(BLOCK),
   next_page_params: {
     block_number: 8988686,
+    items_count: 50,
+  },
+};
+
+export const BLOCK_TXS: BlockTransactionsResponse = {
+  items: Array(50).fill(TX),
+  next_page_params: {
+    block_number: 9004925,
+    index: 49,
     items_count: 50,
   },
 };

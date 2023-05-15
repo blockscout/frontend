@@ -3,6 +3,7 @@ import {
   useColorModeValue,
   chakra,
   Button,
+  Skeleton,
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -10,13 +11,18 @@ import infoIcon from 'icons/info.svg';
 
 interface Props {
   isOpen?: boolean;
+  isLoading?: boolean;
   className?: string;
   onClick?: () => void;
 }
 
-const AdditionalInfoButton = ({ isOpen, onClick, className }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
+const AdditionalInfoButton = ({ isOpen, onClick, className, isLoading }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
 
   const infoBgColor = useColorModeValue('blue.50', 'gray.600');
+
+  if (isLoading) {
+    return <Skeleton boxSize={ 6 } borderRadius="sm"/>;
+  }
 
   return (
     <Button

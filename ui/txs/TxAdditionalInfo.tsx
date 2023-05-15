@@ -27,9 +27,10 @@ type Props =
     tx: Transaction;
   }) & {
     isMobile?: boolean;
+    isLoading?: boolean;
   }
 
-const TxAdditionalInfo = ({ hash, tx, isMobile }: Props) => {
+const TxAdditionalInfo = ({ hash, tx, isMobile, isLoading }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const content = hash !== undefined ? <TxAdditionalInfoContainer hash={ hash }/> : <TxAdditionalInfoContent tx={ tx }/>;
@@ -37,7 +38,7 @@ const TxAdditionalInfo = ({ hash, tx, isMobile }: Props) => {
   if (isMobile) {
     return (
       <>
-        <AdditionalInfoButton onClick={ onOpen }/>
+        <AdditionalInfoButton onClick={ onOpen } isLoading={ isLoading }/>
         <Modal isOpen={ isOpen } onClose={ onClose } size="full">
           <ModalContent paddingTop={ 4 }>
             <ModalCloseButton/>
@@ -52,7 +53,7 @@ const TxAdditionalInfo = ({ hash, tx, isMobile }: Props) => {
       { ({ isOpen }) => (
         <>
           <PopoverTrigger>
-            <AdditionalInfoButton isOpen={ isOpen }/>
+            <AdditionalInfoButton isOpen={ isOpen } isLoading={ isLoading }/>
           </PopoverTrigger>
           <PopoverContent border="1px solid" borderColor="divider">
             <PopoverBody>

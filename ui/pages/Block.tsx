@@ -10,7 +10,7 @@ import { useAppContext } from 'lib/appContext';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { BLOCK } from 'stubs/block';
+import { BLOCK, BLOCK_TXS } from 'stubs/block';
 import BlockDetails from 'ui/block/BlockDetails';
 import BlockWithdrawals from 'ui/block/BlockWithdrawals';
 import TextAd from 'ui/shared/ad/TextAd';
@@ -47,6 +47,7 @@ const BlockPageContent = () => {
     pathParams: { height },
     options: {
       enabled: Boolean(!blockQuery.isPlaceholderData && blockQuery.data?.height && tab === 'txs'),
+      placeholderData: BLOCK_TXS,
     },
   });
 

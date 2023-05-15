@@ -1,4 +1,3 @@
-import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -8,7 +7,7 @@ import appConfig from 'configs/app/config';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useNewTxsSocket from 'lib/hooks/useNewTxsSocket';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
-import Page from 'ui/shared/Page/Page';
+import { TXS } from 'stubs/tx';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
 import TxsContent from 'ui/txs/TxsContent';
@@ -28,6 +27,9 @@ const Transactions = () => {
   const txsQuery = useQueryWithPages({
     resourceName: filter === 'validated' ? 'txs_validated' : 'txs_pending',
     filters: { filter },
+    options: {
+      placeholderData: TXS,
+    },
   });
 
   const { num, socketAlert } = useNewTxsSocket();
@@ -47,17 +49,15 @@ const Transactions = () => {
   ];
 
   return (
-    <Page>
-      <Box h="100%">
-        <PageTitle text="Transactions" withTextAd/>
-        <RoutedTabs
-          tabs={ tabs }
-          tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
-          rightSlot={ <TxsTabSlot pagination={ txsQuery.pagination } isPaginationVisible={ txsQuery.isPaginationVisible && !isMobile }/> }
-          stickyEnabled={ !isMobile }
-        />
-      </Box>
-    </Page>
+    <>
+      <PageTitle text="Transactions" withTextAd/>
+      <RoutedTabs
+        tabs={ tabs }
+        tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
+        rightSlot={ <TxsTabSlot pagination={ txsQuery.pagination } isPaginationVisible={ txsQuery.isPaginationVisible && !isMobile }/> }
+        stickyEnabled={ !isMobile }
+      />
+    </>
   );
 };
 

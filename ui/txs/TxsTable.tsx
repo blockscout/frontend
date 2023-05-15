@@ -1,4 +1,4 @@
-import { Link, Table, Tbody, Tr, Th, Td, Icon } from '@chakra-ui/react';
+import { Link, Table, Tbody, Tr, Th, Icon } from '@chakra-ui/react';
 import { AnimatePresence } from 'framer-motion';
 import React from 'react';
 
@@ -7,7 +7,7 @@ import type { Sort } from 'types/client/txs-sort';
 
 import appConfig from 'configs/app/config';
 import rightArrowIcon from 'icons/arrows/east.svg';
-import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
+import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import TheadSticky from 'ui/shared/TheadSticky';
 
 import TxsTableItem from './TxsTableItem';
@@ -23,6 +23,7 @@ type Props = {
   socketInfoNum?: number;
   currentAddress?: string;
   enableTimeIncrement?: boolean;
+  isLoading?: boolean;
 }
 
 const TxsTable = ({
@@ -36,6 +37,7 @@ const TxsTable = ({
   socketInfoNum,
   currentAddress,
   enableTimeIncrement,
+  isLoading,
 }: Props) => {
   return (
     <Table variant="simple" minWidth="950px" size="xs">
@@ -67,18 +69,22 @@ const TxsTable = ({
       </TheadSticky>
       <Tbody>
         { showSocketInfo && (
-          <SocketNewItemsNotice borderRadius={ 0 } url={ window.location.href } alert={ socketInfoAlert } num={ socketInfoNum }>
-            { ({ content }) => <Tr><Td colSpan={ 10 } p={ 0 }>{ content }</Td></Tr> }
-          </SocketNewItemsNotice>
+          <SocketNewItemsNotice.Desktop
+            url={ window.location.href }
+            alert={ socketInfoAlert }
+            num={ socketInfoNum }
+            isLoading={ isLoading }
+          />
         ) }
         <AnimatePresence initial={ false }>
-          { txs.map((item) => (
+          { txs.map((item, index) => (
             <TxsTableItem
-              key={ item.hash }
+              key={ item.hash + (isLoading ? index : '') }
               tx={ item }
               showBlockInfo={ showBlockInfo }
               currentAddress={ currentAddress }
               enableTimeIncrement={ enableTimeIncrement }
+              isLoading={ isLoading }
             />
           )) }
         </AnimatePresence>

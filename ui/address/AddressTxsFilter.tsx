@@ -16,9 +16,10 @@ interface Props {
   isActive: boolean;
   defaultFilter: AddressFromToFilter;
   onFilterChange: (nextValue: string | Array<string>) => void;
+  isLoading?: boolean;
 }
 
-const AddressTxsFilter = ({ onFilterChange, defaultFilter, isActive }: Props) => {
+const AddressTxsFilter = ({ onFilterChange, defaultFilter, isActive, isLoading }: Props) => {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
@@ -26,6 +27,7 @@ const AddressTxsFilter = ({ onFilterChange, defaultFilter, isActive }: Props) =>
       <MenuButton>
         <FilterButton
           isActive={ isOpen || isActive }
+          isLoading={ isLoading }
           onClick={ onToggle }
           as="div"
         />

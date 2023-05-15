@@ -1,13 +1,16 @@
-import { Tag, chakra } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
+
+import Tag from 'ui/shared/chakra/Tag';
 
 interface Props {
   isIn: boolean;
   isOut: boolean;
   className?: string;
+  isLoading?: boolean;
 }
 
-const InOutTag = ({ isIn, isOut, className }: Props) => {
+const InOutTag = ({ isIn, isOut, className, isLoading }: Props) => {
   if (!isIn && !isOut) {
     return null;
   }
@@ -20,6 +23,7 @@ const InOutTag = ({ isIn, isOut, className }: Props) => {
       colorScheme={ colorScheme }
       display="flex"
       justifyContent="center"
+      isLoading={ isLoading }
     >
       { isOut ? 'OUT' : 'IN' }
     </Tag>
