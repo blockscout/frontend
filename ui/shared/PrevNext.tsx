@@ -1,4 +1,4 @@
-import { Box, Icon, IconButton, chakra, Tooltip } from '@chakra-ui/react';
+import { Box, Icon, IconButton, chakra, Tooltip, Flex, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import eastArrow from 'icons/arrows/east-mini.svg';
@@ -10,9 +10,10 @@ interface Props {
   nextLabel?: string;
   isPrevDisabled?: boolean;
   isNextDisabled?: boolean;
+  isLoading?: boolean;
 }
 
-const PrevNext = ({ className, onClick, prevLabel, nextLabel, isPrevDisabled, isNextDisabled }: Props) => {
+const PrevNext = ({ className, onClick, prevLabel, nextLabel, isPrevDisabled, isNextDisabled, isLoading }: Props) => {
   const handelPrevClick = React.useCallback(() => {
     onClick('prev');
   }, [ onClick ]);
@@ -20,6 +21,15 @@ const PrevNext = ({ className, onClick, prevLabel, nextLabel, isPrevDisabled, is
   const handelNextClick = React.useCallback(() => {
     onClick('next');
   }, [ onClick ]);
+
+  if (isLoading) {
+    return (
+      <Flex columnGap="10px" className={ className }>
+        <Skeleton boxSize={ 6 } borderRadius="sm"/>
+        <Skeleton boxSize={ 6 } borderRadius="sm"/>
+      </Flex>
+    );
+  }
 
   return (
     <Box className={ className }>

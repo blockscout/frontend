@@ -1,4 +1,4 @@
-import { Grid, GridItem, Text, Icon, Link, Box, Tooltip, useColorModeValue } from '@chakra-ui/react';
+import { Grid, GridItem, Text, Icon, Link, Box, Tooltip, useColorModeValue, Skeleton } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import capitalize from 'lodash/capitalize';
@@ -19,7 +19,6 @@ import dayjs from 'lib/date/dayjs';
 import { space } from 'lib/html-entities';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import BlockDetailsSkeleton from 'ui/block/details/BlockDetailsSkeleton';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
@@ -42,7 +41,7 @@ const BlockDetails = ({ query }: Props) => {
 
   const separatorColor = useColorModeValue('gray.200', 'gray.700');
 
-  const { data, isLoading, isError, error } = query;
+  const { data, isPlaceholderData, isError, error } = query;
 
   const handleCutClick = React.useCallback(() => {
     setIsExpanded((flag) => !flag);
@@ -63,10 +62,6 @@ const BlockDetails = ({ query }: Props) => {
     router.push({ pathname: '/block/[height]', query: { height: nextId } }, undefined);
   }, [ data, router ]);
 
-  if (isLoading) {
-    return <BlockDetailsSkeleton/>;
-  }
-
   if (isError) {
     if (error?.status === 404) {
       throw Error('Block not found', { cause: error as unknown as Error });
@@ -77,6 +72,10 @@ const BlockDetails = ({ query }: Props) => {
     }
 
     return <DataFetchAlert/>;
+  }
+
+  if (!data) {
+    return null;
   }
 
   const sectionGap = (
@@ -92,13 +91,50 @@ const BlockDetails = ({ query }: Props) => {
 
   const validatorTitle = getNetworkValidatorTitle();
 
+  const rewardBreakDown = (() => {
+    if (appConfig.L2.isL2Network || totalReward.isEqualTo(ZERO) || txFees.isEqualTo(ZERO) || burntFees.isEqualTo(ZERO)) {
+      return null;
+    }
+
+    if (isPlaceholderData) {
+      return <Skeleton w="525px" h="20px"/>;
+    }
+
+    return (
+      <Text variant="secondary" whiteSpace="break-spaces">
+        <Tooltip label="Static block reward">
+          <span>{ staticReward.dividedBy(WEI).toFixed() }</span>
+        </Tooltip>
+        { !txFees.isEqualTo(ZERO) && (
+          <>
+            { space }+{ space }
+            <Tooltip label="Txn fees">
+              <span>{ txFees.dividedBy(WEI).toFixed() }</span>
+            </Tooltip>
+          </>
+        ) }
+        { !burntFees.isEqualTo(ZERO) && (
+          <>
+            { space }-{ space }
+            <Tooltip label="Burnt fees">
+              <span>{ burntFees.dividedBy(WEI).toFixed() }</span>
+            </Tooltip>
+          </>
+        ) }
+      </Text>
+    );
+  })();
+
   return (
     <Grid columnGap={ 8 } rowGap={{ base: 3, lg: 3 }} templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }} overflow="hidden">
       <DetailsInfoItem
         title={ `${ data.type === 'reorg' ? 'Reorg' : 'Block' } height` }
         hint="The block height of a particular block is defined as the number of blocks preceding it in the blockchain"
+        isLoading={ isPlaceholderData }
       >
-        { data.height }
+        <Skeleton isLoaded={ !isPlaceholderData }>
+          { data.height }
+        </Skeleton>
         { data.height === 0 && <Text whiteSpace="pre"> - Genesis Block</Text> }
         <PrevNext
           ml={ 6 }
@@ -106,37 +142,52 @@ const BlockDetails = ({ query }: Props) => {
           prevLabel="View previous block"
           nextLabel="View next block"
           isPrevDisabled={ data.height === 0 }
+          isLoading={ isPlaceholderData }
         />
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Size"
         hint="Size of the block in bytes"
+        isLoading={ isPlaceholderData }
       >
-        { data.size.toLocaleString() }
+        <Skeleton isLoaded={ !isPlaceholderData }>
+          { data.size.toLocaleString() }
+        </Skeleton>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Timestamp"
         hint="Date & time at which block was produced."
+        isLoading={ isPlaceholderData }
       >
-        <Icon as={ clockIcon } boxSize={ 5 } color="gray.500"/>
-        <Text ml={ 1 }>{ dayjs(data.timestamp).fromNow() }</Text>
+        <Skeleton isLoaded={ !isPlaceholderData } boxSize={ 5 } borderRadius="full">
+          <Icon as={ clockIcon } boxSize={ 5 } color="gray.500"/>
+        </Skeleton>
+        <Skeleton isLoaded={ !isPlaceholderData } ml={ 1 }>
+          { dayjs(data.timestamp).fromNow() }
+        </Skeleton>
         <TextSeparator/>
-        <Text whiteSpace="normal">{ dayjs(data.timestamp).format('LLLL') }</Text>
+        <Skeleton isLoaded={ !isPlaceholderData } whiteSpace="normal">
+          { dayjs(data.timestamp).format('LLLL') }
+        </Skeleton>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Transactions"
         hint="The number of transactions in the block"
+        isLoading={ isPlaceholderData }
       >
-        <LinkInternal href={ route({ pathname: '/block/[height]', query: { height: heightOrHash, tab: 'txs' } }) }>
-          { data.tx_count } transaction{ data.tx_count === 1 ? '' : 's' }
-        </LinkInternal>
+        <Skeleton isLoaded={ !isPlaceholderData }>
+          <LinkInternal href={ route({ pathname: '/block/[height]', query: { height: heightOrHash, tab: 'txs' } }) }>
+            { data.tx_count } transaction{ data.tx_count === 1 ? '' : 's' }
+          </LinkInternal>
+        </Skeleton>
       </DetailsInfoItem>
       <DetailsInfoItem
         title={ appConfig.network.verificationType === 'validation' ? 'Validated by' : 'Mined by' }
         hint="A block producer who successfully included the block onto the blockchain"
         columnGap={ 1 }
+        isLoading={ isPlaceholderData }
       >
-        <AddressLink type="address" hash={ data.miner.hash }/>
+        <AddressLink type="address" hash={ data.miner.hash } isLoading={ isPlaceholderData }/>
         { data.miner.name && <Text>{ `(${ capitalize(validatorTitle) }: ${ data.miner.name })` }</Text> }
         { /* api doesn't return the block processing time yet */ }
         { /* <Text>{ dayjs.duration(block.minedIn, 'second').humanize(true) }</Text> */ }
@@ -149,31 +200,12 @@ const BlockDetails = ({ query }: Props) => {
           on top of the fees paid for all transactions in the block`
           }
           columnGap={ 1 }
+          isLoading={ isPlaceholderData }
         >
-          <Text>{ totalReward.dividedBy(WEI).toFixed() } { appConfig.network.currency.symbol }</Text>
-          { (!txFees.isEqualTo(ZERO) || !burntFees.isEqualTo(ZERO)) && (
-            <Text variant="secondary" whiteSpace="break-spaces">(
-              <Tooltip label="Static block reward">
-                <span>{ staticReward.dividedBy(WEI).toFixed() }</span>
-              </Tooltip>
-              { !txFees.isEqualTo(ZERO) && (
-                <>
-                  { space }+{ space }
-                  <Tooltip label="Txn fees">
-                    <span>{ txFees.dividedBy(WEI).toFixed() }</span>
-                  </Tooltip>
-                </>
-              ) }
-              { !burntFees.isEqualTo(ZERO) && (
-                <>
-                  { space }-{ space }
-                  <Tooltip label="Burnt fees">
-                    <span>{ burntFees.dividedBy(WEI).toFixed() }</span>
-                  </Tooltip>
-                </>
-              ) }
-        )</Text>
-          ) }
+          <Skeleton isLoaded={ !isPlaceholderData }>
+            { totalReward.dividedBy(WEI).toFixed() } { appConfig.network.currency.symbol }
+          </Skeleton>
+          { rewardBreakDown }
         </DetailsInfoItem>
       ) }
       { data.rewards
@@ -195,35 +227,49 @@ const BlockDetails = ({ query }: Props) => {
       <DetailsInfoItem
         title="Gas used"
         hint="The total gas amount used in the block and its percentage of gas filled in the block"
+        isLoading={ isPlaceholderData }
       >
-        <Text>{ BigNumber(data.gas_used || 0).toFormat() }</Text>
+        <Skeleton isLoaded={ !isPlaceholderData }>
+          { BigNumber(data.gas_used || 0).toFormat() }
+        </Skeleton>
         <Utilization
           ml={ 4 }
           colorScheme="gray"
           value={ BigNumber(data.gas_used || 0).dividedBy(BigNumber(data.gas_limit)).toNumber() }
+          isLoading={ isPlaceholderData }
         />
         { data.gas_target_percentage && (
           <>
             <TextSeparator color={ separatorColor } mx={ 1 }/>
-            <GasUsedToTargetRatio value={ data.gas_target_percentage }/>
+            <GasUsedToTargetRatio value={ data.gas_target_percentage } isLoading={ isPlaceholderData }/>
           </>
         ) }
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Gas limit"
         hint="Total gas limit provided by all transactions in the block"
+        isLoading={ isPlaceholderData }
       >
-        <Text>{ BigNumber(data.gas_limit).toFormat() }</Text>
+        <Skeleton isLoaded={ !isPlaceholderData }>
+          { BigNumber(data.gas_limit).toFormat() }
+        </Skeleton>
       </DetailsInfoItem>
       { data.base_fee_per_gas && (
         <DetailsInfoItem
           title="Base fee per gas"
           hint="Minimum fee required per unit of gas. Fee adjusts based on network congestion"
+          isLoading={ isPlaceholderData }
         >
-          <Text>{ BigNumber(data.base_fee_per_gas).dividedBy(WEI).toFixed() } { appConfig.network.currency.symbol } </Text>
-          <Text variant="secondary" whiteSpace="pre">
-            { space }({ BigNumber(data.base_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() } Gwei)
-          </Text>
+          { isPlaceholderData ? (
+            <Skeleton isLoaded={ !isPlaceholderData } h="20px" maxW="380px" w="100%"/>
+          ) : (
+            <>
+              <Text>{ BigNumber(data.base_fee_per_gas).dividedBy(WEI).toFixed() } { appConfig.network.currency.symbol } </Text>
+              <Text variant="secondary" whiteSpace="pre">
+                { space }({ BigNumber(data.base_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() } Gwei)
+              </Text>
+            </>
+          ) }
         </DetailsInfoItem>
       ) }
       <DetailsInfoItem
@@ -233,15 +279,21 @@ const BlockDetails = ({ query }: Props) => {
 
           Equals Block Base Fee per Gas * Gas Used`
         }
+        isLoading={ isPlaceholderData }
       >
-        <Icon as={ flameIcon } boxSize={ 5 } color="gray.500"/>
-        <Text ml={ 1 }>{ burntFees.dividedBy(WEI).toFixed() } { appConfig.network.currency.symbol }</Text>
+        <Skeleton isLoaded={ !isPlaceholderData } boxSize={ 5 }>
+          <Icon as={ flameIcon } boxSize={ 5 } color="gray.500"/>
+        </Skeleton>
+        <Skeleton isLoaded={ !isPlaceholderData } ml={ 1 }>
+          { burntFees.dividedBy(WEI).toFixed() } { appConfig.network.currency.symbol }
+        </Skeleton>
         { !txFees.isEqualTo(ZERO) && (
           <Tooltip label="Burnt fees / Txn fees * 100%">
             <Box>
               <Utilization
                 ml={ 4 }
                 value={ burntFees.dividedBy(txFees).toNumber() }
+                isLoading={ isPlaceholderData }
               />
             </Box>
           </Tooltip>
@@ -251,8 +303,11 @@ const BlockDetails = ({ query }: Props) => {
         <DetailsInfoItem
           title="Priority fee / Tip"
           hint="User-defined tips sent to validator for transaction priority/inclusion"
+          isLoading={ isPlaceholderData }
         >
-          { BigNumber(data.priority_fee).dividedBy(WEI).toFixed() } { appConfig.network.currency.symbol }
+          <Skeleton isLoaded={ !isPlaceholderData }>
+            { BigNumber(data.priority_fee).dividedBy(WEI).toFixed() } { appConfig.network.currency.symbol }
+          </Skeleton>
         </DetailsInfoItem>
       ) }
       { /* api doesn't support extra data yet */ }
@@ -267,21 +322,21 @@ const BlockDetails = ({ query }: Props) => {
       { /* CUT */ }
       <GridItem colSpan={{ base: undefined, lg: 2 }}>
         <Element name="BlockDetails__cutLink">
-          <Link
-            mt={ 6 }
-            display="inline-block"
-            fontSize="sm"
-            textDecorationLine="underline"
-            textDecorationStyle="dashed"
-            onClick={ handleCutClick }
-          >
-            { isExpanded ? 'Hide details' : 'View details' }
-          </Link>
+          <Skeleton isLoaded={ !isPlaceholderData } mt={ 6 } display="inline-block">
+            <Link
+              fontSize="sm"
+              textDecorationLine="underline"
+              textDecorationStyle="dashed"
+              onClick={ handleCutClick }
+            >
+              { isExpanded ? 'Hide details' : 'View details' }
+            </Link>
+          </Skeleton>
         </Element>
       </GridItem>
 
       { /* ADDITIONAL INFO */ }
-      { isExpanded && (
+      { isExpanded && !isPlaceholderData && (
         <>
           <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
 

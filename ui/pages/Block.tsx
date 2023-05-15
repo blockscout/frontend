@@ -10,6 +10,7 @@ import { useAppContext } from 'lib/appContext';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { BLOCK } from 'stubs/block';
 import BlockDetails from 'ui/block/BlockDetails';
 import BlockWithdrawals from 'ui/block/BlockWithdrawals';
 import TextAd from 'ui/shared/ad/TextAd';
@@ -35,14 +36,17 @@ const BlockPageContent = () => {
 
   const blockQuery = useApiQuery('block', {
     pathParams: { height },
-    queryOptions: { enabled: Boolean(height) },
+    queryOptions: {
+      enabled: Boolean(height),
+      placeholderData: BLOCK,
+    },
   });
 
   const blockTxsQuery = useQueryWithPages({
     resourceName: 'block_txs',
     pathParams: { height },
     options: {
-      enabled: Boolean(blockQuery.data?.height && tab === 'txs'),
+      enabled: Boolean(!blockQuery.isPlaceholderData && blockQuery.data?.height && tab === 'txs'),
     },
   });
 
@@ -50,7 +54,7 @@ const BlockPageContent = () => {
     resourceName: 'block_withdrawals',
     pathParams: { height },
     options: {
-      enabled: Boolean(blockQuery.data?.height && appConfig.beaconChain.hasBeaconChain && tab === 'withdrawals'),
+      enabled: Boolean(!blockQuery.isPlaceholderData && blockQuery.data?.height && appConfig.beaconChain.hasBeaconChain && tab === 'withdrawals'),
     },
   });
 
