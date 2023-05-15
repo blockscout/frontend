@@ -8,9 +8,9 @@ import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/appContext';
 import networkExplorers from 'lib/networks/networkExplorers';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { TX } from 'stubs/tx';
 import TextAd from 'ui/shared/ad/TextAd';
 import LinkExternal from 'ui/shared/LinkExternal';
-import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
 import TxDetails from 'ui/tx/TxDetails';
@@ -38,7 +38,10 @@ const TransactionPageContent = () => {
 
   const { data } = useApiQuery('tx', {
     pathParams: { hash },
-    queryOptions: { enabled: Boolean(hash) },
+    queryOptions: {
+      enabled: Boolean(hash),
+      placeholderData: TX,
+    },
   });
 
   const explorersLinks = networkExplorers
@@ -66,7 +69,7 @@ const TransactionPageContent = () => {
   );
 
   return (
-    <Page>
+    <>
       <TextAd mb={ 6 }/>
       <PageTitle
         text="Transaction details"
@@ -75,7 +78,7 @@ const TransactionPageContent = () => {
         backLinkLabel="Back to transactions list"
       />
       <RoutedTabs tabs={ TABS }/>
-    </Page>
+    </>
   );
 };
 

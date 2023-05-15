@@ -1,10 +1,13 @@
 import type { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import type { RoutedQuery } from 'nextjs-routes';
 import React from 'react';
 
 import getSeo from 'lib/next/tx/getSeo';
-import Transaction from 'ui/pages/Transaction';
+import Page from 'ui/shared/Page/Page';
+
+const Transaction = dynamic(() => import('ui/pages/Transaction'), { ssr: false });
 
 const TransactionPage: NextPage<RoutedQuery<'/tx/[hash]'>> = ({ hash }: RoutedQuery<'/tx/[hash]'>) => {
   const { title, description } = getSeo({ hash });
@@ -15,7 +18,9 @@ const TransactionPage: NextPage<RoutedQuery<'/tx/[hash]'>> = ({ hash }: RoutedQu
         <title>{ title }</title>
         <meta name="description" content={ description }/>
       </Head>
-      <Transaction/>
+      <Page>
+        <Transaction/>
+      </Page>
     </>
   );
 };
