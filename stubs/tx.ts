@@ -1,3 +1,4 @@
+import type { RawTracesResponse } from 'types/api/rawTrace';
 import type { Transaction, TransactionsResponse } from 'types/api/transaction';
 
 import { ADDRESS_PARAMS } from './addressParams';
@@ -58,3 +59,5 @@ export const TXS: TransactionsResponse = {
     filter: 'validated',
   },
 };
+
+export const TX_RAW_TRACE: RawTracesResponse = [];
