@@ -3,8 +3,9 @@ import NextLink from 'next/link';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
+import type { NavItem } from 'types/client/navigation-items';
+
 import useIsMobile from 'lib/hooks/useIsMobile';
-import type { NavItem } from 'lib/hooks/useNavItems';
 import { isInternalItem } from 'lib/hooks/useNavItems';
 
 import useColors from './useColors';

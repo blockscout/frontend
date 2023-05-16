@@ -1,4 +1,5 @@
 /* eslint-disable no-restricted-properties */
+import type { NavItemExternal } from 'types/client/navigation-items';
 import type { WalletType } from 'types/client/wallets';
 import type { NetworkExplorer } from 'types/networks';
 import type { ChainIndicatorId } from 'ui/home/indicators/types';

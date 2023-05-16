@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
-import type { Route } from 'nextjs-routes';
 import React from 'react';
+
+import type { NavItemInternal, NavItem, NavGroupItem } from 'types/client/navigation-items';
 
 import appConfig from 'configs/app/config';
 import abiIcon from 'icons/ABI.svg';
@@ -26,28 +27,6 @@ import txnBatchIcon from 'icons/txn_batches.svg';
 import verifiedIcon from 'icons/verified.svg';
 import watchlistIcon from 'icons/watchlist.svg';
 import { rightLineArrow } from 'lib/html-entities';
-
-type NavItemCommon = {
-  text: string;
-  icon?: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
-}
-
-type NavItemInternal = NavItemCommon & {
-  nextRoute: Route;
-  isActive?: boolean;
-  isNewUi?: boolean;
-}
-
-type NavItemExternal = NavItemCommon & {
-  url: string;
-}
-
-export type NavItem = NavItemInternal | NavItemExternal
-
-export type NavGroupItem = NavItemCommon & {
-  isActive?: boolean;
-  subItems: Array<NavItem> | Array<Array<NavItem>>;
-}
 
 interface ReturnType {
   mainNavItems: Array<NavItem | NavGroupItem>;
