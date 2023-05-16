@@ -52,9 +52,6 @@ const AddressTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}
     },
   });
 
-  // addressTxsQuery.isPlaceholderData = true;
-  // addressTxsQuery.pagination.isLoading = true;
-
   const handleFilterChange = React.useCallback((val: string | Array<string>) => {
 
     const newVal = getFilterValue(val);
