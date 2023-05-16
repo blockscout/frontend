@@ -1,4 +1,4 @@
-import { Grid, GridItem, Text, Icon, Link, Box, Tooltip, useColorModeValue, Skeleton } from '@chakra-ui/react';
+import { Grid, GridItem, Text, Link, Box, Tooltip, useColorModeValue, Skeleton } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import capitalize from 'lodash/capitalize';
@@ -20,6 +20,7 @@ import { space } from 'lib/html-entities';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import AddressLink from 'ui/shared/address/AddressLink';
+import Icon from 'ui/shared/chakra/Icon';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
@@ -159,9 +160,7 @@ const BlockDetails = ({ query }: Props) => {
         hint="Date & time at which block was produced."
         isLoading={ isPlaceholderData }
       >
-        <Skeleton isLoaded={ !isPlaceholderData } boxSize={ 5 } borderRadius="full">
-          <Icon as={ clockIcon } boxSize={ 5 } color="gray.500"/>
-        </Skeleton>
+        <Icon as={ clockIcon } boxSize={ 5 } color="gray.500" isLoading={ isPlaceholderData }/>
         <Skeleton isLoaded={ !isPlaceholderData } ml={ 1 }>
           { dayjs(data.timestamp).fromNow() }
         </Skeleton>
@@ -281,9 +280,7 @@ const BlockDetails = ({ query }: Props) => {
         }
         isLoading={ isPlaceholderData }
       >
-        <Skeleton isLoaded={ !isPlaceholderData } boxSize={ 5 }>
-          <Icon as={ flameIcon } boxSize={ 5 } color="gray.500"/>
-        </Skeleton>
+        <Icon as={ flameIcon } boxSize={ 5 } color="gray.500" isLoading={ isPlaceholderData }/>
         <Skeleton isLoaded={ !isPlaceholderData } ml={ 1 }>
           { burntFees.dividedBy(WEI).toFixed() } { appConfig.network.currency.symbol }
         </Skeleton>

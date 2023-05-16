@@ -1,7 +1,8 @@
-import { Box, HStack, Icon, Flex, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { Box, HStack, Flex, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import keyIcon from 'icons/key.svg';
+import Icon from 'ui/shared/chakra/Icon';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 interface Props {
@@ -13,9 +14,7 @@ interface Props {
 const ApiKeySnippet = ({ apiKey, name, isLoading }: Props) => {
   return (
     <HStack spacing={ 2 } alignItems="start">
-      <Skeleton isLoaded={ !isLoading } boxSize={ 6 } display="inline-block">
-        <Icon as={ keyIcon } boxSize={ 6 } color={ useColorModeValue('gray.500', 'gray.400') }/>
-      </Skeleton>
+      <Icon as={ keyIcon } boxSize={ 6 } color={ useColorModeValue('gray.500', 'gray.400') } isLoading={ isLoading }/>
       <Box>
         <Flex alignItems={{ base: 'flex-start', lg: 'center' }}>
           <Skeleton isLoaded={ !isLoading } display="inline-block" fontWeight={ 600 } mr={ 1 }>

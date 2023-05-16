@@ -1,4 +1,4 @@
-import { Flex, Icon, Skeleton } from '@chakra-ui/react';
+import { Flex, Skeleton } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -10,6 +10,7 @@ import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
+import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import InOutTag from 'ui/shared/InOutTag';
@@ -66,14 +67,13 @@ const TokenTransferListItem = ({
       { showTxInfo && txHash && (
         <Flex justifyContent="space-between" alignItems="center" lineHeight="24px" width="100%">
           <Flex>
-            <Skeleton isLoaded={ !isLoading } boxSize="30px" mr={ 2 } borderRadius="base">
-              <Icon
-                as={ transactionIcon }
-                boxSize="30px"
-                color="link"
-              />
-            </Skeleton>
-            <Address width="100%">
+            <Icon
+              as={ transactionIcon }
+              boxSize="30px"
+              color="link"
+              isLoading={ isLoading }
+            />
+            <Address width="100%" ml={ 2 }>
               <AddressLink
                 hash={ txHash }
                 type="transaction"
@@ -98,7 +98,7 @@ const TokenTransferListItem = ({
         </Address>
         { baseAddress ?
           <InOutTag isIn={ baseAddress === to.hash } isOut={ baseAddress === from.hash } w="50px" textAlign="center" isLoading={ isLoading }/> :
-          <Skeleton isLoaded={ !isLoading } boxSize={ 6 }><Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500"/></Skeleton>
+          <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500" isLoading={ isLoading }/>
         }
         <Address width={ addressWidth }>
           <AddressIcon address={ to } isLoading={ isLoading }/>

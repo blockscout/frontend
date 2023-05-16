@@ -1,4 +1,4 @@
-import { Tr, Td, Flex, Box, Icon, Tooltip, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { Tr, Td, Flex, Box, Tooltip, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import { motion } from 'framer-motion';
 import { route } from 'nextjs-routes';
@@ -12,6 +12,7 @@ import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import { WEI } from 'lib/consts';
 import BlockTimestamp from 'ui/blocks/BlockTimestamp';
 import AddressLink from 'ui/shared/address/AddressLink';
+import Icon from 'ui/shared/chakra/Icon';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
 import LinkInternal from 'ui/shared/LinkInternal';
 import TextSeparator from 'ui/shared/TextSeparator';
@@ -110,9 +111,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
       { !appConfig.L2.isL2Network && (
         <Td fontSize="sm">
           <Flex alignItems="center" columnGap={ 1 }>
-            <Skeleton isLoaded={ !isLoading } boxSize={ 5 }>
-              <Icon as={ flameIcon } boxSize={ 5 } color={ burntFeesIconColor }/>
-            </Skeleton>
+            <Icon as={ flameIcon } boxSize={ 5 } color={ burntFeesIconColor } isLoading={ isLoading }/>
             <Skeleton isLoaded={ !isLoading } display="inline-block">
               { burntFees.dividedBy(WEI).toFixed(8) }
             </Skeleton>

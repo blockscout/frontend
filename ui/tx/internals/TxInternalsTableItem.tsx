@@ -1,4 +1,4 @@
-import { Tr, Td, Icon, Box, Flex, Skeleton } from '@chakra-ui/react';
+import { Tr, Td, Box, Flex, Skeleton } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -9,6 +9,7 @@ import rightArrowIcon from 'icons/arrows/east.svg';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
+import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import TxStatus from 'ui/shared/TxStatus';
@@ -42,9 +43,7 @@ const TxInternalTableItem = ({ type, from, to, value, success, error, gas_limit:
         </Address>
       </Td>
       <Td px={ 0 } verticalAlign="middle">
-        <Skeleton isLoaded={ !isLoading } boxSize={ 6 }>
-          <Icon as={ rightArrowIcon } boxSize={ 6 } color="gray.500"/>
-        </Skeleton>
+        <Icon as={ rightArrowIcon } boxSize={ 6 } color="gray.500" isLoading={ isLoading }/>
       </Td>
       <Td verticalAlign="middle">
         { toData && (

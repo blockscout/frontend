@@ -1,12 +1,12 @@
 import {
   Tr,
   Td,
-  Icon,
   VStack,
   Show,
   Hide,
   Flex,
   Skeleton,
+  Box,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { route } from 'nextjs-routes';
@@ -19,6 +19,7 @@ import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
+import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import CurrencyValue from 'ui/shared/CurrencyValue';
@@ -133,9 +134,9 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
         <Td px={ 0 }>
           { (isIn || isOut) ?
             <InOutTag isIn={ isIn } isOut={ isOut } width="48px" mr={ 2 } isLoading={ isLoading }/> : (
-              <Skeleton mx="6px" isLoaded={ !isLoading } boxSize={ 6 }>
-                <Icon as={ rightArrowIcon } boxSize={ 6 } color="gray.500"/>
-              </Skeleton>
+              <Box mx="6px">
+                <Icon as={ rightArrowIcon } boxSize={ 6 } color="gray.500" isLoading={ isLoading }/>
+              </Box>
             ) }
         </Td>
         <Td>
@@ -146,18 +147,15 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
         <Td colSpan={ 3 }>
           <Flex alignItems="center">
             { (isIn || isOut) ?
-              <InOutTag isIn={ isIn } isOut={ isOut } width="48px" isLoading={ isLoading }/> :
-              (
-                <Skeleton isLoaded={ !isLoading } boxSize={ 6 }>
-                  <Icon
-                    as={ rightArrowIcon }
-                    boxSize={ 6 }
-                    color="gray.500"
-                    transform="rotate(90deg)"
-                  />
-                </Skeleton>
-              )
-            }
+              <InOutTag isIn={ isIn } isOut={ isOut } width="48px" isLoading={ isLoading }/> : (
+                <Icon
+                  as={ rightArrowIcon }
+                  boxSize={ 6 }
+                  color="gray.500"
+                  transform="rotate(90deg)"
+                  isLoading={ isLoading }
+                />
+              ) }
             <VStack alignItems="start" overflow="hidden" ml={ 1 }>
               { addressFrom }
               { addressTo }

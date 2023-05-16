@@ -1,4 +1,4 @@
-import { Flex, Icon, Box, HStack, Skeleton } from '@chakra-ui/react';
+import { Flex, Box, HStack, Skeleton } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -9,6 +9,7 @@ import eastArrowIcon from 'icons/arrows/east.svg';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
+import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
@@ -33,9 +34,7 @@ const TxInternalsListItem = ({ type, from, to, value, success, error, gas_limit:
           <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ from.hash } isLoading={ isLoading }/>
           <CopyToClipboard text={ from.hash } isLoading={ isLoading }/>
         </Address>
-        <Skeleton isLoaded={ !isLoading } boxSize={ 6 }>
-          <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500"/>
-        </Skeleton>
+        <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500" isLoading={ isLoading }/>
         { toData && (
           <Address width="calc((100% - 48px) / 2)">
             <AddressIcon address={ toData } isLoading={ isLoading }/>

@@ -1,4 +1,4 @@
-import { Flex, Skeleton, Text, Box, Icon, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Skeleton, Text, Box, useColorModeValue } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import capitalize from 'lodash/capitalize';
 import { route } from 'nextjs-routes';
@@ -13,6 +13,7 @@ import { WEI } from 'lib/consts';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import BlockTimestamp from 'ui/blocks/BlockTimestamp';
 import AddressLink from 'ui/shared/address/AddressLink';
+import Icon from 'ui/shared/chakra/Icon';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
 import LinkInternal from 'ui/shared/LinkInternal';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
@@ -97,9 +98,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           <Text fontWeight={ 500 }>Burnt fees</Text>
           <Flex columnGap={ 4 } mt={ 2 }>
             <Flex>
-              <Skeleton isLoaded={ !isLoading } boxSize={ 5 } display="inline-block">
-                <Icon as={ flameIcon } boxSize={ 5 } color="gray.500"/>
-              </Skeleton>
+              <Icon as={ flameIcon } boxSize={ 5 } color="gray.500" isLoading={ isLoading }/>
               <Skeleton isLoaded={ !isLoading } display="inline-block" color="text_secondary" ml={ 1 }>
                 <span>{ burntFees.div(WEI).toFixed() }</span>
               </Skeleton>

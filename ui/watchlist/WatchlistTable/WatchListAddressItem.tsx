@@ -1,4 +1,4 @@
-import { HStack, VStack, chakra, Icon, Flex, Skeleton } from '@chakra-ui/react';
+import { HStack, VStack, chakra, Flex, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TWatchlistItem } from 'types/client/account';
@@ -8,6 +8,7 @@ import TokensIcon from 'icons/tokens.svg';
 // import WalletIcon from 'icons/wallet.svg';
 import { nbsp } from 'lib/html-entities';
 import AddressSnippet from 'ui/shared/AddressSnippet';
+import Icon from 'ui/shared/chakra/Icon';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import TokenLogo from 'ui/shared/TokenLogo';
 
@@ -40,10 +41,8 @@ const WatchListAddressItem = ({ item, isLoading }: { item: TWatchlistItem; isLoa
         </Skeleton>
       </Flex>
       { item.tokens_count && (
-        <HStack spacing={ 0 } fontSize="sm" pl={ infoItemsPaddingLeft }>
-          <Skeleton isLoaded={ !isLoading } boxSize={ 5 } mr={ 2 } borderRadius="sm">
-            <Icon as={ TokensIcon } boxSize={ 5 }/>
-          </Skeleton>
+        <HStack spacing={ 2 } fontSize="sm" pl={ infoItemsPaddingLeft }>
+          <Icon as={ TokensIcon } boxSize={ 5 } isLoading={ isLoading } borderRadius="sm"/>
           <Skeleton isLoaded={ !isLoading } display="inline-flex">
             <span>{ `Tokens:${ nbsp }` + item.tokens_count }</span>
             { /* api does not provide token prices */ }

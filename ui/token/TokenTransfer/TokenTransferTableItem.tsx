@@ -1,4 +1,4 @@
-import { Tr, Td, Icon, Grid, Skeleton, Box } from '@chakra-ui/react';
+import { Tr, Td, Grid, Skeleton, Box } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -9,6 +9,7 @@ import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
+import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
@@ -69,9 +70,9 @@ const TokenTransferTableItem = ({
         </Address>
       </Td>
       <Td px={ 0 }>
-        <Skeleton isLoaded={ !isLoading } boxSize={ 6 } my="3px">
-          <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500"/>
-        </Skeleton>
+        <Box my="3px">
+          <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500" isLoading={ isLoading }/>
+        </Box>
       </Td>
       <Td>
         <Address display="inline-flex" maxW="100%" py="3px">

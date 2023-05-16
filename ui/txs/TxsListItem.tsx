@@ -2,7 +2,6 @@ import {
   HStack,
   Box,
   Flex,
-  Icon,
   Skeleton,
 } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
@@ -18,6 +17,7 @@ import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
+import Icon from 'ui/shared/chakra/Icon';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import InOutTag from 'ui/shared/InOutTag';
 import LinkInternal from 'ui/shared/LinkInternal';
@@ -56,14 +56,13 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
       </Flex>
       <Flex justifyContent="space-between" lineHeight="24px" mt={ 3 } alignItems="center">
         <Flex>
-          <Skeleton isLoaded={ !isLoading } boxSize="30px" mr={ 2 } borderRadius="base">
-            <Icon
-              as={ transactionIcon }
-              boxSize="30px"
-              color="link"
-            />
-          </Skeleton>
-          <Address width="100%">
+          <Icon
+            as={ transactionIcon }
+            boxSize="30px"
+            color="link"
+            isLoading={ isLoading }
+          />
+          <Address width="100%" ml={ 2 }>
             <AddressLink
               hash={ tx.hash }
               type="transaction"
@@ -117,13 +116,14 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
         </Address>
         { (isIn || isOut) ?
           <InOutTag isIn={ isIn } isOut={ isOut } width="48px" mx={ 2 } isLoading={ isLoading }/> : (
-            <Skeleton isLoaded={ !isLoading } mx={ 2 } boxSize={ 6 }>
+            <Box mx={ 2 }>
               <Icon
                 as={ rightArrowIcon }
                 boxSize={ 6 }
                 color="gray.500"
+                isLoading={ isLoading }
               />
-            </Skeleton>
+            </Box>
           ) }
         { dataTo ? (
           <Address maxWidth={ `calc((100% - ${ currentAddress ? TAG_WIDTH + 16 : ARROW_WIDTH + 8 }px)/2)` }>

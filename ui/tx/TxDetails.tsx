@@ -3,7 +3,7 @@ import {
   GridItem,
   Text,
   Box,
-  Icon,
+  Icon as ChakraIcon,
   Link,
   Spinner,
   Tag,
@@ -29,6 +29,7 @@ import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
+import Icon from 'ui/shared/chakra/Icon';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
@@ -96,14 +97,14 @@ const TxDetails = () => {
   const executionSuccessBadge = toAddress?.is_contract && data.result === 'success' ? (
     <Tooltip label="Contract execution completed">
       <chakra.span display="inline-flex" ml={ 2 } mr={ 1 }>
-        <Icon as={ successIcon } boxSize={ 4 } color={ executionSuccessIconColor } cursor="pointer"/>
+        <ChakraIcon as={ successIcon } boxSize={ 4 } color={ executionSuccessIconColor } cursor="pointer"/>
       </chakra.span>
     </Tooltip>
   ) : null;
   const executionFailedBadge = toAddress?.is_contract && Boolean(data.status) && data.result !== 'success' ? (
     <Tooltip label="Error occurred during contract execution">
       <chakra.span display="inline-flex" ml={ 2 } mr={ 1 }>
-        <Icon as={ errorIcon } boxSize={ 4 } color="error" cursor="pointer"/>
+        <ChakraIcon as={ errorIcon } boxSize={ 4 } color="error" cursor="pointer"/>
       </chakra.span>
     </Tooltip>
   ) : null;
@@ -182,9 +183,7 @@ const TxDetails = () => {
           hint="Date & time of transaction inclusion, including length of time for confirmation"
           isLoading={ isPlaceholderData }
         >
-          <Skeleton isLoaded={ !isPlaceholderData } boxSize={ 5 }>
-            <Icon as={ clockIcon } boxSize={ 5 } color="gray.500"/>
-          </Skeleton>
+          <Icon as={ clockIcon } boxSize={ 5 } color="gray.500" isLoading={ isPlaceholderData }/>
           <Skeleton isLoaded={ !isPlaceholderData } ml={ 1 }>{ dayjs(data.timestamp).fromNow() }</Skeleton>
           <TextSeparator/>
           <Skeleton isLoaded={ !isPlaceholderData } whiteSpace="normal">{ dayjs(data.timestamp).format('LLLL') }</Skeleton>
