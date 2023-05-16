@@ -185,9 +185,6 @@ export default function useNavItems(): ReturnType {
         isNewUi: true,
       } : null,
       { text: 'Charts & stats', nextRoute: { pathname: '/stats' as const }, icon: statsIcon, isActive: pathname === '/stats', isNewUi: true },
-      // there should be custom site sections like Stats, Faucet, More, etc but never an 'other'
-      // examples https://explorer-edgenet.polygon.technology/ and https://explorer.celo.org/
-      // at this stage custom menu items is under development, we will implement it later
       {
         text: 'API',
         icon: apiDocsIcon,
