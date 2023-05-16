@@ -1,4 +1,3 @@
-import { Skeleton } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -93,17 +92,14 @@ const BlockPageContent = () => {
 
   return (
     <>
-      { blockQuery.isLoading ? <Skeleton h={{ base: 12, lg: 6 }} mb={ 6 } w="100%" maxW="680px"/> : <TextAd mb={ 6 }/> }
-      { blockQuery.isLoading ? (
-        <Skeleton h={ 10 } w="300px" mb={ 6 }/>
-      ) : (
-        <PageTitle
-          text={ `Block #${ blockQuery.data?.height }` }
-          backLinkUrl={ hasGoBackLink ? appProps.referrer : undefined }
-          backLinkLabel="Back to blocks list"
-        />
-      ) }
-      { blockQuery.isLoading ? <SkeletonTabs/> : (
+      <TextAd mb={ 6 }/>
+      <PageTitle
+        text={ `Block #${ blockQuery.data?.height }` }
+        backLinkUrl={ hasGoBackLink ? appProps.referrer : undefined }
+        backLinkLabel="Back to blocks list"
+        isLoading={ blockQuery.isPlaceholderData }
+      />
+      { blockQuery.isPlaceholderData ? <SkeletonTabs tabs={ tabs }/> : (
         <RoutedTabs
           tabs={ tabs }
           tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
