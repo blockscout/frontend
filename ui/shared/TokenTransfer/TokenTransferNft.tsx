@@ -30,7 +30,7 @@ const TokenTransferNft = ({ hash, id, className, isDisabled, isLoading, truncati
       w="100%"
       className={ className }
     >
-      <Icon as={ nftPlaceholder } boxSize="30px" color="inherit" isLoading={ isLoading }/>
+      <Icon as={ nftPlaceholder } boxSize="30px" color="inherit" isLoading={ isLoading } borderRadius="base"/>
       <Skeleton isLoaded={ !isLoading } maxW="calc(100% - 34px)" ml={ 1 }>
         { truncation === 'constant' ? <HashStringShorten hash={ id }/> : <HashStringShortenDynamic hash={ id } fontWeight={ 500 }/> }
       </Skeleton>

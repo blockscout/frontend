@@ -78,9 +78,9 @@ const LogItem = ({ address, index, topics, data, decoded, type, tx_hash: txHash,
       </GridItem>
       { decoded && (
         <>
-          <RowHeader>Decode input data</RowHeader>
+          <RowHeader isLoading={ isLoading }>Decode input data</RowHeader>
           <GridItem>
-            <LogDecodedInputData data={ decoded }/>
+            <LogDecodedInputData data={ decoded } isLoading={ isLoading }/>
           </GridItem>
         </>
       ) }
