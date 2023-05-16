@@ -1,9 +1,10 @@
-import type { TokenCounters, TokenHolder, TokenHolders, TokenInfo, TokenInstance, TokenInventoryResponse, TokenType } from 'types/api/token';
+import type { TokenCounters, TokenHolder, TokenHolders, TokenInfo, TokenInstance, TokenType } from 'types/api/token';
 import type { TokenTransfer, TokenTransferPagination, TokenTransferResponse } from 'types/api/tokenTransfer';
 
 import { ADDRESS_PARAMS, ADDRESS_HASH } from './addressParams';
 import { BLOCK_HASH } from './block';
 import { TX_HASH } from './tx';
+import { generateListStub } from './utils';
 
 export const TOKEN_INFO_ERC_20: TokenInfo<'ERC-20'> = {
   address: ADDRESS_HASH,
@@ -75,11 +76,11 @@ export const TOKEN_TRANSFER_ERC_1155: TokenTransfer = {
 export const getTokenTransfersStub = (type?: TokenType, pagination: TokenTransferPagination | null = null): TokenTransferResponse => {
   switch (type) {
     case 'ERC-721':
-      return { items: Array(50).fill(TOKEN_TRANSFER_ERC_721), next_page_params: pagination };
+      return generateListStub<'token_transfers'>(TOKEN_TRANSFER_ERC_721, 50, pagination);
     case 'ERC-1155':
-      return { items: Array(50).fill(TOKEN_TRANSFER_ERC_1155), next_page_params: pagination };
+      return generateListStub<'token_transfers'>(TOKEN_TRANSFER_ERC_1155, 50, pagination);
     default:
-      return { items: Array(50).fill(TOKEN_TRANSFER_ERC_20), next_page_params: pagination };
+      return generateListStub<'token_transfers'>(TOKEN_TRANSFER_ERC_20, 50, pagination);
   }
 };
 
@@ -99,9 +100,4 @@ export const TOKEN_INSTANCE: TokenInstance = {
   owner: ADDRESS_PARAMS,
   token: TOKEN_INFO_ERC_1155,
   holder_address_hash: ADDRESS_HASH,
-};
-
-export const TOKEN_INSTANCES: TokenInventoryResponse = {
-  items: Array(50).fill(TOKEN_INSTANCE),
-  next_page_params: null,
 };

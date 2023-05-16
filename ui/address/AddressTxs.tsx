@@ -13,7 +13,8 @@ import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
-import { ADDRESS_TXS } from 'stubs/address';
+import { TX } from 'stubs/tx';
+import { generateListStub } from 'stubs/utils';
 import ActionBar from 'ui/shared/ActionBar';
 import Pagination from 'ui/shared/Pagination';
 import TxsContent from 'ui/txs/TxsContent';
@@ -43,7 +44,11 @@ const AddressTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}
     filters: { filter: filterValue },
     scrollRef,
     options: {
-      placeholderData: ADDRESS_TXS,
+      placeholderData: generateListStub<'address_txs'>(TX, 50, {
+        block_number: 9005713,
+        index: 5,
+        items_count: 50,
+      }),
     },
   });
 

@@ -6,7 +6,8 @@ import type { InternalTransaction } from 'types/api/internalTransaction';
 import { SECOND } from 'lib/consts';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 // import { apos } from 'lib/html-entities';
-import { INTERNAL_TXS } from 'stubs/internalTx';
+import { INTERNAL_TX } from 'stubs/internalTx';
+import { generateListStub } from 'stubs/utils';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 // import FilterInput from 'ui/shared/filters/FilterInput';
@@ -76,7 +77,7 @@ const TxInternals = () => {
     pathParams: { hash: txInfo.data?.hash },
     options: {
       enabled: !txInfo.isPlaceholderData && Boolean(txInfo.data?.hash) && Boolean(txInfo.data?.status),
-      placeholderData: INTERNAL_TXS,
+      placeholderData: generateListStub<'tx_internal_txs'>(INTERNAL_TX, 3),
     },
   });
 

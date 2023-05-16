@@ -1,8 +1,7 @@
-import type { Address, AddressTransactionsResponse } from 'types/api/address';
+import type { Address } from 'types/api/address';
 
 import { ADDRESS_HASH } from './addressParams';
 import { TOKEN_INFO_ERC_20 } from './token';
-import { TXS } from './tx';
 
 export const ADDRESS_INFO: Address = {
   block_number_balance_updated_at: 8774377,
@@ -33,5 +32,3 @@ export const ADDRESS_INFO: Address = {
   watchlist_names: [],
   watchlist_address_id: null,
 };
-
-export const ADDRESS_TXS: AddressTransactionsResponse = TXS as AddressTransactionsResponse;

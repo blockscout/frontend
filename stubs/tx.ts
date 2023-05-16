@@ -1,5 +1,5 @@
 import type { RawTracesResponse } from 'types/api/rawTrace';
-import type { Transaction, TransactionsResponse } from 'types/api/transaction';
+import type { Transaction } from 'types/api/transaction';
 
 import { ADDRESS_PARAMS } from './addressParams';
 
@@ -48,16 +48,6 @@ export const TX: Transaction = {
     14545,
   ],
   tx_tag: null,
-};
-
-export const TXS: TransactionsResponse = {
-  items: Array(50).fill(TX),
-  next_page_params: {
-    block_number: 9005713,
-    index: 5,
-    items_count: 50,
-    filter: 'validated',
-  },
 };
 
 export const TX_RAW_TRACE: RawTracesResponse = [];

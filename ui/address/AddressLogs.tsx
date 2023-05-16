@@ -3,7 +3,8 @@ import React from 'react';
 
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { ADDRESS_LOGS } from 'stubs/log';
+import { LOG } from 'stubs/log';
+import { generateListStub } from 'stubs/utils';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import LogItem from 'ui/shared/logs/LogItem';
@@ -18,7 +19,12 @@ const AddressLogs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>
     pathParams: { hash },
     scrollRef,
     options: {
-      placeholderData: ADDRESS_LOGS,
+      placeholderData: generateListStub<'address_logs'>(LOG, 3, {
+        block_number: 9005750,
+        index: 42,
+        items_count: 50,
+        transaction_index: 23,
+      }),
     },
   });
 

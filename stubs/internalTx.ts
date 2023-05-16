@@ -1,4 +1,4 @@
-import type { InternalTransaction, InternalTransactionsResponse } from 'types/api/internalTransaction';
+import type { InternalTransaction } from 'types/api/internalTransaction';
 
 import { ADDRESS_PARAMS } from './addressParams';
 import { TX_HASH } from './tx';
@@ -16,9 +16,4 @@ export const INTERNAL_TX: InternalTransaction = {
   transaction_hash: TX_HASH,
   type: 'staticcall',
   value: '22324344900000000',
-};
-
-export const INTERNAL_TXS: InternalTransactionsResponse = {
-  items: Array(3).fill(INTERNAL_TX),
-  next_page_params: null,
 };

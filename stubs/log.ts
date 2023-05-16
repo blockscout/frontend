@@ -1,4 +1,4 @@
-import type { Log, LogsResponseAddress, LogsResponseTx } from 'types/api/log';
+import type { Log } from 'types/api/log';
 
 import { ADDRESS_PARAMS } from './addressParams';
 import { TX_HASH } from './tx';
@@ -32,19 +32,4 @@ export const LOG: Log = {
     null,
   ],
   tx_hash: TX_HASH,
-};
-
-export const TX_LOGS: LogsResponseTx = {
-  items: Array(3).fill(LOG),
-  next_page_params: null,
-};
-
-export const ADDRESS_LOGS: LogsResponseAddress = {
-  items: Array(3).fill(LOG),
-  next_page_params: {
-    block_number: 9005750,
-    index: 42,
-    items_count: 50,
-    transaction_index: 23,
-  },
 };

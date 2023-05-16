@@ -9,8 +9,10 @@ import { useAppContext } from 'lib/appContext';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { BLOCK, BLOCK_TXS } from 'stubs/block';
-import { WITHDRAWALS } from 'stubs/withdrawals';
+import { BLOCK } from 'stubs/block';
+import { TX } from 'stubs/tx';
+import { generateListStub } from 'stubs/utils';
+import { WITHDRAWAL } from 'stubs/withdrawals';
 import BlockDetails from 'ui/block/BlockDetails';
 import BlockWithdrawals from 'ui/block/BlockWithdrawals';
 import TextAd from 'ui/shared/ad/TextAd';
@@ -47,7 +49,11 @@ const BlockPageContent = () => {
     pathParams: { height },
     options: {
       enabled: Boolean(!blockQuery.isPlaceholderData && blockQuery.data?.height && tab === 'txs'),
-      placeholderData: BLOCK_TXS,
+      placeholderData: generateListStub<'block_txs'>(TX, 50, {
+        block_number: 9004925,
+        index: 49,
+        items_count: 50,
+      }),
     },
   });
 
@@ -56,7 +62,10 @@ const BlockPageContent = () => {
     pathParams: { height },
     options: {
       enabled: Boolean(!blockQuery.isPlaceholderData && blockQuery.data?.height && appConfig.beaconChain.hasBeaconChain && tab === 'withdrawals'),
-      placeholderData: WITHDRAWALS,
+      placeholderData: generateListStub<'block_withdrawals'>(WITHDRAWAL, 50, {
+        index: 5,
+        items_count: 50,
+      }),
     },
   });
 

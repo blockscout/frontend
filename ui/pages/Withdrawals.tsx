@@ -3,7 +3,8 @@ import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
-import { WITHDRAWALS } from 'stubs/withdrawals';
+import { generateListStub } from 'stubs/utils';
+import { WITHDRAWAL } from 'stubs/withdrawals';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -17,7 +18,10 @@ const Withdrawals = () => {
   const { data, isError, isPlaceholderData, isPaginationVisible, pagination } = useQueryWithPages({
     resourceName: 'withdrawals',
     options: {
-      placeholderData: WITHDRAWALS,
+      placeholderData: generateListStub<'withdrawals'>(WITHDRAWAL, 50, {
+        index: 5,
+        items_count: 50,
+      }),
     },
   });
 

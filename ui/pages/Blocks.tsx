@@ -6,7 +6,8 @@ import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
-import { BLOCKS } from 'stubs/block';
+import { BLOCK } from 'stubs/block';
+import { generateListStub } from 'stubs/utils';
 import BlocksContent from 'ui/blocks/BlocksContent';
 import BlocksTabSlot from 'ui/blocks/BlocksTabSlot';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -33,7 +34,10 @@ const BlocksPageContent = () => {
     resourceName: 'blocks',
     filters: { type },
     options: {
-      placeholderData: BLOCKS,
+      placeholderData: generateListStub<'blocks'>(BLOCK, 50, {
+        block_number: 8988686,
+        items_count: 50,
+      }),
     },
   });
 

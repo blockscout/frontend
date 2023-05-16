@@ -4,7 +4,8 @@ import React from 'react';
 
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { WITHDRAWALS } from 'stubs/withdrawals';
+import { generateListStub } from 'stubs/utils';
+import { WITHDRAWAL } from 'stubs/withdrawals';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/Pagination';
@@ -21,7 +22,10 @@ const AddressWithdrawals = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivE
     pathParams: { hash },
     scrollRef,
     options: {
-      placeholderData: WITHDRAWALS,
+      placeholderData: generateListStub<'address_withdrawals'>(WITHDRAWAL, 50, {
+        index: 5,
+        items_count: 50,
+      }),
     },
   });
   const content = data?.items ? (

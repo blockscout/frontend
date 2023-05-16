@@ -18,6 +18,7 @@ import useSocketMessage from 'lib/socket/useSocketMessage';
 import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import * as addressStubs from 'stubs/address';
 import * as tokenStubs from 'stubs/token';
+import { generateListStub } from 'stubs/utils';
 import AddressContract from 'ui/address/AddressContract';
 import TextAd from 'ui/shared/ad/TextAd';
 import Tag from 'ui/shared/chakra/Tag';
@@ -143,7 +144,7 @@ const TokenPageContent = () => {
     scrollRef,
     options: {
       enabled: Boolean(router.query.hash && router.query.tab === 'inventory' && hasData),
-      placeholderData: tokenStubs.TOKEN_INSTANCES,
+      placeholderData: generateListStub<'token_inventory'>(tokenStubs.TOKEN_INSTANCE),
     },
   });
 

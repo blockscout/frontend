@@ -7,7 +7,8 @@ import appConfig from 'configs/app/config';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useNewTxsSocket from 'lib/hooks/useNewTxsSocket';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
-import { TXS } from 'stubs/tx';
+import { TX } from 'stubs/tx';
+import { generateListStub } from 'stubs/utils';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
 import TxsContent from 'ui/txs/TxsContent';
@@ -28,7 +29,12 @@ const Transactions = () => {
     resourceName: filter === 'validated' ? 'txs_validated' : 'txs_pending',
     filters: { filter },
     options: {
-      placeholderData: TXS,
+      placeholderData: generateListStub<'txs_validated'>(TX, 50, {
+        block_number: 9005713,
+        index: 5,
+        items_count: 50,
+        filter: 'validated',
+      }),
     },
   });
 

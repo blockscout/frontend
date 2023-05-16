@@ -3,7 +3,8 @@ import React from 'react';
 
 import { SECOND } from 'lib/consts';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
-import { TX_LOGS } from 'stubs/log';
+import { LOG } from 'stubs/log';
+import { generateListStub } from 'stubs/utils';
 import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import LogItem from 'ui/shared/logs/LogItem';
@@ -19,7 +20,7 @@ const TxLogs = () => {
     pathParams: { hash: txInfo.data?.hash },
     options: {
       enabled: !txInfo.isPlaceholderData && Boolean(txInfo.data?.hash) && Boolean(txInfo.data?.status),
-      placeholderData: TX_LOGS,
+      placeholderData: generateListStub<'tx_logs'>(LOG, 3),
     },
   });
 
