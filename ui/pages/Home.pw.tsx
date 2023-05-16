@@ -57,7 +57,7 @@ test.describe('custom hero plate background', () => {
     ]) as any,
   });
 
-  extendedTest.only('default view', async({ mount, page }) => {
+  extendedTest('default view', async({ mount, page }) => {
     await page.route(IMAGE_URL, (route) => {
       return route.fulfill({
         status: 200,
