@@ -249,7 +249,7 @@ const TokenPageContent = () => {
         ) }
         additionalsRight={ tagsNode }
         afterTitle={
-          verifiedInfoQuery.data ?
+          verifiedInfoQuery.data?.tokenAddress ?
             <Icon as={ iconSuccess } color="green.500" boxSize={ 4 } verticalAlign="top"/> :
             <Box boxSize={ 4 } display="inline-block"/>
         }

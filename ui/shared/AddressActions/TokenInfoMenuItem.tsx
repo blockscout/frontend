@@ -3,6 +3,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { TokenVerifiedInfo } from 'types/api/token';
+
 import appConfig from 'configs/app/config';
 import iconEdit from 'icons/edit.svg';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
@@ -50,13 +52,18 @@ const TokenInfoMenuItem = ({ className, hash }: Props) => {
   const icon = <Icon as={ iconEdit } boxSize={ 6 } mr={ 2 } p={ 1 }/>;
 
   const content = (() => {
-    const verifiedTokenInfo = queryClient.getQueryData(getResourceKey('token_verified_info', { pathParams: { hash, chainId: appConfig.network.id } }));
+    const verifiedTokenInfo = queryClient.getQueryData<TokenVerifiedInfo>(
+      getResourceKey(
+        'token_verified_info',
+        { pathParams: { hash, chainId: appConfig.network.id } },
+      ),
+    );
 
     if (!verifiedAddressesQuery.data?.verifiedAddresses.find(({ contractAddress }) => contractAddress.toLowerCase() === hash.toLowerCase())) {
       return (
         <MenuItem className={ className } onClick={ handleAddAddressClick }>
           { icon }
-          <span>{ verifiedTokenInfo ? 'Update token info' : 'Add token info' }</span>
+          <span>{ verifiedTokenInfo?.tokenAddress ? 'Update token info' : 'Add token info' }</span>
         </MenuItem>
       );
     }
@@ -68,7 +75,7 @@ const TokenInfoMenuItem = ({ className, hash }: Props) => {
         { icon }
         <span>
           {
-            hasApplication || verifiedTokenInfo ?
+            hasApplication || verifiedTokenInfo?.tokenAddress ?
               'Update token info' :
               'Add token info'
           }

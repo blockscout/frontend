@@ -55,7 +55,7 @@ const TokenVerifiedInfo = ({ verifiedInfoQuery, isVerifiedInfoEnabled, hash }: P
     return (
       <>
         { websiteLink }
-        { Boolean(data) && <TokenProjectInfo data={ data }/> }
+        { Boolean(data.tokenAddress) && <TokenProjectInfo data={ data }/> }
         { explorers }
       </>
     );
