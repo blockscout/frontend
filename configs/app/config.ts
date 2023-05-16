@@ -101,7 +101,7 @@ const config = Object.freeze({
     telegram: getEnvValue(process.env.NEXT_PUBLIC_FOOTER_TELEGRAM_LINK),
     staking: getEnvValue(process.env.NEXT_PUBLIC_FOOTER_STAKING_LINK),
   },
-  otherLinks: parseEnvJson<Array<{url: string; text: string}>>(getEnvValue(process.env.NEXT_PUBLIC_OTHER_LINKS)) || [],
+  otherLinks: parseEnvJson<Array<NavItemExternal>>(getEnvValue(process.env.NEXT_PUBLIC_OTHER_LINKS)) || [],
   featuredNetworks: getEnvValue(process.env.NEXT_PUBLIC_FEATURED_NETWORKS),
   blockScoutVersion: getEnvValue(process.env.NEXT_PUBLIC_BLOCKSCOUT_VERSION),
   isAccountSupported: getEnvValue(process.env.NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED) === 'true',
