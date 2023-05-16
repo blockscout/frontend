@@ -17,11 +17,11 @@ const Home = () => {
     <Page isHomePage>
       <Box
         w="100%"
-        backgroundImage={ appConfig.homepage.plate.gradient }
-        backgroundColor="blue.400"
+        background={ appConfig.homepage.plate.background }
         borderRadius="24px"
         padding={{ base: '24px', lg: '48px' }}
         minW={{ base: 'unset', lg: '900px' }}
+        data-label="hero plate"
       >
         <Flex mb={{ base: 6, lg: 8 }} justifyContent="space-between">
           <Heading
