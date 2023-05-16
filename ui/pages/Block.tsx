@@ -11,6 +11,7 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { BLOCK, BLOCK_TXS } from 'stubs/block';
+import { WITHDRAWALS } from 'stubs/withdrawals';
 import BlockDetails from 'ui/block/BlockDetails';
 import BlockWithdrawals from 'ui/block/BlockWithdrawals';
 import TextAd from 'ui/shared/ad/TextAd';
@@ -56,6 +57,7 @@ const BlockPageContent = () => {
     pathParams: { height },
     options: {
       enabled: Boolean(!blockQuery.isPlaceholderData && blockQuery.data?.height && appConfig.beaconChain.hasBeaconChain && tab === 'withdrawals'),
+      placeholderData: WITHDRAWALS,
     },
   });
 

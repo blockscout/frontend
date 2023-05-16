@@ -39,7 +39,7 @@ const TxState = () => {
 
   return (
     <>
-      <Text>
+      <Text mb={ 6 }>
         A set of information that represents the current state is updated when a transaction takes place on the network.
         The below is a summary of those changes.
       </Text>

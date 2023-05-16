@@ -1,9 +1,12 @@
 import type { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import React from 'react';
 
 import getNetworkTitle from 'lib/networks/getNetworkTitle';
-import Withdrawals from 'ui/pages/Withdrawals';
+import Page from 'ui/shared/Page/Page';
+
+const Withdrawals = dynamic(() => import('ui/pages/Withdrawals'), { ssr: false });
 
 const WithdrawalsPage: NextPage = () => {
   const title = getNetworkTitle();
@@ -12,7 +15,9 @@ const WithdrawalsPage: NextPage = () => {
       <Head>
         <title>{ title }</title>
       </Head>
-      <Withdrawals/>
+      <Page>
+        <Withdrawals/>
+      </Page>
     </>
   );
 };

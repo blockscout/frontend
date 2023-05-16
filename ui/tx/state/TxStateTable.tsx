@@ -18,7 +18,7 @@ interface Props {
 
 const TxStateTable = ({ data, isLoading }: Props) => {
   return (
-    <Table variant="simple" minWidth="1000px" size="sm" w="auto" mt={ 6 }>
+    <Table variant="simple" minWidth="1000px" size="sm" w="auto">
       <Thead top={ 0 }>
         <Tr>
           <Th width="140px">Type</Th>

@@ -4,6 +4,7 @@ import React from 'react';
 
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { WITHDRAWALS } from 'stubs/withdrawals';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/Pagination';
@@ -15,24 +16,34 @@ const AddressWithdrawals = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivE
 
   const hash = getQueryParamString(router.query.hash);
 
-  const { data, isLoading, isError, pagination, isPaginationVisible } = useQueryWithPages({
+  const { data, isPlaceholderData, isError, pagination, isPaginationVisible } = useQueryWithPages({
     resourceName: 'address_withdrawals',
     pathParams: { hash },
     scrollRef,
+    options: {
+      placeholderData: WITHDRAWALS,
+    },
   });
   const content = data?.items ? (
     <>
       <Show below="lg" ssr={ false }>
-        { data.items.map((item) => <WithdrawalsListItem item={ item } key={ item.index } view="address"/>) }
+        { data.items.map((item, index) => (
+          <WithdrawalsListItem
+            key={ item.index + Number(isPlaceholderData ? index : '') }
+            item={ item }
+            view="address"
+            isLoading={ isPlaceholderData }
+          />
+        )) }
       </Show>
       <Hide below="lg" ssr={ false }>
-        <WithdrawalsTable items={ data.items } view="address" top={ isPaginationVisible ? 80 : 0 }/>
+        <WithdrawalsTable items={ data.items } view="address" top={ isPaginationVisible ? 80 : 0 } isLoading={ isPlaceholderData }/>
       </Hide>
     </>
   ) : null ;
 
   const actionBar = isPaginationVisible ? (
-    <ActionBar mt={ -6 } showShadow={ isLoading }>
+    <ActionBar mt={ -6 }>
       <Pagination ml="auto" { ...pagination }/>
     </ActionBar>
   ) : null;
@@ -40,7 +51,7 @@ const AddressWithdrawals = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivE
   return (
     <DataListDisplay
       isError={ isError }
-      isLoading={ isLoading }
+      isLoading={ false }
       items={ data?.items }
       skeletonProps={{ isLongSkeleton: true, skeletonDesktopColumns: Array(5).fill(`${ 100 / 5 }%`), skeletonDesktopMinW: '950px' }}
       emptyText="There are no withdrawals for this address."

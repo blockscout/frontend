@@ -3,9 +3,9 @@ import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
+import { WITHDRAWALS } from 'stubs/withdrawals';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/Pagination';
 import WithdrawalsListItem from 'ui/withdrawals/WithdrawalsListItem';
@@ -14,14 +14,28 @@ import WithdrawalsTable from 'ui/withdrawals/WithdrawalsTable';
 const Withdrawals = () => {
   const isMobile = useIsMobile();
 
-  const { data, isError, isLoading, isPaginationVisible, pagination } = useQueryWithPages({
+  const { data, isError, isPlaceholderData, isPaginationVisible, pagination } = useQueryWithPages({
     resourceName: 'withdrawals',
+    options: {
+      placeholderData: WITHDRAWALS,
+    },
   });
 
   const content = data?.items ? (
     <>
-      <Show below="lg" ssr={ false }>{ data.items.map((item => <WithdrawalsListItem key={ item.index } item={ item } view="list"/>)) }</Show>
-      <Hide below="lg" ssr={ false }><WithdrawalsTable items={ data.items } view="list" top={ isPaginationVisible ? 80 : 0 }/></Hide>
+      <Show below="lg" ssr={ false }>
+        { data.items.map(((item, index) => (
+          <WithdrawalsListItem
+            key={ item.index + (isPlaceholderData ? String(index) : '') }
+            item={ item }
+            view="list"
+            isLoading={ isPlaceholderData }
+          />
+        ))) }
+      </Show>
+      <Hide below="lg" ssr={ false }>
+        <WithdrawalsTable items={ data.items } view="list" top={ isPaginationVisible ? 80 : 0 } isLoading={ isPlaceholderData }/>
+      </Hide>
     </>
   ) : null;
 
@@ -35,18 +49,18 @@ const Withdrawals = () => {
   ) : null;
 
   return (
-    <Page>
+    <>
       <PageTitle text="Withdrawals" withTextAd/>
       <DataListDisplay
         isError={ isError }
-        isLoading={ isLoading }
+        isLoading={ false }
         items={ data?.items }
         skeletonProps={{ skeletonDesktopColumns: Array(6).fill(`${ 100 / 6 }%`), skeletonDesktopMinW: '950px' }}
         emptyText="There are no withdrawals."
         content={ content }
         actionBar={ actionBar }
       />
-    </Page>
+    </>
   );
 };
 

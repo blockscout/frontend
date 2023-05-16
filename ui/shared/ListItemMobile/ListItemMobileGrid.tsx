@@ -49,6 +49,7 @@ const Label = chakra(({ children, className, isLoading }: LabelProps) => {
       fontWeight={ 500 }
       lineHeight="20px"
       my="5px"
+      justifySelf="start"
     >
       { children }
     </Skeleton>
