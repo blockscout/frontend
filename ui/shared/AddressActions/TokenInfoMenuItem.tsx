@@ -1,13 +1,11 @@
 import { MenuItem, Icon, chakra, useDisclosure } from '@chakra-ui/react';
-import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { TokenVerifiedInfo } from 'types/api/token';
-
 import appConfig from 'configs/app/config';
 import iconEdit from 'icons/edit.svg';
-import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
+import useApiQuery from 'lib/api/useApiQuery';
+import useHasAccount from 'lib/hooks/useHasAccount';
 import useRedirectIfNotAuth from 'lib/hooks/useRedirectIfNotAuth';
 import AddressVerificationModal from 'ui/addressVerification/AddressVerificationModal';
 
@@ -20,13 +18,25 @@ const TokenInfoMenuItem = ({ className, hash }: Props) => {
   const router = useRouter();
   const modal = useDisclosure();
   const redirectIfNotAuth = useRedirectIfNotAuth();
-  const queryClient = useQueryClient();
+  const isAuth = useHasAccount();
 
   const verifiedAddressesQuery = useApiQuery('verified_addresses', {
     pathParams: { chainId: appConfig.network.id },
+    queryOptions: {
+      enabled: isAuth,
+    },
   });
   const applicationsQuery = useApiQuery('token_info_applications', {
     pathParams: { chainId: appConfig.network.id, id: undefined },
+    queryOptions: {
+      enabled: isAuth,
+    },
+  });
+  const tokenInfoQuery = useApiQuery('token_verified_info', {
+    pathParams: { hash, chainId: appConfig.network.id },
+    queryOptions: {
+      refetchOnMount: false,
+    },
   });
 
   const handleAddAddressClick = React.useCallback(() => {
@@ -52,18 +62,11 @@ const TokenInfoMenuItem = ({ className, hash }: Props) => {
   const icon = <Icon as={ iconEdit } boxSize={ 6 } mr={ 2 } p={ 1 }/>;
 
   const content = (() => {
-    const verifiedTokenInfo = queryClient.getQueryData<TokenVerifiedInfo>(
-      getResourceKey(
-        'token_verified_info',
-        { pathParams: { hash, chainId: appConfig.network.id } },
-      ),
-    );
-
     if (!verifiedAddressesQuery.data?.verifiedAddresses.find(({ contractAddress }) => contractAddress.toLowerCase() === hash.toLowerCase())) {
       return (
         <MenuItem className={ className } onClick={ handleAddAddressClick }>
           { icon }
-          <span>{ verifiedTokenInfo?.tokenAddress ? 'Update token info' : 'Add token info' }</span>
+          <span>{ tokenInfoQuery.data?.tokenAddress ? 'Update token info' : 'Add token info' }</span>
         </MenuItem>
       );
     }
@@ -75,7 +78,7 @@ const TokenInfoMenuItem = ({ className, hash }: Props) => {
         { icon }
         <span>
           {
-            hasApplication || verifiedTokenInfo?.tokenAddress ?
+            hasApplication || tokenInfoQuery.data?.tokenAddress ?
               'Update token info' :
               'Add token info'
           }

@@ -74,7 +74,7 @@ const AddressVerificationStepAddress = ({ defaultAddress, onContinue }: Props) =
         return <span>Specified address either does not exist or is EOA.</span>;
       }
       case 'IS_OWNER_ERROR': {
-        return <span>Ownership of this contract address ownership is already verified by this account.</span>;
+        return <span>Ownership of this contract address is already verified by this account.</span>;
       }
       case 'OWNERSHIP_VERIFIED_ERROR': {
         return <span>Ownership of this contract address is already verified by another account.</span>;
