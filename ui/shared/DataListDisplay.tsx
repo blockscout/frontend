@@ -1,7 +1,7 @@
 import { Box, Text, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import EmptySearchResult from 'ui/apps/EmptySearchResult';
+import EmptySearchResult from 'ui/shared/EmptySearchResult';
 
 import DataFetchAlert from './DataFetchAlert';
 import SkeletonList from './skeletons/SkeletonList';

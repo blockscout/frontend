@@ -24,7 +24,7 @@ const CopyToClipboard = ({ text, className, isLoading }: Props) => {
   }, [ hasCopied ]);
 
   if (isLoading) {
-    return <Skeleton boxSize={ 5 } className={ className } borderRadius="sm" flexShrink={ 0 }/>;
+    return <Skeleton boxSize={ 5 } className={ className } borderRadius="sm" flexShrink={ 0 } ml={ 1 }/>;
   }
 
   return (

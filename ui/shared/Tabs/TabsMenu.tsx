@@ -10,13 +10,13 @@ import { Popover,
 import type { StyleProps } from '@chakra-ui/styled-system';
 import React from 'react';
 
-import type { MenuButton, RoutedTab } from './types';
+import type { MenuButton, TabItem } from './types';
 
 import { menuButton } from './utils';
 
 interface Props {
-  tabs: Array<RoutedTab | MenuButton>;
-  activeTab?: RoutedTab;
+  tabs: Array<TabItem | MenuButton>;
+  activeTab?: TabItem;
   tabsCut: number;
   isActive: boolean;
   styles?: StyleProps;
@@ -25,7 +25,7 @@ interface Props {
   size: ButtonProps['size'];
 }
 
-const RoutedTabsMenu = ({ tabs, tabsCut, isActive, styles, onItemClick, buttonRef, activeTab, size }: Props) => {
+const TabsMenu = ({ tabs, tabsCut, isActive, styles, onItemClick, buttonRef, activeTab, size }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   const handleItemClick = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
@@ -69,4 +69,4 @@ const RoutedTabsMenu = ({ tabs, tabsCut, isActive, styles, onItemClick, buttonRe
   );
 };
 
-export default React.memo(RoutedTabsMenu);
+export default React.memo(TabsMenu);

@@ -3,7 +3,7 @@ import type { Transaction } from 'types/api/transaction';
 import type { AddressTag, WatchlistName } from './addressParams';
 import type { Block } from './block';
 import type { InternalTransaction } from './internalTransaction';
-import type { TokenInfo, TokenType } from './token';
+import type { TokenInfo, TokenInstance, TokenType } from './token';
 import type { TokenTransfer, TokenTransferPagination } from './tokenTransfer';
 
 export interface Address {
@@ -48,6 +48,7 @@ export interface AddressTokenBalance {
   token: TokenInfo;
   token_id: string | null;
   value: string;
+  token_instance?: TokenInstance;
 }
 
 export interface AddressTokensResponse {

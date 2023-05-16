@@ -5,7 +5,7 @@ import React, { useEffect } from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
 import type { TokenInfo } from 'types/api/token';
-import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
+import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import appConfig from 'configs/app/config';
 import iconSuccess from 'icons/status/success.svg';
@@ -26,8 +26,8 @@ import Tag from 'ui/shared/chakra/Tag';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
 import Pagination from 'ui/shared/Pagination';
-import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
 import SkeletonTabs from 'ui/shared/skeletons/SkeletonTabs';
+import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TokenLogo from 'ui/shared/TokenLogo';
 import TokenContractInfo from 'ui/token/TokenContractInfo';
 import TokenDetails from 'ui/token/TokenDetails';

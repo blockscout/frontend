@@ -1,10 +1,10 @@
 import {
   Box, Flex, Heading, Icon, IconButton, Image, Link, List, Modal, ModalBody,
-  ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tag, Text,
+  ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tag, Text, useColorModeValue,
 } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
-import type { AppItemOverview } from 'types/client/apps';
+import type { MarketplaceAppOverview } from 'types/client/marketplace';
 
 import linkIcon from 'icons/link.svg';
 import ghIcon from 'icons/social/git.svg';
@@ -15,16 +15,16 @@ import starOutlineIcon from 'icons/star_outline.svg';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp } from 'lib/html-entities';
 
-import AppModalLink from './AppModalLink';
+import MarketplaceAppModalLink from './MarketplaceAppModalLink';
 
 type Props = {
   onClose: () => void;
   isFavorite: boolean;
   onFavoriteClick: (id: string, isFavorite: boolean) => void;
-  data: AppItemOverview;
+  data: MarketplaceAppOverview;
 }
 
-const AppModal = ({
+const MarketplaceAppModal = ({
   onClose,
   isFavorite,
   onFavoriteClick,
@@ -41,6 +41,7 @@ const AppModal = ({
     telegram,
     twitter,
     logo,
+    logoDarkMode,
     categories,
   } = data;
 
@@ -64,6 +65,7 @@ const AppModal = ({
   }, [ onFavoriteClick, data.id, isFavorite ]);
 
   const isMobile = useIsMobile();
+  const logoUrl = useColorModeValue(logo, logoDarkMode || logo);
 
   return (
     <Modal
@@ -89,7 +91,7 @@ const AppModal = ({
             gridRow={{ base: '1 / 3', sm: '1 / 4' }}
           >
             <Image
-              src={ logo }
+              src={ logoUrl }
               alt={ `${ title } app icon` }
             />
           </Flex>
@@ -120,7 +122,7 @@ const AppModal = ({
             marginTop={{ base: 6, sm: 0 }}
           >
             <Box display="flex">
-              <AppModalLink
+              <MarketplaceAppModalLink
                 id={ data.id }
                 url={ url }
                 external={ external }
@@ -241,4 +243,4 @@ const AppModal = ({
   );
 };
 
-export default AppModal;
+export default MarketplaceAppModal;

@@ -198,7 +198,7 @@ export default function useNavItems(): ReturnType {
 
     const accountNavItems = [
       {
-        text: 'Watchlist',
+        text: 'Watch list',
         nextRoute: { pathname: '/account/watchlist' as const },
         icon: watchlistIcon,
         isActive: pathname === '/account/watchlist',

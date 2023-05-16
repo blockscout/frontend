@@ -1,20 +1,21 @@
 import { Grid, GridItem } from '@chakra-ui/react';
 import React from 'react';
 
-import type { AppItemPreview } from 'types/client/apps';
+import type { MarketplaceAppPreview } from 'types/client/marketplace';
 
 import { apos } from 'lib/html-entities';
-import AppCard from 'ui/apps/AppCard';
-import EmptySearchResult from 'ui/apps/EmptySearchResult';
+import EmptySearchResult from 'ui/shared/EmptySearchResult';
+
+import MarketplaceAppCard from './MarketplaceAppCard';
 
 type Props = {
-  apps: Array<AppItemPreview>;
+  apps: Array<MarketplaceAppPreview>;
   onAppClick: (id: string) => void;
   favoriteApps: Array<string>;
   onFavoriteClick: (id: string, isFavorite: boolean) => void;
 }
 
-const AppList = ({ apps, onAppClick, favoriteApps, onFavoriteClick }: Props) => {
+const MarketplaceList = ({ apps, onAppClick, favoriteApps, onFavoriteClick }: Props) => {
   return apps.length > 0 ? (
     <Grid
       templateColumns={{
@@ -28,13 +29,14 @@ const AppList = ({ apps, onAppClick, favoriteApps, onFavoriteClick }: Props) => 
         <GridItem
           key={ app.id }
         >
-          <AppCard
+          <MarketplaceAppCard
             onInfoClick={ onAppClick }
             id={ app.id }
             external={ app.external }
             url={ app.url }
             title={ app.title }
             logo={ app.logo }
+            logoDarkMode={ app.logoDarkMode }
             shortDescription={ app.shortDescription }
             categories={ app.categories }
             isFavorite={ favoriteApps.includes(app.id) }
@@ -48,4 +50,4 @@ const AppList = ({ apps, onAppClick, favoriteApps, onFavoriteClick }: Props) => 
   );
 };
 
-export default React.memo(AppList);
+export default React.memo(MarketplaceList);

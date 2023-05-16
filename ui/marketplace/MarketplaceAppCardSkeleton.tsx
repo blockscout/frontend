@@ -1,7 +1,7 @@
 import { Box, Heading, Skeleton, SkeletonCircle, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
-export const AppCardSkeleton = () => {
+const MarketplaceAppCardSkeleton = () => {
   return (
     <Box
       borderRadius="md"
@@ -43,3 +43,5 @@ export const AppCardSkeleton = () => {
     </Box>
   );
 };
+
+export default MarketplaceAppCardSkeleton;

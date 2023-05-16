@@ -1,7 +1,7 @@
 export const data = {
   items: [
     {
-      amount: '192175',
+      amount: '192175000000000',
       block_number: 43242,
       index: 11688,
       receiver: {
@@ -15,7 +15,7 @@ export const data = {
       validator_index: 49622,
     },
     {
-      amount: '192175',
+      amount: '192175000000000',
       block_number: 43242,
       index: 11687,
       receiver: {
@@ -29,7 +29,7 @@ export const data = {
       validator_index: 49621,
     },
     {
-      amount: '182773',
+      amount: '182773000000000',
       block_number: 43242,
       index: 11686,
       receiver: {

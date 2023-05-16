@@ -1,13 +1,14 @@
 import type React from 'react';
 
-export interface RoutedTab {
+export interface TabItem {
   id: string;
   title: string | (() => React.ReactNode);
   component: React.ReactNode;
-  subTabs?: Array<string>;
 }
 
-export type RoutedSubTab = Omit<RoutedTab, 'subTabs'>;
+export type RoutedTab = TabItem & { subTabs?: Array<string> }
+
+export type RoutedSubTab = Omit<TabItem, 'subTabs'>;
 
 export interface MenuButton {
   id: null;

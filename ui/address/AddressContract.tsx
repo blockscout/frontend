@@ -1,9 +1,9 @@
 import React from 'react';
 
-import type { RoutedSubTab } from 'ui/shared/RoutedTabs/types';
+import type { RoutedSubTab } from 'ui/shared/Tabs/types';
 
 import { ContractContextProvider } from 'ui/address/contract/context';
-import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
+import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import Web3ModalProvider from 'ui/shared/Web3ModalProvider';
 
 interface Props {

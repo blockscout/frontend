@@ -1,7 +1,7 @@
 import { Flex, Skeleton, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { RoutedTab } from '../RoutedTabs/types';
+import type { RoutedTab } from '../Tabs/types';
 
 interface Props {
   className?: string;
