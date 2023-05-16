@@ -1,5 +1,5 @@
 import type { TokenCounters, TokenHolder, TokenHolders, TokenInfo, TokenInstance, TokenInventoryResponse, TokenType } from 'types/api/token';
-import type { TokenTransfer, TokenTransferResponse } from 'types/api/tokenTransfer';
+import type { TokenTransfer, TokenTransferPagination, TokenTransferResponse } from 'types/api/tokenTransfer';
 
 import { ADDRESS_PARAMS, ADDRESS_HASH } from './addressParams';
 import { BLOCK_HASH } from './block';
@@ -72,14 +72,14 @@ export const TOKEN_TRANSFER_ERC_1155: TokenTransfer = {
   token: TOKEN_INFO_ERC_1155,
 };
 
-export const getTokenTransfersStub = (type?: TokenType): TokenTransferResponse => {
+export const getTokenTransfersStub = (type?: TokenType, pagination: TokenTransferPagination | null = null): TokenTransferResponse => {
   switch (type) {
     case 'ERC-721':
-      return { items: Array(50).fill(TOKEN_TRANSFER_ERC_721), next_page_params: null };
+      return { items: Array(50).fill(TOKEN_TRANSFER_ERC_721), next_page_params: pagination };
     case 'ERC-1155':
-      return { items: Array(50).fill(TOKEN_TRANSFER_ERC_1155), next_page_params: null };
+      return { items: Array(50).fill(TOKEN_TRANSFER_ERC_1155), next_page_params: pagination };
     default:
-      return { items: Array(50).fill(TOKEN_TRANSFER_ERC_20), next_page_params: null };
+      return { items: Array(50).fill(TOKEN_TRANSFER_ERC_20), next_page_params: pagination };
   }
 };
 

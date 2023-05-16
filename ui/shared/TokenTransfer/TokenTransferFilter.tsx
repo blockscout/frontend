@@ -19,6 +19,7 @@ interface Props {
   withAddressFilter?: boolean;
   onAddressFilterChange?: (nextValue: string) => void;
   defaultAddressFilter?: AddressFromToFilter;
+  isLoading?: boolean;
 }
 
 const TokenTransferFilter = ({
@@ -28,10 +29,11 @@ const TokenTransferFilter = ({
   withAddressFilter,
   onAddressFilterChange,
   defaultAddressFilter,
+  isLoading,
 }: Props) => {
 
   return (
-    <PopoverFilter appliedFiltersNum={ appliedFiltersNum } contentProps={{ w: '200px' }}>
+    <PopoverFilter appliedFiltersNum={ appliedFiltersNum } contentProps={{ w: '200px' }} isLoading={ isLoading }>
       { withAddressFilter && (
         <>
           <Text variant="secondary" fontWeight={ 600 }>Address</Text>

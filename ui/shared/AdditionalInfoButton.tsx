@@ -21,7 +21,7 @@ const AdditionalInfoButton = ({ isOpen, onClick, className, isLoading }: Props, 
   const infoBgColor = useColorModeValue('blue.50', 'gray.600');
 
   if (isLoading) {
-    return <Skeleton boxSize={ 6 } borderRadius="sm"/>;
+    return <Skeleton boxSize={ 6 } borderRadius="sm" flexShrink={ 0 }/>;
   }
 
   return (

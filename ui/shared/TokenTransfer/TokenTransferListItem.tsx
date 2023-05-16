@@ -1,4 +1,4 @@
-import { Text, Flex, Tag, Icon } from '@chakra-ui/react';
+import { Flex, Icon, Skeleton } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -10,6 +10,8 @@ import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
+import Tag from 'ui/shared/chakra/Tag';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import InOutTag from 'ui/shared/InOutTag';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
@@ -17,12 +19,11 @@ import { getTokenTransferTypeText } from 'ui/shared/TokenTransfer/helpers';
 import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 
-import CopyToClipboard from '../CopyToClipboard';
-
 type Props = TokenTransfer & {
   baseAddress?: string;
   showTxInfo?: boolean;
   enableTimeIncrement?: boolean;
+  isLoading?: boolean;
 }
 
 const TokenTransferListItem = ({
@@ -36,6 +37,7 @@ const TokenTransferListItem = ({
   type,
   timestamp,
   enableTimeIncrement,
+  isLoading,
 }: Props) => {
   const value = (() => {
     if (!('value' in total)) {
@@ -51,57 +53,63 @@ const TokenTransferListItem = ({
   return (
     <ListItemMobile rowGap={ 3 } isAnimated>
       <Flex w="100%" justifyContent="space-between">
-        <Flex flexWrap="wrap" rowGap={ 1 } mr={ showTxInfo && txHash ? 2 : 0 }>
-          <TokenSnippet hash={ token.address } w="auto" maxW="calc(100% - 140px)" name={ token.name || 'Unnamed token' }/>
-          <Tag flexShrink={ 0 } ml={ 2 } mr={ 2 }>{ token.type }</Tag>
-          <Tag colorScheme="orange">{ getTokenTransferTypeText(type) }</Tag>
+        <Flex flexWrap="wrap" rowGap={ 1 } mr={ showTxInfo && txHash ? 2 : 0 } columnGap={ 2 }>
+          <TokenSnippet hash={ token.address } w="auto" maxW="calc(100% - 140px)" name={ token.name || 'Unnamed token' } isLoading={ isLoading }/>
+          <Tag flexShrink={ 0 } isLoading={ isLoading }>{ token.type }</Tag>
+          <Tag colorScheme="orange" isLoading={ isLoading }>{ getTokenTransferTypeText(type) }</Tag>
         </Flex>
         { showTxInfo && txHash && (
-          <TxAdditionalInfo hash={ txHash } isMobile/>
+          <TxAdditionalInfo hash={ txHash } isMobile isLoading={ isLoading }/>
         ) }
       </Flex>
-      { 'token_id' in total && <TokenTransferNft hash={ token.address } id={ total.token_id }/> }
+      { 'token_id' in total && <TokenTransferNft hash={ token.address } id={ total.token_id } isLoading={ isLoading }/> }
       { showTxInfo && txHash && (
         <Flex justifyContent="space-between" alignItems="center" lineHeight="24px" width="100%">
           <Flex>
-            <Icon
-              as={ transactionIcon }
-              boxSize="30px"
-              mr={ 2 }
-              color="link"
-            />
+            <Skeleton isLoaded={ !isLoading } boxSize="30px" mr={ 2 } borderRadius="base">
+              <Icon
+                as={ transactionIcon }
+                boxSize="30px"
+                color="link"
+              />
+            </Skeleton>
             <Address width="100%">
               <AddressLink
                 hash={ txHash }
                 type="transaction"
                 fontWeight="700"
                 truncation="constant"
+                isLoading={ isLoading }
               />
             </Address>
           </Flex>
-          { timestamp && <Text variant="secondary" fontWeight="400" fontSize="sm">{ timeAgo }</Text> }
+          { timestamp && (
+            <Skeleton isLoaded={ !isLoading } color="text_secondary" fontWeight="400" fontSize="sm">
+              <span>{ timeAgo }</span>
+            </Skeleton>
+          ) }
         </Flex>
       ) }
       <Flex w="100%" columnGap={ 3 }>
         <Address width={ addressWidth }>
-          <AddressIcon address={ from }/>
-          <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ from.hash } isDisabled={ baseAddress === from.hash }/>
-          { baseAddress !== from.hash && <CopyToClipboard text={ from.hash }/> }
+          <AddressIcon address={ from } isLoading={ isLoading }/>
+          <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ from.hash } isDisabled={ baseAddress === from.hash } isLoading={ isLoading }/>
+          { baseAddress !== from.hash && <CopyToClipboard text={ from.hash } isLoading={ isLoading }/> }
         </Address>
         { baseAddress ?
-          <InOutTag isIn={ baseAddress === to.hash } isOut={ baseAddress === from.hash } w="50px" textAlign="center"/> :
-          <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500"/>
+          <InOutTag isIn={ baseAddress === to.hash } isOut={ baseAddress === from.hash } w="50px" textAlign="center" isLoading={ isLoading }/> :
+          <Skeleton isLoaded={ !isLoading } boxSize={ 6 }><Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500"/></Skeleton>
         }
         <Address width={ addressWidth }>
-          <AddressIcon address={ to }/>
-          <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ to.hash } isDisabled={ baseAddress === to.hash }/>
-          { baseAddress !== to.hash && <CopyToClipboard text={ to.hash }/> }
+          <AddressIcon address={ to } isLoading={ isLoading }/>
+          <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ to.hash } isDisabled={ baseAddress === to.hash } isLoading={ isLoading }/>
+          { baseAddress !== to.hash && <CopyToClipboard text={ to.hash } isLoading={ isLoading }/> }
         </Address>
       </Flex>
       { value && (
         <Flex columnGap={ 2 } w="100%">
-          <Text fontWeight={ 500 } flexShrink={ 0 }>Value</Text>
-          <Text variant="secondary">{ value }</Text>
+          <Skeleton isLoaded={ !isLoading } fontWeight={ 500 } flexShrink={ 0 }>Value</Skeleton>
+          <Skeleton isLoaded={ !isLoading } color="text_secondary"><span>{ value }</span></Skeleton>
         </Flex>
       ) }
     </ListItemMobile>

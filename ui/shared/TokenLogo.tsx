@@ -33,7 +33,7 @@ interface Props {
 const TokenLogo = ({ hash, name, className, isLoading }: Props) => {
 
   if (isLoading) {
-    return <Skeleton className={ className } borderRadius="base"/>;
+    return <Skeleton className={ className } borderRadius="base" flexShrink={ 0 }/>;
   }
 
   const logoSrc = appConfig.network.assetsPathname && hash ? [

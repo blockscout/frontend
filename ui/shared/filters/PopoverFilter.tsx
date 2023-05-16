@@ -15,9 +15,10 @@ interface Props {
   isActive?: boolean;
   children: React.ReactNode;
   contentProps?: PopoverContentProps;
+  isLoading?: boolean;
 }
 
-const PopoverFilter = ({ appliedFiltersNum, children, contentProps, isActive }: Props) => {
+const PopoverFilter = ({ appliedFiltersNum, children, contentProps, isActive, isLoading }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
 
   return (
@@ -27,6 +28,7 @@ const PopoverFilter = ({ appliedFiltersNum, children, contentProps, isActive }: 
           isActive={ isOpen || isActive || Number(appliedFiltersNum) > 0 }
           onClick={ onToggle }
           appliedFiltersNum={ appliedFiltersNum }
+          isLoading={ isLoading }
         />
       </PopoverTrigger>
       <PopoverContent { ...contentProps }>

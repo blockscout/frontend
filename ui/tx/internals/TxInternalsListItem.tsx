@@ -15,7 +15,7 @@ import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TxStatus from 'ui/shared/TxStatus';
 import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
-type Props = InternalTransaction & { isLoading: boolean };
+type Props = InternalTransaction & { isLoading?: boolean };
 
 const TxInternalsListItem = ({ type, from, to, value, success, error, gas_limit: gasLimit, created_contract: createdContract, isLoading }: Props) => {
   const typeTitle = TX_INTERNALS_ITEMS.find(({ id }) => id === type)?.title;

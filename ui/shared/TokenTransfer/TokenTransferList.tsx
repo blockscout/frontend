@@ -10,18 +10,20 @@ interface Props {
   baseAddress?: string;
   showTxInfo?: boolean;
   enableTimeIncrement?: boolean;
+  isLoading?: boolean;
 }
 
-const TokenTransferList = ({ data, baseAddress, showTxInfo, enableTimeIncrement }: Props) => {
+const TokenTransferList = ({ data, baseAddress, showTxInfo, enableTimeIncrement, isLoading }: Props) => {
   return (
     <Box>
-      { data.map((item) => (
+      { data.map((item, index) => (
         <TokenTransferListItem
-          key={ item.tx_hash + item.block_hash + item.log_index }
+          key={ item.tx_hash + item.block_hash + item.log_index + (isLoading ? index : '') }
           { ...item }
           baseAddress={ baseAddress }
           showTxInfo={ showTxInfo }
           enableTimeIncrement={ enableTimeIncrement }
+          isLoading={ isLoading }
         />
       )) }
     </Box>
