@@ -52,7 +52,7 @@ const TokenTransferListItem = ({
     <ListItemMobile rowGap={ 3 } isAnimated>
       <Flex w="100%" justifyContent="space-between">
         <Flex flexWrap="wrap" rowGap={ 1 } mr={ showTxInfo && txHash ? 2 : 0 }>
-          <TokenSnippet data={ token } w="auto" maxW="calc(100% - 140px)"/>
+          <TokenSnippet data={ token } w="auto" maxW="calc(100% - 140px)" hideSymbol/>
           <Tag flexShrink={ 0 } ml={ 2 } mr={ 2 }>{ token.type }</Tag>
           <Tag colorScheme="orange">{ getTokenTransferTypeText(type) }</Tag>
         </Flex>

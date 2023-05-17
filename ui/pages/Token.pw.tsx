@@ -17,7 +17,7 @@ const TOKEN_TRANSFERS_API_URL = buildApiUrl('token_transfers', { hash: '1' });
 const ADDRESS_API_URL = buildApiUrl('address', { hash: '1' });
 const hooksConfig = {
   router: {
-    query: { hash: 1, tab: 'token_transfers' },
+    query: { hash: '1', tab: 'token_transfers' },
     isReady: true,
   },
 };
@@ -90,7 +90,9 @@ test('with verified info', async({ mount, page, createSocket }) => {
 
   await insertAdPlaceholder(page);
 
-  await expect(component.locator('main')).toHaveScreenshot();
+  await page.getByRole('button', { name: /project info/i }).click();
+
+  await expect(component).toHaveScreenshot();
 });
 
 test.describe('mobile', () => {
@@ -131,6 +133,6 @@ test.describe('mobile', () => {
 
     await insertAdPlaceholder(page);
 
-    await expect(component.locator('main')).toHaveScreenshot();
+    await expect(component).toHaveScreenshot();
   });
 });

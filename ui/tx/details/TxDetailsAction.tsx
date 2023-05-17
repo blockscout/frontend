@@ -46,8 +46,8 @@ const TxDetailsAction = ({ action }: Props) => {
         icon_url: null,
       };
       const token1 = {
-        address: data.symbol0 === 'Ether' ? appConfig.network.currency.address || '' : data.address1,
-        name: data.symbol0 === 'Ether' ? appConfig.network.currency.symbol || null : data.symbol1,
+        address: data.symbol1 === 'Ether' ? appConfig.network.currency.address || '' : data.address1,
+        name: data.symbol1 === 'Ether' ? appConfig.network.currency.symbol || null : data.symbol1,
         type: 'ERC-20',
         symbol: null,
         icon_url: null,
