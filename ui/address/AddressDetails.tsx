@@ -18,7 +18,6 @@ import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkInternal from 'ui/shared/LinkInternal';
-import NetworkExplorers from 'ui/shared/NetworkExplorers';
 
 import AddressBalance from './details/AddressBalance';
 import AddressDetailsSkeleton from './details/AddressDetailsSkeleton';
@@ -87,7 +86,6 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
   return (
     <Box>
       <AddressHeadingInfo address={ data } token={ data.token } isLinkDisabled/>
-      <NetworkExplorers mt={ 8 } type="address" pathParam={ addressHash }/>
       <Grid
         mt={ 8 }
         columnGap={ 8 }

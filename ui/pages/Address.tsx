@@ -22,6 +22,7 @@ import AddressTokenTransfers from 'ui/address/AddressTokenTransfers';
 import AddressTxs from 'ui/address/AddressTxs';
 import AddressWithdrawals from 'ui/address/AddressWithdrawals';
 import TextAd from 'ui/shared/ad/TextAd';
+import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import SkeletonTabs from 'ui/shared/skeletons/SkeletonTabs';
@@ -98,6 +99,12 @@ const AddressPageContent = () => {
   }, [ addressQuery.data, contractTabs, hash ]);
 
   const tagsNode = tags.length > 0 ? <Flex columnGap={ 2 }>{ tags }</Flex> : null;
+  const additionalsRight = (
+    <>
+      { tagsNode }
+      <NetworkExplorers type="address" pathParam={ hash } ml="auto"/>
+    </>
+  );
 
   const content = addressQuery.isError ? null : <RoutedTabs tabs={ tabs } tabListProps={{ mt: 8 }}/>;
 
@@ -122,7 +129,7 @@ const AddressPageContent = () => {
       ) : (
         <PageTitle
           text={ `${ addressQuery.data?.is_contract ? 'Contract' : 'Address' } details` }
-          additionalsRight={ tagsNode }
+          additionalsRight={ additionalsRight }
           backLink={ backLink }
         />
       ) }

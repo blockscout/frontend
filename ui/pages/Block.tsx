@@ -13,6 +13,7 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import BlockDetails from 'ui/block/BlockDetails';
 import BlockWithdrawals from 'ui/block/BlockWithdrawals';
 import TextAd from 'ui/shared/ad/TextAd';
+import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
 import Pagination from 'ui/shared/Pagination';
@@ -104,6 +105,7 @@ const BlockPageContent = () => {
         <PageTitle
           text={ `Block #${ blockQuery.data?.height }` }
           backLink={ backLink }
+          additionalsRight={ <NetworkExplorers type="block" pathParam={ height } ml={{ base: 'initial', lg: 'auto' }}/> }
         />
       ) }
       { blockQuery.isLoading ? <SkeletonTabs/> : (

@@ -16,6 +16,7 @@ export interface NetworkExplorer {
     tx?: string;
     address?: string;
     token?: string;
+    block?: string;
   };
 }
 

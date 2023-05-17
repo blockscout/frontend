@@ -5,26 +5,22 @@ import React from 'react';
 import type { TokenVerifiedInfo as TTokenVerifiedInfo } from 'types/api/token';
 
 import LinkExternal from 'ui/shared/LinkExternal';
-import NetworkExplorers from 'ui/shared/NetworkExplorers';
 
 import TokenProjectInfo from './TokenProjectInfo';
 
 interface Props {
   verifiedInfoQuery: UseQueryResult<TTokenVerifiedInfo>;
   isVerifiedInfoEnabled: boolean;
-  hash: string;
 }
 
-const TokenVerifiedInfo = ({ verifiedInfoQuery, isVerifiedInfoEnabled, hash }: Props) => {
+const TokenVerifiedInfo = ({ verifiedInfoQuery, isVerifiedInfoEnabled }: Props) => {
 
   const { data, isLoading, isError } = verifiedInfoQuery;
   const websiteLinkBg = useColorModeValue('gray.100', 'gray.700');
 
   const content = (() => {
-    const explorers = <NetworkExplorers type="token" pathParam={ hash }/>;
-
     if (!isVerifiedInfoEnabled) {
-      return explorers;
+      return null;
     }
 
     if (isLoading) {
@@ -38,7 +34,7 @@ const TokenVerifiedInfo = ({ verifiedInfoQuery, isVerifiedInfoEnabled, hash }: P
     }
 
     if (isError) {
-      return explorers;
+      return null;
     }
 
     const websiteLink = (() => {
@@ -56,7 +52,6 @@ const TokenVerifiedInfo = ({ verifiedInfoQuery, isVerifiedInfoEnabled, hash }: P
       <>
         { websiteLink }
         { Boolean(data.tokenAddress) && <TokenProjectInfo data={ data }/> }
-        { explorers }
       </>
     );
   })();

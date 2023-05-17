@@ -103,7 +103,7 @@ For each application, you need to specify the `MarketplaceCategoryId` to which i
 | --- | --- | --- | --- | --- | --- |
 | title | `string` | Displayed name of the explorer | yes | - | `Anyblock` |
 | baseUrl | `string` | Base url of the explorer | yes | - | `https://explorer.anyblock.tools` |
-| paths | `Record<'tx' \| 'block' \| 'address', string>` | Map of explorer entities and their paths | yes | - | `{'tx':'/ethereum/poa/core/tx'}` |
+| paths | `Record<'tx' \| 'block' \| 'address' \| 'token', string>` | Map of explorer entities and their paths | yes | - | `{'tx':'/ethereum/poa/core/tx'}` |
 
 *Note* The url of an entity will be constructed as `<baseUrl><paths[<entity-type>]><entity-id>`, e.g `https://explorer.anyblock.tools/ethereum/poa/core/tx/<tx-id>`
 

@@ -120,7 +120,7 @@ frontend:
     NEXT_PUBLIC_NETWORK_RPC_URL:
       _default: https://rpc.ankr.com/eth_goerli
     NEXT_PUBLIC_NETWORK_EXPLORERS:
-      _default: "[{'title':'Bitquery','baseUrl':'https://explorer.bitquery.io/','paths':{'tx':'/goerli/tx','address':'/goerli/address','token':'/goerli/token'}},{'title':'Etherscan','baseUrl':'https://goerli.etherscan.io/','paths':{'tx':'/tx','address':'/address','token':'/token'}}]"
+      _default: "[{'title':'Bitquery','baseUrl':'https://explorer.bitquery.io/','paths':{'tx':'/goerli/tx','address':'/goerli/address','token':'/goerli/token','block':'/goerli/block'}},{'title':'Etherscan','baseUrl':'https://goerli.etherscan.io/','paths':{'tx':'/tx','address':'/address','token':'/token','block':'/block'}}]"
     NEXT_PUBLIC_API_SPEC_URL:
       _default: https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml
     NEXT_PUBLIC_MARKETPLACE_CONFIG_URL:

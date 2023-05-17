@@ -23,6 +23,7 @@ import * as tokenStubs from 'stubs/token';
 import AddressContract from 'ui/address/AddressContract';
 import TextAd from 'ui/shared/ad/TextAd';
 import Tag from 'ui/shared/chakra/Tag';
+import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
 import Pagination from 'ui/shared/Pagination';
@@ -236,6 +237,12 @@ const TokenPageContent = () => {
     .filter(Boolean)
     .map((tag) => <Tag key={ tag.label } isLoading={ tokenQuery.isPlaceholderData }>{ tag.display_name }</Tag>);
   const tagsNode = tags.length > 0 ? <Flex columnGap={ 2 }>{ tags }</Flex> : null;
+  const additionalsRight = (
+    <>
+      { tagsNode }
+      <NetworkExplorers type="token" pathParam={ hashString } ml="auto"/>
+    </>
+  );
 
   return (
     <>
@@ -247,7 +254,7 @@ const TokenPageContent = () => {
         additionalsLeft={ (
           <TokenLogo data={ tokenQuery.data } boxSize={ 6 } isLoading={ tokenQuery.isPlaceholderData }/>
         ) }
-        additionalsRight={ tagsNode }
+        additionalsRight={ additionalsRight }
         afterTitle={
           verifiedInfoQuery.data?.tokenAddress ?
             <Icon as={ iconSuccess } color="green.500" boxSize={ 4 } verticalAlign="top"/> :
@@ -255,7 +262,7 @@ const TokenPageContent = () => {
         }
       />
       <TokenContractInfo tokenQuery={ tokenQuery } contractQuery={ contractQuery }/>
-      <TokenVerifiedInfo hash={ hashString } verifiedInfoQuery={ verifiedInfoQuery } isVerifiedInfoEnabled={ isVerifiedInfoEnabled }/>
+      <TokenVerifiedInfo verifiedInfoQuery={ verifiedInfoQuery } isVerifiedInfoEnabled={ isVerifiedInfoEnabled }/>
       <TokenDetails tokenQuery={ tokenQuery }/>
       { /* should stay before tabs to scroll up with pagination */ }
       <Box ref={ scrollRef }></Box>
