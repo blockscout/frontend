@@ -21,7 +21,7 @@ const ERC721TokensTableItem = ({
     <Tr>
       <Td verticalAlign="middle">
         <Flex alignItems="center">
-          <TokenLogo hash={ token.address } name={ token.name } boxSize={ 6 } mr={ 2 }/>
+          <TokenLogo data={ token } boxSize={ 6 } mr={ 2 }/>
           <AddressLink fontWeight="700" hash={ token.address } type="token" alias={ tokenString }/>
         </Flex>
       </Td>

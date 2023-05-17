@@ -245,7 +245,7 @@ const TokenPageContent = () => {
         text={ `${ tokenQuery.data?.name || 'Unnamed' }${ tokenSymbolText } token` }
         backLink={ backLink }
         additionalsLeft={ (
-          <TokenLogo hash={ tokenQuery.data?.address } name={ tokenQuery.data?.name } boxSize={ 6 } isLoading={ tokenQuery.isPlaceholderData }/>
+          <TokenLogo data={ tokenQuery.data } boxSize={ 6 } isLoading={ tokenQuery.isPlaceholderData }/>
         ) }
         additionalsRight={ tagsNode }
         afterTitle={

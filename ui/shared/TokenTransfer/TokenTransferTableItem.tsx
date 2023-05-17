@@ -45,7 +45,7 @@ const TokenTransferTableItem = ({
       ) }
       <Td>
         <Flex flexDir="column" alignItems="flex-start">
-          <TokenSnippet hash={ token.address } name={ token.name || 'Unnamed token' } lineHeight="30px"/>
+          <TokenSnippet data={ token } lineHeight="30px"/>
           <Tag mt={ 1 }>{ token.type }</Tag>
           <Tag colorScheme="orange" mt={ 2 }>{ getTokenTransferTypeText(type) }</Tag>
         </Flex>

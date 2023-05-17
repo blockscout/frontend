@@ -58,7 +58,7 @@ const TokenInstanceDetails = ({ data, scrollRef }: Props) => {
             title="Token"
             hint="Token name"
           >
-            <TokenSnippet hash={ data.token.address } name={ data.token.name }/>
+            <TokenSnippet data={ data.token }/>
           </DetailsInfoItem>
           { data.is_unique && data.owner && (
             <DetailsInfoItem

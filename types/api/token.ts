@@ -12,6 +12,7 @@ export interface TokenInfo<T extends TokenType = TokenType> {
   holders: string | null;
   exchange_rate: string | null;
   total_supply: string | null;
+  icon_url: string | null;
 }
 
 export interface TokenCounters {

@@ -1,36 +1,45 @@
 import { Image, chakra, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
+import type { TokenInfo } from 'types/api/token';
+
 import appConfig from 'configs/app/config';
 import TokenLogoPlaceholder from 'ui/shared/TokenLogoPlaceholder';
 
-interface Props {
-  hash?: string;
-  name?: string | null;
+export interface Props {
+  data?: Pick<TokenInfo, 'address' | 'icon_url' | 'name'>;
   className?: string;
   isLoading?: boolean;
 }
 
-const TokenLogo = ({ hash, name, className, isLoading }: Props) => {
+const TokenLogo = ({ className, isLoading, data }: Props) => {
 
   if (isLoading) {
     return <Skeleton className={ className } borderRadius="base"/>;
   }
 
-  const logoSrc = appConfig.network.assetsPathname && hash ? [
-    'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/',
-    appConfig.network.assetsPathname,
-    '/assets/',
-    hash,
-    '/logo.png',
-  ].join('') : undefined;
+  const logoSrc = (() => {
+    if (data?.icon_url) {
+      return data.icon_url;
+    }
+
+    if (appConfig.network.assetsPathname && data?.address) {
+      return [
+        'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/',
+        appConfig.network.assetsPathname,
+        '/assets/',
+        data.address,
+        '/logo.png',
+      ].join('');
+    }
+  })();
 
   return (
     <Image
       borderRadius="base"
       className={ className }
       src={ logoSrc }
-      alt={ `${ name || 'token' } logo` }
+      alt={ `${ data?.name || 'token' } logo` }
       fallback={ <TokenLogoPlaceholder className={ className }/> }
     />
   );

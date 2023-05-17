@@ -49,7 +49,7 @@ const NFTItem = ({ token, token_id: tokenId, token_instance: tokenInstance }: Pr
       ) }
       { token.name && (
         <Flex alignItems="center">
-          <TokenLogo hash={ token.address } name={ token.name } boxSize={ 6 } ml={ 1 } mr={ 1 }/>
+          <TokenLogo data={ token } boxSize={ 6 } ml={ 1 } mr={ 1 }/>
           <TruncatedTextTooltip label={ token.name }>
             <Text variant="secondary" overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis">{ token.name }</Text>
           </TruncatedTextTooltip>
