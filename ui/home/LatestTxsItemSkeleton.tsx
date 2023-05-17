@@ -11,7 +11,7 @@ const LatestTxsItemSkeleton = () => {
   return (
     <Box
       width="100%"
-      minW="700px"
+      minW={{ base: 'unset', lg: '700px' }}
       borderTop="1px solid"
       borderColor="divider"
       py={ 4 }
