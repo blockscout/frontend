@@ -29,6 +29,7 @@ The app instance could be customized by passing following variables to NodeJS en
 | Variable | Type| Description | Is required  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_FEATURED_NETWORKS | `string` | URL of configuration file (`.json` format only) which contains list of featured networks that will be shown in the network menu. See [below](#featured-network-configuration-properties) list of available properties for particular network | - | - | `https://example.com/featured_networks_config.json` |
+| NEXT_PUBLIC_OTHER_LINKS | `Array<{url: string; text: string}>` | List of links for the "Other" navigation menu | - | - | `[{'url':'https://blockscout.com','text':'Blockscout'}]` |
 | NEXT_PUBLIC_BLOCKSCOUT_VERSION | `string` | Current running version of Blockscout (used to display link to release in the footer) | - | - | `v.5.1.0-beta`
 | NEXT_PUBLIC_FOOTER_GITHUB_LINK | `string` | Link to Github in the footer | - | - | `https://github.com/blockscout/blockscout` |
 | NEXT_PUBLIC_FOOTER_TWITTER_LINK | `string` | Link to Twitter in the footer | - | - | `https://www.twitter.com/blockscoutcom` |

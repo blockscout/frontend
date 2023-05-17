@@ -3,8 +3,9 @@ import NextLink from 'next/link';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
+import type { NavItem } from 'types/client/navigation-items';
+
 import useIsMobile from 'lib/hooks/useIsMobile';
-import type { NavItem } from 'lib/hooks/useNavItems';
 import { isInternalItem } from 'lib/hooks/useNavItems';
 
 import useColors from './useColors';
@@ -57,7 +58,7 @@ const NavLink = ({ item, isCollapsed, px, className }: Props) => {
         color={ isInternalItem(item) && item.isActive ? colors.text.active : colors.text.hover }
       >
         <HStack spacing={ 3 } overflow="hidden">
-          <Icon as={ item.icon } boxSize="30px"/>
+          { item.icon && <Icon as={ item.icon } boxSize="30px"/> }
           <Text { ...styleProps.textProps }>
             { item.text }
           </Text>
