@@ -24,7 +24,10 @@ export default function useSearchQuery(isSearchPage = false) {
 
   const redirectCheckQuery = useApiQuery('search_check_redirect', {
     queryParams: { q: q.current },
-    queryOptions: { enabled: isSearchPage && Boolean(q) },
+    // on search result page we check redirect only once on mount
+    // on pages with regular search bar we check redirect on every search term change
+    // in order to prepend its result to suggest list since this resource is much faster than regular search
+    queryOptions: { enabled: Boolean(isSearchPage ? q : debouncedSearchTerm) },
   });
 
   useUpdateValueEffect(() => {
