@@ -90,7 +90,7 @@ const CsvExport = () => {
   return (
     <Page>
       <PageTitle
-        text="Export data to CSV file"
+        title="Export data to CSV file"
         backLink={ backLink }
       />
       <Flex mb={ 10 } whiteSpace="pre-wrap" flexWrap="wrap">

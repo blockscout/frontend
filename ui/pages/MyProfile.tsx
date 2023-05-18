@@ -55,7 +55,7 @@ const MyProfile = () => {
 
   return (
     <Page>
-      <PageTitle text="My profile"/>
+      <PageTitle title="My profile"/>
       { content }
     </Page>
   );

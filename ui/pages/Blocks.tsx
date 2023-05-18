@@ -42,7 +42,7 @@ const BlocksPageContent = () => {
 
   return (
     <Page>
-      <PageTitle text="Blocks" withTextAd/>
+      <PageTitle title="Blocks" withTextAd/>
       <RoutedTabs
         tabs={ tabs }
         tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }

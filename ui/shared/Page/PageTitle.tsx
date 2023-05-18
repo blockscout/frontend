@@ -1,4 +1,4 @@
-import { Heading, Flex, Grid, Tooltip, Icon, Link, chakra, Skeleton } from '@chakra-ui/react';
+import { Heading, Flex, Tooltip, Icon, Link, chakra, Box, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import eastArrowIcon from 'icons/arrows/east.svg';
@@ -8,83 +8,79 @@ import LinkInternal from 'ui/shared/LinkInternal';
 type BackLinkProp = { label: string; url: string } | { label: string; onClick: () => void };
 
 type Props = {
-  text: string;
-  additionalsLeft?: React.ReactNode;
-  additionalsRight?: React.ReactNode;
-  withTextAd?: boolean;
+  title: string;
   className?: string;
   backLink?: BackLinkProp;
+  beforeTitle?: React.ReactNode;
   afterTitle?: React.ReactNode;
+  contentAfter?: React.ReactNode;
   isLoading?: boolean;
+  withTextAd?: boolean;
 }
 
-const PageTitle = ({ text, additionalsLeft, additionalsRight, withTextAd, backLink, className, isLoading, afterTitle }: Props) => {
-  const title = (
-    <Skeleton isLoaded={ !isLoading }>
-      <Heading
-        as="h1"
-        size="lg"
-        flex="none"
-        wordBreak="break-word"
-      >
-        { text }
-        { afterTitle }
-      </Heading>
-    </Skeleton>
-  );
+const BackLink = (props: BackLinkProp & { isLoading?: boolean }) => {
+  if (!props) {
+    return null;
+  }
 
-  const backLinkComponent = (() => {
-    if (!backLink) {
-      return null;
-    }
+  if (props.isLoading) {
+    return <Skeleton boxSize={ 6 } display="inline-block" borderRadius="base" mr={ 3 } isLoaded={ !props.isLoading }/>;
+  }
 
-    const icon = <Icon as={ eastArrowIcon } boxSize={ 6 } transform="rotate(180deg)" margin="auto"/>;
+  const icon = <Icon as={ eastArrowIcon } boxSize={ 6 } transform="rotate(180deg)" margin="auto"/>;
 
-    if ('url' in backLink) {
-      return (
-        <Tooltip label={ backLink.label }>
-          <LinkInternal display="inline-flex" href={ backLink.url } h="40px">
-            { icon }
-          </LinkInternal>
-        </Tooltip>
-      );
-    }
-
+  if ('url' in props) {
     return (
-      <Tooltip label={ backLink.label }>
-        <Link display="inline-flex" onClick={ backLink.onClick } h="40px">
+      <Tooltip label={ props.label }>
+        <LinkInternal display="inline-flex" href={ props.url } h="40px" mr={ 3 }>
           { icon }
-        </Link>
+        </LinkInternal>
       </Tooltip>
     );
-  })();
+  }
 
   return (
+    <Tooltip label={ props.label }>
+      <Link display="inline-flex" onClick={ props.onClick } h="40px" mr={ 3 }>
+        { icon }
+      </Link>
+    </Tooltip>
+  );
+};
+
+const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoading, afterTitle, beforeTitle }: Props) => {
+  return (
     <Flex
-      columnGap={ 3 }
-      rowGap={ 3 }
-      alignItems={{ base: 'start', lg: 'center' }}
-      flexDirection={{ base: 'column', lg: 'row' }}
-      mb={ 6 }
-      justifyContent="space-between"
       className={ className }
+      mb={ 6 }
+      flexDir="row"
+      flexWrap="wrap"
+      rowGap={ 3 }
+      columnGap={ 3 }
+      alignItems="center"
     >
-      <Flex flexWrap="wrap" columnGap={ 3 } alignItems="center" width={ withTextAd ? 'unset' : '100%' } flexShrink={ 0 }>
-        <Grid
-          templateColumns={ [ backLinkComponent && 'auto', additionalsLeft && 'auto', '1fr' ].filter(Boolean).join(' ') }
-          columnGap={ 3 }
+      <Box>
+        { backLink && <BackLink { ...backLink } isLoading={ isLoading }/> }
+        { beforeTitle }
+        <Skeleton
+          isLoaded={ !isLoading }
+          display="inline"
+          verticalAlign={ isLoading ? 'super' : undefined }
         >
-          { backLinkComponent }
-          { additionalsLeft !== undefined && (
-            <Flex h="40px" alignItems="center">
-              { additionalsLeft }
-            </Flex>
-          ) }
-          { title }
-        </Grid>
-        { additionalsRight }
-      </Flex>
-      { withTextAd && <TextAd flexShrink={ 100 }/> }
+          <Heading
+            as="h1"
+            size="lg"
+            display="inline"
+            wordBreak="break-word"
+            w="100%"
+          >
+            { title }
+          </Heading>
+        </Skeleton>
+        { afterTitle }
+      </Box>
+      { contentAfter }
+      { withTextAd && <TextAd order={{ base: -1, lg: 100 }} mb={{ base: 6, lg: 0 }} ml="auto"/> }
     </Flex>
   );
 };

@@ -1,4 +1,4 @@
-import { Box, Icon, Flex } from '@chakra-ui/react';
+import { Box, Icon } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
@@ -22,7 +22,7 @@ import * as addressStubs from 'stubs/address';
 import * as tokenStubs from 'stubs/token';
 import AddressContract from 'ui/address/AddressContract';
 import TextAd from 'ui/shared/ad/TextAd';
-import Tag from 'ui/shared/chakra/Tag';
+import EntityTags from 'ui/shared/EntityTags';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
@@ -228,38 +228,36 @@ const TokenPageContent = () => {
     };
   }, [ appProps.referrer ]);
 
-  const tags = [
-    { label: tokenQuery.data?.type, display_name: tokenQuery.data?.type },
-    ...(contractQuery.data?.private_tags || []),
-    ...(contractQuery.data?.public_tags || []),
-    ...(contractQuery.data?.watchlist_names || []),
-  ]
-    .filter(Boolean)
-    .map((tag) => <Tag key={ tag.label } isLoading={ tokenQuery.isPlaceholderData }>{ tag.display_name }</Tag>);
-  const tagsNode = tags.length > 0 ? <Flex columnGap={ 2 }>{ tags }</Flex> : null;
-  const additionalsRight = (
-    <>
-      { tagsNode }
-      <NetworkExplorers type="token" pathParam={ hashString } ml="auto"/>
-    </>
+  const tags = (
+    <EntityTags
+      data={ contractQuery.data }
+      isLoading={ tokenQuery.isPlaceholderData || contractQuery.isPlaceholderData }
+      tagsBefore={ [
+        tokenQuery.data ? { label: tokenQuery.data?.type, display_name: tokenQuery.data?.type } : undefined,
+      ] }
+      contentAfter={
+        <NetworkExplorers type="token" pathParam={ hashString } ml="auto"/>
+      }
+      flexGrow={ 1 }
+    />
   );
 
   return (
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
+        title={ `${ tokenQuery.data?.name || 'Unnamed' }${ tokenSymbolText } token` }
         isLoading={ tokenQuery.isPlaceholderData }
-        text={ `${ tokenQuery.data?.name || 'Unnamed' }${ tokenSymbolText } token` }
         backLink={ backLink }
-        additionalsLeft={ (
-          <TokenLogo data={ tokenQuery.data } boxSize={ 6 } isLoading={ tokenQuery.isPlaceholderData }/>
+        beforeTitle={ (
+          <TokenLogo data={ tokenQuery.data } boxSize={ 6 } isLoading={ tokenQuery.isPlaceholderData } display="inline-block" mr={ 2 }/>
         ) }
-        additionalsRight={ additionalsRight }
         afterTitle={
           verifiedInfoQuery.data?.tokenAddress ?
             <Icon as={ iconSuccess } color="green.500" boxSize={ 4 } verticalAlign="top"/> :
             <Box boxSize={ 4 } display="inline-block"/>
         }
+        contentAfter={ tags }
       />
       <TokenContractInfo tokenQuery={ tokenQuery } contractQuery={ contractQuery }/>
       <TokenVerifiedInfo verifiedInfoQuery={ verifiedInfoQuery } isVerifiedInfoEnabled={ isVerifiedInfoEnabled }/>

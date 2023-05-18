@@ -115,7 +115,7 @@ const CustomAbiPage: React.FC = () => {
   return (
     <Page>
       <Box h="100%">
-        <PageTitle text="Custom ABI"/>
+        <PageTitle title="Custom ABI"/>
         { content }
       </Box>
     </Page>

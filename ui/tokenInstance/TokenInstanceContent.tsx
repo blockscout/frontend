@@ -145,10 +145,10 @@ const TokenInstanceContent = () => {
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
-        text={ `${ tokenInstanceQuery.data.token.name || 'Unnamed token' } #${ tokenInstanceQuery.data.id }` }
+        title={ `${ tokenInstanceQuery.data.token.name || 'Unnamed token' } #${ tokenInstanceQuery.data.id }` }
         backLink={ backLink }
-        additionalsLeft={ nftShieldIcon }
-        additionalsRight={ tokenTag }
+        beforeTitle={ nftShieldIcon }
+        contentAfter={ tokenTag }
       />
 
       <AddressHeadingInfo address={ address } token={ tokenInstanceQuery.data.token }/>

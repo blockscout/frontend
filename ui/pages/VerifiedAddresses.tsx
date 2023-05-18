@@ -130,7 +130,7 @@ const VerifiedAddresses = () => {
     const tokenName = addressInfo ? `${ addressInfo.metadata.tokenName } (${ addressInfo.metadata.tokenSymbol })` : '';
     return (
       <>
-        <PageTitle text="Token info application form" backLink={ backLink }/>
+        <PageTitle title="Token info application form" backLink={ backLink }/>
         <TokenInfoForm
           address={ selectedAddress }
           tokenName={ tokenName }
@@ -167,7 +167,7 @@ const VerifiedAddresses = () => {
 
   return (
     <>
-      <PageTitle text="My verified addresses"/>
+      <PageTitle title="My verified addresses"/>
       <AccountPageDescription allowCut={ false }>
         <span>
           Verify ownership of a smart contract address to easily update information in Blockscout.

@@ -98,7 +98,7 @@ const ContractVerification = () => {
   return (
     <Page>
       <PageTitle
-        text="New smart contract verification"
+        title="New smart contract verification"
         backLink={ backLink }
       />
       { hash && (

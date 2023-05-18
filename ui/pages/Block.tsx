@@ -103,9 +103,10 @@ const BlockPageContent = () => {
         <Skeleton h={ 10 } w="300px" mb={ 6 }/>
       ) : (
         <PageTitle
-          text={ `Block #${ blockQuery.data?.height }` }
+          title={ `Block #${ blockQuery.data?.height }` }
           backLink={ backLink }
-          additionalsRight={ <NetworkExplorers type="block" pathParam={ height } ml={{ base: 'initial', lg: 'auto' }}/> }
+          contentAfter={ <NetworkExplorers type="block" pathParam={ height } ml={{ base: 'initial', lg: 'auto' }}/> }
+          withTextAd
         />
       ) }
       { blockQuery.isLoading ? <SkeletonTabs/> : (

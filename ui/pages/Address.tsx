@@ -1,4 +1,4 @@
-import { Flex, Skeleton, Tag, Box, Icon } from '@chakra-ui/react';
+import { Skeleton, Box, Icon } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -22,6 +22,7 @@ import AddressTokenTransfers from 'ui/address/AddressTokenTransfers';
 import AddressTxs from 'ui/address/AddressTxs';
 import AddressWithdrawals from 'ui/address/AddressWithdrawals';
 import TextAd from 'ui/shared/ad/TextAd';
+import EntityTags from 'ui/shared/EntityTags';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -48,17 +49,6 @@ const AddressPageContent = () => {
     pathParams: { hash },
     queryOptions: { enabled: Boolean(hash) },
   });
-
-  const tags = [
-    addressQuery.data?.is_contract ? { label: 'contract', display_name: 'Contract' } : { label: 'eoa', display_name: 'EOA' },
-    addressQuery.data?.implementation_address ? { label: 'proxy', display_name: 'Proxy' } : undefined,
-    addressQuery.data?.token ? { label: 'token', display_name: 'Token' } : undefined,
-    ...(addressQuery.data?.private_tags || []),
-    ...(addressQuery.data?.public_tags || []),
-    ...(addressQuery.data?.watchlist_names || []),
-  ]
-    .filter(Boolean)
-    .map((tag) => <Tag key={ tag.label }>{ tag.display_name }</Tag>);
 
   const contractTabs = useContractTabs(addressQuery.data);
 
@@ -98,12 +88,19 @@ const AddressPageContent = () => {
     ].filter(Boolean);
   }, [ addressQuery.data, contractTabs, hash ]);
 
-  const tagsNode = tags.length > 0 ? <Flex columnGap={ 2 }>{ tags }</Flex> : null;
-  const additionalsRight = (
-    <>
-      { tagsNode }
-      <NetworkExplorers type="address" pathParam={ hash } ml="auto"/>
-    </>
+  const tags = (
+    <EntityTags
+      data={ addressQuery.data }
+      isLoading={ addressQuery.isPlaceholderData }
+      tagsBefore={ [
+        addressQuery.data?.is_contract ? { label: 'contract', display_name: 'Contract' } : { label: 'eoa', display_name: 'EOA' },
+        addressQuery.data?.implementation_address ? { label: 'proxy', display_name: 'Proxy' } : undefined,
+        addressQuery.data?.token ? { label: 'token', display_name: 'Token' } : undefined,
+      ] }
+      contentAfter={
+        <NetworkExplorers type="address" pathParam={ hash } ml="auto"/>
+      }
+    />
   );
 
   const content = addressQuery.isError ? null : <RoutedTabs tabs={ tabs } tabListProps={{ mt: 8 }}/>;
@@ -128,9 +125,9 @@ const AddressPageContent = () => {
         <Skeleton h={ 10 } w="260px" mb={ 6 }/>
       ) : (
         <PageTitle
-          text={ `${ addressQuery.data?.is_contract ? 'Contract' : 'Address' } details` }
-          additionalsRight={ additionalsRight }
+          title={ `${ addressQuery.data?.is_contract ? 'Contract' : 'Address' } details` }
           backLink={ backLink }
+          contentAfter={ tags }
         />
       ) }
       <AddressDetails addressQuery={ addressQuery } scrollRef={ tabsScrollRef }/>

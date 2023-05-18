@@ -1,4 +1,3 @@
-import { Flex, Tag } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -8,6 +7,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/appContext';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import TextAd from 'ui/shared/ad/TextAd';
+import EntityTags from 'ui/shared/EntityTags';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -34,16 +34,19 @@ const TransactionPageContent = () => {
 
   const hash = getQueryParamString(router.query.hash);
 
-  const { data } = useApiQuery('tx', {
+  const { data, isPlaceholderData } = useApiQuery('tx', {
     pathParams: { hash },
     queryOptions: { enabled: Boolean(hash) },
   });
 
-  const additionals = (
-    <Flex justifyContent="space-between" alignItems="center" flexGrow={ 1 } flexWrap="wrap">
-      { data?.tx_tag && <Tag my={ 2 }>{ data.tx_tag }</Tag> }
-      <NetworkExplorers type="tx" pathParam={ hash } ml={{ base: 'initial', lg: 'auto' }}/>
-    </Flex>
+  const tags = (
+    <EntityTags
+      isLoading={ isPlaceholderData }
+      tagsBefore={ [ data?.tx_tag ? { label: data.tx_tag, display_name: data.tx_tag } : undefined ] }
+      contentAfter={
+        <NetworkExplorers type="tx" pathParam={ hash } ml={{ base: 'initial', lg: 'auto' }}/>
+      }
+    />
   );
 
   const backLink = React.useMemo(() => {
@@ -63,9 +66,9 @@ const TransactionPageContent = () => {
     <Page>
       <TextAd mb={ 6 }/>
       <PageTitle
-        text="Transaction details"
-        additionalsRight={ additionals }
+        title="Transaction details"
         backLink={ backLink }
+        contentAfter={ tags }
       />
       <RoutedTabs tabs={ TABS }/>
     </Page>

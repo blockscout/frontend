@@ -9,7 +9,7 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 const MarketplacePage: NextPage = () => {
   return (
     <Page>
-      <PageTitle text="Marketplace"/>
+      <PageTitle title="Marketplace"/>
       <Head><title>Blockscout | Marketplace</title></Head>
 
       <Marketplace/>

@@ -34,7 +34,7 @@ const Sol2Uml = () => {
   return (
     <Page>
       <PageTitle
-        text="Solidity UML diagram"
+        title="Solidity UML diagram"
         backLink={ backLink }
       />
       <Flex mb={ 10 }>
