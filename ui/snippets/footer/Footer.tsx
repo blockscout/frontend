@@ -1,4 +1,4 @@
-import { Box, Grid, Flex, Text, Stack, Link, VStack, Skeleton } from '@chakra-ui/react';
+import { Box, Grid, Flex, Text, Link, VStack, Skeleton } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
@@ -74,8 +74,8 @@ const Footer = () => {
     });
 
   return (
-    <Stack direction={{ base: 'column', lg: 'row' }} p={{ base: 4, lg: 9 }} gap={{ base: 6, lg: 12 }} borderTop="1px solid" borderColor="divider">
-      <Box flexGrow="1" mb={{ base: 2, lg: 0 }}>
+    <Flex direction={{ base: 'column', lg: 'row' }} p={{ base: 4, lg: 9 }} borderTop="1px solid" borderColor="divider">
+      <Box flexGrow="1" mb={{ base: 6, lg: 12 }}>
         <Flex>
           <ColorModeToggler/>
           <NetworkAddToWallet ml={ 8 }/>
@@ -98,39 +98,41 @@ const Footer = () => {
           </Text>
         ) }
       </Box>
-      <Box minW={{ base: 'auto', lg: appConfig.footerLinks ? '160px' : 'auto' }}>
-        { appConfig.footerLinks && <Text fontWeight={ 500 } mb={ 3 }>Blockscout</Text> }
-        <Grid
-          gap={ 2 }
-          gridTemplateColumns={{ base: '160px', lg: appConfig.footerLinks ? '160px' : 'repeat(3, 160px)' }}
-          gridTemplateRows={{ base: 'auto', lg: appConfig.footerLinks ? 'auto' : 'repeat(2, auto)' }}
-          gridAutoFlow={{ base: 'row', lg: appConfig.footerLinks ? 'row' : 'column' }}
-          mt={{ base: 0, lg: appConfig.footerLinks ? 0 : '100px' }}
-        >
-          { BLOCSKOUT_LINKS.map(link => <FooterLinkItem { ...link } key={ link.text }/>) }
-        </Grid>
-      </Box>
-      { appConfig.footerLinks && isLoading && (
-        Array.from(Array(3)).map((i, index) => (
-          <Box minW={{ base: 'auto', lg: '160px' }} key={ index }>
-            <Skeleton w="120px" h="20px" mb={ 6 }/>
-            <VStack spacing={ 4 } alignItems="start" mb={ 2 }>
-              { Array.from(Array(5)).map((i, index) => <Skeleton w="160px" h="14px" key={ index }/>) }
-            </VStack>
-          </Box>
-        ))
-      ) }
-      { appConfig.footerLinks && data && (
-        data.slice(0, 3).map(linkGroup => (
-          <Box minW={{ base: 'auto', lg: '160px' }} key={ linkGroup.title }>
-            <Text fontWeight={ 500 } mb={ 3 }>{ linkGroup.title }</Text>
-            <VStack spacing={ 2 } alignItems="start">
-              { linkGroup.links.map(link => <FooterLinkItem { ...link } key={ link.text }/>) }
-            </VStack>
-          </Box>
-        ))
-      ) }
-    </Stack>
+      <Grid gap={{ base: 6, lg: 12 }} gridTemplateColumns={{ base: 'repeat(auto-fill, 160px)', lg: 'repeat(4, 160px)' }}>
+        <Box minW="160px" w={ appConfig.footerLinks ? '160px' : '100%' }>
+          { appConfig.footerLinks && <Text fontWeight={ 500 } mb={ 3 }>Blockscout</Text> }
+          <Grid
+            gap={ 2 }
+            gridTemplateColumns={ appConfig.footerLinks ? '160px' : { base: 'repeat(auto-fill, 160px)', lg: 'repeat(3, 160px)' } }
+            gridTemplateRows={{ base: 'auto', lg: appConfig.footerLinks ? 'auto' : 'repeat(2, auto)' }}
+            gridAutoFlow={{ base: 'row', lg: appConfig.footerLinks ? 'row' : 'column' }}
+            mt={{ base: 0, lg: appConfig.footerLinks ? 0 : '100px' }}
+          >
+            { BLOCSKOUT_LINKS.map(link => <FooterLinkItem { ...link } key={ link.text }/>) }
+          </Grid>
+        </Box>
+        { appConfig.footerLinks && isLoading && (
+          Array.from(Array(3)).map((i, index) => (
+            <Box minW="160px" key={ index }>
+              <Skeleton w="120px" h="20px" mb={ 6 }/>
+              <VStack spacing={ 4 } alignItems="start" mb={ 2 }>
+                { Array.from(Array(5)).map((i, index) => <Skeleton w="160px" h="14px" key={ index }/>) }
+              </VStack>
+            </Box>
+          ))
+        ) }
+        { appConfig.footerLinks && data && (
+          data.slice(0, 3).map(linkGroup => (
+            <Box minW="160px" key={ linkGroup.title }>
+              <Text fontWeight={ 500 } mb={ 3 }>{ linkGroup.title }</Text>
+              <VStack spacing={ 2 } alignItems="start">
+                { linkGroup.links.map(link => <FooterLinkItem { ...link } key={ link.text }/>) }
+              </VStack>
+            </Box>
+          ))
+        ) }
+      </Grid>
+    </Flex>
   );
 };
 
