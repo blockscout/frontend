@@ -1,0 +1,23 @@
+environments:
+  {{ .Environment.Name }}:
+---
+helmDefaults:
+  timeout: 600
+  kubeContext: k8s-dev
+  wait: true
+  recreatePods: false
+
+repositories:
+  - name: blockscout-ci-cd
+    url: https://blockscout.github.io/blockscout-ci-cd
+
+releases:
+  - name: bs-stack
+    chart: blockscout-ci-cd/blockscout-stack
+    namespace: front-main
+    labels:
+      app: front
+    values:
+    - values/main/values.yaml
+    - global:
+        env: "main"
