@@ -5,7 +5,6 @@ import type { Address } from 'types/api/address';
 import type { TokenInfo } from 'types/api/token';
 
 import appConfig from 'configs/app/config';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import AddressFavoriteButton from 'ui/address/details/AddressFavoriteButton';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
@@ -22,8 +21,6 @@ interface Props {
 }
 
 const AddressHeadingInfo = ({ address, token, isLinkDisabled, isLoading }: Props) => {
-  const isMobile = useIsMobile();
-
   return (
     <Flex alignItems="center">
       <AddressIcon address={ address } isLoading={ isLoading }/>
@@ -32,8 +29,8 @@ const AddressHeadingInfo = ({ address, token, isLinkDisabled, isLoading }: Props
         hash={ address.hash }
         ml={ 2 }
         fontFamily="heading"
+        fontSize="lg"
         fontWeight={ 500 }
-        truncation={ isMobile ? 'constant' : 'none' }
         isDisabled={ isLinkDisabled }
         isLoading={ isLoading }
       />

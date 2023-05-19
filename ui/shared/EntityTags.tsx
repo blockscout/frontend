@@ -33,7 +33,7 @@ const EntityTags = ({ className, data, tagsBefore = [], tagsAfter = [], isLoadin
   ]
     .filter(Boolean);
 
-  if (tags.length === 0) {
+  if (tags.length === 0 && !contentAfter) {
     return null;
   }
 
@@ -78,7 +78,7 @@ const EntityTags = ({ className, data, tagsBefore = [], tagsAfter = [], isLoadin
   })();
 
   return (
-    <Flex className={ className } columnGap={ 2 } rowGap={ 2 } flexWrap="wrap" alignItems="center">
+    <Flex className={ className } columnGap={ 2 } rowGap={ 2 } flexWrap="wrap" alignItems="center" flexGrow={ 1 }>
       { content }
       { contentAfter }
     </Flex>

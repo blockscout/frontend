@@ -22,7 +22,7 @@ const AddressActions = ({ isLoading }: Props) => {
 
   return (
     <Menu>
-      <Skeleton isLoaded={ !isLoading } ml={ 2 }>
+      <Skeleton isLoaded={ !isLoading } ml={ 2 } borderRadius="base">
         <MenuButton
           as={ Button }
           size="sm"
