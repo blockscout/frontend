@@ -95,7 +95,7 @@ const TokenInstanceContent = () => {
     return <TokenInstanceSkeleton/>;
   }
 
-  const nftShieldIcon = <Icon as={ nftIcon } boxSize={ 6 }/>;
+  const nftShieldIcon = <Icon as={ nftIcon } boxSize={ 6 } mr={ 2 }/>;
   const tokenTag = <Tag>{ tokenInstanceQuery.data.token.type }</Tag>;
   const address = {
     hash: hash || '',
