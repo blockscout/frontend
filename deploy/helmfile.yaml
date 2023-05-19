@@ -21,3 +21,12 @@ releases:
     - values/main/values.yaml
     - global:
         env: "main"
+  - name: bs-stack
+    chart: blockscout-ci-cd/blockscout-stack
+    namespace: l2-optimism-goerli
+    labels:
+      app: l2-optimism-goerli
+    values:
+    - values/l2-optimism-goerli/values.yaml
+    - global:
+        env: "optimism-goerli"

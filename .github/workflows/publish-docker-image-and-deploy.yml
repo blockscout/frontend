@@ -52,8 +52,9 @@ jobs:
             GIT_COMMIT_SHA=${{ env.SHORT_SHA }}
 
   deploy_main:
-    uses: blockscout/blockscout-ci-cd/.github/workflows/deploy_helmfile.yaml@master
+    name: Deploy frontend
     needs: push_to_registry
+    uses: blockscout/blockscout-ci-cd/.github/workflows/deploy_helmfile.yaml@master
     with:
       appName: front
       globalEnv: main
@@ -61,11 +62,14 @@ jobs:
       kubeConfigSecret: ci/data/dev/kubeconfig/k8s-dev
       vaultRole: ci-dev
     secrets: inherit
-#  deploy_l2:
-#    name: Deploy frontend (L2)
-#    needs: push_to_registry
-#    uses: blockscout/blockscout-ci-cd/.github/workflows/deploy.yaml@master
-#    with:
-#      env_vars: VALUES_DIR=deploy/values/l2-optimism-goerli,APP_NAME=bs-stack
-#      appNamespace: tests-optimism-goerli
-#    secrets: inherit
+  deploy_l2:
+    name: Deploy frontend (L2)
+    needs: push_to_registry
+    uses: blockscout/blockscout-ci-cd/.github/workflows/deploy_helmfile.yaml@master
+    with:
+      appName: l2-optimism-goerli
+      globalEnv: optimism-goerli
+      helmfileDir: deploy
+      kubeConfigSecret: ci/data/dev/kubeconfig/k8s-dev
+      vaultRole: ci-dev
+    secrets: inherit
