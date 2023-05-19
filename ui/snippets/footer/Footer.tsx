@@ -2,6 +2,8 @@ import { Box, Grid, Flex, Text, Link, VStack, Skeleton } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
+import type { CustomLinksGroup } from 'types/footerLinks';
+
 import appConfig from 'configs/app/config';
 import discussionsIcon from 'icons/discussions.svg';
 import editIcon from 'icons/edit.svg';
@@ -14,6 +16,8 @@ import NetworkAddToWallet from 'ui/shared/NetworkAddToWallet';
 
 import ColorModeToggler from '../header/ColorModeToggler';
 import FooterLinkItem from './FooterLinkItem';
+
+const MAX_LINKS_COLUMNS = 3;
 
 const API_VERSION_URL = `https://github.com/blockscout/blockscout/tree/${ appConfig.blockScoutVersion }`;
 // const FRONT_VERSION_URL = `https://github.com/blockscout/frontend/tree/${ appConfig.frontendVersion }`;
@@ -52,20 +56,10 @@ const BLOCSKOUT_LINKS = [
   },
 ];
 
-type CustomLink = {
-  text: string;
-  url: string;
-}
-
-type CustomLinksGroup = {
-  title: string;
-  links: Array<CustomLink>;
-}
-
 const Footer = () => {
   const fetch = useFetch();
 
-  const { isLoading, data } = useQuery<unknown, ResourceError<unknown>, Array<CustomLinksGroup>>(
+  const { isLoading, data: linksData } = useQuery<unknown, ResourceError<unknown>, Array<CustomLinksGroup>>(
     [ 'footer-links' ],
     async() => fetch(appConfig.footerLinks || ''),
     {
@@ -98,7 +92,13 @@ const Footer = () => {
           </Text>
         ) }
       </Box>
-      <Grid gap={{ base: 6, lg: 12 }} gridTemplateColumns={{ base: 'repeat(auto-fill, 160px)', lg: 'repeat(4, 160px)' }}>
+      <Grid
+        gap={{ base: 6, lg: 12 }}
+        gridTemplateColumns={ appConfig.footerLinks ?
+          { base: 'repeat(auto-fill, 160px)', lg: `repeat(${ (linksData?.length || MAX_LINKS_COLUMNS) + 1 }, 160px)` } :
+          'auto'
+        }
+      >
         <Box minW="160px" w={ appConfig.footerLinks ? '160px' : '100%' }>
           { appConfig.footerLinks && <Text fontWeight={ 500 } mb={ 3 }>Blockscout</Text> }
           <Grid
@@ -121,8 +121,8 @@ const Footer = () => {
             </Box>
           ))
         ) }
-        { appConfig.footerLinks && data && (
-          data.slice(0, 3).map(linkGroup => (
+        { appConfig.footerLinks && linksData && (
+          linksData.slice(0, MAX_LINKS_COLUMNS).map(linkGroup => (
             <Box minW="160px" key={ linkGroup.title }>
               <Text fontWeight={ 500 } mb={ 3 }>{ linkGroup.title }</Text>
               <VStack spacing={ 2 } alignItems="start">
