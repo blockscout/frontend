@@ -5,7 +5,6 @@ import React, { useCallback } from 'react';
 import chevronIcon from 'icons/arrows/east-mini.svg';
 import useHasAccount from 'lib/hooks/useHasAccount';
 import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
-import NavFooter from 'ui/snippets/navigation/NavFooter';
 import NavLink from 'ui/snippets/navigation/NavLink';
 
 import NavLinkGroupMobile from './NavLinkGroupMobile';
@@ -78,7 +77,6 @@ const NavigationMobile = () => {
             </VStack>
           </Box>
         ) }
-        <NavFooter hasAccount={ hasAccount }/>
       </Box>
       { openedGroupIndex >= 0 && (
         <Box

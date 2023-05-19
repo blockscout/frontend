@@ -38,6 +38,9 @@ jobs:
       - name: Add SHORT_SHA env property with commit short sha
         run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
 
+      - name: Extract Git Tag
+        run: echo "GIT_TAG=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
+
       - name: Add outputs
         run: |
           echo "::set-output name=short-sha::${{ env.SHORT_SHA }}"

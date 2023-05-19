@@ -10,7 +10,6 @@ import ProfileMenuMobile from 'ui/snippets/profileMenu/ProfileMenuMobile';
 import SearchBar from 'ui/snippets/searchBar/SearchBar';
 
 import Burger from './Burger';
-import ColorModeToggler from './ColorModeToggler';
 
 type Props = {
   isHomePage?: boolean;
@@ -66,7 +65,6 @@ const Header = ({ isHomePage, renderSearchBar }: Props) => {
             <Box width="100%">
               { searchBar }
             </Box>
-            <ColorModeToggler/>
             { appConfig.isAccountSupported && <ProfileMenuDesktop/> }
           </HStack>
         ) }

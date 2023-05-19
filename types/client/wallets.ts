@@ -3,8 +3,7 @@ import type { providers } from 'ethers';
 export type WalletType = 'metamask' | 'coinbase';
 
 export interface WalletInfo {
-  add_token_text: string;
-  add_network_text: string;
+  name: string;
   icon: React.ElementType;
 }
 

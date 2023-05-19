@@ -67,7 +67,7 @@ const AddressAddToWallet = ({ className, token, isLoading }: Props) => {
   const defaultWallet = appConfig.web3.defaultWallet;
 
   return (
-    <Tooltip label={ WALLETS_INFO[defaultWallet].add_token_text }>
+    <Tooltip label={ `Add token to ${ WALLETS_INFO[defaultWallet].name }` }>
       <Box className={ className } display="inline-flex" cursor="pointer" onClick={ handleClick }>
         <Icon as={ WALLETS_INFO[defaultWallet].icon } boxSize={ 6 }/>
       </Box>

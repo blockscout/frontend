@@ -1,4 +1,4 @@
-import { Box, Icon, Tooltip, chakra } from '@chakra-ui/react';
+import { Button, Icon, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import appConfig from 'configs/app/config';
@@ -59,11 +59,10 @@ const NetworkAddToWallet = ({ className }: Props) => {
   const defaultWallet = appConfig.web3.defaultWallet;
 
   return (
-    <Tooltip label={ WALLETS_INFO[defaultWallet].add_network_text }>
-      <Box className={ className } display="inline-flex" cursor="pointer" onClick={ handleClick }>
-        <Icon as={ WALLETS_INFO[defaultWallet].icon } boxSize={ 5 }/>
-      </Box>
-    </Tooltip>
+    <Button variant="outline" size="sm" onClick={ handleClick } className={ className }>
+      <Icon as={ WALLETS_INFO[defaultWallet].icon } boxSize={ 5 } mr={ 2 }/>
+        Add { appConfig.network.name }
+    </Button>
   );
 };
 

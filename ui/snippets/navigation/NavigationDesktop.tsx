@@ -12,7 +12,6 @@ import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import NetworkMenu from 'ui/snippets/networkMenu/NetworkMenu';
 
-import NavFooter from './NavFooter';
 import NavLink from './NavLink';
 import NavLinkGroupDesktop from './NavLinkGroupDesktop';
 
@@ -97,7 +96,6 @@ const NavigationDesktop = () => {
           </VStack>
         </Box>
       ) }
-      <NavFooter isCollapsed={ isCollapsed } hasAccount={ hasAccount }/>
       <Icon
         as={ chevronIcon }
         width={ 6 }

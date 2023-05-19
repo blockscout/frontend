@@ -8,7 +8,6 @@ import Stats from 'ui/home/Stats';
 import Transactions from 'ui/home/Transactions';
 import AdBanner from 'ui/shared/ad/AdBanner';
 import Page from 'ui/shared/Page/Page';
-import ColorModeToggler from 'ui/snippets/header/ColorModeToggler';
 import ProfileMenuDesktop from 'ui/snippets/profileMenu/ProfileMenuDesktop';
 import SearchBar from 'ui/snippets/searchBar/SearchBar';
 
@@ -33,15 +32,9 @@ const Home = () => {
           >
             Welcome to { appConfig.network.name } explorer
           </Heading>
-          <Flex
-            alignItems="center"
-            display={{ base: 'none', lg: 'flex' }}
-            columnGap={ 12 }
-            pl={ 4 }
-          >
-            <ColorModeToggler trackBg="blackAlpha.900"/>
+          <Box display={{ base: 'none', lg: 'block' }}>
             { appConfig.isAccountSupported && <ProfileMenuDesktop/> }
-          </Flex>
+          </Box>
         </Flex>
         <LightMode>
           <SearchBar isHomepage/>
