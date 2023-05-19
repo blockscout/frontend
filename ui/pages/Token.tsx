@@ -236,7 +236,7 @@ const TokenPageContent = () => {
         tokenQuery.data ? { label: tokenQuery.data?.type, display_name: tokenQuery.data?.type } : undefined,
       ] }
       contentAfter={
-        <NetworkExplorers type="token" pathParam={ hashString } ml="auto"/>
+        <NetworkExplorers type="token" pathParam={ hashString } ml="auto" hideText={ isMobile }/>
       }
       flexGrow={ 1 }
     />

@@ -106,7 +106,6 @@ const BlockPageContent = () => {
           title={ `Block #${ blockQuery.data?.height }` }
           backLink={ backLink }
           contentAfter={ <NetworkExplorers type="block" pathParam={ height } ml={{ base: 'initial', lg: 'auto' }}/> }
-          withTextAd
         />
       ) }
       { blockQuery.isLoading ? <SkeletonTabs/> : (

@@ -5,16 +5,17 @@ import type { NetworkExplorer as TNetworkExplorer } from 'types/networks';
 
 import appConfig from 'configs/app/config';
 import arrowIcon from 'icons/arrows/east-mini.svg';
-import searchIcon from 'icons/search.svg';
+import explorerIcon from 'icons/explorer.svg';
 import LinkExternal from 'ui/shared/LinkExternal';
 
 interface Props {
   className?: string;
   type: keyof TNetworkExplorer['paths'];
   pathParam: string;
+  hideText?: boolean;
 }
 
-const NetworkExplorers = ({ className, type, pathParam }: Props) => {
+const NetworkExplorers = ({ className, type, pathParam, hideText }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
 
   const explorersLinks = appConfig.network.explorers
@@ -42,8 +43,8 @@ const NetworkExplorers = ({ className, type, pathParam }: Props) => {
           px={ 2 }
           h="30px"
         >
-          <Icon as={ searchIcon } boxSize={ 4 } mr={ 1 }/>
-          <span>Explorers</span>
+          <Icon as={ explorerIcon } boxSize={ 5 } mr={ hideText ? 0 : 1 }/>
+          { !hideText && <span>Explorers</span> }
           <Icon as={ arrowIcon } transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 } ml={ 1 }/>
         </Button>
       </PopoverTrigger>

@@ -10,6 +10,7 @@ import iconSuccess from 'icons/status/success.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/appContext';
 import useContractTabs from 'lib/hooks/useContractTabs';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import AddressBlocksValidated from 'ui/address/AddressBlocksValidated';
 import AddressCoinBalance from 'ui/address/AddressCoinBalance';
@@ -39,7 +40,7 @@ const TOKEN_TABS = Object.values(tokenTabsByType);
 
 const AddressPageContent = () => {
   const router = useRouter();
-
+  const isMobile = useIsMobile();
   const appProps = useAppContext();
 
   const tabsScrollRef = React.useRef<HTMLDivElement>(null);
@@ -98,7 +99,7 @@ const AddressPageContent = () => {
         addressQuery.data?.token ? { label: 'token', display_name: 'Token' } : undefined,
       ] }
       contentAfter={
-        <NetworkExplorers type="address" pathParam={ hash } ml="auto"/>
+        <NetworkExplorers type="address" pathParam={ hash } ml="auto" hideText={ isMobile }/>
       }
     />
   );
