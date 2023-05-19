@@ -4,7 +4,7 @@ import React from 'react';
 import type { TokenInfo } from 'types/api/token';
 
 import iconSuccess from 'icons/status/success.svg';
-import Tag from 'ui/shared/chakra/Tag';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import EntityTags from 'ui/shared/EntityTags';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import TokenLogo from 'ui/shared/TokenLogo';
@@ -12,6 +12,8 @@ import TokenLogo from 'ui/shared/TokenLogo';
 import PageTitle from '../PageTitle';
 
 const DefaultView = () => {
+  const isMobile = useIsMobile();
+
   const tokenData: TokenInfo = {
     address: '0x363574E6C5C71c343d7348093D84320c76d5Dd29',
     type: 'ERC-20',
@@ -34,12 +36,7 @@ const DefaultView = () => {
       tagsBefore={ [
         { label: 'example', display_name: 'Example label' },
       ] }
-      contentAfter={ (
-        <>
-          <Tag key="custom" colorScheme="orange" variant="solid">Awesome</Tag>
-          <NetworkExplorers type="token" pathParam="token-hash" ml="auto"/>
-        </>
-      ) }
+      contentAfter={ <NetworkExplorers type="token" pathParam="token-hash" ml="auto" hideText={ isMobile }/> }
       flexGrow={ 1 }
     />
   );

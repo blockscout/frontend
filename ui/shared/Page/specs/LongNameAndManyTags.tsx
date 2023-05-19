@@ -5,9 +5,9 @@ import React from 'react';
 import type { TokenInfo } from 'types/api/token';
 
 import iconSuccess from 'icons/status/success.svg';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import { publicTag, privateTag, watchlistName } from 'mocks/address/tag';
-import Tag from 'ui/shared/chakra/Tag';
 import EntityTags from 'ui/shared/EntityTags';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import TokenLogo from 'ui/shared/TokenLogo';
@@ -15,6 +15,8 @@ import TokenLogo from 'ui/shared/TokenLogo';
 import PageTitle from '../PageTitle';
 
 const LongNameAndManyTags = () => {
+  const isMobile = useIsMobile();
+
   const tokenData: TokenInfo = {
     address: '0xa77A39CC9680B10C00af5D4ABFc92e1F07406c64',
     decimals: null,
@@ -41,12 +43,7 @@ const LongNameAndManyTags = () => {
         { label: 'after_1', display_name: 'Another tag' },
         { label: 'after_2', display_name: 'And yet more' },
       ] }
-      contentAfter={ (
-        <>
-          <Tag key="custom" colorScheme="orange" variant="solid">Awesome</Tag>
-          <NetworkExplorers type="token" pathParam="token-hash" ml="auto"/>
-        </>
-      ) }
+      contentAfter={ <NetworkExplorers type="token" pathParam="token-hash" ml="auto" hideText={ isMobile }/> }
       flexGrow={ 1 }
     />
   );
