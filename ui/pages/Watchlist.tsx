@@ -5,13 +5,13 @@ import React, { useCallback, useState } from 'react';
 import type { WatchlistAddress, WatchlistTokensResponse } from 'types/api/account';
 import type { TWatchlist, TWatchlistItem } from 'types/client/account';
 
+import type { ResourceError } from 'lib/api/resources';
 import { resourceKey } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import SkeletonListAccount from 'ui/shared/skeletons/SkeletonListAccount';
 import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
@@ -22,31 +22,27 @@ import WatchlistTable from 'ui/watchlist/WatchlistTable/WatchlistTable';
 
 const WatchList: React.FC = () => {
   const apiFetch = useApiFetch();
-  const { data, isLoading, isError } = useQuery<unknown, unknown, TWatchlist>([ resourceKey('watchlist') ], async() => {
-    try {
-      const watchlistAddresses = await apiFetch<'watchlist', Array<WatchlistAddress>>('watchlist');
+  const { data, isLoading, isError, error } = useQuery<unknown, ResourceError, TWatchlist>([ resourceKey('watchlist') ], async() => {
+    const watchlistAddresses = await apiFetch<'watchlist', Array<WatchlistAddress>>('watchlist');
 
-      if (!Array.isArray(watchlistAddresses)) {
-        throw Error();
-      }
-
-      const watchlistTokens = await Promise.all(watchlistAddresses.map(({ address }) => {
-        if (!address?.hash) {
-          return Promise.resolve(0);
-        }
-        return apiFetch<'old_api', WatchlistTokensResponse>('old_api', { queryParams: { address: address.hash, module: 'account', action: 'tokenlist' } })
-          .then((response) => {
-            if ('result' in response && Array.isArray(response.result)) {
-              return response.result.length;
-            }
-            return 0;
-          });
-      }));
-
-      return watchlistAddresses.map((item, index) => ({ ...item, tokens_count: watchlistTokens[index] }));
-    } catch (error) {
-      return error;
+    if (!Array.isArray(watchlistAddresses)) {
+      return;
     }
+
+    const watchlistTokens = await Promise.all(watchlistAddresses.map(({ address }) => {
+      if (!address?.hash) {
+        return Promise.resolve(0);
+      }
+      return apiFetch<'old_api', WatchlistTokensResponse>('old_api', { queryParams: { address: address.hash, module: 'account', action: 'tokenlist' } })
+        .then((response) => {
+          if ('result' in response && Array.isArray(response.result)) {
+            return response.result.length;
+          }
+          return 0;
+        });
+    }));
+
+    return watchlistAddresses.map((item, index) => ({ ...item, tokens_count: watchlistTokens[index] }));
   });
   const queryClient = useQueryClient();
 
@@ -96,24 +92,30 @@ const WatchList: React.FC = () => {
     </AccountPageDescription>
   );
 
-  let content;
-  if (isLoading && !data) {
-    const loader = isMobile ? <SkeletonListAccount showFooterSlot/> : (
-      <>
-        <SkeletonTable columns={ [ '70%', '30%', '160px', '108px' ] }/>
-        <Skeleton height="44px" width="156px" marginTop={ 8 }/>
-      </>
-    );
+  if (isError) {
+    if (error.status === 403) {
+      throw new Error('Unverified email error', { cause: error });
+    }
+    return <DataFetchAlert/>;
+  }
 
-    content = (
-      <>
-        { description }
-        { loader }
-      </>
-    );
-  } else if (isError) {
-    content = <DataFetchAlert/>;
-  } else {
+  const content = (() => {
+    if (isLoading && !data) {
+      const loader = isMobile ? <SkeletonListAccount showFooterSlot/> : (
+        <>
+          <SkeletonTable columns={ [ '70%', '30%', '160px', '108px' ] }/>
+          <Skeleton height="44px" width="156px" marginTop={ 8 }/>
+        </>
+      );
+
+      return (
+        <>
+          { description }
+          { loader }
+        </>
+      );
+    }
+
     const list = isMobile ? (
       <Box>
         { data.map((item) => (
@@ -133,7 +135,7 @@ const WatchList: React.FC = () => {
       />
     );
 
-    content = (
+    return (
       <>
         { description }
         { Boolean(data?.length) && list }
@@ -142,7 +144,7 @@ const WatchList: React.FC = () => {
             size="lg"
             onClick={ addressModalProps.onOpen }
           >
-                Add address
+                  Add address
           </Button>
         </Box>
         <AddressModal
@@ -162,15 +164,13 @@ const WatchList: React.FC = () => {
         ) }
       </>
     );
-  }
+  })();
 
   return (
-    <Page>
-      <Box h="100%">
-        <PageTitle text="Watch list"/>
-        { content }
-      </Box>
-    </Page>
+    <>
+      <PageTitle title="Watch list"/>
+      { content }
+    </>
   );
 };
 

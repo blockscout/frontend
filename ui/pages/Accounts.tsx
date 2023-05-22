@@ -51,7 +51,7 @@ const Accounts = () => {
 
   return (
     <Page>
-      <PageTitle text="Top accounts" withTextAd/>
+      <PageTitle title="Top accounts" withTextAd/>
       <DataListDisplay
         isError={ isError }
         isLoading={ isLoading }

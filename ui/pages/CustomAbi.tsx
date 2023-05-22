@@ -12,7 +12,6 @@ import CustomAbiTable from 'ui/customAbi/CustomAbiTable/CustomAbiTable';
 import DeleteCustomAbiModal from 'ui/customAbi/DeleteCustomAbiModal';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import SkeletonListAccount from 'ui/shared/skeletons/SkeletonListAccount';
 import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
@@ -26,7 +25,7 @@ const CustomAbiPage: React.FC = () => {
   const [ customAbiModalData, setCustomAbiModalData ] = useState<CustomAbi>();
   const [ deleteModalData, setDeleteModalData ] = useState<CustomAbi>();
 
-  const { data, isLoading, isError } = useApiQuery('custom_abi');
+  const { data, isLoading, isError, error } = useApiQuery('custom_abi');
 
   const onEditClick = useCallback((data: CustomAbi) => {
     setCustomAbiModalData(data);
@@ -72,6 +71,9 @@ const CustomAbiPage: React.FC = () => {
     }
 
     if (isError) {
+      if (error.status === 403) {
+        throw new Error('Unverified email error', { cause: error });
+      }
       return <DataFetchAlert/>;
     }
 
@@ -113,12 +115,10 @@ const CustomAbiPage: React.FC = () => {
   })();
 
   return (
-    <Page>
-      <Box h="100%">
-        <PageTitle text="Custom ABI"/>
-        { content }
-      </Box>
-    </Page>
+    <>
+      <PageTitle title="Custom ABI"/>
+      { content }
+    </>
   );
 };
 

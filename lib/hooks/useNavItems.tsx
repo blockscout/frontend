@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
-import type { Route } from 'nextjs-routes';
 import React from 'react';
+
+import type { NavItemInternal, NavItem, NavGroupItem } from 'types/client/navigation-items';
 
 import appConfig from 'configs/app/config';
 import abiIcon from 'icons/ABI.svg';
@@ -26,28 +27,6 @@ import txnBatchIcon from 'icons/txn_batches.svg';
 import verifiedIcon from 'icons/verified.svg';
 import watchlistIcon from 'icons/watchlist.svg';
 import { rightLineArrow } from 'lib/html-entities';
-
-type NavItemCommon = {
-  text: string;
-  icon: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
-}
-
-type NavItemInternal = NavItemCommon & {
-  nextRoute: Route;
-  isActive?: boolean;
-  isNewUi?: boolean;
-}
-
-type NavItemExternal = NavItemCommon & {
-  url: string;
-}
-
-export type NavItem = NavItemInternal | NavItemExternal
-
-export type NavGroupItem = NavItemCommon & {
-  isActive?: boolean;
-  subItems: Array<NavItem> | Array<Array<NavItem>>;
-}
 
 interface ReturnType {
   mainNavItems: Array<NavItem | NavGroupItem>;
@@ -78,41 +57,38 @@ export default function useNavItems(): ReturnType {
       nextRoute: { pathname: '/accounts' as const },
       icon: topAccountsIcon,
       isActive: pathname === '/accounts',
-      isNewUi: true,
     };
     const blocks = {
       text: 'Blocks',
       nextRoute: { pathname: '/blocks' as const },
       icon: blocksIcon,
       isActive: pathname === '/blocks' || pathname === '/block/[height]',
-      isNewUi: true,
     };
     const txs = {
       text: 'Transactions',
       nextRoute: { pathname: '/txs' as const },
       icon: transactionsIcon,
       isActive: pathname === '/txs' || pathname === '/tx/[hash]',
-      isNewUi: true,
     };
     const verifiedContracts =
     // eslint-disable-next-line max-len
-     { text: 'Verified contracts', nextRoute: { pathname: '/verified-contracts' as const }, icon: verifiedIcon, isActive: pathname === '/verified-contracts', isNewUi: true };
+     { text: 'Verified contracts', nextRoute: { pathname: '/verified-contracts' as const }, icon: verifiedIcon, isActive: pathname === '/verified-contracts' };
 
     if (appConfig.L2.isL2Network) {
       blockchainNavItems = [
         [
           txs,
           // eslint-disable-next-line max-len
-          { text: `Deposits (L1${ rightLineArrow }L2)`, nextRoute: { pathname: '/l2-deposits' as const }, icon: depositsIcon, isActive: pathname === '/l2-deposits', isNewUi: true },
+          { text: `Deposits (L1${ rightLineArrow }L2)`, nextRoute: { pathname: '/l2-deposits' as const }, icon: depositsIcon, isActive: pathname === '/l2-deposits' },
           // eslint-disable-next-line max-len
-          { text: `Withdrawals (L2${ rightLineArrow }L1)`, nextRoute: { pathname: '/l2-withdrawals' as const }, icon: withdrawalsIcon, isActive: pathname === '/l2-withdrawals', isNewUi: true },
+          { text: `Withdrawals (L2${ rightLineArrow }L1)`, nextRoute: { pathname: '/l2-withdrawals' as const }, icon: withdrawalsIcon, isActive: pathname === '/l2-withdrawals' },
         ],
         [
           blocks,
           // eslint-disable-next-line max-len
-          { text: 'Txn batches', nextRoute: { pathname: '/l2-txn-batches' as const }, icon: txnBatchIcon, isActive: pathname === '/l2-txn-batches', isNewUi: true },
+          { text: 'Txn batches', nextRoute: { pathname: '/l2-txn-batches' as const }, icon: txnBatchIcon, isActive: pathname === '/l2-txn-batches' },
           // eslint-disable-next-line max-len
-          { text: 'Output roots', nextRoute: { pathname: '/l2-output-roots' as const }, icon: outputRootsIcon, isActive: pathname === '/l2-output-roots', isNewUi: true },
+          { text: 'Output roots', nextRoute: { pathname: '/l2-output-roots' as const }, icon: outputRootsIcon, isActive: pathname === '/l2-output-roots' },
         ],
         [
           topAccounts,
@@ -130,25 +106,22 @@ export default function useNavItems(): ReturnType {
           nextRoute: { pathname: '/withdrawals' as const },
           icon: withdrawalsIcon,
           isActive: pathname === '/withdrawals',
-          isNewUi: true,
         },
       ].filter(Boolean);
     }
 
-    const otherNavItems: Array<NavItem> = [
+    const apiNavItems: Array<NavItem> = [
       hasAPIDocs ? {
         text: 'REST API',
         nextRoute: { pathname: '/api-docs' as const },
         icon: apiDocsIcon,
         isActive: pathname === '/api-docs',
-        isNewUi: true,
       } : null,
       {
         text: 'GraphQL',
         nextRoute: { pathname: '/graphiql' as const },
         icon: graphQLIcon,
         isActive: pathname === '/graphiql',
-        isNewUi: true,
       },
       {
         text: 'RPC API',
@@ -167,7 +140,6 @@ export default function useNavItems(): ReturnType {
         text: 'Blockchain',
         icon: globeIcon,
         isActive: blockchainNavItems.flat().some(item => isInternalItem(item) && item.isActive),
-        isNewUi: true,
         subItems: blockchainNavItems,
       },
       {
@@ -175,24 +147,24 @@ export default function useNavItems(): ReturnType {
         nextRoute: { pathname: '/tokens' as const },
         icon: tokensIcon,
         isActive: pathname.startsWith('/token'),
-        isNewUi: true,
       },
       isMarketplaceAvailable ? {
         text: 'Apps',
         nextRoute: { pathname: '/apps' as const },
         icon: appsIcon,
         isActive: pathname.startsWith('/app'),
-        isNewUi: true,
       } : null,
-      { text: 'Charts & stats', nextRoute: { pathname: '/stats' as const }, icon: statsIcon, isActive: pathname === '/stats', isNewUi: true },
-      // there should be custom site sections like Stats, Faucet, More, etc but never an 'other'
-      // examples https://explorer-edgenet.polygon.technology/ and https://explorer.celo.org/
-      // at this stage custom menu items is under development, we will implement it later
-      otherNavItems.length > 0 ? {
+      { text: 'Charts & stats', nextRoute: { pathname: '/stats' as const }, icon: statsIcon, isActive: pathname === '/stats' },
+      {
+        text: 'API',
+        icon: apiDocsIcon,
+        isActive: apiNavItems.some(item => isInternalItem(item) && item.isActive),
+        subItems: apiNavItems,
+      },
+      appConfig.otherLinks.length > 0 ? {
         text: 'Other',
         icon: gearIcon,
-        isActive: otherNavItems.some(item => isInternalItem(item) && item.isActive),
-        subItems: otherNavItems,
+        subItems: appConfig.otherLinks,
       } : null,
     ].filter(Boolean) as Array<NavItem | NavGroupItem>;
 
@@ -202,42 +174,42 @@ export default function useNavItems(): ReturnType {
         nextRoute: { pathname: '/account/watchlist' as const },
         icon: watchlistIcon,
         isActive: pathname === '/account/watchlist',
-        isNewUi: true,
       },
       {
         text: 'Private tags',
         nextRoute: { pathname: '/account/tag_address' as const },
         icon: privateTagIcon,
         isActive: pathname === '/account/tag_address',
-        isNewUi: true,
       },
       {
         text: 'Public tags',
         nextRoute: { pathname: '/account/public_tags_request' as const },
         icon: publicTagIcon, isActive: pathname === '/account/public_tags_request',
-        isNewUi: true,
       },
       {
         text: 'API keys',
         nextRoute: { pathname: '/account/api_key' as const },
         icon: apiKeysIcon, isActive: pathname === '/account/api_key',
-        isNewUi: true,
       },
       {
         text: 'Custom ABI',
         nextRoute: { pathname: '/account/custom_abi' as const },
         icon: abiIcon,
         isActive: pathname === '/account/custom_abi',
-        isNewUi: true,
       },
-    ];
+      appConfig.contractInfoApi.endpoint && appConfig.adminServiceApi.endpoint && {
+        text: 'Verified addrs',
+        nextRoute: { pathname: '/account/verified_addresses' as const },
+        icon: verifiedIcon,
+        isActive: pathname === '/account/verified_addresses',
+      },
+    ].filter(Boolean);
 
     const profileItem = {
       text: 'My profile',
       nextRoute: { pathname: '/auth/profile' as const },
       icon: profileIcon,
       isActive: pathname === '/auth/profile',
-      isNewUi: true,
     };
 
     return { mainNavItems, accountNavItems, profileItem };

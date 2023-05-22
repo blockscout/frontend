@@ -1,3 +1,4 @@
+import type { TokenInfoApplication } from './account';
 import type { AddressParam } from './addressParams';
 
 export type TokenType = 'ERC-20' | 'ERC-721' | 'ERC-1155';
@@ -11,6 +12,7 @@ export interface TokenInfo<T extends TokenType = TokenType> {
   holders: string | null;
   exchange_rate: string | null;
   total_supply: string | null;
+  icon_url: string | null;
 }
 
 export interface TokenCounters {
@@ -57,3 +59,5 @@ export interface TokenInventoryResponse {
 export type TokenInventoryPagination = {
   unique_token: number;
 }
+
+export type TokenVerifiedInfo = Omit<TokenInfoApplication, 'id' | 'status'>;

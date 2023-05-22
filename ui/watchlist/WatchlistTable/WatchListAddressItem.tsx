@@ -14,14 +14,19 @@ import TokenLogo from 'ui/shared/TokenLogo';
 const WatchListAddressItem = ({ item }: {item: TWatchlistItem}) => {
   const infoItemsPaddingLeft = { base: 1, lg: 8 };
 
+  const nativeTokenData = React.useMemo(() => ({
+    address: appConfig.network.currency.address || '',
+    name: appConfig.network.currency.name || '',
+    icon_url: '',
+  }), [ ]);
+
   return (
     <VStack spacing={ 2 } align="stretch" fontWeight={ 500 }>
       <AddressSnippet address={ item.address }/>
       <Flex fontSize="sm" h={ 6 } pl={ infoItemsPaddingLeft } flexWrap="wrap" alignItems="center" rowGap={ 1 }>
         { appConfig.network.currency.address && (
           <TokenLogo
-            hash={ appConfig.network.currency.address }
-            name={ appConfig.network.name }
+            data={ nativeTokenData }
             boxSize={ 4 }
             borderRadius="sm"
             mr={ 2 }

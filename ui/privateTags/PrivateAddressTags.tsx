@@ -15,7 +15,7 @@ import AddressTagTable from './AddressTagTable/AddressTagTable';
 import DeletePrivateTagModal from './DeletePrivateTagModal';
 
 const PrivateAddressTags = () => {
-  const { data: addressTagsData, isError, isPlaceholderData } = useApiQuery('private_tags_address', {
+  const { data: addressTagsData, isError, error, isPlaceholderData, refetch } = useApiQuery('private_tags_address', {
     queryOptions: {
       refetchOnMount: false,
       placeholderData: Array(3).fill(PRIVATE_TAG_ADDRESS),
@@ -34,6 +34,10 @@ const PrivateAddressTags = () => {
     addressModalProps.onOpen();
   }, [ addressModalProps ]);
 
+  const onAddOrEditSuccess = useCallback(async() => {
+    await refetch();
+  }, [ refetch ]);
+
   const onAddressModalClose = useCallback(() => {
     setAddressModalData(undefined);
     addressModalProps.onClose();
@@ -50,6 +54,9 @@ const PrivateAddressTags = () => {
   }, [ deleteModalProps ]);
 
   if (isError) {
+    if (error.status === 403) {
+      throw new Error('Unverified email error', { cause: error });
+    }
     return <DataFetchAlert/>;
   }
 
@@ -91,7 +98,7 @@ const PrivateAddressTags = () => {
           </Button>
         </Skeleton>
       </Box>
-      <AddressModal { ...addressModalProps } onClose={ onAddressModalClose } data={ addressModalData }/>
+      <AddressModal { ...addressModalProps } onClose={ onAddressModalClose } data={ addressModalData } onSuccess={ onAddOrEditSuccess }/>
       { deleteModalData && (
         <DeletePrivateTagModal
           { ...deleteModalProps }

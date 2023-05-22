@@ -50,7 +50,6 @@ const CsvExport = () => {
 
   const addressHash = router.query.address?.toString() || '';
   const exportType = router.query.type?.toString() || '';
-  const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/address');
 
   const addressQuery = useApiQuery('address', {
     pathParams: { hash: addressHash },
@@ -58,6 +57,19 @@ const CsvExport = () => {
       enabled: Boolean(addressHash),
     },
   });
+
+  const backLink = React.useMemo(() => {
+    const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/address');
+
+    if (!hasGoBackLink) {
+      return;
+    }
+
+    return {
+      label: 'Back to address',
+      url: appProps.referrer,
+    };
+  }, [ appProps.referrer ]);
 
   if (!isCorrectExportType(exportType) || !addressHash || addressQuery.error?.status === 400) {
     throw Error('Not found', { cause: { status: 404 } });
@@ -78,9 +90,8 @@ const CsvExport = () => {
   return (
     <Page>
       <PageTitle
-        text="Export data to CSV file"
-        backLinkUrl={ hasGoBackLink ? appProps.referrer : undefined }
-        backLinkLabel="Back to address"
+        title="Export data to CSV file"
+        backLink={ backLink }
       />
       <Flex mb={ 10 } whiteSpace="pre-wrap" flexWrap="wrap">
         <span>Export { EXPORT_TYPES[exportType].text } for address </span>

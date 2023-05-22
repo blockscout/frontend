@@ -3,14 +3,14 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { UserInfo } from 'types/api/account';
-
 import starFilledIcon from 'icons/star_filled.svg';
 import starOutlineIcon from 'icons/star_outline.svg';
+import type { ResourceError } from 'lib/api/resources';
 import { resourceKey } from 'lib/api/resources';
 import { getResourceKey } from 'lib/api/useApiQuery';
-import useLoginUrl from 'lib/hooks/useLoginUrl';
 import usePreventFocusAfterModalClosing from 'lib/hooks/usePreventFocusAfterModalClosing';
+import useRedirectIfNotAuth from 'lib/hooks/useRedirectIfNotAuth';
+import useToast from 'lib/hooks/useToast';
 import WatchlistAddModal from 'ui/watchlist/AddressModal/AddressModal';
 import DeleteAddressModal from 'ui/watchlist/DeleteAddressModal';
 
@@ -25,18 +25,33 @@ const AddressFavoriteButton = ({ className, hash, watchListId }: Props) => {
   const deleteModalProps = useDisclosure();
   const queryClient = useQueryClient();
   const router = useRouter();
+  const toast = useToast();
 
-  const profileData = queryClient.getQueryData<UserInfo>([ resourceKey('user_info') ]);
-  const isAuth = Boolean(profileData);
-  const loginUrl = useLoginUrl();
+  const redirectIfNotAuth = useRedirectIfNotAuth();
+
+  const profileState = queryClient.getQueryState<unknown, ResourceError<{ message: string }>>([ resourceKey('user_info') ]);
 
   const handleClick = React.useCallback(() => {
-    if (!isAuth) {
-      window.location.assign(loginUrl);
+    if (profileState?.error?.status === 403) {
+      const isUnverifiedEmail = profileState.error.payload?.message.includes('Unverified email');
+      if (isUnverifiedEmail) {
+        toast({
+          position: 'top-right',
+          title: 'Error',
+          description: 'Unable to add address to watch list. Please go to the watch list page instead.',
+          status: 'error',
+          variant: 'subtle',
+          isClosable: true,
+        });
+        return;
+      }
+    }
+
+    if (redirectIfNotAuth()) {
       return;
     }
     watchListId ? deleteModalProps.onOpen() : addModalProps.onOpen();
-  }, [ addModalProps, deleteModalProps, watchListId, isAuth, loginUrl ]);
+  }, [ profileState, redirectIfNotAuth, watchListId, deleteModalProps, addModalProps, toast ]);
 
   const handleAddOrDeleteSuccess = React.useCallback(async() => {
     const queryKey = getResourceKey('address', { pathParams: { hash: router.query.hash?.toString() } });

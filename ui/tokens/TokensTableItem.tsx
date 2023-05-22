@@ -53,7 +53,7 @@ const TokensTableItem = ({
           </Text>
           <Box>
             <Flex alignItems="center">
-              <TokenLogo hash={ address } name={ name } boxSize={ 6 } mr={ 2 }/>
+              <TokenLogo data={ token } boxSize={ 6 } mr={ 2 }/>
               <AddressLink fontSize="sm" fontWeight="700" hash={ address } type="token" alias={ tokenString }/>
             </Flex>
             <Flex alignItems="center" width="136px" justifyContent="space-between" ml={ 8 } mt={ 2 }>

@@ -33,6 +33,8 @@ export function app(): CspDev.DirectiveDescriptor {
       appConfig.api.socket,
       appConfig.statsApi.endpoint,
       appConfig.visualizeApi.endpoint,
+      appConfig.contractInfoApi.endpoint,
+      appConfig.adminServiceApi.endpoint,
 
       // chain RPC server
       appConfig.network.rpcUrl,

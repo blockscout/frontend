@@ -47,7 +47,7 @@ const TokensTableItem = ({
       >
         <GridItem display="flex">
           <Flex overflow="hidden" mr={ 3 } alignItems="center">
-            <TokenLogo hash={ address } name={ name } boxSize={ 6 } mr={ 2 }/>
+            <TokenLogo data={ token } boxSize={ 6 } mr={ 2 }/>
             <AddressLink fontSize="sm" fontWeight="700" hash={ address } type="token" alias={ tokenString }/>
             <Tag flexShrink={ 0 } ml={ 3 }>{ type }</Tag>
           </Flex>

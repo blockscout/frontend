@@ -13,20 +13,20 @@ export interface SearchResultAddressOrContract {
   type: 'address' | 'contract';
   name: string | null;
   address: string;
-  url: string;
+  url?: string; // not used by the frontend, we build the url ourselves
 }
 
 export interface SearchResultBlock {
   type: 'block';
-  block_number: number;
+  block_number: number | string;
   block_hash: string;
-  url: string;
+  url?: string; // not used by the frontend, we build the url ourselves
 }
 
 export interface SearchResultTx {
   type: 'transaction';
   tx_hash: string;
-  url: string;
+  url?: string; // not used by the frontend, we build the url ourselves
 }
 
 export type SearchResultItem = SearchResultToken | SearchResultAddressOrContract | SearchResultBlock | SearchResultTx;
