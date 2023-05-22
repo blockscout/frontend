@@ -4,7 +4,7 @@ import React from 'react';
 
 import txIcon from 'icons/transactions.svg';
 
-const ErrorInvalidTxHash = () => {
+const AppErrorInvalidTxHash = () => {
   const textColor = useColorModeValue('gray.500', 'gray.400');
   const snippet = {
     borderColor: useColorModeValue('blackAlpha.300', 'whiteAlpha.300'),
@@ -54,4 +54,4 @@ const ErrorInvalidTxHash = () => {
   );
 };
 
-export default ErrorInvalidTxHash;
+export default AppErrorInvalidTxHash;

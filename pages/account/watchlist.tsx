@@ -4,6 +4,7 @@ import React from 'react';
 
 import getNetworkTitle from 'lib/networks/getNetworkTitle';
 import WatchList from 'ui/pages/Watchlist';
+import Page from 'ui/shared/Page/Page';
 
 const WatchListPage: NextPage = () => {
   const title = getNetworkTitle();
@@ -12,7 +13,9 @@ const WatchListPage: NextPage = () => {
       <Head>
         <title>{ title }</title>
       </Head>
-      <WatchList/>
+      <Page>
+        <WatchList/>
+      </Page>
     </>
   );
 };

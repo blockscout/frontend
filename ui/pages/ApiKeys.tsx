@@ -13,7 +13,6 @@ import ApiKeyTable from 'ui/apiKey/ApiKeyTable/ApiKeyTable';
 import DeleteApiKeyModal from 'ui/apiKey/DeleteApiKeyModal';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import SkeletonListAccount from 'ui/shared/skeletons/SkeletonListAccount';
 import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
@@ -29,7 +28,7 @@ const ApiKeysPage: React.FC = () => {
   const [ apiKeyModalData, setApiKeyModalData ] = useState<ApiKey>();
   const [ deleteModalData, setDeleteModalData ] = useState<ApiKey>();
 
-  const { data, isLoading, isError } = useApiQuery('api_keys');
+  const { data, isLoading, isError, error } = useApiQuery('api_keys');
 
   const onEditClick = useCallback((data: ApiKey) => {
     setApiKeyModalData(data);
@@ -76,6 +75,9 @@ const ApiKeysPage: React.FC = () => {
     }
 
     if (isError) {
+      if (error.status === 403) {
+        throw new Error('Unverified email error', { cause: error });
+      }
       return <DataFetchAlert/>;
     }
 
@@ -130,12 +132,10 @@ const ApiKeysPage: React.FC = () => {
   })();
 
   return (
-    <Page>
-      <Box h="100%">
-        <PageTitle title="API keys"/>
-        { content }
-      </Box>
-    </Page>
+    <>
+      <PageTitle title="API keys"/>
+      { content }
+    </>
   );
 };
 

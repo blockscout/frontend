@@ -9,7 +9,6 @@ import useToast from 'lib/hooks/useToast';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import PublicTagsData from 'ui/publicTags/PublicTagsData';
 import PublicTagsForm from 'ui/publicTags/PublicTagsForm/PublicTagsForm';
-import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 type TScreen = 'data' | 'form';
@@ -90,14 +89,14 @@ const PublicTagsComponent: React.FC = () => {
   };
 
   return (
-    <Page>
+    <>
       <PageTitle
         title={ header }
         backLink={ screen === 'form' ? backLink : undefined }
         display={{ base: 'block', lg: 'inline-flex' }}
       />
       { content }
-    </Page>
+    </>
   );
 };
 
