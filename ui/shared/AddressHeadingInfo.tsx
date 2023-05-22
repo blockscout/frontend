@@ -4,13 +4,13 @@ import React from 'react';
 import type { Address } from 'types/api/address';
 import type { TokenInfo } from 'types/api/token';
 
-import config from 'configs/app/config';
-import useIsMobile from 'lib/hooks/useIsMobile';
+import appConfig from 'configs/app/config';
 import AddressFavoriteButton from 'ui/address/details/AddressFavoriteButton';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
+import AddressActionsMenu from 'ui/shared/AddressActions/Menu';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 interface Props {
@@ -21,8 +21,6 @@ interface Props {
 }
 
 const AddressHeadingInfo = ({ address, token, isLinkDisabled, isLoading }: Props) => {
-  const isMobile = useIsMobile();
-
   return (
     <Flex alignItems="center">
       <AddressIcon address={ address } isLoading={ isLoading }/>
@@ -31,17 +29,18 @@ const AddressHeadingInfo = ({ address, token, isLinkDisabled, isLoading }: Props
         hash={ address.hash }
         ml={ 2 }
         fontFamily="heading"
+        fontSize="lg"
         fontWeight={ 500 }
-        truncation={ isMobile ? 'constant' : 'none' }
         isDisabled={ isLinkDisabled }
         isLoading={ isLoading }
       />
       <CopyToClipboard text={ address.hash } isLoading={ isLoading }/>
       { !isLoading && address.is_contract && token && <AddressAddToWallet ml={ 2 } token={ token }/> }
-      { !isLoading && !address.is_contract && config.isAccountSupported && (
+      { !isLoading && !address.is_contract && appConfig.isAccountSupported && (
         <AddressFavoriteButton hash={ address.hash } watchListId={ address.watchlist_address_id } ml={ 3 }/>
       ) }
       <AddressQrCode hash={ address.hash } ml={ 2 } isLoading={ isLoading }/>
+      { appConfig.isAccountSupported && <AddressActionsMenu isLoading={ isLoading }/> }
     </Flex>
   );
 };

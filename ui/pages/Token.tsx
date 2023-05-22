@@ -7,12 +7,14 @@ import type { SocketMessage } from 'lib/socket/types';
 import type { TokenInfo } from 'types/api/token';
 import type { RoutedTab } from 'ui/shared/Tabs/types';
 
+import appConfig from 'configs/app/config';
 import iconSuccess from 'icons/status/success.svg';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/appContext';
 import useContractTabs from 'lib/hooks/useContractTabs';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
+import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import trimTokenSymbol from 'lib/token/trimTokenSymbol';
@@ -20,7 +22,8 @@ import * as addressStubs from 'stubs/address';
 import * as tokenStubs from 'stubs/token';
 import AddressContract from 'ui/address/AddressContract';
 import TextAd from 'ui/shared/ad/TextAd';
-import Tag from 'ui/shared/chakra/Tag';
+import EntityTags from 'ui/shared/EntityTags';
+import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
 import Pagination from 'ui/shared/Pagination';
@@ -32,6 +35,7 @@ import TokenDetails from 'ui/token/TokenDetails';
 import TokenHolders from 'ui/token/TokenHolders/TokenHolders';
 import TokenInventory from 'ui/token/TokenInventory';
 import TokenTransfer from 'ui/token/TokenTransfer/TokenTransfer';
+import TokenVerifiedInfo from 'ui/token/TokenVerifiedInfo';
 
 export type TokenTabs = 'token_transfers' | 'holders' | 'inventory';
 
@@ -43,11 +47,9 @@ const TokenPageContent = () => {
 
   const appProps = useAppContext();
 
-  const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/tokens');
-
   const scrollRef = React.useRef<HTMLDivElement>(null);
 
-  const hashString = router.query.hash?.toString();
+  const hashString = getQueryParamString(router.query.hash);
 
   const queryClient = useQueryClient();
 
@@ -147,6 +149,12 @@ const TokenPageContent = () => {
     },
   });
 
+  const isVerifiedInfoEnabled = Boolean(appConfig.contractInfoApi.endpoint);
+  const verifiedInfoQuery = useApiQuery('token_verified_info', {
+    pathParams: { hash: hashString, chainId: appConfig.network.id },
+    queryOptions: { enabled: Boolean(tokenQuery.data) && isVerifiedInfoEnabled },
+  });
+
   const contractTabs = useContractTabs(contractQuery.data);
 
   const tabs: Array<RoutedTab> = [
@@ -207,20 +215,52 @@ const TokenPageContent = () => {
     };
   }, [ isMobile ]);
 
+  const backLink = React.useMemo(() => {
+    const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/tokens');
+
+    if (!hasGoBackLink) {
+      return;
+    }
+
+    return {
+      label: 'Back to tokens list',
+      url: appProps.referrer,
+    };
+  }, [ appProps.referrer ]);
+
+  const tags = (
+    <EntityTags
+      data={ contractQuery.data }
+      isLoading={ tokenQuery.isPlaceholderData || contractQuery.isPlaceholderData }
+      tagsBefore={ [
+        tokenQuery.data ? { label: tokenQuery.data?.type, display_name: tokenQuery.data?.type } : undefined,
+      ] }
+      contentAfter={
+        <NetworkExplorers type="token" pathParam={ hashString } ml="auto" hideText={ isMobile }/>
+      }
+      flexGrow={ 1 }
+    />
+  );
+
   return (
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
+        title={ `${ tokenQuery.data?.name || 'Unnamed' }${ tokenSymbolText } token` }
         isLoading={ tokenQuery.isPlaceholderData }
-        text={ `${ tokenQuery.data?.name || 'Unnamed' }${ tokenSymbolText } token` }
-        backLinkUrl={ hasGoBackLink ? appProps.referrer : undefined }
-        backLinkLabel="Back to tokens list"
-        additionalsLeft={ (
-          <TokenLogo hash={ tokenQuery.data?.address } name={ tokenQuery.data?.name } boxSize={ 6 } isLoading={ tokenQuery.isPlaceholderData }/>
+        backLink={ backLink }
+        beforeTitle={ (
+          <TokenLogo data={ tokenQuery.data } boxSize={ 6 } isLoading={ tokenQuery.isPlaceholderData } display="inline-block" mr={ 2 }/>
         ) }
-        additionalsRight={ <Tag isLoading={ tokenQuery.isPlaceholderData }>{ tokenQuery.data?.type }</Tag> }
+        afterTitle={
+          verifiedInfoQuery.data?.tokenAddress ?
+            <Icon as={ iconSuccess } color="green.500" boxSize={ 4 } verticalAlign="top"/> :
+            <Box boxSize={ 4 } display="inline-block"/>
+        }
+        contentAfter={ tags }
       />
       <TokenContractInfo tokenQuery={ tokenQuery } contractQuery={ contractQuery }/>
+      <TokenVerifiedInfo verifiedInfoQuery={ verifiedInfoQuery } isVerifiedInfoEnabled={ isVerifiedInfoEnabled }/>
       <TokenDetails tokenQuery={ tokenQuery }/>
       { /* should stay before tabs to scroll up with pagination */ }
       <Box ref={ scrollRef }></Box>

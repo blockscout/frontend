@@ -9,7 +9,7 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 const Graph = () => {
   return (
     <Page>
-      <PageTitle text="Charts"/>
+      <PageTitle title="Charts"/>
       <Heading as="h2" size="sm" fontWeight="500" mb={ 3 }>Ethereum Daily Transactions & ERC-20 Token Transfer Chart</Heading>
       <Box w="100%" h="400px">
         <EthereumChart/>

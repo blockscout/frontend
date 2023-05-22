@@ -27,11 +27,17 @@ const dailyTxsIndicator: TChainIndicator<'homepage_chart_txs'> = {
   },
 };
 
+const nativeTokenData = {
+  address: appConfig.network.currency.address || '',
+  name: appConfig.network.currency.name || '',
+  icon_url: '',
+};
+
 const coinPriceIndicator: TChainIndicator<'homepage_chart_market'> = {
   id: 'coin_price',
   title: `${ appConfig.network.currency.symbol } price`,
   value: (stats) => '$' + Number(stats.coin_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }),
-  icon: <TokenLogo hash={ appConfig.network.currency.address || '' } name={ appConfig.network.currency.name } boxSize={ 6 }/>,
+  icon: <TokenLogo data={ nativeTokenData } boxSize={ 6 }/>,
   hint: `${ appConfig.network.currency.symbol } token daily price in USD.`,
   api: {
     resourceName: 'homepage_chart_market',

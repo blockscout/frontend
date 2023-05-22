@@ -1,4 +1,4 @@
-import { Flex, Skeleton, Tag, Box, Icon } from '@chakra-ui/react';
+import { Skeleton, Box, Icon } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -10,6 +10,7 @@ import iconSuccess from 'icons/status/success.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/appContext';
 import useContractTabs from 'lib/hooks/useContractTabs';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import AddressBlocksValidated from 'ui/address/AddressBlocksValidated';
 import AddressCoinBalance from 'ui/address/AddressCoinBalance';
@@ -22,6 +23,8 @@ import AddressTokenTransfers from 'ui/address/AddressTokenTransfers';
 import AddressTxs from 'ui/address/AddressTxs';
 import AddressWithdrawals from 'ui/address/AddressWithdrawals';
 import TextAd from 'ui/shared/ad/TextAd';
+import EntityTags from 'ui/shared/EntityTags';
+import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import SkeletonTabs from 'ui/shared/skeletons/SkeletonTabs';
@@ -37,10 +40,8 @@ const TOKEN_TABS = Object.values(tokenTabsByType);
 
 const AddressPageContent = () => {
   const router = useRouter();
-
+  const isMobile = useIsMobile();
   const appProps = useAppContext();
-
-  const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/accounts');
 
   const tabsScrollRef = React.useRef<HTMLDivElement>(null);
   const hash = getQueryParamString(router.query.hash);
@@ -49,17 +50,6 @@ const AddressPageContent = () => {
     pathParams: { hash },
     queryOptions: { enabled: Boolean(hash) },
   });
-
-  const tags = [
-    addressQuery.data?.is_contract ? { label: 'contract', display_name: 'Contract' } : { label: 'eoa', display_name: 'EOA' },
-    addressQuery.data?.implementation_address ? { label: 'proxy', display_name: 'Proxy' } : undefined,
-    addressQuery.data?.token ? { label: 'token', display_name: 'Token' } : undefined,
-    ...(addressQuery.data?.private_tags || []),
-    ...(addressQuery.data?.public_tags || []),
-    ...(addressQuery.data?.watchlist_names || []),
-  ]
-    .filter(Boolean)
-    .map((tag) => <Tag key={ tag.label }>{ tag.display_name }</Tag>);
 
   const contractTabs = useContractTabs(addressQuery.data);
 
@@ -99,9 +89,35 @@ const AddressPageContent = () => {
     ].filter(Boolean);
   }, [ addressQuery.data, contractTabs, hash ]);
 
-  const tagsNode = tags.length > 0 ? <Flex columnGap={ 2 }>{ tags }</Flex> : null;
+  const tags = (
+    <EntityTags
+      data={ addressQuery.data }
+      isLoading={ addressQuery.isPlaceholderData }
+      tagsBefore={ [
+        addressQuery.data?.is_contract ? { label: 'contract', display_name: 'Contract' } : { label: 'eoa', display_name: 'EOA' },
+        addressQuery.data?.implementation_address ? { label: 'proxy', display_name: 'Proxy' } : undefined,
+        addressQuery.data?.token ? { label: 'token', display_name: 'Token' } : undefined,
+      ] }
+      contentAfter={
+        <NetworkExplorers type="address" pathParam={ hash } ml="auto" hideText={ isMobile }/>
+      }
+    />
+  );
 
   const content = addressQuery.isError ? null : <RoutedTabs tabs={ tabs } tabListProps={{ mt: 8 }}/>;
+
+  const backLink = React.useMemo(() => {
+    const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/accounts');
+
+    if (!hasGoBackLink) {
+      return;
+    }
+
+    return {
+      label: 'Back to top accounts list',
+      url: appProps.referrer,
+    };
+  }, [ appProps.referrer ]);
 
   return (
     <Page>
@@ -110,10 +126,9 @@ const AddressPageContent = () => {
         <Skeleton h={ 10 } w="260px" mb={ 6 }/>
       ) : (
         <PageTitle
-          text={ `${ addressQuery.data?.is_contract ? 'Contract' : 'Address' } details` }
-          additionalsRight={ tagsNode }
-          backLinkUrl={ hasGoBackLink ? appProps.referrer : undefined }
-          backLinkLabel="Back to top accounts list"
+          title={ `${ addressQuery.data?.is_contract ? 'Contract' : 'Address' } details` }
+          backLink={ backLink }
+          contentAfter={ tags }
         />
       ) }
       <AddressDetails addressQuery={ addressQuery } scrollRef={ tabsScrollRef }/>

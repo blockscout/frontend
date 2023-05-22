@@ -31,6 +31,7 @@ export const mintToken: TxStateChange = {
     symbol: 'nMOONBIRD',
     total_supply: '10645',
     type: 'ERC-721',
+    icon_url: null,
   },
   type: 'token',
 };
@@ -66,6 +67,7 @@ export const receiveMintedToken: TxStateChange = {
     symbol: 'nMOONBIRD',
     total_supply: '10645',
     type: 'ERC-721',
+    icon_url: null,
   },
   type: 'token',
 };

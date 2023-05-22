@@ -22,7 +22,7 @@ const ERC721TokensListItem = ({ token, value }: Props) => {
   return (
     <ListItemMobile rowGap={ 2 }>
       <Flex alignItems="center" width="100%">
-        <TokenLogo hash={ token.address } name={ token.name } boxSize={ 6 } mr={ 2 }/>
+        <TokenLogo data={ token } boxSize={ 6 } mr={ 2 }/>
         <AddressLink fontWeight="700" hash={ hash } tokenHash={ token.address } type="address_token" alias={ tokenString }/>
       </Flex>
       <Flex alignItems="center" pl={ 8 }>

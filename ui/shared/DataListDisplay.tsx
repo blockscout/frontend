@@ -68,7 +68,7 @@ const DataListDisplay = (props: Props) => {
   }
 
   if (!props.items?.length) {
-    return <Text as="span">{ props.emptyText }</Text>;
+    return props.emptyText ? <Text as="span">{ props.emptyText }</Text> : null;
   }
 
   return (

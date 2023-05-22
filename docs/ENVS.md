@@ -104,7 +104,7 @@ For each application, you need to specify the `MarketplaceCategoryId` to which i
 | --- | --- | --- | --- | --- | --- |
 | title | `string` | Displayed name of the explorer | yes | - | `Anyblock` |
 | baseUrl | `string` | Base url of the explorer | yes | - | `https://explorer.anyblock.tools` |
-| paths | `Record<'tx' \| 'block' \| 'address', string>` | Map of explorer entities and their paths | yes | - | `{'tx':'/ethereum/poa/core/tx'}` |
+| paths | `Record<'tx' \| 'block' \| 'address' \| 'token', string>` | Map of explorer entities and their paths | yes | - | `{'tx':'/ethereum/poa/core/tx'}` |
 
 *Note* The url of an entity will be constructed as `<baseUrl><paths[<entity-type>]><entity-id>`, e.g `https://explorer.anyblock.tools/ethereum/poa/core/tx/<tx-id>`
 
@@ -129,6 +129,8 @@ For each application, you need to specify the `MarketplaceCategoryId` to which i
 | NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL | `ws \| wss` | Main API websocket protocol | - | `wss` | `ws` |
 | NEXT_PUBLIC_STATS_API_HOST | `string` | Stats API endpoint url | - | - | `https://my-host.com` |
 | NEXT_PUBLIC_VISUALIZE_API_HOST | `string` | Visualize API endpoint url | - | - | `https://my-host.com` |
+| NEXT_PUBLIC_CONTRACT_INFO_API_HOST | `string` | Contract Info API endpoint url | - | - | `https://my-host.com` |
+| NEXT_PUBLIC_ADMIN_SERVICE_API_HOST | `string` | Admin Service API endpoint url | - | - | `https://my-host.com` |
 
 
 ## External services configuration

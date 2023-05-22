@@ -9,6 +9,7 @@ export const tokenInfo: TokenInfo = {
   symbol: 'ARIA',
   type: 'ERC-20',
   total_supply: '1235',
+  icon_url: null,
 };
 
 export const tokenCounters: TokenCounters = {
@@ -25,6 +26,7 @@ export const tokenInfoERC20a: TokenInfo = {
   symbol: 'HyFi',
   total_supply: '369000000000000000000000000',
   type: 'ERC-20',
+  icon_url: null,
 };
 
 export const tokenInfoERC20b: TokenInfo = {
@@ -36,6 +38,7 @@ export const tokenInfoERC20b: TokenInfo = {
   symbol: 'USDC',
   total_supply: '900000000000000000000000000',
   type: 'ERC-20',
+  icon_url: null,
 };
 
 export const tokenInfoERC20c: TokenInfo = {
@@ -47,6 +50,7 @@ export const tokenInfoERC20c: TokenInfo = {
   symbol: 'ETH',
   total_supply: '1000000000000000000000000',
   type: 'ERC-20',
+  icon_url: null,
 };
 
 export const tokenInfoERC20d: TokenInfo = {
@@ -58,6 +62,7 @@ export const tokenInfoERC20d: TokenInfo = {
   symbol: 'ZETA',
   total_supply: '2100000000000000000000000000',
   type: 'ERC-20',
+  icon_url: null,
 };
 
 export const tokenInfoERC20LongSymbol: TokenInfo = {
@@ -69,6 +74,7 @@ export const tokenInfoERC20LongSymbol: TokenInfo = {
   symbol: 'ipfs://QmUpFUfVKDCWeZQk5pvDFUxnpQP9N6eLSHhNUy49T1JVtY',
   total_supply: '2100000000000000000000000000',
   type: 'ERC-20',
+  icon_url: null,
 };
 
 export const tokenInfoERC721a: TokenInfo = {
@@ -80,6 +86,7 @@ export const tokenInfoERC721a: TokenInfo = {
   symbol: 'HYFI_ATHENA',
   total_supply: '105',
   type: 'ERC-721',
+  icon_url: null,
 };
 
 export const tokenInfoERC721b: TokenInfo = {
@@ -91,6 +98,7 @@ export const tokenInfoERC721b: TokenInfo = {
   symbol: 'WOWG',
   total_supply: null,
   type: 'ERC-721',
+  icon_url: null,
 };
 
 export const tokenInfoERC721c: TokenInfo = {
@@ -102,6 +110,7 @@ export const tokenInfoERC721c: TokenInfo = {
   symbol: 'PUMA',
   total_supply: null,
   type: 'ERC-721',
+  icon_url: null,
 };
 
 export const tokenInfoERC721LongSymbol: TokenInfo = {
@@ -113,6 +122,7 @@ export const tokenInfoERC721LongSymbol: TokenInfo = {
   symbol: 'ipfs://QmUpFUfVKDCWeZQk5pvDFUxnpQP9N6eLSHhNUy49T1JVtY',
   total_supply: null,
   type: 'ERC-721',
+  icon_url: null,
 };
 
 export const tokenInfoERC1155a: TokenInfo = {
@@ -124,6 +134,7 @@ export const tokenInfoERC1155a: TokenInfo = {
   symbol: 'HYFI_MEMBERSHIP',
   total_supply: '482',
   type: 'ERC-1155',
+  icon_url: null,
 };
 
 export const tokenInfoERC1155b: TokenInfo = {
@@ -135,6 +146,7 @@ export const tokenInfoERC1155b: TokenInfo = {
   symbol: 'WVC',
   total_supply: '4943',
   type: 'ERC-1155',
+  icon_url: null,
 };
 
 export const tokenInfoERC1155WithoutName: TokenInfo = {
@@ -146,4 +158,5 @@ export const tokenInfoERC1155WithoutName: TokenInfo = {
   symbol: null,
   total_supply: '482',
   type: 'ERC-1155',
+  icon_url: null,
 };
