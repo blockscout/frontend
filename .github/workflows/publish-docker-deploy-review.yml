@@ -5,14 +5,6 @@ on:
   # push:
   workflow_dispatch:
 
-env:
-  K8S_LOCAL_PORT: ${{ secrets.K8S_LOCAL_PORT }}
-  K8S_HOST: ${{ secrets.K8S_HOST }}
-  BASTION_HOST: ${{ secrets.BASTION_HOST }}
-  K8S_PORT: ${{ secrets.K8S_PORT }}
-  USERNAME: ${{ secrets.USERNAME }}
-  BASTION_SSH_KEY: ${{secrets.BASTION_SSH_KEY}}
-
 jobs:
   push_to_registry:
     name: Push Docker image to registry
@@ -66,14 +58,11 @@ jobs:
   deploy_review:
     name: Deploy review
     needs: push_to_registry
-    uses: blockscout/blockscout-ci-cd/.github/workflows/deploy.yaml@master
+    uses: blockscout/blockscout-ci-cd/.github/workflows/deploy_helmfile.yaml@master
     with:
-      env_vars: VALUES_DIR=deploy/values/review,APP_NAME=bs-stack,DOCKER_IMAGE=prerelease-$GITHUB_REF_NAME_SLUG,K8S_DOMAIN=blockscout-main.test.aws-k8s.blockscout.com
+      appName: review-$GITHUB_REF_NAME_SLUG
       globalEnv: review
-      appNamespace: review-front-$GITHUB_REF_NAME_SLUG
-      blockscoutIngressHost: review-front
-      frontendIngressHost: review-front
-      frontendImage: ghcr.io/blockscout/frontend:prerelease-$GITHUB_REF_NAME_SLUG
-      gethIngressHost: review-front-geth
-      scVerifierIngressHost: review-front-sc-verifier
+      helmfileDir: deploy
+      kubeConfigSecret: ci/data/dev/kubeconfig/k8s-dev
+      vaultRole: ci-dev
     secrets: inherit
