@@ -8,7 +8,6 @@ type NavItemCommon = {
 export type NavItemInternal = NavItemCommon & {
   nextRoute: Route;
   isActive?: boolean;
-  isNewUi?: boolean;
 }
 
 export type NavItemExternal = NavItemCommon & {

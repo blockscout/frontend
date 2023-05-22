@@ -21,26 +21,18 @@ type Props = {
 const NavLink = ({ item, isCollapsed, px, className }: Props) => {
   const isMobile = useIsMobile();
   const colors = useColors();
+
   const isExpanded = isCollapsed === false;
+  const isInternalLink = isInternalItem(item);
 
-  const styleProps = useNavLinkStyleProps({ isCollapsed, isExpanded, isActive: isInternalItem(item) && item.isActive });
-
+  const styleProps = useNavLinkStyleProps({ isCollapsed, isExpanded, isActive: isInternalLink && item.isActive });
   const isXLScreen = useBreakpointValue({ base: false, xl: true });
-
-  let href: string| undefined;
-
-  const isInternal = isInternalItem(item);
-
-  if (isInternal) {
-    href = !item.isNewUi ? route(item.nextRoute) : undefined;
-  } else {
-    href = item.url;
-  }
+  const href = isInternalLink ? route(item.nextRoute) : item.url;
 
   const content = (
     <Link
       href={ href }
-      target={ isInternal ? '_self' : '_blank' }
+      target={ isInternalLink ? '_self' : '_blank' }
       { ...styleProps.itemProps }
       w={{ base: '100%', lg: isExpanded ? '100%' : '60px', xl: isCollapsed ? '60px' : '100%' }}
       display="flex"
@@ -55,7 +47,7 @@ const NavLink = ({ item, isCollapsed, px, className }: Props) => {
         placement="right"
         variant="nav"
         gutter={ 20 }
-        color={ isInternalItem(item) && item.isActive ? colors.text.active : colors.text.hover }
+        color={ isInternalLink && item.isActive ? colors.text.active : colors.text.hover }
       >
         <HStack spacing={ 3 } overflow="hidden">
           { item.icon && <Icon as={ item.icon } boxSize="30px"/> }
@@ -69,9 +61,7 @@ const NavLink = ({ item, isCollapsed, px, className }: Props) => {
 
   return (
     <Box as="li" listStyleType="none" w="100%" className={ className }>
-      { /* why not NextLink in all cases? since prev UI and new one are hosting in the same domain and global routing is managed by nginx */ }
-      { /* we have to hard reload page on every transition between urls from different part of the app */ }
-      { isInternalItem(item) && item.isNewUi ? (
+      { isInternalLink ? (
         <NextLink href={ item.nextRoute } passHref legacyBehavior>
           { content }
         </NextLink>
