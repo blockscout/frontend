@@ -10,6 +10,8 @@ helmDefaults:
 repositories:
   - name: blockscout-ci-cd
     url: https://blockscout.github.io/blockscout-ci-cd
+  - name: bedag
+    url: https://bedag.github.io/helm-charts
 
 releases:
   - name: bs-stack
@@ -30,6 +32,20 @@ releases:
     - values/l2-optimism-goerli/values.yaml
     - global:
         env: "optimism-goerli"
+  - name: reg-secret
+    chart: bedag/raw
+    namespace: review-l2-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}
+    labels:
+      app: review-l2-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}
+    values:
+      - resources:
+        - apiVersion: v1
+          data:
+            .dockerconfigjson: ref+vault://deployment-values/blockscout/common?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/dockerRegistryCreds
+          kind: Secret
+          metadata:
+            name: regcred
+          type: kubernetes.io/dockerconfigjson
   - name: bs-stack
     chart: blockscout-ci-cd/blockscout-stack
     namespace: review-l2-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}
