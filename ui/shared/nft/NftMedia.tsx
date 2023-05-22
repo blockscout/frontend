@@ -1,4 +1,5 @@
 import { AspectRatio, chakra, Skeleton } from '@chakra-ui/react';
+import type { StaticRoute } from 'nextjs-routes';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
@@ -35,7 +36,7 @@ const NftMedia = ({ imageUrl, animationUrl, className, isLoading }: Props) => {
       return;
     }
 
-    const url = route({ pathname: '/api/media-type', query: { url: animationUrl } });
+    const url = route({ pathname: '/node-api/media-type' as StaticRoute<'/api/media-type'>['pathname'], query: { url: animationUrl } });
     fetch(url)
       .then((response) => response.json())
       .then((_data) => {

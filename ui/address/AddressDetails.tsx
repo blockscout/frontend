@@ -1,4 +1,4 @@
-import { Box, Flex, Text, Icon, Grid } from '@chakra-ui/react';
+import { Box, Text, Icon, Grid } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { route } from 'nextjs-routes';
@@ -6,7 +6,6 @@ import React from 'react';
 
 import type { Address as TAddress } from 'types/api/address';
 
-import appConfig from 'configs/app/config';
 import blockIcon from 'icons/block.svg';
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
@@ -18,7 +17,6 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
 
 import AddressBalance from './details/AddressBalance';
@@ -83,21 +81,11 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
     return <AddressDetailsSkeleton/>;
   }
 
-  const explorers = appConfig.network.explorers.filter(({ paths }) => paths.address);
   const data = addressQuery.isError ? errorData : addressQuery.data;
 
   return (
     <Box>
       <AddressHeadingInfo address={ data } token={ data.token } isLinkDisabled/>
-      { explorers.length > 0 && (
-        <Flex mt={ 8 } columnGap={ 4 } flexWrap="wrap">
-          <Text fontSize="sm">Verify with other explorers</Text>
-          { explorers.map((explorer) => {
-            const url = new URL(explorer.paths.address + '/' + addressHash, explorer.baseUrl);
-            return <LinkExternal key={ explorer.baseUrl } href={ url.toString() }>{ explorer.title }</LinkExternal>;
-          }) }
-        </Flex>
-      ) }
       <Grid
         mt={ 8 }
         columnGap={ 8 }

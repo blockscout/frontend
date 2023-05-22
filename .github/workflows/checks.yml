@@ -1,5 +1,6 @@
 name: Checks
 on:
+  workflow_dispatch:
   pull_request:
   push:
     branches:
@@ -9,6 +10,7 @@ jobs:
   lint:
     name: ESLint
     runs-on: ubuntu-latest
+    if: "!contains(github.event.pull_request.labels.*.name, 'WIP')"
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -30,6 +32,7 @@ jobs:
   type_check:
     name: TypeScript
     runs-on: ubuntu-latest
+    if: "!contains(github.event.pull_request.labels.*.name, 'WIP')"
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3

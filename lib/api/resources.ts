@@ -1,4 +1,15 @@
-import type { UserInfo, CustomAbis, PublicTags, AddressTags, TransactionTags, ApiKeys, WatchlistAddress } from 'types/api/account';
+import type {
+  UserInfo,
+  CustomAbis,
+  PublicTags,
+  AddressTags,
+  TransactionTags,
+  ApiKeys,
+  WatchlistAddress,
+  VerifiedAddressResponse,
+  TokenInfoApplicationConfig,
+  TokenInfoApplications,
+} from 'types/api/account';
 import type {
   Address,
   AddressCounters,
@@ -36,14 +47,15 @@ import type {
   TokenInventoryResponse,
   TokenInstance,
   TokenInstanceTransfersCount,
+  TokenVerifiedInfo,
 } from 'types/api/token';
 import type { TokensResponse, TokensFilters, TokenInstanceTransferResponse } from 'types/api/tokens';
 import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
-import type { TransactionsResponseValidated, TransactionsResponsePending, Transaction } from 'types/api/transaction';
+import type { TransactionsResponseValidated, TransactionsResponsePending, Transaction, TransactionsResponseWatchlist } from 'types/api/transaction';
 import type { TTxsFilters } from 'types/api/txsFilters';
 import type { TxStateChanges } from 'types/api/txStateChanges';
 import type { VisualizedContract } from 'types/api/visualization';
-import type { WithdrawalsResponse } from 'types/api/withdrawals';
+import type { WithdrawalsResponse, WithdrawalsCounters } from 'types/api/withdrawals';
 import type { ArrayElement } from 'types/utils';
 
 import appConfig from 'configs/app/config';
@@ -89,6 +101,35 @@ export const RESOURCES = {
   api_keys: {
     path: '/api/account/v1/user/api_keys/:id?',
     pathParams: [ 'id' as const ],
+  },
+
+  // ACCOUNT: ADDRESS VERIFICATION & TOKEN INFO
+  address_verification: {
+    path: '/api/v1/chains/:chainId/verified-addresses:type',
+    pathParams: [ 'chainId' as const, 'type' as const ],
+    endpoint: appConfig.contractInfoApi.endpoint,
+    basePath: appConfig.contractInfoApi.basePath,
+  },
+
+  verified_addresses: {
+    path: '/api/v1/chains/:chainId/verified-addresses',
+    pathParams: [ 'chainId' as const ],
+    endpoint: appConfig.contractInfoApi.endpoint,
+    basePath: appConfig.contractInfoApi.basePath,
+  },
+
+  token_info_applications_config: {
+    path: '/api/v1/chains/:chainId/token-info-submissions/selectors',
+    pathParams: [ 'chainId' as const ],
+    endpoint: appConfig.adminServiceApi.endpoint,
+    basePath: appConfig.adminServiceApi.basePath,
+  },
+
+  token_info_applications: {
+    path: '/api/v1/chains/:chainId/token-info-submissions/:id?',
+    pathParams: [ 'chainId' as const, 'id' as const ],
+    endpoint: appConfig.adminServiceApi.endpoint,
+    basePath: appConfig.adminServiceApi.basePath,
   },
 
   // STATS
@@ -148,6 +189,11 @@ export const RESOURCES = {
     paginationFields: [ 'filter' as const, 'hash' as const, 'inserted_at' as const ],
     filterFields: [ 'filter' as const, 'type' as const, 'method' as const ],
   },
+  txs_watchlist: {
+    path: '/api/v2/transactions/watchlist',
+    paginationFields: [ 'filter' as const, 'hash' as const, 'inserted_at' as const ],
+    filterFields: [ ],
+  },
   tx: {
     path: '/api/v2/transactions/:hash',
     pathParams: [ 'hash' as const ],
@@ -182,6 +228,9 @@ export const RESOURCES = {
     path: '/api/v2/withdrawals',
     paginationFields: [ 'index' as const, 'items_count' as const ],
     filterFields: [],
+  },
+  withdrawals_counters: {
+    path: '/api/v2/withdrawals/counters',
   },
 
   // ADDRESSES
@@ -304,6 +353,12 @@ export const RESOURCES = {
     path: '/api/v2/tokens/:hash',
     pathParams: [ 'hash' as const ],
   },
+  token_verified_info: {
+    path: '/api/v1/chains/:chainId/token-infos/:hash',
+    pathParams: [ 'chainId' as const, 'hash' as const ],
+    endpoint: appConfig.contractInfoApi.endpoint,
+    basePath: appConfig.contractInfoApi.basePath,
+  },
   token_counters: {
     path: '/api/v2/tokens/:hash/counters',
     pathParams: [ 'hash' as const ],
@@ -372,6 +427,9 @@ export const RESOURCES = {
   },
   homepage_txs: {
     path: '/api/v2/main-page/transactions',
+  },
+  homepage_txs_watchlist: {
+    path: '/api/v2/main-page/transactions/watchlist',
   },
   homepage_indexing_status: {
     path: '/api/v2/main-page/indexing-status',
@@ -493,7 +551,7 @@ export interface ResourceError<T = unknown> {
 export type ResourceErrorAccount<T> = ResourceError<{ errors: T }>
 
 export type PaginatedResources = 'blocks' | 'block_txs' |
-'txs_validated' | 'txs_pending' |
+'txs_validated' | 'txs_pending' | 'txs_watchlist' |
 'tx_internal_txs' | 'tx_logs' | 'tx_token_transfers' |
 'addresses' |
 'address_txs' | 'address_internal_txs' | 'address_token_transfers' | 'address_blocks_validated' | 'address_coin_balance' |
@@ -516,11 +574,15 @@ Q extends 'private_tags_address' ? AddressTags :
 Q extends 'private_tags_tx' ? TransactionTags :
 Q extends 'api_keys' ? ApiKeys :
 Q extends 'watchlist' ? Array<WatchlistAddress> :
+Q extends 'verified_addresses' ? VerifiedAddressResponse :
+Q extends 'token_info_applications_config' ? TokenInfoApplicationConfig :
+Q extends 'token_info_applications' ? TokenInfoApplications :
 Q extends 'homepage_stats' ? HomeStats :
 Q extends 'homepage_chart_txs' ? ChartTransactionResponse :
 Q extends 'homepage_chart_market' ? ChartMarketResponse :
 Q extends 'homepage_blocks' ? Array<Block> :
 Q extends 'homepage_txs' ? Array<Transaction> :
+Q extends 'homepage_txs_watchlist' ? Array<Transaction> :
 Q extends 'homepage_deposits' ? Array<L2DepositsItem> :
 Q extends 'homepage_indexing_status' ? IndexingStatus :
 Q extends 'stats_counters' ? Counters :
@@ -532,6 +594,7 @@ Q extends 'block_txs' ? BlockTransactionsResponse :
 Q extends 'block_withdrawals' ? BlockWithdrawalsResponse :
 Q extends 'txs_validated' ? TransactionsResponseValidated :
 Q extends 'txs_pending' ? TransactionsResponsePending :
+Q extends 'txs_watchlist' ? TransactionsResponseWatchlist :
 Q extends 'tx' ? Transaction :
 Q extends 'tx_internal_txs' ? InternalTransactionsResponse :
 Q extends 'tx_logs' ? LogsResponseTx :
@@ -551,6 +614,7 @@ Q extends 'address_logs' ? LogsResponseAddress :
 Q extends 'address_tokens' ? AddressTokensResponse :
 Q extends 'address_withdrawals' ? AddressWithdrawalsResponse :
 Q extends 'token' ? TokenInfo :
+Q extends 'token_verified_info' ? TokenVerifiedInfo :
 Q extends 'token_counters' ? TokenCounters :
 Q extends 'token_transfers' ? TokenTransferResponse :
 Q extends 'token_holders' ? TokenHolders :
@@ -572,6 +636,7 @@ Q extends 'verified_contracts_counters' ? VerifiedContractsCounters :
 Q extends 'visualize_sol2uml' ? VisualizedContract :
 Q extends 'contract_verification_config' ? SmartContractVerificationConfig :
 Q extends 'withdrawals' ? WithdrawalsResponse :
+Q extends 'withdrawals_counters' ? WithdrawalsCounters :
 Q extends 'l2_output_roots' ? L2OutputRootsResponse :
 Q extends 'l2_withdrawals' ? L2WithdrawalsResponse :
 Q extends 'l2_deposits' ? L2DepositsResponse :

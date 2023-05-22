@@ -299,12 +299,12 @@ frontend:
     NEXT_PUBLIC_FEATURED_NETWORKS:
       _default: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/featured-networks/eth-goerli.json
     NEXT_PUBLIC_NETWORK_EXPLORERS:
-      _default: "[{'title':'Anyblock','baseUrl':'https://explorer.anyblock.tools','paths':{'tx':'/ethereum/ethereum/goerli/transaction','address':'/ethereum/ethereum/goerli/address'}},{'title':'Etherscan','baseUrl':'https://goerli.etherscan.io/','paths':{'tx':'/tx','address':'/address'}}]"
+      _default: "[{'title':'Bitquery','baseUrl':'https://explorer.bitquery.io/','paths':{'tx':'/goerli/tx','address':'/goerli/address','token':'/goerli/token','block':'/goerli/block'}},{'title':'Etherscan','baseUrl':'https://goerli.etherscan.io/','paths':{'tx':'/tx','address':'/address','token':'/token','block':'/block'}}]"
     # network config
     NEXT_PUBLIC_NETWORK_NAME:
-      _default: Ethereum
+      _default: Göerli
     NEXT_PUBLIC_NETWORK_SHORT_NAME:
-      _default: Goerli
+      _default: Göerli
     NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME:
       _default: ethereum
     NEXT_PUBLIC_NETWORK_LOGO:
@@ -343,9 +343,13 @@ frontend:
     NEXT_PUBLIC_API_HOST:
       _default: blockscout.com/eth/goerli
     NEXT_PUBLIC_STATS_API_HOST:
-      _default: https://stats-test.aws-k8s.blockscout.com/
+      _default: https://stats-test.aws-k8s.blockscout.com
     NEXT_PUBLIC_VISUALIZE_API_HOST:
       _default: https://visualizer.aws-k8s.blockscout.com
+    NEXT_PUBLIC_CONTRACT_INFO_API_HOST:
+      _default: https://contracts-info-test.k8s-dev.blockscout.com
+    NEXT_PUBLIC_ADMIN_SERVICE_API_HOST:
+      _default: https://admin-rs-test.k8s-dev.blockscout.com
     NEXT_PUBLIC_APP_HOST:
       _default: blockscout.com/eth/goerli
     NEXT_PUBLIC_LOGOUT_URL:
@@ -355,7 +359,7 @@ frontend:
     NEXT_PUBLIC_NETWORK_RPC_URL:
       _default: https://rpc.ankr.com/eth_goerli
     NEXT_PUBLIC_HOMEPAGE_CHARTS:
-      _default: "['daily_txs','coin_price','market_cup']"
+      _default: "['daily_txs','coin_price','market_cap']"
     NEXT_PUBLIC_API_SPEC_URL:
       _default: https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml
     NEXT_PUBLIC_MARKETPLACE_CONFIG_URL:

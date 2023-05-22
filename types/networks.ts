@@ -15,6 +15,8 @@ export interface NetworkExplorer {
   paths: {
     tx?: string;
     address?: string;
+    token?: string;
+    block?: string;
   };
 }
 

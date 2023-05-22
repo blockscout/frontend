@@ -7,7 +7,7 @@ import TokensList from 'ui/tokens/Tokens';
 const Tokens = () => {
   return (
     <Page>
-      <PageTitle text="Tokens" withTextAd/>
+      <PageTitle title="Tokens" withTextAd/>
       <TokensList/>
     </Page>
   );

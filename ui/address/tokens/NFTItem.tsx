@@ -4,13 +4,13 @@ import React from 'react';
 
 import type { AddressTokenBalance } from 'types/api/address';
 
-import NftImage from 'ui/shared/nft/NftImage';
+import NftMedia from 'ui/shared/nft/NftMedia';
 import TokenLogo from 'ui/shared/TokenLogo';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 type Props = AddressTokenBalance;
 
-const NFTItem = ({ token, token_id: tokenId }: Props) => {
+const NFTItem = ({ token, token_id: tokenId, token_instance: tokenInstance }: Props) => {
   const tokenLink = route({ pathname: '/token/[hash]', query: { hash: token.address } });
 
   return (
@@ -26,11 +26,10 @@ const NFTItem = ({ token, token_id: tokenId }: Props) => {
       lineHeight="20px"
     >
       <LinkOverlay href={ tokenLink }>
-        <NftImage
+        <NftMedia
           mb="18px"
-          url={ null }
-          fallbackPadding="30px"
-          cursor="pointer"
+          imageUrl={ tokenInstance?.image_url || null }
+          animationUrl={ tokenInstance?.animation_url || null }
         />
       </LinkOverlay>
       { tokenId && (
@@ -50,7 +49,7 @@ const NFTItem = ({ token, token_id: tokenId }: Props) => {
       ) }
       { token.name && (
         <Flex alignItems="center">
-          <TokenLogo hash={ token.address } name={ token.name } boxSize={ 6 } ml={ 1 } mr={ 1 }/>
+          <TokenLogo data={ token } boxSize={ 6 } ml={ 1 } mr={ 1 }/>
           <TruncatedTextTooltip label={ token.name }>
             <Text variant="secondary" overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis">{ token.name }</Text>
           </TruncatedTextTooltip>

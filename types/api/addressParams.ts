@@ -9,13 +9,16 @@ export interface WatchlistName {
   display_name: string;
 }
 
-export interface AddressParam {
+export interface UserTags {
+  private_tags: Array<AddressTag> | null;
+  watchlist_names: Array<WatchlistName> | null;
+  public_tags: Array<AddressTag> | null;
+}
+
+export interface AddressParam extends UserTags {
   hash: string;
   implementation_name: string | null;
   name: string | null;
   is_contract: boolean;
   is_verified: boolean | null;
-  private_tags: Array<AddressTag> | null;
-  watchlist_names: Array<WatchlistName> | null;
-  public_tags: Array<AddressTag> | null;
 }

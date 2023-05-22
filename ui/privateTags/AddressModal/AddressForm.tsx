@@ -3,7 +3,7 @@ import {
   Button,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
 import { useForm, Controller } from 'react-hook-form';
@@ -11,7 +11,6 @@ import { useForm, Controller } from 'react-hook-form';
 import type { AddressTag, AddressTagErrors } from 'types/api/account';
 
 import type { ResourceErrorAccount } from 'lib/api/resources';
-import { resourceKey } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/getErrorMessage';
 import { ADDRESS_REGEXP } from 'lib/validations/address';
@@ -21,8 +20,9 @@ import TagInput from 'ui/shared/TagInput';
 const TAG_MAX_LENGTH = 35;
 
 type Props = {
-  data?: AddressTag;
+  data?: Partial<AddressTag>;
   onClose: () => void;
+  onSuccess: () => Promise<void>;
   setAlertVisible: (isAlertVisible: boolean) => void;
 }
 
@@ -31,7 +31,7 @@ type Inputs = {
   tag: string;
 }
 
-const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
+const AddressForm: React.FC<Props> = ({ data, onClose, onSuccess, setAlertVisible }) => {
   const apiFetch = useApiFetch();
   const [ pending, setPending ] = useState(false);
   const { control, handleSubmit, formState: { errors, isDirty }, setError } = useForm<Inputs>({
@@ -43,8 +43,6 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
   });
 
   const formBackgroundColor = useColorModeValue('white', 'gray.900');
-
-  const queryClient = useQueryClient();
 
   const { mutate } = useMutation((formData: Inputs) => {
     const body = {
@@ -74,11 +72,10 @@ const AddressForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
         setAlertVisible(true);
       }
     },
-    onSuccess: () => {
-      queryClient.refetchQueries([ resourceKey('private_tags_address') ]).then(() => {
-        onClose();
-        setPending(false);
-      });
+    onSuccess: async() => {
+      await onSuccess();
+      onClose();
+      setPending(false);
     },
   });
 

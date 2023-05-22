@@ -168,7 +168,7 @@ const WatchList: React.FC = () => {
 
   return (
     <>
-      <PageTitle text="Watch list"/>
+      <PageTitle title="Watch list"/>
       { content }
     </>
   );

@@ -20,4 +20,4 @@ const AddressTagsPage: NextPage = () => {
 
 export default AddressTagsPage;
 
-export { getServerSideProps } from 'lib/next/getServerSideProps';
+export { getServerSideProps } from 'lib/next/account/getServerSideProps';

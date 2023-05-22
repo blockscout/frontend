@@ -63,6 +63,12 @@ const AddressBalance = ({ data }: Props) => {
     handler: handleNewCoinBalanceMessage,
   });
 
+  const tokenData = React.useMemo(() => ({
+    address: appConfig.network.currency.address || '',
+    name: appConfig.network.currency.name || '',
+    icon_url: '',
+  }), [ ]);
+
   return (
     <DetailsInfoItem
       title="Balance"
@@ -71,8 +77,7 @@ const AddressBalance = ({ data }: Props) => {
       alignItems="flex-start"
     >
       <TokenLogo
-        hash={ appConfig.network.currency.address }
-        name={ appConfig.network.currency.name }
+        data={ tokenData }
         boxSize={ 5 }
         mr={ 2 }
         fontSize="sm"

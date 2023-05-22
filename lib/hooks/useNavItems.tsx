@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
-import type { Route } from 'nextjs-routes';
 import React from 'react';
+
+import type { NavItemInternal, NavItem, NavGroupItem } from 'types/client/navigation-items';
 
 import appConfig from 'configs/app/config';
 import abiIcon from 'icons/ABI.svg';
@@ -26,28 +27,6 @@ import txnBatchIcon from 'icons/txn_batches.svg';
 import verifiedIcon from 'icons/verified.svg';
 import watchlistIcon from 'icons/watchlist.svg';
 import { rightLineArrow } from 'lib/html-entities';
-
-type NavItemCommon = {
-  text: string;
-  icon: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
-}
-
-type NavItemInternal = NavItemCommon & {
-  nextRoute: Route;
-  isActive?: boolean;
-  isNewUi?: boolean;
-}
-
-type NavItemExternal = NavItemCommon & {
-  url: string;
-}
-
-export type NavItem = NavItemInternal | NavItemExternal
-
-export type NavGroupItem = NavItemCommon & {
-  isActive?: boolean;
-  subItems: Array<NavItem> | Array<Array<NavItem>>;
-}
 
 interface ReturnType {
   mainNavItems: Array<NavItem | NavGroupItem>;
@@ -135,7 +114,7 @@ export default function useNavItems(): ReturnType {
       ].filter(Boolean);
     }
 
-    const otherNavItems: Array<NavItem> = [
+    const apiNavItems: Array<NavItem> = [
       hasAPIDocs ? {
         text: 'REST API',
         nextRoute: { pathname: '/api-docs' as const },
@@ -185,20 +164,22 @@ export default function useNavItems(): ReturnType {
         isNewUi: true,
       } : null,
       { text: 'Charts & stats', nextRoute: { pathname: '/stats' as const }, icon: statsIcon, isActive: pathname === '/stats', isNewUi: true },
-      // there should be custom site sections like Stats, Faucet, More, etc but never an 'other'
-      // examples https://explorer-edgenet.polygon.technology/ and https://explorer.celo.org/
-      // at this stage custom menu items is under development, we will implement it later
-      otherNavItems.length > 0 ? {
+      {
+        text: 'API',
+        icon: apiDocsIcon,
+        isActive: apiNavItems.some(item => isInternalItem(item) && item.isActive),
+        subItems: apiNavItems,
+      },
+      appConfig.otherLinks.length > 0 ? {
         text: 'Other',
         icon: gearIcon,
-        isActive: otherNavItems.some(item => isInternalItem(item) && item.isActive),
-        subItems: otherNavItems,
+        subItems: appConfig.otherLinks,
       } : null,
     ].filter(Boolean) as Array<NavItem | NavGroupItem>;
 
     const accountNavItems = [
       {
-        text: 'Watchlist',
+        text: 'Watch list',
         nextRoute: { pathname: '/account/watchlist' as const },
         icon: watchlistIcon,
         isActive: pathname === '/account/watchlist',
@@ -230,7 +211,14 @@ export default function useNavItems(): ReturnType {
         isActive: pathname === '/account/custom_abi',
         isNewUi: true,
       },
-    ];
+      appConfig.contractInfoApi.endpoint && appConfig.adminServiceApi.endpoint && {
+        text: 'Verified addrs',
+        nextRoute: { pathname: '/account/verified_addresses' as const },
+        icon: verifiedIcon,
+        isActive: pathname === '/account/verified_addresses',
+        isNewUi: true,
+      },
+    ].filter(Boolean);
 
     const profileItem = {
       text: 'My profile',

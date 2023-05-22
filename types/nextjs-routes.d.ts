@@ -10,6 +10,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/account/custom_abi">
     | StaticRoute<"/account/public_tags_request">
     | StaticRoute<"/account/tag_address">
+    | StaticRoute<"/account/verified_addresses">
     | StaticRoute<"/account/watchlist">
     | StaticRoute<"/accounts">
     | DynamicRoute<"/address/[hash]/contract_verification", { "hash": string }>
