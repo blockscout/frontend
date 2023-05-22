@@ -30,3 +30,12 @@ releases:
     - values/l2-optimism-goerli/values.yaml
     - global:
         env: "optimism-goerli"
+  - name: bs-stack
+    chart: blockscout-ci-cd/blockscout-stack
+    namespace: review-l2-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}
+    labels:
+      app: review-l2-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}
+    values:
+    - values/review-l2/values.yaml.gotmpl
+    - global:
+        env: "review"
