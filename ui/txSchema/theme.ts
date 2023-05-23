@@ -75,11 +75,28 @@ export const stylesheet: Array<cytoscape.Stylesheet> = [
     },
   },
   {
+    selector: '.curve-segments',
+    style: {
+      'curve-style': 'segments',
+      'segment-distances': '-20 20 -20',
+      'segment-weights': '0.1 0.5 0.9',
+    },
+  },
+  {
     selector: '.curve-straight',
     style: {
       'curve-style': 'straight',
     },
   },
+  {
+    selector: '.curve-multi-unbundled-bezier',
+    style: {
+      'curve-style': 'unbundled-bezier',
+      'control-point-distances': [ 40, -40 ],
+      'control-point-weights': [ 0.250, 0.75 ],
+    },
+  },
+
   {
     selector: '.edge-in',
     style: {

@@ -5,7 +5,7 @@ export const elements: Parameters<typeof CytoscapeComponent['normalizeElements']
     {
       data: {
         id: 'n0',
-        label: '0x11e...18dda',
+        label: '0x11...8dda',
         href: 'https://etherscan.io/address/0x11e4857bb9993a50c685a79afad4e6f65d518dda',
       },
       classes: 'address',
