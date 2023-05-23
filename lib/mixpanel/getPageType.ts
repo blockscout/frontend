@@ -40,6 +40,7 @@ const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/api/proxy': 'Node API: Proxy',
   '/api/csrf': 'Node API: CSRF token',
   '/auth/auth0': 'Auth',
+  '/visualize/tx': 'Tx schema',
 };
 
 export default function getPageType(pathname: Route['pathname']) {

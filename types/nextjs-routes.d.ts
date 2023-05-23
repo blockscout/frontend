@@ -42,6 +42,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/txs">
     | StaticRoute<"/verified-contracts">
     | StaticRoute<"/visualize/sol2uml">
+    | StaticRoute<"/visualize/tx">
     | StaticRoute<"/withdrawals">;
 
   interface StaticRoute<Pathname> {
