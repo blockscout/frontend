@@ -3,7 +3,7 @@ name: Publish Docker image on every push to main branch
 on:
   push:
     branches:
-      - nz-helmfile
+      - main
 
 jobs:
   push_to_registry:
