@@ -69,12 +69,12 @@ const Footer = () => {
 
   return (
     <Flex direction={{ base: 'column', lg: 'row' }} p={{ base: 4, lg: 9 }} borderTop="1px solid" borderColor="divider">
-      <Box flexGrow="1" mb={{ base: 6, lg: 0 }}>
+      <Box flexGrow="1" mb={{ base: 8, lg: 0 }}>
         <Flex>
           <ColorModeToggler/>
           <NetworkAddToWallet ml={ 8 }/>
         </Flex>
-        <Box mt={{ base: 6, lg: '44px' }}>
+        <Box mt={{ base: 5, lg: '44px' }}>
           <Link fontSize="xs" href="https://www.blockscout.com">blockscout.com</Link>
         </Box>
         <Text mt={ 3 } mr={{ base: 0, lg: '114px' }} maxW={{ base: 'unset', lg: '470px' }} fontSize="xs">

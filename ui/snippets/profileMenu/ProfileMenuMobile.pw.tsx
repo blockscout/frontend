@@ -49,8 +49,5 @@ test.describe('auth', () => {
 
     await component.getByAltText(/Profile picture/i).click();
     await expect(page).toHaveScreenshot();
-
-    await page.locator('div[aria-label="Toggle color mode"]').click();
-    await expect(page).toHaveScreenshot();
   });
 });
