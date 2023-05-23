@@ -25,6 +25,7 @@ const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/account/custom_abi': 'Custom ABI',
   '/account/public_tags_request': 'Public tags',
   '/account/tag_address': 'Private tags',
+  '/account/verified_addresses': 'Verified addresses',
   '/withdrawals': 'Withdrawals',
   '/visualize/sol2uml': 'Solidity UML diagram',
   '/csv-export': 'Export data to CSV file',
@@ -39,7 +40,6 @@ const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/api/proxy': 'Node API: Proxy',
   '/api/csrf': 'Node API: CSRF token',
   '/auth/auth0': 'Auth',
-  '/graph': 'Graph',
 };
 
 export default function getPageType(pathname: Route['pathname']) {
