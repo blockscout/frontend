@@ -12,5 +12,8 @@ declare global {
       providers?: Array<ExternalProvider>;
     };
     coinzilla_display: Array<CPreferences>;
+    ga?: {
+      getAll: () => Array<{ get: (prop: string) => string }>;
+    };
   }
 }

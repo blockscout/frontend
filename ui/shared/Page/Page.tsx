@@ -5,6 +5,7 @@ import getErrorCauseStatusCode from 'lib/errors/getErrorCauseStatusCode';
 import getResourceErrorPayload from 'lib/errors/getResourceErrorPayload';
 import useAdblockDetect from 'lib/hooks/useAdblockDetect';
 import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';
+import * as mixpanel from 'lib/mixpanel';
 import AppError from 'ui/shared/AppError/AppError';
 import AppErrorBlockConsensus from 'ui/shared/AppError/AppErrorBlockConsensus';
 import AppErrorInvalidTxHash from 'ui/shared/AppError/AppErrorInvalidTxHash';
@@ -31,6 +32,9 @@ const Page = ({
   useGetCsrfToken();
 
   useAdblockDetect();
+
+  const isMixpanelInited = mixpanel.useInit();
+  mixpanel.useLogPageView(isMixpanelInited);
 
   const renderErrorScreen = React.useCallback((error?: Error) => {
     const statusCode = getErrorCauseStatusCode(error) || 500;

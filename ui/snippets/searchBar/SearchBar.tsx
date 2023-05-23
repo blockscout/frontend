@@ -1,10 +1,12 @@
 import { Popover, PopoverTrigger, PopoverContent, PopoverBody, useDisclosure } from '@chakra-ui/react';
 import _debounce from 'lodash/debounce';
+import { useRouter } from 'next/router';
 import { route } from 'nextjs-routes';
 import type { FormEvent, FocusEvent } from 'react';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import * as mixpanel from 'lib/mixpanel/index';
 
 import SearchBarInput from './SearchBarInput';
 import SearchBarSuggest from './SearchBarSuggest';
@@ -20,16 +22,22 @@ const SearchBar = ({ isHomepage }: Props) => {
   const menuRef = React.useRef<HTMLDivElement>(null);
   const menuWidth = React.useRef<number>(0);
   const isMobile = useIsMobile();
+  const router = useRouter();
 
-  const { searchTerm, handleSearchTermChange, query, redirectCheckQuery } = useSearchQuery();
+  const { searchTerm, handleSearchTermChange, query, pathname, redirectCheckQuery } = useSearchQuery();
 
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (searchTerm) {
       const url = route({ pathname: '/search-results', query: { q: searchTerm } });
-      window.location.assign(url);
+      mixpanel.logEvent(mixpanel.EventTypes.SEARCH_QUERY, {
+        'Search query': searchTerm,
+        'Source page type': mixpanel.getPageType(pathname),
+        'Result URL': url,
+      });
+      router.push({ pathname: '/search-results', query: { q: searchTerm } }, undefined, { shallow: true });
     }
-  }, [ searchTerm ]);
+  }, [ searchTerm, pathname, router ]);
 
   const handleFocus = React.useCallback(() => {
     onOpen();
@@ -52,6 +60,15 @@ const SearchBar = ({ isHomepage }: Props) => {
     handleSearchTermChange('');
     inputRef.current?.querySelector('input')?.focus();
   }, [ handleSearchTermChange ]);
+
+  const handleItemClick = React.useCallback((event: React.MouseEvent<HTMLAnchorElement>) => {
+    mixpanel.logEvent(mixpanel.EventTypes.SEARCH_QUERY, {
+      'Search query': searchTerm,
+      'Source page type': mixpanel.getPageType(pathname),
+      'Result URL': event.currentTarget.href,
+    });
+    onClose();
+  }, [ pathname, searchTerm, onClose ]);
 
   const menuPaddingX = isMobile && !isHomepage ? 32 : 0;
   const calculateMenuWidth = React.useCallback(() => {
@@ -98,7 +115,7 @@ const SearchBar = ({ isHomepage }: Props) => {
       </PopoverTrigger>
       <PopoverContent w={ `${ menuWidth.current }px` } maxH={{ base: '300px', lg: '500px' }} overflowY="scroll" ref={ menuRef }>
         <PopoverBody py={ 6 }>
-          <SearchBarSuggest query={ query } redirectCheckQuery={ redirectCheckQuery } searchTerm={ searchTerm }/>
+          <SearchBarSuggest query={ query } redirectCheckQuery={ redirectCheckQuery } searchTerm={ searchTerm } onItemClick={ handleItemClick }/>
         </PopoverBody>
       </PopoverContent>
     </Popover>

@@ -143,6 +143,7 @@ For each application, you need to specify the `MarketplaceCategoryId` to which i
 | NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID | `string` | Project id for [WalletConnect](https://docs.walletconnect.com/2.0/web3modal/react/installation#obtain-project-id) integration | - | - | `<secret>` |
 | NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY | `string` | Site key for [reCAPTCHA](https://developers.google.com/recaptcha) service | - | - | `<secret>` |
 | NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID | `string` | Property ID for [Google Analytics](https://analytics.google.com/) service | - | - | `UA-XXXXXX-X` |
+| NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN | `string` | Project token for [Mixpanel](https://mixpanel.com/) analytics service | - | - | `<secret>` |
 
 ## L2 configuration
 *Note* All variables are required only for roll-up instances

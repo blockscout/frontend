@@ -36,9 +36,10 @@ interface Props {
   };
   redirectCheckQuery: UseQueryResult<SearchRedirectResult>;
   searchTerm: string;
+  onItemClick: (event: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 
-const SearchBarSuggest = ({ query, redirectCheckQuery, searchTerm }: Props) => {
+const SearchBarSuggest = ({ query, redirectCheckQuery, searchTerm, onItemClick }: Props) => {
   const isMobile = useIsMobile();
 
   const simpleMatch: SearchResultItem | undefined = React.useMemo(() => {
@@ -88,7 +89,8 @@ const SearchBarSuggest = ({ query, redirectCheckQuery, searchTerm }: Props) => {
     return (
       <>
         <Text fontWeight={ 500 } fontSize="sm">Found <Text fontWeight={ 700 } as="span">{ num }</Text> matching { resultText }</Text>
-        { items.map((item, index) => <SearchBarSuggestItem key={ index } data={ item } isMobile={ isMobile } searchTerm={ searchTerm }/>) }
+        { items.map((item, index) =>
+          <SearchBarSuggestItem key={ index } data={ item } isMobile={ isMobile } searchTerm={ searchTerm } onClick={ onItemClick }/>) }
         { query.isLoading && <ContentLoader text="We are still searching, please wait... " fontSize="sm" mt={ 5 }/> }
       </>
     );
