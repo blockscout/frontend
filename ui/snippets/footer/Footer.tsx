@@ -80,21 +80,19 @@ const Footer = () => {
         <Text mt={ 3 } mr={{ base: 0, lg: '114px' }} maxW={{ base: 'unset', lg: '470px' }} fontSize="xs">
             Blockscout is a tool for inspecting and analyzing EVM based blockchains. Blockchain explorer for Ethereum Networks.
         </Text>
-        { (appConfig.blockScoutVersion || appConfig.frontendVersion) && (
-          <VStack spacing={ 1 } mt={ 6 } alignItems="start">
-            { appConfig.blockScoutVersion && (
-              <Text fontSize="xs">
+        <VStack spacing={ 1 } mt={ 6 } alignItems="start">
+          { appConfig.blockScoutVersion && (
+            <Text fontSize="xs">
                 Backend: <Link href={ API_VERSION_URL } target="_blank">{ appConfig.blockScoutVersion }</Link>
-              </Text>
-            ) }
-            { appConfig.frontendVersion && (
-              <Text fontSize="xs">
-                { /* Frontend: <Link href={ FRONT_VERSION_URL } target="_blank">{ appConfig.frontendVersion }</Link> */ }
-                Frontend: { appConfig.frontendVersion }
-              </Text>
-            ) }
-          </VStack>
-        ) }
+            </Text>
+          ) }
+          { (appConfig.frontendVersion || appConfig.frontendCommit) && (
+            <Text fontSize="xs">
+              { /* Frontend: <Link href={ FRONT_VERSION_URL } target="_blank">{ appConfig.frontendVersion }</Link> */ }
+                Frontend: { [ appConfig.frontendVersion, appConfig.frontendCommit ].filter(Boolean).join('+') }
+            </Text>
+          ) }
+        </VStack>
       </Box>
       <Grid
         gap={{ base: 6, lg: 12 }}

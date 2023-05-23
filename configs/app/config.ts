@@ -101,6 +101,7 @@ const config = Object.freeze({
   footerLinks: getEnvValue(process.env.NEXT_PUBLIC_FOOTER_LINKS),
   blockScoutVersion: getEnvValue(process.env.NEXT_PUBLIC_BLOCKSCOUT_VERSION),
   frontendVersion: getEnvValue(process.env.NEXT_PUBLIC_GIT_TAG),
+  frontendCommit: getEnvValue(process.env.NEXT_PUBLIC_GIT_COMMIT_SHA),
   isAccountSupported: getEnvValue(process.env.NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED) === 'true',
   marketplaceConfigUrl: getEnvValue(process.env.NEXT_PUBLIC_MARKETPLACE_CONFIG_URL),
   marketplaceSubmitForm: getEnvValue(process.env.NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM),
