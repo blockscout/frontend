@@ -58,7 +58,7 @@ jobs:
   deploy_review_l2:
     name: Deploy review l2
     needs: push_to_registry
-    uses: blockscout/blockscout-ci-cd/.github/workflows/deploy_helmfile.yaml@nz-review-depl-url
+    uses: blockscout/blockscout-ci-cd/.github/workflows/deploy_helmfile.yaml@master
     with:
       appName: review-l2-$GITHUB_REF_NAME_SLUG
       globalEnv: review
