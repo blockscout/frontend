@@ -8,7 +8,7 @@ interface Props extends TagProps {
   isLoading?: boolean;
 }
 
-const Tag = ({ isLoading, ...props }: Props) => {
+const Tag = ({ isLoading, ...props }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
 
   if (props.isTruncated && typeof props.children === 'string') {
     if (!props.children) {
@@ -18,16 +18,16 @@ const Tag = ({ isLoading, ...props }: Props) => {
     return (
       <Skeleton isLoaded={ !isLoading } display="inline-block" borderRadius="sm" maxW="100%">
         <TruncatedTextTooltip label={ props.children }>
-          <ChakraTag { ...props }/>
+          <ChakraTag { ...props } ref={ ref }/>
         </TruncatedTextTooltip>
       </Skeleton>
     );
   }
   return (
     <Skeleton isLoaded={ !isLoading } display="inline-block" borderRadius="sm" maxW="100%">
-      <ChakraTag { ...props }/>
+      <ChakraTag { ...props } ref={ ref }/>
     </Skeleton>
   );
 };
 
-export default React.memo(Tag);
+export default React.memo(React.forwardRef(Tag));

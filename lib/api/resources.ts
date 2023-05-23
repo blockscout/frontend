@@ -1,4 +1,15 @@
-import type { UserInfo, CustomAbis, PublicTags, AddressTags, TransactionTags, ApiKeys, WatchlistAddress } from 'types/api/account';
+import type {
+  UserInfo,
+  CustomAbis,
+  PublicTags,
+  AddressTags,
+  TransactionTags,
+  ApiKeys,
+  WatchlistAddress,
+  VerifiedAddressResponse,
+  TokenInfoApplicationConfig,
+  TokenInfoApplications,
+} from 'types/api/account';
 import type {
   Address,
   AddressCounters,
@@ -36,6 +47,7 @@ import type {
   TokenInventoryResponse,
   TokenInstance,
   TokenInstanceTransfersCount,
+  TokenVerifiedInfo,
 } from 'types/api/token';
 import type { TokensResponse, TokensFilters, TokenInstanceTransferResponse } from 'types/api/tokens';
 import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
@@ -63,6 +75,9 @@ export const RESOURCES = {
   user_info: {
     path: '/api/account/v1/user/info',
   },
+  email_resend: {
+    path: '/api/account/v1/email/resend',
+  },
   custom_abi: {
     path: '/api/account/v1/user/custom_abis/:id?',
     pathParams: [ 'id' as const ],
@@ -86,6 +101,35 @@ export const RESOURCES = {
   api_keys: {
     path: '/api/account/v1/user/api_keys/:id?',
     pathParams: [ 'id' as const ],
+  },
+
+  // ACCOUNT: ADDRESS VERIFICATION & TOKEN INFO
+  address_verification: {
+    path: '/api/v1/chains/:chainId/verified-addresses:type',
+    pathParams: [ 'chainId' as const, 'type' as const ],
+    endpoint: appConfig.contractInfoApi.endpoint,
+    basePath: appConfig.contractInfoApi.basePath,
+  },
+
+  verified_addresses: {
+    path: '/api/v1/chains/:chainId/verified-addresses',
+    pathParams: [ 'chainId' as const ],
+    endpoint: appConfig.contractInfoApi.endpoint,
+    basePath: appConfig.contractInfoApi.basePath,
+  },
+
+  token_info_applications_config: {
+    path: '/api/v1/chains/:chainId/token-info-submissions/selectors',
+    pathParams: [ 'chainId' as const ],
+    endpoint: appConfig.adminServiceApi.endpoint,
+    basePath: appConfig.adminServiceApi.basePath,
+  },
+
+  token_info_applications: {
+    path: '/api/v1/chains/:chainId/token-info-submissions/:id?',
+    pathParams: [ 'chainId' as const, 'id' as const ],
+    endpoint: appConfig.adminServiceApi.endpoint,
+    basePath: appConfig.adminServiceApi.basePath,
   },
 
   // STATS
@@ -309,6 +353,12 @@ export const RESOURCES = {
     path: '/api/v2/tokens/:hash',
     pathParams: [ 'hash' as const ],
   },
+  token_verified_info: {
+    path: '/api/v1/chains/:chainId/token-infos/:hash',
+    pathParams: [ 'chainId' as const, 'hash' as const ],
+    endpoint: appConfig.contractInfoApi.endpoint,
+    basePath: appConfig.contractInfoApi.basePath,
+  },
   token_counters: {
     path: '/api/v2/tokens/:hash/counters',
     pathParams: [ 'hash' as const ],
@@ -524,6 +574,9 @@ Q extends 'private_tags_address' ? AddressTags :
 Q extends 'private_tags_tx' ? TransactionTags :
 Q extends 'api_keys' ? ApiKeys :
 Q extends 'watchlist' ? Array<WatchlistAddress> :
+Q extends 'verified_addresses' ? VerifiedAddressResponse :
+Q extends 'token_info_applications_config' ? TokenInfoApplicationConfig :
+Q extends 'token_info_applications' ? TokenInfoApplications :
 Q extends 'homepage_stats' ? HomeStats :
 Q extends 'homepage_chart_txs' ? ChartTransactionResponse :
 Q extends 'homepage_chart_market' ? ChartMarketResponse :
@@ -561,6 +614,7 @@ Q extends 'address_logs' ? LogsResponseAddress :
 Q extends 'address_tokens' ? AddressTokensResponse :
 Q extends 'address_withdrawals' ? AddressWithdrawalsResponse :
 Q extends 'token' ? TokenInfo :
+Q extends 'token_verified_info' ? TokenVerifiedInfo :
 Q extends 'token_counters' ? TokenCounters :
 Q extends 'token_transfers' ? TokenTransferResponse :
 Q extends 'token_holders' ? TokenHolders :

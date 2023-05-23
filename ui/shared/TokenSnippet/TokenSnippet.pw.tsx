@@ -1,18 +1,29 @@
 import { test, expect, devices } from '@playwright/experimental-ct-react';
 import React from 'react';
 
+import type { TokenInfo } from 'types/api/token';
+
 import TestApp from 'playwright/TestApp';
 
 import TokenSnippet from './TokenSnippet';
 
-const API_URL = 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x363574E6C5C71c343d7348093D84320c76d5Dd29/logo.png';
-
 test.use(devices['iPhone 13 Pro']);
 
 test('unnamed', async({ mount }) => {
+  const data: TokenInfo = {
+    address: '0x363574E6C5C71c343d7348093D84320c76d5Dd29',
+    type: 'ERC-20',
+    symbol: 'xDAI',
+    name: null,
+    decimals: '18',
+    holders: '1',
+    exchange_rate: null,
+    total_supply: null,
+    icon_url: null,
+  };
   const component = await mount(
     <TestApp>
-      <TokenSnippet hash="0x363574E6C5C71c343d7348093D84320c76d5Dd29" symbol="xDAI"/>
+      <TokenSnippet data={ data }/>
     </TestApp>,
   );
 
@@ -20,16 +31,40 @@ test('unnamed', async({ mount }) => {
 });
 
 test('named', async({ mount }) => {
+  const data: TokenInfo = {
+    address: '0x363574E6C5C71c343d7348093D84320c76d5Dd29',
+    type: 'ERC-20',
+    symbol: 'SHA',
+    name: 'Shavuha token',
+    decimals: '18',
+    holders: '1',
+    exchange_rate: null,
+    total_supply: null,
+    icon_url: null,
+  };
   const component = await mount(
     <TestApp>
-      <TokenSnippet hash="0x363574E6C5C71c343d7348093D84320c76d5Dd29" name="Shavuha token" symbol="SHA"/>
+      <TokenSnippet data={ data }/>
     </TestApp>,
   );
 
   await expect(component).toHaveScreenshot();
 });
 
-test('with logo', async({ mount, page }) => {
+test('with logo and long symbol', async({ mount, page }) => {
+  const API_URL = 'https://example.com/logo.png';
+  const data: TokenInfo = {
+    address: '0x363574E6C5C71c343d7348093D84320c76d5Dd29',
+    type: 'ERC-20',
+    symbol: 'SHAAAAAAAAAAAAA',
+    name: null,
+    decimals: '18',
+    holders: '1',
+    exchange_rate: null,
+    total_supply: null,
+    icon_url: API_URL,
+  };
+
   await page.route(API_URL, (route) => {
     return route.fulfill({
       status: 200,
@@ -39,7 +74,7 @@ test('with logo', async({ mount, page }) => {
 
   const component = await mount(
     <TestApp>
-      <TokenSnippet hash="0x363574E6C5C71c343d7348093D84320c76d5Dd29"/>
+      <TokenSnippet data={ data }/>
     </TestApp>,
   );
 

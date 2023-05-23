@@ -9,7 +9,7 @@ import type { ResourceError } from 'lib/api/resources';
 import { AppContextProvider } from 'lib/appContext';
 import { Chakra } from 'lib/Chakra';
 import { ScrollDirectionProvider } from 'lib/contexts/scrollDirection';
-import getErrorStatusCode from 'lib/errors/getErrorStatusCode';
+import getErrorCauseStatusCode from 'lib/errors/getErrorCauseStatusCode';
 import useConfigSentry from 'lib/hooks/useConfigSentry';
 import { SocketProvider } from 'lib/socket/context';
 import theme from 'theme';
@@ -29,7 +29,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         refetchOnWindowFocus: false,
         retry: (failureCount, _error) => {
           const error = _error as ResourceError<{ status: number }>;
-          const status = error?.status || error?.payload?.status;
+          const status = error?.payload?.status || error?.status;
           if (status && status >= 400 && status < 500) {
             // don't do retry for client error responses
             return false;
@@ -42,7 +42,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   }));
 
   const renderErrorScreen = React.useCallback((error?: Error) => {
-    const statusCode = getErrorStatusCode(error);
+    const statusCode = getErrorCauseStatusCode(error);
 
     return (
       <AppError

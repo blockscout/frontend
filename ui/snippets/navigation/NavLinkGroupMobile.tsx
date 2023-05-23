@@ -7,8 +7,9 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
+import type { NavGroupItem } from 'types/client/navigation-items';
+
 import chevronIcon from 'icons/arrows/east-mini.svg';
-import type { NavGroupItem } from 'lib/hooks/useNavItems';
 
 import useNavLinkStyleProps from './useNavLinkStyleProps';
 

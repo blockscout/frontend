@@ -61,7 +61,7 @@ const NavigationDesktop = () => {
       width={{ lg: isExpanded ? '229px' : '92px', xl: isCollapsed ? '92px' : '229px' }}
       { ...getDefaultTransitionProps({ transitionProperty: 'width, padding' }) }
     >
-      <Icon as={ testnetIcon } h="14px" w="auto" color="red.400" pl={ 3 } alignSelf="flex-start"/>
+      { appConfig.network.isTestnet && <Icon as={ testnetIcon } h="14px" w="auto" color="red.400" pl={ 3 } alignSelf="flex-start"/> }
       <Box
         as="header"
         display="flex"

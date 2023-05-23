@@ -24,7 +24,7 @@ const PublicTagsData = ({ changeToFormScreen, onTagDelete }: Props) => {
   const [ deleteModalData, setDeleteModalData ] = useState<PublicTag>();
   const isMobile = useIsMobile();
 
-  const { data, isLoading, isError } = useApiQuery('public_tags');
+  const { data, isLoading, isError, error } = useApiQuery('public_tags');
 
   const onDeleteModalClose = useCallback(() => {
     setDeleteModalData(undefined);
@@ -70,6 +70,9 @@ const PublicTagsData = ({ changeToFormScreen, onTagDelete }: Props) => {
   }
 
   if (isError) {
+    if (error.status === 403) {
+      throw new Error('Unverified email error', { cause: error });
+    }
     return <DataFetchAlert/>;
   }
 

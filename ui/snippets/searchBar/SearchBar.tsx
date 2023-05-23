@@ -24,7 +24,7 @@ const SearchBar = ({ isHomepage }: Props) => {
   const isMobile = useIsMobile();
   const router = useRouter();
 
-  const { searchTerm, handleSearchTermChange, query, pathname } = useSearchQuery();
+  const { searchTerm, handleSearchTermChange, query, pathname, redirectCheckQuery } = useSearchQuery();
 
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -115,7 +115,7 @@ const SearchBar = ({ isHomepage }: Props) => {
       </PopoverTrigger>
       <PopoverContent w={ `${ menuWidth.current }px` } maxH={{ base: '300px', lg: '500px' }} overflowY="scroll" ref={ menuRef }>
         <PopoverBody py={ 6 }>
-          <SearchBarSuggest query={ query } searchTerm={ searchTerm } onItemClick={ handleItemClick }/>
+          <SearchBarSuggest query={ query } redirectCheckQuery={ redirectCheckQuery } searchTerm={ searchTerm } onItemClick={ handleItemClick }/>
         </PopoverBody>
       </PopoverContent>
     </Popover>

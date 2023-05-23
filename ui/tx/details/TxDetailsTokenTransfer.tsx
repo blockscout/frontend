@@ -5,7 +5,6 @@ import type { TokenTransfer as TTokenTransfer, Erc20TotalPayload, Erc721TotalPay
 
 import rightArrowIcon from 'icons/arrows/east.svg';
 import { space } from 'lib/html-entities';
-import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
@@ -27,9 +26,7 @@ const TxDetailsTokenTransfer = ({ data }: Props) => {
               <CurrencyValue value={ total.value } exchangeRate={ data.token.exchange_rate } fontWeight={ 600 } decimals={ total.decimals }/>
             </Text>
             <TokenSnippet
-              symbol={ trimTokenSymbol(data.token.symbol) }
-              hash={ data.token.address }
-              name={ data.token.name }
+              data={ data.token }
               w="auto"
               flexGrow="1"
               columnGap={ 1 }
@@ -43,11 +40,9 @@ const TxDetailsTokenTransfer = ({ data }: Props) => {
         const total = data.total as Erc721TotalPayload;
         return (
           <NftTokenTransferSnippet
-            name={ data.token.name }
+            token={ data.token }
             tokenId={ total.token_id }
             value="1"
-            hash={ data.token.address }
-            symbol={ trimTokenSymbol(data.token.symbol) }
           />
         );
       }
@@ -56,12 +51,10 @@ const TxDetailsTokenTransfer = ({ data }: Props) => {
         const total = data.total as Erc1155TotalPayload;
         return (
           <NftTokenTransferSnippet
-            name={ data.token.name }
             key={ total.token_id }
+            token={ data.token }
             tokenId={ total.token_id }
             value={ total.value }
-            hash={ data.token.address }
-            symbol={ trimTokenSymbol(data.token.symbol) }
           />
         );
       }

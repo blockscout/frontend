@@ -16,7 +16,7 @@ import TransactionTagListItem from './TransactionTagTable/TransactionTagListItem
 import TransactionTagTable from './TransactionTagTable/TransactionTagTable';
 
 const PrivateTransactionTags = () => {
-  const { data: transactionTagsData, isLoading, isError } = useApiQuery('private_tags_tx', { queryOptions: { refetchOnMount: false } });
+  const { data: transactionTagsData, isLoading, isError, error } = useApiQuery('private_tags_tx', { queryOptions: { refetchOnMount: false } });
 
   const transactionModalProps = useDisclosure();
   const deleteModalProps = useDisclosure();
@@ -69,6 +69,9 @@ const PrivateTransactionTags = () => {
   }
 
   if (isError) {
+    if (error.status === 403) {
+      throw new Error('Unverified email error', { cause: error });
+    }
     return <DataFetchAlert/>;
   }
 

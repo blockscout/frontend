@@ -5,6 +5,7 @@ import * as blockMock from 'mocks/blocks/block';
 import * as dailyTxsMock from 'mocks/stats/daily_txs';
 import * as statsMock from 'mocks/stats/index';
 import * as txMock from 'mocks/txs/tx';
+import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
 import insertAdPlaceholder from 'playwright/utils/insertAdPlaceholder';
@@ -45,6 +46,35 @@ test('default view -@default +@desktop-xl +@dark-mode', async({ mount, page }) =
   await insertAdPlaceholder(page);
 
   await expect(component.locator('main')).toHaveScreenshot();
+});
+
+test.describe('custom hero plate background', () => {
+  const IMAGE_URL = 'https://localhost:3000/my-image.png';
+  const extendedTest = test.extend({
+    context: contextWithEnvs([
+      { name: 'NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND', value: `no-repeat center/cover url(${ IMAGE_URL })` },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ]) as any,
+  });
+
+  extendedTest('default view', async({ mount, page }) => {
+    await page.route(IMAGE_URL, (route) => {
+      return route.fulfill({
+        status: 200,
+        path: './playwright/giant_duck_long.jpg',
+      });
+    });
+
+    const component = await mount(
+      <TestApp>
+        <Home/>
+      </TestApp>,
+    );
+
+    const heroPlate = component.locator('div[data-label="hero plate"]');
+
+    await expect(heroPlate).toHaveScreenshot();
+  });
 });
 
 // had to separate mobile test, otherwise all the tests fell on CI

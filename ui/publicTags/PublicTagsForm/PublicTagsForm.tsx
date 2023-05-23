@@ -28,7 +28,7 @@ import PublicTagsFormInput from './PublicTagsFormInput';
 
 type Props = {
   changeToDataScreen: (success?: boolean) => void;
-  data?: PublicTag;
+  data?: Partial<PublicTag>;
 }
 
 export type Inputs = {
@@ -67,8 +67,8 @@ const PublicTagsForm = ({ changeToDataScreen, data }: Props) => {
       email: data?.email || '',
       companyName: data?.company || '',
       companyUrl: data?.website || '',
-      tags: data?.tags.split(';').map((tag) => tag).join('; ') || '',
-      addresses: data?.addresses.map((address, index: number) => ({ name: `address.${ index }.address`, address })) ||
+      tags: data?.tags?.split(';').map((tag) => tag).join('; ') || '',
+      addresses: data?.addresses?.map((address, index: number) => ({ name: `address.${ index }.address`, address })) ||
         [ { name: 'address.0.address', address: '' } ],
       comment: data?.additional_comment || '',
       action: data?.is_owner === undefined || data?.is_owner ? 'add' : 'report',

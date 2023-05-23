@@ -70,7 +70,7 @@ const Withdrawals = () => {
 
   return (
     <Page>
-      <PageTitle text="Withdrawals" withTextAd/>
+      <PageTitle title="Withdrawals" withTextAd/>
       <DataListDisplay
         isError={ isError }
         isLoading={ isLoading }
