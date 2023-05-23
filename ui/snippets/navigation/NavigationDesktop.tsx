@@ -82,7 +82,7 @@ const NavigationDesktop = () => {
         <VStack as="ul" spacing="1" alignItems="flex-start">
           { mainNavItems.map((item) => {
             if (isGroupItem(item)) {
-              return <NavLinkGroupDesktop key={ item.text } { ...item } isCollapsed={ isCollapsed }/>;
+              return <NavLinkGroupDesktop key={ item.text } item={ item } isCollapsed={ isCollapsed }/>;
             } else {
               return <NavLink key={ item.text } item={ item } isCollapsed={ isCollapsed }/>;
             }

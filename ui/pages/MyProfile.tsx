@@ -9,7 +9,7 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import UserAvatar from 'ui/shared/UserAvatar';
 
 const MyProfile = () => {
-  const { data, isLoading, isError, error, isFetched } = useFetchProfileInfo();
+  const { data, isLoading, isError, error } = useFetchProfileInfo();
   useRedirectForInvalidAuthToken();
 
   const content = (() => {
@@ -26,7 +26,7 @@ const MyProfile = () => {
 
     return (
       <VStack maxW="412px" mt={ 8 } gap={ 5 } alignItems="stretch">
-        <UserAvatar size={ 64 } data={ data } isFetched={ isFetched }/>
+        <UserAvatar size={ 64 }/>
         <FormControl variant="floating" id="name" isRequired size="lg">
           <Input
             required

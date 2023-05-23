@@ -15,7 +15,6 @@ import globeIcon from 'icons/globe-b.svg';
 import graphQLIcon from 'icons/graphQL.svg';
 import outputRootsIcon from 'icons/output_roots.svg';
 import privateTagIcon from 'icons/privattags.svg';
-import profileIcon from 'icons/profile.svg';
 import publicTagIcon from 'icons/publictags.svg';
 import apiDocsIcon from 'icons/restAPI.svg';
 import rpcIcon from 'icons/RPC.svg';
@@ -27,6 +26,7 @@ import txnBatchIcon from 'icons/txn_batches.svg';
 import verifiedIcon from 'icons/verified.svg';
 import watchlistIcon from 'icons/watchlist.svg';
 import { rightLineArrow } from 'lib/html-entities';
+import UserAvatar from 'ui/shared/UserAvatar';
 
 interface ReturnType {
   mainNavItems: Array<NavItem | NavGroupItem>;
@@ -213,7 +213,7 @@ export default function useNavItems(): ReturnType {
     const profileItem = {
       text: 'My profile',
       nextRoute: { pathname: '/auth/profile' as const },
-      icon: profileIcon,
+      iconComponent: UserAvatar,
       isActive: pathname === '/auth/profile',
     };
 

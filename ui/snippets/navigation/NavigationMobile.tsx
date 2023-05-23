@@ -57,7 +57,7 @@ const NavigationMobile = () => {
           >
             { mainNavItems.map((item, index) => {
               if (isGroupItem(item)) {
-                return <NavLinkGroupMobile key={ item.text } { ...item } onClick={ onGroupItemOpen(index) }/>;
+                return <NavLinkGroupMobile key={ item.text } item={ item } onClick={ onGroupItemOpen(index) }/>;
               } else {
                 return <NavLink key={ item.text } item={ item }/>;
               }
