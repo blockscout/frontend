@@ -106,7 +106,7 @@ const CustomAbiPage: React.FC = () => {
 
   return (
     <>
-      <PageTitle text="Custom ABI"/>
+      <PageTitle title="Custom ABI"/>
       { content }
     </>
   );

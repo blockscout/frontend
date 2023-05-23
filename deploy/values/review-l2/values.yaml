@@ -113,7 +113,7 @@ frontend:
       _default: https://raw.githubusercontent.com/blockscout/frontend-configs/dev/configs/marketplace/base-goerli.json
     NEXT_PUBLIC_NETWORK_EXPLORERS:
       _default: ''
-    NEXT_PUBLIC_HOMEPAGE_PLATE_GRADIENT:
+    NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND:
       _default: "linear-gradient(136.9deg,rgb(107 94 236) 1.5%,rgb(0 82 255) 56.84%,rgb(82 62 231) 98.54%)"
     NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS:
       _default: ''
@@ -126,9 +126,13 @@ frontend:
     NEXT_PUBLIC_HOMEPAGE_CHARTS:
       _default: "['daily_txs']"
     NEXT_PUBLIC_IS_TESTNET:
-      _default: "true"
+      _default: true
     NEXT_PUBLIC_VISUALIZE_API_HOST:
       _default: https://visualizer-optimism-goerli.test.aws-k8s.blockscout.com
+    NEXT_PUBLIC_CONTRACT_INFO_API_HOST:
+      _default: https://contracts-info-test.k8s-dev.blockscout.com
+    NEXT_PUBLIC_ADMIN_SERVICE_API_HOST:
+      _default: https://admin-rs-test.k8s-dev.blockscout.com
     NEXT_PUBLIC_IS_L2_NETWORK:
       _default: "true"
     NEXT_PUBLIC_L1_BASE_URL:

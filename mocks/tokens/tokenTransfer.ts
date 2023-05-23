@@ -30,6 +30,7 @@ export const erc20: TokenTransfer = {
     symbol: 'ARIA',
     type: 'ERC-20',
     total_supply: '0',
+    icon_url: null,
   },
   total: {
     decimals: '18',
@@ -73,6 +74,7 @@ export const erc721: TokenTransfer = {
     symbol: 'AriaSA',
     type: 'ERC-721',
     total_supply: '0',
+    icon_url: null,
   },
   total: {
     token_id: '875879856',
@@ -115,6 +117,7 @@ export const erc1155A: TokenTransfer = {
     symbol: 'MY_SYMBOL_IS_VERY_LONG',
     type: 'ERC-1155',
     total_supply: '0',
+    icon_url: null,
   },
   total: {
     token_id: '123',

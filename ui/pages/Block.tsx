@@ -2,7 +2,7 @@ import { Skeleton } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
+import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import appConfig from 'configs/app/config';
 import useApiQuery from 'lib/api/useApiQuery';
@@ -13,11 +13,12 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import BlockDetails from 'ui/block/BlockDetails';
 import BlockWithdrawals from 'ui/block/BlockWithdrawals';
 import TextAd from 'ui/shared/ad/TextAd';
+import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
 import Pagination from 'ui/shared/Pagination';
-import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
 import SkeletonTabs from 'ui/shared/skeletons/SkeletonTabs';
+import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TxsContent from 'ui/txs/TxsContent';
 
 const TAB_LIST_PROPS = {
@@ -82,7 +83,18 @@ const BlockPageContent = () => {
     pagination = blockWithdrawalsQuery.pagination;
   }
 
-  const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/blocks');
+  const backLink = React.useMemo(() => {
+    const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/blocks');
+
+    if (!hasGoBackLink) {
+      return;
+    }
+
+    return {
+      label: 'Back to blocks list',
+      url: appProps.referrer,
+    };
+  }, [ appProps.referrer ]);
 
   return (
     <>
@@ -91,9 +103,9 @@ const BlockPageContent = () => {
         <Skeleton h={ 10 } w="300px" mb={ 6 }/>
       ) : (
         <PageTitle
-          text={ `Block #${ blockQuery.data?.height }` }
-          backLinkUrl={ hasGoBackLink ? appProps.referrer : undefined }
-          backLinkLabel="Back to blocks list"
+          title={ `Block #${ blockQuery.data?.height }` }
+          backLink={ backLink }
+          contentAfter={ <NetworkExplorers type="block" pathParam={ height } ml={{ base: 'initial', lg: 'auto' }}/> }
         />
       ) }
       { blockQuery.isLoading ? <SkeletonTabs/> : (

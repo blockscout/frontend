@@ -1,12 +1,12 @@
 import type { Transaction } from 'types/api/transaction';
 
-import type { AddressTag, WatchlistName } from './addressParams';
+import type { UserTags } from './addressParams';
 import type { Block } from './block';
 import type { InternalTransaction } from './internalTransaction';
-import type { TokenInfo, TokenType } from './token';
+import type { TokenInfo, TokenInstance, TokenType } from './token';
 import type { TokenTransfer, TokenTransferPagination } from './tokenTransfer';
 
-export interface Address {
+export interface Address extends UserTags {
   block_number_balance_updated_at: number | null;
   coin_balance: string | null;
   creator_address_hash: string | null;
@@ -30,11 +30,8 @@ export interface Address {
   is_contract: boolean;
   is_verified: boolean;
   name: string | null;
-  private_tags: Array<AddressTag> | null;
-  public_tags: Array<AddressTag> | null;
   token: TokenInfo | null;
   watchlist_address_id: number | null;
-  watchlist_names: Array<WatchlistName> | null;
 }
 
 export interface AddressCounters {
@@ -48,6 +45,7 @@ export interface AddressTokenBalance {
   token: TokenInfo;
   token_id: string | null;
   value: string;
+  token_instance?: TokenInstance;
 }
 
 export interface AddressTokensResponse {

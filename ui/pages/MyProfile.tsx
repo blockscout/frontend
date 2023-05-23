@@ -57,7 +57,7 @@ const MyProfile = () => {
 
   return (
     <>
-      <PageTitle text="My profile"/>
+      <PageTitle title="My profile"/>
       { content }
     </>
   );

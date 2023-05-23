@@ -1,12 +1,12 @@
-// import { Icon } from '@chakra-ui/react';
 import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
-// import plusIcon from 'icons/plus.svg';
 import * as textAdMock from 'mocks/ad/textAd';
 import TestApp from 'playwright/TestApp';
 
-import PageTitle from './PageTitle';
+import DefaultView from './specs/DefaultView';
+import LongNameAndManyTags from './specs/LongNameAndManyTags';
+import WithTextAd from './specs/WithTextAd';
 
 test.beforeEach(async({ page }) => {
   await page.route('https://request-global.czilladx.com/serve/native.php?z=19260bf627546ab7242', (route) => route.fulfill({
@@ -19,51 +19,38 @@ test.beforeEach(async({ page }) => {
       path: './playwright/image_s.jpg',
     });
   });
+  await page.route('https://example.com/logo.png', (route) => {
+    return route.fulfill({
+      status: 200,
+      path: './playwright/image_s.jpg',
+    });
+  });
 });
 
 test('default view +@mobile', async({ mount }) => {
   const component = await mount(
     <TestApp>
-      <PageTitle
-        text="Title"
-      />
+      <DefaultView/>
     </TestApp>,
   );
 
   await expect(component).toHaveScreenshot();
 });
 
-test('with text ad, back link and addons +@mobile +@dark-mode', async({ mount }) => {
-  // https://github.com/microsoft/playwright/issues/15620
-  // not possible to pass component as a prop in tests
-  // const left = <Icon as={ plusIcon }/>;
-
+test('with text ad +@mobile', async({ mount }) => {
   const component = await mount(
     <TestApp>
-      <PageTitle
-        text="Title"
-        withTextAd
-        backLinkLabel="Back"
-        backLinkUrl="back"
-        // additionalsLeft={ left }
-        additionalsRight="Privet"
-      />
+      <WithTextAd/>
     </TestApp>,
   );
 
   await expect(component).toHaveScreenshot();
 });
 
-test('long title with text ad, back link and addons +@mobile', async({ mount }) => {
+test('with long name and many tags +@mobile', async({ mount }) => {
   const component = await mount(
     <TestApp>
-      <PageTitle
-        text="This title is long, really long"
-        withTextAd
-        backLinkLabel="Back"
-        backLinkUrl="back"
-        additionalsRight="Privet, kak dela?"
-      />
+      <LongNameAndManyTags/>
     </TestApp>,
   );
 

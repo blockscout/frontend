@@ -1,18 +1,18 @@
-import { Flex, Tag } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
+import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/appContext';
-import networkExplorers from 'lib/networks/networkExplorers';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import TextAd from 'ui/shared/ad/TextAd';
-import LinkExternal from 'ui/shared/LinkExternal';
+import EntityTags from 'ui/shared/EntityTags';
+import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
+import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TxDetails from 'ui/tx/TxDetails';
 import TxInternals from 'ui/tx/TxInternals';
 import TxLogs from 'ui/tx/TxLogs';
@@ -32,47 +32,45 @@ const TABS: Array<RoutedTab> = [
 const TransactionPageContent = () => {
   const router = useRouter();
   const appProps = useAppContext();
+  const isMobile = useIsMobile();
 
-  const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/txs');
   const hash = getQueryParamString(router.query.hash);
 
-  const { data } = useApiQuery('tx', {
+  const { data, isPlaceholderData } = useApiQuery('tx', {
     pathParams: { hash },
     queryOptions: { enabled: Boolean(hash) },
   });
 
-  const explorersLinks = networkExplorers
-    .filter((explorer) => explorer.paths.tx)
-    .map((explorer) => {
-      const url = new URL(explorer.paths.tx + '/' + hash, explorer.baseUrl);
-      return <LinkExternal key={ explorer.baseUrl } href={ url.toString() }>Open in { explorer.title }</LinkExternal>;
-    });
-
-  const additionals = (
-    <Flex justifyContent="space-between" alignItems="center" flexGrow={ 1 } flexWrap="wrap">
-      { data?.tx_tag && <Tag my={ 2 }>{ data.tx_tag }</Tag> }
-      { explorersLinks.length > 0 && (
-        <Flex
-          alignItems="center"
-          flexWrap="wrap"
-          columnGap={ 6 }
-          rowGap={ 3 }
-          ml={{ base: 'initial', lg: 'auto' }}
-        >
-          { explorersLinks }
-        </Flex>
-      ) }
-    </Flex>
+  const tags = (
+    <EntityTags
+      isLoading={ isPlaceholderData }
+      tagsBefore={ [ data?.tx_tag ? { label: data.tx_tag, display_name: data.tx_tag } : undefined ] }
+      contentAfter={
+        <NetworkExplorers type="tx" pathParam={ hash } ml={{ base: 'initial', lg: 'auto' }} hideText={ isMobile && Boolean(data?.tx_tag) }/>
+      }
+    />
   );
+
+  const backLink = React.useMemo(() => {
+    const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/txs');
+
+    if (!hasGoBackLink) {
+      return;
+    }
+
+    return {
+      label: 'Back to transactions list',
+      url: appProps.referrer,
+    };
+  }, [ appProps.referrer ]);
 
   return (
     <Page>
       <TextAd mb={ 6 }/>
       <PageTitle
-        text="Transaction details"
-        additionalsRight={ additionals }
-        backLinkUrl={ hasGoBackLink ? appProps.referrer : undefined }
-        backLinkLabel="Back to transactions list"
+        title="Transaction details"
+        backLink={ backLink }
+        contentAfter={ tags }
       />
       <RoutedTabs tabs={ TABS }/>
     </Page>

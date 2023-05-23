@@ -132,3 +132,39 @@ test('search by tx hash +@mobile', async({ mount, page }) => {
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
 });
+
+test('search with simple match', async({ mount, page }) => {
+  const API_URL = buildApiUrl('search') + `?q=${ searchMock.tx1.tx_hash }`;
+  const API_CHECK_REDIRECT_URL = buildApiUrl('search_check_redirect') + `?q=${ searchMock.tx1.tx_hash }`;
+
+  await page.route(API_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify({
+      items: [
+        searchMock.tx1,
+      ],
+    }),
+  }));
+  await page.route(API_CHECK_REDIRECT_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify({
+      parameter: searchMock.tx1.tx_hash,
+      redirect: true,
+      type: 'transaction',
+    }),
+  }));
+
+  await mount(
+    <TestApp>
+      <SearchBar/>
+    </TestApp>,
+  );
+  await page.getByPlaceholder(/search/i).type(searchMock.tx1.tx_hash);
+  await page.waitForResponse(API_URL);
+
+  const resultText = page.getByText('Found 1 matching result');
+  expect(resultText).toBeTruthy();
+
+  const links = page.getByText(searchMock.tx1.tx_hash);
+  await expect(links).toHaveCount(1);
+});

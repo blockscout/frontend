@@ -127,7 +127,7 @@ const ApiKeysPage: React.FC = () => {
 
   return (
     <>
-      <PageTitle text="API keys"/>
+      <PageTitle title="API keys"/>
       { content }
     </>
   );

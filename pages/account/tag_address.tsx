@@ -22,4 +22,4 @@ const PrivateTagsPage: NextPage = () => {
 
 export default PrivateTagsPage;
 
-export { getServerSideProps } from 'lib/next/getServerSideProps';
+export { getServerSideProps } from 'lib/next/account/getServerSideProps';

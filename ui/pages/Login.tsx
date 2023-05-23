@@ -56,7 +56,7 @@ const Login = () => {
   return (
     <Page>
       <VStack gap={ 4 } alignItems="flex-start" maxW="1000px">
-        <PageTitle text="Login page 😂"/>
+        <PageTitle title="Login page 😂"/>
         { isFormVisible && (
           <>
             <Alert status="error" flexDirection="column" alignItems="flex-start">

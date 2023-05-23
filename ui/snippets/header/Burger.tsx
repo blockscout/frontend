@@ -44,7 +44,7 @@ const Burger = () => {
         <DrawerOverlay/>
         <DrawerContent maxWidth="260px">
           <DrawerBody p={ 6 } display="flex" flexDirection="column">
-            <Icon as={ testnetIcon } h="14px" w="auto" color="red.400" alignSelf="flex-start"/>
+            { appConfig.network.isTestnet && <Icon as={ testnetIcon } h="14px" w="auto" color="red.400" alignSelf="flex-start"/> }
             <Flex alignItems="center" justifyContent="space-between">
               <NetworkLogo onClick={ handleNetworkLogoClick }/>
               { appConfig.featuredNetworks ? (

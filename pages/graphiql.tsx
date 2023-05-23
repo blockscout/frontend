@@ -16,7 +16,7 @@ const GraphiqlPage: NextPage = () => {
   return (
     <Page>
       <Head><title>Graph Page</title></Head>
-      <PageTitle text="GraphQL playground"/>
+      <PageTitle title="GraphQL playground"/>
       <GraphQL/>
     </Page>
   );

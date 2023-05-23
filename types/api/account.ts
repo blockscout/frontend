@@ -160,3 +160,58 @@ export type PublicTagErrors = {
   full_name: Array<string>;
   tags: Array<string>;
 }
+
+export interface VerifiedAddress {
+  userId: string;
+  chainId: string;
+  contractAddress: string;
+  verifiedDate: string;
+  metadata: {
+    tokenName: string | null;
+    tokenSymbol: string | null;
+  };
+}
+
+export interface VerifiedAddressResponse {
+  verifiedAddresses: Array<VerifiedAddress>;
+}
+
+export interface TokenInfoApplicationConfig {
+  projectSectors: Array<string>;
+}
+
+export interface TokenInfoApplication {
+  adminComments?: string;
+  coinGeckoTicker?: string;
+  coinMarketCapTicker?: string;
+  comment?: string;
+  defiLlamaTicker?: string;
+  discord?: string;
+  docs?: string;
+  facebook?: string;
+  github?: string;
+  iconUrl: string;
+  id: string;
+  linkedin?: string;
+  medium?: string;
+  openSea?: string;
+  projectDescription?: string;
+  projectEmail: string;
+  projectName?: string;
+  projectSector?: string;
+  projectWebsite: string;
+  reddit?: string;
+  requesterEmail: string;
+  requesterName: string;
+  slack?: string;
+  status: 'STATUS_UNKNOWN' | 'IN_PROCESS' | 'APPROVED' | 'REJECTED' | 'UPDATE_REQUIRED';
+  support?: string;
+  telegram?: string;
+  tokenAddress: string;
+  twitter?: string;
+  updatedAt: string;
+}
+
+export interface TokenInfoApplications {
+  submissions: Array<TokenInfoApplication>;
+}

@@ -65,7 +65,7 @@ const TokenSelectItem = ({ data }: Props) => {
       href={ url }
     >
       <Flex alignItems="center" w="100%">
-        <TokenLogo hash={ data.token.address } name={ data.token.name } boxSize={ 6 }/>
+        <TokenLogo data={ data.token } boxSize={ 6 }/>
         <Text fontWeight={ 700 } ml={ 2 }>{ data.token.name || <HashStringShorten hash={ data.token.address }/> }</Text>
         { data.usd && <Text fontWeight={ 700 } ml="auto">${ data.usd.toFormat(2) }</Text> }
       </Flex>

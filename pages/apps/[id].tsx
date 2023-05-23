@@ -5,7 +5,7 @@ import React from 'react';
 import MarketplaceApp from 'ui/pages/MarketplaceApp';
 import Page from 'ui/shared/Page/Page';
 
-const AppPage: NextPage = () => {
+const MarketplaceAppPage: NextPage = () => {
   return (
     <Page wrapChildren={ false }>
       <Head><title>Blockscout | Marketplace</title></Head>
@@ -14,6 +14,6 @@ const AppPage: NextPage = () => {
   );
 };
 
-export default AppPage;
+export default MarketplaceAppPage;
 
 export { getServerSideProps } from 'lib/next/getServerSideProps';

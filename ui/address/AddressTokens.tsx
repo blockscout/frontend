@@ -9,7 +9,7 @@ import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import { tokenTabsByType } from 'ui/pages/Address';
 import Pagination from 'ui/shared/Pagination';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
-import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
+import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 
 import ERC1155Tokens from './tokens/ERC1155Tokens';
 import ERC20Tokens from './tokens/ERC20Tokens';

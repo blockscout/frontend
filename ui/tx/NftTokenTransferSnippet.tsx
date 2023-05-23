@@ -2,22 +2,22 @@ import { Flex, Link, Text, Icon, Box } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
+import type { TokenInfo } from 'types/api/token';
+
 import nftIcon from 'icons/nft_shield.svg';
 import AddressLink from 'ui/shared/address/AddressLink';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
 
 interface Props {
+  token: TokenInfo;
   value: string;
   tokenId: string;
-  hash: string;
-  name?: string | null;
-  symbol?: string | null;
 }
 
-const NftTokenTransferSnippet = ({ value, name, hash, symbol, tokenId }: Props) => {
+const NftTokenTransferSnippet = ({ value, token, tokenId }: Props) => {
   const num = value === '1' ? '' : value;
-  const url = route({ pathname: '/token/[hash]/instance/[id]', query: { hash: hash, id: tokenId } });
+  const url = route({ pathname: '/token/[hash]/instance/[id]', query: { hash: token.address, id: tokenId } });
 
   return (
     <Flex alignItems="center" columnGap={ 3 } rowGap={ 2 } flexWrap="wrap">
@@ -28,10 +28,10 @@ const NftTokenTransferSnippet = ({ value, name, hash, symbol, tokenId }: Props) 
           { tokenId.length > 8 ? <HashStringShorten hash={ tokenId }/> : tokenId }
         </Link>
       </Box>
-      { name ? (
-        <TokenSnippet symbol={ symbol } hash={ hash } name={ name } w="auto" logoSize={ 5 } columnGap={ 1 }/>
+      { token.name ? (
+        <TokenSnippet data={ token } w="auto" logoSize={ 5 } columnGap={ 1 }/>
       ) : (
-        <AddressLink hash={ hash } truncation="constant" type="token"/>
+        <AddressLink hash={ token.address } truncation="constant" type="token"/>
       ) }
     </Flex>
   );
