@@ -67,11 +67,11 @@ export const stylesheet: Array<cytoscape.Stylesheet> = [
     },
   },
   {
-    selector: '.curve-unbundled-bezier',
+    selector: '.curve-bezier',
     style: {
-      'curve-style': 'unbundled-bezier',
-      'control-point-distances': '10 50 10',
-      'control-point-weights': '0.1 0.5 0.9',
+      'curve-style': 'bezier',
+      'control-point-step-size': 100,
+      'control-point-distance': 50,
     },
   },
   {
@@ -86,14 +86,6 @@ export const stylesheet: Array<cytoscape.Stylesheet> = [
     selector: '.curve-straight',
     style: {
       'curve-style': 'straight',
-    },
-  },
-  {
-    selector: '.curve-multi-unbundled-bezier',
-    style: {
-      'curve-style': 'unbundled-bezier',
-      'control-point-distances': [ 40, -40 ],
-      'control-point-weights': [ 0.250, 0.75 ],
     },
   },
 

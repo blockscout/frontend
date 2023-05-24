@@ -44,12 +44,12 @@ export const elements: Parameters<typeof CytoscapeComponent['normalizeElements']
     },
   ],
   edges: [
-    { data: { id: 'e0', source: 'n0', target: 'n1', label: '0: 28.78299468309970842 DAI' }, classes: 'edge-label edge-out curve-unbundled-bezier' },
-    { data: { id: 'e1', source: 'n0', target: 'n1', label: '1: 23.1524 USDC' }, classes: 'edge-label edge-out curve-unbundled-bezier' },
-    { data: { id: 'e2', source: 'n1', target: 'n2', label: '2: 28.782370186250247577 DAI' }, classes: 'edge-label edge-out curve-unbundled-bezier' },
-    { data: { id: 'e3', source: 'n1', target: 'n2', label: '3: 23.1524 USDC' }, classes: 'edge-label edge-out curve-unbundled-bezier' },
-    { data: { id: 'e4', source: 'n2', target: 'n3', label: '4: 28.782370186250247577 DAI' }, classes: 'edge-label edge-out curve-unbundled-bezier' },
-    { data: { id: 'e5', source: 'n2', target: 'n3', label: '5: 23.1524 USDC' }, classes: 'edge-label edge-out curve-unbundled-bezier' },
+    { data: { id: 'e0', source: 'n0', target: 'n1', label: '0: 28.78299468309970842 DAI' }, classes: 'edge-label edge-out curve-bezier' },
+    { data: { id: 'e1', source: 'n0', target: 'n1', label: '1: 23.1524 USDC' }, classes: 'edge-label edge-out curve-bezier' },
+    { data: { id: 'e2', source: 'n1', target: 'n2', label: '2: 28.782370186250247577 DAI' }, classes: 'edge-label edge-out curve-bezier' },
+    { data: { id: 'e3', source: 'n1', target: 'n2', label: '3: 23.1524 USDC' }, classes: 'edge-label edge-out curve-bezier' },
+    { data: { id: 'e4', source: 'n2', target: 'n3', label: '4: 28.782370186250247577 DAI' }, classes: 'edge-label edge-out curve-bezier' },
+    { data: { id: 'e5', source: 'n2', target: 'n3', label: '5: 23.1524 USDC' }, classes: 'edge-label edge-out curve-bezier' },
     {
       data: {
         id: 'e6',
