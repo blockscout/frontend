@@ -6,6 +6,8 @@ import type { InternalTransaction } from 'types/api/internalTransaction';
 import { SECOND } from 'lib/consts';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 // import { apos } from 'lib/html-entities';
+import { INTERNAL_TX } from 'stubs/internalTx';
+import { generateListStub } from 'stubs/utils';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 // import FilterInput from 'ui/shared/filters/FilterInput';
@@ -70,11 +72,12 @@ const TxInternals = () => {
   // const [ searchTerm, setSearchTerm ] = React.useState<string>('');
   const [ sort, setSort ] = React.useState<Sort>();
   const txInfo = useFetchTxInfo({ updateDelay: 5 * SECOND });
-  const { data, isLoading, isError, pagination, isPaginationVisible } = useQueryWithPages({
+  const { data, isPlaceholderData, isError, pagination, isPaginationVisible } = useQueryWithPages({
     resourceName: 'tx_internal_txs',
     pathParams: { hash: txInfo.data?.hash },
     options: {
-      enabled: Boolean(txInfo.data?.hash) && Boolean(txInfo.data?.status),
+      enabled: !txInfo.isPlaceholderData && Boolean(txInfo.data?.hash) && Boolean(txInfo.data?.status),
+      placeholderData: generateListStub<'tx_internal_txs'>(INTERNAL_TX, 3),
     },
   });
 
@@ -84,11 +87,14 @@ const TxInternals = () => {
 
   const handleSortToggle = React.useCallback((field: SortField) => {
     return () => {
+      if (isPlaceholderData) {
+        return;
+      }
       setSort(getNextSortValue(field));
     };
-  }, []);
+  }, [ isPlaceholderData ]);
 
-  if (!txInfo.isLoading && !txInfo.isError && !txInfo.data.status) {
+  if (!txInfo.isPlaceholderData && !txInfo.isError && !txInfo.data?.status) {
     return txInfo.socketStatus ? <TxSocketAlert status={ txInfo.socketStatus }/> : <TxPendingAlert/>;
   }
 
@@ -100,9 +106,15 @@ const TxInternals = () => {
 
   const content = filteredData ? (
     <>
-      <Show below="lg" ssr={ false }><TxInternalsList data={ filteredData }/></Show>
+      <Show below="lg" ssr={ false }><TxInternalsList data={ filteredData } isLoading={ isPlaceholderData }/></Show>
       <Hide below="lg" ssr={ false }>
-        <TxInternalsTable data={ filteredData } sort={ sort } onSortToggle={ handleSortToggle } top={ isPaginationVisible ? 80 : 0 }/>
+        <TxInternalsTable
+          data={ filteredData }
+          sort={ sort }
+          onSortToggle={ handleSortToggle }
+          top={ isPaginationVisible ? 80 : 0 }
+          isLoading={ isPlaceholderData }
+        />
       </Hide>
     </>
   ) : null;
@@ -118,7 +130,7 @@ const TxInternals = () => {
   return (
     <DataListDisplay
       isError={ isError || txInfo.isError }
-      isLoading={ isLoading || txInfo.isLoading }
+      isLoading={ false }
       items={ data?.items }
       skeletonProps={{ skeletonDesktopColumns: [ '28%', '20%', '24px', '20%', '16%', '16%' ] }}
       emptyText="There are no internal transactions for this transaction."

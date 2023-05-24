@@ -1,4 +1,3 @@
-import { Skeleton } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -10,6 +9,10 @@ import { useAppContext } from 'lib/appContext';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { BLOCK } from 'stubs/block';
+import { TX } from 'stubs/tx';
+import { generateListStub } from 'stubs/utils';
+import { WITHDRAWAL } from 'stubs/withdrawals';
 import BlockDetails from 'ui/block/BlockDetails';
 import BlockWithdrawals from 'ui/block/BlockWithdrawals';
 import TextAd from 'ui/shared/ad/TextAd';
@@ -36,14 +39,22 @@ const BlockPageContent = () => {
 
   const blockQuery = useApiQuery('block', {
     pathParams: { height },
-    queryOptions: { enabled: Boolean(height) },
+    queryOptions: {
+      enabled: Boolean(height),
+      placeholderData: BLOCK,
+    },
   });
 
   const blockTxsQuery = useQueryWithPages({
     resourceName: 'block_txs',
     pathParams: { height },
     options: {
-      enabled: Boolean(blockQuery.data?.height && tab === 'txs'),
+      enabled: Boolean(!blockQuery.isPlaceholderData && blockQuery.data?.height && tab === 'txs'),
+      placeholderData: generateListStub<'block_txs'>(TX, 50, {
+        block_number: 9004925,
+        index: 49,
+        items_count: 50,
+      }),
     },
   });
 
@@ -51,7 +62,11 @@ const BlockPageContent = () => {
     resourceName: 'block_withdrawals',
     pathParams: { height },
     options: {
-      enabled: Boolean(blockQuery.data?.height && appConfig.beaconChain.hasBeaconChain && tab === 'withdrawals'),
+      enabled: Boolean(!blockQuery.isPlaceholderData && blockQuery.data?.height && appConfig.beaconChain.hasBeaconChain && tab === 'withdrawals'),
+      placeholderData: generateListStub<'block_withdrawals'>(WITHDRAWAL, 50, {
+        index: 5,
+        items_count: 50,
+      }),
     },
   });
 
@@ -98,17 +113,14 @@ const BlockPageContent = () => {
 
   return (
     <>
-      { blockQuery.isLoading ? <Skeleton h={{ base: 12, lg: 6 }} mb={ 6 } w="100%" maxW="680px"/> : <TextAd mb={ 6 }/> }
-      { blockQuery.isLoading ? (
-        <Skeleton h={ 10 } w="300px" mb={ 6 }/>
-      ) : (
-        <PageTitle
-          title={ `Block #${ blockQuery.data?.height }` }
-          backLink={ backLink }
-          contentAfter={ <NetworkExplorers type="block" pathParam={ height } ml={{ base: 'initial', lg: 'auto' }}/> }
-        />
-      ) }
-      { blockQuery.isLoading ? <SkeletonTabs/> : (
+      <TextAd mb={ 6 }/>
+      <PageTitle
+        title={ `Block #${ blockQuery.data?.height }` }
+        backLink={ backLink }
+        contentAfter={ <NetworkExplorers type="block" pathParam={ height } ml={{ base: 'initial', lg: 'auto' }}/> }
+        isLoading={ blockQuery.isPlaceholderData }
+      />
+      { blockQuery.isPlaceholderData ? <SkeletonTabs tabs={ tabs }/> : (
         <RoutedTabs
           tabs={ tabs }
           tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }

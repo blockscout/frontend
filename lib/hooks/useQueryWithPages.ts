@@ -158,6 +158,7 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
     resetPage,
     hasNextPage: nextPageParams ? Object.keys(nextPageParams).length > 0 : false,
     canGoBackwards: canGoBackwards.current,
+    isLoading: queryResult.isPlaceholderData && !hasPagination,
   };
 
   const isPaginationVisible = hasPagination || (!queryResult.isLoading && !queryResult.isError && pagination.hasNextPage);

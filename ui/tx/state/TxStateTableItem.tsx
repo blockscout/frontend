@@ -1,4 +1,4 @@
-import { Tr, Td } from '@chakra-ui/react';
+import { Tr, Td, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TxStateChange } from 'types/api/txStateChanges';
@@ -11,26 +11,37 @@ import { getStateElements } from './utils';
 
 interface Props {
   data: TxStateChange;
+  isLoading?: boolean;
 }
 
-const TxStateTableItem = ({ data }: Props) => {
-  const { before, after, change, tag, tokenId } = getStateElements(data);
+const TxStateTableItem = ({ data, isLoading }: Props) => {
+  const { before, after, change, tag, tokenId } = getStateElements(data, isLoading);
 
   return (
     <Tr>
-      <Td lineHeight="30px">
-        { tag }
+      <Td>
+        <Box py="3px">
+          { tag }
+        </Box>
       </Td>
       <Td>
-        <Address height="30px">
-          <AddressIcon address={ data.address }/>
-          <AddressLink type="address" hash={ data.address.hash } alias={ data.address.name } fontWeight="500" truncation="constant" ml={ 2 }/>
+        <Address py="3px">
+          <AddressIcon address={ data.address } isLoading={ isLoading }/>
+          <AddressLink
+            type="address"
+            hash={ data.address.hash }
+            alias={ data.address.name }
+            fontWeight="500"
+            truncation="constant"
+            ml={ 2 }
+            isLoading={ isLoading }
+          />
         </Address>
       </Td>
-      <Td isNumeric lineHeight="30px">{ before }</Td>
-      <Td isNumeric lineHeight="30px">{ after }</Td>
-      <Td isNumeric lineHeight="30px"> { change } </Td>
-      <Td lineHeight="30px">{ tokenId }</Td>
+      <Td isNumeric><Box py="7px">{ before }</Box></Td>
+      <Td isNumeric><Box py="7px">{ after }</Box></Td>
+      <Td isNumeric><Box py="7px">{ change }</Box></Td>
+      <Td>{ tokenId }</Td>
     </Tr>
   );
 };

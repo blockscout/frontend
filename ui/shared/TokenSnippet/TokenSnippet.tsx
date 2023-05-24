@@ -12,14 +12,15 @@ interface Props {
   className?: string;
   logoSize?: number;
   isDisabled?: boolean;
+  isLoading?: boolean;
   hideSymbol?: boolean;
 }
 
-const TokenSnippet = ({ data, className, logoSize = 6, isDisabled, hideSymbol }: Props) => {
+const TokenSnippet = ({ data, className, logoSize = 6, isDisabled, hideSymbol, isLoading }: Props) => {
   return (
     <Flex className={ className } alignItems="center" columnGap={ 2 } w="100%">
-      <TokenLogo boxSize={ logoSize } data={ data }/>
-      <AddressLink hash={ data?.address || '' } alias={ data?.name || 'Unnamed token' } type="token" isDisabled={ isDisabled }/>
+      <TokenLogo boxSize={ logoSize } data={ data } isLoading={ isLoading }/>
+      <AddressLink hash={ data?.address || '' } alias={ data?.name || 'Unnamed token' } type="token" isDisabled={ isDisabled } isLoading={ isLoading }/>
       { data?.symbol && !hideSymbol && <Text variant="secondary">({ trimTokenSymbol(data.symbol) })</Text> }
     </Flex>
   );

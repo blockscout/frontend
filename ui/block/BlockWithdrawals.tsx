@@ -22,10 +22,22 @@ const BlockWithdrawals = ({ blockWithdrawalsQuery }: Props) => {
   const content = blockWithdrawalsQuery.data?.items ? (
     <>
       <Show below="lg" ssr={ false }>
-        { blockWithdrawalsQuery.data.items.map((item) => <WithdrawalsListItem item={ item } key={ item.index } view="block"/>) }
+        { blockWithdrawalsQuery.data.items.map((item, index) => (
+          <WithdrawalsListItem
+            key={ item.index + (blockWithdrawalsQuery.isPlaceholderData ? String(index) : '') }
+            item={ item }
+            view="block"
+            isLoading={ blockWithdrawalsQuery.isPlaceholderData }
+          />
+        )) }
       </Show>
       <Hide below="lg" ssr={ false }>
-        <WithdrawalsTable items={ blockWithdrawalsQuery.data.items } view="block" top={ blockWithdrawalsQuery.isPaginationVisible ? 80 : 0 }/>
+        <WithdrawalsTable
+          items={ blockWithdrawalsQuery.data.items }
+          isLoading={ blockWithdrawalsQuery.isPlaceholderData }
+          top={ blockWithdrawalsQuery.isPaginationVisible ? 80 : 0 }
+          view="block"
+        />
       </Hide>
     </>
   ) : null ;
@@ -33,7 +45,7 @@ const BlockWithdrawals = ({ blockWithdrawalsQuery }: Props) => {
   return (
     <DataListDisplay
       isError={ blockWithdrawalsQuery.isError }
-      isLoading={ blockWithdrawalsQuery.isLoading }
+      isLoading={ false }
       items={ blockWithdrawalsQuery.data?.items }
       skeletonProps={{ isLongSkeleton: true, skeletonDesktopColumns: Array(4).fill(`${ 100 / 4 }%`), skeletonDesktopMinW: '950px' }}
       emptyText="There are no withdrawals for this block."

@@ -1,5 +1,5 @@
 import type { As } from '@chakra-ui/react';
-import { Box, Button, Circle, Icon, useColorModeValue } from '@chakra-ui/react';
+import { Skeleton, Box, Button, Circle, Icon, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import filterIcon from 'icons/filter.svg';
@@ -8,14 +8,19 @@ const FilterIcon = <Icon as={ filterIcon } boxSize={ 5 } mr={{ base: 0, lg: 2 }}
 
 interface Props {
   isActive?: boolean;
+  isLoading?: boolean;
   appliedFiltersNum?: number;
   onClick: () => void;
   as?: As;
 }
 
-const FilterButton = ({ isActive, appliedFiltersNum, onClick, as }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
+const FilterButton = ({ isActive, isLoading, appliedFiltersNum, onClick, as }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
   const badgeColor = useColorModeValue('white', 'black');
   const badgeBgColor = useColorModeValue('blue.700', 'gray.50');
+
+  if (isLoading) {
+    return <Skeleton w={{ base: 9, lg: '78px' }} h={ 8 } borderRadius="base"/>;
+  }
 
   return (
     <Button

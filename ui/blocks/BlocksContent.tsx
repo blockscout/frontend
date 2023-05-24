@@ -1,4 +1,4 @@
-import { Show, Hide, Alert } from '@chakra-ui/react';
+import { Alert, Box } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
@@ -66,7 +66,7 @@ const BlocksContent = ({ type, query }: Props) => {
     topic: 'blocks:new_block',
     onSocketClose: handleSocketClose,
     onSocketError: handleSocketError,
-    isDisabled: query.isLoading || query.isError || query.pagination.page !== 1,
+    isDisabled: query.isPlaceholderData || query.isError || query.pagination.page !== 1,
   });
   useSocketMessage({
     channel,
@@ -77,12 +77,12 @@ const BlocksContent = ({ type, query }: Props) => {
   const content = query.data?.items ? (
     <>
       { socketAlert && <Alert status="warning" mb={ 6 } as="a" href={ window.document.location.href }>{ socketAlert }</Alert> }
-      <Show below="lg" key="content-mobile" ssr={ false }>
-        <BlocksList data={ query.data.items }/>
-      </Show>
-      <Hide below="lg" key="content-desktop" ssr={ false }>
-        <BlocksTable data={ query.data.items } top={ query.isPaginationVisible ? 80 : 0 } page={ query.pagination.page }/>
-      </Hide>
+      <Box display={{ base: 'block', lg: 'none' }}>
+        <BlocksList data={ query.data.items } isLoading={ query.isPlaceholderData } page={ query.pagination.page }/>
+      </Box>
+      <Box display={{ base: 'none', lg: 'block' }}>
+        <BlocksTable data={ query.data.items } top={ query.isPaginationVisible ? 80 : 0 } page={ query.pagination.page } isLoading={ query.isPlaceholderData }/>
+      </Box>
     </>
   ) : null;
 
@@ -95,7 +95,7 @@ const BlocksContent = ({ type, query }: Props) => {
   return (
     <DataListDisplay
       isError={ query.isError }
-      isLoading={ query.isLoading }
+      isLoading={ false }
       items={ query.data?.items }
       skeletonProps={{ skeletonDesktopColumns: [ '125px', '120px', '21%', '64px', '35%', '22%', '22%' ] }}
       emptyText="There are no blocks."

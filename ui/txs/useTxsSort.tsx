@@ -20,6 +20,10 @@ export default function useTxsSort(
   const [ sorting, setSorting ] = React.useState<Sort>(cookies.get(cookies.NAMES.TXS_SORT) as Sort);
 
   const setSortByField = React.useCallback((field: 'val' | 'fee') => () => {
+    if (queryResult.isPlaceholderData) {
+      return;
+    }
+
     setSorting((prevVal) => {
       let newVal: Sort = '';
       if (field === 'val') {
@@ -43,7 +47,7 @@ export default function useTxsSort(
       cookies.set(cookies.NAMES.TXS_SORT, newVal);
       return newVal;
     });
-  }, [ ]);
+  }, [ queryResult.isPlaceholderData ]);
 
   const setSortByValue = React.useCallback((value: Sort | undefined) => {
     setSorting((prevVal: Sort) => {

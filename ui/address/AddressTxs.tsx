@@ -13,6 +13,8 @@ import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
+import { TX } from 'stubs/tx';
+import { generateListStub } from 'stubs/utils';
 import ActionBar from 'ui/shared/ActionBar';
 import Pagination from 'ui/shared/Pagination';
 import TxsContent from 'ui/txs/TxsContent';
@@ -41,6 +43,13 @@ const AddressTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}
     pathParams: { hash: currentAddress },
     filters: { filter: filterValue },
     scrollRef,
+    options: {
+      placeholderData: generateListStub<'address_txs'>(TX, 50, {
+        block_number: 9005713,
+        index: 5,
+        items_count: 50,
+      }),
+    },
   });
 
   const handleFilterChange = React.useCallback((val: string | Array<string>) => {
@@ -112,7 +121,7 @@ const AddressTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}
     topic: `addresses:${ currentAddress?.toLowerCase() }`,
     onSocketClose: handleSocketClose,
     onSocketError: handleSocketError,
-    isDisabled: addressTxsQuery.pagination.page !== 1,
+    isDisabled: addressTxsQuery.pagination.page !== 1 || addressTxsQuery.isPlaceholderData,
   });
 
   useSocketMessage({
@@ -132,15 +141,23 @@ const AddressTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}
       defaultFilter={ filterValue }
       onFilterChange={ handleFilterChange }
       isActive={ Boolean(filterValue) }
+      isLoading={ addressTxsQuery.pagination.isLoading }
     />
   );
 
   return (
     <>
       { !isMobile && (
-        <ActionBar mt={ -6 } showShadow={ addressTxsQuery.isLoading }>
+        <ActionBar mt={ -6 }>
           { filter }
-          { currentAddress && <AddressCsvExportLink address={ currentAddress } type="transactions" ml="auto"/> }
+          { currentAddress && (
+            <AddressCsvExportLink
+              address={ currentAddress }
+              type="transactions"
+              ml="auto"
+              isLoading={ addressTxsQuery.pagination.isLoading }
+            />
+          ) }
           { addressTxsQuery.isPaginationVisible && <Pagination { ...addressTxsQuery.pagination } ml={ 8 }/> }
         </ActionBar>
       ) }

@@ -8,14 +8,22 @@ import BlocksListItem from 'ui/blocks/BlocksListItem';
 
 interface Props {
   data: Array<Block>;
+  isLoading: boolean;
+  page: number;
 }
 
-const BlocksList = ({ data }: Props) => {
+const BlocksList = ({ data, isLoading, page }: Props) => {
   return (
     <Box>
       <AnimatePresence initial={ false }>
-        { /* TODO prop "enableTimeIncrement" should be set to false for second and later pages */ }
-        { data.map((item) => <BlocksListItem key={ item.height } data={ item } enableTimeIncrement/>) }
+        { data.map((item, index) => (
+          <BlocksListItem
+            key={ item.height + (isLoading ? String(index) : '') }
+            data={ item }
+            isLoading={ isLoading }
+            enableTimeIncrement={ page === 1 && !isLoading }
+          />
+        )) }
       </AnimatePresence>
     </Box>
   );

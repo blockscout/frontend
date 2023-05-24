@@ -1,4 +1,4 @@
-import { Text, Grid, GridItem, Tooltip, Button, useColorModeValue, Alert, Link } from '@chakra-ui/react';
+import { Grid, GridItem, Tooltip, Button, useColorModeValue, Alert, Link, Skeleton } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
@@ -14,15 +14,16 @@ import LogTopic from 'ui/shared/logs/LogTopic';
 
 type Props = Log & {
   type: 'address' | 'transaction';
+  isLoading?: boolean;
 };
 
-const RowHeader = ({ children }: { children: React.ReactNode }) => (
+const RowHeader = ({ children, isLoading }: { children: React.ReactNode; isLoading?: boolean }) => (
   <GridItem _notFirst={{ my: { base: 4, lg: 0 } }}>
-    <Text fontWeight={ 500 }>{ children }</Text>
+    <Skeleton fontWeight={ 500 } isLoaded={ !isLoading } display="inline-block">{ children }</Skeleton>
   </GridItem>
 );
 
-const LogItem = ({ address, index, topics, data, decoded, type, tx_hash: txHash }: Props) => {
+const LogItem = ({ address, index, topics, data, decoded, type, tx_hash: txHash, isLoading }: Props) => {
 
   const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
   const dataBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
@@ -50,14 +51,15 @@ const LogItem = ({ address, index, topics, data, decoded, type, tx_hash: txHash 
           </Alert>
         </GridItem>
       ) }
-      { hasTxInfo ? <RowHeader>Transaction</RowHeader> : <RowHeader>Address</RowHeader> }
+      { hasTxInfo ? <RowHeader isLoading={ isLoading }>Transaction</RowHeader> : <RowHeader isLoading={ isLoading }>Address</RowHeader> }
       <GridItem display="flex" alignItems="center">
         <Address mr={{ base: 9, lg: 0 }}>
-          { !hasTxInfo && <AddressIcon address={ address } mr={ 2 }/> }
+          { !hasTxInfo && <AddressIcon address={ address } mr={ 2 } isLoading={ isLoading }/> }
           <AddressLink
             hash={ hasTxInfo ? txHash : address.hash }
             alias={ hasTxInfo ? undefined : address.name }
             type={ type === 'address' ? 'transaction' : 'address' }
+            isLoading={ isLoading }
           />
         </Address>
         { /* api doesn't have find topic feature yet */ }
@@ -66,34 +68,37 @@ const LogItem = ({ address, index, topics, data, decoded, type, tx_hash: txHash 
             <Icon as={ searchIcon } boxSize={ 5 }/>
           </Link>
         </Tooltip> */ }
-        <Tooltip label="Log index">
-          <Button variant="outline" colorScheme="gray" isActive ml="auto" size="sm" fontWeight={ 400 }>
-            { index }
-          </Button>
-        </Tooltip>
+        <Skeleton isLoaded={ !isLoading } ml="auto" borderRadius="base">
+          <Tooltip label="Log index">
+            <Button variant="outline" colorScheme="gray" isActive size="sm" fontWeight={ 400 }>
+              { index }
+            </Button>
+          </Tooltip>
+        </Skeleton>
       </GridItem>
       { decoded && (
         <>
-          <RowHeader>Decode input data</RowHeader>
+          <RowHeader isLoading={ isLoading }>Decode input data</RowHeader>
           <GridItem>
-            <LogDecodedInputData data={ decoded }/>
+            <LogDecodedInputData data={ decoded } isLoading={ isLoading }/>
           </GridItem>
         </>
       ) }
-      <RowHeader>Topics</RowHeader>
+      <RowHeader isLoading={ isLoading }>Topics</RowHeader>
       <GridItem>
         { topics.filter(Boolean).map((item, index) => (
           <LogTopic
             key={ index }
             hex={ item }
             index={ index }
+            isLoading={ isLoading }
           />
         )) }
       </GridItem>
-      <RowHeader>Data</RowHeader>
-      <GridItem p={ 4 } fontSize="sm" borderRadius="md" bgColor={ dataBgColor }>
+      <RowHeader isLoading={ isLoading }>Data</RowHeader>
+      <Skeleton isLoaded={ !isLoading } p={ 4 } fontSize="sm" borderRadius="md" bgColor={ isLoading ? undefined : dataBgColor }>
         { data }
-      </GridItem>
+      </Skeleton>
     </Grid>
   );
 };

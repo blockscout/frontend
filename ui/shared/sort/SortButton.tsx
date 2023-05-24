@@ -1,4 +1,4 @@
-import { Icon, IconButton, chakra } from '@chakra-ui/react';
+import { Icon, IconButton, chakra, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import upDownArrow from 'icons/arrows/up-down.svg';
@@ -7,9 +7,14 @@ type Props = {
   onClick: () => void;
   isActive: boolean;
   className?: string;
+  isLoading?: boolean;
 }
 
-const SortButton = ({ onClick, isActive, className }: Props) => {
+const SortButton = ({ onClick, isActive, className, isLoading }: Props) => {
+  if (isLoading) {
+    return <Skeleton className={ className } w="36px" h="32px" borderRadius="base"/>;
+  }
+
   return (
     <IconButton
       icon={ <Icon as={ upDownArrow } boxSize={ 5 }/> }

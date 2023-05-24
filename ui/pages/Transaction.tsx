@@ -7,10 +7,10 @@ import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/appContext';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { TX } from 'stubs/tx';
 import TextAd from 'ui/shared/ad/TextAd';
 import EntityTags from 'ui/shared/EntityTags';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
-import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TxDetails from 'ui/tx/TxDetails';
@@ -38,7 +38,10 @@ const TransactionPageContent = () => {
 
   const { data, isPlaceholderData } = useApiQuery('tx', {
     pathParams: { hash },
-    queryOptions: { enabled: Boolean(hash) },
+    queryOptions: {
+      enabled: Boolean(hash),
+      placeholderData: TX,
+    },
   });
 
   const tags = (
@@ -65,7 +68,7 @@ const TransactionPageContent = () => {
   }, [ appProps.referrer ]);
 
   return (
-    <Page>
+    <>
       <TextAd mb={ 6 }/>
       <PageTitle
         title="Transaction details"
@@ -73,7 +76,7 @@ const TransactionPageContent = () => {
         contentAfter={ tags }
       />
       <RoutedTabs tabs={ TABS }/>
-    </Page>
+    </>
   );
 };
 

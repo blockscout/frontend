@@ -20,11 +20,12 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import TOKEN_TYPE from 'lib/token/tokenTypes';
+import { getTokenTransfersStub } from 'stubs/token';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import Pagination from 'ui/shared/Pagination';
-import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
+import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import TokenLogo from 'ui/shared/TokenLogo';
 import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
 import TokenTransferList from 'ui/shared/TokenTransfer/TokenTransferList';
@@ -81,11 +82,18 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
     },
   );
 
-  const { isError, isLoading, data, pagination, onFilterChange, isPaginationVisible } = useQueryWithPages({
+  const { isError, isPlaceholderData, data, pagination, onFilterChange, isPaginationVisible } = useQueryWithPages({
     resourceName: 'address_token_transfers',
     pathParams: { hash: currentAddress },
     filters: tokenFilter ? { token: tokenFilter } : filters,
     scrollRef,
+    options: {
+      placeholderData: getTokenTransfersStub(undefined, {
+        block_number: 7793535,
+        index: 46,
+        items_count: 50,
+      }),
+    },
   });
 
   const handleTypeFilterChange = React.useCallback((nextValue: Array<TokenType>) => {
@@ -172,16 +180,17 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
           showSocketInfo={ pagination.page === 1 && !tokenFilter }
           socketInfoAlert={ socketAlert }
           socketInfoNum={ newItemsCount }
+          isLoading={ isPlaceholderData }
         />
       </Hide>
       <Show below="lg" ssr={ false }>
         { pagination.page === 1 && !tokenFilter && (
-          <SocketNewItemsNotice
+          <SocketNewItemsNotice.Mobile
             url={ window.location.href }
             num={ newItemsCount }
             alert={ socketAlert }
             type="token_transfer"
-            borderBottomRadius={ 0 }
+            isLoading={ isPlaceholderData }
           />
         ) }
         <TokenTransferList
@@ -189,6 +198,7 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
           baseAddress={ currentAddress }
           showTxInfo
           enableTimeIncrement
+          isLoading={ isPlaceholderData }
         />
       </Show>
     </>
@@ -227,7 +237,7 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
     <>
       { isMobile && tokenFilterComponent }
       { !isActionBarHidden && (
-        <ActionBar mt={ -6 } showShadow={ isLoading }>
+        <ActionBar mt={ -6 }>
           { !isMobile && tokenFilterComponent }
           { !tokenFilter && (
             <TokenTransferFilter
@@ -237,9 +247,17 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
               withAddressFilter
               onAddressFilterChange={ handleAddressFilterChange }
               defaultAddressFilter={ filters.filter }
+              isLoading={ isPlaceholderData }
             />
           ) }
-          { currentAddress && <AddressCsvExportLink address={ currentAddress } type="token-transfers" ml={{ base: 2, lg: 'auto' }}/> }
+          { currentAddress && (
+            <AddressCsvExportLink
+              address={ currentAddress }
+              type="token-transfers"
+              ml={{ base: 2, lg: 'auto' }}
+              isLoading={ isPlaceholderData }
+            />
+          ) }
           { isPaginationVisible && <Pagination ml={{ base: 'auto', lg: 8 }} { ...pagination }/> }
         </ActionBar>
       ) }
@@ -249,7 +267,7 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
   return (
     <DataListDisplay
       isError={ isError }
-      isLoading={ isLoading }
+      isLoading={ false }
       items={ data?.items }
       skeletonProps={{
         isLongSkeleton: true,

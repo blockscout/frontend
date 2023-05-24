@@ -47,6 +47,7 @@ export type Transaction = {
   l1_fee_scalar?: string;
   l1_gas_price?: string;
   l1_gas_used?: string;
+  has_error_in_internal_txs: boolean | null;
 }
 
 export type TransactionsResponse = TransactionsResponseValidated | TransactionsResponsePending;

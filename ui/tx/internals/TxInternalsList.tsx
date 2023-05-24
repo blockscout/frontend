@@ -5,10 +5,10 @@ import type { InternalTransaction } from 'types/api/internalTransaction';
 
 import TxInternalsListItem from 'ui/tx/internals/TxInternalsListItem';
 
-const TxInternalsList = ({ data }: { data: Array<InternalTransaction>}) => {
+const TxInternalsList = ({ data, isLoading }: { data: Array<InternalTransaction>; isLoading?: boolean }) => {
   return (
     <Box>
-      { data.map((item) => <TxInternalsListItem key={ item.transaction_hash } { ...item }/>) }
+      { data.map((item, index) => <TxInternalsListItem key={ item.transaction_hash + (isLoading ? index : '') } { ...item } isLoading={ isLoading }/>) }
     </Box>
   );
 };

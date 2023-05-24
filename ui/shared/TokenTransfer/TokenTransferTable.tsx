@@ -1,9 +1,9 @@
-import { Table, Tbody, Tr, Th, Td } from '@chakra-ui/react';
+import { Table, Tbody, Tr, Th } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
-import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
+import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import { default as Thead } from 'ui/shared/TheadSticky';
 import TokenTransferTableItem from 'ui/shared/TokenTransfer/TokenTransferTableItem';
 
@@ -16,6 +16,7 @@ interface Props {
   showSocketInfo?: boolean;
   socketInfoAlert?: string;
   socketInfoNum?: number;
+  isLoading?: boolean;
 }
 
 const TokenTransferTable = ({
@@ -27,6 +28,7 @@ const TokenTransferTable = ({
   showSocketInfo,
   socketInfoAlert,
   socketInfoNum,
+  isLoading,
 }: Props) => {
 
   return (
@@ -45,26 +47,22 @@ const TokenTransferTable = ({
       </Thead>
       <Tbody>
         { showSocketInfo && (
-          <Tr>
-            <Td colSpan={ 10 } p={ 0 }>
-              <SocketNewItemsNotice
-                borderRadius={ 0 }
-                pl="10px"
-                url={ window.location.href }
-                alert={ socketInfoAlert }
-                num={ socketInfoNum }
-                type="token_transfer"
-              />
-            </Td>
-          </Tr>
+          <SocketNewItemsNotice.Desktop
+            url={ window.location.href }
+            alert={ socketInfoAlert }
+            num={ socketInfoNum }
+            type="token_transfer"
+            isLoading={ isLoading }
+          />
         ) }
-        { data.map((item) => (
+        { data.map((item, index) => (
           <TokenTransferTableItem
-            key={ item.tx_hash + item.block_hash + item.log_index }
+            key={ item.tx_hash + item.block_hash + item.log_index + (isLoading ? index : '') }
             { ...item }
             baseAddress={ baseAddress }
             showTxInfo={ showTxInfo }
             enableTimeIncrement={ enableTimeIncrement }
+            isLoading={ isLoading }
           />
         )) }
       </Tbody>

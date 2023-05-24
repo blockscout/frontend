@@ -1,4 +1,3 @@
-import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -9,7 +8,8 @@ import useHasAccount from 'lib/hooks/useHasAccount';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useNewTxsSocket from 'lib/hooks/useNewTxsSocket';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
-import Page from 'ui/shared/Page/Page';
+import { TX } from 'stubs/tx';
+import { generateListStub } from 'stubs/utils';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TxsContent from 'ui/txs/TxsContent';
@@ -31,6 +31,12 @@ const Transactions = () => {
     filters: { filter: router.query.tab === 'pending' ? 'pending' : 'validated' },
     options: {
       enabled: !router.query.tab || router.query.tab === 'validated' || router.query.tab === 'pending',
+      placeholderData: generateListStub<'txs_validated'>(TX, 50, {
+        block_number: 9005713,
+        index: 5,
+        items_count: 50,
+        filter: 'validated',
+      }),
     },
   });
 
@@ -71,17 +77,15 @@ const Transactions = () => {
   ].filter(Boolean);
 
   return (
-    <Page>
-      <Box h="100%">
-        <PageTitle title="Transactions" withTextAd/>
-        <RoutedTabs
-          tabs={ tabs }
-          tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
-          rightSlot={ <TxsTabSlot pagination={ txsQuery.pagination } isPaginationVisible={ txsQuery.isPaginationVisible && !isMobile }/> }
-          stickyEnabled={ !isMobile }
-        />
-      </Box>
-    </Page>
+    <>
+      <PageTitle title="Transactions" withTextAd/>
+      <RoutedTabs
+        tabs={ tabs }
+        tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
+        rightSlot={ <TxsTabSlot pagination={ txsQuery.pagination } isPaginationVisible={ txsQuery.isPaginationVisible && !isMobile }/> }
+        stickyEnabled={ !isMobile }
+      />
+    </>
   );
 };
 

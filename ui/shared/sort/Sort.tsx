@@ -20,9 +20,10 @@ interface Props<Sort extends string> {
   options: Array<Option<Sort>>;
   sort: Sort | undefined;
   setSort: (value: Sort | undefined) => void;
+  isLoading?: boolean;
 }
 
-const Sort = <Sort extends string>({ sort, setSort, options }: Props<Sort>) => {
+const Sort = <Sort extends string>({ sort, setSort, options, isLoading }: Props<Sort>) => {
   const { isOpen, onToggle } = useDisclosure();
 
   const setSortingFromMenu = React.useCallback((val: string | Array<string>) => {
@@ -36,6 +37,7 @@ const Sort = <Sort extends string>({ sort, setSort, options }: Props<Sort>) => {
         <SortButton
           isActive={ isOpen || Boolean(sort) }
           onClick={ onToggle }
+          isLoading={ isLoading }
         />
       </MenuButton>
       <MenuList minWidth="240px" zIndex="popover">

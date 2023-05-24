@@ -1,15 +1,17 @@
-import { Tag } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TransactionType } from 'types/api/transaction';
 
+import Tag from 'ui/shared/chakra/Tag';
+
 export interface Props {
   types: Array<TransactionType>;
+  isLoading?: boolean;
 }
 
 const TYPES_ORDER = [ 'token_creation', 'contract_creation', 'token_transfer', 'contract_call', 'coin_transfer' ];
 
-const TxType = ({ types }: Props) => {
+const TxType = ({ types, isLoading }: Props) => {
   const typeToShow = types.sort((t1, t2) => TYPES_ORDER.indexOf(t1) - TYPES_ORDER.indexOf(t2))[0];
 
   let label;
@@ -43,7 +45,7 @@ const TxType = ({ types }: Props) => {
   }
 
   return (
-    <Tag colorScheme={ colorScheme }>
+    <Tag colorScheme={ colorScheme } isLoading={ isLoading }>
       { label }
     </Tag>
   );

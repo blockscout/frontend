@@ -1,4 +1,4 @@
-import { Tag, TagLabel, TagLeftIcon, Tooltip } from '@chakra-ui/react';
+import { TagLabel, TagLeftIcon, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
@@ -6,13 +6,15 @@ import type { Transaction } from 'types/api/transaction';
 import errorIcon from 'icons/status/error.svg';
 import pendingIcon from 'icons/status/pending.svg';
 import successIcon from 'icons/status/success.svg';
+import Tag from 'ui/shared/chakra/Tag';
 
 export interface Props {
   status: Transaction['status'];
   errorText?: string | null;
+  isLoading?: boolean;
 }
 
-const TxStatus = ({ status, errorText }: Props) => {
+const TxStatus = ({ status, errorText, isLoading }: Props) => {
   let label;
   let icon;
   let colorScheme;
@@ -39,7 +41,7 @@ const TxStatus = ({ status, errorText }: Props) => {
 
   return (
     <Tooltip label={ errorText }>
-      <Tag colorScheme={ colorScheme } display="inline-flex">
+      <Tag colorScheme={ colorScheme } display="inline-flex" isLoading={ isLoading }>
         <TagLeftIcon boxSize={ 2.5 } as={ icon }/>
         <TagLabel>{ label }</TagLabel>
       </Tag>

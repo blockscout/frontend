@@ -47,6 +47,7 @@ export const base: Block = {
   tx_fees: '26853607500000000',
   type: 'block',
   uncles_hashes: [],
+  has_beacon_chain_withdrawals: false,
 };
 
 export const genesis: Block = {
@@ -83,6 +84,7 @@ export const genesis: Block = {
   tx_fees: '0',
   type: 'block',
   uncles_hashes: [],
+  has_beacon_chain_withdrawals: false,
 };
 
 export const base2: Block = {

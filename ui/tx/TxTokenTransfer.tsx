@@ -9,6 +9,7 @@ import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import { apos } from 'lib/html-entities';
 import TOKEN_TYPE from 'lib/token/tokenTypes';
+import { getTokenTransfersStub } from 'stubs/token';
 import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DataListDisplay from 'ui/shared/DataListDisplay';
@@ -34,7 +35,10 @@ const TxTokenTransfer = () => {
   const tokenTransferQuery = useQueryWithPages({
     resourceName: 'tx_token_transfers',
     pathParams: { hash: txsInfo.data?.hash.toString() },
-    options: { enabled: Boolean(txsInfo.data?.status && txsInfo.data?.hash) },
+    options: {
+      enabled: !txsInfo.isPlaceholderData && Boolean(txsInfo.data?.status && txsInfo.data?.hash),
+      placeholderData: getTokenTransfersStub(),
+    },
     filters: { type: typeFilter },
   });
 
@@ -43,7 +47,7 @@ const TxTokenTransfer = () => {
     setTypeFilter(nextValue);
   }, [ tokenTransferQuery ]);
 
-  if (!txsInfo.isLoading && !txsInfo.isError && !txsInfo.data.status) {
+  if (!txsInfo.isLoading && !txsInfo.isPlaceholderData && !txsInfo.isError && !txsInfo.data.status) {
     return txsInfo.socketStatus ? <TxSocketAlert status={ txsInfo.socketStatus }/> : <TxPendingAlert/>;
   }
 
@@ -57,10 +61,10 @@ const TxTokenTransfer = () => {
   const content = tokenTransferQuery.data?.items ? (
     <>
       <Hide below="lg" ssr={ false }>
-        <TokenTransferTable data={ tokenTransferQuery.data?.items } top={ isActionBarHidden ? 0 : 80 }/>
+        <TokenTransferTable data={ tokenTransferQuery.data?.items } top={ isActionBarHidden ? 0 : 80 } isLoading={ tokenTransferQuery.isPlaceholderData }/>
       </Hide>
       <Show below="lg" ssr={ false }>
-        <TokenTransferList data={ tokenTransferQuery.data?.items }/>
+        <TokenTransferList data={ tokenTransferQuery.data?.items } isLoading={ tokenTransferQuery.isPlaceholderData }/>
       </Show>
     </>
   ) : null;
@@ -71,6 +75,7 @@ const TxTokenTransfer = () => {
         defaultTypeFilters={ typeFilter }
         onTypeFilterChange={ handleTypeFilterChange }
         appliedFiltersNum={ numActiveFilters }
+        isLoading={ tokenTransferQuery.isPlaceholderData }
       />
       { tokenTransferQuery.isPaginationVisible && <Pagination ml="auto" { ...tokenTransferQuery.pagination }/> }
     </ActionBar>
@@ -79,7 +84,7 @@ const TxTokenTransfer = () => {
   return (
     <DataListDisplay
       isError={ txsInfo.isError || tokenTransferQuery.isError }
-      isLoading={ txsInfo.isLoading || tokenTransferQuery.isLoading }
+      isLoading={ false }
       items={ tokenTransferQuery.data?.items }
       skeletonProps={{
         isLongSkeleton: true,

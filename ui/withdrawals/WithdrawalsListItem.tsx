@@ -1,4 +1,4 @@
-import { Icon } from '@chakra-ui/react';
+import { Flex, Icon, Skeleton } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
@@ -16,7 +16,7 @@ import CurrencyValue from 'ui/shared/CurrencyValue';
 import LinkInternal from 'ui/shared/LinkInternal';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 
-type Props = {
+type Props = ({
   item: WithdrawalsItem;
   view: 'list';
 } | {
@@ -25,44 +25,52 @@ type Props = {
 } | {
   item: BlockWithdrawalsItem;
   view: 'block';
-};
+}) & { isLoading?: boolean };
 
-const WithdrawalsListItem = ({ item, view }: Props) => {
+const WithdrawalsListItem = ({ item, isLoading, view }: Props) => {
   return (
     <ListItemMobileGrid.Container gridTemplateColumns="100px auto">
 
-      <ListItemMobileGrid.Label>Index</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>Index</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        { item.index }
+        <Skeleton isLoaded={ !isLoading } display="inline-block">{ item.index }</Skeleton>
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label>Validator index</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>Validator index</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        { item.validator_index }
+        <Skeleton isLoaded={ !isLoading } display="inline-block">{ item.validator_index }</Skeleton>
       </ListItemMobileGrid.Value>
 
       { view !== 'block' && (
         <>
-          <ListItemMobileGrid.Label>Block</ListItemMobileGrid.Label><ListItemMobileGrid.Value>
-            <LinkInternal
-              href={ route({ pathname: '/block/[height]', query: { height: item.block_number.toString() } }) }
-              display="flex"
-              width="fit-content"
-              alignItems="center"
-            >
-              <Icon as={ blockIcon } boxSize={ 6 } mr={ 1 }/>
-              { item.block_number }
-            </LinkInternal>
+          <ListItemMobileGrid.Label isLoading={ isLoading }>Block</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Value>
+            { isLoading ? (
+              <Flex columnGap={ 1 } alignItems="center">
+                <Skeleton boxSize={ 6 }/>
+                <Skeleton display="inline-block">{ item.block_number }</Skeleton>
+              </Flex>
+            ) : (
+              <LinkInternal
+                href={ route({ pathname: '/block/[height]', query: { height: item.block_number.toString() } }) }
+                display="flex"
+                width="fit-content"
+                alignItems="center"
+              >
+                <Icon as={ blockIcon } boxSize={ 6 } mr={ 1 }/>
+                { item.block_number }
+              </LinkInternal>
+            ) }
           </ListItemMobileGrid.Value>
         </>
       ) }
 
       { view !== 'address' && (
         <>
-          <ListItemMobileGrid.Label>To</ListItemMobileGrid.Label><ListItemMobileGrid.Value>
+          <ListItemMobileGrid.Label isLoading={ isLoading }>To</ListItemMobileGrid.Label><ListItemMobileGrid.Value>
             <Address>
-              <AddressIcon address={ item.receiver }/>
-              <AddressLink type="address" hash={ item.receiver.hash } truncation="dynamic" ml={ 2 }/>
+              <AddressIcon address={ item.receiver } isLoading={ isLoading }/>
+              <AddressLink type="address" hash={ item.receiver.hash } truncation="dynamic" ml={ 2 } isLoading={ isLoading }/>
             </Address>
           </ListItemMobileGrid.Value>
         </>
@@ -70,14 +78,14 @@ const WithdrawalsListItem = ({ item, view }: Props) => {
 
       { view !== 'block' && (
         <>
-          <ListItemMobileGrid.Label>Age</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            { dayjs(item.timestamp).fromNow() }
+            <Skeleton isLoaded={ !isLoading } display="inline-block">{ dayjs(item.timestamp).fromNow() }</Skeleton>
           </ListItemMobileGrid.Value>
 
-          <ListItemMobileGrid.Label>Value</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Label isLoading={ isLoading }>Value</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <CurrencyValue value={ item.amount } currency={ appConfig.network.currency.symbol }/>
+            <CurrencyValue value={ item.amount } currency={ appConfig.network.currency.symbol } isLoading={ isLoading }/>
           </ListItemMobileGrid.Value>
         </>
       ) }

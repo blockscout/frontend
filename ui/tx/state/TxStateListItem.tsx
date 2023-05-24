@@ -11,48 +11,49 @@ import { getStateElements } from './utils';
 
 interface Props {
   data: TxStateChange;
+  isLoading?: boolean;
 }
 
-const TxStateListItem = ({ data }: Props) => {
+const TxStateListItem = ({ data, isLoading }: Props) => {
 
-  const { before, after, change, tag, tokenId } = getStateElements(data);
+  const { before, after, change, tag, tokenId } = getStateElements(data, isLoading);
 
   return (
     <ListItemMobileGrid.Container>
 
-      <ListItemMobileGrid.Label>Address</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>Address</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value py="3px">
         <Address flexGrow={ 1 } w="100%" alignSelf="center">
-          <AddressIcon address={ data.address }/>
-          <AddressLink type="address" hash={ data.address.hash } ml={ 2 } truncation="constant" mr={ 3 }/>
+          <AddressIcon address={ data.address } isLoading={ isLoading }/>
+          <AddressLink type="address" hash={ data.address.hash } ml={ 2 } truncation="constant" mr={ 3 } isLoading={ isLoading }/>
           { tag }
         </Address>
       </ListItemMobileGrid.Value>
 
       { before && (
         <>
-          <ListItemMobileGrid.Label>Before</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Label isLoading={ isLoading }>Before</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>{ before }</ListItemMobileGrid.Value>
         </>
       ) }
 
       { after && (
         <>
-          <ListItemMobileGrid.Label>After</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Label isLoading={ isLoading }>After</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>{ after }</ListItemMobileGrid.Value>
         </>
       ) }
 
       { change && (
         <>
-          <ListItemMobileGrid.Label>Change</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Label isLoading={ isLoading }>Change</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>{ change }</ListItemMobileGrid.Value>
         </>
       ) }
 
       { tokenId && (
         <>
-          <ListItemMobileGrid.Label>Token ID</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Label isLoading={ isLoading }>Token ID</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value py="0">{ tokenId }</ListItemMobileGrid.Value>
         </>
       ) }

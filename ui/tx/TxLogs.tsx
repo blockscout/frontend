@@ -3,10 +3,11 @@ import React from 'react';
 
 import { SECOND } from 'lib/consts';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
+import { LOG } from 'stubs/log';
+import { generateListStub } from 'stubs/utils';
 import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import LogItem from 'ui/shared/logs/LogItem';
-import LogSkeleton from 'ui/shared/logs/LogSkeleton';
 import Pagination from 'ui/shared/Pagination';
 import TxPendingAlert from 'ui/tx/TxPendingAlert';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
@@ -14,15 +15,16 @@ import useFetchTxInfo from 'ui/tx/useFetchTxInfo';
 
 const TxLogs = () => {
   const txInfo = useFetchTxInfo({ updateDelay: 5 * SECOND });
-  const { data, isLoading, isError, pagination, isPaginationVisible } = useQueryWithPages({
+  const { data, isPlaceholderData, isError, pagination, isPaginationVisible } = useQueryWithPages({
     resourceName: 'tx_logs',
     pathParams: { hash: txInfo.data?.hash },
     options: {
-      enabled: Boolean(txInfo.data?.hash) && Boolean(txInfo.data?.status),
+      enabled: !txInfo.isPlaceholderData && Boolean(txInfo.data?.hash) && Boolean(txInfo.data?.status),
+      placeholderData: generateListStub<'tx_logs'>(LOG, 3),
     },
   });
 
-  if (!txInfo.isLoading && !txInfo.isError && !txInfo.data.status) {
+  if (!txInfo.isLoading && !txInfo.isPlaceholderData && !txInfo.isError && !txInfo.data.status) {
     return txInfo.socketStatus ? <TxSocketAlert status={ txInfo.socketStatus }/> : <TxPendingAlert/>;
   }
 
@@ -30,16 +32,7 @@ const TxLogs = () => {
     return <DataFetchAlert/>;
   }
 
-  if (isLoading || txInfo.isLoading) {
-    return (
-      <Box>
-        <LogSkeleton/>
-        <LogSkeleton/>
-      </Box>
-    );
-  }
-
-  if (data.items.length === 0) {
+  if (!data?.items.length) {
     return <Text as="span">There are no logs for this transaction.</Text>;
   }
 
@@ -50,7 +43,7 @@ const TxLogs = () => {
           <Pagination ml="auto" { ...pagination }/>
         </ActionBar>
       ) }
-      { data.items.map((item, index) => <LogItem key={ index } { ...item } type="transaction"/>) }
+      { data?.items.map((item, index) => <LogItem key={ index } { ...item } type="transaction" isLoading={ isPlaceholderData }/>) }
     </Box>
   );
 };

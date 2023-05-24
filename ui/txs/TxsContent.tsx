@@ -8,7 +8,7 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
-import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
+import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 
 import TxsHeaderMobile from './TxsHeaderMobile';
 import TxsListItem from './TxsListItem';
@@ -45,7 +45,7 @@ const TxsContent = ({
   hasLongSkeleton,
   top,
 }: Props) => {
-  const { data, isLoading, isError, setSortByField, setSortByValue, sorting } = useTxsSort(query);
+  const { data, isPlaceholderData, isError, setSortByField, setSortByValue, sorting } = useTxsSort(query);
   const isMobile = useIsMobile();
 
   const content = data?.items ? (
@@ -53,22 +53,21 @@ const TxsContent = ({
       <Show below="lg" ssr={ false }>
         <Box>
           { showSocketInfo && (
-            <SocketNewItemsNotice
+            <SocketNewItemsNotice.Mobile
               url={ window.location.href }
               num={ socketInfoNum }
               alert={ socketInfoAlert }
-              borderBottomRadius={ 0 }
-            >
-              { ({ content }) => <Box>{ content }</Box> }
-            </SocketNewItemsNotice>
+              isLoading={ isPlaceholderData }
+            />
           ) }
-          { data.items.map(tx => (
+          { data.items.map((tx, index) => (
             <TxsListItem
+              key={ tx.hash + (isPlaceholderData ? index : '') }
               tx={ tx }
-              key={ tx.hash }
               showBlockInfo={ showBlockInfo }
               currentAddress={ currentAddress }
               enableTimeIncrement={ enableTimeIncrement }
+              isLoading={ isPlaceholderData }
             />
           )) }
         </Box>
@@ -85,6 +84,7 @@ const TxsContent = ({
           top={ top || query.isPaginationVisible ? 80 : 0 }
           currentAddress={ currentAddress }
           enableTimeIncrement={ enableTimeIncrement }
+          isLoading={ isPlaceholderData }
         />
       </Hide>
     </>
@@ -97,15 +97,18 @@ const TxsContent = ({
       setSorting={ setSortByValue }
       paginationProps={ query.pagination }
       showPagination={ query.isPaginationVisible }
+      isLoading={ query.pagination.isLoading }
       filterComponent={ filter }
-      linkSlot={ currentAddress ? <AddressCsvExportLink address={ currentAddress } type="transactions" ml={ 2 }/> : null }
+      linkSlot={ currentAddress ?
+        <AddressCsvExportLink address={ currentAddress } type="transactions" ml={ 2 } isLoading={ query.pagination.isLoading }/> : null
+      }
     />
   ) : null;
 
   return (
     <DataListDisplay
       isError={ isError }
-      isLoading={ isLoading }
+      isLoading={ false }
       items={ data?.items }
       skeletonProps={{
         isLongSkeleton: hasLongSkeleton,

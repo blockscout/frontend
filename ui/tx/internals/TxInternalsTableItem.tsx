@@ -1,4 +1,4 @@
-import { Tr, Td, Tag, Icon, Box, Flex } from '@chakra-ui/react';
+import { Tr, Td, Box, Flex, Skeleton } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -9,13 +9,17 @@ import rightArrowIcon from 'icons/arrows/east.svg';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
+import Icon from 'ui/shared/chakra/Icon';
+import Tag from 'ui/shared/chakra/Tag';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import TxStatus from 'ui/shared/TxStatus';
 import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
-type Props = InternalTransaction
+type Props = InternalTransaction & {
+  isLoading?: boolean;
+}
 
-const TxInternalTableItem = ({ type, from, to, value, success, error, gas_limit: gasLimit, created_contract: createdContract }: Props) => {
+const TxInternalTableItem = ({ type, from, to, value, success, error, gas_limit: gasLimit, created_contract: createdContract, isLoading }: Props) => {
   const typeTitle = TX_INTERNALS_ITEMS.find(({ id }) => id === type)?.title;
   const toData = to ? to : createdContract;
 
@@ -25,36 +29,40 @@ const TxInternalTableItem = ({ type, from, to, value, success, error, gas_limit:
         <Flex rowGap={ 2 } flexWrap="wrap">
           { typeTitle && (
             <Box w="126px" display="inline-block">
-              <Tag colorScheme="cyan" mr={ 5 }>{ typeTitle }</Tag>
+              <Tag colorScheme="cyan" mr={ 5 } isLoading={ isLoading }>{ typeTitle }</Tag>
             </Box>
           ) }
-          <TxStatus status={ success ? 'ok' : 'error' } errorText={ error }/>
+          <TxStatus status={ success ? 'ok' : 'error' } errorText={ error } isLoading={ isLoading }/>
         </Flex>
       </Td>
       <Td verticalAlign="middle">
         <Address display="inline-flex" maxW="100%">
-          <AddressIcon address={ from }/>
-          <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ from.hash } alias={ from.name } flexGrow={ 1 }/>
-          <CopyToClipboard text={ from.hash }/>
+          <AddressIcon address={ from } isLoading={ isLoading }/>
+          <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ from.hash } alias={ from.name } flexGrow={ 1 } isLoading={ isLoading }/>
+          <CopyToClipboard text={ from.hash } isLoading={ isLoading }/>
         </Address>
       </Td>
       <Td px={ 0 } verticalAlign="middle">
-        <Icon as={ rightArrowIcon } boxSize={ 6 } color="gray.500"/>
+        <Icon as={ rightArrowIcon } boxSize={ 6 } color="gray.500" isLoading={ isLoading }/>
       </Td>
       <Td verticalAlign="middle">
         { toData && (
           <Address display="inline-flex" maxW="100%">
-            <AddressIcon address={ toData }/>
-            <AddressLink type="address" hash={ toData.hash } alias={ toData.name } fontWeight="500" ml={ 2 }/>
-            <CopyToClipboard text={ toData.hash }/>
+            <AddressIcon address={ toData } isLoading={ isLoading }/>
+            <AddressLink type="address" hash={ toData.hash } alias={ toData.name } fontWeight="500" ml={ 2 } isLoading={ isLoading }/>
+            <CopyToClipboard text={ toData.hash } isLoading={ isLoading }/>
           </Address>
         ) }
       </Td>
       <Td isNumeric verticalAlign="middle">
-        { BigNumber(value).div(BigNumber(10 ** appConfig.network.currency.decimals)).toFormat() }
+        <Skeleton isLoaded={ !isLoading } display="inline-block">
+          { BigNumber(value).div(BigNumber(10 ** appConfig.network.currency.decimals)).toFormat() }
+        </Skeleton>
       </Td>
       <Td isNumeric verticalAlign="middle">
-        { BigNumber(gasLimit).toFormat() }
+        <Skeleton isLoaded={ !isLoading } display="inline-block">
+          { BigNumber(gasLimit).toFormat() }
+        </Skeleton>
       </Td>
     </Tr>
   );

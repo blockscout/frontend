@@ -1,8 +1,9 @@
-import { Box, Icon, chakra, Skeleton } from '@chakra-ui/react';
+import { Box, chakra, Skeleton } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
 import nftPlaceholder from 'icons/nft_shield.svg';
+import Icon from 'ui/shared/chakra/Icon';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkInternal from 'ui/shared/LinkInternal';
@@ -29,10 +30,8 @@ const TokenTransferNft = ({ hash, id, className, isDisabled, isLoading, truncati
       w="100%"
       className={ className }
     >
-      <Skeleton isLoaded={ !isLoading } boxSize="30px" mr={ 1 } borderRadius="base">
-        <Icon as={ nftPlaceholder } boxSize="30px" color="inherit"/>
-      </Skeleton>
-      <Skeleton isLoaded={ !isLoading } maxW="calc(100% - 34px)">
+      <Icon as={ nftPlaceholder } boxSize="30px" color="inherit" isLoading={ isLoading } borderRadius="base"/>
+      <Skeleton isLoaded={ !isLoading } maxW="calc(100% - 34px)" ml={ 1 }>
         { truncation === 'constant' ? <HashStringShorten hash={ id }/> : <HashStringShortenDynamic hash={ id } fontWeight={ 500 }/> }
       </Skeleton>
     </Component>

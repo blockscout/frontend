@@ -1,4 +1,4 @@
-import { Flex, Text, Grid, GridItem, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Grid, GridItem, useColorModeValue, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { DecodedInput } from 'types/api/decodedInput';
@@ -13,12 +13,13 @@ interface RowProps {
   name: string;
   type: string;
   indexed?: boolean;
+  isLoading?: boolean;
 }
 
 const PADDING = 4;
 const GAP = 5;
 
-const TableRow = ({ isLast, name, type, children, indexed }: RowProps) => {
+const TableRow = ({ isLast, name, type, children, indexed, isLoading }: RowProps) => {
   const bgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
 
   return (
@@ -31,7 +32,7 @@ const TableRow = ({ isLast, name, type, children, indexed }: RowProps) => {
         bgColor={ bgColor }
         borderBottomLeftRadius={ isLast ? 'md' : 'none' }
       >
-        { name }
+        <Skeleton isLoaded={ !isLoading } display="inline-block">{ name }</Skeleton>
       </GridItem>
       <GridItem
         pr={ GAP }
@@ -39,7 +40,7 @@ const TableRow = ({ isLast, name, type, children, indexed }: RowProps) => {
         pb={ isLast ? PADDING : 0 }
         bgColor={ bgColor }
       >
-        { type }
+        <Skeleton isLoaded={ !isLoading } display="inline-block">{ type }</Skeleton>
       </GridItem>
       { indexed !== undefined && (
         <GridItem
@@ -48,7 +49,7 @@ const TableRow = ({ isLast, name, type, children, indexed }: RowProps) => {
           pb={ isLast ? PADDING : 0 }
           bgColor={ bgColor }
         >
-          { indexed ? 'true' : 'false' }
+          <Skeleton isLoaded={ !isLoading } display="inline-block">{ indexed ? 'true' : 'false' }</Skeleton>
         </GridItem>
       ) }
       <GridItem
@@ -66,9 +67,10 @@ const TableRow = ({ isLast, name, type, children, indexed }: RowProps) => {
 
 interface Props {
   data: DecodedInput;
+  isLoading?: boolean;
 }
 
-const LogDecodedInputData = ({ data }: Props) => {
+const LogDecodedInputData = ({ data, isLoading }: Props) => {
   const bgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
   const hasIndexed = data.parameters.some(({ indexed }) => indexed !== undefined);
 
@@ -81,10 +83,10 @@ const LogDecodedInputData = ({ data }: Props) => {
     <Grid gridTemplateColumns={ gridTemplateColumns } fontSize="sm" lineHeight={ 5 } w="100%">
       { /* FIRST PART OF BLOCK */ }
       <GridItem fontWeight={ 600 } pl={{ base: 0, lg: PADDING }} pr={{ base: 0, lg: GAP }} colSpan={{ base: colNumber, lg: undefined }}>
-        Method Id
+        <Skeleton isLoaded={ !isLoading }>Method Id</Skeleton>
       </GridItem>
       <GridItem colSpan={{ base: colNumber, lg: colNumber - 1 }} pr={{ base: 0, lg: PADDING }} mt={{ base: 2, lg: 0 }}>
-        { data.method_id }
+        <Skeleton isLoaded={ !isLoading } display="inline-block">{ data.method_id }</Skeleton>
       </GridItem>
       <GridItem
         py={ 2 }
@@ -96,7 +98,7 @@ const LogDecodedInputData = ({ data }: Props) => {
         borderTopWidth="1px"
         colSpan={{ base: colNumber, lg: undefined }}
       >
-        Call
+        <Skeleton isLoaded={ !isLoading }>Call</Skeleton>
       </GridItem>
       <GridItem
         py={{ base: 0, lg: 2 }}
@@ -108,7 +110,7 @@ const LogDecodedInputData = ({ data }: Props) => {
         borderTopWidth={{ base: '0px', lg: '1px' }}
         whiteSpace="normal"
       >
-        { data.method_call }
+        <Skeleton isLoaded={ !isLoading } display="inline-block">{ data.method_call }</Skeleton>
       </GridItem>
       { /* TABLE INSIDE OF BLOCK */ }
       { data.parameters.length > 0 && (
@@ -121,7 +123,7 @@ const LogDecodedInputData = ({ data }: Props) => {
             bgColor={ bgColor }
             fontWeight={ 600 }
           >
-        Name
+            <Skeleton isLoaded={ !isLoading } display="inline-block">Name</Skeleton>
           </GridItem>
           <GridItem
             pr={ GAP }
@@ -130,7 +132,7 @@ const LogDecodedInputData = ({ data }: Props) => {
             bgColor={ bgColor }
             fontWeight={ 600 }
           >
-        Type
+            <Skeleton isLoaded={ !isLoading } display="inline-block">Type</Skeleton>
           </GridItem>
           { hasIndexed && (
             <GridItem
@@ -140,7 +142,7 @@ const LogDecodedInputData = ({ data }: Props) => {
               bgColor={ bgColor }
               fontWeight={ 600 }
             >
-          Inde<wbr/>xed?
+              <Skeleton isLoaded={ !isLoading } display="inline-block">Inde<wbr/>xed?</Skeleton>
             </GridItem>
           ) }
           <GridItem
@@ -150,7 +152,7 @@ const LogDecodedInputData = ({ data }: Props) => {
             bgColor={ bgColor }
             fontWeight={ 600 }
           >
-        Data
+            <Skeleton isLoaded={ !isLoading } display="inline-block">Data</Skeleton>
           </GridItem>
         </>
       ) }
@@ -159,8 +161,8 @@ const LogDecodedInputData = ({ data }: Props) => {
           if (type === 'address' && typeof value === 'string') {
             return (
               <Address justifyContent="space-between">
-                <AddressLink type="address" hash={ value }/>
-                <CopyToClipboard text={ value }/>
+                <AddressLink type="address" hash={ value } isLoading={ isLoading }/>
+                <CopyToClipboard text={ value } isLoading={ isLoading }/>
               </Address>
             );
           }
@@ -169,22 +171,29 @@ const LogDecodedInputData = ({ data }: Props) => {
             const text = JSON.stringify(value, undefined, 4);
             return (
               <Flex alignItems="flex-start" justifyContent="space-between" whiteSpace="normal" wordBreak="break-all">
-                <div>{ text }</div>
-                <CopyToClipboard text={ text }/>
+                <Skeleton isLoaded={ !isLoading } display="inline-block">{ text }</Skeleton>
+                <CopyToClipboard text={ text } isLoading={ isLoading }/>
               </Flex>
             );
           }
 
           return (
             <Flex alignItems="flex-start" justifyContent="space-between" whiteSpace="normal" wordBreak="break-all">
-              <Text>{ value }</Text>
-              <CopyToClipboard text={ value }/>
+              <Skeleton isLoaded={ !isLoading } display="inline-block">{ value }</Skeleton>
+              <CopyToClipboard text={ value } isLoading={ isLoading }/>
             </Flex>
           );
         })();
 
         return (
-          <TableRow key={ name } name={ name } type={ type } isLast={ index === data.parameters.length - 1 } indexed={ indexed }>
+          <TableRow
+            key={ name }
+            name={ name }
+            type={ type }
+            isLast={ index === data.parameters.length - 1 }
+            indexed={ indexed }
+            isLoading={ isLoading }
+          >
             { content }
           </TableRow>
         );

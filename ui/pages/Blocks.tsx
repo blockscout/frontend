@@ -6,9 +6,10 @@ import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
+import { BLOCK } from 'stubs/block';
+import { generateListStub } from 'stubs/utils';
 import BlocksContent from 'ui/blocks/BlocksContent';
 import BlocksTabSlot from 'ui/blocks/BlocksTabSlot';
-import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 
@@ -32,6 +33,12 @@ const BlocksPageContent = () => {
   const blocksQuery = useQueryWithPages({
     resourceName: 'blocks',
     filters: { type },
+    options: {
+      placeholderData: generateListStub<'blocks'>(BLOCK, 50, {
+        block_number: 8988686,
+        items_count: 50,
+      }),
+    },
   });
 
   const tabs: Array<RoutedTab> = [
@@ -41,7 +48,7 @@ const BlocksPageContent = () => {
   ];
 
   return (
-    <Page>
+    <>
       <PageTitle title="Blocks" withTextAd/>
       <RoutedTabs
         tabs={ tabs }
@@ -49,7 +56,7 @@ const BlocksPageContent = () => {
         rightSlot={ <BlocksTabSlot pagination={ blocksQuery.pagination } isPaginationVisible={ blocksQuery.isPaginationVisible }/> }
         stickyEnabled={ !isMobile }
       />
-    </Page>
+    </>
   );
 };
 

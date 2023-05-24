@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react';
-import { test, expect } from '@playwright/experimental-ct-react';
+import { test, expect, devices } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import { erc1155A } from 'mocks/tokens/tokenTransfer';
@@ -17,7 +17,7 @@ const hooksConfig = {
   },
 };
 
-test('with token filter and pagination +@mobile', async({ mount, page }) => {
+test('with token filter and pagination', async({ mount, page }) => {
   await page.route(API_URL, (route) => route.fulfill({
     status: 200,
     body: JSON.stringify({ items: [ erc1155A ], next_page_params: { block_number: 1 } }),
@@ -34,7 +34,7 @@ test('with token filter and pagination +@mobile', async({ mount, page }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('with token filter and no pagination +@mobile', async({ mount, page }) => {
+test('with token filter and no pagination', async({ mount, page }) => {
   await page.route(API_URL, (route) => route.fulfill({
     status: 200,
     body: JSON.stringify({ items: [ erc1155A ] }),
@@ -49,4 +49,42 @@ test('with token filter and no pagination +@mobile', async({ mount, page }) => {
   );
 
   await expect(component).toHaveScreenshot();
+});
+
+test.describe('mobile', () => {
+  test.use({ viewport: devices['iPhone 13 Pro'].viewport });
+
+  test('with token filter and pagination', async({ mount, page }) => {
+    await page.route(API_URL, (route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify({ items: [ erc1155A ], next_page_params: { block_number: 1 } }),
+    }));
+
+    const component = await mount(
+      <TestApp>
+        <Box h={{ base: '134px', lg: 6 }}/>
+        <AddressTokenTransfers/>
+      </TestApp>,
+      { hooksConfig },
+    );
+
+    await expect(component).toHaveScreenshot();
+  });
+
+  test('with token filter and no pagination', async({ mount, page }) => {
+    await page.route(API_URL, (route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify({ items: [ erc1155A ] }),
+    }));
+
+    const component = await mount(
+      <TestApp>
+        <Box h={{ base: '134px', lg: 6 }}/>
+        <AddressTokenTransfers/>
+      </TestApp>,
+      { hooksConfig },
+    );
+
+    await expect(component).toHaveScreenshot();
+  });
 });

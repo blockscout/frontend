@@ -15,7 +15,7 @@ export interface Props {
 const TokenLogo = ({ className, isLoading, data }: Props) => {
 
   if (isLoading) {
-    return <Skeleton className={ className } borderRadius="base"/>;
+    return <Skeleton className={ className } borderRadius="base" flexShrink={ 0 }/>;
   }
 
   const logoSrc = (() => {

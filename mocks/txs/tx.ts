@@ -65,6 +65,7 @@ export const base: Transaction = {
   type: 2,
   value: '42000000000000000000',
   actions: [],
+  has_error_in_internal_txs: false,
 };
 
 export const withContractCreation: Transaction = {

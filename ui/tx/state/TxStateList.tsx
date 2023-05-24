@@ -7,12 +7,13 @@ import TxStateListItem from 'ui/tx/state/TxStateListItem';
 
 interface Props {
   data: TxStateChanges;
+  isLoading?: boolean;
 }
 
-const TxStateList = ({ data }: Props) => {
+const TxStateList = ({ data, isLoading }: Props) => {
   return (
-    <Box mt={ 6 }>
-      { data.map((item, index) => <TxStateListItem key={ index } data={ item }/>) }
+    <Box>
+      { data.map((item, index) => <TxStateListItem key={ index } data={ item } isLoading={ isLoading }/>) }
     </Box>
   );
 };

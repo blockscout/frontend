@@ -58,7 +58,7 @@ test('base view +@mobile +@dark-mode', async({ mount, page }) => {
   );
   await page.waitForResponse(BLOCKS_API_URL);
 
-  await expect(component.locator('main')).toHaveScreenshot();
+  await expect(component).toHaveScreenshot();
 });
 
 test('new item from socket', async({ mount, page, createSocket }) => {
@@ -85,7 +85,7 @@ test('new item from socket', async({ mount, page, createSocket }) => {
     },
   });
 
-  await expect(component.locator('main')).toHaveScreenshot();
+  await expect(component).toHaveScreenshot();
 });
 
 test('socket error', async({ mount, page, createSocket }) => {
@@ -105,5 +105,5 @@ test('socket error', async({ mount, page, createSocket }) => {
   await socketServer.joinChannel(socket, 'blocks:new_block');
   socket.close();
 
-  await expect(component.locator('main')).toHaveScreenshot();
+  await expect(component).toHaveScreenshot();
 });

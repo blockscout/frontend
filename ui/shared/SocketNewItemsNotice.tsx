@@ -61,6 +61,7 @@ const SocketNewItemsNotice = chakra(({ children, className, url, num, alert, typ
       py="6px"
       fontWeight={ 400 }
       fontSize="sm"
+      lineHeight={ 5 }
       bgColor={ bgColor }
       color={ color }
     >
@@ -77,7 +78,7 @@ export const Desktop = ({ ...props }: Props) => {
   return (
     <SocketNewItemsNotice
       borderRadius={ props.isLoading ? 'sm' : 0 }
-      h={ props.isLoading ? 4 : 'auto' }
+      h={ props.isLoading ? 5 : 'auto' }
       maxW={ props.isLoading ? '215px' : undefined }
       w="100%"
       mx={ props.isLoading ? 4 : 0 }

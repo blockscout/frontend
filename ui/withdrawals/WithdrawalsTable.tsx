@@ -12,6 +12,7 @@ import WithdrawalsTableItem from './WithdrawalsTableItem';
 
  type Props = {
    top: number;
+   isLoading?: boolean;
  } & ({
    items: Array<WithdrawalsItem>;
    view: 'list';
@@ -23,28 +24,28 @@ import WithdrawalsTableItem from './WithdrawalsTableItem';
    view: 'block';
  });
 
-const WithdrawalsTable = ({ items, top, view = 'list' }: Props) => {
+const WithdrawalsTable = ({ items, isLoading, top, view = 'list' }: Props) => {
   return (
     <Table variant="simple" size="sm" style={{ tableLayout: 'auto' }} minW="950px">
       <Thead top={ top }>
         <Tr>
-          <Th>Index</Th>
-          <Th>Validator index</Th>
-          { view !== 'block' && <Th>Block</Th> }
-          { view !== 'address' && <Th>To</Th> }
-          { view !== 'block' && <Th>Age</Th> }
-          <Th>{ `Value ${ appConfig.network.currency.symbol }` }</Th>
+          <Th minW="140px">Index</Th>
+          <Th minW="200px">Validator index</Th>
+          { view !== 'block' && <Th w="25%">Block</Th> }
+          { view !== 'address' && <Th w="25%">To</Th> }
+          { view !== 'block' && <Th w="25%">Age</Th> }
+          <Th w="25%">{ `Value ${ appConfig.network.currency.symbol }` }</Th>
         </Tr>
       </Thead>
       <Tbody>
-        { view === 'list' && (items as Array<WithdrawalsItem>).map((item) => (
-          <WithdrawalsTableItem key={ item.index } item={ item } view="list"/>
+        { view === 'list' && (items as Array<WithdrawalsItem>).map((item, index) => (
+          <WithdrawalsTableItem key={ item.index + (isLoading ? String(index) : '') } item={ item } view="list" isLoading={ isLoading }/>
         )) }
-        { view === 'address' && (items as Array<AddressWithdrawalsItem>).map((item) => (
-          <WithdrawalsTableItem key={ item.index } item={ item } view="address"/>
+        { view === 'address' && (items as Array<AddressWithdrawalsItem>).map((item, index) => (
+          <WithdrawalsTableItem key={ item.index + (isLoading ? String(index) : '') } item={ item } view="address" isLoading={ isLoading }/>
         )) }
-        { view === 'block' && (items as Array<BlockWithdrawalsItem>).map((item) => (
-          <WithdrawalsTableItem key={ item.index } item={ item } view="block"/>
+        { view === 'block' && (items as Array<BlockWithdrawalsItem>).map((item, index) => (
+          <WithdrawalsTableItem key={ item.index + (isLoading ? String(index) : '') } item={ item } view="block" isLoading={ isLoading }/>
         )) }
       </Tbody>
     </Table>

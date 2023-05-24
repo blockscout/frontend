@@ -12,6 +12,7 @@ import delay from 'lib/delay';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
+import { TX } from 'stubs/tx';
 
 interface Params {
   onTxStatusUpdate?: () => void;
@@ -33,6 +34,7 @@ export default function useFetchTxInfo({ onTxStatusUpdate, updateDelay }: Params
     queryOptions: {
       enabled: Boolean(hash),
       refetchOnMount: false,
+      placeholderData: TX,
     },
   });
   const { data, isError, isLoading } = queryResult;
