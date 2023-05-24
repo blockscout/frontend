@@ -204,7 +204,7 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
         ) }
         { data?.compiler_settings ? (
           <RawDataSnippet
-            data={ JSON.stringify(data.compiler_settings) }
+            data={ JSON.stringify(data.compiler_settings, undefined, 4) }
             title="Compiler Settings"
             textareaMaxHeight="200px"
             isLoading={ isPlaceholderData }
@@ -212,7 +212,7 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
         ) : null }
         { data?.abi && (
           <RawDataSnippet
-            data={ JSON.stringify(data.abi) }
+            data={ JSON.stringify(data.abi, undefined, 4) }
             title="Contract ABI"
             textareaMaxHeight="200px"
             isLoading={ isPlaceholderData }
