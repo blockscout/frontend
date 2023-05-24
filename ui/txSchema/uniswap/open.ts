@@ -36,9 +36,9 @@ export const elements: Parameters<typeof CytoscapeComponent['normalizeElements']
     },
   ],
   edges: [
-    { data: { id: 'e0', source: 'n0', target: 'n1', label: '0: 30,771,107.25177646 PoE' }, classes: 'edge-label edge-out curve-straight' },
-    { data: { id: 'e1', source: 'n0', target: 'n2', label: '1: 0.6 ETH' }, classes: 'edge-label edge-out curve-straight' },
-    { data: { id: 'e2', source: 'n2', target: 'n1', label: '1: 0.6 WETH' }, classes: 'edge-label edge-out curve-straight' },
+    { data: { id: 'e0', source: 'n0', target: 'n1', label: '0: 30,771,107.25177646 PoE' }, classes: 'label straight' },
+    { data: { id: 'e1', source: 'n0', target: 'n2', label: '1: 0.6 ETH' }, classes: 'label straight' },
+    { data: { id: 'e2', source: 'n2', target: 'n1', label: '1: 0.6 WETH' }, classes: 'label straight' },
 
     {
       data: {
@@ -48,7 +48,7 @@ export const elements: Parameters<typeof CytoscapeComponent['normalizeElements']
         label: '3: #314008 Uniswap - 1% - PoE/WETH - 0.000000010016<>MAX',
         href: 'https://etherscan.io/nft/0xc36442b4a4522e871399cd717abdd847ab11fe88/314008',
       },
-      classes: 'edge-label edge-in curve-straight',
+      classes: 'label straight',
     },
   ],
 };

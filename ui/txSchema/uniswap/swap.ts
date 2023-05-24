@@ -36,9 +36,9 @@ export const elements: Parameters<typeof CytoscapeComponent['normalizeElements']
     },
   ],
   edges: [
-    { data: { id: 'e0', source: 'n0', target: 'n1', label: '0: 5.072623 USDT' }, classes: 'edge-label edge-out curve-straight' },
-    { data: { id: 'e1', source: 'n1', target: 'n2', label: '1: 5.070084 USDC' }, classes: 'edge-label edge-out curve-straight' },
-    { data: { id: 'e2', source: 'n2', target: 'n3', label: '2: 5.070084 USDC' }, classes: 'edge-label edge-out curve-straight' },
-    { data: { id: 'e3', source: 'n3', target: 'n0', label: '3: 5.068031851544657337 DAI' }, classes: 'edge-label edge-out curve-straight' },
+    { data: { id: 'e0', source: 'n0', target: 'n1', label: '0: 5.072623 USDT' }, classes: 'label straight' },
+    { data: { id: 'e1', source: 'n1', target: 'n2', label: '1: 5.070084 USDC' }, classes: 'label straight' },
+    { data: { id: 'e2', source: 'n2', target: 'n3', label: '2: 5.070084 USDC' }, classes: 'label straight' },
+    { data: { id: 'e3', source: 'n3', target: 'n0', label: '3: 5.068031851544657337 DAI' }, classes: 'label straight' },
   ],
 };

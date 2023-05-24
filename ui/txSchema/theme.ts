@@ -7,6 +7,7 @@ export const style: CSSProperties = {
 };
 
 export const stylesheet: Array<cytoscape.Stylesheet> = [
+  // NODES
   {
     selector: 'node[label]',
     style: {
@@ -16,21 +17,8 @@ export const stylesheet: Array<cytoscape.Stylesheet> = [
       'text-overflow-wrap': 'anywhere',
     },
   },
-
   {
-    selector: 'edge[label]',
-    style: {
-      width: 2,
-      label: 'data(label)',
-      'target-arrow-shape': 'vee',
-      'text-wrap': 'wrap',
-      'text-max-width': '100px',
-      'text-overflow-wrap': 'whitespace',
-    },
-  },
-
-  {
-    selector: '.address',
+    selector: 'node.address',
     style: {
       shape: 'round-rectangle',
       'text-valign': 'center',
@@ -44,7 +32,7 @@ export const stylesheet: Array<cytoscape.Stylesheet> = [
   },
 
   {
-    selector: '.contract',
+    selector: 'node.contract',
     style: {
       shape: 'cut-rectangle',
       'background-color': 'lightcyan',
@@ -52,9 +40,25 @@ export const stylesheet: Array<cytoscape.Stylesheet> = [
     },
   },
 
+  // EDGES
   {
-    selector: '.edge-label',
+    selector: 'edge',
     style: {
+      color: 'steelblue',
+      'line-color': 'steelblue',
+      'source-arrow-color': 'steelblue',
+      'target-arrow-color': 'steelblue',
+    },
+  },
+  {
+    selector: 'edge[label]',
+    style: {
+      width: 2,
+      label: 'data(label)',
+      'target-arrow-shape': 'vee',
+      'text-wrap': 'wrap',
+      'text-max-width': '100px',
+      'text-overflow-wrap': 'whitespace',
       'text-background-opacity': 0.9,
       color: '#000',
       'text-background-color': '#FFF',
@@ -66,8 +70,10 @@ export const stylesheet: Array<cytoscape.Stylesheet> = [
       'text-background-padding': '4px',
     },
   },
+
+  // EDGE LINES
   {
-    selector: '.curve-bezier',
+    selector: 'edge.bezier',
     style: {
       'curve-style': 'bezier',
       'control-point-step-size': 100,
@@ -75,7 +81,7 @@ export const stylesheet: Array<cytoscape.Stylesheet> = [
     },
   },
   {
-    selector: '.curve-segments',
+    selector: 'edge.segments',
     style: {
       'curve-style': 'segments',
       'segment-distances': '-20 20 -20',
@@ -83,28 +89,9 @@ export const stylesheet: Array<cytoscape.Stylesheet> = [
     },
   },
   {
-    selector: '.curve-straight',
+    selector: 'edge.straight',
     style: {
       'curve-style': 'straight',
-    },
-  },
-
-  {
-    selector: '.edge-in',
-    style: {
-      color: 'firebrick',
-      'line-color': 'firebrick',
-      'source-arrow-color': 'firebrick',
-      'target-arrow-color': 'firebrick',
-    },
-  },
-  {
-    selector: '.edge-out',
-    style: {
-      color: 'steelblue',
-      'line-color': 'steelblue',
-      'source-arrow-color': 'steelblue',
-      'target-arrow-color': 'steelblue',
     },
   },
 ];
