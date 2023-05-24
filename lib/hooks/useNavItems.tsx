@@ -154,7 +154,12 @@ export default function useNavItems(): ReturnType {
         icon: appsIcon,
         isActive: pathname.startsWith('/app'),
       } : null,
-      { text: 'Charts & stats', nextRoute: { pathname: '/stats' as const }, icon: statsIcon, isActive: pathname === '/stats' },
+      appConfig.statsApi.endpoint ? {
+        text: 'Charts & stats',
+        nextRoute: { pathname: '/stats' as const },
+        icon: statsIcon,
+        isActive: pathname === '/stats',
+      } : null,
       {
         text: 'API',
         icon: apiDocsIcon,
