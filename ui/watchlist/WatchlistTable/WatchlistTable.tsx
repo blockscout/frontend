@@ -12,12 +12,13 @@ import type { TWatchlist, TWatchlistItem } from 'types/client/account';
 import WatchlistTableItem from './WatchListTableItem';
 
 interface Props {
-  data: TWatchlist;
+  data?: TWatchlist;
+  isLoading?: boolean;
   onEditClick: (data: TWatchlistItem) => void;
   onDeleteClick: (data: TWatchlistItem) => void;
 }
 
-const WatchlistTable = ({ data, onDeleteClick, onEditClick }: Props) => {
+const WatchlistTable = ({ data, isLoading, onDeleteClick, onEditClick }: Props) => {
   return (
     <Table variant="simple" minWidth="600px">
       <Thead>
@@ -29,10 +30,11 @@ const WatchlistTable = ({ data, onDeleteClick, onEditClick }: Props) => {
         </Tr>
       </Thead>
       <Tbody>
-        { data.map((item) => (
+        { data?.map((item, index) => (
           <WatchlistTableItem
+            key={ item.address_hash + (isLoading ? index : '') }
             item={ item }
-            key={ item.address_hash }
+            isLoading={ isLoading }
             onDeleteClick={ onDeleteClick }
             onEditClick={ onEditClick }
           />

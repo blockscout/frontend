@@ -4,11 +4,9 @@ import React, { useCallback, useState } from 'react';
 import type { TransactionTag } from 'types/api/account';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import useIsMobile from 'lib/hooks/useIsMobile';
+import { PRIVATE_TAG_TX } from 'stubs/account';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import SkeletonListAccount from 'ui/shared/skeletons/SkeletonListAccount';
-import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 
 import DeletePrivateTagModal from './DeletePrivateTagModal';
 import TransactionModal from './TransactionModal/TransactionModal';
@@ -16,11 +14,15 @@ import TransactionTagListItem from './TransactionTagTable/TransactionTagListItem
 import TransactionTagTable from './TransactionTagTable/TransactionTagTable';
 
 const PrivateTransactionTags = () => {
-  const { data: transactionTagsData, isLoading, isError, error } = useApiQuery('private_tags_tx', { queryOptions: { refetchOnMount: false } });
+  const { data: transactionTagsData, isPlaceholderData, isError, error } = useApiQuery('private_tags_tx', {
+    queryOptions: {
+      refetchOnMount: false,
+      placeholderData: Array(3).fill(PRIVATE_TAG_TX),
+    },
+  });
 
   const transactionModalProps = useDisclosure();
   const deleteModalProps = useDisclosure();
-  const isMobile = useIsMobile();
 
   const [ transactionModalData, setTransactionModalData ] = useState<TransactionTag>();
   const [ deleteModalData, setDeleteModalData ] = useState<TransactionTag>();
@@ -52,22 +54,6 @@ const PrivateTransactionTags = () => {
     </AccountPageDescription>
   );
 
-  if (isLoading && !transactionTagsData) {
-    const loader = isMobile ? <SkeletonListAccount/> : (
-      <>
-        <SkeletonTable columns={ [ '75%', '25%', '108px' ] }/>
-        <Skeleton height="44px" width="156px" marginTop={ 8 }/>
-      </>
-    );
-
-    return (
-      <>
-        { description }
-        { loader }
-      </>
-    );
-  }
-
   if (isError) {
     if (error.status === 403) {
       throw new Error('Unverified email error', { cause: error });
@@ -75,37 +61,42 @@ const PrivateTransactionTags = () => {
     return <DataFetchAlert/>;
   }
 
-  const list = isMobile ? (
-    <Box>
-      { transactionTagsData.map((item) => (
-        <TransactionTagListItem
-          item={ item }
-          key={ item.id }
+  const list = (
+    <>
+      <Box display={{ base: 'block', lg: 'none' }}>
+        { transactionTagsData?.map((item, index) => (
+          <TransactionTagListItem
+            key={ item.id + (isPlaceholderData ? index : '') }
+            item={ item }
+            isLoading={ isPlaceholderData }
+            onDeleteClick={ onDeleteClick }
+            onEditClick={ onEditClick }
+          />
+        )) }
+      </Box>
+      <Box display={{ base: 'none', lg: 'block' }}>
+        <TransactionTagTable
+          data={ transactionTagsData }
+          isLoading={ isPlaceholderData }
           onDeleteClick={ onDeleteClick }
           onEditClick={ onEditClick }
         />
-      )) }
-    </Box>
-  ) : (
-    <TransactionTagTable
-      data={ transactionTagsData }
-      onDeleteClick={ onDeleteClick }
-      onEditClick={ onEditClick }
-    />
+      </Box>
+    </>
   );
 
   return (
     <>
       { description }
-      { Boolean(transactionTagsData.length) && list }
-      <Box marginTop={ 8 }>
+      { Boolean(transactionTagsData?.length) && list }
+      <Skeleton mt={ 8 } isLoaded={ !isPlaceholderData } display="inline-block">
         <Button
           size="lg"
           onClick={ transactionModalProps.onOpen }
         >
           Add transaction tag
         </Button>
-      </Box>
+      </Skeleton>
       <TransactionModal { ...transactionModalProps } onClose={ onAddressModalClose } data={ transactionModalData }/>
       { deleteModalData && (
         <DeletePrivateTagModal

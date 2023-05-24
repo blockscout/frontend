@@ -102,7 +102,7 @@ export type CustomAbis = Array<CustomAbi>
 
 export interface CustomAbi {
   name: string;
-  id: number;
+  id: string;
   contract_address_hash: string;
   contract_address: AddressParam;
   abi: Array<AbiItem>;
@@ -119,7 +119,7 @@ export interface AbiItem {
 }
 
 interface AbiInputOutput {
-  type: 'uint256';
+  type: 'uint256' | 'address';
   name: string;
 }
 

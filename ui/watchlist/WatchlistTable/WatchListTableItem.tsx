@@ -1,8 +1,8 @@
 import {
-  Tag,
   Tr,
   Td,
   Switch,
+  Skeleton,
 } from '@chakra-ui/react';
 import { useMutation } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
@@ -11,18 +11,19 @@ import type { TWatchlistItem } from 'types/client/account';
 
 import useApiFetch from 'lib/api/useApiFetch';
 import useToast from 'lib/hooks/useToast';
+import Tag from 'ui/shared/chakra/Tag';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
-import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 import WatchListAddressItem from './WatchListAddressItem';
 
 interface Props {
   item: TWatchlistItem;
+  isLoading?: boolean;
   onEditClick: (data: TWatchlistItem) => void;
   onDeleteClick: (data: TWatchlistItem) => void;
 }
 
-const WatchlistTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
+const WatchlistTableItem = ({ item, isLoading, onEditClick, onDeleteClick }: Props) => {
   const [ notificationEnabled, setNotificationEnabled ] = useState(item.notification_methods.email);
   const [ switchDisabled, setSwitchDisabled ] = useState(false);
   const onItemEditClick = useCallback(() => {
@@ -88,26 +89,24 @@ const WatchlistTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
 
   return (
     <Tr alignItems="top" key={ item.address_hash }>
-      <Td><WatchListAddressItem item={ item }/></Td>
+      <Td><WatchListAddressItem item={ item } isLoading={ isLoading }/></Td>
       <Td>
-        <TruncatedTextTooltip label={ item.name }>
-          <Tag>
-            { item.name }
-          </Tag>
-        </TruncatedTextTooltip>
+        <Tag isLoading={ isLoading } isTruncated>{ item.name }</Tag>
       </Td>
       <Td>
-        <Switch
-          colorScheme="blue"
-          size="md"
-          isChecked={ notificationEnabled }
-          onChange={ onSwitch }
-          isDisabled={ switchDisabled }
-          aria-label="Email notification"
-        />
+        <Skeleton isLoaded={ !isLoading } display="inline-block">
+          <Switch
+            colorScheme="blue"
+            size="md"
+            isChecked={ notificationEnabled }
+            onChange={ onSwitch }
+            isDisabled={ switchDisabled }
+            aria-label="Email notification"
+          />
+        </Skeleton>
       </Td>
       <Td>
-        <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
+        <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick } isLoading={ isLoading }/>
       </Td>
     </Tr>
   );

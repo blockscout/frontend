@@ -4,7 +4,6 @@ import React, { useCallback, useState } from 'react';
 import type { AddressTag } from 'types/api/account';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import { PRIVATE_TAG_ADDRESS } from 'stubs/account';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
@@ -24,7 +23,6 @@ const PrivateAddressTags = () => {
 
   const addressModalProps = useDisclosure();
   const deleteModalProps = useDisclosure();
-  const isMobile = useIsMobile();
 
   const [ addressModalData, setAddressModalData ] = useState<AddressTag>();
   const [ deleteModalData, setDeleteModalData ] = useState<AddressTag>();
@@ -60,25 +58,28 @@ const PrivateAddressTags = () => {
     return <DataFetchAlert/>;
   }
 
-  const list = isMobile ? (
-    <Box>
-      { addressTagsData?.map((item: AddressTag, index: number) => (
-        <AddressTagListItem
-          item={ item }
-          key={ item.id + (isPlaceholderData ? index : '') }
+  const list = (
+    <>
+      <Box display={{ base: 'block', lg: 'none' }}>
+        { addressTagsData?.map((item: AddressTag, index: number) => (
+          <AddressTagListItem
+            item={ item }
+            key={ item.id + (isPlaceholderData ? index : '') }
+            onDeleteClick={ onDeleteClick }
+            onEditClick={ onEditClick }
+            isLoading={ isPlaceholderData }
+          />
+        )) }
+      </Box>
+      <Box display={{ base: 'none', lg: 'block' }}>
+        <AddressTagTable
+          isLoading={ isPlaceholderData }
+          data={ addressTagsData }
           onDeleteClick={ onDeleteClick }
           onEditClick={ onEditClick }
-          isLoading={ isPlaceholderData }
         />
-      )) }
-    </Box>
-  ) : (
-    <AddressTagTable
-      isLoading={ isPlaceholderData }
-      data={ addressTagsData }
-      onDeleteClick={ onDeleteClick }
-      onEditClick={ onEditClick }
-    />
+      </Box>
+    </>
   );
 
   return (
@@ -88,16 +89,14 @@ const PrivateAddressTags = () => {
         Private tags are saved in your account and are only visible when you are logged in.
       </AccountPageDescription>
       { Boolean(addressTagsData?.length) && list }
-      <Box marginTop={ 8 }>
-        <Skeleton isLoaded={ !isPlaceholderData } display="inline-block">
-          <Button
-            size="lg"
-            onClick={ addressModalProps.onOpen }
-          >
+      <Skeleton mt={ 8 } isLoaded={ !isPlaceholderData } display="inline-block">
+        <Button
+          size="lg"
+          onClick={ addressModalProps.onOpen }
+        >
             Add address tag
-          </Button>
-        </Skeleton>
-      </Box>
+        </Button>
+      </Skeleton>
       <AddressModal { ...addressModalProps } onClose={ onAddressModalClose } data={ addressModalData } onSuccess={ onAddOrEditSuccess }/>
       { deleteModalData && (
         <DeletePrivateTagModal

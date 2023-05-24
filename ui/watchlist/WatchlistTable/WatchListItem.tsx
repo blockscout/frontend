@@ -1,4 +1,4 @@
-import { Tag, Box, Switch, Text, HStack, Flex } from '@chakra-ui/react';
+import { Box, Switch, Text, HStack, Flex, Skeleton } from '@chakra-ui/react';
 import { useMutation } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
@@ -6,6 +6,7 @@ import type { TWatchlistItem } from 'types/client/account';
 
 import useApiFetch from 'lib/api/useApiFetch';
 import useToast from 'lib/hooks/useToast';
+import Tag from 'ui/shared/chakra/Tag';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 
@@ -13,11 +14,12 @@ import WatchListAddressItem from './WatchListAddressItem';
 
 interface Props {
   item: TWatchlistItem;
+  isLoading?: boolean;
   onEditClick: (data: TWatchlistItem) => void;
   onDeleteClick: (data: TWatchlistItem) => void;
 }
 
-const WatchListItem = ({ item, onEditClick, onDeleteClick }: Props) => {
+const WatchListItem = ({ item, isLoading, onEditClick, onDeleteClick }: Props) => {
   const [ notificationEnabled, setNotificationEnabled ] = useState(item.notification_methods.email);
   const [ switchDisabled, setSwitchDisabled ] = useState(false);
   const onItemEditClick = useCallback(() => {
@@ -84,27 +86,27 @@ const WatchListItem = ({ item, onEditClick, onDeleteClick }: Props) => {
   return (
     <ListItemMobile>
       <Box maxW="100%">
-        <WatchListAddressItem item={ item }/>
+        <WatchListAddressItem item={ item } isLoading={ isLoading }/>
         <HStack spacing={ 3 } mt={ 6 }>
           <Text fontSize="sm" fontWeight={ 500 }>Private tag</Text>
-          <Tag>
-            { item.name }
-          </Tag>
+          <Tag isLoading={ isLoading } isTruncated>{ item.name }</Tag>
         </HStack>
       </Box>
       <Flex alignItems="center" justifyContent="space-between" mt={ 6 } w="100%">
         <HStack spacing={ 3 }>
           <Text fontSize="sm" fontWeight={ 500 }>Email notification</Text>
-          <Switch
-            colorScheme="blue"
-            size="md"
-            isChecked={ notificationEnabled }
-            onChange={ onSwitch }
-            aria-label="Email notification"
-            isDisabled={ switchDisabled }
-          />
+          <Skeleton isLoaded={ !isLoading } display="inline-block">
+            <Switch
+              colorScheme="blue"
+              size="md"
+              isChecked={ notificationEnabled }
+              onChange={ onSwitch }
+              aria-label="Email notification"
+              isDisabled={ switchDisabled }
+            />
+          </Skeleton>
         </HStack>
-        <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
+        <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick } isLoading={ isLoading }/>
       </Flex>
     </ListItemMobile>
   );

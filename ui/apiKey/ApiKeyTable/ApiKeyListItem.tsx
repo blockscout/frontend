@@ -8,11 +8,12 @@ import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 
 interface Props {
   item: ApiKey;
+  isLoading?: boolean;
   onEditClick: (item: ApiKey) => void;
   onDeleteClick: (item: ApiKey) => void;
 }
 
-const ApiKeyListItem = ({ item, onEditClick, onDeleteClick }: Props) => {
+const ApiKeyListItem = ({ item, isLoading, onEditClick, onDeleteClick }: Props) => {
 
   const onItemEditClick = useCallback(() => {
     return onEditClick(item);
@@ -24,8 +25,8 @@ const ApiKeyListItem = ({ item, onEditClick, onDeleteClick }: Props) => {
 
   return (
     <ListItemMobile>
-      <ApiKeySnippet apiKey={ item.api_key } name={ item.name }/>
-      <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
+      <ApiKeySnippet apiKey={ item.api_key } name={ item.name } isLoading={ isLoading }/>
+      <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick } isLoading={ isLoading }/>
     </ListItemMobile>
   );
 };

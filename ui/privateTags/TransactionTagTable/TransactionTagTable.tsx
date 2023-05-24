@@ -12,12 +12,13 @@ import type { TransactionTags, TransactionTag } from 'types/api/account';
 import TransactionTagTableItem from './TransactionTagTableItem';
 
 interface Props {
-  data: TransactionTags;
+  data?: TransactionTags;
+  isLoading: boolean;
   onEditClick: (data: TransactionTag) => void;
   onDeleteClick: (data: TransactionTag) => void;
 }
 
-const AddressTagTable = ({ data, onDeleteClick, onEditClick }: Props) => {
+const AddressTagTable = ({ data, isLoading, onDeleteClick, onEditClick }: Props) => {
   return (
     <Table variant="simple" minWidth="600px">
       <Thead>
@@ -28,10 +29,11 @@ const AddressTagTable = ({ data, onDeleteClick, onEditClick }: Props) => {
         </Tr>
       </Thead>
       <Tbody>
-        { data.map((item) => (
+        { data?.map((item, index) => (
           <TransactionTagTableItem
+            key={ item.id + (isLoading ? index : '') }
             item={ item }
-            key={ item.id }
+            isLoading={ isLoading }
             onDeleteClick={ onDeleteClick }
             onEditClick={ onEditClick }
           />

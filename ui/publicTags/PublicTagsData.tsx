@@ -4,12 +4,10 @@ import React, { useCallback, useState } from 'react';
 import type { PublicTag } from 'types/api/account';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import useIsMobile from 'lib/hooks/useIsMobile';
+import { PUBLIC_TAG } from 'stubs/account';
 import PublicTagListItem from 'ui/publicTags/PublicTagTable/PublicTagListItem';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import SkeletonListAccount from 'ui/shared/skeletons/SkeletonListAccount';
-import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 
 import DeletePublicTagModal from './DeletePublicTagModal';
 import PublicTagTable from './PublicTagTable/PublicTagTable';
@@ -22,9 +20,12 @@ type Props = {
 const PublicTagsData = ({ changeToFormScreen, onTagDelete }: Props) => {
   const deleteModalProps = useDisclosure();
   const [ deleteModalData, setDeleteModalData ] = useState<PublicTag>();
-  const isMobile = useIsMobile();
 
-  const { data, isLoading, isError, error } = useApiQuery('public_tags');
+  const { data, isPlaceholderData, isError, error } = useApiQuery('public_tags', {
+    queryOptions: {
+      placeholderData: Array(3).fill(PUBLIC_TAG),
+    },
+  });
 
   const onDeleteModalClose = useCallback(() => {
     setDeleteModalData(undefined);
@@ -53,22 +54,6 @@ const PublicTagsData = ({ changeToFormScreen, onTagDelete }: Props) => {
     </AccountPageDescription>
   );
 
-  if (isLoading) {
-    const loader = isMobile ? <SkeletonListAccount/> : (
-      <>
-        <SkeletonTable columns={ [ '50%', '25%', '25%', '108px' ] }/>
-        <Skeleton height="48px" width="270px" marginTop={ 8 }/>
-      </>
-    );
-
-    return (
-      <>
-        { description }
-        { loader }
-      </>
-    );
-  }
-
   if (isError) {
     if (error.status === 403) {
       throw new Error('Unverified email error', { cause: error });
@@ -76,33 +61,37 @@ const PublicTagsData = ({ changeToFormScreen, onTagDelete }: Props) => {
     return <DataFetchAlert/>;
   }
 
-  const list = isMobile ? (
-    <Box>
-      { data.map((item) => (
-        <PublicTagListItem
-          item={ item }
-          key={ item.id }
-          onDeleteClick={ onItemDeleteClick }
-          onEditClick={ onItemEditClick }
-        />
-      )) }
-    </Box>
-  ) : (
-    <PublicTagTable data={ data } onEditClick={ onItemEditClick } onDeleteClick={ onItemDeleteClick }/>
+  const list = (
+    <>
+      <Box display={{ base: 'block', lg: 'none' }}>
+        { data?.map((item, index) => (
+          <PublicTagListItem
+            key={ item.id + (isPlaceholderData ? String(index) : '') }
+            item={ item }
+            isLoading={ isPlaceholderData }
+            onDeleteClick={ onItemDeleteClick }
+            onEditClick={ onItemEditClick }
+          />
+        )) }
+      </Box>
+      <Box display={{ base: 'none', lg: 'block' }}>
+        <PublicTagTable data={ data } isLoading={ isPlaceholderData } onEditClick={ onItemEditClick } onDeleteClick={ onItemDeleteClick }/>
+      </Box>
+    </>
   );
 
   return (
     <>
       { description }
-      { data.length > 0 && list }
-      <Box marginTop={ 8 }>
+      { Boolean(data?.length) && list }
+      <Skeleton mt={ 8 } isLoaded={ !isPlaceholderData } display="inline-block">
         <Button
           size="lg"
           onClick={ changeToForm }
         >
             Request to add public tag
         </Button>
-      </Box>
+      </Skeleton>
       { deleteModalData && (
         <DeletePublicTagModal
           { ...deleteModalProps }

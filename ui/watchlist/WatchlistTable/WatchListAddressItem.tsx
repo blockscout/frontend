@@ -1,4 +1,4 @@
-import { HStack, VStack, Text, Icon, Flex } from '@chakra-ui/react';
+import { HStack, VStack, chakra, Icon, Flex, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TWatchlistItem } from 'types/client/account';
@@ -11,7 +11,7 @@ import AddressSnippet from 'ui/shared/AddressSnippet';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import TokenLogo from 'ui/shared/TokenLogo';
 
-const WatchListAddressItem = ({ item }: {item: TWatchlistItem}) => {
+const WatchListAddressItem = ({ item, isLoading }: { item: TWatchlistItem; isLoading?: boolean }) => {
   const infoItemsPaddingLeft = { base: 1, lg: 8 };
 
   const nativeTokenData = React.useMemo(() => ({
@@ -22,32 +22,39 @@ const WatchListAddressItem = ({ item }: {item: TWatchlistItem}) => {
 
   return (
     <VStack spacing={ 2 } align="stretch" fontWeight={ 500 }>
-      <AddressSnippet address={ item.address }/>
-      <Flex fontSize="sm" h={ 6 } pl={ infoItemsPaddingLeft } flexWrap="wrap" alignItems="center" rowGap={ 1 }>
+      <AddressSnippet address={ item.address } isLoading={ isLoading }/>
+      <Flex fontSize="sm" pl={ infoItemsPaddingLeft } flexWrap="wrap" alignItems="center" rowGap={ 1 }>
         { appConfig.network.currency.address && (
           <TokenLogo
             data={ nativeTokenData }
-            boxSize={ 4 }
+            boxSize={ 5 }
             borderRadius="sm"
             mr={ 2 }
+            isLoading={ isLoading }
           />
         ) }
-        <Text as="span" whiteSpace="pre">{ appConfig.network.currency.symbol } balance: </Text>
-        <CurrencyValue
-          value={ item.address_balance }
-          exchangeRate={ item.exchange_rate }
-          decimals={ String(appConfig.network.currency.decimals) }
-          accuracy={ 2 }
-          accuracyUsd={ 2 }
-        />
+        <Skeleton isLoaded={ !isLoading } whiteSpace="pre" display="inline-flex">
+          <span>{ appConfig.network.currency.symbol } balance: </span>
+          <CurrencyValue
+            value={ item.address_balance }
+            exchangeRate={ item.exchange_rate }
+            decimals={ String(appConfig.network.currency.decimals) }
+            accuracy={ 2 }
+            accuracyUsd={ 2 }
+          />
+        </Skeleton>
       </Flex>
       { item.tokens_count && (
-        <HStack spacing={ 0 } fontSize="sm" h={ 6 } pl={ infoItemsPaddingLeft }>
-          <Icon as={ TokensIcon } mr={ 2 } w="17px" h="16px"/>
-          <Text>{ `Tokens:${ nbsp }` + item.tokens_count }</Text>
-          { /* api does not provide token prices */ }
-          { /* <Text variant="secondary">{ `${ nbsp }($${ item.tokensUSD } USD)` }</Text> */ }
-          <Text variant="secondary">{ `${ nbsp }(N/A)` }</Text>
+        <HStack spacing={ 0 } fontSize="sm" pl={ infoItemsPaddingLeft }>
+          <Skeleton isLoaded={ !isLoading } boxSize={ 5 } mr={ 2 } borderRadius="sm">
+            <Icon as={ TokensIcon } boxSize={ 5 }/>
+          </Skeleton>
+          <Skeleton isLoaded={ !isLoading } display="inline-flex">
+            <span>{ `Tokens:${ nbsp }` + item.tokens_count }</span>
+            { /* api does not provide token prices */ }
+            { /* <Text variant="secondary">{ `${ nbsp }($${ item.tokensUSD } USD)` }</Text> */ }
+            <chakra.span color="text_secondary">{ `${ nbsp }(N/A)` }</chakra.span>
+          </Skeleton>
         </HStack>
       ) }
       { /* api does not provide token prices */ }

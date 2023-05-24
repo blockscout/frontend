@@ -1,10 +1,12 @@
 import type { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import React from 'react';
 
 import getNetworkTitle from 'lib/networks/getNetworkTitle';
-import PublicTags from 'ui/pages/PublicTags';
 import Page from 'ui/shared/Page/Page';
+
+const PublicTags = dynamic(() => import('ui/pages/PublicTags'), { ssr: false });
 
 const PublicTagsPage: NextPage = () => {
   const title = getNetworkTitle();

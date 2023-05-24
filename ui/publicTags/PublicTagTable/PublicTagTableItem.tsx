@@ -1,25 +1,26 @@
 import {
-  Tag,
   Tr,
   Td,
   VStack,
-  Text,
+  Box,
+  Skeleton,
 } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
 import type { PublicTag } from 'types/api/account';
 
 import AddressSnippet from 'ui/shared/AddressSnippet';
+import Tag from 'ui/shared/chakra/Tag';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
-import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 interface Props {
   item: PublicTag;
+  isLoading?: boolean;
   onEditClick: (data: PublicTag) => void;
   onDeleteClick: (data: PublicTag) => void;
 }
 
-const PublicTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
+const PublicTagTableItem = ({ item, isLoading, onEditClick, onDeleteClick }: Props) => {
   const onItemEditClick = useCallback(() => {
     return onEditClick(item);
   }, [ item, onEditClick ]);
@@ -32,29 +33,23 @@ const PublicTagTableItem = ({ item, onEditClick, onDeleteClick }: Props) => {
     <Tr alignItems="top" key={ item.id }>
       <Td>
         <VStack spacing={ 4 } alignItems="unset">
-          { item.addresses_with_info.map((address) => <AddressSnippet key={ address.hash } address={ address }/>) }
+          { item.addresses_with_info.map((address) => <AddressSnippet key={ address.hash } address={ address } isLoading={ isLoading }/>) }
         </VStack>
       </Td>
       <Td>
         <VStack spacing={ 2 } alignItems="baseline">
-          { item.tags.split(';').map((tag) => {
-            return (
-              <TruncatedTextTooltip label={ tag } key={ tag }>
-                <Tag>
-                  { tag }
-                </Tag>
-              </TruncatedTextTooltip>
-            );
-          }) }
+          { item.tags.split(';').map((tag) => <Tag key={ tag } isLoading={ isLoading } isTruncated>{ tag }</Tag>) }
         </VStack>
       </Td>
       <Td>
-        <VStack alignItems="flex-start">
-          <Text fontSize="sm" fontWeight="500">Submitted</Text>
-        </VStack>
+        <Skeleton fontSize="sm" fontWeight="500" py="2px" isLoaded={ !isLoading } display="inline-block">
+          Submitted
+        </Skeleton>
       </Td>
       <Td>
-        <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick }/>
+        <Box py="2px">
+          <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick } isLoading={ isLoading }/>
+        </Box>
       </Td>
     </Tr>
   );

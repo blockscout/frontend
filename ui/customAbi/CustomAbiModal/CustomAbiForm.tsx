@@ -48,7 +48,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
   const queryClient = useQueryClient();
   const apiFetch = useApiFetch();
 
-  const customAbiKey = (data: Inputs & { id?: number }) => {
+  const customAbiKey = (data: Inputs & { id?: string }) => {
     const body = { name: data.name, contract_address_hash: data.contract_address_hash, abi: data.abi };
 
     if (!data.id) {
