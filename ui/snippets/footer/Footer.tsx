@@ -12,6 +12,7 @@ import gitIcon from 'icons/social/git.svg';
 import twitterIcon from 'icons/social/tweet.svg';
 import type { ResourceError } from 'lib/api/resources';
 import useFetch from 'lib/hooks/useFetch';
+import useIssueUrl from 'lib/hooks/useIssueUrl';
 import NetworkAddToWallet from 'ui/shared/NetworkAddToWallet';
 
 import ColorModeToggler from '../header/ColorModeToggler';
@@ -22,41 +23,42 @@ const MAX_LINKS_COLUMNS = 3;
 const API_VERSION_URL = `https://github.com/blockscout/blockscout/tree/${ appConfig.blockScoutVersion }`;
 // const FRONT_VERSION_URL = `https://github.com/blockscout/frontend/tree/${ appConfig.frontendVersion }`;
 
-const BLOCSKOUT_LINKS = [
-  {
-    icon: editIcon,
-    iconSize: '16px',
-    text: 'Submit an issue',
-    // template???
-    url: 'https://github.com/blockscout/blockscout/issues/new',
-  },
-  {
-    icon: gitIcon,
-    iconSize: '18px',
-    text: 'Contribute',
-    url: 'https://github.com/blockscout/blockscout',
-  },
-  {
-    icon: twitterIcon,
-    iconSize: '18px',
-    text: 'Twitter',
-    url: 'https://www.twitter.com/blockscoutcom',
-  },
-  {
-    icon: discordIcon,
-    iconSize: '18px',
-    text: 'Discord',
-    url: 'https://discord.gg/blockscout',
-  },
-  {
-    icon: discussionsIcon,
-    iconSize: '20px',
-    text: 'Discussions',
-    url: 'https://github.com/orgs/blockscout/discussions',
-  },
-];
-
 const Footer = () => {
+
+  const issueUrl = useIssueUrl();
+  const BLOCSKOUT_LINKS = [
+    {
+      icon: editIcon,
+      iconSize: '16px',
+      text: 'Submit an issue',
+      url: issueUrl,
+    },
+    {
+      icon: gitIcon,
+      iconSize: '18px',
+      text: 'Contribute',
+      url: 'https://github.com/blockscout/blockscout',
+    },
+    {
+      icon: twitterIcon,
+      iconSize: '18px',
+      text: 'Twitter',
+      url: 'https://www.twitter.com/blockscoutcom',
+    },
+    {
+      icon: discordIcon,
+      iconSize: '18px',
+      text: 'Discord',
+      url: 'https://discord.gg/blockscout',
+    },
+    {
+      icon: discussionsIcon,
+      iconSize: '20px',
+      text: 'Discussions',
+      url: 'https://github.com/orgs/blockscout/discussions',
+    },
+  ];
+
   const fetch = useFetch();
 
   const { isLoading, data: linksData } = useQuery<unknown, ResourceError<unknown>, Array<CustomLinksGroup>>(
