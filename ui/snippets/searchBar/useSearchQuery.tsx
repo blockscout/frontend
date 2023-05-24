@@ -15,6 +15,7 @@ export default function useSearchQuery(isSearchPage = false) {
   const [ searchTerm, setSearchTerm ] = React.useState(initialValue);
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  const pathname = router.pathname;
 
   const query = useQueryWithPages({
     resourceName: 'search',
@@ -23,8 +24,11 @@ export default function useSearchQuery(isSearchPage = false) {
   });
 
   const redirectCheckQuery = useApiQuery('search_check_redirect', {
-    queryParams: { q: q.current },
-    queryOptions: { enabled: isSearchPage && Boolean(q) },
+    // on search result page we check redirect only once on mount
+    // on pages with regular search bar we check redirect on every search term change
+    // in order to prepend its result to suggest list since this resource is much faster than regular search
+    queryParams: { q: isSearchPage ? q.current : debouncedSearchTerm },
+    queryOptions: { enabled: Boolean(isSearchPage ? q.current : debouncedSearchTerm) },
   });
 
   useUpdateValueEffect(() => {
@@ -39,5 +43,6 @@ export default function useSearchQuery(isSearchPage = false) {
     handleSearchTermChange: setSearchTerm,
     query,
     redirectCheckQuery,
+    pathname,
   };
 }

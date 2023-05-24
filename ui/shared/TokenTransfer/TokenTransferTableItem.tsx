@@ -49,7 +49,7 @@ const TokenTransferTableItem = ({
       ) }
       <Td>
         <Flex flexDir="column" alignItems="flex-start" my="3px" rowGap={ 2 }>
-          <TokenSnippet hash={ token.address } name={ token.name || 'Unnamed token' } isLoading={ isLoading }/>
+          <TokenSnippet data={ token } isLoading={ isLoading } hideSymbol/>
           <Tag isLoading={ isLoading }>{ token.type }</Tag>
           <Tag colorScheme="orange" isLoading={ isLoading }>{ getTokenTransferTypeText(type) }</Tag>
         </Flex>

@@ -1,6 +1,7 @@
 import { test as base, expect, devices } from '@playwright/experimental-ct-react';
 import React from 'react';
 
+import * as verifiedAddressesMocks from 'mocks/account/verifiedAddresses';
 import { token as contract } from 'mocks/address/address';
 import { tokenInfo, tokenCounters } from 'mocks/tokens/tokenInfo';
 import * as socketServer from 'playwright/fixtures/socketServer';
@@ -16,7 +17,7 @@ const TOKEN_TRANSFERS_API_URL = buildApiUrl('token_transfers', { hash: '1' });
 const ADDRESS_API_URL = buildApiUrl('address', { hash: '1' });
 const hooksConfig = {
   router: {
-    query: { hash: 1, tab: 'token_transfers' },
+    query: { hash: '1', tab: 'token_transfers' },
     isReady: true,
   },
 };
@@ -70,9 +71,55 @@ test('base view', async({ mount, page, createSocket }) => {
   await expect(component).toHaveScreenshot();
 });
 
+test('with verified info', async({ mount, page, createSocket }) => {
+  const VERIFIED_INFO_URL = buildApiUrl('token_verified_info', { chainId: '1', hash: '1' });
+  await page.route(VERIFIED_INFO_URL, (route) => route.fulfill({
+    body: JSON.stringify(verifiedAddressesMocks.TOKEN_INFO_APPLICATION.APPROVED),
+  }));
+
+  const component = await mount(
+    <TestApp withSocket>
+      <Token/>
+    </TestApp>,
+    { hooksConfig },
+  );
+
+  const socket = await createSocket();
+  const channel = await socketServer.joinChannel(socket, 'tokens:1');
+  socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });
+
+  await insertAdPlaceholder(page);
+
+  await page.getByRole('button', { name: /project info/i }).click();
+
+  await expect(component).toHaveScreenshot();
+});
+
 test.describe('mobile', () => {
   test.use({ viewport: devices['iPhone 13 Pro'].viewport });
   test('base view', async({ mount, page, createSocket }) => {
+    const component = await mount(
+      <TestApp withSocket>
+        <Token/>
+      </TestApp>,
+      { hooksConfig },
+    );
+
+    const socket = await createSocket();
+    const channel = await socketServer.joinChannel(socket, 'tokens:1');
+    socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });
+
+    await insertAdPlaceholder(page);
+
+    await expect(component).toHaveScreenshot();
+  });
+
+  test('with verified info', async({ mount, page, createSocket }) => {
+    const VERIFIED_INFO_URL = buildApiUrl('token_verified_info', { chainId: '1', hash: '1' });
+    await page.route(VERIFIED_INFO_URL, (route) => route.fulfill({
+      body: JSON.stringify(verifiedAddressesMocks.TOKEN_INFO_APPLICATION.APPROVED),
+    }));
+
     const component = await mount(
       <TestApp withSocket>
         <Token/>

@@ -20,7 +20,9 @@ import GoogleAnalytics from 'ui/shared/GoogleAnalytics';
 import 'lib/setLocale';
 
 function MyApp({ Component, pageProps }: AppProps) {
+
   useConfigSentry();
+
   const [ queryClient ] = useState(() => new QueryClient({
     defaultOptions: {
       queries: {

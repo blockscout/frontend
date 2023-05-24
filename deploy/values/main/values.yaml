@@ -21,21 +21,20 @@ blockscout:
     enabled: true
     annotations:
       # - 'nginx.ingress.kubernetes.io/rewrite-target: /$2'
-      - 'nginx.ingress.kubernetes.io/cors-allow-origin: "https://*.blockscout-main.test.aws-k8s.blockscout.com, https://*.test.aws-k8s.blockscout.com, http://localhost:3000"'
+      - 'nginx.ingress.kubernetes.io/cors-allow-origin: "https://*.k8s-dev.blockscout.com, http://localhost:3000"'
       - 'nginx.ingress.kubernetes.io/cors-allow-credentials: "true"'
       - 'nginx.ingress.kubernetes.io/cors-allow-methods: PUT, GET, POST, OPTIONS, DELETE, PATCH'
       - 'nginx.ingress.kubernetes.io/enable-cors: "true"'
       - 'nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-csrf-token"'
       - 'nginx.ingress.kubernetes.io/cors-expose-headers: "x-bs-account-csrf"'
     host:
-      _default: blockscout.test.blockscout.aws-k8s.blockscout.com
+      _default: blockscout-main.k8s-dev.blockscout.com
     # enable https
     #
     tls:
       enabled: true
     path:
       prefix:
-        # - "/poa/sokol(/|$)(.*)"
         - "/"
   # probes
   livenessProbe:
@@ -57,16 +56,12 @@ blockscout:
         _default: "2"
   # node label
   nodeSelector:
-    enabled: true
-    labels:
-      _default:
-        app: blockscout-prod
+    enabled: false
+
   # Blockscout environment variables
   environment:
     BLOCKSCOUT_VERSION:
       _default: v5.1.2-beta
-    ECTO_USE_SSL:
-      _default: 'false'
     ETHEREUM_JSONRPC_VARIANT:
       _default: geth
     HEART_BEAT_TIMEOUT:
@@ -114,7 +109,7 @@ blockscout:
     APPS:
       _default: '[{"title": "Marketplace", "url": "/apps", "embedded?": true}]'
     SESSION_COOKIE_DOMAIN:
-      _default: blockscout-main.test.aws-k8s.blockscout.com
+      _default: blockscout-main.k8s-dev.blockscout.com
     ETHEREUM_JSONRPC_DEBUG_TRACE_TRANSACTION_TIMEOUT:
       _default: '20s'
     INDEXER_INTERNAL_TRANSACTIONS_BATCH_SIZE:
@@ -139,102 +134,50 @@ blockscout:
       _default: '8739119'
     TRACE_LAST_BLOCK:
       _default: '8739119'
-
-postgres:
-  enabled: true
-  image: postgres:13.8
-  port: 5432
-
-  command: '["docker-entrypoint.sh", "-c"]'
-  args: '["max_connections=500"]'
-
-  # strategy: Recreate
-
-  persistence: true
-  customShm:
-    enabled: true
-    sizeLimit: 256Mi
-
-  storage: 1400Gi
-
-  resources:
-    limits:
-      memory:
-        _default: "8Gi"
-      cpu:
-        _default: "2"
-    requests:
-      memory:
-        _default: "8Gi"
-      cpu:
-        _default: "1"
-  # node label
-  nodeSelector:
-    enabled: true
-    labels:
-      _default:
-        app: blockscout-prod
-
-  environment:
-    POSTGRES_USER:
-      _default: 'postgres'
-    POSTGRES_HOST_AUTH_METHOD:
-      _default: 'trust'
-# enable geth deploy
-geth:
-  enabled: false
-  image:
-    _default: ethereum/client-go:stable
-  replicas:
-    app: 1
-  ports:
-    http:
-      number: 8545
-      protocol: TCP
-    ws:
-      number: 8546
-      protocol: TCP
-    auth:
-      number: 8551
-      protocol: TCP
-  command:
-    - /bin/sh
-    - -c
-    - |-
-      /root/init.sh --fakepow --dev --dev.period=1 --datadir=/root/.ethereum/devnet --keystore=/root/.ethereum/devnet/keystore --password=/root/password.txt --unlock=0 --unlock=1 --mine --miner.threads=1 --miner.etherbase=0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 --ipcpath=/root/geth.ipc --http --http.vhosts=* --http.addr=0.0.0.0 --http.port=8545 --http.api=eth,net,web3,debug,txpool --ws --ws.origins=* --ws.addr=0.0.0.0 --ws.port=8546 --ws.api=eth,net,web3,debug,txpool --graphql --graphql.corsdomain=* --allow-insecure-unlock --rpc.allow-unprotected-txs --http.corsdomain=* --vmdebug --networkid=1337 --rpc.txfeecap=0
-  environment: {}
-  persistence:
-    enabled: false
-  resources:
-    limits:
-      memory:
-        _default: "2Gi"
-      cpu:
-        _default: "0.2"
-    requests:
-      memory:
-        _default: "2Gi"
-      cpu:
-        _default: "0.2"
-  # node label
-  nodeSelector:
-    enabled: true
-    app: blockscout
-  service:
-    # ClusterIP, NodePort or LoadBalancer
-    type: ClusterIP
-  # enable ingress
-  ingress:
-    enabled: true
-    host:
-      _default: node.test.aws-k8s.blockscout.com
-    # enable https
-    tls:
-      enabled: false
-  jwt:
-    enabled: false
-  files:
-    enabled: true
+    ETHEREUM_JSONRPC_TRACE_URL:
+      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ETHEREUM_JSONRPC_TRACE_URL
+    ETHEREUM_JSONRPC_HTTP_URL:
+      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ETHEREUM_JSONRPC_HTTP_URL
+    ACCOUNT_USERNAME:
+      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_USERNAME
+    ACCOUNT_PASSWORD:
+      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_PASSWORD
+    MAILSLURP_API_KEY:
+      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/MAILSLURP_API_KEY
+    MAILSLURP_EMAIL_ID:
+      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/MAILSLURP_EMAIL_ID
+    ACCOUNT_SENDGRID_API_KEY:
+      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_SENDGRID_API_KEY
+    ACCOUNT_SENDGRID_SENDER:
+      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_SENDGRID_SENDER
+    ACCOUNT_SENDGRID_TEMPLATE:
+      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_SENDGRID_TEMPLATE
+    ACCOUNT_PUBLIC_TAGS_AIRTABLE_URL:
+      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_PUBLIC_TAGS_AIRTABLE_URL
+    ACCOUNT_PUBLIC_TAGS_AIRTABLE_API_KEY:
+      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_PUBLIC_TAGS_AIRTABLE_API_KEY
+    ACCOUNT_CLOAK_KEY:
+      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_CLOAK_KEY
+    SECRET_KEY_BASE:
+      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/SECRET_KEY_BASE
+    DATABASE_URL:
+      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/DATABASE_URL
+    API_SENSITIVE_ENDPOINTS_KEY:
+      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/API_SENSITIVE_ENDPOINTS_KEY
+    ACCOUNT_DATABASE_URL:
+      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_DATABASE_URL
+    ACCOUNT_REDIS_URL:
+      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_REDIS_URL
+    ACCOUNT_AUTH0_DOMAIN:
+      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_AUTH0_DOMAIN
+    ACCOUNT_AUTH0_CLIENT_ID:
+      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_AUTH0_CLIENT_ID
+    ACCOUNT_AUTH0_CLIENT_SECRET:
+      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_AUTH0_CLIENT_SECRET
+    RE_CAPTCHA_SECRET_KEY:
+      _default: ref+vault://deployment-values/blockscout/common?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/RE_CAPTCHA_SECRET_KEY
+    RE_CAPTCHA_CLIENT_KEY:
+      _default: ref+vault://deployment-values/blockscout/common?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/RE_CAPTCHA_CLIENT_KEY
 
 frontend:
   app: blockscout
@@ -251,7 +194,7 @@ frontend:
     # annotations:
     #   - 'nginx.ingress.kubernetes.io/use-regex: "true"'
     host:
-      _default: frontend.test.blockscout.aws-k8s.blockscout.com
+      _default: blockscout-main.k8s-dev.blockscout.com
     # enable https
     tls:
       enabled: true
@@ -294,17 +237,19 @@ frontend:
         _default: 384Mi
       cpu:
         _default: 250m
+  nodeSelector:
+    enabled: false
   environment:
     # ui config
     NEXT_PUBLIC_FEATURED_NETWORKS:
       _default: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/featured-networks/eth-goerli.json
     NEXT_PUBLIC_NETWORK_EXPLORERS:
-      _default: "[{'title':'Anyblock','baseUrl':'https://explorer.anyblock.tools','paths':{'tx':'/ethereum/ethereum/goerli/transaction','address':'/ethereum/ethereum/goerli/address'}},{'title':'Etherscan','baseUrl':'https://goerli.etherscan.io/','paths':{'tx':'/tx','address':'/address'}}]"
+      _default: "[{'title':'Bitquery','baseUrl':'https://explorer.bitquery.io/','paths':{'tx':'/goerli/tx','address':'/goerli/address','token':'/goerli/token','block':'/goerli/block'}},{'title':'Etherscan','baseUrl':'https://goerli.etherscan.io/','paths':{'tx':'/tx','address':'/address','token':'/token','block':'/block'}}]"
     # network config
     NEXT_PUBLIC_NETWORK_NAME:
-      _default: Ethereum
+      _default: Göerli
     NEXT_PUBLIC_NETWORK_SHORT_NAME:
-      _default: Goerli
+      _default: Göerli
     NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME:
       _default: ethereum
     NEXT_PUBLIC_NETWORK_LOGO:
@@ -341,21 +286,25 @@ frontend:
     NEXT_PUBLIC_APP_INSTANCE:
       _default: eth_goerli
     NEXT_PUBLIC_API_HOST:
-      _default: blockscout.com/eth/goerli
+      _default: blockscout-main.k8s-dev.blockscout.com
     NEXT_PUBLIC_STATS_API_HOST:
-      _default: https://stats-test.aws-k8s.blockscout.com/
+      _default: https://stats-test.k8s-dev.blockscout.com/
     NEXT_PUBLIC_VISUALIZE_API_HOST:
-      _default: https://visualizer.aws-k8s.blockscout.com
+      _default: http://visualizer-svc.visualizer-testing.svc.cluster.local/
+    NEXT_PUBLIC_CONTRACT_INFO_API_HOST:
+      _default: https://contracts-info-test.k8s-dev.blockscout.com
+    NEXT_PUBLIC_ADMIN_SERVICE_API_HOST:
+      _default: https://admin-rs-test.k8s-dev.blockscout.com
     NEXT_PUBLIC_APP_HOST:
-      _default: blockscout.com/eth/goerli
+      _default: blockscout-main.k8s-dev.blockscout.com
     NEXT_PUBLIC_LOGOUT_URL:
       _default: https://blockscoutcom.us.auth0.com/v2/logout
     NEXT_PUBLIC_LOGOUT_RETURN_URL:
-      _default: https://blockscout.com/auth/logout
+      _default: https://blockscout-main.k8s-dev.blockscout.com/auth/logout
     NEXT_PUBLIC_NETWORK_RPC_URL:
       _default: https://rpc.ankr.com/eth_goerli
     NEXT_PUBLIC_HOMEPAGE_CHARTS:
-      _default: "['daily_txs','coin_price','market_cup']"
+      _default: "['daily_txs','coin_price','market_cap']"
     NEXT_PUBLIC_API_SPEC_URL:
       _default: https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml
     NEXT_PUBLIC_MARKETPLACE_CONFIG_URL:
@@ -364,3 +313,17 @@ frontend:
       _default: true
     NEXT_PUBLIC_GRAPHIQL_TRANSACTION:
       _default: 0xf7d4972356e6ae44ae948d0cf19ef2beaf0e574c180997e969a2837da15e349d
+    NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS:
+      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS
+    NEXT_PUBLIC_SENTRY_DSN:
+      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_SENTRY_DSN
+    SENTRY_CSP_REPORT_URI:
+      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/SENTRY_CSP_REPORT_URI
+    NEXT_PUBLIC_AUTH0_CLIENT_ID:
+      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_AUTH0_CLIENT_ID
+    NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID:
+      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID
+    NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY:
+      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY
+    NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID:
+      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID

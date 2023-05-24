@@ -17,6 +17,12 @@ interface Props<V extends FieldValues, N extends Path<V>> {
 const FileInput = <Values extends FieldValues, Names extends Path<Values>>({ children, accept, multiple, field }: Props<Values, Names>) => {
   const ref = React.useRef<HTMLInputElement>(null);
 
+  React.useEffect(() => {
+    if (!multiple && field.value?.length === 0 && ref.current?.value) {
+      ref.current.value = '';
+    }
+  }, [ field.value?.length, multiple ]);
+
   const onChange = React.useCallback((files: Array<File>) => {
     field.onChange([ ...(field.value || []), ...files ]);
   }, [ field ]);

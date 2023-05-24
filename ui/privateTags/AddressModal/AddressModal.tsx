@@ -9,18 +9,19 @@ import AddressForm from './AddressForm';
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  data?: AddressTag;
+  onSuccess: () => Promise<void>;
+  data?: Partial<AddressTag>;
 }
 
-const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
-  const title = data ? 'Edit address tag' : 'New address tag';
-  const text = !data ? 'Label any address with a private address tag (up to 35 chars) to customize your explorer experience.' : '';
+const AddressModal: React.FC<Props> = ({ isOpen, onClose, onSuccess, data }) => {
+  const title = data?.id ? 'Edit address tag' : 'New address tag';
+  const text = !data?.id ? 'Label any address with a private address tag (up to 35 chars) to customize your explorer experience.' : '';
 
   const [ isAlertVisible, setAlertVisible ] = useState(false);
 
   const renderForm = useCallback(() => {
-    return <AddressForm data={ data } onClose={ onClose } setAlertVisible={ setAlertVisible }/>;
-  }, [ data, onClose ]);
+    return <AddressForm data={ data } onClose={ onClose } onSuccess={ onSuccess } setAlertVisible={ setAlertVisible }/>;
+  }, [ data, onClose, onSuccess ]);
   return (
     <FormModal<AddressTag>
       isOpen={ isOpen }

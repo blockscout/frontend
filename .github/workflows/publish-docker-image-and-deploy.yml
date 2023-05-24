@@ -5,14 +5,6 @@ on:
     branches:
       - main
 
-env:
-  K8S_LOCAL_PORT: ${{ secrets.K8S_LOCAL_PORT }}
-  K8S_HOST: ${{ secrets.K8S_HOST }}
-  BASTION_HOST: ${{ secrets.BASTION_HOST }}
-  K8S_PORT: ${{ secrets.K8S_PORT }}
-  USERNAME: ${{ secrets.USERNAME }}
-  BASTION_SSH_KEY: ${{secrets.BASTION_SSH_KEY}}
-
 jobs:
   push_to_registry:
     name: Push Docker image to registry
@@ -54,22 +46,22 @@ jobs:
   deploy_main:
     name: Deploy frontend
     needs: push_to_registry
-    uses: blockscout/blockscout-ci-cd/.github/workflows/deploy.yaml@master
+    uses: blockscout/blockscout-ci-cd/.github/workflows/deploy_helmfile.yaml@master
     with:
-      env_vars: VALUES_DIR=deploy/values/main,APP_NAME=bs-stack
+      appName: front
       globalEnv: main
-      appNamespace: front-main
-      blockscoutIngressHost: blockscout
-      frontendIngressHost: blockscout
-      frontendImage: ghcr.io/blockscout/frontend:main
-      gethIngressHost: geth
-      scVerifierIngressHost: sc-verifier
+      helmfileDir: deploy
+      kubeConfigSecret: ci/data/dev/kubeconfig/k8s-dev
+      vaultRole: ci-dev
     secrets: inherit
   deploy_l2:
     name: Deploy frontend (L2)
     needs: push_to_registry
-    uses: blockscout/blockscout-ci-cd/.github/workflows/deploy.yaml@master
+    uses: blockscout/blockscout-ci-cd/.github/workflows/deploy_helmfile.yaml@master
     with:
-      env_vars: VALUES_DIR=deploy/values/l2-optimism-goerli,APP_NAME=bs-stack
-      appNamespace: tests-optimism-goerli
+      appName: l2-optimism-goerli
+      globalEnv: optimism-goerli
+      helmfileDir: deploy
+      kubeConfigSecret: ci/data/dev/kubeconfig/k8s-dev
+      vaultRole: ci-dev
     secrets: inherit

@@ -1,13 +1,12 @@
-import { Link, Text, Icon } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React, { useCallback, useState } from 'react';
 import { animateScroll } from 'react-scroll';
 
 import type { PublicTag } from 'types/api/account';
 
-import eastArrowIcon from 'icons/arrows/east.svg';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import useToast from 'lib/hooks/useToast';
+import getQueryParamString from 'lib/router/getQueryParamString';
 import PublicTagsData from 'ui/publicTags/PublicTagsData';
 import PublicTagsForm from 'ui/publicTags/PublicTagsForm/PublicTagsForm';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -22,12 +21,20 @@ const toastDescriptions = {
 } as Record<TToastAction, string>;
 
 const PublicTagsComponent: React.FC = () => {
-  const [ screen, setScreen ] = useState<TScreen>('data');
-  const [ formData, setFormData ] = useState<PublicTag>();
+  const router = useRouter();
+  const addressHash = getQueryParamString(router.query.address);
+
+  const [ screen, setScreen ] = useState<TScreen>(addressHash ? 'form' : 'data');
+  const [ formData, setFormData ] = useState<Partial<PublicTag> | undefined>(addressHash ? { addresses: [ addressHash ] } : undefined);
 
   const toast = useToast();
-  const isMobile = useIsMobile();
   useRedirectForInvalidAuthToken();
+
+  React.useEffect(() => {
+    addressHash && router.replace({ pathname: '/account/public_tags_request' });
+  // componentDidMount
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ ]);
 
   const showToast = useCallback((action: TToastAction) => {
     toast({
@@ -76,15 +83,18 @@ const PublicTagsComponent: React.FC = () => {
     header = formData ? 'Request to edit a public tag/label' : 'Request a public tag/label';
   }
 
+  const backLink = {
+    label: 'Public tags',
+    onClick: onGoBack,
+  };
+
   return (
     <>
-      { screen === 'form' && (
-        <Link display="inline-flex" alignItems="center" mb={ 6 } onClick={ onGoBack }>
-          <Icon as={ eastArrowIcon } boxSize={ 6 } transform="rotate(180deg)"/>
-          { isMobile && <Text variant="inherit" fontSize="sm" ml={ 2 }>Public tags</Text> }
-        </Link>
-      ) }
-      <PageTitle text={ header } display={{ base: 'block', lg: 'inline-flex' }} ml={{ base: 0, lg: 3 }}/>
+      <PageTitle
+        title={ header }
+        backLink={ screen === 'form' ? backLink : undefined }
+        display={{ base: 'block', lg: 'inline-flex' }}
+      />
       { content }
     </>
   );

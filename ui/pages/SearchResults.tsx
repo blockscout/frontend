@@ -152,7 +152,7 @@ const SearchResultsPageContent = () => {
     <Page renderHeader={ renderHeader }>
       { isLoading || redirectCheckQuery.isLoading ?
         <Skeleton h={ 10 } mb={ 6 } w="100%" maxW="222px"/> :
-        <PageTitle text="Search results"/>
+        <PageTitle title="Search results"/>
       }
       { bar }
       { content }

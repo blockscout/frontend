@@ -1,4 +1,6 @@
 import { chakra, Text, Flex, useColorModeValue, Icon, Box } from '@chakra-ui/react';
+import type { LinkProps as NextLinkProps } from 'next/link';
+import NextLink from 'next/link';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
@@ -15,9 +17,10 @@ interface Props {
   data: SearchResultItem;
   isMobile: boolean | undefined;
   searchTerm: string;
+  onClick: (event: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 
-const SearchBarSuggestItem = ({ data, isMobile, searchTerm }: Props) => {
+const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick }: Props) => {
 
   const url = (() => {
     switch (data.type) {
@@ -142,31 +145,33 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm }: Props) => {
   })();
 
   return (
-    <chakra.a
-      py={ 3 }
-      px={ 1 }
-      display="flex"
-      flexDir="column"
-      rowGap={ 2 }
-      borderColor="divider"
-      borderBottomWidth="1px"
-      _last={{
-        borderBottomWidth: '0',
-      }}
-      _hover={{
-        bgColor: useColorModeValue('blue.50', 'gray.800'),
-      }}
-      fontSize="sm"
-      href={ url }
-      _first={{
-        mt: 2,
-      }}
-    >
-      <Flex display="flex" alignItems="center">
-        { firstRow }
-      </Flex>
-      { secondRow }
-    </chakra.a>
+    <NextLink href={ url as NextLinkProps['href'] } passHref legacyBehavior>
+      <chakra.a
+        py={ 3 }
+        px={ 1 }
+        display="flex"
+        flexDir="column"
+        rowGap={ 2 }
+        borderColor="divider"
+        borderBottomWidth="1px"
+        _last={{
+          borderBottomWidth: '0',
+        }}
+        _hover={{
+          bgColor: useColorModeValue('blue.50', 'gray.800'),
+        }}
+        fontSize="sm"
+        _first={{
+          mt: 2,
+        }}
+        onClick={ onClick }
+      >
+        <Flex display="flex" alignItems="center">
+          { firstRow }
+        </Flex>
+        { secondRow }
+      </chakra.a>
+    </NextLink>
   );
 };
 

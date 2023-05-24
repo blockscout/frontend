@@ -4,5 +4,4 @@ export interface NetworkLink {
   pathname: string;
   name: string;
   icon?: FunctionComponent<SVGAttributes<SVGElement>>;
-  isNewUi?: boolean;
 }

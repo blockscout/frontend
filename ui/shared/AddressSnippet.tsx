@@ -9,7 +9,7 @@ import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 interface Props {
-  address: AddressParam;
+  address: Pick<AddressParam, 'hash' | 'is_contract' | 'implementation_name'>;
   subtitle?: string;
   isLoading?: boolean;
 }
@@ -20,7 +20,7 @@ const AddressSnippet = ({ address, subtitle, isLoading }: Props) => {
       <Address>
         <AddressIcon address={ address } isLoading={ isLoading }/>
         <AddressLink type="address" hash={ address.hash } fontWeight="600" ml={ 2 } isLoading={ isLoading }/>
-        <CopyToClipboard text={ address.hash } ml={ 1 } isLoading={ isLoading }/>
+        <CopyToClipboard text={ address.hash } isLoading={ isLoading }/>
       </Address>
       { subtitle && (
         <Skeleton fontSize="sm" color="text_secondary" mt={ 0.5 } ml={ 8 } display="inline-block" isLoaded={ !isLoading }>

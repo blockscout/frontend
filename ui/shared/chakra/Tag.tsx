@@ -8,7 +8,7 @@ interface Props extends TagProps {
   isLoading?: boolean;
 }
 
-const Tag = ({ isLoading, ...props }: Props, ref: React.LegacyRef<HTMLDivElement>) => {
+const Tag = ({ isLoading, ...props }: Props, ref: React.ForwardedRef<HTMLDivElement>) => {
 
   if (props.isTruncated && typeof props.children === 'string') {
     if (!props.children) {

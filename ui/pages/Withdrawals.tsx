@@ -1,6 +1,9 @@
-import { Flex, Hide, Show } from '@chakra-ui/react';
+import { Flex, Hide, Show, Skeleton, Text } from '@chakra-ui/react';
+import BigNumber from 'bignumber.js';
 import React from 'react';
 
+import useApiQuery from 'lib/api/useApiQuery';
+import getCurrencyValue from 'lib/getCurrencyValue';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import { generateListStub } from 'stubs/utils';
@@ -25,6 +28,8 @@ const Withdrawals = () => {
     },
   });
 
+  const countersQuery = useApiQuery('withdrawals_counters');
+
   const content = data?.items ? (
     <>
       <Show below="lg" ssr={ false }>
@@ -43,18 +48,47 @@ const Withdrawals = () => {
     </>
   ) : null;
 
-  const actionBar = isPaginationVisible ? (
-    <ActionBar mt={ -6 }>
-      <Flex alignItems="center" justifyContent="space-between" w="100%">
-        { !isMobile }
-        <Pagination ml="auto" { ...pagination }/>
-      </Flex>
-    </ActionBar>
-  ) : null;
+  const text = (() => {
+    if (countersQuery.isLoading) {
+      return (
+        <Skeleton
+          w={{ base: '100%', lg: '320px' }}
+          h="24px"
+          mb={{ base: 6, lg: isPaginationVisible ? 0 : 7 }}
+          mt={{ base: 0, lg: isPaginationVisible ? 0 : 7 }}
+        />
+      );
+    }
+
+    if (countersQuery.isError) {
+      return null;
+    }
+
+    const { valueStr } = getCurrencyValue({ value: countersQuery.data.withdrawal_sum });
+    return (
+      <Text mb={{ base: 6, lg: isPaginationVisible ? 0 : 6 }} lineHeight={{ base: '24px', lg: '32px' }}>
+        { BigNumber(countersQuery.data.withdrawal_count).toFormat() } withdrawals processed and { valueStr } ETH withdrawn
+      </Text>
+    );
+  })();
+
+  const actionBar = (
+    <>
+      { (isMobile || !isPaginationVisible) && text }
+      { isPaginationVisible && (
+        <ActionBar mt={ -6 }>
+          <Flex alignItems="center" justifyContent="space-between" w="100%">
+            { !isMobile && text }
+            <Pagination ml="auto" { ...pagination }/>
+          </Flex>
+        </ActionBar>
+      ) }
+    </>
+  );
 
   return (
     <>
-      <PageTitle text="Withdrawals" withTextAd/>
+      <PageTitle title="Withdrawals" withTextAd/>
       <DataListDisplay
         isError={ isError }
         isLoading={ false }

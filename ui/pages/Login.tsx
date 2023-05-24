@@ -1,5 +1,6 @@
 import { VStack, Textarea, Button, Alert, AlertTitle, AlertDescription, Code, Flex, Box } from '@chakra-ui/react';
 import * as Sentry from '@sentry/react';
+import mixpanel from 'mixpanel-browser';
 import type { ChangeEvent } from 'react';
 import React from 'react';
 
@@ -25,6 +26,10 @@ const Login = () => {
 
   const checkSentry = React.useCallback(() => {
     Sentry.captureException(new Error('Test error'), { extra: { foo: 'bar' }, tags: { source: 'test' } });
+  }, []);
+
+  const checkMixpanel = React.useCallback(() => {
+    mixpanel.track('Test event', { my_prop: 'foo bar' });
   }, []);
 
   const handleTokenChange = React.useCallback((event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -56,7 +61,7 @@ const Login = () => {
   return (
     <Page>
       <VStack gap={ 4 } alignItems="flex-start" maxW="1000px">
-        <PageTitle text="Login page 😂"/>
+        <PageTitle title="Login page 😂"/>
         { isFormVisible && (
           <>
             <Alert status="error" flexDirection="column" alignItems="flex-start">
@@ -74,6 +79,7 @@ const Login = () => {
           </>
         ) }
         <Button colorScheme="red" onClick={ checkSentry }>Check Sentry</Button>
+        <Button colorScheme="teal" onClick={ checkMixpanel }>Check Mixpanel</Button>
         <Flex columnGap={ 2 } alignItems="center">
           <Box w="50px" textAlign="center">{ num }</Box>
           <Button onClick={ handleNumIncrement } size="sm">add</Button>

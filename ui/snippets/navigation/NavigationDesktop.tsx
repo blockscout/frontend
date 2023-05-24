@@ -6,6 +6,7 @@ import chevronIcon from 'icons/arrows/east-mini.svg';
 import testnetIcon from 'icons/testnet.svg';
 import { useAppContext } from 'lib/appContext';
 import * as cookies from 'lib/cookies';
+import useHasAccount from 'lib/hooks/useHasAccount';
 import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
@@ -28,11 +29,10 @@ const NavigationDesktop = () => {
     isNavBarCollapsed = false;
   }
 
-  const hasAuth = Boolean(cookies.get(cookies.NAMES.API_TOKEN, cookiesString));
-
   const { mainNavItems, accountNavItems } = useNavItems();
 
-  const hasAccount = hasAuth && appConfig.isAccountSupported;
+  const hasAccount = useHasAccount();
+
   const [ isCollapsed, setCollapsedState ] = React.useState<boolean | undefined>(isNavBarCollapsed);
 
   const handleTogglerClick = React.useCallback(() => {
@@ -61,7 +61,7 @@ const NavigationDesktop = () => {
       width={{ lg: isExpanded ? '229px' : '92px', xl: isCollapsed ? '92px' : '229px' }}
       { ...getDefaultTransitionProps({ transitionProperty: 'width, padding' }) }
     >
-      <Icon as={ testnetIcon } h="14px" w="auto" color="red.400" pl={ 3 } alignSelf="flex-start"/>
+      { appConfig.network.isTestnet && <Icon as={ testnetIcon } h="14px" w="auto" color="red.400" pl={ 3 } alignSelf="flex-start"/> }
       <Box
         as="header"
         display="flex"

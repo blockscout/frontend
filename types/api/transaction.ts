@@ -71,6 +71,15 @@ export interface TransactionsResponsePending {
   } | null;
 }
 
+export interface TransactionsResponseWatchlist {
+  items: Array<Transaction>;
+  next_page_params: {
+    inserted_at: string;
+    hash: string;
+    filter: 'pending';
+  } | null;
+}
+
 export type TransactionType = 'token_transfer' | 'contract_creation' | 'contract_call' | 'token_creation' | 'coin_transfer'
 
 export type TxsResponse = TransactionsResponseValidated | TransactionsResponsePending | BlockTransactionsResponse;

@@ -2,7 +2,7 @@ import { Box, Tag, Icon } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { RoutedTab } from 'ui/shared/RoutedTabs/types';
+import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import nftIcon from 'icons/nft_shield.svg';
 import useApiQuery from 'lib/api/useApiQuery';
@@ -15,8 +15,8 @@ import LinkExternal from 'ui/shared/LinkExternal';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/Pagination';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
-import RoutedTabs from 'ui/shared/RoutedTabs/RoutedTabs';
 import SkeletonTabs from 'ui/shared/skeletons/SkeletonTabs';
+import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TokenHolders from 'ui/token/TokenHolders/TokenHolders';
 import TokenTransfer from 'ui/token/TokenTransfer/TokenTransfer';
 
@@ -34,8 +34,6 @@ const TokenInstanceContent = () => {
   const hash = router.query.hash?.toString();
   const id = router.query.id?.toString();
   const tab = router.query.tab?.toString();
-
-  const hasGoBackLink = appProps.referrer && appProps.referrer.includes(`/token/${ hash }`) && !appProps.referrer.includes('instance');
 
   const scrollRef = React.useRef<HTMLDivElement>(null);
 
@@ -64,6 +62,19 @@ const TokenInstanceContent = () => {
     },
   });
 
+  const backLink = React.useMemo(() => {
+    const hasGoBackLink = appProps.referrer && appProps.referrer.includes(`/token/${ hash }`) && !appProps.referrer.includes('instance');
+
+    if (!hasGoBackLink) {
+      return;
+    }
+
+    return {
+      label: 'Back to token page',
+      url: appProps.referrer,
+    };
+  }, [ appProps.referrer, hash ]);
+
   const tabs: Array<RoutedTab> = [
     {
       id: 'token_transfers',
@@ -84,7 +95,7 @@ const TokenInstanceContent = () => {
     return <TokenInstanceSkeleton/>;
   }
 
-  const nftShieldIcon = <Icon as={ nftIcon } boxSize={ 6 }/>;
+  const nftShieldIcon = <Icon as={ nftIcon } boxSize={ 6 } mr={ 2 }/>;
   const tokenTag = <Tag>{ tokenInstanceQuery.data.token.type }</Tag>;
   const address = {
     hash: hash || '',
@@ -134,11 +145,10 @@ const TokenInstanceContent = () => {
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
-        text={ `${ tokenInstanceQuery.data.token.name || 'Unnamed token' } #${ tokenInstanceQuery.data.id }` }
-        backLinkUrl={ hasGoBackLink ? appProps.referrer : undefined }
-        backLinkLabel="Back to token page"
-        additionalsLeft={ nftShieldIcon }
-        additionalsRight={ tokenTag }
+        title={ `${ tokenInstanceQuery.data.token.name || 'Unnamed token' } #${ tokenInstanceQuery.data.id }` }
+        backLink={ backLink }
+        beforeTitle={ nftShieldIcon }
+        contentAfter={ tokenTag }
       />
 
       <AddressHeadingInfo address={ address } token={ tokenInstanceQuery.data.token }/>

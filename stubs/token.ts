@@ -15,6 +15,7 @@ export const TOKEN_INFO_ERC_20: TokenInfo<'ERC-20'> = {
   symbol: 'STUB',
   total_supply: '6000000000000000000',
   type: 'ERC-20',
+  icon_url: null,
 };
 
 export const TOKEN_INFO_ERC_721: TokenInfo<'ERC-721'> = {

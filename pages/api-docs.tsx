@@ -15,7 +15,7 @@ const APIDocsPage: NextPage = () => {
 
   return (
     <Page>
-      <PageTitle text="API Documentation"/>
+      <PageTitle title="API Documentation"/>
       <Head><title>{ `API for the ${ networkTitle }` }</title></Head>
       <SwaggerUI/>
     </Page>

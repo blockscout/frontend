@@ -204,11 +204,17 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
     </>
   ) : null;
 
+  const tokenData = React.useMemo(() => ({
+    address: tokenFilter || '',
+    name: '',
+    icon_url: '',
+  }), [ tokenFilter ]);
+
   const tokenFilterComponent = tokenFilter && (
     <Flex alignItems="center" flexWrap="wrap" mb={{ base: isActionBarHidden ? 3 : 6, lg: 0 }} mr={ 4 }>
       <Text whiteSpace="nowrap" mr={ 2 } py={ 1 }>Filtered by token</Text>
       <Flex alignItems="center" py={ 1 }>
-        <TokenLogo hash={ tokenFilter } boxSize={ 6 } mr={ 2 }/>
+        <TokenLogo data={ tokenData } boxSize={ 6 } mr={ 2 }/>
         { isMobile ? <HashStringShorten hash={ tokenFilter }/> : tokenFilter }
         <Tooltip label="Reset filter">
           <Flex>

@@ -1,4 +1,4 @@
-import { Text, Flex, useColorModeValue, Skeleton } from '@chakra-ui/react';
+import { Flex, useColorModeValue, Skeleton } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -63,13 +63,11 @@ const TokenTransferListItem = ({
           </Address>
         </Flex>
         { timestamp && (
-          <Text variant="secondary" fontWeight="400" fontSize="sm">
-            <Skeleton isLoaded={ !isLoading } display="inline-block">
-              <span>
-                { timeAgo }
-              </span>
-            </Skeleton>
-          </Text>
+          <Skeleton isLoaded={ !isLoading } display="inline-block" fontWeight="400" fontSize="sm" color="text_secondary">
+            <span>
+              { timeAgo }
+            </span>
+          </Skeleton>
         ) }
       </Flex>
       { method && <Tag isLoading={ isLoading }>{ method }</Tag> }

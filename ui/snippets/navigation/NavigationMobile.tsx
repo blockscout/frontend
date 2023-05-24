@@ -2,9 +2,8 @@ import { Box, Flex, Text, Icon, VStack, useColorModeValue } from '@chakra-ui/rea
 import { animate, motion, useMotionValue } from 'framer-motion';
 import React, { useCallback } from 'react';
 
-import appConfig from 'configs/app/config';
 import chevronIcon from 'icons/arrows/east-mini.svg';
-import * as cookies from 'lib/cookies';
+import useHasAccount from 'lib/hooks/useHasAccount';
 import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
 import NavFooter from 'ui/snippets/navigation/NavFooter';
 import NavLink from 'ui/snippets/navigation/NavLink';
@@ -30,8 +29,7 @@ const NavigationMobile = () => {
     animate(subX, 250, { ease: 'easeInOut', onComplete: () => setOpenedGroupIndex(-1) });
   }, [ mainX, subX ]);
 
-  const isAuth = Boolean(cookies.get(cookies.NAMES.API_TOKEN));
-  const hasAccount = appConfig.isAccountSupported && isAuth;
+  const hasAccount = useHasAccount();
 
   const iconColor = useColorModeValue('blue.600', 'blue.300');
 
