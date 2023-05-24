@@ -14,7 +14,7 @@ export const stylesheet: Array<cytoscape.Stylesheet> = [
       label: 'data(label)',
       'text-wrap': 'wrap',
       'text-max-width': '130px',
-      'text-overflow-wrap': 'anywhere',
+      'text-overflow-wrap': 'whitespace',
     },
   },
   {
@@ -37,6 +37,34 @@ export const stylesheet: Array<cytoscape.Stylesheet> = [
       shape: 'cut-rectangle',
       'background-color': 'lightcyan',
       'border-color': 'darkturquoise',
+    },
+  },
+
+  {
+    selector: 'node.token',
+    style: {
+      shape: 'hexagon',
+      'background-color': 'coral',
+      'border-color': 'crimson',
+    },
+  },
+
+  {
+    selector: 'node.virtual',
+    style: {
+      shape: 'rectangle',
+      'background-color': 'cornsilk',
+      'border-color': 'darkmagenta',
+      'border-style': 'dashed',
+    },
+  },
+
+  {
+    selector: 'node.nft',
+    style: {
+      shape: 'octagon',
+      'background-color': 'lightpink',
+      'border-color': 'fuchsia',
     },
   },
 
@@ -92,6 +120,24 @@ export const stylesheet: Array<cytoscape.Stylesheet> = [
     selector: 'edge.straight',
     style: {
       'curve-style': 'straight',
+    },
+  },
+  {
+    selector: 'edge.tech',
+    style: {
+      'line-color': 'darkgray',
+      'line-style': 'dashed',
+    },
+  },
+
+  // AREAS
+  {
+    selector: 'node.uniswap',
+    style: {
+      'background-color': 'honeydew',
+      'border-color': 'honeydew',
+      'font-size': '20px',
+      'font-weight': 'bold',
     },
   },
 ];

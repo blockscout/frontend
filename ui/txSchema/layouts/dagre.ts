@@ -10,8 +10,8 @@ type LayoutOptions = DagreLayoutOptions & Record<string, unknown>;
 export const dagre: LayoutOptions = {
   name: 'dagre',
   // dagre algo options, uses default value on undefined
-  nodeSep: 100, // the separation between adjacent nodes in the same rank
-  edgeSep: 200, // the separation between adjacent edges in the same rank
+  nodeSep: 50, // the separation between adjacent nodes in the same rank
+  edgeSep: 100, // the separation between adjacent edges in the same rank
   rankSep: 200, // the separation between each rank in the layout
   rankDir: 'LR', // 'TB' for top to bottom flow, 'LR' for left to right,
   align: undefined, // alignment for rank nodes. Can be 'UL', 'UR', 'DL', or 'DR', where U = up, D = down, L = left, and R = right

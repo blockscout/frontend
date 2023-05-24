@@ -19,10 +19,13 @@ const TxSchemaGraph = (props: Props) => {
     cy.current.layout(layouts.dagre).run();
 
     cy.current.on('tap', 'node', function(event) {
-      try {
-        window.open(event.target.data('href'));
-      } catch (e) {
-        window.location.href = event.target.data('href');
+      const url = event.target.data('href');
+      if (url) {
+        try {
+          window.open(url);
+        } catch (e) {
+          window.location.href = url;
+        }
       }
     });
 
@@ -30,9 +33,9 @@ const TxSchemaGraph = (props: Props) => {
       const url = event.target.data('href');
       if (url) {
         try {
-          window.open(event.target.data('href'));
+          window.open(url);
         } catch (e) {
-          window.location.href = event.target.data('href');
+          window.location.href = url;
         }
       }
     });
