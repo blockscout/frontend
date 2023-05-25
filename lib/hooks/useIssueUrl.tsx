@@ -25,7 +25,7 @@ const bodyTemplate = `*Describe your issue here.*
 
 *Tell us what happens instead.*`;
 
-const labels = 'BlockScout';
+const labels = 'new UI';
 
 const title = `${ appConfig.network.name }: <Issue Title>`;
 
