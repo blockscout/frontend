@@ -12,6 +12,7 @@ import { useAppContext } from 'lib/appContext';
 import useContractTabs from 'lib/hooks/useContractTabs';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { ADDRESS_INFO } from 'stubs/address';
 import AddressBlocksValidated from 'ui/address/AddressBlocksValidated';
 import AddressCoinBalance from 'ui/address/AddressCoinBalance';
 import AddressContract from 'ui/address/AddressContract';
@@ -25,7 +26,6 @@ import AddressWithdrawals from 'ui/address/AddressWithdrawals';
 import TextAd from 'ui/shared/ad/TextAd';
 import EntityTags from 'ui/shared/EntityTags';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
-import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import SkeletonTabs from 'ui/shared/skeletons/SkeletonTabs';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
@@ -48,7 +48,10 @@ const AddressPageContent = () => {
 
   const addressQuery = useApiQuery('address', {
     pathParams: { hash },
-    queryOptions: { enabled: Boolean(hash) },
+    queryOptions: {
+      enabled: Boolean(hash),
+      placeholderData: ADDRESS_INFO,
+    },
   });
 
   const contractTabs = useContractTabs(addressQuery.data);
@@ -120,23 +123,20 @@ const AddressPageContent = () => {
   }, [ appProps.referrer ]);
 
   return (
-    <Page>
-      { addressQuery.isLoading ? <Skeleton h={{ base: 12, lg: 6 }} mb={ 6 } w="100%" maxW="680px"/> : <TextAd mb={ 6 }/> }
-      { addressQuery.isLoading ? (
-        <Skeleton h={ 10 } w="260px" mb={ 6 }/>
-      ) : (
-        <PageTitle
-          title={ `${ addressQuery.data?.is_contract ? 'Contract' : 'Address' } details` }
-          backLink={ backLink }
-          contentAfter={ tags }
-        />
-      ) }
+    <>
+      { addressQuery.isPlaceholderData ? <Skeleton h={{ base: 12, lg: 6 }} mb={ 6 } w="100%" maxW="680px"/> : <TextAd mb={ 6 }/> }
+      <PageTitle
+        title={ `${ addressQuery.data?.is_contract ? 'Contract' : 'Address' } details` }
+        backLink={ backLink }
+        contentAfter={ tags }
+        isLoading={ addressQuery.isPlaceholderData }
+      />
       <AddressDetails addressQuery={ addressQuery } scrollRef={ tabsScrollRef }/>
       { /* should stay before tabs to scroll up with pagination */ }
       <Box ref={ tabsScrollRef }></Box>
-      { addressQuery.isLoading ? <SkeletonTabs/> : content }
-      { !addressQuery.isLoading && !addressQuery.isError && <Box h={{ base: 0, lg: '40vh' }}/> }
-    </Page>
+      { addressQuery.isPlaceholderData ? <SkeletonTabs tabs={ tabs }/> : content }
+      { !addressQuery.isPlaceholderData && !addressQuery.isError && <Box h={{ base: 0, lg: '40vh' }}/> }
+    </>
   );
 };
 

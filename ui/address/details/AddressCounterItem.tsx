@@ -13,6 +13,7 @@ interface Props {
   query: UseQueryResult<AddressCounters>;
   address: string;
   onClick: () => void;
+  isAddressQueryLoading: boolean;
 }
 
 const PROP_TO_TAB = {
@@ -21,8 +22,8 @@ const PROP_TO_TAB = {
   validations_count: 'blocks_validated',
 };
 
-const AddressCounterItem = ({ prop, query, address, onClick }: Props) => {
-  if (query.isLoading) {
+const AddressCounterItem = ({ prop, query, address, onClick, isAddressQueryLoading }: Props) => {
+  if (query.isPlaceholderData || isAddressQueryLoading) {
     return <Skeleton h={ 5 } w="80px" borderRadius="full"/>;
   }
 

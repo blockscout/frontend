@@ -64,7 +64,7 @@ const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoa
         { beforeTitle }
         <Skeleton
           isLoaded={ !isLoading }
-          display="inline"
+          display={ isLoading ? 'inline-block' : 'inline' }
           verticalAlign={ isLoading ? 'super' : undefined }
         >
           <Heading

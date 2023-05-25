@@ -1,4 +1,4 @@
-import type { Address } from 'types/api/address';
+import type { Address, AddressCounters } from 'types/api/address';
 import type { AddressesItem } from 'types/api/addresses';
 
 import { ADDRESS_HASH } from './addressParams';
@@ -6,7 +6,7 @@ import { TOKEN_INFO_ERC_20 } from './token';
 
 export const ADDRESS_INFO: Address = {
   block_number_balance_updated_at: 8774377,
-  coin_balance: '0',
+  coin_balance: '810941268802273085757',
   creation_tx_hash: null,
   creator_address_hash: null,
   exchange_rate: null,
@@ -32,6 +32,13 @@ export const ADDRESS_INFO: Address = {
   public_tags: [],
   watchlist_names: [],
   watchlist_address_id: null,
+};
+
+export const ADDRESS_COUNTERS: AddressCounters = {
+  gas_usage_count: '8028907522',
+  token_transfers_count: '420',
+  transactions_count: '119020',
+  validations_count: '0',
 };
 
 export const TOP_ADDRESS: AddressesItem = {
