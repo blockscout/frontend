@@ -1,8 +1,9 @@
-import type { Address, AddressCounters } from 'types/api/address';
+import type { Address, AddressCoinBalanceHistoryItem, AddressCounters } from 'types/api/address';
 import type { AddressesItem } from 'types/api/addresses';
 
 import { ADDRESS_HASH } from './addressParams';
 import { TOKEN_INFO_ERC_20 } from './token';
+import { TX_HASH } from './tx';
 
 export const ADDRESS_INFO: Address = {
   block_number_balance_updated_at: 8774377,
@@ -52,4 +53,12 @@ export const TOP_ADDRESS: AddressesItem = {
   private_tags: [],
   public_tags: [ ],
   watchlist_names: [],
+};
+
+export const ADDRESS_COIN_BALANCE: AddressCoinBalanceHistoryItem = {
+  block_number: 9004413,
+  block_timestamp: '2023-05-15T13:16:24Z',
+  delta: '1000000000000000000',
+  transaction_hash: TX_HASH,
+  value: '953427250000000000000000',
 };

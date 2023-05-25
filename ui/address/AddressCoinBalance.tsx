@@ -10,6 +10,8 @@ import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
+import { ADDRESS_COIN_BALANCE } from 'stubs/address';
+import { generateListStub } from 'stubs/utils';
 import SocketAlert from 'ui/shared/SocketAlert';
 
 import AddressCoinBalanceChart from './coinBalance/AddressCoinBalanceChart';
@@ -26,6 +28,18 @@ const AddressCoinBalance = () => {
     resourceName: 'address_coin_balance',
     pathParams: { hash: addressHash },
     scrollRef,
+    options: {
+      placeholderData: generateListStub<'address_coin_balance'>(
+        ADDRESS_COIN_BALANCE,
+        50,
+        {
+          next_page_params: {
+            block_number: 8009880,
+            items_count: 50,
+          },
+        },
+      ),
+    },
   });
 
   const handleSocketError = React.useCallback(() => {
@@ -56,7 +70,7 @@ const AddressCoinBalance = () => {
     topic: `addresses:${ addressHash.toLowerCase() }`,
     onSocketClose: handleSocketError,
     onSocketError: handleSocketError,
-    isDisabled: !addressHash || coinBalanceQuery.pagination.page !== 1,
+    isDisabled: !addressHash || coinBalanceQuery.isPlaceholderData || coinBalanceQuery.pagination.page !== 1,
   });
   useSocketMessage({
     channel,
