@@ -1,4 +1,4 @@
-import { Tr, Td, Tag, Text } from '@chakra-ui/react';
+import { Tr, Td, Text, Skeleton } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -8,12 +8,15 @@ import appConfig from 'configs/app/config';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
+import Tag from 'ui/shared/chakra/Tag';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 type Props = {
   item: AddressesItem;
   index: number;
   totalSupply: string;
   hasPercentage: boolean;
+  isLoading?: boolean;
 }
 
 const AddressesTableItem = ({
@@ -21,6 +24,7 @@ const AddressesTableItem = ({
   index,
   totalSupply,
   hasPercentage,
+  isLoading,
 }: Props) => {
 
   const addressBalance = BigNumber(item.coin_balance).div(BigNumber(10 ** appConfig.network.currency.decimals));
@@ -29,11 +33,13 @@ const AddressesTableItem = ({
   return (
     <Tr>
       <Td>
-        <Text lineHeight="24px">{ index }</Text>
+        <Skeleton isLoaded={ !isLoading } display="inline-block" minW={ 6 } lineHeight="24px">
+          { index }
+        </Skeleton>
       </Td>
       <Td>
         <Address display="inline-flex" maxW="100%">
-          <AddressIcon address={ item } mr={ 2 }/>
+          <AddressIcon address={ item } mr={ 2 } isLoading={ isLoading }/>
           <AddressLink
             fontWeight={ 700 }
             flexGrow={ 1 }
@@ -41,18 +47,22 @@ const AddressesTableItem = ({
             hash={ item.hash }
             alias={ item.name }
             type="address"
+            isLoading={ isLoading }
           />
+          <CopyToClipboard text={ item.hash } isLoading={ isLoading }/>
         </Address>
       </Td>
       <Td pl={ 10 }>
         { item.public_tags && item.public_tags.length ? item.public_tags.map(tag => (
-          <Tag key={ tag.label }>{ tag.display_name }</Tag>
-        )) : <Text lineHeight="24px">-</Text> }
+          <Tag key={ tag.label } isLoading={ isLoading } isTruncated>{ tag.display_name }</Tag>
+        )) : null }
       </Td>
       <Td isNumeric>
-        <Text lineHeight="24px" as="span">{ addressBalanceChunks[0] }</Text>
-        { addressBalanceChunks[1] && <Text lineHeight="24px" as="span">.</Text> }
-        <Text lineHeight="24px" variant="secondary" as="span">{ addressBalanceChunks[1] }</Text>
+        <Skeleton isLoaded={ !isLoading } display="inline-block">
+          <Text lineHeight="24px" as="span">{ addressBalanceChunks[0] }</Text>
+          { addressBalanceChunks[1] && <Text lineHeight="24px" as="span">.</Text> }
+          <Text lineHeight="24px" variant="secondary" as="span">{ addressBalanceChunks[1] }</Text>
+        </Skeleton>
       </Td>
       { hasPercentage && (
         <Td isNumeric>
@@ -60,7 +70,9 @@ const AddressesTableItem = ({
         </Td>
       ) }
       <Td isNumeric>
-        <Text lineHeight="24px">{ Number(item.tx_count).toLocaleString() }</Text>
+        <Skeleton isLoaded={ !isLoading } display="inline-block" lineHeight="24px">
+          { Number(item.tx_count).toLocaleString() }
+        </Skeleton>
       </Td>
     </Tr>
   );

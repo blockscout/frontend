@@ -13,9 +13,10 @@ interface Props {
   totalSupply: string;
   pageStartIndex: number;
   top: number;
+  isLoading?: boolean;
 }
 
-const AddressesTable = ({ items, totalSupply, pageStartIndex, top }: Props) => {
+const AddressesTable = ({ items, totalSupply, pageStartIndex, top, isLoading }: Props) => {
   const hasPercentage = Boolean(totalSupply && totalSupply !== '0');
   return (
     <Table variant="simple" size="sm">
@@ -32,11 +33,12 @@ const AddressesTable = ({ items, totalSupply, pageStartIndex, top }: Props) => {
       <Tbody>
         { items.map((item, index) => (
           <AddressesTableItem
-            key={ item.hash }
+            key={ item.hash + (isLoading ? index : '') }
             item={ item }
             totalSupply={ totalSupply }
             index={ pageStartIndex + index }
             hasPercentage={ hasPercentage }
+            isLoading={ isLoading }
           />
         )) }
       </Tbody>

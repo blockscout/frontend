@@ -77,7 +77,7 @@ const TxInternals = () => {
     pathParams: { hash: txInfo.data?.hash },
     options: {
       enabled: !txInfo.isPlaceholderData && Boolean(txInfo.data?.hash) && Boolean(txInfo.data?.status),
-      placeholderData: generateListStub<'tx_internal_txs'>(INTERNAL_TX, 3),
+      placeholderData: generateListStub<'tx_internal_txs'>(INTERNAL_TX, 3, { next_page_params: null }),
     },
   });
 

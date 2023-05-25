@@ -21,10 +21,10 @@ const Withdrawals = () => {
   const { data, isError, isPlaceholderData, isPaginationVisible, pagination } = useQueryWithPages({
     resourceName: 'withdrawals',
     options: {
-      placeholderData: generateListStub<'withdrawals'>(WITHDRAWAL, 50, {
+      placeholderData: generateListStub<'withdrawals'>(WITHDRAWAL, 50, { next_page_params: {
         index: 5,
         items_count: 50,
-      }),
+      } }),
     },
   });
 

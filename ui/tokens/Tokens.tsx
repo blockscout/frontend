@@ -36,12 +36,18 @@ const Tokens = () => {
     resourceName: 'tokens',
     filters: { q: debouncedFilter, type },
     options: {
-      placeholderData: generateListStub<'tokens'>(TOKEN_INFO_ERC_20, 50, {
-        holder_count: 81528,
-        items_count: 50,
-        name: '',
-        market_cap: null,
-      }),
+      placeholderData: generateListStub<'tokens'>(
+        TOKEN_INFO_ERC_20,
+        50,
+        {
+          next_page_params: {
+            holder_count: 81528,
+            items_count: 50,
+            name: '',
+            market_cap: null,
+          },
+        },
+      ),
     },
   });
 

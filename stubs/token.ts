@@ -77,11 +77,11 @@ export const TOKEN_TRANSFER_ERC_1155: TokenTransfer = {
 export const getTokenTransfersStub = (type?: TokenType, pagination: TokenTransferPagination | null = null): TokenTransferResponse => {
   switch (type) {
     case 'ERC-721':
-      return generateListStub<'token_transfers'>(TOKEN_TRANSFER_ERC_721, 50, pagination);
+      return generateListStub<'token_transfers'>(TOKEN_TRANSFER_ERC_721, 50, { next_page_params: pagination });
     case 'ERC-1155':
-      return generateListStub<'token_transfers'>(TOKEN_TRANSFER_ERC_1155, 50, pagination);
+      return generateListStub<'token_transfers'>(TOKEN_TRANSFER_ERC_1155, 50, { next_page_params: pagination });
     default:
-      return generateListStub<'token_transfers'>(TOKEN_TRANSFER_ERC_20, 50, pagination);
+      return generateListStub<'token_transfers'>(TOKEN_TRANSFER_ERC_20, 50, { next_page_params: pagination });
   }
 };
 

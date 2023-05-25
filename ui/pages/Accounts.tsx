@@ -2,19 +2,34 @@ import { Hide, Show } from '@chakra-ui/react';
 import React from 'react';
 
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
+import { TOP_ADDRESS } from 'stubs/address';
+import { generateListStub } from 'stubs/utils';
 import AddressesListItem from 'ui/addresses/AddressesListItem';
 import AddressesTable from 'ui/addresses/AddressesTable';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/Pagination';
 
 const PAGE_SIZE = 50;
 
 const Accounts = () => {
-  const { isError, isLoading, data, isPaginationVisible, pagination } = useQueryWithPages({
+  const { isError, isPlaceholderData, data, isPaginationVisible, pagination } = useQueryWithPages({
     resourceName: 'addresses',
+    options: {
+      placeholderData: generateListStub<'addresses'>(
+        TOP_ADDRESS,
+        50,
+        {
+          next_page_params: {
+            fetched_coin_balance: '42',
+            hash: '0x99f0ec06548b086e46cb0019c78d0b9b9f36cd53',
+            items_count: 50,
+          },
+          total_supply: '0',
+        },
+      ),
+    },
   });
 
   const actionBar = isPaginationVisible && (
@@ -32,16 +47,18 @@ const Accounts = () => {
           items={ data.items }
           totalSupply={ data.total_supply }
           pageStartIndex={ pageStartIndex }
+          isLoading={ isPlaceholderData }
         />
       </Hide>
       <Show below="lg" ssr={ false }>
         { data.items.map((item, index) => {
           return (
             <AddressesListItem
-              key={ item.hash }
+              key={ item.hash + (isPlaceholderData ? index : '') }
               item={ item }
               index={ pageStartIndex + index }
               totalSupply={ data.total_supply }
+              isLoading={ isPlaceholderData }
             />
           );
         }) }
@@ -50,18 +67,18 @@ const Accounts = () => {
   ) : null;
 
   return (
-    <Page>
+    <>
       <PageTitle title="Top accounts" withTextAd/>
       <DataListDisplay
         isError={ isError }
-        isLoading={ isLoading }
+        isLoading={ false }
         items={ data?.items }
         skeletonProps={{ skeletonDesktopColumns: [ '64px', '30%', '20%', '20%', '15%', '15%' ] }}
         emptyText="There are no accounts."
         content={ content }
         actionBar={ actionBar }
       />
-    </Page>
+    </>
   );
 };
 

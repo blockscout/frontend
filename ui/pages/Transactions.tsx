@@ -31,12 +31,12 @@ const Transactions = () => {
     filters: { filter: router.query.tab === 'pending' ? 'pending' : 'validated' },
     options: {
       enabled: !router.query.tab || router.query.tab === 'validated' || router.query.tab === 'pending',
-      placeholderData: generateListStub<'txs_validated'>(TX, 50, {
+      placeholderData: generateListStub<'txs_validated'>(TX, 50, { next_page_params: {
         block_number: 9005713,
         index: 5,
         items_count: 50,
         filter: 'validated',
-      }),
+      } }),
     },
   });
 

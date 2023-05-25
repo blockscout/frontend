@@ -19,12 +19,12 @@ const AddressLogs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>
     pathParams: { hash },
     scrollRef,
     options: {
-      placeholderData: generateListStub<'address_logs'>(LOG, 3, {
+      placeholderData: generateListStub<'address_logs'>(LOG, 3, { next_page_params: {
         block_number: 9005750,
         index: 42,
         items_count: 50,
         transaction_index: 23,
-      }),
+      } }),
     },
   });
 

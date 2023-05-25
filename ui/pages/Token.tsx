@@ -146,7 +146,7 @@ const TokenPageContent = () => {
     scrollRef,
     options: {
       enabled: Boolean(router.query.hash && router.query.tab === 'inventory' && hasData),
-      placeholderData: generateListStub<'token_inventory'>(tokenStubs.TOKEN_INSTANCE),
+      placeholderData: generateListStub<'token_inventory'>(tokenStubs.TOKEN_INSTANCE, 50, { next_page_params: null }),
     },
   });
 
