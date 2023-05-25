@@ -40,7 +40,7 @@ jobs:
 
       - name: Add outputs
         run: |
-          echo "::set-output name=short-sha::${{ env.GITHUB_EVENT_PULL_REQUEST_HEAD_SHA_SHORT }}"
+          echo "::set-output name=short-sha::${{ env.SHORT_SHA }}"
         id: output-step
 
       - name: Build and push
@@ -53,7 +53,7 @@ jobs:
           tags: ghcr.io/blockscout/frontend:prerelease-${{ env.GITHUB_REF_NAME_SLUG }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            GIT_COMMIT_SHA=${{ env.GITHUB_EVENT_PULL_REQUEST_HEAD_SHA_SHORT }}
+            GIT_COMMIT_SHA=${{ env.SHORT_SHA }}
 
   deploy_review:
     name: Deploy review
