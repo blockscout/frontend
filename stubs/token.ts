@@ -9,11 +9,11 @@ import { generateListStub } from './utils';
 export const TOKEN_INFO_ERC_20: TokenInfo<'ERC-20'> = {
   address: ADDRESS_HASH,
   decimals: '18',
-  exchange_rate: null,
+  exchange_rate: '0.999997',
   holders: '16026',
   name: 'Stub Token (goerli)',
   symbol: 'STUB',
-  total_supply: '6000000000000000000',
+  total_supply: '60000000000000000000000',
   type: 'ERC-20',
   icon_url: null,
 };

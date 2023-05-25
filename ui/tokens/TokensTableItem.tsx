@@ -1,11 +1,13 @@
-import { Box, Flex, Td, Tr, Text, Tag } from '@chakra-ui/react';
+import { Box, Flex, Td, Tr, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
+import Address from 'ui/shared/address/Address';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import AddressLink from 'ui/shared/address/AddressLink';
+import Tag from 'ui/shared/chakra/Tag';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import TokenLogo from 'ui/shared/TokenLogo';
 
@@ -13,6 +15,7 @@ type Props = {
   token: TokenInfo;
   index: number;
   page: number;
+  isLoading?: boolean;
 }
 
 const PAGE_SIZE = 50;
@@ -21,6 +24,7 @@ const TokensTableItem = ({
   token,
   page,
   index,
+  isLoading,
 }: Props) => {
 
   const {
@@ -41,8 +45,9 @@ const TokensTableItem = ({
   return (
     <Tr>
       <Td>
-        <Flex>
-          <Text
+        <Flex alignItems="flex-start">
+          <Skeleton
+            isLoaded={ !isLoading }
             fontSize="sm"
             lineHeight="24px"
             fontWeight={ 600 }
@@ -50,28 +55,46 @@ const TokensTableItem = ({
             minW="28px"
           >
             { (page - 1) * PAGE_SIZE + index + 1 }
-          </Text>
+          </Skeleton>
           <Box>
             <Flex alignItems="center">
-              <TokenLogo data={ token } boxSize={ 6 } mr={ 2 }/>
-              <AddressLink fontSize="sm" fontWeight="700" hash={ address } type="token" alias={ tokenString }/>
+              <TokenLogo data={ token } boxSize={ 6 } mr={ 2 } isLoading={ isLoading }/>
+              <AddressLink fontSize="sm" fontWeight="700" hash={ address } type="token" alias={ tokenString } isLoading={ isLoading }/>
             </Flex>
-            <Flex alignItems="center" width="136px" justifyContent="space-between" ml={ 8 } mt={ 2 }>
-              <Flex alignItems="center">
-                <AddressLink fontSize="sm" hash={ address } type="address" truncation="constant" fontWeight={ 500 }/>
-                <CopyToClipboard text={ address } ml={ 1 }/>
-              </Flex>
-              <AddressAddToWallet token={ token }/>
-            </Flex>
-            <Tag flexShrink={ 0 } ml={ 8 } mt={ 3 }>{ type }</Tag>
+            <Box ml={ 8 } mt={ 2 }>
+              <Address>
+                <AddressLink fontSize="sm" hash={ address } type="address" truncation="constant" fontWeight={ 500 } isLoading={ isLoading }/>
+                <CopyToClipboard text={ address } isLoading={ isLoading }/>
+                <AddressAddToWallet token={ token } ml={ 2 } isLoading={ isLoading }/>
+              </Address>
+              <Box mt={ 3 } >
+                <Tag isLoading={ isLoading }>{ type }</Tag>
+              </Box>
+            </Box>
           </Box>
         </Flex>
       </Td>
-      <Td isNumeric><Text fontSize="sm" lineHeight="24px" fontWeight={ 500 }>{ exchangeRate && `$${ exchangeRate }` }</Text></Td>
-      <Td isNumeric maxWidth="300px" width="300px">
-        <Text fontSize="sm" lineHeight="24px" fontWeight={ 500 }>{ totalValue?.usd && `$${ totalValue.usd }` }</Text>
+      <Td isNumeric>
+        <Skeleton isLoaded={ !isLoading } fontSize="sm" lineHeight="24px" fontWeight={ 500 } display="inline-block">
+          { exchangeRate && `$${ exchangeRate }` }
+        </Skeleton>
       </Td>
-      <Td isNumeric><Text fontSize="sm" lineHeight="24px" fontWeight={ 500 }>{ Number(holders).toLocaleString() }</Text></Td>
+      <Td isNumeric maxWidth="300px" width="300px">
+        <Skeleton isLoaded={ !isLoading } fontSize="sm" lineHeight="24px" fontWeight={ 500 } display="inline-block">
+          { totalValue?.usd && `$${ totalValue.usd }` }
+        </Skeleton>
+      </Td>
+      <Td isNumeric>
+        <Skeleton
+          isLoaded={ !isLoading }
+          fontSize="sm"
+          lineHeight="24px"
+          fontWeight={ 500 }
+          display="inline-block"
+        >
+          { Number(holders).toLocaleString() }
+        </Skeleton>
+      </Td>
     </Tr>
   );
 };

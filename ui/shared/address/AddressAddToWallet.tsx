@@ -1,4 +1,4 @@
-import { Box, chakra, Icon, Tooltip } from '@chakra-ui/react';
+import { Box, chakra, Icon, Skeleton, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
@@ -11,9 +11,10 @@ import { WALLETS_INFO } from 'lib/web3/wallets';
 interface Props {
   className?: string;
   token: TokenInfo;
+  isLoading?: boolean;
 }
 
-const AddressAddToWallet = ({ className, token }: Props) => {
+const AddressAddToWallet = ({ className, token, isLoading }: Props) => {
   const toast = useToast();
   const provider = useProvider();
 
@@ -57,6 +58,10 @@ const AddressAddToWallet = ({ className, token }: Props) => {
 
   if (!provider) {
     return null;
+  }
+
+  if (isLoading) {
+    return <Skeleton className={ className } boxSize={ 6 } borderRadius="base"/>;
   }
 
   const defaultWallet = appConfig.web3.defaultWallet;

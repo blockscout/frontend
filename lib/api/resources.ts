@@ -383,7 +383,7 @@ export const RESOURCES = {
   },
   tokens: {
     path: '/api/v2/tokens',
-    paginationFields: [ 'holder_count' as const, 'items_count' as const, 'name' as const ],
+    paginationFields: [ 'holder_count' as const, 'items_count' as const, 'name' as const, 'market_cap' as const ],
     filterFields: [ 'q' as const, 'type' as const ],
   },
 

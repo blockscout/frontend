@@ -7,6 +7,7 @@ export type TokensResponse = {
     holder_count: number;
     items_count: number;
     name: string;
+    market_cap: string | null;
   };
 }
 

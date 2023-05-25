@@ -9,6 +9,8 @@ import useDebounce from 'lib/hooks/useDebounce';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import { apos } from 'lib/html-entities';
 import TOKEN_TYPE from 'lib/token/tokenTypes';
+import { TOKEN_INFO_ERC_20 } from 'stubs/token';
+import { generateListStub } from 'stubs/utils';
 import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DataListDisplay from 'ui/shared/DataListDisplay';
@@ -25,14 +27,22 @@ const getTokenFilterValue = (getFilterValuesFromQuery<TokenType>).bind(null, TOK
 
 const Tokens = () => {
   const router = useRouter();
-  const [ filter, setFilter ] = React.useState<string>(router.query.filter?.toString() || '');
+  const [ filter, setFilter ] = React.useState<string>(router.query.q?.toString() || '');
   const [ type, setType ] = React.useState<Array<TokenType> | undefined>(getTokenFilterValue(router.query.type));
 
   const debouncedFilter = useDebounce(filter, 300);
 
-  const { isError, isLoading, data, isPaginationVisible, pagination, onFilterChange } = useQueryWithPages({
+  const { isError, isPlaceholderData, data, isPaginationVisible, pagination, onFilterChange } = useQueryWithPages({
     resourceName: 'tokens',
     filters: { q: debouncedFilter, type },
+    options: {
+      placeholderData: generateListStub<'tokens'>(TOKEN_INFO_ERC_20, 50, {
+        holder_count: 81528,
+        items_count: 50,
+        name: '',
+        market_cap: null,
+      }),
+    },
   });
 
   const onSearchChange = useCallback((value: string) => {
@@ -84,15 +94,23 @@ const Tokens = () => {
   const content = data?.items ? (
     <>
       <Show below="lg" ssr={ false }>
-        { data.items.map((item, index) => <TokensListItem key={ item.address } token={ item } index={ index } page={ pagination.page }/>) }
+        { data.items.map((item, index) => (
+          <TokensListItem
+            key={ item.address + (isPlaceholderData ? index : '') }
+            token={ item }
+            index={ index }
+            page={ pagination.page }
+            isLoading={ isPlaceholderData }
+          />
+        )) }
       </Show>
-      <Hide below="lg" ssr={ false }><TokensTable items={ data.items } page={ pagination.page }/></Hide></>
+      <Hide below="lg" ssr={ false }><TokensTable items={ data.items } page={ pagination.page } isLoading={ isPlaceholderData }/></Hide></>
   ) : null;
 
   return (
     <DataListDisplay
       isError={ isError }
-      isLoading={ isLoading }
+      isLoading={ false }
       items={ data?.items }
       skeletonProps={{ skeletonDesktopColumns: [ '25px', '33%', '33%', '33%', '110px' ] }}
       emptyText="There are no tokens."
