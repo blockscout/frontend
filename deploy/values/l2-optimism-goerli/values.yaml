@@ -5,7 +5,7 @@ blockscout:
   app: blockscout
   enabled: true
   image:
-    _default: &image blockscout/blockscout-optimism-l2-advanced:5.1.4-prerelease-a8c134e4
+    _default: &image blockscout/blockscout-optimism-l2-advanced:5.1.5-prerelease-ebf700a8
   replicas:
     app: 1
   # init container
