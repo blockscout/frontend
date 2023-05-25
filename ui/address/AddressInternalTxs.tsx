@@ -9,6 +9,8 @@ import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { INTERNAL_TX } from 'stubs/internalTx';
+import { generateListStub } from 'stubs/utils';
 import AddressIntTxsTable from 'ui/address/internals/AddressIntTxsTable';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
@@ -26,15 +28,28 @@ const AddressInternalTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivE
 
   const hash = getQueryParamString(router.query.hash);
 
-  const { data, isLoading, isError, pagination, onFilterChange, isPaginationVisible } = useQueryWithPages({
+  const { data, isPlaceholderData, isError, pagination, onFilterChange, isPaginationVisible } = useQueryWithPages({
     resourceName: 'address_internal_txs',
     pathParams: { hash },
     filters: { filter: filterValue },
     scrollRef,
+    options: {
+      placeholderData: generateListStub<'address_internal_txs'>(
+        INTERNAL_TX,
+        50,
+        {
+          next_page_params: {
+            block_number: 8987561,
+            index: 2,
+            items_count: 50,
+            transaction_index: 67,
+          },
+        },
+      ),
+    },
   });
 
   const handleFilterChange = React.useCallback((val: string | Array<string>) => {
-
     const newVal = getFilterValue(val);
     setFilterValue(newVal);
     onFilterChange({ filter: newVal });
@@ -43,22 +58,23 @@ const AddressInternalTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivE
   const content = data?.items ? (
     <>
       <Show below="lg" ssr={ false }>
-        <AddressIntTxsList data={ data.items } currentAddress={ hash }/>
+        <AddressIntTxsList data={ data.items } currentAddress={ hash } isLoading={ isPlaceholderData }/>
       </Show>
       <Hide below="lg" ssr={ false }>
-        <AddressIntTxsTable data={ data.items } currentAddress={ hash }/>
+        <AddressIntTxsTable data={ data.items } currentAddress={ hash } isLoading={ isPlaceholderData }/>
       </Hide>
     </>
   ) : null ;
 
   const actionBar = (
-    <ActionBar mt={ -6 } justifyContent="left" showShadow={ isLoading }>
+    <ActionBar mt={ -6 } justifyContent="left">
       <AddressTxsFilter
         defaultFilter={ filterValue }
         onFilterChange={ handleFilterChange }
         isActive={ Boolean(filterValue) }
+        isLoading={ pagination.isLoading }
       />
-      <AddressCsvExportLink address={ hash } type="internal-transactions" ml={{ base: 2, lg: 'auto' }}/>
+      <AddressCsvExportLink address={ hash } isLoading={ pagination.isLoading } type="internal-transactions" ml={{ base: 2, lg: 'auto' }}/>
       { isPaginationVisible && <Pagination ml={{ base: 'auto', lg: 8 }} { ...pagination }/> }
     </ActionBar>
   );
@@ -66,7 +82,7 @@ const AddressInternalTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivE
   return (
     <DataListDisplay
       isError={ isError }
-      isLoading={ isLoading }
+      isLoading={ false }
       items={ data?.items }
       skeletonProps={{ isLongSkeleton: true, skeletonDesktopColumns: [ '15%', '15%', '10%', '20%', '20%', '20%' ] }}
       filterProps={{ emptyFilteredText: `Couldn${ apos }t find any transaction that matches your query.`, hasActiveFilters: Boolean(filterValue) }}
