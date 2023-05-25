@@ -1,4 +1,4 @@
-import type { HomeStats } from 'types/api/stats';
+import type { HomeStats, StatsChartsSection } from 'types/api/stats';
 
 export const HOMEPAGE_STATS: HomeStats = {
   average_block_time: 14346,
@@ -17,4 +17,39 @@ export const HOMEPAGE_STATS: HomeStats = {
   total_gas_used: '0',
   total_transactions: '193823272',
   transactions_today: '0',
+};
+
+export const STATS_CHARTS_SECTION: StatsChartsSection = {
+  id: 'placeholder',
+  title: 'Placeholder',
+  charts: [
+    {
+      id: 'chart_0',
+      title: 'Average transaction fee',
+      description: 'The average amount in ETH spent per transaction',
+      units: 'ETH',
+    },
+    {
+      id: 'chart_1',
+      title: 'Transactions fees',
+      description: 'Amount of tokens paid as fees',
+      units: 'ETH',
+    },
+    {
+      id: 'chart_2',
+      title: 'New transactions',
+      description: 'New transactions number',
+      units: null,
+    },
+    {
+      id: 'chart_3',
+      title: 'Transactions growth',
+      description: 'Cumulative transactions number',
+      units: null,
+    },
+  ],
+};
+
+export const STATS_CHARTS = {
+  sections: [ STATS_CHARTS_SECTION ],
 };

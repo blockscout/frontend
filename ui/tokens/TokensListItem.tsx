@@ -77,12 +77,12 @@ const TokensTableItem = ({
       { totalValue?.usd && (
         <HStack spacing={ 3 }>
           <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>On-chain market cap</Skeleton>
-          <Skeleton isLoaded={ !isLoading } fontSize="sm" variant="secondary"><span>{ totalValue.usd }</span></Skeleton>
+          <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary"><span>{ totalValue.usd }</span></Skeleton>
         </HStack>
       ) }
       <HStack spacing={ 3 }>
         <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>Holders</Skeleton>
-        <Skeleton isLoaded={ !isLoading } fontSize="sm" variant="secondary"><span>{ Number(holders).toLocaleString() }</span></Skeleton>
+        <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary"><span>{ Number(holders).toLocaleString() }</span></Skeleton>
       </HStack>
     </ListItemMobile>
   );

@@ -40,7 +40,7 @@ const AddressBlocksValidatedListItem = (props: Props) => {
       </Flex>
       <Flex columnGap={ 2 } w="100%">
         <Skeleton isLoaded={ !props.isLoading } fontWeight={ 500 } flexShrink={ 0 }>Gas used</Skeleton>
-        <Skeleton isLoaded={ !props.isLoading } variant="secondary">{ BigNumber(props.gas_used || 0).toFormat() }</Skeleton>
+        <Skeleton isLoaded={ !props.isLoading } color="text_secondary">{ BigNumber(props.gas_used || 0).toFormat() }</Skeleton>
         <Utilization
           colorScheme="gray"
           value={ BigNumber(props.gas_used || 0).dividedBy(BigNumber(props.gas_limit)).toNumber() }
@@ -49,7 +49,7 @@ const AddressBlocksValidatedListItem = (props: Props) => {
       </Flex>
       <Flex columnGap={ 2 } w="100%">
         <Skeleton isLoaded={ !props.isLoading } fontWeight={ 500 } flexShrink={ 0 }>Reward { appConfig.network.currency.symbol }</Skeleton>
-        <Skeleton isLoaded={ !props.isLoading } variant="secondary">{ totalReward.toFixed() }</Skeleton>
+        <Skeleton isLoaded={ !props.isLoading } color="text_secondary">{ totalReward.toFixed() }</Skeleton>
       </Flex>
     </ListItemMobile>
   );

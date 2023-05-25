@@ -14,13 +14,14 @@ type Props = {
   units?: string;
   interval: StatsIntervalIds;
   onLoadingError: () => void;
+  isPlaceholderData: boolean;
 }
 
 function formatDate(date: Date) {
   return date.toISOString().substring(0, 10);
 }
 
-const ChartWidgetContainer = ({ id, title, description, interval, onLoadingError, units }: Props) => {
+const ChartWidgetContainer = ({ id, title, description, interval, onLoadingError, units, isPlaceholderData }: Props) => {
   const selectedInterval = STATS_INTERVALS[interval];
 
   const endDate = selectedInterval.start ? formatDate(new Date()) : undefined;
@@ -31,6 +32,10 @@ const ChartWidgetContainer = ({ id, title, description, interval, onLoadingError
     queryParams: {
       from: startDate,
       to: endDate,
+    },
+    queryOptions: {
+      enabled: !isPlaceholderData,
+      refetchOnMount: false,
     },
   });
 
@@ -52,6 +57,7 @@ const ChartWidgetContainer = ({ id, title, description, interval, onLoadingError
       units={ units }
       description={ description }
       isLoading={ isLoading }
+      minH="230px"
     />
   );
 };
