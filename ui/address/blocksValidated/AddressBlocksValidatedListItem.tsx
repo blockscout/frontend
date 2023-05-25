@@ -1,4 +1,4 @@
-import { Text, Flex } from '@chakra-ui/react';
+import { Flex, Skeleton } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import { route } from 'nextjs-routes';
 import React from 'react';
@@ -14,6 +14,7 @@ import Utilization from 'ui/shared/Utilization/Utilization';
 
 type Props = Block & {
   page: number;
+  isLoading: boolean;
 };
 
 const AddressBlocksValidatedListItem = (props: Props) => {
@@ -24,21 +25,31 @@ const AddressBlocksValidatedListItem = (props: Props) => {
   return (
     <ListItemMobile rowGap={ 2 } isAnimated>
       <Flex justifyContent="space-between" w="100%">
-        <LinkInternal href={ blockUrl } fontWeight="700">{ props.height }</LinkInternal>
-        <Text variant="secondary">{ timeAgo }</Text>
+        <Skeleton isLoaded={ !props.isLoading } display="inline-block">
+          <LinkInternal href={ blockUrl } fontWeight="700">{ props.height }</LinkInternal>
+        </Skeleton>
+        <Skeleton isLoaded={ !props.isLoading } color="text_secondary" display="inline-block">
+          <span>{ timeAgo }</span>
+        </Skeleton>
       </Flex>
       <Flex columnGap={ 2 } w="100%">
-        <Text fontWeight={ 500 } flexShrink={ 0 }>Txn</Text>
-        <Text variant="secondary">{ props.tx_count }</Text>
+        <Skeleton isLoaded={ !props.isLoading } fontWeight={ 500 } flexShrink={ 0 }>Txn</Skeleton>
+        <Skeleton isLoaded={ !props.isLoading } display="inline-block" color="Skeleton_secondary">
+          <span>{ props.tx_count }</span>
+        </Skeleton>
       </Flex>
       <Flex columnGap={ 2 } w="100%">
-        <Text fontWeight={ 500 } flexShrink={ 0 }>Gas used</Text>
-        <Text variant="secondary">{ BigNumber(props.gas_used || 0).toFormat() }</Text>
-        <Utilization colorScheme="gray" value={ BigNumber(props.gas_used || 0).dividedBy(BigNumber(props.gas_limit)).toNumber() }/>
+        <Skeleton isLoaded={ !props.isLoading } fontWeight={ 500 } flexShrink={ 0 }>Gas used</Skeleton>
+        <Skeleton isLoaded={ !props.isLoading } variant="secondary">{ BigNumber(props.gas_used || 0).toFormat() }</Skeleton>
+        <Utilization
+          colorScheme="gray"
+          value={ BigNumber(props.gas_used || 0).dividedBy(BigNumber(props.gas_limit)).toNumber() }
+          isLoading={ props.isLoading }
+        />
       </Flex>
       <Flex columnGap={ 2 } w="100%">
-        <Text fontWeight={ 500 } flexShrink={ 0 }>Reward { appConfig.network.currency.symbol }</Text>
-        <Text variant="secondary">{ totalReward.toFixed() }</Text>
+        <Skeleton isLoaded={ !props.isLoading } fontWeight={ 500 } flexShrink={ 0 }>Reward { appConfig.network.currency.symbol }</Skeleton>
+        <Skeleton isLoaded={ !props.isLoading } variant="secondary">{ totalReward.toFixed() }</Skeleton>
       </Flex>
     </ListItemMobile>
   );

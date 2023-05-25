@@ -11,6 +11,8 @@ import { getResourceKey } from 'lib/api/useApiQuery';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
+import { BLOCK } from 'stubs/block';
+import { generateListStub } from 'stubs/utils';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/Pagination';
@@ -34,6 +36,18 @@ const AddressBlocksValidated = ({ scrollRef }: Props) => {
     resourceName: 'address_blocks_validated',
     pathParams: { hash: addressHash },
     scrollRef,
+    options: {
+      placeholderData: generateListStub<'address_blocks_validated'>(
+        BLOCK,
+        50,
+        {
+          next_page_params: {
+            block_number: 9060562,
+            items_count: 50,
+          },
+        },
+      ),
+    },
   });
 
   const handleSocketError = React.useCallback(() => {
@@ -61,7 +75,7 @@ const AddressBlocksValidated = ({ scrollRef }: Props) => {
     topic: `blocks:${ addressHash.toLowerCase() }`,
     onSocketClose: handleSocketError,
     onSocketError: handleSocketError,
-    isDisabled: !addressHash || query.pagination.page !== 1,
+    isDisabled: !addressHash || query.isPlaceholderData || query.pagination.page !== 1,
   });
   useSocketMessage({
     channel,
@@ -84,22 +98,32 @@ const AddressBlocksValidated = ({ scrollRef }: Props) => {
             </Tr>
           </Thead>
           <Tbody>
-            { query.data.items.map((item) => (
-              <AddressBlocksValidatedTableItem key={ item.height } { ...item } page={ query.pagination.page }/>
+            { query.data.items.map((item, index) => (
+              <AddressBlocksValidatedTableItem
+                key={ item.height + (query.isPlaceholderData ? String(index) : '') }
+                { ...item }
+                page={ query.pagination.page }
+                isLoading={ query.isPlaceholderData }
+              />
             )) }
           </Tbody>
         </Table>
       </Hide>
       <Show below="lg" ssr={ false }>
-        { query.data.items.map((item) => (
-          <AddressBlocksValidatedListItem key={ item.height } { ...item } page={ query.pagination.page }/>
+        { query.data.items.map((item, index) => (
+          <AddressBlocksValidatedListItem
+            key={ item.height + (query.isPlaceholderData ? String(index) : '') }
+            { ...item }
+            page={ query.pagination.page }
+            isLoading={ query.isPlaceholderData }
+          />
         )) }
       </Show>
     </>
   ) : null;
 
   const actionBar = query.isPaginationVisible ? (
-    <ActionBar mt={ -6 } showShadow={ query.isLoading }>
+    <ActionBar mt={ -6 }>
       <Pagination ml="auto" { ...query.pagination }/>
     </ActionBar>
   ) : null;
@@ -107,7 +131,7 @@ const AddressBlocksValidated = ({ scrollRef }: Props) => {
   return (
     <DataListDisplay
       isError={ query.isError }
-      isLoading={ query.isLoading }
+      isLoading={ false }
       items={ query.data?.items }
       skeletonProps={{ isLongSkeleton: true, skeletonDesktopColumns: [ '17%', '17%', '16%', '25%', '25%' ] }}
       emptyText="There are no validated blocks for this address."
