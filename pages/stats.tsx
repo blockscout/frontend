@@ -1,8 +1,10 @@
-import type { NextPage } from 'next';
+import type { NextPage, GetServerSideProps } from 'next';
 import Head from 'next/head';
 import React from 'react';
 
 import appConfig from 'configs/app/config';
+import type { Props } from 'lib/next/getServerSideProps';
+import { getServerSideProps as getServerSidePropsBase } from 'lib/next/getServerSideProps';
 
 import Stats from '../ui/pages/Stats';
 
@@ -17,4 +19,12 @@ const StatsPage: NextPage = () => {
 
 export default StatsPage;
 
-export { getServerSideProps } from 'lib/next/getServerSideProps';
+export const getServerSideProps: GetServerSideProps<Props> = async(args) => {
+  if (!appConfig.statsApi.endpoint) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return getServerSidePropsBase(args);
+};
