@@ -18,7 +18,7 @@ const variantPrimary = defineStyle((props) => {
 
 const variantSecondary = defineStyle((props) => {
   return {
-    color: mode('gray.500', 'gray.500')(props),
+    color: mode('gray.600', 'gray.500')(props),
     _hover: {
       color: mode('gray.600', 'gray.400')(props),
     },

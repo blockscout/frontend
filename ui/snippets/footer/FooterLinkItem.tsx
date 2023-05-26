@@ -1,4 +1,4 @@
-import { Center, Text, Icon, Link, useColorModeValue } from '@chakra-ui/react';
+import { Center, Icon, Link } from '@chakra-ui/react';
 import React from 'react';
 
 type Props = {
@@ -9,16 +9,14 @@ type Props = {
 }
 
 const FooterLinkItem = ({ icon, iconSize, text, url }: Props) => {
-  const textColor = useColorModeValue('gray.600', 'gray.500');
-
   return (
-    <Link href={ url } display="flex" alignItems="center" h="30px" color={ textColor } target="_blank">
+    <Link href={ url } display="flex" alignItems="center" h="30px" variant="secondary" target="_blank" fontSize="xs">
       { icon && (
         <Center minW={ 6 } mr="6px">
           <Icon boxSize={ iconSize || 5 } as={ icon }/>
         </Center>
       ) }
-      <Text fontSize="xs" color={ textColor }>{ text }</Text>
+      { text }
     </Link>
   );
 };
