@@ -29,8 +29,7 @@ export default function useTimeChartController({ data, width, height }: Props) {
   );
 
   const yMin = useMemo(
-    // use -1 instead of 0 to correctly display the curve between two zero points.
-    () => d3.min(data, ({ items }) => d3.min(items, ({ value }) => value)) || -1,
+    () => d3.min(data, ({ items }) => d3.min(items, ({ value }) => value)) || 0,
     [ data ],
   );
 
@@ -72,7 +71,25 @@ export default function useTimeChartController({ data, width, height }: Props) {
     return format(d as Date);
   };
 
-  const yTickFormat = () => (d: d3.AxisDomain) => Number(d).toLocaleString(undefined, { maximumFractionDigits: 3, notation: 'compact' });
+  const yTickFormat = () => (d: d3.AxisDomain) => {
+    const num = Number(d);
+    const maximumFractionDigits = (() => {
+      if (num < 1) {
+        return 3;
+      }
+
+      if (num < 10) {
+        return 2;
+      }
+
+      if (num < 100) {
+        return 1;
+      }
+
+      return 0;
+    })();
+    return Number(d).toLocaleString(undefined, { maximumFractionDigits, notation: 'compact' });
+  };
 
   return {
     xTickFormat,
