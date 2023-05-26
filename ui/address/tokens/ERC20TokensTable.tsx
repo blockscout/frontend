@@ -10,9 +10,10 @@ import ERC20TokensTableItem from './ERC20TokensTableItem';
 interface Props {
   data: Array<AddressTokenBalance>;
   top: number;
+  isLoading: boolean;
 }
 
-const ERC20TokensTable = ({ data, top }: Props) => {
+const ERC20TokensTable = ({ data, top, isLoading }: Props) => {
   return (
     <Table variant="simple" size="sm">
       <Thead top={ top }>
@@ -25,8 +26,8 @@ const ERC20TokensTable = ({ data, top }: Props) => {
         </Tr>
       </Thead>
       <Tbody>
-        { data.map((item) => (
-          <ERC20TokensTableItem key={ item.token.address } { ...item }/>
+        { data.map((item, index) => (
+          <ERC20TokensTableItem key={ item.token.address + (isLoading ? index : '') } { ...item } isLoading={ isLoading }/>
         )) }
       </Tbody>
     </Table>

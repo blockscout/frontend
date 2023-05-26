@@ -1,4 +1,4 @@
-import { Tr, Td, Flex } from '@chakra-ui/react';
+import { Tr, Td, Flex, Skeleton } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -9,11 +9,12 @@ import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import TokenLogo from 'ui/shared/TokenLogo';
 
-type Props = AddressTokenBalance;
+type Props = AddressTokenBalance & { isLoading: boolean};
 
 const ERC721TokensTableItem = ({
   token,
   value,
+  isLoading,
 }: Props) => {
   const router = useRouter();
 
@@ -24,21 +25,23 @@ const ERC721TokensTableItem = ({
     <Tr>
       <Td verticalAlign="middle">
         <Flex alignItems="center">
-          <TokenLogo data={ token } boxSize={ 6 } mr={ 2 }/>
-          <AddressLink fontWeight="700" hash={ hash } tokenHash={ token.address } type="address_token" alias={ tokenString }/>
+          <TokenLogo data={ token } boxSize={ 6 } mr={ 2 } isLoading={ isLoading }/>
+          <AddressLink fontWeight="700" hash={ hash } tokenHash={ token.address } type="address_token" alias={ tokenString } isLoading={ isLoading }/>
         </Flex>
       </Td>
       <Td verticalAlign="middle">
         <Flex alignItems="center" width="150px" justifyContent="space-between">
           <Flex alignItems="center">
-            <AddressLink hash={ token.address } type="address" truncation="dynamic"/>
-            <CopyToClipboard text={ token.address } ml={ 1 }/>
+            <AddressLink hash={ token.address } type="address" truncation="dynamic" isLoading={ isLoading }/>
+            <CopyToClipboard text={ token.address } isLoading={ isLoading }/>
           </Flex>
-          <AddressAddToWallet token={ token } ml={ 4 }/>
+          <AddressAddToWallet token={ token } ml={ 4 } isLoading={ isLoading }/>
         </Flex>
       </Td>
       <Td isNumeric verticalAlign="middle">
-        { value }
+        <Skeleton isLoaded={ !isLoading } display="inline-block">
+          { value }
+        </Skeleton>
       </Td>
     </Tr>
   );

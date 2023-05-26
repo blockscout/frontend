@@ -1,8 +1,8 @@
-import type { Address, AddressCoinBalanceHistoryItem, AddressCounters } from 'types/api/address';
+import type { Address, AddressCoinBalanceHistoryItem, AddressCounters, AddressTokenBalance } from 'types/api/address';
 import type { AddressesItem } from 'types/api/addresses';
 
 import { ADDRESS_HASH } from './addressParams';
-import { TOKEN_INFO_ERC_20 } from './token';
+import { TOKEN_INFO_ERC_1155, TOKEN_INFO_ERC_20, TOKEN_INFO_ERC_721, TOKEN_INSTANCE } from './token';
 import { TX_HASH } from './tx';
 
 export const ADDRESS_INFO: Address = {
@@ -61,4 +61,25 @@ export const ADDRESS_COIN_BALANCE: AddressCoinBalanceHistoryItem = {
   delta: '1000000000000000000',
   transaction_hash: TX_HASH,
   value: '953427250000000000000000',
+};
+
+export const ADDRESS_TOKEN_BALANCE_ERC_20: AddressTokenBalance = {
+  token: TOKEN_INFO_ERC_20,
+  token_id: null,
+  token_instance: null,
+  value: '1000000000000000000000000',
+};
+
+export const ADDRESS_TOKEN_BALANCE_ERC_721: AddressTokenBalance = {
+  token: TOKEN_INFO_ERC_721,
+  token_id: null,
+  token_instance: null,
+  value: '176',
+};
+
+export const ADDRESS_TOKEN_BALANCE_ERC_1155: AddressTokenBalance = {
+  token: TOKEN_INFO_ERC_1155,
+  token_id: '188882',
+  token_instance: TOKEN_INSTANCE,
+  value: '176',
 };

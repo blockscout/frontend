@@ -296,7 +296,7 @@ export const RESOURCES = {
   address_tokens: {
     path: '/api/v2/addresses/:hash/tokens',
     pathParams: [ 'hash' as const ],
-    paginationFields: [ 'items_count' as const, 'token_name' as const, 'token_type' as const, 'value' as const ],
+    paginationFields: [ 'items_count' as const, 'token_name' as const, 'token_type' as const, 'value' as const, 'fiat_value' as const, 'id' as const ],
     filterFields: [ 'type' as const ],
   },
   address_withdrawals: {

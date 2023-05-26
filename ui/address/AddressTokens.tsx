@@ -6,6 +6,8 @@ import type { TokenType } from 'types/api/token';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
+import { ADDRESS_TOKEN_BALANCE_ERC_1155, ADDRESS_TOKEN_BALANCE_ERC_20, ADDRESS_TOKEN_BALANCE_ERC_721 } from 'stubs/address';
+import { generateListStub } from 'stubs/utils';
 import { tokenTabsByType } from 'ui/pages/Address';
 import Pagination from 'ui/shared/Pagination';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
@@ -43,7 +45,9 @@ const AddressTokens = () => {
     filters: { type: 'ERC-20' },
     scrollRef,
     options: {
+      refetchOnMount: false,
       enabled: tokenType === 'ERC-20',
+      placeholderData: generateListStub<'address_tokens'>(ADDRESS_TOKEN_BALANCE_ERC_20, 10, { next_page_params: null }),
     },
   });
 
@@ -53,7 +57,9 @@ const AddressTokens = () => {
     filters: { type: 'ERC-721' },
     scrollRef,
     options: {
+      refetchOnMount: false,
       enabled: tokenType === 'ERC-721',
+      placeholderData: generateListStub<'address_tokens'>(ADDRESS_TOKEN_BALANCE_ERC_721, 10, { next_page_params: null }),
     },
   });
 
@@ -63,7 +69,9 @@ const AddressTokens = () => {
     filters: { type: 'ERC-1155' },
     scrollRef,
     options: {
+      refetchOnMount: false,
       enabled: tokenType === 'ERC-1155',
+      placeholderData: generateListStub<'address_tokens'>(ADDRESS_TOKEN_BALANCE_ERC_1155, 10, { next_page_params: null }),
     },
   });
 

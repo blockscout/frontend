@@ -23,7 +23,7 @@ type Props = {
 const ERC721Tokens = ({ tokensQuery }: Props) => {
   const isMobile = useIsMobile();
 
-  const { isError, isLoading, data, pagination, isPaginationVisible } = tokensQuery;
+  const { isError, isPlaceholderData, data, pagination, isPaginationVisible } = tokensQuery;
 
   const actionBar = isMobile && isPaginationVisible && (
     <ActionBar mt={ -6 }>
@@ -33,14 +33,20 @@ const ERC721Tokens = ({ tokensQuery }: Props) => {
 
   const content = data?.items ? (
     <>
-      <Hide below="lg" ssr={ false }><ERC721TokensTable data={ data.items } top={ isPaginationVisible ? 72 : 0 }/></Hide>
-      <Show below="lg" ssr={ false }>{ data.items.map(item => <ERC721TokensListItem key={ item.token.address } { ...item }/>) }</Show></>
+      <Hide below="lg" ssr={ false }><ERC721TokensTable data={ data.items } isLoading={ isPlaceholderData } top={ isPaginationVisible ? 72 : 0 }/></Hide>
+      <Show below="lg" ssr={ false }>{ data.items.map((item, index) => (
+        <ERC721TokensListItem
+          key={ item.token.address + (isPlaceholderData ? index : '') }
+          { ...item }
+          isLoading={ isPlaceholderData }
+        />
+      )) }</Show></>
   ) : null;
 
   return (
     <DataListDisplay
       isError={ isError }
-      isLoading={ isLoading }
+      isLoading={ false }
       items={ data?.items }
       skeletonProps={{
         isLongSkeleton: true,

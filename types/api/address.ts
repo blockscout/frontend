@@ -45,7 +45,7 @@ export interface AddressTokenBalance {
   token: TokenInfo;
   token_id: string | null;
   value: string;
-  token_instance?: TokenInstance;
+  token_instance: TokenInstance | null;
 }
 
 export interface AddressTokensResponse {
@@ -55,6 +55,7 @@ export interface AddressTokensResponse {
     token_name: 'string' | null;
     token_type: TokenType;
     value: number;
+    fiat_value: string | null;
   } | null;
 }
 

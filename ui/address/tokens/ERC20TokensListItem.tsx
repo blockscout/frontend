@@ -1,4 +1,4 @@
-import { Flex, HStack, Text } from '@chakra-ui/react';
+import { Flex, HStack, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressTokenBalance } from 'types/api/address';
@@ -10,9 +10,9 @@ import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TokenLogo from 'ui/shared/TokenLogo';
 
-type Props = AddressTokenBalance;
+type Props = AddressTokenBalance & { isLoading: boolean};
 
-const ERC20TokensListItem = ({ token, value }: Props) => {
+const ERC20TokensListItem = ({ token, value, isLoading }: Props) => {
 
   const tokenString = [ token.name, token.symbol && `(${ token.symbol })` ].filter(Boolean).join(' ');
 
@@ -24,28 +24,34 @@ const ERC20TokensListItem = ({ token, value }: Props) => {
   return (
     <ListItemMobile rowGap={ 2 }>
       <Flex alignItems="center" width="100%">
-        <TokenLogo data={ token } boxSize={ 6 } mr={ 2 }/>
-        <AddressLink fontWeight="700" hash={ token.address } type="token" alias={ tokenString }/>
+        <TokenLogo data={ token } boxSize={ 6 } mr={ 2 } isLoading={ isLoading }/>
+        <AddressLink fontWeight="700" hash={ token.address } type="token" alias={ tokenString } isLoading={ isLoading }/>
       </Flex>
       <Flex alignItems="center" pl={ 8 }>
-        <AddressLink hash={ token.address } type="address" truncation="constant"/>
-        <CopyToClipboard text={ token.address } ml={ 1 }/>
-        <AddressAddToWallet token={ token } ml={ 2 }/>
+        <AddressLink hash={ token.address } type="address" truncation="constant" isLoading={ isLoading }/>
+        <CopyToClipboard text={ token.address } isLoading={ isLoading }/>
+        <AddressAddToWallet token={ token } ml={ 2 } isLoading={ isLoading }/>
       </Flex>
       { token.exchange_rate !== undefined && token.exchange_rate !== null && (
         <HStack spacing={ 3 }>
-          <Text fontSize="sm" fontWeight={ 500 }>Price</Text>
-          <Text fontSize="sm" variant="secondary">{ `$${ token.exchange_rate }` }</Text>
+          <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>Price</Skeleton>
+          <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary">
+            <span>{ `$${ token.exchange_rate }` }</span>
+          </Skeleton>
         </HStack>
       ) }
       <HStack spacing={ 3 }>
-        <Text fontSize="sm" fontWeight={ 500 }>Quantity</Text>
-        <Text fontSize="sm" variant="secondary">{ tokenQuantity }</Text>
+        <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>Quantity</Skeleton>
+        <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary">
+          <span>{ tokenQuantity }</span>
+        </Skeleton>
       </HStack>
       { tokenValue !== undefined && (
         <HStack spacing={ 3 }>
-          <Text fontSize="sm" fontWeight={ 500 }>Value</Text>
-          <Text fontSize="sm" variant="secondary">{ tokenValue }</Text>
+          <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>Value</Skeleton>
+          <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary">
+            <span>{ tokenValue }</span>
+          </Skeleton>
         </HStack>
       ) }
     </ListItemMobile>
