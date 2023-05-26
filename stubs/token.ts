@@ -1,4 +1,4 @@
-import type { TokenCounters, TokenHolder, TokenHolders, TokenInfo, TokenInstance, TokenType } from 'types/api/token';
+import type { TokenCounters, TokenHolder, TokenInfo, TokenInstance, TokenType } from 'types/api/token';
 import type { TokenTransfer, TokenTransferPagination, TokenTransferResponse } from 'types/api/tokenTransfer';
 
 import { ADDRESS_PARAMS, ADDRESS_HASH } from './addressParams';
@@ -37,8 +37,6 @@ export const TOKEN_HOLDER: TokenHolder = {
   address: ADDRESS_PARAMS,
   value: '1021378038331138520',
 };
-
-export const TOKEN_HOLDERS: TokenHolders = { items: Array(50).fill(TOKEN_HOLDER), next_page_params: null };
 
 export const TOKEN_TRANSFER_ERC_20: TokenTransfer = {
   block_hash: BLOCK_HASH,
@@ -92,7 +90,7 @@ export const TOKEN_INSTANCE: TokenInstance = {
   image_url: 'https://ipfs.vipsland.com/nft/collections/genesis/188882.gif',
   is_unique: true,
   metadata: {
-    attributes: Array(3).fill({ trait_type: 'skin', value: '6' }),
+    attributes: Array(3).fill({ trait_type: 'skin tone', value: 'very light skin tone' }),
     description: '**GENESIS #188882**, **8a77ca1bcaa4036f** :: *844th* generation of *#57806 and #57809* :: **eGenetic Hash Code (eDNA)** = *2822355e953a462d*',
     external_url: 'https://vipsland.com/nft/collections/genesis/188882',
     image: 'https://ipfs.vipsland.com/nft/collections/genesis/188882.gif',

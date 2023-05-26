@@ -1,12 +1,12 @@
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
+import { ADDRESS_INFO } from 'stubs/address';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import DetailsSkeletonRow from 'ui/shared/skeletons/DetailsSkeletonRow';
 
 interface Props {
   hash: string;
@@ -15,17 +15,17 @@ interface Props {
 const TokenInstanceCreatorAddress = ({ hash }: Props) => {
   const addressQuery = useApiQuery('address', {
     pathParams: { hash },
+    queryOptions: {
+      enabled: Boolean(hash),
+      placeholderData: ADDRESS_INFO,
+    },
   });
 
   if (addressQuery.isError) {
     return null;
   }
 
-  if (addressQuery.isLoading) {
-    return <DetailsSkeletonRow w="30%"/>;
-  }
-
-  if (!addressQuery.data.creator_address_hash) {
+  if (!addressQuery.data?.creator_address_hash) {
     return null;
   }
 
@@ -39,11 +39,12 @@ const TokenInstanceCreatorAddress = ({ hash }: Props) => {
     <DetailsInfoItem
       title="Creator"
       hint="Address that deployed this token contract"
+      isLoading={ addressQuery.isPlaceholderData }
     >
       <Address>
-        <AddressIcon address={ creatorAddress }/>
-        <AddressLink type="address" hash={ creatorAddress.hash } ml={ 2 }/>
-        <CopyToClipboard text={ creatorAddress.hash }/>
+        <AddressIcon address={ creatorAddress } isLoading={ addressQuery.isPlaceholderData }/>
+        <AddressLink type="address" hash={ creatorAddress.hash } ml={ 2 } isLoading={ addressQuery.isPlaceholderData }/>
+        <CopyToClipboard text={ creatorAddress.hash } isLoading={ addressQuery.isPlaceholderData }/>
       </Address>
     </DetailsInfoItem>
   );

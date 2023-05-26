@@ -1,4 +1,4 @@
-import { Box, Flex, Grid, GridItem, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Grid, GridItem, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInstance } from 'types/api/token';
@@ -18,11 +18,12 @@ import TokenInstanceCreatorAddress from './details/TokenInstanceCreatorAddress';
 import TokenInstanceTransfersCount from './details/TokenInstanceTransfersCount';
 
 interface Props {
-  data: TokenInstance;
+  data?: TokenInstance;
+  isLoading?: boolean;
   scrollRef?: React.RefObject<HTMLDivElement>;
 }
 
-const TokenInstanceDetails = ({ data, scrollRef }: Props) => {
+const TokenInstanceDetails = ({ data, scrollRef, isLoading }: Props) => {
   const handleCounterItemClick = React.useCallback(() => {
     window.setTimeout(() => {
       // cannot do scroll instantly, have to wait a little
@@ -30,7 +31,7 @@ const TokenInstanceDetails = ({ data, scrollRef }: Props) => {
     }, 500);
   }, [ scrollRef ]);
 
-  const metadata = parseMetadata(data.metadata);
+  const metadata = parseMetadata(data?.metadata);
   const hasMetadata = metadata && Boolean((metadata.name || metadata.description || metadata.attributes));
   const attributeBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
 
@@ -43,6 +44,10 @@ const TokenInstanceDetails = ({ data, scrollRef }: Props) => {
       borderColor="divider"
     />
   );
+
+  if (!data) {
+    return null;
+  }
 
   return (
     <>
@@ -57,34 +62,37 @@ const TokenInstanceDetails = ({ data, scrollRef }: Props) => {
           <DetailsInfoItem
             title="Token"
             hint="Token name"
+            isLoading={ isLoading }
           >
-            <TokenSnippet data={ data.token }/>
+            <TokenSnippet data={ data.token } isLoading={ isLoading }/>
           </DetailsInfoItem>
           { data.is_unique && data.owner && (
             <DetailsInfoItem
               title="Owner"
               hint="Current owner of this token instance"
+              isLoading={ isLoading }
             >
               <Address>
-                <AddressIcon address={ data.owner }/>
-                <AddressLink type="address" hash={ data.owner.hash } ml={ 2 }/>
-                <CopyToClipboard text={ data.owner.hash }/>
+                <AddressIcon address={ data.owner } isLoading={ isLoading }/>
+                <AddressLink type="address" hash={ data.owner.hash } ml={ 2 } isLoading={ isLoading }/>
+                <CopyToClipboard text={ data.owner.hash } isLoading={ isLoading }/>
               </Address>
             </DetailsInfoItem>
           ) }
-          <TokenInstanceCreatorAddress hash={ data.token.address }/>
+          <TokenInstanceCreatorAddress hash={ isLoading ? '' : data.token.address }/>
           <DetailsInfoItem
             title="Token ID"
             hint="This token instance unique token ID"
+            isLoading={ isLoading }
           >
             <Flex alignItems="center" overflow="hidden">
-              <Box overflow="hidden" display="inline-block" w="100%">
+              <Skeleton isLoaded={ !isLoading } overflow="hidden" display="inline-block" w="100%">
                 <HashStringShortenDynamic hash={ data.id }/>
-              </Box>
-              <CopyToClipboard text={ data.id } ml={ 1 }/>
+              </Skeleton>
+              <CopyToClipboard text={ data.id } isLoading={ isLoading }/>
             </Flex>
           </DetailsInfoItem>
-          <TokenInstanceTransfersCount hash={ data.token.address } id={ data.id } onClick={ handleCounterItemClick }/>
+          <TokenInstanceTransfersCount hash={ isLoading ? '' : data.token.address } id={ isLoading ? '' : data.id } onClick={ handleCounterItemClick }/>
         </Grid>
         <NftMedia
           imageUrl={ data.image_url }
@@ -92,6 +100,7 @@ const TokenInstanceDetails = ({ data, scrollRef }: Props) => {
           w="250px"
           flexShrink={ 0 }
           alignSelf={{ base: 'center', lg: 'flex-start' }}
+          isLoading={ isLoading }
         />
       </Flex>
       <Grid
@@ -110,8 +119,11 @@ const TokenInstanceDetails = ({ data, scrollRef }: Props) => {
                 hint="NFT name"
                 whiteSpace="normal"
                 wordBreak="break-word"
+                isLoading={ isLoading }
               >
-                { metadata.name }
+                <Skeleton isLoaded={ !isLoading }>
+                  { metadata.name }
+                </Skeleton>
               </DetailsInfoItem>
             ) }
             { metadata?.description && (
@@ -120,8 +132,11 @@ const TokenInstanceDetails = ({ data, scrollRef }: Props) => {
                 hint="NFT description"
                 whiteSpace="normal"
                 wordBreak="break-word"
+                isLoading={ isLoading }
               >
-                { metadata.description }
+                <Skeleton isLoaded={ !isLoading }>
+                  { metadata.description }
+                </Skeleton>
               </DetailsInfoItem>
             ) }
             { metadata?.attributes && (
@@ -129,6 +144,7 @@ const TokenInstanceDetails = ({ data, scrollRef }: Props) => {
                 title="Attributes"
                 hint="NFT attributes"
                 whiteSpace="normal"
+                isLoading={ isLoading }
               >
                 <Grid gap={ 2 } templateColumns="repeat(auto-fill,minmax(160px, 1fr))" w="100%">
                   { metadata.attributes.map((attribute, index) => (
@@ -138,9 +154,16 @@ const TokenInstanceDetails = ({ data, scrollRef }: Props) => {
                       borderRadius="md"
                       px={ 4 }
                       py={ 2 }
+                      display="flex"
+                      flexDir="column"
+                      alignItems="flex-start"
                     >
-                      <Box fontSize="xs" color="text_secondary" fontWeight={ 500 }>{ attribute.trait_type }</Box>
-                      <Box fontSize="sm">{ attribute.value }</Box>
+                      <Skeleton isLoaded={ !isLoading } fontSize="xs" lineHeight={ 4 } color="text_secondary" fontWeight={ 500 } mb={ 1 }>
+                        <span>{ attribute.trait_type }</span>
+                      </Skeleton>
+                      <Skeleton isLoaded={ !isLoading } fontSize="sm">
+                        <span>{ attribute.value }</span>
+                      </Skeleton>
                     </GridItem>
                   )) }
                 </Grid>
@@ -149,7 +172,7 @@ const TokenInstanceDetails = ({ data, scrollRef }: Props) => {
           </>
         ) }
         { divider }
-        <DetailsSponsoredItem/>
+        <DetailsSponsoredItem isLoading={ isLoading }/>
       </Grid>
     </>
   );

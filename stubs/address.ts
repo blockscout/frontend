@@ -9,7 +9,7 @@ export const ADDRESS_INFO: Address = {
   block_number_balance_updated_at: 8774377,
   coin_balance: '810941268802273085757',
   creation_tx_hash: null,
-  creator_address_hash: null,
+  creator_address_hash: ADDRESS_HASH,
   exchange_rate: null,
   has_custom_methods_read: false,
   has_custom_methods_write: false,
