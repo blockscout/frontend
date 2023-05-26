@@ -74,7 +74,7 @@ const Page = ({
   ) : children;
 
   return (
-    <Box minWidth="fit-content">
+    <Box minWidth={{ base: '100vw', lg: 'fit-content' }}>
       <Flex w="100%" minH="100vh" alignItems="stretch">
         <NavigationDesktop/>
         <Flex flexDir="column" flexGrow={ 1 } w={{ base: '100%', lg: 'auto' }}>
