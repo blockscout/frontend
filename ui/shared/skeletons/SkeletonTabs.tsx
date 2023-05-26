@@ -1,7 +1,9 @@
-import { Flex, Skeleton, chakra } from '@chakra-ui/react';
+import { Flex, Skeleton, chakra, Box, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import type { RoutedTab } from '../Tabs/types';
+
+import useTabIndexFromQuery from 'ui/shared/Tabs/useTabIndexFromQuery';
 
 interface Props {
   className?: string;
@@ -10,6 +12,9 @@ interface Props {
 }
 
 const SkeletonTabs = ({ className, tabs, size = 'md' }: Props) => {
+  const bgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
+  const tabIndex = useTabIndexFromQuery(tabs || []);
+
   if (tabs) {
     if (tabs.length === 1) {
       return null;
@@ -19,16 +24,34 @@ const SkeletonTabs = ({ className, tabs, size = 'md' }: Props) => {
     const paddingVert = size === 'sm' ? 1 : 2;
 
     return (
-      <Flex className={ className } my={ 8 } alignItems="center">
-        { tabs.map(({ title, id }, index) => (
+      <Flex className={ className } my={ 8 } alignItems="center" overflow="hidden">
+        { tabs.slice(0, tabIndex).map(({ title, id }) => (
           <Skeleton
             key={ id }
-            py={ index === 0 ? paddingVert : 0 }
-            px={ index === 0 ? paddingHor : 0 }
-            mx={ index === 0 ? 0 : paddingHor }
+            mx={ paddingHor }
             borderRadius="base"
             fontWeight={ 600 }
             borderWidth={ size === 'sm' ? '2px' : 0 }
+            flexShrink={ 0 }
+          >
+            { typeof title === 'string' ? title : title() }
+          </Skeleton>
+        )) }
+        { tabs.slice(tabIndex, tabIndex + 1).map(({ title, id }) => (
+          <Box key={ id } bgColor={ bgColor } px={ paddingHor } py={ paddingVert } borderRadius="base" flexShrink={ 0 }>
+            <Skeleton borderRadius="base" borderWidth={ size === 'sm' ? '2px' : 0 }>
+              { typeof title === 'string' ? title : title() }
+            </Skeleton>
+          </Box>
+        )) }
+        { tabs.slice(tabIndex + 1).map(({ title, id }) => (
+          <Skeleton
+            key={ id }
+            mx={ paddingHor }
+            borderRadius="base"
+            fontWeight={ 600 }
+            borderWidth={ size === 'sm' ? '2px' : 0 }
+            flexShrink={ 0 }
           >
             { typeof title === 'string' ? title : title() }
           </Skeleton>
