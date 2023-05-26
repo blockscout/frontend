@@ -1,9 +1,12 @@
 import type { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import React from 'react';
 
 import getNetworkTitle from 'lib/networks/getNetworkTitle';
-import Tokens from 'ui/pages/Tokens';
+import Page from 'ui/shared/Page/Page';
+
+const Tokens = dynamic(() => import('ui/pages/Tokens'), { ssr: false });
 
 const TokensPage: NextPage = () => {
   const title = getNetworkTitle();
@@ -12,7 +15,9 @@ const TokensPage: NextPage = () => {
       <Head>
         <title>{ title }</title>
       </Head>
-      <Tokens/>
+      <Page>
+        <Tokens/>
+      </Page>
     </>
   );
 };

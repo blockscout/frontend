@@ -11,9 +11,10 @@ import AddressIntTxsTableItem from './AddressIntTxsTableItem';
 interface Props {
   data: Array<InternalTransaction>;
   currentAddress: string;
+  isLoading?: boolean;
 }
 
-const AddressIntTxsTable = ({ data, currentAddress }: Props) => {
+const AddressIntTxsTable = ({ data, currentAddress, isLoading }: Props) => {
   return (
     <Table variant="simple" size="sm">
       <Thead top={ 80 }>
@@ -30,8 +31,13 @@ const AddressIntTxsTable = ({ data, currentAddress }: Props) => {
         </Tr>
       </Thead>
       <Tbody>
-        { data.map((item) => (
-          <AddressIntTxsTableItem key={ item.transaction_hash } { ...item } currentAddress={ currentAddress }/>
+        { data.map((item, index) => (
+          <AddressIntTxsTableItem
+            key={ item.transaction_hash + '_' + index }
+            { ...item }
+            currentAddress={ currentAddress }
+            isLoading={ isLoading }
+          />
         )) }
       </Tbody>
     </Table>

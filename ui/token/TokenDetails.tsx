@@ -87,8 +87,11 @@ const TokenDetails = ({ tokenQuery }: Props) => {
           title="Price"
           hint="Price per token on the exchanges"
           alignSelf="center"
+          isLoading={ tokenQuery.isPlaceholderData }
         >
-          { `$${ exchangeRate }` }
+          <Skeleton isLoaded={ !tokenQuery.isPlaceholderData } display="inline-block">
+            <span>{ `$${ exchangeRate }` }</span>
+          </Skeleton>
         </DetailsInfoItem>
       ) }
       { marketcap && (
@@ -96,8 +99,11 @@ const TokenDetails = ({ tokenQuery }: Props) => {
           title="Fully diluted market cap"
           hint="Total supply * Price"
           alignSelf="center"
+          isLoading={ tokenQuery.isPlaceholderData }
         >
-          { `$${ marketcap }` }
+          <Skeleton isLoaded={ !tokenQuery.isPlaceholderData } display="inline-block">
+            <span>{ `$${ marketcap }` }</span>
+          </Skeleton>
         </DetailsInfoItem>
       ) }
       <DetailsInfoItem

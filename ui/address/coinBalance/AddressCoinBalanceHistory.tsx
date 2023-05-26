@@ -37,15 +37,25 @@ const AddressCoinBalanceHistory = ({ query }: Props) => {
             </Tr>
           </Thead>
           <Tbody>
-            { query.data.items.map((item) => (
-              <AddressCoinBalanceTableItem key={ item.block_number } { ...item } page={ query.pagination.page }/>
+            { query.data.items.map((item, index) => (
+              <AddressCoinBalanceTableItem
+                key={ item.block_number + (query.isPlaceholderData ? String(index) : '') }
+                { ...item }
+                page={ query.pagination.page }
+                isLoading={ query.isPlaceholderData }
+              />
             )) }
           </Tbody>
         </Table>
       </Hide>
       <Show below="lg" ssr={ false }>
-        { query.data.items.map((item) => (
-          <AddressCoinBalanceListItem key={ item.block_number } { ...item } page={ query.pagination.page }/>
+        { query.data.items.map((item, index) => (
+          <AddressCoinBalanceListItem
+            key={ item.block_number + (query.isPlaceholderData ? String(index) : '') }
+            { ...item }
+            page={ query.pagination.page }
+            isLoading={ query.isPlaceholderData }
+          />
         )) }
       </Show>
     </>
@@ -61,7 +71,7 @@ const AddressCoinBalanceHistory = ({ query }: Props) => {
     <DataListDisplay
       mt={ 8 }
       isError={ query.isError }
-      isLoading={ query.isLoading }
+      isLoading={ false }
       items={ query.data?.items }
       skeletonProps={{ skeletonDesktopColumns: [ '25%', '25%', '25%', '25%', '120px' ] }}
       emptyText="There is no coin balance history for this address."

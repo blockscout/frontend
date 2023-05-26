@@ -1,4 +1,4 @@
-import { Td, Tr, Text, Box, Flex } from '@chakra-ui/react';
+import { Td, Tr, Flex, Skeleton } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import { route } from 'nextjs-routes';
 import React from 'react';
@@ -12,6 +12,7 @@ import Utilization from 'ui/shared/Utilization/Utilization';
 
 type Props = Block & {
   page: number;
+  isLoading: boolean;
 };
 
 const AddressBlocksValidatedTableItem = (props: Props) => {
@@ -22,22 +23,36 @@ const AddressBlocksValidatedTableItem = (props: Props) => {
   return (
     <Tr>
       <Td>
-        <LinkInternal href={ blockUrl } fontWeight="700">{ props.height }</LinkInternal>
+        <Skeleton isLoaded={ !props.isLoading } display="inline-block">
+          <LinkInternal href={ blockUrl } fontWeight="700">{ props.height }</LinkInternal>
+        </Skeleton>
       </Td>
       <Td>
-        <Text variant="secondary">{ timeAgo }</Text>
+        <Skeleton isLoaded={ !props.isLoading } color="text_secondary" display="inline-block">
+          <span>{ timeAgo }</span>
+        </Skeleton>
       </Td>
       <Td>
-        <Text fontWeight="500">{ props.tx_count }</Text>
+        <Skeleton isLoaded={ !props.isLoading } display="inline-block" fontWeight="500">
+          <span>{ props.tx_count }</span>
+        </Skeleton>
       </Td>
       <Td>
         <Flex alignItems="center" columnGap={ 2 }>
-          <Box flexBasis="80px">{ BigNumber(props.gas_used || 0).toFormat() }</Box>
-          <Utilization colorScheme="gray" value={ BigNumber(props.gas_used || 0).dividedBy(BigNumber(props.gas_limit)).toNumber() }/>
+          <Skeleton isLoaded={ !props.isLoading } flexBasis="80px">
+            { BigNumber(props.gas_used || 0).toFormat() }
+          </Skeleton>
+          <Utilization
+            colorScheme="gray"
+            value={ BigNumber(props.gas_used || 0).dividedBy(BigNumber(props.gas_limit)).toNumber() }
+            isLoading={ props.isLoading }
+          />
         </Flex>
       </Td>
       <Td isNumeric display="flex" justifyContent="end">
-        { totalReward.toFixed() }
+        <Skeleton isLoaded={ !props.isLoading } display="inline-block">
+          <span>{ totalReward.toFixed() }</span>
+        </Skeleton>
       </Td>
     </Tr>
   );

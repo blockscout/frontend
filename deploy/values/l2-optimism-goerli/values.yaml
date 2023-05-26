@@ -362,8 +362,6 @@ frontend:
       _default: "Base Göerli"
     NEXT_PUBLIC_NETWORK_SHORT_NAME:
       _default: Base
-    NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME:
-      _default: optimism
     NEXT_PUBLIC_NETWORK_ID:
       _default: 420
     NEXT_PUBLIC_NETWORK_CURRENCY_NAME:

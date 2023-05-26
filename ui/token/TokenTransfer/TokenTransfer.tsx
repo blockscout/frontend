@@ -31,7 +31,7 @@ type Props = {
 const TokenTransfer = ({ transfersQuery, tokenId, token }: Props) => {
   const isMobile = useIsMobile();
   const router = useRouter();
-  const { isError, isLoading, isPlaceholderData, data, pagination, isPaginationVisible } = transfersQuery;
+  const { isError, isPlaceholderData, data, pagination, isPaginationVisible } = transfersQuery;
 
   const [ newItemsCount, setNewItemsCount ] = useGradualIncrement(0);
   const [ socketAlert, setSocketAlert ] = React.useState('');
@@ -52,7 +52,7 @@ const TokenTransfer = ({ transfersQuery, tokenId, token }: Props) => {
     topic: `tokens:${ router.query.hash?.toString().toLowerCase() }`,
     onSocketClose: handleSocketClose,
     onSocketError: handleSocketError,
-    isDisabled: isLoading || isError || pagination.page !== 1,
+    isDisabled: isPlaceholderData || isError || pagination.page !== 1,
   });
   useSocketMessage({
     channel,
@@ -99,7 +99,7 @@ const TokenTransfer = ({ transfersQuery, tokenId, token }: Props) => {
   return (
     <DataListDisplay
       isError={ isError }
-      isLoading={ !isPlaceholderData && isLoading }
+      isLoading={ false }
       items={ data?.items }
       skeletonProps={{
         isLongSkeleton: true,

@@ -136,7 +136,7 @@ const TokenPageContent = () => {
     scrollRef,
     options: {
       enabled: Boolean(router.query.hash && router.query.tab === 'holders' && hasData),
-      placeholderData: tokenStubs.TOKEN_HOLDERS,
+      placeholderData: generateListStub<'token_holders'>(tokenStubs.TOKEN_HOLDER, 50, { next_page_params: null }),
     },
   });
 
@@ -146,7 +146,7 @@ const TokenPageContent = () => {
     scrollRef,
     options: {
       enabled: Boolean(router.query.hash && router.query.tab === 'inventory' && hasData),
-      placeholderData: generateListStub<'token_inventory'>(tokenStubs.TOKEN_INSTANCE),
+      placeholderData: generateListStub<'token_inventory'>(tokenStubs.TOKEN_INSTANCE, 50, { next_page_params: null }),
     },
   });
 

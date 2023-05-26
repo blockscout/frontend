@@ -1,4 +1,4 @@
-import { Flex, Text, chakra } from '@chakra-ui/react';
+import { Flex, chakra, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
@@ -21,7 +21,11 @@ const TokenSnippet = ({ data, className, logoSize = 6, isDisabled, hideSymbol, i
     <Flex className={ className } alignItems="center" columnGap={ 2 } w="100%">
       <TokenLogo boxSize={ logoSize } data={ data } isLoading={ isLoading }/>
       <AddressLink hash={ data?.address || '' } alias={ data?.name || 'Unnamed token' } type="token" isDisabled={ isDisabled } isLoading={ isLoading }/>
-      { data?.symbol && !hideSymbol && <Text variant="secondary">({ trimTokenSymbol(data.symbol) })</Text> }
+      { data?.symbol && !hideSymbol && (
+        <Skeleton isLoaded={ !isLoading } color="text_secondary">
+          <span>({ trimTokenSymbol(data.symbol) })</span>
+        </Skeleton>
+      ) }
     </Flex>
   );
 };

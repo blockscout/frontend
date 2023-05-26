@@ -7,6 +7,7 @@ import React, { useEffect, useRef } from 'react';
 import type { RoutedTab } from './types';
 
 import TabsWithScroll from './TabsWithScroll';
+import useTabIndexFromQuery from './useTabIndexFromQuery';
 
 interface Props extends ThemingProps<'Tabs'> {
   tabs: Array<RoutedTab>;
@@ -18,16 +19,7 @@ interface Props extends ThemingProps<'Tabs'> {
 
 const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled, className, ...themeProps }: Props) => {
   const router = useRouter();
-
-  let tabIndex = 0;
-  const tabFromRoute = router.query.tab;
-  if (tabFromRoute) {
-    tabIndex = tabs.findIndex(({ id, subTabs }) => id === tabFromRoute || subTabs?.some((id) => id === tabFromRoute));
-    if (tabIndex < 0) {
-      tabIndex = 0;
-    }
-  }
-
+  const tabIndex = useTabIndexFromQuery(tabs);
   const tabsRef = useRef<HTMLDivElement>(null);
 
   const handleTabChange = React.useCallback((index: number) => {

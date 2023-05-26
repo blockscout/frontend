@@ -34,10 +34,10 @@ const BlocksPageContent = () => {
     resourceName: 'blocks',
     filters: { type },
     options: {
-      placeholderData: generateListStub<'blocks'>(BLOCK, 50, {
+      placeholderData: generateListStub<'blocks'>(BLOCK, 50, { next_page_params: {
         block_number: 8988686,
         items_count: 50,
-      }),
+      } }),
     },
   });
 

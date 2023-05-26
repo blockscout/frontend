@@ -89,7 +89,7 @@ const TokenTransferListItem = ({
           <Skeleton isLoaded={ !isLoading } flexShrink={ 0 } fontWeight={ 500 }>
             Value
           </Skeleton>
-          <Skeleton isLoaded={ !isLoading } variant="secondary">
+          <Skeleton isLoaded={ !isLoading } color="text_secondary">
             { value }
           </Skeleton>
           <Skeleton isLoaded={ !isLoading }>{ trimTokenSymbol(token.symbol) }</Skeleton>

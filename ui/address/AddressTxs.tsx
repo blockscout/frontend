@@ -44,11 +44,11 @@ const AddressTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}
     filters: { filter: filterValue },
     scrollRef,
     options: {
-      placeholderData: generateListStub<'address_txs'>(TX, 50, {
+      placeholderData: generateListStub<'address_txs'>(TX, 50, { next_page_params: {
         block_number: 9005713,
         index: 5,
         items_count: 50,
-      }),
+      } }),
     },
   });
 

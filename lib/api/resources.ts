@@ -191,7 +191,7 @@ export const RESOURCES = {
   },
   txs_watchlist: {
     path: '/api/v2/transactions/watchlist',
-    paginationFields: [ 'filter' as const, 'hash' as const, 'inserted_at' as const ],
+    paginationFields: [ 'block_number' as const, 'index' as const, 'items_count' as const ],
     filterFields: [ ],
   },
   tx: {
@@ -296,7 +296,7 @@ export const RESOURCES = {
   address_tokens: {
     path: '/api/v2/addresses/:hash/tokens',
     pathParams: [ 'hash' as const ],
-    paginationFields: [ 'items_count' as const, 'token_name' as const, 'token_type' as const, 'value' as const ],
+    paginationFields: [ 'items_count' as const, 'token_name' as const, 'token_type' as const, 'value' as const, 'fiat_value' as const, 'id' as const ],
     filterFields: [ 'type' as const ],
   },
   address_withdrawals: {
@@ -383,7 +383,7 @@ export const RESOURCES = {
   },
   tokens: {
     path: '/api/v2/tokens',
-    paginationFields: [ 'holder_count' as const, 'items_count' as const, 'name' as const ],
+    paginationFields: [ 'holder_count' as const, 'items_count' as const, 'name' as const, 'market_cap' as const ],
     filterFields: [ 'q' as const, 'type' as const ],
   },
 

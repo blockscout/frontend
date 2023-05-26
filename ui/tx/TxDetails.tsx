@@ -193,7 +193,7 @@ const TxDetails = () => {
           </Skeleton>
         </DetailsInfoItem>
       ) }
-      <DetailsSponsoredItem/>
+      <DetailsSponsoredItem isLoading={ isPlaceholderData }/>
 
       { divider }
 

@@ -24,7 +24,7 @@ const BackLink = (props: BackLinkProp & { isLoading?: boolean }) => {
   }
 
   if (props.isLoading) {
-    return <Skeleton boxSize={ 6 } display="inline-block" borderRadius="base" mr={ 3 } isLoaded={ !props.isLoading }/>;
+    return <Skeleton boxSize={ 6 } display="inline-block" borderRadius="base" mr={ 3 } my={ 2 } verticalAlign="text-bottom" isLoaded={ !props.isLoading }/>;
   }
 
   const icon = <Icon as={ eastArrowIcon } boxSize={ 6 } transform="rotate(180deg)" margin="auto"/>;
@@ -64,7 +64,7 @@ const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoa
         { beforeTitle }
         <Skeleton
           isLoaded={ !isLoading }
-          display="inline"
+          display={ isLoading ? 'inline-block' : 'inline' }
           verticalAlign={ isLoading ? 'super' : undefined }
         >
           <Heading

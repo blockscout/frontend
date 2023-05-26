@@ -1,4 +1,4 @@
-import { Flex, Skeleton } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -19,7 +19,7 @@ const TokenBalances = () => {
 
   const addressQuery = useApiQuery('address', {
     pathParams: { hash },
-    queryOptions: { enabled: Boolean(hash) },
+    queryOptions: { enabled: Boolean(hash), refetchOnMount: false },
   });
 
   const tokenQuery = useFetchTokens({ hash });
@@ -28,23 +28,12 @@ const TokenBalances = () => {
     return <DataFetchAlert/>;
   }
 
-  if (addressQuery.isLoading || tokenQuery.isLoading) {
-    const item = <Skeleton w={{ base: '100%', lg: '240px' }} h="82px" borderRadius="16px"/>;
-    return (
-      <Flex columnGap={ 3 } rowGap={ 3 } mt={{ base: '6px', lg: 0 }} flexDirection={{ base: 'column', lg: 'row' }}>
-        { item }
-        { item }
-        { item }
-      </Flex>
-    );
-  }
-
   const addressData = addressQuery.data;
   const { valueStr: nativeValue, usdBn: nativeUsd } = getCurrencyValue({
-    value: addressData.coin_balance || '0',
+    value: addressData?.coin_balance || '0',
     accuracy: 8,
     accuracyUsd: 2,
-    exchangeRate: addressData.exchange_rate,
+    exchangeRate: addressData?.exchange_rate,
     decimals: String(appConfig.network.currency.decimals),
   });
 
@@ -57,10 +46,15 @@ const TokenBalances = () => {
 
   return (
     <Flex columnGap={ 3 } rowGap={ 3 } mt={{ base: '6px', lg: 0 }} flexDirection={{ base: 'column', lg: 'row' }}>
-      <TokenBalancesItem name="Net Worth" value={ addressData.exchange_rate ? `${ prefix }$${ totalUsd.toFormat(2) } USD` : 'N/A' }/>
+      <TokenBalancesItem
+        name="Net Worth"
+        value={ addressData?.exchange_rate ? `${ prefix }$${ totalUsd.toFormat(2) } USD` : 'N/A' }
+        isLoading={ addressQuery.isLoading || tokenQuery.isLoading }
+      />
       <TokenBalancesItem
         name={ `${ appConfig.network.currency.symbol } Balance` }
         value={ (!nativeUsd.eq(ZERO) ? `$${ nativeUsd.toFormat(2) } USD | ` : '') + `${ nativeValue } ${ appConfig.network.currency.symbol }` }
+        isLoading={ addressQuery.isLoading || tokenQuery.isLoading }
       />
       <TokenBalancesItem
         name="Tokens"
@@ -68,9 +62,10 @@ const TokenBalances = () => {
           `${ prefix }$${ tokensInfo.usd.toFormat(2) } USD ` +
           tokensNumText
         }
+        isLoading={ addressQuery.isLoading || tokenQuery.isLoading }
       />
     </Flex>
   );
 };
 
-export default React.memo(TokenBalances);
+export default TokenBalances;

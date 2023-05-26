@@ -10,9 +10,10 @@ import TokensTableItem from './TokensTableItem';
 type Props = {
   items: Array<TokenInfo>;
   page: number;
+  isLoading?: boolean;
 }
 
-const TokensTable = ({ items, page }: Props) => {
+const TokensTable = ({ items, page, isLoading }: Props) => {
   return (
     <Table style={{ tableLayout: 'auto' }}>
       <Thead top={ 80 }>
@@ -25,7 +26,7 @@ const TokensTable = ({ items, page }: Props) => {
       </Thead>
       <Tbody>
         { items.map((item, index) => (
-          <TokensTableItem key={ item.address } token={ item } index={ index } page={ page }/>
+          <TokensTableItem key={ item.address + (isLoading ? index : '') } token={ item } index={ index } page={ page } isLoading={ isLoading }/>
         )) }
       </Tbody>
     </Table>

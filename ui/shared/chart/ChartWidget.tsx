@@ -3,13 +3,13 @@ import {
   Center,
   chakra,
   Flex,
-  Grid,
   Icon,
   IconButton, Link,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
+  Skeleton,
   Text,
   Tooltip,
   useColorModeValue,
@@ -30,7 +30,6 @@ import { apos } from 'lib/html-entities';
 import saveAsCSV from 'lib/saveAsCSV';
 
 import ChartWidgetGraph from './ChartWidgetGraph';
-import ChartWidgetSkeleton from './ChartWidgetSkeleton';
 import FullscreenChartModal from './FullscreenChartModal';
 
 export type Props = {
@@ -110,10 +109,6 @@ const ChartWidget = ({ items, title, description, isLoading, className, isError,
     }
   }, [ items, title ]);
 
-  if (isLoading) {
-    return <ChartWidgetSkeleton hasDescription={ Boolean(description) }/>;
-  }
-
   const hasItems = items && items.length > 2;
 
   const content = (() => {
@@ -137,6 +132,10 @@ const ChartWidget = ({ items, title, description, isLoading, className, isError,
       );
     }
 
+    if (isLoading) {
+      return <Skeleton flexGrow={ 1 } w="100%"/>;
+    }
+
     if (!hasItems) {
       return (
         <Center flexGrow={ 1 }>
@@ -146,7 +145,7 @@ const ChartWidget = ({ items, title, description, isLoading, className, isError,
     }
 
     return (
-      <Box h="100%" maxW="100%">
+      <Box flexGrow={ 1 } maxW="100%">
         <ChartWidgetGraph
           items={ items }
           onZoom={ handleZoom }
@@ -160,112 +159,104 @@ const ChartWidget = ({ items, title, description, isLoading, className, isError,
 
   return (
     <>
-      <Box
+      <Flex
         height="100%"
-        display="flex"
-        flexDirection="column"
         ref={ ref }
+        flexDir="column"
         padding={{ base: 3, lg: 4 }}
         borderRadius="md"
         border="1px"
         borderColor={ borderColor }
         className={ className }
       >
-        <Grid
-          gridTemplateColumns="auto auto 36px"
-          gridColumnGap={ 2 }
-        >
-          <Text
-            fontWeight={ 600 }
-            fontSize="md"
-            lineHeight={ 6 }
-            as="p"
-            size={{ base: 'xs', lg: 'sm' }}
-          >
-            { title }
-          </Text>
-
-          { description && (
-            <Text
-              mb={ 1 }
-              gridColumn={ 1 }
-              as="p"
-              variant="secondary"
-              fontSize="xs"
+        <Flex columnGap={ 6 } mb={ 1 } alignItems="flex-start">
+          <Flex flexGrow={ 1 } flexDir="column" alignItems="flex-start">
+            <Skeleton
+              isLoaded={ !isLoading }
+              fontWeight={ 600 }
+              size={{ base: 'xs', lg: 'sm' }}
             >
-              { description }
-            </Text>
-          ) }
+              { title }
+            </Skeleton>
 
-          <Tooltip label="Reset zoom">
-            <IconButton
-              hidden={ isZoomResetInitial }
-              aria-label="Reset zoom"
-              colorScheme="blue"
-              w={ 9 }
-              h={ 8 }
-              gridColumn={ 2 }
-              justifySelf="end"
-              alignSelf="top"
-              gridRow="1/3"
-              size="sm"
-              variant="outline"
-              onClick={ handleZoomResetClick }
-              icon={ <Icon as={ repeatArrowIcon } w={ 4 } h={ 4 }/> }
-            />
-          </Tooltip>
-
-          { hasItems && (
-            <Menu>
-              <MenuButton
-                gridColumn={ 3 }
-                gridRow="1/3"
-                justifySelf="end"
-                w="36px"
-                h="32px"
-                icon={ <Icon as={ dotsIcon } w={ 4 } h={ 4 }/> }
-                colorScheme="gray"
-                variant="ghost"
-                as={ IconButton }
+            { description && (
+              <Skeleton
+                isLoaded={ !isLoading }
+                color="text_secondary"
+                fontSize="xs"
+                mt={ 1 }
               >
-                <VisuallyHidden>
-                  Open chart options menu
-                </VisuallyHidden>
-              </MenuButton>
-              <MenuList>
-                <MenuItem
-                  display="flex"
-                  alignItems="center"
-                  onClick={ showChartFullscreen }
-                >
-                  <Icon as={ scopeIcon } boxSize={ 5 } mr={ 3 }/>
+                <span>{ description }</span>
+              </Skeleton>
+            ) }
+          </Flex>
+
+          <Flex ml="auto" columnGap={ 2 }>
+            <Tooltip label="Reset zoom">
+              <IconButton
+                hidden={ isZoomResetInitial }
+                aria-label="Reset zoom"
+                colorScheme="blue"
+                w={ 9 }
+                h={ 8 }
+                size="sm"
+                variant="outline"
+                onClick={ handleZoomResetClick }
+                icon={ <Icon as={ repeatArrowIcon } w={ 4 } h={ 4 }/> }
+              />
+            </Tooltip>
+
+            { hasItems && (
+              <Menu>
+                <Skeleton isLoaded={ !isLoading } borderRadius="base">
+                  <MenuButton
+                    w="36px"
+                    h="32px"
+                    icon={ <Icon as={ dotsIcon } w={ 4 } h={ 4 }/> }
+                    colorScheme="gray"
+                    variant="ghost"
+                    as={ IconButton }
+                  >
+                    <VisuallyHidden>
+                      Open chart options menu
+                    </VisuallyHidden>
+                  </MenuButton>
+                </Skeleton>
+                <MenuList>
+                  <MenuItem
+                    display="flex"
+                    alignItems="center"
+                    onClick={ showChartFullscreen }
+                  >
+                    <Icon as={ scopeIcon } boxSize={ 5 } mr={ 3 }/>
                   View fullscreen
-                </MenuItem>
+                  </MenuItem>
 
-                <MenuItem
-                  display="flex"
-                  alignItems="center"
-                  onClick={ handleFileSaveClick }
-                >
-                  <Icon as={ imageIcon } boxSize={ 5 } mr={ 3 }/>
+                  <MenuItem
+                    display="flex"
+                    alignItems="center"
+                    onClick={ handleFileSaveClick }
+                  >
+                    <Icon as={ imageIcon } boxSize={ 5 } mr={ 3 }/>
                   Save as PNG
-                </MenuItem>
+                  </MenuItem>
 
-                <MenuItem
-                  display="flex"
-                  alignItems="center"
-                  onClick={ handleSVGSavingClick }
-                >
-                  <Icon as={ svgFileIcon } boxSize={ 5 } mr={ 3 }/>
+                  <MenuItem
+                    display="flex"
+                    alignItems="center"
+                    onClick={ handleSVGSavingClick }
+                  >
+                    <Icon as={ svgFileIcon } boxSize={ 5 } mr={ 3 }/>
                   Save as CSV
-                </MenuItem>
-              </MenuList>
-            </Menu>
-          ) }
-        </Grid>
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+            ) }
+          </Flex>
+        </Flex>
 
         { content }
-      </Box>
+      </Flex>
 
       { hasItems && (
         <FullscreenChartModal

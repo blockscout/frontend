@@ -20,7 +20,7 @@ const TxLogs = () => {
     pathParams: { hash: txInfo.data?.hash },
     options: {
       enabled: !txInfo.isPlaceholderData && Boolean(txInfo.data?.hash) && Boolean(txInfo.data?.status),
-      placeholderData: generateListStub<'tx_logs'>(LOG, 3),
+      placeholderData: generateListStub<'tx_logs'>(LOG, 3, { next_page_params: null }),
     },
   });
 

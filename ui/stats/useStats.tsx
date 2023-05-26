@@ -1,10 +1,11 @@
-import debounce from 'lodash/debounce';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 
 import type { StatsChartInfo, StatsChartsSection } from 'types/api/stats';
 import type { StatsIntervalIds } from 'types/client/stats';
 
 import useApiQuery from 'lib/api/useApiQuery';
+import useDebounce from 'lib/hooks/useDebounce';
+import { STATS_CHARTS } from 'stubs/stats';
 
 function isSectionMatches(section: StatsChartsSection, currentSection: string): boolean {
   return currentSection === 'all' || section.id === currentSection;
@@ -15,30 +16,30 @@ function isChartNameMatches(q: string, chart: StatsChartInfo) {
 }
 
 export default function useStats() {
-  const { data, isLoading, isError } = useApiQuery('stats_lines');
+  const { data, isPlaceholderData, isError } = useApiQuery('stats_lines', {
+    queryOptions: {
+      placeholderData: STATS_CHARTS,
+    },
+  });
 
   const [ currentSection, setCurrentSection ] = useState('all');
   const [ filterQuery, setFilterQuery ] = useState('');
-  const [ displayedCharts, setDisplayedCharts ] = useState(data?.sections);
   const [ interval, setInterval ] = useState<StatsIntervalIds>('oneMonth');
   const sectionIds = useMemo(() => data?.sections?.map(({ id }) => id), [ data ]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debounceFilterCharts = useCallback(debounce(q => setFilterQuery(q), 500), []);
+  const debouncedFilterQuery = useDebounce(filterQuery, 500);
 
-  const filterCharts = useCallback((q: string, currentSection: string) => {
-    const charts = data?.sections
+  const displayedCharts = React.useMemo(() => {
+    return data?.sections
       ?.map((section) => {
-        const charts = section.charts.filter((chart) => isSectionMatches(section, currentSection) && isChartNameMatches(q, chart));
+        const charts = section.charts.filter((chart) => isSectionMatches(section, currentSection) && isChartNameMatches(debouncedFilterQuery, chart));
 
         return {
           ...section,
           charts,
         };
       }).filter((section) => section.charts.length > 0);
-
-    setDisplayedCharts(charts || []);
-  }, [ data ]);
+  }, [ currentSection, data?.sections, debouncedFilterQuery ]);
 
   const handleSectionChange = useCallback((newSection: string) => {
     setCurrentSection(newSection);
@@ -48,33 +49,33 @@ export default function useStats() {
     setInterval(newInterval);
   }, []);
 
-  useEffect(() => {
-    filterCharts(filterQuery, currentSection);
-  }, [ filterQuery, currentSection, filterCharts ]);
+  const handleFilterChange = useCallback((q: string) => {
+    setFilterQuery(q);
+  }, []);
 
   return React.useMemo(() => ({
     sections: data?.sections,
     sectionIds,
-    isLoading,
+    isPlaceholderData,
     isError,
     filterQuery,
     currentSection,
     handleSectionChange,
     interval,
     handleIntervalChange,
-    debounceFilterCharts,
+    handleFilterChange,
     displayedCharts,
   }), [
     data,
     sectionIds,
-    isLoading,
+    isPlaceholderData,
     isError,
     filterQuery,
     currentSection,
     handleSectionChange,
     interval,
     handleIntervalChange,
-    debounceFilterCharts,
+    handleFilterChange,
     displayedCharts,
   ]);
 }

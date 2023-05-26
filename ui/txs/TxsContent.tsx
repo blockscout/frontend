@@ -97,7 +97,6 @@ const TxsContent = ({
       setSorting={ setSortByValue }
       paginationProps={ query.pagination }
       showPagination={ query.isPaginationVisible }
-      isLoading={ query.pagination.isLoading }
       filterComponent={ filter }
       linkSlot={ currentAddress ?
         <AddressCsvExportLink address={ currentAddress } type="transactions" ml={ 2 } isLoading={ query.pagination.isLoading }/> : null

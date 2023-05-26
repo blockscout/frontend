@@ -57,7 +57,7 @@ test('base view +@dark-mode', async({ mount, page }) => {
 test('loading', async({ mount }) => {
   const component = await mount(
     <TestApp>
-      <ChartWidget { ...props } isLoading/>
+      <ChartWidget { ...props } isLoading minH="250px"/>
     </TestApp>,
   );
 

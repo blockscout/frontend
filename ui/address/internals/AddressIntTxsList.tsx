@@ -8,12 +8,20 @@ import AddressIntTxsListItem from 'ui/address/internals/AddressIntTxsListItem';
 type Props = {
   data: Array<InternalTransaction>;
   currentAddress: string;
+  isLoading?: boolean;
 }
 
-const AddressIntTxsList = ({ data, currentAddress }: Props) => {
+const AddressIntTxsList = ({ data, currentAddress, isLoading }: Props) => {
   return (
     <Box>
-      { data.map((item) => <AddressIntTxsListItem key={ item.transaction_hash } { ...item } currentAddress={ currentAddress }/>) }
+      { data.map((item, index) => (
+        <AddressIntTxsListItem
+          key={ item.transaction_hash + '_' + index }
+          { ...item }
+          currentAddress={ currentAddress }
+          isLoading={ isLoading }
+        />
+      )) }
     </Box>
   );
 };

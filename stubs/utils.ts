@@ -5,10 +5,10 @@ import type { PaginatedResources, PaginatedResponse } from 'lib/api/resources';
 export function generateListStub<Resource extends PaginatedResources>(
   stub: ArrayElement<PaginatedResponse<Resource>['items']>,
   num = 50,
-  pagination: PaginatedResponse<Resource>['next_page_params'] = null,
+  rest: Omit<PaginatedResponse<Resource>, 'items'>,
 ) {
   return {
     items: Array(num).fill(stub),
-    next_page_params: pagination,
+    ...rest,
   };
 }

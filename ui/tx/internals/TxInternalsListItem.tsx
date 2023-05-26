@@ -45,13 +45,13 @@ const TxInternalsListItem = ({ type, from, to, value, success, error, gas_limit:
       </Box>
       <HStack spacing={ 3 }>
         <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>Value { appConfig.network.currency.symbol }</Skeleton>
-        <Skeleton isLoaded={ !isLoading } fontSize="sm" variant="secondary">
+        <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary">
           { BigNumber(value).div(BigNumber(10 ** appConfig.network.currency.decimals)).toFormat() }
         </Skeleton>
       </HStack>
       <HStack spacing={ 3 }>
         <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>Gas limit</Skeleton>
-        <Skeleton isLoaded={ !isLoading } fontSize="sm" variant="secondary">{ BigNumber(gasLimit).toFormat() }</Skeleton>
+        <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary">{ BigNumber(gasLimit).toFormat() }</Skeleton>
       </HStack>
     </ListItemMobile>
   );

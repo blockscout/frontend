@@ -50,11 +50,11 @@ const BlockPageContent = () => {
     pathParams: { height },
     options: {
       enabled: Boolean(!blockQuery.isPlaceholderData && blockQuery.data?.height && tab === 'txs'),
-      placeholderData: generateListStub<'block_txs'>(TX, 50, {
+      placeholderData: generateListStub<'block_txs'>(TX, 50, { next_page_params: {
         block_number: 9004925,
         index: 49,
         items_count: 50,
-      }),
+      } }),
     },
   });
 
@@ -63,10 +63,10 @@ const BlockPageContent = () => {
     pathParams: { height },
     options: {
       enabled: Boolean(!blockQuery.isPlaceholderData && blockQuery.data?.height && appConfig.beaconChain.hasBeaconChain && tab === 'withdrawals'),
-      placeholderData: generateListStub<'block_withdrawals'>(WITHDRAWAL, 50, {
+      placeholderData: generateListStub<'block_withdrawals'>(WITHDRAWAL, 50, { next_page_params: {
         index: 5,
         items_count: 50,
-      }),
+      } }),
     },
   });
 

@@ -31,12 +31,12 @@ const Transactions = () => {
     filters: { filter: router.query.tab === 'pending' ? 'pending' : 'validated' },
     options: {
       enabled: !router.query.tab || router.query.tab === 'validated' || router.query.tab === 'pending',
-      placeholderData: generateListStub<'txs_validated'>(TX, 50, {
+      placeholderData: generateListStub<'txs_validated'>(TX, 50, { next_page_params: {
         block_number: 9005713,
         index: 5,
         items_count: 50,
         filter: 'validated',
-      }),
+      } }),
     },
   });
 
@@ -44,6 +44,11 @@ const Transactions = () => {
     resourceName: 'txs_watchlist',
     options: {
       enabled: router.query.tab === 'watchlist',
+      placeholderData: generateListStub<'txs_watchlist'>(TX, 50, { next_page_params: {
+        block_number: 9005713,
+        index: 5,
+        items_count: 50,
+      } }),
     },
   });
 
@@ -82,7 +87,12 @@ const Transactions = () => {
       <RoutedTabs
         tabs={ tabs }
         tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
-        rightSlot={ <TxsTabSlot pagination={ txsQuery.pagination } isPaginationVisible={ txsQuery.isPaginationVisible && !isMobile }/> }
+        rightSlot={ (
+          <TxsTabSlot
+            pagination={ router.query.tab === 'watchlist' ? txsWatchlistQuery.pagination : txsQuery.pagination }
+            isPaginationVisible={ txsQuery.isPaginationVisible && !isMobile }
+          />
+        ) }
         stickyEnabled={ !isMobile }
       />
     </>

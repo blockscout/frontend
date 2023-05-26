@@ -25,7 +25,7 @@ const AddressCoinBalanceChart = ({ addressHash }: Props) => {
       title="Balances"
       items={ items }
       isLoading={ isLoading }
-      h="250px"
+      h="300px"
     />
   );
 };

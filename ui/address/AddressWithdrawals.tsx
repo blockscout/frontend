@@ -22,10 +22,10 @@ const AddressWithdrawals = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivE
     pathParams: { hash },
     scrollRef,
     options: {
-      placeholderData: generateListStub<'address_withdrawals'>(WITHDRAWAL, 50, {
+      placeholderData: generateListStub<'address_withdrawals'>(WITHDRAWAL, 50, { next_page_params: {
         index: 5,
         items_count: 50,
-      }),
+      } }),
     },
   });
   const content = data?.items ? (

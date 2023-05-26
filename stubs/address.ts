@@ -1,13 +1,15 @@
-import type { Address } from 'types/api/address';
+import type { Address, AddressCoinBalanceHistoryItem, AddressCounters, AddressTokenBalance } from 'types/api/address';
+import type { AddressesItem } from 'types/api/addresses';
 
 import { ADDRESS_HASH } from './addressParams';
-import { TOKEN_INFO_ERC_20 } from './token';
+import { TOKEN_INFO_ERC_1155, TOKEN_INFO_ERC_20, TOKEN_INFO_ERC_721, TOKEN_INSTANCE } from './token';
+import { TX_HASH } from './tx';
 
 export const ADDRESS_INFO: Address = {
   block_number_balance_updated_at: 8774377,
-  coin_balance: '0',
+  coin_balance: '810941268802273085757',
   creation_tx_hash: null,
-  creator_address_hash: null,
+  creator_address_hash: ADDRESS_HASH,
   exchange_rate: null,
   has_custom_methods_read: false,
   has_custom_methods_write: false,
@@ -31,4 +33,53 @@ export const ADDRESS_INFO: Address = {
   public_tags: [],
   watchlist_names: [],
   watchlist_address_id: null,
+};
+
+export const ADDRESS_COUNTERS: AddressCounters = {
+  gas_usage_count: '8028907522',
+  token_transfers_count: '420',
+  transactions_count: '119020',
+  validations_count: '0',
+};
+
+export const TOP_ADDRESS: AddressesItem = {
+  coin_balance: '11886682377162664596540805',
+  tx_count: '1835',
+  hash: '0x4f7A67464B5976d7547c860109e4432d50AfB38e',
+  implementation_name: null,
+  is_contract: false,
+  is_verified: null,
+  name: null,
+  private_tags: [],
+  public_tags: [ ],
+  watchlist_names: [],
+};
+
+export const ADDRESS_COIN_BALANCE: AddressCoinBalanceHistoryItem = {
+  block_number: 9004413,
+  block_timestamp: '2023-05-15T13:16:24Z',
+  delta: '1000000000000000000',
+  transaction_hash: TX_HASH,
+  value: '953427250000000000000000',
+};
+
+export const ADDRESS_TOKEN_BALANCE_ERC_20: AddressTokenBalance = {
+  token: TOKEN_INFO_ERC_20,
+  token_id: null,
+  token_instance: null,
+  value: '1000000000000000000000000',
+};
+
+export const ADDRESS_TOKEN_BALANCE_ERC_721: AddressTokenBalance = {
+  token: TOKEN_INFO_ERC_721,
+  token_id: null,
+  token_instance: null,
+  value: '176',
+};
+
+export const ADDRESS_TOKEN_BALANCE_ERC_1155: AddressTokenBalance = {
+  token: TOKEN_INFO_ERC_1155,
+  token_id: '188882',
+  token_instance: TOKEN_INSTANCE,
+  value: '176',
 };

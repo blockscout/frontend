@@ -67,7 +67,12 @@ const TokenSelect = ({ onClick }: Props) => {
   });
 
   if (isLoading) {
-    return <Skeleton h={ 8 } w="160px"/>;
+    return (
+      <Flex columnGap={ 3 }>
+        <Skeleton h={ 8 } w="150px" borderRadius="base"/>
+        <Skeleton h={ 8 } w={ 9 } borderRadius="base"/>
+      </Flex>
+    );
   }
 
   const hasTokens = _sumBy(Object.values(data), ({ items }) => items.length) > 0;

@@ -1,11 +1,13 @@
 import type { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import React from 'react';
 
 import type { PageParams } from 'lib/next/token/types';
 
 import getNetworkTitle from 'lib/networks/getNetworkTitle';
-import TokenInstance from 'ui/pages/TokenInstance';
+import Page from 'ui/shared/Page/Page';
+const TokenInstance = dynamic(() => import('ui/pages/TokenInstance'), { ssr: false });
 
 const TokenInstancePage: NextPage<PageParams> = () => {
   const title = getNetworkTitle();
@@ -15,7 +17,9 @@ const TokenInstancePage: NextPage<PageParams> = () => {
       <Head>
         <title>{ title }</title>
       </Head>
-      <TokenInstance/>
+      <Page>
+        <TokenInstance/>
+      </Page>
     </>
   );
 };

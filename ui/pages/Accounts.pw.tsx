@@ -28,11 +28,7 @@ const addresses: AddressesResponse = {
     },
   ],
   total_supply: '25222000',
-  next_page_params: {
-    items_count: 50,
-    fetched_coin_balance: '123',
-    hash: 'aa',
-  },
+  next_page_params: null,
 };
 
 test('base view +@mobile +@dark-mode', async({ mount, page }) => {
@@ -51,5 +47,5 @@ test('base view +@mobile +@dark-mode', async({ mount, page }) => {
     </TestApp>,
   );
 
-  await expect(component.locator('main')).toHaveScreenshot();
+  await expect(component).toHaveScreenshot();
 });

@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { TokenInstance } from 'types/api/token';
 
+import ContentLoader from 'ui/shared/ContentLoader';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
@@ -12,14 +13,19 @@ type Format = 'JSON' | 'Table'
 
 interface Props {
   data: TokenInstance['metadata'] | undefined;
+  isPlaceholderData?: boolean;
 }
 
-const TokenInstanceMetadata = ({ data }: Props) => {
+const TokenInstanceMetadata = ({ data, isPlaceholderData }: Props) => {
   const [ format, setFormat ] = React.useState<Format>('Table');
 
   const handleSelectChange = React.useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
     setFormat(event.target.value as Format);
   }, []);
+
+  if (isPlaceholderData) {
+    return <ContentLoader/>;
+  }
 
   if (!data) {
     return <Box>There is no metadata for this NFT</Box>;
