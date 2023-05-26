@@ -374,7 +374,7 @@
             "id": "apiHost",
             "description": "Choose API host:",
             "options": [
-              "blockscout-main.test.aws-k8s.blockscout.com",
+              "blockscout-main.k8s-dev.blockscout.com",
               "eth-goerli.blockscout.com",
               "eth.blockscout.com",
             ],
@@ -385,7 +385,7 @@
             "id": "L2ApiHost",
             "description": "Choose L2 API host:",
             "options": [
-              "blockscout-optimism-goerli.test.aws-k8s.blockscout.com",
+              "blockscout-optimism-goerli.k8s-dev.blockscout.com",
               "base-goerli.blockscout.com",
             ],
             "default": ""
