@@ -115,7 +115,7 @@ export function getDefaultValues(method: SmartContractVerificationMethod, config
   }
 
   if (config.is_rust_verifier_microservice_enabled) {
-    if (method === 'flattened-code') {
+    if (method === 'flattened-code' || method === 'standard-input') {
       'name' in defaultValues && (defaultValues.name = undefined);
       'autodetect_constructor_args' in defaultValues && (defaultValues.autodetect_constructor_args = false);
     }

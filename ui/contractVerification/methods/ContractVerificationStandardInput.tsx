@@ -1,5 +1,7 @@
 import React from 'react';
 
+import type { SmartContractVerificationConfig } from 'types/api/contract';
+
 import ContractVerificationMethod from '../ContractVerificationMethod';
 import ContractVerificationFieldAutodetectArgs from '../fields/ContractVerificationFieldAutodetectArgs';
 import ContractVerificationFieldCompiler from '../fields/ContractVerificationFieldCompiler';
@@ -8,17 +10,17 @@ import ContractVerificationFieldSources from '../fields/ContractVerificationFiel
 
 const FILE_TYPES = [ '.json' as const ];
 
-const ContractVerificationStandardInput = () => {
+const ContractVerificationStandardInput = ({ config }: { config: SmartContractVerificationConfig }) => {
   return (
     <ContractVerificationMethod title="Contract verification via Solidity (standard JSON input) ">
-      <ContractVerificationFieldName/>
+      { !config?.is_rust_verifier_microservice_enabled && <ContractVerificationFieldName/> }
       <ContractVerificationFieldCompiler/>
       <ContractVerificationFieldSources
         fileTypes={ FILE_TYPES }
         title="Standard Input JSON"
         hint="Upload the standard input JSON file created during contract compilation."
       />
-      <ContractVerificationFieldAutodetectArgs/>
+      { !config?.is_rust_verifier_microservice_enabled && <ContractVerificationFieldAutodetectArgs/> }
     </ContractVerificationMethod>
   );
 };

@@ -116,7 +116,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
   const methods = React.useMemo(() => {
     return {
       'flattened-code': <ContractVerificationFlattenSourceCode config={ config }/>,
-      'standard-input': <ContractVerificationStandardInput/>,
+      'standard-input': <ContractVerificationStandardInput config={ config }/>,
       sourcify: <ContractVerificationSourcify/>,
       'multi-part': <ContractVerificationMultiPartFile/>,
       'vyper-code': <ContractVerificationVyperContract config={ config }/>,
