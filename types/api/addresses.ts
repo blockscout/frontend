@@ -8,6 +8,6 @@ export type AddressesResponse = {
     fetched_coin_balance: string;
     hash: string;
     items_count: number;
-  };
+  } | null;
   total_supply: string;
 }

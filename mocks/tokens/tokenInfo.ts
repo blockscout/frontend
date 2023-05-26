@@ -26,7 +26,7 @@ export const tokenInfoERC20a: TokenInfo = {
   symbol: 'HyFi',
   total_supply: '369000000000000000000000000',
   type: 'ERC-20',
-  icon_url: null,
+  icon_url: 'https://example.com/token-icon.png',
 };
 
 export const tokenInfoERC20b: TokenInfo = {

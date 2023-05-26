@@ -4,6 +4,7 @@ import React from 'react';
 
 import * as coinBalanceMock from 'mocks/address/coinBalanceHistory';
 import * as tokensMock from 'mocks/address/tokens';
+import { tokenInfoERC20a } from 'mocks/tokens/tokenInfo';
 import * as socketServer from 'playwright/fixtures/socketServer';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
@@ -11,7 +12,7 @@ import MockAddressPage from 'ui/address/testUtils/MockAddressPage';
 
 import TokenSelect from './TokenSelect';
 
-const ASSET_URL = 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xb2a90505dc6680a7a695f7975d0d32EeF610f456/logo.png';
+const ASSET_URL = tokenInfoERC20a.icon_url as string;
 const TOKENS_ERC20_API_URL = buildApiUrl('address_tokens', { hash: '1' }) + '?type=ERC-20';
 const TOKENS_ERC721_API_URL = buildApiUrl('address_tokens', { hash: '1' }) + '?type=ERC-721';
 const TOKENS_ER1155_API_URL = buildApiUrl('address_tokens', { hash: '1' }) + '?type=ERC-1155';
