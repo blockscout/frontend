@@ -191,7 +191,7 @@ export const RESOURCES = {
   },
   txs_watchlist: {
     path: '/api/v2/transactions/watchlist',
-    paginationFields: [ 'filter' as const, 'hash' as const, 'inserted_at' as const ],
+    paginationFields: [ 'block_number' as const, 'index' as const, 'items_count' as const ],
     filterFields: [ ],
   },
   tx: {

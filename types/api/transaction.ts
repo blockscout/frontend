@@ -74,9 +74,9 @@ export interface TransactionsResponsePending {
 export interface TransactionsResponseWatchlist {
   items: Array<Transaction>;
   next_page_params: {
-    inserted_at: string;
-    hash: string;
-    filter: 'pending';
+    block_number: number;
+    index: number;
+    items_count: 50;
   } | null;
 }
 
