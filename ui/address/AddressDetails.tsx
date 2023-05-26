@@ -210,7 +210,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
             isLoading={ addressQuery.isPlaceholderData }
           >
             <LinkInternal
-              href={ route({ pathname: '/block/[height]', query: { height: String(data.block_number_balance_updated_at) } }) }
+              href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.block_number_balance_updated_at) } }) }
               display="flex"
               alignItems="center"
             >

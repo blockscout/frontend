@@ -38,7 +38,7 @@ interface Props {
 const BlockDetails = ({ query }: Props) => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
   const router = useRouter();
-  const heightOrHash = getQueryParamString(router.query.height);
+  const heightOrHash = getQueryParamString(router.query.height_or_hash);
 
   const separatorColor = useColorModeValue('gray.200', 'gray.700');
 
@@ -60,7 +60,7 @@ const BlockDetails = ({ query }: Props) => {
     const increment = direction === 'next' ? +1 : -1;
     const nextId = String(data.height + increment);
 
-    router.push({ pathname: '/block/[height]', query: { height: nextId } }, undefined);
+    router.push({ pathname: '/block/[height_or_hash]', query: { height_or_hash: nextId } }, undefined);
   }, [ data, router ]);
 
   if (isError) {
@@ -175,7 +175,7 @@ const BlockDetails = ({ query }: Props) => {
         isLoading={ isPlaceholderData }
       >
         <Skeleton isLoaded={ !isPlaceholderData }>
-          <LinkInternal href={ route({ pathname: '/block/[height]', query: { height: heightOrHash, tab: 'txs' } }) }>
+          <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash, tab: 'txs' } }) }>
             { data.tx_count } transaction{ data.tx_count === 1 ? '' : 's' }
           </LinkInternal>
         </Skeleton>

@@ -19,7 +19,7 @@ const AppErrorBlockConsensus = ({ hash, className }: Props) => {
         size="lg"
         variant="outline"
         as="a"
-        href={ hash ? route({ pathname: '/block/[height]', query: { height: hash } }) : route({ pathname: '/' }) }
+        href={ hash ? route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: hash } }) : route({ pathname: '/' }) }
       >
         { hash ? 'View reorg' : 'Back to home' }
       </Button>

@@ -40,7 +40,10 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           <Skeleton isLoaded={ !isLoading } display="inline-block">
             <LinkInternal
               fontWeight={ 600 }
-              href={ route({ pathname: '/block/[height]', query: { height: data.type === 'reorg' ? String(data.hash) : String(data.height) } }) }
+              href={ route({
+                pathname: '/block/[height_or_hash]',
+                query: { height_or_hash: data.type === 'reorg' ? String(data.hash) : String(data.height) },
+              }) }
             >
               { data.height }
             </LinkInternal>
@@ -62,7 +65,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
         <Text fontWeight={ 500 }>Txn</Text>
         { data.tx_count > 0 ? (
           <Skeleton isLoaded={ !isLoading } display="inline-block">
-            <LinkInternal href={ route({ pathname: '/block/[height]', query: { height: String(data.height), tab: 'txs' } }) }>
+            <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.height), tab: 'txs' } }) }>
               { data.tx_count }
             </LinkInternal>
           </Skeleton>

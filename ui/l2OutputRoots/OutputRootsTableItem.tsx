@@ -32,7 +32,7 @@ const OutputRootsTableItem = ({ item }: Props) => {
           display="flex"
           width="fit-content"
           alignItems="center"
-          href={ route({ pathname: '/block/[height]', query: { height: item.l2_block_number.toString() } }) }
+          href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.l2_block_number.toString() } }) }
         >
           <Icon as={ txBatchIcon } boxSize={ 6 } mr={ 1 }/>
           { item.l2_block_number }

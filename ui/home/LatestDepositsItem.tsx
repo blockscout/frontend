@@ -29,7 +29,9 @@ const LatestTxsItem = ({ item }: Props) => {
 
   const l1BlockLink = (
     <LinkExternal
-      href={ appConfig.L2.L1BaseUrl + route({ pathname: '/block/[height]', query: { height: item.l1_block_number.toString() } }) }
+      href={ appConfig.L2.L1BaseUrl +
+        route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.l1_block_number.toString() } })
+      }
       fontWeight={ 700 }
       display="inline-flex"
       mr={ 2 }

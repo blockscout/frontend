@@ -96,7 +96,7 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
         <Box mt={ 2 }>
           <Skeleton isLoaded={ !isLoading } display="inline-block" whiteSpace="pre">Block </Skeleton>
           <Skeleton isLoaded={ !isLoading } display="inline-block">
-            <LinkInternal href={ route({ pathname: '/block/[height]', query: { height: tx.block.toString() } }) }>{ tx.block }</LinkInternal>
+            <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: tx.block.toString() } }) }>{ tx.block }</LinkInternal>
           </Skeleton>
         </Box>
       ) }

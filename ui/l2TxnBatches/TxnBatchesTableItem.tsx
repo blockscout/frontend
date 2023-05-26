@@ -25,7 +25,7 @@ const TxnBatchesTableItem = ({ item }: Props) => {
           display="flex"
           width="fit-content"
           alignItems="center"
-          href={ route({ pathname: '/block/[height]', query: { height: item.l2_block_number.toString() } }) }
+          href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.l2_block_number.toString() } }) }
         >
           <Icon as={ txBatchIcon } boxSize={ 6 } mr={ 1 }/>
           { item.l2_block_number }
@@ -33,7 +33,7 @@ const TxnBatchesTableItem = ({ item }: Props) => {
       </Td>
       <Td>
         <LinkInternal
-          href={ route({ pathname: '/block/[height]', query: { height: item.l2_block_number.toString(), tab: 'txs' } }) }
+          href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.l2_block_number.toString(), tab: 'txs' } }) }
           lineHeight="24px"
         >
           { item.tx_count }
@@ -41,7 +41,7 @@ const TxnBatchesTableItem = ({ item }: Props) => {
       </Td>
       <Td>
         <LinkExternal
-          href={ appConfig.L2.L1BaseUrl + route({ pathname: '/block/[height]', query: { height: item.epoch_number.toString() } }) }
+          href={ appConfig.L2.L1BaseUrl + route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.epoch_number.toString() } }) }
           fontWeight={ 600 }
           lineHeight="24px"
           display="inline-flex"

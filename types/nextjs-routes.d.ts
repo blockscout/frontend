@@ -23,7 +23,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/apps">
     | StaticRoute<"/auth/auth0">
     | StaticRoute<"/auth/profile">
-    | DynamicRoute<"/block/[height]", { "height": string }>
+    | DynamicRoute<"/block/[height_or_hash]", { "height_or_hash": string }>
     | StaticRoute<"/blocks">
     | StaticRoute<"/csv-export">
     | StaticRoute<"/graphiql">

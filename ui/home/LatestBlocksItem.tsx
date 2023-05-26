@@ -45,7 +45,7 @@ const LatestBlocksItem = ({ block, h }: Props) => {
         <HStack spacing={ 2 }>
           <Icon as={ blockIcon } boxSize="30px" color="link"/>
           <LinkInternal
-            href={ route({ pathname: '/block/[height]', query: { height: String(block.height) } }) }
+            href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(block.height) } }) }
             fontSize="xl"
             fontWeight="500"
           >

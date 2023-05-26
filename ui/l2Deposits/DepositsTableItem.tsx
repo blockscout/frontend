@@ -23,7 +23,7 @@ const WithdrawalsTableItem = ({ item }: Props) => {
     <Tr>
       <Td verticalAlign="middle" fontWeight={ 600 }>
         <LinkExternal
-          href={ appConfig.L2.L1BaseUrl + route({ pathname: '/block/[height]', query: { height: item.l1_block_number.toString() } }) }
+          href={ appConfig.L2.L1BaseUrl + route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.l1_block_number.toString() } }) }
           fontWeight={ 600 }
           display="inline-flex"
         >

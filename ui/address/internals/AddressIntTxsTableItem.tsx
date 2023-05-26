@@ -67,7 +67,7 @@ const AddressIntTxsTableItem = ({
       </Td>
       <Td verticalAlign="middle">
         <Skeleton isLoaded={ !isLoading } display="inline-block">
-          <LinkInternal href={ route({ pathname: '/block/[height]', query: { height: block.toString() } }) }>
+          <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: block.toString() } }) }>
             { block }
           </LinkInternal>
         </Skeleton>

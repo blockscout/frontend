@@ -28,7 +28,7 @@ const TxnBatchesListItem = ({ item }: Props) => {
           display="flex"
           width="fit-content"
           alignItems="center"
-          href={ route({ pathname: '/block/[height]', query: { height: item.l2_block_number.toString() } }) }
+          href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.l2_block_number.toString() } }) }
         >
           <Icon as={ txBatchIcon } boxSize={ 6 } mr={ 1 }/>
           { item.l2_block_number }
@@ -37,7 +37,7 @@ const TxnBatchesListItem = ({ item }: Props) => {
 
       <ListItemMobileGrid.Label>L2 block txn count</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <LinkInternal href={ route({ pathname: '/block/[height]', query: { height: item.l2_block_number.toString(), tab: 'txs' } }) }>
+        <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.l2_block_number.toString(), tab: 'txs' } }) }>
           { item.tx_count }
         </LinkInternal>
       </ListItemMobileGrid.Value>
@@ -47,7 +47,7 @@ const TxnBatchesListItem = ({ item }: Props) => {
         <LinkExternal
           fontWeight={ 600 }
           display="inline-flex"
-          href={ appConfig.L2.L1BaseUrl + route({ pathname: '/block/[height]', query: { height: item.epoch_number.toString() } }) }
+          href={ appConfig.L2.L1BaseUrl + route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.epoch_number.toString() } }) }
         >
           { item.epoch_number }
         </LinkExternal>

@@ -5,7 +5,7 @@ const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/txs': 'Transactions',
   '/tx/[hash]': 'Transaction details',
   '/blocks': 'Blocks',
-  '/block/[height]': 'Block details',
+  '/block/[height_or_hash]': 'Block details',
   '/accounts': 'Top accounts',
   '/address/[hash]': 'Address details',
   '/verified-contracts': 'Verified contracts',
