@@ -8,15 +8,26 @@ on:
   workflow_dispatch:
 
 jobs:
-  cleanup:
-    uses: blockscout/blockscout-ci-cd/.github/workflows/cleanup.yaml@master
+  cleanup_release:
+    uses: blockscout/blockscout-ci-cd/.github/workflows/cleanup_helmfile.yaml@master
     with:
-      appNamespace: review-front-$GITHUB_REF_NAME_SLUG
-      dockerImage: prerelease-$GITHUB_REF_NAME_SLUG
+      appName: review-l2-$GITHUB_REF_NAME_SLUG
+      globalEnv: review
+      helmfileDir: deploy
+      kubeConfigSecret: ci/data/dev/kubeconfig/k8s-dev
+      vaultRole: ci-dev
     secrets: inherit
-  cleanup_l2:
-    uses: blockscout/blockscout-ci-cd/.github/workflows/cleanup.yaml@master
+  cleanup_l2_release:
+    uses: blockscout/blockscout-ci-cd/.github/workflows/cleanup_helmfile.yaml@master
     with:
-      appNamespace: review-front-l2-$GITHUB_REF_NAME_SLUG
+      appName: review-$GITHUB_REF_NAME_SLUG
+      globalEnv: review
+      helmfileDir: deploy
+      kubeConfigSecret: ci/data/dev/kubeconfig/k8s-dev
+      vaultRole: ci-dev
+    secrets: inherit
+  cleanup_docker_image:
+    uses: blockscout/blockscout-ci-cd/.github/workflows/cleanup_docker.yaml@master
+    with:
       dockerImage: prerelease-$GITHUB_REF_NAME_SLUG
     secrets: inherit
