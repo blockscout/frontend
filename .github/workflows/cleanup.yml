@@ -9,7 +9,7 @@ on:
 
 jobs:
   cleanup_release:
-    uses: blockscout/blockscout-ci-cd/.github/workflows/cleanup_helmfile.yaml@nz-cleanup-fix
+    uses: blockscout/blockscout-ci-cd/.github/workflows/cleanup_helmfile.yaml@master
     with:
       appName: review-l2-$GITHUB_REF_NAME_SLUG
       globalEnv: review
@@ -18,7 +18,7 @@ jobs:
       vaultRole: ci-dev
     secrets: inherit
   cleanup_l2_release:
-    uses: blockscout/blockscout-ci-cd/.github/workflows/cleanup_helmfile.yaml@nz-cleanup-fix
+    uses: blockscout/blockscout-ci-cd/.github/workflows/cleanup_helmfile.yaml@master
     with:
       appName: review-$GITHUB_REF_NAME_SLUG
       globalEnv: review
@@ -27,7 +27,7 @@ jobs:
       vaultRole: ci-dev
     secrets: inherit
   cleanup_docker_image:
-    uses: blockscout/blockscout-ci-cd/.github/workflows/cleanup_docker.yaml@nz-cleanup-fix
+    uses: blockscout/blockscout-ci-cd/.github/workflows/cleanup_docker.yaml@master
     with:
       dockerImage: prerelease-$GITHUB_REF_NAME_SLUG
     secrets: inherit
