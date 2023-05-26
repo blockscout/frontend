@@ -34,13 +34,13 @@ type Props = {
 
 const DataListDisplay = (props: Props) => {
   if (props.isError) {
-    return <DataFetchAlert/>;
+    return <DataFetchAlert className={ props.className }/>;
   }
 
   if (props.isLoading) {
 
     return (
-      <>
+      <Box className={ props.className }>
         { props.actionBar }
         { 'customSkeleton' in props.skeletonProps && props.skeletonProps.customSkeleton }
         { 'skeletonDesktopColumns' in props.skeletonProps && (
@@ -54,21 +54,21 @@ const DataListDisplay = (props: Props) => {
             />
           </>
         ) }
-      </>
+      </Box>
     );
   }
 
   if (props.filterProps?.hasActiveFilters && !props.items?.length) {
     return (
-      <>
+      <Box className={ props.className }>
         { props.actionBar }
         <EmptySearchResult text={ props.filterProps.emptyFilteredText }/>
-      </>
+      </Box>
     );
   }
 
   if (!props.items?.length) {
-    return props.emptyText ? <Text as="span">{ props.emptyText }</Text> : null;
+    return props.emptyText ? <Text className={ props.className }>{ props.emptyText }</Text> : null;
   }
 
   return (

@@ -26,6 +26,7 @@ const AddressCoinBalanceChart = ({ addressHash }: Props) => {
       items={ items }
       isLoading={ isLoading }
       h="300px"
+      units={ appConfig.network.currency.symbol }
     />
   );
 };
