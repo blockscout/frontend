@@ -180,6 +180,19 @@ const BlockDetails = ({ query }: Props) => {
           </LinkInternal>
         </Skeleton>
       </DetailsInfoItem>
+      { appConfig.beaconChain.hasBeaconChain && Boolean(data.withdrawals_count) && (
+        <DetailsInfoItem
+          title="Withdrawals"
+          hint="The number of beacon withdrawals in the block"
+          isLoading={ isPlaceholderData }
+        >
+          <Skeleton isLoaded={ !isPlaceholderData }>
+            <LinkInternal href={ route({ pathname: '/block/[height]', query: { height: heightOrHash, tab: 'withdrawals' } }) }>
+              { data.withdrawals_count } withdrawal{ data.withdrawals_count === 1 ? '' : 's' }
+            </LinkInternal>
+          </Skeleton>
+        </DetailsInfoItem>
+      ) }
       <DetailsInfoItem
         title={ appConfig.network.verificationType === 'validation' ? 'Validated by' : 'Mined by' }
         hint="A block producer who successfully included the block onto the blockchain"
