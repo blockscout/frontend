@@ -110,7 +110,7 @@ test.describe('auth', () => {
     },
   });
 
-  extendedTest.use({ viewport: { width: devices['iPhone 13 Pro'].viewport.width, height: 1000 } });
+  extendedTest.use({ viewport: { width: devices['iPhone 13 Pro'].viewport.width, height: 800 } });
 
   extendedTest('base view', async({ mount, page }) => {
     const component = await mount(

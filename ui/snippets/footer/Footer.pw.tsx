@@ -17,7 +17,7 @@ base.describe('with custom links, 4 cols', () => {
     ]) as any,
   });
 
-  test('base view +@dark-mode +@mobile', async({ mount, page }) => {
+  test('base view +@dark-mode +@mobile +@desktop-xl', async({ mount, page }) => {
     await page.route(FOOTER_LINKS_URL, (route) => {
       return route.fulfill({
         body: JSON.stringify(FOOTER_LINKS),
@@ -61,6 +61,11 @@ base.describe('with custom links, 2 cols', () => {
 
 base.describe('without custom links', () => {
   base('base view +@dark-mode +@mobile', async({ mount, page }) => {
+    await page.evaluate(() => {
+      window.ethereum = {
+        providers: [ { isMetaMask: true } ],
+      };
+    });
 
     await mount(
       <TestApp>

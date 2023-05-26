@@ -1,4 +1,4 @@
-import { Box, Drawer, DrawerOverlay, DrawerContent, DrawerBody, useDisclosure, Button } from '@chakra-ui/react';
+import { Box, Drawer, DrawerOverlay, DrawerContent, DrawerBody, useDisclosure, Button, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
@@ -26,9 +26,11 @@ const ProfileMenuMobile = () => {
         <DrawerOverlay/>
         <DrawerContent maxWidth="260px">
           <DrawerBody p={ 6 }>
-            <Box onClick={ onClose } mb={ 6 }>
-              <UserAvatar size={ 24 } data={ data } isFetched={ isFetched }/>
-            </Box>
+            <Flex justifyContent="end" mb={ 6 }>
+              <Box onClick={ onClose }>
+                <UserAvatar size={ 24 } data={ data } isFetched={ isFetched }/>
+              </Box>
+            </Flex>
             { data ? <ProfileMenuContent { ...data }/> : (
               <Button size="sm" width="full" variant="outline" as="a" href={ loginUrl }>Sign In</Button>
             ) }

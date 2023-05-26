@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/experimental-ct-react';
+import { test, expect, devices } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import type { AddressesResponse } from 'types/api/addresses';
@@ -31,7 +31,30 @@ const addresses: AddressesResponse = {
   next_page_params: null,
 };
 
-test('base view +@mobile +@dark-mode', async({ mount, page }) => {
+test.describe('mobile', () => {
+  test.use({ viewport: devices['iPhone 13 Pro'].viewport });
+
+  test('base view', async({ mount, page }) => {
+    await page.route(ADDRESSES_API_URL, (route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify(addresses),
+    }));
+    await page.route('https://request-global.czilladx.com/serve/native.php?z=19260bf627546ab7242', (route) => route.fulfill({
+      status: 200,
+      body: '',
+    }));
+
+    const component = await mount(
+      <TestApp>
+        <Accounts/>
+      </TestApp>,
+    );
+
+    await expect(component.locator('main')).toHaveScreenshot();
+  });
+});
+
+test('base view +@dark-mode', async({ mount, page }) => {
   await page.route(ADDRESSES_API_URL, (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(addresses),

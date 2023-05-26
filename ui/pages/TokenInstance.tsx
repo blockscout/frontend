@@ -183,8 +183,6 @@ const TokenInstanceContent = () => {
           stickyEnabled={ !isMobile }
         />
       ) }
-
-      { !tokenInstanceQuery.isLoading && !tokenInstanceQuery.isError && <Box h={{ base: 0, lg: '40vh' }}/> }
     </>
   );
 };

@@ -69,27 +69,31 @@ const Footer = () => {
 
   return (
     <Flex direction={{ base: 'column', lg: 'row' }} p={{ base: 4, lg: 9 }} borderTop="1px solid" borderColor="divider">
-      <Box flexGrow="1" mb={{ base: 6, lg: 12 }}>
+      <Box flexGrow="1" mb={{ base: 6, lg: 0 }}>
         <Flex>
           <ColorModeToggler/>
           <NetworkAddToWallet ml={ 8 }/>
         </Flex>
-        <Box mt={{ base: 6, lg: 10 }}>
+        <Box mt={{ base: 6, lg: '44px' }}>
           <Link fontSize="xs" href="https://www.blockscout.com">blockscout.com</Link>
         </Box>
         <Text mt={ 3 } mr={{ base: 0, lg: '114px' }} maxW={{ base: 'unset', lg: '470px' }} fontSize="xs">
             Blockscout is a tool for inspecting and analyzing EVM based blockchains. Blockchain explorer for Ethereum Networks.
         </Text>
-        { appConfig.blockScoutVersion && (
-          <Text fontSize="xs" mt={ 8 }>
-            Backend: <Link href={ API_VERSION_URL } target="_blank">{ appConfig.blockScoutVersion }</Link>
-          </Text>
-        ) }
-        { appConfig.frontendVersion && (
-          <Text fontSize="xs" mt={ 8 }>
-            { /* Frontend: <Link href={ FRONT_VERSION_URL } target="_blank">{ appConfig.frontendVersion }</Link> */ }
-            Frontend: { appConfig.frontendVersion }
-          </Text>
+        { (appConfig.blockScoutVersion || appConfig.frontendVersion) && (
+          <VStack spacing={ 1 } mt={ 6 } alignItems="start">
+            { appConfig.blockScoutVersion && (
+              <Text fontSize="xs">
+                Backend: <Link href={ API_VERSION_URL } target="_blank">{ appConfig.blockScoutVersion }</Link>
+              </Text>
+            ) }
+            { appConfig.frontendVersion && (
+              <Text fontSize="xs">
+                { /* Frontend: <Link href={ FRONT_VERSION_URL } target="_blank">{ appConfig.frontendVersion }</Link> */ }
+                Frontend: { appConfig.frontendVersion }
+              </Text>
+            ) }
+          </VStack>
         ) }
       </Box>
       <Grid
@@ -102,7 +106,7 @@ const Footer = () => {
         <Box minW="160px" w={ appConfig.footerLinks ? '160px' : '100%' }>
           { appConfig.footerLinks && <Text fontWeight={ 500 } mb={ 3 }>Blockscout</Text> }
           <Grid
-            gap={ 2 }
+            gap={ 1 }
             gridTemplateColumns={ appConfig.footerLinks ? '160px' : { base: 'repeat(auto-fill, 160px)', lg: 'repeat(3, 160px)' } }
             gridTemplateRows={{ base: 'auto', lg: appConfig.footerLinks ? 'auto' : 'repeat(2, auto)' }}
             gridAutoFlow={{ base: 'row', lg: appConfig.footerLinks ? 'row' : 'column' }}
@@ -115,7 +119,7 @@ const Footer = () => {
           Array.from(Array(3)).map((i, index) => (
             <Box minW="160px" key={ index }>
               <Skeleton w="120px" h="20px" mb={ 6 }/>
-              <VStack spacing={ 4 } alignItems="start" mb={ 2 }>
+              <VStack spacing={ 5 } alignItems="start" mb={ 2 }>
                 { Array.from(Array(5)).map((i, index) => <Skeleton w="160px" h="14px" key={ index }/>) }
               </VStack>
             </Box>
@@ -125,7 +129,7 @@ const Footer = () => {
           linksData.slice(0, MAX_LINKS_COLUMNS).map(linkGroup => (
             <Box minW="160px" key={ linkGroup.title }>
               <Text fontWeight={ 500 } mb={ 3 }>{ linkGroup.title }</Text>
-              <VStack spacing={ 2 } alignItems="start">
+              <VStack spacing={ 1 } alignItems="start">
                 { linkGroup.links.map(link => <FooterLinkItem { ...link } key={ link.text }/>) }
               </VStack>
             </Box>

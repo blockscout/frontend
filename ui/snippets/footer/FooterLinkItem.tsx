@@ -12,7 +12,7 @@ const FooterLinkItem = ({ icon, iconSize, text, url }: Props) => {
   const textColor = useColorModeValue('gray.600', 'gray.500');
 
   return (
-    <Link href={ url } display="flex" alignItems="center" h={ 6 } color={ textColor } target="_blank">
+    <Link href={ url } display="flex" alignItems="center" h="30px" color={ textColor } target="_blank">
       { icon && (
         <Center minW={ 6 } mr="6px">
           <Icon boxSize={ iconSize || 5 } as={ icon }/>
