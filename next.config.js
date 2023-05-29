@@ -2,6 +2,7 @@ const withTM = require('next-transpile-modules')([
   'react-syntax-highlighter',
   'swagger-client',
   'swagger-ui-react',
+  'react-cytoscapejs',
 ]);
 const withRoutes = require('nextjs-routes/config')({
   outDir: 'types',
