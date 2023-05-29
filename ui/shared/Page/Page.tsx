@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import getErrorCauseStatusCode from 'lib/errors/getErrorCauseStatusCode';
@@ -12,6 +12,7 @@ import AppErrorInvalidTxHash from 'ui/shared/AppError/AppErrorInvalidTxHash';
 import AppErrorUnverifiedEmail from 'ui/shared/AppError/AppErrorUnverifiedEmail';
 import ErrorBoundary from 'ui/shared/ErrorBoundary';
 import PageContent from 'ui/shared/Page/PageContent';
+import Footer from 'ui/snippets/footer/Footer';
 import Header from 'ui/snippets/header/Header';
 import NavigationDesktop from 'ui/snippets/navigation/NavigationDesktop';
 
@@ -73,18 +74,21 @@ const Page = ({
   ) : children;
 
   return (
-    <Flex w="100%" minH="100vh" alignItems="stretch">
-      <NavigationDesktop/>
-      <Flex flexDir="column" flexGrow={ 1 } w={{ base: '100%', lg: 'auto' }}>
-        { renderHeader ?
-          renderHeader() :
-          <Header isHomePage={ isHomePage }/>
-        }
-        <ErrorBoundary renderErrorScreen={ renderErrorScreen }>
-          { renderedChildren }
-        </ErrorBoundary>
+    <Box minWidth={{ base: '100vw', lg: 'fit-content' }}>
+      <Flex w="100%" minH="100vh" alignItems="stretch">
+        <NavigationDesktop/>
+        <Flex flexDir="column" flexGrow={ 1 } w={{ base: '100%', lg: 'auto' }}>
+          { renderHeader ?
+            renderHeader() :
+            <Header isHomePage={ isHomePage }/>
+          }
+          <ErrorBoundary renderErrorScreen={ renderErrorScreen }>
+            { renderedChildren }
+          </ErrorBoundary>
+        </Flex>
       </Flex>
-    </Flex>
+      <Footer/>
+    </Box>
   );
 };
 

@@ -30,11 +30,8 @@ The app instance could be customized by passing following variables to NodeJS en
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_FEATURED_NETWORKS | `string` | URL of configuration file (`.json` format only) which contains list of featured networks that will be shown in the network menu. See [below](#featured-network-configuration-properties) list of available properties for particular network | - | - | `https://example.com/featured_networks_config.json` |
 | NEXT_PUBLIC_OTHER_LINKS | `Array<{url: string; text: string}>` | List of links for the "Other" navigation menu | - | - | `[{'url':'https://blockscout.com','text':'Blockscout'}]` |
+| NEXT_PUBLIC_FOOTER_LINKS | `string` | URL of configuration file (`.json` format only) which contains list of link groups to be displayed in the footer. See [below](#footer-links-configuration-properties) list of available properties for particular group | - | - | `https://example.com/footer_links_config.json` |
 | NEXT_PUBLIC_BLOCKSCOUT_VERSION | `string` | Current running version of Blockscout (used to display link to release in the footer) | - | - | `v.5.1.0-beta`
-| NEXT_PUBLIC_FOOTER_GITHUB_LINK | `string` | Link to Github in the footer | - | - | `https://github.com/blockscout/blockscout` |
-| NEXT_PUBLIC_FOOTER_TWITTER_LINK | `string` | Link to Twitter in the footer | - | - | `https://www.twitter.com/blockscoutcom` |
-| NEXT_PUBLIC_FOOTER_TELEGRAM_LINK | `string` | Link to Telegram in the footer | - | - | `https://t.me/poa_network` |
-| NEXT_PUBLIC_FOOTER_STAKING_LINK | `string` | Link to staking dashboard in the footer | - | - | `https://duneanalytics.com/maxaleks/xdai-staking` |
 | NEXT_PUBLIC_MARKETPLACE_CONFIG_URL | `string` | URL of configuration file (`.json` format only) which contains list of apps that will be shown on the marketplace page. See [below](#marketplace-app-configuration-properties) list of available properties for an app | - | - | `https://example.com/marketplace_config.json` |
 | NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM | `string` | Link to form where authors can submit their dapps to the marketplace | - | - | `https://airtable.com/shrqUAcjgGJ4jU88C` |
 | NEXT_PUBLIC_NETWORK_EXPLORERS | `Array<NetworkExplorer>` where `NetworkExplorer` can have following [properties](#network-explorer-configuration-properties) | Used to build up links to transactions, blocks, addresses in other chain explorers. | - | - | `[{'title':'Anyblock','baseUrl':'https://explorer.anyblock.tools','paths':{'tx':'/ethereum/poa/core/tx'}}]` |
@@ -107,6 +104,13 @@ For each application, you need to specify the `MarketplaceCategoryId` to which i
 | paths | `Record<'tx' \| 'block' \| 'address' \| 'token', string>` | Map of explorer entities and their paths | yes | - | `{'tx':'/ethereum/poa/core/tx'}` |
 
 *Note* The url of an entity will be constructed as `<baseUrl><paths[<entity-type>]><entity-id>`, e.g `https://explorer.anyblock.tools/ethereum/poa/core/tx/<tx-id>`
+
+## Footer links configuration properties
+
+| Variable | Type| Description | Is required  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| title | `string` | Title of link group | yes | - | `Company` |
+| links | `Array<{'text':string;'url':string;}>` | list of links | yes | - | `[{'text':'Homepage','url':'https://www.blockscout.com'}]` |
 
 
 ## App configuration

@@ -17,16 +17,18 @@ import type { NavGroupItem } from 'types/client/navigation-items';
 import chevronIcon from 'icons/arrows/east-mini.svg';
 
 import NavLink from './NavLink';
+import NavLinkIcon from './NavLinkIcon';
 import useNavLinkStyleProps from './useNavLinkStyleProps';
 
-type Props = NavGroupItem & {
+type Props = {
+  item: NavGroupItem;
   isCollapsed?: boolean;
 }
 
-const NavLinkGroupDesktop = ({ text, subItems, icon, isCollapsed, isActive }: Props) => {
+const NavLinkGroupDesktop = ({ item, isCollapsed }: Props) => {
   const isExpanded = isCollapsed === false;
 
-  const styleProps = useNavLinkStyleProps({ isCollapsed, isExpanded, isActive });
+  const styleProps = useNavLinkStyleProps({ isCollapsed, isExpanded, isActive: item.isActive });
 
   return (
     <Box as="li" listStyleType="none" w="100%">
@@ -41,15 +43,15 @@ const NavLinkGroupDesktop = ({ text, subItems, icon, isCollapsed, isActive }: Pr
             w={{ lg: isExpanded ? '180px' : '60px', xl: isCollapsed ? '60px' : '180px' }}
             pl={{ lg: isExpanded ? 3 : '15px', xl: isCollapsed ? '15px' : 3 }}
             pr={{ lg: isExpanded ? 0 : '15px', xl: isCollapsed ? '15px' : 0 }}
-            aria-label={ `${ text } link group` }
+            aria-label={ `${ item.text } link group` }
             position="relative"
           >
             <HStack spacing={ 3 } overflow="hidden">
-              <Icon as={ icon } boxSize="30px"/>
+              <NavLinkIcon item={ item }/>
               <Text
                 { ...styleProps.textProps }
               >
-                { text }
+                { item.text }
               </Text>
               <Icon
                 as={ chevronIcon }
@@ -68,10 +70,10 @@ const NavLinkGroupDesktop = ({ text, subItems, icon, isCollapsed, isActive }: Pr
         <PopoverContent width="252px" top={{ lg: isExpanded ? '-16px' : 0, xl: isCollapsed ? 0 : '-16px' }}>
           <PopoverBody p={ 4 }>
             <Text variant="secondary" fontSize="sm" mb={ 2 } display={{ lg: isExpanded ? 'none' : 'block', xl: isCollapsed ? 'block' : 'none' }}>
-              { text }
+              { item.text }
             </Text>
             <VStack spacing={ 1 } alignItems="start">
-              { subItems.map((item, index) => Array.isArray(item) ? (
+              { item.subItems.map((subItem, index) => Array.isArray(subItem) ? (
                 <Box
                   key={ index }
                   w="100%"
@@ -83,10 +85,10 @@ const NavLinkGroupDesktop = ({ text, subItems, icon, isCollapsed, isActive }: Pr
                     borderColor: 'divider',
                   }}
                 >
-                  { item.map(subItem => <NavLink key={ subItem.text } item={ subItem } isCollapsed={ false }/>) }
+                  { subItem.map(subSubItem => <NavLink key={ subSubItem.text } item={ subSubItem } isCollapsed={ false }/>) }
                 </Box>
               ) :
-                <NavLink key={ item.text } item={ item } isCollapsed={ false }/>,
+                <NavLink key={ item.text } item={ subItem } isCollapsed={ false }/>,
               ) }
             </VStack>
           </PopoverBody>

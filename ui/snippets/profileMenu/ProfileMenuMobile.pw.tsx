@@ -8,18 +8,25 @@ import buildApiUrl from 'playwright/utils/buildApiUrl';
 
 import ProfileMenuMobile from './ProfileMenuMobile';
 
-test.use({ viewport: devices['iPhone 13 Pro'].viewport });
-
 test('no auth', async({ mount, page }) => {
+  const hooksConfig = {
+    router: {
+      asPath: '/',
+      pathname: '/',
+    },
+  };
   const component = await mount(
     <TestApp>
       <ProfileMenuMobile/>
     </TestApp>,
+    { hooksConfig },
   );
 
   await component.locator('.identicon').click();
-  await expect(page).toHaveScreenshot();
+  expect(page.url()).toBe('http://localhost:3100/auth/auth0?path=%2F');
 });
+
+test.use({ viewport: devices['iPhone 13 Pro'].viewport });
 
 test.describe('auth', () => {
   const extendedTest = test.extend({
@@ -48,9 +55,6 @@ test.describe('auth', () => {
     );
 
     await component.getByAltText(/Profile picture/i).click();
-    await expect(page).toHaveScreenshot();
-
-    await page.locator('div[aria-label="Toggle color mode"]').click();
     await expect(page).toHaveScreenshot();
   });
 });

@@ -12,7 +12,6 @@ import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import NetworkMenu from 'ui/snippets/networkMenu/NetworkMenu';
 
-import NavFooter from './NavFooter';
 import NavLink from './NavLink';
 import NavLinkGroupDesktop from './NavLinkGroupDesktop';
 
@@ -83,7 +82,7 @@ const NavigationDesktop = () => {
         <VStack as="ul" spacing="1" alignItems="flex-start">
           { mainNavItems.map((item) => {
             if (isGroupItem(item)) {
-              return <NavLinkGroupDesktop key={ item.text } { ...item } isCollapsed={ isCollapsed }/>;
+              return <NavLinkGroupDesktop key={ item.text } item={ item } isCollapsed={ isCollapsed }/>;
             } else {
               return <NavLink key={ item.text } item={ item } isCollapsed={ isCollapsed }/>;
             }
@@ -97,7 +96,6 @@ const NavigationDesktop = () => {
           </VStack>
         </Box>
       ) }
-      <NavFooter isCollapsed={ isCollapsed } hasAccount={ hasAccount }/>
       <Icon
         as={ chevronIcon }
         width={ 6 }
