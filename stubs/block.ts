@@ -14,7 +14,6 @@ export const BLOCK: Block = {
   gas_target_percentage: 55.79,
   gas_used: '6631036',
   gas_used_percentage: 22.10,
-  has_beacon_chain_withdrawals: null,
   hash: BLOCK_HASH,
   height: 8988736,
   miner: ADDRESS_PARAMS,

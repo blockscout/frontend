@@ -81,7 +81,7 @@ const BlockPageContent = () => {
   const tabs: Array<RoutedTab> = React.useMemo(() => ([
     { id: 'index', title: 'Details', component: <BlockDetails query={ blockQuery }/> },
     { id: 'txs', title: 'Transactions', component: <TxsContent query={ blockTxsQuery } showBlockInfo={ false } showSocketInfo={ false }/> },
-    appConfig.beaconChain.hasBeaconChain && blockQuery.data?.has_beacon_chain_withdrawals ?
+    appConfig.beaconChain.hasBeaconChain && Boolean(blockQuery.data?.withdrawals_count) ?
       { id: 'withdrawals', title: 'Withdrawals', component: <BlockWithdrawals blockWithdrawalsQuery={ blockWithdrawalsQuery }/> } :
       null,
   ].filter(Boolean)), [ blockQuery, blockTxsQuery, blockWithdrawalsQuery ]);

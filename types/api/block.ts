@@ -10,7 +10,6 @@ export interface Block {
   tx_count: number;
   miner: AddressParam;
   size: number;
-  has_beacon_chain_withdrawals: boolean | null;
   hash: string;
   parent_hash: string;
   difficulty: string;
@@ -30,6 +29,7 @@ export interface Block {
   type: BlockType;
   tx_fees: string | null;
   uncles_hashes: Array<string>;
+  withdrawals_count?: number;
 }
 
 export interface BlocksResponse {
