@@ -105,7 +105,7 @@ export const stylesheet: Array<cytoscape.Stylesheet> = [
     style: {
       'curve-style': 'bezier',
       'control-point-step-size': 100,
-      'control-point-distance': 50,
+      'control-point-distance': 80,
     },
   },
   {
