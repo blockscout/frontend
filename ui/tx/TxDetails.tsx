@@ -163,7 +163,7 @@ const TxDetails = () => {
         { data.block === null ?
           <Text>Pending</Text> : (
             <Skeleton isLoaded={ !isPlaceholderData }>
-              <LinkInternal href={ route({ pathname: '/block/[height]', query: { height: String(data.block) } }) }>
+              <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.block) } }) }>
                 { data.block }
               </LinkInternal>
             </Skeleton>

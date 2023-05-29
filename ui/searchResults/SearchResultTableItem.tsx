@@ -93,7 +93,7 @@ const SearchResultTableItem = ({ data, searchTerm }: Props) => {
             <Td fontSize="sm">
               <Flex alignItems="center">
                 <Icon as={ blockIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
-                <LinkInternal fontWeight={ 700 } href={ route({ pathname: '/block/[height]', query: { height: String(data.block_number) } }) }>
+                <LinkInternal fontWeight={ 700 } href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.block_hash) } }) }>
                   <Box as={ shouldHighlightHash ? 'span' : 'mark' }>{ data.block_number }</Box>
                 </LinkInternal>
               </Flex>

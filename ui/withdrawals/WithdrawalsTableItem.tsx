@@ -43,7 +43,7 @@ const WithdrawalsTableItem = ({ item, view, isLoading }: Props) => {
             </Flex>
           ) : (
             <LinkInternal
-              href={ route({ pathname: '/block/[height]', query: { height: item.block_number.toString() } }) }
+              href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.block_number.toString() } }) }
               display="flex"
               width="fit-content"
               alignItems="center"

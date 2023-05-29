@@ -19,7 +19,7 @@ type Props = AddressCoinBalanceHistoryItem & {
 };
 
 const AddressCoinBalanceListItem = (props: Props) => {
-  const blockUrl = route({ pathname: '/block/[height]', query: { height: String(props.block_number) } });
+  const blockUrl = route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(props.block_number) } });
   const deltaBn = BigNumber(props.delta).div(WEI);
   const isPositiveDelta = deltaBn.gte(ZERO);
   const timeAgo = useTimeAgoIncrement(props.block_timestamp, props.page === 1);

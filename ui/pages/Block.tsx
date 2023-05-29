@@ -34,20 +34,20 @@ const BlockPageContent = () => {
   const router = useRouter();
   const isMobile = useIsMobile();
   const appProps = useAppContext();
-  const height = getQueryParamString(router.query.height);
+  const heightOrHash = getQueryParamString(router.query.height_or_hash);
   const tab = getQueryParamString(router.query.tab);
 
   const blockQuery = useApiQuery('block', {
-    pathParams: { height },
+    pathParams: { height_or_hash: heightOrHash },
     queryOptions: {
-      enabled: Boolean(height),
+      enabled: Boolean(heightOrHash),
       placeholderData: BLOCK,
     },
   });
 
   const blockTxsQuery = useQueryWithPages({
     resourceName: 'block_txs',
-    pathParams: { height },
+    pathParams: { height_or_hash: heightOrHash },
     options: {
       enabled: Boolean(!blockQuery.isPlaceholderData && blockQuery.data?.height && tab === 'txs'),
       placeholderData: generateListStub<'block_txs'>(TX, 50, { next_page_params: {
@@ -60,7 +60,7 @@ const BlockPageContent = () => {
 
   const blockWithdrawalsQuery = useQueryWithPages({
     resourceName: 'block_withdrawals',
-    pathParams: { height },
+    pathParams: { height_or_hash: heightOrHash },
     options: {
       enabled: Boolean(!blockQuery.isPlaceholderData && blockQuery.data?.height && appConfig.beaconChain.hasBeaconChain && tab === 'withdrawals'),
       placeholderData: generateListStub<'block_withdrawals'>(WITHDRAWAL, 50, { next_page_params: {
@@ -70,7 +70,7 @@ const BlockPageContent = () => {
     },
   });
 
-  if (!height) {
+  if (!heightOrHash) {
     throw new Error('Block not found', { cause: { status: 404 } });
   }
 
@@ -117,7 +117,7 @@ const BlockPageContent = () => {
       <PageTitle
         title={ `Block #${ blockQuery.data?.height }` }
         backLink={ backLink }
-        contentAfter={ <NetworkExplorers type="block" pathParam={ height } ml={{ base: 'initial', lg: 'auto' }}/> }
+        contentAfter={ <NetworkExplorers type="block" pathParam={ heightOrHash } ml={{ base: 'initial', lg: 'auto' }}/> }
         isLoading={ blockQuery.isPlaceholderData }
       />
       { blockQuery.isPlaceholderData ? <SkeletonTabs tabs={ tabs }/> : (

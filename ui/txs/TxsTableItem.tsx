@@ -120,7 +120,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
         <Td>
           { tx.block && (
             <Skeleton isLoaded={ !isLoading } display="inline-block">
-              <LinkInternal href={ route({ pathname: '/block/[height]', query: { height: tx.block.toString() } }) }>
+              <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: tx.block.toString() } }) }>
                 { tx.block }
               </LinkInternal>
             </Skeleton>

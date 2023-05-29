@@ -57,7 +57,7 @@ const TxInternalsListItem = ({
       <HStack spacing={ 1 }>
         <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>Block</Skeleton>
         <Skeleton isLoaded={ !isLoading }>
-          <LinkInternal href={ route({ pathname: '/block/[height]', query: { height: block.toString() } }) }>{ block }</LinkInternal>
+          <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: block.toString() } }) }>{ block }</LinkInternal>
         </Skeleton>
       </HStack>
       <Box w="100%" display="flex" columnGap={ 3 }>

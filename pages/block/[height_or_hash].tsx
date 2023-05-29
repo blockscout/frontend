@@ -9,8 +9,8 @@ import Page from 'ui/shared/Page/Page';
 
 const Block = dynamic(() => import('ui/pages/Block'), { ssr: false });
 
-const BlockPage: NextPage<RoutedQuery<'/block/[height]'>> = ({ height }: RoutedQuery<'/block/[height]'>) => {
-  const { title, description } = getSeo({ height });
+const BlockPage: NextPage<RoutedQuery<'/block/[height_or_hash]'>> = (params: RoutedQuery<'/block/[height_or_hash]'>) => {
+  const { title, description } = getSeo({ height_or_hash: params.height_or_hash });
   return (
     <>
       <Head>

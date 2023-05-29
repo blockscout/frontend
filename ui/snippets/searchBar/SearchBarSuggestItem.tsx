@@ -35,7 +35,7 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick }: Props) =>
         return route({ pathname: '/tx/[hash]', query: { hash: data.tx_hash } });
       }
       case 'block': {
-        return route({ pathname: '/block/[height]', query: { height: String(data.block_number) } });
+        return route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.block_hash) } });
       }
     }
   })();

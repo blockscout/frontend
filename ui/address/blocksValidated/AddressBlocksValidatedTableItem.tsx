@@ -16,7 +16,7 @@ type Props = Block & {
 };
 
 const AddressBlocksValidatedTableItem = (props: Props) => {
-  const blockUrl = route({ pathname: '/block/[height]', query: { height: String(props.height) } });
+  const blockUrl = route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(props.height) } });
   const timeAgo = useTimeAgoIncrement(props.timestamp, props.page === 1);
   const totalReward = getBlockTotalReward(props);
 

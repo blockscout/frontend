@@ -26,7 +26,7 @@ const SearchResultsPageContent = () => {
     if (redirectCheckQuery.data?.redirect && redirectCheckQuery.data.parameter) {
       switch (redirectCheckQuery.data.type) {
         case 'block': {
-          router.push({ pathname: '/block/[height]', query: { height: redirectCheckQuery.data.parameter } });
+          router.push({ pathname: '/block/[height_or_hash]', query: { height_or_hash: redirectCheckQuery.data.parameter } });
           return;
         }
         case 'address': {

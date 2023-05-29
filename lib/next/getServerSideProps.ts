@@ -14,8 +14,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async({ req, query 
       cookies: req.headers.cookie || '',
       referrer: req.headers.referer || '',
       id: query.id?.toString() || '',
-      height: query.height?.toString() || '',
       hash: query.hash?.toString() || '',
+      height_or_hash: query.height_or_hash?.toString() || '',
     },
   };
 };
