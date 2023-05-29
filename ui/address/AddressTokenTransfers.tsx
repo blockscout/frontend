@@ -117,11 +117,21 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
   const handleNewSocketMessage: SocketMessage.AddressTokenTransfer['handler'] = (payload) => {
     setSocketAlert('');
 
-    if (data?.items && data.items.length >= OVERLOAD_COUNT) {
-      if (matchFilters(filters, payload.token_transfer, currentAddress)) {
-        setNewItemsCount(prev => prev + 1);
+    const newItems: Array<TokenTransfer> = [];
+
+    payload.token_transfers.forEach(transfer => {
+      if (data?.items && data.items.length + newItems.length >= OVERLOAD_COUNT) {
+        if (matchFilters(filters, transfer, currentAddress)) {
+          setNewItemsCount(prev => prev + 1);
+        }
+      } else {
+        if (matchFilters(filters, transfer, currentAddress)) {
+          newItems.push(transfer);
+        }
       }
-    } else {
+    });
+
+    if (newItems.length > 0) {
       queryClient.setQueryData(
         getResourceKey('address_token_transfers', { pathParams: { hash: currentAddress }, queryParams: { ...filters } }),
         (prevData: AddressTokenTransferResponse | undefined) => {
@@ -129,19 +139,17 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
             return;
           }
 
-          if (!matchFilters(filters, payload.token_transfer, currentAddress)) {
-            return prevData;
-          }
-
           return {
             ...prevData,
             items: [
-              payload.token_transfer,
+              ...newItems,
               ...prevData.items,
             ],
           };
-        });
+        },
+      );
     }
+
   };
 
   const handleSocketClose = React.useCallback(() => {

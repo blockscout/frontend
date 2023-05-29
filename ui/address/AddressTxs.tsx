@@ -62,16 +62,6 @@ const AddressTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}
   const handleNewSocketMessage: SocketMessage.AddressTxs['handler'] = (payload) => {
     setSocketAlert('');
 
-    if (addressTxsQuery.data?.items && addressTxsQuery.data.items.length >= OVERLOAD_COUNT) {
-      if (
-        !filterValue ||
-        (filterValue === 'from' && payload.transaction.from.hash === currentAddress) ||
-        (filterValue === 'to' && payload.transaction.to?.hash === currentAddress)
-      ) {
-        setNewItemsCount(prev => prev + 1);
-      }
-    }
-
     queryClient.setQueryData(
       getResourceKey('address_txs', { pathParams: { hash: currentAddress }, queryParams: { filter: filterValue } }),
       (prevData: AddressTransactionsResponse | undefined) => {
@@ -79,32 +69,30 @@ const AddressTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}
           return;
         }
 
-        const currIndex = prevData.items.findIndex((tx) => tx.hash === payload.transaction.hash);
+        const newItems = [ ...prevData.items ];
 
-        if (currIndex > -1) {
-          prevData.items[currIndex] = payload.transaction;
-          return prevData;
-        }
+        payload.transactions.forEach(tx => {
+          const currIndex = newItems.findIndex((item) => item.hash === tx.hash);
 
-        if (prevData.items.length >= OVERLOAD_COUNT) {
-          return prevData;
-        }
-
-        if (filterValue) {
-          if (
-            (filterValue === 'from' && payload.transaction.from.hash !== currentAddress) ||
-              (filterValue === 'to' && payload.transaction.to?.hash !== currentAddress)
-          ) {
-            return prevData;
+          if (currIndex > -1) {
+            newItems[currIndex] = tx;
+          } else {
+            if (!filterValue ||
+                (filterValue === 'from' && tx.from.hash === currentAddress) ||
+                (filterValue === 'to' && tx.to?.hash === currentAddress)
+            ) {
+              if (newItems.length >= OVERLOAD_COUNT) {
+                setNewItemsCount(prev => prev + 1);
+              } else {
+                newItems.unshift(tx);
+              }
+            }
           }
-        }
+        });
 
         return {
           ...prevData,
-          items: [
-            payload.transaction,
-            ...prevData.items,
-          ],
+          items: newItems,
         };
       });
   };

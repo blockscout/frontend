@@ -49,9 +49,9 @@ export namespace SocketMessage {
   SocketMessageParamsGeneric<'current_coin_balance', { coin_balance: string; block_number: number; exchange_rate: string }>;
   export type AddressTokenBalance = SocketMessageParamsGeneric<'token_balance', { block_number: number }>;
   export type AddressCoinBalance = SocketMessageParamsGeneric<'coin_balance', { coin_balance: AddressCoinBalanceHistoryItem }>;
-  export type AddressTxs = SocketMessageParamsGeneric<'transaction', { transaction: Transaction }>;
-  export type AddressTxsPending = SocketMessageParamsGeneric<'pending_transaction', { transaction: Transaction }>;
-  export type AddressTokenTransfer = SocketMessageParamsGeneric<'token_transfer', { token_transfer: TokenTransfer }>;
+  export type AddressTxs = SocketMessageParamsGeneric<'transaction', { transactions: Array<Transaction> }>;
+  export type AddressTxsPending = SocketMessageParamsGeneric<'pending_transaction', { transactions: Array<Transaction> }>;
+  export type AddressTokenTransfer = SocketMessageParamsGeneric<'token_transfer', { token_transfers: Array<TokenTransfer> }>;
   export type AddressChangedBytecode = SocketMessageParamsGeneric<'changed_bytecode', Record<string, never>>;
   export type TokenTransfers = SocketMessageParamsGeneric<'token_transfer', {token_transfer: number }>;
   export type TokenTotalSupply = SocketMessageParamsGeneric<'total_supply', {total_supply: number }>;
