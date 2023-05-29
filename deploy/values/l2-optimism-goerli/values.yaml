@@ -292,7 +292,7 @@ frontend:
   app: blockscout
   enabled: true
   image:
-    _default: ghcr.io/blockscout/frontend:v1.0.8
+    _default: ghcr.io/blockscout/frontend:latest
   ingress:
     enabled: true
     # annotations:
@@ -349,7 +349,7 @@ frontend:
         _default: 256Mi
   environment:
     NEXT_PUBLIC_BLOCKSCOUT_VERSION:
-      _default: v5.1.2-beta
+      _default: v5.1.5-beta
     NEXT_PUBLIC_FOOTER_GITHUB_LINK:
       _default: https://github.com/blockscout/blockscout
     NEXT_PUBLIC_FOOTER_TWITTER_LINK:
