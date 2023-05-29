@@ -9,6 +9,8 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { VERIFIED_CONTRACT_INFO } from 'stubs/contract';
+import { generateListStub } from 'stubs/utils';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import FilterInput from 'ui/shared/filters/FilterInput';
@@ -32,9 +34,21 @@ const VerifiedContracts = () => {
 
   const isMobile = useIsMobile();
 
-  const { isError, isLoading, data, isPaginationVisible, pagination, onFilterChange } = useQueryWithPages({
+  const { isError, isPlaceholderData, data, isPaginationVisible, pagination, onFilterChange } = useQueryWithPages({
     resourceName: 'verified_contracts',
     filters: { q: debouncedSearchTerm, filter: type },
+    options: {
+      placeholderData: generateListStub<'verified_contracts'>(
+        VERIFIED_CONTRACT_INFO,
+        50,
+        {
+          next_page_params: {
+            items_count: '50',
+            smart_contract_id: '50',
+          },
+        },
+      ),
+    },
   });
 
   const handleSearchTermChange = React.useCallback((value: string) => {
@@ -107,10 +121,10 @@ const VerifiedContracts = () => {
   const content = sortedData ? (
     <>
       <Show below="lg" ssr={ false }>
-        <VerifiedContractsList data={ sortedData }/>
+        <VerifiedContractsList data={ sortedData } isLoading={ isPlaceholderData }/>
       </Show>
       <Hide below="lg" ssr={ false }>
-        <VerifiedContractsTable data={ sortedData } sort={ sort } onSortToggle={ handleSortToggle }/>
+        <VerifiedContractsTable data={ sortedData } sort={ sort } onSortToggle={ handleSortToggle } isLoading={ isPlaceholderData }/>
       </Hide>
     </>
   ) : null;
@@ -121,7 +135,7 @@ const VerifiedContracts = () => {
       <VerifiedContractsCounters/>
       <DataListDisplay
         isError={ isError }
-        isLoading={ isLoading }
+        isLoading={ false }
         items={ data?.items }
         skeletonProps={{ skeletonDesktopColumns: [ '50%', '130px', '130px', '50%', '80px', '110px' ] }}
         emptyText="There are no verified contracts."
