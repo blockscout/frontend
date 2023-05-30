@@ -7,7 +7,6 @@ import { useForm } from 'react-hook-form';
 import type { MethodFormFields, ContractMethodCallResult } from './types';
 import type { SmartContractMethodInput, SmartContractMethod } from 'types/api/contract';
 
-import appConfig from 'configs/app/config';
 import arrowIcon from 'icons/arrows/down-right.svg';
 
 import ContractMethodField from './ContractMethodField';
@@ -67,14 +66,13 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
   const [ result, setResult ] = React.useState<ContractMethodCallResult<T>>();
   const [ isLoading, setLoading ] = React.useState(false);
 
-  const inputs = React.useMemo(() => {
+  const inputs: Array<SmartContractMethodInput> = React.useMemo(() => {
     return [
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ...('inputs' in data ? data.inputs as Array<any> : []), // todo_tom fix type
+      ...('inputs' in data ? data.inputs : []),
       ...('stateMutability' in data && data.stateMutability === 'payable' ? [ {
         name: 'value',
-        type: appConfig.network.currency.symbol,
-        internalType: appConfig.network.currency.symbol,
+        type: 'uint256' as const,
+        internalType: 'uint256' as const,
       } ] : []),
     ];
   }, [ data ]);

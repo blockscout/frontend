@@ -1,7 +1,5 @@
 import type { Abi } from 'abitype';
 
-// import type { ArrayElement } from 'types/utils';
-
 export type SmartContractMethodArgType = 'address' | 'uint256' | 'bool' | 'string' | 'bytes' | 'bytes32';
 export type SmartContractMethodStateMutability = 'view' | 'nonpayable' | 'payable';
 
@@ -82,19 +80,15 @@ export interface SmartContractWriteReceive {
 }
 
 export type SmartContractWriteMethod = SmartContractMethodBase | SmartContractWriteFallback | SmartContractWriteReceive;
-// export type SmartContractWriteMethod = ArrayElement<Abi> & {name?: string};
-// export type SmartContractReadMethod = ArrayElement<Abi> & {name?: string};
 
 export type SmartContractMethod = SmartContractReadMethod | SmartContractWriteMethod;
 
-// export type SmartContractMethodInput = ArrayElement<Abi> & {name?: string};
 export interface SmartContractMethodInput {
   internalType?: SmartContractMethodArgType;
   name: string;
   type: SmartContractMethodArgType;
 }
 
-// export type SmartContractMethodOutput = ArrayElement<Abi> & {name?: string};
 export interface SmartContractMethodOutput extends SmartContractMethodInput {
   value?: string;
 }
