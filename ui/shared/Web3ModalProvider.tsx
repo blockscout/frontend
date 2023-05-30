@@ -1,18 +1,18 @@
 import { useColorModeValue, useToken } from '@chakra-ui/react';
-import {
-  EthereumClient,
-  modalConnectors,
-  walletConnectProvider,
-} from '@web3modal/ethereum';
+import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum';
 import { Web3Modal } from '@web3modal/react';
 import React from 'react';
 import type { Chain } from 'wagmi';
-import { configureChains, createClient, WagmiConfig } from 'wagmi';
+import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 
 import appConfig from 'configs/app/config';
 
-const { wagmiClient, ethereumClient } = (() => {
+const getConfig = () => {
   try {
+    if (!appConfig.walletConnect.projectId) {
+      throw new Error('WalletConnect Project ID is not set');
+    }
+
     const currentChain: Chain = {
       id: Number(appConfig.network.id),
       name: appConfig.network.name || '',
@@ -23,6 +23,9 @@ const { wagmiClient, ethereumClient } = (() => {
         symbol: appConfig.network.currency.symbol || '',
       },
       rpcUrls: {
+        'public': {
+          http: [ appConfig.network.rpcUrl || '' ],
+        },
         'default': {
           http: [ appConfig.network.rpcUrl || '' ],
         },
@@ -37,46 +40,50 @@ const { wagmiClient, ethereumClient } = (() => {
 
     const chains = [ currentChain ];
 
-    const { provider } = configureChains(chains, [
-      walletConnectProvider({ projectId: appConfig.walletConnect.projectId || '' }),
+    const { publicClient } = configureChains(chains, [
+      w3mProvider({ projectId: appConfig.walletConnect.projectId || '' }),
     ]);
-    const wagmiClient = createClient({
+    const wagmiConfig = createConfig({
       autoConnect: true,
-      connectors: modalConnectors({ appName: 'web3Modal', chains }),
-      provider,
+      connectors: w3mConnectors({ projectId: appConfig.walletConnect.projectId, chains, version: 2 }),
+      publicClient,
     });
-    const ethereumClient = new EthereumClient(wagmiClient, chains);
+    const ethereumClient = new EthereumClient(wagmiConfig, chains);
 
-    return { wagmiClient, ethereumClient };
+    return { wagmiConfig, ethereumClient };
   } catch (error) {
-    return { wagmiClient: undefined, ethereumClient: undefined };
+    return { wagmiConfig: undefined, ethereumClient: undefined };
   }
-})();
+};
 
 interface Props {
   children: React.ReactNode;
   fallback?: JSX.Element | (() => JSX.Element);
 }
+const { wagmiConfig, ethereumClient } = getConfig();
 
 const Web3ModalProvider = ({ children, fallback }: Props) => {
   const modalZIndex = useToken<string>('zIndices', 'modal');
   const web3ModalTheme = useColorModeValue('light', 'dark');
 
-  if (!wagmiClient || !ethereumClient) {
+  if (!wagmiConfig || !ethereumClient || !appConfig.walletConnect.projectId) {
     return typeof fallback === 'function' ? fallback() : (fallback || null);
   }
 
   return (
-    <WagmiConfig client={ wagmiClient }>
-      { children }
+    <>
+      <WagmiConfig config={ wagmiConfig }>
+        { children }
+      </WagmiConfig>
       <Web3Modal
         projectId={ appConfig.walletConnect.projectId }
         ethereumClient={ ethereumClient }
-        themeZIndex={ Number(modalZIndex) }
         themeMode={ web3ModalTheme }
-        themeBackground="themeColor"
+        themeVariables={{
+          '--w3m-z-index': modalZIndex,
+        }}
       />
-    </WagmiConfig>
+    </>
   );
 };
 

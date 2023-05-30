@@ -30,7 +30,9 @@ const NetworkAddToWallet = ({ className }: Props) => {
           rpcUrls: [ appConfig.network.rpcUrl ],
           blockExplorerUrls: [ appConfig.baseUrl ],
         } ],
-      };
+      // in wagmi types for wallet_addEthereumChain method is not provided
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any;
       await provider?.request?.(config);
       toast({
         position: 'top-right',

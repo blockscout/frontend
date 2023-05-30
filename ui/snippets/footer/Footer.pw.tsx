@@ -1,5 +1,6 @@
 import { test as base, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
+import type { WindowProvider } from 'wagmi';
 
 import { FOOTER_LINKS } from 'mocks/config/footerLinks';
 import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
@@ -64,7 +65,7 @@ base.describe('without custom links', () => {
     await page.evaluate(() => {
       window.ethereum = {
         providers: [ { isMetaMask: true } ],
-      };
+      } as WindowProvider;
     });
 
     await mount(

@@ -25,7 +25,7 @@ interface Props<T extends SmartContractMethod> {
   isWrite?: boolean;
 }
 
-const getFieldName = (name: string, index: number): string => name || String(index);
+const getFieldName = (name: string | undefined, index: number): string => name || String(index);
 
 const sortFields = (data: Array<SmartContractMethodInput>) => ([ a ]: [string, string], [ b ]: [string, string]): 1 | -1 | 0 => {
   const fieldNames = data.map(({ name }, index) => getFieldName(name, index));
@@ -69,12 +69,13 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
 
   const inputs = React.useMemo(() => {
     return [
-      ...('inputs' in data ? data.inputs : []),
-      ...(data.stateMutability === 'payable' ? [ {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ...('inputs' in data ? data.inputs as Array<any> : []), // todo_tom fix type
+      ...('stateMutability' in data && data.stateMutability === 'payable' ? [ {
         name: 'value',
         type: appConfig.network.currency.symbol,
         internalType: appConfig.network.currency.symbol,
-      } as SmartContractMethodInput ] : []),
+      } ] : []),
     ];
   }, [ data ]);
 

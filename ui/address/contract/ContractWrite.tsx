@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAccount, useSigner, useNetwork, useSwitchNetwork } from 'wagmi';
+import { useAccount, useWalletClient, useNetwork, useSwitchNetwork } from 'wagmi';
 
 import type { SmartContractWriteMethod } from 'types/api/contract';
 
@@ -24,7 +24,7 @@ interface Props {
 }
 
 const ContractWrite = ({ addressHash, isProxy, isCustomAbi }: Props) => {
-  const { data: signer } = useSigner();
+  const { data: walletClient } = useWalletClient();
   const { isConnected } = useAccount();
   const { chain } = useNetwork();
   const { switchNetworkAsync } = useSwitchNetwork();
@@ -67,24 +67,28 @@ const ContractWrite = ({ addressHash, isProxy, isCustomAbi }: Props) => {
 
     if (item.type === 'receive') {
       const value = args[0] ? getNativeCoinValue(args[0]) : '0';
-      const result = await signer?.sendTransaction({
-        to: addressHash,
-        value,
+      const hash = await walletClient?.sendTransaction({
+        to: addressHash as `0x${ string }` | undefined,
+        value: BigInt(value), // todo_tom simplify this
       });
-      return { hash: result?.hash as string };
+      return { hash };
     }
 
-    const _args = item.stateMutability === 'payable' ? args.slice(0, -1) : args;
-    const value = item.stateMutability === 'payable' ? getNativeCoinValue(args[args.length - 1]) : undefined;
+    const _args = 'stateMutability' in item && item.stateMutability === 'payable' ? args.slice(0, -1) : args;
+    const value = 'stateMutability' in item && item.stateMutability === 'payable' ? getNativeCoinValue(args[args.length - 1]) : undefined;
     const methodName = item.type === 'fallback' ? 'fallback' : item.name;
 
-    const result = await _contract[methodName](..._args, {
+    if (!methodName) {
+      throw new Error('Method name is not defined');
+    }
+
+    const hash = await _contract.write[methodName](..._args, {
       gasLimit: 100_000,
       value,
     });
 
-    return { hash: result.hash as string };
-  }, [ _contract, addressHash, chain, isConnected, signer, switchNetworkAsync ]);
+    return { hash };
+  }, [ _contract, addressHash, chain, isConnected, walletClient, switchNetworkAsync ]);
 
   const renderContent = React.useCallback((item: SmartContractWriteMethod, index: number, id: number) => {
     return (

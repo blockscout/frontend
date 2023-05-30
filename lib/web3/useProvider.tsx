@@ -1,11 +1,12 @@
 import React from 'react';
+import type { WindowProvider } from 'wagmi';
 
-import type { ExternalProvider } from 'types/client/wallets';
+import 'wagmi/window';
 
 import appConfig from 'configs/app/config';
 
 export default function useProvider() {
-  const [ provider, setProvider ] = React.useState<ExternalProvider>();
+  const [ provider, setProvider ] = React.useState<WindowProvider>();
 
   React.useEffect(() => {
     if (!('ethereum' in window)) {
