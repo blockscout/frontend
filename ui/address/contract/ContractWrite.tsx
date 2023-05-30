@@ -39,17 +39,17 @@ const ContractWrite = ({ addressHash, isProxy, isCustomAbi }: Props) => {
     },
   });
 
-  const { contract, proxy, custom } = useContractContext();
-  const _contract = (() => {
+  const { contractInfo, customInfo, proxyInfo } = useContractContext();
+  const abi = (() => {
     if (isProxy) {
-      return proxy;
+      return proxyInfo?.abi;
     }
 
     if (isCustomAbi) {
-      return custom;
+      return customInfo?.abi;
     }
 
-    return contract;
+    return contractInfo?.abi;
   })();
 
   const handleMethodFormSubmit = React.useCallback(async(item: SmartContractWriteMethod, args: Array<string | Array<unknown>>) => {
@@ -61,34 +61,37 @@ const ContractWrite = ({ addressHash, isProxy, isCustomAbi }: Props) => {
       await switchNetworkAsync?.(Number(config.network.id));
     }
 
-    if (!_contract) {
+    if (!abi) {
       throw new Error('Something went wrong. Try again later.');
     }
 
-    if (item.type === 'receive') {
-      const value = args[0] ? getNativeCoinValue(args[0]) : '0';
+    if (item.type === 'receive' || item.type === 'fallback') {
+      const value = getNativeCoinValue(args[0]);
       const hash = await walletClient?.sendTransaction({
         to: addressHash as `0x${ string }` | undefined,
-        value: BigInt(value), // todo_tom simplify this
+        value,
       });
       return { hash };
     }
 
     const _args = 'stateMutability' in item && item.stateMutability === 'payable' ? args.slice(0, -1) : args;
     const value = 'stateMutability' in item && item.stateMutability === 'payable' ? getNativeCoinValue(args[args.length - 1]) : undefined;
-    const methodName = item.type === 'fallback' ? 'fallback' : item.name;
+    const methodName = item.name;
 
     if (!methodName) {
       throw new Error('Method name is not defined');
     }
 
-    const hash = await _contract.write[methodName](..._args, {
-      gasLimit: 100_000,
-      value,
+    const hash = await walletClient?.writeContract({
+      args: _args,
+      abi: abi,
+      functionName: methodName,
+      address: addressHash as `0x${ string }`,
+      value: value as undefined,
     });
 
     return { hash };
-  }, [ _contract, addressHash, chain, isConnected, walletClient, switchNetworkAsync ]);
+  }, [ isConnected, chain, abi, walletClient, addressHash, switchNetworkAsync ]);
 
   const renderContent = React.useCallback((item: SmartContractWriteMethod, index: number, id: number) => {
     return (

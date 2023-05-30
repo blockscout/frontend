@@ -1,12 +1,8 @@
 import { useQueryClient } from '@tanstack/react-query';
-import type { Abi } from 'abitype';
 import React from 'react';
-import type { WalletClient } from 'wagmi';
-import { useWalletClient } from 'wagmi';
-import type { GetContractResult } from 'wagmi/actions';
-import { getContract } from 'wagmi/actions';
 
 import type { Address } from 'types/api/address';
+import type { SmartContract } from 'types/api/contract';
 
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 
@@ -16,19 +12,18 @@ type ProviderProps = {
 }
 
 type TContractContext = {
-  contract: GetContractResult<Abi, WalletClient> | undefined;
-  proxy: GetContractResult<Abi, WalletClient> | undefined;
-  custom: GetContractResult<Abi, WalletClient> | undefined;
+  contractInfo: SmartContract | undefined;
+  proxyInfo: SmartContract | undefined;
+  customInfo: SmartContract | undefined;
 };
 
 const ContractContext = React.createContext<TContractContext>({
-  contract: undefined,
-  proxy: undefined,
-  custom: undefined,
+  proxyInfo: undefined,
+  contractInfo: undefined,
+  customInfo: undefined,
 });
 
 export function ContractContextProvider({ addressHash, children }: ProviderProps) {
-  const { data: walletClient } = useWalletClient();
   const queryClient = useQueryClient();
 
   const { data: contractInfo } = useApiQuery('contract', {
@@ -60,30 +55,11 @@ export function ContractContextProvider({ addressHash, children }: ProviderProps
     },
   });
 
-  const contract = addressHash && contractInfo?.abi ? getContract({
-    address: addressHash as `0x${ string }`,
-    abi: contractInfo?.abi ?? undefined,
-    walletClient: walletClient ?? undefined,
-  }) : undefined;
-
-  const proxy = addressInfo?.implementation_address && proxyInfo?.abi ? getContract({
-    address: addressInfo?.implementation_address as `0x${ string }`,
-    abi: proxyInfo?.abi,
-    walletClient: walletClient ?? undefined,
-  }) : undefined;
-
-  const custom = addressHash && customInfo ? getContract({
-    address: addressHash as `0x${ string }`,
-    abi: customInfo,
-    walletClient: walletClient ?? undefined,
-  }) : undefined;
-
   const value = React.useMemo(() => ({
-    contract,
-    proxy,
-    custom,
-  // todo_tom fix this
-  } as TContractContext), [ contract, proxy, custom ]);
+    proxyInfo,
+    contractInfo,
+    customInfo,
+  } as TContractContext), [ proxyInfo, contractInfo, customInfo ]);
 
   return (
     <ContractContext.Provider value={ value }>

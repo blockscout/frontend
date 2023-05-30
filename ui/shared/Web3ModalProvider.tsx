@@ -56,11 +56,12 @@ const getConfig = () => {
   }
 };
 
+const { wagmiConfig, ethereumClient } = getConfig();
+
 interface Props {
   children: React.ReactNode;
   fallback?: JSX.Element | (() => JSX.Element);
 }
-const { wagmiConfig, ethereumClient } = getConfig();
 
 const Web3ModalProvider = ({ children, fallback }: Props) => {
   const modalZIndex = useToken<string>('zIndices', 'modal');
