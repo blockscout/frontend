@@ -2,10 +2,8 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { w3mProvider } from '@web3modal/ethereum';
 import React from 'react';
-import { createWalletClient, custom } from 'viem';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
-import { MockConnector } from 'wagmi/connectors/mock';
 
 import { AppContextProvider } from 'lib/appContext';
 import type { Props as PageProps } from 'lib/next/getServerSideProps';
@@ -29,16 +27,6 @@ const defaultAppContext = {
 };
 
 // >>> Web3 stuff
-const connector = new MockConnector({
-  options: {
-    chainId: mainnet.id,
-    walletClient: createWalletClient({
-      chain: mainnet,
-      transport: custom(window.ethereum!),
-    }),
-  },
-});
-
 const { publicClient } = configureChains(
   [ mainnet ],
   [
@@ -48,7 +36,7 @@ const { publicClient } = configureChains(
 
 const wagmiConfig = createConfig({
   autoConnect: false,
-  connectors: [ connector ],
+  connectors: [ ],
   publicClient,
 });
 // <<<<
