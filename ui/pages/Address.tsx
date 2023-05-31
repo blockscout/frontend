@@ -1,4 +1,4 @@
-import { Skeleton, Box, Icon } from '@chakra-ui/react';
+import { Box, Icon } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -124,7 +124,7 @@ const AddressPageContent = () => {
 
   return (
     <>
-      { addressQuery.isPlaceholderData ? <Skeleton h={{ base: 12, lg: 6 }} mb={ 6 } w="100%" maxW="680px"/> : <TextAd mb={ 6 }/> }
+      <TextAd mb={ 6 }/>
       <PageTitle
         title={ `${ addressQuery.data?.is_contract ? 'Contract' : 'Address' } details` }
         backLink={ backLink }
