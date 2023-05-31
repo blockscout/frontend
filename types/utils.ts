@@ -1,5 +1,6 @@
-export type ArrayElement<ArrayType extends Array<unknown>> =
-    ArrayType extends Array<(infer ElementType)> ? ElementType : never;
+export type ArrayElement<ArrType> = ArrType extends ReadonlyArray<infer ElementType>
+  ? ElementType
+  : never;
 
 export type ExcludeNull<T> = T extends null ? never : T;
 

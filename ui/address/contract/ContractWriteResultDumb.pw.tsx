@@ -12,7 +12,7 @@ test('loading', async({ mount }) => {
       error: null,
     },
     result: {
-      hash: '0x363574E6C5C71c343d7348093D84320c76d5Dd29',
+      hash: '0x363574E6C5C71c343d7348093D84320c76d5Dd29' as `0x${ string }`,
     },
     onSettle: () => {},
   };
@@ -33,7 +33,7 @@ test('success', async({ mount }) => {
       error: null,
     },
     result: {
-      hash: '0x363574E6C5C71c343d7348093D84320c76d5Dd29',
+      hash: '0x363574E6C5C71c343d7348093D84320c76d5Dd29' as `0x${ string }`,
     },
     onSettle: () => {},
   };
@@ -57,7 +57,7 @@ test('error +@mobile', async({ mount }) => {
       } as Error,
     },
     result: {
-      hash: '0x363574E6C5C71c343d7348093D84320c76d5Dd29',
+      hash: '0x363574E6C5C71c343d7348093D84320c76d5Dd29' as `0x${ string }`,
     },
     onSettle: () => {},
   };

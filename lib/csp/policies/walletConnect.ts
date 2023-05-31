@@ -10,8 +10,7 @@ export function walletConnect(): CspDev.DirectiveDescriptor {
   return {
     'connect-src': [
       '*.walletconnect.com',
-      'wss://*.bridge.walletconnect.org',
-      'wss://www.walletlink.org',
+      'wss://relay.walletconnect.com',
     ],
     'img-src': [
       '*.walletconnect.com',
