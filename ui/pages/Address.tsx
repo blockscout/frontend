@@ -1,4 +1,4 @@
-import { Skeleton, Box, Icon } from '@chakra-ui/react';
+import { Box, Icon } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -124,7 +124,7 @@ const AddressPageContent = () => {
 
   return (
     <>
-      { addressQuery.isPlaceholderData ? <Skeleton h={{ base: 12, lg: 6 }} mb={ 6 } w="100%" maxW="680px"/> : <TextAd mb={ 6 }/> }
+      <TextAd mb={ 6 }/>
       <PageTitle
         title={ `${ addressQuery.data?.is_contract ? 'Contract' : 'Address' } details` }
         backLink={ backLink }
@@ -135,7 +135,6 @@ const AddressPageContent = () => {
       { /* should stay before tabs to scroll up with pagination */ }
       <Box ref={ tabsScrollRef }></Box>
       { addressQuery.isPlaceholderData ? <SkeletonTabs tabs={ tabs }/> : content }
-      { !addressQuery.isPlaceholderData && !addressQuery.isError && <Box h={{ base: 0, lg: '40vh' }}/> }
     </>
   );
 };

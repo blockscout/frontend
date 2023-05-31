@@ -35,6 +35,8 @@ WORKDIR /app
 # pass commit sha to the app (uses by sentry.io as release version)
 ARG GIT_COMMIT_SHA
 ENV NEXT_PUBLIC_GIT_COMMIT_SHA=$GIT_COMMIT_SHA
+
+# pass git tag to the app (for the footer link)
 ARG GIT_TAG
 ENV NEXT_PUBLIC_GIT_TAG=$GIT_TAG
 

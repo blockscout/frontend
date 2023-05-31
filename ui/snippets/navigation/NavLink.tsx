@@ -1,4 +1,4 @@
-import { Link, Icon, Text, HStack, Tooltip, Box, useBreakpointValue, chakra, shouldForwardProp } from '@chakra-ui/react';
+import { Link, Text, HStack, Tooltip, Box, useBreakpointValue, chakra, shouldForwardProp } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { route } from 'nextjs-routes';
 import React from 'react';
@@ -8,6 +8,7 @@ import type { NavItem } from 'types/client/navigation-items';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { isInternalItem } from 'lib/hooks/useNavItems';
 
+import NavLinkIcon from './NavLinkIcon';
 import useColors from './useColors';
 import useNavLinkStyleProps from './useNavLinkStyleProps';
 
@@ -50,7 +51,7 @@ const NavLink = ({ item, isCollapsed, px, className }: Props) => {
         color={ isInternalLink && item.isActive ? colors.text.active : colors.text.hover }
       >
         <HStack spacing={ 3 } overflow="hidden">
-          { item.icon && <Icon as={ item.icon } boxSize="30px"/> }
+          <NavLinkIcon item={ item }/>
           <Text { ...styleProps.textProps }>
             { item.text }
           </Text>

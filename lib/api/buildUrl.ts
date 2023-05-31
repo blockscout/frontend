@@ -18,7 +18,8 @@ export default function buildUrl<R extends ResourceName>(
   const url = new URL(compile(path)(pathParams), baseUrl);
 
   queryParams && Object.entries(queryParams).forEach(([ key, value ]) => {
-    value && url.searchParams.append(key, String(value));
+    // there are some pagination params that can be null for the next page
+    (value || value === null) && url.searchParams.append(key, String(value));
   });
 
   return url.toString();

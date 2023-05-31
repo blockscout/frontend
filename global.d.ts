@@ -1,4 +1,4 @@
-import type { ExternalProvider } from 'types/client/wallets';
+import type { WindowProvider } from 'wagmi';
 
 type CPreferences = {
   zone: string;
@@ -8,9 +8,7 @@ type CPreferences = {
 
 declare global {
   export interface Window {
-    ethereum?: {
-      providers?: Array<ExternalProvider>;
-    };
+    ethereum?: WindowProvider;
     coinzilla_display: Array<CPreferences>;
     ga?: {
       getAll: () => Array<{ get: (prop: string) => string }>;

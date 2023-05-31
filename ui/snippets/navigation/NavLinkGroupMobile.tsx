@@ -11,15 +11,16 @@ import type { NavGroupItem } from 'types/client/navigation-items';
 
 import chevronIcon from 'icons/arrows/east-mini.svg';
 
+import NavLinkIcon from './NavLinkIcon';
 import useNavLinkStyleProps from './useNavLinkStyleProps';
 
-type Props = NavGroupItem & {
-  isCollapsed?: boolean;
+type Props = {
+  item: NavGroupItem;
   onClick: () => void;
 }
 
-const NavLinkGroup = ({ text, icon, isActive, onClick }: Props) => {
-  const styleProps = useNavLinkStyleProps({ isActive });
+const NavLinkGroup = ({ item, onClick }: Props) => {
+  const styleProps = useNavLinkStyleProps({ isActive: item.isActive });
 
   return (
     <Box as="li" listStyleType="none" w="100%" onClick={ onClick }>
@@ -27,15 +28,15 @@ const NavLinkGroup = ({ text, icon, isActive, onClick }: Props) => {
         { ...styleProps.itemProps }
         w="100%"
         px={ 3 }
-        aria-label={ `${ text } link group` }
+        aria-label={ `${ item.text } link group` }
       >
         <Flex justifyContent="space-between" width="100%" alignItems="center" pr={ 1 }>
           <HStack spacing={ 3 } overflow="hidden">
-            <Icon as={ icon } boxSize="30px"/>
+            <NavLinkIcon item={ item }/>
             <Text
               { ...styleProps.textProps }
             >
-              { text }
+              { item.text }
             </Text>
           </HStack>
           <Icon as={ chevronIcon } transform="rotate(180deg)" boxSize={ 6 }/>

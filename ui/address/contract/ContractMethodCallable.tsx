@@ -7,7 +7,6 @@ import { useForm } from 'react-hook-form';
 import type { MethodFormFields, ContractMethodCallResult } from './types';
 import type { SmartContractMethodInput, SmartContractMethod } from 'types/api/contract';
 
-import appConfig from 'configs/app/config';
 import arrowIcon from 'icons/arrows/down-right.svg';
 
 import ContractMethodField from './ContractMethodField';
@@ -25,7 +24,7 @@ interface Props<T extends SmartContractMethod> {
   isWrite?: boolean;
 }
 
-const getFieldName = (name: string, index: number): string => name || String(index);
+const getFieldName = (name: string | undefined, index: number): string => name || String(index);
 
 const sortFields = (data: Array<SmartContractMethodInput>) => ([ a ]: [string, string], [ b ]: [string, string]): 1 | -1 | 0 => {
   const fieldNames = data.map(({ name }, index) => getFieldName(name, index));
@@ -67,14 +66,14 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
   const [ result, setResult ] = React.useState<ContractMethodCallResult<T>>();
   const [ isLoading, setLoading ] = React.useState(false);
 
-  const inputs = React.useMemo(() => {
+  const inputs: Array<SmartContractMethodInput> = React.useMemo(() => {
     return [
       ...('inputs' in data ? data.inputs : []),
-      ...(data.stateMutability === 'payable' ? [ {
+      ...('stateMutability' in data && data.stateMutability === 'payable' ? [ {
         name: 'value',
-        type: appConfig.network.currency.symbol,
-        internalType: appConfig.network.currency.symbol,
-      } as SmartContractMethodInput ] : []),
+        type: 'uint256' as const,
+        internalType: 'uint256' as const,
+      } ] : []),
     ];
   }, [ data ]);
 

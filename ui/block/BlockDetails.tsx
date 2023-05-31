@@ -187,7 +187,7 @@ const BlockDetails = ({ query }: Props) => {
           isLoading={ isPlaceholderData }
         >
           <Skeleton isLoaded={ !isPlaceholderData }>
-            <LinkInternal href={ route({ pathname: '/block/[height]', query: { height: heightOrHash, tab: 'withdrawals' } }) }>
+            <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash, tab: 'withdrawals' } }) }>
               { data.withdrawals_count } withdrawal{ data.withdrawals_count === 1 ? '' : 's' }
             </LinkInternal>
           </Skeleton>

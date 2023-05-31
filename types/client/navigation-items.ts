@@ -1,9 +1,15 @@
 import type { Route } from 'nextjs-routes';
+import type React from 'react';
+
+type NavIconOrComponent = {
+  icon?: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
+} | {
+  iconComponent?: React.FC<{size?: number}>;
+};
 
 type NavItemCommon = {
   text: string;
-  icon?: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
-}
+} & NavIconOrComponent;
 
 export type NavItemInternal = NavItemCommon & {
   nextRoute: Route;

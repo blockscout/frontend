@@ -1,9 +1,8 @@
 import { useQueryClient } from '@tanstack/react-query';
-import type { Contract } from 'ethers';
 import React from 'react';
-import { useContract, useProvider, useSigner } from 'wagmi';
 
 import type { Address } from 'types/api/address';
+import type { SmartContract } from 'types/api/contract';
 
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 
@@ -13,20 +12,18 @@ type ProviderProps = {
 }
 
 type TContractContext = {
-  contract: Contract | null;
-  proxy: Contract | null;
-  custom: Contract | null;
+  contractInfo: SmartContract | undefined;
+  proxyInfo: SmartContract | undefined;
+  customInfo: SmartContract | undefined;
 };
 
 const ContractContext = React.createContext<TContractContext>({
-  contract: null,
-  proxy: null,
-  custom: null,
+  proxyInfo: undefined,
+  contractInfo: undefined,
+  customInfo: undefined,
 });
 
 export function ContractContextProvider({ addressHash, children }: ProviderProps) {
-  const provider = useProvider();
-  const { data: signer } = useSigner();
   const queryClient = useQueryClient();
 
   const { data: contractInfo } = useApiQuery('contract', {
@@ -58,27 +55,11 @@ export function ContractContextProvider({ addressHash, children }: ProviderProps
     },
   });
 
-  const contract = useContract({
-    address: addressHash,
-    abi: contractInfo?.abi ?? undefined,
-    signerOrProvider: signer ?? provider,
-  });
-  const proxy = useContract({
-    address: addressInfo?.implementation_address ?? undefined,
-    abi: proxyInfo?.abi ?? undefined,
-    signerOrProvider: signer ?? provider,
-  });
-  const custom = useContract({
-    address: addressHash,
-    abi: customInfo ?? undefined,
-    signerOrProvider: signer ?? provider,
-  });
-
   const value = React.useMemo(() => ({
-    contract,
-    proxy,
-    custom,
-  }), [ contract, proxy, custom ]);
+    proxyInfo,
+    contractInfo,
+    customInfo,
+  } as TContractContext), [ proxyInfo, contractInfo, customInfo ]);
 
   return (
     <ContractContext.Provider value={ value }>

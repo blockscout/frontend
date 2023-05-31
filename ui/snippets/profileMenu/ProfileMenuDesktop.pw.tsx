@@ -53,6 +53,6 @@ test.describe('auth', () => {
     );
 
     await component.getByAltText(/Profile picture/i).click();
-    await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 250, height: 550 } });
+    await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 250, height: 600 } });
   });
 });

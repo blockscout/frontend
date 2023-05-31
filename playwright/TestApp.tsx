@@ -1,10 +1,9 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { providers } from 'ethers';
+import { w3mProvider } from '@web3modal/ethereum';
 import React from 'react';
-import { createClient, WagmiConfig } from 'wagmi';
+import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
-import { MockConnector } from 'wagmi/connectors/mock';
 
 import { AppContextProvider } from 'lib/appContext';
 import type { Props as PageProps } from 'lib/next/getServerSideProps';
@@ -28,25 +27,17 @@ const defaultAppContext = {
 };
 
 // >>> Web3 stuff
-const provider = new providers.JsonRpcProvider(
-  'http://localhost:8545',
-  {
-    name: 'POA',
-    chainId: 99,
-  },
+const { publicClient } = configureChains(
+  [ mainnet ],
+  [
+    w3mProvider({ projectId: '' }),
+  ],
 );
 
-const connector = new MockConnector({
-  chains: [ mainnet ],
-  options: {
-    signer: provider.getSigner(),
-  },
-});
-
-const wagmiClient = createClient({
-  autoConnect: true,
-  connectors: [ connector ],
-  provider,
+const wagmiConfig = createConfig({
+  autoConnect: false,
+  connectors: [ ],
+  publicClient,
 });
 // <<<<
 
@@ -65,7 +56,7 @@ const TestApp = ({ children, withSocket, appContext = defaultAppContext }: Props
       <QueryClientProvider client={ queryClient }>
         <SocketProvider url={ withSocket ? `ws://localhost:${ PORT }` : undefined }>
           <AppContextProvider { ...appContext }>
-            <WagmiConfig client={ wagmiClient }>
+            <WagmiConfig config={ wagmiConfig }>
               { children }
             </WagmiConfig>
           </AppContextProvider>

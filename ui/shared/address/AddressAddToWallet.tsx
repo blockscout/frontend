@@ -26,7 +26,7 @@ const AddressAddToWallet = ({ className, token, isLoading }: Props) => {
           type: 'ERC20', // Initially only supports ERC20, but eventually more!
           options: {
             address: token.address,
-            symbol: token.symbol,
+            symbol: token.symbol || '',
             decimals: Number(token.decimals) || 18,
             // TODO: add token image when we have it in API
             // image: ''
@@ -67,7 +67,7 @@ const AddressAddToWallet = ({ className, token, isLoading }: Props) => {
   const defaultWallet = appConfig.web3.defaultWallet;
 
   return (
-    <Tooltip label={ WALLETS_INFO[defaultWallet].add_token_text }>
+    <Tooltip label={ `Add token to ${ WALLETS_INFO[defaultWallet].name }` }>
       <Box className={ className } display="inline-flex" cursor="pointer" onClick={ handleClick }>
         <Icon as={ WALLETS_INFO[defaultWallet].icon } boxSize={ 6 }/>
       </Box>

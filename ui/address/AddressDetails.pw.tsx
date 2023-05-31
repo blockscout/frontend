@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/experimental-ct-react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
+import type { WindowProvider } from 'wagmi';
 
 import type { Address } from 'types/api/address';
 
@@ -74,7 +75,7 @@ test('token', async({ mount, page }) => {
   await page.evaluate(() => {
     window.ethereum = {
       providers: [ { isMetaMask: true } ],
-    };
+    }as WindowProvider;
   });
 
   const component = await mount(

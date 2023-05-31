@@ -2,10 +2,9 @@ import { useColorModeValue, useToken, SkeletonCircle, Image, Box } from '@chakra
 import React from 'react';
 import Identicon from 'react-identicons';
 
-import type { UserInfo } from 'types/api/account';
-
 import { useAppContext } from 'lib/appContext';
 import * as cookies from 'lib/cookies';
+import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
 
 const IdenticonComponent = typeof Identicon === 'object' && 'default' in Identicon ? Identicon.default : Identicon;
 
@@ -34,14 +33,13 @@ const FallbackImage = ({ size, id }: { size: number; id: string }) => {
 
 interface Props {
   size: number;
-  data?: UserInfo;
-  isFetched: boolean;
 }
 
-const UserAvatar = ({ size, data, isFetched }: Props) => {
+const UserAvatar = ({ size }: Props) => {
   const appProps = useAppContext();
   const hasAuth = Boolean(cookies.get(cookies.NAMES.API_TOKEN, appProps.cookies));
   const [ isImageLoadError, setImageLoadError ] = React.useState(false);
+  const { data, isFetched } = useFetchProfileInfo();
 
   const sizeString = `${ size }px`;
 
