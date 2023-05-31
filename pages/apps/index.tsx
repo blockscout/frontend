@@ -1,10 +1,12 @@
 import type { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import React from 'react';
 
-import Marketplace from 'ui/pages/Marketplace';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
+
+const Marketplace = dynamic(() => import('ui/pages/Marketplace'), { ssr: false });
 
 const MarketplacePage: NextPage = () => {
   return (

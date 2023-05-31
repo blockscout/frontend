@@ -1,4 +1,4 @@
-import { chakra, Icon, Input, InputGroup, InputLeftElement, InputRightElement, useColorModeValue } from '@chakra-ui/react';
+import { chakra, Icon, Input, InputGroup, InputLeftElement, InputRightElement, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import type { ChangeEvent } from 'react';
 import React, { useCallback, useState } from 'react';
 
@@ -11,9 +11,10 @@ type Props = {
   size?: 'xs' | 'sm' | 'md' | 'lg';
   placeholder: string;
   initialValue?: string;
+  isLoading?: boolean;
 }
 
-const FilterInput = ({ onChange, className, size = 'sm', placeholder, initialValue }: Props) => {
+const FilterInput = ({ onChange, className, size = 'sm', placeholder, initialValue, isLoading }: Props) => {
   const [ filterQuery, setFilterQuery ] = useState(initialValue || '');
   const inputRef = React.useRef<HTMLInputElement>(null);
   const iconColor = useColorModeValue('blackAlpha.600', 'whiteAlpha.600');
@@ -32,34 +33,38 @@ const FilterInput = ({ onChange, className, size = 'sm', placeholder, initialVal
   }, [ onChange ]);
 
   return (
-    <InputGroup
-      size={ size }
+    <Skeleton
+      isLoaded={ !isLoading }
       className={ className }
       minW="250px"
     >
-      <InputLeftElement
-        pointerEvents="none"
-      >
-        <Icon as={ searchIcon } color={ iconColor }/>
-      </InputLeftElement>
-
-      <Input
-        ref={ inputRef }
+      <InputGroup
         size={ size }
-        value={ filterQuery }
-        onChange={ handleFilterQueryChange }
-        placeholder={ placeholder }
-        borderWidth="2px"
-        textOverflow="ellipsis"
-        whiteSpace="nowrap"
-      />
+      >
+        <InputLeftElement
+          pointerEvents="none"
+        >
+          <Icon as={ searchIcon } color={ iconColor }/>
+        </InputLeftElement>
 
-      { filterQuery ? (
-        <InputRightElement>
-          <InputClearButton onClick={ handleFilterQueryClear }/>
-        </InputRightElement>
-      ) : null }
-    </InputGroup>
+        <Input
+          ref={ inputRef }
+          size={ size }
+          value={ filterQuery }
+          onChange={ handleFilterQueryChange }
+          placeholder={ placeholder }
+          borderWidth="2px"
+          textOverflow="ellipsis"
+          whiteSpace="nowrap"
+        />
+
+        { filterQuery ? (
+          <InputRightElement>
+            <InputClearButton onClick={ handleFilterQueryClear }/>
+          </InputRightElement>
+        ) : null }
+      </InputGroup>
+    </Skeleton>
   );
 };
 
