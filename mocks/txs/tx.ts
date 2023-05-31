@@ -251,3 +251,26 @@ export const l2tx: Transaction = {
   l1_gas_used: '17060',
   l1_fee: '1584574188135760',
 };
+
+export const base2 = {
+  ...base,
+  hash: '0x02d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3193',
+  from: {
+    ...base.from,
+    hash: '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859',
+  },
+};
+
+export const base3 = {
+  ...base,
+  hash: '0x12d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3193',
+  from: {
+    ...base.from,
+    hash: '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859',
+  },
+};
+
+export const base4 = {
+  ...base,
+  hash: '0x22d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3193',
+};

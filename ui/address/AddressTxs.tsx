@@ -5,6 +5,7 @@ import React from 'react';
 import type { SocketMessage } from 'lib/socket/types';
 import type { AddressFromToFilter, AddressTransactionsResponse } from 'types/api/address';
 import { AddressFromToFilterValues } from 'types/api/address';
+import type { Transaction } from 'types/api/transaction';
 
 import { getResourceKey } from 'lib/api/useApiQuery';
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
@@ -26,7 +27,27 @@ const OVERLOAD_COUNT = 75;
 
 const getFilterValue = (getFilterValueFromQuery<AddressFromToFilter>).bind(null, AddressFromToFilterValues);
 
-const AddressTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}) => {
+const matchFilter = (filterValue: AddressFromToFilter, transaction: Transaction, address?: string) => {
+  if (!filterValue) {
+    return true;
+  }
+
+  if (filterValue === 'from') {
+    return transaction.from.hash === address;
+  }
+
+  if (filterValue === 'to') {
+    return transaction.to?.hash === address;
+  }
+};
+
+type Props = {
+  scrollRef?: React.RefObject<HTMLDivElement>;
+  // for tests only
+  overloadCount?: number;
+}
+
+const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Props) => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -69,30 +90,35 @@ const AddressTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}
           return;
         }
 
-        const newItems = [ ...prevData.items ];
+        const newItems: Array<Transaction> = [];
+        let newCount = 0;
 
         payload.transactions.forEach(tx => {
-          const currIndex = newItems.findIndex((item) => item.hash === tx.hash);
+          const currIndex = prevData.items.findIndex((item) => item.hash === tx.hash);
 
           if (currIndex > -1) {
-            newItems[currIndex] = tx;
+            prevData.items[currIndex] = tx;
           } else {
-            if (!filterValue ||
-                (filterValue === 'from' && tx.from.hash === currentAddress) ||
-                (filterValue === 'to' && tx.to?.hash === currentAddress)
-            ) {
-              if (newItems.length >= OVERLOAD_COUNT) {
-                setNewItemsCount(prev => prev + 1);
+            if (matchFilter(filterValue, tx, currentAddress)) {
+              if (newItems.length + prevData.items.length >= overloadCount) {
+                newCount++;
               } else {
-                newItems.unshift(tx);
+                newItems.push(tx);
               }
             }
           }
         });
 
+        if (newCount > 0) {
+          setNewItemsCount(prev => prev + newCount);
+        }
+
         return {
           ...prevData,
-          items: newItems,
+          items: [
+            ...newItems,
+            ...prevData.items,
+          ],
         };
       });
   };

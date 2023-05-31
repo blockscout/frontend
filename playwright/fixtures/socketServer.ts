@@ -5,6 +5,8 @@ import { WebSocketServer } from 'ws';
 import type { AddressCoinBalanceHistoryItem } from 'types/api/address';
 import type { NewBlockSocketResponse } from 'types/api/block';
 import type { SmartContractVerificationResponse } from 'types/api/contract';
+import type { TokenTransfer } from 'types/api/tokenTransfer';
+import type { Transaction } from 'types/api/transaction';
 
 type ReturnType = () => Promise<WebSocket>;
 
@@ -58,11 +60,14 @@ export const joinChannel = async(socket: WebSocket, channelName: string) => {
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'coin_balance', payload: { coin_balance: AddressCoinBalanceHistoryItem }): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'token_balance', payload: { block_number: number }): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'transaction', payload: { transaction: number }): void;
+export function sendMessage(socket: WebSocket, channel: Channel, msg: 'transaction', payload: { transactions: Array<Transaction> }): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'pending_transaction', payload: { pending_transaction: number }): void;
+export function sendMessage(socket: WebSocket, channel: Channel, msg: 'pending_transaction', payload: { pending_transactions: Array<Transaction> }): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'new_block', payload: NewBlockSocketResponse): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'verification_result', payload: SmartContractVerificationResponse): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'total_supply', payload: { total_supply: number}): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'changed_bytecode', payload: Record<string, never>): void;
+export function sendMessage(socket: WebSocket, channel: Channel, msg: 'token_transfer', payload: { token_transfers: Array<TokenTransfer> }): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: string, payload: unknown): void {
   socket.send(JSON.stringify([
     ...channel,

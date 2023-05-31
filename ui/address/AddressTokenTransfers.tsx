@@ -63,7 +63,13 @@ const matchFilters = (filters: Filters, tokenTransfer: TokenTransfer, address?: 
   return true;
 };
 
-const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}) => {
+type Props = {
+  scrollRef?: React.RefObject<HTMLDivElement>;
+  // for tests only
+  overloadCount?: number;
+}
+
+const AddressTokenTransfers = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Props) => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const isMobile = useIsMobile();
@@ -118,11 +124,12 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
     setSocketAlert('');
 
     const newItems: Array<TokenTransfer> = [];
+    let newCount = 0;
 
     payload.token_transfers.forEach(transfer => {
-      if (data?.items && data.items.length + newItems.length >= OVERLOAD_COUNT) {
+      if (data?.items && data.items.length + newItems.length >= overloadCount) {
         if (matchFilters(filters, transfer, currentAddress)) {
-          setNewItemsCount(prev => prev + 1);
+          newCount++;
         }
       } else {
         if (matchFilters(filters, transfer, currentAddress)) {
@@ -130,6 +137,10 @@ const AddressTokenTransfers = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLD
         }
       }
     });
+
+    if (newCount > 0) {
+      setNewItemsCount(prev => prev + newCount);
+    }
 
     if (newItems.length > 0) {
       queryClient.setQueryData(
