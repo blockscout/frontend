@@ -5,6 +5,7 @@ import React from 'react';
 import type { SocketMessage } from 'lib/socket/types';
 import type { AddressFromToFilter, AddressTransactionsResponse } from 'types/api/address';
 import { AddressFromToFilterValues } from 'types/api/address';
+import type { Transaction } from 'types/api/transaction';
 
 import { getResourceKey } from 'lib/api/useApiQuery';
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
@@ -26,7 +27,27 @@ const OVERLOAD_COUNT = 75;
 
 const getFilterValue = (getFilterValueFromQuery<AddressFromToFilter>).bind(null, AddressFromToFilterValues);
 
-const AddressTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}) => {
+const matchFilter = (filterValue: AddressFromToFilter, transaction: Transaction, address?: string) => {
+  if (!filterValue) {
+    return true;
+  }
+
+  if (filterValue === 'from') {
+    return transaction.from.hash === address;
+  }
+
+  if (filterValue === 'to') {
+    return transaction.to?.hash === address;
+  }
+};
+
+type Props = {
+  scrollRef?: React.RefObject<HTMLDivElement>;
+  // for tests only
+  overloadCount?: number;
+}
+
+const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Props) => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -62,16 +83,6 @@ const AddressTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}
   const handleNewSocketMessage: SocketMessage.AddressTxs['handler'] = (payload) => {
     setSocketAlert('');
 
-    if (addressTxsQuery.data?.items && addressTxsQuery.data.items.length >= OVERLOAD_COUNT) {
-      if (
-        !filterValue ||
-        (filterValue === 'from' && payload.transaction.from.hash === currentAddress) ||
-        (filterValue === 'to' && payload.transaction.to?.hash === currentAddress)
-      ) {
-        setNewItemsCount(prev => prev + 1);
-      }
-    }
-
     queryClient.setQueryData(
       getResourceKey('address_txs', { pathParams: { hash: currentAddress }, queryParams: { filter: filterValue } }),
       (prevData: AddressTransactionsResponse | undefined) => {
@@ -79,30 +90,33 @@ const AddressTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}
           return;
         }
 
-        const currIndex = prevData.items.findIndex((tx) => tx.hash === payload.transaction.hash);
+        const newItems: Array<Transaction> = [];
+        let newCount = 0;
 
-        if (currIndex > -1) {
-          prevData.items[currIndex] = payload.transaction;
-          return prevData;
-        }
+        payload.transactions.forEach(tx => {
+          const currIndex = prevData.items.findIndex((item) => item.hash === tx.hash);
 
-        if (prevData.items.length >= OVERLOAD_COUNT) {
-          return prevData;
-        }
-
-        if (filterValue) {
-          if (
-            (filterValue === 'from' && payload.transaction.from.hash !== currentAddress) ||
-              (filterValue === 'to' && payload.transaction.to?.hash !== currentAddress)
-          ) {
-            return prevData;
+          if (currIndex > -1) {
+            prevData.items[currIndex] = tx;
+          } else {
+            if (matchFilter(filterValue, tx, currentAddress)) {
+              if (newItems.length + prevData.items.length >= overloadCount) {
+                newCount++;
+              } else {
+                newItems.push(tx);
+              }
+            }
           }
+        });
+
+        if (newCount > 0) {
+          setNewItemsCount(prev => prev + newCount);
         }
 
         return {
           ...prevData,
           items: [
-            payload.transaction,
+            ...newItems,
             ...prevData.items,
           ],
         };
