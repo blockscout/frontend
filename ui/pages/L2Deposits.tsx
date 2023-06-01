@@ -71,11 +71,11 @@ const L2Deposits = () => {
 
   const actionBar = (
     <>
-      <Box mb={ 6 } display={{ base: 'flex', lg: 'none' }}>
+      <Box mb={ 6 } display={{ base: 'block', lg: 'none' }}>
         { text }
       </Box>
       <ActionBar mt={ -6 }>
-        <Box display={{ base: 'none', lg: 'flex' }}>
+        <Box display={{ base: 'none', lg: 'block' }}>
           { text }
         </Box>
         { isPaginationVisible && <Pagination ml="auto" { ...pagination }/> }

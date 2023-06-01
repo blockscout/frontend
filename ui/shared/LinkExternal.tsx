@@ -15,7 +15,7 @@ const LinkExternal = ({ href, children, className, isLoading }: Props) => {
     return (
       <Box className={ className } fontSize="sm" lineHeight={ 5 } display="inline-block" alignItems="center">
         { children }
-        <Skeleton boxSize={ 4 } verticalAlign="middle"/>
+        <Skeleton boxSize={ 4 } verticalAlign="middle" display="inline-block"/>
       </Box>
     );
   }

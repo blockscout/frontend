@@ -24,5 +24,4 @@ export type L2WithdrawalsResponse = {
     'items_count': number;
     'nonce': string;
   };
-  total: number;
 }

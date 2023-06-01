@@ -10,9 +10,10 @@ import WithdrawalsTableItem from './WithdrawalsTableItem';
  type Props = {
    items: Array<L2WithdrawalsItem>;
    top: number;
+   isLoading?: boolean;
  }
 
-const WithdrawalsTable = ({ items, top }: Props) => {
+const WithdrawalsTable = ({ items, top, isLoading }: Props) => {
   return (
     <Table variant="simple" size="sm" style={{ tableLayout: 'auto' }} minW="950px">
       <Thead top={ top }>
@@ -27,8 +28,8 @@ const WithdrawalsTable = ({ items, top }: Props) => {
         </Tr>
       </Thead>
       <Tbody>
-        { items.map((item) => (
-          <WithdrawalsTableItem key={ item.l2_tx_hash } item={ item }/>
+        { items.map((item, index) => (
+          <WithdrawalsTableItem key={ item.l2_tx_hash + (isLoading ? index : '') } item={ item } isLoading={ isLoading }/>
         )) }
       </Tbody>
     </Table>
