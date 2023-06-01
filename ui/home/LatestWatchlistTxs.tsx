@@ -5,26 +5,26 @@ import React from 'react';
 import useApiQuery from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
+import { TX } from 'stubs/tx';
 import LinkInternal from 'ui/shared/LinkInternal';
 
 import LatestTxsItem from './LatestTxsItem';
-import LatestTxsItemSkeleton from './LatestTxsItemSkeleton';
 
 const LatestWatchlistTxs = () => {
   useRedirectForInvalidAuthToken();
   const isMobile = useIsMobile();
   const txsCount = isMobile ? 2 : 6;
-  const { data, isLoading, isError } = useApiQuery('homepage_txs_watchlist');
-
-  if (isLoading) {
-    return <>{ Array.from(Array(txsCount)).map((item, index) => <LatestTxsItemSkeleton key={ index }/>) }</>;
-  }
+  const { data, isPlaceholderData, isError } = useApiQuery('homepage_txs_watchlist', {
+    queryOptions: {
+      placeholderData: Array(txsCount).fill(TX),
+    },
+  });
 
   if (isError) {
     return <Text mt={ 4 }>No data. Please reload page.</Text>;
   }
 
-  if (data.length === 0) {
+  if (!data?.length) {
     return <Text mt={ 4 }>There are no transactions.</Text>;
   }
 
@@ -33,7 +33,13 @@ const LatestWatchlistTxs = () => {
     return (
       <>
         <Box mb={{ base: 3, lg: 4 }}>
-          { data.slice(0, txsCount).map((tx => <LatestTxsItem key={ tx.hash } tx={ tx }/>)) }
+          { data.slice(0, txsCount).map(((tx, index) => (
+            <LatestTxsItem
+              key={ tx.hash + (isPlaceholderData ? index : '') }
+              tx={ tx }
+              isLoading={ isPlaceholderData }
+            />
+          ))) }
         </Box>
         <Flex justifyContent="center">
           <LinkInternal fontSize="sm" href={ txsUrl }>View all watch list transactions</LinkInternal>
