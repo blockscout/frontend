@@ -1,4 +1,5 @@
 import type { L2DepositsItem } from 'types/api/l2Deposits';
+import type { L2TxnBatchesItem } from 'types/api/l2TxnBatches';
 import type { L2WithdrawalsItem } from 'types/api/l2Withdrawals';
 
 import { ADDRESS_HASH, ADDRESS_PARAMS } from './addressParams';
@@ -22,4 +23,14 @@ export const L2_WITHDRAWAL_ITEM: L2WithdrawalsItem = {
   msg_nonce: 2393,
   msg_nonce_version: 1,
   status: 'Ready to prove',
+};
+
+export const L2_TXN_BATCHES_ITEM: L2TxnBatchesItem = {
+  epoch_number: 9103513,
+  l1_timestamp: '2023-06-01T14:46:48.000000Z',
+  l1_tx_hashes: [
+    TX_HASH,
+  ],
+  l2_block_number: 5218590,
+  tx_count: 9,
 };
