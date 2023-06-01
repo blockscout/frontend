@@ -48,7 +48,12 @@ const TokenTransferTable = ({ data, top, showSocketInfo, socketInfoAlert, socket
           />
         ) }
         { data.map((item, index) => (
-          <TokenTransferTableItem key={ index } { ...item } tokenId={ tokenId } isLoading={ isLoading }/>
+          <TokenTransferTableItem
+            key={ item.tx_hash + item.block_hash + item.log_index + '_' + index }
+            { ...item }
+            tokenId={ tokenId }
+            isLoading={ isLoading }
+          />
         )) }
       </Tbody>
     </Table>

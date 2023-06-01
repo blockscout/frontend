@@ -49,8 +49,14 @@ const TokenDetails = ({ tokenQuery }: Props) => {
 
     const tab: TokenTabs = item === 'token_holders_count' ? 'holders' : 'token_transfers';
 
-    return <Link onClick={ changeUrlAndScroll(tab) }>{ Number(itemValue).toLocaleString() }</Link>;
-  }, [ tokenCountersQuery.data, changeUrlAndScroll ]);
+    return (
+      <Skeleton isLoaded={ !tokenCountersQuery.isPlaceholderData }>
+        <Link onClick={ changeUrlAndScroll(tab) }>
+          { Number(itemValue).toLocaleString() }
+        </Link>
+      </Skeleton>
+    );
+  }, [ tokenCountersQuery.data, tokenCountersQuery.isPlaceholderData, changeUrlAndScroll ]);
 
   if (tokenQuery.isError) {
     throw Error('Token fetch error', { cause: tokenQuery.error as unknown as Error });
