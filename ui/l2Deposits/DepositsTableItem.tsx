@@ -1,4 +1,4 @@
-import { Box, Td, Tr, Text, Icon } from '@chakra-ui/react';
+import { Td, Tr, Skeleton } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import { route } from 'nextjs-routes';
 import React from 'react';
@@ -10,13 +10,14 @@ import blockIcon from 'icons/block.svg';
 import txIcon from 'icons/transactions.svg';
 import dayjs from 'lib/date/dayjs';
 import AddressIcon from 'ui/shared/address/AddressIcon';
+import Icon from 'ui/shared/chakra/Icon';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
 
- type Props = { item: L2DepositsItem };
+ type Props = { item: L2DepositsItem; isLoading?: boolean };
 
-const WithdrawalsTableItem = ({ item }: Props) => {
+const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
   const timeAgo = dayjs(item.l1_block_timestamp).fromNow();
 
   return (
@@ -26,9 +27,12 @@ const WithdrawalsTableItem = ({ item }: Props) => {
           href={ appConfig.L2.L1BaseUrl + route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.l1_block_number.toString() } }) }
           fontWeight={ 600 }
           display="inline-flex"
+          isLoading={ isLoading }
         >
-          <Icon as={ blockIcon } boxSize={ 6 } mr={ 1 }/>
-          { item.l1_block_number }
+          <Icon as={ blockIcon } boxSize={ 6 } isLoading={ isLoading }/>
+          <Skeleton isLoaded={ !isLoading } ml={ 1 }>
+            { item.l1_block_number }
+          </Skeleton>
         </LinkExternal>
       </Td>
       <Td verticalAlign="middle">
@@ -39,13 +43,16 @@ const WithdrawalsTableItem = ({ item }: Props) => {
           alignItems="center"
           overflow="hidden"
           w="100%"
+          isLoading={ isLoading }
         >
-          <Icon as={ txIcon } boxSize={ 6 } mr={ 1 }/>
-          <Box w="calc(100% - 36px)" overflow="hidden" whiteSpace="nowrap"><HashStringShorten hash={ item.l2_tx_hash }/></Box>
+          <Icon as={ txIcon } boxSize={ 6 } isLoading={ isLoading }/>
+          <Skeleton isLoaded={ !isLoading } w="calc(100% - 36px)" ml={ 1 } overflow="hidden" whiteSpace="nowrap">
+            <HashStringShorten hash={ item.l2_tx_hash }/>
+          </Skeleton>
         </LinkInternal>
       </Td>
       <Td verticalAlign="middle" pr={ 12 }>
-        <Text variant="secondary">{ timeAgo }</Text>
+        <Skeleton isLoaded={ !isLoading } color="text_secondary" display="inline-block"><span>{ timeAgo }</span></Skeleton>
       </Td>
       <Td verticalAlign="middle">
         <LinkExternal
@@ -53,9 +60,12 @@ const WithdrawalsTableItem = ({ item }: Props) => {
           maxW="100%"
           display="inline-flex"
           overflow="hidden"
+          isLoading={ isLoading }
         >
-          <Icon as={ txIcon } boxSize={ 6 } mr={ 1 }/>
-          <Box w="calc(100% - 44px)" overflow="hidden" whiteSpace="nowrap"><HashStringShorten hash={ item.l1_tx_hash }/></Box>
+          <Icon as={ txIcon } boxSize={ 6 } isLoading={ isLoading }/>
+          <Skeleton isLoaded={ !isLoading } w="calc(100% - 44px)" overflow="hidden" whiteSpace="nowrap" ml={ 1 }>
+            <HashStringShorten hash={ item.l1_tx_hash }/>
+          </Skeleton>
         </LinkExternal>
       </Td>
       <Td verticalAlign="middle">
@@ -64,13 +74,18 @@ const WithdrawalsTableItem = ({ item }: Props) => {
           maxW="100%"
           display="inline-flex"
           overflow="hidden"
+          isLoading={ isLoading }
         >
-          <AddressIcon address={{ hash: item.l1_tx_origin, is_contract: false, implementation_name: '' }} mr={ 2 }/>
-          <Box w="calc(100% - 44px)" overflow="hidden" whiteSpace="nowrap"><HashStringShorten hash={ item.l1_tx_origin }/></Box>
+          <AddressIcon address={{ hash: item.l1_tx_origin, is_contract: false, implementation_name: '' }} isLoading={ isLoading }/>
+          <Skeleton isLoaded={ !isLoading } w="calc(100% - 44px)" overflow="hidden" whiteSpace="nowrap" ml={ 2 }>
+            <HashStringShorten hash={ item.l1_tx_origin }/>
+          </Skeleton>
         </LinkExternal>
       </Td>
       <Td verticalAlign="middle" isNumeric>
-        <Text variant="secondary">{ BigNumber(item.l2_tx_gas_limit).toFormat() }</Text>
+        <Skeleton isLoaded={ !isLoading } color="text_secondary" display="inline-block">
+          <span>{ BigNumber(item.l2_tx_gas_limit).toFormat() }</span>
+        </Skeleton>
       </Td>
     </Tr>
   );
