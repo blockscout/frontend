@@ -90,8 +90,8 @@ const WithdrawalsListItem = ({ item, isLoading }: Props) => {
               overflow="hidden"
               isLoading={ isLoading }
             >
-              <Icon as={ txIcon } boxSize={ 6 } mr={ 1 } isLoading={ isLoading }/>
-              <Skeleton isLoaded={ !isLoading } w="calc(100% - 44px)" overflow="hidden" whiteSpace="nowrap">
+              <Icon as={ txIcon } boxSize={ 6 } isLoading={ isLoading }/>
+              <Skeleton isLoaded={ !isLoading } w="calc(100% - 44px)" overflow="hidden" whiteSpace="nowrap" ml={ 1 }>
                 <HashStringShortenDynamic hash={ item.l1_tx_hash }/>
               </Skeleton>
             </LinkExternal>

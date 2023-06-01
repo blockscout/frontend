@@ -83,7 +83,7 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
           ) }
         </Flex>
         <Flex alignItems="center" mb={ 3 }>
-          <Address>
+          <Address mr={ 2 }>
             <AddressIcon address={ tx.from } isLoading={ isLoading }/>
             <AddressLink
               type="address"
@@ -99,12 +99,11 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
           <Icon
             as={ rightArrowIcon }
             boxSize={ 6 }
-            mx={ 2 }
             color="gray.500"
             isLoading={ isLoading }
           />
           { dataTo && (
-            <Address>
+            <Address ml={ 2 }>
               <AddressIcon address={ dataTo } isLoading={ isLoading }/>
               <AddressLink
                 type="address"

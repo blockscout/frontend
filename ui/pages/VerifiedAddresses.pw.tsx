@@ -75,7 +75,7 @@ test('address verification flow', async({ mount, page }) => {
 
   // fill second step
   const option = page.getByText(/sign manually/i);
-  option.click();
+  await option.click();
   const signatureInput = page.getByLabel(/signature hash/i);
   await signatureInput.fill(mocks.SIGNATURE);
   await page.getByRole('button', { name: /verify/i }).click();
