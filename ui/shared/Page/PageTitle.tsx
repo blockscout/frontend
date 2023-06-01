@@ -59,12 +59,12 @@ const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoa
       columnGap={ 3 }
       alignItems="center"
     >
-      <Box>
+      <Box h={{ base: 'auto', lg: isLoading ? 10 : 'auto' }}>
         { backLink && <BackLink { ...backLink } isLoading={ isLoading }/> }
         { beforeTitle }
         <Skeleton
           isLoaded={ !isLoading }
-          display={ isLoading ? 'inline-block' : 'inline' }
+          display={{ base: 'inline', lg: isLoading ? 'inline-block' : 'inline' }}
           verticalAlign={ isLoading ? 'super' : undefined }
         >
           <Heading

@@ -251,7 +251,15 @@ const TokenPageContent = () => {
         isLoading={ tokenQuery.isPlaceholderData }
         backLink={ backLink }
         beforeTitle={ (
-          <TokenLogo data={ tokenQuery.data } boxSize={ 6 } isLoading={ tokenQuery.isPlaceholderData } display="inline-block" mr={ 2 }/>
+          <TokenLogo
+            data={ tokenQuery.data }
+            boxSize={ 6 }
+            isLoading={ tokenQuery.isPlaceholderData }
+            display="inline-block"
+            mr={ 2 }
+            my={{ base: 'auto', lg: tokenQuery.isPlaceholderData ? 2 : 'auto' }}
+            verticalAlign={{ base: undefined, lg: tokenQuery.isPlaceholderData ? 'text-bottom' : undefined }}
+          />
         ) }
         afterTitle={
           verifiedInfoQuery.data?.tokenAddress ?
