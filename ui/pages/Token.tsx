@@ -28,8 +28,8 @@ import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
 import Pagination from 'ui/shared/Pagination';
-import SkeletonTabs from 'ui/shared/skeletons/SkeletonTabs';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
+import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import TokenLogo from 'ui/shared/TokenLogo';
 import TokenContractInfo from 'ui/token/TokenContractInfo';
 import TokenDetails from 'ui/token/TokenDetails';
@@ -275,7 +275,7 @@ const TokenPageContent = () => {
       <Box ref={ scrollRef }></Box>
 
       { tokenQuery.isPlaceholderData || contractQuery.isPlaceholderData ?
-        <SkeletonTabs tabs={ tabs }/> :
+        <TabsSkeleton tabs={ tabs }/> :
         (
           <RoutedTabs
             tabs={ tabs }

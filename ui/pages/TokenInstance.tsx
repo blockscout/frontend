@@ -19,8 +19,8 @@ import LinkExternal from 'ui/shared/LinkExternal';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/Pagination';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
-import SkeletonTabs from 'ui/shared/skeletons/SkeletonTabs';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
+import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import TokenHolders from 'ui/token/TokenHolders/TokenHolders';
 import TokenTransfer from 'ui/token/TokenTransfer/TokenTransfer';
 import TokenInstanceDetails from 'ui/tokenInstance/TokenInstanceDetails';
@@ -175,7 +175,7 @@ const TokenInstanceContent = () => {
       { /* should stay before tabs to scroll up with pagination */ }
       <Box ref={ scrollRef }></Box>
 
-      { tokenInstanceQuery.isPlaceholderData ? <SkeletonTabs tabs={ tabs }/> : (
+      { tokenInstanceQuery.isPlaceholderData ? <TabsSkeleton tabs={ tabs }/> : (
         <RoutedTabs
           tabs={ tabs }
           tabListProps={ isMobile ? { mt: 8 } : { mt: 3, py: 5, marginBottom: 0 } }
