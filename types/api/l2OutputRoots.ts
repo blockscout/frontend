@@ -9,7 +9,6 @@ export type L2OutputRootsItem = {
 
 export type L2OutputRootsResponse = {
   items: Array<L2OutputRootsItem>;
-  total: number;
   next_page_params: {
     index: number;
     items_count: number;

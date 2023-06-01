@@ -1,9 +1,12 @@
 import type { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import React from 'react';
 
 import getNetworkTitle from 'lib/networks/getNetworkTitle';
-import L2OutputRoots from 'ui/pages/L2OutputRoots';
+import Page from 'ui/shared/Page/Page';
+
+const L2OutputRoots = dynamic(() => import('ui/pages/L2OutputRoots'), { ssr: false });
 
 const OutputRootsPage: NextPage = () => {
   const title = getNetworkTitle();
@@ -12,7 +15,9 @@ const OutputRootsPage: NextPage = () => {
       <Head>
         <title>{ title }</title>
       </Head>
-      <L2OutputRoots/>
+      <Page>
+        <L2OutputRoots/>
+      </Page>
     </>
   );
 };

@@ -29,7 +29,7 @@ const DepositsListItem = ({ item, isLoading }: Props) => {
         <LinkExternal
           href={ appConfig.L2.L1BaseUrl + route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.l1_block_number.toString() } }) }
           fontWeight={ 600 }
-          display="inline-flex"
+          display="flex"
           isLoading={ isLoading }
         >
           <Icon as={ blockIcon } boxSize={ 6 } isLoading={ isLoading }/>
@@ -65,7 +65,7 @@ const DepositsListItem = ({ item, isLoading }: Props) => {
         <LinkExternal
           href={ appConfig.L2.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: item.l1_tx_hash } }) }
           maxW="100%"
-          display="inline-flex"
+          display="flex"
           overflow="hidden"
           isLoading={ isLoading }
         >
@@ -81,7 +81,7 @@ const DepositsListItem = ({ item, isLoading }: Props) => {
         <LinkExternal
           href={ appConfig.L2.L1BaseUrl + route({ pathname: '/address/[hash]', query: { hash: item.l1_tx_origin } }) }
           maxW="100%"
-          display="inline-flex"
+          display="flex"
           overflow="hidden"
           isLoading={ isLoading }
         >

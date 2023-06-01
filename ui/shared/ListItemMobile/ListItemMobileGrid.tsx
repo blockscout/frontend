@@ -20,7 +20,6 @@ const Container = chakra(({ isAnimated, children, className }: ContainerProps) =
       rowGap={ 2 }
       columnGap={ 2 }
       gridTemplateColumns="86px auto"
-      gridTemplateRows="30px"
       alignItems="start"
       paddingY={ 4 }
       borderColor="divider"

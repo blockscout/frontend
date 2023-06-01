@@ -1,4 +1,5 @@
 import type { L2DepositsItem } from 'types/api/l2Deposits';
+import type { L2OutputRootsItem } from 'types/api/l2OutputRoots';
 import type { L2TxnBatchesItem } from 'types/api/l2TxnBatches';
 import type { L2WithdrawalsItem } from 'types/api/l2Withdrawals';
 
@@ -33,4 +34,13 @@ export const L2_TXN_BATCHES_ITEM: L2TxnBatchesItem = {
   ],
   l2_block_number: 5218590,
   tx_count: 9,
+};
+
+export const L2_OUTPUT_ROOTS_ITEM: L2OutputRootsItem = {
+  l1_block_number: 9103684,
+  l1_timestamp: '2023-06-01T15:26:12.000000Z',
+  l1_tx_hash: TX_HASH,
+  l2_block_number: 10102468,
+  l2_output_index: 50655,
+  output_root: TX_HASH,
 };
