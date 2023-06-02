@@ -106,6 +106,8 @@ const TabsWithScroll = ({
     >
       <TabList
         marginBottom={{ base: 6, lg: 8 }}
+        mx={{ base: '-16px', lg: 'unset' }}
+        px={{ base: '16px', lg: 'unset' }}
         flexWrap="nowrap"
         whiteSpace="nowrap"
         ref={ listRef }
