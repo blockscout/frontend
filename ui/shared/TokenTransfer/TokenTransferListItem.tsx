@@ -50,7 +50,7 @@ const TokenTransferListItem = ({
 
   const timeAgo = useTimeAgoIncrement(timestamp, enableTimeIncrement);
 
-  const addressWidth = `calc((100% - ${ baseAddress ? '50px' : '0px' }) / 2)`;
+  const addressWidth = `calc((100% - ${ baseAddress ? '50px - 24px' : '24px - 24px' }) / 2)`;
   return (
     <ListItemMobile rowGap={ 3 } isAnimated>
       <Flex w="100%" justifyContent="space-between">
@@ -91,16 +91,24 @@ const TokenTransferListItem = ({
         </Flex>
       ) }
       <Flex w="100%" columnGap={ 3 }>
-        <Address width={ addressWidth }>
+        <Address width={ addressWidth } flexShrink={ 0 }>
           <AddressIcon address={ from } isLoading={ isLoading }/>
           <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ from.hash } isDisabled={ baseAddress === from.hash } isLoading={ isLoading }/>
           { baseAddress !== from.hash && <CopyToClipboard text={ from.hash } isLoading={ isLoading }/> }
         </Address>
-        { baseAddress ?
-          <InOutTag isIn={ baseAddress === to.hash } isOut={ baseAddress === from.hash } w="50px" textAlign="center" isLoading={ isLoading }/> :
-          <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500" isLoading={ isLoading }/>
+        { baseAddress ? (
+          <InOutTag
+            isIn={ baseAddress === to.hash }
+            isOut={ baseAddress === from.hash }
+            w="50px"
+            textAlign="center"
+            isLoading={ isLoading }
+            flexShrink={ 0 }
+          />
+        ) :
+          <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500" isLoading={ isLoading } flexShrink={ 0 }/>
         }
-        <Address width={ addressWidth }>
+        <Address width={ addressWidth } flexShrink={ 0 }>
           <AddressIcon address={ to } isLoading={ isLoading }/>
           <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ to.hash } isDisabled={ baseAddress === to.hash } isLoading={ isLoading }/>
           { baseAddress !== to.hash && <CopyToClipboard text={ to.hash } isLoading={ isLoading }/> }
