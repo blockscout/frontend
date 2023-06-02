@@ -9,12 +9,27 @@ import TokenTransferList from './TokenTransferList';
 
 test.use({ viewport: devices['iPhone 13 Pro'].viewport });
 
+const data = [
+  {
+    ...tokenTransferMock.erc20,
+    to: {
+      ...tokenTransferMock.erc20.to,
+      hash: tokenTransferMock.erc721.to.hash,
+    },
+  },
+  tokenTransferMock.erc721,
+  tokenTransferMock.erc1155A,
+  tokenTransferMock.erc1155B,
+  tokenTransferMock.erc1155C,
+  tokenTransferMock.erc1155D,
+];
+
 test('without tx info', async({ mount }) => {
   const component = await mount(
     <TestApp>
       <Box h={{ base: '134px', lg: 6 }}/>
       <TokenTransferList
-        data={ tokenTransferMock.mixTokens.items }
+        data={ data }
         showTxInfo={ false }
       />
     </TestApp>,
@@ -28,7 +43,7 @@ test('with tx info', async({ mount }) => {
     <TestApp>
       <Box h={{ base: '134px', lg: 6 }}/>
       <TokenTransferList
-        data={ tokenTransferMock.mixTokens.items }
+        data={ data }
         showTxInfo={ true }
       />
     </TestApp>,
