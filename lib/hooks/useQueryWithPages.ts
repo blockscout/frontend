@@ -96,8 +96,7 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
       nextPageQuery = omit(router.query, [ 'next_page_params', 'page' ]);
       canGoBackwards.current = true;
     } else {
-      const nextPageParams = pageParams[page - 1];
-      nextPageParams && Object.entries(nextPageParams).forEach(([ key, val ]) => nextPageQuery[key] = String(val));
+      nextPageQuery.next_page_params = encodeURIComponent(JSON.stringify(pageParams[page - 1]));
       nextPageQuery.page = String(page - 1);
     }
 

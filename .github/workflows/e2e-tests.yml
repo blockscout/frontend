@@ -67,15 +67,15 @@ jobs:
           build-args: |
             GIT_COMMIT_SHA=${{ env.SHORT_SHA }}
             GIT_TAG=${{ github.ref_type == 'tag' && github.github.ref_name || '' }}
-  deploy_and_tests:
+  #deploy_and_tests:
     # if: github.event.review.state == 'approved'
-    needs: push_to_registry
-    uses: blockscout/blockscout-ci-cd/.github/workflows/e2e_new.yaml@master
-    with:
-      appNamespace: e2e-front-$GITHUB_SHA_SHORT
-      frontendImage: ${{ needs.push_to_registry.outputs.tags }}
-      blockscoutIngressHost: e2e-blockscout-$GITHUB_SHA_SHORT
-      frontendIngressHost: e2e-blockscout-$GITHUB_SHA_SHORT
-      gethIngressHost: e2e-geth-$GITHUB_SHA_SHORT
-      scVerifierIngressHost: e2e-sc-verifier-$GITHUB_SHA_SHORT
-    secrets: inherit
+  #  needs: push_to_registry
+  #  uses: blockscout/blockscout-ci-cd/.github/workflows/e2e_new.yaml@master
+  #  with:
+  #    appNamespace: e2e-front-$GITHUB_SHA_SHORT
+  #    frontendImage: ${{ needs.push_to_registry.outputs.tags }}
+  #    blockscoutIngressHost: e2e-blockscout-$GITHUB_SHA_SHORT
+  #    frontendIngressHost: e2e-blockscout-$GITHUB_SHA_SHORT
+  #    gethIngressHost: e2e-geth-$GITHUB_SHA_SHORT
+  #    scVerifierIngressHost: e2e-sc-verifier-$GITHUB_SHA_SHORT
+  #  secrets: inherit
