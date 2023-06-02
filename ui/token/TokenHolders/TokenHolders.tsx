@@ -60,9 +60,7 @@ const TokenHoldersContent = ({ holdersQuery, token }: Props) => {
   return (
     <DataListDisplay
       isError={ holdersQuery.isError }
-      isLoading={ false }
       items={ holdersQuery.data?.items }
-      skeletonProps={{ skeletonDesktopColumns: [ '100%', '300px', '175px' ] }}
       emptyText="There are no holders for this token."
       content={ content }
       actionBar={ actionBar }

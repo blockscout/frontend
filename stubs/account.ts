@@ -1,4 +1,4 @@
-import type { PublicTag, AddressTag, TransactionTag, ApiKey, CustomAbi } from 'types/api/account';
+import type { PublicTag, AddressTag, TransactionTag, ApiKey, CustomAbi, VerifiedAddress, TokenInfoApplication } from 'types/api/account';
 import type { TWatchlistItem } from 'types/client/account';
 
 import { ADDRESS_PARAMS, ADDRESS_HASH } from './addressParams';
@@ -78,4 +78,29 @@ export const CUSTOM_ABI: CustomAbi = {
   contract_address_hash: ADDRESS_HASH,
   id: '1',
   name: 'placeholder',
+};
+
+export const VERIFIED_ADDRESS: VerifiedAddress = {
+  userId: 'john.doe@gmail.com',
+  chainId: '5',
+  contractAddress: ADDRESS_HASH,
+  verifiedDate: '2022-11-11',
+  metadata: {
+    tokenName: 'Placeholder Token',
+    tokenSymbol: 'PLC',
+  },
+};
+
+export const TOKEN_INFO_APPLICATION: TokenInfoApplication = {
+  id: '1',
+  tokenAddress: ADDRESS_HASH,
+  status: 'IN_PROCESS',
+  updatedAt: '2022-11-11 13:49:48.031453Z',
+  requesterName: 'John Doe',
+  requesterEmail: 'john.doe@gmail.com',
+  projectWebsite: 'http://example.com',
+  projectEmail: 'info@example.com',
+  iconUrl: 'https://example.com/100/100',
+  projectDescription: 'Hello!',
+  projectSector: 'DeFi',
 };

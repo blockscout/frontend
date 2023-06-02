@@ -6,13 +6,12 @@ import React from 'react';
 import SearchResultListItem from 'ui/searchResults/SearchResultListItem';
 import SearchResultTableItem from 'ui/searchResults/SearchResultTableItem';
 import ActionBar from 'ui/shared/ActionBar';
+import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/Pagination';
-import SkeletonList from 'ui/shared/skeletons/SkeletonList';
-import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
-import { default as Thead } from 'ui/shared/TheadSticky';
+import Thead from 'ui/shared/TheadSticky';
 import Header from 'ui/snippets/header/Header';
 import SearchBarInput from 'ui/snippets/searchBar/SearchBarInput';
 import useSearchQuery from 'ui/snippets/searchBar/useSearchQuery';
@@ -20,7 +19,8 @@ import useSearchQuery from 'ui/snippets/searchBar/useSearchQuery';
 const SearchResultsPageContent = () => {
   const router = useRouter();
   const { query, redirectCheckQuery, searchTerm, debouncedSearchTerm, handleSearchTermChange } = useSearchQuery(true);
-  const { data, isError, isLoading, pagination, isPaginationVisible } = query;
+  const { data, isError, isPlaceholderData, pagination, isPaginationVisible } = query;
+  const [ showContent, setShowContent ] = React.useState(false);
 
   React.useEffect(() => {
     if (redirectCheckQuery.data?.redirect && redirectCheckQuery.data.parameter) {
@@ -39,7 +39,9 @@ const SearchResultsPageContent = () => {
         }
       }
     }
-  }, [ redirectCheckQuery.data, router ]);
+
+    !redirectCheckQuery.isLoading && setShowContent(true);
+  }, [ redirectCheckQuery, router ]);
 
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -50,23 +52,21 @@ const SearchResultsPageContent = () => {
       return <DataFetchAlert/>;
     }
 
-    if (isLoading || redirectCheckQuery.isLoading) {
-      return (
-        <Box>
-          <SkeletonList display={{ base: 'block', lg: 'none' }}/>
-          <SkeletonTable display={{ base: 'none', lg: 'block' }} columns={ [ '50%', '50%', '150px' ] }/>
-        </Box>
-      );
-    }
-
-    if (data.items.length === 0) {
+    if (!data?.items.length) {
       return null;
     }
 
     return (
       <>
         <Show below="lg" ssr={ false }>
-          { data.items.map((item, index) => <SearchResultListItem key={ index } data={ item } searchTerm={ debouncedSearchTerm }/>) }
+          { data.items.map((item, index) => (
+            <SearchResultListItem
+              key={ (isPlaceholderData ? 'placeholder_' : 'actual_') + index }
+              data={ item }
+              searchTerm={ debouncedSearchTerm }
+              isLoading={ isPlaceholderData }
+            />
+          )) }
         </Show>
         <Hide below="lg" ssr={ false }>
           <Table variant="simple" size="md" fontWeight={ 500 }>
@@ -78,7 +78,14 @@ const SearchResultsPageContent = () => {
               </Tr>
             </Thead>
             <Tbody>
-              { data.items.map((item, index) => <SearchResultTableItem key={ index } data={ item } searchTerm={ debouncedSearchTerm }/>) }
+              { data.items.map((item, index) => (
+                <SearchResultTableItem
+                  key={ (isPlaceholderData ? 'placeholder_' : 'actual_') + index }
+                  data={ item }
+                  searchTerm={ debouncedSearchTerm }
+                  isLoading={ isPlaceholderData }
+                />
+              )) }
             </Tbody>
           </Table>
         </Hide>
@@ -91,16 +98,16 @@ const SearchResultsPageContent = () => {
       return null;
     }
 
-    const text = isLoading || redirectCheckQuery.isLoading ? (
+    const text = isPlaceholderData && pagination.page === 1 ? (
       <Skeleton h={ 6 } w="280px" borderRadius="full" mb={ isPaginationVisible ? 0 : 6 }/>
     ) : (
       (
         <Box mb={ isPaginationVisible ? 0 : 6 } lineHeight="32px">
           <span>Found </span>
           <chakra.span fontWeight={ 700 }>
-            { pagination.page > 1 ? 50 : data.items.length }{ data.next_page_params || pagination.page > 1 ? '+' : '' }
+            { pagination.page > 1 ? 50 : data?.items.length }{ data?.next_page_params || pagination.page > 1 ? '+' : '' }
           </chakra.span>
-          <span> matching result{ data.items.length > 1 || pagination.page > 1 ? 's' : '' } for </span>
+          <span> matching result{ (data?.items && data.items.length > 1) || pagination.page > 1 ? 's' : '' } for </span>
                       “<chakra.span fontWeight={ 700 }>{ debouncedSearchTerm }</chakra.span>”
         </Box>
       )
@@ -148,14 +155,17 @@ const SearchResultsPageContent = () => {
     return <Header renderSearchBar={ renderSearchBar }/>;
   }, [ renderSearchBar ]);
 
-  return (
-    <Page renderHeader={ renderHeader }>
-      { isLoading || redirectCheckQuery.isLoading ?
-        <Skeleton h={ 10 } mb={ 6 } w="100%" maxW="222px"/> :
-        <PageTitle title="Search results"/>
-      }
+  const pageContent = !showContent ? <ContentLoader/> : (
+    <>
+      <PageTitle title="Search results"/>
       { bar }
       { content }
+    </>
+  );
+
+  return (
+    <Page renderHeader={ renderHeader }>
+      { pageContent }
     </Page>
   );
 };

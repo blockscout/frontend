@@ -10,9 +10,10 @@ import TxnBatchesTableItem from './TxnBatchesTableItem';
 type Props = {
   items: Array<L2TxnBatchesItem>;
   top: number;
+  isLoading?: boolean;
 }
 
-const TxnBatchesTable = ({ items, top }: Props) => {
+const TxnBatchesTable = ({ items, top, isLoading }: Props) => {
   return (
     <Table variant="simple" size="sm" minW="850px">
       <Thead top={ top }>
@@ -25,8 +26,12 @@ const TxnBatchesTable = ({ items, top }: Props) => {
         </Tr>
       </Thead>
       <Tbody>
-        { items.map((item) => (
-          <TxnBatchesTableItem key={ item.l2_block_number } item={ item }/>
+        { items.map((item, index) => (
+          <TxnBatchesTableItem
+            key={ item.l2_block_number + (isLoading ? String(index) : '') }
+            item={ item }
+            isLoading={ isLoading }
+          />
         )) }
       </Tbody>
     </Table>

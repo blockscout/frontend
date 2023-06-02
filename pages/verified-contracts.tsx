@@ -1,10 +1,11 @@
 import type { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import React from 'react';
 
 import getNetworkTitle from 'lib/networks/getNetworkTitle';
-import VerifiedContracts from 'ui/pages/VerifiedContracts';
 import Page from 'ui/shared/Page/Page';
+const VerifiedContracts = dynamic(() => import('ui/pages/VerifiedContracts'), { ssr: false });
 
 const VerifiedContractsPage: NextPage = () => {
   const title = getNetworkTitle();

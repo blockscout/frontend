@@ -2,8 +2,7 @@ import {
   Box,
   Flex,
   Grid,
-  Icon,
-  Text,
+  Skeleton,
 } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
@@ -15,15 +14,17 @@ import blockIcon from 'icons/block.svg';
 import txIcon from 'icons/transactions.svg';
 import dayjs from 'lib/date/dayjs';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import Icon from 'ui/shared/chakra/Icon';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
 
 type Props = {
   item: L2DepositsItem;
+  isLoading?: boolean;
 }
 
-const LatestTxsItem = ({ item }: Props) => {
+const LatestTxsItem = ({ item, isLoading }: Props) => {
   const timeAgo = dayjs(item.l1_block_timestamp).fromNow();
   const isMobile = useIsMobile();
 
@@ -35,9 +36,10 @@ const LatestTxsItem = ({ item }: Props) => {
       fontWeight={ 700 }
       display="inline-flex"
       mr={ 2 }
+      isLoading={ isLoading }
     >
-      <Icon as={ blockIcon } boxSize="30px" mr={ 1 }/>
-      { item.l1_block_number }
+      <Icon as={ blockIcon } boxSize="30px" isLoading={ isLoading } borderRadius="base"/>
+      <Skeleton isLoaded={ !isLoading } ml={ 1 }>{ item.l1_block_number }</Skeleton>
     </LinkExternal>
   );
 
@@ -48,9 +50,13 @@ const LatestTxsItem = ({ item }: Props) => {
       display="inline-flex"
       alignItems="center"
       overflow="hidden"
+      isLoading={ isLoading }
+      my="3px"
     >
-      <Icon as={ txIcon } boxSize={ 6 } mr={ 1 }/>
-      <Box overflow="hidden" whiteSpace="nowrap"><HashStringShortenDynamic hash={ item.l1_tx_hash }/></Box>
+      <Icon as={ txIcon } boxSize={ 6 } isLoading={ isLoading }/>
+      <Skeleton isLoaded={ !isLoading } overflow="hidden" whiteSpace="nowrap" ml={ 1 }>
+        <HashStringShortenDynamic hash={ item.l1_tx_hash }/>
+      </Skeleton>
     </LinkExternal>
   );
 
@@ -61,9 +67,12 @@ const LatestTxsItem = ({ item }: Props) => {
       alignItems="center"
       overflow="hidden"
       w="100%"
+      isLoading={ isLoading }
     >
-      <Icon as={ txIcon } boxSize={ 6 } mr={ 1 }/>
-      <Box w="calc(100% - 36px)" overflow="hidden" whiteSpace="nowrap"><HashStringShortenDynamic hash={ item.l2_tx_hash }/></Box>
+      <Icon as={ txIcon } boxSize={ 6 } isLoading={ isLoading }/>
+      <Skeleton isLoaded={ !isLoading } w="calc(100% - 36px)" overflow="hidden" whiteSpace="nowrap" ml={ 1 }>
+        <HashStringShortenDynamic hash={ item.l2_tx_hash }/>
+      </Skeleton>
     </LinkInternal>
   );
 
@@ -73,28 +82,42 @@ const LatestTxsItem = ({ item }: Props) => {
         <>
           <Flex justifyContent="space-between" alignItems="center" mb={ 1 }>
             { l1BlockLink }
-            <Text variant="secondary">{ timeAgo }</Text>
+            <Skeleton isLoaded={ !isLoading } color="text_secondary">
+              <span>{ timeAgo }</span>
+            </Skeleton>
           </Flex>
           <Grid gridTemplateColumns="56px auto">
-            <Text lineHeight="30px">L1 txn</Text>
+            <Skeleton isLoaded={ !isLoading } my="5px" w="fit-content">
+              L1 txn
+            </Skeleton>
             { l1TxLink }
-            <Text lineHeight="30px">L2 txn</Text>
+            <Skeleton isLoaded={ !isLoading } my="3px" w="fit-content">
+              L2 txn
+            </Skeleton>
             { l2TxLink }
           </Grid>
         </>
       );
     }
+
     return (
       <Grid width="100%" columnGap={ 4 } rowGap={ 2 } templateColumns="max-content max-content auto" w="100%">
         { l1BlockLink }
-        <Text lineHeight="30px">L1 txn</Text>
+        <Skeleton isLoaded={ !isLoading } w="fit-content" h="fit-content" my="5px">
+          L1 txn
+        </Skeleton>
         { l1TxLink }
-        <Text variant="secondary">{ timeAgo }</Text>
-        <Text lineHeight="30px">L2 txn</Text>
+        <Skeleton isLoaded={ !isLoading } color="text_secondary" w="fit-content" h="fit-content" my="2px">
+          <span>{ timeAgo }</span>
+        </Skeleton>
+        <Skeleton isLoaded={ !isLoading } w="fit-content" h="fit-content" my="2px">
+          L2 txn
+        </Skeleton>
         { l2TxLink }
       </Grid>
     );
   })();
+
   return (
     <Box
       width="100%"
@@ -104,6 +127,7 @@ const LatestTxsItem = ({ item }: Props) => {
       px={{ base: 0, lg: 4 }}
       _last={{ borderBottom: '1px solid', borderColor: 'divider' }}
       fontSize="sm"
+      lineHeight={ 5 }
     >
       { content }
     </Box>

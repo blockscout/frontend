@@ -6,6 +6,8 @@ import useDebounce from 'lib/hooks/useDebounce';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import useUpdateValueEffect from 'lib/hooks/useUpdateValueEffect';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { SEARCH_RESULT_ITEM, SEARCH_RESULT_NEXT_PAGE_PARAMS } from 'stubs/search';
+import { generateListStub } from 'stubs/utils';
 
 export default function useSearchQuery(isSearchPage = false) {
   const router = useRouter();
@@ -20,7 +22,12 @@ export default function useSearchQuery(isSearchPage = false) {
   const query = useQueryWithPages({
     resourceName: 'search',
     filters: { q: debouncedSearchTerm },
-    options: { enabled: debouncedSearchTerm.trim().length > 0 },
+    options: {
+      enabled: debouncedSearchTerm.trim().length > 0,
+      placeholderData: isSearchPage ?
+        generateListStub<'search'>(SEARCH_RESULT_ITEM, 50, { next_page_params: SEARCH_RESULT_NEXT_PAGE_PARAMS }) :
+        undefined,
+    },
   });
 
   const redirectCheckQuery = useApiQuery('search_check_redirect', {

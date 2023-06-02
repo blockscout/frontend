@@ -1,9 +1,12 @@
 import type { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import React from 'react';
 
 import getNetworkTitle from 'lib/networks/getNetworkTitle';
-import L2Deposits from 'ui/pages/L2Deposits';
+import Page from 'ui/shared/Page/Page';
+
+const L2Deposits = dynamic(() => import('ui/pages/L2Deposits'), { ssr: false });
 
 const DepositsPage: NextPage = () => {
   const title = getNetworkTitle();
@@ -12,7 +15,9 @@ const DepositsPage: NextPage = () => {
       <Head>
         <title>{ title }</title>
       </Head>
-      <L2Deposits/>
+      <Page>
+        <L2Deposits/>
+      </Page>
     </>
   );
 };

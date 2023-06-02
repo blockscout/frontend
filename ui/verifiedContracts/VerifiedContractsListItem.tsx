@@ -1,4 +1,4 @@
-import { Box, Flex, Icon } from '@chakra-ui/react';
+import { Box, Flex, Skeleton } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -12,14 +12,16 @@ import dayjs from 'lib/date/dayjs';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
+import Icon from 'ui/shared/chakra/Icon';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 
 interface Props {
   data: VerifiedContract;
+  isLoading?: boolean;
 }
 
-const VerifiedContractsListItem = ({ data }: Props) => {
+const VerifiedContractsListItem = ({ data, isLoading }: Props) => {
   const balance = data.coin_balance && data.coin_balance !== '0' ?
     BigNumber(data.coin_balance).div(10 ** appConfig.network.currency.decimals).dp(6).toFormat() :
     '0';
@@ -27,50 +29,50 @@ const VerifiedContractsListItem = ({ data }: Props) => {
   return (
     <ListItemMobile rowGap={ 3 }>
       <Address columnGap={ 2 } overflow="hidden" w="100%">
-        <AddressIcon address={ data.address }/>
-        <AddressLink hash={ data.address.hash } type="address" alias={ data.address.name }/>
-        <Box color="text_secondary" ml="auto">
+        <AddressIcon address={ data.address } isLoading={ isLoading }/>
+        <AddressLink hash={ data.address.hash } type="address" alias={ data.address.name } isLoading={ isLoading }/>
+        <Skeleton isLoaded={ !isLoading } color="text_secondary" ml="auto">
           <HashStringShorten hash={ data.address.hash } isTooltipDisabled/>
-        </Box>
+        </Skeleton>
       </Address>
       <Flex columnGap={ 3 }>
-        <Box fontWeight={ 500 }>Balance { appConfig.network.currency.symbol }</Box>
-        <Box color="text_secondary">
-          { balance }
-        </Box>
+        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>Balance { appConfig.network.currency.symbol }</Skeleton>
+        <Skeleton isLoaded={ !isLoading } color="text_secondary">
+          <span>{ balance }</span>
+        </Skeleton>
       </Flex>
       <Flex columnGap={ 3 }>
-        <Box fontWeight={ 500 }>Txs count</Box>
-        <Box color="text_secondary">
-          { data.tx_count ? data.tx_count.toLocaleString() : '0' }
-        </Box>
+        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>Txs count</Skeleton>
+        <Skeleton isLoaded={ !isLoading } color="text_secondary">
+          <span>{ data.tx_count ? data.tx_count.toLocaleString() : '0' }</span>
+        </Skeleton>
       </Flex>
       <Flex columnGap={ 3 }>
-        <Box fontWeight={ 500 } flexShrink="0">Compiler</Box>
-        <Flex flexWrap="wrap">
+        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 } flexShrink="0">Compiler</Skeleton>
+        <Skeleton isLoaded={ !isLoading } display="flex" flexWrap="wrap">
           <Box textTransform="capitalize">{ data.language }</Box>
           <Box color="text_secondary" wordBreak="break-all" whiteSpace="pre-wrap"> ({ data.compiler_version })</Box>
-        </Flex>
+        </Skeleton>
       </Flex>
       <Flex columnGap={ 3 }>
-        <Box fontWeight={ 500 }>Optimization</Box>
+        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>Optimization</Skeleton>
         { data.optimization_enabled ?
-          <Icon as={ iconCheck } boxSize={ 6 } color="green.500" cursor="pointer"/> :
-          <Icon as={ iconCross } boxSize={ 6 } color="red.600" cursor="pointer"/> }
+          <Icon as={ iconCheck } boxSize={ 6 } color="green.500" cursor="pointer" isLoading={ isLoading }/> :
+          <Icon as={ iconCross } boxSize={ 6 } color="red.600" cursor="pointer" isLoading={ isLoading }/> }
       </Flex>
       <Flex columnGap={ 3 }>
-        <Box fontWeight={ 500 }>Constructor args</Box>
+        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>Constructor args</Skeleton>
         { data.has_constructor_args ?
-          <Icon as={ iconCheck } boxSize={ 6 } color="green.500" cursor="pointer"/> :
-          <Icon as={ iconCross } boxSize={ 6 } color="red.600" cursor="pointer"/> }
+          <Icon as={ iconCheck } boxSize={ 6 } color="green.500" cursor="pointer" isLoading={ isLoading }/> :
+          <Icon as={ iconCross } boxSize={ 6 } color="red.600" cursor="pointer" isLoading={ isLoading }/> }
       </Flex>
       <Flex columnGap={ 3 }>
-        <Box fontWeight={ 500 }>Verified</Box>
+        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>Verified</Skeleton>
         <Flex alignItems="center" columnGap={ 2 }>
-          <Icon as={ iconSuccess } boxSize={ 4 } color="green.500"/>
-          <Box color="text_secondary">
-            { dayjs(data.verified_at).fromNow() }
-          </Box>
+          <Icon as={ iconSuccess } boxSize={ 4 } color="green.500" isLoading={ isLoading }/>
+          <Skeleton isLoaded={ !isLoading } color="text_secondary">
+            <span>{ dayjs(data.verified_at).fromNow() }</span>
+          </Skeleton>
         </Flex>
       </Flex>
       { /* <Flex columnGap={ 3 }>

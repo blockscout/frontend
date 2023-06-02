@@ -1,4 +1,4 @@
-import { Text, Flex, Icon, Box, chakra } from '@chakra-ui/react';
+import { Flex, Icon, Box, chakra, Skeleton } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
@@ -19,9 +19,10 @@ import TokenLogo from 'ui/shared/TokenLogo';
 interface Props {
   data: SearchResultItem;
   searchTerm: string;
+  isLoading?: boolean;
 }
 
-const SearchResultListItem = ({ data, searchTerm }: Props) => {
+const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
 
   const firstRow = (() => {
     switch (data.type) {
@@ -30,9 +31,15 @@ const SearchResultListItem = ({ data, searchTerm }: Props) => {
 
         return (
           <Flex alignItems="flex-start">
-            <TokenLogo boxSize={ 6 } hash={ data.address } name={ data.name } flexShrink={ 0 }/>
-            <LinkInternal ml={ 2 } href={ route({ pathname: '/token/[hash]', query: { hash: data.address } }) } fontWeight={ 700 } wordBreak="break-all">
-              <chakra.span dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}/>
+            <TokenLogo boxSize={ 6 } hash={ data.address } name={ data.name } flexShrink={ 0 } isLoading={ isLoading }/>
+            <LinkInternal
+              ml={ 2 }
+              href={ route({ pathname: '/token/[hash]', query: { hash: data.address } }) }
+              fontWeight={ 700 }
+              wordBreak="break-all"
+              isLoading={ isLoading }
+            >
+              <Skeleton isLoaded={ !isLoading } dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}/>
             </LinkInternal>
           </Flex>
         );
@@ -80,7 +87,9 @@ const SearchResultListItem = ({ data, searchTerm }: Props) => {
     switch (data.type) {
       case 'token': {
         return (
-          <HashStringShortenDynamic hash={ data.address }/>
+          <Skeleton isLoaded={ !isLoading }>
+            <HashStringShortenDynamic hash={ data.address }/>
+          </Skeleton>
         );
       }
       case 'block': {
@@ -106,7 +115,9 @@ const SearchResultListItem = ({ data, searchTerm }: Props) => {
     <ListItemMobile py={ 3 } fontSize="sm" rowGap={ 2 }>
       <Flex justifyContent="space-between" w="100%" overflow="hidden" lineHeight={ 6 }>
         { firstRow }
-        <Text variant="secondary" ml={ 8 } textTransform="capitalize">{ data.type }</Text>
+        <Skeleton isLoaded={ !isLoading } color="text_secondary" ml={ 8 } textTransform="capitalize">
+          <span>{ data.type }</span>
+        </Skeleton>
       </Flex>
       { secondRow }
     </ListItemMobile>

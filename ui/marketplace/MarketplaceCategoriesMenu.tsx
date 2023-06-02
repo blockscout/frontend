@@ -1,4 +1,4 @@
-import { Box, Button, Icon, Menu, MenuButton, MenuList } from '@chakra-ui/react';
+import { Box, Button, Icon, Menu, MenuButton, MenuList, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import { MarketplaceCategory } from 'types/client/marketplace';
@@ -11,14 +11,27 @@ type Props = {
   categories: Array<string>;
   selectedCategoryId: string;
   onSelect: (category: string) => void;
+  isLoading: boolean;
 }
 
-const MarketplaceCategoriesMenu = ({ selectedCategoryId, onSelect, categories }: Props) => {
+const MarketplaceCategoriesMenu = ({ selectedCategoryId, onSelect, categories, isLoading }: Props) => {
   const options = React.useMemo(() => ([
     MarketplaceCategory.FAVORITES,
     MarketplaceCategory.ALL,
     ...categories,
   ]), [ categories ]);
+
+  if (isLoading) {
+    return (
+      <Skeleton
+        h="40px"
+        w={{ base: '100%', sm: '120px' }}
+        borderRadius="base"
+        mb={{ base: 2, sm: 0 }}
+        mr={{ base: 0, sm: 2 }}
+      />
+    );
+  }
 
   return (
     <Menu>

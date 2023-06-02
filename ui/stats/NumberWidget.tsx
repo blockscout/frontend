@@ -1,32 +1,40 @@
-import { Box, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 type Props = {
   label: string;
   value: string;
+  isLoading?: boolean;
 }
 
-const NumberWidget = ({ label, value }: Props) => {
+const NumberWidget = ({ label, value, isLoading }: Props) => {
+  const bgColor = useColorModeValue('blue.50', 'blue.800');
+  const skeletonBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
+
   return (
     <Box
-      bg={ useColorModeValue('blue.50', 'blue.800') }
+      bg={ isLoading ? skeletonBgColor : bgColor }
       px={ 3 }
       py={{ base: 2, lg: 3 }}
       borderRadius={ 12 }
     >
-      <Text
-        variant="secondary"
+      <Skeleton
+        isLoaded={ !isLoading }
+        color="text_secondary"
         fontSize="xs"
+        w="fit-content"
       >
-        { label }
-      </Text>
+        <span>{ label }</span>
+      </Skeleton>
 
-      <Text
+      <Skeleton
+        isLoaded={ !isLoading }
         fontWeight={ 500 }
         fontSize="lg"
+        w="fit-content"
       >
         { value }
-      </Text>
+      </Skeleton>
     </Box>
   );
 };

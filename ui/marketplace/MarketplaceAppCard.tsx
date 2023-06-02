@@ -1,4 +1,4 @@
-import { Box, Heading, Icon, IconButton, Image, Link, LinkBox, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Icon, IconButton, Image, Link, LinkBox, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import type { MouseEvent } from 'react';
 import React, { useCallback } from 'react';
 
@@ -14,6 +14,7 @@ interface Props extends MarketplaceAppPreview {
   onInfoClick: (id: string) => void;
   isFavorite: boolean;
   onFavoriteClick: (id: string, isFavorite: boolean) => void;
+  isLoading: boolean;
 }
 
 const MarketplaceAppCard = ({
@@ -28,6 +29,7 @@ const MarketplaceAppCard = ({
   onInfoClick,
   isFavorite,
   onFavoriteClick,
+  isLoading,
 }: Props) => {
   const categoriesLabel = categories.join(', ');
 
@@ -41,14 +43,15 @@ const MarketplaceAppCard = ({
   }, [ onFavoriteClick, id, isFavorite ]);
 
   const logoUrl = useColorModeValue(logo, logoDarkMode || logo);
+  const moreButtonBgGradient = `linear(to-r, ${ useColorModeValue('whiteAlpha.50', 'blackAlpha.50') }, ${ useColorModeValue('white', 'black') } 20%)`;
 
   return (
     <LinkBox
       _hover={{
-        boxShadow: 'md',
+        boxShadow: isLoading ? 'none' : 'md',
       }}
       _focusWithin={{
-        boxShadow: 'md',
+        boxShadow: isLoading ? 'none' : 'md',
       }}
       borderRadius="md"
       height="100%"
@@ -60,12 +63,13 @@ const MarketplaceAppCard = ({
       <Box
         display={{ base: 'grid', sm: 'block' }}
         gridTemplateColumns={{ base: '64px 1fr', sm: '1fr' }}
-        gridTemplateRows={{ base: '20px 20px auto', sm: 'none' }}
+        gridTemplateRows={{ base: 'none', sm: 'none' }}
         gridRowGap={{ base: 2, sm: 'none' }}
         gridColumnGap={{ base: 4, sm: 'none' }}
         height="100%"
       >
-        <Box
+        <Skeleton
+          isLoaded={ !isLoading }
           gridRow={{ base: '1 / 4', sm: 'auto' }}
           marginBottom={ 4 }
           w={{ base: '64px', sm: '96px' }}
@@ -76,17 +80,20 @@ const MarketplaceAppCard = ({
           justifyContent="center"
         >
           <Image
-            src={ logoUrl }
+            src={ isLoading ? undefined : logoUrl }
             alt={ `${ title } app icon` }
           />
-        </Box>
+        </Skeleton>
 
-        <Heading
+        <Skeleton
+          isLoaded={ !isLoading }
           gridColumn={{ base: 2, sm: 'auto' }}
           as="h3"
-          marginBottom={ 2 }
-          size={{ base: 'xs', sm: 'sm' }}
+          marginBottom={{ base: 0, sm: 2 }}
+          fontSize={{ base: 'sm', sm: 'lg' }}
           fontWeight="semibold"
+          fontFamily="heading"
+          display="inline-block"
         >
           <MarketplaceAppCardLink
             id={ id }
@@ -94,68 +101,74 @@ const MarketplaceAppCard = ({
             external={ external }
             title={ title }
           />
-        </Heading>
+        </Skeleton>
 
-        <Text
-          marginBottom={ 2 }
-          variant="secondary"
+        <Skeleton
+          isLoaded={ !isLoading }
+          marginBottom={{ base: 0, sm: 2 }}
+          color="text_secondary"
           fontSize="xs"
         >
-          { categoriesLabel }
-        </Text>
+          <span>{ categoriesLabel }</span>
+        </Skeleton>
 
-        <Text
+        <Skeleton
+          isLoaded={ !isLoading }
           fontSize={{ base: 'xs', sm: 'sm' }}
           lineHeight="20px"
           noOfLines={ 4 }
         >
           { shortDescription }
-        </Text>
+        </Skeleton>
 
-        <Box
-          position="absolute"
-          right={{ base: 3, sm: '20px' }}
-          bottom={{ base: 3, sm: '20px' }}
-          paddingLeft={ 8 }
-          bgGradient={ `linear(to-r, ${ useColorModeValue('whiteAlpha.50', 'blackAlpha.50') }, ${ useColorModeValue('white', 'black') } 20%)` }
-        >
-          <Link
-            fontSize={{ base: 'xs', sm: 'sm' }}
-            display="flex"
-            alignItems="center"
-            paddingRight={{ sm: 2 }}
-            maxW="100%"
-            overflow="hidden"
-            href="#"
-            onClick={ handleInfoClick }
+        { !isLoading && (
+          <Box
+            position="absolute"
+            right={{ base: 3, sm: '20px' }}
+            bottom={{ base: 3, sm: '20px' }}
+            paddingLeft={ 8 }
+            bgGradient={ moreButtonBgGradient }
           >
+            <Link
+              fontSize={{ base: 'xs', sm: 'sm' }}
+              display="flex"
+              alignItems="center"
+              paddingRight={{ sm: 2 }}
+              maxW="100%"
+              overflow="hidden"
+              href="#"
+              onClick={ handleInfoClick }
+            >
             More
 
-            <Icon
-              as={ northEastIcon }
-              marginLeft={ 1 }
-            />
-          </Link>
-        </Box>
+              <Icon
+                as={ northEastIcon }
+                marginLeft={ 1 }
+              />
+            </Link>
+          </Box>
+        ) }
 
-        <IconButton
-          display={{ base: 'block', sm: isFavorite ? 'block' : 'none' }}
-          _groupHover={{ display: 'block' }}
-          position="absolute"
-          right={{ base: 3, sm: '10px' }}
-          top={{ base: 3, sm: '14px' }}
-          aria-label="Mark as favorite"
-          title="Mark as favorite"
-          variant="ghost"
-          colorScheme="gray"
-          w={ 9 }
-          h={ 8 }
-          onClick={ handleFavoriteClick }
-          icon={ isFavorite ?
-            <Icon as={ starFilledIcon } w={ 4 } h={ 4 } color="yellow.400"/> :
-            <Icon as={ starOutlineIcon } w={ 4 } h={ 4 } color="gray.300"/>
-          }
-        />
+        { !isLoading && (
+          <IconButton
+            display={{ base: 'block', sm: isFavorite ? 'block' : 'none' }}
+            _groupHover={{ display: 'block' }}
+            position="absolute"
+            right={{ base: 3, sm: '10px' }}
+            top={{ base: 3, sm: '14px' }}
+            aria-label="Mark as favorite"
+            title="Mark as favorite"
+            variant="ghost"
+            colorScheme="gray"
+            w={ 9 }
+            h={ 8 }
+            onClick={ handleFavoriteClick }
+            icon={ isFavorite ?
+              <Icon as={ starFilledIcon } w={ 4 } h={ 4 } color="yellow.400"/> :
+              <Icon as={ starOutlineIcon } w={ 4 } h={ 4 } color="gray.300"/>
+            }
+          />
+        ) }
       </Box>
     </LinkBox>
   );

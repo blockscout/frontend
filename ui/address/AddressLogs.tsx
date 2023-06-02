@@ -39,12 +39,10 @@ const AddressLogs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>
   return (
     <DataListDisplay
       isError={ isError }
-      isLoading={ false }
       items={ data?.items }
       emptyText="There are no logs for this address."
       content={ content }
       actionBar={ actionBar }
-      skeletonProps={{ customSkeleton: null }}
     />
   );
 };

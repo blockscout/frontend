@@ -99,12 +99,7 @@ const TokenTransfer = ({ transfersQuery, tokenId, token }: Props) => {
   return (
     <DataListDisplay
       isError={ isError }
-      isLoading={ false }
       items={ data?.items }
-      skeletonProps={{
-        isLongSkeleton: true,
-        skeletonDesktopColumns: [ '45%', '15%', '36px', '15%', '25%' ],
-      }}
       emptyText="There are no token transfers."
       content={ content }
       actionBar={ actionBar }

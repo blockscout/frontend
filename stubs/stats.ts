@@ -1,4 +1,4 @@
-import type { HomeStats, StatsChartsSection } from 'types/api/stats';
+import type { Counter, HomeStats, StatsChartsSection } from 'types/api/stats';
 
 export const HOMEPAGE_STATS: HomeStats = {
   average_block_time: 14346,
@@ -52,4 +52,11 @@ export const STATS_CHARTS_SECTION: StatsChartsSection = {
 
 export const STATS_CHARTS = {
   sections: [ STATS_CHARTS_SECTION ],
+};
+
+export const STATS_COUNTER: Counter = {
+  id: 'stub',
+  value: '9074405',
+  title: 'Placeholder Counter',
+  units: '',
 };

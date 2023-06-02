@@ -13,10 +13,11 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp } from 'lib/html-entities';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
+import { BLOCK } from 'stubs/block';
+import { HOMEPAGE_STATS } from 'stubs/stats';
 import LinkInternal from 'ui/shared/LinkInternal';
 
 import LatestBlocksItem from './LatestBlocksItem';
-import LatestBlocksItemSkeleton from './LatestBlocksItemSkeleton';
 
 const BLOCK_HEIGHT_L1 = 166;
 const BLOCK_HEIGHT_L2 = 112;
@@ -32,10 +33,18 @@ const LatestBlocks = () => {
   } else {
     blocksMaxCount = isMobile ? 2 : 3;
   }
-  const { data, isLoading, isError } = useApiQuery('homepage_blocks');
+  const { data, isPlaceholderData, isError } = useApiQuery('homepage_blocks', {
+    queryOptions: {
+      placeholderData: Array(4).fill(BLOCK),
+    },
+  });
 
   const queryClient = useQueryClient();
-  const statsQueryResult = useApiQuery('homepage_stats');
+  const statsQueryResult = useApiQuery('homepage_stats', {
+    queryOptions: {
+      placeholderData: HOMEPAGE_STATS,
+    },
+  });
 
   const handleNewBlockMessage: SocketMessage.NewBlock['handler'] = React.useCallback((payload) => {
     queryClient.setQueryData(getResourceKey('homepage_blocks'), (prevData: Array<Block> | undefined) => {
@@ -52,7 +61,7 @@ const LatestBlocks = () => {
 
   const channel = useSocketChannel({
     topic: 'blocks:new_block',
-    isDisabled: isLoading || isError,
+    isDisabled: isPlaceholderData || isError,
   });
   useSocketMessage({
     channel,
@@ -61,22 +70,6 @@ const LatestBlocks = () => {
   });
 
   let content;
-
-  if (isLoading) {
-    content = (
-      <>
-        <Skeleton w="100%" h={ 6 } mb={ 9 }/>
-        <VStack
-          spacing={ `${ BLOCK_MARGIN }px` }
-          mb={ 6 }
-          height={ `${ blockHeight * blocksMaxCount + BLOCK_MARGIN * (blocksMaxCount - 1) }px` }
-          overflow="hidden"
-        >
-          { Array.from(Array(blocksMaxCount)).map((item, index) => <LatestBlocksItemSkeleton key={ index }/>) }
-        </VStack>
-      </>
-    );
-  }
 
   if (isError) {
     content = <Text>No data. Please reload page.</Text>;
@@ -88,22 +81,26 @@ const LatestBlocks = () => {
 
     content = (
       <>
-        { statsQueryResult.isLoading && (
-          <Skeleton h="24px" w="170px" mb={{ base: 6, lg: 9 }}/>
-        ) }
         { statsQueryResult.data?.network_utilization_percentage !== undefined && (
-          <Box mb={{ base: 6, lg: 3 }}>
+          <Skeleton isLoaded={ !statsQueryResult.isPlaceholderData } mb={{ base: 6, lg: 3 }} display="inline-block">
             <Text as="span" fontSize="sm">
               Network utilization:{ nbsp }
             </Text>
             <Text as="span" fontSize="sm" color="blue.400" fontWeight={ 700 }>
               { statsQueryResult.data?.network_utilization_percentage.toFixed(2) }%
             </Text>
-          </Box>
+          </Skeleton>
         ) }
         <VStack spacing={ `${ BLOCK_MARGIN }px` } mb={ 4 } height={ `${ blockHeight * blocksCount + BLOCK_MARGIN * (blocksCount - 1) }px` } overflow="hidden">
           <AnimatePresence initial={ false } >
-            { dataToShow.map((block => <LatestBlocksItem key={ block.height } block={ block } h={ blockHeight }/>)) }
+            { dataToShow.map(((block, index) => (
+              <LatestBlocksItem
+                key={ block.height + (isPlaceholderData ? String(index) : '') }
+                block={ block }
+                h={ blockHeight }
+                isLoading={ isPlaceholderData }
+              />
+            ))) }
           </AnimatePresence>
         </VStack>
         <Flex justifyContent="center">

@@ -184,7 +184,6 @@ const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Props) => {
         socketInfoAlert={ socketAlert }
         socketInfoNum={ newItemsCount }
         top={ 80 }
-        hasLongSkeleton
       />
     </>
   );

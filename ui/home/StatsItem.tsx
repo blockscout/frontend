@@ -1,8 +1,9 @@
 import type { SystemStyleObject, TooltipProps } from '@chakra-ui/react';
-import { Flex, Icon, Text, useColorModeValue, chakra, LightMode } from '@chakra-ui/react';
+import { Skeleton, Flex, useColorModeValue, chakra, LightMode } from '@chakra-ui/react';
 import React from 'react';
 
 import breakpoints from 'theme/foundations/breakpoints';
+import Icon from 'ui/shared/chakra/Icon';
 import Hint from 'ui/shared/Hint';
 
 type Props = {
@@ -12,6 +13,7 @@ type Props = {
   className?: string;
   tooltipLabel?: React.ReactNode;
   url?: string;
+  isLoading?: boolean;
 }
 
 const LARGEST_BREAKPOINT = '1240px';
@@ -24,7 +26,7 @@ const TOOLTIP_PROPS: Partial<TooltipProps> = {
   bgColor: 'blackAlpha.900',
 };
 
-const StatsItem = ({ icon, title, value, className, tooltipLabel, url }: Props) => {
+const StatsItem = ({ icon, title, value, className, tooltipLabel, url, isLoading }: Props) => {
   const sxContainer: SystemStyleObject = {
     [`@media screen and (min-width: ${ breakpoints.lg }) and (max-width: ${ LARGEST_BREAKPOINT })`]: { flexDirection: 'column' },
   };
@@ -33,11 +35,13 @@ const StatsItem = ({ icon, title, value, className, tooltipLabel, url }: Props) 
     [`@media screen and (min-width: ${ breakpoints.lg }) and (max-width: ${ LARGEST_BREAKPOINT })`]: { alignItems: 'center' },
   };
 
+  const bgColor = useColorModeValue('blue.50', 'blue.800');
+  const loadingBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
   const infoColor = useColorModeValue('gray.600', 'gray.400');
 
   return (
     <Flex
-      backgroundColor={ useColorModeValue('blue.50', 'blue.800') }
+      backgroundColor={ isLoading ? loadingBgColor : bgColor }
       padding={ 3 }
       borderRadius="md"
       flexDirection="row"
@@ -48,21 +52,25 @@ const StatsItem = ({ icon, title, value, className, tooltipLabel, url }: Props) 
       className={ className }
       color={ useColorModeValue('black', 'white') }
       position="relative"
-      { ...(url ? {
+      { ...(url && !isLoading ? {
         as: 'a',
         href: url,
       } : {}) }
     >
-      <Icon as={ icon } boxSize={ 7 }/>
+      <Icon as={ icon } boxSize={ 7 } isLoading={ isLoading } borderRadius="base"/>
       <Flex
         flexDirection="column"
         alignItems="start"
         sx={ sxText }
       >
-        <Text variant="secondary" fontSize="xs" lineHeight="16px">{ title }</Text>
-        <Text fontWeight={ 500 } fontSize="md" color={ useColorModeValue('black', 'white') }>{ value }</Text>
+        <Skeleton isLoaded={ !isLoading } color="text_secondary" fontSize="xs" lineHeight="16px" borderRadius="base">
+          <span>{ title }</span>
+        </Skeleton>
+        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 } fontSize="md" color={ useColorModeValue('black', 'white') } borderRadius="base">
+          <span>{ value }</span>
+        </Skeleton>
       </Flex>
-      { tooltipLabel && (
+      { tooltipLabel && !isLoading && (
         <LightMode>
           <Hint
             label={ tooltipLabel }

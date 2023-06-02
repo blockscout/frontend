@@ -10,9 +10,10 @@ import DepositsTableItem from './DepositsTableItem';
  type Props = {
    items: Array<L2DepositsItem>;
    top: number;
+   isLoading?: boolean;
  }
 
-const DepositsTable = ({ items, top }: Props) => {
+const DepositsTable = ({ items, top, isLoading }: Props) => {
   return (
     <Table variant="simple" size="sm" style={{ tableLayout: 'auto' }} minW="950px">
       <Thead top={ top }>
@@ -26,8 +27,8 @@ const DepositsTable = ({ items, top }: Props) => {
         </Tr>
       </Thead>
       <Tbody>
-        { items.map((item) => (
-          <DepositsTableItem key={ item.l2_tx_hash } item={ item }/>
+        { items.map((item, index) => (
+          <DepositsTableItem key={ item.l2_tx_hash + (isLoading ? index : '') } item={ item } isLoading={ isLoading }/>
         )) }
       </Tbody>
     </Table>

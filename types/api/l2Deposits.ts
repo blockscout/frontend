@@ -14,5 +14,4 @@ export type L2DepositsResponse = {
     l1_block_number: number;
     tx_hash: string;
   };
-  total: number;
 }

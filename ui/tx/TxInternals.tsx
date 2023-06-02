@@ -130,9 +130,7 @@ const TxInternals = () => {
   return (
     <DataListDisplay
       isError={ isError || txInfo.isError }
-      isLoading={ false }
       items={ data?.items }
-      skeletonProps={{ skeletonDesktopColumns: [ '28%', '20%', '24px', '20%', '16%', '16%' ] }}
       emptyText="There are no internal transactions for this transaction."
       // filterProps={{
       // emptyFilteredText: `Couldn${ apos }t find any transaction that matches your query.`.

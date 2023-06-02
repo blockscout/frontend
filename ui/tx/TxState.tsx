@@ -45,11 +45,9 @@ const TxState = () => {
       </Text>
       <DataListDisplay
         isError={ isError }
-        isLoading={ false }
         items={ data }
         emptyText="There are no state changes for this transaction."
         content={ content }
-        skeletonProps={{ customSkeleton: null }}
       />
     </>
   );

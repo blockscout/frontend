@@ -50,12 +50,10 @@ const TokenInventory = ({ inventoryQuery }: Props) => {
   return (
     <DataListDisplay
       isError={ inventoryQuery.isError }
-      isLoading={ false }
       items={ items }
       emptyText="There are no tokens."
       content={ content }
       actionBar={ actionBar }
-      skeletonProps={{ customSkeleton: null }}
     />
   );
 };

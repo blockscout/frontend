@@ -54,12 +54,10 @@ const ERC1155Tokens = ({ tokensQuery }: Props) => {
   return (
     <DataListDisplay
       isError={ isError }
-      isLoading={ false }
       items={ data?.items }
       emptyText="There are no tokens of selected type."
       content={ content }
       actionBar={ actionBar }
-      skeletonProps={{ customSkeleton: null }}
     />
   );
 };

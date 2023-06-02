@@ -20,7 +20,7 @@ const Container = chakra(({ isAnimated, children, className }: ContainerProps) =
       rowGap={ 2 }
       columnGap={ 2 }
       gridTemplateColumns="86px auto"
-      gridTemplateRows="minmax(30px, max-content)"
+      alignItems="start"
       paddingY={ 4 }
       borderColor="divider"
       borderTopWidth="1px"
@@ -29,6 +29,7 @@ const Container = chakra(({ isAnimated, children, className }: ContainerProps) =
       }}
       className={ className }
       fontSize="sm"
+      lineHeight="20px"
     >
       { children }
     </Grid>
@@ -47,7 +48,6 @@ const Label = chakra(({ children, className, isLoading }: LabelProps) => {
       className={ className }
       isLoaded={ !isLoading }
       fontWeight={ 500 }
-      lineHeight="20px"
       my="5px"
       justifySelf="start"
     >

@@ -10,9 +10,10 @@ import OutputRootsTableItem from './OutputRootsTableItem';
 type Props = {
   items: Array<L2OutputRootsItem>;
   top: number;
+  isLoading?: boolean;
 }
 
-const OutputRootsTable = ({ items, top }: Props) => {
+const OutputRootsTable = ({ items, top, isLoading }: Props) => {
   return (
     <Table variant="simple" size="sm" minW="900px">
       <Thead top={ top }>
@@ -25,8 +26,8 @@ const OutputRootsTable = ({ items, top }: Props) => {
         </Tr>
       </Thead>
       <Tbody>
-        { items.map((item) => (
-          <OutputRootsTableItem key={ item.l2_output_index } item={ item }/>
+        { items.map((item, index) => (
+          <OutputRootsTableItem key={ item.l2_output_index + (Number(isLoading ? index : '') ? String(index) : '') } item={ item } isLoading={ isLoading }/>
         )) }
       </Tbody>
     </Table>

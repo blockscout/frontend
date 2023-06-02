@@ -1,4 +1,7 @@
 import type { SmartContract } from 'types/api/contract';
+import type { VerifiedContract } from 'types/api/contracts';
+
+import { ADDRESS_PARAMS } from './addressParams';
 
 export const CONTRACT_CODE_UNVERIFIED = {
   creation_bytecode: '0x60806040526e',
@@ -38,3 +41,15 @@ export const CONTRACT_CODE_VERIFIED = {
   source_code: 'source_code',
   verified_at: '2023-02-21T14:39:16.906760Z',
 } as unknown as SmartContract;
+
+export const VERIFIED_CONTRACT_INFO: VerifiedContract = {
+  address: { ...ADDRESS_PARAMS, name: 'StubContract' },
+  coin_balance: '30319033612988277',
+  compiler_version: 'v0.8.17+commit.8df45f5f',
+  has_constructor_args: true,
+  language: 'solidity',
+  market_cap: null,
+  optimization_enabled: false,
+  tx_count: 565058,
+  verified_at: '2023-04-10T13:16:33.884921Z',
+};

@@ -1,4 +1,4 @@
-import { Tr, Td, Text, Flex, Icon, Box } from '@chakra-ui/react';
+import { Tr, Td, Flex, Icon, Box, Skeleton } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
@@ -18,9 +18,10 @@ import TokenLogo from 'ui/shared/TokenLogo';
 interface Props {
   data: SearchResultItem;
   searchTerm: string;
+  isLoading?: boolean;
 }
 
-const SearchResultTableItem = ({ data, searchTerm }: Props) => {
+const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
 
   const content = (() => {
     switch (data.type) {
@@ -30,16 +31,22 @@ const SearchResultTableItem = ({ data, searchTerm }: Props) => {
           <>
             <Td fontSize="sm">
               <Flex alignItems="center">
-                <TokenLogo boxSize={ 6 } hash={ data.address } name={ data.name } flexShrink={ 0 }/>
-                <LinkInternal ml={ 2 } href={ route({ pathname: '/token/[hash]', query: { hash: data.address } }) } fontWeight={ 700 } wordBreak="break-all">
-                  <span dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}/>
+                <TokenLogo boxSize={ 6 } hash={ data.address } name={ data.name } flexShrink={ 0 } isLoading={ isLoading }/>
+                <LinkInternal
+                  ml={ 2 }
+                  href={ route({ pathname: '/token/[hash]', query: { hash: data.address } }) }
+                  fontWeight={ 700 }
+                  wordBreak="break-all"
+                  isLoading={ isLoading }
+                >
+                  <Skeleton isLoaded={ !isLoading } dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}/>
                 </LinkInternal>
               </Flex>
             </Td>
             <Td fontSize="sm" verticalAlign="middle">
-              <Box whiteSpace="nowrap" overflow="hidden">
+              <Skeleton isLoaded={ !isLoading } whiteSpace="nowrap" overflow="hidden">
                 <HashStringShortenDynamic hash={ data.address }/>
-              </Box>
+              </Skeleton>
             </Td>
           </>
         );
@@ -126,9 +133,9 @@ const SearchResultTableItem = ({ data, searchTerm }: Props) => {
     <Tr>
       { content }
       <Td fontSize="sm" textTransform="capitalize" verticalAlign="middle">
-        <Text variant="secondary">
-          { data.type }
-        </Text>
+        <Skeleton isLoaded={ !isLoading } color="text_secondary" display="inline-block">
+          <span>{ data.type }</span>
+        </Skeleton>
       </Td>
     </Tr>
   );

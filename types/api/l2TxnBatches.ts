@@ -8,9 +8,8 @@ export type L2TxnBatchesItem = {
 
 export type L2TxnBatchesResponse = {
   items: Array<L2TxnBatchesItem>;
-  total: number;
   next_page_params: {
-    index: number;
+    block_number: number;
     items_count: number;
   };
 }

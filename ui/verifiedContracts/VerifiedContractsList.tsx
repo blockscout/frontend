@@ -5,10 +5,16 @@ import type { VerifiedContract } from 'types/api/contracts';
 
 import VerifiedContractsListItem from './VerifiedContractsListItem';
 
-const VerifiedContractsList = ({ data }: { data: Array<VerifiedContract>}) => {
+const VerifiedContractsList = ({ data, isLoading }: { data: Array<VerifiedContract>; isLoading: boolean }) => {
   return (
     <Box>
-      { data.map((item) => <VerifiedContractsListItem key={ item.address.hash } data={ item }/>) }
+      { data.map((item, index) => (
+        <VerifiedContractsListItem
+          key={ item.address.hash + (isLoading ? index : '') }
+          data={ item }
+          isLoading={ isLoading }
+        />
+      )) }
     </Box>
   );
 };

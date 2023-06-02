@@ -27,8 +27,8 @@ import TextAd from 'ui/shared/ad/TextAd';
 import EntityTags from 'ui/shared/EntityTags';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import SkeletonTabs from 'ui/shared/skeletons/SkeletonTabs';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
+import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 
 export const tokenTabsByType: Record<TokenType, string> = {
   'ERC-20': 'tokens_erc20',
@@ -134,7 +134,7 @@ const AddressPageContent = () => {
       <AddressDetails addressQuery={ addressQuery } scrollRef={ tabsScrollRef }/>
       { /* should stay before tabs to scroll up with pagination */ }
       <Box ref={ tabsScrollRef }></Box>
-      { addressQuery.isPlaceholderData ? <SkeletonTabs tabs={ tabs }/> : content }
+      { addressQuery.isPlaceholderData ? <TabsSkeleton tabs={ tabs }/> : content }
     </>
   );
 };

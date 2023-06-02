@@ -32,5 +32,5 @@ test('base view +@mobile', async({ mount, page }) => {
     </TestApp>,
   );
 
-  await expect(component.locator('main')).toHaveScreenshot();
+  await expect(component).toHaveScreenshot();
 });

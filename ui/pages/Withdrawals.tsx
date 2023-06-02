@@ -91,9 +91,7 @@ const Withdrawals = () => {
       <PageTitle title="Withdrawals" withTextAd/>
       <DataListDisplay
         isError={ isError }
-        isLoading={ false }
         items={ data?.items }
-        skeletonProps={{ skeletonDesktopColumns: Array(6).fill(`${ 100 / 6 }%`), skeletonDesktopMinW: '950px' }}
         emptyText="There are no withdrawals."
         content={ content }
         actionBar={ actionBar }

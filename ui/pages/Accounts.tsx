@@ -71,9 +71,7 @@ const Accounts = () => {
       <PageTitle title="Top accounts" withTextAd/>
       <DataListDisplay
         isError={ isError }
-        isLoading={ false }
         items={ data?.items }
-        skeletonProps={{ skeletonDesktopColumns: [ '64px', '30%', '20%', '20%', '15%', '15%' ] }}
         emptyText="There are no accounts."
         content={ content }
         actionBar={ actionBar }

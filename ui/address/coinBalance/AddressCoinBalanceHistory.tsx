@@ -71,9 +71,7 @@ const AddressCoinBalanceHistory = ({ query }: Props) => {
     <DataListDisplay
       mt={ 8 }
       isError={ query.isError }
-      isLoading={ false }
       items={ query.data?.items }
-      skeletonProps={{ skeletonDesktopColumns: [ '25%', '25%', '25%', '25%', '120px' ] }}
       emptyText="There is no coin balance history for this address."
       content={ content }
       actionBar={ actionBar }

@@ -20,8 +20,8 @@ import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import type { Props as PaginationProps } from 'ui/shared/Pagination';
 import Pagination from 'ui/shared/Pagination';
-import SkeletonTabs from 'ui/shared/skeletons/SkeletonTabs';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
+import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import TxsContent from 'ui/txs/TxsContent';
 
 const TAB_LIST_PROPS = {
@@ -120,7 +120,7 @@ const BlockPageContent = () => {
         contentAfter={ <NetworkExplorers type="block" pathParam={ heightOrHash } ml={{ base: 'initial', lg: 'auto' }}/> }
         isLoading={ blockQuery.isPlaceholderData }
       />
-      { blockQuery.isPlaceholderData ? <SkeletonTabs tabs={ tabs }/> : (
+      { blockQuery.isPlaceholderData ? <TabsSkeleton tabs={ tabs }/> : (
         <RoutedTabs
           tabs={ tabs }
           tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }

@@ -14,9 +14,10 @@ interface Props {
   data: Array<VerifiedContract>;
   sort: Sort | undefined;
   onSortToggle: (field: SortField) => () => void;
+  isLoading?: boolean;
 }
 
-const VerifiedContractsTable = ({ data, sort, onSortToggle }: Props) => {
+const VerifiedContractsTable = ({ data, sort, onSortToggle, isLoading }: Props) => {
   const sortIconTransform = sort?.includes('asc') ? 'rotate(-90deg)' : 'rotate(90deg)';
 
   return (
@@ -25,13 +26,13 @@ const VerifiedContractsTable = ({ data, sort, onSortToggle }: Props) => {
         <Tr>
           <Th width="50%">Contract</Th>
           <Th width="130px" isNumeric>
-            <Link display="flex" alignItems="center" justifyContent="flex-end" onClick={ onSortToggle('balance') } columnGap={ 1 }>
+            <Link display="flex" alignItems="center" justifyContent="flex-end" onClick={ isLoading ? undefined : onSortToggle('balance') } columnGap={ 1 }>
               { sort?.includes('balance') && <Icon as={ arrowIcon } boxSize={ 4 } transform={ sortIconTransform }/> }
                 Balance { appConfig.network.currency.symbol }
             </Link>
           </Th>
           <Th width="130px" isNumeric>
-            <Link display="flex" alignItems="center" justifyContent="flex-end" onClick={ onSortToggle('txs') } columnGap={ 1 }>
+            <Link display="flex" alignItems="center" justifyContent="flex-end" onClick={ isLoading ? undefined : onSortToggle('txs') } columnGap={ 1 }>
               { sort?.includes('txs') && <Icon as={ arrowIcon } boxSize={ 4 } transform={ sortIconTransform }/> }
                 Txs
             </Link>
@@ -43,7 +44,12 @@ const VerifiedContractsTable = ({ data, sort, onSortToggle }: Props) => {
         </Tr>
       </Thead>
       <Tbody>
-        { data.map((item) => <VerifiedContractsTableItem key={ item.address.hash } data={ item }/>) }
+        { data.map((item, index) => (
+          <VerifiedContractsTableItem
+            key={ item.address.hash + (isLoading ? index : '') }
+            data={ item }
+            isLoading={ isLoading }/>
+        )) }
       </Tbody>
     </Table>
   );

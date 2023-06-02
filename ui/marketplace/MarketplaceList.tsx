@@ -1,4 +1,4 @@
-import { Grid, GridItem } from '@chakra-ui/react';
+import { Grid } from '@chakra-ui/react';
 import React from 'react';
 
 import type { MarketplaceAppPreview } from 'types/client/marketplace';
@@ -13,9 +13,10 @@ type Props = {
   onAppClick: (id: string) => void;
   favoriteApps: Array<string>;
   onFavoriteClick: (id: string, isFavorite: boolean) => void;
+  isLoading: boolean;
 }
 
-const MarketplaceList = ({ apps, onAppClick, favoriteApps, onFavoriteClick }: Props) => {
+const MarketplaceList = ({ apps, onAppClick, favoriteApps, onFavoriteClick, isLoading }: Props) => {
   return apps.length > 0 ? (
     <Grid
       templateColumns={{
@@ -25,24 +26,22 @@ const MarketplaceList = ({ apps, onAppClick, favoriteApps, onFavoriteClick }: Pr
       autoRows="1fr"
       gap={{ base: '16px', sm: '24px' }}
     >
-      { apps.map((app) => (
-        <GridItem
-          key={ app.id }
-        >
-          <MarketplaceAppCard
-            onInfoClick={ onAppClick }
-            id={ app.id }
-            external={ app.external }
-            url={ app.url }
-            title={ app.title }
-            logo={ app.logo }
-            logoDarkMode={ app.logoDarkMode }
-            shortDescription={ app.shortDescription }
-            categories={ app.categories }
-            isFavorite={ favoriteApps.includes(app.id) }
-            onFavoriteClick={ onFavoriteClick }
-          />
-        </GridItem>
+      { apps.map((app, index) => (
+        <MarketplaceAppCard
+          key={ app.id + (isLoading ? index : '') }
+          onInfoClick={ onAppClick }
+          id={ app.id }
+          external={ app.external }
+          url={ app.url }
+          title={ app.title }
+          logo={ app.logo }
+          logoDarkMode={ app.logoDarkMode }
+          shortDescription={ app.shortDescription }
+          categories={ app.categories }
+          isFavorite={ favoriteApps.includes(app.id) }
+          onFavoriteClick={ onFavoriteClick }
+          isLoading={ isLoading }
+        />
       )) }
     </Grid>
   ) : (

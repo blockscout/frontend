@@ -116,9 +116,7 @@ const Tokens = () => {
   return (
     <DataListDisplay
       isError={ isError }
-      isLoading={ false }
       items={ data?.items }
-      skeletonProps={{ skeletonDesktopColumns: [ '25px', '33%', '33%', '33%', '110px' ] }}
       emptyText="There are no tokens."
       filterProps={{
         emptyFilteredText: `Couldn${ apos }t find token that matches your filter query.`,

@@ -12,6 +12,7 @@ import type { ResourceError } from 'lib/api/resources';
 import useDebounce from 'lib/hooks/useDebounce';
 import useApiFetch from 'lib/hooks/useFetch';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { MARKETPLACE_APP } from 'stubs/marketplace';
 
 const favoriteAppsLocalStorageKey = 'favoriteApps';
 
@@ -44,11 +45,12 @@ export default function useMarketplace() {
   const [ favoriteApps, setFavoriteApps ] = React.useState<Array<string>>([]);
 
   const apiFetch = useApiFetch();
-  const { isLoading, isError, error, data } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppOverview>>(
+  const { isPlaceholderData, isError, error, data } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppOverview>>(
     [ 'marketplace-apps' ],
     async() => apiFetch(appConfig.marketplaceConfigUrl || ''),
     {
       select: (data) => (data as Array<MarketplaceAppOverview>).sort((a, b) => a.title.localeCompare(b.title)),
+      placeholderData: Array(9).fill(MARKETPLACE_APP),
       staleTime: Infinity,
     });
 
@@ -90,13 +92,13 @@ export default function useMarketplace() {
   }, [ ]);
 
   React.useEffect(() => {
-    if (!isLoading && !isError) {
+    if (!isPlaceholderData && !isError) {
       const isValidDefaultCategory = categories.includes(defaultCategoryId);
       isValidDefaultCategory && setSelectedCategoryId(defaultCategoryId);
     }
     // run only when data is loaded
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ isLoading ]);
+  }, [ isPlaceholderData ]);
 
   React.useEffect(() => {
     const query = _pickBy({
@@ -118,7 +120,7 @@ export default function useMarketplace() {
     onCategoryChange: handleCategoryChange,
     filterQuery: debouncedFilterQuery,
     onSearchInputChange: setFilterQuery,
-    isLoading,
+    isPlaceholderData,
     isError,
     error,
     categories,
@@ -139,7 +141,7 @@ export default function useMarketplace() {
     handleCategoryChange,
     handleFavoriteClick,
     isError,
-    isLoading,
+    isPlaceholderData,
     showAppInfo,
     debouncedFilterQuery,
   ]);
