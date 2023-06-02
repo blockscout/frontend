@@ -2,18 +2,17 @@ import { Grid } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
+import { STATS_COUNTER } from 'stubs/stats';
 
 import DataFetchAlert from '../shared/DataFetchAlert';
 import NumberWidget from './NumberWidget';
-import NumberWidgetSkeleton from './NumberWidgetSkeleton';
-
-const skeletonsCount = 8;
 
 const NumberWidgetsList = () => {
-  const { data, isLoading, isError } = useApiQuery('stats_counters');
-
-  const skeletonElement = [ ...Array(skeletonsCount) ]
-    .map((e, i) => <NumberWidgetSkeleton key={ i }/>);
+  const { data, isPlaceholderData, isError } = useApiQuery('stats_counters', {
+    queryOptions: {
+      placeholderData: { counters: Array(10).fill(STATS_COUNTER) },
+    },
+  });
 
   if (isError) {
     return <DataFetchAlert/>;
@@ -24,17 +23,19 @@ const NumberWidgetsList = () => {
       gridTemplateColumns={{ base: 'repeat(2, 1fr)', lg: 'repeat(4, 1fr)' }}
       gridGap={ 4 }
     >
-      { isLoading ? skeletonElement :
-        data?.counters?.map(({ id, title, value, units }) => {
+      {
+        data?.counters?.map(({ id, title, value, units }, index) => {
 
           return (
             <NumberWidget
-              key={ id }
+              key={ id + (isPlaceholderData ? index : '') }
               label={ title }
               value={ `${ Number(value).toLocaleString(undefined, { maximumFractionDigits: 3, notation: 'compact' }) } ${ units ? units : '' }` }
+              isLoading={ isPlaceholderData }
             />
           );
-        }) }
+        })
+      }
     </Grid>
   );
 };

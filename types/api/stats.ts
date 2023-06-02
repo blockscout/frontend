@@ -23,7 +23,7 @@ export type Counters = {
   counters: Array<Counter>;
 }
 
-type Counter = {
+export type Counter = {
   id: string;
   value: string;
   title: string;
