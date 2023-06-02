@@ -85,9 +85,7 @@ const L2TxnBatches = () => {
       <PageTitle title={ `Tx batches (L2${ nbsp }blocks)` } withTextAd/>
       <DataListDisplay
         isError={ isError }
-        isLoading={ false }
         items={ data?.items }
-        skeletonProps={{ skeletonDesktopColumns: [ '170px', '170px', '160px', '100%', '150px' ] }}
         emptyText="There are no tx batches."
         content={ content }
         actionBar={ actionBar }

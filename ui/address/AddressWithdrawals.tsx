@@ -55,9 +55,7 @@ const AddressWithdrawals = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivE
   return (
     <DataListDisplay
       isError={ isError }
-      isLoading={ false }
       items={ data?.items }
-      skeletonProps={{ isLongSkeleton: true, skeletonDesktopColumns: Array(5).fill(`${ 100 / 5 }%`), skeletonDesktopMinW: '950px' }}
       emptyText="There are no withdrawals for this address."
       content={ content }
       actionBar={ actionBar }

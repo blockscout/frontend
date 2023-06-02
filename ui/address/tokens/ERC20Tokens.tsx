@@ -46,12 +46,7 @@ const ERC20Tokens = ({ tokensQuery }: Props) => {
   return (
     <DataListDisplay
       isError={ isError }
-      isLoading={ false }
       items={ data?.items }
-      skeletonProps={{
-        isLongSkeleton: true,
-        skeletonDesktopColumns: [ '30%', '30%', '10%', '20%', '10%' ],
-      }}
       emptyText="There are no tokens of selected type."
       content={ content }
       actionBar={ actionBar }

@@ -135,9 +135,7 @@ const VerifiedContracts = () => {
       <VerifiedContractsCounters/>
       <DataListDisplay
         isError={ isError }
-        isLoading={ false }
         items={ data?.items }
-        skeletonProps={{ skeletonDesktopColumns: [ '50%', '130px', '130px', '50%', '80px', '110px' ] }}
         emptyText="There are no verified contracts."
         filterProps={{
           emptyFilteredText: `Couldn${ apos }t find any contract that matches your query.`,

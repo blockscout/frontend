@@ -46,12 +46,7 @@ const ERC721Tokens = ({ tokensQuery }: Props) => {
   return (
     <DataListDisplay
       isError={ isError }
-      isLoading={ false }
       items={ data?.items }
-      skeletonProps={{
-        isLongSkeleton: true,
-        skeletonDesktopColumns: [ '40%', '40%', '20%' ],
-      }}
       emptyText="There are no tokens of selected type."
       content={ content }
       actionBar={ actionBar }

@@ -286,12 +286,7 @@ const AddressTokenTransfers = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Pr
   return (
     <DataListDisplay
       isError={ isError }
-      isLoading={ false }
       items={ data?.items }
-      skeletonProps={{
-        isLongSkeleton: true,
-        skeletonDesktopColumns: [ '44px', '185px', '160px', '25%', '25%', '25%', '25%' ],
-      }}
       emptyText="There are no token transfers."
       filterProps={{
         emptyFilteredText: `Couldn${ apos }t find any token transfer that matches your query.`,

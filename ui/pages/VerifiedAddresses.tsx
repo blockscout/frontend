@@ -187,12 +187,10 @@ const VerifiedAddresses = () => {
         <AdminSupportText mt={ 5 }/>
       </AccountPageDescription>
       <DataListDisplay
-        isLoading={ false }
         isError={ addressesQuery.isError || applicationsQuery.isError }
         items={ addressesQuery.data?.verifiedAddresses }
         content={ content }
         emptyText=""
-        skeletonProps={{ customSkeleton: null }}
       />
       { addButton }
       <AddressVerificationModal

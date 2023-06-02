@@ -95,9 +95,7 @@ const BlocksContent = ({ type, query }: Props) => {
   return (
     <DataListDisplay
       isError={ query.isError }
-      isLoading={ false }
       items={ query.data?.items }
-      skeletonProps={{ skeletonDesktopColumns: [ '125px', '120px', '21%', '64px', '35%', '22%', '22%' ] }}
       emptyText="There are no blocks."
       content={ content }
       actionBar={ actionBar }

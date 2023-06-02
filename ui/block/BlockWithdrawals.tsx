@@ -45,9 +45,7 @@ const BlockWithdrawals = ({ blockWithdrawalsQuery }: Props) => {
   return (
     <DataListDisplay
       isError={ blockWithdrawalsQuery.isError }
-      isLoading={ false }
       items={ blockWithdrawalsQuery.data?.items }
-      skeletonProps={{ isLongSkeleton: true, skeletonDesktopColumns: Array(4).fill(`${ 100 / 4 }%`), skeletonDesktopMinW: '950px' }}
       emptyText="There are no withdrawals for this block."
       content={ content }
     />

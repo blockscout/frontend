@@ -86,9 +86,7 @@ const L2OutputRoots = () => {
       <PageTitle title="Output roots" withTextAd/>
       <DataListDisplay
         isError={ isError }
-        isLoading={ false }
         items={ data?.items }
-        skeletonProps={{ skeletonDesktopColumns: [ '140px', '20%', '20%', '30%', '30%' ] }}
         emptyText="There are no output roots."
         content={ content }
         actionBar={ actionBar }

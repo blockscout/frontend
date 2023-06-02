@@ -88,9 +88,7 @@ const L2Deposits = () => {
       <PageTitle title={ `Deposits (L1${ nbsp }${ rightLineArrow }${ nbsp }L2)` } withTextAd/>
       <DataListDisplay
         isError={ isError }
-        isLoading={ false }
         items={ data?.items }
-        skeletonProps={{ skeletonDesktopColumns: Array(7).fill(`${ 100 / 7 }%`), skeletonDesktopMinW: '950px' }}
         emptyText="There are no withdrawals."
         content={ content }
         actionBar={ actionBar }

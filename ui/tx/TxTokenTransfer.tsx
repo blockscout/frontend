@@ -84,12 +84,7 @@ const TxTokenTransfer = () => {
   return (
     <DataListDisplay
       isError={ txsInfo.isError || tokenTransferQuery.isError }
-      isLoading={ false }
       items={ tokenTransferQuery.data?.items }
-      skeletonProps={{
-        isLongSkeleton: true,
-        skeletonDesktopColumns: [ '185px', '25%', '25%', '25%', '25%' ],
-      }}
       emptyText="There are no token transfers."
       filterProps={{
         emptyFilteredText: `Couldn${ apos }t find any token transfer that matches your query.`,

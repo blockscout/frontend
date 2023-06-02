@@ -131,9 +131,7 @@ const AddressBlocksValidated = ({ scrollRef }: Props) => {
   return (
     <DataListDisplay
       isError={ query.isError }
-      isLoading={ false }
       items={ query.data?.items }
-      skeletonProps={{ isLongSkeleton: true, skeletonDesktopColumns: [ '17%', '17%', '16%', '25%', '25%' ] }}
       emptyText="There are no validated blocks for this address."
       content={ content }
       actionBar={ actionBar }

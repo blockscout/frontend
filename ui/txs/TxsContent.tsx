@@ -30,7 +30,6 @@ type Props = {
   filter?: React.ReactNode;
   enableTimeIncrement?: boolean;
   top?: number;
-  hasLongSkeleton?: boolean;
 }
 
 const TxsContent = ({
@@ -42,7 +41,6 @@ const TxsContent = ({
   socketInfoNum,
   currentAddress,
   enableTimeIncrement,
-  hasLongSkeleton,
   top,
 }: Props) => {
   const { data, isPlaceholderData, isError, setSortByField, setSortByValue, sorting } = useTxsSort(query);
@@ -107,14 +105,7 @@ const TxsContent = ({
   return (
     <DataListDisplay
       isError={ isError }
-      isLoading={ false }
       items={ data?.items }
-      skeletonProps={{
-        isLongSkeleton: hasLongSkeleton,
-        skeletonDesktopColumns: showBlockInfo ?
-          [ '32px', '22%', '160px', '20%', '18%', '292px', '20%', '20%' ] :
-          [ '32px', '22%', '160px', '20%', '292px', '20%', '20%' ],
-      }}
       emptyText="There are no transactions."
       content={ content }
       actionBar={ actionBar }
