@@ -10,9 +10,10 @@ interface Props {
   applications: Array<TokenInfoApplication> | undefined;
   onItemAdd: (address: string) => void;
   onItemEdit: (address: string) => void;
+  isLoading: boolean;
 }
 
-const VerifiedAddressesTable = ({ data, applications, onItemEdit, onItemAdd }: Props) => {
+const VerifiedAddressesTable = ({ data, applications, onItemEdit, onItemAdd, isLoading }: Props) => {
   return (
     <Table variant="simple">
       <Thead>
@@ -25,13 +26,14 @@ const VerifiedAddressesTable = ({ data, applications, onItemEdit, onItemAdd }: P
         </Tr>
       </Thead>
       <Tbody>
-        { data.map((item) => (
+        { data.map((item, index) => (
           <VerifiedAddressesTableItem
-            key={ item.contractAddress }
+            key={ item.contractAddress + (isLoading ? index : '') }
             item={ item }
             application={ applications?.find(({ tokenAddress }) => tokenAddress.toLowerCase() === item.contractAddress.toLowerCase()) }
             onAdd={ onItemAdd }
             onEdit={ onItemEdit }
+            isLoading={ isLoading }
           />
         )) }
       </Tbody>

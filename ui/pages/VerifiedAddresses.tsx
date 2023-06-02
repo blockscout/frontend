@@ -1,4 +1,4 @@
-import { OrderedList, ListItem, chakra, Button, useDisclosure, Show, Hide, Skeleton, Box, Link } from '@chakra-ui/react';
+import { OrderedList, ListItem, chakra, Button, useDisclosure, Show, Hide, Skeleton, Link } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -9,12 +9,11 @@ import appConfig from 'configs/app/config';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { TOKEN_INFO_APPLICATION, VERIFIED_ADDRESS } from 'stubs/account';
 import AddressVerificationModal from 'ui/addressVerification/AddressVerificationModal';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import SkeletonListAccount from 'ui/shared/skeletons/SkeletonListAccount';
-import SkeletonTable from 'ui/shared/skeletons/SkeletonTable';
 import AdminSupportText from 'ui/shared/texts/AdminSupportText';
 import TokenInfoForm from 'ui/tokenInfo/TokenInfoForm';
 import VerifiedAddressesListItem from 'ui/verifiedAddresses/VerifiedAddressesListItem';
@@ -35,12 +34,18 @@ const VerifiedAddresses = () => {
   }, [ ]);
 
   const modalProps = useDisclosure();
+  const queryClient = useQueryClient();
+
   const addressesQuery = useApiQuery('verified_addresses', {
     pathParams: { chainId: appConfig.network.id },
+    queryOptions: {
+      placeholderData: { verifiedAddresses: Array(3).fill(VERIFIED_ADDRESS) },
+    },
   });
   const applicationsQuery = useApiQuery('token_info_applications', {
     pathParams: { chainId: appConfig.network.id, id: undefined },
     queryOptions: {
+      placeholderData: { submissions: Array(3).fill(TOKEN_INFO_APPLICATION) },
       select: (data) => {
         return {
           ...data,
@@ -49,7 +54,8 @@ const VerifiedAddresses = () => {
       },
     },
   });
-  const queryClient = useQueryClient();
+
+  const isLoading = addressesQuery.isPlaceholderData || applicationsQuery.isPlaceholderData;
 
   const handleGoBack = React.useCallback(() => {
     setSelectedAddress(undefined);
@@ -94,24 +100,11 @@ const VerifiedAddresses = () => {
   }, [ queryClient ]);
 
   const addButton = (
-    <Box marginTop={ 8 }>
+    <Skeleton mt={ 8 } isLoaded={ !isLoading } display="inline-block">
       <Button size="lg" onClick={ modalProps.onOpen }>
           Add address
       </Button>
-    </Box>
-  );
-
-  const skeleton = (
-    <>
-      <Box display={{ base: 'block', lg: 'none' }}>
-        <SkeletonListAccount/>
-        <Skeleton height="44px" width="156px" marginTop={ 8 }/>
-      </Box>
-      <Box display={{ base: 'none', lg: 'block' }}>
-        <SkeletonTable columns={ [ '100%', '180px', '260px', '160px' ] }/>
-        <Skeleton height="44px" width="156px" marginTop={ 8 }/>
-      </Box>
-    </>
+    </Skeleton>
   );
 
   const backLink = React.useMemo(() => {
@@ -144,13 +137,14 @@ const VerifiedAddresses = () => {
   const content = addressesQuery.data?.verifiedAddresses ? (
     <>
       <Show below="lg" key="content-mobile" ssr={ false }>
-        { addressesQuery.data.verifiedAddresses.map((item) => (
+        { addressesQuery.data.verifiedAddresses.map((item, index) => (
           <VerifiedAddressesListItem
-            key={ item.contractAddress }
+            key={ item.contractAddress + (isLoading ? index : '') }
             item={ item }
             application={ applicationsQuery.data?.submissions?.find(({ tokenAddress }) => tokenAddress.toLowerCase() === item.contractAddress.toLowerCase()) }
             onAdd={ handleItemAdd }
             onEdit={ handleItemEdit }
+            isLoading={ isLoading }
           />
         )) }
       </Show>
@@ -160,6 +154,7 @@ const VerifiedAddresses = () => {
           applications={ applicationsQuery.data?.submissions }
           onItemEdit={ handleItemEdit }
           onItemAdd={ handleItemAdd }
+          isLoading={ isLoading }
         />
       </Hide>
     </>
@@ -192,12 +187,12 @@ const VerifiedAddresses = () => {
         <AdminSupportText mt={ 5 }/>
       </AccountPageDescription>
       <DataListDisplay
-        isLoading={ addressesQuery.isLoading || applicationsQuery.isLoading }
+        isLoading={ false }
         isError={ addressesQuery.isError || applicationsQuery.isError }
         items={ addressesQuery.data?.verifiedAddresses }
         content={ content }
         emptyText=""
-        skeletonProps={{ customSkeleton: skeleton }}
+        skeletonProps={{ customSkeleton: null }}
       />
       { addButton }
       <AddressVerificationModal
