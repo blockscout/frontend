@@ -170,7 +170,7 @@ l2Test('l2', async({ mount, page }) => {
 
 const mainnetTest = test.extend({
   context: contextWithEnvs([
-    { name: 'NEXT_PUBLIC_IS_TESTNET', value: 'fals' },
+    { name: 'NEXT_PUBLIC_IS_TESTNET', value: 'false' },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ]) as any,
 });
