@@ -1,4 +1,4 @@
-import { Flex, Skeleton } from '@chakra-ui/react';
+import { Box, Flex, Skeleton } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -36,17 +36,20 @@ const TokenHoldersListItem = ({ holder, token, isLoading }: Props) => {
         <CopyToClipboard text={ holder.address.hash } isLoading={ isLoading }/>
       </Address>
       <Flex justifyContent="space-between" alignItems="center" width="100%">
-        <Skeleton isLoaded={ !isLoading } display="inline-block">
-          { quantity }
+        <Skeleton isLoaded={ !isLoading } display="inline-block" width="100%">
+          <Box as="span" wordBreak="break-word" mr={ 6 }>
+            { quantity }
+          </Box>
+          { token.total_supply && (
+            <Utilization
+              value={ BigNumber(holder.value).div(BigNumber(token.total_supply)).dp(4).toNumber() }
+              colorScheme="green"
+              isLoading={ isLoading }
+              display="inline-flex"
+              float="right"
+            />
+          ) }
         </Skeleton>
-        { token.total_supply && (
-          <Utilization
-            value={ BigNumber(holder.value).div(BigNumber(token.total_supply)).dp(4).toNumber() }
-            colorScheme="green"
-            ml={ 6 }
-            isLoading={ isLoading }
-          />
-        ) }
       </Flex>
     </ListItemMobile>
   );
