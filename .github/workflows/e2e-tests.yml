@@ -66,7 +66,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             GIT_COMMIT_SHA=${{ env.SHORT_SHA }}
-            GIT_TAG=${{ github.ref_type == 'tag' && github.github.ref_name || '' }}
+            GIT_TAG=${{ github.ref_type == 'tag' && github.ref_name || '' }}
   #deploy_and_tests:
     # if: github.event.review.state == 'approved'
   #  needs: push_to_registry
