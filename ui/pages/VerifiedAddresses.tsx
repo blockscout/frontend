@@ -99,6 +99,10 @@ const VerifiedAddresses = () => {
       });
   }, [ queryClient ]);
 
+  if (addressesQuery.isError && addressesQuery.error.status === 403) {
+    throw new Error('Unverified email error', { cause: addressesQuery.error });
+  }
+
   const addButton = (
     <Skeleton mt={ 8 } isLoaded={ !isLoading } display="inline-block">
       <Button size="lg" onClick={ modalProps.onOpen }>
