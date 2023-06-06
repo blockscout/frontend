@@ -14,6 +14,16 @@ import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 type Props = { item: TokenInstance; isLoading: boolean };
 
 const NFTItem = ({ item, isLoading }: Props) => {
+
+  const mediaElement = (
+    <NftMedia
+      mb="18px"
+      imageUrl={ item.image_url }
+      animationUrl={ item.animation_url }
+      isLoading={ isLoading }
+    />
+  );
+
   return (
     <LinkBox
       w={{ base: '100%', lg: '210px' }}
@@ -21,21 +31,22 @@ const NFTItem = ({ item, isLoading }: Props) => {
       borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }
       borderRadius="12px"
       p="10px"
-      _hover={{ boxShadow: 'md' }}
+      _hover={{ boxShadow: isLoading ? 'none' : 'md' }}
       fontSize="sm"
       fontWeight={ 500 }
       lineHeight="20px"
     >
-      <NextLink href={{ pathname: '/token/[hash]/instance/[id]', query: { hash: item.token.address, id: item.id } }} passHref legacyBehavior>
-        <LinkOverlay>
-          <NftMedia
-            mb="18px"
-            imageUrl={ item.image_url }
-            animationUrl={ item.animation_url }
-            isLoading={ isLoading }
-          />
-        </LinkOverlay>
-      </NextLink>
+      { isLoading ? mediaElement : (
+        <NextLink
+          href={{ pathname: '/token/[hash]/instance/[id]', query: { hash: item.token.address, id: item.id } }}
+          passHref
+          legacyBehavior
+        >
+          <LinkOverlay>
+            { mediaElement }
+          </LinkOverlay>
+        </NextLink>
+      ) }
       { item.id && (
         <Flex mb={ 2 } ml={ 1 }>
           <Text whiteSpace="pre" variant="secondary">ID# </Text>
@@ -46,6 +57,7 @@ const NFTItem = ({ item, isLoading }: Props) => {
                 textOverflow="ellipsis"
                 whiteSpace="nowrap"
                 display="block"
+                isLoading={ isLoading }
               >
                 { item.id }
               </LinkInternal>
