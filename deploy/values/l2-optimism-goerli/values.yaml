@@ -49,9 +49,9 @@ blockscout:
   resources:
     limits:
       memory:
-        _default: "2Gi"
+        _default: "4Gi"
       cpu:
-        _default: "1"
+        _default: "2"
     requests:
       memory:
         _default: "2Gi"

@@ -48,7 +48,7 @@ blockscout:
       memory:
         _default: "4Gi"
       cpu:
-        _default: "3"
+        _default: "4"
     requests:
       memory:
         _default: "2Gi"
@@ -239,6 +239,10 @@ frontend:
         _default: 250m
   nodeSelector:
     enabled: false
+  livenessProbe:
+    enabled: true
+  readinessProbe:
+    enabled: true
   environment:
     # ui config
     NEXT_PUBLIC_FEATURED_NETWORKS:
