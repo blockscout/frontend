@@ -15,6 +15,7 @@ export interface SmartContract {
   name: string | null;
   verified_at: string | null;
   is_verified: boolean | null;
+  is_verified_via_eth_bytecode_db: boolean | null;
   is_changed_bytecode: boolean | null;
   // sourcify info >>>
   is_verified_via_sourcify: boolean | null;

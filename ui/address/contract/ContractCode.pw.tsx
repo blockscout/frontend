@@ -98,6 +98,23 @@ test('verified via sourcify', async({ mount, page }) => {
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 110 } });
 });
 
+test('verified via eth bytecode db', async({ mount, page }) => {
+  await page.route(CONTRACT_API_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify(contractMock.verifiedViaEthBytecodeDb),
+  }));
+  await page.route('https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0/**', (route) => route.abort());
+
+  await mount(
+    <TestApp>
+      <ContractCode addressHash={ addressHash } noSocket/>
+    </TestApp>,
+    { hooksConfig },
+  );
+
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 110 } });
+});
+
 test('self destructed', async({ mount, page }) => {
   await page.route(CONTRACT_API_URL, (route) => route.fulfill({
     status: 200,
