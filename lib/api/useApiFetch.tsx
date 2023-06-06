@@ -1,6 +1,7 @@
 import React from 'react';
 
 import isNeedProxy from 'lib/api/isNeedProxy';
+import * as cookies from 'lib/cookies';
 import type { Params as FetchParams } from 'lib/hooks/useFetch';
 import useFetch from 'lib/hooks/useFetch';
 
@@ -27,9 +28,10 @@ export default function useApiFetch() {
       url,
       {
         credentials: 'include',
-        ...(resource.endpoint && isNeedProxy() ? {
+        ...(resource.endpoint ? {
           headers: {
-            'x-endpoint': resource.endpoint,
+            ...(isNeedProxy() ? { 'x-endpoint': resource.endpoint } : {}),
+            ...(resource.needAuth ? { Authorization: cookies.get(cookies.NAMES.API_TOKEN) } : {}),
           },
         } : {}),
         ...fetchParams,
