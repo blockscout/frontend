@@ -32,12 +32,13 @@ const TokenTransferTableItem = ({ holder, token, isLoading }: Props) => {
             alias={ holder.address.name }
             flexGrow={ 1 }
             isLoading={ isLoading }
+            truncation="constant"
           />
           <CopyToClipboard text={ holder.address.hash } isLoading={ isLoading }/>
         </Address>
       </Td>
       <Td verticalAlign="middle" isNumeric>
-        <Skeleton isLoaded={ !isLoading } display="inline-block">
+        <Skeleton isLoaded={ !isLoading } display="inline-block" wordBreak="break-word">
           { quantity }
         </Skeleton>
       </Td>

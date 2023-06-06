@@ -15,11 +15,11 @@ interface Props {
 
 const TokenHoldersTable = ({ data, token, top, isLoading }: Props) => {
   return (
-    <Table variant="simple" size="sm">
+    <Table variant="simple" size="sm" layout="auto">
       <Thead top={ top }>
         <Tr>
           <Th>Holder</Th>
-          <Th isNumeric width="300px">Quantity</Th>
+          <Th isNumeric>Quantity</Th>
           { token.total_supply && <Th isNumeric width="175px">Percentage</Th> }
         </Tr>
       </Thead>
