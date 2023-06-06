@@ -167,3 +167,28 @@ l2Test('l2', async({ mount, page }) => {
 
   await expect(component).toHaveScreenshot();
 });
+
+const mainnetTest = test.extend({
+  context: contextWithEnvs([
+    { name: 'NEXT_PUBLIC_IS_TESTNET', value: 'false' },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ]) as any,
+});
+
+mainnetTest('without testnet warning', async({ mount, page }) => {
+  await page.route(API_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify(txMock.l2tx),
+  }));
+
+  const component = await mount(
+    <TestApp>
+      <TxDetails/>
+    </TestApp>,
+    { hooksConfig },
+  );
+
+  await insertAdPlaceholder(page);
+
+  await expect(component).toHaveScreenshot();
+});

@@ -65,6 +65,7 @@ export interface ApiResource {
   endpoint?: string;
   basePath?: string;
   pathParams?: Array<string>;
+  needAuth?: boolean; // for external APIs which require authentication
 }
 
 export const RESOURCES = {
@@ -109,6 +110,7 @@ export const RESOURCES = {
     pathParams: [ 'chainId' as const, 'type' as const ],
     endpoint: appConfig.contractInfoApi.endpoint,
     basePath: appConfig.contractInfoApi.basePath,
+    needAuth: true,
   },
 
   verified_addresses: {
@@ -116,6 +118,7 @@ export const RESOURCES = {
     pathParams: [ 'chainId' as const ],
     endpoint: appConfig.contractInfoApi.endpoint,
     basePath: appConfig.contractInfoApi.basePath,
+    needAuth: true,
   },
 
   token_info_applications_config: {
@@ -123,6 +126,7 @@ export const RESOURCES = {
     pathParams: [ 'chainId' as const ],
     endpoint: appConfig.adminServiceApi.endpoint,
     basePath: appConfig.adminServiceApi.basePath,
+    needAuth: true,
   },
 
   token_info_applications: {
@@ -130,6 +134,7 @@ export const RESOURCES = {
     pathParams: [ 'chainId' as const, 'id' as const ],
     endpoint: appConfig.adminServiceApi.endpoint,
     basePath: appConfig.adminServiceApi.basePath,
+    needAuth: true,
   },
 
   // STATS
