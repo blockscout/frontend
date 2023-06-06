@@ -1,10 +1,12 @@
 import { Accordion, Hide, Show, Text } from '@chakra-ui/react';
 import React from 'react';
 
-import useApiQuery from 'lib/api/useApiQuery';
 import { SECOND } from 'lib/consts';
+import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import { TX_STATE_CHANGES } from 'stubs/txStateChanges';
+import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
+import Pagination from 'ui/shared/Pagination';
 import TxStateList from 'ui/tx/state/TxStateList';
 import TxStateTable from 'ui/tx/state/TxStateTable';
 import useFetchTxInfo from 'ui/tx/useFetchTxInfo';
@@ -14,11 +16,18 @@ import TxSocketAlert from './TxSocketAlert';
 
 const TxState = () => {
   const txInfo = useFetchTxInfo({ updateDelay: 5 * SECOND });
-  const { data, isPlaceholderData, isError } = useApiQuery('tx_state_changes', {
+  const { data, isPlaceholderData, isError, isPaginationVisible, pagination } = useQueryWithPages({
+    resourceName: 'tx_state_changes',
     pathParams: { hash: txInfo.data?.hash },
-    queryOptions: {
-      enabled: Boolean(txInfo.data?.hash) && Boolean(txInfo.data?.status),
-      placeholderData: TX_STATE_CHANGES,
+    options: {
+      enabled: !txInfo.isPlaceholderData && Boolean(txInfo.data?.hash) && Boolean(txInfo.data?.status),
+      placeholderData: {
+        items: TX_STATE_CHANGES,
+        next_page_params: {
+          items_count: 1,
+          state_changes: null,
+        },
+      },
     },
   });
 
@@ -29,12 +38,18 @@ const TxState = () => {
   const content = data ? (
     <Accordion allowMultiple defaultIndex={ [] }>
       <Hide below="lg" ssr={ false }>
-        <TxStateTable data={ data } isLoading={ isPlaceholderData }/>
+        <TxStateTable data={ data.items } isLoading={ isPlaceholderData } top={ isPaginationVisible ? 80 : 0 }/>
       </Hide>
       <Show below="lg" ssr={ false }>
-        <TxStateList data={ data } isLoading={ isPlaceholderData }/>
+        <TxStateList data={ data.items } isLoading={ isPlaceholderData }/>
       </Show>
     </Accordion>
+  ) : null;
+
+  const actionBar = isPaginationVisible ? (
+    <ActionBar mt={ -6 } showShadow>
+      <Pagination ml="auto" { ...pagination }/>
+    </ActionBar>
   ) : null;
 
   return (
@@ -45,9 +60,10 @@ const TxState = () => {
       </Text>
       <DataListDisplay
         isError={ isError }
-        items={ data }
+        items={ data?.items }
         emptyText="There are no state changes for this transaction."
         content={ content }
+        actionBar={ actionBar }
       />
     </>
   );

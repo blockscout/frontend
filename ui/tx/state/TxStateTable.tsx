@@ -6,20 +6,21 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TxStateChanges } from 'types/api/txStateChanges';
+import type { TxStateChange } from 'types/api/txStateChanges';
 
 import { default as Thead } from 'ui/shared/TheadSticky';
 import TxStateTableItem from 'ui/tx/state/TxStateTableItem';
 
 interface Props {
-  data: TxStateChanges;
+  data: Array<TxStateChange>;
   isLoading?: boolean;
+  top: number;
 }
 
-const TxStateTable = ({ data, isLoading }: Props) => {
+const TxStateTable = ({ data, isLoading, top }: Props) => {
   return (
     <Table variant="simple" minWidth="1000px" size="sm" w="auto">
-      <Thead top={ 0 }>
+      <Thead top={ top }>
         <Tr>
           <Th width="140px">Type</Th>
           <Th width="146px">Address</Th>

@@ -3,10 +3,8 @@ import React from 'react';
 
 import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
 
-import type { TxStateChangeNftItemFlatten } from './utils';
-
 interface Props {
-  items: Array<TxStateChangeNftItemFlatten>;
+  items: Array<{total: { token_id: string} }>;
   tokenAddress: string;
   isLoading?: boolean;
 }

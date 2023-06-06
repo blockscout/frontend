@@ -1,12 +1,12 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TxStateChanges } from 'types/api/txStateChanges';
+import type { TxStateChange } from 'types/api/txStateChanges';
 
 import TxStateListItem from 'ui/tx/state/TxStateListItem';
 
 interface Props {
-  data: TxStateChanges;
+  data: Array<TxStateChange>;
   isLoading?: boolean;
 }
 

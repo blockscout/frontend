@@ -2,8 +2,7 @@ import { Flex, Skeleton, Tooltip } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type { TxStateChange, TxStateChangeTokenErc1155, TxStateChangeTokenErc1155Single, TxStateChangeTokenErc721 } from 'types/api/txStateChanges';
-import type { ArrayElement } from 'types/utils';
+import type { TxStateChange } from 'types/api/txStateChanges';
 
 import appConfig from 'configs/app/config';
 import { ZERO_ADDRESS } from 'lib/consts';
@@ -12,6 +11,7 @@ import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import AddressLink from 'ui/shared/address/AddressLink';
 import Tag from 'ui/shared/chakra/Tag';
+import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
 
 import TxStateTokenIdList from './TxStateTokenIdList';
 
@@ -98,11 +98,22 @@ export function getStateElements(data: TxStateChange, isLoading?: boolean) {
 
       const tokenId = (() => {
         if (!Array.isArray(data.change)) {
-          return null;
+          if ('token_id' in data && data.token_id) {
+            return (
+              <TokenTransferNft
+                hash={ data.token.address }
+                id={ data.token_id }
+                w="auto"
+                truncation="constant"
+                isLoading={ isLoading }
+              />
+            );
+          } else {
+            return null;
+          }
         }
 
-        const items = (data.change as Array<TxStateChangeNftItem>).reduce(flattenTotal, []);
-        return <TxStateTokenIdList items={ items } tokenAddress={ data.token.address } isLoading={ isLoading }/>;
+        return <TxStateTokenIdList items={ data.change } tokenAddress={ data.token.address } isLoading={ isLoading }/>;
       })();
 
       return {
@@ -126,17 +137,4 @@ export function getStateElements(data: TxStateChange, isLoading?: boolean) {
       };
     }
   }
-}
-
-export type TxStateChangeNftItem = ArrayElement<TxStateChangeTokenErc721['change'] | TxStateChangeTokenErc1155['change']>;
-export type TxStateChangeNftItemFlatten = ArrayElement<TxStateChangeTokenErc721['change'] | TxStateChangeTokenErc1155Single['change']>;
-
-function flattenTotal(result: Array<TxStateChangeNftItemFlatten>, item: TxStateChangeNftItem): Array<TxStateChangeNftItemFlatten> {
-  if (Array.isArray(item.total)) {
-    result.push(...item.total.map((total) => ({ ...item, total })));
-  } else {
-    result.push({ ...item, total: item.total });
-  }
-
-  return result;
 }
