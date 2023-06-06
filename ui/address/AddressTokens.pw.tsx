@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react';
-import { test as base, expect } from '@playwright/experimental-ct-react';
+import { test as base, expect, devices } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import { withName } from 'mocks/address/address';
@@ -56,7 +56,7 @@ const test = base.extend({
   },
 });
 
-test('erc20 +@mobile +@dark-mode', async({ mount }) => {
+test('erc20 +@dark-mode', async({ mount }) => {
   const hooksConfig = {
     router: {
       query: { hash: ADDRESS_HASH, tab: 'tokens_erc20' },
@@ -75,7 +75,7 @@ test('erc20 +@mobile +@dark-mode', async({ mount }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('erc721 +@mobile +@dark-mode', async({ mount }) => {
+test('erc721 +@dark-mode', async({ mount }) => {
   const hooksConfig = {
     router: {
       query: { hash: ADDRESS_HASH, tab: 'tokens_erc721' },
@@ -94,7 +94,7 @@ test('erc721 +@mobile +@dark-mode', async({ mount }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('erc1155 +@mobile +@dark-mode', async({ mount }) => {
+test('erc1155 +@dark-mode', async({ mount }) => {
   const hooksConfig = {
     router: {
       query: { hash: ADDRESS_HASH, tab: 'tokens_erc1155' },
@@ -111,4 +111,65 @@ test('erc1155 +@mobile +@dark-mode', async({ mount }) => {
   );
 
   await expect(component).toHaveScreenshot();
+});
+
+test.describe('mobile', () => {
+  test.use({ viewport: devices['iPhone 13 Pro'].viewport });
+
+  test('erc20', async({ mount }) => {
+    const hooksConfig = {
+      router: {
+        query: { hash: ADDRESS_HASH, tab: 'tokens_erc20' },
+        isReady: true,
+      },
+    };
+
+    const component = await mount(
+      <TestApp>
+        <Box h={{ base: '134px', lg: 6 }}/>
+        <AddressTokens/>
+      </TestApp>,
+      { hooksConfig },
+    );
+
+    await expect(component).toHaveScreenshot();
+  });
+
+  test('erc721', async({ mount }) => {
+    const hooksConfig = {
+      router: {
+        query: { hash: ADDRESS_HASH, tab: 'tokens_erc721' },
+        isReady: true,
+      },
+    };
+
+    const component = await mount(
+      <TestApp>
+        <Box h={{ base: '134px', lg: 6 }}/>
+        <AddressTokens/>
+      </TestApp>,
+      { hooksConfig },
+    );
+
+    await expect(component).toHaveScreenshot();
+  });
+
+  test('erc1155', async({ mount }) => {
+    const hooksConfig = {
+      router: {
+        query: { hash: ADDRESS_HASH, tab: 'tokens_erc1155' },
+        isReady: true,
+      },
+    };
+
+    const component = await mount(
+      <TestApp>
+        <Box h={{ base: '134px', lg: 6 }}/>
+        <AddressTokens/>
+      </TestApp>,
+      { hooksConfig },
+    );
+
+    await expect(component).toHaveScreenshot();
+  });
 });
