@@ -10,6 +10,7 @@ import LinkInternal from 'ui/shared/LinkInternal';
 import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 
 import LatestTxsItem from './LatestTxsItem';
+import LatestTxsItemMobile from './LatestTxsItemMobile';
 
 const LatestTransactions = () => {
   const isMobile = useIsMobile();
@@ -31,7 +32,16 @@ const LatestTransactions = () => {
     return (
       <>
         <SocketNewItemsNotice borderBottomRadius={ 0 } url={ txsUrl } num={ num } alert={ socketAlert } isLoading={ isPlaceholderData }/>
-        <Box mb={{ base: 3, lg: 4 }}>
+        <Box mb={ 3 } display={{ base: 'block', lg: 'none' }}>
+          { data.slice(0, txsCount).map(((tx, index) => (
+            <LatestTxsItemMobile
+              key={ tx.hash + (isPlaceholderData ? index : '') }
+              tx={ tx }
+              isLoading={ isPlaceholderData }
+            />
+          ))) }
+        </Box>
+        <Box mb={ 4 } display={{ base: 'none', lg: 'block' }}>
           { data.slice(0, txsCount).map(((tx, index) => (
             <LatestTxsItem
               key={ tx.hash + (isPlaceholderData ? index : '') }
