@@ -1,4 +1,4 @@
-import type { TxStateChange, TxStateChanges } from 'types/api/txStateChanges';
+import type { TxStateChange } from 'types/api/txStateChanges';
 
 import { ADDRESS_PARAMS } from './addressParams';
 import { TOKEN_INFO_ERC_721 } from './token';
@@ -40,7 +40,7 @@ export const STATE_CHANGE_TOKEN: TxStateChange = {
   type: 'token',
 };
 
-export const TX_STATE_CHANGES: TxStateChanges = [
+export const TX_STATE_CHANGES: Array<TxStateChange> = [
   STATE_CHANGE_MINER,
   STATE_CHANGE_COIN,
   STATE_CHANGE_TOKEN,

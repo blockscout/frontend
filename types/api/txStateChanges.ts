@@ -1,6 +1,6 @@
 import type { AddressParam } from './addressParams';
 import type { TokenInfo } from './token';
-import type { Erc1155TotalPayload, Erc721TotalPayload } from './tokenTransfer';
+import type { Erc721TotalPayload } from './tokenTransfer';
 
 export type TxStateChange = (TxStateChangeCoin | TxStateChangeToken) & {
   address: AddressParam;
@@ -34,24 +34,18 @@ export interface TxStateChangeTokenErc721 {
   }>;
 }
 
-export type TxStateChangeTokenErc1155 = TxStateChangeTokenErc1155Single | TxStateChangeTokenErc1155Batch;
-
-export interface TxStateChangeTokenErc1155Single {
+export interface TxStateChangeTokenErc1155 {
   type: 'token';
   token: TokenInfo<'ERC-1155'>;
-  change: Array<{
-    direction: ChangeDirection;
-    total: Erc1155TotalPayload;
-  }>;
+  change: string;
+  token_id: string;
 }
 
-export interface TxStateChangeTokenErc1155Batch {
-  type: 'token';
-  token: TokenInfo<'ERC-1155'>;
-  change: Array<{
-    direction: ChangeDirection;
-    total: Array<Erc1155TotalPayload>;
-  }>;
-}
-
-export type TxStateChanges = Array<TxStateChange>;
+export type TxStateChanges = {
+  items: Array<TxStateChange>;
+  next_page_params: {
+    items_count: number;
+    // ???
+    state_changes: null;
+  };
+};

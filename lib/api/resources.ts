@@ -219,6 +219,7 @@ export const RESOURCES = {
   tx_state_changes: {
     path: '/api/v2/transactions/:hash/state-changes',
     pathParams: [ 'hash' as const ],
+    filterFields: [],
   },
   withdrawals: {
     path: '/api/v2/withdrawals',
@@ -512,7 +513,7 @@ export type ResourceErrorAccount<T> = ResourceError<{ errors: T }>
 
 export type PaginatedResources = 'blocks' | 'block_txs' |
 'txs_validated' | 'txs_pending' | 'txs_watchlist' |
-'tx_internal_txs' | 'tx_logs' | 'tx_token_transfers' |
+'tx_internal_txs' | 'tx_logs' | 'tx_token_transfers' | 'tx_state_changes' |
 'addresses' |
 'address_txs' | 'address_internal_txs' | 'address_token_transfers' | 'address_blocks_validated' | 'address_coin_balance' |
 'search' |

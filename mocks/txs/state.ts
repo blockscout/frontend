@@ -72,6 +72,36 @@ export const receiveMintedToken: TxStateChange = {
   type: 'token',
 };
 
+export const transfer1155Token: TxStateChange = {
+  address: {
+    hash: '0x51243E83Db20F8FC2761D894067A2A9eb7B158DE',
+    implementation_name: null,
+    is_contract: false,
+    is_verified: false,
+    name: null,
+    private_tags: [],
+    public_tags: [],
+    watchlist_names: [],
+  },
+  balance_after: '1',
+  balance_before: '0',
+  change: '1',
+  is_miner: false,
+  token: {
+    address: '0x56Cc277717106E528A9FcC2CD342Ff98db758041',
+    decimals: null,
+    exchange_rate: null,
+    holders: '50413',
+    icon_url: null,
+    name: null,
+    symbol: null,
+    total_supply: null,
+    type: 'ERC-1155',
+  },
+  token_id: '1',
+  type: 'token',
+};
+
 export const receiveCoin: TxStateChange = {
   address: {
     hash: '0x8dC847Af872947Ac18d5d63fA646EB65d4D99560',
@@ -110,9 +140,16 @@ export const sendCoin: TxStateChange = {
   type: 'coin',
 };
 
-export const baseResponse = [
-  mintToken,
-  receiveMintedToken,
-  sendCoin,
-  receiveCoin,
-];
+export const baseResponse = {
+  items: [
+    mintToken,
+    receiveMintedToken,
+    sendCoin,
+    receiveCoin,
+    transfer1155Token,
+  ],
+  next_page_params: {
+    items_count: 50,
+    state_changes: null,
+  },
+};
