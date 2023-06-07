@@ -121,20 +121,42 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
     ));
   })();
 
+  const verificationAlert = (() => {
+    if (data?.is_verified_via_eth_bytecode_db) {
+      return (
+        <Alert status="warning" whiteSpace="pre-wrap" flexWrap="wrap">
+          <span>This contract has been { data.is_partially_verified ? 'partially ' : '' }verified using </span>
+          <LinkExternal
+            href="https://docs.blockscout.com/about/features/ethereum-bytecode-database-microservice"
+            fontSize="md"
+          >
+            Blockscout Bytecode Database
+          </LinkExternal>
+        </Alert>
+      );
+    }
+
+    if (data?.is_verified_via_sourcify) {
+      return (
+        <Alert status="warning" whiteSpace="pre-wrap" flexWrap="wrap">
+          <span>This contract has been { data.is_partially_verified ? 'partially ' : '' }verified via Sourcify. </span>
+          { data.sourcify_repo_url && <LinkExternal href={ data.sourcify_repo_url } fontSize="md">View contract in Sourcify repository</LinkExternal> }
+        </Alert>
+      );
+    }
+
+    return null;
+  })();
+
   return (
     <>
       <Flex flexDir="column" rowGap={ 2 } mb={ 6 } _empty={{ display: 'none' }}>
         { data?.is_verified && (
           <Skeleton isLoaded={ !isPlaceholderData }>
-            <Alert status="success">Contract Source Code Verified (Exact Match)</Alert>
+            <Alert status="success">Contract Source Code Verified ({ data.is_partially_verified ? 'Partial' : 'Exact' } Match)</Alert>
           </Skeleton>
         ) }
-        { data?.is_verified_via_sourcify && (
-          <Alert status="warning" whiteSpace="pre-wrap" flexWrap="wrap">
-            <span>This contract has been { data.is_partially_verified ? 'partially ' : '' }verified via Sourcify. </span>
-            { data.sourcify_repo_url && <LinkExternal href={ data.sourcify_repo_url } fontSize="md">View contract in Sourcify repository</LinkExternal> }
-          </Alert>
-        ) }
+        { verificationAlert }
         { (data?.is_changed_bytecode || isChangedBytecodeSocket) && (
           <Alert status="warning">
             Warning! Contract bytecode has been changed and does not match the verified one. Therefore, interaction with this smart contract may be risky.
