@@ -1,4 +1,4 @@
-import { test as base, expect } from '@playwright/experimental-ct-react';
+import { test as base, expect, devices } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import * as textAdMock from 'mocks/ad/textAd';
@@ -40,7 +40,7 @@ test.beforeEach(async({ page }) => {
   });
 });
 
-test('base view +@mobile +@dark-mode', async({ mount, page }) => {
+test('base view +@dark-mode', async({ mount, page }) => {
   await page.route(BLOCKS_API_URL, (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(blockMock.baseListResponse),
@@ -59,6 +59,30 @@ test('base view +@mobile +@dark-mode', async({ mount, page }) => {
   await page.waitForResponse(BLOCKS_API_URL);
 
   await expect(component).toHaveScreenshot();
+});
+
+test.describe('mobile', () => {
+  test.use({ viewport: devices['iPhone 13 Pro'].viewport });
+  test(' base view', async({ mount, page }) => {
+    await page.route(BLOCKS_API_URL, (route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify(blockMock.baseListResponse),
+    }));
+    await page.route(STATS_API_URL, (route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify(statsMock.base),
+    }));
+
+    const component = await mount(
+      <TestApp>
+        <Blocks/>
+      </TestApp>,
+      { hooksConfig },
+    );
+    await page.waitForResponse(BLOCKS_API_URL);
+
+    await expect(component).toHaveScreenshot();
+  });
 });
 
 test('new item from socket', async({ mount, page, createSocket }) => {
