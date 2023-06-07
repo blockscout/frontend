@@ -45,7 +45,6 @@ export type TxStateChanges = {
   items: Array<TxStateChange>;
   next_page_params: {
     items_count: number;
-    // ???
     state_changes: null;
   };
 };
