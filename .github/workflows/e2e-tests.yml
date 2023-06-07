@@ -59,7 +59,7 @@ jobs:
 #          build-args: |
 #            GIT_COMMIT_SHA=${{ env.SHORT_SHA }}
 #            GIT_TAG=${{ github.ref_type == 'tag' && github.ref_name || '' }}
-  deploy_e2e:
+  deploy_e2e_and_test:
 #    needs: push_to_registry
     runs-on: ubuntu-latest
     permissions: write-all
@@ -86,3 +86,12 @@ jobs:
           ref: main
           wait_interval: 30
           client_payload: '{ "instance": "dev", "globalEnv": "e2e"}'
+      - name: Trigger tests
+        uses: convictional/trigger-workflow-and-wait@v1.6.1
+        with:
+          owner: blockscout
+          repo: blockscout-ci-cd
+          github_token: ${{env.WORKFLOW_TRIGGER_TOKEN}}
+          workflow_file_name: e2e_new.yaml
+          ref: main
+          wait_interval: 30
