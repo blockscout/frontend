@@ -212,10 +212,12 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
             isLoading={ isPlaceholderData }
           />
         ) }
-        <ContractSourceCode
-          address={ addressHash }
-          isLoading={ isPlaceholderData }
-        />
+        { data?.is_verified && (
+          <ContractSourceCode
+            address={ addressHash }
+            implementationAddress={ addressInfo?.implementation_address ?? undefined }
+          />
+        ) }
         { data?.compiler_settings ? (
           <RawDataSnippet
             data={ JSON.stringify(data.compiler_settings, undefined, 4) }

@@ -5,12 +5,12 @@ import React from 'react';
 import type { SmartContract } from 'types/api/contract';
 import type { ArrayElement } from 'types/utils';
 
+import useApiQuery from 'lib/api/useApiQuery';
+import * as stubs from 'stubs/contract';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import LinkInternal from 'ui/shared/LinkInternal';
 import CodeEditor from 'ui/shared/monaco/CodeEditor';
 import formatFilePath from 'ui/shared/monaco/utils/formatFilePath';
-
-import { useContractContext } from './context';
 
 const SOURCE_CODE_OPTIONS = [
   { id: 'primary', label: 'Proxy' } as const,
@@ -31,26 +31,45 @@ function getEditorData(contractInfo: SmartContract | undefined) {
 }
 
 interface Props {
-  address?: string; // todo_tom need address of proxy contract
-  isLoading?: boolean; // todo_tom should be true if proxyInfo is not loaded
+  address?: string;
+  implementationAddress?: string;
 }
 
-// todo_tom fix mobile layout
-const ContractSourceCode = ({ address, isLoading }: Props) => {
+const ContractSourceCode = ({ address, implementationAddress }: Props) => {
   const [ sourceType, setSourceType ] = React.useState<SourceCodeType>('primary');
 
-  const { contractInfo: primaryContract, proxyInfo: secondaryContract } = useContractContext();
+  const primaryContractQuery = useApiQuery('contract', {
+    pathParams: { hash: address },
+    queryOptions: {
+      enabled: Boolean(address),
+      refetchOnMount: false,
+      placeholderData: stubs.CONTRACT_CODE_VERIFIED,
+    },
+  });
 
-  const editorDataPrimary = React.useMemo(() => {
-    return getEditorData(primaryContract);
-  }, [ primaryContract ]);
+  const secondaryContractQuery = useApiQuery('contract', {
+    pathParams: { hash: implementationAddress },
+    queryOptions: {
+      enabled: Boolean(implementationAddress),
+      refetchOnMount: false,
+      placeholderData: stubs.CONTRACT_CODE_VERIFIED,
+    },
+  });
 
-  const editorDataSecondary = React.useMemo(() => {
-    return getEditorData(secondaryContract);
-  }, [ secondaryContract ]);
+  const isLoading = implementationAddress ?
+    primaryContractQuery.isPlaceholderData || secondaryContractQuery.isPlaceholderData :
+    primaryContractQuery.isPlaceholderData;
 
-  const activeContract = sourceType === 'secondary' ? secondaryContract : primaryContract;
-  const activeContractData = sourceType === 'secondary' ? editorDataSecondary : editorDataPrimary;
+  const primaryEditorData = React.useMemo(() => {
+    return getEditorData(primaryContractQuery.data);
+  }, [ primaryContractQuery.data ]);
+
+  const secondaryEditorData = React.useMemo(() => {
+    return getEditorData(secondaryContractQuery.data);
+  }, [ secondaryContractQuery.data ]);
+
+  const activeContract = sourceType === 'secondary' ? secondaryContractQuery.data : primaryContractQuery.data;
+  const activeContractData = sourceType === 'secondary' ? secondaryEditorData : primaryEditorData;
 
   const heading = (
     <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>
@@ -59,10 +78,17 @@ const ContractSourceCode = ({ address, isLoading }: Props) => {
     </Skeleton>
   );
 
-  const diagramLink = activeContract?.can_be_visualized_via_sol2uml && address ? (
+  const diagramLinkAddress = (() => {
+    if (!activeContract?.can_be_visualized_via_sol2uml) {
+      return;
+    }
+    return sourceType === 'secondary' ? implementationAddress : address;
+  })();
+
+  const diagramLink = diagramLinkAddress ? (
     <Tooltip label="Visualize contract code using Sol2Uml JS library">
       <LinkInternal
-        href={ route({ pathname: '/visualize/sol2uml', query: { address } }) }
+        href={ route({ pathname: '/visualize/sol2uml', query: { address: diagramLinkAddress } }) }
         ml="auto"
       >
         <Skeleton isLoaded={ !isLoading }>
@@ -70,7 +96,7 @@ const ContractSourceCode = ({ address, isLoading }: Props) => {
         </Skeleton>
       </LinkInternal>
     </Tooltip>
-  ) : null;
+  ) : <Box ml="auto"/>;
 
   const copyToClipboard = activeContractData?.length === 1 ?
     <CopyToClipboard text={ activeContractData[0].source_code } isLoading={ isLoading } ml={ 3 }/> :
@@ -80,15 +106,15 @@ const ContractSourceCode = ({ address, isLoading }: Props) => {
     setSourceType(event.target.value as SourceCodeType);
   }, []);
 
-  const editorSourceTypeSelector = secondaryContract?.source_code ? (
+  const editorSourceTypeSelector = !secondaryContractQuery.isPlaceholderData && secondaryContractQuery.data?.source_code ? (
     <Select
       size="xs"
-      borderRadius="base"
       value={ sourceType }
       onChange={ handleSelectChange }
       focusBorderColor="none"
       w="auto"
       ml={ 3 }
+      borderRadius="base"
     >
       { SOURCE_CODE_OPTIONS.map((option) => <option key={ option.id } value={ option.id }>{ option.label }</option>) }
     </Select>
@@ -99,25 +125,25 @@ const ContractSourceCode = ({ address, isLoading }: Props) => {
       return <Skeleton h="557px" w="100%"/>;
     }
 
-    if (!editorDataPrimary) {
+    if (!primaryEditorData) {
       return null;
     }
 
     return (
       <>
         <Box display={ sourceType === 'primary' ? 'block' : 'none' }>
-          <CodeEditor data={ editorDataPrimary } remappings={ primaryContract?.compiler_settings?.remappings }/>
+          <CodeEditor data={ primaryEditorData } remappings={ primaryContractQuery.data?.compiler_settings?.remappings }/>
         </Box>
-        { editorDataSecondary && (
+        { secondaryEditorData && (
           <Box display={ sourceType === 'secondary' ? 'block' : 'none' }>
-            <CodeEditor data={ editorDataSecondary } remappings={ secondaryContract?.compiler_settings?.remappings }/>
+            <CodeEditor data={ secondaryEditorData } remappings={ secondaryContractQuery.data?.compiler_settings?.remappings }/>
           </Box>
         ) }
       </>
     );
   })();
 
-  if (!editorDataPrimary) {
+  if (!primaryEditorData) {
     return null;
   }
 
