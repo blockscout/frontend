@@ -85,4 +85,4 @@ jobs:
           workflow_file_name: deploy_blockscout.yaml
           ref: main
           wait_interval: 30
-          client_payload: '{ "instance": "e2e", "globalEnv": "dev"}'
+          client_payload: '{ "instance": "dev", "globalEnv": "e2e"}'
