@@ -8,14 +8,6 @@ on:
     #  - '*'
   workflow_dispatch:
 
-env:
-  K8S_LOCAL_PORT: ${{ secrets.K8S_LOCAL_PORT }}
-  K8S_HOST: ${{ secrets.K8S_HOST }}
-  BASTION_HOST: ${{ secrets.BASTION_HOST }}
-  K8S_PORT: ${{ secrets.K8S_PORT }}
-  USERNAME: ${{ secrets.USERNAME }}
-  BASTION_SSH_KEY: ${{secrets.BASTION_SSH_KEY}}
-
 jobs:
 #  push_to_registry:
 #    name: Push Docker image to registry
@@ -70,6 +62,7 @@ jobs:
   deploy_e2e:
 #    needs: push_to_registry
     runs-on: ubuntu-latest
+    permissions: write-all
     steps:
       - name: Get Vault credentials
         id: retrieve-vault-secrets
