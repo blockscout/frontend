@@ -3,7 +3,6 @@ import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
 
-import getCurrencyValue from 'lib/getCurrencyValue';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import AddressLink from 'ui/shared/address/AddressLink';
 import Tag from 'ui/shared/chakra/Tag';
@@ -29,16 +28,13 @@ const TokensTableItem = ({
 
   const {
     address,
-    total_supply: totalSupply,
     exchange_rate: exchangeRate,
     type,
     name,
     symbol,
-    decimals,
     holders,
+    circulating_market_cap: marketCap,
   } = token;
-
-  const totalValue = totalSupply !== null ? getCurrencyValue({ value: totalSupply, accuracy: 3, accuracyUsd: 2, exchangeRate, decimals }) : undefined;
 
   const tokenString = [ name, symbol && `(${ symbol })` ].filter(Boolean).join(' ');
 
@@ -74,10 +70,10 @@ const TokensTableItem = ({
           <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary"><span>{ exchangeRate }</span></Skeleton>
         </HStack>
       ) }
-      { totalValue?.usd && (
+      { marketCap && (
         <HStack spacing={ 3 }>
           <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>On-chain market cap</Skeleton>
-          <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary"><span>{ totalValue.usd }</span></Skeleton>
+          <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary"><span>{ marketCap }</span></Skeleton>
         </HStack>
       ) }
       <HStack spacing={ 3 }>

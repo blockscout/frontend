@@ -3,7 +3,6 @@ import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
 
-import getCurrencyValue from 'lib/getCurrencyValue';
 import Address from 'ui/shared/address/Address';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -29,16 +28,13 @@ const TokensTableItem = ({
 
   const {
     address,
-    total_supply: totalSupply,
     exchange_rate: exchangeRate,
     type,
     name,
     symbol,
-    decimals,
     holders,
+    circulating_market_cap: marketCap,
   } = token;
-
-  const totalValue = totalSupply !== null ? getCurrencyValue({ value: totalSupply, accuracy: 3, accuracyUsd: 2, exchangeRate, decimals }) : undefined;
 
   const tokenString = [ name, symbol && `(${ symbol })` ].filter(Boolean).join(' ');
 
@@ -81,7 +77,7 @@ const TokensTableItem = ({
       </Td>
       <Td isNumeric maxWidth="300px" width="300px">
         <Skeleton isLoaded={ !isLoading } fontSize="sm" lineHeight="24px" fontWeight={ 500 } display="inline-block">
-          { totalValue?.usd && `$${ totalValue.usd }` }
+          { marketCap && `$${ marketCap }` }
         </Skeleton>
       </Td>
       <Td isNumeric>

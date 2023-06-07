@@ -65,17 +65,16 @@ const TokenDetails = ({ tokenQuery }: Props) => {
   const {
     exchange_rate: exchangeRate,
     total_supply: totalSupply,
+    circulating_market_cap: marketCap,
     decimals,
     symbol,
     type,
   } = tokenQuery.data || {};
 
-  let marketcap;
   let totalSupplyValue;
 
   if (type === 'ERC-20') {
     const totalValue = totalSupply ? getCurrencyValue({ value: totalSupply, accuracy: 3, accuracyUsd: 2, exchangeRate, decimals }) : undefined;
-    marketcap = totalValue?.usd;
     totalSupplyValue = totalValue?.valueStr;
   } else {
     totalSupplyValue = Number(totalSupply).toLocaleString();
@@ -100,7 +99,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
           </Skeleton>
         </DetailsInfoItem>
       ) }
-      { marketcap && (
+      { marketCap && (
         <DetailsInfoItem
           title="Fully diluted market cap"
           hint="Total supply * Price"
@@ -108,7 +107,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
           isLoading={ tokenQuery.isPlaceholderData }
         >
           <Skeleton isLoaded={ !tokenQuery.isPlaceholderData } display="inline-block">
-            <span>{ `$${ marketcap }` }</span>
+            <span>{ `$${ marketCap }` }</span>
           </Skeleton>
         </DetailsInfoItem>
       ) }
