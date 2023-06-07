@@ -114,6 +114,7 @@ const config = Object.freeze({
   ad: {
     domainWithAd: getEnvValue(process.env.NEXT_PUBLIC_AD_DOMAIN_WITH_AD) || 'blockscout.com',
     adButlerOn: getEnvValue(process.env.NEXT_PUBLIC_AD_ADBUTLER_ON) === 'true',
+    sliseOn: getEnvValue(process.env.NEXT_PUBLIC_AD_SLISE_ON) === 'true',
   },
   web3: {
     defaultWallet: getWeb3DefaultWallet(),
