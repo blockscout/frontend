@@ -46,6 +46,7 @@ export function ContractContextProvider({ addressHash, children }: ProviderProps
     },
   });
 
+  // todo_tom check custom abi case
   const { data: customInfo } = useApiQuery('contract_methods_write', {
     pathParams: { hash: addressHash },
     queryParams: { is_custom_abi: 'true' },
