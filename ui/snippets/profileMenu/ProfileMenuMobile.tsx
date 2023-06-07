@@ -1,4 +1,6 @@
 import { Box, Drawer, DrawerOverlay, DrawerContent, DrawerBody, useDisclosure, Button } from '@chakra-ui/react';
+import type { ButtonProps } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
@@ -9,8 +11,26 @@ import ProfileMenuContent from 'ui/snippets/profileMenu/ProfileMenuContent';
 const ProfileMenuMobile = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { data } = useFetchProfileInfo();
+  const { data, error } = useFetchProfileInfo();
   const loginUrl = useLoginUrl();
+
+  const buttonProps: Partial<ButtonProps> = (() => {
+    if (error?.status === 403) {
+      return {
+        as: 'a',
+        href: route({ pathname: '/auth/profile' }),
+      };
+    }
+
+    if (!data) {
+      return {
+        as: 'a',
+        href: loginUrl,
+      };
+    }
+
+    return {};
+  })();
 
   return (
     <>
@@ -18,8 +38,7 @@ const ProfileMenuMobile = () => {
         <Button
           variant="unstyled"
           height="auto"
-          as={ data ? undefined : 'a' }
-          href={ data ? undefined : loginUrl }
+          { ...buttonProps }
         >
           <UserAvatar size={ 24 }/>
         </Button>

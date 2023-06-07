@@ -16,6 +16,7 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/address/[hash]/contract_verification", { "hash": string }>
     | DynamicRoute<"/address/[hash]", { "hash": string }>
     | StaticRoute<"/api/csrf">
+    | StaticRoute<"/api/healthz">
     | StaticRoute<"/api/media-type">
     | StaticRoute<"/api/proxy">
     | StaticRoute<"/api-docs">

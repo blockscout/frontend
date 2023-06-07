@@ -1,4 +1,6 @@
+import type { ButtonProps } from '@chakra-ui/react';
 import { Popover, PopoverContent, PopoverBody, PopoverTrigger, Button } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
@@ -7,8 +9,26 @@ import UserAvatar from 'ui/shared/UserAvatar';
 import ProfileMenuContent from 'ui/snippets/profileMenu/ProfileMenuContent';
 
 const ProfileMenuDesktop = () => {
-  const { data } = useFetchProfileInfo();
+  const { data, error } = useFetchProfileInfo();
   const loginUrl = useLoginUrl();
+
+  const buttonProps: Partial<ButtonProps> = (() => {
+    if (error?.status === 403) {
+      return {
+        as: 'a',
+        href: route({ pathname: '/auth/profile' }),
+      };
+    }
+
+    if (!data) {
+      return {
+        as: 'a',
+        href: loginUrl,
+      };
+    }
+
+    return {};
+  })();
 
   return (
     <Popover openDelay={ 300 } placement="bottom-end" gutter={ 10 } isLazy>
@@ -18,8 +38,7 @@ const ProfileMenuDesktop = () => {
           display="inline-flex"
           height="auto"
           flexShrink={ 0 }
-          as={ data ? undefined : 'a' }
-          href={ data ? undefined : loginUrl }
+          { ...buttonProps }
         >
           <UserAvatar size={ 50 }/>
         </Button>
