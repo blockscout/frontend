@@ -3,9 +3,10 @@
     // for the documentation about the tasks.json format
     "version": "2.0.0",
     "tasks": [
+        // DEV SERVER
         {
-            "type": "npm",
-            "script": "dev",
+            "type": "shell",
+            "command": "yarn dev:${input:devServerConfig}",
             "problemMatcher": [],
             "label": "dev server",
             "detail": "start local dev server",
@@ -17,27 +18,6 @@
                 "revealProblems": "onProblem",
             },
             "icon": {
-                "color": "terminal.ansiGreen",
-                "id": "server-process"
-            },
-            "runOptions": {
-                "instanceLimit": 1
-            }
-        },
-        {
-            "type": "npm",
-            "script": "dev:poa_core",
-            "problemMatcher": [],
-            "label": "dev server: poa",
-            "detail": "start local dev server for POA network",
-            "presentation": {
-                "reveal": "always",
-                "panel": "shared",
-                "focus": true,
-                "close": false,
-                "revealProblems": "onProblem",
-            },
-            "icon": {
                 "color": "terminal.ansiMagenta",
                 "id": "server-process"
             },
@@ -45,48 +25,8 @@
                 "instanceLimit": 1
             }
         },
-        {
-            "type": "shell",
-            "command": "NEXT_PUBLIC_API_HOST=${input:apiHost} yarn dev:goerli",
-            "problemMatcher": [],
-            "label": "dev server: goerli",
-            "detail": "start local dev server for Goerli network",
-            "presentation": {
-                "reveal": "always",
-                "panel": "shared",
-                "focus": true,
-                "close": false,
-                "revealProblems": "onProblem",
-            },
-            "icon": {
-                "color": "terminal.ansiMagenta",
-                "id": "server-process"
-            },
-            "runOptions": {
-                "instanceLimit": 1
-            }
-        },
-        {
-            "type": "shell",
-            "command": "NEXT_PUBLIC_API_HOST=${input:L2ApiHost} NEXT_PUBLIC_L1_BASE_URL=https://${input:apiHost} yarn dev:goerli:optimism",
-            "problemMatcher": [],
-            "label": "dev server: goerli optimism",
-            "detail": "start local dev server for Goerli Optimism network",
-            "presentation": {
-                "reveal": "always",
-                "panel": "shared",
-                "focus": true,
-                "close": false,
-                "revealProblems": "onProblem",
-            },
-            "icon": {
-                "color": "terminal.ansiMagenta",
-                "id": "server-process"
-            },
-            "runOptions": {
-                "instanceLimit": 1
-            }
-        },
+
+        // CODE CHECKS
         {
             "type": "typescript",
             "label": "tsc build",
@@ -371,22 +311,15 @@
         },
         {
             "type": "pickString",
-            "id": "apiHost",
-            "description": "Choose API host:",
+            "id": "devServerConfig",
+            "description": "Choose dev server config:",
             "options": [
-              "blockscout-main.k8s-dev.blockscout.com",
-              "eth-goerli.blockscout.com",
-              "eth.blockscout.com",
-            ],
-            "default": ""
-        },
-        {
-            "type": "pickString",
-            "id": "L2ApiHost",
-            "description": "Choose L2 API host:",
-            "options": [
-              "blockscout-optimism-goerli.k8s-dev.blockscout.com",
-              "base-goerli.blockscout.com",
+              "main",
+              "main:L2",
+              "poa_core",
+              "eth_goerli",
+              "eth",
+              "local",
             ],
             "default": ""
         },
