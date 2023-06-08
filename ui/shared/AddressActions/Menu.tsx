@@ -4,6 +4,7 @@ import React from 'react';
 
 import appConfig from 'configs/app/config';
 import iconArrow from 'icons/arrows/east-mini.svg';
+import useIsAccountActionAllowed from 'lib/hooks/useIsAccountActionAllowed';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
 import PrivateTagMenuItem from './PrivateTagMenuItem';
@@ -19,6 +20,7 @@ const AddressActions = ({ isLoading }: Props) => {
 
   const hash = getQueryParamString(router.query.hash);
   const isTokenPage = router.pathname === '/token/[hash]';
+  const isAccountActionAllowed = useIsAccountActionAllowed();
 
   return (
     <Menu>
@@ -36,9 +38,9 @@ const AddressActions = ({ isLoading }: Props) => {
       </Skeleton>
       <MenuList minWidth="180px" zIndex="popover">
         { isTokenPage && appConfig.contractInfoApi.endpoint && appConfig.adminServiceApi.endpoint && appConfig.isAccountSupported &&
-          <TokenInfoMenuItem py={ 2 } px={ 4 } hash={ hash }/> }
-        <PrivateTagMenuItem py={ 2 } px={ 4 } hash={ hash }/>
-        <PublicTagMenuItem py={ 2 } px={ 4 } hash={ hash }/>
+          <TokenInfoMenuItem py={ 2 } px={ 4 } hash={ hash } onBeforeClick={ isAccountActionAllowed }/> }
+        <PrivateTagMenuItem py={ 2 } px={ 4 } hash={ hash } onBeforeClick={ isAccountActionAllowed }/>
+        <PublicTagMenuItem py={ 2 } px={ 4 } hash={ hash } onBeforeClick={ isAccountActionAllowed }/>
       </MenuList>
     </Menu>
   );

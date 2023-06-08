@@ -5,12 +5,9 @@ import React from 'react';
 
 import starFilledIcon from 'icons/star_filled.svg';
 import starOutlineIcon from 'icons/star_outline.svg';
-import type { ResourceError } from 'lib/api/resources';
-import { resourceKey } from 'lib/api/resources';
 import { getResourceKey } from 'lib/api/useApiQuery';
+import useIsAccountActionAllowed from 'lib/hooks/useIsAccountActionAllowed';
 import usePreventFocusAfterModalClosing from 'lib/hooks/usePreventFocusAfterModalClosing';
-import useRedirectIfNotAuth from 'lib/hooks/useRedirectIfNotAuth';
-import useToast from 'lib/hooks/useToast';
 import WatchlistAddModal from 'ui/watchlist/AddressModal/AddressModal';
 import DeleteAddressModal from 'ui/watchlist/DeleteAddressModal';
 
@@ -25,33 +22,14 @@ const AddressFavoriteButton = ({ className, hash, watchListId }: Props) => {
   const deleteModalProps = useDisclosure();
   const queryClient = useQueryClient();
   const router = useRouter();
-  const toast = useToast();
-
-  const redirectIfNotAuth = useRedirectIfNotAuth();
-
-  const profileState = queryClient.getQueryState<unknown, ResourceError<{ message: string }>>([ resourceKey('user_info') ]);
+  const isAccountActionAllowed = useIsAccountActionAllowed();
 
   const handleClick = React.useCallback(() => {
-    if (profileState?.error?.status === 403) {
-      const isUnverifiedEmail = profileState.error.payload?.message.includes('Unverified email');
-      if (isUnverifiedEmail) {
-        toast({
-          position: 'top-right',
-          title: 'Error',
-          description: 'Unable to add address to watch list. Please go to the watch list page instead.',
-          status: 'error',
-          variant: 'subtle',
-          isClosable: true,
-        });
-        return;
-      }
-    }
-
-    if (redirectIfNotAuth()) {
+    if (!isAccountActionAllowed({ pathname: '/account/watchlist' })) {
       return;
     }
     watchListId ? deleteModalProps.onOpen() : addModalProps.onOpen();
-  }, [ profileState, redirectIfNotAuth, watchListId, deleteModalProps, addModalProps, toast ]);
+  }, [ isAccountActionAllowed, watchListId, deleteModalProps, addModalProps ]);
 
   const handleAddOrDeleteSuccess = React.useCallback(async() => {
     const queryKey = getResourceKey('address', { pathParams: { hash: router.query.hash?.toString() } });
