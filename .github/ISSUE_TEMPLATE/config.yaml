@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Ask a question
+    url: https://github.com/orgs/blockscout/discussions
+    about: Ask questions and discuss topics with other community members
+  - name: Join our Discord Server
+    url: https://discord.gg/blockscout
+    about: The official Blockscout Discord community
