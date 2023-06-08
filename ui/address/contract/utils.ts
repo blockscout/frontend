@@ -1,5 +1,3 @@
-import config from 'configs/app/config';
-
 export const getNativeCoinValue = (value: string | Array<unknown>) => {
   const _value = Array.isArray(value) ? value[0] : value;
 
@@ -7,7 +5,7 @@ export const getNativeCoinValue = (value: string | Array<unknown>) => {
     return BigInt(0);
   }
 
-  return BigInt(Number(_value) * 10 ** config.network.currency.decimals);
+  return BigInt(Number(_value));
 };
 
 export const addZeroesAllowed = (valueType: string) => {
@@ -15,7 +13,7 @@ export const addZeroesAllowed = (valueType: string) => {
     return false;
   }
 
-  const REGEXP = /u?int(\d+)/i;
+  const REGEXP = /^u?int(\d+)/i;
 
   const match = valueType.match(REGEXP);
   const power = match?.[1];
