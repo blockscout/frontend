@@ -89,3 +89,4 @@ jobs:
   test:
     needs: deploy_e2e
     uses: blockscout/blockscout-ci-cd/.github/workflows/e2e_new.yaml@master
+    secrets: inherit
