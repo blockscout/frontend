@@ -4,17 +4,7 @@ on:
   push:
     tags:
       - '*'
-  # pull_request_review:
-  #   types: [submitted]
   workflow_dispatch:
-
-env:
-  K8S_LOCAL_PORT: ${{ secrets.K8S_LOCAL_PORT }}
-  K8S_HOST: ${{ secrets.K8S_HOST }}
-  BASTION_HOST: ${{ secrets.BASTION_HOST }}
-  K8S_PORT: ${{ secrets.K8S_PORT }}
-  USERNAME: ${{ secrets.USERNAME }}
-  BASTION_SSH_KEY: ${{secrets.BASTION_SSH_KEY}}
 
 jobs:
   push_to_registry:
@@ -67,15 +57,34 @@ jobs:
           build-args: |
             GIT_COMMIT_SHA=${{ env.SHORT_SHA }}
             GIT_TAG=${{ github.ref_type == 'tag' && github.ref_name || '' }}
-  #deploy_and_tests:
-    # if: github.event.review.state == 'approved'
-  #  needs: push_to_registry
-  #  uses: blockscout/blockscout-ci-cd/.github/workflows/e2e_new.yaml@master
-  #  with:
-  #    appNamespace: e2e-front-$GITHUB_SHA_SHORT
-  #    frontendImage: ${{ needs.push_to_registry.outputs.tags }}
-  #    blockscoutIngressHost: e2e-blockscout-$GITHUB_SHA_SHORT
-  #    frontendIngressHost: e2e-blockscout-$GITHUB_SHA_SHORT
-  #    gethIngressHost: e2e-geth-$GITHUB_SHA_SHORT
-  #    scVerifierIngressHost: e2e-sc-verifier-$GITHUB_SHA_SHORT
-  #  secrets: inherit
+  deploy_e2e:
+    needs: push_to_registry
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - name: Get Vault credentials
+        id: retrieve-vault-secrets
+        uses: hashicorp/vault-action@v2.4.1
+        with:
+          url: https://vault.k8s.blockscout.com
+          role: ci-dev
+          path: github-jwt
+          method: jwt
+          tlsSkipVerify: false
+          exportToken: true
+          secrets: |
+            ci/data/dev/github token | WORKFLOW_TRIGGER_TOKEN ;
+      - name: Trigger deploy
+        uses: convictional/trigger-workflow-and-wait@v1.6.1
+        with:
+          owner: blockscout
+          repo: deployment-values
+          github_token: ${{env.WORKFLOW_TRIGGER_TOKEN}}
+          workflow_file_name: deploy_blockscout.yaml
+          ref: main
+          wait_interval: 30
+          client_payload: '{ "instance": "dev", "globalEnv": "e2e"}'
+  test:
+    needs: deploy_e2e
+    uses: blockscout/blockscout-ci-cd/.github/workflows/e2e_new.yaml@master
+    secrets: inherit
