@@ -1,34 +1,34 @@
 import { MenuItem, Icon, chakra, useDisclosure } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
+import type { Route } from 'nextjs-routes';
 import React from 'react';
 
 import type { Address } from 'types/api/address';
 
 import iconPrivateTags from 'icons/privattags.svg';
 import { getResourceKey } from 'lib/api/useApiQuery';
-import useRedirectIfNotAuth from 'lib/hooks/useRedirectIfNotAuth';
 import PrivateTagModal from 'ui/privateTags/AddressModal/AddressModal';
 
 interface Props {
   className?: string;
   hash: string;
+  onBeforeClick: (route: Route) => boolean;
 }
 
-const PrivateTagMenuItem = ({ className, hash }: Props) => {
+const PrivateTagMenuItem = ({ className, hash, onBeforeClick }: Props) => {
   const modal = useDisclosure();
   const queryClient = useQueryClient();
-  const redirectIfNotAuth = useRedirectIfNotAuth();
 
   const queryKey = getResourceKey('address', { pathParams: { hash } });
   const addressData = queryClient.getQueryData<Address>(queryKey);
 
   const handleClick = React.useCallback(() => {
-    if (redirectIfNotAuth()) {
+    if (!onBeforeClick({ pathname: '/account/tag_address' })) {
       return;
     }
 
     modal.onOpen();
-  }, [ modal, redirectIfNotAuth ]);
+  }, [ modal, onBeforeClick ]);
 
   const handleAddPrivateTag = React.useCallback(async() => {
     await queryClient.refetchQueries({ queryKey });

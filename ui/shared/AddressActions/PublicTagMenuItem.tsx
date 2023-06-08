@@ -1,26 +1,26 @@
 import { MenuItem, Icon, chakra } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
+import type { Route } from 'nextjs-routes';
 import React from 'react';
 
 import iconPublicTags from 'icons/publictags.svg';
-import useRedirectIfNotAuth from 'lib/hooks/useRedirectIfNotAuth';
 
 interface Props {
   className?: string;
   hash: string;
+  onBeforeClick: (route: Route) => boolean;
 }
 
-const PublicTagMenuItem = ({ className, hash }: Props) => {
+const PublicTagMenuItem = ({ className, hash, onBeforeClick }: Props) => {
   const router = useRouter();
-  const redirectIfNotAuth = useRedirectIfNotAuth();
 
   const handleClick = React.useCallback(() => {
-    if (redirectIfNotAuth()) {
+    if (!onBeforeClick({ pathname: '/account/public_tags_request' })) {
       return;
     }
 
     router.push({ pathname: '/account/public_tags_request', query: { address: hash } });
-  }, [ hash, redirectIfNotAuth, router ]);
+  }, [ hash, onBeforeClick, router ]);
 
   return (
     <MenuItem className={ className }onClick={ handleClick }>
