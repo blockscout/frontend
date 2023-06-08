@@ -1,23 +1,23 @@
 import { MenuItem, Icon, chakra, useDisclosure } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
+import type { Route } from 'nextjs-routes';
 import React from 'react';
 
 import appConfig from 'configs/app/config';
 import iconEdit from 'icons/edit.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import useHasAccount from 'lib/hooks/useHasAccount';
-import useRedirectIfNotAuth from 'lib/hooks/useRedirectIfNotAuth';
 import AddressVerificationModal from 'ui/addressVerification/AddressVerificationModal';
 
 interface Props {
   className?: string;
   hash: string;
+  onBeforeClick: (route: Route) => boolean;
 }
 
-const TokenInfoMenuItem = ({ className, hash }: Props) => {
+const TokenInfoMenuItem = ({ className, hash, onBeforeClick }: Props) => {
   const router = useRouter();
   const modal = useDisclosure();
-  const redirectIfNotAuth = useRedirectIfNotAuth();
   const isAuth = useHasAccount();
 
   const verifiedAddressesQuery = useApiQuery('verified_addresses', {
@@ -40,12 +40,12 @@ const TokenInfoMenuItem = ({ className, hash }: Props) => {
   });
 
   const handleAddAddressClick = React.useCallback(() => {
-    if (redirectIfNotAuth()) {
+    if (!onBeforeClick({ pathname: '/account/verified_addresses' })) {
       return;
     }
 
     modal.onOpen();
-  }, [ modal, redirectIfNotAuth ]);
+  }, [ modal, onBeforeClick ]);
 
   const handleAddApplicationClick = React.useCallback(async() => {
     router.push({ pathname: '/account/verified_addresses', query: { address: hash } });
