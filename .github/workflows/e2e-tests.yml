@@ -94,4 +94,4 @@ jobs:
           github_token: ${{env.WORKFLOW_TRIGGER_TOKEN}}
           workflow_file_name: e2e_new.yaml
           ref: master
-          wait_interval: 30
+          wait_interval: 60
