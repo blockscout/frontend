@@ -1,5 +1,6 @@
 import { Box, Flex, Grid, Link, Skeleton } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
+import BigNumber from 'bignumber.js';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 import { scroller } from 'react-scroll';
@@ -107,7 +108,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
           isLoading={ tokenQuery.isPlaceholderData }
         >
           <Skeleton isLoaded={ !tokenQuery.isPlaceholderData } display="inline-block">
-            <span>{ `$${ marketCap }` }</span>
+            <span>{ `$${ BigNumber(marketCap).toFormat() }` }</span>
           </Skeleton>
         </DetailsInfoItem>
       ) }

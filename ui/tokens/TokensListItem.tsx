@@ -1,4 +1,5 @@
 import { Flex, HStack, Grid, GridItem, Skeleton } from '@chakra-ui/react';
+import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
@@ -73,7 +74,7 @@ const TokensTableItem = ({
       { marketCap && (
         <HStack spacing={ 3 }>
           <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>On-chain market cap</Skeleton>
-          <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary"><span>{ marketCap }</span></Skeleton>
+          <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary"><span>{ BigNumber(marketCap).toFormat() }</span></Skeleton>
         </HStack>
       ) }
       <HStack spacing={ 3 }>
