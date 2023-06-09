@@ -13,6 +13,7 @@ import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import Icon from 'ui/shared/chakra/Icon';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 
@@ -34,6 +35,7 @@ const VerifiedContractsListItem = ({ data, isLoading }: Props) => {
         <Skeleton isLoaded={ !isLoading } color="text_secondary" ml="auto">
           <HashStringShorten hash={ data.address.hash } isTooltipDisabled/>
         </Skeleton>
+        <CopyToClipboard text={ data.address.hash } ml={ -1 } isLoading={ isLoading }/>
       </Address>
       <Flex columnGap={ 3 }>
         <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>Balance { appConfig.network.currency.symbol }</Skeleton>

@@ -12,6 +12,7 @@ import dayjs from 'lib/date/dayjs';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import Icon from 'ui/shared/chakra/Icon';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 
 interface Props {
@@ -31,9 +32,12 @@ const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
           <AddressIcon address={ data.address } isLoading={ isLoading }/>
           <Flex columnGap={ 2 } flexWrap="wrap" w="calc(100% - 32px)">
             <AddressLink hash={ data.address.hash } type="address" alias={ data.address.name } isLoading={ isLoading } my={ 1 }/>
-            <Skeleton isLoaded={ !isLoading } color="text_secondary" my={ 1 }>
-              <HashStringShorten hash={ data.address.hash } isTooltipDisabled/>
-            </Skeleton>
+            <Flex alignItems="center">
+              <Skeleton isLoaded={ !isLoading } color="text_secondary" my={ 1 }>
+                <HashStringShorten hash={ data.address.hash } isTooltipDisabled/>
+              </Skeleton>
+              <CopyToClipboard text={ data.address.hash } isLoading={ isLoading }/>
+            </Flex>
           </Flex>
         </Flex>
       </Td>
