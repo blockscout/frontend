@@ -19,6 +19,7 @@ const LongNameAndManyTags = () => {
 
   const tokenData: TokenInfo = {
     address: '0xa77A39CC9680B10C00af5D4ABFc92e1F07406c64',
+    circulating_market_cap: null,
     decimals: null,
     exchange_rate: null,
     holders: '294',
