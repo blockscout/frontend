@@ -47,7 +47,7 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick }: Props) =>
 
         return (
           <>
-            <TokenLogo boxSize={ 6 } hash={ data.address } name={ data.name } flexShrink={ 0 }/>
+            <TokenLogo boxSize={ 6 } data={ data } flexShrink={ 0 }/>
             <Text fontWeight={ 700 } ml={ 2 } w="200px" overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" flexShrink={ 0 }>
               <span dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}/>
             </Text>

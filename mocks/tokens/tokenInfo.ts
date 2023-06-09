@@ -9,7 +9,7 @@ export const tokenInfo: TokenInfo = {
   symbol: 'ARIA',
   type: 'ERC-20',
   total_supply: '1235',
-  icon_url: null,
+  icon_url: 'http://localhost:3000/token-icon.png',
 };
 
 export const tokenCounters: TokenCounters = {
