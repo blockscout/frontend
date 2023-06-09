@@ -134,7 +134,7 @@ blockscout:
     INDEXER_OPTIMISM_L1_DEPOSITS_START_BLOCK:
       _default: '8381594'
     ETHEREUM_JSONRPC_DEBUG_TRACE_TRANSACTION_TIMEOUT:
-      _default: '20s'
+      _default: '25s'
     INDEXER_OPTIMISM_L1_RPC:
       _default: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/INDEXER_OPTIMISM_L1_RPC
     ACCOUNT_USERNAME:
