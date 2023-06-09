@@ -41,6 +41,7 @@
     "@sentry/nextjs": "^7.12.1",
     "@sentry/react": "^7.24.0",
     "@sentry/tracing": "^7.24.0",
+    "@slise/embed-react": "^2.2.0",
     "@tanstack/react-query": "^4.0.10",
     "@tanstack/react-query-devtools": "^4.0.10",
     "@types/papaparse": "^5.3.5",

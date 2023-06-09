@@ -12,6 +12,7 @@ export function ad(): CspDev.DirectiveDescriptor {
       'coinzilla.com',
       '*.coinzilla.com',
       'request-global.czilladx.com',
+      '*.slise.xyz',
     ],
     'frame-src': [
       'request-global.czilladx.com',
@@ -19,6 +20,7 @@ export function ad(): CspDev.DirectiveDescriptor {
     'script-src': [
       'coinzillatag.com',
       'servedbyadbutler.com',
+      '*.slise.xyz',
       // what hash is this?
       '\'sha256-wMOeDjJaOTjCfNjluteV+tSqHW547T89sgxd8W6tQJM=\'',
       // what hash is this?

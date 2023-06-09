@@ -8,6 +8,7 @@ import isSelfHosted from 'lib/isSelfHosted';
 
 import AdbutlerBanner from './AdbutlerBanner';
 import CoinzillaBanner from './CoinzillaBanner';
+import SliseBanner from './SliseBanner';
 
 const AdBanner = ({ className, isLoading }: { className?: string; isLoading?: boolean }) => {
   const hasAdblockCookie = cookies.get(cookies.NAMES.ADBLOCK_DETECTED, useAppContext().cookies);
@@ -16,7 +17,17 @@ const AdBanner = ({ className, isLoading }: { className?: string; isLoading?: bo
     return null;
   }
 
-  const content = appConfig.ad.adButlerOn ? <AdbutlerBanner/> : <CoinzillaBanner/>;
+  const content = (() => {
+    if (appConfig.ad.adButlerOn) {
+      return <AdbutlerBanner/>;
+    }
+
+    if (appConfig.ad.sliseOn) {
+      return <SliseBanner/>;
+    }
+
+    return <CoinzillaBanner/>;
+  })();
 
   return (
     <Skeleton
