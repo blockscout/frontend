@@ -114,6 +114,8 @@ const config = Object.freeze({
   ad: {
     domainWithAd: getEnvValue(process.env.NEXT_PUBLIC_AD_DOMAIN_WITH_AD) || 'blockscout.com',
     adButlerOn: getEnvValue(process.env.NEXT_PUBLIC_AD_ADBUTLER_ON) === 'true',
+    adButlerIdDesktop: getEnvValue(process.env.NEXT_PUBLIC_AD_ADBUTLER_ID_DESKTOP),
+    adButlerIdMobile: getEnvValue(process.env.NEXT_PUBLIC_AD_ADBUTLER_ID_MOBILE),
     sliseOn: getEnvValue(process.env.NEXT_PUBLIC_AD_SLISE_ON) === 'true',
   },
   web3: {
