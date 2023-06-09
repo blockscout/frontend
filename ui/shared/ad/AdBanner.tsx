@@ -34,7 +34,7 @@ const AdBanner = ({ className, isLoading }: { className?: string; isLoading?: bo
       className={ className }
       isLoaded={ !isLoading }
       borderRadius="none"
-      maxW={ appConfig.ad.adButlerOn ? '760px' : '728px' }
+      maxW={ appConfig.ad.adButlerOn ? appConfig.ad.adButlerConfigDesktop?.width : '728px' }
       w="100%"
     >
       { content }

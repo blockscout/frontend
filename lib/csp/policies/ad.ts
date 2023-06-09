@@ -1,4 +1,3 @@
-// import CryptoJS from 'crypto-js';
 import Base64 from 'crypto-js/enc-base64';
 import sha256 from 'crypto-js/sha256';
 import type CspDev from 'csp-dev';
