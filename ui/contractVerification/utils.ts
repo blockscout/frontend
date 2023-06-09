@@ -258,8 +258,13 @@ const API_ERROR_TO_FORM_FIELD: Record<keyof SmartContractVerificationError, Fiel
   name: 'name',
 };
 
-export function formatSocketErrors(errors: SmartContractVerificationError): Array<[FieldPath<FormFields>, ErrorOption]> {
+export function formatSocketErrors(errors: SmartContractVerificationError): Array<[FieldPath<FormFields>, ErrorOption] | undefined> {
   return Object.entries(errors).map(([ key, value ]) => {
-    return [ API_ERROR_TO_FORM_FIELD[key as keyof SmartContractVerificationError], { message: value.join(',') } ];
+    const _key = key as keyof SmartContractVerificationError;
+    if (!API_ERROR_TO_FORM_FIELD[_key]) {
+      return;
+    }
+
+    return [ API_ERROR_TO_FORM_FIELD[_key], { message: value.join(',') } ];
   });
 }

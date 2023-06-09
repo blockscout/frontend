@@ -5,6 +5,7 @@ import React from 'react';
 
 import getSeo from 'lib/next/address/getSeo';
 import ContractVerification from 'ui/pages/ContractVerification';
+import Page from 'ui/shared/Page/Page';
 
 const ContractVerificationPage: NextPage<RoutedQuery<'/address/[hash]/contract_verification'>> =
 ({ hash }: RoutedQuery<'/address/[hash]/contract_verification'>) => {
@@ -16,7 +17,9 @@ const ContractVerificationPage: NextPage<RoutedQuery<'/address/[hash]/contract_v
         <title>{ title }</title>
         <meta name="description" content={ description }/>
       </Head>
-      <ContractVerification/>
+      <Page>
+        <ContractVerification/>
+      </Page>
     </>
   );
 };

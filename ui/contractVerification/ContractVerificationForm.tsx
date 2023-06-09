@@ -62,7 +62,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
   const handleNewSocketMessage: SocketMessage.ContractVerification['handler'] = React.useCallback((payload) => {
     if (payload.status === 'error') {
       const errors = formatSocketErrors(payload.errors);
-      errors.forEach(([ field, error ]) => setError(field, error));
+      errors.filter(Boolean).forEach(([ field, error ]) => setError(field, error));
       submitPromiseResolver.current?.(null);
       return;
     }

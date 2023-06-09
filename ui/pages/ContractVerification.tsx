@@ -15,7 +15,6 @@ import ContentLoader from 'ui/shared/ContentLoader';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 const ContractVerification = () => {
@@ -96,7 +95,7 @@ const ContractVerification = () => {
   }, [ appProps.referrer ]);
 
   return (
-    <Page>
+    <>
       <PageTitle
         title="New smart contract verification"
         backLink={ backLink }
@@ -111,7 +110,7 @@ const ContractVerification = () => {
         </Address>
       ) }
       { content }
-    </Page>
+    </>
   );
 };
 
