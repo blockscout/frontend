@@ -84,7 +84,7 @@ export const DEFAULT_VALUES: Record<SmartContractVerificationMethod, FormFields>
       value: 'vyper-code' as const,
       label: METHOD_LABELS['vyper-code'],
     },
-    name: 'Vyper_contract',
+    name: '',
     compiler: null,
     evm_version: null,
     code: '',
