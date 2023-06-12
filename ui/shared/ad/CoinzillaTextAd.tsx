@@ -1,7 +1,7 @@
 import { Box, Image, Link, Text, chakra, Skeleton } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 
-import { useAppContext } from 'lib/appContext';
+import { useAppContext } from 'lib/contexts/app';
 import * as cookies from 'lib/cookies';
 import { ndash } from 'lib/html-entities';
 import isBrowser from 'lib/isBrowser';

@@ -10,7 +10,7 @@ import type { RoutedTab } from 'ui/shared/Tabs/types';
 import appConfig from 'configs/app/config';
 import iconSuccess from 'icons/status/success.svg';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
-import { useAppContext } from 'lib/appContext';
+import { useAppContext } from 'lib/contexts/app';
 import useContractTabs from 'lib/hooks/useContractTabs';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';

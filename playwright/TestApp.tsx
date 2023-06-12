@@ -5,7 +5,7 @@ import React from 'react';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 
-import { AppContextProvider } from 'lib/appContext';
+import { AppContextProvider } from 'lib/contexts/app';
 import type { Props as PageProps } from 'lib/next/getServerSideProps';
 import { SocketProvider } from 'lib/socket/context';
 import { PORT } from 'playwright/fixtures/socketServer';

@@ -4,7 +4,7 @@ import React from 'react';
 import appConfig from 'configs/app/config';
 import chevronIcon from 'icons/arrows/east-mini.svg';
 import testnetIcon from 'icons/testnet.svg';
-import { useAppContext } from 'lib/appContext';
+import { useAppContext } from 'lib/contexts/app';
 import * as cookies from 'lib/cookies';
 import useHasAccount from 'lib/hooks/useHasAccount';
 import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';

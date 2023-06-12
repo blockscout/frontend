@@ -6,7 +6,7 @@ import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import nftIcon from 'icons/nft_shield.svg';
 import useApiQuery from 'lib/api/useApiQuery';
-import { useAppContext } from 'lib/appContext';
+import { useAppContext } from 'lib/contexts/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import { TOKEN_INSTANCE } from 'stubs/token';

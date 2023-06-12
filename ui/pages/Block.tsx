@@ -5,7 +5,7 @@ import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import appConfig from 'configs/app/config';
 import useApiQuery from 'lib/api/useApiQuery';
-import { useAppContext } from 'lib/appContext';
+import { useAppContext } from 'lib/contexts/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import getQueryParamString from 'lib/router/getQueryParamString';
