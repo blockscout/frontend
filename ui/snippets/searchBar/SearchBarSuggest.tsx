@@ -3,12 +3,12 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import _uniqBy from 'lodash/uniqBy';
 import React from 'react';
 
-import type { SearchRedirectResult, SearchResult, SearchResultItem } from 'types/api/search';
+import type { SearchRedirectResult, SearchResultItem } from 'types/api/search';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import TextAd from 'ui/shared/ad/TextAd';
 import ContentLoader from 'ui/shared/ContentLoader';
-import type { Props as PaginationProps } from 'ui/shared/Pagination';
+import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 
 import SearchBarSuggestItem from './SearchBarSuggestItem';
 
@@ -31,9 +31,7 @@ const getUniqueIdentifier = (item: SearchResultItem) => {
 };
 
 interface Props {
-  query: UseQueryResult<SearchResult> & {
-    pagination: PaginationProps;
-  };
+  query: QueryWithPagesResult<'search'>;
   redirectCheckQuery: UseQueryResult<SearchRedirectResult>;
   searchTerm: string;
   onItemClick: (event: React.MouseEvent<HTMLAnchorElement>) => void;

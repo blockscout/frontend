@@ -1,20 +1,20 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { LOG } from 'stubs/log';
 import { generateListStub } from 'stubs/utils';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import LogItem from 'ui/shared/logs/LogItem';
-import Pagination from 'ui/shared/Pagination';
+import Pagination from 'ui/shared/pagination/Pagination';
+import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 const AddressLogs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}) => {
   const router = useRouter();
 
   const hash = getQueryParamString(router.query.hash);
-  const { data, isPlaceholderData, isError, pagination, isPaginationVisible } = useQueryWithPages({
+  const { data, isPlaceholderData, isError, pagination } = useQueryWithPages({
     resourceName: 'address_logs',
     pathParams: { hash },
     scrollRef,
@@ -28,7 +28,7 @@ const AddressLogs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>
     },
   });
 
-  const actionBar = isPaginationVisible ? (
+  const actionBar = pagination.isVisible ? (
     <ActionBar mt={ -6 } showShadow>
       <Pagination ml="auto" { ...pagination }/>
     </ActionBar>

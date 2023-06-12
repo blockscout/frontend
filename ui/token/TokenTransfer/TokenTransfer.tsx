@@ -1,11 +1,9 @@
 import { Box } from '@chakra-ui/react';
-import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
 import type { TokenInfo } from 'types/api/token';
-import type { TokenTransferResponse } from 'types/api/tokenTransfer';
 
 import useGradualIncrement from 'lib/hooks/useGradualIncrement';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -13,17 +11,14 @@ import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import Pagination from 'ui/shared/Pagination';
-import type { Props as PaginationProps } from 'ui/shared/Pagination';
+import Pagination from 'ui/shared/pagination/Pagination';
+import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import TokenTransferList from 'ui/token/TokenTransfer/TokenTransferList';
 import TokenTransferTable from 'ui/token/TokenTransfer/TokenTransferTable';
 
 type Props = {
-  transfersQuery: UseQueryResult<TokenTransferResponse> & {
-    pagination: PaginationProps;
-    isPaginationVisible: boolean;
-  };
+  transfersQuery: QueryWithPagesResult<'token_transfers'> | QueryWithPagesResult<'token_instance_transfers'>;
   tokenId?: string;
   token?: TokenInfo;
 }
@@ -31,7 +26,7 @@ type Props = {
 const TokenTransfer = ({ transfersQuery, tokenId, token }: Props) => {
   const isMobile = useIsMobile();
   const router = useRouter();
-  const { isError, isPlaceholderData, data, pagination, isPaginationVisible } = transfersQuery;
+  const { isError, isPlaceholderData, data, pagination } = transfersQuery;
 
   const [ newItemsCount, setNewItemsCount ] = useGradualIncrement(0);
   const [ socketAlert, setSocketAlert ] = React.useState('');
@@ -66,7 +61,7 @@ const TokenTransfer = ({ transfersQuery, tokenId, token }: Props) => {
       <Box display={{ base: 'none', lg: 'block' }}>
         <TokenTransferTable
           data={ data?.items }
-          top={ isPaginationVisible ? 80 : 0 }
+          top={ pagination.isVisible ? 80 : 0 }
           showSocketInfo={ pagination.page === 1 }
           socketInfoAlert={ socketAlert }
           socketInfoNum={ newItemsCount }
@@ -90,7 +85,7 @@ const TokenTransfer = ({ transfersQuery, tokenId, token }: Props) => {
     </>
   ) : null;
 
-  const actionBar = isMobile && isPaginationVisible ? (
+  const actionBar = isMobile && pagination.isVisible ? (
     <ActionBar mt={ -6 }>
       <Pagination ml="auto" { ...pagination }/>
     </ActionBar>

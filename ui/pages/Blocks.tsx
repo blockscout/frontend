@@ -4,13 +4,13 @@ import React from 'react';
 import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { BLOCK } from 'stubs/block';
 import { generateListStub } from 'stubs/utils';
 import BlocksContent from 'ui/blocks/BlocksContent';
 import BlocksTabSlot from 'ui/blocks/BlocksTabSlot';
 import PageTitle from 'ui/shared/Page/PageTitle';
+import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 
 const TAB_LIST_PROPS = {
@@ -58,23 +58,14 @@ const BlocksPageContent = () => {
     },
   });
 
-  const { pagination, isPaginationVisible } = (() => {
+  const pagination = (() => {
     if (tab === 'reorgs') {
-      return {
-        pagination: reorgsQuery.pagination,
-        isPaginationVisible: reorgsQuery.isPaginationVisible,
-      };
+      return reorgsQuery.pagination;
     }
     if (tab === 'uncles') {
-      return {
-        pagination: unclesQuery.pagination,
-        isPaginationVisible: unclesQuery.isPaginationVisible,
-      };
+      return unclesQuery.pagination;
     }
-    return {
-      pagination: blocksQuery.pagination,
-      isPaginationVisible: blocksQuery.isPaginationVisible,
-    };
+    return blocksQuery.pagination;
   })();
 
   const tabs: Array<RoutedTab> = [
@@ -89,7 +80,7 @@ const BlocksPageContent = () => {
       <RoutedTabs
         tabs={ tabs }
         tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
-        rightSlot={ <BlocksTabSlot pagination={ pagination } isPaginationVisible={ isPaginationVisible }/> }
+        rightSlot={ <BlocksTabSlot pagination={ pagination }/> }
         stickyEnabled={ !isMobile }
       />
     </>

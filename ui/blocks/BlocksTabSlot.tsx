@@ -1,18 +1,18 @@
 import { Flex, Box, Text, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
+import type { PaginationParams } from 'ui/shared/pagination/types';
+
 import useApiQuery from 'lib/api/useApiQuery';
 import { nbsp } from 'lib/html-entities';
 import { HOMEPAGE_STATS } from 'stubs/stats';
-import type { Props as PaginationProps } from 'ui/shared/Pagination';
-import Pagination from 'ui/shared/Pagination';
+import Pagination from 'ui/shared/pagination/Pagination';
 
 interface Props {
-  pagination: PaginationProps;
-  isPaginationVisible: boolean;
+  pagination: PaginationParams;
 }
 
-const BlocksTabSlot = ({ pagination, isPaginationVisible }: Props) => {
+const BlocksTabSlot = ({ pagination }: Props) => {
   const statsQuery = useApiQuery('homepage_stats', {
     queryOptions: {
       placeholderData: HOMEPAGE_STATS,
@@ -31,7 +31,7 @@ const BlocksTabSlot = ({ pagination, isPaginationVisible }: Props) => {
           </Skeleton>
         </Box>
       ) }
-      { isPaginationVisible && <Pagination my={ 1 } { ...pagination }/> }
+      <Pagination my={ 1 } { ...pagination }/>
     </Flex>
   );
 };

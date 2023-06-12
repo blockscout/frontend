@@ -8,14 +8,14 @@ import type { AddressBlocksValidatedResponse } from 'types/api/address';
 
 import appConfig from 'configs/app/config';
 import { getResourceKey } from 'lib/api/useApiQuery';
-import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { BLOCK } from 'stubs/block';
 import { generateListStub } from 'stubs/utils';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import Pagination from 'ui/shared/Pagination';
+import Pagination from 'ui/shared/pagination/Pagination';
+import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import SocketAlert from 'ui/shared/SocketAlert';
 import { default as Thead } from 'ui/shared/TheadSticky';
 
@@ -88,7 +88,7 @@ const AddressBlocksValidated = ({ scrollRef }: Props) => {
       { socketAlert && <SocketAlert mb={ 6 }/> }
       <Hide below="lg" ssr={ false }>
         <Table variant="simple" size="sm">
-          <Thead top={ query.isPaginationVisible ? 80 : 0 }>
+          <Thead top={ query.pagination.isVisible ? 80 : 0 }>
             <Tr>
               <Th width="17%">Block</Th>
               <Th width="17%">Age</Th>
@@ -122,7 +122,7 @@ const AddressBlocksValidated = ({ scrollRef }: Props) => {
     </>
   ) : null;
 
-  const actionBar = query.isPaginationVisible ? (
+  const actionBar = query.pagination.isVisible ? (
     <ActionBar mt={ -6 }>
       <Pagination ml="auto" { ...query.pagination }/>
     </ActionBar>

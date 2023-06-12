@@ -1,20 +1,19 @@
 import { Button, Skeleton, Flex, Icon, IconButton, chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import type { PaginationParams } from './types';
+
 import arrowIcon from 'icons/arrows/east-mini.svg';
 
-export type Props = {
-  page: number;
-  onNextPageClick: () => void;
-  onPrevPageClick: () => void;
-  resetPage: () => void;
-  hasNextPage: boolean;
+interface Props extends PaginationParams {
   className?: string;
-  canGoBackwards: boolean;
-  isLoading?: boolean;
 }
 
-const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasNextPage, className, canGoBackwards, isLoading }: Props) => {
+const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasNextPage, className, canGoBackwards, isLoading, isVisible }: Props) => {
+
+  if (!isVisible) {
+    return null;
+  }
 
   return (
     <Flex

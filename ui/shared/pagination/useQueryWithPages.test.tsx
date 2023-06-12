@@ -29,6 +29,7 @@ it('returns correct data if there is only one page', async() => {
     canGoBackwards: true,
     hasNextPage: false,
     isLoading: false,
+    isVisible: true,
   });
 });
 

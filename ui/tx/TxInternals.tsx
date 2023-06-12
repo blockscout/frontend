@@ -4,7 +4,6 @@ import React from 'react';
 import type { InternalTransaction } from 'types/api/internalTransaction';
 
 import { SECOND } from 'lib/consts';
-import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 // import { apos } from 'lib/html-entities';
 import { INTERNAL_TX } from 'stubs/internalTx';
 import { generateListStub } from 'stubs/utils';
@@ -12,7 +11,8 @@ import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 // import FilterInput from 'ui/shared/filters/FilterInput';
 // import TxInternalsFilter from 'ui/tx/internals/TxInternalsFilter';
-import Pagination from 'ui/shared/Pagination';
+import Pagination from 'ui/shared/pagination/Pagination';
+import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import TxInternalsList from 'ui/tx/internals/TxInternalsList';
 import TxInternalsTable from 'ui/tx/internals/TxInternalsTable';
 import type { Sort, SortField } from 'ui/tx/internals/utils';
@@ -72,7 +72,7 @@ const TxInternals = () => {
   // const [ searchTerm, setSearchTerm ] = React.useState<string>('');
   const [ sort, setSort ] = React.useState<Sort>();
   const txInfo = useFetchTxInfo({ updateDelay: 5 * SECOND });
-  const { data, isPlaceholderData, isError, pagination, isPaginationVisible } = useQueryWithPages({
+  const { data, isPlaceholderData, isError, pagination } = useQueryWithPages({
     resourceName: 'tx_internal_txs',
     pathParams: { hash: txInfo.data?.hash },
     options: {
@@ -112,14 +112,14 @@ const TxInternals = () => {
           data={ filteredData }
           sort={ sort }
           onSortToggle={ handleSortToggle }
-          top={ isPaginationVisible ? 80 : 0 }
+          top={ pagination.isVisible ? 80 : 0 }
           isLoading={ isPlaceholderData }
         />
       </Hide>
     </>
   ) : null;
 
-  const actionBar = isPaginationVisible ? (
+  const actionBar = pagination.isVisible ? (
     <ActionBar mt={ -6 }>
       { /* <TxInternalsFilter onFilterChange={ handleFilterChange } defaultFilters={ filters } appliedFiltersNum={ filters.length }/> */ }
       { /* <FilterInput onChange={ setSearchTerm } maxW="360px" ml={ 3 } size="xs" placeholder="Search by addresses, hash, method..."/> */ }

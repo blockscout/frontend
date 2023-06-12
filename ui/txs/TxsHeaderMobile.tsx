@@ -2,11 +2,12 @@ import { HStack, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Sort as TSort } from 'types/client/txs-sort';
+import type { PaginationParams } from 'ui/shared/pagination/types';
 
 // import FilterInput from 'ui/shared/filters/FilterInput';
+
 import ActionBar from 'ui/shared/ActionBar';
-import Pagination from 'ui/shared/Pagination';
-import type { Props as PaginationProps } from 'ui/shared/Pagination';
+import Pagination from 'ui/shared/pagination/Pagination';
 import type { Option } from 'ui/shared/sort/Sort';
 import Sort from 'ui/shared/sort/Sort';
 
@@ -23,7 +24,7 @@ const SORT_OPTIONS: Array<Option<TSort>> = [
 type Props = {
   sorting: TSort;
   setSorting: (val: TSort | undefined) => void;
-  paginationProps: PaginationProps;
+  paginationProps: PaginationParams;
   className?: string;
   showPagination?: boolean;
   filterComponent?: React.ReactNode;

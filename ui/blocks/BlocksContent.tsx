@@ -1,5 +1,4 @@
 import { Alert, Box } from '@chakra-ui/react';
-import type { UseQueryResult } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
@@ -14,17 +13,12 @@ import BlocksList from 'ui/blocks/BlocksList';
 import BlocksTable from 'ui/blocks/BlocksTable';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import Pagination from 'ui/shared/Pagination';
-import type { Props as PaginationProps } from 'ui/shared/Pagination';
-
-type QueryResult = UseQueryResult<BlocksResponse> & {
-  pagination: PaginationProps;
-  isPaginationVisible: boolean;
-};
+import Pagination from 'ui/shared/pagination/Pagination';
+import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 
 interface Props {
   type?: BlockType;
-  query: QueryResult;
+  query: QueryWithPagesResult<'blocks'>;
 }
 
 const BlocksContent = ({ type, query }: Props) => {
@@ -81,12 +75,17 @@ const BlocksContent = ({ type, query }: Props) => {
         <BlocksList data={ query.data.items } isLoading={ query.isPlaceholderData } page={ query.pagination.page }/>
       </Box>
       <Box display={{ base: 'none', lg: 'block' }}>
-        <BlocksTable data={ query.data.items } top={ query.isPaginationVisible ? 80 : 0 } page={ query.pagination.page } isLoading={ query.isPlaceholderData }/>
+        <BlocksTable
+          data={ query.data.items }
+          top={ query.pagination.isVisible ? 80 : 0 }
+          page={ query.pagination.page }
+          isLoading={ query.isPlaceholderData }
+        />
       </Box>
     </>
   ) : null;
 
-  const actionBar = isMobile && query.isPaginationVisible ? (
+  const actionBar = isMobile && query.pagination.isVisible ? (
     <ActionBar mt={ -6 }>
       <Pagination ml="auto" { ...query.pagination }/>
     </ActionBar>

@@ -6,12 +6,12 @@ import type { SocketMessage } from 'lib/socket/types';
 import type { AddressCoinBalanceHistoryResponse } from 'types/api/address';
 
 import { getResourceKey } from 'lib/api/useApiQuery';
-import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { ADDRESS_COIN_BALANCE } from 'stubs/address';
 import { generateListStub } from 'stubs/utils';
+import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import SocketAlert from 'ui/shared/SocketAlert';
 
 import AddressCoinBalanceChart from './coinBalance/AddressCoinBalanceChart';
