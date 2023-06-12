@@ -1,19 +1,38 @@
 import fetch from 'jest-fetch-mock';
+import { renderHook, wrapper, act } from 'jest/lib';
 import { mockRouter } from 'jest/mocks/next-router';
-import { renderHook, wrapper } from 'jest/utils';
+import flushPromises from 'jest/utils/flushPromises';
+import * as addressMock from 'mocks/address/address';
 
 import type { Params } from './useQueryWithPages';
 import useQueryWithPages from './useQueryWithPages';
 
-jest.mock('next/router', () => mockRouter({ query: { page: '1' } }));
+jest.mock('next/router', () => mockRouter());
 
-test('simple test', async() => {
-  const params: Params<'blocks'> = {
-    resourceName: 'blocks',
+it('returns correct data if there is only one page', async() => {
+  const params: Params<'address_txs'> = {
+    resourceName: 'address_txs',
+    pathParams: { hash: addressMock.hash },
   };
-  fetch.mockResponse(JSON.stringify({ data: '12345' }));
+  const response = {
+    items: [],
+    next_page_params: null,
+  };
+  fetch.mockResponse(JSON.stringify(response));
 
   const { result } = renderHook(() => useQueryWithPages(params), { wrapper });
-  await new Promise(process.nextTick);
-  expect(result.current.data).toEqual('Bob');
+  await waitForApiResponse();
+
+  expect(result.current.data).toEqual(response);
+  expect(result.current.pagination).toMatchObject({
+    page: 1,
+    canGoBackwards: true,
+    hasNextPage: false,
+    isLoading: false,
+  });
 });
+
+async function waitForApiResponse() {
+  await flushPromises();
+  await act(flushPromises);
+}

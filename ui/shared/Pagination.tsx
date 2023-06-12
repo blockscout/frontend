@@ -37,7 +37,7 @@ const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasNext
           variant="outline"
           onClick={ onPrevPageClick }
           size="sm"
-          aria-label="Next page"
+          aria-label="Prev page"
           w="36px"
           icon={ <Icon as={ arrowIcon } w={ 5 } h={ 5 }/> }
           isDisabled={ !canGoBackwards || page === 1 }
