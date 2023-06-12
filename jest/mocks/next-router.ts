@@ -1,11 +1,17 @@
 import type { NextRouter } from 'next/router';
 
-export function mockRouter(params?: Partial<NextRouter>) {
+export const router = {
+  query: {},
+  push: jest.fn(),
+};
+
+export const useRouter = jest.fn<unknown, Array<Partial<NextRouter>>>(() => (router));
+
+export const mockUseRouter = (params?: Partial<NextRouter>) => {
   return {
     useRouter: jest.fn(() => ({
-      query: {},
-      push: jest.fn(),
+      ...router,
       ...params,
     })),
   };
-}
+};
