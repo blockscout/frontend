@@ -10,7 +10,7 @@ import type { Params as UseApiQueryParams } from 'lib/api/useApiQuery';
 import useApiQuery from 'lib/api/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
-interface Params<Resource extends PaginatedResources> {
+export interface Params<Resource extends PaginatedResources> {
   resourceName: Resource;
   options?: UseApiQueryParams<Resource>['queryOptions'];
   pathParams?: UseApiQueryParams<Resource>['pathParams'];
