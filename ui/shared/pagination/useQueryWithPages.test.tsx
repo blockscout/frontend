@@ -37,6 +37,14 @@ const responses = {
     items: [ { hash: '31' }, { hash: '32' } ],
     next_page_params: null,
   },
+  page_filtered: {
+    items: [ { hash: '41' }, { hash: '42' } ],
+    next_page_params: {
+      block_number: 41,
+      index: 42,
+      items_count: 43,
+    },
+  },
 };
 
 beforeEach(() => {
@@ -363,10 +371,133 @@ describe('if there is page query param in URL', () => {
     });
   });
 
-  it('correctly navigates to the following pages', async() => {});
+  it('correctly navigates to the following pages', async() => {
+    const routerPush = jest.fn(() => Promise.resolve());
+    useRouter.mockReturnValue({ ...router, pathname: '/current-route', push: routerPush, query: { page: '2' } });
+
+    const params: Params<'address_txs'> = {
+      resourceName: 'address_txs',
+      pathParams: { hash: addressMock.hash },
+    };
+    fetch.once(JSON.stringify(responses.page_2));
+    fetch.once(JSON.stringify(responses.page_3));
+
+    const { result } = renderHook(() => useQueryWithPages(params), { wrapper });
+    await waitForApiResponse();
+
+    await act(async() => {
+      result.current.pagination.onNextPageClick();
+    });
+    await waitForApiResponse();
+
+    expect(result.current.data).toEqual(responses.page_3);
+    expect(result.current.pagination).toMatchObject({
+      page: 3,
+      canGoBackwards: false,
+      hasNextPage: false,
+      isLoading: false,
+      isVisible: true,
+    });
+
+    expect(routerPush).toHaveBeenCalledTimes(1);
+    expect(routerPush).toHaveBeenLastCalledWith(
+      {
+        pathname: '/current-route',
+        query: {
+          next_page_params: encodeURIComponent(JSON.stringify(responses.page_2.next_page_params)),
+          page: '3',
+        },
+      },
+      undefined,
+      { shallow: true },
+    );
+  });
 });
 
-describe('queries with filters', () => {});
+describe('queries with filters', () => {
+  it('reset page when filter is changed', async() => {
+    const routerPush = jest.fn(() => Promise.resolve());
+    useRouter.mockReturnValue({ ...router, pathname: '/current-route', push: routerPush, query: { foo: 'bar' } });
+
+    const params: Params<'address_txs'> = {
+      resourceName: 'address_txs',
+      pathParams: { hash: addressMock.hash },
+    };
+    fetch.once(JSON.stringify(responses.page_1));
+    fetch.once(JSON.stringify(responses.page_2));
+    fetch.once(JSON.stringify(responses.page_filtered));
+
+    const { result } = renderHook(() => useQueryWithPages(params), { wrapper });
+    await waitForApiResponse();
+
+    await act(async() => {
+      result.current.pagination.onNextPageClick();
+    });
+    await waitForApiResponse();
+
+    await act(async() => {
+      result.current.onFilterChange({ filter: 'from' });
+    });
+    await waitForApiResponse();
+
+    expect(result.current.data).toEqual(responses.page_filtered);
+    expect(result.current.pagination).toMatchObject({
+      page: 1,
+      canGoBackwards: true,
+      hasNextPage: true,
+      isLoading: false,
+      isVisible: true,
+    });
+
+    expect(routerPush).toHaveBeenCalledTimes(2);
+    expect(routerPush).toHaveBeenLastCalledWith(
+      {
+        pathname: '/current-route',
+        query: { filter: 'from', foo: 'bar' },
+      },
+      undefined,
+      { shallow: true },
+    );
+
+    expect(animateScroll.scrollToTop).toHaveBeenCalledTimes(2);
+    expect(animateScroll.scrollToTop).toHaveBeenLastCalledWith({ duration: 0 });
+  });
+
+  it('saves filter params in query when navigating between pages', async() => {
+    const routerPush = jest.fn(() => Promise.resolve());
+    useRouter.mockReturnValue({ ...router, pathname: '/current-route', push: routerPush, query: { filter: 'from', foo: 'bar' } });
+
+    const params: Params<'address_txs'> = {
+      resourceName: 'address_txs',
+      pathParams: { hash: addressMock.hash },
+    };
+    fetch.once(JSON.stringify(responses.page_1));
+    fetch.once(JSON.stringify(responses.page_2));
+
+    const { result } = renderHook(() => useQueryWithPages(params), { wrapper });
+    await waitForApiResponse();
+
+    await act(async() => {
+      result.current.pagination.onNextPageClick();
+    });
+    await waitForApiResponse();
+
+    expect(routerPush).toHaveBeenCalledTimes(1);
+    expect(routerPush).toHaveBeenLastCalledWith(
+      {
+        pathname: '/current-route',
+        query: {
+          filter: 'from',
+          foo: 'bar',
+          next_page_params: encodeURIComponent(JSON.stringify(responses.page_1.next_page_params)),
+          page: '2',
+        },
+      },
+      undefined,
+      { shallow: true },
+    );
+  });
+});
 
 async function waitForApiResponse() {
   await flushPromises();
