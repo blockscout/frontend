@@ -94,20 +94,25 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
   }, [ clearErrors ]);
 
   const handleOpenWeb3Modal = React.useCallback(() => {
+    clearErrors('root');
     openWeb3Modal();
-  }, [ openWeb3Modal ]);
+  }, [ clearErrors, openWeb3Modal ]);
 
   const handleWeb3SignClick = React.useCallback(() => {
+    clearErrors('root');
+
     if (!isConnected) {
       return setError('root', { type: 'manual', message: 'Please connect to your Web3 wallet first' });
     }
+
     const message = getValues('message');
     signMessage({ message });
-  }, [ getValues, signMessage, isConnected, setError ]);
+  }, [ clearErrors, isConnected, getValues, signMessage, setError ]);
 
   const handleManualSignClick = React.useCallback(() => {
+    clearErrors('root');
     onSubmit();
-  }, [ onSubmit ]);
+  }, [ clearErrors, onSubmit ]);
 
   const button = (() => {
     if (signMethod === 'manually') {
