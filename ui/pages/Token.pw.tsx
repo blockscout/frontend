@@ -76,6 +76,12 @@ test('with verified info', async({ mount, page, createSocket }) => {
   await page.route(VERIFIED_INFO_URL, (route) => route.fulfill({
     body: JSON.stringify(verifiedAddressesMocks.TOKEN_INFO_APPLICATION.APPROVED),
   }));
+  await page.route(tokenInfo.icon_url as string, (route) => {
+    return route.fulfill({
+      status: 200,
+      path: './playwright/image_s.jpg',
+    });
+  });
 
   const component = await mount(
     <TestApp withSocket>
@@ -119,6 +125,12 @@ test.describe('mobile', () => {
     await page.route(VERIFIED_INFO_URL, (route) => route.fulfill({
       body: JSON.stringify(verifiedAddressesMocks.TOKEN_INFO_APPLICATION.APPROVED),
     }));
+    await page.route(tokenInfo.icon_url as string, (route) => {
+      return route.fulfill({
+        status: 200,
+        path: './playwright/image_s.jpg',
+      });
+    });
 
     const component = await mount(
       <TestApp withSocket>

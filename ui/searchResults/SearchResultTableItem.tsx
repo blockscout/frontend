@@ -27,11 +27,12 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
     switch (data.type) {
       case 'token': {
         const name = data.name + (data.symbol ? ` (${ trimTokenSymbol(data.symbol) })` : '');
+
         return (
           <>
             <Td fontSize="sm">
               <Flex alignItems="center">
-                <TokenLogo boxSize={ 6 } hash={ data.address } name={ data.name } flexShrink={ 0 } isLoading={ isLoading }/>
+                <TokenLogo boxSize={ 6 } data={ data } flexShrink={ 0 } isLoading={ isLoading }/>
                 <LinkInternal
                   ml={ 2 }
                   href={ route({ pathname: '/token/[hash]', query: { hash: data.address } }) }
