@@ -6,6 +6,7 @@ import * as cookies from 'lib/cookies';
 import authFixture from 'playwright/fixtures/auth';
 import contextWithEnvs, { createContextWithEnvs } from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
+import * as app from 'playwright/utils/app';
 
 import NavigationDesktop from './NavigationDesktop';
 
@@ -104,7 +105,7 @@ base.describe('cookie set to false', () => {
       const context = await createContextWithEnvs(browser, [
         { name: 'NEXT_PUBLIC_FEATURED_NETWORKS', value: FEATURED_NETWORKS_URL },
       ]);
-      context.addCookies([ { name: cookies.NAMES.NAV_BAR_COLLAPSED, value: 'false', domain: 'localhost', path: '/' } ]);
+      context.addCookies([ { name: cookies.NAMES.NAV_BAR_COLLAPSED, value: 'false', domain: app.domain, path: '/' } ]);
       use(context);
     },
   });
