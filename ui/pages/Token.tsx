@@ -178,7 +178,7 @@ const TokenPageContent = () => {
 
         return 'Contract';
       },
-      component: <AddressContract tabs={ contractTabs } addressHash={ hashString }/>,
+      component: <AddressContract tabs={ contractTabs }/>,
       subTabs: contractTabs.map(tab => tab.id),
     } : undefined,
   ].filter(Boolean);
