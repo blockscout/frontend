@@ -55,7 +55,7 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
   const [ pageParams, setPageParams ] = React.useState<Record<number, NextPageParams>>({
     [page]: getPaginationParamsFromQuery(router.query.next_page_params),
   });
-  const [ hasPagination, setHasPagination ] = React.useState(page > 1);
+  const [ hasPages, setHasPages ] = React.useState(page > 1);
 
   const isMounted = React.useRef(false);
   const canGoBackwards = React.useRef(!router.query.page);
@@ -93,7 +93,7 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
       next_page_params: encodeURIComponent(JSON.stringify(data.next_page_params)),
     };
 
-    setHasPagination(true);
+    setHasPages(true);
     scrollToTop();
     router.push({ pathname: router.pathname, query: nextPageQuery }, undefined, { shallow: true });
   }, [ data?.next_page_params, page, router, scrollToTop ]);
@@ -116,7 +116,6 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
         setPage(prev => prev - 1);
         page === 2 && queryClient.removeQueries({ queryKey: [ resourceName ] });
       });
-    setHasPagination(true);
   }, [ router, page, pageParams, scrollToTop, queryClient, resourceName ]);
 
   const resetPage = useCallback(() => {
@@ -135,8 +134,6 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
         queryClient.removeQueries({ queryKey: [ resourceName ], type: 'inactive' });
       }, 100);
     });
-
-    setHasPagination(true);
   }, [ queryClient, resourceName, router, scrollToTop ]);
 
   const onFilterChange = useCallback((newFilters: PaginationFilters<Resource> | undefined) => {
@@ -148,7 +145,6 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
         }
       });
     }
-    setHasPagination(false);
     scrollToTop();
     router.push(
       {
@@ -158,6 +154,7 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
       undefined,
       { shallow: true },
     ).then(() => {
+      setHasPages(false);
       setPage(1);
       setPageParams({});
     });
@@ -171,10 +168,11 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
     onNextPageClick,
     onPrevPageClick,
     resetPage,
+    hasPages,
     hasNextPage,
     canGoBackwards: canGoBackwards.current,
-    isLoading: queryResult.isPlaceholderData && !hasPagination,
-    isVisible: hasPagination || (!queryResult.isLoading && !queryResult.isError && hasNextPage),
+    isLoading: queryResult.isPlaceholderData,
+    isVisible: hasPages || hasNextPage,
   };
 
   React.useEffect(() => {

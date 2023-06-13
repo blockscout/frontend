@@ -3,6 +3,7 @@ export interface PaginationParams {
   onNextPageClick: () => void;
   onPrevPageClick: () => void;
   resetPage: () => void;
+  hasPages: boolean;
   hasNextPage: boolean;
   canGoBackwards: boolean;
   isLoading: boolean;

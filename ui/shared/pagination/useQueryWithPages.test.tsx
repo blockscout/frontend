@@ -68,6 +68,7 @@ it('returns correct data if there is only one page', async() => {
     hasNextPage: false,
     isLoading: false,
     isVisible: false,
+    hasPages: false,
   });
 });
 
@@ -127,6 +128,7 @@ describe('if there are multiple pages', () => {
         hasNextPage: true,
         isLoading: false,
         isVisible: true,
+        hasPages: true,
       });
 
       expect(routerPush).toHaveBeenCalledTimes(1);
@@ -164,6 +166,7 @@ describe('if there are multiple pages', () => {
         hasNextPage: false,
         isLoading: false,
         isVisible: true,
+        hasPages: true,
       });
 
       expect(routerPush).toHaveBeenCalledTimes(2);
@@ -207,6 +210,7 @@ describe('if there are multiple pages', () => {
         hasNextPage: true,
         isLoading: false,
         isVisible: true,
+        hasPages: true,
       });
 
       expect(routerPush).toHaveBeenCalledTimes(3);
@@ -254,6 +258,7 @@ describe('if there are multiple pages', () => {
         hasNextPage: true,
         isLoading: false,
         isVisible: true,
+        hasPages: true,
       });
 
       expect(routerPush).toHaveBeenCalledTimes(4);
@@ -305,6 +310,7 @@ describe('if there are multiple pages', () => {
       hasNextPage: true,
       isLoading: false,
       isVisible: true,
+      hasPages: true,
     });
 
     expect(routerPush).toHaveBeenCalledTimes(3);
@@ -368,6 +374,7 @@ describe('if there is page query param in URL', () => {
       hasNextPage: false,
       isLoading: false,
       isVisible: true,
+      hasPages: true,
     });
   });
 
@@ -397,6 +404,7 @@ describe('if there is page query param in URL', () => {
       hasNextPage: false,
       isLoading: false,
       isVisible: true,
+      hasPages: true,
     });
 
     expect(routerPush).toHaveBeenCalledTimes(1);
@@ -447,6 +455,7 @@ describe('queries with filters', () => {
       hasNextPage: true,
       isLoading: false,
       isVisible: true,
+      hasPages: false,
     });
 
     expect(routerPush).toHaveBeenCalledTimes(2);

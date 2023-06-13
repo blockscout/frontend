@@ -9,6 +9,7 @@ import React from 'react';
 import type { AddressFromToFilter } from 'types/api/address';
 import type { TokenType } from 'types/api/token';
 
+import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
 import PopoverFilter from 'ui/shared/filters/PopoverFilter';
 import TokenTypeFilter from 'ui/shared/filters/TokenTypeFilter';
 
@@ -31,9 +32,10 @@ const TokenTransferFilter = ({
   defaultAddressFilter,
   isLoading,
 }: Props) => {
+  const isInitialLoading = useIsInitialLoading(isLoading);
 
   return (
-    <PopoverFilter appliedFiltersNum={ appliedFiltersNum } contentProps={{ w: '200px' }} isLoading={ isLoading }>
+    <PopoverFilter appliedFiltersNum={ appliedFiltersNum } contentProps={{ w: '200px' }} isLoading={ isInitialLoading }>
       { withAddressFilter && (
         <>
           <Text variant="secondary" fontWeight={ 600 }>Address</Text>
