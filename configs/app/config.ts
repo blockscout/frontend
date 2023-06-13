@@ -1,4 +1,5 @@
 /* eslint-disable no-restricted-properties */
+import type { AdButlerConfig } from 'types/client/adButlerConfig';
 import type { NavItemExternal } from 'types/client/navigation-items';
 import type { WalletType } from 'types/client/wallets';
 import type { NetworkExplorer } from 'types/networks';
@@ -114,6 +115,9 @@ const config = Object.freeze({
   ad: {
     domainWithAd: getEnvValue(process.env.NEXT_PUBLIC_AD_DOMAIN_WITH_AD) || 'blockscout.com',
     adButlerOn: getEnvValue(process.env.NEXT_PUBLIC_AD_ADBUTLER_ON) === 'true',
+    adButlerConfigDesktop: parseEnvJson<AdButlerConfig>(getEnvValue(process.env.NEXT_PUBLIC_AD_ADBUTLER_CONFIG_DESKTOP)),
+    adButlerConfigMobile: parseEnvJson<AdButlerConfig>(getEnvValue(process.env.NEXT_PUBLIC_AD_ADBUTLER_CONFIG_MOBILE)),
+    sliseOn: getEnvValue(process.env.NEXT_PUBLIC_AD_SLISE_ON) === 'true',
   },
   web3: {
     defaultWallet: getWeb3DefaultWallet(),

@@ -8,6 +8,7 @@ import { generateListStub } from './utils';
 
 export const TOKEN_INFO_ERC_20: TokenInfo<'ERC-20'> = {
   address: ADDRESS_HASH,
+  circulating_market_cap: '117629601.61913824',
   decimals: '18',
   exchange_rate: '0.999997',
   holders: '16026',
@@ -20,11 +21,13 @@ export const TOKEN_INFO_ERC_20: TokenInfo<'ERC-20'> = {
 
 export const TOKEN_INFO_ERC_721: TokenInfo<'ERC-721'> = {
   ...TOKEN_INFO_ERC_20,
+  circulating_market_cap: null,
   type: 'ERC-721',
 };
 
 export const TOKEN_INFO_ERC_1155: TokenInfo<'ERC-1155'> = {
   ...TOKEN_INFO_ERC_20,
+  circulating_market_cap: null,
   type: 'ERC-1155',
 };
 
