@@ -86,11 +86,11 @@ const AddressPageContent = () => {
 
           return 'Contract';
         },
-        component: <AddressContract tabs={ contractTabs } addressHash={ hash }/>,
+        component: <AddressContract tabs={ contractTabs }/>,
         subTabs: contractTabs.map(tab => tab.id),
       } : undefined,
     ].filter(Boolean);
-  }, [ addressQuery.data, contractTabs, hash ]);
+  }, [ addressQuery.data, contractTabs ]);
 
   const tags = (
     <EntityTags

@@ -23,6 +23,12 @@ test('search by name +@mobile +@dark-mode', async({ mount, page }) => {
       ],
     }),
   }));
+  await page.route(searchMock.token1.icon_url as string, (route) => {
+    return route.fulfill({
+      status: 200,
+      path: './playwright/image_s.jpg',
+    });
+  });
 
   const component = await mount(
     <TestApp>

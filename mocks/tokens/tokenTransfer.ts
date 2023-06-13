@@ -23,6 +23,7 @@ export const erc20: TokenTransfer = {
   },
   token: {
     address: '0x55d536e4d6c1993d8ef2e2a4ef77f02088419420',
+    circulating_market_cap: '117629601.61913824',
     decimals: '18',
     exchange_rate: null,
     holders: '46554',
@@ -67,6 +68,7 @@ export const erc721: TokenTransfer = {
   },
   token: {
     address: '0x363574E6C5C71c343d7348093D84320c76d5Dd29',
+    circulating_market_cap: null,
     decimals: null,
     exchange_rate: null,
     holders: '63090',
@@ -110,6 +112,7 @@ export const erc1155A: TokenTransfer = {
   },
   token: {
     address: '0xF56b7693E4212C584de4a83117f805B8E89224CB',
+    circulating_market_cap: null,
     decimals: null,
     exchange_rate: null,
     holders: '1',

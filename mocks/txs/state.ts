@@ -24,6 +24,7 @@ export const mintToken: TxStateChange = {
   is_miner: false,
   token: {
     address: '0x8977EA6C55e878125d1bF3433EBf72138B7a4543',
+    circulating_market_cap: null,
     decimals: null,
     exchange_rate: null,
     holders: '9191',
@@ -60,6 +61,7 @@ export const receiveMintedToken: TxStateChange = {
   is_miner: false,
   token: {
     address: '0x8977EA6C55e878125d1bF3433EBf72138B7a4543',
+    circulating_market_cap: null,
     decimals: null,
     exchange_rate: null,
     holders: '9191',
@@ -89,6 +91,7 @@ export const transfer1155Token: TxStateChange = {
   is_miner: false,
   token: {
     address: '0x56Cc277717106E528A9FcC2CD342Ff98db758041',
+    circulating_market_cap: null,
     decimals: null,
     exchange_rate: null,
     holders: '50413',

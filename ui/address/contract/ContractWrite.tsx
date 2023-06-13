@@ -9,12 +9,12 @@ import ContractMethodsAccordion from 'ui/address/contract/ContractMethodsAccordi
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
-import { useContractContext } from './context';
 import ContractConnectWallet from './ContractConnectWallet';
 import ContractCustomAbiAlert from './ContractCustomAbiAlert';
 import ContractImplementationAddress from './ContractImplementationAddress';
 import ContractMethodCallable from './ContractMethodCallable';
 import ContractWriteResult from './ContractWriteResult';
+import useContractAbi from './useContractAbi';
 import { getNativeCoinValue } from './utils';
 
 interface Props {
@@ -39,18 +39,7 @@ const ContractWrite = ({ addressHash, isProxy, isCustomAbi }: Props) => {
     },
   });
 
-  const { contractInfo, customInfo, proxyInfo } = useContractContext();
-  const abi = (() => {
-    if (isProxy) {
-      return proxyInfo?.abi;
-    }
-
-    if (isCustomAbi) {
-      return customInfo?.abi;
-    }
-
-    return contractInfo?.abi;
-  })();
+  const contractAbi = useContractAbi({ addressHash, isProxy, isCustomAbi });
 
   const handleMethodFormSubmit = React.useCallback(async(item: SmartContractWriteMethod, args: Array<string | Array<unknown>>) => {
     if (!isConnected) {
@@ -61,7 +50,7 @@ const ContractWrite = ({ addressHash, isProxy, isCustomAbi }: Props) => {
       await switchNetworkAsync?.(Number(config.network.id));
     }
 
-    if (!abi) {
+    if (!contractAbi) {
       throw new Error('Something went wrong. Try again later.');
     }
 
@@ -84,14 +73,14 @@ const ContractWrite = ({ addressHash, isProxy, isCustomAbi }: Props) => {
 
     const hash = await walletClient?.writeContract({
       args: _args,
-      abi: abi,
+      abi: contractAbi,
       functionName: methodName,
       address: addressHash as `0x${ string }`,
       value: value as undefined,
     });
 
     return { hash };
-  }, [ isConnected, chain, abi, walletClient, addressHash, switchNetworkAsync ]);
+  }, [ isConnected, chain, contractAbi, walletClient, addressHash, switchNetworkAsync ]);
 
   const renderContent = React.useCallback((item: SmartContractWriteMethod, index: number, id: number) => {
     return (

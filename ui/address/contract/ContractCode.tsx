@@ -212,16 +212,10 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
             isLoading={ isPlaceholderData }
           />
         ) }
-        { data?.source_code && (
+        { data?.is_verified && (
           <ContractSourceCode
-            data={ data.source_code }
-            hasSol2Yml={ Boolean(data.can_be_visualized_via_sol2uml) }
             address={ addressHash }
-            isViper={ Boolean(data.is_vyper_contract) }
-            filePath={ data.file_path }
-            additionalSource={ data.additional_sources }
-            remappings={ data.compiler_settings?.remappings }
-            isLoading={ isPlaceholderData }
+            implementationAddress={ addressInfo?.implementation_address ?? undefined }
           />
         ) }
         { data?.compiler_settings ? (
