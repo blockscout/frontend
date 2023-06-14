@@ -7,11 +7,14 @@ on:
       - main
       
 jobs:
-  lint:
-    name: ESLint
+  code_quality:
+    name: Code quality
     runs-on: ubuntu-latest
     if: "!contains(github.event.pull_request.labels.*.name, 'WIP')"
     steps:
+      - name: Cancel previous runs
+        uses: styfle/cancel-workflow-action@0.11.0
+
       - name: Checkout repo
         uses: actions/checkout@v3
 
@@ -29,33 +32,17 @@ jobs:
       - name: Run ESLint
         run: yarn lint:eslint
 
-  type_check:
-    name: TypeScript
-    runs-on: ubuntu-latest
-    if: "!contains(github.event.pull_request.labels.*.name, 'WIP')"
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: 'yarn'
-
-      - name: Install dependencies
-        uses: bahmutov/npm-install@v1
-        with:
-          useRollingCache: true
-
       - name: Compile TypeScript
         run: yarn lint:tsc
 
   jest_tests:
     name: Run unit tests with Jest
-    needs: [ lint, type_check ]
+    needs: [ code_quality ]
     runs-on: ubuntu-latest
     steps:
+      - name: Cancel previous runs
+        uses: styfle/cancel-workflow-action@0.11.0
+
       - name: Checkout repo
         uses: actions/checkout@v3
 
@@ -75,12 +62,16 @@ jobs:
 
   pw_tests:
     name: Run components visual tests with PlayWright
-    needs: [ lint, type_check ]
+    needs: [ code_quality ]
+    # if: ${{ false }}
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.28.0-focal
+      image: mcr.microsoft.com/playwright:v1.32.0-focal
 
     steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.11.0
+
       - name: Install git-lfs
         run: apt-get update && apt-get install git-lfs
 
