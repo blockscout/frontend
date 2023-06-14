@@ -37,7 +37,7 @@ const TxRawTrace = () => {
 
   const channel = useSocketChannel({
     topic: `transactions:${ hash }`,
-    isDisabled: !hash || !txInfo.isPlaceholderData || !txInfo.data?.status,
+    isDisabled: !hash || txInfo.isPlaceholderData || !txInfo.data?.status,
     onJoin: () => setIsSocketOpen(true),
   });
   useSocketMessage({
