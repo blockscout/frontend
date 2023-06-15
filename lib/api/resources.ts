@@ -479,6 +479,9 @@ export const RESOURCES = {
   csv_export_token_transfers: {
     path: '/token-transfers-csv',
   },
+  csv_export_logs: {
+    path: '/logs-csv',
+  },
 };
 
 export type ResourceName = keyof typeof RESOURCES;
