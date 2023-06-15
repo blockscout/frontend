@@ -6,15 +6,16 @@ on:
     branches:
       - main
       
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   code_quality:
     name: Code quality
     runs-on: ubuntu-latest
     if: "!contains(github.event.pull_request.labels.*.name, 'WIP')"
     steps:
-      - name: Cancel previous runs
-        uses: styfle/cancel-workflow-action@0.11.0
-
       - name: Checkout repo
         uses: actions/checkout@v3
 
@@ -40,9 +41,6 @@ jobs:
     needs: [ code_quality ]
     runs-on: ubuntu-latest
     steps:
-      - name: Cancel previous runs
-        uses: styfle/cancel-workflow-action@0.11.0
-
       - name: Checkout repo
         uses: actions/checkout@v3
 
