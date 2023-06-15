@@ -52,7 +52,7 @@ const Header = ({ isHomePage, renderSearchBar }: Props) => {
         paddingTop={ 9 }
         display={{ base: 'none', lg: 'block' }}
       >
-        <IndexingAlert/>
+        { !appConfig.hideIndexingAlert && <IndexingAlert/> }
         { !isHomePage && (
           <HStack
             as="header"
