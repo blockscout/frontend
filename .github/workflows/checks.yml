@@ -78,7 +78,6 @@ jobs:
   pw_tests:
     name: Run components visual tests with PlayWright
     needs: [ code_quality ]
-    # if: ${{ false }}
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.32.0-focal
