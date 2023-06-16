@@ -53,7 +53,7 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install dependencies
-        run: yarn --frozen-lockfile --offline --verbose
+        run: yarn --frozen-lockfile --offline
 
       - name: Run ESLint
         run: yarn lint:eslint
@@ -86,7 +86,7 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
       
       - name: Install dependencies
-        run: yarn --frozen-lockfile --offline --verbose
+        run: yarn --frozen-lockfile --offline
 
       - name: Run Jest
         run: yarn test:jest
@@ -124,7 +124,7 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         
       - name: Install dependencies
-        run: yarn --frozen-lockfile --offline --verbose
+        run: yarn --frozen-lockfile --offline
 
       - name: Run PlayWright
         run: HOME=/root yarn test:pw
