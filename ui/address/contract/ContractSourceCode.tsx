@@ -142,11 +142,19 @@ const ContractSourceCode = ({ address, implementationAddress }: Props) => {
     return (
       <>
         <Box display={ sourceType === 'primary' ? 'block' : 'none' }>
-          <CodeEditor data={ primaryEditorData } remappings={ primaryContractQuery.data?.compiler_settings?.remappings }/>
+          <CodeEditor
+            data={ primaryEditorData }
+            remappings={ primaryContractQuery.data?.compiler_settings?.remappings }
+            language={ primaryContractQuery.data?.language ?? undefined }
+          />
         </Box>
         { secondaryEditorData && (
           <Box display={ sourceType === 'secondary' ? 'block' : 'none' }>
-            <CodeEditor data={ secondaryEditorData } remappings={ secondaryContractQuery.data?.compiler_settings?.remappings }/>
+            <CodeEditor
+              data={ secondaryEditorData }
+              remappings={ secondaryContractQuery.data?.compiler_settings?.remappings }
+              language={ secondaryContractQuery.data?.language ?? undefined }
+            />
           </Box>
         ) }
       </>
