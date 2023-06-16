@@ -37,6 +37,7 @@ export interface SmartContract {
   };
   verified_twin_address_hash: string | null;
   minimal_proxy_address_hash: string | null;
+  language: string | null;
 }
 
 export type SmartContractDecodedConstructorArg = [

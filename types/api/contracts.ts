@@ -22,7 +22,7 @@ export interface VerifiedContractsResponse {
 
 export interface VerifiedContractsFilters {
   q: string | undefined;
-  filter: 'vyper' | 'solidity' | undefined;
+  filter: 'vyper' | 'solidity' | 'yul' | undefined;
 }
 
 export type VerifiedContractsCounters = {
