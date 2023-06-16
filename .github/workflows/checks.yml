@@ -92,11 +92,16 @@ jobs:
         run: yarn test:jest
 
   pw_tests:
-    name: Run components visual tests with PlayWright
+    name: 'Run components visual tests with PlayWright, project: ${{ matrix.project }}'
     needs: [ code_quality ]
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.32.0-focal
+
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [ default, mobile, dark-color-mode ]
 
     steps:
       - name: Install git-lfs
@@ -127,7 +132,7 @@ jobs:
         run: yarn --frozen-lockfile --offline
 
       - name: Run PlayWright
-        run: HOME=/root yarn test:pw
+        run: HOME=/root ./playwright/make-envs-script.sh && NODE_OPTIONS=\"--max-old-space-size=4096\" playwright test -c playwright-ct.config.ts --project=${{ matrix.project }}
 
       - name: Upload test results
         if: always()
