@@ -132,7 +132,7 @@ jobs:
         run: yarn --frozen-lockfile --offline
 
       - name: Run PlayWright
-        run: HOME=/root ./playwright/make-envs-script.sh && NODE_OPTIONS=\"--max-old-space-size=4096\" playwright test -c playwright-ct.config.ts --project=${{ matrix.project }}
+        run: HOME=/root ./playwright/make-envs-script.sh && NODE_OPTIONS=\"--max-old-space-size=4096\" ./node_modules/.bin/playwright test -c ./playwright-ct.config.ts --project=${{ matrix.project }}
 
       - name: Upload test results
         if: always()
