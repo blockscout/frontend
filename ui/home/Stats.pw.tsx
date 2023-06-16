@@ -1,28 +1,44 @@
 import { test, expect } from '@playwright/experimental-ct-react';
+import type { Locator } from '@playwright/test';
 import React from 'react';
 
 import * as statsMock from 'mocks/stats/index';
 import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
+import * as configs from 'playwright/utils/configs';
 
 import Stats from './Stats';
 
 const API_URL = buildApiUrl('homepage_stats');
 
-test('all items +@mobile +@dark-mode +@desktop-xl', async({ mount, page }) => {
-  await page.route(API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(statsMock.base),
-  }));
+test.describe('all items', () => {
+  let component: Locator;
 
-  const component = await mount(
-    <TestApp>
-      <Stats/>
-    </TestApp>,
-  );
+  test.beforeEach(async({ page, mount }) => {
+    await page.route(API_URL, (route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify(statsMock.base),
+    }));
 
-  await expect(component).toHaveScreenshot();
+    component = await mount(
+      <TestApp>
+        <Stats/>
+      </TestApp>,
+    );
+  });
+
+  test('+@mobile +@dark-mode', async() => {
+    await expect(component).toHaveScreenshot();
+  });
+
+  test.describe('screen xl', () => {
+    test.use({ viewport: configs.viewport.xl });
+
+    test('', async() => {
+      await expect(component).toHaveScreenshot();
+    });
+  });
 });
 
 test.describe('4 items', () => {
