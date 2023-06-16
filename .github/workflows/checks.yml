@@ -62,7 +62,7 @@ jobs:
         run: yarn lint:tsc
 
   jest_tests:
-    name: Run unit tests with Jest
+    name: Jest tests
     needs: [ code_quality ]
     runs-on: ubuntu-latest
     steps:
@@ -92,7 +92,7 @@ jobs:
         run: yarn test:jest
 
   pw_tests:
-    name: 'Run components visual tests with PlayWright, project: ${{ matrix.project }}'
+    name: 'Playwright tests - project: ${{ matrix.project }}'
     needs: [ code_quality ]
     runs-on: ubuntu-latest
     container:
