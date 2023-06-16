@@ -23,9 +23,19 @@ function getEditorData(contractInfo: SmartContract | undefined) {
     return undefined;
   }
 
-  const defaultName = contractInfo.is_vyper_contract ? '/index.vy' : '/index.sol';
+  const extension = (() => {
+    switch (contractInfo.language) {
+      case 'vyper':
+        return 'vy';
+      case 'yul':
+        return 'yul';
+      default:
+        return 'sol';
+    }
+  })();
+
   return [
-    { file_path: formatFilePath(contractInfo.file_path || defaultName), source_code: contractInfo.source_code },
+    { file_path: formatFilePath(contractInfo.file_path || `index.${ extension }`), source_code: contractInfo.source_code },
     ...(contractInfo.additional_sources || []).map((source) => ({ ...source, file_path: formatFilePath(source.file_path) })),
   ];
 }
