@@ -9,7 +9,7 @@ import type { ApiResource, ResourceName, ResourcePathParams } from './resources'
 export default function buildUrl<R extends ResourceName>(
   resourceName: R,
   pathParams?: ResourcePathParams<R>,
-  queryParams?: Record<string, string | Array<string> | number | undefined>,
+  queryParams?: Record<string, string | Array<string> | number | null | undefined>,
 ): string {
   const resource: ApiResource = RESOURCES[resourceName];
   const baseUrl = isNeedProxy() ? appConfig.baseUrl : (resource.endpoint || appConfig.api.endpoint);
