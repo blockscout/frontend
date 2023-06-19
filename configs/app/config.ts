@@ -181,6 +181,7 @@ const config = Object.freeze({
   graphQL: {
     defaultTxnHash: getEnvValue(process.env.NEXT_PUBLIC_GRAPHIQL_TRANSACTION) || '',
   },
+  hideIndexingAlert: getEnvValue(process.env.NEXT_PUBLIC_HIDE_INDEXING_ALERT),
 });
 
 export default config;

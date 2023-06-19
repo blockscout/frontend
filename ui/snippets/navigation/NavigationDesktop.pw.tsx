@@ -1,5 +1,6 @@
 import { Box, Flex } from '@chakra-ui/react';
 import { test as base, expect } from '@playwright/experimental-ct-react';
+import type { Locator } from '@playwright/test';
 import React from 'react';
 
 import * as cookies from 'lib/cookies';
@@ -7,6 +8,7 @@ import authFixture from 'playwright/fixtures/auth';
 import contextWithEnvs, { createContextWithEnvs } from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
 import * as app from 'playwright/utils/app';
+import * as configs from 'playwright/utils/configs';
 
 import NavigationDesktop from './NavigationDesktop';
 
@@ -27,18 +29,32 @@ const test = base.extend({
   ]) as any,
 });
 
-test('no auth +@desktop-xl +@dark-mode-xl', async({ mount }) => {
-  const component = await mount(
-    <TestApp>
-      <Flex w="100%" minH="100vh" alignItems="stretch">
-        <NavigationDesktop/>
-        <Box bgColor="lightpink" w="100%"/>
-      </Flex>
-    </TestApp>,
-    { hooksConfig },
-  );
+test.describe('no auth', () => {
+  let component: Locator;
 
-  await expect(component).toHaveScreenshot();
+  test.beforeEach(async({ mount }) => {
+    component = await mount(
+      <TestApp>
+        <Flex w="100%" minH="100vh" alignItems="stretch">
+          <NavigationDesktop/>
+          <Box bgColor="lightpink" w="100%"/>
+        </Flex>
+      </TestApp>,
+      { hooksConfig },
+    );
+  });
+
+  test('+@dark-mode', async() => {
+    await expect(component).toHaveScreenshot();
+  });
+
+  test.describe('xl screen', () => {
+    test.use({ viewport: configs.viewport.xl });
+
+    test('+@dark-mode', async() => {
+      await expect(component).toHaveScreenshot();
+    });
+  });
 });
 
 base.describe('auth', () => {
@@ -52,7 +68,37 @@ base.describe('auth', () => {
     },
   });
 
-  test('+@desktop-xl +@dark-mode-xl', async({ mount }) => {
+  let component: Locator;
+
+  test.beforeEach(async({ mount }) => {
+    component = await mount(
+      <TestApp>
+        <Flex w="100%" minH="100vh" alignItems="stretch">
+          <NavigationDesktop/>
+          <Box bgColor="lightpink" w="100%"/>
+        </Flex>
+      </TestApp>,
+      { hooksConfig },
+    );
+  });
+
+  test('+@dark-mode', async() => {
+    await expect(component).toHaveScreenshot();
+  });
+
+  test.describe('xl screen', () => {
+    test.use({ viewport: configs.viewport.xl });
+
+    test('+@dark-mode', async() => {
+      await expect(component).toHaveScreenshot();
+    });
+  });
+});
+
+test.describe('with tooltips', () => {
+  test.use({ viewport: configs.viewport.xl });
+
+  test('', async({ mount, page }) => {
     const component = await mount(
       <TestApp>
         <Flex w="100%" minH="100vh" alignItems="stretch">
@@ -63,40 +109,40 @@ base.describe('auth', () => {
       { hooksConfig },
     );
 
+    await page.locator('svg[aria-label="Expand/Collapse menu"]').click();
+    await page.locator('a[aria-label="Tokens link"]').hover();
+
     await expect(component).toHaveScreenshot();
   });
 });
 
-test('with tooltips +@desktop-xl -@default', async({ mount, page }) => {
-  const component = await mount(
-    <TestApp>
-      <Flex w="100%" minH="100vh" alignItems="stretch">
-        <NavigationDesktop/>
-        <Box bgColor="lightpink" w="100%"/>
-      </Flex>
-    </TestApp>,
-    { hooksConfig },
-  );
+test.describe('with submenu', () => {
+  let component: Locator;
 
-  await page.locator('svg[aria-label="Expand/Collapse menu"]').click();
-  await page.locator('a[aria-label="Tokens link"]').hover();
+  test.beforeEach(async({ mount, page }) => {
+    component = await mount(
+      <TestApp>
+        <Flex w="100%" minH="100vh" alignItems="stretch">
+          <NavigationDesktop/>
+          <Box bgColor="lightpink" w="100%"/>
+        </Flex>
+      </TestApp>,
+      { hooksConfig },
+    );
+    await page.locator('a[aria-label="Blockchain link group"]').hover();
+  });
 
-  await expect(component).toHaveScreenshot();
-});
+  test('', async() => {
+    await expect(component).toHaveScreenshot();
+  });
 
-test('with submenu +@desktop-xl +@dark-mode', async({ mount, page }) => {
-  const component = await mount(
-    <TestApp>
-      <Flex w="100%" minH="100vh" alignItems="stretch">
-        <NavigationDesktop/>
-        <Box bgColor="lightpink" w="100%"/>
-      </Flex>
-    </TestApp>,
-    { hooksConfig },
-  );
-  await page.locator('a[aria-label="Blockchain link group"]').hover();
+  test.describe('xl screen', () => {
+    test.use({ viewport: configs.viewport.xl });
 
-  await expect(component).toHaveScreenshot();
+    test('', async() => {
+      await expect(component).toHaveScreenshot();
+    });
+  });
 });
 
 base.describe('cookie set to false', () => {
@@ -110,8 +156,10 @@ base.describe('cookie set to false', () => {
     },
   });
 
-  test('navbar is opened +@desktop-xl', async({ mount }) => {
-    const component = await mount(
+  let component: Locator;
+
+  test.beforeEach(async({ mount }) => {
+    component = await mount(
       <TestApp>
         <Flex w="100%" minH="100vh" alignItems="stretch">
           <NavigationDesktop/>
@@ -120,9 +168,20 @@ base.describe('cookie set to false', () => {
       </TestApp>,
       { hooksConfig },
     );
+  });
 
+  test('', async() => {
     const networkMenu = component.locator('button[aria-label="Network menu"]');
-    expect(await networkMenu.isVisible()).toBe(true);
+    await expect(networkMenu).toBeVisible();
+  });
+
+  test.describe('xl screen', () => {
+    test.use({ viewport: configs.viewport.xl });
+
+    test('', async() => {
+      const networkMenu = component.locator('button[aria-label="Network menu"]');
+      await expect(networkMenu).toBeVisible();
+    });
   });
 });
 

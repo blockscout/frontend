@@ -1,4 +1,4 @@
-import { Text } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import _uniqBy from 'lodash/uniqBy';
 import React from 'react';
@@ -96,7 +96,11 @@ const SearchBarSuggest = ({ query, redirectCheckQuery, searchTerm, onItemClick }
 
   return (
     <>
-      { !isMobile && <TextAd pb={ 4 } mb={ 5 } borderColor="divider" borderBottomWidth="1px"/> }
+      { !isMobile && (
+        <Box pb={ 4 } mb={ 5 } borderColor="divider" borderBottomWidth="1px" _empty={{ display: 'none' }}>
+          <TextAd/>
+        </Box>
+      ) }
       { content }
     </>
   );

@@ -28,6 +28,7 @@
     "test:pw": "./playwright/make-envs-script.sh && NODE_OPTIONS=\"--max-old-space-size=4096\" ./node_modules/.bin/dotenv -e ./configs/envs/.env.pw -- playwright test -c playwright-ct.config.ts",
     "test:pw:local": "export NODE_PATH=$(pwd)/node_modules && rm -rf ./playwright/.cache && yarn test:pw",
     "test:pw:docker": "docker run --rm --network host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.32.0-focal ./playwright/run-tests.sh",
+    "test:pw:ci": "yarn test:pw --project=$PW_PROJECT",
     "test:jest": "jest",
     "test:jest:watch": "jest --watch"
   },

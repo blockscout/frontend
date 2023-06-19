@@ -10,6 +10,8 @@ import LogItem from 'ui/shared/logs/LogItem';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
+import AddressCsvExportLink from './AddressCsvExportLink';
+
 const AddressLogs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}) => {
   const router = useRouter();
 
@@ -28,11 +30,12 @@ const AddressLogs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>
     },
   });
 
-  const actionBar = pagination.isVisible ? (
-    <ActionBar mt={ -6 } showShadow>
-      <Pagination ml="auto" { ...pagination }/>
+  const actionBar = (
+    <ActionBar mt={ -6 } showShadow justifyContent={{ base: 'space-between', lg: 'end' }}>
+      <AddressCsvExportLink address={ hash } isLoading={ pagination.isLoading } type="logs"/>
+      <Pagination ml={{ base: 0, lg: 8 }} { ...pagination }/>
     </ActionBar>
-  ) : null;
+  );
 
   const content = data?.items ? data.items.map((item, index) => <LogItem key={ index } { ...item } type="address" isLoading={ isPlaceholderData }/>) : null;
 

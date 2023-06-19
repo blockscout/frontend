@@ -80,7 +80,7 @@ const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoa
         { afterTitle }
       </Box>
       { contentAfter }
-      { withTextAd && <TextAd order={{ base: -1, lg: 100 }} mb={{ base: 6, lg: 0 }} ml="auto"/> }
+      { withTextAd && <TextAd order={{ base: -1, lg: 100 }} mb={{ base: 6, lg: 0 }} ml="auto" w={{ base: '100%', lg: 'auto' }}/> }
     </Flex>
   );
 };

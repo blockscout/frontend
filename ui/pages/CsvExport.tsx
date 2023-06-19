@@ -39,6 +39,11 @@ const EXPORT_TYPES: Record<CsvExportType, ExportTypeEntity> = {
     resource: 'csv_export_token_transfers',
     fileNameTemplate: 'token_transfers',
   },
+  logs: {
+    text: 'logs',
+    resource: 'csv_export_logs',
+    fileNameTemplate: 'logs',
+  },
 };
 
 const isCorrectExportType = (type: string): type is CsvExportType => Object.keys(EXPORT_TYPES).includes(type);
