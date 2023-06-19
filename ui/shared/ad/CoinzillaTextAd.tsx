@@ -45,6 +45,7 @@ const CoinzillaTextAd = ({ className }: {className?: string}) => {
           }
         })
         .finally(() => {
+          // setAdData(MOCK);
           setIsLoading(false);
         });
     }
@@ -55,7 +56,16 @@ const CoinzillaTextAd = ({ className }: {className?: string}) => {
   }
 
   if (isLoading) {
-    return <Skeleton className={ className } h={{ base: 12, lg: 6 }} w={{ base: '100%', lg: 'auto' }} flexGrow={ 1 } maxW="1000px" display="inline-block"/>;
+    return (
+      <Skeleton
+        className={ className }
+        h={{ base: 12, lg: 6 }}
+        w="100%"
+        flexGrow={ 1 }
+        maxW="800px"
+        display="block"
+      />
+    );
   }
 
   if (!adData) {
