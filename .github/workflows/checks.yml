@@ -42,18 +42,17 @@ jobs:
           node-version: 18
           cache: 'yarn'
 
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-
-      - uses: actions/cache@v3
-        id: yarn-cache
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        id: cache-node-modules
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-
+          path: |
+            node_modules
+          key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+  
       - name: Install dependencies
-        run: yarn --frozen-lockfile --offline
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: yarn --frozen-lockfile
 
       - name: Run ESLint
         run: yarn lint:eslint
@@ -75,18 +74,17 @@ jobs:
           node-version: 18
           cache: 'yarn'
 
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-  
-      - uses: actions/cache@v3
-        id: yarn-cache
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        id: cache-node-modules
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-      
+          path: |
+            node_modules
+          key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+    
       - name: Install dependencies
-        run: yarn --frozen-lockfile --offline
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: yarn --frozen-lockfile
 
       - name: Run Jest
         run: yarn test:jest
@@ -118,18 +116,17 @@ jobs:
           node-version: 18
           cache: 'yarn'
 
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-    
-      - uses: actions/cache@v3
-        id: yarn-cache
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        id: cache-node-modules
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-        
+          path: |
+            node_modules
+          key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+    
       - name: Install dependencies
-        run: yarn --frozen-lockfile --offline
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: yarn --frozen-lockfile
 
       - name: Run PlayWright
         run: yarn test:pw:ci
