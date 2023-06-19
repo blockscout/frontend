@@ -5,6 +5,7 @@ import React from 'react';
 import type { SearchResultItem } from 'types/api/search';
 
 import blockIcon from 'icons/block.svg';
+import labelIcon from 'icons/publictags.svg';
 import txIcon from 'icons/transactions.svg';
 import highlightText from 'lib/highlightText';
 import trimTokenSymbol from 'lib/token/trimTokenSymbol';
@@ -90,6 +91,32 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
               </mark>
             </Address>
           </Td>
+        );
+      }
+
+      case 'label': {
+        return (
+          <>
+            <Td fontSize="sm">
+              <Flex alignItems="center">
+                <Icon as={ labelIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
+                <LinkInternal
+                  ml={ 2 }
+                  href={ route({ pathname: '/address/[hash]', query: { hash: data.address } }) }
+                  fontWeight={ 700 }
+                  wordBreak="break-all"
+                  isLoading={ isLoading }
+                >
+                  <Skeleton isLoaded={ !isLoading } dangerouslySetInnerHTML={{ __html: highlightText(data.name, searchTerm) }}/>
+                </LinkInternal>
+              </Flex>
+            </Td>
+            <Td fontSize="sm" verticalAlign="middle">
+              <Skeleton isLoaded={ !isLoading } whiteSpace="nowrap" overflow="hidden">
+                <HashStringShortenDynamic hash={ data.address }/>
+              </Skeleton>
+            </Td>
+          </>
         );
       }
 

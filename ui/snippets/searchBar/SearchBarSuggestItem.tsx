@@ -7,6 +7,7 @@ import React from 'react';
 import type { SearchResultItem } from 'types/api/search';
 
 import blockIcon from 'icons/block.svg';
+import labelIcon from 'icons/publictags.svg';
 import txIcon from 'icons/transactions.svg';
 import highlightText from 'lib/highlightText';
 import AddressIcon from 'ui/shared/address/AddressIcon';
@@ -28,7 +29,8 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick }: Props) =>
         return route({ pathname: '/token/[hash]', query: { hash: data.address } });
       }
       case 'contract':
-      case 'address': {
+      case 'address':
+      case 'label': {
         return route({ pathname: '/address/[hash]', query: { hash: data.address } });
       }
       case 'transaction': {
@@ -76,6 +78,21 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick }: Props) =>
           </>
         );
       }
+      case 'label': {
+        return (
+          <>
+            <Icon as={ labelIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
+            <Text fontWeight={ 700 } ml={ 2 } w="200px" overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" flexShrink={ 0 }>
+              <span dangerouslySetInnerHTML={{ __html: highlightText(data.name, searchTerm) }}/>
+            </Text>
+            { !isMobile && (
+              <Text overflow="hidden" whiteSpace="nowrap" ml={ 2 } variant="secondary">
+                <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>
+              </Text>
+            ) }
+          </>
+        );
+      }
       case 'block': {
         const shouldHighlightHash = data.block_hash.toLowerCase() === searchTerm.toLowerCase();
         return (
@@ -109,7 +126,8 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick }: Props) =>
     }
 
     switch (data.type) {
-      case 'token': {
+      case 'token':
+      case 'label': {
         return (
           <Text variant="secondary" whiteSpace="nowrap" overflow="hidden">
             <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>

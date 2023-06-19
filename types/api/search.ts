@@ -17,6 +17,13 @@ export interface SearchResultAddressOrContract {
   url?: string; // not used by the frontend, we build the url ourselves
 }
 
+export interface SearchResultLabel {
+  type: 'label';
+  address: string;
+  name: string;
+  url?: string; // not used by the frontend, we build the url ourselves
+}
+
 export interface SearchResultBlock {
   type: 'block';
   block_number: number | string;
@@ -30,7 +37,7 @@ export interface SearchResultTx {
   url?: string; // not used by the frontend, we build the url ourselves
 }
 
-export type SearchResultItem = SearchResultToken | SearchResultAddressOrContract | SearchResultBlock | SearchResultTx;
+export type SearchResultItem = SearchResultToken | SearchResultAddressOrContract | SearchResultBlock | SearchResultTx | SearchResultLabel;
 
 export interface SearchResult {
   items: Array<SearchResultItem>;
