@@ -2,7 +2,6 @@ import { Box, Hide, Show, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import { rightLineArrow, nbsp } from 'lib/html-entities';
 import { L2_WITHDRAWAL_ITEM } from 'stubs/L2';
 import { generateListStub } from 'stubs/utils';
@@ -11,10 +10,11 @@ import WithdrawalsTable from 'ui/l2Withdrawals/WithdrawalsTable';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import Pagination from 'ui/shared/Pagination';
+import Pagination from 'ui/shared/pagination/Pagination';
+import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 const L2Withdrawals = () => {
-  const { data, isError, isPlaceholderData, isPaginationVisible, pagination } = useQueryWithPages({
+  const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
     resourceName: 'l2_withdrawals',
     options: {
       placeholderData: generateListStub<'l2_withdrawals'>(
@@ -46,7 +46,7 @@ const L2Withdrawals = () => {
         />
       ))) }</Show>
       <Hide below="lg" ssr={ false }>
-        <WithdrawalsTable items={ data.items } top={ isPaginationVisible ? 80 : 0 } isLoading={ isPlaceholderData }/>
+        <WithdrawalsTable items={ data.items } top={ pagination.isVisible ? 80 : 0 } isLoading={ isPlaceholderData }/>
       </Hide>
     </>
   ) : null;
@@ -75,7 +75,7 @@ const L2Withdrawals = () => {
         <Box display={{ base: 'none', lg: 'block' }}>
           { text }
         </Box>
-        { isPaginationVisible && <Pagination ml="auto" { ...pagination }/> }
+        { pagination.isVisible && <Pagination ml="auto" { ...pagination }/> }
       </ActionBar>
     </>
   );

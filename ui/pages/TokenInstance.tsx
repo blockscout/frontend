@@ -2,13 +2,13 @@ import { Box, Icon, Skeleton } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { PaginationParams } from 'ui/shared/pagination/types';
 import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import nftIcon from 'icons/nft_shield.svg';
 import useApiQuery from 'lib/api/useApiQuery';
-import { useAppContext } from 'lib/appContext';
+import { useAppContext } from 'lib/contexts/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import { TOKEN_INSTANCE } from 'stubs/token';
 import * as tokenStubs from 'stubs/token';
 import { generateListStub } from 'stubs/utils';
@@ -17,8 +17,8 @@ import AddressHeadingInfo from 'ui/shared/AddressHeadingInfo';
 import Tag from 'ui/shared/chakra/Tag';
 import LinkExternal from 'ui/shared/LinkExternal';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import Pagination from 'ui/shared/Pagination';
-import type { Props as PaginationProps } from 'ui/shared/Pagination';
+import Pagination from 'ui/shared/pagination/Pagination';
+import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import TokenHolders from 'ui/token/TokenHolders/TokenHolders';
@@ -144,15 +144,12 @@ const TokenInstanceContent = () => {
     }
   })();
 
-  let pagination: PaginationProps | undefined;
-  let isPaginationVisible;
+  let pagination: PaginationParams | undefined;
 
   if (tab === 'token_transfers') {
     pagination = transfersQuery.pagination;
-    isPaginationVisible = transfersQuery.isPaginationVisible;
   } else if (tab === 'holders') {
     pagination = holdersQuery.pagination;
-    isPaginationVisible = holdersQuery.isPaginationVisible;
   }
 
   return (
@@ -179,7 +176,7 @@ const TokenInstanceContent = () => {
         <RoutedTabs
           tabs={ tabs }
           tabListProps={ isMobile ? { mt: 8 } : { mt: 3, py: 5, marginBottom: 0 } }
-          rightSlot={ !isMobile && isPaginationVisible && pagination ? <Pagination { ...pagination }/> : null }
+          rightSlot={ !isMobile && pagination?.isVisible ? <Pagination { ...pagination }/> : null }
           stickyEnabled={ !isMobile }
         />
       ) }

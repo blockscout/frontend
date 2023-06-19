@@ -1,31 +1,25 @@
 import { Show, Hide } from '@chakra-ui/react';
-import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
-
-import type { AddressTokensResponse } from 'types/api/address';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import Pagination from 'ui/shared/Pagination';
-import type { Props as PaginationProps } from 'ui/shared/Pagination';
+import Pagination from 'ui/shared/pagination/Pagination';
+import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 
 import ERC20TokensListItem from './ERC20TokensListItem';
 import ERC20TokensTable from './ERC20TokensTable';
 
 type Props = {
-  tokensQuery: UseQueryResult<AddressTokensResponse> & {
-    pagination: PaginationProps;
-    isPaginationVisible: boolean;
-  };
+  tokensQuery: QueryWithPagesResult<'address_tokens'>;
 }
 
 const ERC20Tokens = ({ tokensQuery }: Props) => {
   const isMobile = useIsMobile();
 
-  const { isError, isPlaceholderData, data, pagination, isPaginationVisible } = tokensQuery;
+  const { isError, isPlaceholderData, data, pagination } = tokensQuery;
 
-  const actionBar = isMobile && isPaginationVisible && (
+  const actionBar = isMobile && pagination.isVisible && (
     <ActionBar mt={ -6 }>
       <Pagination ml="auto" { ...pagination }/>
     </ActionBar>
@@ -33,7 +27,7 @@ const ERC20Tokens = ({ tokensQuery }: Props) => {
 
   const content = data?.items ? (
     <>
-      <Hide below="lg" ssr={ false }><ERC20TokensTable data={ data.items } top={ isPaginationVisible ? 72 : 0 } isLoading={ isPlaceholderData }/></Hide>
+      <Hide below="lg" ssr={ false }><ERC20TokensTable data={ data.items } top={ pagination.isVisible ? 72 : 0 } isLoading={ isPlaceholderData }/></Hide>
       <Show below="lg" ssr={ false }>{ data.items.map((item, index) => (
         <ERC20TokensListItem
           key={ item.token.address + (isPlaceholderData ? index : '') }

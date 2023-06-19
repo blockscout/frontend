@@ -5,15 +5,15 @@ import React, { useEffect } from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
 import type { TokenInfo } from 'types/api/token';
+import type { PaginationParams } from 'ui/shared/pagination/types';
 import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import appConfig from 'configs/app/config';
 import iconSuccess from 'icons/status/success.svg';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
-import { useAppContext } from 'lib/appContext';
+import { useAppContext } from 'lib/contexts/app';
 import useContractTabs from 'lib/hooks/useContractTabs';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
@@ -26,8 +26,8 @@ import TextAd from 'ui/shared/ad/TextAd';
 import EntityTags from 'ui/shared/EntityTags';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import type { Props as PaginationProps } from 'ui/shared/Pagination';
-import Pagination from 'ui/shared/Pagination';
+import Pagination from 'ui/shared/pagination/Pagination';
+import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import TokenLogo from 'ui/shared/TokenLogo';
@@ -183,21 +183,17 @@ const TokenPageContent = () => {
     } : undefined,
   ].filter(Boolean);
 
-  let hasPagination;
-  let pagination: PaginationProps | undefined;
+  let pagination: PaginationParams | undefined;
 
   if (!router.query.tab || router.query.tab === 'token_transfers') {
-    hasPagination = transfersQuery.isPaginationVisible;
     pagination = transfersQuery.pagination;
   }
 
   if (router.query.tab === 'holders') {
-    hasPagination = holdersQuery.isPaginationVisible;
     pagination = holdersQuery.pagination;
   }
 
   if (router.query.tab === 'inventory') {
-    hasPagination = inventoryQuery.isPaginationVisible;
     pagination = inventoryQuery.pagination;
   }
 
@@ -280,7 +276,7 @@ const TokenPageContent = () => {
           <RoutedTabs
             tabs={ tabs }
             tabListProps={ tabListProps }
-            rightSlot={ !isMobile && hasPagination && pagination ? <Pagination { ...pagination }/> : null }
+            rightSlot={ !isMobile && pagination?.isVisible ? <Pagination { ...pagination }/> : null }
             stickyEnabled={ !isMobile }
           />
         ) }

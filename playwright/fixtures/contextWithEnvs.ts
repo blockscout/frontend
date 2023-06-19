@@ -1,6 +1,8 @@
 import type { test } from '@playwright/experimental-ct-react';
 import type { Browser } from '@playwright/test';
 
+import * as app from 'playwright/utils/app';
+
 interface Env {
   name: string;
   value: string;
@@ -20,7 +22,7 @@ export async function createContextWithEnvs(browser: Browser, envs: Array<Env>) 
   return browser.newContext({
     storageState: {
       origins: [
-        { origin: 'http://localhost:3100', localStorage: envs },
+        { origin: app.url, localStorage: envs },
       ],
       cookies: [],
     },

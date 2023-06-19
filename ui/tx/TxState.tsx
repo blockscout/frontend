@@ -2,11 +2,11 @@ import { Accordion, Hide, Show, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import { SECOND } from 'lib/consts';
-import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import { TX_STATE_CHANGES } from 'stubs/txStateChanges';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import Pagination from 'ui/shared/Pagination';
+import Pagination from 'ui/shared/pagination/Pagination';
+import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import TxStateList from 'ui/tx/state/TxStateList';
 import TxStateTable from 'ui/tx/state/TxStateTable';
 import useFetchTxInfo from 'ui/tx/useFetchTxInfo';
@@ -16,7 +16,7 @@ import TxSocketAlert from './TxSocketAlert';
 
 const TxState = () => {
   const txInfo = useFetchTxInfo({ updateDelay: 5 * SECOND });
-  const { data, isPlaceholderData, isError, isPaginationVisible, pagination } = useQueryWithPages({
+  const { data, isPlaceholderData, isError, pagination } = useQueryWithPages({
     resourceName: 'tx_state_changes',
     pathParams: { hash: txInfo.data?.hash },
     options: {
@@ -38,7 +38,7 @@ const TxState = () => {
   const content = data ? (
     <Accordion allowMultiple defaultIndex={ [] }>
       <Hide below="lg" ssr={ false }>
-        <TxStateTable data={ data.items } isLoading={ isPlaceholderData } top={ isPaginationVisible ? 80 : 0 }/>
+        <TxStateTable data={ data.items } isLoading={ isPlaceholderData } top={ pagination.isVisible ? 80 : 0 }/>
       </Hide>
       <Show below="lg" ssr={ false }>
         <TxStateList data={ data.items } isLoading={ isPlaceholderData }/>
@@ -46,7 +46,7 @@ const TxState = () => {
     </Accordion>
   ) : null;
 
-  const actionBar = isPaginationVisible ? (
+  const actionBar = pagination.isVisible ? (
     <ActionBar mt={ -6 } showShadow>
       <Pagination ml="auto" { ...pagination }/>
     </ActionBar>

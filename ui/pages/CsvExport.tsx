@@ -6,7 +6,7 @@ import type { CsvExportType } from 'types/client/address';
 
 import type { ResourceName } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
-import { useAppContext } from 'lib/appContext';
+import { useAppContext } from 'lib/contexts/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import CsvExportForm from 'ui/csvExport/CsvExportForm';
 import Address from 'ui/shared/address/Address';

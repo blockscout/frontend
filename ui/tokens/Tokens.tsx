@@ -6,7 +6,6 @@ import type { TokenType } from 'types/api/token';
 
 import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
 import useDebounce from 'lib/hooks/useDebounce';
-import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import { apos } from 'lib/html-entities';
 import TOKEN_TYPE from 'lib/token/tokenTypes';
 import { TOKEN_INFO_ERC_20 } from 'stubs/token';
@@ -17,7 +16,8 @@ import DataListDisplay from 'ui/shared/DataListDisplay';
 import FilterInput from 'ui/shared/filters/FilterInput';
 import PopoverFilter from 'ui/shared/filters/PopoverFilter';
 import TokenTypeFilter from 'ui/shared/filters/TokenTypeFilter';
-import Pagination from 'ui/shared/Pagination';
+import Pagination from 'ui/shared/pagination/Pagination';
+import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 import TokensListItem from './TokensListItem';
 import TokensTable from './TokensTable';
@@ -32,7 +32,7 @@ const Tokens = () => {
 
   const debouncedFilter = useDebounce(filter, 300);
 
-  const { isError, isPlaceholderData, data, isPaginationVisible, pagination, onFilterChange } = useQueryWithPages({
+  const { isError, isPlaceholderData, data, pagination, onFilterChange } = useQueryWithPages({
     resourceName: 'tokens',
     filters: { q: debouncedFilter, type },
     options: {
@@ -92,7 +92,7 @@ const Tokens = () => {
           { typeFilter }
           { filterInput }
         </HStack>
-        { isPaginationVisible && <Pagination ml="auto" { ...pagination }/> }
+        <Pagination ml="auto" { ...pagination }/>
       </ActionBar>
     </>
   );

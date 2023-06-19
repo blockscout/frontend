@@ -1,25 +1,21 @@
 import { Box } from '@chakra-ui/react';
-import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
-import type { TokenHolders, TokenInfo } from 'types/api/token';
+import type { TokenInfo } from 'types/api/token';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import Pagination from 'ui/shared/Pagination';
-import type { Props as PaginationProps } from 'ui/shared/Pagination';
+import Pagination from 'ui/shared/pagination/Pagination';
+import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 
 import TokenHoldersList from './TokenHoldersList';
 import TokenHoldersTable from './TokenHoldersTable';
 
 type Props = {
   token?: TokenInfo;
-  holdersQuery: UseQueryResult<TokenHolders> & {
-    pagination: PaginationProps;
-    isPaginationVisible: boolean;
-  };
+  holdersQuery: QueryWithPagesResult<'token_holders'>;
 }
 
 const TokenHoldersContent = ({ holdersQuery, token }: Props) => {
@@ -29,7 +25,7 @@ const TokenHoldersContent = ({ holdersQuery, token }: Props) => {
     return <DataFetchAlert/>;
   }
 
-  const actionBar = isMobile && holdersQuery.isPaginationVisible && (
+  const actionBar = isMobile && holdersQuery.pagination.isVisible && (
     <ActionBar mt={ -6 }>
       <Pagination ml="auto" { ...holdersQuery.pagination }/>
     </ActionBar>
@@ -43,7 +39,7 @@ const TokenHoldersContent = ({ holdersQuery, token }: Props) => {
         <TokenHoldersTable
           data={ items }
           token={ token }
-          top={ holdersQuery.isPaginationVisible ? 80 : 0 }
+          top={ holdersQuery.pagination.isVisible ? 80 : 0 }
           isLoading={ holdersQuery.isPlaceholderData }
         />
       </Box>

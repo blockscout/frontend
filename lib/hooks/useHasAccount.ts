@@ -1,5 +1,5 @@
 import appConfig from 'configs/app/config';
-import { useAppContext } from 'lib/appContext';
+import { useAppContext } from 'lib/contexts/app';
 import * as cookies from 'lib/cookies';
 
 export default function useHasAccount() {

@@ -19,10 +19,9 @@ test('base view +@mobile', async({ mount }) => {
             items: [ tokenInstanse, tokenInstanse, tokenInstanse ],
             next_page_params: { unique_token: 1 },
           },
-          isPaginationVisible: true,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore:
-          pagination: { page: 1 },
+          pagination: { page: 1, isVisible: true },
         }}
       />
     </TestApp>,

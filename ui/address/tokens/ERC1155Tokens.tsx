@@ -1,30 +1,24 @@
 import { Grid } from '@chakra-ui/react';
-import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
-
-import type { AddressTokensResponse } from 'types/api/address';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import type { Props as PaginationProps } from 'ui/shared/Pagination';
-import Pagination from 'ui/shared/Pagination';
+import Pagination from 'ui/shared/pagination/Pagination';
+import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 
 import NFTItem from './NFTItem';
 
 type Props = {
-  tokensQuery: UseQueryResult<AddressTokensResponse> & {
-    pagination: PaginationProps;
-    isPaginationVisible: boolean;
-  };
+  tokensQuery: QueryWithPagesResult<'address_tokens'>;
 }
 
 const ERC1155Tokens = ({ tokensQuery }: Props) => {
   const isMobile = useIsMobile();
 
-  const { isError, isPlaceholderData, data, pagination, isPaginationVisible } = tokensQuery;
+  const { isError, isPlaceholderData, data, pagination } = tokensQuery;
 
-  const actionBar = isMobile && isPaginationVisible && (
+  const actionBar = isMobile && pagination.isVisible && (
     <ActionBar mt={ -6 }>
       <Pagination ml="auto" { ...pagination }/>
     </ActionBar>

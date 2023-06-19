@@ -19,10 +19,9 @@ test('erc20 +@mobile', async({ mount }) => {
             items: [ tokenTransferMock.erc20 ],
             next_page_params: null,
           },
-          isPaginationVisible: true,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore:
-          pagination: { page: 1 },
+          pagination: { page: 1, isVisible: true },
         }}
       />
     </TestApp>,
@@ -43,10 +42,9 @@ test('erc721 +@mobile', async({ mount }) => {
             items: [ tokenTransferMock.erc721 ],
             next_page_params: null,
           },
-          isPaginationVisible: true,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore:
-          pagination: { page: 1 },
+          pagination: { page: 1, isVisible: true },
         }}
       />
     </TestApp>,
@@ -72,10 +70,9 @@ test('erc1155 +@mobile', async({ mount }) => {
             ],
             next_page_params: null,
           },
-          isPaginationVisible: true,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore:
-          pagination: { page: 1 },
+          pagination: { page: 1, isVisible: true },
         }}
       />
     </TestApp>,

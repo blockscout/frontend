@@ -1,28 +1,22 @@
 import { Grid } from '@chakra-ui/react';
-import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
-
-import type { TokenInventoryResponse } from 'types/api/token';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import type { Props as PaginationProps } from 'ui/shared/Pagination';
-import Pagination from 'ui/shared/Pagination';
+import Pagination from 'ui/shared/pagination/Pagination';
+import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 
 import TokenInventoryItem from './TokenInventoryItem';
 
 type Props = {
-  inventoryQuery: UseQueryResult<TokenInventoryResponse> & {
-    pagination: PaginationProps;
-    isPaginationVisible: boolean;
-  };
+  inventoryQuery: QueryWithPagesResult<'token_inventory'>;
 }
 
 const TokenInventory = ({ inventoryQuery }: Props) => {
   const isMobile = useIsMobile();
 
-  const actionBar = isMobile && inventoryQuery.isPaginationVisible && (
+  const actionBar = isMobile && inventoryQuery.pagination.isVisible && (
     <ActionBar mt={ -6 }>
       <Pagination ml="auto" { ...inventoryQuery.pagination }/>
     </ActionBar>

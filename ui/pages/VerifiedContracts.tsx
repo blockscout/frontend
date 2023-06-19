@@ -6,7 +6,6 @@ import type { VerifiedContractsFilters } from 'types/api/contracts';
 
 import useDebounce from 'lib/hooks/useDebounce';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { VERIFIED_CONTRACT_INFO } from 'stubs/contract';
@@ -15,7 +14,8 @@ import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import FilterInput from 'ui/shared/filters/FilterInput';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import Pagination from 'ui/shared/Pagination';
+import Pagination from 'ui/shared/pagination/Pagination';
+import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import Sort from 'ui/shared/sort/Sort';
 import type { SortField, Sort as TSort } from 'ui/verifiedContracts/utils';
 import { SORT_OPTIONS, sortFn, getNextSortValue } from 'ui/verifiedContracts/utils';
@@ -34,7 +34,7 @@ const VerifiedContracts = () => {
 
   const isMobile = useIsMobile();
 
-  const { isError, isPlaceholderData, data, isPaginationVisible, pagination, onFilterChange } = useQueryWithPages({
+  const { isError, isPlaceholderData, data, pagination, onFilterChange } = useQueryWithPages({
     resourceName: 'verified_contracts',
     filters: { q: debouncedSearchTerm, filter: type },
     options: {
@@ -100,13 +100,13 @@ const VerifiedContracts = () => {
         { sortButton }
         { filterInput }
       </HStack>
-      { (!isMobile || isPaginationVisible) && (
+      { (!isMobile || pagination.isVisible) && (
         <ActionBar mt={ -6 }>
           <HStack spacing={ 3 } display={{ base: 'none', lg: 'flex' }}>
             { typeFilter }
             { filterInput }
           </HStack>
-          { isPaginationVisible && <Pagination ml="auto" { ...pagination }/> }
+          <Pagination ml="auto" { ...pagination }/>
         </ActionBar>
       ) }
     </>

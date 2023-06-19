@@ -2,7 +2,7 @@ import { chakra, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import appConfig from 'configs/app/config';
-import { useAppContext } from 'lib/appContext';
+import { useAppContext } from 'lib/contexts/app';
 import * as cookies from 'lib/cookies';
 import isSelfHosted from 'lib/isSelfHosted';
 

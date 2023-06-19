@@ -5,10 +5,10 @@ import React from 'react';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 
-import { AppContextProvider } from 'lib/appContext';
+import { AppContextProvider } from 'lib/contexts/app';
 import type { Props as PageProps } from 'lib/next/getServerSideProps';
 import { SocketProvider } from 'lib/socket/context';
-import { PORT } from 'playwright/fixtures/socketServer';
+import * as app from 'playwright/utils/app';
 import theme from 'theme';
 
 type Props = {
@@ -54,7 +54,7 @@ const TestApp = ({ children, withSocket, appContext = defaultAppContext }: Props
   return (
     <ChakraProvider theme={ theme }>
       <QueryClientProvider client={ queryClient }>
-        <SocketProvider url={ withSocket ? `ws://localhost:${ PORT }` : undefined }>
+        <SocketProvider url={ withSocket ? `ws://${ app.domain }:${ app.socketPort }` : undefined }>
           <AppContextProvider { ...appContext }>
             <WagmiConfig config={ wagmiConfig }>
               { children }

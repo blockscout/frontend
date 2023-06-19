@@ -6,8 +6,8 @@ import React, { useState } from 'react';
 
 import appConfig from 'configs/app/config';
 import type { ResourceError } from 'lib/api/resources';
-import { AppContextProvider } from 'lib/appContext';
-import { Chakra } from 'lib/Chakra';
+import { AppContextProvider } from 'lib/contexts/app';
+import { ChakraProvider } from 'lib/contexts/chakra';
 import { ScrollDirectionProvider } from 'lib/contexts/scrollDirection';
 import getErrorCauseStatusCode from 'lib/errors/getErrorCauseStatusCode';
 import useConfigSentry from 'lib/hooks/useConfigSentry';
@@ -63,7 +63,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, []);
 
   return (
-    <Chakra theme={ theme } cookies={ pageProps.cookies }>
+    <ChakraProvider theme={ theme } cookies={ pageProps.cookies }>
       <ErrorBoundary renderErrorScreen={ renderErrorScreen } onError={ handleError }>
         <AppContextProvider pageProps={ pageProps }>
           <QueryClientProvider client={ queryClient }>
@@ -77,7 +77,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           </QueryClientProvider>
         </AppContextProvider>
       </ErrorBoundary>
-    </Chakra>
+    </ChakraProvider>
   );
 }
 
