@@ -141,6 +141,6 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v2
         with:
-          name: playwright-report
+          name: playwright-report-${{ matrix.project }}
           path: playwright-report
           retention-days: 10
