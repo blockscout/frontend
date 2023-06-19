@@ -61,14 +61,10 @@ const VerifiedContracts = () => {
       return;
     }
 
-    if ((value === 'vyper' || value === 'solidity')) {
-      onFilterChange({ q: debouncedSearchTerm, filter: value });
-      setType(value);
-      return;
-    }
+    const filter = value === 'all' ? undefined : value as VerifiedContractsFilters['filter'];
 
-    onFilterChange({ q: debouncedSearchTerm, filter: undefined });
-    setType(undefined);
+    onFilterChange({ q: debouncedSearchTerm, filter });
+    setType(filter);
   }, [ debouncedSearchTerm, onFilterChange ]);
 
   const handleSortToggle = React.useCallback((field: SortField) => {

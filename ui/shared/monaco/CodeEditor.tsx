@@ -36,9 +36,10 @@ const EDITOR_HEIGHT = 500;
 interface Props {
   data: Array<File>;
   remappings?: Array<string>;
+  language?: string;
 }
 
-const CodeEditor = ({ data, remappings }: Props) => {
+const CodeEditor = ({ data, remappings, language }: Props) => {
   const [ instance, setInstance ] = React.useState<Monaco | undefined>();
   const [ editor, setEditor ] = React.useState<monaco.editor.IStandaloneCodeEditor | undefined>();
   const [ index, setIndex ] = React.useState(0);
@@ -52,6 +53,8 @@ const CodeEditor = ({ data, remappings }: Props) => {
   const themeColors = useThemeColors();
 
   const editorWidth = containerRect ? containerRect.width - (isMobile ? 0 : SIDE_BAR_WIDTH) : 0;
+
+  const editorLanguage = language === 'vyper' ? 'elixir' : 'sol';
 
   React.useEffect(() => {
     instance?.editor.setTheme(colorMode === 'light' ? 'blockscout-light' : 'blockscout-dark');
@@ -69,7 +72,7 @@ const CodeEditor = ({ data, remappings }: Props) => {
     const loadedModelsPaths = loadedModels.map((model) => model.uri.path);
     const newModels = data.slice(1)
       .filter((file) => !loadedModelsPaths.includes(file.file_path))
-      .map((file) => monaco.editor.createModel(file.source_code, 'sol', monaco.Uri.parse(file.file_path)));
+      .map((file) => monaco.editor.createModel(file.source_code, editorLanguage, monaco.Uri.parse(file.file_path)));
 
     loadedModels.concat(newModels).forEach(addFileImportDecorations);
 
@@ -185,7 +188,7 @@ const CodeEditor = ({ data, remappings }: Props) => {
     return (
       <Box overflow="hidden" borderRadius="md" height={ `${ EDITOR_HEIGHT }px` }>
         <MonacoEditor
-          language="sol"
+          language={ editorLanguage }
           path={ data[index].file_path }
           defaultValue={ data[index].source_code }
           options={ EDITOR_OPTIONS }
@@ -216,7 +219,7 @@ const CodeEditor = ({ data, remappings }: Props) => {
         <MonacoEditor
           className="editor-container"
           height={ `${ EDITOR_HEIGHT }px` }
-          language="sol"
+          language={ editorLanguage }
           path={ data[index].file_path }
           defaultValue={ data[index].source_code }
           options={ EDITOR_OPTIONS }

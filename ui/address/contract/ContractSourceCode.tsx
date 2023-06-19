@@ -23,9 +23,19 @@ function getEditorData(contractInfo: SmartContract | undefined) {
     return undefined;
   }
 
-  const defaultName = contractInfo.is_vyper_contract ? '/index.vy' : '/index.sol';
+  const extension = (() => {
+    switch (contractInfo.language) {
+      case 'vyper':
+        return 'vy';
+      case 'yul':
+        return 'yul';
+      default:
+        return 'sol';
+    }
+  })();
+
   return [
-    { file_path: formatFilePath(contractInfo.file_path || defaultName), source_code: contractInfo.source_code },
+    { file_path: formatFilePath(contractInfo.file_path || `index.${ extension }`), source_code: contractInfo.source_code },
     ...(contractInfo.additional_sources || []).map((source) => ({ ...source, file_path: formatFilePath(source.file_path) })),
   ];
 }
@@ -74,7 +84,7 @@ const ContractSourceCode = ({ address, implementationAddress }: Props) => {
   const heading = (
     <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>
       <span>Contract source code</span>
-      <Text whiteSpace="pre" as="span" variant="secondary"> ({ activeContract?.is_vyper_contract ? 'Vyper' : 'Solidity' })</Text>
+      <Text whiteSpace="pre" as="span" variant="secondary" textTransform="capitalize"> ({ activeContract?.language })</Text>
     </Skeleton>
   );
 
@@ -132,11 +142,19 @@ const ContractSourceCode = ({ address, implementationAddress }: Props) => {
     return (
       <>
         <Box display={ sourceType === 'primary' ? 'block' : 'none' }>
-          <CodeEditor data={ primaryEditorData } remappings={ primaryContractQuery.data?.compiler_settings?.remappings }/>
+          <CodeEditor
+            data={ primaryEditorData }
+            remappings={ primaryContractQuery.data?.compiler_settings?.remappings }
+            language={ primaryContractQuery.data?.language ?? undefined }
+          />
         </Box>
         { secondaryEditorData && (
           <Box display={ sourceType === 'secondary' ? 'block' : 'none' }>
-            <CodeEditor data={ secondaryEditorData } remappings={ secondaryContractQuery.data?.compiler_settings?.remappings }/>
+            <CodeEditor
+              data={ secondaryEditorData }
+              remappings={ secondaryContractQuery.data?.compiler_settings?.remappings }
+              language={ secondaryContractQuery.data?.language ?? undefined }
+            />
           </Box>
         ) }
       </>
