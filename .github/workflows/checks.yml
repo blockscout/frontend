@@ -42,10 +42,17 @@ jobs:
           node-version: 18
           cache: 'yarn'
 
-      - name: Install dependencies
-        uses: bahmutov/npm-install@v1
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        id: cache-node-modules
         with:
-          useRollingCache: true
+          path: |
+            node_modules
+          key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+  
+      - name: Install dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: yarn --frozen-lockfile
 
       - name: Run ESLint
         run: yarn lint:eslint
@@ -54,7 +61,7 @@ jobs:
         run: yarn lint:tsc
 
   jest_tests:
-    name: Run unit tests with Jest
+    name: Jest tests
     needs: [ code_quality ]
     runs-on: ubuntu-latest
     steps:
@@ -67,20 +74,32 @@ jobs:
           node-version: 18
           cache: 'yarn'
 
-      - name: Install dependencies
-        uses: bahmutov/npm-install@v1
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        id: cache-node-modules
         with:
-          useRollingCache: true
+          path: |
+            node_modules
+          key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+    
+      - name: Install dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: yarn --frozen-lockfile
 
       - name: Run Jest
         run: yarn test:jest
 
   pw_tests:
-    name: Run components visual tests with PlayWright
+    name: 'Playwright tests - project: ${{ matrix.project }}'
     needs: [ code_quality ]
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.32.0-focal
+
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [ default, mobile, dark-color-mode ]
 
     steps:
       - name: Install git-lfs
@@ -97,18 +116,28 @@ jobs:
           node-version: 18
           cache: 'yarn'
 
-      - name: Install dependencies
-        uses: bahmutov/npm-install@v1
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        id: cache-node-modules
         with:
-          useRollingCache: true
+          path: |
+            node_modules
+          key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+    
+      - name: Install dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: yarn --frozen-lockfile
 
       - name: Run PlayWright
-        run: HOME=/root yarn test:pw
+        run: yarn test:pw:ci
+        env:
+          HOME: /root
+          PW_PROJECT: ${{ matrix.project }}
 
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v2
         with:
-          name: playwright-report
+          name: playwright-report-${{ matrix.project }}
           path: playwright-report
           retention-days: 10
