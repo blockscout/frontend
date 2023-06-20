@@ -20,6 +20,7 @@ import ContractVerificationSourcify from './methods/ContractVerificationSourcify
 import ContractVerificationStandardInput from './methods/ContractVerificationStandardInput';
 import ContractVerificationVyperContract from './methods/ContractVerificationVyperContract';
 import ContractVerificationVyperMultiPartFile from './methods/ContractVerificationVyperMultiPartFile';
+import ContractVerificationVyperStandardInput from './methods/ContractVerificationVyperStandardInput';
 import { prepareRequestBody, formatSocketErrors, getDefaultValues } from './utils';
 
 interface Props {
@@ -121,6 +122,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
       'multi-part': <ContractVerificationMultiPartFile/>,
       'vyper-code': <ContractVerificationVyperContract config={ config }/>,
       'vyper-multi-part': <ContractVerificationVyperMultiPartFile/>,
+      'vyper-standard-input': <ContractVerificationVyperStandardInput/>,
     };
   }, [ config ]);
   const method = watch('method');

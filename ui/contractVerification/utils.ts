@@ -9,6 +9,7 @@ import type {
   FormFieldsStandardInput,
   FormFieldsVyperContract,
   FormFieldsVyperMultiPartFile,
+  FormFieldsVyperStandardInput,
 } from './types';
 import type { SmartContractVerificationMethod, SmartContractVerificationError, SmartContractVerificationConfig } from 'types/api/contract';
 
@@ -21,6 +22,7 @@ export const SUPPORTED_VERIFICATION_METHODS: Array<SmartContractVerificationMeth
   'multi-part',
   'vyper-code',
   'vyper-multi-part',
+  'vyper-standard-input',
 ];
 
 export const METHOD_LABELS: Record<SmartContractVerificationMethod, string> = {
@@ -30,6 +32,7 @@ export const METHOD_LABELS: Record<SmartContractVerificationMethod, string> = {
   'multi-part': 'Solidity (Multi-part files)',
   'vyper-code': 'Vyper (Contract)',
   'vyper-multi-part': 'Vyper (Multi-part files)',
+  'vyper-standard-input': 'Vyper (Standard JSON input)',
 };
 
 export const DEFAULT_VALUES: Record<SmartContractVerificationMethod, FormFields> = {
@@ -97,6 +100,14 @@ export const DEFAULT_VALUES: Record<SmartContractVerificationMethod, FormFields>
     },
     compiler: null,
     evm_version: null,
+    sources: [],
+  },
+  'vyper-standard-input': {
+    method: {
+      value: 'vyper-standard-input' as const,
+      label: METHOD_LABELS['vyper-standard-input'],
+    },
+    compiler: null,
     sources: [],
   },
 };
@@ -219,6 +230,16 @@ export function prepareRequestBody(data: FormFields): FetchParams['body'] {
       _data.evm_version && body.set('evm_version', _data.evm_version.value);
       addFilesToFormData(body, _data.sources, 'files');
       addFilesToFormData(body, _data.interfaces, 'interfaces');
+
+      return body;
+    }
+
+    case 'vyper-standard-input': {
+      const _data = data as FormFieldsVyperStandardInput;
+
+      const body = new FormData();
+      _data.compiler && body.set('compiler_version', _data.compiler.value);
+      addFilesToFormData(body, _data.sources, 'files');
 
       return body;
     }
