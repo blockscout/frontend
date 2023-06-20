@@ -145,6 +145,7 @@ export type SmartContractVerificationResponse = {
 export interface SmartContractVerificationError {
   contract_source_code?: Array<string>;
   files?: Array<string>;
+  interfaces?: Array<string>;
   compiler_version?: Array<string>;
   constructor_arguments?: Array<string>;
   name?: Array<string>;

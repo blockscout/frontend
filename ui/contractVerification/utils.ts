@@ -169,7 +169,7 @@ export function prepareRequestBody(data: FormFields): FetchParams['body'] {
       body.set('contract_name', _data.name);
       body.set('autodetect_constructor_args', String(Boolean(_data.autodetect_constructor_args)));
       body.set('constructor_args', _data.constructor_args);
-      addFilesToFormData(body, _data.sources);
+      addFilesToFormData(body, _data.sources, 'files');
 
       return body;
     }
@@ -177,7 +177,7 @@ export function prepareRequestBody(data: FormFields): FetchParams['body'] {
     case 'sourcify': {
       const _data = data as FormFieldsSourcify;
       const body = new FormData();
-      addFilesToFormData(body, _data.sources);
+      addFilesToFormData(body, _data.sources, 'files');
       _data.contract_index && body.set('chosen_contract_index', _data.contract_index.value);
 
       return body;
@@ -194,7 +194,7 @@ export function prepareRequestBody(data: FormFields): FetchParams['body'] {
 
       const libraries = reduceLibrariesArray(_data.libraries);
       libraries && body.set('libraries', JSON.stringify(libraries));
-      addFilesToFormData(body, _data.sources);
+      addFilesToFormData(body, _data.sources, 'files');
 
       return body;
     }
@@ -217,7 +217,8 @@ export function prepareRequestBody(data: FormFields): FetchParams['body'] {
       const body = new FormData();
       _data.compiler && body.set('compiler_version', _data.compiler.value);
       _data.evm_version && body.set('evm_version', _data.evm_version.value);
-      addFilesToFormData(body, _data.sources);
+      addFilesToFormData(body, _data.sources, 'files');
+      addFilesToFormData(body, _data.interfaces, 'interfaces');
 
       return body;
     }
@@ -239,20 +240,21 @@ function reduceLibrariesArray(libraries: Array<ContractLibrary> | undefined) {
   }, {});
 }
 
-function addFilesToFormData(body: FormData, files: Array<File> | undefined) {
+function addFilesToFormData(body: FormData, files: Array<File> | undefined, fieldName: 'files' | 'interfaces') {
   if (!files) {
     return;
   }
 
   for (let index = 0; index < files.length; index++) {
     const file = files[index];
-    body.set(`files[${ index }]`, file, file.name);
+    body.set(`${ fieldName }[${ index }]`, file, file.name);
   }
 }
 
 const API_ERROR_TO_FORM_FIELD: Record<keyof SmartContractVerificationError, FieldPath<FormFields>> = {
   contract_source_code: 'code',
   files: 'sources',
+  interfaces: 'interfaces',
   compiler_version: 'compiler',
   constructor_arguments: 'constructor_args',
   name: 'name',

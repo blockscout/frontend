@@ -64,6 +64,7 @@ export interface FormFieldsVyperMultiPartFile {
   compiler: Option | null;
   evm_version: Option | null;
   sources: Array<File>;
+  interfaces: Array<File>;
 }
 
 export type FormFields = FormFieldsFlattenSourceCode | FormFieldsStandardInput | FormFieldsSourcify |
