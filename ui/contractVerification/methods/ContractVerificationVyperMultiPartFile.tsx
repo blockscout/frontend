@@ -31,6 +31,7 @@ const ContractVerificationVyperMultiPartFile = () => {
           Primary compiled Vyper contract. 
           Only add the main contract here whose bytecode has been deployed, all other files can be uploaded to the interfaces box below.
         ` }
+        required
       />
       <ContractVerificationFieldSources
         name="interfaces"

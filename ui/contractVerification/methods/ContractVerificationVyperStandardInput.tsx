@@ -14,6 +14,7 @@ const ContractVerificationVyperStandardInput = () => {
         fileTypes={ FILE_TYPES }
         title="Standard Input JSON"
         hint="Upload the standard input JSON file created during contract compilation."
+        required
       />
     </ContractVerificationMethod>
   );

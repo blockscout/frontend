@@ -19,6 +19,7 @@ const ContractVerificationStandardInput = ({ config }: { config: SmartContractVe
         fileTypes={ FILE_TYPES }
         title="Standard Input JSON"
         hint="Upload the standard input JSON file created during contract compilation."
+        required
       />
       { !config?.is_rust_verifier_microservice_enabled && <ContractVerificationFieldAutodetectArgs/> }
     </ContractVerificationMethod>

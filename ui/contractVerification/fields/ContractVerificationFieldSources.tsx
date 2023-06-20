@@ -19,11 +19,12 @@ interface Props {
   name?: 'sources' | 'interfaces';
   fileTypes: Array<FileTypes>;
   multiple?: boolean;
+  required?: boolean;
   title: string;
   hint: string | React.ReactNode;
 }
 
-const ContractVerificationFieldSources = ({ fileTypes, multiple, title, hint, name = 'sources' }: Props) => {
+const ContractVerificationFieldSources = ({ fileTypes, multiple, required, title, hint, name = 'sources' }: Props) => {
   const { setValue, getValues, control, formState, clearErrors } = useFormContext<FormFields>();
 
   const error = (() => {
@@ -90,6 +91,19 @@ const ContractVerificationFieldSources = ({ fileTypes, multiple, title, hint, na
 
   const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, typeof name>}) => {
     const hasValue = field.value && field.value.length > 0;
+
+    const errorElement = (() => {
+      if (commonError?.type === 'required') {
+        return <FieldError message="Field is required"/>;
+      }
+
+      if (commonError?.message) {
+        return <FieldError message={ commonError.message }/>;
+      }
+
+      return null;
+    })();
+
     return (
       <>
         <FileInput<FormFields, typeof name> accept={ fileTypes.join(',') } multiple={ multiple } field={ field }>
@@ -106,7 +120,7 @@ const ContractVerificationFieldSources = ({ fileTypes, multiple, title, hint, na
             </Flex>
           ) }
         </FileInput>
-        { commonError?.message && <FieldError message={ commonError.type === 'required' ? 'Field is required' : commonError.message }/> }
+        { errorElement }
       </>
     );
   }, [ fileTypes, multiple, commonError, formState.isSubmitting, renderFiles, renderUploadButton ]);
@@ -142,13 +156,13 @@ const ContractVerificationFieldSources = ({ fileTypes, multiple, title, hint, na
   }, [ multiple ]);
 
   const rules = React.useMemo(() => ({
-    required: true,
+    required,
     validate: {
       file_type: validateFileType,
       file_size: validateFileSize,
       quantity: validateQuantity,
     },
-  }), [ validateFileSize, validateFileType, validateQuantity ]);
+  }), [ validateFileSize, validateFileType, validateQuantity, required ]);
 
   return (
     <ContractVerificationFormRow>
