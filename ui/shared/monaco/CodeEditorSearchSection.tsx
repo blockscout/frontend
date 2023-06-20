@@ -1,11 +1,10 @@
-import { AccordionButton, AccordionItem, AccordionPanel, Icon, Box } from '@chakra-ui/react';
+import { AccordionButton, AccordionItem, AccordionPanel, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SearchResult } from './types';
 
+import CodeEditorFileIcon from './CodeEditorFileIcon';
 import CodeEditorSearchResultItem from './CodeEditorSearchResultItem';
-import iconFile from './icons/file.svg';
-import iconSolidity from './icons/solidity.svg';
 import getFileName from './utils/getFileName';
 import useThemeColors from './utils/useThemeColors';
 
@@ -23,8 +22,6 @@ const CodeEditorSearchSection = ({ data, onItemClick }: Props) => {
       onItemClick(data.file_path, Number(lineNumber));
     }
   }, [ data.file_path, onItemClick ]);
-
-  const icon = /.sol|.yul|.vy$/.test(fileName) ? iconSolidity : iconFile;
 
   const themeColors = useThemeColors();
 
@@ -48,7 +45,7 @@ const CodeEditorSearchSection = ({ data, onItemClick }: Props) => {
               height="22px"
               py="3px"
             />
-            <Icon as={ icon } boxSize="16px" mr="4px"/>
+            <CodeEditorFileIcon mr="4px" fileName={ fileName }/>
             <span>{ fileName }</span>
             <Box className="monaco-count-badge" ml="auto" bgColor={ themeColors['badge.background'] }>{ data.matches.length }</Box>
           </AccordionButton>
