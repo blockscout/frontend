@@ -199,7 +199,7 @@ module.exports = {
         groups: [
           'module',
           '/types/',
-          [ '/^configs/', '/^data/', '/^deploy/', '/^icons/', '/^lib/', '/^mocks/', '/^pages/', '/^playwright/', '/^stubs/', '/^theme/', '/^ui/' ],
+          [ '/^configs/', '/^data/', '/^deploy/', '/^icons/', '/^jest/', '/^lib/', '/^mocks/', '/^pages/', '/^playwright/', '/^stubs/', '/^theme/', '/^ui/' ],
           [ 'parent', 'sibling', 'index' ],
         ],
         alphabetize: { order: 'asc', ignoreCase: true },
@@ -289,7 +289,7 @@ module.exports = {
       },
     },
     {
-      files: [ 'configs/**/*.js', 'configs/**/*.ts', '*.config.ts' ],
+      files: [ 'configs/**/*.js', 'configs/**/*.ts', '*.config.ts', 'playwright/**/*.ts' ],
       rules: {
         // for configs allow to consume env variables from process.env directly
         'no-restricted-properties': [ 0 ],

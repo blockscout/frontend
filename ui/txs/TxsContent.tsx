@@ -1,13 +1,10 @@
 import { Box, Show, Hide } from '@chakra-ui/react';
-import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
-
-import type { TxsResponse } from 'types/api/transaction';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import type { Props as PaginationProps } from 'ui/shared/Pagination';
+import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 
 import TxsHeaderMobile from './TxsHeaderMobile';
@@ -15,13 +12,8 @@ import TxsListItem from './TxsListItem';
 import TxsTable from './TxsTable';
 import useTxsSort from './useTxsSort';
 
-type QueryResult = UseQueryResult<TxsResponse> & {
-  pagination: PaginationProps;
-  isPaginationVisible: boolean;
-};
-
 type Props = {
-  query: QueryResult;
+  query: QueryWithPagesResult<'txs_validated' | 'txs_pending'> | QueryWithPagesResult<'txs_watchlist'> | QueryWithPagesResult<'block_txs'>;
   showBlockInfo?: boolean;
   showSocketInfo?: boolean;
   socketInfoAlert?: string;
@@ -79,7 +71,7 @@ const TxsContent = ({
           showSocketInfo={ showSocketInfo }
           socketInfoAlert={ socketInfoAlert }
           socketInfoNum={ socketInfoNum }
-          top={ top || query.isPaginationVisible ? 80 : 0 }
+          top={ top || query.pagination.isVisible ? 80 : 0 }
           currentAddress={ currentAddress }
           enableTimeIncrement={ enableTimeIncrement }
           isLoading={ isPlaceholderData }
@@ -94,7 +86,7 @@ const TxsContent = ({
       sorting={ sorting }
       setSorting={ setSortByValue }
       paginationProps={ query.pagination }
-      showPagination={ query.isPaginationVisible }
+      showPagination={ query.pagination.isVisible }
       filterComponent={ filter }
       linkSlot={ currentAddress ?
         <AddressCsvExportLink address={ currentAddress } type="transactions" ml={ 2 } isLoading={ query.pagination.isLoading }/> : null

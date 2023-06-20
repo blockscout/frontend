@@ -6,7 +6,6 @@ import type { AddressFromToFilter } from 'types/api/address';
 import { AddressFromToFilterValues } from 'types/api/address';
 
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
-import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { INTERNAL_TX } from 'stubs/internalTx';
@@ -14,7 +13,8 @@ import { generateListStub } from 'stubs/utils';
 import AddressIntTxsTable from 'ui/address/internals/AddressIntTxsTable';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import Pagination from 'ui/shared/Pagination';
+import Pagination from 'ui/shared/pagination/Pagination';
+import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 import AddressCsvExportLink from './AddressCsvExportLink';
 import AddressTxsFilter from './AddressTxsFilter';
@@ -28,7 +28,7 @@ const AddressInternalTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivE
 
   const hash = getQueryParamString(router.query.hash);
 
-  const { data, isPlaceholderData, isError, pagination, onFilterChange, isPaginationVisible } = useQueryWithPages({
+  const { data, isPlaceholderData, isError, pagination, onFilterChange } = useQueryWithPages({
     resourceName: 'address_internal_txs',
     pathParams: { hash },
     filters: { filter: filterValue },
@@ -75,7 +75,7 @@ const AddressInternalTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivE
         isLoading={ pagination.isLoading }
       />
       <AddressCsvExportLink address={ hash } isLoading={ pagination.isLoading } type="internal-transactions" ml={{ base: 2, lg: 'auto' }}/>
-      { isPaginationVisible && <Pagination ml={{ base: 'auto', lg: 8 }} { ...pagination }/> }
+      <Pagination ml={{ base: 'auto', lg: 8 }} { ...pagination }/>
     </ActionBar>
   );
 

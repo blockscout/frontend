@@ -101,7 +101,7 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
         </Box>
       ) }
       <Flex alignItems="center" height={ 6 } mt={ 6 }>
-        <Address maxWidth={ `calc((100% - ${ currentAddress ? TAG_WIDTH + 16 : ARROW_WIDTH + 8 }px)/2)` }>
+        <Address w={ `calc((100% - ${ currentAddress ? TAG_WIDTH + 16 : ARROW_WIDTH + 8 }px)/2)` }>
           <AddressIcon address={ tx.from } isLoading={ isLoading }/>
           <AddressLink
             type="address"
@@ -126,7 +126,7 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
             </Box>
           ) }
         { dataTo ? (
-          <Address maxWidth={ `calc((100% - ${ currentAddress ? TAG_WIDTH + 16 : ARROW_WIDTH + 8 }px)/2)` }>
+          <Address w={ `calc((100% - ${ currentAddress ? TAG_WIDTH + 16 : ARROW_WIDTH + 8 }px)/2)` }>
             <AddressIcon address={ dataTo } isLoading={ isLoading }/>
             <AddressLink
               type="address"

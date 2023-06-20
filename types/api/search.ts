@@ -7,6 +7,7 @@ export interface SearchResultToken {
   address: string;
   token_url: string;
   address_url: string;
+  icon_url: string | null;
 }
 
 export interface SearchResultAddressOrContract {

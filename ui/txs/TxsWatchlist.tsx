@@ -1,19 +1,11 @@
-import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
-import type { TxsResponse } from 'types/api/transaction';
-
 import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
-import type { Props as PaginationProps } from 'ui/shared/Pagination';
+import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 import TxsContent from 'ui/txs/TxsContent';
 
-type QueryResult = UseQueryResult<TxsResponse> & {
-  pagination: PaginationProps;
-  isPaginationVisible: boolean;
-};
-
 type Props = {
-  query: QueryResult;
+  query: QueryWithPagesResult<'txs_watchlist'>;
 }
 
 const TxsWatchlist = ({ query }: Props) => {

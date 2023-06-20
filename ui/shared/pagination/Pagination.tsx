@@ -1,20 +1,21 @@
 import { Button, Skeleton, Flex, Icon, IconButton, chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import type { PaginationParams } from './types';
+
 import arrowIcon from 'icons/arrows/east-mini.svg';
 
-export type Props = {
-  page: number;
-  onNextPageClick: () => void;
-  onPrevPageClick: () => void;
-  resetPage: () => void;
-  hasNextPage: boolean;
+interface Props extends PaginationParams {
   className?: string;
-  canGoBackwards: boolean;
-  isLoading?: boolean;
 }
 
-const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasNextPage, className, canGoBackwards, isLoading }: Props) => {
+const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasPages, hasNextPage, className, canGoBackwards, isLoading, isVisible }: Props) => {
+
+  if (!isVisible) {
+    return null;
+  }
+
+  const showSkeleton = page === 1 && !hasPages && isLoading;
 
   return (
     <Flex
@@ -22,28 +23,28 @@ const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasNext
       fontSize="sm"
       alignItems="center"
     >
-      <Skeleton isLoaded={ !isLoading } display="inline-block" mr={ 4 } borderRadius="base">
+      <Skeleton isLoaded={ !showSkeleton } display="inline-block" mr={ 4 } borderRadius="base">
         <Button
           variant="outline"
           size="sm"
           onClick={ resetPage }
-          isDisabled={ page === 1 }
+          isDisabled={ page === 1 || isLoading }
         >
         First
         </Button>
       </Skeleton>
-      <Skeleton isLoaded={ !isLoading } display="inline-block" mr={ 3 } borderRadius="base">
+      <Skeleton isLoaded={ !showSkeleton } display="inline-block" mr={ 3 } borderRadius="base">
         <IconButton
           variant="outline"
           onClick={ onPrevPageClick }
           size="sm"
-          aria-label="Next page"
+          aria-label="Prev page"
           w="36px"
           icon={ <Icon as={ arrowIcon } w={ 5 } h={ 5 }/> }
-          isDisabled={ !canGoBackwards || page === 1 }
+          isDisabled={ !canGoBackwards || page === 1 || isLoading }
         />
       </Skeleton>
-      <Skeleton isLoaded={ !isLoading } display="inline-block" borderRadius="base">
+      <Skeleton isLoaded={ !showSkeleton } display="inline-block" borderRadius="base">
         <Button
           variant="outline"
           size="sm"
@@ -51,12 +52,13 @@ const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasNext
           borderWidth="1px"
           fontWeight={ 400 }
           h={ 8 }
+          minW="36px"
           cursor="unset"
         >
           { page }
         </Button>
       </Skeleton>
-      <Skeleton isLoaded={ !isLoading } display="inline-block" ml={ 3 } borderRadius="base">
+      <Skeleton isLoaded={ !showSkeleton } display="inline-block" ml={ 3 } borderRadius="base">
         <IconButton
           variant="outline"
           onClick={ onNextPageClick }
@@ -64,7 +66,7 @@ const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasNext
           aria-label="Next page"
           w="36px"
           icon={ <Icon as={ arrowIcon } w={ 5 } h={ 5 } transform="rotate(180deg)"/> }
-          isDisabled={ !hasNextPage }
+          isDisabled={ !hasNextPage || isLoading }
         />
       </Skeleton>
       { /* not implemented yet */ }

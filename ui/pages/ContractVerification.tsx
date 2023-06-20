@@ -5,7 +5,7 @@ import React from 'react';
 import type { SmartContractVerificationMethod } from 'types/api/contract';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import { useAppContext } from 'lib/appContext';
+import { useAppContext } from 'lib/contexts/app';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import ContractVerificationForm from 'ui/contractVerification/ContractVerificationForm';
 import { isValidVerificationMethod, sortVerificationMethods } from 'ui/contractVerification/utils';

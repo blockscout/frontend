@@ -9,6 +9,7 @@ export const SEARCH_RESULT_ITEM: SearchResultItem = {
   symbol: 'USDC',
   token_url: '/token/0x3714A8C7824B22271550894f7555f0a672f97809',
   type: 'token',
+  icon_url: null,
 };
 
 export const SEARCH_RESULT_NEXT_PAGE_PARAMS: SearchResult['next_page_params'] = {

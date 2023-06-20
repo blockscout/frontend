@@ -1,13 +1,13 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { PaginationParams } from 'ui/shared/pagination/types';
 import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import appConfig from 'configs/app/config';
 import useApiQuery from 'lib/api/useApiQuery';
-import { useAppContext } from 'lib/appContext';
+import { useAppContext } from 'lib/contexts/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { BLOCK } from 'stubs/block';
 import { TX } from 'stubs/tx';
@@ -18,8 +18,8 @@ import BlockWithdrawals from 'ui/block/BlockWithdrawals';
 import TextAd from 'ui/shared/ad/TextAd';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import type { Props as PaginationProps } from 'ui/shared/Pagination';
-import Pagination from 'ui/shared/Pagination';
+import Pagination from 'ui/shared/pagination/Pagination';
+import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import TxsContent from 'ui/txs/TxsContent';
@@ -87,8 +87,8 @@ const BlockPageContent = () => {
   ].filter(Boolean)), [ blockQuery, blockTxsQuery, blockWithdrawalsQuery ]);
 
   const hasPagination = !isMobile && (
-    (tab === 'txs' && blockTxsQuery.isPaginationVisible) ||
-    (tab === 'withdrawals' && blockWithdrawalsQuery.isPaginationVisible)
+    (tab === 'txs' && blockTxsQuery.pagination.isVisible) ||
+    (tab === 'withdrawals' && blockWithdrawalsQuery.pagination.isVisible)
   );
 
   let pagination;
@@ -124,7 +124,7 @@ const BlockPageContent = () => {
         <RoutedTabs
           tabs={ tabs }
           tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
-          rightSlot={ hasPagination ? <Pagination { ...(pagination as PaginationProps) }/> : null }
+          rightSlot={ hasPagination ? <Pagination { ...(pagination as PaginationParams) }/> : null }
           stickyEnabled={ hasPagination }
         />
       ) }

@@ -8,7 +8,7 @@ import type { RoutedTab } from 'ui/shared/Tabs/types';
 import appConfig from 'configs/app/config';
 import iconSuccess from 'icons/status/success.svg';
 import useApiQuery from 'lib/api/useApiQuery';
-import { useAppContext } from 'lib/appContext';
+import { useAppContext } from 'lib/contexts/app';
 import useContractTabs from 'lib/hooks/useContractTabs';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -86,11 +86,11 @@ const AddressPageContent = () => {
 
           return 'Contract';
         },
-        component: <AddressContract tabs={ contractTabs } addressHash={ hash }/>,
+        component: <AddressContract tabs={ contractTabs }/>,
         subTabs: contractTabs.map(tab => tab.id),
       } : undefined,
     ].filter(Boolean);
-  }, [ addressQuery.data, contractTabs, hash ]);
+  }, [ addressQuery.data, contractTabs ]);
 
   const tags = (
     <EntityTags

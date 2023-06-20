@@ -31,7 +31,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
 
         return (
           <Flex alignItems="flex-start">
-            <TokenLogo boxSize={ 6 } hash={ data.address } name={ data.name } flexShrink={ 0 } isLoading={ isLoading }/>
+            <TokenLogo boxSize={ 6 } data={ data } flexShrink={ 0 } isLoading={ isLoading }/>
             <LinkInternal
               ml={ 2 }
               href={ route({ pathname: '/token/[hash]', query: { hash: data.address } }) }

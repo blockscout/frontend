@@ -2,7 +2,6 @@ import { Box, Hide, Show, Skeleton, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import { nbsp } from 'lib/html-entities';
 import { L2_TXN_BATCHES_ITEM } from 'stubs/L2';
 import { generateListStub } from 'stubs/utils';
@@ -11,10 +10,11 @@ import TxnBatchesTable from 'ui/l2TxnBatches/TxnBatchesTable';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import Pagination from 'ui/shared/Pagination';
+import Pagination from 'ui/shared/pagination/Pagination';
+import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 const L2TxnBatches = () => {
-  const { data, isError, isPlaceholderData, isPaginationVisible, pagination } = useQueryWithPages({
+  const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
     resourceName: 'l2_txn_batches',
     options: {
       placeholderData: generateListStub<'l2_txn_batches'>(
@@ -47,7 +47,7 @@ const L2TxnBatches = () => {
           />
         ))) }
       </Show>
-      <Hide below="lg" ssr={ false }><TxnBatchesTable items={ data.items } top={ isPaginationVisible ? 80 : 0 } isLoading={ isPlaceholderData }/></Hide>
+      <Hide below="lg" ssr={ false }><TxnBatchesTable items={ data.items } top={ pagination.isVisible ? 80 : 0 } isLoading={ isPlaceholderData }/></Hide>
     </>
   ) : null;
 
@@ -75,7 +75,7 @@ const L2TxnBatches = () => {
         <Box display={{ base: 'none', lg: 'block' }}>
           { text }
         </Box>
-        { isPaginationVisible && <Pagination ml="auto" { ...pagination }/> }
+        { pagination.isVisible && <Pagination ml="auto" { ...pagination }/> }
       </ActionBar>
     </>
   );

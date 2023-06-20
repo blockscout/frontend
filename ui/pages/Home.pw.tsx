@@ -1,4 +1,5 @@
 import { test, expect, devices } from '@playwright/experimental-ct-react';
+import type { Locator } from '@playwright/test';
 import React from 'react';
 
 import * as blockMock from 'mocks/blocks/block';
@@ -8,44 +9,59 @@ import * as txMock from 'mocks/txs/tx';
 import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
+import * as configs from 'playwright/utils/configs';
 import insertAdPlaceholder from 'playwright/utils/insertAdPlaceholder';
 
 import Home from './Home';
 
-test('default view -@default +@desktop-xl +@dark-mode', async({ mount, page }) => {
-  await page.route(buildApiUrl('homepage_stats'), (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(statsMock.base),
-  }));
-  await page.route(buildApiUrl('homepage_blocks'), (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify([
-      blockMock.base,
-      blockMock.base2,
-    ]),
-  }));
-  await page.route(buildApiUrl('homepage_txs'), (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify([
-      txMock.base,
-      txMock.withContractCreation,
-      txMock.withTokenTransfer,
-    ]),
-  }));
-  await page.route(buildApiUrl('homepage_chart_txs'), (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(dailyTxsMock.base),
-  }));
+test.describe('default view', () => {
+  let component: Locator;
 
-  const component = await mount(
-    <TestApp>
-      <Home/>
-    </TestApp>,
-  );
+  test.beforeEach(async({ page, mount }) => {
+    await page.route(buildApiUrl('homepage_stats'), (route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify(statsMock.base),
+    }));
+    await page.route(buildApiUrl('homepage_blocks'), (route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify([
+        blockMock.base,
+        blockMock.base2,
+      ]),
+    }));
+    await page.route(buildApiUrl('homepage_txs'), (route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify([
+        txMock.base,
+        txMock.withContractCreation,
+        txMock.withTokenTransfer,
+      ]),
+    }));
+    await page.route(buildApiUrl('homepage_chart_txs'), (route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify(dailyTxsMock.base),
+    }));
 
-  await insertAdPlaceholder(page);
+    component = await mount(
+      <TestApp>
+        <Home/>
+      </TestApp>,
+    );
 
-  await expect(component.locator('main')).toHaveScreenshot();
+    await insertAdPlaceholder(page);
+  });
+
+  test('-@default +@dark-mode', async() => {
+    await expect(component.locator('main')).toHaveScreenshot();
+  });
+
+  test.describe('screen xl', () => {
+    test.use({ viewport: configs.viewport.xl });
+
+    test('', async() => {
+      await expect(component.locator('main')).toHaveScreenshot();
+    });
+  });
 });
 
 test.describe('custom hero plate background', () => {

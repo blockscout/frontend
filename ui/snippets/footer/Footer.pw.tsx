@@ -5,6 +5,7 @@ import type { WindowProvider } from 'wagmi';
 import { FOOTER_LINKS } from 'mocks/config/footerLinks';
 import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
+import * as configs from 'playwright/utils/configs';
 
 import Footer from './Footer';
 
@@ -18,7 +19,7 @@ base.describe('with custom links, 4 cols', () => {
     ]) as any,
   });
 
-  test('base view +@dark-mode +@mobile +@desktop-xl', async({ mount, page }) => {
+  test.beforeEach(async({ page, mount }) => {
     await page.route(FOOTER_LINKS_URL, (route) => {
       return route.fulfill({
         body: JSON.stringify(FOOTER_LINKS),
@@ -30,8 +31,18 @@ base.describe('with custom links, 4 cols', () => {
         <Footer/>
       </TestApp>,
     );
+  });
 
+  test('+@mobile +@dark-mode', async({ page }) => {
     await expect(page).toHaveScreenshot();
+  });
+
+  test.describe('screen xl', () => {
+    test.use({ viewport: configs.viewport.xl });
+
+    test('', async({ page }) => {
+      await expect(page).toHaveScreenshot();
+    });
   });
 });
 

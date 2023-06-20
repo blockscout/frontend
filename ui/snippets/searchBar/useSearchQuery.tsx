@@ -3,11 +3,11 @@ import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import useDebounce from 'lib/hooks/useDebounce';
-import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import useUpdateValueEffect from 'lib/hooks/useUpdateValueEffect';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { SEARCH_RESULT_ITEM, SEARCH_RESULT_NEXT_PAGE_PARAMS } from 'stubs/search';
 import { generateListStub } from 'stubs/utils';
+import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 export default function useSearchQuery(isSearchPage = false) {
   const router = useRouter();

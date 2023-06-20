@@ -7,13 +7,13 @@ import appConfig from 'configs/app/config';
 import useHasAccount from 'lib/hooks/useHasAccount';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useNewTxsSocket from 'lib/hooks/useNewTxsSocket';
-import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
 import PageTitle from 'ui/shared/Page/PageTitle';
+import Pagination from 'ui/shared/pagination/Pagination';
+import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TxsContent from 'ui/txs/TxsContent';
-import TxsTabSlot from 'ui/txs/TxsTabSlot';
 import TxsWatchlist from 'ui/txs/TxsWatchlist';
 
 const TAB_LIST_PROPS = {
@@ -81,6 +81,8 @@ const Transactions = () => {
     } : undefined,
   ].filter(Boolean);
 
+  const pagination = router.query.tab === 'watchlist' ? txsWatchlistQuery.pagination : txsQuery.pagination;
+
   return (
     <>
       <PageTitle title="Transactions" withTextAd/>
@@ -88,10 +90,7 @@ const Transactions = () => {
         tabs={ tabs }
         tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
         rightSlot={ (
-          <TxsTabSlot
-            pagination={ router.query.tab === 'watchlist' ? txsWatchlistQuery.pagination : txsQuery.pagination }
-            isPaginationVisible={ txsQuery.isPaginationVisible && !isMobile }
-          />
+          pagination.isVisible && !isMobile ? <Pagination my={ 1 } { ...pagination }/> : null
         ) }
         stickyEnabled={ !isMobile }
       />

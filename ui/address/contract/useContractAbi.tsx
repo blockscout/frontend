@@ -1,29 +1,18 @@
 import { useQueryClient } from '@tanstack/react-query';
+import type { Abi } from 'abitype';
 import React from 'react';
 
 import type { Address } from 'types/api/address';
-import type { SmartContract } from 'types/api/contract';
 
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 
-type ProviderProps = {
+interface Params {
   addressHash?: string;
-  children: React.ReactNode;
+  isProxy?: boolean;
+  isCustomAbi?: boolean;
 }
 
-type TContractContext = {
-  contractInfo: SmartContract | undefined;
-  proxyInfo: SmartContract | undefined;
-  customInfo: SmartContract | undefined;
-};
-
-const ContractContext = React.createContext<TContractContext>({
-  proxyInfo: undefined,
-  contractInfo: undefined,
-  customInfo: undefined,
-});
-
-export function ContractContextProvider({ addressHash, children }: ProviderProps) {
+export default function useContractAbi({ addressHash, isProxy, isCustomAbi }: Params): Abi | undefined {
   const queryClient = useQueryClient();
 
   const { data: contractInfo } = useApiQuery('contract', {
@@ -55,23 +44,15 @@ export function ContractContextProvider({ addressHash, children }: ProviderProps
     },
   });
 
-  const value = React.useMemo(() => ({
-    proxyInfo,
-    contractInfo,
-    customInfo,
-  } as TContractContext), [ proxyInfo, contractInfo, customInfo ]);
+  return React.useMemo(() => {
+    if (isProxy) {
+      return proxyInfo?.abi ?? undefined;
+    }
 
-  return (
-    <ContractContext.Provider value={ value }>
-      { children }
-    </ContractContext.Provider>
-  );
-}
+    if (isCustomAbi) {
+      return customInfo;
+    }
 
-export function useContractContext() {
-  const context = React.useContext(ContractContext);
-  if (context === undefined) {
-    throw new Error('useContractContext must be used within a ContractContextProvider');
-  }
-  return context;
+    return contractInfo?.abi ?? undefined;
+  }, [ contractInfo?.abi, customInfo, isCustomAbi, isProxy, proxyInfo?.abi ]);
 }

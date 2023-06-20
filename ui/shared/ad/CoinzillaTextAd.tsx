@@ -1,7 +1,7 @@
 import { Box, Image, Link, Text, chakra, Skeleton } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 
-import { useAppContext } from 'lib/appContext';
+import { useAppContext } from 'lib/contexts/app';
 import * as cookies from 'lib/cookies';
 import { ndash } from 'lib/html-entities';
 import isBrowser from 'lib/isBrowser';
@@ -45,6 +45,7 @@ const CoinzillaTextAd = ({ className }: {className?: string}) => {
           }
         })
         .finally(() => {
+          // setAdData(MOCK);
           setIsLoading(false);
         });
     }
@@ -55,7 +56,16 @@ const CoinzillaTextAd = ({ className }: {className?: string}) => {
   }
 
   if (isLoading) {
-    return <Skeleton className={ className } h={{ base: 12, lg: 6 }} w={{ base: '100%', lg: 'auto' }} flexGrow={ 1 } maxW="1000px" display="inline-block"/>;
+    return (
+      <Skeleton
+        className={ className }
+        h={{ base: 12, lg: 6 }}
+        w="100%"
+        flexGrow={ 1 }
+        maxW="800px"
+        display="block"
+      />
+    );
   }
 
   if (!adData) {

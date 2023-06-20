@@ -3,14 +3,14 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { TokenType } from 'types/api/token';
+import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import { ADDRESS_TOKEN_BALANCE_ERC_1155, ADDRESS_TOKEN_BALANCE_ERC_20, ADDRESS_TOKEN_BALANCE_ERC_721 } from 'stubs/address';
 import { generateListStub } from 'stubs/utils';
 import { tokenTabsByType } from 'ui/pages/Address';
-import Pagination from 'ui/shared/Pagination';
-import type { Props as PaginationProps } from 'ui/shared/Pagination';
+import Pagination from 'ui/shared/pagination/Pagination';
+import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 
 import ERC1155Tokens from './tokens/ERC1155Tokens';
@@ -81,17 +81,13 @@ const AddressTokens = () => {
     { id: tokenTabsByType['ERC-1155'], title: 'ERC-1155', component: <ERC1155Tokens tokensQuery={ erc1155Query }/> },
   ];
 
-  let isPaginationVisible;
-  let pagination: PaginationProps | undefined;
+  let pagination: PaginationParams | undefined;
 
   if (tab === tokenTabsByType['ERC-1155']) {
-    isPaginationVisible = erc1155Query.isPaginationVisible;
     pagination = erc1155Query.pagination;
   } else if (tab === tokenTabsByType['ERC-721']) {
-    isPaginationVisible = erc721Query.isPaginationVisible;
     pagination = erc721Query.pagination;
   } else {
-    isPaginationVisible = erc20Query.isPaginationVisible;
     pagination = erc20Query.pagination;
   }
 
@@ -106,7 +102,7 @@ const AddressTokens = () => {
         colorScheme="gray"
         size="sm"
         tabListProps={ isMobile ? TAB_LIST_PROPS_MOBILE : TAB_LIST_PROPS }
-        rightSlot={ isPaginationVisible && !isMobile ? <Pagination { ...pagination }/> : null }
+        rightSlot={ pagination.isVisible && !isMobile ? <Pagination { ...pagination }/> : null }
         stickyEnabled={ !isMobile }
       />
     </>

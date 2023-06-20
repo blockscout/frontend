@@ -10,14 +10,14 @@ import type { Transaction } from 'types/api/transaction';
 import { getResourceKey } from 'lib/api/useApiQuery';
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
 import ActionBar from 'ui/shared/ActionBar';
-import Pagination from 'ui/shared/Pagination';
+import Pagination from 'ui/shared/pagination/Pagination';
+import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import TxsContent from 'ui/txs/TxsContent';
 
 import AddressCsvExportLink from './AddressCsvExportLink';
@@ -172,7 +172,7 @@ const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Props) => {
               isLoading={ addressTxsQuery.pagination.isLoading }
             />
           ) }
-          { addressTxsQuery.isPaginationVisible && <Pagination { ...addressTxsQuery.pagination } ml={ 8 }/> }
+          <Pagination { ...addressTxsQuery.pagination } ml={ 8 }/>
         </ActionBar>
       ) }
       <TxsContent

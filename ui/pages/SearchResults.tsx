@@ -10,7 +10,7 @@ import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import Pagination from 'ui/shared/Pagination';
+import Pagination from 'ui/shared/pagination/Pagination';
 import Thead from 'ui/shared/TheadSticky';
 import Header from 'ui/snippets/header/Header';
 import SearchBarInput from 'ui/snippets/searchBar/SearchBarInput';
@@ -19,7 +19,7 @@ import useSearchQuery from 'ui/snippets/searchBar/useSearchQuery';
 const SearchResultsPageContent = () => {
   const router = useRouter();
   const { query, redirectCheckQuery, searchTerm, debouncedSearchTerm, handleSearchTermChange } = useSearchQuery(true);
-  const { data, isError, isPlaceholderData, pagination, isPaginationVisible } = query;
+  const { data, isError, isPlaceholderData, pagination } = query;
   const [ showContent, setShowContent ] = React.useState(false);
 
   React.useEffect(() => {
@@ -70,7 +70,7 @@ const SearchResultsPageContent = () => {
         </Show>
         <Hide below="lg" ssr={ false }>
           <Table variant="simple" size="md" fontWeight={ 500 }>
-            <Thead top={ isPaginationVisible ? 80 : 0 }>
+            <Thead top={ pagination.isVisible ? 80 : 0 }>
               <Tr>
                 <Th width="50%">Search Result</Th>
                 <Th width="50%"/>
@@ -99,10 +99,10 @@ const SearchResultsPageContent = () => {
     }
 
     const text = isPlaceholderData && pagination.page === 1 ? (
-      <Skeleton h={ 6 } w="280px" borderRadius="full" mb={ isPaginationVisible ? 0 : 6 }/>
+      <Skeleton h={ 6 } w="280px" borderRadius="full" mb={ pagination.isVisible ? 0 : 6 }/>
     ) : (
       (
-        <Box mb={ isPaginationVisible ? 0 : 6 } lineHeight="32px">
+        <Box mb={ pagination.isVisible ? 0 : 6 } lineHeight="32px">
           <span>Found </span>
           <chakra.span fontWeight={ 700 }>
             { pagination.page > 1 ? 50 : data?.items.length }{ data?.next_page_params || pagination.page > 1 ? '+' : '' }
@@ -113,7 +113,7 @@ const SearchResultsPageContent = () => {
       )
     );
 
-    if (!isPaginationVisible) {
+    if (!pagination.isVisible) {
       return text;
     }
 

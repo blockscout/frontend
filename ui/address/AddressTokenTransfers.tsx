@@ -14,7 +14,6 @@ import { getResourceKey } from 'lib/api/useApiQuery';
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
 import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
@@ -24,7 +23,8 @@ import { getTokenTransfersStub } from 'stubs/token';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import HashStringShorten from 'ui/shared/HashStringShorten';
-import Pagination from 'ui/shared/Pagination';
+import Pagination from 'ui/shared/pagination/Pagination';
+import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import TokenLogo from 'ui/shared/TokenLogo';
 import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
@@ -88,7 +88,7 @@ const AddressTokenTransfers = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Pr
     },
   );
 
-  const { isError, isPlaceholderData, data, pagination, onFilterChange, isPaginationVisible } = useQueryWithPages({
+  const { isError, isPlaceholderData, data, pagination, onFilterChange } = useQueryWithPages({
     resourceName: 'address_token_transfers',
     pathParams: { hash: currentAddress },
     filters: tokenFilter ? { token: tokenFilter } : filters,
@@ -277,7 +277,7 @@ const AddressTokenTransfers = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Pr
               isLoading={ isPlaceholderData }
             />
           ) }
-          { isPaginationVisible && <Pagination ml={{ base: 'auto', lg: 8 }} { ...pagination }/> }
+          <Pagination ml={{ base: 'auto', lg: 8 }} { ...pagination }/>
         </ActionBar>
       ) }
     </>

@@ -10,6 +10,7 @@ import React from 'react';
 
 import type { AddressFromToFilter } from 'types/api/address';
 
+import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
 import FilterButton from 'ui/shared/filters/FilterButton';
 
 interface Props {
@@ -21,13 +22,14 @@ interface Props {
 
 const AddressTxsFilter = ({ onFilterChange, defaultFilter, isActive, isLoading }: Props) => {
   const { isOpen, onToggle } = useDisclosure();
+  const isInitialLoading = useIsInitialLoading(isLoading);
 
   return (
     <Menu>
       <MenuButton>
         <FilterButton
           isActive={ isOpen || isActive }
-          isLoading={ isLoading }
+          isLoading={ isInitialLoading }
           onClick={ onToggle }
           as="div"
         />

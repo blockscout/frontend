@@ -1,11 +1,13 @@
 import { Box } from '@chakra-ui/react';
 import { test as base, expect } from '@playwright/experimental-ct-react';
+import type { Locator } from '@playwright/test';
 import React from 'react';
 
 import * as txMock from 'mocks/txs/tx';
 import * as socketServer from 'playwright/fixtures/socketServer';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
+import * as configs from 'playwright/utils/configs';
 
 import AddressTxs from './AddressTxs';
 
@@ -19,32 +21,45 @@ const hooksConfig = {
   },
 };
 
-const test = base.extend<socketServer.SocketServerFixture>({
-  createSocket: socketServer.createSocket,
+base.describe('base view', () => {
+  let component: Locator;
+
+  base.beforeEach(async({ page, mount }) => {
+    await page.route(API_URL, (route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify({ items: [ txMock.base, txMock.base ], next_page_params: { block: 1 } }),
+    }));
+
+    component = await mount(
+      <TestApp>
+        <Box h={{ base: '134px', lg: 6 }}/>
+        <AddressTxs/>
+      </TestApp>,
+      { hooksConfig },
+    );
+  });
+
+  base('+@mobile', async() => {
+    await expect(component).toHaveScreenshot();
+  });
+
+  base.describe('screen xl', () => {
+    base.use({ viewport: configs.viewport.xl });
+
+    base('', async() => {
+      await expect(component).toHaveScreenshot();
+    });
+  });
 });
 
-// FIXME
-// test cases which use socket cannot run in parallel since the socket server always run on the same port
-test.describe.configure({ mode: 'serial' });
+base.describe('socket', () => {
+  const test = base.extend<socketServer.SocketServerFixture>({
+    createSocket: socketServer.createSocket,
+  });
+  // FIXME
+  // test cases which use socket cannot run in parallel since the socket server always run on the same port
+  test.describe.configure({ mode: 'serial' });
 
-test('address txs +@mobile +@desktop-xl', async({ mount, page }) => {
-  await page.route(API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify({ items: [ txMock.base, txMock.base ], next_page_params: { block: 1 } }),
-  }));
-
-  const component = await mount(
-    <TestApp>
-      <Box h={{ base: '134px', lg: 6 }}/>
-      <AddressTxs/>
-    </TestApp>,
-    { hooksConfig },
-  );
-
-  await expect(component).toHaveScreenshot();
-});
-
-test.describe('socket', () => {
   test('without overload', async({ mount, page, createSocket }) => {
     await page.route(API_URL, (route) => route.fulfill({
       status: 200,

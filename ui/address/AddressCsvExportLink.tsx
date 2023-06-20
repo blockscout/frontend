@@ -6,6 +6,7 @@ import type { CsvExportType } from 'types/client/address';
 
 import appConfig from 'configs/app/config';
 import svgFileIcon from 'icons/files/csv.svg';
+import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import LinkInternal from 'ui/shared/LinkInternal';
 
@@ -18,12 +19,13 @@ interface Props {
 
 const AddressCsvExportLink = ({ className, address, type, isLoading }: Props) => {
   const isMobile = useIsMobile();
+  const isInitialLoading = useIsInitialLoading(isLoading);
 
   if (!appConfig.reCaptcha.siteKey) {
     return null;
   }
 
-  if (isLoading) {
+  if (isInitialLoading) {
     return (
       <Flex className={ className } flexShrink={ 0 } alignItems="center">
         <Skeleton boxSize={{ base: '32px', lg: 6 }} borderRadius="base"/>

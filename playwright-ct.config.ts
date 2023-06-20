@@ -63,7 +63,9 @@ const config: PlaywrightTestConfig = defineConfig({
     },
   },
 
-  /* Configure projects for major browsers */
+  // configured projects
+  // these projects are also used for sharding tests in CI
+  // when adding or deleting a project, make sure to update github workflow accordingly
   projects: [
     {
       name: 'default',
@@ -81,36 +83,11 @@ const config: PlaywrightTestConfig = defineConfig({
       },
     },
     {
-      name: 'desktop xl',
-      grep: /\+@desktop-xl/,
-      use: {
-        ...devices['Desktop Chrome'],
-        viewport: { width: 1600, height: 1000 },
-      },
-    },
-    {
-      name: 'dark color mode',
+      name: 'dark-color-mode',
       grep: /\+@dark-mode/,
       use: {
         ...devices['Desktop Chrome'],
         viewport: { width: 1200, height: 750 },
-        colorScheme: 'dark',
-      },
-    },
-    {
-      name: 'dark color mode mobile',
-      grep: /\+@dark-mode-mobile/,
-      use: {
-        ...devices['iPhone 13 Pro'],
-        colorScheme: 'dark',
-      },
-    },
-    {
-      name: 'dark color mode desktop xl',
-      grep: /\+@dark-mode-xl/,
-      use: {
-        ...devices['Desktop Chrome'],
-        viewport: { width: 1600, height: 1000 },
         colorScheme: 'dark',
       },
     },

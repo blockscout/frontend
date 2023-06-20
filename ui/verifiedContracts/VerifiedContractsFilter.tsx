@@ -35,6 +35,7 @@ const VerifiedContractsFilter = ({ onChange, defaultValue, isActive }: Props) =>
           <MenuItemOption value="all">All</MenuItemOption>
           <MenuItemOption value="solidity">Solidity</MenuItemOption>
           <MenuItemOption value="vyper">Vyper</MenuItemOption>
+          <MenuItemOption value="yul">Yul</MenuItemOption>
         </MenuOptionGroup>
       </MenuList>
     </Menu>

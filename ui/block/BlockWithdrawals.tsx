@@ -1,21 +1,13 @@
 import { Show, Hide } from '@chakra-ui/react';
-import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
-import type { BlockWithdrawalsResponse } from 'types/api/block';
-
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import type { Props as PaginationProps } from 'ui/shared/Pagination';
+import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 import WithdrawalsListItem from 'ui/withdrawals/WithdrawalsListItem';
 import WithdrawalsTable from 'ui/withdrawals/WithdrawalsTable';
 
-type QueryResult = UseQueryResult<BlockWithdrawalsResponse> & {
-  pagination: PaginationProps;
-  isPaginationVisible: boolean;
-};
-
 type Props = {
-  blockWithdrawalsQuery: QueryResult;
+  blockWithdrawalsQuery: QueryWithPagesResult<'block_withdrawals'>;
 }
 
 const BlockWithdrawals = ({ blockWithdrawalsQuery }: Props) => {
@@ -35,7 +27,7 @@ const BlockWithdrawals = ({ blockWithdrawalsQuery }: Props) => {
         <WithdrawalsTable
           items={ blockWithdrawalsQuery.data.items }
           isLoading={ blockWithdrawalsQuery.isPlaceholderData }
-          top={ blockWithdrawalsQuery.isPaginationVisible ? 80 : 0 }
+          top={ blockWithdrawalsQuery.pagination.isVisible ? 80 : 0 }
           view="block"
         />
       </Hide>

@@ -1,20 +1,22 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import useQueryWithPages from 'lib/hooks/useQueryWithPages';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { LOG } from 'stubs/log';
 import { generateListStub } from 'stubs/utils';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import LogItem from 'ui/shared/logs/LogItem';
-import Pagination from 'ui/shared/Pagination';
+import Pagination from 'ui/shared/pagination/Pagination';
+import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
+
+import AddressCsvExportLink from './AddressCsvExportLink';
 
 const AddressLogs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}) => {
   const router = useRouter();
 
   const hash = getQueryParamString(router.query.hash);
-  const { data, isPlaceholderData, isError, pagination, isPaginationVisible } = useQueryWithPages({
+  const { data, isPlaceholderData, isError, pagination } = useQueryWithPages({
     resourceName: 'address_logs',
     pathParams: { hash },
     scrollRef,
@@ -28,11 +30,12 @@ const AddressLogs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>
     },
   });
 
-  const actionBar = isPaginationVisible ? (
-    <ActionBar mt={ -6 } showShadow>
-      <Pagination ml="auto" { ...pagination }/>
+  const actionBar = (
+    <ActionBar mt={ -6 } showShadow justifyContent={{ base: 'space-between', lg: 'end' }}>
+      <AddressCsvExportLink address={ hash } isLoading={ pagination.isLoading } type="logs"/>
+      <Pagination ml={{ base: 0, lg: 8 }} { ...pagination }/>
     </ActionBar>
-  ) : null;
+  );
 
   const content = data?.items ? data.items.map((item, index) => <LogItem key={ index } { ...item } type="address" isLoading={ isPlaceholderData }/>) : null;
 

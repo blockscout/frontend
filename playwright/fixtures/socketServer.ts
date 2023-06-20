@@ -8,6 +8,8 @@ import type { SmartContractVerificationResponse } from 'types/api/contract';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 import type { Transaction } from 'types/api/transaction';
 
+import * as app from 'playwright/utils/app';
+
 type ReturnType = () => Promise<WebSocket>;
 
 type Channel = [string, string, string];
@@ -16,11 +18,9 @@ export interface SocketServerFixture {
   createSocket: ReturnType;
 }
 
-export const PORT = 3200;
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const createSocket: TestFixture<ReturnType, { page: Page}> = async({ page }, use) => {
-  const socketServer = new WebSocketServer({ port: PORT });
+  const socketServer = new WebSocketServer({ port: app.socketPort });
 
   const connectionPromise = new Promise<WebSocket>((resolve) => {
     socketServer.on('connection', (socket: WebSocket) => {
