@@ -75,8 +75,8 @@ const ContractSourceCode = ({ address, implementationAddress }: Props) => {
   }, [ primaryContractQuery.data ]);
 
   const secondaryEditorData = React.useMemo(() => {
-    return getEditorData(secondaryContractQuery.data);
-  }, [ secondaryContractQuery.data ]);
+    return secondaryContractQuery.isPlaceholderData ? undefined : getEditorData(secondaryContractQuery.data);
+  }, [ secondaryContractQuery.data, secondaryContractQuery.isPlaceholderData ]);
 
   const activeContract = sourceType === 'secondary' ? secondaryContractQuery.data : primaryContractQuery.data;
   const activeContractData = sourceType === 'secondary' ? secondaryEditorData : primaryEditorData;
