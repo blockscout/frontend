@@ -9,6 +9,15 @@ it('construct correct absolute path', () => {
   expect(result).toBe('/foo/abc/contract.sol');
 });
 
+it('construct correct absolute path if file is in the current directory', () => {
+  const result = getFullPathOfImportedFile(
+    '/abc/index.sol',
+    './contract.sol',
+  );
+
+  expect(result).toBe('/abc/contract.sol');
+});
+
 it('returns undefined if imported file is outside the base file folder', () => {
   const result = getFullPathOfImportedFile(
     '/index.sol',
