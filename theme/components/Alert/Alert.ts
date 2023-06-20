@@ -21,8 +21,9 @@ function getBg(props: StyleFunctionProps) {
 const baseStyle = definePartsStyle({
   container: {
     bg: $bg.reference,
-    px: '4',
-    py: '3',
+    borderRadius: 'md',
+    px: 6,
+    py: 3,
   },
   title: {
     fontWeight: 'bold',
