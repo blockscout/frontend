@@ -84,7 +84,8 @@ const ContractSourceCode = ({ address, implementationAddress }: Props) => {
   const heading = (
     <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>
       <span>Contract source code</span>
-      <Text whiteSpace="pre" as="span" variant="secondary" textTransform="capitalize"> ({ activeContract?.language })</Text>
+      { activeContract?.language &&
+        <Text whiteSpace="pre" as="span" variant="secondary" textTransform="capitalize"> ({ activeContract.language })</Text> }
     </Skeleton>
   );
 
