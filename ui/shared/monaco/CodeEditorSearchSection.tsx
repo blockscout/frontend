@@ -44,10 +44,26 @@ const CodeEditorSearchSection = ({ data, onItemClick }: Props) => {
               width="20px"
               height="22px"
               py="3px"
+              flexShrink={ 0 }
             />
             <CodeEditorFileIcon mr="4px" fileName={ fileName }/>
-            <span>{ fileName }</span>
-            <Box className="monaco-count-badge" ml="auto" bgColor={ themeColors['badge.background'] }>{ data.matches.length }</Box>
+            <Box
+              mr="8px"
+              whiteSpace="nowrap"
+              overflow="hidden"
+              textOverflow="ellipsis"
+              textAlign="left"
+            >
+              { fileName }
+            </Box>
+            <Box
+              className="monaco-count-badge"
+              ml="auto"
+              bgColor={ themeColors['badge.background'] }
+              flexShrink={ 0 }
+            >
+              { data.matches.length }
+            </Box>
           </AccordionButton>
           <AccordionPanel p={ 0 }>
             { data.matches.map((match) => (
