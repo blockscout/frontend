@@ -171,7 +171,7 @@ export const withRichMetadata: TokenInstance = {
     token_id: '7741920',
     serial_total: 1100,
     blockchain_state: 'BURNING',
-    image: 'https://nftu.com/nft-content/media/PAPAYA/92ee5f5c-bce9-4d64-8a25-c7e1e6305572/dee8734bbefb0d63d6156b6fa0e1385822480589daa1862cbd37a94f6bc2ba3a',
+    image: 'ipfs://dee8734bbefb0d63d6156b6fa0e1385822480589daa1862cbd37a94f6bc2ba3a',
     revealed_nfts: null,
     nft_data_id: '92ee5f5c-bce9-4d64-8a25-c7e1e6305572',
     series: 'Tip-Off',
