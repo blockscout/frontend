@@ -5,6 +5,7 @@ import React from 'react';
 import type { SearchResultItem } from 'types/api/search';
 
 import blockIcon from 'icons/block.svg';
+import labelIcon from 'icons/publictags.svg';
 import txIcon from 'icons/transactions.svg';
 import highlightText from 'lib/highlightText';
 import trimTokenSymbol from 'lib/token/trimTokenSymbol';
@@ -55,6 +56,23 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
               <AddressLink type="address" hash={ data.address } fontWeight={ 700 } display="block" w="100%"/>
             </Box>
           </Address>
+        );
+      }
+
+      case 'label': {
+        return (
+          <Flex alignItems="flex-start">
+            <Icon as={ labelIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
+            <LinkInternal
+              ml={ 2 }
+              href={ route({ pathname: '/address/[hash]', query: { hash: data.address } }) }
+              fontWeight={ 700 }
+              wordBreak="break-all"
+              isLoading={ isLoading }
+            >
+              <span dangerouslySetInnerHTML={{ __html: highlightText(data.name, searchTerm) }}/>
+            </LinkInternal>
+          </Flex>
         );
       }
 

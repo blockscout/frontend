@@ -51,6 +51,28 @@ test('search by name  +@mobile +@dark-mode', async({ mount, page }) => {
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 500 } });
 });
 
+test('search by tag  +@mobile +@dark-mode', async({ mount, page }) => {
+  const API_URL = buildApiUrl('search') + '?q=o';
+  await page.route(API_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify({
+      items: [
+        searchMock.label1,
+      ],
+    }),
+  }));
+
+  await mount(
+    <TestApp>
+      <SearchBar/>
+    </TestApp>,
+  );
+  await page.getByPlaceholder(/search/i).type('o');
+  await page.waitForResponse(API_URL);
+
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 500 } });
+});
+
 test('search by address hash +@mobile', async({ mount, page }) => {
   const API_URL = buildApiUrl('search') + `?q=${ searchMock.address1.address }`;
   await page.route(API_URL, (route) => route.fulfill({

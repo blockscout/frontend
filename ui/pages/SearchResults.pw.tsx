@@ -20,6 +20,7 @@ test('search by name +@mobile +@dark-mode', async({ mount, page }) => {
         searchMock.token1,
         searchMock.token2,
         searchMock.contract1,
+        searchMock.label1,
       ],
     }),
   }));
