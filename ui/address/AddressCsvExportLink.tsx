@@ -2,7 +2,7 @@ import { chakra, Icon, Tooltip, Hide, Skeleton, Flex } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
-import type { CsvExportType } from 'types/client/address';
+import type { CsvExportParams } from 'types/client/address';
 
 import appConfig from 'configs/app/config';
 import svgFileIcon from 'icons/files/csv.svg';
@@ -12,12 +12,12 @@ import LinkInternal from 'ui/shared/LinkInternal';
 
 interface Props {
   address: string;
-  type: CsvExportType;
+  params: CsvExportParams;
   className?: string;
   isLoading?: boolean;
 }
 
-const AddressCsvExportLink = ({ className, address, type, isLoading }: Props) => {
+const AddressCsvExportLink = ({ className, address, params, isLoading }: Props) => {
   const isMobile = useIsMobile();
   const isInitialLoading = useIsInitialLoading(isLoading);
 
@@ -43,7 +43,7 @@ const AddressCsvExportLink = ({ className, address, type, isLoading }: Props) =>
         display="inline-flex"
         alignItems="center"
         whiteSpace="nowrap"
-        href={ route({ pathname: '/csv-export', query: { type, address } }) }
+        href={ route({ pathname: '/csv-export', query: { ...params, address } }) }
         flexShrink={ 0 }
       >
         <Icon as={ svgFileIcon } boxSize={{ base: '30px', lg: 6 }}/>

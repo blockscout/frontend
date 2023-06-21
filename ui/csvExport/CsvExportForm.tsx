@@ -4,6 +4,7 @@ import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
 
 import type { FormFields } from './types';
+import type { CsvExportParams } from 'types/client/address';
 
 import buildUrl from 'lib/api/buildUrl';
 import type { ResourceName } from 'lib/api/resources';
@@ -17,10 +18,12 @@ import CsvExportFormReCaptcha from './CsvExportFormReCaptcha';
 interface Props {
   hash: string;
   resource: ResourceName;
+  filterType?: CsvExportParams['filterType'] | null;
+  filterValue?: CsvExportParams['filterValue'] | null;
   fileNameTemplate: string;
 }
 
-const CsvExportForm = ({ hash, resource, fileNameTemplate }: Props) => {
+const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTemplate }: Props) => {
   const formApi = useForm<FormFields>({
     mode: 'onBlur',
     defaultValues: {
@@ -37,6 +40,8 @@ const CsvExportForm = ({ hash, resource, fileNameTemplate }: Props) => {
         address_id: hash,
         from_period: data.from,
         to_period: data.to,
+        filter_type: filterType,
+        filter_value: filterValue,
         recaptcha_response: data.reCaptcha,
       });
 
@@ -51,7 +56,11 @@ const CsvExportForm = ({ hash, resource, fileNameTemplate }: Props) => {
       }
 
       const blob = await response.blob();
-      downloadBlob(blob, `${ fileNameTemplate }_${ hash }_${ data.from }_${ data.to }.csv`);
+      downloadBlob(
+        blob,
+        `${ fileNameTemplate }_${ hash }_${ data.from }_${ data.to }
+        ${ filterType && filterValue ? '_with_filter_type_' + filterType + '_value_' + filterValue : '' }.csv`,
+      );
 
     } catch (error) {
       toast({
@@ -64,7 +73,7 @@ const CsvExportForm = ({ hash, resource, fileNameTemplate }: Props) => {
       });
     }
 
-  }, [ fileNameTemplate, hash, resource, toast ]);
+  }, [ fileNameTemplate, hash, resource, filterType, filterValue, toast ]);
 
   return (
     <FormProvider { ...formApi }>

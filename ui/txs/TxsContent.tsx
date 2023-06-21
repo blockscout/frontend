@@ -1,6 +1,8 @@
 import { Box, Show, Hide } from '@chakra-ui/react';
 import React from 'react';
 
+import type { AddressFromToFilter } from 'types/api/address';
+
 import useIsMobile from 'lib/hooks/useIsMobile';
 import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
 import DataListDisplay from 'ui/shared/DataListDisplay';
@@ -20,12 +22,14 @@ type Props = {
   socketInfoNum?: number;
   currentAddress?: string;
   filter?: React.ReactNode;
+  filterValue?: AddressFromToFilter;
   enableTimeIncrement?: boolean;
   top?: number;
 }
 
 const TxsContent = ({
   filter,
+  filterValue,
   query,
   showBlockInfo = true,
   showSocketInfo = true,
@@ -88,8 +92,14 @@ const TxsContent = ({
       paginationProps={ query.pagination }
       showPagination={ query.pagination.isVisible }
       filterComponent={ filter }
-      linkSlot={ currentAddress ?
-        <AddressCsvExportLink address={ currentAddress } type="transactions" ml={ 2 } isLoading={ query.pagination.isLoading }/> : null
+      linkSlot={ currentAddress ? (
+        <AddressCsvExportLink
+          address={ currentAddress }
+          params={{ type: 'transactions', filterType: 'address', filterValue }}
+          ml={ 2 }
+          isLoading={ query.pagination.isLoading }
+        />
+      ) : null
       }
     />
   ) : null;

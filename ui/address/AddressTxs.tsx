@@ -159,24 +159,27 @@ const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Props) => {
     />
   );
 
+  const csvExportLink = (
+    <AddressCsvExportLink
+      address={ currentAddress }
+      params={{ type: 'transactions', filterType: 'address', filterValue }}
+      ml="auto"
+      isLoading={ addressTxsQuery.pagination.isLoading }
+    />
+  );
+
   return (
     <>
       { !isMobile && (
         <ActionBar mt={ -6 }>
           { filter }
-          { currentAddress && (
-            <AddressCsvExportLink
-              address={ currentAddress }
-              type="transactions"
-              ml="auto"
-              isLoading={ addressTxsQuery.pagination.isLoading }
-            />
-          ) }
+          { currentAddress && csvExportLink }
           <Pagination { ...addressTxsQuery.pagination } ml={ 8 }/>
         </ActionBar>
       ) }
       <TxsContent
         filter={ filter }
+        filterValue={ filterValue }
         query={ addressTxsQuery }
         currentAddress={ typeof currentAddress === 'string' ? currentAddress : undefined }
         enableTimeIncrement

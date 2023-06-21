@@ -272,7 +272,7 @@ const AddressTokenTransfers = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Pr
           { currentAddress && (
             <AddressCsvExportLink
               address={ currentAddress }
-              type="token-transfers"
+              params={{ type: 'token-transfers', filterType: 'address', filterValue: filters.filter }}
               ml={{ base: 2, lg: 'auto' }}
               isLoading={ isPlaceholderData }
             />

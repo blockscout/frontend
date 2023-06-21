@@ -74,7 +74,12 @@ const AddressInternalTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivE
         isActive={ Boolean(filterValue) }
         isLoading={ pagination.isLoading }
       />
-      <AddressCsvExportLink address={ hash } isLoading={ pagination.isLoading } type="internal-transactions" ml={{ base: 2, lg: 'auto' }}/>
+      <AddressCsvExportLink
+        address={ hash }
+        isLoading={ pagination.isLoading }
+        params={{ type: 'internal-transactions', filterType: 'address', filterValue }}
+        ml={{ base: 2, lg: 'auto' }}
+      />
       <Pagination ml={{ base: 'auto', lg: 8 }} { ...pagination }/>
     </ActionBar>
   );
