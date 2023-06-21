@@ -70,7 +70,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
               wordBreak="break-all"
               isLoading={ isLoading }
             >
-              <Skeleton isLoaded={ !isLoading } dangerouslySetInnerHTML={{ __html: highlightText(data.name, searchTerm) }}/>
+              <span dangerouslySetInnerHTML={{ __html: highlightText(data.name, searchTerm) }}/>
             </LinkInternal>
           </Flex>
         );
