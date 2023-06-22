@@ -17,11 +17,11 @@ interface Props {
 
 const ContractMethodStatic = ({ data }: Props) => {
   const isBigInt = data.type.includes('int256') || data.type.includes('int128');
-  const [ value, setValue ] = React.useState(isBigInt && data.value ? BigNumber(data.value).toFixed() : data.value);
+  const [ value, setValue ] = React.useState(isBigInt && data.value && typeof data.value === 'string' ? BigNumber(data.value).toFixed() : data.value);
   const [ label, setLabel ] = React.useState('WEI');
 
   const handleCheckboxChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    if (!data.value) {
+    if (!data.value || typeof data.value !== 'string') {
       return;
     }
 
@@ -35,7 +35,7 @@ const ContractMethodStatic = ({ data }: Props) => {
   }, [ data.value ]);
 
   const content = (() => {
-    if (data.type === 'address' && data.value) {
+    if (typeof data.value === 'string' && data.type === 'address' && data.value) {
       return (
         <Address>
           <AddressLink type="address" hash={ data.value }/>
@@ -44,7 +44,7 @@ const ContractMethodStatic = ({ data }: Props) => {
       );
     }
 
-    return <chakra.span wordBreak="break-all">({ data.type }): { value }</chakra.span>;
+    return <chakra.span wordBreak="break-all">({ data.type }): { String(value) }</chakra.span>;
   })();
 
   return (

@@ -4,10 +4,9 @@ import React from 'react';
 
 import type { FileTree } from './types';
 
-import iconFile from './icons/file.svg';
+import CodeEditorFileIcon from './CodeEditorFileIcon';
 import iconFolderOpen from './icons/folder-open.svg';
 import iconFolder from './icons/folder.svg';
-import iconSolidity from './icons/solidity.svg';
 import useThemeColors from './utils/useThemeColors';
 
 interface Props {
@@ -74,8 +73,6 @@ const CodeEditorFileTree = ({ tree, level = 0, onItemClick, isCollapsed, selecte
             );
           }
 
-          const icon = /.sol|.yul|.vy$/.test(leaf.name) ? iconSolidity : iconFile;
-
           return (
             <AccordionItem
               key={ index }
@@ -92,7 +89,7 @@ const CodeEditorFileTree = ({ tree, level = 0, onItemClick, isCollapsed, selecte
               }}
               bgColor={ selectedFile === leaf.file_path ? themeColors['list.inactiveSelectionBackground'] : 'none' }
             >
-              <Icon as={ icon } boxSize="16px" mr="4px"/>
+              <CodeEditorFileIcon fileName={ leaf.name } mr="4px"/>
               { leafName }
             </AccordionItem>
           );

@@ -19,7 +19,7 @@ export default function getFullPathOfImportedFile(baseFilePath: string, imported
 
   const result: Array<string> = baseFileChunks.slice(0, -1);
 
-  for (let index = 0; index < importedFileChunks.length - 1; index++) {
+  for (let index = 0; index < importedFileChunks.length; index++) {
     const element = importedFileChunks[index];
 
     if (element === '.') {
@@ -40,8 +40,6 @@ export default function getFullPathOfImportedFile(baseFilePath: string, imported
   if (result.length === 0) {
     return;
   }
-
-  result.push(importedFileChunks[importedFileChunks.length - 1]);
 
   return '/' + result.join('/');
 }

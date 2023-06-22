@@ -1,11 +1,10 @@
-import { Flex, Icon, chakra, Box } from '@chakra-ui/react';
+import { Flex, chakra, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import { alt } from 'lib/html-entities';
 import useThemeColors from 'ui/shared/monaco/utils/useThemeColors';
 
-import iconFile from './icons/file.svg';
-import iconSolidity from './icons/solidity.svg';
+import CodeEditorFileIcon from './CodeEditorFileIcon';
 import getFilePathParts from './utils/getFilePathParts';
 
 interface Props {
@@ -30,8 +29,6 @@ const CodeEditorTab = ({ isActive, path, onClick, onClose, isCloseDisabled, tabs
     !isCloseDisabled && onClose(path);
   }, [ isCloseDisabled, onClose, path ]);
 
-  const icon = /.sol|.yul|.vy$/.test(fileName) ? iconSolidity : iconFile;
-
   return (
     <Flex
       pl="10px"
@@ -55,7 +52,7 @@ const CodeEditorTab = ({ isActive, path, onClick, onClose, isCloseDisabled, tabs
       }}
       userSelect="none"
     >
-      <Icon as={ icon } boxSize="16px" mr="4px"/>
+      <CodeEditorFileIcon mr="4px" fileName={ fileName }/>
       <span>{ fileName }</span>
       { folderName && <chakra.span fontSize="11px" opacity={ 0.8 } ml={ 1 }>{ folderName[0] === '.' ? '' : '...' }{ folderName }</chakra.span> }
       <Box
