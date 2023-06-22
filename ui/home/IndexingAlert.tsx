@@ -97,7 +97,7 @@ const IndexingAlert = ({ className }: { className?: string }) => {
   }
 
   return (
-    <Alert status="warning" variant="solid" py={ 3 } borderRadius="12px" mb={ 6 } className={ className }>
+    <Alert status="info" colorScheme="gray" py={ 3 } borderRadius="12px" mb={ 6 } className={ className }>
       { !isMobile && <AlertIcon/> }
       <AlertTitle>
         { content }

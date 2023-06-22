@@ -1,4 +1,4 @@
-import Alert from './Alert';
+import Alert from './Alert/Alert';
 import Badge from './Badge';
 import Button from './Button/Button';
 import Checkbox from './Checkbox';
