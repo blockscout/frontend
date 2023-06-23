@@ -9,6 +9,7 @@ import type { SocketMessage } from 'lib/socket/types';
 import type { SmartContractVerificationMethod, SmartContractVerificationConfig } from 'types/api/contract';
 
 import useApiFetch from 'lib/api/useApiFetch';
+import delay from 'lib/delay';
 import useToast from 'lib/hooks/useToast';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
@@ -60,10 +61,11 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
     });
   }, [ apiFetch, hash ]);
 
-  const handleNewSocketMessage: SocketMessage.ContractVerification['handler'] = React.useCallback((payload) => {
+  const handleNewSocketMessage: SocketMessage.ContractVerification['handler'] = React.useCallback(async(payload) => {
     if (payload.status === 'error') {
       const errors = formatSocketErrors(payload.errors);
       errors.filter(Boolean).forEach(([ field, error ]) => setError(field, error));
+      await delay(100); // have to wait a little bit, otherwise isSubmitting status will not be updated
       submitPromiseResolver.current?.(null);
       return;
     }
