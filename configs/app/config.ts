@@ -1,5 +1,6 @@
 /* eslint-disable no-restricted-properties */
 import type { AdButlerConfig } from 'types/client/adButlerConfig';
+import type { AdBannerProviders, AdTextProviders } from 'types/client/adProviders';
 import type { NavItemExternal } from 'types/client/navigation-items';
 import type { WalletType } from 'types/client/wallets';
 import type { NetworkExplorer } from 'types/networks';
@@ -23,6 +24,20 @@ const getWeb3DefaultWallet = (): WalletType => {
   ];
 
   return (envValue && SUPPORTED_WALLETS.includes(envValue) ? envValue : 'metamask') as WalletType;
+};
+
+const getAdBannerProvider = (): AdBannerProviders => {
+  const envValue = getEnvValue(process.env.NEXT_PUBLIC_AD_BANNER_PROVIDER);
+  const SUPPORTED_AD_BANNER_PROVIDERS: Array<AdBannerProviders> = [ 'slise', 'adbutler', 'coinzilla', 'none' ];
+
+  return (envValue && SUPPORTED_AD_BANNER_PROVIDERS.includes(envValue) ? envValue : 'slise') as AdBannerProviders;
+};
+
+const getAdTextProvider = (): AdTextProviders => {
+  const envValue = getEnvValue(process.env.NEXT_PUBLIC_AD_TEXT_PROVIDER);
+  const SUPPORTED_AD_BANNER_PROVIDERS: Array<AdTextProviders> = [ 'coinzilla', 'none' ];
+
+  return (envValue && SUPPORTED_AD_BANNER_PROVIDERS.includes(envValue) ? envValue : 'slise') as AdTextProviders;
 };
 
 const env = process.env.NODE_ENV;
@@ -113,11 +128,10 @@ const config = Object.freeze({
   authUrl,
   logoutUrl,
   ad: {
-    domainWithAd: getEnvValue(process.env.NEXT_PUBLIC_AD_DOMAIN_WITH_AD) || 'blockscout.com',
-    adButlerOn: getEnvValue(process.env.NEXT_PUBLIC_AD_ADBUTLER_ON) === 'true',
+    adBannerProvider: getAdBannerProvider(),
+    adTextProvider: getAdTextProvider(),
     adButlerConfigDesktop: parseEnvJson<AdButlerConfig>(getEnvValue(process.env.NEXT_PUBLIC_AD_ADBUTLER_CONFIG_DESKTOP)),
     adButlerConfigMobile: parseEnvJson<AdButlerConfig>(getEnvValue(process.env.NEXT_PUBLIC_AD_ADBUTLER_CONFIG_MOBILE)),
-    sliseOn: getEnvValue(process.env.NEXT_PUBLIC_AD_SLISE_ON) === 'true',
   },
   web3: {
     defaultWallet: getWeb3DefaultWallet(),
