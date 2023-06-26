@@ -9,6 +9,7 @@ import nftIcon from 'icons/nft_shield.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import * as regexp from 'lib/regexp';
 import { TOKEN_INSTANCE } from 'stubs/token';
 import * as tokenStubs from 'stubs/token';
 import { generateListStub } from 'stubs/utils';
@@ -124,12 +125,15 @@ const TokenInstanceContent = () => {
     }
 
     try {
-      const url = new URL(tokenInstanceQuery.data.external_app_url);
+      const url = regexp.URL_PREFIX.test(tokenInstanceQuery.data.external_app_url) ?
+        new URL(tokenInstanceQuery.data.external_app_url) :
+        new URL('https://' + tokenInstanceQuery.data.external_app_url);
+
       return (
         <Skeleton isLoaded={ !tokenInstanceQuery.isPlaceholderData } display="inline-block" fontSize="sm" mt={ 6 }>
           <span>View in app </span>
-          <LinkExternal href={ tokenInstanceQuery.data.external_app_url }>
-            { url.hostname }
+          <LinkExternal href={ url.toString() }>
+            { url.hostname || tokenInstanceQuery.data.external_app_url }
           </LinkExternal>
         </Skeleton>
       );
