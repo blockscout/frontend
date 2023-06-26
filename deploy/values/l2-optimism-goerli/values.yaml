@@ -5,7 +5,7 @@ blockscout:
   app: blockscout
   enabled: true
   image:
-    _default: &image blockscout/blockscout-optimism:5.2.0-postrelease-53fbca80
+    _default: &image blockscout/blockscout-optimism:latest
   replicas:
     app: 1
   # init container
@@ -86,7 +86,7 @@ blockscout:
     MICROSERVICE_SC_VERIFIER_ENABLED:
       _default: 'true'
     MICROSERVICE_SC_VERIFIER_URL:
-      _default: http://sc-verifier-svc:8043
+      _default: https://sc-verifier-test.k8s-dev.blockscout.com
     ACCOUNT_ENABLED:
       _default: 'true'
     DISABLE_EXCHANGE_RATES:
@@ -181,67 +181,6 @@ blockscout:
       _default: ref+vault://deployment-values/blockscout/common?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/RE_CAPTCHA_SECRET_KEY
     RE_CAPTCHA_CLIENT_KEY:
       _default: ref+vault://deployment-values/blockscout/common?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/RE_CAPTCHA_CLIENT_KEY
-
-scVerifier:
-  enabled: true
-  image:
-    _default: ghcr.io/blockscout/smart-contract-verifier:main
-  # enable ingress
-  ingress:
-    enabled: true
-    host:
-      _default: verifier-optimism-goerli.k8s-dev.blockscout.com
-    # enable https
-    tls:
-      enabled: true
-  resources:
-    limits:
-      cpu:
-        _default: 250m
-      memory:
-        _default: 512Mi
-    requests:
-      cpu:
-        _default: 250m
-      memory:
-        _default: 256Mi
-  nodeSelector:
-    enabled: false
-  environment:
-    SMART_CONTRACT_VERIFIER__SERVER__HTTP__ADDR:
-      _default: 0.0.0.0:8050
-    SMART_CONTRACT_VERIFIER__SERVER__GRPC__ADDR:
-      _default: 0.0.0.0:8051
-    SMART_CONTRACT_VERIFIER__SOLIDITY__COMPILERS_DIR:
-      _default: /tmp/solidity-compilers
-    SMART_CONTRACT_VERIFIER__SOLIDITY__REFRESH_VERSIONS_SCHEDULE:
-      _default: 0 0 * * * * *
-    SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__REGION:
-      _default: ""
-    SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__ENDPOINT:
-      _default: https://storage.googleapis.com
-    SMART_CONTRACT_VERIFIER__SOURCIFY__ENABLED:
-      _default: 'true'
-    SMART_CONTRACT_VERIFIER__SOURCIFY__API_URL:
-      _default: https://sourcify.dev/server/
-    SMART_CONTRACT_VERIFIER__SOURCIFY__VERIFICATION_ATTEMPTS:
-      _default: 3
-    SMART_CONTRACT_VERIFIER__SOURCIFY__REQUEST_TIMEOUT:
-      _default: 10
-    SMART_CONTRACT_VERIFIER__METRICS__ENABLED:
-      _default: 'true'
-    SMART_CONTRACT_VERIFIER__METRICS__ADDR:
-      _default: 0.0.0.0:6060
-    SMART_CONTRACT_VERIFIER__METRICS__ROUTE:
-      _default: /metrics
-    SMART_CONTRACT_VERIFIER__JAEGER__ENABLED:
-      _default: 'false'
-    SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__ACCESS_KEY:
-      _default: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__ACCESS_KEY
-    SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__SECRET_KEY:
-      _default: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__SECRET_KEY
-    SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__BUCKET:
-      _default: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/SMART_CONTRACT_VERIFIER__SOLIDITY__FETCHER__S3__BUCKET
 
 # enable stats deploy
 stats:
@@ -413,7 +352,7 @@ frontend:
     NEXT_PUBLIC_IS_TESTNET:
       _default: true
     NEXT_PUBLIC_VISUALIZE_API_HOST:
-      _default: https://visualizer-optimism-goerli.k8s-dev.blockscout.com
+      _default: https://visualizer-test.k8s-dev.blockscout.com
     NEXT_PUBLIC_CONTRACT_INFO_API_HOST:
       _default: https://contracts-info-test.k8s-dev.blockscout.com
     NEXT_PUBLIC_ADMIN_SERVICE_API_HOST:
@@ -432,48 +371,3 @@ frontend:
       _default: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_AUTH0_CLIENT_ID
     NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID:
       _default: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID
-
-visualizer:
-  enabled: true
-  image:
-    _default: ghcr.io/blockscout/visualizer:latest
-
-  # enable ingress
-  ingress:
-    enabled: true
-    host:
-      _default: visualizer-optimism-goerli.k8s-dev.blockscout.com
-    # enable https
-    tls:
-      enabled: true
-      createSecret: false
-
-  resources:
-    limits:
-      cpu:
-        _default: 100m
-      memory:
-        _default: 128Mi
-    requests:
-      cpu:
-        _default: 50m
-      memory:
-        _default: 64Mi
-
-  nodeSelector:
-    enabled: false
-  # probes
-  livenessProbe:
-    enabled: true
-    path: /health
-  readinessProbe:
-    enabled: true
-    path: /health
-
-  environment:
-    VISUALIZER__SERVER__HTTP__ENABLED:
-      _default: 'true'
-    VISUALIZER__SERVER__HTTP__ADDR:
-      _default: 0.0.0.0:8050
-    VISUALIZER__SERVER__GRPC__ENABLED:
-      _default: 'false'
