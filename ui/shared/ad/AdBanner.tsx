@@ -4,7 +4,6 @@ import React from 'react';
 import appConfig from 'configs/app/config';
 import { useAppContext } from 'lib/contexts/app';
 import * as cookies from 'lib/cookies';
-import isSelfHosted from 'lib/isSelfHosted';
 
 import AdbutlerBanner from './AdbutlerBanner';
 import CoinzillaBanner from './CoinzillaBanner';
@@ -13,20 +12,19 @@ import SliseBanner from './SliseBanner';
 const AdBanner = ({ className, isLoading }: { className?: string; isLoading?: boolean }) => {
   const hasAdblockCookie = cookies.get(cookies.NAMES.ADBLOCK_DETECTED, useAppContext().cookies);
 
-  if (!isSelfHosted() || hasAdblockCookie) {
+  if (appConfig.ad.adBannerProvider === 'none' || hasAdblockCookie) {
     return null;
   }
 
   const content = (() => {
-    if (appConfig.ad.adButlerOn) {
-      return <AdbutlerBanner/>;
+    switch (appConfig.ad.adBannerProvider) {
+      case 'adbutler':
+        return <AdbutlerBanner/>;
+      case 'coinzilla':
+        return <CoinzillaBanner/>;
+      case 'slise':
+        return <SliseBanner/>;
     }
-
-    if (appConfig.ad.sliseOn) {
-      return <SliseBanner/>;
-    }
-
-    return <CoinzillaBanner/>;
   })();
 
   return (
@@ -34,7 +32,7 @@ const AdBanner = ({ className, isLoading }: { className?: string; isLoading?: bo
       className={ className }
       isLoaded={ !isLoading }
       borderRadius="none"
-      maxW={ appConfig.ad.adButlerOn ? appConfig.ad.adButlerConfigDesktop?.width : '728px' }
+      maxW={ appConfig.ad.adBannerProvider === 'adbutler' ? appConfig.ad.adButlerConfigDesktop?.width : '728px' }
       w="100%"
     >
       { content }

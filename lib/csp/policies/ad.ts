@@ -2,14 +2,9 @@ import Base64 from 'crypto-js/enc-base64';
 import sha256 from 'crypto-js/sha256';
 import type CspDev from 'csp-dev';
 
-import isSelfHosted from 'lib/isSelfHosted';
 import { connectAdbutler, placeAd } from 'ui/shared/ad/adbutlerScript';
 
 export function ad(): CspDev.DirectiveDescriptor {
-  if (!isSelfHosted()) {
-    return {};
-  }
-
   return {
     'connect-src': [
       'coinzilla.com',
