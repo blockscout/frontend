@@ -3,6 +3,9 @@ name: Label released issues
 on:
     workflow_dispatch:
     workflow_call:
+    pull_request:
+        branches:
+            - tom2drum/issue_945
 
 concurrency:
     group: ${{ github.workflow }}
