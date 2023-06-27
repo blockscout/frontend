@@ -145,7 +145,7 @@ jobs:
                         })
                         core.endGroup();
 
-                        core.setOutput('result', commits.join(','));
+                        return commits;
 
             -   name: Looking for issues linked to commits
                 id: linked_issues
@@ -155,7 +155,9 @@ jobs:
                     COMMITS: ${{ steps.commits.outputs.result }}
                 with:
                     script: |
-                        const commits = process.env.COMMITS.split(',');
+                        const commits = JSON.parse(process.env.COMMITS);
+
+                        core.info(commits);
 
                         if (commits.length === 0) {
                             core.setOutput('result', '');
@@ -181,7 +183,7 @@ jobs:
                             core.notice('No linked issues found.');
                         }
                     
-                        core.setOutput('result', issues.join(','));
+                        return issues;
 
                         async function getLinkedIssuesForCommitPR(sha) {
                             core.info(`Fetching issues for commit: ${ sha }`);
@@ -261,7 +263,7 @@ jobs:
                     ISSUES: ${{ steps.linked_issues.outputs.result }}
                 with:
                     script: |
-                        const issues = process.env.ISSUES.split(',');
+                        const issues = JSON.parse(process.env.ISSUES);
 
                         if (issues.length === 0) {
                             core.notice('No issues has found. Nothing to label.');
