@@ -1,9 +1,8 @@
 name: Release
 
 on:
-    push:
-        branches:
-            - tom2drum/issues_945
+    # TODO @tom2drum: remove PR trigger
+    pull_request:
     release:
         types: [ released, prereleased ]
 
@@ -13,10 +12,12 @@ concurrency:
 
 jobs:
     label_released_issues:
+        name: Label released issues
         uses: './.github/workflows/label-released-issues.yml'
         secrets: inherit
         if: ${{ github.event.action == 'released' }}
     update_project_cards:
+        name: Update project tasks statuses
         needs: label_released_issues
         uses: './.github/workflows/update-project-cards.yml'
         with:
@@ -25,5 +26,4 @@ jobs:
             field_value: Released
             issues: ${{ needs.label_released_issues.outputs.issues }}
         secrets: inherit
-        if: ${{ github.event.action == 'released' }}
 
