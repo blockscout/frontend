@@ -186,7 +186,7 @@ jobs:
                         async function getLinkedIssuesForCommitPR(sha) {
                             core.info(`Fetching issues for commit: ${ sha }`);
 
-                            const response = await octokit.graphql(`
+                            const response = await github.graphql(`
                                 query ($owner: String!, $repo: String!, $sha: GitObjectID!) {
                                     repository(owner: $owner, name: $repo) {
                                     object(oid: $sha) {
