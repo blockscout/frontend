@@ -61,7 +61,7 @@ jobs:
                 with:
                     script: |
                         try {
-                            const result = await github.rest.request('GET /repos/{owner}/{repo}/labels/{name}', {
+                            const result = await github.request('GET /repos/{owner}/{repo}/labels/{name}', {
                                 owner: context.repo.owner,
                                 repo: context.repo.repo,
                                 name: process.env.LABEL_NAME,
@@ -85,7 +85,7 @@ jobs:
                     LABEL_NAME: ${{ steps.tags.outputs.latest }}
                 with:
                     script: |
-                        const { data } = await github.rest.request('GET /repos/{owner}/{repo}/issues', {
+                        const { data } = await github.request('GET /repos/{owner}/{repo}/issues', {
                             owner: context.repo.owner,
                             repo: context.repo.repo,
                             labels: process.env.LABEL_NAME,
@@ -108,7 +108,7 @@ jobs:
                     LATEST_TAG: ${{ steps.tags.outputs.latest }}
                 with:
                     script: |
-                        const { data: { commits: commitsInRelease } } = await github.rest.request('GET /repos/{owner}/{repo}/compare/{basehead}', {
+                        const { data: { commits: commitsInRelease } } = await github.request('GET /repos/{owner}/{repo}/compare/{basehead}', {
                             owner: context.repo.owner,
                             repo: context.repo.repo,
                             basehead: `${ process.env.PREVIOUS_TAG }...${ process.env.LATEST_TAG }`,
