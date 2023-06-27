@@ -3,6 +3,27 @@ name: Update project cards for issues
 on:
     pull_request:
     workflow_dispatch:
+        inputs:
+            project_name:
+                description: Name of the project
+                default: Front-end tasks
+                required: true
+                type: string
+            field_name:
+                description: Field name to be updated
+                default: Status
+                required: true
+                type: string
+            field_value:
+                description: New value of the field
+                default: Released
+                required: true
+                type: string
+            issues:
+                description: JSON encoded list of issue numbers to be updated
+                default: '[900,903,899,912]'
+                required: true
+                type: string
     workflow_call:
         inputs: 
             project_name:
@@ -39,9 +60,10 @@ jobs:
                 id: project
                 uses: actions/github-script@v6
                 env:
-                    PROJECT_NAME: ${{ github.event.inputs.project_name }}
-                    FIELD_NAME: ${{ github.event.inputs.field_name }}
-                    FIELD_VALUE: ${{ github.event.inputs.field_value }}
+                    # remove fallbacks for PR trigger
+                    PROJECT_NAME: ${{ github.event.pull_request && 'Front-end tasks' || github.event.inputs.project_name }}
+                    FIELD_NAME: ${{ github.event.pull_request && 'Status' || github.event.inputs.field_name }}
+                    FIELD_VALUE: ${{ github.event.pull_request && 'Released'  || github.event.inputs.field_value }}
                 with:
                     script: |
                         const response = await github.graphql(`

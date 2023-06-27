@@ -3,6 +3,12 @@ name: Label released issues
 on:
     pull_request:
     workflow_dispatch:
+        inputs: 
+            label_color:
+                description: 'A color of the added label'
+                default: 'FFFFFF'
+                required: false
+                type: string
     workflow_call:
         inputs: 
             label_color:
