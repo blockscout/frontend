@@ -47,8 +47,8 @@ jobs:
                             .filter(({ isPrerelease, isDraft }) => !isPrerelease && !isDraft);
 
                         core.info('Found following tags:');
-                        core.info('    latest:        ', latestTag);
-                        core.info('    second latest: ', previousTag);
+                        core.info(`    latest:        ${ latestTag }`);
+                        core.info(`    second latest: ${ previousTag }`);
 
                         core.setOutput('latest', latestTag);
                         core.setOutput('previous', previousTag);
@@ -61,19 +61,58 @@ jobs:
                 with:
                     script: |
                         try {
-                            const result = await octokit.request('GET /repos/{owner}/{repo}/labels/{name}', {
+                            const result = await github.rest.request('GET /repos/{owner}/{repo}/labels/{name}', {
                                 owner: context.repo.owner,
                                 repo: context.repo.repo,
                                 name: process.env.LABEL_NAME,
                             });
 
-                            core.info('Found label with id: ', result.data.id);
+                            core.info(`Found label with id: ${ result.data.id }`);
                             core.setOutput('id', result.data.id);
                         } catch (error) {
+                            core.info(error);
                             if (error.status === 404) {
                                 core.info('Nothing has found.');
                                 core.setOutput('id', null);
                             }
                         }
 
+            -   name: Fetch issues with release label
+                id: has_labeled_issues
+                uses: actions/github-script@v6
+                if: ${{ steps.label.outputs.id != null }}
+                env:
+                    LABEL_NAME: ${{ steps.tags.outputs.latest }}
+                with:
+                    script: |
+                        const { data } = await github.rest.request('GET /repos/{owner}/{repo}/issues', {
+                            owner: context.repo.owner,
+                            repo: context.repo.repo,
+                            labels: process.env.LABEL_NAME,
+                            state: 'all',
+                        });
+
+                        if (data.length > 0) {
+                            core.info(`Found ${ data.length } issues with label ${ process.env.LABEL_NAME }. No further action required.`);
+                            core.setOutput('result', data.length > 0);
+                            core.notice('Issues already labeled.')
+                            return;
+                        }
+
+            -   name: Looking for commits between two releases
+                id: commits
+                uses: actions/github-script@v6
+                if: ${{ steps.label.outputs.id == null && steps.has_labeled_issues.outputs.result != true }}
+                env:
+                    PREVIOUS_TAG: ${{ steps.tags.outputs.previous }}
+                    LATEST_TAG: ${{ steps.tags.outputs.latest }}
+                with:
+                    script: |
+                        const { data: { commits: commitsInRelease } } = await github.rest.request('GET /repos/{owner}/{repo}/compare/{basehead}', {
+                            owner: context.repo.owner,
+                            repo: context.repo.repo,
+                            basehead: `${ process.env.PREVIOUS_TAG }...${ process.env.LATEST_TAG }`,
+                        });
+
+                        core.info(`Found ${ commitsInRelease.length } commits.`);
 
