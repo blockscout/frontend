@@ -118,7 +118,7 @@ jobs:
             -   name: Looking for commits between two releases
                 id: commits
                 uses: actions/github-script@v6
-                if: ${{ !steps.has_labeled_issues.outputs.result }}
+                if: ${{ steps.has_labeled_issues.outputs.result == 'false' }}
                 env:
                     PREVIOUS_TAG: ${{ steps.tags.outputs.previous }}
                     LATEST_TAG: ${{ steps.tags.outputs.latest }}
@@ -148,7 +148,7 @@ jobs:
             -   name: Looking for issues linked to commits
                 id: linked_issues
                 uses: actions/github-script@v6
-                if: ${{ !steps.has_labeled_issues.outputs.result }}
+                if: ${{ steps.has_labeled_issues.outputs.result == 'false' }}
                 env:
                     COMMITS: ${{ steps.commits.outputs.result }}
                 with:
@@ -237,7 +237,7 @@ jobs:
             -   name: Creating label with latest release tag
                 id: label_creating
                 uses: actions/github-script@v6
-                if: ${{ !steps.has_labeled_issues.outputs.result }}
+                if: ${{ steps.has_labeled_issues.outputs.result == 'false' }}
                 env:
                     LABEL_NAME: ${{ steps.tags.outputs.latest }}
                     LABEL_COLOR: ${{ github.event.inputs.label_color }}
@@ -256,7 +256,7 @@ jobs:
             -   name: Adding label to issues
                 id: labeling_issues
                 uses: actions/github-script@v6
-                if: ${{ !steps.has_labeled_issues.outputs.result }}
+                if: ${{ steps.has_labeled_issues.outputs.result == 'false' }}
                 env:
                     LABEL_NAME: ${{ steps.tags.outputs.latest }}
                     ISSUES: ${{ steps.linked_issues.outputs.result }}
