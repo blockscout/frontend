@@ -1,0 +1,29 @@
+name: Release
+
+on:
+    push:
+        branches:
+            - tom2drum/issues_945
+    release:
+        types: [ released, prereleased ]
+
+concurrency:
+    group: ${{ github.workflow }}
+    cancel-in-progress: true
+
+jobs:
+    label_released_issues:
+        uses: './.github/workflows/label-released-issues.yml'
+        secrets: inherit
+        if: ${{ github.event.action == 'released' }}
+    update_project_cards:
+        needs: label_released_issues
+        uses: './.github/workflows/update-project-cards.yml'
+        with:
+            project_name: Front-end tasks
+            field_name: Status
+            field_value: Released
+            issues: ${{ needs.label_released_issues.outputs.issues }}
+        secrets: inherit
+        if: ${{ github.event.action == 'released' }}
+

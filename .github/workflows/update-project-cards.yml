@@ -1,7 +1,7 @@
 name: Update project cards for issues
 
 on:
-    pull_request:
+    # pull_request:
     workflow_dispatch:
         inputs:
             project_name:
@@ -21,29 +21,24 @@ on:
                 type: string
             issues:
                 description: JSON encoded list of issue numbers to be updated
-                default: '[900,903,899,912]'
                 required: true
                 type: string
     workflow_call:
         inputs: 
             project_name:
                 description: Name of the project
-                default: Front-end tasks
                 required: true
                 type: string
             field_name:
                 description: Field name to be updated
-                default: Status
                 required: true
                 type: string
             field_value:
                 description: New value of the field
-                default: Released
                 required: true
                 type: string
             issues:
                 description: JSON encoded list of issue numbers to be updated
-                default: '[900,903,899,912]'
                 required: true
                 type: string
 
