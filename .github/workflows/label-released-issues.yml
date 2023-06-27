@@ -111,8 +111,7 @@ jobs:
                         if (data.length > 0) {
                             core.info(`Found ${ data.length } closed issues with label ${ process.env.LABEL_NAME }. No further action required.`);
                             core.notice('Issues already labeled.')
-                            return false;
-                            // return data.length > 0;
+                            return data.length > 0;
                         }
 
             -   name: Looking for commits between two releases
@@ -137,7 +136,7 @@ jobs:
 
                         const commits = commitsInRelease.map(({ sha }) => sha);
 
-                        core.startGroup(`Found ${ commits.length } commits:`);
+                        core.startGroup(`Found ${ commits.length } commits`);
                         commits.forEach((sha) => {
                             core.info(sha);
                         })
@@ -161,7 +160,7 @@ jobs:
 
                         const map = {};
 
-                        core.startGroup(`Looking for linked issues:`);
+                        core.startGroup(`Looking for linked issues`);
                         for (const sha of commits) {
                             const result = await getLinkedIssuesForCommitPR(sha);
                             result.forEach((issue) => {
@@ -173,9 +172,9 @@ jobs:
                         const issues = Object.values(map);
                     
                         if (issues.length > 0) {
-                            core.startGroup(`Found ${ issues.length } unique issues:`);
+                            core.startGroup(`Found ${ issues.length } unique issues`);
                             issues.sort().forEach((issue) => {
-                                core.info(`#${ issue }`);
+                                core.info(`#${ issue } - https://github.com/${ context.repo.owner }/${ context.repo.repo }/issues/${ issue }`);
                             })
                             core.endGroup();
                         } else {
@@ -272,7 +271,7 @@ jobs:
                         for (const issue of issues) {
                             core.info(`Adding release label to the issue #${ issue }...`);
                             await addLabelToIssue(issue, process.env.LABEL_NAME);
-                            core.info('Done.');
+                            core.info('Done.\n');
                         }
 
                         async function addLabelToIssue(issue, label) {
