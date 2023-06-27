@@ -98,8 +98,7 @@ jobs:
                     script: |
                         if (!process.env.LABEL_ID) {
                             core.info(`Label doesn not exist. No need to fetch issues.`);
-                            core.setOutput('result', false);
-                            return;
+                            return false;
                         }
 
                         const { data } = await github.request('GET /repos/{owner}/{repo}/issues', {
@@ -111,9 +110,9 @@ jobs:
 
                         if (data.length > 0) {
                             core.info(`Found ${ data.length } closed issues with label ${ process.env.LABEL_NAME }. No further action required.`);
-                            core.setOutput('result', false);
-                            // core.setOutput('result', data.length > 0);
                             core.notice('Issues already labeled.')
+                            return false;
+                            // return data.length > 0;
                         }
 
             -   name: Looking for commits between two releases
@@ -133,8 +132,7 @@ jobs:
 
                         if (commitsInRelease.length === 0) {
                             core.notice(`No commits found between ${ process.env.PREVIOUS_TAG } and ${ process.env.LATEST_TAG }`);
-                            core.setOutput('result', '');
-                            return;
+                            return [];
                         }
 
                         const commits = commitsInRelease.map(({ sha }) => sha);
@@ -157,20 +155,21 @@ jobs:
                     script: |
                         const commits = JSON.parse(process.env.COMMITS);
 
-                        core.info(commits);
-
                         if (commits.length === 0) {
-                            core.setOutput('result', '');
-                            return;
+                            return [];
                         }
 
                         const map = {};
+
+                        core.startGroup(`Looking for linked issues:`);
                         for (const sha of commits) {
                             const result = await getLinkedIssuesForCommitPR(sha);
                             result.forEach((issue) => {
                                 map[issue] = issue;
                             });
                         }
+                        core.endGroup();
+
                         const issues = Object.values(map);
                     
                         if (issues.length > 0) {
@@ -230,7 +229,7 @@ jobs:
                                 .map(({ closingIssuesReferences: { nodes: issues } }) => issues.map(({ number }) => number))
                                 .flat();
 
-                            core.info(`Found following issues: ${ issues.join(', ') }`);
+                            core.info(`Found following issues: ${ issues.join(', ') || '-' }\n`);
 
                             return issues;
                         }
@@ -241,14 +240,14 @@ jobs:
                 if: ${{ !steps.has_labeled_issues.outputs.result }}
                 env:
                     LABEL_NAME: ${{ steps.tags.outputs.latest }}
+                    LABEL_COLOR: ${{ github.event.inputs.label_color }}
                 with:
                     script: |
-                        const color = ${{ github.event.inputs.label_color }}
                         const result = await github.request('POST /repos/{owner}/{repo}/labels', {
                             owner: context.repo.owner,
                             repo: context.repo.repo,
                             name: process.env.LABEL_NAME,
-                            color,
+                            color: process.env.LABEL_COLOR,
                             description: `Release ${ process.env.LABEL_NAME }`,
                         });
 
