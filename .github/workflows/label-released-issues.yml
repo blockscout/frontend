@@ -84,7 +84,7 @@ jobs:
                         } catch (error) {
                             if (error.status === 404) {
                                 core.info('Nothing has found.');
-                                core.setOutput('id', null);
+                                core.setOutput('id', 'null');
                             }
                         }
 
@@ -96,8 +96,8 @@ jobs:
                     LABEL_ID: ${{ steps.label.outputs.id }}
                 with:
                     script: |
-                        if (!process.env.LABEL_ID) {
-                            core.info(`Label doesn not exist. No need to fetch issues.`);
+                        if (process.env.LABEL_ID === 'null') {
+                            core.info(`Label does not exist. No need to fetch issues.`);
                             return false;
                         }
 
@@ -237,7 +237,7 @@ jobs:
             -   name: Creating label with latest release tag
                 id: label_creating
                 uses: actions/github-script@v6
-                if: ${{ steps.has_labeled_issues.outputs.result == 'false' }}
+                if: ${{ steps.label.outputs.id == 'null' && steps.has_labeled_issues.outputs.result == 'false' }}
                 env:
                     LABEL_NAME: ${{ steps.tags.outputs.latest }}
                     LABEL_COLOR: ${{ github.event.inputs.label_color }}
