@@ -12,7 +12,7 @@ on:
                 type: string
         outputs:
             issues:
-                description: "Comma separated list of issues linked to commits in the release"
+                description: "JSON encoded list of issues linked to commits in the release"
                 value: ${{ jobs.run.outputs.issues }}
 
 concurrency:

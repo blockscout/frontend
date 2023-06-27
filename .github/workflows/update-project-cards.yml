@@ -1,0 +1,118 @@
+name: Update project cards for issues
+
+on:
+    pull_request:
+    workflow_dispatch:
+    workflow_call:
+        inputs: 
+            project_name:
+                description: Name of the project
+                default: Front-end tasks
+                required: true
+                type: string
+            field_name:
+                description: Field name to be updated
+                default: Status
+                required: true
+                type: string
+            field_value:
+                description: New value of the field
+                default: Released
+                required: true
+                type: string
+            issues:
+                description: JSON encoded list of issue numbers to be updated
+                default: '[900,903,899,912]'
+                required: true
+                type: string
+
+concurrency:
+    group: ${{ github.workflow }}/${{ inputs.project_name }}/${{ inputs.field_name }}
+    cancel-in-progress: true
+
+jobs:
+    run:
+        name: Run
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Getting project info
+                id: project
+                uses: actions/github-script@v6
+                env:
+                    PROJECT_NAME: ${{ github.event.inputs.project_name }}
+                    FIELD_NAME: ${{ github.event.inputs.field_name }}
+                    FIELD_VALUE: ${{ github.event.inputs.field_value }}
+                with:
+                    script: |
+                        const response = await github.graphql(`
+                            query ($login: String!, $q: String!) {
+                                organization(login: $login) {
+                                    projectsV2(query: $q, first: 1) {
+                                        nodes {
+                                            id,
+                                            title,
+                                            number,
+                                            fields(first: 20) {
+                                                nodes {
+                                                    ... on ProjectV2Field {
+                                                        id
+                                                        name
+                                                    }
+                                                    ... on ProjectV2SingleSelectField {
+                                                        id
+                                                        name
+                                                        options {
+                                                            id
+                                                            name
+                                                        }
+                                                    }
+                                                }  
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        `, {
+                            login: context.repo.owner,
+                            q: process.env.PROJECT_NAME,
+                        });
+                
+                        const { organization: { projectsV2: { nodes: projects } } } = response;
+
+                        if (projects.length === 0) {
+                            core.setFailed('Project not found.');
+                            return;
+                        }
+                        
+                        if (projects.length > 1) {
+                            core.info(`Fould ${ projects.length } with the similar name:`);
+                            projects.forEach((issue) => {
+                                core.info(`    #${ projects.number } - ${ projects.title }`);
+                            })
+                            core.setFailed('Fould multiple projects with the similar name. Cannot determine which one to use.');
+                            return;
+                        }
+                        
+                        const { id: projectId, fields: { nodes: fields } } = projects[0];
+                        const field = fields.find((field) => field.name === process.env.FIELD_NAME);
+                        
+                        if (!field) {
+                            core.setFailed(`Field with name "${ process.env.FIELD_NAME }" not found in the project.`);
+                            return;
+                        }
+                        
+                        const option = field.options.find((option) => option.name === process.env.FIELD_VALUE);
+                        
+                        if (!option) {
+                            core.setFailed(`Option with name "${ process.env.FIELD_VALUE }" not found in the field possible values.`);
+                            return;
+                        }
+                        
+                        core.info('Found following info:');
+                        core.info('    project_id:      ', projectId);
+                        core.info('    field_id:        ', field.id);
+                        core.info('    field_value_id:  ', option.id);
+                        
+                        core.setOutput('id', projectId);
+                        core.setOutput('field_id', field.id);
+                        core.setOutput('field_value_id', option.id);
