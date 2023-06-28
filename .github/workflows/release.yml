@@ -1,0 +1,27 @@
+name: Release
+
+on:
+    release:
+        types: [ released ]
+
+concurrency:
+    group: Release
+    cancel-in-progress: true
+
+jobs:
+    label_released_issues:
+        name: Label released issues
+        uses: './.github/workflows/label-released-issues.yml'
+        secrets: inherit
+        if: ${{ github.event.action == 'released' }}
+    update_project_cards:
+        name: Update project tasks statuses
+        needs: label_released_issues
+        uses: './.github/workflows/update-project-cards.yml'
+        with:
+            project_name: Front-end tasks
+            field_name: Status
+            field_value: Released
+            issues: ${{ needs.label_released_issues.outputs.issues }}
+        secrets: inherit
+
