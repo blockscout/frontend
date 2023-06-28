@@ -60,7 +60,6 @@ jobs:
                     FIELD_NAME: ${{ github.event.pull_request && 'Status' || github.event.inputs.field_name }}
                     FIELD_VALUE: ${{ github.event.pull_request && 'Released'  || github.event.inputs.field_value }}
                 with:
-                    debug: true
                     github-token: ${{ secrets.BOT_LABEL_ISSUE_TOKEN }}
                     script: |
                         const response = await github.graphql(`
@@ -128,9 +127,9 @@ jobs:
                         }
                         
                         core.info('Found following info:');
-                        core.info('    project_id:      ', projectId);
-                        core.info('    field_id:        ', field.id);
-                        core.info('    field_value_id:  ', option.id);
+                        core.info(`    project_id:     ${ projectId }`);
+                        core.info(`    field_id:       ${ field.id }`);
+                        core.info(`    field_value_id: ${ option.id }`);
                         
                         core.setOutput('id', projectId);
                         core.setOutput('field_id', field.id);
@@ -143,7 +142,6 @@ jobs:
                     # TODO @tom2drum: remove fallbacks for PR trigger
                     ISSUES: ${{ github.event.pull_request && '[900,903,899,912]' || github.event.inputs.issues }}
                 with:
-                    debug: true
                     github-token: ${{ secrets.BOT_LABEL_ISSUE_TOKEN }}
                     script: |
                         const result = [];
@@ -209,7 +207,6 @@ jobs:
                     FIELD_ID: ${{ steps.project_info.outputs.field_id }}
                     FIELD_VALUE_ID: ${{ steps.project_info.outputs.field_value_id }}
                 with:
-                    debug: true
                     github-token: ${{ secrets.BOT_LABEL_ISSUE_TOKEN }}
                     script: |
                         const items = JSON.parse(process.env.ITEMS);
@@ -221,7 +218,7 @@ jobs:
                         }
 
                         for (const item of items) {
-                            core.info(`Changing field value for item ${ issue }...`);
+                            core.info(`Changing field value for item ${ item }...`);
                             await changeItemFieldValue(item);
                             core.info('Done.\n');
                         }
