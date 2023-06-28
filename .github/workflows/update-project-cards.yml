@@ -54,9 +54,9 @@ jobs:
                 id: project_info
                 uses: actions/github-script@v6
                 env:
-                    PROJECT_NAME: ${{ github.event.inputs.project_name }}
-                    FIELD_NAME: ${{ github.event.inputs.field_name }}
-                    FIELD_VALUE: ${{ github.event.inputs.field_value }}
+                    PROJECT_NAME: ${{ inputs.project_name }}
+                    FIELD_NAME: ${{ inputs.field_name }}
+                    FIELD_VALUE: ${{ inputs.field_value }}
                 with:
                     github-token: ${{ secrets.BOT_LABEL_ISSUE_TOKEN }}
                     script: |
@@ -137,7 +137,7 @@ jobs:
                 id: items
                 uses: actions/github-script@v6
                 env:
-                    ISSUES: ${{ github.event.inputs.issues }}
+                    ISSUES: ${{ inputs.issues }}
                 with:
                     github-token: ${{ secrets.BOT_LABEL_ISSUE_TOKEN }}
                     script: |

@@ -244,7 +244,7 @@ jobs:
                 if: ${{ steps.label.outputs.id == 'null' && steps.has_labeled_issues.outputs.result == 'false' }}
                 env:
                     LABEL_NAME: ${{ steps.tags.outputs.latest }}
-                    LABEL_COLOR: ${{ github.event.inputs.label_color }}
+                    LABEL_COLOR: ${{ inputs.label_color }}
                 with:
                     script: |
                         const result = await github.request('POST /repos/{owner}/{repo}/labels', {
