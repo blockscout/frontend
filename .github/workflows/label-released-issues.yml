@@ -21,7 +21,7 @@ on:
                 value: ${{ jobs.run.outputs.issues }}
 
 concurrency:
-    group: ${{ github.workflow }}
+    group: Label released issues
     cancel-in-progress: true
 
 jobs:
