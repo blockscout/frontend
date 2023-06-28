@@ -3,7 +3,7 @@ import React from 'react';
 import type { RoutedSubTab } from 'ui/shared/Tabs/types';
 
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
-import Web3ModalProvider from 'ui/shared/Web3ModalProvider';
+import Web3Provider from 'ui/shared/Web3Provider';
 
 interface Props {
   tabs: Array<RoutedSubTab>;
@@ -23,9 +23,9 @@ const AddressContract = ({ tabs }: Props) => {
   }, [ tabs ]);
 
   return (
-    <Web3ModalProvider fallback={ fallback }>
+    <Web3Provider fallback={ fallback }>
       <RoutedTabs tabs={ tabs } variant="outline" colorScheme="gray" size="sm" tabListProps={ TAB_LIST_PROPS }/>
-    </Web3ModalProvider>
+    </Web3Provider>
   );
 };
 

@@ -1,9 +1,9 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { w3mProvider } from '@web3modal/ethereum';
 import React from 'react';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
+import { publicProvider } from 'wagmi/providers/public';
 
 import { AppContextProvider } from 'lib/contexts/app';
 import type { Props as PageProps } from 'lib/next/getServerSideProps';
@@ -30,7 +30,7 @@ const defaultAppContext = {
 const { publicClient } = configureChains(
   [ mainnet ],
   [
-    w3mProvider({ projectId: '' }),
+    publicProvider(),
   ],
 );
 
