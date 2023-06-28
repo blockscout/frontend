@@ -1,7 +1,7 @@
 name: Update project cards for issues
 
 on:
-    # pull_request:
+    pull_request:
     workflow_dispatch:
         inputs:
             project_name:
@@ -61,6 +61,7 @@ jobs:
                     FIELD_VALUE: ${{ github.event.pull_request && 'Released'  || github.event.inputs.field_value }}
                 with:
                     debug: true
+                    github-token: ${{ secrets.BOT_LABEL_ISSUE_TOKEN }}
                     script: |
                         const response = await github.graphql(`
                             query ($login: String!, $q: String!) {
@@ -143,6 +144,7 @@ jobs:
                     ISSUES: ${{ github.event.pull_request && '[900,903,899,912]' || github.event.inputs.issues }}
                 with:
                     debug: true
+                    github-token: ${{ secrets.BOT_LABEL_ISSUE_TOKEN }}
                     script: |
                         const result = [];
                         const issues = JSON.parse(process.env.ISSUES);
@@ -208,6 +210,7 @@ jobs:
                     FIELD_VALUE_ID: ${{ steps.project_info.outputs.field_value_id }}
                 with:
                     debug: true
+                    github-token: ${{ secrets.BOT_LABEL_ISSUE_TOKEN }}
                     script: |
                         const items = JSON.parse(process.env.ITEMS);
 

@@ -2,7 +2,7 @@ name: Release
 
 on:
     # TODO @tom2drum: remove PR trigger
-    pull_request:
+    # pull_request:
     release:
         types: [ released, prereleased ]
 
@@ -15,7 +15,8 @@ jobs:
         name: Label released issues
         uses: './.github/workflows/label-released-issues.yml'
         secrets: inherit
-        if: ${{ github.event.action == 'released' }}
+        # TODO @tom2drum: uncomment condition
+        # if: ${{ github.event.action == 'released' }}
     update_project_cards:
         name: Update project tasks statuses
         needs: label_released_issues
