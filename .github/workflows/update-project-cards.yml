@@ -1,7 +1,6 @@
 name: Update project cards for issues
 
 on:
-    pull_request:
     workflow_dispatch:
         inputs:
             project_name:
@@ -55,10 +54,9 @@ jobs:
                 id: project_info
                 uses: actions/github-script@v6
                 env:
-                    # TODO @tom2drum: remove fallbacks for PR trigger
-                    PROJECT_NAME: ${{ github.event.pull_request && 'Front-end tasks' || github.event.inputs.project_name }}
-                    FIELD_NAME: ${{ github.event.pull_request && 'Status' || github.event.inputs.field_name }}
-                    FIELD_VALUE: ${{ github.event.pull_request && 'Released'  || github.event.inputs.field_value }}
+                    PROJECT_NAME: ${{ github.event.inputs.project_name }}
+                    FIELD_NAME: ${{ github.event.inputs.field_name }}
+                    FIELD_VALUE: ${{ github.event.inputs.field_value }}
                 with:
                     github-token: ${{ secrets.BOT_LABEL_ISSUE_TOKEN }}
                     script: |
@@ -139,8 +137,7 @@ jobs:
                 id: items
                 uses: actions/github-script@v6
                 env:
-                    # TODO @tom2drum: remove fallbacks for PR trigger
-                    ISSUES: ${{ github.event.pull_request && '[900,903,899,912]' || github.event.inputs.issues }}
+                    ISSUES: ${{ github.event.inputs.issues }}
                 with:
                     github-token: ${{ secrets.BOT_LABEL_ISSUE_TOKEN }}
                     script: |

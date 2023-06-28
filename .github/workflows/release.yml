@@ -2,9 +2,9 @@ name: Release
 
 on:
     # TODO @tom2drum: remove PR trigger
-    # pull_request:
+    pull_request:
     release:
-        types: [ released, prereleased ]
+        types: [ released ]
 
 concurrency:
     group: ${{ github.workflow }}

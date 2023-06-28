@@ -115,7 +115,7 @@ jobs:
 
                         if (data.length > 0) {
                             core.info(`Found ${ data.length } closed issues with label ${ process.env.LABEL_NAME }. No further action required.`);
-                            core.notice('Issues already labeled.')
+                            core.notice('Issues already labeled.');
                             return data.length > 0;
                         }
 
