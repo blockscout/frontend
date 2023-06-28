@@ -6,7 +6,7 @@ import type { ChangeEvent, FormEvent, FocusEvent } from 'react';
 import searchIcon from 'icons/search.svg';
 import { useScrollDirection } from 'lib/contexts/scrollDirection';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import InputClearButton from 'ui/shared/InputClearButton';
+import ClearButton from 'ui/shared/ClearButton';
 
 interface Props {
   onChange: (value: string) => void;
@@ -108,7 +108,7 @@ const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, onHid
         />
         { value && (
           <InputRightElement top={{ base: 2, lg: '18px' }} right={ 2 }>
-            <InputClearButton onClick={ onClear }/>
+            <ClearButton onClick={ onClear }/>
           </InputRightElement>
         ) }
       </InputGroup>

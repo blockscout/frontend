@@ -11,7 +11,7 @@ import { Controller } from 'react-hook-form';
 import type { MethodFormFields } from './types';
 import type { SmartContractMethodArgType } from 'types/api/contract';
 
-import InputClearButton from 'ui/shared/InputClearButton';
+import ClearButton from 'ui/shared/ClearButton';
 
 import ContractMethodFieldZeroes from './ContractMethodFieldZeroes';
 import { addZeroesAllowed } from './utils';
@@ -63,7 +63,7 @@ const ContractMethodField = ({ control, name, valueType, placeholder, setValue, 
             paddingRight={ hasZerosControl ? '120px' : '40px' }
           />
           <InputRightElement w="auto" right={ 1 }>
-            { field.value && <InputClearButton onClick={ handleClear } isDisabled={ isDisabled }/> }
+            { field.value && <ClearButton onClick={ handleClear } isDisabled={ isDisabled }/> }
             { hasZerosControl && <ContractMethodFieldZeroes onClick={ handleAddZeroesClick } isDisabled={ isDisabled }/> }
           </InputRightElement>
         </InputGroup>
