@@ -1,5 +1,5 @@
 import { Alert, Button, Flex } from '@chakra-ui/react';
-import { useWeb3Modal } from '@web3modal/react';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 import React from 'react';
 import { useAccount, useDisconnect } from 'wagmi';
 
@@ -8,14 +8,14 @@ import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 
 const ContractConnectWallet = () => {
-  const { open } = useWeb3Modal();
   const { address, isDisconnected } = useAccount();
+  const { openConnectModal } = useConnectModal();
   const { disconnect } = useDisconnect();
   const isMobile = useIsMobile();
 
   const handleConnect = React.useCallback(() => {
-    open();
-  }, [ open ]);
+    openConnectModal?.();
+  }, [ openConnectModal ]);
 
   const handleDisconnect = React.useCallback(() => {
     disconnect();

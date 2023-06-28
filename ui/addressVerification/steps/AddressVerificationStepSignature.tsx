@@ -1,5 +1,5 @@
 import { Alert, Box, Button, chakra, Flex, Link, Radio, RadioGroup } from '@chakra-ui/react';
-import { useWeb3Modal } from '@web3modal/react';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
@@ -34,7 +34,7 @@ interface Props extends AddressVerificationFormFirstStepFields, AddressCheckStat
 const AddressVerificationStepSignature = ({ address, signingMessage, contractCreator, contractOwner, onContinue, noWeb3Provider }: Props) => {
   const [ signMethod, setSignMethod ] = React.useState<'wallet' | 'manually'>(noWeb3Provider ? 'manually' : 'wallet');
 
-  const { open: openWeb3Modal } = useWeb3Modal();
+  const { openConnectModal } = useConnectModal();
   const { isConnected } = useAccount();
 
   const formApi = useForm<Fields>({
@@ -93,10 +93,10 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
     clearErrors('root');
   }, [ clearErrors ]);
 
-  const handleOpenWeb3Modal = React.useCallback(() => {
+  const handleOpenConnectModal = React.useCallback(() => {
     clearErrors('root');
-    openWeb3Modal();
-  }, [ clearErrors, openWeb3Modal ]);
+    openConnectModal?.();
+  }, [ clearErrors, openConnectModal ]);
 
   const handleWeb3SignClick = React.useCallback(() => {
     clearErrors('root');
@@ -131,7 +131,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
     return (
       <Button
         size="lg"
-        onClick={ isConnected ? handleWeb3SignClick : handleOpenWeb3Modal }
+        onClick={ isConnected ? handleWeb3SignClick : handleOpenConnectModal }
         isLoading={ formState.isSubmitting || isSigning }
         loadingText={ isSigning ? 'Signing' : 'Verifying' }
       >

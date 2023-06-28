@@ -5,7 +5,7 @@ import type { AddressVerificationFormFirstStepFields, AddressCheckStatusSuccess 
 import type { VerifiedAddress } from 'types/api/account';
 
 import eastArrowIcon from 'icons/arrows/east.svg';
-import Web3ModalProvider from 'ui/shared/Web3ModalProvider';
+import Web3Provider from 'ui/shared/Web3Provider';
 
 import AddressVerificationStepAddress from './steps/AddressVerificationStepAddress';
 import AddressVerificationStepSignature from './steps/AddressVerificationStepSignature';
@@ -90,9 +90,9 @@ const AddressVerificationModal = ({ defaultAddress, isOpen, onClose, onSubmit, o
         </ModalHeader>
         <ModalCloseButton/>
         <ModalBody mb={ 0 }>
-          <Web3ModalProvider fallback={ step?.fallback || step.content }>
+          <Web3Provider fallback={ step?.fallback || step.content }>
             { step.content }
-          </Web3ModalProvider>
+          </Web3Provider>
         </ModalBody>
       </ModalContent>
     </Modal>
