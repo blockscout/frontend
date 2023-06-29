@@ -96,7 +96,6 @@ const TxsContent = ({
         <AddressCsvExportLink
           address={ currentAddress }
           params={{ type: 'transactions', filterType: 'address', filterValue }}
-          ml={ 2 }
           isLoading={ query.pagination.isLoading }
         />
       ) : null
