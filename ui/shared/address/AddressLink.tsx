@@ -18,6 +18,7 @@ type CommonProps = {
   fontWeight?: string;
   alias?: string | null;
   isLoading?: boolean;
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 
 type AddressTokenTxProps = {
@@ -105,6 +106,7 @@ const AddressLink = (props: Props) => {
       target={ target }
       overflow="hidden"
       whiteSpace="nowrap"
+      onClick={ props.onClick }
     >
       { content }
     </LinkInternal>
