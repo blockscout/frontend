@@ -88,7 +88,7 @@ const ContractWrite = ({ addressHash, isProxy, isCustomAbi }: Props) => {
         key={ id + '_' + index }
         data={ item }
         onSubmit={ handleMethodFormSubmit }
-        ResultComponent={ ContractWriteResult }
+        resultComponent={ ContractWriteResult }
         isWrite
       />
     );
