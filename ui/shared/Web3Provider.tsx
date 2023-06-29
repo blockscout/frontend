@@ -1,15 +1,26 @@
 import '@rainbow-me/rainbowkit/styles.css';
 import { useColorModeValue } from '@chakra-ui/react';
 import {
-  getDefaultWallets,
   RainbowKitProvider,
   darkTheme,
   lightTheme,
+  connectorsForWallets,
 } from '@rainbow-me/rainbowkit';
+import {
+  injectedWallet,
+  rainbowWallet,
+  walletConnectWallet,
+  coinbaseWallet,
+  metaMaskWallet,
+  trustWallet,
+  braveWallet,
+  rabbyWallet,
+} from '@rainbow-me/rainbowkit/wallets';
 import React from 'react';
 import type { Chain } from 'wagmi';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
+import { publicProvider } from 'wagmi/providers/public';
 
 import appConfig from 'configs/app/config';
 
@@ -50,17 +61,36 @@ const getConfig = () => {
         jsonRpcProvider({
           rpc: chain => ({ http: chain.rpcUrls.default.http[0] }),
         }),
+        publicProvider(),
       ],
     );
 
-    const { connectors } = getDefaultWallets({
-      appName: 'Blockscout',
-      projectId: appConfig.walletConnect.projectId,
-      chains,
-    });
+    const projectId = appConfig.walletConnect.projectId;
+    const appName = appConfig.network.name || 'Blockscout';
+
+    const connectors = connectorsForWallets([
+      {
+        groupName: 'Featured 🦆',
+        wallets: [
+          coinbaseWallet({ chains, appName }),
+          rainbowWallet({ projectId, chains }),
+        ],
+      },
+      {
+        groupName: 'Recommended 🦄',
+        wallets: [
+          metaMaskWallet({ chains, projectId }),
+          trustWallet({ chains, projectId }),
+          walletConnectWallet({ projectId, chains }),
+          braveWallet({ chains }),
+          rabbyWallet({ chains }),
+          injectedWallet({ chains }),
+        ],
+      },
+    ]);
 
     const wagmiConfig = createConfig({
-      autoConnect: true,
+      autoConnect: false,
       connectors,
       publicClient,
     });
