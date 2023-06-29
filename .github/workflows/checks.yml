@@ -94,7 +94,7 @@ jobs:
     needs: [ code_quality ]
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.32.0-focal
+      image: mcr.microsoft.com/playwright:v1.35.1-focal
 
     strategy:
       fail-fast: false
