@@ -6,6 +6,7 @@ import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import React from 'react';
 
 import type { File, Monaco } from './types';
+import type { SmartContractExternalLibrary } from 'types/api/contract';
 
 import useClientRect from 'lib/hooks/useClientRect';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -15,6 +16,7 @@ import CodeEditorBreadcrumbs from './CodeEditorBreadcrumbs';
 import CodeEditorLoading from './CodeEditorLoading';
 import CodeEditorSideBar, { CONTAINER_WIDTH as SIDE_BAR_WIDTH } from './CodeEditorSideBar';
 import CodeEditorTabs from './CodeEditorTabs';
+import addExternalLibraryWarningDecoration from './utils/addExternalLibraryWarningDecoration';
 import addFileImportDecorations from './utils/addFileImportDecorations';
 import getFullPathOfImportedFile from './utils/getFullPathOfImportedFile';
 import * as themes from './utils/themes';
@@ -36,10 +38,11 @@ const EDITOR_HEIGHT = 500;
 interface Props {
   data: Array<File>;
   remappings?: Array<string>;
+  libraries?: Array<SmartContractExternalLibrary>;
   language?: string;
 }
 
-const CodeEditor = ({ data, remappings, language }: Props) => {
+const CodeEditor = ({ data, remappings, libraries, language }: Props) => {
   const [ instance, setInstance ] = React.useState<Monaco | undefined>();
   const [ editor, setEditor ] = React.useState<monaco.editor.IStandaloneCodeEditor | undefined>();
   const [ index, setIndex ] = React.useState(0);
@@ -74,7 +77,13 @@ const CodeEditor = ({ data, remappings, language }: Props) => {
       .filter((file) => !loadedModelsPaths.includes(file.file_path))
       .map((file) => monaco.editor.createModel(file.source_code, editorLanguage, monaco.Uri.parse(file.file_path)));
 
-    loadedModels.concat(newModels).forEach(addFileImportDecorations);
+    if (language === 'solidity') {
+      loadedModels.concat(newModels)
+        .forEach((models) => {
+          addFileImportDecorations(models);
+          libraries?.length && addExternalLibraryWarningDecoration(models, libraries);
+        });
+    }
 
     editor.addAction({
       id: 'close-tab',
@@ -182,11 +191,14 @@ const CodeEditor = ({ data, remappings, language }: Props) => {
       textDecoration: 'underline',
       cursor: 'pointer',
     },
+    '.risk-warning': {
+      backgroundColor: 'deeppink',
+    },
   }), [ editorWidth, themeColors ]);
 
   if (data.length === 1) {
     return (
-      <Box overflow="hidden" borderRadius="md" height={ `${ EDITOR_HEIGHT }px` }>
+      <Box overflow="hidden" borderRadius="md" height={ `${ EDITOR_HEIGHT }px` } sx={ containerSx }>
         <MonacoEditor
           language={ editorLanguage }
           path={ data[index].file_path }

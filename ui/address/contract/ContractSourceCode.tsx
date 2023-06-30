@@ -146,6 +146,7 @@ const ContractSourceCode = ({ address, implementationAddress }: Props) => {
           <CodeEditor
             data={ primaryEditorData }
             remappings={ primaryContractQuery.data?.compiler_settings?.remappings }
+            libraries={ primaryContractQuery.data?.external_libraries ?? undefined }
             language={ primaryContractQuery.data?.language ?? undefined }
           />
         </Box>
@@ -154,6 +155,7 @@ const ContractSourceCode = ({ address, implementationAddress }: Props) => {
             <CodeEditor
               data={ secondaryEditorData }
               remappings={ secondaryContractQuery.data?.compiler_settings?.remappings }
+              libraries={ secondaryContractQuery.data?.external_libraries ?? undefined }
               language={ secondaryContractQuery.data?.language ?? undefined }
             />
           </Box>
