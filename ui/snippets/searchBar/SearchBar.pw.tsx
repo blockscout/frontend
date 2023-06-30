@@ -162,23 +162,23 @@ test('search by tx hash +@mobile', async({ mount, page }) => {
 });
 
 test('search with simple match', async({ mount, page }) => {
-  const API_URL = buildApiUrl('search') + `?q=${ searchMock.tx1.tx_hash }`;
-  const API_CHECK_REDIRECT_URL = buildApiUrl('search_check_redirect') + `?q=${ searchMock.tx1.tx_hash }`;
+  const API_URL = buildApiUrl('search') + `?q=${ searchMock.token2.name }`;
+  const API_CHECK_REDIRECT_URL = buildApiUrl('search_check_redirect') + `?q=${ searchMock.token2.name }`;
 
   await page.route(API_URL, (route) => route.fulfill({
     status: 200,
     body: JSON.stringify({
       items: [
-        searchMock.tx1,
+        searchMock.token2,
       ],
     }),
   }));
   await page.route(API_CHECK_REDIRECT_URL, (route) => route.fulfill({
     status: 200,
     body: JSON.stringify({
-      parameter: searchMock.tx1.tx_hash,
+      parameter: searchMock.token2.address,
       redirect: true,
-      type: 'transaction',
+      type: 'address',
     }),
   }));
 
@@ -187,14 +187,18 @@ test('search with simple match', async({ mount, page }) => {
       <SearchBar/>
     </TestApp>,
   );
-  await page.getByPlaceholder(/search/i).type(searchMock.tx1.tx_hash);
+  await page.getByPlaceholder(/search/i).type(searchMock.token2.name);
   await page.waitForResponse(API_URL);
+  await page.waitForResponse(API_CHECK_REDIRECT_URL);
 
-  const resultText = page.getByText('Found 1 matching result');
-  expect(resultText).toBeTruthy();
+  const resultText = page.getByText('Found 2 matching result');
+  await expect(resultText).toBeVisible();
 
-  const links = page.getByText(searchMock.tx1.tx_hash);
-  await expect(links).toHaveCount(1);
+  const linkToToken = page.getByText(searchMock.token2.name);
+  await expect(linkToToken).toHaveCount(1);
+
+  const linkToAddress = page.getByText(searchMock.token2.address);
+  await expect(linkToAddress).toHaveCount(2);
 });
 
 test('recent keywords suggest +@mobile', async({ mount, page }) => {

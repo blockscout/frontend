@@ -16,16 +16,16 @@ const getUniqueIdentifier = (item: SearchResultItem) => {
   switch (item.type) {
     case 'contract':
     case 'address': {
-      return item.address;
+      return item.type + item.address;
     }
     case 'transaction': {
-      return item.tx_hash;
+      return item.type + item.tx_hash;
     }
     case 'block': {
-      return item.block_hash || item.block_number;
+      return item.type + (item.block_hash || item.block_number);
     }
     case 'token': {
-      return item.address;
+      return item.type + item.address;
     }
   }
 };
