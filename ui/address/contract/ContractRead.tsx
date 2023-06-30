@@ -74,7 +74,7 @@ const ContractRead = ({ addressHash, isProxy, isCustomAbi }: Props) => {
         key={ id + '_' + index }
         data={ item }
         onSubmit={ handleMethodFormSubmit }
-        ResultComponent={ ContractReadResult }
+        resultComponent={ ContractReadResult }
       />
     );
   }, [ handleMethodFormSubmit ]);
