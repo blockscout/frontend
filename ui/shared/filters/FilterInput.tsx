@@ -3,7 +3,7 @@ import type { ChangeEvent } from 'react';
 import React, { useCallback, useState } from 'react';
 
 import searchIcon from 'icons/search.svg';
-import InputClearButton from 'ui/shared/InputClearButton';
+import ClearButton from 'ui/shared/ClearButton';
 
 type Props = {
   onChange: (searchTerm: string) => void;
@@ -60,7 +60,7 @@ const FilterInput = ({ onChange, className, size = 'sm', placeholder, initialVal
 
         { filterQuery ? (
           <InputRightElement>
-            <InputClearButton onClick={ handleFilterQueryClear }/>
+            <ClearButton onClick={ handleFilterQueryClear }/>
           </InputRightElement>
         ) : null }
       </InputGroup>

@@ -4,6 +4,7 @@ import type { FormEvent } from 'react';
 import React from 'react';
 
 import SearchResultListItem from 'ui/searchResults/SearchResultListItem';
+import SearchResultsInput from 'ui/searchResults/SearchResultsInput';
 import SearchResultTableItem from 'ui/searchResults/SearchResultTableItem';
 import ActionBar from 'ui/shared/ActionBar';
 import ContentLoader from 'ui/shared/ContentLoader';
@@ -13,7 +14,6 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import Thead from 'ui/shared/TheadSticky';
 import Header from 'ui/snippets/header/Header';
-import SearchBarInput from 'ui/snippets/searchBar/SearchBarInput';
 import useSearchQuery from 'ui/snippets/searchBar/useSearchQuery';
 
 const SearchResultsPageContent = () => {
@@ -128,28 +128,15 @@ const SearchResultsPageContent = () => {
     );
   })();
 
-  const inputRef = React.useRef<HTMLFormElement>(null);
-  const handelHide = React.useCallback(() => {
-    inputRef.current?.querySelector('input')?.blur();
-  }, [ ]);
-
-  const handleClear = React.useCallback(() => {
-    handleSearchTermChange('');
-    inputRef.current?.querySelector('input')?.focus();
-  }, [ handleSearchTermChange ]);
-
   const renderSearchBar = React.useCallback(() => {
     return (
-      <SearchBarInput
-        ref={ inputRef }
-        onChange={ handleSearchTermChange }
-        onSubmit={ handleSubmit }
-        value={ searchTerm }
-        onHide={ handelHide }
-        onClear={ handleClear }
+      <SearchResultsInput
+        searchTerm={ searchTerm }
+        handleSubmit={ handleSubmit }
+        handleSearchTermChange={ handleSearchTermChange }
       />
     );
-  }, [ handleSearchTermChange, handleSubmit, searchTerm, handelHide, handleClear ]);
+  }, [ handleSearchTermChange, handleSubmit, searchTerm ]);
 
   const renderHeader = React.useCallback(() => {
     return <Header renderSearchBar={ renderSearchBar }/>;

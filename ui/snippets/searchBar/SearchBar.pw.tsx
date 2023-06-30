@@ -196,3 +196,15 @@ test('search with simple match', async({ mount, page }) => {
   const links = page.getByText(searchMock.tx1.tx_hash);
   await expect(links).toHaveCount(1);
 });
+
+test('recent keywords suggest +@mobile', async({ mount, page }) => {
+  await mount(
+    <TestApp>
+      <SearchBar/>
+    </TestApp>,
+  );
+  // eslint-disable-next-line max-len
+  await page.evaluate(() => window.localStorage.setItem('recent_search_keywords', '["10x1d311959270e0bbdc1fc7bc6dbd8ad645c4dd8d6aa32f5f89d54629a924f112b","0x1d311959270e0bbdc1fc7bc6dbd8ad645c4dd8d6aa32f5f89d54629a924f112b","usd","bob"]'));
+  await page.getByPlaceholder(/search/i).click();
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 500 } });
+});
