@@ -44,12 +44,12 @@ export default function useSearchQuery(isSearchPage = false) {
     }
   }, debouncedSearchTerm);
 
-  return {
+  return React.useMemo(() => ({
     searchTerm,
     debouncedSearchTerm,
     handleSearchTermChange: setSearchTerm,
     query,
     redirectCheckQuery,
     pathname,
-  };
+  }), [ debouncedSearchTerm, pathname, query, redirectCheckQuery, searchTerm ]);
 }

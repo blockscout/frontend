@@ -23,6 +23,15 @@ const SearchResultsPageContent = () => {
   const [ showContent, setShowContent ] = React.useState(false);
 
   React.useEffect(() => {
+    if (showContent) {
+      return;
+    }
+
+    if (!debouncedSearchTerm) {
+      setShowContent(true);
+      return;
+    }
+
     if (redirectCheckQuery.data?.redirect && redirectCheckQuery.data.parameter) {
       switch (redirectCheckQuery.data.type) {
         case 'block': {
@@ -41,7 +50,7 @@ const SearchResultsPageContent = () => {
     }
 
     !redirectCheckQuery.isLoading && setShowContent(true);
-  }, [ redirectCheckQuery, router ]);
+  }, [ redirectCheckQuery, router, debouncedSearchTerm, showContent ]);
 
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -157,4 +166,4 @@ const SearchResultsPageContent = () => {
   );
 };
 
-export default SearchResultsPageContent;
+export default React.memo(SearchResultsPageContent);
