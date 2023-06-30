@@ -9,6 +9,7 @@ import labelIcon from 'icons/publictags.svg';
 import txIcon from 'icons/transactions.svg';
 import highlightText from 'lib/highlightText';
 import * as mixpanel from 'lib/mixpanel/index';
+import { saveToRecentKeywords } from 'lib/recentSearchKeywords';
 import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
@@ -27,6 +28,7 @@ interface Props {
 const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
 
   const handleLinkClick = React.useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
+    saveToRecentKeywords(searchTerm);
     mixpanel.logEvent(mixpanel.EventTypes.SEARCH_QUERY, {
       'Search query': searchTerm,
       'Source page type': 'Search results',
@@ -152,7 +154,11 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
           <span>{ data.type }</span>
         </Skeleton>
       </Flex>
-      { secondRow }
+      { Boolean(secondRow) && (
+        <Box w="100%" overflow="hidden" whiteSpace="nowrap">
+          { secondRow }
+        </Box>
+      ) }
     </ListItemMobile>
   );
 };
