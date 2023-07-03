@@ -107,7 +107,7 @@ const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, onHid
           value={ value }
         />
         { value && (
-          <InputRightElement top={{ base: 2, lg: '18px' }} right={ 2 }>
+          <InputRightElement top={{ base: isHomepage ? '18px' : 2, lg: '18px' }} right={ 2 }>
             <ClearButton onClick={ onClear }/>
           </InputRightElement>
         ) }
