@@ -212,7 +212,7 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
             isLoading={ isPlaceholderData }
           />
         ) }
-        { data?.is_verified && (
+        { data?.source_code && (
           <ContractSourceCode
             address={ addressHash }
             implementationAddress={ addressInfo?.implementation_address ?? undefined }
