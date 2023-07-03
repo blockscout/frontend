@@ -9,7 +9,7 @@ import type { TokenVerifiedInfo } from 'types/api/token';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 
-import Content from './TokenProjectInfo/Content';
+import Content, { hasContent } from './TokenProjectInfo/Content';
 import TriggerButton from './TokenProjectInfo/TriggerButton';
 
 interface Props {
@@ -19,6 +19,10 @@ interface Props {
 const TokenProjectInfo = ({ data }: Props) => {
   const isMobile = useIsMobile();
   const { isOpen, onToggle, onClose } = useDisclosure();
+
+  if (!hasContent(data)) {
+    return null;
+  }
 
   if (isMobile) {
     return (
