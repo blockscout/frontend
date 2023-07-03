@@ -28,5 +28,8 @@ export default function addFileImportDecorations(model: monaco.editor.ITextModel
     options,
   }));
 
+  // TODO: add support for "import * as" - https://docs.soliditylang.org/en/latest/grammar.html#a4.SolidityParser.importDirective
+  // but we need a live example first to test it
+
   model.deltaDecorations([], regularImportDecorations.concat(namedImportDecorations));
 }

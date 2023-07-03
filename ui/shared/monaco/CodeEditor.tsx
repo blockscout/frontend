@@ -18,6 +18,7 @@ import CodeEditorSideBar, { CONTAINER_WIDTH as SIDE_BAR_WIDTH } from './CodeEdit
 import CodeEditorTabs from './CodeEditorTabs';
 import addExternalLibraryWarningDecoration from './utils/addExternalLibraryWarningDecoration';
 import addFileImportDecorations from './utils/addFileImportDecorations';
+import addSameNameWarningDecoration from './utils/addSameNameWarningDecoration';
 import getFullPathOfImportedFile from './utils/getFullPathOfImportedFile';
 import * as themes from './utils/themes';
 import useThemeColors from './utils/useThemeColors';
@@ -40,9 +41,10 @@ interface Props {
   remappings?: Array<string>;
   libraries?: Array<SmartContractExternalLibrary>;
   language?: string;
+  name?: string;
 }
 
-const CodeEditor = ({ data, remappings, libraries, language }: Props) => {
+const CodeEditor = ({ data, remappings, libraries, language, name }: Props) => {
   const [ instance, setInstance ] = React.useState<Monaco | undefined>();
   const [ editor, setEditor ] = React.useState<monaco.editor.IStandaloneCodeEditor | undefined>();
   const [ index, setIndex ] = React.useState(0);
@@ -82,6 +84,7 @@ const CodeEditor = ({ data, remappings, libraries, language }: Props) => {
         .forEach((models) => {
           addFileImportDecorations(models);
           libraries?.length && addExternalLibraryWarningDecoration(models, libraries);
+          name && addSameNameWarningDecoration(models, name);
         });
     }
 
@@ -191,6 +194,7 @@ const CodeEditor = ({ data, remappings, libraries, language }: Props) => {
       textDecoration: 'underline',
       cursor: 'pointer',
     },
+    // TODO @tom2drum: change style to match the design
     '.risk-warning': {
       backgroundColor: 'deeppink',
     },

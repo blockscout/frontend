@@ -6,6 +6,7 @@ export default function addExternalLibraryWarningDecoration(model: monaco.editor
   const options: monaco.editor.IModelDecorationOptions = {
     inlineClassName: '.risk-warning',
     hoverMessage: {
+      // TODO @tom2drum: research more customizable tooltip
       value: 'Be careful!!!',
     },
   };
@@ -16,7 +17,7 @@ export default function addExternalLibraryWarningDecoration(model: monaco.editor
     return;
   }
 
-  const matches = model.findMatches(`(^library ${ names })(.?)\\{`, false, true, false, null, true);
+  const matches = model.findMatches(`(^library ${ names })\\s?\\{`, false, true, false, null, true);
   const decorations: Array<monaco.editor.IModelDeltaDecoration> = matches.map(({ range, matches }) => ({
     range: {
       ...range,
