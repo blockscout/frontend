@@ -20,6 +20,8 @@ const CodeEditorTabs = ({ tabs, activeTab, onTabSelect, onTabClose }: Props) => 
 
   return (
     <Flex
+      borderTopLeftRadius="md"
+      overflow="hidden"
       bgColor={ themeColors['sideBar.background'] }
       flexWrap="wrap"
     >

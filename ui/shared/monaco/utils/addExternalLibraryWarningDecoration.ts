@@ -5,10 +5,12 @@ import type { SmartContractExternalLibrary } from 'types/api/contract';
 export default function addExternalLibraryWarningDecoration(model: monaco.editor.ITextModel, libraries: Array<SmartContractExternalLibrary>) {
   const options: monaco.editor.IModelDecorationOptions = {
     inlineClassName: '.risk-warning',
-    hoverMessage: {
-      // TODO @tom2drum: research more customizable tooltip
-      value: 'Be careful!!!',
-    },
+    hoverMessage: [
+      { value: '**This is an external library linked to the verified contract**' },
+      // eslint-disable-next-line max-len
+      { value: 'The linked library source code only affects the bytecode part with external `DELEGATECALL` to the library and it is not possible to automatically ensure that provided library is really the one deployed at specified address. If you want to be sure, check the source code of the library at the given address. (See [issue](https://github.com/blockscout/blockscout-rs/issues/532) for more details)',
+      },
+    ],
   };
 
   const names = libraries.map(getLibraryName(model)).filter(Boolean).join('|');
@@ -21,7 +23,7 @@ export default function addExternalLibraryWarningDecoration(model: monaco.editor
   const decorations: Array<monaco.editor.IModelDeltaDecoration> = matches.map(({ range, matches }) => ({
     range: {
       ...range,
-      startColumn: 1,
+      startColumn: 9,
       endColumn: matches ? matches[1].length + 1 : 0,
     },
     options,

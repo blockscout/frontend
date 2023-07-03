@@ -1,5 +1,5 @@
 import type { SystemStyleObject } from '@chakra-ui/react';
-import { Box, useColorMode, Flex } from '@chakra-ui/react';
+import { Box, useColorMode, Flex, useToken } from '@chakra-ui/react';
 import type { EditorProps } from '@monaco-editor/react';
 import MonacoEditor from '@monaco-editor/react';
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
@@ -54,6 +54,7 @@ const CodeEditor = ({ data, remappings, libraries, language, name }: Props) => {
   const [ containerRect, containerNodeRef ] = useClientRect<HTMLDivElement>();
 
   const { colorMode } = useColorMode();
+  const borderRadius = useToken('radii', 'md');
   const isMobile = useIsMobile();
   const themeColors = useThemeColors();
 
@@ -186,6 +187,12 @@ const CodeEditor = ({ data, remappings, libraries, language, name }: Props) => {
       width: `${ editorWidth }px`,
       height: '100%',
     },
+    '.monaco-editor': {
+      'border-bottom-left-radius': borderRadius,
+    },
+    '.monaco-editor .overflow-guard': {
+      'border-bottom-left-radius': borderRadius,
+    },
     '.highlight': {
       backgroundColor: themeColors['custom.findMatchHighlightBackground'],
     },
@@ -198,18 +205,28 @@ const CodeEditor = ({ data, remappings, libraries, language, name }: Props) => {
     '.risk-warning': {
       backgroundColor: 'deeppink',
     },
-  }), [ editorWidth, themeColors ]);
+  }), [ editorWidth, themeColors, borderRadius ]);
 
   if (data.length === 1) {
+    const sx = {
+      ...containerSx,
+      '.monaco-editor': {
+        'border-radius': borderRadius,
+      },
+      '.monaco-editor .overflow-guard': {
+        'border-radius': borderRadius,
+      },
+    };
+
     return (
-      <Box overflow="hidden" borderRadius="md" height={ `${ EDITOR_HEIGHT }px` } sx={ containerSx }>
+      <Box height={ `${ EDITOR_HEIGHT }px` } sx={ sx }>
         <MonacoEditor
           language={ editorLanguage }
           path={ data[index].file_path }
           defaultValue={ data[index].source_code }
           options={ EDITOR_OPTIONS }
           onMount={ handleEditorDidMount }
-          loading={ <CodeEditorLoading/> }
+          loading={ <CodeEditorLoading borderRadius="md"/> }
         />
       </Box>
     );
@@ -218,13 +235,13 @@ const CodeEditor = ({ data, remappings, libraries, language, name }: Props) => {
   return (
     <Flex
       className={ isMetaPressed ? 'meta-pressed' : undefined }
-      overflow="hidden"
-      borderRadius="md"
       width="100%"
       height={ `${ EDITOR_HEIGHT + TABS_HEIGHT + BREADCRUMBS_HEIGHT }px` }
       position="relative"
       ref={ containerNodeRef }
       sx={ containerSx }
+      overflow={{ base: 'hidden', lg: 'visible' }}
+      borderRadius="md"
       onClick={ handleClick }
       onKeyDown={ handleKeyDown }
       onKeyUp={ handleKeyUp }
@@ -240,7 +257,7 @@ const CodeEditor = ({ data, remappings, libraries, language, name }: Props) => {
           defaultValue={ data[index].source_code }
           options={ EDITOR_OPTIONS }
           onMount={ handleEditorDidMount }
-          loading={ <CodeEditorLoading/> }
+          loading={ <CodeEditorLoading borderBottomLeftRadius="md"/> }
         />
       </Box>
       <CodeEditorSideBar
