@@ -187,6 +187,7 @@ stats:
   enabled: true
   image:
     _default: ghcr.io/blockscout/stats:main
+    pullPolicy: Always
 
   # enable ingress
   ingress:
