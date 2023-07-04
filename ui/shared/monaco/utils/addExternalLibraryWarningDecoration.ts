@@ -4,7 +4,7 @@ import type { SmartContractExternalLibrary } from 'types/api/contract';
 
 export default function addExternalLibraryWarningDecoration(model: monaco.editor.ITextModel, libraries: Array<SmartContractExternalLibrary>) {
   const options: monaco.editor.IModelDecorationOptions = {
-    inlineClassName: '.risk-warning',
+    isWholeLine: true,
     hoverMessage: [
       { value: '**This is an external library linked to the verified contract**' },
       // eslint-disable-next-line max-len
@@ -19,17 +19,51 @@ export default function addExternalLibraryWarningDecoration(model: monaco.editor
     return;
   }
 
-  const matches = model.findMatches(`(^library ${ names })\\s?\\{`, false, true, false, null, true);
-  const decorations: Array<monaco.editor.IModelDeltaDecoration> = matches.map(({ range, matches }) => ({
-    range: {
-      ...range,
-      startColumn: 9,
-      endColumn: matches ? matches[1].length + 1 : 0,
-    },
-    options,
-  }));
+  const [ firstLineMatch ] = model.findMatches(`(^library ${ names })\\s?\\{`, false, true, false, null, true);
 
-  model.deltaDecorations([], decorations);
+  if (!firstLineMatch) {
+    return;
+  }
+
+  const firstLineDecoration: monaco.editor.IModelDeltaDecoration = {
+    range: {
+      startColumn: 1,
+      endColumn: 10, // doesn't really matter since isWholeLine is true
+      startLineNumber: firstLineMatch.range.startLineNumber,
+      endLineNumber: firstLineMatch.range.startLineNumber,
+    },
+    options: {
+      ...options,
+      className: '.risk-warning-primary',
+      marginClassName: '.risk-warning-primary',
+    },
+  };
+
+  const lastLineRange: monaco.IRange = {
+    startLineNumber: firstLineMatch.range.startLineNumber,
+    startColumn: 1,
+    endColumn: 10,
+    endLineNumber: model.getLineCount(),
+  };
+  const [ lastLineMatch ] = model
+    .findMatches(`^\\}`, lastLineRange, true, false, null, true)
+    .sort(sortByEndLineNumberAsc);
+
+  const restDecoration: monaco.editor.IModelDeltaDecoration = {
+    range: {
+      startLineNumber: firstLineMatch.range.startLineNumber + 1,
+      endLineNumber: lastLineMatch.range.startLineNumber,
+      startColumn: 1,
+      endColumn: 10, // doesn't really matter since isWholeLine is true
+    },
+    options: {
+      ...options,
+      className: '.risk-warning',
+      marginClassName: '.risk-warning',
+    },
+  };
+
+  model.deltaDecorations([], [ firstLineDecoration, restDecoration ]);
 }
 
 const getLibraryName = (model: monaco.editor.ITextModel) => (library: SmartContractExternalLibrary) => {
@@ -46,4 +80,16 @@ const getLibraryName = (model: monaco.editor.ITextModel) => (library: SmartContr
   }
 
   return libraryName;
+};
+
+const sortByEndLineNumberAsc = (a: monaco.editor.FindMatch, b: monaco.editor.FindMatch) => {
+  if (a.range.endLineNumber < b.range.endLineNumber) {
+    return -1;
+  }
+
+  if (a.range.endLineNumber > b.range.endLineNumber) {
+    return 1;
+  }
+
+  return 0;
 };

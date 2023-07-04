@@ -201,9 +201,11 @@ const CodeEditor = ({ data, remappings, libraries, language, name }: Props) => {
       textDecoration: 'underline',
       cursor: 'pointer',
     },
-    // TODO @tom2drum: change style to match the design
+    '.risk-warning-primary': {
+      backgroundColor: themeColors['custom.riskWarning.primaryBackground'],
+    },
     '.risk-warning': {
-      backgroundColor: 'deeppink',
+      backgroundColor: themeColors['custom.riskWarning.background'],
     },
   }), [ editorWidth, themeColors, borderRadius ]);
 
