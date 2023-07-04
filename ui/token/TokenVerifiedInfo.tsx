@@ -51,7 +51,7 @@ const TokenVerifiedInfo = ({ verifiedInfoQuery, isVerifiedInfoEnabled }: Props) 
     return (
       <>
         { websiteLink }
-        { Boolean(data.tokenAddress) && <TokenProjectInfo data={ data }/> }
+        <TokenProjectInfo data={ data }/>
       </>
     );
   })();

@@ -1,4 +1,4 @@
-import { Flex, Text, Box, Grid } from '@chakra-ui/react';
+import { Flex, Text, Grid } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenVerifiedInfo } from 'types/api/token';
@@ -45,9 +45,20 @@ const PRICE_TICKERS: Array<Omit<ServiceLinkProps, 'href'>> = [
   { field: 'defiLlamaTicker', icon: iconDefiLlama, title: 'DefiLlama' },
 ];
 
+export function hasContent(data: TokenVerifiedInfo): boolean {
+  const fields: Array<keyof TokenVerifiedInfo> = [
+    'projectDescription',
+    'docs',
+    'support',
+    ...SOCIAL_LINKS.map(({ field }) => field),
+    ...PRICE_TICKERS.map(({ field }) => field),
+  ];
+  return fields.some((field) => data[field]);
+}
+
 const Content = ({ data }: Props) => {
-  const docs = <DocsLink href={ data.docs }/>;
-  const support = <SupportLink url={ data.support }/>;
+  const docs = data.docs ? <DocsLink href={ data.docs }/> : null;
+  const support = data.support ? <SupportLink url={ data.support }/> : null;
   const description = data.projectDescription ? <Text fontSize="sm" mt={ 3 }>{ data.projectDescription }</Text> : null;
 
   const socialLinks = SOCIAL_LINKS
@@ -59,9 +70,9 @@ const Content = ({ data }: Props) => {
     .filter(({ href }) => href);
 
   return (
-    <Box fontSize="sm">
+    <Flex fontSize="sm" flexDir="column" rowGap={ 5 }>
       { (description || docs || support) && (
-        <>
+        <div>
           <Text variant="secondary" fontSize="xs">Description and support info</Text>
           { description }
           { (docs || support) && (
@@ -70,25 +81,25 @@ const Content = ({ data }: Props) => {
               { docs }
             </Flex>
           ) }
-        </>
+        </div>
       ) }
       { socialLinks.length > 0 && (
-        <>
-          <Text variant="secondary" fontSize="xs" mt={ 5 }>Links</Text>
+        <div>
+          <Text variant="secondary" fontSize="xs">Links</Text>
           <Grid templateColumns={{ base: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }} columnGap={ 4 } rowGap={ 3 } mt={ 3 }>
             { socialLinks.map((link) => <ServiceLink key={ link.field } { ...link }/>) }
           </Grid>
-        </>
+        </div>
       ) }
       { priceTickersLinks.length > 0 && (
-        <>
-          <Text variant="secondary" fontSize="xs" mt={ 5 }>Crypto markets</Text>
+        <div>
+          <Text variant="secondary" fontSize="xs">Crypto markets</Text>
           <Grid templateColumns={{ base: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }} columnGap={ 4 } rowGap={ 3 } mt={ 3 }>
             { priceTickersLinks.map((link) => <ServiceLink key={ link.field } { ...link }/>) }
           </Grid>
-        </>
+        </div>
       ) }
-    </Box>
+    </Flex>
   );
 };
 

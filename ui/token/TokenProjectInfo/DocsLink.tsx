@@ -4,14 +4,10 @@ import React from 'react';
 import iconDocs from 'icons/docs.svg';
 
 interface Props {
-  href?: string;
+  href: string;
 }
 
 const DocsLink = ({ href }: Props) => {
-  if (!href) {
-    return null;
-  }
-
   return (
     <Link
       href={ href }
