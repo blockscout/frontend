@@ -12,10 +12,10 @@ import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 
 export default function addSameNameWarningDecoration(model: monaco.editor.ITextModel, contractName: string) {
   const options: monaco.editor.IModelDecorationOptions = {
-    className: '.risk-warning',
+    // className: '.risk-warning',
     hoverMessage: [
       // TODO @tom2drum: change tooltip content for same name contract
-      { value: '**Contract with the same name is detected**' },
+      { value: 'The main file containing verified contract' },
     ],
   };
 
