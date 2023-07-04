@@ -108,19 +108,6 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
     );
   })();
 
-  const externalLibraries = (() => {
-    if (!data?.external_libraries || data?.external_libraries.length === 0) {
-      return null;
-    }
-
-    return data.external_libraries.map((item) => (
-      <Box key={ item.address_hash }>
-        <chakra.span fontWeight={ 500 }>{ item.name }: </chakra.span>
-        <LinkInternal href={ route({ pathname: '/address/[hash]', query: { hash: item.address_hash, tab: 'contract' } }) }>{ item.address_hash }</LinkInternal>
-      </Box>
-    ));
-  })();
-
   const verificationAlert = (() => {
     if (data?.is_verified_via_eth_bytecode_db) {
       return (
@@ -253,14 +240,6 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
           <RawDataSnippet
             data={ data.deployed_bytecode }
             title="Deployed ByteCode"
-            textareaMaxHeight="200px"
-            isLoading={ isPlaceholderData }
-          />
-        ) }
-        { externalLibraries && (
-          <RawDataSnippet
-            data={ externalLibraries }
-            title="External Libraries"
             textareaMaxHeight="200px"
             isLoading={ isPlaceholderData }
           />

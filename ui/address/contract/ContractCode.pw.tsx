@@ -62,7 +62,7 @@ test('verified with changed byte code socket', async({ mount, page, createSocket
   await expect(component).toHaveScreenshot();
 });
 
-test('verified with multiple sources +@mobile', async({ mount, page }) => {
+test('verified with multiple sources', async({ mount, page }) => {
   await page.route(CONTRACT_API_URL, (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(contractMock.withMultiplePaths),
@@ -77,7 +77,9 @@ test('verified with multiple sources +@mobile', async({ mount, page }) => {
   );
 
   const section = page.locator('section', { hasText: 'Contract source code' });
+  await expect(section).toHaveScreenshot();
 
+  await page.getByRole('button', { name: 'View external libraries' }).click();
   await expect(section).toHaveScreenshot();
 });
 
