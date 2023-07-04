@@ -326,7 +326,7 @@ frontend:
     NEXT_PUBLIC_LOGOUT_URL:
       _default: https://blockscoutcom.us.auth0.com/v2/logout
     NEXT_PUBLIC_LOGOUT_RETURN_URL:
-      _default: http://blockscout-optimism-goerli.k8s-dev.blockscout.com/auth/logout
+      _default: https://blockscout-optimism-goerli.k8s-dev.blockscout.com/auth/logout
     NEXT_PUBLIC_STATS_API_HOST:
       _default: https://stats-optimism-goerli.k8s-dev.blockscout.com
     NEXT_PUBLIC_API_SPEC_URL:
