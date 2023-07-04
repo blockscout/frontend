@@ -31,7 +31,7 @@ const VerifiedContractsListItem = ({ data, isLoading }: Props) => {
     <ListItemMobile rowGap={ 3 }>
       <Address columnGap={ 2 } overflow="hidden" w="100%">
         <AddressIcon address={ data.address } isLoading={ isLoading }/>
-        <AddressLink hash={ data.address.hash } type="address" alias={ data.address.name } isLoading={ isLoading }/>
+        <AddressLink hash={ data.address.hash } type="address" alias={ data.address.name } isLoading={ isLoading } query={{ tab: 'contract' }}/>
         <Skeleton isLoaded={ !isLoading } color="text_secondary" ml="auto">
           <HashStringShorten hash={ data.address.hash } isTooltipDisabled/>
         </Skeleton>
