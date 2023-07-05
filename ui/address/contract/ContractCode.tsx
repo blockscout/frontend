@@ -188,6 +188,7 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
           { data.optimization_runs && <InfoItem label="Optimization runs" value={ String(data.optimization_runs) } isLoading={ isPlaceholderData }/> }
           { data.verified_at &&
             <InfoItem label="Verified at" value={ dayjs(data.verified_at).format('LLLL') } wordBreak="break-word" isLoading={ isPlaceholderData }/> }
+          <InfoItem label="Contract file path" value={ data.file_path } wordBreak="break-word" isLoading={ isPlaceholderData }/>
         </Grid>
       ) }
       <Flex flexDir="column" rowGap={ 6 }>

@@ -18,7 +18,6 @@ import CodeEditorSideBar, { CONTAINER_WIDTH as SIDE_BAR_WIDTH } from './CodeEdit
 import CodeEditorTabs from './CodeEditorTabs';
 import addExternalLibraryWarningDecoration from './utils/addExternalLibraryWarningDecoration';
 import addFileImportDecorations from './utils/addFileImportDecorations';
-import addSameNameWarningDecoration from './utils/addSameNameWarningDecoration';
 import getFullPathOfImportedFile from './utils/getFullPathOfImportedFile';
 import * as themes from './utils/themes';
 import useThemeColors from './utils/useThemeColors';
@@ -41,10 +40,10 @@ interface Props {
   remappings?: Array<string>;
   libraries?: Array<SmartContractExternalLibrary>;
   language?: string;
-  name?: string;
+  mainFile?: string;
 }
 
-const CodeEditor = ({ data, remappings, libraries, language, name }: Props) => {
+const CodeEditor = ({ data, remappings, libraries, language, mainFile }: Props) => {
   const [ instance, setInstance ] = React.useState<Monaco | undefined>();
   const [ editor, setEditor ] = React.useState<monaco.editor.IStandaloneCodeEditor | undefined>();
   const [ index, setIndex ] = React.useState(0);
@@ -85,7 +84,6 @@ const CodeEditor = ({ data, remappings, libraries, language, name }: Props) => {
         .forEach((models) => {
           addFileImportDecorations(models);
           libraries?.length && addExternalLibraryWarningDecoration(models, libraries);
-          name && addSameNameWarningDecoration(models, name);
         });
     }
 
@@ -249,7 +247,13 @@ const CodeEditor = ({ data, remappings, libraries, language, name }: Props) => {
       onKeyUp={ handleKeyUp }
     >
       <Box flexGrow={ 1 }>
-        <CodeEditorTabs tabs={ tabs } activeTab={ data[index].file_path } onTabSelect={ handleTabSelect } onTabClose={ handleTabClose }/>
+        <CodeEditorTabs
+          tabs={ tabs }
+          activeTab={ data[index].file_path }
+          mainFile={ mainFile }
+          onTabSelect={ handleTabSelect }
+          onTabClose={ handleTabClose }
+        />
         <CodeEditorBreadcrumbs path={ data[index].file_path }/>
         <MonacoEditor
           className="editor-container"
@@ -268,6 +272,7 @@ const CodeEditor = ({ data, remappings, libraries, language, name }: Props) => {
         monaco={ instance }
         editor={ editor }
         selectedFile={ data[index].file_path }
+        mainFile={ mainFile }
       />
     </Flex>
   );

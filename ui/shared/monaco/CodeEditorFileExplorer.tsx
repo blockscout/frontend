@@ -11,11 +11,12 @@ interface Props {
   data: Array<File>;
   onFileSelect: (index: number) => void;
   selectedFile: string;
+  mainFile?: string;
   isActive: boolean;
   setActionBarRenderer: React.Dispatch<React.SetStateAction<(() => JSX.Element) | undefined>>;
 }
 
-const CodeEditorFileExplorer = ({ data, onFileSelect, selectedFile, isActive, setActionBarRenderer }: Props) => {
+const CodeEditorFileExplorer = ({ data, onFileSelect, selectedFile, mainFile, isActive, setActionBarRenderer }: Props) => {
   const [ key, setKey ] = React.useState(0);
   const tree = React.useMemo(() => {
     return composeFileTree(data);
@@ -46,7 +47,14 @@ const CodeEditorFileExplorer = ({ data, onFileSelect, selectedFile, isActive, se
 
   return (
     <Box>
-      <CodeEditorFileTree key={ key } tree={ tree } onItemClick={ handleFileClick } isCollapsed={ key > 0 } selectedFile={ selectedFile }/>
+      <CodeEditorFileTree
+        key={ key }
+        tree={ tree }
+        onItemClick={ handleFileClick }
+        isCollapsed={ key > 0 }
+        selectedFile={ selectedFile }
+        mainFile={ mainFile }
+      />
     </Box>
   );
 };

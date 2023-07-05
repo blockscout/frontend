@@ -7,11 +7,12 @@ import useThemeColors from './utils/useThemeColors';
 interface Props {
   tabs: Array<string>;
   activeTab: string;
+  mainFile?: string;
   onTabSelect: (tab: string) => void;
   onTabClose: (tab: string) => void;
 }
 
-const CodeEditorTabs = ({ tabs, activeTab, onTabSelect, onTabClose }: Props) => {
+const CodeEditorTabs = ({ tabs, activeTab, mainFile, onTabSelect, onTabClose }: Props) => {
   const themeColors = useThemeColors();
 
   const tabsPathChunks = React.useMemo(() => {
@@ -30,6 +31,7 @@ const CodeEditorTabs = ({ tabs, activeTab, onTabSelect, onTabClose }: Props) => 
           key={ tab }
           path={ tab }
           isActive={ activeTab === tab }
+          isMainFile={ mainFile === tab }
           onClick={ onTabSelect }
           onClose={ onTabClose }
           isCloseDisabled={ tabs.length === 1 }
