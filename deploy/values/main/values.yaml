@@ -186,6 +186,7 @@ frontend:
   enabled: true
   image:
     _default: ghcr.io/blockscout/frontend:main
+    pullPolicy: Always
   replicas:
     app: 1
   docker:

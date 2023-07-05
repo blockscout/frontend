@@ -235,6 +235,7 @@ frontend:
   enabled: true
   image:
     _default: ghcr.io/blockscout/frontend:latest
+    pullPolicy: Always
   ingress:
     enabled: true
     # annotations:
