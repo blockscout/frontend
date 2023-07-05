@@ -14,15 +14,16 @@ interface Props {
   isDisabled?: boolean;
   isLoading?: boolean;
   hideSymbol?: boolean;
+  hideIcon?: boolean;
 }
 
-const TokenSnippet = ({ data, className, logoSize = 6, isDisabled, hideSymbol, isLoading }: Props) => {
+const TokenSnippet = ({ data, className, logoSize = 6, isDisabled, hideSymbol, hideIcon, isLoading }: Props) => {
 
   const withSymbol = data && data.symbol && !hideSymbol;
 
   return (
-    <Flex className={ className } alignItems="center" columnGap={ 2 } w="100%">
-      <TokenLogo boxSize={ logoSize } data={ data } isLoading={ isLoading }/>
+    <Flex className={ className } alignItems="center" columnGap={ 2 } maxW="100%">
+      { !hideIcon && <TokenLogo boxSize={ logoSize } data={ data } isLoading={ isLoading }/> }
       <AddressLink
         flexShrink={ 0 }
         hash={ data?.address || '' }
@@ -30,7 +31,9 @@ const TokenSnippet = ({ data, className, logoSize = 6, isDisabled, hideSymbol, i
         type="token"
         isDisabled={ isDisabled }
         isLoading={ isLoading }
-        maxW={ withSymbol ? `calc(80% - ${ logoSize * 4 + 8 }px)` : '100%' }
+        maxW={ withSymbol ? `calc(80% - ${ logoSize * 4 + 8 * 2 }px)` : `calc(100% - ${ logoSize * 4 + 8 }px)` }
+        overflow="hidden"
+        textOverflow="ellipsis"
       />
       { withSymbol && (
         <Skeleton isLoaded={ !isLoading } color="text_secondary" maxW="20%" display="flex">

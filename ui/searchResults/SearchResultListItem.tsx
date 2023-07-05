@@ -10,14 +10,13 @@ import txIcon from 'icons/transactions.svg';
 import highlightText from 'lib/highlightText';
 import * as mixpanel from 'lib/mixpanel/index';
 import { saveToRecentKeywords } from 'lib/recentSearchKeywords';
-import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkInternal from 'ui/shared/LinkInternal';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
-import TokenLogo from 'ui/shared/TokenLogo';
+import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
 
 interface Props {
   data: SearchResultItem;
@@ -39,22 +38,8 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
   const firstRow = (() => {
     switch (data.type) {
       case 'token': {
-        const name = data.name + (data.symbol ? ` (${ trimTokenSymbol(data.symbol) })` : '');
-
         return (
-          <Flex alignItems="flex-start">
-            <TokenLogo boxSize={ 6 } data={ data } flexShrink={ 0 } isLoading={ isLoading }/>
-            <LinkInternal
-              ml={ 2 }
-              href={ route({ pathname: '/token/[hash]', query: { hash: data.address } }) }
-              fontWeight={ 700 }
-              wordBreak="break-all"
-              isLoading={ isLoading }
-              onClick={ handleLinkClick }
-            >
-              <Skeleton isLoaded={ !isLoading } dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}/>
-            </LinkInternal>
-          </Flex>
+          <TokenSnippet data={ data } isLoading={ isLoading } hideSymbol fontWeight={ 700 }/>
         );
       }
 

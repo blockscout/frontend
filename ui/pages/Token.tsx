@@ -17,7 +17,6 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
-import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import * as addressStubs from 'stubs/address';
 import * as tokenStubs from 'stubs/token';
 import { generateListStub } from 'stubs/utils';
@@ -197,7 +196,7 @@ const TokenPageContent = () => {
     pagination = inventoryQuery.pagination;
   }
 
-  const tokenSymbolText = tokenQuery.data?.symbol ? ` (${ trimTokenSymbol(tokenQuery.data.symbol) })` : '';
+  const tokenSymbolText = tokenQuery.data?.symbol ? ` (${ tokenQuery.data.symbol })` : '';
 
   const tabListProps = React.useCallback(({ isSticky, activeTabIndex }: { isSticky: boolean; activeTabIndex: number }) => {
     if (isMobile) {

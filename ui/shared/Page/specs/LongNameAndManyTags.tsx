@@ -6,7 +6,6 @@ import type { TokenInfo } from 'types/api/token';
 
 import iconSuccess from 'icons/status/success.svg';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import { publicTag, privateTag, watchlistName } from 'mocks/address/tag';
 import EntityTags from 'ui/shared/EntityTags';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
@@ -49,7 +48,7 @@ const LongNameAndManyTags = () => {
     />
   );
 
-  const tokenSymbolText = ` (${ trimTokenSymbol(tokenData.symbol) })`;
+  const tokenSymbolText = ` (${ tokenData.symbol })`;
 
   return (
     <PageTitle
