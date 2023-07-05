@@ -29,7 +29,7 @@ const NftTokenTransferSnippet = ({ value, token, tokenId }: Props) => {
         </Link>
       </Box>
       { token.name ? (
-        <TokenSnippet data={ token } w="auto" logoSize={ 5 } columnGap={ 1 }/>
+        <TokenSnippet data={ token } logoSize={ 5 } columnGap={ 1 }/>
       ) : (
         <AddressLink hash={ token.address } truncation="constant" type="token"/>
       ) }
