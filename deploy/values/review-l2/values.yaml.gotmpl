@@ -5,6 +5,7 @@ frontend:
   enabled: true
   image:
     _default: ghcr.io/blockscout/frontend:prerelease-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}
+    pullPolicy: Always
   ingress:
     enabled: true
     host:
