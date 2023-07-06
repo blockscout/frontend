@@ -8,9 +8,11 @@ import type { MarketplaceAppOverview } from 'types/client/marketplace';
 
 import appConfig from 'configs/app/config';
 import type { ResourceError } from 'lib/api/resources';
+import { useAppContext } from 'lib/contexts/app';
 import useApiFetch from 'lib/hooks/useFetch';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import ContentLoader from 'ui/shared/ContentLoader';
+import PageTitle from 'ui/shared/Page/PageTitle';
 
 const IFRAME_SANDBOX_ATTRIBUTE = 'allow-forms allow-orientation-lock ' +
 'allow-pointer-lock allow-popups-to-escape-sandbox ' +
@@ -23,6 +25,7 @@ const MarketplaceApp = () => {
   const ref = useRef<HTMLIFrameElement>(null);
 
   const apiFetch = useApiFetch();
+  const appProps = useAppContext();
   const router = useRouter();
   const id = getQueryParamString(router.query.id);
 
@@ -71,32 +74,46 @@ const MarketplaceApp = () => {
     throw new Error('Unable to load app', { cause: error });
   }
 
-  return (
-    <Center
-      as="main"
-      h="100vh"
-      pt={{ base: '138px', lg: 0 }}
-      pb={{ base: 0, lg: 10 }}
-    >
-      { (isFrameLoading) && (
-        <ContentLoader/>
-      ) }
+  const backLink = React.useMemo(() => {
+    const hasGoBackLink = appProps.referrer.includes('/apps');
 
-      { data && (
-        <Box
-          allow={ IFRAME_ALLOW_ATTRIBUTE }
-          ref={ ref }
-          sandbox={ IFRAME_SANDBOX_ATTRIBUTE }
-          as="iframe"
-          h="100%"
-          w="100%"
-          display={ isFrameLoading ? 'none' : 'block' }
-          src={ data.url }
-          title={ data.title }
-          onLoad={ handleIframeLoad }
-        />
-      ) }
-    </Center>
+    if (!hasGoBackLink) {
+      return;
+    }
+
+    return {
+      label: 'Back to marketplace',
+      url: appProps.referrer,
+    };
+  }, [ appProps.referrer ]);
+
+  return (
+    <>
+      { !isLoading && <PageTitle title={ data.title } px={{ base: 4, lg: 12 }} pt={{ base: '138px', lg: 0 }} backLink={ backLink }/> }
+      <Center
+        as="main"
+        h="100vh"
+      >
+        { (isFrameLoading) && (
+          <ContentLoader/>
+        ) }
+
+        { data && (
+          <Box
+            allow={ IFRAME_ALLOW_ATTRIBUTE }
+            ref={ ref }
+            sandbox={ IFRAME_SANDBOX_ATTRIBUTE }
+            as="iframe"
+            h="100%"
+            w="100%"
+            display={ isFrameLoading ? 'none' : 'block' }
+            src={ data.url }
+            title={ data.title }
+            onLoad={ handleIframeLoad }
+          />
+        ) }
+      </Center>
+    </>
   );
 };
 
