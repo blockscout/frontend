@@ -1,4 +1,4 @@
-import _capitalize from 'lodash/capitalize';
+import _upperFirst from 'lodash/upperFirst';
 
 import type { Metadata } from 'types/client/token';
 
@@ -39,7 +39,7 @@ export default function attributesParser(attributes: Array<unknown>): Metadata['
 
       return {
         value: formatValue(value, display),
-        trait_type: _capitalize(trait || 'property'),
+        trait_type: _upperFirst(trait || 'property'),
       };
     })
     .filter(Boolean);

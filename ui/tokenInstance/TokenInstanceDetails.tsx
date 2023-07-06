@@ -13,6 +13,7 @@ import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import NftMedia from 'ui/shared/nft/NftMedia';
 import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
+import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 import TokenInstanceCreatorAddress from './details/TokenInstanceCreatorAddress';
 import TokenInstanceTransfersCount from './details/TokenInstanceTransfersCount';
@@ -161,9 +162,11 @@ const TokenInstanceDetails = ({ data, scrollRef, isLoading }: Props) => {
                       <Skeleton isLoaded={ !isLoading } fontSize="xs" lineHeight={ 4 } color="text_secondary" fontWeight={ 500 } mb={ 1 }>
                         <span>{ attribute.trait_type }</span>
                       </Skeleton>
-                      <Skeleton isLoaded={ !isLoading } fontSize="sm">
-                        <span>{ attribute.value }</span>
-                      </Skeleton>
+                      <TruncatedTextTooltip label={ attribute.value }>
+                        <Skeleton isLoaded={ !isLoading } fontSize="sm" w="100%" overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis">
+                          { attribute.value }
+                        </Skeleton>
+                      </TruncatedTextTooltip>
                     </GridItem>
                   )) }
                 </Grid>
