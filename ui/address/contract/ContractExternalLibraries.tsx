@@ -13,7 +13,6 @@ import {
   PopoverContent,
   PopoverTrigger,
   StackDivider,
-  useColorModeValue,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
@@ -21,6 +20,7 @@ import React from 'react';
 
 import type { SmartContractExternalLibrary } from 'types/api/contract';
 
+import arrowIcon from 'icons/arrows/east-mini.svg';
 import iconWarning from 'icons/status/warning.svg';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { apos } from 'lib/html-entities';
@@ -49,7 +49,6 @@ const Item = (data: SmartContractExternalLibrary) => {
 
 const ContractExternalLibraries = ({ className, data }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
-  const bgColor = useColorModeValue('blue.50', 'gray.600');
   const isMobile = useIsMobile();
 
   if (data.length === 0) {
@@ -59,22 +58,17 @@ const ContractExternalLibraries = ({ className, data }: Props) => {
   const button = (
     <Button
       className={ className }
-      variant="unstyled"
+      size="sm"
+      variant="outline"
+      colorScheme="gray"
       onClick={ onToggle }
-      color="link"
-      _hover={{
-        color: 'link_hovered',
-      }}
-      bgColor={ isOpen ? bgColor : 'unset' }
-      fontWeight={ 400 }
-      h={ 8 }
-      px={{ base: 0, lg: 2 }}
-      display="flex"
-      alignItems="center"
+      fontWeight={ 600 }
+      px={ 2 }
       aria-label="View external libraries"
     >
-      <span>Libraries ({ data.length })</span>
+      <span>{ data.length } { data.length > 1 ? 'Libraries' : 'Library' } </span>
       <Icon as={ iconWarning } boxSize={ 5 } color="orange.400" ml="2px"/>
+      <Icon as={ arrowIcon } transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 } ml={ 2 }/>
     </Button>
   );
 

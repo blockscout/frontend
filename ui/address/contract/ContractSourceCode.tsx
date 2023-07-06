@@ -126,6 +126,7 @@ const ContractSourceCode = ({ address, implementationAddress }: Props) => {
       onChange={ handleSelectChange }
       focusBorderColor="none"
       w="auto"
+      fontWeight={ 600 }
       borderRadius="base"
     >
       { SOURCE_CODE_OPTIONS.map((option) => <option key={ option.id } value={ option.id }>{ option.label }</option>) }

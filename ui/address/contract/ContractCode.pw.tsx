@@ -1,10 +1,12 @@
 import { test as base, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
+import * as addressMock from 'mocks/address/address';
 import * as contractMock from 'mocks/contract/info';
 import * as socketServer from 'playwright/fixtures/socketServer';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
+import MockAddressPage from 'ui/address/testUtils/MockAddressPage';
 
 import ContractCode from './ContractCode';
 
@@ -24,16 +26,30 @@ const test = base.extend<socketServer.SocketServerFixture>({
 // test cases which use socket cannot run in parallel since the socket server always run on the same port
 test.describe.configure({ mode: 'serial' });
 
-test('verified with changed byte code +@mobile +@dark-mode', async({ mount, page }) => {
+test('full view +@mobile +@dark-mode', async({ mount, page }) => {
+  await page.route('https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0/**', (route) => route.abort());
   await page.route(CONTRACT_API_URL, (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(contractMock.withChangedByteCode),
   }));
-  await page.route('https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0/**', (route) => route.abort());
+
+  const ADDRESS_API_URL = buildApiUrl('address', { hash: addressHash });
+  await page.route(ADDRESS_API_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify(addressMock.contract),
+  }));
+
+  const PROXY_CONTRACT_API_URL = buildApiUrl('contract', { hash: addressMock.contract.implementation_address as string });
+  await page.route(PROXY_CONTRACT_API_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify(contractMock.withChangedByteCode),
+  }));
 
   const component = await mount(
     <TestApp>
-      <ContractCode addressHash={ addressHash } noSocket/>
+      <MockAddressPage>
+        <ContractCode addressHash={ addressHash } noSocket/>
+      </MockAddressPage>
     </TestApp>,
     { hooksConfig },
   );
