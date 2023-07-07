@@ -15,7 +15,7 @@ import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkInternal from 'ui/shared/LinkInternal';
-import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
+import TokenLogo from 'ui/shared/TokenLogo';
 
 interface Props {
   data: SearchResultItem;
@@ -37,10 +37,31 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
   const content = (() => {
     switch (data.type) {
       case 'token': {
+        const name = data.name + (data.symbol ? ` (${ data.symbol })` : '');
+
         return (
           <>
             <Td fontSize="sm">
-              <TokenSnippet data={ data } isLoading={ isLoading } hideSymbol fontWeight={ 700 }/>
+              <Flex alignItems="center">
+                <TokenLogo boxSize={ 6 } data={ data } flexShrink={ 0 } isLoading={ isLoading }/>
+                <LinkInternal
+                  ml={ 2 }
+                  href={ route({ pathname: '/token/[hash]', query: { hash: data.address } }) }
+                  fontWeight={ 700 }
+                  wordBreak="break-all"
+                  overflow="hidden"
+                  isLoading={ isLoading }
+                  onClick={ handleLinkClick }
+                >
+                  <Skeleton
+                    isLoaded={ !isLoading }
+                    overflow="hidden"
+                    textOverflow="ellipsis"
+                    whiteSpace="nowrap"
+                    dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}
+                  />
+                </LinkInternal>
+              </Flex>
             </Td>
             <Td fontSize="sm" verticalAlign="middle">
               <Skeleton isLoaded={ !isLoading } whiteSpace="nowrap" overflow="hidden">

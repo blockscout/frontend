@@ -34,7 +34,7 @@ const TxDetailsActions = ({ actions }: Props) => {
     >
       <Flex
         flexDirection="column"
-        alignItems="flex-start"
+        alignItems="stretch"
         rowGap={ 5 }
         w="100%"
         maxH="200px"

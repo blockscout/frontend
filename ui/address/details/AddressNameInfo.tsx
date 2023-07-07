@@ -19,7 +19,7 @@ const AddressNameInfo = ({ data, isLoading }: Props) => {
         hint="Token name and symbol"
         isLoading={ isLoading }
       >
-        <TokenSnippet data={ data.token } isLoading={ isLoading } hideIcon w="100%"/>
+        <TokenSnippet data={ data.token } isLoading={ isLoading } hideIcon/>
       </DetailsInfoItem>
     );
   }

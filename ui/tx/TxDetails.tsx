@@ -241,7 +241,7 @@ const TxDetails = () => {
           { toAddress ? (
             <>
               { data.to && data.to.hash ? (
-                <Address alignItems="center" flexShrink={ 0 } w="100%">
+                <Address alignItems="center" flexShrink={ 0 } w={{ base: '100%', lg: 'auto' }}>
                   <AddressIcon address={ toAddress } isLoading={ isPlaceholderData }/>
                   <AddressLink type="address" ml={ 2 } hash={ toAddress.hash } isLoading={ isPlaceholderData }/>
                   { executionSuccessBadge }

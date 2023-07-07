@@ -16,7 +16,7 @@ import AddressLink from 'ui/shared/address/AddressLink';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkInternal from 'ui/shared/LinkInternal';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
-import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
+import TokenLogo from 'ui/shared/TokenLogo';
 
 interface Props {
   data: SearchResultItem;
@@ -38,8 +38,29 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
   const firstRow = (() => {
     switch (data.type) {
       case 'token': {
+        const name = data.name + (data.symbol ? ` (${ data.symbol })` : '');
+
         return (
-          <TokenSnippet data={ data } isLoading={ isLoading } hideSymbol fontWeight={ 700 }/>
+          <Flex alignItems="flex-start" overflow="hidden">
+            <TokenLogo boxSize={ 6 } data={ data } flexShrink={ 0 } isLoading={ isLoading }/>
+            <LinkInternal
+              ml={ 2 }
+              href={ route({ pathname: '/token/[hash]', query: { hash: data.address } }) }
+              fontWeight={ 700 }
+              wordBreak="break-all"
+              isLoading={ isLoading }
+              onClick={ handleLinkClick }
+              overflow="hidden"
+            >
+              <Skeleton
+                isLoaded={ !isLoading }
+                dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}
+                whiteSpace="nowrap"
+                overflow="hidden"
+                textOverflow="ellipsis"
+              />
+            </LinkInternal>
+          </Flex>
         );
       }
 
