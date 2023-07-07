@@ -99,7 +99,7 @@ const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoa
       columnGap={ 3 }
       alignItems="center"
     >
-      <Flex h={{ base: 'auto', lg: isLoading ? 10 : 'auto' }} maxW="100%">
+      <Flex h={{ base: 'auto', lg: isLoading ? 10 : 'auto' }} maxW="100%" alignItems="center">
         { backLink && <BackLink { ...backLink } isLoading={ isLoading }/> }
         { beforeTitle }
         <Skeleton
