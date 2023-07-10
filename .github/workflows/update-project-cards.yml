@@ -41,10 +41,6 @@ on:
                 required: true
                 type: string
 
-concurrency:
-    group: ${{ github.workflow }}/${{ inputs.project_name }}/${{ inputs.field_name }}
-    cancel-in-progress: true
-
 jobs:
     run:
         name: Run
