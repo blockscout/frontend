@@ -59,7 +59,7 @@ jobs:
                         `, {
                         owner: context.repo.owner,
                         repo: context.repo.repo,
-                        pr: process.env.PULL_REQUEST_NUMBER,
+                        pr: Number(process.env.PULL_REQUEST_NUMBER),
                     });
 
                     const { repository: { pullRequest: { closingIssuesReferences } } } = response;
