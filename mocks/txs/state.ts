@@ -143,6 +143,37 @@ export const sendCoin: TxStateChange = {
   type: 'coin',
 };
 
+export const sendERC20Token = {
+  address: {
+    hash: '0x7f6479df95Aa3036a3BE02DB6300ea201ABd9981',
+    implementation_name: null,
+    is_contract: false,
+    is_verified: false,
+    name: null,
+    private_tags: [],
+    public_tags: [],
+    watchlist_names: [],
+  },
+  balance_after: '6814903154',
+  balance_before: '9814903154',
+  change: '-3000000000',
+  is_miner: false,
+  token: {
+    address: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+    circulating_market_cap: '82978861367.28714',
+    decimals: '6',
+    exchange_rate: '0.992839',
+    holders: null,
+    icon_url: 'https://gateway.tkn.xyz/ipfs/bafybeihrrubjya5nnwgqdm6mfqisxfnv76tl3yd452lkmgomn5n64gzbxu/',
+    name: 'Tether USD',
+    symbol: 'USDT',
+    total_supply: '39030615894320966',
+    type: 'ERC-20',
+    token_id: null,
+  },
+  type: 'token',
+};
+
 export const baseResponse = {
   items: [
     mintToken,
@@ -150,6 +181,7 @@ export const baseResponse = {
     sendCoin,
     receiveCoin,
     transfer1155Token,
+    sendERC20Token,
   ],
   next_page_params: {
     items_count: 50,

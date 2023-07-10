@@ -63,6 +63,7 @@ const AddressFavoriteButton = ({ className, hash, watchListId }: Props) => {
           size="sm"
           pl="6px"
           pr="6px"
+          flexShrink={ 0 }
           onClick={ handleClick }
           icon={ <Icon as={ watchListId ? starFilledIcon : starOutlineIcon } boxSize={ 5 }/> }
           onFocusCapture={ usePreventFocusAfterModalClosing() }

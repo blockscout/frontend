@@ -20,7 +20,7 @@ interface ResultComponentProps<T extends SmartContractMethod> {
 interface Props<T extends SmartContractMethod> {
   data: T;
   onSubmit: (data: T, args: Array<string | Array<unknown>>) => Promise<ContractMethodCallResult<T>>;
-  ResultComponent: (props: ResultComponentProps<T>) => JSX.Element | null;
+  resultComponent: (props: ResultComponentProps<T>) => JSX.Element | null;
   isWrite?: boolean;
 }
 
@@ -61,7 +61,7 @@ const parseArrayValue = (value: string) => {
   }
 };
 
-const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit, ResultComponent, isWrite }: Props<T>) => {
+const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit, resultComponent: ResultComponent, isWrite }: Props<T>) => {
 
   const [ result, setResult ] = React.useState<ContractMethodCallResult<T>>();
   const [ isLoading, setLoading ] = React.useState(false);

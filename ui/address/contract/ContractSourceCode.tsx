@@ -75,8 +75,8 @@ const ContractSourceCode = ({ address, implementationAddress }: Props) => {
   }, [ primaryContractQuery.data ]);
 
   const secondaryEditorData = React.useMemo(() => {
-    return getEditorData(secondaryContractQuery.data);
-  }, [ secondaryContractQuery.data ]);
+    return secondaryContractQuery.isPlaceholderData ? undefined : getEditorData(secondaryContractQuery.data);
+  }, [ secondaryContractQuery.data, secondaryContractQuery.isPlaceholderData ]);
 
   const activeContract = sourceType === 'secondary' ? secondaryContractQuery.data : primaryContractQuery.data;
   const activeContractData = sourceType === 'secondary' ? secondaryEditorData : primaryEditorData;
@@ -84,7 +84,8 @@ const ContractSourceCode = ({ address, implementationAddress }: Props) => {
   const heading = (
     <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>
       <span>Contract source code</span>
-      <Text whiteSpace="pre" as="span" variant="secondary" textTransform="capitalize"> ({ activeContract?.language })</Text>
+      { activeContract?.language &&
+        <Text whiteSpace="pre" as="span" variant="secondary" textTransform="capitalize"> ({ activeContract.language })</Text> }
     </Skeleton>
   );
 

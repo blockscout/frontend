@@ -61,7 +61,7 @@ const ContractRead = ({ addressHash, isProxy, isCustomAbi }: Props) => {
       return <Alert status="error" fontSize="sm" wordBreak="break-word">{ item.error }</Alert>;
     }
 
-    if (item.outputs.some(({ value }) => value)) {
+    if (item.outputs.some(({ value }) => value !== undefined && value !== null)) {
       return (
         <Flex flexDir="column" rowGap={ 1 }>
           { item.outputs.map((output, index) => <ContractMethodConstant key={ index } data={ output }/>) }
@@ -74,7 +74,7 @@ const ContractRead = ({ addressHash, isProxy, isCustomAbi }: Props) => {
         key={ id + '_' + index }
         data={ item }
         onSubmit={ handleMethodFormSubmit }
-        ResultComponent={ ContractReadResult }
+        resultComponent={ ContractReadResult }
       />
     );
   }, [ handleMethodFormSubmit ]);

@@ -232,6 +232,11 @@ const TokenPageContent = () => {
       tagsBefore={ [
         tokenQuery.data ? { label: tokenQuery.data?.type, display_name: tokenQuery.data?.type } : undefined,
       ] }
+      tagsAfter={
+        verifiedInfoQuery.data?.projectSector ?
+          [ { label: verifiedInfoQuery.data.projectSector, display_name: verifiedInfoQuery.data.projectSector } ] :
+          undefined
+      }
       contentAfter={
         <NetworkExplorers type="token" pathParam={ hashString } ml="auto" hideText={ isMobile }/>
       }

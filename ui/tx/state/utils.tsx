@@ -77,21 +77,26 @@ export function getStateElements(data: TxStateChange, isLoading?: boolean) {
           isLoading={ isLoading }
         />
       );
-      const before = Number(data.balance_before);
-      const after = Number(data.balance_after);
+      const beforeBn = BigNumber(data.balance_before || '0').div(BigNumber(10 ** (Number(data.token.decimals))));
+      const afterBn = BigNumber(data.balance_after || '0').div(BigNumber(10 ** (Number(data.token.decimals))));
       const change = (() => {
-        const difference = typeof data.change === 'string' ? Number(data.change) : after - before;
+        let differenceBn;
+        if (typeof data.change === 'string') {
+          differenceBn = BigNumber(data.change || '0').div(BigNumber(10 ** (Number(data.token.decimals))));
+        } else {
+          differenceBn = afterBn.minus(beforeBn);
+        }
 
-        if (!difference) {
+        if (!differenceBn || differenceBn.isEqualTo(0)) {
           return null;
         }
 
-        const changeColor = difference >= 0 ? 'green.500' : 'red.500';
-        const changeSign = difference >= 0 ? '+' : '-';
+        const changeColor = differenceBn.isGreaterThanOrEqualTo(0) ? 'green.500' : 'red.500';
+        const changeSign = differenceBn.isGreaterThanOrEqualTo(0) ? '+' : '-';
 
         return (
           <Skeleton isLoaded={ !isLoading } display="inline-block" color={ changeColor }>
-            <span>{ changeSign }{ nbsp }{ Math.abs(difference).toLocaleString() }</span>
+            <span>{ changeSign }{ nbsp }{ differenceBn.abs().toFormat() }</span>
           </Skeleton>
         );
       })();
@@ -119,14 +124,14 @@ export function getStateElements(data: TxStateChange, isLoading?: boolean) {
       return {
         before: data.balance_before ? (
           <Flex whiteSpace="pre-wrap" justifyContent={{ base: 'flex-start', lg: 'flex-end' }}>
-            <Skeleton isLoaded={ !isLoading }>{ before.toLocaleString() }</Skeleton>
+            <Skeleton isLoaded={ !isLoading }>{ beforeBn.toFormat() }</Skeleton>
             <span>{ space }</span>
             { tokenLink }
           </Flex>
         ) : null,
         after: data.balance_after ? (
           <Flex whiteSpace="pre-wrap" justifyContent={{ base: 'flex-start', lg: 'flex-end' }}>
-            <Skeleton isLoaded={ !isLoading }>{ after.toLocaleString() }</Skeleton>
+            <Skeleton isLoaded={ !isLoading }>{ afterBn.toFormat() }</Skeleton>
             <span>{ space }</span>
             { tokenLink }
           </Flex>

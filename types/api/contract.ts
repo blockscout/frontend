@@ -91,7 +91,7 @@ export interface SmartContractMethodInput {
 }
 
 export interface SmartContractMethodOutput extends SmartContractMethodInput {
-  value?: string;
+  value?: string | boolean;
 }
 
 export interface SmartContractQueryMethodReadSuccess {

@@ -4,12 +4,12 @@ import React from 'react';
 import errorIcon from 'icons/status/error.svg';
 
 interface Props {
-  onClick: () => void;
+  onClick: (e: React.SyntheticEvent) => void;
   isDisabled?: boolean;
   className?: string;
 }
 
-const InputClearButton = ({ onClick, isDisabled, className }: Props) => {
+const ClearButton = ({ onClick, isDisabled, className }: Props) => {
   const iconColor = useColorModeValue('gray.300', 'gray.600');
   const iconColorHover = useColorModeValue('gray.200', 'gray.500');
 
@@ -28,4 +28,4 @@ const InputClearButton = ({ onClick, isDisabled, className }: Props) => {
   );
 };
 
-export default chakra(InputClearButton);
+export default chakra(ClearButton);

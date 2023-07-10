@@ -2,6 +2,7 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 import type { Primitive } from 'react-hook-form';
 
+import urlParser from 'lib/token/metadata/urlParser';
 import LinkExternal from 'ui/shared/LinkExternal';
 
 import MetadataAccordionItem from './MetadataAccordionItem';
@@ -22,13 +23,10 @@ const MetadataItemPrimitive = ({ name, value, isItem = true, isFlat, level }: Pr
   const content = (() => {
     switch (typeof value) {
       case 'string': {
-        try {
-          if (!value.includes('http')) {
-            throw new Error();
-          }
-          const url = new URL(value);
+        const url = urlParser(value);
+        if (url) {
           return <LinkExternal href={ url.toString() }>{ value }</LinkExternal>;
-        } catch (error) {}
+        }
       }
       // eslint-disable-next-line no-fallthrough
       default: {

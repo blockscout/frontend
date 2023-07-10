@@ -1,0 +1,289 @@
+name: Label released issues
+
+on:
+    workflow_dispatch:
+        inputs: 
+            label_color:
+                description: 'A color of the added label'
+                default: 'FFFFFF'
+                required: false
+                type: string
+    workflow_call:
+        inputs: 
+            label_color:
+                description: 'A color of the added label'
+                default: 'FFFFFF'
+                required: false
+                type: string
+        outputs:
+            issues:
+                description: "JSON encoded list of issues linked to commits in the release"
+                value: ${{ jobs.run.outputs.issues }}
+
+concurrency:
+    group: Label released issues
+    cancel-in-progress: true
+
+jobs:
+    run:
+        name: Run
+        runs-on: ubuntu-latest
+        outputs:
+            issues: ${{ steps.linked_issues.outputs.result }}
+        steps:
+            -   name: Getting tags of the two latestest releases
+                id: tags
+                uses: actions/github-script@v6
+                with:
+                    script: |
+                        const { repository: { releases: { nodes: releases } } } = await github.graphql(`
+                            query ($owner: String!, $repo: String!) {
+                                repository(owner: $owner, name: $repo) {
+                                    releases(first: 10, orderBy: { field: CREATED_AT, direction: DESC }) {
+                                        nodes {
+                                            name
+                                            tagName
+                                            tagCommit {
+                                                oid
+                                            }
+                                            isPrerelease
+                                            isDraft
+                                            publishedAt
+                                        }
+                                    }
+                                }
+                            }
+                            `, 
+                            {
+                                owner: context.repo.owner,
+                                repo: context.repo.repo,
+                            }
+                        );
+
+                        const [ { tagName: latestTag }, { tagName: previousTag } ] = releases
+                            .filter(({ isPrerelease, isDraft }) => !isPrerelease && !isDraft);
+
+                        core.info('Found following tags:');
+                        core.info(`    latest:        ${ latestTag }`);
+                        core.info(`    second latest: ${ previousTag }`);
+
+                        core.setOutput('latest', latestTag);
+                        core.setOutput('previous', previousTag);
+            
+            -   name: Getting info about latest release label
+                id: label
+                uses: actions/github-script@v6
+                env:
+                    LABEL_NAME: ${{ steps.tags.outputs.latest }}
+                with:
+                    script: |
+                        try {
+                            const result = await github.request('GET /repos/{owner}/{repo}/labels/{name}', {
+                                owner: context.repo.owner,
+                                repo: context.repo.repo,
+                                name: process.env.LABEL_NAME,
+                            });
+
+                            core.info(`Found label with id: ${ result.data.id }`);
+                            core.setOutput('id', result.data.id);
+                        } catch (error) {
+                            if (error.status === 404) {
+                                core.info('Nothing has found.');
+                                core.setOutput('id', 'null');
+                            }
+                        }
+
+            -   name: Fetching issues with release label
+                id: has_labeled_issues
+                uses: actions/github-script@v6
+                env:
+                    LABEL_NAME: ${{ steps.tags.outputs.latest }}
+                    LABEL_ID: ${{ steps.label.outputs.id }}
+                with:
+                    script: |
+                        if (process.env.LABEL_ID === 'null') {
+                            core.info(`Label does not exist. No need to fetch issues.`);
+                            return false;
+                        }
+
+                        const { data } = await github.request('GET /repos/{owner}/{repo}/issues', {
+                            owner: context.repo.owner,
+                            repo: context.repo.repo,
+                            labels: process.env.LABEL_NAME,
+                            state: 'closed',
+                        });
+
+                        if (data.length > 0) {
+                            core.info(`Found ${ data.length } closed issues with label ${ process.env.LABEL_NAME }. No further action required.`);
+                            core.notice('Issues already labeled.');
+                            return data.length > 0;
+                        }
+
+            -   name: Looking for commits between two releases
+                id: commits
+                uses: actions/github-script@v6
+                if: ${{ steps.has_labeled_issues.outputs.result == 'false' }}
+                env:
+                    PREVIOUS_TAG: ${{ steps.tags.outputs.previous }}
+                    LATEST_TAG: ${{ steps.tags.outputs.latest }}
+                with:
+                    script: |
+                        const { data: { commits: commitsInRelease } } = await github.request('GET /repos/{owner}/{repo}/compare/{basehead}', {
+                            owner: context.repo.owner,
+                            repo: context.repo.repo,
+                            basehead: `${ process.env.PREVIOUS_TAG }...${ process.env.LATEST_TAG }`,
+                        });
+
+                        if (commitsInRelease.length === 0) {
+                            core.notice(`No commits found between ${ process.env.PREVIOUS_TAG } and ${ process.env.LATEST_TAG }`);
+                            return [];
+                        }
+
+                        const commits = commitsInRelease.map(({ sha }) => sha);
+
+                        core.startGroup(`Found ${ commits.length } commits`);
+                        commits.forEach((sha) => {
+                            core.info(sha);
+                        })
+                        core.endGroup();
+
+                        return commits;
+
+            -   name: Looking for issues linked to commits
+                id: linked_issues
+                uses: actions/github-script@v6
+                if: ${{ steps.has_labeled_issues.outputs.result == 'false' }}
+                env:
+                    COMMITS: ${{ steps.commits.outputs.result }}
+                with:
+                    script: |
+                        const commits = JSON.parse(process.env.COMMITS);
+
+                        if (commits.length === 0) {
+                            return [];
+                        }
+
+                        const map = {};
+
+                        core.startGroup(`Looking for linked issues`);
+                        for (const sha of commits) {
+                            const result = await getLinkedIssuesForCommitPR(sha);
+                            result.forEach((issue) => {
+                                map[issue] = issue;
+                            });
+                        }
+                        core.endGroup();
+
+                        const issues = Object.values(map);
+                    
+                        if (issues.length > 0) {
+                            core.startGroup(`Found ${ issues.length } unique issues`);
+                            issues.sort().forEach((issue) => {
+                                core.info(`#${ issue } - https://github.com/${ context.repo.owner }/${ context.repo.repo }/issues/${ issue }`);
+                            })
+                            core.endGroup();
+                        } else {
+                            core.notice('No linked issues found.');
+                        }
+                    
+                        return issues;
+
+                        async function getLinkedIssuesForCommitPR(sha) {
+                            core.info(`Fetching issues for commit: ${ sha }`);
+
+                            const response = await github.graphql(`
+                                query ($owner: String!, $repo: String!, $sha: GitObjectID!) {
+                                    repository(owner: $owner, name: $repo) {
+                                    object(oid: $sha) {
+                                        ... on Commit {
+                                        associatedPullRequests(first: 10) {
+                                            nodes {
+                                            number
+                                            title
+                                            state
+                                            merged
+                                            closingIssuesReferences(first: 10) {
+                                                nodes {
+                                                number
+                                                title
+                                                closed
+                                                }
+                                            }
+                                            }
+                                        }
+                                        }
+                                    }
+                                    }
+                                }
+                                `, {
+                                owner: context.repo.owner,
+                                repo: context.repo.repo,
+                                sha,
+                            });
+
+                            if (!response) {
+                                core.info('Nothing has found.');
+                                return [];
+                            }
+
+                            const { repository: { object: { associatedPullRequests } } } = response;
+
+                            const issues = associatedPullRequests
+                                .nodes
+                                .map(({ closingIssuesReferences: { nodes: issues } }) => issues.map(({ number }) => number))
+                                .flat();
+
+                            core.info(`Found following issues: ${ issues.join(', ') || '-' }\n`);
+
+                            return issues;
+                        }
+
+            -   name: Creating label with latest release tag
+                id: label_creating
+                uses: actions/github-script@v6
+                if: ${{ steps.label.outputs.id == 'null' && steps.has_labeled_issues.outputs.result == 'false' }}
+                env:
+                    LABEL_NAME: ${{ steps.tags.outputs.latest }}
+                    LABEL_COLOR: ${{ inputs.label_color }}
+                with:
+                    script: |
+                        const result = await github.request('POST /repos/{owner}/{repo}/labels', {
+                            owner: context.repo.owner,
+                            repo: context.repo.repo,
+                            name: process.env.LABEL_NAME,
+                            color: process.env.LABEL_COLOR,
+                            description: `Release ${ process.env.LABEL_NAME }`,
+                        });
+
+                        core.info('Label was created.');
+
+            -   name: Adding label to issues
+                id: labeling_issues
+                uses: actions/github-script@v6
+                if: ${{ steps.has_labeled_issues.outputs.result == 'false' }}
+                env:
+                    LABEL_NAME: ${{ steps.tags.outputs.latest }}
+                    ISSUES: ${{ steps.linked_issues.outputs.result }}
+                with:
+                    script: |
+                        const issues = JSON.parse(process.env.ISSUES);
+
+                        if (issues.length === 0) {
+                            core.notice('No issues has found. Nothing to label.');
+                            return;
+                        }
+
+                        for (const issue of issues) {
+                            core.info(`Adding release label to the issue #${ issue }...`);
+                            await addLabelToIssue(issue, process.env.LABEL_NAME);
+                            core.info('Done.\n');
+                        }
+
+                        async function addLabelToIssue(issue, label) {
+                            return await github.request('POST /repos/{owner}/{repo}/issues/{issue_number}/labels', {
+                                owner: context.repo.owner,
+                                repo: context.repo.repo,
+                                issue_number: issue,
+                                labels: [ label ],
+                            });
+                        }

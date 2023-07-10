@@ -26,3 +26,4 @@ jobs:
             
             # other settings
             repo-token: ${{ secrets.GITHUB_TOKEN }}
+            close-issue-reason: "not_planned"

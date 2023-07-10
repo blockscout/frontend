@@ -5,14 +5,10 @@ import iconEmail from 'icons/email.svg';
 import iconLink from 'icons/link.svg';
 
 interface Props {
-  url?: string;
+  url: string;
 }
 
 const SupportLink = ({ url }: Props) => {
-  if (!url) {
-    return null;
-  }
-
   const isEmail = url.includes('@');
   const href = isEmail ? `mailto:${ url }` : url;
   const icon = isEmail ? iconEmail : iconLink;

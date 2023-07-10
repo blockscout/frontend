@@ -32,7 +32,11 @@ const AddressLogs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>
 
   const actionBar = (
     <ActionBar mt={ -6 } showShadow justifyContent={{ base: 'space-between', lg: 'end' }}>
-      <AddressCsvExportLink address={ hash } isLoading={ pagination.isLoading } type="logs"/>
+      <AddressCsvExportLink
+        address={ hash }
+        isLoading={ pagination.isLoading }
+        params={{ type: 'logs' }}
+      />
       <Pagination ml={{ base: 0, lg: 8 }} { ...pagination }/>
     </ActionBar>
   );

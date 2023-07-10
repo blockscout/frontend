@@ -7,8 +7,10 @@ import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as mixpanel from 'lib/mixpanel/index';
+import { getRecentSearchKeywords, saveToRecentKeywords } from 'lib/recentSearchKeywords';
 
 import SearchBarInput from './SearchBarInput';
+import SearchBarRecentKeywords from './SearchBarRecentKeywords';
 import SearchBarSuggest from './SearchBarSuggest';
 import useSearchQuery from './useSearchQuery';
 
@@ -24,6 +26,8 @@ const SearchBar = ({ isHomepage }: Props) => {
   const isMobile = useIsMobile();
   const router = useRouter();
 
+  const recentSearchKeywords = getRecentSearchKeywords();
+
   const { searchTerm, handleSearchTermChange, query, pathname, redirectCheckQuery } = useSearchQuery();
 
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
@@ -35,6 +39,7 @@ const SearchBar = ({ isHomepage }: Props) => {
         'Source page type': mixpanel.getPageType(pathname),
         'Result URL': url,
       });
+      saveToRecentKeywords(searchTerm);
       router.push({ pathname: '/search-results', query: { q: searchTerm } }, undefined, { shallow: true });
     }
   }, [ searchTerm, pathname, router ]);
@@ -67,6 +72,7 @@ const SearchBar = ({ isHomepage }: Props) => {
       'Source page type': mixpanel.getPageType(pathname),
       'Result URL': event.currentTarget.href,
     });
+    saveToRecentKeywords(searchTerm);
     onClose();
   }, [ pathname, searchTerm, onClose ]);
 
@@ -93,7 +99,7 @@ const SearchBar = ({ isHomepage }: Props) => {
 
   return (
     <Popover
-      isOpen={ isOpen && searchTerm.trim().length > 0 }
+      isOpen={ isOpen && (searchTerm.trim().length > 0 || recentSearchKeywords.length > 0) }
       autoFocus={ false }
       onClose={ onClose }
       placement="bottom-start"
@@ -115,7 +121,12 @@ const SearchBar = ({ isHomepage }: Props) => {
       </PopoverTrigger>
       <PopoverContent w={ `${ menuWidth.current }px` } maxH={{ base: '300px', lg: '500px' }} overflowY="scroll" ref={ menuRef }>
         <PopoverBody py={ 6 } sx={ isHomepage ? { mark: { bgColor: 'green.100' } } : {} }>
-          <SearchBarSuggest query={ query } redirectCheckQuery={ redirectCheckQuery } searchTerm={ searchTerm } onItemClick={ handleItemClick }/>
+          { searchTerm.trim().length === 0 && recentSearchKeywords.length > 0 && (
+            <SearchBarRecentKeywords onClick={ handleSearchTermChange } onClear={ onClose }/>
+          ) }
+          { searchTerm.trim().length > 0 && (
+            <SearchBarSuggest query={ query } redirectCheckQuery={ redirectCheckQuery } searchTerm={ searchTerm } onItemClick={ handleItemClick }/>
+          ) }
         </PopoverBody>
       </PopoverContent>
     </Popover>

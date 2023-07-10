@@ -14,7 +14,7 @@ export const read: Array<SmartContractReadMethod> = [
     method_id: '70a08231',
     name: 'FLASHLOAN_PREMIUM_TOTAL',
     outputs: [
-      { internalType: 'uint256', name: '', type: 'uint256', value: '' },
+      { internalType: 'uint256', name: '', type: 'uint256' },
     ],
     payable: false,
     stateMutability: 'view',
