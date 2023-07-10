@@ -81,7 +81,7 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
         noValidate
         onSubmit={ handleSubmit(onFormSubmit) }
       >
-        <Flex columnGap={ 5 } rowGap={ 3 } flexDir={{ base: 'column', lg: 'row' }} alignItems={{ base: 'flex-start', lg: 'center' }}>
+        <Flex columnGap={ 5 } rowGap={ 3 } flexDir={{ base: 'column', lg: 'row' }} alignItems={{ base: 'flex-start', lg: 'center' }} flexWrap="wrap">
           <CsvExportFormField name="from" formApi={ formApi }/>
           <CsvExportFormField name="to" formApi={ formApi }/>
           <CsvExportFormReCaptcha formApi={ formApi }/>

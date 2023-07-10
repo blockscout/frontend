@@ -4,6 +4,7 @@ import React from 'react';
 import * as addressMock from 'mocks/address/address';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
+import * as configs from 'playwright/utils/configs';
 
 import CsvExport from './CsvExport';
 
@@ -22,7 +23,7 @@ test.beforeEach(async({ page }) => {
   }));
 });
 
-test('base view +@mobile +@dark-mode', async({ mount }) => {
+test('base view +@mobile +@dark-mode', async({ mount, page }) => {
 
   const component = await mount(
     <TestApp>
@@ -31,5 +32,10 @@ test('base view +@mobile +@dark-mode', async({ mount }) => {
     { hooksConfig },
   );
 
-  await expect(component).toHaveScreenshot();
+  await page.waitForResponse('https://www.google.com/recaptcha/api2/**');
+
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator('.recaptcha') ],
+    maskColor: configs.maskColor,
+  });
 });
