@@ -188,24 +188,17 @@ test('search by tx hash +@mobile', async({ mount, page }) => {
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
 });
 
-test('search with simple match', async({ mount, page }) => {
-  const API_URL = buildApiUrl('search') + `?q=${ searchMock.token2.name }`;
-  const API_CHECK_REDIRECT_URL = buildApiUrl('search_check_redirect') + `?q=${ searchMock.token2.name }`;
-
+test('search with view all link', async({ mount, page }) => {
+  const API_URL = buildApiUrl('search') + '?q=o';
   await page.route(API_URL, (route) => route.fulfill({
     status: 200,
     body: JSON.stringify({
       items: [
+        searchMock.token1,
         searchMock.token2,
+        searchMock.contract1,
       ],
-    }),
-  }));
-  await page.route(API_CHECK_REDIRECT_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify({
-      parameter: searchMock.token2.address,
-      redirect: true,
-      type: 'address',
+      next_page_params: { foo: 'bar' },
     }),
   }));
 
@@ -214,18 +207,46 @@ test('search with simple match', async({ mount, page }) => {
       <SearchBar/>
     </TestApp>,
   );
-  await page.getByPlaceholder(/search/i).type(searchMock.token2.name);
+  await page.getByPlaceholder(/search/i).type('o');
+
   await page.waitForResponse(API_URL);
-  await page.waitForResponse(API_CHECK_REDIRECT_URL);
 
-  const resultText = page.getByText('Found 2 matching result');
-  await expect(resultText).toBeVisible();
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 500 } });
+});
 
-  const linkToToken = page.getByText(searchMock.token2.name);
-  await expect(linkToToken).toHaveCount(1);
+test('scroll suggest to category', async({ mount, page }) => {
+  const API_URL = buildApiUrl('search') + '?q=o';
+  await page.route(API_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify({
+      items: [
+        searchMock.token1,
+        searchMock.token2,
+        searchMock.contract1,
+        searchMock.token1,
+        searchMock.token2,
+        searchMock.contract1,
+        searchMock.token1,
+        searchMock.token2,
+        searchMock.contract1,
+        searchMock.token1,
+        searchMock.token2,
+        searchMock.contract1,
+      ],
+    }),
+  }));
 
-  const linkToAddress = page.getByText(searchMock.token2.address);
-  await expect(linkToAddress).toHaveCount(2);
+  await mount(
+    <TestApp>
+      <SearchBar/>
+    </TestApp>,
+  );
+  await page.getByPlaceholder(/search/i).type('o');
+  await page.waitForResponse(API_URL);
+
+  await page.getByRole('tab', { name: 'Addresses' }).click();
+
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 500 } });
 });
 
 test('recent keywords suggest +@mobile', async({ mount, page }) => {
