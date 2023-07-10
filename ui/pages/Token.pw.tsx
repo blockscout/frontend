@@ -7,7 +7,7 @@ import { tokenInfo, tokenCounters } from 'mocks/tokens/tokenInfo';
 import * as socketServer from 'playwright/fixtures/socketServer';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
-import insertAdPlaceholder from 'playwright/utils/insertAdPlaceholder';
+import * as configs from 'playwright/utils/configs';
 
 import Token from './Token';
 
@@ -66,9 +66,10 @@ test('base view', async({ mount, page, createSocket }) => {
   const channel = await socketServer.joinChannel(socket, 'tokens:1');
   socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });
 
-  await insertAdPlaceholder(page);
-
-  await expect(component).toHaveScreenshot();
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator(configs.adsBannerSelector) ],
+    maskColor: configs.maskColor,
+  });
 });
 
 test('with verified info', async({ mount, page, createSocket }) => {
@@ -94,11 +95,12 @@ test('with verified info', async({ mount, page, createSocket }) => {
   const channel = await socketServer.joinChannel(socket, 'tokens:1');
   socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });
 
-  await insertAdPlaceholder(page);
-
   await page.getByRole('button', { name: /project info/i }).click();
 
-  await expect(component).toHaveScreenshot();
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator(configs.adsBannerSelector) ],
+    maskColor: configs.maskColor,
+  });
 });
 
 test.describe('mobile', () => {
@@ -115,9 +117,10 @@ test.describe('mobile', () => {
     const channel = await socketServer.joinChannel(socket, 'tokens:1');
     socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });
 
-    await insertAdPlaceholder(page);
-
-    await expect(component).toHaveScreenshot();
+    await expect(component).toHaveScreenshot({
+      mask: [ page.locator(configs.adsBannerSelector) ],
+      maskColor: configs.maskColor,
+    });
   });
 
   test('with verified info', async({ mount, page, createSocket }) => {
@@ -143,8 +146,9 @@ test.describe('mobile', () => {
     const channel = await socketServer.joinChannel(socket, 'tokens:1');
     socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });
 
-    await insertAdPlaceholder(page);
-
-    await expect(component).toHaveScreenshot();
+    await expect(component).toHaveScreenshot({
+      mask: [ page.locator(configs.adsBannerSelector) ],
+      maskColor: configs.maskColor,
+    });
   });
 });
