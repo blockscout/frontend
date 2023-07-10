@@ -10,12 +10,13 @@ const Marketplace = dynamic(() => import('ui/pages/Marketplace'), { ssr: false }
 
 const MarketplacePage: NextPage = () => {
   return (
-    <Page>
-      <PageTitle title="Marketplace"/>
+    <>
       <Head><title>Blockscout | Marketplace</title></Head>
-
-      <Marketplace/>
-    </Page>
+      <Page>
+        <PageTitle title="Marketplace"/>
+        <Marketplace/>
+      </Page>
+    </>
   );
 };
 
