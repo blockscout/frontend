@@ -1,9 +1,8 @@
-import { Flex, Grid, GridItem, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Grid, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInstance } from 'types/api/token';
 
-import parseMetadata from 'lib/token/parseMetadata';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -15,6 +14,8 @@ import NftMedia from 'ui/shared/nft/NftMedia';
 import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
 
 import TokenInstanceCreatorAddress from './details/TokenInstanceCreatorAddress';
+import TokenInstanceDivider from './details/TokenInstanceDivider';
+import TokenInstanceMetadataInfo from './details/TokenInstanceMetadataInfo';
 import TokenInstanceTransfersCount from './details/TokenInstanceTransfersCount';
 
 interface Props {
@@ -30,20 +31,6 @@ const TokenInstanceDetails = ({ data, scrollRef, isLoading }: Props) => {
       scrollRef?.current?.scrollIntoView({ behavior: 'smooth' });
     }, 500);
   }, [ scrollRef ]);
-
-  const metadata = parseMetadata(data?.metadata);
-  const hasMetadata = metadata && Boolean((metadata.name || metadata.description || metadata.attributes));
-  const attributeBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
-
-  const divider = (
-    <GridItem
-      colSpan={{ base: undefined, lg: 2 }}
-      mt={{ base: 2, lg: 3 }}
-      mb={{ base: 0, lg: 3 }}
-      borderBottom="1px solid"
-      borderColor="divider"
-    />
-  );
 
   if (!data) {
     return null;
@@ -110,68 +97,8 @@ const TokenInstanceDetails = ({ data, scrollRef, isLoading }: Props) => {
         templateColumns={{ base: 'minmax(0, 1fr)', lg: '200px minmax(0, 1fr)' }}
         overflow="hidden"
       >
-        { hasMetadata && (
-          <>
-            { divider }
-            { metadata?.name && (
-              <DetailsInfoItem
-                title="Name"
-                hint="NFT name"
-                whiteSpace="normal"
-                wordBreak="break-word"
-                isLoading={ isLoading }
-              >
-                <Skeleton isLoaded={ !isLoading }>
-                  { metadata.name }
-                </Skeleton>
-              </DetailsInfoItem>
-            ) }
-            { metadata?.description && (
-              <DetailsInfoItem
-                title="Description"
-                hint="NFT description"
-                whiteSpace="normal"
-                wordBreak="break-word"
-                isLoading={ isLoading }
-              >
-                <Skeleton isLoaded={ !isLoading }>
-                  { metadata.description }
-                </Skeleton>
-              </DetailsInfoItem>
-            ) }
-            { metadata?.attributes && (
-              <DetailsInfoItem
-                title="Attributes"
-                hint="NFT attributes"
-                whiteSpace="normal"
-                isLoading={ isLoading }
-              >
-                <Grid gap={ 2 } templateColumns="repeat(auto-fill,minmax(160px, 1fr))" w="100%">
-                  { metadata.attributes.map((attribute, index) => (
-                    <GridItem
-                      key={ index }
-                      bgColor={ attributeBgColor }
-                      borderRadius="md"
-                      px={ 4 }
-                      py={ 2 }
-                      display="flex"
-                      flexDir="column"
-                      alignItems="flex-start"
-                    >
-                      <Skeleton isLoaded={ !isLoading } fontSize="xs" lineHeight={ 4 } color="text_secondary" fontWeight={ 500 } mb={ 1 }>
-                        <span>{ attribute.trait_type }</span>
-                      </Skeleton>
-                      <Skeleton isLoaded={ !isLoading } fontSize="sm">
-                        <span>{ attribute.value }</span>
-                      </Skeleton>
-                    </GridItem>
-                  )) }
-                </Grid>
-              </DetailsInfoItem>
-            ) }
-          </>
-        ) }
-        { divider }
+        <TokenInstanceMetadataInfo data={ data } isLoading={ isLoading }/>
+        <TokenInstanceDivider/>
         <DetailsSponsoredItem isLoading={ isLoading }/>
       </Grid>
     </>
