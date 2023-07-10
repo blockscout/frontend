@@ -10,7 +10,6 @@ import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
 import * as configs from 'playwright/utils/configs';
-import insertAdPlaceholder from 'playwright/utils/insertAdPlaceholder';
 
 import Home from './Home';
 
@@ -47,19 +46,23 @@ test.describe('default view', () => {
         <Home/>
       </TestApp>,
     );
-
-    await insertAdPlaceholder(page);
   });
 
-  test('-@default +@dark-mode', async() => {
-    await expect(component.locator('main')).toHaveScreenshot();
+  test('-@default +@dark-mode', async({ page }) => {
+    await expect(component.locator('main')).toHaveScreenshot({
+      mask: [ page.locator(configs.adsBannerSelector) ],
+      maskColor: configs.maskColor,
+    });
   });
 
   test.describe('screen xl', () => {
     test.use({ viewport: configs.viewport.xl });
 
-    test('', async() => {
-      await expect(component.locator('main')).toHaveScreenshot();
+    test('', async({ page }) => {
+      await expect(component.locator('main')).toHaveScreenshot({
+        mask: [ page.locator(configs.adsBannerSelector) ],
+        maskColor: configs.maskColor,
+      });
     });
   });
 });
@@ -89,7 +92,10 @@ test.describe('custom hero plate background', () => {
 
     const heroPlate = component.locator('div[data-label="hero plate"]');
 
-    await expect(heroPlate).toHaveScreenshot();
+    await expect(heroPlate).toHaveScreenshot({
+      mask: [ page.locator(configs.adsBannerSelector) ],
+      maskColor: configs.maskColor,
+    });
   });
 });
 
@@ -128,8 +134,9 @@ test.describe('mobile', () => {
       </TestApp>,
     );
 
-    await insertAdPlaceholder(page);
-
-    await expect(component.locator('main')).toHaveScreenshot();
+    await expect(component.locator('main')).toHaveScreenshot({
+      mask: [ page.locator(configs.adsBannerSelector) ],
+      maskColor: configs.maskColor,
+    });
   });
 });

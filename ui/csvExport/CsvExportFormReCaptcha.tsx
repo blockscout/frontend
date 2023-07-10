@@ -1,3 +1,4 @@
+import { Alert } from '@chakra-ui/react';
 import React from 'react';
 import ReCaptcha from 'react-google-recaptcha';
 import type { UseFormReturn } from 'react-hook-form';
@@ -41,8 +42,18 @@ const CsvExportFormReCaptcha = ({ formApi }: Props) => {
     formApi.setError('reCaptcha', { type: 'required' });
   }, [ formApi ]);
 
+  if (!appConfig.reCaptcha.siteKey) {
+    return (
+      <Alert status="error">
+        CSV export is not available at the moment since reCaptcha is not configured for this application.
+        Please contact the service maintainer to make necessary changes in the service configuration.
+      </Alert>
+    );
+  }
+
   return (
     <ReCaptcha
+      className="recaptcha"
       ref={ ref }
       sitekey={ appConfig.reCaptcha.siteKey }
       onChange={ handleReCaptchaChange }

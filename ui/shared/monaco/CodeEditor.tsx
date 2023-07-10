@@ -1,11 +1,12 @@
 import type { SystemStyleObject } from '@chakra-ui/react';
-import { Box, useColorMode, Flex } from '@chakra-ui/react';
+import { Box, useColorMode, Flex, useToken } from '@chakra-ui/react';
 import type { EditorProps } from '@monaco-editor/react';
 import MonacoEditor from '@monaco-editor/react';
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import React from 'react';
 
 import type { File, Monaco } from './types';
+import type { SmartContractExternalLibrary } from 'types/api/contract';
 
 import useClientRect from 'lib/hooks/useClientRect';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -15,6 +16,7 @@ import CodeEditorBreadcrumbs from './CodeEditorBreadcrumbs';
 import CodeEditorLoading from './CodeEditorLoading';
 import CodeEditorSideBar, { CONTAINER_WIDTH as SIDE_BAR_WIDTH } from './CodeEditorSideBar';
 import CodeEditorTabs from './CodeEditorTabs';
+import addExternalLibraryWarningDecoration from './utils/addExternalLibraryWarningDecoration';
 import addFileImportDecorations from './utils/addFileImportDecorations';
 import getFullPathOfImportedFile from './utils/getFullPathOfImportedFile';
 import * as themes from './utils/themes';
@@ -36,10 +38,12 @@ const EDITOR_HEIGHT = 500;
 interface Props {
   data: Array<File>;
   remappings?: Array<string>;
+  libraries?: Array<SmartContractExternalLibrary>;
   language?: string;
+  mainFile?: string;
 }
 
-const CodeEditor = ({ data, remappings, language }: Props) => {
+const CodeEditor = ({ data, remappings, libraries, language, mainFile }: Props) => {
   const [ instance, setInstance ] = React.useState<Monaco | undefined>();
   const [ editor, setEditor ] = React.useState<monaco.editor.IStandaloneCodeEditor | undefined>();
   const [ index, setIndex ] = React.useState(0);
@@ -49,6 +53,7 @@ const CodeEditor = ({ data, remappings, language }: Props) => {
   const [ containerRect, containerNodeRef ] = useClientRect<HTMLDivElement>();
 
   const { colorMode } = useColorMode();
+  const borderRadius = useToken('radii', 'md');
   const isMobile = useIsMobile();
   const themeColors = useThemeColors();
 
@@ -74,7 +79,13 @@ const CodeEditor = ({ data, remappings, language }: Props) => {
       .filter((file) => !loadedModelsPaths.includes(file.file_path))
       .map((file) => monaco.editor.createModel(file.source_code, editorLanguage, monaco.Uri.parse(file.file_path)));
 
-    loadedModels.concat(newModels).forEach(addFileImportDecorations);
+    if (language === 'solidity') {
+      loadedModels.concat(newModels)
+        .forEach((models) => {
+          addFileImportDecorations(models);
+          libraries?.length && addExternalLibraryWarningDecoration(models, libraries);
+        });
+    }
 
     editor.addAction({
       id: 'close-tab',
@@ -174,6 +185,12 @@ const CodeEditor = ({ data, remappings, language }: Props) => {
       width: `${ editorWidth }px`,
       height: '100%',
     },
+    '.monaco-editor': {
+      'border-bottom-left-radius': borderRadius,
+    },
+    '.monaco-editor .overflow-guard': {
+      'border-bottom-left-radius': borderRadius,
+    },
     '.highlight': {
       backgroundColor: themeColors['custom.findMatchHighlightBackground'],
     },
@@ -182,18 +199,34 @@ const CodeEditor = ({ data, remappings, language }: Props) => {
       textDecoration: 'underline',
       cursor: 'pointer',
     },
-  }), [ editorWidth, themeColors ]);
+    '.risk-warning-primary': {
+      backgroundColor: themeColors['custom.riskWarning.primaryBackground'],
+    },
+    '.risk-warning': {
+      backgroundColor: themeColors['custom.riskWarning.background'],
+    },
+  }), [ editorWidth, themeColors, borderRadius ]);
 
   if (data.length === 1) {
+    const sx = {
+      ...containerSx,
+      '.monaco-editor': {
+        'border-radius': borderRadius,
+      },
+      '.monaco-editor .overflow-guard': {
+        'border-radius': borderRadius,
+      },
+    };
+
     return (
-      <Box overflow="hidden" borderRadius="md" height={ `${ EDITOR_HEIGHT }px` }>
+      <Box height={ `${ EDITOR_HEIGHT }px` } sx={ sx }>
         <MonacoEditor
           language={ editorLanguage }
           path={ data[index].file_path }
           defaultValue={ data[index].source_code }
           options={ EDITOR_OPTIONS }
           onMount={ handleEditorDidMount }
-          loading={ <CodeEditorLoading/> }
+          loading={ <CodeEditorLoading borderRadius="md"/> }
         />
       </Box>
     );
@@ -202,19 +235,25 @@ const CodeEditor = ({ data, remappings, language }: Props) => {
   return (
     <Flex
       className={ isMetaPressed ? 'meta-pressed' : undefined }
-      overflow="hidden"
-      borderRadius="md"
       width="100%"
       height={ `${ EDITOR_HEIGHT + TABS_HEIGHT + BREADCRUMBS_HEIGHT }px` }
       position="relative"
       ref={ containerNodeRef }
       sx={ containerSx }
+      overflow={{ base: 'hidden', lg: 'visible' }}
+      borderRadius="md"
       onClick={ handleClick }
       onKeyDown={ handleKeyDown }
       onKeyUp={ handleKeyUp }
     >
       <Box flexGrow={ 1 }>
-        <CodeEditorTabs tabs={ tabs } activeTab={ data[index].file_path } onTabSelect={ handleTabSelect } onTabClose={ handleTabClose }/>
+        <CodeEditorTabs
+          tabs={ tabs }
+          activeTab={ data[index].file_path }
+          mainFile={ mainFile }
+          onTabSelect={ handleTabSelect }
+          onTabClose={ handleTabClose }
+        />
         <CodeEditorBreadcrumbs path={ data[index].file_path }/>
         <MonacoEditor
           className="editor-container"
@@ -224,7 +263,7 @@ const CodeEditor = ({ data, remappings, language }: Props) => {
           defaultValue={ data[index].source_code }
           options={ EDITOR_OPTIONS }
           onMount={ handleEditorDidMount }
-          loading={ <CodeEditorLoading/> }
+          loading={ <CodeEditorLoading borderBottomLeftRadius="md"/> }
         />
       </Box>
       <CodeEditorSideBar
@@ -233,6 +272,7 @@ const CodeEditor = ({ data, remappings, language }: Props) => {
         monaco={ instance }
         editor={ editor }
         selectedFile={ data[index].file_path }
+        mainFile={ mainFile }
       />
     </Flex>
   );

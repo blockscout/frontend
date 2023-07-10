@@ -16,16 +16,26 @@ import ContractVerificationFormRow from '../ContractVerificationFormRow';
 type FileTypes = '.sol' | '.yul' | '.json' | '.vy'
 
 interface Props {
+  name?: 'sources' | 'interfaces';
   fileTypes: Array<FileTypes>;
   multiple?: boolean;
+  required?: boolean;
   title: string;
-  hint: string;
+  hint: string | React.ReactNode;
 }
 
-const ContractVerificationFieldSources = ({ fileTypes, multiple, title, hint }: Props) => {
+const ContractVerificationFieldSources = ({ fileTypes, multiple, required, title, hint, name = 'sources' }: Props) => {
   const { setValue, getValues, control, formState, clearErrors } = useFormContext<FormFields>();
 
-  const error = 'sources' in formState.errors ? formState.errors.sources : undefined;
+  const error = (() => {
+    if (name === 'sources' && 'sources' in formState.errors) {
+      return formState.errors.sources;
+    }
+
+    if (name === 'interfaces' && 'interfaces' in formState.errors) {
+      return formState.errors.interfaces;
+    }
+  })();
   const commonError = !error?.type?.startsWith('file_') ? error : undefined;
   const fileError = error?.type?.startsWith('file_') ? error : undefined;
 
@@ -34,12 +44,12 @@ const ContractVerificationFieldSources = ({ fileTypes, multiple, title, hint }: 
       return;
     }
 
-    const value = getValues('sources').slice();
+    const value = getValues(name).slice();
     value.splice(index, 1);
-    setValue('sources', value);
-    clearErrors('sources');
+    setValue(name, value);
+    clearErrors(name);
 
-  }, [ getValues, clearErrors, setValue ]);
+  }, [ getValues, name, setValue, clearErrors ]);
 
   const renderUploadButton = React.useCallback(() => {
     return (
@@ -79,11 +89,24 @@ const ContractVerificationFieldSources = ({ fileTypes, multiple, title, hint }: 
     );
   }, [ formState.isSubmitting, handleFileRemove, fileError ]);
 
-  const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'sources'>}) => {
+  const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, typeof name>}) => {
     const hasValue = field.value && field.value.length > 0;
+
+    const errorElement = (() => {
+      if (commonError?.type === 'required') {
+        return <FieldError message="Field is required"/>;
+      }
+
+      if (commonError?.message) {
+        return <FieldError message={ commonError.message }/>;
+      }
+
+      return null;
+    })();
+
     return (
       <>
-        <FileInput<FormFields, 'sources'> accept={ fileTypes.join(',') } multiple={ multiple } field={ field }>
+        <FileInput<FormFields, typeof name> accept={ fileTypes.join(',') } multiple={ multiple } field={ field }>
           { ({ onChange }) => (
             <Flex
               flexDir="column"
@@ -97,12 +120,12 @@ const ContractVerificationFieldSources = ({ fileTypes, multiple, title, hint }: 
             </Flex>
           ) }
         </FileInput>
-        { commonError?.message && <FieldError message={ commonError.type === 'required' ? 'Field is required' : commonError.message }/> }
+        { errorElement }
       </>
     );
   }, [ fileTypes, multiple, commonError, formState.isSubmitting, renderFiles, renderUploadButton ]);
 
-  const validateFileType = React.useCallback(async(value: FieldPathValue<FormFields, 'sources'>): Promise<ValidateResult> => {
+  const validateFileType = React.useCallback(async(value: FieldPathValue<FormFields, typeof name>): Promise<ValidateResult> => {
     if (Array.isArray(value)) {
       const errorText = `Wrong file type. Allowed files types are ${ fileTypes.join(',') }.`;
       const errors = value.map(({ name }) => fileTypes.some((ext) => name.endsWith(ext)) ? '' : errorText);
@@ -113,7 +136,7 @@ const ContractVerificationFieldSources = ({ fileTypes, multiple, title, hint }: 
     return true;
   }, [ fileTypes ]);
 
-  const validateFileSize = React.useCallback(async(value: FieldPathValue<FormFields, 'sources'>): Promise<ValidateResult> => {
+  const validateFileSize = React.useCallback(async(value: FieldPathValue<FormFields, typeof name>): Promise<ValidateResult> => {
     if (Array.isArray(value)) {
       const FILE_SIZE_LIMIT = 20 * Mb;
       const errors = value.map(({ size }) => size > FILE_SIZE_LIMIT ? 'File is too big. Maximum size is 20 Mb.' : '');
@@ -124,7 +147,7 @@ const ContractVerificationFieldSources = ({ fileTypes, multiple, title, hint }: 
     return true;
   }, []);
 
-  const validateQuantity = React.useCallback(async(value: FieldPathValue<FormFields, 'sources'>): Promise<ValidateResult> => {
+  const validateQuantity = React.useCallback(async(value: FieldPathValue<FormFields, typeof name>): Promise<ValidateResult> => {
     if (!multiple && Array.isArray(value) && value.length > 1) {
       return 'You can upload only one file';
     }
@@ -133,18 +156,18 @@ const ContractVerificationFieldSources = ({ fileTypes, multiple, title, hint }: 
   }, [ multiple ]);
 
   const rules = React.useMemo(() => ({
-    required: true,
+    required,
     validate: {
       file_type: validateFileType,
       file_size: validateFileSize,
       quantity: validateQuantity,
     },
-  }), [ validateFileSize, validateFileType, validateQuantity ]);
+  }), [ validateFileSize, validateFileType, validateQuantity, required ]);
 
   return (
     <ContractVerificationFormRow>
       <Controller
-        name="sources"
+        name={ name }
         control={ control }
         render={ renderControl }
         rules={ rules }

@@ -9,6 +9,7 @@ import type {
   FormFieldsStandardInput,
   FormFieldsVyperContract,
   FormFieldsVyperMultiPartFile,
+  FormFieldsVyperStandardInput,
 } from './types';
 import type { SmartContractVerificationMethod, SmartContractVerificationError, SmartContractVerificationConfig } from 'types/api/contract';
 
@@ -21,6 +22,7 @@ export const SUPPORTED_VERIFICATION_METHODS: Array<SmartContractVerificationMeth
   'multi-part',
   'vyper-code',
   'vyper-multi-part',
+  'vyper-standard-input',
 ];
 
 export const METHOD_LABELS: Record<SmartContractVerificationMethod, string> = {
@@ -30,6 +32,7 @@ export const METHOD_LABELS: Record<SmartContractVerificationMethod, string> = {
   'multi-part': 'Solidity (Multi-part files)',
   'vyper-code': 'Vyper (Contract)',
   'vyper-multi-part': 'Vyper (Multi-part files)',
+  'vyper-standard-input': 'Vyper (Standard JSON input)',
 };
 
 export const DEFAULT_VALUES: Record<SmartContractVerificationMethod, FormFields> = {
@@ -84,7 +87,7 @@ export const DEFAULT_VALUES: Record<SmartContractVerificationMethod, FormFields>
       value: 'vyper-code' as const,
       label: METHOD_LABELS['vyper-code'],
     },
-    name: 'Vyper_contract',
+    name: '',
     compiler: null,
     evm_version: null,
     code: '',
@@ -97,6 +100,14 @@ export const DEFAULT_VALUES: Record<SmartContractVerificationMethod, FormFields>
     },
     compiler: null,
     evm_version: null,
+    sources: [],
+  },
+  'vyper-standard-input': {
+    method: {
+      value: 'vyper-standard-input' as const,
+      label: METHOD_LABELS['vyper-standard-input'],
+    },
+    compiler: null,
     sources: [],
   },
 };
@@ -169,7 +180,7 @@ export function prepareRequestBody(data: FormFields): FetchParams['body'] {
       body.set('contract_name', _data.name);
       body.set('autodetect_constructor_args', String(Boolean(_data.autodetect_constructor_args)));
       body.set('constructor_args', _data.constructor_args);
-      addFilesToFormData(body, _data.sources);
+      addFilesToFormData(body, _data.sources, 'files');
 
       return body;
     }
@@ -177,7 +188,7 @@ export function prepareRequestBody(data: FormFields): FetchParams['body'] {
     case 'sourcify': {
       const _data = data as FormFieldsSourcify;
       const body = new FormData();
-      addFilesToFormData(body, _data.sources);
+      addFilesToFormData(body, _data.sources, 'files');
       _data.contract_index && body.set('chosen_contract_index', _data.contract_index.value);
 
       return body;
@@ -194,7 +205,7 @@ export function prepareRequestBody(data: FormFields): FetchParams['body'] {
 
       const libraries = reduceLibrariesArray(_data.libraries);
       libraries && body.set('libraries', JSON.stringify(libraries));
-      addFilesToFormData(body, _data.sources);
+      addFilesToFormData(body, _data.sources, 'files');
 
       return body;
     }
@@ -217,7 +228,18 @@ export function prepareRequestBody(data: FormFields): FetchParams['body'] {
       const body = new FormData();
       _data.compiler && body.set('compiler_version', _data.compiler.value);
       _data.evm_version && body.set('evm_version', _data.evm_version.value);
-      addFilesToFormData(body, _data.sources);
+      addFilesToFormData(body, _data.sources, 'files');
+      addFilesToFormData(body, _data.interfaces, 'interfaces');
+
+      return body;
+    }
+
+    case 'vyper-standard-input': {
+      const _data = data as FormFieldsVyperStandardInput;
+
+      const body = new FormData();
+      _data.compiler && body.set('compiler_version', _data.compiler.value);
+      addFilesToFormData(body, _data.sources, 'files');
 
       return body;
     }
@@ -239,27 +261,33 @@ function reduceLibrariesArray(libraries: Array<ContractLibrary> | undefined) {
   }, {});
 }
 
-function addFilesToFormData(body: FormData, files: Array<File> | undefined) {
+function addFilesToFormData(body: FormData, files: Array<File> | undefined, fieldName: 'files' | 'interfaces') {
   if (!files) {
     return;
   }
 
   for (let index = 0; index < files.length; index++) {
     const file = files[index];
-    body.set(`files[${ index }]`, file, file.name);
+    body.set(`${ fieldName }[${ index }]`, file, file.name);
   }
 }
 
 const API_ERROR_TO_FORM_FIELD: Record<keyof SmartContractVerificationError, FieldPath<FormFields>> = {
   contract_source_code: 'code',
   files: 'sources',
+  interfaces: 'interfaces',
   compiler_version: 'compiler',
   constructor_arguments: 'constructor_args',
   name: 'name',
 };
 
-export function formatSocketErrors(errors: SmartContractVerificationError): Array<[FieldPath<FormFields>, ErrorOption]> {
+export function formatSocketErrors(errors: SmartContractVerificationError): Array<[FieldPath<FormFields>, ErrorOption] | undefined> {
   return Object.entries(errors).map(([ key, value ]) => {
-    return [ API_ERROR_TO_FORM_FIELD[key as keyof SmartContractVerificationError], { message: value.join(',') } ];
+    const _key = key as keyof SmartContractVerificationError;
+    if (!API_ERROR_TO_FORM_FIELD[_key]) {
+      return;
+    }
+
+    return [ API_ERROR_TO_FORM_FIELD[_key], { message: value.join(',') } ];
   });
 }

@@ -1,13 +1,27 @@
 import stripLeadingSlash from 'lib/stripLeadingSlash';
+import stripTrailingSlash from 'lib/stripTrailingSlash';
 
-export default function getFullPathOfImportedFile(baseFilePath: string, importedFilePath: string, remappings?: Array<string>) {
+// FIXME support multiline imports - https://base-goerli.blockscout.com/address/0x3442844D5d4938CA70f8C227dB88F6069C0b82A9?tab=contract
+
+export default function getFullPathOfImportedFile(baseFilePath: string, importedFilePath: string, compilerRemappings?: Array<string>) {
   if (importedFilePath[0] !== '.') {
     let result = importedFilePath;
 
-    if (remappings && remappings.length > 0) {
-      const [ alias, target ] = remappings.map((item) => item.split('=')).find(([ key ]) => importedFilePath.startsWith(key)) || [];
-      if (alias) {
-        result = importedFilePath.replace(alias, target);
+    // how remappings work - https://docs.soliditylang.org/en/v0.8.13/path-resolution.html#import-remapping
+    if (compilerRemappings && compilerRemappings.length > 0) {
+      const remappings = formatCompilerRemappings(compilerRemappings);
+
+      const { prefix, target } = remappings.find(({ context, prefix }) => {
+        if (context) {
+          const contextPart = '/' + stripLeadingSlash(stripTrailingSlash(context));
+          return baseFilePath.startsWith(contextPart + '/') && importedFilePath.startsWith(prefix);
+        }
+
+        return importedFilePath.startsWith(prefix);
+      }) || {};
+
+      if (prefix && target) {
+        result = importedFilePath.replace(prefix, target);
       }
     }
 
@@ -42,4 +56,23 @@ export default function getFullPathOfImportedFile(baseFilePath: string, imported
   }
 
   return '/' + result.join('/');
+}
+
+interface Remapping {
+  context?: string;
+  prefix: string;
+  target: string;
+}
+
+function formatCompilerRemappings(remappings: Array<string>): Array<Remapping> {
+  return remappings.map((item) => {
+    const chunks = item.split(':');
+
+    const [ prefix, target ] = chunks[chunks.length - 1].split('=');
+    return {
+      context: chunks.length > 1 ? chunks[0] : undefined,
+      prefix,
+      target,
+    };
+  });
 }

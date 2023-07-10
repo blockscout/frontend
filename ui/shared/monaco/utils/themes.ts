@@ -29,12 +29,14 @@ export const light = {
 
     // not able to use rgba for standard variables, so we use custom prefix here
     'custom.list.hoverBackground': 'rgba(16, 17, 18, 0.08)', // blackAlpha.200
-    'custom.findMatchHighlightBackground': 'rgba(234,92,0,0.33)',
+    'custom.findMatchHighlightBackground': 'rgba(198, 246, 213, 1)',
     'custom.inputOption.activeBackground': 'rgba(0, 144, 241, 0.2)',
     'custom.inputOption.hoverBackground': 'rgba(184, 184, 184, 0.31)',
 
     // don't know the name of this variables in vscode
     'custom.fileLink.hoverForeground': '#4299E1', // blue.400
+    'custom.riskWarning.primaryBackground': '#FEEBCB', // orange.100
+    'custom.riskWarning.background': '#FFFAF0', // orange.50
   } as const,
 };
 
@@ -69,11 +71,13 @@ export const dark = {
 
     // not able to use rgba for standard variables, so we use custom prefix here
     'custom.list.hoverBackground': 'rgba(255, 255, 255, 0.08)', // whiteAlpha.200
-    'custom.findMatchHighlightBackground': 'rgba(234,92,0,0.33)',
+    'custom.findMatchHighlightBackground': 'rgba(34, 84, 61, 1)',
     'custom.inputOption.activeBackground': 'rgba(0, 127, 212, 0.4)',
     'custom.inputOption.hoverBackground': 'rgba(90, 93, 94, 0.31)',
 
     // don't know the name of this variables in vscode
     'custom.fileLink.hoverForeground': '#4299E1', // blue.400
+    'custom.riskWarning.primaryBackground': 'rgba(246, 173, 85, 0.3)', // orange.300
+    'custom.riskWarning.background': 'rgba(246, 173, 85, 0.1)', // orange.300
   } as const,
 };

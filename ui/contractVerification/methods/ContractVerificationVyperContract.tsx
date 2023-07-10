@@ -12,7 +12,7 @@ import ContractVerificationFieldName from '../fields/ContractVerificationFieldNa
 const ContractVerificationVyperContract = ({ config }: { config: SmartContractVerificationConfig }) => {
   return (
     <ContractVerificationMethod title="Contract verification via Vyper (contract)">
-      <ContractVerificationFieldName hint="Must match the name specified in the code." isReadOnly/>
+      <ContractVerificationFieldName hint="The contract name is the name assigned to the verified contract in Blockscout."/>
       <ContractVerificationFieldCompiler isVyper/>
       { config?.is_rust_verifier_microservice_enabled && <ContractVerificationFieldEvmVersion isVyper/> }
       <ContractVerificationFieldCode isVyper/>

@@ -108,19 +108,6 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
     );
   })();
 
-  const externalLibraries = (() => {
-    if (!data?.external_libraries || data?.external_libraries.length === 0) {
-      return null;
-    }
-
-    return data.external_libraries.map((item) => (
-      <Box key={ item.address_hash }>
-        <chakra.span fontWeight={ 500 }>{ item.name }: </chakra.span>
-        <LinkInternal href={ route({ pathname: '/address/[hash]', query: { hash: item.address_hash, tab: 'contract' } }) }>{ item.address_hash }</LinkInternal>
-      </Box>
-    ));
-  })();
-
   const verificationAlert = (() => {
     if (data?.is_verified_via_eth_bytecode_db) {
       return (
@@ -201,6 +188,7 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
           { data.optimization_runs && <InfoItem label="Optimization runs" value={ String(data.optimization_runs) } isLoading={ isPlaceholderData }/> }
           { data.verified_at &&
             <InfoItem label="Verified at" value={ dayjs(data.verified_at).format('LLLL') } wordBreak="break-word" isLoading={ isPlaceholderData }/> }
+          { data.file_path && <InfoItem label="Contract file path" value={ data.file_path } wordBreak="break-word" isLoading={ isPlaceholderData }/> }
         </Grid>
       ) }
       <Flex flexDir="column" rowGap={ 6 }>
@@ -212,7 +200,7 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
             isLoading={ isPlaceholderData }
           />
         ) }
-        { data?.is_verified && (
+        { data?.source_code && (
           <ContractSourceCode
             address={ addressHash }
             implementationAddress={ addressInfo?.implementation_address ?? undefined }
@@ -253,14 +241,6 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
           <RawDataSnippet
             data={ data.deployed_bytecode }
             title="Deployed ByteCode"
-            textareaMaxHeight="200px"
-            isLoading={ isPlaceholderData }
-          />
-        ) }
-        { externalLibraries && (
-          <RawDataSnippet
-            data={ externalLibraries }
-            title="External Libraries"
             textareaMaxHeight="200px"
             isLoading={ isPlaceholderData }
           />
