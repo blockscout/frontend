@@ -120,7 +120,7 @@ const SearchBar = ({ isHomepage }: Props) => {
         />
       </PopoverTrigger>
       <PopoverContent w={ `${ menuWidth.current }px` } maxH={{ base: '300px', lg: '500px' }} overflowY="scroll" ref={ menuRef }>
-        <PopoverBody py={ 6 } sx={ isHomepage ? { mark: { bgColor: 'green.100' } } : {} }>
+        <PopoverBody py={ 6 } sx={ isHomepage ? { mark: { bgColor: 'green.100' } } : {} } color="chakra-body-text">
           { searchTerm.trim().length === 0 && recentSearchKeywords.length > 0 && (
             <SearchBarRecentKeywords onClick={ handleSearchTermChange } onClear={ onClose }/>
           ) }

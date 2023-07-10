@@ -1,3 +1,4 @@
+import { LightMode } from '@chakra-ui/react';
 import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
@@ -43,6 +44,32 @@ test('search by name  +@mobile +@dark-mode', async({ mount, page }) => {
   await mount(
     <TestApp>
       <SearchBar/>
+    </TestApp>,
+  );
+  await page.getByPlaceholder(/search/i).type('o');
+  await page.waitForResponse(API_URL);
+
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 500 } });
+});
+
+test('search by name homepage +@dark-mode', async({ mount, page }) => {
+  const API_URL = buildApiUrl('search') + '?q=o';
+  await page.route(API_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify({
+      items: [
+        searchMock.token1,
+        searchMock.token2,
+        searchMock.contract1,
+      ],
+    }),
+  }));
+
+  await mount(
+    <TestApp>
+      <LightMode>
+        <SearchBar isHomepage/>
+      </LightMode>
     </TestApp>,
   );
   await page.getByPlaceholder(/search/i).type('o');
