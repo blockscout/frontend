@@ -19,6 +19,7 @@ type CommonProps = {
   alias?: string | null;
   isLoading?: boolean;
   onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
+  query?: Record<string, string>;
 }
 
 type AddressTokenTxProps = {
@@ -46,15 +47,15 @@ const AddressLink = (props: Props) => {
 
   let url;
   if (type === 'transaction') {
-    url = route({ pathname: '/tx/[hash]', query: { hash } });
+    url = route({ pathname: '/tx/[hash]', query: { ...props.query, hash } });
   } else if (type === 'token') {
-    url = route({ pathname: '/token/[hash]', query: { hash } });
+    url = route({ pathname: '/token/[hash]', query: { ...props.query, hash } });
   } else if (type === 'block') {
-    url = route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: props.blockHeight } });
+    url = route({ pathname: '/block/[height_or_hash]', query: { ...props.query, height_or_hash: props.blockHeight } });
   } else if (type === 'address_token') {
-    url = route({ pathname: '/address/[hash]', query: { hash, tab: 'token_transfers', token: props.tokenHash, scroll_to_tabs: 'true' } });
+    url = route({ pathname: '/address/[hash]', query: { ...props.query, hash, tab: 'token_transfers', token: props.tokenHash, scroll_to_tabs: 'true' } });
   } else {
-    url = route({ pathname: '/address/[hash]', query: { hash } });
+    url = route({ pathname: '/address/[hash]', query: { ...props.query, hash } });
   }
 
   const content = (() => {

@@ -12,6 +12,8 @@ import LinkInternal from 'ui/shared/LinkInternal';
 import CodeEditor from 'ui/shared/monaco/CodeEditor';
 import formatFilePath from 'ui/shared/monaco/utils/formatFilePath';
 
+import ContractExternalLibraries from './ContractExternalLibraries';
+
 const SOURCE_CODE_OPTIONS = [
   { id: 'primary', label: 'Proxy' } as const,
   { id: 'secondary', label: 'Implementation' } as const,
@@ -100,17 +102,17 @@ const ContractSourceCode = ({ address, implementationAddress }: Props) => {
     <Tooltip label="Visualize contract code using Sol2Uml JS library">
       <LinkInternal
         href={ route({ pathname: '/visualize/sol2uml', query: { address: diagramLinkAddress } }) }
-        ml="auto"
+        ml={{ base: '0', lg: 'auto' }}
       >
         <Skeleton isLoaded={ !isLoading }>
           View UML diagram
         </Skeleton>
       </LinkInternal>
     </Tooltip>
-  ) : <Box ml="auto"/>;
+  ) : null;
 
   const copyToClipboard = activeContractData?.length === 1 ?
-    <CopyToClipboard text={ activeContractData[0].source_code } isLoading={ isLoading } ml={ 3 }/> :
+    <CopyToClipboard text={ activeContractData[0].source_code } isLoading={ isLoading } ml={{ base: 'auto', lg: diagramLink ? '0' : 'auto' }}/> :
     null;
 
   const handleSelectChange = React.useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -124,12 +126,20 @@ const ContractSourceCode = ({ address, implementationAddress }: Props) => {
       onChange={ handleSelectChange }
       focusBorderColor="none"
       w="auto"
-      ml={ 3 }
+      fontWeight={ 600 }
       borderRadius="base"
     >
       { SOURCE_CODE_OPTIONS.map((option) => <option key={ option.id } value={ option.id }>{ option.label }</option>) }
     </Select>
   ) : null;
+
+  const externalLibraries = (() => {
+    if (sourceType === 'secondary') {
+      return secondaryContractQuery.data?.external_libraries && <ContractExternalLibraries data={ secondaryContractQuery.data.external_libraries }/>;
+    }
+
+    return primaryContractQuery.data?.external_libraries && <ContractExternalLibraries data={ primaryContractQuery.data.external_libraries }/>;
+  })();
 
   const content = (() => {
     if (isLoading) {
@@ -146,7 +156,9 @@ const ContractSourceCode = ({ address, implementationAddress }: Props) => {
           <CodeEditor
             data={ primaryEditorData }
             remappings={ primaryContractQuery.data?.compiler_settings?.remappings }
+            libraries={ primaryContractQuery.data?.external_libraries ?? undefined }
             language={ primaryContractQuery.data?.language ?? undefined }
+            mainFile={ primaryEditorData[0]?.file_path }
           />
         </Box>
         { secondaryEditorData && (
@@ -154,7 +166,9 @@ const ContractSourceCode = ({ address, implementationAddress }: Props) => {
             <CodeEditor
               data={ secondaryEditorData }
               remappings={ secondaryContractQuery.data?.compiler_settings?.remappings }
+              libraries={ secondaryContractQuery.data?.external_libraries ?? undefined }
               language={ secondaryContractQuery.data?.language ?? undefined }
+              mainFile={ secondaryEditorData?.[0]?.file_path }
             />
           </Box>
         ) }
@@ -168,9 +182,10 @@ const ContractSourceCode = ({ address, implementationAddress }: Props) => {
 
   return (
     <section>
-      <Flex justifyContent="space-between" alignItems="center" mb={ 3 }>
+      <Flex alignItems="center" mb={ 3 } columnGap={ 3 } rowGap={ 2 } flexWrap="wrap">
         { heading }
         { editorSourceTypeSelector }
+        { externalLibraries }
         { diagramLink }
         { copyToClipboard }
       </Flex>

@@ -5,6 +5,7 @@ import React from 'react';
 import type { FileTree } from './types';
 
 import CodeEditorFileIcon from './CodeEditorFileIcon';
+import CodeEditorMainFileIndicator from './CodeEditorMainFileIndicator';
 import iconFolderOpen from './icons/folder-open.svg';
 import iconFolder from './icons/folder.svg';
 import useThemeColors from './utils/useThemeColors';
@@ -15,9 +16,10 @@ interface Props {
   isCollapsed?: boolean;
   onItemClick: (event: React.MouseEvent) => void;
   selectedFile: string;
+  mainFile?: string;
 }
 
-const CodeEditorFileTree = ({ tree, level = 0, onItemClick, isCollapsed, selectedFile }: Props) => {
+const CodeEditorFileTree = ({ tree, level = 0, onItemClick, isCollapsed, selectedFile, mainFile }: Props) => {
   const itemProps: ChakraProps = {
     borderWidth: '0px',
     cursor: 'pointer',
@@ -65,6 +67,7 @@ const CodeEditorFileTree = ({ tree, level = 0, onItemClick, isCollapsed, selecte
                         onItemClick={ onItemClick }
                         isCollapsed={ isCollapsed }
                         selectedFile={ selectedFile }
+                        mainFile={ mainFile }
                       />
                     </AccordionPanel>
                   </>
@@ -82,6 +85,7 @@ const CodeEditorFileTree = ({ tree, level = 0, onItemClick, isCollapsed, selecte
               onClick={ onItemClick }
               data-file-path={ leaf.file_path }
               display="flex"
+              position="relative"
               alignItems="center"
               overflow="hidden"
               _hover={{
@@ -89,6 +93,13 @@ const CodeEditorFileTree = ({ tree, level = 0, onItemClick, isCollapsed, selecte
               }}
               bgColor={ selectedFile === leaf.file_path ? themeColors['list.inactiveSelectionBackground'] : 'none' }
             >
+              { mainFile === leaf.file_path && (
+                <CodeEditorMainFileIndicator
+                  position="absolute"
+                  top={ `${ (22 - 12) / 2 }px` }
+                  left={ `${ (26 - 12 - 2) + (level * 8) }px` }
+                />
+              ) }
               <CodeEditorFileIcon fileName={ leaf.name } mr="4px"/>
               { leafName }
             </AccordionItem>

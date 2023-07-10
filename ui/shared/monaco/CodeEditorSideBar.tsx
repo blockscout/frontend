@@ -18,11 +18,12 @@ interface Props {
   data: Array<File>;
   onFileSelect: (index: number, lineNumber?: number) => void;
   selectedFile: string;
+  mainFile?: string;
 }
 
 export const CONTAINER_WIDTH = 250;
 
-const CodeEditorSideBar = ({ onFileSelect, data, monaco, editor, selectedFile }: Props) => {
+const CodeEditorSideBar = ({ onFileSelect, data, monaco, editor, selectedFile, mainFile }: Props) => {
 
   const [ isStuck, setIsStuck ] = React.useState(false);
   const [ isDrawerOpen, setIsDrawerOpen ] = useBoolean(false);
@@ -132,6 +133,7 @@ const CodeEditorSideBar = ({ onFileSelect, data, monaco, editor, selectedFile }:
                 data={ data }
                 onFileSelect={ handleFileSelect }
                 selectedFile={ selectedFile }
+                mainFile={ mainFile }
                 isActive={ tabIndex === 0 }
                 setActionBarRenderer={ setActionBarRenderer }
               />
