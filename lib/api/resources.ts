@@ -466,6 +466,11 @@ export const RESOURCES = {
     path: '/api/v2/optimism/txn-batches/count',
   },
 
+  // OTHER
+  client_key: {
+    path: '/api/v2/key',
+  },
+
   // DEPRECATED
   old_api: {
     path: '/api',
