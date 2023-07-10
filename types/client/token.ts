@@ -7,4 +7,5 @@ export interface Metadata {
 export interface MetadataAttributes {
   value: string;
   trait_type: string;
+  value_type?: 'URL';
 }
