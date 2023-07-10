@@ -53,7 +53,15 @@ const ContractVerificationFieldEvmVersion = ({ isVyper }: Props) => {
       />
       <>
         <span>The EVM version the contract is written for. If the bytecode does not match the version, we try to verify using the latest EVM version. </span>
-        <Link href="https://forum.poa.network/t/smart-contract-verification-evm-version-details/2318" target="_blank">EVM version details</Link>
+        <Link
+          href={ isVyper ?
+            'https://docs.vyperlang.org/en/stable/compiling-a-contract.html#target-options' :
+            'https://docs.soliditylang.org/en/latest/using-the-compiler.html#target-options'
+          }
+          target="_blank"
+        >
+          EVM version details
+        </Link>
       </>
     </ContractVerificationFormRow>
   );
