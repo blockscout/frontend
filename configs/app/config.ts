@@ -89,6 +89,7 @@ const DEFAULT_CURRENCY_DECIMALS = 18;
 const config = Object.freeze({
   env,
   isDev,
+  useNextJsProxy: getEnvValue(process.env.NEXT_PUBLIC_USE_NEXT_JS_PROXY) === 'true',
   network: {
     logo: {
       'default': getEnvValue(process.env.NEXT_PUBLIC_NETWORK_LOGO),

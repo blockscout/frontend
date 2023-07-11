@@ -78,8 +78,10 @@ frontend:
       _default: 'true'
     NEXT_PUBLIC_FEATURED_NETWORKS:
       _default: https://raw.githubusercontent.com/blockscout/frontend-configs/dev/configs/featured-networks/eth-goerli.json
+    NEXT_PUBLIC_USE_NEXT_JS_PROXY:
+      _default: true
     NEXT_PUBLIC_API_HOST:
-      _default: blockscout-main.k8s-dev.blockscout.com
+      _default: eth-goerli.blockscout.com
     NEXT_PUBLIC_STATS_API_HOST:
       _default: https://stats-test.k8s-dev.blockscout.com/
     NEXT_PUBLIC_VISUALIZE_API_HOST:
