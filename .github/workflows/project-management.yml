@@ -28,13 +28,13 @@ jobs:
             issues: "[${{ github.event.issue.number }}]"
         secrets: inherit
 
-    review_requested:
-        name: Update tasks when review is requested
+    review_requested_issues:
+        name: Get issues for requested PR review
         runs-on: ubuntu-latest
         if: ${{ github.event.pull_request && github.event.action == 'review_requested' }}
+        outputs:
+            issues: ${{ steps.linked_issues.outputs.result }}
         steps:
-            - name: Checkout repo
-              uses: actions/checkout@v3
             - name: Fetching issues linked to pull request
               id: linked_issues
               uses: actions/github-script@v6
@@ -76,11 +76,13 @@ jobs:
 
                     return issues;
 
-            - name: Updating project task statuses for found issues
-              if: ${{ steps.linked_issues.outputs.result }}
-              uses: './.github/workflows/update-project-cards.yml'
-              with:
-                project_name: ${{ vars.PROJECT_NAME }}
-                field_name: Status
-                field_value: Review
-                issues: ${{ steps.linked_issues.outputs.result }}
+    review_requested_tasks:
+        name: Update status of tasks linked to PR
+        needs: [ review_requested_issues ]
+        if: ${{ needs.review_requested_issues.outputs.issues }}
+        uses: './.github/workflows/update-project-cards.yml'
+        with:
+            project_name: ${{ vars.PROJECT_NAME }}
+            field_name: Status
+            field_value: Review
+            issues: ${{ needs.review_requested_issues.outputs.issues }}
