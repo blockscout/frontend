@@ -6,6 +6,7 @@ import appConfig from 'configs/app/config';
 import icon404 from 'icons/error-pages/404.svg';
 import buildUrl from 'lib/api/buildUrl';
 import * as cookies from 'lib/cookies';
+import useFetch from 'lib/hooks/useFetch';
 import useToast from 'lib/hooks/useToast';
 
 interface Props {
@@ -14,6 +15,7 @@ interface Props {
 
 const AppErrorTooManyRequests = ({ className }: Props) => {
   const toast = useToast();
+  const fetch = useFetch();
 
   const handleReCaptchaChange = React.useCallback(async(token: string | null) => {
 
@@ -22,13 +24,12 @@ const AppErrorTooManyRequests = ({ className }: Props) => {
         const url = buildUrl('client_key', undefined, { recaptcha_response: token });
 
         const response = await fetch(url);
-        const data = await response.json();
 
-        if (!(typeof data === 'object' && data !== null && 'key' in data && typeof data.key === 'string')) {
+        if (!(typeof response === 'object' && response !== null && 'key' in response && typeof response.key === 'string')) {
           throw Error('Invalid response from "Client key" resource.');
         }
 
-        cookies.set(cookies.NAMES.CLIENT_KEY, data.key, { expires: 5 / 24 }); // set cookie for 5 hours === key lifetime
+        cookies.set(cookies.NAMES.CLIENT_KEY, response.key, { expires: 5 / 24 }); // set cookie for 5 hours === key lifetime
         window.location.reload();
 
       } catch (error) {
@@ -42,7 +43,7 @@ const AppErrorTooManyRequests = ({ className }: Props) => {
         });
       }
     }
-  }, [ toast ]);
+  }, [ toast, fetch ]);
 
   return (
     <Box
