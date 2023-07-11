@@ -7,8 +7,8 @@ import getSeo from 'lib/next/address/getSeo';
 import ContractVerification from 'ui/pages/ContractVerification';
 import Page from 'ui/shared/Page/Page';
 
-const ContractVerificationPage: NextPage<RoutedQuery<'/address/[hash]/contract_verification'>> =
-({ hash }: RoutedQuery<'/address/[hash]/contract_verification'>) => {
+const ContractVerificationPage: NextPage<RoutedQuery<'/address/[hash]/contract-verification'>> =
+({ hash }: RoutedQuery<'/address/[hash]/contract-verification'>) => {
   const { title, description } = getSeo({ hash });
 
   return (

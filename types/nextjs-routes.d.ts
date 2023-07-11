@@ -6,14 +6,14 @@
 // prettier-ignore
 declare module "nextjs-routes" {
   export type Route =
-    | StaticRoute<"/account/api_key">
-    | StaticRoute<"/account/custom_abi">
-    | StaticRoute<"/account/public_tags_request">
-    | StaticRoute<"/account/tag_address">
-    | StaticRoute<"/account/verified_addresses">
+    | StaticRoute<"/account/api-key">
+    | StaticRoute<"/account/custom-abi">
+    | StaticRoute<"/account/public-tags-request">
+    | StaticRoute<"/account/tag-address">
+    | StaticRoute<"/account/verified-addresses">
     | StaticRoute<"/account/watchlist">
     | StaticRoute<"/accounts">
-    | DynamicRoute<"/address/[hash]/contract_verification", { "hash": string }>
+    | DynamicRoute<"/address/[hash]/contract-verification", { "hash": string }>
     | DynamicRoute<"/address/[hash]", { "hash": string }>
     | StaticRoute<"/api/csrf">
     | StaticRoute<"/api/healthz">
