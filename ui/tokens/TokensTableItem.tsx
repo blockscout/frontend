@@ -73,7 +73,7 @@ const TokensTableItem = ({
       </Td>
       <Td isNumeric>
         <Skeleton isLoaded={ !isLoading } fontSize="sm" lineHeight="24px" fontWeight={ 500 } display="inline-block">
-          { exchangeRate && `$${ exchangeRate }` }
+          { exchangeRate && `$${ Number(exchangeRate).toLocaleString(undefined, { minimumSignificantDigits: 4 }) }` }
         </Skeleton>
       </Td>
       <Td isNumeric maxWidth="300px" width="300px">

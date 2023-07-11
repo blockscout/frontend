@@ -43,7 +43,7 @@ const ERC20TokensTableItem = ({
       </Td>
       <Td isNumeric verticalAlign="middle">
         <Skeleton isLoaded={ !isLoading } display="inline-block">
-          { token.exchange_rate && `$${ token.exchange_rate }` }
+          { token.exchange_rate && `$${ Number(token.exchange_rate).toLocaleString() }` }
         </Skeleton>
       </Td>
       <Td isNumeric verticalAlign="middle">
