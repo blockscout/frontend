@@ -22,8 +22,12 @@ export default function useApiFetch() {
     resourceName: R,
     { pathParams, queryParams, fetchParams }: Params<R> = {},
   ) => {
+    const apiToken = cookies.get(cookies.NAMES.API_TOKEN);
+    const clientKey = cookies.get(cookies.NAMES.CLIENT_KEY);
+
     const resource: ApiResource = RESOURCES[resourceName];
-    const url = buildUrl(resourceName, pathParams, queryParams);
+    const url = buildUrl(resourceName, pathParams, { ...queryParams, apikey: clientKey });
+
     return fetch<SuccessType, ErrorType>(
       url,
       {
@@ -31,7 +35,7 @@ export default function useApiFetch() {
         ...(resource.endpoint ? {
           headers: {
             ...(isNeedProxy() ? { 'x-endpoint': resource.endpoint } : {}),
-            ...(resource.needAuth ? { Authorization: cookies.get(cookies.NAMES.API_TOKEN) } : {}),
+            ...(resource.needAuth ? { Authorization: apiToken } : {}),
           },
         } : {}),
         ...fetchParams,
