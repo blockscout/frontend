@@ -33,6 +33,8 @@ jobs:
         runs-on: ubuntu-latest
         if: ${{ github.event.pull_request && github.event.action == 'review_requested' }}
         steps:
+            - name: Checkout repo
+              uses: actions/checkout@v3
             - name: Fetching issues linked to pull request
               id: linked_issues
               uses: actions/github-script@v6
