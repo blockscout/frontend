@@ -75,7 +75,7 @@ base.describe('without custom links', () => {
   base('base view +@dark-mode +@mobile', async({ mount, page }) => {
     await page.evaluate(() => {
       window.ethereum = {
-        providers: [ { isMetaMask: true } ],
+        isMetaMask: true,
       } as WindowProvider;
     });
 
