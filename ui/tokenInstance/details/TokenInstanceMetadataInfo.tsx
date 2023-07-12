@@ -1,12 +1,12 @@
-import { Box, Grid, GridItem, Icon, Link, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { Box, Grid, GridItem, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInstance } from 'types/api/token';
 import type { MetadataAttributes } from 'types/client/token';
 
-import arrowIcon from 'icons/arrows/north-east.svg';
 import parseMetadata from 'lib/token/parseMetadata';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import LinkExternal from 'ui/shared/LinkExternal';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 import TokenInstanceDivider from './TokenInstanceDivider';
@@ -27,14 +27,20 @@ const Item = ({ data, isLoading }: ItemProps) => {
   const value = (() => {
     if (data.value_type === 'URL') {
       return (
-        <Link whiteSpace="nowrap" display="flex" alignItems="center" w="100%" overflow="hidden" fontSize="sm">
+        <LinkExternal
+          whiteSpace="nowrap"
+          display="inline-flex"
+          alignItems="center"
+          w="100%"
+          overflow="hidden"
+          href={ data.value }
+        >
           <TruncatedTextTooltip label={ data.value }>
             <Box w="calc(100% - 16px)" overflow="hidden" textOverflow="ellipsis">
               <span>{ data.value }</span>
             </Box>
           </TruncatedTextTooltip>
-          <Icon as={ arrowIcon } boxSize={ 4 }/>
-        </Link>
+        </LinkExternal>
       );
     }
 
