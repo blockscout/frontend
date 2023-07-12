@@ -1,6 +1,7 @@
 import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Icon, Tooltip, useClipboard, useDisclosure } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
+import { Element } from 'react-scroll';
 
 import type { SmartContractMethod } from 'types/api/contract';
 
@@ -41,8 +42,8 @@ const ContractMethodsAccordionItem = <T extends SmartContractMethod>({ data, ind
   }, [ onCopy ]);
 
   return (
-    <AccordionItem as="section" _first={{ borderTopWidth: '0' }}>
-      <h2>
+    <AccordionItem as="section" _first={{ borderTopWidth: 0 }} _last={{ borderBottomWidth: 0 }}>
+      <Element as="h2" name={ 'method_id' in data ? `method_${ data.method_id }` : '' }>
         <AccordionButton px={ 0 } py={ 3 } _hover={{ bgColor: 'inherit' }} wordBreak="break-all" textAlign="left">
           { 'method_id' in data && (
             <Tooltip label={ hasCopied ? 'Copied!' : 'Copy link' } isOpen={ isOpen || hasCopied } onClose={ onClose }>
@@ -82,7 +83,7 @@ const ContractMethodsAccordionItem = <T extends SmartContractMethod>({ data, ind
           ) }
           <AccordionIcon/>
         </AccordionButton>
-      </h2>
+      </Element>
       <AccordionPanel pb={ 4 } px={ 0 }>
         { renderContent(data, index, id) }
       </AccordionPanel>

@@ -1,7 +1,7 @@
 import { Accordion, Box, Flex, Link } from '@chakra-ui/react';
 import _range from 'lodash/range';
 import React from 'react';
-import { scroller, Element } from 'react-scroll';
+import { scroller } from 'react-scroll';
 
 import type { SmartContractMethod } from 'types/api/contract';
 
@@ -14,7 +14,7 @@ interface Props<T extends SmartContractMethod> {
 }
 
 const ContractMethodsAccordion = <T extends SmartContractMethod>({ data, addressHash, renderItemContent }: Props<T>) => {
-  const [ expandedSections, setExpandedSections ] = React.useState<Array<number>>([]);
+  const [ expandedSections, setExpandedSections ] = React.useState<Array<number>>(data.length === 1 ? [ 0 ] : []);
   const [ id, setId ] = React.useState(0);
 
   React.useEffect(() => {
@@ -25,7 +25,7 @@ const ContractMethodsAccordion = <T extends SmartContractMethod>({ data, address
     }
 
     const index = data.findIndex((item) => 'method_id' in item && item.method_id === hash);
-    if (index) {
+    if (index > -1) {
       scroller.scrollTo(`method_${ hash }`, {
         duration: 500,
         smooth: true,
@@ -62,21 +62,24 @@ const ContractMethodsAccordion = <T extends SmartContractMethod>({ data, address
   return (
     <>
       <Flex mb={ 3 }>
-        <Box fontWeight={ 500 }>Contract information</Box>
-        <Link onClick={ handleExpandAll } ml="auto">{ expandedSections.length === data.length ? 'Collapse' : 'Expand' } all</Link>
+        <Box fontWeight={ 500 } mr="auto">Contract information</Box>
+        { data.length > 1 && (
+          <Link onClick={ handleExpandAll }>
+            { expandedSections.length === data.length ? 'Collapse' : 'Expand' } all
+          </Link>
+        ) }
         <Link onClick={ handleReset } ml={ 3 }>Reset</Link>
       </Flex>
       <Accordion allowMultiple position="relative" onChange={ handleAccordionStateChange } index={ expandedSections }>
         { data.map((item, index) => (
-          <Element key={ index } name={ 'method_id' in item ? `method_${ item.method_id }` : '' }>
-            <ContractMethodsAccordionItem
-              data={ item }
-              id={ id }
-              index={ index }
-              addressHash={ addressHash }
-              renderContent={ renderItemContent as (item: SmartContractMethod, index: number, id: number) => React.ReactNode }
-            />
-          </Element>
+          <ContractMethodsAccordionItem
+            key={ index }
+            data={ item }
+            id={ id }
+            index={ index }
+            addressHash={ addressHash }
+            renderContent={ renderItemContent as (item: SmartContractMethod, index: number, id: number) => React.ReactNode }
+          />
         )) }
       </Accordion>
     </>
