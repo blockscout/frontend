@@ -1,17 +1,18 @@
-import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Flex, Link } from '@chakra-ui/react';
+import { Accordion, Box, Flex, Link } from '@chakra-ui/react';
 import _range from 'lodash/range';
 import React from 'react';
 
 import type { SmartContractMethod } from 'types/api/contract';
 
-import Hint from 'ui/shared/Hint';
+import ContractMethodsAccordionItem from './ContractMethodsAccordionItem';
 
 interface Props<T extends SmartContractMethod> {
   data: Array<T>;
-  renderContent: (item: T, index: number, id: number) => React.ReactNode;
+  addressHash?: string;
+  renderItemContent: (item: T, index: number, id: number) => React.ReactNode;
 }
 
-const ContractMethodsAccordion = <T extends SmartContractMethod>({ data, renderContent }: Props<T>) => {
+const ContractMethodsAccordion = <T extends SmartContractMethod>({ data, addressHash, renderItemContent }: Props<T>) => {
   const [ expandedSections, setExpandedSections ] = React.useState<Array<number>>([]);
   const [ id, setId ] = React.useState(0);
 
@@ -47,41 +48,16 @@ const ContractMethodsAccordion = <T extends SmartContractMethod>({ data, renderC
         <Link onClick={ handleReset } ml={ 3 }>Reset</Link>
       </Flex>
       <Accordion allowMultiple position="relative" onChange={ handleAccordionStateChange } index={ expandedSections }>
-        { data.map((item, index) => {
-          return (
-            <AccordionItem key={ index } as="section" _first={{ borderTopWidth: '0' }}>
-              <h2>
-                <AccordionButton px={ 0 } py={ 3 } _hover={{ bgColor: 'inherit' }} wordBreak="break-all" textAlign="left">
-                  <Box as="span" fontWeight={ 500 } mr={ 1 }>
-                    { index + 1 }. { item.type === 'fallback' || item.type === 'receive' ? item.type : item.name }
-                  </Box>
-                  { item.type === 'fallback' && (
-                    <Hint
-                      label={
-                        `The fallback function is executed on a call to the contract if none of the other functions match 
-                        the given function signature, or if no data was supplied at all and there is no receive Ether function. 
-                        The fallback function always receives data, but in order to also receive Ether it must be marked payable.`
-                      }/>
-                  ) }
-                  { item.type === 'receive' && (
-                    <Hint
-                      label={
-                        `The receive function is executed on a call to the contract with empty calldata. 
-                        This is the function that is executed on plain Ether transfers (e.g. via .send() or .transfer()). 
-                        If no such function exists, but a payable fallback function exists, the fallback function will be called on a plain Ether transfer. 
-                        If neither a receive Ether nor a payable fallback function is present, 
-                        the contract cannot receive Ether through regular transactions and throws an exception.`
-                      }/>
-                  ) }
-                  <AccordionIcon/>
-                </AccordionButton>
-              </h2>
-              <AccordionPanel pb={ 4 } px={ 0 }>
-                { renderContent(item, index, id) }
-              </AccordionPanel>
-            </AccordionItem>
-          );
-        }) }
+        { data.map((item, index) => (
+          <ContractMethodsAccordionItem
+            key={ index }
+            data={ item }
+            id={ id }
+            index={ index }
+            addressHash={ addressHash }
+            renderContent={ renderItemContent as (item: SmartContractMethod, index: number, id: number) => React.ReactNode }
+          />
+        )) }
       </Accordion>
     </>
   );
