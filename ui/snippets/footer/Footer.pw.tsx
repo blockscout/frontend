@@ -5,11 +5,13 @@ import type { WindowProvider } from 'wagmi';
 import { FOOTER_LINKS } from 'mocks/config/footerLinks';
 import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
+import buildApiUrl from 'playwright/utils/buildApiUrl';
 import * as configs from 'playwright/utils/configs';
 
 import Footer from './Footer';
 
 const FOOTER_LINKS_URL = 'https://localhost:3000/footer-links.json';
+const BACKEND_VERSION_API_URL = buildApiUrl('config_backend_version');
 
 base.describe('with custom links, 4 cols', () => {
   const test = base.extend({
@@ -77,6 +79,13 @@ base.describe('without custom links', () => {
       window.ethereum = {
         isMetaMask: true,
       } as WindowProvider;
+    });
+    await page.route(BACKEND_VERSION_API_URL, (route) => {
+      return route.fulfill({
+        body: JSON.stringify({
+          backend_version: 'v5.2.0-beta.+commit.1ce1a355',
+        }),
+      });
     });
 
     await mount(
