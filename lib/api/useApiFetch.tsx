@@ -34,7 +34,7 @@ export default function useApiFetch() {
     const clientKey = cookies.get(cookies.NAMES.CLIENT_KEY);
 
     const resource: ApiResource = RESOURCES[resourceName];
-    const url = buildUrl(resourceName, pathParams, { ...queryParams, apikey: clientKey });
+    const url = buildUrl(resourceName, pathParams, { ...queryParams, token: clientKey });
     const withBody = isBodyAllowed(fetchParams?.method);
     const headers = _pickBy({
       'x-endpoint': resource.endpoint && isNeedProxy() ? resource.endpoint : undefined,

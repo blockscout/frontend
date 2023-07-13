@@ -3,7 +3,7 @@ import React from 'react';
 import ReCaptcha from 'react-google-recaptcha';
 
 import appConfig from 'configs/app/config';
-import icon404 from 'icons/error-pages/404.svg';
+import icon429 from 'icons/error-pages/429.svg';
 import buildUrl from 'lib/api/buildUrl';
 import * as cookies from 'lib/cookies';
 import useFetch from 'lib/hooks/useFetch';
@@ -50,20 +50,19 @@ const AppErrorTooManyRequests = ({ className }: Props) => {
       className={ className }
       sx={{
         '.recaptcha': {
-          mt: 6,
+          mt: 8,
+          h: '78px', // otherwise content will jump after reCaptcha is loaded
         },
       }}
     >
-      <Icon as={ icon404 } width="200px" height="auto"/>
+      <Icon as={ icon429 } width="200px" height="auto"/>
       <Heading mt={ 8 } size="2xl" fontFamily="body">Too many requests</Heading>
       <Text variant="secondary" mt={ 3 }>
-        Chill on the couch table curl into a furry donut i hate cucumber pls do not throw it at me i like frogs and 0 gravity bite off human toes.
-        Curl into a furry donut why dog in house?
+        You have exceeded the request rate for a given time period. Please reduce the number of requests and try again soon.
       </Text>
       { appConfig.reCaptcha.siteKey && (
         <ReCaptcha
           className="recaptcha"
-          //   ref={ ref }
           sitekey={ appConfig.reCaptcha.siteKey }
           onChange={ handleReCaptchaChange }
         />
