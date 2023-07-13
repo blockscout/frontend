@@ -40,7 +40,7 @@ const TokenInfoMenuItem = ({ className, hash, onBeforeClick }: Props) => {
   });
 
   const handleAddAddressClick = React.useCallback(() => {
-    if (!onBeforeClick({ pathname: '/account/verified_addresses' })) {
+    if (!onBeforeClick({ pathname: '/account/verified-addresses' })) {
       return;
     }
 
@@ -48,7 +48,7 @@ const TokenInfoMenuItem = ({ className, hash, onBeforeClick }: Props) => {
   }, [ modal, onBeforeClick ]);
 
   const handleAddApplicationClick = React.useCallback(async() => {
-    router.push({ pathname: '/account/verified_addresses', query: { address: hash } });
+    router.push({ pathname: '/account/verified-addresses', query: { address: hash } });
   }, [ hash, router ]);
 
   const handleVerifiedAddressSubmit = React.useCallback(async() => {
@@ -56,7 +56,7 @@ const TokenInfoMenuItem = ({ className, hash, onBeforeClick }: Props) => {
   }, [ verifiedAddressesQuery ]);
 
   const handleShowMyAddressesClick = React.useCallback(async() => {
-    router.push({ pathname: '/account/verified_addresses' });
+    router.push({ pathname: '/account/verified-addresses' });
   }, [ router ]);
 
   const icon = <Icon as={ iconEdit } boxSize={ 6 } mr={ 2 } p={ 1 }/>;

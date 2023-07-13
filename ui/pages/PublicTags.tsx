@@ -31,7 +31,7 @@ const PublicTagsComponent: React.FC = () => {
   useRedirectForInvalidAuthToken();
 
   React.useEffect(() => {
-    addressHash && router.replace({ pathname: '/account/public_tags_request' });
+    addressHash && router.replace({ pathname: '/account/public-tags-request' });
   // componentDidMount
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ ]);

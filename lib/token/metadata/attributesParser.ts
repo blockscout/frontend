@@ -1,23 +1,42 @@
-import _capitalize from 'lodash/capitalize';
+import _upperFirst from 'lodash/upperFirst';
 
-import type { Metadata } from 'types/client/token';
+import type { Metadata, MetadataAttributes } from 'types/client/token';
 
 import dayjs from 'lib/date/dayjs';
 
-function formatValue(value: string | number, display: string | undefined): string {
+function formatValue(value: string | number, display: string | undefined, trait: string | undefined): Pick<MetadataAttributes, 'value' | 'value_type'> {
   // https://docs.opensea.io/docs/metadata-standards#attributes
   switch (display) {
     case 'boost_number': {
-      return `+${ value } boost`;
+      return {
+        value: `+${ value } boost`,
+      };
     }
     case 'boost_percentage': {
-      return `${ value }% boost`;
+      return {
+        value: `${ value }% boost`,
+      };
     }
     case 'date': {
-      return dayjs(value).format('YYYY-MM-DD');
+      return {
+        value: dayjs(value).format('YYYY-MM-DD'),
+      };
     }
     default: {
-      return String(value);
+      try {
+        if (trait?.toLowerCase().includes('url')) {
+          const url = new URL(String(value));
+          return {
+            value: url.toString(),
+            value_type: 'URL',
+          };
+        }
+        throw new Error();
+      } catch (error) {
+        return {
+          value: String(value),
+        };
+      }
     }
   }
 }
@@ -38,8 +57,8 @@ export default function attributesParser(attributes: Array<unknown>): Metadata['
       }
 
       return {
-        value: formatValue(value, display),
-        trait_type: _capitalize(trait || 'property'),
+        ...formatValue(value, display, trait),
+        trait_type: _upperFirst(trait || 'property'),
       };
     })
     .filter(Boolean);

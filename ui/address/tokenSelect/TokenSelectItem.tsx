@@ -22,7 +22,7 @@ const TokenSelectItem = ({ data }: Props) => {
         return (
           <>
             <span >{ BigNumber(data.value).dividedBy(10 ** tokenDecimals).toFormat(2) } { trimTokenSymbol(data.token.symbol) }</span>
-            { data.token.exchange_rate && <span >@{ data.token.exchange_rate }</span> }
+            { data.token.exchange_rate && <span >@{ Number(data.token.exchange_rate).toLocaleString() }</span> }
           </>
         );
       }

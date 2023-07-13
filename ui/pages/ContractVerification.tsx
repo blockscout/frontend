@@ -49,7 +49,7 @@ const ContractVerification = () => {
 
   React.useEffect(() => {
     if (method && hash) {
-      router.replace({ pathname: '/address/[hash]/contract_verification', query: { hash } }, undefined, { scroll: false, shallow: true });
+      router.replace({ pathname: '/address/[hash]/contract-verification', query: { hash } }, undefined, { scroll: false, shallow: true });
     }
   // onMount only
   // eslint-disable-next-line react-hooks/exhaustive-deps

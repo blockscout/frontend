@@ -46,8 +46,8 @@ export const base: TokenInstance = {
         value: '5',
       },
       {
-        trait_type: 'bg color',
-        value: '64',
+        trait_type: 'eventURL',
+        value: 'https://twitter.com/lilnounsdao?s=21&t=xAihrtwPd6avwdsQqeMXCw',
       },
       {
         trait_type: 'p1',
