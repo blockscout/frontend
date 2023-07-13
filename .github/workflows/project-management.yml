@@ -29,7 +29,7 @@ jobs:
         secrets: inherit
 
     review_requested_issues:
-        name: Get issues for requested PR review
+        name: Get issues linked to PR
         runs-on: ubuntu-latest
         if: ${{ github.event.pull_request && github.event.action == 'review_requested' }}
         outputs:
@@ -77,10 +77,11 @@ jobs:
                     return issues;
 
     review_requested_tasks:
-        name: Update status of tasks linked to PR
+        name: Update status for issues in review
         needs: [ review_requested_issues ]
         if: ${{ needs.review_requested_issues.outputs.issues }}
         uses: './.github/workflows/update-project-cards.yml'
+        secrets: inherit
         with:
             project_name: ${{ vars.PROJECT_NAME }}
             field_name: Status
