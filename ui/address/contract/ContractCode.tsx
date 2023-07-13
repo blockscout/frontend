@@ -241,6 +241,7 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
           <RawDataSnippet
             data={ data.deployed_bytecode }
             title="Deployed ByteCode"
+            rightSlot={ !data?.creation_bytecode && !(data.is_verified || data.is_self_destructed) ? verificationButton : null }
             textareaMaxHeight="200px"
             isLoading={ isPlaceholderData }
           />
