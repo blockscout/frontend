@@ -23,7 +23,7 @@ const PrivateTagMenuItem = ({ className, hash, onBeforeClick }: Props) => {
   const addressData = queryClient.getQueryData<Address>(queryKey);
 
   const handleClick = React.useCallback(() => {
-    if (!onBeforeClick({ pathname: '/account/tag_address' })) {
+    if (!onBeforeClick({ pathname: '/account/tag-address' })) {
       return;
     }
 

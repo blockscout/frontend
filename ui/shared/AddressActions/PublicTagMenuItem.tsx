@@ -15,11 +15,11 @@ const PublicTagMenuItem = ({ className, hash, onBeforeClick }: Props) => {
   const router = useRouter();
 
   const handleClick = React.useCallback(() => {
-    if (!onBeforeClick({ pathname: '/account/public_tags_request' })) {
+    if (!onBeforeClick({ pathname: '/account/public-tags-request' })) {
       return;
     }
 
-    router.push({ pathname: '/account/public_tags_request', query: { address: hash } });
+    router.push({ pathname: '/account/public-tags-request', query: { address: hash } });
   }, [ hash, onBeforeClick, router ]);
 
   return (

@@ -75,7 +75,7 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
       ml="auto"
       mr={ 3 }
       as="a"
-      href={ route({ pathname: '/address/[hash]/contract_verification', query: { hash: addressHash || '' } }) }
+      href={ route({ pathname: '/address/[hash]/contract-verification', query: { hash: addressHash || '' } }) }
     >
         Verify & publish
     </Button>
@@ -157,7 +157,7 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
               <AddressLink type="address" hash={ data.verified_twin_address_hash } truncation="constant" ml={ 2 }/>
             </Address>
             <chakra.span mt={ 1 }>All functions displayed below are from ABI of that contract. In order to verify current contract, proceed with </chakra.span>
-            <LinkInternal href={ route({ pathname: '/address/[hash]/contract_verification', query: { hash: addressHash || '' } }) }>
+            <LinkInternal href={ route({ pathname: '/address/[hash]/contract-verification', query: { hash: addressHash || '' } }) }>
               Verify & Publish
             </LinkInternal>
             <span> page</span>

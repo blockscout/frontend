@@ -80,7 +80,7 @@ const AddressVerificationStepAddress = ({ defaultAddress, onContinue }: Props) =
         return <span>Ownership of this contract address is already verified by another account.</span>;
       }
       case 'SOURCE_CODE_NOT_VERIFIED_ERROR': {
-        const href = route({ pathname: '/address/[hash]/contract_verification', query: { hash: address } });
+        const href = route({ pathname: '/address/[hash]/contract-verification', query: { hash: address } });
         return (
           <Box>
             <span>The contract source code you entered is not yet verified. Please follow these steps to </span>

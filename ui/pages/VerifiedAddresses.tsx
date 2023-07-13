@@ -29,7 +29,7 @@ const VerifiedAddresses = () => {
   const [ selectedAddress, setSelectedAddress ] = React.useState<string | undefined>(addressHash);
 
   React.useEffect(() => {
-    addressHash && router.replace({ pathname: '/account/verified_addresses' });
+    addressHash && router.replace({ pathname: '/account/verified-addresses' });
   // componentDidMount
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ ]);
