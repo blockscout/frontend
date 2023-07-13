@@ -68,7 +68,9 @@ const TokensTableItem = ({
       { exchangeRate && (
         <HStack spacing={ 3 }>
           <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>Price</Skeleton>
-          <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary"><span>{ exchangeRate }</span></Skeleton>
+          <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary">
+            <span>${ Number(exchangeRate).toLocaleString(undefined, { minimumSignificantDigits: 4 }) }</span>
+          </Skeleton>
         </HStack>
       ) }
       { marketCap && (

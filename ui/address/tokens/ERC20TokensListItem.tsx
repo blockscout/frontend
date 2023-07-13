@@ -36,7 +36,7 @@ const ERC20TokensListItem = ({ token, value, isLoading }: Props) => {
         <HStack spacing={ 3 }>
           <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>Price</Skeleton>
           <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary">
-            <span>{ `$${ token.exchange_rate }` }</span>
+            <span>{ `$${ Number(token.exchange_rate).toLocaleString() }` }</span>
           </Skeleton>
         </HStack>
       ) }
