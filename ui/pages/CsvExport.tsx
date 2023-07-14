@@ -9,6 +9,7 @@ import type { ResourceName } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import { nbsp } from 'lib/html-entities';
 import CsvExportForm from 'ui/csvExport/CsvExportForm';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
@@ -137,8 +138,10 @@ const CsvExport = () => {
           <AddressIcon address={{ hash: addressHash, is_contract: true, implementation_name: null }}/>
           <AddressLink hash={ addressHash } type="address" ml={ 2 } truncation={ isMobile ? 'constant' : 'dynamic' }/>
         </Address>
-        { filterType && filterValue && <span> with applied filter by { filterType } ({ filterValue })</span> }
-        <span> to CSV file</span>
+        <span>{ nbsp }</span>
+        { filterType && filterValue && <span>with applied filter by { filterType } ({ filterValue }) </span> }
+        <span>to CSV file. </span>
+        <span>Exports are limited to the first 10K { EXPORT_TYPES[exportType].text }.</span>
       </Flex>
       { content }
     </Page>
