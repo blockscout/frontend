@@ -14,6 +14,7 @@ import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import useFetch from 'lib/hooks/useFetch';
 import useIssueUrl from 'lib/hooks/useIssueUrl';
+import IndexingAlertIntTxs from 'ui/home/IndexingAlertIntTxs';
 import NetworkAddToWallet from 'ui/shared/NetworkAddToWallet';
 
 import ColorModeToggler from '../header/ColorModeToggler';
@@ -81,6 +82,7 @@ const Footer = () => {
       <Box flexGrow="1" mb={{ base: 8, lg: 0 }}>
         <Flex>
           <ColorModeToggler/>
+          { !appConfig.hideIndexingAlert && <IndexingAlertIntTxs ml={ 6 }/> }
           <NetworkAddToWallet ml={ 8 }/>
         </Flex>
         <Box mt={{ base: 5, lg: '44px' }}>

@@ -96,4 +96,27 @@ base.describe('without custom links', () => {
 
     await expect(page).toHaveScreenshot();
   });
+
+  base('with indexing alert +@dark-mode +@mobile', async({ mount, page }) => {
+    await page.evaluate(() => {
+      window.ethereum = {
+        providers: [ { isMetaMask: true } ],
+      } as WindowProvider;
+    });
+
+    const API_URL = buildApiUrl('homepage_indexing_status');
+
+    await page.route(API_URL, (route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify({ finished_indexing: false, indexed_internal_transactions_ratio: 0.1 }),
+    }));
+
+    const component = await mount(
+      <TestApp>
+        <Footer/>
+      </TestApp>,
+    );
+
+    await expect(component).toHaveScreenshot();
+  });
 });
