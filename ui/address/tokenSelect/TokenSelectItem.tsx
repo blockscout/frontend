@@ -27,7 +27,7 @@ const TokenSelectItem = ({ data }: Props) => {
                 { text }
               </chakra.span>
             </TruncatedTextTooltip>
-            { data.token.exchange_rate && <chakra.span ml={ 2 }>@{ data.token.exchange_rate }</chakra.span> }
+            { data.token.exchange_rate && <chakra.span ml={ 2 }>@{ Number(data.token.exchange_rate).toLocaleString() }</chakra.span> }
           </>
         );
       }

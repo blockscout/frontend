@@ -8,13 +8,16 @@ import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 
 const ContractConnectWallet = () => {
-  const { open } = useWeb3Modal();
+  const { open, isOpen } = useWeb3Modal();
   const { address, isDisconnected } = useAccount();
   const { disconnect } = useDisconnect();
   const isMobile = useIsMobile();
+  const [ isModalOpening, setIsModalOpening ] = React.useState(false);
 
-  const handleConnect = React.useCallback(() => {
-    open();
+  const handleConnect = React.useCallback(async() => {
+    setIsModalOpening(true);
+    await open();
+    setIsModalOpening(false);
   }, [ open ]);
 
   const handleDisconnect = React.useCallback(() => {
@@ -26,7 +29,16 @@ const ContractConnectWallet = () => {
       return (
         <>
           <span>Disconnected</span>
-          <Button ml={ 3 } onClick={ handleConnect } size="sm" variant="outline">Connect wallet</Button>
+          <Button
+            ml={ 3 }
+            onClick={ handleConnect }
+            size="sm"
+            variant="outline"
+            isLoading={ isModalOpening || isOpen }
+            loadingText="Connect wallet"
+          >
+              Connect wallet
+          </Button>
         </>
       );
     }

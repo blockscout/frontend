@@ -28,6 +28,7 @@ import type {
 import type { AddressesResponse } from 'types/api/addresses';
 import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters, BlockWithdrawalsResponse } from 'types/api/block';
 import type { ChartMarketResponse, ChartTransactionResponse } from 'types/api/charts';
+import type { BackendVersionConfig } from 'types/api/configs';
 import type { SmartContract, SmartContractReadMethod, SmartContractWriteMethod, SmartContractVerificationConfig } from 'types/api/contract';
 import type { VerifiedContractsResponse, VerifiedContractsFilters, VerifiedContractsCounters } from 'types/api/contracts';
 import type { IndexingStatus } from 'types/api/indexingStatus';
@@ -466,6 +467,11 @@ export const RESOURCES = {
     path: '/api/v2/optimism/txn-batches/count',
   },
 
+  // CONFIGS
+  config_backend_version: {
+    path: '/api/v2/config/backend-version',
+  },
+
   // DEPRECATED
   old_api: {
     path: '/api',
@@ -609,6 +615,7 @@ Q extends 'l2_output_roots_count' ? number :
 Q extends 'l2_withdrawals_count' ? number :
 Q extends 'l2_deposits_count' ? number :
 Q extends 'l2_txn_batches_count' ? number :
+Q extends 'config_backend_version' ? BackendVersionConfig :
 never;
 /* eslint-enable @typescript-eslint/indent */
 

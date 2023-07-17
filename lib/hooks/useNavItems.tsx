@@ -135,7 +135,7 @@ export default function useNavItems(): ReturnType {
       },
     ].filter(Boolean);
 
-    const mainNavItems = [
+    const mainNavItems: ReturnType['mainNavItems'] = [
       {
         text: 'Blockchain',
         icon: globeIcon,
@@ -171,9 +171,9 @@ export default function useNavItems(): ReturnType {
         icon: gearIcon,
         subItems: appConfig.otherLinks,
       } : null,
-    ].filter(Boolean) as Array<NavItem | NavGroupItem>;
+    ].filter(Boolean);
 
-    const accountNavItems = [
+    const accountNavItems: ReturnType['accountNavItems'] = [
       {
         text: 'Watch list',
         nextRoute: { pathname: '/account/watchlist' as const },
@@ -182,31 +182,31 @@ export default function useNavItems(): ReturnType {
       },
       {
         text: 'Private tags',
-        nextRoute: { pathname: '/account/tag_address' as const },
+        nextRoute: { pathname: '/account/tag-address' as const },
         icon: privateTagIcon,
-        isActive: pathname === '/account/tag_address',
+        isActive: pathname === '/account/tag-address',
       },
       {
         text: 'Public tags',
-        nextRoute: { pathname: '/account/public_tags_request' as const },
-        icon: publicTagIcon, isActive: pathname === '/account/public_tags_request',
+        nextRoute: { pathname: '/account/public-tags-request' as const },
+        icon: publicTagIcon, isActive: pathname === '/account/public-tags-request',
       },
       {
         text: 'API keys',
-        nextRoute: { pathname: '/account/api_key' as const },
-        icon: apiKeysIcon, isActive: pathname === '/account/api_key',
+        nextRoute: { pathname: '/account/api-key' as const },
+        icon: apiKeysIcon, isActive: pathname === '/account/api-key',
       },
       {
         text: 'Custom ABI',
-        nextRoute: { pathname: '/account/custom_abi' as const },
+        nextRoute: { pathname: '/account/custom-abi' as const },
         icon: abiIcon,
-        isActive: pathname === '/account/custom_abi',
+        isActive: pathname === '/account/custom-abi',
       },
       appConfig.contractInfoApi.endpoint && appConfig.adminServiceApi.endpoint && {
         text: 'Verified addrs',
-        nextRoute: { pathname: '/account/verified_addresses' as const },
+        nextRoute: { pathname: '/account/verified-addresses' as const },
         icon: verifiedIcon,
-        isActive: pathname === '/account/verified_addresses',
+        isActive: pathname === '/account/verified-addresses',
       },
     ].filter(Boolean);
 

@@ -75,7 +75,7 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
       ml="auto"
       mr={ 3 }
       as="a"
-      href={ route({ pathname: '/address/[hash]/contract_verification', query: { hash: addressHash || '' } }) }
+      href={ route({ pathname: '/address/[hash]/contract-verification', query: { hash: addressHash || '' } }) }
     >
         Verify & publish
     </Button>
@@ -106,19 +106,6 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
         { decoded }
       </>
     );
-  })();
-
-  const externalLibraries = (() => {
-    if (!data?.external_libraries || data?.external_libraries.length === 0) {
-      return null;
-    }
-
-    return data.external_libraries.map((item) => (
-      <Box key={ item.address_hash }>
-        <chakra.span fontWeight={ 500 }>{ item.name }: </chakra.span>
-        <LinkInternal href={ route({ pathname: '/address/[hash]', query: { hash: item.address_hash, tab: 'contract' } }) }>{ item.address_hash }</LinkInternal>
-      </Box>
-    ));
   })();
 
   const verificationAlert = (() => {
@@ -170,7 +157,7 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
               <AddressLink type="address" hash={ data.verified_twin_address_hash } truncation="constant" ml={ 2 }/>
             </Address>
             <chakra.span mt={ 1 }>All functions displayed below are from ABI of that contract. In order to verify current contract, proceed with </chakra.span>
-            <LinkInternal href={ route({ pathname: '/address/[hash]/contract_verification', query: { hash: addressHash || '' } }) }>
+            <LinkInternal href={ route({ pathname: '/address/[hash]/contract-verification', query: { hash: addressHash || '' } }) }>
               Verify & Publish
             </LinkInternal>
             <span> page</span>
@@ -201,6 +188,7 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
           { data.optimization_runs && <InfoItem label="Optimization runs" value={ String(data.optimization_runs) } isLoading={ isPlaceholderData }/> }
           { data.verified_at &&
             <InfoItem label="Verified at" value={ dayjs(data.verified_at).format('LLLL') } wordBreak="break-word" isLoading={ isPlaceholderData }/> }
+          { data.file_path && <InfoItem label="Contract file path" value={ data.file_path } wordBreak="break-word" isLoading={ isPlaceholderData }/> }
         </Grid>
       ) }
       <Flex flexDir="column" rowGap={ 6 }>
@@ -212,7 +200,7 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
             isLoading={ isPlaceholderData }
           />
         ) }
-        { data?.is_verified && (
+        { data?.source_code && (
           <ContractSourceCode
             address={ addressHash }
             implementationAddress={ addressInfo?.implementation_address ?? undefined }
@@ -253,14 +241,6 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
           <RawDataSnippet
             data={ data.deployed_bytecode }
             title="Deployed ByteCode"
-            textareaMaxHeight="200px"
-            isLoading={ isPlaceholderData }
-          />
-        ) }
-        { externalLibraries && (
-          <RawDataSnippet
-            data={ externalLibraries }
-            title="External Libraries"
             textareaMaxHeight="200px"
             isLoading={ isPlaceholderData }
           />

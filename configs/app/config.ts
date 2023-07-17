@@ -6,6 +6,8 @@ import type { WalletType } from 'types/client/wallets';
 import type { NetworkExplorer } from 'types/networks';
 import type { ChainIndicatorId } from 'ui/home/indicators/types';
 
+import stripTrailingSlash from 'lib/stripTrailingSlash';
+
 const getEnvValue = (env: string | undefined) => env?.replaceAll('\'', '"');
 const parseEnvJson = <DataType>(env: string | undefined): DataType | null => {
   try {
@@ -15,7 +17,6 @@ const parseEnvJson = <DataType>(env: string | undefined): DataType | null => {
   }
 };
 
-const stripTrailingSlash = (str: string) => str[str.length - 1] === '/' ? str.slice(0, -1) : str;
 const getWeb3DefaultWallet = (): WalletType => {
   const envValue = getEnvValue(process.env.NEXT_PUBLIC_WEB3_DEFAULT_WALLET);
   const SUPPORTED_WALLETS: Array<WalletType> = [
@@ -115,7 +116,6 @@ const config = Object.freeze({
   otherLinks: parseEnvJson<Array<NavItemExternal>>(getEnvValue(process.env.NEXT_PUBLIC_OTHER_LINKS)) || [],
   featuredNetworks: getEnvValue(process.env.NEXT_PUBLIC_FEATURED_NETWORKS),
   footerLinks: getEnvValue(process.env.NEXT_PUBLIC_FOOTER_LINKS),
-  blockScoutVersion: getEnvValue(process.env.NEXT_PUBLIC_BLOCKSCOUT_VERSION),
   frontendVersion: getEnvValue(process.env.NEXT_PUBLIC_GIT_TAG),
   frontendCommit: getEnvValue(process.env.NEXT_PUBLIC_GIT_COMMIT_SHA),
   isAccountSupported: getEnvValue(process.env.NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED) === 'true',

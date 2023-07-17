@@ -82,6 +82,19 @@ const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props
         return <ListItem key={ method }>Verification of Vyper contract.</ListItem>;
       case 'vyper-multi-part':
         return <ListItem key={ method }>Verification of multi-part Vyper files.</ListItem>;
+      case 'vyper-standard-input':
+        return (
+          <ListItem key={ method }>
+            <span>Verification of Vyper contract using </span>
+            <Link
+              href="https://docs.vyperlang.org/en/stable/compiling-a-contract.html#compiler-input-and-output-json-description"
+              target="_blank"
+            >
+              Standard input JSON
+            </Link>
+            <span> file.</span>
+          </ListItem>
+        );
     }
   }, []);
 

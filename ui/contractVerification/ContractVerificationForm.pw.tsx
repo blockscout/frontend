@@ -37,6 +37,7 @@ const formConfig: SmartContractVerificationConfig = {
     'multi-part',
     'vyper-code',
     'vyper-multi-part',
+    'vyper-standard-input',
   ],
   vyper_compiler_versions: [
     'v0.3.7+commit.6020b8bb',
@@ -178,6 +179,21 @@ test('vyper multi-part method', async({ mount, page }) => {
   await component.getByLabel(/verification method/i).focus();
   await component.getByLabel(/verification method/i).type('vyper');
   await page.getByRole('button', { name: /multi-part files/i }).click();
+
+  await expect(component).toHaveScreenshot();
+});
+
+test('vyper vyper-standard-input method', async({ mount, page }) => {
+  const component = await mount(
+    <TestApp>
+      <ContractVerificationForm config={ formConfig } hash={ hash }/>
+    </TestApp>,
+    { hooksConfig },
+  );
+
+  await component.getByLabel(/verification method/i).focus();
+  await component.getByLabel(/verification method/i).type('vyper');
+  await page.getByRole('button', { name: /standard json input/i }).click();
 
   await expect(component).toHaveScreenshot();
 });

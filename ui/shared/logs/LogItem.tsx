@@ -47,7 +47,7 @@ const LogItem = ({ address, index, topics, data, decoded, type, tx_hash: txHash,
         <GridItem colSpan={{ base: 1, lg: 2 }}>
           <Alert status="warning" display="inline-table" whiteSpace="normal">
             To see accurate decoded input data, the contract must be verified.{ space }
-            <Link href={ route({ pathname: '/address/[hash]/contract_verification', query: { hash: address.hash } }) }>Verify the contract here</Link>
+            <Link href={ route({ pathname: '/address/[hash]/contract-verification', query: { hash: address.hash } }) }>Verify the contract here</Link>
           </Alert>
         </GridItem>
       ) }

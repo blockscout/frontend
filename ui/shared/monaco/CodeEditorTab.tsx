@@ -5,10 +5,12 @@ import { alt } from 'lib/html-entities';
 import useThemeColors from 'ui/shared/monaco/utils/useThemeColors';
 
 import CodeEditorFileIcon from './CodeEditorFileIcon';
+import CodeEditorMainFileIndicator from './CodeEditorMainFileIndicator';
 import getFilePathParts from './utils/getFilePathParts';
 
 interface Props {
   isActive?: boolean;
+  isMainFile?: boolean;
   path: string;
   onClick: (path: string) => void;
   onClose: (path: string) => void;
@@ -16,7 +18,7 @@ interface Props {
   tabsPathChunks: Array<Array<string>>;
 }
 
-const CodeEditorTab = ({ isActive, path, onClick, onClose, isCloseDisabled, tabsPathChunks }: Props) => {
+const CodeEditorTab = ({ isActive, isMainFile, path, onClick, onClose, isCloseDisabled, tabsPathChunks }: Props) => {
   const [ fileName, folderName ] = getFilePathParts(path, tabsPathChunks);
   const themeColors = useThemeColors();
 
@@ -55,6 +57,7 @@ const CodeEditorTab = ({ isActive, path, onClick, onClose, isCloseDisabled, tabs
       <CodeEditorFileIcon mr="4px" fileName={ fileName }/>
       <span>{ fileName }</span>
       { folderName && <chakra.span fontSize="11px" opacity={ 0.8 } ml={ 1 }>{ folderName[0] === '.' ? '' : '...' }{ folderName }</chakra.span> }
+      { isMainFile && <CodeEditorMainFileIndicator ml={ 2 }/> }
       <Box
         className="codicon codicon-close"
         boxSize="20px"

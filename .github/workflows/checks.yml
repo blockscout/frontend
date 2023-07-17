@@ -90,7 +90,7 @@ jobs:
         run: yarn test:jest
 
   pw_tests:
-    name: 'Playwright tests - project: ${{ matrix.project }}'
+    name: 'Playwright tests / Project: ${{ matrix.project }}'
     needs: [ code_quality ]
     runs-on: ubuntu-latest
     container:

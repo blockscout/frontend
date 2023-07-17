@@ -12,6 +12,7 @@ const ContractVerificationSourcify = () => {
       <ContractVerificationFieldSources
         fileTypes={ FILE_TYPES }
         multiple
+        required
         title="Sources and Metadata JSON"
         hint="Upload all Solidity contract source files and JSON metadata file(s) created during contract compilation."
       />

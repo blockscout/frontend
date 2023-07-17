@@ -1,5 +1,6 @@
 import { useColorModeValue, useToken } from '@chakra-ui/react';
-import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum';
+import { jsonRpcProvider } from '@wagmi/core/providers/jsonRpc';
+import { EthereumClient, w3mConnectors } from '@web3modal/ethereum';
 import { Web3Modal } from '@web3modal/react';
 import React from 'react';
 import type { Chain } from 'wagmi';
@@ -41,7 +42,11 @@ const getConfig = () => {
     const chains = [ currentChain ];
 
     const { publicClient } = configureChains(chains, [
-      w3mProvider({ projectId: appConfig.walletConnect.projectId || '' }),
+      jsonRpcProvider({
+        rpc: () => ({
+          http: appConfig.network.rpcUrl || '',
+        }),
+      }),
     ]);
     const wagmiConfig = createConfig({
       autoConnect: true,

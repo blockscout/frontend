@@ -1,16 +1,20 @@
 import type { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import React from 'react';
 
-import MarketplaceApp from 'ui/pages/MarketplaceApp';
 import Page from 'ui/shared/Page/Page';
+
+const MarketplaceApp = dynamic(() => import('ui/pages/MarketplaceApp'), { ssr: false });
 
 const MarketplaceAppPage: NextPage = () => {
   return (
-    <Page wrapChildren={ false }>
+    <>
       <Head><title>Blockscout | Marketplace</title></Head>
-      <MarketplaceApp/>
-    </Page>
+      <Page wrapChildren={ false }>
+        <MarketplaceApp/>
+      </Page>
+    </>
   );
 };
 

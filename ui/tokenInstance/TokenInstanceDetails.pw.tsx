@@ -5,7 +5,7 @@ import * as addressMock from 'mocks/address/address';
 import * as tokenInstanceMock from 'mocks/tokens/tokenInstance';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
-import insertAdPlaceholder from 'playwright/utils/insertAdPlaceholder';
+import * as configs from 'playwright/utils/configs';
 
 import TokenInstanceDetails from './TokenInstanceDetails';
 
@@ -31,7 +31,8 @@ test('base view +@dark-mode +@mobile', async({ mount, page }) => {
     </TestApp>,
   );
 
-  await insertAdPlaceholder(page);
-
-  await expect(component).toHaveScreenshot();
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator(configs.adsBannerSelector) ],
+    maskColor: configs.maskColor,
+  });
 });
