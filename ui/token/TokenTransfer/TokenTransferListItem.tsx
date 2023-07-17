@@ -7,7 +7,6 @@ import type { TokenTransfer } from 'types/api/tokenTransfer';
 import eastArrowIcon from 'icons/arrows/east.svg';
 import transactionIcon from 'icons/transactions.svg';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -16,6 +15,7 @@ import Tag from 'ui/shared/chakra/Tag';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
+import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean };
 
@@ -92,7 +92,13 @@ const TokenTransferListItem = ({
           <Skeleton isLoaded={ !isLoading } color="text_secondary">
             <span>{ value }</span>
           </Skeleton>
-          <Skeleton isLoaded={ !isLoading }>{ trimTokenSymbol(token.symbol) }</Skeleton>
+          { token.symbol && (
+            <TruncatedTextTooltip label={ token.symbol }>
+              <Skeleton isLoaded={ !isLoading } overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+                { token.symbol }
+              </Skeleton>
+            </TruncatedTextTooltip>
+          ) }
         </Flex>
       ) }
       { 'token_id' in total && (token.type === 'ERC-721' || token.type === 'ERC-1155') && (

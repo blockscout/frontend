@@ -64,17 +64,18 @@ const TxDetailsTokenTransfer = ({ data }: Props) => {
   return (
     <Flex
       alignItems="center"
-      flexWrap="wrap"
+      flexWrap={{ base: 'wrap', lg: 'nowrap' }}
       columnGap={ 3 }
       rowGap={ 3 }
       flexDir="row"
+      w="100%"
     >
       <Flex alignItems="center">
         <AddressLink type="address" fontWeight="500" hash={ data.from.hash } truncation="constant"/>
         <Icon as={ rightArrowIcon } boxSize={ 6 } mx={ 2 } color="gray.500"/>
         <AddressLink type="address" fontWeight="500" hash={ data.to.hash } truncation="constant"/>
       </Flex>
-      <Flex flexDir="column" rowGap={ 5 }>
+      <Flex flexDir="column" rowGap={ 5 } w="100%" overflow="hidden">
         { content }
       </Flex>
     </Flex>

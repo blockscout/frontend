@@ -42,6 +42,7 @@ import LinkInternal from 'ui/shared/LinkInternal';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import RawInputData from 'ui/shared/RawInputData';
 import TextSeparator from 'ui/shared/TextSeparator';
+import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 import TxStatus from 'ui/shared/TxStatus';
 import Utilization from 'ui/shared/Utilization/Utilization';
 import TxDetailsActions from 'ui/tx/details/TxDetailsActions';
@@ -240,7 +241,7 @@ const TxDetails = () => {
           { toAddress ? (
             <>
               { data.to && data.to.hash ? (
-                <Address alignItems="center">
+                <Address alignItems="center" flexShrink={ 0 } w={{ base: '100%', lg: 'auto' }}>
                   <AddressIcon address={ toAddress } isLoading={ isPlaceholderData }/>
                   <AddressLink type="address" ml={ 2 } hash={ toAddress.hash } isLoading={ isPlaceholderData }/>
                   { executionSuccessBadge }
@@ -248,7 +249,7 @@ const TxDetails = () => {
                   <CopyToClipboard text={ toAddress.hash } isLoading={ isPlaceholderData }/>
                 </Address>
               ) : (
-                <Flex width={{ base: '100%', lg: 'auto' }} whiteSpace="pre" alignItems="center">
+                <Flex width={{ base: '100%', lg: 'auto' }} whiteSpace="pre" alignItems="center" flexShrink={ 0 }>
                   <span>[Contract </span>
                   <AddressLink type="address" hash={ toAddress.hash }/>
                   <span> created]</span>
@@ -257,7 +258,11 @@ const TxDetails = () => {
                   <CopyToClipboard text={ toAddress.hash }/>
                 </Flex>
               ) }
-              { toAddress.name && <Text>{ toAddress.name }</Text> }
+              { toAddress.name && (
+                <TruncatedTextTooltip label={ toAddress.name }>
+                  <chakra.span overflow="hidden" textOverflow="ellipsis">{ toAddress.name }</chakra.span>
+                </TruncatedTextTooltip>
+              ) }
               { addressToTags.length > 0 && (
                 <Flex columnGap={ 3 }>
                   { addressToTags }

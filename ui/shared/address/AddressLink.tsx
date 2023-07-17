@@ -61,7 +61,7 @@ const AddressLink = (props: Props) => {
   const content = (() => {
     if (alias) {
       const text = <Box overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">{ alias }</Box>;
-      if (type === 'token') {
+      if (type === 'token' || type === 'address_token') {
         return (
           <TruncatedTextTooltip label={ alias }>
             { text }

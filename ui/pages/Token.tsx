@@ -1,4 +1,4 @@
-import { Box, Icon } from '@chakra-ui/react';
+import { Box, Icon, Tooltip } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
@@ -10,6 +10,7 @@ import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import appConfig from 'configs/app/config';
 import iconSuccess from 'icons/status/success.svg';
+import iconVerifiedToken from 'icons/verified_token.svg';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import useContractTabs from 'lib/hooks/useContractTabs';
@@ -17,7 +18,6 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
-import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import * as addressStubs from 'stubs/address';
 import * as tokenStubs from 'stubs/token';
 import { generateListStub } from 'stubs/utils';
@@ -197,7 +197,7 @@ const TokenPageContent = () => {
     pagination = inventoryQuery.pagination;
   }
 
-  const tokenSymbolText = tokenQuery.data?.symbol ? ` (${ trimTokenSymbol(tokenQuery.data.symbol) })` : '';
+  const tokenSymbolText = tokenQuery.data?.symbol ? ` (${ tokenQuery.data.symbol })` : '';
 
   const tabListProps = React.useCallback(({ isSticky, activeTabIndex }: { isSticky: boolean; activeTabIndex: number }) => {
     if (isMobile) {
@@ -225,30 +225,39 @@ const TokenPageContent = () => {
     };
   }, [ appProps.referrer ]);
 
-  const tags = (
-    <EntityTags
-      data={ contractQuery.data }
-      isLoading={ tokenQuery.isPlaceholderData || contractQuery.isPlaceholderData }
-      tagsBefore={ [
-        tokenQuery.data ? { label: tokenQuery.data?.type, display_name: tokenQuery.data?.type } : undefined,
-      ] }
-      tagsAfter={
-        verifiedInfoQuery.data?.projectSector ?
-          [ { label: verifiedInfoQuery.data.projectSector, display_name: verifiedInfoQuery.data.projectSector } ] :
-          undefined
-      }
-      contentAfter={
-        <NetworkExplorers type="token" pathParam={ hashString } ml="auto" hideText={ isMobile }/>
-      }
-      flexGrow={ 1 }
-    />
+  const titleContentAfter = (
+    <>
+      { verifiedInfoQuery.data?.tokenAddress && (
+        <Tooltip label={ `Information on this token has been verified by ${ appConfig.network.name }` }>
+          <Box boxSize={ 6 }>
+            <Icon as={ iconVerifiedToken } color="green.500" boxSize={ 6 } cursor="pointer"/>
+          </Box>
+        </Tooltip>
+      ) }
+      <EntityTags
+        data={ contractQuery.data }
+        isLoading={ tokenQuery.isPlaceholderData || contractQuery.isPlaceholderData }
+        tagsBefore={ [
+          tokenQuery.data ? { label: tokenQuery.data?.type, display_name: tokenQuery.data?.type } : undefined,
+        ] }
+        tagsAfter={
+          verifiedInfoQuery.data?.projectSector ?
+            [ { label: verifiedInfoQuery.data.projectSector, display_name: verifiedInfoQuery.data.projectSector } ] :
+            undefined
+        }
+        contentAfter={
+          <NetworkExplorers type="token" pathParam={ hashString } ml="auto" hideText={ isMobile }/>
+        }
+        flexGrow={ 1 }
+      />
+    </>
   );
 
   return (
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
-        title={ `${ tokenQuery.data?.name || 'Unnamed' }${ tokenSymbolText } token` }
+        title={ `${ tokenQuery.data?.name || 'Unnamed token' }${ tokenSymbolText }` }
         isLoading={ tokenQuery.isPlaceholderData }
         backLink={ backLink }
         beforeTitle={ (
@@ -256,18 +265,10 @@ const TokenPageContent = () => {
             data={ tokenQuery.data }
             boxSize={ 6 }
             isLoading={ tokenQuery.isPlaceholderData }
-            display="inline-block"
             mr={ 2 }
-            my={{ base: 'auto', lg: tokenQuery.isPlaceholderData ? 2 : 'auto' }}
-            verticalAlign={{ base: undefined, lg: tokenQuery.isPlaceholderData ? 'text-bottom' : undefined }}
           />
         ) }
-        afterTitle={
-          verifiedInfoQuery.data?.tokenAddress ?
-            <Icon as={ iconSuccess } color="green.500" boxSize={ 4 } verticalAlign="top"/> :
-            <Box boxSize={ 4 } display="inline-block"/>
-        }
-        contentAfter={ tags }
+        contentAfter={ titleContentAfter }
       />
       <TokenContractInfo tokenQuery={ tokenQuery } contractQuery={ contractQuery }/>
       <TokenVerifiedInfo verifiedInfoQuery={ verifiedInfoQuery } isVerifiedInfoEnabled={ isVerifiedInfoEnabled }/>

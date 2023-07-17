@@ -15,13 +15,13 @@ type Props = {
 
 const TokensTable = ({ items, page, isLoading }: Props) => {
   return (
-    <Table style={{ tableLayout: 'auto' }}>
+    <Table>
       <Thead top={ 80 }>
         <Tr>
-          <Th>Token</Th>
-          <Th isNumeric>Price</Th>
-          <Th isNumeric>On-chain market cap</Th>
-          <Th isNumeric>Holders</Th>
+          <Th w="50%">Token</Th>
+          <Th isNumeric w="15%">Price</Th>
+          <Th isNumeric w="20%">On-chain market cap</Th>
+          <Th isNumeric w="15%">Holders</Th>
         </Tr>
       </Thead>
       <Tbody>

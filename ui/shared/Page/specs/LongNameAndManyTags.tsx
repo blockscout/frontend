@@ -4,9 +4,8 @@ import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
 
-import iconSuccess from 'icons/status/success.svg';
+import iconVerifiedToken from 'icons/verified_token.svg';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import { publicTag, privateTag, watchlistName } from 'mocks/address/tag';
 import EntityTags from 'ui/shared/EntityTags';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
@@ -31,33 +30,35 @@ const LongNameAndManyTags = () => {
   };
 
   const contentAfter = (
-    <EntityTags
-      data={{
-        private_tags: [ privateTag ],
-        public_tags: [ publicTag ],
-        watchlist_names: [ watchlistName ],
-      }}
-      tagsBefore={ [
-        { label: 'example', display_name: 'Example with long name' },
-      ] }
-      tagsAfter={ [
-        { label: 'after_1', display_name: 'Another tag' },
-        { label: 'after_2', display_name: 'And yet more' },
-      ] }
-      contentAfter={ <NetworkExplorers type="token" pathParam="token-hash" ml="auto" hideText={ isMobile }/> }
-      flexGrow={ 1 }
-    />
+    <>
+      <Icon as={ iconVerifiedToken } color="green.500" boxSize={ 6 } cursor="pointer"/>
+      <EntityTags
+        data={{
+          private_tags: [ privateTag ],
+          public_tags: [ publicTag ],
+          watchlist_names: [ watchlistName ],
+        }}
+        tagsBefore={ [
+          { label: 'example', display_name: 'Example with long name' },
+        ] }
+        tagsAfter={ [
+          { label: 'after_1', display_name: 'Another tag' },
+          { label: 'after_2', display_name: 'And yet more' },
+        ] }
+        contentAfter={ <NetworkExplorers type="token" pathParam="token-hash" ml="auto" hideText={ isMobile }/> }
+        flexGrow={ 1 }
+      />
+    </>
   );
 
-  const tokenSymbolText = ` (${ trimTokenSymbol(tokenData.symbol) })`;
+  const tokenSymbolText = ` (${ tokenData.symbol })`;
 
   return (
     <PageTitle
       title={ `${ tokenData?.name }${ tokenSymbolText } token` }
       beforeTitle={ (
-        <TokenLogo data={ tokenData } boxSize={ 6 } display="inline-block" mr={ 2 }/>
+        <TokenLogo data={ tokenData } boxSize={ 6 } mr={ 2 }/>
       ) }
-      afterTitle={ <Icon as={ iconSuccess } color="green.500" boxSize={ 4 } verticalAlign="top"/> }
       contentAfter={ contentAfter }
     />
   );
