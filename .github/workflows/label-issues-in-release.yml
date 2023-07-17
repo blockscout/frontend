@@ -254,7 +254,7 @@ jobs:
                 id: labeling_issues
                 uses: actions/github-script@v6
                 env:
-                    LABEL_NAME: ${{ steps.tags.outputs.latest }}
+                    LABEL_NAME: ${{ inputs.label_name }}
                     ISSUES: ${{ steps.linked_issues.outputs.result }}
                 with:
                     script: |
