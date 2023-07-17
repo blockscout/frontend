@@ -12,7 +12,11 @@ concurrency:
 jobs:
     label_released_issues:
         name: Label released issues
-        uses: './.github/workflows/label-released-issues.yml'
+        uses: './.github/workflows/label-issues-in-release.yml'
+        with:
+            tag: ${{ github.ref_name }}
+            label_name: ${{ github.ref_name }}
+            label_description: Release ${{ github.ref_name }}
         secrets: inherit
     update_project_cards:
         name: Update project tasks statuses
