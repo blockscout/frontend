@@ -1,11 +1,12 @@
 name: Release
 
 on:
+    workflow_dispatch:
     release:
         types: [ released ]
 
 concurrency:
-    group: Release
+    group: ${{ github.workflow }}-${{ github.ref }} # Release-refs/tags/v1.0.0
     cancel-in-progress: true
 
 jobs:
@@ -13,7 +14,6 @@ jobs:
         name: Label released issues
         uses: './.github/workflows/label-released-issues.yml'
         secrets: inherit
-        if: ${{ github.event.action == 'released' }}
     update_project_cards:
         name: Update project tasks statuses
         needs: label_released_issues
