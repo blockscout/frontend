@@ -22,9 +22,10 @@ interface Props {
 const TokenSnippet = ({ data, className, logoSize = 6, isDisabled, hideSymbol, hideIcon, isLoading, maxW }: Props) => {
 
   const withSymbol = data && data.symbol && !hideSymbol;
+  const columnGap = 2;
 
   return (
-    <Flex className={ className } alignItems="center" columnGap={ 2 } w="100%" overflow="hidden">
+    <Flex className={ className } alignItems="center" columnGap={ columnGap } w="100%" overflow="hidden">
       { !hideIcon && <TokenLogo boxSize={ logoSize } data={ data } isLoading={ isLoading }/> }
       <AddressLink
         flexShrink={ 0 }
@@ -33,7 +34,10 @@ const TokenSnippet = ({ data, className, logoSize = 6, isDisabled, hideSymbol, h
         type="token"
         isDisabled={ isDisabled }
         isLoading={ isLoading }
-        maxW={ withSymbol ? `calc(80% - ${ logoSize * 4 + 8 * 2 }px)` : `calc(${ maxW || '100%' } - ${ logoSize * 4 + 8 }px)` }
+        maxW={ withSymbol ?
+          `calc(80% - ${ (logoSize + columnGap * 2) * 4 }px)` :
+          `calc(${ maxW || '100%' } - ${ (logoSize + columnGap) * 4 }px)`
+        }
         overflow="hidden"
         textOverflow="ellipsis"
       />

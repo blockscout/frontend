@@ -257,7 +257,7 @@ const TokenPageContent = () => {
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
-        title={ `${ tokenQuery.data?.name || 'Unnamed' }${ tokenSymbolText } token` }
+        title={ `${ tokenQuery.data?.name || 'Unnamed token' }${ tokenSymbolText }` }
         isLoading={ tokenQuery.isPlaceholderData }
         backLink={ backLink }
         beforeTitle={ (
