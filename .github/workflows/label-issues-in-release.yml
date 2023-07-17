@@ -1,15 +1,41 @@
-name: Label released issues
+name: Label issues in release
 
 on:
     workflow_dispatch:
-        inputs: 
+        inputs:
+            tag:
+                description: 'Release tag'
+                required: true
+                type: string
+            label_name:
+                description: 'Name of the label'
+                required: true
+                type: string
+            label_description:
+                description: 'Description of the label'
+                default: ''
+                required: false
+                type: string
             label_color:
                 description: 'A color of the added label'
                 default: 'FFFFFF'
                 required: false
                 type: string
     workflow_call:
-        inputs: 
+        inputs:
+            tag:
+                description: 'Release tag'
+                required: true
+                type: string
+            label_name:
+                description: 'Name of the label'
+                required: true
+                type: string
+            label_description:
+                description: 'Description of the label'
+                default: ''
+                required: false
+                type: string
             label_color:
                 description: 'A color of the added label'
                 default: 'FFFFFF'
@@ -21,7 +47,7 @@ on:
                 value: ${{ jobs.run.outputs.issues }}
 
 concurrency:
-    group: Label released issues
+    group: ${{ github.workflow }}-${{ github.ref }}
     cancel-in-progress: true
 
 jobs:
@@ -34,6 +60,8 @@ jobs:
             -   name: Getting tags of the two latestest releases
                 id: tags
                 uses: actions/github-script@v6
+                env:
+                    TAG: ${{ inputs.tag }}
                 with:
                     script: |
                         const { repository: { releases: { nodes: releases } } } = await github.graphql(`
@@ -60,8 +88,15 @@ jobs:
                             }
                         );
 
-                        const [ { tagName: latestTag }, { tagName: previousTag } ] = releases
-                            .filter(({ isPrerelease, isDraft }) => !isPrerelease && !isDraft);
+                        if (releases[0].tagName !== process.env.TAG) {
+                            core.setFailed(`Release with tag ${ process.env.TAG } is not latest one.`);
+                            return;
+                        }
+
+                        const latestTag = process.env.TAG;
+                        const [ { tagName: previousTag } ] = releases
+                            .slice(1)
+                            .filter(({ isDraft }) => !isDraft);
 
                         core.info('Found following tags:');
                         core.info(`    latest:        ${ latestTag }`);
@@ -70,59 +105,9 @@ jobs:
                         core.setOutput('latest', latestTag);
                         core.setOutput('previous', previousTag);
             
-            -   name: Getting info about latest release label
-                id: label
-                uses: actions/github-script@v6
-                env:
-                    LABEL_NAME: ${{ steps.tags.outputs.latest }}
-                with:
-                    script: |
-                        try {
-                            const result = await github.request('GET /repos/{owner}/{repo}/labels/{name}', {
-                                owner: context.repo.owner,
-                                repo: context.repo.repo,
-                                name: process.env.LABEL_NAME,
-                            });
-
-                            core.info(`Found label with id: ${ result.data.id }`);
-                            core.setOutput('id', result.data.id);
-                        } catch (error) {
-                            if (error.status === 404) {
-                                core.info('Nothing has found.');
-                                core.setOutput('id', 'null');
-                            }
-                        }
-
-            -   name: Fetching issues with release label
-                id: has_labeled_issues
-                uses: actions/github-script@v6
-                env:
-                    LABEL_NAME: ${{ steps.tags.outputs.latest }}
-                    LABEL_ID: ${{ steps.label.outputs.id }}
-                with:
-                    script: |
-                        if (process.env.LABEL_ID === 'null') {
-                            core.info(`Label does not exist. No need to fetch issues.`);
-                            return false;
-                        }
-
-                        const { data } = await github.request('GET /repos/{owner}/{repo}/issues', {
-                            owner: context.repo.owner,
-                            repo: context.repo.repo,
-                            labels: process.env.LABEL_NAME,
-                            state: 'closed',
-                        });
-
-                        if (data.length > 0) {
-                            core.info(`Found ${ data.length } closed issues with label ${ process.env.LABEL_NAME }. No further action required.`);
-                            core.notice('Issues already labeled.');
-                            return data.length > 0;
-                        }
-
             -   name: Looking for commits between two releases
                 id: commits
                 uses: actions/github-script@v6
-                if: ${{ steps.has_labeled_issues.outputs.result == 'false' }}
                 env:
                     PREVIOUS_TAG: ${{ steps.tags.outputs.previous }}
                     LATEST_TAG: ${{ steps.tags.outputs.latest }}
@@ -152,7 +137,6 @@ jobs:
             -   name: Looking for issues linked to commits
                 id: linked_issues
                 uses: actions/github-script@v6
-                if: ${{ steps.has_labeled_issues.outputs.result == 'false' }}
                 env:
                     COMMITS: ${{ steps.commits.outputs.result }}
                 with:
@@ -238,29 +222,37 @@ jobs:
                             return issues;
                         }
 
-            -   name: Creating label with latest release tag
+            -   name: Creating label
                 id: label_creating
                 uses: actions/github-script@v6
-                if: ${{ steps.label.outputs.id == 'null' && steps.has_labeled_issues.outputs.result == 'false' }}
                 env:
-                    LABEL_NAME: ${{ steps.tags.outputs.latest }}
+                    LABEL_NAME: ${{ inputs.label_name }}
                     LABEL_COLOR: ${{ inputs.label_color }}
+                    LABEL_DESCRIPTION: ${{ inputs.label_description }}
                 with:
                     script: |
-                        const result = await github.request('POST /repos/{owner}/{repo}/labels', {
-                            owner: context.repo.owner,
-                            repo: context.repo.repo,
-                            name: process.env.LABEL_NAME,
-                            color: process.env.LABEL_COLOR,
-                            description: `Release ${ process.env.LABEL_NAME }`,
-                        });
+                        try {
+                            const result = await github.request('POST /repos/{owner}/{repo}/labels', {
+                                owner: context.repo.owner,
+                                repo: context.repo.repo,
+                                name: process.env.LABEL_NAME,
+                                color: process.env.LABEL_COLOR,
+                                description: process.env.LABEL_DESCRIPTION,
+                            });
 
-                        core.info('Label was created.');
+                            core.info('Label was created.');
+                        } catch (error) {
+                            if (error.status === 422) {
+                                core.info('Label already exist.');
+                            } else {
+                                core.setFailed(error.message);
+                            }
+                        }
+                        
 
             -   name: Adding label to issues
                 id: labeling_issues
                 uses: actions/github-script@v6
-                if: ${{ steps.has_labeled_issues.outputs.result == 'false' }}
                 env:
                     LABEL_NAME: ${{ steps.tags.outputs.latest }}
                     ISSUES: ${{ steps.linked_issues.outputs.result }}
@@ -274,7 +266,7 @@ jobs:
                         }
 
                         for (const issue of issues) {
-                            core.info(`Adding release label to the issue #${ issue }...`);
+                            core.info(`Adding label to the issue #${ issue }...`);
                             await addLabelToIssue(issue, process.env.LABEL_NAME);
                             core.info('Done.\n');
                         }
