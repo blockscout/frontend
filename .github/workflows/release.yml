@@ -10,6 +10,49 @@ concurrency:
     cancel-in-progress: true
 
 jobs:
+    remove_prerelease_label:
+        name: Remove pre-release label from issues
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Remove label
+                id: tags
+                uses: actions/github-script@v6
+                env:
+                    LABEL_NAME: pre-release
+                with:
+                    script: |
+                        const { data: issues } = await github.request('GET /repos/{owner}/{repo}/issues', {
+                            owner: context.repo.owner,
+                            repo: context.repo.repo,
+                            labels: process.env.LABEL_NAME,
+                            state: 'all'
+                        });
+                
+                        const issueIds = issues.map(({ node_id }) => node_id);
+                        const labelId = issues[0].labels.find(({ name }) => name === process.env.LABEL_NAME).node_id;
+
+                        core.info(`Found ${ issueIds.length } issues with label "${ process.env.LABEL_NAME }"`);
+
+                        for (const issueId of issueIds) {
+                            core.info(`Removing label for issue with node_id ${ issueId }...`);
+
+                            await github.graphql(`
+                                mutation($input: RemoveLabelsFromLabelableInput!) {
+                                    removeLabelsFromLabelable(input: $input) {
+                                        clientMutationId
+                                    }
+                                }
+                                `, {
+                                input: {
+                                    labelIds: [ labelId ],
+                                    labelableId: issueId
+                                },
+                            });
+
+                            core.info('Done.\n');
+                        }
+
+
     label_released_issues:
         name: Label released issues
         uses: './.github/workflows/label-issues-in-release.yml'
@@ -18,6 +61,7 @@ jobs:
             label_name: ${{ github.ref_name }}
             label_description: Release ${{ github.ref_name }}
         secrets: inherit
+
     update_project_cards:
         name: Update project tasks statuses
         needs: label_released_issues
@@ -28,4 +72,3 @@ jobs:
             field_value: Released
             issues: ${{ needs.label_released_issues.outputs.issues }}
         secrets: inherit
-
