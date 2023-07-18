@@ -1,4 +1,4 @@
-import { Flex, Icon, Box, chakra, Skeleton } from '@chakra-ui/react';
+import { Flex, Grid, Icon, Box, Text, chakra, Skeleton } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
@@ -6,13 +6,16 @@ import type { SearchResultItem } from 'types/api/search';
 
 import blockIcon from 'icons/block.svg';
 import labelIcon from 'icons/publictags.svg';
+import iconSuccess from 'icons/status/success.svg';
 import txIcon from 'icons/transactions.svg';
+import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
 import * as mixpanel from 'lib/mixpanel/index';
 import { saveToRecentKeywords } from 'lib/recentSearchKeywords';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
+import HashStringShorten from 'ui/shared/HashStringShorten';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkInternal from 'ui/shared/LinkInternal';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
@@ -41,7 +44,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
         const name = data.name + (data.symbol ? ` (${ data.symbol })` : '');
 
         return (
-          <Flex alignItems="flex-start" overflow="hidden">
+          <Flex alignItems="flex-start" flexGrow={ 1 } overflow="hidden">
             <TokenLogo boxSize={ 6 } data={ data } flexShrink={ 0 } isLoading={ isLoading }/>
             <LinkInternal
               ml={ 2 }
@@ -50,6 +53,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
               wordBreak="break-all"
               isLoading={ isLoading }
               onClick={ handleLinkClick }
+              flexGrow={ 1 }
               overflow="hidden"
             >
               <Skeleton
@@ -68,12 +72,15 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
       case 'address': {
         const shouldHighlightHash = data.address.toLowerCase() === searchTerm.toLowerCase();
         return (
-          <Address>
-            <AddressIcon address={{ hash: data.address, is_contract: data.type === 'contract', implementation_name: null }} mr={ 2 } flexShrink={ 0 }/>
-            <Box as={ shouldHighlightHash ? 'mark' : 'span' } display="block" whiteSpace="nowrap" overflow="hidden">
-              <AddressLink type="address" hash={ data.address } fontWeight={ 700 } display="block" w="100%" onClick={ handleLinkClick }/>
-            </Box>
-          </Address>
+          <Flex alignItems="center" overflow="hidden">
+            <Address>
+              <AddressIcon address={{ hash: data.address, is_contract: data.type === 'contract', implementation_name: null }} mr={ 2 } flexShrink={ 0 }/>
+              <Box as={ shouldHighlightHash ? 'mark' : 'span' } display="block" whiteSpace="nowrap" overflow="hidden">
+                <AddressLink type="address" hash={ data.address } fontWeight={ 700 } display="block" w="100%" onClick={ handleLinkClick }/>
+              </Box>
+            </Address>
+            { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 2 }/> }
+          </Flex>
         );
       }
 
@@ -104,6 +111,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
               fontWeight={ 700 }
               href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.block_hash) } }) }
               onClick={ handleLinkClick }
+              mr={ 4 }
             >
               <Box as={ shouldHighlightHash ? 'span' : 'mark' }>{ data.block_number }</Box>
             </LinkInternal>
@@ -128,17 +136,49 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
     switch (data.type) {
       case 'token': {
         return (
-          <Skeleton isLoaded={ !isLoading }>
-            <HashStringShortenDynamic hash={ data.address }/>
-          </Skeleton>
+          <Grid templateColumns="1fr auto" overflow="hidden" gap={ 5 }>
+            <Skeleton isLoaded={ !isLoading } overflow="hidden" display="flex" alignItems="center">
+              <HashStringShorten hash={ data.address }/>
+              { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 2 }/> }
+            </Skeleton>
+            { data.token_type === 'ERC-20' && data.exchange_rate && (
+              <Text overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" fontWeight={ 700 }>
+                ${ Number(data.exchange_rate).toLocaleString() }
+              </Text>
+            ) }
+            { data.token_type !== 'ERC-20' && data.total_supply && (
+              <Text overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" variant="secondary">
+                Items { Number(data.total_supply).toLocaleString() }
+              </Text>
+            ) }
+          </Grid>
         );
       }
       case 'block': {
         const shouldHighlightHash = data.block_hash.toLowerCase() === searchTerm.toLowerCase();
         return (
-          <Box as={ shouldHighlightHash ? 'mark' : 'span' } display="block" w="100%" whiteSpace="nowrap" overflow="hidden">
-            <HashStringShortenDynamic hash={ data.block_hash }/>
-          </Box>
+          <Flex alignItems="center" justifyContent="space-between" w="100%">
+            <Text variant="secondary" mr={ 2 }>{ dayjs(data.timestamp).format('llll') }</Text>
+            <Box as={ shouldHighlightHash ? 'mark' : 'span' } display="block" whiteSpace="nowrap" overflow="hidden">
+              <HashStringShorten hash={ data.block_hash }/>
+            </Box>
+          </Flex>
+
+        );
+      }
+      case 'transaction': {
+        return (
+          <Text variant="secondary">{ dayjs(data.timestamp).format('llll') }</Text>
+        );
+      }
+      case 'label': {
+        return (
+          <Flex alignItems="center" justifyContent="space-between">
+            <Box overflow="hidden">
+              <HashStringShortenDynamic hash={ data.address }/>
+            </Box>
+            { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 2 }/> }
+          </Flex>
         );
       }
       case 'contract':

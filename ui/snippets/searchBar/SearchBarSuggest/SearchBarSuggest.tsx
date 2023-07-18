@@ -15,9 +15,8 @@ import SearchBarSuggestItem from './SearchBarSuggestItem';
 type Category = 'token' | 'nft' | 'address' | 'app' | 'public_tag' | 'transaction' | 'block';
 
 const CATEGORIES: Array<{id: Category; title: string }> = [
-  { id: 'token', title: 'Tokens' },
-  // { id: 'tokens', title: 'Tokens (ERC-20)' },
-  // { id: 'nfts', title: 'NFTs (ERC-721 & ERC-1155)' },
+  { id: 'token', title: 'Tokens (ERC-20)' },
+  { id: 'nft', title: 'NFTs (ERC-721 & ERC-1155)' },
   { id: 'address', title: 'Addresses' },
   { id: 'app', title: 'Apps' },
   { id: 'public_tag', title: 'Public tags' },
@@ -32,7 +31,10 @@ const getItemCategory = (item: SearchResultItem): Category | undefined => {
       return 'address';
     }
     case 'token': {
-      return 'token';
+      if (item.token_type === 'ERC-20') {
+        return 'token';
+      }
+      return 'nft';
     }
     case 'block': {
       return 'block';
@@ -54,53 +56,38 @@ interface Props {
 }
 
 // eslint-disable-next-line import-helpers/order-imports
-// import * as searchMock from 'mocks/search/index';
+import * as searchMock from 'mocks/search/index';
 
-// const mock = [
-//   searchMock.address1,
-//   searchMock.block1,
-//   searchMock.contract1,
-//   searchMock.label1,
-//   searchMock.token1,
-//   searchMock.token2,
-//   searchMock.tx1,
-//   searchMock.address1,
-//   searchMock.block1,
-//   searchMock.block1,
-//   searchMock.block1,
-//   searchMock.block1,
-//   searchMock.block1,
-//   searchMock.block1,
-//   searchMock.block1,
-//   searchMock.block1,
-//   searchMock.block1,
-//   searchMock.contract1,
-//   searchMock.label1,
-//   searchMock.token1,
-//   searchMock.token2,
-//   searchMock.tx1,
-//   searchMock.address1,
-//   searchMock.block1,
-//   searchMock.contract1,
-//   searchMock.label1,
-//   searchMock.token1,
-//   searchMock.token2,
-//   searchMock.tx1,
-//   searchMock.address1,
-//   searchMock.block1,
-//   searchMock.contract1,
-//   searchMock.label1,
-//   searchMock.token1,
-//   searchMock.token2,
-//   searchMock.tx1,
-//   searchMock.address1,
-//   searchMock.block1,
-//   searchMock.contract1,
-//   searchMock.label1,
-//   searchMock.token1,
-//   searchMock.token2,
-//   searchMock.tx1,
-// ];
+const mock = [
+  searchMock.address1,
+  searchMock.block1,
+  searchMock.contract1,
+  searchMock.label1,
+  searchMock.token1,
+  searchMock.token2,
+  searchMock.tx1,
+  searchMock.address1,
+  searchMock.block1,
+  searchMock.block1,
+  searchMock.block1,
+  searchMock.block1,
+  searchMock.block1,
+  searchMock.block1,
+  searchMock.block1,
+  searchMock.block1,
+  searchMock.block1,
+  searchMock.contract1,
+  searchMock.label1,
+  searchMock.token1,
+  searchMock.token2,
+  searchMock.tx1,
+  searchMock.address1,
+  searchMock.block1,
+  searchMock.contract1,
+  searchMock.label1,
+  searchMock.token1,
+  searchMock.token2,
+];
 
 const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props) => {
   const isMobile = useIsMobile();
@@ -146,8 +133,8 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
       return {};
     }
     const map: Partial<Record<Category, Array<SearchResultItem>>> = {};
-    query.data?.items.forEach(item => {
-    // mock.forEach(item => {
+    // query.data?.items.forEach(item => {
+    mock.forEach(item => {
       const cat = getItemCategory(item);
       if (cat) {
         if (cat in map) {
@@ -174,7 +161,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
 
   const content = (() => {
     if (query.isLoading) {
-      return <ContentLoader text="We are searching, please wait... " fontSize="sm" my={ 5 }/>;
+      return <ContentLoader text="We are searching, please wait... " fontSize="sm"/>;
     }
 
     if (query.isError) {

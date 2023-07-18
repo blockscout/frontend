@@ -13,7 +13,7 @@ import LinkInternal from 'ui/shared/LinkInternal';
 
 import SearchBarInput from './SearchBarInput';
 import SearchBarRecentKeywords from './SearchBarRecentKeywords';
-import SearchBarSuggest from './SearchBarSuggest';
+import SearchBarSuggest from './SearchBarSuggest/SearchBarSuggest';
 import useSearchQuery from './useSearchQuery';
 
 type Props = {
@@ -130,7 +130,7 @@ const SearchBar = ({ isHomepage }: Props) => {
       >
         <PopoverBody py={ 0 } color="chakra-body-text">
           <Box
-            maxH="  50vh"
+            maxH="50vh"
             overflowY="scroll"
             id={ SCROLL_CONTAINER_ID }
             ref={ scrollRef }

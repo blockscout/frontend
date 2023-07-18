@@ -28,7 +28,7 @@ test.beforeEach(async({ page }) => {
   });
 });
 
-test('search by name  +@mobile +@dark-mode', async({ mount, page }) => {
+test('search by token name  +@mobile +@dark-mode', async({ mount, page }) => {
   const API_URL = buildApiUrl('search') + '?q=o';
   await page.route(API_URL, (route) => route.fulfill({
     status: 200,
@@ -36,6 +36,27 @@ test('search by name  +@mobile +@dark-mode', async({ mount, page }) => {
       items: [
         searchMock.token1,
         searchMock.token2,
+      ],
+    }),
+  }));
+
+  await mount(
+    <TestApp>
+      <SearchBar/>
+    </TestApp>,
+  );
+  await page.getByPlaceholder(/search/i).type('o');
+  await page.waitForResponse(API_URL);
+
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 500 } });
+});
+
+test('search by contract name  +@mobile +@dark-mode', async({ mount, page }) => {
+  const API_URL = buildApiUrl('search') + '?q=o';
+  await page.route(API_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify({
+      items: [
         searchMock.contract1,
       ],
     }),
