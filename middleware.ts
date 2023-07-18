@@ -1,10 +1,8 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { route } from 'nextjs-routes';
 
-import appConfig from 'configs/app/config';
-import { NAMES } from 'lib/cookies';
 import generateCspPolicy from 'lib/csp/generateCspPolicy';
+import * as middlewares from 'lib/next/middlewares/index';
 
 const cspPolicy = generateCspPolicy();
 
@@ -16,16 +14,9 @@ export function middleware(req: NextRequest) {
     return;
   }
 
-  // we don't have any info from router here, so just do straight forward sub-string search (sorry)
-  const isAccountRoute =
-    req.nextUrl.pathname.includes('/account/') ||
-    (req.nextUrl.pathname === '/txs' && req.nextUrl.searchParams.get('tab') === 'watchlist');
-  const isProfileRoute = req.nextUrl.pathname.includes('/auth/profile');
-  const apiToken = req.cookies.get(NAMES.API_TOKEN);
-
-  if ((isAccountRoute || isProfileRoute) && !apiToken && appConfig.isAccountSupported) {
-    const authUrl = appConfig.authUrl + route({ pathname: '/auth/auth0', query: { path: req.nextUrl.pathname } });
-    return NextResponse.redirect(authUrl);
+  const accountResponse = middlewares.account(req);
+  if (accountResponse) {
+    return accountResponse;
   }
 
   const end = Date.now();
