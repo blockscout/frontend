@@ -7,8 +7,8 @@ import { animateScroll } from 'react-scroll';
 
 import type { PaginationParams } from './types';
 
-import type { PaginatedResources, PaginationFilters, ResourceError, ResourcePayload } from 'lib/api/resources';
-import { RESOURCES } from 'lib/api/resources';
+import type { PaginatedResources, PaginationFilters, PaginationSorting, ResourceError, ResourcePayload } from 'lib/api/resources';
+import { RESOURCES, SORTING_FIELDS } from 'lib/api/resources';
 import type { Params as UseApiQueryParams } from 'lib/api/useApiQuery';
 import useApiQuery from 'lib/api/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -18,6 +18,7 @@ export interface Params<Resource extends PaginatedResources> {
   options?: UseApiQueryParams<Resource>['queryOptions'];
   pathParams?: UseApiQueryParams<Resource>['pathParams'];
   filters?: PaginationFilters<Resource>;
+  sorting?: PaginationSorting<Resource>;
   scrollRef?: React.RefObject<HTMLDivElement>;
 }
 
@@ -37,12 +38,14 @@ export type QueryWithPagesResult<Resource extends PaginatedResources> =
 UseQueryResult<ResourcePayload<Resource>, ResourceError<unknown>> &
 {
   onFilterChange: (filters: PaginationFilters<Resource>) => void;
+  onSortingChange: (sorting?: PaginationSorting<Resource>) => void;
   pagination: PaginationParams;
 }
 
 export default function useQueryWithPages<Resource extends PaginatedResources>({
   resourceName,
   filters,
+  sorting,
   options,
   pathParams,
   scrollRef,
@@ -59,7 +62,7 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
 
   const isMounted = React.useRef(false);
   const canGoBackwards = React.useRef(!router.query.page);
-  const queryParams = { ...pageParams[page], ...filters };
+  const queryParams = { ...pageParams[page], ...filters, ...sorting };
 
   const scrollToTop = useCallback(() => {
     scrollRef?.current ? scrollRef.current.scrollIntoView(true) : animateScroll.scrollToTop({ duration: 0 });
@@ -160,6 +163,26 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
     });
   }, [ router, resource.filterFields, scrollToTop ]);
 
+  const onSortingChange = useCallback((newSorting: PaginationSorting<Resource> | undefined) => {
+    const newQuery = {
+      ...omit<typeof router.query>(router.query, 'next_page_params', 'page', SORTING_FIELDS),
+      ...newSorting,
+    };
+    scrollToTop();
+    router.push(
+      {
+        pathname: router.pathname,
+        query: newQuery,
+      },
+      undefined,
+      { shallow: true },
+    ).then(() => {
+      setHasPages(false);
+      setPage(1);
+      setPageParams({});
+    });
+  }, [ router, scrollToTop ]);
+
   const nextPageParams = data?.next_page_params;
   const hasNextPage = nextPageParams ? Object.keys(nextPageParams).length > 0 : false;
 
@@ -190,5 +213,5 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
     }, 0);
   }, []);
 
-  return { ...queryResult, pagination, onFilterChange };
+  return { ...queryResult, pagination, onFilterChange, onSortingChange };
 }
