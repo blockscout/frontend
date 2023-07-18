@@ -39,6 +39,7 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
   const [ isChangedBytecodeSocket, setIsChangedBytecodeSocket ] = React.useState<boolean>();
 
   const queryClient = useQueryClient();
+  const refetchQueries = queryClient.refetchQueries;
   const addressInfo = queryClient.getQueryData<AddressInfo>(getResourceKey('address', { pathParams: { hash: addressHash } }));
 
   const { data, isPlaceholderData, isError } = useApiQuery('contract', {
@@ -54,6 +55,15 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
     setIsChangedBytecodeSocket(true);
   }, [ ]);
 
+  const handleContractWasVerifiedMessage: SocketMessage.SmartContractWasVerified['handler'] = React.useCallback(() => {
+    refetchQueries({
+      queryKey: getResourceKey('address', { pathParams: { hash: addressHash } }),
+    });
+    refetchQueries({
+      queryKey: getResourceKey('contract', { pathParams: { hash: addressHash } }),
+    });
+  }, [ addressHash, refetchQueries ]);
+
   const channel = useSocketChannel({
     topic: `addresses:${ addressHash?.toLowerCase() }`,
     isDisabled: !addressHash,
@@ -63,6 +73,11 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
     channel,
     event: 'changed_bytecode',
     handler: handleChangedBytecodeMessage,
+  });
+  useSocketMessage({
+    channel,
+    event: 'smart_contract_was_verified',
+    handler: handleContractWasVerifiedMessage,
   });
 
   if (isError) {
