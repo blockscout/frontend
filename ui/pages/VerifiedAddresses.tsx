@@ -7,7 +7,6 @@ import type { VerifiedAddress, TokenInfoApplication, TokenInfoApplications, Veri
 
 import appConfig from 'configs/app/config';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
-import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
 import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { TOKEN_INFO_APPLICATION, VERIFIED_ADDRESS } from 'stubs/account';
@@ -55,7 +54,6 @@ const VerifiedAddresses = () => {
       },
     },
   });
-  const profileQuery = useFetchProfileInfo();
 
   const isLoading = addressesQuery.isPlaceholderData || applicationsQuery.isPlaceholderData;
 
@@ -100,10 +98,6 @@ const VerifiedAddresses = () => {
         return { submissions };
       });
   }, [ queryClient ]);
-
-  if (profileQuery.isError && profileQuery.error.status === 403) {
-    throw new Error('Unverified email error', { cause: profileQuery.error });
-  }
 
   const addButton = (
     <Skeleton mt={ 8 } isLoaded={ !isLoading } display="inline-block">

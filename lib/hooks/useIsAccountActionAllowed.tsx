@@ -19,6 +19,7 @@ export default function useIsAccountActionAllowed() {
   const router = useRouter();
 
   return React.useCallback((accountRoute: Route) => {
+    // TODO @tom2drum manage this case
     if (profileState?.error?.status === 403) {
       router.push(accountRoute);
       return false;

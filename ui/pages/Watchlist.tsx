@@ -20,7 +20,7 @@ import WatchlistTable from 'ui/watchlist/WatchlistTable/WatchlistTable';
 
 const WatchList: React.FC = () => {
   const apiFetch = useApiFetch();
-  const { data, isPlaceholderData, isError, error } = useQuery<unknown, ResourceError, TWatchlist>(
+  const { data, isPlaceholderData, isError } = useQuery<unknown, ResourceError, TWatchlist>(
     [ resourceKey('watchlist') ],
     async() => {
       const watchlistAddresses = await apiFetch<'watchlist', Array<WatchlistAddress>>('watchlist');
@@ -96,9 +96,6 @@ const WatchList: React.FC = () => {
   );
 
   if (isError) {
-    if (error.status === 403) {
-      throw new Error('Unverified email error', { cause: error });
-    }
     return <DataFetchAlert/>;
   }
 

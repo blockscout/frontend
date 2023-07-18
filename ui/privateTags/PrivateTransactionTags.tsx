@@ -14,7 +14,7 @@ import TransactionTagListItem from './TransactionTagTable/TransactionTagListItem
 import TransactionTagTable from './TransactionTagTable/TransactionTagTable';
 
 const PrivateTransactionTags = () => {
-  const { data: transactionTagsData, isPlaceholderData, isError, error } = useApiQuery('private_tags_tx', {
+  const { data: transactionTagsData, isPlaceholderData, isError } = useApiQuery('private_tags_tx', {
     queryOptions: {
       refetchOnMount: false,
       placeholderData: Array(3).fill(PRIVATE_TAG_TX),
@@ -55,9 +55,6 @@ const PrivateTransactionTags = () => {
   );
 
   if (isError) {
-    if (error.status === 403) {
-      throw new Error('Unverified email error', { cause: error });
-    }
     return <DataFetchAlert/>;
   }
 

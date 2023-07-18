@@ -9,7 +9,6 @@ import * as mixpanel from 'lib/mixpanel';
 import AppError from 'ui/shared/AppError/AppError';
 import AppErrorBlockConsensus from 'ui/shared/AppError/AppErrorBlockConsensus';
 import AppErrorInvalidTxHash from 'ui/shared/AppError/AppErrorInvalidTxHash';
-import AppErrorUnverifiedEmail from 'ui/shared/AppError/AppErrorUnverifiedEmail';
 import ErrorBoundary from 'ui/shared/ErrorBoundary';
 import PageContent from 'ui/shared/Page/PageContent';
 import Footer from 'ui/snippets/footer/Footer';
@@ -46,17 +45,9 @@ const Page = ({
 
     const isInvalidTxHash = error?.message.includes('Invalid tx hash');
     const isBlockConsensus = messageInPayload?.includes('Block lost consensus');
-    const isUnverifiedEmail = statusCode === 403 && messageInPayload?.includes('Unverified email');
 
     if (isInvalidTxHash) {
       return <PageContent isHomePage={ isHomePage }><AppErrorInvalidTxHash/></PageContent>;
-    }
-
-    if (isUnverifiedEmail) {
-      const email = resourceErrorPayload && 'email' in resourceErrorPayload && typeof resourceErrorPayload.email === 'string' ?
-        resourceErrorPayload.email :
-        undefined;
-      return <PageContent isHomePage={ isHomePage }><AppErrorUnverifiedEmail mt="50px" email={ email }/></PageContent>;
     }
 
     if (isBlockConsensus) {
