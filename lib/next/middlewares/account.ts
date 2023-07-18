@@ -42,7 +42,14 @@ export function account(req: NextRequest) {
         return;
       }
 
-      return NextResponse.redirect(appConfig.logoutUrl);
+      // yes, we could have checked that the current URL is not the logout URL, but we hadn't
+      // logout URL is always external URL in auth0.com sub-domain
+      // at least we hope so
+
+      const res = NextResponse.redirect(appConfig.logoutUrl);
+      res.cookies.delete(cookies.NAMES.CONFIRM_EMAIL_PAGE_VIEWED); // reset cookie to show email verification page again
+
+      return res;
     }
 
     // if user hasn't seen email verification page, make redirect to it
