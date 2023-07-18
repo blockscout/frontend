@@ -4,7 +4,7 @@ on:
     workflow_dispatch:
     push:
         tags:
-            - 'v**'
+            - 'v[0-9]+.[0-9]+.[0-9]+-[a-z]+' # e.g v1.2.3-alpha
 
 concurrency:
     group: ${{ github.workflow }}-${{ github.ref }} # Release-refs/tags/v1.0.0
