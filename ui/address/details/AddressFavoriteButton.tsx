@@ -25,7 +25,7 @@ const AddressFavoriteButton = ({ className, hash, watchListId }: Props) => {
   const isAccountActionAllowed = useIsAccountActionAllowed();
 
   const handleClick = React.useCallback(() => {
-    if (!isAccountActionAllowed({ pathname: '/account/watchlist' })) {
+    if (!isAccountActionAllowed()) {
       return;
     }
     watchListId ? deleteModalProps.onOpen() : addModalProps.onOpen();
