@@ -116,9 +116,8 @@ In order to enable "My Account" feature you have to configure following set of v
 | Variable | Type| Description | Is required  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED | `boolean` | Set to true if network has account feature | - | `false` | `true` |
-| NEXT_PUBLIC_AUTH_URL | `string` | Account auth base url; the login path (`/auth/auth0`) will be added to it at execution time. Required if account is supported for the app instance. | - | - | `https://blockscout.com` |
-| NEXT_PUBLIC_LOGOUT_URL | `string` | Account logout url. Required if account is supported for the app instance. | - | - | `https://blockscoutcom.us.auth0.com/v2/logout` |
-| NEXT_PUBLIC_LOGOUT_RETURN_URL | `string` | Account logout return url. Required if account is supported for the app instance. | - | - | `https://blockscout.com/poa/core/auth/logout` |
+| NEXT_PUBLIC_AUTH_URL | `string` | Account auth base url; it is used for building login URL (`${ NEXT_PUBLIC_AUTH_URL }/auth/auth0`) and logout return URL (`${ NEXT_PUBLIC_AUTH_URL }/auth/logout`); if not provided the base app URL will be used instead | - | - | `https://blockscout.com` |
+| NEXT_PUBLIC_LOGOUT_URL | `string` | Account logout url. Required if account is supported for the app instance. | `true` if "My Account" is enabled | - | `https://blockscoutcom.us.auth0.com/v2/logout` |
 
 ## App configuration
 

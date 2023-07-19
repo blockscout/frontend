@@ -70,8 +70,9 @@ const logoutUrl = (() => {
   try {
     const envUrl = getEnvValue(process.env.NEXT_PUBLIC_LOGOUT_URL);
     const auth0ClientId = getEnvValue(process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID);
-    const returnUrl = getEnvValue(process.env.NEXT_PUBLIC_LOGOUT_RETURN_URL);
-    if (!envUrl || !auth0ClientId || !returnUrl) {
+    const returnUrl = authUrl + '/auth/logout';
+
+    if (!envUrl || !auth0ClientId) {
       throw Error();
     }
 
