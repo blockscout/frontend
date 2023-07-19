@@ -1,4 +1,4 @@
-import { Text, Icon, Grid } from '@chakra-ui/react';
+import { Text, Icon, Flex, Grid } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SearchResultBlock } from 'types/api/search';
@@ -20,7 +20,7 @@ const SearchBarSuggestBlock = ({ data, isMobile, searchTerm }: Props) => {
   if (isMobile) {
     return (
       <>
-        <Grid alignItems="center" templateColumns="24px auto 1fr" gap={ 2 }>
+        <Flex alignItems="center">
           <Icon as={ blockIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
           <Text
             fontWeight={ 700 }
@@ -30,23 +30,24 @@ const SearchBarSuggestBlock = ({ data, isMobile, searchTerm }: Props) => {
           >
             <span dangerouslySetInnerHTML={{ __html: highlightText(data.block_number.toString(), searchTerm) }}/>
           </Text>
-          <Text variant="secondary" overflow="hidden" whiteSpace="nowrap" as={ shouldHighlightHash ? 'mark' : 'span' } display="block">
-            <HashStringShortenDynamic hash={ data.block_hash } isTooltipDisabled/>
-          </Text>
-        </Grid>
+        </Flex>
+        <Text variant="secondary" overflow="hidden" whiteSpace="nowrap" as={ shouldHighlightHash ? 'mark' : 'span' } display="block">
+          <HashStringShortenDynamic hash={ data.block_hash } isTooltipDisabled/>
+        </Text>
         <Text variant="secondary">{ dayjs(data.timestamp).format('llll') }</Text>
       </>
     );
   }
 
   return (
-    <Grid templateColumns="24px auto 1fr auto" gap={ 2 }>
+    <Grid templateColumns="24px auto minmax(auto, max-content) auto" gap={ 2 }>
       <Icon as={ blockIcon } boxSize={ 6 } color="gray.500"/>
       <Text
         fontWeight={ 700 }
         overflow="hidden"
         whiteSpace="nowrap"
         textOverflow="ellipsis"
+        w="200px"
       >
         <span dangerouslySetInnerHTML={{ __html: highlightText(data.block_number.toString(), searchTerm) }}/>
       </Text>
@@ -59,7 +60,7 @@ const SearchBarSuggestBlock = ({ data, isMobile, searchTerm }: Props) => {
       >
         <HashStringShortenDynamic hash={ data.block_hash } isTooltipDisabled/>
       </Text>
-      <Text variant="secondary">{ dayjs(data.timestamp).format('llll') }</Text>
+      <Text variant="secondary" textAlign="end">{ dayjs(data.timestamp).format('llll') }</Text>
     </Grid>
   );
 };
