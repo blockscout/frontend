@@ -15,10 +15,10 @@ import { saveToRecentKeywords } from 'lib/recentSearchKeywords';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
-import HashStringShorten from 'ui/shared/HashStringShorten';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkInternal from 'ui/shared/LinkInternal';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
+import { getItemCategory, searchItemTitles } from 'ui/shared/search/utils';
 import TokenLogo from 'ui/shared/TokenLogo';
 
 interface Props {
@@ -89,7 +89,6 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
           <Flex alignItems="flex-start">
             <Icon as={ labelIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
             <LinkInternal
-              ml={ 2 }
               href={ route({ pathname: '/address/[hash]', query: { hash: data.address } }) }
               fontWeight={ 700 }
               wordBreak="break-all"
@@ -138,32 +137,25 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
         return (
           <Grid templateColumns="1fr auto" overflow="hidden" gap={ 5 }>
             <Skeleton isLoaded={ !isLoading } overflow="hidden" display="flex" alignItems="center">
-              <HashStringShorten hash={ data.address }/>
+              <HashStringShortenDynamic hash={ data.address }/>
               { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 2 }/> }
             </Skeleton>
-            { data.token_type === 'ERC-20' && data.exchange_rate && (
-              <Text overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" fontWeight={ 700 }>
-                ${ Number(data.exchange_rate).toLocaleString() }
-              </Text>
-            ) }
-            { data.token_type !== 'ERC-20' && data.total_supply && (
-              <Text overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" variant="secondary">
-                Items { Number(data.total_supply).toLocaleString() }
-              </Text>
-            ) }
+            <Text overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" fontWeight={ 700 }>
+              { data.token_type === 'ERC-20' && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }
+              { data.token_type !== 'ERC-20' && data.total_supply && `Items ${ Number(data.total_supply).toLocaleString() }` }
+            </Text>
           </Grid>
         );
       }
       case 'block': {
         const shouldHighlightHash = data.block_hash.toLowerCase() === searchTerm.toLowerCase();
         return (
-          <Flex alignItems="center" justifyContent="space-between" w="100%">
-            <Text variant="secondary" mr={ 2 }>{ dayjs(data.timestamp).format('llll') }</Text>
-            <Box as={ shouldHighlightHash ? 'mark' : 'span' } display="block" whiteSpace="nowrap" overflow="hidden">
-              <HashStringShorten hash={ data.block_hash }/>
+          <>
+            <Box as={ shouldHighlightHash ? 'mark' : 'span' } display="block" whiteSpace="nowrap" overflow="hidden" mb={ 1 }>
+              <HashStringShortenDynamic hash={ data.block_hash }/>
             </Box>
-          </Flex>
-
+            <Text variant="secondary" mr={ 2 }>{ dayjs(data.timestamp).format('llll') }</Text>
+          </>
         );
       }
       case 'transaction': {
@@ -192,12 +184,14 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
     }
   })();
 
+  const category = getItemCategory(data);
+
   return (
     <ListItemMobile py={ 3 } fontSize="sm" rowGap={ 2 }>
       <Flex justifyContent="space-between" w="100%" overflow="hidden" lineHeight={ 6 }>
         { firstRow }
         <Skeleton isLoaded={ !isLoading } color="text_secondary" ml={ 8 } textTransform="capitalize">
-          <span>{ data.type }</span>
+          <span>{ category ? searchItemTitles[category].itemTitleShort : '' }</span>
         </Skeleton>
       </Flex>
       { Boolean(secondRow) && (

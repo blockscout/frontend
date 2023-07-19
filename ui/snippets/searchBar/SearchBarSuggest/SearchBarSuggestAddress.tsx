@@ -27,45 +27,29 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm }: Props) => {
             flexShrink={ 0 }
 
           />
-          { data.name && (
-            <Text
-              fontWeight={ 700 }
-              overflow="hidden"
-              whiteSpace="nowrap"
-              textOverflow="ellipsis"
-              flexGrow={ 1 }
-            >
-              <span dangerouslySetInnerHTML={{ __html: highlightText(data.name, searchTerm) }}/>
-            </Text>
-          ) }
-          { !data.name && (
-            <Box
-              as={ shouldHighlightHash ? 'mark' : 'span' }
-              display="block"
-              overflow="hidden"
-              whiteSpace="nowrap"
-              fontWeight={ 700 }
-              flexGrow={ 1 }
+          <Box
+            as={ shouldHighlightHash ? 'mark' : 'span' }
+            display="block"
+            overflow="hidden"
+            whiteSpace="nowrap"
+            fontWeight={ 700 }
+            flexGrow={ 1 }
 
-            >
-              <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>
-            </Box>
-          ) }
-          { !data.name && data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 2 }/> }
+          >
+            <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>
+          </Box>
+          { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 2 }/> }
         </Flex>
         { data.name && (
-          <Flex alignItems="center" justifyContent="space-between">
-            <Text
-              as={ shouldHighlightHash ? 'mark' : 'span' }
-              overflow="hidden"
-              whiteSpace="nowrap"
-              variant="secondary"
-              flexGrow={ 1 }
-            >
-              <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>
-            </Text>
-            { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 2 }/> }
-          </Flex>
+          <Text
+            variant="secondary"
+            overflow="hidden"
+            whiteSpace="nowrap"
+            textOverflow="ellipsis"
+            flexGrow={ 1 }
+          >
+            <span dangerouslySetInnerHTML={{ __html: highlightText(data.name, searchTerm) }}/>
+          </Text>
         ) }
       </>
     );
@@ -79,43 +63,29 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm }: Props) => {
         flexShrink={ 0 }
 
       />
+      <Flex alignItems="center" w="420px">
+        <Box
+          as={ shouldHighlightHash ? 'mark' : 'span' }
+          display="block"
+          overflow="hidden"
+          whiteSpace="nowrap"
+          fontWeight={ 700 }
+        >
+          <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>
+        </Box>
+        { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 2 }/> }
+      </Flex>
       { data.name && (
-        <>
-          <Text
-            fontWeight={ 700 }
-            overflow="hidden"
-            whiteSpace="nowrap"
-            textOverflow="ellipsis"
-            flexGrow={ 0 }
-            w="200px"
-          >
-            <span dangerouslySetInnerHTML={{ __html: highlightText(data.name, searchTerm) }}/>
-          </Text>
-          <Text
-            as={ shouldHighlightHash ? 'mark' : 'span' }
-            overflow="hidden"
-            whiteSpace="nowrap"
-            variant="secondary"
-            ml={ 2 }
-          >
-            <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>
-          </Text>
-          { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 2 }/> }
-        </>
-      ) }
-      { !data.name && (
-        <>
-          <Box
-            as={ shouldHighlightHash ? 'mark' : 'span' }
-            display="block"
-            overflow="hidden"
-            whiteSpace="nowrap"
-            fontWeight={ 700 }
-          >
-            <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>
-          </Box>
-          { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 2 }/> }
-        </>
+        <Text
+          variant="secondary"
+          overflow="hidden"
+          whiteSpace="nowrap"
+          textOverflow="ellipsis"
+          flexGrow={ 0 }
+          ml={ 6 }
+        >
+          <span dangerouslySetInnerHTML={{ __html: highlightText(data.name, searchTerm) }}/>
+        </Text>
       ) }
     </Flex>
   );

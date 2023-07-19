@@ -38,16 +38,10 @@ const SearchBarSuggestToken = ({ data, isMobile, searchTerm }: Props) => {
             <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>
           </Text>
           { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 2 }/> }
-          { data.token_type === 'ERC-20' && data.exchange_rate && (
-            <Text overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis"ml={ 2 } fontWeight={ 700 } maxW="200px">
-              ${ Number(data.exchange_rate).toLocaleString() }
-            </Text>
-          ) }
-          { data.token_type !== 'ERC-20' && data.total_supply && (
-            <Text overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis"ml={ 2 } variant="secondary" maxW="200px" >
-              Items { Number(data.total_supply).toLocaleString() }
-            </Text>
-          ) }
+          <Text overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis"ml={ 2 } fontWeight={ 700 } maxW="200px">
+            { data.token_type === 'ERC-20' && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }
+            { data.token_type !== 'ERC-20' && data.total_supply && `Items ${ Number(data.total_supply).toLocaleString() }` }
+          </Text>
         </Grid>
       </>
     );
@@ -72,16 +66,10 @@ const SearchBarSuggestToken = ({ data, isMobile, searchTerm }: Props) => {
         </Text>
         { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 2 }/> }
       </Flex>
-      { data.token_type === 'ERC-20' && data.exchange_rate && (
-        <Text overflow="hidden" whiteSpace="nowrap" ml={ 2 } fontWeight={ 700 }>
-          ${ Number(data.exchange_rate).toLocaleString() }
-        </Text>
-      ) }
-      { data.token_type !== 'ERC-20' && data.total_supply && (
-        <Text overflow="hidden" whiteSpace="nowrap" ml={ 2 } variant="secondary">
-          Items { Number(data.total_supply).toLocaleString() }
-        </Text>
-      ) }
+      <Text overflow="hidden" whiteSpace="nowrap" ml={ 2 } fontWeight={ 700 }>
+        { data.token_type === 'ERC-20' && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }
+        { data.token_type !== 'ERC-20' && data.total_supply && `Items ${ Number(data.total_supply).toLocaleString() }` }
+      </Text>
     </Grid>
   );
 };

@@ -195,7 +195,7 @@ const TxDetails = () => {
             <Icon as={ clockIcon } boxSize={ 5 } color="gray.500" isLoading={ isPlaceholderData }/>
             <Skeleton isLoaded={ !isPlaceholderData } ml={ 1 }>{ dayjs(data.timestamp).fromNow() }</Skeleton>
             <TextSeparator/>
-            <Skeleton isLoaded={ !isPlaceholderData } whiteSpace="normal">{ dayjs(data.timestamp).format('LLLL') }</Skeleton>
+            <Skeleton isLoaded={ !isPlaceholderData } whiteSpace="normal">{ dayjs(data.timestamp).format('llll') }</Skeleton>
             <TextSeparator color="gray.500"/>
             <Skeleton isLoaded={ !isPlaceholderData } color="text_secondary">
               <span>{ getConfirmationDuration(data.confirmation_duration) }</span>

@@ -17,6 +17,7 @@ import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkInternal from 'ui/shared/LinkInternal';
+import { getItemCategory, searchItemTitles } from 'ui/shared/search/utils';
 import TokenLogo from 'ui/shared/TokenLogo';
 
 interface Props {
@@ -66,25 +67,19 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
               </Flex>
             </Td>
             <Td fontSize="sm" verticalAlign="middle">
-              <Skeleton isLoaded={ !isLoading } whiteSpace="nowrap" overflow="hidden" display="flex" alignItems="center">
+              <Skeleton isLoaded={ !isLoading } whiteSpace="nowrap" overflow="hidden" display="flex" alignItems="center" justifyContent="space-between">
                 <Box overflow="hidden" whiteSpace="nowrap" w={ data.is_smart_contract_verified ? 'calc(100%-32px)' : 'unset' }>
                   <HashStringShortenDynamic hash={ data.address }/>
                 </Box>
                 { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 2 }/> }
               </Skeleton>
             </Td>
-            <Td fontSize="sm" verticalAlign="middle">
+            <Td fontSize="sm" verticalAlign="middle" isNumeric>
               <Skeleton isLoaded={ !isLoading } whiteSpace="nowrap" overflow="hidden">
-                { data.token_type === 'ERC-20' && data.exchange_rate && (
-                  <Text overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" fontWeight={ 700 }>
-                  ${ Number(data.exchange_rate).toLocaleString() }
-                  </Text>
-                ) }
-                { data.token_type !== 'ERC-20' && data.total_supply && (
-                  <Text overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" variant="secondary">
-                    Items { Number(data.total_supply).toLocaleString() }
-                  </Text>
-                ) }
+                <Text overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" fontWeight={ 700 }>
+                  { data.token_type === 'ERC-20' && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }
+                  { data.token_type !== 'ERC-20' && data.total_supply && `Items ${ Number(data.total_supply).toLocaleString() }` }
+                </Text>
               </Skeleton>
             </Td>
           </>
@@ -154,12 +149,15 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
                 </LinkInternal>
               </Flex>
             </Td>
-            <Td colSpan={ 2 } fontSize="sm" verticalAlign="middle">
-              <Flex alignItems="center" overflow="hidden">
-                <HashStringShortenDynamic hash={ data.address }/>
+            <Td fontSize="sm" verticalAlign="middle">
+              <Flex alignItems="center" overflow="hidden" justifyContent="space-between">
+                <Box overflow="hidden" whiteSpace="nowrap" w={ data.is_smart_contract_verified ? 'calc(100%-32px)' : 'unset' }>
+                  <HashStringShortenDynamic hash={ data.address }/>
+                </Box>
                 { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 2 }/> }
               </Flex>
             </Td>
+            <Td></Td>
           </>
         );
       }
@@ -186,7 +184,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
                 <HashStringShortenDynamic hash={ data.block_hash }/>
               </Box>
             </Td>
-            <Td fontSize="sm" verticalAlign="middle">
+            <Td fontSize="sm" verticalAlign="middle" isNumeric>
               <Text variant="secondary">{ dayjs(data.timestamp).format('llll') }</Text>
             </Td>
           </>
@@ -204,7 +202,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
                 </chakra.mark>
               </Flex>
             </Td>
-            <Td fontSize="sm" verticalAlign="middle">
+            <Td fontSize="sm" verticalAlign="middle" isNumeric>
               <Text variant="secondary">{ dayjs(data.timestamp).format('llll') }</Text>
             </Td>
           </>
@@ -213,12 +211,14 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
     }
   })();
 
+  const category = getItemCategory(data);
+
   return (
     <Tr>
       { content }
       <Td fontSize="sm" textTransform="capitalize" verticalAlign="middle">
         <Skeleton isLoaded={ !isLoading } color="text_secondary" display="inline-block">
-          <span>{ data.type }</span>
+          <span>{ category ? searchItemTitles[category].itemTitle : '' }</span>
         </Skeleton>
       </Td>
     </Tr>

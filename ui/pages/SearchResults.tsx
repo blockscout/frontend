@@ -15,39 +15,6 @@ import Pagination from 'ui/shared/pagination/Pagination';
 import Thead from 'ui/shared/TheadSticky';
 import Header from 'ui/snippets/header/Header';
 import useSearchQuery from 'ui/snippets/searchBar/useSearchQuery';
-// eslint-disable-next-line import-helpers/order-imports
-import * as searchMock from 'mocks/search/index';
-
-const mock = [
-  searchMock.address1,
-  searchMock.block1,
-  searchMock.contract1,
-  searchMock.label1,
-  searchMock.token1,
-  searchMock.token2,
-  searchMock.tx1,
-  searchMock.address1,
-  searchMock.block1,
-  searchMock.block1,
-  searchMock.block1,
-  searchMock.block1,
-  searchMock.block1,
-  searchMock.block1,
-  searchMock.block1,
-  searchMock.block1,
-  searchMock.block1,
-  searchMock.contract1,
-  searchMock.label1,
-  searchMock.token1,
-  searchMock.token2,
-  searchMock.tx1,
-  searchMock.address1,
-  searchMock.block1,
-  searchMock.contract1,
-  searchMock.label1,
-  searchMock.token1,
-  searchMock.token2,
-];
 
 const SearchResultsPageContent = () => {
   const router = useRouter();
@@ -101,8 +68,7 @@ const SearchResultsPageContent = () => {
     return (
       <>
         <Show below="lg" ssr={ false }>
-          { mock.map((item, index) => (
-          // { data.items.map((item, index) => (
+          { data.items.map((item, index) => (
             <SearchResultListItem
               key={ (isPlaceholderData ? 'placeholder_' : 'actual_') + index }
               data={ item }
@@ -117,13 +83,12 @@ const SearchResultsPageContent = () => {
               <Tr>
                 <Th width="30%">Search Result</Th>
                 <Th width="35%"/>
-                <Th width="35%"/>
+                <Th width="35%" pr={ 10 }/>
                 <Th width="150px">Category</Th>
               </Tr>
             </Thead>
             <Tbody>
-              { /* { data.items.map((item, index) => ( */ }
-              { mock.map((item, index) => (
+              { data.items.map((item, index) => (
                 <SearchResultTableItem
                   key={ (isPlaceholderData ? 'placeholder_' : 'actual_') + index }
                   data={ item }
