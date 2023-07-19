@@ -9,44 +9,10 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import TextAd from 'ui/shared/ad/TextAd';
 import ContentLoader from 'ui/shared/ContentLoader';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
+import type { Category } from 'ui/shared/search/utils';
+import { getItemCategory, searchCategories } from 'ui/shared/search/utils';
 
 import SearchBarSuggestItem from './SearchBarSuggestItem';
-
-type Category = 'token' | 'nft' | 'address' | 'app' | 'public_tag' | 'transaction' | 'block';
-
-const CATEGORIES: Array<{id: Category; title: string }> = [
-  { id: 'token', title: 'Tokens (ERC-20)' },
-  { id: 'nft', title: 'NFTs (ERC-721 & ERC-1155)' },
-  { id: 'address', title: 'Addresses' },
-  { id: 'app', title: 'Apps' },
-  { id: 'public_tag', title: 'Public tags' },
-  { id: 'transaction', title: 'Transactions' },
-  { id: 'block', title: 'Blocks' },
-];
-
-const getItemCategory = (item: SearchResultItem): Category | undefined => {
-  switch (item.type) {
-    case 'address':
-    case 'contract': {
-      return 'address';
-    }
-    case 'token': {
-      if (item.token_type === 'ERC-20') {
-        return 'token';
-      }
-      return 'nft';
-    }
-    case 'block': {
-      return 'block';
-    }
-    case 'label': {
-      return 'public_tag';
-    }
-    case 'transaction': {
-      return 'transaction';
-    }
-  }
-};
 
 interface Props {
   query: QueryWithPagesResult<'search'>;
@@ -54,40 +20,6 @@ interface Props {
   onItemClick: (event: React.MouseEvent<HTMLAnchorElement>) => void;
   containerId: string;
 }
-
-// eslint-disable-next-line import-helpers/order-imports
-import * as searchMock from 'mocks/search/index';
-
-const mock = [
-  searchMock.address1,
-  searchMock.block1,
-  searchMock.contract1,
-  searchMock.label1,
-  searchMock.token1,
-  searchMock.token2,
-  searchMock.tx1,
-  searchMock.address1,
-  searchMock.block1,
-  searchMock.block1,
-  searchMock.block1,
-  searchMock.block1,
-  searchMock.block1,
-  searchMock.block1,
-  searchMock.block1,
-  searchMock.block1,
-  searchMock.block1,
-  searchMock.contract1,
-  searchMock.label1,
-  searchMock.token1,
-  searchMock.token2,
-  searchMock.tx1,
-  searchMock.address1,
-  searchMock.block1,
-  searchMock.contract1,
-  searchMock.label1,
-  searchMock.token1,
-  searchMock.token2,
-];
 
 const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props) => {
   const isMobile = useIsMobile();
@@ -133,8 +65,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
       return {};
     }
     const map: Partial<Record<Category, Array<SearchResultItem>>> = {};
-    // query.data?.items.forEach(item => {
-    mock.forEach(item => {
+    query.data?.items.forEach(item => {
       const cat = getItemCategory(item);
       if (cat) {
         if (cat in map) {
@@ -168,7 +99,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
       return <Text>Something went wrong. Try refreshing the page or come back later.</Text>;
     }
 
-    const resultCategories = CATEGORIES.filter(cat => itemsGroups[cat.id]);
+    const resultCategories = searchCategories.filter(cat => itemsGroups[cat.id]);
 
     return (
       <>

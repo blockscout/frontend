@@ -29,12 +29,13 @@ const SearchBarSuggestTx = ({ data, isMobile }: Props) => {
   }
 
   return (
-    <Grid templateColumns="24px 1fr auto" gap={ 2 }>
+    <Grid templateColumns="24px minmax(auto, max-content) auto" gap={ 2 }>
       <Icon as={ txIcon } boxSize={ 6 } color="gray.500"/>
-      <chakra.mark overflow="hidden" whiteSpace="nowrap" display="block" fontWeight={ 700 } width="fit-content">
+
+      <chakra.mark overflow="hidden" whiteSpace="nowrap" display="block" fontWeight={ 700 } >
         <HashStringShortenDynamic hash={ data.tx_hash } isTooltipDisabled/>
       </chakra.mark>
-      <Text variant="secondary">{ dayjs(data.timestamp).format('llll') }</Text>
+      <Text variant="secondary" textAlign="end">{ dayjs(data.timestamp).format('llll') }</Text>
     </Grid>
   );
 };
