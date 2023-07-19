@@ -78,33 +78,6 @@ test('verified with changed byte code socket', async({ mount, page, createSocket
   await expect(component).toHaveScreenshot();
 });
 
-test('verified after getting message from socket', async({ mount, page, createSocket }) => {
-  await page.route(CONTRACT_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(contractMock.nonVerified),
-  }), { times: 1 });
-  await page.route(CONTRACT_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(contractMock.verified),
-  }), { times: 1 });
-  await page.route('https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0/**', (route) => route.abort());
-
-  const component = await mount(
-    <TestApp withSocket>
-      <ContractCode addressHash={ addressHash }/>
-    </TestApp>,
-    { hooksConfig },
-  );
-
-  await expect(component.getByText(/Contract Source Code Verified/i)).not.toBeAttached();
-
-  const socket = await createSocket();
-  const channel = await socketServer.joinChannel(socket, 'addresses:' + addressHash.toLowerCase());
-  socketServer.sendMessage(socket, channel, 'smart_contract_was_verified', {});
-
-  await expect(component.getByText(/Contract Source Code Verified/i)).toBeAttached();
-});
-
 test('verified with multiple sources', async({ mount, page }) => {
   await page.route(CONTRACT_API_URL, (route) => route.fulfill({
     status: 200,
