@@ -125,6 +125,7 @@ const config = Object.freeze({
   host: appHost,
   port: appPort,
   baseUrl,
+  // TODO @tom2drum move all account envs to one config
   authUrl,
   logoutUrl,
   ad: {

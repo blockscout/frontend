@@ -21,7 +21,6 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_NETWORK_LOGO_DARK | `string` | Network logo for dark color mode; if not provided, **inverted** regular logo will be used instead | - | - | `https://placekitten.com/240/40` |
 | NEXT_PUBLIC_NETWORK_ICON | `string` | Network icon; used as a replacement for regular network logo when nav bar is collapsed; if not provided, placeholder will be shown; *Note* the icon size should be at least 60px by 60px | - | - | `https://placekitten.com/60/60` |
 | NEXT_PUBLIC_NETWORK_ICON_DARK | `string` | Network icon for dark color mode; if not provided, **inverted** regular icon will be used instead | - | - | `https://placekitten.com/60/60` |
-| NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED | `boolean` | Set to true if network has account feature | - | `false` | `true` |
 | NEXT_PUBLIC_IS_TESTNET | `boolean`| Set to true if network is testnet | - | `false` | `true` |
 
 ## UI configuration
@@ -35,9 +34,6 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM | `string` | Link to form where authors can submit their dapps to the marketplace | - | - | `https://airtable.com/shrqUAcjgGJ4jU88C` |
 | NEXT_PUBLIC_NETWORK_EXPLORERS | `Array<NetworkExplorer>` where `NetworkExplorer` can have following [properties](#network-explorer-configuration-properties) | Used to build up links to transactions, blocks, addresses in other chain explorers. | - | - | `[{'title':'Anyblock','baseUrl':'https://explorer.anyblock.tools','paths':{'tx':'/ethereum/poa/core/tx'}}]` |
 | NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE | `validation` or `mining` | Verification type in the network | - | `mining` | `validation` |
-| NEXT_PUBLIC_AUTH_URL | `string` | Account auth base url; the login path (`/auth/auth0`) will be added to it at execution time. Required if account is supported for the app instance. | - | - | `https://blockscout.com` |
-| NEXT_PUBLIC_LOGOUT_URL | `string` | Account logout url. Required if account is supported for the app instance. | - | - | `https://blockscoutcom.us.auth0.com/v2/logout` |
-| NEXT_PUBLIC_LOGOUT_RETURN_URL | `string` | Account logout return url. Required if account is supported for the app instance. | - | - | `https://blockscout.com/poa/core/auth/logout` |
 | NEXT_PUBLIC_HOMEPAGE_CHARTS | `Array<'daily_txs' \| 'coin_price' \| 'market_cap'>` | List of charts displayed on the home page | - | - | `['daily_txs','coin_price','market_cap']` |
 | NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR | `string` | Text color of the hero plate on the homepage (escape "#" symbol if you use HEX color codes) | `\#FFFFFF \| rgb(220, 254, 118)` | `\#DCFE76` |
 | NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND | `string` | Background css value for hero plate on the homepage (escape "#" symbol if you use HEX color codes) | - | `radial-gradient(103.03% 103.03% at 0% 0%, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%), var(--chakra-colors-blue-400)` | `radial-gradient(at 15% 86%, hsla(350,65%,70%,1) 0px, transparent 50%)` \| `no-repeat bottom 20% right 0px/100% url(https://placekitten/1400/200)` |
@@ -106,13 +102,23 @@ For each application, you need to specify the `MarketplaceCategoryId` to which i
 
 *Note* The url of an entity will be constructed as `<baseUrl><paths[<entity-type>]><entity-id>`, e.g `https://explorer.anyblock.tools/ethereum/poa/core/tx/<tx-id>`
 
-## Footer links configuration properties
+### Footer links configuration properties
 
 | Variable | Type| Description | Is required  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | title | `string` | Title of link group | yes | - | `Company` |
 | links | `Array<{'text':string;'url':string;}>` | list of links | yes | - | `[{'text':'Homepage','url':'https://www.blockscout.com'}]` |
 
+## Account configuration
+
+In order to enable "My Account" feature you have to configure following set of variables:
+
+| Variable | Type| Description | Is required  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED | `boolean` | Set to true if network has account feature | - | `false` | `true` |
+| NEXT_PUBLIC_AUTH_URL | `string` | Account auth base url; the login path (`/auth/auth0`) will be added to it at execution time. Required if account is supported for the app instance. | - | - | `https://blockscout.com` |
+| NEXT_PUBLIC_LOGOUT_URL | `string` | Account logout url. Required if account is supported for the app instance. | - | - | `https://blockscoutcom.us.auth0.com/v2/logout` |
+| NEXT_PUBLIC_LOGOUT_RETURN_URL | `string` | Account logout return url. Required if account is supported for the app instance. | - | - | `https://blockscout.com/poa/core/auth/logout` |
 
 ## App configuration
 
@@ -164,20 +170,3 @@ For each application, you need to specify the `MarketplaceCategoryId` to which i
 | Variable | Type| Description | Is required  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_HAS_BEACON_CHAIN | `boolean` | Set to true for networks with the beacon chain | - | - | `true` |
-
-
-
-
-# How to add new environment variable
-
-If the variable should be exposed to the browser don't forget to add prefix `NEXT_PUBLIC_` to its name.
-
-These are the steps that you have to follow to make everything work:
-- create the variable placeholder for build-time in file `.env.template`; this is the most important step, without this the app will not receive any variables that are passed at run-time
-- for local development purposes add the variable to either `configs/envs/.env.common` or `configs/envs/.env.<network>` files depending on if the variable has the same value for all network or specific value for each network
-- add the variable to CI configs
-    - `deploy/values/review/values.yaml` - review environment
-    - `deploy/values/main/values.yaml` - production environment
-    - `deploy/values/e2e/values.yaml` - e2e-test environment
-
-Keep in mind that all json-like values should be single-quoted, e.g `[{'foo': 'bar'}]`
