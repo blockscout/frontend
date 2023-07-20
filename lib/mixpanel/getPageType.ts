@@ -41,6 +41,7 @@ const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/api/csrf': 'Node API: CSRF token',
   '/api/healthz': 'Node API: Health check',
   '/auth/auth0': 'Auth',
+  '/auth/unverified-email': 'Auth',
 };
 
 export default function getPageType(pathname: Route['pathname']) {

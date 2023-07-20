@@ -1,6 +1,5 @@
 import { MenuItem, Icon, chakra } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import type { Route } from 'nextjs-routes';
 import React from 'react';
 
 import iconPublicTags from 'icons/publictags.svg';
@@ -8,14 +7,14 @@ import iconPublicTags from 'icons/publictags.svg';
 interface Props {
   className?: string;
   hash: string;
-  onBeforeClick: (route: Route) => boolean;
+  onBeforeClick: () => boolean;
 }
 
 const PublicTagMenuItem = ({ className, hash, onBeforeClick }: Props) => {
   const router = useRouter();
 
   const handleClick = React.useCallback(() => {
-    if (!onBeforeClick({ pathname: '/account/public-tags-request' })) {
+    if (!onBeforeClick()) {
       return;
     }
 

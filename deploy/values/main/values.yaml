@@ -212,6 +212,7 @@ frontend:
         - "/apps"
         - "/static"
         - "/auth/profile"
+        - "/auth/unverified-email"
         - "/txs"
         - "/tx"
         - "/blocks"

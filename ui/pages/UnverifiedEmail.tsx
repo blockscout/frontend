@@ -1,7 +1,7 @@
 import { Box, Text, Button, Heading, Icon, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import icon403 from 'icons/error-pages/403.svg';
+import iconEmailSent from 'icons/email-sent.svg';
 import useApiFetch from 'lib/api/useApiFetch';
 import dayjs from 'lib/date/dayjs';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
@@ -9,16 +9,18 @@ import getErrorObjStatusCode from 'lib/errors/getErrorObjStatusCode';
 import useToast from 'lib/hooks/useToast';
 
 interface Props {
-  className?: string;
-  email?: string;
+  email?: string; // TODO: obtain email from API
 }
 
-const AppErrorUnverifiedEmail = ({ className, email }: Props) => {
+const UnverifiedEmail = ({ email }: Props) => {
   const apiFetch = useApiFetch();
+  const [ isLoading, setIsLoading ] = React.useState(false);
   const toast = useToast();
 
   const handleButtonClick = React.useCallback(async() => {
     const toastId = 'resend-email-error';
+
+    setIsLoading(true);
 
     try {
       await apiFetch('email_resend');
@@ -44,6 +46,10 @@ const AppErrorUnverifiedEmail = ({ className, email }: Props) => {
           return;
         }
 
+        if (!payload.seconds_before_next_resend) {
+          return;
+        }
+
         const timeUntilNextResend = dayjs().add(payload.seconds_before_next_resend, 'seconds').fromNow();
         return `Email resend is available ${ timeUntilNextResend }.`;
       })();
@@ -58,12 +64,14 @@ const AppErrorUnverifiedEmail = ({ className, email }: Props) => {
         isClosable: true,
       });
     }
+
+    setIsLoading(false);
   }, [ apiFetch, toast ]);
 
   return (
-    <Box className={ className }>
-      <Icon as={ icon403 } width="200px" height="auto"/>
-      <Heading mt={ 8 } size="2xl" fontFamily="body">Email is not verified</Heading>
+    <Box>
+      <Icon as={ iconEmailSent } width="180px" height="auto" mt="52px"/>
+      <Heading mt={ 6 } size="2xl">Verify your email address</Heading>
       <Text variant="secondary" mt={ 3 }>
         <span>Please confirm your email address to use the My Account feature. A confirmation email was sent to </span>
         <span>{ email || 'your email address' }</span>
@@ -73,6 +81,8 @@ const AppErrorUnverifiedEmail = ({ className, email }: Props) => {
         mt={ 8 }
         size="lg"
         variant="outline"
+        isLoading={ isLoading }
+        loadingText="Resending..."
         onClick={ handleButtonClick }
       >
         Resend verification email
@@ -81,4 +91,4 @@ const AppErrorUnverifiedEmail = ({ className, email }: Props) => {
   );
 };
 
-export default chakra(AppErrorUnverifiedEmail);
+export default chakra(UnverifiedEmail);

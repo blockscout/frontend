@@ -9,7 +9,7 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import UserAvatar from 'ui/shared/UserAvatar';
 
 const MyProfile = () => {
-  const { data, isLoading, isError, error } = useFetchProfileInfo();
+  const { data, isLoading, isError } = useFetchProfileInfo();
   useRedirectForInvalidAuthToken();
 
   const content = (() => {
@@ -18,9 +18,6 @@ const MyProfile = () => {
     }
 
     if (isError) {
-      if (error.status === 403) {
-        throw new Error('Unverified email error', { cause: error });
-      }
       return <DataFetchAlert/>;
     }
 

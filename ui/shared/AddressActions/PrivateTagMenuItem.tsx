@@ -1,6 +1,5 @@
 import { MenuItem, Icon, chakra, useDisclosure } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
-import type { Route } from 'nextjs-routes';
 import React from 'react';
 
 import type { Address } from 'types/api/address';
@@ -12,7 +11,7 @@ import PrivateTagModal from 'ui/privateTags/AddressModal/AddressModal';
 interface Props {
   className?: string;
   hash: string;
-  onBeforeClick: (route: Route) => boolean;
+  onBeforeClick: () => boolean;
 }
 
 const PrivateTagMenuItem = ({ className, hash, onBeforeClick }: Props) => {
@@ -23,7 +22,7 @@ const PrivateTagMenuItem = ({ className, hash, onBeforeClick }: Props) => {
   const addressData = queryClient.getQueryData<Address>(queryKey);
 
   const handleClick = React.useCallback(() => {
-    if (!onBeforeClick({ pathname: '/account/tag-address' })) {
+    if (!onBeforeClick()) {
       return;
     }
 

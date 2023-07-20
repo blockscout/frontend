@@ -21,7 +21,7 @@ const PublicTagsData = ({ changeToFormScreen, onTagDelete }: Props) => {
   const deleteModalProps = useDisclosure();
   const [ deleteModalData, setDeleteModalData ] = useState<PublicTag>();
 
-  const { data, isPlaceholderData, isError, error } = useApiQuery('public_tags', {
+  const { data, isPlaceholderData, isError } = useApiQuery('public_tags', {
     queryOptions: {
       placeholderData: Array(3).fill(PUBLIC_TAG),
     },
@@ -55,9 +55,6 @@ const PublicTagsData = ({ changeToFormScreen, onTagDelete }: Props) => {
   );
 
   if (isError) {
-    if (error.status === 403) {
-      throw new Error('Unverified email error', { cause: error });
-    }
     return <DataFetchAlert/>;
   }
 

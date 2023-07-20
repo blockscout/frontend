@@ -14,7 +14,7 @@ const ProfileMenuDesktop = () => {
 
   React.useEffect(() => {
     if (!isLoading) {
-      setHasMenu(Boolean(data) || error?.status === 403);
+      setHasMenu(Boolean(data));
     }
   }, [ data, error?.status, isLoading ]);
 
