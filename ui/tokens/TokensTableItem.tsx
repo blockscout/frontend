@@ -53,7 +53,7 @@ const TokensTableItem = ({
           >
             { (page - 1) * PAGE_SIZE + index + 1 }
           </Skeleton>
-          <Box>
+          <Box overflow="hidden">
             <Flex alignItems="center">
               <TokenLogo data={ token } boxSize={ 6 } mr={ 2 } isLoading={ isLoading }/>
               <AddressLink fontSize="sm" fontWeight="700" hash={ address } type="token" alias={ tokenString } isLoading={ isLoading }/>

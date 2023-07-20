@@ -8,7 +8,6 @@ import appConfig from 'configs/app/config';
 import { ZERO_ADDRESS } from 'lib/consts';
 import { nbsp, space } from 'lib/html-entities';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
-import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import AddressLink from 'ui/shared/address/AddressLink';
 import Tag from 'ui/shared/chakra/Tag';
 import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
@@ -58,8 +57,16 @@ export function getStateElements(data: TxStateChange, isLoading?: boolean) {
       const changeSign = beforeBn.lte(afterBn) ? '+' : '-';
 
       return {
-        before: <Skeleton isLoaded={ !isLoading } display="inline-block">{ beforeBn.toFormat() } { appConfig.network.currency.symbol }</Skeleton>,
-        after: <Skeleton isLoaded={ !isLoading } display="inline-block">{ afterBn.toFormat() } { appConfig.network.currency.symbol }</Skeleton>,
+        before: (
+          <Skeleton isLoaded={ !isLoading } wordBreak="break-all" display="inline-block">
+            { beforeBn.toFormat() } { appConfig.network.currency.symbol }
+          </Skeleton>
+        ),
+        after: (
+          <Skeleton isLoaded={ !isLoading } wordBreak="break-all" display="inline-block">
+            { afterBn.toFormat() } { appConfig.network.currency.symbol }
+          </Skeleton>
+        ),
         change: (
           <Skeleton isLoaded={ !isLoading } display="inline-block" color={ changeColor }>
             <span>{ changeSign }{ nbsp }{ differenceBn.abs().toFormat() }</span>
@@ -73,7 +80,7 @@ export function getStateElements(data: TxStateChange, isLoading?: boolean) {
         <AddressLink
           type="token"
           hash={ data.token.address }
-          alias={ trimTokenSymbol(data.token?.symbol || data.token.address) }
+          alias={ data.token?.symbol || data.token.address }
           isLoading={ isLoading }
         />
       );

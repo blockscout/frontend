@@ -1,4 +1,4 @@
-import { Box, Flex, Grid, Link, Skeleton } from '@chakra-ui/react';
+import { Box, Grid, Link, Skeleton } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import { useRouter } from 'next/router';
@@ -13,8 +13,7 @@ import { TOKEN_COUNTERS } from 'stubs/token';
 import type { TokenTabs } from 'ui/pages/Token';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-
+import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 interface Props {
   tokenQuery: UseQueryResult<TokenInfo>;
 }
@@ -120,13 +119,16 @@ const TokenDetails = ({ tokenQuery }: Props) => {
         whiteSpace="pre-wrap"
         isLoading={ tokenQuery.isPlaceholderData }
       >
-        <Skeleton isLoaded={ !tokenQuery.isPlaceholderData }>
-          <Flex w="100%">
-            <Box whiteSpace="nowrap" overflow="hidden">
-              <HashStringShortenDynamic hash={ totalSupplyValue || '0' }/>
+        <Skeleton isLoaded={ !tokenQuery.isPlaceholderData } w="100%" display="flex">
+          <TruncatedTextTooltip label={ totalSupplyValue || '0' }>
+            <Box overflow="hidden" textOverflow="ellipsis" flexShrink={ 0 } maxW="80%" whiteSpace="nowrap">
+              { totalSupplyValue || '0' }
             </Box>
-            <Box flexShrink={ 0 }> { symbol || '' }</Box>
-          </Flex>
+          </TruncatedTextTooltip>
+          <Box flexShrink={ 0 }> </Box>
+          <TruncatedTextTooltip label={ symbol || '' }>
+            <Box overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">{ symbol || '' }</Box>
+          </TruncatedTextTooltip>
         </Skeleton>
       </DetailsInfoItem>
       <DetailsInfoItem

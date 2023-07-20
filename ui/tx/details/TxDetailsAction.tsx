@@ -64,6 +64,9 @@ const TxDetailsAction = ({ action }: Props) => {
             columnGap={ 1 }
             logoSize={ 5 }
             isDisabled={ data.symbol0 === 'Ether' }
+            hideSymbol
+            maxW="200px"
+            flexShrink={ 0 }
           />
 
           <chakra.span color="text_secondary">{ type === 'swap' ? 'For' : 'And' }: </chakra.span>
@@ -75,6 +78,9 @@ const TxDetailsAction = ({ action }: Props) => {
             columnGap={ 1 }
             logoSize={ 5 }
             isDisabled={ data.symbol1 === 'Ether' }
+            hideSymbol
+            maxW="200px"
+            flexShrink={ 0 }
           />
 
           <chakra.span color="text_secondary">{ text1 } </chakra.span>
@@ -105,7 +111,6 @@ const TxDetailsAction = ({ action }: Props) => {
               columnGap={ 1 }
               logoSize={ 5 }
               rowGap={ 2 }
-              flexWrap="wrap"
             />
             <chakra.span> to </chakra.span>
             <AddressLink hash={ data.to } type="address" truncation="constant"/>

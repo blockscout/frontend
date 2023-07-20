@@ -11,22 +11,30 @@ import discordIcon from 'icons/social/discord.svg';
 import gitIcon from 'icons/social/git.svg';
 import twitterIcon from 'icons/social/tweet.svg';
 import type { ResourceError } from 'lib/api/resources';
+import useApiQuery from 'lib/api/useApiQuery';
 import useFetch from 'lib/hooks/useFetch';
 import useIssueUrl from 'lib/hooks/useIssueUrl';
+import IndexingAlertIntTxs from 'ui/home/IndexingAlertIntTxs';
 import NetworkAddToWallet from 'ui/shared/NetworkAddToWallet';
 
 import ColorModeToggler from '../header/ColorModeToggler';
 import FooterLinkItem from './FooterLinkItem';
+import getApiVersionUrl from './utils/getApiVersionUrl';
 
 const MAX_LINKS_COLUMNS = 3;
 
-const API_VERSION_URL = `https://github.com/blockscout/blockscout/tree/${ appConfig.blockScoutVersion }`;
 // const FRONT_VERSION_URL = `https://github.com/blockscout/frontend/tree/${ appConfig.frontendVersion }`;
 
 const Footer = () => {
 
-  const issueUrl = useIssueUrl();
-  const BLOCSKOUT_LINKS = [
+  const { data: backendVersionData } = useApiQuery('config_backend_version', {
+    queryOptions: {
+      staleTime: Infinity,
+    },
+  });
+  const apiVersionUrl = getApiVersionUrl(backendVersionData?.backend_version);
+  const issueUrl = useIssueUrl(backendVersionData?.backend_version);
+  const BLOCKSCOUT_LINKS = [
     {
       icon: editIcon,
       iconSize: '16px',
@@ -74,6 +82,7 @@ const Footer = () => {
       <Box flexGrow="1" mb={{ base: 8, lg: 0 }}>
         <Flex>
           <ColorModeToggler/>
+          { !appConfig.hideIndexingAlert && <IndexingAlertIntTxs ml={ 6 }/> }
           <NetworkAddToWallet ml={ 8 }/>
         </Flex>
         <Box mt={{ base: 5, lg: '44px' }}>
@@ -83,9 +92,9 @@ const Footer = () => {
             Blockscout is a tool for inspecting and analyzing EVM based blockchains. Blockchain explorer for Ethereum Networks.
         </Text>
         <VStack spacing={ 1 } mt={ 6 } alignItems="start">
-          { appConfig.blockScoutVersion && (
+          { apiVersionUrl && (
             <Text fontSize="xs">
-                Backend: <Link href={ API_VERSION_URL } target="_blank">{ appConfig.blockScoutVersion }</Link>
+                Backend: <Link href={ apiVersionUrl } target="_blank">{ backendVersionData?.backend_version }</Link>
             </Text>
           ) }
           { (appConfig.frontendVersion || appConfig.frontendCommit) && (
@@ -112,7 +121,7 @@ const Footer = () => {
             gridAutoFlow={{ base: 'row', lg: appConfig.footerLinks ? 'row' : 'column' }}
             mt={{ base: 0, lg: appConfig.footerLinks ? 0 : '100px' }}
           >
-            { BLOCSKOUT_LINKS.map(link => <FooterLinkItem { ...link } key={ link.text }/>) }
+            { BLOCKSCOUT_LINKS.map(link => <FooterLinkItem { ...link } key={ link.text }/>) }
           </Grid>
         </Box>
         { appConfig.footerLinks && isLoading && (

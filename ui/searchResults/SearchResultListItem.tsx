@@ -10,7 +10,6 @@ import txIcon from 'icons/transactions.svg';
 import highlightText from 'lib/highlightText';
 import * as mixpanel from 'lib/mixpanel/index';
 import { saveToRecentKeywords } from 'lib/recentSearchKeywords';
-import trimTokenSymbol from 'lib/token/trimTokenSymbol';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -39,10 +38,10 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
   const firstRow = (() => {
     switch (data.type) {
       case 'token': {
-        const name = data.name + (data.symbol ? ` (${ trimTokenSymbol(data.symbol) })` : '');
+        const name = data.name + (data.symbol ? ` (${ data.symbol })` : '');
 
         return (
-          <Flex alignItems="flex-start">
+          <Flex alignItems="flex-start" overflow="hidden">
             <TokenLogo boxSize={ 6 } data={ data } flexShrink={ 0 } isLoading={ isLoading }/>
             <LinkInternal
               ml={ 2 }
@@ -51,8 +50,15 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
               wordBreak="break-all"
               isLoading={ isLoading }
               onClick={ handleLinkClick }
+              overflow="hidden"
             >
-              <Skeleton isLoaded={ !isLoading } dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}/>
+              <Skeleton
+                isLoaded={ !isLoading }
+                dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}
+                whiteSpace="nowrap"
+                overflow="hidden"
+                textOverflow="ellipsis"
+              />
             </LinkInternal>
           </Flex>
         );

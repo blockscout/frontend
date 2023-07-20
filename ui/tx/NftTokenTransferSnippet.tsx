@@ -20,7 +20,7 @@ const NftTokenTransferSnippet = ({ value, token, tokenId }: Props) => {
   const url = route({ pathname: '/token/[hash]/instance/[id]', query: { hash: token.address, id: tokenId } });
 
   return (
-    <Flex alignItems="center" columnGap={ 3 } rowGap={ 2 } flexWrap="wrap">
+    <Flex alignItems="center" columnGap={ 3 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
       <Text fontWeight={ 500 } as="span">For { num } token ID:</Text>
       <Box display="inline-flex" alignItems="center">
         <Icon as={ nftIcon } boxSize={ 6 } mr={ 1 }/>
@@ -29,7 +29,7 @@ const NftTokenTransferSnippet = ({ value, token, tokenId }: Props) => {
         </Link>
       </Box>
       { token.name ? (
-        <TokenSnippet data={ token } w="auto" logoSize={ 5 } columnGap={ 1 }/>
+        <TokenSnippet data={ token } logoSize={ 5 } columnGap={ 1 }/>
       ) : (
         <AddressLink hash={ token.address } truncation="constant" type="token"/>
       ) }

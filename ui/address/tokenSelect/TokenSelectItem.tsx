@@ -3,9 +3,8 @@ import BigNumber from 'bignumber.js';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
-import trimTokenSymbol from 'lib/token/trimTokenSymbol';
-import HashStringShorten from 'ui/shared/HashStringShorten';
-import TokenLogo from 'ui/shared/TokenLogo';
+import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
+import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 import type { TokenEnhancedData } from '../utils/tokenUtils';
 
@@ -19,15 +18,28 @@ const TokenSelectItem = ({ data }: Props) => {
     switch (data.token.type) {
       case 'ERC-20': {
         const tokenDecimals = Number(data.token.decimals) || 18;
+        const text = `${ BigNumber(data.value).dividedBy(10 ** tokenDecimals).toFormat(2) } ${ data.token.symbol }`;
+
         return (
           <>
-            <span >{ BigNumber(data.value).dividedBy(10 ** tokenDecimals).toFormat(2) } { trimTokenSymbol(data.token.symbol) }</span>
-            { data.token.exchange_rate && <span >@{ Number(data.token.exchange_rate).toLocaleString() }</span> }
+            <TruncatedTextTooltip label={ text }>
+              <chakra.span textOverflow="ellipsis" overflow="hidden">
+                { text }
+              </chakra.span>
+            </TruncatedTextTooltip>
+            { data.token.exchange_rate && <chakra.span ml={ 2 }>@{ Number(data.token.exchange_rate).toLocaleString() }</chakra.span> }
           </>
         );
       }
       case 'ERC-721': {
-        return <chakra.span textOverflow="ellipsis" overflow="hidden">{ BigNumber(data.value).toFormat() } { data.token.symbol }</chakra.span>;
+        const text = `${ BigNumber(data.value).toFormat() } ${ data.token.symbol }`;
+        return (
+          <TruncatedTextTooltip label={ text }>
+            <chakra.span textOverflow="ellipsis" overflow="hidden">
+              { text }
+            </chakra.span>
+          </TruncatedTextTooltip>
+        );
       }
       case 'ERC-1155': {
         return (
@@ -64,9 +76,8 @@ const TokenSelectItem = ({ data }: Props) => {
       as="a"
       href={ url }
     >
-      <Flex alignItems="center" w="100%">
-        <TokenLogo data={ data.token } boxSize={ 6 }/>
-        <Text fontWeight={ 700 } ml={ 2 }>{ data.token.name || <HashStringShorten hash={ data.token.address }/> }</Text>
+      <Flex alignItems="center" w="100%" overflow="hidden">
+        <TokenSnippet data={ data.token } hideSymbol fontWeight={ 700 } isDisabled/>
         { data.usd && <Text fontWeight={ 700 } ml="auto">${ data.usd.toFormat(2) }</Text> }
       </Flex>
       <Flex alignItems="center" justifyContent="space-between" w="100%" whiteSpace="nowrap">

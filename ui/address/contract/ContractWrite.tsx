@@ -15,7 +15,7 @@ import ContractImplementationAddress from './ContractImplementationAddress';
 import ContractMethodCallable from './ContractMethodCallable';
 import ContractWriteResult from './ContractWriteResult';
 import useContractAbi from './useContractAbi';
-import { getNativeCoinValue } from './utils';
+import { getNativeCoinValue, prepareAbi } from './utils';
 
 interface Props {
   addressHash?: string;
@@ -71,9 +71,10 @@ const ContractWrite = ({ addressHash, isProxy, isCustomAbi }: Props) => {
       throw new Error('Method name is not defined');
     }
 
+    const abi = prepareAbi(contractAbi, item);
     const hash = await walletClient?.writeContract({
       args: _args,
-      abi: contractAbi,
+      abi,
       functionName: methodName,
       address: addressHash as `0x${ string }`,
       value: value as undefined,

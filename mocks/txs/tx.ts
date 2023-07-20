@@ -184,7 +184,7 @@ export const withActionsUniswap: Transaction = {
         address1: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
         amount0: '7143.488560357232097378',
         amount1: '10',
-        symbol0: 'XFT',
+        symbol0: 'Ring ding ding daa baa Baa aramba baa bom baa barooumba Wh-wha-what&#39;s going on-on? Ding, ding This is the Crazy Frog Ding, ding Bem',
         symbol1: 'Ether',
       },
       protocol: 'uniswap_v3',

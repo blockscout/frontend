@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
 
-import iconSuccess from 'icons/status/success.svg';
+import iconVerifiedToken from 'icons/verified_token.svg';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import EntityTags from 'ui/shared/EntityTags';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
@@ -33,22 +33,24 @@ const DefaultView = () => {
   };
 
   const contentAfter = (
-    <EntityTags
-      tagsBefore={ [
-        { label: 'example', display_name: 'Example label' },
-      ] }
-      contentAfter={ <NetworkExplorers type="token" pathParam="token-hash" ml="auto" hideText={ isMobile }/> }
-      flexGrow={ 1 }
-    />
+    <>
+      <Icon as={ iconVerifiedToken } color="green.500" boxSize={ 6 } cursor="pointer"/>
+      <EntityTags
+        tagsBefore={ [
+          { label: 'example', display_name: 'Example label' },
+        ] }
+        contentAfter={ <NetworkExplorers type="token" pathParam="token-hash" ml="auto" hideText={ isMobile }/> }
+        flexGrow={ 1 }
+      />
+    </>
   );
 
   return (
     <PageTitle
       title="Shavukha Token (SHVKH) token"
       beforeTitle={ (
-        <TokenLogo data={ tokenData } boxSize={ 6 } display="inline-block" mr={ 2 }/>
+        <TokenLogo data={ tokenData } boxSize={ 6 } mr={ 2 }/>
       ) }
-      afterTitle={ <Icon as={ iconSuccess } color="green.500" boxSize={ 4 } verticalAlign="top"/> }
       backLink={ backLink }
       contentAfter={ contentAfter }
     />

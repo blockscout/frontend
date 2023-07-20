@@ -5,11 +5,13 @@ import type { WindowProvider } from 'wagmi';
 import { FOOTER_LINKS } from 'mocks/config/footerLinks';
 import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
+import buildApiUrl from 'playwright/utils/buildApiUrl';
 import * as configs from 'playwright/utils/configs';
 
 import Footer from './Footer';
 
 const FOOTER_LINKS_URL = 'https://localhost:3000/footer-links.json';
+const BACKEND_VERSION_API_URL = buildApiUrl('config_backend_version');
 
 base.describe('with custom links, 4 cols', () => {
   const test = base.extend({
@@ -78,6 +80,13 @@ base.describe('without custom links', () => {
         isMetaMask: true,
       } as WindowProvider;
     });
+    await page.route(BACKEND_VERSION_API_URL, (route) => {
+      return route.fulfill({
+        body: JSON.stringify({
+          backend_version: 'v5.2.0-beta.+commit.1ce1a355',
+        }),
+      });
+    });
 
     await mount(
       <TestApp>
@@ -86,5 +95,28 @@ base.describe('without custom links', () => {
     );
 
     await expect(page).toHaveScreenshot();
+  });
+
+  base('with indexing alert +@dark-mode +@mobile', async({ mount, page }) => {
+    await page.evaluate(() => {
+      window.ethereum = {
+        providers: [ { isMetaMask: true } ],
+      } as WindowProvider;
+    });
+
+    const API_URL = buildApiUrl('homepage_indexing_status');
+
+    await page.route(API_URL, (route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify({ finished_indexing: false, indexed_internal_transactions_ratio: 0.1 }),
+    }));
+
+    const component = await mount(
+      <TestApp>
+        <Footer/>
+      </TestApp>,
+    );
+
+    await expect(component).toHaveScreenshot();
   });
 });

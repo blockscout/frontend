@@ -37,6 +37,7 @@ const AdditionalInfoButton = ({ isOpen, onClick, className, isLoading }: Props, 
       h="24px"
       onClick={ onClick }
       cursor="pointer"
+      flexShrink={ 0 }
     >
       <Icon
         as={ infoIcon }
