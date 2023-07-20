@@ -4,6 +4,8 @@ import React from 'react';
 import type { ContractMethodReadResult } from './types';
 import type { SmartContractReadMethod } from 'types/api/contract';
 
+import hexToUtf8 from 'lib/hexToUtf8';
+
 interface Props {
   item: SmartContractReadMethod;
   result: ContractMethodReadResult;
@@ -23,7 +25,14 @@ const ContractReadResult = ({ item, result, onSettle }: Props) => {
 
   if (result.is_error) {
     const message = 'error' in result.result ? result.result.error : result.result.message;
-    return <Alert status="error" mt={ 3 } p={ 4 } borderRadius="md" fontSize="sm" wordBreak="break-word">{ message }</Alert>;
+    const decoded = 'raw' in result.result && result.result.raw ? `\nRevert reason: ${ hexToUtf8(result.result.raw) }` : '';
+
+    return (
+      <Alert status="error" mt={ 3 } p={ 4 } borderRadius="md" fontSize="sm" wordBreak="break-word" whiteSpace="pre-wrap">
+        { message }
+        { decoded }
+      </Alert>
+    );
   }
 
   return (

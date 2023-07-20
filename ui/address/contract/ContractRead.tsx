@@ -56,7 +56,7 @@ const ContractRead = ({ addressHash, isProxy, isCustomAbi }: Props) => {
     });
   }, [ addressHash, apiFetch, isCustomAbi, isProxy, userAddress ]);
 
-  const renderContent = React.useCallback((item: SmartContractReadMethod, index: number, id: number) => {
+  const renderItemContent = React.useCallback((item: SmartContractReadMethod, index: number, id: number) => {
     if (item.error) {
       return <Alert status="error" fontSize="sm" wordBreak="break-word">{ item.error }</Alert>;
     }
@@ -96,7 +96,7 @@ const ContractRead = ({ addressHash, isProxy, isCustomAbi }: Props) => {
       { isCustomAbi && <ContractCustomAbiAlert/> }
       <ContractConnectWallet/>
       { isProxy && <ContractImplementationAddress hash={ addressHash }/> }
-      <ContractMethodsAccordion data={ data } renderContent={ renderContent }/>
+      <ContractMethodsAccordion data={ data } addressHash={ addressHash } renderItemContent={ renderItemContent }/>
     </>
   );
 };
