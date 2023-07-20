@@ -5,7 +5,6 @@ import ReCaptcha from 'react-google-recaptcha';
 import appConfig from 'configs/app/config';
 import icon429 from 'icons/error-pages/429.svg';
 import buildUrl from 'lib/api/buildUrl';
-import * as cookies from 'lib/cookies';
 import useFetch from 'lib/hooks/useFetch';
 import useToast from 'lib/hooks/useToast';
 
@@ -21,15 +20,19 @@ const AppErrorTooManyRequests = ({ className }: Props) => {
 
     if (token) {
       try {
-        const url = buildUrl('client_key', undefined, { recaptcha_response: token });
+        const url = buildUrl('api_v2_key');
 
-        const response = await fetch(url);
+        await fetch(url, {
+          method: 'POST',
+          body: { recaptcha_response: token },
+        });
 
-        if (!(typeof response === 'object' && response !== null && 'key' in response && typeof response.key === 'string')) {
-          throw Error('Invalid response from "Client key" resource.');
-        }
+        // if (!(typeof response === 'object' && response !== null && 'key' in response && typeof response.key === 'string')) {
+        //   throw Error('Invalid response from "Client key" resource.');
+        // }
 
-        cookies.set(cookies.NAMES.CLIENT_KEY, response.key, { expires: 5 / 24 }); // set cookie for 5 hours === key lifetime
+        // cookies.set(cookies.NAMES.CLIENT_KEY, response.key, { expires: 5 / 24 }); // set cookie for 5 hours === key lifetime
+        // debugger;
         window.location.reload();
 
       } catch (error) {

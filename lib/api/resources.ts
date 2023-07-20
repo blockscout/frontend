@@ -473,7 +473,7 @@ export const RESOURCES = {
   },
 
   // OTHER
-  client_key: {
+  api_v2_key: {
     path: '/api/v2/key',
   },
 
