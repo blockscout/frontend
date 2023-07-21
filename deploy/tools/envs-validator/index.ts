@@ -5,13 +5,15 @@ import { fromZodError } from 'zod-validation-error';
 import { nextPublicEnvsSchema } from './schema';
 
 try {
+  const appEnvs = Object.entries(process.env)
+    .filter(([ key ]) => key.startsWith('NEXT_PUBLIC_'))
+    .reduce((result, [ key, value ]) => {
+      result[key] = value || '';
+      return result;
+    }, {} as Record<string, string>);
+
   console.log(`⏳ Checking environment variables...`);
-  nextPublicEnvsSchema.parse({
-    NEXT_PUBLIC_NETWORK_NAME: process.env.NEXT_PUBLIC_NETWORK_NAME,
-    NEXT_PUBLIC_APP_PROTOCOL: process.env.NEXT_PUBLIC_APP_PROTOCOL,
-    NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED: process.env.NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED,
-    NEXT_PUBLIC_AUTH_URL: process.env.NEXT_PUBLIC_AUTH_URL,
-  });
+  nextPublicEnvsSchema.parse(appEnvs);
   console.log('👍 All good!\n');
 } catch (error) {
   const validationError = fromZodError(

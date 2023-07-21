@@ -111,13 +111,14 @@ For each application, you need to specify the `MarketplaceCategoryId` to which i
 
 ## Account configuration
 
-In order to enable "My Account" feature you have to configure following set of variables:
+In order to enable "My Account" feature you have to configure following set of variables. All variables are **required**.
 
 | Variable | Type| Description | Is required  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED | `boolean` | Set to true if network has account feature | - | `false` | `true` |
-| NEXT_PUBLIC_AUTH_URL | `string` | Account auth base url; it is used for building login URL (`${ NEXT_PUBLIC_AUTH_URL }/auth/auth0`) and logout return URL (`${ NEXT_PUBLIC_AUTH_URL }/auth/logout`); if not provided the base app URL will be used instead | - | - | `https://blockscout.com` |
-| NEXT_PUBLIC_LOGOUT_URL | `string` | Account logout url. Required if account is supported for the app instance. | `true` if "My Account" is enabled | - | `https://blockscoutcom.us.auth0.com/v2/logout` |
+| NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED | `boolean` | Set to true if network has account feature | yes | `false` | `true` |
+| NEXT_PUBLIC_AUTH0_CLIENT_ID | `string` | Client id for [Auth0](https://auth0.com/) provider | yes | - | `<secret>` |
+| NEXT_PUBLIC_AUTH_URL | `string` | Account auth base url; it is used for building login URL (`${ NEXT_PUBLIC_AUTH_URL }/auth/auth0`) and logout return URL (`${ NEXT_PUBLIC_AUTH_URL }/auth/logout`); if not provided the base app URL will be used instead | yes | - | `https://blockscout.com` |
+| NEXT_PUBLIC_LOGOUT_URL | `string` | Account logout url. Required if account is supported for the app instance. | yes | - | `https://blockscoutcom.us.auth0.com/v2/logout` |
 
 ## App configuration
 
@@ -134,13 +135,13 @@ In order to enable "My Account" feature you have to configure following set of v
 | Variable | Type| Description | Is required  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_API_PROTOCOL | `http \| https` | Main API protocol | - | `https` | `http` |
-| NEXT_PUBLIC_API_HOST | `string` | Main API host | - | `blockscout.com` | `my-host.com` |
+| NEXT_PUBLIC_API_HOST | `string` | Main API host | yes | - | `blockscout.com` |
 | NEXT_PUBLIC_API_BASE_PATH | `string` | Base path for Main API endpoint url | - | - | `/poa/core` |
 | NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL | `ws \| wss` | Main API websocket protocol | - | `wss` | `ws` |
-| NEXT_PUBLIC_STATS_API_HOST | `string` | Stats API endpoint url | - | - | `https://my-host.com` |
-| NEXT_PUBLIC_VISUALIZE_API_HOST | `string` | Visualize API endpoint url | - | - | `https://my-host.com` |
-| NEXT_PUBLIC_CONTRACT_INFO_API_HOST | `string` | Contract Info API endpoint url | - | - | `https://my-host.com` |
-| NEXT_PUBLIC_ADMIN_SERVICE_API_HOST | `string` | Admin Service API endpoint url | - | - | `https://my-host.com` |
+| NEXT_PUBLIC_STATS_API_HOST | `string` | Stats API endpoint url | - | - | `https://stats.services.blockscout.com` |
+| NEXT_PUBLIC_VISUALIZE_API_HOST | `string` | Visualize API endpoint url | - | - | `https://visualizer.services.blockscout.com` |
+| NEXT_PUBLIC_CONTRACT_INFO_API_HOST | `string` | Contract Info API endpoint url | - | - | `https://contracts-info.services.blockscout.com` |
+| NEXT_PUBLIC_ADMIN_SERVICE_API_HOST | `string` | Admin Service API endpoint url | - | - | `https://admin-rs.services.blockscout.com` |
 
 
 ## External services configuration
@@ -149,7 +150,6 @@ In order to enable "My Account" feature you have to configure following set of v
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_SENTRY_DSN | `string` | Client key for your Sentry.io app | - | - | `<secret>` |
 | SENTRY_CSP_REPORT_URI | `string` | URL for sending CSP-reports to your Sentry.io app | - | - | `<secret>` |
-| NEXT_PUBLIC_AUTH0_CLIENT_ID | `string` | Client id for [Auth0](https://auth0.com/) provider | - | - | `<secret>` |
 | NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID | `string` | Project id for [WalletConnect](https://docs.walletconnect.com/2.0/web3modal/react/installation#obtain-project-id) integration | - | - | `<secret>` |
 | NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY | `string` | Site key for [reCAPTCHA](https://developers.google.com/recaptcha) service | - | - | `<secret>` |
 | NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID | `string` | Property ID for [Google Analytics](https://analytics.google.com/) service | - | - | `UA-XXXXXX-X` |
