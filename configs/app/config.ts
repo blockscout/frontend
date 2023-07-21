@@ -9,6 +9,8 @@ import type { ChainIndicatorId } from 'ui/home/indicators/types';
 
 import stripTrailingSlash from 'lib/stripTrailingSlash';
 
+// I was not able to type all envs in global.d.ts, because it doesn't handle correctly union types.
+// So I had to do a little type coercion here.
 const ENVS = process.env as unknown as NextPublicEnvs;
 
 const getEnvValue = <T extends string>(env: T | undefined): T | undefined => env?.replaceAll('\'', '"') as T;
