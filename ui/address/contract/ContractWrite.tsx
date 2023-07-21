@@ -15,7 +15,7 @@ import ContractImplementationAddress from './ContractImplementationAddress';
 import ContractMethodCallable from './ContractMethodCallable';
 import ContractWriteResult from './ContractWriteResult';
 import useContractAbi from './useContractAbi';
-import { getNativeCoinValue } from './utils';
+import { getNativeCoinValue, prepareAbi } from './utils';
 
 interface Props {
   addressHash?: string;
@@ -71,9 +71,10 @@ const ContractWrite = ({ addressHash, isProxy, isCustomAbi }: Props) => {
       throw new Error('Method name is not defined');
     }
 
+    const abi = prepareAbi(contractAbi, item);
     const hash = await walletClient?.writeContract({
       args: _args,
-      abi: contractAbi,
+      abi,
       functionName: methodName,
       address: addressHash as `0x${ string }`,
       value: value as undefined,
@@ -82,7 +83,7 @@ const ContractWrite = ({ addressHash, isProxy, isCustomAbi }: Props) => {
     return { hash };
   }, [ isConnected, chain, contractAbi, walletClient, addressHash, switchNetworkAsync ]);
 
-  const renderContent = React.useCallback((item: SmartContractWriteMethod, index: number, id: number) => {
+  const renderItemContent = React.useCallback((item: SmartContractWriteMethod, index: number, id: number) => {
     return (
       <ContractMethodCallable
         key={ id + '_' + index }
@@ -111,7 +112,7 @@ const ContractWrite = ({ addressHash, isProxy, isCustomAbi }: Props) => {
       { isCustomAbi && <ContractCustomAbiAlert/> }
       <ContractConnectWallet/>
       { isProxy && <ContractImplementationAddress hash={ addressHash }/> }
-      <ContractMethodsAccordion data={ data } renderContent={ renderContent }/>
+      <ContractMethodsAccordion data={ data } addressHash={ addressHash } renderItemContent={ renderItemContent }/>
     </>
   );
 };

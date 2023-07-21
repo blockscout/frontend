@@ -11,25 +11,37 @@ import Address from 'ui/shared/address/Address';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
+function castValueToString(value: number | string | boolean | bigint | undefined): string {
+  switch (typeof value) {
+    case 'string':
+      return value;
+    case 'boolean':
+      return String(value);
+    case 'undefined':
+      return '';
+    case 'number':
+      return value.toLocaleString(undefined, { useGrouping: false });
+    case 'bigint':
+      return value.toString();
+  }
+}
+
 interface Props {
   data: SmartContractMethodOutput;
 }
 
 const ContractMethodStatic = ({ data }: Props) => {
-  const isBigInt = data.type.includes('int256') || data.type.includes('int128');
-  const [ value, setValue ] = React.useState(isBigInt && data.value && typeof data.value === 'string' ? BigNumber(data.value).toFixed() : data.value);
+  const [ value, setValue ] = React.useState<string>(castValueToString(data.value));
   const [ label, setLabel ] = React.useState('WEI');
 
   const handleCheckboxChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    if (!data.value || typeof data.value !== 'string') {
-      return;
-    }
+    const initialValue = castValueToString(data.value);
 
     if (event.target.checked) {
-      setValue(BigNumber(data.value).div(WEI).toFixed());
+      setValue(BigNumber(initialValue).div(WEI).toFixed());
       setLabel(appConfig.network.currency.symbol || 'ETH');
     } else {
-      setValue(BigNumber(data.value).toFixed());
+      setValue(BigNumber(initialValue).toFixed());
       setLabel('WEI');
     }
   }, [ data.value ]);
@@ -50,7 +62,7 @@ const ContractMethodStatic = ({ data }: Props) => {
   return (
     <Flex flexDir={{ base: 'column', lg: 'row' }} columnGap={ 2 } rowGap={ 2 }>
       { content }
-      { isBigInt && <Checkbox onChange={ handleCheckboxChange }>{ label }</Checkbox> }
+      { (data.type.includes('int256') || data.type.includes('int128')) && <Checkbox onChange={ handleCheckboxChange }>{ label }</Checkbox> }
     </Flex>
   );
 };

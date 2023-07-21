@@ -161,7 +161,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
             <span>This address </span>
             <span>{ signer }</span>
             <span> is not a creator/owner of the requested contract and cannot claim ownership. Only </span>
-            <span>{ expectedSigners }2</span>
+            <span>{ expectedSigners }</span>
             <span> can verify ownership of this contract.</span>
           </Box>
         );
