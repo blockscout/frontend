@@ -12,7 +12,7 @@ try {
       return result;
     }, {} as Record<string, string>);
 
-  console.log(`⏳ Checking environment variables...`);
+  console.log(`⏳ Validating environment variables schema...`);
   nextPublicEnvsSchema.parse(appEnvs);
   console.log('👍 All good!\n');
 } catch (error) {
@@ -25,6 +25,6 @@ try {
     },
   );
   console.log(validationError);
-  console.log('🚨 File is invalid\n');
+  console.log('🚨 ENV set is invalid\n');
   process.exit(1);
 }
