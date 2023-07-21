@@ -15,52 +15,50 @@ interface Props {
 }
 
 const SearchBarSuggestBlock = ({ data, isMobile, searchTerm }: Props) => {
+  const icon = <Icon as={ blockIcon } boxSize={ 6 } color="gray.500"/>;
   const shouldHighlightHash = data.block_hash.toLowerCase() === searchTerm.toLowerCase();
+  const blockNumber = (
+    <Text
+      fontWeight={ 700 }
+      overflow="hidden"
+      whiteSpace="nowrap"
+      textOverflow="ellipsis"
+    >
+      <span dangerouslySetInnerHTML={{ __html: highlightText(data.block_number.toString(), searchTerm) }}/>
+    </Text>
+  );
+  const hash = (
+    <Text
+      variant="secondary"
+      overflow="hidden"
+      whiteSpace="nowrap"
+      as={ shouldHighlightHash ? 'mark' : 'span' }
+      display="block"
+    >
+      <HashStringShortenDynamic hash={ data.block_hash } isTooltipDisabled/>
+    </Text>
+  );
+  const date = dayjs(data.timestamp).format('llll');
 
   if (isMobile) {
     return (
       <>
-        <Flex alignItems="center">
-          <Icon as={ blockIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
-          <Text
-            fontWeight={ 700 }
-            overflow="hidden"
-            whiteSpace="nowrap"
-            textOverflow="ellipsis"
-          >
-            <span dangerouslySetInnerHTML={{ __html: highlightText(data.block_number.toString(), searchTerm) }}/>
-          </Text>
+        <Flex alignItems="center" gap={ 2 }>
+          { icon }
+          { blockNumber }
         </Flex>
-        <Text variant="secondary" overflow="hidden" whiteSpace="nowrap" as={ shouldHighlightHash ? 'mark' : 'span' } display="block">
-          <HashStringShortenDynamic hash={ data.block_hash } isTooltipDisabled/>
-        </Text>
-        <Text variant="secondary">{ dayjs(data.timestamp).format('llll') }</Text>
+        { hash }
+        <Text variant="secondary">{ date }</Text>
       </>
     );
   }
 
   return (
-    <Grid templateColumns="24px auto minmax(auto, max-content) auto" gap={ 2 }>
-      <Icon as={ blockIcon } boxSize={ 6 } color="gray.500"/>
-      <Text
-        fontWeight={ 700 }
-        overflow="hidden"
-        whiteSpace="nowrap"
-        textOverflow="ellipsis"
-        w="200px"
-      >
-        <span dangerouslySetInnerHTML={{ __html: highlightText(data.block_number.toString(), searchTerm) }}/>
-      </Text>
-      <Text
-        variant="secondary"
-        overflow="hidden"
-        whiteSpace="nowrap"
-        as={ shouldHighlightHash ? 'mark' : 'span' }
-        display="block"
-      >
-        <HashStringShortenDynamic hash={ data.block_hash } isTooltipDisabled/>
-      </Text>
-      <Text variant="secondary" textAlign="end">{ dayjs(data.timestamp).format('llll') }</Text>
+    <Grid templateColumns="24px 200px minmax(auto, max-content) auto" gap={ 2 }>
+      { icon }
+      { blockNumber }
+      { hash }
+      <Text variant="secondary" textAlign="end">{ date }</Text>
     </Grid>
   );
 };

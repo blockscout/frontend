@@ -14,28 +14,31 @@ interface Props {
 }
 
 const SearchBarSuggestTx = ({ data, isMobile }: Props) => {
+  const icon = <Icon as={ txIcon } boxSize={ 6 } color="gray.500"/>;
+  const hash = (
+    <chakra.mark overflow="hidden" whiteSpace="nowrap" fontWeight={ 700 }>
+      <HashStringShortenDynamic hash={ data.tx_hash } isTooltipDisabled/>
+    </chakra.mark>
+  );
+  const date = dayjs(data.timestamp).format('llll');
+
   if (isMobile) {
     return (
       <>
-        <Flex alignItems="center" justifyContent="space-between">
-          <Icon as={ txIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
-          <chakra.mark overflow="hidden" whiteSpace="nowrap" fontWeight={ 700 }>
-            <HashStringShortenDynamic hash={ data.tx_hash } isTooltipDisabled/>
-          </chakra.mark>
+        <Flex alignItems="center" justifyContent="space-between" gap={ 2 }>
+          { icon }
+          { hash }
         </Flex>
-        <Text variant="secondary">{ dayjs(data.timestamp).format('llll') }</Text>
+        <Text variant="secondary">{ date }</Text>
       </>
     );
   }
 
   return (
     <Grid templateColumns="24px minmax(auto, max-content) auto" gap={ 2 }>
-      <Icon as={ txIcon } boxSize={ 6 } color="gray.500"/>
-
-      <chakra.mark overflow="hidden" whiteSpace="nowrap" display="block" fontWeight={ 700 } >
-        <HashStringShortenDynamic hash={ data.tx_hash } isTooltipDisabled/>
-      </chakra.mark>
-      <Text variant="secondary" textAlign="end">{ dayjs(data.timestamp).format('llll') }</Text>
+      { icon }
+      { hash }
+      <Text variant="secondary" textAlign="end">{ date }</Text>
     </Grid>
   );
 };

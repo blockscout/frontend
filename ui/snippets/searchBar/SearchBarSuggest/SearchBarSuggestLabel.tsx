@@ -1,4 +1,4 @@
-import { Text, Flex, Icon } from '@chakra-ui/react';
+import { Grid, Text, Flex, Icon } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SearchResultLabel } from 'types/api/search';
@@ -15,54 +15,53 @@ interface Props {
 }
 
 const SearchBarSuggestLabel = ({ data, isMobile, searchTerm }: Props) => {
+  const icon = <Icon as={ labelIcon } boxSize={ 6 } color="gray.500"/>;
+
+  const name = (
+    <Text
+      fontWeight={ 700 }
+      overflow="hidden"
+      whiteSpace="nowrap"
+      textOverflow="ellipsis"
+    >
+      <span dangerouslySetInnerHTML={{ __html: highlightText(data.name, searchTerm) }}/>
+    </Text>
+  );
+
+  const address = (
+    <Text
+      overflow="hidden"
+      whiteSpace="nowrap"
+      variant="secondary"
+    >
+      <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>
+    </Text>
+  );
+
+  const isContractVerified = data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500"/>;
+
   if (isMobile) {
     return (
       <>
-        <Flex alignItems="center" overflow="hidden">
-          <Icon as={ labelIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
-          <Text
-            fontWeight={ 700 }
-            overflow="hidden"
-            whiteSpace="nowrap"
-            textOverflow="ellipsis"
-            flexGrow={ 1 }
-          >
-            <span dangerouslySetInnerHTML={{ __html: highlightText(data.name, searchTerm) }}/>
-          </Text>
+        <Flex alignItems="center" overflow="hidden" gap={ 2 }>
+          { icon }
+          { name }
         </Flex>
-        <Flex alignItems="center" justifyContent="space-between" overflow="hidden">
-          <Text overflow="hidden" whiteSpace="nowrap" variant="secondary">
-            <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>
-          </Text>
-          { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 2 }/> }
+        <Flex alignItems="center" justifyContent="space-between" overflow="hidden" gap={ 2 }>
+          { address }
+          { isContractVerified }
         </Flex>
       </>
     );
   }
 
   return (
-    <Flex alignItems="center">
-      <Icon as={ labelIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
-      <Text
-        fontWeight={ 700 }
-        overflow="hidden"
-        whiteSpace="nowrap"
-        textOverflow="ellipsis"
-        flexGrow={ 0 }
-        w="200px"
-      >
-        <span dangerouslySetInnerHTML={{ __html: highlightText(data.name, searchTerm) }}/>
-      </Text>
-      <Text
-        overflow="hidden"
-        whiteSpace="nowrap"
-        variant="secondary"
-        ml={ 2 }
-      >
-        <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>
-      </Text>
-      { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 2 }/> }
-    </Flex>
+    <Grid alignItems="center" gridTemplateColumns="24px 200px max-content 24px" gap={ 2 }>
+      { icon }
+      { name }
+      { address }
+      { isContractVerified }
+    </Grid>
   );
 };
 

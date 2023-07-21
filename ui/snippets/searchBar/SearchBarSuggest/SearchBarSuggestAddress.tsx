@@ -16,17 +16,25 @@ interface Props {
 
 const SearchBarSuggestAddress = ({ data, isMobile, searchTerm }: Props) => {
   const shouldHighlightHash = data.address.toLowerCase() === searchTerm.toLowerCase();
+  const icon = <AddressIcon address={{ hash: data.address, is_contract: data.type === 'contract', implementation_name: null }} flexShrink={ 0 }/>;
+  const name = data.name && (
+    <Text
+      variant="secondary"
+      overflow="hidden"
+      whiteSpace="nowrap"
+      textOverflow="ellipsis"
+    >
+      <span dangerouslySetInnerHTML={{ __html: highlightText(data.name, searchTerm) }}/>
+    </Text>
+  );
+  const isContractVerified = data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500"/>;
+  const address = <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>;
 
   if (isMobile) {
     return (
       <>
-        <Flex alignItems="center" justifyContent="space-between">
-          <AddressIcon
-            address={{ hash: data.address, is_contract: data.type === 'contract', implementation_name: null }}
-            mr={ 2 }
-            flexShrink={ 0 }
-
-          />
+        <Flex alignItems="center" justifyContent="space-between" gap={ 2 }>
+          { icon }
           <Box
             as={ shouldHighlightHash ? 'mark' : 'span' }
             display="block"
@@ -36,34 +44,19 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm }: Props) => {
             flexGrow={ 1 }
 
           >
-            <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>
+            { address }
           </Box>
-          { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 2 }/> }
+          { isContractVerified }
         </Flex>
-        { data.name && (
-          <Text
-            variant="secondary"
-            overflow="hidden"
-            whiteSpace="nowrap"
-            textOverflow="ellipsis"
-            flexGrow={ 1 }
-          >
-            <span dangerouslySetInnerHTML={{ __html: highlightText(data.name, searchTerm) }}/>
-          </Text>
-        ) }
+        { name }
       </>
     );
   }
 
   return (
-    <Flex alignItems="center">
-      <AddressIcon
-        address={{ hash: data.address, is_contract: data.type === 'contract', implementation_name: null }}
-        mr={ 2 }
-        flexShrink={ 0 }
-
-      />
-      <Flex alignItems="center" w="420px">
+    <Flex alignItems="center" gap={ 2 }>
+      { icon }
+      <Flex alignItems="center" w="450px" gap={ 2 }>
         <Box
           as={ shouldHighlightHash ? 'mark' : 'span' }
           display="block"
@@ -71,22 +64,11 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm }: Props) => {
           whiteSpace="nowrap"
           fontWeight={ 700 }
         >
-          <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>
+          { address }
         </Box>
-        { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 2 }/> }
+        { isContractVerified }
       </Flex>
-      { data.name && (
-        <Text
-          variant="secondary"
-          overflow="hidden"
-          whiteSpace="nowrap"
-          textOverflow="ellipsis"
-          flexGrow={ 0 }
-          ml={ 6 }
-        >
-          <span dangerouslySetInnerHTML={{ __html: highlightText(data.name, searchTerm) }}/>
-        </Text>
-      ) }
+      { name }
     </Flex>
   );
 };

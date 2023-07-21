@@ -72,15 +72,13 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
       case 'address': {
         const shouldHighlightHash = data.address.toLowerCase() === searchTerm.toLowerCase();
         return (
-          <Flex alignItems="center" overflow="hidden">
-            <Address>
-              <AddressIcon address={{ hash: data.address, is_contract: data.type === 'contract', implementation_name: null }} mr={ 2 } flexShrink={ 0 }/>
-              <Box as={ shouldHighlightHash ? 'mark' : 'span' } display="block" whiteSpace="nowrap" overflow="hidden">
-                <AddressLink type="address" hash={ data.address } fontWeight={ 700 } display="block" w="100%" onClick={ handleLinkClick }/>
-              </Box>
-            </Address>
+          <Address>
+            <AddressIcon address={{ hash: data.address, is_contract: data.type === 'contract', implementation_name: null }} mr={ 2 } flexShrink={ 0 }/>
+            <Box as={ shouldHighlightHash ? 'mark' : 'span' } display="block" whiteSpace="nowrap" overflow="hidden">
+              <AddressLink type="address" hash={ data.address } fontWeight={ 700 } display="block" w="100%" onClick={ handleLinkClick }/>
+            </Box>
             { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 2 }/> }
-          </Flex>
+          </Address>
         );
       }
 

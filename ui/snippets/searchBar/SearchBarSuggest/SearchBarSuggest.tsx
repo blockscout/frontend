@@ -78,7 +78,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
     return map;
   }, [ query.data?.items ]);
 
-  const scrollToCategory = React.useCallback((index: number) => {
+  const scrollToCategory = React.useCallback((index: number) => () => {
     setTabIndex(index);
     scroller.scrollTo(`cat_${ index }`, {
       duration: 250,
@@ -99,22 +99,26 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
       return <Text>Something went wrong. Try refreshing the page or come back later.</Text>;
     }
 
+    if (!query.data.items || query.data.items.length === 0) {
+      return <Text>No results found.</Text>;
+    }
+
     const resultCategories = searchCategories.filter(cat => itemsGroups[cat.id]);
 
     return (
       <>
         { resultCategories.length > 1 && (
           <Box position="sticky" top="0" width="100%" background={ bgColor } py={ 5 } my={ -5 } ref={ tabsRef }>
-            <Tabs variant="outline" colorScheme="gray" size="sm" onChange={ scrollToCategory } index={ tabIndex }>
+            <Tabs variant="outline" colorScheme="gray" size="sm" index={ tabIndex }>
               <TabList columnGap={ 3 } rowGap={ 2 } flexWrap="wrap">
-                { resultCategories.map(cat => <Tab key={ cat.id }>{ cat.title }</Tab>) }
+                { resultCategories.map((cat, index) => <Tab key={ cat.id } onClick={ scrollToCategory(index) }>{ cat.title }</Tab>) }
               </TabList>
             </Tabs>
           </Box>
         ) }
         { resultCategories.map((cat, indx) => {
           return (
-            <Element name={ `cat_${ indx }` } key={ indx }>
+            <Element name={ `cat_${ indx }` } key={ cat.id }>
               <Text
                 fontSize="sm"
                 fontWeight={ 600 }

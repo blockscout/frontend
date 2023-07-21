@@ -15,61 +15,61 @@ interface Props {
 }
 
 const SearchBarSuggestToken = ({ data, isMobile, searchTerm }: Props) => {
-  const name = data.name + (data.symbol ? ` (${ data.symbol })` : '');
+  const icon = <TokenLogo boxSize={ 6 } data={ data }/>;
+  const name = (
+    <Text
+      fontWeight={ 700 }
+      overflow="hidden"
+      whiteSpace="nowrap"
+      textOverflow="ellipsis"
+    >
+      <span dangerouslySetInnerHTML={{ __html: highlightText(data.name + (data.symbol ? ` (${ data.symbol })` : ''), searchTerm) }}/>
+    </Text>
+  );
+
+  const address = (
+    <Text variant="secondary" whiteSpace="nowrap" overflow="hidden">
+      <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>
+    </Text>
+  );
+
+  const contractVerifiedIcon = data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500"/>;
+  const additionalInfo = (
+    <Text overflow="hidden" whiteSpace="nowrap" fontWeight={ 700 }>
+      { data.token_type === 'ERC-20' && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }
+      { data.token_type !== 'ERC-20' && data.total_supply && `Items ${ Number(data.total_supply).toLocaleString() }` }
+    </Text>
+  );
 
   if (isMobile) {
+    const templateCols = `1fr
+    ${ data.is_smart_contract_verified ? ' auto' : '' }
+    ${ (data.token_type === 'ERC-20' && data.exchange_rate) || (data.token_type !== 'ERC-20' && data.total_supply) ? ' auto' : '' }`;
+
     return (
       <>
-        <Flex alignItems="center" justifyContent="space-between">
-          <TokenLogo boxSize={ 6 } data={ data } flexShrink={ 0 }/>
-          <Text
-            fontWeight={ 700 }
-            overflow="hidden"
-            whiteSpace="nowrap"
-            textOverflow="ellipsis"
-            ml={ 2 }
-            flexGrow={ 1 }
-          >
-            <span dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}/>
-          </Text>
+        <Flex alignItems="center" gap={ 2 }>
+          { icon }
+          { name }
         </Flex>
-        <Grid templateColumns="1fr auto auto" alignItems="center">
-          <Text variant="secondary" whiteSpace="nowrap" overflow="hidden">
-            <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>
-          </Text>
-          { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 2 }/> }
-          <Text overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis"ml={ 2 } fontWeight={ 700 } maxW="200px">
-            { data.token_type === 'ERC-20' && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }
-            { data.token_type !== 'ERC-20' && data.total_supply && `Items ${ Number(data.total_supply).toLocaleString() }` }
-          </Text>
+        <Grid templateColumns={ templateCols } alignItems="center" gap={ 2 }>
+          { address }
+          { contractVerifiedIcon }
+          { additionalInfo }
         </Grid>
       </>
     );
   }
 
   return (
-    <Grid templateColumns="24px 200px 1fr auto">
-      <TokenLogo boxSize={ 6 } data={ data }/>
-      <Text
-        fontWeight={ 700 }
-        overflow="hidden"
-        whiteSpace="nowrap"
-        textOverflow="ellipsis"
-        ml={ 2 }
-        flexGrow={ 0 }
-      >
-        <span dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}/>
-      </Text>
-      <Flex alignItems="center">
-        <Text overflow="hidden" whiteSpace="nowrap" ml={ 2 } variant="secondary">
-          <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>
-        </Text>
-        { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 2 }/> }
+    <Grid templateColumns="24px 200px 1fr auto" gap={ 2 }>
+      { icon }
+      { name }
+      <Flex alignItems="center" gap={ 2 }>
+        { address }
+        { contractVerifiedIcon }
       </Flex>
-      <Text overflow="hidden" whiteSpace="nowrap" ml={ 2 } fontWeight={ 700 }>
-        { data.token_type === 'ERC-20' && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }
-        { data.token_type !== 'ERC-20' && data.total_supply && `Items ${ Number(data.total_supply).toLocaleString() }` }
-      </Text>
+      { additionalInfo }
     </Grid>
   );
 };

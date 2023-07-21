@@ -119,15 +119,13 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
 
         return (
           <Td colSpan={ 3 } fontSize="sm">
-            <Flex alignItems="center" overflow="hidden">
-              <Address>
-                <AddressIcon address={{ hash: data.address, is_contract: data.type === 'contract', implementation_name: null }} mr={ 2 } flexShrink={ 0 }/>
-                <mark>
-                  <AddressLink hash={ data.address } type="address" fontWeight={ 700 } onClick={ handleLinkClick }/>
-                </mark>
-              </Address>
+            <Address>
+              <AddressIcon address={{ hash: data.address, is_contract: data.type === 'contract', implementation_name: null }} mr={ 2 } flexShrink={ 0 }/>
+              <mark>
+                <AddressLink hash={ data.address } type="address" fontWeight={ 700 } onClick={ handleLinkClick }/>
+              </mark>
               { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 2 }/> }
-            </Flex>
+            </Address>
           </Td>
         );
       }
