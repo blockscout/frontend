@@ -43,7 +43,7 @@ export type NextPublicEnvs = {
 
   // App config
   NEXT_PUBLIC_APP_INSTANCE?: string;
-  NEXT_PUBLIC_APP_PROTOCOL: 'http' | 'https';
+  NEXT_PUBLIC_APP_PROTOCOL?: 'http' | 'https';
   NEXT_PUBLIC_APP_HOST: string;
   NEXT_PUBLIC_APP_PORT?: string;
   NEXT_PUBLIC_APP_ENV?: string;
