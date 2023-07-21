@@ -36,11 +36,11 @@ const AddressHeadingInfo = ({ address, token, isLinkDisabled, isLoading }: Props
       />
       <CopyToClipboard text={ address.hash } isLoading={ isLoading }/>
       { !isLoading && address.is_contract && token && <AddressAddToWallet ml={ 2 } token={ token }/> }
-      { !isLoading && !address.is_contract && appConfig.isAccountSupported && (
+      { !isLoading && !address.is_contract && appConfig.account.isEnabled && (
         <AddressFavoriteButton hash={ address.hash } watchListId={ address.watchlist_address_id } ml={ 3 }/>
       ) }
       <AddressQrCode hash={ address.hash } ml={ 2 } isLoading={ isLoading } flexShrink={ 0 }/>
-      { appConfig.isAccountSupported && <AddressActionsMenu isLoading={ isLoading }/> }
+      { appConfig.account.isEnabled && <AddressActionsMenu isLoading={ isLoading }/> }
     </Flex>
   );
 };

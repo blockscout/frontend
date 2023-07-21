@@ -46,7 +46,7 @@ const ProfileMenuContent = ({ data }: Props) => {
         </VStack>
       </Box>
       <Box mt={ 2 } pt={ 3 } borderTopColor="divider" borderTopWidth="1px" { ...getDefaultTransitionProps() }>
-        <Button size="sm" width="full" variant="outline" as="a" href={ appConfig.logoutUrl }>Sign Out</Button>
+        <Button size="sm" width="full" variant="outline" as="a" href={ appConfig.account.logoutUrl }>Sign Out</Button>
       </Box>
     </Box>
   );

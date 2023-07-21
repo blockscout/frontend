@@ -37,7 +37,7 @@ const AddressActions = ({ isLoading }: Props) => {
         </MenuButton>
       </Skeleton>
       <MenuList minWidth="180px" zIndex="popover">
-        { isTokenPage && appConfig.contractInfoApi.endpoint && appConfig.adminServiceApi.endpoint && appConfig.isAccountSupported &&
+        { isTokenPage && appConfig.contractInfoApi.endpoint && appConfig.adminServiceApi.endpoint && appConfig.account.isEnabled &&
           <TokenInfoMenuItem py={ 2 } px={ 4 } hash={ hash } onBeforeClick={ isAccountActionAllowed }/> }
         <PrivateTagMenuItem py={ 2 } px={ 4 } hash={ hash } onBeforeClick={ isAccountActionAllowed }/>
         <PublicTagMenuItem py={ 2 } px={ 4 } hash={ hash } onBeforeClick={ isAccountActionAllowed }/>

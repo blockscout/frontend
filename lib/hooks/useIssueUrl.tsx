@@ -24,7 +24,7 @@ export default function useIssueUrl(backendVersion: string | undefined) {
 ### Environment
 
 * Backend Version/branch/commit: ${ backendVersion }
-* Frontend Version+commit: ${ [ appConfig.frontendVersion, appConfig.frontendCommit ].filter(Boolean).join('+') }
+* Frontend Version+commit: ${ [ appConfig.footer.frontendVersion, appConfig.footer.frontendCommit ].filter(Boolean).join('+') }
 * User Agent: ${ userAgent }
 
 ### Steps to reproduce

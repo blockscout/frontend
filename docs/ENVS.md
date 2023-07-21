@@ -136,6 +136,7 @@ In order to enable "My Account" feature you have to configure following set of v
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_API_PROTOCOL | `http \| https` | Main API protocol | - | `https` | `http` |
 | NEXT_PUBLIC_API_HOST | `string` | Main API host | yes | - | `blockscout.com` |
+| NEXT_PUBLIC_API_PORT | `number` | Port where API is running on the host | - | - | `3001` |
 | NEXT_PUBLIC_API_BASE_PATH | `string` | Base path for Main API endpoint url | - | - | `/poa/core` |
 | NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL | `ws \| wss` | Main API websocket protocol | - | `wss` | `ws` |
 | NEXT_PUBLIC_STATS_API_HOST | `string` | Stats API endpoint url | - | - | `https://stats.services.blockscout.com` |

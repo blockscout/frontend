@@ -5,6 +5,7 @@ export type NextPublicEnvs = {
   NEXT_PUBLIC_NETWORK_ID: string;
   NEXT_PUBLIC_NETWORK_RPC_URL?: string;
   NEXT_PUBLIC_NETWORK_CURRENCY_NAME?: string;
+  NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL?: string;
   NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS?: string;
   NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS?: string;
   NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME?: string;
@@ -50,6 +51,7 @@ export type NextPublicEnvs = {
   // API config
   NEXT_PUBLIC_API_PROTOCOL?: 'http' | 'https';
   NEXT_PUBLIC_API_HOST: string;
+  NEXT_PUBLIC_API_PORT?: string;
   NEXT_PUBLIC_API_BASE_PATH?: string;
   NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL?: 'ws' | 'wss';
   NEXT_PUBLIC_STATS_API_HOST?: string;
@@ -64,6 +66,10 @@ export type NextPublicEnvs = {
   NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY?: string;
   NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID?: string;
   NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN?: string;
+
+  // utilities
+  NEXT_PUBLIC_GIT_TAG?: string;
+  NEXT_PUBLIC_GIT_COMMIT_SHA?: string;
 }
 & NextPublicEnvsAccount
 & NextPublicEnvsMarketplace
