@@ -1,8 +1,13 @@
 Dockerfile
 .dockerignore
 node_modules
+/**/node_modules
 node_modules_linux
 npm-debug.log
 README.md
 .next
 .git
+*.tsbuildinfo
+.eslintcache
+/test-results/
+/playwright-report/
