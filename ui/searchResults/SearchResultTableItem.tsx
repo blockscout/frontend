@@ -67,11 +67,11 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
               </Flex>
             </Td>
             <Td fontSize="sm" verticalAlign="middle">
-              <Skeleton isLoaded={ !isLoading } whiteSpace="nowrap" overflow="hidden" display="flex" alignItems="center" justifyContent="space-between">
-                <Box overflow="hidden" whiteSpace="nowrap" w={ data.is_smart_contract_verified ? 'calc(100%-32px)' : 'unset' }>
+              <Skeleton isLoaded={ !isLoading } whiteSpace="nowrap" overflow="hidden" display="flex" alignItems="center">
+                <Box overflow="hidden" whiteSpace="nowrap" w={ data.is_smart_contract_verified ? 'calc(100%-28px)' : 'unset' }>
                   <HashStringShortenDynamic hash={ data.address }/>
                 </Box>
-                { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 2 }/> }
+                { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 1 }/> }
               </Skeleton>
             </Td>
             <Td fontSize="sm" verticalAlign="middle" isNumeric>
@@ -107,7 +107,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
                       <HashStringShortenDynamic hash={ data.address }/>
                     </Box>
                   </LinkInternal>
-                  { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 2 }/> }
+                  { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 1 }/> }
                 </Flex>
               </Td>
               <Td colSpan={ 2 } fontSize="sm" verticalAlign="middle">
@@ -124,7 +124,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
               <mark>
                 <AddressLink hash={ data.address } type="address" fontWeight={ 700 } onClick={ handleLinkClick }/>
               </mark>
-              { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 2 }/> }
+              { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 1 }/> }
             </Address>
           </Td>
         );
@@ -148,11 +148,11 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
               </Flex>
             </Td>
             <Td fontSize="sm" verticalAlign="middle">
-              <Flex alignItems="center" overflow="hidden" justifyContent="space-between">
-                <Box overflow="hidden" whiteSpace="nowrap" w={ data.is_smart_contract_verified ? 'calc(100%-32px)' : 'unset' }>
+              <Flex alignItems="center" overflow="hidden">
+                <Box overflow="hidden" whiteSpace="nowrap" w={ data.is_smart_contract_verified ? 'calc(100%-28px)' : 'unset' }>
                   <HashStringShortenDynamic hash={ data.address }/>
                 </Box>
-                { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 2 }/> }
+                { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 1 }/> }
               </Flex>
             </Td>
             <Td></Td>

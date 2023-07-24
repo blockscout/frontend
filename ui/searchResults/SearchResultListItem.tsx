@@ -77,7 +77,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
             <Box as={ shouldHighlightHash ? 'mark' : 'span' } display="block" whiteSpace="nowrap" overflow="hidden">
               <AddressLink type="address" hash={ data.address } fontWeight={ 700 } display="block" w="100%" onClick={ handleLinkClick }/>
             </Box>
-            { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 2 }/> }
+            { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 1 }/> }
           </Address>
         );
       }
@@ -132,11 +132,16 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
   const secondRow = (() => {
     switch (data.type) {
       case 'token': {
+        const templateCols = `1fr
+        ${ (data.token_type === 'ERC-20' && data.exchange_rate) || (data.token_type !== 'ERC-20' && data.total_supply) ? ' auto' : '' }`;
+
         return (
-          <Grid templateColumns="1fr auto" overflow="hidden" gap={ 5 }>
+          <Grid templateColumns={ templateCols } alignItems="center" gap={ 2 }>
             <Skeleton isLoaded={ !isLoading } overflow="hidden" display="flex" alignItems="center">
-              <HashStringShortenDynamic hash={ data.address }/>
-              { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 2 }/> }
+              <Text variant="secondary" whiteSpace="nowrap" overflow="hidden">
+                <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>
+              </Text>
+              { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 1 }/> }
             </Skeleton>
             <Text overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" fontWeight={ 700 }>
               { data.token_type === 'ERC-20' && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }
@@ -163,11 +168,11 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
       }
       case 'label': {
         return (
-          <Flex alignItems="center" justifyContent="space-between">
+          <Flex alignItems="center">
             <Box overflow="hidden">
               <HashStringShortenDynamic hash={ data.address }/>
             </Box>
-            { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 2 }/> }
+            { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 1 }/> }
           </Flex>
         );
       }

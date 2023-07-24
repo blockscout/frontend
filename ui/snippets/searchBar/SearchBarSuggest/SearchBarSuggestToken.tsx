@@ -33,7 +33,7 @@ const SearchBarSuggestToken = ({ data, isMobile, searchTerm }: Props) => {
     </Text>
   );
 
-  const contractVerifiedIcon = data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500"/>;
+  const contractVerifiedIcon = data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 1 }/>;
   const additionalInfo = (
     <Text overflow="hidden" whiteSpace="nowrap" fontWeight={ 700 }>
       { data.token_type === 'ERC-20' && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }
@@ -43,7 +43,6 @@ const SearchBarSuggestToken = ({ data, isMobile, searchTerm }: Props) => {
 
   if (isMobile) {
     const templateCols = `1fr
-    ${ data.is_smart_contract_verified ? ' auto' : '' }
     ${ (data.token_type === 'ERC-20' && data.exchange_rate) || (data.token_type !== 'ERC-20' && data.total_supply) ? ' auto' : '' }`;
 
     return (
@@ -53,8 +52,10 @@ const SearchBarSuggestToken = ({ data, isMobile, searchTerm }: Props) => {
           { name }
         </Flex>
         <Grid templateColumns={ templateCols } alignItems="center" gap={ 2 }>
-          { address }
-          { contractVerifiedIcon }
+          <Flex alignItems="center" overflow="hidden">
+            { address }
+            { contractVerifiedIcon }
+          </Flex>
           { additionalInfo }
         </Grid>
       </>
@@ -65,7 +66,7 @@ const SearchBarSuggestToken = ({ data, isMobile, searchTerm }: Props) => {
     <Grid templateColumns="24px 200px 1fr auto" gap={ 2 }>
       { icon }
       { name }
-      <Flex alignItems="center" gap={ 2 }>
+      <Flex alignItems="center" overflow="hidden">
         { address }
         { contractVerifiedIcon }
       </Flex>

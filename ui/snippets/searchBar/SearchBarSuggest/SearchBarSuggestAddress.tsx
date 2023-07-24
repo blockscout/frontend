@@ -1,4 +1,4 @@
-import { Box, Text, Flex, Icon } from '@chakra-ui/react';
+import { Box, Text, Grid, Flex, Icon } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SearchResultAddressOrContract } from 'types/api/search';
@@ -27,27 +27,27 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm }: Props) => {
       <span dangerouslySetInnerHTML={{ __html: highlightText(data.name, searchTerm) }}/>
     </Text>
   );
-  const isContractVerified = data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500"/>;
+  const isContractVerified = data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 1 }/>;
   const address = <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>;
 
   if (isMobile) {
     return (
       <>
-        <Flex alignItems="center" justifyContent="space-between" gap={ 2 }>
+        <Grid templateColumns="24px 1fr" gap={ 2 }>
           { icon }
-          <Box
-            as={ shouldHighlightHash ? 'mark' : 'span' }
-            display="block"
-            overflow="hidden"
-            whiteSpace="nowrap"
-            fontWeight={ 700 }
-            flexGrow={ 1 }
-
-          >
-            { address }
-          </Box>
-          { isContractVerified }
-        </Flex>
+          <Flex alignItems="center" overflow="hidden">
+            <Box
+              as={ shouldHighlightHash ? 'mark' : 'span' }
+              display="block"
+              overflow="hidden"
+              whiteSpace="nowrap"
+              fontWeight={ 700 }
+            >
+              { address }
+            </Box>
+            { isContractVerified }
+          </Flex>
+        </Grid>
         { name }
       </>
     );
@@ -56,7 +56,7 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm }: Props) => {
   return (
     <Flex alignItems="center" gap={ 2 }>
       { icon }
-      <Flex alignItems="center" w="450px" gap={ 2 }>
+      <Flex alignItems="center" w="450px" overflow="hidden">
         <Box
           as={ shouldHighlightHash ? 'mark' : 'span' }
           display="block"

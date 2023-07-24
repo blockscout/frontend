@@ -47,7 +47,7 @@ const SearchBarSuggestLabel = ({ data, isMobile, searchTerm }: Props) => {
           { icon }
           { name }
         </Flex>
-        <Flex alignItems="center" justifyContent="space-between" overflow="hidden" gap={ 2 }>
+        <Flex alignItems="center" overflow="hidden" gap={ 1 }>
           { address }
           { isContractVerified }
         </Flex>
@@ -59,8 +59,10 @@ const SearchBarSuggestLabel = ({ data, isMobile, searchTerm }: Props) => {
     <Grid alignItems="center" gridTemplateColumns="24px 200px max-content 24px" gap={ 2 }>
       { icon }
       { name }
-      { address }
-      { isContractVerified }
+      <Flex alignItems="center" overflow="hidden" gap={ 1 }>
+        { address }
+        { isContractVerified }
+      </Flex>
     </Grid>
   );
 };
