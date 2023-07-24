@@ -25,14 +25,11 @@ const AppErrorTooManyRequests = ({ className }: Props) => {
         await fetch(url, {
           method: 'POST',
           body: { recaptcha_response: token },
+          credentials: 'include',
+        }, {
+          resource: 'api_v2_key',
         });
 
-        // if (!(typeof response === 'object' && response !== null && 'key' in response && typeof response.key === 'string')) {
-        //   throw Error('Invalid response from "Client key" resource.');
-        // }
-
-        // cookies.set(cookies.NAMES.CLIENT_KEY, response.key, { expires: 5 / 24 }); // set cookie for 5 hours === key lifetime
-        // debugger;
         window.location.reload();
 
       } catch (error) {
