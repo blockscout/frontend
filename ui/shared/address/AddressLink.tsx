@@ -20,6 +20,7 @@ type CommonProps = {
   isLoading?: boolean;
   onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
   query?: Record<string, string>;
+  tailLength?: number;
 }
 
 type AddressTokenTxProps = {
@@ -78,7 +79,7 @@ const AddressLink = (props: Props) => {
       case 'constant':
         return <HashStringShorten hash={ hash } isTooltipDisabled={ isMobile }/>;
       case 'dynamic':
-        return <HashStringShortenDynamic hash={ hash } fontWeight={ fontWeight } isTooltipDisabled={ isMobile }/>;
+        return <HashStringShortenDynamic hash={ hash } fontWeight={ fontWeight } isTooltipDisabled={ isMobile } tailLength={ props.tailLength }/>;
       case 'none':
         return <span>{ hash }</span>;
     }

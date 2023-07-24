@@ -38,6 +38,30 @@ test('default view +@mobile +@dark-mode', async({ mount, page }) => {
   await expect(component).toHaveScreenshot();
 });
 
+test('with long block height', async({ mount, page }) => {
+  await page.route(STATS_API_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify(statsMock.base),
+  }));
+  await page.route(BLOCKS_API_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify([
+      {
+        ...blockMock.base,
+        height: 123456789012345,
+      },
+    ]),
+  }));
+
+  const component = await mount(
+    <TestApp>
+      <LatestBlocks/>
+    </TestApp>,
+  );
+
+  await expect(component).toHaveScreenshot();
+});
+
 test.describe('socket', () => {
   test.describe.configure({ mode: 'serial' });
 
