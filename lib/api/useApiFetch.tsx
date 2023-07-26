@@ -24,7 +24,7 @@ export interface Params<R extends ResourceName> {
 export default function useApiFetch() {
   const fetch = useFetch();
   const queryClient = useQueryClient();
-  const { token } = queryClient.getQueryData<CsrfData>(getResourceKey('csrf')) || {};
+  const { token: csrfToken } = queryClient.getQueryData<CsrfData>(getResourceKey('csrf')) || {};
 
   return React.useCallback(<R extends ResourceName, SuccessType = unknown, ErrorType = unknown>(
     resourceName: R,
@@ -38,7 +38,7 @@ export default function useApiFetch() {
     const headers = _pickBy({
       'x-endpoint': resource.endpoint && isNeedProxy() ? resource.endpoint : undefined,
       Authorization: resource.endpoint && resource.needAuth ? apiToken : undefined,
-      'x-csrf-token': withBody && token ? token : undefined,
+      'x-csrf-token': withBody && csrfToken ? csrfToken : undefined,
     }, Boolean) as HeadersInit;
 
     return fetch<SuccessType, ErrorType>(
@@ -52,5 +52,5 @@ export default function useApiFetch() {
         resource: resource.path,
       },
     );
-  }, [ fetch, token ]);
+  }, [ fetch, csrfToken ]);
 }
