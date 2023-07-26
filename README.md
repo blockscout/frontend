@@ -1,55 +1,36 @@
-<h1 align="center">Blockscout frontend app</h1>
+<h1 align="center">Blockscout frontend</h1>
 
 <p align="center">
     <span>Frontend application for </span>
     <a href="https://github.com/blockscout/blockscout/blob/master/README.md">Blockscout</a>
     <span> blockchain explorer</span>
 </p>
+[![](https://dcbadge.vercel.app/api/server/blockscout?style=flat)](https://discord.gg/blockscout)
+docker pull blockscout/blockscout:latest
 
+## Running and configuring the app
 
-## App running and configuration
+App is distributed as a docker image. Here you can find information about the [package](https://github.com/blockscout/frontend/pkgs/container/frontend) and its recent [releases](https://github.com/blockscout/frontend/releases).
 
-App is distributed as a docker image. Info about the package and its recent releases you can find [here](https://github.com/blockscout/frontend/pkgs/container/frontend).
+You can configure your app by passing necessary environment variables when stating the container. See full list of ENVs and their description [here](./docs/ENVS.md).
 
-You can configure your app by passing necessary environment variables when stating a container. See full list of envs and their description [here](./docs/ENVS.md).
+```sh
+docker run -p 3000:3000 --env-file <path-to-your-env-file> ghcr.io/blockscout/frontend:latest
+```
 
-## Development
+Alternatively, you can build your own docker image and run your app from that. Please follow this [guide](./docs/CUSTOM_BUILD.md).
 
-### Technology stack
+## Contributing
 
-Core technologies what used in the project are
-- [yarn](https://yarnpkg.com/) as package manager
-- [React](https://reactjs.org/) as UI library
-- [Next.js](https://nextjs.org/) as application framework
-- [Chakra](https://chakra-ui.com/) as component library; our theme customization could be found in `/theme` folder
-- [jest]() as JavaScript testing framework
-- [playwright](https://playwright.dev/) as a tool for components visual testing
+See our [Contribution guide](./docs/CONTRIBUTING.md) for pull request protocol. We expect contributors to follow our [code of conduct](./CODE_OF_CONDUCT.md) when submitting code or comments.
 
-And of course our premier language is [Typescript](https://www.typescriptlang.org/)
+## Resources
+- [App ENVs list](./docs/ENVS.md)
+- [Contribution guide](./docs/CONTRIBUTING.md)
+- [Making custom build](./docs/CUSTOM_BUILD.md)
 
------
-### Local Development
+## License
 
-**Pre-requisites** You should have installed Node.js v16. The best way to manage your local Node.js version is [nvm](https://github.com/nvm-sh/nvm)
+[![License: GPL v3.0](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-For local development please follow next steps:
-- clone repo
-- install dependencies with `yarn`
-- clone `.env.example` into `configs/envs/.env.secrets` and fill it with necessary secret values (see description [below](#environment-variables))
-- to spin up local dev server
-    - for predefined networks configs (see full available list in `package.json`) you can just run `yarn dev:<app_name>`
-    - for custom network setup create `.env.local` file with all required environment variables from the [list](#environment-variables) and run `yarn dev`
-- navigate to the host from logs output
-
-### Components visual testing
-
-We use [playwright experimental components testing](https://playwright.dev/docs/test-components) for visual (screenshots) CI check. Test renders a single component in headless browser in docker, generates screenshots and then compares this screenshot with a reference one.
-To perform testing locally you need to install docker and run `yarn test:pw:docker`
-
-### Building and running your own docker image
-
-For building a docker image simply run `yarn build:docker` or alternatively run `docker build` and pass your own args.
-
-For running app container from freshly built image with your local env config at `./.end.local` use `yarn start:docker:local` command or run `docker run` manually.
-
-*Disclaimer* Do no try to generate production build of the app on your local machine (outside the docker), it will fail.
+This project is licensed under the GNU General Public License v3.0. See the [LICENSE](LICENSE) file for details.

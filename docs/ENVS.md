@@ -2,7 +2,7 @@
 
 The app instance could be customized by passing following variables to NodeJS environment at runtime. See their list below.
 
-**IMPORTANT NOTE!** For _production_ build purposes all json-like values should be single-quoted. If it contains a hash (`#`) or a dollar-sign (`$`) the whole value should be wrapped in single quotes as well (see `dotenv` [readme](https://github.com/bkeepers/dotenv#variable-substitution))
+**IMPORTANT NOTE!** For _production_ build purposes all json-like values should be single-quoted. If it contains a hash (`#`) or a dollar-sign (`$`) the whole value should be wrapped in single quotes as well (see `dotenv` [readme](https://github.com/bkeepers/dotenv#variable-substitution) for the reference)
 
 ## Network configuration
 
@@ -164,20 +164,3 @@ For each application, you need to specify the `MarketplaceCategoryId` to which i
 | Variable | Type| Description | Is required  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_HAS_BEACON_CHAIN | `boolean` | Set to true for networks with the beacon chain | - | - | `true` |
-
-
-
-
-# How to add new environment variable
-
-If the variable should be exposed to the browser don't forget to add prefix `NEXT_PUBLIC_` to its name.
-
-These are the steps that you have to follow to make everything work:
-- create the variable placeholder for build-time in file `.env.template`; this is the most important step, without this the app will not receive any variables that are passed at run-time
-- for local development purposes add the variable to either `configs/envs/.env.common` or `configs/envs/.env.<network>` files depending on if the variable has the same value for all network or specific value for each network
-- add the variable to CI configs
-    - `deploy/values/review/values.yaml` - review environment
-    - `deploy/values/main/values.yaml` - production environment
-    - `deploy/values/e2e/values.yaml` - e2e-test environment
-
-Keep in mind that all json-like values should be single-quoted, e.g `[{'foo': 'bar'}]`
