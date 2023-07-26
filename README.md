@@ -5,8 +5,6 @@
     <a href="https://github.com/blockscout/blockscout/blob/master/README.md">Blockscout</a>
     <span> blockchain explorer</span>
 </p>
-[![](https://dcbadge.vercel.app/api/server/blockscout?style=flat)](https://discord.gg/blockscout)
-docker pull blockscout/blockscout:latest
 
 ## Running and configuring the app
 
