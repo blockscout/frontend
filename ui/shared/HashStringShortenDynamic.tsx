@@ -23,9 +23,10 @@ interface Props {
   hash: string;
   fontWeight?: string | number;
   isTooltipDisabled?: boolean;
+  tailLength?: number;
 }
 
-const HashStringShortenDynamic = ({ hash, fontWeight = '400', isTooltipDisabled }: Props) => {
+const HashStringShortenDynamic = ({ hash, fontWeight = '400', isTooltipDisabled, tailLength = TAIL_LENGTH }: Props) => {
   const elementRef = useRef<HTMLSpanElement>(null);
   const [ displayedString, setDisplayedString ] = React.useState(hash);
 
@@ -48,9 +49,9 @@ const HashStringShortenDynamic = ({ hash, fontWeight = '400', isTooltipDisabled 
     const parentWidth = getWidth(parent);
 
     if (getWidth(shadowEl) > parentWidth) {
-      const tail = hash.slice(-TAIL_LENGTH);
+      const tail = hash.slice(-tailLength);
       let leftI = HEAD_MIN_LENGTH;
-      let rightI = hash.length - TAIL_LENGTH;
+      let rightI = hash.length - tailLength;
 
       while (rightI - leftI > 1) {
         const medI = ((rightI - leftI) % 2) ? leftI + (rightI - leftI + 1) / 2 : leftI + (rightI - leftI) / 2;
@@ -68,7 +69,7 @@ const HashStringShortenDynamic = ({ hash, fontWeight = '400', isTooltipDisabled 
     }
 
     parent.removeChild(shadowEl);
-  }, [ hash ]);
+  }, [ hash, tailLength ]);
 
   // we want to do recalculation when isFontFaceLoaded flag is changed
   // but we don't want to create more resize event listeners

@@ -54,7 +54,7 @@ const IndexingAlertIntTxs = ({ className }: { className?: string }) => {
     <Text fontSize="xs" color={ hintTextcolor }>
       { data.indexed_internal_transactions_ratio &&
         `${ Math.floor(Number(data.indexed_internal_transactions_ratio) * 100) }% Blocks With Internal Transactions Indexed${ nbsp }${ ndash } ` }
-      We{ apos }re indexing this chain right now. Some of the counts may be inaccurate.`
+      We{ apos }re indexing this chain right now. Some of the counts may be inaccurate.
     </Text>
   );
 

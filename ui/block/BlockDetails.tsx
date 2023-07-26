@@ -166,7 +166,7 @@ const BlockDetails = ({ query }: Props) => {
         </Skeleton>
         <TextSeparator/>
         <Skeleton isLoaded={ !isPlaceholderData } whiteSpace="normal">
-          { dayjs(data.timestamp).format('LLLL') }
+          { dayjs(data.timestamp).format('llll') }
         </Skeleton>
       </DetailsInfoItem>
       <DetailsInfoItem

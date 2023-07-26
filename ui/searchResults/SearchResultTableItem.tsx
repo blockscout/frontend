@@ -1,4 +1,4 @@
-import { Tr, Td, Flex, Icon, Box, Skeleton } from '@chakra-ui/react';
+import { chakra, Tr, Td, Text, Flex, Icon, Box, Skeleton } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
@@ -6,7 +6,9 @@ import type { SearchResultItem } from 'types/api/search';
 
 import blockIcon from 'icons/block.svg';
 import labelIcon from 'icons/publictags.svg';
+import iconSuccess from 'icons/status/success.svg';
 import txIcon from 'icons/transactions.svg';
+import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
 import * as mixpanel from 'lib/mixpanel/index';
 import { saveToRecentKeywords } from 'lib/recentSearchKeywords';
@@ -15,6 +17,7 @@ import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkInternal from 'ui/shared/LinkInternal';
+import { getItemCategory, searchItemTitles } from 'ui/shared/search/utils';
 import TokenLogo from 'ui/shared/TokenLogo';
 
 interface Props {
@@ -64,8 +67,19 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
               </Flex>
             </Td>
             <Td fontSize="sm" verticalAlign="middle">
+              <Skeleton isLoaded={ !isLoading } whiteSpace="nowrap" overflow="hidden" display="flex" alignItems="center">
+                <Box overflow="hidden" whiteSpace="nowrap" w={ data.is_smart_contract_verified ? 'calc(100%-28px)' : 'unset' }>
+                  <HashStringShortenDynamic hash={ data.address }/>
+                </Box>
+                { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 1 }/> }
+              </Skeleton>
+            </Td>
+            <Td fontSize="sm" verticalAlign="middle" isNumeric>
               <Skeleton isLoaded={ !isLoading } whiteSpace="nowrap" overflow="hidden">
-                <HashStringShortenDynamic hash={ data.address }/>
+                <Text overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" fontWeight={ 700 }>
+                  { data.token_type === 'ERC-20' && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }
+                  { data.token_type !== 'ERC-20' && data.total_supply && `Items ${ Number(data.total_supply).toLocaleString() }` }
+                </Text>
               </Skeleton>
             </Td>
           </>
@@ -93,9 +107,10 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
                       <HashStringShortenDynamic hash={ data.address }/>
                     </Box>
                   </LinkInternal>
+                  { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 1 }/> }
                 </Flex>
               </Td>
-              <Td fontSize="sm" verticalAlign="middle">
+              <Td colSpan={ 2 } fontSize="sm" verticalAlign="middle">
                 <span dangerouslySetInnerHTML={{ __html: shouldHighlightHash ? data.name : highlightText(data.name, searchTerm) }}/>
               </Td>
             </>
@@ -103,12 +118,13 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
         }
 
         return (
-          <Td colSpan={ 2 } fontSize="sm">
+          <Td colSpan={ 3 } fontSize="sm">
             <Address>
               <AddressIcon address={{ hash: data.address, is_contract: data.type === 'contract', implementation_name: null }} mr={ 2 } flexShrink={ 0 }/>
               <mark>
                 <AddressLink hash={ data.address } type="address" fontWeight={ 700 } onClick={ handleLinkClick }/>
               </mark>
+              { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 1 }/> }
             </Address>
           </Td>
         );
@@ -121,7 +137,6 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
               <Flex alignItems="center">
                 <Icon as={ labelIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
                 <LinkInternal
-                  ml={ 2 }
                   href={ route({ pathname: '/address/[hash]', query: { hash: data.address } }) }
                   fontWeight={ 700 }
                   wordBreak="break-all"
@@ -133,10 +148,14 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
               </Flex>
             </Td>
             <Td fontSize="sm" verticalAlign="middle">
-              <Skeleton isLoaded={ !isLoading } whiteSpace="nowrap" overflow="hidden">
-                <HashStringShortenDynamic hash={ data.address }/>
-              </Skeleton>
+              <Flex alignItems="center" overflow="hidden">
+                <Box overflow="hidden" whiteSpace="nowrap" w={ data.is_smart_contract_verified ? 'calc(100%-28px)' : 'unset' }>
+                  <HashStringShortenDynamic hash={ data.address }/>
+                </Box>
+                { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 1 }/> }
+              </Flex>
             </Td>
+            <Td></Td>
           </>
         );
       }
@@ -163,31 +182,41 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
                 <HashStringShortenDynamic hash={ data.block_hash }/>
               </Box>
             </Td>
+            <Td fontSize="sm" verticalAlign="middle" isNumeric>
+              <Text variant="secondary">{ dayjs(data.timestamp).format('llll') }</Text>
+            </Td>
           </>
         );
       }
 
       case 'transaction': {
         return (
-          <Td colSpan={ 2 } fontSize="sm">
-            <Flex alignItems="center">
-              <Icon as={ txIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
-              <mark>
-                <AddressLink hash={ data.tx_hash } type="transaction" fontWeight={ 700 } onClick={ handleLinkClick }/>
-              </mark>
-            </Flex>
-          </Td>
+          <>
+            <Td colSpan={ 2 } fontSize="sm">
+              <Flex alignItems="center">
+                <Icon as={ txIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
+                <chakra.mark overflow="hidden">
+                  <AddressLink display="block" hash={ data.tx_hash } type="transaction" fontWeight={ 700 } onClick={ handleLinkClick } truncation="dynamic"/>
+                </chakra.mark>
+              </Flex>
+            </Td>
+            <Td fontSize="sm" verticalAlign="middle" isNumeric>
+              <Text variant="secondary">{ dayjs(data.timestamp).format('llll') }</Text>
+            </Td>
+          </>
         );
       }
     }
   })();
+
+  const category = getItemCategory(data);
 
   return (
     <Tr>
       { content }
       <Td fontSize="sm" textTransform="capitalize" verticalAlign="middle">
         <Skeleton isLoaded={ !isLoading } color="text_secondary" display="inline-block">
-          <span>{ data.type }</span>
+          <span>{ category ? searchItemTitles[category].itemTitle : '' }</span>
         </Skeleton>
       </Td>
     </Tr>
