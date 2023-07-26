@@ -25,7 +25,7 @@ const ApiKeysPage: React.FC = () => {
   const [ apiKeyModalData, setApiKeyModalData ] = useState<ApiKey>();
   const [ deleteModalData, setDeleteModalData ] = useState<ApiKey>();
 
-  const { data, isPlaceholderData, isError, error } = useApiQuery('api_keys', {
+  const { data, isPlaceholderData, isError } = useApiQuery('api_keys', {
     queryOptions: {
       placeholderData: Array(3).fill(API_KEY),
     },
@@ -60,9 +60,6 @@ const ApiKeysPage: React.FC = () => {
 
   const content = (() => {
     if (isError) {
-      if (error.status === 403) {
-        throw new Error('Unverified email error', { cause: error });
-      }
       return <DataFetchAlert/>;
     }
 

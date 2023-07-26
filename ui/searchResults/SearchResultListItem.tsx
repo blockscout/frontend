@@ -1,4 +1,4 @@
-import { Flex, Icon, Box, chakra, Skeleton } from '@chakra-ui/react';
+import { Flex, Grid, Icon, Box, Text, chakra, Skeleton } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
@@ -6,7 +6,9 @@ import type { SearchResultItem } from 'types/api/search';
 
 import blockIcon from 'icons/block.svg';
 import labelIcon from 'icons/publictags.svg';
+import iconSuccess from 'icons/status/success.svg';
 import txIcon from 'icons/transactions.svg';
+import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
 import * as mixpanel from 'lib/mixpanel/index';
 import { saveToRecentKeywords } from 'lib/recentSearchKeywords';
@@ -16,6 +18,7 @@ import AddressLink from 'ui/shared/address/AddressLink';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkInternal from 'ui/shared/LinkInternal';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
+import { getItemCategory, searchItemTitles } from 'ui/shared/search/utils';
 import TokenLogo from 'ui/shared/TokenLogo';
 
 interface Props {
@@ -41,7 +44,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
         const name = data.name + (data.symbol ? ` (${ data.symbol })` : '');
 
         return (
-          <Flex alignItems="flex-start" overflow="hidden">
+          <Flex alignItems="flex-start" flexGrow={ 1 } overflow="hidden">
             <TokenLogo boxSize={ 6 } data={ data } flexShrink={ 0 } isLoading={ isLoading }/>
             <LinkInternal
               ml={ 2 }
@@ -50,6 +53,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
               wordBreak="break-all"
               isLoading={ isLoading }
               onClick={ handleLinkClick }
+              flexGrow={ 1 }
               overflow="hidden"
             >
               <Skeleton
@@ -73,6 +77,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
             <Box as={ shouldHighlightHash ? 'mark' : 'span' } display="block" whiteSpace="nowrap" overflow="hidden">
               <AddressLink type="address" hash={ data.address } fontWeight={ 700 } display="block" w="100%" onClick={ handleLinkClick }/>
             </Box>
+            { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 1 }/> }
           </Address>
         );
       }
@@ -82,7 +87,6 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
           <Flex alignItems="flex-start">
             <Icon as={ labelIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
             <LinkInternal
-              ml={ 2 }
               href={ route({ pathname: '/address/[hash]', query: { hash: data.address } }) }
               fontWeight={ 700 }
               wordBreak="break-all"
@@ -104,6 +108,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
               fontWeight={ 700 }
               href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.block_hash) } }) }
               onClick={ handleLinkClick }
+              mr={ 4 }
             >
               <Box as={ shouldHighlightHash ? 'span' : 'mark' }>{ data.block_number }</Box>
             </LinkInternal>
@@ -127,18 +132,48 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
   const secondRow = (() => {
     switch (data.type) {
       case 'token': {
+        const templateCols = `1fr
+        ${ (data.token_type === 'ERC-20' && data.exchange_rate) || (data.token_type !== 'ERC-20' && data.total_supply) ? ' auto' : '' }`;
+
         return (
-          <Skeleton isLoaded={ !isLoading }>
-            <HashStringShortenDynamic hash={ data.address }/>
-          </Skeleton>
+          <Grid templateColumns={ templateCols } alignItems="center" gap={ 2 }>
+            <Skeleton isLoaded={ !isLoading } overflow="hidden" display="flex" alignItems="center">
+              <Text variant="secondary" whiteSpace="nowrap" overflow="hidden">
+                <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>
+              </Text>
+              { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 1 }/> }
+            </Skeleton>
+            <Text overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" fontWeight={ 700 }>
+              { data.token_type === 'ERC-20' && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }
+              { data.token_type !== 'ERC-20' && data.total_supply && `Items ${ Number(data.total_supply).toLocaleString() }` }
+            </Text>
+          </Grid>
         );
       }
       case 'block': {
         const shouldHighlightHash = data.block_hash.toLowerCase() === searchTerm.toLowerCase();
         return (
-          <Box as={ shouldHighlightHash ? 'mark' : 'span' } display="block" w="100%" whiteSpace="nowrap" overflow="hidden">
-            <HashStringShortenDynamic hash={ data.block_hash }/>
-          </Box>
+          <>
+            <Box as={ shouldHighlightHash ? 'mark' : 'span' } display="block" whiteSpace="nowrap" overflow="hidden" mb={ 1 }>
+              <HashStringShortenDynamic hash={ data.block_hash }/>
+            </Box>
+            <Text variant="secondary" mr={ 2 }>{ dayjs(data.timestamp).format('llll') }</Text>
+          </>
+        );
+      }
+      case 'transaction': {
+        return (
+          <Text variant="secondary">{ dayjs(data.timestamp).format('llll') }</Text>
+        );
+      }
+      case 'label': {
+        return (
+          <Flex alignItems="center">
+            <Box overflow="hidden">
+              <HashStringShortenDynamic hash={ data.address }/>
+            </Box>
+            { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 1 }/> }
+          </Flex>
         );
       }
       case 'contract':
@@ -152,12 +187,14 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
     }
   })();
 
+  const category = getItemCategory(data);
+
   return (
     <ListItemMobile py={ 3 } fontSize="sm" rowGap={ 2 }>
       <Flex justifyContent="space-between" w="100%" overflow="hidden" lineHeight={ 6 }>
         { firstRow }
         <Skeleton isLoaded={ !isLoading } color="text_secondary" ml={ 8 } textTransform="capitalize">
-          <span>{ data.type }</span>
+          <span>{ category ? searchItemTitles[category].itemTitleShort : '' }</span>
         </Skeleton>
       </Flex>
       { Boolean(secondRow) && (

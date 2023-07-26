@@ -319,7 +319,7 @@
               "poa_core",
               "eth_goerli",
               "eth",
-              "local",
+              "localhost",
             ],
             "default": ""
         },

@@ -39,6 +39,7 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
   const [ isChangedBytecodeSocket, setIsChangedBytecodeSocket ] = React.useState<boolean>();
 
   const queryClient = useQueryClient();
+  const refetchQueries = queryClient.refetchQueries;
   const addressInfo = queryClient.getQueryData<AddressInfo>(getResourceKey('address', { pathParams: { hash: addressHash } }));
 
   const { data, isPlaceholderData, isError } = useApiQuery('contract', {
@@ -54,6 +55,15 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
     setIsChangedBytecodeSocket(true);
   }, [ ]);
 
+  const handleContractWasVerifiedMessage: SocketMessage.SmartContractWasVerified['handler'] = React.useCallback(() => {
+    refetchQueries({
+      queryKey: getResourceKey('address', { pathParams: { hash: addressHash } }),
+    });
+    refetchQueries({
+      queryKey: getResourceKey('contract', { pathParams: { hash: addressHash } }),
+    });
+  }, [ addressHash, refetchQueries ]);
+
   const channel = useSocketChannel({
     topic: `addresses:${ addressHash?.toLowerCase() }`,
     isDisabled: !addressHash,
@@ -63,6 +73,11 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
     channel,
     event: 'changed_bytecode',
     handler: handleChangedBytecodeMessage,
+  });
+  useSocketMessage({
+    channel,
+    event: 'smart_contract_was_verified',
+    handler: handleContractWasVerifiedMessage,
   });
 
   if (isError) {
@@ -187,7 +202,7 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
             <InfoItem label="Optimization enabled" value={ data.optimization_enabled ? 'true' : 'false' } isLoading={ isPlaceholderData }/> }
           { data.optimization_runs && <InfoItem label="Optimization runs" value={ String(data.optimization_runs) } isLoading={ isPlaceholderData }/> }
           { data.verified_at &&
-            <InfoItem label="Verified at" value={ dayjs(data.verified_at).format('LLLL') } wordBreak="break-word" isLoading={ isPlaceholderData }/> }
+            <InfoItem label="Verified at" value={ dayjs(data.verified_at).format('llll') } wordBreak="break-word" isLoading={ isPlaceholderData }/> }
           { data.file_path && <InfoItem label="Contract file path" value={ data.file_path } wordBreak="break-word" isLoading={ isPlaceholderData }/> }
         </Grid>
       ) }
@@ -241,6 +256,7 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
           <RawDataSnippet
             data={ data.deployed_bytecode }
             title="Deployed ByteCode"
+            rightSlot={ !data?.creation_bytecode && !(data.is_verified || data.is_self_destructed) ? verificationButton : null }
             textareaMaxHeight="200px"
             isLoading={ isPlaceholderData }
           />

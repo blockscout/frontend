@@ -12,7 +12,7 @@ export default function buildUrl<R extends ResourceName>(
   queryParams?: Record<string, string | Array<string> | number | null | undefined>,
 ): string {
   const resource: ApiResource = RESOURCES[resourceName];
-  const baseUrl = isNeedProxy() ? appConfig.baseUrl : (resource.endpoint || appConfig.api.endpoint);
+  const baseUrl = isNeedProxy() ? appConfig.app.baseUrl : (resource.endpoint || appConfig.api.endpoint);
   const basePath = resource.basePath !== undefined ? resource.basePath : appConfig.api.basePath;
   const path = isNeedProxy() ? '/node-api/proxy' + basePath + resource.path : basePath + resource.path;
   const url = new URL(compile(path)(pathParams), baseUrl);

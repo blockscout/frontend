@@ -83,7 +83,7 @@ const ContractWrite = ({ addressHash, isProxy, isCustomAbi }: Props) => {
     return { hash };
   }, [ isConnected, chain, contractAbi, walletClient, addressHash, switchNetworkAsync ]);
 
-  const renderContent = React.useCallback((item: SmartContractWriteMethod, index: number, id: number) => {
+  const renderItemContent = React.useCallback((item: SmartContractWriteMethod, index: number, id: number) => {
     return (
       <ContractMethodCallable
         key={ id + '_' + index }
@@ -112,7 +112,7 @@ const ContractWrite = ({ addressHash, isProxy, isCustomAbi }: Props) => {
       { isCustomAbi && <ContractCustomAbiAlert/> }
       <ContractConnectWallet/>
       { isProxy && <ContractImplementationAddress hash={ addressHash }/> }
-      <ContractMethodsAccordion data={ data } renderContent={ renderContent }/>
+      <ContractMethodsAccordion data={ data } addressHash={ addressHash } renderItemContent={ renderItemContent }/>
     </>
   );
 };

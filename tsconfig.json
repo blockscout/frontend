@@ -17,5 +17,5 @@
     "baseUrl": ".",
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "decs.d.ts", "global.d.ts"],
-  "exclude": ["node_modules", "node_modules_linux"],
+  "exclude": ["node_modules", "node_modules_linux", "./deploy/tools/envs-validator"],
 }

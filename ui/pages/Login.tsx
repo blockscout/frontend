@@ -21,7 +21,7 @@ const Login = () => {
 
   React.useEffect(() => {
     const token = cookies.get(cookies.NAMES.API_TOKEN);
-    setFormVisibility(Boolean(!token && appConfig.isAccountSupported));
+    setFormVisibility(Boolean(!token && appConfig.account.isEnabled));
   }, []);
 
   const checkSentry = React.useCallback(() => {

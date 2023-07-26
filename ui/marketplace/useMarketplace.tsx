@@ -47,7 +47,7 @@ export default function useMarketplace() {
   const apiFetch = useApiFetch();
   const { isPlaceholderData, isError, error, data } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppOverview>>(
     [ 'marketplace-apps' ],
-    async() => apiFetch(appConfig.marketplaceConfigUrl || ''),
+    async() => apiFetch(appConfig.marketplace.configUrl || ''),
     {
       select: (data) => (data as Array<MarketplaceAppOverview>).sort((a, b) => a.title.localeCompare(b.title)),
       placeholderData: Array(9).fill(MARKETPLACE_APP),

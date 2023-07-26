@@ -1,0 +1,112 @@
+export type NextPublicEnvs = {
+  // network config
+  NEXT_PUBLIC_NETWORK_NAME: string;
+  NEXT_PUBLIC_NETWORK_SHORT_NAME?: string;
+  NEXT_PUBLIC_NETWORK_ID: string;
+  NEXT_PUBLIC_NETWORK_RPC_URL?: string;
+  NEXT_PUBLIC_NETWORK_CURRENCY_NAME?: string;
+  NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL?: string;
+  NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS?: string;
+  NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS?: string;
+  NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME?: string;
+  NEXT_PUBLIC_NETWORK_LOGO?: string;
+  NEXT_PUBLIC_NETWORK_LOGO_DARK?: string;
+  NEXT_PUBLIC_NETWORK_ICON?: string;
+  NEXT_PUBLIC_NETWORK_ICON_DARK?: string;
+  NEXT_PUBLIC_NETWORK_EXPLORERS?: string;
+  NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE?: 'validation' | 'mining';
+  NEXT_PUBLIC_IS_TESTNET?: 'true' | '';
+  NEXT_PUBLIC_HAS_BEACON_CHAIN?: 'true' | '';
+
+  // UI config
+  NEXT_PUBLIC_FEATURED_NETWORKS?: string;
+  NEXT_PUBLIC_OTHER_LINKS?: string;
+  NEXT_PUBLIC_FOOTER_LINKS?: string;
+  NEXT_PUBLIC_API_SPEC_URL?: string;
+  NEXT_PUBLIC_GRAPHIQL_TRANSACTION?: string;
+  NEXT_PUBLIC_WEB3_DEFAULT_WALLET?: 'metamask' | 'coinbase';
+  NEXT_PUBLIC_WEB3_DISABLE_ADD_TOKEN_TO_WALLET?: 'true' | 'false';
+  NEXT_PUBLIC_HIDE_INDEXING_ALERT?: 'true' | 'false';
+
+  // Homepage config
+  NEXT_PUBLIC_HOMEPAGE_CHARTS?: string;
+  NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR?: string;
+  NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND?: string;
+  NEXT_PUBLIC_HOMEPAGE_SHOW_GAS_TRACKER?: 'true' | 'false';
+  NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME?: 'true' | 'false';
+
+  // Ads config
+  NEXT_PUBLIC_AD_ADBUTLER_CONFIG_DESKTOP?: string;
+  NEXT_PUBLIC_AD_ADBUTLER_CONFIG_MOBILE?: string;
+  NEXT_PUBLIC_AD_BANNER_PROVIDER?: 'slise' | 'adbutler' | 'coinzilla' | 'none';
+  NEXT_PUBLIC_AD_TEXT_PROVIDER?: 'coinzilla' | 'none';
+
+  // App config
+  NEXT_PUBLIC_APP_INSTANCE?: string;
+  NEXT_PUBLIC_APP_PROTOCOL?: 'http' | 'https';
+  NEXT_PUBLIC_APP_HOST: string;
+  NEXT_PUBLIC_APP_PORT?: string;
+  NEXT_PUBLIC_APP_ENV?: string;
+
+  // API config
+  NEXT_PUBLIC_API_PROTOCOL?: 'http' | 'https';
+  NEXT_PUBLIC_API_HOST: string;
+  NEXT_PUBLIC_API_PORT?: string;
+  NEXT_PUBLIC_API_BASE_PATH?: string;
+  NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL?: 'ws' | 'wss';
+  NEXT_PUBLIC_STATS_API_HOST?: string;
+  NEXT_PUBLIC_VISUALIZE_API_HOST?: string;
+  NEXT_PUBLIC_CONTRACT_INFO_API_HOST?: string;
+  NEXT_PUBLIC_ADMIN_SERVICE_API_HOST?: string;
+
+  // external services config
+  NEXT_PUBLIC_SENTRY_DSN?: string;
+  SENTRY_CSP_REPORT_URI?: string;
+  NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID?: string;
+  NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY?: string;
+  NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID?: string;
+  NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN?: string;
+
+  // utilities
+  NEXT_PUBLIC_GIT_TAG?: string;
+  NEXT_PUBLIC_GIT_COMMIT_SHA?: string;
+}
+& NextPublicEnvsAccount
+& NextPublicEnvsMarketplace
+& NextPublicEnvsRollup;
+
+type NextPublicEnvsAccount =
+{
+  NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED?: undefined;
+  NEXT_PUBLIC_AUTH_URL?: undefined;
+  NEXT_PUBLIC_LOGOUT_URL?: undefined;
+  NEXT_PUBLIC_AUTH0_CLIENT_ID?: undefined;
+} |
+{
+  NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED: 'true';
+  NEXT_PUBLIC_AUTH_URL: string;
+  NEXT_PUBLIC_LOGOUT_URL: string;
+  NEXT_PUBLIC_AUTH0_CLIENT_ID: string;
+}
+
+type NextPublicEnvsMarketplace =
+{
+  NEXT_PUBLIC_MARKETPLACE_CONFIG_URL: string;
+  NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM: string;
+} |
+{
+  NEXT_PUBLIC_MARKETPLACE_CONFIG_URL?: undefined;
+  NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM?: undefined;
+}
+
+type NextPublicEnvsRollup =
+{
+  NEXT_PUBLIC_IS_L2_NETWORK: 'true';
+  NEXT_PUBLIC_L1_BASE_URL: string;
+  NEXT_PUBLIC_L2_WITHDRAWAL_URL: string;
+} |
+{
+  NEXT_PUBLIC_IS_L2_NETWORK?: undefined;
+  NEXT_PUBLIC_L1_BASE_URL?: undefined;
+  NEXT_PUBLIC_L2_WITHDRAWAL_URL?: undefined;
+}

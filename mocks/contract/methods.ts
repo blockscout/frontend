@@ -90,6 +90,7 @@ export const readResultError: SmartContractQueryMethodReadError = {
   result: {
     message: 'Some shit happened',
     code: -32017,
+    raw: '49276d20616c7761797320726576657274696e67207769746820616e206572726f72',
   },
 };
 

@@ -34,7 +34,7 @@ const getConfig = () => {
       blockExplorers: {
         'default': {
           name: 'Blockscout',
-          url: appConfig.baseUrl,
+          url: appConfig.app.baseUrl,
         },
       },
     };

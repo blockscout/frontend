@@ -74,7 +74,7 @@ const Marketplace = () => {
         />
       ) }
 
-      { config.marketplaceSubmitForm && (
+      { config.marketplace.submitForm && (
         <Skeleton
           isLoaded={ !isPlaceholderData }
           marginTop={{ base: 8, sm: 16 }}
@@ -84,7 +84,7 @@ const Marketplace = () => {
             fontWeight="bold"
             display="inline-flex"
             alignItems="baseline"
-            href={ config.marketplaceSubmitForm }
+            href={ config.marketplace.submitForm }
             isExternal
           >
             <Icon

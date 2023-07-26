@@ -2,11 +2,9 @@ import {
   Box,
   Flex,
   Grid,
-  HStack,
   Skeleton,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { Block } from 'types/api/block';
@@ -17,7 +15,6 @@ import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import BlockTimestamp from 'ui/blocks/BlockTimestamp';
 import AddressLink from 'ui/shared/address/AddressLink';
 import Icon from 'ui/shared/chakra/Icon';
-import LinkInternal from 'ui/shared/LinkInternal';
 
 type Props = {
   block: Block;
@@ -40,22 +37,29 @@ const LatestBlocksItem = ({ block, h, isLoading }: Props) => {
       p={ 6 }
       h={ `${ h }px` }
       minWidth={{ base: '100%', lg: '280px' }}
+      w="100%"
     >
-      <Flex justifyContent="space-between" alignItems="center" mb={ 3 }>
-        <HStack spacing={ 2 }>
-          <Icon as={ blockIcon } boxSize="30px" color="link" isLoading={ isLoading } borderRadius="base"/>
-          <LinkInternal
-            href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(block.height) } }) }
-            fontSize="xl"
-            fontWeight="500"
-            isLoading={ isLoading }
-          >
-            <Skeleton isLoaded={ !isLoading }>
-              { block.height }
-            </Skeleton>
-          </LinkInternal>
-        </HStack>
-        <BlockTimestamp ts={ block.timestamp } isEnabled={ !isLoading } isLoading={ isLoading } fontSize="sm"/>
+      <Flex alignItems="center" overflow="hidden" w="100%" mb={ 3 }>
+        <Icon as={ blockIcon } boxSize="30px" color="link" isLoading={ isLoading } borderRadius="base"/>
+        <AddressLink
+          isLoading={ isLoading }
+          type="block"
+          hash={ String(block.height) }
+          blockHeight={ String(block.height) }
+          fontSize="xl"
+          fontWeight="500"
+          ml={ 2 }
+          mr="auto"
+          tailLength={ 2 }
+        />
+        <BlockTimestamp
+          ts={ block.timestamp }
+          isEnabled={ !isLoading }
+          isLoading={ isLoading }
+          fontSize="sm"
+          flexShrink={ 0 }
+          ml={ 2 }
+        />
       </Flex>
       <Grid gridGap={ 2 } templateColumns="auto minmax(0, 1fr)" fontSize="sm">
         <Skeleton isLoaded={ !isLoading }>Txn</Skeleton>

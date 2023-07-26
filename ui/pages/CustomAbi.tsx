@@ -22,7 +22,7 @@ const CustomAbiPage: React.FC = () => {
   const [ customAbiModalData, setCustomAbiModalData ] = useState<CustomAbi>();
   const [ deleteModalData, setDeleteModalData ] = useState<CustomAbi>();
 
-  const { data, isPlaceholderData, isError, error } = useApiQuery('custom_abi', {
+  const { data, isPlaceholderData, isError } = useApiQuery('custom_abi', {
     queryOptions: {
       placeholderData: Array(3).fill(CUSTOM_ABI),
     },
@@ -56,9 +56,6 @@ const CustomAbiPage: React.FC = () => {
 
   const content = (() => {
     if (isError) {
-      if (error.status === 403) {
-        throw new Error('Unverified email error', { cause: error });
-      }
       return <DataFetchAlert/>;
     }
 

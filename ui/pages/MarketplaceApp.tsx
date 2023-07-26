@@ -32,7 +32,7 @@ const MarketplaceApp = () => {
   const { isLoading, isError, error, data } = useQuery<unknown, ResourceError<unknown>, MarketplaceAppOverview>(
     [ 'marketplace-apps', id ],
     async() => {
-      const result = await apiFetch<Array<MarketplaceAppOverview>, unknown>(appConfig.marketplaceConfigUrl || '');
+      const result = await apiFetch<Array<MarketplaceAppOverview>, unknown>(appConfig.marketplace.configUrl || '');
       if (!Array.isArray(result)) {
         throw result;
       }
@@ -57,9 +57,9 @@ const MarketplaceApp = () => {
     if (data && !isFrameLoading) {
       const message = {
         blockscoutColorMode: colorMode,
-        blockscoutRootUrl: appConfig.baseUrl + route({ pathname: '/' }),
-        blockscoutAddressExplorerUrl: appConfig.baseUrl + route({ pathname: '/address/[hash]', query: { hash: '' } }),
-        blockscoutTransactionExplorerUrl: appConfig.baseUrl + route({ pathname: '/tx/[hash]', query: { hash: '' } }),
+        blockscoutRootUrl: appConfig.app.baseUrl + route({ pathname: '/' }),
+        blockscoutAddressExplorerUrl: appConfig.app.baseUrl + route({ pathname: '/address/[hash]', query: { hash: '' } }),
+        blockscoutTransactionExplorerUrl: appConfig.app.baseUrl + route({ pathname: '/tx/[hash]', query: { hash: '' } }),
         blockscoutNetworkName: appConfig.network.name,
         blockscoutNetworkId: Number(appConfig.network.id),
         blockscoutNetworkCurrency: appConfig.network.currency,
