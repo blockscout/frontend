@@ -23,7 +23,7 @@ import getApiVersionUrl from './utils/getApiVersionUrl';
 
 const MAX_LINKS_COLUMNS = 3;
 
-// const FRONT_VERSION_URL = `https://github.com/blockscout/frontend/tree/${ appConfig.frontendVersion }`;
+// const FRONT_VERSION_URL = `https://github.com/blockscout/frontend/tree/${ appConfig.footer.frontendVersion }`;
 
 const Footer = () => {
 
@@ -71,9 +71,9 @@ const Footer = () => {
 
   const { isLoading, data: linksData } = useQuery<unknown, ResourceError<unknown>, Array<CustomLinksGroup>>(
     [ 'footer-links' ],
-    async() => fetch(appConfig.footerLinks || ''),
+    async() => fetch(appConfig.footer.links || ''),
     {
-      enabled: Boolean(appConfig.footerLinks),
+      enabled: Boolean(appConfig.footer.links),
       staleTime: Infinity,
     });
 
@@ -97,34 +97,34 @@ const Footer = () => {
                 Backend: <Link href={ apiVersionUrl } target="_blank">{ backendVersionData?.backend_version }</Link>
             </Text>
           ) }
-          { (appConfig.frontendVersion || appConfig.frontendCommit) && (
+          { (appConfig.footer.frontendVersion || appConfig.footer.frontendCommit) && (
             <Text fontSize="xs">
-              { /* Frontend: <Link href={ FRONT_VERSION_URL } target="_blank">{ appConfig.frontendVersion }</Link> */ }
-                Frontend: { [ appConfig.frontendVersion, appConfig.frontendCommit ].filter(Boolean).join('+') }
+              { /* Frontend: <Link href={ FRONT_VERSION_URL } target="_blank">{ appConfig.footer.frontendVersion }</Link> */ }
+                Frontend: { [ appConfig.footer.frontendVersion, appConfig.footer.frontendCommit ].filter(Boolean).join('+') }
             </Text>
           ) }
         </VStack>
       </Box>
       <Grid
         gap={{ base: 6, lg: 12 }}
-        gridTemplateColumns={ appConfig.footerLinks ?
+        gridTemplateColumns={ appConfig.footer.links ?
           { base: 'repeat(auto-fill, 160px)', lg: `repeat(${ (linksData?.length || MAX_LINKS_COLUMNS) + 1 }, 160px)` } :
           'auto'
         }
       >
-        <Box minW="160px" w={ appConfig.footerLinks ? '160px' : '100%' }>
-          { appConfig.footerLinks && <Text fontWeight={ 500 } mb={ 3 }>Blockscout</Text> }
+        <Box minW="160px" w={ appConfig.footer.links ? '160px' : '100%' }>
+          { appConfig.footer.links && <Text fontWeight={ 500 } mb={ 3 }>Blockscout</Text> }
           <Grid
             gap={ 1 }
-            gridTemplateColumns={ appConfig.footerLinks ? '160px' : { base: 'repeat(auto-fill, 160px)', lg: 'repeat(3, 160px)' } }
-            gridTemplateRows={{ base: 'auto', lg: appConfig.footerLinks ? 'auto' : 'repeat(2, auto)' }}
-            gridAutoFlow={{ base: 'row', lg: appConfig.footerLinks ? 'row' : 'column' }}
-            mt={{ base: 0, lg: appConfig.footerLinks ? 0 : '100px' }}
+            gridTemplateColumns={ appConfig.footer.links ? '160px' : { base: 'repeat(auto-fill, 160px)', lg: 'repeat(3, 160px)' } }
+            gridTemplateRows={{ base: 'auto', lg: appConfig.footer.links ? 'auto' : 'repeat(2, auto)' }}
+            gridAutoFlow={{ base: 'row', lg: appConfig.footer.links ? 'row' : 'column' }}
+            mt={{ base: 0, lg: appConfig.footer.links ? 0 : '100px' }}
           >
             { BLOCKSCOUT_LINKS.map(link => <FooterLinkItem { ...link } key={ link.text }/>) }
           </Grid>
         </Box>
-        { appConfig.footerLinks && isLoading && (
+        { appConfig.footer.links && isLoading && (
           Array.from(Array(3)).map((i, index) => (
             <Box minW="160px" key={ index }>
               <Skeleton w="120px" h="20px" mb={ 6 }/>
@@ -134,7 +134,7 @@ const Footer = () => {
             </Box>
           ))
         ) }
-        { appConfig.footerLinks && linksData && (
+        { appConfig.footer.links && linksData && (
           linksData.slice(0, MAX_LINKS_COLUMNS).map(linkGroup => (
             <Box minW="160px" key={ linkGroup.title }>
               <Text fontWeight={ 500 } mb={ 3 }>{ linkGroup.title }</Text>

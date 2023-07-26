@@ -5,7 +5,7 @@ import * as cookies from 'lib/cookies';
 export default function useHasAccount() {
   const appProps = useAppContext();
 
-  if (!appConfig.isAccountSupported) {
+  if (!appConfig.account.isEnabled) {
     return false;
   }
 

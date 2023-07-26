@@ -8,7 +8,7 @@ import type { ChainIndicatorId } from 'ui/home/indicators/types';
 
 import stripTrailingSlash from 'lib/stripTrailingSlash';
 
-const getEnvValue = (env: string | undefined) => env?.replaceAll('\'', '"');
+const getEnvValue = <T extends string>(env: T | undefined): T | undefined => env?.replaceAll('\'', '"') as T;
 const parseEnvJson = <DataType>(env: string | undefined): DataType | null => {
   try {
     return JSON.parse(env || 'null') as DataType | null;
@@ -70,8 +70,9 @@ const logoutUrl = (() => {
   try {
     const envUrl = getEnvValue(process.env.NEXT_PUBLIC_LOGOUT_URL);
     const auth0ClientId = getEnvValue(process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID);
-    const returnUrl = getEnvValue(process.env.NEXT_PUBLIC_LOGOUT_RETURN_URL);
-    if (!envUrl || !auth0ClientId || !returnUrl) {
+    const returnUrl = authUrl + '/auth/logout';
+
+    if (!envUrl || !auth0ClientId) {
       throw Error();
     }
 
@@ -113,20 +114,30 @@ const config = Object.freeze({
     rpcUrl: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_RPC_URL),
     isTestnet: getEnvValue(process.env.NEXT_PUBLIC_IS_TESTNET) === 'true',
   },
-  otherLinks: parseEnvJson<Array<NavItemExternal>>(getEnvValue(process.env.NEXT_PUBLIC_OTHER_LINKS)) || [],
-  featuredNetworks: getEnvValue(process.env.NEXT_PUBLIC_FEATURED_NETWORKS),
-  footerLinks: getEnvValue(process.env.NEXT_PUBLIC_FOOTER_LINKS),
-  frontendVersion: getEnvValue(process.env.NEXT_PUBLIC_GIT_TAG),
-  frontendCommit: getEnvValue(process.env.NEXT_PUBLIC_GIT_COMMIT_SHA),
-  isAccountSupported: getEnvValue(process.env.NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED) === 'true',
-  marketplaceConfigUrl: getEnvValue(process.env.NEXT_PUBLIC_MARKETPLACE_CONFIG_URL),
-  marketplaceSubmitForm: getEnvValue(process.env.NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM),
-  protocol: appSchema,
-  host: appHost,
-  port: appPort,
-  baseUrl,
-  authUrl,
-  logoutUrl,
+  navigation: {
+    otherLinks: parseEnvJson<Array<NavItemExternal>>(getEnvValue(process.env.NEXT_PUBLIC_OTHER_LINKS)) || [],
+    featuredNetworks: getEnvValue(process.env.NEXT_PUBLIC_FEATURED_NETWORKS),
+  },
+  footer: {
+    links: getEnvValue(process.env.NEXT_PUBLIC_FOOTER_LINKS),
+    frontendVersion: getEnvValue(process.env.NEXT_PUBLIC_GIT_TAG),
+    frontendCommit: getEnvValue(process.env.NEXT_PUBLIC_GIT_COMMIT_SHA),
+  },
+  marketplace: {
+    configUrl: getEnvValue(process.env.NEXT_PUBLIC_MARKETPLACE_CONFIG_URL),
+    submitForm: getEnvValue(process.env.NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM),
+  },
+  account: {
+    isEnabled: getEnvValue(process.env.NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED) === 'true',
+    authUrl,
+    logoutUrl,
+  },
+  app: {
+    protocol: appSchema,
+    host: appHost,
+    port: appPort,
+    baseUrl,
+  },
   ad: {
     adBannerProvider: getAdBannerProvider(),
     adTextProvider: getAdTextProvider(),

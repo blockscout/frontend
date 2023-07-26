@@ -33,7 +33,7 @@ const Home = () => {
             Welcome to { appConfig.network.name } explorer
           </Heading>
           <Box display={{ base: 'none', lg: 'block' }}>
-            { appConfig.isAccountSupported && <ProfileMenuDesktop/> }
+            { appConfig.account.isEnabled && <ProfileMenuDesktop/> }
           </Box>
         </Flex>
         <LightMode>

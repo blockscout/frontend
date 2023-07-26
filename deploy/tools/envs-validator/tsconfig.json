@@ -1,0 +1,15 @@
+{
+	"compilerOptions": {
+		"target": "es6",
+		"skipLibCheck": true,
+		"strict": true,
+		"esModuleInterop": true,
+		"module": "CommonJS",
+		"moduleResolution": "node",
+		"isolatedModules": true,
+		"incremental": true,
+		"baseUrl": "."
+	},
+	"include": ["./schema.ts"],
+	"exclude": ["node_modules"]
+}

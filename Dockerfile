@@ -1,33 +1,49 @@
-# Install dependencies only when needed
+# *****************************
+# *** STAGE 1: Dependencies ***
+# *****************************
 FROM node:18-alpine AS deps
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat
-WORKDIR /app
 
-# Install dependencies based on the preferred package manager
+# Install dependencies for App
+WORKDIR /app
 COPY package.json yarn.lock ./
 RUN apk add git
 RUN yarn --frozen-lockfile
 
-# Rebuild the source code only when needed
+# Install dependencies for ENVs checker
+WORKDIR /envs-validator
+COPY ./deploy/tools/envs-validator/package.json ./deploy/tools/envs-validator/yarn.lock ./
+RUN yarn --frozen-lockfile
+
+# *****************************
+# ****** STAGE 2: Build *******
+# *****************************
 FROM node:18-alpine AS builder
+
+# Build app for production
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 COPY .env.template .env.production
+RUN rm -rf ./deploy/tools/envs-validator
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED 1
-
-ARG SENTRY_DSN
-ARG NEXT_PUBLIC_SENTRY_DSN
-ARG SENTRY_CSP_REPORT_URI
-ARG SENTRY_AUTH_TOKEN
-
 RUN yarn build
 
+# Build ENVs checker
+WORKDIR /envs-validator
+COPY --from=deps /envs-validator/node_modules ./node_modules
+COPY ./deploy/tools/envs-validator .
+COPY ./types/envs.ts .
+RUN yarn build
+
+# *****************************
+# ******* STAGE 3: Run ********
+# *****************************
 # Production image, copy all the files and run next
 FROM node:18-alpine AS runner
 WORKDIR /app
@@ -50,6 +66,7 @@ RUN adduser --system --uid 1001 nextjs
 COPY --from=builder /app/next.config.js ./
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /envs-validator/index.js ./envs-validator.js
 
 # Copy scripts and ENV templates file
 COPY ./deploy/scripts/entrypoint.sh .
@@ -61,7 +78,6 @@ COPY .env.template .
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Execute script for replace build ENV with run ones
 RUN apk add --no-cache --upgrade bash
 RUN ["chmod", "+x", "./entrypoint.sh"]
 RUN ["chmod", "+x", "./replace_envs.sh"]

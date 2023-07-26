@@ -289,7 +289,7 @@ module.exports = {
       },
     },
     {
-      files: [ 'configs/**/*.js', 'configs/**/*.ts', '*.config.ts', 'playwright/**/*.ts' ],
+      files: [ 'configs/**/*.js', 'configs/**/*.ts', '*.config.ts', 'playwright/**/*.ts', 'deploy/tools/**/*.ts' ],
       rules: {
         // for configs allow to consume env variables from process.env directly
         'no-restricted-properties': [ 0 ],
