@@ -244,10 +244,10 @@
         },
         {
             "type": "npm",
-            "script": "start:docker:poa_core",
+            "script": "start:docker:main",
             "problemMatcher": [],
-            "label": "docker: run poa",
-            "detail": "run docker container for POA network",
+            "label": "docker: run main",
+            "detail": "run docker container for main dev environment",
             "presentation": {
                 "reveal": "always",
                 "panel": "shared",

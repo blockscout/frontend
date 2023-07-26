@@ -3,7 +3,7 @@
 set +x
 
 # config
-envFilename='.env.template'
+envFilename='.env.production'
 nextFolder='./.next/'
 
 # replacing build-stage ENVs with run-stage ENVs

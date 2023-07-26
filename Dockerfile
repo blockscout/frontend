@@ -16,22 +16,28 @@ WORKDIR /envs-validator
 COPY ./deploy/tools/envs-validator/package.json ./deploy/tools/envs-validator/yarn.lock ./
 RUN yarn --frozen-lockfile
 
+
 # *****************************
 # ****** STAGE 2: Build *******
 # *****************************
 FROM node:18-alpine AS builder
+RUN apk add --no-cache --upgrade libc6-compat bash
 
-# Build app for production
+# Copy dependencies and source code
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-COPY .env.template .env.production
-RUN rm -rf ./deploy/tools/envs-validator
+
+# Generate .env.production with ENVs placeholders
+COPY --chmod=+x ./deploy/scripts/make_envs_template.sh ./
+RUN ./make_envs_template.sh
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED 1
+
+# Build app for production
 RUN yarn build
 
 # Build ENVs checker
@@ -41,11 +47,14 @@ COPY ./deploy/tools/envs-validator .
 COPY ./types/envs.ts .
 RUN yarn build
 
+
 # *****************************
 # ******* STAGE 3: Run ********
 # *****************************
 # Production image, copy all the files and run next
 FROM node:18-alpine AS runner
+RUN apk add --no-cache --upgrade bash
+
 WORKDIR /app
 
 # pass commit sha to the app (uses by sentry.io as release version)
@@ -68,19 +77,15 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /envs-validator/index.js ./envs-validator.js
 
-# Copy scripts and ENV templates file
-COPY ./deploy/scripts/entrypoint.sh .
-COPY ./deploy/scripts/replace_envs.sh .
-COPY .env.template .
+# Copy scripts and ENVs file
+COPY --chmod=+x ./deploy/scripts/entrypoint.sh .
+COPY --chmod=+x ./deploy/scripts/replace_envs.sh .
+COPY --from=builder /app/.env.production .
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-RUN apk add --no-cache --upgrade bash
-RUN ["chmod", "+x", "./entrypoint.sh"]
-RUN ["chmod", "+x", "./replace_envs.sh"]
 
 ENTRYPOINT ["./entrypoint.sh"]
 
