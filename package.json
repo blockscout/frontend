@@ -16,7 +16,7 @@
     "dev:eth_goerli": "./node_modules/.bin/dotenv -e ./configs/envs/.env.eth_goerli -e ./configs/envs/.env.secrets -- bash -c 'next dev -- -p \"$NEXT_PUBLIC_APP_PORT\"' | ./node_modules/.bin/pino-pretty",
     "dev:eth": "./node_modules/.bin/dotenv -e ./configs/envs/.env.eth -e ./configs/envs/.env.secrets -- bash -c 'next dev -- -p \"$NEXT_PUBLIC_APP_PORT\"' | ./node_modules/.bin/pino-pretty",
     "build": "next build",
-    "build:docker": "docker build --build-arg GIT_COMMIT_SHA=$(git rev-parse HEAD) -t blockscout-frontend ./",
+    "build:docker": "docker build --build-arg GIT_COMMIT_SHA=$(git rev-parse --short HEAD) -t blockscout-frontend ./",
     "start": "next start",
     "start:docker:local": "docker run -p 3000:3000 --env-file .env.local blockscout-frontend",
     "start:docker:main": "docker run -p 3000:3000 --env-file ./configs/envs/.env.main --env-file ./configs/envs/.env.secrets blockscout-frontend",
