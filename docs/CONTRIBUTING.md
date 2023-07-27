@@ -136,10 +136,10 @@ We have 3 pre-configured projects. You can run your test with the desired projec
 | --- | --- |
 | **Running and building** |
 | `yarn dev` | run local dev server with user's configuration |
-| `yarn dev:<config_name>` | run local dev server with predefined configuration |
+| `yarn dev:preset <config_preset_name>` | run local dev server with predefined configuration |
 | `yarn build:docker` | build a docker image locally |
 | `yarn start:docker:local` | start an application from previously built local docker image with user's configuration |
-| `yarn start:docker:main` | start an application from previously built local docker image with main dev environment configuration |
+| `yarn start:docker:preset <config_preset_name>` | start an application from previously built local docker image with predefined configuration |
 | **Linting and formatting** |
 | `yarn lint:eslint` | lint project files with ESLint |
 | `yarn lint:eslint:fix` | lint project files with ESLint and automatically fix problems |
