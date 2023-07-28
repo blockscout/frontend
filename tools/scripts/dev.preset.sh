@@ -19,4 +19,10 @@ if [ ! -f "$secrets_file" ]; then
     exit 1
 fi
 
-dotenv -e $config_file -e $secrets_file -- bash -c 'next dev -- -p $NEXT_PUBLIC_APP_PORT' | pino-pretty
+dotenv \
+  -v NEXT_PUBLIC_GIT_COMMIT_SHA=$(git rev-parse --short HEAD) \
+  -v NEXT_PUBLIC_GIT_TAG=$(git describe --tags --abbrev=0) \
+  -e $config_file \
+  -e $secrets_file \
+  -- bash -c 'next dev -- -p $NEXT_PUBLIC_APP_PORT' |
+pino-pretty

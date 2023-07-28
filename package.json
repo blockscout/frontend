@@ -11,7 +11,7 @@
     "dev": "next dev",
     "dev:preset": "./tools/scripts/dev.preset.sh",
     "build": "next build",
-    "build:docker": "docker build --build-arg GIT_COMMIT_SHA=$(git rev-parse --short HEAD) -t blockscout-frontend ./",
+    "build:docker": "docker build --build-arg GIT_COMMIT_SHA=$(git rev-parse --short HEAD) --build-arg GIT_TAG=$(git describe --tags --abbrev=0) -t blockscout-frontend ./",
     "start": "next start",
     "start:docker:local": "docker run -p 3000:3000 --env-file .env.local blockscout-frontend",
     "start:docker:preset": "./tools/scripts/docker.preset.sh",
