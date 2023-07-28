@@ -6,7 +6,7 @@
   "scripts": {
     "build": "yarn ts-to-zod ./envs.ts ./schema.ts && yarn webpack-cli -c ./webpack.config.js",
     "validate": "node ./index.js",
-    "dev": "cp ../../../types/envs.ts ./ && NEXT_PUBLIC_GIT_COMMIT_SHA=commit_sha NEXT_PUBLIC_GIT_TAG=git_tag ../../scripts/make_envs_template.sh ../../../docs/ENVS.md && yarn build && yarn dotenv -e ../../../configs/envs/.env.main -e ../../../configs/envs/.env.secrets yarn validate"
+    "dev": "./dev.sh"
   },
   "dependencies": {
     "ts-loader": "^9.4.4",
