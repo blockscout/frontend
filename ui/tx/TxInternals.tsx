@@ -13,6 +13,7 @@ import DataListDisplay from 'ui/shared/DataListDisplay';
 // import TxInternalsFilter from 'ui/tx/internals/TxInternalsFilter';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
+import { default as getNextSortValueShared } from 'ui/shared/sort/getNextSortValue';
 import TxInternalsList from 'ui/tx/internals/TxInternalsList';
 import TxInternalsTable from 'ui/tx/internals/TxInternalsTable';
 import type { Sort, SortField } from 'ui/tx/internals/utils';
@@ -25,12 +26,7 @@ const SORT_SEQUENCE: Record<SortField, Array<Sort | undefined>> = {
   'gas-limit': [ 'gas-limit-desc', 'gas-limit-asc', undefined ],
 };
 
-const getNextSortValue = (field: SortField) => (prevValue: Sort | undefined) => {
-  const sequence = SORT_SEQUENCE[field];
-  const curIndex = sequence.findIndex((sort) => sort === prevValue);
-  const nextIndex = curIndex + 1 > sequence.length - 1 ? 0 : curIndex + 1;
-  return sequence[nextIndex];
-};
+const getNextSortValue = (getNextSortValueShared<SortField, Sort>).bind(undefined, SORT_SEQUENCE);
 
 const sortFn = (sort: Sort | undefined) => (a: InternalTransaction, b: InternalTransaction) => {
   switch (sort) {

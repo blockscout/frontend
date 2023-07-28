@@ -24,3 +24,8 @@ export interface TokenInstanceTransferPagination {
   items_count: number;
   token_id: string;
 }
+
+export interface TokensSorting {
+  sort: 'fiat_value' | 'holder_count' | 'circulating_market_cap';
+  order: 'asc' | 'desc';
+}
