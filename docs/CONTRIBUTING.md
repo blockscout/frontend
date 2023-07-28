@@ -162,3 +162,5 @@ We have 3 pre-configured projects. You can run your test with the desired projec
 There are some predefined tasks for all commands described above. You can see its full list by pressing <kbd>cmd + shift + P</kbd> and using command `Task: Run task`
 
 Also there is a Jest test launch configuration for debugging and running current test file in the watch mode.
+
+And you may find the Dev Container setup useful too.
