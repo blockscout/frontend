@@ -84,7 +84,7 @@ type NextPublicEnvsAccount =
 } |
 {
   NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED: 'true';
-  NEXT_PUBLIC_AUTH_URL: string;
+  NEXT_PUBLIC_AUTH_URL?: string;
   NEXT_PUBLIC_LOGOUT_URL: string;
   NEXT_PUBLIC_AUTH0_CLIENT_ID: string;
 }
