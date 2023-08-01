@@ -170,3 +170,4 @@ In order to enable "My Account" feature you have to configure following set of v
 | Variable | Type| Description | Is required  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_HAS_BEACON_CHAIN | `boolean` | Set to true for networks with the beacon chain | - | - | `true` |
+| NEXT_PUBLIC_BEACON_CHAIN_CURRENCY_SYMBOL | `string` | Beacon network currency symbol | - | NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL | `ETH` |

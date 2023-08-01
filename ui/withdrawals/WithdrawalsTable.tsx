@@ -34,7 +34,7 @@ const WithdrawalsTable = ({ items, isLoading, top, view = 'list' }: Props) => {
           { view !== 'block' && <Th w="25%">Block</Th> }
           { view !== 'address' && <Th w="25%">To</Th> }
           { view !== 'block' && <Th w="25%">Age</Th> }
-          <Th w="25%">{ `Value ${ appConfig.network.currency.symbol }` }</Th>
+          <Th w="25%">{ `Value ${ appConfig.beaconChain.currencySymbol }` }</Th>
         </Tr>
       </Thead>
       <Tbody>
