@@ -140,7 +140,7 @@ const SearchBar = ({ isHomepage }: Props) => {
         >
           <Box
             maxH="50vh"
-            overflowY="scroll"
+            overflowY="auto"
             id={ SCROLL_CONTAINER_ID }
             ref={ scrollRef }
             as={ Element }
