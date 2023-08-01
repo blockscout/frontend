@@ -54,7 +54,7 @@ const NetworkAddToWallet = ({ className }: Props) => {
     }
   }, [ provider, toast ]);
 
-  if (!provider) {
+  if (!provider || !appConfig.network.rpcUrl) {
     return null;
   }
 
