@@ -17,6 +17,7 @@ export type NextPublicEnvs = {
   NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE?: 'validation' | 'mining';
   NEXT_PUBLIC_IS_TESTNET?: 'true' | '';
   NEXT_PUBLIC_HAS_BEACON_CHAIN?: 'true' | '';
+  NEXT_PUBLIC_BEACON_NETWORK_CURRENCY_SYMBOL?: string;
 
   // UI config
   NEXT_PUBLIC_FEATURED_NETWORKS?: string;
