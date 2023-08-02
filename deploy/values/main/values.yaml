@@ -1,9 +1,12 @@
 fullNameOverride: bs-stack
 nameOverride: bs-stack
+imagePullSecrets:
+  - name: regcred
+
 blockscout:
   enabled: true
   image:
-    imagePullPolicy: Always
+    pullPolicy: Always
     tag: frontend-main
   replicaCount: 1
   # enable ingress
@@ -103,7 +106,7 @@ frontend:
   enabled: true
   image:
     tag: main
-    imagePullPolicy: Always
+    pullPolicy: Always
   replicaCount: 1
   ingress:
     enabled: true
