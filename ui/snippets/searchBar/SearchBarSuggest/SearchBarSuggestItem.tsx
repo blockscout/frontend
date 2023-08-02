@@ -1,4 +1,3 @@
-import { chakra, useColorModeValue } from '@chakra-ui/react';
 import type { LinkProps as NextLinkProps } from 'next/link';
 import NextLink from 'next/link';
 import { route } from 'nextjs-routes';
@@ -8,6 +7,7 @@ import type { SearchResultItem } from 'types/api/search';
 
 import SearchBarSuggestAddress from './SearchBarSuggestAddress';
 import SearchBarSuggestBlock from './SearchBarSuggestBlock';
+import SearchBarSuggestItemLink from './SearchBarSuggestItemLink';
 import SearchBarSuggestLabel from './SearchBarSuggestLabel';
 import SearchBarSuggestToken from './SearchBarSuggestToken';
 import SearchBarSuggestTx from './SearchBarSuggestTx';
@@ -64,28 +64,9 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick }: Props) =>
 
   return (
     <NextLink href={ url as NextLinkProps['href'] } passHref legacyBehavior>
-      <chakra.a
-        py={ 3 }
-        px={ 1 }
-        display="flex"
-        flexDir="column"
-        rowGap={ 2 }
-        borderColor="divider"
-        borderBottomWidth="1px"
-        _last={{
-          borderBottomWidth: '0',
-        }}
-        _hover={{
-          bgColor: useColorModeValue('blue.50', 'gray.800'),
-        }}
-        fontSize="sm"
-        _first={{
-          mt: 2,
-        }}
-        onClick={ onClick }
-      >
+      <SearchBarSuggestItemLink onClick={ onClick }>
         { content }
-      </chakra.a>
+      </SearchBarSuggestItemLink>
     </NextLink>
   );
 };

@@ -3,15 +3,15 @@ import throttle from 'lodash/throttle';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
-import type { SearchResultItem } from 'types/api/search';
-
 import useIsMobile from 'lib/hooks/useIsMobile';
+import useMarketplaceApps from 'ui/marketplace/useMarketplaceApps';
 import TextAd from 'ui/shared/ad/TextAd';
 import ContentLoader from 'ui/shared/ContentLoader';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
-import type { Category } from 'ui/shared/search/utils';
+import type { ItemsCategoriesMap } from 'ui/shared/search/utils';
 import { getItemCategory, searchCategories } from 'ui/shared/search/utils';
 
+import SearchBarSuggestApp from './SearchBarSuggestApp';
 import SearchBarSuggestItem from './SearchBarSuggestItem';
 
 interface Props {
@@ -23,6 +23,8 @@ interface Props {
 
 const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props) => {
   const isMobile = useIsMobile();
+
+  const marketplaceApps = useMarketplaceApps(searchTerm);
 
   const categoriesRefs = React.useRef<Array<HTMLParagraphElement>>([]);
   const tabsRef = React.useRef<HTMLDivElement>(null);
@@ -61,10 +63,10 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
   }, [ containerId, handleScroll ]);
 
   const itemsGroups = React.useMemo(() => {
-    if (!query.data?.items) {
+    if (!query.data?.items && !marketplaceApps.displayedApps) {
       return {};
     }
-    const map: Partial<Record<Category, Array<SearchResultItem>>> = {};
+    const map: Partial<ItemsCategoriesMap> = {};
     query.data?.items.forEach(item => {
       const cat = getItemCategory(item);
       if (cat) {
@@ -75,8 +77,11 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
         }
       }
     });
+    if (marketplaceApps.displayedApps.length) {
+      map.app = marketplaceApps.displayedApps;
+    }
     return map;
-  }, [ query.data?.items ]);
+  }, [ query.data?.items, marketplaceApps.displayedApps ]);
 
   const scrollToCategory = React.useCallback((index: number) => () => {
     setTabIndex(index);
@@ -91,7 +96,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
   const bgColor = useColorModeValue('white', 'gray.900');
 
   const content = (() => {
-    if (query.isLoading) {
+    if (query.isLoading || marketplaceApps.isPlaceholderData) {
       return <ContentLoader text="We are searching, please wait... " fontSize="sm"/>;
     }
 
@@ -129,8 +134,11 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
               >
                 { cat.title }
               </Text>
-              { itemsGroups[cat.id]?.map((item, index) =>
+              { cat.id !== 'app' && itemsGroups[cat.id]?.map((item, index) =>
                 <SearchBarSuggestItem key={ index } data={ item } isMobile={ isMobile } searchTerm={ searchTerm } onClick={ onItemClick }/>,
+              ) }
+              { cat.id === 'app' && itemsGroups[cat.id]?.map((item, index) =>
+                <SearchBarSuggestApp key={ index } data={ item } isMobile={ isMobile } searchTerm={ searchTerm } onClick={ onItemClick }/>,
               ) }
             </Element>
           );

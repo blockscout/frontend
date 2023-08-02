@@ -1,4 +1,4 @@
-import { Flex, Grid, Icon, Box, Text, chakra, Skeleton } from '@chakra-ui/react';
+import { Flex, Grid, Icon, Image, Box, Text, chakra, Skeleton, useColorMode } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
@@ -16,13 +16,15 @@ import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
+import type { SearchResultAppItem } from 'ui/shared/search/utils';
 import { getItemCategory, searchItemTitles } from 'ui/shared/search/utils';
 import TokenLogo from 'ui/shared/TokenLogo';
 
 interface Props {
-  data: SearchResultItem;
+  data: SearchResultItem | SearchResultAppItem;
   searchTerm: string;
   isLoading?: boolean;
 }
@@ -37,6 +39,8 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
       'Result URL': e.currentTarget.href,
     });
   }, [ searchTerm ]);
+
+  const { colorMode } = useColorMode();
 
   const firstRow = (() => {
     switch (data.type) {
@@ -84,7 +88,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
 
       case 'label': {
         return (
-          <Flex alignItems="flex-start">
+          <Flex alignItems="center">
             <Icon as={ labelIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
             <LinkInternal
               href={ route({ pathname: '/address/[hash]', query: { hash: data.address } }) }
@@ -95,6 +99,42 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
             >
               <span dangerouslySetInnerHTML={{ __html: highlightText(data.name, searchTerm) }}/>
             </LinkInternal>
+          </Flex>
+        );
+      }
+
+      case 'app': {
+        const title = <span dangerouslySetInnerHTML={{ __html: highlightText(data.app.title, searchTerm) }}/>;
+        return (
+          <Flex alignItems="center">
+            <Image
+              borderRadius="base"
+              boxSize={ 6 }
+              mr={ 2 }
+              src={ colorMode === 'dark' && data.app.logoDarkMode ? data.app.logoDarkMode : data.app.logo }
+              alt={ `${ data.app.title } app icon` }
+            />
+            { data.app.external ? (
+              <LinkExternal
+                href={ data.app.url }
+                fontWeight={ 700 }
+                wordBreak="break-all"
+                isLoading={ isLoading }
+                onClick={ handleLinkClick }
+              >
+                { title }
+              </LinkExternal>
+            ) : (
+              <LinkInternal
+                href={ route({ pathname: '/apps/[id]', query: { id: data.app.id } }) }
+                fontWeight={ 700 }
+                wordBreak="break-all"
+                isLoading={ isLoading }
+                onClick={ handleLinkClick }
+              >
+                { title }
+              </LinkInternal>
+            ) }
           </Flex>
         );
       }
@@ -138,7 +178,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
         return (
           <Grid templateColumns={ templateCols } alignItems="center" gap={ 2 }>
             <Skeleton isLoaded={ !isLoading } overflow="hidden" display="flex" alignItems="center">
-              <Text variant="secondary" whiteSpace="nowrap" overflow="hidden">
+              <Text whiteSpace="nowrap" overflow="hidden">
                 <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>
               </Text>
               { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 1 }/> }
@@ -176,6 +216,21 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
           </Flex>
         );
       }
+      case 'app': {
+        return (
+          <Text
+            overflow="hidden"
+            textOverflow="ellipsis"
+            sx={{
+              display: '-webkit-box',
+              '-webkit-box-orient': 'vertical',
+              '-webkit-line-clamp': '3',
+            }}
+          >
+            { data.app.description }
+          </Text>
+        );
+      }
       case 'contract':
       case 'address': {
         const shouldHighlightHash = data.address.toLowerCase() === searchTerm.toLowerCase();
@@ -198,7 +253,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
         </Skeleton>
       </Flex>
       { Boolean(secondRow) && (
-        <Box w="100%" overflow="hidden" whiteSpace="nowrap">
+        <Box w="100%" overflow="hidden">
           { secondRow }
         </Box>
       ) }
