@@ -10,13 +10,15 @@ helmDefaults:
 repositories:
   - name: blockscout-ci-cd
     url: https://blockscout.github.io/blockscout-ci-cd
+  - name: blockscout
+    url: https://blockscout.github.io/helm-charts
   - name: bedag
     url: https://bedag.github.io/helm-charts
 
 releases:
   # Deploy front-main
   - name: bs-stack
-    chart: blockscout-ci-cd/blockscout-stack
+    chart: blockscout/blockscout-stack
     namespace: front-main
     labels:
       app: front
