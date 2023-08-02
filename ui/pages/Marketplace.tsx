@@ -94,7 +94,7 @@ const Marketplace = () => {
               mr={ 2 }
             />
 
-              Submit an App
+              Submit an app
           </Link>
         </Skeleton>
       ) }

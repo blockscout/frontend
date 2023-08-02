@@ -27,7 +27,7 @@ const TxDetailsActions = ({ actions }: Props) => {
 
   return (
     <DetailsInfoItem
-      title="Transaction Action"
+      title="Transaction action"
       hint="Highlighted events of the transaction"
       note={ hasScroll ? 'Scroll to see more' : undefined }
       position="relative"

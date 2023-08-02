@@ -81,7 +81,7 @@ const SearchResultsPageContent = () => {
           <Table variant="simple" size="md" fontWeight={ 500 }>
             <Thead top={ pagination.isVisible ? 80 : 0 }>
               <Tr>
-                <Th width="30%">Search Result</Th>
+                <Th width="30%">Search result</Th>
                 <Th width="35%"/>
                 <Th width="35%" pr={ 10 }/>
                 <Th width="150px">Category</Th>
