@@ -15,7 +15,7 @@ import Tag from 'ui/shared/chakra/Tag';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
-import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
+import TruncatedValue from 'ui/shared/TruncatedValue';
 
 type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean };
 
@@ -92,13 +92,7 @@ const TokenTransferListItem = ({
           <Skeleton isLoaded={ !isLoading } color="text_secondary">
             <span>{ value }</span>
           </Skeleton>
-          { token.symbol && (
-            <TruncatedTextTooltip label={ token.symbol }>
-              <Skeleton isLoaded={ !isLoading } overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
-                { token.symbol }
-              </Skeleton>
-            </TruncatedTextTooltip>
-          ) }
+          { token.symbol && <TruncatedValue isLoading={ isLoading } value={ token.symbol }/> }
         </Flex>
       ) }
       { 'token_id' in total && (token.type === 'ERC-721' || token.type === 'ERC-1155') && (

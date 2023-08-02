@@ -7,8 +7,7 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkInternal from 'ui/shared/LinkInternal';
-
-import TruncatedTextTooltip from '../TruncatedTextTooltip';
+import TruncatedValue from 'ui/shared/TruncatedValue';
 
 type CommonProps = {
   className?: string;
@@ -63,11 +62,7 @@ const AddressLink = (props: Props) => {
     if (alias) {
       const text = <Box overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">{ alias }</Box>;
       if (type === 'token' || type === 'address_token') {
-        return (
-          <TruncatedTextTooltip label={ alias }>
-            { text }
-          </TruncatedTextTooltip>
-        );
+        return <TruncatedValue value={ alias } display="block"/>;
       }
       return (
         <Tooltip label={ hash } isDisabled={ isMobile }>
