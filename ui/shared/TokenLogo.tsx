@@ -3,7 +3,6 @@ import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
 
-import appConfig from 'configs/app/config';
 import TokenLogoPlaceholder from 'ui/shared/TokenLogoPlaceholder';
 
 export interface Props {
@@ -18,27 +17,11 @@ const TokenLogo = ({ className, isLoading, data }: Props) => {
     return <Skeleton className={ className } borderRadius="base" flexShrink={ 0 }/>;
   }
 
-  const logoSrc = (() => {
-    if (data?.icon_url) {
-      return data.icon_url;
-    }
-
-    if (appConfig.network.assetsPathname && data?.address) {
-      return [
-        'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/',
-        appConfig.network.assetsPathname,
-        '/assets/',
-        data.address,
-        '/logo.png',
-      ].join('');
-    }
-  })();
-
   return (
     <Image
       borderRadius="base"
       className={ className }
-      src={ logoSrc }
+      src={ data?.icon_url ?? undefined }
       alt={ `${ data?.name || 'token' } logo` }
       fallback={ <TokenLogoPlaceholder className={ className }/> }
     />
