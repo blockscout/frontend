@@ -1,6 +1,7 @@
 import type { VerifiedContract } from 'types/api/contracts';
 
 import compareBns from 'lib/bigint/compareBns';
+import { default as getNextSortValueShared } from 'ui/shared/sort/getNextSortValue';
 import type { Option } from 'ui/shared/sort/Sort';
 
 export type SortField = 'balance' | 'txs';
@@ -19,12 +20,7 @@ const SORT_SEQUENCE: Record<SortField, Array<Sort | undefined>> = {
   txs: [ 'txs-desc', 'txs-asc', undefined ],
 };
 
-export const getNextSortValue = (field: SortField) => (prevValue: Sort | undefined) => {
-  const sequence = SORT_SEQUENCE[field];
-  const curIndex = sequence.findIndex((sort) => sort === prevValue);
-  const nextIndex = curIndex + 1 > sequence.length - 1 ? 0 : curIndex + 1;
-  return sequence[nextIndex];
-};
+export const getNextSortValue = (getNextSortValueShared<SortField, Sort>).bind(undefined, SORT_SEQUENCE);
 
 export const sortFn = (sort: Sort | undefined) => (a: VerifiedContract, b: VerifiedContract) => {
   switch (sort) {

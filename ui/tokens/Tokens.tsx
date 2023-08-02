@@ -1,8 +1,10 @@
 import { Hide, HStack, Show } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
+import type { Query } from 'nextjs-routes';
 import React, { useCallback } from 'react';
 
 import type { TokenType } from 'types/api/token';
+import type { TokensSorting } from 'types/api/tokens';
 
 import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
 import useDebounce from 'lib/hooks/useDebounce';
@@ -18,6 +20,8 @@ import PopoverFilter from 'ui/shared/filters/PopoverFilter';
 import TokenTypeFilter from 'ui/shared/filters/TokenTypeFilter';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
+import type { Option } from 'ui/shared/sort/Sort';
+import Sort from 'ui/shared/sort/Sort';
 
 import TokensListItem from './TokensListItem';
 import TokensTable from './TokensTable';
@@ -25,16 +29,50 @@ import TokensTable from './TokensTable';
 const TOKEN_TYPES = TOKEN_TYPE.map(i => i.id);
 const getTokenFilterValue = (getFilterValuesFromQuery<TokenType>).bind(null, TOKEN_TYPES);
 
+export type TokensSortingField = TokensSorting['sort'];
+export type TokensSortingValue = `${ TokensSortingField }-${ TokensSorting['order'] }`;
+
+const SORT_OPTIONS: Array<Option<TokensSortingValue>> = [
+  { title: 'Default', id: undefined },
+  { title: 'Price ascending', id: 'fiat_value-asc' },
+  { title: 'Price descending', id: 'fiat_value-desc' },
+  { title: 'Holders ascending', id: 'holder_count-asc' },
+  { title: 'Holders descending', id: 'holder_count-desc' },
+  { title: 'On-chain market cap ascending', id: 'circulating_market_cap-asc' },
+  { title: 'On-chain market cap descending', id: 'circulating_market_cap-desc' },
+];
+
+const getSortValueFromQuery = (query: Query): TokensSortingValue | undefined => {
+  if (!query.sort || !query.order) {
+    return undefined;
+  }
+
+  const str = query.sort + '-' + query.order;
+  if (SORT_OPTIONS.map(option => option.id).includes(str)) {
+    return str as TokensSortingValue;
+  }
+};
+
+const getSortParamsFromValue = (val?: TokensSortingValue): TokensSorting | undefined => {
+  if (!val) {
+    return undefined;
+  }
+  const sortingChunks = val.split('-') as [ TokensSortingField, TokensSorting['order'] ];
+  return { sort: sortingChunks[0], order: sortingChunks[1] };
+};
+
 const Tokens = () => {
   const router = useRouter();
   const [ filter, setFilter ] = React.useState<string>(router.query.q?.toString() || '');
+  const [ sorting, setSorting ] = React.useState<TokensSortingValue | undefined>(getSortValueFromQuery(router.query));
   const [ type, setType ] = React.useState<Array<TokenType> | undefined>(getTokenFilterValue(router.query.type));
 
   const debouncedFilter = useDebounce(filter, 300);
 
-  const { isError, isPlaceholderData, data, pagination, onFilterChange } = useQueryWithPages({
+  const { isError, isPlaceholderData, data, pagination, onFilterChange, onSortingChange } = useQueryWithPages({
     resourceName: 'tokens',
     filters: { q: debouncedFilter, type },
+    sorting: getSortParamsFromValue(sorting),
     options: {
       placeholderData: generateListStub<'tokens'>(
         TOKEN_INFO_ERC_20,
@@ -61,6 +99,11 @@ const Tokens = () => {
     setType(value);
   }, [ debouncedFilter, onFilterChange ]);
 
+  const onSort = useCallback((value?: TokensSortingValue) => {
+    setSorting(value);
+    onSortingChange(getSortParamsFromValue(value));
+  }, [ setSorting, onSortingChange ]);
+
   if (isError) {
     return <DataFetchAlert/>;
   }
@@ -85,6 +128,11 @@ const Tokens = () => {
     <>
       <HStack spacing={ 3 } mb={ 6 } display={{ base: 'flex', lg: 'none' }}>
         { typeFilter }
+        <Sort
+          options={ SORT_OPTIONS }
+          setSort={ onSort }
+          sort={ sorting }
+        />
         { filterInput }
       </HStack>
       <ActionBar mt={ -6 }>
@@ -110,7 +158,16 @@ const Tokens = () => {
           />
         )) }
       </Show>
-      <Hide below="lg" ssr={ false }><TokensTable items={ data.items } page={ pagination.page } isLoading={ isPlaceholderData }/></Hide></>
+      <Hide below="lg" ssr={ false }>
+        <TokensTable
+          items={ data.items }
+          page={ pagination.page }
+          isLoading={ isPlaceholderData }
+          setSorting={ onSort }
+          sorting={ sorting }
+        />
+      </Hide>
+    </>
   ) : null;
 
   return (

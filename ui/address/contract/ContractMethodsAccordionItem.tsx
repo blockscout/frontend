@@ -23,7 +23,7 @@ const ContractMethodsAccordionItem = <T extends SmartContractMethod>({ data, ind
       return '';
     }
 
-    return config.baseUrl + route({
+    return config.app.baseUrl + route({
       pathname: '/address/[hash]',
       query: {
         hash: addressHash ?? '',

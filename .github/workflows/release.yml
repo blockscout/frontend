@@ -5,10 +5,6 @@ on:
     release:
         types: [ released ]
 
-concurrency:
-    group: ${{ github.workflow }}-${{ github.ref }} # Release-refs/tags/v1.0.0
-    cancel-in-progress: true
-
 jobs:
     remove_prerelease_label:
         name: Remove pre-release label from issues

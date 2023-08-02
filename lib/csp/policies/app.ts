@@ -5,8 +5,8 @@ import appConfig from 'configs/app/config';
 import { KEY_WORDS } from '../utils';
 
 const MAIN_DOMAINS = [
-  `*.${ appConfig.host }`,
-  appConfig.host,
+  `*.${ appConfig.app.host }`,
+  appConfig.app.host,
   appConfig.visualizeApi.endpoint,
 ].filter(Boolean);
 // eslint-disable-next-line no-restricted-properties

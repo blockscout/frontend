@@ -299,8 +299,6 @@ frontend:
       _default: blockscout-main.k8s-dev.blockscout.com
     NEXT_PUBLIC_LOGOUT_URL:
       _default: https://blockscoutcom.us.auth0.com/v2/logout
-    NEXT_PUBLIC_LOGOUT_RETURN_URL:
-      _default: https://blockscout-main.k8s-dev.blockscout.com/auth/logout
     NEXT_PUBLIC_NETWORK_RPC_URL:
       _default: https://rpc.ankr.com/eth_goerli
     NEXT_PUBLIC_HOMEPAGE_CHARTS:

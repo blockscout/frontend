@@ -1,3 +1,5 @@
+import type { TokenType } from 'types/api/token';
+
 export type SearchResultType = 'token' | 'address' | 'block' | 'transaction' | 'contract';
 
 export interface SearchResultToken {
@@ -8,12 +10,17 @@ export interface SearchResultToken {
   token_url: string;
   address_url: string;
   icon_url: string | null;
+  token_type: TokenType;
+  exchange_rate: string | null;
+  total_supply: string | null;
+  is_smart_contract_verified: boolean;
 }
 
 export interface SearchResultAddressOrContract {
   type: 'address' | 'contract';
   name: string | null;
   address: string;
+  is_smart_contract_verified: boolean;
   url?: string; // not used by the frontend, we build the url ourselves
 }
 
@@ -21,6 +28,7 @@ export interface SearchResultLabel {
   type: 'label';
   address: string;
   name: string;
+  is_smart_contract_verified: boolean;
   url?: string; // not used by the frontend, we build the url ourselves
 }
 
@@ -28,12 +36,14 @@ export interface SearchResultBlock {
   type: 'block';
   block_number: number | string;
   block_hash: string;
+  timestamp: string;
   url?: string; // not used by the frontend, we build the url ourselves
 }
 
 export interface SearchResultTx {
   type: 'transaction';
   tx_hash: string;
+  timestamp: string;
   url?: string; // not used by the frontend, we build the url ourselves
 }
 

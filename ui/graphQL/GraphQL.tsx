@@ -50,7 +50,7 @@ const GraphQL = () => {
     // or the older one subscriptions-transport-ws
     // so we (isstuev & vbaranov) decided to configure playground without subscriptions
     // in case of any complaint consider reconfigure the graphql ws server with absinthe_graphql_ws package
-    // subscriptionUrl: `wss://${appConfig.host}/socket/`,
+    // subscriptionUrl: `wss://${appConfig.app.host}/socket/`,
   });
 
   return (

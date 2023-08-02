@@ -42,7 +42,7 @@ const SearchBarSuggest = ({ onClick, onClear }: Props) => {
   }
 
   return (
-    <>
+    <Box py={ 6 }>
       { !isMobile && (
         <Box pb={ 4 } mb={ 5 } borderColor="divider" borderBottomWidth="1px" _empty={{ display: 'none' }}>
           <TextAd/>
@@ -82,7 +82,7 @@ const SearchBarSuggest = ({ onClick, onClear }: Props) => {
           </Flex>
         </Box>
       )) }
-    </>
+    </Box>
   );
 };
 

@@ -8,7 +8,7 @@ import { DAY } from 'lib/consts';
 import * as cookies from 'lib/cookies';
 
 export function account(req: NextRequest) {
-  if (!appConfig.isAccountSupported) {
+  if (!appConfig.account.isEnabled) {
     return;
   }
 
@@ -24,7 +24,7 @@ export function account(req: NextRequest) {
     const isProfileRoute = req.nextUrl.pathname.includes('/auth/profile');
 
     if ((isAccountRoute || isProfileRoute)) {
-      const authUrl = appConfig.authUrl + route({ pathname: '/auth/auth0', query: { path: req.nextUrl.pathname } });
+      const authUrl = appConfig.account.authUrl + route({ pathname: '/auth/auth0', query: { path: req.nextUrl.pathname } });
       return NextResponse.redirect(authUrl);
     }
   }
@@ -35,7 +35,7 @@ export function account(req: NextRequest) {
     if (apiTokenCookie) {
       // temporary solution
       // TODO check app for integrity https://github.com/blockscout/frontend/issues/1028 and make typescript happy here
-      if (!appConfig.logoutUrl) {
+      if (!appConfig.account.logoutUrl) {
         httpLogger.logger.error({
           message: 'Logout URL is not configured',
         });
@@ -46,7 +46,7 @@ export function account(req: NextRequest) {
       // logout URL is always external URL in auth0.com sub-domain
       // at least we hope so
 
-      const res = NextResponse.redirect(appConfig.logoutUrl);
+      const res = NextResponse.redirect(appConfig.account.logoutUrl);
       res.cookies.delete(cookies.NAMES.CONFIRM_EMAIL_PAGE_VIEWED); // reset cookie to show email verification page again
 
       return res;
@@ -55,7 +55,7 @@ export function account(req: NextRequest) {
     // if user hasn't seen email verification page, make redirect to it
     if (!req.cookies.get(cookies.NAMES.CONFIRM_EMAIL_PAGE_VIEWED)) {
       if (!req.nextUrl.pathname.includes('/auth/unverified-email')) {
-        const url = appConfig.baseUrl + route({ pathname: '/auth/unverified-email' });
+        const url = appConfig.app.baseUrl + route({ pathname: '/auth/unverified-email' });
         const res = NextResponse.redirect(url);
         res.cookies.set({
           name: cookies.NAMES.CONFIRM_EMAIL_PAGE_VIEWED,

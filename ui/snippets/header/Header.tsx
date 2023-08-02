@@ -43,7 +43,7 @@ const Header = ({ isHomePage, renderSearchBar }: Props) => {
         >
           <Burger/>
           <NetworkLogo/>
-          { appConfig.isAccountSupported ? <ProfileMenuMobile/> : <Box boxSize={ 10 }/> }
+          { appConfig.account.isEnabled ? <ProfileMenuMobile/> : <Box boxSize={ 10 }/> }
         </Flex>
         { !isHomePage && searchBar }
       </Box>
@@ -65,7 +65,7 @@ const Header = ({ isHomePage, renderSearchBar }: Props) => {
             <Box width="100%">
               { searchBar }
             </Box>
-            { appConfig.isAccountSupported && <ProfileMenuDesktop/> }
+            { appConfig.account.isEnabled && <ProfileMenuDesktop/> }
           </HStack>
         ) }
       </Box>

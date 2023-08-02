@@ -16,9 +16,9 @@ export default function useNetworkMenu() {
   const apiFetch = useApiFetch();
   const { isLoading, data } = useQuery<unknown, ResourceError<unknown>, Array<FeaturedNetwork>>(
     [ 'featured-network' ],
-    async() => apiFetch(appConfig.featuredNetworks || ''),
+    async() => apiFetch(appConfig.navigation.featuredNetworks || ''),
     {
-      enabled: Boolean(appConfig.featuredNetworks) && isOpen,
+      enabled: Boolean(appConfig.navigation.featuredNetworks) && isOpen,
       staleTime: Infinity,
     });
 

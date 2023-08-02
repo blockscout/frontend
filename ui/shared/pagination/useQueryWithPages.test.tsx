@@ -45,6 +45,10 @@ const responses = {
       items_count: 43,
     },
   },
+  page_sorted: {
+    items: [ { hash: '61' }, { hash: '62' } ],
+    next_page_params: null,
+  },
 };
 
 beforeEach(() => {
@@ -423,13 +427,16 @@ describe('if there is page query param in URL', () => {
 });
 
 describe('queries with filters', () => {
-  it('reset page when filter is changed', async() => {
+  it('reset page, keep sorting when filter is changed', async() => {
     const routerPush = jest.fn(() => Promise.resolve());
-    useRouter.mockReturnValue({ ...router, pathname: '/current-route', push: routerPush, query: { foo: 'bar' } });
+    useRouter.mockReturnValue({ ...router, pathname: '/current-route', push: routerPush, query: { foo: 'bar', sort: 'val-desc' } });
 
     const params: Params<'address_txs'> = {
       resourceName: 'address_txs',
       pathParams: { hash: addressMock.hash },
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore:
+      sorting: { sort: 'val-desc' },
     };
     fetch.once(JSON.stringify(responses.page_1));
     fetch.once(JSON.stringify(responses.page_2));
@@ -462,7 +469,7 @@ describe('queries with filters', () => {
     expect(routerPush).toHaveBeenLastCalledWith(
       {
         pathname: '/current-route',
-        query: { filter: 'from', foo: 'bar' },
+        query: { filter: 'from', foo: 'bar', sort: 'val-desc' },
       },
       undefined,
       { shallow: true },
@@ -497,6 +504,98 @@ describe('queries with filters', () => {
         pathname: '/current-route',
         query: {
           filter: 'from',
+          foo: 'bar',
+          next_page_params: encodeURIComponent(JSON.stringify(responses.page_1.next_page_params)),
+          page: '2',
+        },
+      },
+      undefined,
+      { shallow: true },
+    );
+  });
+});
+
+describe('queries with sorting', () => {
+  it('reset page, save filter when sorting is changed', async() => {
+    const routerPush = jest.fn(() => Promise.resolve());
+    useRouter.mockReturnValue({ ...router, pathname: '/current-route', push: routerPush, query: { foo: 'bar', filter: 'from' } });
+
+    const params: Params<'address_txs'> = {
+      resourceName: 'address_txs',
+      pathParams: { hash: addressMock.hash },
+      filters: { filter: 'from' },
+    };
+    fetch.once(JSON.stringify(responses.page_1));
+    fetch.once(JSON.stringify(responses.page_2));
+    fetch.once(JSON.stringify(responses.page_sorted));
+
+    const { result } = renderHook(() => useQueryWithPages(params), { wrapper });
+    await waitForApiResponse();
+
+    await act(async() => {
+      result.current.pagination.onNextPageClick();
+    });
+    await waitForApiResponse();
+
+    await act(async() => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore:
+      result.current.onSortingChange({ sort: 'val-desc' });
+    });
+    await waitForApiResponse();
+
+    expect(result.current.data).toEqual(responses.page_sorted);
+    expect(result.current.pagination).toMatchObject({
+      page: 1,
+      canGoBackwards: true,
+      hasNextPage: false,
+      isLoading: false,
+      isVisible: false,
+      hasPages: false,
+    });
+
+    expect(routerPush).toHaveBeenCalledTimes(2);
+    expect(routerPush).toHaveBeenLastCalledWith(
+      {
+        pathname: '/current-route',
+        query: { filter: 'from', foo: 'bar', sort: 'val-desc' },
+      },
+      undefined,
+      { shallow: true },
+    );
+
+    expect(animateScroll.scrollToTop).toHaveBeenCalledTimes(2);
+    expect(animateScroll.scrollToTop).toHaveBeenLastCalledWith({ duration: 0 });
+  });
+
+  it('saves sorting params in query when navigating between pages', async() => {
+    const routerPush = jest.fn(() => Promise.resolve());
+    useRouter.mockReturnValue({ ...router, pathname: '/current-route', push: routerPush, query: { foo: 'bar', sort: 'val-desc' } });
+
+    const params: Params<'address_txs'> = {
+      resourceName: 'address_txs',
+      pathParams: { hash: addressMock.hash },
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore:
+      sorting: { sort: 'val-desc' },
+    };
+    fetch.once(JSON.stringify(responses.page_1));
+    fetch.once(JSON.stringify(responses.page_2));
+
+    const { result } = renderHook(() => useQueryWithPages(params), { wrapper });
+    await waitForApiResponse();
+
+    await act(async() => {
+      result.current.pagination.onNextPageClick();
+    });
+    await waitForApiResponse();
+
+    expect(routerPush).toHaveBeenCalledTimes(1);
+    expect(routerPush).toHaveBeenLastCalledWith(
+      {
+        pathname: '/current-route',
+        query: {
+          sort: 'val-desc',
           foo: 'bar',
           next_page_params: encodeURIComponent(JSON.stringify(responses.page_1.next_page_params)),
           page: '2',
