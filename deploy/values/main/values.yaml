@@ -1,327 +1,171 @@
-global:
-  env: main
-# enable Blockscout deploy
+fullNameOverride: bs-stack
+nameOverride: bs-stack
+imagePullSecrets:
+  - name: regcred
+
 blockscout:
-  app: blockscout
   enabled: true
   image:
-    _default: &image blockscout/blockscout:frontend-main
-  replicas:
-    app: 1
-  docker:
-    port: 80
-    targetPort: 4000
-  # init container
-  init:
-    enabled: true
-    image:
-      _default: *image
+    pullPolicy: Always
+    tag: frontend-main
+  replicaCount: 1
   # enable ingress
   ingress:
     enabled: true
     annotations:
-      # - 'nginx.ingress.kubernetes.io/rewrite-target: /$2'
-      - 'nginx.ingress.kubernetes.io/cors-allow-origin: "https://*.k8s-dev.blockscout.com, http://localhost:3000"'
-      - 'nginx.ingress.kubernetes.io/cors-allow-credentials: "true"'
-      - 'nginx.ingress.kubernetes.io/cors-allow-methods: PUT, GET, POST, OPTIONS, DELETE, PATCH'
-      - 'nginx.ingress.kubernetes.io/enable-cors: "true"'
-      - 'nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-csrf-token"'
-      - 'nginx.ingress.kubernetes.io/cors-expose-headers: "x-bs-account-csrf"'
-    host:
-      _default: blockscout-main.k8s-dev.blockscout.com
-    # enable https
-    #
+      kubernetes.io/ingress.class: internal-and-public
+      nginx.ingress.kubernetes.io/proxy-body-size: "500m"
+      nginx.ingress.kubernetes.io/client-max-body-size: "500M"
+      nginx.ingress.kubernetes.io/proxy-buffering: "off"
+      nginx.ingress.kubernetes.io/proxy-connect-timeout: "15m"
+      nginx.ingress.kubernetes.io/proxy-send-timeout: "15m"
+      nginx.ingress.kubernetes.io/proxy-read-timeout: "15m"
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/cors-allow-origin: "https://*.k8s-dev.blockscout.com, http://localhost:3000"
+      nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+      nginx.ingress.kubernetes.io/cors-allow-methods: "PUT, GET, POST, OPTIONS, DELETE, PATCH"
+      nginx.ingress.kubernetes.io/enable-cors: "true"
+      nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-csrf-token"
+      nginx.ingress.kubernetes.io/cors-expose-headers: "x-bs-account-csrf"
+    hostname: blockscout-main.k8s-dev.blockscout.com
     tls:
       enabled: true
-    path:
-      prefix:
-        - "/"
-  # probes
-  livenessProbe:
-    enabled: true
-    path: /
-  readinessProbe:
-    enabled: true
-    path: /
+
   resources:
     limits:
-      memory:
-        _default: "4Gi"
-      cpu:
-        _default: "4"
+      memory: "6Gi"
+      cpu: "6"
     requests:
-      memory:
-        _default: "2Gi"
-      cpu:
-        _default: "2"
-  # node label
-  nodeSelector:
-    enabled: false
-
+      memory: "3Gi"
+      cpu: "3"
   # Blockscout environment variables
-  environment:
-    BLOCKSCOUT_VERSION:
-      _default: v5.1.2-beta
-    ETHEREUM_JSONRPC_VARIANT:
-      _default: geth
-    HEART_BEAT_TIMEOUT:
-      _default: 30
-    PORT:
-      _default: 4000
-    SUBNETWORK:
-      _default: Ethereum
-    NETWORK:
-      _default: (Goerli)
-    NETWORK_ICON:
-      _default: _network_icon.html
-    COIN:
-      _default: ETH
-    COIN_NAME:
-      _default: ETH
-    LOGO:
-      _default: /images/goerli_logo.svg
-    TXS_STATS_DAYS_TO_COMPILE_AT_INIT:
-      _default: 1
-    COIN_BALANCE_HISTORY_DAYS:
-      _default: 90
-    POOL_SIZE:
-      _default: 100
-    DISPLAY_TOKEN_ICONS:
-      _default: 'true'
-    FETCH_REWARDS_WAY:
-      _default: manual
-    SHOW_TESTNET_LABEL:
-      _default: 'true'
-    CHAIN_ID:
-      _default: 5
-    MICROSERVICE_SC_VERIFIER_ENABLED:
-      _default: 'true'
-    MICROSERVICE_SC_VERIFIER_URL:
-      _default: http://eth-bytecode-db-svc.eth-bytecode-db-testing.svc.cluster.local:80
-    INDEXER_MEMORY_LIMIT:
-      _default: 5
-    ACCOUNT_ENABLED:
-      _default: 'true'
-    API_V2_ENABLED:
-      _default: 'true'
-    APPS_MENU:
-      _default: 'true'
-    APPS:
-      _default: '[{"title": "Marketplace", "url": "/apps", "embedded?": true}]'
-    SESSION_COOKIE_DOMAIN:
-      _default: blockscout-main.k8s-dev.blockscout.com
-    ETHEREUM_JSONRPC_DEBUG_TRACE_TRANSACTION_TIMEOUT:
-      _default: '20s'
-    INDEXER_INTERNAL_TRANSACTIONS_BATCH_SIZE:
-      _default: 15
-    INDEXER_DISABLE_EMPTY_BLOCKS_SANITIZER:
-      _default: 'true'
-    INDEXER_DISABLE_PENDING_TRANSACTIONS_FETCHER:
-      _default: 'true'
-    INDEXER_RECEIPTS_BATCH_SIZE:
-      _default: 50
-    INDEXER_COIN_BALANCES_BATCH_SIZE:
-      _default: 50
-    DISABLE_EXCHANGE_RATES:
-      _default: 'true'
-    DISABLE_INDEXER:
-      _default: 'false'
-    FIRST_BLOCK:
-      _default: '8739119'
-    LAST_BLOCK:
-      _default: '8739119'
-    TRACE_FIRST_BLOCK:
-      _default: '8739119'
-    TRACE_LAST_BLOCK:
-      _default: '8739119'
-    ETHEREUM_JSONRPC_TRACE_URL:
-      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ETHEREUM_JSONRPC_TRACE_URL
-    ETHEREUM_JSONRPC_HTTP_URL:
-      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ETHEREUM_JSONRPC_HTTP_URL
-    ACCOUNT_USERNAME:
-      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_USERNAME
-    ACCOUNT_PASSWORD:
-      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_PASSWORD
-    MAILSLURP_API_KEY:
-      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/MAILSLURP_API_KEY
-    MAILSLURP_EMAIL_ID:
-      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/MAILSLURP_EMAIL_ID
-    ACCOUNT_SENDGRID_API_KEY:
-      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_SENDGRID_API_KEY
-    ACCOUNT_SENDGRID_SENDER:
-      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_SENDGRID_SENDER
-    ACCOUNT_SENDGRID_TEMPLATE:
-      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_SENDGRID_TEMPLATE
-    ACCOUNT_PUBLIC_TAGS_AIRTABLE_URL:
-      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_PUBLIC_TAGS_AIRTABLE_URL
-    ACCOUNT_PUBLIC_TAGS_AIRTABLE_API_KEY:
-      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_PUBLIC_TAGS_AIRTABLE_API_KEY
-    ACCOUNT_CLOAK_KEY:
-      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_CLOAK_KEY
-    SECRET_KEY_BASE:
-      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/SECRET_KEY_BASE
-    DATABASE_URL:
-      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/DATABASE_URL
-    DATABASE_READ_ONLY_API_URL:
-      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/DATABASE_READ_ONLY_API_URL
-    API_SENSITIVE_ENDPOINTS_KEY:
-      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/API_SENSITIVE_ENDPOINTS_KEY
-    ACCOUNT_DATABASE_URL:
-      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_DATABASE_URL
-    ACCOUNT_REDIS_URL:
-      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_REDIS_URL
-    ACCOUNT_AUTH0_DOMAIN:
-      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_AUTH0_DOMAIN
-    ACCOUNT_AUTH0_CLIENT_ID:
-      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_AUTH0_CLIENT_ID
-    ACCOUNT_AUTH0_CLIENT_SECRET:
-      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_AUTH0_CLIENT_SECRET
-    RE_CAPTCHA_SECRET_KEY:
-      _default: ref+vault://deployment-values/blockscout/common?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/RE_CAPTCHA_SECRET_KEY
-    RE_CAPTCHA_CLIENT_KEY:
-      _default: ref+vault://deployment-values/blockscout/common?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/RE_CAPTCHA_CLIENT_KEY
+  env:
+    BLOCKSCOUT_VERSION: v5.1.2-beta
+    ETHEREUM_JSONRPC_VARIANT: geth
+    HEART_BEAT_TIMEOUT: 30
+    PORT: 4000
+    SUBNETWORK: Ethereum
+    NETWORK: (Goerli)
+    NETWORK_ICON: _network_icon.html
+    COIN: ETH
+    COIN_NAME: ETH
+    LOGO: /images/goerli_logo.svg
+    TXS_STATS_DAYS_TO_COMPILE_AT_INIT: 1
+    COIN_BALANCE_HISTORY_DAYS: 90
+    POOL_SIZE: 100
+    DISPLAY_TOKEN_ICONS: 'true'
+    FETCH_REWARDS_WAY: manual
+    SHOW_TESTNET_LABEL: 'true'
+    CHAIN_ID: 5
+    MICROSERVICE_SC_VERIFIER_ENABLED: 'true'
+    MICROSERVICE_SC_VERIFIER_URL: http://eth-bytecode-db-svc.eth-bytecode-db-testing.svc.cluster.local:80
+    INDEXER_MEMORY_LIMIT: 5
+    ACCOUNT_ENABLED: 'true'
+    API_V2_ENABLED: 'true'
+    APPS_MENU: 'true'
+    APPS: '[{"title": "Marketplace", "url": "/apps", "embedded?": true}]'
+    SESSION_COOKIE_DOMAIN: blockscout-main.k8s-dev.blockscout.com
+    ETHEREUM_JSONRPC_DEBUG_TRACE_TRANSACTION_TIMEOUT: '20s'
+    INDEXER_INTERNAL_TRANSACTIONS_BATCH_SIZE: 15
+    INDEXER_DISABLE_EMPTY_BLOCKS_SANITIZER: 'true'
+    INDEXER_DISABLE_PENDING_TRANSACTIONS_FETCHER: 'true'
+    INDEXER_RECEIPTS_BATCH_SIZE: 50
+    INDEXER_COIN_BALANCES_BATCH_SIZE: 50
+    DISABLE_EXCHANGE_RATES: 'true'
+    DISABLE_INDEXER: 'false'
+    FIRST_BLOCK: '8739119'
+    LAST_BLOCK: '8739119'
+    TRACE_FIRST_BLOCK: '8739119'
+    TRACE_LAST_BLOCK: '8739119'
+    ETHEREUM_JSONRPC_TRACE_URL: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ETHEREUM_JSONRPC_TRACE_URL
+    ETHEREUM_JSONRPC_HTTP_URL: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ETHEREUM_JSONRPC_HTTP_URL
+    ACCOUNT_USERNAME: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_USERNAME
+    ACCOUNT_PASSWORD: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_PASSWORD
+    MAILSLURP_API_KEY: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/MAILSLURP_API_KEY
+    MAILSLURP_EMAIL_ID: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/MAILSLURP_EMAIL_ID
+    ACCOUNT_SENDGRID_API_KEY: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_SENDGRID_API_KEY
+    ACCOUNT_SENDGRID_SENDER: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_SENDGRID_SENDER
+    ACCOUNT_SENDGRID_TEMPLATE: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_SENDGRID_TEMPLATE
+    ACCOUNT_PUBLIC_TAGS_AIRTABLE_URL: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_PUBLIC_TAGS_AIRTABLE_URL
+    ACCOUNT_PUBLIC_TAGS_AIRTABLE_API_KEY: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_PUBLIC_TAGS_AIRTABLE_API_KEY
+    ACCOUNT_CLOAK_KEY: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_CLOAK_KEY
+    SECRET_KEY_BASE: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/SECRET_KEY_BASE
+    DATABASE_URL: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/DATABASE_URL
+    DATABASE_READ_ONLY_API_URL: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/DATABASE_READ_ONLY_API_URL
+    API_SENSITIVE_ENDPOINTS_KEY: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/API_SENSITIVE_ENDPOINTS_KEY
+    ACCOUNT_DATABASE_URL: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_DATABASE_URL
+    ACCOUNT_REDIS_URL: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_REDIS_URL
+    ACCOUNT_AUTH0_DOMAIN: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_AUTH0_DOMAIN
+    ACCOUNT_AUTH0_CLIENT_ID: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_AUTH0_CLIENT_ID
+    ACCOUNT_AUTH0_CLIENT_SECRET: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_AUTH0_CLIENT_SECRET
+    RE_CAPTCHA_SECRET_KEY: ref+vault://deployment-values/blockscout/common?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/RE_CAPTCHA_SECRET_KEY
+    RE_CAPTCHA_CLIENT_KEY: ref+vault://deployment-values/blockscout/common?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/RE_CAPTCHA_CLIENT_KEY
 
 frontend:
-  app: blockscout
   enabled: true
   image:
-    _default: ghcr.io/blockscout/frontend:main
+    tag: main
     pullPolicy: Always
-  replicas:
-    app: 1
-  docker:
-    port: 80
-    targetPort: 3000
+  replicaCount: 1
   ingress:
     enabled: true
-    # annotations:
-    #   - 'nginx.ingress.kubernetes.io/use-regex: "true"'
-    host:
-      _default: blockscout-main.k8s-dev.blockscout.com
-    # enable https
-    tls:
-      enabled: true
-    path:
-      exact:
-        # - "/(apps|auth/profile|account)"
-        - "/"
-      prefix:
-        - "/_next"
-        - "/node-api"
-        - "/account"
-        - "/apps"
-        - "/static"
-        - "/auth/profile"
-        - "/auth/unverified-email"
-        - "/txs"
-        - "/tx"
-        - "/blocks"
-        - "/block"
-        - "/login"
-        - "/address"
-        - "/stats"
-        - "/search-results"
-        - "/token"
-        - "/tokens"
-        - "/accounts"
-        - "/visualize"
-        - "/api-docs"
-        - "/csv-export"
-        - "/verified-contracts"
-        - "/graphiql"
+    annotations:
+      kubernetes.io/ingress.class: internal-and-public
+      nginx.ingress.kubernetes.io/proxy-body-size: 500m
+      nginx.ingress.kubernetes.io/client-max-body-size: "500M"
+      nginx.ingress.kubernetes.io/proxy-buffering: "off"
+      nginx.ingress.kubernetes.io/proxy-connect-timeout: "15m"
+      nginx.ingress.kubernetes.io/proxy-send-timeout: "15m"
+      nginx.ingress.kubernetes.io/proxy-read-timeout: "15m"
+      cert-manager.io/cluster-issuer: "zerossl-prod"
+    hostname: blockscout-main.k8s-dev.blockscout.com
 
   resources:
     limits:
-      memory:
-        _default: 768Mi
-      cpu:
-        _default: 500m
+      memory: 768Mi
+      cpu: 500m
     requests:
-      memory:
-        _default: 384Mi
-      cpu:
-        _default: 250m
-  nodeSelector:
-    enabled: false
-  livenessProbe:
-    enabled: true
-  readinessProbe:
-    enabled: true
-  environment:
+      memory: 384Mi
+      cpu: 250m
+
+  env:
     # ui config
-    NEXT_PUBLIC_FEATURED_NETWORKS:
-      _default: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/featured-networks/eth-goerli.json
-    NEXT_PUBLIC_NETWORK_EXPLORERS:
-      _default: "[{'title':'Bitquery','baseUrl':'https://explorer.bitquery.io/','paths':{'tx':'/goerli/tx','address':'/goerli/address','token':'/goerli/token','block':'/goerli/block'}},{'title':'Etherscan','baseUrl':'https://goerli.etherscan.io/','paths':{'tx':'/tx','address':'/address','token':'/token','block':'/block'}}]"
+    NEXT_PUBLIC_FEATURED_NETWORKS: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/featured-networks/eth-goerli.json
+    NEXT_PUBLIC_NETWORK_EXPLORERS: "[{'title':'Bitquery','baseUrl':'https://explorer.bitquery.io/','paths':{'tx':'/goerli/tx','address':'/goerli/address','token':'/goerli/token','block':'/goerli/block'}},{'title':'Etherscan','baseUrl':'https://goerli.etherscan.io/','paths':{'tx':'/tx','address':'/address','token':'/token','block':'/block'}}]"
     # network config
-    NEXT_PUBLIC_NETWORK_NAME:
-      _default: Göerli
-    NEXT_PUBLIC_NETWORK_SHORT_NAME:
-      _default: Göerli
-    NEXT_PUBLIC_NETWORK_LOGO:
-      _default: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-logos/goerli.svg
-    NEXT_PUBLIC_NETWORK_ICON:
-      _default: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-icons/goerli.svg
-    NEXT_PUBLIC_NETWORK_ID:
-      _default: 5
-    NEXT_PUBLIC_NETWORK_CURRENCY_NAME:
-      _default: Ether
-    NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL:
-      _default: ETH
-    NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS:
-      _default: 18
-    NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS:
-      _default: 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
-    NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED:
-      _default: true
-    NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE:
-      _default: validation
-    NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM:
-      _default: https://airtable.com/shrqUAcjgGJ4jU88C
-    # api config
-    NEXT_PUBLIC_API_BASE_PATH:
-      _default: /
-    NEXT_PUBLIC_APP_ENV:
-      _default: stable
-    NEXT_PUBLIC_APP_INSTANCE:
-      _default: eth_goerli
-    NEXT_PUBLIC_API_HOST:
-      _default: blockscout-main.k8s-dev.blockscout.com
-    NEXT_PUBLIC_STATS_API_HOST:
-      _default: https://stats-test.k8s-dev.blockscout.com/
-    NEXT_PUBLIC_VISUALIZE_API_HOST:
-      _default: http://visualizer-svc.visualizer-testing.svc.cluster.local/
-    NEXT_PUBLIC_CONTRACT_INFO_API_HOST:
-      _default: https://contracts-info-test.k8s-dev.blockscout.com
-    NEXT_PUBLIC_ADMIN_SERVICE_API_HOST:
-      _default: https://admin-rs-test.k8s-dev.blockscout.com
-    NEXT_PUBLIC_APP_HOST:
-      _default: blockscout-main.k8s-dev.blockscout.com
-    NEXT_PUBLIC_LOGOUT_URL:
-      _default: https://blockscoutcom.us.auth0.com/v2/logout
-    NEXT_PUBLIC_NETWORK_RPC_URL:
-      _default: https://rpc.ankr.com/eth_goerli
-    NEXT_PUBLIC_HOMEPAGE_CHARTS:
-      _default: "['daily_txs','coin_price','market_cap']"
-    NEXT_PUBLIC_API_SPEC_URL:
-      _default: https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml
-    NEXT_PUBLIC_MARKETPLACE_CONFIG_URL:
-      _default: https://raw.githubusercontent.com/blockscout/frontend-configs/dev/configs/marketplace/eth-goerli.json
-    NEXT_PUBLIC_IS_TESTNET:
-      _default: true
-    NEXT_PUBLIC_GRAPHIQL_TRANSACTION:
-      _default: 0xf7d4972356e6ae44ae948d0cf19ef2beaf0e574c180997e969a2837da15e349d
-    NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS:
-      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS
-    NEXT_PUBLIC_SENTRY_DSN:
-      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_SENTRY_DSN
-    SENTRY_CSP_REPORT_URI:
-      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/SENTRY_CSP_REPORT_URI
-    NEXT_PUBLIC_AUTH0_CLIENT_ID:
-      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_AUTH0_CLIENT_ID
-    NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID:
-      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID
-    NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY:
-      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY
-    NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID:
-      _default: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID
+    NEXT_PUBLIC_NETWORK_NAME: Göerli
+    NEXT_PUBLIC_NETWORK_SHORT_NAME: Göerli
+    NEXT_PUBLIC_NETWORK_LOGO: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-logos/goerli.svg
+    NEXT_PUBLIC_NETWORK_ICON: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-icons/goerli.svg
+    NEXT_PUBLIC_NETWORK_ID: 5
+    NEXT_PUBLIC_NETWORK_CURRENCY_NAME: Ether
+    NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL: ETH
+    NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS: 18
+    NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS: 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
+    NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED: true
+    NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE: validation
+    NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM: https://airtable.com/shrqUAcjgGJ4jU88C
+    NEXT_PUBLIC_API_BASE_PATH: /
+    NEXT_PUBLIC_APP_ENV: stable
+    NEXT_PUBLIC_APP_INSTANCE: eth_goerli
+    NEXT_PUBLIC_API_HOST: blockscout-main.k8s-dev.blockscout.com
+    NEXT_PUBLIC_STATS_API_HOST: https://stats-test.k8s-dev.blockscout.com/
+    NEXT_PUBLIC_VISUALIZE_API_HOST: http://visualizer-svc.visualizer-testing.svc.cluster.local/
+    NEXT_PUBLIC_CONTRACT_INFO_API_HOST: https://contracts-info-test.k8s-dev.blockscout.com
+    NEXT_PUBLIC_ADMIN_SERVICE_API_HOST: https://admin-rs-test.k8s-dev.blockscout.com
+    NEXT_PUBLIC_APP_HOST: blockscout-main.k8s-dev.blockscout.com
+    NEXT_PUBLIC_LOGOUT_URL: https://blockscoutcom.us.auth0.com/v2/logout
+    NEXT_PUBLIC_NETWORK_RPC_URL: https://rpc.ankr.com/eth_goerli
+    NEXT_PUBLIC_HOMEPAGE_CHARTS: "['daily_txs','coin_price','market_cap']"
+    NEXT_PUBLIC_API_SPEC_URL: https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml
+    NEXT_PUBLIC_MARKETPLACE_CONFIG_URL: https://raw.githubusercontent.com/blockscout/frontend-configs/dev/configs/marketplace/eth-goerli.json
+    NEXT_PUBLIC_IS_TESTNET: true
+    NEXT_PUBLIC_GRAPHIQL_TRANSACTION: 0xf7d4972356e6ae44ae948d0cf19ef2beaf0e574c180997e969a2837da15e349d
+    NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS
+    NEXT_PUBLIC_SENTRY_DSN: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_SENTRY_DSN
+    SENTRY_CSP_REPORT_URI: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/SENTRY_CSP_REPORT_URI
+    NEXT_PUBLIC_AUTH0_CLIENT_ID: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_AUTH0_CLIENT_ID
+    NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID
+    NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY
+    NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID

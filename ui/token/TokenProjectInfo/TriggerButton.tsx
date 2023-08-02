@@ -23,7 +23,7 @@ const TriggerButton = ({ isOpen, onClick }: Props, ref: React.ForwardedRef<HTMLB
       h="30px"
     >
       <Icon as={ rocketIcon } boxSize={ 4 } mr={ 1 }/>
-      <span>Project Info</span>
+      <span>Project info</span>
       <Icon as={ arrowIcon } transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 } ml={ 1 }/>
     </Button>
   );

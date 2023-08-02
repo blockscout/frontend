@@ -24,6 +24,9 @@ const variantSoftRounded = definePartsStyle((props) => {
       _hover: {
         color: 'link_hovered',
       },
+      _focusVisible: {
+        boxShadow: { base: 'none', lg: 'outline' },
+      },
     },
   };
 });

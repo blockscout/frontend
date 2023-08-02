@@ -108,7 +108,6 @@ const config = Object.freeze({
       decimals: Number(getEnvValue(process.env.NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS)) || DEFAULT_CURRENCY_DECIMALS,
       address: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS),
     },
-    assetsPathname: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME),
     explorers: parseEnvJson<Array<NetworkExplorer>>(getEnvValue(process.env.NEXT_PUBLIC_NETWORK_EXPLORERS)) || [],
     verificationType: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE) || 'mining',
     rpcUrl: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_RPC_URL),
@@ -162,6 +161,7 @@ const config = Object.freeze({
   },
   beaconChain: {
     hasBeaconChain: getEnvValue(process.env.NEXT_PUBLIC_HAS_BEACON_CHAIN) === 'true',
+    currencySymbol: getEnvValue(process.env.NEXT_PUBLIC_BEACON_CHAIN_CURRENCY_SYMBOL) || getEnvValue(process.env.NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL),
   },
   statsApi: {
     endpoint: getEnvValue(process.env.NEXT_PUBLIC_STATS_API_HOST),

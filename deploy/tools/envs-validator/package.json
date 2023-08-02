@@ -6,7 +6,7 @@
   "scripts": {
     "build": "yarn ts-to-zod ./envs.ts ./schema.ts && yarn webpack-cli -c ./webpack.config.js",
     "validate": "node ./index.js",
-    "dev": "cp ../../../types/envs.ts ./ && yarn build && yarn dotenv -e ../../../configs/envs/.env.poa_core yarn validate"
+    "dev": "./dev.sh"
   },
   "dependencies": {
     "ts-loader": "^9.4.4",

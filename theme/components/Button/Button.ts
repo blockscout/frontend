@@ -177,6 +177,9 @@ const baseStyle = defineStyle({
   fontWeight: 600,
   borderRadius: 'base',
   overflow: 'hidden',
+  _focusVisible: {
+    boxShadow: { base: 'none', lg: 'outline' },
+  },
 });
 
 const sizes = {
