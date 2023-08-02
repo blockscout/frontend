@@ -136,6 +136,7 @@ const config = Object.freeze({
     host: appHost,
     port: appPort,
     baseUrl,
+    useNextJsProxy: getEnvValue(process.env.NEXT_PUBLIC_USE_NEXT_JS_PROXY) === 'true',
   },
   ad: {
     adBannerProvider: getAdBannerProvider(),

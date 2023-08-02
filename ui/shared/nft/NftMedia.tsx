@@ -3,6 +3,8 @@ import type { StaticRoute } from 'nextjs-routes';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
+import useFetch from 'lib/hooks/useFetch';
+
 import NftImage from './NftImage';
 import NftVideo from './NftVideo';
 import type { MediaType } from './utils';
@@ -17,6 +19,7 @@ interface Props {
 
 const NftMedia = ({ imageUrl, animationUrl, className, isLoading }: Props) => {
   const [ type, setType ] = React.useState<MediaType | undefined>(!animationUrl ? 'image' : undefined);
+  const fetch = useFetch();
 
   React.useEffect(() => {
     if (!animationUrl || isLoading) {
@@ -38,7 +41,6 @@ const NftMedia = ({ imageUrl, animationUrl, className, isLoading }: Props) => {
 
     const url = route({ pathname: '/node-api/media-type' as StaticRoute<'/api/media-type'>['pathname'], query: { url: animationUrl } });
     fetch(url)
-      .then((response) => response.json())
       .then((_data) => {
         const data = _data as { type: MediaType | undefined };
         setType(data.type || 'image');
@@ -47,7 +49,7 @@ const NftMedia = ({ imageUrl, animationUrl, className, isLoading }: Props) => {
         setType('image');
       });
 
-  }, [ animationUrl, isLoading ]);
+  }, [ animationUrl, isLoading, fetch ]);
 
   if (!type || isLoading) {
     return (

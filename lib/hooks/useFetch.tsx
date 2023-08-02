@@ -1,11 +1,8 @@
 import * as Sentry from '@sentry/react';
-import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
-import type { CsrfData } from 'types/client/account';
-
+import isBodyAllowed from 'lib/api/isBodyAllowed';
 import type { ResourceError, ResourcePath } from 'lib/api/resources';
-import { getResourceKey } from 'lib/api/useApiQuery';
 
 export interface Params {
   method?: RequestInit['method'];
@@ -20,16 +17,13 @@ interface Meta {
 }
 
 export default function useFetch() {
-  const queryClient = useQueryClient();
-  const { token } = queryClient.getQueryData<CsrfData>(getResourceKey('csrf')) || {};
-
   return React.useCallback(<Success, Error>(path: string, params?: Params, meta?: Meta): Promise<Success | ResourceError<Error>> => {
     const _body = params?.body;
     const isFormData = _body instanceof FormData;
-    const isBodyAllowed = params?.method && ![ 'GET', 'HEAD' ].includes(params.method);
+    const withBody = isBodyAllowed(params?.method);
 
     const body: FormData | string | undefined = (() => {
-      if (!isBodyAllowed) {
+      if (!withBody) {
         return;
       }
 
@@ -44,8 +38,7 @@ export default function useFetch() {
       ...params,
       body,
       headers: {
-        ...(isBodyAllowed && !isFormData ? { 'Content-type': 'application/json' } : undefined),
-        ...(isBodyAllowed && token ? { 'x-csrf-token': token } : undefined),
+        ...(withBody && !isFormData ? { 'Content-type': 'application/json' } : undefined),
         ...params?.headers,
       },
     };
@@ -56,7 +49,7 @@ export default function useFetch() {
           status: response.status,
           statusText: response.statusText,
         };
-        Sentry.captureException(new Error('Client fetch failed'), { extra: { ...error, ...meta }, tags: { source: 'api_fetch' } });
+        Sentry.captureException(new Error('Client fetch failed'), { extra: { ...error, ...meta }, tags: { source: 'fetch' } });
 
         return response.json().then(
           (jsonError) => Promise.reject({
@@ -73,5 +66,5 @@ export default function useFetch() {
         return response.json() as Promise<Success>;
       }
     });
-  }, [ token ]);
+  }, [ ]);
 }

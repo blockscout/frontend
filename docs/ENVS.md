@@ -128,6 +128,7 @@ In order to enable "My Account" feature you have to configure following set of v
 | NEXT_PUBLIC_APP_HOST | `string` | App host | yes | - | `blockscout.com` |
 | NEXT_PUBLIC_APP_PORT | `number` | Port where app is running | - | `3000` | `3001` |
 | NEXT_PUBLIC_APP_ENV | `string` | Current app env (e.g development, review or production). Used for Sentry.io configuration | - | equals to `process.env.NODE_ENV` | `production` |
+| NEXT_PUBLIC_USE_NEXT_JS_PROXY | `boolean` | Tells the app to proxy all APIs request through the NextJs app. **We strongly advise not to use it in the production environment** | - | `false` | `true` |
 
 ## API configuration
 

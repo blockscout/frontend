@@ -43,7 +43,7 @@ const Page = ({
       resourceErrorPayload.message :
       undefined;
 
-    const isInvalidTxHash = error?.message.includes('Invalid tx hash');
+    const isInvalidTxHash = error?.message?.includes('Invalid tx hash');
     const isBlockConsensus = messageInPayload?.includes('Block lost consensus');
 
     if (isInvalidTxHash) {
