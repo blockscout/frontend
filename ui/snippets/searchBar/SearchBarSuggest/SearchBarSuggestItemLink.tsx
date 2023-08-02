@@ -3,10 +3,12 @@ import React from 'react';
 
 type Props = {
   onClick: (event: React.MouseEvent<HTMLAnchorElement>) => void;
+  href?: string;
+  target?: string;
   children: React.ReactNode;
 }
 
-const SearchBarSuggestItemLink = ({ onClick, children }: Props) => {
+const SearchBarSuggestItemLink = ({ onClick, href, target, children }: Props) => {
   return (
     <chakra.a
       py={ 3 }
@@ -27,6 +29,8 @@ const SearchBarSuggestItemLink = ({ onClick, children }: Props) => {
         mt: 2,
       }}
       onClick={ onClick }
+      href={ href }
+      target={ target }
     >
       { children }
     </chakra.a>

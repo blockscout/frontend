@@ -1,4 +1,4 @@
-import { Link, Icon, Image, Flex, Text, useColorModeValue } from '@chakra-ui/react';
+import { Icon, Image, Flex, Text, useColorModeValue } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import React from 'react';
 
@@ -16,7 +16,7 @@ interface Props {
   onClick: (event: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 
-const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick }: Props) => {
+const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick }: Props) => {
 
   const logo = (
     <Image
@@ -26,6 +26,8 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick }: Props) =>
       alt={ `${ data.title } app icon` }
     />
   );
+
+  const secondaryColor = useColorModeValue('gray.500', 'gray.400');
 
   const content = (() => {
     if (isMobile) {
@@ -81,18 +83,16 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick }: Props) =>
         >
           { data.description }
         </Text>
-        { data.external && <Icon as={ arrowIcon } boxSize={ 4 } verticalAlign="middle"/> }
+        { data.external && <Icon as={ arrowIcon } boxSize={ 4 } verticalAlign="middle" color={ secondaryColor }/> }
       </Flex>
     );
   })();
 
   if (data.external) {
     return (
-      <Link href={ data.url } target="_blank" cursor="auto" _hover={{ textDecoration: 'none' }}>
-        <SearchBarSuggestItemLink onClick={ onClick }>
-          { content }
-        </SearchBarSuggestItemLink>
-      </Link>
+      <SearchBarSuggestItemLink onClick={ onClick } href={ data.url } target="_blank">
+        { content }
+      </SearchBarSuggestItemLink>
     );
   }
 
@@ -105,4 +105,4 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick }: Props) =>
   );
 };
 
-export default React.memo(SearchBarSuggestItem);
+export default React.memo(SearchBarSuggestApp);

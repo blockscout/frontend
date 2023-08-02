@@ -253,7 +253,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
         </Skeleton>
       </Flex>
       { Boolean(secondRow) && (
-        <Box w="100%" overflow="hidden">
+        <Box w="100%" overflow="hidden" whiteSpace={ data.type !== 'app' ? 'nowrap' : undefined }>
           { secondRow }
         </Box>
       ) }

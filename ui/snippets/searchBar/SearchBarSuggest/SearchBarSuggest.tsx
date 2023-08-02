@@ -8,7 +8,7 @@ import useMarketplaceApps from 'ui/marketplace/useMarketplaceApps';
 import TextAd from 'ui/shared/ad/TextAd';
 import ContentLoader from 'ui/shared/ContentLoader';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
-import type { ItemsCategoriesMap } from 'ui/shared/search/utils';
+import type { ApiCategory, ItemsCategoriesMap } from 'ui/shared/search/utils';
 import { getItemCategory, searchCategories } from 'ui/shared/search/utils';
 
 import SearchBarSuggestApp from './SearchBarSuggestApp';
@@ -68,7 +68,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
     }
     const map: Partial<ItemsCategoriesMap> = {};
     query.data?.items.forEach(item => {
-      const cat = getItemCategory(item);
+      const cat = getItemCategory(item) as ApiCategory;
       if (cat) {
         if (cat in map) {
           map[cat]?.push(item);
