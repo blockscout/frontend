@@ -161,6 +161,7 @@ const config = Object.freeze({
   },
   beaconChain: {
     hasBeaconChain: getEnvValue(process.env.NEXT_PUBLIC_HAS_BEACON_CHAIN) === 'true',
+    currencySymbol: getEnvValue(process.env.NEXT_PUBLIC_BEACON_CHAIN_CURRENCY_SYMBOL) || getEnvValue(process.env.NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL),
   },
   statsApi: {
     endpoint: getEnvValue(process.env.NEXT_PUBLIC_STATS_API_HOST),

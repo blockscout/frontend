@@ -50,7 +50,7 @@ import type {
   TokenInstanceTransfersCount,
   TokenVerifiedInfo,
 } from 'types/api/token';
-import type { TokensResponse, TokensFilters, TokenInstanceTransferResponse } from 'types/api/tokens';
+import type { TokensResponse, TokensFilters, TokensSorting, TokenInstanceTransferResponse } from 'types/api/tokens';
 import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
 import type { TransactionsResponseValidated, TransactionsResponsePending, Transaction, TransactionsResponseWatchlist } from 'types/api/transaction';
 import type { TTxsFilters } from 'types/api/txsFilters';
@@ -68,6 +68,8 @@ export interface ApiResource {
   pathParams?: Array<string>;
   needAuth?: boolean; // for external APIs which require authentication
 }
+
+export const SORTING_FIELDS = [ 'sort', 'order' ];
 
 export const RESOURCES = {
   // ACCOUNT
@@ -631,5 +633,11 @@ Q extends 'address_tokens' ? AddressTokensFilter :
 Q extends 'search' ? SearchResultFilters :
 Q extends 'tokens' ? TokensFilters :
 Q extends 'verified_contracts' ? VerifiedContractsFilters :
+never;
+/* eslint-enable @typescript-eslint/indent */
+
+/* eslint-disable @typescript-eslint/indent */
+export type PaginationSorting<Q extends PaginatedResources> =
+Q extends 'tokens' ? TokensSorting :
 never;
 /* eslint-enable @typescript-eslint/indent */
