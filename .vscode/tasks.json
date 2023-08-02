@@ -6,7 +6,7 @@
         // DEV SERVER
         {
             "type": "shell",
-            "command": "yarn dev:${input:devServerConfig}",
+            "command": "yarn dev:preset ${input:dev_config_preset}",
             "problemMatcher": [],
             "label": "dev server",
             "detail": "start local dev server",
@@ -243,11 +243,11 @@
             }
         },
         {
-            "type": "npm",
-            "script": "start:docker:poa_core",
+            "type": "shell",
+            "command": "yarn start:docker:preset ${input:dev_config_preset}",
             "problemMatcher": [],
-            "label": "docker: run poa",
-            "detail": "run docker container for POA network",
+            "label": "docker: run",
+            "detail": "run docker container with env preset",
             "presentation": {
                 "reveal": "always",
                 "panel": "shared",
@@ -311,17 +311,17 @@
         },
         {
             "type": "pickString",
-            "id": "devServerConfig",
-            "description": "Choose dev server config:",
+            "id": "dev_config_preset",
+            "description": "Choose dev server config preset:",
             "options": [
               "main",
-              "main:L2",
+              "main.L2",
               "poa_core",
               "eth_goerli",
               "eth",
               "localhost",
             ],
-            "default": ""
+            "default": "main"
         },
     ],
 }

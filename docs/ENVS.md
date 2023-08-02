@@ -1,4 +1,4 @@
-# Environment variables
+# Run-time environment variables
 
 The app instance could be customized by passing following variables to NodeJS environment at runtime. See their list below.
 
