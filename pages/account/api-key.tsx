@@ -19,4 +19,4 @@ const ApiKeysPage: NextPage = () => {
 
 export default ApiKeysPage;
 
-export { getServerSideProps } from 'lib/next/getServerSidePropsAccount';
+export { account as getServerSideProps } from 'lib/next/getServerSideProps';

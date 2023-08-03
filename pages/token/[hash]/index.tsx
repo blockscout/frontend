@@ -20,4 +20,4 @@ const TokenPage: NextPage<Props> = (props: Props) => {
 
 export default TokenPage;
 
-export { getServerSideProps } from 'lib/next/getServerSideProps';
+export { base as getServerSideProps } from 'lib/next/getServerSideProps';

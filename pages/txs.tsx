@@ -19,4 +19,4 @@ const TxsPage: NextPage = () => {
 
 export default TxsPage;
 
-export { getServerSideProps } from 'lib/next/getServerSideProps';
+export { base as getServerSideProps } from 'lib/next/getServerSideProps';

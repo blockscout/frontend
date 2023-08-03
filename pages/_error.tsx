@@ -19,14 +19,13 @@
 import * as Sentry from '@sentry/nextjs';
 import type { GetServerSideProps } from 'next';
 import NextErrorComponent from 'next/error';
-import Head from 'next/head';
 import React from 'react';
 
 import sentryConfig from 'configs/sentry/nextjs';
 import * as cookies from 'lib/cookies';
-import getNetworkTitle from 'lib/networks/getNetworkTitle';
 import type { Props as ServerSidePropsCommon } from 'lib/next/getServerSideProps';
-import { getServerSideProps as getServerSidePropsCommon } from 'lib/next/getServerSideProps';
+import { base as getServerSidePropsCommon } from 'lib/next/getServerSideProps';
+import PageServer from 'lib/next/PageServer';
 import AppError from 'ui/shared/AppError/AppError';
 import Page from 'ui/shared/Page/Page';
 
@@ -36,17 +35,12 @@ type Props = ServerSidePropsCommon & {
 
 const CustomErrorComponent = (props: Props) => {
   if (props.statusCode === 404) {
-    const title = getNetworkTitle();
-
     return (
-      <>
-        <Head>
-          <title>{ title }</title>
-        </Head>
+      <PageServer pathname="/">
         <Page>
           <AppError statusCode={ 404 } mt="50px"/>
         </Page>
-      </>
+      </PageServer>
     );
   }
 

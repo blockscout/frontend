@@ -14,4 +14,4 @@ const HomePage: NextPage = () => {
 
 export default HomePage;
 
-export { getServerSideProps } from 'lib/next/getServerSideProps';
+export { base as getServerSideProps } from 'lib/next/getServerSideProps';

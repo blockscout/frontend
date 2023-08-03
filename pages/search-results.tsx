@@ -17,4 +17,4 @@ const SearchResultsPage: NextPage<Props> = (props: Props) => {
 
 export default SearchResultsPage;
 
-export { getServerSideProps } from 'lib/next/getServerSideProps';
+export { base as getServerSideProps } from 'lib/next/getServerSideProps';

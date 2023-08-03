@@ -19,4 +19,4 @@ const VerifiedAddressesPage: NextPage = () => {
 
 export default VerifiedAddressesPage;
 
-export { getServerSidePropsForVerifiedAddresses as getServerSideProps } from 'lib/next/getServerSidePropsAccount';
+export { verifiedAddresses as getServerSideProps } from 'lib/next/getServerSideProps';

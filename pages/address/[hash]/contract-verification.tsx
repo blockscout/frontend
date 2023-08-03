@@ -18,4 +18,4 @@ const ContractVerificationPage: NextPage<Props> = (props: Props) => {
 
 export default ContractVerificationPage;
 
-export { getServerSideProps } from 'lib/next/getServerSideProps';
+export { base as getServerSideProps } from 'lib/next/getServerSideProps';

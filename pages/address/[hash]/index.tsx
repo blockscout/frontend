@@ -20,4 +20,4 @@ const AddressPage: NextPage<Props> = (props: Props) => {
 
 export default AddressPage;
 
-export { getServerSideProps } from 'lib/next/getServerSideProps';
+export { base as getServerSideProps } from 'lib/next/getServerSideProps';

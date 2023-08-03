@@ -19,4 +19,4 @@ const TxnBatchesPage: NextPage = () => {
 
 export default TxnBatchesPage;
 
-export { getServerSideProps } from 'lib/next/getServerSidePropsL2';
+export { L2 as getServerSideProps } from 'lib/next/getServerSideProps';

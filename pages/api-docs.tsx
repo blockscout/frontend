@@ -1,9 +1,6 @@
-import type { NextPage, GetServerSideProps } from 'next';
+import type { NextPage } from 'next';
 import React from 'react';
 
-import appConfig from 'configs/app/config';
-import { getServerSideProps as getServerSidePropsBase } from 'lib/next/getServerSideProps';
-import type { Props } from 'lib/next/getServerSideProps';
 import PageServer from 'lib/next/PageServer';
 import SwaggerUI from 'ui/apiDocs/SwaggerUI';
 import Page from 'ui/shared/Page/Page';
@@ -22,12 +19,4 @@ const APIDocsPage: NextPage = () => {
 
 export default APIDocsPage;
 
-export const getServerSideProps: GetServerSideProps<Props> = async(args) => {
-  if (!appConfig.apiDoc.specUrl) {
-    return {
-      notFound: true,
-    };
-  }
-
-  return getServerSidePropsBase(args);
-};
+export { apiDocs as getServerSideProps } from 'lib/next/getServerSideProps';

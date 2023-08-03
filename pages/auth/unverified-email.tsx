@@ -17,4 +17,4 @@ const UnverifiedEmailPage: NextPage = () => {
 
 export default UnverifiedEmailPage;
 
-export { getServerSideProps } from 'lib/next/getServerSidePropsAccount';
+export { account as getServerSideProps } from 'lib/next/getServerSideProps';

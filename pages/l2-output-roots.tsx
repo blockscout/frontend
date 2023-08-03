@@ -19,4 +19,4 @@ const OutputRootsPage: NextPage = () => {
 
 export default OutputRootsPage;
 
-export { getServerSideProps } from 'lib/next/getServerSidePropsL2';
+export { L2 as getServerSideProps } from 'lib/next/getServerSideProps';

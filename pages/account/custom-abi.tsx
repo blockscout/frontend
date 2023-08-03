@@ -19,4 +19,4 @@ const CustomAbiPage: NextPage = () => {
 
 export default CustomAbiPage;
 
-export { getServerSideProps } from 'lib/next/getServerSidePropsAccount';
+export { account as getServerSideProps } from 'lib/next/getServerSideProps';

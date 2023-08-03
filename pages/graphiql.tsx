@@ -26,4 +26,4 @@ const GraphiqlPage: NextPage = () => {
 
 export default GraphiqlPage;
 
-export { getServerSideProps } from 'lib/next/getServerSideProps';
+export { base as getServerSideProps } from 'lib/next/getServerSideProps';

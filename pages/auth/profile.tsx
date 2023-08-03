@@ -17,4 +17,4 @@ const MyProfilePage: NextPage = () => {
 
 export default MyProfilePage;
 
-export { getServerSideProps } from 'lib/next/getServerSidePropsAccount';
+export { account as getServerSideProps } from 'lib/next/getServerSideProps';

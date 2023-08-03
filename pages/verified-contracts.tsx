@@ -19,4 +19,4 @@ const VerifiedContractsPage: NextPage = () => {
 
 export default VerifiedContractsPage;
 
-export { getServerSideProps } from 'lib/next/getServerSideProps';
+export { base as getServerSideProps } from 'lib/next/getServerSideProps';
