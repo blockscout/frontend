@@ -23,6 +23,10 @@ const defaultAppContext = {
   pageProps: {
     cookies: '',
     referrer: '',
+    id: '',
+    height_or_hash: '',
+    hash: '',
+    q: '',
   },
 };
 

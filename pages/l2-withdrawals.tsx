@@ -1,24 +1,19 @@
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
-import Head from 'next/head';
 import React from 'react';
 
-import getNetworkTitle from 'lib/networks/getNetworkTitle';
+import PageServer from 'lib/next/PageServer';
 import Page from 'ui/shared/Page/Page';
 
 const L2Withdrawals = dynamic(() => import('ui/pages/L2Withdrawals'), { ssr: false });
 
 const WithdrawalsPage: NextPage = () => {
-  const title = getNetworkTitle();
   return (
-    <>
-      <Head>
-        <title>{ title }</title>
-      </Head>
+    <PageServer pathname="/l2-withdrawals">
       <Page>
         <L2Withdrawals/>
       </Page>
-    </>
+    </PageServer>
   );
 };
 

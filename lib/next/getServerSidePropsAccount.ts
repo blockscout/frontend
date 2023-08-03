@@ -1,6 +1,6 @@
 import appConfig from 'configs/app/config';
 
-import { getServerSideProps as base } from '../getServerSideProps';
+import { getServerSideProps as base } from './getServerSideProps';
 
 export const getServerSideProps: typeof base = async(...args) => {
   if (!appConfig.account.isEnabled) {
