@@ -73,7 +73,7 @@ const SearchResultsPageContent = () => {
     return (
       <>
         <Show below="lg" ssr={ false }>
-          { marketplaceApps.displayedApps.map((item, index) => (
+          { pagination.page === 1 && marketplaceApps.displayedApps.map((item, index) => (
             <SearchResultListItem
               key={ 'actual_' + index }
               data={{ type: 'app', app: item }}
@@ -100,7 +100,7 @@ const SearchResultsPageContent = () => {
               </Tr>
             </Thead>
             <Tbody>
-              { marketplaceApps.displayedApps.map((item, index) => (
+              { pagination.page === 1 && marketplaceApps.displayedApps.map((item, index) => (
                 <SearchResultTableItem
                   key={ 'actual_' + index }
                   data={{ type: 'app', app: item }}
@@ -138,7 +138,7 @@ const SearchResultsPageContent = () => {
           <chakra.span fontWeight={ 700 }>
             { resultsCount }
           </chakra.span>
-          <span> matching result{ (data?.items && data.items.length > 1) || pagination.page > 1 ? 's' : '' } for </span>
+          <span> matching result{ (((data?.items.length || 0) + marketplaceApps.displayedApps.length) > 1) || pagination.page > 1 ? 's' : '' } for </span>
           “<chakra.span fontWeight={ 700 }>{ debouncedSearchTerm }</chakra.span>”
         </Box>
       )

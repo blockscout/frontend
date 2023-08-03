@@ -27,8 +27,6 @@ const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick }: Props) => 
     />
   );
 
-  const secondaryColor = useColorModeValue('gray.500', 'gray.400');
-
   const content = (() => {
     if (isMobile) {
       return (
@@ -83,7 +81,7 @@ const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick }: Props) => 
         >
           { data.description }
         </Text>
-        { data.external && <Icon as={ arrowIcon } boxSize={ 4 } verticalAlign="middle" color={ secondaryColor }/> }
+        { data.external && <Icon as={ arrowIcon } boxSize={ 4 } verticalAlign="middle" color="text_secondary"/> }
       </Flex>
     );
   })();
