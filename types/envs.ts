@@ -34,10 +34,7 @@ export type NextPublicEnvs = {
   NEXT_PUBLIC_HOMEPAGE_SHOW_GAS_TRACKER?: 'true' | 'false';
   NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME?: 'true' | 'false';
 
-  // Ads config
-  NEXT_PUBLIC_AD_ADBUTLER_CONFIG_DESKTOP?: string;
-  NEXT_PUBLIC_AD_ADBUTLER_CONFIG_MOBILE?: string;
-  NEXT_PUBLIC_AD_BANNER_PROVIDER?: 'slise' | 'adbutler' | 'coinzilla' | 'none';
+  // Text ads config
   NEXT_PUBLIC_AD_TEXT_PROVIDER?: 'coinzilla' | 'none';
 
   // App config
@@ -73,7 +70,8 @@ export type NextPublicEnvs = {
 & NextPublicEnvsAccount
 & NextPublicEnvsMarketplace
 & NextPublicEnvsRollup
-& NextPublicEnvsBeacon;
+& NextPublicEnvsBeacon
+& NextPublicEnvsAdsBanner;
 
 type NextPublicEnvsAccount =
 {
@@ -119,4 +117,17 @@ type NextPublicEnvsBeacon =
 {
   NEXT_PUBLIC_HAS_BEACON_CHAIN?: undefined;
   NEXT_PUBLIC_BEACON_CHAIN_CURRENCY_SYMBOL?: undefined;
+}
+
+type NextPublicEnvsAdsBanner =
+{
+  NEXT_PUBLIC_AD_BANNER_PROVIDER: 'slise' | 'coinzilla' | 'none';
+} |
+{
+  NEXT_PUBLIC_AD_BANNER_PROVIDER: 'adbutler';
+  NEXT_PUBLIC_AD_ADBUTLER_CONFIG_DESKTOP: string;
+  NEXT_PUBLIC_AD_ADBUTLER_CONFIG_MOBILE: string;
+} |
+{
+  NEXT_PUBLIC_AD_BANNER_PROVIDER?: undefined;
 }
