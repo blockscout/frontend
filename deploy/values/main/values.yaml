@@ -2,6 +2,19 @@ fullNameOverride: bs-stack
 nameOverride: bs-stack
 imagePullSecrets:
   - name: regcred
+config:
+  network:
+    id: 5
+    name: Göerli
+    shortname: Göerli
+    currency:
+      name: Ether
+      symbol: ETH
+      decimals: 18
+  account:
+    enabled: true
+  testnet: true
+
 
 blockscout:
   enabled: true
@@ -44,25 +57,18 @@ blockscout:
     BLOCKSCOUT_VERSION: v5.1.2-beta
     ETHEREUM_JSONRPC_VARIANT: geth
     HEART_BEAT_TIMEOUT: 30
-    PORT: 4000
     SUBNETWORK: Ethereum
     NETWORK: (Goerli)
     NETWORK_ICON: _network_icon.html
-    COIN: ETH
-    COIN_NAME: ETH
     LOGO: /images/goerli_logo.svg
     TXS_STATS_DAYS_TO_COMPILE_AT_INIT: 1
     COIN_BALANCE_HISTORY_DAYS: 90
     POOL_SIZE: 100
     DISPLAY_TOKEN_ICONS: 'true'
     FETCH_REWARDS_WAY: manual
-    SHOW_TESTNET_LABEL: 'true'
-    CHAIN_ID: 5
     MICROSERVICE_SC_VERIFIER_ENABLED: 'true'
     MICROSERVICE_SC_VERIFIER_URL: http://eth-bytecode-db-svc.eth-bytecode-db-testing.svc.cluster.local:80
     INDEXER_MEMORY_LIMIT: 5
-    ACCOUNT_ENABLED: 'true'
-    API_V2_ENABLED: 'true'
     APPS_MENU: 'true'
     APPS: '[{"title": "Marketplace", "url": "/apps", "embedded?": true}]'
     SESSION_COOKIE_DOMAIN: blockscout-main.k8s-dev.blockscout.com
@@ -78,6 +84,7 @@ blockscout:
     LAST_BLOCK: '8739119'
     TRACE_FIRST_BLOCK: '8739119'
     TRACE_LAST_BLOCK: '8739119'
+  envFromSecret:
     ETHEREUM_JSONRPC_TRACE_URL: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ETHEREUM_JSONRPC_TRACE_URL
     ETHEREUM_JSONRPC_HTTP_URL: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ETHEREUM_JSONRPC_HTTP_URL
     ACCOUNT_USERNAME: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_USERNAME
@@ -134,34 +141,25 @@ frontend:
     NEXT_PUBLIC_FEATURED_NETWORKS: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/featured-networks/eth-goerli.json
     NEXT_PUBLIC_NETWORK_EXPLORERS: "[{'title':'Bitquery','baseUrl':'https://explorer.bitquery.io/','paths':{'tx':'/goerli/tx','address':'/goerli/address','token':'/goerli/token','block':'/goerli/block'}},{'title':'Etherscan','baseUrl':'https://goerli.etherscan.io/','paths':{'tx':'/tx','address':'/address','token':'/token','block':'/block'}}]"
     # network config
-    NEXT_PUBLIC_NETWORK_NAME: Göerli
-    NEXT_PUBLIC_NETWORK_SHORT_NAME: Göerli
     NEXT_PUBLIC_NETWORK_LOGO: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-logos/goerli.svg
     NEXT_PUBLIC_NETWORK_ICON: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-icons/goerli.svg
-    NEXT_PUBLIC_NETWORK_ID: 5
-    NEXT_PUBLIC_NETWORK_CURRENCY_NAME: Ether
-    NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL: ETH
-    NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS: 18
+
     NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS: 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
-    NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED: true
     NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE: validation
     NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM: https://airtable.com/shrqUAcjgGJ4jU88C
-    NEXT_PUBLIC_API_BASE_PATH: /
     NEXT_PUBLIC_APP_ENV: stable
     NEXT_PUBLIC_APP_INSTANCE: eth_goerli
-    NEXT_PUBLIC_API_HOST: blockscout-main.k8s-dev.blockscout.com
     NEXT_PUBLIC_STATS_API_HOST: https://stats-test.k8s-dev.blockscout.com/
     NEXT_PUBLIC_VISUALIZE_API_HOST: http://visualizer-svc.visualizer-testing.svc.cluster.local/
     NEXT_PUBLIC_CONTRACT_INFO_API_HOST: https://contracts-info-test.k8s-dev.blockscout.com
     NEXT_PUBLIC_ADMIN_SERVICE_API_HOST: https://admin-rs-test.k8s-dev.blockscout.com
-    NEXT_PUBLIC_APP_HOST: blockscout-main.k8s-dev.blockscout.com
     NEXT_PUBLIC_LOGOUT_URL: https://blockscoutcom.us.auth0.com/v2/logout
     NEXT_PUBLIC_NETWORK_RPC_URL: https://rpc.ankr.com/eth_goerli
     NEXT_PUBLIC_HOMEPAGE_CHARTS: "['daily_txs','coin_price','market_cap']"
     NEXT_PUBLIC_API_SPEC_URL: https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml
     NEXT_PUBLIC_MARKETPLACE_CONFIG_URL: https://raw.githubusercontent.com/blockscout/frontend-configs/dev/configs/marketplace/eth-goerli.json
-    NEXT_PUBLIC_IS_TESTNET: true
     NEXT_PUBLIC_GRAPHIQL_TRANSACTION: 0xf7d4972356e6ae44ae948d0cf19ef2beaf0e574c180997e969a2837da15e349d
+  envFromSecret:
     NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS
     NEXT_PUBLIC_SENTRY_DSN: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_SENTRY_DSN
     SENTRY_CSP_REPORT_URI: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/SENTRY_CSP_REPORT_URI
