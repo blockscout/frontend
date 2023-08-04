@@ -1,7 +1,7 @@
 import { HStack, Box, Flex, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import { useScrollDirection } from 'lib/contexts/scrollDirection';
 import IndexingAlertBlocks from 'ui/home/IndexingAlertBlocks';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
@@ -43,7 +43,7 @@ const Header = ({ isHomePage, renderSearchBar }: Props) => {
         >
           <Burger/>
           <NetworkLogo/>
-          { appConfig.account.isEnabled ? <ProfileMenuMobile/> : <Box boxSize={ 10 }/> }
+          { config.features.account.isEnabled ? <ProfileMenuMobile/> : <Box boxSize={ 10 }/> }
         </Flex>
         { !isHomePage && searchBar }
       </Box>
@@ -52,7 +52,7 @@ const Header = ({ isHomePage, renderSearchBar }: Props) => {
         paddingTop={ 9 }
         display={{ base: 'none', lg: 'block' }}
       >
-        { !appConfig.hideIndexingAlert && <IndexingAlertBlocks/> }
+        { !config.UI.indexingAlert.isHidden && <IndexingAlertBlocks/> }
         { !isHomePage && (
           <HStack
             as="header"
@@ -65,7 +65,7 @@ const Header = ({ isHomePage, renderSearchBar }: Props) => {
             <Box width="100%">
               { searchBar }
             </Box>
-            { appConfig.account.isEnabled && <ProfileMenuDesktop/> }
+            { config.features.account.isEnabled && <ProfileMenuDesktop/> }
           </HStack>
         ) }
       </Box>

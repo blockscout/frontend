@@ -5,7 +5,7 @@ import React from 'react';
 import type { Transaction } from 'types/api/transaction';
 import type { Sort } from 'types/client/txs-sort';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import rightArrowIcon from 'icons/arrows/east.svg';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import TheadSticky from 'ui/shared/TheadSticky';
@@ -55,14 +55,14 @@ const TxsTable = ({
             <Link onClick={ sort('val') } display="flex" justifyContent="end">
               { sorting === 'val-asc' && <Icon boxSize={ 5 } as={ rightArrowIcon } transform="rotate(-90deg)"/> }
               { sorting === 'val-desc' && <Icon boxSize={ 5 } as={ rightArrowIcon } transform="rotate(90deg)"/> }
-              { `Value ${ appConfig.network.currency.symbol }` }
+              { `Value ${ config.chain.currency.symbol }` }
             </Link>
           </Th>
           <Th width="20%" isNumeric pr={ 5 }>
             <Link onClick={ sort('fee') } display="flex" justifyContent="end">
               { sorting === 'fee-asc' && <Icon boxSize={ 5 } as={ rightArrowIcon } transform="rotate(-90deg)"/> }
               { sorting === 'fee-desc' && <Icon boxSize={ 5 } as={ rightArrowIcon } transform="rotate(90deg)"/> }
-              { `Fee ${ appConfig.network.currency.symbol }` }
+              { `Fee ${ config.chain.currency.symbol }` }
             </Link>
           </Th>
         </Tr>

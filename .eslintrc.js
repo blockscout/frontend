@@ -211,7 +211,7 @@ module.exports = {
       object: 'process',
       property: 'env',
       // FIXME: restrict the rule only NEXT_PUBLIC variables
-      message: 'Please use configs/app/config.ts to import any NEXT_PUBLIC environment variables. For other properties please disable this rule for a while.',
+      message: 'Please use configs/app/index.ts to import any NEXT_PUBLIC environment variables. For other properties please disable this rule for a while.',
     } ],
 
     'react/jsx-key': 'error',

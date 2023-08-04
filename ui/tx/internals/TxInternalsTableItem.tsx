@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import rightArrowIcon from 'icons/arrows/east.svg';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
@@ -56,7 +56,7 @@ const TxInternalTableItem = ({ type, from, to, value, success, error, gas_limit:
       </Td>
       <Td isNumeric verticalAlign="middle">
         <Skeleton isLoaded={ !isLoading } display="inline-block">
-          { BigNumber(value).div(BigNumber(10 ** appConfig.network.currency.decimals)).toFormat() }
+          { BigNumber(value).div(BigNumber(10 ** config.chain.currency.decimals)).toFormat() }
         </Skeleton>
       </Td>
       <Td isNumeric verticalAlign="middle">

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import type { Route } from 'nextjs-routes';
 import React from 'react';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import iconEdit from 'icons/edit.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import useHasAccount from 'lib/hooks/useHasAccount';
@@ -21,19 +21,19 @@ const TokenInfoMenuItem = ({ className, hash, onBeforeClick }: Props) => {
   const isAuth = useHasAccount();
 
   const verifiedAddressesQuery = useApiQuery('verified_addresses', {
-    pathParams: { chainId: appConfig.network.id },
+    pathParams: { chainId: config.chain.id },
     queryOptions: {
       enabled: isAuth,
     },
   });
   const applicationsQuery = useApiQuery('token_info_applications', {
-    pathParams: { chainId: appConfig.network.id, id: undefined },
+    pathParams: { chainId: config.chain.id, id: undefined },
     queryOptions: {
       enabled: isAuth,
     },
   });
   const tokenInfoQuery = useApiQuery('token_verified_info', {
-    pathParams: { hash, chainId: appConfig.network.id },
+    pathParams: { hash, chainId: config.chain.id },
     queryOptions: {
       refetchOnMount: false,
     },

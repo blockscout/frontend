@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { CustomLinksGroup } from 'types/footerLinks';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import discussionsIcon from 'icons/discussions.svg';
 import editIcon from 'icons/edit.svg';
 import discordIcon from 'icons/social/discord.svg';
@@ -23,7 +23,7 @@ import getApiVersionUrl from './utils/getApiVersionUrl';
 
 const MAX_LINKS_COLUMNS = 3;
 
-// const FRONT_VERSION_URL = `https://github.com/blockscout/frontend/tree/${ appConfig.footer.frontendVersion }`;
+// const FRONT_VERSION_URL = `https://github.com/blockscout/frontend/tree/${ config.UI.footer.frontendVersion }`;
 
 const Footer = () => {
 
@@ -71,9 +71,9 @@ const Footer = () => {
 
   const { isLoading, data: linksData } = useQuery<unknown, ResourceError<unknown>, Array<CustomLinksGroup>>(
     [ 'footer-links' ],
-    async() => fetch(appConfig.footer.links || ''),
+    async() => fetch(config.UI.footer.links || ''),
     {
-      enabled: Boolean(appConfig.footer.links),
+      enabled: Boolean(config.UI.footer.links),
       staleTime: Infinity,
     });
 
@@ -82,7 +82,7 @@ const Footer = () => {
       <Box flexGrow="1" mb={{ base: 8, lg: 0 }}>
         <Flex>
           <ColorModeToggler/>
-          { !appConfig.hideIndexingAlert && <IndexingAlertIntTxs ml={ 6 }/> }
+          { !config.UI.indexingAlert.isHidden && <IndexingAlertIntTxs ml={ 6 }/> }
           <NetworkAddToWallet ml={ 8 }/>
         </Flex>
         <Box mt={{ base: 5, lg: '44px' }}>
@@ -97,34 +97,34 @@ const Footer = () => {
                 Backend: <Link href={ apiVersionUrl } target="_blank">{ backendVersionData?.backend_version }</Link>
             </Text>
           ) }
-          { (appConfig.footer.frontendVersion || appConfig.footer.frontendCommit) && (
+          { (config.UI.footer.frontendVersion || config.UI.footer.frontendCommit) && (
             <Text fontSize="xs">
-              { /* Frontend: <Link href={ FRONT_VERSION_URL } target="_blank">{ appConfig.footer.frontendVersion }</Link> */ }
-                Frontend: { [ appConfig.footer.frontendVersion, appConfig.footer.frontendCommit ].filter(Boolean).join('+') }
+              { /* Frontend: <Link href={ FRONT_VERSION_URL } target="_blank">{ config.UI.footer.frontendVersion }</Link> */ }
+                Frontend: { [ config.UI.footer.frontendVersion, config.UI.footer.frontendCommit ].filter(Boolean).join('+') }
             </Text>
           ) }
         </VStack>
       </Box>
       <Grid
         gap={{ base: 6, lg: 12 }}
-        gridTemplateColumns={ appConfig.footer.links ?
+        gridTemplateColumns={ config.UI.footer.links ?
           { base: 'repeat(auto-fill, 160px)', lg: `repeat(${ (linksData?.length || MAX_LINKS_COLUMNS) + 1 }, 160px)` } :
           'auto'
         }
       >
-        <Box minW="160px" w={ appConfig.footer.links ? '160px' : '100%' }>
-          { appConfig.footer.links && <Text fontWeight={ 500 } mb={ 3 }>Blockscout</Text> }
+        <Box minW="160px" w={ config.UI.footer.links ? '160px' : '100%' }>
+          { config.UI.footer.links && <Text fontWeight={ 500 } mb={ 3 }>Blockscout</Text> }
           <Grid
             gap={ 1 }
-            gridTemplateColumns={ appConfig.footer.links ? '160px' : { base: 'repeat(auto-fill, 160px)', lg: 'repeat(3, 160px)' } }
-            gridTemplateRows={{ base: 'auto', lg: appConfig.footer.links ? 'auto' : 'repeat(2, auto)' }}
-            gridAutoFlow={{ base: 'row', lg: appConfig.footer.links ? 'row' : 'column' }}
-            mt={{ base: 0, lg: appConfig.footer.links ? 0 : '100px' }}
+            gridTemplateColumns={ config.UI.footer.links ? '160px' : { base: 'repeat(auto-fill, 160px)', lg: 'repeat(3, 160px)' } }
+            gridTemplateRows={{ base: 'auto', lg: config.UI.footer.links ? 'auto' : 'repeat(2, auto)' }}
+            gridAutoFlow={{ base: 'row', lg: config.UI.footer.links ? 'row' : 'column' }}
+            mt={{ base: 0, lg: config.UI.footer.links ? 0 : '100px' }}
           >
             { BLOCKSCOUT_LINKS.map(link => <FooterLinkItem { ...link } key={ link.text }/>) }
           </Grid>
         </Box>
-        { appConfig.footer.links && isLoading && (
+        { config.UI.footer.links && isLoading && (
           Array.from(Array(3)).map((i, index) => (
             <Box minW="160px" key={ index }>
               <Skeleton w="120px" h="20px" mb={ 6 }/>
@@ -134,7 +134,7 @@ const Footer = () => {
             </Box>
           ))
         ) }
-        { appConfig.footer.links && linksData && (
+        { config.UI.footer.links && linksData && (
           linksData.slice(0, MAX_LINKS_COLUMNS).map(linkGroup => (
             <Box minW="160px" key={ linkGroup.title }>
               <Text fontWeight={ 500 } mb={ 3 }>{ linkGroup.title }</Text>

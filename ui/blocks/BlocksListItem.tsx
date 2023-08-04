@@ -6,7 +6,7 @@ import React from 'react';
 
 import type { Block } from 'types/api/block';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import flameIcon from 'icons/flame.svg';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import { WEI } from 'lib/consts';
@@ -88,15 +88,15 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           ) }
         </Flex>
       </Box>
-      { !appConfig.L2.isL2Network && (
+      { !config.features.rollup.isEnabled && (
         <Flex columnGap={ 2 }>
-          <Text fontWeight={ 500 }>Reward { appConfig.network.currency.symbol }</Text>
+          <Text fontWeight={ 500 }>Reward { config.chain.currency.symbol }</Text>
           <Skeleton isLoaded={ !isLoading } display="inline-block" color="text_secondary">
             <span>{ totalReward.toFixed() }</span>
           </Skeleton>
         </Flex>
       ) }
-      { !appConfig.L2.isL2Network && (
+      { !config.features.rollup.isEnabled && (
         <Box>
           <Text fontWeight={ 500 }>Burnt fees</Text>
           <Flex columnGap={ 4 } mt={ 2 }>

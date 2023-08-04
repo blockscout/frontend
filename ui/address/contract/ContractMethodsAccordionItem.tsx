@@ -5,7 +5,7 @@ import { Element } from 'react-scroll';
 
 import type { SmartContractMethod } from 'types/api/contract';
 
-import config from 'configs/app/config';
+import config from 'configs/app';
 import iconLink from 'icons/link.svg';
 import Hint from 'ui/shared/Hint';
 

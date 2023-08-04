@@ -5,7 +5,7 @@ import React from 'react';
 
 import type { SmartContractMethodOutput } from 'types/api/contract';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import { WEI } from 'lib/consts';
 import Address from 'ui/shared/address/Address';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -39,7 +39,7 @@ const ContractMethodStatic = ({ data }: Props) => {
 
     if (event.target.checked) {
       setValue(BigNumber(initialValue).div(WEI).toFixed());
-      setLabel(appConfig.network.currency.symbol || 'ETH');
+      setLabel(config.chain.currency.symbol || 'ETH');
     } else {
       setValue(BigNumber(initialValue).toFixed());
       setLabel('WEI');

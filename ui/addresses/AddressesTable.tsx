@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { AddressesItem } from 'types/api/addresses';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import { default as Thead } from 'ui/shared/TheadSticky';
 
 import AddressesTableItem from './AddressesTableItem';
@@ -25,7 +25,7 @@ const AddressesTable = ({ items, totalSupply, pageStartIndex, top, isLoading }: 
           <Th width="64px">Rank</Th>
           <Th width={ hasPercentage ? '30%' : '40%' }>Address</Th>
           <Th width="20%" pl={ 10 }>Public tag</Th>
-          <Th width={ hasPercentage ? '20%' : '25%' } isNumeric>{ `Balance ${ appConfig.network.currency.symbol }` }</Th>
+          <Th width={ hasPercentage ? '20%' : '25%' } isNumeric>{ `Balance ${ config.chain.currency.symbol }` }</Th>
           { hasPercentage && <Th width="15%" isNumeric>Percentage</Th> }
           <Th width="15%" isNumeric>Txn count</Th>
         </Tr>

@@ -9,7 +9,7 @@ import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import rightArrowIcon from 'icons/arrows/east.svg';
 import transactionIcon from 'icons/transactions.svg';
 import getValueWithUnit from 'lib/getValueWithUnit';
@@ -142,11 +142,11 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
         ) : '-' }
       </Flex>
       <Box mt={ 2 }>
-        <Skeleton isLoaded={ !isLoading } display="inline-block" whiteSpace="pre">Value { appConfig.network.currency.symbol } </Skeleton>
+        <Skeleton isLoaded={ !isLoading } display="inline-block" whiteSpace="pre">Value { config.chain.currency.symbol } </Skeleton>
         <Skeleton isLoaded={ !isLoading } display="inline-block" variant="text_secondary">{ getValueWithUnit(tx.value).toFormat() }</Skeleton>
       </Box>
       <Box mt={ 2 } mb={ 3 }>
-        <Skeleton isLoaded={ !isLoading } display="inline-block" whiteSpace="pre">Fee { appConfig.network.currency.symbol } </Skeleton>
+        <Skeleton isLoaded={ !isLoading } display="inline-block" whiteSpace="pre">Fee { config.chain.currency.symbol } </Skeleton>
         <Skeleton isLoaded={ !isLoading } display="inline-block" variant="text_secondary">{ getValueWithUnit(tx.fee.value).toFormat() }</Skeleton>
       </Box>
     </ListItemMobile>

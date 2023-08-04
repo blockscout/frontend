@@ -1,13 +1,13 @@
 import type CspDev from 'csp-dev';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 
 import { KEY_WORDS } from '../utils';
 
 const MAIN_DOMAINS = [
-  `*.${ appConfig.app.host }`,
-  appConfig.app.host,
-  appConfig.visualizeApi.endpoint,
+  `*.${ config.app.host }`,
+  config.app.host,
+  config.features.sol2uml_diagrams.api.endpoint,
 ].filter(Boolean);
 // eslint-disable-next-line no-restricted-properties
 const REPORT_URI = process.env.SENTRY_CSP_REPORT_URI;
@@ -26,18 +26,18 @@ export function app(): CspDev.DirectiveDescriptor {
       ...MAIN_DOMAINS,
 
       // webpack hmr in safari doesn't recognize localhost as 'self' for some reason
-      appConfig.isDev ? 'ws://localhost:3000/_next/webpack-hmr' : '',
+      config.app.isDev ? 'ws://localhost:3000/_next/webpack-hmr' : '',
 
-      // API
-      appConfig.api.endpoint,
-      appConfig.api.socket,
-      appConfig.statsApi.endpoint,
-      appConfig.visualizeApi.endpoint,
-      appConfig.contractInfoApi.endpoint,
-      appConfig.adminServiceApi.endpoint,
+      // APIs
+      config.api.endpoint,
+      config.api.socket,
+      config.features.stats.api.endpoint,
+      config.features.sol2uml_diagrams.api.endpoint,
+      config.features.verified_tokens.api.endpoint,
+      config.features.address_verification.api.endpoint,
 
       // chain RPC server
-      appConfig.network.rpcUrl,
+      config.chain.rpcUrl,
       'https://infragrid.v.network', // RPC providers
 
       // github (spec for api-docs page)
@@ -50,7 +50,7 @@ export function app(): CspDev.DirectiveDescriptor {
 
       // next.js generates and rebuilds source maps in dev using eval()
       // https://github.com/vercel/next.js/issues/14221#issuecomment-657258278
-      appConfig.isDev ? KEY_WORDS.UNSAFE_EVAL : '',
+      config.app.isDev ? KEY_WORDS.UNSAFE_EVAL : '',
 
       // hash of ColorModeScript
       '\'sha256-e7MRMmTzLsLQvIy1iizO1lXf7VWYoQ6ysj5fuUzvRwE=\'',
@@ -109,7 +109,7 @@ export function app(): CspDev.DirectiveDescriptor {
       '*',
     ],
 
-    ...(REPORT_URI && !appConfig.isDev ? {
+    ...(REPORT_URI && !config.app.isDev ? {
       'report-uri': [
         REPORT_URI,
       ],

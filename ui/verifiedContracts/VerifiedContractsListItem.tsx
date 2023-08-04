@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { VerifiedContract } from 'types/api/contracts';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import iconCheck from 'icons/check.svg';
 import iconCross from 'icons/cross.svg';
 import iconSuccess from 'icons/status/success.svg';
@@ -24,7 +24,7 @@ interface Props {
 
 const VerifiedContractsListItem = ({ data, isLoading }: Props) => {
   const balance = data.coin_balance && data.coin_balance !== '0' ?
-    BigNumber(data.coin_balance).div(10 ** appConfig.network.currency.decimals).dp(6).toFormat() :
+    BigNumber(data.coin_balance).div(10 ** config.chain.currency.decimals).dp(6).toFormat() :
     '0';
 
   return (
@@ -38,7 +38,7 @@ const VerifiedContractsListItem = ({ data, isLoading }: Props) => {
         <CopyToClipboard text={ data.address.hash } ml={ -1 } isLoading={ isLoading }/>
       </Address>
       <Flex columnGap={ 3 }>
-        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>Balance { appConfig.network.currency.symbol }</Skeleton>
+        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>Balance { config.chain.currency.symbol }</Skeleton>
         <Skeleton isLoaded={ !isLoading } color="text_secondary">
           <span>{ balance }</span>
         </Skeleton>

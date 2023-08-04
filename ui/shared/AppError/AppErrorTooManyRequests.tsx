@@ -2,7 +2,7 @@ import { Box, Heading, Icon, Text, chakra } from '@chakra-ui/react';
 import React from 'react';
 import ReCaptcha from 'react-google-recaptcha';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import icon429 from 'icons/error-pages/429.svg';
 import buildUrl from 'lib/api/buildUrl';
 import useFetch from 'lib/hooks/useFetch';
@@ -60,10 +60,10 @@ const AppErrorTooManyRequests = ({ className }: Props) => {
       <Text variant="secondary" mt={ 3 }>
         You have exceeded the request rate for a given time period. Please reduce the number of requests and try again soon.
       </Text>
-      { appConfig.reCaptcha.siteKey && (
+      { config.services.reCaptcha.siteKey && (
         <ReCaptcha
           className="recaptcha"
-          sitekey={ appConfig.reCaptcha.siteKey }
+          sitekey={ config.services.reCaptcha.siteKey }
           onChange={ handleReCaptchaChange }
         />
       ) }

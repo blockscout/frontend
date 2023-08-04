@@ -1,7 +1,7 @@
 import { Flex, Skeleton, Text, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import Hint from 'ui/shared/Hint';
 
@@ -11,13 +11,13 @@ import useFetchChartData from './useFetchChartData';
 import INDICATORS from './utils/indicators';
 
 const indicators = INDICATORS
-  .filter(({ id }) => appConfig.homepage.charts.includes(id))
+  .filter(({ id }) => config.UI.homepage.charts.includes(id))
   .sort((a, b) => {
-    if (appConfig.homepage.charts.indexOf(a.id) > appConfig.homepage.charts.indexOf(b.id)) {
+    if (config.UI.homepage.charts.indexOf(a.id) > config.UI.homepage.charts.indexOf(b.id)) {
       return 1;
     }
 
-    if (appConfig.homepage.charts.indexOf(a.id) < appConfig.homepage.charts.indexOf(b.id)) {
+    if (config.UI.homepage.charts.indexOf(a.id) < config.UI.homepage.charts.indexOf(b.id)) {
       return -1;
     }
 

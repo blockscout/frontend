@@ -1,5 +1,5 @@
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 
 export default function getNetworkValidatorTitle() {
-  return appConfig.network.verificationType === 'validation' ? 'validator' : 'miner';
+  return config.chain.verificationType === 'validation' ? 'validator' : 'miner';
 }

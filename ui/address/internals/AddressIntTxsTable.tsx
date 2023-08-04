@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import { default as Thead } from 'ui/shared/TheadSticky';
 
 import AddressIntTxsTableItem from './AddressIntTxsTableItem';
@@ -26,7 +26,7 @@ const AddressIntTxsTable = ({ data, currentAddress, isLoading }: Props) => {
           <Th width="48px" px={ 0 }/>
           <Th width="20%">To</Th>
           <Th width="20%" isNumeric>
-            Value { appConfig.network.currency.symbol }
+            Value { config.chain.currency.symbol }
           </Th>
         </Tr>
       </Thead>

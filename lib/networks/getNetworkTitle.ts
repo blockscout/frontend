@@ -1,6 +1,6 @@
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 
 // TODO delete when page descriptions is refactored
 export default function getNetworkTitle() {
-  return appConfig.network.name + (appConfig.network.shortName ? ` (${ appConfig.network.shortName })` : '') + ' Explorer';
+  return config.chain.name + (config.chain.shortName ? ` (${ config.chain.shortName })` : '') + ' Explorer';
 }

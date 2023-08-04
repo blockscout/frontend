@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { L2TxnBatchesItem } from 'types/api/l2TxnBatches';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import txIcon from 'icons/transactions.svg';
 import txBatchIcon from 'icons/txBatch.svg';
 import dayjs from 'lib/date/dayjs';
@@ -47,7 +47,7 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
       </Td>
       <Td>
         <LinkExternal
-          href={ appConfig.L2.L1BaseUrl + route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.epoch_number.toString() } }) }
+          href={ config.features.rollup.L1BaseUrl + route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.epoch_number.toString() } }) }
           fontWeight={ 600 }
           display="inline-flex"
           isLoading={ isLoading }
@@ -65,7 +65,7 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
               maxW="100%"
               display="inline-flex"
               key={ hash }
-              href={ appConfig.L2.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: hash } }) }
+              href={ config.features.rollup.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: hash } }) }
               isLoading={ isLoading }
             >
               <Icon as={ txIcon } boxSize={ 6 } isLoading={ isLoading }/>

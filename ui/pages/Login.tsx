@@ -4,7 +4,7 @@ import mixpanel from 'mixpanel-browser';
 import type { ChangeEvent } from 'react';
 import React from 'react';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import * as cookies from 'lib/cookies';
 import useGradualIncrement from 'lib/hooks/useGradualIncrement';
 import useToast from 'lib/hooks/useToast';
@@ -21,7 +21,7 @@ const Login = () => {
 
   React.useEffect(() => {
     const token = cookies.get(cookies.NAMES.API_TOKEN);
-    setFormVisibility(Boolean(!token && appConfig.account.isEnabled));
+    setFormVisibility(Boolean(!token && config.features.account.isEnabled));
   }, []);
 
   const checkSentry = React.useCallback(() => {

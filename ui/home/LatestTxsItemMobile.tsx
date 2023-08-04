@@ -9,7 +9,7 @@ import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import rightArrowIcon from 'icons/arrows/east.svg';
 import transactionIcon from 'icons/transactions.svg';
 import getValueWithUnit from 'lib/getValueWithUnit';
@@ -115,11 +115,11 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
         ) }
       </Flex>
       <Skeleton isLoaded={ !isLoading } mb={ 2 } fontSize="sm" w="fit-content">
-        <Text as="span">Value { appConfig.network.currency.symbol } </Text>
+        <Text as="span">Value { config.chain.currency.symbol } </Text>
         <Text as="span" variant="secondary">{ getValueWithUnit(tx.value).dp(5).toFormat() }</Text>
       </Skeleton>
       <Skeleton isLoaded={ !isLoading } fontSize="sm" w="fit-content">
-        <Text as="span">Fee { appConfig.network.currency.symbol } </Text>
+        <Text as="span">Fee { config.chain.currency.symbol } </Text>
         <Text as="span" variant="secondary">{ getValueWithUnit(tx.fee.value).dp(5).toFormat() }</Text>
       </Skeleton>
     </Box>

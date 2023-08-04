@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { L2WithdrawalsItem } from 'types/api/l2Withdrawals';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import txIcon from 'icons/transactions.svg';
 import dayjs from 'lib/date/dayjs';
 import Address from 'ui/shared/address/Address';
@@ -75,7 +75,7 @@ const WithdrawalsListItem = ({ item, isLoading }: Props) => {
       <ListItemMobileGrid.Label isLoading={ isLoading }>Status</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         { item.status === 'Ready for relay' ?
-          <LinkExternal href={ appConfig.L2.withdrawalUrl }>{ item.status }</LinkExternal> :
+          <LinkExternal href={ config.features.rollup.withdrawalUrl }>{ item.status }</LinkExternal> :
           <Skeleton isLoaded={ !isLoading } display="inline-block">{ item.status }</Skeleton> }
       </ListItemMobileGrid.Value>
 
@@ -84,7 +84,7 @@ const WithdrawalsListItem = ({ item, isLoading }: Props) => {
           <ListItemMobileGrid.Label isLoading={ isLoading }>L1 txn hash</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value py="3px">
             <LinkExternal
-              href={ appConfig.L2.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: item.l1_tx_hash } }) }
+              href={ config.features.rollup.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: item.l1_tx_hash } }) }
               maxW="100%"
               display="inline-flex"
               overflow="hidden"

@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import type { Fields } from './types';
 import type { TokenInfoApplication } from 'types/api/account';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 import useApiQuery from 'lib/api/useApiQuery';
@@ -49,7 +49,7 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
   const toast = useToast();
 
   const configQuery = useApiQuery('token_info_applications_config', {
-    pathParams: { chainId: appConfig.network.id },
+    pathParams: { chainId: config.chain.id },
   });
 
   const formApi = useForm<Fields>({
@@ -64,7 +64,7 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
       const isNewApplication = !application?.id || [ 'REJECTED', 'APPROVED' ].includes(application.status);
 
       const result = await apiFetch<'token_info_applications', TokenInfoApplication, { message: string }>('token_info_applications', {
-        pathParams: { chainId: appConfig.network.id, id: !isNewApplication ? application.id : undefined },
+        pathParams: { chainId: config.chain.id, id: !isNewApplication ? application.id : undefined },
         fetchParams: {
           method: isNewApplication ? 'POST' : 'PUT',
           body: { submission },

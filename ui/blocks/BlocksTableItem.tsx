@@ -6,7 +6,7 @@ import React from 'react';
 
 import type { Block } from 'types/api/block';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import flameIcon from 'icons/flame.svg';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import { WEI } from 'lib/consts';
@@ -87,7 +87,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           </Skeleton>
         ) : data.tx_count }
       </Td>
-      { !appConfig.L2.isL2Network && (
+      { !config.features.rollup.isEnabled && (
         <Td fontSize="sm">
           <Skeleton isLoaded={ !isLoading } display="inline-block">{ BigNumber(data.gas_used || 0).toFormat() }</Skeleton>
           <Flex mt={ 2 }>
@@ -114,7 +114,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           { totalReward.toFixed(8) }
         </Skeleton>
       </Td>
-      { !appConfig.L2.isL2Network && (
+      { !config.features.rollup.isEnabled && (
         <Td fontSize="sm">
           <Flex alignItems="center" columnGap={ 1 }>
             <Icon as={ flameIcon } boxSize={ 5 } color={ burntFeesIconColor } isLoading={ isLoading }/>

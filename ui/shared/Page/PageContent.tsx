@@ -1,7 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import IndexingAlertBlocks from 'ui/home/IndexingAlertBlocks';
 
 interface Props {
@@ -18,7 +18,7 @@ const PageContent = ({ children, isHomePage }: Props) => {
       paddingBottom={ 10 }
       paddingTop={{ base: isHomePage ? '88px' : '138px', lg: 0 }}
     >
-      { !appConfig.hideIndexingAlert && <IndexingAlertBlocks display={{ base: 'block', lg: 'none' }}/> }
+      { !config.UI.indexingAlert.isHidden && <IndexingAlertBlocks display={{ base: 'block', lg: 'none' }}/> }
       { children }
     </Box>
   );

@@ -6,6 +6,6 @@ export default Object.freeze({
   title: 'Export data to CSV file',
   isEnabled: Boolean(reCaptchaSiteKey),
   reCaptcha: {
-    siteKey: reCaptchaSiteKey,
+    siteKey: reCaptchaSiteKey ?? '',
   },
 });

@@ -7,6 +7,6 @@ export default Object.freeze({
   title: 'Blockchain interaction (write to contract, etc.)',
   isEnabled: Boolean(walletConnectProjectId && chain.rpcUrl),
   walletConnect: {
-    projectId: walletConnectProjectId,
+    projectId: walletConnectProjectId ?? '',
   },
 });

@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { AddressesItem } from 'types/api/addresses';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -27,7 +27,7 @@ const AddressesTableItem = ({
   isLoading,
 }: Props) => {
 
-  const addressBalance = BigNumber(item.coin_balance).div(BigNumber(10 ** appConfig.network.currency.decimals));
+  const addressBalance = BigNumber(item.coin_balance).div(BigNumber(10 ** config.chain.currency.decimals));
   const addressBalanceChunks = addressBalance.dp(8).toFormat().split('.');
 
   return (

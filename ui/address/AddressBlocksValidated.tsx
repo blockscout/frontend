@@ -6,7 +6,7 @@ import React from 'react';
 import type { SocketMessage } from 'lib/socket/types';
 import type { AddressBlocksValidatedResponse } from 'types/api/address';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import { getResourceKey } from 'lib/api/useApiQuery';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
@@ -94,7 +94,7 @@ const AddressBlocksValidated = ({ scrollRef }: Props) => {
               <Th width="17%">Age</Th>
               <Th width="16%">Txn</Th>
               <Th width="25%">Gas used</Th>
-              <Th width="25%" isNumeric>Reward { appConfig.network.currency.symbol }</Th>
+              <Th width="25%" isNumeric>Reward { config.chain.currency.symbol }</Th>
             </Tr>
           </Thead>
           <Tbody>

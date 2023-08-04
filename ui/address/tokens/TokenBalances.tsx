@@ -2,7 +2,7 @@ import { Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { ZERO } from 'lib/consts';
 import getCurrencyValue from 'lib/getCurrencyValue';
@@ -34,7 +34,7 @@ const TokenBalances = () => {
     accuracy: 8,
     accuracyUsd: 2,
     exchangeRate: addressData?.exchange_rate,
-    decimals: String(appConfig.network.currency.decimals),
+    decimals: String(config.chain.currency.decimals),
   });
 
   const tokensInfo = getTokensTotalInfo(tokenQuery.data);
@@ -52,8 +52,8 @@ const TokenBalances = () => {
         isLoading={ addressQuery.isLoading || tokenQuery.isLoading }
       />
       <TokenBalancesItem
-        name={ `${ appConfig.network.currency.symbol } Balance` }
-        value={ (!nativeUsd.eq(ZERO) ? `$${ nativeUsd.toFormat(2) } USD | ` : '') + `${ nativeValue } ${ appConfig.network.currency.symbol }` }
+        name={ `${ config.chain.currency.symbol } Balance` }
+        value={ (!nativeUsd.eq(ZERO) ? `$${ nativeUsd.toFormat(2) } USD | ` : '') + `${ nativeValue } ${ config.chain.currency.symbol }` }
         isLoading={ addressQuery.isLoading || tokenQuery.isLoading }
       />
       <TokenBalancesItem

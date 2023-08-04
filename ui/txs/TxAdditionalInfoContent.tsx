@@ -5,7 +5,7 @@ import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import LinkInternal from 'ui/shared/LinkInternal';
@@ -34,7 +34,7 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
         <Flex>
           <CurrencyValue
             value={ tx.fee.value }
-            currency={ appConfig.network.currency.symbol }
+            currency={ config.chain.currency.symbol }
             exchangeRate={ tx.exchange_rate }
             accuracyUsd={ 2 }
           />

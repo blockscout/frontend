@@ -7,7 +7,7 @@ import React from 'react';
 import type { MarketplaceAppOverview } from 'types/client/marketplace';
 import { MarketplaceCategory } from 'types/client/marketplace';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useDebounce from 'lib/hooks/useDebounce';
 import useApiFetch from 'lib/hooks/useFetch';
@@ -47,7 +47,7 @@ export default function useMarketplace() {
   const apiFetch = useApiFetch();
   const { isPlaceholderData, isError, error, data } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppOverview>>(
     [ 'marketplace-apps' ],
-    async() => apiFetch(appConfig.marketplace.configUrl || ''),
+    async() => apiFetch(config.features.marketplace.configUrl),
     {
       select: (data) => (data as Array<MarketplaceAppOverview>).sort((a, b) => a.title.localeCompare(b.title)),
       placeholderData: Array(9).fill(MARKETPLACE_APP),

@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { deviceType } from 'react-device-detect';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import * as cookies from 'lib/cookies';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
@@ -19,21 +19,21 @@ export default function useMixpanelInit() {
 
   React.useEffect(() => {
     isGoogleAnalyticsLoaded().then((isGALoaded) => {
-      if (!appConfig.mixpanel.projectToken) {
+      if (!config.features.mixpanel.isEnabled) {
         return;
       }
 
       const debugFlagCookie = cookies.get(cookies.NAMES.MIXPANEL_DEBUG);
 
-      const config: Partial<Config> = {
+      const mixpanelConfig: Partial<Config> = {
         debug: Boolean(debugFlagQuery.current || debugFlagCookie),
       };
       const isAuth = Boolean(cookies.get(cookies.NAMES.API_TOKEN));
 
-      mixpanel.init(appConfig.mixpanel.projectToken, config);
+      mixpanel.init(config.features.mixpanel.projectToken, mixpanelConfig);
       mixpanel.register({
-        'Chain id': appConfig.network.id,
-        Environment: appConfig.isDev ? 'Dev' : 'Prod',
+        'Chain id': config.chain.id,
+        Environment: config.app.isDev ? 'Dev' : 'Prod',
         Authorized: isAuth,
         'Viewport width': window.innerWidth,
         'Viewport height': window.innerHeight,
