@@ -25,25 +25,12 @@ import sentryConfig from 'configs/sentry/nextjs';
 import * as cookies from 'lib/cookies';
 import type { Props as ServerSidePropsCommon } from 'lib/next/getServerSideProps';
 import { base as getServerSidePropsCommon } from 'lib/next/getServerSideProps';
-import PageServer from 'lib/next/PageServer';
-import AppError from 'ui/shared/AppError/AppError';
-import Page from 'ui/shared/Page/Page';
 
 type Props = ServerSidePropsCommon & {
   statusCode: number;
 }
 
 const CustomErrorComponent = (props: Props) => {
-  if (props.statusCode === 404) {
-    return (
-      <PageServer pathname="/">
-        <Page>
-          <AppError statusCode={ 404 } mt="50px"/>
-        </Page>
-      </PageServer>
-    );
-  }
-
   const colorModeCookie = cookies.getFromCookieString(props.cookies || '', cookies.NAMES.COLOR_MODE);
   return <NextErrorComponent statusCode={ props.statusCode } withDarkMode={ colorModeCookie === 'dark' }/>;
 };

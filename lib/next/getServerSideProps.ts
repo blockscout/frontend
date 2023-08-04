@@ -24,82 +24,82 @@ export const base: GetServerSideProps<Props> = async({ req, query }) => {
   };
 };
 
-export const account: GetServerSideProps<Props> = async(...args) => {
+export const account: GetServerSideProps<Props> = async(context) => {
   if (!appConfig.account.isEnabled) {
     return {
       notFound: true,
     };
   }
 
-  return base(...args);
+  return base(context);
 };
 
-export const verifiedAddresses: GetServerSideProps<Props> = async(...args) => {
+export const verifiedAddresses: GetServerSideProps<Props> = async(context) => {
   if (!appConfig.adminServiceApi.endpoint || !appConfig.contractInfoApi.endpoint) {
     return {
       notFound: true,
     };
   }
 
-  return account(...args);
+  return account(context);
 };
 
-export const beaconChain: GetServerSideProps<Props> = async(args) => {
+export const beaconChain: GetServerSideProps<Props> = async(context) => {
   if (!appConfig.beaconChain.hasBeaconChain) {
     return {
       notFound: true,
     };
   }
 
-  return base(args);
+  return base(context);
 };
 
-export const L2: GetServerSideProps<Props> = async(args) => {
+export const L2: GetServerSideProps<Props> = async(context) => {
   if (!appConfig.L2.isL2Network) {
     return {
       notFound: true,
     };
   }
 
-  return base(args);
+  return base(context);
 };
 
-export const marketplace: GetServerSideProps<Props> = async(args) => {
+export const marketplace: GetServerSideProps<Props> = async(context) => {
   if (!appConfig.marketplace.configUrl || !appConfig.network.rpcUrl) {
     return {
       notFound: true,
     };
   }
 
-  return base(args);
+  return base(context);
 };
 
-export const apiDocs: GetServerSideProps<Props> = async(args) => {
+export const apiDocs: GetServerSideProps<Props> = async(context) => {
   if (!appConfig.apiDoc.specUrl) {
     return {
       notFound: true,
     };
   }
 
-  return base(args);
+  return base(context);
 };
 
-export const csvExport: GetServerSideProps<Props> = async(args) => {
+export const csvExport: GetServerSideProps<Props> = async(context) => {
   if (!appConfig.reCaptcha.siteKey) {
     return {
       notFound: true,
     };
   }
 
-  return base(args);
+  return base(context);
 };
 
-export const stats: GetServerSideProps<Props> = async(args) => {
+export const stats: GetServerSideProps<Props> = async(context) => {
   if (!appConfig.statsApi.endpoint) {
     return {
       notFound: true,
     };
   }
 
-  return base(args);
+  return base(context);
 };

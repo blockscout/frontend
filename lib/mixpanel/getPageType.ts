@@ -33,6 +33,7 @@ const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/l2-output-roots': 'Output roots',
   '/l2-txn-batches': 'Tx batches (L2 blocks)',
   '/l2-withdrawals': 'Withdrawals (L2 > L1)',
+  '/404': '404',
 
   // service routes, added only to make typescript happy
   '/login': 'Login',
