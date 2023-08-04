@@ -33,7 +33,7 @@ const SearchBar = ({ isHomepage }: Props) => {
 
   const recentSearchKeywords = getRecentSearchKeywords();
 
-  const { searchTerm, handleSearchTermChange, query, pathname } = useSearchQuery();
+  const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query, pathname } = useSearchQuery();
 
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -142,7 +142,12 @@ const SearchBar = ({ isHomepage }: Props) => {
               <SearchBarRecentKeywords onClick={ handleSearchTermChange } onClear={ onClose }/>
             ) }
             { searchTerm.trim().length > 0 && (
-              <SearchBarSuggest query={ query } searchTerm={ searchTerm } onItemClick={ handleItemClick } containerId={ SCROLL_CONTAINER_ID }/>
+              <SearchBarSuggest
+                query={ query }
+                searchTerm={ debouncedSearchTerm }
+                onItemClick={ handleItemClick }
+                containerId={ SCROLL_CONTAINER_ID }
+              />
             ) }
           </Box>
         </PopoverBody>

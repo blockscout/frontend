@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import type { FormEvent } from 'react';
 import React from 'react';
 
+import useMarketplaceApps from 'ui/marketplace/useMarketplaceApps';
 import SearchResultListItem from 'ui/searchResults/SearchResultListItem';
 import SearchResultsInput from 'ui/searchResults/SearchResultsInput';
 import SearchResultTableItem from 'ui/searchResults/SearchResultTableItem';
@@ -21,6 +22,8 @@ const SearchResultsPageContent = () => {
   const { query, redirectCheckQuery, searchTerm, debouncedSearchTerm, handleSearchTermChange } = useSearchQuery(true);
   const { data, isError, isPlaceholderData, pagination } = query;
   const [ showContent, setShowContent ] = React.useState(false);
+
+  const marketplaceApps = useMarketplaceApps(debouncedSearchTerm);
 
   React.useEffect(() => {
     if (showContent) {
@@ -61,14 +64,23 @@ const SearchResultsPageContent = () => {
       return <DataFetchAlert/>;
     }
 
-    if (!data?.items.length) {
+    const hasData = data?.items.length || (pagination.page === 1 && marketplaceApps.displayedApps.length);
+
+    if (!hasData) {
       return null;
     }
 
     return (
       <>
         <Show below="lg" ssr={ false }>
-          { data.items.map((item, index) => (
+          { pagination.page === 1 && marketplaceApps.displayedApps.map((item, index) => (
+            <SearchResultListItem
+              key={ 'actual_' + index }
+              data={{ type: 'app', app: item }}
+              searchTerm={ debouncedSearchTerm }
+            />
+          )) }
+          { data && data.items.map((item, index) => (
             <SearchResultListItem
               key={ (isPlaceholderData ? 'placeholder_' : 'actual_') + index }
               data={ item }
@@ -88,7 +100,14 @@ const SearchResultsPageContent = () => {
               </Tr>
             </Thead>
             <Tbody>
-              { data.items.map((item, index) => (
+              { pagination.page === 1 && marketplaceApps.displayedApps.map((item, index) => (
+                <SearchResultTableItem
+                  key={ 'actual_' + index }
+                  data={{ type: 'app', app: item }}
+                  searchTerm={ debouncedSearchTerm }
+                />
+              )) }
+              { data && data.items.map((item, index) => (
                 <SearchResultTableItem
                   key={ (isPlaceholderData ? 'placeholder_' : 'actual_') + index }
                   data={ item }
@@ -108,6 +127,8 @@ const SearchResultsPageContent = () => {
       return null;
     }
 
+    const resultsCount = pagination.page === 1 && !data?.next_page_params ? (data?.items.length || 0) + marketplaceApps.displayedApps.length : '50+';
+
     const text = isPlaceholderData && pagination.page === 1 ? (
       <Skeleton h={ 6 } w="280px" borderRadius="full" mb={ pagination.isVisible ? 0 : 6 }/>
     ) : (
@@ -115,10 +136,10 @@ const SearchResultsPageContent = () => {
         <Box mb={ pagination.isVisible ? 0 : 6 } lineHeight="32px">
           <span>Found </span>
           <chakra.span fontWeight={ 700 }>
-            { pagination.page > 1 ? 50 : data?.items.length }{ data?.next_page_params || pagination.page > 1 ? '+' : '' }
+            { resultsCount }
           </chakra.span>
-          <span> matching result{ (data?.items && data.items.length > 1) || pagination.page > 1 ? 's' : '' } for </span>
-                      “<chakra.span fontWeight={ 700 }>{ debouncedSearchTerm }</chakra.span>”
+          <span> matching result{ (((data?.items.length || 0) + marketplaceApps.displayedApps.length) > 1) || pagination.page > 1 ? 's' : '' } for </span>
+          “<chakra.span fontWeight={ 700 }>{ debouncedSearchTerm }</chakra.span>”
         </Box>
       )
     );
