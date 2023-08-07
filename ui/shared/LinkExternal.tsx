@@ -23,7 +23,7 @@ const LinkExternal = ({ href, children, className, isLoading }: Props) => {
   return (
     <Link className={ className } fontSize="sm" lineHeight={ 5 } display="inline-block" alignItems="center" target="_blank" href={ href }>
       { children }
-      <Icon as={ arrowIcon } boxSize={ 4 } verticalAlign="middle"/>
+      <Icon as={ arrowIcon } boxSize={ 4 } verticalAlign="middle" color="gray.400"/>
     </Link>
   );
 };
