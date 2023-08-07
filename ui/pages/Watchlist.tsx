@@ -1,13 +1,11 @@
 import { Box, Button, Skeleton, useDisclosure } from '@chakra-ui/react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
-import type { WatchlistAddress, WatchlistTokensResponse } from 'types/api/account';
-import type { TWatchlist, TWatchlistItem } from 'types/client/account';
+import type { WatchlistAddress } from 'types/api/account';
 
-import type { ResourceError } from 'lib/api/resources';
 import { resourceKey } from 'lib/api/resources';
-import useApiFetch from 'lib/api/useApiFetch';
+import useApiQuery from 'lib/api/useApiQuery';
 import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import { WATCH_LIST_ITEM_WITH_TOKEN_INFO } from 'stubs/account';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
@@ -19,45 +17,21 @@ import WatchListItem from 'ui/watchlist/WatchlistTable/WatchListItem';
 import WatchlistTable from 'ui/watchlist/WatchlistTable/WatchlistTable';
 
 const WatchList: React.FC = () => {
-  const apiFetch = useApiFetch();
-  const { data, isPlaceholderData, isError } = useQuery<unknown, ResourceError, TWatchlist>(
-    [ resourceKey('watchlist') ],
-    async() => {
-      const watchlistAddresses = await apiFetch<'watchlist', Array<WatchlistAddress>>('watchlist');
-
-      if (!Array.isArray(watchlistAddresses)) {
-        return;
-      }
-
-      const watchlistTokens = await Promise.all(watchlistAddresses.map(({ address }) => {
-        if (!address?.hash) {
-          return Promise.resolve(0);
-        }
-        return apiFetch<'old_api', WatchlistTokensResponse>('old_api', { queryParams: { address: address.hash, module: 'account', action: 'tokenlist' } })
-          .then((response) => {
-            if ('result' in response && Array.isArray(response.result)) {
-              return response.result.length;
-            }
-            return 0;
-          });
-      }));
-
-      return watchlistAddresses.map((item, index) => ({ ...item, tokens_count: watchlistTokens[index] }));
-    },
-    {
+  const { data, isPlaceholderData, isError } = useApiQuery('watchlist', {
+    queryOptions: {
       placeholderData: Array(3).fill(WATCH_LIST_ITEM_WITH_TOKEN_INFO),
     },
-  );
+  });
   const queryClient = useQueryClient();
 
   const addressModalProps = useDisclosure();
   const deleteModalProps = useDisclosure();
   useRedirectForInvalidAuthToken();
 
-  const [ addressModalData, setAddressModalData ] = useState<TWatchlistItem>();
-  const [ deleteModalData, setDeleteModalData ] = useState<TWatchlistItem>();
+  const [ addressModalData, setAddressModalData ] = useState<WatchlistAddress>();
+  const [ deleteModalData, setDeleteModalData ] = useState<WatchlistAddress>();
 
-  const onEditClick = useCallback((data: TWatchlistItem) => {
+  const onEditClick = useCallback((data: WatchlistAddress) => {
     setAddressModalData(data);
     addressModalProps.onOpen();
   }, [ addressModalProps ]);
@@ -73,7 +47,7 @@ const WatchList: React.FC = () => {
     addressModalProps.onClose();
   }, [ addressModalProps, queryClient ]);
 
-  const onDeleteClick = useCallback((data: TWatchlistItem) => {
+  const onDeleteClick = useCallback((data: WatchlistAddress) => {
     setDeleteModalData(data);
     deleteModalProps.onOpen();
   }, [ deleteModalProps ]);
@@ -84,7 +58,7 @@ const WatchList: React.FC = () => {
   }, [ deleteModalProps ]);
 
   const onDeleteSuccess = useCallback(async() => {
-    queryClient.setQueryData([ resourceKey('watchlist') ], (prevData: TWatchlist | undefined) => {
+    queryClient.setQueryData([ resourceKey('watchlist') ], (prevData: Array<WatchlistAddress> | undefined) => {
       return prevData?.filter((item) => item.id !== deleteModalData?.id);
     });
   }, [ deleteModalData?.id, queryClient ]);

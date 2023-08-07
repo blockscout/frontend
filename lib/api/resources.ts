@@ -480,9 +480,6 @@ export const RESOURCES = {
   },
 
   // DEPRECATED
-  old_api: {
-    path: '/api',
-  },
   csv_export_txs: {
     path: '/transactions-csv',
   },
