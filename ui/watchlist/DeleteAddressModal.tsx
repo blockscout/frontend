@@ -1,7 +1,7 @@
 import { Text } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
-import type { TWatchlistItem } from 'types/client/account';
+import type { WatchlistAddress } from 'types/api/account';
 
 import useApiFetch from 'lib/api/useApiFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -11,7 +11,7 @@ type Props = {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => Promise<void>;
-  data: Pick<TWatchlistItem, 'address_hash' | 'id'>;
+  data: Pick<WatchlistAddress, 'address_hash' | 'id'>;
 }
 
 const DeleteAddressModal: React.FC<Props> = ({ isOpen, onClose, onSuccess, data }) => {

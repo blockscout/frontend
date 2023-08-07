@@ -66,12 +66,9 @@ export interface WatchlistAddress {
   notification_methods: NotificationMethods;
   id: string;
   address: AddressParam;
-}
-
-export interface WatchlistTokensResponse {
-  message: string;
-  result?: Array<unknown>;
-  status: string;
+  tokens_count: number;
+  tokens_fiat_value: string;
+  tokens_overflow: boolean;
 }
 
 export interface WatchlistAddressNew {

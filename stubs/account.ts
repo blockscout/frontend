@@ -1,5 +1,4 @@
-import type { PublicTag, AddressTag, TransactionTag, ApiKey, CustomAbi, VerifiedAddress, TokenInfoApplication } from 'types/api/account';
-import type { TWatchlistItem } from 'types/client/account';
+import type { PublicTag, AddressTag, TransactionTag, ApiKey, CustomAbi, VerifiedAddress, TokenInfoApplication, WatchlistAddress } from 'types/api/account';
 
 import { ADDRESS_PARAMS, ADDRESS_HASH } from './addressParams';
 import { TX_HASH } from './tx';
@@ -30,7 +29,7 @@ export const PUBLIC_TAG: PublicTag = {
   website: 'example.com',
 };
 
-export const WATCH_LIST_ITEM_WITH_TOKEN_INFO: TWatchlistItem = {
+export const WATCH_LIST_ITEM_WITH_TOKEN_INFO: WatchlistAddress = {
   address: ADDRESS_PARAMS,
   address_balance: '7072643779453701031672',
   address_hash: ADDRESS_HASH,
@@ -55,6 +54,8 @@ export const WATCH_LIST_ITEM_WITH_TOKEN_INFO: TWatchlistItem = {
     },
   },
   tokens_count: 42,
+  tokens_fiat_value: '12345',
+  tokens_overflow: false,
 };
 
 export const API_KEY: ApiKey = {

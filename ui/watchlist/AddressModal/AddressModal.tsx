@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 
-import type { TWatchlistItem } from 'types/client/account';
+import type { WatchlistAddress } from 'types/api/account';
 
 import FormModal from 'ui/shared/FormModal';
 
@@ -11,7 +11,7 @@ type Props = {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => Promise<void>;
-  data?: Partial<TWatchlistItem>;
+  data?: Partial<WatchlistAddress>;
 }
 
 const AddressModal: React.FC<Props> = ({ isOpen, onClose, onSuccess, data, isAdd }) => {
@@ -25,7 +25,7 @@ const AddressModal: React.FC<Props> = ({ isOpen, onClose, onSuccess, data, isAdd
   }, [ data, isAdd, onSuccess ]);
 
   return (
-    <FormModal<TWatchlistItem>
+    <FormModal<WatchlistAddress>
       isOpen={ isOpen }
       onClose={ onClose }
       title={ title }
