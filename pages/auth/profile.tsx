@@ -1,21 +1,20 @@
 import type { NextPage } from 'next';
-import Head from 'next/head';
 import React from 'react';
 
+import PageServer from 'lib/next/PageServer';
 import MyProfile from 'ui/pages/MyProfile';
 import Page from 'ui/shared/Page/Page';
 
 const MyProfilePage: NextPage = () => {
   return (
-    <>
-      <Head><title>My profile</title></Head>
+    <PageServer pathname="/auth/profile">
       <Page>
         <MyProfile/>
       </Page>
-    </>
+    </PageServer>
   );
 };
 
 export default MyProfilePage;
 
-export { getServerSideProps } from 'lib/next/account/getServerSideProps';
+export { account as getServerSideProps } from 'lib/next/getServerSideProps';

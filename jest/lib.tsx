@@ -14,6 +14,10 @@ import 'lib/setLocale';
 const PAGE_PROPS = {
   cookies: '',
   referrer: '',
+  id: '',
+  height_or_hash: '',
+  hash: '',
+  q: '',
 };
 
 const TestApp = ({ children }: {children: React.ReactNode}) => {

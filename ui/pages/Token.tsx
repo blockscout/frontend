@@ -15,6 +15,7 @@ import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import useContractTabs from 'lib/hooks/useContractTabs';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import * as metadata from 'lib/metadata';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
@@ -108,16 +109,7 @@ const TokenPageContent = () => {
 
   useEffect(() => {
     if (tokenQuery.data && !tokenQuery.isPlaceholderData) {
-      const tokenSymbol = tokenQuery.data.symbol ? ` (${ tokenQuery.data.symbol })` : '';
-      const tokenName = `${ tokenQuery.data.name || 'Unnamed' }${ tokenSymbol }`;
-      const title = document.getElementsByTagName('title')[0];
-      if (title) {
-        title.textContent = title.textContent?.replace(tokenQuery.data.address, tokenName) || title.textContent;
-      }
-      const description = document.getElementsByName('description')[0] as HTMLMetaElement;
-      if (description) {
-        description.content = description.content.replace(tokenQuery.data.address, tokenName) || description.content;
-      }
+      metadata.update({ pathname: '/token/[hash]', query: { hash: tokenQuery.data.address } }, { symbol: tokenQuery.data.symbol ?? '' });
     }
   }, [ tokenQuery.data, tokenQuery.isPlaceholderData ]);
 
