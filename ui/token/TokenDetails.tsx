@@ -13,7 +13,8 @@ import { TOKEN_COUNTERS } from 'stubs/token';
 import type { TokenTabs } from 'ui/pages/Token';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
-import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
+import TruncatedValue from 'ui/shared/TruncatedValue';
+
 interface Props {
   tokenQuery: UseQueryResult<TokenInfo>;
 }
@@ -120,15 +121,9 @@ const TokenDetails = ({ tokenQuery }: Props) => {
         isLoading={ tokenQuery.isPlaceholderData }
       >
         <Skeleton isLoaded={ !tokenQuery.isPlaceholderData } w="100%" display="flex">
-          <TruncatedTextTooltip label={ totalSupplyValue || '0' }>
-            <Box overflow="hidden" textOverflow="ellipsis" flexShrink={ 0 } maxW="80%" whiteSpace="nowrap">
-              { totalSupplyValue || '0' }
-            </Box>
-          </TruncatedTextTooltip>
+          <TruncatedValue value={ totalSupplyValue || '0' } maxW="80%" flexShrink={ 0 }/>
           <Box flexShrink={ 0 }> </Box>
-          <TruncatedTextTooltip label={ symbol || '' }>
-            <Box overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">{ symbol || '' }</Box>
-          </TruncatedTextTooltip>
+          <TruncatedValue value={ symbol || '' }/>
         </Skeleton>
       </DetailsInfoItem>
       <DetailsInfoItem

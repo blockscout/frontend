@@ -1,4 +1,4 @@
-import { Table, Tbody, Tr, Th, Box } from '@chakra-ui/react';
+import { Table, Tbody, Tr, Th } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
@@ -6,7 +6,7 @@ import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import { default as Thead } from 'ui/shared/TheadSticky';
-import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
+import TruncatedValue from 'ui/shared/TruncatedValue';
 import TokenTransferTableItem from 'ui/token/TokenTransfer/TokenTransferTableItem';
 
 interface Props {
@@ -34,10 +34,8 @@ const TokenTransferTable = ({ data, top, showSocketInfo, socketInfoAlert, socket
           <Th width="218px" >To</Th>
           { (tokenType === 'ERC-721' || tokenType === 'ERC-1155') && <Th width="20%" isNumeric={ tokenType === 'ERC-721' }>Token ID</Th> }
           { (tokenType === 'ERC-20' || tokenType === 'ERC-1155') && (
-            <Th width="20%" isNumeric whiteSpace="nowrap">
-              <TruncatedTextTooltip label={ `Value ${ token?.symbol }` }>
-                <Box overflow="hidden" textOverflow="ellipsis">Value { token?.symbol }</Box>
-              </TruncatedTextTooltip>
+            <Th width="20%" isNumeric>
+              <TruncatedValue value={ `Value ${ token?.symbol || '' }` } w="100%" verticalAlign="middle"/>
             </Th>
           ) }
         </Tr>

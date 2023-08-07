@@ -43,7 +43,7 @@ import LinkInternal from 'ui/shared/LinkInternal';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import RawInputData from 'ui/shared/RawInputData';
 import TextSeparator from 'ui/shared/TextSeparator';
-import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
+import TruncatedValue from 'ui/shared/TruncatedValue';
 import TxStatus from 'ui/shared/TxStatus';
 import Utilization from 'ui/shared/Utilization/Utilization';
 import TxDetailsActions from 'ui/tx/details/TxDetailsActions';
@@ -259,11 +259,7 @@ const TxDetails = () => {
                   <CopyToClipboard text={ toAddress.hash }/>
                 </Flex>
               ) }
-              { toAddress.name && (
-                <TruncatedTextTooltip label={ toAddress.name }>
-                  <chakra.span overflow="hidden" textOverflow="ellipsis">{ toAddress.name }</chakra.span>
-                </TruncatedTextTooltip>
-              ) }
+              { toAddress.name && <TruncatedValue value={ toAddress.name }/> }
               { addressToTags.length > 0 && (
                 <Flex columnGap={ 3 }>
                   { addressToTags }

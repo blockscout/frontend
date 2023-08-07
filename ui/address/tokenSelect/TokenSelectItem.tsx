@@ -4,7 +4,7 @@ import { route } from 'nextjs-routes';
 import React from 'react';
 
 import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
-import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
+import TruncatedValue from 'ui/shared/TruncatedValue';
 
 import type { TokenEnhancedData } from '../utils/tokenUtils';
 
@@ -22,24 +22,14 @@ const TokenSelectItem = ({ data }: Props) => {
 
         return (
           <>
-            <TruncatedTextTooltip label={ text }>
-              <chakra.span textOverflow="ellipsis" overflow="hidden">
-                { text }
-              </chakra.span>
-            </TruncatedTextTooltip>
+            <TruncatedValue value={ text }/>
             { data.token.exchange_rate && <chakra.span ml={ 2 }>@{ Number(data.token.exchange_rate).toLocaleString() }</chakra.span> }
           </>
         );
       }
       case 'ERC-721': {
         const text = `${ BigNumber(data.value).toFormat() } ${ data.token.symbol || '' }`;
-        return (
-          <TruncatedTextTooltip label={ text }>
-            <chakra.span textOverflow="ellipsis" overflow="hidden">
-              { text }
-            </chakra.span>
-          </TruncatedTextTooltip>
-        );
+        return <TruncatedValue value={ text }/>;
       }
       case 'ERC-1155': {
         return (

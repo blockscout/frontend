@@ -7,6 +7,7 @@ import type { AddressTokenBalance } from 'types/api/address';
 import NftMedia from 'ui/shared/nft/NftMedia';
 import TokenLogo from 'ui/shared/TokenLogo';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
+import TruncatedValue from 'ui/shared/TruncatedValue';
 
 type Props = AddressTokenBalance & { isLoading: boolean };
 
@@ -55,11 +56,7 @@ const NFTItem = ({ token, token_id: tokenId, token_instance: tokenInstance, isLo
       { token.name && (
         <Flex alignItems="center">
           <TokenLogo data={ token } boxSize={ 6 } ml={ 1 } mr={ 1 } isLoading={ isLoading }/>
-          <TruncatedTextTooltip label={ token.name }>
-            <Skeleton isLoaded={ !isLoading } color="text_secondary" overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis">
-              <span>{ token.name }</span>
-            </Skeleton>
-          </TruncatedTextTooltip>
+          <TruncatedValue isLoading={ isLoading } value={ token.name } color="text_secondary"/>
         </Flex>
       ) }
     </LinkBox>
