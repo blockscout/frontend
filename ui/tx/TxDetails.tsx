@@ -25,6 +25,7 @@ import errorIcon from 'icons/status/error.svg';
 import successIcon from 'icons/status/success.svg';
 import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
+import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
@@ -328,7 +329,11 @@ const TxDetails = () => {
           <DetailsInfoItem
             title="Gas fees (Gwei)"
             // eslint-disable-next-line max-len
-            hint="Base Fee refers to the network Base Fee at the time of the block, while Max Fee & Max Priority Fee refer to the max amount a user is willing to pay for their tx & to give to the miner respectively"
+            hint={ `
+              Base Fee refers to the network Base Fee at the time of the block, 
+              while Max Fee & Max Priority Fee refer to the max amount a user is willing to pay 
+              for their tx & to give to the ${ getNetworkValidatorTitle() } respectively
+            ` }
             isLoading={ isPlaceholderData }
           >
             { data.base_fee_per_gas && (
@@ -358,12 +363,13 @@ const TxDetails = () => {
             title="Burnt fees"
             hint={ `Amount of ${ appConfig.network.currency.symbol } burned for this transaction. Equals Block Base Fee per Gas * Gas Used` }
           >
-            <Icon as={ flameIcon } mr={ 1 } boxSize={ 5 } color="gray.500"/>
+            <Icon as={ flameIcon } boxSize={ 5 } color="gray.500"/>
             <CurrencyValue
               value={ String(data.tx_burnt_fee) }
               currency={ appConfig.network.currency.symbol }
               exchangeRate={ data.exchange_rate }
               flexWrap="wrap"
+              ml={ 1 }
             />
           </DetailsInfoItem>
         ) }
