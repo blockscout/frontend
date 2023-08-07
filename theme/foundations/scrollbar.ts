@@ -4,6 +4,7 @@ import type { StyleFunctionProps } from '@chakra-ui/theme-tools';
 
 const scrollbar = (props: StyleFunctionProps) => {
   const bgColor = mode('blackAlpha.300', 'whiteAlpha.300')(props);
+  const resizerUrl = mode('url(/static/resizer_light.png)', 'url(/static/resizer_dark.png)')(props);
 
   return {
     'body *::-webkit-scrollbar': {
@@ -26,7 +27,7 @@ const scrollbar = (props: StyleFunctionProps) => {
       backgroundColor: 'transparent',
     },
     'body *::-webkit-resizer': {
-      backgroundImage: 'url(/static/resizer.png)',
+      backgroundImage: resizerUrl,
       backgroundSize: '20px',
     },
     'body *': {
