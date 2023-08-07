@@ -35,7 +35,7 @@ const InfoItem = chakra(({ label, value, className, isLoading }: { label: string
 ));
 
 const ContractCode = ({ addressHash, noSocket }: Props) => {
-  const [ isSocketOpen, setIsSocketOpen ] = React.useState(false);
+  const [ isQueryEnabled, setIsQueryEnabled ] = React.useState(false);
   const [ isChangedBytecodeSocket, setIsChangedBytecodeSocket ] = React.useState<boolean>();
 
   const queryClient = useQueryClient();
@@ -45,7 +45,7 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
   const { data, isPlaceholderData, isError } = useApiQuery('contract', {
     pathParams: { hash: addressHash },
     queryOptions: {
-      enabled: Boolean(addressHash) && (noSocket || isSocketOpen),
+      enabled: Boolean(addressHash) && (noSocket || isQueryEnabled),
       refetchOnMount: false,
       placeholderData: addressInfo?.is_verified ? stubs.CONTRACT_CODE_VERIFIED : stubs.CONTRACT_CODE_UNVERIFIED,
     },
@@ -64,10 +64,13 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
     });
   }, [ addressHash, refetchQueries ]);
 
+  const enableQuery = React.useCallback(() => setIsQueryEnabled(true), []);
+
   const channel = useSocketChannel({
     topic: `addresses:${ addressHash?.toLowerCase() }`,
     isDisabled: !addressHash,
-    onJoin: () => setIsSocketOpen(true),
+    onJoin: enableQuery,
+    onSocketError: enableQuery,
   });
   useSocketMessage({
     channel,
