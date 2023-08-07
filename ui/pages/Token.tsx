@@ -41,7 +41,7 @@ import TokenVerifiedInfo from 'ui/token/TokenVerifiedInfo';
 export type TokenTabs = 'token_transfers' | 'holders' | 'inventory';
 
 const TokenPageContent = () => {
-  const [ isSocketOpen, setIsSocketOpen ] = React.useState(false);
+  const [ isQueryEnabled, setIsQueryEnabled ] = React.useState(false);
   const [ totalSupplySocket, setTotalSupplySocket ] = React.useState<number>();
   const router = useRouter();
   const isMobile = useIsMobile();
@@ -65,7 +65,7 @@ const TokenPageContent = () => {
   const contractQuery = useApiQuery('address', {
     pathParams: { hash: hashString },
     queryOptions: {
-      enabled: isSocketOpen && Boolean(router.query.hash),
+      enabled: isQueryEnabled && Boolean(router.query.hash),
       placeholderData: addressStubs.ADDRESS_INFO,
     },
   });
@@ -92,10 +92,13 @@ const TokenPageContent = () => {
     });
   }, [ queryClient, hashString ]);
 
+  const enableQuery = React.useCallback(() => setIsQueryEnabled(true), []);
+
   const channel = useSocketChannel({
     topic: `tokens:${ hashString?.toLowerCase() }`,
     isDisabled: !hashString,
-    onJoin: () => setIsSocketOpen(true),
+    onJoin: enableQuery,
+    onSocketError: enableQuery,
   });
   useSocketMessage({
     channel,
