@@ -1,7 +1,9 @@
 import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
+import { apps as appsMock } from 'mocks/apps/apps';
 import * as searchMock from 'mocks/search/index';
+import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
 
@@ -139,4 +141,59 @@ test('search by tx hash +@mobile', async({ mount, page }) => {
   );
 
   await expect(component.locator('main')).toHaveScreenshot();
+});
+
+test.describe('with apps', () => {
+  const MARKETPLACE_CONFIG_URL = 'https://marketplace-config.url';
+  const extendedTest = test.extend({
+    context: contextWithEnvs([
+      { name: 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', value: MARKETPLACE_CONFIG_URL },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ]) as any,
+  });
+
+  extendedTest('default view +@mobile', async({ mount, page }) => {
+    const hooksConfig = {
+      router: {
+        query: { q: 'o' },
+      },
+    };
+    const API_URL = buildApiUrl('search') + '?q=o';
+    await page.route(API_URL, (route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify({
+        items: [
+          searchMock.token1,
+        ],
+        next_page_params: { foo: 'bar' },
+      }),
+    }));
+
+    await page.route(MARKETPLACE_CONFIG_URL, (route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify(appsMock),
+    }));
+
+    await page.route(appsMock[0].logo, (route) => {
+      return route.fulfill({
+        status: 200,
+        path: './playwright/image_s.jpg',
+      });
+    });
+    await page.route(appsMock[1].logo as string, (route) => {
+      return route.fulfill({
+        status: 200,
+        path: './playwright/image_s.jpg',
+      });
+    });
+
+    const component = await mount(
+      <TestApp>
+        <SearchResults/>
+      </TestApp>,
+      { hooksConfig },
+    );
+
+    await expect(component.locator('main')).toHaveScreenshot();
+  });
 });

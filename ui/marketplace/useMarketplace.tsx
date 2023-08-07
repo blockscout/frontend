@@ -1,18 +1,14 @@
-import { useQuery } from '@tanstack/react-query';
 import _pickBy from 'lodash/pickBy';
 import _unique from 'lodash/uniq';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { MarketplaceAppOverview } from 'types/client/marketplace';
 import { MarketplaceCategory } from 'types/client/marketplace';
 
-import appConfig from 'configs/app/config';
-import type { ResourceError } from 'lib/api/resources';
 import useDebounce from 'lib/hooks/useDebounce';
-import useApiFetch from 'lib/hooks/useFetch';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { MARKETPLACE_APP } from 'stubs/marketplace';
+
+import useMarketplaceApps from './useMarketplaceApps';
 
 const favoriteAppsLocalStorageKey = 'favoriteApps';
 
@@ -24,16 +20,6 @@ function getFavoriteApps() {
   }
 }
 
-function isAppNameMatches(q: string, app: MarketplaceAppOverview) {
-  return app.title.toLowerCase().includes(q.toLowerCase());
-}
-
-function isAppCategoryMatches(category: string, app: MarketplaceAppOverview, favoriteApps: Array<string>) {
-  return category === MarketplaceCategory.ALL ||
-      (category === MarketplaceCategory.FAVORITES && favoriteApps.includes(app.id)) ||
-      app.categories.includes(category);
-}
-
 export default function useMarketplace() {
   const router = useRouter();
   const defaultCategoryId = getQueryParamString(router.query.category);
@@ -43,16 +29,6 @@ export default function useMarketplace() {
   const [ selectedCategoryId, setSelectedCategoryId ] = React.useState<string>(MarketplaceCategory.ALL);
   const [ filterQuery, setFilterQuery ] = React.useState(defaultFilterQuery);
   const [ favoriteApps, setFavoriteApps ] = React.useState<Array<string>>([]);
-
-  const apiFetch = useApiFetch();
-  const { isPlaceholderData, isError, error, data } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppOverview>>(
-    [ 'marketplace-apps' ],
-    async() => apiFetch(appConfig.marketplace.configUrl || ''),
-    {
-      select: (data) => (data as Array<MarketplaceAppOverview>).sort((a, b) => a.title.localeCompare(b.title)),
-      placeholderData: Array(9).fill(MARKETPLACE_APP),
-      staleTime: Infinity,
-    });
 
   const handleFavoriteClick = React.useCallback((id: string, isFavorite: boolean) => {
     const favoriteApps = getFavoriteApps();
@@ -79,9 +55,7 @@ export default function useMarketplace() {
     setSelectedCategoryId(newCategory);
   }, []);
 
-  const displayedApps = React.useMemo(() => {
-    return data?.filter(app => isAppNameMatches(debouncedFilterQuery, app) && isAppCategoryMatches(selectedCategoryId, app, favoriteApps)) || [];
-  }, [ selectedCategoryId, data, debouncedFilterQuery, favoriteApps ]);
+  const { isPlaceholderData, isError, error, data, displayedApps } = useMarketplaceApps(debouncedFilterQuery, selectedCategoryId, favoriteApps);
 
   const categories = React.useMemo(() => {
     return _unique(data?.map(app => app.categories).flat()) || [];

@@ -1,4 +1,4 @@
-# Environment variables
+# Run-time environment variables
 
 The app instance could be customized by passing following variables to NodeJS environment at runtime. See their list below.
 
@@ -16,7 +16,6 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL | `string` | Network currency symbol | - | - | `ETH` |
 | NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS | `string` | Network currency decimals | - | `18` | `6` |
 | NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS | `string` | Address of network's native token | - | - | `0x029a799563238d0e75e20be2f4bda0ea68d00172` |
-| NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME | `string` | Network name for constructing url of token logos according to template `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${assetsNamePath}/assets/${tokenAddress}/logo.png`. It should match network name in TrustWallet assets repo, see the full list [here](https://github.com/trustwallet/assets/tree/master/blockchains) | - | - | `ethereum` |
 | NEXT_PUBLIC_NETWORK_LOGO | `string` | Network logo; if not provided, placeholder will be shown; *Note* the logo height should be 20px and width less than 120px | - | - | `https://placekitten.com/240/40` |
 | NEXT_PUBLIC_NETWORK_LOGO_DARK | `string` | Network logo for dark color mode; if not provided, **inverted** regular logo will be used instead | - | - | `https://placekitten.com/240/40` |
 | NEXT_PUBLIC_NETWORK_ICON | `string` | Network icon; used as a replacement for regular network logo when nav bar is collapsed; if not provided, placeholder will be shown; *Note* the icon size should be at least 60px by 60px | - | - | `https://placekitten.com/60/60` |
@@ -129,6 +128,7 @@ In order to enable "My Account" feature you have to configure following set of v
 | NEXT_PUBLIC_APP_HOST | `string` | App host | yes | - | `blockscout.com` |
 | NEXT_PUBLIC_APP_PORT | `number` | Port where app is running | - | `3000` | `3001` |
 | NEXT_PUBLIC_APP_ENV | `string` | Current app env (e.g development, review or production). Used for Sentry.io configuration | - | equals to `process.env.NODE_ENV` | `production` |
+| NEXT_PUBLIC_USE_NEXT_JS_PROXY | `boolean` | Tells the app to proxy all APIs request through the NextJs app. **We strongly advise not to use it in the production environment** | - | `false` | `true` |
 
 ## API configuration
 
@@ -170,3 +170,4 @@ In order to enable "My Account" feature you have to configure following set of v
 | Variable | Type| Description | Is required  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_HAS_BEACON_CHAIN | `boolean` | Set to true for networks with the beacon chain | - | - | `true` |
+| NEXT_PUBLIC_BEACON_CHAIN_CURRENCY_SYMBOL | `string` | Beacon network currency symbol | - | NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL | `ETH` |

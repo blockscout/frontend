@@ -1,6 +1,7 @@
 const path = require('path');
 module.exports = {
   mode: 'production',
+  target: 'node',
   entry: path.resolve(__dirname) + '/index.ts',
   module: {
     rules: [

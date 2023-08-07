@@ -1,30 +1,23 @@
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
-import Head from 'next/head';
-import type { RoutedQuery } from 'nextjs-routes';
 import React from 'react';
 
-import getSeo from 'lib/next/address/getSeo';
+import type { Props } from 'lib/next/getServerSideProps';
+import PageServer from 'lib/next/PageServer';
 import Page from 'ui/shared/Page/Page';
 
 const Address = dynamic(() => import('ui/pages/Address'), { ssr: false });
 
-const AddressPage: NextPage<RoutedQuery<'/address/[hash]'>> = ({ hash }: RoutedQuery<'/address/[hash]'>) => {
-  const { title, description } = getSeo({ hash });
-
+const AddressPage: NextPage<Props> = (props: Props) => {
   return (
-    <>
-      <Head>
-        <title>{ title }</title>
-        <meta name="description" content={ description }/>
-      </Head>
+    <PageServer pathname="/address/[hash]" query={ props }>
       <Page>
         <Address/>
       </Page>
-    </>
+    </PageServer>
   );
 };
 
 export default AddressPage;
 
-export { getServerSideProps } from 'lib/next/getServerSideProps';
+export { base as getServerSideProps } from 'lib/next/getServerSideProps';

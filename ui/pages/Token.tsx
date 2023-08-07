@@ -15,6 +15,7 @@ import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import useContractTabs from 'lib/hooks/useContractTabs';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import * as metadata from 'lib/metadata';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
@@ -41,7 +42,7 @@ import TokenVerifiedInfo from 'ui/token/TokenVerifiedInfo';
 export type TokenTabs = 'token_transfers' | 'holders' | 'inventory';
 
 const TokenPageContent = () => {
-  const [ isSocketOpen, setIsSocketOpen ] = React.useState(false);
+  const [ isQueryEnabled, setIsQueryEnabled ] = React.useState(false);
   const [ totalSupplySocket, setTotalSupplySocket ] = React.useState<number>();
   const router = useRouter();
   const isMobile = useIsMobile();
@@ -65,7 +66,7 @@ const TokenPageContent = () => {
   const contractQuery = useApiQuery('address', {
     pathParams: { hash: hashString },
     queryOptions: {
-      enabled: isSocketOpen && Boolean(router.query.hash),
+      enabled: isQueryEnabled && Boolean(router.query.hash),
       placeholderData: addressStubs.ADDRESS_INFO,
     },
   });
@@ -92,10 +93,13 @@ const TokenPageContent = () => {
     });
   }, [ queryClient, hashString ]);
 
+  const enableQuery = React.useCallback(() => setIsQueryEnabled(true), []);
+
   const channel = useSocketChannel({
     topic: `tokens:${ hashString?.toLowerCase() }`,
     isDisabled: !hashString,
-    onJoin: () => setIsSocketOpen(true),
+    onJoin: enableQuery,
+    onSocketError: enableQuery,
   });
   useSocketMessage({
     channel,
@@ -105,16 +109,7 @@ const TokenPageContent = () => {
 
   useEffect(() => {
     if (tokenQuery.data && !tokenQuery.isPlaceholderData) {
-      const tokenSymbol = tokenQuery.data.symbol ? ` (${ tokenQuery.data.symbol })` : '';
-      const tokenName = `${ tokenQuery.data.name || 'Unnamed' }${ tokenSymbol }`;
-      const title = document.getElementsByTagName('title')[0];
-      if (title) {
-        title.textContent = title.textContent?.replace(tokenQuery.data.address, tokenName) || title.textContent;
-      }
-      const description = document.getElementsByName('description')[0] as HTMLMetaElement;
-      if (description) {
-        description.content = description.content.replace(tokenQuery.data.address, tokenName) || description.content;
-      }
+      metadata.update({ pathname: '/token/[hash]', query: { hash: tokenQuery.data.address } }, { symbol: tokenQuery.data.symbol ?? '' });
     }
   }, [ tokenQuery.data, tokenQuery.isPlaceholderData ]);
 

@@ -1,4 +1,4 @@
-import { chakra, Tr, Td, Text, Flex, Icon, Box, Skeleton } from '@chakra-ui/react';
+import { chakra, Tr, Td, Text, Flex, Icon, Image, Box, Skeleton, useColorMode } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
@@ -16,12 +16,14 @@ import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
+import type { SearchResultAppItem } from 'ui/shared/search/utils';
 import { getItemCategory, searchItemTitles } from 'ui/shared/search/utils';
 import TokenLogo from 'ui/shared/TokenLogo';
 
 interface Props {
-  data: SearchResultItem;
+  data: SearchResultItem | SearchResultAppItem;
   searchTerm: string;
   isLoading?: boolean;
 }
@@ -36,6 +38,8 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
       'Result URL': e.currentTarget.href,
     });
   }, [ searchTerm ]);
+
+  const { colorMode } = useColorMode();
 
   const content = (() => {
     switch (data.type) {
@@ -156,6 +160,55 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
               </Flex>
             </Td>
             <Td></Td>
+          </>
+        );
+      }
+
+      case 'app': {
+        const title = <span dangerouslySetInnerHTML={{ __html: highlightText(data.app.title, searchTerm) }}/>;
+        return (
+          <>
+            <Td fontSize="sm">
+              <Flex alignItems="center">
+                <Image
+                  borderRadius="base"
+                  boxSize={ 6 }
+                  mr={ 2 }
+                  src={ colorMode === 'dark' && data.app.logoDarkMode ? data.app.logoDarkMode : data.app.logo }
+                  alt={ `${ data.app.title } app icon` }
+                />
+                { data.app.external ? (
+                  <LinkExternal
+                    href={ data.app.url }
+                    fontWeight={ 700 }
+                    wordBreak="break-all"
+                    isLoading={ isLoading }
+                    onClick={ handleLinkClick }
+                  >
+                    { title }
+                  </LinkExternal>
+                ) : (
+                  <LinkInternal
+                    href={ route({ pathname: '/apps/[id]', query: { id: data.app.id } }) }
+                    fontWeight={ 700 }
+                    wordBreak="break-all"
+                    isLoading={ isLoading }
+                    onClick={ handleLinkClick }
+                  >
+                    { title }
+                  </LinkInternal>
+                ) }
+              </Flex>
+            </Td>
+            <Td fontSize="sm" verticalAlign="middle" colSpan={ 2 }>
+              <Text
+                overflow="hidden"
+                whiteSpace="nowrap"
+                textOverflow="ellipsis"
+              >
+                { data.app.description }
+              </Text>
+            </Td>
           </>
         );
       }

@@ -3,7 +3,9 @@ import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import * as textAdMock from 'mocks/ad/textAd';
+import { apps as appsMock } from 'mocks/apps/apps';
 import * as searchMock from 'mocks/search/index';
+import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
 
@@ -280,4 +282,56 @@ test('recent keywords suggest +@mobile', async({ mount, page }) => {
   await page.evaluate(() => window.localStorage.setItem('recent_search_keywords', '["10x1d311959270e0bbdc1fc7bc6dbd8ad645c4dd8d6aa32f5f89d54629a924f112b","0x1d311959270e0bbdc1fc7bc6dbd8ad645c4dd8d6aa32f5f89d54629a924f112b","usd","bob"]'));
   await page.getByPlaceholder(/search/i).click();
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 500 } });
+});
+
+test.describe('with apps', () => {
+  const MARKETPLACE_CONFIG_URL = 'https://marketplace-config.url';
+  const extendedTest = test.extend({
+    context: contextWithEnvs([
+      { name: 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', value: MARKETPLACE_CONFIG_URL },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ]) as any,
+  });
+
+  extendedTest('default view +@mobile', async({ mount, page }) => {
+    const API_URL = buildApiUrl('search') + '?q=o';
+    await page.route(API_URL, (route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify({
+        items: [
+          searchMock.token1,
+        ],
+        next_page_params: { foo: 'bar' },
+      }),
+    }));
+
+    await page.route(MARKETPLACE_CONFIG_URL, (route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify(appsMock),
+    }));
+
+    await page.route(appsMock[0].logo, (route) => {
+      return route.fulfill({
+        status: 200,
+        path: './playwright/image_s.jpg',
+      });
+    });
+    await page.route(appsMock[1].logo as string, (route) => {
+      return route.fulfill({
+        status: 200,
+        path: './playwright/image_s.jpg',
+      });
+    });
+
+    await mount(
+      <TestApp>
+        <SearchBar/>
+      </TestApp>,
+    );
+    await page.getByPlaceholder(/search/i).type('o');
+
+    await page.waitForResponse(API_URL);
+
+    await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 500 } });
+  });
 });

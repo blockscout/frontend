@@ -16,7 +16,6 @@ export type NextPublicEnvs = {
   NEXT_PUBLIC_NETWORK_EXPLORERS?: string;
   NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE?: 'validation' | 'mining';
   NEXT_PUBLIC_IS_TESTNET?: 'true' | '';
-  NEXT_PUBLIC_HAS_BEACON_CHAIN?: 'true' | '';
 
   // UI config
   NEXT_PUBLIC_FEATURED_NETWORKS?: string;
@@ -73,7 +72,8 @@ export type NextPublicEnvs = {
 }
 & NextPublicEnvsAccount
 & NextPublicEnvsMarketplace
-& NextPublicEnvsRollup;
+& NextPublicEnvsRollup
+& NextPublicEnvsBeacon;
 
 type NextPublicEnvsAccount =
 {
@@ -109,4 +109,14 @@ type NextPublicEnvsRollup =
   NEXT_PUBLIC_IS_L2_NETWORK?: undefined;
   NEXT_PUBLIC_L1_BASE_URL?: undefined;
   NEXT_PUBLIC_L2_WITHDRAWAL_URL?: undefined;
+}
+
+type NextPublicEnvsBeacon =
+{
+  NEXT_PUBLIC_HAS_BEACON_CHAIN: 'true';
+  NEXT_PUBLIC_BEACON_CHAIN_CURRENCY_SYMBOL?: string;
+} |
+{
+  NEXT_PUBLIC_HAS_BEACON_CHAIN?: undefined;
+  NEXT_PUBLIC_BEACON_CHAIN_CURRENCY_SYMBOL?: undefined;
 }

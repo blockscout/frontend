@@ -1,29 +1,21 @@
 import type { NextPage } from 'next';
-import Head from 'next/head';
-import type { RoutedQuery } from 'nextjs-routes';
 import React from 'react';
 
-import getSeo from 'lib/next/address/getSeo';
+import type { Props } from 'lib/next/getServerSideProps';
+import PageServer from 'lib/next/PageServer';
 import ContractVerification from 'ui/pages/ContractVerification';
 import Page from 'ui/shared/Page/Page';
 
-const ContractVerificationPage: NextPage<RoutedQuery<'/address/[hash]/contract-verification'>> =
-({ hash }: RoutedQuery<'/address/[hash]/contract-verification'>) => {
-  const { title, description } = getSeo({ hash });
-
+const ContractVerificationPage: NextPage<Props> = (props: Props) => {
   return (
-    <>
-      <Head>
-        <title>{ title }</title>
-        <meta name="description" content={ description }/>
-      </Head>
+    <PageServer pathname="/address/[hash]/contract-verification" query={ props }>
       <Page>
         <ContractVerification/>
       </Page>
-    </>
+    </PageServer>
   );
 };
 
 export default ContractVerificationPage;
 
-export { getServerSideProps } from 'lib/next/getServerSideProps';
+export { base as getServerSideProps } from 'lib/next/getServerSideProps';

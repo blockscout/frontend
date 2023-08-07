@@ -474,6 +474,11 @@ export const RESOURCES = {
     path: '/api/v2/config/backend-version',
   },
 
+  // OTHER
+  api_v2_key: {
+    path: '/api/v2/key',
+  },
+
   // DEPRECATED
   old_api: {
     path: '/api',

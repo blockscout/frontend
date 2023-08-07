@@ -1,25 +1,22 @@
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
-import Head from 'next/head';
 import React from 'react';
 
-import getNetworkTitle from 'lib/networks/getNetworkTitle';
+import PageServer from 'lib/next/PageServer';
 import Page from 'ui/shared/Page/Page';
 
 const VerifiedAddresses = dynamic(() => import('ui/pages/VerifiedAddresses'), { ssr: false });
 
 const VerifiedAddressesPage: NextPage = () => {
-  const title = getNetworkTitle();
   return (
-    <>
-      <Head><title>{ title }</title></Head>
+    <PageServer pathname="/account/verified-addresses">
       <Page>
         <VerifiedAddresses/>
       </Page>
-    </>
+    </PageServer>
   );
 };
 
 export default VerifiedAddressesPage;
 
-export { getServerSidePropsForVerifiedAddresses as getServerSideProps } from 'lib/next/account/getServerSideProps';
+export { verifiedAddresses as getServerSideProps } from 'lib/next/getServerSideProps';

@@ -58,16 +58,15 @@ For all types of dependencies:
 *Note*, if the variable should be exposed to the browser don't forget to add prefix `NEXT_PUBLIC_` to its name.
 
 These are the steps that you have to follow to make everything work:
-1. Register variable placeholder in file `.env.template`; this is the most important step, without this the app will not receive variable value at run-time
-2. Document variable in the [/docs/ENVS.md](./ENVS.md) file; provide short description, its expected type, requirement flag, default and example value
-3. Make sure that you have added a property to React app config (`/configs/app/config.ts`) that is associated with this variable; do not use ENV variable values directly in the application code
-4. For local development purposes add the variable with its appropriate values to pre-defined ENV configs `/configs/envs` where it is needed
-5. Add the variable to CI configs where it is needed
+1. First and foremost, document variable in the [/docs/ENVS.md](./ENVS.md) file; provide short description, its expected type, requirement flag, default and example value; **do not skip this step** otherwise the app will not receive variable value at run-time
+2. Make sure that you have added a property to React app config (`/configs/app/config.ts`) that is associated with this variable; do not use ENV variable values directly in the application code
+3. For local development purposes add the variable with its appropriate values to pre-defined ENV configs `/configs/envs` where it is needed
+4. Add the variable to CI configs where it is needed
     - `deploy/values/review/values.yaml.gotmpl` - review development environment
     - `deploy/values/main/values.yaml` - main development environment
     - `deploy/values/review-l2/values.yaml.gotmpl` - review development environment for L2 networks
     - `deploy/values/l2-optimism-goerli/values.yaml` - main development environment
-6. Don't forget to mention in the PR notes that new ENV variable were added  
+5. Don't forget to mention in the PR notes that new ENV variable were added  
 
 ## Writing & Running Tests
 
@@ -137,10 +136,10 @@ We have 3 pre-configured projects. You can run your test with the desired projec
 | --- | --- |
 | **Running and building** |
 | `yarn dev` | run local dev server with user's configuration |
-| `yarn dev:<config_name>` | run local dev server with predefined configuration |
+| `yarn dev:preset <config_preset_name>` | run local dev server with predefined configuration |
 | `yarn build:docker` | build a docker image locally |
 | `yarn start:docker:local` | start an application from previously built local docker image with user's configuration |
-| `yarn start:docker:poa_core` | start an application from previously built local docker image with predefined configuration for POA network explorer |
+| `yarn start:docker:preset <config_preset_name>` | start an application from previously built local docker image with predefined configuration |
 | **Linting and formatting** |
 | `yarn lint:eslint` | lint project files with ESLint |
 | `yarn lint:eslint:fix` | lint project files with ESLint and automatically fix problems |
