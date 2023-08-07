@@ -17,7 +17,7 @@ import TxSocketAlert from 'ui/tx/TxSocketAlert';
 import useFetchTxInfo from 'ui/tx/useFetchTxInfo';
 
 const TxRawTrace = () => {
-  const [ isSocketOpen, setIsSocketOpen ] = React.useState(false);
+  const [ isQueryEnabled, setIsQueryEnabled ] = React.useState(false);
   const [ rawTraces, setRawTraces ] = React.useState<RawTracesResponse>();
   const router = useRouter();
   const hash = getQueryParamString(router.query.hash);
@@ -26,7 +26,7 @@ const TxRawTrace = () => {
   const { data, isPlaceholderData, isError } = useApiQuery('tx_raw_trace', {
     pathParams: { hash },
     queryOptions: {
-      enabled: Boolean(hash) && Boolean(txInfo.data?.status) && isSocketOpen,
+      enabled: Boolean(hash) && Boolean(txInfo.data?.status) && isQueryEnabled,
       placeholderData: TX_RAW_TRACE,
     },
   });
@@ -35,10 +35,13 @@ const TxRawTrace = () => {
     setRawTraces(payload);
   }, [ ]);
 
+  const enableQuery = React.useCallback(() => setIsQueryEnabled(true), []);
+
   const channel = useSocketChannel({
     topic: `transactions:${ hash }`,
     isDisabled: !hash || txInfo.isPlaceholderData || !txInfo.data?.status,
-    onJoin: () => setIsSocketOpen(true),
+    onJoin: enableQuery,
+    onSocketError: enableQuery,
   });
   useSocketMessage({
     channel,

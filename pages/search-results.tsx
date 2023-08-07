@@ -1,24 +1,20 @@
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
-import Head from 'next/head';
 import React from 'react';
 
-import getNetworkTitle from 'lib/networks/getNetworkTitle';
+import type { Props } from 'lib/next/getServerSideProps';
+import PageServer from 'lib/next/PageServer';
 
 const SearchResults = dynamic(() => import('ui/pages/SearchResults'), { ssr: false });
 
-const SearchResultsPage: NextPage = () => {
-  const title = getNetworkTitle();
+const SearchResultsPage: NextPage<Props> = (props: Props) => {
   return (
-    <>
-      <Head>
-        <title>{ title }</title>
-      </Head>
+    <PageServer pathname="/search-results" query={ props }>
       <SearchResults/>
-    </>
+    </PageServer>
   );
 };
 
 export default SearchResultsPage;
 
-export { getServerSideProps } from 'lib/next/getServerSideProps';
+export { base as getServerSideProps } from 'lib/next/getServerSideProps';

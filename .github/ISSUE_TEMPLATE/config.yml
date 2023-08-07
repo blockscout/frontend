@@ -1,5 +1,8 @@
 blank_issues_enabled: false
 contact_links:
+  - name: Feature Request
+    url: https://blockscout.canny.io/feature-requests
+    about: Request a feature or enhancement
   - name: Ask a question
     url: https://github.com/orgs/blockscout/discussions
     about: Ask questions and discuss topics with other community members

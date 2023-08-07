@@ -19,37 +19,18 @@
 import * as Sentry from '@sentry/nextjs';
 import type { GetServerSideProps } from 'next';
 import NextErrorComponent from 'next/error';
-import Head from 'next/head';
 import React from 'react';
 
 import sentryConfig from 'configs/sentry/nextjs';
 import * as cookies from 'lib/cookies';
-import getNetworkTitle from 'lib/networks/getNetworkTitle';
 import type { Props as ServerSidePropsCommon } from 'lib/next/getServerSideProps';
-import { getServerSideProps as getServerSidePropsCommon } from 'lib/next/getServerSideProps';
-import AppError from 'ui/shared/AppError/AppError';
-import Page from 'ui/shared/Page/Page';
+import { base as getServerSidePropsCommon } from 'lib/next/getServerSideProps';
 
 type Props = ServerSidePropsCommon & {
   statusCode: number;
 }
 
 const CustomErrorComponent = (props: Props) => {
-  if (props.statusCode === 404) {
-    const title = getNetworkTitle();
-
-    return (
-      <>
-        <Head>
-          <title>{ title }</title>
-        </Head>
-        <Page>
-          <AppError statusCode={ 404 } mt="50px"/>
-        </Page>
-      </>
-    );
-  }
-
   const colorModeCookie = cookies.getFromCookieString(props.cookies || '', cookies.NAMES.COLOR_MODE);
   return <NextErrorComponent statusCode={ props.statusCode } withDarkMode={ colorModeCookie === 'dark' }/>;
 };

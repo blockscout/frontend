@@ -33,7 +33,7 @@ const SearchBar = ({ isHomepage }: Props) => {
 
   const recentSearchKeywords = getRecentSearchKeywords();
 
-  const { searchTerm, handleSearchTermChange, query, pathname } = useSearchQuery();
+  const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query, pathname } = useSearchQuery();
 
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -128,21 +128,34 @@ const SearchBar = ({ isHomepage }: Props) => {
         w={ `${ menuWidth.current }px` }
         ref={ menuRef }
       >
-        <PopoverBody p={ 0 } color="chakra-body-text">
+        <PopoverBody
+          p={ 0 }
+          color="chakra-body-text"
+          sx={
+            isHomepage ? {
+              mark: { bgColor: 'green.100' },
+              '*::-webkit-scrollbar-thumb': { backgroundColor: 'blackAlpha.300' },
+            } : {}
+          }
+        >
           <Box
             maxH="50vh"
-            overflowY="scroll"
+            overflowY="auto"
             id={ SCROLL_CONTAINER_ID }
             ref={ scrollRef }
             as={ Element }
-            sx={ isHomepage ? { mark: { bgColor: 'green.100' } } : {} }
             px={ 4 }
           >
             { searchTerm.trim().length === 0 && recentSearchKeywords.length > 0 && (
               <SearchBarRecentKeywords onClick={ handleSearchTermChange } onClear={ onClose }/>
             ) }
             { searchTerm.trim().length > 0 && (
-              <SearchBarSuggest query={ query } searchTerm={ searchTerm } onItemClick={ handleItemClick } containerId={ SCROLL_CONTAINER_ID }/>
+              <SearchBarSuggest
+                query={ query }
+                searchTerm={ debouncedSearchTerm }
+                onItemClick={ handleItemClick }
+                containerId={ SCROLL_CONTAINER_ID }
+              />
             ) }
           </Box>
         </PopoverBody>

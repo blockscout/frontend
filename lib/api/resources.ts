@@ -474,10 +474,12 @@ export const RESOURCES = {
     path: '/api/v2/config/backend-version',
   },
 
-  // DEPRECATED
-  old_api: {
-    path: '/api',
+  // OTHER
+  api_v2_key: {
+    path: '/api/v2/key',
   },
+
+  // DEPRECATED
   csv_export_txs: {
     path: '/transactions-csv',
   },

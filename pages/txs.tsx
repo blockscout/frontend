@@ -1,25 +1,22 @@
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
-import Head from 'next/head';
 import React from 'react';
 
-import getNetworkTitle from 'lib/networks/getNetworkTitle';
+import PageServer from 'lib/next/PageServer';
 import Page from 'ui/shared/Page/Page';
 
 const Transactions = dynamic(() => import('ui/pages/Transactions'), { ssr: false });
 
 const TxsPage: NextPage = () => {
-  const title = getNetworkTitle();
   return (
-    <>
-      <Head><title>{ title }</title></Head>
+    <PageServer pathname="/txs">
       <Page>
         <Transactions/>
       </Page>
-    </>
+    </PageServer>
   );
 };
 
 export default TxsPage;
 
-export { getServerSideProps } from 'lib/next/getServerSideProps';
+export { base as getServerSideProps } from 'lib/next/getServerSideProps';

@@ -1,24 +1,20 @@
 import type { NextPage } from 'next';
-import Head from 'next/head';
 import React from 'react';
 
-import getNetworkTitle from 'lib/networks/getNetworkTitle';
+import PageServer from 'lib/next/PageServer';
 import UnverifiedEmail from 'ui/pages/UnverifiedEmail';
 import Page from 'ui/shared/Page/Page';
 
 const UnverifiedEmailPage: NextPage = () => {
-  const title = getNetworkTitle();
-
   return (
-    <>
-      <Head><title>{ title }</title></Head>
+    <PageServer pathname="/auth/unverified-email">
       <Page>
         <UnverifiedEmail/>
       </Page>
-    </>
+    </PageServer>
   );
 };
 
 export default UnverifiedEmailPage;
 
-export { getServerSideProps } from 'lib/next/account/getServerSideProps';
+export { account as getServerSideProps } from 'lib/next/getServerSideProps';

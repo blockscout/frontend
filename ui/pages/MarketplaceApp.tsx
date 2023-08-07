@@ -10,6 +10,7 @@ import appConfig from 'configs/app/config';
 import type { ResourceError } from 'lib/api/resources';
 import { useAppContext } from 'lib/contexts/app';
 import useApiFetch from 'lib/hooks/useFetch';
+import * as metadata from 'lib/metadata';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import ContentLoader from 'ui/shared/ContentLoader';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -69,6 +70,15 @@ const MarketplaceApp = () => {
       ref?.current?.contentWindow?.postMessage(message, data.url);
     }
   }, [ isFrameLoading, data, colorMode, ref ]);
+
+  useEffect(() => {
+    if (data) {
+      metadata.update(
+        { pathname: '/apps/[id]', query: { id: data.id } },
+        { app_name: data.title },
+      );
+    }
+  }, [ data ]);
 
   if (isError) {
     throw new Error('Unable to load app', { cause: error });

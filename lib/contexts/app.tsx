@@ -7,7 +7,14 @@ type Props = {
   pageProps: PageProps;
 }
 
-const AppContext = createContext<PageProps>({ cookies: '', referrer: '' });
+const AppContext = createContext<PageProps>({
+  cookies: '',
+  referrer: '',
+  id: '',
+  height_or_hash: '',
+  hash: '',
+  q: '',
+});
 
 export function AppContextProvider({ children, pageProps }: Props) {
   return (

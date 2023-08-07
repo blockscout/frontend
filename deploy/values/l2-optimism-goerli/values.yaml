@@ -1,372 +1,204 @@
-global:
-  env: optimism-goerli
-# enable Blockscout deploy
+fullNameOverride: bs-stack
+nameOverride: bs-stack
+imagePullSecrets:
+  - name: regcred
+config:
+  network:
+    id: 420
+    name: "Base Göerli"
+    shortname: Base
+    currency:
+      name: Ether
+      symbol: ETH
+      decimals: 18
+  account:
+    enabled: true
+  testnet: true
+
 blockscout:
-  app: blockscout
   enabled: true
   image:
-    _default: &image blockscout/blockscout-optimism:latest
-  replicas:
-    app: 1
-  # init container
-  init:
-    enabled: true
-    image:
-      _default: *image
-  # enable ingress
+    repository: blockscout/blockscout-optimism
+    imagePullPolicy: Always
+    tag: latest
+  replicaCount: 1
   ingress:
     enabled: true
     annotations:
-      - 'nginx.ingress.kubernetes.io/cors-allow-origin: "https://*.blockscout-main.k8s-dev.blockscout.com, https://*.k8s-dev.blockscout.com, http://localhost:3000"'
-      - 'nginx.ingress.kubernetes.io/cors-allow-credentials: "true"'
-      - 'nginx.ingress.kubernetes.io/cors-allow-methods: PUT, GET, POST, OPTIONS, DELETE, PATCH'
-      - 'nginx.ingress.kubernetes.io/enable-cors: "true"'
-      - 'nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-csrf-token"'
-      # - 'nginx.ingress.kubernetes.io/rewrite-target: /$2'
-    host:
-      _default: blockscout-optimism-goerli.k8s-dev.blockscout.com
-    # enable https
-    #
+      kubernetes.io/ingress.class: internal-and-public
+      nginx.ingress.kubernetes.io/proxy-body-size: "500m"
+      nginx.ingress.kubernetes.io/client-max-body-size: "500M"
+      nginx.ingress.kubernetes.io/proxy-buffering: "off"
+      nginx.ingress.kubernetes.io/proxy-connect-timeout: "15m"
+      nginx.ingress.kubernetes.io/proxy-send-timeout: "15m"
+      nginx.ingress.kubernetes.io/proxy-read-timeout: "15m"
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/cors-allow-origin: "https://*.blockscout-main.k8s-dev.blockscout.com, https://*.k8s-dev.blockscout.com, http://localhost:3000"
+      nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+      nginx.ingress.kubernetes.io/cors-allow-methods: "PUT, GET, POST, OPTIONS, DELETE, PATCH"
+      nginx.ingress.kubernetes.io/enable-cors: "true"
+      nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-csrf-token"
+    hostname: blockscout-optimism-goerli.k8s-dev.blockscout.com
     tls:
       enabled: true
-    path:
-      prefix:
-        - "/"
-  # probes
-  livenessProbe:
-    enabled: true
-    path: /
-    params:
-      initialDelaySeconds: 100
-      periodSeconds: 100
-  readinessProbe:
-    enabled: true
-    path: /
-    params:
-      initialDelaySeconds: 60
-      periodSeconds: 10
-      timeoutSeconds: 60
   resources:
     limits:
-      memory:
-        _default: "4Gi"
-      cpu:
-        _default: "2"
+      memory: "4Gi"
+      cpu: "2"
     requests:
-      memory:
-        _default: "2Gi"
-      cpu:
-        _default: "1"
-  nodeSelector:
-    enabled: false
-  # Blockscout environment variables
-  environment:
-    ENV:
-      _default: test
-    RESOURCE_MODE:
-      _default: account
-    PUBLIC:
-      _default: 'false'
-    PORT:
-      _default: 4000
-    PORT_PG:
-      _default: 5432
-    PORT_NETWORK_HTTP:
-      _default: 8545
-    PORT_NETWORK_WS:
-      _default: 8546
-    ETHEREUM_JSONRPC_VARIANT:
-      _default: geth
-    COIN:
-      _default: ETH
-    COIN_NAME:
-      _default: ETH
-    MIX_ENV:
-      _default: prod
-    MICROSERVICE_SC_VERIFIER_ENABLED:
-      _default: 'true'
-    MICROSERVICE_SC_VERIFIER_URL:
-      _default: https://sc-verifier-test.k8s-dev.blockscout.com
-    ACCOUNT_ENABLED:
-      _default: 'true'
-    DISABLE_EXCHANGE_RATES:
-      _default: 'true'
-    BLOCKSCOUT_HOST:
-      _default: 'blockscout-optimism-goerli.k8s-dev.blockscout.com'
-    NETWORK_PATH:
-      _default: "/"
-    APPS_MENU:
-      _default: 'true'
-    EXTERNAL_APPS:
-      _default: '[{"title": "Marketplace", "url": "/apps"}]'
-    JSON_RPC:
-      _default: https://goerli.optimism.io
-    API_V2_ENABLED:
-      _default: 'true'
-    FIRST_BLOCK:
-      _default: '4667000'
-    TRACE_FIRST_BLOCK:
-      _default: '4667000'
-    LAST_BLOCK:
-      _default: '4677000'
-    TRACE_LAST_BLOCK:
-      _default: '4677000'
-    DISABLE_REALTIME_INDEXER:
-      _default: 'false'
-    INDEXER_OPTIMISM_L1_PORTAL_CONTRACT:
-      _default: 0x5b47E1A08Ea6d985D6649300584e6722Ec4B1383
-    INDEXER_OPTIMISM_L1_WITHDRAWALS_START_BLOCK:
-      _default: '8299683'
-    INDEXER_OPTIMISM_L2_WITHDRAWALS_START_BLOCK:
-      _default: '4066066'
-    INDEXER_OPTIMISM_L2_MESSAGE_PASSER_CONTRACT:
-      _default: 0x4200000000000000000000000000000000000016
-    INDEXER_OPTIMISM_L1_OUTPUT_ROOTS_START_BLOCK:
-      _default: '8299683'
-    INDEXER_OPTIMISM_L1_OUTPUT_ORACLE_CONTRACT:
-      _default: 0xE6Dfba0953616Bacab0c9A8ecb3a9BBa77FC15c0
-    INDEXER_OPTIMISM_L1_BATCH_START_BLOCK:
-      _default: '8381594'
-    INDEXER_OPTIMISM_L1_BATCH_INBOX:
-      _default: 0xff00000000000000000000000000000000000420
-    INDEXER_OPTIMISM_L1_BATCH_SUBMITTER:
-      _default: 0x7431310e026b69bfc676c0013e12a1a11411eec9
-    INDEXER_OPTIMISM_L1_DEPOSITS_START_BLOCK:
-      _default: '8381594'
-    ETHEREUM_JSONRPC_DEBUG_TRACE_TRANSACTION_TIMEOUT:
-      _default: '25s'
-    INDEXER_OPTIMISM_L1_RPC:
-      _default: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/INDEXER_OPTIMISM_L1_RPC
-    ACCOUNT_USERNAME:
-      _default: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_USERNAME
-    ACCOUNT_PASSWORD:
-      _default: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_PASSWORD
-    MAILSLURP_API_KEY:
-      _default: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/MAILSLURP_API_KEY
-    MAILSLURP_EMAIL_ID:
-      _default: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/MAILSLURP_EMAIL_ID
-    ACCOUNT_AUTH0_DOMAIN:
-      _default: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_AUTH0_DOMAIN
-    ACCOUNT_AUTH0_CLIENT_ID:
-      _default: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_AUTH0_CLIENT_ID
-    ACCOUNT_AUTH0_CLIENT_SECRET:
-      _default: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_AUTH0_CLIENT_SECRET
-    ACCOUNT_SENDGRID_API_KEY:
-      _default: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_SENDGRID_API_KEY
-    ACCOUNT_SENDGRID_SENDER:
-      _default: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_SENDGRID_SENDER
-    ACCOUNT_SENDGRID_TEMPLATE:
-      _default: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_SENDGRID_TEMPLATE
-    ACCOUNT_PUBLIC_TAGS_AIRTABLE_URL:
-      _default: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_PUBLIC_TAGS_AIRTABLE_URL
-    ACCOUNT_PUBLIC_TAGS_AIRTABLE_API_KEY:
-      _default: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_PUBLIC_TAGS_AIRTABLE_API_KEY
-    ACCOUNT_CLOAK_KEY:
-      _default: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_CLOAK_KEY
-    SECRET_KEY_BASE:
-      _default: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/SECRET_KEY_BASE
-    DATABASE_URL:
-      _default: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/DATABASE_URL
-    ACCOUNT_DATABASE_URL:
-      _default: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_DATABASE_URL
-    ACCOUNT_REDIS_URL:
-      _default: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_REDIS_URL
-    ETHEREUM_JSONRPC_TRACE_URL:
-      _default: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ETHEREUM_JSONRPC_TRACE_URL
-    ETHEREUM_JSONRPC_HTTP_URL:
-      _default: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ETHEREUM_JSONRPC_HTTP_URL
-    ETHEREUM_JSONRPC_WS_URL:
-      _default: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ETHEREUM_JSONRPC_WS_URL
-    RE_CAPTCHA_SECRET_KEY:
-      _default: ref+vault://deployment-values/blockscout/common?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/RE_CAPTCHA_SECRET_KEY
-    RE_CAPTCHA_CLIENT_KEY:
-      _default: ref+vault://deployment-values/blockscout/common?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/RE_CAPTCHA_CLIENT_KEY
+      memory: "2Gi"
+      cpu: "1"
 
-# enable stats deploy
+  env:
+    ENV: test
+    RESOURCE_MODE: account
+    PUBLIC: 'false'
+    PORT: 4000
+    PORT_PG: 5432
+    PORT_NETWORK_HTTP: 8545
+    PORT_NETWORK_WS: 8546
+    ETHEREUM_JSONRPC_VARIANT: geth
+    MIX_ENV: prod
+    MICROSERVICE_SC_VERIFIER_ENABLED: 'true'
+    MICROSERVICE_SC_VERIFIER_URL: https://sc-verifier-test.k8s-dev.blockscout.com
+    DISABLE_EXCHANGE_RATES: 'true'
+    APPS_MENU: 'true'
+    EXTERNAL_APPS: '[{"title": "Marketplace", "url": "/apps"}]'
+    JSON_RPC: https://goerli.optimism.io
+    FIRST_BLOCK: '4667000'
+    TRACE_FIRST_BLOCK: '4667000'
+    LAST_BLOCK: '4677000'
+    TRACE_LAST_BLOCK: '4677000'
+    DISABLE_REALTIME_INDEXER: 'false'
+    INDEXER_OPTIMISM_L1_PORTAL_CONTRACT: 0x5b47E1A08Ea6d985D6649300584e6722Ec4B1383
+    INDEXER_OPTIMISM_L1_WITHDRAWALS_START_BLOCK: '8299683'
+    INDEXER_OPTIMISM_L2_WITHDRAWALS_START_BLOCK: '4066066'
+    INDEXER_OPTIMISM_L2_MESSAGE_PASSER_CONTRACT: 0x4200000000000000000000000000000000000016
+    INDEXER_OPTIMISM_L1_OUTPUT_ROOTS_START_BLOCK: '8299683'
+    INDEXER_OPTIMISM_L1_OUTPUT_ORACLE_CONTRACT: 0xE6Dfba0953616Bacab0c9A8ecb3a9BBa77FC15c0
+    INDEXER_OPTIMISM_L1_BATCH_START_BLOCK: '8381594'
+    INDEXER_OPTIMISM_L1_BATCH_INBOX: 0xff00000000000000000000000000000000000420
+    INDEXER_OPTIMISM_L1_BATCH_SUBMITTER: 0x7431310e026b69bfc676c0013e12a1a11411eec9
+    INDEXER_OPTIMISM_L1_DEPOSITS_START_BLOCK: '8381594'
+    ETHEREUM_JSONRPC_DEBUG_TRACE_TRANSACTION_TIMEOUT: '25s'
+  envFromSecret:
+    INDEXER_OPTIMISM_L1_RPC: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/INDEXER_OPTIMISM_L1_RPC
+    ACCOUNT_USERNAME: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_USERNAME
+    ACCOUNT_PASSWORD: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_PASSWORD
+    MAILSLURP_API_KEY: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/MAILSLURP_API_KEY
+    MAILSLURP_EMAIL_ID: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/MAILSLURP_EMAIL_ID
+    ACCOUNT_AUTH0_DOMAIN: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_AUTH0_DOMAIN
+    ACCOUNT_AUTH0_CLIENT_ID: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_AUTH0_CLIENT_ID
+    ACCOUNT_AUTH0_CLIENT_SECRET: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_AUTH0_CLIENT_SECRET
+    ACCOUNT_SENDGRID_API_KEY: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_SENDGRID_API_KEY
+    ACCOUNT_SENDGRID_SENDER: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_SENDGRID_SENDER
+    ACCOUNT_SENDGRID_TEMPLATE: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_SENDGRID_TEMPLATE
+    ACCOUNT_PUBLIC_TAGS_AIRTABLE_URL: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_PUBLIC_TAGS_AIRTABLE_URL
+    ACCOUNT_PUBLIC_TAGS_AIRTABLE_API_KEY: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_PUBLIC_TAGS_AIRTABLE_API_KEY
+    ACCOUNT_CLOAK_KEY: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_CLOAK_KEY
+    SECRET_KEY_BASE: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/SECRET_KEY_BASE
+    DATABASE_URL: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/DATABASE_URL
+    ACCOUNT_DATABASE_URL: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_DATABASE_URL
+    ACCOUNT_REDIS_URL: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ACCOUNT_REDIS_URL
+    ETHEREUM_JSONRPC_TRACE_URL: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ETHEREUM_JSONRPC_TRACE_URL
+    ETHEREUM_JSONRPC_HTTP_URL: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ETHEREUM_JSONRPC_HTTP_URL
+    ETHEREUM_JSONRPC_WS_URL: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/ETHEREUM_JSONRPC_WS_URL
+    RE_CAPTCHA_SECRET_KEY: ref+vault://deployment-values/blockscout/common?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/RE_CAPTCHA_SECRET_KEY
+    RE_CAPTCHA_CLIENT_KEY: ref+vault://deployment-values/blockscout/common?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/RE_CAPTCHA_CLIENT_KEY
+
 stats:
   enabled: true
   image:
-    _default: ghcr.io/blockscout/stats:main
+    tag: main
     pullPolicy: Always
 
-  # enable ingress
   ingress:
     enabled: true
     annotations:
-      - 'nginx.ingress.kubernetes.io/cors-allow-origin: "https://*.blockscout-main.k8s-dev.blockscout.com, https://*.k8s-dev.blockscout.com, http://localhost:3000"'
-      - 'nginx.ingress.kubernetes.io/cors-allow-credentials: "true"'
-      - 'nginx.ingress.kubernetes.io/cors-allow-methods: PUT, GET, POST, OPTIONS, DELETE, PATCH'
-      - 'nginx.ingress.kubernetes.io/enable-cors: "true"'
-    host:
-      _default: stats-optimism-goerli.k8s-dev.blockscout.com
-    # enable https
+      kubernetes.io/ingress.class: internal-and-public
+      nginx.ingress.kubernetes.io/proxy-body-size: "500m"
+      nginx.ingress.kubernetes.io/client-max-body-size: "500M"
+      nginx.ingress.kubernetes.io/proxy-buffering: "off"
+      nginx.ingress.kubernetes.io/proxy-connect-timeout: "15m"
+      nginx.ingress.kubernetes.io/proxy-send-timeout: "15m"
+      nginx.ingress.kubernetes.io/proxy-read-timeout: "15m"
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/cors-allow-origin: "https://*.blockscout-main.k8s-dev.blockscout.com, https://*.k8s-dev.blockscout.com, http://localhost:3000"
+      nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+      nginx.ingress.kubernetes.io/cors-allow-methods: "PUT, GET, POST, OPTIONS, DELETE, PATCH"
+      nginx.ingress.kubernetes.io/enable-cors: "true"
+    hostname: stats-optimism-goerli.k8s-dev.blockscout.com
     tls:
       enabled: true
 
   resources:
     limits:
-      cpu:
-        _default: 250m
-      memory:
-        _default: 512Mi
+      cpu: 250m
+      memory: 512Mi
     requests:
-      cpu:
-        _default: 250m
-      memory:
-        _default: 256Mi
-  nodeSelector:
-    enabled: false
-  environment:
-    RUST_LOG:
-      _default: info
-    STATS__RUN_MIGRATIONS:
-      _default: true
-    STATS__TRACING__FORMAT:
-      _default: json
-    STATS__METRICS__ENABLED:
-      _default: true
-    STATS__DB_URL:
-      _default: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/STATS__DB_URL
-    STATS__BLOCKSCOUT_DB_URL:
-      _default: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/STATS__BLOCKSCOUT_DB_URL
+      cpu: 250m
+      memory: 256Mi
+  env:
+    RUST_LOG: info
+    STATS__RUN_MIGRATIONS: true
+    STATS__TRACING__FORMAT: json
+    STATS__METRICS__ENABLED: true
+  envFromSecret:
+    STATS__DB_URL: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/STATS__DB_URL
+    STATS__BLOCKSCOUT_DB_URL: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/STATS__BLOCKSCOUT_DB_URL
 
 frontend:
-  app: blockscout
   enabled: true
   image:
-    _default: ghcr.io/blockscout/frontend:latest
     pullPolicy: Always
+  replicaCount: 1
   ingress:
     enabled: true
-    # annotations:
-    #   - 'nginx.ingress.kubernetes.io/use-regex: "true"'
-    host:
-      _default: blockscout-optimism-goerli.k8s-dev.blockscout.com
-    # enable https
-    tls:
-      enabled: true
-    path:
-      exact:
-        # - "/(apps|auth/profile|account)"
-        - "/"
-      prefix:
-        # - "/(apps|auth/profile|account)"
-        - "/_next"
-        - "/node-api"
-        - "/account"
-        - "/apps"
-        - "/static"
-        - "/auth/profile"
-        - "/auth/unverified-email"
-        - "/txs"
-        - "/tx"
-        - "/blocks"
-        - "/block"
-        - "/login"
-        - "/address"
-        - "/stats"
-        - "/search-results"
-        - "/token"
-        - "/tokens"
-        - "/csv-export"
-        - "/verified-contracts"
-        - "/graphiql"
-        - "/accounts"
-        - "/visualize"
-        - "/api-docs"
-        - "/l2-output-roots"
-        - "/l2-txn-batches"
-        - "/l2-withdrawals"
-        - "/l2-deposits"
-  nodeSelector:
-    enabled: false
+    hostname: blockscout-optimism-goerli.k8s-dev.blockscout.com
+    annotations:
+      kubernetes.io/ingress.class: internal-and-public
+      nginx.ingress.kubernetes.io/proxy-body-size: 500m
+      nginx.ingress.kubernetes.io/client-max-body-size: "500M"
+      nginx.ingress.kubernetes.io/proxy-buffering: "off"
+      nginx.ingress.kubernetes.io/proxy-connect-timeout: "15m"
+      nginx.ingress.kubernetes.io/proxy-send-timeout: "15m"
+      nginx.ingress.kubernetes.io/proxy-read-timeout: "15m"
+      cert-manager.io/cluster-issuer: "zerossl-prod"
   resources:
     limits:
-      cpu:
-        _default: 200m
-      memory:
-        _default: 512Mi
+      cpu: 200m
+      memory: 512Mi
     requests:
-      cpu:
-        _default: 200m
-      memory:
-        _default: 256Mi
-  environment:
-    NEXT_PUBLIC_APP_ENV:
-      _default: stable
-    NEXT_PUBLIC_APP_INSTANCE:
-      _default: base_goerli
-    NEXT_PUBLIC_NETWORK_NAME:
-      _default: "Base Göerli"
-    NEXT_PUBLIC_NETWORK_SHORT_NAME:
-      _default: Base
-    NEXT_PUBLIC_NETWORK_ID:
-      _default: 420
-    NEXT_PUBLIC_NETWORK_CURRENCY_NAME:
-      _default: Ether
-    NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL:
-      _default: ETH
-    NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS:
-      _default: 18
-    NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE:
-      _default: validation
-    NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED:
-      _default: 'true'
-    NEXT_PUBLIC_NETWORK_LOGO:
-      _default: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-logos/base.svg
-    NEXT_PUBLIC_NETWORK_ICON:
-      _default: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-icons/base.svg
-    NEXT_PUBLIC_FEATURED_NETWORKS:
-      _default: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/featured-networks/base-goerli.json
-    NEXT_PUBLIC_API_HOST:
-      _default: blockscout-optimism-goerli.k8s-dev.blockscout.com
-    NEXT_PUBLIC_APP_HOST:
-      _default: blockscout-optimism-goerli.k8s-dev.blockscout.com
-    NEXT_PUBLIC_API_BASE_PATH:
-      _default: /
-    NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM:
-      _default: https://airtable.com/shrqUAcjgGJ4jU88C
-    NEXT_PUBLIC_LOGOUT_URL:
-      _default: https://blockscoutcom.us.auth0.com/v2/logout
-    NEXT_PUBLIC_STATS_API_HOST:
-      _default: https://stats-optimism-goerli.k8s-dev.blockscout.com
-    NEXT_PUBLIC_API_SPEC_URL:
-      _default: https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml
-    NEXT_PUBLIC_MARKETPLACE_CONFIG_URL:
-      _default: https://raw.githubusercontent.com/blockscout/frontend-configs/dev/configs/marketplace/base-goerli.json
-    NEXT_PUBLIC_NETWORK_EXPLORERS:
-      _default: ''
-    NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND:
-      _default: "linear-gradient(136.9deg,rgb(107 94 236) 1.5%,rgb(0 82 255) 56.84%,rgb(82 62 231) 98.54%)"
-    NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS:
-      _default: ''
-    NEXT_PUBLIC_NETWORK_RPC_URL:
-      _default: https://goerli.optimism.io
-    NEXT_PUBLIC_WEB3_DEFAULT_WALLET:
-      _default: coinbase
-    NEXT_PUBLIC_WEB3_DISABLE_ADD_TOKEN_TO_WALLET:
-      _default: true
-    NEXT_PUBLIC_HOMEPAGE_CHARTS:
-      _default: "['daily_txs']"
-    NEXT_PUBLIC_IS_TESTNET:
-      _default: true
-    NEXT_PUBLIC_VISUALIZE_API_HOST:
-      _default: https://visualizer-test.k8s-dev.blockscout.com
-    NEXT_PUBLIC_CONTRACT_INFO_API_HOST:
-      _default: https://contracts-info-test.k8s-dev.blockscout.com
-    NEXT_PUBLIC_ADMIN_SERVICE_API_HOST:
-      _default: https://admin-rs-test.k8s-dev.blockscout.com
-    NEXT_PUBLIC_IS_L2_NETWORK:
-      _default: "true"
-    NEXT_PUBLIC_L1_BASE_URL:
-      _default: https://eth-goerli.blockscout.com/
-    NEXT_PUBLIC_L2_WITHDRAWAL_URL:
-      _default: https://app.optimism.io/bridge/withdraw
-    NEXT_PUBLIC_GRAPHIQL_TRANSACTION:
-      _default: 0x4a0ed8ddf751a7cb5297f827699117b0f6d21a0b2907594d300dc9fed75c7e62
-    NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS:
-      _default: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS
-    NEXT_PUBLIC_AUTH0_CLIENT_ID:
-      _default: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_AUTH0_CLIENT_ID
-    NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID:
-      _default: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID
+      cpu: 200m
+      memory: 256Mi
+  env:
+    NEXT_PUBLIC_APP_ENV: stable
+    NEXT_PUBLIC_APP_INSTANCE: base_goerli
+    NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE: validation
+    NEXT_PUBLIC_NETWORK_LOGO: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-logos/base.svg
+    NEXT_PUBLIC_NETWORK_ICON: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-icons/base.svg
+    NEXT_PUBLIC_FEATURED_NETWORKS: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/featured-networks/base-goerli.json
+    NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM: https://airtable.com/shrqUAcjgGJ4jU88C
+    NEXT_PUBLIC_LOGOUT_URL: https://blockscoutcom.us.auth0.com/v2/logout
+    NEXT_PUBLIC_API_SPEC_URL: https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml
+    NEXT_PUBLIC_MARKETPLACE_CONFIG_URL: https://raw.githubusercontent.com/blockscout/frontend-configs/dev/configs/marketplace/base-goerli.json
+    NEXT_PUBLIC_NETWORK_EXPLORERS: ''
+    NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND: "linear-gradient(136.9deg,rgb(107 94 236) 1.5%,rgb(0 82 255) 56.84%,rgb(82 62 231) 98.54%)"
+    NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS: ''
+    NEXT_PUBLIC_NETWORK_RPC_URL: https://goerli.optimism.io
+    NEXT_PUBLIC_WEB3_DEFAULT_WALLET: coinbase
+    NEXT_PUBLIC_WEB3_DISABLE_ADD_TOKEN_TO_WALLET: true
+    NEXT_PUBLIC_HOMEPAGE_CHARTS: "['daily_txs']"
+    NEXT_PUBLIC_VISUALIZE_API_HOST: https://visualizer-test.k8s-dev.blockscout.com
+    NEXT_PUBLIC_CONTRACT_INFO_API_HOST: https://contracts-info-test.k8s-dev.blockscout.com
+    NEXT_PUBLIC_ADMIN_SERVICE_API_HOST: https://admin-rs-test.k8s-dev.blockscout.com
+    NEXT_PUBLIC_IS_L2_NETWORK: "true"
+    NEXT_PUBLIC_L1_BASE_URL: https://eth-goerli.blockscout.com/
+    NEXT_PUBLIC_L2_WITHDRAWAL_URL: https://app.optimism.io/bridge/withdraw
+    NEXT_PUBLIC_GRAPHIQL_TRANSACTION: 0x4a0ed8ddf751a7cb5297f827699117b0f6d21a0b2907594d300dc9fed75c7e62
+  envFromSecret:
+    NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS
+    NEXT_PUBLIC_AUTH0_CLIENT_ID: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_AUTH0_CLIENT_ID
+    NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID: ref+vault://deployment-values/blockscout/dev/l2-optimism-goerli?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID

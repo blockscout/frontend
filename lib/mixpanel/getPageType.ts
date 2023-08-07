@@ -33,6 +33,7 @@ const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/l2-output-roots': 'Output roots',
   '/l2-txn-batches': 'Tx batches (L2 blocks)',
   '/l2-withdrawals': 'Withdrawals (L2 > L1)',
+  '/404': '404',
 
   // service routes, added only to make typescript happy
   '/login': 'Login',
@@ -41,7 +42,7 @@ const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/api/csrf': 'Node API: CSRF token',
   '/api/healthz': 'Node API: Health check',
   '/auth/auth0': 'Auth',
-  '/auth/unverified-email': 'Auth',
+  '/auth/unverified-email': 'Unverified email',
 };
 
 export default function getPageType(pathname: Route['pathname']) {

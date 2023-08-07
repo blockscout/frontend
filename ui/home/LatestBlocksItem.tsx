@@ -12,6 +12,7 @@ import type { Block } from 'types/api/block';
 import appConfig from 'configs/app/config';
 import blockIcon from 'icons/block.svg';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
+import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import BlockTimestamp from 'ui/blocks/BlockTimestamp';
 import AddressLink from 'ui/shared/address/AddressLink';
 import Icon from 'ui/shared/chakra/Icon';
@@ -68,7 +69,7 @@ const LatestBlocksItem = ({ block, h, isLoading }: Props) => {
           <>
             <Skeleton isLoaded={ !isLoading }>Reward</Skeleton>
             <Skeleton isLoaded={ !isLoading } color="text_secondary"><span>{ totalReward.toFixed() }</span></Skeleton>
-            <Skeleton isLoaded={ !isLoading }>Miner</Skeleton>
+            <Skeleton isLoaded={ !isLoading } textTransform="capitalize">{ getNetworkValidatorTitle() }</Skeleton>
             <AddressLink type="address" alias={ block.miner.name } hash={ block.miner.hash } truncation="constant" maxW="100%" isLoading={ isLoading }/>
           </>
         ) }
