@@ -7,15 +7,15 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TWatchlist, TWatchlistItem } from 'types/client/account';
+import type { WatchlistAddress } from 'types/api/account';
 
 import WatchlistTableItem from './WatchListTableItem';
 
 interface Props {
-  data?: TWatchlist;
+  data?: Array<WatchlistAddress>;
   isLoading?: boolean;
-  onEditClick: (data: TWatchlistItem) => void;
-  onDeleteClick: (data: TWatchlistItem) => void;
+  onEditClick: (data: WatchlistAddress) => void;
+  onDeleteClick: (data: WatchlistAddress) => void;
 }
 
 const WatchlistTable = ({ data, isLoading, onDeleteClick, onEditClick }: Props) => {

@@ -1,18 +1,20 @@
-import { HStack, VStack, chakra, Flex, Skeleton } from '@chakra-ui/react';
+import { HStack, VStack, Flex, Skeleton, Text } from '@chakra-ui/react';
+import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type { TWatchlistItem } from 'types/client/account';
+import type { WatchlistAddress } from 'types/api/account';
 
 import appConfig from 'configs/app/config';
 import TokensIcon from 'icons/tokens.svg';
-// import WalletIcon from 'icons/wallet.svg';
+import WalletIcon from 'icons/wallet.svg';
+import getCurrencyValue from 'lib/getCurrencyValue';
 import { nbsp } from 'lib/html-entities';
 import AddressSnippet from 'ui/shared/AddressSnippet';
 import Icon from 'ui/shared/chakra/Icon';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import TokenLogo from 'ui/shared/TokenLogo';
 
-const WatchListAddressItem = ({ item, isLoading }: { item: TWatchlistItem; isLoading?: boolean }) => {
+const WatchListAddressItem = ({ item, isLoading }: { item: WatchlistAddress; isLoading?: boolean }) => {
   const infoItemsPaddingLeft = { base: 1, lg: 8 };
 
   const nativeTokenData = React.useMemo(() => ({
@@ -20,6 +22,8 @@ const WatchListAddressItem = ({ item, isLoading }: { item: TWatchlistItem; isLoa
     name: appConfig.network.currency.name || '',
     icon_url: '',
   }), [ ]);
+
+  const { usdBn: usdNative } = getCurrencyValue({ value: item.address_balance, accuracy: 2, accuracyUsd: 2, exchangeRate: item.exchange_rate });
 
   return (
     <VStack spacing={ 2 } align="stretch" fontWeight={ 500 }>
@@ -49,21 +53,21 @@ const WatchListAddressItem = ({ item, isLoading }: { item: TWatchlistItem; isLoa
         <HStack spacing={ 2 } fontSize="sm" pl={ infoItemsPaddingLeft }>
           <Icon as={ TokensIcon } boxSize={ 5 } isLoading={ isLoading } borderRadius="sm"/>
           <Skeleton isLoaded={ !isLoading } display="inline-flex">
-            <span>{ `Tokens:${ nbsp }` + item.tokens_count }</span>
-            { /* api does not provide token prices */ }
-            { /* <Text variant="secondary">{ `${ nbsp }($${ item.tokensUSD } USD)` }</Text> */ }
-            <chakra.span color="text_secondary">{ `${ nbsp }(N/A)` }</chakra.span>
+            <span>{ `Tokens:${ nbsp }` + item.tokens_count + (item.tokens_overflow ? '+' : '') }</span>
+            <Text variant="secondary" fontWeight={ 400 }>{ `${ nbsp }($${ BigNumber(item.tokens_fiat_value).toFormat(2) })` }</Text>
           </Skeleton>
         </HStack>
       ) }
-      { /* api does not provide token prices */ }
-      { /* { item.address_balance && (
-          <HStack spacing={ 0 } fontSize="sm" h={ 6 } pl={ infoItemsPaddingLeft }>
-            <Icon as={ WalletIcon } mr={ 2 } w="16px" h="16px"/>
-            <Text>{ `Net worth:${ nbsp }` }</Text>
-            <Link href="#">{ `$${ item.totalUSD } USD` }</Link>
-          </HStack>
-        ) } */ }
+      { item.tokens_fiat_value && (
+        <HStack spacing={ 2 } fontSize="sm" pl={ infoItemsPaddingLeft }>
+          <Icon boxSize={ 5 } as={ WalletIcon } isLoading={ isLoading }/>
+          <Skeleton isLoaded={ !isLoading } display="inline-flex">
+            <Text>{ `Net worth:${ nbsp }` }
+              { `${ item.tokens_overflow ? '>' : '' }$${ BigNumber(item.tokens_fiat_value).plus((BigNumber(usdNative ? usdNative : '0'))).toFormat(2) }` }
+            </Text>
+          </Skeleton>
+        </HStack>
+      ) }
     </VStack>
   );
 };

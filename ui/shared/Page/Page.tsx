@@ -39,9 +39,13 @@ const Page = ({
   const renderErrorScreen = React.useCallback((error?: Error) => {
     const statusCode = getErrorCauseStatusCode(error) || 500;
     const resourceErrorPayload = getResourceErrorPayload(error);
-    const messageInPayload = resourceErrorPayload && 'message' in resourceErrorPayload && typeof resourceErrorPayload.message === 'string' ?
-      resourceErrorPayload.message :
-      undefined;
+    const messageInPayload =
+      resourceErrorPayload &&
+      typeof resourceErrorPayload === 'object' &&
+      'message' in resourceErrorPayload &&
+      typeof resourceErrorPayload.message === 'string' ?
+        resourceErrorPayload.message :
+        undefined;
 
     const isInvalidTxHash = error?.message?.includes('Invalid tx hash');
     const isBlockConsensus = messageInPayload?.includes('Block lost consensus');
@@ -51,9 +55,13 @@ const Page = ({
     }
 
     if (isBlockConsensus) {
-      const hash = resourceErrorPayload && 'hash' in resourceErrorPayload && typeof resourceErrorPayload.hash === 'string' ?
-        resourceErrorPayload.hash :
-        undefined;
+      const hash =
+        resourceErrorPayload &&
+        typeof resourceErrorPayload === 'object' &&
+        'hash' in resourceErrorPayload &&
+        typeof resourceErrorPayload.hash === 'string' ?
+          resourceErrorPayload.hash :
+          undefined;
       return <PageContent isHomePage={ isHomePage }><AppErrorBlockConsensus hash={ hash } mt="50px"/></PageContent>;
     }
 

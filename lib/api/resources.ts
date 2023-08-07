@@ -474,11 +474,6 @@ export const RESOURCES = {
     path: '/api/v2/key',
   },
 
-  // DEPRECATED
-  old_api: {
-    path: '/api',
-  },
-
   // API V1
   csv_export_txs: {
     path: '/api/v1/transactions-csv',
