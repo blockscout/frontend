@@ -427,11 +427,6 @@ export const RESOURCES = {
     path: '/api/v2/search/check-redirect',
   },
 
-  // GraphQL
-  graphql: {
-    path: '/graphql',
-  },
-
   // L2
   l2_deposits: {
     path: '/api/v2/optimism/deposits',
@@ -479,18 +474,21 @@ export const RESOURCES = {
     path: '/api/v2/key',
   },
 
-  // DEPRECATED
+  // API V1
   csv_export_txs: {
-    path: '/transactions-csv',
+    path: '/api/v1/transactions-csv',
   },
   csv_export_internal_txs: {
-    path: '/internal-transactions-csv',
+    path: '/api/v1/internal-transactions-csv',
   },
   csv_export_token_transfers: {
-    path: '/token-transfers-csv',
+    path: '/api/v1/token-transfers-csv',
   },
   csv_export_logs: {
-    path: '/logs-csv',
+    path: '/api/v1/logs-csv',
+  },
+  graphql: {
+    path: '/api/v1/graphql',
   },
 };
 
