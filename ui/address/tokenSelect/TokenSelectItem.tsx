@@ -18,7 +18,7 @@ const TokenSelectItem = ({ data }: Props) => {
     switch (data.token.type) {
       case 'ERC-20': {
         const tokenDecimals = Number(data.token.decimals) || 18;
-        const text = `${ BigNumber(data.value).dividedBy(10 ** tokenDecimals).toFormat(2) } ${ data.token.symbol }`;
+        const text = `${ BigNumber(data.value).dividedBy(10 ** tokenDecimals).toFormat(2) } ${ data.token.symbol || '' }`;
 
         return (
           <>
@@ -32,7 +32,7 @@ const TokenSelectItem = ({ data }: Props) => {
         );
       }
       case 'ERC-721': {
-        const text = `${ BigNumber(data.value).toFormat() } ${ data.token.symbol }`;
+        const text = `${ BigNumber(data.value).toFormat() } ${ data.token.symbol || '' }`;
         return (
           <TruncatedTextTooltip label={ text }>
             <chakra.span textOverflow="ellipsis" overflow="hidden">
