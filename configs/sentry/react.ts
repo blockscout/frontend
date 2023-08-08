@@ -1,10 +1,12 @@
 import type * as Sentry from '@sentry/react';
 import { BrowserTracing } from '@sentry/tracing';
 
+import appConfig from 'configs/app';
+
 export const config: Sentry.BrowserOptions = {
-  environment: process.env.NEXT_PUBLIC_APP_ENV || process.env.NODE_ENV,
-  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
-  release: process.env.NEXT_PUBLIC_GIT_COMMIT_SHA,
+  environment: appConfig.features.sentry.environment,
+  dsn: appConfig.features.sentry.dsn,
+  release: process.env.NEXT_PUBLIC_GIT_TAG || process.env.NEXT_PUBLIC_GIT_COMMIT_SHA,
   integrations: [ new BrowserTracing() ],
   // We recommend adjusting this value in production, or using tracesSampler
   // for finer control
@@ -55,5 +57,5 @@ export const config: Sentry.BrowserOptions = {
 };
 
 export function configureScope(scope: Sentry.Scope) {
-  scope.setTag('app_instance', process.env.NEXT_PUBLIC_APP_INSTANCE);
+  scope.setTag('app_instance', appConfig.features.sentry.instance);
 }

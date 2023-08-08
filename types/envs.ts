@@ -1,3 +1,5 @@
+// TODO @tom2drum revise unions and features
+
 export type NextPublicEnvs = {
   // network config
   NEXT_PUBLIC_NETWORK_NAME: string;
@@ -38,11 +40,9 @@ export type NextPublicEnvs = {
   NEXT_PUBLIC_AD_TEXT_PROVIDER?: 'coinzilla' | 'none';
 
   // App config
-  NEXT_PUBLIC_APP_INSTANCE?: string;
   NEXT_PUBLIC_APP_PROTOCOL?: 'http' | 'https';
   NEXT_PUBLIC_APP_HOST: string;
   NEXT_PUBLIC_APP_PORT?: string;
-  NEXT_PUBLIC_APP_ENV?: string;
 
   // API config
   NEXT_PUBLIC_API_PROTOCOL?: 'http' | 'https';
@@ -56,8 +56,6 @@ export type NextPublicEnvs = {
   NEXT_PUBLIC_ADMIN_SERVICE_API_HOST?: string;
 
   // external services config
-  NEXT_PUBLIC_SENTRY_DSN?: string;
-  SENTRY_CSP_REPORT_URI?: string;
   NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID?: string;
   NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY?: string;
   NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID?: string;
@@ -71,7 +69,8 @@ export type NextPublicEnvs = {
 & NextPublicEnvsMarketplace
 & NextPublicEnvsRollup
 & NextPublicEnvsBeacon
-& NextPublicEnvsAdsBanner;
+& NextPublicEnvsAdsBanner
+& NextPublicEnvsSentry;
 
 type NextPublicEnvsAccount =
 {
@@ -130,4 +129,18 @@ type NextPublicEnvsAdsBanner =
 } |
 {
   NEXT_PUBLIC_AD_BANNER_PROVIDER?: undefined;
+}
+
+type NextPublicEnvsSentry =
+{
+  NEXT_PUBLIC_SENTRY_DSN: string;
+  SENTRY_CSP_REPORT_URI?: string;
+  NEXT_PUBLIC_APP_INSTANCE?: string;
+  NEXT_PUBLIC_APP_ENV?: string;
+} |
+{
+  NEXT_PUBLIC_SENTRY_DSN?: undefined;
+  SENTRY_CSP_REPORT_URI?: undefined;
+  NEXT_PUBLIC_APP_INSTANCE?: undefined;
+  NEXT_PUBLIC_APP_ENV?: undefined;
 }

@@ -11,7 +11,10 @@ export { default as marketplace } from './marketplace';
 export { default as mixpanel } from './mixpanel';
 export { default as rest_api_docs } from './rest_api_docs';
 export { default as rollup } from './rollup';
+export { default as sentry } from './sentry';
 export { default as sol2uml_diagrams } from './sol2uml_diagrams';
 export { default as stats } from './stats';
 export { default as web3_wallet } from './web3_wallet';
 export { default as verified_tokens } from './verified_tokens';
+
+// TODO @tom2drum camelCase for feature ids

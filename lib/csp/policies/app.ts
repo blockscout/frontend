@@ -10,7 +10,6 @@ const MAIN_DOMAINS = [
   config.features.sol2uml_diagrams.api.endpoint,
 ].filter(Boolean);
 // eslint-disable-next-line no-restricted-properties
-const REPORT_URI = process.env.SENTRY_CSP_REPORT_URI;
 
 export function app(): CspDev.DirectiveDescriptor {
   return {
@@ -109,9 +108,9 @@ export function app(): CspDev.DirectiveDescriptor {
       '*',
     ],
 
-    ...(REPORT_URI && !config.app.isDev ? {
+    ...(config.features.sentry.isEnabled && config.features.sentry.cspReportUrl && !config.app.isDev ? {
       'report-uri': [
-        REPORT_URI,
+        config.features.sentry.cspReportUrl,
       ],
     } : {}),
   };

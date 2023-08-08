@@ -31,7 +31,7 @@ The app instance could be customized by passing following variables to NodeJS en
   - [Blockchain statistics](ENVS.md#blockchain-statistics)
   - [Web3 wallet integration](ENVS.md#web3-wallet-integration-add-token-or-network-to-the-wallet) (add token or network to the wallet)
   - [Verified tokens info](ENVS.md#verified-tokens-info)
-  - Sentry analytics // TODO @tom2drum new feature?
+  - [Sentry error monitoring](ENVS.md#sentry-error-monitoring)
 - 3rd party services configuration
 
 ## App configuration
@@ -41,8 +41,6 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_APP_PROTOCOL | `http \| https` | App url schema | - | `https` | `http` |
 | NEXT_PUBLIC_APP_HOST | `string` | App host | yes | - | `blockscout.com` |
 | NEXT_PUBLIC_APP_PORT | `number` | Port where app is running | - | `3000` | `3001` |
-| NEXT_PUBLIC_APP_ENV | `string` | Current app env (e.g development, review or production). Used for Sentry.io configuration | - | equals to `process.env.NODE_ENV` | `production` | // TODO @tom2drum explain this
-| NEXT_PUBLIC_APP_INSTANCE | `string` | Name of app instance | - | - | `wonderful_kepler` | // TODO @tom2drum explain this
 | NEXT_PUBLIC_USE_NEXT_JS_PROXY | `boolean` | Tells the app to proxy all APIs request through the NextJs app. **We strongly advise not to use it in the production environment** | - | `false` | `true` |
 
 ## Blockchain parameters
@@ -205,7 +203,7 @@ This feature is **enabled by default** with the `coinzilla` ads provider. To swi
 
 | Variable | Type| Description | Is required  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY | `string` | Site key for [reCAPTCHA](https://developers.google.com/recaptcha) service | true | - | `<your-secret>` |
+| NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY | `string` | See [below](ENVS.md#google-recaptcha) | true | - | `<your-secret>` |
 
 ### Google analytics
 
@@ -301,16 +299,21 @@ This feature is **enabled by default** with the `metamask` wallet type. To switc
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_CONTRACT_INFO_API_HOST | `string` | Contract Info API endpoint url | yes | - | `https://contracts-info.services.blockscout.com` |
 
-
-------
-XXXXXXXXX
-------
-
-
-## External services configuration
+### Sentry error monitoring
 
 | Variable | Type| Description | Is required  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_SENTRY_DSN | `string` | Client key for your Sentry.io app | - | - | `<your-secret>` |
+| NEXT_PUBLIC_SENTRY_DSN | `string` | Client key for your Sentry.io app | yes | - | `<your-secret>` |
 | SENTRY_CSP_REPORT_URI | `string` | URL for sending CSP-reports to your Sentry.io app | - | - | `<your-secret>` |
-| NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY | `string` | Site key for [reCAPTCHA](https://developers.google.com/recaptcha) service | - | - | `<your-secret>` |
+| NEXT_PUBLIC_APP_ENV | `string` | Current app env (e.g development, review or production). Passed as `environment` property to Sentry config | - | `process.env.NODE_ENV` | `production` |
+| NEXT_PUBLIC_APP_INSTANCE | `string` | Name of app instance. Used as custom tag `app_instance` value in the main Sentry scope | - | - | `wonderful_kepler` |
+
+## External services configuration
+
+### Google ReCaptcha
+
+For obtaining the variables values please refer to [reCAPTCHA documentation](https://developers.google.com/recaptcha).
+
+| Variable | Type| Description | Is required  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY | `string` | Site key | - | - | `<your-secret>` |
