@@ -1,4 +1,5 @@
 import type { NavItemExternal } from 'types/client/navigation-items';
+import type { NetworkExplorer } from 'types/networks';
 import type { ChainIndicatorId } from 'ui/home/indicators/types';
 
 import { getEnvValue, parseEnvJson } from './utils';
@@ -8,6 +9,14 @@ const HOMEPAGE_PLATE_BACKGROUND_DEFAULT = 'radial-gradient(103.03% 103.03% at 0%
 
 const UI = Object.freeze({
   sidebar: {
+    logo: {
+      'default': getEnvValue(process.env.NEXT_PUBLIC_NETWORK_LOGO),
+      dark: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_LOGO_DARK),
+    },
+    icon: {
+      'default': getEnvValue(process.env.NEXT_PUBLIC_NETWORK_ICON),
+      dark: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_ICON_DARK),
+    },
     otherLinks: parseEnvJson<Array<NavItemExternal>>(getEnvValue(process.env.NEXT_PUBLIC_OTHER_LINKS)) || [],
     featuredNetworks: getEnvValue(process.env.NEXT_PUBLIC_FEATURED_NETWORKS),
   },
@@ -27,6 +36,9 @@ const UI = Object.freeze({
   },
   indexingAlert: {
     isHidden: getEnvValue(process.env.NEXT_PUBLIC_HIDE_INDEXING_ALERT),
+  },
+  explorers: {
+    items: parseEnvJson<Array<NetworkExplorer>>(getEnvValue(process.env.NEXT_PUBLIC_NETWORK_EXPLORERS)) || [],
   },
 });
 

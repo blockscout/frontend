@@ -6,8 +6,10 @@ run();
 async function run() {
   console.log();
   try {
-    // TODO @tom2drum add link to documentation
-    console.log('📋 Here is the list of the features enabled for the running instance. To adjust their configuration, please refer to the documentation.');
+    console.log(`
+📋 Here is the list of the features enabled for the running instance. 
+To adjust their configuration, please refer to the documentation - https://github.com/blockscout/frontend/blob/main/docs/ENVS.md#app-features
+    `);
     Object.entries(config.features)
       .forEach(([ , feature ]) => {
         const mark = feature.isEnabled ? '✔️' : ' ';

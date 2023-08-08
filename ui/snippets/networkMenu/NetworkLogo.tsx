@@ -25,7 +25,7 @@ const LogoFallback = ({ isCollapsed, isSmall }: { isCollapsed?: boolean; isSmall
     xl: isCollapsed ? 'none' : 'block',
   };
 
-  if (config.chain[field].default) {
+  if (config.UI.sidebar[field].default) {
     return <Skeleton w="100%" borderRadius="sm" display={ display }/>;
   }
 
@@ -42,11 +42,11 @@ const LogoFallback = ({ isCollapsed, isSmall }: { isCollapsed?: boolean; isSmall
 
 const NetworkLogo = ({ isCollapsed, onClick }: Props) => {
 
-  const logoSrc = useColorModeValue(config.chain.logo.default, config.chain.logo.dark || config.chain.logo.default);
-  const iconSrc = useColorModeValue(config.chain.icon.default, config.chain.icon.dark || config.chain.icon.default);
+  const logoSrc = useColorModeValue(config.UI.sidebar.logo.default, config.UI.sidebar.logo.dark || config.UI.sidebar.logo.default);
+  const iconSrc = useColorModeValue(config.UI.sidebar.icon.default, config.UI.sidebar.icon.dark || config.UI.sidebar.icon.default);
   const darkModeFilter = { filter: 'brightness(0) invert(1)' };
-  const logoStyle = useColorModeValue({}, !config.chain.logo.dark ? darkModeFilter : {});
-  const iconStyle = useColorModeValue({}, !config.chain.icon.dark ? darkModeFilter : {});
+  const logoStyle = useColorModeValue({}, !config.UI.sidebar.logo.dark ? darkModeFilter : {});
+  const iconStyle = useColorModeValue({}, !config.UI.sidebar.icon.dark ? darkModeFilter : {});
 
   return (
     // TODO switch to <NextLink href={ href } passHref> when main page for network will be ready

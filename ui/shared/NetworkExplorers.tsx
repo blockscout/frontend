@@ -18,7 +18,7 @@ interface Props {
 const NetworkExplorers = ({ className, type, pathParam, hideText }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
 
-  const explorersLinks = config.chain.explorers
+  const explorersLinks = config.UI.explorers.items
     .filter((explorer) => explorer.paths[type])
     .map((explorer) => {
       const url = new URL(explorer.paths[type] + '/' + pathParam, explorer.baseUrl);
