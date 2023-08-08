@@ -51,3 +51,21 @@ test('genesis block', async({ mount, page }) => {
 
   await expect(component).toHaveScreenshot();
 });
+
+test('rootstock custom fields', async({ mount, page }) => {
+  const query = {
+    data: blockMock.rootstock,
+    isLoading: false,
+  } as UseQueryResult<Block, ResourceError>;
+
+  const component = await mount(
+    <TestApp>
+      <BlockDetails query={ query }/>
+    </TestApp>,
+    { hooksConfig },
+  );
+
+  await page.getByText('View details').click();
+
+  await expect(component).toHaveScreenshot();
+});

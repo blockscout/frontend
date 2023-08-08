@@ -58,10 +58,10 @@ const sizes = {
       return {
         fontSize: 'md',
         lineHeight: '24px',
-        padding: '28px 24px',
-        right: '26px',
+        padding: '28px 4px 28px 24px',
+        right: '22px',
         _focusWithin: {
-          padding: '16px 24px 2px 24px',
+          padding: '16px 0 2px 24px',
         },
         '&[data-fancy=true]': {
           right: '36px',
@@ -76,10 +76,10 @@ const sizes = {
       return {
         fontSize: 'md',
         lineHeight: '20px',
-        padding: '18px 16px',
-        right: '18px',
+        padding: '18px 4px 18px 16px',
+        right: '22px',
         _focusWithin: {
-          padding: '10px 16px 2px 16px',
+          padding: '10px 0 2px 16px',
         },
         '&[data-fancy=true]': {
           right: '36px',

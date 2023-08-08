@@ -4,7 +4,7 @@ import { route } from 'nextjs-routes';
 import React from 'react';
 
 import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
-import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
+import TruncatedValue from 'ui/shared/TruncatedValue';
 
 import type { TokenEnhancedData } from '../utils/tokenUtils';
 
@@ -18,28 +18,18 @@ const TokenSelectItem = ({ data }: Props) => {
     switch (data.token.type) {
       case 'ERC-20': {
         const tokenDecimals = Number(data.token.decimals) || 18;
-        const text = `${ BigNumber(data.value).dividedBy(10 ** tokenDecimals).toFormat(2) } ${ data.token.symbol }`;
+        const text = `${ BigNumber(data.value).dividedBy(10 ** tokenDecimals).toFormat(2) } ${ data.token.symbol || '' }`;
 
         return (
           <>
-            <TruncatedTextTooltip label={ text }>
-              <chakra.span textOverflow="ellipsis" overflow="hidden">
-                { text }
-              </chakra.span>
-            </TruncatedTextTooltip>
+            <TruncatedValue value={ text }/>
             { data.token.exchange_rate && <chakra.span ml={ 2 }>@{ Number(data.token.exchange_rate).toLocaleString() }</chakra.span> }
           </>
         );
       }
       case 'ERC-721': {
-        const text = `${ BigNumber(data.value).toFormat() } ${ data.token.symbol }`;
-        return (
-          <TruncatedTextTooltip label={ text }>
-            <chakra.span textOverflow="ellipsis" overflow="hidden">
-              { text }
-            </chakra.span>
-          </TruncatedTextTooltip>
-        );
+        const text = `${ BigNumber(data.value).toFormat() } ${ data.token.symbol || '' }`;
+        return <TruncatedValue value={ text }/>;
       }
       case 'ERC-1155': {
         return (

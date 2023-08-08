@@ -1,4 +1,4 @@
-import { Box, Grid, GridItem, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { Grid, GridItem, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInstance } from 'types/api/token';
@@ -7,7 +7,7 @@ import type { MetadataAttributes } from 'types/client/token';
 import parseMetadata from 'lib/token/parseMetadata';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import LinkExternal from 'ui/shared/LinkExternal';
-import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
+import TruncatedValue from 'ui/shared/TruncatedValue';
 
 import TokenInstanceDivider from './TokenInstanceDivider';
 
@@ -35,22 +35,12 @@ const Item = ({ data, isLoading }: ItemProps) => {
           overflow="hidden"
           href={ data.value }
         >
-          <TruncatedTextTooltip label={ data.value }>
-            <Box w="calc(100% - 16px)" overflow="hidden" textOverflow="ellipsis">
-              <span>{ data.value }</span>
-            </Box>
-          </TruncatedTextTooltip>
+          <TruncatedValue value={ data.value } w="calc(100% - 16px)"/>
         </LinkExternal>
       );
     }
 
-    return (
-      <TruncatedTextTooltip label={ data.value }>
-        <Skeleton isLoaded={ !isLoading } fontSize="sm" w="100%" overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis">
-          { data.value }
-        </Skeleton>
-      </TruncatedTextTooltip>
-    );
+    return <TruncatedValue value={ data.value } fontSize="sm" w="100%" isLoading={ isLoading }/>;
   })();
 
   return (

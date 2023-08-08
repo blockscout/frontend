@@ -9,8 +9,7 @@ import React, { useCallback, useState } from 'react';
 import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
 import { useForm, Controller } from 'react-hook-form';
 
-import type { WatchlistErrors } from 'types/api/account';
-import type { TWatchlistItem } from 'types/client/account';
+import type { WatchlistAddress, WatchlistErrors } from 'types/api/account';
 
 import type { ResourceErrorAccount } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
@@ -28,7 +27,7 @@ const NOTIFICATIONS = [ 'native', 'ERC-20', 'ERC-721' ] as const;
 const TAG_MAX_LENGTH = 35;
 
 type Props = {
-  data?: Partial<TWatchlistItem>;
+  data?: Partial<WatchlistAddress>;
   onSuccess: () => Promise<void>;
   setAlertVisible: (isAlertVisible: boolean) => void;
   isAdd: boolean;

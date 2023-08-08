@@ -1,12 +1,12 @@
 import type { StyleProps } from '@chakra-ui/react';
-import { Flex, chakra, Skeleton, Box, shouldForwardProp } from '@chakra-ui/react';
+import { Flex, chakra, Skeleton, shouldForwardProp } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
 
 import AddressLink from 'ui/shared/address/AddressLink';
 import TokenLogo from 'ui/shared/TokenLogo';
-import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
+import TruncatedValue from 'ui/shared/TruncatedValue';
 
 interface Props {
   data?: Pick<TokenInfo, 'address' | 'icon_url' | 'name' | 'symbol'>;
@@ -44,9 +44,7 @@ const TokenSnippet = ({ data, className, logoSize = 6, isDisabled, hideSymbol, h
       { withSymbol && (
         <Skeleton isLoaded={ !isLoading } color="text_secondary" maxW="20%" display="flex">
           <div>(</div>
-          <TruncatedTextTooltip label={ data.symbol || '' }>
-            <Box overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" wordBreak="break-all">{ data.symbol }</Box>
-          </TruncatedTextTooltip>
+          <TruncatedValue value={ data.symbol } display="block" wordBreak="break-all"/>
           <div>)</div>
         </Skeleton>
       ) }

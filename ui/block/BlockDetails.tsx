@@ -28,6 +28,7 @@ import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkInternal from 'ui/shared/LinkInternal';
 import PrevNext from 'ui/shared/PrevNext';
+import RawDataSnippet from 'ui/shared/RawDataSnippet';
 import TextSeparator from 'ui/shared/TextSeparator';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
@@ -127,7 +128,12 @@ const BlockDetails = ({ query }: Props) => {
   })();
 
   return (
-    <Grid columnGap={ 8 } rowGap={{ base: 3, lg: 3 }} templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }} overflow="hidden">
+    <Grid
+      columnGap={ 8 }
+      rowGap={{ base: 3, lg: 3 }}
+      templateColumns={{ base: 'minmax(0, 1fr)', lg: 'minmax(min-content, 200px) minmax(0, 1fr)' }}
+      overflow="hidden"
+    >
       <DetailsInfoItem
         title={ `${ data.type === 'reorg' ? 'Reorg' : 'Block' } height` }
         hint="The block height of a particular block is defined as the number of blocks preceding it in the blockchain"
@@ -266,6 +272,17 @@ const BlockDetails = ({ query }: Props) => {
           { BigNumber(data.gas_limit).toFormat() }
         </Skeleton>
       </DetailsInfoItem>
+      { data.minimum_gas_price && (
+        <DetailsInfoItem
+          title="Minimum gas price"
+          hint="Minimum gas price"
+          isLoading={ isPlaceholderData }
+        >
+          <Skeleton isLoaded={ !isPlaceholderData }>
+            { BigNumber(data.minimum_gas_price).toFormat() }
+          </Skeleton>
+        </DetailsInfoItem>
+      ) }
       { data.base_fee_per_gas && (
         <DetailsInfoItem
           title="Base fee per gas"
@@ -349,6 +366,59 @@ const BlockDetails = ({ query }: Props) => {
       { isExpanded && !isPlaceholderData && (
         <>
           <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
+
+          { data.bitcoin_merged_mining_header && (
+            <DetailsInfoItem
+              title="Bitcoin merged mining header"
+              hint="Bitcoin merged mining header"
+              flexWrap="nowrap"
+              alignSelf="flex-start"
+            >
+              <Box whiteSpace="nowrap" overflow="hidden">
+                <HashStringShortenDynamic hash={ data.bitcoin_merged_mining_header }/>
+              </Box>
+              <CopyToClipboard text={ data.bitcoin_merged_mining_header }/>
+            </DetailsInfoItem>
+          ) }
+          { data.bitcoin_merged_mining_coinbase_transaction && (
+            <DetailsInfoItem
+              title="Bitcoin merged mining coinbase transaction"
+              hint="Bitcoin merged mining coinbase transaction"
+            >
+              <RawDataSnippet
+                data={ data.bitcoin_merged_mining_coinbase_transaction }
+                isLoading={ isPlaceholderData }
+                showCopy={ false }
+                textareaMaxHeight="100px"
+              />
+            </DetailsInfoItem>
+          ) }
+          { data.bitcoin_merged_mining_merkle_proof && (
+            <DetailsInfoItem
+              title="Bitcoin merged mining Merkle proof"
+              hint="Bitcoin merged mining Merkle proof"
+            >
+              <RawDataSnippet
+                data={ data.bitcoin_merged_mining_merkle_proof }
+                isLoading={ isPlaceholderData }
+                showCopy={ false }
+                textareaMaxHeight="100px"
+              />
+            </DetailsInfoItem>
+          ) }
+          { data.hash_for_merged_mining && (
+            <DetailsInfoItem
+              title="Hash for merged mining"
+              hint="Hash for merged mining"
+              flexWrap="nowrap"
+              alignSelf="flex-start"
+            >
+              <Box whiteSpace="nowrap" overflow="hidden">
+                <HashStringShortenDynamic hash={ data.hash_for_merged_mining }/>
+              </Box>
+              <CopyToClipboard text={ data.hash_for_merged_mining }/>
+            </DetailsInfoItem>
+          ) }
 
           <DetailsInfoItem
             title="Difficulty"
