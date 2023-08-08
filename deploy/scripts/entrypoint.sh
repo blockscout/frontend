@@ -9,5 +9,8 @@ fi
 # Execute script for replace build-time ENVs placeholders with their values at runtime
 ./replace_envs.sh
 
-echo "starting Nextjs"
+# Print list of enabled features
+node ./feature-reporter.js
+
+echo "Starting Next.js application"
 exec "$@"

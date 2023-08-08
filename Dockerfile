@@ -12,6 +12,14 @@ COPY package.json yarn.lock ./
 RUN apk add git
 RUN yarn --frozen-lockfile
 
+
+### FEATURE REPORTER
+# Install dependencies
+WORKDIR /feature-reporter
+COPY ./deploy/tools/feature-reporter/package.json ./deploy/tools/feature-reporter/yarn.lock ./
+RUN yarn --frozen-lockfile
+
+
 ### ENV VARIABLES CHECKER
 # Install dependencies
 WORKDIR /envs-validator
@@ -52,6 +60,13 @@ RUN ./make_envs_template.sh ./docs/ENVS.md
 RUN yarn build
 
 
+### FEATURE REPORTER
+# Copy dependencies and source code, then build
+COPY --from=deps /feature-reporter/node_modules ./deploy/tools/feature-reporter/node_modules
+RUN cd ./deploy/tools/feature-reporter && yarn compile_config
+RUN cd ./deploy/tools/feature-reporter &&  yarn build
+
+
 ### ENV VARIABLES CHECKER
 # Copy dependencies and source code, then build 
 WORKDIR /envs-validator
@@ -81,6 +96,7 @@ COPY --from=builder /app/next.config.js ./
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /envs-validator/index.js ./envs-validator.js
+COPY --from=builder /app/deploy/tools/feature-reporter/index.js ./feature-reporter.js
 
 # Copy scripts and ENVs file
 COPY --chmod=+x ./deploy/scripts/entrypoint.sh .

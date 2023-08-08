@@ -3,6 +3,7 @@ import stripTrailingSlash from 'lib/stripTrailingSlash';
 import { getEnvValue } from './utils';
 
 // TODO @tom2drum make API HOST required and remove fallback to blockscout
+// TODO @tom2drum strip trailing slashes
 const apiHost = getEnvValue(process.env.NEXT_PUBLIC_API_HOST);
 const apiSchema = getEnvValue(process.env.NEXT_PUBLIC_API_PROTOCOL) || 'https';
 const apiPort = getEnvValue(process.env.NEXT_PUBLIC_API_PORT);
