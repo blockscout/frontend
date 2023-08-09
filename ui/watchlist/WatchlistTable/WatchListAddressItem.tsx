@@ -18,7 +18,6 @@ const WatchListAddressItem = ({ item, isLoading }: { item: WatchlistAddress; isL
   const infoItemsPaddingLeft = { base: 1, lg: 8 };
 
   const nativeTokenData = React.useMemo(() => ({
-    address: config.chain.currency.address || '',
     name: config.chain.currency.name || '',
     icon_url: '',
   }), [ ]);
@@ -29,15 +28,13 @@ const WatchListAddressItem = ({ item, isLoading }: { item: WatchlistAddress; isL
     <VStack spacing={ 2 } align="stretch" fontWeight={ 500 }>
       <AddressSnippet address={ item.address } isLoading={ isLoading }/>
       <Flex fontSize="sm" pl={ infoItemsPaddingLeft } flexWrap="wrap" alignItems="center" rowGap={ 1 }>
-        { config.chain.currency.address && (
-          <TokenLogo
-            data={ nativeTokenData }
-            boxSize={ 5 }
-            borderRadius="sm"
-            mr={ 2 }
-            isLoading={ isLoading }
-          />
-        ) }
+        <TokenLogo
+          data={ nativeTokenData }
+          boxSize={ 5 }
+          borderRadius="sm"
+          mr={ 2 }
+          isLoading={ isLoading }
+        />
         <Skeleton isLoaded={ !isLoading } whiteSpace="pre" display="inline-flex">
           <span>{ config.chain.currency.symbol } balance: </span>
           <CurrencyValue

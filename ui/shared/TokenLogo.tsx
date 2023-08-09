@@ -6,7 +6,7 @@ import type { TokenInfo } from 'types/api/token';
 import TokenLogoPlaceholder from 'ui/shared/TokenLogoPlaceholder';
 
 export interface Props {
-  data?: Pick<TokenInfo, 'address' | 'icon_url' | 'name'>;
+  data?: Pick<TokenInfo, | 'icon_url' | 'name'>;
   className?: string;
   isLoading?: boolean;
 }

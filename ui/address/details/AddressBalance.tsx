@@ -65,7 +65,6 @@ const AddressBalance = ({ data, isLoading }: Props) => {
   });
 
   const tokenData = React.useMemo(() => ({
-    address: config.chain.currency.address || '',
     name: config.chain.currency.name || '',
     icon_url: '',
   }), [ ]);

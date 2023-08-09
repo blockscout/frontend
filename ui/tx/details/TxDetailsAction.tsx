@@ -39,14 +39,14 @@ const TxDetailsAction = ({ action }: Props) => {
       const amount1 = BigNumber(data.amount1).toFormat();
       const [ text0, text1 ] = getActionText(type);
       const token0 = {
-        address: data.symbol0 === 'Ether' ? config.chain.currency.address || '' : data.address0,
+        address: data.symbol0 === 'Ether' ? '' : data.address0,
         name: data.symbol0 === 'Ether' ? config.chain.currency.symbol || null : data.symbol0,
         type: 'ERC-20',
         symbol: null,
         icon_url: null,
       };
       const token1 = {
-        address: data.symbol1 === 'Ether' ? config.chain.currency.address || '' : data.address1,
+        address: data.symbol1 === 'Ether' ? '' : data.address1,
         name: data.symbol1 === 'Ether' ? config.chain.currency.symbol || null : data.symbol1,
         type: 'ERC-20',
         symbol: null,

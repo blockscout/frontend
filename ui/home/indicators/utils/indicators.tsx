@@ -28,7 +28,6 @@ const dailyTxsIndicator: TChainIndicator<'homepage_chart_txs'> = {
 };
 
 const nativeTokenData = {
-  address: config.chain.currency.address || '',
   name: config.chain.currency.name || '',
   icon_url: '',
 };
