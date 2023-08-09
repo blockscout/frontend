@@ -1,6 +1,6 @@
 import { compile } from 'path-to-regexp';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 
 import isNeedProxy from './isNeedProxy';
 import { RESOURCES } from './resources';
@@ -12,8 +12,8 @@ export default function buildUrl<R extends ResourceName>(
   queryParams?: Record<string, string | Array<string> | number | null | undefined>,
 ): string {
   const resource: ApiResource = RESOURCES[resourceName];
-  const baseUrl = isNeedProxy() ? appConfig.app.baseUrl : (resource.endpoint || appConfig.api.endpoint);
-  const basePath = resource.basePath !== undefined ? resource.basePath : appConfig.api.basePath;
+  const baseUrl = isNeedProxy() ? config.app.baseUrl : (resource.endpoint || config.api.endpoint);
+  const basePath = resource.basePath !== undefined ? resource.basePath : config.api.basePath;
   const path = isNeedProxy() ? '/node-api/proxy' + basePath + resource.path : basePath + resource.path;
   const url = new URL(compile(path)(pathParams), baseUrl);
 

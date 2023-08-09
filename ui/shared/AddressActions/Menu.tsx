@@ -2,7 +2,7 @@ import { Button, Menu, MenuButton, MenuList, Icon, Flex, Skeleton } from '@chakr
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import iconArrow from 'icons/arrows/east-mini.svg';
 import useIsAccountActionAllowed from 'lib/hooks/useIsAccountActionAllowed';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -37,7 +37,7 @@ const AddressActions = ({ isLoading }: Props) => {
         </MenuButton>
       </Skeleton>
       <MenuList minWidth="180px" zIndex="popover">
-        { isTokenPage && appConfig.contractInfoApi.endpoint && appConfig.adminServiceApi.endpoint && appConfig.account.isEnabled &&
+        { isTokenPage && config.features.addressVerification.isEnabled &&
           <TokenInfoMenuItem py={ 2 } px={ 4 } hash={ hash } onBeforeClick={ isAccountActionAllowed }/> }
         <PrivateTagMenuItem py={ 2 } px={ 4 } hash={ hash } onBeforeClick={ isAccountActionAllowed }/>
         <PublicTagMenuItem py={ 2 } px={ 4 } hash={ hash } onBeforeClick={ isAccountActionAllowed }/>

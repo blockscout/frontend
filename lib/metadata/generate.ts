@@ -2,7 +2,7 @@ import type { Route } from 'nextjs-routes';
 
 import type { ApiData, Metadata } from './types';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import getNetworkTitle from 'lib/networks/getNetworkTitle';
 
 import compileValue from './compileValue';
@@ -12,7 +12,7 @@ export default function generate<R extends Route>(route: R, apiData?: ApiData<R>
   const params = {
     ...route.query,
     ...apiData,
-    network_name: appConfig.network.name,
+    network_name: config.chain.name,
     network_title: getNetworkTitle(),
   };
 

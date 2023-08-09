@@ -6,7 +6,7 @@ import type { AddressWithdrawalsItem } from 'types/api/address';
 import type { BlockWithdrawalsItem } from 'types/api/block';
 import type { WithdrawalsItem } from 'types/api/withdrawals';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import blockIcon from 'icons/block.svg';
 import dayjs from 'lib/date/dayjs';
 import Address from 'ui/shared/address/Address';
@@ -85,7 +85,7 @@ const WithdrawalsListItem = ({ item, isLoading, view }: Props) => {
 
           <ListItemMobileGrid.Label isLoading={ isLoading }>Value</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <CurrencyValue value={ item.amount } currency={ appConfig.beaconChain.currencySymbol } isLoading={ isLoading }/>
+            <CurrencyValue value={ item.amount } currency={ config.features.beaconChain.currency.symbol } isLoading={ isLoading }/>
           </ListItemMobileGrid.Value>
         </>
       ) }

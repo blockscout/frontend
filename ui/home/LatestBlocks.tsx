@@ -7,7 +7,7 @@ import React from 'react';
 import type { SocketMessage } from 'lib/socket/types';
 import type { Block } from 'types/api/block';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp } from 'lib/html-entities';
@@ -24,11 +24,11 @@ const BLOCK_HEIGHT_L2 = 112;
 const BLOCK_MARGIN = 12;
 
 const LatestBlocks = () => {
-  const blockHeight = appConfig.L2.isL2Network ? BLOCK_HEIGHT_L2 : BLOCK_HEIGHT_L1;
+  const blockHeight = config.features.rollup.isEnabled ? BLOCK_HEIGHT_L2 : BLOCK_HEIGHT_L1;
   const isMobile = useIsMobile();
   // const blocksMaxCount = isMobile ? 2 : 3;
   let blocksMaxCount: number;
-  if (appConfig.L2.isL2Network) {
+  if (config.features.rollup.isEnabled) {
     blocksMaxCount = isMobile ? 4 : 5;
   } else {
     blocksMaxCount = isMobile ? 2 : 3;

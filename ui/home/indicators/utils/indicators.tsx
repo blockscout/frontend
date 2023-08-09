@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { TChainIndicator } from '../types';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import globeIcon from 'icons/globe.svg';
 import txIcon from 'icons/transactions.svg';
 import { sortByDateDesc } from 'ui/shared/chart/utils/sorts';
@@ -28,24 +28,23 @@ const dailyTxsIndicator: TChainIndicator<'homepage_chart_txs'> = {
 };
 
 const nativeTokenData = {
-  address: appConfig.network.currency.address || '',
-  name: appConfig.network.currency.name || '',
+  name: config.chain.currency.name || '',
   icon_url: '',
 };
 
 const coinPriceIndicator: TChainIndicator<'homepage_chart_market'> = {
   id: 'coin_price',
-  title: `${ appConfig.network.currency.symbol } price`,
+  title: `${ config.chain.currency.symbol } price`,
   value: (stats) => '$' + Number(stats.coin_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }),
   icon: <TokenLogo data={ nativeTokenData } boxSize={ 6 }/>,
-  hint: `${ appConfig.network.currency.symbol } token daily price in USD.`,
+  hint: `${ config.chain.currency.symbol } token daily price in USD.`,
   api: {
     resourceName: 'homepage_chart_market',
     dataFn: (response) => ([ {
       items: response.chart_data
         .map((item) => ({ date: new Date(item.date), value: Number(item.closing_price) }))
         .sort(sortByDateDesc),
-      name: `${ appConfig.network.currency.symbol } price`,
+      name: `${ config.chain.currency.symbol } price`,
       valueFormatter: (x: number) => '$' + x.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }),
     } ]),
   },

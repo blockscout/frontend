@@ -3,7 +3,7 @@ import _mapValues from 'lodash/mapValues';
 
 import type { NetworkExplorer } from 'types/networks';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 
 // for easy .env update
 // const NETWORK_EXPLORERS = JSON.stringify([
@@ -29,7 +29,7 @@ const stripTrailingSlash = (str: string) => str[str.length - 1] === '/' ? str.sl
 const addLeadingSlash = (str: string) => str[0] === '/' ? str : '/' + str;
 
 const networkExplorers: Array<NetworkExplorer> = (() => {
-  return appConfig.network.explorers.map((explorer) => ({
+  return config.UI.explorers.items.map((explorer) => ({
     ...explorer,
     baseUrl: stripTrailingSlash(explorer.baseUrl),
     paths: _mapValues(explorer.paths, _compose(stripTrailingSlash, addLeadingSlash)),

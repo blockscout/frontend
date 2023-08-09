@@ -4,7 +4,7 @@ import React from 'react';
 import type { SocketMessage } from 'lib/socket/types';
 import type { Address } from 'types/api/address';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import { getResourceKey } from 'lib/api/useApiQuery';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
@@ -65,15 +65,14 @@ const AddressBalance = ({ data, isLoading }: Props) => {
   });
 
   const tokenData = React.useMemo(() => ({
-    address: appConfig.network.currency.address || '',
-    name: appConfig.network.currency.name || '',
+    name: config.chain.currency.name || '',
     icon_url: '',
   }), [ ]);
 
   return (
     <DetailsInfoItem
       title="Balance"
-      hint={ `Address balance in ${ appConfig.network.currency.symbol }. Doesn't include ERC20, ERC721 and ERC1155 tokens` }
+      hint={ `Address balance in ${ config.chain.currency.symbol }. Doesn't include ERC20, ERC721 and ERC1155 tokens` }
       flexWrap="nowrap"
       alignItems="flex-start"
       isLoading={ isLoading }
@@ -88,8 +87,8 @@ const AddressBalance = ({ data, isLoading }: Props) => {
       <CurrencyValue
         value={ data.coin_balance || '0' }
         exchangeRate={ data.exchange_rate }
-        decimals={ String(appConfig.network.currency.decimals) }
-        currency={ appConfig.network.currency.symbol }
+        decimals={ String(config.chain.currency.decimals) }
+        currency={ config.chain.currency.symbol }
         accuracyUsd={ 2 }
         accuracy={ 8 }
         flexWrap="wrap"

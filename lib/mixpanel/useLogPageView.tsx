@@ -2,7 +2,7 @@ import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
 import getPageType from './getPageType';
@@ -18,7 +18,7 @@ export default function useLogPageView(isInited: boolean) {
   const page = getQueryParamString(router.query.page);
 
   React.useEffect(() => {
-    if (!appConfig.mixpanel.projectToken || !isInited) {
+    if (!config.features.mixpanel.isEnabled || !isInited) {
       return;
     }
 

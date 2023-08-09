@@ -5,7 +5,7 @@ import type { AddressWithdrawalsItem } from 'types/api/address';
 import type { BlockWithdrawalsItem } from 'types/api/block';
 import type { WithdrawalsItem } from 'types/api/withdrawals';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import { default as Thead } from 'ui/shared/TheadSticky';
 
 import WithdrawalsTableItem from './WithdrawalsTableItem';
@@ -34,7 +34,7 @@ const WithdrawalsTable = ({ items, isLoading, top, view = 'list' }: Props) => {
           { view !== 'block' && <Th w="25%">Block</Th> }
           { view !== 'address' && <Th w="25%">To</Th> }
           { view !== 'block' && <Th w="25%">Age</Th> }
-          <Th w="25%">{ `Value ${ appConfig.beaconChain.currencySymbol }` }</Th>
+          <Th w="25%">{ `Value ${ config.features.beaconChain.currency.symbol }` }</Th>
         </Tr>
       </Thead>
       <Tbody>

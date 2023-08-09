@@ -1,9 +1,9 @@
 import type CspDev from 'csp-dev';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 
 export function walletConnect(): CspDev.DirectiveDescriptor {
-  if (!appConfig.walletConnect.projectId || !appConfig.network.rpcUrl) {
+  if (!config.features.blockchainInteraction.isEnabled) {
     return {};
   }
 

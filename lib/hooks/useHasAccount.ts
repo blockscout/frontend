@@ -1,11 +1,11 @@
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
 import * as cookies from 'lib/cookies';
 
 export default function useHasAccount() {
   const appProps = useAppContext();
 
-  if (!appConfig.account.isEnabled) {
+  if (!config.features.account.isEnabled) {
     return false;
   }
 

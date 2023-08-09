@@ -3,13 +3,13 @@ import type { WindowProvider } from 'wagmi';
 
 import 'wagmi/window';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 
 export default function useProvider() {
   const [ provider, setProvider ] = React.useState<WindowProvider>();
 
   React.useEffect(() => {
-    if (!('ethereum' in window && window.ethereum)) {
+    if (!('ethereum' in window && window.ethereum) || !config.features.web3Wallet.isEnabled) {
       return;
     }
 
@@ -18,11 +18,11 @@ export default function useProvider() {
     const providers = Array.isArray(window.ethereum.providers) ? window.ethereum.providers : [ window.ethereum ];
 
     providers.forEach(async(provider) => {
-      if (appConfig.web3.defaultWallet === 'coinbase' && provider.isCoinbaseWallet) {
+      if (config.features.web3Wallet.defaultWallet === 'coinbase' && provider.isCoinbaseWallet) {
         return setProvider(provider);
       }
 
-      if (appConfig.web3.defaultWallet === 'metamask' && provider.isMetaMask) {
+      if (config.features.web3Wallet.defaultWallet === 'metamask' && provider.isMetaMask) {
         return setProvider(provider);
       }
     });

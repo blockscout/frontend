@@ -3,7 +3,7 @@ import { useAccount, useWalletClient, useNetwork, useSwitchNetwork } from 'wagmi
 
 import type { SmartContractWriteMethod } from 'types/api/contract';
 
-import config from 'configs/app/config';
+import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import ContractMethodsAccordion from 'ui/address/contract/ContractMethodsAccordion';
 import ContentLoader from 'ui/shared/ContentLoader';
@@ -46,8 +46,8 @@ const ContractWrite = ({ addressHash, isProxy, isCustomAbi }: Props) => {
       throw new Error('Wallet is not connected');
     }
 
-    if (chain?.id && String(chain.id) !== config.network.id) {
-      await switchNetworkAsync?.(Number(config.network.id));
+    if (chain?.id && String(chain.id) !== config.chain.id) {
+      await switchNetworkAsync?.(Number(config.chain.id));
     }
 
     if (!contractAbi) {

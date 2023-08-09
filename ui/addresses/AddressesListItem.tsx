@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { AddressesItem } from 'types/api/addresses';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
@@ -26,7 +26,7 @@ const AddressesListItem = ({
   isLoading,
 }: Props) => {
 
-  const addressBalance = BigNumber(item.coin_balance).div(BigNumber(10 ** appConfig.network.currency.decimals));
+  const addressBalance = BigNumber(item.coin_balance).div(BigNumber(10 ** config.chain.currency.decimals));
 
   return (
     <ListItemMobile rowGap={ 3 }>
@@ -52,7 +52,7 @@ const AddressesListItem = ({
         <Tag key={ tag.label } isLoading={ isLoading }>{ tag.display_name }</Tag>
       )) }
       <HStack spacing={ 3 }>
-        <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>{ `Balance ${ appConfig.network.currency.symbol }` }</Skeleton>
+        <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>{ `Balance ${ config.chain.currency.symbol }` }</Skeleton>
         <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary">
           <span>{ addressBalance.dp(8).toFormat() }</span>
         </Skeleton>

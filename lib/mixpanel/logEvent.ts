@@ -1,6 +1,6 @@
 import mixpanel from 'mixpanel-browser';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 
 import type { EventTypes, EventPayload } from './utils';
 
@@ -12,7 +12,7 @@ export default function logEvent<EventType extends EventTypes>(
   optionsOrCallback?: TrackFnArgs[2],
   callback?: TrackFnArgs[3],
 ) {
-  if (!appConfig.mixpanel.projectToken) {
+  if (!config.features.mixpanel.isEnabled) {
     return;
   }
   mixpanel.track(type, properties, optionsOrCallback, callback);

@@ -5,7 +5,7 @@ import React from 'react';
 
 import type { VerifiedAddress, TokenInfoApplication, TokenInfoApplications, VerifiedAddressResponse } from 'types/api/account';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -37,13 +37,13 @@ const VerifiedAddresses = () => {
   const queryClient = useQueryClient();
 
   const addressesQuery = useApiQuery('verified_addresses', {
-    pathParams: { chainId: appConfig.network.id },
+    pathParams: { chainId: config.chain.id },
     queryOptions: {
       placeholderData: { verifiedAddresses: Array(3).fill(VERIFIED_ADDRESS) },
     },
   });
   const applicationsQuery = useApiQuery('token_info_applications', {
-    pathParams: { chainId: appConfig.network.id, id: undefined },
+    pathParams: { chainId: config.chain.id, id: undefined },
     queryOptions: {
       placeholderData: { submissions: Array(3).fill(TOKEN_INFO_APPLICATION) },
       select: (data) => {
@@ -70,7 +70,7 @@ const VerifiedAddresses = () => {
 
   const handleAddressSubmit = React.useCallback((newItem: VerifiedAddress) => {
     queryClient.setQueryData(
-      getResourceKey('verified_addresses', { pathParams: { chainId: appConfig.network.id } }),
+      getResourceKey('verified_addresses', { pathParams: { chainId: config.chain.id } }),
       (prevData: VerifiedAddressResponse | undefined) => {
         if (!prevData) {
           return { verifiedAddresses: [ newItem ] };
@@ -85,7 +85,7 @@ const VerifiedAddresses = () => {
   const handleApplicationSubmit = React.useCallback((newItem: TokenInfoApplication) => {
     setSelectedAddress(undefined);
     queryClient.setQueryData(
-      getResourceKey('token_info_applications', { pathParams: { chainId: appConfig.network.id, id: undefined } }),
+      getResourceKey('token_info_applications', { pathParams: { chainId: config.chain.id, id: undefined } }),
       (prevData: TokenInfoApplications | undefined) => {
         if (!prevData) {
           return { submissions: [ newItem ] };
@@ -174,7 +174,7 @@ const VerifiedAddresses = () => {
           Before starting, make sure that:
         </chakra.p>
         <OrderedList ml={ 6 }>
-          <ListItem>The source code for the smart contract is deployed on “{ appConfig.network.name }”.</ListItem>
+          <ListItem>The source code for the smart contract is deployed on “{ config.chain.name }”.</ListItem>
           <ListItem>
             <span>The source code is verified (if not yet verified, you can use </span>
             <Link href="https://docs.blockscout.com/for-users/verifying-a-smart-contract" target="_blank">this tool</Link>

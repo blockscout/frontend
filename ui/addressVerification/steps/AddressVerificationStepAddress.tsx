@@ -12,7 +12,7 @@ import type {
   RootFields,
 } from '../types';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 import LinkInternal from 'ui/shared/LinkInternal';
@@ -49,7 +49,7 @@ const AddressVerificationStepAddress = ({ defaultAddress, onContinue }: Props) =
       };
       const response = await apiFetch<'address_verification', AddressCheckResponseSuccess, AddressVerificationResponseError>('address_verification', {
         fetchParams: { method: 'POST', body },
-        pathParams: { chainId: appConfig.network.id, type: ':prepare' },
+        pathParams: { chainId: config.chain.id, type: ':prepare' },
       });
 
       if (response.status !== 'SUCCESS') {

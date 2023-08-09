@@ -9,7 +9,7 @@ import React from 'react';
 
 import type { Block } from 'types/api/block';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import blockIcon from 'icons/block.svg';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
@@ -65,7 +65,7 @@ const LatestBlocksItem = ({ block, h, isLoading }: Props) => {
       <Grid gridGap={ 2 } templateColumns="auto minmax(0, 1fr)" fontSize="sm">
         <Skeleton isLoaded={ !isLoading }>Txn</Skeleton>
         <Skeleton isLoaded={ !isLoading } color="text_secondary"><span>{ block.tx_count }</span></Skeleton>
-        { !appConfig.L2.isL2Network && (
+        { !config.features.rollup.isEnabled && (
           <>
             <Skeleton isLoaded={ !isLoading }>Reward</Skeleton>
             <Skeleton isLoaded={ !isLoading } color="text_secondary"><span>{ totalReward.toFixed() }</span></Skeleton>

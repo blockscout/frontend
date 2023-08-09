@@ -10,7 +10,7 @@ import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import rightArrowIcon from 'icons/arrows/east.svg';
 import transactionIcon from 'icons/transactions.svg';
 import getValueWithUnit from 'lib/getValueWithUnit';
@@ -117,7 +117,7 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
         </Grid>
         <Box>
           <Skeleton isLoaded={ !isLoading } mb={ 2 }>
-            <Text as="span" whiteSpace="pre">{ appConfig.network.currency.symbol } </Text>
+            <Text as="span" whiteSpace="pre">{ config.chain.currency.symbol } </Text>
             <Text as="span" variant="secondary">{ getValueWithUnit(tx.value).dp(5).toFormat() }</Text>
           </Skeleton>
           <Skeleton isLoaded={ !isLoading }>

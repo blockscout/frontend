@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { NavItemInternal, NavItem, NavGroupItem } from 'types/client/navigation-items';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import abiIcon from 'icons/ABI.svg';
 import apiKeysIcon from 'icons/API.svg';
 import appsIcon from 'icons/apps.svg';
@@ -43,9 +43,6 @@ export function isInternalItem(item: NavItem): item is NavItemInternal {
 }
 
 export default function useNavItems(): ReturnType {
-  const isMarketplaceAvailable = Boolean(appConfig.marketplace.configUrl && appConfig.network.rpcUrl);
-  const hasAPIDocs = appConfig.apiDoc.specUrl;
-
   const router = useRouter();
   const pathname = router.pathname;
 
@@ -74,7 +71,7 @@ export default function useNavItems(): ReturnType {
     // eslint-disable-next-line max-len
      { text: 'Verified contracts', nextRoute: { pathname: '/verified-contracts' as const }, icon: verifiedIcon, isActive: pathname === '/verified-contracts' };
 
-    if (appConfig.L2.isL2Network) {
+    if (config.features.rollup.isEnabled) {
       blockchainNavItems = [
         [
           txs,
@@ -101,7 +98,7 @@ export default function useNavItems(): ReturnType {
         blocks,
         topAccounts,
         verifiedContracts,
-        appConfig.beaconChain.hasBeaconChain && {
+        config.features.beaconChain.isEnabled && {
           text: 'Withdrawals',
           nextRoute: { pathname: '/withdrawals' as const },
           icon: withdrawalsIcon,
@@ -111,18 +108,18 @@ export default function useNavItems(): ReturnType {
     }
 
     const apiNavItems: Array<NavItem> = [
-      hasAPIDocs ? {
+      config.features.restApiDocs.isEnabled ? {
         text: 'REST API',
         nextRoute: { pathname: '/api-docs' as const },
         icon: apiDocsIcon,
         isActive: pathname === '/api-docs',
       } : null,
-      {
+      config.features.graphqlApiDocs.isEnabled ? {
         text: 'GraphQL',
         nextRoute: { pathname: '/graphiql' as const },
         icon: graphQLIcon,
         isActive: pathname === '/graphiql',
-      },
+      } : null,
       {
         text: 'RPC API',
         icon: rpcIcon,
@@ -148,13 +145,13 @@ export default function useNavItems(): ReturnType {
         icon: tokensIcon,
         isActive: pathname.startsWith('/token'),
       },
-      isMarketplaceAvailable ? {
+      config.features.marketplace.isEnabled ? {
         text: 'Apps',
         nextRoute: { pathname: '/apps' as const },
         icon: appsIcon,
         isActive: pathname.startsWith('/app'),
       } : null,
-      appConfig.statsApi.endpoint ? {
+      config.features.stats.isEnabled ? {
         text: 'Charts & stats',
         nextRoute: { pathname: '/stats' as const },
         icon: statsIcon,
@@ -166,10 +163,10 @@ export default function useNavItems(): ReturnType {
         isActive: apiNavItems.some(item => isInternalItem(item) && item.isActive),
         subItems: apiNavItems,
       },
-      appConfig.navigation.otherLinks.length > 0 ? {
+      config.UI.sidebar.otherLinks.length > 0 ? {
         text: 'Other',
         icon: gearIcon,
-        subItems: appConfig.navigation.otherLinks,
+        subItems: config.UI.sidebar.otherLinks,
       } : null,
     ].filter(Boolean);
 
@@ -202,7 +199,7 @@ export default function useNavItems(): ReturnType {
         icon: abiIcon,
         isActive: pathname === '/account/custom-abi',
       },
-      appConfig.contractInfoApi.endpoint && appConfig.adminServiceApi.endpoint && {
+      config.features.addressVerification.isEnabled && {
         text: 'Verified addrs',
         nextRoute: { pathname: '/account/verified-addresses' as const },
         icon: verifiedIcon,
@@ -218,5 +215,5 @@ export default function useNavItems(): ReturnType {
     };
 
     return { mainNavItems, accountNavItems, profileItem };
-  }, [ hasAPIDocs, isMarketplaceAvailable, pathname ]);
+  }, [ pathname ]);
 }

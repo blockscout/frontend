@@ -7,7 +7,6 @@ export type NextPublicEnvs = {
   NEXT_PUBLIC_NETWORK_CURRENCY_NAME?: string;
   NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL?: string;
   NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS?: string;
-  NEXT_PUBLIC_NETWORK_TOKEN_ADDRESS?: string;
   NEXT_PUBLIC_NETWORK_ASSETS_PATHNAME?: string;
   NEXT_PUBLIC_NETWORK_LOGO?: string;
   NEXT_PUBLIC_NETWORK_LOGO_DARK?: string;
@@ -34,18 +33,13 @@ export type NextPublicEnvs = {
   NEXT_PUBLIC_HOMEPAGE_SHOW_GAS_TRACKER?: 'true' | 'false';
   NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME?: 'true' | 'false';
 
-  // Ads config
-  NEXT_PUBLIC_AD_ADBUTLER_CONFIG_DESKTOP?: string;
-  NEXT_PUBLIC_AD_ADBUTLER_CONFIG_MOBILE?: string;
-  NEXT_PUBLIC_AD_BANNER_PROVIDER?: 'slise' | 'adbutler' | 'coinzilla' | 'none';
+  // Text ads config
   NEXT_PUBLIC_AD_TEXT_PROVIDER?: 'coinzilla' | 'none';
 
   // App config
-  NEXT_PUBLIC_APP_INSTANCE?: string;
   NEXT_PUBLIC_APP_PROTOCOL?: 'http' | 'https';
   NEXT_PUBLIC_APP_HOST: string;
   NEXT_PUBLIC_APP_PORT?: string;
-  NEXT_PUBLIC_APP_ENV?: string;
 
   // API config
   NEXT_PUBLIC_API_PROTOCOL?: 'http' | 'https';
@@ -56,11 +50,8 @@ export type NextPublicEnvs = {
   NEXT_PUBLIC_STATS_API_HOST?: string;
   NEXT_PUBLIC_VISUALIZE_API_HOST?: string;
   NEXT_PUBLIC_CONTRACT_INFO_API_HOST?: string;
-  NEXT_PUBLIC_ADMIN_SERVICE_API_HOST?: string;
 
   // external services config
-  NEXT_PUBLIC_SENTRY_DSN?: string;
-  SENTRY_CSP_REPORT_URI?: string;
   NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID?: string;
   NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY?: string;
   NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID?: string;
@@ -73,7 +64,9 @@ export type NextPublicEnvs = {
 & NextPublicEnvsAccount
 & NextPublicEnvsMarketplace
 & NextPublicEnvsRollup
-& NextPublicEnvsBeacon;
+& NextPublicEnvsBeacon
+& NextPublicEnvsAdsBanner
+& NextPublicEnvsSentry;
 
 type NextPublicEnvsAccount =
 {
@@ -87,6 +80,7 @@ type NextPublicEnvsAccount =
   NEXT_PUBLIC_AUTH_URL?: string;
   NEXT_PUBLIC_LOGOUT_URL: string;
   NEXT_PUBLIC_AUTH0_CLIENT_ID: string;
+  NEXT_PUBLIC_ADMIN_SERVICE_API_HOST?: string;
 }
 
 type NextPublicEnvsMarketplace =
@@ -119,4 +113,31 @@ type NextPublicEnvsBeacon =
 {
   NEXT_PUBLIC_HAS_BEACON_CHAIN?: undefined;
   NEXT_PUBLIC_BEACON_CHAIN_CURRENCY_SYMBOL?: undefined;
+}
+
+type NextPublicEnvsAdsBanner =
+{
+  NEXT_PUBLIC_AD_BANNER_PROVIDER: 'slise' | 'coinzilla' | 'none';
+} |
+{
+  NEXT_PUBLIC_AD_BANNER_PROVIDER: 'adbutler';
+  NEXT_PUBLIC_AD_ADBUTLER_CONFIG_DESKTOP: string;
+  NEXT_PUBLIC_AD_ADBUTLER_CONFIG_MOBILE: string;
+} |
+{
+  NEXT_PUBLIC_AD_BANNER_PROVIDER?: undefined;
+}
+
+type NextPublicEnvsSentry =
+{
+  NEXT_PUBLIC_SENTRY_DSN: string;
+  SENTRY_CSP_REPORT_URI?: string;
+  NEXT_PUBLIC_APP_INSTANCE?: string;
+  NEXT_PUBLIC_APP_ENV?: string;
+} |
+{
+  NEXT_PUBLIC_SENTRY_DSN?: undefined;
+  SENTRY_CSP_REPORT_URI?: undefined;
+  NEXT_PUBLIC_APP_INSTANCE?: undefined;
+  NEXT_PUBLIC_APP_ENV?: undefined;
 }

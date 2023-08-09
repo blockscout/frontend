@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { CsrfData } from 'types/client/account';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import isBodyAllowed from 'lib/api/isBodyAllowed';
 import isNeedProxy from 'lib/api/isNeedProxy';
 import { getResourceKey } from 'lib/api/useApiQuery';
@@ -49,7 +49,7 @@ export default function useApiFetch() {
         //    for user authentication in My account
         //    for API rate-limits (cannot use in the condition though, but we agreed with devops team that should not be an issue)
         // change condition here if something is changed
-        credentials: appConfig.account.isEnabled ? 'include' : 'same-origin',
+        credentials: config.features.account.isEnabled ? 'include' : 'same-origin',
         headers,
         ...fetchParams,
       },

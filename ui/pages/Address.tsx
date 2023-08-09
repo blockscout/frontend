@@ -5,7 +5,7 @@ import React from 'react';
 import type { TokenType } from 'types/api/token';
 import type { RoutedTab } from 'ui/shared/Tabs/types';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import iconSuccess from 'icons/status/success.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
@@ -59,7 +59,7 @@ const AddressPageContent = () => {
   const tabs: Array<RoutedTab> = React.useMemo(() => {
     return [
       { id: 'txs', title: 'Transactions', component: <AddressTxs scrollRef={ tabsScrollRef }/> },
-      appConfig.beaconChain.hasBeaconChain && addressQuery.data?.has_beacon_chain_withdrawals ?
+      config.features.beaconChain.isEnabled && addressQuery.data?.has_beacon_chain_withdrawals ?
         { id: 'withdrawals', title: 'Withdrawals', component: <AddressWithdrawals scrollRef={ tabsScrollRef }/> } :
         undefined,
       addressQuery.data?.has_token_transfers ?

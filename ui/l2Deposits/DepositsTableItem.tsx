@@ -5,7 +5,7 @@ import React from 'react';
 
 import type { L2DepositsItem } from 'types/api/l2Deposits';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import blockIcon from 'icons/block.svg';
 import txIcon from 'icons/transactions.svg';
 import dayjs from 'lib/date/dayjs';
@@ -24,7 +24,7 @@ const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
     <Tr>
       <Td verticalAlign="middle" fontWeight={ 600 }>
         <LinkExternal
-          href={ appConfig.L2.L1BaseUrl + route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.l1_block_number.toString() } }) }
+          href={ config.features.rollup.L1BaseUrl + route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.l1_block_number.toString() } }) }
           fontWeight={ 600 }
           display="inline-flex"
           isLoading={ isLoading }
@@ -56,7 +56,7 @@ const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
       </Td>
       <Td verticalAlign="middle">
         <LinkExternal
-          href={ appConfig.L2.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: item.l1_tx_hash } }) }
+          href={ config.features.rollup.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: item.l1_tx_hash } }) }
           maxW="100%"
           display="inline-flex"
           overflow="hidden"
@@ -70,7 +70,7 @@ const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
       </Td>
       <Td verticalAlign="middle">
         <LinkExternal
-          href={ appConfig.L2.L1BaseUrl + route({ pathname: '/address/[hash]', query: { hash: item.l1_tx_origin } }) }
+          href={ config.features.rollup.L1BaseUrl + route({ pathname: '/address/[hash]', query: { hash: item.l1_tx_origin } }) }
           maxW="100%"
           display="inline-flex"
           overflow="hidden"

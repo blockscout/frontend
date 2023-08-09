@@ -1,6 +1,6 @@
 import { compile } from 'path-to-regexp';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 
 import { RESOURCES } from './resources';
 import type { ApiResource, ResourceName } from './resources';
@@ -11,8 +11,8 @@ export default function buildUrlNode(
   queryParams?: Record<string, string | number | undefined>,
 ) {
   const resource: ApiResource = typeof _resource === 'string' ? RESOURCES[_resource] : _resource;
-  const baseUrl = resource.endpoint || appConfig.api.endpoint;
-  const basePath = resource.basePath !== undefined ? resource.basePath : appConfig.api.basePath;
+  const baseUrl = resource.endpoint || config.api.endpoint;
+  const basePath = resource.basePath !== undefined ? resource.basePath : config.api.basePath;
   const path = basePath + resource.path;
   const url = new URL(compile(path)(pathParams), baseUrl);
 

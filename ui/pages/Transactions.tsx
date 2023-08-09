@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { RoutedTab } from 'ui/shared/Tabs/types';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import useHasAccount from 'lib/hooks/useHasAccount';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useNewTxsSocket from 'lib/hooks/useNewTxsSocket';
@@ -23,7 +23,7 @@ const TAB_LIST_PROPS = {
 };
 
 const Transactions = () => {
-  const verifiedTitle = appConfig.network.verificationType === 'validation' ? 'Validated' : 'Mined';
+  const verifiedTitle = config.chain.verificationType === 'validation' ? 'Validated' : 'Mined';
   const router = useRouter();
   const isMobile = useIsMobile();
   const txsQuery = useQueryWithPages({

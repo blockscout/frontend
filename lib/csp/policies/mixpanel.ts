@@ -1,9 +1,9 @@
 import type CspDev from 'csp-dev';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 
 export function mixpanel(): CspDev.DirectiveDescriptor {
-  if (!appConfig.mixpanel.projectToken) {
+  if (!config.features.mixpanel.isEnabled) {
     return {};
   }
 

@@ -4,7 +4,7 @@ import React from 'react';
 import type { Address } from 'types/api/address';
 import type { TokenInfo } from 'types/api/token';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import AddressFavoriteButton from 'ui/address/details/AddressFavoriteButton';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
@@ -36,11 +36,11 @@ const AddressHeadingInfo = ({ address, token, isLinkDisabled, isLoading }: Props
       />
       <CopyToClipboard text={ address.hash } isLoading={ isLoading }/>
       { !isLoading && address.is_contract && token && <AddressAddToWallet ml={ 2 } token={ token }/> }
-      { !isLoading && !address.is_contract && appConfig.account.isEnabled && (
+      { !isLoading && !address.is_contract && config.features.account.isEnabled && (
         <AddressFavoriteButton hash={ address.hash } watchListId={ address.watchlist_address_id } ml={ 3 }/>
       ) }
       <AddressQrCode hash={ address.hash } ml={ 2 } isLoading={ isLoading } flexShrink={ 0 }/>
-      { appConfig.account.isEnabled && <AddressActionsMenu isLoading={ isLoading }/> }
+      { config.features.account.isEnabled && <AddressActionsMenu isLoading={ isLoading }/> }
     </Flex>
   );
 };

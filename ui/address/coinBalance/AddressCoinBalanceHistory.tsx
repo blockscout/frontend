@@ -5,7 +5,7 @@ import React from 'react';
 import type { AddressCoinBalanceHistoryResponse } from 'types/api/address';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -31,7 +31,7 @@ const AddressCoinBalanceHistory = ({ query }: Props) => {
               <Th width="20%">Block</Th>
               <Th width="20%">Txn</Th>
               <Th width="20%">Age</Th>
-              <Th width="20%" isNumeric pr={ 1 }>Balance { appConfig.network.currency.symbol }</Th>
+              <Th width="20%" isNumeric pr={ 1 }>Balance { config.chain.currency.symbol }</Th>
               <Th width="20%" isNumeric>Delta</Th>
             </Tr>
           </Thead>

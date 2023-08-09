@@ -9,7 +9,7 @@ import { scroller, Element } from 'react-scroll';
 
 import type { Block } from 'types/api/block';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import clockIcon from 'icons/clock.svg';
 import flameIcon from 'icons/flame.svg';
 import type { ResourceError } from 'lib/api/resources';
@@ -94,7 +94,7 @@ const BlockDetails = ({ query }: Props) => {
   const validatorTitle = getNetworkValidatorTitle();
 
   const rewardBreakDown = (() => {
-    if (appConfig.L2.isL2Network || totalReward.isEqualTo(ZERO) || txFees.isEqualTo(ZERO) || burntFees.isEqualTo(ZERO)) {
+    if (config.features.rollup.isEnabled || totalReward.isEqualTo(ZERO) || txFees.isEqualTo(ZERO) || burntFees.isEqualTo(ZERO)) {
       return null;
     }
 
@@ -186,7 +186,7 @@ const BlockDetails = ({ query }: Props) => {
           </LinkInternal>
         </Skeleton>
       </DetailsInfoItem>
-      { appConfig.beaconChain.hasBeaconChain && Boolean(data.withdrawals_count) && (
+      { config.features.beaconChain.isEnabled && Boolean(data.withdrawals_count) && (
         <DetailsInfoItem
           title="Withdrawals"
           hint="The number of beacon withdrawals in the block"
@@ -200,7 +200,7 @@ const BlockDetails = ({ query }: Props) => {
         </DetailsInfoItem>
       ) }
       <DetailsInfoItem
-        title={ appConfig.network.verificationType === 'validation' ? 'Validated by' : 'Mined by' }
+        title={ config.chain.verificationType === 'validation' ? 'Validated by' : 'Mined by' }
         hint="A block producer who successfully included the block onto the blockchain"
         columnGap={ 1 }
         isLoading={ isPlaceholderData }
@@ -210,18 +210,18 @@ const BlockDetails = ({ query }: Props) => {
         { /* api doesn't return the block processing time yet */ }
         { /* <Text>{ dayjs.duration(block.minedIn, 'second').humanize(true) }</Text> */ }
       </DetailsInfoItem>
-      { !appConfig.L2.isL2Network && !totalReward.isEqualTo(ZERO) && (
+      { !config.features.rollup.isEnabled && !totalReward.isEqualTo(ZERO) && (
         <DetailsInfoItem
           title="Block reward"
           hint={
-            `For each block, the ${ validatorTitle } is rewarded with a finite amount of ${ appConfig.network.currency.symbol || 'native token' } 
+            `For each block, the ${ validatorTitle } is rewarded with a finite amount of ${ config.chain.currency.symbol || 'native token' } 
           on top of the fees paid for all transactions in the block`
           }
           columnGap={ 1 }
           isLoading={ isPlaceholderData }
         >
           <Skeleton isLoaded={ !isPlaceholderData }>
-            { totalReward.dividedBy(WEI).toFixed() } { appConfig.network.currency.symbol }
+            { totalReward.dividedBy(WEI).toFixed() } { config.chain.currency.symbol }
           </Skeleton>
           { rewardBreakDown }
         </DetailsInfoItem>
@@ -235,7 +235,7 @@ const BlockDetails = ({ query }: Props) => {
             // is this text correct for validators?
             hint={ `Amount of distributed reward. ${ capitalize(validatorTitle) }s receive a static block reward + Tx fees + uncle fees` }
           >
-            { BigNumber(reward).dividedBy(WEI).toFixed() } { appConfig.network.currency.symbol }
+            { BigNumber(reward).dividedBy(WEI).toFixed() } { config.chain.currency.symbol }
           </DetailsInfoItem>
         ))
       }
@@ -293,7 +293,7 @@ const BlockDetails = ({ query }: Props) => {
             <Skeleton isLoaded={ !isPlaceholderData } h="20px" maxW="380px" w="100%"/>
           ) : (
             <>
-              <Text>{ BigNumber(data.base_fee_per_gas).dividedBy(WEI).toFixed() } { appConfig.network.currency.symbol } </Text>
+              <Text>{ BigNumber(data.base_fee_per_gas).dividedBy(WEI).toFixed() } { config.chain.currency.symbol } </Text>
               <Text variant="secondary" whiteSpace="pre">
                 { space }({ BigNumber(data.base_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() } Gwei)
               </Text>
@@ -304,7 +304,7 @@ const BlockDetails = ({ query }: Props) => {
       <DetailsInfoItem
         title="Burnt fees"
         hint={
-          `Amount of ${ appConfig.network.currency.symbol || 'native token' } burned from transactions included in the block.
+          `Amount of ${ config.chain.currency.symbol || 'native token' } burned from transactions included in the block.
 
           Equals Block Base Fee per Gas * Gas Used`
         }
@@ -312,7 +312,7 @@ const BlockDetails = ({ query }: Props) => {
       >
         <Icon as={ flameIcon } boxSize={ 5 } color="gray.500" isLoading={ isPlaceholderData }/>
         <Skeleton isLoaded={ !isPlaceholderData } ml={ 1 }>
-          { burntFees.dividedBy(WEI).toFixed() } { appConfig.network.currency.symbol }
+          { burntFees.dividedBy(WEI).toFixed() } { config.chain.currency.symbol }
         </Skeleton>
         { !txFees.isEqualTo(ZERO) && (
           <Tooltip label="Burnt fees / Txn fees * 100%">
@@ -333,7 +333,7 @@ const BlockDetails = ({ query }: Props) => {
           isLoading={ isPlaceholderData }
         >
           <Skeleton isLoaded={ !isPlaceholderData }>
-            { BigNumber(data.priority_fee).dividedBy(WEI).toFixed() } { appConfig.network.currency.symbol }
+            { BigNumber(data.priority_fee).dividedBy(WEI).toFixed() } { config.chain.currency.symbol }
           </Skeleton>
         </DetailsInfoItem>
       ) }

@@ -8,7 +8,7 @@ import type { TokenInfo } from 'types/api/token';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 import type { RoutedTab } from 'ui/shared/Tabs/types';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import iconSuccess from 'icons/status/success.svg';
 import iconVerifiedToken from 'icons/verified_token.svg';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
@@ -145,10 +145,9 @@ const TokenPageContent = () => {
     },
   });
 
-  const isVerifiedInfoEnabled = Boolean(appConfig.contractInfoApi.endpoint);
   const verifiedInfoQuery = useApiQuery('token_verified_info', {
-    pathParams: { hash: hashString, chainId: appConfig.network.id },
-    queryOptions: { enabled: Boolean(tokenQuery.data) && isVerifiedInfoEnabled },
+    pathParams: { hash: hashString, chainId: config.chain.id },
+    queryOptions: { enabled: Boolean(tokenQuery.data) && config.features.verifiedTokens.isEnabled },
   });
 
   const contractTabs = useContractTabs(contractQuery.data);
@@ -223,7 +222,7 @@ const TokenPageContent = () => {
   const titleContentAfter = (
     <>
       { verifiedInfoQuery.data?.tokenAddress && (
-        <Tooltip label={ `Information on this token has been verified by ${ appConfig.network.name }` }>
+        <Tooltip label={ `Information on this token has been verified by ${ config.chain.name }` }>
           <Box boxSize={ 6 }>
             <Icon as={ iconVerifiedToken } color="green.500" boxSize={ 6 } cursor="pointer"/>
           </Box>
@@ -266,7 +265,7 @@ const TokenPageContent = () => {
         contentAfter={ titleContentAfter }
       />
       <TokenContractInfo tokenQuery={ tokenQuery } contractQuery={ contractQuery }/>
-      <TokenVerifiedInfo verifiedInfoQuery={ verifiedInfoQuery } isVerifiedInfoEnabled={ isVerifiedInfoEnabled }/>
+      <TokenVerifiedInfo verifiedInfoQuery={ verifiedInfoQuery }/>
       <TokenDetails tokenQuery={ tokenQuery }/>
       { /* should stay before tabs to scroll up with pagination */ }
       <Box ref={ scrollRef }></Box>

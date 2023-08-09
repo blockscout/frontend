@@ -5,7 +5,7 @@ import React from 'react';
 
 import type { Block } from 'types/api/block';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import LinkInternal from 'ui/shared/LinkInternal';
@@ -48,7 +48,7 @@ const AddressBlocksValidatedListItem = (props: Props) => {
         />
       </Flex>
       <Flex columnGap={ 2 } w="100%">
-        <Skeleton isLoaded={ !props.isLoading } fontWeight={ 500 } flexShrink={ 0 }>Reward { appConfig.network.currency.symbol }</Skeleton>
+        <Skeleton isLoaded={ !props.isLoading } fontWeight={ 500 } flexShrink={ 0 }>Reward { config.chain.currency.symbol }</Skeleton>
         <Skeleton isLoaded={ !props.isLoading } color="text_secondary">{ totalReward.toFixed() }</Skeleton>
       </Flex>
     </ListItemMobile>

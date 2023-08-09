@@ -1,11 +1,11 @@
 import React from 'react';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import isBrowser from 'lib/isBrowser';
 
 const base = 'https://github.com/blockscout/blockscout/issues/new/';
 const labels = 'new UI';
-const title = `${ appConfig.network.name }: <Issue Title>`;
+const title = `${ config.chain.name }: <Issue Title>`;
 
 export default function useIssueUrl(backendVersion: string | undefined) {
   const [ userAgent, setUserAgent ] = React.useState('');
@@ -24,7 +24,7 @@ export default function useIssueUrl(backendVersion: string | undefined) {
 ### Environment
 
 * Backend Version/branch/commit: ${ backendVersion }
-* Frontend Version+commit: ${ [ appConfig.footer.frontendVersion, appConfig.footer.frontendCommit ].filter(Boolean).join('+') }
+* Frontend Version+commit: ${ [ config.UI.footer.frontendVersion, config.UI.footer.frontendCommit ].filter(Boolean).join('+') }
 * User Agent: ${ userAgent }
 
 ### Steps to reproduce

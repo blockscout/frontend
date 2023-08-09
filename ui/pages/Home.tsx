@@ -1,7 +1,7 @@
 import { Box, Heading, Flex, LightMode } from '@chakra-ui/react';
 import React from 'react';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import ChainIndicators from 'ui/home/indicators/ChainIndicators';
 import LatestBlocks from 'ui/home/LatestBlocks';
 import Stats from 'ui/home/Stats';
@@ -16,7 +16,7 @@ const Home = () => {
     <Page isHomePage>
       <Box
         w="100%"
-        background={ appConfig.homepage.plate.background }
+        background={ config.UI.homepage.plate.background }
         borderRadius="24px"
         padding={{ base: '24px', lg: '48px' }}
         minW={{ base: 'unset', lg: '900px' }}
@@ -28,12 +28,12 @@ const Home = () => {
             size={{ base: 'md', lg: 'xl' }}
             lineHeight={{ base: '32px', lg: '50px' }}
             fontWeight={ 600 }
-            color={ appConfig.homepage.plate.textColor }
+            color={ config.UI.homepage.plate.textColor }
           >
-            Welcome to { appConfig.network.name } explorer
+            Welcome to { config.chain.name } explorer
           </Heading>
           <Box display={{ base: 'none', lg: 'block' }}>
-            { appConfig.account.isEnabled && <ProfileMenuDesktop/> }
+            { config.features.account.isEnabled && <ProfileMenuDesktop/> }
           </Box>
         </Flex>
         <LightMode>

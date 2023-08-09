@@ -1,9 +1,9 @@
 import type CspDev from 'csp-dev';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 
 export function googleAnalytics(): CspDev.DirectiveDescriptor {
-  if (!appConfig.googleAnalytics.propertyId) {
+  if (!config.features.googleAnalytics.isEnabled) {
     return {};
   }
 

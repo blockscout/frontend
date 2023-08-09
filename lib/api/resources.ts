@@ -59,7 +59,7 @@ import type { VisualizedContract } from 'types/api/visualization';
 import type { WithdrawalsResponse, WithdrawalsCounters } from 'types/api/withdrawals';
 import type { ArrayElement } from 'types/utils';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 
 export interface ApiResource {
   path: ResourcePath;
@@ -111,58 +111,58 @@ export const RESOURCES = {
   address_verification: {
     path: '/api/v1/chains/:chainId/verified-addresses:type',
     pathParams: [ 'chainId' as const, 'type' as const ],
-    endpoint: appConfig.contractInfoApi.endpoint,
-    basePath: appConfig.contractInfoApi.basePath,
+    endpoint: config.features.verifiedTokens.api.endpoint,
+    basePath: config.features.verifiedTokens.api.basePath,
     needAuth: true,
   },
 
   verified_addresses: {
     path: '/api/v1/chains/:chainId/verified-addresses',
     pathParams: [ 'chainId' as const ],
-    endpoint: appConfig.contractInfoApi.endpoint,
-    basePath: appConfig.contractInfoApi.basePath,
+    endpoint: config.features.verifiedTokens.api.endpoint,
+    basePath: config.features.verifiedTokens.api.basePath,
     needAuth: true,
   },
 
   token_info_applications_config: {
     path: '/api/v1/chains/:chainId/token-info-submissions/selectors',
     pathParams: [ 'chainId' as const ],
-    endpoint: appConfig.adminServiceApi.endpoint,
-    basePath: appConfig.adminServiceApi.basePath,
+    endpoint: config.features.addressVerification.api.endpoint,
+    basePath: config.features.addressVerification.api.basePath,
     needAuth: true,
   },
 
   token_info_applications: {
     path: '/api/v1/chains/:chainId/token-info-submissions/:id?',
     pathParams: [ 'chainId' as const, 'id' as const ],
-    endpoint: appConfig.adminServiceApi.endpoint,
-    basePath: appConfig.adminServiceApi.basePath,
+    endpoint: config.features.addressVerification.api.endpoint,
+    basePath: config.features.addressVerification.api.basePath,
     needAuth: true,
   },
 
   // STATS
   stats_counters: {
     path: '/api/v1/counters',
-    endpoint: appConfig.statsApi.endpoint,
-    basePath: appConfig.statsApi.basePath,
+    endpoint: config.features.stats.api.endpoint,
+    basePath: config.features.stats.api.basePath,
   },
   stats_lines: {
     path: '/api/v1/lines',
-    endpoint: appConfig.statsApi.endpoint,
-    basePath: appConfig.statsApi.basePath,
+    endpoint: config.features.stats.api.endpoint,
+    basePath: config.features.stats.api.basePath,
   },
   stats_line: {
     path: '/api/v1/lines/:id',
     pathParams: [ 'id' as const ],
-    endpoint: appConfig.statsApi.endpoint,
-    basePath: appConfig.statsApi.basePath,
+    endpoint: config.features.stats.api.endpoint,
+    basePath: config.features.stats.api.basePath,
   },
 
   // VISUALIZATION
   visualize_sol2uml: {
     path: '/api/v1/solidity\\:visualize-contracts',
-    endpoint: appConfig.visualizeApi.endpoint,
-    basePath: appConfig.visualizeApi.basePath,
+    endpoint: config.features.sol2uml.api.endpoint,
+    basePath: config.features.sol2uml.api.basePath,
   },
 
   // BLOCKS, TXS
@@ -345,8 +345,8 @@ export const RESOURCES = {
   token_verified_info: {
     path: '/api/v1/chains/:chainId/token-infos/:hash',
     pathParams: [ 'chainId' as const, 'hash' as const ],
-    endpoint: appConfig.contractInfoApi.endpoint,
-    basePath: appConfig.contractInfoApi.basePath,
+    endpoint: config.features.verifiedTokens.api.endpoint,
+    basePath: config.features.verifiedTokens.api.basePath,
   },
   token_counters: {
     path: '/api/v2/tokens/:hash/counters',

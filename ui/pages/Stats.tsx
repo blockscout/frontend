@@ -1,7 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
@@ -26,7 +26,7 @@ const Stats = () => {
 
   return (
     <Page>
-      <PageTitle title={ `${ appConfig.network.name } stats` }/>
+      <PageTitle title={ `${ config.chain.name } stats` }/>
 
       <Box mb={{ base: 6, sm: 8 }}>
         <NumberWidgetsList/>

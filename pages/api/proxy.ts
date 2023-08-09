@@ -2,7 +2,7 @@ import _pick from 'lodash/pick';
 import _pickBy from 'lodash/pickBy';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import fetchFactory from 'lib/api/nodeFetch';
 
 const handler = async(nextReq: NextApiRequest, nextRes: NextApiResponse) => {
@@ -13,7 +13,7 @@ const handler = async(nextReq: NextApiRequest, nextRes: NextApiResponse) => {
 
   const url = new URL(
     nextReq.url.replace(/^\/node-api\/proxy/, ''),
-    nextReq.headers['x-endpoint']?.toString() || appConfig.api.endpoint,
+    nextReq.headers['x-endpoint']?.toString() || config.api.endpoint,
   );
   const apiRes = await fetchFactory(nextReq)(
     url.toString(),

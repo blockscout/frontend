@@ -6,35 +6,35 @@ import React from 'react';
 import type { Chain } from 'wagmi';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 
 const getConfig = () => {
   try {
-    if (!appConfig.walletConnect.projectId) {
+    if (!config.features.blockchainInteraction.walletConnect.projectId) {
       throw new Error('WalletConnect Project ID is not set');
     }
 
     const currentChain: Chain = {
-      id: Number(appConfig.network.id),
-      name: appConfig.network.name || '',
-      network: appConfig.network.name || '',
+      id: Number(config.chain.id),
+      name: config.chain.name || '',
+      network: config.chain.name || '',
       nativeCurrency: {
-        decimals: appConfig.network.currency.decimals,
-        name: appConfig.network.currency.name || '',
-        symbol: appConfig.network.currency.symbol || '',
+        decimals: config.chain.currency.decimals,
+        name: config.chain.currency.name || '',
+        symbol: config.chain.currency.symbol || '',
       },
       rpcUrls: {
         'public': {
-          http: [ appConfig.network.rpcUrl || '' ],
+          http: [ config.chain.rpcUrl || '' ],
         },
         'default': {
-          http: [ appConfig.network.rpcUrl || '' ],
+          http: [ config.chain.rpcUrl || '' ],
         },
       },
       blockExplorers: {
         'default': {
           name: 'Blockscout',
-          url: appConfig.app.baseUrl,
+          url: config.app.baseUrl,
         },
       },
     };
@@ -44,13 +44,13 @@ const getConfig = () => {
     const { publicClient } = configureChains(chains, [
       jsonRpcProvider({
         rpc: () => ({
-          http: appConfig.network.rpcUrl || '',
+          http: config.chain.rpcUrl || '',
         }),
       }),
     ]);
     const wagmiConfig = createConfig({
       autoConnect: true,
-      connectors: w3mConnectors({ projectId: appConfig.walletConnect.projectId, chains }),
+      connectors: w3mConnectors({ projectId: config.features.blockchainInteraction.walletConnect.projectId, chains }),
       publicClient,
     });
     const ethereumClient = new EthereumClient(wagmiConfig, chains);
@@ -72,7 +72,7 @@ const Web3ModalProvider = ({ children, fallback }: Props) => {
   const modalZIndex = useToken<string>('zIndices', 'modal');
   const web3ModalTheme = useColorModeValue('light', 'dark');
 
-  if (!wagmiConfig || !ethereumClient || !appConfig.walletConnect.projectId) {
+  if (!wagmiConfig || !ethereumClient || !config.features.blockchainInteraction.isEnabled) {
     return typeof fallback === 'function' ? fallback() : (fallback || null);
   }
 
@@ -82,7 +82,7 @@ const Web3ModalProvider = ({ children, fallback }: Props) => {
         { children }
       </WagmiConfig>
       <Web3Modal
-        projectId={ appConfig.walletConnect.projectId }
+        projectId={ config.features.blockchainInteraction.walletConnect.projectId }
         ethereumClient={ ethereumClient }
         themeMode={ web3ModalTheme }
         themeVariables={{

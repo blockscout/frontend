@@ -2,7 +2,7 @@ import { Flex, Hide, Show, Skeleton, Text } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import getCurrencyValue from 'lib/getCurrencyValue';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -68,7 +68,8 @@ const Withdrawals = () => {
     const { valueStr } = getCurrencyValue({ value: countersQuery.data.withdrawal_sum });
     return (
       <Text mb={{ base: 6, lg: pagination.isVisible ? 0 : 6 }} lineHeight={{ base: '24px', lg: '32px' }}>
-        { BigNumber(countersQuery.data.withdrawal_count).toFormat() } withdrawals processed and { valueStr } { appConfig.beaconChain.currencySymbol } withdrawn
+        { BigNumber(countersQuery.data.withdrawal_count).toFormat() } withdrawals processed
+        and { valueStr } { config.features.beaconChain.currency.symbol } withdrawn
       </Text>
     );
   })();

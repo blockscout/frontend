@@ -2,7 +2,7 @@ import { Grid } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import blockIcon from 'icons/block.svg';
 import clockIcon from 'icons/clock-light.svg';
 import gasIcon from 'icons/gas.svg';
@@ -14,8 +14,8 @@ import { HOMEPAGE_STATS } from 'stubs/stats';
 import StatsGasPrices from './StatsGasPrices';
 import StatsItem from './StatsItem';
 
-const hasGasTracker = appConfig.homepage.showGasTracker;
-const hasAvgBlockTime = appConfig.homepage.showAvgBlockTime;
+const hasGasTracker = config.UI.homepage.showGasTracker;
+const hasAvgBlockTime = config.UI.homepage.showAvgBlockTime;
 
 let itemsCount = 5;
 !hasGasTracker && itemsCount--;

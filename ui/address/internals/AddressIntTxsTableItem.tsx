@@ -5,7 +5,7 @@ import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import rightArrowIcon from 'icons/arrows/east.svg';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Address from 'ui/shared/address/Address';
@@ -105,7 +105,7 @@ const AddressIntTxsTableItem = ({
       </Td>
       <Td isNumeric verticalAlign="middle">
         <Skeleton isLoaded={ !isLoading } display="inline-block" minW={ 6 }>
-          { BigNumber(value).div(BigNumber(10 ** appConfig.network.currency.decimals)).toFormat() }
+          { BigNumber(value).div(BigNumber(10 ** config.chain.currency.decimals)).toFormat() }
         </Skeleton>
       </Td>
     </Tr>

@@ -59,7 +59,7 @@ For all types of dependencies:
 
 These are the steps that you have to follow to make everything work:
 1. First and foremost, document variable in the [/docs/ENVS.md](./ENVS.md) file; provide short description, its expected type, requirement flag, default and example value; **do not skip this step** otherwise the app will not receive variable value at run-time
-2. Make sure that you have added a property to React app config (`/configs/app/config.ts`) that is associated with this variable; do not use ENV variable values directly in the application code
+2. Make sure that you have added a property to React app config (`/configs/app/index.ts`) in appropriate section that is associated with this variable; do not use ENV variable values directly in the application code
 3. For local development purposes add the variable with its appropriate values to pre-defined ENV configs `/configs/envs` where it is needed
 4. Add the variable to CI configs where it is needed
     - `deploy/values/review/values.yaml.gotmpl` - review development environment

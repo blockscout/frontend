@@ -8,7 +8,7 @@ import { Box, useColorModeValue } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import ContentLoader from 'ui/shared/ContentLoader';
 
 import 'swagger-ui-react/swagger-ui.css';
@@ -57,7 +57,7 @@ const SwaggerUI = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const reqInterceptor = React.useCallback((req: any) => {
     if (!req.loadSpec) {
-      req.url = req.url.replace(DEFAULT_SERVER, appConfig.api.host);
+      req.url = req.url.replace(DEFAULT_SERVER, config.api.host);
       const url = new URL(req.url);
       url.protocol = 'https:';
       req.url = url.toString();
@@ -68,7 +68,7 @@ const SwaggerUI = () => {
   return (
     <Box sx={ swaggerStyle }>
       <SwaggerUIReact
-        url={ appConfig.apiDoc.specUrl }
+        url={ config.features.restApiDocs.specUrl }
         plugins={ [ NeverShowInfoPlugin ] }
         requestInterceptor={ reqInterceptor }
       />

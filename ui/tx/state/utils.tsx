@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { TxStateChange } from 'types/api/txStateChanges';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import { ZERO_ADDRESS } from 'lib/consts';
 import { nbsp, space } from 'lib/html-entities';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
@@ -50,8 +50,8 @@ export function getStateElements(data: TxStateChange, isLoading?: boolean) {
 
   switch (data.type) {
     case 'coin': {
-      const beforeBn = BigNumber(data.balance_before || '0').div(10 ** appConfig.network.currency.decimals);
-      const afterBn = BigNumber(data.balance_after || '0').div(10 ** appConfig.network.currency.decimals);
+      const beforeBn = BigNumber(data.balance_before || '0').div(10 ** config.chain.currency.decimals);
+      const afterBn = BigNumber(data.balance_after || '0').div(10 ** config.chain.currency.decimals);
       const differenceBn = afterBn.minus(beforeBn);
       const changeColor = beforeBn.lte(afterBn) ? 'green.500' : 'red.500';
       const changeSign = beforeBn.lte(afterBn) ? '+' : '-';
@@ -59,12 +59,12 @@ export function getStateElements(data: TxStateChange, isLoading?: boolean) {
       return {
         before: (
           <Skeleton isLoaded={ !isLoading } wordBreak="break-all" display="inline-block">
-            { beforeBn.toFormat() } { appConfig.network.currency.symbol }
+            { beforeBn.toFormat() } { config.chain.currency.symbol }
           </Skeleton>
         ),
         after: (
           <Skeleton isLoaded={ !isLoading } wordBreak="break-all" display="inline-block">
-            { afterBn.toFormat() } { appConfig.network.currency.symbol }
+            { afterBn.toFormat() } { config.chain.currency.symbol }
           </Skeleton>
         ),
         change: (

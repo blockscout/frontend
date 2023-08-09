@@ -18,7 +18,7 @@ import { route } from 'nextjs-routes';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import clockIcon from 'icons/clock.svg';
 import flameIcon from 'icons/flame.svg';
 import errorIcon from 'icons/status/error.svg';
@@ -124,7 +124,7 @@ const TxDetails = () => {
 
   return (
     <>
-      { appConfig.network.isTestnet && <Alert status="warning" mb={ 6 }>This is a { appConfig.network.name } testnet transaction only</Alert> }
+      { config.chain.isTestnet && <Alert status="warning" mb={ 6 }>This is a { config.chain.name } testnet transaction only</Alert> }
       <Grid columnGap={ 8 } rowGap={{ base: 3, lg: 3 }} templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }}>
         { socketStatus && (
           <GridItem colSpan={{ base: undefined, lg: 2 }} mb={ 2 }>
@@ -281,7 +281,7 @@ const TxDetails = () => {
         >
           <CurrencyValue
             value={ data.value }
-            currency={ appConfig.network.currency.symbol }
+            currency={ config.chain.currency.symbol }
             exchangeRate={ data.exchange_rate }
             isLoading={ isPlaceholderData }
           />
@@ -293,7 +293,7 @@ const TxDetails = () => {
         >
           <CurrencyValue
             value={ data.fee.value }
-            currency={ appConfig.network.currency.symbol }
+            currency={ config.chain.currency.symbol }
             exchangeRate={ data.exchange_rate }
             flexWrap="wrap"
             isLoading={ isPlaceholderData }
@@ -305,7 +305,7 @@ const TxDetails = () => {
           isLoading={ isPlaceholderData }
         >
           <Skeleton isLoaded={ !isPlaceholderData } mr={ 1 }>
-            { BigNumber(data.gas_price).dividedBy(WEI).toFixed() } { appConfig.network.currency.symbol }
+            { BigNumber(data.gas_price).dividedBy(WEI).toFixed() } { config.chain.currency.symbol }
           </Skeleton>
           <Skeleton isLoaded={ !isPlaceholderData } color="text_secondary">
             <span>({ BigNumber(data.gas_price).dividedBy(WEI_IN_GWEI).toFixed() } Gwei)</span>
@@ -354,22 +354,22 @@ const TxDetails = () => {
             ) }
           </DetailsInfoItem>
         ) }
-        { data.tx_burnt_fee && !appConfig.L2.isL2Network && (
+        { data.tx_burnt_fee && !config.features.rollup.isEnabled && (
           <DetailsInfoItem
             title="Burnt fees"
-            hint={ `Amount of ${ appConfig.network.currency.symbol } burned for this transaction. Equals Block Base Fee per Gas * Gas Used` }
+            hint={ `Amount of ${ config.chain.currency.symbol } burned for this transaction. Equals Block Base Fee per Gas * Gas Used` }
           >
             <Icon as={ flameIcon } boxSize={ 5 } color="gray.500"/>
             <CurrencyValue
               value={ String(data.tx_burnt_fee) }
-              currency={ appConfig.network.currency.symbol }
+              currency={ config.chain.currency.symbol }
               exchangeRate={ data.exchange_rate }
               flexWrap="wrap"
               ml={ 1 }
             />
           </DetailsInfoItem>
         ) }
-        { appConfig.L2.isL2Network && (
+        { config.features.rollup.isEnabled && (
           <>
             { data.l1_gas_used && (
               <DetailsInfoItem
@@ -386,7 +386,7 @@ const TxDetails = () => {
                 hint="L1 gas price"
                 isLoading={ isPlaceholderData }
               >
-                <Text mr={ 1 }>{ BigNumber(data.l1_gas_price).dividedBy(WEI).toFixed() } { appConfig.network.currency.symbol }</Text>
+                <Text mr={ 1 }>{ BigNumber(data.l1_gas_price).dividedBy(WEI).toFixed() } { config.chain.currency.symbol }</Text>
                 <Text variant="secondary">({ BigNumber(data.l1_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } Gwei)</Text>
               </DetailsInfoItem>
             ) }
@@ -399,7 +399,7 @@ const TxDetails = () => {
               >
                 <CurrencyValue
                   value={ data.l1_fee }
-                  currency={ appConfig.network.currency.symbol }
+                  currency={ config.chain.currency.symbol }
                   exchangeRate={ data.exchange_rate }
                   flexWrap="wrap"
                 />

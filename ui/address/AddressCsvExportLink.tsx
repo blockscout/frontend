@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { CsvExportParams } from 'types/client/address';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import svgFileIcon from 'icons/files/csv.svg';
 import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -21,7 +21,7 @@ const AddressCsvExportLink = ({ className, address, params, isLoading }: Props) 
   const isMobile = useIsMobile();
   const isInitialLoading = useIsInitialLoading(isLoading);
 
-  if (!appConfig.reCaptcha.siteKey) {
+  if (!config.features.csvExport.isEnabled) {
     return null;
   }
 

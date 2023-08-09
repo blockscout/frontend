@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 
 export const ADBUTLER_ACCOUNT = 182226;
 
@@ -10,12 +10,12 @@ var AdButler = AdButler || {}; AdButler.ads = AdButler.ads || [];
   var abkw = window.abkw || '';
   const isMobile = window.matchMedia("only screen and (max-width: 1000px)").matches;
   if (isMobile) {
-      var plc${ appConfig.ad.adButlerConfigMobile?.id } = window.plc${ appConfig.ad.adButlerConfigMobile?.id } || 0;
-      document.getElementById('ad-banner').innerHTML = '<'+'div id="placement_${ appConfig.ad.adButlerConfigMobile?.id }_'+plc${ appConfig.ad.adButlerConfigMobile?.id }+'"></'+'div>';
-      AdButler.ads.push({handler: function(opt){ AdButler.register(${ ADBUTLER_ACCOUNT }, ${ appConfig.ad.adButlerConfigMobile?.id }, [${ appConfig.ad.adButlerConfigMobile?.width },${ appConfig.ad.adButlerConfigMobile?.height }], 'placement_${ appConfig.ad.adButlerConfigMobile?.id }_'+opt.place, opt); }, opt: { place: plc${ appConfig.ad.adButlerConfigMobile?.id }++, keywords: abkw, domain: 'servedbyadbutler.com', click:'CLICK_MACRO_PLACEHOLDER' }});
+      var plc${ config.features.adsBanner.adButler.config.mobile?.id } = window.plc${ config.features.adsBanner.adButler.config.mobile?.id } || 0;
+      document.getElementById('ad-banner').innerHTML = '<'+'div id="placement_${ config.features.adsBanner.adButler.config.mobile?.id }_'+plc${ config.features.adsBanner.adButler.config.mobile?.id }+'"></'+'div>';
+      AdButler.ads.push({handler: function(opt){ AdButler.register(${ ADBUTLER_ACCOUNT }, ${ config.features.adsBanner.adButler.config.mobile?.id }, [${ config.features.adsBanner.adButler.config.mobile?.width },${ config.features.adsBanner.adButler.config.mobile?.height }], 'placement_${ config.features.adsBanner.adButler.config.mobile?.id }_'+opt.place, opt); }, opt: { place: plc${ config.features.adsBanner.adButler.config.mobile?.id }++, keywords: abkw, domain: 'servedbyadbutler.com', click:'CLICK_MACRO_PLACEHOLDER' }});
   } else {
-      var plc${ appConfig.ad.adButlerConfigDesktop?.id } = window.plc${ appConfig.ad.adButlerConfigDesktop?.id } || 0;
-      document.getElementById('ad-banner').innerHTML = '<'+'div id="placement_${ appConfig.ad.adButlerConfigDesktop?.id }_'+plc${ appConfig.ad.adButlerConfigDesktop?.id }+'"></'+'div>';
-      AdButler.ads.push({handler: function(opt){ AdButler.register(${ ADBUTLER_ACCOUNT }, ${ appConfig.ad.adButlerConfigDesktop?.id }, [${ appConfig.ad.adButlerConfigDesktop?.width },${ appConfig.ad.adButlerConfigDesktop?.height }], 'placement_${ appConfig.ad.adButlerConfigDesktop?.id }_'+opt.place, opt); }, opt: { place: plc${ appConfig.ad.adButlerConfigDesktop?.id }++, keywords: abkw, domain: 'servedbyadbutler.com', click:'CLICK_MACRO_PLACEHOLDER' }});
+      var plc${ config.features.adsBanner.adButler.config.desktop?.id } = window.plc${ config.features.adsBanner.adButler.config.desktop?.id } || 0;
+      document.getElementById('ad-banner').innerHTML = '<'+'div id="placement_${ config.features.adsBanner.adButler.config.desktop?.id }_'+plc${ config.features.adsBanner.adButler.config.desktop?.id }+'"></'+'div>';
+      AdButler.ads.push({handler: function(opt){ AdButler.register(${ ADBUTLER_ACCOUNT }, ${ config.features.adsBanner.adButler.config.desktop?.id }, [${ config.features.adsBanner.adButler.config.desktop?.width },${ config.features.adsBanner.adButler.config.desktop?.height }], 'placement_${ config.features.adsBanner.adButler.config.desktop?.id }_'+opt.place, opt); }, opt: { place: plc${ config.features.adsBanner.adButler.config.desktop?.id }++, keywords: abkw, domain: 'servedbyadbutler.com', click:'CLICK_MACRO_PLACEHOLDER' }});
   }
 `;

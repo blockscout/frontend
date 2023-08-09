@@ -5,7 +5,7 @@ import React from 'react';
 
 import type { AddressCoinBalanceHistoryItem } from 'types/api/address';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import { WEI, ZERO } from 'lib/consts';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Address from 'ui/shared/address/Address';
@@ -28,7 +28,7 @@ const AddressCoinBalanceListItem = (props: Props) => {
     <ListItemMobile rowGap={ 2 } isAnimated>
       <Flex justifyContent="space-between" w="100%">
         <Skeleton isLoaded={ !props.isLoading } fontWeight={ 600 }>
-          { BigNumber(props.value).div(WEI).dp(8).toFormat() } { appConfig.network.currency.symbol }
+          { BigNumber(props.value).div(WEI).dp(8).toFormat() } { config.chain.currency.symbol }
         </Skeleton>
         <Skeleton isLoaded={ !props.isLoading }>
           <Stat flexGrow="0">

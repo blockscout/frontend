@@ -15,7 +15,7 @@ import type {
 } from '../types';
 import type { VerifiedAddress } from 'types/api/account';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import useApiFetch from 'lib/api/useApiFetch';
 import shortenString from 'lib/shortenString';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
@@ -62,7 +62,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
 
       const response = await apiFetch<'address_verification', AddressValidationResponseSuccess, AddressVerificationResponseError>('address_verification', {
         fetchParams: { method: 'POST', body },
-        pathParams: { chainId: appConfig.network.id, type: ':verify' },
+        pathParams: { chainId: config.chain.id, type: ':verify' },
       });
 
       if (response.status !== 'SUCCESS') {

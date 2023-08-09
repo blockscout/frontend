@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { VerifiedContract } from 'types/api/contracts';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import arrowIcon from 'icons/arrows/east.svg';
 import { default as Thead } from 'ui/shared/TheadSticky';
 
@@ -28,7 +28,7 @@ const VerifiedContractsTable = ({ data, sort, onSortToggle, isLoading }: Props) 
           <Th width="130px" isNumeric>
             <Link display="flex" alignItems="center" justifyContent="flex-end" onClick={ isLoading ? undefined : onSortToggle('balance') } columnGap={ 1 }>
               { sort?.includes('balance') && <Icon as={ arrowIcon } boxSize={ 4 } transform={ sortIconTransform }/> }
-                Balance { appConfig.network.currency.symbol }
+                Balance { config.chain.currency.symbol }
             </Link>
           </Th>
           <Th width="130px" isNumeric>

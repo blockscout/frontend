@@ -1,14 +1,14 @@
 import Script from 'next/script';
 import React from 'react';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 
 const GoogleAnalytics = () => {
-  if (!appConfig.googleAnalytics.propertyId) {
+  if (!config.features.googleAnalytics.isEnabled) {
     return null;
   }
 
-  const id = appConfig.googleAnalytics.propertyId;
+  const id = config.features.googleAnalytics.propertyId;
 
   return (
     <>

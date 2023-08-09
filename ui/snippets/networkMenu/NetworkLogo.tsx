@@ -2,7 +2,7 @@ import { Icon, Box, Image, useColorModeValue, Skeleton } from '@chakra-ui/react'
 import { route } from 'nextjs-routes';
 import React from 'react';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import iconPlaceholder from 'icons/networks/icon-placeholder.svg';
 import logoPlaceholder from 'icons/networks/logo-placeholder.svg';
 
@@ -25,7 +25,7 @@ const LogoFallback = ({ isCollapsed, isSmall }: { isCollapsed?: boolean; isSmall
     xl: isCollapsed ? 'none' : 'block',
   };
 
-  if (appConfig.network[field].default) {
+  if (config.UI.sidebar[field].default) {
     return <Skeleton w="100%" borderRadius="sm" display={ display }/>;
   }
 
@@ -42,11 +42,11 @@ const LogoFallback = ({ isCollapsed, isSmall }: { isCollapsed?: boolean; isSmall
 
 const NetworkLogo = ({ isCollapsed, onClick }: Props) => {
 
-  const logoSrc = useColorModeValue(appConfig.network.logo.default, appConfig.network.logo.dark || appConfig.network.logo.default);
-  const iconSrc = useColorModeValue(appConfig.network.icon.default, appConfig.network.icon.dark || appConfig.network.icon.default);
+  const logoSrc = useColorModeValue(config.UI.sidebar.logo.default, config.UI.sidebar.logo.dark || config.UI.sidebar.logo.default);
+  const iconSrc = useColorModeValue(config.UI.sidebar.icon.default, config.UI.sidebar.icon.dark || config.UI.sidebar.icon.default);
   const darkModeFilter = { filter: 'brightness(0) invert(1)' };
-  const logoStyle = useColorModeValue({}, !appConfig.network.logo.dark ? darkModeFilter : {});
-  const iconStyle = useColorModeValue({}, !appConfig.network.icon.dark ? darkModeFilter : {});
+  const logoStyle = useColorModeValue({}, !config.UI.sidebar.logo.dark ? darkModeFilter : {});
+  const iconStyle = useColorModeValue({}, !config.UI.sidebar.icon.dark ? darkModeFilter : {});
 
   return (
     // TODO switch to <NextLink href={ href } passHref> when main page for network will be ready
@@ -66,7 +66,7 @@ const NetworkLogo = ({ isCollapsed, onClick }: Props) => {
         w="auto"
         h="100%"
         src={ logoSrc }
-        alt={ `${ appConfig.network.name } network logo` }
+        alt={ `${ config.chain.name } network logo` }
         fallback={ <LogoFallback isCollapsed={ isCollapsed }/> }
         display={{ base: 'block', lg: isCollapsed === false ? 'block' : 'none', xl: isCollapsed ? 'none' : 'block' }}
         style={ logoStyle }
@@ -76,7 +76,7 @@ const NetworkLogo = ({ isCollapsed, onClick }: Props) => {
         w="auto"
         h="100%"
         src={ iconSrc }
-        alt={ `${ appConfig.network.name } network logo` }
+        alt={ `${ config.chain.name } network logo` }
         fallback={ <LogoFallback isCollapsed={ isCollapsed } isSmall/> }
         display={{ base: 'none', lg: isCollapsed === false ? 'none' : 'block', xl: isCollapsed ? 'block' : 'none' }}
         style={ iconStyle }

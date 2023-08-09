@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import useToast from 'lib/hooks/useToast';
 import useProvider from 'lib/web3/useProvider';
 import { WALLETS_INFO } from 'lib/web3/wallets';
@@ -64,7 +64,11 @@ const AddressAddToWallet = ({ className, token, isLoading }: Props) => {
     return <Skeleton className={ className } boxSize={ 6 } borderRadius="base"/>;
   }
 
-  const defaultWallet = appConfig.web3.defaultWallet;
+  const defaultWallet = config.features.web3Wallet.defaultWallet;
+
+  if (defaultWallet === 'none') {
+    return null;
+  }
 
   return (
     <Tooltip label={ `Add token to ${ WALLETS_INFO[defaultWallet].name }` }>

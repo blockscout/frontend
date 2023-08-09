@@ -3,7 +3,7 @@ import { createGraphiQLFetcher } from '@graphiql/toolkit';
 import { GraphiQL } from 'graphiql';
 import React from 'react';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import buildUrl from 'lib/api/buildUrl';
 import 'graphiql/graphiql.css';
 import isBrowser from 'lib/isBrowser';
@@ -33,7 +33,7 @@ const GraphQL = () => {
 
   const initialQuery = `{
     transaction(
-      hash: "${ appConfig.graphQL.defaultTxnHash }"
+      hash: "${ config.features.graphqlApiDocs.defaultTxHash }"
     ) {
       hash
       blockNumber
@@ -50,7 +50,7 @@ const GraphQL = () => {
     // or the older one subscriptions-transport-ws
     // so we (isstuev & vbaranov) decided to configure playground without subscriptions
     // in case of any complaint consider reconfigure the graphql ws server with absinthe_graphql_ws package
-    // subscriptionUrl: `wss://${appConfig.app.host}/socket/`,
+    // subscriptionUrl: `wss://${config.app.host}/socket/`,
   });
 
   return (

@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { FeaturedNetwork, NetworkGroup } from 'types/networks';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useApiFetch from 'lib/hooks/useFetch';
 
@@ -16,9 +16,9 @@ export default function useNetworkMenu() {
   const apiFetch = useApiFetch();
   const { isLoading, data } = useQuery<unknown, ResourceError<unknown>, Array<FeaturedNetwork>>(
     [ 'featured-network' ],
-    async() => apiFetch(appConfig.navigation.featuredNetworks || ''),
+    async() => apiFetch(config.UI.sidebar.featuredNetworks || ''),
     {
-      enabled: Boolean(appConfig.navigation.featuredNetworks) && isOpen,
+      enabled: Boolean(config.UI.sidebar.featuredNetworks) && isOpen,
       staleTime: Infinity,
     });
 

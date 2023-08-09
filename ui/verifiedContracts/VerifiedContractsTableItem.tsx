@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { VerifiedContract } from 'types/api/contracts';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import iconCheck from 'icons/check.svg';
 import iconCross from 'icons/cross.svg';
 import iconSuccess from 'icons/status/success.svg';
@@ -22,7 +22,7 @@ interface Props {
 
 const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
   const balance = data.coin_balance && data.coin_balance !== '0' ?
-    BigNumber(data.coin_balance).div(10 ** appConfig.network.currency.decimals).dp(6).toFormat() :
+    BigNumber(data.coin_balance).div(10 ** config.chain.currency.decimals).dp(6).toFormat() :
     '0';
 
   return (

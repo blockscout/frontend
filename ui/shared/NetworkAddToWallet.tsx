@@ -1,7 +1,7 @@
 import { Button, Icon, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import useToast from 'lib/hooks/useToast';
 import useProvider from 'lib/web3/useProvider';
 import { WALLETS_INFO } from 'lib/web3/wallets';
@@ -16,24 +16,24 @@ const NetworkAddToWallet = ({ className }: Props) => {
 
   const handleClick = React.useCallback(async() => {
     try {
-      const hexadecimalChainId = '0x' + Number(appConfig.network.id).toString(16);
-      const config = {
+      const hexadecimalChainId = '0x' + Number(config.chain.id).toString(16);
+      const params = {
         method: 'wallet_addEthereumChain',
         params: [ {
           chainId: hexadecimalChainId,
-          chainName: appConfig.network.name,
+          chainName: config.chain.name,
           nativeCurrency: {
-            name: appConfig.network.currency.name,
-            symbol: appConfig.network.currency.symbol,
-            decimals: appConfig.network.currency.decimals,
+            name: config.chain.currency.name,
+            symbol: config.chain.currency.symbol,
+            decimals: config.chain.currency.decimals,
           },
-          rpcUrls: [ appConfig.network.rpcUrl ],
-          blockExplorerUrls: [ appConfig.app.baseUrl ],
+          rpcUrls: [ config.chain.rpcUrl ],
+          blockExplorerUrls: [ config.app.baseUrl ],
         } ],
       // in wagmi types for wallet_addEthereumChain method is not provided
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any;
-      await provider?.request?.(config);
+      await provider?.request?.(params);
       toast({
         position: 'top-right',
         title: 'Success',
@@ -54,16 +54,20 @@ const NetworkAddToWallet = ({ className }: Props) => {
     }
   }, [ provider, toast ]);
 
-  if (!provider || !appConfig.network.rpcUrl) {
+  if (!provider || !config.chain.rpcUrl) {
     return null;
   }
 
-  const defaultWallet = appConfig.web3.defaultWallet;
+  const defaultWallet = config.features.web3Wallet.defaultWallet;
+
+  if (defaultWallet === 'none') {
+    return null;
+  }
 
   return (
     <Button variant="outline" size="sm" onClick={ handleClick } className={ className }>
       <Icon as={ WALLETS_INFO[defaultWallet].icon } boxSize={ 5 } mr={ 2 }/>
-        Add { appConfig.network.name }
+        Add { config.chain.name }
     </Button>
   );
 };

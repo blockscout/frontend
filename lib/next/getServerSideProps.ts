@@ -1,6 +1,6 @@
 import type { GetServerSideProps } from 'next';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 
 export type Props = {
   cookies: string;
@@ -25,7 +25,7 @@ export const base: GetServerSideProps<Props> = async({ req, query }) => {
 };
 
 export const account: GetServerSideProps<Props> = async(context) => {
-  if (!appConfig.account.isEnabled) {
+  if (!config.features.account.isEnabled) {
     return {
       notFound: true,
     };
@@ -35,7 +35,7 @@ export const account: GetServerSideProps<Props> = async(context) => {
 };
 
 export const verifiedAddresses: GetServerSideProps<Props> = async(context) => {
-  if (!appConfig.adminServiceApi.endpoint || !appConfig.contractInfoApi.endpoint) {
+  if (!config.features.addressVerification.isEnabled) {
     return {
       notFound: true,
     };
@@ -45,7 +45,7 @@ export const verifiedAddresses: GetServerSideProps<Props> = async(context) => {
 };
 
 export const beaconChain: GetServerSideProps<Props> = async(context) => {
-  if (!appConfig.beaconChain.hasBeaconChain) {
+  if (!config.features.beaconChain.isEnabled) {
     return {
       notFound: true,
     };
@@ -55,7 +55,7 @@ export const beaconChain: GetServerSideProps<Props> = async(context) => {
 };
 
 export const L2: GetServerSideProps<Props> = async(context) => {
-  if (!appConfig.L2.isL2Network) {
+  if (!config.features.rollup.isEnabled) {
     return {
       notFound: true,
     };
@@ -65,7 +65,7 @@ export const L2: GetServerSideProps<Props> = async(context) => {
 };
 
 export const marketplace: GetServerSideProps<Props> = async(context) => {
-  if (!appConfig.marketplace.configUrl || !appConfig.network.rpcUrl) {
+  if (!config.features.marketplace.isEnabled) {
     return {
       notFound: true,
     };
@@ -75,7 +75,7 @@ export const marketplace: GetServerSideProps<Props> = async(context) => {
 };
 
 export const apiDocs: GetServerSideProps<Props> = async(context) => {
-  if (!appConfig.apiDoc.specUrl) {
+  if (!config.features.restApiDocs.isEnabled) {
     return {
       notFound: true,
     };
@@ -85,7 +85,7 @@ export const apiDocs: GetServerSideProps<Props> = async(context) => {
 };
 
 export const csvExport: GetServerSideProps<Props> = async(context) => {
-  if (!appConfig.reCaptcha.siteKey) {
+  if (!config.features.csvExport.isEnabled) {
     return {
       notFound: true,
     };
@@ -95,7 +95,7 @@ export const csvExport: GetServerSideProps<Props> = async(context) => {
 };
 
 export const stats: GetServerSideProps<Props> = async(context) => {
-  if (!appConfig.statsApi.endpoint) {
+  if (!config.features.stats.isEnabled) {
     return {
       notFound: true,
     };

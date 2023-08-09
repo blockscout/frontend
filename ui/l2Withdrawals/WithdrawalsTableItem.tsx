@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { L2WithdrawalsItem } from 'types/api/l2Withdrawals';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import txIcon from 'icons/transactions.svg';
 import dayjs from 'lib/date/dayjs';
 import Address from 'ui/shared/address/Address';
@@ -55,14 +55,14 @@ const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
       </Td>
       <Td verticalAlign="middle">
         { item.status === 'Ready for relay' ?
-          <LinkExternal href={ appConfig.L2.withdrawalUrl }>{ item.status }</LinkExternal> :
+          <LinkExternal href={ config.features.rollup.withdrawalUrl }>{ item.status }</LinkExternal> :
           <Skeleton isLoaded={ !isLoading } display="inline-block">{ item.status }</Skeleton>
         }
       </Td>
       <Td verticalAlign="middle">
         { item.l1_tx_hash ? (
           <LinkExternal
-            href={ appConfig.L2.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: item.l1_tx_hash } }) }
+            href={ config.features.rollup.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: item.l1_tx_hash } }) }
             isLoading={ isLoading }
             display="inline-flex"
           >

@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { L2OutputRootsItem } from 'types/api/l2OutputRoots';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import txIcon from 'icons/transactions.svg';
 import dayjs from 'lib/date/dayjs';
 import Icon from 'ui/shared/chakra/Icon';
@@ -53,7 +53,7 @@ const OutputRootsListItem = ({ item, isLoading }: Props) => {
           maxW="100%"
           display="flex"
           overflow="hidden"
-          href={ appConfig.L2.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: item.l1_tx_hash } }) }
+          href={ config.features.rollup.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: item.l1_tx_hash } }) }
           isLoading={ isLoading }
         >
           <Icon as={ txIcon } boxSize={ 6 } isLoading={ isLoading }/>

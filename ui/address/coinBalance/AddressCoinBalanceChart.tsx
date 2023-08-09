@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import ChartWidget from 'ui/shared/chart/ChartWidget';
 
@@ -16,7 +16,7 @@ const AddressCoinBalanceChart = ({ addressHash }: Props) => {
 
   const items = React.useMemo(() => data?.map(({ date, value }) => ({
     date: new Date(date),
-    value: BigNumber(value).div(10 ** appConfig.network.currency.decimals).toNumber(),
+    value: BigNumber(value).div(10 ** config.chain.currency.decimals).toNumber(),
   })), [ data ]);
 
   return (
@@ -26,7 +26,7 @@ const AddressCoinBalanceChart = ({ addressHash }: Props) => {
       items={ items }
       isLoading={ isLoading }
       h="300px"
-      units={ appConfig.network.currency.symbol }
+      units={ config.chain.currency.symbol }
     />
   );
 };

@@ -1,7 +1,7 @@
 import { Box, Icon, Link, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
-import config from 'configs/app/config';
+import config from 'configs/app';
 import PlusIcon from 'icons/plus.svg';
 import MarketplaceAppModal from 'ui/marketplace/MarketplaceAppModal';
 import MarketplaceCategoriesMenu from 'ui/marketplace/MarketplaceCategoriesMenu';
@@ -74,7 +74,7 @@ const Marketplace = () => {
         />
       ) }
 
-      { config.marketplace.submitForm && (
+      { config.features.marketplace.isEnabled && (
         <Skeleton
           isLoaded={ !isPlaceholderData }
           marginTop={{ base: 8, sm: 16 }}
@@ -84,7 +84,7 @@ const Marketplace = () => {
             fontWeight="bold"
             display="inline-flex"
             alignItems="baseline"
-            href={ config.marketplace.submitForm }
+            href={ config.features.marketplace.submitFormUrl }
             isExternal
           >
             <Icon

@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { NetworkExplorer as TNetworkExplorer } from 'types/networks';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import arrowIcon from 'icons/arrows/east-mini.svg';
 import explorerIcon from 'icons/explorer.svg';
 import LinkExternal from 'ui/shared/LinkExternal';
@@ -18,7 +18,7 @@ interface Props {
 const NetworkExplorers = ({ className, type, pathParam, hideText }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
 
-  const explorersLinks = appConfig.network.explorers
+  const explorersLinks = config.UI.explorers.items
     .filter((explorer) => explorer.paths[type])
     .map((explorer) => {
       const url = new URL(explorer.paths[type] + '/' + pathParam, explorer.baseUrl);

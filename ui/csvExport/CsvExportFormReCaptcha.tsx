@@ -5,7 +5,7 @@ import type { UseFormReturn } from 'react-hook-form';
 
 import type { FormFields } from './types';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 
 interface Props {
   formApi: UseFormReturn<FormFields>;
@@ -42,7 +42,7 @@ const CsvExportFormReCaptcha = ({ formApi }: Props) => {
     formApi.setError('reCaptcha', { type: 'required' });
   }, [ formApi ]);
 
-  if (!appConfig.reCaptcha.siteKey) {
+  if (!config.features.csvExport.isEnabled) {
     return (
       <Alert status="error">
         CSV export is not available at the moment since reCaptcha is not configured for this application.
@@ -55,7 +55,7 @@ const CsvExportFormReCaptcha = ({ formApi }: Props) => {
     <ReCaptcha
       className="recaptcha"
       ref={ ref }
-      sitekey={ appConfig.reCaptcha.siteKey }
+      sitekey={ config.features.csvExport.reCaptcha.siteKey }
       onChange={ handleReCaptchaChange }
       onExpired={ handleReCaptchaExpire }
     />

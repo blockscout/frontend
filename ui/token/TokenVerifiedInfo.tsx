@@ -4,22 +4,22 @@ import React from 'react';
 
 import type { TokenVerifiedInfo as TTokenVerifiedInfo } from 'types/api/token';
 
+import config from 'configs/app';
 import LinkExternal from 'ui/shared/LinkExternal';
 
 import TokenProjectInfo from './TokenProjectInfo';
 
 interface Props {
   verifiedInfoQuery: UseQueryResult<TTokenVerifiedInfo>;
-  isVerifiedInfoEnabled: boolean;
 }
 
-const TokenVerifiedInfo = ({ verifiedInfoQuery, isVerifiedInfoEnabled }: Props) => {
+const TokenVerifiedInfo = ({ verifiedInfoQuery }: Props) => {
 
   const { data, isLoading, isError } = verifiedInfoQuery;
   const websiteLinkBg = useColorModeValue('gray.100', 'gray.700');
 
   const content = (() => {
-    if (!isVerifiedInfoEnabled) {
+    if (!config.features.verifiedTokens.isEnabled) {
       return null;
     }
 

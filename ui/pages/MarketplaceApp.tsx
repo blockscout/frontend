@@ -6,7 +6,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import type { MarketplaceAppOverview } from 'types/client/marketplace';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import { useAppContext } from 'lib/contexts/app';
 import useApiFetch from 'lib/hooks/useFetch';
@@ -33,7 +33,7 @@ const MarketplaceApp = () => {
   const { isLoading, isError, error, data } = useQuery<unknown, ResourceError<unknown>, MarketplaceAppOverview>(
     [ 'marketplace-apps', id ],
     async() => {
-      const result = await apiFetch<Array<MarketplaceAppOverview>, unknown>(appConfig.marketplace.configUrl || '');
+      const result = await apiFetch<Array<MarketplaceAppOverview>, unknown>(config.features.marketplace.configUrl);
       if (!Array.isArray(result)) {
         throw result;
       }
@@ -58,13 +58,13 @@ const MarketplaceApp = () => {
     if (data && !isFrameLoading) {
       const message = {
         blockscoutColorMode: colorMode,
-        blockscoutRootUrl: appConfig.app.baseUrl + route({ pathname: '/' }),
-        blockscoutAddressExplorerUrl: appConfig.app.baseUrl + route({ pathname: '/address/[hash]', query: { hash: '' } }),
-        blockscoutTransactionExplorerUrl: appConfig.app.baseUrl + route({ pathname: '/tx/[hash]', query: { hash: '' } }),
-        blockscoutNetworkName: appConfig.network.name,
-        blockscoutNetworkId: Number(appConfig.network.id),
-        blockscoutNetworkCurrency: appConfig.network.currency,
-        blockscoutNetworkRpc: appConfig.network.rpcUrl,
+        blockscoutRootUrl: config.app.baseUrl + route({ pathname: '/' }),
+        blockscoutAddressExplorerUrl: config.app.baseUrl + route({ pathname: '/address/[hash]', query: { hash: '' } }),
+        blockscoutTransactionExplorerUrl: config.app.baseUrl + route({ pathname: '/tx/[hash]', query: { hash: '' } }),
+        blockscoutNetworkName: config.chain.name,
+        blockscoutNetworkId: Number(config.chain.id),
+        blockscoutNetworkCurrency: config.chain.currency,
+        blockscoutNetworkRpc: config.chain.rpcUrl,
       };
 
       ref?.current?.contentWindow?.postMessage(message, data.url);

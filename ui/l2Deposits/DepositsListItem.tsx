@@ -5,7 +5,7 @@ import React from 'react';
 
 import type { L2DepositsItem } from 'types/api/l2Deposits';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import blockIcon from 'icons/block.svg';
 import txIcon from 'icons/transactions.svg';
 import dayjs from 'lib/date/dayjs';
@@ -27,7 +27,7 @@ const DepositsListItem = ({ item, isLoading }: Props) => {
       <ListItemMobileGrid.Label isLoading={ isLoading }>L1 block No</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value py="3px">
         <LinkExternal
-          href={ appConfig.L2.L1BaseUrl + route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.l1_block_number.toString() } }) }
+          href={ config.features.rollup.L1BaseUrl + route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.l1_block_number.toString() } }) }
           fontWeight={ 600 }
           display="flex"
           isLoading={ isLoading }
@@ -63,7 +63,7 @@ const DepositsListItem = ({ item, isLoading }: Props) => {
       <ListItemMobileGrid.Label isLoading={ isLoading }>L1 txn hash</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value py="3px">
         <LinkExternal
-          href={ appConfig.L2.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: item.l1_tx_hash } }) }
+          href={ config.features.rollup.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: item.l1_tx_hash } }) }
           maxW="100%"
           display="flex"
           overflow="hidden"
@@ -79,7 +79,7 @@ const DepositsListItem = ({ item, isLoading }: Props) => {
       <ListItemMobileGrid.Label isLoading={ isLoading }>L1 txn origin</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value py="3px">
         <LinkExternal
-          href={ appConfig.L2.L1BaseUrl + route({ pathname: '/address/[hash]', query: { hash: item.l1_tx_origin } }) }
+          href={ config.features.rollup.L1BaseUrl + route({ pathname: '/address/[hash]', query: { hash: item.l1_tx_origin } }) }
           maxW="100%"
           display="flex"
           overflow="hidden"

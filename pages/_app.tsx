@@ -5,7 +5,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { AppProps } from 'next/app';
 import React, { useState } from 'react';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import { AppContextProvider } from 'lib/contexts/app';
 import { ChakraProvider } from 'lib/contexts/chakra';
 import { ScrollDirectionProvider } from 'lib/contexts/scrollDirection';
@@ -85,7 +85,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <AppContextProvider pageProps={ pageProps }>
           <QueryClientProvider client={ queryClient }>
             <ScrollDirectionProvider>
-              <SocketProvider url={ `${ appConfig.api.socket }${ appConfig.api.basePath }/socket/v2` }>
+              <SocketProvider url={ `${ config.api.socket }${ config.api.basePath }/socket/v2` }>
                 <Component { ...pageProps }/>
               </SocketProvider>
             </ScrollDirectionProvider>

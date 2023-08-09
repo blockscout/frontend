@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { WatchlistAddress } from 'types/api/account';
 
-import appConfig from 'configs/app/config';
+import config from 'configs/app';
 import TokensIcon from 'icons/tokens.svg';
 import WalletIcon from 'icons/wallet.svg';
 import getCurrencyValue from 'lib/getCurrencyValue';
@@ -18,8 +18,7 @@ const WatchListAddressItem = ({ item, isLoading }: { item: WatchlistAddress; isL
   const infoItemsPaddingLeft = { base: 1, lg: 8 };
 
   const nativeTokenData = React.useMemo(() => ({
-    address: appConfig.network.currency.address || '',
-    name: appConfig.network.currency.name || '',
+    name: config.chain.currency.name || '',
     icon_url: '',
   }), [ ]);
 
@@ -29,21 +28,19 @@ const WatchListAddressItem = ({ item, isLoading }: { item: WatchlistAddress; isL
     <VStack spacing={ 2 } align="stretch" fontWeight={ 500 }>
       <AddressSnippet address={ item.address } isLoading={ isLoading }/>
       <Flex fontSize="sm" pl={ infoItemsPaddingLeft } flexWrap="wrap" alignItems="center" rowGap={ 1 }>
-        { appConfig.network.currency.address && (
-          <TokenLogo
-            data={ nativeTokenData }
-            boxSize={ 5 }
-            borderRadius="sm"
-            mr={ 2 }
-            isLoading={ isLoading }
-          />
-        ) }
+        <TokenLogo
+          data={ nativeTokenData }
+          boxSize={ 5 }
+          borderRadius="sm"
+          mr={ 2 }
+          isLoading={ isLoading }
+        />
         <Skeleton isLoaded={ !isLoading } whiteSpace="pre" display="inline-flex">
-          <span>{ appConfig.network.currency.symbol } balance: </span>
+          <span>{ config.chain.currency.symbol } balance: </span>
           <CurrencyValue
             value={ item.address_balance }
             exchangeRate={ item.exchange_rate }
-            decimals={ String(appConfig.network.currency.decimals) }
+            decimals={ String(config.chain.currency.decimals) }
             accuracy={ 2 }
             accuracyUsd={ 2 }
           />
