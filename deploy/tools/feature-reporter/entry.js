@@ -11,7 +11,7 @@ To adjust their configuration, please refer to the documentation - https://githu
     `);
     Object.entries(config.features)
       .forEach(([ , feature ]) => {
-        const mark = feature.isEnabled ? '✔️' : ' ';
+        const mark = feature.isEnabled ? 'v' : ' ';
         console.log(`    [${ mark }] ${ feature.title }`);
       });
 
