@@ -1,7 +1,9 @@
+import stripTrailingSlash from 'lib/stripTrailingSlash';
+
 import app from '../app';
 import { getEnvValue } from '../utils';
 
-const authUrl = getEnvValue(process.env.NEXT_PUBLIC_AUTH_URL) || app.baseUrl;
+const authUrl = stripTrailingSlash(getEnvValue(process.env.NEXT_PUBLIC_AUTH_URL) || app.baseUrl);
 
 const logoutUrl = (() => {
   try {

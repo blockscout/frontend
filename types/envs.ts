@@ -1,5 +1,3 @@
-// TODO @tom2drum revise unions and features
-
 export type NextPublicEnvs = {
   // network config
   NEXT_PUBLIC_NETWORK_NAME: string;
@@ -53,7 +51,6 @@ export type NextPublicEnvs = {
   NEXT_PUBLIC_STATS_API_HOST?: string;
   NEXT_PUBLIC_VISUALIZE_API_HOST?: string;
   NEXT_PUBLIC_CONTRACT_INFO_API_HOST?: string;
-  NEXT_PUBLIC_ADMIN_SERVICE_API_HOST?: string;
 
   // external services config
   NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID?: string;
@@ -84,6 +81,7 @@ type NextPublicEnvsAccount =
   NEXT_PUBLIC_AUTH_URL?: string;
   NEXT_PUBLIC_LOGOUT_URL: string;
   NEXT_PUBLIC_AUTH0_CLIENT_ID: string;
+  NEXT_PUBLIC_ADMIN_SERVICE_API_HOST?: string;
 }
 
 type NextPublicEnvsMarketplace =

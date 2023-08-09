@@ -5,8 +5,17 @@ const walletConnectProjectId = getEnvValue(process.env.NEXT_PUBLIC_WALLET_CONNEC
 
 export default Object.freeze({
   title: 'Blockchain interaction (writing to contract, etc.)',
-  // TODO @tom2drum add currency and chain id
-  isEnabled: Boolean(walletConnectProjectId && chain.rpcUrl),
+  isEnabled: Boolean(
+    // all chain parameters are required for wagmi provider
+    // @wagmi/chains/dist/index.d.ts
+    chain.id &&
+    chain.name &&
+    chain.currency.name &&
+    chain.currency.symbol &&
+    chain.currency.decimals &&
+    chain.rpcUrl &&
+    walletConnectProjectId,
+  ),
   walletConnect: {
     projectId: walletConnectProjectId ?? '',
   },
