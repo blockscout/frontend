@@ -32,7 +32,7 @@ The app instance could be customized by passing following variables to NodeJS en
   - [Web3 wallet integration](ENVS.md#web3-wallet-integration-add-token-or-network-to-the-wallet) (add token or network to the wallet)
   - [Verified tokens info](ENVS.md#verified-tokens-info)
   - [Sentry error monitoring](ENVS.md#sentry-error-monitoring)
-- 3rd party services configuration
+- [3rd party services configuration](ENVS.md#external-services-configuration)
 
 &nbsp;
 

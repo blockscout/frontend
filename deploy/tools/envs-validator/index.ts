@@ -64,11 +64,13 @@ async function checkPlaceholdersCongruity(runTimeEnvs: Record<string, string>) {
     }
 
     if (inconsistencies.length > 0) {
-      console.log(`🚸 For the following environment variables placeholders were not generated at build-time:`);
+      console.log('🚸 For the following environment variables placeholders were not generated at build-time:');
       inconsistencies.forEach((env) => {
-        console.log(`    ${ env }`);
+        console.log(`     ${ env }`);
       });
-      console.log('They are either deprecated or running the app with them may lead to unexpected behavior. Please check the documentation for more details.');
+      console.log(`   They are either deprecated or running the app with them may lead to unexpected behavior. 
+   Please check the documentation for more details - https://github.com/blockscout/frontend/blob/main/docs/ENVS.md
+      `);
       throw new Error();
     }
 
