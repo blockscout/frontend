@@ -98,7 +98,7 @@ export default function useNavItems(): ReturnType {
         blocks,
         topAccounts,
         verifiedContracts,
-        config.features.beacon_chain.isEnabled && {
+        config.features.beaconChain.isEnabled && {
           text: 'Withdrawals',
           nextRoute: { pathname: '/withdrawals' as const },
           icon: withdrawalsIcon,
@@ -108,13 +108,13 @@ export default function useNavItems(): ReturnType {
     }
 
     const apiNavItems: Array<NavItem> = [
-      config.features.rest_api_docs.isEnabled ? {
+      config.features.restApiDocs.isEnabled ? {
         text: 'REST API',
         nextRoute: { pathname: '/api-docs' as const },
         icon: apiDocsIcon,
         isActive: pathname === '/api-docs',
       } : null,
-      config.features.graphql_api_docs.isEnabled ? {
+      config.features.graphqlApiDocs.isEnabled ? {
         text: 'GraphQL',
         nextRoute: { pathname: '/graphiql' as const },
         icon: graphQLIcon,
@@ -199,7 +199,7 @@ export default function useNavItems(): ReturnType {
         icon: abiIcon,
         isActive: pathname === '/account/custom-abi',
       },
-      config.features.address_verification.isEnabled && {
+      config.features.addressVerification.isEnabled && {
         text: 'Verified addrs',
         nextRoute: { pathname: '/account/verified-addresses' as const },
         icon: verifiedIcon,

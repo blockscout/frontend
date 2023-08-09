@@ -35,7 +35,7 @@ export const account: GetServerSideProps<Props> = async(context) => {
 };
 
 export const verifiedAddresses: GetServerSideProps<Props> = async(context) => {
-  if (!config.features.address_verification.isEnabled) {
+  if (!config.features.addressVerification.isEnabled) {
     return {
       notFound: true,
     };
@@ -45,7 +45,7 @@ export const verifiedAddresses: GetServerSideProps<Props> = async(context) => {
 };
 
 export const beaconChain: GetServerSideProps<Props> = async(context) => {
-  if (!config.features.beacon_chain.isEnabled) {
+  if (!config.features.beaconChain.isEnabled) {
     return {
       notFound: true,
     };
@@ -75,7 +75,7 @@ export const marketplace: GetServerSideProps<Props> = async(context) => {
 };
 
 export const apiDocs: GetServerSideProps<Props> = async(context) => {
-  if (!config.features.rest_api_docs.isEnabled) {
+  if (!config.features.restApiDocs.isEnabled) {
     return {
       notFound: true,
     };
@@ -85,7 +85,7 @@ export const apiDocs: GetServerSideProps<Props> = async(context) => {
 };
 
 export const csvExport: GetServerSideProps<Props> = async(context) => {
-  if (!config.features.csv_export.isEnabled) {
+  if (!config.features.csvExport.isEnabled) {
     return {
       notFound: true,
     };

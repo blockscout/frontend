@@ -58,7 +58,7 @@ const NetworkAddToWallet = ({ className }: Props) => {
     return null;
   }
 
-  const defaultWallet = config.features.web3_wallet.defaultWallet;
+  const defaultWallet = config.features.web3Wallet.defaultWallet;
 
   if (defaultWallet === 'none') {
     return null;

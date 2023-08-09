@@ -68,7 +68,7 @@ const SwaggerUI = () => {
   return (
     <Box sx={ swaggerStyle }>
       <SwaggerUIReact
-        url={ config.features.rest_api_docs.specUrl }
+        url={ config.features.restApiDocs.specUrl }
         plugins={ [ NeverShowInfoPlugin ] }
         requestInterceptor={ reqInterceptor }
       />

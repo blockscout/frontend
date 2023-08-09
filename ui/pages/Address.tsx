@@ -59,7 +59,7 @@ const AddressPageContent = () => {
   const tabs: Array<RoutedTab> = React.useMemo(() => {
     return [
       { id: 'txs', title: 'Transactions', component: <AddressTxs scrollRef={ tabsScrollRef }/> },
-      config.features.beacon_chain.isEnabled && addressQuery.data?.has_beacon_chain_withdrawals ?
+      config.features.beaconChain.isEnabled && addressQuery.data?.has_beacon_chain_withdrawals ?
         { id: 'withdrawals', title: 'Withdrawals', component: <AddressWithdrawals scrollRef={ tabsScrollRef }/> } :
         undefined,
       addressQuery.data?.has_token_transfers ?

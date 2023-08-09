@@ -62,7 +62,7 @@ const BlockPageContent = () => {
     resourceName: 'block_withdrawals',
     pathParams: { height_or_hash: heightOrHash },
     options: {
-      enabled: Boolean(!blockQuery.isPlaceholderData && blockQuery.data?.height && config.features.beacon_chain.isEnabled && tab === 'withdrawals'),
+      enabled: Boolean(!blockQuery.isPlaceholderData && blockQuery.data?.height && config.features.beaconChain.isEnabled && tab === 'withdrawals'),
       placeholderData: generateListStub<'block_withdrawals'>(WITHDRAWAL, 50, { next_page_params: {
         index: 5,
         items_count: 50,
@@ -81,7 +81,7 @@ const BlockPageContent = () => {
   const tabs: Array<RoutedTab> = React.useMemo(() => ([
     { id: 'index', title: 'Details', component: <BlockDetails query={ blockQuery }/> },
     { id: 'txs', title: 'Transactions', component: <TxsContent query={ blockTxsQuery } showBlockInfo={ false } showSocketInfo={ false }/> },
-    config.features.beacon_chain.isEnabled && Boolean(blockQuery.data?.withdrawals_count) ?
+    config.features.beaconChain.isEnabled && Boolean(blockQuery.data?.withdrawals_count) ?
       { id: 'withdrawals', title: 'Withdrawals', component: <BlockWithdrawals blockWithdrawalsQuery={ blockWithdrawalsQuery }/> } :
       null,
   ].filter(Boolean)), [ blockQuery, blockTxsQuery, blockWithdrawalsQuery ]);

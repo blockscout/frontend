@@ -9,7 +9,7 @@ export default function useProvider() {
   const [ provider, setProvider ] = React.useState<WindowProvider>();
 
   React.useEffect(() => {
-    if (!('ethereum' in window && window.ethereum) || !config.features.web3_wallet.isEnabled) {
+    if (!('ethereum' in window && window.ethereum) || !config.features.web3Wallet.isEnabled) {
       return;
     }
 
@@ -18,11 +18,11 @@ export default function useProvider() {
     const providers = Array.isArray(window.ethereum.providers) ? window.ethereum.providers : [ window.ethereum ];
 
     providers.forEach(async(provider) => {
-      if (config.features.web3_wallet.defaultWallet === 'coinbase' && provider.isCoinbaseWallet) {
+      if (config.features.web3Wallet.defaultWallet === 'coinbase' && provider.isCoinbaseWallet) {
         return setProvider(provider);
       }
 
-      if (config.features.web3_wallet.defaultWallet === 'metamask' && provider.isMetaMask) {
+      if (config.features.web3Wallet.defaultWallet === 'metamask' && provider.isMetaMask) {
         return setProvider(provider);
       }
     });

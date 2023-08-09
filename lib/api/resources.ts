@@ -111,32 +111,32 @@ export const RESOURCES = {
   address_verification: {
     path: '/api/v1/chains/:chainId/verified-addresses:type',
     pathParams: [ 'chainId' as const, 'type' as const ],
-    endpoint: config.features.verified_tokens.api.endpoint,
-    basePath: config.features.verified_tokens.api.basePath,
+    endpoint: config.features.verifiedTokens.api.endpoint,
+    basePath: config.features.verifiedTokens.api.basePath,
     needAuth: true,
   },
 
   verified_addresses: {
     path: '/api/v1/chains/:chainId/verified-addresses',
     pathParams: [ 'chainId' as const ],
-    endpoint: config.features.verified_tokens.api.endpoint,
-    basePath: config.features.verified_tokens.api.basePath,
+    endpoint: config.features.verifiedTokens.api.endpoint,
+    basePath: config.features.verifiedTokens.api.basePath,
     needAuth: true,
   },
 
   token_info_applications_config: {
     path: '/api/v1/chains/:chainId/token-info-submissions/selectors',
     pathParams: [ 'chainId' as const ],
-    endpoint: config.features.address_verification.api.endpoint,
-    basePath: config.features.address_verification.api.basePath,
+    endpoint: config.features.addressVerification.api.endpoint,
+    basePath: config.features.addressVerification.api.basePath,
     needAuth: true,
   },
 
   token_info_applications: {
     path: '/api/v1/chains/:chainId/token-info-submissions/:id?',
     pathParams: [ 'chainId' as const, 'id' as const ],
-    endpoint: config.features.address_verification.api.endpoint,
-    basePath: config.features.address_verification.api.basePath,
+    endpoint: config.features.addressVerification.api.endpoint,
+    basePath: config.features.addressVerification.api.basePath,
     needAuth: true,
   },
 
@@ -161,8 +161,8 @@ export const RESOURCES = {
   // VISUALIZATION
   visualize_sol2uml: {
     path: '/api/v1/solidity\\:visualize-contracts',
-    endpoint: config.features.sol2uml_diagrams.api.endpoint,
-    basePath: config.features.sol2uml_diagrams.api.basePath,
+    endpoint: config.features.sol2uml.api.endpoint,
+    basePath: config.features.sol2uml.api.basePath,
   },
 
   // BLOCKS, TXS
@@ -345,8 +345,8 @@ export const RESOURCES = {
   token_verified_info: {
     path: '/api/v1/chains/:chainId/token-infos/:hash',
     pathParams: [ 'chainId' as const, 'hash' as const ],
-    endpoint: config.features.verified_tokens.api.endpoint,
-    basePath: config.features.verified_tokens.api.basePath,
+    endpoint: config.features.verifiedTokens.api.endpoint,
+    basePath: config.features.verifiedTokens.api.basePath,
   },
   token_counters: {
     path: '/api/v2/tokens/:hash/counters',

@@ -3,7 +3,7 @@ import type CspDev from 'csp-dev';
 import config from 'configs/app';
 
 export function walletConnect(): CspDev.DirectiveDescriptor {
-  if (!config.features.blockchain_interaction.isEnabled) {
+  if (!config.features.blockchainInteraction.isEnabled) {
     return {};
   }
 

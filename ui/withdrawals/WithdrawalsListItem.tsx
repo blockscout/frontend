@@ -85,7 +85,7 @@ const WithdrawalsListItem = ({ item, isLoading, view }: Props) => {
 
           <ListItemMobileGrid.Label isLoading={ isLoading }>Value</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <CurrencyValue value={ item.amount } currency={ config.features.beacon_chain.currency.symbol } isLoading={ isLoading }/>
+            <CurrencyValue value={ item.amount } currency={ config.features.beaconChain.currency.symbol } isLoading={ isLoading }/>
           </ListItemMobileGrid.Value>
         </>
       ) }

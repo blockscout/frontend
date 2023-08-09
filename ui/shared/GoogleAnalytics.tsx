@@ -4,11 +4,11 @@ import React from 'react';
 import config from 'configs/app';
 
 const GoogleAnalytics = () => {
-  if (!config.features.google_analytics.isEnabled) {
+  if (!config.features.googleAnalytics.isEnabled) {
     return null;
   }
 
-  const id = config.features.google_analytics.propertyId;
+  const id = config.features.googleAnalytics.propertyId;
 
   return (
     <>

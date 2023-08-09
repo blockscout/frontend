@@ -12,12 +12,12 @@ import SliseBanner from './SliseBanner';
 const AdBanner = ({ className, isLoading }: { className?: string; isLoading?: boolean }) => {
   const hasAdblockCookie = cookies.get(cookies.NAMES.ADBLOCK_DETECTED, useAppContext().cookies);
 
-  if (!config.features.ads_banner.isEnabled || hasAdblockCookie) {
+  if (!config.features.adsBanner.isEnabled || hasAdblockCookie) {
     return null;
   }
 
   const content = (() => {
-    switch (config.features.ads_banner.provider) {
+    switch (config.features.adsBanner.provider) {
       case 'adbutler':
         return <AdbutlerBanner/>;
       case 'coinzilla':
@@ -32,7 +32,7 @@ const AdBanner = ({ className, isLoading }: { className?: string; isLoading?: bo
       className={ className }
       isLoaded={ !isLoading }
       borderRadius="none"
-      maxW={ config.features.ads_banner.provider === 'adbutler' ? config.features.ads_banner.adButler.config.desktop?.width : '728px' }
+      maxW={ config.features.adsBanner.provider === 'adbutler' ? config.features.adsBanner.adButler.config.desktop?.width : '728px' }
       w="100%"
     >
       { content }

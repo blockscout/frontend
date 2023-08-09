@@ -21,7 +21,7 @@ const AddressCsvExportLink = ({ className, address, params, isLoading }: Props) 
   const isMobile = useIsMobile();
   const isInitialLoading = useIsInitialLoading(isLoading);
 
-  if (!config.features.csv_export.isEnabled) {
+  if (!config.features.csvExport.isEnabled) {
     return null;
   }
 

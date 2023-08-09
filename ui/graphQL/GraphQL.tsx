@@ -33,7 +33,7 @@ const GraphQL = () => {
 
   const initialQuery = `{
     transaction(
-      hash: "${ config.features.graphql_api_docs.defaultTxHash }"
+      hash: "${ config.features.graphqlApiDocs.defaultTxHash }"
     ) {
       hash
       blockNumber

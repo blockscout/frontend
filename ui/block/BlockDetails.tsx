@@ -186,7 +186,7 @@ const BlockDetails = ({ query }: Props) => {
           </LinkInternal>
         </Skeleton>
       </DetailsInfoItem>
-      { config.features.beacon_chain.isEnabled && Boolean(data.withdrawals_count) && (
+      { config.features.beaconChain.isEnabled && Boolean(data.withdrawals_count) && (
         <DetailsInfoItem
           title="Withdrawals"
           hint="The number of beacon withdrawals in the block"

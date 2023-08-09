@@ -147,7 +147,7 @@ const TokenPageContent = () => {
 
   const verifiedInfoQuery = useApiQuery('token_verified_info', {
     pathParams: { hash: hashString, chainId: config.chain.id },
-    queryOptions: { enabled: Boolean(tokenQuery.data) && config.features.verified_tokens.isEnabled },
+    queryOptions: { enabled: Boolean(tokenQuery.data) && config.features.verifiedTokens.isEnabled },
   });
 
   const contractTabs = useContractTabs(contractQuery.data);

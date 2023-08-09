@@ -10,7 +10,7 @@ import config from 'configs/app';
 
 const getConfig = () => {
   try {
-    if (!config.features.blockchain_interaction.walletConnect.projectId) {
+    if (!config.features.blockchainInteraction.walletConnect.projectId) {
       throw new Error('WalletConnect Project ID is not set');
     }
 
@@ -50,7 +50,7 @@ const getConfig = () => {
     ]);
     const wagmiConfig = createConfig({
       autoConnect: true,
-      connectors: w3mConnectors({ projectId: config.features.blockchain_interaction.walletConnect.projectId, chains }),
+      connectors: w3mConnectors({ projectId: config.features.blockchainInteraction.walletConnect.projectId, chains }),
       publicClient,
     });
     const ethereumClient = new EthereumClient(wagmiConfig, chains);
@@ -72,7 +72,7 @@ const Web3ModalProvider = ({ children, fallback }: Props) => {
   const modalZIndex = useToken<string>('zIndices', 'modal');
   const web3ModalTheme = useColorModeValue('light', 'dark');
 
-  if (!wagmiConfig || !ethereumClient || !config.features.blockchain_interaction.isEnabled) {
+  if (!wagmiConfig || !ethereumClient || !config.features.blockchainInteraction.isEnabled) {
     return typeof fallback === 'function' ? fallback() : (fallback || null);
   }
 
@@ -82,7 +82,7 @@ const Web3ModalProvider = ({ children, fallback }: Props) => {
         { children }
       </WagmiConfig>
       <Web3Modal
-        projectId={ config.features.blockchain_interaction.walletConnect.projectId }
+        projectId={ config.features.blockchainInteraction.walletConnect.projectId }
         ethereumClient={ ethereumClient }
         themeMode={ web3ModalTheme }
         themeVariables={{

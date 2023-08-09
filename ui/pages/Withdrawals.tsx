@@ -69,7 +69,7 @@ const Withdrawals = () => {
     return (
       <Text mb={{ base: 6, lg: pagination.isVisible ? 0 : 6 }} lineHeight={{ base: '24px', lg: '32px' }}>
         { BigNumber(countersQuery.data.withdrawal_count).toFormat() } withdrawals processed
-        and { valueStr } { config.features.beacon_chain.currency.symbol } withdrawn
+        and { valueStr } { config.features.beaconChain.currency.symbol } withdrawn
       </Text>
     );
   })();

@@ -7,7 +7,7 @@ import { KEY_WORDS } from '../utils';
 const MAIN_DOMAINS = [
   `*.${ config.app.host }`,
   config.app.host,
-  config.features.sol2uml_diagrams.api.endpoint,
+  config.features.sol2uml.api.endpoint,
 ].filter(Boolean);
 // eslint-disable-next-line no-restricted-properties
 
@@ -31,9 +31,9 @@ export function app(): CspDev.DirectiveDescriptor {
       config.api.endpoint,
       config.api.socket,
       config.features.stats.api.endpoint,
-      config.features.sol2uml_diagrams.api.endpoint,
-      config.features.verified_tokens.api.endpoint,
-      config.features.address_verification.api.endpoint,
+      config.features.sol2uml.api.endpoint,
+      config.features.verifiedTokens.api.endpoint,
+      config.features.addressVerification.api.endpoint,
 
       // chain RPC server
       config.chain.rpcUrl,

@@ -3,7 +3,7 @@ import type CspDev from 'csp-dev';
 import config from 'configs/app';
 
 export function googleAnalytics(): CspDev.DirectiveDescriptor {
-  if (!config.features.google_analytics.isEnabled) {
+  if (!config.features.googleAnalytics.isEnabled) {
     return {};
   }
 

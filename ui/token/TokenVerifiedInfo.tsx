@@ -19,7 +19,7 @@ const TokenVerifiedInfo = ({ verifiedInfoQuery }: Props) => {
   const websiteLinkBg = useColorModeValue('gray.100', 'gray.700');
 
   const content = (() => {
-    if (!config.features.verified_tokens.isEnabled) {
+    if (!config.features.verifiedTokens.isEnabled) {
       return null;
     }
 

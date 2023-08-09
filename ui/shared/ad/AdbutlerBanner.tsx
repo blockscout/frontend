@@ -19,8 +19,8 @@ const AdbutlerBanner = ({ className }: { className?: string }) => {
       }
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore:
-      let plc = window[`plc${ config.features.ads_banner.adButler.config.mobile?.id }`] || 0;
-      const adButlerConfig = isMobile ? config.features.ads_banner.adButler.config.mobile : config.features.ads_banner.adButler.config.desktop;
+      let plc = window[`plc${ config.features.adsBanner.adButler.config.mobile?.id }`] || 0;
+      const adButlerConfig = isMobile ? config.features.adsBanner.adButler.config.mobile : config.features.adsBanner.adButler.config.desktop;
       const banner = document.getElementById('ad-banner');
       if (banner) {
         banner.innerHTML = '<' + 'div id="placement_' + adButlerConfig?.id + '_' + plc + '"></' + 'div>';
