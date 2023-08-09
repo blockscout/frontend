@@ -275,7 +275,7 @@ const BlockDetails = ({ query }: Props) => {
       { data.minimum_gas_price && (
         <DetailsInfoItem
           title="Minimum gas price"
-          hint="Minimum gas price"
+          hint="The minimum gas price a transaction should have in order to be included in this block"
           isLoading={ isPlaceholderData }
         >
           <Skeleton isLoaded={ !isPlaceholderData }>
@@ -370,7 +370,7 @@ const BlockDetails = ({ query }: Props) => {
           { data.bitcoin_merged_mining_header && (
             <DetailsInfoItem
               title="Bitcoin merged mining header"
-              hint="Bitcoin merged mining header"
+              hint="Merged-mining field: Bitcoin header"
               flexWrap="nowrap"
               alignSelf="flex-start"
             >
@@ -383,7 +383,7 @@ const BlockDetails = ({ query }: Props) => {
           { data.bitcoin_merged_mining_coinbase_transaction && (
             <DetailsInfoItem
               title="Bitcoin merged mining coinbase transaction"
-              hint="Bitcoin merged mining coinbase transaction"
+              hint="Merged-mining field: Coinbase transaction"
             >
               <RawDataSnippet
                 data={ data.bitcoin_merged_mining_coinbase_transaction }
@@ -396,7 +396,7 @@ const BlockDetails = ({ query }: Props) => {
           { data.bitcoin_merged_mining_merkle_proof && (
             <DetailsInfoItem
               title="Bitcoin merged mining Merkle proof"
-              hint="Bitcoin merged mining Merkle proof"
+              hint="Merged-mining field: Merkle proof"
             >
               <RawDataSnippet
                 data={ data.bitcoin_merged_mining_merkle_proof }
@@ -409,7 +409,7 @@ const BlockDetails = ({ query }: Props) => {
           { data.hash_for_merged_mining && (
             <DetailsInfoItem
               title="Hash for merged mining"
-              hint="Hash for merged mining"
+              hint="Merged-mining field: Rootstock block header hash"
               flexWrap="nowrap"
               alignSelf="flex-start"
             >
