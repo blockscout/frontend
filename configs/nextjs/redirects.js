@@ -1,102 +1,244 @@
 const oldUrls = [
+  // ACCOUNT
   {
-    oldPath: '/account/tag_transaction',
-    newPath: '/account/tag_address?tab=tx',
+    source: '/account/tag_address',
+    destination: '/account/tag-address',
   },
   {
-    oldPath: '/pending-transactions',
-    newPath: '/txs?tab=pending',
+    source: '/account/tag_address/new',
+    destination: '/account/tag-address',
   },
   {
-    oldPath: '/tx/:hash/internal-transactions',
-    newPath: '/tx/:hash?tab=internal',
+    source: '/account/tag_transaction',
+    destination: '/account/tag-address?tab=tx',
   },
   {
-    oldPath: '/tx/:hash/logs',
-    newPath: '/tx/:hash?tab=logs',
+    source: '/account/tag_transaction/new',
+    destination: '/account/tag-address?tab=tx',
   },
   {
-    oldPath: '/tx/:hash/raw-trace',
-    newPath: '/tx/:hash?tab=raw_trace',
+    source: '/account/watchlist_address/:id/edit',
+    destination: '/account/watchlist',
   },
   {
-    oldPath: '/tx/:hash/state',
-    newPath: '/tx/:hash?tab=state',
+    source: '/account/watchlist_address/new',
+    destination: '/account/watchlist',
   },
   {
-    oldPath: '/uncles',
-    newPath: '/blocks?tab=uncles',
+    source: '/account/api_key',
+    destination: '/account/api-key',
   },
   {
-    oldPath: '/reorgs',
-    newPath: '/blocks?tab=reorgs',
+    source: '/account/api_key/:id/edit',
+    destination: '/account/api-key',
   },
   {
-    oldPath: '/block/:height/transactions',
-    newPath: '/block/:height?tab=txs',
+    source: '/account/api_key/new',
+    destination: '/account/api-key',
   },
   {
-    oldPath: '/address/:hash/transactions',
-    newPath: '/address/:hash',
+    source: '/account/custom_abi',
+    destination: '/account/custom-abi',
   },
   {
-    oldPath: '/address/:hash/token-transfers',
-    newPath: '/address/:hash?tab=token_transfers',
+    source: '/account/custom_abi/:id/edit',
+    destination: '/account/custom-abi',
   },
   {
-    oldPath: '/address/:hash/tokens',
-    newPath: '/address/:hash?tab=tokens',
+    source: '/account/custom_abi/new',
+    destination: '/account/custom-abi',
   },
   {
-    oldPath: '/address/:hash/internal-transactions',
-    newPath: '/address/:hash?tab=internal_txns',
+    source: '/account/public_tags_request',
+    destination: '/account/public-tags-request',
   },
   {
-    oldPath: '/address/:hash/coin-balances',
-    newPath: '/address/:hash?tab=coin_balance_history',
+    source: '/account/public_tags_request/:id/edit',
+    destination: '/account/public-tags-request',
   },
   {
-    oldPath: '/address/:hash/validations',
-    newPath: '/address/:hash?tab=blocks_validated',
+    source: '/account/public_tags_request/new',
+    destination: '/account/public-tags-request',
+  },
+
+  // TRANSACTIONS
+  {
+    source: '/pending-transactions',
+    destination: '/txs?tab=pending',
   },
   {
-    oldPath: '/address/:hash/tokens/:token_hash/token-transfers',
-    newPath: '/address/:hash?tab=token_transfers&token=:token_hash',
-  },
-  // contract verification
-  {
-    oldPath: '/address/:hash/contract_verifications/new',
-    newPath: '/address/:hash/contract_verification',
+    source: '/tx/:hash/internal-transactions',
+    destination: '/tx/:hash?tab=internal',
   },
   {
-    oldPath: '/address/:hash/verify-via-flattened-code/new',
-    newPath: '/address/:hash/contract_verification?method=flatten_source_code',
+    source: '/tx/:hash/logs',
+    destination: '/tx/:hash?tab=logs',
   },
   {
-    oldPath: '/address/:hash/verify-via-standard-json-input/new',
-    newPath: '/address/:hash/contract_verification?method=standard_input',
+    source: '/tx/:hash/raw-trace',
+    destination: '/tx/:hash?tab=raw_trace',
   },
   {
-    oldPath: '/address/:hash/verify-via-metadata-json/new',
-    newPath: '/address/:hash/contract_verification?method=sourcify',
+    source: '/tx/:hash/state',
+    destination: '/tx/:hash?tab=state',
   },
   {
-    oldPath: '/address/:hash/verify-via-multi-part-files/new',
-    newPath: '/address/:hash/contract_verification?method=multi_part_file',
+    source: '/tx/:hash/token-transfers',
+    destination: '/tx/:hash?tab=token_transfers',
+  },
+
+  // BLOCKS
+  {
+    source: '/blocks/:height/:path*',
+    destination: '/block/:height/:path*',
   },
   {
-    oldPath: '/address/:hash/verify-vyper-contract/new',
-    newPath: '/address/:hash/contract_verification?method=vyper_contract',
+    source: '/uncles',
+    destination: '/blocks?tab=uncles',
+  },
+  {
+    source: '/reorgs',
+    destination: '/blocks?tab=reorgs',
+  },
+  {
+    source: '/block/:height/transactions',
+    destination: '/block/:height?tab=txs',
+  },
+  {
+    source: '/block/:height/withdrawals',
+    destination: '/block/:height?tab=withdrawals',
+  },
+
+  // ADDRESS
+  {
+    source: '/address/:hash/transactions',
+    destination: '/address/:hash',
+  },
+  {
+    source: '/address/:hash/token-transfers',
+    destination: '/address/:hash?tab=token_transfers',
+  },
+  {
+    source: '/address/:hash/tokens',
+    destination: '/address/:hash?tab=tokens',
+  },
+  {
+    source: '/address/:hash/internal-transactions',
+    destination: '/address/:hash?tab=internal_txns',
+  },
+  {
+    source: '/address/:hash/coin-balances',
+    destination: '/address/:hash?tab=coin_balance_history',
+  },
+  {
+    source: '/address/:hash/logs',
+    destination: '/address/:hash?tab=logs',
+  },
+  {
+    source: '/address/:hash/validations',
+    destination: '/address/:hash?tab=blocks_validated',
+  },
+  {
+    source: '/address/:hash/contracts',
+    destination: '/address/:hash?tab=contract',
+  },
+  {
+    source: '/address/:hash/read-contract',
+    destination: '/address/:hash?tab=read_contract',
+  },
+  {
+    source: '/address/:hash/read-proxy',
+    destination: '/address/:hash?tab=read_proxy',
+  },
+  {
+    source: '/address/:hash/write-contract',
+    destination: '/address/:hash?tab=write_contract',
+  },
+  {
+    source: '/address/:hash/write-proxy',
+    destination: '/address/:hash?tab=write_proxy',
+  },
+  {
+    source: '/address/:hash/tokens/:token_hash/token-transfers',
+    destination: '/address/:hash?tab=token_transfers&token=:token_hash',
+  },
+
+  // CONTRACT VERIFICATION
+  {
+    source: '/address/:hash/contract_verifications/new',
+    destination: '/address/:hash/contract_verification',
+  },
+  {
+    source: '/address/:hash/verify-via-flattened-code/new',
+    destination: '/address/:hash/contract_verification?method=flatten_source_code',
+  },
+  {
+    source: '/address/:hash/verify-via-standard-json-input/new',
+    destination: '/address/:hash/contract_verification?method=standard_input',
+  },
+  {
+    source: '/address/:hash/verify-via-metadata-json/new',
+    destination: '/address/:hash/contract_verification?method=sourcify',
+  },
+  {
+    source: '/address/:hash/verify-via-multi-part-files/new',
+    destination: '/address/:hash/contract_verification?method=multi_part_file',
+  },
+  {
+    source: '/address/:hash/verify-vyper-contract/new',
+    destination: '/address/:hash/contract_verification?method=vyper_contract',
+  },
+
+  // TOKENS
+  {
+    source: '/tokens/:hash/:path*',
+    destination: '/token/:hash/:path*',
+  },
+  {
+    source: '/token/:hash/token-transfers',
+    destination: '/token/:hash',
+  },
+  {
+    source: '/token/:hash/token-holders',
+    destination: '/token/:hash/?tab=holders',
+  },
+  {
+    source: '/token/:hash/inventory',
+    destination: '/token/:hash/?tab=inventory',
+  },
+  {
+    source: '/token/:hash/instance/:id/token-transfers',
+    destination: '/token/:hash/instance/:id',
+  },
+  {
+    source: '/token/:hash/instance/:id/token-holders',
+    destination: '/token/:hash/instance/:id?tab=holders',
+  },
+  {
+    source: '/token/:hash/instance/:id/metadata',
+    destination: '/token/:hash/instance/:id?tab=metadata',
+  },
+  {
+    source: '/token/:hash/read-contract',
+    destination: '/token/:hash?tab=read_contract',
+  },
+  {
+    source: '/token/:hash/read-proxy',
+    destination: '/token/:hash?tab=read_proxy',
+  },
+  {
+    source: '/token/:hash/write-contract',
+    destination: '/token/:hash?tab=write_contract',
+  },
+  {
+    source: '/token/:hash/write-proxy',
+    destination: '/token/:hash?tab=write_proxy',
   },
 ];
 
 async function redirects() {
   return [
-    ...oldUrls.map(item => {
-      const source = item.oldPath;
-      const destination = item.newPath;
-      return { source, destination, permanent: false };
-    }),
+    ...oldUrls.map((item) => ({ ...item, permanent: false })),
   ];
 }
 
