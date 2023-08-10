@@ -1,8 +1,64 @@
 const oldUrls = [
   // ACCOUNT
   {
+    source: '/account/tag_address',
+    destination: '/account/tag-address',
+  },
+  {
+    source: '/account/tag_address/new',
+    destination: '/account/tag-address',
+  },
+  {
     source: '/account/tag_transaction',
-    destination: '/account/tag_address?tab=tx',
+    destination: '/account/tag-address?tab=tx',
+  },
+  {
+    source: '/account/tag_transaction/new',
+    destination: '/account/tag-address?tab=tx',
+  },
+  {
+    source: '/account/watchlist_address/:id/edit',
+    destination: '/account/watchlist',
+  },
+  {
+    source: '/account/watchlist_address/new',
+    destination: '/account/watchlist',
+  },
+  {
+    source: '/account/api_key',
+    destination: '/account/api-key',
+  },
+  {
+    source: '/account/api_key/:id/edit',
+    destination: '/account/api-key',
+  },
+  {
+    source: '/account/api_key/new',
+    destination: '/account/api-key',
+  },
+  {
+    source: '/account/custom_abi',
+    destination: '/account/custom-abi',
+  },
+  {
+    source: '/account/custom_abi/:id/edit',
+    destination: '/account/custom-abi',
+  },
+  {
+    source: '/account/custom_abi/new',
+    destination: '/account/custom-abi',
+  },
+  {
+    source: '/account/public_tags_request',
+    destination: '/account/public-tags-request',
+  },
+  {
+    source: '/account/public_tags_request/:id/edit',
+    destination: '/account/public-tags-request',
+  },
+  {
+    source: '/account/public_tags_request/new',
+    destination: '/account/public-tags-request',
   },
 
   // TRANSACTIONS
@@ -26,8 +82,16 @@ const oldUrls = [
     source: '/tx/:hash/state',
     destination: '/tx/:hash?tab=state',
   },
+  {
+    source: '/tx/:hash/token-transfers',
+    destination: '/tx/:hash?tab=token_transfers',
+  },
 
   // BLOCKS
+  {
+    source: '/blocks/:height/:path*',
+    destination: '/block/:height/:path*',
+  },
   {
     source: '/uncles',
     destination: '/blocks?tab=uncles',
@@ -39,6 +103,10 @@ const oldUrls = [
   {
     source: '/block/:height/transactions',
     destination: '/block/:height?tab=txs',
+  },
+  {
+    source: '/block/:height/withdrawals',
+    destination: '/block/:height?tab=withdrawals',
   },
 
   // ADDRESS
@@ -141,6 +209,14 @@ const oldUrls = [
   {
     source: '/token/:hash/instance/:id/token-transfers',
     destination: '/token/:hash/instance/:id',
+  },
+  {
+    source: '/token/:hash/instance/:id/token-holders',
+    destination: '/token/:hash/instance/:id?tab=holders',
+  },
+  {
+    source: '/token/:hash/instance/:id/metadata',
+    destination: '/token/:hash/instance/:id?tab=metadata',
   },
   {
     source: '/token/:hash/read-contract',
