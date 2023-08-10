@@ -59,6 +59,11 @@ export interface AddressTokensResponse {
   } | null;
 }
 
+export interface AddressTokensBalancesSocketMessage {
+  overflow: boolean;
+  token_balances: Array<AddressTokenBalance>;
+}
+
 export interface AddressTransactionsResponse {
   items: Array<Transaction>;
   next_page_params: {
