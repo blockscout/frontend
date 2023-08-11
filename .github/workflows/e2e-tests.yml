@@ -9,8 +9,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  push_to_registry:
-    name: Push Docker image to registry
+  publish_image:
+    name: Publish Docker image
     runs-on: ubuntu-latest
     outputs:
       shortSha: ${{ steps.output-step.outputs.short-sha }}
@@ -59,8 +59,10 @@ jobs:
           build-args: |
             GIT_COMMIT_SHA=${{ env.SHORT_SHA }}
             GIT_TAG=${{ github.ref_type == 'tag' && github.ref_name || '' }}
+
   deploy_e2e:
-    needs: push_to_registry
+    name: Deploy E2E instance
+    needs: publish_image
     runs-on: ubuntu-latest
     permissions: write-all
     steps:
@@ -86,7 +88,9 @@ jobs:
           ref: main
           wait_interval: 30
           client_payload: '{ "instance": "dev", "globalEnv": "e2e"}'
+
   test:
+    name: Run tests
     needs: deploy_e2e
     uses: blockscout/blockscout-ci-cd/.github/workflows/e2e_new.yaml@master
     secrets: inherit

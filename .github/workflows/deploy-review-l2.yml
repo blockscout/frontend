@@ -1,13 +1,11 @@
-name: Deploy l2 review environment (manually)
+name: Deploy review environment (L2)
 
 on:
-  # pull_request:
-  # push:
   workflow_dispatch:
 
 jobs:
-  push_to_registry:
-    name: Push Docker image to registry
+  publish_image:
+    name: Publish Docker image
     runs-on: ubuntu-latest
     outputs:
       shortSha: ${{ steps.output-step.outputs.short-sha }}
@@ -56,8 +54,8 @@ jobs:
             GIT_COMMIT_SHA=${{ env.SHORT_SHA }}
 
   deploy_review_l2:
-    name: Deploy review l2
-    needs: push_to_registry
+    name: Deploy frontend (L2)
+    needs: publish_image
     uses: blockscout/blockscout-ci-cd/.github/workflows/deploy_helmfile.yaml@master
     with:
       appName: review-l2-$GITHUB_REF_NAME_SLUG
