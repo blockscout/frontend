@@ -1,12 +1,27 @@
+import type { Feature } from './types';
+
 import { getEnvValue } from '../utils';
 
 const apiEndpoint = getEnvValue(process.env.NEXT_PUBLIC_STATS_API_HOST);
 
-export default Object.freeze({
-  title: 'Blockchain statistics',
-  isEnabled: Boolean(apiEndpoint),
-  api: {
-    endpoint: apiEndpoint,
-    basePath: '',
-  },
-});
+const title = 'Blockchain statistics';
+
+const config: Feature<{ api: { endpoint: string; basePath: string } }> = (() => {
+  if (apiEndpoint) {
+    return Object.freeze({
+      title,
+      isEnabled: true,
+      api: {
+        endpoint: apiEndpoint,
+        basePath: '',
+      },
+    });
+  }
+
+  return Object.freeze({
+    title,
+    isEnabled: false,
+  });
+})();
+
+export default config;

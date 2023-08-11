@@ -10,6 +10,8 @@ import { default as Thead } from 'ui/shared/TheadSticky';
 
 import WithdrawalsTableItem from './WithdrawalsTableItem';
 
+const feature = config.features.beaconChain;
+
  type Props = {
    top: number;
    isLoading?: boolean;
@@ -25,6 +27,10 @@ import WithdrawalsTableItem from './WithdrawalsTableItem';
  });
 
 const WithdrawalsTable = ({ items, isLoading, top, view = 'list' }: Props) => {
+  if (!feature.isEnabled) {
+    return null;
+  }
+
   return (
     <Table variant="simple" size="sm" style={{ tableLayout: 'auto' }} minW="950px">
       <Thead top={ top }>
@@ -34,7 +40,7 @@ const WithdrawalsTable = ({ items, isLoading, top, view = 'list' }: Props) => {
           { view !== 'block' && <Th w="25%">Block</Th> }
           { view !== 'address' && <Th w="25%">To</Th> }
           { view !== 'block' && <Th w="25%">Age</Th> }
-          <Th w="25%">{ `Value ${ config.features.beaconChain.currency.symbol }` }</Th>
+          <Th w="25%">{ `Value ${ feature.currency.symbol }` }</Th>
         </Tr>
       </Thead>
       <Tbody>

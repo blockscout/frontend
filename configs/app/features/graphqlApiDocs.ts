@@ -1,9 +1,17 @@
+import type { Feature } from './types';
+
 import { getEnvValue } from '../utils';
 
 const defaultTxHash = getEnvValue(process.env.NEXT_PUBLIC_GRAPHIQL_TRANSACTION);
 
-export default Object.freeze({
-  title: 'GraphQL API documentation',
-  isEnabled: true,
-  defaultTxHash,
-});
+const title = 'GraphQL API documentation';
+
+const config: Feature<{ defaultTxHash: string | undefined }> = (() => {
+  return Object.freeze({
+    title,
+    isEnabled: true,
+    defaultTxHash,
+  });
+})();
+
+export default config;

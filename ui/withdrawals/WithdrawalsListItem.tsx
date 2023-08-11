@@ -16,6 +16,8 @@ import CurrencyValue from 'ui/shared/CurrencyValue';
 import LinkInternal from 'ui/shared/LinkInternal';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 
+const feature = config.features.beaconChain;
+
 type Props = ({
   item: WithdrawalsItem;
   view: 'list';
@@ -28,6 +30,10 @@ type Props = ({
 }) & { isLoading?: boolean };
 
 const WithdrawalsListItem = ({ item, isLoading, view }: Props) => {
+  if (!feature.isEnabled) {
+    return null;
+  }
+
   return (
     <ListItemMobileGrid.Container gridTemplateColumns="100px auto">
 
@@ -85,7 +91,7 @@ const WithdrawalsListItem = ({ item, isLoading, view }: Props) => {
 
           <ListItemMobileGrid.Label isLoading={ isLoading }>Value</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <CurrencyValue value={ item.amount } currency={ config.features.beaconChain.currency.symbol } isLoading={ isLoading }/>
+            <CurrencyValue value={ item.amount } currency={ feature.currency.symbol } isLoading={ isLoading }/>
           </ListItemMobileGrid.Value>
         </>
       ) }

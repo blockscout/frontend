@@ -16,10 +16,16 @@ import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 
+const feature = config.features.rollup;
+
 type Props = { item: L2DepositsItem; isLoading?: boolean };
 
 const DepositsListItem = ({ item, isLoading }: Props) => {
   const timeAgo = dayjs(item.l1_block_timestamp).fromNow();
+
+  if (!feature.isEnabled) {
+    return null;
+  }
 
   return (
     <ListItemMobileGrid.Container>
@@ -27,7 +33,7 @@ const DepositsListItem = ({ item, isLoading }: Props) => {
       <ListItemMobileGrid.Label isLoading={ isLoading }>L1 block No</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value py="3px">
         <LinkExternal
-          href={ config.features.rollup.L1BaseUrl + route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.l1_block_number.toString() } }) }
+          href={ feature.L1BaseUrl + route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.l1_block_number.toString() } }) }
           fontWeight={ 600 }
           display="flex"
           isLoading={ isLoading }
@@ -63,7 +69,7 @@ const DepositsListItem = ({ item, isLoading }: Props) => {
       <ListItemMobileGrid.Label isLoading={ isLoading }>L1 txn hash</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value py="3px">
         <LinkExternal
-          href={ config.features.rollup.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: item.l1_tx_hash } }) }
+          href={ feature.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: item.l1_tx_hash } }) }
           maxW="100%"
           display="flex"
           overflow="hidden"
@@ -79,7 +85,7 @@ const DepositsListItem = ({ item, isLoading }: Props) => {
       <ListItemMobileGrid.Label isLoading={ isLoading }>L1 txn origin</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value py="3px">
         <LinkExternal
-          href={ config.features.rollup.L1BaseUrl + route({ pathname: '/address/[hash]', query: { hash: item.l1_tx_origin } }) }
+          href={ feature.L1BaseUrl + route({ pathname: '/address/[hash]', query: { hash: item.l1_tx_origin } }) }
           maxW="100%"
           display="flex"
           overflow="hidden"

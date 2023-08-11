@@ -21,7 +21,7 @@ const ProfileMenuMobile = () => {
   }, [ data, error?.status, isLoading ]);
 
   const buttonProps: Partial<ButtonProps> = (() => {
-    if (hasMenu) {
+    if (hasMenu || !loginUrl) {
       return {};
     }
 

@@ -9,15 +9,17 @@ import AdbutlerBanner from './AdbutlerBanner';
 import CoinzillaBanner from './CoinzillaBanner';
 import SliseBanner from './SliseBanner';
 
+const feature = config.features.adsBanner;
+
 const AdBanner = ({ className, isLoading }: { className?: string; isLoading?: boolean }) => {
   const hasAdblockCookie = cookies.get(cookies.NAMES.ADBLOCK_DETECTED, useAppContext().cookies);
 
-  if (!config.features.adsBanner.isEnabled || hasAdblockCookie) {
+  if (!feature.isEnabled || hasAdblockCookie) {
     return null;
   }
 
   const content = (() => {
-    switch (config.features.adsBanner.provider) {
+    switch (feature.provider) {
       case 'adbutler':
         return <AdbutlerBanner/>;
       case 'coinzilla':
@@ -32,7 +34,7 @@ const AdBanner = ({ className, isLoading }: { className?: string; isLoading?: bo
       className={ className }
       isLoaded={ !isLoading }
       borderRadius="none"
-      maxW={ config.features.adsBanner.provider === 'adbutler' ? config.features.adsBanner.adButler.config.desktop?.width : '728px' }
+      maxW={ feature.provider === 'adbutler' ? feature.adButler.config.desktop.width : '728px' }
       w="100%"
     >
       { content }

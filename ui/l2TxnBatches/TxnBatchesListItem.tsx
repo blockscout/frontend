@@ -14,10 +14,16 @@ import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 
+const feature = config.features.rollup;
+
 type Props = { item: L2TxnBatchesItem; isLoading?: boolean };
 
 const TxnBatchesListItem = ({ item, isLoading }: Props) => {
   const timeAgo = dayjs(item.l1_timestamp).fromNow();
+
+  if (!feature.isEnabled) {
+    return null;
+  }
 
   return (
     <ListItemMobileGrid.Container gridTemplateColumns="100px auto">
@@ -56,7 +62,7 @@ const TxnBatchesListItem = ({ item, isLoading }: Props) => {
         <LinkExternal
           fontWeight={ 600 }
           display="inline-flex"
-          href={ config.features.rollup.L1BaseUrl + route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.epoch_number.toString() } }) }
+          href={ feature.L1BaseUrl + route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.epoch_number.toString() } }) }
           isLoading={ isLoading }
         >
           <Skeleton isLoaded={ !isLoading }>
@@ -72,7 +78,7 @@ const TxnBatchesListItem = ({ item, isLoading }: Props) => {
             <LinkExternal
               maxW="100%"
               display="inline-flex"
-              href={ config.features.rollup.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: hash } }) }
+              href={ feature.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: hash } }) }
               key={ hash }
               isLoading={ isLoading }
             >

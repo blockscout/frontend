@@ -16,6 +16,8 @@ import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import WithdrawalsListItem from 'ui/withdrawals/WithdrawalsListItem';
 import WithdrawalsTable from 'ui/withdrawals/WithdrawalsTable';
 
+const feature = config.features.beaconChain;
+
 const Withdrawals = () => {
   const isMobile = useIsMobile();
 
@@ -61,7 +63,7 @@ const Withdrawals = () => {
       );
     }
 
-    if (countersQuery.isError) {
+    if (countersQuery.isError || !feature.isEnabled) {
       return null;
     }
 
@@ -69,7 +71,7 @@ const Withdrawals = () => {
     return (
       <Text mb={{ base: 6, lg: pagination.isVisible ? 0 : 6 }} lineHeight={{ base: '24px', lg: '32px' }}>
         { BigNumber(countersQuery.data.withdrawal_count).toFormat() } withdrawals processed
-        and { valueStr } { config.features.beaconChain.currency.symbol } withdrawn
+        and { valueStr } { feature.currency.symbol } withdrawn
       </Text>
     );
   })();

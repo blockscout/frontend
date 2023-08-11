@@ -15,11 +15,17 @@ import HashStringShorten from 'ui/shared/HashStringShorten';
 import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
 
+const feature = config.features.rollup;
+
  type Props = { item: L2WithdrawalsItem; isLoading?: boolean };
 
 const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
   const timeAgo = item.l2_timestamp ? dayjs(item.l2_timestamp).fromNow() : 'N/A';
   const timeToEnd = item.challenge_period_end ? dayjs(item.challenge_period_end).fromNow(true) + ' left' : '';
+
+  if (!feature.isEnabled) {
+    return null;
+  }
 
   return (
     <Tr>
@@ -55,14 +61,14 @@ const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
       </Td>
       <Td verticalAlign="middle">
         { item.status === 'Ready for relay' ?
-          <LinkExternal href={ config.features.rollup.withdrawalUrl }>{ item.status }</LinkExternal> :
+          <LinkExternal href={ feature.withdrawalUrl }>{ item.status }</LinkExternal> :
           <Skeleton isLoaded={ !isLoading } display="inline-block">{ item.status }</Skeleton>
         }
       </Td>
       <Td verticalAlign="middle">
         { item.l1_tx_hash ? (
           <LinkExternal
-            href={ config.features.rollup.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: item.l1_tx_hash } }) }
+            href={ feature.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: item.l1_tx_hash } }) }
             isLoading={ isLoading }
             display="inline-flex"
           >

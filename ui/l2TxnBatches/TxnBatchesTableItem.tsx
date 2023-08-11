@@ -13,10 +13,16 @@ import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
 
+const feature = config.features.rollup;
+
 type Props = { item: L2TxnBatchesItem; isLoading?: boolean };
 
 const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
   const timeAgo = dayjs(item.l1_timestamp).fromNow();
+
+  if (!feature.isEnabled) {
+    return null;
+  }
 
   return (
     <Tr>
@@ -47,7 +53,7 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
       </Td>
       <Td>
         <LinkExternal
-          href={ config.features.rollup.L1BaseUrl + route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.epoch_number.toString() } }) }
+          href={ feature.L1BaseUrl + route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.epoch_number.toString() } }) }
           fontWeight={ 600 }
           display="inline-flex"
           isLoading={ isLoading }
@@ -65,7 +71,7 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
               maxW="100%"
               display="inline-flex"
               key={ hash }
-              href={ config.features.rollup.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: hash } }) }
+              href={ feature.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: hash } }) }
               isLoading={ isLoading }
             >
               <Icon as={ txIcon } boxSize={ 6 } isLoading={ isLoading }/>

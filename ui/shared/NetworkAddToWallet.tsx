@@ -6,6 +6,8 @@ import useToast from 'lib/hooks/useToast';
 import useProvider from 'lib/web3/useProvider';
 import { WALLETS_INFO } from 'lib/web3/wallets';
 
+const feature = config.features.web3Wallet;
+
 interface Props {
   className?: string;
 }
@@ -54,19 +56,13 @@ const NetworkAddToWallet = ({ className }: Props) => {
     }
   }, [ provider, toast ]);
 
-  if (!provider || !config.chain.rpcUrl) {
-    return null;
-  }
-
-  const defaultWallet = config.features.web3Wallet.defaultWallet;
-
-  if (defaultWallet === 'none') {
+  if (!provider || !config.chain.rpcUrl || !feature.isEnabled) {
     return null;
   }
 
   return (
     <Button variant="outline" size="sm" onClick={ handleClick } className={ className }>
-      <Icon as={ WALLETS_INFO[defaultWallet].icon } boxSize={ 5 } mr={ 2 }/>
+      <Icon as={ WALLETS_INFO[feature.defaultWallet].icon } boxSize={ 5 } mr={ 2 }/>
         Add { config.chain.name }
     </Button>
   );

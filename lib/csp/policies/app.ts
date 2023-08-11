@@ -1,5 +1,7 @@
 import type CspDev from 'csp-dev';
 
+import { getFeaturePayload } from 'configs/app/features/types';
+
 import config from 'configs/app';
 
 import { KEY_WORDS } from '../utils';
@@ -7,9 +9,8 @@ import { KEY_WORDS } from '../utils';
 const MAIN_DOMAINS = [
   `*.${ config.app.host }`,
   config.app.host,
-  config.features.sol2uml.api.endpoint,
+  getFeaturePayload(config.features.sol2uml)?.api.endpoint,
 ].filter(Boolean);
-// eslint-disable-next-line no-restricted-properties
 
 export function app(): CspDev.DirectiveDescriptor {
   return {
@@ -30,10 +31,10 @@ export function app(): CspDev.DirectiveDescriptor {
       // APIs
       config.api.endpoint,
       config.api.socket,
-      config.features.stats.api.endpoint,
-      config.features.sol2uml.api.endpoint,
-      config.features.verifiedTokens.api.endpoint,
-      config.features.addressVerification.api.endpoint,
+      getFeaturePayload(config.features.stats)?.api.endpoint,
+      getFeaturePayload(config.features.sol2uml)?.api.endpoint,
+      getFeaturePayload(config.features.verifiedTokens)?.api.endpoint,
+      getFeaturePayload(config.features.addressVerification)?.api.endpoint,
 
       // chain RPC server
       config.chain.rpcUrl,
@@ -108,10 +109,17 @@ export function app(): CspDev.DirectiveDescriptor {
       '*',
     ],
 
-    ...(config.features.sentry.isEnabled && config.features.sentry.cspReportUrl && !config.app.isDev ? {
-      'report-uri': [
-        config.features.sentry.cspReportUrl,
-      ],
-    } : {}),
+    ...((() => {
+      const sentryFeature = config.features.sentry;
+      if (!sentryFeature.isEnabled || !sentryFeature.cspReportUrl || config.app.isDev) {
+        return {};
+      }
+
+      return {
+        'report-uri': [
+          sentryFeature.cspReportUrl,
+        ],
+      };
+    })()),
   };
 }

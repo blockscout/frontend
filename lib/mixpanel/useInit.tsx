@@ -19,7 +19,8 @@ export default function useMixpanelInit() {
 
   React.useEffect(() => {
     isGoogleAnalyticsLoaded().then((isGALoaded) => {
-      if (!config.features.mixpanel.isEnabled) {
+      const feature = config.features.mixpanel;
+      if (!feature.isEnabled) {
         return;
       }
 
@@ -30,7 +31,7 @@ export default function useMixpanelInit() {
       };
       const isAuth = Boolean(cookies.get(cookies.NAMES.API_TOKEN));
 
-      mixpanel.init(config.features.mixpanel.projectToken, mixpanelConfig);
+      mixpanel.init(feature.projectToken, mixpanelConfig);
       mixpanel.register({
         'Chain id': config.chain.id,
         Environment: config.app.isDev ? 'Dev' : 'Prod',

@@ -14,6 +14,10 @@ export default function useIsAccountActionAllowed() {
   const loginUrl = useLoginUrl();
 
   return React.useCallback(() => {
+    if (!loginUrl) {
+      return false;
+    }
+
     if (!isAuth) {
       window.location.assign(loginUrl);
       return false;

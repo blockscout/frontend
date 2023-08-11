@@ -14,10 +14,16 @@ import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 
+const feature = config.features.rollup;
+
 type Props = { item: L2OutputRootsItem; isLoading?: boolean };
 
 const OutputRootsListItem = ({ item, isLoading }: Props) => {
   const timeAgo = dayjs(item.l1_timestamp).fromNow();
+
+  if (!feature.isEnabled) {
+    return null;
+  }
 
   return (
     <ListItemMobileGrid.Container>
@@ -53,7 +59,7 @@ const OutputRootsListItem = ({ item, isLoading }: Props) => {
           maxW="100%"
           display="flex"
           overflow="hidden"
-          href={ config.features.rollup.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: item.l1_tx_hash } }) }
+          href={ feature.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: item.l1_tx_hash } }) }
           isLoading={ isLoading }
         >
           <Icon as={ txIcon } boxSize={ 6 } isLoading={ isLoading }/>

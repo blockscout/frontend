@@ -1,3 +1,4 @@
+import { getFeaturePayload } from 'configs/app/features/types';
 import type {
   UserInfo,
   CustomAbis,
@@ -111,58 +112,58 @@ export const RESOURCES = {
   address_verification: {
     path: '/api/v1/chains/:chainId/verified-addresses:type',
     pathParams: [ 'chainId' as const, 'type' as const ],
-    endpoint: config.features.verifiedTokens.api.endpoint,
-    basePath: config.features.verifiedTokens.api.basePath,
+    endpoint: getFeaturePayload(config.features.verifiedTokens)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.verifiedTokens)?.api.basePath,
     needAuth: true,
   },
 
   verified_addresses: {
     path: '/api/v1/chains/:chainId/verified-addresses',
     pathParams: [ 'chainId' as const ],
-    endpoint: config.features.verifiedTokens.api.endpoint,
-    basePath: config.features.verifiedTokens.api.basePath,
+    endpoint: getFeaturePayload(config.features.verifiedTokens)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.verifiedTokens)?.api.basePath,
     needAuth: true,
   },
 
   token_info_applications_config: {
     path: '/api/v1/chains/:chainId/token-info-submissions/selectors',
     pathParams: [ 'chainId' as const ],
-    endpoint: config.features.addressVerification.api.endpoint,
-    basePath: config.features.addressVerification.api.basePath,
+    endpoint: getFeaturePayload(config.features.addressVerification)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.addressVerification)?.api.basePath,
     needAuth: true,
   },
 
   token_info_applications: {
     path: '/api/v1/chains/:chainId/token-info-submissions/:id?',
     pathParams: [ 'chainId' as const, 'id' as const ],
-    endpoint: config.features.addressVerification.api.endpoint,
-    basePath: config.features.addressVerification.api.basePath,
+    endpoint: getFeaturePayload(config.features.addressVerification)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.addressVerification)?.api.basePath,
     needAuth: true,
   },
 
   // STATS
   stats_counters: {
     path: '/api/v1/counters',
-    endpoint: config.features.stats.api.endpoint,
-    basePath: config.features.stats.api.basePath,
+    endpoint: getFeaturePayload(config.features.stats)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.stats)?.api.basePath,
   },
   stats_lines: {
     path: '/api/v1/lines',
-    endpoint: config.features.stats.api.endpoint,
-    basePath: config.features.stats.api.basePath,
+    endpoint: getFeaturePayload(config.features.stats)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.stats)?.api.basePath,
   },
   stats_line: {
     path: '/api/v1/lines/:id',
     pathParams: [ 'id' as const ],
-    endpoint: config.features.stats.api.endpoint,
-    basePath: config.features.stats.api.basePath,
+    endpoint: getFeaturePayload(config.features.stats)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.stats)?.api.basePath,
   },
 
   // VISUALIZATION
   visualize_sol2uml: {
     path: '/api/v1/solidity\\:visualize-contracts',
-    endpoint: config.features.sol2uml.api.endpoint,
-    basePath: config.features.sol2uml.api.basePath,
+    endpoint: getFeaturePayload(config.features.sol2uml)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.sol2uml)?.api.basePath,
   },
 
   // BLOCKS, TXS
@@ -345,8 +346,8 @@ export const RESOURCES = {
   token_verified_info: {
     path: '/api/v1/chains/:chainId/token-infos/:hash',
     pathParams: [ 'chainId' as const, 'hash' as const ],
-    endpoint: config.features.verifiedTokens.api.endpoint,
-    basePath: config.features.verifiedTokens.api.basePath,
+    endpoint: getFeaturePayload(config.features.verifiedTokens)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.verifiedTokens)?.api.basePath,
   },
   token_counters: {
     path: '/api/v2/tokens/:hash/counters',

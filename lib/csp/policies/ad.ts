@@ -19,7 +19,7 @@ export function ad(): CspDev.DirectiveDescriptor {
       'coinzillatag.com',
       'servedbyadbutler.com',
       `'sha256-${ Base64.stringify(sha256(connectAdbutler)) }'`,
-      `'sha256-${ Base64.stringify(sha256(placeAd)) }'`,
+      `'sha256-${ Base64.stringify(sha256(placeAd ?? '')) }'`,
       '*.slise.xyz',
     ],
     'img-src': [

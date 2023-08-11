@@ -3,12 +3,12 @@ import { NextResponse } from 'next/server';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import { httpLogger } from 'lib/api/logger';
 import { DAY } from 'lib/consts';
 import * as cookies from 'lib/cookies';
 
 export function account(req: NextRequest) {
-  if (!config.features.account.isEnabled) {
+  const feature = config.features.account;
+  if (!feature.isEnabled) {
     return;
   }
 
@@ -24,7 +24,7 @@ export function account(req: NextRequest) {
     const isProfileRoute = req.nextUrl.pathname.includes('/auth/profile');
 
     if ((isAccountRoute || isProfileRoute)) {
-      const authUrl = config.features.account.authUrl + route({ pathname: '/auth/auth0', query: { path: req.nextUrl.pathname } });
+      const authUrl = feature.authUrl + route({ pathname: '/auth/auth0', query: { path: req.nextUrl.pathname } });
       return NextResponse.redirect(authUrl);
     }
   }
@@ -33,20 +33,11 @@ export function account(req: NextRequest) {
   if (req.cookies.get(cookies.NAMES.INVALID_SESSION)) {
     // if user has both cookies, make redirect to logout
     if (apiTokenCookie) {
-      // temporary solution
-      // TODO check app for integrity https://github.com/blockscout/frontend/issues/1028 and make typescript happy here
-      if (!config.features.account.logoutUrl) {
-        httpLogger.logger.error({
-          message: 'Logout URL is not configured',
-        });
-        return;
-      }
-
       // yes, we could have checked that the current URL is not the logout URL, but we hadn't
       // logout URL is always external URL in auth0.com sub-domain
       // at least we hope so
 
-      const res = NextResponse.redirect(config.features.account.logoutUrl);
+      const res = NextResponse.redirect(feature.logoutUrl);
       res.cookies.delete(cookies.NAMES.CONFIRM_EMAIL_PAGE_VIEWED); // reset cookie to show email verification page again
 
       return res;

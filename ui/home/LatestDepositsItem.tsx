@@ -19,6 +19,8 @@ import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
 
+const feature = config.features.rollup;
+
 type Props = {
   item: L2DepositsItem;
   isLoading?: boolean;
@@ -28,9 +30,13 @@ const LatestTxsItem = ({ item, isLoading }: Props) => {
   const timeAgo = dayjs(item.l1_block_timestamp).fromNow();
   const isMobile = useIsMobile();
 
+  if (!feature.isEnabled) {
+    return null;
+  }
+
   const l1BlockLink = (
     <LinkExternal
-      href={ config.features.rollup.L1BaseUrl +
+      href={ feature.L1BaseUrl +
         route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.l1_block_number.toString() } })
       }
       fontWeight={ 700 }
@@ -45,7 +51,7 @@ const LatestTxsItem = ({ item, isLoading }: Props) => {
 
   const l1TxLink = (
     <LinkExternal
-      href={ config.features.rollup.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: item.l1_tx_hash } }) }
+      href={ feature.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: item.l1_tx_hash } }) }
       maxW="100%"
       display="inline-flex"
       alignItems="center"

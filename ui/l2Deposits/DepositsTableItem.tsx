@@ -15,16 +15,22 @@ import HashStringShorten from 'ui/shared/HashStringShorten';
 import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
 
+const feature = config.features.rollup;
+
  type Props = { item: L2DepositsItem; isLoading?: boolean };
 
 const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
   const timeAgo = dayjs(item.l1_block_timestamp).fromNow();
 
+  if (!feature.isEnabled) {
+    return null;
+  }
+
   return (
     <Tr>
       <Td verticalAlign="middle" fontWeight={ 600 }>
         <LinkExternal
-          href={ config.features.rollup.L1BaseUrl + route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.l1_block_number.toString() } }) }
+          href={ feature.L1BaseUrl + route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.l1_block_number.toString() } }) }
           fontWeight={ 600 }
           display="inline-flex"
           isLoading={ isLoading }
@@ -56,7 +62,7 @@ const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
       </Td>
       <Td verticalAlign="middle">
         <LinkExternal
-          href={ config.features.rollup.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: item.l1_tx_hash } }) }
+          href={ feature.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: item.l1_tx_hash } }) }
           maxW="100%"
           display="inline-flex"
           overflow="hidden"
@@ -70,7 +76,7 @@ const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
       </Td>
       <Td verticalAlign="middle">
         <LinkExternal
-          href={ config.features.rollup.L1BaseUrl + route({ pathname: '/address/[hash]', query: { hash: item.l1_tx_origin } }) }
+          href={ feature.L1BaseUrl + route({ pathname: '/address/[hash]', query: { hash: item.l1_tx_origin } }) }
           maxW="100%"
           display="inline-flex"
           overflow="hidden"

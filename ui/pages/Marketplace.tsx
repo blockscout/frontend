@@ -9,6 +9,7 @@ import MarketplaceList from 'ui/marketplace/MarketplaceList';
 import FilterInput from 'ui/shared/filters/FilterInput';
 
 import useMarketplace from '../marketplace/useMarketplace';
+const feature = config.features.marketplace;
 
 const Marketplace = () => {
   const {
@@ -30,6 +31,10 @@ const Marketplace = () => {
 
   if (isError) {
     throw new Error('Unable to get apps list', { cause: error });
+  }
+
+  if (!feature.isEnabled) {
+    return null;
   }
 
   const selectedApp = displayedApps.find(app => app.id === selectedAppId);
@@ -74,30 +79,28 @@ const Marketplace = () => {
         />
       ) }
 
-      { config.features.marketplace.isEnabled && (
-        <Skeleton
-          isLoaded={ !isPlaceholderData }
-          marginTop={{ base: 8, sm: 16 }}
-          display="inline-block"
+      <Skeleton
+        isLoaded={ !isPlaceholderData }
+        marginTop={{ base: 8, sm: 16 }}
+        display="inline-block"
+      >
+        <Link
+          fontWeight="bold"
+          display="inline-flex"
+          alignItems="baseline"
+          href={ feature.submitFormUrl }
+          isExternal
         >
-          <Link
-            fontWeight="bold"
-            display="inline-flex"
-            alignItems="baseline"
-            href={ config.features.marketplace.submitFormUrl }
-            isExternal
-          >
-            <Icon
-              as={ PlusIcon }
-              w={ 3 }
-              h={ 3 }
-              mr={ 2 }
-            />
+          <Icon
+            as={ PlusIcon }
+            w={ 3 }
+            h={ 3 }
+            mr={ 2 }
+          />
 
               Submit an app
-          </Link>
-        </Skeleton>
-      ) }
+        </Link>
+      </Skeleton>
     </>
   );
 };
