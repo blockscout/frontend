@@ -2,7 +2,6 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
-import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 import ChartsWidgetsList from '../stats/ChartsWidgetsList';
@@ -25,7 +24,7 @@ const Stats = () => {
   } = useStats();
 
   return (
-    <Page>
+    <>
       <PageTitle title={ `${ config.chain.name } stats` }/>
 
       <Box mb={{ base: 6, sm: 8 }}>
@@ -50,7 +49,7 @@ const Stats = () => {
         charts={ displayedCharts }
         interval={ interval }
       />
-    </Page>
+    </>
   );
 };
 

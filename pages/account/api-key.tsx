@@ -3,20 +3,17 @@ import dynamic from 'next/dynamic';
 import React from 'react';
 
 import PageServer from 'lib/next/PageServer';
-import Page from 'ui/shared/Page/Page';
 
 const ApiKeys = dynamic(() => import('ui/pages/ApiKeys'), { ssr: false });
 
-const ApiKeysPage: NextPage = () => {
+const Page: NextPage = () => {
   return (
     <PageServer pathname="/account/api-key">
-      <Page>
-        <ApiKeys/>
-      </Page>
+      <ApiKeys/>
     </PageServer>
   );
 };
 
-export default ApiKeysPage;
+export default Page;
 
 export { account as getServerSideProps } from 'lib/next/getServerSideProps';

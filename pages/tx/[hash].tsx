@@ -4,20 +4,17 @@ import React from 'react';
 
 import type { Props } from 'lib/next/getServerSideProps';
 import PageServer from 'lib/next/PageServer';
-import Page from 'ui/shared/Page/Page';
 
 const Transaction = dynamic(() => import('ui/pages/Transaction'), { ssr: false });
 
-const TransactionPage: NextPage<Props> = (props: Props) => {
+const Page: NextPage<Props> = (props: Props) => {
   return (
     <PageServer pathname="/tx/[hash]" query={ props }>
-      <Page>
-        <Transaction/>
-      </Page>
+      <Transaction/>
     </PageServer>
   );
 };
 
-export default TransactionPage;
+export default Page;
 
 export { base as getServerSideProps } from 'lib/next/getServerSideProps';

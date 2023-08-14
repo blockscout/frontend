@@ -3,20 +3,17 @@ import dynamic from 'next/dynamic';
 import React from 'react';
 
 import PageServer from 'lib/next/PageServer';
-import Page from 'ui/shared/Page/Page';
 
 const L2OutputRoots = dynamic(() => import('ui/pages/L2OutputRoots'), { ssr: false });
 
-const OutputRootsPage: NextPage = () => {
+const Page: NextPage = () => {
   return (
     <PageServer pathname="/l2-output-roots">
-      <Page>
-        <L2OutputRoots/>
-      </Page>
+      <L2OutputRoots/>
     </PageServer>
   );
 };
 
-export default OutputRootsPage;
+export default Page;
 
 export { L2 as getServerSideProps } from 'lib/next/getServerSideProps';

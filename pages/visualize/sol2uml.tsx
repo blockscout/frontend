@@ -4,7 +4,7 @@ import React from 'react';
 import PageServer from 'lib/next/PageServer';
 import Sol2Uml from 'ui/pages/Sol2Uml';
 
-const Sol2UmlPage: NextPage = () => {
+const Page: NextPage = () => {
   return (
     <PageServer pathname="/visualize/sol2uml">
       <Sol2Uml/>
@@ -12,6 +12,6 @@ const Sol2UmlPage: NextPage = () => {
   );
 };
 
-export default Sol2UmlPage;
+export default Page;
 
 export { base as getServerSideProps } from 'lib/next/getServerSideProps';

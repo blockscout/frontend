@@ -3,18 +3,15 @@ import React from 'react';
 
 import PageServer from 'lib/next/PageServer';
 import MyProfile from 'ui/pages/MyProfile';
-import Page from 'ui/shared/Page/Page';
 
-const MyProfilePage: NextPage = () => {
+const Page: NextPage = () => {
   return (
     <PageServer pathname="/auth/profile">
-      <Page>
-        <MyProfile/>
-      </Page>
+      <MyProfile/>
     </PageServer>
   );
 };
 
-export default MyProfilePage;
+export default Page;
 
 export { account as getServerSideProps } from 'lib/next/getServerSideProps';

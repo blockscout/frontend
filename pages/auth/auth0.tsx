@@ -1,10 +1,10 @@
 import type { NextPage } from 'next';
 
-const Auth0Page: NextPage = () => {
+const Page: NextPage = () => {
   return null;
 };
 
-export default Auth0Page;
+export default Page;
 
 export async function getServerSideProps() {
   return {

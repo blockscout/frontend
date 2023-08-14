@@ -2,16 +2,13 @@ import React from 'react';
 
 import PageServer from 'lib/next/PageServer';
 import AppError from 'ui/shared/AppError/AppError';
-import Page from 'ui/shared/Page/Page';
 
-const Custom404 = () => {
+const Page = () => {
   return (
     <PageServer pathname="/404">
-      <Page>
-        <AppError statusCode={ 404 } mt="50px"/>
-      </Page>
+      <AppError statusCode={ 404 } mt="50px"/>
     </PageServer>
   );
 };
 
-export default Custom404;
+export default Page;

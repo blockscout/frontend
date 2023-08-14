@@ -3,20 +3,17 @@ import dynamic from 'next/dynamic';
 import React from 'react';
 
 import PageServer from 'lib/next/PageServer';
-import Page from 'ui/shared/Page/Page';
 
 const WatchList = dynamic(() => import('ui/pages/Watchlist'), { ssr: false });
 
-const WatchListPage: NextPage = () => {
+const Page: NextPage = () => {
   return (
     <PageServer pathname="/account/watchlist">
-      <Page>
-        <WatchList/>
-      </Page>
+      <WatchList/>
     </PageServer>
   );
 };
 
-export default WatchListPage;
+export default Page;
 
 export { account as getServerSideProps } from 'lib/next/getServerSideProps';

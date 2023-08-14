@@ -3,18 +3,15 @@ import React from 'react';
 
 import PageServer from 'lib/next/PageServer';
 import UnverifiedEmail from 'ui/pages/UnverifiedEmail';
-import Page from 'ui/shared/Page/Page';
 
-const UnverifiedEmailPage: NextPage = () => {
+const Page: NextPage = () => {
   return (
     <PageServer pathname="/auth/unverified-email">
-      <Page>
-        <UnverifiedEmail/>
-      </Page>
+      <UnverifiedEmail/>
     </PageServer>
   );
 };
 
-export default UnverifiedEmailPage;
+export default Page;
 
 export { account as getServerSideProps } from 'lib/next/getServerSideProps';

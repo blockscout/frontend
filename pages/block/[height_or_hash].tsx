@@ -4,20 +4,17 @@ import React from 'react';
 
 import type { Props } from 'lib/next/getServerSideProps';
 import PageServer from 'lib/next/PageServer';
-import Page from 'ui/shared/Page/Page';
 
 const Block = dynamic(() => import('ui/pages/Block'), { ssr: false });
 
-const BlockPage: NextPage<Props> = (props: Props) => {
+const Page: NextPage<Props> = (props: Props) => {
   return (
     <PageServer pathname="/block/[height_or_hash]" query={ props }>
-      <Page>
-        <Block/>
-      </Page>
+      <Block/>
     </PageServer>
   );
 };
 
-export default BlockPage;
+export default Page;
 
 export { base as getServerSideProps } from 'lib/next/getServerSideProps';

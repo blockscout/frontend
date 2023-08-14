@@ -3,6 +3,7 @@ import type { Route } from 'nextjs-routes';
 import React from 'react';
 
 import * as metadata from 'lib/metadata';
+import Page from 'ui/shared/Page/Page';
 
 type Props = Route & {
   children: React.ReactNode;
@@ -17,7 +18,9 @@ const PageServer = (props: Props) => {
         <title>{ title }</title>
         <meta name="description" content={ description }/>
       </Head>
-      { props.children }
+      <Page>
+        { props.children }
+      </Page>
     </>
   );
 };

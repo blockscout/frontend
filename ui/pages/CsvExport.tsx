@@ -16,7 +16,6 @@ import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 interface ExportTypeEntity {
@@ -127,7 +126,7 @@ const CsvExport = () => {
   })();
 
   return (
-    <Page>
+    <>
       <PageTitle
         title="Export data to CSV file"
         backLink={ backLink }
@@ -144,7 +143,7 @@ const CsvExport = () => {
         <span>Exports are limited to the last 10K { EXPORT_TYPES[exportType].text }.</span>
       </Flex>
       { content }
-    </Page>
+    </>
   );
 };
 

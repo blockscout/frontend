@@ -4,20 +4,17 @@ import React from 'react';
 
 import type { Props } from 'lib/next/getServerSideProps';
 import PageServer from 'lib/next/PageServer';
-import Page from 'ui/shared/Page/Page';
 
 const TokenInstance = dynamic(() => import('ui/pages/TokenInstance'), { ssr: false });
 
-const TokenInstancePage: NextPage<Props> = (props: Props) => {
+const Page: NextPage<Props> = (props: Props) => {
   return (
     <PageServer pathname="/token/[hash]/instance/[id]" query={ props }>
-      <Page>
-        <TokenInstance/>
-      </Page>
+      <TokenInstance/>
     </PageServer>
   );
 };
 
-export default TokenInstancePage;
+export default Page;
 
 export { base as getServerSideProps } from 'lib/next/getServerSideProps';

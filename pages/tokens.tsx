@@ -3,20 +3,17 @@ import dynamic from 'next/dynamic';
 import React from 'react';
 
 import PageServer from 'lib/next/PageServer';
-import Page from 'ui/shared/Page/Page';
 
 const Tokens = dynamic(() => import('ui/pages/Tokens'), { ssr: false });
 
-const TokensPage: NextPage = () => {
+const Page: NextPage = () => {
   return (
     <PageServer pathname="/tokens">
-      <Page>
-        <Tokens/>
-      </Page>
+      <Tokens/>
     </PageServer>
   );
 };
 
-export default TokensPage;
+export default Page;
 
 export { base as getServerSideProps } from 'lib/next/getServerSideProps';
