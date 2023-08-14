@@ -22,6 +22,8 @@ interface Props {
   renderHeader?: () => React.ReactNode;
 }
 
+// TODO @tom2drum remove layout related code
+
 const Page = ({
   children,
   wrapChildren = true,

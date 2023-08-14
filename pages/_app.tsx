@@ -2,8 +2,9 @@ import type { ChakraProps } from '@chakra-ui/react';
 import * as Sentry from '@sentry/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
-import React, { useState } from 'react';
+import React from 'react';
 
 import config from 'configs/app';
 import { AppContextProvider } from 'lib/contexts/app';
@@ -19,14 +20,24 @@ import AppError from 'ui/shared/AppError/AppError';
 import AppErrorTooManyRequests from 'ui/shared/AppError/AppErrorTooManyRequests';
 import ErrorBoundary from 'ui/shared/ErrorBoundary';
 import GoogleAnalytics from 'ui/shared/GoogleAnalytics';
+import Layout from 'ui/shared/layout/Layout';
 
 import 'lib/setLocale';
 
-function MyApp({ Component, pageProps }: AppProps) {
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+  getLayout?: (page: React.ReactElement) => React.ReactNode;
+}
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+}
+
+function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
   useConfigSentry();
 
-  const [ queryClient ] = useState(() => new QueryClient({
+  const [ queryClient ] = React.useState(() => new QueryClient({
     defaultOptions: {
       queries: {
         refetchOnWindowFocus: false,
@@ -79,6 +90,8 @@ function MyApp({ Component, pageProps }: AppProps) {
     Sentry.captureException(error);
   }, []);
 
+  const getLayout = Component.getLayout ?? ((page) => <Layout>{ page }</Layout>);
+
   return (
     <ChakraProvider theme={ theme } cookies={ pageProps.cookies }>
       <ErrorBoundary renderErrorScreen={ renderErrorScreen } onError={ handleError }>
@@ -86,7 +99,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <QueryClientProvider client={ queryClient }>
             <ScrollDirectionProvider>
               <SocketProvider url={ `${ config.api.socket }${ config.api.basePath }/socket/v2` }>
-                <Component { ...pageProps }/>
+                { getLayout(<Component { ...pageProps }/>) }
               </SocketProvider>
             </ScrollDirectionProvider>
             <ReactQueryDevtools/>

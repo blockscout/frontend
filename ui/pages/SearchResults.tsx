@@ -3,14 +3,15 @@ import { useRouter } from 'next/router';
 import type { FormEvent } from 'react';
 import React from 'react';
 
+import IndexingAlertBlocks from 'ui/home/IndexingAlertBlocks';
 import useMarketplaceApps from 'ui/marketplace/useMarketplaceApps';
 import SearchResultListItem from 'ui/searchResults/SearchResultListItem';
 import SearchResultsInput from 'ui/searchResults/SearchResultsInput';
 import SearchResultTableItem from 'ui/searchResults/SearchResultTableItem';
 import ActionBar from 'ui/shared/ActionBar';
+import AppErrorScreen from 'ui/shared/AppError/AppErrorScreen';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import Thead from 'ui/shared/TheadSticky';
@@ -169,10 +170,6 @@ const SearchResultsPageContent = () => {
     );
   }, [ handleSearchTermChange, handleSubmit, searchTerm ]);
 
-  const renderHeader = React.useCallback(() => {
-    return <Header renderSearchBar={ renderSearchBar }/>;
-  }, [ renderSearchBar ]);
-
   const pageContent = !showContent ? <ContentLoader/> : (
     <>
       <PageTitle title="Search results"/>
@@ -182,9 +179,13 @@ const SearchResultsPageContent = () => {
   );
 
   return (
-    <Page renderHeader={ renderHeader }>
-      { pageContent }
-    </Page>
+    <>
+      <IndexingAlertBlocks/>
+      <Header renderSearchBar={ renderSearchBar }/>
+      <AppErrorScreen>
+        { pageContent }
+      </AppErrorScreen>
+    </>
   );
 };
 

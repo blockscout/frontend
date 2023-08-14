@@ -4,7 +4,7 @@ import React from 'react';
 import PageServer from 'lib/next/PageServer';
 import Login from 'ui/pages/Login';
 
-const LoginPage: NextPage = () => {
+const Page: NextPage = () => {
   return (
     <PageServer pathname="/login">
       <Login/>
@@ -12,6 +12,6 @@ const LoginPage: NextPage = () => {
   );
 };
 
-export default LoginPage;
+export default Page;
 
 export { base as getServerSideProps } from 'lib/next/getServerSideProps';
