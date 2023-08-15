@@ -141,7 +141,7 @@ const CsvExport = () => {
         <span>{ nbsp }</span>
         { filterType && filterValue && <span>with applied filter by { filterType } ({ filterValue }) </span> }
         <span>to CSV file. </span>
-        <span>Exports are limited to the first 10K { EXPORT_TYPES[exportType].text }.</span>
+        <span>Exports are limited to the last 10K { EXPORT_TYPES[exportType].text }.</span>
       </Flex>
       { content }
     </Page>
