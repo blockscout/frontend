@@ -1,6 +1,6 @@
 import type { ChakraProps } from '@chakra-ui/react';
 import * as Sentry from '@sentry/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { AppProps } from 'next/app';
 import React from 'react';
@@ -8,12 +8,10 @@ import React from 'react';
 import type { NextPageWithLayout } from 'nextjs/types';
 
 import config from 'configs/app';
+import useQueryClientConfig from 'lib/api/useQueryClientConfig';
 import { AppContextProvider } from 'lib/contexts/app';
 import { ChakraProvider } from 'lib/contexts/chakra';
 import { ScrollDirectionProvider } from 'lib/contexts/scrollDirection';
-import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
-import getErrorObjStatusCode from 'lib/errors/getErrorObjStatusCode';
-import useConfigSentry from 'lib/hooks/useConfigSentry';
 import { SocketProvider } from 'lib/socket/context';
 import theme from 'theme';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
@@ -40,31 +38,7 @@ const ERROR_SCREEN_STYLES: ChakraProps = {
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
-  // TODO @tom2drum move this to PageNextJs
-  useConfigSentry();
-
-  // TODO @tom2drum move this to a separate file
-  const [ queryClient ] = React.useState(() => new QueryClient({
-    defaultOptions: {
-      queries: {
-        refetchOnWindowFocus: false,
-        retry: (failureCount, error) => {
-          const errorPayload = getErrorObjPayload<{ status: number }>(error);
-          const status = errorPayload?.status || getErrorObjStatusCode(error);
-          if (status && status >= 400 && status < 500) {
-            // don't do retry for client error responses
-            return false;
-          }
-          return failureCount < 2;
-        },
-        useErrorBoundary: (error) => {
-          const status = getErrorObjStatusCode(error);
-          // don't catch error for "Too many requests" response
-          return status === 429;
-        },
-      },
-    },
-  }));
+  const queryClient = useQueryClientConfig();
 
   const handleError = React.useCallback((error: Error) => {
     Sentry.captureException(error);
