@@ -1,8 +1,10 @@
 /* eslint-disable max-len */
-import { Box, Heading, OrderedList, ListItem, Icon, useColorModeValue, Flex } from '@chakra-ui/react';
+import { Box, OrderedList, ListItem, Icon, useColorModeValue, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import txIcon from 'icons/transactions.svg';
+
+import AppErrorTitle from '../AppErrorTitle';
 
 const AppErrorInvalidTxHash = () => {
   const textColor = useColorModeValue('gray.500', 'gray.400');
@@ -13,7 +15,7 @@ const AppErrorInvalidTxHash = () => {
   };
 
   return (
-    <Box mt="50px">
+    <>
       <Box p={ 4 } borderColor={ snippet.borderColor } borderRadius="md" w="230px" borderWidth="1px">
         <Flex alignItems="center" pb={ 4 } borderBottomWidth="1px" borderColor={ snippet.borderColor }>
           <Icon as={ txIcon } boxSize={ 8 } color={ snippet.iconColor } bgColor={ snippet.iconBg } p={ 1 } borderRadius="md"/>
@@ -33,9 +35,7 @@ const AppErrorInvalidTxHash = () => {
           </Flex>
         </Flex>
       </Box>
-      <Heading size="2xl" fontFamily="body" mt={ 6 }>
-        Sorry, we are unable to locate this transaction hash
-      </Heading>
+      <AppErrorTitle title="Sorry, we are unable to locate this transaction hash"/>
       <OrderedList color={ textColor } mt={ 3 } spacing={ 3 }>
         <ListItem>
             If you have just submitted this transaction please wait for at least 30 seconds before refreshing this page.
@@ -50,7 +50,7 @@ const AppErrorInvalidTxHash = () => {
             If it still does not show up after 1 hour, please check with your sender/exchange/wallet/transaction provider for additional information.
         </ListItem>
       </OrderedList>
-    </Box>
+    </>
   );
 };
 

@@ -10,15 +10,12 @@ import config from 'configs/app';
 import { AppContextProvider } from 'lib/contexts/app';
 import { ChakraProvider } from 'lib/contexts/chakra';
 import { ScrollDirectionProvider } from 'lib/contexts/scrollDirection';
-import getErrorCauseStatusCode from 'lib/errors/getErrorCauseStatusCode';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import getErrorObjStatusCode from 'lib/errors/getErrorObjStatusCode';
 import useConfigSentry from 'lib/hooks/useConfigSentry';
 import { SocketProvider } from 'lib/socket/context';
 import theme from 'theme';
-import AppError from 'ui/shared/AppError/AppError';
-import AppErrorTooManyRequests from 'ui/shared/AppError/AppErrorTooManyRequests';
-import ErrorBoundary from 'ui/shared/ErrorBoundary';
+import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
 import GoogleAnalytics from 'ui/shared/GoogleAnalytics';
 import Layout from 'ui/shared/layout/Layout';
 
@@ -32,6 +29,18 @@ export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 }
+
+const ERROR_SCREEN_STYLES: ChakraProps = {
+  h: '100vh',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'flex-start',
+  justifyContent: 'center',
+  width: 'fit-content',
+  maxW: '800px',
+  margin: '0 auto',
+  p: { base: 4, lg: 0 },
+};
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
@@ -59,33 +68,6 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     },
   }));
 
-  const renderErrorScreen = React.useCallback((error?: Error) => {
-    const statusCode = getErrorCauseStatusCode(error) || getErrorObjStatusCode(error);
-
-    const styles: ChakraProps = {
-      h: '100vh',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'flex-start',
-      justifyContent: 'center',
-      width: 'fit-content',
-      maxW: '800px',
-      margin: '0 auto',
-      p: { base: 4, lg: 0 },
-    };
-
-    if (statusCode === 429) {
-      return <AppErrorTooManyRequests { ...styles }/>;
-    }
-
-    return (
-      <AppError
-        statusCode={ statusCode || 500 }
-        { ...styles }
-      />
-    );
-  }, []);
-
   const handleError = React.useCallback((error: Error) => {
     Sentry.captureException(error);
   }, []);
@@ -94,7 +76,10 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
   return (
     <ChakraProvider theme={ theme } cookies={ pageProps.cookies }>
-      <ErrorBoundary renderErrorScreen={ renderErrorScreen } onError={ handleError }>
+      <AppErrorBoundary
+        { ...ERROR_SCREEN_STYLES }
+        onError={ handleError }
+      >
         <AppContextProvider pageProps={ pageProps }>
           <QueryClientProvider client={ queryClient }>
             <ScrollDirectionProvider>
@@ -106,7 +91,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
             <GoogleAnalytics/>
           </QueryClientProvider>
         </AppContextProvider>
-      </ErrorBoundary>
+      </AppErrorBoundary>
     </ChakraProvider>
   );
 }

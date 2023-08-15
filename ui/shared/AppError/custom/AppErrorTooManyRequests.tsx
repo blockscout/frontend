@@ -1,4 +1,4 @@
-import { Box, Heading, Icon, Text, chakra } from '@chakra-ui/react';
+import { Box, Heading, Icon, Text } from '@chakra-ui/react';
 import React from 'react';
 import ReCaptcha from 'react-google-recaptcha';
 
@@ -8,11 +8,7 @@ import buildUrl from 'lib/api/buildUrl';
 import useFetch from 'lib/hooks/useFetch';
 import useToast from 'lib/hooks/useToast';
 
-interface Props {
-  className?: string;
-}
-
-const AppErrorTooManyRequests = ({ className }: Props) => {
+const AppErrorTooManyRequests = () => {
   const toast = useToast();
   const fetch = useFetch();
 
@@ -47,7 +43,6 @@ const AppErrorTooManyRequests = ({ className }: Props) => {
 
   return (
     <Box
-      className={ className }
       sx={{
         '.recaptcha': {
           mt: 8,
@@ -71,4 +66,4 @@ const AppErrorTooManyRequests = ({ className }: Props) => {
   );
 };
 
-export default chakra(AppErrorTooManyRequests);
+export default AppErrorTooManyRequests;

@@ -9,7 +9,7 @@ import SearchResultListItem from 'ui/searchResults/SearchResultListItem';
 import SearchResultsInput from 'ui/searchResults/SearchResultsInput';
 import SearchResultTableItem from 'ui/searchResults/SearchResultTableItem';
 import ActionBar from 'ui/shared/ActionBar';
-import AppErrorScreen from 'ui/shared/AppError/AppErrorScreen';
+import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -182,9 +182,9 @@ const SearchResultsPageContent = () => {
     <>
       <IndexingAlertBlocks/>
       <Header renderSearchBar={ renderSearchBar }/>
-      <AppErrorScreen>
+      <AppErrorBoundary>
         { pageContent }
-      </AppErrorScreen>
+      </AppErrorBoundary>
     </>
   );
 };
