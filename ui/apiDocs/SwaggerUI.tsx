@@ -13,6 +13,8 @@ import ContentLoader from 'ui/shared/ContentLoader';
 
 import 'swagger-ui-react/swagger-ui.css';
 
+const feature = config.features.restApiDocs;
+
 const DEFAULT_SERVER = 'blockscout.com/poa/core';
 
 const NeverShowInfoPlugin = () => {
@@ -65,10 +67,14 @@ const SwaggerUI = () => {
     return req;
   }, []);
 
+  if (!feature.isEnabled) {
+    return null;
+  }
+
   return (
     <Box sx={ swaggerStyle }>
       <SwaggerUIReact
-        url={ config.features.restApiDocs.specUrl }
+        url={ feature.specUrl }
         plugins={ [ NeverShowInfoPlugin ] }
         requestInterceptor={ reqInterceptor }
       />

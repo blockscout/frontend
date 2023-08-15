@@ -1,3 +1,4 @@
+import type { Feature } from './types';
 import type { AdTextProviders } from 'types/client/adProviders';
 
 import { getEnvValue } from '../utils';
@@ -9,8 +10,21 @@ const provider: AdTextProviders = (() => {
   return envValue && SUPPORTED_AD_BANNER_PROVIDERS.includes(envValue) ? envValue as AdTextProviders : 'coinzilla';
 })();
 
-export default Object.freeze({
-  title: 'Text ads',
-  isEnabled: provider !== 'none',
-  provider,
-});
+const title = 'Text ads';
+
+const config: Feature<{ provider: AdTextProviders }> = (() => {
+  if (provider !== 'none') {
+    return Object.freeze({
+      title,
+      isEnabled: true,
+      provider,
+    });
+  }
+
+  return Object.freeze({
+    title,
+    isEnabled: false,
+  });
+})();
+
+export default config;

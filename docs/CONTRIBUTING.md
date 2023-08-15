@@ -2,6 +2,8 @@
 
 Thanks for showing interest to contribute to Blockscout. The following steps will get you up and running.
 
+&nbsp;
+
 ## Project setup
 
 1. Fork the repo by clicking <kbd>Fork</kbd> button at the top of the repo main page and name it appropriately
@@ -23,6 +25,8 @@ Thanks for showing interest to contribute to Blockscout. The following steps wil
     yarn
     ```
 
+&nbsp;
+
 ## Toolkit
 
 We are using following technology stack in the project
@@ -36,6 +40,8 @@ We are using following technology stack in the project
 
 And of course our premier language is [Typescript](https://www.typescriptlang.org/).
 
+&nbsp;
+
 ## Local development
 
 1. Prepare your environment variables:  
@@ -48,10 +54,14 @@ And of course our premier language is [Typescript](https://www.typescriptlang.or
     - if your options is "B", use `yarn dev:<config_name>` command
 3. In browser navigate to the URL from the command output (by default, it is `http://localhost:3000`)
 
+&nbsp;
+
 ## Adding new dependencies
 For all types of dependencies:
 - **Do not add** a dependency if the desired functionality is easily implementable
 - If adding a dependency is necessary, please be sure that is is well-maintained and trustworthy
+
+&nbsp;
 
 ## Adding new ENV variable
 
@@ -59,7 +69,12 @@ For all types of dependencies:
 
 These are the steps that you have to follow to make everything work:
 1. First and foremost, document variable in the [/docs/ENVS.md](./ENVS.md) file; provide short description, its expected type, requirement flag, default and example value; **do not skip this step** otherwise the app will not receive variable value at run-time
-2. Make sure that you have added a property to React app config (`/configs/app/index.ts`) in appropriate section that is associated with this variable; do not use ENV variable values directly in the application code
+2. Make sure that you have added a property to React app config (`/configs/app/index.ts`) in appropriate section that is associated with this variable; do not use ENV variable values directly in the application code; decide where this variable belongs to and place it under the certain section:
+    - `app` - the front-end app itself
+    - `api` - the main API configuration
+    - `UI` - the app UI customization
+    - `features` - the particular feature of the app
+    - `services` - some 3rd party service integration which is not related to one particular feature  
 3. For local development purposes add the variable with its appropriate values to pre-defined ENV configs `/configs/envs` where it is needed
 4. Add the variable to CI configs where it is needed
     - `deploy/values/review/values.yaml.gotmpl` - review development environment
@@ -67,6 +82,8 @@ These are the steps that you have to follow to make everything work:
     - `deploy/values/review-l2/values.yaml.gotmpl` - review development environment for L2 networks
     - `deploy/values/l2-optimism-goerli/values.yaml` - main development environment
 5. Don't forget to mention in the PR notes that new ENV variable were added  
+
+&nbsp;
 
 ## Writing & Running Tests
 
@@ -92,6 +109,8 @@ We have 3 pre-configured projects. You can run your test with the desired projec
 - `dark-color-mode` - project for testing app in the dark color mode, uses desktop Chrome desktop device with forced dark color mode; add tag `+@dark-mode` to run test with this project.
 
 *Note* that, since we are developing not on the same operating system as our CI system, we have to use Docker to generate or update the screenshots. In order to do that use `yarn test:pw:docker <path-to-file> --update-snapshots` command. Please **do not commit** any screenshots generated via `yarn test:pw:local` command, their associated tests will fail in the CI run.
+
+&nbsp;
 
 ## Making a Pull Request
 
@@ -130,7 +149,9 @@ We have 3 pre-configured projects. You can run your test with the desired projec
 
 *Note*, if you Pull Request contains any changes that are not backwards compatible with the previous versions of the app, please specify them in PR description and add label ["breaking changes"](https://github.com/blockscout/frontend/labels/breaking%20changes) to it.
 
-## Command list
+&nbsp;
+
+## Commands list
 
 | Command | Description |
 | --- | --- |
@@ -151,6 +172,8 @@ We have 3 pre-configured projects. You can run your test with the desired projec
 | `yarn test:pw:local` | run Playwright component tests locally |
 | `yarn test:pw:docker` | run Playwright component tests in docker container |
 | `yarn test:pw:ci` | run Playwright component tests in CI |
+
+&nbsp;
 
 ## Tips & Tricks
 

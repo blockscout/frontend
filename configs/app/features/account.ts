@@ -1,3 +1,5 @@
+import type { Feature } from './types';
+
 import stripTrailingSlash from 'lib/stripTrailingSlash';
 
 import app from '../app';
@@ -25,9 +27,26 @@ const logoutUrl = (() => {
   }
 })();
 
-export default Object.freeze({
-  title: 'My account',
-  isEnabled: getEnvValue(process.env.NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED) === 'true',
-  authUrl,
-  logoutUrl,
-});
+const title = 'My account';
+
+const config: Feature<{ authUrl: string; logoutUrl: string }> = (() => {
+  if (
+    getEnvValue(process.env.NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED) === 'true' &&
+    authUrl &&
+    logoutUrl
+  ) {
+    return Object.freeze({
+      title,
+      isEnabled: true,
+      authUrl,
+      logoutUrl,
+    });
+  }
+
+  return Object.freeze({
+    title,
+    isEnabled: false,
+  });
+})();
+
+export default config;

@@ -1,11 +1,23 @@
-import { getEnvValue } from '../utils';
+import type { Feature } from './types';
 
-const reCaptchaSiteKey = getEnvValue(process.env.NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY);
+import services from '../services';
 
-export default Object.freeze({
-  title: 'Export data to CSV file',
-  isEnabled: Boolean(reCaptchaSiteKey),
-  reCaptcha: {
-    siteKey: reCaptchaSiteKey ?? '',
-  },
-});
+const title = 'Export data to CSV file';
+
+const config: Feature<{ reCaptcha: { siteKey: string }}> = (() => {
+  if (services.reCaptcha.siteKey) {
+    return Object.freeze({
+      title,
+      isEnabled: true,
+      reCaptcha: {
+        siteKey: services.reCaptcha.siteKey,
+      },
+    });
+  }
+  return Object.freeze({
+    title,
+    isEnabled: false,
+  });
+})();
+
+export default config;

@@ -42,7 +42,9 @@ const CsvExportFormReCaptcha = ({ formApi }: Props) => {
     formApi.setError('reCaptcha', { type: 'required' });
   }, [ formApi ]);
 
-  if (!config.features.csvExport.isEnabled) {
+  const feature = config.features.csvExport;
+
+  if (!feature.isEnabled) {
     return (
       <Alert status="error">
         CSV export is not available at the moment since reCaptcha is not configured for this application.
@@ -55,7 +57,7 @@ const CsvExportFormReCaptcha = ({ formApi }: Props) => {
     <ReCaptcha
       className="recaptcha"
       ref={ ref }
-      sitekey={ config.features.csvExport.reCaptcha.siteKey }
+      sitekey={ feature.reCaptcha.siteKey }
       onChange={ handleReCaptchaChange }
       onExpired={ handleReCaptchaExpire }
     />

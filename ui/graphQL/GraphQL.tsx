@@ -8,6 +8,8 @@ import buildUrl from 'lib/api/buildUrl';
 import 'graphiql/graphiql.css';
 import isBrowser from 'lib/isBrowser';
 
+const feature = config.features.graphqlApiDocs;
+
 const graphQLStyle = {
   '.graphiql-container': {
     backgroundColor: 'unset',
@@ -31,9 +33,13 @@ const GraphQL = () => {
     }
   }, [ colorMode ]);
 
+  if (!feature.isEnabled) {
+    return null;
+  }
+
   const initialQuery = `{
     transaction(
-      hash: "${ config.features.graphqlApiDocs.defaultTxHash }"
+      hash: "${ feature.defaultTxHash }"
     ) {
       hash
       blockNumber

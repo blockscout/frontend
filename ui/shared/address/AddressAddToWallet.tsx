@@ -8,6 +8,8 @@ import useToast from 'lib/hooks/useToast';
 import useProvider from 'lib/web3/useProvider';
 import { WALLETS_INFO } from 'lib/web3/wallets';
 
+const feature = config.features.web3Wallet;
+
 interface Props {
   className?: string;
   token: TokenInfo;
@@ -64,16 +66,14 @@ const AddressAddToWallet = ({ className, token, isLoading }: Props) => {
     return <Skeleton className={ className } boxSize={ 6 } borderRadius="base"/>;
   }
 
-  const defaultWallet = config.features.web3Wallet.defaultWallet;
-
-  if (defaultWallet === 'none') {
+  if (!feature.isEnabled) {
     return null;
   }
 
   return (
-    <Tooltip label={ `Add token to ${ WALLETS_INFO[defaultWallet].name }` }>
+    <Tooltip label={ `Add token to ${ WALLETS_INFO[feature.defaultWallet].name }` }>
       <Box className={ className } display="inline-flex" cursor="pointer" onClick={ handleClick }>
-        <Icon as={ WALLETS_INFO[defaultWallet].icon } boxSize={ 6 }/>
+        <Icon as={ WALLETS_INFO[feature.defaultWallet].icon } boxSize={ 6 }/>
       </Box>
     </Tooltip>
   );

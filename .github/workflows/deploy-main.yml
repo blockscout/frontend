@@ -1,4 +1,4 @@
-name: Publish Docker image on every push to main branch
+name: Deploy from main branch
 
 on:
   push:
@@ -10,8 +10,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  push_to_registry:
-    name: Push Docker image to registry
+  publish_image:
+    name: Publish Docker image
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
@@ -52,7 +52,7 @@ jobs:
 
   deploy_main:
     name: Deploy frontend
-    needs: push_to_registry
+    needs: publish_image
     uses: blockscout/blockscout-ci-cd/.github/workflows/deploy_helmfile.yaml@master
     with:
       appName: front
@@ -61,9 +61,10 @@ jobs:
       kubeConfigSecret: ci/data/dev/kubeconfig/k8s-dev
       vaultRole: ci-dev
     secrets: inherit
+
   deploy_l2:
     name: Deploy frontend (L2)
-    needs: push_to_registry
+    needs: publish_image
     uses: blockscout/blockscout-ci-cd/.github/workflows/deploy_helmfile.yaml@master
     with:
       appName: l2-optimism-goerli

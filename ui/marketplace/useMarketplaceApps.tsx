@@ -9,6 +9,9 @@ import type { ResourceError } from 'lib/api/resources';
 import useApiFetch from 'lib/hooks/useFetch';
 import { MARKETPLACE_APP } from 'stubs/marketplace';
 
+const feature = config.features.marketplace;
+const configUrl = feature.isEnabled ? feature.configUrl : '';
+
 function isAppNameMatches(q: string, app: MarketplaceAppOverview) {
   return app.title.toLowerCase().includes(q.toLowerCase());
 }
@@ -23,11 +26,12 @@ export default function useMarketplaceApps(filter: string, selectedCategoryId: s
   const apiFetch = useApiFetch();
   const { isPlaceholderData, isError, error, data } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppOverview>>(
     [ 'marketplace-apps' ],
-    async() => apiFetch(config.features.marketplace.configUrl || ''),
+    async() => apiFetch(configUrl),
     {
       select: (data) => (data as Array<MarketplaceAppOverview>).sort((a, b) => a.title.localeCompare(b.title)),
       placeholderData: Array(9).fill(MARKETPLACE_APP),
       staleTime: Infinity,
+      enabled: feature.isEnabled,
     });
 
   const displayedApps = React.useMemo(() => {
