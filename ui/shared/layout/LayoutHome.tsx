@@ -9,7 +9,6 @@ import Header from 'ui/snippets/header/Header';
 import * as Layout from './components';
 
 const LayoutHome = ({ children }: Props) => {
-
   return (
     <Layout.Container>
       <Layout.MainArea>
