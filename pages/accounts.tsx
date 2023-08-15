@@ -2,21 +2,18 @@ import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-import PageServer from 'lib/next/PageServer';
-import Page from 'ui/shared/Page/Page';
+import PageNextJs from 'nextjs/PageNextJs';
 
 const Accounts = dynamic(() => import('ui/pages/Accounts'), { ssr: false });
 
-const AccountsPage: NextPage = () => {
+const Page: NextPage = () => {
   return (
-    <PageServer pathname="/accounts">
-      <Page>
-        <Accounts/>
-      </Page>
-    </PageServer>
+    <PageNextJs pathname="/accounts">
+      <Accounts/>
+    </PageNextJs>
   );
 };
 
-export default AccountsPage;
+export default Page;
 
-export { base as getServerSideProps } from 'lib/next/getServerSideProps';
+export { base as getServerSideProps } from 'nextjs/getServerSideProps';

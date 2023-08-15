@@ -1,9 +1,10 @@
 import { Box, Flex, Select, Skeleton, Text, Tooltip } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { SmartContract } from 'types/api/contract';
 import type { ArrayElement } from 'types/utils';
+
+import { route } from 'nextjs-routes';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import * as stubs from 'stubs/contract';

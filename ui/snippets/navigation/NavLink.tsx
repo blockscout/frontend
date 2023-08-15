@@ -1,9 +1,10 @@
 import { Link, Text, HStack, Tooltip, Box, useBreakpointValue, chakra, shouldForwardProp } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { NavItem } from 'types/client/navigation-items';
+
+import { route } from 'nextjs-routes';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { isInternalItem } from 'lib/hooks/useNavItems';

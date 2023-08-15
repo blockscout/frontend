@@ -1,17 +1,18 @@
 import type { NextPage } from 'next';
 import React from 'react';
 
-import PageServer from 'lib/next/PageServer';
+import PageNextJs from 'nextjs/PageNextJs';
+
 import CsvExport from 'ui/pages/CsvExport';
 
-const CsvExportPage: NextPage = () => {
+const Page: NextPage = () => {
   return (
-    <PageServer pathname="/csv-export">
+    <PageNextJs pathname="/csv-export">
       <CsvExport/>
-    </PageServer>
+    </PageNextJs>
   );
 };
 
-export default CsvExportPage;
+export default Page;
 
-export { csvExport as getServerSideProps } from 'lib/next/getServerSideProps';
+export { csvExport as getServerSideProps } from 'nextjs/getServerSideProps';

@@ -1,17 +1,18 @@
 import type { NextPage } from 'next';
 import React from 'react';
 
-import PageServer from 'lib/next/PageServer';
+import PageNextJs from 'nextjs/PageNextJs';
+
 import Login from 'ui/pages/Login';
 
-const LoginPage: NextPage = () => {
+const Page: NextPage = () => {
   return (
-    <PageServer pathname="/login">
+    <PageNextJs pathname="/login">
       <Login/>
-    </PageServer>
+    </PageNextJs>
   );
 };
 
-export default LoginPage;
+export default Page;
 
-export { base as getServerSideProps } from 'lib/next/getServerSideProps';
+export { base as getServerSideProps } from 'nextjs/getServerSideProps';

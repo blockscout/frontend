@@ -1,8 +1,9 @@
 import { Skeleton } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { L2WithdrawalsItem } from 'types/api/l2Withdrawals';
+
+import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import txIcon from 'icons/transactions.svg';

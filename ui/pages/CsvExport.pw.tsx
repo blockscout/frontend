@@ -34,7 +34,7 @@ test('base view +@mobile +@dark-mode', async({ mount, page }) => {
 
   await page.waitForResponse('https://www.google.com/recaptcha/api2/**');
 
-  await expect(component.locator('main')).toHaveScreenshot({
+  await expect(component).toHaveScreenshot({
     mask: [ page.locator('.recaptcha') ],
     maskColor: configs.maskColor,
   });

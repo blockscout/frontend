@@ -2,23 +2,23 @@ import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-import PageServer from 'lib/next/PageServer';
-import Page from 'ui/shared/Page/Page';
+import PageNextJs from 'nextjs/PageNextJs';
+
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 const Marketplace = dynamic(() => import('ui/pages/Marketplace'), { ssr: false });
 
-const MarketplacePage: NextPage = () => {
+const Page: NextPage = () => {
   return (
-    <PageServer pathname="/apps">
-      <Page>
+    <PageNextJs pathname="/apps">
+      <>
         <PageTitle title="Marketplace"/>
         <Marketplace/>
-      </Page>
-    </PageServer>
+      </>
+    </PageNextJs>
   );
 };
 
-export default MarketplacePage;
+export default Page;
 
-export { marketplace as getServerSideProps } from 'lib/next/getServerSideProps';
+export { marketplace as getServerSideProps } from 'nextjs/getServerSideProps';

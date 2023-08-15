@@ -3,14 +3,15 @@ const withTM = require('next-transpile-modules')([
   'swagger-client',
   'swagger-ui-react',
 ]);
-const withRoutes = require('nextjs-routes/config')({
-  outDir: 'types',
-});
 const path = require('path');
 
-const headers = require('./configs/nextjs/headers');
-const redirects = require('./configs/nextjs/redirects');
-const rewrites = require('./configs/nextjs/rewrites');
+const withRoutes = require('nextjs-routes/config')({
+  outDir: 'nextjs',
+});
+
+const headers = require('./nextjs/headers');
+const redirects = require('./nextjs/redirects');
+const rewrites = require('./nextjs/rewrites');
 
 const moduleExports = withTM({
   include: path.resolve(__dirname, 'icons'),

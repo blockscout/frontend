@@ -2,21 +2,18 @@ import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-import PageServer from 'lib/next/PageServer';
-import Page from 'ui/shared/Page/Page';
+import PageNextJs from 'nextjs/PageNextJs';
 
 const CustomAbi = dynamic(() => import('ui/pages/CustomAbi'), { ssr: false });
 
-const CustomAbiPage: NextPage = () => {
+const Page: NextPage = () => {
   return (
-    <PageServer pathname="/account/custom-abi">
-      <Page>
-        <CustomAbi/>
-      </Page>
-    </PageServer>
+    <PageNextJs pathname="/account/custom-abi">
+      <CustomAbi/>
+    </PageNextJs>
   );
 };
 
-export default CustomAbiPage;
+export default Page;
 
-export { account as getServerSideProps } from 'lib/next/getServerSideProps';
+export { account as getServerSideProps } from 'nextjs/getServerSideProps';

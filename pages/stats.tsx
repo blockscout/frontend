@@ -1,18 +1,18 @@
 import type { NextPage } from 'next';
 import React from 'react';
 
-import PageServer from 'lib/next/PageServer';
+import PageNextJs from 'nextjs/PageNextJs';
 
-import Stats from '../ui/pages/Stats';
+import Stats from 'ui/pages/Stats';
 
-const StatsPage: NextPage = () => {
+const Page: NextPage = () => {
   return (
-    <PageServer pathname="/stats">
+    <PageNextJs pathname="/stats">
       <Stats/>
-    </PageServer>
+    </PageNextJs>
   );
 };
 
-export default StatsPage;
+export default Page;
 
-export { stats as getServerSideProps } from 'lib/next/getServerSideProps';
+export { stats as getServerSideProps } from 'nextjs/getServerSideProps';

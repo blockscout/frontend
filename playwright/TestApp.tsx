@@ -5,8 +5,9 @@ import React from 'react';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 
+import type { Props as PageProps } from 'nextjs/getServerSideProps';
+
 import { AppContextProvider } from 'lib/contexts/app';
-import type { Props as PageProps } from 'lib/next/getServerSideProps';
 import { SocketProvider } from 'lib/socket/context';
 import * as app from 'playwright/utils/app';
 import theme from 'theme';

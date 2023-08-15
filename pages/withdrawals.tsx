@@ -2,21 +2,18 @@ import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-import PageServer from 'lib/next/PageServer';
-import Page from 'ui/shared/Page/Page';
+import PageNextJs from 'nextjs/PageNextJs';
 
 const Withdrawals = dynamic(() => import('ui/pages/Withdrawals'), { ssr: false });
 
-const WithdrawalsPage: NextPage = () => {
+const Page: NextPage = () => {
   return (
-    <PageServer pathname="/withdrawals">
-      <Page>
-        <Withdrawals/>
-      </Page>
-    </PageServer>
+    <PageNextJs pathname="/withdrawals">
+      <Withdrawals/>
+    </PageNextJs>
   );
 };
 
-export default WithdrawalsPage;
+export default Page;
 
-export { beaconChain as getServerSideProps } from 'lib/next/getServerSideProps';
+export { beaconChain as getServerSideProps } from 'nextjs/getServerSideProps';

@@ -2,21 +2,18 @@ import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-import PageServer from 'lib/next/PageServer';
-import Page from 'ui/shared/Page/Page';
+import PageNextJs from 'nextjs/PageNextJs';
 
 const Transactions = dynamic(() => import('ui/pages/Transactions'), { ssr: false });
 
-const TxsPage: NextPage = () => {
+const Page: NextPage = () => {
   return (
-    <PageServer pathname="/txs">
-      <Page>
-        <Transactions/>
-      </Page>
-    </PageServer>
+    <PageNextJs pathname="/txs">
+      <Transactions/>
+    </PageNextJs>
   );
 };
 
-export default TxsPage;
+export default Page;
 
-export { base as getServerSideProps } from 'lib/next/getServerSideProps';
+export { base as getServerSideProps } from 'nextjs/getServerSideProps';

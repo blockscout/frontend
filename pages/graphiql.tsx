@@ -2,9 +2,9 @@ import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-import PageServer from 'lib/next/PageServer';
+import PageNextJs from 'nextjs/PageNextJs';
+
 import ContentLoader from 'ui/shared/ContentLoader';
-import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 const GraphQL = dynamic(() => import('ui/graphQL/GraphQL'), {
@@ -12,18 +12,16 @@ const GraphQL = dynamic(() => import('ui/graphQL/GraphQL'), {
   ssr: false,
 });
 
-const GraphiqlPage: NextPage = () => {
+const Page: NextPage = () => {
 
   return (
-    <PageServer pathname="/graphiql">
-      <Page>
-        <PageTitle title="GraphQL playground"/>
-        <GraphQL/>
-      </Page>
-    </PageServer>
+    <PageNextJs pathname="/graphiql">
+      <PageTitle title="GraphQL playground"/>
+      <GraphQL/>
+    </PageNextJs>
   );
 };
 
-export default GraphiqlPage;
+export default Page;
 
-export { base as getServerSideProps } from 'lib/next/getServerSideProps';
+export { base as getServerSideProps } from 'nextjs/getServerSideProps';

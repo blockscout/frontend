@@ -1,21 +1,19 @@
 import type { NextPage } from 'next';
 import React from 'react';
 
-import type { Props } from 'lib/next/getServerSideProps';
-import PageServer from 'lib/next/PageServer';
-import ContractVerification from 'ui/pages/ContractVerification';
-import Page from 'ui/shared/Page/Page';
+import type { Props } from 'nextjs/getServerSideProps';
+import PageNextJs from 'nextjs/PageNextJs';
 
-const ContractVerificationPage: NextPage<Props> = (props: Props) => {
+import ContractVerification from 'ui/pages/ContractVerification';
+
+const Page: NextPage<Props> = (props: Props) => {
   return (
-    <PageServer pathname="/address/[hash]/contract-verification" query={ props }>
-      <Page>
-        <ContractVerification/>
-      </Page>
-    </PageServer>
+    <PageNextJs pathname="/address/[hash]/contract-verification" query={ props }>
+      <ContractVerification/>
+    </PageNextJs>
   );
 };
 
-export default ContractVerificationPage;
+export default Page;
 
-export { base as getServerSideProps } from 'lib/next/getServerSideProps';
+export { base as getServerSideProps } from 'nextjs/getServerSideProps';

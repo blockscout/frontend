@@ -1,10 +1,11 @@
 import { Box, Popover, PopoverTrigger, PopoverContent, PopoverBody, useDisclosure, PopoverFooter } from '@chakra-ui/react';
 import _debounce from 'lodash/debounce';
 import { useRouter } from 'next/router';
-import { route } from 'nextjs-routes';
 import type { FormEvent, FocusEvent } from 'react';
 import React from 'react';
 import { Element } from 'react-scroll';
+
+import { route } from 'nextjs-routes';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as mixpanel from 'lib/mixpanel/index';

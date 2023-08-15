@@ -1,9 +1,10 @@
 import { Td, Tr, Skeleton } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { L2DepositsItem } from 'types/api/l2Deposits';
+
+import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import blockIcon from 'icons/block.svg';

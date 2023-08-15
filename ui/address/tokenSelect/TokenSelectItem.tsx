@@ -1,7 +1,8 @@
 import { chakra, Flex, Text, useColorModeValue } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import { route } from 'nextjs-routes';
 import React from 'react';
+
+import { route } from 'nextjs-routes';
 
 import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
 import TruncatedValue from 'ui/shared/TruncatedValue';

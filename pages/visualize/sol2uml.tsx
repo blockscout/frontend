@@ -1,17 +1,18 @@
 import type { NextPage } from 'next';
 import React from 'react';
 
-import PageServer from 'lib/next/PageServer';
+import PageNextJs from 'nextjs/PageNextJs';
+
 import Sol2Uml from 'ui/pages/Sol2Uml';
 
-const Sol2UmlPage: NextPage = () => {
+const Page: NextPage = () => {
   return (
-    <PageServer pathname="/visualize/sol2uml">
+    <PageNextJs pathname="/visualize/sol2uml">
       <Sol2Uml/>
-    </PageServer>
+    </PageNextJs>
   );
 };
 
-export default Sol2UmlPage;
+export default Page;
 
-export { base as getServerSideProps } from 'lib/next/getServerSideProps';
+export { base as getServerSideProps } from 'nextjs/getServerSideProps';

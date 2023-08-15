@@ -1,6 +1,7 @@
 import { Box, chakra, Skeleton } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
+
+import { route } from 'nextjs-routes';
 
 import nftPlaceholder from 'icons/nft_shield.svg';
 import Icon from 'ui/shared/chakra/Icon';

@@ -7,7 +7,6 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
-import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Sol2UmlDiagram from 'ui/sol2uml/Sol2UmlDiagram';
 
@@ -32,7 +31,7 @@ const Sol2Uml = () => {
   }, [ appProps.referrer ]);
 
   return (
-    <Page>
+    <>
       <PageTitle
         title="Solidity UML diagram"
         backLink={ backLink }
@@ -45,7 +44,7 @@ const Sol2Uml = () => {
         </Address>
       </Flex>
       <Sol2UmlDiagram addressHash={ addressHash }/>
-    </Page>
+    </>
   );
 };
 

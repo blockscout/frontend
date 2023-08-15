@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';

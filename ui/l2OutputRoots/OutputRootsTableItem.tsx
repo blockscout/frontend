@@ -1,8 +1,9 @@
 import { Flex, Td, Tr, Skeleton } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { L2OutputRootsItem } from 'types/api/l2OutputRoots';
+
+import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import txIcon from 'icons/transactions.svg';

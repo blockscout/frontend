@@ -1,10 +1,11 @@
 import { Box, Center, useColorMode } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import { route } from 'nextjs-routes';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import type { MarketplaceAppOverview } from 'types/client/marketplace';
+
+import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
@@ -105,10 +106,10 @@ const MarketplaceApp = () => {
 
   return (
     <>
-      { !isLoading && <PageTitle title={ data.title } px={{ base: 4, lg: 12 }} pt={{ base: '138px', lg: 0 }} backLink={ backLink }/> }
+      { !isLoading && <PageTitle title={ data.title } backLink={ backLink }/> }
       <Center
-        as="main"
         h="100vh"
+        mx={{ base: -4, lg: -12 }}
       >
         { (isFrameLoading) && (
           <ContentLoader/>

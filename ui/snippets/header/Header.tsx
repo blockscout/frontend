@@ -3,7 +3,6 @@ import React from 'react';
 
 import config from 'configs/app';
 import { useScrollDirection } from 'lib/contexts/scrollDirection';
-import IndexingAlertBlocks from 'ui/home/IndexingAlertBlocks';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import ProfileMenuDesktop from 'ui/snippets/profileMenu/ProfileMenuDesktop';
 import ProfileMenuMobile from 'ui/snippets/profileMenu/ProfileMenuMobile';
@@ -47,12 +46,7 @@ const Header = ({ isHomePage, renderSearchBar }: Props) => {
         </Flex>
         { !isHomePage && searchBar }
       </Box>
-      <Box
-        paddingX={ 12 }
-        paddingTop={ 9 }
-        display={{ base: 'none', lg: 'block' }}
-      >
-        { !config.UI.indexingAlert.isHidden && <IndexingAlertBlocks/> }
+      <Box display={{ base: 'none', lg: 'block' }}>
         { !isHomePage && (
           <HStack
             as="header"
@@ -60,7 +54,6 @@ const Header = ({ isHomePage, renderSearchBar }: Props) => {
             alignItems="center"
             justifyContent="center"
             gap={ 12 }
-            paddingBottom="52px"
           >
             <Box width="100%">
               { searchBar }

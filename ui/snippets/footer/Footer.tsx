@@ -78,7 +78,7 @@ const Footer = () => {
     });
 
   return (
-    <Flex direction={{ base: 'column', lg: 'row' }} p={{ base: 4, lg: 9 }} borderTop="1px solid" borderColor="divider">
+    <Flex direction={{ base: 'column', lg: 'row' }} p={{ base: 4, lg: 9 }} borderTop="1px solid" borderColor="divider" as="footer">
       <Box flexGrow="1" mb={{ base: 8, lg: 0 }}>
         <Flex>
           <ColorModeToggler/>

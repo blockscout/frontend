@@ -1,7 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import nodeFetch from 'node-fetch';
 
-import { httpLogger } from 'lib/api/logger';
+import { httpLogger } from 'nextjs/utils/logger';
+
 import getQueryParamString from 'lib/router/getQueryParamString';
 
 export default async function mediaTypeHandler(req: NextApiRequest, res: NextApiResponse) {

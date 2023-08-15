@@ -1,8 +1,9 @@
 import { Flex, Link, Text, LinkBox, LinkOverlay, useColorModeValue, Skeleton } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { AddressTokenBalance } from 'types/api/address';
+
+import { route } from 'nextjs-routes';
 
 import NftMedia from 'ui/shared/nft/NftMedia';
 import TokenLogo from 'ui/shared/TokenLogo';

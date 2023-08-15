@@ -2,22 +2,19 @@ import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-import type { Props } from 'lib/next/getServerSideProps';
-import PageServer from 'lib/next/PageServer';
-import Page from 'ui/shared/Page/Page';
+import type { Props } from 'nextjs/getServerSideProps';
+import PageNextJs from 'nextjs/PageNextJs';
 
 const Address = dynamic(() => import('ui/pages/Address'), { ssr: false });
 
-const AddressPage: NextPage<Props> = (props: Props) => {
+const Page: NextPage<Props> = (props: Props) => {
   return (
-    <PageServer pathname="/address/[hash]" query={ props }>
-      <Page>
-        <Address/>
-      </Page>
-    </PageServer>
+    <PageNextJs pathname="/address/[hash]" query={ props }>
+      <Address/>
+    </PageNextJs>
   );
 };
 
-export default AddressPage;
+export default Page;
 
-export { base as getServerSideProps } from 'lib/next/getServerSideProps';
+export { base as getServerSideProps } from 'nextjs/getServerSideProps';

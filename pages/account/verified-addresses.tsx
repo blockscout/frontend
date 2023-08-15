@@ -2,21 +2,18 @@ import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-import PageServer from 'lib/next/PageServer';
-import Page from 'ui/shared/Page/Page';
+import PageNextJs from 'nextjs/PageNextJs';
 
 const VerifiedAddresses = dynamic(() => import('ui/pages/VerifiedAddresses'), { ssr: false });
 
-const VerifiedAddressesPage: NextPage = () => {
+const Page: NextPage = () => {
   return (
-    <PageServer pathname="/account/verified-addresses">
-      <Page>
-        <VerifiedAddresses/>
-      </Page>
-    </PageServer>
+    <PageNextJs pathname="/account/verified-addresses">
+      <VerifiedAddresses/>
+    </PageNextJs>
   );
 };
 
-export default VerifiedAddressesPage;
+export default Page;
 
-export { verifiedAddresses as getServerSideProps } from 'lib/next/getServerSideProps';
+export { verifiedAddresses as getServerSideProps } from 'nextjs/getServerSideProps';

@@ -1,22 +1,20 @@
 import type { NextPage } from 'next';
 import React from 'react';
 
-import PageServer from 'lib/next/PageServer';
+import PageNextJs from 'nextjs/PageNextJs';
+
 import SwaggerUI from 'ui/apiDocs/SwaggerUI';
-import Page from 'ui/shared/Page/Page';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
-const APIDocsPage: NextPage = () => {
+const Page: NextPage = () => {
   return (
-    <PageServer pathname="/api-docs">
-      <Page>
-        <PageTitle title="API Documentation"/>
-        <SwaggerUI/>
-      </Page>
-    </PageServer>
+    <PageNextJs pathname="/api-docs">
+      <PageTitle title="API Documentation"/>
+      <SwaggerUI/>
+    </PageNextJs>
   );
 };
 
-export default APIDocsPage;
+export default Page;
 
-export { apiDocs as getServerSideProps } from 'lib/next/getServerSideProps';
+export { apiDocs as getServerSideProps } from 'nextjs/getServerSideProps';

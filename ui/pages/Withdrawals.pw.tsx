@@ -1,11 +1,18 @@
-import { test, expect } from '@playwright/experimental-ct-react';
+import { test as base, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import { data as withdrawalsData } from 'mocks/withdrawals/withdrawals';
+import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
+import * as configs from 'playwright/utils/configs';
 
 import Withdrawals from './Withdrawals';
+
+const test = base.extend({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  context: contextWithEnvs(configs.featureEnvs.beaconChain) as any,
+});
 
 const WITHDRAWALS_API_URL = buildApiUrl('withdrawals');
 const WITHDRAWALS_COUNTERS_API_URL = buildApiUrl('withdrawals_counters');

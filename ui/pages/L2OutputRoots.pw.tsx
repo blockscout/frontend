@@ -1,11 +1,18 @@
-import { test, expect } from '@playwright/experimental-ct-react';
+import { test as base, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import { outputRootsData } from 'mocks/l2outputRoots/outputRoots';
+import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
+import * as configs from 'playwright/utils/configs';
 
 import OutputRoots from './L2OutputRoots';
+
+const test = base.extend({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  context: contextWithEnvs(configs.featureEnvs.rollup) as any,
+});
 
 const OUTPUT_ROOTS_API_URL = buildApiUrl('l2_output_roots');
 const OUTPUT_ROOTS_COUNT_API_URL = buildApiUrl('l2_output_roots_count');

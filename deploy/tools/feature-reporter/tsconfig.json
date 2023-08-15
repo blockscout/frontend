@@ -5,7 +5,7 @@
     "module": "CommonJS",
     "outDir": "./build",
     "paths": {
-      "nextjs-routes": ["./types/nextjs-routes.d.ts"],
+      "nextjs-routes": ["./nextjs/nextjs-routes.d.ts"],
     }
   },
   "include": [ "../../../configs/app/index.ts" ],

@@ -1,7 +1,8 @@
 import { AspectRatio, chakra, Skeleton } from '@chakra-ui/react';
+import React from 'react';
+
 import type { StaticRoute } from 'nextjs-routes';
 import { route } from 'nextjs-routes';
-import React from 'react';
 
 import useFetch from 'lib/hooks/useFetch';
 

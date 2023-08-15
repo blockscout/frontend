@@ -1,20 +1,18 @@
 import type { NextPage } from 'next';
 import React from 'react';
 
-import PageServer from 'lib/next/PageServer';
-import MyProfile from 'ui/pages/MyProfile';
-import Page from 'ui/shared/Page/Page';
+import PageNextJs from 'nextjs/PageNextJs';
 
-const MyProfilePage: NextPage = () => {
+import MyProfile from 'ui/pages/MyProfile';
+
+const Page: NextPage = () => {
   return (
-    <PageServer pathname="/auth/profile">
-      <Page>
-        <MyProfile/>
-      </Page>
-    </PageServer>
+    <PageNextJs pathname="/auth/profile">
+      <MyProfile/>
+    </PageNextJs>
   );
 };
 
-export default MyProfilePage;
+export default Page;
 
-export { account as getServerSideProps } from 'lib/next/getServerSideProps';
+export { account as getServerSideProps } from 'nextjs/getServerSideProps';

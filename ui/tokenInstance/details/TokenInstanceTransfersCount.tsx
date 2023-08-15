@@ -1,6 +1,7 @@
 import { Skeleton } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
+
+import { route } from 'nextjs-routes';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';

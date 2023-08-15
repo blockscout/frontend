@@ -1,8 +1,9 @@
 import { Flex, Grid, Icon, Image, Box, Text, chakra, Skeleton, useColorMode } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { SearchResultItem } from 'types/api/search';
+
+import { route } from 'nextjs-routes';
 
 import blockIcon from 'icons/block.svg';
 import labelIcon from 'icons/publictags.svg';

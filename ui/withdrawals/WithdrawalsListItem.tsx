@@ -1,10 +1,11 @@
 import { Flex, Icon, Skeleton } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { AddressWithdrawalsItem } from 'types/api/address';
 import type { BlockWithdrawalsItem } from 'types/api/block';
 import type { WithdrawalsItem } from 'types/api/withdrawals';
+
+import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import blockIcon from 'icons/block.svg';

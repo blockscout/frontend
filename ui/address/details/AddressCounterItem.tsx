@@ -1,10 +1,11 @@
 import { Skeleton } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { AddressCounters } from 'types/api/address';
+
+import { route } from 'nextjs-routes';
 
 import LinkInternal from 'ui/shared/LinkInternal';
 

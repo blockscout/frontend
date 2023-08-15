@@ -1,11 +1,12 @@
 import { Box, Heading, Flex, Text, VStack, Skeleton } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { AnimatePresence } from 'framer-motion';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
 import type { Block } from 'types/api/block';
+
+import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';

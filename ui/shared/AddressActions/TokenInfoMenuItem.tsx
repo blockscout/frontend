@@ -1,7 +1,8 @@
 import { MenuItem, Icon, chakra, useDisclosure } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import type { Route } from 'nextjs-routes';
 import React from 'react';
+
+import type { Route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import iconEdit from 'icons/edit.svg';

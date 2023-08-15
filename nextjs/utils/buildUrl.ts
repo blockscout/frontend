@@ -1,11 +1,10 @@
 import { compile } from 'path-to-regexp';
 
 import config from 'configs/app';
+import { RESOURCES } from 'lib/api/resources';
+import type { ApiResource, ResourceName } from 'lib/api/resources';
 
-import { RESOURCES } from './resources';
-import type { ApiResource, ResourceName } from './resources';
-
-export default function buildUrlNode(
+export default function buildUrl(
   _resource: ApiResource | ResourceName,
   pathParams?: Record<string, string | undefined>,
   queryParams?: Record<string, string | number | undefined>,

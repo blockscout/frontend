@@ -6,6 +6,8 @@ import * as searchMock from 'mocks/search/index';
 import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
+import * as configs from 'playwright/utils/configs';
+import LayoutMainColumn from 'ui/shared/layout/components/MainColumn';
 
 import SearchResults from './SearchResults';
 
@@ -35,12 +37,17 @@ test('search by name +@mobile +@dark-mode', async({ mount, page }) => {
 
   const component = await mount(
     <TestApp>
-      <SearchResults/>
+      <LayoutMainColumn>
+        <SearchResults/>
+      </LayoutMainColumn>
     </TestApp>,
     { hooksConfig },
   );
 
-  await expect(component.locator('main')).toHaveScreenshot();
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator('header'), page.locator('form') ],
+    maskColor: configs.maskColor,
+  });
 });
 
 test('search by address hash +@mobile', async({ mount, page }) => {
@@ -60,12 +67,17 @@ test('search by address hash +@mobile', async({ mount, page }) => {
 
   const component = await mount(
     <TestApp>
-      <SearchResults/>
+      <LayoutMainColumn>
+        <SearchResults/>
+      </LayoutMainColumn>
     </TestApp>,
     { hooksConfig },
   );
 
-  await expect(component.locator('main')).toHaveScreenshot();
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator('header'), page.locator('form') ],
+    maskColor: configs.maskColor,
+  });
 });
 
 test('search by block number +@mobile', async({ mount, page }) => {
@@ -85,12 +97,17 @@ test('search by block number +@mobile', async({ mount, page }) => {
 
   const component = await mount(
     <TestApp>
-      <SearchResults/>
+      <LayoutMainColumn>
+        <SearchResults/>
+      </LayoutMainColumn>
     </TestApp>,
     { hooksConfig },
   );
 
-  await expect(component.locator('main')).toHaveScreenshot();
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator('header'), page.locator('form') ],
+    maskColor: configs.maskColor,
+  });
 });
 
 test('search by block hash +@mobile', async({ mount, page }) => {
@@ -110,12 +127,17 @@ test('search by block hash +@mobile', async({ mount, page }) => {
 
   const component = await mount(
     <TestApp>
-      <SearchResults/>
+      <LayoutMainColumn>
+        <SearchResults/>
+      </LayoutMainColumn>
     </TestApp>,
     { hooksConfig },
   );
 
-  await expect(component.locator('main')).toHaveScreenshot();
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator('header'), page.locator('form') ],
+    maskColor: configs.maskColor,
+  });
 });
 
 test('search by tx hash +@mobile', async({ mount, page }) => {
@@ -135,12 +157,17 @@ test('search by tx hash +@mobile', async({ mount, page }) => {
 
   const component = await mount(
     <TestApp>
-      <SearchResults/>
+      <LayoutMainColumn>
+        <SearchResults/>
+      </LayoutMainColumn>
     </TestApp>,
     { hooksConfig },
   );
 
-  await expect(component.locator('main')).toHaveScreenshot();
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator('header'), page.locator('form') ],
+    maskColor: configs.maskColor,
+  });
 });
 
 test.describe('with apps', () => {
@@ -189,11 +216,16 @@ test.describe('with apps', () => {
 
     const component = await mount(
       <TestApp>
-        <SearchResults/>
+        <LayoutMainColumn>
+          <SearchResults/>
+        </LayoutMainColumn>
       </TestApp>,
       { hooksConfig },
     );
 
-    await expect(component.locator('main')).toHaveScreenshot();
+    await expect(component).toHaveScreenshot({
+      mask: [ page.locator('header'), page.locator('form') ],
+      maskColor: configs.maskColor,
+    });
   });
 });

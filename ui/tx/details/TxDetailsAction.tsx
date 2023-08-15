@@ -1,9 +1,10 @@
 import { Flex, Link, Icon, chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { TxAction, TxActionGeneral } from 'types/api/txAction';
+
+import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import uniswapIcon from 'icons/uniswap.svg';

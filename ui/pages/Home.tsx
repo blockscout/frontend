@@ -7,13 +7,12 @@ import LatestBlocks from 'ui/home/LatestBlocks';
 import Stats from 'ui/home/Stats';
 import Transactions from 'ui/home/Transactions';
 import AdBanner from 'ui/shared/ad/AdBanner';
-import Page from 'ui/shared/Page/Page';
 import ProfileMenuDesktop from 'ui/snippets/profileMenu/ProfileMenuDesktop';
 import SearchBar from 'ui/snippets/searchBar/SearchBar';
 
 const Home = () => {
   return (
-    <Page isHomePage>
+    <>
       <Box
         w="100%"
         background={ config.UI.homepage.plate.background }
@@ -49,7 +48,7 @@ const Home = () => {
           <Transactions/>
         </Box>
       </Flex>
-    </Page>
+    </>
   );
 };
 

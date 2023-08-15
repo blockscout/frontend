@@ -1,17 +1,28 @@
 import React from 'react';
 
-import PageServer from 'lib/next/PageServer';
-import AppError from 'ui/shared/AppError/AppError';
-import Page from 'ui/shared/Page/Page';
+import type { NextPageWithLayout } from 'nextjs/types';
 
-const Custom404 = () => {
+import PageNextJs from 'nextjs/PageNextJs';
+
+import AppError from 'ui/shared/AppError/AppError';
+import LayoutError from 'ui/shared/layout/LayoutError';
+
+const error = new Error('Not found', { cause: { status: 404 } });
+
+const Page: NextPageWithLayout = () => {
   return (
-    <PageServer pathname="/404">
-      <Page>
-        <AppError statusCode={ 404 } mt="50px"/>
-      </Page>
-    </PageServer>
+    <PageNextJs pathname="/404">
+      <AppError error={ error }/>
+    </PageNextJs>
   );
 };
 
-export default Custom404;
+Page.getLayout = function getLayout(page: React.ReactElement) {
+  return (
+    <LayoutError>
+      { page }
+    </LayoutError>
+  );
+};
+
+export default Page;

@@ -21,10 +21,11 @@ import type { GetServerSideProps } from 'next';
 import NextErrorComponent from 'next/error';
 import React from 'react';
 
+import type { Props as ServerSidePropsCommon } from 'nextjs/getServerSideProps';
+import { base as getServerSidePropsCommon } from 'nextjs/getServerSideProps';
+
 import sentryConfig from 'configs/sentry/nextjs';
 import * as cookies from 'lib/cookies';
-import type { Props as ServerSidePropsCommon } from 'lib/next/getServerSideProps';
-import { base as getServerSidePropsCommon } from 'lib/next/getServerSideProps';
 
 type Props = ServerSidePropsCommon & {
   statusCode: number;

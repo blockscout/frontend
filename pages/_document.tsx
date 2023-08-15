@@ -3,8 +3,9 @@ import type { DocumentContext } from 'next/document';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import React from 'react';
 
+import * as serverTiming from 'nextjs/utils/serverTiming';
+
 import config from 'configs/app';
-import * as serverTiming from 'lib/next/serverTiming';
 import theme from 'theme';
 
 class MyDocument extends Document {
