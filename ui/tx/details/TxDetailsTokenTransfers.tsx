@@ -1,8 +1,9 @@
 import { Icon, GridItem, Show, Flex } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
+
+import { route } from 'nextjs-routes';
 
 import tokenIcon from 'icons/token.svg';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';

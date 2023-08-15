@@ -1,7 +1,8 @@
 import { chakra, shouldForwardProp, Tooltip, Box, Skeleton } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import type { HTMLAttributeAnchorTarget } from 'react';
 import React from 'react';
+
+import { route } from 'nextjs-routes';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import HashStringShorten from 'ui/shared/HashStringShorten';

@@ -1,10 +1,11 @@
 import { Box, Text, Grid, Skeleton } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { Address as TAddress } from 'types/api/address';
+
+import { route } from 'nextjs-routes';
 
 import blockIcon from 'icons/block.svg';
 import type { ResourceError } from 'lib/api/resources';

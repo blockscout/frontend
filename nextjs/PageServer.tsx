@@ -1,6 +1,7 @@
 import Head from 'next/head';
-import type { Route } from 'nextjs-routes';
 import React from 'react';
+
+import type { Route } from 'nextjs-routes';
 
 import * as metadata from 'lib/metadata';
 import Page from 'ui/shared/Page/Page';

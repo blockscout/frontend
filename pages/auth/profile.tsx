@@ -1,7 +1,8 @@
 import type { NextPage } from 'next';
 import React from 'react';
 
-import PageServer from 'lib/next/PageServer';
+import PageServer from 'nextjs/PageServer';
+
 import MyProfile from 'ui/pages/MyProfile';
 
 const Page: NextPage = () => {
@@ -14,4 +15,4 @@ const Page: NextPage = () => {
 
 export default Page;
 
-export { account as getServerSideProps } from 'lib/next/getServerSideProps';
+export { account as getServerSideProps } from 'nextjs/getServerSideProps';

@@ -14,9 +14,10 @@ import {
   Alert,
 } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import { route } from 'nextjs-routes';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
+
+import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import clockIcon from 'icons/clock.svg';

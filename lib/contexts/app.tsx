@@ -1,6 +1,6 @@
 import React, { createContext, useContext } from 'react';
 
-import type { Props as PageProps } from 'lib/next/getServerSideProps';
+import type { Props as PageProps } from 'nextjs/getServerSideProps';
 
 type Props = {
   children: React.ReactNode;

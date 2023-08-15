@@ -1,9 +1,10 @@
 import { Td, Tr, Flex, Skeleton } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { Block } from 'types/api/block';
+
+import { route } from 'nextjs-routes';
 
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';

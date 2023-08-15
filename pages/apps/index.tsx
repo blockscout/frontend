@@ -2,7 +2,8 @@ import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-import PageServer from 'lib/next/PageServer';
+import PageServer from 'nextjs/PageServer';
+
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 const Marketplace = dynamic(() => import('ui/pages/Marketplace'), { ssr: false });
@@ -20,4 +21,4 @@ const Page: NextPage = () => {
 
 export default Page;
 
-export { marketplace as getServerSideProps } from 'lib/next/getServerSideProps';
+export { marketplace as getServerSideProps } from 'nextjs/getServerSideProps';

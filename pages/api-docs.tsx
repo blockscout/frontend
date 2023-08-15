@@ -1,7 +1,8 @@
 import type { NextPage } from 'next';
 import React from 'react';
 
-import PageServer from 'lib/next/PageServer';
+import PageServer from 'nextjs/PageServer';
+
 import SwaggerUI from 'ui/apiDocs/SwaggerUI';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
@@ -16,4 +17,4 @@ const Page: NextPage = () => {
 
 export default Page;
 
-export { apiDocs as getServerSideProps } from 'lib/next/getServerSideProps';
+export { apiDocs as getServerSideProps } from 'nextjs/getServerSideProps';

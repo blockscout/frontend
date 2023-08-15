@@ -1,6 +1,7 @@
 import React from 'react';
 
-import PageServer from 'lib/next/PageServer';
+import PageServer from 'nextjs/PageServer';
+
 import type { NextPageWithLayout } from 'pages/_app';
 import AppError from 'ui/shared/AppError/AppError';
 import LayoutError from 'ui/shared/layout/LayoutError';

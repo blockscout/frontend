@@ -1,6 +1,6 @@
-import type { Route } from 'nextjs-routes';
-
 import type { ApiData, Metadata } from './types';
+
+import type { Route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import getNetworkTitle from 'lib/networks/getNetworkTitle';

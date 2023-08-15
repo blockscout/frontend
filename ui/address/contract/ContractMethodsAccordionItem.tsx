@@ -1,9 +1,10 @@
 import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Icon, Tooltip, useClipboard, useDisclosure } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 import { Element } from 'react-scroll';
 
 import type { SmartContractMethod } from 'types/api/contract';
+
+import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import iconLink from 'icons/link.svg';

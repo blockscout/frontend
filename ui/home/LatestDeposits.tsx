@@ -1,8 +1,9 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
+
+import { route } from 'nextjs-routes';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import useGradualIncrement from 'lib/hooks/useGradualIncrement';

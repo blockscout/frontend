@@ -4,10 +4,11 @@ import {
   Flex,
   Skeleton,
 } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
+
+import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import rightArrowIcon from 'icons/arrows/east.svg';

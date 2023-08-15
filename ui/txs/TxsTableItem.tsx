@@ -9,10 +9,11 @@ import {
   Box,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
+
+import { route } from 'nextjs-routes';
 
 import rightArrowIcon from 'icons/arrows/east.svg';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';

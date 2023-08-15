@@ -1,10 +1,11 @@
 import { Hide, HStack, Show } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import type { Query } from 'nextjs-routes';
 import React, { useCallback } from 'react';
 
 import type { TokenType } from 'types/api/token';
 import type { TokensSorting } from 'types/api/tokens';
+
+import type { Query } from 'nextjs-routes';
 
 import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
 import useDebounce from 'lib/hooks/useDebounce';

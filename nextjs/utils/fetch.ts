@@ -4,7 +4,8 @@ import type { NextApiRequestCookies } from 'next/dist/server/api-utils';
 import type { RequestInit, Response } from 'node-fetch';
 import nodeFetch from 'node-fetch';
 
-import { httpLogger } from 'lib/api/logger';
+import { httpLogger } from 'nextjs/utils/logger';
+
 import * as cookies from 'lib/cookies';
 
 export default function fetchFactory(

@@ -1,8 +1,9 @@
 import { Flex, Link, Text, Icon, Box } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
+
+import { route } from 'nextjs-routes';
 
 import nftIcon from 'icons/nft_shield.svg';
 import AddressLink from 'ui/shared/address/AddressLink';

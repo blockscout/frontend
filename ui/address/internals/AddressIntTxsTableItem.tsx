@@ -1,9 +1,10 @@
 import { Tr, Td, Box, Flex, Skeleton } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
+
+import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import rightArrowIcon from 'icons/arrows/east.svg';

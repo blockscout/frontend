@@ -1,5 +1,4 @@
 import { Button, chakra, useUpdateEffect } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -7,6 +6,8 @@ import { useForm, FormProvider } from 'react-hook-form';
 import type { FormFields } from './types';
 import type { SocketMessage } from 'lib/socket/types';
 import type { SmartContractVerificationMethod, SmartContractVerificationConfig } from 'types/api/contract';
+
+import { route } from 'nextjs-routes';
 
 import useApiFetch from 'lib/api/useApiFetch';
 import delay from 'lib/delay';

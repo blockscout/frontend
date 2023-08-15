@@ -1,6 +1,6 @@
-import type { Route } from 'nextjs-routes';
-
 import type { ApiData } from './types';
+
+import type { Route } from 'nextjs-routes';
 
 import generate from './generate';
 

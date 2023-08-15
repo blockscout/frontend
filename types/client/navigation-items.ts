@@ -1,5 +1,6 @@
-import type { Route } from 'nextjs-routes';
 import type React from 'react';
+
+import type { Route } from 'nextjs-routes';
 
 type NavIconOrComponent = {
   icon?: React.FunctionComponent<React.SVGAttributes<SVGElement>>;

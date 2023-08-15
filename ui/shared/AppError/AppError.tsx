@@ -1,6 +1,7 @@
 import { Box, Button, Text } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
+
+import { route } from 'nextjs-routes';
 
 import getErrorCauseStatusCode from 'lib/errors/getErrorCauseStatusCode';
 import getErrorObjStatusCode from 'lib/errors/getErrorObjStatusCode';

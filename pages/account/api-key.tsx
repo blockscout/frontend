@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-import PageServer from 'lib/next/PageServer';
+import PageServer from 'nextjs/PageServer';
 
 const ApiKeys = dynamic(() => import('ui/pages/ApiKeys'), { ssr: false });
 
@@ -16,4 +16,4 @@ const Page: NextPage = () => {
 
 export default Page;
 
-export { account as getServerSideProps } from 'lib/next/getServerSideProps';
+export { account as getServerSideProps } from 'nextjs/getServerSideProps';

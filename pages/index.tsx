@@ -1,6 +1,7 @@
 import React from 'react';
 
-import PageServer from 'lib/next/PageServer';
+import PageServer from 'nextjs/PageServer';
+
 import type { NextPageWithLayout } from 'pages/_app';
 import Home from 'ui/pages/Home';
 import LayoutHome from 'ui/shared/layout/LayoutHome';
@@ -23,4 +24,4 @@ Page.getLayout = function getLayout(page: React.ReactElement) {
 
 export default Page;
 
-export { base as getServerSideProps } from 'lib/next/getServerSideProps';
+export { base as getServerSideProps } from 'nextjs/getServerSideProps';

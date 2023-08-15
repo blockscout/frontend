@@ -1,8 +1,8 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
-import generateCspPolicy from 'lib/csp/generateCspPolicy';
-import * as middlewares from 'lib/next/middlewares/index';
+import generateCspPolicy from 'nextjs/csp/generateCspPolicy';
+import * as middlewares from 'nextjs/middlewares/index';
 
 const cspPolicy = generateCspPolicy();
 

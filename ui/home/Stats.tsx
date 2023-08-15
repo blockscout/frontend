@@ -1,6 +1,7 @@
 import { Grid } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
+
+import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import blockIcon from 'icons/block.svg';

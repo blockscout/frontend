@@ -1,7 +1,8 @@
 import type { NextPage } from 'next';
 import React from 'react';
 
-import PageServer from 'lib/next/PageServer';
+import PageServer from 'nextjs/PageServer';
+
 import Sol2Uml from 'ui/pages/Sol2Uml';
 
 const Page: NextPage = () => {
@@ -14,4 +15,4 @@ const Page: NextPage = () => {
 
 export default Page;
 
-export { base as getServerSideProps } from 'lib/next/getServerSideProps';
+export { base as getServerSideProps } from 'nextjs/getServerSideProps';

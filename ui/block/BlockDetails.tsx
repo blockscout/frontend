@@ -3,11 +3,12 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import capitalize from 'lodash/capitalize';
 import { useRouter } from 'next/router';
-import { route } from 'nextjs-routes';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
 import type { Block } from 'types/api/block';
+
+import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import clockIcon from 'icons/clock.svg';

@@ -1,10 +1,11 @@
 import { Flex, Skeleton, Text, Box, useColorModeValue } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import capitalize from 'lodash/capitalize';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { Block } from 'types/api/block';
+
+import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import flameIcon from 'icons/flame.svg';

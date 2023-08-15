@@ -4,10 +4,11 @@ import {
   Grid,
   Skeleton,
 } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { L2DepositsItem } from 'types/api/l2Deposits';
+
+import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import blockIcon from 'icons/block.svg';

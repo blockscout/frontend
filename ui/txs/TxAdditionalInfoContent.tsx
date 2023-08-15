@@ -1,9 +1,10 @@
 import { Box, Heading, Text, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
+
+import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import getValueWithUnit from 'lib/getValueWithUnit';

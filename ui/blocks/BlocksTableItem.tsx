@@ -1,10 +1,11 @@
 import { Tr, Td, Flex, Box, Tooltip, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import { motion } from 'framer-motion';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { Block } from 'types/api/block';
+
+import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import flameIcon from 'icons/flame.svg';

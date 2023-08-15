@@ -1,6 +1,7 @@
 import { Button } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
+
+import { route } from 'nextjs-routes';
 
 import AppErrorIcon from '../AppErrorIcon';
 import AppErrorTitle from '../AppErrorTitle';

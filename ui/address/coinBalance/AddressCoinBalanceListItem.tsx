@@ -1,9 +1,10 @@
 import { Text, Stat, StatHelpText, StatArrow, Flex, Skeleton } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { AddressCoinBalanceHistoryItem } from 'types/api/address';
+
+import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import { WEI, ZERO } from 'lib/consts';

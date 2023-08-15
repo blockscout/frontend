@@ -2,8 +2,9 @@ import _pick from 'lodash/pick';
 import _pickBy from 'lodash/pickBy';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
+import fetchFactory from 'nextjs/utils/fetch';
+
 import config from 'configs/app';
-import fetchFactory from 'lib/api/nodeFetch';
 
 const handler = async(nextReq: NextApiRequest, nextRes: NextApiResponse) => {
   if (!nextReq.url) {

@@ -1,8 +1,9 @@
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-import type { Props } from 'lib/next/getServerSideProps';
-import PageServer from 'lib/next/PageServer';
+import type { Props } from 'nextjs/getServerSideProps';
+import PageServer from 'nextjs/PageServer';
+
 import type { NextPageWithLayout } from 'pages/_app';
 import LayoutSearchResults from 'ui/shared/layout/LayoutSearchResults';
 
@@ -26,4 +27,4 @@ Page.getLayout = function getLayout(page: React.ReactElement) {
 
 export default Page;
 
-export { base as getServerSideProps } from 'lib/next/getServerSideProps';
+export { base as getServerSideProps } from 'nextjs/getServerSideProps';
