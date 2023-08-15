@@ -5,7 +5,6 @@ import React from 'react';
 import * as textAdMock from 'mocks/ad/textAd';
 import { apps as appsMock } from 'mocks/apps/apps';
 import * as searchMock from 'mocks/search/index';
-import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
 
@@ -285,15 +284,9 @@ test('recent keywords suggest +@mobile', async({ mount, page }) => {
 });
 
 test.describe('with apps', () => {
-  const MARKETPLACE_CONFIG_URL = 'https://marketplace-config.url';
-  const extendedTest = test.extend({
-    context: contextWithEnvs([
-      { name: 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', value: MARKETPLACE_CONFIG_URL },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ]) as any,
-  });
+  const MARKETPLACE_CONFIG_URL = 'https://localhost:3000/marketplace-config.json';
 
-  extendedTest('default view +@mobile', async({ mount, page }) => {
+  test('default view +@mobile', async({ mount, page }) => {
     const API_URL = buildApiUrl('search') + '?q=o';
     await page.route(API_URL, (route) => route.fulfill({
       status: 200,

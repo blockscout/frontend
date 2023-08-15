@@ -16,7 +16,6 @@ const MainColumn = ({ children, className }: Props) => {
       paddingX={{ base: 4, lg: 12 }}
       paddingTop={{ base: '138px', lg: 9 }}
       paddingBottom={ 10 }
-      as="main"
     >
       { children }
     </Flex>

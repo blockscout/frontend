@@ -49,7 +49,7 @@ test.describe('default view', () => {
   });
 
   test('-@default +@dark-mode', async({ page }) => {
-    await expect(component.locator('main')).toHaveScreenshot({
+    await expect(component).toHaveScreenshot({
       mask: [ page.locator(configs.adsBannerSelector) ],
       maskColor: configs.maskColor,
     });
@@ -59,7 +59,7 @@ test.describe('default view', () => {
     test.use({ viewport: configs.viewport.xl });
 
     test('', async({ page }) => {
-      await expect(component.locator('main')).toHaveScreenshot({
+      await expect(component).toHaveScreenshot({
         mask: [ page.locator(configs.adsBannerSelector) ],
         maskColor: configs.maskColor,
       });
@@ -134,7 +134,7 @@ test.describe('mobile', () => {
       </TestApp>,
     );
 
-    await expect(component.locator('main')).toHaveScreenshot({
+    await expect(component).toHaveScreenshot({
       mask: [ page.locator(configs.adsBannerSelector) ],
       maskColor: configs.maskColor,
     });

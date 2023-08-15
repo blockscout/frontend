@@ -1,11 +1,18 @@
-import { test, expect } from '@playwright/experimental-ct-react';
+import { test as base, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import { data as withdrawalsData } from 'mocks/l2withdrawals/withdrawals';
+import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
+import * as configs from 'playwright/utils/configs';
 
 import L2Withdrawals from './L2Withdrawals';
+
+const test = base.extend({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  context: contextWithEnvs(configs.featureEnvs.rollup) as any,
+});
 
 const WITHDRAWALS_API_URL = buildApiUrl('l2_withdrawals');
 const WITHDRAWALS_COUNT_API_URL = buildApiUrl('l2_withdrawals_count');

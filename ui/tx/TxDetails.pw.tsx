@@ -154,10 +154,8 @@ test('with actions uniswap +@mobile +@dark-mode', async({ mount, page }) => {
 });
 
 const l2Test = test.extend({
-  context: contextWithEnvs([
-    { name: 'NEXT_PUBLIC_IS_L2_NETWORK', value: 'true' },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ]) as any,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  context: contextWithEnvs(configs.featureEnvs.rollup) as any,
 });
 
 l2Test('l2', async({ mount, page }) => {
