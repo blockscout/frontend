@@ -11,16 +11,18 @@ import * as Layout from './components';
 const LayoutDefault = ({ children }: Props) => {
   return (
     <Layout.Container>
-      <Layout.Content>
+      <Layout.MainArea>
         <Layout.SideBar/>
         <Layout.MainColumn>
           <IndexingAlertBlocks/>
           <Header/>
           <AppErrorBoundary>
-            { children }
+            <Layout.Content>
+              { children }
+            </Layout.Content>
           </AppErrorBoundary>
         </Layout.MainColumn>
-      </Layout.Content>
+      </Layout.MainArea>
       <Layout.Footer/>
     </Layout.Container>
   );

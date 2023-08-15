@@ -8,12 +8,12 @@ const LayoutSearchResults = ({ children }: Props) => {
 
   return (
     <Layout.Container>
-      <Layout.Content>
+      <Layout.MainArea>
         <Layout.SideBar/>
         <Layout.MainColumn>
           { children }
         </Layout.MainColumn>
-      </Layout.Content>
+      </Layout.MainArea>
       <Layout.Footer/>
     </Layout.Container>
   );

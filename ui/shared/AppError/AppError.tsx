@@ -92,7 +92,7 @@ const AppError = ({ error, className }: Props) => {
   })();
 
   return (
-    <Box className={ className } mt="50px" maxW="800px">
+    <Box className={ className } mt={{ base: '52px', lg: '104px' }} maxW="800px">
       { content }
     </Box>
   );

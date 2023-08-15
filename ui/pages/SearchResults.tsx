@@ -12,6 +12,7 @@ import ActionBar from 'ui/shared/ActionBar';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
+import * as Layout from 'ui/shared/layout/components';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import Thead from 'ui/shared/TheadSticky';
@@ -183,7 +184,9 @@ const SearchResultsPageContent = () => {
       <IndexingAlertBlocks/>
       <Header renderSearchBar={ renderSearchBar }/>
       <AppErrorBoundary>
-        { pageContent }
+        <Layout.Content>
+          { pageContent }
+        </Layout.Content>
       </AppErrorBoundary>
     </>
   );

@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 interface Props {
@@ -7,9 +7,9 @@ interface Props {
 
 const Content = ({ children }: Props) => {
   return (
-    <Flex w="100%" minH="100vh" alignItems="stretch">
+    <Box pt={{ base: 0, lg: '52px' }}>
       { children }
-    </Flex>
+    </Box>
   );
 };
 

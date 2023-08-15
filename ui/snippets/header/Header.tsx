@@ -54,7 +54,6 @@ const Header = ({ isHomePage, renderSearchBar }: Props) => {
             alignItems="center"
             justifyContent="center"
             gap={ 12 }
-            paddingBottom="52px"
           >
             <Box width="100%">
               { searchBar }
