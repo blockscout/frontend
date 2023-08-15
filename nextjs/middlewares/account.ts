@@ -2,7 +2,6 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
 import { route } from 'nextjs-routes';
-import { httpLogger } from 'nextjs/utils/logger';
 
 import config from 'configs/app';
 import { DAY } from 'lib/consts';
