@@ -1,17 +1,17 @@
 import type { NextPage } from 'next';
 import React from 'react';
 
-import PageServer from 'nextjs/PageServer';
+import PageNextJs from 'nextjs/PageNextJs';
 
 import SwaggerUI from 'ui/apiDocs/SwaggerUI';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 const Page: NextPage = () => {
   return (
-    <PageServer pathname="/api-docs">
+    <PageNextJs pathname="/api-docs">
       <PageTitle title="API Documentation"/>
       <SwaggerUI/>
-    </PageServer>
+    </PageNextJs>
   );
 };
 

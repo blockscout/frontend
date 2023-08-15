@@ -1,15 +1,15 @@
 import type { NextPage } from 'next';
 import React from 'react';
 
-import PageServer from 'nextjs/PageServer';
+import PageNextJs from 'nextjs/PageNextJs';
 
 import UnverifiedEmail from 'ui/pages/UnverifiedEmail';
 
 const Page: NextPage = () => {
   return (
-    <PageServer pathname="/auth/unverified-email">
+    <PageNextJs pathname="/auth/unverified-email">
       <UnverifiedEmail/>
-    </PageServer>
+    </PageNextJs>
   );
 };
 

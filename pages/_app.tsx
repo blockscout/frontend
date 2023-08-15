@@ -2,9 +2,10 @@ import type { ChakraProps } from '@chakra-ui/react';
 import * as Sentry from '@sentry/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import React from 'react';
+
+import type { NextPageWithLayout } from 'nextjs/types';
 
 import config from 'configs/app';
 import { AppContextProvider } from 'lib/contexts/app';
@@ -20,11 +21,6 @@ import GoogleAnalytics from 'ui/shared/GoogleAnalytics';
 import Layout from 'ui/shared/layout/Layout';
 
 import 'lib/setLocale';
-
-// eslint-disable-next-line @typescript-eslint/ban-types
-export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
-  getLayout?: (page: React.ReactElement) => React.ReactNode;
-}
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
@@ -44,8 +40,10 @@ const ERROR_SCREEN_STYLES: ChakraProps = {
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
+  // TODO @tom2drum move this to PageNextJs
   useConfigSentry();
 
+  // TODO @tom2drum move this to a separate file
   const [ queryClient ] = React.useState(() => new QueryClient({
     defaultOptions: {
       queries: {

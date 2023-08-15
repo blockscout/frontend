@@ -1,15 +1,15 @@
 import type { NextPage } from 'next';
 import React from 'react';
 
-import PageServer from 'nextjs/PageServer';
+import PageNextJs from 'nextjs/PageNextJs';
 
 import Sol2Uml from 'ui/pages/Sol2Uml';
 
 const Page: NextPage = () => {
   return (
-    <PageServer pathname="/visualize/sol2uml">
+    <PageNextJs pathname="/visualize/sol2uml">
       <Sol2Uml/>
-    </PageServer>
+    </PageNextJs>
   );
 };
 

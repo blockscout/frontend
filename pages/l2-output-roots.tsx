@@ -2,15 +2,15 @@ import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-import PageServer from 'nextjs/PageServer';
+import PageNextJs from 'nextjs/PageNextJs';
 
 const L2OutputRoots = dynamic(() => import('ui/pages/L2OutputRoots'), { ssr: false });
 
 const Page: NextPage = () => {
   return (
-    <PageServer pathname="/l2-output-roots">
+    <PageNextJs pathname="/l2-output-roots">
       <L2OutputRoots/>
-    </PageServer>
+    </PageNextJs>
   );
 };
 

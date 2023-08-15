@@ -3,15 +3,15 @@ import dynamic from 'next/dynamic';
 import React from 'react';
 
 import type { Props } from 'nextjs/getServerSideProps';
-import PageServer from 'nextjs/PageServer';
+import PageNextJs from 'nextjs/PageNextJs';
 
 const Token = dynamic(() => import('ui/pages/Token'), { ssr: false });
 
 const Page: NextPage<Props> = (props: Props) => {
   return (
-    <PageServer pathname="/token/[hash]" query={ props }>
+    <PageNextJs pathname="/token/[hash]" query={ props }>
       <Token/>
-    </PageServer>
+    </PageNextJs>
   );
 };
 

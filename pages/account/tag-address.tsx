@@ -2,15 +2,15 @@ import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-import PageServer from 'nextjs/PageServer';
+import PageNextJs from 'nextjs/PageNextJs';
 
 const PrivateTags = dynamic(() => import('ui/pages/PrivateTags'), { ssr: false });
 
 const Page: NextPage = () => {
   return (
-    <PageServer pathname="/account/tag-address">
+    <PageNextJs pathname="/account/tag-address">
       <PrivateTags/>
-    </PageServer>
+    </PageNextJs>
   );
 };
 

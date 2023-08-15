@@ -3,15 +3,23 @@ import React from 'react';
 
 import type { Route } from 'nextjs-routes';
 
+import useAdblockDetect from 'lib/hooks/useAdblockDetect';
+import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';
 import * as metadata from 'lib/metadata';
-import Page from 'ui/shared/Page/Page';
+import * as mixpanel from 'lib/mixpanel';
 
 type Props = Route & {
   children: React.ReactNode;
 }
 
-const PageServer = (props: Props) => {
+const PageNextJs = (props: Props) => {
   const { title, description } = metadata.generate(props);
+
+  useGetCsrfToken();
+  useAdblockDetect();
+
+  const isMixpanelInited = mixpanel.useInit();
+  mixpanel.useLogPageView(isMixpanelInited);
 
   return (
     <>
@@ -19,11 +27,9 @@ const PageServer = (props: Props) => {
         <title>{ title }</title>
         <meta name="description" content={ description }/>
       </Head>
-      <Page>
-        { props.children }
-      </Page>
+      { props.children }
     </>
   );
 };
 
-export default React.memo(PageServer);
+export default React.memo(PageNextJs);

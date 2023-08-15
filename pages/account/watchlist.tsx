@@ -2,15 +2,15 @@ import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-import PageServer from 'nextjs/PageServer';
+import PageNextJs from 'nextjs/PageNextJs';
 
 const WatchList = dynamic(() => import('ui/pages/Watchlist'), { ssr: false });
 
 const Page: NextPage = () => {
   return (
-    <PageServer pathname="/account/watchlist">
+    <PageNextJs pathname="/account/watchlist">
       <WatchList/>
-    </PageServer>
+    </PageNextJs>
   );
 };
 

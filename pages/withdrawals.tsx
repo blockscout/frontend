@@ -2,15 +2,15 @@ import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-import PageServer from 'nextjs/PageServer';
+import PageNextJs from 'nextjs/PageNextJs';
 
 const Withdrawals = dynamic(() => import('ui/pages/Withdrawals'), { ssr: false });
 
 const Page: NextPage = () => {
   return (
-    <PageServer pathname="/withdrawals">
+    <PageNextJs pathname="/withdrawals">
       <Withdrawals/>
-    </PageServer>
+    </PageNextJs>
   );
 };
 

@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-import PageServer from 'nextjs/PageServer';
+import PageNextJs from 'nextjs/PageNextJs';
 
 import ContentLoader from 'ui/shared/ContentLoader';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -15,10 +15,10 @@ const GraphQL = dynamic(() => import('ui/graphQL/GraphQL'), {
 const Page: NextPage = () => {
 
   return (
-    <PageServer pathname="/graphiql">
+    <PageNextJs pathname="/graphiql">
       <PageTitle title="GraphQL playground"/>
       <GraphQL/>
-    </PageServer>
+    </PageNextJs>
   );
 };
 

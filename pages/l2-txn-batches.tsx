@@ -2,15 +2,15 @@ import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-import PageServer from 'nextjs/PageServer';
+import PageNextJs from 'nextjs/PageNextJs';
 
 const L2TxnBatches = dynamic(() => import('ui/pages/L2TxnBatches'), { ssr: false });
 
 const Page: NextPage = () => {
   return (
-    <PageServer pathname="/l2-txn-batches">
+    <PageNextJs pathname="/l2-txn-batches">
       <L2TxnBatches/>
-    </PageServer>
+    </PageNextJs>
   );
 };
 

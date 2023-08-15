@@ -1,15 +1,15 @@
 import type { NextPage } from 'next';
 import React from 'react';
 
-import PageServer from 'nextjs/PageServer';
+import PageNextJs from 'nextjs/PageNextJs';
 
 import CsvExport from 'ui/pages/CsvExport';
 
 const Page: NextPage = () => {
   return (
-    <PageServer pathname="/csv-export">
+    <PageNextJs pathname="/csv-export">
       <CsvExport/>
-    </PageServer>
+    </PageNextJs>
   );
 };
 

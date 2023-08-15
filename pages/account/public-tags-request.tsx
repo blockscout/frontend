@@ -2,15 +2,15 @@ import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-import PageServer from 'nextjs/PageServer';
+import PageNextJs from 'nextjs/PageNextJs';
 
 const PublicTags = dynamic(() => import('ui/pages/PublicTags'), { ssr: false });
 
 const Page: NextPage = () => {
   return (
-    <PageServer pathname="/account/public-tags-request">
+    <PageNextJs pathname="/account/public-tags-request">
       <PublicTags/>
-    </PageServer>
+    </PageNextJs>
   );
 };
 

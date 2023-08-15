@@ -2,15 +2,15 @@ import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-import PageServer from 'nextjs/PageServer';
+import PageNextJs from 'nextjs/PageNextJs';
 
 const CustomAbi = dynamic(() => import('ui/pages/CustomAbi'), { ssr: false });
 
 const Page: NextPage = () => {
   return (
-    <PageServer pathname="/account/custom-abi">
+    <PageNextJs pathname="/account/custom-abi">
       <CustomAbi/>
-    </PageServer>
+    </PageNextJs>
   );
 };
 

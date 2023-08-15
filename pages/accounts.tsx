@@ -2,15 +2,15 @@ import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-import PageServer from 'nextjs/PageServer';
+import PageNextJs from 'nextjs/PageNextJs';
 
 const Accounts = dynamic(() => import('ui/pages/Accounts'), { ssr: false });
 
 const Page: NextPage = () => {
   return (
-    <PageServer pathname="/accounts">
+    <PageNextJs pathname="/accounts">
       <Accounts/>
-    </PageServer>
+    </PageNextJs>
   );
 };
 

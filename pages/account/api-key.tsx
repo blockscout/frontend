@@ -2,15 +2,15 @@ import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-import PageServer from 'nextjs/PageServer';
+import PageNextJs from 'nextjs/PageNextJs';
 
 const ApiKeys = dynamic(() => import('ui/pages/ApiKeys'), { ssr: false });
 
 const Page: NextPage = () => {
   return (
-    <PageServer pathname="/account/api-key">
+    <PageNextJs pathname="/account/api-key">
       <ApiKeys/>
-    </PageServer>
+    </PageNextJs>
   );
 };
 

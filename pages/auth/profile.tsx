@@ -1,15 +1,15 @@
 import type { NextPage } from 'next';
 import React from 'react';
 
-import PageServer from 'nextjs/PageServer';
+import PageNextJs from 'nextjs/PageNextJs';
 
 import MyProfile from 'ui/pages/MyProfile';
 
 const Page: NextPage = () => {
   return (
-    <PageServer pathname="/auth/profile">
+    <PageNextJs pathname="/auth/profile">
       <MyProfile/>
-    </PageServer>
+    </PageNextJs>
   );
 };
 

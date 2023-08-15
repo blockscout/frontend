@@ -1,16 +1,17 @@
 import React from 'react';
 
-import PageServer from 'nextjs/PageServer';
+import type { NextPageWithLayout } from 'nextjs/types';
 
-import type { NextPageWithLayout } from 'pages/_app';
+import PageNextJs from 'nextjs/PageNextJs';
+
 import Home from 'ui/pages/Home';
 import LayoutHome from 'ui/shared/layout/LayoutHome';
 
 const Page: NextPageWithLayout = () => {
   return (
-    <PageServer pathname="/">
+    <PageNextJs pathname="/">
       <Home/>
-    </PageServer>
+    </PageNextJs>
   );
 };
 

@@ -2,15 +2,15 @@ import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-import PageServer from 'nextjs/PageServer';
+import PageNextJs from 'nextjs/PageNextJs';
 
 const VerifiedContracts = dynamic(() => import('ui/pages/VerifiedContracts'), { ssr: false });
 
 const Page: NextPage = () => {
   return (
-    <PageServer pathname="/verified-contracts">
+    <PageNextJs pathname="/verified-contracts">
       <VerifiedContracts/>
-    </PageServer>
+    </PageNextJs>
   );
 };
 
