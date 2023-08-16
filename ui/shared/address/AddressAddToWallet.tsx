@@ -5,6 +5,7 @@ import type { TokenInfo } from 'types/api/token';
 
 import config from 'configs/app';
 import useToast from 'lib/hooks/useToast';
+import * as mixpanel from 'lib/mixpanel/index';
 import useProvider from 'lib/web3/useProvider';
 import { WALLETS_INFO } from 'lib/web3/wallets';
 
@@ -18,9 +19,13 @@ interface Props {
 
 const AddressAddToWallet = ({ className, token, isLoading }: Props) => {
   const toast = useToast();
-  const provider = useProvider();
+  const { provider, wallet } = useProvider();
 
   const handleClick = React.useCallback(async() => {
+    if (!wallet) {
+      return;
+    }
+
     try {
       const wasAdded = await provider?.request?.({
         method: 'wallet_watchAsset',
@@ -30,8 +35,7 @@ const AddressAddToWallet = ({ className, token, isLoading }: Props) => {
             address: token.address,
             symbol: token.symbol || '',
             decimals: Number(token.decimals) || 18,
-            // TODO: add token image when we have it in API
-            // image: ''
+            image: token.icon_url || '',
           },
         },
       });
@@ -45,6 +49,11 @@ const AddressAddToWallet = ({ className, token, isLoading }: Props) => {
           variant: 'subtle',
           isClosable: true,
         });
+        mixpanel.logEvent(mixpanel.EventTypes.ADD_TO_WALLET, {
+          Target: 'token',
+          Wallet: wallet,
+          Token: token.symbol || '',
+        });
       }
     } catch (error) {
       toast({
@@ -56,9 +65,9 @@ const AddressAddToWallet = ({ className, token, isLoading }: Props) => {
         isClosable: true,
       });
     }
-  }, [ toast, token, provider ]);
+  }, [ toast, token, provider, wallet ]);
 
-  if (!provider) {
+  if (!provider || !wallet) {
     return null;
   }
 
@@ -71,9 +80,9 @@ const AddressAddToWallet = ({ className, token, isLoading }: Props) => {
   }
 
   return (
-    <Tooltip label={ `Add token to ${ WALLETS_INFO[feature.defaultWallet].name }` }>
+    <Tooltip label={ `Add token to ${ WALLETS_INFO[wallet].name }` }>
       <Box className={ className } display="inline-flex" cursor="pointer" onClick={ handleClick }>
-        <Icon as={ WALLETS_INFO[feature.defaultWallet].icon } boxSize={ 6 }/>
+        <Icon as={ WALLETS_INFO[wallet].icon } boxSize={ 6 }/>
       </Box>
     </Tooltip>
   );
