@@ -22,7 +22,7 @@ interface Props {
 
 const NftMedia = ({ url, className, isLoading }: Props) => {
   const [ type, setType ] = React.useState<MediaType | undefined>();
-  const [ isMediaLoading, setIsMediaLoading ] = React.useState(true);
+  const [ isMediaLoading, setIsMediaLoading ] = React.useState(Boolean(url));
   const [ isLoadingError, setIsLoadingError ] = React.useState(false);
 
   const bgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
