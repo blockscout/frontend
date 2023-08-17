@@ -13,7 +13,7 @@ test('base view +@mobile +@dark-mode', async({ mount, page }) => {
   await page.route(mocks.TOKEN_INFO_APPLICATION_BASE.iconUrl, (route) => {
     return route.fulfill({
       status: 200,
-      path: './playwright/image_md.jpg',
+      path: './playwright/mocks/image_md.jpg',
     });
   });
 
@@ -41,7 +41,7 @@ test('status IN_PROCESS', async({ mount, page }) => {
   await page.route(mocks.TOKEN_INFO_APPLICATION_BASE.iconUrl, (route) => {
     return route.fulfill({
       status: 200,
-      path: './playwright/image_md.jpg',
+      path: './playwright/mocks/image_md.jpg',
     });
   });
 

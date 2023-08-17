@@ -71,7 +71,7 @@ test('with logo and long symbol', async({ mount, page }) => {
   await page.route(API_URL, (route) => {
     return route.fulfill({
       status: 200,
-      path: './playwright/image_s.jpg',
+      path: './playwright/mocks/image_s.jpg',
     });
   });
 

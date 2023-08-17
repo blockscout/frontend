@@ -29,7 +29,7 @@ const test = base.extend({
     await page.route(ASSET_URL, (route) => {
       return route.fulfill({
         status: 200,
-        path: './playwright/image_s.jpg',
+        path: './playwright/mocks/image_s.jpg',
       });
     });
     await page.route(ADDRESS_API_URL, (route) => route.fulfill({
@@ -141,7 +141,7 @@ base('long values', async({ mount, page }) => {
   await page.route(ASSET_URL, (route) => {
     return route.fulfill({
       status: 200,
-      path: './playwright/image_s.jpg',
+      path: './playwright/mocks/image_s.jpg',
     });
   });
   await page.route(ADDRESS_API_URL, (route) => route.fulfill({

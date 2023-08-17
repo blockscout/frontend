@@ -37,7 +37,7 @@ test('base view', async({ mount, page }) => {
   await page.route(LOGO_URL, (route) => {
     return route.fulfill({
       status: 200,
-      path: './playwright/image_s.jpg',
+      path: './playwright/mocks/image_s.jpg',
     });
   });
 
@@ -67,7 +67,7 @@ test.describe('dark mode', () => {
     await page.route(LOGO_URL, (route) => {
       return route.fulfill({
         status: 200,
-        path: './playwright/image_s.jpg',
+        path: './playwright/mocks/image_s.jpg',
       });
     });
 

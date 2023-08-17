@@ -31,7 +31,7 @@ test('search by name +@mobile +@dark-mode', async({ mount, page }) => {
   await page.route(searchMock.token1.icon_url as string, (route) => {
     return route.fulfill({
       status: 200,
-      path: './playwright/image_s.jpg',
+      path: './playwright/mocks/image_s.jpg',
     });
   });
 
@@ -204,13 +204,13 @@ test.describe('with apps', () => {
     await page.route(appsMock[0].logo, (route) => {
       return route.fulfill({
         status: 200,
-        path: './playwright/image_s.jpg',
+        path: './playwright/mocks/image_s.jpg',
       });
     });
     await page.route(appsMock[1].logo as string, (route) => {
       return route.fulfill({
         status: 200,
-        path: './playwright/image_s.jpg',
+        path: './playwright/mocks/image_s.jpg',
       });
     });
 
