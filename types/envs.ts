@@ -22,9 +22,7 @@ export type NextPublicEnvs = {
   NEXT_PUBLIC_FOOTER_LINKS?: string;
   NEXT_PUBLIC_API_SPEC_URL?: string;
   NEXT_PUBLIC_GRAPHIQL_TRANSACTION?: string;
-  // FIXME as of now this file cannot use any import or external types (in this case WalletType)
-  // due to envs-validator script build process restrictions
-  NEXT_PUBLIC_WEB3_WALLETS?: Array<'metamask' | 'coinbase' | 'token_pocket'> | 'none';
+  NEXT_PUBLIC_WEB3_WALLETS?: string;
   NEXT_PUBLIC_WEB3_DISABLE_ADD_TOKEN_TO_WALLET?: 'true' | 'false';
   NEXT_PUBLIC_HIDE_INDEXING_ALERT?: 'true' | 'false';
 
