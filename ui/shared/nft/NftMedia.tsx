@@ -95,6 +95,11 @@ const NftMedia = ({ url, className, isLoading }: Props) => {
       overflow="hidden"
       borderRadius="md"
       objectFit="contain"
+      sx={{
+        '&>img, &>video': {
+          objectFit: 'contain',
+        },
+      }}
     >
       <>
         { content }
