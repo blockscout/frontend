@@ -7,6 +7,7 @@ import type { CustomLinksGroup } from 'types/footerLinks';
 import config from 'configs/app';
 import discussionsIcon from 'icons/discussions.svg';
 import editIcon from 'icons/edit.svg';
+import cannyIcon from 'icons/social/canny.svg';
 import discordIcon from 'icons/social/discord.svg';
 import gitIcon from 'icons/social/git.svg';
 import twitterIcon from 'icons/social/tweet.svg';
@@ -40,6 +41,12 @@ const Footer = () => {
       iconSize: '16px',
       text: 'Submit an issue',
       url: issueUrl,
+    },
+    {
+      icon: cannyIcon,
+      iconSize: '20px',
+      text: 'Feature request',
+      url: 'https://blockscout.canny.io/feature-requests',
     },
     {
       icon: gitIcon,
