@@ -1,5 +1,6 @@
 import { AspectRatio, chakra, Skeleton } from '@chakra-ui/react';
 import React from 'react';
+import { useInView } from 'react-intersection-observer';
 
 import type { StaticRoute } from 'nextjs-routes';
 import { route } from 'nextjs-routes';
@@ -20,10 +21,12 @@ interface Props {
 
 const NftMedia = ({ url, className, isLoading }: Props) => {
   const [ type, setType ] = React.useState<MediaType | undefined>();
+
   const fetch = useFetch();
+  const { ref, inView } = useInView({ triggerOnce: true });
 
   React.useEffect(() => {
-    if (!url || isLoading) {
+    if (!url || isLoading || !inView) {
       return;
     }
 
@@ -50,11 +53,16 @@ const NftMedia = ({ url, className, isLoading }: Props) => {
         setType('image');
       });
 
-  }, [ url, isLoading, fetch ]);
+  }, [ url, isLoading, fetch, inView ]);
 
-  if (!type || isLoading) {
+  if (!url) {
+    return <NftFallback className={ className }/>;
+  }
+
+  if (!type || isLoading || !inView) {
     return (
       <AspectRatio
+        ref={ ref }
         className={ className }
         ratio={ 1 / 1 }
         overflow="hidden"
@@ -63,10 +71,6 @@ const NftMedia = ({ url, className, isLoading }: Props) => {
         <Skeleton/>
       </AspectRatio>
     );
-  }
-
-  if (!url) {
-    return <NftFallback className={ className }/>;
   }
 
   if (type === 'video') {
