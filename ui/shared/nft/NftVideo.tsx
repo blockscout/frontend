@@ -1,39 +1,25 @@
-import { AspectRatio, Skeleton, chakra } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 interface Props {
-  className?: string;
   src: string;
+  onLoad: () => void;
+  onError: () => void;
 }
 
-const NftVideo = ({ className, src }: Props) => {
-  const [ isLoading, setIsLoading ] = React.useState(true);
-
-  const handleCanPlay = React.useCallback(() => {
-    setIsLoading(false);
-  }, []);
-
+const NftVideo = ({ src, onLoad, onError }: Props) => {
   return (
-    <AspectRatio
-      className={ className }
-      ratio={ 1 / 1 }
-      overflow="hidden"
+    <chakra.video
+      src={ src }
+      autoPlay
+      disablePictureInPicture
+      loop
+      muted
+      playsInline
+      onCanPlayThrough={ onLoad }
+      onError={ onError }
       borderRadius="md"
-    >
-      <>
-        <chakra.video
-          src={ src }
-          autoPlay
-          disablePictureInPicture
-          loop
-          muted
-          playsInline
-          onCanPlayThrough={ handleCanPlay }
-          borderRadius="md"
-        />
-        { isLoading && <Skeleton position="absolute" w="100%" h="100%" left={ 0 } top={ 0 }/> }
-      </>
-    </AspectRatio>
+    />
   );
 };
 

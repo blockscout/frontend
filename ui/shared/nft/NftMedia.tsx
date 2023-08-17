@@ -1,4 +1,4 @@
-import { AspectRatio, chakra, Skeleton } from '@chakra-ui/react';
+import { AspectRatio, chakra, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
 
@@ -21,6 +21,10 @@ interface Props {
 
 const NftMedia = ({ url, className, isLoading }: Props) => {
   const [ type, setType ] = React.useState<MediaType | undefined>();
+  const [ isMediaLoading, setIsMediaLoading ] = React.useState(true);
+  const [ isLoadingError, setIsLoadingError ] = React.useState(false);
+
+  const bgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
 
   const fetch = useFetch();
   const { ref, inView } = useInView({ triggerOnce: true });
@@ -55,29 +59,46 @@ const NftMedia = ({ url, className, isLoading }: Props) => {
 
   }, [ url, isLoading, fetch, inView ]);
 
-  if (!url) {
-    return <NftFallback className={ className }/>;
-  }
+  const handleMediaLoaded = React.useCallback(() => {
+    setIsMediaLoading(false);
+  }, []);
 
-  if (!type || isLoading || !inView) {
-    return (
-      <AspectRatio
-        ref={ ref }
-        className={ className }
-        ratio={ 1 / 1 }
-        overflow="hidden"
-        borderRadius="md"
-      >
-        <Skeleton/>
-      </AspectRatio>
-    );
-  }
+  const handleMediaLoadError = React.useCallback(() => {
+    setIsMediaLoading(false);
+    setIsLoadingError(true);
+  }, []);
 
-  if (type === 'video') {
-    return <NftVideo className={ className } src={ url }/>;
-  }
+  const content = (() => {
+    if (!url || isLoadingError) {
+      return <NftFallback/>;
+    }
 
-  return <NftImage className={ className } url={ url }/>;
+    switch (type) {
+      case 'video':
+        return <NftVideo src={ url } onLoad={ handleMediaLoaded } onError={ handleMediaLoadError }/>;
+      case 'image':
+        return <NftImage url={ url } onLoad={ handleMediaLoaded } onError={ handleMediaLoadError }/>;
+      default:
+        return null;
+    }
+  })();
+
+  return (
+    <AspectRatio
+      ref={ ref }
+      className={ className }
+      bgColor={ isLoading || isMediaLoading ? 'transparent' : bgColor }
+      ratio={ 1 / 1 }
+      overflow="hidden"
+      borderRadius="md"
+      objectFit="contain"
+    >
+      <>
+        { content }
+        { isMediaLoading && <Skeleton position="absolute" left={ 0 } top={ 0 } w="100%" h="100%" zIndex="1"/> }
+      </>
+    </AspectRatio>
+  );
 };
 
 export default chakra(NftMedia);

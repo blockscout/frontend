@@ -1,85 +1,23 @@
-import type { ResponsiveValue } from '@chakra-ui/react';
-import { Box, AspectRatio, chakra, Image, shouldForwardProp, Skeleton, useColorModeValue } from '@chakra-ui/react';
-import type { Property } from 'csstype';
+import { Image } from '@chakra-ui/react';
 import React from 'react';
-
-import NftFallback from './NftFallback';
 
 interface Props {
   url: string;
-  className?: string;
-  objectFit: ResponsiveValue<Property.ObjectFit>;
+  onLoad: () => void;
+  onError: () => void;
 }
 
-const NftImage = ({ url, className, objectFit }: Props) => {
-  const [ isLoading, setIsLoading ] = React.useState(true);
-  const [ isError, setIsError ] = React.useState(false);
-
-  const handleLoad = React.useCallback(() => {
-    setIsLoading(false);
-  }, []);
-
-  const handleLoadError = React.useCallback(() => {
-    setIsLoading(false);
-    setIsError(true);
-  }, []);
-
-  const _objectFit = objectFit || 'contain';
-
-  const content = (() => {
-    // as of ChakraUI v2.5.3
-    // fallback prop of Image component doesn't work well with loading prop lazy strategy
-    // so we have to render fallback and loader manually
-    if (isError) {
-      return <NftFallback className={ className }/>;
-    }
-
-    return (
-      <Box>
-        { isLoading && <Skeleton position="absolute" left={ 0 } top={ 0 } w="100%" h="100%" zIndex="1"/> }
-        <Image
-          w="100%"
-          h="100%"
-          objectFit={ _objectFit }
-          src={ url }
-          opacity={ isLoading ? 0 : 1 }
-          alt="Token instance image"
-          onError={ handleLoadError }
-          onLoad={ handleLoad }
-          loading={ url ? 'lazy' : undefined }
-        />
-      </Box>
-    );
-  })();
-
+const NftImage = ({ url, onLoad, onError }: Props) => {
   return (
-    <AspectRatio
-      className={ className }
-      ratio={ 1 / 1 }
-      bgColor={ useColorModeValue('blackAlpha.50', 'whiteAlpha.50') }
-      overflow="hidden"
-      borderRadius="md"
-      sx={{
-        '&>img': {
-          objectFit: _objectFit,
-        },
-      }}
-    >
-      { content }
-    </AspectRatio>
+    <Image
+      w="100%"
+      h="100%"
+      src={ url }
+      alt="Token instance image"
+      onError={ onError }
+      onLoad={ onLoad }
+    />
   );
 };
 
-const NftImageChakra = chakra(NftImage, {
-  shouldForwardProp: (prop) => {
-    const isChakraProp = !shouldForwardProp(prop);
-
-    if (isChakraProp && prop !== 'objectFit') {
-      return false;
-    }
-
-    return true;
-  },
-});
-
-export default NftImageChakra;
+export default NftImage;
