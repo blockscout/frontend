@@ -18,8 +18,7 @@ const NFTItem = ({ item, isLoading }: Props) => {
   const mediaElement = (
     <NftMedia
       mb="18px"
-      imageUrl={ item.image_url }
-      animationUrl={ item.animation_url }
+      url={ item.animation_url || item.image_url }
       isLoading={ isLoading }
     />
   );

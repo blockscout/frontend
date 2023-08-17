@@ -30,8 +30,7 @@ const NFTItem = ({ token, token_id: tokenId, token_instance: tokenInstance, isLo
       <LinkOverlay href={ isLoading ? undefined : tokenLink }>
         <NftMedia
           mb="18px"
-          imageUrl={ tokenInstance?.image_url || null }
-          animationUrl={ tokenInstance?.animation_url || null }
+          url={ tokenInstance?.animation_url || tokenInstance?.image_url || null }
           isLoading={ isLoading }
         />
       </LinkOverlay>

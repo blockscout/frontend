@@ -1,34 +1,17 @@
 import type { ResponsiveValue } from '@chakra-ui/react';
-import { Box, AspectRatio, chakra, Icon, Image, shouldForwardProp, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { Box, AspectRatio, chakra, Image, shouldForwardProp, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import type { Property } from 'csstype';
 import React from 'react';
 
-import nftIcon from 'icons/nft_shield.svg';
+import NftFallback from './NftFallback';
 
 interface Props {
-  url: string | null;
+  url: string;
   className?: string;
-  fallbackPadding?: string;
   objectFit: ResponsiveValue<Property.ObjectFit>;
 }
 
-interface FallbackProps {
-  className?: string;
-  padding?: string;
-}
-
-const Fallback = ({ className, padding }: FallbackProps) => {
-  return (
-    <Icon
-      className={ className }
-      as={ nftIcon }
-      p={ padding ?? '50px' }
-      color={ useColorModeValue('blackAlpha.500', 'whiteAlpha.500') }
-    />
-  );
-};
-
-const NftImage = ({ url, className, fallbackPadding, objectFit }: Props) => {
+const NftImage = ({ url, className, objectFit }: Props) => {
   const [ isLoading, setIsLoading ] = React.useState(true);
   const [ isError, setIsError ] = React.useState(false);
 
@@ -47,8 +30,8 @@ const NftImage = ({ url, className, fallbackPadding, objectFit }: Props) => {
     // as of ChakraUI v2.5.3
     // fallback prop of Image component doesn't work well with loading prop lazy strategy
     // so we have to render fallback and loader manually
-    if (isError || !url) {
-      return <Fallback className={ className } padding={ fallbackPadding }/>;
+    if (isError) {
+      return <NftFallback className={ className }/>;
     }
 
     return (
