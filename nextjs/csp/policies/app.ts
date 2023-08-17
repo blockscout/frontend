@@ -105,7 +105,7 @@ export function app(): CspDev.DirectiveDescriptor {
     ],
 
     'frame-src': [
-      // improve: allow only frames from marketplace config
+      // could be a marketplace app or NFT media (html-page)
       '*',
     ],
 

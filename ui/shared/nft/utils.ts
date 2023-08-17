@@ -1,4 +1,4 @@
-export type MediaType = 'image' | 'video';
+export type MediaType = 'image' | 'video' | 'html';
 
 const IMAGE_EXTENSIONS = [
   '.jpg', 'jpeg',

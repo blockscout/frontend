@@ -8,6 +8,7 @@ import { route } from 'nextjs-routes';
 import useFetch from 'lib/hooks/useFetch';
 
 import NftFallback from './NftFallback';
+import NftHtml from './NftHtml';
 import NftImage from './NftImage';
 import NftVideo from './NftVideo';
 import type { MediaType } from './utils';
@@ -76,6 +77,8 @@ const NftMedia = ({ url, className, isLoading }: Props) => {
     switch (type) {
       case 'video':
         return <NftVideo src={ url } onLoad={ handleMediaLoaded } onError={ handleMediaLoadError }/>;
+      case 'html':
+        return <NftHtml src={ url } onLoad={ handleMediaLoaded } onError={ handleMediaLoadError }/>;
       case 'image':
         return <NftImage url={ url } onLoad={ handleMediaLoaded } onError={ handleMediaLoadError }/>;
       default:
