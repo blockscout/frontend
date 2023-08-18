@@ -28,19 +28,13 @@ type AddressTokenTxProps = {
   hash: 'hash';
 }
 
-type BlockProps = {
-  type: 'block';
-  hash: string;
-  blockHeight: string;
-}
-
 type AddressTokenProps = {
   type: 'address_token';
   hash: string;
   tokenHash: string;
 }
 
-type Props = CommonProps & (AddressTokenTxProps | BlockProps | AddressTokenProps);
+type Props = CommonProps & (AddressTokenTxProps | AddressTokenProps);
 
 const AddressLink = (props: Props) => {
   const { alias, type, className, truncation = 'dynamic', hash, fontWeight, target = '_self', isDisabled, isLoading } = props;
@@ -51,8 +45,6 @@ const AddressLink = (props: Props) => {
     url = route({ pathname: '/tx/[hash]', query: { ...props.query, hash } });
   } else if (type === 'token') {
     url = route({ pathname: '/token/[hash]', query: { ...props.query, hash } });
-  } else if (type === 'block') {
-    url = route({ pathname: '/block/[height_or_hash]', query: { ...props.query, height_or_hash: props.blockHeight } });
   } else if (type === 'address_token') {
     url = route({ pathname: '/address/[hash]', query: { ...props.query, hash, tab: 'token_transfers', token: props.tokenHash, scroll_to_tabs: 'true' } });
   } else {

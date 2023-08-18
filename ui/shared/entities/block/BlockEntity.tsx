@@ -8,6 +8,7 @@ import { route } from 'nextjs-routes';
 import blockIcon from 'icons/block.svg';
 import IconBase from 'ui/shared/chakra/Icon';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
 
 import type { Size } from './utils';
@@ -16,20 +17,17 @@ import { getPropsForSize } from './utils';
 // TODO @tom2drum migrate all block links to this component
 // TODO @tom2drum icon color: grey for search result page
 
-interface LinkProps {
-  className?: string;
-  isLoading?: boolean;
-  number: number;
-  hash?: string;
+interface LinkProps extends Pick<EntryProps, 'className' | 'hash' | 'number' | 'onClick' | 'isLoading' | 'isExternal' | 'href'> {
   children: React.ReactNode;
-  onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 
-const Link = chakra(({ number, hash, className, isLoading, children, onClick }: LinkProps) => {
+const Link = chakra(({ number, hash, className, isLoading, children, isExternal, onClick, href }: LinkProps) => {
+  const Component = isExternal ? LinkExternal : LinkInternal;
+
   return (
-    <LinkInternal
+    <Component
       className={ className }
-      href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: hash || String(number) } }) }
+      href={ href ?? route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: hash ?? String(number) } }) }
       display="flex"
       alignItems="center"
       minWidth={ 0 } // for content truncation - https://css-tricks.com/flexbox-truncated-text/
@@ -37,30 +35,27 @@ const Link = chakra(({ number, hash, className, isLoading, children, onClick }: 
       onClick={ onClick }
     >
       { children }
-    </LinkInternal>
+    </Component>
   );
 });
 
-interface IconProps {
-  isLoading?: boolean;
-  size?: Size;
-}
+type IconProps = Pick<EntryProps, 'isLoading' | 'size'>;
 
 const Icon = ({ isLoading, size }: IconProps) => {
-  const boxSize = getPropsForSize(size).icon.boxSize;
+  const styles = getPropsForSize(size).icon;
   return (
-    <Box mr={ 2 }>
-      <IconBase as={ blockIcon } boxSize={ boxSize } isLoading={ isLoading } borderRadius="base"/>
+    <Box marginRight={ styles.marginRight }>
+      <IconBase
+        as={ blockIcon }
+        boxSize={ styles.boxSize }
+        isLoading={ isLoading }
+        borderRadius="base"
+      />
     </Box>
   );
 };
 
-interface ContentProps {
-  className?: string;
-  isLoading?: boolean;
-  number: number;
-  tailLength?: number;
-  size?: Size;
+interface ContentProps extends Pick<EntryProps, 'className' | 'isLoading' | 'size' | 'tailLength' | 'number'> {
   asProp?: As;
 }
 
@@ -75,11 +70,9 @@ const Content = chakra(({ className, isLoading, number, tailLength, size, asProp
       whiteSpace="nowrap"
       fontSize={ styles.fontSize }
       lineHeight={ styles.lineHeight }
-      fontWeight={ styles.fontWeight }
     >
       <HashStringShortenDynamic
         hash={ String(number) }
-        fontWeight={ styles.fontWeight }
         tailLength={ tailLength ?? 2 }
         as={ asProp }
       />
@@ -87,17 +80,20 @@ const Content = chakra(({ className, isLoading, number, tailLength, size, asProp
   );
 });
 
-interface EntryProps {
+export interface EntryProps {
   className?: string;
   isLoading?: boolean;
   number: number;
   hash?: string;
   size?: Size;
   tailLength?: number;
+  onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
+  isExternal?: boolean;
+  href?: string;
 }
 
 const BlockEntity = (props: EntryProps) => {
-  const partsProps = _omit(props, 'className');
+  const partsProps = _omit(props, [ 'className', 'onClick' ]);
 
   return (
     <Link { ...props }>

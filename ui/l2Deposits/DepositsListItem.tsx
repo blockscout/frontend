@@ -7,11 +7,11 @@ import type { L2DepositsItem } from 'types/api/l2Deposits';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import blockIcon from 'icons/block.svg';
 import txIcon from 'icons/transactions.svg';
 import dayjs from 'lib/date/dayjs';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import Icon from 'ui/shared/chakra/Icon';
+import BlockEntityL2 from 'ui/shared/entities/block/BlockEntityL2';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
@@ -33,15 +33,12 @@ const DepositsListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>L1 block No</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value py="3px">
-        <LinkExternal
-          href={ feature.L1BaseUrl + route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.l1_block_number.toString() } }) }
-          fontWeight={ 600 }
-          display="flex"
+        <BlockEntityL2
+          number={ item.l1_block_number }
           isLoading={ isLoading }
-        >
-          <Icon as={ blockIcon } boxSize={ 6 } isLoading={ isLoading }/>
-          <Skeleton isLoaded={ !isLoading } ml={ 1 }>{ item.l1_block_number }</Skeleton>
-        </LinkExternal>
+          size="sm"
+          fontWeight={ 600 }
+        />
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>L2 txn hash</ListItemMobileGrid.Label>

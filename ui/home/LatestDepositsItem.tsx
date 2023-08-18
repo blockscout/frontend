@@ -11,11 +11,11 @@ import type { L2DepositsItem } from 'types/api/l2Deposits';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import blockIcon from 'icons/block.svg';
 import txIcon from 'icons/transactions.svg';
 import dayjs from 'lib/date/dayjs';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import Icon from 'ui/shared/chakra/Icon';
+import BlockEntityL2 from 'ui/shared/entities/block/BlockEntityL2';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
@@ -36,18 +36,12 @@ const LatestTxsItem = ({ item, isLoading }: Props) => {
   }
 
   const l1BlockLink = (
-    <LinkExternal
-      href={ feature.L1BaseUrl +
-        route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.l1_block_number.toString() } })
-      }
-      fontWeight={ 700 }
-      display="inline-flex"
-      mr={ 2 }
+    <BlockEntityL2
+      number={ item.l1_block_number }
       isLoading={ isLoading }
-    >
-      <Icon as={ blockIcon } boxSize="30px" isLoading={ isLoading } borderRadius="base"/>
-      <Skeleton isLoaded={ !isLoading } ml={ 1 }>{ item.l1_block_number }</Skeleton>
-    </LinkExternal>
+      size="sm"
+      fontWeight={ 700 }
+    />
   );
 
   const l1TxLink = (

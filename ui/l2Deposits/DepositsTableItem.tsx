@@ -7,11 +7,11 @@ import type { L2DepositsItem } from 'types/api/l2Deposits';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import blockIcon from 'icons/block.svg';
 import txIcon from 'icons/transactions.svg';
 import dayjs from 'lib/date/dayjs';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import Icon from 'ui/shared/chakra/Icon';
+import BlockEntityL2 from 'ui/shared/entities/block/BlockEntityL2';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
@@ -29,18 +29,13 @@ const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
 
   return (
     <Tr>
-      <Td verticalAlign="middle" fontWeight={ 600 }>
-        <LinkExternal
-          href={ feature.L1BaseUrl + route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.l1_block_number.toString() } }) }
-          fontWeight={ 600 }
-          display="inline-flex"
+      <Td verticalAlign="middle">
+        <BlockEntityL2
+          number={ item.l1_block_number }
           isLoading={ isLoading }
-        >
-          <Icon as={ blockIcon } boxSize={ 6 } isLoading={ isLoading }/>
-          <Skeleton isLoaded={ !isLoading } ml={ 1 }>
-            { item.l1_block_number }
-          </Skeleton>
-        </LinkExternal>
+          size="sm"
+          fontWeight={ 600 }
+        />
       </Td>
       <Td verticalAlign="middle">
         <LinkInternal
