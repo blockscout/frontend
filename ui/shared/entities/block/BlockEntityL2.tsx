@@ -10,7 +10,7 @@ import * as BlockEntity from './BlockEntity';
 
 const feature = config.features.rollup;
 
-const BlockEntityL2 = (props: BlockEntity.EntryProps) => {
+const BlockEntityL2 = (props: BlockEntity.EntityProps) => {
   const partsProps = _omit(props, [ 'className', 'onClick' ]);
 
   if (!feature.isEnabled) {

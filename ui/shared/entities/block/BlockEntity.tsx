@@ -17,7 +17,7 @@ import { getPropsForSize } from './utils';
 // TODO @tom2drum migrate all block links to this component
 // TODO @tom2drum icon color: grey for search result page
 
-interface LinkProps extends Pick<EntryProps, 'className' | 'hash' | 'number' | 'onClick' | 'isLoading' | 'isExternal' | 'href'> {
+interface LinkProps extends Pick<EntityProps, 'className' | 'hash' | 'number' | 'onClick' | 'isLoading' | 'isExternal' | 'href'> {
   children: React.ReactNode;
 }
 
@@ -39,7 +39,7 @@ const Link = chakra(({ number, hash, className, isLoading, children, isExternal,
   );
 });
 
-type IconProps = Pick<EntryProps, 'isLoading' | 'size'>;
+type IconProps = Pick<EntityProps, 'isLoading' | 'size'>;
 
 const Icon = ({ isLoading, size }: IconProps) => {
   const styles = getPropsForSize(size).icon;
@@ -55,7 +55,7 @@ const Icon = ({ isLoading, size }: IconProps) => {
   );
 };
 
-interface ContentProps extends Pick<EntryProps, 'className' | 'isLoading' | 'size' | 'tailLength' | 'number'> {
+interface ContentProps extends Pick<EntityProps, 'className' | 'isLoading' | 'size' | 'tailLength' | 'number'> {
   asProp?: As;
 }
 
@@ -80,7 +80,7 @@ const Content = chakra(({ className, isLoading, number, tailLength, size, asProp
   );
 });
 
-export interface EntryProps {
+export interface EntityProps {
   className?: string;
   isLoading?: boolean;
   number: number;
@@ -92,7 +92,7 @@ export interface EntryProps {
   href?: string;
 }
 
-const BlockEntity = (props: EntryProps) => {
+const BlockEntity = (props: EntityProps) => {
   const partsProps = _omit(props, [ 'className', 'onClick' ]);
 
   return (
