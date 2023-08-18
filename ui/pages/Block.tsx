@@ -111,11 +111,13 @@ const BlockPageContent = () => {
     };
   }, [ appProps.referrer ]);
 
+  const title = blockQuery.data?.type === 'reorg' ? `Reorged block #${ blockQuery.data?.height }` : `Block #${ blockQuery.data?.height }`;
+
   return (
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
-        title={ `Block #${ blockQuery.data?.height }` }
+        title={ title }
         backLink={ backLink }
         contentAfter={ <NetworkExplorers type="block" pathParam={ heightOrHash } ml={{ base: 'initial', lg: 'auto' }}/> }
         isLoading={ blockQuery.isPlaceholderData }
