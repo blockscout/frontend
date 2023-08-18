@@ -11,7 +11,7 @@ import txIcon from 'icons/transactions.svg';
 import dayjs from 'lib/date/dayjs';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import Icon from 'ui/shared/chakra/Icon';
-import BlockEntityL2 from 'ui/shared/entities/block/BlockEntityL2';
+import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
@@ -30,7 +30,7 @@ const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
   return (
     <Tr>
       <Td verticalAlign="middle">
-        <BlockEntityL2
+        <BlockEntityL1
           number={ item.l1_block_number }
           isLoading={ isLoading }
           size="sm"

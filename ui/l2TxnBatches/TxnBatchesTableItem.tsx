@@ -7,9 +7,10 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import txIcon from 'icons/transactions.svg';
-import txBatchIcon from 'icons/txBatch.svg';
 import dayjs from 'lib/date/dayjs';
 import Icon from 'ui/shared/chakra/Icon';
+import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
+import BlockEntityL2 from 'ui/shared/entities/block/BlockEntityL2';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
@@ -28,19 +29,12 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
   return (
     <Tr>
       <Td>
-        <LinkInternal
-          fontWeight={ 600 }
-          display="flex"
-          width="fit-content"
-          alignItems="center"
-          href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.l2_block_number.toString() } }) }
+        <BlockEntityL2
           isLoading={ isLoading }
-        >
-          <Icon as={ txBatchIcon } boxSize={ 6 } isLoading={ isLoading }/>
-          <Skeleton isLoaded={ !isLoading } ml={ 1 }>
-            { item.l2_block_number }
-          </Skeleton>
-        </LinkInternal>
+          number={ item.l2_block_number }
+          size="sm"
+          fontWeight={ 600 }
+        />
       </Td>
       <Td>
         <LinkInternal
@@ -53,17 +47,14 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
         </LinkInternal>
       </Td>
       <Td>
-        <LinkExternal
-          href={ feature.L1BaseUrl + route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.epoch_number.toString() } }) }
-          fontWeight={ 600 }
-          display="inline-flex"
+        <BlockEntityL1
           isLoading={ isLoading }
+          number={ item.epoch_number }
+          size="sm"
           py="2px"
-        >
-          <Skeleton isLoaded={ !isLoading } display="inline-block">
-            { item.epoch_number }
-          </Skeleton>
-        </LinkExternal>
+          noIcon
+          fontWeight={ 600 }
+        />
       </Td>
       <Td pr={ 12 }>
         <VStack spacing={ 3 } alignItems="flex-start">

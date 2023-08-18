@@ -10,9 +10,9 @@ import txIcon from 'icons/transactions.svg';
 import dayjs from 'lib/date/dayjs';
 import Icon from 'ui/shared/chakra/Icon';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import BlockEntityL2 from 'ui/shared/entities/block/BlockEntityL2';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkExternal from 'ui/shared/LinkExternal';
-import LinkInternal from 'ui/shared/LinkInternal';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 
 const feature = config.features.rollup;
@@ -43,15 +43,12 @@ const OutputRootsListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>L2 block #</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <LinkInternal
-          display="flex"
-          width="fit-content"
-          alignItems="center"
-          href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.l2_block_number.toString() } }) }
+        <BlockEntityL2
           isLoading={ isLoading }
-        >
-          <Skeleton isLoaded={ !isLoading } display="inline-block">{ item.l2_block_number }</Skeleton>
-        </LinkInternal>
+          number={ item.l2_block_number }
+          size="sm"
+          noIcon
+        />
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>L1 txn hash</ListItemMobileGrid.Label>

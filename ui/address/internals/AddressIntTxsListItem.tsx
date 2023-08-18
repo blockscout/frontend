@@ -4,8 +4,6 @@ import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
 
-import { route } from 'nextjs-routes';
-
 import config from 'configs/app';
 import eastArrowIcon from 'icons/arrows/east.svg';
 import dayjs from 'lib/date/dayjs';
@@ -15,8 +13,8 @@ import AddressLink from 'ui/shared/address/AddressLink';
 import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import InOutTag from 'ui/shared/InOutTag';
-import LinkInternal from 'ui/shared/LinkInternal';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TxStatus from 'ui/shared/TxStatus';
 import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
@@ -57,9 +55,12 @@ const TxInternalsListItem = ({
       </Flex>
       <HStack spacing={ 1 }>
         <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>Block</Skeleton>
-        <Skeleton isLoaded={ !isLoading }>
-          <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: block.toString() } }) }>{ block }</LinkInternal>
-        </Skeleton>
+        <BlockEntity
+          isLoading={ isLoading }
+          number={ block }
+          size="sm"
+          noIcon
+        />
       </HStack>
       <Box w="100%" display="flex" columnGap={ 3 }>
         <Address width="calc((100% - 48px) / 2)">

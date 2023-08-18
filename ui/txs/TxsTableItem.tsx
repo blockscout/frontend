@@ -13,8 +13,6 @@ import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
 
-import { route } from 'nextjs-routes';
-
 import rightArrowIcon from 'icons/arrows/east.svg';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Address from 'ui/shared/address/Address';
@@ -24,8 +22,8 @@ import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import CurrencyValue from 'ui/shared/CurrencyValue';
+import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import InOutTag from 'ui/shared/InOutTag';
-import LinkInternal from 'ui/shared/LinkInternal';
 import TxStatus from 'ui/shared/TxStatus';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 
@@ -120,11 +118,13 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
       { showBlockInfo && (
         <Td>
           { tx.block && (
-            <Skeleton isLoaded={ !isLoading } display="inline-block">
-              <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: tx.block.toString() } }) }>
-                { tx.block }
-              </LinkInternal>
-            </Skeleton>
+            <BlockEntity
+              isLoading={ isLoading }
+              number={ tx.block }
+              size="sm"
+              noIcon
+              fontWeight={ 500 }
+            />
           ) }
         </Td>
       ) }

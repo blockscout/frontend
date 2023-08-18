@@ -7,13 +7,12 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import txIcon from 'icons/transactions.svg';
-import txBatchIcon from 'icons/txBatch.svg';
 import dayjs from 'lib/date/dayjs';
 import Icon from 'ui/shared/chakra/Icon';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import BlockEntityL2 from 'ui/shared/entities/block/BlockEntityL2';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkExternal from 'ui/shared/LinkExternal';
-import LinkInternal from 'ui/shared/LinkInternal';
 
 const feature = config.features.rollup;
 
@@ -35,19 +34,12 @@ const OutputRootsTableItem = ({ item, isLoading }: Props) => {
         <Skeleton isLoaded={ !isLoading } color="text_secondary" display="inline-block"><span>{ timeAgo }</span></Skeleton>
       </Td>
       <Td verticalAlign="middle">
-        <LinkInternal
-          fontWeight={ 600 }
-          display="flex"
-          width="fit-content"
-          alignItems="center"
-          href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.l2_block_number.toString() } }) }
+        <BlockEntityL2
           isLoading={ isLoading }
-        >
-          <Icon as={ txBatchIcon } boxSize={ 6 } isLoading={ isLoading }/>
-          <Skeleton isLoaded={ !isLoading } display="inline-block" ml={ 1 }>
-            { item.l2_block_number }
-          </Skeleton>
-        </LinkInternal>
+          number={ item.l2_block_number }
+          size="sm"
+          fontWeight={ 600 }
+        />
       </Td>
       <Td verticalAlign="middle" pr={ 12 }>
         <Flex>

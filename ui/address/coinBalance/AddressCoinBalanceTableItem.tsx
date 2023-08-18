@@ -4,13 +4,11 @@ import React from 'react';
 
 import type { AddressCoinBalanceHistoryItem } from 'types/api/address';
 
-import { route } from 'nextjs-routes';
-
 import { WEI, ZERO } from 'lib/consts';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Address from 'ui/shared/address/Address';
 import AddressLink from 'ui/shared/address/AddressLink';
-import LinkInternal from 'ui/shared/LinkInternal';
+import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 
 type Props = AddressCoinBalanceHistoryItem & {
   page: number;
@@ -18,7 +16,6 @@ type Props = AddressCoinBalanceHistoryItem & {
 };
 
 const AddressCoinBalanceTableItem = (props: Props) => {
-  const blockUrl = route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(props.block_number) } });
   const deltaBn = BigNumber(props.delta).div(WEI);
   const isPositiveDelta = deltaBn.gte(ZERO);
   const timeAgo = useTimeAgoIncrement(props.block_timestamp, props.page === 1);
@@ -26,9 +23,13 @@ const AddressCoinBalanceTableItem = (props: Props) => {
   return (
     <Tr>
       <Td>
-        <Skeleton isLoaded={ !props.isLoading } display="inline-block">
-          <LinkInternal href={ blockUrl } fontWeight="700">{ props.block_number }</LinkInternal>
-        </Skeleton>
+        <BlockEntity
+          isLoading={ props.isLoading }
+          number={ props.block_number }
+          size="sm"
+          noIcon
+          fontWeight={ 700 }
+        />
       </Td>
       <Td>
         { props.transaction_hash &&
@@ -51,7 +52,7 @@ const AddressCoinBalanceTableItem = (props: Props) => {
       </Td>
       <Td isNumeric display="flex" justifyContent="end">
         <Skeleton isLoaded={ !props.isLoading }>
-          <Stat flexGrow="0">
+          <Stat flexGrow="0" lineHeight={ 5 }>
             <StatHelpText display="flex" mb={ 0 } alignItems="center">
               <StatArrow type={ isPositiveDelta ? 'increase' : 'decrease' }/>
               <Text as="span" color={ isPositiveDelta ? 'green.500' : 'red.500' } fontWeight={ 600 }>

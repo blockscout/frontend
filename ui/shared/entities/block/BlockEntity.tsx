@@ -14,7 +14,6 @@ import LinkInternal from 'ui/shared/LinkInternal';
 import type { Size } from './utils';
 import { getPropsForSize } from './utils';
 
-// TODO @tom2drum migrate all block links to this component
 // TODO @tom2drum icon color: grey for search result page
 
 interface LinkProps extends Pick<EntityProps, 'className' | 'hash' | 'number' | 'onClick' | 'isLoading' | 'isExternal' | 'href'> {
@@ -39,14 +38,20 @@ const Link = chakra(({ number, hash, className, isLoading, children, isExternal,
   );
 });
 
-type IconProps = Pick<EntityProps, 'isLoading' | 'size'>;
+interface IconProps extends Pick<EntityProps, 'isLoading' | 'size' | 'noIcon'> {
+  asProp?: As;
+}
 
-const Icon = ({ isLoading, size }: IconProps) => {
+const Icon = ({ isLoading, size, noIcon, asProp }: IconProps) => {
+  if (noIcon) {
+    return null;
+  }
+
   const styles = getPropsForSize(size).icon;
   return (
     <Box marginRight={ styles.marginRight }>
       <IconBase
-        as={ blockIcon }
+        as={ asProp ?? blockIcon }
         boxSize={ styles.boxSize }
         isLoading={ isLoading }
         borderRadius="base"
@@ -90,6 +95,7 @@ export interface EntityProps {
   onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
   isExternal?: boolean;
   href?: string;
+  noIcon?: boolean;
 }
 
 const BlockEntity = (props: EntityProps) => {

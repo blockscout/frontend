@@ -7,9 +7,10 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import txIcon from 'icons/transactions.svg';
-import txBatchIcon from 'icons/txBatch.svg';
 import dayjs from 'lib/date/dayjs';
 import Icon from 'ui/shared/chakra/Icon';
+import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
+import BlockEntityL2 from 'ui/shared/entities/block/BlockEntityL2';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
@@ -31,19 +32,12 @@ const TxnBatchesListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>L2 block #</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value py="3px">
-        <LinkInternal
-          fontWeight={ 600 }
-          display="flex"
-          width="fit-content"
-          alignItems="center"
-          href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.l2_block_number.toString() } }) }
+        <BlockEntityL2
           isLoading={ isLoading }
-        >
-          <Icon as={ txBatchIcon } boxSize={ 6 } isLoading={ isLoading }/>
-          <Skeleton isLoaded={ !isLoading } ml={ 1 }>
-            { item.l2_block_number }
-          </Skeleton>
-        </LinkInternal>
+          number={ item.l2_block_number }
+          size="sm"
+          fontWeight={ 600 }
+        />
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>L2 block txn count</ListItemMobileGrid.Label>
@@ -60,16 +54,13 @@ const TxnBatchesListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Epoch number</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <LinkExternal
-          fontWeight={ 600 }
-          display="inline-flex"
-          href={ feature.L1BaseUrl + route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.epoch_number.toString() } }) }
+        <BlockEntityL1
           isLoading={ isLoading }
-        >
-          <Skeleton isLoaded={ !isLoading }>
-            { item.epoch_number }
-          </Skeleton>
-        </LinkExternal>
+          number={ item.epoch_number }
+          size="sm"
+          noIcon
+          fontWeight={ 600 }
+        />
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>L1 txn hash</ListItemMobileGrid.Label>
