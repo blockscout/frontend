@@ -5,7 +5,6 @@ import type { SearchResultItem } from 'types/api/search';
 
 import { route } from 'nextjs-routes';
 
-import blockIcon from 'icons/block.svg';
 import labelIcon from 'icons/publictags.svg';
 import iconSuccess from 'icons/status/success.svg';
 import txIcon from 'icons/transactions.svg';
@@ -16,6 +15,7 @@ import { saveToRecentKeywords } from 'lib/recentSearchKeywords';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
+import * as BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
@@ -220,16 +220,19 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
         return (
           <>
             <Td fontSize="sm">
-              <Flex alignItems="center">
-                <Icon as={ blockIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
-                <LinkInternal
+              <BlockEntity.Link
+                hash={ data.block_hash }
+                number={ Number(data.block_number) }
+                onClick={ handleLinkClick }
+              >
+                <BlockEntity.Icon/>
+                <BlockEntity.Content
+                  asProp={ shouldHighlightHash ? 'span' : 'mark' }
+                  number={ Number(data.block_number) }
+                  fontSize="sm"
                   fontWeight={ 700 }
-                  href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.block_hash) } }) }
-                  onClick={ handleLinkClick }
-                >
-                  <Box as={ shouldHighlightHash ? 'span' : 'mark' }>{ data.block_number }</Box>
-                </LinkInternal>
-              </Flex>
+                />
+              </BlockEntity.Link>
             </Td>
             <Td fontSize="sm" verticalAlign="middle">
               <Box overflow="hidden" whiteSpace="nowrap" as={ shouldHighlightHash ? 'mark' : 'span' } display="block">
