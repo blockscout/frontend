@@ -80,7 +80,7 @@ test.describe('custom hero plate background', () => {
     await page.route(IMAGE_URL, (route) => {
       return route.fulfill({
         status: 200,
-        path: './playwright/giant_duck_long.jpg',
+        path: './playwright/mocks/image_long.jpg',
       });
     });
 

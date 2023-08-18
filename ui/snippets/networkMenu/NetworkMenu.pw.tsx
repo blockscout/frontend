@@ -23,7 +23,7 @@ extendedTest('base view +@dark-mode', async({ mount, page }) => {
   await page.route(LOGO_URL, (route) => {
     return route.fulfill({
       status: 200,
-      path: './playwright/image_s.jpg',
+      path: './playwright/mocks/image_s.jpg',
     });
   });
   await page.route(FEATURED_NETWORKS_URL, (route) => {

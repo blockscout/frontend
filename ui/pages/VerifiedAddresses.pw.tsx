@@ -14,7 +14,7 @@ test.beforeEach(async({ context }) => {
   await context.route(mocks.TOKEN_INFO_APPLICATION_BASE.iconUrl, (route) => {
     return route.fulfill({
       status: 200,
-      path: './playwright/image_s.jpg',
+      path: './playwright/mocks/image_s.jpg',
     });
   });
 });

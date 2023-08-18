@@ -80,7 +80,7 @@ test('with verified info', async({ mount, page, createSocket }) => {
   await page.route(tokenInfo.icon_url as string, (route) => {
     return route.fulfill({
       status: 200,
-      path: './playwright/image_s.jpg',
+      path: './playwright/mocks/image_s.jpg',
     });
   });
 
@@ -131,7 +131,7 @@ test.describe('mobile', () => {
     await page.route(tokenInfo.icon_url as string, (route) => {
       return route.fulfill({
         status: 200,
-        path: './playwright/image_s.jpg',
+        path: './playwright/mocks/image_s.jpg',
       });
     });
 

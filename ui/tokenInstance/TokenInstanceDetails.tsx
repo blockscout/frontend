@@ -82,8 +82,7 @@ const TokenInstanceDetails = ({ data, scrollRef, isLoading }: Props) => {
           <TokenInstanceTransfersCount hash={ isLoading ? '' : data.token.address } id={ isLoading ? '' : data.id } onClick={ handleCounterItemClick }/>
         </Grid>
         <NftMedia
-          imageUrl={ data.image_url }
-          animationUrl={ data.animation_url }
+          url={ data.animation_url || data.image_url }
           w="250px"
           flexShrink={ 0 }
           alignSelf={{ base: 'center', lg: 'flex-start' }}

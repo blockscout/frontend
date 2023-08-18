@@ -45,7 +45,7 @@ test.describe('auth', () => {
     await page.route(profileMock.base.avatar, (route) => {
       return route.fulfill({
         status: 200,
-        path: './playwright/image_s.jpg',
+        path: './playwright/mocks/image_s.jpg',
       });
     });
 

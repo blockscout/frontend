@@ -35,7 +35,7 @@ test.beforeEach(async({ page }) => {
   await page.route(textAdMock.duck.ad.thumbnail, (route) => {
     return route.fulfill({
       status: 200,
-      path: './playwright/image_s.jpg',
+      path: './playwright/mocks/image_s.jpg',
     });
   });
 });

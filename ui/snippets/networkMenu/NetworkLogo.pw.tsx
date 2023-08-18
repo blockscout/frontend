@@ -59,13 +59,13 @@ base.describe('custom logo', () => {
     await page.route(LOGO_URL, (route) => {
       return route.fulfill({
         status: 200,
-        path: './playwright/network-logo.svg',
+        path: './playwright/mocks/network-logo.svg',
       });
     });
     await page.route(ICON_URL, (route) => {
       return route.fulfill({
         status: 200,
-        path: './playwright/duck.svg',
+        path: './playwright/mocks/image_svg.svg',
       });
     });
 
@@ -108,13 +108,13 @@ base.describe('custom logo with dark option -@default +@dark-mode', () => {
     await page.route(LOGO_URL, (route) => {
       return route.fulfill({
         status: 200,
-        path: './playwright/giant_duck_long.jpg',
+        path: './playwright/mocks/image_long.jpg',
       });
     });
     await page.route(ICON_URL, (route) => {
       return route.fulfill({
         status: 200,
-        path: './playwright/image_s.jpg',
+        path: './playwright/mocks/image_s.jpg',
       });
     });
 

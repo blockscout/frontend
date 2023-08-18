@@ -17,7 +17,17 @@ export default async function mediaTypeHandler(req: NextApiRequest, res: NextApi
     }
 
     const contentType = response.headers.get('content-type');
-    const mediaType = contentType?.startsWith('video') ? 'video' : 'image';
+    const mediaType = (() => {
+      if (contentType?.startsWith('video')) {
+        return 'video';
+      }
+
+      if (contentType === 'text/html') {
+        return 'html';
+      }
+
+      return 'image';
+    })();
     res.status(200).json({ type: mediaType });
   } catch (error) {
     res.status(200).json({ type: undefined });
