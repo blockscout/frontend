@@ -3,10 +3,9 @@ import React from 'react';
 
 import TestApp from 'playwright/TestApp';
 
-import type { Size } from '../utils';
 import BlockEntity from './BlockEntity';
 
-const sizes: Array<Size> = [ 'sm', 'md', 'lg' ];
+const sizes = [ 'sm', 'md', 'lg' ];
 
 test.use({ viewport: { width: 180, height: 30 } });
 

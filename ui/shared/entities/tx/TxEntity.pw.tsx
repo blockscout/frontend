@@ -3,11 +3,10 @@ import React from 'react';
 
 import TestApp from 'playwright/TestApp';
 
-import type { Size } from '../utils';
 import TxEntity from './TxEntity';
 
 const hash = '0x376db52955d5bce114d0ccea2dcf22289b4eae1b86bcae5a59bb5fdbfef48899';
-const sizes: Array<Size> = [ 'sm', 'md', 'lg' ];
+const sizes = [ 'sm', 'md', 'lg' ];
 
 test.use({ viewport: { width: 180, height: 30 } });
 

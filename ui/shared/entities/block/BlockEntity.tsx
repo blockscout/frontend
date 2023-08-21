@@ -1,97 +1,59 @@
 import type { As } from '@chakra-ui/react';
-import { Box, chakra, Skeleton } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import _omit from 'lodash/omit';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
 import blockIcon from 'icons/block.svg';
-import IconBase from 'ui/shared/chakra/Icon';
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import LinkExternal from 'ui/shared/LinkExternal';
-import LinkInternal from 'ui/shared/LinkInternal';
-
-import type { Size } from '../utils';
-import { getPropsForSize } from '../utils';
+import * as EntityBase from 'ui/shared/entities/base/components';
 
 // TODO @tom2drum icon color: grey for search result page
 
-interface LinkProps extends Pick<EntityProps, 'className' | 'hash' | 'number' | 'onClick' | 'isLoading' | 'isExternal' | 'href'> {
-  children: React.ReactNode;
-}
+type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'hash' | 'number'>;
 
-const Link = chakra(({ number, hash, className, isLoading, children, isExternal, onClick, href }: LinkProps) => {
-  const Component = isExternal ? LinkExternal : LinkInternal;
+const Link = chakra((props: LinkProps) => {
+  const heightOrHash = props.hash ?? String(props.number);
+  const defaultHref = route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash } });
 
   return (
-    <Component
-      className={ className }
-      href={ href ?? route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: hash ?? String(number) } }) }
-      display="flex"
-      alignItems="center"
-      minWidth={ 0 } // for content truncation - https://css-tricks.com/flexbox-truncated-text/
-      isLoading={ isLoading }
-      onClick={ onClick }
+    <EntityBase.Link
+      { ...props }
+      href={ props.href ?? defaultHref }
     >
-      { children }
-    </Component>
+      { props.children }
+    </EntityBase.Link>
   );
 });
 
-interface IconProps extends Pick<EntityProps, 'isLoading' | 'size' | 'noIcon'> {
+type IconProps = Omit<EntityBase.IconBaseProps, 'asProp'> & {
   asProp?: As;
-}
+};
 
-const Icon = ({ isLoading, size, noIcon, asProp }: IconProps) => {
-  if (noIcon) {
-    return null;
-  }
-
-  const styles = getPropsForSize(size).icon;
+const Icon = (props: IconProps) => {
   return (
-    <Box marginRight={ styles.marginRight }>
-      <IconBase
-        as={ asProp ?? blockIcon }
-        boxSize={ styles.boxSize }
-        isLoading={ isLoading }
-        borderRadius="base"
-      />
-    </Box>
+    <EntityBase.Icon
+      { ...props }
+      asProp={ props.asProp ?? blockIcon }
+    />
   );
 };
 
-interface ContentProps extends Pick<EntityProps, 'className' | 'isLoading' | 'tailLength' | 'number'> {
-  asProp?: As;
-}
+type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'number'>;
 
-const Content = chakra(({ className, isLoading, number, tailLength, asProp }: ContentProps) => {
+const Content = chakra((props: ContentProps) => {
   return (
-    <Skeleton
-      className={ className }
-      isLoaded={ !isLoading }
-      overflow="hidden"
-      whiteSpace="nowrap"
-    >
-      <HashStringShortenDynamic
-        hash={ String(number) }
-        tailLength={ tailLength ?? 2 }
-        as={ asProp }
-      />
-    </Skeleton>
+    <EntityBase.Content
+      { ...props }
+      text={ String(props.number) }
+      tailLength={ props.tailLength ?? 2 }
+    />
   );
 });
 
-export interface EntityProps {
-  className?: string;
-  isLoading?: boolean;
+export interface EntityProps extends EntityBase.EntityBaseProps {
   number: number;
   hash?: string;
-  size?: Size;
-  tailLength?: number;
-  onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
-  isExternal?: boolean;
-  href?: string;
-  noIcon?: boolean;
 }
 
 const BlockEntity = (props: EntityProps) => {
