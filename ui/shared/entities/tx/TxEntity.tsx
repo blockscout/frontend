@@ -19,7 +19,6 @@ import type { Size } from '../utils';
 import { getPropsForSize } from '../utils';
 
 // TODO @tom2drum icon color: grey for search result page
-// TODO @tom2drum refactor tx links and AddressLinks with type transaction
 // TODO @tom2drum make EntityBase component
 
 interface LinkProps extends Pick<EntityProps, 'className' | 'hash' | 'onClick' | 'isLoading' | 'isExternal' | 'href'> {
