@@ -1,5 +1,5 @@
 import type { As } from '@chakra-ui/react';
-import { Box, chakra, Skeleton } from '@chakra-ui/react';
+import { Box, chakra, Flex, Skeleton } from '@chakra-ui/react';
 import _omit from 'lodash/omit';
 import React from 'react';
 
@@ -9,6 +9,7 @@ import { route } from 'nextjs-routes';
 
 import transactionIcon from 'icons/transactions.svg';
 import IconBase from 'ui/shared/chakra/Icon';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkExternal from 'ui/shared/LinkExternal';
@@ -18,7 +19,6 @@ import type { Size } from '../utils';
 import { getPropsForSize } from '../utils';
 
 // TODO @tom2drum icon color: grey for search result page
-// TODO @tom2drum refactor TransactionSnippet
 // TODO @tom2drum refactor tx links and AddressLinks with type transaction
 // TODO @tom2drum make EntityBase component
 
@@ -105,19 +105,38 @@ const Content = chakra(({ className, isLoading, asProp, hash, truncation = 'dyna
   );
 });
 
+const Copy = CopyToClipboard;
+
 export interface EntityProps {
   className?: string;
   isLoading?: boolean;
   hash: string;
   size?: Size;
-  onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
+  onClick?: (event: React.MouseEvent<HTMLElement>) => void;
   isExternal?: boolean;
   href?: string;
   noIcon?: boolean;
   truncation?: HashTruncation;
+  withCopy?: boolean;
 }
 
 const TxEntity = (props: EntityProps) => {
+  if (props.withCopy) {
+    const partsProps = _omit(props, [ 'className', 'onClick' ]);
+    const linkProps = _omit(props, [ 'className' ]);
+
+    // TODO @tom2drum refactor if icon should be a part of the link
+    return (
+      <Flex alignItems="center" className={ props.className } { ...partsProps }>
+        <Link { ...linkProps }>
+          <Icon { ...partsProps }/>
+          <Content { ...partsProps }/>
+        </Link>
+        <Copy text={ props.hash } isLoading={ props.isLoading }/>
+      </Flex>
+    );
+  }
+
   const partsProps = _omit(props, [ 'className', 'onClick' ]);
 
   return (

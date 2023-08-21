@@ -7,8 +7,8 @@ import React, { useCallback } from 'react';
 import type { TransactionTag } from 'types/api/account';
 
 import Tag from 'ui/shared/chakra/Tag';
+import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
-import TransactionSnippet from 'ui/shared/TransactionSnippet';
 
 interface Props {
   item: TransactionTag;
@@ -29,7 +29,12 @@ const TransactionTagTableItem = ({ item, isLoading, onEditClick, onDeleteClick }
   return (
     <Tr alignItems="top" key={ item.id }>
       <Td>
-        <TransactionSnippet hash={ item.transaction_hash } isLoading={ isLoading }/>
+        <TxEntity
+          hash={ item.transaction_hash }
+          isLoading={ isLoading }
+          fontWeight={ 600 }
+          withCopy
+        />
       </Td>
       <Td>
         <Tag isLoading={ isLoading } isTruncated>{ item.name }</Tag>
