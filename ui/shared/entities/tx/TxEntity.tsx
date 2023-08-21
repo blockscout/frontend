@@ -112,7 +112,7 @@ export interface EntityProps {
   isLoading?: boolean;
   hash: string;
   size?: Size;
-  onClick?: (event: React.MouseEvent<HTMLElement>) => void;
+  onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
   isExternal?: boolean;
   href?: string;
   noIcon?: boolean;

@@ -12,6 +12,7 @@ import AddressLink from 'ui/shared/address/AddressLink';
 import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
 
 type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean }
@@ -33,9 +34,12 @@ const TokenTransferTableItem = ({
     <Tr alignItems="top">
       <Td>
         <Grid alignItems="center" gridTemplateColumns="auto 130px" width="fit-content" py="7px">
-          <Address display="inline-flex" fontWeight={ 600 }>
-            <AddressLink type="transaction" hash={ txHash } isLoading={ isLoading }/>
-          </Address>
+          <TxEntity
+            hash={ txHash }
+            isLoading={ isLoading }
+            fontWeight={ 600 }
+            noIcon
+          />
           { timestamp && (
             <Skeleton isLoaded={ !isLoading } display="inline-block" color="gray.500" fontWeight="400" ml="10px">
               <span>

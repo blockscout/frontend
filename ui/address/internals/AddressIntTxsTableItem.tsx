@@ -14,6 +14,7 @@ import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
+import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import InOutTag from 'ui/shared/InOutTag';
 import TxStatus from 'ui/shared/TxStatus';
 import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
@@ -46,7 +47,12 @@ const AddressIntTxsTableItem = ({
     <Tr alignItems="top">
       <Td verticalAlign="middle">
         <Flex rowGap={ 3 } flexWrap="wrap">
-          <AddressLink fontWeight="700" hash={ txnHash } type="transaction" isLoading={ isLoading }/>
+          <TxEntity
+            hash={ txnHash }
+            isLoading={ isLoading }
+            fontWeight={ 700 }
+            noIcon
+          />
           { timestamp && (
             <Skeleton isLoaded={ !isLoading } color="text_secondary" fontWeight="400" fontSize="sm">
               <span>{ timeAgo }</span>

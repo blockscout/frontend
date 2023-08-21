@@ -7,9 +7,8 @@ import type { AddressCoinBalanceHistoryItem } from 'types/api/address';
 import config from 'configs/app';
 import { WEI, ZERO } from 'lib/consts';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import Address from 'ui/shared/address/Address';
-import AddressLink from 'ui/shared/address/AddressLink';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
+import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 
 type Props = AddressCoinBalanceHistoryItem & {
@@ -51,9 +50,13 @@ const AddressCoinBalanceListItem = (props: Props) => {
       { props.transaction_hash && (
         <Flex columnGap={ 2 } w="100%">
           <Skeleton isLoaded={ !props.isLoading } fontWeight={ 500 } flexShrink={ 0 }>Txs</Skeleton>
-          <Address maxW="150px" fontWeight="700">
-            <AddressLink hash={ props.transaction_hash } type="transaction" isLoading={ props.isLoading }/>
-          </Address>
+          <TxEntity
+            hash={ props.transaction_hash }
+            isLoading={ props.isLoading }
+            noIcon
+            fontWeight={ 700 }
+            maxW="150px"
+          />
         </Flex>
       ) }
       <Flex columnGap={ 2 } w="100%">

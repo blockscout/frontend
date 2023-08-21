@@ -14,6 +14,7 @@ import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
+import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import InOutTag from 'ui/shared/InOutTag';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TxStatus from 'ui/shared/TxStatus';
@@ -48,7 +49,12 @@ const TxInternalsListItem = ({
         <TxStatus status={ success ? 'ok' : 'error' } errorText={ error } isLoading={ isLoading }/>
       </Flex>
       <Flex justifyContent="space-between" width="100%">
-        <AddressLink fontWeight="700" hash={ txnHash } truncation="constant" type="transaction" isLoading={ isLoading }/>
+        <TxEntity
+          hash={ txnHash }
+          isLoading={ isLoading }
+          fontWeight={ 700 }
+          truncation="constant"
+        />
         <Skeleton isLoaded={ !isLoading } color="text_secondary" fontWeight="400" fontSize="sm">
           <span>{ dayjs(timestamp).fromNow() }</span>
         </Skeleton>

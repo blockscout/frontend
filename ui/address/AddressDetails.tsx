@@ -18,6 +18,7 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
+import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkInternal from 'ui/shared/LinkInternal';
 
@@ -103,7 +104,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
           >
             <AddressLink type="address" hash={ data.creator_address_hash } truncation="constant"/>
             <Text whiteSpace="pre"> at txn </Text>
-            <AddressLink hash={ data.creation_tx_hash } type="transaction" truncation="constant"/>
+            <TxEntity hash={ data.creator_address_hash } truncation="constant" noIcon/>
           </DetailsInfoItem>
         ) }
         { data.is_contract && data.implementation_address && (

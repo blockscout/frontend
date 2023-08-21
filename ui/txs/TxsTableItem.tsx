@@ -23,6 +23,7 @@ import Tag from 'ui/shared/chakra/Tag';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
+import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import InOutTag from 'ui/shared/InOutTag';
 import TxStatus from 'ui/shared/TxStatus';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
@@ -91,14 +92,13 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
       </Td>
       <Td pr={ 4 }>
         <VStack alignItems="start" lineHeight="24px">
-          <Address width="100%">
-            <AddressLink
-              hash={ tx.hash }
-              type="transaction"
-              fontWeight="700"
-              isLoading={ isLoading }
-            />
-          </Address>
+          <TxEntity
+            hash={ tx.hash }
+            isLoading={ isLoading }
+            fontWeight={ 700 }
+            noIcon
+            maxW="100%"
+          />
           { tx.timestamp && <Skeleton color="text_secondary" fontWeight="400" isLoaded={ !isLoading }><span>{ timeAgo }</span></Skeleton> }
         </VStack>
       </Td>
