@@ -43,7 +43,8 @@ const LatestBlocksItem = ({ block, h, isLoading }: Props) => {
         <BlockEntity
           isLoading={ isLoading }
           number={ block.height }
-          size="lg"
+          fontSize="xl"
+          lineHeight={ 7 }
           fontWeight={ 500 }
           mr="auto"
           tailLength={ 2 }

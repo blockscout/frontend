@@ -6,13 +6,10 @@ import type { L2TxnBatchesItem } from 'types/api/l2TxnBatches';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import txIcon from 'icons/transactions.svg';
 import dayjs from 'lib/date/dayjs';
-import Icon from 'ui/shared/chakra/Icon';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import BlockEntityL2 from 'ui/shared/entities/block/BlockEntityL2';
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import LinkExternal from 'ui/shared/LinkExternal';
+import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import LinkInternal from 'ui/shared/LinkInternal';
 
 const feature = config.features.rollup;
@@ -32,7 +29,8 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
         <BlockEntityL2
           isLoading={ isLoading }
           number={ item.l2_block_number }
-          size="sm"
+          fontSize="sm"
+          lineHeight={ 5 }
           fontWeight={ 600 }
         />
       </Td>
@@ -50,27 +48,23 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
         <BlockEntityL1
           isLoading={ isLoading }
           number={ item.epoch_number }
-          size="sm"
+          fontSize="sm"
+          lineHeight={ 5 }
+          fontWeight={ 600 }
           py="2px"
           noIcon
-          fontWeight={ 600 }
         />
       </Td>
       <Td pr={ 12 }>
         <VStack spacing={ 3 } alignItems="flex-start">
           { item.l1_tx_hashes.map(hash => (
-            <LinkExternal
-              maxW="100%"
-              display="inline-flex"
+            <TxEntityL1
               key={ hash }
-              href={ feature.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: hash } }) }
               isLoading={ isLoading }
-            >
-              <Icon as={ txIcon } boxSize={ 6 } isLoading={ isLoading }/>
-              <Skeleton isLoaded={ !isLoading } w="calc(100% - 36px)" overflow="hidden" whiteSpace="nowrap" ml={ 1 }>
-                <HashStringShortenDynamic hash={ hash }/>
-              </Skeleton>
-            </LinkExternal>
+              hash={ hash }
+              size="sm"
+              maxW="100%"
+            />
           )) }
         </VStack>
       </Td>

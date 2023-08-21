@@ -10,7 +10,6 @@ import type { Transaction } from 'types/api/transaction';
 
 import config from 'configs/app';
 import rightArrowIcon from 'icons/arrows/east.svg';
-import transactionIcon from 'icons/transactions.svg';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Address from 'ui/shared/address/Address';
@@ -19,6 +18,7 @@ import AddressLink from 'ui/shared/address/AddressLink';
 import Icon from 'ui/shared/chakra/Icon';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
+import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import InOutTag from 'ui/shared/InOutTag';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TxStatus from 'ui/shared/TxStatus';
@@ -54,23 +54,13 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
         <TxAdditionalInfo tx={ tx } isMobile isLoading={ isLoading }/>
       </Flex>
       <Flex justifyContent="space-between" lineHeight="24px" mt={ 3 } alignItems="center">
-        <Flex>
-          <Icon
-            as={ transactionIcon }
-            boxSize="30px"
-            color="link"
-            isLoading={ isLoading }
-          />
-          <Address width="100%" ml={ 2 }>
-            <AddressLink
-              hash={ tx.hash }
-              type="transaction"
-              fontWeight="700"
-              truncation="constant"
-              isLoading={ isLoading }
-            />
-          </Address>
-        </Flex>
+        <TxEntity
+          isLoading={ isLoading }
+          hash={ tx.hash }
+          truncation="constant"
+          size="lg"
+          fontWeight="700"
+        />
         { tx.timestamp && (
           <Skeleton isLoaded={ !isLoading } color="text_secondary" fontWeight="400" fontSize="sm">
             <span>{ timeAgo }</span>

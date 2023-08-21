@@ -3,10 +3,13 @@ import { Box, chakra, Skeleton } from '@chakra-ui/react';
 import _omit from 'lodash/omit';
 import React from 'react';
 
+import type { HashTruncation } from 'types/ui';
+
 import { route } from 'nextjs-routes';
 
-import blockIcon from 'icons/block.svg';
+import transactionIcon from 'icons/transactions.svg';
 import IconBase from 'ui/shared/chakra/Icon';
+import HashStringShorten from 'ui/shared/HashStringShorten';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
@@ -15,18 +18,21 @@ import type { Size } from '../utils';
 import { getPropsForSize } from '../utils';
 
 // TODO @tom2drum icon color: grey for search result page
+// TODO @tom2drum refactor TransactionSnippet
+// TODO @tom2drum refactor tx links and AddressLinks with type transaction
+// TODO @tom2drum make EntityBase component
 
-interface LinkProps extends Pick<EntityProps, 'className' | 'hash' | 'number' | 'onClick' | 'isLoading' | 'isExternal' | 'href'> {
+interface LinkProps extends Pick<EntityProps, 'className' | 'hash' | 'onClick' | 'isLoading' | 'isExternal' | 'href'> {
   children: React.ReactNode;
 }
 
-const Link = chakra(({ number, hash, className, isLoading, children, isExternal, onClick, href }: LinkProps) => {
+const Link = chakra(({ hash, className, isLoading, children, isExternal, onClick, href }: LinkProps) => {
   const Component = isExternal ? LinkExternal : LinkInternal;
 
   return (
     <Component
       className={ className }
-      href={ href ?? route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: hash ?? String(number) } }) }
+      href={ href ?? route({ pathname: '/tx/[hash]', query: { hash } }) }
       display="flex"
       alignItems="center"
       minWidth={ 0 } // for content truncation - https://css-tricks.com/flexbox-truncated-text/
@@ -51,7 +57,7 @@ const Icon = ({ isLoading, size, noIcon, asProp }: IconProps) => {
   return (
     <Box marginRight={ styles.marginRight }>
       <IconBase
-        as={ asProp ?? blockIcon }
+        as={ asProp ?? transactionIcon }
         boxSize={ styles.boxSize }
         isLoading={ isLoading }
         borderRadius="base"
@@ -60,11 +66,33 @@ const Icon = ({ isLoading, size, noIcon, asProp }: IconProps) => {
   );
 };
 
-interface ContentProps extends Pick<EntityProps, 'className' | 'isLoading' | 'tailLength' | 'number'> {
+interface ContentProps extends Pick<EntityProps, 'className' | 'isLoading' | 'hash' | 'truncation'> {
   asProp?: As;
 }
 
-const Content = chakra(({ className, isLoading, number, tailLength, asProp }: ContentProps) => {
+const Content = chakra(({ className, isLoading, asProp, hash, truncation = 'dynamic' }: ContentProps) => {
+
+  const children = (() => {
+    switch (truncation) {
+      case 'constant':
+        return (
+          <HashStringShorten
+            hash={ hash }
+            as={ asProp }
+          />
+        );
+      case 'dynamic':
+        return (
+          <HashStringShortenDynamic
+            hash={ hash }
+            as={ asProp }
+          />
+        );
+      case 'none':
+        return <span>{ hash }</span>;
+    }
+  })();
+
   return (
     <Skeleton
       className={ className }
@@ -72,11 +100,7 @@ const Content = chakra(({ className, isLoading, number, tailLength, asProp }: Co
       overflow="hidden"
       whiteSpace="nowrap"
     >
-      <HashStringShortenDynamic
-        hash={ String(number) }
-        tailLength={ tailLength ?? 2 }
-        as={ asProp }
-      />
+      { children }
     </Skeleton>
   );
 });
@@ -84,17 +108,16 @@ const Content = chakra(({ className, isLoading, number, tailLength, asProp }: Co
 export interface EntityProps {
   className?: string;
   isLoading?: boolean;
-  number: number;
-  hash?: string;
+  hash: string;
   size?: Size;
-  tailLength?: number;
   onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
   isExternal?: boolean;
   href?: string;
   noIcon?: boolean;
+  truncation?: HashTruncation;
 }
 
-const BlockEntity = (props: EntityProps) => {
+const TxEntity = (props: EntityProps) => {
   const partsProps = _omit(props, [ 'className', 'onClick' ]);
 
   return (
@@ -105,7 +128,7 @@ const BlockEntity = (props: EntityProps) => {
   );
 };
 
-export default React.memo(chakra(BlockEntity));
+export default React.memo(chakra(TxEntity));
 
 export {
   Link,

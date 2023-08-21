@@ -3,8 +3,8 @@ import React from 'react';
 
 import TestApp from 'playwright/TestApp';
 
+import type { Size } from '../utils';
 import BlockEntity from './BlockEntity';
-import type { Size } from './utils';
 
 const sizes: Array<Size> = [ 'sm', 'md', 'lg' ];
 

@@ -7,14 +7,13 @@ import type { L2DepositsItem } from 'types/api/l2Deposits';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import txIcon from 'icons/transactions.svg';
 import dayjs from 'lib/date/dayjs';
 import AddressIcon from 'ui/shared/address/AddressIcon';
-import Icon from 'ui/shared/chakra/Icon';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
+import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkExternal from 'ui/shared/LinkExternal';
-import LinkInternal from 'ui/shared/LinkInternal';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 
 const feature = config.features.rollup;
@@ -36,27 +35,19 @@ const DepositsListItem = ({ item, isLoading }: Props) => {
         <BlockEntityL1
           number={ item.l1_block_number }
           isLoading={ isLoading }
-          size="sm"
+          fontSize="sm"
+          lineHeight={ 5 }
           fontWeight={ 600 }
         />
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>L2 txn hash</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value py="3px">
-        <LinkInternal
-          href={ route({ pathname: '/tx/[hash]', query: { hash: item.l2_tx_hash } }) }
-          display="flex"
-          width="fit-content"
-          alignItems="center"
-          overflow="hidden"
-          w="100%"
+        <TxEntity
           isLoading={ isLoading }
-        >
-          <Icon as={ txIcon } boxSize={ 6 } isLoading={ isLoading }/>
-          <Skeleton isLoaded={ !isLoading } w="calc(100% - 36px)" overflow="hidden" whiteSpace="nowrap" ml={ 1 }>
-            <HashStringShortenDynamic hash={ item.l2_tx_hash }/>
-          </Skeleton>
-        </LinkInternal>
+          hash={ item.l2_tx_hash }
+          size="sm"
+        />
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
@@ -66,18 +57,11 @@ const DepositsListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>L1 txn hash</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value py="3px">
-        <LinkExternal
-          href={ feature.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: item.l1_tx_hash } }) }
-          maxW="100%"
-          display="flex"
-          overflow="hidden"
+        <TxEntityL1
           isLoading={ isLoading }
-        >
-          <Icon as={ txIcon } boxSize={ 6 } isLoading={ isLoading }/>
-          <Skeleton isLoaded={ !isLoading } w="calc(100% - 44px)" overflow="hidden" whiteSpace="nowrap" ml={ 1 }>
-            <HashStringShortenDynamic hash={ item.l1_tx_hash }/>
-          </Skeleton>
-        </LinkExternal>
+          hash={ item.l1_tx_hash }
+          size="sm"
+        />
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>L1 txn origin</ListItemMobileGrid.Label>

@@ -3,16 +3,12 @@ import React from 'react';
 
 import type { L2OutputRootsItem } from 'types/api/l2OutputRoots';
 
-import { route } from 'nextjs-routes';
-
 import config from 'configs/app';
-import txIcon from 'icons/transactions.svg';
 import dayjs from 'lib/date/dayjs';
-import Icon from 'ui/shared/chakra/Icon';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import BlockEntityL2 from 'ui/shared/entities/block/BlockEntityL2';
+import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import LinkExternal from 'ui/shared/LinkExternal';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 
 const feature = config.features.rollup;
@@ -46,25 +42,19 @@ const OutputRootsListItem = ({ item, isLoading }: Props) => {
         <BlockEntityL2
           isLoading={ isLoading }
           number={ item.l2_block_number }
-          size="sm"
+          fontSize="sm"
+          lineHeight={ 5 }
           noIcon
         />
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>L1 txn hash</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value py="3px">
-        <LinkExternal
-          maxW="100%"
-          display="flex"
-          overflow="hidden"
-          href={ feature.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: item.l1_tx_hash } }) }
+        <TxEntityL1
           isLoading={ isLoading }
-        >
-          <Icon as={ txIcon } boxSize={ 6 } isLoading={ isLoading }/>
-          <Skeleton isLoaded={ !isLoading } w="calc(100% - 36px)" overflow="hidden" whiteSpace="nowrap" ml={ 1 }>
-            <HashStringShortenDynamic hash={ item.l1_tx_hash }/>
-          </Skeleton>
-        </LinkExternal>
+          hash={ item.l1_tx_hash }
+          size="sm"
+        />
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Output root</ListItemMobileGrid.Label>

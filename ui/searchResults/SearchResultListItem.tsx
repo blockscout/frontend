@@ -1,4 +1,4 @@
-import { Flex, Grid, Icon, Image, Box, Text, chakra, Skeleton, useColorMode } from '@chakra-ui/react';
+import { Flex, Grid, Icon, Image, Box, Text, Skeleton, useColorMode } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SearchResultItem } from 'types/api/search';
@@ -7,7 +7,6 @@ import { route } from 'nextjs-routes';
 
 import labelIcon from 'icons/publictags.svg';
 import iconSuccess from 'icons/status/success.svg';
-import txIcon from 'icons/transactions.svg';
 import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
 import * as mixpanel from 'lib/mixpanel/index';
@@ -16,6 +15,7 @@ import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import * as BlockEntity from 'ui/shared/entities/block/BlockEntity';
+import * as TxEntity from 'ui/shared/entities/tx/TxEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
@@ -161,12 +161,20 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
 
       case 'transaction': {
         return (
-          <Flex alignItems="center" overflow="hidden">
-            <Icon as={ txIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
-            <chakra.mark display="block" overflow="hidden">
-              <AddressLink hash={ data.tx_hash } type="transaction" fontWeight={ 700 } display="block" onClick={ handleLinkClick }/>
-            </chakra.mark>
-          </Flex>
+          <TxEntity.Link
+            isLoading={ isLoading }
+            hash={ data.tx_hash }
+            onClick={ handleLinkClick }
+          >
+            <TxEntity.Icon/>
+            <TxEntity.Content
+              asProp="mark"
+              hash={ data.tx_hash }
+              fontSize="sm"
+              lineHeight={ 5 }
+              fontWeight={ 700 }
+            />
+          </TxEntity.Link>
         );
       }
     }

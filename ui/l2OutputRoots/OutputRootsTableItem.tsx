@@ -3,16 +3,12 @@ import React from 'react';
 
 import type { L2OutputRootsItem } from 'types/api/l2OutputRoots';
 
-import { route } from 'nextjs-routes';
-
 import config from 'configs/app';
-import txIcon from 'icons/transactions.svg';
 import dayjs from 'lib/date/dayjs';
-import Icon from 'ui/shared/chakra/Icon';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import BlockEntityL2 from 'ui/shared/entities/block/BlockEntityL2';
+import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import LinkExternal from 'ui/shared/LinkExternal';
 
 const feature = config.features.rollup;
 
@@ -37,24 +33,17 @@ const OutputRootsTableItem = ({ item, isLoading }: Props) => {
         <BlockEntityL2
           isLoading={ isLoading }
           number={ item.l2_block_number }
-          size="sm"
+          fontSize="sm"
+          lineHeight={ 5 }
           fontWeight={ 600 }
         />
       </Td>
       <Td verticalAlign="middle" pr={ 12 }>
-        <Flex>
-          <LinkExternal
-            maxW="100%"
-            display="inline-flex"
-            href={ feature.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: item.l1_tx_hash } }) }
-            isLoading={ isLoading }
-          >
-            <Icon as={ txIcon } boxSize={ 6 } isLoading={ isLoading }/>
-            <Skeleton isLoaded={ !isLoading } w="calc(100% - 36px)" overflow="hidden" whiteSpace="nowrap" ml={ 1 } >
-              <HashStringShortenDynamic hash={ item.l1_tx_hash }/>
-            </Skeleton>
-          </LinkExternal>
-        </Flex>
+        <TxEntityL1
+          isLoading={ isLoading }
+          hash={ item.l1_tx_hash }
+          size="sm"
+        />
       </Td>
       <Td verticalAlign="middle">
         <Flex overflow="hidden" whiteSpace="nowrap" w="100%" alignItems="center">

@@ -8,17 +8,12 @@ import React from 'react';
 
 import type { L2DepositsItem } from 'types/api/l2Deposits';
 
-import { route } from 'nextjs-routes';
-
 import config from 'configs/app';
-import txIcon from 'icons/transactions.svg';
 import dayjs from 'lib/date/dayjs';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import Icon from 'ui/shared/chakra/Icon';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import LinkExternal from 'ui/shared/LinkExternal';
-import LinkInternal from 'ui/shared/LinkInternal';
+import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 
 const feature = config.features.rollup;
 
@@ -39,42 +34,26 @@ const LatestTxsItem = ({ item, isLoading }: Props) => {
     <BlockEntityL1
       number={ item.l1_block_number }
       isLoading={ isLoading }
-      size="sm"
+      fontSize="sm"
+      lineHeight={ 5 }
       fontWeight={ 700 }
     />
   );
 
   const l1TxLink = (
-    <LinkExternal
-      href={ feature.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: item.l1_tx_hash } }) }
-      maxW="100%"
-      display="inline-flex"
-      alignItems="center"
-      overflow="hidden"
+    <TxEntityL1
       isLoading={ isLoading }
-      my="3px"
-    >
-      <Icon as={ txIcon } boxSize={ 6 } isLoading={ isLoading }/>
-      <Skeleton isLoaded={ !isLoading } overflow="hidden" whiteSpace="nowrap" ml={ 1 }>
-        <HashStringShortenDynamic hash={ item.l1_tx_hash }/>
-      </Skeleton>
-    </LinkExternal>
+      hash={ item.l1_tx_hash }
+      size="sm"
+    />
   );
 
   const l2TxLink = (
-    <LinkInternal
-      href={ route({ pathname: '/tx/[hash]', query: { hash: item.l2_tx_hash } }) }
-      display="flex"
-      alignItems="center"
-      overflow="hidden"
-      w="100%"
+    <TxEntity
       isLoading={ isLoading }
-    >
-      <Icon as={ txIcon } boxSize={ 6 } isLoading={ isLoading }/>
-      <Skeleton isLoaded={ !isLoading } w="calc(100% - 36px)" overflow="hidden" whiteSpace="nowrap" ml={ 1 }>
-        <HashStringShortenDynamic hash={ item.l2_tx_hash }/>
-      </Skeleton>
-    </LinkInternal>
+      hash={ item.l2_tx_hash }
+      size="sm"
+    />
   );
 
   const content = (() => {
