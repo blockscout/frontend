@@ -319,6 +319,7 @@
               "poa_core",
               "eth_goerli",
               "eth",
+              "rootstock",
               "localhost",
             ],
             "default": "main"

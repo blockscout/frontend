@@ -15,7 +15,7 @@ import clockIcon from 'icons/clock.svg';
 import flameIcon from 'icons/flame.svg';
 import type { ResourceError } from 'lib/api/resources';
 import getBlockReward from 'lib/block/getBlockReward';
-import { WEI, WEI_IN_GWEI, ZERO } from 'lib/consts';
+import { GWEI, WEI, WEI_IN_GWEI, ZERO } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
 import { space } from 'lib/html-entities';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
@@ -211,7 +211,7 @@ const BlockDetails = ({ query }: Props) => {
         { /* api doesn't return the block processing time yet */ }
         { /* <Text>{ dayjs.duration(block.minedIn, 'second').humanize(true) }</Text> */ }
       </DetailsInfoItem>
-      { !config.features.rollup.isEnabled && !totalReward.isEqualTo(ZERO) && (
+      { !config.features.rollup.isEnabled && !totalReward.isEqualTo(ZERO) && !config.UI.views.block.hiddenFields?.total_reward && (
         <DetailsInfoItem
           title="Block reward"
           hint={
@@ -280,7 +280,7 @@ const BlockDetails = ({ query }: Props) => {
           isLoading={ isPlaceholderData }
         >
           <Skeleton isLoaded={ !isPlaceholderData }>
-            { BigNumber(data.minimum_gas_price).toFormat() }
+            { BigNumber(data.minimum_gas_price).dividedBy(GWEI).toFormat() } Gwei
           </Skeleton>
         </DetailsInfoItem>
       ) }
@@ -302,31 +302,33 @@ const BlockDetails = ({ query }: Props) => {
           ) }
         </DetailsInfoItem>
       ) }
-      <DetailsInfoItem
-        title="Burnt fees"
-        hint={
-          `Amount of ${ config.chain.currency.symbol || 'native token' } burned from transactions included in the block.
+      { !config.UI.views.block.hiddenFields?.burnt_fees && (
+        <DetailsInfoItem
+          title="Burnt fees"
+          hint={
+            `Amount of ${ config.chain.currency.symbol || 'native token' } burned from transactions included in the block.
 
           Equals Block Base Fee per Gas * Gas Used`
-        }
-        isLoading={ isPlaceholderData }
-      >
-        <Icon as={ flameIcon } boxSize={ 5 } color="gray.500" isLoading={ isPlaceholderData }/>
-        <Skeleton isLoaded={ !isPlaceholderData } ml={ 1 }>
-          { burntFees.dividedBy(WEI).toFixed() } { config.chain.currency.symbol }
-        </Skeleton>
-        { !txFees.isEqualTo(ZERO) && (
-          <Tooltip label="Burnt fees / Txn fees * 100%">
-            <Box>
-              <Utilization
-                ml={ 4 }
-                value={ burntFees.dividedBy(txFees).toNumber() }
-                isLoading={ isPlaceholderData }
-              />
-            </Box>
-          </Tooltip>
-        ) }
-      </DetailsInfoItem>
+          }
+          isLoading={ isPlaceholderData }
+        >
+          <Icon as={ flameIcon } boxSize={ 5 } color="gray.500" isLoading={ isPlaceholderData }/>
+          <Skeleton isLoaded={ !isPlaceholderData } ml={ 1 }>
+            { burntFees.dividedBy(WEI).toFixed() } { config.chain.currency.symbol }
+          </Skeleton>
+          { !txFees.isEqualTo(ZERO) && (
+            <Tooltip label="Burnt fees / Txn fees * 100%">
+              <Box>
+                <Utilization
+                  ml={ 4 }
+                  value={ burntFees.dividedBy(txFees).toNumber() }
+                  isLoading={ isPlaceholderData }
+                />
+              </Box>
+            </Tooltip>
+          ) }
+        </DetailsInfoItem>
+      ) }
       { data.priority_fee !== null && BigNumber(data.priority_fee).gt(ZERO) && (
         <DetailsInfoItem
           title="Priority fee / Tip"
@@ -467,12 +469,14 @@ const BlockDetails = ({ query }: Props) => {
           >
             <Text wordBreak="break-all" whiteSpace="break-spaces">{ data.state_root }</Text>
           </DetailsInfoItem> */ }
-          <DetailsInfoItem
-            title="Nonce"
-            hint="Block nonce is a value used during mining to demonstrate proof of work for a block"
-          >
-            { data.nonce }
-          </DetailsInfoItem>
+          { config.chain.verificationType !== 'validation' && (
+            <DetailsInfoItem
+              title="Nonce"
+              hint="Block nonce is a value used during mining to demonstrate proof of work for a block"
+            >
+              { data.nonce }
+            </DetailsInfoItem>
+          ) }
         </>
       ) }
     </Grid>

@@ -2,6 +2,7 @@ import type { NavItemExternal } from 'types/client/navigation-items';
 import type { NetworkExplorer } from 'types/networks';
 import type { ChainIndicatorId } from 'ui/home/indicators/types';
 
+import * as views from './ui/views';
 import { getEnvValue, parseEnvJson } from './utils';
 
 // eslint-disable-next-line max-len
@@ -34,6 +35,7 @@ const UI = Object.freeze({
     showGasTracker: getEnvValue(process.env.NEXT_PUBLIC_HOMEPAGE_SHOW_GAS_TRACKER) === 'false' ? false : true,
     showAvgBlockTime: getEnvValue(process.env.NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME) === 'false' ? false : true,
   },
+  views,
   indexingAlert: {
     isHidden: getEnvValue(process.env.NEXT_PUBLIC_HIDE_INDEXING_ALERT),
   },

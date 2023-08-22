@@ -19,3 +19,11 @@ export const featureEnvs = {
     { name: 'NEXT_PUBLIC_L2_WITHDRAWAL_URL', value: 'https://localhost:3102' },
   ],
 };
+
+export const viewsEnvs = {
+  block: {
+    hiddenFields: [
+      { name: 'NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_FIELDS', value: '["burnt_fees", "total_reward"]' },
+    ],
+  },
+};

@@ -12,6 +12,8 @@ The app instance could be customized by passing following variables to NodeJS en
   - [Homepage](ENVS.md#homepage)
   - [Sidebar](ENVS.md#sidebar)
   - [Footer](ENVS.md#footer)
+  - [Views](ENVS.md#views)
+    - [Block](ENVS.md#block-views)
   - [Misc](ENVS.md#misc)
 - [App features](ENVS.md#app-features)
   - [My account](ENVS.md#my-account)
@@ -127,6 +129,23 @@ The app version shown in the footer is derived from build-time ENV variables `NE
 | --- | --- | --- | --- | --- | --- |
 | title | `string` | Title of link group | Required | - | `Company` |
 | links | `Array<{'text':string;'url':string;}>` | list of links | Required | - | `[{'text':'Homepage','url':'https://www.blockscout.com'}]` |
+
+&nbsp;
+
+### Views
+
+#### Block views
+
+| Variable | Type | Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_FIELDS | `Array<BlockFieldId>` | Array of the block fields ids that should be hidden. See below the list of the possible id values. | - | - | `'["burnt_fees","total_reward"]'` |
+
+
+##### Block fields list
+| Id | Description |
+| --- | --- |
+| `burnt_fees` | Burnt fees |
+| `total_reward` | Total block reward |
 
 &nbsp;
 

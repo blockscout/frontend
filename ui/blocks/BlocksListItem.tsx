@@ -89,7 +89,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           ) }
         </Flex>
       </Box>
-      { !config.features.rollup.isEnabled && (
+      { !config.features.rollup.isEnabled && !config.UI.views.block.hiddenFields?.total_reward && (
         <Flex columnGap={ 2 }>
           <Text fontWeight={ 500 }>Reward { config.chain.currency.symbol }</Text>
           <Skeleton isLoaded={ !isLoading } display="inline-block" color="text_secondary">
@@ -97,7 +97,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           </Skeleton>
         </Flex>
       ) }
-      { !config.features.rollup.isEnabled && (
+      { !config.features.rollup.isEnabled && !config.UI.views.block.hiddenFields?.burnt_fees && (
         <Box>
           <Text fontWeight={ 500 }>Burnt fees</Text>
           <Flex columnGap={ 4 } mt={ 2 }>
