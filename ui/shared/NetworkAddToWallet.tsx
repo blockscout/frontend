@@ -1,4 +1,4 @@
-import { Button, Icon, chakra } from '@chakra-ui/react';
+import { Button, Icon } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
@@ -10,11 +10,7 @@ import { WALLETS_INFO } from 'lib/web3/wallets';
 
 const feature = config.features.web3Wallet;
 
-interface Props {
-  className?: string;
-}
-
-const NetworkAddToWallet = ({ className }: Props) => {
+const NetworkAddToWallet = () => {
   const toast = useToast();
   const { provider, wallet } = useProvider();
   const addOrSwitchChain = useAddOrSwitchChain();
@@ -58,11 +54,11 @@ const NetworkAddToWallet = ({ className }: Props) => {
   }
 
   return (
-    <Button variant="outline" size="sm" onClick={ handleClick } className={ className }>
+    <Button variant="outline" size="sm" onClick={ handleClick }>
       <Icon as={ WALLETS_INFO[wallet].icon } boxSize={ 5 } mr={ 2 }/>
         Add { config.chain.name }
     </Button>
   );
 };
 
-export default React.memo(chakra(NetworkAddToWallet));
+export default React.memo(NetworkAddToWallet);
