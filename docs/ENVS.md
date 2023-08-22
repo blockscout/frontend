@@ -138,10 +138,10 @@ The app version shown in the footer is derived from build-time ENV variables `NE
 
 | Variable | Type | Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_FIELDS | `Array<BlockFieldId>` | Array of the block fields ids that should be hidden. See below the list of the possible value. | - | - | `https://example.com/footer_links_config.json` |
+| NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_FIELDS | `Array<BlockFieldId>` | Array of the block fields ids that should be hidden. See below the list of the possible id values. | - | - | `'["burnt_fees","total_reward"]'` |
 
 
-##### Block fields
+##### Block fields list
 | Id | Description |
 | --- | --- |
 | `burnt_fees` | Burnt fees |
