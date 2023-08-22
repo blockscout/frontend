@@ -80,6 +80,12 @@ export interface TransactionsResponseWatchlist {
   } | null;
 }
 
-export type TransactionType = 'token_transfer' | 'contract_creation' | 'contract_call' | 'token_creation' | 'coin_transfer'
+export type TransactionType = 'rootstock_remasc' |
+'rootstock_bridge' |
+'token_transfer' |
+'contract_creation' |
+'contract_call' |
+'token_creation' |
+'coin_transfer'
 
 export type TxsResponse = TransactionsResponseValidated | TransactionsResponsePending | BlockTransactionsResponse;

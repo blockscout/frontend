@@ -196,7 +196,7 @@ const oldUrls = [
   },
   {
     source: '/token/:hash/token-transfers',
-    destination: '/token/:hash',
+    destination: '/token/:hash/?tab=token_transfers',
   },
   {
     source: '/token/:hash/token-holders',
