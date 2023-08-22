@@ -125,7 +125,7 @@ const TxDetails = () => {
 
   return (
     <>
-      { config.chain.isTestnet && <Alert status="warning" mb={ 6 }>This is a { config.chain.name } testnet transaction only</Alert> }
+      { config.chain.isTestnet && <Alert status="warning" mb={ 6 }>This is a testnet transaction only</Alert> }
       <Grid columnGap={ 8 } rowGap={{ base: 3, lg: 3 }} templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }}>
         { socketStatus && (
           <GridItem colSpan={{ base: undefined, lg: 2 }} mb={ 2 }>
