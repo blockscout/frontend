@@ -22,7 +22,7 @@ export type NextPublicEnvs = {
   NEXT_PUBLIC_FOOTER_LINKS?: string;
   NEXT_PUBLIC_API_SPEC_URL?: string;
   NEXT_PUBLIC_GRAPHIQL_TRANSACTION?: string;
-  NEXT_PUBLIC_WEB3_DEFAULT_WALLET?: 'metamask' | 'coinbase';
+  NEXT_PUBLIC_WEB3_WALLETS?: string;
   NEXT_PUBLIC_WEB3_DISABLE_ADD_TOKEN_TO_WALLET?: 'true' | 'false';
   NEXT_PUBLIC_HIDE_INDEXING_ALERT?: 'true' | 'false';
 

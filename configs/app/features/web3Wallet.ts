@@ -1,26 +1,37 @@
 import type { Feature } from './types';
 import type { WalletType } from 'types/client/wallets';
 
-import { getEnvValue } from '../utils';
+import { getEnvValue, parseEnvJson } from '../utils';
 
-const defaultWallet = ((): WalletType => {
-  const envValue = getEnvValue(process.env.NEXT_PUBLIC_WEB3_DEFAULT_WALLET) as WalletType;
+const wallets = ((): Array<WalletType> | undefined => {
+  const envValue = getEnvValue(process.env.NEXT_PUBLIC_WEB3_WALLETS);
+  if (envValue === 'none') {
+    return;
+  }
+
   const SUPPORTED_WALLETS: Array<WalletType> = [
     'metamask',
     'coinbase',
+    'token_pocket',
   ];
 
-  return envValue && SUPPORTED_WALLETS.includes(envValue) ? envValue : 'metamask';
+  const wallets = parseEnvJson<Array<WalletType>>(envValue)?.filter((type) => SUPPORTED_WALLETS.includes(type));
+
+  if (!wallets || wallets.length === 0) {
+    return [ 'metamask' ];
+  }
+
+  return wallets;
 })();
 
 const title = 'Web3 wallet integration (add token or network to the wallet)';
 
-const config: Feature<{ defaultWallet: Exclude<WalletType, 'none'>; addToken: { isDisabled: boolean }}> = (() => {
-  if (defaultWallet !== 'none') {
+const config: Feature<{ wallets: Array<WalletType>; addToken: { isDisabled: boolean }}> = (() => {
+  if (wallets && wallets.length > 0) {
     return Object.freeze({
       title,
       isEnabled: true,
-      defaultWallet,
+      wallets,
       addToken: {
         isDisabled: getEnvValue(process.env.NEXT_PUBLIC_WEB3_DISABLE_ADD_TOKEN_TO_WALLET) === 'true',
       },

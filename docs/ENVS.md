@@ -333,11 +333,11 @@ For each application, you need to specify the `MarketplaceCategoryId` to which i
 
 ### Web3 wallet integration (add token or network to the wallet)
 
-This feature is **enabled by default** with the `metamask` wallet type. To switch it off pass `NEXT_PUBLIC_WEB3_DEFAULT_WALLET=none`.
+This feature is **enabled by default** with the `['metamask']` value. To switch it off pass `NEXT_PUBLIC_WEB3_WALLETS=none`.
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_WEB3_DEFAULT_WALLET | `metamask` \| `coinbase` \| `none` | Type of Web3 wallet which will be used by default to add tokens or chains to | - | `metamask` | `coinbase` |
+| NEXT_PUBLIC_WEB3_WALLETS | `Array<'metamask' \| 'coinbase' \| 'token_pocket'>` | Array of Web3 wallets which will be used  to add tokens or chain to. The first wallet which is enabled in user's browser will be shown. | - | `[ 'metamask' ]` | `[ 'coinbase' ]` |
 | NEXT_PUBLIC_WEB3_DISABLE_ADD_TOKEN_TO_WALLET | `boolean`| Set to `true` to hide icon "Add to your wallet" next to token addresses | - | - | `true` |
 
 &nbsp;

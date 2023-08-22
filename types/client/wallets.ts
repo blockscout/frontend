@@ -1,4 +1,4 @@
-export type WalletType = 'metamask' | 'coinbase' | 'none';
+export type WalletType = 'metamask' | 'coinbase' | 'token_pocket';
 
 export interface WalletInfo {
   name: string;
