@@ -6,7 +6,9 @@ import type { Block } from 'types/api/block';
 
 import type { ResourceError } from 'lib/api/resources';
 import * as blockMock from 'mocks/blocks/block';
+import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
+import * as configs from 'playwright/utils/configs';
 
 import BlockDetails from './BlockDetails';
 
@@ -52,7 +54,12 @@ test('genesis block', async({ mount, page }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('rootstock custom fields', async({ mount, page }) => {
+const customFieldsTest = test.extend({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  context: contextWithEnvs(configs.viewsEnvs.block.hiddenFields) as any,
+});
+
+customFieldsTest('rootstock custom fields', async({ mount, page }) => {
   const query = {
     data: blockMock.rootstock,
     isLoading: false,

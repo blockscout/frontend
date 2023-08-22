@@ -211,7 +211,7 @@ const BlockDetails = ({ query }: Props) => {
         { /* api doesn't return the block processing time yet */ }
         { /* <Text>{ dayjs.duration(block.minedIn, 'second').humanize(true) }</Text> */ }
       </DetailsInfoItem>
-      { !config.features.rollup.isEnabled && !totalReward.isEqualTo(ZERO) && (
+      { !config.features.rollup.isEnabled && !totalReward.isEqualTo(ZERO) && !config.UI.views.block.hiddenFields?.total_reward && (
         <DetailsInfoItem
           title="Block reward"
           hint={
@@ -302,7 +302,7 @@ const BlockDetails = ({ query }: Props) => {
           ) }
         </DetailsInfoItem>
       ) }
-      { burntFees.gt(ZERO) && (
+      { !config.UI.views.block.hiddenFields?.burnt_fees && (
         <DetailsInfoItem
           title="Burnt fees"
           hint={

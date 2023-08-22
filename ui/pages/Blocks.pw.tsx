@@ -4,9 +4,11 @@ import React from 'react';
 import * as textAdMock from 'mocks/ad/textAd';
 import * as blockMock from 'mocks/blocks/block';
 import * as statsMock from 'mocks/stats/index';
+import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
 import * as socketServer from 'playwright/fixtures/socketServer';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
+import * as configs from 'playwright/utils/configs';
 
 import Blocks from './Blocks';
 
@@ -61,9 +63,62 @@ test('base view +@dark-mode', async({ mount, page }) => {
   await expect(component).toHaveScreenshot();
 });
 
+const hiddenFieldsTest = test.extend({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  context: contextWithEnvs(configs.viewsEnvs.block.hiddenFields) as any,
+});
+
+hiddenFieldsTest('hidden fields', async({ mount, page }) => {
+  await page.route(BLOCKS_API_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify(blockMock.baseListResponse),
+  }));
+  await page.route(STATS_API_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify(statsMock.base),
+  }));
+
+  const component = await mount(
+    <TestApp>
+      <Blocks/>
+    </TestApp>,
+    { hooksConfig },
+  );
+  await page.waitForResponse(BLOCKS_API_URL);
+
+  await expect(component).toHaveScreenshot();
+});
+
 test.describe('mobile', () => {
   test.use({ viewport: devices['iPhone 13 Pro'].viewport });
+
   test(' base view', async({ mount, page }) => {
+    await page.route(BLOCKS_API_URL, (route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify(blockMock.baseListResponse),
+    }));
+    await page.route(STATS_API_URL, (route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify(statsMock.base),
+    }));
+
+    const component = await mount(
+      <TestApp>
+        <Blocks/>
+      </TestApp>,
+      { hooksConfig },
+    );
+    await page.waitForResponse(BLOCKS_API_URL);
+
+    await expect(component).toHaveScreenshot();
+  });
+
+  const hiddenFieldsTest = test.extend({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    context: contextWithEnvs(configs.viewsEnvs.block.hiddenFields) as any,
+  });
+
+  hiddenFieldsTest('hidden fields', async({ mount, page }) => {
     await page.route(BLOCKS_API_URL, (route) => route.fulfill({
       status: 200,
       body: JSON.stringify(blockMock.baseListResponse),
