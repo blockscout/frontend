@@ -18,10 +18,6 @@ import StatsItem from './StatsItem';
 const hasGasTracker = config.UI.homepage.showGasTracker;
 const hasAvgBlockTime = config.UI.homepage.showAvgBlockTime;
 
-let itemsCount = 5;
-!hasGasTracker && itemsCount--;
-!hasAvgBlockTime && itemsCount--;
-
 const Stats = () => {
   const { data, isPlaceholderData, isError } = useApiQuery('homepage_stats', {
     queryOptions: {
@@ -37,8 +33,13 @@ const Stats = () => {
 
   const lastItemTouchStyle = { gridColumn: { base: 'span 2', lg: 'unset' } };
 
+  let itemsCount = 5;
+  !hasGasTracker && itemsCount--;
+  !hasAvgBlockTime && itemsCount--;
+
   if (data) {
-    const isOdd = Boolean(hasGasTracker && !data.gas_prices ? (itemsCount - 1) % 2 : itemsCount % 2);
+    !data.gas_prices && itemsCount--;
+    const isOdd = Boolean(itemsCount % 2);
     const gasLabel = hasGasTracker && data.gas_prices ? <StatsGasPrices gasPrices={ data.gas_prices }/> : null;
 
     content = (
