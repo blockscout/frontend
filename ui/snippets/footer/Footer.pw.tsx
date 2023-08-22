@@ -12,6 +12,7 @@ import Footer from './Footer';
 
 const FOOTER_LINKS_URL = 'https://localhost:3000/footer-links.json';
 const BACKEND_VERSION_API_URL = buildApiUrl('config_backend_version');
+const INDEXING_ALERT_API_URL = buildApiUrl('homepage_indexing_status');
 
 base.describe('with custom links, 4 cols', () => {
   const test = base.extend({
@@ -27,6 +28,17 @@ base.describe('with custom links, 4 cols', () => {
         body: JSON.stringify(FOOTER_LINKS),
       });
     });
+
+    await page.evaluate(() => {
+      window.ethereum = {
+        isMetaMask: true,
+      } as WindowProvider;
+    });
+
+    await page.route(INDEXING_ALERT_API_URL, (route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify({ finished_indexing: false, indexed_internal_transactions_ratio: 0.1 }),
+    }));
 
     await mount(
       <TestApp>
@@ -104,9 +116,7 @@ base.describe('without custom links', () => {
       } as WindowProvider;
     });
 
-    const API_URL = buildApiUrl('homepage_indexing_status');
-
-    await page.route(API_URL, (route) => route.fulfill({
+    await page.route(INDEXING_ALERT_API_URL, (route) => route.fulfill({
       status: 200,
       body: JSON.stringify({ finished_indexing: false, indexed_internal_transactions_ratio: 0.1 }),
     }));

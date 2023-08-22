@@ -1,4 +1,4 @@
-import { IconButton, Icon, Popover, PopoverTrigger, PopoverContent, PopoverBody, Flex, Text, useColorModeValue, chakra } from '@chakra-ui/react';
+import { IconButton, Icon, Popover, PopoverTrigger, PopoverContent, PopoverBody, Flex, Text, useColorModeValue } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
@@ -11,7 +11,7 @@ import { apos, nbsp, ndash } from 'lib/html-entities';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 
-const IndexingAlertIntTxs = ({ className }: { className?: string }) => {
+const IndexingAlertIntTxs = () => {
 
   const { data, isError, isLoading } = useApiQuery('homepage_indexing_status');
 
@@ -66,7 +66,6 @@ const IndexingAlertIntTxs = ({ className }: { className?: string }) => {
       borderRadius="base"
       alignItems="center"
       justifyContent="center"
-      className={ className }
       color="green.400"
       _hover={{ color: 'blue.400' }}
     >
@@ -99,4 +98,4 @@ const IndexingAlertIntTxs = ({ className }: { className?: string }) => {
   );
 };
 
-export default chakra(IndexingAlertIntTxs);
+export default IndexingAlertIntTxs;

@@ -52,6 +52,7 @@ const TokenPageContent = () => {
   const scrollRef = React.useRef<HTMLDivElement>(null);
 
   const hashString = getQueryParamString(router.query.hash);
+  const tab = getQueryParamString(router.query.tab);
 
   const queryClient = useQueryClient();
 
@@ -114,24 +115,22 @@ const TokenPageContent = () => {
   }, [ tokenQuery.data, tokenQuery.isPlaceholderData ]);
 
   const hasData = (tokenQuery.data && !tokenQuery.isPlaceholderData) && (contractQuery.data && !contractQuery.isPlaceholderData);
+  const hasInventoryTab = tokenQuery.data?.type === 'ERC-1155' || tokenQuery.data?.type === 'ERC-721';
 
   const transfersQuery = useQueryWithPages({
     resourceName: 'token_transfers',
     pathParams: { hash: hashString },
     scrollRef,
     options: {
-      enabled: Boolean(hashString && (!router.query.tab || router.query.tab === 'token_transfers') && hasData),
+      enabled: Boolean(
+        hasData &&
+        hashString &&
+        (
+          (!hasInventoryTab && !tab) ||
+          tab === 'token_transfers'
+        ),
+      ),
       placeholderData: tokenStubs.getTokenTransfersStub(tokenQuery.data?.type),
-    },
-  });
-
-  const holdersQuery = useQueryWithPages({
-    resourceName: 'token_holders',
-    pathParams: { hash: hashString },
-    scrollRef,
-    options: {
-      enabled: Boolean(router.query.hash && router.query.tab === 'holders' && hasData),
-      placeholderData: generateListStub<'token_holders'>(tokenStubs.TOKEN_HOLDER, 50, { next_page_params: null }),
     },
   });
 
@@ -140,8 +139,25 @@ const TokenPageContent = () => {
     pathParams: { hash: hashString },
     scrollRef,
     options: {
-      enabled: Boolean(router.query.hash && router.query.tab === 'inventory' && hasData),
+      enabled: Boolean(
+        hasData &&
+        hashString &&
+        (
+          (hasInventoryTab && !tab) ||
+          tab === 'inventory'
+        ),
+      ),
       placeholderData: generateListStub<'token_inventory'>(tokenStubs.TOKEN_INSTANCE, 50, { next_page_params: null }),
+    },
+  });
+
+  const holdersQuery = useQueryWithPages({
+    resourceName: 'token_holders',
+    pathParams: { hash: hashString },
+    scrollRef,
+    options: {
+      enabled: Boolean(hashString && tab === 'holders' && hasData),
+      placeholderData: generateListStub<'token_holders'>(tokenStubs.TOKEN_HOLDER, 50, { next_page_params: null }),
     },
   });
 
@@ -153,11 +169,11 @@ const TokenPageContent = () => {
   const contractTabs = useContractTabs(contractQuery.data);
 
   const tabs: Array<RoutedTab> = [
-    { id: 'token_transfers', title: 'Token transfers', component: <TokenTransfer transfersQuery={ transfersQuery } token={ tokenQuery.data }/> },
-    { id: 'holders', title: 'Holders', component: <TokenHolders token={ tokenQuery.data } holdersQuery={ holdersQuery }/> },
     (tokenQuery.data?.type === 'ERC-1155' || tokenQuery.data?.type === 'ERC-721') ?
       { id: 'inventory', title: 'Inventory', component: <TokenInventory inventoryQuery={ inventoryQuery }/> } :
       undefined,
+    { id: 'token_transfers', title: 'Token transfers', component: <TokenTransfer transfersQuery={ transfersQuery } token={ tokenQuery.data }/> },
+    { id: 'holders', title: 'Holders', component: <TokenHolders token={ tokenQuery.data } holdersQuery={ holdersQuery }/> },
     contractQuery.data?.is_contract ? {
       id: 'contract',
       title: () => {
@@ -179,7 +195,7 @@ const TokenPageContent = () => {
 
   let pagination: PaginationParams | undefined;
 
-  if (!router.query.tab || router.query.tab === 'token_transfers') {
+  if (!tab || tab === 'token_transfers') {
     pagination = transfersQuery.pagination;
   }
 
@@ -187,7 +203,7 @@ const TokenPageContent = () => {
     pagination = holdersQuery.pagination;
   }
 
-  if (router.query.tab === 'inventory') {
+  if (tab === 'inventory') {
     pagination = inventoryQuery.pagination;
   }
 
