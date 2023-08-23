@@ -6,6 +6,9 @@ interface Props {
   children: React.ReactNode;
 }
 
+/**
+ * @deprecated use `ui/shared/entities/address` instead
+ */
 const Address = ({ children, className }: Props) => {
   return <Flex alignItems="center" overflow="hidden" className={ className }>{ children }</Flex>;
 };

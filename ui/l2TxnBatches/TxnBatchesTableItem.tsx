@@ -6,12 +6,10 @@ import type { L2TxnBatchesItem } from 'types/api/l2TxnBatches';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import txIcon from 'icons/transactions.svg';
-import txBatchIcon from 'icons/txBatch.svg';
 import dayjs from 'lib/date/dayjs';
-import Icon from 'ui/shared/chakra/Icon';
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import LinkExternal from 'ui/shared/LinkExternal';
+import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
+import BlockEntityL2 from 'ui/shared/entities/block/BlockEntityL2';
+import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import LinkInternal from 'ui/shared/LinkInternal';
 
 const feature = config.features.rollup;
@@ -28,19 +26,13 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
   return (
     <Tr>
       <Td>
-        <LinkInternal
-          fontWeight={ 600 }
-          display="flex"
-          width="fit-content"
-          alignItems="center"
-          href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.l2_block_number.toString() } }) }
+        <BlockEntityL2
           isLoading={ isLoading }
-        >
-          <Icon as={ txBatchIcon } boxSize={ 6 } isLoading={ isLoading }/>
-          <Skeleton isLoaded={ !isLoading } ml={ 1 }>
-            { item.l2_block_number }
-          </Skeleton>
-        </LinkInternal>
+          number={ item.l2_block_number }
+          fontSize="sm"
+          lineHeight={ 5 }
+          fontWeight={ 600 }
+        />
       </Td>
       <Td>
         <LinkInternal
@@ -53,33 +45,27 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
         </LinkInternal>
       </Td>
       <Td>
-        <LinkExternal
-          href={ feature.L1BaseUrl + route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.epoch_number.toString() } }) }
-          fontWeight={ 600 }
-          display="inline-flex"
+        <BlockEntityL1
           isLoading={ isLoading }
+          number={ item.epoch_number }
+          fontSize="sm"
+          lineHeight={ 5 }
+          fontWeight={ 600 }
           py="2px"
-        >
-          <Skeleton isLoaded={ !isLoading } display="inline-block">
-            { item.epoch_number }
-          </Skeleton>
-        </LinkExternal>
+          noIcon
+        />
       </Td>
       <Td pr={ 12 }>
         <VStack spacing={ 3 } alignItems="flex-start">
           { item.l1_tx_hashes.map(hash => (
-            <LinkExternal
-              maxW="100%"
-              display="inline-flex"
+            <TxEntityL1
               key={ hash }
-              href={ feature.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: hash } }) }
               isLoading={ isLoading }
-            >
-              <Icon as={ txIcon } boxSize={ 6 } isLoading={ isLoading }/>
-              <Skeleton isLoaded={ !isLoading } w="calc(100% - 36px)" overflow="hidden" whiteSpace="nowrap" ml={ 1 }>
-                <HashStringShortenDynamic hash={ hash }/>
-              </Skeleton>
-            </LinkExternal>
+              hash={ hash }
+              fontSize="sm"
+              lineHeight={ 5 }
+              maxW="100%"
+            />
           )) }
         </VStack>
       </Td>

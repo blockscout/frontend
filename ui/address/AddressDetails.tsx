@@ -1,4 +1,4 @@
-import { Box, Text, Grid, Skeleton } from '@chakra-ui/react';
+import { Box, Text, Grid } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -7,7 +7,6 @@ import type { Address as TAddress } from 'types/api/address';
 
 import { route } from 'nextjs-routes';
 
-import blockIcon from 'icons/block.svg';
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -15,10 +14,11 @@ import { ADDRESS_COUNTERS } from 'stubs/address';
 import AddressCounterItem from 'ui/address/details/AddressCounterItem';
 import AddressLink from 'ui/shared/address/AddressLink';
 import AddressHeadingInfo from 'ui/shared/AddressHeadingInfo';
-import Icon from 'ui/shared/chakra/Icon';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
+import BlockEntity from 'ui/shared/entities/block/BlockEntity';
+import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkInternal from 'ui/shared/LinkInternal';
 
@@ -104,7 +104,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
           >
             <AddressLink type="address" hash={ data.creator_address_hash } truncation="constant"/>
             <Text whiteSpace="pre"> at txn </Text>
-            <AddressLink hash={ data.creation_tx_hash } type="transaction" truncation="constant"/>
+            <TxEntity hash={ data.creation_tx_hash } truncation="constant" noIcon/>
           </DetailsInfoItem>
         ) }
         { data.is_contract && data.implementation_address && (
@@ -210,16 +210,10 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
             py={{ base: '2px', lg: 1 }}
             isLoading={ addressQuery.isPlaceholderData }
           >
-            <LinkInternal
-              href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.block_number_balance_updated_at) } }) }
-              display="flex"
-              alignItems="center"
-            >
-              <Box mr={ 2 }>
-                <Icon as={ blockIcon } boxSize={ 6 } isLoading={ addressQuery.isPlaceholderData }/>
-              </Box>
-              <Skeleton isLoaded={ !addressQuery.isPlaceholderData }>{ data.block_number_balance_updated_at }</Skeleton>
-            </LinkInternal>
+            <BlockEntity
+              number={ data.block_number_balance_updated_at }
+              isLoading={ addressQuery.isPlaceholderData }
+            />
           </DetailsInfoItem>
         ) }
         <DetailsSponsoredItem isLoading={ addressQuery.isPlaceholderData }/>

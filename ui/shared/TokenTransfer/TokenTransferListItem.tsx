@@ -5,7 +5,6 @@ import React from 'react';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import eastArrowIcon from 'icons/arrows/east.svg';
-import transactionIcon from 'icons/transactions.svg';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
@@ -13,6 +12,7 @@ import AddressLink from 'ui/shared/address/AddressLink';
 import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import InOutTag from 'ui/shared/InOutTag';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
@@ -66,23 +66,12 @@ const TokenTransferListItem = ({
       { 'token_id' in total && <TokenTransferNft hash={ token.address } id={ total.token_id } isLoading={ isLoading }/> }
       { showTxInfo && txHash && (
         <Flex justifyContent="space-between" alignItems="center" lineHeight="24px" width="100%">
-          <Flex>
-            <Icon
-              as={ transactionIcon }
-              boxSize="30px"
-              color="link"
-              isLoading={ isLoading }
-            />
-            <Address width="100%" ml={ 2 }>
-              <AddressLink
-                hash={ txHash }
-                type="transaction"
-                fontWeight="700"
-                truncation="constant"
-                isLoading={ isLoading }
-              />
-            </Address>
-          </Flex>
+          <TxEntity
+            isLoading={ isLoading }
+            hash={ txHash }
+            truncation="constant"
+            fontWeight="700"
+          />
           { timestamp && (
             <Skeleton isLoaded={ !isLoading } color="text_secondary" fontWeight="400" fontSize="sm">
               <span>{ timeAgo }</span>

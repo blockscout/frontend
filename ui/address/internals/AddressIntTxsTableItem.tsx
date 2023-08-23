@@ -4,8 +4,6 @@ import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
 
-import { route } from 'nextjs-routes';
-
 import config from 'configs/app';
 import rightArrowIcon from 'icons/arrows/east.svg';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
@@ -15,8 +13,9 @@ import AddressLink from 'ui/shared/address/AddressLink';
 import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import BlockEntity from 'ui/shared/entities/block/BlockEntity';
+import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import InOutTag from 'ui/shared/InOutTag';
-import LinkInternal from 'ui/shared/LinkInternal';
 import TxStatus from 'ui/shared/TxStatus';
 import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
@@ -48,7 +47,12 @@ const AddressIntTxsTableItem = ({
     <Tr alignItems="top">
       <Td verticalAlign="middle">
         <Flex rowGap={ 3 } flexWrap="wrap">
-          <AddressLink fontWeight="700" hash={ txnHash } type="transaction" isLoading={ isLoading }/>
+          <TxEntity
+            hash={ txnHash }
+            isLoading={ isLoading }
+            fontWeight={ 700 }
+            noIcon
+          />
           { timestamp && (
             <Skeleton isLoaded={ !isLoading } color="text_secondary" fontWeight="400" fontSize="sm">
               <span>{ timeAgo }</span>
@@ -67,11 +71,14 @@ const AddressIntTxsTableItem = ({
         </Flex>
       </Td>
       <Td verticalAlign="middle">
-        <Skeleton isLoaded={ !isLoading } display="inline-block">
-          <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: block.toString() } }) }>
-            { block }
-          </LinkInternal>
-        </Skeleton>
+        <BlockEntity
+          isLoading={ isLoading }
+          number={ block }
+          noIcon
+          fontSize="sm"
+          lineHeight={ 5 }
+          fontWeight={ 500 }
+        />
       </Td>
       <Td verticalAlign="middle">
         <Address display="inline-flex" maxW="100%">

@@ -15,6 +15,7 @@ import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import BlockTimestamp from 'ui/blocks/BlockTimestamp';
 import AddressLink from 'ui/shared/address/AddressLink';
 import Icon from 'ui/shared/chakra/Icon';
+import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
 import LinkInternal from 'ui/shared/LinkInternal';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
@@ -38,17 +39,13 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
     <ListItemMobile rowGap={ 3 } key={ String(data.height) } isAnimated>
       <Flex justifyContent="space-between" w="100%">
         <Flex columnGap={ 2 } alignItems="center">
-          <Skeleton isLoaded={ !isLoading } display="inline-block">
-            <LinkInternal
-              fontWeight={ 600 }
-              href={ route({
-                pathname: '/block/[height_or_hash]',
-                query: { height_or_hash: data.type === 'reorg' ? String(data.hash) : String(data.height) },
-              }) }
-            >
-              { data.height }
-            </LinkInternal>
-          </Skeleton>
+          <BlockEntity
+            isLoading={ isLoading }
+            number={ data.height }
+            hash={ data.type === 'reorg' ? data.hash : undefined }
+            noIcon
+            fontWeight={ 600 }
+          />
         </Flex>
         <BlockTimestamp ts={ data.timestamp } isEnabled={ enableTimeIncrement } isLoading={ isLoading }/>
       </Flex>

@@ -11,13 +11,13 @@ import type { Transaction } from 'types/api/transaction';
 
 import config from 'configs/app';
 import rightArrowIcon from 'icons/arrows/east.svg';
-import transactionIcon from 'icons/transactions.svg';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import Icon from 'ui/shared/chakra/Icon';
+import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxStatus from 'ui/shared/TxStatus';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 import TxType from 'ui/txs/TxType';
@@ -54,26 +54,14 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
         justifyContent="space-between"
         mb={ 6 }
       >
-        <Flex mr={ 3 }>
-          <Icon
-            as={ transactionIcon }
-            boxSize="30px"
-            mr={ 2 }
-            color="link"
-            isLoading={ isLoading }
-          />
-          <Address width="100%">
-            <AddressLink
-              hash={ tx.hash }
-              type="transaction"
-              fontWeight="700"
-              truncation="constant"
-              isLoading={ isLoading }
-            />
-          </Address>
-        </Flex>
+        <TxEntity
+          isLoading={ isLoading }
+          hash={ tx.hash }
+          fontWeight="700"
+          truncation="constant"
+        />
         { tx.timestamp && (
-          <Skeleton isLoaded={ !isLoading } color="text_secondary" fontWeight="400" fontSize="sm">
+          <Skeleton isLoaded={ !isLoading } color="text_secondary" fontWeight="400" fontSize="sm" ml={ 3 }>
             <span>{ timeAgo }</span>
           </Skeleton>
         ) }

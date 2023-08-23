@@ -3,18 +3,14 @@ import React from 'react';
 
 import type { L2WithdrawalsItem } from 'types/api/l2Withdrawals';
 
-import { route } from 'nextjs-routes';
-
 import config from 'configs/app';
-import txIcon from 'icons/transactions.svg';
 import dayjs from 'lib/date/dayjs';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
-import Icon from 'ui/shared/chakra/Icon';
-import HashStringShorten from 'ui/shared/HashStringShorten';
+import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import LinkExternal from 'ui/shared/LinkExternal';
-import LinkInternal from 'ui/shared/LinkInternal';
 
 const feature = config.features.rollup;
 
@@ -42,18 +38,13 @@ const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
         ) : 'N/A' }
       </Td>
       <Td verticalAlign="middle">
-        <LinkInternal
-          href={ route({ pathname: '/tx/[hash]', query: { hash: item.l2_tx_hash } }) }
-          display="flex"
-          width="fit-content"
-          alignItems="center"
+        <TxEntity
           isLoading={ isLoading }
-        >
-          <Icon as={ txIcon } boxSize={ 6 } isLoading={ isLoading }/>
-          <Skeleton isLoaded={ !isLoading } w="calc(100% - 36px)" overflow="hidden" whiteSpace="nowrap" ml={ 1 }>
-            <HashStringShorten hash={ item.l2_tx_hash }/>
-          </Skeleton>
-        </LinkInternal>
+          hash={ item.l2_tx_hash }
+          truncation="constant"
+          fontSize="sm"
+          lineHeight={ 5 }
+        />
       </Td>
       <Td verticalAlign="middle" pr={ 12 }>
         <Skeleton isLoaded={ !isLoading } color="text_secondary" display="inline-block">
@@ -68,15 +59,13 @@ const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
       </Td>
       <Td verticalAlign="middle">
         { item.l1_tx_hash ? (
-          <LinkExternal
-            href={ feature.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: item.l1_tx_hash } }) }
+          <TxEntityL1
             isLoading={ isLoading }
-            display="inline-flex"
-          >
-            <Skeleton isLoaded={ !isLoading }>
-              <HashStringShorten hash={ item.l1_tx_hash }/>
-            </Skeleton>
-          </LinkExternal>
+            hash={ item.l1_tx_hash }
+            truncation="constant"
+            fontSize="sm"
+            lineHeight={ 5 }
+          />
         ) :
           'N/A'
         }

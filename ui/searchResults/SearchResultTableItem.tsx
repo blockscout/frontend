@@ -1,14 +1,12 @@
-import { chakra, Tr, Td, Text, Flex, Icon, Image, Box, Skeleton, useColorMode } from '@chakra-ui/react';
+import { Tr, Td, Text, Flex, Icon, Image, Box, Skeleton, useColorMode } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SearchResultItem } from 'types/api/search';
 
 import { route } from 'nextjs-routes';
 
-import blockIcon from 'icons/block.svg';
 import labelIcon from 'icons/publictags.svg';
 import iconSuccess from 'icons/status/success.svg';
-import txIcon from 'icons/transactions.svg';
 import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
 import * as mixpanel from 'lib/mixpanel/index';
@@ -16,6 +14,8 @@ import { saveToRecentKeywords } from 'lib/recentSearchKeywords';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
+import * as BlockEntity from 'ui/shared/entities/block/BlockEntity';
+import * as TxEntity from 'ui/shared/entities/tx/TxEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
@@ -220,16 +220,22 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
         return (
           <>
             <Td fontSize="sm">
-              <Flex alignItems="center">
-                <Icon as={ blockIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
-                <LinkInternal
-                  fontWeight={ 700 }
-                  href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.block_hash) } }) }
+              <BlockEntity.Container>
+                <BlockEntity.Icon/>
+                <BlockEntity.Link
+                  hash={ data.block_hash }
+                  number={ Number(data.block_number) }
                   onClick={ handleLinkClick }
                 >
-                  <Box as={ shouldHighlightHash ? 'span' : 'mark' }>{ data.block_number }</Box>
-                </LinkInternal>
-              </Flex>
+                  <BlockEntity.Content
+                    asProp={ shouldHighlightHash ? 'span' : 'mark' }
+                    number={ Number(data.block_number) }
+                    fontSize="sm"
+                    lineHeight={ 5 }
+                    fontWeight={ 700 }
+                  />
+                </BlockEntity.Link>
+              </BlockEntity.Container>
             </Td>
             <Td fontSize="sm" verticalAlign="middle">
               <Box overflow="hidden" whiteSpace="nowrap" as={ shouldHighlightHash ? 'mark' : 'span' } display="block">
@@ -247,12 +253,22 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
         return (
           <>
             <Td colSpan={ 2 } fontSize="sm">
-              <Flex alignItems="center">
-                <Icon as={ txIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
-                <chakra.mark overflow="hidden">
-                  <AddressLink display="block" hash={ data.tx_hash } type="transaction" fontWeight={ 700 } onClick={ handleLinkClick } truncation="dynamic"/>
-                </chakra.mark>
-              </Flex>
+              <TxEntity.Container>
+                <TxEntity.Icon/>
+                <TxEntity.Link
+                  isLoading={ isLoading }
+                  hash={ data.tx_hash }
+                  onClick={ handleLinkClick }
+                >
+                  <TxEntity.Content
+                    asProp="mark"
+                    hash={ data.tx_hash }
+                    fontSize="sm"
+                    lineHeight={ 5 }
+                    fontWeight={ 700 }
+                  />
+                </TxEntity.Link>
+              </TxEntity.Container>
             </Td>
             <Td fontSize="sm" verticalAlign="middle" isNumeric>
               <Text variant="secondary">{ dayjs(data.timestamp).format('llll') }</Text>

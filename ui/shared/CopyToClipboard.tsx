@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 import CopyIcon from 'icons/copy.svg';
 
-interface Props {
+export interface Props {
   text: string;
   className?: string;
   isLoading?: boolean;

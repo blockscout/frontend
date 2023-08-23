@@ -13,8 +13,6 @@ import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
 
-import { route } from 'nextjs-routes';
-
 import rightArrowIcon from 'icons/arrows/east.svg';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Address from 'ui/shared/address/Address';
@@ -24,8 +22,9 @@ import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import CurrencyValue from 'ui/shared/CurrencyValue';
+import BlockEntity from 'ui/shared/entities/block/BlockEntity';
+import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import InOutTag from 'ui/shared/InOutTag';
-import LinkInternal from 'ui/shared/LinkInternal';
 import TxStatus from 'ui/shared/TxStatus';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 
@@ -93,14 +92,13 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
       </Td>
       <Td pr={ 4 }>
         <VStack alignItems="start" lineHeight="24px">
-          <Address width="100%">
-            <AddressLink
-              hash={ tx.hash }
-              type="transaction"
-              fontWeight="700"
-              isLoading={ isLoading }
-            />
-          </Address>
+          <TxEntity
+            hash={ tx.hash }
+            isLoading={ isLoading }
+            fontWeight={ 700 }
+            noIcon
+            maxW="100%"
+          />
           { tx.timestamp && <Skeleton color="text_secondary" fontWeight="400" isLoaded={ !isLoading }><span>{ timeAgo }</span></Skeleton> }
         </VStack>
       </Td>
@@ -120,11 +118,14 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
       { showBlockInfo && (
         <Td>
           { tx.block && (
-            <Skeleton isLoaded={ !isLoading } display="inline-block">
-              <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: tx.block.toString() } }) }>
-                { tx.block }
-              </LinkInternal>
-            </Skeleton>
+            <BlockEntity
+              isLoading={ isLoading }
+              number={ tx.block }
+              noIcon
+              fontSize="sm"
+              lineHeight={ 6 }
+              fontWeight={ 500 }
+            />
           ) }
         </Td>
       ) }
