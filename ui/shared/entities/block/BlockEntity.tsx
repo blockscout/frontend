@@ -5,7 +5,7 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
-import blockIcon from 'icons/block.svg';
+import blockIcon from 'icons/block_slim.svg';
 import * as EntityBase from 'ui/shared/entities/base/components';
 
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'hash' | 'number'>;

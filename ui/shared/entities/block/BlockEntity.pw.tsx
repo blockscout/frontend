@@ -5,7 +5,7 @@ import TestApp from 'playwright/TestApp';
 
 import BlockEntity from './BlockEntity';
 
-const iconSizes = [ 'sm', 'md', 'lg' ];
+const iconSizes = [ 'md', 'lg' ];
 
 test.use({ viewport: { width: 180, height: 30 } });
 

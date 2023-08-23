@@ -34,7 +34,6 @@ const LatestTxsItem = ({ item, isLoading }: Props) => {
     <BlockEntityL1
       number={ item.l1_block_number }
       isLoading={ isLoading }
-      iconSize="lg"
       fontSize="sm"
       lineHeight={ 5 }
       fontWeight={ 700 }

@@ -3,7 +3,7 @@ import _omit from 'lodash/omit';
 import React from 'react';
 
 import config from 'configs/app';
-import txBatchIcon from 'icons/txBatch.svg';
+import txBatchIcon from 'icons/txn_batches_slim.svg';
 
 import * as BlockEntity from './BlockEntity';
 

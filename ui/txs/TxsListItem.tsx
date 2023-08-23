@@ -58,7 +58,6 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
           isLoading={ isLoading }
           hash={ tx.hash }
           truncation="constant"
-          iconSize="lg"
           fontWeight="700"
         />
         { tx.timestamp && (

@@ -5,7 +5,7 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
-import transactionIcon from 'icons/transactions.svg';
+import transactionIcon from 'icons/transactions_slim.svg';
 import * as EntityBase from 'ui/shared/entities/base/components';
 
 // TODO @tom2drum use in search suggest but without link

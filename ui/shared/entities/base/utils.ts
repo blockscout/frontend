@@ -1,20 +1,15 @@
-export type IconSize = 'sm' | 'md' | 'lg';
+export type IconSize = 'md' | 'lg';
 
 export function getIconProps(size: IconSize = 'md') {
   switch (size) {
-    case 'sm': {
-      return {
-        boxSize: '20px',
-      };
-    }
     case 'md': {
       return {
-        boxSize: '24px',
+        boxSize: '20px', // for tables, lists and regular content
       };
     }
     case 'lg': {
       return {
-        boxSize: '30px',
+        boxSize: '30px', // for headings
       };
     }
   }

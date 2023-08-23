@@ -44,7 +44,6 @@ const LatestBlocksItem = ({ block, h, isLoading }: Props) => {
           isLoading={ isLoading }
           number={ block.height }
           tailLength={ 2 }
-          iconSize="lg"
           fontSize="xl"
           lineHeight={ 7 }
           fontWeight={ 500 }

@@ -57,7 +57,6 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
               <TxEntity
                 isLoading={ isLoading }
                 hash={ tx.hash }
-                iconSize="lg"
                 fontWeight="700"
               />
               { tx.timestamp && (

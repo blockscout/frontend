@@ -47,7 +47,6 @@ const TokenTransferListItem = ({
           isLoading={ isLoading }
           hash={ txHash }
           truncation="constant"
-          iconSize="lg"
           fontWeight="700"
         />
         { timestamp && (
