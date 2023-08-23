@@ -1,5 +1,5 @@
 import { Box, chakra, Flex, Skeleton, useColorModeValue } from '@chakra-ui/react';
-import type { As } from '@chakra-ui/react';
+import type { As, IconProps } from '@chakra-ui/react';
 import React from 'react';
 
 import IconBase from 'ui/shared/chakra/Icon';
@@ -12,7 +12,7 @@ import LinkInternal from 'ui/shared/LinkInternal';
 
 import { getIconProps, type IconSize } from './utils';
 
-export type HashTruncation = 'constant' | 'dynamic' | 'none';
+export type Truncation = 'constant' | 'dynamic' | 'tail' | 'none';
 
 export interface EntityBaseProps {
   className?: string;
@@ -21,10 +21,11 @@ export interface EntityBaseProps {
   onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
   isExternal?: boolean;
   href?: string;
+  query?: Record<string, string>;
   noIcon?: boolean;
   withCopy?: boolean;
   tailLength?: number;
-  truncation?: HashTruncation;
+  truncation?: Truncation;
 }
 
 export interface ContainerBaseProps extends Pick<EntityBaseProps, 'className'> {
@@ -66,10 +67,11 @@ const Link = chakra(({ isLoading, children, isExternal, onClick, href }: LinkBas
 
 export interface IconBaseProps extends Pick<EntityBaseProps, 'isLoading' | 'iconSize' | 'noIcon'> {
   asProp: As;
+  color?: IconProps['color'];
 }
 
-const Icon = ({ isLoading, iconSize, noIcon, asProp }: IconBaseProps) => {
-  const color = useColorModeValue('gray.500', 'gray.400');
+const Icon = ({ isLoading, iconSize, noIcon, asProp, color }: IconBaseProps) => {
+  const defaultColor = useColorModeValue('gray.500', 'gray.400');
 
   if (noIcon) {
     return null;
@@ -77,7 +79,7 @@ const Icon = ({ isLoading, iconSize, noIcon, asProp }: IconBaseProps) => {
 
   const styles = getIconProps(iconSize);
   return (
-    <Box mr={ 2 } color={ color }>
+    <Box mr={ 2 } color={ color ?? defaultColor }>
       <IconBase
         as={ asProp }
         boxSize={ styles.boxSize }
