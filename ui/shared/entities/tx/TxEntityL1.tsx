@@ -12,20 +12,24 @@ const feature = config.features.rollup;
 
 const TxEntityL1 = (props: TxEntity.EntityProps) => {
   const partsProps = _omit(props, [ 'className', 'onClick' ]);
+  const linkProps = _omit(props, [ 'className' ]);
 
   if (!feature.isEnabled) {
     return null;
   }
 
   return (
-    <TxEntity.Link
-      { ...props }
-      isExternal
-      href={ feature.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: props.hash } }) }
-    >
+    <TxEntity.Container className={ props.className }>
       <TxEntity.Icon { ...partsProps }/>
-      <TxEntity.Content { ...partsProps }/>
-    </TxEntity.Link>
+      <TxEntity.Link
+        { ...linkProps }
+        isExternal
+        href={ feature.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: props.hash } }) }
+      >
+        <TxEntity.Content { ...partsProps }/>
+      </TxEntity.Link>
+      <TxEntity.Copy { ...partsProps }/>
+    </TxEntity.Container>
   );
 };
 

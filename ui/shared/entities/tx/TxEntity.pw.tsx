@@ -6,18 +6,18 @@ import TestApp from 'playwright/TestApp';
 import TxEntity from './TxEntity';
 
 const hash = '0x376db52955d5bce114d0ccea2dcf22289b4eae1b86bcae5a59bb5fdbfef48899';
-const sizes = [ 'sm', 'md', 'lg' ];
+const iconSizes = [ 'sm', 'md', 'lg' ];
 
 test.use({ viewport: { width: 180, height: 30 } });
 
-test.describe('sizes', () => {
-  sizes.forEach((size) => {
-    test(`size=${ size }`, async({ mount }) => {
+test.describe('icon size', () => {
+  iconSizes.forEach((size) => {
+    test(size, async({ mount }) => {
       const component = await mount(
         <TestApp>
           <TxEntity
             hash={ hash }
-            size={ size }
+            iconSize={ size }
           />
         </TestApp>,
       );
@@ -53,7 +53,7 @@ test('external link', async({ mount }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('with copy', async({ mount }) => {
+test('with copy +@dark-mode', async({ mount }) => {
   const component = await mount(
     <TestApp>
       <TxEntity
@@ -62,6 +62,8 @@ test('with copy', async({ mount }) => {
       />
     </TestApp>,
   );
+
+  await component.getByText(hash.slice(0, 4)).hover();
 
   await expect(component).toHaveScreenshot();
 });

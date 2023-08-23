@@ -5,18 +5,18 @@ import TestApp from 'playwright/TestApp';
 
 import BlockEntity from './BlockEntity';
 
-const sizes = [ 'sm', 'md', 'lg' ];
+const iconSizes = [ 'sm', 'md', 'lg' ];
 
 test.use({ viewport: { width: 180, height: 30 } });
 
-test.describe('sizes', () => {
-  sizes.forEach((size) => {
-    test(`size=${ size }`, async({ mount }) => {
+test.describe('icon sizes', () => {
+  iconSizes.forEach((size) => {
+    test(size, async({ mount }) => {
       const component = await mount(
         <TestApp>
           <BlockEntity
             number={ 17943507 }
-            size={ size }
+            iconSize={ size }
           />
         </TestApp>,
       );
@@ -39,7 +39,7 @@ test('loading', async({ mount }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('external link', async({ mount }) => {
+test('external link +@dark-mode', async({ mount }) => {
   const component = await mount(
     <TestApp>
       <BlockEntity
@@ -48,6 +48,8 @@ test('external link', async({ mount }) => {
       />
     </TestApp>,
   );
+
+  await component.getByText('17943507').hover();
 
   await expect(component).toHaveScreenshot();
 });

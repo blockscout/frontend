@@ -11,6 +11,7 @@ import * as BlockEntity from './BlockEntity';
 const feature = config.features.rollup;
 
 const BlockEntityL1 = (props: BlockEntity.EntityProps) => {
+  const linkProps = _omit(props, [ 'className' ]);
   const partsProps = _omit(props, [ 'className', 'onClick' ]);
 
   if (!feature.isEnabled) {
@@ -18,14 +19,16 @@ const BlockEntityL1 = (props: BlockEntity.EntityProps) => {
   }
 
   return (
-    <BlockEntity.Link
-      { ...props }
-      isExternal
-      href={ feature.L1BaseUrl + route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: props.hash ?? String(props.number) } }) }
-    >
+    <BlockEntity.Container className={ props.className }>
       <BlockEntity.Icon { ...partsProps }/>
-      <BlockEntity.Content { ...partsProps }/>
-    </BlockEntity.Link>
+      <BlockEntity.Link
+        { ...linkProps }
+        isExternal
+        href={ feature.L1BaseUrl + route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: props.hash ?? String(props.number) } }) }
+      >
+        <BlockEntity.Content { ...partsProps }/>
+      </BlockEntity.Link>
+    </BlockEntity.Container>
   );
 };
 

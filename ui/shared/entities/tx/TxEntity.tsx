@@ -1,15 +1,12 @@
 import type { As } from '@chakra-ui/react';
-import { chakra, Flex } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import _omit from 'lodash/omit';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
 import transactionIcon from 'icons/transactions.svg';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import * as EntityBase from 'ui/shared/entities/base/components';
-
-// TODO @tom2drum icon color: grey for search result page
 
 interface LinkProps extends Pick<EntityProps, 'className' | 'hash' | 'onClick' | 'isLoading' | 'isExternal' | 'href'> {
   children: React.ReactNode;
@@ -52,43 +49,44 @@ const Content = chakra((props: ContentProps) => {
   );
 });
 
-const Copy = CopyToClipboard;
+type CopyProps = Omit<EntityBase.CopyBaseProps, 'text'> & Pick<EntityProps, 'hash'>;
+
+const Copy = (props: CopyProps) => {
+  return (
+    <EntityBase.Copy
+      { ...props }
+      text={ props.hash }
+    />
+  );
+};
+
+const Container = EntityBase.Container;
 
 export interface EntityProps extends EntityBase.EntityBaseProps {
   hash: string;
 }
 
 const TxEntity = (props: EntityProps) => {
-  if (props.withCopy) {
-    const partsProps = _omit(props, [ 'className', 'onClick' ]);
-    const linkProps = _omit(props, [ 'className' ]);
-
-    // TODO @tom2drum refactor if icon should be a part of the link
-    return (
-      <Flex alignItems="center" className={ props.className } { ...partsProps }>
-        <Link { ...linkProps }>
-          <Icon { ...partsProps }/>
-          <Content { ...partsProps }/>
-        </Link>
-        <Copy text={ props.hash } isLoading={ props.isLoading }/>
-      </Flex>
-    );
-  }
-
+  const linkProps = _omit(props, [ 'className' ]);
   const partsProps = _omit(props, [ 'className', 'onClick' ]);
 
   return (
-    <Link { ...props }>
+    <Container className={ props.className }>
       <Icon { ...partsProps }/>
-      <Content { ...partsProps }/>
-    </Link>
+      <Link { ...linkProps }>
+        <Content { ...partsProps }/>
+      </Link>
+      <Copy { ...partsProps }/>
+    </Container>
   );
 };
 
 export default React.memo(chakra(TxEntity));
 
 export {
+  Container,
   Link,
   Icon,
   Content,
+  Copy,
 };

@@ -8,8 +8,6 @@ import { route } from 'nextjs-routes';
 import blockIcon from 'icons/block.svg';
 import * as EntityBase from 'ui/shared/entities/base/components';
 
-// TODO @tom2drum icon color: grey for search result page
-
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'hash' | 'number'>;
 
 const Link = chakra((props: LinkProps) => {
@@ -51,25 +49,31 @@ const Content = chakra((props: ContentProps) => {
   );
 });
 
+const Container = EntityBase.Container;
+
 export interface EntityProps extends EntityBase.EntityBaseProps {
   number: number;
   hash?: string;
 }
 
 const BlockEntity = (props: EntityProps) => {
+  const linkProps = _omit(props, [ 'className' ]);
   const partsProps = _omit(props, [ 'className', 'onClick' ]);
 
   return (
-    <Link { ...props }>
+    <Container className={ props.className }>
       <Icon { ...partsProps }/>
-      <Content { ...partsProps }/>
-    </Link>
+      <Link { ...linkProps }>
+        <Content { ...partsProps }/>
+      </Link>
+    </Container>
   );
 };
 
 export default React.memo(chakra(BlockEntity));
 
 export {
+  Container,
   Link,
   Icon,
   Content,

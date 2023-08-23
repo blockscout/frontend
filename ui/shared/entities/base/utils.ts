@@ -1,30 +1,20 @@
-export type Size = 'sm' | 'md' | 'lg';
+export type IconSize = 'sm' | 'md' | 'lg';
 
-// TODO @tom2drum revise and maybe remove lineHeight and fontSize, leave only icon size
-export function getPropsForSize(size: Size = 'md') {
+export function getIconProps(size: IconSize = 'md') {
   switch (size) {
     case 'sm': {
       return {
-        icon: {
-          boxSize: '24px',
-          marginRight: 1,
-        },
+        boxSize: '20px',
       };
     }
     case 'md': {
       return {
-        icon: {
-          boxSize: '24px',
-          marginRight: 2,
-        },
+        boxSize: '24px',
       };
     }
     case 'lg': {
       return {
-        icon: {
-          boxSize: '30px',
-          marginRight: 2,
-        },
+        boxSize: '30px',
       };
     }
   }
