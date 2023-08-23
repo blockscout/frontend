@@ -53,7 +53,8 @@ const OutputRootsListItem = ({ item, isLoading }: Props) => {
         <TxEntityL1
           isLoading={ isLoading }
           hash={ item.l1_tx_hash }
-          size="sm"
+          fontSize="sm"
+          lineHeight={ 5 }
         />
       </ListItemMobileGrid.Value>
 

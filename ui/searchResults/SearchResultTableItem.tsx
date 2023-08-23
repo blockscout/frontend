@@ -220,20 +220,22 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
         return (
           <>
             <Td fontSize="sm">
-              <BlockEntity.Link
-                hash={ data.block_hash }
-                number={ Number(data.block_number) }
-                onClick={ handleLinkClick }
-              >
+              <BlockEntity.Container>
                 <BlockEntity.Icon/>
-                <BlockEntity.Content
-                  asProp={ shouldHighlightHash ? 'span' : 'mark' }
+                <BlockEntity.Link
+                  hash={ data.block_hash }
                   number={ Number(data.block_number) }
-                  fontSize="sm"
-                  lineHeight={ 5 }
-                  fontWeight={ 700 }
-                />
-              </BlockEntity.Link>
+                  onClick={ handleLinkClick }
+                >
+                  <BlockEntity.Content
+                    asProp={ shouldHighlightHash ? 'span' : 'mark' }
+                    number={ Number(data.block_number) }
+                    fontSize="sm"
+                    lineHeight={ 5 }
+                    fontWeight={ 700 }
+                  />
+                </BlockEntity.Link>
+              </BlockEntity.Container>
             </Td>
             <Td fontSize="sm" verticalAlign="middle">
               <Box overflow="hidden" whiteSpace="nowrap" as={ shouldHighlightHash ? 'mark' : 'span' } display="block">
@@ -251,20 +253,22 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
         return (
           <>
             <Td colSpan={ 2 } fontSize="sm">
-              <TxEntity.Link
-                isLoading={ isLoading }
-                hash={ data.tx_hash }
-                onClick={ handleLinkClick }
-              >
+              <TxEntity.Container>
                 <TxEntity.Icon/>
-                <TxEntity.Content
-                  asProp="mark"
+                <TxEntity.Link
+                  isLoading={ isLoading }
                   hash={ data.tx_hash }
-                  fontSize="sm"
-                  lineHeight={ 5 }
-                  fontWeight={ 700 }
-                />
-              </TxEntity.Link>
+                  onClick={ handleLinkClick }
+                >
+                  <TxEntity.Content
+                    asProp="mark"
+                    hash={ data.tx_hash }
+                    fontSize="sm"
+                    lineHeight={ 5 }
+                    fontWeight={ 700 }
+                  />
+                </TxEntity.Link>
+              </TxEntity.Container>
             </Td>
             <Td fontSize="sm" verticalAlign="middle" isNumeric>
               <Text variant="secondary">{ dayjs(data.timestamp).format('llll') }</Text>

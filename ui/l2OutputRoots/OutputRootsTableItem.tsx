@@ -42,7 +42,8 @@ const OutputRootsTableItem = ({ item, isLoading }: Props) => {
         <TxEntityL1
           isLoading={ isLoading }
           hash={ item.l1_tx_hash }
-          size="sm"
+          fontSize="sm"
+          lineHeight={ 5 }
         />
       </Td>
       <Td verticalAlign="middle">

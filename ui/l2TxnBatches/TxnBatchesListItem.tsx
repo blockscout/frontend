@@ -55,8 +55,9 @@ const TxnBatchesListItem = ({ item, isLoading }: Props) => {
         <BlockEntityL1
           isLoading={ isLoading }
           number={ item.epoch_number }
-          size="sm"
           noIcon
+          fontSize="sm"
+          lineHeight={ 5 }
           fontWeight={ 600 }
         />
       </ListItemMobileGrid.Value>
@@ -69,7 +70,8 @@ const TxnBatchesListItem = ({ item, isLoading }: Props) => {
               key={ hash }
               isLoading={ isLoading }
               hash={ hash }
-              size="sm"
+              fontSize="sm"
+              lineHeight={ 5 }
               maxW="100%"
             />
           )) }

@@ -24,8 +24,9 @@ const AddressBlocksValidatedTableItem = (props: Props) => {
         <BlockEntity
           isLoading={ props.isLoading }
           number={ props.height }
-          size="sm"
           noIcon
+          fontSize="sm"
+          lineHeight={ 5 }
           fontWeight={ 700 }
         />
       </Td>

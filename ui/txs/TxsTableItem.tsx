@@ -121,8 +121,9 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
             <BlockEntity
               isLoading={ isLoading }
               number={ tx.block }
-              size="sm"
               noIcon
+              fontSize="sm"
+              lineHeight={ 6 }
               fontWeight={ 500 }
             />
           ) }

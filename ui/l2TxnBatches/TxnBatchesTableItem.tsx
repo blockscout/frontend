@@ -62,7 +62,8 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
               key={ hash }
               isLoading={ isLoading }
               hash={ hash }
-              size="sm"
+              fontSize="sm"
+              lineHeight={ 5 }
               maxW="100%"
             />
           )) }

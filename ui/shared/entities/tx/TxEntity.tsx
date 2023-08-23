@@ -8,6 +8,8 @@ import { route } from 'nextjs-routes';
 import transactionIcon from 'icons/transactions.svg';
 import * as EntityBase from 'ui/shared/entities/base/components';
 
+// TODO @tom2drum use in search suggest but without link
+
 interface LinkProps extends Pick<EntityProps, 'className' | 'hash' | 'onClick' | 'isLoading' | 'isExternal' | 'href'> {
   children: React.ReactNode;
 }

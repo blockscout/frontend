@@ -64,8 +64,9 @@ const TxInternalsListItem = ({
         <BlockEntity
           isLoading={ isLoading }
           number={ block }
-          size="sm"
           noIcon
+          fontSize="sm"
+          lineHeight={ 5 }
         />
       </HStack>
       <Box w="100%" display="flex" columnGap={ 3 }>

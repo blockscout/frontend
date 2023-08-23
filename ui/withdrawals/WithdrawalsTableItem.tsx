@@ -37,7 +37,8 @@ const WithdrawalsTableItem = ({ item, view, isLoading }: Props) => {
           <BlockEntity
             number={ item.block_number }
             isLoading={ isLoading }
-            size="sm"
+            fontSize="sm"
+            lineHeight={ 5 }
           />
         </Td>
       ) }

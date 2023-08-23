@@ -43,11 +43,12 @@ const LatestBlocksItem = ({ block, h, isLoading }: Props) => {
         <BlockEntity
           isLoading={ isLoading }
           number={ block.height }
+          tailLength={ 2 }
+          iconSize="lg"
           fontSize="xl"
           lineHeight={ 7 }
           fontWeight={ 500 }
           mr="auto"
-          tailLength={ 2 }
         />
         <BlockTimestamp
           ts={ block.timestamp }

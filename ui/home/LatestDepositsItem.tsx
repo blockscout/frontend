@@ -34,6 +34,7 @@ const LatestTxsItem = ({ item, isLoading }: Props) => {
     <BlockEntityL1
       number={ item.l1_block_number }
       isLoading={ isLoading }
+      iconSize="lg"
       fontSize="sm"
       lineHeight={ 5 }
       fontWeight={ 700 }
@@ -44,7 +45,8 @@ const LatestTxsItem = ({ item, isLoading }: Props) => {
     <TxEntityL1
       isLoading={ isLoading }
       hash={ item.l1_tx_hash }
-      size="sm"
+      fontSize="sm"
+      lineHeight={ 5 }
     />
   );
 
@@ -52,7 +54,8 @@ const LatestTxsItem = ({ item, isLoading }: Props) => {
     <TxEntity
       isLoading={ isLoading }
       hash={ item.l2_tx_hash }
-      size="sm"
+      fontSize="sm"
+      lineHeight={ 5 }
     />
   );
 

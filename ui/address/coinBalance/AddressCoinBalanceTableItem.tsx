@@ -25,8 +25,9 @@ const AddressCoinBalanceTableItem = (props: Props) => {
         <BlockEntity
           isLoading={ props.isLoading }
           number={ props.block_number }
-          size="sm"
           noIcon
+          fontSize="sm"
+          lineHeight={ 5 }
           fontWeight={ 700 }
         />
       </Td>

@@ -41,7 +41,8 @@ const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
         <TxEntity
           isLoading={ isLoading }
           hash={ item.l2_tx_hash }
-          size="sm"
+          fontSize="sm"
+          lineHeight={ 5 }
           truncation="constant"
         />
       </Td>
@@ -53,7 +54,8 @@ const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
           isLoading={ isLoading }
           hash={ item.l1_tx_hash }
           truncation="constant"
-          size="sm"
+          fontSize="sm"
+          lineHeight={ 5 }
         />
       </Td>
       <Td verticalAlign="middle">

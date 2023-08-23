@@ -104,7 +104,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
           >
             <AddressLink type="address" hash={ data.creator_address_hash } truncation="constant"/>
             <Text whiteSpace="pre"> at txn </Text>
-            <TxEntity hash={ data.creator_address_hash } truncation="constant" noIcon/>
+            <TxEntity hash={ data.creation_tx_hash } truncation="constant" noIcon/>
           </DetailsInfoItem>
         ) }
         { data.is_contract && data.implementation_address && (

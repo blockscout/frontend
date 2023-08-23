@@ -74,8 +74,9 @@ const AddressIntTxsTableItem = ({
         <BlockEntity
           isLoading={ isLoading }
           number={ block }
-          size="sm"
           noIcon
+          fontSize="sm"
+          lineHeight={ 5 }
           fontWeight={ 500 }
         />
       </Td>

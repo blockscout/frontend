@@ -50,8 +50,9 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
               isLoading={ isLoading }
               number={ data.height }
               hash={ data.type === 'reorg' ? data.hash : undefined }
-              size="sm"
               noIcon
+              fontSize="sm"
+              lineHeight={ 5 }
               fontWeight={ 600 }
             />
           </Tooltip>

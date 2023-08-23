@@ -143,38 +143,42 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
       case 'block': {
         const shouldHighlightHash = data.block_hash.toLowerCase() === searchTerm.toLowerCase();
         return (
-          <BlockEntity.Link
-            hash={ data.block_hash }
-            number={ Number(data.block_number) }
-            onClick={ handleLinkClick }
-          >
+          <BlockEntity.Container>
             <BlockEntity.Icon/>
-            <BlockEntity.Content
-              asProp={ shouldHighlightHash ? 'span' : 'mark' }
+            <BlockEntity.Link
+              hash={ data.block_hash }
               number={ Number(data.block_number) }
-              fontSize="sm"
-              fontWeight={ 700 }
-            />
-          </BlockEntity.Link>
+              onClick={ handleLinkClick }
+            >
+              <BlockEntity.Content
+                asProp={ shouldHighlightHash ? 'span' : 'mark' }
+                number={ Number(data.block_number) }
+                fontSize="sm"
+                fontWeight={ 700 }
+              />
+            </BlockEntity.Link>
+          </BlockEntity.Container>
         );
       }
 
       case 'transaction': {
         return (
-          <TxEntity.Link
-            isLoading={ isLoading }
-            hash={ data.tx_hash }
-            onClick={ handleLinkClick }
-          >
+          <TxEntity.Container>
             <TxEntity.Icon/>
-            <TxEntity.Content
-              asProp="mark"
+            <TxEntity.Link
+              isLoading={ isLoading }
               hash={ data.tx_hash }
-              fontSize="sm"
-              lineHeight={ 5 }
-              fontWeight={ 700 }
-            />
-          </TxEntity.Link>
+              onClick={ handleLinkClick }
+            >
+              <TxEntity.Content
+                asProp="mark"
+                hash={ data.tx_hash }
+                fontSize="sm"
+                lineHeight={ 5 }
+                fontWeight={ 700 }
+              />
+            </TxEntity.Link>
+          </TxEntity.Container>
         );
       }
     }
