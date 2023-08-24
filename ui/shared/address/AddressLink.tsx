@@ -36,6 +36,9 @@ type AddressTokenProps = {
 
 type Props = CommonProps & (AddressTokenTxProps | AddressTokenProps);
 
+/**
+ * @deprecated use `ui/shared/entities/**` instead
+ */
 const AddressLink = (props: Props) => {
   const { alias, type, className, truncation = 'dynamic', hash, fontWeight, target = '_self', isDisabled, isLoading } = props;
   const isMobile = useIsMobile();
