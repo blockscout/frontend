@@ -56,6 +56,8 @@ const Copy = (props: CopyProps) => {
     <EntityBase.Copy
       { ...props }
       text={ props.hash }
+      // by default we don't show copy icon, maybe this should be revised
+      noCopy={ props.noCopy ?? true }
     />
   );
 };

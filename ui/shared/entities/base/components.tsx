@@ -24,8 +24,7 @@ export interface EntityBaseProps {
   href?: string;
   query?: Record<string, string>;
   noIcon?: boolean;
-  // TODO @tom2drum rename to noCopy
-  withCopy?: boolean;
+  noCopy?: boolean;
   tailLength?: number;
   truncation?: Truncation;
 }
@@ -133,10 +132,10 @@ const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dyna
   );
 });
 
-export type CopyBaseProps = Pick<CopyToClipboardProps, 'isLoading' | 'text'> & Pick<EntityBaseProps, 'withCopy'>;
+export type CopyBaseProps = Pick<CopyToClipboardProps, 'isLoading' | 'text'> & Pick<EntityBaseProps, 'noCopy'>;
 
 const Copy = (props: CopyBaseProps) => {
-  if (!props.withCopy) {
+  if (props.noCopy) {
     return null;
   }
 

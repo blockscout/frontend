@@ -122,7 +122,6 @@ const Copy = (props: CopyProps) => {
     <EntityBase.Copy
       { ...props }
       text={ props.token.address }
-      withCopy={ props.withCopy ?? true }
     />
   );
 };

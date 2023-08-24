@@ -101,7 +101,6 @@ const Copy = (props: CopyProps) => {
     <EntityBase.Copy
       { ...props }
       text={ props.address.hash }
-      withCopy={ props.withCopy ?? true }
     />
   );
 };

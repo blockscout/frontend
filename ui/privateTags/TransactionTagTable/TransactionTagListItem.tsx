@@ -30,7 +30,7 @@ const TransactionTagListItem = ({ item, isLoading, onEditClick, onDeleteClick }:
         <TxEntity
           hash={ item.transaction_hash }
           isLoading={ isLoading }
-          withCopy
+          noCopy={ false }
           fontWeight={ 600 }
           maxW="100%"
         />
