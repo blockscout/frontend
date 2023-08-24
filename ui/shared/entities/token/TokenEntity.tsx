@@ -13,9 +13,7 @@ import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 import { getIconProps } from '../base/utils';
 
-interface LinkProps extends Pick<EntityProps, 'className' | 'token' | 'onClick' | 'isLoading' | 'isExternal' | 'href' | 'query'> {
-  children: React.ReactNode;
-}
+type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'token'>;
 
 const Link = chakra((props: LinkProps) => {
   const defaultHref = route({ pathname: '/token/[hash]', query: { ...props.query, hash: props.token.address } });

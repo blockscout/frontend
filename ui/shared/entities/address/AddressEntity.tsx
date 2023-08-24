@@ -14,9 +14,7 @@ import * as EntityBase from 'ui/shared/entities/base/components';
 
 import { getIconProps } from '../base/utils';
 
-interface LinkProps extends Pick<EntityProps, 'className' | 'address' | 'onClick' | 'isLoading' | 'isExternal' | 'href' | 'query'> {
-  children: React.ReactNode;
-}
+type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'address'>;
 
 const Link = chakra((props: LinkProps) => {
   const defaultHref = route({ pathname: '/address/[hash]', query: { ...props.query, hash: props.address.hash } });

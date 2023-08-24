@@ -95,6 +95,19 @@ test('external link', async({ mount }) => {
   await expect(component).toHaveScreenshot();
 });
 
+test('no link', async({ mount }) => {
+  const component = await mount(
+    <TestApp>
+      <AddressEntity
+        address={ addressMock.withoutName }
+        noLink
+      />
+    </TestApp>,
+  );
+
+  await expect(component).toHaveScreenshot();
+});
+
 test('customization', async({ mount }) => {
   const component = await mount(
     <TestApp>

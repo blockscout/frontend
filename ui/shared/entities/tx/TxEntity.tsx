@@ -8,9 +8,7 @@ import { route } from 'nextjs-routes';
 import transactionIcon from 'icons/transactions_slim.svg';
 import * as EntityBase from 'ui/shared/entities/base/components';
 
-interface LinkProps extends Pick<EntityProps, 'className' | 'hash' | 'onClick' | 'isLoading' | 'isExternal' | 'href'> {
-  children: React.ReactNode;
-}
+type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'hash'>;
 
 const Link = chakra((props: LinkProps) => {
   const defaultHref = route({ pathname: '/tx/[hash]', query: { hash: props.hash } });

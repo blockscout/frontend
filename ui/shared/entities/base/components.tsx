@@ -14,17 +14,17 @@ import { getIconProps, type IconSize } from './utils';
 
 export type Truncation = 'constant' | 'dynamic' | 'tail' | 'none';
 
-// TODO @tom2drum add disabled link props
 export interface EntityBaseProps {
   className?: string;
-  isLoading?: boolean;
-  iconSize?: IconSize;
-  onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
-  isExternal?: boolean;
   href?: string;
-  query?: Record<string, string>;
-  noIcon?: boolean;
+  iconSize?: IconSize;
+  isExternal?: boolean;
+  isLoading?: boolean;
   noCopy?: boolean;
+  noIcon?: boolean;
+  noLink?: boolean;
+  onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
+  query?: Record<string, string>;
   tailLength?: number;
   truncation?: Truncation;
 }
@@ -45,21 +45,29 @@ const Container = chakra(({ className, children }: ContainerBaseProps) => {
   );
 });
 
-export interface LinkBaseProps extends Pick<EntityBaseProps, 'className' | 'onClick' | 'isLoading' | 'isExternal' | 'href'> {
+export interface LinkBaseProps extends Pick<EntityBaseProps, 'className' | 'onClick' | 'isLoading' | 'isExternal' | 'href' | 'noLink' | 'query'> {
   children: React.ReactNode;
 }
 
-const Link = chakra(({ isLoading, children, isExternal, onClick, href }: LinkBaseProps) => {
+const Link = chakra(({ isLoading, children, isExternal, onClick, href, noLink }: LinkBaseProps) => {
+  const styles = {
+    display: 'inline-flex',
+    alignItems: 'center',
+    minWidth: 0, // for content truncation - https://css-tricks.com/flexbox-truncated-text/
+  };
+
+  if (noLink) {
+    return <Skeleton isLoaded={ !isLoading } { ...styles }>{ children }</Skeleton>;
+  }
+
   const Component = isExternal ? LinkExternal : LinkInternal;
 
   return (
     <Component
+      { ...styles }
       href={ href }
       isLoading={ isLoading }
       onClick={ onClick }
-      display="inline-flex"
-      alignItems="center"
-      minWidth={ 0 } // for content truncation - https://css-tricks.com/flexbox-truncated-text/
     >
       { children }
     </Component>
