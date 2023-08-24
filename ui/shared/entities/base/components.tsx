@@ -14,6 +14,7 @@ import { getIconProps, type IconSize } from './utils';
 
 export type Truncation = 'constant' | 'dynamic' | 'tail' | 'none';
 
+// TODO @tom2drum add disabled link props
 export interface EntityBaseProps {
   className?: string;
   isLoading?: boolean;
@@ -23,6 +24,7 @@ export interface EntityBaseProps {
   href?: string;
   query?: Record<string, string>;
   noIcon?: boolean;
+  // TODO @tom2drum rename to noCopy
   withCopy?: boolean;
   tailLength?: number;
   truncation?: Truncation;
@@ -32,7 +34,7 @@ export interface ContainerBaseProps extends Pick<EntityBaseProps, 'className'> {
   children: React.ReactNode;
 }
 
-const Container = ({ className, children }: ContainerBaseProps) => {
+const Container = chakra(({ className, children }: ContainerBaseProps) => {
   return (
     <Flex
       className={ className }
@@ -42,7 +44,7 @@ const Container = ({ className, children }: ContainerBaseProps) => {
       { children }
     </Flex>
   );
-};
+});
 
 export interface LinkBaseProps extends Pick<EntityBaseProps, 'className' | 'onClick' | 'isLoading' | 'isExternal' | 'href'> {
   children: React.ReactNode;
