@@ -469,7 +469,7 @@ const BlockDetails = ({ query }: Props) => {
           >
             <Text wordBreak="break-all" whiteSpace="break-spaces">{ data.state_root }</Text>
           </DetailsInfoItem> */ }
-          { config.chain.verificationType !== 'validation' && (
+          { config.chain.verificationType !== 'validation' && !config.UI.views.block.hiddenFields?.nonce && (
             <DetailsInfoItem
               title="Nonce"
               hint="Block nonce is a value used during mining to demonstrate proof of work for a block"
