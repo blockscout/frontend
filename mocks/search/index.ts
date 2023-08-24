@@ -11,6 +11,7 @@ export const token1: SearchResultToken = {
   token_type: 'ERC-721',
   total_supply: '10000001',
   exchange_rate: null,
+  is_verified_via_admin_panel: true,
   is_smart_contract_verified: true,
 };
 
@@ -25,6 +26,7 @@ export const token2: SearchResultToken = {
   token_type: 'ERC-20',
   total_supply: '10000001',
   exchange_rate: '1.11',
+  is_verified_via_admin_panel: false,
   is_smart_contract_verified: false,
 };
 
