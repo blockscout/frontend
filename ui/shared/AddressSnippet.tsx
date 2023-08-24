@@ -14,6 +14,7 @@ interface Props {
   isLoading?: boolean;
 }
 
+// TODO @tom2drum remove this component
 const AddressSnippet = ({ address, subtitle, isLoading }: Props) => {
   return (
     <Box maxW="100%">

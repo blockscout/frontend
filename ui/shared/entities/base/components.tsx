@@ -26,6 +26,7 @@ export interface EntityBaseProps {
   onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
   query?: Record<string, string>;
   tailLength?: number;
+  target?: React.HTMLAttributeAnchorTarget;
   truncation?: Truncation;
 }
 

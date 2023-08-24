@@ -11,9 +11,7 @@ import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
 import * as mixpanel from 'lib/mixpanel/index';
 import { saveToRecentKeywords } from 'lib/recentSearchKeywords';
-import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
+import * as AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import * as TxEntity from 'ui/shared/entities/tx/TxEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
@@ -95,25 +93,33 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
       case 'address': {
         if (data.name) {
           const shouldHighlightHash = data.address.toLowerCase() === searchTerm.toLowerCase();
+          const address = {
+            hash: data.address,
+            is_contract: data.type === 'contract',
+            is_verified: data.is_smart_contract_verified,
+            name: null,
+            implementation_name: null,
+          };
 
           return (
             <>
               <Td fontSize="sm">
-                <Flex alignItems="center" overflow="hidden">
-                  <AddressIcon address={{ hash: data.address, is_contract: data.type === 'contract', implementation_name: null }} mr={ 2 } flexShrink={ 0 }/>
-                  <LinkInternal
-                    href={ route({ pathname: '/address/[hash]', query: { hash: data.address } }) }
-                    fontWeight={ 700 }
-                    overflow="hidden"
-                    whiteSpace="nowrap"
+                <AddressEntity.Container>
+                  <AddressEntity.Icon address={ address }/>
+                  <AddressEntity.Link
+                    address={ address }
                     onClick={ handleLinkClick }
                   >
-                    <Box as={ shouldHighlightHash ? 'mark' : 'span' } display="block">
-                      <HashStringShortenDynamic hash={ data.address }/>
-                    </Box>
-                  </LinkInternal>
-                  { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 1 }/> }
-                </Flex>
+                    <AddressEntity.Content
+                      asProp={ shouldHighlightHash ? 'mark' : 'span' }
+                      address={ address }
+                      fontSize="sm"
+                      lineHeight={ 5 }
+                      fontWeight={ 700 }
+                    />
+                  </AddressEntity.Link>
+                  <AddressEntity.Copy address={ address }/>
+                </AddressEntity.Container>
               </Td>
               <Td colSpan={ 2 } fontSize="sm" verticalAlign="middle">
                 <span dangerouslySetInnerHTML={{ __html: shouldHighlightHash ? data.name : highlightText(data.name, searchTerm) }}/>
@@ -122,15 +128,32 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
           );
         }
 
+        const address = {
+          hash: data.address,
+          is_contract: data.type === 'contract',
+          is_verified: data.is_smart_contract_verified,
+          name: null,
+          implementation_name: null,
+        };
+
         return (
           <Td colSpan={ 3 } fontSize="sm">
-            <Address>
-              <AddressIcon address={{ hash: data.address, is_contract: data.type === 'contract', implementation_name: null }} mr={ 2 } flexShrink={ 0 }/>
-              <mark>
-                <AddressLink hash={ data.address } type="address" fontWeight={ 700 } onClick={ handleLinkClick }/>
-              </mark>
-              { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 1 }/> }
-            </Address>
+            <AddressEntity.Container>
+              <AddressEntity.Icon address={ address }/>
+              <AddressEntity.Link
+                address={ address }
+                onClick={ handleLinkClick }
+              >
+                <AddressEntity.Content
+                  asProp="mark"
+                  address={ address }
+                  fontSize="sm"
+                  lineHeight={ 5 }
+                  fontWeight={ 700 }
+                />
+              </AddressEntity.Link>
+              <AddressEntity.Copy address={ address }/>
+            </AddressEntity.Container>
           </Td>
         );
       }

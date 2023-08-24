@@ -1,11 +1,11 @@
+import { Flex } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
 import type { Address as TAddress } from 'types/api/address';
 
 import { getResourceKey } from 'lib/api/useApiQuery';
-import Address from 'ui/shared/address/Address';
-import AddressLink from 'ui/shared/address/AddressLink';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 interface Props {
   hash: string | undefined;
@@ -22,10 +22,10 @@ const ContractImplementationAddress = ({ hash }: Props) => {
   }
 
   return (
-    <Address whiteSpace="pre-wrap" flexWrap="wrap" mb={ 6 }>
-      <span>Implementation address: </span>
-      <AddressLink type="address" hash={ data.implementation_address }/>
-    </Address>
+    <Flex mb={ 6 } flexWrap="wrap" columnGap={ 2 }>
+      <span>Implementation address:</span>
+      <AddressEntity address={{ hash: data.implementation_address, is_contract: true }} noIcon noCopy/>
+    </Flex>
   );
 };
 

@@ -24,10 +24,7 @@ import arrowIcon from 'icons/arrows/east-mini.svg';
 import iconWarning from 'icons/status/warning.svg';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { apos } from 'lib/html-entities';
-import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 interface Props {
   className?: string;
@@ -38,11 +35,13 @@ const Item = (data: SmartContractExternalLibrary) => {
   return (
     <Flex flexDir="column" py={ 2 } w="100%" rowGap={ 1 }>
       <Box>{ data.name }</Box>
-      <Address>
-        <AddressIcon address={{ hash: data.address_hash, is_contract: true, implementation_name: null }}/>
-        <AddressLink hash={ data.address_hash } type="address" ml={ 2 } fontWeight={ 500 } fontSize="sm" target="_blank" query={{ tab: 'contract' }}/>
-        <CopyToClipboard text={ data.address_hash }/>
-      </Address>
+      <AddressEntity
+        address={{ hash: data.address_hash, is_contract: true, implementation_name: null }}
+        query={{ tab: 'contract' }}
+        fontSize="sm"
+        fontWeight="500"
+        target="_blank"
+      />
     </Flex>
   );
 };

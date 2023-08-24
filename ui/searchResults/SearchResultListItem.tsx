@@ -11,9 +11,7 @@ import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
 import * as mixpanel from 'lib/mixpanel/index';
 import { saveToRecentKeywords } from 'lib/recentSearchKeywords';
-import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
+import * as AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import * as TxEntity from 'ui/shared/entities/tx/TxEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
@@ -76,14 +74,31 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
       case 'contract':
       case 'address': {
         const shouldHighlightHash = data.address.toLowerCase() === searchTerm.toLowerCase();
+        const address = {
+          hash: data.address,
+          is_contract: data.type === 'contract',
+          is_verified: data.is_smart_contract_verified,
+          name: null,
+          implementation_name: null,
+        };
+
         return (
-          <Address>
-            <AddressIcon address={{ hash: data.address, is_contract: data.type === 'contract', implementation_name: null }} mr={ 2 } flexShrink={ 0 }/>
-            <Box as={ shouldHighlightHash ? 'mark' : 'span' } display="block" whiteSpace="nowrap" overflow="hidden">
-              <AddressLink type="address" hash={ data.address } fontWeight={ 700 } display="block" w="100%" onClick={ handleLinkClick }/>
-            </Box>
-            { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 1 }/> }
-          </Address>
+          <AddressEntity.Container>
+            <AddressEntity.Icon address={ address }/>
+            <AddressEntity.Link
+              address={ address }
+              onClick={ handleLinkClick }
+            >
+              <AddressEntity.Content
+                asProp={ shouldHighlightHash ? 'mark' : 'span' }
+                address={ address }
+                fontSize="sm"
+                lineHeight={ 5 }
+                fontWeight={ 700 }
+              />
+            </AddressEntity.Link>
+            <AddressEntity.Copy address={ address }/>
+          </AddressEntity.Container>
         );
       }
 

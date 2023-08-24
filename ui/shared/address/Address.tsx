@@ -6,6 +6,7 @@ interface Props {
   children: React.ReactNode;
 }
 
+// TODO @tom2drum delete this component
 /**
  * @deprecated use `ui/shared/entities/address` instead
  */

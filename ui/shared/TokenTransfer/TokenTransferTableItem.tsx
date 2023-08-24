@@ -5,11 +5,8 @@ import React from 'react';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
 import Tag from 'ui/shared/chakra/Tag';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import InOutTag from 'ui/shared/InOutTag';
 import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
@@ -75,19 +72,14 @@ const TokenTransferTableItem = ({
         </Td>
       ) }
       <Td>
-        <Address display="inline-flex" maxW="100%" my="3px">
-          <AddressIcon address={ from } isLoading={ isLoading }/>
-          <AddressLink
-            type="address" ml={ 2 }
-            fontWeight="500"
-            hash={ from.hash }
-            alias={ from.name }
-            flexGrow={ 1 }
-            isDisabled={ baseAddress === from.hash }
-            isLoading={ isLoading }
-          />
-          { baseAddress !== from.hash && <CopyToClipboard text={ from.hash } isLoading={ isLoading }/> }
-        </Address>
+        <AddressEntity
+          address={ from }
+          isLoading={ isLoading }
+          my="5px"
+          noLink={ baseAddress === from.hash }
+          noCopy={ baseAddress === from.hash }
+          flexGrow={ 1 }
+        />
       </Td>
       { baseAddress && (
         <Td px={ 0 }>
@@ -103,20 +95,14 @@ const TokenTransferTableItem = ({
         </Td>
       ) }
       <Td>
-        <Address display="inline-flex" maxW="100%" my="3px">
-          <AddressIcon address={ to } isLoading={ isLoading }/>
-          <AddressLink
-            type="address"
-            ml={ 2 }
-            fontWeight="500"
-            hash={ to.hash }
-            alias={ to.name }
-            flexGrow={ 1 }
-            isDisabled={ baseAddress === to.hash }
-            isLoading={ isLoading }
-          />
-          { baseAddress !== to.hash && <CopyToClipboard text={ to.hash } isLoading={ isLoading }/> }
-        </Address>
+        <AddressEntity
+          address={ to }
+          isLoading={ isLoading }
+          my="5px"
+          noLink={ baseAddress === to.hash }
+          noCopy={ baseAddress === to.hash }
+          flexGrow={ 1 }
+        />
       </Td>
       <Td isNumeric verticalAlign="top">
         <Skeleton isLoaded={ !isLoading } display="inline-block" my="7px">

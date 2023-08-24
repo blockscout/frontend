@@ -8,14 +8,11 @@ import type { CsvExportParams } from 'types/client/address';
 import type { ResourceName } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp } from 'lib/html-entities';
 import CsvExportForm from 'ui/csvExport/CsvExportForm';
-import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 interface ExportTypeEntity {
@@ -60,7 +57,6 @@ const isCorrectExportType = (type: string): type is CsvExportParams['type'] => O
 
 const CsvExport = () => {
   const router = useRouter();
-  const isMobile = useIsMobile();
   const appProps = useAppContext();
 
   const addressHash = router.query.address?.toString() || '';
@@ -133,10 +129,10 @@ const CsvExport = () => {
       />
       <Flex mb={ 10 } whiteSpace="pre-wrap" flexWrap="wrap">
         <span>Export { EXPORT_TYPES[exportType].text } for address </span>
-        <Address>
-          <AddressIcon address={{ hash: addressHash, is_contract: true, implementation_name: null }}/>
-          <AddressLink hash={ addressHash } type="address" ml={ 2 } truncation={ isMobile ? 'constant' : 'dynamic' }/>
-        </Address>
+        <AddressEntity
+          address={{ hash: addressHash, is_contract: true, implementation_name: null }}
+          noCopy
+        />
         <span>{ nbsp }</span>
         { filterType && filterValue && <span>with applied filter by { filterType } ({ filterValue }) </span> }
         <span>to CSV file. </span>

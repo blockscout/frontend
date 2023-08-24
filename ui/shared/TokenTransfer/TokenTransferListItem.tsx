@@ -6,12 +6,9 @@ import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import eastArrowIcon from 'icons/arrows/east.svg';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
 import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import InOutTag from 'ui/shared/InOutTag';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
@@ -80,11 +77,14 @@ const TokenTransferListItem = ({
         </Flex>
       ) }
       <Flex w="100%" columnGap={ 3 }>
-        <Address width={ addressWidth } flexShrink={ 0 }>
-          <AddressIcon address={ from } isLoading={ isLoading }/>
-          <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ from.hash } isDisabled={ baseAddress === from.hash } isLoading={ isLoading }/>
-          { baseAddress !== from.hash && <CopyToClipboard text={ from.hash } isLoading={ isLoading }/> }
-        </Address>
+        <AddressEntity
+          address={ from }
+          isLoading={ isLoading }
+          noLink={ baseAddress === from.hash }
+          noCopy={ baseAddress === from.hash }
+          flexShrink={ 0 }
+          width={ addressWidth }
+        />
         { baseAddress ? (
           <InOutTag
             isIn={ baseAddress === to.hash }
@@ -97,11 +97,14 @@ const TokenTransferListItem = ({
         ) :
           <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500" isLoading={ isLoading } flexShrink={ 0 }/>
         }
-        <Address width={ addressWidth } flexShrink={ 0 }>
-          <AddressIcon address={ to } isLoading={ isLoading }/>
-          <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ to.hash } isDisabled={ baseAddress === to.hash } isLoading={ isLoading }/>
-          { baseAddress !== to.hash && <CopyToClipboard text={ to.hash } isLoading={ isLoading }/> }
-        </Address>
+        <AddressEntity
+          address={ to }
+          isLoading={ isLoading }
+          noLink={ baseAddress === to.hash }
+          noCopy={ baseAddress === to.hash }
+          flexShrink={ 0 }
+          width={ addressWidth }
+        />
       </Flex>
       { value && (
         <Flex columnGap={ 2 } w="100%">
