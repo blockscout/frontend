@@ -12,6 +12,9 @@ type Props = {
   isLoading?: boolean;
 }
 
+/**
+ * @deprecated use `ui/shared/entities/**` instead
+ */
 const AddressIcon = ({ address, className, isLoading }: Props) => {
   if (isLoading) {
     return <Skeleton boxSize={ 6 } className={ className } borderRadius="full" flexShrink={ 0 }/>;

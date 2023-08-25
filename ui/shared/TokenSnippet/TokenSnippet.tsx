@@ -19,6 +19,9 @@ interface Props {
   maxW: StyleProps['maxW'];
 }
 
+/**
+ * @deprecated use `ui/shared/entities/token/**` instead
+ */
 const TokenSnippet = ({ data, className, logoSize = 6, isDisabled, hideSymbol, hideIcon, isLoading, maxW }: Props) => {
 
   const withSymbol = data && data.symbol && !hideSymbol;

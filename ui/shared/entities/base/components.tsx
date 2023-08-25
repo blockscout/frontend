@@ -16,14 +16,15 @@ export type Truncation = 'constant' | 'dynamic' | 'tail' | 'none';
 
 export interface EntityBaseProps {
   className?: string;
-  isLoading?: boolean;
-  iconSize?: IconSize;
-  onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
-  isExternal?: boolean;
   href?: string;
-  query?: Record<string, string>;
+  iconSize?: IconSize;
+  isExternal?: boolean;
+  isLoading?: boolean;
+  noCopy?: boolean;
   noIcon?: boolean;
-  withCopy?: boolean;
+  noLink?: boolean;
+  onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
+  query?: Record<string, string>;
   tailLength?: number;
   truncation?: Truncation;
 }
@@ -32,7 +33,7 @@ export interface ContainerBaseProps extends Pick<EntityBaseProps, 'className'> {
   children: React.ReactNode;
 }
 
-const Container = ({ className, children }: ContainerBaseProps) => {
+const Container = chakra(({ className, children }: ContainerBaseProps) => {
   return (
     <Flex
       className={ className }
@@ -42,23 +43,31 @@ const Container = ({ className, children }: ContainerBaseProps) => {
       { children }
     </Flex>
   );
-};
+});
 
-export interface LinkBaseProps extends Pick<EntityBaseProps, 'className' | 'onClick' | 'isLoading' | 'isExternal' | 'href'> {
+export interface LinkBaseProps extends Pick<EntityBaseProps, 'className' | 'onClick' | 'isLoading' | 'isExternal' | 'href' | 'noLink' | 'query'> {
   children: React.ReactNode;
 }
 
-const Link = chakra(({ isLoading, children, isExternal, onClick, href }: LinkBaseProps) => {
+const Link = chakra(({ isLoading, children, isExternal, onClick, href, noLink }: LinkBaseProps) => {
+  const styles = {
+    display: 'inline-flex',
+    alignItems: 'center',
+    minWidth: 0, // for content truncation - https://css-tricks.com/flexbox-truncated-text/
+  };
+
+  if (noLink) {
+    return <Skeleton isLoaded={ !isLoading } { ...styles }>{ children }</Skeleton>;
+  }
+
   const Component = isExternal ? LinkExternal : LinkInternal;
 
   return (
     <Component
+      { ...styles }
       href={ href }
       isLoading={ isLoading }
       onClick={ onClick }
-      display="inline-flex"
-      alignItems="center"
-      minWidth={ 0 } // for content truncation - https://css-tricks.com/flexbox-truncated-text/
     >
       { children }
     </Component>
@@ -131,10 +140,10 @@ const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dyna
   );
 });
 
-export type CopyBaseProps = Pick<CopyToClipboardProps, 'isLoading' | 'text'> & Pick<EntityBaseProps, 'withCopy'>;
+export type CopyBaseProps = Pick<CopyToClipboardProps, 'isLoading' | 'text'> & Pick<EntityBaseProps, 'noCopy'>;
 
 const Copy = (props: CopyBaseProps) => {
-  if (!props.withCopy) {
+  if (props.noCopy) {
     return null;
   }
 

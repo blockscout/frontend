@@ -58,7 +58,7 @@ test('with copy +@dark-mode', async({ mount }) => {
     <TestApp>
       <TxEntity
         hash={ hash }
-        withCopy
+        noCopy={ false }
       />
     </TestApp>,
   );
