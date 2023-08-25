@@ -4,7 +4,7 @@ import React from 'react';
 import useApiQuery from 'lib/api/useApiQuery';
 import useDebounce from 'lib/hooks/useDebounce';
 
-export default function useSearchQuery() {
+export default function useQuickSearchQuery() {
   const router = useRouter();
 
   const [ searchTerm, setSearchTerm ] = React.useState('');
