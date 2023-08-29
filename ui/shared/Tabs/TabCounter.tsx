@@ -29,7 +29,7 @@ const TasCounter = ({ count, parentClassName }: Props) => {
       transitionDuration="normal"
       transitionTimingFunction="ease"
     >
-      { count }
+      { count > 50 ? '50+' : count }
     </Text>
   );
 };

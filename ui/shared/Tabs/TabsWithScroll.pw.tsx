@@ -24,7 +24,7 @@ test('with counters', async({ mount }) => {
     {
       id: 'tab3',
       title: 'Third tab',
-      count: 1,
+      count: 51,
       component: null,
     },
   ];
