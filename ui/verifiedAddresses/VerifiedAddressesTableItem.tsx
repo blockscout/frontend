@@ -5,8 +5,8 @@ import type { TokenInfoApplication, VerifiedAddress } from 'types/api/account';
 
 import editIcon from 'icons/edit.svg';
 import dayjs from 'lib/date/dayjs';
-import AddressSnippet from 'ui/shared/AddressSnippet';
 import Icon from 'ui/shared/chakra/Icon';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 import VerifiedAddressesStatus from './VerifiedAddressesStatus';
 import VerifiedAddressesTokenSnippet from './VerifiedAddressesTokenSnippet';
@@ -54,7 +54,11 @@ const VerifiedAddressesTableItem = ({ item, application, onAdd, onEdit, isLoadin
   return (
     <Tr>
       <Td>
-        <AddressSnippet address={{ hash: item.contractAddress, is_contract: true, implementation_name: null }} isLoading={ isLoading }/>
+        <AddressEntity
+          address={{ hash: item.contractAddress, is_contract: true, implementation_name: null }}
+          isLoading={ isLoading }
+          fontWeight="600"
+        />
       </Td>
       <Td fontSize="sm" verticalAlign="middle" pr={ 1 }>
         { tokenInfo }

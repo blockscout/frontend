@@ -9,9 +9,9 @@ import TokensIcon from 'icons/tokens.svg';
 import WalletIcon from 'icons/wallet.svg';
 import getCurrencyValue from 'lib/getCurrencyValue';
 import { nbsp } from 'lib/html-entities';
-import AddressSnippet from 'ui/shared/AddressSnippet';
 import Icon from 'ui/shared/chakra/Icon';
 import CurrencyValue from 'ui/shared/CurrencyValue';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenLogo from 'ui/shared/TokenLogo';
 
 const WatchListAddressItem = ({ item, isLoading }: { item: WatchlistAddress; isLoading?: boolean }) => {
@@ -26,7 +26,12 @@ const WatchListAddressItem = ({ item, isLoading }: { item: WatchlistAddress; isL
 
   return (
     <VStack spacing={ 2 } align="stretch" fontWeight={ 500 }>
-      <AddressSnippet address={ item.address } isLoading={ isLoading }/>
+      <AddressEntity
+        address={ item.address }
+        isLoading={ isLoading }
+        fontWeight="600"
+        py="2px"
+      />
       <Flex fontSize="sm" pl={ infoItemsPaddingLeft } flexWrap="wrap" alignItems="center" rowGap={ 1 }>
         <TokenLogo
           data={ nativeTokenData }

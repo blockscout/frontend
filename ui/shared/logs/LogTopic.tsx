@@ -4,9 +4,8 @@ import React from 'react';
 
 import hexToAddress from 'lib/hexToAddress';
 import hexToUtf8 from 'lib/hexToUtf8';
-import Address from 'ui/shared/address/Address';
-import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 interface Props {
@@ -51,10 +50,10 @@ const LogTopic = ({ hex, index, isLoading }: Props) => {
 
       case 'address': {
         return (
-          <Address>
-            <AddressLink type="address" hash={ value } isLoading={ isLoading }/>
-            <CopyToClipboard text={ value } isLoading={ isLoading }/>
-          </Address>
+          <AddressEntity
+            address={{ hash: value, name: '', implementation_name: null, is_contract: false, is_verified: false }}
+            isLoading={ isLoading }
+          />
         );
       }
     }

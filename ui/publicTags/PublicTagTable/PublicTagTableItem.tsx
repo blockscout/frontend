@@ -9,8 +9,8 @@ import React, { useCallback } from 'react';
 
 import type { PublicTag } from 'types/api/account';
 
-import AddressSnippet from 'ui/shared/AddressSnippet';
 import Tag from 'ui/shared/chakra/Tag';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 
 interface Props {
@@ -33,7 +33,15 @@ const PublicTagTableItem = ({ item, isLoading, onEditClick, onDeleteClick }: Pro
     <Tr alignItems="top" key={ item.id }>
       <Td>
         <VStack spacing={ 4 } alignItems="unset">
-          { item.addresses_with_info.map((address) => <AddressSnippet key={ address.hash } address={ address } isLoading={ isLoading }/>) }
+          { item.addresses_with_info.map((address) => (
+            <AddressEntity
+              key={ address.hash }
+              address={ address }
+              isLoading={ isLoading }
+              fontWeight="600"
+              py="2px"
+            />
+          )) }
         </VStack>
       </Td>
       <Td>
