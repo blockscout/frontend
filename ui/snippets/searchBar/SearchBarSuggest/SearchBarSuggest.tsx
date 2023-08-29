@@ -1,13 +1,16 @@
 import { Box, Tab, TabList, Tabs, Text, useColorModeValue } from '@chakra-ui/react';
+import type { UseQueryResult } from '@tanstack/react-query';
 import throttle from 'lodash/throttle';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
+import type { SearchResultItem } from 'types/api/search';
+
+import type { ResourceError } from 'lib/api/resources';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useMarketplaceApps from 'ui/marketplace/useMarketplaceApps';
 import TextAd from 'ui/shared/ad/TextAd';
 import ContentLoader from 'ui/shared/ContentLoader';
-import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 import type { ApiCategory, ItemsCategoriesMap } from 'ui/shared/search/utils';
 import { getItemCategory, searchCategories } from 'ui/shared/search/utils';
 
@@ -15,7 +18,7 @@ import SearchBarSuggestApp from './SearchBarSuggestApp';
 import SearchBarSuggestItem from './SearchBarSuggestItem';
 
 interface Props {
-  query: QueryWithPagesResult<'search'>;
+  query: UseQueryResult<Array<SearchResultItem>, ResourceError<unknown>>;
   searchTerm: string;
   onItemClick: (event: React.MouseEvent<HTMLAnchorElement>) => void;
   containerId: string;
@@ -33,7 +36,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
 
   const handleScroll = React.useCallback(() => {
     const container = document.getElementById(containerId);
-    if (!container || !query.data?.items.length) {
+    if (!container || !query.data?.length) {
       return;
     }
     const topLimit = container.getBoundingClientRect().y + (tabsRef.current?.clientHeight || 0) + 24;
@@ -47,7 +50,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
         break;
       }
     }
-  }, [ containerId, query.data?.items ]);
+  }, [ containerId, query.data ]);
 
   React.useEffect(() => {
     const container = document.getElementById(containerId);
@@ -63,11 +66,11 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
   }, [ containerId, handleScroll ]);
 
   const itemsGroups = React.useMemo(() => {
-    if (!query.data?.items && !marketplaceApps.displayedApps) {
+    if (!query.data && !marketplaceApps.displayedApps) {
       return {};
     }
     const map: Partial<ItemsCategoriesMap> = {};
-    query.data?.items.forEach(item => {
+    query.data?.forEach(item => {
       const cat = getItemCategory(item) as ApiCategory;
       if (cat) {
         if (cat in map) {
@@ -81,7 +84,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
       map.app = marketplaceApps.displayedApps;
     }
     return map;
-  }, [ query.data?.items, marketplaceApps.displayedApps ]);
+  }, [ query.data, marketplaceApps.displayedApps ]);
 
   const scrollToCategory = React.useCallback((index: number) => () => {
     setTabIndex(index);
@@ -104,7 +107,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
       return <Text>Something went wrong. Try refreshing the page or come back later.</Text>;
     }
 
-    if (!query.data.items || query.data.items.length === 0) {
+    if (!query.data || query.data.length === 0) {
       return <Text>No results found.</Text>;
     }
 

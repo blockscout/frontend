@@ -4,6 +4,7 @@ import React from 'react';
 import type { SearchResultToken } from 'types/api/search';
 
 import iconSuccess from 'icons/status/success.svg';
+import verifiedToken from 'icons/verified_token.svg';
 import highlightText from 'lib/highlightText';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import TokenLogo from 'ui/shared/TokenLogo';
@@ -16,6 +17,7 @@ interface Props {
 
 const SearchBarSuggestToken = ({ data, isMobile, searchTerm }: Props) => {
   const icon = <TokenLogo boxSize={ 6 } data={ data }/>;
+  const verifiedIcon = <Icon as={ verifiedToken } boxSize={ 4 } color="green.500"/>;
   const name = (
     <Text
       fontWeight={ 700 }
@@ -49,7 +51,10 @@ const SearchBarSuggestToken = ({ data, isMobile, searchTerm }: Props) => {
       <>
         <Flex alignItems="center" gap={ 2 }>
           { icon }
-          { name }
+          <Flex alignItems="center" gap={ 1 }>
+            { name }
+            { data.is_verified_via_admin_panel && verifiedIcon }
+          </Flex>
         </Flex>
         <Grid templateColumns={ templateCols } alignItems="center" gap={ 2 }>
           <Flex alignItems="center" overflow="hidden">
@@ -65,7 +70,10 @@ const SearchBarSuggestToken = ({ data, isMobile, searchTerm }: Props) => {
   return (
     <Grid templateColumns="24px 200px 1fr auto" gap={ 2 }>
       { icon }
-      { name }
+      <Flex alignItems="center" gap={ 1 }>
+        { name }
+        { data.is_verified_via_admin_panel && verifiedIcon }
+      </Flex>
       <Flex alignItems="center" overflow="hidden">
         { address }
         { contractVerifiedIcon }
