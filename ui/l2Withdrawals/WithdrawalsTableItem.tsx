@@ -5,9 +5,7 @@ import type { L2WithdrawalsItem } from 'types/api/l2Withdrawals';
 
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
-import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import LinkExternal from 'ui/shared/LinkExternal';
@@ -31,10 +29,11 @@ const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
       </Td>
       <Td verticalAlign="middle">
         { item.from ? (
-          <Address>
-            <AddressIcon address={ item.from } isLoading={ isLoading }/>
-            <AddressLink hash={ item.from.hash } type="address" truncation="constant" ml={ 2 } isLoading={ isLoading }/>
-          </Address>
+          <AddressEntity
+            address={ item.from }
+            isLoading={ isLoading }
+            truncation="constant"
+          />
         ) : 'N/A' }
       </Td>
       <Td verticalAlign="middle">

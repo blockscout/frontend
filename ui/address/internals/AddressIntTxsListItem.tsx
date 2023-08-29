@@ -7,12 +7,9 @@ import type { InternalTransaction } from 'types/api/internalTransaction';
 import config from 'configs/app';
 import eastArrowIcon from 'icons/arrows/east.svg';
 import dayjs from 'lib/date/dayjs';
-import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
 import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import InOutTag from 'ui/shared/InOutTag';
@@ -40,7 +37,7 @@ const TxInternalsListItem = ({
   const toData = to ? to : createdContract;
 
   const isOut = Boolean(currentAddress && currentAddress === from.hash);
-  const isIn = Boolean(currentAddress && currentAddress === to?.hash);
+  const isIn = Boolean(currentAddress && currentAddress === toData?.hash);
 
   return (
     <ListItemMobile rowGap={ 3 }>
@@ -70,21 +67,25 @@ const TxInternalsListItem = ({
         />
       </HStack>
       <Box w="100%" display="flex" columnGap={ 3 }>
-        <Address width="calc((100% - 48px) / 2)">
-          <AddressIcon address={ from } isLoading={ isLoading }/>
-          <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ from.hash } isDisabled={ isOut } isLoading={ isLoading }/>
-          { isIn && <CopyToClipboard text={ from.hash } isLoading={ isLoading }/> }
-        </Address>
+        <AddressEntity
+          address={ from }
+          isLoading={ isLoading }
+          noLink={ isOut }
+          noCopy={ isOut }
+          width="calc((100% - 48px) / 2)"
+        />
         { (isIn || isOut) ?
           <InOutTag isIn={ isIn } isOut={ isOut } isLoading={ isLoading }/> :
           <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500" isLoading={ isLoading }/>
         }
         { toData && (
-          <Address width="calc((100% - 48px) / 2)">
-            <AddressIcon address={ toData } isLoading={ isLoading }/>
-            <AddressLink type="address" ml={ 2 } fontWeight="500" hash={ toData.hash } isDisabled={ isIn } isLoading={ isLoading }/>
-            { isOut && <CopyToClipboard text={ toData.hash } isLoading={ isLoading }/> }
-          </Address>
+          <AddressEntity
+            address={ toData }
+            isLoading={ isLoading }
+            noLink={ isIn }
+            noCopy={ isIn }
+            width="calc((100% - 48px) / 2)"
+          />
         ) }
       </Box>
       <HStack spacing={ 3 }>

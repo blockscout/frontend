@@ -6,10 +6,8 @@ import type { BlockWithdrawalsItem } from 'types/api/block';
 import type { WithdrawalsItem } from 'types/api/withdrawals';
 
 import dayjs from 'lib/date/dayjs';
-import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
 import CurrencyValue from 'ui/shared/CurrencyValue';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 
  type Props = ({
@@ -44,10 +42,11 @@ const WithdrawalsTableItem = ({ item, view, isLoading }: Props) => {
       ) }
       { view !== 'address' && (
         <Td verticalAlign="middle">
-          <Address>
-            <AddressIcon address={ item.receiver } isLoading={ isLoading }/>
-            <AddressLink type="address" hash={ item.receiver.hash } truncation="constant" ml={ 2 } isLoading={ isLoading }/>
-          </Address>
+          <AddressEntity
+            address={ item.receiver }
+            isLoading={ isLoading }
+            truncation="constant"
+          />
         </Td>
       ) }
       { view !== 'block' && (

@@ -6,12 +6,9 @@ import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import eastArrowIcon from 'icons/arrows/east.svg';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
 import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import AddressEntityWithTokenFilter from 'ui/shared/entities/address/AddressEntityWithTokenFilter';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
 
@@ -57,21 +54,12 @@ const TokenTransferTableItem = ({
         ) : null }
       </Td>
       <Td>
-        <Address display="inline-flex" maxW="100%" py="3px">
-          <AddressIcon address={ from } isLoading={ isLoading }/>
-          <AddressLink
-            ml={ 2 }
-            flexGrow={ 1 }
-            fontWeight="500"
-            type="address_token"
-            hash={ from.hash }
-            alias={ from.name }
-            tokenHash={ token.address }
-            truncation="constant"
-            isLoading={ isLoading }
-          />
-          <CopyToClipboard text={ from.hash } isLoading={ isLoading }/>
-        </Address>
+        <AddressEntityWithTokenFilter
+          address={ from }
+          isLoading={ isLoading }
+          truncation="constant"
+          tokenHash={ token.address }
+        />
       </Td>
       <Td px={ 0 }>
         <Box my="3px">
@@ -79,21 +67,12 @@ const TokenTransferTableItem = ({
         </Box>
       </Td>
       <Td>
-        <Address display="inline-flex" maxW="100%" py="3px">
-          <AddressIcon address={ to } isLoading={ isLoading }/>
-          <AddressLink
-            ml={ 2 }
-            flexGrow={ 1 }
-            fontWeight="500"
-            type="address_token"
-            hash={ to.hash }
-            alias={ to.name }
-            tokenHash={ token.address }
-            truncation="constant"
-            isLoading={ isLoading }
-          />
-          <CopyToClipboard text={ to.hash } isLoading={ isLoading }/>
-        </Address>
+        <AddressEntityWithTokenFilter
+          address={ to }
+          isLoading={ isLoading }
+          truncation="constant"
+          tokenHash={ token.address }
+        />
       </Td>
       { (token.type === 'ERC-721' || token.type === 'ERC-1155') && (
         <Td>

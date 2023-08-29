@@ -3,9 +3,7 @@ import React from 'react';
 
 import type { TxStateChange } from 'types/api/txStateChanges';
 
-import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 import { getStateElements } from './utils';
 
@@ -25,18 +23,12 @@ const TxStateTableItem = ({ data, isLoading }: Props) => {
         </Box>
       </Td>
       <Td>
-        <Address py="3px">
-          <AddressIcon address={ data.address } isLoading={ isLoading }/>
-          <AddressLink
-            type="address"
-            hash={ data.address.hash }
-            alias={ data.address.name }
-            fontWeight="500"
-            truncation="constant"
-            ml={ 2 }
-            isLoading={ isLoading }
-          />
-        </Address>
+        <AddressEntity
+          address={ data.address }
+          isLoading={ isLoading }
+          truncation="constant"
+          py="7px"
+        />
       </Td>
       <Td isNumeric><Box py="7px">{ before }</Box></Td>
       <Td isNumeric><Box py="7px">{ after }</Box></Td>
