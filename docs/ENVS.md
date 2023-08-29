@@ -146,6 +146,7 @@ The app version shown in the footer is derived from build-time ENV variables `NE
 | --- | --- |
 | `burnt_fees` | Burnt fees |
 | `total_reward` | Total block reward |
+| `nonce` | Block nonce |
 
 &nbsp;
 
