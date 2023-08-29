@@ -1,19 +1,16 @@
-import { Td, Tr, Icon, Skeleton, Flex } from '@chakra-ui/react';
+import { Td, Tr, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressWithdrawalsItem } from 'types/api/address';
 import type { BlockWithdrawalsItem } from 'types/api/block';
 import type { WithdrawalsItem } from 'types/api/withdrawals';
 
-import { route } from 'nextjs-routes';
-
-import blockIcon from 'icons/block.svg';
 import dayjs from 'lib/date/dayjs';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import CurrencyValue from 'ui/shared/CurrencyValue';
-import LinkInternal from 'ui/shared/LinkInternal';
+import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 
  type Props = ({
    item: WithdrawalsItem;
@@ -37,22 +34,12 @@ const WithdrawalsTableItem = ({ item, view, isLoading }: Props) => {
       </Td>
       { view !== 'block' && (
         <Td verticalAlign="middle">
-          { isLoading ? (
-            <Flex columnGap={ 1 } alignItems="center">
-              <Skeleton boxSize={ 6 }/>
-              <Skeleton display="inline-block">{ item.block_number }</Skeleton>
-            </Flex>
-          ) : (
-            <LinkInternal
-              href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.block_number.toString() } }) }
-              display="flex"
-              width="fit-content"
-              alignItems="center"
-            >
-              <Icon as={ blockIcon } boxSize={ 6 } mr={ 1 }/>
-              { item.block_number }
-            </LinkInternal>
-          ) }
+          <BlockEntity
+            number={ item.block_number }
+            isLoading={ isLoading }
+            fontSize="sm"
+            lineHeight={ 5 }
+          />
         </Td>
       ) }
       { view !== 'address' && (

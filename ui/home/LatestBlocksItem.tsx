@@ -10,12 +10,11 @@ import React from 'react';
 import type { Block } from 'types/api/block';
 
 import config from 'configs/app';
-import blockIcon from 'icons/block.svg';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import BlockTimestamp from 'ui/blocks/BlockTimestamp';
 import AddressLink from 'ui/shared/address/AddressLink';
-import Icon from 'ui/shared/chakra/Icon';
+import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 
 type Props = {
   block: Block;
@@ -41,17 +40,14 @@ const LatestBlocksItem = ({ block, h, isLoading }: Props) => {
       w="100%"
     >
       <Flex alignItems="center" overflow="hidden" w="100%" mb={ 3 }>
-        <Icon as={ blockIcon } boxSize="30px" color="link" isLoading={ isLoading } borderRadius="base"/>
-        <AddressLink
+        <BlockEntity
           isLoading={ isLoading }
-          type="block"
-          hash={ String(block.height) }
-          blockHeight={ String(block.height) }
-          fontSize="xl"
-          fontWeight="500"
-          ml={ 2 }
-          mr="auto"
+          number={ block.height }
           tailLength={ 2 }
+          fontSize="xl"
+          lineHeight={ 7 }
+          fontWeight={ 500 }
+          mr="auto"
         />
         <BlockTimestamp
           ts={ block.timestamp }

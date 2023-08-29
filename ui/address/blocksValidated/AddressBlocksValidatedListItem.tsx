@@ -4,12 +4,10 @@ import React from 'react';
 
 import type { Block } from 'types/api/block';
 
-import { route } from 'nextjs-routes';
-
 import config from 'configs/app';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import LinkInternal from 'ui/shared/LinkInternal';
+import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
@@ -19,16 +17,18 @@ type Props = Block & {
 };
 
 const AddressBlocksValidatedListItem = (props: Props) => {
-  const blockUrl = route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: props.height.toString() } });
   const timeAgo = useTimeAgoIncrement(props.timestamp, props.page === 1);
   const totalReward = getBlockTotalReward(props);
 
   return (
     <ListItemMobile rowGap={ 2 } isAnimated>
       <Flex justifyContent="space-between" w="100%">
-        <Skeleton isLoaded={ !props.isLoading } display="inline-block">
-          <LinkInternal href={ blockUrl } fontWeight="700">{ props.height }</LinkInternal>
-        </Skeleton>
+        <BlockEntity
+          isLoading={ props.isLoading }
+          number={ props.height }
+          noIcon
+          fontWeight={ 700 }
+        />
         <Skeleton isLoaded={ !props.isLoading } color="text_secondary" display="inline-block">
           <span>{ timeAgo }</span>
         </Skeleton>

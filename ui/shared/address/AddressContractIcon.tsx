@@ -5,6 +5,9 @@ type Props = {
   className?: string;
 }
 
+/**
+ * @deprecated use `ui/shared/entities/**` instead
+ */
 const AddressContractIcon = ({ className }: Props) => {
   const bgColor = useColorModeValue('gray.200', 'gray.600');
   const color = useColorModeValue('gray.400', 'gray.200');

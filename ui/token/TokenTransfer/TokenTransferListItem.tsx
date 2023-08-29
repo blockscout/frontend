@@ -1,11 +1,10 @@
-import { Flex, useColorModeValue, Skeleton } from '@chakra-ui/react';
+import { Flex, Skeleton } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import eastArrowIcon from 'icons/arrows/east.svg';
-import transactionIcon from 'icons/transactions.svg';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
@@ -13,6 +12,7 @@ import AddressLink from 'ui/shared/address/AddressLink';
 import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
 import TruncatedValue from 'ui/shared/TruncatedValue';
@@ -38,30 +38,17 @@ const TokenTransferListItem = ({
     return BigNumber(total.value).div(BigNumber(10 ** Number(total.decimals))).dp(8).toFormat();
   })();
 
-  const iconColor = useColorModeValue('blue.600', 'blue.300');
-
   const timeAgo = useTimeAgoIncrement(timestamp, true);
 
   return (
     <ListItemMobile rowGap={ 3 } isAnimated>
       <Flex justifyContent="space-between" alignItems="center" lineHeight="24px" width="100%">
-        <Flex>
-          <Icon
-            as={ transactionIcon }
-            boxSize="30px"
-            color={ iconColor }
-            isLoading={ isLoading }
-          />
-          <Address width="100%" ml={ 2 }>
-            <AddressLink
-              hash={ txHash }
-              type="transaction"
-              fontWeight="700"
-              truncation="constant"
-              isLoading={ isLoading }
-            />
-          </Address>
-        </Flex>
+        <TxEntity
+          isLoading={ isLoading }
+          hash={ txHash }
+          truncation="constant"
+          fontWeight="700"
+        />
         { timestamp && (
           <Skeleton isLoaded={ !isLoading } display="inline-block" fontWeight="400" fontSize="sm" color="text_secondary">
             <span>

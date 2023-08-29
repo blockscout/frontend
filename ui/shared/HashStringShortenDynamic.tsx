@@ -8,7 +8,8 @@
 
 // so i did it with js
 
-import { Tooltip } from '@chakra-ui/react';
+import type { As } from '@chakra-ui/react';
+import { Tooltip, chakra } from '@chakra-ui/react';
 import _debounce from 'lodash/debounce';
 import React, { useCallback, useEffect, useRef } from 'react';
 import type { FontFace } from 'use-font-face-observer';
@@ -24,9 +25,10 @@ interface Props {
   fontWeight?: string | number;
   isTooltipDisabled?: boolean;
   tailLength?: number;
+  as?: As;
 }
 
-const HashStringShortenDynamic = ({ hash, fontWeight = '400', isTooltipDisabled, tailLength = TAIL_LENGTH }: Props) => {
+const HashStringShortenDynamic = ({ hash, fontWeight = '400', isTooltipDisabled, tailLength = TAIL_LENGTH, as = 'span' }: Props) => {
   const elementRef = useRef<HTMLSpanElement>(null);
   const [ displayedString, setDisplayedString ] = React.useState(hash);
 
@@ -88,7 +90,7 @@ const HashStringShortenDynamic = ({ hash, fontWeight = '400', isTooltipDisabled,
     };
   }, [ calculateString ]);
 
-  const content = <span ref={ elementRef }>{ displayedString }</span>;
+  const content = <chakra.span ref={ elementRef } as={ as }>{ displayedString }</chakra.span>;
   const isTruncated = hash.length !== displayedString.length;
 
   if (isTruncated) {

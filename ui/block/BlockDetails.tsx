@@ -458,7 +458,15 @@ const BlockDetails = ({ query }: Props) => {
               hint="The hash of the block from which this block was generated"
               flexWrap="nowrap"
             >
-              <AddressLink hash={ data.parent_hash } type="block" blockHeight={ String(data.height - 1) }/>
+              <LinkInternal
+                href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.height - 1) } }) }
+                overflow="hidden"
+                whiteSpace="nowrap"
+              >
+                <HashStringShortenDynamic
+                  hash={ data.parent_hash }
+                />
+              </LinkInternal>
               <CopyToClipboard text={ data.parent_hash }/>
             </DetailsInfoItem>
           ) }

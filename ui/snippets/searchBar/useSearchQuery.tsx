@@ -9,10 +9,10 @@ import { SEARCH_RESULT_ITEM, SEARCH_RESULT_NEXT_PAGE_PARAMS } from 'stubs/search
 import { generateListStub } from 'stubs/utils';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
-export default function useSearchQuery(isSearchPage = false) {
+export default function useSearchQuery() {
   const router = useRouter();
   const q = React.useRef(getQueryParamString(router.query.q));
-  const initialValue = isSearchPage ? q.current : '';
+  const initialValue = q.current;
 
   const [ searchTerm, setSearchTerm ] = React.useState(initialValue);
 
@@ -24,24 +24,18 @@ export default function useSearchQuery(isSearchPage = false) {
     filters: { q: debouncedSearchTerm },
     options: {
       enabled: debouncedSearchTerm.trim().length > 0,
-      placeholderData: isSearchPage ?
-        generateListStub<'search'>(SEARCH_RESULT_ITEM, 50, { next_page_params: SEARCH_RESULT_NEXT_PAGE_PARAMS }) :
-        undefined,
+      placeholderData: generateListStub<'search'>(SEARCH_RESULT_ITEM, 50, { next_page_params: SEARCH_RESULT_NEXT_PAGE_PARAMS }),
     },
   });
 
   const redirectCheckQuery = useApiQuery('search_check_redirect', {
     // on search result page we check redirect only once on mount
-    // on pages with regular search bar we check redirect on every search term change
-    // in order to prepend its result to suggest list since this resource is much faster than regular search
-    queryParams: { q: isSearchPage ? q.current : debouncedSearchTerm },
-    queryOptions: { enabled: Boolean(isSearchPage ? q.current : debouncedSearchTerm) },
+    queryParams: { q: q.current },
+    queryOptions: { enabled: Boolean(q.current) },
   });
 
   useUpdateValueEffect(() => {
-    if (isSearchPage) {
-      query.onFilterChange({ q: debouncedSearchTerm });
-    }
+    query.onFilterChange({ q: debouncedSearchTerm });
   }, debouncedSearchTerm);
 
   return React.useMemo(() => ({

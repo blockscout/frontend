@@ -8,11 +8,8 @@ import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
 
-import { route } from 'nextjs-routes';
-
 import config from 'configs/app';
 import rightArrowIcon from 'icons/arrows/east.svg';
-import transactionIcon from 'icons/transactions.svg';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Address from 'ui/shared/address/Address';
@@ -20,8 +17,9 @@ import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import Icon from 'ui/shared/chakra/Icon';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import BlockEntity from 'ui/shared/entities/block/BlockEntity';
+import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import InOutTag from 'ui/shared/InOutTag';
-import LinkInternal from 'ui/shared/LinkInternal';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TxStatus from 'ui/shared/TxStatus';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
@@ -56,23 +54,12 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
         <TxAdditionalInfo tx={ tx } isMobile isLoading={ isLoading }/>
       </Flex>
       <Flex justifyContent="space-between" lineHeight="24px" mt={ 3 } alignItems="center">
-        <Flex>
-          <Icon
-            as={ transactionIcon }
-            boxSize="30px"
-            color="link"
-            isLoading={ isLoading }
-          />
-          <Address width="100%" ml={ 2 }>
-            <AddressLink
-              hash={ tx.hash }
-              type="transaction"
-              fontWeight="700"
-              truncation="constant"
-              isLoading={ isLoading }
-            />
-          </Address>
-        </Flex>
+        <TxEntity
+          isLoading={ isLoading }
+          hash={ tx.hash }
+          truncation="constant"
+          fontWeight="700"
+        />
         { tx.timestamp && (
           <Skeleton isLoaded={ !isLoading } color="text_secondary" fontWeight="400" fontSize="sm">
             <span>{ timeAgo }</span>
@@ -94,12 +81,14 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
         </Flex>
       ) }
       { showBlockInfo && tx.block !== null && (
-        <Box mt={ 2 }>
+        <Flex mt={ 2 }>
           <Skeleton isLoaded={ !isLoading } display="inline-block" whiteSpace="pre">Block </Skeleton>
-          <Skeleton isLoaded={ !isLoading } display="inline-block">
-            <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: tx.block.toString() } }) }>{ tx.block }</LinkInternal>
-          </Skeleton>
-        </Box>
+          <BlockEntity
+            isLoading={ isLoading }
+            number={ tx.block }
+            noIcon
+          />
+        </Flex>
       ) }
       <Flex alignItems="center" height={ 6 } mt={ 6 }>
         <Address w={ `calc((100% - ${ currentAddress ? TAG_WIDTH + 16 : ARROW_WIDTH + 8 }px)/2)` }>

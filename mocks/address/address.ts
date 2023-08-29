@@ -9,7 +9,7 @@ export const hash = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859';
 export const withName: AddressParam = {
   hash: hash,
   implementation_name: null,
-  is_contract: true,
+  is_contract: false,
   is_verified: null,
   name: 'ArianeeStore',
   private_tags: [],
@@ -20,7 +20,7 @@ export const withName: AddressParam = {
 export const withoutName: AddressParam = {
   hash: hash,
   implementation_name: null,
-  is_contract: true,
+  is_contract: false,
   is_verified: null,
   name: null,
   private_tags: [],

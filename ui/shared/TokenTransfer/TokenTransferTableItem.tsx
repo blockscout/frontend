@@ -10,6 +10,7 @@ import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import Tag from 'ui/shared/chakra/Tag';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import InOutTag from 'ui/shared/InOutTag';
 import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
 import { getTokenTransferTypeText } from 'ui/shared/TokenTransfer/helpers';
@@ -59,9 +60,13 @@ const TokenTransferTableItem = ({
       </Td>
       { showTxInfo && txHash && (
         <Td>
-          <Address display="inline-flex" maxW="100%" fontWeight={ 600 } mt="7px">
-            <AddressLink type="transaction" hash={ txHash } isLoading={ isLoading }/>
-          </Address>
+          <TxEntity
+            hash={ txHash }
+            isLoading={ isLoading }
+            fontWeight={ 600 }
+            noIcon
+            mt="7px"
+          />
           { timestamp && (
             <Skeleton isLoaded={ !isLoading } color="text_secondary" fontWeight="400" mt="10px" display="inline-block">
               <span>{ timeAgo }</span>

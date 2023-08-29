@@ -12,13 +12,13 @@ import type { Transaction } from 'types/api/transaction';
 
 import config from 'configs/app';
 import rightArrowIcon from 'icons/arrows/east.svg';
-import transactionIcon from 'icons/transactions.svg';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Address from 'ui/shared/address/Address';
 import AddressIcon from 'ui/shared/address/AddressIcon';
 import AddressLink from 'ui/shared/address/AddressLink';
 import Icon from 'ui/shared/chakra/Icon';
+import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxStatus from 'ui/shared/TxStatus';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 import TxType from 'ui/txs/TxType';
@@ -54,24 +54,20 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
               mt={ 2 }
               alignItems="center"
             >
-              <Icon
-                as={ transactionIcon }
-                boxSize="30px"
-                color="link"
-                display="inline"
+              <TxEntity
                 isLoading={ isLoading }
-                borderRadius="base"
+                hash={ tx.hash }
+                fontWeight="700"
               />
-              <Address overflow="hidden" w="calc(100% - 130px)" maxW="calc(100% - 130px)" ml={ 2 } mr={ 2 }>
-                <AddressLink
-                  hash={ tx.hash }
-                  type="transaction"
-                  fontWeight="700"
-                  isLoading={ isLoading }
-                />
-              </Address>
               { tx.timestamp && (
-                <Skeleton isLoaded={ !isLoading } color="text_secondary" fontWeight="400" fontSize="sm">
+                <Skeleton
+                  isLoaded={ !isLoading }
+                  color="text_secondary"
+                  fontWeight="400"
+                  fontSize="sm"
+                  flexShrink={ 0 }
+                  ml={ 2 }
+                >
                   <span>{ timeAgo }</span>
                 </Skeleton>
               ) }

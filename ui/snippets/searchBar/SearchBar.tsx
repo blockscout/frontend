@@ -15,7 +15,7 @@ import LinkInternal from 'ui/shared/LinkInternal';
 import SearchBarInput from './SearchBarInput';
 import SearchBarRecentKeywords from './SearchBarRecentKeywords';
 import SearchBarSuggest from './SearchBarSuggest/SearchBarSuggest';
-import useSearchQuery from './useSearchQuery';
+import useQuickSearchQuery from './useQuickSearchQuery';
 
 type Props = {
   isHomepage?: boolean;
@@ -34,7 +34,7 @@ const SearchBar = ({ isHomepage }: Props) => {
 
   const recentSearchKeywords = getRecentSearchKeywords();
 
-  const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query, pathname } = useSearchQuery();
+  const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query, pathname } = useQuickSearchQuery();
 
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -160,7 +160,7 @@ const SearchBar = ({ isHomepage }: Props) => {
             ) }
           </Box>
         </PopoverBody>
-        { searchTerm.trim().length > 0 && query.data?.next_page_params && (
+        { searchTerm.trim().length > 0 && query.data && query.data.length >= 50 && (
           <PopoverFooter>
             <LinkInternal
               href={ route({ pathname: '/search-results', query: { q: searchTerm } }) }

@@ -4,12 +4,10 @@ import React from 'react';
 
 import type { Block } from 'types/api/block';
 
-import { route } from 'nextjs-routes';
-
 import config from 'configs/app';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import LinkInternal from 'ui/shared/LinkInternal';
+import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
 type Props = Block & {
@@ -18,16 +16,20 @@ type Props = Block & {
 };
 
 const AddressBlocksValidatedTableItem = (props: Props) => {
-  const blockUrl = route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(props.height) } });
   const timeAgo = useTimeAgoIncrement(props.timestamp, props.page === 1);
   const totalReward = getBlockTotalReward(props);
 
   return (
     <Tr>
       <Td>
-        <Skeleton isLoaded={ !props.isLoading } display="inline-block">
-          <LinkInternal href={ blockUrl } fontWeight="700">{ props.height }</LinkInternal>
-        </Skeleton>
+        <BlockEntity
+          isLoading={ props.isLoading }
+          number={ props.height }
+          noIcon
+          fontSize="sm"
+          lineHeight={ 5 }
+          fontWeight={ 700 }
+        />
       </Td>
       <Td>
         <Skeleton isLoaded={ !props.isLoading } color="text_secondary" display="inline-block">

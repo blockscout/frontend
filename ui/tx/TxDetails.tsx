@@ -17,8 +17,6 @@ import BigNumber from 'bignumber.js';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
-import { route } from 'nextjs-routes';
-
 import config from 'configs/app';
 import clockIcon from 'icons/clock.svg';
 import flameIcon from 'icons/flame.svg';
@@ -38,9 +36,9 @@ import CurrencyValue from 'ui/shared/CurrencyValue';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
+import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 // import PrevNext from 'ui/shared/PrevNext';
-import LinkInternal from 'ui/shared/LinkInternal';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import RawInputData from 'ui/shared/RawInputData';
 import TextSeparator from 'ui/shared/TextSeparator';
@@ -173,11 +171,11 @@ const TxDetails = () => {
         >
           { data.block === null ?
             <Text>Pending</Text> : (
-              <Skeleton isLoaded={ !isPlaceholderData }>
-                <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.block) } }) }>
-                  { data.block }
-                </LinkInternal>
-              </Skeleton>
+              <BlockEntity
+                isLoading={ isPlaceholderData }
+                number={ data.block }
+                noIcon
+              />
             ) }
           { Boolean(data.confirmations) && (
             <>

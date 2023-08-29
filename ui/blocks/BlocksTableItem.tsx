@@ -14,6 +14,7 @@ import { WEI } from 'lib/consts';
 import BlockTimestamp from 'ui/blocks/BlockTimestamp';
 import AddressLink from 'ui/shared/address/AddressLink';
 import Icon from 'ui/shared/chakra/Icon';
+import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
 import LinkInternal from 'ui/shared/LinkInternal';
 import TextSeparator from 'ui/shared/TextSeparator';
@@ -45,17 +46,15 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
       <Td fontSize="sm">
         <Flex columnGap={ 2 } alignItems="center" mb={ 2 }>
           <Tooltip isDisabled={ data.type !== 'reorg' } label="Chain reorganizations">
-            <Skeleton isLoaded={ !isLoading } display="inline-block">
-              <LinkInternal
-                fontWeight={ 600 }
-                href={ route({
-                  pathname: '/block/[height_or_hash]',
-                  query: { height_or_hash: data.type === 'reorg' ? String(data.hash) : String(data.height) },
-                }) }
-              >
-                { data.height }
-              </LinkInternal>
-            </Skeleton>
+            <BlockEntity
+              isLoading={ isLoading }
+              number={ data.height }
+              hash={ data.type === 'reorg' ? data.hash : undefined }
+              noIcon
+              fontSize="sm"
+              lineHeight={ 5 }
+              fontWeight={ 600 }
+            />
           </Tooltip>
         </Flex>
         <BlockTimestamp ts={ data.timestamp } isEnabled={ enableTimeIncrement } isLoading={ isLoading }/>
