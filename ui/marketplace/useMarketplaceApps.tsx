@@ -29,7 +29,7 @@ export default function useMarketplaceApps(filter: string, selectedCategoryId: s
     async() => apiFetch(configUrl),
     {
       select: (data) => (data as Array<MarketplaceAppOverview>).sort((a, b) => a.title.localeCompare(b.title)),
-      placeholderData: Array(9).fill(MARKETPLACE_APP),
+      placeholderData: feature.isEnabled ? Array(9).fill(MARKETPLACE_APP) : undefined,
       staleTime: Infinity,
       enabled: feature.isEnabled,
     });
