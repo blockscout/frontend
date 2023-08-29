@@ -41,10 +41,6 @@ const WithdrawalsListItem = ({ item, isLoading }: Props) => {
               address={ item.from }
               isLoading={ isLoading }
             />
-            { /* <Address>
-              <AddressIcon address={ item.from } isLoading={ isLoading }/>
-              <AddressLink hash={ item.from.hash } type="address" truncation="dynamic" ml={ 2 } isLoading={ isLoading }/>
-            </Address> */ }
           </ListItemMobileGrid.Value>
         </>
       ) }
