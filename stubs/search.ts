@@ -10,6 +10,7 @@ export const SEARCH_RESULT_ITEM: SearchResultItem = {
   token_url: '/token/0x3714A8C7824B22271550894f7555f0a672f97809',
   type: 'token',
   icon_url: null,
+  is_verified_via_admin_panel: false,
   is_smart_contract_verified: false,
   exchange_rate: '1.11',
   total_supply: null,

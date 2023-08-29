@@ -30,15 +30,13 @@ test.beforeEach(async({ page }) => {
 });
 
 test('search by token name  +@mobile +@dark-mode', async({ mount, page }) => {
-  const API_URL = buildApiUrl('search') + '?q=o';
+  const API_URL = buildApiUrl('quick_search') + '?q=o';
   await page.route(API_URL, (route) => route.fulfill({
     status: 200,
-    body: JSON.stringify({
-      items: [
-        searchMock.token1,
-        searchMock.token2,
-      ],
-    }),
+    body: JSON.stringify([
+      searchMock.token1,
+      searchMock.token2,
+    ]),
   }));
 
   await mount(
@@ -53,14 +51,12 @@ test('search by token name  +@mobile +@dark-mode', async({ mount, page }) => {
 });
 
 test('search by contract name  +@mobile +@dark-mode', async({ mount, page }) => {
-  const API_URL = buildApiUrl('search') + '?q=o';
+  const API_URL = buildApiUrl('quick_search') + '?q=o';
   await page.route(API_URL, (route) => route.fulfill({
     status: 200,
-    body: JSON.stringify({
-      items: [
-        searchMock.contract1,
-      ],
-    }),
+    body: JSON.stringify([
+      searchMock.contract1,
+    ]),
   }));
 
   await mount(
@@ -75,16 +71,14 @@ test('search by contract name  +@mobile +@dark-mode', async({ mount, page }) => 
 });
 
 test('search by name homepage +@dark-mode', async({ mount, page }) => {
-  const API_URL = buildApiUrl('search') + '?q=o';
+  const API_URL = buildApiUrl('quick_search') + '?q=o';
   await page.route(API_URL, (route) => route.fulfill({
     status: 200,
-    body: JSON.stringify({
-      items: [
-        searchMock.token1,
-        searchMock.token2,
-        searchMock.contract1,
-      ],
-    }),
+    body: JSON.stringify([
+      searchMock.token1,
+      searchMock.token2,
+      searchMock.contract1,
+    ]),
   }));
 
   await mount(
@@ -101,14 +95,12 @@ test('search by name homepage +@dark-mode', async({ mount, page }) => {
 });
 
 test('search by tag  +@mobile +@dark-mode', async({ mount, page }) => {
-  const API_URL = buildApiUrl('search') + '?q=o';
+  const API_URL = buildApiUrl('quick_search') + '?q=o';
   await page.route(API_URL, (route) => route.fulfill({
     status: 200,
-    body: JSON.stringify({
-      items: [
-        searchMock.label1,
-      ],
-    }),
+    body: JSON.stringify([
+      searchMock.label1,
+    ]),
   }));
 
   await mount(
@@ -123,14 +115,12 @@ test('search by tag  +@mobile +@dark-mode', async({ mount, page }) => {
 });
 
 test('search by address hash +@mobile', async({ mount, page }) => {
-  const API_URL = buildApiUrl('search') + `?q=${ searchMock.address1.address }`;
+  const API_URL = buildApiUrl('quick_search') + `?q=${ searchMock.address1.address }`;
   await page.route(API_URL, (route) => route.fulfill({
     status: 200,
-    body: JSON.stringify({
-      items: [
-        searchMock.address1,
-      ],
-    }),
+    body: JSON.stringify([
+      searchMock.address1,
+    ]),
   }));
 
   await mount(
@@ -145,14 +135,12 @@ test('search by address hash +@mobile', async({ mount, page }) => {
 });
 
 test('search by block number +@mobile', async({ mount, page }) => {
-  const API_URL = buildApiUrl('search') + `?q=${ searchMock.block1.block_number }`;
-  await page.route(buildApiUrl('search') + `?q=${ searchMock.block1.block_number }`, (route) => route.fulfill({
+  const API_URL = buildApiUrl('quick_search') + `?q=${ searchMock.block1.block_number }`;
+  await page.route(API_URL, (route) => route.fulfill({
     status: 200,
-    body: JSON.stringify({
-      items: [
-        searchMock.block1,
-      ],
-    }),
+    body: JSON.stringify([
+      searchMock.block1,
+    ]),
   }));
 
   await mount(
@@ -167,14 +155,12 @@ test('search by block number +@mobile', async({ mount, page }) => {
 });
 
 test('search by block hash +@mobile', async({ mount, page }) => {
-  const API_URL = buildApiUrl('search') + `?q=${ searchMock.block1.block_hash }`;
-  await page.route(buildApiUrl('search') + `?q=${ searchMock.block1.block_hash }`, (route) => route.fulfill({
+  const API_URL = buildApiUrl('quick_search') + `?q=${ searchMock.block1.block_hash }`;
+  await page.route(API_URL, (route) => route.fulfill({
     status: 200,
-    body: JSON.stringify({
-      items: [
-        searchMock.block1,
-      ],
-    }),
+    body: JSON.stringify([
+      searchMock.block1,
+    ]),
   }));
 
   await mount(
@@ -189,14 +175,12 @@ test('search by block hash +@mobile', async({ mount, page }) => {
 });
 
 test('search by tx hash +@mobile', async({ mount, page }) => {
-  const API_URL = buildApiUrl('search') + `?q=${ searchMock.tx1.tx_hash }`;
-  await page.route(buildApiUrl('search') + `?q=${ searchMock.tx1.tx_hash }`, (route) => route.fulfill({
+  const API_URL = buildApiUrl('quick_search') + `?q=${ searchMock.tx1.tx_hash }`;
+  await page.route(API_URL, (route) => route.fulfill({
     status: 200,
-    body: JSON.stringify({
-      items: [
-        searchMock.tx1,
-      ],
-    }),
+    body: JSON.stringify([
+      searchMock.tx1,
+    ]),
   }));
 
   await mount(
@@ -211,17 +195,15 @@ test('search by tx hash +@mobile', async({ mount, page }) => {
 });
 
 test('search with view all link', async({ mount, page }) => {
-  const API_URL = buildApiUrl('search') + '?q=o';
+  const API_URL = buildApiUrl('quick_search') + '?q=o';
   await page.route(API_URL, (route) => route.fulfill({
     status: 200,
-    body: JSON.stringify({
-      items: [
-        searchMock.token1,
-        searchMock.token2,
-        searchMock.contract1,
-      ],
-      next_page_params: { foo: 'bar' },
-    }),
+    body: JSON.stringify([
+      searchMock.token1,
+      searchMock.token2,
+      searchMock.contract1,
+      ...Array(47).fill(searchMock.contract1),
+    ]),
   }));
 
   await mount(
@@ -237,25 +219,23 @@ test('search with view all link', async({ mount, page }) => {
 });
 
 test('scroll suggest to category', async({ mount, page }) => {
-  const API_URL = buildApiUrl('search') + '?q=o';
+  const API_URL = buildApiUrl('quick_search') + '?q=o';
   await page.route(API_URL, (route) => route.fulfill({
     status: 200,
-    body: JSON.stringify({
-      items: [
-        searchMock.token1,
-        searchMock.token2,
-        searchMock.contract1,
-        searchMock.token1,
-        searchMock.token2,
-        searchMock.contract1,
-        searchMock.token1,
-        searchMock.token2,
-        searchMock.contract1,
-        searchMock.token1,
-        searchMock.token2,
-        searchMock.contract1,
-      ],
-    }),
+    body: JSON.stringify([
+      searchMock.token1,
+      searchMock.token2,
+      searchMock.contract1,
+      searchMock.token1,
+      searchMock.token2,
+      searchMock.contract1,
+      searchMock.token1,
+      searchMock.token2,
+      searchMock.contract1,
+      searchMock.token1,
+      searchMock.token2,
+      searchMock.contract1,
+    ]),
   }));
 
   await mount(
@@ -287,15 +267,12 @@ test.describe('with apps', () => {
   const MARKETPLACE_CONFIG_URL = 'https://localhost:3000/marketplace-config.json';
 
   test('default view +@mobile', async({ mount, page }) => {
-    const API_URL = buildApiUrl('search') + '?q=o';
+    const API_URL = buildApiUrl('quick_search') + '?q=o';
     await page.route(API_URL, (route) => route.fulfill({
       status: 200,
-      body: JSON.stringify({
-        items: [
-          searchMock.token1,
-        ],
-        next_page_params: { foo: 'bar' },
-      }),
+      body: JSON.stringify([
+        searchMock.token1,
+      ]),
     }));
 
     await page.route(MARKETPLACE_CONFIG_URL, (route) => route.fulfill({

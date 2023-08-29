@@ -41,7 +41,7 @@ import type { L2TxnBatchesResponse } from 'types/api/l2TxnBatches';
 import type { L2WithdrawalsResponse } from 'types/api/l2Withdrawals';
 import type { LogsResponseTx, LogsResponseAddress } from 'types/api/log';
 import type { RawTracesResponse } from 'types/api/rawTrace';
-import type { SearchRedirectResult, SearchResult, SearchResultFilters } from 'types/api/search';
+import type { SearchRedirectResult, SearchResult, SearchResultFilters, SearchResultItem } from 'types/api/search';
 import type { Counters, StatsCharts, StatsChart, HomeStats } from 'types/api/stats';
 import type {
   TokenCounters,
@@ -425,6 +425,10 @@ export const RESOURCES = {
   },
 
   // SEARCH
+  quick_search: {
+    path: '/api/v2/search/quick',
+    filterFields: [ 'q' ],
+  },
   search: {
     path: '/api/v2/search',
     filterFields: [ 'q' ],
@@ -603,6 +607,7 @@ Q extends 'token_instance_transfers' ? TokenInstanceTransferResponse :
 Q extends 'token_instance_holders' ? TokenHolders :
 Q extends 'token_inventory' ? TokenInventoryResponse :
 Q extends 'tokens' ? TokensResponse :
+Q extends 'quick_search' ? Array<SearchResultItem> :
 Q extends 'search' ? SearchResult :
 Q extends 'search_check_redirect' ? SearchRedirectResult :
 Q extends 'contract' ? SmartContract :
