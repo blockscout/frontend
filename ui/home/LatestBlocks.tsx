@@ -25,18 +25,18 @@ const BLOCK_HEIGHT_L2 = 112;
 const BLOCK_MARGIN = 12;
 
 const LatestBlocks = () => {
-  const blockHeight = config.features.rollup.isEnabled ? BLOCK_HEIGHT_L2 : BLOCK_HEIGHT_L1;
+  const blockHeight = config.features.rollup.isEnabled || config.UI.views.block.hiddenFields?.total_reward ? BLOCK_HEIGHT_L2 : BLOCK_HEIGHT_L1;
   const isMobile = useIsMobile();
   // const blocksMaxCount = isMobile ? 2 : 3;
   let blocksMaxCount: number;
-  if (config.features.rollup.isEnabled) {
+  if (config.features.rollup.isEnabled || config.UI.views.block.hiddenFields?.total_reward) {
     blocksMaxCount = isMobile ? 4 : 5;
   } else {
     blocksMaxCount = isMobile ? 2 : 3;
   }
   const { data, isPlaceholderData, isError } = useApiQuery('homepage_blocks', {
     queryOptions: {
-      placeholderData: Array(4).fill(BLOCK),
+      placeholderData: Array(blocksMaxCount).fill(BLOCK),
     },
   });
 

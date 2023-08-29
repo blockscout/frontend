@@ -6,6 +6,7 @@ import type { Block } from 'types/api/block';
 
 import { route } from 'nextjs-routes';
 
+import config from 'configs/app';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import LinkInternal from 'ui/shared/LinkInternal';
@@ -50,11 +51,13 @@ const AddressBlocksValidatedTableItem = (props: Props) => {
           />
         </Flex>
       </Td>
-      <Td isNumeric display="flex" justifyContent="end">
-        <Skeleton isLoaded={ !props.isLoading } display="inline-block">
-          <span>{ totalReward.toFixed() }</span>
-        </Skeleton>
-      </Td>
+      { !config.UI.views.block.hiddenFields?.total_reward && (
+        <Td isNumeric display="flex" justifyContent="end">
+          <Skeleton isLoaded={ !props.isLoading } display="inline-block">
+            <span>{ totalReward.toFixed() }</span>
+          </Skeleton>
+        </Td>
+      ) }
     </Tr>
   );
 };

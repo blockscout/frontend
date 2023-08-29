@@ -48,10 +48,12 @@ const AddressBlocksValidatedListItem = (props: Props) => {
           isLoading={ props.isLoading }
         />
       </Flex>
-      <Flex columnGap={ 2 } w="100%">
-        <Skeleton isLoaded={ !props.isLoading } fontWeight={ 500 } flexShrink={ 0 }>Reward { config.chain.currency.symbol }</Skeleton>
-        <Skeleton isLoaded={ !props.isLoading } color="text_secondary">{ totalReward.toFixed() }</Skeleton>
-      </Flex>
+      { !config.UI.views.block.hiddenFields?.total_reward && (
+        <Flex columnGap={ 2 } w="100%">
+          <Skeleton isLoaded={ !props.isLoading } fontWeight={ 500 } flexShrink={ 0 }>Reward { config.chain.currency.symbol }</Skeleton>
+          <Skeleton isLoaded={ !props.isLoading } color="text_secondary">{ totalReward.toFixed() }</Skeleton>
+        </Flex>
+      ) }
     </ListItemMobile>
   );
 };

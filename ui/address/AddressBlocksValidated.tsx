@@ -94,7 +94,8 @@ const AddressBlocksValidated = ({ scrollRef }: Props) => {
               <Th width="17%">Age</Th>
               <Th width="16%">Txn</Th>
               <Th width="25%">Gas used</Th>
-              <Th width="25%" isNumeric>Reward { config.chain.currency.symbol }</Th>
+              { !config.UI.views.block.hiddenFields?.total_reward &&
+              <Th width="25%" isNumeric>Reward { config.chain.currency.symbol }</Th> }
             </Tr>
           </Thead>
           <Tbody>
