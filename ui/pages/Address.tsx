@@ -12,7 +12,7 @@ import { useAppContext } from 'lib/contexts/app';
 import useContractTabs from 'lib/hooks/useContractTabs';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { ADDRESS_INFO } from 'stubs/address';
+import { ADDRESS_INFO, ADDRESS_TABS_COUNTERS } from 'stubs/address';
 import AddressBlocksValidated from 'ui/address/AddressBlocksValidated';
 import AddressCoinBalance from 'ui/address/AddressCoinBalance';
 import AddressContract from 'ui/address/AddressContract';
@@ -54,24 +54,71 @@ const AddressPageContent = () => {
     },
   });
 
+  const addressTabsCountersQuery = useApiQuery('address_tabs_counters', {
+    pathParams: { hash },
+    queryOptions: {
+      enabled: Boolean(hash),
+      placeholderData: ADDRESS_TABS_COUNTERS,
+    },
+  });
+
   const contractTabs = useContractTabs(addressQuery.data);
 
   const tabs: Array<RoutedTab> = React.useMemo(() => {
     return [
-      { id: 'txs', title: 'Transactions', component: <AddressTxs scrollRef={ tabsScrollRef }/> },
-      config.features.beaconChain.isEnabled && addressQuery.data?.has_beacon_chain_withdrawals ?
-        { id: 'withdrawals', title: 'Withdrawals', component: <AddressWithdrawals scrollRef={ tabsScrollRef }/> } :
+      {
+        id: 'txs',
+        title: 'Transactions',
+        count: addressTabsCountersQuery.data?.transactions_count,
+        component: <AddressTxs scrollRef={ tabsScrollRef }/>,
+      },
+      config.features.beaconChain.isEnabled ?
+        {
+          id: 'withdrawals',
+          title: 'Withdrawals',
+          count: addressTabsCountersQuery.data?.withdrawals_count,
+          component: <AddressWithdrawals scrollRef={ tabsScrollRef }/>,
+        } :
         undefined,
-      addressQuery.data?.has_token_transfers ?
-        { id: 'token_transfers', title: 'Token transfers', component: <AddressTokenTransfers scrollRef={ tabsScrollRef }/> } :
+      {
+        id: 'token_transfers',
+        title: 'Token transfers',
+        count: addressTabsCountersQuery.data?.token_transfers_count,
+        component: <AddressTokenTransfers scrollRef={ tabsScrollRef }/>,
+      },
+      {
+        id: 'tokens',
+        title: 'Tokens',
+        count: addressTabsCountersQuery.data?.token_balances_count,
+        component: <AddressTokens/>,
+        subTabs: TOKEN_TABS,
+      },
+      {
+        id: 'internal_txns',
+        title: 'Internal txns',
+        count: addressTabsCountersQuery.data?.internal_txs_count,
+        component: <AddressInternalTxs scrollRef={ tabsScrollRef }/>,
+      },
+      {
+        id: 'coin_balance_history',
+        title: 'Coin balance history',
+        count: addressTabsCountersQuery.data?.coin_balances_count,
+        component: <AddressCoinBalance/>,
+      },
+      config.chain.verificationType === 'validation' ?
+        {
+          id: 'blocks_validated',
+          title: 'Blocks validated',
+          count: addressTabsCountersQuery.data?.validations_count,
+          component: <AddressBlocksValidated scrollRef={ tabsScrollRef }/>,
+        } :
         undefined,
-      addressQuery.data?.has_tokens ? { id: 'tokens', title: 'Tokens', component: <AddressTokens/>, subTabs: TOKEN_TABS } : undefined,
-      { id: 'internal_txns', title: 'Internal txns', component: <AddressInternalTxs scrollRef={ tabsScrollRef }/> },
-      { id: 'coin_balance_history', title: 'Coin balance history', component: <AddressCoinBalance/> },
-      addressQuery.data?.has_validated_blocks ?
-        { id: 'blocks_validated', title: 'Blocks validated', component: <AddressBlocksValidated scrollRef={ tabsScrollRef }/> } :
-        undefined,
-      addressQuery.data?.has_logs ? { id: 'logs', title: 'Logs', component: <AddressLogs scrollRef={ tabsScrollRef }/> } : undefined,
+      {
+        id: 'logs',
+        title: 'Logs',
+        count: addressTabsCountersQuery.data?.logs_count,
+        component: <AddressLogs scrollRef={ tabsScrollRef }/>,
+      },
       addressQuery.data?.is_contract ? {
         id: 'contract',
         title: () => {
@@ -90,7 +137,7 @@ const AddressPageContent = () => {
         subTabs: contractTabs.map(tab => tab.id),
       } : undefined,
     ].filter(Boolean);
-  }, [ addressQuery.data, contractTabs ]);
+  }, [ addressQuery.data, contractTabs, addressTabsCountersQuery.data ]);
 
   const tags = (
     <EntityTags
@@ -134,7 +181,7 @@ const AddressPageContent = () => {
       <AddressDetails addressQuery={ addressQuery } scrollRef={ tabsScrollRef }/>
       { /* should stay before tabs to scroll up with pagination */ }
       <Box ref={ tabsScrollRef }></Box>
-      { addressQuery.isPlaceholderData ? <TabsSkeleton tabs={ tabs }/> : content }
+      { (addressQuery.isPlaceholderData || addressTabsCountersQuery.isPlaceholderData) ? <TabsSkeleton tabs={ tabs }/> : content }
     </>
   );
 };

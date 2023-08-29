@@ -12,7 +12,10 @@ import React from 'react';
 
 import type { MenuButton, TabItem } from './types';
 
+import TabCounter from './TabCounter';
 import { menuButton } from './utils';
+
+const BUTTON_CLASSNAME = 'button-item';
 
 interface Props {
   tabs: Array<TabItem | MenuButton>;
@@ -59,8 +62,10 @@ const TabsMenu = ({ tabs, tabsCut, isActive, styles, onItemClick, buttonRef, act
               isActive={ activeTab ? activeTab.id === tab.id : false }
               justifyContent="left"
               data-index={ index }
+              className={ BUTTON_CLASSNAME }
             >
               { typeof tab.title === 'function' ? tab.title() : tab.title }
+              <TabCounter count={ tab.count } parentClassName={ BUTTON_CLASSNAME }/>
             </Button>
           )) }
         </PopoverBody>
