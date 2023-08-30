@@ -8,7 +8,7 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import uniswapIcon from 'icons/uniswap.svg';
-import AddressLink from 'ui/shared/address/AddressLink';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
 
 interface Props {
@@ -114,7 +114,12 @@ const TxDetailsAction = ({ action }: Props) => {
               rowGap={ 2 }
             />
             <chakra.span> to </chakra.span>
-            <AddressLink hash={ data.to } type="address" truncation="constant"/>
+            <AddressEntity
+              address={{ hash: data.to }}
+              truncation="constant"
+              noIcon
+              noCopy
+            />
           </Flex>
 
           <Flex columnGap={ 1 } rowGap={ 2 } pl={ 3 } flexDirection="column" mt={ 2 }>

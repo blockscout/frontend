@@ -13,8 +13,8 @@ import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import { WEI } from 'lib/consts';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import BlockTimestamp from 'ui/blocks/BlockTimestamp';
-import AddressLink from 'ui/shared/address/AddressLink';
 import Icon from 'ui/shared/chakra/Icon';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
 import LinkInternal from 'ui/shared/LinkInternal';
@@ -55,9 +55,12 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           <span>{ data.size.toLocaleString() } bytes</span>
         </Skeleton>
       </Flex>
-      <Flex columnGap={ 2 }>
+      <Flex columnGap={ 2 } w="100%">
         <Text fontWeight={ 500 }>{ capitalize(getNetworkValidatorTitle()) }</Text>
-        <AddressLink type="address" alias={ data.miner.name } hash={ data.miner.hash } truncation="constant" isLoading={ isLoading }/>
+        <AddressEntity
+          address={ data.miner }
+          isLoading={ isLoading }
+        />
       </Flex>
       <Flex columnGap={ 2 }>
         <Text fontWeight={ 500 }>Txn</Text>

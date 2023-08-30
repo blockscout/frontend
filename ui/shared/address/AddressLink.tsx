@@ -24,7 +24,7 @@ type CommonProps = {
 }
 
 type AddressTokenTxProps = {
-  type: 'address' | 'token';
+  type: 'token';
   hash: 'hash';
 }
 
@@ -48,8 +48,6 @@ const AddressLink = (props: Props) => {
     url = route({ pathname: '/token/[hash]', query: { ...props.query, hash } });
   } else if (type === 'address_token') {
     url = route({ pathname: '/address/[hash]', query: { ...props.query, hash, tab: 'token_transfers', token: props.tokenHash, scroll_to_tabs: 'true' } });
-  } else {
-    url = route({ pathname: '/address/[hash]', query: { ...props.query, hash } });
   }
 
   const content = (() => {

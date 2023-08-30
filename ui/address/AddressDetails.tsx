@@ -12,11 +12,11 @@ import useApiQuery from 'lib/api/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ADDRESS_COUNTERS } from 'stubs/address';
 import AddressCounterItem from 'ui/address/details/AddressCounterItem';
-import AddressLink from 'ui/shared/address/AddressLink';
 import AddressHeadingInfo from 'ui/shared/AddressHeadingInfo';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
@@ -102,7 +102,12 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
             hint="Transaction and address of creation"
             isLoading={ addressQuery.isPlaceholderData }
           >
-            <AddressLink type="address" hash={ data.creator_address_hash } truncation="constant"/>
+            <AddressEntity
+              address={{ hash: data.creator_address_hash }}
+              truncation="constant"
+              noIcon
+              noCopy
+            />
             <Text whiteSpace="pre"> at txn </Text>
             <TxEntity hash={ data.creation_tx_hash } truncation="constant" noIcon/>
           </DetailsInfoItem>

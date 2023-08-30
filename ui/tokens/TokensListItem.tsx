@@ -7,7 +7,7 @@ import type { TokenInfo } from 'types/api/token';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import AddressLink from 'ui/shared/address/AddressLink';
 import Tag from 'ui/shared/chakra/Tag';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TokenLogo from 'ui/shared/TokenLogo';
 
@@ -56,14 +56,14 @@ const TokensTableItem = ({
           </Skeleton>
         </GridItem>
       </Grid>
-      <Flex justifyContent="space-between" alignItems="center" width="100%">
-        <Flex alignItems="center" width="136px" justifyContent="space-between" ml={ 8 } mt="-8px">
-          <Flex alignItems="center">
-            <AddressLink fontSize="sm" hash={ address } type="address" truncation="constant" isLoading={ isLoading }/>
-            <CopyToClipboard text={ address } isLoading={ isLoading }/>
-          </Flex>
-          <AddressAddToWallet token={ token } isLoading={ isLoading }/>
-        </Flex>
+      <Flex justifyContent="space-between" alignItems="center" width="150px" ml={ 8 } mt={ -2 }>
+        <AddressEntity
+          address={{ hash: address }}
+          isLoading={ isLoading }
+          truncation="constant"
+          noIcon
+        />
+        <AddressAddToWallet token={ token } isLoading={ isLoading }/>
       </Flex>
       { exchangeRate && (
         <HStack spacing={ 3 }>

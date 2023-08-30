@@ -25,9 +25,9 @@ const BlocksTable = ({ data, isLoading, top, page }: Props) => {
         <Tr>
           <Th width="125px">Block</Th>
           <Th width="120px">Size, bytes</Th>
-          <Th width={ config.features.rollup.isEnabled ? '37%' : '21%' } minW="144px">{ capitalize(getNetworkValidatorTitle()) }</Th>
+          <Th width={ config.features.rollup.isEnabled ? '37%' : '23%' } minW="160px">{ capitalize(getNetworkValidatorTitle()) }</Th>
           <Th width="64px" isNumeric>Txn</Th>
-          <Th width={ config.features.rollup.isEnabled ? '63%' : '35%' }>Gas used</Th>
+          <Th width={ config.features.rollup.isEnabled ? '63%' : '33%' }>Gas used</Th>
           { !config.features.rollup.isEnabled && !config.UI.views.block.hiddenFields?.total_reward &&
               <Th width="22%">Reward { config.chain.currency.symbol }</Th> }
           { !config.features.rollup.isEnabled && !config.UI.views.block.hiddenFields?.burnt_fees &&

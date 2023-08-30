@@ -39,7 +39,6 @@ import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import RawInputData from 'ui/shared/RawInputData';
 import TextSeparator from 'ui/shared/TextSeparator';
-import TruncatedValue from 'ui/shared/TruncatedValue';
 import TxStatus from 'ui/shared/TxStatus';
 import Utilization from 'ui/shared/Utilization/Utilization';
 import TxDetailsActions from 'ui/tx/details/TxDetailsActions';
@@ -235,7 +234,7 @@ const TxDetails = () => {
           { toAddress ? (
             <>
               { data.to && data.to.hash ? (
-                <Flex flexWrap="nowrap" alignItems="center" w="100%">
+                <Flex flexWrap="nowrap" alignItems="center" maxW="100%">
                   <AddressEntity
                     address={ toAddress }
                     isLoading={ isPlaceholderData }
@@ -256,7 +255,6 @@ const TxDetails = () => {
                   { executionFailedBadge }
                 </Flex>
               ) }
-              { toAddress.name && <TruncatedValue value={ toAddress.name }/> }
               { addressToTags.length > 0 && (
                 <Flex columnGap={ 3 }>
                   { addressToTags }
@@ -281,6 +279,7 @@ const TxDetails = () => {
             currency={ config.chain.currency.symbol }
             exchangeRate={ data.exchange_rate }
             isLoading={ isPlaceholderData }
+            flexWrap="wrap"
           />
         </DetailsInfoItem>
         <DetailsInfoItem

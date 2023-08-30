@@ -6,7 +6,7 @@ import type { AddressTokenBalance } from 'types/api/address';
 
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import AddressLink from 'ui/shared/address/AddressLink';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TokenLogo from 'ui/shared/TokenLogo';
 
@@ -26,8 +26,12 @@ const ERC721TokensListItem = ({ token, value, isLoading }: Props) => {
         <AddressLink fontWeight="700" hash={ hash } tokenHash={ token.address } type="address_token" alias={ tokenString } isLoading={ isLoading }/>
       </Flex>
       <Flex alignItems="center" pl={ 8 }>
-        <AddressLink hash={ token.address } type="address" truncation="constant" isLoading={ isLoading }/>
-        <CopyToClipboard text={ token.address } isLoading={ isLoading }/>
+        <AddressEntity
+          address={{ hash: token.address }}
+          isLoading={ isLoading }
+          truncation="constant"
+          noIcon
+        />
         <AddressAddToWallet token={ token } ml={ 2 } isLoading={ isLoading }/>
       </Flex>
       <HStack spacing={ 3 }>

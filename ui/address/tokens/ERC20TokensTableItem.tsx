@@ -6,7 +6,7 @@ import type { AddressTokenBalance } from 'types/api/address';
 import getCurrencyValue from 'lib/getCurrencyValue';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import AddressLink from 'ui/shared/address/AddressLink';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenLogo from 'ui/shared/TokenLogo';
 
 type Props = AddressTokenBalance & { isLoading: boolean };
@@ -34,10 +34,11 @@ const ERC20TokensTableItem = ({
       </Td>
       <Td verticalAlign="middle">
         <Flex alignItems="center" width="150px" justifyContent="space-between">
-          <Flex alignItems="center">
-            <AddressLink hash={ token.address } type="address" truncation="constant" isLoading={ isLoading }/>
-            <CopyToClipboard text={ token.address } isLoading={ isLoading }/>
-          </Flex>
+          <AddressEntity
+            address={{ hash: token.address }}
+            isLoading={ isLoading }
+            noIcon
+          />
           <AddressAddToWallet token={ token } ml={ 4 } isLoading={ isLoading }/>
         </Flex>
       </Td>
