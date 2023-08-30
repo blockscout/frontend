@@ -12,6 +12,7 @@ type Props = {
   isLoading?: boolean;
 }
 
+// TODO @tom2drum - remove this component
 /**
  * @deprecated use `ui/shared/entities/**` instead
  */

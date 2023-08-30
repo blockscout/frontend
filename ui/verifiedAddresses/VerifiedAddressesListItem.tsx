@@ -7,10 +7,10 @@ import editIcon from 'icons/edit.svg';
 import dayjs from 'lib/date/dayjs';
 import Icon from 'ui/shared/chakra/Icon';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 
 import VerifiedAddressesStatus from './VerifiedAddressesStatus';
-import VerifiedAddressesTokenSnippet from './VerifiedAddressesTokenSnippet';
 
 interface Props {
   item: VerifiedAddress;
@@ -48,9 +48,21 @@ const VerifiedAddressesListItem = ({ item, application, onAdd, onEdit, isLoading
       return <Link onClick={ handleAddClick }>Add details</Link>;
     }
 
+    const token = {
+      icon_url: application.iconUrl,
+      address: application.tokenAddress,
+      name: item.metadata.tokenName,
+      symbol: '',
+    };
+
     return (
       <>
-        <VerifiedAddressesTokenSnippet application={ application } name={ item.metadata.tokenName }/>
+        <TokenEntity
+          token={ token }
+          noLink={ application.status === 'IN_PROCESS' }
+          noCopy
+          noSymbol
+        />
         <Tooltip label="Edit">
           <IconButton
             aria-label="edit"
@@ -80,7 +92,7 @@ const VerifiedAddressesListItem = ({ item, application, onAdd, onEdit, isLoading
       { item.metadata.tokenName && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Token Info</ListItemMobileGrid.Label>
-          <ListItemMobileGrid.Value py={ application ? '3px' : '5px' } display="flex" alignItems="center">
+          <ListItemMobileGrid.Value display="flex" alignItems="center">
             { tokenInfo }
           </ListItemMobileGrid.Value>
         </>

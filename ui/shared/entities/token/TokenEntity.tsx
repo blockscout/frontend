@@ -58,12 +58,13 @@ const Icon = chakra((props: IconProps) => {
   );
 });
 
-type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'token' | 'jointSymbol'>;
+type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'token' | 'jointSymbol' | 'onlySymbol'>;
 
 const Content = chakra((props: ContentProps) => {
   const nameString = [
-    props.token.name ?? 'Unnamed token',
-    props.token.symbol && props.jointSymbol && `(${ props.token.symbol })`,
+    !props.onlySymbol && (props.token.name ?? 'Unnamed token'),
+    props.onlySymbol && (props.token.symbol ?? ''),
+    props.token.symbol && props.jointSymbol && !props.onlySymbol && `(${ props.token.symbol })`,
   ].filter(Boolean).join(' ');
 
   return (
@@ -82,12 +83,12 @@ const Content = chakra((props: ContentProps) => {
   );
 });
 
-type SymbolProps = Pick<EntityProps, 'token' | 'isLoading' | 'noSymbol' | 'jointSymbol'>;
+type SymbolProps = Pick<EntityProps, 'token' | 'isLoading' | 'noSymbol' | 'jointSymbol' | 'onlySymbol'>;
 
 const Symbol = (props: SymbolProps) => {
   const symbol = props.token.symbol;
 
-  if (!symbol || props.noSymbol || props.jointSymbol) {
+  if (!symbol || props.noSymbol || props.jointSymbol || props.onlySymbol) {
     return null;
   }
 
@@ -134,6 +135,7 @@ export interface EntityProps extends EntityBase.EntityBaseProps {
   token: Pick<TokenInfo, 'address' | 'icon_url' | 'name' | 'symbol'>;
   noSymbol?: boolean;
   jointSymbol?: boolean;
+  onlySymbol?: boolean;
 }
 
 const TokenEntity = (props: EntityProps) => {
