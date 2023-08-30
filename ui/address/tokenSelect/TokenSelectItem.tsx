@@ -4,7 +4,7 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
-import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
+import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
 import type { TokenEnhancedData } from '../utils/tokenUtils';
@@ -68,7 +68,13 @@ const TokenSelectItem = ({ data }: Props) => {
       href={ url }
     >
       <Flex alignItems="center" w="100%" overflow="hidden">
-        <TokenSnippet data={ data.token } hideSymbol fontWeight={ 700 } isDisabled/>
+        <TokenEntity
+          token={ data.token }
+          noSymbol
+          noCopy
+          noLink
+          fontWeight={ 700 }
+        />
         { data.usd && <Text fontWeight={ 700 } ml="auto">${ data.usd.toFormat(2) }</Text> }
       </Flex>
       <Flex alignItems="center" justifyContent="space-between" w="100%" whiteSpace="nowrap">

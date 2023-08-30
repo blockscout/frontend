@@ -7,7 +7,7 @@ import rightArrowIcon from 'icons/arrows/east.svg';
 import { space } from 'lib/html-entities';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
+import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import NftTokenTransferSnippet from 'ui/tx/NftTokenTransferSnippet';
 
 interface Props {
@@ -25,12 +25,11 @@ const TxDetailsTokenTransfer = ({ data }: Props) => {
             <Text fontWeight={ 500 } as="span">For:{ space }
               <CurrencyValue value={ total.value } exchangeRate={ data.token.exchange_rate } fontWeight={ 600 } decimals={ total.decimals }/>
             </Text>
-            <TokenSnippet
-              data={ data.token }
+            <TokenEntity
+              token={ data.token }
+              noCopy
               w="auto"
               flexGrow="1"
-              columnGap={ 1 }
-              logoSize={ 5 }
             />
           </Flex>
         );
@@ -63,7 +62,7 @@ const TxDetailsTokenTransfer = ({ data }: Props) => {
 
   return (
     <Flex
-      alignItems="center"
+      alignItems="flex-start"
       flexWrap={{ base: 'wrap', lg: 'nowrap' }}
       columnGap={ 3 }
       rowGap={ 3 }
@@ -72,7 +71,7 @@ const TxDetailsTokenTransfer = ({ data }: Props) => {
     >
       <Flex alignItems="center" fontWeight="500">
         <AddressEntity address={ data.from } truncation="constant" noIcon maxW="150px"/>
-        <Icon as={ rightArrowIcon } boxSize={ 6 } mx={ 2 } color="gray.500"/>
+        <Icon as={ rightArrowIcon } boxSize={ 5 } mx={ 2 } color="gray.500"/>
         <AddressEntity address={ data.to } truncation="constant" noIcon maxW="150px"/>
       </Flex>
       <Flex flexDir="column" rowGap={ 5 } w="100%" overflow="hidden">

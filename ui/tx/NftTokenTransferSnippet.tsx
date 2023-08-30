@@ -6,9 +6,8 @@ import type { TokenInfo } from 'types/api/token';
 import { route } from 'nextjs-routes';
 
 import nftIcon from 'icons/nft_shield.svg';
-import AddressLink from 'ui/shared/address/AddressLink';
+import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import HashStringShorten from 'ui/shared/HashStringShorten';
-import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
 
 interface Props {
   token: TokenInfo;
@@ -29,11 +28,10 @@ const NftTokenTransferSnippet = ({ value, token, tokenId }: Props) => {
           { tokenId.length > 8 ? <HashStringShorten hash={ tokenId }/> : tokenId }
         </Link>
       </Box>
-      { token.name ? (
-        <TokenSnippet data={ token } logoSize={ 5 } columnGap={ 1 }/>
-      ) : (
-        <AddressLink hash={ token.address } truncation="constant" type="token"/>
-      ) }
+      <TokenEntity
+        token={ token }
+        noCopy
+      />
     </Flex>
   );
 };

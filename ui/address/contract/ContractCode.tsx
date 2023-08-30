@@ -105,9 +105,14 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
 
     const decoded = data.decoded_constructor_args
       .map(([ value, { name, type } ], index) => {
-        const valueEl = type === 'address' ?
-          <LinkInternal href={ route({ pathname: '/address/[hash]', query: { hash: value } }) }>{ value }</LinkInternal> :
-          <span>{ value }</span>;
+        const valueEl = type === 'address' ? (
+          <AddressEntity
+            address={{ hash: value }}
+            noIcon
+            display="inline-flex"
+            maxW="100%"
+          />
+        ) : <span>{ value }</span>;
         return (
           <Box key={ index }>
             <span>Arg [{ index }] { name || '' } ({ type }): </span>

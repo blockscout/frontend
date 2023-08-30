@@ -7,9 +7,9 @@ import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import NftMedia from 'ui/shared/nft/NftMedia';
-import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
 
 import TokenInstanceCreatorAddress from './details/TokenInstanceCreatorAddress';
 import TokenInstanceDivider from './details/TokenInstanceDivider';
@@ -49,7 +49,11 @@ const TokenInstanceDetails = ({ data, scrollRef, isLoading }: Props) => {
             hint="Token name"
             isLoading={ isLoading }
           >
-            <TokenSnippet data={ data.token } isLoading={ isLoading }/>
+            <TokenEntity
+              token={ data.token }
+              isLoading={ isLoading }
+              noCopy
+            />
           </DetailsInfoItem>
           { data.is_unique && data.owner && (
             <DetailsInfoItem

@@ -7,9 +7,9 @@ import type { TokenTransfer } from 'types/api/tokenTransfer';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Tag from 'ui/shared/chakra/Tag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import InOutTag from 'ui/shared/InOutTag';
-import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
 import { getTokenTransferTypeText } from 'ui/shared/TokenTransfer/helpers';
 import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
@@ -47,7 +47,13 @@ const TokenTransferTableItem = ({
       ) }
       <Td>
         <Flex flexDir="column" alignItems="flex-start" my="3px" rowGap={ 2 }>
-          <TokenSnippet data={ token } isLoading={ isLoading } hideSymbol/>
+          <TokenEntity
+            token={ token }
+            isLoading={ isLoading }
+            noSymbol
+            noCopy
+            my="2px"
+          />
           <Tag isLoading={ isLoading }>{ token.type }</Tag>
           <Tag colorScheme="orange" isLoading={ isLoading }>{ getTokenTransferTypeText(type) }</Tag>
         </Flex>
