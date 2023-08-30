@@ -5,11 +5,10 @@ import React from 'react';
 import type { TokenInfo } from 'types/api/token';
 
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
-import AddressLink from 'ui/shared/address/AddressLink';
 import Tag from 'ui/shared/chakra/Tag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
-import TokenLogo from 'ui/shared/TokenLogo';
 
 type Props = {
   token: TokenInfo;
@@ -31,13 +30,9 @@ const TokensTableItem = ({
     address,
     exchange_rate: exchangeRate,
     type,
-    name,
-    symbol,
     holders,
     circulating_market_cap: marketCap,
   } = token;
-
-  const tokenString = [ name, symbol && `(${ symbol })` ].filter(Boolean).join(' ');
 
   return (
     <ListItemMobile rowGap={ 3 }>
@@ -46,11 +41,16 @@ const TokensTableItem = ({
         gridTemplateColumns="minmax(0, 1fr)"
       >
         <GridItem display="flex">
-          <Flex overflow="hidden" mr={ 3 } alignItems="center">
-            <TokenLogo data={ token } boxSize={ 6 } mr={ 2 } isLoading={ isLoading }/>
-            <AddressLink fontSize="sm" fontWeight="700" hash={ address } type="token" alias={ tokenString } isLoading={ isLoading } mr={ 3 }/>
-            <Tag flexShrink={ 0 } isLoading={ isLoading }>{ type }</Tag>
-          </Flex>
+          <TokenEntity
+            token={ token }
+            isLoading={ isLoading }
+            jointSymbol
+            noCopy
+            w="auto"
+            fontSize="sm"
+            fontWeight="700"
+          />
+          <Tag flexShrink={ 0 } isLoading={ isLoading } ml={ 3 }>{ type }</Tag>
           <Skeleton isLoaded={ !isLoading } fontSize="sm" ml="auto" color="text_secondary" minW="24px" textAlign="right" lineHeight={ 6 }>
             <span>{ (page - 1) * PAGE_SIZE + index + 1 }</span>
           </Skeleton>

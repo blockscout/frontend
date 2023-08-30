@@ -24,6 +24,7 @@ import * as tokenStubs from 'stubs/token';
 import { generateListStub } from 'stubs/utils';
 import AddressContract from 'ui/address/AddressContract';
 import TextAd from 'ui/shared/ad/TextAd';
+import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import EntityTags from 'ui/shared/EntityTags';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -31,7 +32,6 @@ import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
-import TokenLogo from 'ui/shared/TokenLogo';
 import TokenContractInfo from 'ui/token/TokenContractInfo';
 import TokenDetails from 'ui/token/TokenDetails';
 import TokenHolders from 'ui/token/TokenHolders/TokenHolders';
@@ -270,14 +270,13 @@ const TokenPageContent = () => {
         title={ `${ tokenQuery.data?.name || 'Unnamed token' }${ tokenSymbolText }` }
         isLoading={ tokenQuery.isPlaceholderData }
         backLink={ backLink }
-        beforeTitle={ (
-          <TokenLogo
-            data={ tokenQuery.data }
-            boxSize={ 6 }
+        beforeTitle={ tokenQuery.data ? (
+          <TokenEntity.Icon
+            token={ tokenQuery.data }
             isLoading={ tokenQuery.isPlaceholderData }
-            mr={ 2 }
+            iconSize="lg"
           />
-        ) }
+        ) : null }
         contentAfter={ titleContentAfter }
       />
       <TokenContractInfo tokenQuery={ tokenQuery } contractQuery={ contractQuery }/>

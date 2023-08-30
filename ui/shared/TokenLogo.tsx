@@ -11,6 +11,7 @@ export interface Props {
   isLoading?: boolean;
 }
 
+// TODO @tom2drum - remove this component
 const TokenLogo = ({ className, isLoading, data }: Props) => {
 
   if (isLoading) {

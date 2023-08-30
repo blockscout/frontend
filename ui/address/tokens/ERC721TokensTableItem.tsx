@@ -5,9 +5,8 @@ import React from 'react';
 import type { AddressTokenBalance } from 'types/api/address';
 
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
-import AddressLink from 'ui/shared/address/AddressLink';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import TokenLogo from 'ui/shared/TokenLogo';
+import TokenEntityWithAddressFilter from 'ui/shared/entities/token/TokenEntityWithAddressFilter';
 
 type Props = AddressTokenBalance & { isLoading: boolean};
 
@@ -19,15 +18,18 @@ const ERC721TokensTableItem = ({
   const router = useRouter();
 
   const hash = router.query.hash?.toString() || '';
-  const tokenString = [ token.name, token.symbol && `(${ token.symbol })` ].filter(Boolean).join(' ');
 
   return (
     <Tr>
       <Td verticalAlign="middle">
-        <Flex alignItems="center">
-          <TokenLogo data={ token } boxSize={ 6 } mr={ 2 } isLoading={ isLoading }/>
-          <AddressLink fontWeight="700" hash={ hash } tokenHash={ token.address } type="address_token" alias={ tokenString } isLoading={ isLoading }/>
-        </Flex>
+        <TokenEntityWithAddressFilter
+          token={ token }
+          addressHash={ hash }
+          isLoading={ isLoading }
+          noCopy
+          jointSymbol
+          fontWeight="700"
+        />
       </Td>
       <Td verticalAlign="middle">
         <Flex alignItems="center" width="150px" justifyContent="space-between">

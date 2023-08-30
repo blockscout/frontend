@@ -5,11 +5,10 @@ import React from 'react';
 import type { TokenInfo } from 'types/api/token';
 
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
-import AddressLink from 'ui/shared/address/AddressLink';
 import Tag from 'ui/shared/chakra/Tag';
 import type { EntityProps as AddressEntityProps } from 'ui/shared/entities/address/AddressEntity';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import TokenLogo from 'ui/shared/TokenLogo';
+import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 
 type Props = {
   token: TokenInfo;
@@ -31,13 +30,10 @@ const TokensTableItem = ({
     address,
     exchange_rate: exchangeRate,
     type,
-    name,
-    symbol,
     holders,
     circulating_market_cap: marketCap,
   } = token;
 
-  const tokenString = [ name, symbol && `(${ symbol })` ].filter(Boolean).join(' ');
   const tokenAddress: AddressEntityProps['address'] = {
     hash: address,
     name: '',
@@ -53,7 +49,7 @@ const TokensTableItem = ({
           <Skeleton
             isLoaded={ !isLoading }
             fontSize="sm"
-            lineHeight="24px"
+            lineHeight="20px"
             fontWeight={ 600 }
             mr={ 3 }
             minW="28px"
@@ -61,10 +57,14 @@ const TokensTableItem = ({
             { (page - 1) * PAGE_SIZE + index + 1 }
           </Skeleton>
           <Box overflow="hidden">
-            <Flex alignItems="center">
-              <TokenLogo data={ token } boxSize={ 6 } mr={ 2 } isLoading={ isLoading }/>
-              <AddressLink fontSize="sm" fontWeight="700" hash={ address } type="token" alias={ tokenString } isLoading={ isLoading }/>
-            </Flex>
+            <TokenEntity
+              token={ token }
+              isLoading={ isLoading }
+              jointSymbol
+              noCopy
+              fontSize="sm"
+              fontWeight="700"
+            />
             <Box ml={ 8 } mt={ 2 }>
               <Flex>
                 <AddressEntity

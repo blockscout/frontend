@@ -12,7 +12,7 @@ import { nbsp } from 'lib/html-entities';
 import Icon from 'ui/shared/chakra/Icon';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import TokenLogo from 'ui/shared/TokenLogo';
+import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 
 const WatchListAddressItem = ({ item, isLoading }: { item: WatchlistAddress; isLoading?: boolean }) => {
   const infoItemsPaddingLeft = { base: 1, lg: 8 };
@@ -20,6 +20,8 @@ const WatchListAddressItem = ({ item, isLoading }: { item: WatchlistAddress; isL
   const nativeTokenData = React.useMemo(() => ({
     name: config.chain.currency.name || '',
     icon_url: '',
+    symbol: '',
+    address: '',
   }), [ ]);
 
   const { usdBn: usdNative } = getCurrencyValue({ value: item.address_balance, accuracy: 2, accuracyUsd: 2, exchangeRate: item.exchange_rate });
@@ -33,11 +35,8 @@ const WatchListAddressItem = ({ item, isLoading }: { item: WatchlistAddress; isL
         py="2px"
       />
       <Flex fontSize="sm" pl={ infoItemsPaddingLeft } flexWrap="wrap" alignItems="center" rowGap={ 1 }>
-        <TokenLogo
-          data={ nativeTokenData }
-          boxSize={ 5 }
-          borderRadius="sm"
-          mr={ 2 }
+        <TokenEntity.Icon
+          token={ nativeTokenData }
           isLoading={ isLoading }
         />
         <Skeleton isLoaded={ !isLoading } whiteSpace="pre" display="inline-flex">

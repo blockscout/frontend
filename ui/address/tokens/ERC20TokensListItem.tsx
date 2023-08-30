@@ -5,16 +5,13 @@ import type { AddressTokenBalance } from 'types/api/address';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
-import AddressLink from 'ui/shared/address/AddressLink';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
-import TokenLogo from 'ui/shared/TokenLogo';
 
 type Props = AddressTokenBalance & { isLoading: boolean};
 
 const ERC20TokensListItem = ({ token, value, isLoading }: Props) => {
-
-  const tokenString = [ token.name, token.symbol && `(${ token.symbol })` ].filter(Boolean).join(' ');
 
   const {
     valueStr: tokenQuantity,
@@ -24,8 +21,13 @@ const ERC20TokensListItem = ({ token, value, isLoading }: Props) => {
   return (
     <ListItemMobile rowGap={ 2 }>
       <Flex alignItems="center" width="100%">
-        <TokenLogo data={ token } boxSize={ 6 } mr={ 2 } isLoading={ isLoading }/>
-        <AddressLink fontWeight="700" hash={ token.address } type="token" alias={ tokenString } isLoading={ isLoading }/>
+        <TokenEntity
+          token={ token }
+          isLoading={ isLoading }
+          noCopy
+          jointSymbol
+          fontWeight="700"
+        />
       </Flex>
       <Flex alignItems="center" pl={ 8 }>
         <AddressEntity
