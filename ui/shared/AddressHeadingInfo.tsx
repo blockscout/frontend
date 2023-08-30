@@ -37,7 +37,7 @@ const AddressHeadingInfo = ({ address, token, isLinkDisabled, isLoading }: Props
       { !isLoading && !address.is_contract && config.features.account.isEnabled && (
         <AddressFavoriteButton hash={ address.hash } watchListId={ address.watchlist_address_id } ml={ 3 }/>
       ) }
-      <AddressQrCode hash={ address.hash } ml={ 2 } isLoading={ isLoading } flexShrink={ 0 }/>
+      <AddressQrCode address={ address } ml={ 2 } isLoading={ isLoading } flexShrink={ 0 }/>
       { config.features.account.isEnabled && <AddressActionsMenu isLoading={ isLoading }/> }
     </Flex>
   );
