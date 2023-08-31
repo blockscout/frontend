@@ -320,6 +320,7 @@
               "eth_goerli",
               "eth",
               "rootstock",
+              "polygon",
               "localhost",
             ],
             "default": "main"
