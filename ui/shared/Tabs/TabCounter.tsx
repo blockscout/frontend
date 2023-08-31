@@ -2,6 +2,8 @@ import type { SystemStyleObject } from '@chakra-ui/react';
 import { Text, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
+const COUNTER_OVERLOAD = 50;
+
 type Props = {
   count?: number;
   parentClassName: string;
@@ -15,10 +17,9 @@ const TasCounter = ({ count, parentClassName }: Props) => {
     return null;
   }
 
-  const sx: SystemStyleObject = {};
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore:
-  sx[`.${ parentClassName }:hover &`] = { color: 'inherit' };
+  const sx: SystemStyleObject = {
+    [`.${ parentClassName }:hover &`]: { color: 'inherit' },
+  };
 
   return (
     <Text
@@ -29,7 +30,7 @@ const TasCounter = ({ count, parentClassName }: Props) => {
       transitionDuration="normal"
       transitionTimingFunction="ease"
     >
-      { count > 50 ? '50+' : count }
+      { count > COUNTER_OVERLOAD ? `${ COUNTER_OVERLOAD }+` : count }
     </Text>
   );
 };
