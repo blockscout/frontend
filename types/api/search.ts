@@ -13,6 +13,7 @@ export interface SearchResultToken {
   token_type: TokenType;
   exchange_rate: string | null;
   total_supply: string | null;
+  is_verified_via_admin_panel: boolean;
   is_smart_contract_verified: boolean;
 }
 

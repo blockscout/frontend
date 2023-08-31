@@ -7,6 +7,7 @@ import { route } from 'nextjs-routes';
 
 import labelIcon from 'icons/publictags.svg';
 import iconSuccess from 'icons/status/success.svg';
+import verifiedToken from 'icons/verified_token.svg';
 import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
 import * as mixpanel from 'lib/mixpanel/index';
@@ -66,6 +67,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
                     dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}
                   />
                 </LinkInternal>
+                { data.is_verified_via_admin_panel && <Icon as={ verifiedToken } boxSize={ 4 } ml={ 1 } color="green.500"/> }
               </Flex>
             </Td>
             <Td fontSize="sm" verticalAlign="middle">

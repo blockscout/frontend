@@ -4,6 +4,7 @@ import React from 'react';
 
 import type { Block } from 'types/api/block';
 
+import config from 'configs/app';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
@@ -52,11 +53,13 @@ const AddressBlocksValidatedTableItem = (props: Props) => {
           />
         </Flex>
       </Td>
-      <Td isNumeric display="flex" justifyContent="end">
-        <Skeleton isLoaded={ !props.isLoading } display="inline-block">
-          <span>{ totalReward.toFixed() }</span>
-        </Skeleton>
-      </Td>
+      { !config.UI.views.block.hiddenFields?.total_reward && (
+        <Td isNumeric display="flex" justifyContent="end">
+          <Skeleton isLoaded={ !props.isLoading } display="inline-block">
+            <span>{ totalReward.toFixed() }</span>
+          </Skeleton>
+        </Td>
+      ) }
     </Tr>
   );
 };

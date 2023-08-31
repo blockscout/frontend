@@ -4,6 +4,7 @@ import React from 'react';
 import type { SearchResultToken } from 'types/api/search';
 
 import iconSuccess from 'icons/status/success.svg';
+import verifiedToken from 'icons/verified_token.svg';
 import highlightText from 'lib/highlightText';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
@@ -16,6 +17,7 @@ interface Props {
 
 const SearchBarSuggestToken = ({ data, isMobile, searchTerm }: Props) => {
   const icon = <TokenEntity.Icon token={ data }/>;
+  const verifiedIcon = <Icon as={ verifiedToken } boxSize={ 4 } color="green.500" ml={ 1 }/>;
   const name = (
     <Text
       fontWeight={ 700 }
@@ -50,6 +52,7 @@ const SearchBarSuggestToken = ({ data, isMobile, searchTerm }: Props) => {
         <Flex alignItems="center">
           { icon }
           { name }
+          { data.is_verified_via_admin_panel && verifiedIcon }
         </Flex>
         <Grid templateColumns={ templateCols } alignItems="center" gap={ 2 }>
           <Flex alignItems="center" overflow="hidden">
@@ -67,6 +70,7 @@ const SearchBarSuggestToken = ({ data, isMobile, searchTerm }: Props) => {
       <Flex alignItems="center">
         { icon }
         { name }
+        { data.is_verified_via_admin_panel && verifiedIcon }
       </Flex>
       <Flex alignItems="center" overflow="hidden">
         { address }

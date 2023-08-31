@@ -7,6 +7,7 @@ import { route } from 'nextjs-routes';
 
 import labelIcon from 'icons/publictags.svg';
 import iconSuccess from 'icons/status/success.svg';
+import verifiedToken from 'icons/verified_token.svg';
 import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
 import * as mixpanel from 'lib/mixpanel/index';
@@ -47,7 +48,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
         const name = data.name + (data.symbol ? ` (${ data.symbol })` : '');
 
         return (
-          <Flex alignItems="flex-start" flexGrow={ 1 } overflow="hidden">
+          <Flex alignItems="center" overflow="hidden">
             <TokenEntity.Icon token={ data } isLoading={ isLoading }/>
             <LinkInternal
               href={ route({ pathname: '/token/[hash]', query: { hash: data.address } }) }
@@ -66,6 +67,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
                 textOverflow="ellipsis"
               />
             </LinkInternal>
+            { data.is_verified_via_admin_panel && <Icon as={ verifiedToken } boxSize={ 4 } ml={ 1 } color="green.500"/> }
           </Flex>
         );
       }

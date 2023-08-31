@@ -23,7 +23,7 @@ export const featureEnvs = {
 export const viewsEnvs = {
   block: {
     hiddenFields: [
-      { name: 'NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_FIELDS', value: '["burnt_fees", "total_reward"]' },
+      { name: 'NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_FIELDS', value: '["burnt_fees", "total_reward", "nonce"]' },
     ],
   },
 };
