@@ -1,10 +1,10 @@
-import { chakra, Grid, Text, Flex, Icon } from '@chakra-ui/react';
+import { chakra, Text, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SearchResultTx } from 'types/api/search';
 
-import txIcon from 'icons/transactions.svg';
 import dayjs from 'lib/date/dayjs';
+import * as TxEntity from 'ui/shared/entities/tx/TxEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 interface Props {
@@ -14,7 +14,7 @@ interface Props {
 }
 
 const SearchBarSuggestTx = ({ data, isMobile }: Props) => {
-  const icon = <Icon as={ txIcon } boxSize={ 6 } color="gray.500"/>;
+  const icon = <TxEntity.Icon/>;
   const hash = (
     <chakra.mark overflow="hidden" whiteSpace="nowrap" fontWeight={ 700 }>
       <HashStringShortenDynamic hash={ data.tx_hash } isTooltipDisabled/>
@@ -25,7 +25,7 @@ const SearchBarSuggestTx = ({ data, isMobile }: Props) => {
   if (isMobile) {
     return (
       <>
-        <Flex alignItems="center" justifyContent="space-between" gap={ 2 }>
+        <Flex alignItems="center">
           { icon }
           { hash }
         </Flex>
@@ -35,11 +35,13 @@ const SearchBarSuggestTx = ({ data, isMobile }: Props) => {
   }
 
   return (
-    <Grid templateColumns="24px minmax(auto, max-content) auto" gap={ 2 }>
-      { icon }
-      { hash }
-      <Text variant="secondary" textAlign="end">{ date }</Text>
-    </Grid>
+    <Flex columnGap={ 2 }>
+      <Flex alignItems="center" minW={ 0 }>
+        { icon }
+        { hash }
+      </Flex>
+      <Text variant="secondary" textAlign="end" flexShrink={ 0 } ml="auto">{ date }</Text>
+    </Flex>
   );
 };
 

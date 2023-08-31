@@ -5,8 +5,8 @@ import type { SearchResultToken } from 'types/api/search';
 
 import iconSuccess from 'icons/status/success.svg';
 import highlightText from 'lib/highlightText';
+import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import TokenLogo from 'ui/shared/TokenLogo';
 
 interface Props {
   data: SearchResultToken;
@@ -15,7 +15,7 @@ interface Props {
 }
 
 const SearchBarSuggestToken = ({ data, isMobile, searchTerm }: Props) => {
-  const icon = <TokenLogo boxSize={ 6 } data={ data }/>;
+  const icon = <TokenEntity.Icon token={ data }/>;
   const name = (
     <Text
       fontWeight={ 700 }
@@ -47,7 +47,7 @@ const SearchBarSuggestToken = ({ data, isMobile, searchTerm }: Props) => {
 
     return (
       <>
-        <Flex alignItems="center" gap={ 2 }>
+        <Flex alignItems="center">
           { icon }
           { name }
         </Flex>
@@ -63,9 +63,11 @@ const SearchBarSuggestToken = ({ data, isMobile, searchTerm }: Props) => {
   }
 
   return (
-    <Grid templateColumns="24px 200px 1fr auto" gap={ 2 }>
-      { icon }
-      { name }
+    <Grid templateColumns="228px 1fr auto" gap={ 2 }>
+      <Flex alignItems="center">
+        { icon }
+        { name }
+      </Flex>
       <Flex alignItems="center" overflow="hidden">
         { address }
         { contractVerifiedIcon }

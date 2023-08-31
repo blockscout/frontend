@@ -1,11 +1,10 @@
-import { Box, Text, Grid, Flex, Icon } from '@chakra-ui/react';
+import { Box, Text, Grid, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SearchResultAddressOrContract } from 'types/api/search';
 
-import iconSuccess from 'icons/status/success.svg';
 import highlightText from 'lib/highlightText';
-import AddressIcon from 'ui/shared/address/AddressIcon';
+import * as AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 interface Props {
@@ -16,7 +15,11 @@ interface Props {
 
 const SearchBarSuggestAddress = ({ data, isMobile, searchTerm }: Props) => {
   const shouldHighlightHash = data.address.toLowerCase() === searchTerm.toLowerCase();
-  const icon = <AddressIcon address={{ hash: data.address, is_contract: data.type === 'contract', implementation_name: null }} flexShrink={ 0 }/>;
+  const icon = (
+    <AddressEntity.Icon
+      address={{ hash: data.address, is_contract: data.type === 'contract', name: '', is_verified: data.is_smart_contract_verified, implementation_name: null }}
+    />
+  );
   const name = data.name && (
     <Text
       variant="secondary"
@@ -27,26 +30,22 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm }: Props) => {
       <span dangerouslySetInnerHTML={{ __html: highlightText(data.name, searchTerm) }}/>
     </Text>
   );
-  const isContractVerified = data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 1 }/>;
   const address = <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>;
 
   if (isMobile) {
     return (
       <>
-        <Grid templateColumns="24px 1fr" gap={ 2 }>
+        <Grid templateColumns="24px 1fr">
           { icon }
-          <Flex alignItems="center" overflow="hidden">
-            <Box
-              as={ shouldHighlightHash ? 'mark' : 'span' }
-              display="block"
-              overflow="hidden"
-              whiteSpace="nowrap"
-              fontWeight={ 700 }
-            >
-              { address }
-            </Box>
-            { isContractVerified }
-          </Flex>
+          <Box
+            as={ shouldHighlightHash ? 'mark' : 'span' }
+            display="block"
+            overflow="hidden"
+            whiteSpace="nowrap"
+            fontWeight={ 700 }
+          >
+            { address }
+          </Box>
         </Grid>
         { name }
       </>
@@ -54,20 +53,19 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm }: Props) => {
   }
 
   return (
-    <Flex alignItems="center" gap={ 2 }>
+    <Flex alignItems="center">
       { icon }
-      <Flex alignItems="center" w="450px" overflow="hidden">
-        <Box
-          as={ shouldHighlightHash ? 'mark' : 'span' }
-          display="block"
-          overflow="hidden"
-          whiteSpace="nowrap"
-          fontWeight={ 700 }
-        >
-          { address }
-        </Box>
-        { isContractVerified }
-      </Flex>
+      <Box
+        as={ shouldHighlightHash ? 'mark' : 'span' }
+        display="block"
+        overflow="hidden"
+        whiteSpace="nowrap"
+        fontWeight={ 700 }
+        w="450px"
+        mr={ 2 }
+      >
+        { address }
+      </Box>
       { name }
     </Flex>
   );
