@@ -78,9 +78,10 @@ const Link = chakra(({ isLoading, children, isExternal, onClick, href, noLink }:
 export interface IconBaseProps extends Pick<EntityBaseProps, 'isLoading' | 'iconSize' | 'noIcon'> {
   asProp: As;
   color?: IconProps['color'];
+  borderRadius?: IconProps['borderRadius'];
 }
 
-const Icon = ({ isLoading, iconSize, noIcon, asProp, color }: IconBaseProps) => {
+const Icon = ({ isLoading, iconSize, noIcon, asProp, color, borderRadius }: IconBaseProps) => {
   const defaultColor = useColorModeValue('gray.500', 'gray.400');
 
   if (noIcon) {
@@ -94,7 +95,7 @@ const Icon = ({ isLoading, iconSize, noIcon, asProp, color }: IconBaseProps) => 
         as={ asProp }
         boxSize={ styles.boxSize }
         isLoading={ isLoading }
-        borderRadius="base"
+        borderRadius={ borderRadius ?? 'base' }
       />
     </Box>
   );

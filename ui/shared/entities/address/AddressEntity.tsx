@@ -56,6 +56,7 @@ const Icon = (props: IconProps) => {
               { ...props }
               asProp={ iconContractVerified }
               color="green.500"
+              borderRadius={ 0 }
             />
           </span>
         </Tooltip>
@@ -68,6 +69,7 @@ const Icon = (props: IconProps) => {
           <EntityBase.Icon
             { ...props }
             asProp={ iconContract }
+            borderRadius={ 0 }
           />
         </span>
       </Tooltip>
