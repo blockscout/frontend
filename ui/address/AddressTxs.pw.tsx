@@ -47,6 +47,7 @@ base.describe('base view', () => {
     base.use({ viewport: configs.viewport.xl });
 
     base('', async() => {
+      base.slow();
       await expect(component).toHaveScreenshot();
     });
   });
