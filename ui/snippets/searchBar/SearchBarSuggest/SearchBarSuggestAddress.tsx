@@ -1,4 +1,4 @@
-import { Box, Text, Grid, Flex } from '@chakra-ui/react';
+import { Box, Text, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SearchResultAddressOrContract } from 'types/api/search';
@@ -35,7 +35,7 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm }: Props) => {
   if (isMobile) {
     return (
       <>
-        <Grid templateColumns="24px 1fr">
+        <Flex alignItems="center">
           { icon }
           <Box
             as={ shouldHighlightHash ? 'mark' : 'span' }
@@ -46,7 +46,7 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm }: Props) => {
           >
             { address }
           </Box>
-        </Grid>
+        </Flex>
         { name }
       </>
     );
@@ -54,18 +54,18 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm }: Props) => {
 
   return (
     <Flex alignItems="center">
-      { icon }
-      <Box
-        as={ shouldHighlightHash ? 'mark' : 'span' }
-        display="block"
-        overflow="hidden"
-        whiteSpace="nowrap"
-        fontWeight={ 700 }
-        w="450px"
-        mr={ 2 }
-      >
-        { address }
-      </Box>
+      <Flex alignItems="center" w="450px" mr={ 2 }>
+        { icon }
+        <Box
+          as={ shouldHighlightHash ? 'mark' : 'span' }
+          display="block"
+          overflow="hidden"
+          whiteSpace="nowrap"
+          fontWeight={ 700 }
+        >
+          { address }
+        </Box>
+      </Flex>
       { name }
     </Flex>
   );

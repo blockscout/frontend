@@ -250,7 +250,7 @@ const TxDetails = () => {
                     isLoading={ isPlaceholderData }
                     noIcon
                   />
-                  <span> created]</span>
+                  <span>created]</span>
                   { executionSuccessBadge }
                   { executionFailedBadge }
                 </Flex>

@@ -1,4 +1,4 @@
-export type IconSize = 'md' | 'lg' | '24';
+export type IconSize = 'md' | 'lg';
 
 export function getIconProps(size: IconSize = 'md') {
   switch (size) {
@@ -10,11 +10,6 @@ export function getIconProps(size: IconSize = 'md') {
     case 'lg': {
       return {
         boxSize: '30px', // for headings
-      };
-    }
-    case '24': {
-      return {
-        boxSize: '24px', // deprecated
       };
     }
   }

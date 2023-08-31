@@ -56,7 +56,7 @@ const TokensTableItem = ({
           </Skeleton>
         </GridItem>
       </Grid>
-      <Flex justifyContent="space-between" alignItems="center" width="150px" ml={ 8 } mt={ -2 }>
+      <Flex justifyContent="space-between" alignItems="center" width="150px" ml={ 7 } mt={ -2 }>
         <AddressEntity
           address={{ hash: address }}
           isLoading={ isLoading }

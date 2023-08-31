@@ -102,10 +102,9 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
               address={{ hash: data.creator_address_hash }}
               truncation="constant"
               noIcon
-              noCopy
             />
             <Text whiteSpace="pre"> at txn </Text>
-            <TxEntity hash={ data.creation_tx_hash } truncation="constant" noIcon/>
+            <TxEntity hash={ data.creation_tx_hash } truncation="constant" noIcon noCopy={ false }/>
           </DetailsInfoItem>
         ) }
         { data.is_contract && data.implementation_address && (
@@ -118,7 +117,6 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
               address={{ hash: data.implementation_address, name: data.implementation_name, is_contract: true }}
               isLoading={ addressQuery.isPlaceholderData }
               noIcon
-              noCopy
             />
           </DetailsInfoItem>
         ) }

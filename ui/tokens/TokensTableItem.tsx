@@ -65,7 +65,7 @@ const TokensTableItem = ({
               fontSize="sm"
               fontWeight="700"
             />
-            <Box ml={ 8 } mt={ 2 }>
+            <Box ml={ 7 } mt={ 2 }>
               <Flex>
                 <AddressEntity
                   address={ tokenAddress }

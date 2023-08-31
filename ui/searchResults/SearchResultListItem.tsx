@@ -5,7 +5,7 @@ import type { SearchResultItem } from 'types/api/search';
 
 import { route } from 'nextjs-routes';
 
-import labelIcon from 'icons/publictags.svg';
+import labelIcon from 'icons/publictags_slim.svg';
 import iconSuccess from 'icons/status/success.svg';
 import verifiedToken from 'icons/verified_token.svg';
 import dayjs from 'lib/date/dayjs';

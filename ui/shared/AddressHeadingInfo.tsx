@@ -22,7 +22,7 @@ const AddressHeadingInfo = ({ address, token, isLinkDisabled, isLoading }: Props
   return (
     <Flex alignItems="center">
       <AddressEntity
-        address={ address }
+        address={{ ...address, name: '' }}
         isLoading={ isLoading }
         fontFamily="heading"
         fontSize="lg"

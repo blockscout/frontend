@@ -1,4 +1,4 @@
-import type { As } from '@chakra-ui/react';
+import type { As, ChakraProps } from '@chakra-ui/react';
 import { Image, Skeleton, chakra } from '@chakra-ui/react';
 import _omit from 'lodash/omit';
 import React from 'react';
@@ -30,16 +30,18 @@ const Link = chakra((props: LinkProps) => {
 
 type IconProps = Pick<EntityProps, 'token' | 'isLoading' | 'iconSize' | 'noIcon' | 'className'> & {
   asProp?: As;
+  marginRight?: ChakraProps['marginRight'];
+  boxSize?: ChakraProps['boxSize'];
 };
 
-const Icon = chakra((props: IconProps) => {
+const Icon = (props: IconProps) => {
   if (props.noIcon) {
     return null;
   }
 
   const styles = {
-    ...getIconProps(props.iconSize),
-    marginRight: 2,
+    marginRight: props.marginRight ?? 2,
+    boxSize: props.boxSize ?? getIconProps(props.iconSize).boxSize,
     borderRadius: 'base',
   };
 
@@ -56,7 +58,7 @@ const Icon = chakra((props: IconProps) => {
       fallback={ <TokenLogoPlaceholder { ...styles }/> }
     />
   );
-});
+};
 
 type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'token' | 'jointSymbol' | 'onlySymbol'>;
 

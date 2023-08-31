@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { SearchResultLabel } from 'types/api/search';
 
-import labelIcon from 'icons/publictags.svg';
+import labelIcon from 'icons/publictags_slim.svg';
 import iconSuccess from 'icons/status/success.svg';
 import highlightText from 'lib/highlightText';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
