@@ -19,8 +19,11 @@ import { useScrollDirection } from 'lib/contexts/scrollDirection';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useIsSticky from 'lib/hooks/useIsSticky';
 
+import TabCounter from './TabCounter';
 import TabsMenu from './TabsMenu';
 import useAdaptiveTabs from './useAdaptiveTabs';
+
+const TAB_CLASSNAME = 'tab-item';
 
 const hiddenItemStyles: StyleProps = {
   position: 'absolute',
@@ -167,8 +170,10 @@ const TabsWithScroll = ({
               { ...(index < tabsCut ? {} : hiddenItemStyles) }
               scrollSnapAlign="start"
               flexShrink={ 0 }
+              className={ TAB_CLASSNAME }
             >
               { typeof tab.title === 'function' ? tab.title() : tab.title }
+              <TabCounter count={ tab.count } parentClassName={ TAB_CLASSNAME }/>
             </Tab>
           );
         }) }

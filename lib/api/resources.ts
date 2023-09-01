@@ -14,6 +14,7 @@ import type {
 import type {
   Address,
   AddressCounters,
+  AddressTabsCounters,
   AddressTransactionsResponse,
   AddressTokenTransferResponse,
   AddressCoinBalanceHistoryResponse,
@@ -246,6 +247,10 @@ export const RESOURCES = {
   },
   address_counters: {
     path: '/api/v2/addresses/:hash/counters',
+    pathParams: [ 'hash' as const ],
+  },
+  address_tabs_counters: {
+    path: '/api/v2/addresses/:hash/tabs-counters',
     pathParams: [ 'hash' as const ],
   },
   // this resource doesn't have pagination, so causing huge problems on some addresses page
@@ -581,6 +586,7 @@ Q extends 'tx_state_changes' ? TxStateChanges :
 Q extends 'addresses' ? AddressesResponse :
 Q extends 'address' ? Address :
 Q extends 'address_counters' ? AddressCounters :
+Q extends 'address_tabs_counters' ? AddressTabsCounters :
 Q extends 'address_txs' ? AddressTransactionsResponse :
 Q extends 'address_internal_txs' ? AddressInternalTxsResponse :
 Q extends 'address_token_transfers' ? AddressTokenTransferResponse :

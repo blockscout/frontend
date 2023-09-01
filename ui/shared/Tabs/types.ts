@@ -3,6 +3,7 @@ import type React from 'react';
 export interface TabItem {
   id: string;
   title: string | (() => React.ReactNode);
+  count?: number;
   component: React.ReactNode;
 }
 
@@ -13,5 +14,6 @@ export type RoutedSubTab = Omit<TabItem, 'subTabs'>;
 export interface MenuButton {
   id: null;
   title: string;
+  count?: never;
   component: null;
 }

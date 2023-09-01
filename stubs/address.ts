@@ -1,4 +1,4 @@
-import type { Address, AddressCoinBalanceHistoryItem, AddressCounters, AddressTokenBalance } from 'types/api/address';
+import type { Address, AddressCoinBalanceHistoryItem, AddressCounters, AddressTabsCounters, AddressTokenBalance } from 'types/api/address';
 import type { AddressesItem } from 'types/api/addresses';
 
 import { ADDRESS_HASH } from './addressParams';
@@ -40,6 +40,17 @@ export const ADDRESS_COUNTERS: AddressCounters = {
   token_transfers_count: '420',
   transactions_count: '119020',
   validations_count: '0',
+};
+
+export const ADDRESS_TABS_COUNTERS: AddressTabsCounters = {
+  coin_balances_count: 10,
+  internal_txs_count: 10,
+  logs_count: 10,
+  token_balances_count: 10,
+  token_transfers_count: 10,
+  transactions_count: 10,
+  validations_count: 10,
+  withdrawals_count: 10,
 };
 
 export const TOP_ADDRESS: AddressesItem = {
