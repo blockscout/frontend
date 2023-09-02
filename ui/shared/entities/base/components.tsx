@@ -28,15 +28,24 @@ export interface EntityBaseProps {
   tailLength?: number;
   target?: React.HTMLAttributeAnchorTarget;
   truncation?: Truncation;
+  variant?: 'page-title';
 }
 
-export interface ContainerBaseProps extends Pick<EntityBaseProps, 'className'> {
+export interface ContainerBaseProps extends Pick<EntityBaseProps, 'className' | 'variant'> {
   children: React.ReactNode;
 }
 
-const Container = chakra(({ className, children }: ContainerBaseProps) => {
+const Container = chakra(({ className, children, variant }: ContainerBaseProps) => {
+  const fontStyles = variant === 'page-title' ? {
+    fontFamily: 'heading',
+    fontSize: '32px',
+    lineHeight: '40px',
+    fontWeight: 500,
+  } : {};
+
   return (
     <Flex
+      { ...fontStyles }
       className={ className }
       alignItems="center"
       minWidth={ 0 } // for content truncation - https://css-tricks.com/flexbox-truncated-text/
@@ -101,12 +110,12 @@ const Icon = ({ isLoading, iconSize, noIcon, asProp, color, borderRadius }: Icon
   );
 };
 
-export interface ContentBaseProps extends Pick<EntityBaseProps, 'className' | 'isLoading' | 'truncation' | 'tailLength'> {
+export interface ContentBaseProps extends Pick<EntityBaseProps, 'className' | 'variant' | 'isLoading' | 'truncation' | 'tailLength'> {
   asProp?: As;
   text: string;
 }
 
-const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dynamic', tailLength }: ContentBaseProps) => {
+const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dynamic', tailLength, variant }: ContentBaseProps) => {
 
   const children = (() => {
     switch (truncation) {
@@ -136,6 +145,7 @@ const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dyna
       isLoaded={ !isLoading }
       overflow="hidden"
       whiteSpace="nowrap"
+      as={ variant === 'page-title' ? 'h1' : 'div' }
     >
       { children }
     </Skeleton>

@@ -1,4 +1,4 @@
-import { Flex, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Skeleton, chakra, useColorModeValue } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
@@ -10,10 +10,12 @@ import LinkExternal from 'ui/shared/LinkExternal';
 import TokenProjectInfo from './TokenProjectInfo';
 
 interface Props {
+  className?: string;
   verifiedInfoQuery: UseQueryResult<TTokenVerifiedInfo>;
+  isLoading?: boolean;
 }
 
-const TokenVerifiedInfo = ({ verifiedInfoQuery }: Props) => {
+const TokenVerifiedInfo = ({ verifiedInfoQuery, className, isLoading: isLoadingProp }: Props) => {
 
   const { data, isLoading, isError } = verifiedInfoQuery;
   const websiteLinkBg = useColorModeValue('gray.100', 'gray.700');
@@ -23,13 +25,9 @@ const TokenVerifiedInfo = ({ verifiedInfoQuery }: Props) => {
       return null;
     }
 
-    if (isLoading) {
+    if (isLoading || isLoadingProp) {
       return (
-        <>
-          <Skeleton w="130px" h="30px" borderRadius="base"/>
-          <Skeleton w="130px" h="30px" borderRadius="base"/>
-          <Skeleton w="120px" h="30px" borderRadius="base"/>
-        </>
+        <Skeleton w="120px" h="30px" borderRadius="base" className={ className }/>
       );
     }
 
@@ -56,7 +54,11 @@ const TokenVerifiedInfo = ({ verifiedInfoQuery }: Props) => {
     );
   })();
 
-  return <Flex columnGap={ 3 } rowGap={ 3 } mt={ 5 } flexWrap="wrap" _empty={{ display: 'none' }}>{ content }</Flex>;
+  return (
+    <Flex className={ className } columnGap={ 2 } rowGap={ 2 } _empty={{ display: 'none' }}>
+      { content }
+    </Flex>
+  );
 };
 
-export default React.memo(TokenVerifiedInfo);
+export default React.memo(chakra(TokenVerifiedInfo));

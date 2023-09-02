@@ -78,6 +78,7 @@ const Content = chakra((props: ContentProps) => {
         overflow="hidden"
         textOverflow="ellipsis"
         height="fit-content"
+        as={ props.variant === 'page-title' ? 'h1' : 'div' }
       >
         { nameString }
       </Skeleton>
@@ -145,7 +146,7 @@ const TokenEntity = (props: EntityProps) => {
   const partsProps = _omit(props, [ 'className', 'onClick' ]);
 
   return (
-    <Container className={ props.className } w="100%">
+    <Container className={ props.className } variant={ props.variant } w="100%">
       <Icon { ...partsProps }/>
       <Link { ...linkProps }>
         <Content { ...partsProps }/>

@@ -17,13 +17,13 @@ const TriggerButton = ({ isOpen, onClick }: Props, ref: React.ForwardedRef<HTMLB
       variant="outline"
       colorScheme="gray"
       onClick={ onClick }
-      aria-label="Show project info"
+      aria-label="Show token info"
       fontWeight={ 500 }
       px={ 2 }
       h="30px"
     >
       <Icon as={ rocketIcon } boxSize={ 4 } mr={ 1 }/>
-      <span>Project info</span>
+      <span>Info</span>
       <Icon as={ arrowIcon } transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 } ml={ 1 }/>
     </Button>
   );

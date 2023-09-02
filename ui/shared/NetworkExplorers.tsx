@@ -1,4 +1,4 @@
-import { Flex, Button, Icon, chakra, Popover, PopoverTrigger, PopoverBody, PopoverContent, useDisclosure } from '@chakra-ui/react';
+import { Flex, Button, Icon, chakra, Popover, PopoverTrigger, PopoverBody, PopoverContent, useDisclosure, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { NetworkExplorer as TNetworkExplorer } from 'types/networks';
@@ -12,10 +12,10 @@ interface Props {
   className?: string;
   type: keyof TNetworkExplorer['paths'];
   pathParam: string;
-  hideText?: boolean;
+  isLoading?: boolean;
 }
 
-const NetworkExplorers = ({ className, type, pathParam, hideText }: Props) => {
+const NetworkExplorers = ({ className, type, pathParam, isLoading }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
 
   const explorersLinks = config.UI.explorers.items
@@ -27,6 +27,10 @@ const NetworkExplorers = ({ className, type, pathParam, hideText }: Props) => {
 
   if (explorersLinks.length === 0) {
     return null;
+  }
+
+  if (isLoading) {
+    return <Skeleton w="71px" h="30px" borderRadius="base" className={ className }/>;
   }
 
   return (
@@ -43,9 +47,9 @@ const NetworkExplorers = ({ className, type, pathParam, hideText }: Props) => {
           px={ 2 }
           h="30px"
         >
-          <Icon as={ explorerIcon } boxSize={ 5 } mr={ hideText ? 0 : 1 }/>
-          { !hideText && <span>Explorers</span> }
-          <Icon as={ arrowIcon } transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 } ml={ 1 }/>
+          <Icon as={ explorerIcon } boxSize={ 5 } mr={ 1 }/>
+          <span>{ explorersLinks.length }</span>
+          <Icon as={ arrowIcon } transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 }/>
         </Button>
       </PopoverTrigger>
       <PopoverContent w="240px">

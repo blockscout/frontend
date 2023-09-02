@@ -3,7 +3,6 @@ import React from 'react';
 
 import type { UserTags } from 'types/api/addressParams';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
 import Tag from 'ui/shared/chakra/Tag';
 
 interface TagData {
@@ -21,7 +20,6 @@ interface Props {
 }
 
 const EntityTags = ({ className, data, tagsBefore = [], tagsAfter = [], isLoading, contentAfter }: Props) => {
-  const isMobile = useIsMobile();
   const { isOpen, onToggle, onClose } = useDisclosure();
 
   const tags = [
@@ -38,7 +36,7 @@ const EntityTags = ({ className, data, tagsBefore = [], tagsAfter = [], isLoadin
   }
 
   const content = (() => {
-    if (isMobile && tags.length > 2) {
+    if (tags.length > 2) {
       return (
         <>
           {
@@ -52,7 +50,7 @@ const EntityTags = ({ className, data, tagsBefore = [], tagsAfter = [], isLoadin
           }
           <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
             <PopoverTrigger>
-              <Tag onClick={ onToggle }>+{ tags.length - 1 }</Tag>
+              <Tag onClick={ onToggle } cursor="pointer">+{ tags.length - 2 }</Tag>
             </PopoverTrigger>
             <PopoverContent w="240px">
               <PopoverBody >

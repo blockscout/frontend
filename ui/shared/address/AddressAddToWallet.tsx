@@ -1,4 +1,4 @@
-import { Box, chakra, Icon, Skeleton, Tooltip } from '@chakra-ui/react';
+import { Box, chakra, Icon, IconButton, Skeleton, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
@@ -16,9 +16,10 @@ interface Props {
   className?: string;
   token: TokenInfo;
   isLoading?: boolean;
+  variant?: 'icon' | 'button';
 }
 
-const AddressAddToWallet = ({ className, token, isLoading }: Props) => {
+const AddressAddToWallet = ({ className, token, isLoading, variant = 'icon' }: Props) => {
   const toast = useToast();
   const { provider, wallet } = useProvider();
   const addOrSwitchChain = useAddOrSwitchChain();
@@ -83,6 +84,22 @@ const AddressAddToWallet = ({ className, token, isLoading }: Props) => {
 
   if (!feature.isEnabled) {
     return null;
+  }
+
+  if (variant === 'button') {
+    return (
+      <Tooltip label={ `Add token to ${ WALLETS_INFO[wallet].name }` }>
+        <IconButton
+          className={ className }
+          aria-label="Add token to wallet"
+          variant="outline"
+          size="sm"
+          px="6px"
+          onClick={ handleClick }
+          icon={ <Icon as={ WALLETS_INFO[wallet].icon } boxSize={ 6 }/> }
+        />
+      </Tooltip>
+    );
   }
 
   return (

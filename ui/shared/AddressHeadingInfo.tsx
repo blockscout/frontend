@@ -29,7 +29,7 @@ const AddressHeadingInfo = ({ address, token, isLinkDisabled, isLoading }: Props
         fontWeight={ 500 }
         noLink={ isLinkDisabled }
       />
-      { !isLoading && address.is_contract && token && <AddressAddToWallet ml={ 2 } token={ token }/> }
+      { !isLoading && address.is_contract && token && <AddressAddToWallet ml={ 2 } token={ token } variant="button"/> }
       { !isLoading && !address.is_contract && config.features.account.isEnabled && (
         <AddressFavoriteButton hash={ address.hash } watchListId={ address.watchlist_address_id } ml={ 3 }/>
       ) }
