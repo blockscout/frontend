@@ -9,9 +9,10 @@ import config from 'configs/app';
 import iconVerifiedToken from 'icons/verified_token.svg';
 import { useAppContext } from 'lib/contexts/app';
 import TextAd from 'ui/shared/ad/TextAd';
-import AddressHeadingInfo from 'ui/shared/AddressHeadingInfo';
+import AddressActionButtons from 'ui/shared/AddressActionButtons';
 import Icon from 'ui/shared/chakra/Icon';
-import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import EntityTags from 'ui/shared/EntityTags';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import * as PageTitle from 'ui/shared/PageTitle/PageTitle';
@@ -61,7 +62,7 @@ const TokenPageTitle = ({ tokenQuery, contractQuery, verifiedInfoQuery, hash }: 
       <PageTitle.MainRow>
         <PageTitle.MainContent>
           { backLink && <PageTitle.BackLink { ...backLink } isLoading={ isLoading }/> }
-          <TokenEntity.default
+          <TokenEntity
             token={ tokenQuery.data }
             isLoading={ isLoading }
             iconSize="lg"
@@ -106,9 +107,17 @@ const TokenPageTitle = ({ tokenQuery, contractQuery, verifiedInfoQuery, hash }: 
           </Flex>
         </PageTitle.SecondaryContent>
       </PageTitle.MainRow>
-      <PageTitle.BottomRow>
-        <AddressHeadingInfo
+      <PageTitle.BottomRow columnGap={ 6 }>
+        <AddressEntity
           address={ address }
+          isLoading={ isLoading }
+          fontFamily="heading"
+          fontSize="lg"
+          fontWeight={ 500 }
+          mr={{ base: 'auto', lg: 0 }}
+        />
+        <AddressActionButtons
+          address={ contractQuery.data }
           token={ contractQuery.data?.token }
           isLoading={ isLoading }
         />
@@ -117,4 +126,4 @@ const TokenPageTitle = ({ tokenQuery, contractQuery, verifiedInfoQuery, hash }: 
   );
 };
 
-export default TokenPageTitle;
+export default React.memo(TokenPageTitle);

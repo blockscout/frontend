@@ -140,12 +140,17 @@ const SecondaryContent = chakra(({ children, className }: SecondaryContentProps)
 // BOTTOM ROW
 
 interface BottomRowProps {
-  children: JSX.Element;
+  children: React.ReactNode;
+  className?: string;
 }
 
-const BottomRow = ({ children }: BottomRowProps) => {
-  return children;
-};
+const BottomRow = chakra(({ children, className }: BottomRowProps) => {
+  return (
+    <Flex className={ className } alignItems="center" rowGap={{ base: 4, lg: 3 }}>
+      { children }
+    </Flex>
+  );
+});
 
 // MAIN COMPONENT
 

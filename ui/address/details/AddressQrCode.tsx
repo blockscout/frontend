@@ -11,7 +11,6 @@ import {
   useDisclosure,
   Tooltip,
   IconButton,
-  Skeleton,
 } from '@chakra-ui/react';
 import * as Sentry from '@sentry/react';
 import QRCode from 'qrcode';
@@ -27,10 +26,9 @@ const SVG_OPTIONS = {
 interface Props {
   className?: string;
   hash: string;
-  isLoading?: boolean;
 }
 
-const AddressQrCode = ({ hash, className, isLoading }: Props) => {
+const AddressQrCode = ({ hash, className }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isMobile = useIsMobile();
   const [ qr, setQr ] = React.useState('');
@@ -50,10 +48,6 @@ const AddressQrCode = ({ hash, className, isLoading }: Props) => {
       });
     }
   }, [ hash, isOpen, onClose ]);
-
-  if (isLoading) {
-    return <Skeleton className={ className } w="36px" h="32px" borderRadius="base"/>;
-  }
 
   return (
     <>

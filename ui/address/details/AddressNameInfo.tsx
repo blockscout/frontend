@@ -4,7 +4,6 @@ import React from 'react';
 import type { Address } from 'types/api/address';
 
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 
 interface Props {
   data: Pick<Address, 'name' | 'token' | 'is_contract'>;
@@ -12,23 +11,6 @@ interface Props {
 }
 
 const AddressNameInfo = ({ data, isLoading }: Props) => {
-  if (data.token) {
-    return (
-      <DetailsInfoItem
-        title="Token name"
-        hint="Token name and symbol"
-        isLoading={ isLoading }
-      >
-        <TokenEntity
-          token={ data.token }
-          isLoading={ isLoading }
-          noIcon
-          noCopy
-        />
-      </DetailsInfoItem>
-    );
-  }
-
   if (data.is_contract && data.name) {
     return (
       <DetailsInfoItem

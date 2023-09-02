@@ -24,6 +24,7 @@ export interface EntityBaseProps {
   noIcon?: boolean;
   noLink?: boolean;
   onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
+  prefix?: string;
   query?: Record<string, string>;
   tailLength?: number;
   target?: React.HTMLAttributeAnchorTarget;
@@ -110,12 +111,12 @@ const Icon = ({ isLoading, iconSize, noIcon, asProp, color, borderRadius }: Icon
   );
 };
 
-export interface ContentBaseProps extends Pick<EntityBaseProps, 'className' | 'variant' | 'isLoading' | 'truncation' | 'tailLength'> {
+export interface ContentBaseProps extends Pick<EntityBaseProps, 'className' | 'variant' | 'isLoading' | 'truncation' | 'tailLength' | 'prefix'> {
   asProp?: As;
   text: string;
 }
 
-const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dynamic', tailLength, variant }: ContentBaseProps) => {
+const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dynamic', tailLength, variant, prefix }: ContentBaseProps) => {
 
   const children = (() => {
     switch (truncation) {
@@ -147,6 +148,7 @@ const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dyna
       whiteSpace="nowrap"
       as={ variant === 'page-title' ? 'h1' : 'div' }
     >
+      { prefix && <span>{ prefix }</span> }
       { children }
     </Skeleton>
   );

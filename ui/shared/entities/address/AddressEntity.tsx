@@ -85,10 +85,10 @@ const Icon = (props: IconProps) => {
   );
 };
 
-type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'address'>;
+type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'address' | 'noName'>;
 
 const Content = chakra((props: ContentProps) => {
-  if (props.address.name) {
+  if (props.address.name && !props.noName) {
     return (
       <Tooltip label={ props.address.hash } maxW="100vw">
         <Skeleton isLoaded={ !props.isLoading } overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" as="span">
@@ -121,6 +121,7 @@ const Container = EntityBase.Container;
 
 export interface EntityProps extends EntityBase.EntityBaseProps {
   address: Pick<AddressParam, 'hash' | 'name' | 'is_contract' | 'is_verified' | 'implementation_name'>;
+  noName?: boolean;
 }
 
 const AddressEntry = (props: EntityProps) => {
@@ -128,7 +129,7 @@ const AddressEntry = (props: EntityProps) => {
   const partsProps = _omit(props, [ 'className', 'onClick' ]);
 
   return (
-    <Container className={ props.className }>
+    <Container className={ props.className } variant={ props.variant }>
       <Icon { ...partsProps }/>
       <Link { ...linkProps }>
         <Content { ...partsProps }/>

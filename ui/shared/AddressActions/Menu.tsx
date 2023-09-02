@@ -1,4 +1,4 @@
-import { Button, Menu, MenuButton, MenuList, Icon, Flex, Skeleton } from '@chakra-ui/react';
+import { Button, Menu, MenuButton, MenuList, Icon, Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -11,11 +11,7 @@ import PrivateTagMenuItem from './PrivateTagMenuItem';
 import PublicTagMenuItem from './PublicTagMenuItem';
 import TokenInfoMenuItem from './TokenInfoMenuItem';
 
-interface Props {
-  isLoading?: boolean;
-}
-
-const AddressActions = ({ isLoading }: Props) => {
+const AddressActions = () => {
   const router = useRouter();
 
   const hash = getQueryParamString(router.query.hash);
@@ -24,18 +20,16 @@ const AddressActions = ({ isLoading }: Props) => {
 
   return (
     <Menu>
-      <Skeleton isLoaded={ !isLoading } ml={ 2 } borderRadius="base">
-        <MenuButton
-          as={ Button }
-          size="sm"
-          variant="outline"
-        >
-          <Flex alignItems="center">
-            <span>More</span>
-            <Icon as={ iconArrow } transform="rotate(-90deg)" boxSize={ 5 } ml={ 1 }/>
-          </Flex>
-        </MenuButton>
-      </Skeleton>
+      <MenuButton
+        as={ Button }
+        size="sm"
+        variant="outline"
+      >
+        <Flex alignItems="center">
+          <span>More</span>
+          <Icon as={ iconArrow } transform="rotate(-90deg)" boxSize={ 5 } ml={ 1 }/>
+        </Flex>
+      </MenuButton>
       <MenuList minWidth="180px" zIndex="popover">
         { isTokenPage && config.features.addressVerification.isEnabled &&
           <TokenInfoMenuItem py={ 2 } px={ 4 } hash={ hash } onBeforeClick={ isAccountActionAllowed }/> }
