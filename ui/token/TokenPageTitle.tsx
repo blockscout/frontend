@@ -60,8 +60,7 @@ const TokenPageTitle = ({ tokenQuery, contractQuery, verifiedInfoQuery, hash }: 
         <TextAd/>
       </PageTitle.TopRow>
       <PageTitle.MainRow>
-        <PageTitle.MainContent>
-          { backLink && <PageTitle.BackLink { ...backLink } isLoading={ isLoading }/> }
+        <PageTitle.MainContent backLink={ backLink }>
           <TokenEntity
             token={ tokenQuery.data }
             isLoading={ isLoading }

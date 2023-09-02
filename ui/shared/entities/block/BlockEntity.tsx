@@ -61,7 +61,7 @@ const BlockEntity = (props: EntityProps) => {
   const partsProps = _omit(props, [ 'className', 'onClick' ]);
 
   return (
-    <Container className={ props.className }>
+    <Container className={ props.className } variant={ props.variant }>
       <Icon { ...partsProps }/>
       <Link { ...linkProps }>
         <Content { ...partsProps }/>

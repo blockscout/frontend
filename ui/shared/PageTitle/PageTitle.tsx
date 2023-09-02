@@ -104,16 +104,17 @@ const BackLink = (props: BackLinkProps) => {
 
 interface MainContentProps extends Pick<Props, 'backLink' | 'isLoading'> {
   children: React.ReactNode;
+  className?: string;
 }
 
-const MainContent = ({ children, backLink, isLoading }: MainContentProps) => {
+const MainContent = chakra(({ children, backLink, isLoading, className }: MainContentProps) => {
   return (
-    <Flex alignItems="center" columnGap={ 3 } w={{ base: '100%', lg: 'auto' }}>
+    <Flex alignItems="center" columnGap={ 3 } w={{ base: '100%', lg: 'auto' }} className={ className }>
       { backLink && <BackLink { ...backLink } isLoading={ isLoading }/> }
       { children }
     </Flex>
   );
-};
+});
 
 // SECONDARY CONTENT
 

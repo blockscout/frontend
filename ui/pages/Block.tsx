@@ -6,7 +6,6 @@ import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
-import { useAppContext } from 'lib/contexts/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { BLOCK } from 'stubs/block';
@@ -14,10 +13,8 @@ import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
 import { WITHDRAWAL } from 'stubs/withdrawals';
 import BlockDetails from 'ui/block/BlockDetails';
+import BlockPageTitle from 'ui/block/BlockPageTitle';
 import BlockWithdrawals from 'ui/block/BlockWithdrawals';
-import TextAd from 'ui/shared/ad/TextAd';
-import NetworkExplorers from 'ui/shared/NetworkExplorers';
-import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
@@ -33,7 +30,6 @@ const TAB_LIST_PROPS = {
 const BlockPageContent = () => {
   const router = useRouter();
   const isMobile = useIsMobile();
-  const appProps = useAppContext();
   const heightOrHash = getQueryParamString(router.query.height_or_hash);
   const tab = getQueryParamString(router.query.tab);
 
@@ -98,29 +94,11 @@ const BlockPageContent = () => {
     pagination = blockWithdrawalsQuery.pagination;
   }
 
-  const backLink = React.useMemo(() => {
-    const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/blocks');
-
-    if (!hasGoBackLink) {
-      return;
-    }
-
-    return {
-      label: 'Back to blocks list',
-      url: appProps.referrer,
-    };
-  }, [ appProps.referrer ]);
-
-  const title = blockQuery.data?.type === 'reorg' ? `Reorged block #${ blockQuery.data?.height }` : `Block #${ blockQuery.data?.height }`;
-
   return (
     <>
-      <TextAd mb={ 6 }/>
-      <PageTitle
-        title={ title }
-        backLink={ backLink }
-        contentAfter={ <NetworkExplorers type="block" pathParam={ heightOrHash } ml={{ base: 'initial', lg: 'auto' }}/> }
-        isLoading={ blockQuery.isPlaceholderData }
+      <BlockPageTitle
+        blockQuery={ blockQuery }
+        heightOrHash={ heightOrHash }
       />
       { blockQuery.isPlaceholderData ? <TabsSkeleton tabs={ tabs }/> : (
         <RoutedTabs

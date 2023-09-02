@@ -45,8 +45,7 @@ const AddressPageTitle = ({ addressQuery }: Props) => {
         <TextAd/>
       </PageTitle.TopRow>
       <PageTitle.MainRow>
-        <PageTitle.MainContent>
-          { backLink && <PageTitle.BackLink { ...backLink } isLoading={ isLoading }/> }
+        <PageTitle.MainContent backLink={ backLink }>
           <AddressEntity
             address={ addressQuery.data }
             isLoading={ isLoading }
