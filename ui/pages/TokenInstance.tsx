@@ -1,4 +1,4 @@
-import { Box, Icon, Skeleton } from '@chakra-ui/react';
+import { Box, Flex, Icon, Skeleton } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -15,8 +15,9 @@ import { TOKEN_INSTANCE } from 'stubs/token';
 import * as tokenStubs from 'stubs/token';
 import { generateListStub } from 'stubs/utils';
 import TextAd from 'ui/shared/ad/TextAd';
-import AddressHeadingInfo from 'ui/shared/AddressHeadingInfo';
+import AddressActionButtons from 'ui/shared/AddressActionButtons';
 import Tag from 'ui/shared/chakra/Tag';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import LinkExternal from 'ui/shared/LinkExternal';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -177,7 +178,21 @@ const TokenInstanceContent = () => {
         isLoading={ tokenInstanceQuery.isPlaceholderData }
       />
 
-      <AddressHeadingInfo address={ address } token={ tokenInstanceQuery.data?.token } isLoading={ tokenInstanceQuery.isPlaceholderData }/>
+      <Flex>
+        <AddressEntity
+          address={ address }
+          isLoading={ tokenInstanceQuery.isPlaceholderData }
+          fontFamily="heading"
+          fontSize="lg"
+          fontWeight={ 500 }
+          mr={{ base: 'auto', lg: 0 }}
+        />
+        <AddressActionButtons
+          address={ address }
+          token={ tokenInstanceQuery.data?.token }
+          isLoading={ tokenInstanceQuery.isPlaceholderData }
+        />
+      </Flex>
 
       { appLink }
 

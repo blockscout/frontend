@@ -4,6 +4,7 @@ import React from 'react';
 import type { Address } from 'types/api/address';
 
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import TruncatedValue from 'ui/shared/TruncatedValue';
 
 interface Props {
   data: Pick<Address, 'name' | 'token' | 'is_contract'>;
@@ -18,9 +19,7 @@ const AddressNameInfo = ({ data, isLoading }: Props) => {
         hint="The name found in the source code of the Contract"
         isLoading={ isLoading }
       >
-        <Skeleton isLoaded={ !isLoading }>
-          { data.name }
-        </Skeleton>
+        <TruncatedValue value={ data.name } isLoading={ isLoading }/>
       </DetailsInfoItem>
     );
   }
