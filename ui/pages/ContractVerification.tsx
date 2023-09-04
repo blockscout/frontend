@@ -1,3 +1,4 @@
+import { Heading } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -11,7 +12,7 @@ import { isValidVerificationMethod, sortVerificationMethods } from 'ui/contractV
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import PageTitle from 'ui/shared/Page/PageTitle';
+import * as PageTitle from 'ui/shared/PageTitle/PageTitle';
 
 const ContractVerification = () => {
   const appProps = useAppContext();
@@ -92,18 +93,24 @@ const ContractVerification = () => {
 
   return (
     <>
-      <PageTitle
-        title="New smart contract verification"
-        backLink={ backLink }
-      />
-      <AddressEntity
-        address={{ hash, is_contract: true, implementation_name: null }}
-        noLink
-        fontFamily="heading"
-        fontSize="lg"
-        fontWeight={ 500 }
-        mb={ 12 }
-      />
+      <PageTitle.Container>
+        <PageTitle.MainRow>
+          <PageTitle.MainContent backLink={ backLink } alignItems="flex-start">
+            <Heading as="h1" size="lg">
+            New smart contract verification
+            </Heading>
+          </PageTitle.MainContent>
+        </PageTitle.MainRow>
+        <PageTitle.BottomRow>
+          <AddressEntity
+            address={{ hash, is_contract: true, implementation_name: null }}
+            noLink
+            fontFamily="heading"
+            fontSize="lg"
+            fontWeight={ 500 }
+          />
+        </PageTitle.BottomRow>
+      </PageTitle.Container>
       { content }
     </>
   );

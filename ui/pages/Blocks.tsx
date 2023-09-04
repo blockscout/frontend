@@ -9,7 +9,7 @@ import { BLOCK } from 'stubs/block';
 import { generateListStub } from 'stubs/utils';
 import BlocksContent from 'ui/blocks/BlocksContent';
 import BlocksTabSlot from 'ui/blocks/BlocksTabSlot';
-import PageTitle from 'ui/shared/Page/PageTitle';
+import PageTitle from 'ui/shared/PageTitle/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 
@@ -76,7 +76,9 @@ const BlocksPageContent = () => {
 
   return (
     <>
-      <PageTitle title="Blocks" withTextAd/>
+      <PageTitle withTextAds>
+        Blocks
+      </PageTitle>
       <RoutedTabs
         tabs={ tabs }
         tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }

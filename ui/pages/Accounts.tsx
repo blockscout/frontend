@@ -7,7 +7,7 @@ import AddressesListItem from 'ui/addresses/AddressesListItem';
 import AddressesTable from 'ui/addresses/AddressesTable';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import PageTitle from 'ui/shared/Page/PageTitle';
+import PageTitle from 'ui/shared/PageTitle/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
@@ -68,7 +68,9 @@ const Accounts = () => {
 
   return (
     <>
-      <PageTitle title="Top accounts" withTextAd/>
+      <PageTitle withTextAds>
+        Top accounts
+      </PageTitle>
       <DataListDisplay
         isError={ isError }
         items={ data?.items }

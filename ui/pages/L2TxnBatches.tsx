@@ -9,7 +9,7 @@ import TxnBatchesListItem from 'ui/l2TxnBatches/TxnBatchesListItem';
 import TxnBatchesTable from 'ui/l2TxnBatches/TxnBatchesTable';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import PageTitle from 'ui/shared/Page/PageTitle';
+import PageTitle from 'ui/shared/PageTitle/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
@@ -82,7 +82,9 @@ const L2TxnBatches = () => {
 
   return (
     <>
-      <PageTitle title={ `Tx batches (L2${ nbsp }blocks)` } withTextAd/>
+      <PageTitle withTextAds>
+        Tx batches (L2{ nbsp }blocks)
+      </PageTitle>
       <DataListDisplay
         isError={ isError }
         items={ data?.items }

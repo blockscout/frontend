@@ -10,7 +10,7 @@ import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthT
 import { WATCH_LIST_ITEM_WITH_TOKEN_INFO } from 'stubs/account';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import PageTitle from 'ui/shared/Page/PageTitle';
+import PageTitle from 'ui/shared/PageTitle/PageTitle';
 import AddressModal from 'ui/watchlist/AddressModal/AddressModal';
 import DeleteAddressModal from 'ui/watchlist/DeleteAddressModal';
 import WatchListItem from 'ui/watchlist/WatchlistTable/WatchListItem';
@@ -131,7 +131,9 @@ const WatchList: React.FC = () => {
 
   return (
     <>
-      <PageTitle title="Watch list"/>
+      <PageTitle>
+       Watch list
+      </PageTitle>
       { content }
     </>
   );

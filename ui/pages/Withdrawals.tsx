@@ -10,7 +10,7 @@ import { generateListStub } from 'stubs/utils';
 import { WITHDRAWAL } from 'stubs/withdrawals';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import PageTitle from 'ui/shared/Page/PageTitle';
+import PageTitle from 'ui/shared/PageTitle/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import WithdrawalsListItem from 'ui/withdrawals/WithdrawalsListItem';
@@ -92,7 +92,9 @@ const Withdrawals = () => {
 
   return (
     <>
-      <PageTitle title="Withdrawals" withTextAd/>
+      <PageTitle withTextAds>
+        Withdrawals
+      </PageTitle>
       <DataListDisplay
         isError={ isError }
         items={ data?.items }

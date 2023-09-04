@@ -29,7 +29,6 @@ const Container = ({ children }: ContainerProps) => {
       flexDir="column"
       rowGap={{ base: 4, lg: 3 }}
       alignItems="stretch"
-      // TODO @tom2drum move margin from title to page content here
       mb={ 8 }
     >
       { children }
@@ -160,21 +159,24 @@ type Props = {
   className?: string;
   isLoading?: boolean;
   backLink?: { label: string; url: string } | { label: string; onClick: () => void };
+  withTextAds?: boolean;
 }
 
-const PageTitle = ({ backLink, isLoading, children }: Props) => {
+const PageTitle = ({ backLink, isLoading, children, withTextAds }: Props) => {
   return (
     <Container>
       <MainRow>
-        <MainContent>
+        <MainContent alignItems="flex-start" flexShrink={ 0 }>
           { backLink && <BackLink { ...backLink } isLoading={ isLoading }/> }
           <Heading as="h1" size="lg">
             { children }
           </Heading>
         </MainContent>
-        <SecondaryContent order={{ base: -1, lg: 1 }}>
-          <TextAd ml="auto"/>
-        </SecondaryContent>
+        { withTextAds && (
+          <SecondaryContent order={{ base: -1, lg: 1 }}>
+            <TextAd ml="auto"/>
+          </SecondaryContent>
+        ) }
       </MainRow>
     </Container>
   );

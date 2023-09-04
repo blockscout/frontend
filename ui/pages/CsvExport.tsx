@@ -13,7 +13,7 @@ import CsvExportForm from 'ui/csvExport/CsvExportForm';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import PageTitle from 'ui/shared/Page/PageTitle';
+import PageTitle from 'ui/shared/PageTitle/PageTitle';
 
 interface ExportTypeEntity {
   text: string;
@@ -123,10 +123,9 @@ const CsvExport = () => {
 
   return (
     <>
-      <PageTitle
-        title="Export data to CSV file"
-        backLink={ backLink }
-      />
+      <PageTitle backLink={ backLink }>
+        Export data to CSV file
+      </PageTitle>
       <Flex mb={ 10 } whiteSpace="pre-wrap" flexWrap="wrap">
         <span>Export { EXPORT_TYPES[exportType].text } for address </span>
         <AddressEntity

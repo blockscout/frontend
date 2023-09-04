@@ -14,7 +14,7 @@ import useApiFetch from 'lib/hooks/useFetch';
 import * as metadata from 'lib/metadata';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import ContentLoader from 'ui/shared/ContentLoader';
-import PageTitle from 'ui/shared/Page/PageTitle';
+import PageTitle from 'ui/shared/PageTitle/PageTitle';
 
 const feature = config.features.marketplace;
 const configUrl = feature.isEnabled ? feature.configUrl : '';
@@ -106,7 +106,11 @@ const MarketplaceApp = () => {
 
   return (
     <>
-      { !isLoading && <PageTitle title={ data.title } backLink={ backLink }/> }
+      { !isLoading && (
+        <PageTitle backLink={ backLink }>
+          { data.title }
+        </PageTitle>
+      ) }
       <Center
         h="100vh"
         mx={{ base: -4, lg: -12 }}

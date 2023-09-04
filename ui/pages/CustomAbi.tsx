@@ -12,7 +12,7 @@ import CustomAbiTable from 'ui/customAbi/CustomAbiTable/CustomAbiTable';
 import DeleteCustomAbiModal from 'ui/customAbi/DeleteCustomAbiModal';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import PageTitle from 'ui/shared/Page/PageTitle';
+import PageTitle from 'ui/shared/PageTitle/PageTitle';
 
 const CustomAbiPage: React.FC = () => {
   const customAbiModalProps = useDisclosure();
@@ -103,7 +103,9 @@ const CustomAbiPage: React.FC = () => {
 
   return (
     <>
-      <PageTitle title="Custom ABI"/>
+      <PageTitle>
+        Custom ABI
+      </PageTitle>
       { content }
     </>
   );

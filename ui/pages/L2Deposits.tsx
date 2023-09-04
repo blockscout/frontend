@@ -9,7 +9,7 @@ import DepositsListItem from 'ui/l2Deposits/DepositsListItem';
 import DepositsTable from 'ui/l2Deposits/DepositsTable';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import PageTitle from 'ui/shared/Page/PageTitle';
+import PageTitle from 'ui/shared/PageTitle/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
@@ -85,7 +85,9 @@ const L2Deposits = () => {
 
   return (
     <>
-      <PageTitle title={ `Deposits (L1${ nbsp }${ rightLineArrow }${ nbsp }L2)` } withTextAd/>
+      <PageTitle withTextAds>
+        Deposits (L1{ nbsp }{ rightLineArrow }{ nbsp }L2)
+      </PageTitle>
       <DataListDisplay
         isError={ isError }
         items={ data?.items }

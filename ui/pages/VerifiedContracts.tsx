@@ -13,7 +13,7 @@ import { generateListStub } from 'stubs/utils';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import FilterInput from 'ui/shared/filters/FilterInput';
-import PageTitle from 'ui/shared/Page/PageTitle';
+import PageTitle from 'ui/shared/PageTitle/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import Sort from 'ui/shared/sort/Sort';
@@ -127,7 +127,9 @@ const VerifiedContracts = () => {
 
   return (
     <Box>
-      <PageTitle title="Verified contracts" withTextAd/>
+      <PageTitle withTextAds>
+        Verified contracts
+      </PageTitle>
       <VerifiedContractsCounters/>
       <DataListDisplay
         isError={ isError }

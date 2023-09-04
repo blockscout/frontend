@@ -9,7 +9,7 @@ import WithdrawalsListItem from 'ui/l2Withdrawals/WithdrawalsListItem';
 import WithdrawalsTable from 'ui/l2Withdrawals/WithdrawalsTable';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import PageTitle from 'ui/shared/Page/PageTitle';
+import PageTitle from 'ui/shared/PageTitle/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
@@ -82,7 +82,9 @@ const L2Withdrawals = () => {
 
   return (
     <>
-      <PageTitle title={ `Withdrawals (L2${ nbsp }${ rightLineArrow }${ nbsp }L1)` } withTextAd/>
+      <PageTitle withTextAds>
+        Withdrawals (L2{ nbsp }{ rightLineArrow }{ nbsp }L1)
+      </PageTitle>
       <DataListDisplay
         isError={ isError }
         items={ data?.items }

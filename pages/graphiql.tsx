@@ -5,7 +5,7 @@ import React from 'react';
 import PageNextJs from 'nextjs/PageNextJs';
 
 import ContentLoader from 'ui/shared/ContentLoader';
-import PageTitle from 'ui/shared/Page/PageTitle';
+import PageTitle from 'ui/shared/PageTitle/PageTitle';
 
 const GraphQL = dynamic(() => import('ui/graphQL/GraphQL'), {
   loading: () => <ContentLoader/>,
@@ -16,7 +16,9 @@ const Page: NextPage = () => {
 
   return (
     <PageNextJs pathname="/graphiql">
-      <PageTitle title="GraphQL playground"/>
+      <PageTitle>
+        GraphQL playground
+      </PageTitle>
       <GraphQL/>
     </PageNextJs>
   );

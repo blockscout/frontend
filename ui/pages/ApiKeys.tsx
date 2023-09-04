@@ -13,7 +13,7 @@ import ApiKeyTable from 'ui/apiKey/ApiKeyTable/ApiKeyTable';
 import DeleteApiKeyModal from 'ui/apiKey/DeleteApiKeyModal';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import PageTitle from 'ui/shared/Page/PageTitle';
+import PageTitle from 'ui/shared/PageTitle/PageTitle';
 
 const DATA_LIMIT = 3;
 
@@ -124,7 +124,9 @@ const ApiKeysPage: React.FC = () => {
 
   return (
     <>
-      <PageTitle title="API keys"/>
+      <PageTitle>
+        API keys
+      </PageTitle>
       { content }
     </>
   );

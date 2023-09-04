@@ -5,7 +5,7 @@ import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
 import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import PageTitle from 'ui/shared/Page/PageTitle';
+import PageTitle from 'ui/shared/PageTitle/PageTitle';
 import UserAvatar from 'ui/shared/UserAvatar';
 
 const MyProfile = () => {
@@ -54,7 +54,9 @@ const MyProfile = () => {
 
   return (
     <>
-      <PageTitle title="My profile"/>
+      <PageTitle>
+        My profile
+      </PageTitle>
       { content }
     </>
   );

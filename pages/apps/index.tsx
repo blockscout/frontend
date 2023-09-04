@@ -4,17 +4,17 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-import PageTitle from 'ui/shared/Page/PageTitle';
+import PageTitle from 'ui/shared/PageTitle/PageTitle';
 
 const Marketplace = dynamic(() => import('ui/pages/Marketplace'), { ssr: false });
 
 const Page: NextPage = () => {
   return (
     <PageNextJs pathname="/apps">
-      <>
-        <PageTitle title="Marketplace"/>
-        <Marketplace/>
-      </>
+      <PageTitle>
+        Marketplace
+      </PageTitle>
+      <Marketplace/>
     </PageNextJs>
   );
 };

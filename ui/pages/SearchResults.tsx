@@ -13,7 +13,7 @@ import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as Layout from 'ui/shared/layout/components';
-import PageTitle from 'ui/shared/Page/PageTitle';
+import PageTitle from 'ui/shared/PageTitle/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import Thead from 'ui/shared/TheadSticky';
 import Header from 'ui/snippets/header/Header';
@@ -173,7 +173,9 @@ const SearchResultsPageContent = () => {
 
   const pageContent = !showContent ? <ContentLoader/> : (
     <>
-      <PageTitle title="Search results"/>
+      <PageTitle>
+        Search results
+      </PageTitle>
       { bar }
       { content }
     </>

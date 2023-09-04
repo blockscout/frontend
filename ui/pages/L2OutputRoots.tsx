@@ -8,7 +8,7 @@ import OutputRootsListItem from 'ui/l2OutputRoots/OutputRootsListItem';
 import OutputRootsTable from 'ui/l2OutputRoots/OutputRootsTable';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import PageTitle from 'ui/shared/Page/PageTitle';
+import PageTitle from 'ui/shared/PageTitle/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
@@ -83,7 +83,9 @@ const L2OutputRoots = () => {
 
   return (
     <>
-      <PageTitle title="Output roots" withTextAd/>
+      <PageTitle withTextAds>
+        Output roots
+      </PageTitle>
       <DataListDisplay
         isError={ isError }
         items={ data?.items }

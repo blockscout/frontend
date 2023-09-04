@@ -9,7 +9,7 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import useNewTxsSocket from 'lib/hooks/useNewTxsSocket';
 import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
-import PageTitle from 'ui/shared/Page/PageTitle';
+import PageTitle from 'ui/shared/PageTitle/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
@@ -85,7 +85,9 @@ const Transactions = () => {
 
   return (
     <>
-      <PageTitle title="Transactions" withTextAd/>
+      <PageTitle withTextAds>
+        Transactions
+      </PageTitle>
       <RoutedTabs
         tabs={ tabs }
         tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }

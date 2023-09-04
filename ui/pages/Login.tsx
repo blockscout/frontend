@@ -8,7 +8,7 @@ import config from 'configs/app';
 import * as cookies from 'lib/cookies';
 import useGradualIncrement from 'lib/hooks/useGradualIncrement';
 import useToast from 'lib/hooks/useToast';
-import PageTitle from 'ui/shared/Page/PageTitle';
+import PageTitle from 'ui/shared/PageTitle/PageTitle';
 
 { /* will be deleted when we fix login in preview CI stands */ }
 const Login = () => {
@@ -60,7 +60,9 @@ const Login = () => {
 
   return (
     <VStack gap={ 4 } alignItems="flex-start" maxW="1000px">
-      <PageTitle title="Login page 😂"/>
+      <PageTitle>
+      Login page 😂
+      </PageTitle>
       { isFormVisible && (
         <>
           <Alert status="error" flexDirection="column" alignItems="flex-start">

@@ -22,6 +22,7 @@ type Props = {
 
 const TEXT_MAX_LINES = 1;
 
+// TODO @tom2drum remove this component
 const BackLink = (props: BackLinkProp & { isLoading?: boolean }) => {
   if (!props) {
     return null;

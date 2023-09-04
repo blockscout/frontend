@@ -13,7 +13,7 @@ import { TOKEN_INFO_APPLICATION, VERIFIED_ADDRESS } from 'stubs/account';
 import AddressVerificationModal from 'ui/addressVerification/AddressVerificationModal';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import PageTitle from 'ui/shared/Page/PageTitle';
+import PageTitle from 'ui/shared/PageTitle/PageTitle';
 import AdminSupportText from 'ui/shared/texts/AdminSupportText';
 import TokenInfoForm from 'ui/tokenInfo/TokenInfoForm';
 import VerifiedAddressesListItem from 'ui/verifiedAddresses/VerifiedAddressesListItem';
@@ -123,7 +123,9 @@ const VerifiedAddresses = () => {
     const tokenName = addressInfo ? `${ addressInfo.metadata.tokenName } (${ addressInfo.metadata.tokenSymbol })` : '';
     return (
       <>
-        <PageTitle title="Token info application form" backLink={ backLink }/>
+        <PageTitle backLink={ backLink }>
+          Token info application form
+        </PageTitle>
         <TokenInfoForm
           address={ selectedAddress }
           tokenName={ tokenName }
@@ -162,7 +164,9 @@ const VerifiedAddresses = () => {
 
   return (
     <>
-      <PageTitle title="My verified addresses"/>
+      <PageTitle>
+        My verified addresses
+      </PageTitle>
       <AccountPageDescription allowCut={ false }>
         <span>
           Verify ownership of a smart contract address to easily update information in Blockscout.

@@ -1,10 +1,10 @@
-import { Flex } from '@chakra-ui/react';
+import { Heading } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import { useAppContext } from 'lib/contexts/app';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import PageTitle from 'ui/shared/Page/PageTitle';
+import * as PageTitle from 'ui/shared/PageTitle/PageTitle';
 import Sol2UmlDiagram from 'ui/sol2uml/Sol2UmlDiagram';
 
 const Sol2Uml = () => {
@@ -28,16 +28,21 @@ const Sol2Uml = () => {
 
   return (
     <>
-      <PageTitle
-        title="Solidity UML diagram"
-        backLink={ backLink }
-      />
-      <Flex mb={ 10 } flexWrap="wrap" columnGap={ 3 }>
-        <span>For contract</span>
-        <AddressEntity
-          address={{ hash: addressHash, is_contract: true, implementation_name: null }}
-        />
-      </Flex>
+      <PageTitle.Container>
+        <PageTitle.MainRow>
+          <PageTitle.MainContent backLink={ backLink } alignItems="flex-start">
+            <Heading as="h1" size="lg">
+              Solidity UML diagram
+            </Heading>
+          </PageTitle.MainContent>
+        </PageTitle.MainRow>
+        <PageTitle.BottomRow flexWrap="wrap" columnGap={ 3 } w="100%" rowGap={ 2 }>
+          <span>For contract</span>
+          <AddressEntity
+            address={{ hash: addressHash, is_contract: true, implementation_name: null }}
+          />
+        </PageTitle.BottomRow>
+      </PageTitle.Container>
       <Sol2UmlDiagram addressHash={ addressHash }/>
     </>
   );
