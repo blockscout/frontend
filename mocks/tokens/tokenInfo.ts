@@ -13,6 +13,12 @@ export const tokenInfo: TokenInfo = {
   icon_url: 'http://localhost:3000/token-icon.png',
 };
 
+export const tokenWithLongNameAndSymbol: TokenInfo = {
+  ...tokenInfo,
+  name: 'This is a very long name for a token that should be truncated',
+  symbol: 'This is a very long symbol for a token that should be truncated',
+};
+
 export const tokenCounters: TokenCounters = {
   token_holders_count: '8838883',
   transfers_count: '88282281',

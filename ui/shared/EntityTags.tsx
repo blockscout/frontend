@@ -50,7 +50,7 @@ const EntityTags = ({ className, data, tagsBefore = [], tagsAfter = [], isLoadin
           }
           <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
             <PopoverTrigger>
-              <Tag onClick={ onToggle } cursor="pointer">+{ tags.length - 2 }</Tag>
+              <Tag onClick={ onToggle } cursor="pointer" isLoading={ isLoading }>+{ tags.length - 2 }</Tag>
             </PopoverTrigger>
             <PopoverContent w="240px">
               <PopoverBody >

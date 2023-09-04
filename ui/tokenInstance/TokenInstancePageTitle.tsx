@@ -16,6 +16,7 @@ import Tag from 'ui/shared/chakra/Tag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import LinkExternal from 'ui/shared/LinkExternal';
 import * as PageTitle from 'ui/shared/PageTitle/PageTitle';
+import TruncatedValue from 'ui/shared/TruncatedValue';
 
 interface Props {
   tokenInstanceQuery: UseQueryResult<TokenInstance>;
@@ -43,11 +44,11 @@ const TokenInstancePageTitle = ({ tokenInstanceQuery, hash }: Props) => {
     };
   }, [ appProps.referrer, hash ]);
 
-  const nftShieldIcon = tokenInstanceQuery.isPlaceholderData ?
-    <Skeleton boxSize="30px" display="inline-block" borderRadius="base" mr={ 2 } my={ 2 } verticalAlign="text-bottom"/> :
-    <Icon as={ nftIcon } boxSize="30px" mr={ 2 }/>;
+  const nftShieldIcon = isLoading ?
+    <Skeleton boxSize="30px" display="inline-block" borderRadius="base" mr={ 2 } my={ 2 } verticalAlign="text-bottom" flexShrink={ 0 }/> :
+    <Icon as={ nftIcon } boxSize="30px" mr={ 2 } flexShrink={ 0 }/>;
 
-  const tokenTag = <Tag isLoading={ tokenInstanceQuery.isPlaceholderData }>{ tokenInstanceQuery.data?.token.type }</Tag>;
+  const tokenTag = <Tag isLoading={ isLoading }>{ tokenInstanceQuery.data?.token.type }</Tag>;
 
   const address = {
     hash: hash || '',
@@ -69,7 +70,7 @@ const TokenInstancePageTitle = ({ tokenInstanceQuery, hash }: Props) => {
         new URL('https://' + tokenInstanceQuery.data.external_app_url);
 
       return (
-        <Skeleton isLoaded={ !tokenInstanceQuery.isPlaceholderData } display="inline-block" fontSize="sm">
+        <Skeleton isLoaded={ !isLoading } display="inline-block" fontSize="sm">
           <span>View in app </span>
           <LinkExternal href={ url.toString() }>
             { url.hostname || tokenInstanceQuery.data.external_app_url }
@@ -95,8 +96,12 @@ const TokenInstancePageTitle = ({ tokenInstanceQuery, hash }: Props) => {
       <PageTitle.MainRow>
         <PageTitle.MainContent backLink={ backLink }>
           { nftShieldIcon }
-          <Heading as="h1" size="lg">
-            { tokenInstanceQuery.data?.token.name || 'Unnamed token' } #${ tokenInstanceQuery.data?.id }
+          <Heading as="h1" size="lg" minW={ 0 } h="40px">
+            <TruncatedValue
+              value={ `${ tokenInstanceQuery.data?.token.name || 'Unnamed token' } #${ tokenInstanceQuery.data?.id }` }
+              isLoading={ isLoading }
+              maxW={{ base: '100%', lg: '500px', xl: '800px' }}
+            />
           </Heading>
         </PageTitle.MainContent>
         <PageTitle.SecondaryContent columnGap={ 3 }>
@@ -107,7 +112,7 @@ const TokenInstancePageTitle = ({ tokenInstanceQuery, hash }: Props) => {
       <PageTitle.BottomRow columnGap={ 6 }>
         <AddressEntity
           address={ address }
-          isLoading={ tokenInstanceQuery.isPlaceholderData }
+          isLoading={ isLoading }
           fontFamily="heading"
           fontSize="lg"
           fontWeight={ 500 }

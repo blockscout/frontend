@@ -184,3 +184,10 @@ export const unique: TokenInstance = {
   ...base,
   is_unique: true,
 };
+
+export const fullData: TokenInstance = {
+  ...base,
+  external_app_url: 'https://example.com',
+  animation_url: 'https://example.com/animation.mp4',
+  image_url: 'https://example.com/image.png',
+};

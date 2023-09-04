@@ -216,7 +216,6 @@ const TokenPageContent = () => {
         tokenQuery={ tokenQuery }
         contractQuery={ contractQuery }
         verifiedInfoQuery={ verifiedInfoQuery }
-        hash={ hashString }
       />
 
       <TokenDetails tokenQuery={ tokenQuery }/>

@@ -67,7 +67,7 @@ const CoinzillaTextAd = ({ className }: {className?: string}) => {
   const urlObject = new URL(adData.ad.url);
 
   return (
-    <Box className={ className }>
+    <Box className={ className } id="text-ads">
       <Text
         as="span"
         whiteSpace="pre-wrap"

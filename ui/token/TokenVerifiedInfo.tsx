@@ -1,4 +1,4 @@
-import { Flex, Skeleton, chakra, useColorModeValue } from '@chakra-ui/react';
+import { Flex, chakra, useColorModeValue } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
@@ -12,10 +12,9 @@ import TokenProjectInfo from './TokenProjectInfo';
 interface Props {
   className?: string;
   verifiedInfoQuery: UseQueryResult<TTokenVerifiedInfo>;
-  isLoading?: boolean;
 }
 
-const TokenVerifiedInfo = ({ verifiedInfoQuery, className, isLoading: isLoadingProp }: Props) => {
+const TokenVerifiedInfo = ({ verifiedInfoQuery, className }: Props) => {
 
   const { data, isLoading, isError } = verifiedInfoQuery;
   const websiteLinkBg = useColorModeValue('gray.100', 'gray.700');
@@ -25,10 +24,8 @@ const TokenVerifiedInfo = ({ verifiedInfoQuery, className, isLoading: isLoadingP
       return null;
     }
 
-    if (isLoading || isLoadingProp) {
-      return (
-        <Skeleton w="120px" h="30px" borderRadius="base" className={ className }/>
-      );
+    if (isLoading) {
+      return null;
     }
 
     if (isError) {

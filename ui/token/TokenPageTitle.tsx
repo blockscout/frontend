@@ -24,10 +24,9 @@ interface Props {
   tokenQuery: UseQueryResult<TokenInfo>;
   contractQuery: UseQueryResult<Address>;
   verifiedInfoQuery: UseQueryResult<TTokenVerifiedInfo>;
-  hash: string;
 }
 
-const TokenPageTitle = ({ tokenQuery, contractQuery, verifiedInfoQuery, hash }: Props) => {
+const TokenPageTitle = ({ tokenQuery, contractQuery, verifiedInfoQuery }: Props) => {
   const appProps = useAppContext();
 
   const isLoading = tokenQuery.isPlaceholderData || contractQuery.isPlaceholderData || verifiedInfoQuery.isLoading;
@@ -98,11 +97,12 @@ const TokenPageTitle = ({ tokenQuery, contractQuery, verifiedInfoQuery, hash }: 
                   [ { label: verifiedInfoQuery.data.projectSector, display_name: verifiedInfoQuery.data.projectSector } ] :
                   undefined
               }
+              flexShrink={ 0 }
             />
           </Flex>
           <Flex ml={{ base: 0, lg: 'auto' }} w={{ base: '100%', lg: 'auto' }}>
             <TokenVerifiedInfo verifiedInfoQuery={ verifiedInfoQuery } mr={ 2 }/>
-            <NetworkExplorers type="token" pathParam={ hash } ml={{ base: 'auto', lg: 0 }} isLoading={ isLoading }/>
+            <NetworkExplorers type="token" pathParam={ tokenQuery.data?.address } ml={{ base: 'auto', lg: 0 }} isLoading={ isLoading }/>
           </Flex>
         </PageTitle.SecondaryContent>
       </PageTitle.MainRow>
