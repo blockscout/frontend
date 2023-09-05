@@ -1,5 +1,6 @@
 import { Flex, Grid, Icon, Image, Box, Text, Skeleton, useColorMode } from '@chakra-ui/react';
 import React from 'react';
+import xss from 'xss';
 
 import type { SearchResultItem } from 'types/api/search';
 
@@ -64,7 +65,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
             >
               <Skeleton
                 isLoaded={ !isLoading }
-                dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}
+                dangerouslySetInnerHTML={{ __html: xss(highlightText(name, searchTerm)) }}
                 whiteSpace="nowrap"
                 overflow="hidden"
                 textOverflow="ellipsis"
@@ -100,14 +101,14 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
               isLoading={ isLoading }
               onClick={ handleLinkClick }
             >
-              <span dangerouslySetInnerHTML={{ __html: highlightText(data.name, searchTerm) }}/>
+              <span dangerouslySetInnerHTML={{ __html: xss(highlightText(data.name, searchTerm)) }}/>
             </LinkInternal>
           </Flex>
         );
       }
 
       case 'app': {
-        const title = <span dangerouslySetInnerHTML={{ __html: highlightText(data.app.title, searchTerm) }}/>;
+        const title = <span dangerouslySetInnerHTML={{ __html: xss(highlightText(data.app.title, searchTerm)) }}/>;
         return (
           <Flex alignItems="center">
             <Image
@@ -251,7 +252,8 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
       case 'contract':
       case 'address': {
         const shouldHighlightHash = data.address.toLowerCase() === searchTerm.toLowerCase();
-        return data.name ? <span dangerouslySetInnerHTML={{ __html: shouldHighlightHash ? data.name : highlightText(data.name, searchTerm) }}/> : null;
+        // eslint-disable-next-line max-len
+        return data.name ? <span dangerouslySetInnerHTML={{ __html: shouldHighlightHash ? xss(data.name) : xss(highlightText(data.name, searchTerm)) }}/> : null;
       }
 
       default:

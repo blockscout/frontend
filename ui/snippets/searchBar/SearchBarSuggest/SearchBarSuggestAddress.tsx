@@ -1,5 +1,6 @@
 import { Box, Text, Grid, Flex, Icon } from '@chakra-ui/react';
 import React from 'react';
+import xss from 'xss';
 
 import type { SearchResultAddressOrContract } from 'types/api/search';
 
@@ -24,7 +25,7 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm }: Props) => {
       whiteSpace="nowrap"
       textOverflow="ellipsis"
     >
-      <span dangerouslySetInnerHTML={{ __html: highlightText(data.name, searchTerm) }}/>
+      <span dangerouslySetInnerHTML={{ __html: xss(highlightText(data.name, searchTerm)) }}/>
     </Text>
   );
   const isContractVerified = data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 1 }/>;

@@ -1,5 +1,6 @@
 import { Grid, Text, Flex, Icon } from '@chakra-ui/react';
 import React from 'react';
+import xss from 'xss';
 
 import type { SearchResultToken } from 'types/api/search';
 
@@ -25,7 +26,7 @@ const SearchBarSuggestToken = ({ data, isMobile, searchTerm }: Props) => {
       whiteSpace="nowrap"
       textOverflow="ellipsis"
     >
-      <span dangerouslySetInnerHTML={{ __html: highlightText(data.name + (data.symbol ? ` (${ data.symbol })` : ''), searchTerm) }}/>
+      <span dangerouslySetInnerHTML={{ __html: xss(highlightText(data.name + (data.symbol ? ` (${ data.symbol })` : ''), searchTerm)) }}/>
     </Text>
   );
 
