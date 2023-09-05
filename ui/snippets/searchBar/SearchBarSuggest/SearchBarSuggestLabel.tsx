@@ -1,6 +1,5 @@
 import { Grid, Text, Flex, Icon } from '@chakra-ui/react';
 import React from 'react';
-import xss from 'xss';
 
 import type { SearchResultLabel } from 'types/api/search';
 
@@ -25,7 +24,7 @@ const SearchBarSuggestLabel = ({ data, isMobile, searchTerm }: Props) => {
       whiteSpace="nowrap"
       textOverflow="ellipsis"
     >
-      <span dangerouslySetInnerHTML={{ __html: xss(highlightText(data.name, searchTerm)) }}/>
+      <span dangerouslySetInnerHTML={{ __html: highlightText(data.name, searchTerm) }}/>
     </Text>
   );
 

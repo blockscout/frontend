@@ -65,7 +65,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
             >
               <Skeleton
                 isLoaded={ !isLoading }
-                dangerouslySetInnerHTML={{ __html: xss(highlightText(name, searchTerm)) }}
+                dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}
                 whiteSpace="nowrap"
                 overflow="hidden"
                 textOverflow="ellipsis"
@@ -101,14 +101,14 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
               isLoading={ isLoading }
               onClick={ handleLinkClick }
             >
-              <span dangerouslySetInnerHTML={{ __html: xss(highlightText(data.name, searchTerm)) }}/>
+              <span dangerouslySetInnerHTML={{ __html: highlightText(data.name, searchTerm) }}/>
             </LinkInternal>
           </Flex>
         );
       }
 
       case 'app': {
-        const title = <span dangerouslySetInnerHTML={{ __html: xss(highlightText(data.app.title, searchTerm)) }}/>;
+        const title = <span dangerouslySetInnerHTML={{ __html: highlightText(data.app.title, searchTerm) }}/>;
         return (
           <Flex alignItems="center">
             <Image
@@ -252,8 +252,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
       case 'contract':
       case 'address': {
         const shouldHighlightHash = data.address.toLowerCase() === searchTerm.toLowerCase();
-        // eslint-disable-next-line max-len
-        return data.name ? <span dangerouslySetInnerHTML={{ __html: shouldHighlightHash ? xss(data.name) : xss(highlightText(data.name, searchTerm)) }}/> : null;
+        return data.name ? <span dangerouslySetInnerHTML={{ __html: shouldHighlightHash ? xss(data.name) : highlightText(data.name, searchTerm) }}/> : null;
       }
 
       default:

@@ -1,7 +1,6 @@
 import { Icon, Image, Flex, Text, useColorModeValue } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import React from 'react';
-import xss from 'xss';
 
 import type { MarketplaceAppOverview } from 'types/client/marketplace';
 
@@ -41,7 +40,7 @@ const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick }: Props) => 
               textOverflow="ellipsis"
               ml={ 2 }
             >
-              <span dangerouslySetInnerHTML={{ __html: xss(highlightText(data.title, searchTerm)) }}/>
+              <span dangerouslySetInnerHTML={{ __html: highlightText(data.title, searchTerm) }}/>
             </Text>
             { data.external && <Icon as={ arrowIcon } boxSize={ 4 } verticalAlign="middle"/> }
           </Flex>
@@ -71,7 +70,7 @@ const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick }: Props) => 
           w="200px"
           flexShrink={ 0 }
         >
-          <span dangerouslySetInnerHTML={{ __html: xss(highlightText(data.title, searchTerm)) }}/>
+          <span dangerouslySetInnerHTML={{ __html: highlightText(data.title, searchTerm) }}/>
         </Text>
         <Text
           variant="secondary"
