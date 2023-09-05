@@ -1,0 +1,28 @@
+{
+	"favicon_generation": {
+		"api_key": "<api_key>",
+		"master_picture": {
+			"type": "url",
+			"url": "<master_url>"
+		},
+		"files_location": {
+			"type": "path",
+			"path": "/favicons"
+		},
+		"favicon_design": {
+			"desktop_browser": {}
+		},
+		"settings": {
+			"compression": "3",
+			"scaling_algorithm": "Mitchell",
+			"error_on_image_too_small": true,
+			"readme_file": false,
+			"html_code_file": false,
+			"use_path_as_is": false
+		},
+		"versioning": {
+			"param_name": "ver",
+			"param_value": "15Zd8"
+		}
+	}
+}
