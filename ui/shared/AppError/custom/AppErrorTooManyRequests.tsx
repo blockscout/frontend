@@ -1,12 +1,14 @@
-import { Box, Heading, Icon, Text } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import React from 'react';
 import ReCaptcha from 'react-google-recaptcha';
 
 import config from 'configs/app';
-import icon429 from 'icons/error-pages/429.svg';
 import buildUrl from 'lib/api/buildUrl';
 import useFetch from 'lib/hooks/useFetch';
 import useToast from 'lib/hooks/useToast';
+
+import AppErrorIcon from '../AppErrorIcon';
+import AppErrorTitle from '../AppErrorTitle';
 
 const AppErrorTooManyRequests = () => {
   const toast = useToast();
@@ -50,8 +52,8 @@ const AppErrorTooManyRequests = () => {
         },
       }}
     >
-      <Icon as={ icon429 } width="200px" height="auto"/>
-      <Heading mt={ 8 } size="2xl" fontFamily="body">Too many requests</Heading>
+      <AppErrorIcon statusCode={ 429 }/>
+      <AppErrorTitle title="Too many requests"/>
       <Text variant="secondary" mt={ 3 }>
         You have exceeded the request rate for a given time period. Please reduce the number of requests and try again soon.
       </Text>
