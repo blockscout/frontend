@@ -30,7 +30,7 @@ const NetworkExplorers = ({ className, type, pathParam, isLoading }: Props) => {
   }
 
   if (isLoading) {
-    return <Skeleton w="71px" h="30px" borderRadius="base" className={ className }/>;
+    return <Skeleton w="71px" h="32px" borderRadius="base" className={ className }/>;
   }
 
   return (
@@ -45,7 +45,7 @@ const NetworkExplorers = ({ className, type, pathParam, isLoading }: Props) => {
           aria-label="Verify in other explorers"
           fontWeight={ 500 }
           px={ 2 }
-          h="30px"
+          h="32px"
         >
           <Icon as={ explorerIcon } boxSize={ 5 } mr={ 1 }/>
           <span>{ explorersLinks.length }</span>

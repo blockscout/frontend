@@ -95,7 +95,7 @@ test('with verified info', async({ mount, page, createSocket }) => {
   const channel = await socketServer.joinChannel(socket, 'tokens:1');
   socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });
 
-  await page.getByRole('button', { name: /project info/i }).click();
+  await page.getByRole('button', { name: /info/i }).click();
 
   await expect(component).toHaveScreenshot({
     mask: [ page.locator(configs.adsBannerSelector) ],
