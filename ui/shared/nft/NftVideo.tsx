@@ -5,9 +5,10 @@ interface Props {
   src: string;
   onLoad: () => void;
   onError: () => void;
+  onClick?: () => void;
 }
 
-const NftVideo = ({ src, onLoad, onError }: Props) => {
+const NftVideo = ({ src, onLoad, onError, onClick }: Props) => {
   return (
     <chakra.video
       src={ src }
@@ -19,6 +20,14 @@ const NftVideo = ({ src, onLoad, onError }: Props) => {
       onCanPlayThrough={ onLoad }
       onError={ onError }
       borderRadius="md"
+      onClick={ onClick }
+      transitionProperty="transform"
+      transitionDuration="normal"
+      transitionTimingFunction="ease"
+      cursor="pointer"
+      _hover={{
+        transform: 'scale(1.2)',
+      }}
     />
   );
 };

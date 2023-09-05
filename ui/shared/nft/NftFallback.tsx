@@ -9,6 +9,7 @@ const NftFallback = () => {
       as={ nftIcon }
       p="50px"
       color={ useColorModeValue('blackAlpha.500', 'whiteAlpha.500') }
+      bgColor={ useColorModeValue('blackAlpha.50', 'whiteAlpha.50') }
     />
   );
 };

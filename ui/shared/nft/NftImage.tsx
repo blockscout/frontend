@@ -2,20 +2,29 @@ import { Image } from '@chakra-ui/react';
 import React from 'react';
 
 interface Props {
-  url: string;
+  src: string;
   onLoad: () => void;
   onError: () => void;
+  onClick?: () => void;
 }
 
-const NftImage = ({ url, onLoad, onError }: Props) => {
+const NftImage = ({ src, onLoad, onError, onClick }: Props) => {
   return (
     <Image
       w="100%"
       h="100%"
-      src={ url }
+      src={ src }
       alt="Token instance image"
       onError={ onError }
       onLoad={ onLoad }
+      onClick={ onClick }
+      transitionProperty="transform"
+      transitionDuration="normal"
+      transitionTimingFunction="ease"
+      cursor="pointer"
+      _hover={{
+        transform: 'scale(1.2)',
+      }}
     />
   );
 };
