@@ -1,5 +1,6 @@
 import { Tr, Td, Text, Flex, Icon, Image, Box, Skeleton, useColorMode } from '@chakra-ui/react';
 import React from 'react';
+import xss from 'xss';
 
 import type { SearchResultItem } from 'types/api/search';
 
@@ -67,7 +68,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
                     overflow="hidden"
                     textOverflow="ellipsis"
                     whiteSpace="nowrap"
-                    dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}
+                    dangerouslySetInnerHTML={{ __html: xss(highlightText(name, searchTerm)) }}
                   />
                 </LinkInternal>
                 { data.is_verified_via_admin_panel && <Icon as={ verifiedToken } boxSize={ 4 } ml={ 1 } color="green.500"/> }
@@ -118,7 +119,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
                 </Flex>
               </Td>
               <Td colSpan={ 2 } fontSize="sm" verticalAlign="middle">
-                <span dangerouslySetInnerHTML={{ __html: shouldHighlightHash ? data.name : highlightText(data.name, searchTerm) }}/>
+                <span dangerouslySetInnerHTML={{ __html: shouldHighlightHash ? xss(data.name) : xss(highlightText(data.name, searchTerm)) }}/>
               </Td>
             </>
           );
@@ -150,7 +151,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
                   isLoading={ isLoading }
                   onClick={ handleLinkClick }
                 >
-                  <span dangerouslySetInnerHTML={{ __html: highlightText(data.name, searchTerm) }}/>
+                  <span dangerouslySetInnerHTML={{ __html: xss(highlightText(data.name, searchTerm)) }}/>
                 </LinkInternal>
               </Flex>
             </Td>
@@ -168,7 +169,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
       }
 
       case 'app': {
-        const title = <span dangerouslySetInnerHTML={{ __html: highlightText(data.app.title, searchTerm) }}/>;
+        const title = <span dangerouslySetInnerHTML={{ __html: xss(highlightText(data.app.title, searchTerm)) }}/>;
         return (
           <>
             <Td fontSize="sm">
