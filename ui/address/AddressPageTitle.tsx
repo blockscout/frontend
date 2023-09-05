@@ -87,7 +87,7 @@ const AddressPageTitle = ({ addressQuery }: Props) => {
             fontSize="lg"
             lineHeight={ 6 }
             fontWeight={ 500 }
-            w="100%"
+            w={{ base: '100%', lg: 'auto' }}
           >
             <TokenEntity
               token={ addressQuery.data.token }

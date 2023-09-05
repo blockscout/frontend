@@ -77,13 +77,15 @@ const TokenPageTitle = ({ tokenQuery, contractQuery, verifiedInfoQuery }: Props)
           <Flex columnGap={ 2 }>
             { verifiedInfoQuery.data?.tokenAddress && (
               <Tooltip label={ `Information on this token has been verified by ${ config.chain.name }` }>
-                <Icon
-                  as={ iconVerifiedToken }
-                  color="green.500"
-                  boxSize={ 6 }
-                  cursor="pointer"
-                  isLoading={ isLoading }
-                />
+                <span>
+                  <Icon
+                    as={ iconVerifiedToken }
+                    color="green.500"
+                    boxSize={ 6 }
+                    cursor="pointer"
+                    isLoading={ isLoading }
+                  />
+                </span>
               </Tooltip>
             ) }
             <EntityTags
