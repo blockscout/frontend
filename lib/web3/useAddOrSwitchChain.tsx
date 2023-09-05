@@ -27,26 +27,23 @@ export default function useAddOrSwitchChain() {
 
       // This error code indicates that the chain has not been added to Wallet.
       if (code === 4902) {
-        const params = {
-          method: 'wallet_addEthereumChain',
-          params: [ {
-            chainId: hexadecimalChainId,
-            chainName: config.chain.name,
-            nativeCurrency: {
-              name: config.chain.currency.name,
-              symbol: config.chain.currency.symbol,
-              decimals: config.chain.currency.decimals,
-            },
-            rpcUrls: [ config.chain.rpcUrl ],
-            blockExplorerUrls: [ config.app.baseUrl ],
-          } ],
-          // in wagmi types for wallet_addEthereumChain method is not provided
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } as any;
+        const params = [ {
+          chainId: hexadecimalChainId,
+          chainName: config.chain.name,
+          nativeCurrency: {
+            name: config.chain.currency.name,
+            symbol: config.chain.currency.symbol,
+            decimals: config.chain.currency.decimals,
+          },
+          rpcUrls: [ config.chain.rpcUrl ],
+          blockExplorerUrls: [ config.app.baseUrl ],
+        } ] as never;
+        // in wagmi types for wallet_addEthereumChain method is not provided
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
         return await provider.request({
           method: 'wallet_addEthereumChain',
-          params,
+          params: params,
         });
       }
 
