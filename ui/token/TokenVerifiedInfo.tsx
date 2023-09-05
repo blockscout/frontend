@@ -36,7 +36,15 @@ const TokenVerifiedInfo = ({ verifiedInfoQuery, className }: Props) => {
       try {
         const url = new URL(data.projectWebsite);
         return (
-          <LinkExternal href={ data.projectWebsite } px="10px" py="5px" bgColor={ websiteLinkBg } borderRadius="base">{ url.host }</LinkExternal>
+          <LinkExternal
+            href={ data.projectWebsite }
+            px="10px"
+            py="6px"
+            bgColor={ websiteLinkBg }
+            borderRadius="base"
+          >
+            { url.host }
+          </LinkExternal>
         );
       } catch (error) {
         return null;

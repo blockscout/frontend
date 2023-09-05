@@ -1,4 +1,4 @@
-import { Box, Heading, Skeleton } from '@chakra-ui/react';
+import { Heading, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import { useQueryClient, type UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
@@ -45,8 +45,8 @@ const TokenInstancePageTitle = ({ tokenInstanceQuery, hash }: Props) => {
   }, [ appProps.referrer, hash ]);
 
   const nftShieldIcon = isLoading ?
-    <Skeleton boxSize="30px" display="inline-block" borderRadius="base" mr={ 2 } my={ 2 } verticalAlign="text-bottom" flexShrink={ 0 }/> :
-    <Icon as={ nftIcon } boxSize="30px" mr={ 2 } flexShrink={ 0 }/>;
+    <Skeleton boxSize="30px" display="inline-block" borderRadius="base" verticalAlign="text-bottom" flexShrink={ 0 }/> :
+    <Icon as={ nftIcon } boxSize="30px" flexShrink={ 0 }/>;
 
   const tokenTag = <Tag isLoading={ isLoading }>{ tokenInstanceQuery.data?.token.type }</Tag>;
 
@@ -59,10 +59,26 @@ const TokenInstancePageTitle = ({ tokenInstanceQuery, hash }: Props) => {
     watchlist_address_id: null,
   };
 
+  const websiteLinkBg = useColorModeValue('gray.100', 'gray.700');
+
   const appLink = (() => {
     if (!tokenInstanceQuery.data?.external_app_url) {
       return null;
     }
+
+    if (isLoading) {
+      return <Skeleton w="110px" h="32px" ml="auto"/>;
+    }
+
+    const styles = {
+      px: '10px',
+      py: '6px',
+      bgColor: websiteLinkBg,
+      borderRadius: 'base',
+      ml: 'auto',
+      fontSize: 'sm',
+      lineHeight: '20px',
+    };
 
     try {
       const url = regexp.URL_PREFIX.test(tokenInstanceQuery.data.external_app_url) ?
@@ -70,20 +86,19 @@ const TokenInstancePageTitle = ({ tokenInstanceQuery, hash }: Props) => {
         new URL('https://' + tokenInstanceQuery.data.external_app_url);
 
       return (
-        <Skeleton isLoaded={ !isLoading } display="inline-block" fontSize="sm">
-          <span>View in app </span>
-          <LinkExternal href={ url.toString() }>
-            { url.hostname || tokenInstanceQuery.data.external_app_url }
-          </LinkExternal>
-        </Skeleton>
+        <LinkExternal
+          isLoading={ isLoading }
+          href={ url.toString() }
+          { ...styles }
+        >
+          { url.hostname || tokenInstanceQuery.data.external_app_url }
+        </LinkExternal>
       );
     } catch (error) {
       return (
-        <Box fontSize="sm">
-          <LinkExternal href={ tokenInstanceQuery.data.external_app_url }>
+        <LinkExternal href={ tokenInstanceQuery.data.external_app_url } { ...styles }>
             View in app
-          </LinkExternal>
-        </Box>
+        </LinkExternal>
       );
     }
   })();
