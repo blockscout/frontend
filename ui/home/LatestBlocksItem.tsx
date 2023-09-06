@@ -69,6 +69,8 @@ const LatestBlocksItem = ({ block, h, isLoading }: Props) => {
             <AddressEntity
               address={ block.miner }
               isLoading={ isLoading }
+              noIcon
+              noCopy
             />
           </>
         ) }

@@ -12,6 +12,7 @@ export interface Address extends UserTags {
   creator_address_hash: string | null;
   creation_tx_hash: string | null;
   exchange_rate: string | null;
+  // TODO: if we are happy with tabs-counters method, should we delete has_something fields?
   has_beacon_chain_withdrawals?: boolean;
   has_custom_methods_read: boolean;
   has_custom_methods_write: boolean;
@@ -148,4 +149,15 @@ export type AddressWithdrawalsItem = {
   index: number;
   timestamp: string;
   validator_index: number;
+}
+
+export type AddressTabsCounters = {
+  coin_balances_count: number;
+  internal_txs_count: number;
+  logs_count: number;
+  token_balances_count: number;
+  token_transfers_count: number;
+  transactions_count: number;
+  validations_count: number;
+  withdrawals_count: number;
 }

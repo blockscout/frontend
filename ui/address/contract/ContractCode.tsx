@@ -195,6 +195,7 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
               truncation="constant"
               fontSize="sm"
               fontWeight="500"
+              noCopy
             />
             <span>. </span>
             <Box>
