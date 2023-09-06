@@ -48,6 +48,10 @@ echo "$API_RESPONSE" > response.json
 # Check if the API response is valid JSON and contains success status
 if ! jq -e '.favicon_generation_result.result.status == "success"' <<< "$API_RESPONSE" >/dev/null; then
   echo "🛑 Error: API response does not contain the expected structure or has an error status."
+  ERROR_MESSAGE=$(echo "$API_RESPONSE" | jq -r '.favicon_generation_result.result.error_message' | tr -d '\\')
+  if [ -n "$ERROR_MESSAGE" ]; then
+    echo "🛑 $ERROR_MESSAGE"
+  fi
   exit 1
 fi
 echo "🆗 API responded with success status."

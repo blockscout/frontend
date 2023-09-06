@@ -10,7 +10,20 @@
 			"path": "/favicons"
 		},
 		"favicon_design": {
-			"desktop_browser": {}
+			"desktop_browser": {},
+			"ios": {
+				"picture_aspect": "no_change",
+				"assets": {
+					"ios6_and_prior_icons": false,
+					"ios7_and_later_icons": true,
+					"precomposed_icons": false,
+					"declare_only_default_icon": true
+				}
+			},
+			"safari_pinned_tab": {
+				"picture_aspect": "black_and_white",
+				"threshold": 60
+			}
 		},
 		"settings": {
 			"compression": "3",
