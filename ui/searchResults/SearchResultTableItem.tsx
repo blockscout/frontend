@@ -1,5 +1,6 @@
 import { Tr, Td, Text, Flex, Icon, Image, Box, Skeleton, useColorMode } from '@chakra-ui/react';
 import React from 'react';
+import xss from 'xss';
 
 import type { SearchResultItem } from 'types/api/search';
 
@@ -118,7 +119,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
                 </Flex>
               </Td>
               <Td colSpan={ 2 } fontSize="sm" verticalAlign="middle">
-                <span dangerouslySetInnerHTML={{ __html: shouldHighlightHash ? data.name : highlightText(data.name, searchTerm) }}/>
+                <span dangerouslySetInnerHTML={{ __html: shouldHighlightHash ? xss(data.name) : highlightText(data.name, searchTerm) }}/>
               </Td>
             </>
           );

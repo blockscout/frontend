@@ -1,5 +1,6 @@
 import { Flex, Grid, Icon, Image, Box, Text, Skeleton, useColorMode } from '@chakra-ui/react';
 import React from 'react';
+import xss from 'xss';
 
 import type { SearchResultItem } from 'types/api/search';
 
@@ -251,7 +252,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
       case 'contract':
       case 'address': {
         const shouldHighlightHash = data.address.toLowerCase() === searchTerm.toLowerCase();
-        return data.name ? <span dangerouslySetInnerHTML={{ __html: shouldHighlightHash ? data.name : highlightText(data.name, searchTerm) }}/> : null;
+        return data.name ? <span dangerouslySetInnerHTML={{ __html: shouldHighlightHash ? xss(data.name) : highlightText(data.name, searchTerm) }}/> : null;
       }
 
       default:
