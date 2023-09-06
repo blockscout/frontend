@@ -54,6 +54,7 @@ echo "$API_RESPONSE" > response.json
 
 # Parse the JSON response to extract the file URL and remove backslashes
 FILE_URL=$(echo "$API_RESPONSE" | jq -r '.favicon_generation_result.favicon.package_url' | tr -d '\\')
+PREVIEW_URL=$(echo "$API_RESPONSE" | jq -r '.favicon_generation_result.preview_picture_url' | tr -d '\\')
 
 # Check if FILE_URL is empty
 if [ -z "$FILE_URL" ]; then
@@ -62,6 +63,7 @@ if [ -z "$FILE_URL" ]; then
 fi
 
 echo "🆗 Found following file URL in the response: $FILE_URL"
+echo "🆗 Favicon preview URL: $PREVIEW_URL"
 echo
 
 # Generate a filename based on the URL
@@ -69,10 +71,9 @@ FILE_NAME=$(basename "$FILE_URL")
 
 # Check if the target folder exists and clear its contents if it does
 if [ -d "$TARGET_FOLDER" ]; then
-  rm -r "$TARGET_FOLDER"/*
-else
-  mkdir -p "$TARGET_FOLDER"
+  rm -r "$TARGET_FOLDER"
 fi
+mkdir -p "$TARGET_FOLDER"
 
 # Download the file
 echo "⏳ Trying to download the file..."
