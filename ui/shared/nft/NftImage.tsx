@@ -1,6 +1,8 @@
 import { Image } from '@chakra-ui/react';
 import React from 'react';
 
+import { mediaStyleProps } from './utils';
+
 interface Props {
   src: string;
   onLoad: () => void;
@@ -18,13 +20,7 @@ const NftImage = ({ src, onLoad, onError, onClick }: Props) => {
       onError={ onError }
       onLoad={ onLoad }
       onClick={ onClick }
-      transitionProperty="transform"
-      transitionDuration="normal"
-      transitionTimingFunction="ease"
-      cursor="pointer"
-      _hover={{
-        transform: 'scale(1.2)',
-      }}
+      { ...mediaStyleProps }
     />
   );
 };

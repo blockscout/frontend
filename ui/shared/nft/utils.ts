@@ -26,3 +26,16 @@ export function getPreliminaryMediaType(url: string): MediaType | undefined {
     return 'video';
   }
 }
+
+export const mediaStyleProps = {
+  transitionProperty: 'transform',
+  transitionDuration: 'normal',
+  transitionTimingFunction: 'ease',
+  cursor: 'pointer',
+  _hover: {
+    base: {},
+    lg: {
+      transform: 'scale(1.2)',
+    },
+  },
+};

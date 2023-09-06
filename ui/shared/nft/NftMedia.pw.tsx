@@ -41,18 +41,27 @@ test.describe('image', () => {
 
     await expect(component).toHaveScreenshot();
   });
+});
 
-  test('preview hover', async({ mount }) => {
-    const component = await mount(
-      <TestApp>
-        <NftMedia url={ MEDIA_URL }/>
-      </TestApp>,
-    );
+test('image preview hover', async({ mount, page }) => {
+  const MEDIA_URL = 'https://localhost:3000/my-image.jpg';
 
-    await component.hover();
-
-    await expect(component).toHaveScreenshot();
+  await page.route(MEDIA_URL, (route) => {
+    return route.fulfill({
+      status: 200,
+      path: './playwright/mocks/image_long.jpg',
+    });
   });
+
+  const component = await mount(
+    <TestApp>
+      <NftMedia url={ MEDIA_URL } w="250px"/>
+    </TestApp>,
+  );
+
+  await component.getByAltText('Token instance image').hover();
+
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 250, height: 250 } });
 });
 
 test('image fullscreen +@dark-mode +@mobile', async({ mount, page }) => {
@@ -101,18 +110,6 @@ test.describe('page', () => {
         <NftMedia url={ MEDIA_URL }/>
       </TestApp>,
     );
-
-    await expect(component).toHaveScreenshot();
-  });
-
-  test('preview hover', async({ mount }) => {
-    const component = await mount(
-      <TestApp>
-        <NftMedia url={ MEDIA_URL }/>
-      </TestApp>,
-    );
-
-    await component.hover();
 
     await expect(component).toHaveScreenshot();
   });
