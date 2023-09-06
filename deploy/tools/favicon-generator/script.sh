@@ -1,7 +1,6 @@
 #!/bin/bash
 
 echo "🌀 Generating favicons bundle..."
-echo
 
 # Check if MASTER_URL is provided
 if [ -z "$MASTER_URL" ]; then
@@ -11,7 +10,7 @@ fi
 
 # Check if NEXT_PUBLIC_FAVICON_GENERATOR_API_KEY is provided
 if [ -z "$NEXT_PUBLIC_FAVICON_GENERATOR_API_KEY" ]; then
-  echo "Error: NEXT_PUBLIC_FAVICON_GENERATOR_API_KEY variable is not provided."
+  echo "🛑 Error: NEXT_PUBLIC_FAVICON_GENERATOR_API_KEY variable is not provided."
   exit 1
 fi
 
@@ -109,4 +108,3 @@ fi
 rm response.json "$CONFIG_FILE"
 
 echo "✅ Done."
-echo
