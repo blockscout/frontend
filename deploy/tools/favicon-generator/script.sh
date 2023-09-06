@@ -9,17 +9,17 @@ if [ -z "$MASTER_URL" ]; then
   exit 1
 fi
 
-# Check if API_KEY is provided
-if [ -z "$API_KEY" ]; then
-  echo "Error: API_KEY variable is not provided."
+# Check if NEXT_PUBLIC_FAVICON_GENERATOR_API_KEY is provided
+if [ -z "$NEXT_PUBLIC_FAVICON_GENERATOR_API_KEY" ]; then
+  echo "Error: NEXT_PUBLIC_FAVICON_GENERATOR_API_KEY variable is not provided."
   exit 1
 fi
 
-# Mask the API_KEY to display only the first 4 characters
-API_KEY_MASKED="${API_KEY:0:8}***"
+# Mask the NEXT_PUBLIC_FAVICON_GENERATOR_API_KEY to display only the first 8 characters
+API_KEY_MASKED="${NEXT_PUBLIC_FAVICON_GENERATOR_API_KEY:0:8}***"
 echo "🆗 The following variables are provided:"
 echo "      MASTER_URL: $MASTER_URL"
-echo "      API_KEY: $API_KEY_MASKED"
+echo "      NEXT_PUBLIC_FAVICON_GENERATOR_API_KEY: $API_KEY_MASKED"
 echo
 
 # RealFaviconGenerator API endpoint URL
@@ -35,12 +35,15 @@ CONFIG_TEMPLATE_FILE="config.template.json"
 CONFIG_FILE="config.json"
 
 # Replace <api_key> and <master_url> placeholders in the JSON template file
-API_KEY_VALUE="$API_KEY"
+API_KEY_VALUE="$NEXT_PUBLIC_FAVICON_GENERATOR_API_KEY"
 sed -e "s|<api_key>|$API_KEY_VALUE|" -e "s|<master_url>|$MASTER_URL|" "$CONFIG_TEMPLATE_FILE" > "$CONFIG_FILE"
 
 # Make the API POST request with JSON data from the config file
 echo "⏳ Making request to API..."
 API_RESPONSE=$(curl -s -X POST -H "Content-Type: application/json" -d @"$CONFIG_FILE" "$API_URL")
+
+# Create the response.json file with the API response
+echo "$API_RESPONSE" > response.json
 
 # Check if the API response is valid JSON and contains success status
 if ! jq -e '.favicon_generation_result.result.status == "success"' <<< "$API_RESPONSE" >/dev/null; then
@@ -48,9 +51,6 @@ if ! jq -e '.favicon_generation_result.result.status == "success"' <<< "$API_RES
   exit 1
 fi
 echo "🆗 API responded with success status."
-
-# Create the response.json file with the API response
-echo "$API_RESPONSE" > response.json
 
 # Parse the JSON response to extract the file URL and remove backslashes
 FILE_URL=$(echo "$API_RESPONSE" | jq -r '.favicon_generation_result.favicon.package_url' | tr -d '\\')
