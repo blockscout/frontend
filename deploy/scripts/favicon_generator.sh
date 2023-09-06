@@ -11,6 +11,8 @@ if [ $? -ne 0 ]; then
 else
     cd ../../../
     favicon_folder="./public/favicon/"
+
+    echo "⏳ Replacing default favicons with freshly generated pack..."
     if [ -d "$favicon_folder" ]; then
         rm -r "$favicon_folder"
     fi
