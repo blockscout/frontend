@@ -5,9 +5,9 @@ import type { TokenInfo } from 'types/api/token';
 
 import iconVerifiedToken from 'icons/verified_token.svg';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import EntityTags from 'ui/shared/EntityTags';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
-import TokenLogo from 'ui/shared/TokenLogo';
 
 import PageTitle from '../PageTitle';
 
@@ -49,7 +49,10 @@ const DefaultView = () => {
     <PageTitle
       title="Shavukha Token (SHVKH) token"
       beforeTitle={ (
-        <TokenLogo data={ tokenData } boxSize={ 6 } mr={ 2 }/>
+        <TokenEntity.Icon
+          token={ tokenData }
+          iconSize="lg"
+        />
       ) }
       backLink={ backLink }
       contentAfter={ contentAfter }

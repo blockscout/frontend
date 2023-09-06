@@ -5,11 +5,10 @@ import React from 'react';
 import type { TokenInfo } from 'types/api/token';
 
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
-import AddressLink from 'ui/shared/address/AddressLink';
 import Tag from 'ui/shared/chakra/Tag';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
-import TokenLogo from 'ui/shared/TokenLogo';
 
 type Props = {
   token: TokenInfo;
@@ -31,13 +30,9 @@ const TokensTableItem = ({
     address,
     exchange_rate: exchangeRate,
     type,
-    name,
-    symbol,
     holders,
     circulating_market_cap: marketCap,
   } = token;
-
-  const tokenString = [ name, symbol && `(${ symbol })` ].filter(Boolean).join(' ');
 
   return (
     <ListItemMobile rowGap={ 3 }>
@@ -46,24 +41,29 @@ const TokensTableItem = ({
         gridTemplateColumns="minmax(0, 1fr)"
       >
         <GridItem display="flex">
-          <Flex overflow="hidden" mr={ 3 } alignItems="center">
-            <TokenLogo data={ token } boxSize={ 6 } mr={ 2 } isLoading={ isLoading }/>
-            <AddressLink fontSize="sm" fontWeight="700" hash={ address } type="token" alias={ tokenString } isLoading={ isLoading } mr={ 3 }/>
-            <Tag flexShrink={ 0 } isLoading={ isLoading }>{ type }</Tag>
-          </Flex>
+          <TokenEntity
+            token={ token }
+            isLoading={ isLoading }
+            jointSymbol
+            noCopy
+            w="auto"
+            fontSize="sm"
+            fontWeight="700"
+          />
+          <Tag flexShrink={ 0 } isLoading={ isLoading } ml={ 3 }>{ type }</Tag>
           <Skeleton isLoaded={ !isLoading } fontSize="sm" ml="auto" color="text_secondary" minW="24px" textAlign="right" lineHeight={ 6 }>
             <span>{ (page - 1) * PAGE_SIZE + index + 1 }</span>
           </Skeleton>
         </GridItem>
       </Grid>
-      <Flex justifyContent="space-between" alignItems="center" width="100%">
-        <Flex alignItems="center" width="136px" justifyContent="space-between" ml={ 8 } mt="-8px">
-          <Flex alignItems="center">
-            <AddressLink fontSize="sm" hash={ address } type="address" truncation="constant" isLoading={ isLoading }/>
-            <CopyToClipboard text={ address } isLoading={ isLoading }/>
-          </Flex>
-          <AddressAddToWallet token={ token } isLoading={ isLoading }/>
-        </Flex>
+      <Flex justifyContent="space-between" alignItems="center" width="150px" ml={ 7 } mt={ -2 }>
+        <AddressEntity
+          address={{ hash: address }}
+          isLoading={ isLoading }
+          truncation="constant"
+          noIcon
+        />
+        <AddressAddToWallet token={ token } isLoading={ isLoading }/>
       </Flex>
       { exchangeRate && (
         <HStack spacing={ 3 }>

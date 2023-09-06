@@ -5,11 +5,8 @@ import React from 'react';
 import type { AddressesItem } from 'types/api/addresses';
 
 import config from 'configs/app';
-import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
 import Tag from 'ui/shared/chakra/Tag';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 type Props = {
   item: AddressesItem;
@@ -37,20 +34,12 @@ const AddressesTableItem = ({
           { index }
         </Skeleton>
       </Td>
-      <Td>
-        <Address display="inline-flex" maxW="100%">
-          <AddressIcon address={ item } mr={ 2 } isLoading={ isLoading }/>
-          <AddressLink
-            fontWeight={ 700 }
-            flexGrow={ 1 }
-            w="calc(100% - 32px)"
-            hash={ item.hash }
-            alias={ item.name }
-            type="address"
-            isLoading={ isLoading }
-          />
-          <CopyToClipboard text={ item.hash } isLoading={ isLoading }/>
-        </Address>
+      <Td verticalAlign="middle">
+        <AddressEntity
+          address={ item }
+          isLoading={ isLoading }
+          fontWeight={ 700 }
+        />
       </Td>
       <Td pl={ 10 }>
         { item.public_tags && item.public_tags.length ? item.public_tags.map(tag => (

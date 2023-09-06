@@ -4,10 +4,7 @@ import React from 'react';
 
 import type { TokenHolder, TokenInfo } from 'types/api/token';
 
-import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
@@ -22,19 +19,12 @@ const TokenHoldersListItem = ({ holder, token, isLoading }: Props) => {
 
   return (
     <ListItemMobile rowGap={ 3 }>
-      <Address display="inline-flex" maxW="100%">
-        <AddressIcon address={ holder.address } isLoading={ isLoading }/>
-        <AddressLink
-          type="address"
-          ml={ 2 }
-          fontWeight="700"
-          hash={ holder.address.hash }
-          alias={ holder.address.name }
-          flexGrow={ 1 }
-          isLoading={ isLoading }
-        />
-        <CopyToClipboard text={ holder.address.hash } isLoading={ isLoading }/>
-      </Address>
+      <AddressEntity
+        address={ holder.address }
+        isLoading={ isLoading }
+        fontWeight="700"
+        maxW="100%"
+      />
       <Flex justifyContent="space-between" alignItems="center" width="100%">
         <Skeleton isLoaded={ !isLoading } display="inline-block" width="100%">
           <Box as="span" wordBreak="break-word" mr={ 6 }>

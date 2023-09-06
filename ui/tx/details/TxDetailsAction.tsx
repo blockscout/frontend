@@ -8,8 +8,8 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import uniswapIcon from 'icons/uniswap.svg';
-import AddressLink from 'ui/shared/address/AddressLink';
-import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 
 interface Props {
   action: TxAction;
@@ -58,34 +58,32 @@ const TxDetailsAction = ({ action }: Props) => {
         <Flex flexWrap="wrap" columnGap={ 1 } rowGap={ 2 } alignItems="center">
           <chakra.span color="text_secondary">{ text0 }: </chakra.span>
 
-          <chakra.span fontWeight={ 600 }>{ amount0 }</chakra.span>
-          <TokenSnippet
-            data={ token0 }
+          <chakra.span fontWeight={ 600 } mr={ 1 }>{ amount0 }</chakra.span>
+          <TokenEntity
+            token={ token0 }
+            noLink={ data.symbol0 === 'Ether' }
+            noCopy
+            noSymbol
             w="auto"
-            columnGap={ 1 }
-            logoSize={ 5 }
-            isDisabled={ data.symbol0 === 'Ether' }
-            hideSymbol
             maxW="200px"
             flexShrink={ 0 }
           />
 
           <chakra.span color="text_secondary">{ type === 'swap' ? 'For' : 'And' }: </chakra.span>
 
-          <chakra.span fontWeight={ 600 }>{ amount1 }</chakra.span>
-          <TokenSnippet
-            data={ token1 }
+          <chakra.span fontWeight={ 600 } mr={ 1 }>{ amount1 }</chakra.span>
+          <TokenEntity
+            token={ token1 }
+            noLink={ data.symbol1 === 'Ether' }
+            noCopy
+            noSymbol
             w="auto"
-            columnGap={ 1 }
-            logoSize={ 5 }
-            isDisabled={ data.symbol1 === 'Ether' }
-            hideSymbol
             maxW="200px"
             flexShrink={ 0 }
           />
 
-          <chakra.span color="text_secondary">{ text1 } </chakra.span>
-          <Flex columnGap={ 1 }>
+          <chakra.span color="text_secondary" mr={ 1 }>{ text1 }</chakra.span>
+          <Flex columnGap={ 2 }>
             <Icon as={ uniswapIcon } boxSize={ 5 } color="white" bgColor="#ff007a" borderRadius="full" p="2px"/>
             <chakra.span color="text_secondary">Uniswap V3</chakra.span>
           </Flex>
@@ -105,16 +103,20 @@ const TxDetailsAction = ({ action }: Props) => {
       return (
         <div>
           <Flex rowGap={ 2 } flexWrap="wrap" alignItems="center" whiteSpace="pre-wrap">
-            <chakra.span>Mint of </chakra.span>
-            <TokenSnippet
-              data={ token }
+            <chakra.span mr={ 2 }>Mint of</chakra.span>
+            <TokenEntity
+              token={ token }
+              noCopy
               w="auto"
-              columnGap={ 1 }
-              logoSize={ 5 }
               rowGap={ 2 }
             />
             <chakra.span> to </chakra.span>
-            <AddressLink hash={ data.to } type="address" truncation="constant"/>
+            <AddressEntity
+              address={{ hash: data.to }}
+              truncation="constant"
+              noIcon
+              noCopy
+            />
           </Flex>
 
           <Flex columnGap={ 1 } rowGap={ 2 } pl={ 3 } flexDirection="column" mt={ 2 }>

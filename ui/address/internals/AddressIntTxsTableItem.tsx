@@ -7,12 +7,9 @@ import type { InternalTransaction } from 'types/api/internalTransaction';
 import config from 'configs/app';
 import rightArrowIcon from 'icons/arrows/east.svg';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
 import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import InOutTag from 'ui/shared/InOutTag';
@@ -39,7 +36,7 @@ const AddressIntTxsTableItem = ({
   const toData = to ? to : createdContract;
 
   const isOut = Boolean(currentAddress && currentAddress === from.hash);
-  const isIn = Boolean(currentAddress && currentAddress === to?.hash);
+  const isIn = Boolean(currentAddress && currentAddress === toData?.hash);
 
   const timeAgo = useTimeAgoIncrement(timestamp, true);
 
@@ -81,34 +78,27 @@ const AddressIntTxsTableItem = ({
         />
       </Td>
       <Td verticalAlign="middle">
-        <Address display="inline-flex" maxW="100%">
-          <AddressIcon address={ from } isLoading={ isLoading }/>
-          <AddressLink
-            type="address"
-            ml={ 2 }
-            fontWeight="500"
-            hash={ from.hash }
-            alias={ from.name }
-            flexGrow={ 1 }
-            isDisabled={ isOut }
-            isLoading={ isLoading }
-          />
-          { isIn && <CopyToClipboard text={ from.hash } isLoading={ isLoading }/> }
-        </Address>
+        <AddressEntity
+          address={ from }
+          isLoading={ isLoading }
+          noLink={ isOut }
+          noCopy={ isOut }
+        />
       </Td>
       <Td px={ 0 } verticalAlign="middle">
         { (isIn || isOut) ?
-          <InOutTag isIn={ isIn } isOut={ isOut } isLoading={ isLoading }/> :
+          <InOutTag isIn={ isIn } isOut={ isOut } isLoading={ isLoading } w="100%"/> :
           <Icon as={ rightArrowIcon } boxSize={ 6 } color="gray.500" isLoading={ isLoading }/>
         }
       </Td>
       <Td verticalAlign="middle">
         { toData && (
-          <Address display="inline-flex" maxW="100%">
-            <AddressIcon address={ toData } isLoading={ isLoading }/>
-            <AddressLink type="address" hash={ toData.hash } alias={ toData.name } fontWeight="500" ml={ 2 } isDisabled={ isIn } isLoading={ isLoading }/>
-            { isOut && <CopyToClipboard text={ toData.hash } isLoading={ isLoading }/> }
-          </Address>
+          <AddressEntity
+            address={ toData }
+            isLoading={ isLoading }
+            noLink={ isIn }
+            noCopy={ isIn }
+          />
         ) }
       </Td>
       <Td isNumeric verticalAlign="middle">

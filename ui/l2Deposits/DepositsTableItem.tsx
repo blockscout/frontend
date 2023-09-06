@@ -4,16 +4,12 @@ import React from 'react';
 
 import type { L2DepositsItem } from 'types/api/l2Deposits';
 
-import { route } from 'nextjs-routes';
-
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
-import AddressIcon from 'ui/shared/address/AddressIcon';
+import AddressEntityL1 from 'ui/shared/entities/address/AddressEntityL1';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
-import HashStringShorten from 'ui/shared/HashStringShorten';
-import LinkExternal from 'ui/shared/LinkExternal';
 
 const feature = config.features.rollup;
 
@@ -59,18 +55,12 @@ const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
         />
       </Td>
       <Td verticalAlign="middle">
-        <LinkExternal
-          href={ feature.L1BaseUrl + route({ pathname: '/address/[hash]', query: { hash: item.l1_tx_origin } }) }
-          maxW="100%"
-          display="inline-flex"
-          overflow="hidden"
+        <AddressEntityL1
+          address={{ hash: item.l1_tx_origin, name: '', is_contract: false, is_verified: false, implementation_name: '' }}
           isLoading={ isLoading }
-        >
-          <AddressIcon address={{ hash: item.l1_tx_origin, is_contract: false, implementation_name: '' }} isLoading={ isLoading }/>
-          <Skeleton isLoaded={ !isLoading } w="calc(100% - 44px)" overflow="hidden" whiteSpace="nowrap" ml={ 2 }>
-            <HashStringShorten hash={ item.l1_tx_origin }/>
-          </Skeleton>
-        </LinkExternal>
+          truncation="constant"
+          noCopy
+        />
       </Td>
       <Td verticalAlign="middle" isNumeric>
         <Skeleton isLoaded={ !isLoading } color="text_secondary" display="inline-block">

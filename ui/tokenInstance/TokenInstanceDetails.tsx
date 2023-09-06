@@ -3,15 +3,13 @@ import React from 'react';
 
 import type { TokenInstance } from 'types/api/token';
 
-import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import NftMedia from 'ui/shared/nft/NftMedia';
-import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
 
 import TokenInstanceCreatorAddress from './details/TokenInstanceCreatorAddress';
 import TokenInstanceDivider from './details/TokenInstanceDivider';
@@ -51,7 +49,11 @@ const TokenInstanceDetails = ({ data, scrollRef, isLoading }: Props) => {
             hint="Token name"
             isLoading={ isLoading }
           >
-            <TokenSnippet data={ data.token } isLoading={ isLoading }/>
+            <TokenEntity
+              token={ data.token }
+              isLoading={ isLoading }
+              noCopy
+            />
           </DetailsInfoItem>
           { data.is_unique && data.owner && (
             <DetailsInfoItem
@@ -59,11 +61,10 @@ const TokenInstanceDetails = ({ data, scrollRef, isLoading }: Props) => {
               hint="Current owner of this token instance"
               isLoading={ isLoading }
             >
-              <Address>
-                <AddressIcon address={ data.owner } isLoading={ isLoading }/>
-                <AddressLink type="address" hash={ data.owner.hash } ml={ 2 } isLoading={ isLoading }/>
-                <CopyToClipboard text={ data.owner.hash } isLoading={ isLoading }/>
-              </Address>
+              <AddressEntity
+                address={ data.owner }
+                isLoading={ isLoading }
+              />
             </DetailsInfoItem>
           ) }
           <TokenInstanceCreatorAddress hash={ isLoading ? '' : data.token.address }/>

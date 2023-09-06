@@ -26,9 +26,6 @@ import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
-import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
 import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
@@ -36,13 +33,12 @@ import CurrencyValue from 'ui/shared/CurrencyValue';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-// import PrevNext from 'ui/shared/PrevNext';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import RawInputData from 'ui/shared/RawInputData';
 import TextSeparator from 'ui/shared/TextSeparator';
-import TruncatedValue from 'ui/shared/TruncatedValue';
 import TxStatus from 'ui/shared/TxStatus';
 import Utilization from 'ui/shared/Utilization/Utilization';
 import TxDetailsActions from 'ui/tx/details/TxDetailsActions';
@@ -141,8 +137,6 @@ const TxDetails = () => {
             <HashStringShortenDynamic hash={ data.hash }/>
           </Skeleton>
           <CopyToClipboard text={ data.hash } isLoading={ isPlaceholderData }/>
-          { /* api doesn't support navigation between certain address account tx */ }
-          { /* <PrevNext ml={ 7 }/> */ }
         </DetailsInfoItem>
         <DetailsInfoItem
           title="Status and method"
@@ -219,11 +213,10 @@ const TxDetails = () => {
           isLoading={ isPlaceholderData }
           columnGap={ 3 }
         >
-          <Address>
-            <AddressIcon address={ data.from } isLoading={ isPlaceholderData }/>
-            <AddressLink type="address" ml={ 2 } hash={ data.from.hash } isLoading={ isPlaceholderData }/>
-            <CopyToClipboard text={ data.from.hash } isLoading={ isPlaceholderData }/>
-          </Address>
+          <AddressEntity
+            address={ data.from }
+            isLoading={ isPlaceholderData }
+          />
           { data.from.name && <Text>{ data.from.name }</Text> }
           { addressFromTags.length > 0 && (
             <Flex columnGap={ 3 }>
@@ -241,24 +234,27 @@ const TxDetails = () => {
           { toAddress ? (
             <>
               { data.to && data.to.hash ? (
-                <Address alignItems="center" flexShrink={ 0 } w={{ base: '100%', lg: 'auto' }}>
-                  <AddressIcon address={ toAddress } isLoading={ isPlaceholderData }/>
-                  <AddressLink type="address" ml={ 2 } hash={ toAddress.hash } isLoading={ isPlaceholderData }/>
+                <Flex flexWrap="nowrap" alignItems="center" maxW="100%">
+                  <AddressEntity
+                    address={ toAddress }
+                    isLoading={ isPlaceholderData }
+                  />
                   { executionSuccessBadge }
                   { executionFailedBadge }
-                  <CopyToClipboard text={ toAddress.hash } isLoading={ isPlaceholderData }/>
-                </Address>
+                </Flex>
               ) : (
-                <Flex width={{ base: '100%', lg: 'auto' }} whiteSpace="pre" alignItems="center" flexShrink={ 0 }>
+                <Flex width="100%" whiteSpace="pre" alignItems="center" flexShrink={ 0 }>
                   <span>[Contract </span>
-                  <AddressLink type="address" hash={ toAddress.hash }/>
-                  <span> created]</span>
+                  <AddressEntity
+                    address={ toAddress }
+                    isLoading={ isPlaceholderData }
+                    noIcon
+                  />
+                  <span>created]</span>
                   { executionSuccessBadge }
                   { executionFailedBadge }
-                  <CopyToClipboard text={ toAddress.hash }/>
                 </Flex>
               ) }
-              { toAddress.name && <TruncatedValue value={ toAddress.name }/> }
               { addressToTags.length > 0 && (
                 <Flex columnGap={ 3 }>
                   { addressToTags }
@@ -283,6 +279,7 @@ const TxDetails = () => {
             currency={ config.chain.currency.symbol }
             exchangeRate={ data.exchange_rate }
             isLoading={ isPlaceholderData }
+            flexWrap="wrap"
           />
         </DetailsInfoItem>
         <DetailsInfoItem

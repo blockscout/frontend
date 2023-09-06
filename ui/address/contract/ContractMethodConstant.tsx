@@ -7,9 +7,7 @@ import type { SmartContractMethodOutput } from 'types/api/contract';
 
 import config from 'configs/app';
 import { WEI } from 'lib/consts';
-import Address from 'ui/shared/address/Address';
-import AddressLink from 'ui/shared/address/AddressLink';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 function castValueToString(value: number | string | boolean | bigint | undefined): string {
   switch (typeof value) {
@@ -49,10 +47,10 @@ const ContractMethodStatic = ({ data }: Props) => {
   const content = (() => {
     if (typeof data.value === 'string' && data.type === 'address' && data.value) {
       return (
-        <Address>
-          <AddressLink type="address" hash={ data.value }/>
-          <CopyToClipboard text={ data.value }/>
-        </Address>
+        <AddressEntity
+          address={{ hash: data.value }}
+          noIcon
+        />
       );
     }
 

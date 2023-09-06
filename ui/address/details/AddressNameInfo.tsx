@@ -4,7 +4,7 @@ import React from 'react';
 import type { Address } from 'types/api/address';
 
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
+import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 
 interface Props {
   data: Pick<Address, 'name' | 'token' | 'is_contract'>;
@@ -19,7 +19,12 @@ const AddressNameInfo = ({ data, isLoading }: Props) => {
         hint="Token name and symbol"
         isLoading={ isLoading }
       >
-        <TokenSnippet data={ data.token } isLoading={ isLoading } hideIcon/>
+        <TokenEntity
+          token={ data.token }
+          isLoading={ isLoading }
+          noIcon
+          noCopy
+        />
       </DetailsInfoItem>
     );
   }

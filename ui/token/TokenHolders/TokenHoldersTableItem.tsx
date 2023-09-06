@@ -4,10 +4,7 @@ import React from 'react';
 
 import type { TokenHolder, TokenInfo } from 'types/api/token';
 
-import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
 type Props = {
@@ -22,20 +19,12 @@ const TokenTransferTableItem = ({ holder, token, isLoading }: Props) => {
   return (
     <Tr>
       <Td verticalAlign="middle">
-        <Address display="inline-flex" maxW="100%">
-          <AddressIcon address={ holder.address } isLoading={ isLoading }/>
-          <AddressLink
-            type="address"
-            ml={ 2 }
-            fontWeight="700"
-            hash={ holder.address.hash }
-            alias={ holder.address.name }
-            flexGrow={ 1 }
-            isLoading={ isLoading }
-            truncation="constant"
-          />
-          <CopyToClipboard text={ holder.address.hash } isLoading={ isLoading }/>
-        </Address>
+        <AddressEntity
+          address={ holder.address }
+          isLoading={ isLoading }
+          flexGrow={ 1 }
+          fontWeight="700"
+        />
       </Td>
       <Td verticalAlign="middle" isNumeric>
         <Skeleton isLoaded={ !isLoading } display="inline-block" wordBreak="break-word">

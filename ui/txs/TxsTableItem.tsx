@@ -15,13 +15,10 @@ import type { Transaction } from 'types/api/transaction';
 
 import rightArrowIcon from 'icons/arrows/east.svg';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
 import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import CurrencyValue from 'ui/shared/CurrencyValue';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import InOutTag from 'ui/shared/InOutTag';
@@ -46,36 +43,27 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
   const timeAgo = useTimeAgoIncrement(tx.timestamp, enableTimeIncrement);
 
   const addressFrom = (
-    <Address w="100%">
-      <AddressIcon address={ tx.from } isLoading={ isLoading }/>
-      <AddressLink
-        type="address"
-        hash={ tx.from.hash }
-        alias={ tx.from.name }
-        fontWeight="500" ml={ 2 }
-        truncation="constant"
-        isDisabled={ isOut }
-        isLoading={ isLoading }
-      />
-      { !isOut && <CopyToClipboard text={ tx.from.hash } isLoading={ isLoading }/> }
-    </Address>
+    <AddressEntity
+      address={ tx.from }
+      isLoading={ isLoading }
+      noCopy={ isOut }
+      noLink={ isOut }
+      truncation="constant"
+      w="100%"
+      py="2px"
+    />
   );
 
   const addressTo = dataTo ? (
-    <Address w="100%">
-      <AddressIcon address={ dataTo } isLoading={ isLoading }/>
-      <AddressLink
-        type="address"
-        hash={ dataTo.hash }
-        alias={ dataTo.name }
-        fontWeight="500"
-        ml={ 2 }
-        truncation="constant"
-        isDisabled={ isIn }
-        isLoading={ isLoading }
-      />
-      { !isIn && <CopyToClipboard text={ dataTo.hash } isLoading={ isLoading }/> }
-    </Address>
+    <AddressEntity
+      address={ dataTo }
+      isLoading={ isLoading }
+      truncation="constant"
+      noCopy={ isIn }
+      noLink={ isIn }
+      w="100%"
+      py="2px"
+    />
   ) : '-';
 
   return (

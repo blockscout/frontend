@@ -1,12 +1,14 @@
 import {
   Tr,
   Td,
+  Box,
+  Skeleton,
 } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
 import type { CustomAbi } from 'types/api/account';
 
-import AddressSnippet from 'ui/shared/AddressSnippet';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 
 interface Props {
@@ -29,7 +31,16 @@ const CustomAbiTableItem = ({ item, isLoading, onEditClick, onDeleteClick }: Pro
   return (
     <Tr alignItems="top" key={ item.id }>
       <Td>
-        <AddressSnippet address={ item.contract_address } subtitle={ item.name } isLoading={ isLoading }/>
+        <Box maxW="100%">
+          <AddressEntity
+            address={ item.contract_address }
+            fontWeight="600"
+            isLoading={ isLoading }
+          />
+          <Skeleton fontSize="sm" color="text_secondary" mt={ 0.5 } ml={ 8 } display="inline-block" isLoaded={ !isLoading }>
+            <span>{ item.name }</span>
+          </Skeleton>
+        </Box>
       </Td>
       <Td>
         <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick } isLoading={ isLoading }/>

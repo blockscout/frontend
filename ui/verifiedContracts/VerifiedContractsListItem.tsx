@@ -9,11 +9,9 @@ import iconCheck from 'icons/check.svg';
 import iconCross from 'icons/cross.svg';
 import iconSuccess from 'icons/status/success.svg';
 import dayjs from 'lib/date/dayjs';
-import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
 import Icon from 'ui/shared/chakra/Icon';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 
@@ -29,14 +27,18 @@ const VerifiedContractsListItem = ({ data, isLoading }: Props) => {
 
   return (
     <ListItemMobile rowGap={ 3 }>
-      <Address columnGap={ 2 } overflow="hidden" w="100%">
-        <AddressIcon address={ data.address } isLoading={ isLoading }/>
-        <AddressLink hash={ data.address.hash } type="address" alias={ data.address.name } isLoading={ isLoading } query={{ tab: 'contract' }}/>
+      <Flex w="100%">
+        <AddressEntity
+          isLoading={ isLoading }
+          address={ data.address }
+          query={{ tab: 'contract' }}
+          noCopy
+        />
         <Skeleton isLoaded={ !isLoading } color="text_secondary" ml="auto">
           <HashStringShorten hash={ data.address.hash } isTooltipDisabled/>
         </Skeleton>
-        <CopyToClipboard text={ data.address.hash } ml={ -1 } isLoading={ isLoading }/>
-      </Address>
+        <CopyToClipboard text={ data.address.hash } isLoading={ isLoading }/>
+      </Flex>
       <Flex columnGap={ 3 }>
         <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>Balance { config.chain.currency.symbol }</Skeleton>
         <Skeleton isLoaded={ !isLoading } color="text_secondary">

@@ -4,16 +4,12 @@ import React from 'react';
 
 import type { L2DepositsItem } from 'types/api/l2Deposits';
 
-import { route } from 'nextjs-routes';
-
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
-import AddressIcon from 'ui/shared/address/AddressIcon';
+import AddressEntityL1 from 'ui/shared/entities/address/AddressEntityL1';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import LinkExternal from 'ui/shared/LinkExternal';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 
 const feature = config.features.rollup;
@@ -31,7 +27,7 @@ const DepositsListItem = ({ item, isLoading }: Props) => {
     <ListItemMobileGrid.Container>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>L1 block No</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value py="3px">
+      <ListItemMobileGrid.Value>
         <BlockEntityL1
           number={ item.l1_block_number }
           isLoading={ isLoading }
@@ -42,7 +38,7 @@ const DepositsListItem = ({ item, isLoading }: Props) => {
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>L2 txn hash</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value py="3px">
+      <ListItemMobileGrid.Value>
         <TxEntity
           isLoading={ isLoading }
           hash={ item.l2_tx_hash }
@@ -57,7 +53,7 @@ const DepositsListItem = ({ item, isLoading }: Props) => {
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>L1 txn hash</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value py="3px">
+      <ListItemMobileGrid.Value>
         <TxEntityL1
           isLoading={ isLoading }
           hash={ item.l1_tx_hash }
@@ -67,19 +63,12 @@ const DepositsListItem = ({ item, isLoading }: Props) => {
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>L1 txn origin</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value py="3px">
-        <LinkExternal
-          href={ feature.L1BaseUrl + route({ pathname: '/address/[hash]', query: { hash: item.l1_tx_origin } }) }
-          maxW="100%"
-          display="flex"
-          overflow="hidden"
+      <ListItemMobileGrid.Value>
+        <AddressEntityL1
+          address={{ hash: item.l1_tx_origin, name: '', is_contract: false, is_verified: false, implementation_name: '' }}
           isLoading={ isLoading }
-        >
-          <AddressIcon address={{ hash: item.l1_tx_origin, is_contract: false, implementation_name: '' }} isLoading={ isLoading }/>
-          <Skeleton isLoaded={ !isLoading } w="calc(100% - 44px)" overflow="hidden" whiteSpace="nowrap" ml={ 2 }>
-            <HashStringShortenDynamic hash={ item.l1_tx_origin }/>
-          </Skeleton>
-        </LinkExternal>
+          noCopy
+        />
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Gas limit</ListItemMobileGrid.Label>

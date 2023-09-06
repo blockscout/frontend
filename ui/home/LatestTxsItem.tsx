@@ -14,10 +14,8 @@ import config from 'configs/app';
 import rightArrowIcon from 'icons/arrows/east.svg';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
 import Icon from 'ui/shared/chakra/Icon';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxStatus from 'ui/shared/TxStatus';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
@@ -83,31 +81,20 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
             isLoading={ isLoading }
           />
           <Box overflow="hidden" ml={ 1 }>
-            <Address mb={ 2 }>
-              <AddressIcon address={ tx.from } isLoading={ isLoading }/>
-              <AddressLink
-                type="address"
-                hash={ tx.from.hash }
-                alias={ tx.from.name }
-                fontWeight="500"
-                ml={ 2 }
-                fontSize="sm"
-                isLoading={ isLoading }
-              />
-            </Address>
+            <AddressEntity
+              isLoading={ isLoading }
+              address={ tx.from }
+              fontSize="sm"
+              fontWeight="500"
+              mb={ 2 }
+            />
             { dataTo && (
-              <Address>
-                <AddressIcon address={ dataTo } isLoading={ isLoading }/>
-                <AddressLink
-                  type="address"
-                  hash={ dataTo.hash }
-                  alias={ dataTo.name }
-                  fontWeight="500"
-                  ml={ 2 }
-                  fontSize="sm"
-                  isLoading={ isLoading }
-                />
-              </Address>
+              <AddressEntity
+                isLoading={ isLoading }
+                address={ dataTo }
+                fontSize="sm"
+                fontWeight="500"
+              />
             ) }
           </Box>
         </Grid>

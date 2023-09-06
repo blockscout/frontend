@@ -8,10 +8,8 @@ import config from 'configs/app';
 import AddressFavoriteButton from 'ui/address/details/AddressFavoriteButton';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
 import AddressActionsMenu from 'ui/shared/AddressActions/Menu';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 interface Props {
   address: Pick<Address, 'hash' | 'is_contract' | 'implementation_name' | 'watchlist_names' | 'watchlist_address_id'>;
@@ -23,18 +21,14 @@ interface Props {
 const AddressHeadingInfo = ({ address, token, isLinkDisabled, isLoading }: Props) => {
   return (
     <Flex alignItems="center">
-      <AddressIcon address={ address } isLoading={ isLoading }/>
-      <AddressLink
-        type="address"
-        hash={ address.hash }
-        ml={ 2 }
+      <AddressEntity
+        address={{ ...address, name: '' }}
+        isLoading={ isLoading }
         fontFamily="heading"
         fontSize="lg"
         fontWeight={ 500 }
-        isDisabled={ isLinkDisabled }
-        isLoading={ isLoading }
+        noLink={ isLinkDisabled }
       />
-      <CopyToClipboard text={ address.hash } isLoading={ isLoading }/>
       { !isLoading && address.is_contract && token && <AddressAddToWallet ml={ 2 } token={ token }/> }
       { !isLoading && !address.is_contract && config.features.account.isEnabled && (
         <AddressFavoriteButton hash={ address.hash } watchListId={ address.watchlist_address_id } ml={ 3 }/>

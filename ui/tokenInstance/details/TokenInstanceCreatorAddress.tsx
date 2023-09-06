@@ -2,11 +2,8 @@ import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { ADDRESS_INFO } from 'stubs/address';
-import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 interface Props {
   hash: string;
@@ -41,11 +38,10 @@ const TokenInstanceCreatorAddress = ({ hash }: Props) => {
       hint="Address that deployed this token contract"
       isLoading={ addressQuery.isPlaceholderData }
     >
-      <Address>
-        <AddressIcon address={ creatorAddress } isLoading={ addressQuery.isPlaceholderData }/>
-        <AddressLink type="address" hash={ creatorAddress.hash } ml={ 2 } isLoading={ addressQuery.isPlaceholderData }/>
-        <CopyToClipboard text={ creatorAddress.hash } isLoading={ addressQuery.isPlaceholderData }/>
-      </Address>
+      <AddressEntity
+        address={ creatorAddress }
+        isLoading={ addressQuery.isPlaceholderData }
+      />
     </DetailsInfoItem>
   );
 };

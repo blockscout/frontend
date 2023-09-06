@@ -13,7 +13,7 @@ import config from 'configs/app';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import BlockTimestamp from 'ui/blocks/BlockTimestamp';
-import AddressLink from 'ui/shared/address/AddressLink';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 
 type Props = {
@@ -66,7 +66,12 @@ const LatestBlocksItem = ({ block, h, isLoading }: Props) => {
             <Skeleton isLoaded={ !isLoading }>Reward</Skeleton>
             <Skeleton isLoaded={ !isLoading } color="text_secondary"><span>{ totalReward.toFixed() }</span></Skeleton>
             <Skeleton isLoaded={ !isLoading } textTransform="capitalize">{ getNetworkValidatorTitle() }</Skeleton>
-            <AddressLink type="address" alias={ block.miner.name } hash={ block.miner.hash } truncation="constant" maxW="100%" isLoading={ isLoading }/>
+            <AddressEntity
+              address={ block.miner }
+              isLoading={ isLoading }
+              noIcon
+              noCopy
+            />
           </>
         ) }
       </Grid>

@@ -22,11 +22,11 @@ import TOKEN_TYPE from 'lib/token/tokenTypes';
 import { getTokenTransfersStub } from 'stubs/token';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
+import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
-import TokenLogo from 'ui/shared/TokenLogo';
 import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
 import TokenTransferList from 'ui/shared/TokenTransfer/TokenTransferList';
 import TokenTransferTable from 'ui/shared/TokenTransfer/TokenTransferTable';
@@ -227,19 +227,20 @@ const AddressTokenTransfers = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Pr
     address: tokenFilter || '',
     name: '',
     icon_url: '',
+    symbol: '',
   }), [ tokenFilter ]);
 
   const tokenFilterComponent = tokenFilter && (
     <Flex alignItems="center" flexWrap="wrap" mb={{ base: isActionBarHidden ? 3 : 6, lg: 0 }} mr={ 4 }>
       <Text whiteSpace="nowrap" mr={ 2 } py={ 1 }>Filtered by token</Text>
       <Flex alignItems="center" py={ 1 }>
-        <TokenLogo data={ tokenData } boxSize={ 6 } mr={ 2 }/>
+        <TokenEntity.Icon token={ tokenData } isLoading={ isPlaceholderData }/>
         { isMobile ? <HashStringShorten hash={ tokenFilter }/> : tokenFilter }
         <Tooltip label="Reset filter">
           <Flex>
             <Icon
               as={ crossIcon }
-              boxSize={ 6 }
+              boxSize={ 5 }
               ml={ 1 }
               color={ resetTokenIconColor }
               cursor="pointer"

@@ -1,12 +1,11 @@
-import { Flex, Text, LinkBox, LinkOverlay, useColorModeValue, Hide, Skeleton } from '@chakra-ui/react';
+import { Flex, Text, LinkBox, LinkOverlay, useColorModeValue, Skeleton } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import React from 'react';
 
 import type { TokenInstance } from 'types/api/token';
 
-import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
+import useIsMobile from 'lib/hooks/useIsMobile';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import LinkInternal from 'ui/shared/LinkInternal';
 import NftMedia from 'ui/shared/nft/NftMedia';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
@@ -14,6 +13,8 @@ import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 type Props = { item: TokenInstance; isLoading: boolean };
 
 const NFTItem = ({ item, isLoading }: Props) => {
+
+  const isMobile = useIsMobile();
 
   const mediaElement = (
     <NftMedia
@@ -67,10 +68,13 @@ const NFTItem = ({ item, isLoading }: Props) => {
       { item.owner && (
         <Flex mb={ 2 } ml={ 1 }>
           <Text whiteSpace="pre" variant="secondary" mr={ 2 } lineHeight="24px">Owner</Text>
-          <Address>
-            <Hide below="lg" ssr={ false }><AddressIcon address={ item.owner } mr={ 1 } isLoading={ isLoading }/></Hide>
-            <AddressLink hash={ item.owner.hash } alias={ item.owner.name } type="address" truncation="constant" isLoading={ isLoading }/>
-          </Address>
+          <AddressEntity
+            address={ item.owner }
+            isLoading={ isLoading }
+            truncation="constant"
+            noCopy
+            noIcon={ isMobile }
+          />
         </Flex>
       ) }
     </LinkBox>

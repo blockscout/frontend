@@ -12,11 +12,8 @@ import config from 'configs/app';
 import rightArrowIcon from 'icons/arrows/east.svg';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
 import Icon from 'ui/shared/chakra/Icon';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import InOutTag from 'ui/shared/InOutTag';
@@ -91,19 +88,14 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
         </Flex>
       ) }
       <Flex alignItems="center" height={ 6 } mt={ 6 }>
-        <Address w={ `calc((100% - ${ currentAddress ? TAG_WIDTH + 16 : ARROW_WIDTH + 8 }px)/2)` }>
-          <AddressIcon address={ tx.from } isLoading={ isLoading }/>
-          <AddressLink
-            type="address"
-            hash={ tx.from.hash }
-            alias={ tx.from.name }
-            fontWeight="500"
-            ml={ 2 }
-            isDisabled={ isOut }
-            isLoading={ isLoading }
-          />
-          { !isOut && <CopyToClipboard text={ tx.from.hash } isLoading={ isLoading }/> }
-        </Address>
+        <AddressEntity
+          address={ tx.from }
+          isLoading={ isLoading }
+          noLink={ isOut }
+          noCopy={ isOut }
+          w={ `calc((100% - ${ currentAddress ? TAG_WIDTH + 16 : ARROW_WIDTH + 8 }px)/2)` }
+          fontWeight="500"
+        />
         { (isIn || isOut) ?
           <InOutTag isIn={ isIn } isOut={ isOut } width="48px" mx={ 2 } isLoading={ isLoading }/> : (
             <Box mx={ 2 }>
@@ -116,19 +108,14 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
             </Box>
           ) }
         { dataTo ? (
-          <Address w={ `calc((100% - ${ currentAddress ? TAG_WIDTH + 16 : ARROW_WIDTH + 8 }px)/2)` }>
-            <AddressIcon address={ dataTo } isLoading={ isLoading }/>
-            <AddressLink
-              type="address"
-              hash={ dataTo.hash }
-              alias={ dataTo.name }
-              fontWeight="500"
-              ml={ 2 }
-              isDisabled={ isIn }
-              isLoading={ isLoading }
-            />
-            { !isIn && <CopyToClipboard text={ dataTo.hash } isLoading={ isLoading }/> }
-          </Address>
+          <AddressEntity
+            address={ dataTo }
+            isLoading={ isLoading }
+            noLink={ isIn }
+            noCopy={ isIn }
+            w={ `calc((100% - ${ currentAddress ? TAG_WIDTH + 16 : ARROW_WIDTH + 8 }px)/2)` }
+            fontWeight="500"
+          />
         ) : '-' }
       </Flex>
       <Box mt={ 2 }>

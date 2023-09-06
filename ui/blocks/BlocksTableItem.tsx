@@ -12,8 +12,8 @@ import flameIcon from 'icons/flame.svg';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import { WEI } from 'lib/consts';
 import BlockTimestamp from 'ui/blocks/BlockTimestamp';
-import AddressLink from 'ui/shared/address/AddressLink';
 import Icon from 'ui/shared/chakra/Icon';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
 import LinkInternal from 'ui/shared/LinkInternal';
@@ -65,13 +65,8 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
         </Skeleton>
       </Td>
       <Td fontSize="sm">
-        <AddressLink
-          type="address"
-          alias={ data.miner.name }
-          hash={ data.miner.hash }
-          truncation="constant"
-          display="inline-flex"
-          maxW="100%"
+        <AddressEntity
+          address={ data.miner }
           isLoading={ isLoading }
         />
       </Td>

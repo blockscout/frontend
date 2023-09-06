@@ -1,4 +1,3 @@
-import { Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -9,12 +8,9 @@ import { useAppContext } from 'lib/contexts/app';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import ContractVerificationForm from 'ui/contractVerification/ContractVerificationForm';
 import { isValidVerificationMethod, sortVerificationMethods } from 'ui/contractVerification/utils';
-import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
 import ContentLoader from 'ui/shared/ContentLoader';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 const ContractVerification = () => {
@@ -100,15 +96,14 @@ const ContractVerification = () => {
         title="New smart contract verification"
         backLink={ backLink }
       />
-      { hash && (
-        <Address mb={ 12 }>
-          <AddressIcon address={{ hash, is_contract: true, implementation_name: null }} flexShrink={ 0 }/>
-          <Text fontFamily="heading" ml={ 2 } fontWeight={ 500 } fontSize="lg" w={{ base: '100%', lg: 'auto' }} whiteSpace="nowrap" overflow="hidden">
-            <HashStringShortenDynamic hash={ hash }/>
-          </Text>
-          <CopyToClipboard text={ hash }/>
-        </Address>
-      ) }
+      <AddressEntity
+        address={{ hash, is_contract: true, implementation_name: null }}
+        noLink
+        fontFamily="heading"
+        fontSize="lg"
+        fontWeight={ 500 }
+        mb={ 12 }
+      />
       { content }
     </>
   );

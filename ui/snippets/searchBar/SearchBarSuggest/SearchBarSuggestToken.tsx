@@ -6,8 +6,8 @@ import type { SearchResultToken } from 'types/api/search';
 import iconSuccess from 'icons/status/success.svg';
 import verifiedToken from 'icons/verified_token.svg';
 import highlightText from 'lib/highlightText';
+import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import TokenLogo from 'ui/shared/TokenLogo';
 
 interface Props {
   data: SearchResultToken;
@@ -16,8 +16,8 @@ interface Props {
 }
 
 const SearchBarSuggestToken = ({ data, isMobile, searchTerm }: Props) => {
-  const icon = <TokenLogo boxSize={ 6 } data={ data }/>;
-  const verifiedIcon = <Icon as={ verifiedToken } boxSize={ 4 } color="green.500"/>;
+  const icon = <TokenEntity.Icon token={ data }/>;
+  const verifiedIcon = <Icon as={ verifiedToken } boxSize={ 4 } color="green.500" ml={ 1 }/>;
   const name = (
     <Text
       fontWeight={ 700 }
@@ -49,12 +49,10 @@ const SearchBarSuggestToken = ({ data, isMobile, searchTerm }: Props) => {
 
     return (
       <>
-        <Flex alignItems="center" gap={ 2 }>
+        <Flex alignItems="center">
           { icon }
-          <Flex alignItems="center" gap={ 1 }>
-            { name }
-            { data.is_verified_via_admin_panel && verifiedIcon }
-          </Flex>
+          { name }
+          { data.is_verified_via_admin_panel && verifiedIcon }
         </Flex>
         <Grid templateColumns={ templateCols } alignItems="center" gap={ 2 }>
           <Flex alignItems="center" overflow="hidden">
@@ -68,9 +66,9 @@ const SearchBarSuggestToken = ({ data, isMobile, searchTerm }: Props) => {
   }
 
   return (
-    <Grid templateColumns="24px 200px 1fr auto" gap={ 2 }>
-      { icon }
-      <Flex alignItems="center" gap={ 1 }>
+    <Grid templateColumns="228px 1fr auto" gap={ 2 }>
+      <Flex alignItems="center">
+        { icon }
         { name }
         { data.is_verified_via_admin_panel && verifiedIcon }
       </Flex>

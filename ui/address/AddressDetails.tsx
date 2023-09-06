@@ -5,22 +5,18 @@ import React from 'react';
 
 import type { Address as TAddress } from 'types/api/address';
 
-import { route } from 'nextjs-routes';
-
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ADDRESS_COUNTERS } from 'stubs/address';
 import AddressCounterItem from 'ui/address/details/AddressCounterItem';
-import AddressLink from 'ui/shared/address/AddressLink';
 import AddressHeadingInfo from 'ui/shared/AddressHeadingInfo';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import LinkInternal from 'ui/shared/LinkInternal';
 
 import AddressBalance from './details/AddressBalance';
 import AddressNameInfo from './details/AddressNameInfo';
@@ -102,9 +98,13 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
             hint="Transaction and address of creation"
             isLoading={ addressQuery.isPlaceholderData }
           >
-            <AddressLink type="address" hash={ data.creator_address_hash } truncation="constant"/>
+            <AddressEntity
+              address={{ hash: data.creator_address_hash }}
+              truncation="constant"
+              noIcon
+            />
             <Text whiteSpace="pre"> at txn </Text>
-            <TxEntity hash={ data.creation_tx_hash } truncation="constant" noIcon/>
+            <TxEntity hash={ data.creation_tx_hash } truncation="constant" noIcon noCopy={ false }/>
           </DetailsInfoItem>
         ) }
         { data.is_contract && data.implementation_address && (
@@ -113,14 +113,11 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
             hint="Implementation address of the proxy contract"
             columnGap={ 1 }
           >
-            <LinkInternal href={ route({ pathname: '/address/[hash]', query: { hash: data.implementation_address } }) } overflow="hidden">
-              { data.implementation_name || <HashStringShortenDynamic hash={ data.implementation_address }/> }
-            </LinkInternal>
-            { data.implementation_name && (
-              <Text variant="secondary" overflow="hidden">
-                <HashStringShortenDynamic hash={ `(${ data.implementation_address })` }/>
-              </Text>
-            ) }
+            <AddressEntity
+              address={{ hash: data.implementation_address, name: data.implementation_name, is_contract: true }}
+              isLoading={ addressQuery.isPlaceholderData }
+              noIcon
+            />
           </DetailsInfoItem>
         ) }
         <AddressBalance data={ data } isLoading={ addressQuery.isPlaceholderData }/>

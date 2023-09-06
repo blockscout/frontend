@@ -9,10 +9,9 @@ import iconCheck from 'icons/check.svg';
 import iconCross from 'icons/cross.svg';
 import iconSuccess from 'icons/status/success.svg';
 import dayjs from 'lib/date/dayjs';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
 import Icon from 'ui/shared/chakra/Icon';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 
 interface Props {
@@ -28,17 +27,18 @@ const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
   return (
     <Tr>
       <Td>
-        <Flex columnGap={ 2 }>
-          <AddressIcon address={ data.address } isLoading={ isLoading }/>
-          <Flex columnGap={ 2 } flexWrap="wrap" w="calc(100% - 32px)">
-            <AddressLink hash={ data.address.hash } type="address" alias={ data.address.name } isLoading={ isLoading } my={ 1 } query={{ tab: 'contract' }}/>
-            <Flex alignItems="center">
-              <Skeleton isLoaded={ !isLoading } color="text_secondary" my={ 1 }>
-                <HashStringShorten hash={ data.address.hash } isTooltipDisabled/>
-              </Skeleton>
-              <CopyToClipboard text={ data.address.hash } isLoading={ isLoading }/>
-            </Flex>
-          </Flex>
+        <AddressEntity
+          address={ data.address }
+          isLoading={ isLoading }
+          query={{ tab: 'contract' }}
+          noCopy
+          mt={ 1 }
+        />
+        <Flex alignItems="center" ml={ 7 }>
+          <Skeleton isLoaded={ !isLoading } color="text_secondary" my={ 1 }>
+            <HashStringShorten hash={ data.address.hash } isTooltipDisabled/>
+          </Skeleton>
+          <CopyToClipboard text={ data.address.hash } isLoading={ isLoading }/>
         </Flex>
       </Td>
       <Td isNumeric>

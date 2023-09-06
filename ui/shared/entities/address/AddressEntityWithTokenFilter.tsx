@@ -1,5 +1,4 @@
 import { chakra } from '@chakra-ui/react';
-import _omit from 'lodash/omit';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
@@ -11,8 +10,6 @@ interface Props extends AddressEntity.EntityProps {
 }
 
 const AddressEntityWithTokenFilter = (props: Props) => {
-  const linkProps = _omit(props, [ 'className' ]);
-  const partsProps = _omit(props, [ 'className', 'onClick' ]);
   const defaultHref = route({
     pathname: '/address/[hash]',
     query: {
@@ -25,15 +22,7 @@ const AddressEntityWithTokenFilter = (props: Props) => {
   });
 
   return (
-    <AddressEntity.Container className={ props.className }>
-      <AddressEntity.Icon { ...partsProps }/>
-      <AddressEntity.Link
-        { ...linkProps }
-        href={ props.href ?? defaultHref }
-      >
-        <AddressEntity.Content { ...partsProps }/>
-      </AddressEntity.Link>
-    </AddressEntity.Container>
+    <AddressEntity.default { ...props } href={ props.href ?? defaultHref }/>
   );
 };
 

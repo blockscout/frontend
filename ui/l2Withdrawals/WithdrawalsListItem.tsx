@@ -5,9 +5,7 @@ import type { L2WithdrawalsItem } from 'types/api/l2Withdrawals';
 
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
-import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import LinkExternal from 'ui/shared/LinkExternal';
@@ -38,17 +36,17 @@ const WithdrawalsListItem = ({ item, isLoading }: Props) => {
       { item.from && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>From</ListItemMobileGrid.Label>
-          <ListItemMobileGrid.Value py="3px">
-            <Address>
-              <AddressIcon address={ item.from } isLoading={ isLoading }/>
-              <AddressLink hash={ item.from.hash } type="address" truncation="dynamic" ml={ 2 } isLoading={ isLoading }/>
-            </Address>
+          <ListItemMobileGrid.Value>
+            <AddressEntity
+              address={ item.from }
+              isLoading={ isLoading }
+            />
           </ListItemMobileGrid.Value>
         </>
       ) }
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>L2 txn hash</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value py="3px">
+      <ListItemMobileGrid.Value>
         <TxEntity
           isLoading={ isLoading }
           hash={ item.l2_tx_hash }
@@ -78,7 +76,7 @@ const WithdrawalsListItem = ({ item, isLoading }: Props) => {
       { item.l1_tx_hash && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>L1 txn hash</ListItemMobileGrid.Label>
-          <ListItemMobileGrid.Value py="3px">
+          <ListItemMobileGrid.Value>
             <TxEntityL1
               isLoading={ isLoading }
               hash={ item.l1_tx_hash }

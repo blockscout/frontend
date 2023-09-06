@@ -8,8 +8,8 @@ import config from 'configs/app';
 import { ZERO_ADDRESS } from 'lib/consts';
 import { nbsp, space } from 'lib/html-entities';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
-import AddressLink from 'ui/shared/address/AddressLink';
 import Tag from 'ui/shared/chakra/Tag';
+import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
 
 import TxStateTokenIdList from './TxStateTokenIdList';
@@ -77,11 +77,13 @@ export function getStateElements(data: TxStateChange, isLoading?: boolean) {
     }
     case 'token': {
       const tokenLink = (
-        <AddressLink
-          type="token"
-          hash={ data.token.address }
-          alias={ data.token?.symbol || data.token.address }
+        <TokenEntity
+          token={ data.token }
           isLoading={ isLoading }
+          noIcon
+          noCopy
+          onlySymbol
+          w="auto"
         />
       );
       const beforeBn = BigNumber(data.balance_before || '0').div(BigNumber(10 ** (Number(data.token.decimals))));
@@ -130,14 +132,14 @@ export function getStateElements(data: TxStateChange, isLoading?: boolean) {
 
       return {
         before: data.balance_before ? (
-          <Flex whiteSpace="pre-wrap" justifyContent={{ base: 'flex-start', lg: 'flex-end' }}>
+          <Flex whiteSpace="pre-wrap" justifyContent={{ base: 'flex-start', lg: 'flex-end' }} flexWrap="wrap">
             <Skeleton isLoaded={ !isLoading }>{ beforeBn.toFormat() }</Skeleton>
             <span>{ space }</span>
             { tokenLink }
           </Flex>
         ) : null,
         after: data.balance_after ? (
-          <Flex whiteSpace="pre-wrap" justifyContent={{ base: 'flex-start', lg: 'flex-end' }}>
+          <Flex whiteSpace="pre-wrap" justifyContent={{ base: 'flex-start', lg: 'flex-end' }} flexWrap="wrap">
             <Skeleton isLoaded={ !isLoading }>{ afterBn.toFormat() }</Skeleton>
             <span>{ space }</span>
             { tokenLink }

@@ -10,7 +10,6 @@ import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import TokenLogo from 'ui/shared/TokenLogo';
 
 interface Props {
   data: Pick<Address, 'block_number_balance_updated_at' | 'coin_balance' | 'hash' | 'exchange_rate'>;
@@ -64,11 +63,6 @@ const AddressBalance = ({ data, isLoading }: Props) => {
     handler: handleNewCoinBalanceMessage,
   });
 
-  const tokenData = React.useMemo(() => ({
-    name: config.chain.currency.name || '',
-    icon_url: '',
-  }), [ ]);
-
   return (
     <DetailsInfoItem
       title="Balance"
@@ -77,13 +71,6 @@ const AddressBalance = ({ data, isLoading }: Props) => {
       alignItems="flex-start"
       isLoading={ isLoading }
     >
-      <TokenLogo
-        data={ tokenData }
-        boxSize={ 5 }
-        mr={ 2 }
-        fontSize="sm"
-        isLoading={ isLoading }
-      />
       <CurrencyValue
         value={ data.coin_balance || '0' }
         exchangeRate={ data.exchange_rate }

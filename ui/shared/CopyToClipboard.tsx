@@ -24,7 +24,7 @@ const CopyToClipboard = ({ text, className, isLoading }: Props) => {
   }, [ hasCopied ]);
 
   if (isLoading) {
-    return <Skeleton boxSize={ 5 } className={ className } borderRadius="sm" flexShrink={ 0 } ml={ 1 }/>;
+    return <Skeleton boxSize={ 5 } className={ className } borderRadius="sm" flexShrink={ 0 } ml={ 2 }/>;
   }
 
   return (
@@ -42,7 +42,8 @@ const CopyToClipboard = ({ text, className, isLoading }: Props) => {
         className={ className }
         onMouseEnter={ onOpen }
         onMouseLeave={ onClose }
-        ml={ 1 }
+        ml={ 2 }
+        borderRadius={ 0 }
       />
     </Tooltip>
   );

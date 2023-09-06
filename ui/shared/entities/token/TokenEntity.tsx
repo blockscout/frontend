@@ -1,4 +1,4 @@
-import type { As } from '@chakra-ui/react';
+import type { As, ChakraProps } from '@chakra-ui/react';
 import { Image, Skeleton, chakra } from '@chakra-ui/react';
 import _omit from 'lodash/omit';
 import React from 'react';
@@ -28,8 +28,10 @@ const Link = chakra((props: LinkProps) => {
   );
 });
 
-type IconProps = Pick<EntityProps, 'token' | 'isLoading' | 'iconSize' | 'noIcon'> & {
+type IconProps = Pick<EntityProps, 'token' | 'isLoading' | 'iconSize' | 'noIcon' | 'className'> & {
   asProp?: As;
+  marginRight?: ChakraProps['marginRight'];
+  boxSize?: ChakraProps['boxSize'];
 };
 
 const Icon = (props: IconProps) => {
@@ -38,18 +40,19 @@ const Icon = (props: IconProps) => {
   }
 
   const styles = {
-    ...getIconProps(props.iconSize),
-    marginRight: 2,
+    marginRight: props.marginRight ?? 2,
+    boxSize: props.boxSize ?? getIconProps(props.iconSize).boxSize,
     borderRadius: 'base',
   };
 
   if (props.isLoading) {
-    return <Skeleton { ...styles } flexShrink={ 0 }/>;
+    return <Skeleton { ...styles } className={ props.className } flexShrink={ 0 }/>;
   }
 
   return (
     <Image
       { ...styles }
+      className={ props.className }
       src={ props.token.icon_url ?? undefined }
       alt={ `${ props.token.name || 'token' } logo` }
       fallback={ <TokenLogoPlaceholder { ...styles }/> }
@@ -57,13 +60,17 @@ const Icon = (props: IconProps) => {
   );
 };
 
-type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'token'>;
+type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'token' | 'jointSymbol' | 'onlySymbol'>;
 
 const Content = chakra((props: ContentProps) => {
-  const name = props.token.name ?? 'Unnamed token';
+  const nameString = [
+    !props.onlySymbol && (props.token.name ?? 'Unnamed token'),
+    props.onlySymbol && (props.token.symbol ?? ''),
+    props.token.symbol && props.jointSymbol && !props.onlySymbol && `(${ props.token.symbol })`,
+  ].filter(Boolean).join(' ');
 
   return (
-    <TruncatedTextTooltip label={ name }>
+    <TruncatedTextTooltip label={ nameString }>
       <Skeleton
         isLoaded={ !props.isLoading }
         display="inline-block"
@@ -72,18 +79,18 @@ const Content = chakra((props: ContentProps) => {
         textOverflow="ellipsis"
         height="fit-content"
       >
-        { name }
+        { nameString }
       </Skeleton>
     </TruncatedTextTooltip>
   );
 });
 
-type SymbolProps = Pick<EntityProps, 'token' | 'isLoading' | 'noSymbol'>;
+type SymbolProps = Pick<EntityProps, 'token' | 'isLoading' | 'noSymbol' | 'jointSymbol' | 'onlySymbol'>;
 
 const Symbol = (props: SymbolProps) => {
   const symbol = props.token.symbol;
 
-  if (!symbol || props.noSymbol) {
+  if (!symbol || props.noSymbol || props.jointSymbol || props.onlySymbol) {
     return null;
   }
 
@@ -129,6 +136,8 @@ const Container = EntityBase.Container;
 export interface EntityProps extends EntityBase.EntityBaseProps {
   token: Pick<TokenInfo, 'address' | 'icon_url' | 'name' | 'symbol'>;
   noSymbol?: boolean;
+  jointSymbol?: boolean;
+  onlySymbol?: boolean;
 }
 
 const TokenEntity = (props: EntityProps) => {

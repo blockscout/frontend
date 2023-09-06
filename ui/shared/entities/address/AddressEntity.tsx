@@ -29,11 +29,15 @@ const Link = chakra((props: LinkProps) => {
   );
 });
 
-type IconProps = Pick<EntityProps, 'address' | 'isLoading' | 'iconSize'> & {
+type IconProps = Pick<EntityProps, 'address' | 'isLoading' | 'iconSize' | 'noIcon'> & {
   asProp?: As;
 };
 
 const Icon = (props: IconProps) => {
+  if (props.noIcon) {
+    return null;
+  }
+
   const styles = {
     ...getIconProps(props.iconSize),
     marginRight: 2,
@@ -46,19 +50,29 @@ const Icon = (props: IconProps) => {
   if (props.address.is_contract) {
     if (props.address.is_verified) {
       return (
-        <EntityBase.Icon
-          { ...props }
-          asProp={ iconContractVerified }
-          color="green.500"
-        />
+        <Tooltip label="Verified contract">
+          <span>
+            <EntityBase.Icon
+              { ...props }
+              asProp={ iconContractVerified }
+              color="green.500"
+              borderRadius={ 0 }
+            />
+          </span>
+        </Tooltip>
       );
     }
 
     return (
-      <EntityBase.Icon
-        { ...props }
-        asProp={ iconContract }
-      />
+      <Tooltip label="Contract">
+        <span>
+          <EntityBase.Icon
+            { ...props }
+            asProp={ iconContract }
+            borderRadius={ 0 }
+          />
+        </span>
+      </Tooltip>
     );
   }
 
