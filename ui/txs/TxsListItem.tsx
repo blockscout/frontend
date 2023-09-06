@@ -94,6 +94,7 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
           noLink={ isOut }
           noCopy={ isOut }
           w={ `calc((100% - ${ currentAddress ? TAG_WIDTH + 16 : ARROW_WIDTH + 8 }px)/2)` }
+          fontWeight="500"
         />
         { (isIn || isOut) ?
           <InOutTag isIn={ isIn } isOut={ isOut } width="48px" mx={ 2 } isLoading={ isLoading }/> : (
@@ -113,6 +114,7 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
             noLink={ isIn }
             noCopy={ isIn }
             w={ `calc((100% - ${ currentAddress ? TAG_WIDTH + 16 : ARROW_WIDTH + 8 }px)/2)` }
+            fontWeight="500"
           />
         ) : '-' }
       </Flex>

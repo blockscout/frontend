@@ -8,6 +8,7 @@ import type { CsvExportParams } from 'types/client/address';
 import type { ResourceName } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp } from 'lib/html-entities';
 import CsvExportForm from 'ui/csvExport/CsvExportForm';
 import ContentLoader from 'ui/shared/ContentLoader';
@@ -58,6 +59,7 @@ const isCorrectExportType = (type: string): type is CsvExportParams['type'] => O
 const CsvExport = () => {
   const router = useRouter();
   const appProps = useAppContext();
+  const isMobile = useIsMobile();
 
   const addressHash = router.query.address?.toString() || '';
   const exportType = router.query.type?.toString() || '';
@@ -131,6 +133,7 @@ const CsvExport = () => {
         <span>Export { EXPORT_TYPES[exportType].text } for address </span>
         <AddressEntity
           address={{ hash: addressHash, is_contract: true, implementation_name: null }}
+          truncation={ isMobile ? 'constant' : 'dynamic' }
           noCopy
         />
         <span>{ nbsp }</span>

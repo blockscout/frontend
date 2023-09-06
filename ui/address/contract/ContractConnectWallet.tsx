@@ -47,7 +47,7 @@ const ContractConnectWallet = () => {
         <Flex alignItems="center">
           <span>Connected to </span>
           <AddressEntity
-            address={{ hash: address, name: '', is_contract: false, implementation_name: null }}
+            address={{ hash: address }}
             truncation={ isMobile ? 'constant' : 'dynamic' }
             fontWeight={ 600 }
             ml={ 2 }

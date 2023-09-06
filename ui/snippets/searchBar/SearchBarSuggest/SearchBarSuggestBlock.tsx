@@ -15,7 +15,6 @@ interface Props {
 }
 
 const SearchBarSuggestBlock = ({ data, isMobile, searchTerm }: Props) => {
-  // const icon = <Icon as={ blockIcon } boxSize={ 6 } color="gray.500"/>;
   const icon = <BlockEntity.Icon/>;
   const shouldHighlightHash = data.block_hash.toLowerCase() === searchTerm.toLowerCase();
   const blockNumber = (
