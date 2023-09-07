@@ -63,6 +63,7 @@ test.describe('without project info', () => {
           tokenQuery={ tokenQuery }
           contractQuery={ contractQuery }
           verifiedInfoQuery={ verifiedInfoQuery }
+          hash={ tokenMock.tokenInfo.address }
         />
       </TestApp>,
     );
@@ -98,6 +99,7 @@ test.describe('without project info', () => {
           tokenQuery={ tokenQuery }
           contractQuery={ contractQuery }
           verifiedInfoQuery={ verifiedInfoQuery }
+          hash={ tokenMock.tokenInfo.address }
         />
       </TestApp>,
     );
@@ -132,6 +134,7 @@ test.describe('with project info', () => {
           tokenQuery={ tokenQuery }
           contractQuery={ contractQuery }
           verifiedInfoQuery={ verifiedInfoQuery }
+          hash={ tokenMock.tokenInfo.address }
         />
       </TestApp>,
     );

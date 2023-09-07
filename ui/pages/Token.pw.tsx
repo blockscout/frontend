@@ -11,13 +11,14 @@ import * as configs from 'playwright/utils/configs';
 
 import Token from './Token';
 
-const TOKEN_API_URL = buildApiUrl('token', { hash: '1' });
-const TOKEN_COUNTERS_API_URL = buildApiUrl('token_counters', { hash: '1' });
-const TOKEN_TRANSFERS_API_URL = buildApiUrl('token_transfers', { hash: '1' });
-const ADDRESS_API_URL = buildApiUrl('address', { hash: '1' });
+const HASH = tokenInfo.address;
+const TOKEN_API_URL = buildApiUrl('token', { hash: HASH });
+const TOKEN_COUNTERS_API_URL = buildApiUrl('token_counters', { hash: HASH });
+const TOKEN_TRANSFERS_API_URL = buildApiUrl('token_transfers', { hash: HASH });
+const ADDRESS_API_URL = buildApiUrl('address', { hash: HASH });
 const hooksConfig = {
   router: {
-    query: { hash: '1', tab: 'token_transfers' },
+    query: { hash: HASH, tab: 'token_transfers' },
     isReady: true,
   },
 };
@@ -63,7 +64,7 @@ test('base view', async({ mount, page, createSocket }) => {
   );
 
   const socket = await createSocket();
-  const channel = await socketServer.joinChannel(socket, 'tokens:1');
+  const channel = await socketServer.joinChannel(socket, `tokens:${ HASH }`);
   socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });
 
   await expect(component).toHaveScreenshot({
@@ -73,7 +74,7 @@ test('base view', async({ mount, page, createSocket }) => {
 });
 
 test('with verified info', async({ mount, page, createSocket }) => {
-  const VERIFIED_INFO_URL = buildApiUrl('token_verified_info', { chainId: '1', hash: '1' });
+  const VERIFIED_INFO_URL = buildApiUrl('token_verified_info', { chainId: '1', hash: HASH });
   await page.route(VERIFIED_INFO_URL, (route) => route.fulfill({
     body: JSON.stringify(verifiedAddressesMocks.TOKEN_INFO_APPLICATION.APPROVED),
   }));
@@ -92,7 +93,7 @@ test('with verified info', async({ mount, page, createSocket }) => {
   );
 
   const socket = await createSocket();
-  const channel = await socketServer.joinChannel(socket, 'tokens:1');
+  const channel = await socketServer.joinChannel(socket, `tokens:${ HASH }`);
   socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });
 
   await page.getByRole('button', { name: /info/i }).click();
@@ -114,7 +115,7 @@ test.describe('mobile', () => {
     );
 
     const socket = await createSocket();
-    const channel = await socketServer.joinChannel(socket, 'tokens:1');
+    const channel = await socketServer.joinChannel(socket, `tokens:${ HASH }`);
     socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });
 
     await expect(component).toHaveScreenshot({
@@ -124,7 +125,7 @@ test.describe('mobile', () => {
   });
 
   test('with verified info', async({ mount, page, createSocket }) => {
-    const VERIFIED_INFO_URL = buildApiUrl('token_verified_info', { chainId: '1', hash: '1' });
+    const VERIFIED_INFO_URL = buildApiUrl('token_verified_info', { chainId: '1', hash: HASH });
     await page.route(VERIFIED_INFO_URL, (route) => route.fulfill({
       body: JSON.stringify(verifiedAddressesMocks.TOKEN_INFO_APPLICATION.APPROVED),
     }));
@@ -143,7 +144,7 @@ test.describe('mobile', () => {
     );
 
     const socket = await createSocket();
-    const channel = await socketServer.joinChannel(socket, 'tokens:1');
+    const channel = await socketServer.joinChannel(socket, `tokens:${ HASH }`);
     socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });
 
     await expect(component).toHaveScreenshot({

@@ -45,7 +45,7 @@ test('EOA +@mobile', async({ mount, page }) => {
 
   const component = await mount(
     <TestApp>
-      <AddressPageTitle addressQuery={ addressQuery }/>
+      <AddressPageTitle addressQuery={ addressQuery } hash={ addressMock.hash }/>
     </TestApp>,
   );
 
@@ -62,7 +62,7 @@ test('contract +@mobile', async({ mount, page }) => {
 
   const component = await mount(
     <TestApp>
-      <AddressPageTitle addressQuery={ addressQuery }/>
+      <AddressPageTitle addressQuery={ addressQuery } hash={ addressMock.hash }/>
     </TestApp>,
   );
 
@@ -82,7 +82,7 @@ test('token contract +@mobile', async({ mount, page }) => {
 
   const component = await mount(
     <TestApp>
-      <AddressPageTitle addressQuery={ addressQuery }/>
+      <AddressPageTitle addressQuery={ addressQuery } hash={ addressMock.hash }/>
     </TestApp>,
   );
 
@@ -103,7 +103,7 @@ test('loading state +@mobile', async({ mount, page }) => {
 
   const component = await mount(
     <TestApp>
-      <AddressPageTitle addressQuery={ addressQuery }/>
+      <AddressPageTitle addressQuery={ addressQuery } hash={ addressMock.hash }/>
     </TestApp>,
   );
 
