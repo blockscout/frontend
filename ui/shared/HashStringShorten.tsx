@@ -6,18 +6,19 @@ import shortenString from 'lib/shortenString';
 
 interface Props {
   hash: string;
+  prefix?: string;
   isTooltipDisabled?: boolean;
   as?: As;
 }
 
-const HashStringShorten = ({ hash, isTooltipDisabled, as = 'span' }: Props) => {
+const HashStringShorten = ({ hash, prefix = '', isTooltipDisabled, as = 'span' }: Props) => {
   if (hash.length <= 8) {
-    return <chakra.span as={ as }>{ hash }</chakra.span>;
+    return <chakra.span as={ as }>{ prefix + hash }</chakra.span>;
   }
 
   return (
     <Tooltip label={ hash } isDisabled={ isTooltipDisabled }>
-      <chakra.span as={ as }>{ shortenString(hash) }</chakra.span>
+      <chakra.span as={ as }>{ prefix + shortenString(hash) }</chakra.span>
     </Tooltip>
   );
 };

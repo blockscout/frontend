@@ -55,11 +55,11 @@ const TxPageTitle = ({ txQuery }: Props) => {
           <TxEntity
             hash={ txQuery.data?.hash }
             isLoading={ isLoading }
-            truncation="constant"
             prefix={ !isMobile ? 'Txn ' : undefined }
             iconSize="lg"
             noLink
             variant="page-title"
+            w="100%"
           />
           { !tags && isMobile && explorers }
         </PageTitle.MainContent>

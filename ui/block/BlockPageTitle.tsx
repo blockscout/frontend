@@ -41,25 +41,28 @@ const BlockPageTitle = ({ blockQuery, heightOrHash }: Props) => {
       <PageTitle.TopRow>
         <TextAd/>
       </PageTitle.TopRow>
-      <PageTitle.MainRow>
+      <PageTitle.MainRow
+        gridTemplateColumns="minmax(0, min-content) minmax(max-content, 1fr)"
+      >
         <PageTitle.MainContent w={{ base: '100%', lg: '100%' }} backLink={ backLink }>
           <BlockEntity
             hash={ blockQuery.data?.hash }
             number={ blockQuery.data?.height }
             isLoading={ isLoading }
-            truncation="constant"
             prefix={ !isMobile ? prefix : '#' }
             iconSize="lg"
             noLink
             variant="page-title"
           />
+        </PageTitle.MainContent>
+        <PageTitle.SecondaryContent>
           <NetworkExplorers
             type="block"
             pathParam={ heightOrHash }
             isLoading={ isLoading }
             ml="auto"
           />
-        </PageTitle.MainContent>
+        </PageTitle.SecondaryContent>
       </PageTitle.MainRow>
     </PageTitle.Container>
   );

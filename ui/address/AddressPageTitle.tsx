@@ -1,15 +1,13 @@
-import { Flex, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Skeleton } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
 import type { Address } from 'types/api/address';
 
-import iconFlashlight from 'icons/flashlight.svg';
 import { useAppContext } from 'lib/contexts/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import TextAd from 'ui/shared/ad/TextAd';
 import AddressActionButtons from 'ui/shared/AddressActionButtons';
-import Icon from 'ui/shared/chakra/Icon';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import EntityTags from 'ui/shared/EntityTags';
@@ -49,13 +47,14 @@ const AddressPageTitle = ({ addressQuery }: Props) => {
       isLoading={ isLoading }
     />
   );
-  const iconColor = useColorModeValue('gray.500', 'gray.400');
 
   const bottomRow = (() => {
     if (addressQuery.data?.token) {
       return (
         <PageTitle.BottomRow
-          flexWrap="wrap"
+          display="grid"
+          gridTemplateColumns={{ base: 'minmax(0, auto)', lg: 'minmax(0, min-content) minmax(max-content, 1fr)' }}
+          w="100%"
           columnGap={ 6 }
         >
           <Flex
@@ -70,7 +69,7 @@ const AddressPageTitle = ({ addressQuery }: Props) => {
               isLoading={ isLoading }
               noCopy
               jointSymbol
-              maxW="600px"
+              fontFamily="heading"
             />
             { addressQuery.data.token.exchange_rate && (
               <Skeleton isLoaded={ !isLoading } ml={ 1 }>
@@ -86,17 +85,14 @@ const AddressPageTitle = ({ addressQuery }: Props) => {
     if (addressQuery.data?.is_contract && addressQuery.data?.name) {
       return (
         <PageTitle.BottomRow columnGap={ 6 } flexWrap="wrap">
-          <Flex alignItems="center" maxW={{ base: '100%', lg: '600px' }}>
-            <Icon as={ iconFlashlight } boxSize={ 5 } isLoading={ isLoading } color={ iconColor }/>
-            <TruncatedValue
-              fontFamily="heading"
-              fontSize="lg"
-              fontWeight={ 500 }
-              ml={ 2 }
-              value={ `Name: ${ addressQuery.data.name }` }
-              isLoading={ isLoading }
-            />
-          </Flex>
+          <TruncatedValue
+            fontFamily="heading"
+            fontSize="lg"
+            fontWeight={ 500 }
+            value={ addressQuery.data.name }
+            isLoading={ isLoading }
+            maxW={{ base: '100%', lg: '600px' }}
+          />
           { actionButtons }
         </PageTitle.BottomRow>
       );
@@ -122,28 +118,27 @@ const AddressPageTitle = ({ addressQuery }: Props) => {
             iconSize="lg"
             variant="page-title"
             prefix={ !isMobile ? titlePrefix : undefined }
-            truncation="constant"
             noLink
             noName
           />
         </PageTitle.MainContent>
-        <PageTitle.SecondaryContent>
-          <Flex columnGap={ 2 }>
-            <EntityTags
-              data={ addressQuery.data }
-              isLoading={ isLoading }
-              tagsBefore={ [
-                addressQuery.data?.is_contract ? { label: 'contract', display_name: 'Contract' } : { label: 'eoa', display_name: 'EOA' },
-                addressQuery.data?.implementation_address ? { label: 'proxy', display_name: 'Proxy' } : undefined,
-                addressQuery.data?.token ? { label: 'token', display_name: 'Token' } : undefined,
-              ] }
-            />
-          </Flex>
+        <PageTitle.SecondaryContent columnGap={ 3 }>
+          <EntityTags
+            data={ addressQuery.data }
+            isLoading={ isLoading }
+            tagsBefore={ [
+              addressQuery.data?.is_contract ? { label: 'contract', display_name: 'Contract' } : { label: 'eoa', display_name: 'EOA' },
+              addressQuery.data?.implementation_address ? { label: 'proxy', display_name: 'Proxy' } : undefined,
+              addressQuery.data?.token ? { label: 'token', display_name: 'Token' } : undefined,
+            ] }
+            flexShrink={ 0 }
+          />
           <NetworkExplorers
             type="address"
             pathParam={ addressQuery.data?.hash }
             ml="auto"
             isLoading={ isLoading }
+            flexShrink={ 0 }
           />
         </PageTitle.SecondaryContent>
       </PageTitle.MainRow>

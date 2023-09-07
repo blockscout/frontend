@@ -116,13 +116,14 @@ export interface ContentBaseProps extends Pick<EntityBaseProps, 'className' | 'v
   text: string;
 }
 
-const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dynamic', tailLength, variant, prefix }: ContentBaseProps) => {
+const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dynamic', tailLength, variant, prefix = '' }: ContentBaseProps) => {
 
   const children = (() => {
     switch (truncation) {
       case 'constant':
         return (
           <HashStringShorten
+            prefix={ prefix }
             hash={ text }
             as={ asProp }
           />
@@ -130,13 +131,14 @@ const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dyna
       case 'dynamic':
         return (
           <HashStringShortenDynamic
-            hash={ text }
+            hash={ prefix + text }
+            prefixLength={ prefix.length }
             as={ asProp }
             tailLength={ tailLength }
           />
         );
       case 'none':
-        return <chakra.span as={ asProp }>{ text }</chakra.span>;
+        return <chakra.span as={ asProp }>{ (prefix ?? '') + text }</chakra.span>;
     }
   })();
 
@@ -148,7 +150,6 @@ const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dyna
       whiteSpace="nowrap"
       as={ variant === 'page-title' ? 'h1' : 'div' }
     >
-      { prefix && <span>{ prefix }</span> }
       { children }
     </Skeleton>
   );

@@ -115,7 +115,7 @@ const TokenInstancePageTitle = ({ tokenInstanceQuery, hash }: Props) => {
             <TruncatedValue
               value={ `${ tokenInstanceQuery.data?.token.name || 'Unnamed token' } #${ tokenInstanceQuery.data?.id }` }
               isLoading={ isLoading }
-              maxW={{ base: '100%', lg: '500px', xl: '800px' }}
+              maxW="100%"
             />
           </Heading>
         </PageTitle.MainContent>

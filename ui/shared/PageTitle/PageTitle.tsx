@@ -1,4 +1,4 @@
-import { Heading, Flex, Tooltip, Icon, Link, chakra, Skeleton } from '@chakra-ui/react';
+import { Heading, Flex, Tooltip, Icon, Link, chakra, Skeleton, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import eastArrowIcon from 'icons/arrows/east.svg';
@@ -50,20 +50,23 @@ const TopRow = ({ children }: TopRowProps) => {
 
 interface MainRowProps {
   children: React.ReactNode;
+  className?: string;
 }
 
-const MainRow = ({ children }: MainRowProps) => {
+const MainRow = chakra(({ children, className }: MainRowProps) => {
   return (
-    <Flex
-      flexDir={{ base: 'column', lg: 'row' }}
+    <Box
+      className={ className }
+      display="grid"
+      gridTemplateColumns={{ base: 'minmax(0, auto)', lg: 'minmax(0, max-content) minmax(max-content, 1fr)' }}
       columnGap={ 3 }
       rowGap={ 4 }
-      alignItems={{ base: 'flex-start', lg: 'center' }}
+      w="100%"
     >
       { children }
-    </Flex>
+    </Box>
   );
-};
+});
 
 // BACK LINK
 
@@ -131,6 +134,7 @@ const SecondaryContent = chakra(({ children, className }: SecondaryContentProps)
       w={{ base: '100%', lg: 'auto' }}
       flexWrap="nowrap"
       rowGap={{ base: 4, lg: 3 }}
+      _empty={{ display: 'none' }}
     >
       { children }
     </Flex>
@@ -165,7 +169,12 @@ type Props = {
 const PageTitle = ({ backLink, isLoading, children, withTextAds }: Props) => {
   return (
     <Container>
-      <MainRow>
+      <MainRow
+        gridTemplateColumns={{
+          base: 'minmax(0, auto)',
+          lg: withTextAds ? 'auto auto' : '1fr',
+        }}
+      >
         <MainContent alignItems="flex-start" flexShrink={ 0 }>
           { backLink && <BackLink { ...backLink } isLoading={ isLoading }/> }
           <Heading as="h1" size="lg">

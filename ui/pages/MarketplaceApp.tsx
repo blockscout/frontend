@@ -1,4 +1,4 @@
-import { Box, Center, useColorMode } from '@chakra-ui/react';
+import { Box, Center, Flex, Heading, Image, useColorMode, useColorModeValue } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -14,7 +14,7 @@ import useApiFetch from 'lib/hooks/useFetch';
 import * as metadata from 'lib/metadata';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import ContentLoader from 'ui/shared/ContentLoader';
-import PageTitle from 'ui/shared/PageTitle/PageTitle';
+import * as PageTitle from 'ui/shared/PageTitle/PageTitle';
 
 const feature = config.features.marketplace;
 const configUrl = feature.isEnabled ? feature.configUrl : '';
@@ -56,6 +56,8 @@ const MarketplaceApp = () => {
 
   const [ isFrameLoading, setIsFrameLoading ] = useState(isLoading);
   const { colorMode } = useColorMode();
+
+  const logoUrl = useColorModeValue(data?.logo, data?.logoDarkMode || data?.logo);
 
   const handleIframeLoad = useCallback(() => {
     setIsFrameLoading(false);
@@ -107,9 +109,19 @@ const MarketplaceApp = () => {
   return (
     <>
       { !isLoading && (
-        <PageTitle backLink={ backLink }>
-          { data.title }
-        </PageTitle>
+        <PageTitle.Container>
+          <PageTitle.MainRow display="flex">
+            <PageTitle.MainContent alignItems="flex-start" flexShrink={ 0 }>
+              { backLink && <PageTitle.BackLink { ...backLink } isLoading={ isLoading }/> }
+              <Flex alignItems="flex-start" columnGap={ 2 }>
+                <Image src={ logoUrl } alt={ `${ data.title } app logo` } boxSize="30px" my="5px"/>
+                <Heading as="h1" size="lg">
+                  { data.title }
+                </Heading>
+              </Flex>
+            </PageTitle.MainContent>
+          </PageTitle.MainRow>
+        </PageTitle.Container>
       ) }
       <Center
         h="100vh"

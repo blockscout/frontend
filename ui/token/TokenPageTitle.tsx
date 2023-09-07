@@ -68,11 +68,11 @@ const TokenPageTitle = ({ tokenQuery, contractQuery, verifiedInfoQuery }: Props)
             noCopy
             jointSymbol
             variant="page-title"
-            maxW={{ base: '100%', lg: '500px', xl: '800px' }}
           />
         </PageTitle.MainContent>
         <PageTitle.SecondaryContent
           flexWrap={ verifiedInfoQuery.data && (verifiedInfoQuery.data.projectWebsite || hasProjectInfo(verifiedInfoQuery.data)) ? 'wrap' : 'nowrap' }
+          columnGap={ 3 }
         >
           <Flex columnGap={ 2 }>
             { verifiedInfoQuery.data?.tokenAddress && (

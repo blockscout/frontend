@@ -25,10 +25,11 @@ interface Props {
   fontWeight?: string | number;
   isTooltipDisabled?: boolean;
   tailLength?: number;
+  prefixLength?: number;
   as?: As;
 }
 
-const HashStringShortenDynamic = ({ hash, fontWeight = '400', isTooltipDisabled, tailLength = TAIL_LENGTH, as = 'span' }: Props) => {
+const HashStringShortenDynamic = ({ hash, fontWeight = '400', isTooltipDisabled, tailLength = TAIL_LENGTH, as = 'span', prefixLength = 0 }: Props) => {
   const elementRef = useRef<HTMLSpanElement>(null);
   const [ displayedString, setDisplayedString ] = React.useState(hash);
 
@@ -52,7 +53,7 @@ const HashStringShortenDynamic = ({ hash, fontWeight = '400', isTooltipDisabled,
 
     if (getWidth(shadowEl) > parentWidth) {
       const tail = hash.slice(-tailLength);
-      let leftI = HEAD_MIN_LENGTH;
+      let leftI = HEAD_MIN_LENGTH + prefixLength;
       let rightI = hash.length - tailLength;
 
       while (rightI - leftI > 1) {
@@ -71,7 +72,7 @@ const HashStringShortenDynamic = ({ hash, fontWeight = '400', isTooltipDisabled,
     }
 
     parent.removeChild(shadowEl);
-  }, [ hash, tailLength ]);
+  }, [ hash, prefixLength, tailLength ]);
 
   // we want to do recalculation when isFontFaceLoaded flag is changed
   // but we don't want to create more resize event listeners
@@ -95,7 +96,7 @@ const HashStringShortenDynamic = ({ hash, fontWeight = '400', isTooltipDisabled,
 
   if (isTruncated) {
     return (
-      <Tooltip label={ hash } isDisabled={ isTooltipDisabled } maxW={{ base: '100vw', lg: '400px' }}>{ content }</Tooltip>
+      <Tooltip label={ hash.slice(prefixLength) } isDisabled={ isTooltipDisabled } maxW={{ base: '100vw', lg: '400px' }}>{ content }</Tooltip>
     );
   }
 
