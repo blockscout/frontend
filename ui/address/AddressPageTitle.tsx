@@ -17,9 +17,10 @@ import TruncatedValue from 'ui/shared/TruncatedValue';
 
 interface Props {
   addressQuery: UseQueryResult<Address>;
+  hash: string;
 }
 
-const AddressPageTitle = ({ addressQuery }: Props) => {
+const AddressPageTitle = ({ addressQuery, hash }: Props) => {
   const appProps = useAppContext();
   const isMobile = useIsMobile();
 
@@ -111,9 +112,9 @@ const AddressPageTitle = ({ addressQuery }: Props) => {
         <TextAd/>
       </PageTitle.TopRow>
       <PageTitle.MainRow>
-        <PageTitle.MainContent backLink={ backLink }>
+        <PageTitle.MainContent backLink={ backLink } isLoading={ isLoading }>
           <AddressEntity
-            address={ addressQuery.data }
+            address={ addressQuery.isError ? { hash } : addressQuery.data }
             isLoading={ isLoading }
             iconSize="lg"
             variant="page-title"
@@ -135,7 +136,7 @@ const AddressPageTitle = ({ addressQuery }: Props) => {
           />
           <NetworkExplorers
             type="address"
-            pathParam={ addressQuery.data?.hash }
+            pathParam={ hash }
             ml="auto"
             isLoading={ isLoading }
             flexShrink={ 0 }

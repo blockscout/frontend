@@ -24,9 +24,10 @@ interface Props {
   tokenQuery: UseQueryResult<TokenInfo>;
   contractQuery: UseQueryResult<Address>;
   verifiedInfoQuery: UseQueryResult<TTokenVerifiedInfo>;
+  hash: string;
 }
 
-const TokenPageTitle = ({ tokenQuery, contractQuery, verifiedInfoQuery }: Props) => {
+const TokenPageTitle = ({ tokenQuery, contractQuery, verifiedInfoQuery, hash }: Props) => {
   const appProps = useAppContext();
 
   const isLoading = tokenQuery.isPlaceholderData || contractQuery.isPlaceholderData || verifiedInfoQuery.isLoading;
@@ -45,7 +46,7 @@ const TokenPageTitle = ({ tokenQuery, contractQuery, verifiedInfoQuery }: Props)
   }, [ appProps.referrer ]);
 
   const address = {
-    hash: tokenQuery.data?.address || '',
+    hash: hash,
     is_contract: true,
     is_verified: contractQuery.data?.is_verified,
     implementation_name: null,
@@ -59,9 +60,9 @@ const TokenPageTitle = ({ tokenQuery, contractQuery, verifiedInfoQuery }: Props)
         <TextAd/>
       </PageTitle.TopRow>
       <PageTitle.MainRow>
-        <PageTitle.MainContent backLink={ backLink }>
+        <PageTitle.MainContent backLink={ backLink } isLoading={ isLoading }>
           <TokenEntity
-            token={ tokenQuery.data }
+            token={ tokenQuery.isError ? { address: hash } : tokenQuery.data }
             isLoading={ isLoading }
             iconSize="lg"
             noLink

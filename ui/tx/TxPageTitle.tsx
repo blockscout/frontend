@@ -51,7 +51,7 @@ const TxPageTitle = ({ txQuery }: Props) => {
         <TextAd/>
       </PageTitle.TopRow>
       <PageTitle.MainRow>
-        <PageTitle.MainContent backLink={ backLink }>
+        <PageTitle.MainContent backLink={ backLink } isLoading={ isLoading }>
           <TxEntity
             hash={ txQuery.data?.hash }
             isLoading={ isLoading }

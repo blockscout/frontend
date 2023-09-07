@@ -95,7 +95,7 @@ const ContractVerification = () => {
     <>
       <PageTitle.Container>
         <PageTitle.MainRow>
-          <PageTitle.MainContent backLink={ backLink } alignItems="flex-start">
+          <PageTitle.MainContent backLink={ backLink } alignItems="flex-start" isLoading={ configQuery.isLoading || contractQuery.isLoading }>
             <Heading as="h1" size="lg">
             New smart contract verification
             </Heading>

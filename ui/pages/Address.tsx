@@ -138,6 +138,7 @@ const AddressPageContent = () => {
     <>
       <AddressPageTitle
         addressQuery={ addressQuery }
+        hash={ hash }
       />
 
       <AddressDetails addressQuery={ addressQuery } scrollRef={ tabsScrollRef }/>

@@ -44,7 +44,7 @@ const BlockPageTitle = ({ blockQuery, heightOrHash }: Props) => {
       <PageTitle.MainRow
         gridTemplateColumns="minmax(0, min-content) minmax(max-content, 1fr)"
       >
-        <PageTitle.MainContent w={{ base: '100%', lg: '100%' }} backLink={ backLink }>
+        <PageTitle.MainContent w={{ base: '100%', lg: '100%' }} backLink={ backLink } isLoading={ isLoading }>
           <BlockEntity
             hash={ blockQuery.data?.hash }
             number={ blockQuery.data?.height }

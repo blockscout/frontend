@@ -109,7 +109,7 @@ const TokenInstancePageTitle = ({ tokenInstanceQuery, hash }: Props) => {
         <TextAd/>
       </PageTitle.TopRow>
       <PageTitle.MainRow>
-        <PageTitle.MainContent backLink={ backLink }>
+        <PageTitle.MainContent backLink={ backLink } isLoading={ isLoading }>
           { nftShieldIcon }
           <Heading as="h1" size="lg" minW={ 0 } h="40px">
             <TruncatedValue
