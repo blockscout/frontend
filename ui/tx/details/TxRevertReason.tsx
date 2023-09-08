@@ -1,9 +1,10 @@
-import { Grid, GridItem, useColorModeValue } from '@chakra-ui/react';
+import { Grid, GridItem, Text, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TransactionRevertReason } from 'types/api/transaction';
 
 import hexToUtf8 from 'lib/hexToUtf8';
+import { HEX_REGEXP } from 'lib/regexp';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 
 type Props = TransactionRevertReason;
@@ -12,7 +13,12 @@ const TxRevertReason = (props: Props) => {
   const bgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
 
   if ('raw' in props) {
+    if (!HEX_REGEXP.test(props.raw)) {
+      return <Text>{ props.raw }</Text>;
+    }
+
     const decoded = hexToUtf8(props.raw);
+
     return (
       <Grid
         bgColor={ bgColor }
