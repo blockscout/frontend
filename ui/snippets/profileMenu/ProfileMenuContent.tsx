@@ -22,7 +22,7 @@ const ProfileMenuContent = ({ data }: Props) => {
   const handleSingOutClick = React.useCallback(() => {
     mixpanel.logEvent(
       mixpanel.EventTypes.ACCOUNT_ACCESS,
-      { Action: 'logged_out' },
+      { Action: 'Logged out' },
       { send_immediately: true },
     );
   }, []);

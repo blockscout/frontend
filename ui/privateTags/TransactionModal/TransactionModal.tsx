@@ -2,6 +2,8 @@ import React, { useCallback, useState } from 'react';
 
 import type { TransactionTag } from 'types/api/account';
 
+import { PAGE_TYPE_DICT } from 'lib/mixpanel/getPageType';
+import * as mixpanel from 'lib/mixpanel/index';
 import FormModal from 'ui/shared/FormModal';
 
 import TransactionForm from './TransactionForm';
@@ -18,9 +20,25 @@ const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
 
   const [ isAlertVisible, setAlertVisible ] = useState(false);
 
+  React.useEffect(() => {
+    isOpen && !data?.id && mixpanel.logEvent(
+      mixpanel.EventTypes.PRIVATE_TAG,
+      { Action: 'Form opened', 'Page type': PAGE_TYPE_DICT['/account/tag-address'], 'Tag type': 'Tx' },
+    );
+  }, [ data?.id, isOpen ]);
+
+  const handleSuccess = React.useCallback(async() => {
+    if (!data?.id) {
+      mixpanel.logEvent(
+        mixpanel.EventTypes.PRIVATE_TAG,
+        { Action: 'Submit', 'Page type': PAGE_TYPE_DICT['/account/tag-address'], 'Tag type': 'Tx' },
+      );
+    }
+  }, [ data?.id ]);
+
   const renderForm = useCallback(() => {
-    return <TransactionForm data={ data } onClose={ onClose } setAlertVisible={ setAlertVisible }/>;
-  }, [ data, onClose ]);
+    return <TransactionForm data={ data } onClose={ onClose } onSuccess={ handleSuccess } setAlertVisible={ setAlertVisible }/>;
+  }, [ data, handleSuccess, onClose ]);
   return (
     <FormModal<TransactionTag>
       isOpen={ isOpen }

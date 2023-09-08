@@ -25,7 +25,7 @@ const UnverifiedEmail = ({ email }: Props) => {
 
     mixpanel.logEvent(
       mixpanel.EventTypes.ACCOUNT_ACCESS,
-      { Action: 'verification_email_resent' },
+      { Action: 'Verification email resent' },
     );
 
     try {

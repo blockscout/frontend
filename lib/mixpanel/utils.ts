@@ -5,6 +5,9 @@ export enum EventTypes {
   SEARCH_QUERY = 'Search query',
   ADD_TO_WALLET = 'Add to wallet',
   ACCOUNT_ACCESS = 'Account access',
+  PRIVATE_TAG = 'Private tag',
+  VERIFY_ADDRESS = 'Verify address',
+  VERIFY_TOKEN = 'Verify token',
 }
 
 /* eslint-disable @typescript-eslint/indent */
@@ -32,7 +35,25 @@ Type extends EventTypes.ADD_TO_WALLET ? (
   }
 ) :
 Type extends EventTypes.ACCOUNT_ACCESS ? {
-  'Action': 'auth0_init' | 'verification_email_resent' | 'logged_out';
+  'Action': 'Auth0 init' | 'Verification email resent' | 'Logged out';
+} :
+Type extends EventTypes.PRIVATE_TAG ? {
+  'Action': 'Form opened' | 'Submit';
+  'Page type': string;
+  'Tag type': 'Address' | 'Tx';
+} :
+Type extends EventTypes.VERIFY_ADDRESS ? (
+  {
+    'Action': 'Form opened' | 'Address entered';
+    'Page type': string;
+  } | {
+    'Action': 'Sign ownership';
+    'Page type': string;
+    'Sign method': 'wallet' | 'manual';
+  }
+) :
+Type extends EventTypes.VERIFY_TOKEN ? {
+  'Action': 'Form opened' | 'Submit';
 } :
 undefined;
 /* eslint-enable @typescript-eslint/indent */

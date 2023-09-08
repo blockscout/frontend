@@ -22,7 +22,7 @@ const ProfileMenuDesktop = () => {
   const handleSignInClick = React.useCallback(() => {
     mixpanel.logEvent(
       mixpanel.EventTypes.ACCOUNT_ACCESS,
-      { Action: 'auth0_init' },
+      { Action: 'Auth0 init' },
       { send_immediately: true },
     );
   }, []);

@@ -26,13 +26,15 @@ import AddressVerificationFieldSignature from '../fields/AddressVerificationFiel
 
 type Fields = RootFields & AddressVerificationFormSecondStepFields;
 
+type SignMethod = 'wallet' | 'manual';
+
 interface Props extends AddressVerificationFormFirstStepFields, AddressCheckStatusSuccess{
-  onContinue: (newItem: VerifiedAddress) => void;
+  onContinue: (newItem: VerifiedAddress, signMethod: SignMethod) => void;
   noWeb3Provider?: boolean;
 }
 
 const AddressVerificationStepSignature = ({ address, signingMessage, contractCreator, contractOwner, onContinue, noWeb3Provider }: Props) => {
-  const [ signMethod, setSignMethod ] = React.useState<'wallet' | 'manually'>(noWeb3Provider ? 'manually' : 'wallet');
+  const [ signMethod, setSignMethod ] = React.useState<SignMethod>(noWeb3Provider ? 'manual' : 'wallet');
 
   const { open: openWeb3Modal } = useWeb3Modal();
   const { isConnected } = useAccount();
@@ -70,11 +72,11 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
         return setError('root', { type, message: response.status === 'INVALID_SIGNER_ERROR' ? response.invalidSigner.signer : undefined });
       }
 
-      onContinue(response.result.verifiedAddress);
+      onContinue(response.result.verifiedAddress, signMethod);
     } catch (error) {
       setError('root', { type: 'UNKNOWN_STATUS' });
     }
-  }, [ address, apiFetch, onContinue, setError ]);
+  }, [ address, apiFetch, onContinue, setError, signMethod ]);
 
   const onSubmit = handleSubmit(onFormSubmit);
 
@@ -115,7 +117,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
   }, [ clearErrors, onSubmit ]);
 
   const button = (() => {
-    if (signMethod === 'manually') {
+    if (signMethod === 'manual') {
       return (
         <Button
           size="lg"
@@ -220,7 +222,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
             <Radio value="manually">Sign manually</Radio>
           </RadioGroup>
         ) }
-        { signMethod === 'manually' && <AddressVerificationFieldSignature formState={ formState } control={ control }/> }
+        { signMethod === 'manual' && <AddressVerificationFieldSignature formState={ formState } control={ control }/> }
       </Flex>
       <Flex alignItems={{ base: 'flex-start', lg: 'center' }} mt={ 8 } columnGap={ 5 } rowGap={ 2 } flexDir={{ base: 'column', lg: 'row' }}>
         { button }

@@ -12,6 +12,7 @@ import useApiFetch from 'lib/api/useApiFetch';
 import useApiQuery from 'lib/api/useApiQuery';
 import useToast from 'lib/hooks/useToast';
 import useUpdateEffect from 'lib/hooks/useUpdateEffect';
+import * as mixpanel from 'lib/mixpanel/index';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
@@ -44,6 +45,7 @@ interface Props {
 const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => {
 
   const containerRef = React.useRef<HTMLFormElement>(null);
+  const openEventSent = React.useRef<boolean>(false);
 
   const apiFetch = useApiFetch();
   const toast = useToast();
@@ -57,6 +59,13 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
     defaultValues: getFormDefaultValues(address, tokenName, application),
   });
   const { handleSubmit, formState, control, trigger } = formApi;
+
+  React.useEffect(() => {
+    if (!application?.id && !openEventSent.current) {
+      mixpanel.logEvent(mixpanel.EventTypes.VERIFY_TOKEN, { Action: 'Form opened' });
+      openEventSent.current = true;
+    }
+  }, [ application?.id ]);
 
   const onFormSubmit: SubmitHandler<Fields> = React.useCallback(async(data) => {
     try {
@@ -73,6 +82,11 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
 
       if ('id' in result) {
         onSubmit(result);
+
+        if (!application?.id) {
+          mixpanel.logEvent(mixpanel.EventTypes.VERIFY_TOKEN, { Action: 'Submit' });
+        }
+
       } else {
         throw result;
       }

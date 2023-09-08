@@ -8,6 +8,7 @@ import config from 'configs/app';
 import iconEdit from 'icons/edit.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import useHasAccount from 'lib/hooks/useHasAccount';
+import { PAGE_TYPE_DICT } from 'lib/mixpanel/getPageType';
 import AddressVerificationModal from 'ui/addressVerification/AddressVerificationModal';
 
 interface Props {
@@ -93,6 +94,7 @@ const TokenInfoMenuItem = ({ className, hash, onBeforeClick }: Props) => {
       { content }
       <AddressVerificationModal
         defaultAddress={ hash }
+        pageType={ PAGE_TYPE_DICT['/token/[hash]'] }
         isOpen={ modal.isOpen }
         onClose={ modal.onClose }
         onSubmit={ handleVerifiedAddressSubmit }
