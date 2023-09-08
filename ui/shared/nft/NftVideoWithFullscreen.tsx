@@ -6,6 +6,7 @@ import React from 'react';
 
 import NftMediaFullscreenModal from './NftMediaFullscreenModal';
 import NftVideo from './NftVideo';
+import { videoPlayProps } from './utils';
 
 interface Props {
   src: string;
@@ -21,12 +22,8 @@ const NftVideoWithFullscreen = ({ src, onLoad, onError }: Props) => {
       <NftVideo src={ src } onLoad={ onLoad } onError={ onError } onClick={ onOpen }/>
       <NftMediaFullscreenModal isOpen={ isOpen } onClose={ onClose }>
         <chakra.video
+          { ...videoPlayProps }
           src={ src }
-          autoPlay
-          disablePictureInPicture
-          loop
-          muted
-          playsInline
           onCanPlayThrough={ onLoad }
           onError={ onError }
           maxH="90vh"

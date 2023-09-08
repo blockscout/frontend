@@ -17,7 +17,7 @@ const NftMediaFullscreenModal = ({ isOpen, onClose, children }: Props) => {
     <Modal isOpen={ isOpen } onClose={ onClose } motionPreset="none">
       <ModalOverlay/>
       <ModalContent w="unset" maxW="100vw" p={ 0 }>
-        <ModalCloseButton position="fixed" color="whiteAlpha.800"/>
+        <ModalCloseButton position="fixed" top={{ base: 2.5, lg: 8 }} right={{ base: 2.5, lg: 8 }} color="whiteAlpha.800"/>
         { children }
       </ModalContent>
     </Modal>

@@ -1,11 +1,12 @@
-import { Icon, useColorModeValue } from '@chakra-ui/react';
+import { Icon, useColorModeValue, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import nftIcon from 'icons/nft_shield.svg';
 
-const NftFallback = () => {
+const NftFallback = ({ className }: {className?: string}) => {
   return (
     <Icon
+      className={ className }
       as={ nftIcon }
       p="50px"
       color={ useColorModeValue('blackAlpha.500', 'whiteAlpha.500') }
@@ -14,4 +15,4 @@ const NftFallback = () => {
   );
 };
 
-export default NftFallback;
+export default chakra(NftFallback);

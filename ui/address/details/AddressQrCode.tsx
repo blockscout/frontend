@@ -21,10 +21,11 @@ import QRCode from 'qrcode';
 import React from 'react';
 
 import type { Address as AddressType } from 'types/api/address';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+
 import qrCodeIcon from 'icons/qr_code.svg';
 import getPageType from 'lib/mixpanel/getPageType';
 import * as mixpanel from 'lib/mixpanel/index';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 const SVG_OPTIONS = {
   margin: 0,
@@ -101,7 +102,6 @@ const AddressQrCode = ({ address, className, isLoading }: Props) => {
               <ModalBody mb={ 0 }>
                 <AddressEntity
                   mb={ 3 }
-                  fontSize="md"
                   fontWeight={ 500 }
                   color="text"
                   address={ address }

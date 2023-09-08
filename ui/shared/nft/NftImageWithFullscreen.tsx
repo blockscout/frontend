@@ -20,7 +20,7 @@ const NftImageWithFullscreen = ({ src, onLoad, onError }: Props) => {
     <>
       <NftImage src={ src } onLoad={ onLoad } onError={ onError } onClick={ onOpen }/>
       <NftMediaFullscreenModal isOpen={ isOpen } onClose={ onClose }>
-        <Image src={ src } alt="Token instance image" maxH="90vh" w="100%" maxW="90vw"/>
+        <Image src={ src } alt="Token instance image" maxH="90vh" maxW="90vw"/>
       </NftMediaFullscreenModal>
     </>
   );
