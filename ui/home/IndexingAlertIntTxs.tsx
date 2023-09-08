@@ -89,7 +89,7 @@ const IndexingAlertIntTxs = () => {
       <PopoverTrigger>
         { trigger }
       </PopoverTrigger>
-      <PopoverContent maxH="450px" overflowY="scroll" w="240px">
+      <PopoverContent maxH="450px" overflowY="hidden" w="240px">
         <PopoverBody p={ 4 } bgColor={ bgColor } boxShadow="2xl">
           { hint }
         </PopoverBody>
