@@ -8,6 +8,7 @@ import starOutlineIcon from 'icons/star_outline.svg';
 import { getResourceKey } from 'lib/api/useApiQuery';
 import useIsAccountActionAllowed from 'lib/hooks/useIsAccountActionAllowed';
 import usePreventFocusAfterModalClosing from 'lib/hooks/usePreventFocusAfterModalClosing';
+import * as mixpanel from 'lib/mixpanel/index';
 import WatchlistAddModal from 'ui/watchlist/AddressModal/AddressModal';
 import DeleteAddressModal from 'ui/watchlist/DeleteAddressModal';
 
@@ -29,6 +30,7 @@ const AddressFavoriteButton = ({ className, hash, watchListId }: Props) => {
       return;
     }
     watchListId ? deleteModalProps.onOpen() : addModalProps.onOpen();
+    !watchListId && mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Add to watchlist' });
   }, [ isAccountActionAllowed, watchListId, deleteModalProps, addModalProps ]);
 
   const handleAddOrDeleteSuccess = React.useCallback(async() => {

@@ -11,6 +11,8 @@ export enum EventTypes {
   WALLET_CONNECT = 'Wallet connect',
   CONTRACT_INTERACTION = 'Contract interaction',
   CONTRACT_VERIFICATION = 'Contract verification',
+  QR_CODE = 'QR code',
+  PAGE_WIDGET = 'Page widget',
 }
 
 /* eslint-disable @typescript-eslint/indent */
@@ -68,6 +70,12 @@ Type extends EventTypes.CONTRACT_INTERACTION ? {
 Type extends EventTypes.CONTRACT_VERIFICATION ? {
   'Method': string;
   'Status': 'Method selected' | 'Finished';
+} :
+Type extends EventTypes.QR_CODE ? {
+  'Page type': string;
+} :
+Type extends EventTypes.PAGE_WIDGET ? {
+  'Type': 'Tokens dropdown' | 'Tokens show all (icon)' | 'Add to watchlist';
 } :
 undefined;
 /* eslint-enable @typescript-eslint/indent */
