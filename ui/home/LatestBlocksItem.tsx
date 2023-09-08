@@ -64,7 +64,7 @@ const LatestBlocksItem = ({ block, h, isLoading }: Props) => {
         { !config.features.rollup.isEnabled && !config.UI.views.block.hiddenFields?.nonce && (
           <>
             <Skeleton isLoaded={ !isLoading }>Reward</Skeleton>
-            <Skeleton isLoaded={ !isLoading } color="text_secondary"><span>{ totalReward.toFixed() }</span></Skeleton>
+            <Skeleton isLoaded={ !isLoading } color="text_secondary"><span>{ totalReward.dp(10).toFixed() }</span></Skeleton>
             <Skeleton isLoaded={ !isLoading } textTransform="capitalize">{ getNetworkValidatorTitle() }</Skeleton>
             <AddressEntity
               address={ block.miner }

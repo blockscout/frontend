@@ -38,6 +38,8 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
             currency={ config.chain.currency.symbol }
             exchangeRate={ tx.exchange_rate }
             accuracyUsd={ 2 }
+            flexWrap="wrap"
+            rowGap={ 0 }
           />
         </Flex>
       </Box>
