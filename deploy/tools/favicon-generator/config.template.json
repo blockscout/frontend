@@ -1,0 +1,41 @@
+{
+	"favicon_generation": {
+		"api_key": "<api_key>",
+		"master_picture": {
+			"type": "url",
+			"url": "<master_url>"
+		},
+		"files_location": {
+			"type": "path",
+			"path": "/favicons"
+		},
+		"favicon_design": {
+			"desktop_browser": {},
+			"ios": {
+				"picture_aspect": "no_change",
+				"assets": {
+					"ios6_and_prior_icons": false,
+					"ios7_and_later_icons": true,
+					"precomposed_icons": false,
+					"declare_only_default_icon": true
+				}
+			},
+			"safari_pinned_tab": {
+				"picture_aspect": "black_and_white",
+				"threshold": 60
+			}
+		},
+		"settings": {
+			"compression": "3",
+			"scaling_algorithm": "Mitchell",
+			"error_on_image_too_small": true,
+			"readme_file": false,
+			"html_code_file": false,
+			"use_path_as_is": false
+		},
+		"versioning": {
+			"param_name": "ver",
+			"param_value": "15Zd8"
+		}
+	}
+}

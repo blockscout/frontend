@@ -30,6 +30,7 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
+          { /* FONTS */ }
           <link
             href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
             rel="stylesheet"
@@ -38,10 +39,15 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
             rel="stylesheet"
           />
-          <link rel="icon" sizes="32x32" type="image/png" href="/static/favicon-32x32.png"/>
-          <link rel="icon" sizes="16x16" type="image/png"href="/static/favicon-16x16.png"/>
-          <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png"/>
-          <link rel="mask-icon" href="/static/safari-pinned-tab.svg" color="#5bbad5"/>
+
+          { /* FAVICON */ }
+          <link rel="icon" href="/favicon/favicon.ico" sizes="48x48"/>
+          <link rel="icon" sizes="32x32" type="image/png" href="/favicon/favicon-32x32.png"/>
+          <link rel="icon" sizes="16x16" type="image/png"href="/favicon/favicon-16x16.png"/>
+          <link rel="apple-touch-icon" href="/favicon/apple-touch-icon-180x180.png"/>
+          <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg"/>
+
+          { /* OG TAGS */ }
           <meta property="og:title" content="Blockscout: A block explorer designed for a decentralized world."/>
           <meta
             property="og:description"

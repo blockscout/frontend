@@ -81,7 +81,7 @@ RUN yarn build
 # *****************************
 # Production image, copy all the files and run next
 FROM node:18-alpine AS runner
-RUN apk add --no-cache --upgrade bash
+RUN apk add --no-cache --upgrade bash curl jq unzip
 
 ### APP
 WORKDIR /app
@@ -98,9 +98,18 @@ COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /envs-validator/index.js ./envs-validator.js
 COPY --from=builder /app/deploy/tools/feature-reporter/index.js ./feature-reporter.js
 
-# Copy scripts and ENVs file
+# Copy scripts
+## Entripoint
 COPY --chmod=+x ./deploy/scripts/entrypoint.sh .
+## ENV replacer
 COPY --chmod=+x ./deploy/scripts/replace_envs.sh .
+## Favicon generator
+COPY --chmod=+x ./deploy/scripts/favicon_generator.sh .
+COPY ./deploy/tools/favicon-generator ./deploy/tools/favicon-generator
+RUN ["chmod", "-R", "777", "./deploy/tools/favicon-generator"]
+RUN ["chmod", "-R", "777", "./public"]
+
+# Copy ENVs files
 COPY --from=builder /app/.env.production .
 COPY --from=builder /app/.env .
 
