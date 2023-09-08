@@ -8,6 +8,7 @@ import type { Block } from 'types/api/block';
 import config from 'configs/app';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import BlocksTableItem from 'ui/blocks/BlocksTableItem';
+import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import { default as Thead } from 'ui/shared/TheadSticky';
 
 interface Props {
@@ -15,9 +16,23 @@ interface Props {
   isLoading?: boolean;
   top: number;
   page: number;
+  socketInfoNum?: number;
+  socketInfoAlert?: string;
+  showSocketInfo?: boolean;
 }
 
-const BlocksTable = ({ data, isLoading, top, page }: Props) => {
+const VALIDATOR_COL_WEIGHT = 23;
+const GAS_COL_WEIGHT = 33;
+const REWARD_COL_WEIGHT = 22;
+const FEES_COL_WEIGHT = 22;
+
+const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum, socketInfoAlert }: Props) => {
+
+  const widthBase =
+    VALIDATOR_COL_WEIGHT +
+    GAS_COL_WEIGHT +
+    (!config.features.rollup.isEnabled && !config.UI.views.block.hiddenFields?.total_reward ? REWARD_COL_WEIGHT : 0) +
+    (!config.features.rollup.isEnabled && !config.UI.views.block.hiddenFields?.burnt_fees ? FEES_COL_WEIGHT : 0);
 
   return (
     <Table variant="simple" minWidth="1040px" size="md" fontWeight={ 500 }>
@@ -25,16 +40,25 @@ const BlocksTable = ({ data, isLoading, top, page }: Props) => {
         <Tr>
           <Th width="125px">Block</Th>
           <Th width="120px">Size, bytes</Th>
-          <Th width={ config.features.rollup.isEnabled ? '37%' : '23%' } minW="160px">{ capitalize(getNetworkValidatorTitle()) }</Th>
+          <Th width={ `${ VALIDATOR_COL_WEIGHT / widthBase * 100 }%` } minW="160px">{ capitalize(getNetworkValidatorTitle()) }</Th>
           <Th width="64px" isNumeric>Txn</Th>
-          <Th width={ config.features.rollup.isEnabled ? '63%' : '33%' }>Gas used</Th>
+          <Th width={ `${ GAS_COL_WEIGHT / widthBase * 100 }%` }>Gas used</Th>
           { !config.features.rollup.isEnabled && !config.UI.views.block.hiddenFields?.total_reward &&
-              <Th width="22%">Reward { config.chain.currency.symbol }</Th> }
+              <Th width={ `${ REWARD_COL_WEIGHT / widthBase * 100 }%` }>Reward { config.chain.currency.symbol }</Th> }
           { !config.features.rollup.isEnabled && !config.UI.views.block.hiddenFields?.burnt_fees &&
-              <Th width="22%">Burnt fees { config.chain.currency.symbol }</Th> }
+              <Th width={ `${ FEES_COL_WEIGHT / widthBase * 100 }%` }>Burnt fees { config.chain.currency.symbol }</Th> }
         </Tr>
       </Thead>
       <Tbody>
+        { showSocketInfo && (
+          <SocketNewItemsNotice.Desktop
+            url={ window.location.href }
+            alert={ socketInfoAlert }
+            num={ socketInfoNum }
+            type="block"
+            isLoading={ isLoading }
+          />
+        ) }
         <AnimatePresence initial={ false }>
           { data.map((item, index) => (
             <BlocksTableItem
