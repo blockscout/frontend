@@ -11,12 +11,19 @@ const apiEndpoint = [
   apiHost,
   apiPort && ':' + apiPort,
 ].filter(Boolean).join('');
+
 const socketSchema = getEnvValue(process.env.NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL) || 'wss';
+const socketEndpoint = [
+  socketSchema,
+  '://',
+  apiHost,
+  apiPort && ':' + apiPort,
+].filter(Boolean).join('');
 
 const api = Object.freeze({
   host: apiHost,
   endpoint: apiEndpoint,
-  socket: `${ socketSchema }://${ apiHost }`,
+  socket: socketEndpoint,
   basePath: stripTrailingSlash(getEnvValue(process.env.NEXT_PUBLIC_API_BASE_PATH) || ''),
 });
 
