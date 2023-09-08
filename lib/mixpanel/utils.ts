@@ -8,6 +8,9 @@ export enum EventTypes {
   PRIVATE_TAG = 'Private tag',
   VERIFY_ADDRESS = 'Verify address',
   VERIFY_TOKEN = 'Verify token',
+  WALLET_CONNECT = 'Wallet connect',
+  CONTRACT_INTERACTION = 'Contract interaction',
+  CONTRACT_VERIFICATION = 'Contract verification',
 }
 
 /* eslint-disable @typescript-eslint/indent */
@@ -54,6 +57,17 @@ Type extends EventTypes.VERIFY_ADDRESS ? (
 ) :
 Type extends EventTypes.VERIFY_TOKEN ? {
   'Action': 'Form opened' | 'Submit';
+} :
+Type extends EventTypes.WALLET_CONNECT ? {
+  'Status': 'Started' | 'Connected';
+} :
+Type extends EventTypes.CONTRACT_INTERACTION ? {
+  'Method type': 'Read' | 'Write';
+  'Method name': string;
+} :
+Type extends EventTypes.CONTRACT_VERIFICATION ? {
+  'Method': string;
+  'Status': 'Method selected' | 'Finished';
 } :
 undefined;
 /* eslint-enable @typescript-eslint/indent */

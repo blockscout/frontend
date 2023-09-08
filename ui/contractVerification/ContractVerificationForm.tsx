@@ -12,6 +12,7 @@ import { route } from 'nextjs-routes';
 import useApiFetch from 'lib/api/useApiFetch';
 import delay from 'lib/delay';
 import useToast from 'lib/hooks/useToast';
+import * as mixpanel from 'lib/mixpanel/index';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 
@@ -23,7 +24,7 @@ import ContractVerificationStandardInput from './methods/ContractVerificationSta
 import ContractVerificationVyperContract from './methods/ContractVerificationVyperContract';
 import ContractVerificationVyperMultiPartFile from './methods/ContractVerificationVyperMultiPartFile';
 import ContractVerificationVyperStandardInput from './methods/ContractVerificationVyperStandardInput';
-import { prepareRequestBody, formatSocketErrors, getDefaultValues } from './utils';
+import { prepareRequestBody, formatSocketErrors, getDefaultValues, METHOD_LABELS } from './utils';
 
 interface Props {
   method?: SmartContractVerificationMethod;
@@ -38,6 +39,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
   });
   const { control, handleSubmit, watch, formState, setError, reset } = formApi;
   const submitPromiseResolver = React.useRef<(value: unknown) => void>();
+  const methodNameRef = React.useRef<string>();
 
   const apiFetch = useApiFetch();
   const toast = useToast();
@@ -79,6 +81,12 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
       variant: 'subtle',
       isClosable: true,
     });
+
+    mixpanel.logEvent(
+      mixpanel.EventTypes.CONTRACT_VERIFICATION,
+      { Status: 'Finished', Method: methodNameRef.current || '' },
+      { send_immediately: true },
+    );
 
     window.location.assign(route({ pathname: '/address/[hash]', query: { hash, tab: 'contract' } }));
   }, [ hash, setError, toast ]);
@@ -135,6 +143,10 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
   useUpdateEffect(() => {
     if (methodValue) {
       reset(getDefaultValues(methodValue, config));
+
+      const methodName = METHOD_LABELS[methodValue];
+      mixpanel.logEvent(mixpanel.EventTypes.CONTRACT_VERIFICATION, { Status: 'Method selected', Method: methodName });
+      methodNameRef.current = methodName;
     }
   // !!! should run only when method is changed
   }, [ methodValue ]);
