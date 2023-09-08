@@ -6,7 +6,7 @@ import * as tokenInstance from 'mocks/tokens/tokenInstance';
 export const erc20a: AddressTokenBalance = {
   token: tokens.tokenInfoERC20a,
   token_id: null,
-  value: '1169320000000000000000000',
+  value: '1169321234567891234567891',
   token_instance: null,
 };
 
