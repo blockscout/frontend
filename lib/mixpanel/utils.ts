@@ -4,6 +4,7 @@ export enum EventTypes {
   PAGE_VIEW = 'Page view',
   SEARCH_QUERY = 'Search query',
   ADD_TO_WALLET = 'Add to wallet',
+  ACCOUNT_ACCESS = 'Account access',
 }
 
 /* eslint-disable @typescript-eslint/indent */
@@ -13,6 +14,7 @@ Type extends EventTypes.PAGE_VIEW ?
   'Page type': string;
   'Tab': string;
   'Page'?: string;
+  'Color mode': 'light' | 'dark';
 } :
 Type extends EventTypes.SEARCH_QUERY ? {
   'Search query': string;
@@ -29,5 +31,8 @@ Type extends EventTypes.ADD_TO_WALLET ? (
     'Token': string;
   }
 ) :
+Type extends EventTypes.ACCOUNT_ACCESS ? {
+  'Action': 'auth0_init' | 'verification_email_resent' | 'logged_out';
+} :
 undefined;
 /* eslint-enable @typescript-eslint/indent */
