@@ -13,7 +13,7 @@ export type NextPublicEnvs = {
   NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL?: string;
   NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS?: string;
   NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE?: 'validation' | 'mining';
-  NEXT_PUBLIC_IS_TESTNET?: 'true' | '';
+  NEXT_PUBLIC_IS_TESTNET?: 'true' | 'false' | '';
 
   // api envs
   NEXT_PUBLIC_API_PROTOCOL?: 'http' | 'https';
