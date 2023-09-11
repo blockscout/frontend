@@ -54,8 +54,13 @@ export default function useProvider() {
     for (const wallet of feature.wallets) {
       const provider = providers.find((provider) => {
         return (
+          // some wallets (e.g TokenPocket, Liquality, etc) try to look like MetaMask but they are not (not even close)
+          // so we have to check in addition the presence of the provider._events property
+          // found this hack in wagmi repo
+          // https://github.com/wagmi-dev/wagmi/blob/399b9eab8cfd698b49bfaa8456598dad9b597e0e/packages/connectors/src/types.ts#L65
+          // for now it's the only way to distinguish them
+          (wallet === 'metamask' && provider.isMetaMask && Boolean(provider._events)) ||
           (wallet === 'coinbase' && provider.isCoinbaseWallet) ||
-          (wallet === 'metamask' && provider.isMetaMask) ||
           (wallet === 'token_pocket' && provider.isTokenPocket)
         );
       });
