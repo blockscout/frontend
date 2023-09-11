@@ -75,7 +75,7 @@ Type extends EventTypes.QR_CODE ? {
   'Page type': string;
 } :
 Type extends EventTypes.PAGE_WIDGET ? {
-  'Type': 'Tokens dropdown' | 'Tokens show all (icon)' | 'Add to watchlist';
+  'Type': 'Tokens dropdown' | 'Tokens show all (icon)' | 'Add to watchlist' | 'Address actions (more button)';
 } :
 undefined;
 /* eslint-enable @typescript-eslint/indent */
