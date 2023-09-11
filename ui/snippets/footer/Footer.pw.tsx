@@ -32,6 +32,7 @@ base.describe('with custom links, 4 cols', () => {
     await page.evaluate(() => {
       window.ethereum = {
         isMetaMask: true,
+        _events: {},
       } as WindowProvider;
     });
 
@@ -90,6 +91,7 @@ base.describe('without custom links', () => {
     await page.evaluate(() => {
       window.ethereum = {
         isMetaMask: true,
+        _events: {},
       } as WindowProvider;
     });
     await page.route(BACKEND_VERSION_API_URL, (route) => {
@@ -112,7 +114,7 @@ base.describe('without custom links', () => {
   base('with indexing alert +@dark-mode +@mobile', async({ mount, page }) => {
     await page.evaluate(() => {
       window.ethereum = {
-        providers: [ { isMetaMask: true } ],
+        providers: [ { isMetaMask: true, _events: {} } ],
       } as WindowProvider;
     });
 
