@@ -1,3 +1,5 @@
+import { WindowPostMessageStream } from '@metamask/post-message-stream';
+import { initializeProvider } from '@metamask/providers';
 import React from 'react';
 import type { WindowProvider } from 'wagmi';
 
@@ -14,7 +16,34 @@ export default function useProvider() {
   const [ wallet, setWallet ] = React.useState<WalletType>();
 
   React.useEffect(() => {
-    if (!('ethereum' in window && window.ethereum) || !feature.isEnabled) {
+    if (!feature.isEnabled) {
+      return;
+    }
+
+    if (!('ethereum' in window && window.ethereum)) {
+      if (feature.wallets.includes('metamask') && window.navigator.userAgent.includes('Firefox')) {
+        // workaround for MetaMask in Firefox
+        // Firefox blocks MetaMask injection script because of our CSP for 'script-src'
+        // so we have to inject it manually while the issue is not fixed
+        // https://github.com/MetaMask/metamask-extension/issues/3133#issuecomment-1025641185
+        const metamaskStream = new WindowPostMessageStream({
+          name: 'metamask-inpage',
+          target: 'metamask-contentscript',
+        });
+
+        // this will initialize the provider and set it as window.ethereum
+        initializeProvider({
+          connectionStream: metamaskStream as never,
+          shouldShimWeb3: true,
+        });
+      } else {
+        return;
+      }
+    }
+
+    // have to check again in case provider was not set as window.ethereum in the previous step for MM in FF
+    // and also it makes typescript happy
+    if (!('ethereum' in window && window.ethereum)) {
       return;
     }
 
