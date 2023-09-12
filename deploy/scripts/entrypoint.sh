@@ -13,6 +13,7 @@ if [ $? -ne 0 ]; then
 else
   echo "👍 Favicons bundle successfully generated."
 fi
+echo
 
 # Execute script for replace build-time ENVs placeholders with their values at runtime
 ./replace_envs.sh
