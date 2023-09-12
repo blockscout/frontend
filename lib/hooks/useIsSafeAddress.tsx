@@ -15,7 +15,7 @@ export default function useIsSafeAddress(hash: string | undefined): boolean {
         return Promise.reject();
       }
 
-      return fetch(`${ feature.apiUrl }/${ hash }`);
+      return fetch(`${ feature.apiUrl }/${ hash }`, undefined, { omitSentryErrorLog: true });
     },
     {
       enabled: feature.isEnabled && Boolean(hash),

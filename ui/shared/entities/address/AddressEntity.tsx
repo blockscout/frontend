@@ -51,14 +51,10 @@ const Icon = (props: IconProps) => {
   if (props.address.is_contract) {
     if (props.isSafeAddress) {
       return (
-        <Tooltip label="Safe contract">
-          <span>
-            <EntityBase.Icon
-              { ...props }
-              asProp={ iconSafe }
-            />
-          </span>
-        </Tooltip>
+        <EntityBase.Icon
+          { ...props }
+          asProp={ iconSafe }
+        />
       );
     }
 
