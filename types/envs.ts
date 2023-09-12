@@ -1,3 +1,4 @@
+// TODO @tom2drum delete this file
 export type NextPublicEnvs = {
   // app envs
   NEXT_PUBLIC_APP_PROTOCOL?: 'http' | 'https';

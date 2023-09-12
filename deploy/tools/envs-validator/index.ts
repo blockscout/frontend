@@ -1,10 +1,9 @@
 /* eslint-disable no-console */
 import fs from 'fs';
 import path from 'path';
-import type { ZodError } from 'zod-validation-error';
-import { fromZodError } from 'zod-validation-error';
+import type { ValidationError } from 'yup';
 
-import { nextPublicEnvsSchema } from './schema';
+import schema from './schema';
 
 run();
 
@@ -18,7 +17,7 @@ async function run() {
         return result;
       }, {} as Record<string, string>);
 
-    await validateEnvsSchema(appEnvs);
+    await validateEnvs(appEnvs);
     await checkPlaceholdersCongruity(appEnvs);
 
   } catch (error) {
@@ -26,25 +25,27 @@ async function run() {
   }
 }
 
-async function validateEnvsSchema(appEnvs: Record<string, string>) {
-  try {
-    console.log(`⏳ Validating environment variables schema...`);
-    nextPublicEnvsSchema.parse(appEnvs);
-    console.log('👍 All good!\n');
-  } catch (error) {
-    const validationError = fromZodError(
-      error as ZodError,
-      {
-        prefix: '',
-        prefixSeparator: '\n  ',
-        issueSeparator: ';\n  ',
-      },
-    );
-    console.log(validationError);
-    console.log('🚨 Environment variables set is invalid.\n');
+async function validateEnvs(appEnvs: Record<string, string>) {
+  console.log(`⏳ Validating ENV variables values...`);
 
-    throw error;
+  try {
+    await schema.validate(appEnvs, { stripUnknown: false });
+    console.log('👍 All good!');
+  } catch (_error) {
+    if (typeof _error === 'object' && _error !== null && 'errors' in _error) {
+      console.log('🚨 ENVs validation failed with the following errors:');
+      (_error as ValidationError).errors.forEach((error) => {
+        console.log('    ', error);
+      });
+    } else {
+      console.log('🚨 Unexpected error occurred during validation.');
+      console.error(_error);
+    }
+
+    throw _error;
   }
+
+  console.log();
 }
 
 async function checkPlaceholdersCongruity(runTimeEnvs: Record<string, string>) {
