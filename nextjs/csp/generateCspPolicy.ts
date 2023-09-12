@@ -11,6 +11,7 @@ function generateCspPolicy() {
     descriptors.googleReCaptcha(),
     descriptors.mixpanel(),
     descriptors.monaco(),
+    descriptors.safe(),
     descriptors.sentry(),
     descriptors.walletConnect(),
   );
