@@ -51,7 +51,7 @@ const ContractVerification = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ ]);
 
-  const isVerifiedContract = contractQuery.data?.is_verified;
+  const isVerifiedContract = contractQuery.data?.is_verified && !contractQuery.data.is_partially_verified;
 
   React.useEffect(() => {
     if (isVerifiedContract) {
