@@ -29,7 +29,7 @@ async function validateEnvs(appEnvs: Record<string, string>) {
   console.log(`⏳ Validating ENV variables values...`);
 
   try {
-    await schema.validate(appEnvs, { stripUnknown: false });
+    await schema.validate(appEnvs, { stripUnknown: false, abortEarly: false });
     console.log('👍 All good!');
   } catch (_error) {
     if (typeof _error === 'object' && _error !== null && 'errors' in _error) {

@@ -2,8 +2,8 @@ import { Text, Flex, Box, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
-import type { ChainIndicatorId } from './types';
 import type { HomeStats } from 'types/api/stats';
+import type { ChainIndicatorId } from 'types/homepage';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 

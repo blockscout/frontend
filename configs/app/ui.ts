@@ -1,6 +1,6 @@
 import type { NavItemExternal } from 'types/client/navigation-items';
+import type { ChainIndicatorId } from 'types/homepage';
 import type { NetworkExplorer } from 'types/networks';
-import type { ChainIndicatorId } from 'ui/home/indicators/types';
 
 import * as views from './ui/views';
 import { getEnvValue, parseEnvJson } from './utils';
