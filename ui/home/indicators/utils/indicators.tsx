@@ -63,7 +63,11 @@ const marketPriceIndicator: TChainIndicator<'homepage_chart_market'> = {
     resourceName: 'homepage_chart_market',
     dataFn: (response) => ([ {
       items: response.chart_data
-        .map((item) => ({ date: new Date(item.date), value: Number(item.closing_price) * Number(response.available_supply) }))
+        .map((item) => (
+          {
+            date: new Date(item.date),
+            value: item.market_cap ? Number(item.market_cap) : Number(item.closing_price) * Number(response.available_supply),
+          }))
         .sort(sortByDateDesc),
       name: 'Market cap',
       valueFormatter: (x: number) => '$' + x.toLocaleString(undefined, { maximumFractionDigits: 0 }),
