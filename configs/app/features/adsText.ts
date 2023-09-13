@@ -5,8 +5,8 @@ import type { AdTextProviders } from 'types/client/adProviders';
 import { getEnvValue } from '../utils';
 
 const provider: AdTextProviders = (() => {
-  const envValue = getEnvValue(process.env.NEXT_PUBLIC_AD_TEXT_PROVIDER);
-  return envValue && SUPPORTED_AD_BANNER_PROVIDERS.includes(envValue) ? envValue as AdTextProviders : 'coinzilla';
+  const envValue = getEnvValue(process.env.NEXT_PUBLIC_AD_TEXT_PROVIDER) as AdTextProviders;
+  return envValue && SUPPORTED_AD_BANNER_PROVIDERS.includes(envValue) ? envValue : 'coinzilla';
 })();
 
 const title = 'Text ads';

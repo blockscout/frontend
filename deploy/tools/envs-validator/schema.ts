@@ -60,7 +60,7 @@ const rollupSchema = yup
     NEXT_PUBLIC_L2_WITHDRAWAL_URL: yup
       .string()
       .when('NEXT_PUBLIC_IS_L2_NETWORK', {
-        is: (value: string) => value === 'true',
+        is: (value: string) => value,
         then: (schema) => schema.url().required(),
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_L2_WITHDRAWAL_URL cannot not be used if NEXT_PUBLIC_IS_L2_NETWORK is not set to "true"'),
       }),
