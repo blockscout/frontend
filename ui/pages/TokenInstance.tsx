@@ -71,7 +71,8 @@ const TokenInstanceContent = () => {
     scrollRef,
     options: {
       enabled: Boolean(hash && tab === 'holders' && shouldFetchHolders),
-      placeholderData: generateListStub<'token_instance_holders'>(tokenStubs.TOKEN_HOLDER, 10, { next_page_params: null }),
+      placeholderData: generateListStub<'token_instance_holders'>(
+        tokenInstanceQuery.data?.token.type === 'ERC-1155' ? tokenStubs.TOKEN_HOLDER_ERC_1155 : tokenStubs.TOKEN_HOLDER_ERC_20, 10, { next_page_params: null }),
     },
   });
 
