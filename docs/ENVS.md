@@ -13,6 +13,7 @@ The app instance could be customized by passing following variables to NodeJS en
   - [Sidebar](ENVS.md#sidebar)
   - [Footer](ENVS.md#footer)
   - [Favicon](ENVS.md#favicon)
+  - [Meta](ENVS.md#meta)
   - [Views](ENVS.md#views)
     - [Block](ENVS.md#block-views)
   - [Misc](ENVS.md#misc)
@@ -142,6 +143,16 @@ By default, the app has generic favicon. You can override this behavior by provi
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_FAVICON_GENERATOR_API_KEY | `string` | RealFaviconGenerator [API key](https://realfavicongenerator.net/api/) | Required | - | `<your-secret>` |
 | NEXT_PUBLIC_FAVICON_MASTER_URL | `string` | - | - | `NEXT_PUBLIC_NETWORK_ICON` | `https://placekitten.com/180/180` |
+
+&nbsp;
+
+### Meta
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_PROMOTE_BLOCKSCOUT_IN_TITLE | `boolean` | Set to `true` to promote Blockscout in page titles | - | `true` | `true` |
+| NEXT_PUBLIC_OG_DESCRIPTION | `string` | OG description for the homepage | - | - | `Blockscout is the #1 open-source blockchain explorer available today. 100+ chains and counting rely on Blockscout data availability, APIs, and ecosystem tools to support their networks.` |
+| NEXT_PUBLIC_OG_IMAGE_URL | `string` | OG image url for homepage and root pages. Minimum image size is 200 x 20 pixels; maximum supported file size is 8 MB; 1.91:1 aspect ratio; supported formats: image/jpeg, image/gif, image/png | - | `static/og_placeholder.png` | `https://placekitten.com/1200/600` |
 
 &nbsp;
 
@@ -409,11 +420,3 @@ For obtaining the variables values please refer to [reCAPTCHA documentation](htt
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY | `string` | Site key | - | - | `<your-secret>` |
-
-### Meta
-
-| Variable | Type| Description | Compulsoriness  | Default value | Example value |
-| --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_PROMOTE_BLOCKSCOUT_IN_TITLE | `boolean` | Set to `true` to promote Blockscout in page titles | - | `true` | `true` |
-| NEXT_PUBLIC_OG_DESCRIPTION | `string` | OG description for the homepage | - | - | `Blockscout is the #1 open-source blockchain explorer available today. 100+ chains and counting rely on Blockscout data availability, APIs, and ecosystem tools to support their networks.` |
-| NEXT_PUBLIC_OG_IMAGE_URL | `string` | OG image url for homepage and root pages. Minimum image size is 200 x 20 pixels; maximum supported file size is 8 MB; 1.91:1 aspect ratio; supported formats: image/jpeg, image/gif, image/png | - | `static/og_placeholder.png` | `https://placekitten.com/1200/600` |
