@@ -1,13 +1,14 @@
 import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
+import { getExternalAssetFilePath } from 'configs/app/utils';
 import { FEATURED_NETWORKS_MOCK } from 'mocks/config/network';
 import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
 
 import NetworkMenu from './NetworkMenu';
 
-const FEATURED_NETWORKS_URL = 'https://localhost:3000/featured-networks.json';
+const FEATURED_NETWORKS_URL = getExternalAssetFilePath('NEXT_PUBLIC_FEATURED_NETWORKS', 'https://localhost:3000/featured-networks.json') || '';
 
 const extendedTest = test.extend({
   context: contextWithEnvs([

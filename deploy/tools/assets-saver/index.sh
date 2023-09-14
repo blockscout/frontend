@@ -1,8 +1,12 @@
 #!/bin/bash
 
+echo
+echo "⬇️  Downloading external assets..."
+echo
+
 # Check if the number of arguments provided is correct
 if [ "$#" -ne 1 ]; then
-  echo "Usage: $0 <ASSETS_DIR>"
+  echo "🛑 Error: incorrect amount of arguments. Usage: $0 <ASSETS_DIR>."
   exit 1
 fi
 
@@ -13,11 +17,11 @@ ASSETS_DIR="$1"
 ASSETS_ENVS=(
     "NEXT_PUBLIC_MARKETPLACE_CONFIG_URL"
     "NEXT_PUBLIC_FEATURED_NETWORKS"
+    "NEXT_PUBLIC_FOOTER_LINKS"
     "NEXT_PUBLIC_NETWORK_LOGO"
     "NEXT_PUBLIC_NETWORK_LOGO_DARK"
     "NEXT_PUBLIC_NETWORK_ICON"
     "NEXT_PUBLIC_NETWORK_ICON_DARK"
-    "NEXT_PUBLIC_FOOTER_LINKS"
 )
 
 # Create the assets directory if it doesn't exist
@@ -49,7 +53,7 @@ download_and_save_asset() {
 
     # Check if the environment variable is set
     if [ -z "${!env_var}" ]; then
-        echo "Environment variable $env_var is not set. Skipping download."
+        echo "⏭️  Environment variable $env_var is not set. Skipping download."
         return 1
     fi
 
@@ -58,10 +62,10 @@ download_and_save_asset() {
 
     # Check if the download was successful
     if [ $? -eq 0 ]; then
-        echo "Downloaded $env_var to $destination successfully."
+        echo "👍 Downloaded $env_var to $destination successfully."
         return 0
     else
-        echo "Failed to download $env_var from $url."
+        echo "🛑 Error: Failed to download $env_var from $url."
         return 1
     fi
 }
@@ -72,3 +76,7 @@ for env_var in "${ASSETS_ENVS[@]}"; do
     filename=$(get_target_filename "$env_var")
     download_and_save_asset "$env_var" "$url" "$filename"
 done
+
+echo
+echo "✅ Done."
+echo
