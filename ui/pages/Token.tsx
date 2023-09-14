@@ -157,7 +157,8 @@ const TokenPageContent = () => {
     scrollRef,
     options: {
       enabled: Boolean(hashString && tab === 'holders' && hasData),
-      placeholderData: generateListStub<'token_holders'>(tokenStubs.TOKEN_HOLDER, 50, { next_page_params: null }),
+      placeholderData: generateListStub<'token_holders'>(
+        tokenQuery.data?.type === 'ERC-1155' ? tokenStubs.TOKEN_HOLDER_ERC_1155 : tokenStubs.TOKEN_HOLDER_ERC_20, 50, { next_page_params: null }),
     },
   });
 
