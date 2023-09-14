@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Download external assets
+./download_assets.sh ./public/assets
+
 # Check run-time ENVs values integrity
 node "$(dirname "$0")/envs-validator.js" "$input"
 if [ $? != 0 ]; then                   
@@ -13,9 +16,6 @@ if [ $? -ne 0 ]; then
 else
   echo "👍 Favicons bundle successfully generated."
 fi
-
-# Download external assets
-./download_assets.sh ./public/assets
 
 # Execute script for replace build-time ENVs placeholders with their values at runtime
 ./replace_envs.sh

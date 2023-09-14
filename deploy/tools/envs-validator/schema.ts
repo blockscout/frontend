@@ -3,12 +3,13 @@ import * as yup from 'yup';
 import type { AdButlerConfig } from '../../../types/client/adButlerConfig';
 import { SUPPORTED_AD_TEXT_PROVIDERS, SUPPORTED_AD_BANNER_PROVIDERS } from '../../../types/client/adProviders';
 import type { AdTextProviders, AdBannerProviders } from '../../../types/client/adProviders';
+import type { MarketplaceAppOverview } from '../../../types/client/marketplace';
 import type { NavItemExternal } from '../../../types/client/navigation-items';
 import type { WalletType } from '../../../types/client/wallets';
 import { SUPPORTED_WALLETS } from '../../../types/client/wallets';
 import type { CustomLink, CustomLinksGroup } from '../../../types/footerLinks';
 import type { ChainIndicatorId } from '../../../types/homepage';
-import type { NetworkVerificationType, NetworkExplorer } from '../../../types/networks';
+import { type NetworkVerificationType, type NetworkExplorer, type FeaturedNetwork, type NetworkGroup, NETWORK_GROUPS } from '../../../types/networks';
 import { BLOCK_FIELDS_IDS } from '../../../types/views/block';
 import type { BlockFieldId } from '../../../types/views/block';
 
@@ -19,8 +20,28 @@ const protocols = [ 'http', 'https' ];
 const marketplaceSchema = yup
   .object()
   .shape({
-    // TODO @tom2drum download and parse JSON
-    NEXT_PUBLIC_MARKETPLACE_CONFIG_URL: yup.string().url(),
+    NEXT_PUBLIC_MARKETPLACE_CONFIG_URL: yup
+      .array()
+      .json()
+      .of(yup
+        .object<MarketplaceAppOverview>()
+        .shape({
+          id: yup.string().required(),
+          external: yup.boolean(),
+          title: yup.string().required(),
+          logo: yup.string().url().required(),
+          logoDarkMode: yup.string().url(),
+          shortDescription: yup.string().required(),
+          categories: yup.array().of(yup.string().required()).required(),
+          url: yup.string().url().required(),
+          author: yup.string().required(),
+          description: yup.string().required(),
+          site: yup.string().url(),
+          twitter: yup.string().url(),
+          telegram: yup.string().url(),
+          github: yup.string().url(),
+        }),
+      ),
     NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM: yup
       .string()
       .when('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', {
@@ -199,8 +220,20 @@ const schema = yup
     NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME: yup.boolean(),
 
     //     b. sidebar
-    // TODO @tom2drum download and parse JSON
-    NEXT_PUBLIC_FEATURED_NETWORKS: yup.string().url(),
+    NEXT_PUBLIC_FEATURED_NETWORKS: yup
+      .array()
+      .json()
+      .of(yup
+        .object<FeaturedNetwork>()
+        .shape({
+          title: yup.string().required(),
+          url: yup.string().url().required(),
+          group: yup.string<NetworkGroup>().oneOf(NETWORK_GROUPS).required(),
+          icon: yup.string().url(),
+          isActive: yup.boolean(),
+          invertIconInDarkMode: yup.boolean(),
+        }),
+      ),
     NEXT_PUBLIC_OTHER_LINKS: yup
       .array()
       .transform(getEnvValue)
@@ -217,9 +250,9 @@ const schema = yup
     NEXT_PUBLIC_NETWORK_ICON_DARK: yup.string().url(),
 
     //     c. footer
-    // TODO @tom2drum download and parse JSON
     NEXT_PUBLIC_FOOTER_LINKS: yup
       .array()
+      .json()
       .of(yup
         .object<CustomLinksGroup>()
         .shape({
