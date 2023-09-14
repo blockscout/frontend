@@ -9,13 +9,32 @@ import type { WalletType } from '../../../types/client/wallets';
 import { SUPPORTED_WALLETS } from '../../../types/client/wallets';
 import type { CustomLink, CustomLinksGroup } from '../../../types/footerLinks';
 import type { ChainIndicatorId } from '../../../types/homepage';
-import { type NetworkVerificationType, type NetworkExplorer, type FeaturedNetwork, type NetworkGroup, NETWORK_GROUPS } from '../../../types/networks';
+import { type NetworkVerificationType, type NetworkExplorer, type FeaturedNetwork, NETWORK_GROUPS } from '../../../types/networks';
 import { BLOCK_FIELDS_IDS } from '../../../types/views/block';
 import type { BlockFieldId } from '../../../types/views/block';
 
 import { getEnvValue } from '../../../configs/app/utils';
+import * as regexp from '../../../lib/regexp';
 
 const protocols = [ 'http', 'https' ];
+
+const marketplaceAppSchema: yup.ObjectSchema<MarketplaceAppOverview> = yup
+  .object({
+    id: yup.string().required(),
+    external: yup.boolean(),
+    title: yup.string().required(),
+    logo: yup.string().url().required(),
+    logoDarkMode: yup.string().url(),
+    shortDescription: yup.string().required(),
+    categories: yup.array().of(yup.string().required()).required(),
+    url: yup.string().url().required(),
+    author: yup.string().required(),
+    description: yup.string().required(),
+    site: yup.string().url(),
+    twitter: yup.string().url(),
+    telegram: yup.string().url(),
+    github: yup.string().url(),
+  });
 
 const marketplaceSchema = yup
   .object()
@@ -23,25 +42,7 @@ const marketplaceSchema = yup
     NEXT_PUBLIC_MARKETPLACE_CONFIG_URL: yup
       .array()
       .json()
-      .of(yup
-        .object<MarketplaceAppOverview>()
-        .shape({
-          id: yup.string().required(),
-          external: yup.boolean(),
-          title: yup.string().required(),
-          logo: yup.string().url().required(),
-          logoDarkMode: yup.string().url(),
-          shortDescription: yup.string().required(),
-          categories: yup.array().of(yup.string().required()).required(),
-          url: yup.string().url().required(),
-          author: yup.string().required(),
-          description: yup.string().required(),
-          site: yup.string().url(),
-          twitter: yup.string().url(),
-          telegram: yup.string().url(),
-          github: yup.string().url(),
-        }),
-      ),
+      .of(marketplaceAppSchema),
     NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM: yup
       .string()
       .when('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', {
@@ -171,6 +172,52 @@ const accountSchema = yup
       }),
   });
 
+const featuredNetworkSchema: yup.ObjectSchema<FeaturedNetwork> = yup
+  .object()
+  .shape({
+    title: yup.string().required(),
+    url: yup.string().url().required(),
+    group: yup.string().oneOf(NETWORK_GROUPS).required(),
+    icon: yup.string().url(),
+    isActive: yup.boolean(),
+    invertIconInDarkMode: yup.boolean(),
+  });
+
+const navItemExternalSchema: yup.ObjectSchema<NavItemExternal> = yup
+  .object({
+    text: yup.string().required(),
+    url: yup.string().url().required(),
+  });
+
+const footerLinkSchema: yup.ObjectSchema<CustomLink> = yup
+  .object({
+    text: yup.string().required(),
+    url: yup.string().url().required(),
+  });
+
+const footerLinkGroupSchema: yup.ObjectSchema<CustomLinksGroup> = yup
+  .object({
+    title: yup.string().required(),
+    links: yup
+      .array()
+      .of(footerLinkSchema)
+      .required(),
+  });
+
+const networkExplorerSchema: yup.ObjectSchema<NetworkExplorer> = yup
+  .object({
+    title: yup.string().required(),
+    baseUrl: yup.string().url().required(),
+    paths: yup
+      .object()
+      .shape({
+        tx: yup.string(),
+        address: yup.string(),
+        token: yup.string(),
+        block: yup.string(),
+      }),
+  });
+
 const schema = yup
   .object()
   .noUnknown(true, (params) => {
@@ -223,27 +270,12 @@ const schema = yup
     NEXT_PUBLIC_FEATURED_NETWORKS: yup
       .array()
       .json()
-      .of(yup
-        .object<FeaturedNetwork>()
-        .shape({
-          title: yup.string().required(),
-          url: yup.string().url().required(),
-          group: yup.string<NetworkGroup>().oneOf(NETWORK_GROUPS).required(),
-          icon: yup.string().url(),
-          isActive: yup.boolean(),
-          invertIconInDarkMode: yup.boolean(),
-        }),
-      ),
+      .of(featuredNetworkSchema),
     NEXT_PUBLIC_OTHER_LINKS: yup
       .array()
       .transform(getEnvValue)
       .json()
-      .of(yup
-        .object<NavItemExternal>()
-        .shape({
-          text: yup.string().required(),
-          url: yup.string().url().required(),
-        })),
+      .of(navItemExternalSchema),
     NEXT_PUBLIC_NETWORK_LOGO: yup.string().url(),
     NEXT_PUBLIC_NETWORK_LOGO_DARK: yup.string().url(),
     NEXT_PUBLIC_NETWORK_ICON: yup.string().url(),
@@ -253,19 +285,7 @@ const schema = yup
     NEXT_PUBLIC_FOOTER_LINKS: yup
       .array()
       .json()
-      .of(yup
-        .object<CustomLinksGroup>()
-        .shape({
-          title: yup.string().required(),
-          links: yup
-            .array()
-            .of(yup
-              .object<CustomLink>()
-              .shape({
-                text: yup.string().required(),
-                url: yup.string().url().required(),
-              })),
-        })),
+      .of(footerLinkGroupSchema),
 
     //     d. views
     NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_FIELDS: yup
@@ -279,20 +299,7 @@ const schema = yup
       .array()
       .transform(getEnvValue)
       .json()
-      .of(yup
-        .object<NetworkExplorer>()
-        .shape({
-          title: yup.string().required(),
-          baseUrl: yup.string().url().required(),
-          paths: yup
-            .object()
-            .shape({
-              tx: yup.string(),
-              address: yup.string(),
-              token: yup.string(),
-              block: yup.string(),
-            }),
-        })),
+      .of(networkExplorerSchema),
     NEXT_PUBLIC_HIDE_INDEXING_ALERT: yup.boolean(),
 
     // 5. Features configuration
@@ -300,7 +307,7 @@ const schema = yup
     NEXT_PUBLIC_STATS_API_HOST: yup.string().url(),
     NEXT_PUBLIC_VISUALIZE_API_HOST: yup.string().url(),
     NEXT_PUBLIC_CONTRACT_INFO_API_HOST: yup.string().url(),
-    NEXT_PUBLIC_GRAPHIQL_TRANSACTION: yup.string().matches(/^(?:0x)?[\da-fA-F]+$/),
+    NEXT_PUBLIC_GRAPHIQL_TRANSACTION: yup.string().matches(regexp.HEX_REGEXP),
     NEXT_PUBLIC_WEB3_WALLETS: yup
       .mixed()
       .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_WEB3_WALLETS, it should be either array or "none" string literal', (data) => {
