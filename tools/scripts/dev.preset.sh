@@ -22,7 +22,7 @@ fi
 # download assets for the running instance
 dotenv \
   -e $config_file \
-  -- bash -c './deploy/tools/assets-saver/index.sh ./public/assets' \
+  -- bash -c './deploy/scripts/download_assets.sh ./public/assets' \
 
 # run the app
 dotenv \

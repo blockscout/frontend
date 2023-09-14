@@ -2,7 +2,6 @@
 
 echo
 echo "⬇️  Downloading external assets..."
-echo
 
 # Check if the number of arguments provided is correct
 if [ "$#" -ne 1 ]; then
@@ -53,7 +52,7 @@ download_and_save_asset() {
 
     # Check if the environment variable is set
     if [ -z "${!env_var}" ]; then
-        echo "⏭️  Environment variable $env_var is not set. Skipping download."
+        echo "   [.] Environment variable $env_var is not set. Skipping download."
         return 1
     fi
 
@@ -62,10 +61,10 @@ download_and_save_asset() {
 
     # Check if the download was successful
     if [ $? -eq 0 ]; then
-        echo "👍 Downloaded $env_var to $destination successfully."
+        echo "   [+] Downloaded $env_var to $destination successfully."
         return 0
     else
-        echo "🛑 Error: Failed to download $env_var from $url."
+        echo "   [-] Failed to download $env_var from $url."
         return 1
     fi
 }
@@ -77,6 +76,5 @@ for env_var in "${ASSETS_ENVS[@]}"; do
     download_and_save_asset "$env_var" "$url" "$filename"
 done
 
-echo
 echo "✅ Done."
 echo

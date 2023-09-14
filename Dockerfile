@@ -100,6 +100,8 @@ COPY --from=builder /app/deploy/tools/feature-reporter/index.js ./feature-report
 COPY --chmod=+x ./deploy/scripts/entrypoint.sh .
 ## ENV replacer
 COPY --chmod=+x ./deploy/scripts/replace_envs.sh .
+## Assets downloader
+COPY --chmod=+x ./deploy/scripts/download_assets.sh .
 ## Favicon generator
 COPY --chmod=+x ./deploy/scripts/favicon_generator.sh .
 COPY ./deploy/tools/favicon-generator ./deploy/tools/favicon-generator

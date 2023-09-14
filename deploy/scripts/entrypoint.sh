@@ -14,6 +14,9 @@ else
   echo "👍 Favicons bundle successfully generated."
 fi
 
+# Download external assets
+./download_assets.sh ./public/assets
+
 # Execute script for replace build-time ENVs placeholders with their values at runtime
 ./replace_envs.sh
 
