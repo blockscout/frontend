@@ -31,9 +31,13 @@ validate_preset() {
 
     if [ $? -eq 0 ]; then
         echo "✅ Preset '$preset' is valid."
+        echo "------------------------------------------------"
+        echo
         return 0
     else
         echo "🛑 Preset '$preset' is invalid. Please fix it and run script again."
+        echo "------------------------------------------------"
+        echo
         return 1
     fi
 }
@@ -41,6 +45,7 @@ validate_preset() {
 
 for preset in "${PRESETS[@]}"; do
     validate_preset "$preset"
+    if [ $? -eq 0 ]; then
+        exit 1
+    fi
 done
-echo "------------------------------------------------"
-echo
