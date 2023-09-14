@@ -46,7 +46,7 @@ const marketplaceSchema = yup
     NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM: yup
       .string()
       .when('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', {
-        is: (value: string) => Boolean(value),
+        is: (value: Array<unknown>) => value.length > 0,
         then: (schema) => schema.url().required(),
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM cannot not be used without NEXT_PUBLIC_MARKETPLACE_CONFIG_URL'),
       }),

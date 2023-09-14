@@ -69,19 +69,25 @@ For all types of dependencies:
 
 These are the steps that you have to follow to make everything work:
 1. First and foremost, document variable in the [/docs/ENVS.md](./ENVS.md) file; provide short description, its expected type, requirement flag, default and example value; **do not skip this step** otherwise the app will not receive variable value at run-time
-2. Make sure that you have added a property to React app config (`/configs/app/index.ts`) in appropriate section that is associated with this variable; do not use ENV variable values directly in the application code; decide where this variable belongs to and place it under the certain section:
+2. Make sure that you have added a property to React app config (`configs/app/index.ts`) in appropriate section that is associated with this variable; do not use ENV variable values directly in the application code; decide where this variable belongs to and place it under the certain section:
     - `app` - the front-end app itself
     - `api` - the main API configuration
     - `UI` - the app UI customization
     - `features` - the particular feature of the app
     - `services` - some 3rd party service integration which is not related to one particular feature  
-3. For local development purposes add the variable with its appropriate values to pre-defined ENV configs `/configs/envs` where it is needed
+3. For local development purposes add the variable with its appropriate values to pre-defined ENV configs `configs/envs` where it is needed
 4. Add the variable to CI configs where it is needed
     - `deploy/values/review/values.yaml.gotmpl` - review development environment
     - `deploy/values/main/values.yaml` - main development environment
     - `deploy/values/review-l2/values.yaml.gotmpl` - review development environment for L2 networks
     - `deploy/values/l2-optimism-goerli/values.yaml` - main development environment
-5. Don't forget to mention in the PR notes that new ENV variable were added  
+5. Add validation schema for the new variable into the file `deploy/tools/envs-validator/schema.ts`; verify that any or all updated config presets from "Step 3" are valid by doing the following steps:
+    - change your current directory to `deploy/tools/envs-validator`
+    - install deps with `yarn` command
+    - change `PRESETS` array in `dev.sh` script file accordingly
+    - run `yarn dev` command and see the validation result
+    - *Please* do not commit your changes in the `dev.sh` file since it is also used in the CI workflow
+6. Don't forget to mention in the PR notes that new ENV variable was added  
 
 &nbsp;
 
