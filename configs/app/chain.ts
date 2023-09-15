@@ -11,6 +11,9 @@ const chain = Object.freeze({
     symbol: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL),
     decimals: Number(getEnvValue(process.env.NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS)) || DEFAULT_CURRENCY_DECIMALS,
   },
+  governanceToken: {
+    symbol: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_GOVERNANCE_TOKEN_SYMBOL),
+  },
   rpcUrl: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_RPC_URL),
   isTestnet: getEnvValue(process.env.NEXT_PUBLIC_IS_TESTNET) === 'true',
   verificationType: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE) || 'mining',
