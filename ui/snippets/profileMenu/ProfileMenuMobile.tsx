@@ -52,7 +52,7 @@ const ProfileMenuMobile = () => {
           <DrawerOverlay/>
           <DrawerContent maxWidth="260px">
             <DrawerBody p={ 6 }>
-              <ProfileMenuContent data={ data }/>
+              <ProfileMenuContent data={ data } onNavLinkClick={ onClose }/>
             </DrawerBody>
           </DrawerContent>
         </Drawer>
