@@ -64,6 +64,18 @@ jobs:
           node-version: 18
           cache: 'yarn'
 
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        id: cache-node-modules
+        with:
+          path: |
+            node_modules
+          key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+    
+      - name: Install dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: yarn --frozen-lockfile
+
       - name: Install script dependencies
         run: cd ./deploy/tools/envs-validator && yarn --frozen-lockfile
 
@@ -71,7 +83,12 @@ jobs:
         run: cp ./.env.example ./configs/envs/.env.secrets
 
       - name: Run validation script
-        run: cd ./deploy/tools/envs-validator && yarn dev
+        run: |
+          set +e
+          cd ./deploy/tools/envs-validator && yarn dev
+          exitcode="$?"
+          echo "exitcode=$exitcode" >> $GITHUB_OUTPUT
+          exit "$exitcode"
 
   jest_tests:
     name: Jest tests
