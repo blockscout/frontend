@@ -26,7 +26,7 @@ async function run() {
 }
 
 async function validateEnvs(appEnvs: Record<string, string>) {
-  console.log(`⏳ Validating ENV variables values...`);
+  console.log(`🌀 Validating ENV variables values...`);
 
   try {
     // replace ENVs with external JSON files content
@@ -71,7 +71,7 @@ async function getExternalJsonContent(fileName: string, envValue: string): Promi
 
     fs.readFile(path.resolve(__dirname, fileName), 'utf8', (err, data) => {
       if (err) {
-        console.log(`⛔ Unable to read file: ${ fileName }`);
+        console.log(`🚨 Unable to read file: ${ fileName }`);
         reject(err);
         return;
       }
@@ -83,7 +83,7 @@ async function getExternalJsonContent(fileName: string, envValue: string): Promi
 
 async function checkPlaceholdersCongruity(runTimeEnvs: Record<string, string>) {
   try {
-    console.log(`⏳ Checking environment variables and their placeholders congruity...`);
+    console.log(`🌀 Checking environment variables and their placeholders congruity...`);
 
     const placeholders = await getEnvsPlaceholders(path.resolve(__dirname, '.env.production'));
     const buildTimeEnvs = await getEnvsPlaceholders(path.resolve(__dirname, '.env'));
@@ -119,7 +119,7 @@ function getEnvsPlaceholders(filePath: string): Promise<Array<string>> {
   return new Promise((resolve, reject) => {
     fs.readFile(filePath, 'utf8', (err, data) => {
       if (err) {
-        console.log(`⛔ Unable to read placeholders file.`);
+        console.log(`🚨 Unable to read placeholders file.`);
         reject(err);
         return;
       }

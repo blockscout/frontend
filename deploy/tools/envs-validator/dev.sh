@@ -18,7 +18,7 @@ validate_preset() {
 
     echo
     echo "------------------------------------------------"
-    echo "⏳ Validating preset '$preset'..."
+    echo "🧿 Validating preset '$preset'..."
 
     dotenv \
         -e $config_file \
