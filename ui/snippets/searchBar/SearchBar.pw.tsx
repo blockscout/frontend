@@ -1,14 +1,23 @@
 import { LightMode } from '@chakra-ui/react';
-import { test, expect } from '@playwright/experimental-ct-react';
+import { test as base, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
+import { getExternalAssetFilePath } from 'configs/app/utils';
 import * as textAdMock from 'mocks/ad/textAd';
 import { apps as appsMock } from 'mocks/apps/apps';
 import * as searchMock from 'mocks/search/index';
+import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
 
 import SearchBar from './SearchBar';
+
+const test = base.extend({
+  context: contextWithEnvs([
+    { name: 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', value: '' },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ]) as any,
+});
 
 test.beforeEach(async({ page }) => {
   await page.route('https://request-global.czilladx.com/serve/native.php?z=19260bf627546ab7242', (route) => route.fulfill({
@@ -263,8 +272,14 @@ test('recent keywords suggest +@mobile', async({ mount, page }) => {
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 500 } });
 });
 
-test.describe('with apps', () => {
-  const MARKETPLACE_CONFIG_URL = 'https://localhost:3000/marketplace-config.json';
+base.describe('with apps', () => {
+  const MARKETPLACE_CONFIG_URL = getExternalAssetFilePath('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', 'https://marketplace-config.json') || '';
+  const test = base.extend({
+    context: contextWithEnvs([
+      { name: 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', value: MARKETPLACE_CONFIG_URL },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ]) as any,
+  });
 
   test('default view +@mobile', async({ mount, page }) => {
     const API_URL = buildApiUrl('quick_search') + '?q=o';
