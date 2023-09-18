@@ -45,7 +45,7 @@ validate_preset() {
 
 for preset in "${PRESETS[@]}"; do
     validate_preset "$preset"
-    if [ $? -eq 0 ]; then
+    if [ $? -eq 1 ]; then
         exit 1
     fi
 done
