@@ -57,6 +57,16 @@ const config: PlaywrightTestConfig = defineConfig({
         sourcemap: false,
         minify: false,
       },
+      resolve: {
+        alias: {
+          // There is an issue with building these package using vite that I cannot resolve
+          // The solution described here - https://github.com/vitejs/vite/issues/9703#issuecomment-1216662109
+          // doesn't seam to work well with our setup
+          // so for now we just mock these modules in tests
+          '@metamask/post-message-stream': './playwright/mocks/modules/@metamask/post-message-stream.js',
+          '@metamask/providers': './playwright/mocks/modules/@metamask/providers.js',
+        },
+      },
       define: {
         'process.env': 'process.env', // Port over window.process envs
       },

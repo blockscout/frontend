@@ -25,6 +25,7 @@ import getApiVersionUrl from './utils/getApiVersionUrl';
 const MAX_LINKS_COLUMNS = 3;
 
 const FRONT_VERSION_URL = `https://github.com/blockscout/frontend/tree/${ config.UI.footer.frontendVersion }`;
+const FRONT_COMMIT_URL = `https://github.com/blockscout/frontend/commit/${ config.UI.footer.frontendCommit }`;
 
 const Footer = () => {
 
@@ -74,6 +75,18 @@ const Footer = () => {
     },
   ];
 
+  const frontendLink = (() => {
+    if (config.UI.footer.frontendVersion) {
+      return <Link href={ FRONT_VERSION_URL } target="_blank">{ config.UI.footer.frontendVersion }</Link>;
+    }
+
+    if (config.UI.footer.frontendCommit) {
+      return <Link href={ FRONT_COMMIT_URL } target="_blank">{ config.UI.footer.frontendCommit }</Link>;
+    }
+
+    return null;
+  })();
+
   const fetch = useFetch();
 
   const { isLoading, data: linksData } = useQuery<unknown, ResourceError<unknown>, Array<CustomLinksGroup>>(
@@ -111,9 +124,9 @@ const Footer = () => {
                 Backend: <Link href={ apiVersionUrl } target="_blank">{ backendVersionData?.backend_version }</Link>
             </Text>
           ) }
-          { (config.UI.footer.frontendVersion || config.UI.footer.frontendCommit) && (
+          { frontendLink && (
             <Text fontSize="xs">
-              Frontend: <Link href={ FRONT_VERSION_URL } target="_blank">{ config.UI.footer.frontendVersion }</Link>
+              Frontend: { frontendLink }
             </Text>
           ) }
         </VStack>

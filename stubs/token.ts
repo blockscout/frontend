@@ -36,8 +36,16 @@ export const TOKEN_COUNTERS: TokenCounters = {
   transfers_count: '123456',
 };
 
-export const TOKEN_HOLDER: TokenHolder = {
+export const TOKEN_HOLDER_ERC_20: TokenHolder = {
   address: ADDRESS_PARAMS,
+  token: TOKEN_INFO_ERC_20,
+  value: '1021378038331138520',
+};
+
+export const TOKEN_HOLDER_ERC_1155: TokenHolder = {
+  address: ADDRESS_PARAMS,
+  token: TOKEN_INFO_ERC_1155,
+  token_id: '12345',
   value: '1021378038331138520',
 };
 

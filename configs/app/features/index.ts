@@ -11,6 +11,7 @@ export { default as marketplace } from './marketplace';
 export { default as mixpanel } from './mixpanel';
 export { default as restApiDocs } from './restApiDocs';
 export { default as rollup } from './rollup';
+export { default as safe } from './safe';
 export { default as sentry } from './sentry';
 export { default as sol2uml } from './sol2uml';
 export { default as stats } from './stats';

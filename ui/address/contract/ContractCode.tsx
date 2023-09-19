@@ -86,6 +86,8 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
     return <DataFetchAlert/>;
   }
 
+  const canBeVerified = !data?.is_self_destructed && (!data?.is_verified || data.is_partially_verified);
+
   const verificationButton = isPlaceholderData ? <Skeleton w="130px" h={ 8 } mr={ 3 } ml="auto" borderRadius="base"/> : (
     <Button
       size="sm"
@@ -253,7 +255,7 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
           <RawDataSnippet
             data={ data.creation_bytecode }
             title="Contract creation code"
-            rightSlot={ data.is_verified || data.is_self_destructed ? null : verificationButton }
+            rightSlot={ canBeVerified ? verificationButton : null }
             beforeSlot={ data.is_self_destructed ? (
               <Alert status="info" whiteSpace="pre-wrap" mb={ 3 }>
                 Contracts that self destruct in their constructors have no contract code published and cannot be verified.
@@ -268,7 +270,7 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
           <RawDataSnippet
             data={ data.deployed_bytecode }
             title="Deployed ByteCode"
-            rightSlot={ !data?.creation_bytecode && !(data.is_verified || data.is_self_destructed) ? verificationButton : null }
+            rightSlot={ !data?.creation_bytecode && canBeVerified ? verificationButton : null }
             textareaMaxHeight="200px"
             isLoading={ isPlaceholderData }
           />

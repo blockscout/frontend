@@ -31,4 +31,6 @@ function replace_envs {
   done < $envFilename
 }
 
+echo ⏳ Replacing build-stage ENV placholders with their run-time values...
 replace_envs
+echo 👍 Done!

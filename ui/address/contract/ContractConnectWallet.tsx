@@ -4,11 +4,11 @@ import React from 'react';
 import { useAccount, useDisconnect } from 'wagmi';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import * as mixpanel from 'lib/mixpanel/index';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 const ContractConnectWallet = () => {
   const { open, isOpen } = useWeb3Modal();
-  const { address, isDisconnected } = useAccount();
   const { disconnect } = useDisconnect();
   const isMobile = useIsMobile();
   const [ isModalOpening, setIsModalOpening ] = React.useState(false);
@@ -17,11 +17,18 @@ const ContractConnectWallet = () => {
     setIsModalOpening(true);
     await open();
     setIsModalOpening(false);
+    mixpanel.logEvent(mixpanel.EventTypes.WALLET_CONNECT, { Status: 'Started' });
   }, [ open ]);
+
+  const handleAccountConnected = React.useCallback(({ isReconnected }: { isReconnected: boolean }) => {
+    !isReconnected && mixpanel.logEvent(mixpanel.EventTypes.WALLET_CONNECT, { Status: 'Connected' });
+  }, []);
 
   const handleDisconnect = React.useCallback(() => {
     disconnect();
   }, [ disconnect ]);
+
+  const { address, isDisconnected } = useAccount({ onConnect: handleAccountConnected });
 
   const content = (() => {
     if (isDisconnected || !address) {
