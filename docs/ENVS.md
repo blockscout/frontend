@@ -382,6 +382,12 @@ This feature is **enabled by default** with the `['metamask']` value. To switch 
 
 &nbsp;
 
+### Safe{Core} address tags
+
+For the smart contract addresses which are [Safe{Core} accounts](https://safe.global/) public tag "Multisig: Safe" will be displayed in the address page header along side to Safe logo. The Safe service is available only for certain networks, see full list [here](https://docs.safe.global/safe-core-api/available-services). Based on provided value of `NEXT_PUBLIC_NETWORK_ID`, the feature will be enabled or disabled. 
+
+&nbsp;
+
 ### Sentry error monitoring
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |

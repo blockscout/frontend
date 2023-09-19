@@ -8,6 +8,7 @@ import type { AddressParam } from 'types/api/addressParams';
 
 import { route } from 'nextjs-routes';
 
+import iconSafe from 'icons/brands/safe.svg';
 import iconContractVerified from 'icons/contract_verified.svg';
 import iconContract from 'icons/contract.svg';
 import * as EntityBase from 'ui/shared/entities/base/components';
@@ -29,7 +30,7 @@ const Link = chakra((props: LinkProps) => {
   );
 });
 
-type IconProps = Pick<EntityProps, 'address' | 'isLoading' | 'iconSize' | 'noIcon'> & {
+type IconProps = Pick<EntityProps, 'address' | 'isLoading' | 'iconSize' | 'noIcon' | 'isSafeAddress'> & {
   asProp?: As;
 };
 
@@ -48,6 +49,15 @@ const Icon = (props: IconProps) => {
   }
 
   if (props.address.is_contract) {
+    if (props.isSafeAddress) {
+      return (
+        <EntityBase.Icon
+          { ...props }
+          asProp={ iconSafe }
+        />
+      );
+    }
+
     if (props.address.is_verified) {
       return (
         <Tooltip label="Verified contract">
@@ -121,6 +131,7 @@ const Container = EntityBase.Container;
 
 export interface EntityProps extends EntityBase.EntityBaseProps {
   address: Pick<AddressParam, 'hash' | 'name' | 'is_contract' | 'is_verified' | 'implementation_name'>;
+  isSafeAddress?: boolean;
 }
 
 const AddressEntry = (props: EntityProps) => {
