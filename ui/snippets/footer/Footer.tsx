@@ -52,25 +52,25 @@ const Footer = () => {
       icon: gitIcon,
       iconSize: '18px',
       text: 'Contribute',
-      url: 'https://github.com/blockscout/blockscout',
+      url: 'https://github.com/subspace',
     },
     {
       icon: twitterIcon,
       iconSize: '18px',
       text: 'Twitter',
-      url: 'https://www.twitter.com/blockscoutcom',
+      url: 'https://twitter.com/NetworkSubspace',
     },
     {
       icon: discordIcon,
       iconSize: '18px',
       text: 'Discord',
-      url: 'https://discord.gg/blockscout',
+      url: 'https://discord.com/invite/subspace-network',
     },
     {
       icon: discussionsIcon,
       iconSize: '20px',
       text: 'Discussions',
-      url: 'https://github.com/orgs/blockscout/discussions',
+      url: 'https://forum.subspace.network/',
     },
   ];
 
@@ -100,7 +100,7 @@ const Footer = () => {
           <NetworkAddToWallet/>
         </Flex>
         <Box mt={{ base: 5, lg: '44px' }}>
-          <Link fontSize="xs" href="https://www.blockscout.com">blockscout.com</Link>
+          <Link fontSize="xs" href="https://subspace.network/">Subspace Network</Link>
         </Box>
         <Text mt={ 3 } maxW={{ base: 'unset', lg: '470px' }} fontSize="xs">
             Blockscout is a tool for inspecting and analyzing EVM based blockchains. Blockchain explorer for Ethereum Networks.

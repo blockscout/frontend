@@ -1,11 +1,11 @@
 blank_issues_enabled: false
 contact_links:
   - name: Feature Request
-    url: https://blockscout.canny.io/feature-requests
+    url: https://github.com/subspace/subspace/issues
     about: Request a feature or enhancement
   - name: Ask a question
-    url: https://github.com/orgs/blockscout/discussions
+    url: https://forum.subspace.network
     about: Ask questions and discuss topics with other community members
   - name: Join our Discord Server
-    url: https://discord.gg/blockscout
-    about: The official Blockscout Discord community
+    url: https://discord.com/invite/subspace-network
+    about: The official Subspace Network Discord community
