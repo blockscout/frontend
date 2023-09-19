@@ -24,7 +24,7 @@ const NumberWidgetsList = () => {
       gridGap={ 4 }
     >
       {
-        data?.counters?.map(({ id, title, value, units }, index) => {
+        data?.counters?.map(({ id, title, value, units, description }, index) => {
 
           return (
             <NumberWidget
@@ -32,6 +32,7 @@ const NumberWidgetsList = () => {
               label={ title }
               value={ `${ Number(value).toLocaleString(undefined, { maximumFractionDigits: 3, notation: 'compact' }) } ${ units ? units : '' }` }
               isLoading={ isPlaceholderData }
+              description={ description }
             />
           );
         })

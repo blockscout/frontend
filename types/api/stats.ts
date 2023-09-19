@@ -27,6 +27,7 @@ export type Counter = {
   id: string;
   value: string;
   title: string;
+  description?: string;
   units: string;
 }
 
