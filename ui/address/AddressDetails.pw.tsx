@@ -75,7 +75,7 @@ test('token', async({ mount, page }) => {
 
   await page.evaluate(() => {
     window.ethereum = {
-      providers: [ { isMetaMask: true } ],
+      providers: [ { isMetaMask: true, _events: {} } ],
     }as WindowProvider;
   });
 
