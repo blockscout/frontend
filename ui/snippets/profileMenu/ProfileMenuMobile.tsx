@@ -4,6 +4,7 @@ import React from 'react';
 
 import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
 import useLoginUrl from 'lib/hooks/useLoginUrl';
+import * as mixpanel from 'lib/mixpanel/index';
 import UserAvatar from 'ui/shared/UserAvatar';
 import ProfileMenuContent from 'ui/snippets/profileMenu/ProfileMenuContent';
 
@@ -13,6 +14,14 @@ const ProfileMenuMobile = () => {
   const { data, error, isLoading } = useFetchProfileInfo();
   const loginUrl = useLoginUrl();
   const [ hasMenu, setHasMenu ] = React.useState(false);
+
+  const handleSignInClick = React.useCallback(() => {
+    mixpanel.logEvent(
+      mixpanel.EventTypes.ACCOUNT_ACCESS,
+      { Action: 'Auth0 init' },
+      { send_immediately: true },
+    );
+  }, []);
 
   React.useEffect(() => {
     if (!isLoading) {
@@ -28,6 +37,7 @@ const ProfileMenuMobile = () => {
     return {
       as: 'a',
       href: loginUrl,
+      onClick: handleSignInClick,
     };
   })();
 

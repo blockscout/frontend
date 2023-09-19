@@ -7,6 +7,7 @@ import dayjs from 'lib/date/dayjs';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import getErrorObjStatusCode from 'lib/errors/getErrorObjStatusCode';
 import useToast from 'lib/hooks/useToast';
+import * as mixpanel from 'lib/mixpanel/index';
 
 interface Props {
   email?: string; // TODO: obtain email from API
@@ -22,8 +23,14 @@ const UnverifiedEmail = ({ email }: Props) => {
 
     setIsLoading(true);
 
+    mixpanel.logEvent(
+      mixpanel.EventTypes.ACCOUNT_ACCESS,
+      { Action: 'Verification email resent' },
+    );
+
     try {
       await apiFetch('email_resend');
+
       toast({
         id: toastId,
         position: 'top-right',

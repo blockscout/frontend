@@ -11,6 +11,7 @@ import type { Address } from 'types/api/address';
 import walletIcon from 'icons/wallet.svg';
 import { getResourceKey } from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import * as mixpanel from 'lib/mixpanel/index';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
@@ -37,6 +38,11 @@ const TokenSelect = ({ onClick }: Props) => {
   const { data, isError, isLoading, refetch } = useFetchTokens({ hash: addressQueryData?.hash });
   const tokensResourceKey = getResourceKey('address_tokens', { pathParams: { hash: addressQueryData?.hash }, queryParams: { type: 'ERC-20' } });
   const tokensIsFetching = useIsFetching({ queryKey: tokensResourceKey });
+
+  const handleIconButtonClick = React.useCallback(() => {
+    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Tokens show all (icon)' });
+    onClick?.();
+  }, [ onClick ]);
 
   const handleTokenBalanceMessage: SocketMessage.AddressTokenBalance['handler'] = React.useCallback((payload) => {
     if (payload.block_number !== blockNumber) {
@@ -97,7 +103,7 @@ const TokenSelect = ({ onClick }: Props) => {
               pr="6px"
               icon={ <Icon as={ walletIcon } boxSize={ 5 }/> }
               as="a"
-              onClick={ onClick }
+              onClick={ handleIconButtonClick }
             />
           </NextLink>
         </Box>

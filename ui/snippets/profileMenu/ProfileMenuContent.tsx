@@ -5,6 +5,7 @@ import type { UserInfo } from 'types/api/account';
 
 import config from 'configs/app';
 import useNavItems from 'lib/hooks/useNavItems';
+import * as mixpanel from 'lib/mixpanel/index';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 import NavLink from 'ui/snippets/navigation/NavLink';
 
@@ -17,6 +18,14 @@ type Props = {
 const ProfileMenuContent = ({ data }: Props) => {
   const { accountNavItems, profileItem } = useNavItems();
   const primaryTextColor = useColorModeValue('blackAlpha.800', 'whiteAlpha.800');
+
+  const handleSingOutClick = React.useCallback(() => {
+    mixpanel.logEvent(
+      mixpanel.EventTypes.ACCOUNT_ACCESS,
+      { Action: 'Logged out' },
+      { send_immediately: true },
+    );
+  }, []);
 
   if (!feature.isEnabled) {
     return null;
@@ -52,7 +61,9 @@ const ProfileMenuContent = ({ data }: Props) => {
         </VStack>
       </Box>
       <Box mt={ 2 } pt={ 3 } borderTopColor="divider" borderTopWidth="1px" { ...getDefaultTransitionProps() }>
-        <Button size="sm" width="full" variant="outline" as="a" href={ feature.logoutUrl }>Sign Out</Button>
+        <Button size="sm" width="full" variant="outline" as="a" href={ feature.logoutUrl } onClick={ handleSingOutClick }>
+          Sign Out
+        </Button>
       </Box>
     </Box>
   );

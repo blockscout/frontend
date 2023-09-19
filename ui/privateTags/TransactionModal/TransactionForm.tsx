@@ -23,6 +23,7 @@ const TAG_MAX_LENGTH = 35;
 type Props = {
   data?: TransactionTag;
   onClose: () => void;
+  onSuccess: () => Promise<void>;
   setAlertVisible: (isAlertVisible: boolean) => void;
 }
 
@@ -31,7 +32,7 @@ type Inputs = {
   tag: string;
 }
 
-const TransactionForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
+const TransactionForm: React.FC<Props> = ({ data, onClose, onSuccess, setAlertVisible }) => {
   const [ pending, setPending ] = useState(false);
   const formBackgroundColor = useColorModeValue('white', 'gray.900');
 
@@ -74,11 +75,11 @@ const TransactionForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) =>
         setAlertVisible(true);
       }
     },
-    onSuccess: () => {
-      queryClient.refetchQueries([ resourceKey('private_tags_tx') ]).then(() => {
-        onClose();
-        setPending(false);
-      });
+    onSuccess: async() => {
+      await queryClient.refetchQueries([ resourceKey('private_tags_tx') ]);
+      await onSuccess();
+      onClose();
+      setPending(false);
     },
   });
 

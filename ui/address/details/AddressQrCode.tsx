@@ -14,11 +14,14 @@ import {
   Skeleton,
 } from '@chakra-ui/react';
 import * as Sentry from '@sentry/react';
+import { useRouter } from 'next/router';
 import QRCode from 'qrcode';
 import React from 'react';
 
 import qrCodeIcon from 'icons/qr_code.svg';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import getPageType from 'lib/mixpanel/getPageType';
+import * as mixpanel from 'lib/mixpanel/index';
 
 const SVG_OPTIONS = {
   margin: 0,
@@ -33,8 +36,12 @@ interface Props {
 const AddressQrCode = ({ hash, className, isLoading }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isMobile = useIsMobile();
+  const router = useRouter();
+
   const [ qr, setQr ] = React.useState('');
   const [ error, setError ] = React.useState('');
+
+  const pageType = getPageType(router.pathname);
 
   React.useEffect(() => {
     if (isOpen) {
@@ -47,9 +54,10 @@ const AddressQrCode = ({ hash, className, isLoading }: Props) => {
 
         setError('');
         setQr(svg);
+        mixpanel.logEvent(mixpanel.EventTypes.QR_CODE, { 'Page type': pageType });
       });
     }
-  }, [ hash, isOpen, onClose ]);
+  }, [ hash, isOpen, onClose, pageType ]);
 
   if (isLoading) {
     return <Skeleton className={ className } w="36px" h="32px" borderRadius="base"/>;
