@@ -55,7 +55,10 @@ const Burger = () => {
                 />
               ) : <Box boxSize={ 9 }/> }
             </Flex>
-            { networkMenu.isOpen ? <NetworkMenuContentMobile tabs={ networkMenu.availableTabs } items={ networkMenu.data }/> : <NavigationMobile/> }
+            { networkMenu.isOpen ?
+              <NetworkMenuContentMobile tabs={ networkMenu.availableTabs } items={ networkMenu.data }/> :
+              <NavigationMobile onNavLinkClick={ onClose }/>
+            }
           </DrawerBody>
         </DrawerContent>
       </Drawer>

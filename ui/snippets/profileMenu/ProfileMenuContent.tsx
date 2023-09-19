@@ -13,9 +13,10 @@ const feature = config.features.account;
 
 type Props = {
   data?: UserInfo;
+  onNavLinkClick?: () => void;
 };
 
-const ProfileMenuContent = ({ data }: Props) => {
+const ProfileMenuContent = ({ data, onNavLinkClick }: Props) => {
   const { accountNavItems, profileItem } = useNavItems();
   const primaryTextColor = useColorModeValue('blackAlpha.800', 'whiteAlpha.800');
 
@@ -54,10 +55,19 @@ const ProfileMenuContent = ({ data }: Props) => {
           { data.email }
         </Text>
       ) }
-      <NavLink item={ profileItem } isActive={ undefined } px="0px" isCollapsed={ false }/>
+      <NavLink item={ profileItem } isActive={ undefined } px="0px" isCollapsed={ false } onClick={ onNavLinkClick }/>
       <Box as="nav" mt={ 2 } pt={ 2 } borderTopColor="divider" borderTopWidth="1px" { ...getDefaultTransitionProps() }>
         <VStack as="ul" spacing="0" alignItems="flex-start" overflow="hidden">
-          { accountNavItems.map((item) => <NavLink key={ item.text } item={ item } isActive={ undefined } isCollapsed={ false } px="0px"/>) }
+          { accountNavItems.map((item) => (
+            <NavLink
+              key={ item.text }
+              item={ item }
+              isActive={ undefined }
+              isCollapsed={ false }
+              px="0px"
+              onClick={ onNavLinkClick }
+            />
+          )) }
         </VStack>
       </Box>
       <Box mt={ 2 } pt={ 3 } borderTopColor="divider" borderTopWidth="1px" { ...getDefaultTransitionProps() }>
