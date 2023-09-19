@@ -110,9 +110,14 @@ export interface SmartContractQueryMethodReadError {
   result: {
     code: number;
     message: string;
-    raw?: string;
   } | {
     error: string;
+  } | {
+    raw: string;
+  } | {
+    method_call: string;
+    method_id: string;
+    parameters: Array<{ 'name': string; 'type': string; 'value': string }>;
   };
 }
 
