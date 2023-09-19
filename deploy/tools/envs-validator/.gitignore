@@ -1,6 +1,5 @@
 /node_modules
+/public
 .env
 .env.production
 index.js
-envs.ts
-schema.ts

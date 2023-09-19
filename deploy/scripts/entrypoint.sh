@@ -1,9 +1,12 @@
 #!/bin/bash
 
+# Download external assets
+./download_assets.sh ./public/assets
+
 # Check run-time ENVs values integrity
 node "$(dirname "$0")/envs-validator.js" "$input"
 if [ $? != 0 ]; then                   
-   echo 🛑 ENV integrity check failed. 1>&2 && exit 1
+   exit 1
 fi
 
 # Generate favicons bundle

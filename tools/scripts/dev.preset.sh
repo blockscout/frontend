@@ -19,6 +19,12 @@ if [ ! -f "$secrets_file" ]; then
     exit 1
 fi
 
+# download assets for the running instance
+dotenv \
+  -e $config_file \
+  -- bash -c './deploy/scripts/download_assets.sh ./public/assets' \
+
+# run the app
 dotenv \
   -v NEXT_PUBLIC_GIT_COMMIT_SHA=$(git rev-parse --short HEAD) \
   -v NEXT_PUBLIC_GIT_TAG=$(git describe --tags --abbrev=0) \

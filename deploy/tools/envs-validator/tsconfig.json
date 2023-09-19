@@ -1,15 +1,17 @@
 {
+	"extends": "../../../tsconfig.json",
 	"compilerOptions": {
+		"noEmit": false,
 		"target": "es2016",
-		"skipLibCheck": true,
-		"strict": true,
-		"esModuleInterop": true,
 		"module": "CommonJS",
-		"moduleResolution": "node",
-		"isolatedModules": true,
-		"incremental": true,
-		"baseUrl": "."
+		"paths": {
+			"nextjs-routes": ["./nextjs/nextjs-routes.d.ts"],
+		}
 	},
-	"include": ["./schema.ts"],
-	"exclude": ["node_modules"]
+	"include": [ "../../../types/**/*.ts", "./index.ts", "./schema.ts" ],
+	"tsc-alias": {
+	  "verbose": true,
+	  "resolveFullPaths": true,
+	}
 }
+  

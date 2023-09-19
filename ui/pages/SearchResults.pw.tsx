@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
+import { getExternalAssetFilePath } from 'configs/app/utils';
 import { apps as appsMock } from 'mocks/apps/apps';
 import * as searchMock from 'mocks/search/index';
 import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
@@ -11,42 +12,51 @@ import LayoutMainColumn from 'ui/shared/layout/components/MainColumn';
 
 import SearchResults from './SearchResults';
 
-test('search by name +@mobile +@dark-mode', async({ mount, page }) => {
-  const hooksConfig = {
-    router: {
-      query: { q: 'o' },
-    },
-  };
-  await page.route(buildApiUrl('search') + '?q=o', (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify({
-      items: [
-        searchMock.token1,
-        searchMock.token2,
-        searchMock.contract1,
-        searchMock.label1,
-      ],
-    }),
-  }));
-  await page.route(searchMock.token1.icon_url as string, (route) => {
-    return route.fulfill({
-      status: 200,
-      path: './playwright/mocks/image_s.jpg',
-    });
+test.describe('search by name ', () => {
+  const extendedTest = test.extend({
+    context: contextWithEnvs([
+      { name: 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', value: '' },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ]) as any,
   });
 
-  const component = await mount(
-    <TestApp>
-      <LayoutMainColumn>
-        <SearchResults/>
-      </LayoutMainColumn>
-    </TestApp>,
-    { hooksConfig },
-  );
+  extendedTest('+@mobile +@dark-mode', async({ mount, page }) => {
+    const hooksConfig = {
+      router: {
+        query: { q: 'o' },
+      },
+    };
+    await page.route(buildApiUrl('search') + '?q=o', (route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify({
+        items: [
+          searchMock.token1,
+          searchMock.token2,
+          searchMock.contract1,
+          searchMock.label1,
+        ],
+      }),
+    }));
+    await page.route(searchMock.token1.icon_url as string, (route) => {
+      return route.fulfill({
+        status: 200,
+        path: './playwright/mocks/image_s.jpg',
+      });
+    });
 
-  await expect(component).toHaveScreenshot({
-    mask: [ page.locator('header'), page.locator('form') ],
-    maskColor: configs.maskColor,
+    const component = await mount(
+      <TestApp>
+        <LayoutMainColumn>
+          <SearchResults/>
+        </LayoutMainColumn>
+      </TestApp>,
+      { hooksConfig },
+    );
+
+    await expect(component).toHaveScreenshot({
+      mask: [ page.locator('header'), page.locator('form') ],
+      maskColor: configs.maskColor,
+    });
   });
 });
 
@@ -171,7 +181,7 @@ test('search by tx hash +@mobile', async({ mount, page }) => {
 });
 
 test.describe('with apps', () => {
-  const MARKETPLACE_CONFIG_URL = 'https://marketplace-config.url';
+  const MARKETPLACE_CONFIG_URL = getExternalAssetFilePath('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', 'https://marketplace-config.json') || '';
   const extendedTest = test.extend({
     context: contextWithEnvs([
       { name: 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', value: MARKETPLACE_CONFIG_URL },

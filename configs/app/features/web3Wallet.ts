@@ -1,4 +1,5 @@
 import type { Feature } from './types';
+import { SUPPORTED_WALLETS } from 'types/client/wallets';
 import type { WalletType } from 'types/client/wallets';
 
 import { getEnvValue, parseEnvJson } from '../utils';
@@ -8,12 +9,6 @@ const wallets = ((): Array<WalletType> | undefined => {
   if (envValue === 'none') {
     return;
   }
-
-  const SUPPORTED_WALLETS: Array<WalletType> = [
-    'metamask',
-    'coinbase',
-    'token_pocket',
-  ];
 
   const wallets = parseEnvJson<Array<WalletType>>(envValue)?.filter((type) => SUPPORTED_WALLETS.includes(type));
 

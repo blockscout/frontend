@@ -1,9 +1,9 @@
 import type { NavItemExternal } from 'types/client/navigation-items';
+import type { ChainIndicatorId } from 'types/homepage';
 import type { NetworkExplorer } from 'types/networks';
-import type { ChainIndicatorId } from 'ui/home/indicators/types';
 
 import * as views from './ui/views';
-import { getEnvValue, parseEnvJson } from './utils';
+import { getEnvValue, getExternalAssetFilePath, parseEnvJson } from './utils';
 
 // eslint-disable-next-line max-len
 const HOMEPAGE_PLATE_BACKGROUND_DEFAULT = 'radial-gradient(103.03% 103.03% at 0% 0%, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%), var(--chakra-colors-blue-400)';
@@ -11,18 +11,18 @@ const HOMEPAGE_PLATE_BACKGROUND_DEFAULT = 'radial-gradient(103.03% 103.03% at 0%
 const UI = Object.freeze({
   sidebar: {
     logo: {
-      'default': getEnvValue(process.env.NEXT_PUBLIC_NETWORK_LOGO),
-      dark: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_LOGO_DARK),
+      'default': getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_LOGO', process.env.NEXT_PUBLIC_NETWORK_LOGO),
+      dark: getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_LOGO_DARK', process.env.NEXT_PUBLIC_NETWORK_LOGO_DARK),
     },
     icon: {
-      'default': getEnvValue(process.env.NEXT_PUBLIC_NETWORK_ICON),
-      dark: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_ICON_DARK),
+      'default': getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_ICON', process.env.NEXT_PUBLIC_NETWORK_ICON),
+      dark: getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_ICON_DARK', process.env.NEXT_PUBLIC_NETWORK_ICON_DARK),
     },
     otherLinks: parseEnvJson<Array<NavItemExternal>>(getEnvValue(process.env.NEXT_PUBLIC_OTHER_LINKS)) || [],
-    featuredNetworks: getEnvValue(process.env.NEXT_PUBLIC_FEATURED_NETWORKS),
+    featuredNetworks: getExternalAssetFilePath('NEXT_PUBLIC_FEATURED_NETWORKS', process.env.NEXT_PUBLIC_FEATURED_NETWORKS),
   },
   footer: {
-    links: getEnvValue(process.env.NEXT_PUBLIC_FOOTER_LINKS),
+    links: getExternalAssetFilePath('NEXT_PUBLIC_FOOTER_LINKS', process.env.NEXT_PUBLIC_FOOTER_LINKS),
     frontendVersion: getEnvValue(process.env.NEXT_PUBLIC_GIT_TAG),
     frontendCommit: getEnvValue(process.env.NEXT_PUBLIC_GIT_COMMIT_SHA),
   },

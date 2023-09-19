@@ -1,9 +1,10 @@
 import type { Feature } from './types';
 
 import chain from '../chain';
-import { getEnvValue } from '../utils';
+import { getEnvValue, getExternalAssetFilePath } from '../utils';
 
-const configUrl = getEnvValue(process.env.NEXT_PUBLIC_MARKETPLACE_CONFIG_URL);
+// config file will be downloaded at run-time and saved in the public folder
+const configUrl = getExternalAssetFilePath('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', process.env.NEXT_PUBLIC_MARKETPLACE_CONFIG_URL);
 const submitFormUrl = getEnvValue(process.env.NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM);
 
 const title = 'Marketplace';
