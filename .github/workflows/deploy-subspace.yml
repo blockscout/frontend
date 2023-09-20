@@ -3,7 +3,7 @@ name: Deploy from subspace-frontend branch
 on:
   push:
     branches:
-      - subspace-frontend
+      - '!main'
   pull_request:
     branches:
       - subspace-frontend
