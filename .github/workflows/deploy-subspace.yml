@@ -51,7 +51,7 @@ jobs:
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          tags: ${{ FRONTEND_NAME }}
+          tags: ${{ env.FRONTEND_NAME }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             GIT_COMMIT_SHA=${{ env.SHORT_SHA }}
