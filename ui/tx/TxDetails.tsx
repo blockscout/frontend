@@ -187,7 +187,7 @@ const TxDetails = () => {
             isLoading={ isPlaceholderData }
           >
             <Icon as={ clockIcon } boxSize={ 5 } color="gray.500" isLoading={ isPlaceholderData }/>
-            <Skeleton isLoaded={ !isPlaceholderData } ml={ 1 }>{ dayjs(data.timestamp).fromNow() }</Skeleton>
+            <Skeleton isLoaded={ !isPlaceholderData } ml={ 2 }>{ dayjs(data.timestamp).fromNow() }</Skeleton>
             <TextSeparator/>
             <Skeleton isLoaded={ !isPlaceholderData } whiteSpace="normal">{ dayjs(data.timestamp).format('llll') }</Skeleton>
             <TextSeparator color="gray.500"/>
@@ -361,7 +361,7 @@ const TxDetails = () => {
               currency={ config.chain.currency.symbol }
               exchangeRate={ data.exchange_rate }
               flexWrap="wrap"
-              ml={ 1 }
+              ml={ 2 }
             />
           </DetailsInfoItem>
         ) }

@@ -103,7 +103,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           <Flex columnGap={ 4 } mt={ 2 }>
             <Flex>
               <Icon as={ flameIcon } boxSize={ 5 } color="gray.500" isLoading={ isLoading }/>
-              <Skeleton isLoaded={ !isLoading } display="inline-block" color="text_secondary" ml={ 1 }>
+              <Skeleton isLoaded={ !isLoading } display="inline-block" color="text_secondary" ml={ 2 }>
                 <span>{ burntFees.div(WEI).toFixed() }</span>
               </Skeleton>
             </Flex>
