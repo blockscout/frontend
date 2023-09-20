@@ -1,7 +1,7 @@
 blank_issues_enabled: false
 contact_links:
   - name: Feature Request
-    url: https://github.com/subspace/subspace/issues
+    url: https://github.com/subspace/blockscout-frontend/issues
     about: Request a feature or enhancement
   - name: Ask a question
     url: https://forum.subspace.network

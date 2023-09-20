@@ -8,9 +8,9 @@ on:
 env:
   FRONTEND_NAME: ghcr.io/${{ github.repository_owner }}/blockscout-frontend:subspace
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+# concurrency:
+#   group: ${{ github.workflow }}-${{ github.ref }}
+#   cancel-in-progress: true
 
 jobs:
   publish_image:
