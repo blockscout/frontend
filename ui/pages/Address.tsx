@@ -75,7 +75,7 @@ const AddressPageContent = () => {
         count: addressTabsCountersQuery.data?.transactions_count,
         component: <AddressTxs scrollRef={ tabsScrollRef }/>,
       },
-      config.features.beaconChain.isEnabled ?
+      config.features.beaconChain.isEnabled && addressTabsCountersQuery.data?.withdrawals_count ?
         {
           id: 'withdrawals',
           title: 'Withdrawals',
@@ -108,7 +108,7 @@ const AddressPageContent = () => {
         count: addressTabsCountersQuery.data?.coin_balances_count,
         component: <AddressCoinBalance/>,
       },
-      config.chain.verificationType === 'validation' ?
+      config.chain.verificationType === 'validation' && addressTabsCountersQuery.data?.validations_count ?
         {
           id: 'blocks_validated',
           title: 'Blocks validated',
@@ -116,12 +116,14 @@ const AddressPageContent = () => {
           component: <AddressBlocksValidated scrollRef={ tabsScrollRef }/>,
         } :
         undefined,
-      {
-        id: 'logs',
-        title: 'Logs',
-        count: addressTabsCountersQuery.data?.logs_count,
-        component: <AddressLogs scrollRef={ tabsScrollRef }/>,
-      },
+      addressTabsCountersQuery.data?.logs_count ?
+        {
+          id: 'logs',
+          title: 'Logs',
+          count: addressTabsCountersQuery.data?.logs_count,
+          component: <AddressLogs scrollRef={ tabsScrollRef }/>,
+        } :
+        undefined,
       addressQuery.data?.is_contract ? {
         id: 'contract',
         title: () => {
