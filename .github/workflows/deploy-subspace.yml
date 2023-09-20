@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - subspace-frontend
+  pull_request:
+    branches:
+      - subspace-frontend
 
 env:
   FRONTEND_NAME: ghcr.io/${{ github.repository_owner }}/blockscout-frontend:subspace
