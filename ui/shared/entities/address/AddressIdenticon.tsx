@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import React from 'react';
 
 import config from 'configs/app';
+import IdenticonGithub from 'ui/shared/IdenticonGithub';
 
 interface IconProps {
   hash: string;
@@ -13,18 +14,8 @@ const Icon = dynamic(
   async() => {
     switch (config.UI.views.address.identiconType) {
       case 'github': {
-        const IdenticonJs = (await import('identicon.js')).default;
-
         // eslint-disable-next-line react/display-name
-        return (props: IconProps) => {
-          const data = new IdenticonJs(props.hash, { size: props.size, format: 'svg' }).toString();
-          return (
-            <Image
-              src={ `data:image/svg+xml;base64,${ data }` }
-              alt={ `Identicon for ${ props.hash }}` }
-            />
-          );
-        };
+        return (props: IconProps) => <IdenticonGithub size={ props.size } seed={ props.hash }/>;
       }
 
       case 'blockie': {

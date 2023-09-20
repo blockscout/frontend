@@ -46,7 +46,9 @@ const ProfileMenuMobile = () => {
       <Box padding={ 2 } onClick={ hasMenu ? onOpen : undefined }>
         <Button
           variant="unstyled"
-          height="auto"
+          display="block"
+          boxSize="24px"
+          flexShrink={ 0 }
           { ...buttonProps }
         >
           <UserAvatar size={ 24 }/>
