@@ -109,6 +109,15 @@ const adsBannerSchema = yup
     NEXT_PUBLIC_AD_BANNER_PROVIDER: yup.string<AdBannerProviders>().oneOf(SUPPORTED_AD_BANNER_PROVIDERS),
     NEXT_PUBLIC_AD_ADBUTLER_CONFIG_DESKTOP: adButlerConfigSchema,
     NEXT_PUBLIC_AD_ADBUTLER_CONFIG_MOBILE: adButlerConfigSchema,
+    NEXT_PUBLIC_AD_CUSTOM_CONFIG_URL: yup
+      .string()
+      .when('NEXT_PUBLIC_AD_BANNER_PROVIDER', {
+        is: (value: AdBannerProviders) => value === 'custom',
+        then: (schema) => schema.url().required(),
+        otherwise: (schema) =>
+          schema.max(-1, 'NEXT_PUBLIC_AD_CUSTOM_CONFIG_URL cannot not be used without NEXT_PUBLIC_AD_BANNER_PROVIDER being set to "custom", ' +
+                'and it must be a valid URL'),
+      }),
   });
 
 const sentrySchema = yup
