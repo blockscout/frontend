@@ -14,7 +14,6 @@ import twitterIcon from 'icons/social/tweet.svg';
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import useFetch from 'lib/hooks/useFetch';
-import useIssueUrl from 'lib/hooks/useIssueUrl';
 import IndexingAlertIntTxs from 'ui/home/IndexingAlertIntTxs';
 import NetworkAddToWallet from 'ui/shared/NetworkAddToWallet';
 
@@ -34,19 +33,18 @@ const Footer = () => {
     },
   });
   const apiVersionUrl = getApiVersionUrl(backendVersionData?.backend_version);
-  const issueUrl = useIssueUrl(backendVersionData?.backend_version);
   const BLOCKSCOUT_LINKS = [
     {
       icon: editIcon,
       iconSize: '16px',
       text: 'Submit an issue',
-      url: issueUrl,
+      url: 'https://github.com/subspace/blockscout-frontend/issues',
     },
     {
       icon: cannyIcon,
       iconSize: '20px',
       text: 'Feature request',
-      url: 'https://blockscout.canny.io/feature-requests',
+      url: 'https://github.com/subspace/blockscout-frontend/issues',
     },
     {
       icon: gitIcon,

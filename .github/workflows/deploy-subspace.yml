@@ -1,13 +1,19 @@
-name: Deploy from main branch
+name: Deploy from subspace-frontend branch
 
 on:
   push:
     branches:
-      - main
+      - '!main'
+  pull_request:
+    branches:
+      - subspace-frontend
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+env:
+  FRONTEND_NAME: ghcr.io/${{ github.repository_owner }}/blockscout-frontend:subspace
+
+# concurrency:
+#   group: ${{ github.workflow }}-${{ github.ref }}
+#   cancel-in-progress: true
 
 jobs:
   publish_image:
@@ -25,14 +31,14 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ghcr.io/blockscout/frontend
+          images: ghcr.io/subspace/blockscout-frontend
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ github.token }}
 
       - name: Add SHORT_SHA env property with commit short sha
         run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
@@ -45,31 +51,9 @@ jobs:
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ env.FRONTEND_NAME }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             GIT_COMMIT_SHA=${{ env.SHORT_SHA }}
 
-  deploy_main:
-    name: Deploy frontend
-    needs: publish_image
-    uses: blockscout/blockscout-ci-cd/.github/workflows/deploy_helmfile.yaml@master
-    with:
-      appName: front
-      globalEnv: main
-      helmfileDir: deploy
-      kubeConfigSecret: ci/data/dev/kubeconfig/k8s-dev
-      vaultRole: ci-dev
-    secrets: inherit
 
-  deploy_l2:
-    name: Deploy frontend (L2)
-    needs: publish_image
-    uses: blockscout/blockscout-ci-cd/.github/workflows/deploy_helmfile.yaml@master
-    with:
-      appName: l2-optimism-goerli
-      globalEnv: optimism-goerli
-      helmfileDir: deploy
-      kubeConfigSecret: ci/data/dev/kubeconfig/k8s-dev
-      vaultRole: ci-dev
-    secrets: inherit
