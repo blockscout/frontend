@@ -61,10 +61,16 @@ const LatestBlocksItem = ({ block, h, isLoading }: Props) => {
       <Grid gridGap={ 2 } templateColumns="auto minmax(0, 1fr)" fontSize="sm">
         <Skeleton isLoaded={ !isLoading }>Txn</Skeleton>
         <Skeleton isLoaded={ !isLoading } color="text_secondary"><span>{ block.tx_count }</span></Skeleton>
-        { !config.features.rollup.isEnabled && !config.UI.views.block.hiddenFields?.nonce && (
+
+        { !config.features.rollup.isEnabled && !config.UI.views.block.hiddenFields?.total_reward && (
           <>
             <Skeleton isLoaded={ !isLoading }>Reward</Skeleton>
             <Skeleton isLoaded={ !isLoading } color="text_secondary"><span>{ totalReward.dp(10).toFixed() }</span></Skeleton>
+          </>
+        ) }
+
+        { !config.features.rollup.isEnabled && (
+          <>
             <Skeleton isLoaded={ !isLoading } textTransform="capitalize">{ getNetworkValidatorTitle() }</Skeleton>
             <AddressEntity
               address={ block.miner }

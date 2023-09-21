@@ -20,12 +20,29 @@ import LinkInternal from 'ui/shared/LinkInternal';
 
 import LatestBlocksItem from './LatestBlocksItem';
 
-const BLOCK_HEIGHT_L1 = 166;
-const BLOCK_HEIGHT_L2 = 112;
 const BLOCK_MARGIN = 12;
 
+const itemInfoLinesNumber = (() => {
+  if (config.features.rollup.isEnabled) {
+    return 1;
+  }
+
+  if (config.UI.views.block.hiddenFields?.total_reward) {
+    return 2;
+  }
+
+  return 3;
+})();
+
+const itemHeight =
+  itemInfoLinesNumber * 21 + // 21px is line height for info text
+  (itemInfoLinesNumber - 1) * 8 + // 8px is gap between lines
+  28 + // 28px is height of block number
+  12 + // 12px is gap between block number and info
+  (24 + 1) * 2 // 24px is top and bottom padding, 1px is border width
+;
+
 const LatestBlocks = () => {
-  const blockHeight = config.features.rollup.isEnabled || config.UI.views.block.hiddenFields?.total_reward ? BLOCK_HEIGHT_L2 : BLOCK_HEIGHT_L1;
   const isMobile = useIsMobile();
   // const blocksMaxCount = isMobile ? 2 : 3;
   let blocksMaxCount: number;
@@ -92,13 +109,13 @@ const LatestBlocks = () => {
             </Text>
           </Skeleton>
         ) }
-        <VStack spacing={ `${ BLOCK_MARGIN }px` } mb={ 4 } height={ `${ blockHeight * blocksCount + BLOCK_MARGIN * (blocksCount - 1) }px` } overflow="hidden">
+        <VStack spacing={ `${ BLOCK_MARGIN }px` } mb={ 4 } height={ `${ itemHeight * blocksCount + BLOCK_MARGIN * (blocksCount - 1) }px` } overflow="hidden">
           <AnimatePresence initial={ false } >
             { dataToShow.map(((block, index) => (
               <LatestBlocksItem
                 key={ block.height + (isPlaceholderData ? String(index) : '') }
                 block={ block }
-                h={ blockHeight }
+                h={ itemHeight }
                 isLoading={ isPlaceholderData }
               />
             ))) }
