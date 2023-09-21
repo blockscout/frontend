@@ -18,26 +18,23 @@ import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 
 type Props = {
   block: Block;
-  h: number;
   isLoading?: boolean;
 }
 
-const LatestBlocksItem = ({ block, h, isLoading }: Props) => {
+const LatestBlocksItem = ({ block, isLoading }: Props) => {
   const totalReward = getBlockTotalReward(block);
   return (
     <Box
       as={ motion.div }
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
+      exit={{ display: 'none' }}
       transitionDuration="normal"
       transitionTimingFunction="linear"
-      borderRadius="12px"
+      borderRadius="md"
       border="1px solid"
       borderColor="divider"
       p={ 6 }
-      h={ `${ h }px` }
-      minWidth={{ base: '100%', lg: '280px' }}
-      w="100%"
     >
       <Flex alignItems="center" overflow="hidden" w="100%" mb={ 3 }>
         <BlockEntity
