@@ -6,8 +6,6 @@ import useCustomBanners from 'ui/shared/ad/useCustomBanners';
 const CustomAdBanner = ({ className }: { className?: string }) => {
   const customBanners = useCustomBanners().data || [];
   const [ currentBannerIndex, setCurrentBannerIndex ] = useState(0);
-  // eslint-disable-next-line no-console
-  console.log(customBanners);
   useEffect(() => {
     if (customBanners.length === 0) {
       return;
