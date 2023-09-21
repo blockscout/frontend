@@ -228,6 +228,7 @@ const AddressTokenTransfers = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Pr
     name: '',
     icon_url: '',
     symbol: '',
+    type: 'ERC-20' as const,
   }), [ tokenFilter ]);
 
   const tokenFilterComponent = tokenFilter && (

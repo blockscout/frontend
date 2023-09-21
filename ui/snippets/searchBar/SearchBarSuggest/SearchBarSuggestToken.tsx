@@ -16,7 +16,7 @@ interface Props {
 }
 
 const SearchBarSuggestToken = ({ data, isMobile, searchTerm }: Props) => {
-  const icon = <TokenEntity.Icon token={ data }/>;
+  const icon = <TokenEntity.Icon token={{ ...data, type: data.token_type }}/>;
   const verifiedIcon = <Icon as={ verifiedToken } boxSize={ 4 } color="green.500" ml={ 1 }/>;
   const name = (
     <Text

@@ -1,7 +1,7 @@
 import { Flex, Link, useBoolean } from '@chakra-ui/react';
 import React from 'react';
 
-import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
+import NftEntity from 'ui/shared/entities/nft/NftEntity';
 
 interface Props {
   items: Array<{total: { token_id: string} }>;
@@ -15,12 +15,10 @@ const TxStateTokenIdList = ({ items, tokenAddress, isLoading }: Props) => {
   return (
     <Flex flexDir="column" rowGap={ 2 }>
       { items.slice(0, isCut ? 3 : items.length).map((item, index) => (
-        <TokenTransferNft
+        <NftEntity
           key={ index }
           hash={ tokenAddress }
           id={ item.total.token_id }
-          w="auto"
-          truncation="constant"
           isLoading={ isLoading }
         />
       )) }

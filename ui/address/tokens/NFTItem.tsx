@@ -1,13 +1,13 @@
-import { Flex, Link, Text, LinkBox, LinkOverlay, useColorModeValue, Skeleton } from '@chakra-ui/react';
+import { Flex, Text, LinkBox, LinkOverlay, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressTokenBalance } from 'types/api/address';
 
 import { route } from 'nextjs-routes';
 
+import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import NftMedia from 'ui/shared/nft/NftMedia';
-import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
 type Props = AddressTokenBalance & { isLoading: boolean };
 
@@ -36,20 +36,7 @@ const NFTItem = ({ token, token_id: tokenId, token_instance: tokenInstance, isLo
       { tokenId && (
         <Flex mb={ 2 } ml={ 1 }>
           <Text whiteSpace="pre" variant="secondary">ID# </Text>
-          <TruncatedTextTooltip label={ tokenId }>
-            <Skeleton isLoaded={ !isLoading } overflow="hidden" h="20px">
-              <Link
-                w="100%"
-                display="inline-block"
-                whiteSpace="nowrap"
-                textOverflow="ellipsis"
-                overflow="hidden"
-                href={ route({ pathname: '/token/[hash]/instance/[id]', query: { hash: token.address, id: tokenId } }) }
-              >
-                { tokenId }
-              </Link>
-            </Skeleton>
-          </TruncatedTextTooltip>
+          <NftEntity hash={ token.address } id={ tokenId } isLoading={ isLoading } noIcon/>
         </Flex>
       ) }
       <TokenEntity

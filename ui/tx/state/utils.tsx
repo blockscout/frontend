@@ -9,8 +9,8 @@ import { ZERO_ADDRESS } from 'lib/consts';
 import { nbsp, space } from 'lib/html-entities';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import Tag from 'ui/shared/chakra/Tag';
+import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
-import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
 
 import TxStateTokenIdList from './TxStateTokenIdList';
 
@@ -114,11 +114,9 @@ export function getStateElements(data: TxStateChange, isLoading?: boolean) {
         if (!Array.isArray(data.change)) {
           if ('token_id' in data && data.token_id) {
             return (
-              <TokenTransferNft
+              <NftEntity
                 hash={ data.token.address }
                 id={ data.token_id }
-                w="auto"
-                truncation="constant"
                 isLoading={ isLoading }
               />
             );
