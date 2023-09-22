@@ -2,7 +2,7 @@ import type { Feature } from './types';
 import type { AdButlerConfig, AdBannerProviders } from 'types/client/ad';
 import { SUPPORTED_AD_BANNER_PROVIDERS } from 'types/client/ad';
 
-import { getEnvValue, parseEnvJson } from '../utils';
+import { getEnvValue, getExternalAssetFilePath, parseEnvJson } from '../utils';
 
 const provider: AdBannerProviders = (() => {
   const envValue = getEnvValue(process.env.NEXT_PUBLIC_AD_BANNER_PROVIDER) as AdBannerProviders;
@@ -46,8 +46,7 @@ const config: Feature<AdsBannerFeaturePayload> = (() => {
       });
     }
   } else if (provider === 'custom') {
-    // const configUrl = getExternalAssetFilePath('NEXT_PUBLIC_AD_CUSTOM_CONFIG_URL', process.env.NEXT_PUBLIC_AD_CUSTOM_CONFIG_URL);
-    const configUrl = getEnvValue(process.env.NEXT_PUBLIC_AD_CUSTOM_CONFIG_URL);
+    const configUrl = getExternalAssetFilePath('NEXT_PUBLIC_AD_CUSTOM_CONFIG_URL', process.env.NEXT_PUBLIC_AD_CUSTOM_CONFIG_URL);
     if (configUrl) {
       return Object.freeze({
         title,
