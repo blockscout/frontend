@@ -2,13 +2,13 @@
   {
     "title": "LUKSO Mainnet",
     "url": "https://explorer.execution.mainnet.lukso.network/",
-    "group": "Mainnet",
+    "group": "Mainnets",
     "icon": "https://lukso.network/assets/images/logos/LUKSO_icon.svg"
   },
   {
     "title": "LUKSO Testnet",
     "url": "https://explorer.execution.testnet.lukso.network/",
-    "group": "Testnet",
+    "group": "Testnets",
     "icon": "https://lukso.network/assets/images/logos/LUKSO_icon.svg"
   }
 ]
