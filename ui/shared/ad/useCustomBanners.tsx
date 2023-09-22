@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
-import type { AdCustomConfig } from 'types/client/adCustomConfig';
+import type { AdCustomConfig } from 'types/client/ad';
 
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';

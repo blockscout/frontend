@@ -228,19 +228,27 @@ This feature is **enabled by default** with the `slise` ads provider. To switch 
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_AD_BANNER_PROVIDER | `slise` \| `adbutler` \| `coinzilla` \| `custom` \| `none` | Ads provider  | - | `slise` | `coinzilla` |
+| NEXT_PUBLIC_AD_BANNER_PROVIDER | `slise` \| `adbutler` \| `coinzilla` \| `custom` \| `none` | Ads provider | - | `slise` | `coinzilla` |
 | NEXT_PUBLIC_AD_ADBUTLER_CONFIG_DESKTOP | `{ id: string; width: string; height: string }` | Placement config for desktop Adbutler banner | - | - | `{'id':'123456','width':'728','height':'90'}` |
 | NEXT_PUBLIC_AD_ADBUTLER_CONFIG_MOBILE | `{ id: string; width: number; height: number }` | Placement config for mobile Adbutler banner | - | - | `{'id':'654321','width':'300','height':'100'}` |
-| NEXT_PUBLIC_AD_CUSTOM_CONFIG_URL | `string` | URL of configuration file (.json format only) which contains list of custom banners that will be shown in the network menu. See below list of available properties for particular banner | - | - | `https://example.com/ad_custom_config.json` |
+| NEXT_PUBLIC_AD_CUSTOM_CONFIG_URL | `string` | URL of configuration file (.json format only) which contains settings and list of custom banners that will be shown in the home page and token detail page. See below list of available properties for particular banner | - | - | `https://example.com/ad_custom_config.json` |
+
+#### Configuration properties
+| Variable | Type | Description | Compulsoriness | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| banners | `array` | List of banners with their properties. Refer to the "Custom banners configuration properties" section below. | Required | - | See below |
+| interval | `number` | Duration (in milliseconds) for how long each banner will be displayed. | - | 60000 | `6000` |
+
+&nbsp;
 
 #### Custom banners configuration properties
 
-| Variable | Type | Description | Compulsoriness  | Default value | Example value |
+| Variable | Type | Description | Compulsoriness | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
-| text | `string` | Tooltip text displayed when the mouse is moved over the banner. | Required | - | `Anyblock` |
+| text | `string` | Tooltip text displayed when the mouse is moved over the banner. | - | - | - |
 | url | `string` | Link that opens when clicking on the banner. | Required | - | `https://example.com` |
-| desktop | `string` | Banner image (both .png, .jpg, and .gif are acceptable) used when the screen width is greater than 62em (usually 99px). | Required | - | `https://example.com/configs/ad-custom-banners/desktop/example.gif` |
-| mobile | `string` | Banner image (both .png, .jpg, and .gif are acceptable) used when the screen width is less than 62em (usually 99px). | Required | - | `https://example.com/configs/ad-custom-banners/mobile/example.gif` |
+| desktop | `string` | Banner image (both .png, .jpg, and .gif are acceptable) used when the screen width is greater than 1000px. | Required | - | `https://example.com/configs/ad-custom-banners/desktop/example.gif` |
+| mobile | `string` | Banner image (both .png, .jpg, and .gif are acceptable) used when the screen width is less than 1000px. | Required | - | `https://example.com/configs/ad-custom-banners/mobile/example.gif` |
 
 &nbsp;
 
@@ -325,7 +333,7 @@ This feature is **always enabled**, but you can configure its behavior by passin
 
 #### Marketplace app configuration properties
 
-| Property | Type | Description | Compulsoriness | Example value
+| Property | Type | Description | Compulsoriness | Example value |
 | --- | --- | --- | --- | --- |
 | id | `string` | Used as slug for the app. Must be unique in the app list. | Required | `'app'` |
 | external | `boolean` | `true` means that the application opens in a new window, but not in an iframe. | - | `true` |

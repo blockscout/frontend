@@ -5,3 +5,20 @@ export type AdBannerProviders = ArrayElement<typeof SUPPORTED_AD_BANNER_PROVIDER
 
 export const SUPPORTED_AD_TEXT_PROVIDERS = [ 'coinzilla', 'none' ] as const;
 export type AdTextProviders = ArrayElement<typeof SUPPORTED_AD_TEXT_PROVIDERS>;
+
+export type AdButlerConfig = {
+  id: string;
+  width: string;
+  height: string;
+}
+export type AdCustomBannerConfig = {
+  text: string;
+  url: string;
+  desktop: string;
+  mobile: string;
+}
+
+export type AdCustomConfig = {
+  banners: Array<AdCustomBannerConfig>;
+  interval: number;
+}

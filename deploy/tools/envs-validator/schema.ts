@@ -1,8 +1,7 @@
 import * as yup from 'yup';
 
-import type { AdButlerConfig } from '../../../types/client/adButlerConfig';
-import { SUPPORTED_AD_TEXT_PROVIDERS, SUPPORTED_AD_BANNER_PROVIDERS } from '../../../types/client/adProviders';
-import type { AdTextProviders, AdBannerProviders } from '../../../types/client/adProviders';
+import type { AdButlerConfig, AdTextProviders, AdBannerProviders } from '../../../types/client/ad';
+import { SUPPORTED_AD_TEXT_PROVIDERS, SUPPORTED_AD_BANNER_PROVIDERS } from '../../../types/client/ad';
 import type { MarketplaceAppOverview } from '../../../types/client/marketplace';
 import type { NavItemExternal } from '../../../types/client/navigation-items';
 import type { WalletType } from '../../../types/client/wallets';
@@ -103,21 +102,40 @@ const adButlerConfigSchema = yup
       .required(),
   });
 
+const adCustomConfigSchema = yup
+  .object()
+  .shape({
+    banners: yup
+      .array()
+      .of(
+        yup.object().shape({
+          text: yup.string(),
+          url: yup.string().url().required(),
+          desktop: yup.string().url().required(),
+          mobile: yup.string().url().required(),
+        }),
+      )
+      .required(),
+    interval: yup.number(),
+  })
+  .when('NEXT_PUBLIC_AD_BANNER_PROVIDER', {
+    is: (value: AdBannerProviders) => value === 'custom',
+    then: (schema) => schema,
+    otherwise: (schema) =>
+      schema.test(
+        'custom-validation',
+        'NEXT_PUBLIC_AD_CUSTOM_CONFIG_URL cannot not be used without NEXT_PUBLIC_AD_BANNER_PROVIDER being set to "custom"',
+        () => false,
+      ),
+  });
+
 const adsBannerSchema = yup
   .object()
   .shape({
     NEXT_PUBLIC_AD_BANNER_PROVIDER: yup.string<AdBannerProviders>().oneOf(SUPPORTED_AD_BANNER_PROVIDERS),
     NEXT_PUBLIC_AD_ADBUTLER_CONFIG_DESKTOP: adButlerConfigSchema,
     NEXT_PUBLIC_AD_ADBUTLER_CONFIG_MOBILE: adButlerConfigSchema,
-    NEXT_PUBLIC_AD_CUSTOM_CONFIG_URL: yup
-      .string()
-      .when('NEXT_PUBLIC_AD_BANNER_PROVIDER', {
-        is: (value: AdBannerProviders) => value === 'custom',
-        then: (schema) => schema.url().required(),
-        otherwise: (schema) =>
-          schema.max(-1, 'NEXT_PUBLIC_AD_CUSTOM_CONFIG_URL cannot not be used without NEXT_PUBLIC_AD_BANNER_PROVIDER being set to "custom", ' +
-                'and it must be a valid URL'),
-      }),
+    NEXT_PUBLIC_AD_CUSTOM_CONFIG_URL: adCustomConfigSchema,
   });
 
 const sentrySchema = yup

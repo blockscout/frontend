@@ -1,6 +1,6 @@
 import type { Feature } from './types';
-import { SUPPORTED_AD_BANNER_PROVIDERS } from 'types/client/adProviders';
-import type { AdTextProviders } from 'types/client/adProviders';
+import { SUPPORTED_AD_BANNER_PROVIDERS } from 'types/client/ad';
+import type { AdTextProviders } from 'types/client/ad';
 
 import { getEnvValue } from '../utils';
 
