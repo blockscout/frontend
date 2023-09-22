@@ -45,7 +45,7 @@ async function validateEnvs(appEnvs: Record<string, string>) {
     appEnvs.NEXT_PUBLIC_AD_CUSTOM_CONFIG_URL = await getExternalJsonContent(
       './public/assets/ad_custom_config.json',
       appEnvs.NEXT_PUBLIC_AD_CUSTOM_CONFIG_URL,
-    ) || '{}';
+    ) || '{ "banners": []}';
 
     await schema.validate(appEnvs, { stripUnknown: false, abortEarly: false });
     console.log('👍 All good!');
