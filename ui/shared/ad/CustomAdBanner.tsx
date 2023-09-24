@@ -6,9 +6,9 @@ import type { AdCustomConfig } from 'types/client/ad';
 
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
+import { MINUTE } from 'lib/consts';
 import useFetch from 'lib/hooks/useFetch';
-
-import useIsMobile from '../../../lib/hooks/useIsMobile';
+import useIsMobile from 'lib/hooks/useIsMobile';
 
 const CustomAdBanner = ({ className }: { className?: string }) => {
   const isMobile = useIsMobile();
@@ -18,31 +18,42 @@ const CustomAdBanner = ({ className }: { className?: string }) => {
 
   const apiFetch = useFetch();
   const { data: adConfig } = useQuery<unknown, ResourceError<unknown>, AdCustomConfig>(
-    [ 'custom-configs' ],
+    [ 'ad-banner-custom-config' ],
     async() => apiFetch(configUrl),
     {
       enabled: feature.isEnabled && feature.provider === 'custom',
       staleTime: Infinity,
     });
-  const interval = adConfig?.interval || 60000;
+  const interval = adConfig?.interval || MINUTE;
   const banners = adConfig?.banners || [];
+  const randomStart = adConfig?.randomStart || false;
+  const randomNextAd = adConfig?.randomNextAd || false;
 
-  const [ currentBannerIndex, setCurrentBannerIndex ] = useState(0);
+  const [ currentBannerIndex, setCurrentBannerIndex ] = useState(
+    randomStart ? Math.floor(Math.random() * banners.length) : 0,
+  );
   useEffect(() => {
     if (banners.length === 0) {
       return;
     }
     const timer = setInterval(() => {
-      setCurrentBannerIndex((prevIndex) => (prevIndex + 1) % banners.length);
+      if (randomNextAd) {
+        setCurrentBannerIndex(Math.floor(Math.random() * banners.length));
+      } else {
+        setCurrentBannerIndex((prevIndex) => (prevIndex + 1) % banners.length);
+      }
     }, interval);
 
     return () => {
       clearInterval(timer);
     };
-  }, [ interval, banners.length ]);
+  }, [ interval, banners.length, randomNextAd ]);
 
   if (banners.length === 0) {
-    return null;
+    return (
+      <Flex className={ className } h="90px">
+      </Flex>
+    );
   }
 
   const currentBanner = banners[currentBannerIndex];
@@ -51,7 +62,8 @@ const CustomAdBanner = ({ className }: { className?: string }) => {
     <Flex className={ className } h="90px">
       <Tooltip label={ currentBanner.text } aria-label={ currentBanner.text }>
         <a href={ currentBanner.url } target="_blank" rel="noopener noreferrer">
-          <Image src={ isMobile ? currentBanner.mobile : currentBanner.desktop } alt={ currentBanner.text } height="100%" width="auto" borderRadius="md"/>
+          <Image src={ isMobile ? currentBanner.mobileImageUrl : currentBanner.desktopImageUrl }
+            alt={ currentBanner.text } height="100%" width="auto" borderRadius="md"/>
         </a>
       </Tooltip>
     </Flex>

@@ -12,13 +12,15 @@ export type AdButlerConfig = {
   height: string;
 }
 export type AdCustomBannerConfig = {
-  text: string;
-  url: string;
-  desktop: string;
-  mobile: string;
+  text?: string;
+  url?: string;
+  desktopImageUrl: string;
+  mobileImageUrl: string;
 }
 
 export type AdCustomConfig = {
   banners: Array<AdCustomBannerConfig>;
-  interval: number;
+  interval?: number;
+  randomStart?: boolean;
+  randomNextAd?: boolean;
 }

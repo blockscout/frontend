@@ -238,6 +238,8 @@ This feature is **enabled by default** with the `slise` ads provider. To switch 
 | --- | --- | --- | --- | --- | --- |
 | banners | `array` | List of banners with their properties. Refer to the "Custom banners configuration properties" section below. | Required | - | See below |
 | interval | `number` | Duration (in milliseconds) for how long each banner will be displayed. | - | 60000 | `6000` |
+| randomStart | `boolean` | Set to true to randomly start playing advertisements from any position in the array | - | `false` | `true` |
+| randomNextAd | `boolean` | Set to ture to randomly play advertisements | - | `false` | `true` |
 
 &nbsp;
 
@@ -246,9 +248,9 @@ This feature is **enabled by default** with the `slise` ads provider. To switch 
 | Variable | Type | Description | Compulsoriness | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | text | `string` | Tooltip text displayed when the mouse is moved over the banner. | - | - | - |
-| url | `string` | Link that opens when clicking on the banner. | Required | - | `https://example.com` |
-| desktop | `string` | Banner image (both .png, .jpg, and .gif are acceptable) used when the screen width is greater than 1000px. | Required | - | `https://example.com/configs/ad-custom-banners/desktop/example.gif` |
-| mobile | `string` | Banner image (both .png, .jpg, and .gif are acceptable) used when the screen width is less than 1000px. | Required | - | `https://example.com/configs/ad-custom-banners/mobile/example.gif` |
+| url | `string` | Link that opens when clicking on the banner. | - | - | `https://example.com` |
+| desktopImageUrl | `string` | Banner image (both .png, .jpg, and .gif are acceptable) used when the screen width is greater than 1000px. | Required | - | `https://example.com/configs/ad-custom-banners/desktop/example.gif` |
+| mobileImageUrl | `string` | Banner image (both .png, .jpg, and .gif are acceptable) used when the screen width is less than 1000px. | Required | - | `https://example.com/configs/ad-custom-banners/mobile/example.gif` |
 
 &nbsp;
 

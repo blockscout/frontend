@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-import type { AdButlerConfig, AdTextProviders, AdBannerProviders } from '../../../types/client/ad';
+import type { AdButlerConfig, AdTextProviders, AdBannerProviders, AdCustomBannerConfig } from '../../../types/client/ad';
 import { SUPPORTED_AD_TEXT_PROVIDERS, SUPPORTED_AD_BANNER_PROVIDERS } from '../../../types/client/ad';
 import type { MarketplaceAppOverview } from '../../../types/client/marketplace';
 import type { NavItemExternal } from '../../../types/client/navigation-items';
@@ -102,21 +102,26 @@ const adButlerConfigSchema = yup
       .required(),
   });
 
+const adCustomBannerConfigSchema: yup.ObjectSchema<AdCustomBannerConfig> = yup
+  .object()
+  .shape({
+    text: yup.string(),
+    url: yup.string().url(),
+    desktopImageUrl: yup.string().url().required(),
+    mobileImageUrl: yup.string().url().required(),
+  });
+
 const adCustomConfigSchema = yup
   .object()
   .shape({
     banners: yup
       .array()
-      .of(
-        yup.object().shape({
-          text: yup.string(),
-          url: yup.string().url().required(),
-          desktop: yup.string().url().required(),
-          mobile: yup.string().url().required(),
-        }),
-      )
+      .of(adCustomBannerConfigSchema)
+      .min(1, 'Banners array cannot be empty')
       .required(),
-    interval: yup.number(),
+    interval: yup.number().positive(),
+    randomStart: yup.boolean(),
+    randomNextAd: yup.boolean(),
   })
   .when('NEXT_PUBLIC_AD_BANNER_PROVIDER', {
     is: (value: AdBannerProviders) => value === 'custom',
