@@ -2,7 +2,6 @@ import type { As } from '@chakra-ui/react';
 import { Flex, Skeleton, Tooltip, chakra } from '@chakra-ui/react';
 import _omit from 'lodash/omit';
 import React from 'react';
-import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 
 import type { AddressParam } from 'types/api/addressParams';
 
@@ -14,6 +13,7 @@ import iconContract from 'icons/contract.svg';
 import * as EntityBase from 'ui/shared/entities/base/components';
 
 import { getIconProps } from '../base/utils';
+import AddressIdenticon from './AddressIdenticon';
 
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'address'>;
 
@@ -88,8 +88,11 @@ const Icon = (props: IconProps) => {
 
   return (
     <Tooltip label={ props.address.implementation_name }>
-      <Flex { ...styles }>
-        <Jazzicon diameter={ props.iconSize === 'lg' ? 30 : 20 } seed={ jsNumberForAddress(props.address.hash) }/>
+      <Flex marginRight={ styles.marginRight }>
+        <AddressIdenticon
+          size={ props.iconSize === 'lg' ? 30 : 20 }
+          hash={ props.address.hash }
+        />
       </Flex>
     </Tooltip>
   );
