@@ -68,7 +68,7 @@ const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
           </chakra.span>
         </Tooltip>
         <Tooltip label={ isLoading ? undefined : 'Constructor args' }>
-          <chakra.span display="inline-block" ml={ 3 }>
+          <chakra.span display="inline-block" ml={ 2 }>
             { data.has_constructor_args ?
               <Icon as={ iconCheck } boxSize={ 6 } color="green.500" cursor="pointer" isLoading={ isLoading }/> :
               <Icon as={ iconCross } boxSize={ 6 } color="red.600" cursor="pointer" isLoading={ isLoading }/> }

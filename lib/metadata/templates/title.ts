@@ -48,5 +48,5 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
 export function make(pathname: Route['pathname']) {
   const template = TEMPLATE_MAP[pathname];
 
-  return `%network_name% ${ template } | Blockscout`;
+  return `%network_name% ${ template }`;
 }

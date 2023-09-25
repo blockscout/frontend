@@ -32,6 +32,7 @@ const nativeTokenData = {
   icon_url: '',
   symbol: '',
   address: '',
+  type: 'ERC-20' as const,
 };
 
 const coinPriceIndicator: TChainIndicator<'homepage_chart_market'> = {

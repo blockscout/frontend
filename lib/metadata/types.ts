@@ -10,4 +10,9 @@ never;
 export interface Metadata {
     title: string;
     description: string;
+    opengraph: {
+        title: string;
+        description?: string;
+        imageUrl?: string;
+    };
 }

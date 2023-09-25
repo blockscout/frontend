@@ -3,6 +3,11 @@
 exports[`generates correct metadata for: dynamic route 1`] = `
 {
   "description": "View transaction 0x12345 on Blockscout (Blockscout) Explorer",
+  "opengraph": {
+    "description": "",
+    "imageUrl": "",
+    "title": "Blockscout transaction 0x12345 | Blockscout",
+  },
   "title": "Blockscout transaction 0x12345 | Blockscout",
 }
 `;
@@ -10,6 +15,11 @@ exports[`generates correct metadata for: dynamic route 1`] = `
 exports[`generates correct metadata for: dynamic route with API data 1`] = `
 {
   "description": "0x12345, balances and analytics on the Blockscout (Blockscout) Explorer",
+  "opengraph": {
+    "description": "",
+    "imageUrl": "",
+    "title": "Blockscout USDT token details | Blockscout",
+  },
   "title": "Blockscout USDT token details | Blockscout",
 }
 `;
@@ -17,6 +27,11 @@ exports[`generates correct metadata for: dynamic route with API data 1`] = `
 exports[`generates correct metadata for: static route 1`] = `
 {
   "description": "Blockscout is the #1 open-source blockchain explorer available today. 100+ chains and counting rely on Blockscout data availability, APIs, and ecosystem tools to support their networks.",
+  "opengraph": {
+    "description": "",
+    "imageUrl": "http://localhost:3000/static/og_placeholder.png",
+    "title": "Blockscout blocks | Blockscout",
+  },
   "title": "Blockscout blocks | Blockscout",
 }
 `;

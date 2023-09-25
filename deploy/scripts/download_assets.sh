@@ -21,6 +21,7 @@ ASSETS_ENVS=(
     "NEXT_PUBLIC_NETWORK_LOGO_DARK"
     "NEXT_PUBLIC_NETWORK_ICON"
     "NEXT_PUBLIC_NETWORK_ICON_DARK"
+    "NEXT_PUBLIC_OG_IMAGE_URL"
 )
 
 # Create the assets directory if it doesn't exist

@@ -20,12 +20,7 @@ import LinkInternal from 'ui/shared/LinkInternal';
 
 import LatestBlocksItem from './LatestBlocksItem';
 
-const BLOCK_HEIGHT_L1 = 166;
-const BLOCK_HEIGHT_L2 = 112;
-const BLOCK_MARGIN = 12;
-
 const LatestBlocks = () => {
-  const blockHeight = config.features.rollup.isEnabled || config.UI.views.block.hiddenFields?.total_reward ? BLOCK_HEIGHT_L2 : BLOCK_HEIGHT_L1;
   const isMobile = useIsMobile();
   // const blocksMaxCount = isMobile ? 2 : 3;
   let blocksMaxCount: number;
@@ -78,7 +73,6 @@ const LatestBlocks = () => {
 
   if (data) {
     const dataToShow = data.slice(0, blocksMaxCount);
-    const blocksCount = dataToShow.length;
 
     content = (
       <>
@@ -92,13 +86,12 @@ const LatestBlocks = () => {
             </Text>
           </Skeleton>
         ) }
-        <VStack spacing={ `${ BLOCK_MARGIN }px` } mb={ 4 } height={ `${ blockHeight * blocksCount + BLOCK_MARGIN * (blocksCount - 1) }px` } overflow="hidden">
+        <VStack spacing={ 3 } mb={ 4 } overflow="hidden" alignItems="stretch">
           <AnimatePresence initial={ false } >
             { dataToShow.map(((block, index) => (
               <LatestBlocksItem
                 key={ block.height + (isPlaceholderData ? String(index) : '') }
                 block={ block }
-                h={ blockHeight }
                 isLoading={ isPlaceholderData }
               />
             ))) }
@@ -112,7 +105,7 @@ const LatestBlocks = () => {
   }
 
   return (
-    <Box width={{ base: '100%', lg: '280px' }}>
+    <Box width={{ base: '100%', lg: '280px' }} flexShrink={ 0 }>
       <Heading as="h4" size="sm" mb={ 4 }>Latest blocks</Heading>
       { content }
     </Box>

@@ -14,7 +14,7 @@ type Props = Route & {
 }
 
 const PageNextJs = (props: Props) => {
-  const { title, description } = metadata.generate(props);
+  const { title, description, opengraph } = metadata.generate(props);
 
   useGetCsrfToken();
   useAdblockDetect();
@@ -28,6 +28,12 @@ const PageNextJs = (props: Props) => {
       <Head>
         <title>{ title }</title>
         <meta name="description" content={ description }/>
+
+        { /* OG TAGS */ }
+        <meta property="og:title" content={ opengraph.title }/>
+        { opengraph.description && <meta property="og:description" content={ opengraph.description }/> }
+        <meta property="og:image" content={ opengraph.imageUrl }/>
+        <meta property="og:type" content="website"/>
       </Head>
       { props.children }
     </>
