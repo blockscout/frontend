@@ -72,6 +72,14 @@ const baseStyle = definePartsStyle((props) => ({
 }));
 
 const sizes = {
+  sm: definePartsStyle({
+    dialogContainer: {
+      height: '100%',
+    },
+    dialog: {
+      maxW: '536px',
+    },
+  }),
   md: definePartsStyle({
     dialogContainer: {
       height: '100%',

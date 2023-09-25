@@ -27,7 +27,13 @@ base.describe('base view', () => {
   base.beforeEach(async({ page, mount }) => {
     await page.route(API_URL, (route) => route.fulfill({
       status: 200,
-      body: JSON.stringify({ items: [ txMock.base, txMock.base ], next_page_params: { block: 1 } }),
+      body: JSON.stringify({ items: [
+        txMock.base,
+        {
+          ...txMock.base,
+          hash: '0x62d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3194',
+        },
+      ], next_page_params: { block: 1 } }),
     }));
 
     component = await mount(
