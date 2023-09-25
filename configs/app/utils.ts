@@ -1,6 +1,17 @@
+import isBrowser from 'lib/isBrowser';
 import * as regexp from 'lib/regexp';
 
-export const getEnvValue = <T extends string>(env: T | undefined): T | undefined => env?.replaceAll('\'', '"') as T;
+export const getEnvValue = (envName: string) => {
+  if (isBrowser()) {
+    if (window.__envs && window.__envs[envName]) {
+      return window.__envs[envName].replaceAll('\'', '"');
+    } else {
+      return;
+    }
+  }
+
+  return process.env[envName]?.replaceAll('\'', '"');
+};
 
 export const parseEnvJson = <DataType>(env: string | undefined): DataType | null => {
   try {
@@ -10,8 +21,8 @@ export const parseEnvJson = <DataType>(env: string | undefined): DataType | null
   }
 };
 
-export const getExternalAssetFilePath = (envName: string, envValue: string | undefined) => {
-  const parsedValue = getEnvValue(envValue);
+export const getExternalAssetFilePath = (envName: string) => {
+  const parsedValue = getEnvValue(envName);
 
   if (!parsedValue) {
     return;

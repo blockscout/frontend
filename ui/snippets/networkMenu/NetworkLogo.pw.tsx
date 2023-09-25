@@ -2,10 +2,10 @@ import { test as base, expect } from '@playwright/experimental-ct-react';
 import type { Locator } from '@playwright/test';
 import React from 'react';
 
-import { getExternalAssetFilePath } from 'configs/app/utils';
 import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
 import * as configs from 'playwright/utils/configs';
+import getExternalAssetFilePath from 'playwright/utils/getExternalAssetFilePath';
 
 import NetworkLogo from './NetworkLogo';
 

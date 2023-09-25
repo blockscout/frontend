@@ -1,11 +1,11 @@
 import { test as base, expect, devices } from '@playwright/experimental-ct-react';
 import React from 'react';
 
-import { getExternalAssetFilePath } from 'configs/app/utils';
 import { FEATURED_NETWORKS_MOCK } from 'mocks/config/network';
 import authFixture from 'playwright/fixtures/auth';
 import contextWithEnvs, { createContextWithEnvs } from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
+import getExternalAssetFilePath from 'playwright/utils/getExternalAssetFilePath';
 
 import Burger from './Burger';
 

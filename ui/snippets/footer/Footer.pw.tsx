@@ -2,12 +2,12 @@ import { test as base, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 import type { WindowProvider } from 'wagmi';
 
-import { getExternalAssetFilePath } from 'configs/app/utils';
 import { FOOTER_LINKS } from 'mocks/config/footerLinks';
 import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
 import * as configs from 'playwright/utils/configs';
+import getExternalAssetFilePath from 'playwright/utils/getExternalAssetFilePath';
 
 import Footer from './Footer';
 

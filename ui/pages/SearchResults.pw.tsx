@@ -1,13 +1,13 @@
 import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
-import { getExternalAssetFilePath } from 'configs/app/utils';
 import { apps as appsMock } from 'mocks/apps/apps';
 import * as searchMock from 'mocks/search/index';
 import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
 import * as configs from 'playwright/utils/configs';
+import getExternalAssetFilePath from 'playwright/utils/getExternalAssetFilePath';
 import LayoutMainColumn from 'ui/shared/layout/components/MainColumn';
 
 import SearchResults from './SearchResults';

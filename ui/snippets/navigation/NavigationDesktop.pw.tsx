@@ -3,13 +3,13 @@ import { test as base, expect } from '@playwright/experimental-ct-react';
 import type { Locator } from '@playwright/test';
 import React from 'react';
 
-import { getExternalAssetFilePath } from 'configs/app/utils';
 import * as cookies from 'lib/cookies';
 import authFixture from 'playwright/fixtures/auth';
 import contextWithEnvs, { createContextWithEnvs } from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
 import * as app from 'playwright/utils/app';
 import * as configs from 'playwright/utils/configs';
+import getExternalAssetFilePath from 'playwright/utils/getExternalAssetFilePath';
 
 import NavigationDesktop from './NavigationDesktop';
 
