@@ -2,16 +2,16 @@ import { test as base, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 import type { WindowProvider } from 'wagmi';
 
+import { buildExternalAssetFilePath } from 'configs/app/utils';
 import { FOOTER_LINKS } from 'mocks/config/footerLinks';
 import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
 import * as configs from 'playwright/utils/configs';
-import getExternalAssetFilePath from 'playwright/utils/getExternalAssetFilePath';
 
 import Footer from './Footer';
 
-const FOOTER_LINKS_URL = getExternalAssetFilePath('NEXT_PUBLIC_FOOTER_LINKS', 'https://localhost:3000/footer-links.json') || '';
+const FOOTER_LINKS_URL = buildExternalAssetFilePath('NEXT_PUBLIC_FOOTER_LINKS', 'https://localhost:3000/footer-links.json') || '';
 
 const BACKEND_VERSION_API_URL = buildApiUrl('config_backend_version');
 const INDEXING_ALERT_API_URL = buildApiUrl('homepage_indexing_status');
