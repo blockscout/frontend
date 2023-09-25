@@ -88,6 +88,7 @@ const TokenInstanceDetails = ({ data, scrollRef, isLoading }: Props) => {
           flexShrink={ 0 }
           alignSelf={{ base: 'center', lg: 'flex-start' }}
           isLoading={ isLoading }
+          withFullscreen
         />
       </Flex>
       <Grid

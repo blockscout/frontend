@@ -44,8 +44,8 @@ const ProfileMenuDesktop = () => {
       <PopoverTrigger>
         <Button
           variant="unstyled"
-          display="inline-flex"
-          height="auto"
+          display="block"
+          boxSize="50px"
           flexShrink={ 0 }
           { ...buttonProps }
         >
