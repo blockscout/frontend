@@ -30,7 +30,7 @@ const AddressCoinBalanceListItem = (props: Props) => {
         <Skeleton isLoaded={ !props.isLoading }>
           <Stat flexGrow="0">
             <StatHelpText display="flex" mb={ 0 } alignItems="center">
-              <StatArrow type={ isPositiveDelta ? 'increase' : 'decrease' }/>
+              <StatArrow type={ isPositiveDelta ? 'increase' : 'decrease' } mr={ 2 }/>
               <Text as="span" color={ isPositiveDelta ? 'green.500' : 'red.500' } fontWeight={ 600 }>
                 { deltaBn.dp(8).toFormat() }
               </Text>

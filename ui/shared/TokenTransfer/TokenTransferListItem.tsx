@@ -9,12 +9,12 @@ import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import InOutTag from 'ui/shared/InOutTag';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import { getTokenTransferTypeText } from 'ui/shared/TokenTransfer/helpers';
-import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 
 type Props = TokenTransfer & {
@@ -66,7 +66,7 @@ const TokenTransferListItem = ({
           <TxAdditionalInfo hash={ txHash } isMobile isLoading={ isLoading }/>
         ) }
       </Flex>
-      { 'token_id' in total && <TokenTransferNft hash={ token.address } id={ total.token_id } isLoading={ isLoading }/> }
+      { 'token_id' in total && <NftEntity hash={ token.address } id={ total.token_id } isLoading={ isLoading }/> }
       { showTxInfo && txHash && (
         <Flex justifyContent="space-between" alignItems="center" lineHeight="24px" width="100%">
           <TxEntity

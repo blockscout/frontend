@@ -12,7 +12,7 @@ const FooterLinkItem = ({ icon, iconSize, text, url }: Props) => {
   return (
     <Link href={ url } display="flex" alignItems="center" h="30px" variant="secondary" target="_blank" fontSize="xs">
       { icon && (
-        <Center minW={ 6 } mr="6px">
+        <Center minW={ 6 } mr={ 2 }>
           <Icon boxSize={ iconSize || 5 } as={ icon }/>
         </Center>
       ) }

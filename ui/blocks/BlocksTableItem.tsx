@@ -111,7 +111,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
       </Td>
       { !config.features.rollup.isEnabled && !config.UI.views.block.hiddenFields?.burnt_fees && (
         <Td fontSize="sm">
-          <Flex alignItems="center" columnGap={ 1 }>
+          <Flex alignItems="center" columnGap={ 2 }>
             <Icon as={ flameIcon } boxSize={ 5 } color={ burntFeesIconColor } isLoading={ isLoading }/>
             <Skeleton isLoaded={ !isLoading } display="inline-block">
               { burntFees.dividedBy(WEI).toFixed(8) }
