@@ -1,9 +1,7 @@
 import { Box, Flex, Link, Text, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
 import { clearRecentSearchKeywords, getRecentSearchKeywords, removeRecentSearchKeyword } from 'lib/recentSearchKeywords';
-import TextAd from 'ui/shared/ad/TextAd';
 import ClearButton from 'ui/shared/ClearButton';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
@@ -13,7 +11,6 @@ type Props = {
 }
 
 const SearchBarSuggest = ({ onClick, onClear }: Props) => {
-  const isMobile = useIsMobile();
   const bgHoverColor = useColorModeValue('blue.50', 'gray.800');
 
   const [ keywords, setKeywords ] = React.useState<Array<string>>(getRecentSearchKeywords());
@@ -43,11 +40,6 @@ const SearchBarSuggest = ({ onClick, onClear }: Props) => {
 
   return (
     <Box py={ 6 }>
-      { !isMobile && (
-        <Box pb={ 4 } mb={ 5 } borderColor="divider" borderBottomWidth="1px" _empty={{ display: 'none' }}>
-          <TextAd/>
-        </Box>
-      ) }
       <Flex mb={ 3 } justifyContent="space-between" fontSize="sm">
         <Text fontWeight={ 600 } variant="secondary">Recent</Text>
         <Link onClick={ clearKeywords }>Clear all</Link>

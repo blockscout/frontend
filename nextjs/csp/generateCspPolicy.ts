@@ -4,7 +4,6 @@ import { makePolicyString, mergeDescriptors } from './utils';
 function generateCspPolicy() {
   const policyDescriptor = mergeDescriptors(
     descriptors.app(),
-    descriptors.ad(),
     descriptors.cloudFlare(),
     descriptors.googleAnalytics(),
     descriptors.googleFonts(),

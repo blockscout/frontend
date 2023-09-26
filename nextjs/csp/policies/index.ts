@@ -1,4 +1,3 @@
-export { ad } from './ad';
 export { app } from './app';
 export { cloudFlare } from './cloudFlare';
 export { googleAnalytics } from './googleAnalytics';

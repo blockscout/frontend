@@ -4,7 +4,6 @@ import React from 'react';
 
 import eastArrowIcon from 'icons/arrows/east.svg';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import TextAd from 'ui/shared/ad/TextAd';
 import LinkInternal from 'ui/shared/LinkInternal';
 
 type BackLinkProp = { label: string; url: string } | { label: string; onClick: () => void };
@@ -52,6 +51,7 @@ const BackLink = (props: BackLinkProp & { isLoading?: boolean }) => {
   );
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoading, afterTitle, beforeTitle }: Props) => {
   const tooltip = useDisclosure();
   const isMobile = useIsMobile();
@@ -140,7 +140,6 @@ const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoa
         { afterTitle }
       </Flex>
       { contentAfter }
-      { withTextAd && <TextAd order={{ base: -1, lg: 100 }} mb={{ base: 6, lg: 0 }} ml="auto" w={{ base: '100%', lg: 'auto' }}/> }
     </Flex>
   );
 };

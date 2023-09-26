@@ -13,7 +13,6 @@ import AddressCounterItem from 'ui/address/details/AddressCounterItem';
 import AddressHeadingInfo from 'ui/shared/AddressHeadingInfo';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
@@ -213,7 +212,6 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
             />
           </DetailsInfoItem>
         ) }
-        <DetailsSponsoredItem isLoading={ addressQuery.isPlaceholderData }/>
       </Grid>
     </Box>
   );
