@@ -12,7 +12,6 @@ import getCurrencyValue from 'lib/getCurrencyValue';
 import { TOKEN_COUNTERS } from 'stubs/token';
 import type { TokenTabs } from 'ui/pages/Token';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
 interface Props {
@@ -158,7 +157,6 @@ const TokenDetails = ({ tokenQuery }: Props) => {
           </Skeleton>
         </DetailsInfoItem>
       ) }
-      <DetailsSponsoredItem isLoading={ tokenQuery.isPlaceholderData }/>
     </Grid>
   );
 };

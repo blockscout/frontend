@@ -8,7 +8,6 @@ import { useAppContext } from 'lib/contexts/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { TX } from 'stubs/tx';
-import TextAd from 'ui/shared/ad/TextAd';
 import EntityTags from 'ui/shared/EntityTags';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -69,7 +68,6 @@ const TransactionPageContent = () => {
 
   return (
     <>
-      <TextAd mb={ 6 }/>
       <PageTitle
         title="Transaction details"
         backLink={ backLink }

@@ -32,7 +32,6 @@ import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
@@ -196,7 +195,6 @@ const TxDetails = () => {
             </Skeleton>
           </DetailsInfoItem>
         ) }
-        <DetailsSponsoredItem isLoading={ isPlaceholderData }/>
 
         { divider }
 

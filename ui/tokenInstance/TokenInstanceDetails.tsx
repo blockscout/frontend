@@ -5,7 +5,6 @@ import type { TokenInstance } from 'types/api/token';
 
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
@@ -99,7 +98,6 @@ const TokenInstanceDetails = ({ data, scrollRef, isLoading }: Props) => {
       >
         <TokenInstanceMetadataInfo data={ data } isLoading={ isLoading }/>
         <TokenInstanceDivider/>
-        <DetailsSponsoredItem isLoading={ isLoading }/>
       </Grid>
     </>
   );

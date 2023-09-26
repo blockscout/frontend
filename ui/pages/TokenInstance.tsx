@@ -14,7 +14,6 @@ import * as regexp from 'lib/regexp';
 import { TOKEN_INSTANCE } from 'stubs/token';
 import * as tokenStubs from 'stubs/token';
 import { generateListStub } from 'stubs/utils';
-import TextAd from 'ui/shared/ad/TextAd';
 import AddressHeadingInfo from 'ui/shared/AddressHeadingInfo';
 import Tag from 'ui/shared/chakra/Tag';
 import LinkExternal from 'ui/shared/LinkExternal';
@@ -168,7 +167,6 @@ const TokenInstanceContent = () => {
 
   return (
     <>
-      <TextAd mb={ 6 }/>
       <PageTitle
         title={ `${ tokenInstanceQuery.data?.token.name || 'Unnamed token' } #${ tokenInstanceQuery.data?.id }` }
         backLink={ backLink }

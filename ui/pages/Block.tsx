@@ -15,7 +15,6 @@ import { generateListStub } from 'stubs/utils';
 import { WITHDRAWAL } from 'stubs/withdrawals';
 import BlockDetails from 'ui/block/BlockDetails';
 import BlockWithdrawals from 'ui/block/BlockWithdrawals';
-import TextAd from 'ui/shared/ad/TextAd';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -115,7 +114,6 @@ const BlockPageContent = () => {
 
   return (
     <>
-      <TextAd mb={ 6 }/>
       <PageTitle
         title={ title }
         backLink={ backLink }
