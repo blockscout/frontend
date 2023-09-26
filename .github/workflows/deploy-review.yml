@@ -5,6 +5,7 @@ on:
 
 jobs:
   make_slug:
+    name: Make GitHub reference slug
     runs-on: ubuntu-latest
     outputs:
       REF_SLUG: ${{ steps.output.outputs.REF_SLUG }}

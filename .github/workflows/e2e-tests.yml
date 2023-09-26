@@ -37,7 +37,7 @@ jobs:
         with:
           owner: blockscout
           repo: deployment-values
-          github_token: ${{env.WORKFLOW_TRIGGER_TOKEN}}
+          github_token: ${{ env.WORKFLOW_TRIGGER_TOKEN }}
           workflow_file_name: deploy_blockscout.yaml
           ref: main
           wait_interval: 30
