@@ -52,13 +52,13 @@ const Footer = () => {
       icon: twitterIcon,
       iconSize: '18px',
       text: 'Twitter',
-      url: 'https://www.twitter.com/blockscoutcom',
+      url: 'https://x.com/lukso_io/',
     },
     {
       icon: discordIcon,
       iconSize: '18px',
       text: 'Discord',
-      url: 'https://discord.gg/blockscout',
+      url: 'https://discord.gg/lukso',
     },
   ];
 
