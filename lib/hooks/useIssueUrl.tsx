@@ -3,7 +3,7 @@ import React from 'react';
 import config from 'configs/app';
 import isBrowser from 'lib/isBrowser';
 
-const base = 'https://github.com/blockscout/blockscout/issues/new/';
+const base = 'https://github.com/lukso-network/network-explorer-execution/issues/new/';
 const labels = 'new UI';
 const title = `${ config.chain.name }: <Issue Title>`;
 

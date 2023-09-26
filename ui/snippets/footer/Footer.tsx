@@ -24,7 +24,7 @@ import getApiVersionUrl from './utils/getApiVersionUrl';
 
 const MAX_LINKS_COLUMNS = 3;
 
-const FRONT_VERSION_URL = `https://github.com/blockscout/frontend/tree/${ config.UI.footer.frontendVersion }`;
+const FRONT_VERSION_URL = `https://github.com/lukso-network/network-explorer-execution-frontend`;
 
 const Footer = () => {
 
@@ -43,16 +43,10 @@ const Footer = () => {
       url: issueUrl,
     },
     {
-      icon: cannyIcon,
-      iconSize: '20px',
-      text: 'Feature request',
-      url: 'https://blockscout.canny.io/feature-requests',
-    },
-    {
       icon: gitIcon,
       iconSize: '18px',
       text: 'Contribute',
-      url: 'https://github.com/blockscout/blockscout',
+      url: 'https://github.com/lukso-network/network-explorer-execution',
     },
     {
       icon: twitterIcon,
@@ -65,12 +59,6 @@ const Footer = () => {
       iconSize: '18px',
       text: 'Discord',
       url: 'https://discord.gg/blockscout',
-    },
-    {
-      icon: discussionsIcon,
-      iconSize: '20px',
-      text: 'Discussions',
-      url: 'https://github.com/orgs/blockscout/discussions',
     },
   ];
 
@@ -100,7 +88,7 @@ const Footer = () => {
           <NetworkAddToWallet/>
         </Flex>
         <Box mt={{ base: 5, lg: '44px' }}>
-          <Link fontSize="xs" href="https://www.blockscout.com">blockscout.com</Link>
+          <Link fontSize="xs" href="https://lukso.network/">lukso.network</Link>
         </Box>
         <Text mt={ 3 } maxW={{ base: 'unset', lg: '470px' }} fontSize="xs">
             Blockscout is a tool for inspecting and analyzing EVM based blockchains. Blockchain explorer for Ethereum Networks.
