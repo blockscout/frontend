@@ -15,26 +15,25 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 
 const WatchListAddressItem = ({ item, isLoading }: { item: WatchlistAddress; isLoading?: boolean }) => {
-  const infoItemsPaddingLeft = { base: 1, lg: 8 };
-
   const nativeTokenData = React.useMemo(() => ({
     name: config.chain.currency.name || '',
     icon_url: '',
     symbol: '',
     address: '',
+    type: 'ERC-20' as const,
   }), [ ]);
 
   const { usdBn: usdNative } = getCurrencyValue({ value: item.address_balance, accuracy: 2, accuracyUsd: 2, exchangeRate: item.exchange_rate });
 
   return (
-    <VStack spacing={ 2 } align="stretch" fontWeight={ 500 }>
+    <VStack spacing={ 3 } align="stretch" fontWeight={ 500 }>
       <AddressEntity
         address={ item.address }
         isLoading={ isLoading }
         fontWeight="600"
         py="2px"
       />
-      <Flex fontSize="sm" pl={ infoItemsPaddingLeft } flexWrap="wrap" alignItems="center" rowGap={ 1 }>
+      <Flex fontSize="sm" pl={ 7 } flexWrap="wrap" alignItems="center" rowGap={ 1 }>
         <TokenEntity.Icon
           token={ nativeTokenData }
           isLoading={ isLoading }
@@ -51,7 +50,7 @@ const WatchListAddressItem = ({ item, isLoading }: { item: WatchlistAddress; isL
         </Skeleton>
       </Flex>
       { item.tokens_count && (
-        <HStack spacing={ 2 } fontSize="sm" pl={ infoItemsPaddingLeft }>
+        <HStack spacing={ 2 } fontSize="sm" pl={ 7 }>
           <Icon as={ TokensIcon } boxSize={ 5 } isLoading={ isLoading } borderRadius="sm"/>
           <Skeleton isLoaded={ !isLoading } display="inline-flex">
             <span>{ `Tokens:${ nbsp }` + item.tokens_count + (item.tokens_overflow ? '+' : '') }</span>
@@ -60,7 +59,7 @@ const WatchListAddressItem = ({ item, isLoading }: { item: WatchlistAddress; isL
         </HStack>
       ) }
       { item.tokens_fiat_value && (
-        <HStack spacing={ 2 } fontSize="sm" pl={ infoItemsPaddingLeft }>
+        <HStack spacing={ 2 } fontSize="sm" pl={ 7 }>
           <Icon boxSize={ 5 } as={ WalletIcon } isLoading={ isLoading }/>
           <Skeleton isLoaded={ !isLoading } display="inline-flex">
             <Text>{ `Net worth:${ nbsp }` }

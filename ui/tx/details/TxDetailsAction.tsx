@@ -1,14 +1,13 @@
-import { Flex, Link, Icon, chakra } from '@chakra-ui/react';
+import { Flex, Icon, chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { TxAction, TxActionGeneral } from 'types/api/txAction';
 
-import { route } from 'nextjs-routes';
-
 import config from 'configs/app';
 import uniswapIcon from 'icons/uniswap.svg';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 
 interface Props {
@@ -122,13 +121,12 @@ const TxDetailsAction = ({ action }: Props) => {
           <Flex columnGap={ 1 } rowGap={ 2 } pl={ 3 } flexDirection="column" mt={ 2 }>
             {
               data.ids.map((id: string) => {
-                const url = route({ pathname: '/token/[hash]/instance/[id]', query: { hash: data.address, id } });
                 return (
                   <Flex key={ data.address + id } whiteSpace="pre-wrap">
-                    <span>1 of </span>
-                    <chakra.span color="text_secondary">Token ID [</chakra.span>
-                    <Link href={ url }>{ id }</Link>
-                    <chakra.span color="text_secondary">]</chakra.span>
+                    <chakra.span flexShrink={ 0 }>1 of </chakra.span>
+                    <chakra.span color="text_secondary" flexShrink={ 0 }>Token ID [</chakra.span>
+                    <NftEntity hash={ data.address } id={ id } noIcon w="min-content"/>
+                    <chakra.span color="text_secondary" flexShrink={ 0 }>]</chakra.span>
                   </Flex>
                 );
               })

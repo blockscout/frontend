@@ -315,7 +315,7 @@ const BlockDetails = ({ query }: Props) => {
           isLoading={ isPlaceholderData }
         >
           <Icon as={ flameIcon } boxSize={ 5 } color="gray.500" isLoading={ isPlaceholderData }/>
-          <Skeleton isLoaded={ !isPlaceholderData } ml={ 1 }>
+          <Skeleton isLoaded={ !isPlaceholderData } ml={ 2 }>
             { burntFees.dividedBy(WEI).toFixed() } { config.chain.currency.symbol }
           </Skeleton>
           { !txFees.isEqualTo(ZERO) && (

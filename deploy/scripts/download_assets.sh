@@ -21,6 +21,7 @@ ASSETS_ENVS=(
     "NEXT_PUBLIC_NETWORK_LOGO_DARK"
     "NEXT_PUBLIC_NETWORK_ICON"
     "NEXT_PUBLIC_NETWORK_ICON_DARK"
+    "NEXT_PUBLIC_OG_IMAGE_URL"
     "NEXT_PUBLIC_AD_CUSTOM_CONFIG_URL"
 )
 
@@ -36,10 +37,10 @@ get_target_filename() {
     local name_prefix="${env_var#NEXT_PUBLIC_}"
     local name_suffix="${name_prefix%_URL}"
     local name_lc="$(echo "$name_suffix" | tr '[:upper:]' '[:lower:]')"
-    
+
     # Extract the extension from the URL
     local extension="${url##*.}"
-    
+
     # Construct the custom file name
     echo "$name_lc.$extension"
 }

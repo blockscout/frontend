@@ -9,8 +9,8 @@ import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
 import AddressEntityWithTokenFilter from 'ui/shared/entities/address/AddressEntityWithTokenFilter';
+import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
-import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
 
 type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean }
 
@@ -79,11 +79,10 @@ const TokenTransferTableItem = ({
       { (token.type === 'ERC-721' || token.type === 'ERC-1155') && (
         <Td>
           { 'token_id' in total ? (
-            <TokenTransferNft
+            <NftEntity
               hash={ token.address }
               id={ total.token_id }
-              justifyContent={ token.type === 'ERC-721' ? 'end' : 'start' }
-              isDisabled={ Boolean(tokenId && tokenId === total.token_id) }
+              noLink={ Boolean(tokenId && tokenId === total.token_id) }
               isLoading={ isLoading }
             />
           ) : ''
