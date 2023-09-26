@@ -4,11 +4,11 @@ config_file="./configs/envs/.env.pw"
 
 rm -rf ./playwright/.cache
 
-set -a
-source "$config_file"
-set +a
+dotenv \
+  -e $config_file \
+  -- bash -c './deploy/scripts/make_envs_script.sh'
 
-export NODE_OPTIONS="--max-old-space-size=4096"
-
-./deploy/scripts/make_envs_script.sh
-playwright test -c playwright-ct.config.ts "$@"
+dotenv \
+  -v NODE_OPTIONS=\"--max-old-space-size=4096\" \
+  -e $config_file \
+  -- playwright test -c playwright-ct.config.ts "$@"
