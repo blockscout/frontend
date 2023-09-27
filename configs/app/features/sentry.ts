@@ -14,6 +14,19 @@ const instance = (() => {
 })();
 const environment = getEnvValue(process.env.NEXT_PUBLIC_APP_ENV) || 'production';
 const release = getEnvValue(process.env.NEXT_PUBLIC_GIT_TAG);
+const cspReportUrl = (() => {
+  try {
+    const url = new URL(getEnvValue(process.env.SENTRY_CSP_REPORT_URI) || '');
+
+    // https://docs.sentry.io/product/security-policy-reporting/#additional-configuration
+    url.searchParams.set('sentry_environment', environment);
+    release && url.searchParams.set('sentry_release', release);
+
+    return url.toString();
+  } catch (error) {
+    return;
+  }
+})();
 
 const title = 'Sentry error monitoring';
 
@@ -29,7 +42,7 @@ const config: Feature<{
       title,
       isEnabled: true,
       dsn,
-      cspReportUrl: getEnvValue(process.env.SENTRY_CSP_REPORT_URI),
+      cspReportUrl,
       instance,
       release,
       environment,
