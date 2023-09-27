@@ -91,7 +91,7 @@ const Footer = () => {
 
   const { isLoading, data: linksData } = useQuery<unknown, ResourceError<unknown>, Array<CustomLinksGroup>>(
     [ 'footer-links' ],
-    async() => fetch(config.UI.footer.links || ''),
+    async() => fetch(config.UI.footer.links || '', undefined, { resource: 'footer-links' }),
     {
       enabled: Boolean(config.UI.footer.links),
       staleTime: Infinity,
