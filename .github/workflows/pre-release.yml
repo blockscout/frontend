@@ -4,7 +4,7 @@ on:
     workflow_dispatch:
     push:
         tags:
-            - 'v[0-9]+.[0-9]+.[0-9]+-[a-z]+' # e.g v1.2.3-alpha
+            - 'v[0-9]+.[0-9]+.[0-9]+-[a-z]+(-[0-9]+)?' # e.g v1.2.3-alpha or v1.2.3-alpha-0
 
 jobs:
     checks:
