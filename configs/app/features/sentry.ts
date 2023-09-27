@@ -4,8 +4,8 @@ import { getEnvValue } from '../utils';
 
 const dsn = getEnvValue(process.env.NEXT_PUBLIC_SENTRY_DSN);
 const instance = getEnvValue(process.env.NEXT_PUBLIC_APP_INSTANCE);
-const environment = instance?.startsWith('dev_') ? 'development' : 'production';
-const release = environment === 'development' ? getEnvValue(process.env.NEXT_PUBLIC_GIT_COMMIT_SHA) : getEnvValue(process.env.NEXT_PUBLIC_GIT_TAG);
+const environment = getEnvValue(process.env.NEXT_PUBLIC_APP_ENV);
+const release = getEnvValue(process.env.NEXT_PUBLIC_GIT_TAG);
 
 const title = 'Sentry error monitoring';
 
@@ -13,10 +13,10 @@ const config: Feature<{
   dsn: string;
   cspReportUrl: string | undefined;
   instance: string;
-  release: string;
-  environment: 'development' | 'production';
+  release: string | undefined;
+  environment: string;
 }> = (() => {
-  if (dsn && instance && release) {
+  if (dsn && instance && environment) {
     return Object.freeze({
       title,
       isEnabled: true,
