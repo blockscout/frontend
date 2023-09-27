@@ -1,4 +1,4 @@
-import { Flex, chakra, Tooltip, Image } from '@chakra-ui/react';
+import { Flex, chakra, Tooltip, Image, Skeleton } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React, { useState, useEffect } from 'react';
 
@@ -17,13 +17,14 @@ const CustomAdBanner = ({ className }: { className?: string }) => {
   const configUrl = (feature.isEnabled && feature.provider === 'custom') ? feature.configUrl : '';
 
   const apiFetch = useFetch();
-  const { data: adConfig } = useQuery<unknown, ResourceError<unknown>, AdCustomConfig>(
+  const { data: adConfig, isLoading, isError } = useQuery<unknown, ResourceError<unknown>, AdCustomConfig>(
     [ 'ad-banner-custom-config' ],
     async() => apiFetch(configUrl),
     {
       enabled: feature.isEnabled && feature.provider === 'custom',
       staleTime: Infinity,
     });
+
   const interval = adConfig?.interval || MINUTE;
   const banners = adConfig?.banners || [];
   const randomStart = adConfig?.randomStart || false;
@@ -49,6 +50,17 @@ const CustomAdBanner = ({ className }: { className?: string }) => {
     };
   }, [ interval, banners.length, randomNextAd ]);
 
+  if (isLoading) {
+    return <Skeleton className={ className } height="90px"/>;
+  }
+
+  if (isError || !adConfig) {
+    return (
+      <Flex className={ className } h="90px">
+      </Flex>
+    );
+  }
+
   if (banners.length === 0) {
     return (
       <Flex className={ className } h="90px">
@@ -63,7 +75,9 @@ const CustomAdBanner = ({ className }: { className?: string }) => {
       <Tooltip label={ currentBanner.text } aria-label={ currentBanner.text }>
         <a href={ currentBanner.url } target="_blank" rel="noopener noreferrer">
           <Image src={ isMobile ? currentBanner.mobileImageUrl : currentBanner.desktopImageUrl }
-            alt={ currentBanner.text } height="100%" width="auto" borderRadius="md"/>
+            alt={ currentBanner.text } height="100%" width="auto" borderRadius="md"
+            fallback={ <Skeleton height="90px" width="auto"/> }
+          />
         </a>
       </Tooltip>
     </Flex>
