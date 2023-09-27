@@ -17,7 +17,7 @@ import outputRootsIcon from 'icons/output_roots.svg';
 import privateTagIcon from 'icons/privattags.svg';
 import publicTagIcon from 'icons/publictags.svg';
 import apiDocsIcon from 'icons/restAPI.svg';
-import rpcIcon from 'icons/RPC.svg';
+import rocket from 'icons/rocket.svg';
 import statsIcon from 'icons/stats.svg';
 import tokensIcon from 'icons/token.svg';
 import topAccountsIcon from 'icons/top-accounts.svg';
@@ -121,14 +121,9 @@ export default function useNavItems(): ReturnType {
         isActive: pathname === '/graphiql',
       } : null,
       {
-        text: 'RPC API',
-        icon: rpcIcon,
-        url: 'https://docs.blockscout.com/for-users/api/rpc-endpoints',
-      },
-      {
-        text: 'Eth RPC API',
-        icon: rpcIcon,
-        url: ' https://docs.blockscout.com/for-users/api/eth-rpc',
+        text: 'Developer Docs',
+        icon: rocket,
+        url: 'https://docs.subspace.network/docs/developers/intro',
       },
     ].filter(Boolean);
 
