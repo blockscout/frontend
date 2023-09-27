@@ -1,9 +1,15 @@
-secrets_file="./configs/envs/.env.secrets"
+secrets_file=".env"
 favicon_folder="./public/favicon/"
-master_url="https://raw.githubusercontent.com/blockscout/frontend/main/tools/scripts/favicon.svg"
 
 if [ ! -f "$secrets_file" ]; then
     echo "Error: File '$secrets_file' not found."
+    exit 1
+fi
+
+master_url=$(grep -i '^NEXT_PUBLIC_FAVICON_MASTER_URL=' "$secrets_file" | cut -d '=' -f 2)
+
+if [ -z "$master_url" ]; then
+    echo "Error: 'NEXT_PUBLIC_FAVICON_MASTER_URL' not found in '$secrets_file'. Please add it to your .env file."
     exit 1
 fi
 
