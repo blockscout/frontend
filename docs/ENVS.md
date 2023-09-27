@@ -344,6 +344,7 @@ This feature is **enabled by default** with the `coinzilla` ads provider. To swi
 | NEXT_PUBLIC_IS_L2_NETWORK | `boolean` | Set to true for L2 solutions | Required | - | `true` |
 | NEXT_PUBLIC_L1_BASE_URL | `string` | Blockscout base URL for L1 network | Required | - | `'http://eth-goerli.blockscout.com'` |
 | NEXT_PUBLIC_L2_WITHDRAWAL_URL | `string` | URL for L2 -> L1 withdrawals | Required | - | `https://app.optimism.io/bridge/withdraw` |
+| NEXT_PUBLIC_IS_ZKEVM_L2_NETWORK | `boolean` | Set to true for zkevm L2 solutions | Required | - | `true` |
 
 &nbsp;
 
