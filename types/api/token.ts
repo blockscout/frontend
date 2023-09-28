@@ -14,6 +14,7 @@ export interface TokenInfo<T extends TokenType = TokenType> {
   total_supply: string | null;
   icon_url: string | null;
   circulating_market_cap: string | null;
+  is_bridged: boolean | null;
 }
 
 export interface TokenCounters {
