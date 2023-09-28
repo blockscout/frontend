@@ -33,7 +33,7 @@ const TabsMenu = ({ tabs, tabsCut, isActive, styles, onItemClick, buttonRef, act
 
   const handleItemClick = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
     onClose();
-    const tabIndex = (event.target as HTMLButtonElement).getAttribute('data-index');
+    const tabIndex = event.currentTarget.getAttribute('data-index');
     if (tabIndex) {
       onItemClick(tabsCut + Number(tabIndex));
     }
