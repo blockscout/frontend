@@ -63,7 +63,7 @@ const IndexingBlocksAlert = () => {
 
   return (
     <Alert status="info" colorScheme="gray" py={ 3 } borderRadius="md">
-      <AlertIcon display={{ base: 'none', lg: 'block' }}/>
+      <AlertIcon display={{ base: 'none', lg: 'flex' }}/>
       <AlertTitle>
         { `${ data.indexed_blocks_ratio && `${ Math.floor(Number(data.indexed_blocks_ratio) * 100) }% Blocks Indexed${ nbsp }${ ndash } ` }
           We're indexing this chain right now. Some of the counts may be inaccurate.` }
