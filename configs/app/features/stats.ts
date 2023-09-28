@@ -1,12 +1,10 @@
-import type { Feature } from './types';
+// import type { Feature } from './types';
 
-import { getEnvValue } from '../utils';
-
-const apiEndpoint = getEnvValue(process.env.NEXT_PUBLIC_STATS_API_HOST);
+const apiEndpoint = 'http://172.16.13.130:8153';
 
 const title = 'Blockchain statistics';
 
-const config: Feature<{ api: { endpoint: string; basePath: string } }> = (() => {
+const config = (() => {
   if (apiEndpoint) {
     return Object.freeze({
       title,
@@ -21,6 +19,10 @@ const config: Feature<{ api: { endpoint: string; basePath: string } }> = (() => 
   return Object.freeze({
     title,
     isEnabled: false,
+    api: {
+      endpoint: apiEndpoint,
+      basePath: '',
+    },
   });
 })();
 

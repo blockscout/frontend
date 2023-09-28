@@ -1,12 +1,10 @@
-import type { Feature } from './types';
+// import type { Feature } from './types';
 
-import { getEnvValue } from '../utils';
-
-const apiEndpoint = getEnvValue(process.env.NEXT_PUBLIC_VISUALIZE_API_HOST);
+const apiEndpoint = 'http://172.16.13.130:8153';
 
 const title = 'Solidity to UML diagrams';
 
-const config: Feature<{ api: { endpoint: string; basePath: string } }> = (() => {
+const config = (() => {
   if (apiEndpoint) {
     return Object.freeze({
       title,

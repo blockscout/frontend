@@ -13,11 +13,20 @@ const isDev = process.env.NODE_ENV === 'development';
 
 const app = Object.freeze({
   isDev,
-  protocol: appSchema,
-  host: appHost,
-  port: appPort,
-  baseUrl,
+  protocol: 'http',
+  host: '172.16.13.130',
+  port: '4000',
+  baseUrl: 'http://172.16.13.130:4000',
   useProxy: true,
 });
+
+// const app = Object.freeze({
+//   isDev: false,
+//   protocol: 'http',
+//   port: '4000',
+//   host: '172.16.13.130',
+//   baseUrl: 'http://172.16.13.130:4000',
+//   useProxy: true,
+// });
 
 export default app;
