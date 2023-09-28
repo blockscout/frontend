@@ -37,12 +37,6 @@ const Footer = () => {
   const issueUrl = useIssueUrl(backendVersionData?.backend_version);
   const BLOCKSCOUT_LINKS = [
     {
-      icon: editIcon,
-      iconSize: '16px',
-      text: 'Submit an issue',
-      url: issueUrl,
-    },
-    {
       icon: gitIcon,
       iconSize: '18px',
       text: 'Contribute',
@@ -91,7 +85,7 @@ const Footer = () => {
           <Link fontSize="xs" href="https://lukso.network/">lukso.network</Link>
         </Box>
         <Text mt={ 3 } maxW={{ base: 'unset', lg: '470px' }} fontSize="xs">
-            Blockscout is a tool for inspecting and analyzing EVM based blockchains. Blockchain explorer for Ethereum Networks.
+            Execution explorer is a tool for inspecting and analyzing EVM based blockchains. Blockchain explorer for EVM Networks. It's the <Link fontSize="xs" href="https://www.blockscout.com/">Blockscout</Link> fork.
         </Text>
         <VStack spacing={ 1 } mt={ 6 } alignItems="start">
           { apiVersionUrl && (
