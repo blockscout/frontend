@@ -2,7 +2,7 @@ import type { Feature } from './types';
 
 import { getEnvValue } from '../utils';
 
-const defaultTxHash = getEnvValue(process.env.NEXT_PUBLIC_GRAPHIQL_TRANSACTION);
+const defaultTxHash = getEnvValue('NEXT_PUBLIC_GRAPHIQL_TRANSACTION');
 
 const title = 'GraphQL API documentation';
 

@@ -1,6 +1,19 @@
+import isBrowser from 'lib/isBrowser';
 import * as regexp from 'lib/regexp';
 
-export const getEnvValue = <T extends string>(env: T | undefined): T | undefined => env?.replaceAll('\'', '"') as T;
+export const getEnvValue = (envName: string) => {
+  const envs = isBrowser() ? window.__envs : process.env;
+
+  if (isBrowser() && envs.NEXT_PUBLIC_APP_INSTANCE === 'pw') {
+    const storageValue = localStorage.getItem(envName);
+
+    if (storageValue) {
+      return storageValue;
+    }
+  }
+
+  return envs[envName]?.replaceAll('\'', '"');
+};
 
 export const parseEnvJson = <DataType>(env: string | undefined): DataType | null => {
   try {
@@ -10,15 +23,19 @@ export const parseEnvJson = <DataType>(env: string | undefined): DataType | null
   }
 };
 
-export const getExternalAssetFilePath = (envName: string, envValue: string | undefined) => {
-  const parsedValue = getEnvValue(envValue);
+export const getExternalAssetFilePath = (envName: string) => {
+  const parsedValue = getEnvValue(envName);
 
   if (!parsedValue) {
     return;
   }
 
-  const fileName = envName.replace(/^NEXT_PUBLIC_/, '').replace(/_URL$/, '').toLowerCase();
-  const fileExtension = parsedValue.match(regexp.FILE_EXTENSION)?.[1];
+  return buildExternalAssetFilePath(envName, parsedValue);
+};
+
+export const buildExternalAssetFilePath = (name: string, value: string) => {
+  const fileName = name.replace(/^NEXT_PUBLIC_/, '').replace(/_URL$/, '').toLowerCase();
+  const fileExtension = value.match(regexp.FILE_EXTENSION)?.[1];
 
   return `/assets/${ fileName }.${ fileExtension }`;
 };

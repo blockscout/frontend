@@ -39,6 +39,9 @@ class MyDocument extends Document {
             rel="stylesheet"
           />
 
+          { /* eslint-disable-next-line @next/next/no-sync-scripts */ }
+          <script src="/envs.js"/>
+
           { /* FAVICON */ }
           <link rel="icon" href="/favicon/favicon.ico" sizes="48x48"/>
           <link rel="icon" sizes="32x32" type="image/png" href="/favicon/favicon-32x32.png"/>

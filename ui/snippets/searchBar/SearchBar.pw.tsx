@@ -2,7 +2,7 @@ import { LightMode } from '@chakra-ui/react';
 import { test as base, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
-import { getExternalAssetFilePath } from 'configs/app/utils';
+import { buildExternalAssetFilePath } from 'configs/app/utils';
 import * as textAdMock from 'mocks/ad/textAd';
 import { apps as appsMock } from 'mocks/apps/apps';
 import * as searchMock from 'mocks/search/index';
@@ -273,7 +273,7 @@ test('recent keywords suggest +@mobile', async({ mount, page }) => {
 });
 
 base.describe('with apps', () => {
-  const MARKETPLACE_CONFIG_URL = getExternalAssetFilePath('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', 'https://marketplace-config.json') || '';
+  const MARKETPLACE_CONFIG_URL = buildExternalAssetFilePath('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', 'https://marketplace-config.json') || '';
   const test = base.extend({
     context: contextWithEnvs([
       { name: 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', value: MARKETPLACE_CONFIG_URL },

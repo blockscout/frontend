@@ -68,7 +68,7 @@ const config: PlaywrightTestConfig = defineConfig({
         },
       },
       define: {
-        'process.env': 'process.env', // Port over window.process envs
+        'process.env': '__envs', // Port process.env over window.__envs
       },
     },
   },
