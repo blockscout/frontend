@@ -64,6 +64,16 @@ export const L2: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
+export const zkEvmL2: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.zkEvmRollup.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
 export const marketplace: GetServerSideProps<Props> = async(context) => {
   if (!config.features.marketplace.isEnabled) {
     return {

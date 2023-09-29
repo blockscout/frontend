@@ -71,7 +71,20 @@ export default function useNavItems(): ReturnType {
     // eslint-disable-next-line max-len
      { text: 'Verified contracts', nextRoute: { pathname: '/verified-contracts' as const }, icon: verifiedIcon, isActive: pathname === '/verified-contracts' };
 
-    if (config.features.rollup.isEnabled) {
+    if (config.features.zkEvmRollup.isEnabled) {
+      blockchainNavItems = [
+        [
+          txs,
+          blocks,
+          // eslint-disable-next-line max-len
+          { text: 'Txn batches', nextRoute: { pathname: '/zkevm-l2-txn-batches' as const }, icon: txnBatchIcon, isActive: pathname === '/zkevm-l2-txn-batches' || pathname === '/batch/[number]' },
+        ],
+        [
+          topAccounts,
+          verifiedContracts,
+        ],
+      ];
+    } else if (config.features.rollup.isEnabled) {
       blockchainNavItems = [
         [
           txs,

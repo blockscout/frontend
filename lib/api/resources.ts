@@ -59,6 +59,7 @@ import type { TTxsFilters } from 'types/api/txsFilters';
 import type { TxStateChanges } from 'types/api/txStateChanges';
 import type { VisualizedContract } from 'types/api/visualization';
 import type { WithdrawalsResponse, WithdrawalsCounters } from 'types/api/withdrawals';
+import type { ZkEvmL2TxnBatchesResponse } from 'types/api/zkEvml2TxnBatches';
 import type { ArrayElement } from 'types/utils';
 
 import config from 'configs/app';
@@ -483,6 +484,15 @@ export const RESOURCES = {
     path: '/api/v2/optimism/txn-batches/count',
   },
 
+  zkevm_l2_txn_batches: {
+    path: '/api/v2/zkevm/batches',
+    filterFields: [],
+  },
+
+  zkevm_l2_txn_batches_count: {
+    path: '/api/v2/zkevm/batches/count',
+  },
+
   // CONFIGS
   config_backend_version: {
     path: '/api/v2/config/backend-version',
@@ -552,6 +562,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'token_instance_transfers' | 'token_instance_holders' |
 'verified_contracts' |
 'l2_output_roots' | 'l2_withdrawals' | 'l2_txn_batches' | 'l2_deposits' |
+'zkevm_l2_txn_batches' |
 'withdrawals' | 'address_withdrawals' | 'block_withdrawals';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
@@ -640,6 +651,8 @@ Q extends 'l2_output_roots_count' ? number :
 Q extends 'l2_withdrawals_count' ? number :
 Q extends 'l2_deposits_count' ? number :
 Q extends 'l2_txn_batches_count' ? number :
+Q extends 'zkevm_l2_txn_batches' ? ZkEvmL2TxnBatchesResponse :
+Q extends 'zkevm_l2_txn_batches_count' ? number :
 Q extends 'config_backend_version' ? BackendVersionConfig :
 never;
 /* eslint-enable @typescript-eslint/indent */

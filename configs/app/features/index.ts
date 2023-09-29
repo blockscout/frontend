@@ -19,3 +19,4 @@ export { default as stats } from './stats';
 export { default as suave } from './suave';
 export { default as web3Wallet } from './web3Wallet';
 export { default as verifiedTokens } from './verifiedTokens';
+export { default as zkEvmRollup } from './zkEvmRollup';
