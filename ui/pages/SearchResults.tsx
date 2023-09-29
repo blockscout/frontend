@@ -40,15 +40,15 @@ const SearchResultsPageContent = () => {
     if (redirectCheckQuery.data?.redirect && redirectCheckQuery.data.parameter) {
       switch (redirectCheckQuery.data.type) {
         case 'block': {
-          router.push({ pathname: '/block/[height_or_hash]', query: { height_or_hash: redirectCheckQuery.data.parameter } });
+          router.replace({ pathname: '/block/[height_or_hash]', query: { height_or_hash: redirectCheckQuery.data.parameter } });
           return;
         }
         case 'address': {
-          router.push({ pathname: '/address/[hash]', query: { hash: redirectCheckQuery.data.parameter } });
+          router.replace({ pathname: '/address/[hash]', query: { hash: redirectCheckQuery.data.parameter } });
           return;
         }
         case 'transaction': {
-          router.push({ pathname: '/tx/[hash]', query: { hash: redirectCheckQuery.data.parameter } });
+          router.replace({ pathname: '/tx/[hash]', query: { hash: redirectCheckQuery.data.parameter } });
           return;
         }
       }
