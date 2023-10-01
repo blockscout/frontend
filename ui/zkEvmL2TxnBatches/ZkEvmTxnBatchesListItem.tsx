@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { ZkEvmL2TxnBatchesItem } from 'types/api/zkEvml2TxnBatches';
 
-// import { route } from 'nextjs-routes';
+import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
@@ -34,8 +34,7 @@ const ZkEvmTxnBatchesListItem = ({ item, isLoading }: Props) => {
           fontSize="sm"
           lineHeight={ 5 }
           fontWeight={ 600 }
-          // fix after implementing batch page
-          href="#"
+          href={ route({ pathname: '/zkevm-l2-txn-batch/[number]', query: { number: item.number.toString() } }) }
         />
       </ListItemMobileGrid.Value>
 

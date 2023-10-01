@@ -8,6 +8,7 @@ export type Props = {
   id: string;
   height_or_hash: string;
   hash: string;
+  number: string;
   q: string;
 }
 
@@ -19,6 +20,7 @@ export const base: GetServerSideProps<Props> = async({ req, query }) => {
       id: query.id?.toString() || '',
       hash: query.hash?.toString() || '',
       height_or_hash: query.height_or_hash?.toString() || '',
+      number: query.number?.toString() || '',
       q: query.q?.toString() || '',
     },
   };

@@ -65,6 +65,11 @@ export type Transaction = {
     validator_address: AddressParam;
     validator_fee: string;
   };
+  // zkEvm fields
+  zkevm_verify_hash?: string;
+  zkevm_batch_number?: number;
+  zkevm_status?: string;
+  zkevm_sequence_hash?: string;
 }
 
 export type TransactionsResponse = TransactionsResponseValidated | TransactionsResponsePending;

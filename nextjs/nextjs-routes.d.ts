@@ -47,6 +47,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/verified-contracts">
     | StaticRoute<"/visualize/sol2uml">
     | StaticRoute<"/withdrawals">
+    | DynamicRoute<"/zkevm-l2-txn-batch/[number]", { "number": string }>
     | StaticRoute<"/zkevm-l2-txn-batches">;
 
   interface StaticRoute<Pathname> {
