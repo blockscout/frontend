@@ -39,6 +39,9 @@ const UI = Object.freeze({
   indexingAlert: {
     isHidden: getEnvValue('NEXT_PUBLIC_HIDE_INDEXING_ALERT'),
   },
+  maintenanceAlert: {
+    message: getEnvValue(process.env.NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE),
+  },
   explorers: {
     items: parseEnvJson<Array<NetworkExplorer>>(getEnvValue('NEXT_PUBLIC_NETWORK_EXPLORERS')) || [],
   },

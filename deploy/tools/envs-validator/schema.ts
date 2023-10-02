@@ -304,6 +304,7 @@ const schema = yup
       .json()
       .of(networkExplorerSchema),
     NEXT_PUBLIC_HIDE_INDEXING_ALERT: yup.boolean(),
+    NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: yup.string(),
 
     // 5. Features configuration
     NEXT_PUBLIC_API_SPEC_URL: yup.string().url(),
