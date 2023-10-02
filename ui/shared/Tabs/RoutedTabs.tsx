@@ -15,9 +15,10 @@ interface Props extends ThemingProps<'Tabs'> {
   rightSlot?: React.ReactNode;
   stickyEnabled?: boolean;
   className?: string;
+  onTabChange?: (index: number) => void;
 }
 
-const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled, className, ...themeProps }: Props) => {
+const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled, className, onTabChange, ...themeProps }: Props) => {
   const router = useRouter();
   const tabIndex = useTabIndexFromQuery(tabs);
   const tabsRef = useRef<HTMLDivElement>(null);
@@ -31,7 +32,9 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled, className, .
       undefined,
       { shallow: true },
     );
-  }, [ tabs, router ]);
+
+    onTabChange?.(index);
+  }, [ tabs, router, onTabChange ]);
 
   useEffect(() => {
     if (router.query.scroll_to_tabs) {

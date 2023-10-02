@@ -1,16 +1,18 @@
 import { CheckboxGroup, Checkbox, Text, Flex, Link, useCheckboxGroup } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenType } from 'types/api/token';
+const BRIDGED_TOKENS_CHAINS = [
+  { id: '1', title: 'Ethereum' },
+  { id: '56', title: 'Binance Smart Chain' },
+  { id: '99', title: 'POA' },
+];
 
-import { TOKEN_TYPES } from 'lib/token/tokenTypes';
-
-type Props = {
-  onChange: (nextValue: Array<TokenType>) => void;
-  defaultValue?: Array<TokenType>;
+interface Props {
+  onChange: (nextValue: Array<string>) => void;
+  defaultValue?: Array<string>;
 }
 
-const TokenTypeFilter = ({ onChange, defaultValue }: Props) => {
+const TokensBridgedChainsFilter = ({ onChange, defaultValue }: Props) => {
   const { value, setValue } = useCheckboxGroup({ defaultValue });
 
   const handleReset = React.useCallback(() => {
@@ -18,7 +20,7 @@ const TokenTypeFilter = ({ onChange, defaultValue }: Props) => {
     onChange([]);
   }, [ onChange, setValue ]);
 
-  const handleChange = React.useCallback((nextValue: Array<TokenType>) => {
+  const handleChange = React.useCallback((nextValue: Array<string>) => {
     setValue(nextValue);
     onChange(nextValue);
   }, [ onChange, setValue ]);
@@ -26,13 +28,13 @@ const TokenTypeFilter = ({ onChange, defaultValue }: Props) => {
   return (
     <>
       <Flex justifyContent="space-between" fontSize="sm">
-        <Text fontWeight={ 600 } variant="secondary">Type</Text>
+        <Text fontWeight={ 600 } variant="secondary">Show bridged tokens from</Text>
         <Link onClick={ handleReset }>Reset</Link>
       </Flex>
       <CheckboxGroup size="lg" onChange={ handleChange } value={ value }>
-        { TOKEN_TYPES.map(({ title, id }) => (
+        { BRIDGED_TOKENS_CHAINS.map(({ title, id }) => (
           <Checkbox key={ id } value={ id }>
-            <Text fontSize="md">{ title }</Text>
+            <Text fontSize="md" whiteSpace="pre-wrap">{ title }</Text>
           </Checkbox>
         )) }
       </CheckboxGroup>
@@ -40,4 +42,4 @@ const TokenTypeFilter = ({ onChange, defaultValue }: Props) => {
   );
 };
 
-export default TokenTypeFilter;
+export default React.memo(TokensBridgedChainsFilter);

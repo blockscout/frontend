@@ -32,6 +32,7 @@ const TokensTableItem = ({
     type,
     holders,
     circulating_market_cap: marketCap,
+    bridge_type: bridgeType,
   } = token;
 
   const tokenAddress: AddressEntityProps['address'] = {
@@ -77,9 +78,10 @@ const TokensTableItem = ({
                 />
                 <AddressAddToWallet token={ token } ml={ 2 } isLoading={ isLoading }/>
               </Flex>
-              <Box mt={ 3 } >
+              <Flex mt={ 3 } columnGap={ 1 }>
                 <Tag isLoading={ isLoading }>{ type }</Tag>
-              </Box>
+                { bridgeType && <Tag isLoading={ isLoading }>{ bridgeType }</Tag> }
+              </Flex>
             </Box>
           </Box>
         </Flex>
