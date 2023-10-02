@@ -47,7 +47,7 @@ on:
                 value: ${{ jobs.run.outputs.issues }}
 
 concurrency:
-  group: ${{ github.workflow }}__${{ github.action }}__${{ github.ref }}
+  group: ${{ github.workflow }}__${{ github.job }}__${{ github.ref }}
   cancel-in-progress: true
 
 jobs:

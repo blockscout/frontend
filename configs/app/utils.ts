@@ -7,7 +7,7 @@ export const getEnvValue = (envName: string) => {
   if (isBrowser() && envs.NEXT_PUBLIC_APP_INSTANCE === 'pw') {
     const storageValue = localStorage.getItem(envName);
 
-    if (storageValue) {
+    if (typeof storageValue === 'string') {
       return storageValue;
     }
   }
