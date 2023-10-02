@@ -1,26 +1,22 @@
-import { Flex, Hide, Show, Skeleton, Text } from '@chakra-ui/react';
+import { Hide, Show, Skeleton, Text } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import getCurrencyValue from 'lib/getCurrencyValue';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import { generateListStub } from 'stubs/utils';
 import { WITHDRAWAL } from 'stubs/withdrawals';
-import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
+import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
 import WithdrawalsListItem from 'ui/withdrawals/WithdrawalsListItem';
 import WithdrawalsTable from 'ui/withdrawals/WithdrawalsTable';
 
 const feature = config.features.beaconChain;
 
 const Withdrawals = () => {
-  const isMobile = useIsMobile();
-
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
     resourceName: 'withdrawals',
     options: {
@@ -31,7 +27,14 @@ const Withdrawals = () => {
     },
   });
 
-  const countersQuery = useApiQuery('withdrawals_counters');
+  const countersQuery = useApiQuery('withdrawals_counters', {
+    queryOptions: {
+      placeholderData: {
+        withdrawal_count: '19091878',
+        withdrawal_sum: '4630710684332438',
+      },
+    },
+  });
 
   const content = data?.items ? (
     <>
@@ -52,43 +55,23 @@ const Withdrawals = () => {
   ) : null;
 
   const text = (() => {
-    if (countersQuery.isLoading) {
-      return (
-        <Skeleton
-          w={{ base: '100%', lg: '320px' }}
-          h="24px"
-          mb={{ base: 6, lg: pagination.isVisible ? 0 : 7 }}
-          mt={{ base: 0, lg: pagination.isVisible ? 0 : 7 }}
-        />
-      );
-    }
-
     if (countersQuery.isError || !feature.isEnabled) {
       return null;
     }
 
-    const { valueStr } = getCurrencyValue({ value: countersQuery.data.withdrawal_sum });
     return (
-      <Text mb={{ base: 6, lg: pagination.isVisible ? 0 : 6 }} lineHeight={{ base: '24px', lg: '32px' }}>
-        { BigNumber(countersQuery.data.withdrawal_count).toFormat() } withdrawals processed
-        and { valueStr } { feature.currency.symbol } withdrawn
-      </Text>
+      <Skeleton isLoaded={ !countersQuery.isPlaceholderData && !isPlaceholderData } display="flex" flexWrap="wrap">
+        { countersQuery.data && (
+          <Text lineHeight={{ base: '24px', lg: '32px' }}>
+            { BigNumber(countersQuery.data.withdrawal_count).toFormat() } withdrawals processed
+        and { getCurrencyValue({ value: countersQuery.data.withdrawal_sum }).valueStr } { feature.currency.symbol } withdrawn
+          </Text>
+        ) }
+      </Skeleton>
     );
   })();
 
-  const actionBar = (
-    <>
-      { (isMobile || !pagination.isVisible) && text }
-      { pagination.isVisible && (
-        <ActionBar mt={ -6 }>
-          <Flex alignItems="center" justifyContent="space-between" w="100%">
-            { !isMobile && text }
-            <Pagination ml="auto" { ...pagination }/>
-          </Flex>
-        </ActionBar>
-      ) }
-    </>
-  );
+  const actionBar = <StickyPaginationWithText text={ text } pagination={ pagination }/>;
 
   return (
     <>
