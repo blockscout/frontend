@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/react';
 import React from 'react';
 
-import { config, configureScope } from 'configs/sentry/react';
+import { config, configureScope } from './config';
 
 export default function useConfigSentry() {
   React.useEffect(() => {

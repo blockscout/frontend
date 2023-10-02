@@ -146,8 +146,8 @@ frontend:
 
     NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE: validation
     NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM: https://airtable.com/shrqUAcjgGJ4jU88C
-    NEXT_PUBLIC_APP_ENV: stable
-    NEXT_PUBLIC_APP_INSTANCE: eth_goerli
+    NEXT_PUBLIC_APP_ENV: development
+    NEXT_PUBLIC_APP_INSTANCE: main
     NEXT_PUBLIC_STATS_API_HOST: https://stats-test.k8s-dev.blockscout.com/
     NEXT_PUBLIC_VISUALIZE_API_HOST: http://visualizer-svc.visualizer-testing.svc.cluster.local/
     NEXT_PUBLIC_CONTRACT_INFO_API_HOST: https://contracts-info-test.k8s-dev.blockscout.com

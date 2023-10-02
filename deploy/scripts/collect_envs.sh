@@ -9,11 +9,11 @@ fi
 input_file="$1"
 prefix="NEXT_PUBLIC_"
 
-# Function to make the environment variables template file
+# Function to make the environment variables registry file based on documentation file ENVS.md
 # It will read the input file, extract all prefixed string and use them as variables names
-# This variables will have placeholders for their values at buildtime which will be replaced with actual values at runtime
-make_envs_template_file() {
-  output_file=".env.production"
+# This variables will have dummy values assigned to them
+make_registry_file() {
+  output_file=".env.registry"
 
   # Check if file already exists and empty its content if it does
   if [ -f "$output_file" ]; then
@@ -21,7 +21,7 @@ make_envs_template_file() {
   fi
 
   grep -oE "${prefix}[[:alnum:]_]+" "$input_file" | sort -u | while IFS= read -r var_name; do
-    echo "$var_name=__PLACEHOLDER_FOR_${var_name}__" >> "$output_file"
+    echo "$var_name=__" >> "$output_file"
   done
 }
 
@@ -41,5 +41,5 @@ save_build-time_envs() {
   done
 }
 
-make_envs_template_file
+make_registry_file
 save_build-time_envs

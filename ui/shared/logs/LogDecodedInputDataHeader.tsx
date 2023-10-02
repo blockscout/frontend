@@ -19,7 +19,7 @@ const Item = ({ label, text, isLoading }: { label: string; text: string; isLoadi
       <Skeleton fontWeight={ 600 } w={{ base: 'auto', lg: '80px' }} flexShrink={ 0 } isLoaded={ !isLoading }>
         { label }
       </Skeleton >
-      <Skeleton isLoaded={ !isLoading }>{ text }</Skeleton>
+      <Skeleton isLoaded={ !isLoading } whiteSpace="pre-wrap">{ text }</Skeleton>
     </Flex>
   );
 };

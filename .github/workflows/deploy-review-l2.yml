@@ -4,61 +4,33 @@ on:
   workflow_dispatch:
 
 jobs:
-  publish_image:
-    name: Publish Docker image
+  make_slug:
+    name: Make GitHub reference slug
     runs-on: ubuntu-latest
     outputs:
-      shortSha: ${{ steps.output-step.outputs.short-sha }}
+      REF_SLUG: ${{ steps.output.outputs.REF_SLUG }}
     steps:
-      - name: Check out the repo
-        uses: actions/checkout@v3
+      -   name: Inject slug/short variables
+          uses: rlespinasse/github-slug-action@v4.4.1
 
-      - name: Inject slug/short variables
-        uses: rlespinasse/github-slug-action@v4.4.1
+      -   name: Set output
+          id: output
+          run: echo "REF_SLUG=${{ env.GITHUB_REF_NAME_SLUG }}" >> $GITHUB_OUTPUT
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      # Will automatically make nice tags, see the table here https://github.com/docker/metadata-action#basic
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: ghcr.io/blockscout/frontend
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Add SHORT_SHA env property with commit short sha
-        run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
-
-      - name: Add outputs
-        run: |
-          echo "::set-output name=short-sha::${{ env.SHORT_SHA }}"
-        id: output-step
-
-      - name: Build and push
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          cache-from: type=gha
-          tags: ghcr.io/blockscout/frontend:prerelease-${{ env.GITHUB_REF_NAME_SLUG }}
-          labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            GIT_COMMIT_SHA=${{ env.SHORT_SHA }}
+  publish_image:
+    name: Publish Docker image
+    needs: make_slug
+    uses: './.github/workflows/publish-image.yml'
+    with:
+        tags: ghcr.io/blockscout/frontend:review-${{ needs.make_slug.outputs.REF_SLUG }}
+    secrets: inherit
 
   deploy_review_l2:
     name: Deploy frontend (L2)
-    needs: publish_image
+    needs: [ make_slug, publish_image ]
     uses: blockscout/blockscout-ci-cd/.github/workflows/deploy_helmfile.yaml@master
     with:
-      appName: review-l2-$GITHUB_REF_NAME_SLUG
+      appName: review-l2-${{ needs.make_slug.outputs.REF_SLUG }}
       globalEnv: review
       helmfileDir: deploy
       kubeConfigSecret: ci/data/dev/kubeconfig/k8s-dev

@@ -2,9 +2,9 @@ import React from 'react';
 
 import type { Props } from './types';
 
-import IndexingAlertBlocks from 'ui/home/IndexingAlertBlocks';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
 import Header from 'ui/snippets/header/Header';
+import HeaderAlert from 'ui/snippets/header/HeaderAlert';
 
 import * as Layout from './components';
 
@@ -16,7 +16,7 @@ const LayoutHome = ({ children }: Props) => {
         <Layout.MainColumn
           paddingTop={{ base: '88px', lg: 9 }}
         >
-          <IndexingAlertBlocks/>
+          <HeaderAlert/>
           <Header isHomePage/>
           <AppErrorBoundary>
             { children }

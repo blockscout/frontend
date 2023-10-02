@@ -47,9 +47,9 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Generate .env.production with ENVs placeholders and save build args into .env file
-COPY --chmod=+x ./deploy/scripts/make_envs_template.sh ./
-RUN ./make_envs_template.sh ./docs/ENVS.md
+# Generate .env.registry with ENVs list and save build args into .env file
+COPY --chmod=+x ./deploy/scripts/collect_envs.sh ./
+RUN ./collect_envs.sh ./docs/ENVS.md
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
@@ -98,8 +98,9 @@ COPY --from=builder /app/deploy/tools/feature-reporter/index.js ./feature-report
 # Copy scripts
 ## Entripoint
 COPY --chmod=+x ./deploy/scripts/entrypoint.sh .
-## ENV replacer
-COPY --chmod=+x ./deploy/scripts/replace_envs.sh .
+## ENV validator and client script maker
+COPY --chmod=+x ./deploy/scripts/validate_envs.sh .
+COPY --chmod=+x ./deploy/scripts/make_envs_script.sh .
 ## Assets downloader
 COPY --chmod=+x ./deploy/scripts/download_assets.sh .
 ## Favicon generator
@@ -109,7 +110,7 @@ RUN ["chmod", "-R", "777", "./deploy/tools/favicon-generator"]
 RUN ["chmod", "-R", "777", "./public"]
 
 # Copy ENVs files
-COPY --from=builder /app/.env.production .
+COPY --from=builder /app/.env.registry .
 COPY --from=builder /app/.env .
 
 # Automatically leverage output traces to reduce image size

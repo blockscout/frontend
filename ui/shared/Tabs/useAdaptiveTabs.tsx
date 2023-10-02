@@ -23,17 +23,26 @@ export default function useAdaptiveTabs(tabs: Array<RoutedTab>, disabled?: boole
       return tabs.length;
     }
 
-    const { visibleNum } = tabWidths.slice(0, -1).reduce((result, item, index) => {
+    const { visibleNum } = tabWidths.slice(0, -1).reduce((result, item, index, array) => {
       if (!item) {
         return result;
       }
 
-      if (result.accWidth + item <= listWidth - rightSlotWidth - menuWidth) {
-        return { visibleNum: result.visibleNum + 1, accWidth: result.accWidth + item };
+      if (result.visibleNum < index) {
+        // means that we haven't increased visibleNum on the previous iteration, so there is no space left
+        // we skip now till the rest of the loop
+        return result;
       }
 
-      if (result.accWidth + item <= listWidth - rightSlotWidth && index === tabWidths.length - 2) {
-        return { visibleNum: result.visibleNum + 1, accWidth: result.accWidth + item };
+      if (index === array.length - 1) {
+        // last element
+        if (result.accWidth + item < listWidth - rightSlotWidth) {
+          return { visibleNum: result.visibleNum + 1, accWidth: result.accWidth + item };
+        }
+      } else {
+        if (result.accWidth + item + menuWidth < listWidth - rightSlotWidth) {
+          return { visibleNum: result.visibleNum + 1, accWidth: result.accWidth + item };
+        }
       }
 
       return result;

@@ -1,5 +1,4 @@
 import type * as Sentry from '@sentry/react';
-import { BrowserTracing } from '@sentry/tracing';
 
 import appConfig from 'configs/app';
 
@@ -13,11 +12,8 @@ export const config: Sentry.BrowserOptions | undefined = (() => {
   return {
     environment: feature.environment,
     dsn: feature.dsn,
-    release: process.env.NEXT_PUBLIC_GIT_TAG || process.env.NEXT_PUBLIC_GIT_COMMIT_SHA,
-    integrations: [ new BrowserTracing() ],
-    // We recommend adjusting this value in production, or using tracesSampler
-    // for finer control
-    tracesSampleRate: 1.0,
+    release: feature.release,
+    enableTracing: false,
 
     // error filtering settings
     // were taken from here - https://docs.sentry.io/platforms/node/guides/azure-functions/configuration/filtering/#decluttering-sentry

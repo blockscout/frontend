@@ -3,10 +3,10 @@
 # Download external assets
 ./download_assets.sh ./public/assets
 
-# Check run-time ENVs values integrity
-node "$(dirname "$0")/envs-validator.js" "$input"
-if [ $? != 0 ]; then                   
-   exit 1
+# Check run-time ENVs values
+./validate_envs.sh
+if [ $? -ne 0 ]; then
+  exit 1
 fi
 
 # Generate favicons bundle
@@ -18,8 +18,8 @@ else
 fi
 echo
 
-# Execute script for replace build-time ENVs placeholders with their values at runtime
-./replace_envs.sh
+# Create envs.js file with run-time environment variables for the client app
+./make_envs_script.sh
 
 # Print list of enabled features
 node ./feature-reporter.js
