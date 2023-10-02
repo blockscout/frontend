@@ -155,14 +155,14 @@ const sentrySchema = yup
       .string()
       .when('NEXT_PUBLIC_SENTRY_DSN', {
         is: (value: string) => Boolean(value),
-        then: (schema) => schema.required(),
+        then: (schema) => schema,
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_APP_INSTANCE cannot not be used without NEXT_PUBLIC_SENTRY_DSN'),
       }),
     NEXT_PUBLIC_APP_ENV: yup
       .string()
       .when('NEXT_PUBLIC_SENTRY_DSN', {
         is: (value: string) => Boolean(value),
-        then: (schema) => schema.required(),
+        then: (schema) => schema,
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_APP_ENV cannot not be used without NEXT_PUBLIC_SENTRY_DSN'),
       }),
   });

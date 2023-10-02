@@ -25,7 +25,7 @@ const Login = () => {
   }, []);
 
   const checkSentry = React.useCallback(() => {
-    Sentry.captureException(new Error('Test error'), { extra: { foo: 'bar' }, tags: { source: 'test' } });
+    Sentry.captureException(new Error('Test error'), { tags: { source: 'test' } });
   }, []);
 
   const checkMixpanel = React.useCallback(() => {
