@@ -81,17 +81,17 @@ async function getExternalJsonContent(fileName: string, envValue: string): Promi
   });
 }
 
-async function checkPlaceholdersCongruity(runTimeEnvs: Record<string, string>) {
+async function checkPlaceholdersCongruity(envsMap: Record<string, string>) {
   try {
     console.log(`🌀 Checking environment variables and their placeholders congruity...`);
 
-    const placeholders = await getEnvsPlaceholders(path.resolve(__dirname, '.env.production'));
+    const runTimeEnvs = await getEnvsPlaceholders(path.resolve(__dirname, '.env.registry'));
     const buildTimeEnvs = await getEnvsPlaceholders(path.resolve(__dirname, '.env'));
-    const envs = Object.keys(runTimeEnvs).filter((env) => !buildTimeEnvs.includes(env));
+    const envs = Object.keys(envsMap).filter((env) => !buildTimeEnvs.includes(env));
 
     const inconsistencies: Array<string> = [];
     for (const env of envs) {
-      const hasPlaceholder = placeholders.includes(env);
+      const hasPlaceholder = runTimeEnvs.includes(env);
       if (!hasPlaceholder) {
         inconsistencies.push(env);
       }

@@ -3,20 +3,20 @@ import type { Feature } from './types';
 import app from '../app';
 import { getEnvValue } from '../utils';
 
-const dsn = getEnvValue(process.env.NEXT_PUBLIC_SENTRY_DSN);
+const dsn = getEnvValue('NEXT_PUBLIC_SENTRY_DSN');
 const instance = (() => {
-  const envValue = getEnvValue(process.env.NEXT_PUBLIC_APP_INSTANCE);
+  const envValue = getEnvValue('NEXT_PUBLIC_APP_INSTANCE');
   if (envValue) {
     return envValue;
   }
 
   return app.host?.replace('.blockscout.com', '').replaceAll('-', '_');
 })();
-const environment = getEnvValue(process.env.NEXT_PUBLIC_APP_ENV) || 'production';
-const release = getEnvValue(process.env.NEXT_PUBLIC_GIT_TAG);
+const environment = getEnvValue('NEXT_PUBLIC_APP_ENV') || 'production';
+const release = getEnvValue('NEXT_PUBLIC_GIT_TAG');
 const cspReportUrl = (() => {
   try {
-    const url = new URL(getEnvValue(process.env.SENTRY_CSP_REPORT_URI) || '');
+    const url = new URL(getEnvValue('SENTRY_CSP_REPORT_URI') || '');
 
     // https://docs.sentry.io/product/security-policy-reporting/#additional-configuration
     url.searchParams.set('sentry_environment', environment);

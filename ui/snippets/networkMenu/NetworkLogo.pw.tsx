@@ -2,7 +2,7 @@ import { test as base, expect } from '@playwright/experimental-ct-react';
 import type { Locator } from '@playwright/test';
 import React from 'react';
 
-import { getExternalAssetFilePath } from 'configs/app/utils';
+import { buildExternalAssetFilePath } from 'configs/app/utils';
 import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
 import * as configs from 'playwright/utils/configs';
@@ -44,8 +44,8 @@ base.describe('placeholder logo', () => {
 });
 
 base.describe('custom logo', () => {
-  const LOGO_URL = getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_LOGO', 'https://localhost:3000/my-logo.png') || '';
-  const ICON_URL = getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_ICON', 'https://localhost:3000/my-icon.png') || '';
+  const LOGO_URL = buildExternalAssetFilePath('NEXT_PUBLIC_NETWORK_LOGO', 'https://localhost:3000/my-logo.png') || '';
+  const ICON_URL = buildExternalAssetFilePath('NEXT_PUBLIC_NETWORK_ICON', 'https://localhost:3000/my-icon.png') || '';
   const test = base.extend({
     context: contextWithEnvs([
       { name: 'NEXT_PUBLIC_NETWORK_LOGO', value: LOGO_URL },
@@ -91,10 +91,10 @@ base.describe('custom logo', () => {
 });
 
 base.describe('custom logo with dark option -@default +@dark-mode', () => {
-  const LOGO_URL = getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_LOGO', 'https://localhost:3000/my-logo.png') || '';
-  const LOGO_URL_DARK = getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_LOGO_DARK', 'https://localhost:3000/my-logo.png') || '';
-  const ICON_URL = getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_ICON', 'https://localhost:3000/my-icon.png') || '';
-  const ICON_URL_DARK = getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_ICON_DARK', 'https://localhost:3000/my-icon.png') || '';
+  const LOGO_URL = buildExternalAssetFilePath('NEXT_PUBLIC_NETWORK_LOGO', 'https://localhost:3000/my-logo.png') || '';
+  const LOGO_URL_DARK = buildExternalAssetFilePath('NEXT_PUBLIC_NETWORK_LOGO_DARK', 'https://localhost:3000/my-logo.png') || '';
+  const ICON_URL = buildExternalAssetFilePath('NEXT_PUBLIC_NETWORK_ICON', 'https://localhost:3000/my-icon.png') || '';
+  const ICON_URL_DARK = buildExternalAssetFilePath('NEXT_PUBLIC_NETWORK_ICON_DARK', 'https://localhost:3000/my-icon.png') || '';
   const test = base.extend({
     context: contextWithEnvs([
       { name: 'NEXT_PUBLIC_NETWORK_LOGO', value: LOGO_URL },

@@ -11,7 +11,7 @@ import { apos, nbsp, ndash } from 'lib/html-entities';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 
-const IndexingAlertIntTxs = () => {
+const IntTxsIndexingStatus = () => {
 
   const { data, isError, isLoading } = useApiQuery('homepage_indexing_status');
 
@@ -98,4 +98,4 @@ const IndexingAlertIntTxs = () => {
   );
 };
 
-export default IndexingAlertIntTxs;
+export default IntTxsIndexingStatus;
