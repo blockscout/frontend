@@ -4,7 +4,7 @@ frontend:
   app: blockscout
   enabled: true
   image:
-    _default: ghcr.io/blockscout/frontend:prerelease-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}
+    _default: ghcr.io/blockscout/frontend:review-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}
     pullPolicy: Always
   ingress:
     enabled: true
