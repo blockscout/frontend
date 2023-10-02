@@ -1,3 +1,11 @@
+declare module 'yup' {
+  interface StringSchema {
+    // Yup's URL validator is not perfect so we made our own
+    // https://github.com/jquense/yup/pull/1859
+    url(): never;
+  }
+}
+
 import * as yup from 'yup';
 
 import type { AdButlerConfig } from '../../../types/client/adButlerConfig';
@@ -19,22 +27,42 @@ import * as regexp from '../../../lib/regexp';
 
 const protocols = [ 'http', 'https' ];
 
+const urlTest: yup.TestConfig = {
+  name: 'url',
+  test: (value: unknown) => {
+    if (!value) {
+      return true;
+    }
+
+    try {
+      if (typeof value === 'string') {
+        new URL(value);
+        return true;
+      }
+    } catch (error) {}
+
+    return false;
+  },
+  message: '${path} is not a valid URL',
+  exclusive: true,
+};
+
 const marketplaceAppSchema: yup.ObjectSchema<MarketplaceAppOverview> = yup
   .object({
     id: yup.string().required(),
     external: yup.boolean(),
     title: yup.string().required(),
-    logo: yup.string().url().required(),
-    logoDarkMode: yup.string().url(),
+    logo: yup.string().test(urlTest).required(),
+    logoDarkMode: yup.string().test(urlTest),
     shortDescription: yup.string().required(),
     categories: yup.array().of(yup.string().required()).required(),
-    url: yup.string().url().required(),
+    url: yup.string().test(urlTest).required(),
     author: yup.string().required(),
     description: yup.string().required(),
-    site: yup.string().url(),
-    twitter: yup.string().url(),
-    telegram: yup.string().url(),
-    github: yup.string().url(),
+    site: yup.string().test(urlTest),
+    twitter: yup.string().test(urlTest),
+    telegram: yup.string().test(urlTest),
+    github: yup.string().test(urlTest),
   });
 
 const marketplaceSchema = yup
@@ -48,7 +76,7 @@ const marketplaceSchema = yup
       .string()
       .when('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', {
         is: (value: Array<unknown>) => value.length > 0,
-        then: (schema) => schema.url().required(),
+        then: (schema) => schema.test(urlTest).required(),
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM cannot not be used without NEXT_PUBLIC_MARKETPLACE_CONFIG_URL'),
       }),
   });
@@ -77,14 +105,14 @@ const rollupSchema = yup
       .string()
       .when('NEXT_PUBLIC_IS_L2_NETWORK', {
         is: (value: boolean) => value,
-        then: (schema) => schema.url().required(),
+        then: (schema) => schema.test(urlTest).required(),
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_L1_BASE_URL cannot not be used if NEXT_PUBLIC_IS_L2_NETWORK is not set to "true"'),
       }),
     NEXT_PUBLIC_L2_WITHDRAWAL_URL: yup
       .string()
       .when('NEXT_PUBLIC_IS_L2_NETWORK', {
         is: (value: string) => value,
-        then: (schema) => schema.url().required(),
+        then: (schema) => schema.test(urlTest).required(),
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_L2_WITHDRAWAL_URL cannot not be used if NEXT_PUBLIC_IS_L2_NETWORK is not set to "true"'),
       }),
   });
@@ -115,12 +143,12 @@ const adsBannerSchema = yup
 const sentrySchema = yup
   .object()
   .shape({
-    NEXT_PUBLIC_SENTRY_DSN: yup.string().url(),
+    NEXT_PUBLIC_SENTRY_DSN: yup.string().test(urlTest),
     SENTRY_CSP_REPORT_URI: yup
       .string()
       .when('NEXT_PUBLIC_SENTRY_DSN', {
         is: (value: string) => Boolean(value),
-        then: (schema) => schema.url(),
+        then: (schema) => schema.test(urlTest),
         otherwise: (schema) => schema.max(-1, 'SENTRY_CSP_REPORT_URI cannot not be used without NEXT_PUBLIC_SENTRY_DSN'),
       }),
     NEXT_PUBLIC_APP_INSTANCE: yup
@@ -154,21 +182,21 @@ const accountSchema = yup
       .string()
       .when('NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED', {
         is: (value: boolean) => value,
-        then: (schema) => schema.url(),
+        then: (schema) => schema.test(urlTest),
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_AUTH_URL cannot not be used if NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED is not set to "true"'),
       }),
     NEXT_PUBLIC_LOGOUT_URL: yup
       .string()
       .when('NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED', {
         is: (value: boolean) => value,
-        then: (schema) => schema.url().required(),
+        then: (schema) => schema.test(urlTest).required(),
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_LOGOUT_URL cannot not be used if NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED is not set to "true"'),
       }),
     NEXT_PUBLIC_ADMIN_SERVICE_API_HOST: yup
       .string()
       .when('NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED', {
         is: (value: boolean) => value,
-        then: (schema) => schema.url(),
+        then: (schema) => schema.test(urlTest),
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_ADMIN_SERVICE_API_HOST cannot not be used if NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED is not set to "true"'),
       }),
   });
@@ -177,9 +205,9 @@ const featuredNetworkSchema: yup.ObjectSchema<FeaturedNetwork> = yup
   .object()
   .shape({
     title: yup.string().required(),
-    url: yup.string().url().required(),
+    url: yup.string().test(urlTest).required(),
     group: yup.string().oneOf(NETWORK_GROUPS).required(),
-    icon: yup.string().url(),
+    icon: yup.string().test(urlTest),
     isActive: yup.boolean(),
     invertIconInDarkMode: yup.boolean(),
   });
@@ -187,13 +215,13 @@ const featuredNetworkSchema: yup.ObjectSchema<FeaturedNetwork> = yup
 const navItemExternalSchema: yup.ObjectSchema<NavItemExternal> = yup
   .object({
     text: yup.string().required(),
-    url: yup.string().url().required(),
+    url: yup.string().test(urlTest).required(),
   });
 
 const footerLinkSchema: yup.ObjectSchema<CustomLink> = yup
   .object({
     text: yup.string().required(),
-    url: yup.string().url().required(),
+    url: yup.string().test(urlTest).required(),
   });
 
 const footerLinkGroupSchema: yup.ObjectSchema<CustomLinksGroup> = yup
@@ -208,7 +236,7 @@ const footerLinkGroupSchema: yup.ObjectSchema<CustomLinksGroup> = yup
 const networkExplorerSchema: yup.ObjectSchema<NetworkExplorer> = yup
   .object({
     title: yup.string().required(),
-    baseUrl: yup.string().url().required(),
+    baseUrl: yup.string().test(urlTest).required(),
     paths: yup
       .object()
       .shape({
@@ -241,7 +269,7 @@ const schema = yup
     NEXT_PUBLIC_NETWORK_NAME: yup.string().required(),
     NEXT_PUBLIC_NETWORK_SHORT_NAME: yup.string(),
     NEXT_PUBLIC_NETWORK_ID: yup.number().positive().integer().required(),
-    NEXT_PUBLIC_NETWORK_RPC_URL: yup.string().url(),
+    NEXT_PUBLIC_NETWORK_RPC_URL: yup.string().test(urlTest),
     NEXT_PUBLIC_NETWORK_CURRENCY_NAME: yup.string(),
     NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL: yup.string(),
     NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS: yup.number().integer().positive(),
@@ -278,10 +306,10 @@ const schema = yup
       .transform(getEnvValue)
       .json()
       .of(navItemExternalSchema),
-    NEXT_PUBLIC_NETWORK_LOGO: yup.string().url(),
-    NEXT_PUBLIC_NETWORK_LOGO_DARK: yup.string().url(),
-    NEXT_PUBLIC_NETWORK_ICON: yup.string().url(),
-    NEXT_PUBLIC_NETWORK_ICON_DARK: yup.string().url(),
+    NEXT_PUBLIC_NETWORK_LOGO: yup.string().test(urlTest),
+    NEXT_PUBLIC_NETWORK_LOGO_DARK: yup.string().test(urlTest),
+    NEXT_PUBLIC_NETWORK_ICON: yup.string().test(urlTest),
+    NEXT_PUBLIC_NETWORK_ICON_DARK: yup.string().test(urlTest),
 
     //     c. footer
     NEXT_PUBLIC_FOOTER_LINKS: yup
@@ -307,10 +335,10 @@ const schema = yup
     NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: yup.string(),
 
     // 5. Features configuration
-    NEXT_PUBLIC_API_SPEC_URL: yup.string().url(),
-    NEXT_PUBLIC_STATS_API_HOST: yup.string().url(),
-    NEXT_PUBLIC_VISUALIZE_API_HOST: yup.string().url(),
-    NEXT_PUBLIC_CONTRACT_INFO_API_HOST: yup.string().url(),
+    NEXT_PUBLIC_API_SPEC_URL: yup.string().test(urlTest),
+    NEXT_PUBLIC_STATS_API_HOST: yup.string().test(urlTest),
+    NEXT_PUBLIC_VISUALIZE_API_HOST: yup.string().test(urlTest),
+    NEXT_PUBLIC_CONTRACT_INFO_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_GRAPHIQL_TRANSACTION: yup.string().matches(regexp.HEX_REGEXP),
     NEXT_PUBLIC_WEB3_WALLETS: yup
       .mixed()
@@ -328,7 +356,7 @@ const schema = yup
     NEXT_PUBLIC_AD_TEXT_PROVIDER: yup.string<AdTextProviders>().oneOf(SUPPORTED_AD_TEXT_PROVIDERS),
     NEXT_PUBLIC_PROMOTE_BLOCKSCOUT_IN_TITLE: yup.boolean(),
     NEXT_PUBLIC_OG_DESCRIPTION: yup.string(),
-    NEXT_PUBLIC_OG_IMAGE_URL: yup.string().url(),
+    NEXT_PUBLIC_OG_IMAGE_URL: yup.string().test(urlTest),
 
     // 6. External services envs
     NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: yup.string(),
