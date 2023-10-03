@@ -5,6 +5,7 @@ import React from 'react';
 import * as tokens from 'mocks/tokens/tokenInfo';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
+import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 
 import Tokens from './Tokens';
 
@@ -32,7 +33,12 @@ test('base view +@mobile +@dark-mode', async({ mount, page }) => {
   const component = await mount(
     <TestApp>
       <Box h={{ base: '134px', lg: 6 }}/>
-      <Tokens/>
+      <Tokens
+        query={{ items: [], next_page_params: null } as unknown as QueryWithPagesResult<'tokens'> | QueryWithPagesResult<'tokens_bridged'>}
+        // eslint-disable-next-line react/jsx-no-bind
+        onSortChange={ () => {} }
+        sort={ undefined }
+        hasActiveFilters={ false }/>
     </TestApp>,
   );
 
