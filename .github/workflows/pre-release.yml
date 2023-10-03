@@ -12,10 +12,11 @@ jobs:
         uses: "./.github/workflows/checks.yml"
         secrets: inherit
 
-    publish_image:
-        name: Publish Docker image
-        uses: './.github/workflows/publish-image.yml'
-        secrets: inherit
+    # publish_image:
+    # image will be published in e2e-tests.yml workflow
+    #     name: Publish Docker image
+    #     uses: './.github/workflows/publish-image.yml'
+    #     secrets: inherit
 
     e2e_tests:
         name: Run e2e tests

@@ -13,9 +13,9 @@ on:
       - 'public/**'
       - 'stub/**'
       
-concurrency:
-  group: ${{ github.workflow }}__${{ github.job }}__${{ github.ref }}
-  cancel-in-progress: true
+# concurrency:
+#   group: ${{ github.workflow }}__${{ github.job }}__${{ github.ref }}
+#   cancel-in-progress: true
 
 jobs:
   code_quality:
