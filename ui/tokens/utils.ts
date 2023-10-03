@@ -17,6 +17,17 @@ export const SORT_OPTIONS: Array<Option<TokensSortingValue>> = [
   { title: 'On-chain market cap descending', id: 'circulating_market_cap-desc' },
 ];
 
+export const BRIDGED_TOKENS_CHAINS = [
+  { id: '1', title: 'Ethereum', short_title: 'ETH' },
+  { id: '56', title: 'Binance Smart Chain', short_title: 'BSC' },
+  { id: '99', title: 'POA', short_title: 'POA' },
+];
+
+export const BRIDGE_TYPES = [
+  { type: 'omni', title: 'OmniBridge', short_title: 'OMNI' },
+  { type: 'amb', title: 'Arbitrary Message Bridge', short_title: 'AMB' },
+];
+
 export const getTokenFilterValue = (getFilterValuesFromQuery<TokenType>).bind(null, TOKEN_TYPE_IDS);
 
 export const getSortValueFromQuery = (query: Query): TokensSortingValue | undefined => {

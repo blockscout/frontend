@@ -1,3 +1,4 @@
+import { Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -10,18 +11,24 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { TOKEN_INFO_ERC_20 } from 'stubs/token';
 import { generateListStub } from 'stubs/utils';
+import Tag from 'ui/shared/chakra/Tag';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TokensList from 'ui/tokens/Tokens';
 import TokensActionBar from 'ui/tokens/TokensActionBar';
-import { getSortParamsFromValue, getSortValueFromQuery, getTokenFilterValue } from 'ui/tokens/utils';
+import { getSortParamsFromValue, getSortValueFromQuery, getTokenFilterValue, BRIDGE_TYPES } from 'ui/tokens/utils';
 
 const TAB_LIST_PROPS = {
   marginBottom: 0,
   py: 5,
   marginTop: -5,
   alignItems: 'center',
+};
+
+const TABS_RIGHT_SLOT_PROPS = {
+  ml: 8,
+  flexGrow: 1,
 };
 
 const Tokens = () => {
@@ -99,6 +106,13 @@ const Tokens = () => {
     tokensQuery.onSortingChange(getSortParamsFromValue(value));
   }, [ setSort, tokensQuery ]);
 
+  const handleTabChange = React.useCallback(() => {
+    setSearchTerm('');
+    setSort(undefined);
+    setTokenTypes(undefined);
+    setBridgeChains(undefined);
+  }, []);
+
   const pagination = tab === 'bridged' ? tokensBridgedQuery.pagination : tokensQuery.pagination;
 
   const actionBar = (
@@ -116,6 +130,25 @@ const Tokens = () => {
       activeTab={ tab }
     />
   );
+
+  const bridgedTokensDescription = (() => {
+    return (
+      <Flex fontSize="sm" mb={ 4 } mt={ 1 } alignItems="center" whiteSpace="pre-wrap" flexWrap="wrap">
+        <span>List of the tokens bridged through </span>
+        { BRIDGE_TYPES.map((item, index, array) => {
+          return (
+            <React.Fragment key={ item.type }>
+              <span>{ item.title } </span>
+              <Tag>{ item.short_title }</Tag>
+              { index === array.length - 2 && <span> and </span> }
+              { index < array.length - 2 && <span>, </span> }
+            </React.Fragment>
+          );
+        }) }
+        <span> extensions</span>
+      </Flex>
+    );
+  })();
 
   const tabs: Array<RoutedTab> = [
     {
@@ -141,6 +174,7 @@ const Tokens = () => {
           onSortChange={ handleSortChange }
           actionBar={ isMobile ? actionBar : null }
           hasActiveFilters={ Boolean(searchTerm || tokenTypes) }
+          description={ bridgedTokensDescription }
         />
       ),
     },
@@ -154,7 +188,9 @@ const Tokens = () => {
         tabs={ tabs }
         tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
         rightSlot={ !isMobile ? actionBar : null }
+        rightSlotProps={ TABS_RIGHT_SLOT_PROPS }
         stickyEnabled={ !isMobile }
+        onTabChange={ handleTabChange }
       />
     </>
   );

@@ -58,7 +58,8 @@ const TokensActionBar = ({
 
   const searchInput = (
     <FilterInput
-      w="100%"
+      key={ activeTab }
+      w={{ base: '100%', lg: '360px' }}
       size="xs"
       onChange={ onSearchChange }
       placeholder="Token name or symbol"
@@ -71,13 +72,14 @@ const TokensActionBar = ({
       <HStack spacing={ 3 } mb={ 6 } display={{ base: 'flex', lg: 'none' }}>
         { filter }
         <Sort
+          key={ activeTab }
           options={ SORT_OPTIONS }
           setSort={ onSortChange }
           sort={ sort }
         />
         { searchInput }
       </HStack>
-      <ActionBar mt={ inTabsSlot ? 0 : -6 } py={ inTabsSlot ? 0 : undefined }>
+      <ActionBar mt={ inTabsSlot ? 0 : -6 } py={ inTabsSlot ? 0 : undefined } justifyContent={ inTabsSlot ? 'space-between' : undefined }>
         <HStack spacing={ 3 } display={{ base: 'none', lg: 'flex' }}>
           { filter }
           { searchInput }

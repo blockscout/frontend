@@ -1,11 +1,7 @@
-import { CheckboxGroup, Checkbox, Text, Flex, Link, useCheckboxGroup } from '@chakra-ui/react';
+import { CheckboxGroup, Checkbox, Text, Flex, Link, useCheckboxGroup, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-const BRIDGED_TOKENS_CHAINS = [
-  { id: '1', title: 'Ethereum' },
-  { id: '56', title: 'Binance Smart Chain' },
-  { id: '99', title: 'POA' },
-];
+import { BRIDGED_TOKENS_CHAINS } from './utils';
 
 interface Props {
   onChange: (nextValue: Array<string>) => void;
@@ -32,9 +28,10 @@ const TokensBridgedChainsFilter = ({ onChange, defaultValue }: Props) => {
         <Link onClick={ handleReset }>Reset</Link>
       </Flex>
       <CheckboxGroup size="lg" onChange={ handleChange } value={ value }>
-        { BRIDGED_TOKENS_CHAINS.map(({ title, id }) => (
-          <Checkbox key={ id } value={ id }>
-            <Text fontSize="md" whiteSpace="pre-wrap">{ title }</Text>
+        { BRIDGED_TOKENS_CHAINS.map(({ title, id, short_title: shortTitle }) => (
+          <Checkbox key={ id } value={ id } fontSize="md" whiteSpace="pre-wrap">
+            <span>{ title }</span>
+            <chakra.span color="text_secondary"> ({ shortTitle })</chakra.span>
           </Checkbox>
         )) }
       </CheckboxGroup>

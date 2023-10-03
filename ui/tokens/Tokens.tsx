@@ -17,9 +17,10 @@ interface Props {
   sort: TokensSortingValue | undefined;
   actionBar?: React.ReactNode;
   hasActiveFilters: boolean;
+  description?: React.ReactNode;
 }
 
-const Tokens = ({ query, onSortChange, sort, actionBar, hasActiveFilters }: Props) => {
+const Tokens = ({ query, onSortChange, sort, actionBar, description, hasActiveFilters }: Props) => {
 
   const { isError, isPlaceholderData, data, pagination } = query;
 
@@ -30,6 +31,7 @@ const Tokens = ({ query, onSortChange, sort, actionBar, hasActiveFilters }: Prop
   const content = data?.items ? (
     <>
       <Show below="lg" ssr={ false }>
+        { description }
         { data.items.map((item, index) => (
           <TokensListItem
             key={ item.address + (isPlaceholderData ? index : '') }
@@ -41,6 +43,7 @@ const Tokens = ({ query, onSortChange, sort, actionBar, hasActiveFilters }: Prop
         )) }
       </Show>
       <Hide below="lg" ssr={ false }>
+        { description }
         <TokensTable
           items={ data.items }
           page={ pagination.page }
