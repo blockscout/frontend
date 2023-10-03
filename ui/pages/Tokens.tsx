@@ -6,6 +6,7 @@ import type { TokenType } from 'types/api/token';
 import type { TokensSortingValue } from 'types/api/tokens';
 import type { RoutedTab } from 'ui/shared/Tabs/types';
 
+import config from 'configs/app';
 import useDebounce from 'lib/hooks/useDebounce';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -17,7 +18,7 @@ import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TokensList from 'ui/tokens/Tokens';
 import TokensActionBar from 'ui/tokens/TokensActionBar';
-import { getSortParamsFromValue, getSortValueFromQuery, getTokenFilterValue, BRIDGE_TYPES, getBridgedChainsFilterValue } from 'ui/tokens/utils';
+import { getSortParamsFromValue, getSortValueFromQuery, getTokenFilterValue, getBridgedChainsFilterValue } from 'ui/tokens/utils';
 
 const TAB_LIST_PROPS = {
   marginBottom: 0,
@@ -30,6 +31,8 @@ const TABS_RIGHT_SLOT_PROPS = {
   ml: 8,
   flexGrow: 1,
 };
+
+const bridgedTokensFeature = config.features.bridgedTokens;
 
 const Tokens = () => {
   const router = useRouter();
@@ -71,7 +74,7 @@ const Tokens = () => {
     filters: { q: debouncedSearchTerm, chain_ids: bridgeChains },
     sorting: getSortParamsFromValue(sort),
     options: {
-      enabled: tab === 'bridged',
+      enabled: bridgedTokensFeature.isEnabled && tab === 'bridged',
       placeholderData: generateListStub<'tokens'>(
         TOKEN_INFO_ERC_20,
         50,
@@ -137,10 +140,14 @@ const Tokens = () => {
   );
 
   const bridgedTokensDescription = (() => {
+    if (!bridgedTokensFeature.isEnabled) {
+      return null;
+    }
+
     return (
       <Flex fontSize="sm" mb={ 4 } mt={ 1 } alignItems="center" whiteSpace="pre-wrap" flexWrap="wrap">
         <span>List of the tokens bridged through </span>
-        { BRIDGE_TYPES.map((item, index, array) => {
+        { bridgedTokensFeature.bridges.map((item, index, array) => {
           return (
             <React.Fragment key={ item.type }>
               <span>{ item.title } </span>
@@ -169,7 +176,7 @@ const Tokens = () => {
         />
       ),
     },
-    {
+    bridgedTokensFeature.isEnabled ? {
       id: 'bridged',
       title: 'Bridged',
       component: (
@@ -182,8 +189,8 @@ const Tokens = () => {
           description={ bridgedTokensDescription }
         />
       ),
-    },
-  ];
+    } : undefined,
+  ].filter(Boolean);
 
   return (
     <>

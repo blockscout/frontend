@@ -4,13 +4,12 @@ import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
 
+import config from 'configs/app';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import Tag from 'ui/shared/chakra/Tag';
 import type { EntityProps as AddressEntityProps } from 'ui/shared/entities/address/AddressEntity';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
-
-import { BRIDGED_TOKENS_CHAINS } from './utils';
 
 type Props = {
   token: TokenInfo;
@@ -20,6 +19,8 @@ type Props = {
 }
 
 const PAGE_SIZE = 50;
+
+const bridgedTokensFeature = config.features.bridgedTokens;
 
 const TokensTableItem = ({
   token,
@@ -37,7 +38,9 @@ const TokensTableItem = ({
     origin_chain_id: originalChainId,
   } = token;
 
-  const bridgedChainTag = BRIDGED_TOKENS_CHAINS.find(({ id }) => id === originalChainId)?.short_title;
+  const bridgedChainTag = bridgedTokensFeature.isEnabled ?
+    bridgedTokensFeature.chains.find(({ id }) => id === originalChainId)?.short_title :
+    undefined;
 
   const tokenAddress: AddressEntityProps['address'] = {
     hash: address,

@@ -252,7 +252,9 @@ const TokenPageContent = () => {
         isLoading={ tokenQuery.isPlaceholderData || contractQuery.isPlaceholderData }
         tagsBefore={ [
           tokenQuery.data ? { label: tokenQuery.data?.type, display_name: tokenQuery.data?.type } : undefined,
-          tokenQuery.data?.is_bridged ? { label: 'bridged', display_name: 'Bridged', colorScheme: 'blue', variant: 'solid' } : undefined,
+          config.features.bridgedTokens.isEnabled && tokenQuery.data?.is_bridged ?
+            { label: 'bridged', display_name: 'Bridged', colorScheme: 'blue', variant: 'solid' } :
+            undefined,
         ] }
         tagsAfter={
           verifiedInfoQuery.data?.projectSector ?

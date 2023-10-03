@@ -13,7 +13,7 @@ import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import AddressActionsMenu from 'ui/shared/AddressActions/Menu';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import LinkExternal from 'ui/shared/LinkExternal';
-import { BRIDGED_TOKENS_CHAINS } from 'ui/tokens/utils';
+
 interface Props {
   address?: Pick<Address, 'hash' | 'is_contract' | 'implementation_name' | 'watchlist_names' | 'watchlist_address_id'>;
   token?: TokenInfo | null;
@@ -29,11 +29,12 @@ const AddressHeadingInfo = ({ address, token, isLinkDisabled, isLoading }: Props
   }
 
   const tokenOriginalLink = (() => {
-    if (!token?.foreign_address || !token.origin_chain_id) {
+    const feature = config.features.bridgedTokens;
+    if (!token?.foreign_address || !token.origin_chain_id || !feature.isEnabled) {
       return null;
     }
 
-    const chainBaseUrl = BRIDGED_TOKENS_CHAINS.find(({ id }) => id === token.origin_chain_id)?.base_url;
+    const chainBaseUrl = feature.chains.find(({ id }) => id === token.origin_chain_id)?.base_url;
 
     if (!chainBaseUrl) {
       return null;
