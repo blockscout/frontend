@@ -2,7 +2,7 @@ import stripTrailingSlash from 'lib/stripTrailingSlash';
 
 import { getEnvValue } from './utils';
 
-const apiHost = getEnvValue('NEXT_PUBLIC_API_HOST');
+const apiHost = 'gnosis.blockscout.com' as string || getEnvValue('NEXT_PUBLIC_API_HOST');
 const apiSchema = getEnvValue('NEXT_PUBLIC_API_PROTOCOL') || 'https';
 const apiPort = getEnvValue('NEXT_PUBLIC_API_PORT');
 const apiEndpoint = [
