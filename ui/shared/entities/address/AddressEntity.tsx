@@ -1,5 +1,5 @@
 import type { As } from '@chakra-ui/react';
-import { Flex, Skeleton, Tooltip, chakra } from '@chakra-ui/react';
+import { Box, Flex, Skeleton, Tooltip, chakra, VStack } from '@chakra-ui/react';
 import _omit from 'lodash/omit';
 import React from 'react';
 
@@ -102,8 +102,15 @@ type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps
 
 const Content = chakra((props: ContentProps) => {
   if (props.address.name) {
+    const label = (
+      <VStack gap={ 0 } py={ 1 } color="inherit">
+        <Box fontWeight={ 600 } whiteSpace="pre-wrap" wordBreak="break-word">{ props.address.name }</Box>
+        <Box whiteSpace="pre-wrap" wordBreak="break-word">{ props.address.hash }</Box>
+      </VStack>
+    );
+
     return (
-      <Tooltip label={ props.address.hash } maxW="100vw">
+      <Tooltip label={ label } maxW="100vw">
         <Skeleton isLoaded={ !props.isLoading } overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" as="span">
           { props.address.name }
         </Skeleton>

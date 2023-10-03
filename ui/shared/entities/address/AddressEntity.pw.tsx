@@ -8,7 +8,7 @@ import AddressEntity from './AddressEntity';
 
 const iconSizes = [ 'md', 'lg' ];
 
-test.use({ viewport: { width: 180, height: 100 } });
+test.use({ viewport: { width: 180, height: 140 } });
 
 test.describe('icon size', () => {
   iconSizes.forEach((size) => {
@@ -122,4 +122,17 @@ test('customization', async({ mount }) => {
   );
 
   await expect(component).toHaveScreenshot();
+});
+
+test('hover', async({ page, mount }) => {
+  const component = await mount(
+    <TestApp>
+      <AddressEntity
+        address={ addressMock.withoutName }
+      />
+    </TestApp>,
+  );
+
+  await component.getByText(addressMock.hash.slice(0, 4)).hover();
+  await expect(page).toHaveScreenshot();
 });
