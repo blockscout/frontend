@@ -15,13 +15,15 @@ export type ZkEvmL2TxnBatchesResponse = {
   } | null;
 }
 
+export const ZKEVM_L2_TX_BATCH_STATUSES = [ 'Unfinalized', 'L1 Sequence Confirmed', 'Finalized' ];
+
 export type ZkEvmL2TxnBatch = {
   acc_input_hash: string;
   global_exit_root: string;
   number: number;
   sequence_tx_hash: string;
   state_root: string;
-  status: string;
+  status: typeof ZKEVM_L2_TX_BATCH_STATUSES[number];
   timestamp: string;
   transactions: Array<string>;
   verify_tx_hash: string;

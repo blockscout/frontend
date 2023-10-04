@@ -17,6 +17,8 @@ import BigNumber from 'bignumber.js';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
+import { ZKEVM_L2_TX_STATUSES } from 'types/api/transaction';
+
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
@@ -56,7 +58,7 @@ import TxAllowedPeekers from 'ui/tx/TxAllowedPeekers';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
 import useFetchTxInfo from 'ui/tx/useFetchTxInfo';
 
-import TxZkEvmStatus from './TxZkEvmStatus';
+import VerificationSteps from './VerificationSteps';
 
 const TxDetails = () => {
   const { data, isPlaceholderData, isError, socketStatus, error } = useFetchTxInfo();
@@ -160,7 +162,7 @@ const TxDetails = () => {
             title="Confirmation status"
             isLoading={ isPlaceholderData }
           >
-            <TxZkEvmStatus status={ data.zkevm_status } isLoading={ isPlaceholderData }/>
+            <VerificationSteps step={ data.zkevm_status } steps={ ZKEVM_L2_TX_STATUSES } isLoading={ isPlaceholderData }/>
           </DetailsInfoItem>
         ) }
         { data.revert_reason && (

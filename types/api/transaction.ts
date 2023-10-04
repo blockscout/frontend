@@ -68,9 +68,11 @@ export type Transaction = {
   // zkEvm fields
   zkevm_verify_hash?: string;
   zkevm_batch_number?: number;
-  zkevm_status?: 'Confirmed by Sequencer' | 'L1 Confirmed';
+  zkevm_status?: typeof ZKEVM_L2_TX_STATUSES[number];
   zkevm_sequence_hash?: string;
 }
+
+export const ZKEVM_L2_TX_STATUSES = [ 'Confirmed by Sequencer', 'L1 Confirmed' ];
 
 export type TransactionsResponse = TransactionsResponseValidated | TransactionsResponsePending;
 

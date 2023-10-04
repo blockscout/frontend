@@ -46,8 +46,7 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
       </Td>
       <Td>
         <LinkInternal
-          // href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.l2_block_number.toString(), tab: 'txs' } }) }
-          href="#"
+          href={ route({ pathname: '/zkevm-l2-txn-batch/[number]', query: { number: item.number.toString(), tab: 'txs' } }) }
           isLoading={ isLoading }
         >
           <Skeleton isLoaded={ !isLoading } minW="40px" my={ 1 }>
@@ -64,7 +63,7 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
             lineHeight={ 5 }
             maxW="100%"
           />
-        ) : <Text>pending</Text> }
+        ) : <Text>Pending</Text> }
       </Td>
       <Td pr={ 12 }>
         { item.sequence_tx_hash ? (
@@ -75,7 +74,7 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
             lineHeight={ 5 }
             maxW="100%"
           />
-        ) : <Text>pending</Text> }
+        ) : <Text>Pending</Text> }
       </Td>
     </Tr>
   );

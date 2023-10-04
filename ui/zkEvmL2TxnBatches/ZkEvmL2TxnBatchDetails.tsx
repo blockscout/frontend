@@ -3,17 +3,21 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import { ZKEVM_L2_TX_BATCH_STATUSES } from 'types/api/zkEvml2TxnBatches';
 import type { ZkEvmL2TxnBatch } from 'types/api/zkEvml2TxnBatches';
 
 import clockIcon from 'icons/clock.svg';
 import type { ResourceError } from 'lib/api/resources';
 import dayjs from 'lib/date/dayjs';
 import Icon from 'ui/shared/chakra/Icon';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
+import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import PrevNext from 'ui/shared/PrevNext';
 import TextSeparator from 'ui/shared/TextSeparator';
+import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 
 interface Props {
   query: UseQueryResult<ZkEvmL2TxnBatch, ResourceError>;
@@ -70,7 +74,6 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
     >
       <DetailsInfoItem
         title="Tx batch number"
-        // hint="The block height of a particular block is defined as the number of blocks preceding it in the blockchain"
         isLoading={ isPlaceholderData }
       >
         <Skeleton isLoaded={ !isPlaceholderData }>
@@ -87,16 +90,12 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Status"
-        // hint="Size of the block in bytes"
         isLoading={ isPlaceholderData }
       >
-        <Skeleton isLoaded={ !isPlaceholderData }>
-          { data.status }
-        </Skeleton>
+        <VerificationSteps steps={ ZKEVM_L2_TX_BATCH_STATUSES } step={ data.status } isLoading={ isPlaceholderData }/>
       </DetailsInfoItem>
       <DetailsInfoItem
-        title="Verify timestamp"
-        // hint="Date & time at which block was produced."
+        title="Timestamp"
         isLoading={ isPlaceholderData }
       >
         <Icon as={ clockIcon } boxSize={ 5 } color="gray.500" isLoading={ isPlaceholderData }/>
@@ -110,7 +109,6 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Verify tx hash"
-        // hint="Date & time at which block was produced."
         isLoading={ isPlaceholderData }
       >
         { data.verify_tx_hash ? (
@@ -137,25 +135,24 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
 
       <DetailsInfoItem
         title="Global exit root"
-        //   hint=''
         isLoading={ isPlaceholderData }
       >
-        <Skeleton isLoaded={ !isPlaceholderData }>
-          { data.global_exit_root }
+        <Skeleton isLoaded={ !isPlaceholderData } overflow="hidden">
+          <HashStringShortenDynamic hash={ data.global_exit_root }/>
         </Skeleton>
+        <CopyToClipboard text={ data.global_exit_root } isLoading={ isPlaceholderData }/>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Acc input hash"
-        //   hint=''
         isLoading={ isPlaceholderData }
       >
-        <Skeleton isLoaded={ !isPlaceholderData }>
-          { data.acc_input_hash }
+        <Skeleton isLoaded={ !isPlaceholderData } overflow="hidden">
+          <HashStringShortenDynamic hash={ data.acc_input_hash }/>
         </Skeleton>
+        <CopyToClipboard text={ data.acc_input_hash } isLoading={ isPlaceholderData }/>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Sequence tx hash"
-        //   hint=''
         isLoading={ isPlaceholderData }
       >
         { data.sequence_tx_hash ? (
@@ -164,17 +161,16 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
             hash={ data.sequence_tx_hash }
             maxW="100%"
           />
-        ) : <Text>pending</Text> }
-        { /* Not sertain how to display pending state */ }
+        ) : <Text>Pending</Text> }
       </DetailsInfoItem>
       <DetailsInfoItem
         title="State root"
-        //   hint=''
         isLoading={ isPlaceholderData }
       >
-        <Skeleton isLoaded={ !isPlaceholderData }>
-          { data.state_root }
+        <Skeleton isLoaded={ !isPlaceholderData } overflow="hidden">
+          <HashStringShortenDynamic hash={ data.state_root }/>
         </Skeleton>
+        <CopyToClipboard text={ data.state_root } isLoading={ isPlaceholderData }/>
       </DetailsInfoItem>
     </Grid>
   );

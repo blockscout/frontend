@@ -54,9 +54,7 @@ const ZkEvmTxnBatchesListItem = ({ item, isLoading }: Props) => {
       <ListItemMobileGrid.Label isLoading={ isLoading }>Txn count</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <LinkInternal
-          // fix after implementing batch page
-          href="#"
-          // href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: item.l2_block_number.toString(), tab: 'txs' } }) }
+          href={ route({ pathname: '/zkevm-l2-txn-batch/[number]', query: { number: item.number.toString(), tab: 'txs' } }) }
           isLoading={ isLoading }
           fontWeight={ 600 }
         >
@@ -76,8 +74,7 @@ const ZkEvmTxnBatchesListItem = ({ item, isLoading }: Props) => {
             lineHeight={ 5 }
             maxW="100%"
           />
-        ) : <Text>pending</Text> }
-        { /* Not sertain how to display pending state */ }
+        ) : <Text>Pending</Text> }
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Sequence hash</ListItemMobileGrid.Label>
@@ -90,8 +87,7 @@ const ZkEvmTxnBatchesListItem = ({ item, isLoading }: Props) => {
             lineHeight={ 5 }
             maxW="100%"
           />
-        ) : <Text>pending</Text> }
-        { /* Not sertain how to display pending state */ }
+        ) : <Text>Pending</Text> }
       </ListItemMobileGrid.Value>
 
     </ListItemMobileGrid.Container>
