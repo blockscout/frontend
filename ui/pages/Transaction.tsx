@@ -13,6 +13,8 @@ import EntityTags from 'ui/shared/EntityTags';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
+import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
+import useTabIndexFromQuery from 'ui/shared/Tabs/useTabIndexFromQuery';
 import TxDetails from 'ui/tx/TxDetails';
 import TxDetailsWrapped from 'ui/tx/TxDetailsWrapped';
 import TxInternals from 'ui/tx/TxInternals';
@@ -46,6 +48,8 @@ const TransactionPageContent = () => {
     { id: 'raw_trace', title: 'Raw trace', component: <TxRawTrace/> },
   ].filter(Boolean);
 
+  const tabIndex = useTabIndexFromQuery(tabs);
+
   const tags = (
     <EntityTags
       isLoading={ isPlaceholderData }
@@ -77,7 +81,12 @@ const TransactionPageContent = () => {
         backLink={ backLink }
         contentAfter={ tags }
       />
-      <RoutedTabs tabs={ tabs }/>
+      { isPlaceholderData ? (
+        <>
+          <TabsSkeleton tabs={ tabs } mt={ 6 }/>
+          { tabs[tabIndex]?.component }
+        </>
+      ) : <RoutedTabs tabs={ tabs }/> }
     </>
   );
 };
