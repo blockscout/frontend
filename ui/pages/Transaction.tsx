@@ -14,20 +14,12 @@ import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TxDetails from 'ui/tx/TxDetails';
+import TxDetailsWrapped from 'ui/tx/TxDetailsWrapped';
 import TxInternals from 'ui/tx/TxInternals';
 import TxLogs from 'ui/tx/TxLogs';
 import TxRawTrace from 'ui/tx/TxRawTrace';
 import TxState from 'ui/tx/TxState';
 import TxTokenTransfer from 'ui/tx/TxTokenTransfer';
-
-const TABS: Array<RoutedTab> = [
-  { id: 'index', title: 'Details', component: <TxDetails/> },
-  { id: 'token_transfers', title: 'Token transfers', component: <TxTokenTransfer/> },
-  { id: 'internal', title: 'Internal txns', component: <TxInternals/> },
-  { id: 'logs', title: 'Logs', component: <TxLogs/> },
-  { id: 'state', title: 'State', component: <TxState/> },
-  { id: 'raw_trace', title: 'Raw trace', component: <TxRawTrace/> },
-];
 
 const TransactionPageContent = () => {
   const router = useRouter();
@@ -43,6 +35,16 @@ const TransactionPageContent = () => {
       placeholderData: TX,
     },
   });
+
+  const tabs: Array<RoutedTab> = [
+    { id: 'index', title: data?.wrapped ? 'Confidential compute tx details' : 'Details', component: <TxDetails/> },
+    data?.wrapped ? { id: 'wrapped', title: 'Regular tx details', component: <TxDetailsWrapped data={ data.wrapped }/> } : undefined,
+    { id: 'token_transfers', title: 'Token transfers', component: <TxTokenTransfer/> },
+    { id: 'internal', title: 'Internal txns', component: <TxInternals/> },
+    { id: 'logs', title: 'Logs', component: <TxLogs/> },
+    { id: 'state', title: 'State', component: <TxState/> },
+    { id: 'raw_trace', title: 'Raw trace', component: <TxRawTrace/> },
+  ].filter(Boolean);
 
   const tags = (
     <EntityTags
@@ -75,7 +77,7 @@ const TransactionPageContent = () => {
         backLink={ backLink }
         contentAfter={ tags }
       />
-      <RoutedTabs tabs={ TABS }/>
+      <RoutedTabs tabs={ tabs }/>
     </>
   );
 };
