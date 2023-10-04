@@ -48,6 +48,10 @@ export type Transaction = {
   l1_gas_price?: string;
   l1_gas_used?: string;
   has_error_in_internal_txs: boolean | null;
+  // SUAVE fields
+  execution_node?: AddressParam | null;
+  allowed_peekers?: Array<string>;
+  wrapped?: Transaction;
 }
 
 export type TransactionsResponse = TransactionsResponseValidated | TransactionsResponsePending;

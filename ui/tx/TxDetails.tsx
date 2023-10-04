@@ -44,6 +44,7 @@ import Utilization from 'ui/shared/Utilization/Utilization';
 import TxDetailsActions from 'ui/tx/details/TxDetailsActions';
 import TxDetailsTokenTransfers from 'ui/tx/details/TxDetailsTokenTransfers';
 import TxRevertReason from 'ui/tx/details/TxRevertReason';
+import TxAllowedPeekers from 'ui/tx/TxAllowedPeekers';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
 import useFetchTxInfo from 'ui/tx/useFetchTxInfo';
 
@@ -195,6 +196,18 @@ const TxDetails = () => {
               <span>{ getConfirmationDuration(data.confirmation_duration) }</span>
             </Skeleton>
           </DetailsInfoItem>
+        ) }
+        { data.execution_node && (
+          <DetailsInfoItem
+            title="Execution node"
+            hint="Execution node"
+            isLoading={ isPlaceholderData }
+          >
+            <AddressEntity address={ data.execution_node } href="#" noIcon/>
+          </DetailsInfoItem>
+        ) }
+        { data.allowed_peekers && data.allowed_peekers.length > 0 && (
+          <TxAllowedPeekers items={ data.allowed_peekers }/>
         ) }
         <DetailsSponsoredItem isLoading={ isPlaceholderData }/>
 
