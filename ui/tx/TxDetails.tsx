@@ -17,6 +17,8 @@ import BigNumber from 'bignumber.js';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
+import { route } from 'nextjs-routes';
+
 import config from 'configs/app';
 import clockIcon from 'icons/clock.svg';
 import flameIcon from 'icons/flame.svg';
@@ -203,7 +205,11 @@ const TxDetails = () => {
             hint="Execution node"
             isLoading={ isPlaceholderData }
           >
-            <AddressEntity address={ data.execution_node } href="#" noIcon/>
+            <AddressEntity
+              address={ data.execution_node }
+              href={ route({ pathname: '/txs/execution-node/[hash]', query: { hash: data.execution_node.hash } }) }
+              noIcon
+            />
           </DetailsInfoItem>
         ) }
         { data.allowed_peekers && data.allowed_peekers.length > 0 && (
