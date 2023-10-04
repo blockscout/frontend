@@ -79,7 +79,12 @@ const TokensActionBar = ({
         />
         { searchInput }
       </HStack>
-      <ActionBar mt={ inTabsSlot ? 0 : -6 } py={ inTabsSlot ? 0 : undefined } justifyContent={ inTabsSlot ? 'space-between' : undefined }>
+      <ActionBar
+        mt={ inTabsSlot ? 0 : -6 }
+        py={ inTabsSlot ? 0 : undefined }
+        justifyContent={ inTabsSlot ? 'space-between' : undefined }
+        display={{ base: pagination.isVisible ? 'flex' : 'none', lg: 'flex' }}
+      >
         <HStack spacing={ 3 } display={{ base: 'none', lg: 'flex' }}>
           { filter }
           { searchInput }

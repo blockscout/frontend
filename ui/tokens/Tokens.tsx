@@ -65,7 +65,7 @@ const Tokens = ({ query, onSortChange, sort, actionBar, description, hasActiveFi
         hasActiveFilters,
       }}
       content={ content }
-      actionBar={ query.pagination.isVisible ? actionBar : null }
+      actionBar={ query.pagination.isVisible || hasActiveFilters ? actionBar : null }
     />
   );
 };

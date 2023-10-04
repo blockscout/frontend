@@ -134,7 +134,7 @@ const Tokens = () => {
       onSortChange={ handleSortChange }
       bridgeChains={ bridgeChains }
       onBridgeChainsChange={ handleBridgeChainsChange }
-      inTabsSlot={ !isMobile }
+      inTabsSlot={ !isMobile && bridgedTokensFeature.isEnabled }
       activeTab={ tab }
     />
   );
@@ -200,7 +200,7 @@ const Tokens = () => {
         tabs={ tabs }
         tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
         rightSlot={ !isMobile ? actionBar : null }
-        rightSlotProps={ TABS_RIGHT_SLOT_PROPS }
+        rightSlotProps={ !isMobile ? TABS_RIGHT_SLOT_PROPS : undefined }
         stickyEnabled={ !isMobile }
         onTabChange={ handleTabChange }
       />
