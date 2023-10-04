@@ -68,7 +68,7 @@ export type Transaction = {
   // zkEvm fields
   zkevm_verify_hash?: string;
   zkevm_batch_number?: number;
-  zkevm_status?: string;
+  zkevm_status?: 'Confirmed by Sequencer' | 'L1 Confirmed';
   zkevm_sequence_hash?: string;
 }
 

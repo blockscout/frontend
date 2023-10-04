@@ -42,16 +42,24 @@ const ZkEvmL2TxnBatch = () => {
     },
   });
 
-  // const blockTxsQuery = useQueryWithPages({
-  //   resourceName: 'batch_txs',
-  //   pathParams: { height_or_hash: heightOrHash },
+  // const batchTxsQuery = useQueryWithPages({
+  //   resourceName: 'zkevm_l2_txn_batch_txs',
+  //   pathParams: { number },
   //   options: {
-  //     enabled: Boolean(!blockQuery.isPlaceholderData && blockQuery.data?.height && tab === 'txs'),
-  //     placeholderData: generateListStub<'block_txs'>(TX, 50, { next_page_params: {
-  //       block_number: 9004925,
+  //     enabled: Boolean(!batchQuery.isPlaceholderData && batchQuery.data?.number && tab === 'txs'),
+  //     placeholderData: generateListStub<'block_txs'>(TX_ZKEVM_L2, 50, { next_page_params: {
+  //       number: 9004925,
   //       index: 49,
   //       items_count: 50,
   //     } }),
+  //   },
+  // });
+
+  // const batchTxsQuery = useApiQuery('zkevm_l2_txn_batch_txs', {
+  //   pathParams: { number },
+  //   queryOptions: {
+  //     enabled: Boolean(!batchQuery.isPlaceholderData && batchQuery.data?.number && tab === 'txs'),
+  //     placeholderData: Array(50).fill(TX),
   //   },
   // });
 
@@ -64,8 +72,8 @@ const ZkEvmL2TxnBatch = () => {
   }
 
   // const tabs: Array<RoutedTab> = React.useMemo(() => ([
-  //   { id: 'index', title: 'Details', component: <BlockDetails query={ blockQuery }/> },
-  //   { id: 'txs', title: 'Transactions', component: <TxsContent query={ blockTxsQuery } showBlockInfo={ false } showSocketInfo={ false }/> },
+  //   { id: 'index', title: 'Details', component: <ZkEvmL2TxnBatchDetails query={ batchQuery }/> },
+  //   { id: 'txs', title: 'Transactions', component: <TxsContent query={ batchTxsQuery } showBlockInfo={ false } showSocketInfo={ false }/> },
   // ].filter(Boolean)), [ blockQuery, blockTxsQuery, blockWithdrawalsQuery ]);
 
   // const hasPagination = !isMobile && (

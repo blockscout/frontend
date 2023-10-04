@@ -6,13 +6,14 @@ import React from 'react';
 import type { SocketMessage } from 'lib/socket/types';
 import type { Transaction } from 'types/api/transaction';
 
+import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import delay from 'lib/delay';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
-import { TX } from 'stubs/tx';
+import { TX, TX_ZKEVM_L2 } from 'stubs/tx';
 
 interface Params {
   onTxStatusUpdate?: () => void;
@@ -34,7 +35,7 @@ export default function useFetchTxInfo({ onTxStatusUpdate, updateDelay }: Params
     queryOptions: {
       enabled: Boolean(hash),
       refetchOnMount: false,
-      placeholderData: TX,
+      placeholderData: config.features.zkEvmRollup.isEnabled ? TX_ZKEVM_L2 : TX,
     },
   });
   const { data, isError, isLoading } = queryResult;
