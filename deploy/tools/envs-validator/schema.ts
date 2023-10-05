@@ -22,7 +22,7 @@ import { IDENTICON_TYPES } from '../../../types/views/address';
 import { BLOCK_FIELDS_IDS } from '../../../types/views/block';
 import type { BlockFieldId } from '../../../types/views/block';
 
-import { getEnvValue } from '../../../configs/app/utils';
+import { replaceQuotes } from '../../../configs/app/utils';
 import * as regexp from '../../../lib/regexp';
 
 const protocols = [ 'http', 'https' ];
@@ -119,7 +119,7 @@ const rollupSchema = yup
 
 const adButlerConfigSchema = yup
   .object<AdButlerConfig>()
-  .transform(getEnvValue)
+  .transform(replaceQuotes)
   .json()
   .when('NEXT_PUBLIC_AD_BANNER_PROVIDER', {
     is: (value: AdBannerProviders) => value === 'adbutler',
@@ -288,7 +288,7 @@ const schema = yup
     //   a. homepage
     NEXT_PUBLIC_HOMEPAGE_CHARTS: yup
       .array()
-      .transform(getEnvValue)
+      .transform(replaceQuotes)
       .json()
       .of(yup.string<ChainIndicatorId>().oneOf([ 'daily_txs', 'coin_price', 'market_cap' ])),
     NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR: yup.string(),
@@ -303,7 +303,7 @@ const schema = yup
       .of(featuredNetworkSchema),
     NEXT_PUBLIC_OTHER_LINKS: yup
       .array()
-      .transform(getEnvValue)
+      .transform(replaceQuotes)
       .json()
       .of(navItemExternalSchema),
     NEXT_PUBLIC_NETWORK_LOGO: yup.string().test(urlTest),
@@ -320,7 +320,7 @@ const schema = yup
     //     d. views
     NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_FIELDS: yup
       .array()
-      .transform(getEnvValue)
+      .transform(replaceQuotes)
       .json()
       .of(yup.string<BlockFieldId>().oneOf(BLOCK_FIELDS_IDS)),
     NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE: yup.string().oneOf(IDENTICON_TYPES),
@@ -328,7 +328,7 @@ const schema = yup
     //     e. misc
     NEXT_PUBLIC_NETWORK_EXPLORERS: yup
       .array()
-      .transform(getEnvValue)
+      .transform(replaceQuotes)
       .json()
       .of(networkExplorerSchema),
     NEXT_PUBLIC_HIDE_INDEXING_ALERT: yup.boolean(),
@@ -346,7 +346,7 @@ const schema = yup
         const isNoneSchema = yup.string().equals([ 'none' ]);
         const isArrayOfWalletsSchema = yup
           .array()
-          .transform(getEnvValue)
+          .transform(replaceQuotes)
           .json()
           .of(yup.string<WalletType>().oneOf(SUPPORTED_WALLETS));
 
@@ -364,6 +364,9 @@ const schema = yup
     NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID: yup.string(),
     NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN: yup.string(),
     NEXT_PUBLIC_FAVICON_GENERATOR_API_KEY: yup.string(),
+
+    // Misc
+    NEXT_PUBLIC_USE_NEXT_JS_PROXY: yup.boolean(),
   })
   .concat(accountSchema)
   .concat(adsBannerSchema)
