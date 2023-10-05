@@ -13,11 +13,14 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import { TOKEN_INFO_ERC_20 } from 'stubs/token';
 import { generateListStub } from 'stubs/utils';
 import Tag from 'ui/shared/chakra/Tag';
+import PopoverFilter from 'ui/shared/filters/PopoverFilter';
+import TokenTypeFilter from 'ui/shared/filters/TokenTypeFilter';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TokensList from 'ui/tokens/Tokens';
 import TokensActionBar from 'ui/tokens/TokensActionBar';
+import TokensBridgedChainsFilter from 'ui/tokens/TokensBridgedChainsFilter';
 import { getSortParamsFromValue, getSortValueFromQuery, getTokenFilterValue, getBridgedChainsFilterValue } from 'ui/tokens/utils';
 
 const TAB_LIST_PROPS = {
@@ -97,19 +100,26 @@ const Tokens = () => {
     setBridgeChains(undefined);
   }, []);
 
+  const filter = tab === 'bridged' ? (
+    <PopoverFilter isActive={ bridgeChains && bridgeChains.length > 0 } contentProps={{ maxW: '350px' }} appliedFiltersNum={ bridgeChains?.length }>
+      <TokensBridgedChainsFilter onChange={ handleBridgeChainsChange } defaultValue={ bridgeChains }/>
+    </PopoverFilter>
+  ) : (
+    <PopoverFilter isActive={ tokenTypes && tokenTypes.length > 0 } contentProps={{ w: '200px' }} appliedFiltersNum={ tokenTypes?.length }>
+      <TokenTypeFilter onChange={ handleTokenTypesChange } defaultValue={ tokenTypes }/>
+    </PopoverFilter>
+  );
+
   const actionBar = (
     <TokensActionBar
+      key={ tab }
       pagination={ tokensQuery.pagination }
-      tokenTypes={ tokenTypes }
-      onTokenTypesChange={ handleTokenTypesChange }
+      filter={ filter }
       searchTerm={ searchTerm }
       onSearchChange={ handleSearchTermChange }
       sort={ sort }
       onSortChange={ handleSortChange }
-      bridgeChains={ bridgeChains }
-      onBridgeChainsChange={ handleBridgeChainsChange }
       inTabsSlot={ !isMobile && bridgedTokensFeature.isEnabled }
-      activeTab={ tab }
     />
   );
 
