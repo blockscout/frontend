@@ -9,6 +9,9 @@ export type TransactionRevertReason = {
   raw: string;
 } | DecodedInput;
 
+type WrappedTransactionFields = 'decoded_input' | 'fee' | 'gas_limit' | 'gas_price' | 'hash' | 'max_fee_per_gas' |
+'max_priority_fee_per_gas' | 'method' | 'nonce' | 'raw_input' | 'to' | 'type' | 'value';
+
 export type Transaction = {
   to: AddressParam | null;
   created_contract: AddressParam | null;
@@ -51,7 +54,7 @@ export type Transaction = {
   // SUAVE fields
   execution_node?: AddressParam | null;
   allowed_peekers?: Array<string>;
-  wrapped?: Transaction;
+  wrapped?: Pick<Transaction, WrappedTransactionFields>;
 }
 
 export type TransactionsResponse = TransactionsResponseValidated | TransactionsResponsePending;

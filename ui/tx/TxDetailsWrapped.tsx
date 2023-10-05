@@ -2,6 +2,7 @@ import { Flex, Grid } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
+import type { ExcludeUndefined } from 'types/utils';
 
 import config from 'configs/app';
 import Tag from 'ui/shared/chakra/Tag';
@@ -16,7 +17,7 @@ import TxDetailsGasPrice from 'ui/tx/details/TxDetailsGasPrice';
 import TxDetailsOther from 'ui/tx/details/TxDetailsOther';
 
 interface Props {
-  data: Transaction;
+  data: ExcludeUndefined<Transaction['wrapped']>;
 }
 
 const TxDetailsWrapped = ({ data }: Props) => {
@@ -60,7 +61,6 @@ const TxDetailsWrapped = ({ data }: Props) => {
         <CurrencyValue
           value={ data.value }
           currency={ config.chain.currency.symbol }
-          exchangeRate={ data.exchange_rate }
           flexWrap="wrap"
         />
       </DetailsInfoItem>
@@ -71,7 +71,6 @@ const TxDetailsWrapped = ({ data }: Props) => {
         <CurrencyValue
           value={ data.fee.value }
           currency={ config.chain.currency.symbol }
-          exchangeRate={ data.exchange_rate }
           flexWrap="wrap"
         />
       </DetailsInfoItem>
@@ -79,7 +78,7 @@ const TxDetailsWrapped = ({ data }: Props) => {
 
       <DetailsInfoItemDivider/>
 
-      <TxDetailsOther type={ data.type } nonce={ data.nonce } position={ data.position }/>
+      <TxDetailsOther type={ data.type } nonce={ data.nonce } position={ null }/>
       <DetailsInfoItem
         title="Raw input"
         hint="Binary data included with the transaction. See logs tab for additional info"

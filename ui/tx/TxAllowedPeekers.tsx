@@ -19,7 +19,9 @@ const TxAllowedPeekers = ({ items }: Props) => {
       hint="Allowed peekers"
     >
       <Flex flexDir="column" rowGap={ 3 } w="100%">
-        { items.slice(0, isExpanded ? undefined : CUT_LENGTH).map((item) => <AddressEntity key={ item } address={{ hash: item }} noIcon/>) }
+        { items
+          .slice(0, isExpanded ? undefined : CUT_LENGTH)
+          .map((item) => <AddressEntity key={ item } address={{ hash: item, is_contract: true }}/>) }
       </Flex>
       { items.length > CUT_LENGTH && (
         <Link
