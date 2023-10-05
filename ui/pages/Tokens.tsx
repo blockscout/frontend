@@ -49,32 +49,10 @@ const Tokens = () => {
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   const tokensQuery = useQueryWithPages({
-    resourceName: 'tokens',
-    filters: { q: debouncedSearchTerm, type: tokenTypes },
+    resourceName: tab === 'bridged' ? 'tokens_bridged' : 'tokens',
+    filters: tab === 'bridged' ? { q: debouncedSearchTerm, chain_ids: bridgeChains } : { q: debouncedSearchTerm, type: tokenTypes },
     sorting: getSortParamsFromValue(sort),
     options: {
-      enabled: tab === 'all' || !tab,
-      placeholderData: generateListStub<'tokens'>(
-        TOKEN_INFO_ERC_20,
-        50,
-        {
-          next_page_params: {
-            holder_count: 81528,
-            items_count: 50,
-            name: '',
-            market_cap: null,
-          },
-        },
-      ),
-    },
-  });
-
-  const tokensBridgedQuery = useQueryWithPages({
-    resourceName: 'tokens_bridged',
-    filters: { q: debouncedSearchTerm, chain_ids: bridgeChains },
-    sorting: getSortParamsFromValue(sort),
-    options: {
-      enabled: bridgedTokensFeature.isEnabled && tab === 'bridged',
       placeholderData: generateListStub<'tokens'>(
         TOKEN_INFO_ERC_20,
         50,
@@ -92,10 +70,10 @@ const Tokens = () => {
 
   const handleSearchTermChange = React.useCallback((value: string) => {
     tab === 'bridged' ?
-      tokensBridgedQuery.onFilterChange({ q: value, chain_ids: bridgeChains }) :
+      tokensQuery.onFilterChange({ q: value, chain_ids: bridgeChains }) :
       tokensQuery.onFilterChange({ q: value, type: tokenTypes });
     setSearchTerm(value);
-  }, [ bridgeChains, tab, tokenTypes, tokensBridgedQuery, tokensQuery ]);
+  }, [ bridgeChains, tab, tokenTypes, tokensQuery ]);
 
   const handleTokenTypesChange = React.useCallback((value: Array<TokenType>) => {
     tokensQuery.onFilterChange({ q: debouncedSearchTerm, type: value });
@@ -103,16 +81,14 @@ const Tokens = () => {
   }, [ debouncedSearchTerm, tokensQuery ]);
 
   const handleBridgeChainsChange = React.useCallback((value: Array<string>) => {
-    tokensBridgedQuery.onFilterChange({ q: debouncedSearchTerm, chain_ids: value });
+    tokensQuery.onFilterChange({ q: debouncedSearchTerm, chain_ids: value });
     setBridgeChains(value);
-  }, [ debouncedSearchTerm, tokensBridgedQuery ]);
+  }, [ debouncedSearchTerm, tokensQuery ]);
 
   const handleSortChange = React.useCallback((value?: TokensSortingValue) => {
     setSort(value);
-    tab === 'bridged' ?
-      tokensBridgedQuery.onSortingChange(getSortParamsFromValue(value)) :
-      tokensQuery.onSortingChange(getSortParamsFromValue(value));
-  }, [ tab, tokensBridgedQuery, tokensQuery ]);
+    tokensQuery.onSortingChange(getSortParamsFromValue(value));
+  }, [ tokensQuery ]);
 
   const handleTabChange = React.useCallback(() => {
     setSearchTerm('');
@@ -121,11 +97,9 @@ const Tokens = () => {
     setBridgeChains(undefined);
   }, []);
 
-  const pagination = tab === 'bridged' ? tokensBridgedQuery.pagination : tokensQuery.pagination;
-
   const actionBar = (
     <TokensActionBar
-      pagination={ pagination }
+      pagination={ tokensQuery.pagination }
       tokenTypes={ tokenTypes }
       onTokenTypesChange={ handleTokenTypesChange }
       searchTerm={ searchTerm }
@@ -139,7 +113,7 @@ const Tokens = () => {
     />
   );
 
-  const bridgedTokensDescription = (() => {
+  const description = (() => {
     if (!bridgedTokensFeature.isEnabled) {
       return null;
     }
@@ -181,12 +155,12 @@ const Tokens = () => {
       title: 'Bridged',
       component: (
         <TokensList
-          query={ tokensBridgedQuery }
+          query={ tokensQuery }
           sort={ sort }
           onSortChange={ handleSortChange }
           actionBar={ isMobile ? actionBar : null }
           hasActiveFilters={ Boolean(searchTerm || bridgeChains) }
-          description={ bridgedTokensDescription }
+          description={ description }
         />
       ),
     } : undefined,
