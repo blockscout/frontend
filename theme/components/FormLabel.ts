@@ -44,6 +44,18 @@ const variantFloating = defineStyle((props) => {
       fontSize: 'xs',
       lineHeight: '16px',
       borderTopRightRadius: 'none',
+      '& svg': {
+        width: '16px',
+        height: '16px',
+      },
+    },
+    '& svg': {
+      transitionProperty: 'width, height',
+      transitionDuration: 'normal',
+      transitionTimingFunction: 'ease',
+      width: '24px',
+      height: '24px',
+      mr: '2',
     },
   };
 });
