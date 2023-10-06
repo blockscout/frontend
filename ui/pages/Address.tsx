@@ -189,11 +189,11 @@ const AddressPageContent = () => {
         isSafeAddress={ isSafeAddress }
       />
       { !isLoading && addressQuery.data?.is_contract && addressQuery.data.token &&
-        <AddressAddToWallet token={ addressQuery.data.token }/> }
+        <AddressAddToWallet token={ addressQuery.data.token } variant="button"/> }
       { !isLoading && !addressQuery.data?.is_contract && config.features.account.isEnabled && (
         <AddressFavoriteButton hash={ hash } watchListId={ addressQuery.data?.watchlist_address_id }/>
       ) }
-      <AddressQrCode address={ addressQuery.data } isLoading={ isLoading } flexShrink={ 0 }/>
+      <AddressQrCode address={ addressQuery.data } isLoading={ isLoading }/>
       <AccountActionsMenu isLoading={ isLoading }/>
       <NetworkExplorers type="address" pathParam={ hash } ml="auto"/>
     </Flex>
