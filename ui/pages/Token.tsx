@@ -259,7 +259,7 @@ const TokenPageContent = () => {
             undefined
         }
         contentAfter={
-          <NetworkExplorers type="token" pathParam={ hashString } ml="auto" hideText={ isMobile }/>
+          <NetworkExplorers type="token" pathParam={ hashString } ml="auto"/>
         }
         flexGrow={ 1 }
       />

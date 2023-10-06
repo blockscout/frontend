@@ -5,7 +5,6 @@ import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { TX } from 'stubs/tx';
 import TextAd from 'ui/shared/ad/TextAd';
@@ -32,7 +31,6 @@ const TABS: Array<RoutedTab> = [
 const TransactionPageContent = () => {
   const router = useRouter();
   const appProps = useAppContext();
-  const isMobile = useIsMobile();
 
   const hash = getQueryParamString(router.query.hash);
 
@@ -49,7 +47,7 @@ const TransactionPageContent = () => {
       isLoading={ isPlaceholderData }
       tagsBefore={ [ data?.tx_tag ? { label: data.tx_tag, display_name: data.tx_tag } : undefined ] }
       contentAfter={
-        <NetworkExplorers type="tx" pathParam={ hash } ml={{ base: 'initial', lg: 'auto' }} hideText={ isMobile && Boolean(data?.tx_tag) }/>
+        <NetworkExplorers type="tx" pathParam={ hash } ml={{ base: 'initial', lg: 'auto' }}/>
       }
     />
   );

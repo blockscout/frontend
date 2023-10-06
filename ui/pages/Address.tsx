@@ -10,7 +10,6 @@ import iconSuccess from 'icons/status/success.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import useContractTabs from 'lib/hooks/useContractTabs';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import useIsSafeAddress from 'lib/hooks/useIsSafeAddress';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ADDRESS_INFO, ADDRESS_TABS_COUNTERS } from 'stubs/address';
@@ -41,7 +40,6 @@ const TOKEN_TABS = Object.values(tokenTabsByType);
 
 const AddressPageContent = () => {
   const router = useRouter();
-  const isMobile = useIsMobile();
   const appProps = useAppContext();
 
   const tabsScrollRef = React.useRef<HTMLDivElement>(null);
@@ -155,7 +153,7 @@ const AddressPageContent = () => {
         isSafeAddress ? { label: 'safe', display_name: 'Multisig: Safe' } : undefined,
       ] }
       contentAfter={
-        <NetworkExplorers type="address" pathParam={ hash } ml="auto" hideText={ isMobile }/>
+        <NetworkExplorers type="address" pathParam={ hash } ml="auto"/>
       }
     />
   );
