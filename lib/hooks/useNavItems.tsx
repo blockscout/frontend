@@ -77,7 +77,7 @@ export default function useNavItems(): ReturnType {
           txs,
           blocks,
           // eslint-disable-next-line max-len
-          { text: 'Txn batches', nextRoute: { pathname: '/zkevm-l2-txn-batches' as const }, icon: txnBatchIcon, isActive: pathname === '/zkevm-l2-txn-batches' || pathname === '/batch/[number]' },
+          { text: 'Txn batches', nextRoute: { pathname: '/zkevm-l2-txn-batches' as const }, icon: txnBatchIcon, isActive: pathname === '/zkevm-l2-txn-batches' || pathname === '/zkevm-l2-txn-batch/[number]' },
         ],
         [
           topAccounts,

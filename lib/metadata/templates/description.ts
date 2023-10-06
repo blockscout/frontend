@@ -39,6 +39,8 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/l2-output-roots': DEFAULT_TEMPLATE,
   '/l2-txn-batches': DEFAULT_TEMPLATE,
   '/l2-withdrawals': DEFAULT_TEMPLATE,
+  '/zkevm-l2-txn-batches': DEFAULT_TEMPLATE,
+  '/zkevm-l2-txn-batch/[number]': DEFAULT_TEMPLATE,
   '/404': DEFAULT_TEMPLATE,
 
   // service routes, added only to make typescript happy

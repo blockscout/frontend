@@ -5,8 +5,8 @@ import { getEnvValue } from '../utils';
 const title = 'ZkEVM rollup (L2) chain';
 
 const config: Feature<{ L1BaseUrl: string; withdrawalUrl?: string }> = (() => {
-  const L1BaseUrl = getEnvValue(process.env.NEXT_PUBLIC_L1_BASE_URL);
-  const isZkEvm = getEnvValue(process.env.NEXT_PUBLIC_IS_ZKEVM_L2_NETWORK) === 'true';
+  const L1BaseUrl = getEnvValue('NEXT_PUBLIC_L1_BASE_URL');
+  const isZkEvm = getEnvValue('NEXT_PUBLIC_IS_ZKEVM_L2_NETWORK') === 'true';
 
   if (isZkEvm && L1BaseUrl) {
     return Object.freeze({

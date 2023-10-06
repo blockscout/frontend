@@ -154,7 +154,7 @@ const TxDetails = () => {
             </Tag>
           ) }
         </DetailsInfoItem>
-        { config.features.zkEvmRollup.isEnabled && (
+        { data.zkevm_status && (
           <DetailsInfoItem
             title="Confirmation status"
             isLoading={ isPlaceholderData }

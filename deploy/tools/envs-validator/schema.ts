@@ -107,6 +107,7 @@ const rollupSchema = yup
   .object()
   .shape({
     NEXT_PUBLIC_IS_L2_NETWORK: yup.boolean(),
+    NEXT_PUBLIC_IS_ZKEVM_L2_NETWORK: yup.boolean(),
     NEXT_PUBLIC_L1_BASE_URL: yup
       .string()
       .when('NEXT_PUBLIC_IS_L2_NETWORK', {

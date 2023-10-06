@@ -29,10 +29,8 @@ export const featureEnvs = {
       value: '[{"type":"omni","title":"OmniBridge","short_title":"OMNI"},{"type":"amb","title":"Arbitrary Message Bridge","short_title":"AMB"}]',
     },
   zkRollup: [
-    { name: 'NEXT_PUBLIC_IS_L2_NETWORK', value: 'true' },
     { name: 'NEXT_PUBLIC_IS_ZKEVM_L2_NETWORK', value: 'true' },
     { name: 'NEXT_PUBLIC_L1_BASE_URL', value: 'https://localhost:3101' },
-    { name: 'NEXT_PUBLIC_L2_WITHDRAWAL_URL', value: 'https://localhost:3102' },
   ],
 };
 
