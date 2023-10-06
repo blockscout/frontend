@@ -10,6 +10,7 @@ import dayjs from 'lib/date/dayjs';
 import BlockEntityL2 from 'ui/shared/entities/block/BlockEntityL2';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import LinkInternal from 'ui/shared/LinkInternal';
+import ZkEvmL2TxnBatchStatus from 'ui/shared/statusTag/ZkEvmL2TxnBatchStatus';
 
 const feature = config.features.rollup;
 
@@ -35,9 +36,7 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
         />
       </Td>
       <Td>
-        <Skeleton isLoaded={ !isLoading }>
-          <span>{ item.status }</span>
-        </Skeleton>
+        <ZkEvmL2TxnBatchStatus status={ item.status } isLoading={ isLoading }/>
       </Td>
       <Td>
         <Skeleton isLoaded={ !isLoading } color="text_secondary">

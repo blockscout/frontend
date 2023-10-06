@@ -1,7 +1,6 @@
 import {
   Box,
   Flex,
-  Grid,
   Skeleton,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
@@ -13,6 +12,7 @@ import { route } from 'nextjs-routes';
 
 import BlockTimestamp from 'ui/blocks/BlockTimestamp';
 import BlockEntityL2 from 'ui/shared/entities/block/BlockEntityL2';
+import ZkEvmL2TxnBatchStatus from 'ui/shared/statusTag/ZkEvmL2TxnBatchStatus';
 
 type Props = {
   batch: ZkEvmL2TxnBatchesItem;
@@ -53,12 +53,14 @@ const LatestZkevmL2BatchItem = ({ batch, isLoading }: Props) => {
           ml={ 2 }
         />
       </Flex>
-      <Grid gridGap={ 2 } templateColumns="auto minmax(0, 1fr)" fontSize="sm">
-        <Skeleton isLoaded={ !isLoading }>Txn</Skeleton>
-        <Skeleton isLoaded={ !isLoading } color="text_secondary"><span>{ batch.tx_count }</span></Skeleton>
-        <Skeleton isLoaded={ !isLoading }>Status</Skeleton>
-        <Skeleton isLoaded={ !isLoading } color="text_secondary"><span>{ batch.status }</span></Skeleton>
-      </Grid>
+      <Flex alignItems="center" justifyContent="space-between" w="100%" flexWrap="wrap">
+        <Flex alignItems="center">
+          <Skeleton isLoaded={ !isLoading } mr={ 2 }>Txn</Skeleton>
+          { /* LINK!!! */ }
+          <Skeleton isLoaded={ !isLoading } color="text_secondary"><span>{ batch.tx_count }</span></Skeleton>
+        </Flex>
+        <ZkEvmL2TxnBatchStatus status={ batch.status } isLoading={ isLoading }/>
+      </Flex>
     </Box>
   );
 };

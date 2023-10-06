@@ -13,7 +13,7 @@ import LatestZkevmL2BatchItem from './LatestZkevmL2BatchItem';
 
 const LatestZkEvmL2Batches = () => {
   const isMobile = useIsMobile();
-  const batchesMaxCount = isMobile ? 2 : 3;
+  const batchesMaxCount = isMobile ? 2 : 5;
 
   const { data, isPlaceholderData, isError } = useApiQuery('homepage_zkevm_l2_batches', {
     queryOptions: {
@@ -33,6 +33,7 @@ const LatestZkEvmL2Batches = () => {
     content = (
       <>
         <VStack spacing={ 3 } mb={ 4 } overflow="hidden" alignItems="stretch">
+          { /* no socket so far */ }
           { /* <AnimatePresence initial={ false } > */ }
           { dataToShow.map(((batch, index) => (
             <LatestZkevmL2BatchItem
