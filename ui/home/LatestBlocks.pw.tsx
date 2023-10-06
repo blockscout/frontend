@@ -42,7 +42,7 @@ test('default view +@mobile +@dark-mode', async({ mount, page }) => {
 
 const testL2 = test.extend({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  context: contextWithEnvs(configs.featureEnvs.rollup) as any,
+  context: contextWithEnvs(configs.featureEnvs.optimisticRollup) as any,
 });
 
 testL2('L2 view', async({ mount, page }) => {

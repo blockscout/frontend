@@ -12,7 +12,7 @@ import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import LinkInternal from 'ui/shared/LinkInternal';
 import ZkEvmL2TxnBatchStatus from 'ui/shared/statusTag/ZkEvmL2TxnBatchStatus';
 
-const feature = config.features.rollup;
+const feature = config.features.zkEvmRollup;
 
 type Props = { item: ZkEvmL2TxnBatchesItem; isLoading?: boolean };
 

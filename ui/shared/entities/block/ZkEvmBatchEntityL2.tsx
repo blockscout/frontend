@@ -24,7 +24,7 @@ const BlockEntityL2 = (props: BlockEntity.EntityProps) => {
       <BlockEntity.Icon { ...partsProps } asProp={ txBatchIcon }/>
       <BlockEntity.Link
         { ...linkProps }
-        href={ feature.L1BaseUrl + route({ pathname: '/zkevm-l2-txn-batch/[number]', query: { number: props.number.toString() } }) }
+        href={ route({ pathname: '/zkevm-l2-txn-batch/[number]', query: { number: props.number.toString() } }) }
       >
         <BlockEntity.Content { ...partsProps }/>
       </BlockEntity.Link>

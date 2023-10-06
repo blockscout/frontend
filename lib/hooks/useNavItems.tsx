@@ -84,7 +84,7 @@ export default function useNavItems(): ReturnType {
           verifiedContracts,
         ],
       ];
-    } else if (config.features.rollup.isEnabled) {
+    } else if (config.features.optimisticRollup.isEnabled) {
       blockchainNavItems = [
         [
           txs,

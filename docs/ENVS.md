@@ -33,7 +33,8 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
   - [Banner ads](ENVS.md#banner-ads)
   - [Text ads](ENVS.md#text-ads)
   - [Beacon chain](ENVS.md#beacon-chain)
-  - [Rollup (L2) chain](ENVS.md#rollup-l2-chain)
+  - [Optimistic rollup (L2) chain](ENVS.md#optimistic-rollup-l2-chain)
+  - [ZkEvm rollup (L2) chain](NVS.md#zkevm-rollup-l2-chain)
   - [Export data to CSV file](ENVS.md#export-data-to-csv-file)
   - [Google analytics](ENVS.md#google-analytics)
   - [Mixpanel analytics](ENVS.md#mixpanel-analytics)
@@ -337,14 +338,22 @@ This feature is **enabled by default** with the `coinzilla` ads provider. To swi
 
 &nbsp;
 
-### Rollup (L2) chain
+### Optimistic rollup (L2) chain
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_IS_L2_NETWORK | `boolean` | Set to true for L2 solutions | Required | - | `true` |
+| NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK | `boolean` | Set to true for optimistic L2 solutions | Required | - | `true` |
+| NEXT_PUBLIC_OPTIMISTIC_L2_WITHDRAWAL_URL | `string` | URL for optimistic L2 -> L1 withdrawals | Required | - | `https://app.optimism.io/bridge/withdraw` |
 | NEXT_PUBLIC_L1_BASE_URL | `string` | Blockscout base URL for L1 network | Required | - | `'http://eth-goerli.blockscout.com'` |
-| NEXT_PUBLIC_L2_WITHDRAWAL_URL | `string` | URL for L2 -> L1 withdrawals | Required | - | `https://app.optimism.io/bridge/withdraw` |
-| NEXT_PUBLIC_IS_ZKEVM_L2_NETWORK | `boolean` | Set to true for zkevm L2 solutions | Required | - | `true` |
+
+&nbsp;
+
+### ZkEvm rollup (L2) chain
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_IS_ZKEVM_L2_NETWORK | `boolean` | Set to true for zkevm L2 solutions  | Required | - | `true` |
+| NEXT_PUBLIC_L1_BASE_URL | `string` | Blockscout base URL for L1 network | Required | - | `'http://eth-goerli.blockscout.com'` |
+
 
 &nbsp;
 

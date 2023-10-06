@@ -8,7 +8,7 @@ import config from 'configs/app';
 
 import * as BlockEntity from './BlockEntity';
 
-const feature = config.features.rollup;
+const feature = config.features.optimisticRollup;
 
 const BlockEntityL1 = (props: BlockEntity.EntityProps) => {
   const linkProps = _omit(props, [ 'className' ]);

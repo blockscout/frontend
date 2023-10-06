@@ -13,7 +13,7 @@ import LinkInternal from 'ui/shared/LinkInternal';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import ZkEvmL2TxnBatchStatus from 'ui/shared/statusTag/ZkEvmL2TxnBatchStatus';
 
-const feature = config.features.rollup;
+const feature = config.features.zkEvmRollup;
 
 type Props = { item: ZkEvmL2TxnBatchesItem; isLoading?: boolean };
 
@@ -40,7 +40,7 @@ const ZkEvmTxnBatchesListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Status</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <ZkEvmL2TxnBatchStatus status={ status } isLoading={ isLoading }/>
+        <ZkEvmL2TxnBatchStatus status={ item.status } isLoading={ isLoading }/>
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>

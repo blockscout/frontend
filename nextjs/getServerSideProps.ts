@@ -57,7 +57,7 @@ export const beaconChain: GetServerSideProps<Props> = async(context) => {
 };
 
 export const L2: GetServerSideProps<Props> = async(context) => {
-  if (!config.features.rollup.isEnabled) {
+  if (!config.features.optimisticRollup.isEnabled) {
     return {
       notFound: true,
     };

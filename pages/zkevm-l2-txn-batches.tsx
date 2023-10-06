@@ -16,4 +16,4 @@ const Page: NextPage = () => {
 
 export default Page;
 
-export { L2 as getServerSideProps } from 'nextjs/getServerSideProps';
+export { zkEvmL2 as getServerSideProps } from 'nextjs/getServerSideProps';

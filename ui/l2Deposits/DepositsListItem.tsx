@@ -12,7 +12,7 @@ import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 
-const feature = config.features.rollup;
+const feature = config.features.optimisticRollup;
 
 type Props = { item: L2DepositsItem; isLoading?: boolean };
 

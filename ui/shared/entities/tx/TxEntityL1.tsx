@@ -8,7 +8,7 @@ import config from 'configs/app';
 
 import * as TxEntity from './TxEntity';
 
-const feature = config.features.rollup;
+const feature = config.features.optimisticRollup.isEnabled ? config.features.optimisticRollup : config.features.zkEvmRollup;
 
 const TxEntityL1 = (props: TxEntity.EntityProps) => {
   const partsProps = _omit(props, [ 'className', 'onClick' ]);

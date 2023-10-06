@@ -14,10 +14,10 @@ export const featureEnvs = {
   beaconChain: [
     { name: 'NEXT_PUBLIC_HAS_BEACON_CHAIN', value: 'true' },
   ],
-  rollup: [
-    { name: 'NEXT_PUBLIC_IS_L2_NETWORK', value: 'true' },
+  optimisticRollup: [
+    { name: 'NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK', value: 'true' },
     { name: 'NEXT_PUBLIC_L1_BASE_URL', value: 'https://localhost:3101' },
-    { name: 'NEXT_PUBLIC_L2_WITHDRAWAL_URL', value: 'https://localhost:3102' },
+    { name: 'NEXT_PUBLIC_OPTIMISTIC_L2_WITHDRAWAL_URL', value: 'https://localhost:3102' },
   ],
   bridgedTokens: [
     {
@@ -28,6 +28,7 @@ export const featureEnvs = {
       name: 'NEXT_PUBLIC_BRIDGED_TOKENS_BRIDGES',
       value: '[{"type":"omni","title":"OmniBridge","short_title":"OMNI"},{"type":"amb","title":"Arbitrary Message Bridge","short_title":"AMB"}]',
     },
+  ],
   zkRollup: [
     { name: 'NEXT_PUBLIC_IS_ZKEVM_L2_NETWORK', value: 'true' },
     { name: 'NEXT_PUBLIC_L1_BASE_URL', value: 'https://localhost:3101' },
