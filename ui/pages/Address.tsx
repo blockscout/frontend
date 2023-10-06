@@ -1,4 +1,4 @@
-import { Box, Icon } from '@chakra-ui/react';
+import { Box, Flex, Icon } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -23,7 +23,12 @@ import AddressTokens from 'ui/address/AddressTokens';
 import AddressTokenTransfers from 'ui/address/AddressTokenTransfers';
 import AddressTxs from 'ui/address/AddressTxs';
 import AddressWithdrawals from 'ui/address/AddressWithdrawals';
+import AddressFavoriteButton from 'ui/address/details/AddressFavoriteButton';
+import AddressQrCode from 'ui/address/details/AddressQrCode';
+import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import TextAd from 'ui/shared/ad/TextAd';
+import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import EntityTags from 'ui/shared/EntityTags';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -147,14 +152,11 @@ const AddressPageContent = () => {
       data={ addressQuery.data }
       isLoading={ addressQuery.isPlaceholderData }
       tagsBefore={ [
-        addressQuery.data?.is_contract ? { label: 'contract', display_name: 'Contract' } : { label: 'eoa', display_name: 'EOA' },
+        !addressQuery.data?.is_contract ? { label: 'eoa', display_name: 'EOA' } : undefined,
         addressQuery.data?.implementation_address ? { label: 'proxy', display_name: 'Proxy' } : undefined,
         addressQuery.data?.token ? { label: 'token', display_name: 'Token' } : undefined,
         isSafeAddress ? { label: 'safe', display_name: 'Multisig: Safe' } : undefined,
       ] }
-      contentAfter={
-        <NetworkExplorers type="address" pathParam={ hash } ml="auto"/>
-      }
     />
   );
 
@@ -173,6 +175,30 @@ const AddressPageContent = () => {
     };
   }, [ appProps.referrer ]);
 
+  const isLoading = addressQuery.isPlaceholderData;
+
+  const titleSecondRow = (
+    <Flex alignItems="center" w="100%" columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
+      <AddressEntity
+        address={{ ...addressQuery.data, name: '' }}
+        isLoading={ isLoading }
+        fontFamily="heading"
+        fontSize="lg"
+        fontWeight={ 500 }
+        noLink
+        isSafeAddress={ isSafeAddress }
+      />
+      { !isLoading && addressQuery.data?.is_contract && addressQuery.data.token &&
+        <AddressAddToWallet token={ addressQuery.data.token }/> }
+      { !isLoading && !addressQuery.data?.is_contract && config.features.account.isEnabled && (
+        <AddressFavoriteButton hash={ hash } watchListId={ addressQuery.data?.watchlist_address_id }/>
+      ) }
+      <AddressQrCode address={ addressQuery.data } isLoading={ isLoading } flexShrink={ 0 }/>
+      <AccountActionsMenu isLoading={ isLoading }/>
+      <NetworkExplorers type="address" pathParam={ hash } ml="auto"/>
+    </Flex>
+  );
+
   return (
     <>
       <TextAd mb={ 6 }/>
@@ -180,7 +206,8 @@ const AddressPageContent = () => {
         title={ `${ addressQuery.data?.is_contract ? 'Contract' : 'Address' } details` }
         backLink={ backLink }
         contentAfter={ tags }
-        isLoading={ addressQuery.isPlaceholderData }
+        secondRow={ titleSecondRow }
+        isLoading={ isLoading }
       />
       <AddressDetails addressQuery={ addressQuery } scrollRef={ tabsScrollRef }/>
       { /* should stay before tabs to scroll up with pagination */ }

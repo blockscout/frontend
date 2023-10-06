@@ -19,6 +19,7 @@ interface Props {
   isLoading?: boolean;
 }
 
+// TODO @tom2drum remove this component
 const AddressHeadingInfo = ({ address, token, isLinkDisabled, isLoading }: Props) => {
   const isSafeAddress = useIsSafeAddress(!isLoading && address.is_contract ? address.hash : undefined);
 
