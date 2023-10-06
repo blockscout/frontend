@@ -36,7 +36,7 @@ const TokenInstanceDetails = ({ data, scrollRef, isLoading }: Props) => {
 
   return (
     <>
-      <Flex alignItems="flex-start" mt={ 8 } flexDir={{ base: 'column-reverse', lg: 'row' }} columnGap={ 6 } rowGap={ 6 }>
+      <Flex alignItems="flex-start" flexDir={{ base: 'column-reverse', lg: 'row' }} columnGap={ 6 } rowGap={ 6 }>
         <Grid
           flexGrow={ 1 }
           columnGap={ 8 }

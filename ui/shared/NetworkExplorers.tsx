@@ -40,7 +40,7 @@ const NetworkExplorers = ({ className, type, pathParam }: Props) => {
           aria-label="Verify in other explorers"
           fontWeight={ 500 }
           px={ 2 }
-          h="30px"
+          h="32px"
           flexShrink={ 0 }
         >
           <Icon as={ explorerIcon } boxSize={ 5 }/>

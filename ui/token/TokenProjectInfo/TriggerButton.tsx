@@ -20,7 +20,7 @@ const TriggerButton = ({ isOpen, onClick }: Props, ref: React.ForwardedRef<HTMLB
       aria-label="Show project info"
       fontWeight={ 500 }
       px={ 2 }
-      h="30px"
+      h="32px"
     >
       <Icon as={ rocketIcon } boxSize={ 5 } mr={ 1 }/>
       <span>Info</span>

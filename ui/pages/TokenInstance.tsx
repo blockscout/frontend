@@ -1,4 +1,4 @@
-import { Box, Icon, Skeleton } from '@chakra-ui/react';
+import { Box, Flex, Icon, Skeleton } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -14,9 +14,12 @@ import * as regexp from 'lib/regexp';
 import { TOKEN_INSTANCE } from 'stubs/token';
 import * as tokenStubs from 'stubs/token';
 import { generateListStub } from 'stubs/utils';
+import AddressQrCode from 'ui/address/details/AddressQrCode';
+import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import TextAd from 'ui/shared/ad/TextAd';
-import AddressHeadingInfo from 'ui/shared/AddressHeadingInfo';
+import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import Tag from 'ui/shared/chakra/Tag';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import LinkExternal from 'ui/shared/LinkExternal';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -122,7 +125,9 @@ const TokenInstanceContent = () => {
   const nftShieldIcon = tokenInstanceQuery.isPlaceholderData ?
     <Skeleton boxSize={ 6 } display="inline-block" borderRadius="base" mr={ 2 } my={ 2 } verticalAlign="text-bottom"/> :
     <Icon as={ nftIcon } boxSize={ 6 } mr={ 2 }/>;
+
   const tokenTag = <Tag isLoading={ tokenInstanceQuery.isPlaceholderData }>{ tokenInstanceQuery.data?.token.type }</Tag>;
+
   const address = {
     hash: hash || '',
     is_contract: true,
@@ -130,6 +135,9 @@ const TokenInstanceContent = () => {
     watchlist_names: [],
     watchlist_address_id: null,
   };
+
+  const isLoading = tokenInstanceQuery.isPlaceholderData;
+
   const appLink = (() => {
     if (!tokenInstanceQuery.data?.external_app_url) {
       return null;
@@ -141,20 +149,15 @@ const TokenInstanceContent = () => {
         new URL('https://' + tokenInstanceQuery.data.external_app_url);
 
       return (
-        <Skeleton isLoaded={ !tokenInstanceQuery.isPlaceholderData } display="inline-block" fontSize="sm" mt={ 6 }>
-          <span>View in app </span>
-          <LinkExternal href={ url.toString() }>
-            { url.hostname || tokenInstanceQuery.data.external_app_url }
-          </LinkExternal>
-        </Skeleton>
+        <LinkExternal href={ url.toString() } variant="subtle" isLoading={ isLoading } ml={{ base: 0, lg: 'auto' }}>
+          { url.hostname || tokenInstanceQuery.data.external_app_url }
+        </LinkExternal>
       );
     } catch (error) {
       return (
-        <Box fontSize="sm" mt={ 6 }>
-          <LinkExternal href={ tokenInstanceQuery.data.external_app_url }>
+        <LinkExternal href={ tokenInstanceQuery.data.external_app_url } isLoading={ isLoading } ml={{ base: 0, lg: 'auto' }}>
             View in app
-          </LinkExternal>
-        </Box>
+        </LinkExternal>
       );
     }
   })();
@@ -167,6 +170,22 @@ const TokenInstanceContent = () => {
     pagination = holdersQuery.pagination;
   }
 
+  const titleSecondRow = (
+    <Flex alignItems="center" w="100%" minW={ 0 } columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
+      <AddressEntity
+        address={ address }
+        isLoading={ isLoading }
+        fontFamily="heading"
+        fontSize="lg"
+        fontWeight={ 500 }
+      />
+      { !isLoading && tokenInstanceQuery.data && <AddressAddToWallet token={ tokenInstanceQuery.data.token } variant="button"/> }
+      <AddressQrCode address={ address } isLoading={ isLoading }/>
+      <AccountActionsMenu isLoading={ isLoading }/>
+      { appLink }
+    </Flex>
+  );
+
   return (
     <>
       <TextAd mb={ 6 }/>
@@ -175,19 +194,16 @@ const TokenInstanceContent = () => {
         backLink={ backLink }
         beforeTitle={ nftShieldIcon }
         contentAfter={ tokenTag }
-        isLoading={ tokenInstanceQuery.isPlaceholderData }
+        secondRow={ titleSecondRow }
+        isLoading={ isLoading }
       />
 
-      <AddressHeadingInfo address={ address } token={ tokenInstanceQuery.data?.token } isLoading={ tokenInstanceQuery.isPlaceholderData }/>
-
-      { appLink }
-
-      <TokenInstanceDetails data={ tokenInstanceQuery?.data } isLoading={ tokenInstanceQuery.isPlaceholderData } scrollRef={ scrollRef }/>
+      <TokenInstanceDetails data={ tokenInstanceQuery?.data } isLoading={ isLoading } scrollRef={ scrollRef }/>
 
       { /* should stay before tabs to scroll up with pagination */ }
       <Box ref={ scrollRef }></Box>
 
-      { tokenInstanceQuery.isPlaceholderData ? <TabsSkeleton tabs={ tabs }/> : (
+      { isLoading ? <TabsSkeleton tabs={ tabs }/> : (
         <RoutedTabs
           tabs={ tabs }
           tabListProps={ isMobile ? { mt: 8 } : { mt: 3, py: 5, marginBottom: 0 } }
