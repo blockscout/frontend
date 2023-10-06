@@ -7,7 +7,9 @@ import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { TX } from 'stubs/tx';
+import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import TextAd from 'ui/shared/ad/TextAd';
+import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import EntityTags from 'ui/shared/EntityTags';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -46,9 +48,6 @@ const TransactionPageContent = () => {
     <EntityTags
       isLoading={ isPlaceholderData }
       tagsBefore={ [ data?.tx_tag ? { label: data.tx_tag, display_name: data.tx_tag } : undefined ] }
-      contentAfter={
-        <NetworkExplorers type="tx" pathParam={ hash } ml={{ base: 'initial', lg: 'auto' }}/>
-      }
     />
   );
 
@@ -65,6 +64,14 @@ const TransactionPageContent = () => {
     };
   }, [ appProps.referrer ]);
 
+  const titleSecondRow = (
+    <>
+      <TxEntity hash={ hash } noLink noCopy={ false } fontWeight={ 500 } mr={ 2 } fontFamily="heading"/>
+      { !data?.tx_tag && <AccountActionsMenu mr={{ base: 0, lg: 3 }}/> }
+      <NetworkExplorers type="tx" pathParam={ hash } ml={{ base: 3, lg: 'auto' }}/>
+    </>
+  );
+
   return (
     <>
       <TextAd mb={ 6 }/>
@@ -72,6 +79,7 @@ const TransactionPageContent = () => {
         title="Transaction details"
         backLink={ backLink }
         contentAfter={ tags }
+        secondRow={ titleSecondRow }
       />
       <RoutedTabs tabs={ TABS }/>
     </>

@@ -129,7 +129,7 @@ const BlockPageContent = () => {
         </chakra.span>
         <AddressEntity address={ blockQuery.data?.miner }/>
       </Skeleton>
-      <NetworkExplorers type="block" pathParam={ heightOrHash } ml={{ base: 'initial', lg: 'auto' }}/>
+      <NetworkExplorers type="block" pathParam={ heightOrHash } ml={{ base: 3, lg: 'auto' }}/>
     </>
   );
 

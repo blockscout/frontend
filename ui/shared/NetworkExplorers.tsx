@@ -41,6 +41,7 @@ const NetworkExplorers = ({ className, type, pathParam }: Props) => {
           fontWeight={ 500 }
           px={ 2 }
           h="30px"
+          flexShrink={ 0 }
         >
           <Icon as={ explorerIcon } boxSize={ 5 }/>
           <Icon as={ arrowIcon } transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 }/>
