@@ -121,7 +121,6 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Transactions"
-        hint="The number of transactions in the batch"
         isLoading={ isPlaceholderData }
       >
         <Skeleton isLoaded={ !isPlaceholderData }>

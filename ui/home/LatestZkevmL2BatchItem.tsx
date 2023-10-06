@@ -8,10 +8,8 @@ import React from 'react';
 
 import type { ZkEvmL2TxnBatchesItem } from 'types/api/zkEvml2TxnBatches';
 
-import { route } from 'nextjs-routes';
-
 import BlockTimestamp from 'ui/blocks/BlockTimestamp';
-import BlockEntityL2 from 'ui/shared/entities/block/BlockEntityL2';
+import ZkEvmBatchEntityL2 from 'ui/shared/entities/block/ZkEvmBatchEntityL2';
 import ZkEvmL2TxnBatchStatus from 'ui/shared/statusTag/ZkEvmL2TxnBatchStatus';
 
 type Props = {
@@ -34,7 +32,7 @@ const LatestZkevmL2BatchItem = ({ batch, isLoading }: Props) => {
       p={ 6 }
     >
       <Flex alignItems="center" overflow="hidden" w="100%" mb={ 3 }>
-        <BlockEntityL2
+        <ZkEvmBatchEntityL2
           isLoading={ isLoading }
           number={ batch.number }
           tailLength={ 2 }
@@ -42,7 +40,6 @@ const LatestZkevmL2BatchItem = ({ batch, isLoading }: Props) => {
           lineHeight={ 7 }
           fontWeight={ 500 }
           mr="auto"
-          href={ route({ pathname: '/zkevm-l2-txn-batch/[number]', query: { number: batch.number.toString() } }) }
         />
         <BlockTimestamp
           ts={ batch.timestamp }

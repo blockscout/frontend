@@ -19,8 +19,6 @@ import { scroller, Element } from 'react-scroll';
 
 import { ZKEVM_L2_TX_STATUSES } from 'types/api/transaction';
 
-import { route } from 'nextjs-routes';
-
 import config from 'configs/app';
 import clockIcon from 'icons/clock.svg';
 import flameIcon from 'icons/flame.svg';
@@ -40,7 +38,7 @@ import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
-import BlockEntityL2 from 'ui/shared/entities/block/BlockEntityL2';
+import ZkEvmBatchEntityL2 from 'ui/shared/entities/block/ZkEvmBatchEntityL2';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import RawInputData from 'ui/shared/RawInputData';
@@ -199,10 +197,9 @@ const TxDetails = () => {
             title="Tx batch"
             isLoading={ isPlaceholderData }
           >
-            <BlockEntityL2
+            <ZkEvmBatchEntityL2
               isLoading={ isPlaceholderData }
               number={ data.zkevm_batch_number }
-              href={ route({ pathname: '/zkevm-l2-txn-batch/[number]', query: { number: data.zkevm_batch_number.toString() } }) }
             />
           </DetailsInfoItem>
         ) }

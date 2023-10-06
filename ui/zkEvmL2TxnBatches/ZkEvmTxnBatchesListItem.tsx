@@ -7,7 +7,7 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
-import BlockEntityL2 from 'ui/shared/entities/block/BlockEntityL2';
+import ZkEvmBatchEntityL2 from 'ui/shared/entities/block/ZkEvmBatchEntityL2';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import LinkInternal from 'ui/shared/LinkInternal';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
@@ -29,13 +29,12 @@ const ZkEvmTxnBatchesListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Batch #</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <BlockEntityL2
+        <ZkEvmBatchEntityL2
           isLoading={ isLoading }
           number={ item.number }
           fontSize="sm"
           lineHeight={ 5 }
           fontWeight={ 600 }
-          href={ route({ pathname: '/zkevm-l2-txn-batch/[number]', query: { number: item.number.toString() } }) }
         />
       </ListItemMobileGrid.Value>
 
