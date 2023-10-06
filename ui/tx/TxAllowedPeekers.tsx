@@ -16,7 +16,7 @@ const TxAllowedPeekers = ({ items }: Props) => {
   return (
     <DetailsInfoItem
       title="Allowed peekers"
-      hint="Allowed peekers"
+      hint="Smart contracts allowed to interact with confidential data"
     >
       <Flex flexDir="column" rowGap={ 3 } w="100%">
         { items

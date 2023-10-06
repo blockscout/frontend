@@ -198,8 +198,8 @@ const TxDetails = () => {
         ) }
         { data.execution_node && (
           <DetailsInfoItem
-            title="Execution node"
-            hint="Execution node"
+            title="Computor"
+            hint="Node that carried out the confidential computation"
             isLoading={ isPlaceholderData }
           >
             <AddressEntity

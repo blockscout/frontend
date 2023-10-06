@@ -1,4 +1,5 @@
 import { Flex, Grid } from '@chakra-ui/react';
+import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
@@ -75,6 +76,14 @@ const TxDetailsWrapped = ({ data }: Props) => {
         />
       </DetailsInfoItem>
       <TxDetailsGasPrice gasPrice={ data.gas_price }/>
+      { data.gas_limit && (
+        <DetailsInfoItem
+          title="Gas limit"
+          hint="Maximum amount of gas that can be used by the transaction"
+        >
+          { BigNumber(data.gas_limit).toFormat() }
+        </DetailsInfoItem>
+      ) }
 
       <DetailsInfoItemDivider/>
 
