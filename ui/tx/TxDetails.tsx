@@ -204,7 +204,7 @@ const TxDetails = () => {
           >
             <AddressEntity
               address={ data.execution_node }
-              href={ route({ pathname: '/txs/execution-node/[hash]', query: { hash: data.execution_node.hash } }) }
+              href={ route({ pathname: '/txs/computor/[hash]', query: { hash: data.execution_node.hash } }) }
             />
           </DetailsInfoItem>
         ) }

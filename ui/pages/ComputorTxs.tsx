@@ -9,7 +9,7 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import TxsContent from 'ui/txs/TxsContent';
 
-const ExecutionNodeTxs = () => {
+const ComputorTxs = () => {
   const router = useRouter();
 
   const hash = getQueryParamString(router.query.hash);
@@ -29,7 +29,7 @@ const ExecutionNodeTxs = () => {
 
   return (
     <>
-      <PageTitle title="Execution node transactions" withTextAd/>
+      <PageTitle title="Computor transactions" withTextAd/>
       <AddressEntity address={{ hash }} mb={ 6 }/>
       <TxsContent
         query={ query }
@@ -39,4 +39,4 @@ const ExecutionNodeTxs = () => {
   );
 };
 
-export default ExecutionNodeTxs;
+export default ComputorTxs;
