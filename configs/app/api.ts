@@ -26,8 +26,8 @@
 // });
 
 const api = Object.freeze({
-  host: '172.16.13.130',
-  endpoint: 'http://172.16.13.130:4000',
+  host: 'scan.aries.axiomesh.io',
+  endpoint: 'https://scan.aries.axiomesh.io',
   socket: 'ws://172.16.13.131:9092',
   basePath: '',
 });
