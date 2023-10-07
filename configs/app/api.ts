@@ -28,7 +28,7 @@
 const api = Object.freeze({
   host: 'scan.aries.axiomesh.io',
   endpoint: 'https://scan.aries.axiomesh.io',
-  socket: 'ws://172.16.13.131:9092',
+  socket: 'ws://192.168.0.208:9092',
   basePath: '',
 });
 
