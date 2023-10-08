@@ -135,9 +135,9 @@ const adCustomBannerConfigSchema: yup.ObjectSchema<AdCustomBannerConfig> = yup
   .object()
   .shape({
     text: yup.string(),
-    url: yup.string().url(),
-    desktopImageUrl: yup.string().url().required(),
-    mobileImageUrl: yup.string().url().required(),
+    url: yup.string().test(urlTest),
+    desktopImageUrl: yup.string().test(urlTest).required(),
+    mobileImageUrl: yup.string().test(urlTest).required(),
   });
 
 const adCustomConfigSchema = yup
