@@ -174,8 +174,8 @@ frontend:
       cpu: 200m
       memory: 256Mi
   env:
-    NEXT_PUBLIC_APP_ENV: stable
-    NEXT_PUBLIC_APP_INSTANCE: base_goerli
+    NEXT_PUBLIC_APP_ENV: development
+    NEXT_PUBLIC_APP_INSTANCE: main_L2
     NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE: validation
     NEXT_PUBLIC_NETWORK_LOGO: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-logos/base.svg
     NEXT_PUBLIC_NETWORK_ICON: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-icons/base.svg

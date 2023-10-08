@@ -18,6 +18,7 @@ declare global {
       register: (...args: unknown) => void;
     };
     abkw: string;
+    __envs: Record<string, string>;
   }
 
   namespace NodeJS {

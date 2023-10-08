@@ -9,7 +9,7 @@ import config from 'configs/app';
 import { WEI } from 'lib/consts';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
-function castValueToString(value: number | string | boolean | bigint | undefined): string {
+function castValueToString(value: number | string | boolean | object | bigint | undefined): string {
   switch (typeof value) {
     case 'string':
       return value;
@@ -21,6 +21,8 @@ function castValueToString(value: number | string | boolean | bigint | undefined
       return value.toLocaleString(undefined, { useGrouping: false });
     case 'bigint':
       return value.toString();
+    case 'object':
+      return JSON.stringify(value, undefined, 2);
   }
 }
 
@@ -54,7 +56,7 @@ const ContractMethodStatic = ({ data }: Props) => {
       );
     }
 
-    return <chakra.span wordBreak="break-all">({ data.type }): { String(value) }</chakra.span>;
+    return <chakra.span wordBreak="break-all" whiteSpace="pre-wrap">({ data.type }): { String(value) }</chakra.span>;
   })();
 
   return (

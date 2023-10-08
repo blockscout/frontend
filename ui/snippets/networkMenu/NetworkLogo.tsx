@@ -55,7 +55,7 @@ const NetworkLogo = ({ isCollapsed, onClick }: Props) => {
       as="a"
       href={ route({ pathname: '/' }) }
       width={{ base: 'auto', lg: isCollapsed === false ? '120px' : '30px', xl: isCollapsed ? '30px' : '120px' }}
-      height={{ base: '20px', lg: isCollapsed === false ? '20px' : '30px', xl: isCollapsed ? '30px' : '20px' }}
+      height={{ base: '24px', lg: isCollapsed === false ? '24px' : '30px', xl: isCollapsed ? '30px' : '24px' }}
       display="inline-flex"
       overflow="hidden"
       onClick={ onClick }

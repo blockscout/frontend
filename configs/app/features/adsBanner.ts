@@ -5,7 +5,7 @@ import { SUPPORTED_AD_BANNER_PROVIDERS } from 'types/client/ad';
 import { getEnvValue, getExternalAssetFilePath, parseEnvJson } from '../utils';
 
 const provider: AdBannerProviders = (() => {
-  const envValue = getEnvValue(process.env.NEXT_PUBLIC_AD_BANNER_PROVIDER) as AdBannerProviders;
+  const envValue = getEnvValue('NEXT_PUBLIC_AD_BANNER_PROVIDER') as AdBannerProviders;
 
   return envValue && SUPPORTED_AD_BANNER_PROVIDERS.includes(envValue) ? envValue : 'slise';
 })();
@@ -29,8 +29,8 @@ type AdsBannerFeaturePayload = {
 
 const config: Feature<AdsBannerFeaturePayload> = (() => {
   if (provider === 'adbutler') {
-    const desktopConfig = parseEnvJson<AdButlerConfig>(getEnvValue(process.env.NEXT_PUBLIC_AD_ADBUTLER_CONFIG_DESKTOP));
-    const mobileConfig = parseEnvJson<AdButlerConfig>(getEnvValue(process.env.NEXT_PUBLIC_AD_ADBUTLER_CONFIG_MOBILE));
+    const desktopConfig = parseEnvJson<AdButlerConfig>(getEnvValue('NEXT_PUBLIC_AD_ADBUTLER_CONFIG_DESKTOP'));
+    const mobileConfig = parseEnvJson<AdButlerConfig>(getEnvValue('NEXT_PUBLIC_AD_ADBUTLER_CONFIG_MOBILE'));
 
     if (desktopConfig && mobileConfig) {
       return Object.freeze({

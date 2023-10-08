@@ -196,7 +196,8 @@ const TokenPageContent = () => {
 
   let pagination: PaginationParams | undefined;
 
-  if (!tab || tab === 'token_transfers') {
+  // default tab for erc-20 is token transfers
+  if ((tokenQuery.data?.type === 'ERC-20' && !tab) || tab === 'token_transfers') {
     pagination = transfersQuery.pagination;
   }
 
@@ -204,7 +205,8 @@ const TokenPageContent = () => {
     pagination = holdersQuery.pagination;
   }
 
-  if (tab === 'inventory') {
+  // default tab for nfts is token inventory
+  if (((tokenQuery.data?.type === 'ERC-1155' || tokenQuery.data?.type === 'ERC-721') && !tab) || tab === 'inventory') {
     pagination = inventoryQuery.pagination;
   }
 

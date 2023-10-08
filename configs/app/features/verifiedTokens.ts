@@ -2,7 +2,7 @@ import type { Feature } from './types';
 
 import { getEnvValue } from '../utils';
 
-const contractInfoApiHost = getEnvValue(process.env.NEXT_PUBLIC_CONTRACT_INFO_API_HOST);
+const contractInfoApiHost = getEnvValue('NEXT_PUBLIC_CONTRACT_INFO_API_HOST');
 
 const title = 'Verified tokens info';
 

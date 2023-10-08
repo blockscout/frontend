@@ -1,4 +1,4 @@
-import { Alert, AlertIcon, AlertTitle, chakra, Skeleton } from '@chakra-ui/react';
+import { Alert, AlertIcon, AlertTitle, Skeleton } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
@@ -8,14 +8,11 @@ import type { IndexingStatus } from 'types/api/indexingStatus';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import * as cookies from 'lib/cookies';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp, ndash } from 'lib/html-entities';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 
-const IndexingAlertBlocks = ({ className }: { className?: string }) => {
-  const isMobile = useIsMobile();
-
+const IndexingBlocksAlert = () => {
   const appProps = useAppContext();
   const cookiesString = appProps.cookies;
   const [ hasAlertCookie ] = React.useState(cookies.get(cookies.NAMES.INDEXING_ALERT, cookiesString) === 'true');
@@ -57,7 +54,7 @@ const IndexingAlertBlocks = ({ className }: { className?: string }) => {
   }
 
   if (isLoading) {
-    return hasAlertCookie ? <Skeleton h={{ base: '96px', lg: '48px' }} mb={ 6 } w="100%" className={ className }/> : null;
+    return hasAlertCookie ? <Skeleton h={{ base: '96px', lg: '48px' }} mb={ 6 } w="100%"/> : null;
   }
 
   if (data.finished_indexing_blocks !== false) {
@@ -65,8 +62,8 @@ const IndexingAlertBlocks = ({ className }: { className?: string }) => {
   }
 
   return (
-    <Alert status="info" colorScheme="gray" py={ 3 } borderRadius="12px" mb={ 6 } className={ className }>
-      { !isMobile && <AlertIcon/> }
+    <Alert status="info" colorScheme="gray" py={ 3 } borderRadius="md">
+      <AlertIcon display={{ base: 'none', lg: 'flex' }}/>
       <AlertTitle>
         { `${ data.indexed_blocks_ratio && `${ Math.floor(Number(data.indexed_blocks_ratio) * 100) }% Blocks Indexed${ nbsp }${ ndash } ` }
           We're indexing this chain right now. Some of the counts may be inaccurate.` }
@@ -75,4 +72,4 @@ const IndexingAlertBlocks = ({ className }: { className?: string }) => {
   );
 };
 
-export default chakra(IndexingAlertBlocks);
+export default React.memo(IndexingBlocksAlert);

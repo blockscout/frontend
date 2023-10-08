@@ -52,7 +52,12 @@ export default function useFetch() {
         };
 
         if (!meta?.omitSentryErrorLog) {
-          Sentry.captureException(new Error('Client fetch failed'), { extra: { ...error, ...meta }, tags: { source: 'fetch' } });
+          Sentry.captureException(new Error('Client fetch failed'), { tags: {
+            source: 'fetch',
+            'source.resource': meta?.resource,
+            'status.code': error.status,
+            'status.text': error.statusText,
+          } });
         }
 
         return response.json().then(

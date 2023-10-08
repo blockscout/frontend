@@ -24,7 +24,7 @@ function formatValue(value: string | number, display: string | undefined, trait:
     }
     default: {
       try {
-        if (trait?.toLowerCase().includes('url')) {
+        if (trait?.toLowerCase().includes('url') || value.toString().startsWith('http')) {
           const url = new URL(String(value));
           return {
             value: url.toString(),

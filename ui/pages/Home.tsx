@@ -12,7 +12,7 @@ import SearchBar from 'ui/snippets/searchBar/SearchBar';
 
 const Home = () => {
   return (
-    <>
+    <Box as="main">
       <Box
         w="100%"
         background={ config.UI.homepage.plate.background }
@@ -48,7 +48,7 @@ const Home = () => {
           <Transactions/>
         </Box>
       </Flex>
-    </>
+    </Box>
   );
 };
 
