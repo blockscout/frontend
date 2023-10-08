@@ -1,5 +1,6 @@
 import { Flex, chakra, Tooltip, Image, Skeleton } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
+import shuffle from 'lodash/shuffle';
 import React, { useState, useEffect } from 'react';
 
 import type { AdCustomConfig } from 'types/client/ad';
@@ -26,9 +27,10 @@ const CustomAdBanner = ({ className }: { className?: string }) => {
     });
 
   const interval = adConfig?.interval || MINUTE;
-  const banners = adConfig?.banners || [];
+  const baseBanners = adConfig?.banners || [];
   const randomStart = adConfig?.randomStart || false;
   const randomNextAd = adConfig?.randomNextAd || false;
+  const banners = randomNextAd ? shuffle(baseBanners) : baseBanners;
 
   const [ currentBannerIndex, setCurrentBannerIndex ] = useState(
     randomStart ? Math.floor(Math.random() * banners.length) : 0,
@@ -38,11 +40,7 @@ const CustomAdBanner = ({ className }: { className?: string }) => {
       return;
     }
     const timer = setInterval(() => {
-      if (randomNextAd) {
-        setCurrentBannerIndex(Math.floor(Math.random() * banners.length));
-      } else {
-        setCurrentBannerIndex((prevIndex) => (prevIndex + 1) % banners.length);
-      }
+      setCurrentBannerIndex((prevIndex) => (prevIndex + 1) % banners.length);
     }, interval);
 
     return () => {
