@@ -49,9 +49,8 @@ const CustomAdBanner = ({ className }: { className?: string }) => {
       clearInterval(timer);
     };
   }, [ interval, banners.length, randomNextAd ]);
-
   if (isLoading) {
-    return <Skeleton className={ className } height="90px"/>;
+    return <Skeleton className={ className } width="100%" height="90px"/>;
   }
 
   if (isError || !adConfig) {
@@ -76,7 +75,7 @@ const CustomAdBanner = ({ className }: { className?: string }) => {
         <a href={ currentBanner.url } target="_blank" rel="noopener noreferrer">
           <Image src={ isMobile ? currentBanner.mobileImageUrl : currentBanner.desktopImageUrl }
             alt={ currentBanner.text } height="100%" width="auto" borderRadius="md"
-            fallback={ <Skeleton height="90px" width="auto"/> }
+            fallback={ <Skeleton width={ isMobile ? '270px' : '728px' } height="90px"/> }
           />
         </a>
       </Tooltip>
