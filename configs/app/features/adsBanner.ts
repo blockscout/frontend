@@ -46,7 +46,7 @@ const config: Feature<AdsBannerFeaturePayload> = (() => {
       });
     }
   } else if (provider === 'custom') {
-    const configUrl = getExternalAssetFilePath('NEXT_PUBLIC_AD_CUSTOM_CONFIG_URL', process.env.NEXT_PUBLIC_AD_CUSTOM_CONFIG_URL);
+    const configUrl = getExternalAssetFilePath('NEXT_PUBLIC_AD_CUSTOM_CONFIG_URL');
     if (configUrl) {
       return Object.freeze({
         title,
