@@ -45,7 +45,7 @@ export const tokenInfoERC20b: TokenInfo<'ERC-20'> = {
 };
 
 export const tokenInfoERC20c: TokenInfo<'ERC-20'> = {
-  address: '0xc1116c98ba622a6218433fF90a2E40DEa482d7A7',
+  address: '0xc1116c98ba622a6218433fF90a2E40DEa482d7A8',
   circulating_market_cap: null,
   decimals: '18',
   exchange_rate: '1328.89',
@@ -58,7 +58,7 @@ export const tokenInfoERC20c: TokenInfo<'ERC-20'> = {
 };
 
 export const tokenInfoERC20d: TokenInfo<'ERC-20'> = {
-  address: '0xCc7bb2D219A0FC08033E130629C2B854b7bA9195',
+  address: '0xCc7bb2D219A0FC08033E130629C2B854b7bA9196',
   circulating_market_cap: null,
   decimals: '18',
   exchange_rate: null,
@@ -71,7 +71,7 @@ export const tokenInfoERC20d: TokenInfo<'ERC-20'> = {
 };
 
 export const tokenInfoERC20LongSymbol: TokenInfo<'ERC-20'> = {
-  address: '0xCc7bb2D219A0FC08033E130629C2B854b7bA9195',
+  address: '0xCc7bb2D219A0FC08033E130629C2B854b7bA9197',
   circulating_market_cap: '112855875.75888918',
   decimals: '18',
   exchange_rate: '1328.89',
@@ -123,7 +123,7 @@ export const tokenInfoERC721c: TokenInfo<'ERC-721'> = {
 };
 
 export const tokenInfoERC721LongSymbol: TokenInfo<'ERC-721'> = {
-  address: '0x47646F1d7dc4Dd2Db5a41D092e2Cf966e27A4992',
+  address: '0x47646F1d7dc4Dd2Db5a41D092e2Cf966e27A4993',
   circulating_market_cap: null,
   decimals: null,
   exchange_rate: null,
@@ -162,7 +162,7 @@ export const tokenInfoERC1155b: TokenInfo<'ERC-1155'> = {
 };
 
 export const tokenInfoERC1155WithoutName: TokenInfo<'ERC-1155'> = {
-  address: '0x4b333DEd10c7ca855EA2C8D4D90A0a8b73788c8e',
+  address: '0x4b333DEd10c7ca855EA2C8D4D90A0a8b73788c8a',
   circulating_market_cap: null,
   decimals: null,
   exchange_rate: null,
@@ -172,4 +172,28 @@ export const tokenInfoERC1155WithoutName: TokenInfo<'ERC-1155'> = {
   total_supply: '482',
   type: 'ERC-1155',
   icon_url: null,
+};
+
+export const bridgedTokenA: TokenInfo<'ERC-20'> = {
+  ...tokenInfoERC20a,
+  is_bridged: true,
+  origin_chain_id: '1',
+  bridge_type: 'omni',
+  foreign_address: '0x4b333DEd10c7ca855EA2C8D4D90A0a8b73788c8b',
+};
+
+export const bridgedTokenB: TokenInfo<'ERC-20'> = {
+  ...tokenInfoERC20b,
+  is_bridged: true,
+  origin_chain_id: '56',
+  bridge_type: 'omni',
+  foreign_address: '0xf4b71b179132ad457f6bcae2a55efa9e4b26eefd',
+};
+
+export const bridgedTokenC: TokenInfo<'ERC-20'> = {
+  ...tokenInfoERC20d,
+  is_bridged: true,
+  origin_chain_id: '99',
+  bridge_type: 'amb',
+  foreign_address: '0x47646F1d7dc4Dd2Db5a41D092e2Cf966e27A4994',
 };

@@ -52,7 +52,7 @@ import type {
   TokenInstanceTransfersCount,
   TokenVerifiedInfo,
 } from 'types/api/token';
-import type { TokensResponse, TokensFilters, TokensSorting, TokenInstanceTransferResponse } from 'types/api/tokens';
+import type { TokensResponse, TokensFilters, TokensSorting, TokenInstanceTransferResponse, TokensBridgedFilters } from 'types/api/tokens';
 import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
 import type { TransactionsResponseValidated, TransactionsResponsePending, Transaction, TransactionsResponseWatchlist } from 'types/api/transaction';
 import type { TTxsFilters } from 'types/api/txsFilters';
@@ -382,6 +382,10 @@ export const RESOURCES = {
     path: '/api/v2/tokens',
     filterFields: [ 'q' as const, 'type' as const ],
   },
+  tokens_bridged: {
+    path: '/api/v2/tokens/bridged',
+    filterFields: [ 'q' as const, 'chain_ids' as const ],
+  },
 
   // TOKEN INSTANCE
   token_instance: {
@@ -544,7 +548,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'address_txs' | 'address_internal_txs' | 'address_token_transfers' | 'address_blocks_validated' | 'address_coin_balance' |
 'search' |
 'address_logs' | 'address_tokens' |
-'token_transfers' | 'token_holders' | 'token_inventory' | 'tokens' |
+'token_transfers' | 'token_holders' | 'token_inventory' | 'tokens' | 'tokens_bridged' |
 'token_instance_transfers' | 'token_instance_holders' |
 'verified_contracts' |
 'l2_output_roots' | 'l2_withdrawals' | 'l2_txn_batches' | 'l2_deposits' |
@@ -613,6 +617,7 @@ Q extends 'token_instance_transfers' ? TokenInstanceTransferResponse :
 Q extends 'token_instance_holders' ? TokenHolders :
 Q extends 'token_inventory' ? TokenInventoryResponse :
 Q extends 'tokens' ? TokensResponse :
+Q extends 'tokens_bridged' ? TokensResponse :
 Q extends 'quick_search' ? Array<SearchResultItem> :
 Q extends 'search' ? SearchResult :
 Q extends 'search_check_redirect' ? SearchRedirectResult :
@@ -650,6 +655,7 @@ Q extends 'address_token_transfers' ? AddressTokenTransferFilters :
 Q extends 'address_tokens' ? AddressTokensFilter :
 Q extends 'search' ? SearchResultFilters :
 Q extends 'tokens' ? TokensFilters :
+Q extends 'tokens_bridged' ? TokensBridgedFilters :
 Q extends 'verified_contracts' ? VerifiedContractsFilters :
 never;
 /* eslint-enable @typescript-eslint/indent */
@@ -657,5 +663,6 @@ never;
 /* eslint-disable @typescript-eslint/indent */
 export type PaginationSorting<Q extends PaginatedResources> =
 Q extends 'tokens' ? TokensSorting :
+Q extends 'tokens_bridged' ? TokensSorting :
 never;
 /* eslint-enable @typescript-eslint/indent */

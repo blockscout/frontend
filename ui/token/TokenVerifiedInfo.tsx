@@ -1,4 +1,4 @@
-import { Flex, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Skeleton } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
@@ -16,7 +16,6 @@ interface Props {
 const TokenVerifiedInfo = ({ verifiedInfoQuery }: Props) => {
 
   const { data, isLoading, isError } = verifiedInfoQuery;
-  const websiteLinkBg = useColorModeValue('gray.100', 'gray.700');
 
   const content = (() => {
     if (!config.features.verifiedTokens.isEnabled) {
@@ -41,7 +40,7 @@ const TokenVerifiedInfo = ({ verifiedInfoQuery }: Props) => {
       try {
         const url = new URL(data.projectWebsite);
         return (
-          <LinkExternal href={ data.projectWebsite } px="10px" py="5px" bgColor={ websiteLinkBg } borderRadius="base">{ url.host }</LinkExternal>
+          <LinkExternal href={ data.projectWebsite } variant="subtle">{ url.host }</LinkExternal>
         );
       } catch (error) {
         return null;

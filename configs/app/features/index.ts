@@ -3,6 +3,7 @@ export { default as addressVerification } from './addressVerification';
 export { default as adsBanner } from './adsBanner';
 export { default as adsText } from './adsText';
 export { default as beaconChain } from './beaconChain';
+export { default as bridgedTokens } from './bridgedTokens';
 export { default as blockchainInteraction } from './blockchainInteraction';
 export { default as csvExport } from './csvExport';
 export { default as googleAnalytics } from './googleAnalytics';
