@@ -14,9 +14,12 @@ const TokenTypeFilter = ({ onChange, defaultValue }: Props) => {
   const { value, setValue } = useCheckboxGroup({ defaultValue });
 
   const handleReset = React.useCallback(() => {
+    if (value.length === 0) {
+      return;
+    }
     setValue([]);
     onChange([]);
-  }, [ onChange, setValue ]);
+  }, [ onChange, setValue, value.length ]);
 
   const handleChange = React.useCallback((nextValue: Array<TokenType>) => {
     setValue(nextValue);
@@ -27,7 +30,15 @@ const TokenTypeFilter = ({ onChange, defaultValue }: Props) => {
     <>
       <Flex justifyContent="space-between" fontSize="sm">
         <Text fontWeight={ 600 } variant="secondary">Type</Text>
-        <Link onClick={ handleReset }>Reset</Link>
+        <Link
+          onClick={ handleReset }
+          color={ value.length > 0 ? 'link' : 'text_secondary' }
+          _hover={{
+            color: value.length > 0 ? 'link_hovered' : 'text_secondary',
+          }}
+        >
+          Reset
+        </Link>
       </Flex>
       <CheckboxGroup size="lg" onChange={ handleChange } value={ value }>
         { TOKEN_TYPES.map(({ title, id }) => (

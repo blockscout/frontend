@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -12,7 +12,6 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { TOKEN_INFO_ERC_20 } from 'stubs/token';
 import { generateListStub } from 'stubs/utils';
-import Tag from 'ui/shared/chakra/Tag';
 import PopoverFilter from 'ui/shared/filters/PopoverFilter';
 import TokenTypeFilter from 'ui/shared/filters/TokenTypeFilter';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -128,21 +127,14 @@ const Tokens = () => {
       return null;
     }
 
+    const bridgesListText = bridgedTokensFeature.bridges.map((item, index, array) => {
+      return item.title + (index < array.length - 2 ? ', ' : '') + (index === array.length - 2 ? ' and ' : '');
+    });
+
     return (
-      <Flex fontSize="sm" mb={ 4 } mt={ 1 } alignItems="center" whiteSpace="pre-wrap" flexWrap="wrap">
-        <span>List of the tokens bridged through </span>
-        { bridgedTokensFeature.bridges.map((item, index, array) => {
-          return (
-            <React.Fragment key={ item.type }>
-              <span>{ item.title } </span>
-              <Tag>{ item.short_title }</Tag>
-              { index === array.length - 2 && <span> and </span> }
-              { index < array.length - 2 && <span>, </span> }
-            </React.Fragment>
-          );
-        }) }
-        <span> extensions</span>
-      </Flex>
+      <Box fontSize="sm" mb={ 4 } mt={ 1 } whiteSpace="pre-wrap" flexWrap="wrap">
+        List of the tokens bridged through { bridgesListText } extensions
+      </Box>
     );
   })();
 
