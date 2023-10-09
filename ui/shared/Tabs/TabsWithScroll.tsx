@@ -22,6 +22,7 @@ import useIsSticky from 'lib/hooks/useIsSticky';
 import TabCounter from './TabCounter';
 import TabsMenu from './TabsMenu';
 import useAdaptiveTabs from './useAdaptiveTabs';
+import { menuButton } from './utils';
 
 const TAB_CLASSNAME = 'tab-item';
 
@@ -60,7 +61,12 @@ const TabsWithScroll = ({
   const [ activeTabIndex, setActiveTabIndex ] = useState<number>(defaultTabIndex || 0);
   const isMobile = useIsMobile();
   const tabsRef = useRef<HTMLDivElement>(null);
-  const { tabsCut, tabsList, tabsRefs, listRef, rightSlotRef } = useAdaptiveTabs(tabs, isMobile);
+
+  const tabsList = React.useMemo(() => {
+    return [ ...tabs, menuButton ];
+  }, [ tabs ]);
+
+  const { tabsCut, tabsRefs, listRef, rightSlotRef } = useAdaptiveTabs(tabsList, isMobile);
   const isSticky = useIsSticky(listRef, 5, stickyEnabled);
   const listBgColor = useColorModeValue('white', 'black');
 
@@ -116,8 +122,7 @@ const TabsWithScroll = ({
         flexWrap="nowrap"
         whiteSpace="nowrap"
         ref={ listRef }
-        overflowY="hidden"
-        overflowX={{ base: 'auto', lg: undefined }}
+        overflowX={{ base: 'auto', lg: 'initial' }}
         overscrollBehaviorX="contain"
         css={{
           'scroll-snap-type': 'x mandatory',

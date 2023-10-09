@@ -22,7 +22,7 @@ const PopoverFilter = ({ appliedFiltersNum, children, contentProps, isActive, is
   const { isOpen, onToggle, onClose } = useDisclosure();
 
   return (
-    <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy strategy="fixed">
+    <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
       <PopoverTrigger>
         <FilterButton
           isActive={ isOpen || isActive || Number(appliedFiltersNum) > 0 }
