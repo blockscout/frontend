@@ -271,8 +271,8 @@ This feature is **enabled by default** with the `slise` ads provider. To switch 
 | --- | --- | --- | --- | --- | --- |
 | text | `string` | Tooltip text displayed when the mouse is moved over the banner. | - | - | - |
 | url | `string` | Link that opens when clicking on the banner. | - | - | `https://example.com` |
-| desktopImageUrl | `string` | Banner image (both .png, .jpg, and .gif are acceptable) used when the screen width is greater than 1000px. | Required | - | `https://example.com/configs/ad-custom-banners/desktop/example.gif` |
-| mobileImageUrl | `string` | Banner image (both .png, .jpg, and .gif are acceptable) used when the screen width is less than 1000px. | Required | - | `https://example.com/configs/ad-custom-banners/mobile/example.gif` |
+| desktopImageUrl | `string` | Banner image (.png, .jpg, and .gif are all acceptable) used when the screen width is greater than 1000px. | Required | - | `https://example.com/configs/ad-custom-banners/desktop/example.gif` |
+| mobileImageUrl | `string` | Banner image (.png, .jpg, and .gif are all acceptable) used when the screen width is less than 1000px. | Required | - | `https://example.com/configs/ad-custom-banners/mobile/example.gif` |
 
 &nbsp;
 
