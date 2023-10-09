@@ -1,6 +1,8 @@
 import isBrowser from 'lib/isBrowser';
 import * as regexp from 'lib/regexp';
 
+export const replaceQuotes = (value: string | undefined) => value?.replaceAll('\'', '"');
+
 export const getEnvValue = (envName: string) => {
   const envs = isBrowser() ? window.__envs : process.env;
 
@@ -12,7 +14,7 @@ export const getEnvValue = (envName: string) => {
     }
   }
 
-  return envs[envName]?.replaceAll('\'', '"');
+  return replaceQuotes(envs[envName]);
 };
 
 export const parseEnvJson = <DataType>(env: string | undefined): DataType | null => {
