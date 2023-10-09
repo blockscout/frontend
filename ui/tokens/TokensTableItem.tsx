@@ -1,9 +1,10 @@
-import { Box, Flex, Td, Tr, Skeleton } from '@chakra-ui/react';
+import { Flex, Td, Tr, Skeleton } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
 
+import config from 'configs/app';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import Tag from 'ui/shared/chakra/Tag';
 import type { EntityProps as AddressEntityProps } from 'ui/shared/entities/address/AddressEntity';
@@ -19,6 +20,8 @@ type Props = {
 
 const PAGE_SIZE = 50;
 
+const bridgedTokensFeature = config.features.bridgedTokens;
+
 const TokensTableItem = ({
   token,
   page,
@@ -32,7 +35,12 @@ const TokensTableItem = ({
     type,
     holders,
     circulating_market_cap: marketCap,
+    origin_chain_id: originalChainId,
   } = token;
+
+  const bridgedChainTag = bridgedTokensFeature.isEnabled ?
+    bridgedTokensFeature.chains.find(({ id }) => id === originalChainId)?.short_title :
+    undefined;
 
   const tokenAddress: AddressEntityProps['address'] = {
     hash: address,
@@ -56,7 +64,7 @@ const TokensTableItem = ({
           >
             { (page - 1) * PAGE_SIZE + index + 1 }
           </Skeleton>
-          <Box overflow="hidden">
+          <Flex overflow="hidden" flexDir="column" rowGap={ 2 }>
             <TokenEntity
               token={ token }
               isLoading={ isLoading }
@@ -65,23 +73,21 @@ const TokensTableItem = ({
               fontSize="sm"
               fontWeight="700"
             />
-            <Box ml={ 7 } mt={ 2 }>
-              <Flex>
-                <AddressEntity
-                  address={ tokenAddress }
-                  isLoading={ isLoading }
-                  noIcon
-                  truncation="constant"
-                  fontSize="sm"
-                  fontWeight={ 500 }
-                />
-                <AddressAddToWallet token={ token } ml={ 2 } isLoading={ isLoading }/>
-              </Flex>
-              <Box mt={ 3 } >
-                <Tag isLoading={ isLoading }>{ type }</Tag>
-              </Box>
-            </Box>
-          </Box>
+            <Flex columnGap={ 2 } py="5px" alignItems="center">
+              <AddressEntity
+                address={ tokenAddress }
+                isLoading={ isLoading }
+                noIcon
+                fontSize="sm"
+                fontWeight={ 500 }
+              />
+              <AddressAddToWallet token={ token } isLoading={ isLoading } iconSize={ 5 }/>
+            </Flex>
+            <Flex columnGap={ 1 }>
+              <Tag isLoading={ isLoading }>{ type }</Tag>
+              { bridgedChainTag && <Tag isLoading={ isLoading }>{ bridgedChainTag }</Tag> }
+            </Flex>
+          </Flex>
         </Flex>
       </Td>
       <Td isNumeric>

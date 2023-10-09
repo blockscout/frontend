@@ -35,6 +35,8 @@ The app instance could be customized by passing following variables to NodeJS en
   - [Blockchain statistics](ENVS.md#blockchain-statistics)
   - [Web3 wallet integration](ENVS.md#web3-wallet-integration-add-token-or-network-to-the-wallet) (add token or network to the wallet)
   - [Verified tokens info](ENVS.md#verified-tokens-info)
+  - [Bridged tokens](ENVS.md#bridged-tokens)
+  - [Safe{Core} address tags](ENVS.md#safecore-address-tags)
   - [SUAVE chain](ENVS.md#suave-chain)
   - [Sentry error monitoring](ENVS.md#sentry-error-monitoring)
 - [3rd party services configuration](ENVS.md#external-services-configuration)
@@ -403,6 +405,36 @@ This feature is **enabled by default** with the `['metamask']` value. To switch 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_CONTRACT_INFO_API_HOST | `string` | Contract Info API endpoint url | Required | - | `https://contracts-info.services.blockscout.com` |
+
+&nbsp;
+
+### Bridged tokens
+
+This feature allows users to view tokens that have been bridged from other EVM chains. Additional tab "Bridged" will be added to the tokens page and the link to original token will be displayed on the token page.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_BRIDGED_TOKENS_CHAINS | `Array<BridgedTokenChain>` where `BridgedTokenChain` can have following [properties](#bridged-token-chain-configuration-properties) | Used for displaying filter by the chain from which token where bridged. Also, used for creating links to original tokens in other explorers. | Required | - | `[{'id':'1','title':'Ethereum','short_title':'ETH','base_url':'https://eth.blockscout.com/token'}]` |
+| NEXT_PUBLIC_BRIDGED_TOKENS_BRIDGES | `Array<TokenBridge>` where `TokenBridge` can have following [properties](#token-bridge-configuration-properties) | Used for displaying text about bridges types on the tokens page. | Required | - | `[{'type':'omni','title':'OmniBridge','short_title':'OMNI'}]` |
+
+#### Bridged token chain configuration properties
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| id | `string` | Base chain id, see [https://chainlist.org](https://chainlist.org) for the reference | Required | - | `1` |
+| title | `string` | Displayed name of the chain | Required | - | `Ethereum` |
+| short_title | `string` | Used for displaying chain name in the list view as tag | Required | - | `ETH` |
+| base_url | `string` | Base url to original token in base chain explorer | Required | - | `https://eth.blockscout.com/token` |
+
+*Note* The url to original token will be constructed as `<base_url>/<token_hash>`, e.g `https://eth.blockscout.com/token/<token_hash>`
+
+#### Token bridge configuration properties
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| type | `string` | Bridge type; should be matched to `bridge_type` field in API response | Required | - | `omni` |
+| title | `string` | Bridge title | Required | - | `OmniBridge` |
+| short_title | `string` | Bridge short title for displaying in the tags | Required | - | `OMNI` |
 
 &nbsp;
 

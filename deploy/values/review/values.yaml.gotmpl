@@ -26,6 +26,7 @@ frontend:
         - "/static"
         - "/assets"
         - "/favicon"
+        - "/assets"
         - "/auth/profile"
         - "/auth/unverified-email"
         - "/txs"
@@ -134,3 +135,5 @@ frontend:
       _default: "['token_pocket','coinbase','metamask']"
     NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE:
       _default: gradient_avatar
+    NEXT_PUBLIC_USE_NEXT_JS_PROXY:
+      _default: true

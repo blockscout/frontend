@@ -321,6 +321,7 @@
               "eth",
               "rootstock",
               "polygon",
+              "gnosis",
               "localhost",
             ],
             "default": "main"
