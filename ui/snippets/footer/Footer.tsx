@@ -6,6 +6,7 @@ import type { CustomLinksGroup } from 'types/footerLinks';
 
 import config from 'configs/app';
 import discussionsIcon from 'icons/discussions.svg';
+import donateIcon from 'icons/donate.svg';
 import editIcon from 'icons/edit.svg';
 import cannyIcon from 'icons/social/canny.svg';
 import discordIcon from 'icons/social/discord.svg';
@@ -72,6 +73,12 @@ const Footer = () => {
       iconSize: '20px',
       text: 'Discussions',
       url: 'https://github.com/orgs/blockscout/discussions',
+    },
+    {
+      icon: donateIcon,
+      iconSize: '20px',
+      text: 'Donate',
+      url: 'https://github.com/sponsors/blockscout',
     },
   ];
 
@@ -142,7 +149,7 @@ const Footer = () => {
           { config.UI.footer.links && <Text fontWeight={ 500 } mb={ 3 }>Blockscout</Text> }
           <Grid
             gap={ 1 }
-            gridTemplateColumns={ config.UI.footer.links ? '160px' : { base: 'repeat(auto-fill, 160px)', lg: 'repeat(3, 160px)' } }
+            gridTemplateColumns={ config.UI.footer.links ? '160px' : { base: 'repeat(auto-fill, 160px)', lg: 'repeat(4, 160px)' } }
             gridTemplateRows={{ base: 'auto', lg: config.UI.footer.links ? 'auto' : 'repeat(2, auto)' }}
             gridAutoFlow={{ base: 'row', lg: config.UI.footer.links ? 'row' : 'column' }}
             mt={{ base: 0, lg: config.UI.footer.links ? 0 : '100px' }}

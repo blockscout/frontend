@@ -46,9 +46,9 @@ on:
                 description: "JSON encoded list of issues linked to commits in the release"
                 value: ${{ jobs.run.outputs.issues }}
 
-concurrency:
-  group: ${{ github.workflow }}__${{ github.job }}__${{ github.ref }}
-  cancel-in-progress: true
+# concurrency:
+#   group: ${{ github.workflow }}__${{ github.job }}__${{ github.ref }}
+#   cancel-in-progress: true
 
 jobs:
     run:

@@ -11,6 +11,7 @@ truncate -s 0 $output_file;
 # Check if the .env file exists and load ENVs from it
 if [ -f .env ]; then
     source .env
+    export $(cut -d= -f1 .env)
 fi
 
 echo "window.__envs = {" >> $output_file;

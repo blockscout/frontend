@@ -393,6 +393,7 @@ const schema = yup
     NEXT_PUBLIC_PROMOTE_BLOCKSCOUT_IN_TITLE: yup.boolean(),
     NEXT_PUBLIC_OG_DESCRIPTION: yup.string(),
     NEXT_PUBLIC_OG_IMAGE_URL: yup.string().test(urlTest),
+    NEXT_PUBLIC_IS_SUAVE_CHAIN: yup.boolean(),
 
     // 6. External services envs
     NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: yup.string(),
@@ -400,7 +401,9 @@ const schema = yup
     NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID: yup.string(),
     NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN: yup.string(),
     NEXT_PUBLIC_FAVICON_GENERATOR_API_KEY: yup.string(),
-    NEXT_PUBLIC_USE_NEXT_JS_PROXY: yup.string(),
+
+    // Misc
+    NEXT_PUBLIC_USE_NEXT_JS_PROXY: yup.boolean(),
   })
   .concat(accountSchema)
   .concat(adsBannerSchema)
