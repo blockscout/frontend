@@ -300,7 +300,7 @@ const TxDetails = () => {
             />
           </DetailsInfoItem>
         ) }
-        { config.UI.views.tx.hiddenFields?.tx_fee && (
+        { !config.UI.views.tx.hiddenFields?.tx_fee && (
           <DetailsInfoItem
             title="Transaction fee"
             hint="Total transaction fee"
