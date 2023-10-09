@@ -29,6 +29,7 @@ type Props = {
 const LatestTxsItem = ({ tx, isLoading }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
   const timeAgo = useTimeAgoIncrement(tx.timestamp || '0', true);
+  const columnNum = config.UI.views.tx.hiddenFields?.value && config.UI.views.tx.hiddenFields?.tx_fee ? 2 : 3;
 
   return (
     <Box
@@ -40,7 +41,7 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
       _last={{ borderBottom: '1px solid', borderColor: 'divider' }}
       display={{ base: 'none', lg: 'block' }}
     >
-      <Grid width="100%" gridTemplateColumns="3fr 2fr 150px" gridGap={ 8 }>
+      <Grid width="100%" gridTemplateColumns={ columnNum === 2 ? '3fr 2fr' : '3fr 2fr 150px' } gridGap={ 8 }>
         <Flex overflow="hidden" w="100%">
           <TxAdditionalInfo tx={ tx } isLoading={ isLoading }/>
           <Box ml={ 3 } w="calc(100% - 40px)">
@@ -99,14 +100,18 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
           </Box>
         </Grid>
         <Box>
-          <Skeleton isLoaded={ !isLoading } mb={ 2 }>
-            <Text as="span" whiteSpace="pre">{ config.chain.currency.symbol } </Text>
-            <Text as="span" variant="secondary">{ getValueWithUnit(tx.value).dp(5).toFormat() }</Text>
-          </Skeleton>
-          <Skeleton isLoaded={ !isLoading }>
-            <Text as="span">Fee </Text>
-            <Text as="span" variant="secondary">{ getValueWithUnit(tx.fee.value).dp(5).toFormat() }</Text>
-          </Skeleton>
+          { !config.UI.views.tx.hiddenFields?.value && (
+            <Skeleton isLoaded={ !isLoading } mb={ 2 }>
+              <Text as="span" whiteSpace="pre">{ config.chain.currency.symbol } </Text>
+              <Text as="span" variant="secondary">{ getValueWithUnit(tx.value).dp(5).toFormat() }</Text>
+            </Skeleton>
+          ) }
+          { !config.UI.views.tx.hiddenFields?.tx_fee && (
+            <Skeleton isLoaded={ !isLoading }>
+              <Text as="span">Fee </Text>
+              <Text as="span" variant="secondary">{ getValueWithUnit(tx.fee.value).dp(5).toFormat() }</Text>
+            </Skeleton>
+          ) }
         </Box>
       </Grid>
     </Box>

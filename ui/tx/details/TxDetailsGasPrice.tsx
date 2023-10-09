@@ -12,6 +12,10 @@ interface Props {
 }
 
 const TxDetailsGasPrice = ({ gasPrice, isLoading }: Props) => {
+  if (config.UI.views.tx.hiddenFields?.gas_price) {
+    return null;
+  }
+
   return (
     <DetailsInfoItem
       title="Gas price"
