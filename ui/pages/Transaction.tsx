@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { RoutedTab } from 'ui/shared/Tabs/types';
 
+import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -39,8 +40,10 @@ const TransactionPageContent = () => {
   });
 
   const tabs: Array<RoutedTab> = [
-    { id: 'index', title: data?.wrapped ? 'Confidential compute tx details' : 'Details', component: <TxDetails/> },
-    data?.wrapped ? { id: 'wrapped', title: 'Regular tx details', component: <TxDetailsWrapped data={ data.wrapped }/> } : undefined,
+    { id: 'index', title: config.features.suave.isEnabled && data?.wrapped ? 'Confidential compute tx details' : 'Details', component: <TxDetails/> },
+    config.features.suave.isEnabled && data?.wrapped ?
+      { id: 'wrapped', title: 'Regular tx details', component: <TxDetailsWrapped data={ data.wrapped }/> } :
+      undefined,
     { id: 'token_transfers', title: 'Token transfers', component: <TxTokenTransfer/> },
     { id: 'internal', title: 'Internal txns', component: <TxInternals/> },
     { id: 'logs', title: 'Logs', component: <TxLogs/> },
