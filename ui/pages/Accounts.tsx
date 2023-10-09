@@ -1,4 +1,5 @@
 import { Hide, Show } from '@chakra-ui/react';
+import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import { TOP_ADDRESS } from 'stubs/address';
@@ -39,13 +40,17 @@ const Accounts = () => {
   );
 
   const pageStartIndex = (pagination.page - 1) * PAGE_SIZE + 1;
+  const totalSupply = React.useMemo(() => {
+    return BigNumber(data?.total_supply || '0');
+  }, [ data?.total_supply ]);
+
   const content = data?.items ? (
     <>
       <Hide below="lg" ssr={ false }>
         <AddressesTable
           top={ pagination.isVisible ? 80 : 0 }
           items={ data.items }
-          totalSupply={ data.total_supply }
+          totalSupply={ totalSupply }
           pageStartIndex={ pageStartIndex }
           isLoading={ isPlaceholderData }
         />
@@ -57,7 +62,7 @@ const Accounts = () => {
               key={ item.hash + (isPlaceholderData ? index : '') }
               item={ item }
               index={ pageStartIndex + index }
-              totalSupply={ data.total_supply }
+              totalSupply={ totalSupply }
               isLoading={ isPlaceholderData }
             />
           );
