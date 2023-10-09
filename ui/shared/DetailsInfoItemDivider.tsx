@@ -1,7 +1,7 @@
 import { GridItem } from '@chakra-ui/react';
 import React from 'react';
 
-const TokenInstanceDivider = () => {
+const DetailsInfoItemDivider = () => {
   return (
     <GridItem
       colSpan={{ base: undefined, lg: 2 }}
@@ -13,4 +13,4 @@ const TokenInstanceDivider = () => {
   );
 };
 
-export default TokenInstanceDivider;
+export default DetailsInfoItemDivider;

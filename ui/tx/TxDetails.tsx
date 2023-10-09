@@ -17,6 +17,8 @@ import BigNumber from 'bignumber.js';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
+import { route } from 'nextjs-routes';
+
 import config from 'configs/app';
 import clockIcon from 'icons/clock.svg';
 import flameIcon from 'icons/flame.svg';
@@ -32,6 +34,7 @@ import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
@@ -42,8 +45,11 @@ import TextSeparator from 'ui/shared/TextSeparator';
 import TxStatus from 'ui/shared/TxStatus';
 import Utilization from 'ui/shared/Utilization/Utilization';
 import TxDetailsActions from 'ui/tx/details/TxDetailsActions';
+import TxDetailsGasPrice from 'ui/tx/details/TxDetailsGasPrice';
+import TxDetailsOther from 'ui/tx/details/TxDetailsOther';
 import TxDetailsTokenTransfers from 'ui/tx/details/TxDetailsTokenTransfers';
 import TxRevertReason from 'ui/tx/details/TxRevertReason';
+import TxAllowedPeekers from 'ui/tx/TxAllowedPeekers';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
 import useFetchTxInfo from 'ui/tx/useFetchTxInfo';
 
@@ -107,19 +113,13 @@ const TxDetails = () => {
     </Tooltip>
   ) : null;
 
-  const divider = (
-    <GridItem
-      colSpan={{ base: undefined, lg: 2 }}
-      mt={{ base: 2, lg: 3 }}
-      mb={{ base: 0, lg: 3 }}
-      borderBottom="1px solid"
-      borderColor="divider"
-    />
-  );
-
   return (
     <>
-      { config.chain.isTestnet && <Alert status="warning" mb={ 6 }>This is a testnet transaction only</Alert> }
+      { config.chain.isTestnet && (
+        <Skeleton mb={ 6 } isLoaded={ !isPlaceholderData }>
+          <Alert status="warning">This is a testnet transaction only</Alert>
+        </Skeleton>
+      ) }
       <Grid columnGap={ 8 } rowGap={{ base: 3, lg: 3 }} templateColumns={{ base: 'minmax(0, 1fr)', lg: 'max-content minmax(728px, auto)' }}>
         { socketStatus && (
           <GridItem colSpan={{ base: undefined, lg: 2 }} mb={ 2 }>
@@ -196,14 +196,29 @@ const TxDetails = () => {
             </Skeleton>
           </DetailsInfoItem>
         ) }
+        { data.execution_node && (
+          <DetailsInfoItem
+            title="Computor"
+            hint="Node that carried out the confidential computation"
+            isLoading={ isPlaceholderData }
+          >
+            <AddressEntity
+              address={ data.execution_node }
+              href={ route({ pathname: '/txs/computor/[hash]', query: { hash: data.execution_node.hash } }) }
+            />
+          </DetailsInfoItem>
+        ) }
+        { data.allowed_peekers && data.allowed_peekers.length > 0 && (
+          <TxAllowedPeekers items={ data.allowed_peekers }/>
+        ) }
         <DetailsSponsoredItem isLoading={ isPlaceholderData }/>
 
-        { divider }
+        <DetailsInfoItemDivider/>
 
         { actionsExist && (
           <>
             <TxDetailsActions actions={ data.actions }/>
-            { divider }
+            <DetailsInfoItemDivider/>
           </>
         ) }
 
@@ -267,7 +282,7 @@ const TxDetails = () => {
         </DetailsInfoItem>
         { data.token_transfers && <TxDetailsTokenTransfers data={ data.token_transfers } txHash={ data.hash }/> }
 
-        { divider }
+        <DetailsInfoItemDivider/>
 
         <DetailsInfoItem
           title="Value"
@@ -295,18 +310,7 @@ const TxDetails = () => {
             isLoading={ isPlaceholderData }
           />
         </DetailsInfoItem>
-        <DetailsInfoItem
-          title="Gas price"
-          hint="Price per unit of gas specified by the sender. Higher gas prices can prioritize transaction inclusion during times of high usage"
-          isLoading={ isPlaceholderData }
-        >
-          <Skeleton isLoaded={ !isPlaceholderData } mr={ 1 }>
-            { BigNumber(data.gas_price).dividedBy(WEI).toFixed() } { config.chain.currency.symbol }
-          </Skeleton>
-          <Skeleton isLoaded={ !isPlaceholderData } color="text_secondary">
-            <span>({ BigNumber(data.gas_price).dividedBy(WEI_IN_GWEI).toFixed() } Gwei)</span>
-          </Skeleton>
-        </DetailsInfoItem>
+        <TxDetailsGasPrice gasPrice={ data.gas_price } isLoading={ isPlaceholderData }/>
         <DetailsInfoItem
           title="Gas usage & limit by txn"
           hint="Actual gas amount used by the transaction"
@@ -430,39 +434,7 @@ const TxDetails = () => {
         { isExpanded && (
           <>
             <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
-            <DetailsInfoItem
-              title="Other"
-              hint="Other data related to this transaction"
-            >
-              {
-                [
-                  typeof data.type === 'number' && (
-                    <Box key="type">
-                      <Text as="span" fontWeight="500">Txn type: </Text>
-                      <Text fontWeight="600" as="span">{ data.type }</Text>
-                      { data.type === 2 && <Text fontWeight="400" as="span" ml={ 1 } variant="secondary">(EIP-1559)</Text> }
-                    </Box>
-                  ),
-                  <Box key="nonce">
-                    <Text as="span" fontWeight="500">Nonce: </Text>
-                    <Text fontWeight="600" as="span">{ data.nonce }</Text>
-                  </Box>,
-                  data.position !== null && (
-                    <Box key="position">
-                      <Text as="span" fontWeight="500">Position: </Text>
-                      <Text fontWeight="600" as="span">{ data.position }</Text>
-                    </Box>
-                  ),
-                ]
-                  .filter(Boolean)
-                  .map((item, index) => (
-                    <>
-                      { index !== 0 && <TextSeparator/> }
-                      { item }
-                    </>
-                  ))
-              }
-            </DetailsInfoItem>
+            <TxDetailsOther nonce={ data.nonce } type={ data.type } position={ data.position }/>
             <DetailsInfoItem
               title="Raw input"
               hint="Binary data included with the transaction. See logs tab for additional info"

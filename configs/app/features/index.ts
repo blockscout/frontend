@@ -15,5 +15,6 @@ export { default as safe } from './safe';
 export { default as sentry } from './sentry';
 export { default as sol2uml } from './sol2uml';
 export { default as stats } from './stats';
+export { default as suave } from './suave';
 export { default as web3Wallet } from './web3Wallet';
 export { default as verifiedTokens } from './verifiedTokens';
