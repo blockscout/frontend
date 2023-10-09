@@ -16,10 +16,10 @@ interface Props {
 
 function getActionText(actionType: TxActionGeneral['type']) {
   switch (actionType) {
-    case 'mint': return [ 'Add', 'Liquidity to' ];
-    case 'burn': return [ 'Remove', 'Liquidity from' ];
-    case 'collect': return [ 'Collect', 'From' ];
-    case 'swap': return [ 'Swap', 'On' ];
+    case 'mint': return [ 'Added', 'liquidity to' ];
+    case 'burn': return [ 'Removed', 'liquidity from' ];
+    case 'collect': return [ 'Collected', 'from' ];
+    case 'swap': return [ 'Swapped', 'on' ];
   }
 }
 
@@ -54,26 +54,30 @@ const TxDetailsAction = ({ action }: Props) => {
       };
 
       return (
-        <Flex flexWrap="wrap" columnGap={ 1 } rowGap={ 2 } alignItems="center">
-          <chakra.span color="text_secondary">{ text0 }: </chakra.span>
+        <Flex flexWrap="wrap" columnGap={ 2 } rowGap={ 2 } alignItems="center" fontWeight={ 500 }>
+          <chakra.span color="text_secondary">{ text0 }</chakra.span>
 
-          <chakra.span fontWeight={ 600 } mr={ 1 }>{ amount0 }</chakra.span>
+          <span>{ amount0 }</span>
+
           <TokenEntity
             token={ token0 }
             noLink={ data.symbol0 === 'Ether' }
             noCopy
+            noIcon
             noSymbol
             w="auto"
             maxW="200px"
             flexShrink={ 0 }
           />
 
-          <chakra.span color="text_secondary">{ type === 'swap' ? 'For' : 'And' }: </chakra.span>
+          <chakra.span color="text_secondary">{ type === 'swap' ? 'for' : 'and' }</chakra.span>
 
-          <chakra.span fontWeight={ 600 } mr={ 1 }>{ amount1 }</chakra.span>
+          <span>{ amount1 }</span>
+
           <TokenEntity
             token={ token1 }
             noLink={ data.symbol1 === 'Ether' }
+            noIcon
             noCopy
             noSymbol
             w="auto"
@@ -81,10 +85,11 @@ const TxDetailsAction = ({ action }: Props) => {
             flexShrink={ 0 }
           />
 
-          <chakra.span color="text_secondary" mr={ 1 }>{ text1 }</chakra.span>
+          <chakra.span color="text_secondary">{ text1 }</chakra.span>
+
           <Flex columnGap={ 2 }>
             <Icon as={ uniswapIcon } boxSize={ 5 } color="white" bgColor="#ff007a" borderRadius="full" p="2px"/>
-            <chakra.span color="text_secondary">Uniswap V3</chakra.span>
+            <chakra.span>Uniswap V3</chakra.span>
           </Flex>
         </Flex>
       );
@@ -101,15 +106,18 @@ const TxDetailsAction = ({ action }: Props) => {
 
       return (
         <div>
-          <Flex rowGap={ 2 } flexWrap="wrap" alignItems="center" whiteSpace="pre-wrap">
-            <chakra.span mr={ 2 }>Mint of</chakra.span>
+          <Flex rowGap={ 2 } columnGap={ 2 } flexWrap="wrap" alignItems="center" whiteSpace="pre-wrap" fontWeight={ 500 }>
+            <chakra.span color="text_secondary">Minted</chakra.span>
+
             <TokenEntity
               token={ token }
               noCopy
               w="auto"
               rowGap={ 2 }
             />
-            <chakra.span> to </chakra.span>
+
+            <chakra.span color="text_secondary">to</chakra.span>
+
             <AddressEntity
               address={{ hash: data.to }}
               truncation="constant"
@@ -118,15 +126,14 @@ const TxDetailsAction = ({ action }: Props) => {
             />
           </Flex>
 
-          <Flex columnGap={ 1 } rowGap={ 2 } pl={ 3 } flexDirection="column" mt={ 2 }>
+          <Flex columnGap={ 1 } rowGap={ 2 } pl={ 3 } flexDirection="column" mt={ 2 } fontWeight={ 500 }>
             {
               data.ids.map((id: string) => {
                 return (
-                  <Flex key={ data.address + id } whiteSpace="pre-wrap">
-                    <chakra.span flexShrink={ 0 }>1 of </chakra.span>
-                    <chakra.span color="text_secondary" flexShrink={ 0 }>Token ID [</chakra.span>
-                    <NftEntity hash={ data.address } id={ id } noIcon w="min-content"/>
-                    <chakra.span color="text_secondary" flexShrink={ 0 }>]</chakra.span>
+                  <Flex key={ data.address + id } whiteSpace="pre-wrap" columnGap={ 2 }>
+                    <chakra.span flexShrink={ 0 }>1</chakra.span>
+                    <chakra.span color="text_secondary" flexShrink={ 0 }>of token ID</chakra.span>
+                    <NftEntity hash={ data.address } id={ id } w="min-content" iconSize="md"/>
                   </Flex>
                 );
               })
