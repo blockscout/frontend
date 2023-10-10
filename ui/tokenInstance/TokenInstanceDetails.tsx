@@ -11,6 +11,7 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import NftMedia from 'ui/shared/nft/NftMedia';
+import TokenNftMarketplaces from 'ui/token/TokenNftMarketplaces';
 
 import TokenInstanceCreatorAddress from './details/TokenInstanceCreatorAddress';
 import TokenInstanceMetadataInfo from './details/TokenInstanceMetadataInfo';
@@ -81,6 +82,7 @@ const TokenInstanceDetails = ({ data, scrollRef, isLoading }: Props) => {
             </Flex>
           </DetailsInfoItem>
           <TokenInstanceTransfersCount hash={ isLoading ? '' : data.token.address } id={ isLoading ? '' : data.id } onClick={ handleCounterItemClick }/>
+          <TokenNftMarketplaces isLoading={ isLoading } hash={ data.token.address } id={ data.id }/>
         </Grid>
         <NftMedia
           url={ data.animation_url || data.image_url }

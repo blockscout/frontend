@@ -22,6 +22,7 @@ import { type NetworkVerificationType, type NetworkExplorer, type FeaturedNetwor
 import { IDENTICON_TYPES } from '../../../types/views/address';
 import { BLOCK_FIELDS_IDS } from '../../../types/views/block';
 import type { BlockFieldId } from '../../../types/views/block';
+import type { NftMarketplaceItem } from '../../../types/views/nft';
 
 import { replaceQuotes } from '../../../configs/app/utils';
 import * as regexp from '../../../lib/regexp';
@@ -248,6 +249,14 @@ const networkExplorerSchema: yup.ObjectSchema<NetworkExplorer> = yup
       }),
   });
 
+const nftMarketplaceSchema: yup.ObjectSchema<NftMarketplaceItem> = yup
+  .object({
+    name: yup.string().required(),
+    collection_url: yup.string().test(urlTest).required(),
+    instance_url: yup.string().test(urlTest).required(),
+    logo_url: yup.string().test(urlTest).required(),
+  });
+
 const bridgedTokenChainSchema: yup.ObjectSchema<BridgedTokenChain> = yup
   .object({
     id: yup.string().required(),
@@ -360,6 +369,11 @@ const schema = yup
       .json()
       .of(yup.string<BlockFieldId>().oneOf(BLOCK_FIELDS_IDS)),
     NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE: yup.string().oneOf(IDENTICON_TYPES),
+    NEXT_PUBLIC_VIEWS_NFT_MARKETPLACES: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(nftMarketplaceSchema),
 
     //     e. misc
     NEXT_PUBLIC_NETWORK_EXPLORERS: yup

@@ -15,21 +15,24 @@ import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
+import TokenNftMarketplaces from './TokenNftMarketplaces';
+
 interface Props {
   tokenQuery: UseQueryResult<TokenInfo>;
 }
 
 const TokenDetails = ({ tokenQuery }: Props) => {
   const router = useRouter();
+  const hash = router.query.hash?.toString();
 
   const tokenCountersQuery = useApiQuery('token_counters', {
-    pathParams: { hash: router.query.hash?.toString() },
+    pathParams: { hash },
     queryOptions: { enabled: Boolean(router.query.hash), placeholderData: TOKEN_COUNTERS },
   });
 
   const changeUrlAndScroll = useCallback((tab: TokenTabs) => () => {
     router.push(
-      { pathname: '/token/[hash]', query: { hash: router.query.hash?.toString() || '', tab } },
+      { pathname: '/token/[hash]', query: { hash: hash || '', tab } },
       undefined,
       { shallow: true },
     );
@@ -37,7 +40,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
       duration: 500,
       smooth: true,
     });
-  }, [ router ]);
+  }, [ hash, router ]);
 
   const countersItem = useCallback((item: 'token_holders_count' | 'transfers_count') => {
     const itemValue = tokenCountersQuery.data?.[item];
@@ -158,6 +161,9 @@ const TokenDetails = ({ tokenQuery }: Props) => {
           </Skeleton>
         </DetailsInfoItem>
       ) }
+
+      { type !== 'ERC-20' && <TokenNftMarketplaces hash={ hash } isLoading={ tokenQuery.isPlaceholderData }/> }
+
       <DetailsSponsoredItem isLoading={ tokenQuery.isPlaceholderData }/>
     </Grid>
   );
