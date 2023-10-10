@@ -1,38 +1,27 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-// import type { PaginationParams } from 'ui/shared/pagination/types';
-// import type { RoutedTab } from 'ui/shared/Tabs/types';
+import type { RoutedTab } from 'ui/shared/Tabs/types';
 
-// import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
-// import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { TX_ZKEVM_L2 } from 'stubs/tx';
+import { generateListStub } from 'stubs/utils';
 import { ZKEVM_L2_TXN_BATCH } from 'stubs/zkEvmL2';
-// import { TX } from 'stubs/tx';
-// import { generateListStub } from 'stubs/utils';
 import TextAd from 'ui/shared/ad/TextAd';
 import PageTitle from 'ui/shared/Page/PageTitle';
+import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
+import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
+import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
+import TxsContent from 'ui/txs/TxsContent';
 import ZkEvmL2TxnBatchDetails from 'ui/zkEvmL2TxnBatches/ZkEvmL2TxnBatchDetails';
-// import Pagination from 'ui/shared/pagination/Pagination';
-// import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-// import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
-// import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
-// import TxsContent from 'ui/txs/TxsContent';
-
-// const TAB_LIST_PROPS = {
-//   marginBottom: 0,
-//   py: 5,
-//   marginTop: -5,
-// };
 
 const ZkEvmL2TxnBatch = () => {
   const router = useRouter();
-  // const isMobile = useIsMobile();
   const appProps = useAppContext();
   const number = getQueryParamString(router.query.number);
-  // const tab = getQueryParamString(router.query.tab);
+  const tab = getQueryParamString(router.query.tab);
 
   const batchQuery = useApiQuery('zkevm_l2_txn_batch', {
     pathParams: { number },
@@ -42,26 +31,15 @@ const ZkEvmL2TxnBatch = () => {
     },
   });
 
-  // const batchTxsQuery = useQueryWithPages({
-  //   resourceName: 'zkevm_l2_txn_batch_txs',
-  //   pathParams: { number },
-  //   options: {
-  //     enabled: Boolean(!batchQuery.isPlaceholderData && batchQuery.data?.number && tab === 'txs'),
-  //     placeholderData: generateListStub<'block_txs'>(TX_ZKEVM_L2, 50, { next_page_params: {
-  //       number: 9004925,
-  //       index: 49,
-  //       items_count: 50,
-  //     } }),
-  //   },
-  // });
-
-  // const batchTxsQuery = useApiQuery('zkevm_l2_txn_batch_txs', {
-  //   pathParams: { number },
-  //   queryOptions: {
-  //     enabled: Boolean(!batchQuery.isPlaceholderData && batchQuery.data?.number && tab === 'txs'),
-  //     placeholderData: Array(50).fill(TX),
-  //   },
-  // });
+  const batchTxsQuery = useQueryWithPages({
+    resourceName: 'zkevm_l2_txn_batch_txs',
+    pathParams: { number },
+    options: {
+      enabled: Boolean(!batchQuery.isPlaceholderData && batchQuery.data?.number && tab === 'txs'),
+      // there is no pagination in zkevm_l2_txn_batch_txs
+      placeholderData: generateListStub<'block_txs'>(TX_ZKEVM_L2, 50, { next_page_params: null }),
+    },
+  });
 
   if (!number) {
     throw new Error('Tx batch not found', { cause: { status: 404 } });
@@ -71,22 +49,10 @@ const ZkEvmL2TxnBatch = () => {
     throw new Error(undefined, { cause: batchQuery.error });
   }
 
-  // const tabs: Array<RoutedTab> = React.useMemo(() => ([
-  //   { id: 'index', title: 'Details', component: <ZkEvmL2TxnBatchDetails query={ batchQuery }/> },
-  //   { id: 'txs', title: 'Transactions', component: <TxsContent query={ batchTxsQuery } showBlockInfo={ false } showSocketInfo={ false }/> },
-  // ].filter(Boolean)), [ blockQuery, blockTxsQuery, blockWithdrawalsQuery ]);
-
-  // const hasPagination = !isMobile && (
-  //   (tab === 'txs' && blockTxsQuery.pagination.isVisible) ||
-  //   (tab === 'withdrawals' && blockWithdrawalsQuery.pagination.isVisible)
-  // );
-
-  // let pagination;
-  // if (tab === 'txs') {
-  //   pagination = blockTxsQuery.pagination;
-  // } else if (tab === 'withdrawals') {
-  //   pagination = blockWithdrawalsQuery.pagination;
-  // }
+  const tabs: Array<RoutedTab> = React.useMemo(() => ([
+    { id: 'index', title: 'Details', component: <ZkEvmL2TxnBatchDetails query={ batchQuery }/> },
+    { id: 'txs', title: 'Transactions', component: <TxsContent query={ batchTxsQuery } showSocketInfo={ false }/> },
+  ].filter(Boolean)), [ batchQuery, batchTxsQuery ]);
 
   const backLink = React.useMemo(() => {
     const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/zkevm_l2_txn_batches');
@@ -108,15 +74,12 @@ const ZkEvmL2TxnBatch = () => {
         title={ `Tx batch #${ number }` }
         backLink={ backLink }
       />
-      { /* { batchQuery.isPlaceholderData ? <TabsSkeleton tabs={ tabs }/> : (
+      { batchQuery.isPlaceholderData ? <TabsSkeleton tabs={ tabs }/> : (
         <RoutedTabs
           tabs={ tabs }
-          tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
-          rightSlot={ hasPagination ? <Pagination { ...(pagination as PaginationParams) }/> : null }
-          stickyEnabled={ hasPagination }
+          // tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
         />
-      ) } */ }
-      <ZkEvmL2TxnBatchDetails query={ batchQuery }/>
+      ) }
     </>
   );
 };

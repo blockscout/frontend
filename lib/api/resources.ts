@@ -577,8 +577,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'token_instance_transfers' | 'token_instance_holders' |
 'verified_contracts' |
 'l2_output_roots' | 'l2_withdrawals' | 'l2_txn_batches' | 'l2_deposits' |
-// 'zkevm_l2_txn_batches' | 'zkevm_l2_txn_batch_txs' |
-'zkevm_l2_txn_batches' |
+'zkevm_l2_txn_batches' | 'zkevm_l2_txn_batch_txs' |
 'withdrawals' | 'address_withdrawals' | 'block_withdrawals';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
@@ -672,7 +671,7 @@ Q extends 'l2_txn_batches_count' ? number :
 Q extends 'zkevm_l2_txn_batches' ? ZkEvmL2TxnBatchesResponse :
 Q extends 'zkevm_l2_txn_batches_count' ? number :
 Q extends 'zkevm_l2_txn_batch' ? ZkEvmL2TxnBatch :
-Q extends 'zkevm_l2_txn_batch_txs' ? Array<Transaction> :
+Q extends 'zkevm_l2_txn_batch_txs' ? { items: Array<Transaction> } :
 Q extends 'config_backend_version' ? BackendVersionConfig :
 never;
 /* eslint-enable @typescript-eslint/indent */
