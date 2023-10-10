@@ -19,6 +19,8 @@ import { scroller, Element } from 'react-scroll';
 
 import { ZKEVM_L2_TX_STATUSES } from 'types/api/transaction';
 
+import { route } from 'nextjs-routes';
+
 import config from 'configs/app';
 import clockIcon from 'icons/clock.svg';
 import flameIcon from 'icons/flame.svg';

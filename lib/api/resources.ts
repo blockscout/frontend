@@ -59,7 +59,7 @@ import type { TTxsFilters } from 'types/api/txsFilters';
 import type { TxStateChanges } from 'types/api/txStateChanges';
 import type { VisualizedContract } from 'types/api/visualization';
 import type { WithdrawalsResponse, WithdrawalsCounters } from 'types/api/withdrawals';
-import type { ZkEvmL2TxnBatch, ZkEvmL2TxnBatchesItem, ZkEvmL2TxnBatchesResponse } from 'types/api/zkEvml2TxnBatches';
+import type { ZkEvmL2TxnBatch, ZkEvmL2TxnBatchesItem, ZkEvmL2TxnBatchesResponse, ZkEvmL2TxnBatchTxs } from 'types/api/zkEvml2TxnBatches';
 import type { ArrayElement } from 'types/utils';
 
 import config from 'configs/app';
@@ -506,6 +506,7 @@ export const RESOURCES = {
   zkevm_l2_txn_batch_txs: {
     path: 'api/v2/transactions/zkevm-batch/:number',
     pathParams: [ 'number' as const ],
+    filterFields: [],
   },
 
   // CONFIGS
@@ -671,7 +672,7 @@ Q extends 'l2_txn_batches_count' ? number :
 Q extends 'zkevm_l2_txn_batches' ? ZkEvmL2TxnBatchesResponse :
 Q extends 'zkevm_l2_txn_batches_count' ? number :
 Q extends 'zkevm_l2_txn_batch' ? ZkEvmL2TxnBatch :
-Q extends 'zkevm_l2_txn_batch_txs' ? { items: Array<Transaction> } :
+Q extends 'zkevm_l2_txn_batch_txs' ? ZkEvmL2TxnBatchTxs :
 Q extends 'config_backend_version' ? BackendVersionConfig :
 never;
 /* eslint-enable @typescript-eslint/indent */

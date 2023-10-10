@@ -37,7 +37,7 @@ const ZkEvmL2TxnBatch = () => {
     options: {
       enabled: Boolean(!batchQuery.isPlaceholderData && batchQuery.data?.number && tab === 'txs'),
       // there is no pagination in zkevm_l2_txn_batch_txs
-      placeholderData: generateListStub<'block_txs'>(TX_ZKEVM_L2, 50, { next_page_params: null }),
+      placeholderData: generateListStub<'zkevm_l2_txn_batch_txs'>(TX_ZKEVM_L2, 50, { next_page_params: null }),
     },
   });
 
