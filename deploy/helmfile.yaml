@@ -19,7 +19,7 @@ releases:
   # Deploy front-main
   - name: bs-stack
     chart: blockscout/blockscout-stack
-    version: 1.0.*
+    version: 1.2.*
     namespace: front-main
     labels:
       app: front
@@ -30,7 +30,7 @@ releases:
   # Deploy l2-optimism-goerli
   - name: bs-stack
     chart: blockscout/blockscout-stack
-    version: 1.0.*
+    version: 1.2.*
     namespace: l2-optimism-goerli
     labels:
       app: l2-optimism-goerli
