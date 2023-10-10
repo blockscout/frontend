@@ -191,6 +191,14 @@ const oldUrls = [
 
   // TOKENS
   {
+    source: '/bridged-tokens',
+    destination: '/tokens/?tab=bridged',
+  },
+  {
+    source: '/bridged-tokens/:chain_name',
+    destination: '/tokens/?tab=bridged',
+  },
+  {
     source: '/tokens/:hash/:path*',
     destination: '/token/:hash/:path*',
   },

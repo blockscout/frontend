@@ -14,6 +14,11 @@ export interface TokenInfo<T extends TokenType = TokenType> {
   total_supply: string | null;
   icon_url: string | null;
   circulating_market_cap: string | null;
+  // bridged token fields
+  is_bridged?: boolean | null;
+  bridge_type?: string | null;
+  origin_chain_id?: string | null;
+  foreign_address?: string | null;
 }
 
 export interface TokenCounters {

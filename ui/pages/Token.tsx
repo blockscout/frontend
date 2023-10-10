@@ -24,6 +24,7 @@ import * as tokenStubs from 'stubs/token';
 import { generateListStub } from 'stubs/utils';
 import AddressContract from 'ui/address/AddressContract';
 import TextAd from 'ui/shared/ad/TextAd';
+import AddressHeadingInfo from 'ui/shared/AddressHeadingInfo';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import EntityTags from 'ui/shared/EntityTags';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
@@ -32,7 +33,6 @@ import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
-import TokenContractInfo from 'ui/token/TokenContractInfo';
 import TokenDetails from 'ui/token/TokenDetails';
 import TokenHolders from 'ui/token/TokenHolders/TokenHolders';
 import TokenInventory from 'ui/token/TokenInventory';
@@ -252,6 +252,9 @@ const TokenPageContent = () => {
         isLoading={ tokenQuery.isPlaceholderData || contractQuery.isPlaceholderData }
         tagsBefore={ [
           tokenQuery.data ? { label: tokenQuery.data?.type, display_name: tokenQuery.data?.type } : undefined,
+          config.features.bridgedTokens.isEnabled && tokenQuery.data?.is_bridged ?
+            { label: 'bridged', display_name: 'Bridged', colorScheme: 'blue', variant: 'solid' } :
+            undefined,
         ] }
         tagsAfter={
           verifiedInfoQuery.data?.projectSector ?
@@ -282,7 +285,11 @@ const TokenPageContent = () => {
         ) : null }
         contentAfter={ titleContentAfter }
       />
-      <TokenContractInfo tokenQuery={ tokenQuery } contractQuery={ contractQuery }/>
+      <AddressHeadingInfo
+        address={ contractQuery.data }
+        token={ tokenQuery.data }
+        isLoading={ tokenQuery.isPlaceholderData || contractQuery.isPlaceholderData }
+      />
       <TokenVerifiedInfo verifiedInfoQuery={ verifiedInfoQuery }/>
       <TokenDetails tokenQuery={ tokenQuery }/>
       { /* should stay before tabs to scroll up with pagination */ }

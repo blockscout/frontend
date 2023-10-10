@@ -149,6 +149,7 @@ test('search by block number +@mobile', async({ mount, page }) => {
     status: 200,
     body: JSON.stringify([
       searchMock.block1,
+      searchMock.block2,
     ]),
   }));
 
@@ -160,7 +161,7 @@ test('search by block number +@mobile', async({ mount, page }) => {
   await page.getByPlaceholder(/search/i).type(String(searchMock.block1.block_number));
   await page.waitForResponse(API_URL);
 
-  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 600 } });
 });
 
 test('search by block hash +@mobile', async({ mount, page }) => {

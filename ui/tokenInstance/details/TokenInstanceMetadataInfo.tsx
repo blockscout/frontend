@@ -6,10 +6,9 @@ import type { MetadataAttributes } from 'types/client/token';
 
 import parseMetadata from 'lib/token/parseMetadata';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 import LinkExternal from 'ui/shared/LinkExternal';
 import TruncatedValue from 'ui/shared/TruncatedValue';
-
-import TokenInstanceDivider from './TokenInstanceDivider';
 
 interface Props {
   data?: TokenInstance;
@@ -71,7 +70,7 @@ const TokenInstanceMetadataInfo = ({ data, isLoading }: Props) => {
 
   return (
     <>
-      <TokenInstanceDivider/>
+      <DetailsInfoItemDivider/>
       { metadata?.name && (
         <DetailsInfoItem
           title="Name"

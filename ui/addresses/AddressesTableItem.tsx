@@ -11,7 +11,7 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 type Props = {
   item: AddressesItem;
   index: number;
-  totalSupply: string;
+  totalSupply: BigNumber;
   hasPercentage: boolean;
   isLoading?: boolean;
 }
@@ -55,7 +55,7 @@ const AddressesTableItem = ({
       </Td>
       { hasPercentage && (
         <Td isNumeric>
-          <Text lineHeight="24px">{ addressBalance.div(BigNumber(totalSupply)).multipliedBy(100).dp(8).toFormat() + '%' }</Text>
+          <Text lineHeight="24px">{ addressBalance.div(totalSupply).multipliedBy(100).dp(8).toFormat() + '%' }</Text>
         </Td>
       ) }
       <Td isNumeric>

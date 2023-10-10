@@ -24,6 +24,7 @@ import Icon from 'ui/shared/chakra/Icon';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
@@ -81,15 +82,6 @@ const BlockDetails = ({ query }: Props) => {
     return null;
   }
 
-  const sectionGap = (
-    <GridItem
-      colSpan={{ base: undefined, lg: 2 }}
-      mt={{ base: 2, lg: 3 }}
-      mb={{ base: 0, lg: 3 }}
-      borderBottom="1px solid"
-      borderColor="divider"
-    />
-  );
   const { totalReward, staticReward, burntFees, txFees } = getBlockReward(data);
 
   const validatorTitle = getNetworkValidatorTitle();
@@ -243,7 +235,7 @@ const BlockDetails = ({ query }: Props) => {
         ))
       }
 
-      { sectionGap }
+      <DetailsInfoItemDivider/>
 
       <DetailsInfoItem
         title="Gas used"
@@ -442,7 +434,7 @@ const BlockDetails = ({ query }: Props) => {
             </Box>
           </DetailsInfoItem>
 
-          { sectionGap }
+          <DetailsInfoItemDivider/>
 
           <DetailsInfoItem
             title="Hash"
