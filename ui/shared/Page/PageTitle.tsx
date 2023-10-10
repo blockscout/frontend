@@ -18,6 +18,8 @@ type Props = {
   contentAfter?: React.ReactNode;
   isLoading?: boolean;
   withTextAd?: boolean;
+  headingProps?: React.ComponentProps<typeof Heading>;
+  containerProps?: React.ComponentProps<typeof Flex>;
 }
 
 const TEXT_MAX_LINES = 1;
@@ -52,7 +54,7 @@ const BackLink = (props: BackLinkProp & { isLoading?: boolean }) => {
   );
 };
 
-const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoading, afterTitle, beforeTitle }: Props) => {
+const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoading, afterTitle, beforeTitle, headingProps, containerProps }: Props) => {
   const tooltip = useDisclosure();
   const isMobile = useIsMobile();
   const [ isTextTruncated, setIsTextTruncated ] = React.useState(false);
@@ -98,6 +100,7 @@ const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoa
       rowGap={ 3 }
       columnGap={ 3 }
       alignItems="center"
+      { ...containerProps }
     >
       <Flex h={{ base: 'auto', lg: isLoading ? 10 : 'auto' }} maxW="100%" alignItems="center">
         { backLink && <BackLink { ...backLink } isLoading={ isLoading }/> }
@@ -130,6 +133,7 @@ const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoa
               onMouseEnter={ tooltip.onOpen }
               onMouseLeave={ tooltip.onClose }
               onClick={ isMobile ? tooltip.onToggle : undefined }
+              { ...headingProps }
             >
               <span ref={ textRef }>
                 { title }

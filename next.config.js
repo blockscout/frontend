@@ -15,7 +15,7 @@ const rewrites = require('./nextjs/rewrites');
 
 const moduleExports = withTM({
   include: path.resolve(__dirname, 'icons'),
-  reactStrictMode: true,
+  reactStrictMode: false,
   webpack(config, { webpack }) {
     config.plugins.push(
       new webpack.DefinePlugin({

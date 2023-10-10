@@ -14,6 +14,7 @@ function generateCspPolicy() {
     descriptors.safe(),
     descriptors.sentry(),
     descriptors.walletConnect(),
+    descriptors.ylideRpcs(),
   );
 
   return makePolicyString(policyDescriptor);

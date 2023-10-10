@@ -8,7 +8,7 @@ export interface Params {
   method?: RequestInit['method'];
   headers?: RequestInit['headers'];
   signal?: RequestInit['signal'];
-  body?: Record<string, unknown> | FormData;
+  body?: NonNullable<unknown> | FormData;
   credentials?: RequestCredentials;
 }
 
@@ -18,7 +18,7 @@ interface Meta {
 }
 
 export default function useFetch() {
-  return React.useCallback(<Success, Error>(path: string, params?: Params, meta?: Meta): Promise<Success | ResourceError<Error>> => {
+  return React.useCallback(<Success, Error>(path: string, params?: Params, meta?: Meta): Promise<Success> => {
     const _body = params?.body;
     const isFormData = _body instanceof FormData;
     const withBody = isBodyAllowed(params?.method);
@@ -65,7 +65,7 @@ export default function useFetch() {
             payload: jsonError as Error,
             status: response.status,
             statusText: response.statusText,
-          }),
+          } as ResourceError<Error>),
           () => {
             return Promise.reject(error);
           },

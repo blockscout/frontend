@@ -1,0 +1,9 @@
+<svg viewBox="0 0 164 104" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M2 102.498C2 61.5 69.5 15.5 162 10.478m0 0-28.5-8.976m28.5 8.976-20.438 21.137" stroke="url(#proceedTOWalletArrow_svg__a)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <defs>
+    <linearGradient id="proceedTOWalletArrow_svg__a" x1="82" y1="1.502" x2="82" y2="102.498" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#97A1FF"/>
+      <stop offset="1" stop-color="#FFB571"/>
+    </linearGradient>
+  </defs>
+</svg>

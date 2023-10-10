@@ -8,6 +8,7 @@ import { mainnet } from 'wagmi/chains';
 import type { Props as PageProps } from 'nextjs/getServerSideProps';
 
 import { AppContextProvider } from 'lib/contexts/app';
+import { YlideProvider } from 'lib/contexts/ylide';
 import { SocketProvider } from 'lib/socket/context';
 import * as app from 'playwright/utils/app';
 import theme from 'theme';
@@ -28,6 +29,8 @@ const defaultAppContext = {
     height_or_hash: '',
     hash: '',
     q: '',
+    topic: '',
+    thread: '',
   },
 };
 
@@ -62,7 +65,9 @@ const TestApp = ({ children, withSocket, appContext = defaultAppContext }: Props
         <SocketProvider url={ withSocket ? `ws://${ app.domain }:${ app.socketPort }` : undefined }>
           <AppContextProvider { ...appContext }>
             <WagmiConfig config={ wagmiConfig }>
-              { children }
+              <YlideProvider>
+                { children }
+              </YlideProvider>
             </WagmiConfig>
           </AppContextProvider>
         </SocketProvider>
