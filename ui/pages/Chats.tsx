@@ -2,6 +2,8 @@ import { Flex, HStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 
+// import ChatsPersonalApi from 'lib/api/ylideApi/ChatsPersonalApi';
+// import { useYlide } from 'lib/contexts/ylide';
 import ActionBar from 'ui/shared/ActionBar';
 import FilterInput from 'ui/shared/filters/FilterInput';
 import ChatsAccountsBar from 'ui/shared/forum/ChatsAccountsBar';
@@ -11,6 +13,15 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 const ChatsPageContent = () => {
   const router = useRouter();
   const [ filter, setFilter ] = React.useState<string>(router.query.q?.toString() || '');
+  // const { accounts: { initialized, domainAccounts } } = useYlide();
+  // const [ chats2, setChats ] = React.useState<Array<Record<string, string>>>([]);
+  // const getChats = ChatsPersonalApi.useGetChats();
+
+  // useEffect(() => {
+  //   if (initialized && domainAccounts.length) {
+  //     getChats(domainAccounts[0].account.address).then(setChats);
+  //   }
+  // }, [ initialized, domainAccounts, getChats ]);
 
   const onSearchChange = useCallback((value: string) => {
     // onFilterChange({ q: value });

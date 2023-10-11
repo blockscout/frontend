@@ -1,41 +1,52 @@
 import React from 'react';
 
-import type { PaginatedArray, ForumTopic } from './types';
+import useChatsApiFetch from './useChatsApiFetch';
 
-import { useYlide } from 'lib/contexts/ylide';
+const useChatsGetList = () => {
+  const fetch = useChatsApiFetch();
 
-import useForumApiFetch from './useForumApiFetch';
-
-const useChatsGetList = (tokens: Array<string>) => {
-  const fetch = useForumApiFetch(tokens);
-
-  return React.useCallback(() => {
-    return fetch<Record<string, { isAdmin: boolean }>>({
-      url: '/auth/me',
+  return React.useCallback((myAddress: string, offset = 0, limit = 100) => {
+    return fetch<Array<Record<string, string>>>({
+      url: '/chats',
       fetchParams: {
-        method: 'GET',
+        method: 'POST',
+        body: {
+          myAddress,
+          offset,
+          limit,
+        },
       },
     });
   }, [ fetch ]);
 };
 
-const useForumBackendGetTopics = () => {
-  const { accounts: { tokens } } = useYlide();
-  const fetch = useForumApiFetch(tokens);
+const useChatsGetMessages = () => {
+  const fetch = useChatsApiFetch();
 
-  return React.useCallback(() => {
-    return fetch<PaginatedArray<ForumTopic>>({
-      url: '/topic/',
+  return React.useCallback((
+    myAddress: string,
+    recipientAddress: string,
+    offset = 0,
+    limit = 100,
+  ) => {
+    return fetch<Array<Record<string, string>>>({
+      url: '/thread',
       fetchParams: {
-        method: 'GET',
+        method: 'POST',
+        body: {
+          myAddress,
+          recipientAddress,
+          offset,
+          limit,
+        },
       },
     });
   }, [ fetch ]);
 };
 
 const publicApi = {
-  useGetList: useChatsGetList,
-  useGetTopics: useForumBackendGetTopics,
+  useGetChats: useChatsGetList,
+  useGetMessages: useChatsGetMessages,
 };
 
 export default publicApi;

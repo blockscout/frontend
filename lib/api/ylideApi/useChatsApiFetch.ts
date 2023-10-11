@@ -22,15 +22,14 @@ export interface Params {
 
 const baseUrl = `https://idx1.ylide.io`;
 
-export default function useChatsApiFetch(tokens?: string | Array<string>) {
+export default function useChatsApiFetch() {
   const fetch = useFetch();
 
   return React.useCallback(<SuccessType = unknown, ErrorType = unknown>(
     { url, queryParams, fetchParams }: Params = {},
   ) => {
     const headers = _pickBy({
-      Authorization: tokens ? `Bearer ${ typeof tokens === 'string' ? tokens : tokens.join(' ') }` : undefined,
-      'Content-Type': fetchParams?.body ? 'text/plain' : undefined,
+      'Content-type': fetchParams?.body ? 'text/plain' : undefined,
     }, Boolean) as HeadersInit;
 
     return fetch<SuccessType, ErrorType>(
@@ -40,5 +39,5 @@ export default function useChatsApiFetch(tokens?: string | Array<string>) {
         ...fetchParams,
       },
     );
-  }, [ fetch, tokens ]);
+  }, [ fetch ]);
 }
