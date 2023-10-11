@@ -156,7 +156,7 @@ jobs:
     
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: yarn --frozen-lockfile
+        run: yarn --frozen-lockfile --ignore-optional
 
       - name: Run PlayWright
         run: yarn test:pw:ci
