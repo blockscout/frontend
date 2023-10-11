@@ -2,17 +2,17 @@ name: Checks
 on:
   workflow_call:
   workflow_dispatch:
-  pull_request:
-    types: [ opened, synchronize, unlabeled ]
-    paths-ignore:
-      - '.github/ISSUE_TEMPLATE/**'
-      - '.husky/**'
-      - '.vscode/**'
-      - 'deploy/**'
-      - 'docs/**'
-      - 'public/**'
-      - 'stub/**'
-      - 'tools/**'
+  # pull_request:
+  #   types: [ opened, synchronize, unlabeled ]
+  #   paths-ignore:
+  #     - '.github/ISSUE_TEMPLATE/**'
+  #     - '.husky/**'
+  #     - '.vscode/**'
+  #     - 'deploy/**'
+  #     - 'docs/**'
+  #     - 'public/**'
+  #     - 'stub/**'
+  #     - 'tools/**'
       
 # concurrency:
 #   group: ${{ github.workflow }}__${{ github.job }}__${{ github.ref }}
